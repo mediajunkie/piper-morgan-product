@@ -2,7 +2,7 @@
 
 ## Status
 
-**Emerging** | Proven in #595
+**Proven** — demonstrated in #595 MUX-INTENT-MULTI (promoted 2026-06-17, instance verified)
 
 ## Context
 

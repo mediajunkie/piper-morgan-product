@@ -1,0 +1,73 @@
+{# F2 #1171 — canonical page shell. Standalone full shell. #}
+{# The header/nav and footer are SHELL-OWNED and are NOT blocks: a page #}
+{# physically cannot override or omit the chrome. That structural guarantee #}
+{# is what retires the off-chrome drift class (CXO F2 spec section 0). #}
+{# Pages: {% extends 'layouts/app_shell.html' %} and fill {% block main %}. #}
+{# Keep comments Jinja-native single-line — base.html's recursive-extends lesson: #}
+{# do NOT use HTML comment delimiters around Jinja tags. #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block page_title %}Piper Morgan{% endblock %}</title>
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+
+  {# tokens.css MUST be first — it defines the variables the others use. #}
+  <link rel="stylesheet" href="/static/css/tokens.css" />
+  <link rel="stylesheet" href="/static/css/toast.css" />
+  <link rel="stylesheet" href="/static/css/dialog.css" />
+  <link rel="stylesheet" href="/static/css/permissions.css" />
+  <link rel="stylesheet" href="/static/css/spacing.css" />
+  <link rel="stylesheet" href="/static/css/chat.css" />
+  <link rel="stylesheet" href="/static/css/app-shell.css" />
+  <link rel="stylesheet" href="/static/css/skip-link.css" />
+
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  {# G57/#1265: skip-link is shell-owned + the FIRST focusable element (before nav) so keyboard users bypass the global nav on first Tab. #}
+  {% include 'components/skip-link.html' %}
+  {# trust stage available to the nav + page JS before DOMContentLoaded fires. #}
+  <script>
+    {# G8: logged-in user → the nav user-menu (the nav reads window.currentUser). #}
+    {# Shell-owned (mirrors home.html) so migrated pages don't each re-declare it. #}
+    {% if user %}
+    window.currentUser = {
+      username: "{{ user.username }}",
+      user_id: "{{ user.user_id }}",
+      is_admin: {{ 'true' if user.is_admin else 'false' }}
+    };
+    {% else %}
+    window.currentUser = null;
+    {% endif %}
+    window.trustStage = {{ trust_stage|default(1)|tojson }};
+  </script>
+
+  {# SHELL-OWNED CHROME — global nav (+ chat widget + command palette). NOT a block. #}
+  {% include 'components/navigation.html' %}
+
+  <div class="app-shell-body">
+    <main id="main-content" class="app-shell-main" role="main" tabindex="-1">
+      {% block main %}{% endblock %}
+    </main>
+    {# Optional Radar/Layer-2 aside. v1: opt-in via show_radar=true (the #1236 #}
+    {# component is still behind ?radar=1 / UAT — the shell stays decoupled). #}
+    {% if show_radar|default(false) %}
+    <aside class="app-shell-aside" aria-label="Radar">{% block aside %}{% endblock %}</aside>
+    {% endif %}
+  </div>
+
+  {# Shell-owned chrome runtime — the nav-included floating chat widget + markdown #}
+  {# rendering need these (mirrors home.html). Migrated pages drop their own copies; #}
+  {# page-specific JS goes in {% block scripts %}. #}
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="/static/js/timestamp-utils.js"></script>
+  <script src="/static/js/chat.js"></script>
+  <script src="/static/js/toast.js"></script>
+  <script src="/static/js/permissions.js"></script>
+  <script src="/static/js/dialog.js"></script>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

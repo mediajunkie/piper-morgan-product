@@ -539,6 +539,55 @@ class InsightDB(Base, TimestampMixin):
         )
 
 
+class DocumentDB(Base, TimestampMixin):
+    """Relational anchor for knowledge-base documents (ADR-071 P2, #1238).
+
+    The doc store is **ChromaDB-only** (the ``pm_knowledge`` collection): the
+    PDF ingester writes chunks straight to ChromaDB with no relational row.
+    ADR-071 D2 mandates that every content store have an owner-anchored row;
+    this table is that row's explicit home. One row per ingested *document*,
+    linked to its ChromaDB chunks by ``chromadb_base_id`` (the ``pdf_<hash>``
+    base of the per-chunk ids ``pdf_<hash>_chunk_<i>``).
+
+    Anchoring fields (Arch ruling 2026-06-16, doc-store disposition synthesis):
+    - ``owner_id``    — who ingested/owns (provenance). FK → users.id; D2 canonical.
+      Nullable for m-40 grace (unknown provenance / unauthenticated ingest).
+    - ``is_global_pm_domain`` — the D1 *exemption marker*. When true, the
+      document is readable by ANY principal — this preserves the intentional
+      PM-domain shared-reasoning-context reads (classifier / morning_standup /
+      document_handlers) by explicit exemption rather than by accident
+      (closes the (c,3) leak as (a,1 + global-flag)). The marker lives HERE on
+      the DB row, NOT in ChromaDB embeddings metadata, so ADR-071 D5's AST guard
+      (which reads ORM model fields) and SQL queries can both see it.
+
+    D7 evolution: when multi-tenancy lands, ``owner_id`` + this marker evolve to
+    ``tenant_id`` together — the discipline is unchanged, only the principal type.
+    """
+
+    __tablename__ = "documents"
+
+    # Surrogate UUID PK (CrossDialectUUID = native UUID on PG, CHAR(36) on SQLite tests)
+    id = Column(CrossDialectUUID(), primary_key=True, default=uuid.uuid4)
+
+    # Link to the ChromaDB document (base of its chunk ids); the natural key
+    chromadb_base_id = Column(String(255), unique=True, nullable=False, index=True)
+
+    # Provenance: who ingested/owns. FK → users.id (ADR-071 D2 canonical).
+    # Nullable: m-40 graceful (None = unknown/unauthenticated provenance).
+    owner_id = Column(CrossDialectUUID(), ForeignKey("users.id"), nullable=True, index=True)
+
+    # D1 exemption marker — true => readable by any principal (global PM domain).
+    is_global_pm_domain = Column(
+        Boolean, nullable=False, default=False, server_default=text("false"), index=True
+    )
+
+    # Lightweight provenance mirror (rich metadata stays in ChromaDB)
+    title = Column(String(500), nullable=True)
+    source = Column(String(1000), nullable=True)
+
+    # created_at / updated_at from TimestampMixin
+
+
 class Product(Base):
     """Product being managed"""
 

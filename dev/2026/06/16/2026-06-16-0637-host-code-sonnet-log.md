@@ -34,6 +34,14 @@
 - (~12:37) IDLE fire — inbox empty, carry-forward unchanged. Queue still drained. Watching for: CIO gbrain co-sign, Lead Dev + CIO pilot portfolios, PM approval on LD streamlining.
 - (~13:xx) PM dropped in. Two carry-forward items resolved: #1058 already CLOSED (was stale in carry-forward); dev/alpha privacy confirmed resolved — gitignore working, files not tracked, no further PM decision needed. LD streamlining approval: PM closing loop directly with CIO. Carry-forward cleaned up.
 
+- (afternoon/evening fires — GAP-C): Duty cycle did not execute after ~13:xx. Session ended when PM conversation closed; cron `6d50bde6` died with it. 15:37, 18:37, 21:37 fires not executed. Two memos arrived in HOST inbox unprocessed (gbrain co-signed memo + CIO fire-as-wake-cure ship). Picked up at June 17 START.
+
+---
+
+## Session wrap — June 16
+
+**Arc**: T3+T4 gbrain synthesis; CIO addendum sent; PM interaction resolved #1058 stale item + dev/alpha privacy + LD streamlining (PM taking to CIO directly). Gap-C killed afternoon cron after ~13:xx.
+
 ---
 
 ## Memory & briefing surfaces referenced this session
@@ -41,3 +49,5 @@
 **Referenced**: carry-forward (primary navigation + queue state); June 15 session log (T3+T4 pending confirmation); gbrain findings file (T1+T2 for context before adding T3+T4); T1+T2 CIO memo (in-reply-to for addendum).
 **Loaded but not referenced**: BRIEFING-CURRENT-STATE.md; PROJECT.md; cross-pollination brief.
 **Wanted but not found**: none.
+
+<!-- DAY-CLOSED: 2026-06-16 -->

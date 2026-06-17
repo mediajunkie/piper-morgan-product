@@ -1,0 +1,52 @@
+/* F2 #1171 — page-shell layout. Token-only (F3-clean); zero hardcoded colors/spacing.
+   Chrome (the nav) is shell-owned; pages fill {% block main %}. The nav's own
+   styles live in components/navigation.html (a flagged token-migration follow-on);
+   this file owns the content-region / aside layout around it. */
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-neutral-off-white);
+  color: var(--color-neutral-darkest-gray);
+}
+
+/* Content region: main + optional aside, centered with a max width. */
+.app-shell-body {
+  flex: 1 0 auto; /* fill the viewport height (full-height app shell) */
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  align-items: flex-start;
+}
+
+.app-shell-main {
+  flex: 1 1 auto;
+  min-width: 0; /* let content shrink rather than overflow the flex row */
+}
+
+/* Optional Radar / Layer-2 aside — the #1236 component fills it where enabled. */
+.app-shell-aside {
+  flex: 0 0 320px;
+  border-left: var(--border-card);
+  padding-left: var(--space-lg);
+}
+
+@media (max-width: 768px) {
+  .app-shell-body {
+    flex-direction: column;
+    padding: var(--space-md);
+  }
+  .app-shell-aside {
+    flex-basis: auto;
+    border-left: none;
+    border-top: var(--border-card);
+    padding-left: 0;
+    padding-top: var(--space-md);
+  }
+}

@@ -1,327 +1,312 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Morning Standup - Piper Morgan</title>
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
-    <link rel="stylesheet" href="/static/css/toast.css" />
-    <link rel="stylesheet" href="/static/css/spinner.css" />
-    <link rel="stylesheet" href="/static/css/skip-link.css" />
-    <link rel="stylesheet" href="/static/css/page-transitions.css" />
-    <link rel="stylesheet" href="/static/css/hover-focus-states.css" />
-    <link rel="stylesheet" href="/static/css/tokens.css" />
-    <link rel="stylesheet" href="/static/css/spacing.css" />
-    <link rel="stylesheet" href="/static/css/chat.css" />
-    <style>
-      body {
-        font-family: var(--font-family);
-        margin: 0;
-        padding: var(--space-md);
-        background: var(--color-background-secondary);
-      }
-      .container {
-        max-width: 1000px;
-        margin: 1.5rem auto 0;
-        background: var(--color-background-primary);
-        border-radius: var(--border-radius-lg);
-        padding: var(--space-lg);
-        box-shadow: var(--shadow-sm);
-      }
-      .header {
-        text-align: center;
-        margin-bottom: var(--space-lg);
-      }
-      .header h1 {
-        color: var(--color-text-primary);
-        margin: 0;
-        font-size: var(--font-size-3xl);
-      }
-      .loading {
-        text-align: center;
-        color: var(--color-text-secondary);
-        font-style: italic;
-      }
-      /* Semantic alert colors - intentionally not tokenized */
-      .error {
-        background: #ffebee;
-        color: #c62828;
-        padding: var(--space-md);
-        border-radius: var(--border-radius-sm);
-        margin: var(--space-md) 0;
-      }
-      .success {
-        color: #2e7d32;
-      }
-      .section {
-        margin: var(--space-md) 0;
-        padding: var(--space-md);
-        background: var(--color-background-tertiary);
-        border-radius: var(--border-radius-md);
-      }
-      .section h2 {
-        color: var(--color-text-primary);
-        margin-top: 0;
-      }
-      .metrics {
-        display: flex;
-        justify-content: space-around;
-        text-align: center;
-        margin: var(--space-md) 0;
-      }
-      .metric {
-        background: var(--color-background-primary);
-        padding: var(--space-md);
-        border-radius: var(--border-radius-md);
-        box-shadow: var(--shadow-xs);
-      }
-      .metric-value {
-        font-size: var(--font-size-2xl);
-        font-weight: bold;
-        color: var(--color-accent-success);
-      }
-      .metric-label {
-        color: var(--color-text-secondary);
-        margin-top: 5px;
-      }
-      pre {
-        background: var(--color-text-primary);
-        color: var(--color-neutral-white);
-        padding: var(--space-md);
-        border-radius: var(--border-radius-sm);
-        overflow-x: auto;
-      }
-      button {
-        background: var(--color-primary);
-        color: var(--color-neutral-white);
-        border: none;
-        padding: var(--space-sm) var(--space-lg);
-        border-radius: var(--border-radius-md);
-        cursor: pointer;
-        font-size: var(--font-size-base);
-      }
-      button:hover {
-        background: var(--color-primary-dark);
-      }
-      button:disabled {
-        background: var(--color-disabled);
-        cursor: not-allowed;
-      }
-    </style>
-  </head>
-  <body>
-    {% include 'components/skip-link.html' %}
-    {% include 'components/navigation.html' %}
-    {% include 'components/toast.html' %}
-    {# #704: lifecycle indicator component for MUX-conscious rendering on
-       work items with lifecycle_state. Component template + JS API live
-       at templates/components/lifecycle_indicator.html (#423). The
-       loadStandup render loop below replaces lifecycle-slot placeholders
-       with LifecycleIndicator.create(stage, true) clones after innerHTML. #}
-    {% include 'components/lifecycle_indicator.html' %}
-    {% set breadcrumbs = [{"label": "Standup", "url": None}] %}
-    {% include 'components/breadcrumbs.html' %}
-    <script>
-      // G8: Logged-in User Indicator - Pass user context from server to navigation
-      {% if user %}
-      window.currentUser = {
-        username: "{{ user.username }}",
-        user_id: "{{ user.user_id }}",
-        is_admin: {{ 'true' if user.is_admin else 'false' }}
-      };
-      {% else %}
-      window.currentUser = null;
-      {% endif %}
-    </script>
-    <div class="container">
-      <div class="header">
-        <h1>🌅 Morning Standup</h1>
-        <p>Your daily accomplishments and priorities</p>
-        <button onclick="loadStandup()" id="loadBtn">Generate Standup</button>
-      </div>
+{% extends "layouts/app_shell.html" %}
+{# F2 #1171: migrated onto app_shell — chrome (nav/footer), the floating widget runtime, #}
+{# and window.currentUser are now shell-owned; this page declares only its content. #}
+{# The inline <style> below is kept verbatim — its hardcoded hex (semantic alert #}
+{# colors) is the per-page CSS-tokenization follow-on (CXO), out of scope here. #}
 
-      <div id="results"></div>
-    </div>
+{% block page_title %}Morning Standup - Piper Morgan{% endblock %}
 
-    <script>
-      async function loadStandup() {
-        const loadBtn = document.getElementById("loadBtn");
-        const results = document.getElementById("results");
+{% block head_extra %}
+<link rel="stylesheet" href="/static/css/spinner.css" />
+<link rel="stylesheet" href="/static/css/skip-link.css" />
+<link rel="stylesheet" href="/static/css/page-transitions.css" />
+<link rel="stylesheet" href="/static/css/hover-focus-states.css" />
+<style>
+  body {
+    font-family: var(--font-family);
+    margin: 0;
+    padding: var(--space-md);
+    background: var(--color-background-secondary);
+  }
+  .container {
+    max-width: 1000px;
+    margin: 1.5rem auto 0;
+    background: var(--color-background-primary);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+  }
+  .header {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+  }
+  .header h1 {
+    color: var(--color-text-primary);
+    margin: 0;
+    font-size: var(--font-size-3xl);
+  }
+  .loading {
+    text-align: center;
+    color: var(--color-text-secondary);
+    font-style: italic;
+  }
+  /* Semantic alert colors - intentionally not tokenized */
+  .error {
+    background: #ffebee;
+    color: #c62828;
+    padding: var(--space-md);
+    border-radius: var(--border-radius-sm);
+    margin: var(--space-md) 0;
+  }
+  .success {
+    color: #2e7d32;
+  }
+  .section {
+    margin: var(--space-md) 0;
+    padding: var(--space-md);
+    background: var(--color-background-tertiary);
+    border-radius: var(--border-radius-md);
+  }
+  .section h2 {
+    color: var(--color-text-primary);
+    margin-top: 0;
+  }
+  .metrics {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    margin: var(--space-md) 0;
+  }
+  .metric {
+    background: var(--color-background-primary);
+    padding: var(--space-md);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-xs);
+  }
+  .metric-value {
+    font-size: var(--font-size-2xl);
+    font-weight: bold;
+    color: var(--color-accent-success);
+  }
+  .metric-label {
+    color: var(--color-text-secondary);
+    margin-top: 5px;
+  }
+  pre {
+    background: var(--color-text-primary);
+    color: var(--color-neutral-white);
+    padding: var(--space-md);
+    border-radius: var(--border-radius-sm);
+    overflow-x: auto;
+  }
+  button {
+    background: var(--color-primary);
+    color: var(--color-neutral-white);
+    border: none;
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    font-size: var(--font-size-base);
+  }
+  button:hover {
+    background: var(--color-primary-dark);
+  }
+  button:disabled {
+    background: var(--color-disabled);
+    cursor: not-allowed;
+  }
+</style>
+{% endblock %}
 
-        // Show loading state
-        Loading.button(loadBtn, true);
-        results.innerHTML =
-          '<div class="loading">⏱️ Generating your morning standup...</div>';
+{% block main %}
+{% include 'components/toast.html' %}
+{# #704: lifecycle indicator component for MUX-conscious rendering on
+   work items with lifecycle_state. Component template + JS API live
+   at templates/components/lifecycle_indicator.html (#423). The
+   loadStandup render loop below replaces lifecycle-slot placeholders
+   with LifecycleIndicator.create(stage, true) clones after innerHTML. #}
+{% include 'components/lifecycle_indicator.html' %}
+{% set breadcrumbs = [{"label": "Standup", "url": None}] %}
+{% include 'components/breadcrumbs.html' %}
+<div class="container">
+  <div class="header">
+    <h1>🌅 Morning Standup</h1>
+    <p>Your daily accomplishments and priorities</p>
+    <button onclick="loadStandup()" id="loadBtn">Generate Standup</button>
+  </div>
 
-        try {
-          const startTime = Date.now();
-          // POST to the correct API endpoint with JSON body
-          const response = await fetch("/api/v1/standup/generate", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ mode: "standard", format: "json" }),
-            credentials: "include"
-          });
-          const data = await response.json();
-          const endTime = Date.now();
+  <div id="results"></div>
+</div>
+{% endblock %}
 
-          // API returns { success: true, standup: {...}, performance_metrics: {...}, metadata: {...} }
-          if (data.success) {
-            ToastMessages.success('standup_ready');
-            const standup = data.standup || {};
-            const metrics = data.performance_metrics || {};
-            results.innerHTML = `
-                        <div class="success">✅ Standup generated successfully!</div>
+{% block scripts %}
+<script>
+  async function loadStandup() {
+    const loadBtn = document.getElementById("loadBtn");
+    const results = document.getElementById("results");
 
-                        <div class="metrics">
-                            <div class="metric">
-                                <div class="metric-value">${
-                                  metrics.generation_time_with_context ||
-                                  metrics.generation_time_formatted ||
-                                  metrics.generation_time_ms + "ms"
-                                }</div>
-                                <div class="metric-label">Generation Time</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">${
-                                  metrics.time_saved_formatted ||
-                                  (standup.time_saved_minutes ? standup.time_saved_minutes + " min" : "N/A")
-                                }</div>
-                                <div class="metric-label">Time Saved</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">${
-                                  metrics.efficiency_multiplier || "N/A"
-                                }</div>
-                                <div class="metric-label">Efficiency</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">${
-                                  endTime - startTime
-                                }ms</div>
-                                <div class="metric-label">API Response Time</div>
-                            </div>
+    // Show loading state
+    Loading.button(loadBtn, true);
+    results.innerHTML =
+      '<div class="loading">⏱️ Generating your morning standup...</div>';
+
+    try {
+      const startTime = Date.now();
+      // POST to the correct API endpoint with JSON body
+      const response = await fetch("/api/v1/standup/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "standard", format: "json" }),
+        credentials: "include"
+      });
+      const data = await response.json();
+      const endTime = Date.now();
+
+      // API returns { success: true, standup: {...}, performance_metrics: {...}, metadata: {...} }
+      if (data.success) {
+        ToastMessages.success('standup_ready');
+        const standup = data.standup || {};
+        const metrics = data.performance_metrics || {};
+        results.innerHTML = `
+                    <div class="success">✅ Standup generated successfully!</div>
+
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value">${
+                              metrics.generation_time_with_context ||
+                              metrics.generation_time_formatted ||
+                              metrics.generation_time_ms + "ms"
+                            }</div>
+                            <div class="metric-label">Generation Time</div>
                         </div>
-
-                        <div class="section">
-                            <h2>📋 Yesterday's Accomplishments</h2>
-                            <ul>${(standup.yesterday_accomplishments || [])
-                              .map((item) => {
-                                if (typeof item !== 'object' || item === null) {
-                                  return `<li>${item}</li>`;
-                                }
-                                const iconPart = item.icon ? item.icon + ' ' : '';
-                                // #704: lifecycle-slot placeholder, replaced
-                                // post-render with LifecycleIndicator.create()
-                                // when lifecycle_state is present. Empty slot
-                                // for items without lifecycle_state — nothing
-                                // renders, graceful degradation.
-                                const lifecycleSlot = item.lifecycle_state
-                                  ? `<span class="lifecycle-slot" data-stage="${item.lifecycle_state}"></span> `
-                                  : '';
-                                return `<li>${iconPart}${lifecycleSlot}${item.display || ''}</li>`;
-                              })
-                              .join("")}</ul>
+                        <div class="metric">
+                            <div class="metric-value">${
+                              metrics.time_saved_formatted ||
+                              (standup.time_saved_minutes ? standup.time_saved_minutes + " min" : "N/A")
+                            }</div>
+                            <div class="metric-label">Time Saved</div>
                         </div>
-
-                        <div class="section">
-                            <h2>🎯 Today's Priorities</h2>
-                            <ul>${(standup.today_priorities || [])
-                              .map((item) => {
-                                if (typeof item !== 'object' || item === null) {
-                                  return `<li>${item}</li>`;
-                                }
-                                const iconPart = item.icon ? item.icon + ' ' : '';
-                                // #704: lifecycle-slot placeholder, replaced
-                                // post-render with LifecycleIndicator.create()
-                                // when lifecycle_state is present. Empty slot
-                                // for items without lifecycle_state — nothing
-                                // renders, graceful degradation.
-                                const lifecycleSlot = item.lifecycle_state
-                                  ? `<span class="lifecycle-slot" data-stage="${item.lifecycle_state}"></span> `
-                                  : '';
-                                return `<li>${iconPart}${lifecycleSlot}${item.display || ''}</li>`;
-                              })
-                              .join("")}</ul>
+                        <div class="metric">
+                            <div class="metric-value">${
+                              metrics.efficiency_multiplier || "N/A"
+                            }</div>
+                            <div class="metric-label">Efficiency</div>
                         </div>
-
-                        <div class="section">
-                            <h2>⚠️ Blockers</h2>
-                            ${
-                              standup.blockers &&
-                              standup.blockers.length > 0
-                                ? `<ul>${standup.blockers
-                                    .map((item) => {
-                                if (typeof item !== 'object' || item === null) {
-                                  return `<li>${item}</li>`;
-                                }
-                                const iconPart = item.icon ? item.icon + ' ' : '';
-                                // #704: lifecycle-slot placeholder, replaced
-                                // post-render with LifecycleIndicator.create()
-                                // when lifecycle_state is present. Empty slot
-                                // for items without lifecycle_state — nothing
-                                // renders, graceful degradation.
-                                const lifecycleSlot = item.lifecycle_state
-                                  ? `<span class="lifecycle-slot" data-stage="${item.lifecycle_state}"></span> `
-                                  : '';
-                                return `<li>${iconPart}${lifecycleSlot}${item.display || ''}</li>`;
-                              })
-                                    .join("")}</ul>`
-                                : "<p>✅ No blockers identified</p>"
-                            }
+                        <div class="metric">
+                            <div class="metric-value">${
+                              endTime - startTime
+                            }ms</div>
+                            <div class="metric-label">API Response Time</div>
                         </div>
+                    </div>
 
-                        <div class="section">
-                            <h2>📊 Full Response</h2>
-                            <pre>${JSON.stringify(data, null, 2)}</pre>
-                        </div>
-                    `;
-
-            // #704: replace lifecycle-slot placeholders with real
-            // LifecycleIndicator elements (clones the template at
-            // #lifecycle-indicator-template, sets stage + experience phrase
-            // + tooltip + aria-label per the component's API).
-            // Items without lifecycle_state never emitted a slot, so they
-            // degrade gracefully (nothing to replace).
-            if (window.LifecycleIndicator && window.LifecycleIndicator.create) {
-              results.querySelectorAll('.lifecycle-slot').forEach((slot) => {
-                const stage = slot.dataset.stage;
-                const indicator = window.LifecycleIndicator.create(stage, true);
-                if (indicator) {
-                  slot.replaceWith(indicator);
-                }
-              });
-            }
-          } else {
-            ToastMessages.error('create_error', { title: 'Generation failed', body: data.detail || 'Please try again' });
-            results.innerHTML = `
-                        <div class="error">❌ Error generating standup: ${
-                          data.detail || "Unknown error"
-                        }</div>
-                        <div class="section">
-                            <h2>Debug Information</h2>
-                            <pre>${JSON.stringify(data, null, 2)}</pre>
-                        </div>
-                    `;
-          }
-        } catch (error) {
-          ToastMessages.error('network_error', { body: error.message || 'Check your internet connection' });
-          results.innerHTML = `
-                    <div class="error">❌ Network error: ${error.message}</div>
                     <div class="section">
-                        <h2>Debug Information</h2>
-                        <pre>Error: ${error.toString()}</pre>
+                        <h2>📋 Yesterday's Accomplishments</h2>
+                        <ul>${(standup.yesterday_accomplishments || [])
+                          .map((item) => {
+                            if (typeof item !== 'object' || item === null) {
+                              return `<li>${item}</li>`;
+                            }
+                            const iconPart = item.icon ? item.icon + ' ' : '';
+                            // #704: lifecycle-slot placeholder, replaced
+                            // post-render with LifecycleIndicator.create()
+                            // when lifecycle_state is present. Empty slot
+                            // for items without lifecycle_state — nothing
+                            // renders, graceful degradation.
+                            const lifecycleSlot = item.lifecycle_state
+                              ? `<span class="lifecycle-slot" data-stage="${item.lifecycle_state}"></span> `
+                              : '';
+                            return `<li>${iconPart}${lifecycleSlot}${item.display || ''}</li>`;
+                          })
+                          .join("")}</ul>
+                    </div>
+
+                    <div class="section">
+                        <h2>🎯 Today's Priorities</h2>
+                        <ul>${(standup.today_priorities || [])
+                          .map((item) => {
+                            if (typeof item !== 'object' || item === null) {
+                              return `<li>${item}</li>`;
+                            }
+                            const iconPart = item.icon ? item.icon + ' ' : '';
+                            // #704: lifecycle-slot placeholder, replaced
+                            // post-render with LifecycleIndicator.create()
+                            // when lifecycle_state is present. Empty slot
+                            // for items without lifecycle_state — nothing
+                            // renders, graceful degradation.
+                            const lifecycleSlot = item.lifecycle_state
+                              ? `<span class="lifecycle-slot" data-stage="${item.lifecycle_state}"></span> `
+                              : '';
+                            return `<li>${iconPart}${lifecycleSlot}${item.display || ''}</li>`;
+                          })
+                          .join("")}</ul>
+                    </div>
+
+                    <div class="section">
+                        <h2>⚠️ Blockers</h2>
+                        ${
+                          standup.blockers &&
+                          standup.blockers.length > 0
+                            ? `<ul>${standup.blockers
+                                .map((item) => {
+                            if (typeof item !== 'object' || item === null) {
+                              return `<li>${item}</li>`;
+                            }
+                            const iconPart = item.icon ? item.icon + ' ' : '';
+                            // #704: lifecycle-slot placeholder, replaced
+                            // post-render with LifecycleIndicator.create()
+                            // when lifecycle_state is present. Empty slot
+                            // for items without lifecycle_state — nothing
+                            // renders, graceful degradation.
+                            const lifecycleSlot = item.lifecycle_state
+                              ? `<span class="lifecycle-slot" data-stage="${item.lifecycle_state}"></span> `
+                              : '';
+                            return `<li>${iconPart}${lifecycleSlot}${item.display || ''}</li>`;
+                          })
+                                .join("")}</ul>`
+                            : "<p>✅ No blockers identified</p>"
+                        }
+                    </div>
+
+                    <div class="section">
+                        <h2>📊 Full Response</h2>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
                     </div>
                 `;
-        } finally {
-          Loading.button(loadBtn, false);
+
+        // #704: replace lifecycle-slot placeholders with real
+        // LifecycleIndicator elements (clones the template at
+        // #lifecycle-indicator-template, sets stage + experience phrase
+        // + tooltip + aria-label per the component's API).
+        // Items without lifecycle_state never emitted a slot, so they
+        // degrade gracefully (nothing to replace).
+        if (window.LifecycleIndicator && window.LifecycleIndicator.create) {
+          results.querySelectorAll('.lifecycle-slot').forEach((slot) => {
+            const stage = slot.dataset.stage;
+            const indicator = window.LifecycleIndicator.create(stage, true);
+            if (indicator) {
+              slot.replaceWith(indicator);
+            }
+          });
         }
+      } else {
+        ToastMessages.error('create_error', { title: 'Generation failed', body: data.detail || 'Please try again' });
+        results.innerHTML = `
+                    <div class="error">❌ Error generating standup: ${
+                      data.detail || "Unknown error"
+                    }</div>
+                    <div class="section">
+                        <h2>Debug Information</h2>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
       }
-    </script>
-    <script src="/static/js/toast.js"></script>
-    <script src="/static/js/toast-messages.js"></script>
-    <script src="/static/js/loading.js"></script>
-    <script src="/static/js/focus-manager.js"></script>
-    <script src="/static/js/page-transitions.js"></script>
-    <script src="/static/js/timestamp-utils.js"></script>
-    <script src="/static/js/chat.js"></script>
-  </body>
-</html>
+    } catch (error) {
+      ToastMessages.error('network_error', { body: error.message || 'Check your internet connection' });
+      results.innerHTML = `
+                <div class="error">❌ Network error: ${error.message}</div>
+                <div class="section">
+                    <h2>Debug Information</h2>
+                    <pre>Error: ${error.toString()}</pre>
+                </div>
+            `;
+    } finally {
+      Loading.button(loadBtn, false);
+    }
+  }
+</script>
+<script src="/static/js/toast-messages.js"></script>
+<script src="/static/js/loading.js"></script>
+<script src="/static/js/focus-manager.js"></script>
+<script src="/static/js/page-transitions.js"></script>
+{% endblock %}

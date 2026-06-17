@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Documents - Piper Morgan</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
-  <!-- tokens.css MUST be first - defines CSS variables used by other stylesheets -->
-  <link rel="stylesheet" href="/static/css/tokens.css" />
-  <link rel="stylesheet" href="/static/css/toast.css" />
-  <link rel="stylesheet" href="/static/css/dialog.css" />
-  <link rel="stylesheet" href="/static/css/spacing.css" />
-  <style>
+{% extends "layouts/app_shell.html" %}
+{# F2 #1171: migrated onto app_shell — chrome (nav/footer), the floating widget runtime, #}
+{# and window.currentUser + window.trustStage are now shell-owned; this page declares #}
+{# only its content. The shell sets window.trustStage = trust_stage|default(1) (the #}
+{# #1147 server-resolved, privacy-leaning default), so this page no longer re-declares #}
+{# it. The inline <style> below is kept verbatim — its hardcoded hex (the documents #}
+{# purple theme) is the per-page CSS-tokenization follow-on (CXO), out of scope here. #}
+
+{% block page_title %}Documents - Piper Morgan{% endblock %}
+
+{% block head_extra %}
+<style>
     body {
       font-family: var(--font-family);
       margin: 0;
@@ -326,10 +325,9 @@
       opacity: 0.9;
     }
   </style>
-</head>
-<body>
-  <!-- Include navigation component -->
-  {% include 'components/navigation.html' %}
+{% endblock %}
+
+{% block main %}
   {% include 'components/toast.html' %}
   {% include 'components/document_window.html' %}
 
@@ -406,28 +404,11 @@
       </div>
     </div>
   </div>
+{% endblock %}
 
-  <!-- JavaScript -->
-  <script src="/static/js/toast.js"></script>
+{% block scripts %}
   <script src="/static/js/toast-messages.js"></script>
   <script>
-    // Inject user context from server
-    {% if user %}
-    window.currentUser = {
-      username: "{{ user.username }}",
-      user_id: "{{ user.user_id }}",
-      is_admin: {{ 'true' if user.is_admin else 'false' }}
-    };
-    // #1147: use the server-RESOLVED trust_stage (real TrustComputationService
-    // lookup in documents_ui, privacy-leaning default 1) — NOT user.trust_stage,
-    // which ignored the handler's resolved stage and defaulted to 4 (showing
-    // Stage-4 docs to everyone — the opposite of AC3's fail-to-Stage-1).
-    window.trustStage = {{ trust_stage | default(1) }};
-    {% else %}
-    window.currentUser = null;
-    window.trustStage = 1;
-    {% endif %}
-
     // State
     let allDocuments = [];
     let currentDocumentId = null;
@@ -666,5 +647,4 @@
       }
     }
   </script>
-</body>
-</html>
+{% endblock %}

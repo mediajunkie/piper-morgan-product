@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-15 | Lead Developer | memo-lead-to-pa-cc-pm-wave-p-prereqs-ack-timeline-bugb-2026-06-15.md | RE Wave P prerequisites — ack (scoping good) + rough timeline + Bug B fix direc… |
+| 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-cohort-fire-as-wake-not-timebox-reminder-2026-06-16.md | Cohort reminder — a cron fire is a WAKE, not a time-box (+ the no-rush correcti… |

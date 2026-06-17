@@ -93,3 +93,54 @@ PM un-deferred the breaking pass ("go!") + affirmed the Inchworm way (thorough/m
   - **m-40 caller-analysis**: real read-callers = `document_handlers:329` (already has `user_id`), `morning_standup` ×2, CLI. **`classifier:1389` is a FALSE POSITIVE** (`knowledge_graph_service.get_relevant_context`, already scoped) — corrects Arch's memo.
 - **Gameplan** (`1238-doc-store-anchoring-gameplan.md`) + **GAMEPLAN audit gate PASSED** (`1238-gameplan-audit.md`): one gap (Performance) found→FIXED (perf characterization, not N/A-dismissed). 0.5/0.7/routing-tests skipped per template's own conditional-skip rules. SOLO → Prompts gate inapplicable-by-absence. **PROCEED to Phase 1.**
 - 5 execution phases queued (model+migration → repo → ingest-wiring → backfill → reads-threading+cross-owner). Inchworm: green + commit + push per phase.
+
+### ~20:00 — #1252 P2 doc-store anchoring SHIPPED (5 phases) + the (c,3) leak CLOSED
+- **All 5 phases on origin/main, green at each boundary** (commit chain through `a5b227f0b`):
+  - **P1** `DocumentDB` model + additive `documents` table migration `a1238documents` (owner_id FK→users.id + is_global_pm_domain marker on the DB row per Arch; reversible — verified up/down on dev PG). 3 model tests.
+  - **P2** `DocumentRepository` — upsert + `get_readable_base_ids` (owner OR global; None→global-only, m-40 graceful). 6 tests.
+  - **P3** ingest anchoring: `DocumentService._ingest_and_anchor` (session+ingester injectable for tests) + **fixed the broken CLI `add`** (passed a str to `upload_pdf(UploadFile)` → new `ingest_path`) + `resolve_pm_owner_id` (env→username 'xian'→None; verified vs real PG → a25db09c). Wiring test (real import chain).
+  - **P4** idempotent backfill script → 1 existing doc (`pdf_88388894`) → PM + global. Verified on dev PG; re-run idempotent.
+  - **P5 — THE (c,3) CLOSE**: 3 reads (find_decisions/get_relevant_context/suggest_documents) owner-scoped (intersect ChromaDB results with `get_readable_base_ids`, fail-closed); callers threaded (document_handlers/morning_standup ×2/CLI). **Cross-owner test**: α/β see own+global, never the other's private; None→global. 22 #1238-anchoring tests + 25 caller-regression tests green.
+
+### ~20:30 — CONFLATION FOUND (read the whole issue) → built the REAL #1238 (DocumentEntitySource)
+- **Finding**: #1238's actual title is **RADAR-DOC-SOURCE — DocumentEntitySource**, NOT "doc-store anchoring." I'd worked from the carry-forward + Arch's "#1238 doc-store" shorthand instead of #1238's body — the *investigate-the-whole-artifact* miss. What I built = the **#1252 P2 prerequisite** that #1238's own STOP-condition predicted; it **unblocks** #1238. Surfaced to PM transparently; pinned the sender-side memo discipline ([[feedback_memo_when_blocked_or_need_lead_guidance]]).
+- **Built the real #1238** (now unblocked, `8ba37c5de`): `DocumentService.list_for_user` + `DocumentRepository.list_for_owner` (owner-scoped — personal radar, NOT global); `DocumentEntitySource` → Document RadarEntity (observed; recency lifecycle; honest meta; ref=base_id); registered in `_build_feed`; **per-source isolation** in `RadarFeed.assemble` (AC: a failing source never blanks Radar). **68 tests green** (8 doc-source + 6 #1236 + 3 route + list methods + regressions).
+- **Closed properly**: #1238 description boxes + completion matrix + status banner + evidence comment (left OPEN for PM UAT — live render rides #1236 `?radar=1`); #1237 umbrella matrix → Document ✅; decisions.log appended; Arch done-memo (next). Gameplan+audit at `dev/2026/06/16/1238-*.md`.
+- **PM-gated / owed**: #1238 live UAT (Document cards at `?radar=1`); the #1238/#1252-P2 framing reconciliation (PM aware). **Follow-up to file**: formal PM-identity config (replace `username='xian'` alpha-fallback → ADR-071 D7).
+- **Lesson re-learned**: read the WHOLE issue body at Phase 0, not the relayed framing. The work was right (it's the genuine prerequisite); the tracking drifted because the cohort shorthand "#1238 doc-store" ≠ #1238's body.
+
+### ~20:45 — F2 #1171 page-shell: P1 shell + P2 insights migration SHIPPED (PM invited evening work)
+- PM took #1238 UAT + asked what teed-up work I'm comfortable with tonight → took **F2 #1171** (cleanest: CXO spec binding, no refactor dep, #1251 item-2/3 fold in).
+- **Phase 0 scope finding**: **27 standalone pages, not ~6** (CXO spec estimate). Gameplan + GAMEPLAN audit (`dev/2026/06/16/1171-F2-*.md`); cohorting needed.
+- **P1 shell SHIPPED** (`f8390f98c`): `layouts/app_shell.html` (standalone; chrome = nav include + footer, **NOT page-overridable** — the F2 guarantee, proven by test) + `web/static/css/app-shell.css` (token-only — all spec tokens verified to exist). `show_radar` opt-in (default off — decoupled from un-UATed #1236). 5 real-render tests.
+- **P2 insights migration SHIPPED** (`1e141b970`): re-pointed base→app_shell; blocks title→page_title / head→head_extra / content→main; **retired the #1251 item-1 per-page nav include** (shell owns chrome, as that include's comment predicted); **#1251 item-3** "Correct"→"Correct this". Real-render test (nav+footer+content via shell). **793 template tests green** (no regression; updated `test_insights_page.py` extends + nav assertions).
+- **DEFERRED + surfaced to CXO** (memo `d281f2c1c`, cc PM): 4 decisions — (1) cohort confirm (~21 app pages migrate / ~5 login·setup·404·500·network-error stay standalone), (2) item-2 242-line insights CSS scope (recommend separate increment), (3) nav-component ~500-line inline-CSS scope (recommend separate), (4) aside default-off v1 OK. **The ~21-page cohort migration waits on CXO's cohort confirm**, then per-page green increments.
+- Honored PM's earlier premature-pause corrections: did the unblocked structural insights migration (TDD safety net) rather than deferring it; deferred ONLY the genuinely-big (242-line CSS) + genuinely-forked (other-page cohorting) parts.
+
+### Fire (22:48 PT, day-close STOP) — D7 filed + restart for UAT + reconcile
+- PM Qs answered: (1) mail — Arch ack'd #1238/#1252-P2 + greenlit D7 + owned the classifier-correction as their own m-30 self-failure; CXO+Arch settled #1164. (2) "27 vs 6" verified REAL: 24 routed views + 3 error pages (404/500/network-error), none dead/fragments; CXO under-estimated (settings 9-cluster + error pages); Phase-0 grep caught it. (3) #1238 UAT: **restarted the Monday-stale server** (PID 27958→76538, env-stripped, fresh code; radar route 401-registered); UAT = login xian@pobox.com → `/?radar=1` → History sidebar → "Test Architecture Chapter" Document card.
+- **D7 PM-identity-config follow-up FILED — #1260** (Arch-greenlit; alpha username+env fallback → formal config, ties to ADR-071 D7 tenant_id).
+- Mail triaged (3 → read/, `97cfb3cf8`). Escalations reconciled (m-41): #1165 CLOSED → Resolved; Open now empty.
+
+### DAY-CLOSE (2026-06-16) — day-arc + memory-eval + sign-off
+**Day-arc**: A marathon. (1) **#1252 P2 doc-store anchoring** — 5 phases, the **(c,3) leak closed** (documents table + owner_id + is_global_pm_domain + owner-scoped reads + backfill + broken-CLI fix), 22 tests. (2) **#1238 DocumentEntitySource** (the real issue, unblocked by P2) — list_for_user + DocumentEntitySource + _build_feed + per-source isolation, 68 tests; OPEN for PM UAT. (3) **F2 #1171** — app_shell shell (chrome-not-overridable, proven) + insights migration + #1251 item-3; 793 template tests green; 27-page cohorting surfaced to CXO. (4) Filed #1257 (P7 cutover), #1260 (D7). All on origin/main; every increment pushed. Conflation found + surfaced (read-the-whole-issue lesson). Memory pin added (memo-when-blocked discipline).
+
+**Memory & briefing surfaces referenced this session**:
+- *Referenced*: Arch #1238 ruling memo (synthesis spec); CXO F2 spec (binding); gameplan-template + audit-cascade skill + close-issue-properly skill (flywheel); CLAUDE.md (worktree paths, mailbox bridge, env-stripped restart, #1106 manifest-regen, intent-dispatch); memory pins [[feedback_memo_when_blocked_or_need_lead_guidance]] (created), [[feedback_careful_git_sync_on_shared_main]], [[feedback_investigate_before_extending_all_work]], [[feedback_write_to_file_dont_carry_plans_in_head]], [[feedback_pre_authorized_for_unblocked_work_just_do]]; m-40 layer-then-migrate; duty-cycle-tick skill.
+- *Loaded but not referenced*: most MEMORY.md index entries (Ship-drafting, calendar, proofreading, voice-guide pins — not relevant to code work this session).
+- *Wanted but not found*: a clean "configured PM identity" config (didn't exist → filed #1260); #1238's actual body should have been read at Phase 0 (the framing-vs-body conflation gap — now a logged lesson).
+
+**Sign-off checklist**: working tree clean (only `data/github_preferences.json` untracked band-aid); all work pushed to origin/main each increment (verified `git branch -r --contains HEAD` at each); nothing stranded. Cron `de784c62` ARMED (next 07:17 START). #1238 awaits PM UAT; F2 cohort awaits CXO confirm; #1164 awaits P7 cutover (Arch-sequenced).
+
+<!-- DAY-CLOSED: 2026-06-16 -->
+
+### Post-close continuation (23:00–23:20 PT) — PM UAT'd #1238; closed it; 3 follow-ups filed
+(Day was closed at 22:48; PM stayed on the late shift + UAT'd, so this appends.)
+- **#1238 UAT PASSED + CLOSED** (`completed`): PM verified live at `/?radar=1` — the "Test Architecture Chapter" Document card renders in Radar (DOCUMENT type, New badge, ● observed). Closed-properly (banner→PASSED + UAT-evidence comment). The (c,3)/#1252-P2 substrate + the DocumentEntitySource both shipped + now user-confirmed.
+- **UAT-login debugging**: PM couldn't log into `xian@pobox.com` → root cause was **login wants the username `xian`, not the email** (+ no password-recovery). The doc-owner resolution (resolve_pm_owner_id → username 'xian' → a25db09c) was actually correct/accessible. Briefly re-owned the doc to m1-test then back to xian (via PIPER_PM_USER_ID override) while diagnosing.
+- **3 follow-ups filed**: **#1260** (D7 PM-identity config, Arch-greenlit) · **#1261** (M5: password recovery + login-identifier clarity for beta) · **#1262** (D1: nav label "History" opens "Radar" panel) · **#1263** (D1: left conversation-list rail not re-skinned to Part-B). [4 total — #1260/#1261 earlier in the close, #1262/#1263 this fire.]
+- **Exec "fire-as-wake-not-timebox" memo** drained → read/ (drove draining #1238-close + the filings now rather than "saving" them). No reply needed.
+- **Deferred (explicit reason)**: F2 ~21-page cohort migration — awaiting CXO's cohort-confirm (memo `d281f2c1c`, 4 decisions). #1164 — awaiting #1257 P7 cutover (Arch-sequenced).
+- **Cron** `de784c62` armed (next 07:17 START). Sign-off: tree clean, all on origin/main.
+
+<!-- DAY-CLOSED: 2026-06-16 (post-close continuation logged above) -->

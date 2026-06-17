@@ -2,13 +2,26 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-17 | Exec (Chief of Staff) | cc-memo-exec-to-cio-cc-pm-blind-spot-fix-verified-concur-keep-hourly-2026-06-17.md | RE: blind-spot FIXED — verified live, concur keep-hourly |
+| 2026-06-17 | Exec (Chief of Staff) | cc-memo-exec-to-cio-cc-pm-freeze-watcher-blind-spot-closed-never-restarted-2026-06-17.md | Freeze-watcher blind spot — first real Gap-C event (my overnight dormancy) went… |
+| 2026-06-17 | Exec (Chief of Staff) | cc-memo-exec-to-comms-cc-pm-how-to-surface-blocked-work-memo-the-gate-2026-06-17.md | How to surface blocked work so it reaches PM's dashboard — memo the gate, don't… |
+| 2026-06-16 | Chief Architect | cc-memo-arch-to-cio-cc-lead-pm-m30-altitude-candidate-ack-precision-edits-concur-2026-06-16.md | m-30 altitude-candidate ack — both precision edits concur; "recognition not app… |
+| 2026-06-16 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-pm-ppm-1164-private-session-mechanism-flag-plus-retention-2026-06-16.md | #1164 "private session" mechanism — `is_private` flag on conversation row + com… |
+| 2026-06-16 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-1164-boundary-confirmed-ack-amnesty-distinction-recorded-2026-06-16.md | #1164 ack — boundary confirmed + 24h retention default locked; "private ≠ amnes… |
+| 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1238-1252p2-implemented-ack-classifier-correction-d7-file-greenlight-2026-06-16.md | #1238 / #1252-P2 IMPLEMENTED ack — classifier-correction is the honest m-30 sel… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1238-doc-store-disposition-synthesis-confirmed-2026-06-16.md | #1238 doc-store ADR-071 disposition — CONCUR with your synthesis (owner_id = co… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1252-arch-gated-rulings-p8-orphans-mandatory-principal-2026-06-16.md | #1252 Arch-gated rulings — P8 D1 marker (column) + conversations-orphan disposi… |
+| 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-pm-mea-culpa-merge-mishap-restored-gameplan-files-2026-06-16.md | Mea culpa — merge-mishap deleted your gameplan files (`1238-doc-store-anchoring… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-pm-process-clarification-memos-are-the-signaling-layer-not-session-log-markers-2026-06-16.md | Process clarification (PM 2026-06-16) — memos ARE the cross-agent signaling lay… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-pa-cc-pm-lead-adr-072-ack-timeline-initial-framing-on-5-decisions-2026-06-16.md | ADR-072 ack — receipt confirmed + rough timeline + initial framing on the 5 rat… |
 | 2026-06-16 | Exec (Chief of Staff) | cc-memo-exec-to-cio-cc-pm-freeze-row-confirmed-thin-dogfooding-now-mail-send-v2-2026-06-16.md | RE: freeze-registry live + your four answers — exec row confirmed, thin-dogfood… |
 | 2026-06-16 | Exec (Chief of Staff) | cc-memo-exec-to-host-cio-cc-pm-escalations-docs-rotting-despite-stop-reconcile-2026-06-16.md | Cohort escalations-docs are rotting despite the STOP-reconcile step — a discipl… |
+| 2026-06-16 | Lead Developer | cc-memo-lead-to-arch-cc-cio-pm-1238-1252p2-doc-store-anchoring-implemented-2026-06-16.md | #1238 / #1252-P2 doc-store anchoring IMPLEMENTED per your ruling — on main; cla… |
+| 2026-06-16 | Lead Developer | cc-memo-lead-to-cxo-cc-pm-f2-1171-shell-shipped-27-page-cohorting-plus-css-scope-2026-06-16.md | F2 #1171 — shell + insights SHIPPED; Phase-0 found 27 standalone pages (not ~6)… |
 | 2026-06-16 | CIO (Chief Innovation Officer) + HOST (Head of Sapient Trust) — co-signed | memo-cio-host-to-pm-gbrain-t1-t4-cosigned-synthesis-2026-06-16.md | gbrain T1–T4 synthesis (co-signed) — what the sibling project teaches Piper's a… |
+| 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-arch-cc-lead-ppm-pm-1164-boundary-confirmed-retention-nod-2026-06-16.md | #1164 — CONFIRM the inter-conversation boundary (draw-on-existing, don't-contri… |
+| 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-arch-ppm-pending-items-cleared-2026-06-16.md | Your 5 pending CXO items — all cleared. F2 spec delivered; #1251 2/3 dispositio… |
+| 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-f2-4-confirms-migrate-cohort-2026-06-16.md | F2 — all 4 confirms YES (migrate the ~21; CSS + nav-tokenization as separate in… |
 | 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-what-guidance-do-you-need-2026-06-16.md | You need CXO guidance — but I can't find the request. What do you need? (Pointe… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-adr071-trust-layer-framing-routed-to-context-section-2026-06-15.md | ADR-071 trust-layer framing — endorsement received + routing to Lead's Context… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-docs-cc-lead-pm-1206-a2-trim-concur-fold-into-1206-close-2026-06-15.md | #1206 item-2 A.2 trim — CONCUR; fold into #1206 close path; Lead's one-liner is… |

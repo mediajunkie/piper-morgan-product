@@ -90,7 +90,13 @@ class ProvenanceSource(str, Enum):
     SESSION_EXTRACTED = "session_extracted"  # extracted from a live conversation
     USER_CONFIRMED = "user_confirmed"   # user explicitly told Piper
     INFERRED = "inferred"              # Piper inferred (confidence < threshold)
+    PIPER_GENERATED = "piper_generated"  # Piper produced this artifact (e.g. generated document, summary)
+    FEDERATED = "federated"            # referenced from an external source via connector; not housed in Piper's store
 ```
+
+**Addendum 2026-06-17 (#1270)**: `PIPER_GENERATED` and `FEDERATED` added to support the Document source-facet model:
+- `PIPER_GENERATED` — trust context differs from user-sourced; surface must mark as Piper-authored (agent-attribution honesty); no connector-health dependency; Stage 2+ surfacing
+- `FEDERATED` — trust inherits connector health (ADR-070 D5 `degrade()` applies); surface must show source + freshness honestly (`status: "stale"` when connector degraded); Stage 3+ surfacing (trust-gate is most load-bearing here); post-Beta (requires RECONNECT connector infrastructure)
 
 **On `InsightDB` (M4 work, #1216):**
 - Add `source: ProvenanceSource` field (not nullable; default `SEED` for existing rows)

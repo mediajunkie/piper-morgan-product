@@ -17,6 +17,72 @@ Cron `3b67d2b9` armed Fire 49 ~13:20 PT June 15 fired Fire 50 (PM-paste 18:46 PT
 
 ## Per-fire summaries (PM-ratified single-log discipline + wake-not-time-box)
 
+- **Fire 56 (June 17 01:22 PT)** — overnight WATCH: inbox-zero; one-line entry committed.
+- **Fire 57 (June 17 ~04:52 / ~07:52 / ~10:52 EXPECTED; DID NOT EXECUTE)** — STOP day-close and morning fires both missed; cron `c01ace0b` died with session at dormancy after Fire 56 ~01:30 PT. Fifth F4 Gap-C session-dormancy instance in 5 days; mechanism extreme reproducibility — Routines watchdog cure-rationale continues to strengthen.
+
+---
+
+## Day arc — June 16 summary
+
+**Tuesday wake-discipline-absorption day + heavy substantive shipment:**
+
+| Fire | Time PT | Deliverable |
+|---|---|---|
+| 53 (extended wake) | 16:36–~19:20 | Step-0 self-heal June 15 + 6-stream drain: #1238 doc-store disposition / ADR-072 ack+timeline+framing / #1252 4 Arch-gated rulings / process clarification (memos > session-log markers) / CIO m-30 ack / 3 decisions.log entries. CLAUDE.md wake-discipline absorbed. |
+| 54 | 19:22 | #1164 private-session mechanism to CXO (`is_private` flag + 3 filters + 24h retention); mea culpa for accidental merge-mishap (Lead's gameplan files deleted + restored). |
+| 55 | 22:22 | Exec cohort fire-as-wake reminder absorbed; ADR-072 v0.1 deferred with explicit-trigger (grounding-pass-first per "no rush antipattern"); CXO #1164 boundary-confirmed ack; Lead #1238/#1252-P2 IMPLEMENTED ack (m-30 self-failure on classifier caller-list noted). |
+
+**Load-bearing finding (June 16)**: **Wake-discipline absorbed** + **drain-or-explicit-trigger-defer** as the cohort's anti-stall rule (PM 6/16 "no advantage to saving work; shyness should not be a thing"). My Fire 55 self-correction (ADR-072 deferral named with grounding-pass-first trigger, not "no rush") is the first application of the discipline at my own work-queue.
+
+**Carry-overs to June 17:**
+- 2 PM calls open from June 12 (user-correction recovery / WS-047 spine)
+- ADR-072 v0.1 deferred with explicit grounding-pass-first trigger
+- Lead Dev executing #1252 P7 cutover + remaining schema work + #1238 implemented
+- ADR-070 awaiting Lead-ratify (cohort review)
+- F4 Gap-C reproducibility now extreme (5 instances in 5 days)
+
+---
+
+## Memory & briefing surfaces referenced this session (per #974)
+
+**Referenced**:
+- `[Anchor on source-set state]` — drove drain-it-all responses without holding for "fresher tomorrow."
+- `[Pre-authorized for any unblocked work]` — drove extended wake throughput Fire 53.
+- `[Investigate before extending]` — verified CXO/Lead/PA memo bodies before responses.
+- **methodologies**: m-30 (Consumer-Trace Verification — cross-altitude self-failure noted on classifier caller-list) / m-36 (mechanism-beats-vigilance — session-log sweep fallback) / m-40 (D6/D7 migration) / m-41 (D5 guard / architecture-boundary cure — both applied in #1164 + ADR-071 D5 refinement).
+- **ADRs**: ADR-058 / ADR-066 v0.2 / ADR-069 / ADR-070 / ADR-071 — referenced extensively in #1238 + #1252 + #1164 rulings.
+
+**Loaded but not referenced**: BRIEFING-ESSENTIAL-ARCHITECT.md (no reload); full PIPER.md + SKILL.md formats (deferred trigger for ADR-072 v0.1).
+
+**Wanted but not found**: a canonical "deferral discipline" pattern in the catalog at session-start — the "drain or explicit-trigger" framing PM/HOST shipped 6/15-6/16 is the right shape; would benefit from being a Pattern-074 candidate.
+
+---
+
+## Sign-off discipline (retroactive close 2026-06-17 11:05 PT post-Fire-57-cron-death)
+
+```bash
+$ git status --short
+# (clean)
+
+$ git log --oneline @{u}..HEAD
+# (empty — branch fully pushed)
+
+$ git log --oneline origin/main..HEAD
+# (empty — branch reachable from origin/main)
+```
+
+✓ Working tree clean
+✓ All Tuesday commits on origin/main
+✓ Day's substantive work — 8+ memos + #1164 mechanism + 3 decisions.log entries — all reachable
+
+<!-- DAY-CLOSED: 2026-06-16 -->
+
+— Architect, June 16 closed retroactively 2026-06-17 11:05 PT after Fire 57 cron-death (5th F4 Gap-C instance in 5 days; mechanism reproducibility extreme). Tuesday substantive work was complete by Fire 55 22:30 PT; missing close-out procedural only.
+
+---
+
+- **Fire 55 (22:22 PT)** — cron-time wake; Exec cohort reminder on fire-as-wake + "no rush" antipattern absorbed. **Self-correction**: my Fire 54 ADR-072 ack used "no hard deadline" framing inherited from PA's brief — that's the antipattern in quality costume. **Explicit-trigger deferral** named here in lieu of vague "when capacity allows": **ADR-072 v0.1 deferred to next substantive wake AFTER reading `PIPER.md` + audit of existing skills' `SKILL.md` formats to ground D2 (PIPER-SKILLS.md manifest decision) and D3 (plugin tool topology) with empirical evidence rather than speculation** — without that grounding it's caller-list-speculation territory (per Lead's #1238 catch on my classifier overstatement this fire). Honest trigger: do the audit pass first; ADR v0.1 from grounded evidence, not from initial framing leans. No other unblocked Arch-owed work in queue (Lead Dev mid-execution; CXO #1164 closed; #1238/#1252-P2 implemented). Light triage of Exec source memo to read/ this fire.
+
 - **Fire 54 (19:22 PT)** — cron-time wake; CXO "pending-items-cleared" cc memo to Lead surfaced #1164 private-session mechanism ask to Arch. **#1164 mechanism shipped** to CXO + cc Lead/PPM/PM (`memo-arch-to-cxo-cc-lead-pm-ppm-1164-private-session-mechanism-flag-plus-retention-2026-06-16.md`, main commit `47572ff04`): three-part mechanism — (1) `is_private` Boolean marker column on conversation rows (same shape as `is_global_pm_domain`); (2) composting/KG-ingestion/Radar-Layer-2 surfacing all filter `WHERE is_private=false` with D5-style AST guard; (3) retention bounded by policy (within-session resume + 24h ceiling, PM-overrideable). Composes with ADR-066 D7 + ADR-071 D1/D5 + m-41 architecture-boundary cure; CXO trust contract structurally substantiatable. **Recovery commit (e29537de8)**: during merge resolution I accidentally deleted Lead Dev's `1238-doc-store-anchoring-gameplan.md` + `1238-gameplan-audit.md` + a CXO read memo — restored byte-identical from pre-delete blob `8aa4b1280`. **Mea culpa memo to Lead Dev + cc PM** (`55496e5de`): m-30 (Consumer-Trace Verification) self-failure at commit-time — `git status --short | head -5` hid staged deletes; lesson named (full `git status` non-optional during multi-file merge resolution). Triaged CXO source. decisions.log entry for #1164 mechanism appended.
 
 - **Fire 53 (16:36 PT — extended wake through ~19:20 PT)** — PM-initiated wake; multi-stream drain per new wake-discipline (CLAUDE.md 6/15 "fire = wake, not time-box"). Step-0 self-heal on June 15 + 6 substantive shipments under one wake:

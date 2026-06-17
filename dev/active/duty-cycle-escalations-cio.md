@@ -1,8 +1,10 @@
 # CIO Duty-Cycle Escalations / PM Attention Doc
 
+> **⚠️ DEPRECATED 2026-06-17 (FOLD, PM-ratified).** This per-role escalations doc is retired. PM-attention / escalation items now ride `dev/active/cio-carry-forward.md` (the residual home); the cohort-attention rollup GitHub-verifies open items and the freeze-registry handles liveness, so this hand-maintained surface (which rotted despite the STOP-reconcile step) is no longer load-bearing. Kept below for traceability; no longer maintained. See `duty-cycle-tick` skill v1.13 + `methodology-41`.
+
 **Agent**: CIO (Piper Morgan, Code instance)
 **Maintained by**: CIO during each duty-cycle pass
-**Last updated**: 2026-05-24 (v0.5 design reframe note added)
+**Last updated**: 2026-06-16 (STOP-fire reconcile — stale items dispositioned; see "Open escalations for PM")
 **Pattern reference (historical)**: V1 v0.2 design, Section "Escalation surface — structured-markdown enumerated entries"
 
 **Duty Cycle role (v0.5 design ratified 2026-05-24)**: This file IS the canonical **Attention Doc** (Doc 3 of the three per-agent duty-cycle docs) under the new design. Per the formalizing-not-proliferating principle, no parallel "attention doc" is created — the existing escalations file is reframed to serve as the PM-batching surface. Items for PM to scan during IDLE accumulate here. Blockers captured during Task Loop step 1.2 land here. When PM engages during IDLE-engaged, this is the doc to walk through together.
@@ -34,6 +36,24 @@ Threads the cycle is moving forward without per-decision PM ratification. PM sca
 ---
 
 ## Open escalations for PM
+
+**RECONCILED 2026-06-16 22:37 PT (STOP-fire, methodology-41 step).** Most items below were stale — resolved by events but never moved (this is exactly the rot Exec's 6/16 flag named; actioned now).
+
+**Genuinely OPEN (1):**
+- **#972 MEM-TEMPORAL field-name alignment** (was 5/25) — Daedalus alignment memo delivered to the Klatch repo 6/15 (proposes `valid_until`); **awaiting Klatch rousing** (dormant >1wk per PM 6/16). P1 lint shipped (#1243) + doc-set extended 6/16. PM action: none right now (gated on Klatch); confirm `valid_until`-vs-`ended` only if Janus context shifts.
+
+**RESOLVED by events** (dispositions; originals retained below for traceability):
+- Routines / freeze watchdog (6/7–6/11 decision items) → **SHIPPED**: launchd freeze-watcher 6/15 + cycling-registry 6/16 (cio+exec). The zero-agent OS-job is the Gap-C cure; the $70/mo Routines path is moot.
+- Thin-prompt cohort-broadcast nod (6/7) → **nod given 6/16**; Exec dogfooding thin now + drives the cohort broadcast (#7b).
+- Cycle-agent launch gesture (6/6) → **settled**: ephemeral Option B (Desktop worktree checkbox); documented in the plan-of-record migration runbook.
+- Mailbox-bridge structural seam (6/3) → **design landed** as #1259 (push-to-ref recommended); gated on LD plumbing review — tracked on the issue now, not here.
+- v0.6 design corrections / functional-vs-named START / commit-cadence (5/25–5/26) → all folded into v0.6/v0.7 + the skill (batched no-op holds); settled.
+
+> **Meta (CIO):** this reconcile *is* the STOP step my 6/16 fold-recommendation flags as usually-skipped → the doc rots. Running it tonight keeps it accurate while the fold (deprecate these per-role docs; let the GitHub-verifying rollup + the freeze-registry + the carry-forward carry the load) awaits HOST concurrence + PM ratification.
+
+---
+
+### Historical open items (superseded by the 2026-06-16 reconciliation above; retained for traceability)
 
 - **2026-06-03 ~10:35 AM PDT — Mailbox-bridge is the next structural seam; escalating the Lead-Dev hook-amendment (for today's Lead discussion).** HOST's mutual-assessment surfaced the concrete cost: an **exec-inbox MANIFEST carried unresolved `stash pop` conflict markers in main's local working tree for ~9 hours overnight** (a concurrent-agent bridge collision), resolved only by Exec's hand-recovery. Worktree isolation killed the concurrent-commit-race family but NOT the mailbox-bridge-into-shared-main friction (mail can't be worktree-isolated; it rides shared main). I hit a cousin myself yesterday (errant `git stash pop`). **Severity**: drift (recurring friction degrading the autonomy substrate). **Action**: adoption-package **open-item #1** — the Lead-Dev hook-amendment allowing `mailboxes/` commits on `claude/*-cycle` branches → mail rides per-fire push-to-ref, retiring the shared-main bridge. **Recommend folding into PM's Lead-Dev discussion today.** The 9hr-stuck MANIFEST is the receipt for leaving it open.
 
@@ -68,6 +88,8 @@ The 2026-05-25 escalations below (cron-bind-to-IDLE + PM-presence refinement + 1
 - Cycles append new escalations; resolve in-place when PM acts; move to Resolved section after one cycle's preservation
 - Active cohort threads section refreshed each pass to reflect current state
 - File path: `dev/active/duty-cycle-escalations-cio.md` (per CXO Framing 4 cross-agent naming convention; globbable as `dev/active/duty-cycle-escalations-*.md` when fleet extends)
+
+> **[All three "## OPEN —" items below + their UPDATE blocks are RESOLVED — see the 2026-06-16 reconciliation under "Open escalations for PM" above. Launch-gesture: settled (Option B). Routines-watchdog: SHIPPED (launchd freeze-watcher + registry). Thin-prompt nod: given; Exec drives #7b.]**
 
 ## OPEN — PM clarification: actual cycle-agent launch gesture (2026-06-06)
 **Surfaced by**: Web 6/6 ("PM: I have not had to set up doppleganger sessions for any other agents"). **The gap**: documented model is Option B (Desktop "New session" → auto-worktree), but PM's comment suggests possible drift between the documented launch model and PM's actual practice. CIO can't confabulate the operator gesture (I run *inside* a session, don't observe launch). **Ask**: PM confirm how a cycle agent is actually launched → reconcile `cohort-agent-status.md` launch-procedure section to reality. **Impact**: affects every future onboarding + Web's eventual daily-mail-check. No rush; doc-accuracy not blocking. (Pending-PM, doesn't block other work per Rule 2.)

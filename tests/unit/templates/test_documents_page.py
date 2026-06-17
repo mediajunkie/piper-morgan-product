@@ -26,15 +26,14 @@ def soup(documents_html):
 class TestDocumentsPageStructure:
     """Tests for page structure."""
 
-    def test_page_has_title(self, soup):
-        """Page should have documents title."""
-        title = soup.find("title")
-        assert title is not None
-        assert "Documents" in title.text
+    def test_page_has_title(self, documents_html):
+        """Page declares its title via the shell's page_title block (F2 #1171 migration)."""
+        assert "{% block page_title %}" in documents_html
+        assert "Documents" in documents_html
 
     def test_includes_navigation(self, documents_html):
-        """Page should include navigation component."""
-        assert "components/navigation.html" in documents_html
+        """Nav chrome is shell-owned now — the page extends app_shell, which provides it (F2 #1171)."""
+        assert '{% extends "layouts/app_shell.html" %}' in documents_html
 
     def test_includes_document_window_component(self, documents_html):
         """Page should include document window component."""
@@ -203,10 +202,9 @@ class TestDocumentsEmptyState:
 class TestDocumentsAccessibility:
     """Tests for accessibility."""
 
-    def test_page_has_lang_attribute(self, soup):
-        """HTML should have lang attribute."""
-        html = soup.find("html")
-        assert html.get("lang") == "en"
+    def test_page_has_lang_attribute(self, documents_html):
+        """<html lang> is shell-owned now — the page extends app_shell, which sets it (F2 #1171)."""
+        assert '{% extends "layouts/app_shell.html" %}' in documents_html
 
     def test_inputs_have_labels(self, soup):
         """Form inputs should have labels."""

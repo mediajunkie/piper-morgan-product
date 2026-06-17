@@ -1,288 +1,276 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Account Settings - Piper Morgan</title>
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
-    <link rel="stylesheet" href="/static/css/toast.css" />
-    <link rel="stylesheet" href="/static/css/chat.css" />
-    <style>
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        margin: 0;
-        padding: 0;
-        background: #f5f5f5;
-      }
+{% extends "layouts/app_shell.html" %}
+{# F2 #1171: migrated onto app_shell — chrome (nav/footer), the floating widget runtime, #}
+{# and window.currentUser are now shell-owned; this page declares only its content. #}
+{# The inline <style> below is kept verbatim — its hardcoded hex is the per-page #}
+{# CSS-tokenization follow-on (CXO), out of scope here. #}
 
-      .account-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 48px 24px;
-      }
+{% block page_title %}Account Settings - Piper Morgan{% endblock %}
 
-      .account-header {
-        margin-bottom: 32px;
-      }
+{% block head_extra %}
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f5f5f5;
+  }
 
-      .account-header h1 {
-        font-size: 32px;
-        font-weight: 600;
-        color: #2c3e50;
-        margin: 0 0 8px 0;
-      }
+  .account-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
 
-      .account-description {
-        font-size: 16px;
-        color: #7f8c8d;
-        margin: 0;
-      }
+  .account-header {
+    margin-bottom: 32px;
+  }
 
-      .account-section {
-        background: white;
-        border: 1px solid #ecf0f1;
-        border-radius: 12px;
-        padding: 24px;
-        margin-bottom: 20px;
-      }
+  .account-header h1 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 8px 0;
+  }
 
-      .section-title {
-        font-size: 18px;
-        font-weight: 600;
-        color: #2c3e50;
-        margin: 0 0 16px 0;
-      }
+  .account-description {
+    font-size: 16px;
+    color: #7f8c8d;
+    margin: 0;
+  }
 
-      .info-row {
-        display: flex;
-        padding: 12px 0;
-        border-bottom: 1px solid #f5f5f5;
-      }
+  .account-section {
+    background: white;
+    border: 1px solid #ecf0f1;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
 
-      .info-row:last-child {
-        border-bottom: none;
-      }
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 16px 0;
+  }
 
-      .info-label {
-        flex: 0 0 150px;
-        font-size: 14px;
-        font-weight: 600;
-        color: #7f8c8d;
-      }
+  .info-row {
+    display: flex;
+    padding: 12px 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
 
-      .info-value {
-        flex: 1;
-        font-size: 14px;
-        color: #2c3e50;
-        font-family: 'SF Mono', Monaco, 'Courier New', monospace;
-      }
+  .info-row:last-child {
+    border-bottom: none;
+  }
 
-      .badge {
-        display: inline-block;
-        padding: 4px 12px;
-        font-size: 12px;
-        font-weight: 600;
-        border-radius: 12px;
-        background: #e3f2fd;
-        color: #3498db;
-      }
+  .info-label {
+    flex: 0 0 150px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #7f8c8d;
+  }
 
-      .badge-admin {
-        background: #fce4ec;
-        color: #e91e63;
-      }
+  .info-value {
+    flex: 1;
+    font-size: 14px;
+    color: #2c3e50;
+    font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+  }
 
-      .coming-soon-tag {
-        display: inline-block;
-        padding: 4px 8px;
-        font-size: 12px;
-        font-weight: 600;
-        border-radius: 4px;
-        background: #fff3e0;
-        color: #f57c00;
-        margin-left: 8px;
-      }
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 12px;
+    background: #e3f2fd;
+    color: #3498db;
+  }
 
-      .account-footer {
-        margin-top: 48px;
-        padding-top: 24px;
-        border-top: 1px solid #ecf0f1;
-        text-align: center;
-      }
+  .badge-admin {
+    background: #fce4ec;
+    color: #e91e63;
+  }
 
-      .version-info {
-        font-size: 13px;
-        color: #95a5a6;
-        font-family: 'SF Mono', Monaco, 'Courier New', monospace;
-      }
+  .coming-soon-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 4px;
+    background: #fff3e0;
+    color: #f57c00;
+    margin-left: 8px;
+  }
 
-      .version-number {
-        font-weight: 600;
-        color: #7f8c8d;
-      }
+  .account-footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #ecf0f1;
+    text-align: center;
+  }
 
-      @media (max-width: 768px) {
-        .account-container {
-          padding: 32px 16px;
-        }
+  .version-info {
+    font-size: 13px;
+    color: #95a5a6;
+    font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+  }
 
-        .account-header h1 {
-          font-size: 24px;
-        }
+  .version-number {
+    font-weight: 600;
+    color: #7f8c8d;
+  }
 
-        .info-row {
-          flex-direction: column;
-        }
+  @media (max-width: 768px) {
+    .account-container {
+      padding: 32px 16px;
+    }
 
-        .info-label {
-          margin-bottom: 4px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    {% include 'components/toast.html' %}
-    {% include 'components/navigation.html' %}
-    {% set breadcrumbs = [
-      {"label": "Settings", "url": "/settings"},
-      {"label": "Account", "url": None}
-    ] %}
-    {% include 'components/breadcrumbs.html' %}
-    <script>
-      // G8: Logged-in User Indicator - Pass user context from server to navigation
-      {% if user %}
-      window.currentUser = {
-        username: "{{ user.username }}",
-        user_id: "{{ user.user_id }}",
-        is_admin: {{ 'true' if user.is_admin else 'false' }}
-      };
-      {% else %}
-      window.currentUser = null;
-      {% endif %}
-    </script>
+    .account-header h1 {
+      font-size: 24px;
+    }
 
-    <div class="account-container">
-      <div class="account-header">
-        <h1>Account Settings</h1>
-        <p class="account-description">
-          Manage your profile and account preferences
-        </p>
-      </div>
+    .info-row {
+      flex-direction: column;
+    }
 
-      <!-- Profile Information -->
-      <div class="account-section">
-        <h2 class="section-title">Profile Information</h2>
-        <div class="info-row">
-          <div class="info-label">Username</div>
-          <div class="info-value">
-            {% if user %}
-              {{ user.username }}
-              {% if user.is_admin %}
-                <span class="badge badge-admin">Admin</span>
-              {% endif %}
-            {% else %}
-              Not logged in
-            {% endif %}
-          </div>
-        </div>
-        <div class="info-row">
-          <div class="info-label">User ID</div>
-          <div class="info-value">
-            {% if user %}
-              {{ user.user_id }}
-            {% else %}
-              —
-            {% endif %}
-          </div>
-        </div>
-        <div class="info-row">
-          <div class="info-label">Account Type</div>
-          <div class="info-value">
-            {% if user %}
-              {% if user.is_admin %}
-                <span class="badge badge-admin">Administrator</span>
-              {% else %}
-                <span class="badge">Standard User</span>
-              {% endif %}
-            {% else %}
-              —
-            {% endif %}
-          </div>
-        </div>
-      </div>
+    .info-label {
+      margin-bottom: 4px;
+    }
+  }
+</style>
+{% endblock %}
 
-      <!-- Security Settings -->
-      <div class="account-section">
-        <h2 class="section-title">
-          Security
-          <span class="coming-soon-tag">Coming Soon</span>
-        </h2>
-        <div class="info-row">
-          <div class="info-label">Password</div>
-          <div class="info-value" style="color: #95a5a6;">
-            Change password functionality coming soon
-          </div>
-        </div>
-        <div class="info-row">
-          <div class="info-label">Two-Factor Auth</div>
-          <div class="info-value" style="color: #95a5a6;">
-            2FA setup coming soon
-          </div>
-        </div>
-      </div>
+{% block main %}
+{% include 'components/toast.html' %}
+{% set breadcrumbs = [
+  {"label": "Settings", "url": "/settings"},
+  {"label": "Account", "url": None}
+] %}
+{% include 'components/breadcrumbs.html' %}
 
-      <!-- Preferences -->
-      <div class="account-section">
-        <h2 class="section-title">
-          Preferences
-          <span class="coming-soon-tag">Coming Soon</span>
-        </h2>
-        <div class="info-row">
-          <div class="info-label">Email Notifications</div>
-          <div class="info-value" style="color: #95a5a6;">
-            Email preferences coming soon
-          </div>
-        </div>
-        <div class="info-row">
-          <div class="info-label">Theme</div>
-          <div class="info-value" style="color: #95a5a6;">
-            Theme customization coming soon
-          </div>
-        </div>
-      </div>
+<div class="account-container">
+  <div class="account-header">
+    <h1>Account Settings</h1>
+    <p class="account-description">
+      Manage your profile and account preferences
+    </p>
+  </div>
 
-      <!-- Version Footer -->
-      <div class="account-footer">
-        <div class="version-info" id="version-info">
-          Piper Morgan <span class="version-number" id="version-number">Loading...</span>
-        </div>
+  <!-- Profile Information -->
+  <div class="account-section">
+    <h2 class="section-title">Profile Information</h2>
+    <div class="info-row">
+      <div class="info-label">Username</div>
+      <div class="info-value">
+        {% if user %}
+          {{ user.username }}
+          {% if user.is_admin %}
+            <span class="badge badge-admin">Admin</span>
+          {% endif %}
+        {% else %}
+          Not logged in
+        {% endif %}
       </div>
     </div>
+    <div class="info-row">
+      <div class="info-label">User ID</div>
+      <div class="info-value">
+        {% if user %}
+          {{ user.user_id }}
+        {% else %}
+          —
+        {% endif %}
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Account Type</div>
+      <div class="info-value">
+        {% if user %}
+          {% if user.is_admin %}
+            <span class="badge badge-admin">Administrator</span>
+          {% else %}
+            <span class="badge">Standard User</span>
+          {% endif %}
+        {% else %}
+          —
+        {% endif %}
+      </div>
+    </div>
+  </div>
 
-    <script src="/static/js/toast.js"></script>
-    <script src="/static/js/toast-messages.js"></script>
-    <script src="/static/js/timestamp-utils.js"></script>
-    <script src="/static/js/chat.js"></script>
-    <script>
-      // Fetch and display version information
-      fetch('/api/v1/version', {
-        credentials: 'include'
-      })
-        .then(response => response.json())
-        .then(data => {
-          const versionEl = document.getElementById('version-number');
-          versionEl.textContent = `v${data.version}`;
+  <!-- Security Settings -->
+  <div class="account-section">
+    <h2 class="section-title">
+      Security
+      <span class="coming-soon-tag">Coming Soon</span>
+    </h2>
+    <div class="info-row">
+      <div class="info-label">Password</div>
+      <div class="info-value" style="color: #95a5a6;">
+        Change password functionality coming soon
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Two-Factor Auth</div>
+      <div class="info-value" style="color: #95a5a6;">
+        2FA setup coming soon
+      </div>
+    </div>
+  </div>
 
-          // Add environment if not production
-          if (data.environment && data.environment !== 'production') {
-            versionEl.textContent += ` (${data.environment})`;
-          }
-        })
-        .catch(error => {
-          console.error('Failed to load version:', error);
-          document.getElementById('version-number').textContent = 'unknown';
-          if (typeof ToastMessages !== 'undefined') {
-            ToastMessages.warning('version_check_failed');
-          }
-        });
-    </script>
-  </body>
-</html>
+  <!-- Preferences -->
+  <div class="account-section">
+    <h2 class="section-title">
+      Preferences
+      <span class="coming-soon-tag">Coming Soon</span>
+    </h2>
+    <div class="info-row">
+      <div class="info-label">Email Notifications</div>
+      <div class="info-value" style="color: #95a5a6;">
+        Email preferences coming soon
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-label">Theme</div>
+      <div class="info-value" style="color: #95a5a6;">
+        Theme customization coming soon
+      </div>
+    </div>
+  </div>
+
+  <!-- Version Footer -->
+  <div class="account-footer">
+    <div class="version-info" id="version-info">
+      Piper Morgan <span class="version-number" id="version-number">Loading...</span>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/toast-messages.js"></script>
+<script>
+  // Fetch and display version information
+  fetch('/api/v1/version', {
+    credentials: 'include'
+  })
+    .then(response => response.json())
+    .then(data => {
+      const versionEl = document.getElementById('version-number');
+      versionEl.textContent = `v${data.version}`;
+
+      // Add environment if not production
+      if (data.environment && data.environment !== 'production') {
+        versionEl.textContent += ` (${data.environment})`;
+      }
+    })
+    .catch(error => {
+      console.error('Failed to load version:', error);
+      document.getElementById('version-number').textContent = 'unknown';
+      if (typeof ToastMessages !== 'undefined') {
+        ToastMessages.warning('version_check_failed');
+      }
+    });
+</script>
+{% endblock %}

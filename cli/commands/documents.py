@@ -9,8 +9,10 @@ from typing import Any, Dict
 
 import click
 
+from services.database.session_factory import AsyncSessionFactory
 from services.intent_service.canonical_handlers import CanonicalHandlers
 from services.knowledge_graph.document_service import get_document_service
+from services.repositories.document_repository import resolve_pm_owner_id
 
 
 @click.group()
@@ -87,12 +89,18 @@ async def add(file_path: str, title: str = None, domain: str = None):
 
         service = get_document_service()  # Use existing singleton
 
-        # Prepare metadata for existing upload_pdf method
+        # Prepare metadata for the ingest pipeline
         metadata = {"title": title or os.path.basename(file_path), "knowledge_domain": domain}
 
-        # Use existing DocumentService upload method
-        # Note: This connects to existing PM-011 upload pipeline
-        result = await service.upload_pdf(file_path, metadata)
+        # #1238 (ADR-071 P2): resolve the configured-PM owner; CLI-ingested docs are
+        # PM-domain knowledge base (global-by-design → is_global_pm_domain=True).
+        # Uses ingest_path (path-based) — the previous upload_pdf(file_path) passed a
+        # string to an UploadFile-typed method (broken).
+        async with AsyncSessionFactory.session_scope() as session:
+            owner_id = await resolve_pm_owner_id(session)
+        result = await service.ingest_path(
+            file_path, metadata, owner_id=owner_id, is_global_pm_domain=True
+        )
 
         # Display upload results
         if result.get("status") == "success":

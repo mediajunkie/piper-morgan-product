@@ -10,10 +10,11 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
 
 ## Open
 
-- **2026-06-10 → 2026-06-13 · PM · #1165 UAT gate** — OPEN (close-ready, two PM-side items). Init-recursion leak **FIXED** (boot-once `af83ef751`; baseline now 243/0/0 — Q16 GREEN after #1212). Corpus/scoring expansion (#1213) **CLOSED 2026-06-13** (P1–P5 + mock-harness #1221 all shipped). Chat-UAT items (#1155/#496/#497/#953/#1143) verified server-side (authenticated JWT). **Remaining for #1165 close (both PM-side)**: (1) PM's authenticated *browser* UAT walk of the chat items; (2) the #1133 History item re-scopes to **Radar** — direction PM-RATIFIED + relayed to CXO/PPM, awaiting CXO's entities-surfacing mockup (#1090) → then Lead builds the slot swap. Not Lead-blocked. (Gate comment posted on #1165 2026-06-13.)
+_None currently open (reconciled 2026-06-16 STOP)._
 
 ## Resolved
 
+- **2026-06-10 → 2026-06-16 · PM · #1165 M3 UAT gate** — **RESOLVED (reconciled 2026-06-16 STOP)**: `gh issue view 1165` = CLOSED (M3 closed). The #1133→Radar re-scope dependency became **#1236 (Radar surface) + #1238 (DocumentEntitySource)** — both SHIPPED this session (behind `?radar=1`, PM-UAT-pending), tracked as their own issues.
 - **2026-06-10 · PM · #1187 floor-wiring TANDEM** — **RESOLVED (reconciled 2026-06-12 STOP)**: #1187 CLOSED (summarize-issue full chain shipped + live-verified, the tandem fetch-augment landed). `gh issue view 1187` = CLOSED.
 - **2026-06-10 · PM · #1129 Slack reconnection** — **RESOLVED (reconciled 2026-06-12 STOP)**: #1129 CLOSED (Slack inbound LIVE via Socket Mode; PM uses it for M3 review). `gh issue view 1129` = CLOSED.
 

@@ -1,12 +1,13 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Integration Health - Piper Morgan</title>
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
-    <link rel="stylesheet" href="/static/css/tokens.css" />
-    <link rel="stylesheet" href="/static/css/toast.css" />
-    <link rel="stylesheet" href="/static/css/chat.css" />
-    <style>
+{% extends "layouts/app_shell.html" %}
+{# F2 #1171: migrated onto app_shell — chrome (nav/footer), the floating widget runtime, #}
+{# and window.currentUser are now shell-owned; this page declares only its content. #}
+{# The inline <style> below is kept verbatim — its hardcoded hex is the per-page #}
+{# CSS-tokenization follow-on (CXO), out of scope here. #}
+
+{% block page_title %}Integration Health - Piper Morgan{% endblock %}
+
+{% block head_extra %}
+<style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         margin: 0;
@@ -356,636 +357,623 @@
         }
       }
     </style>
-  </head>
-  <body>
-    {% include 'components/navigation.html' %}
-    {% set breadcrumbs = [{"label": "Settings", "url": "/settings"}, {"label": "Integrations", "url": None}] %}
-    {% include 'components/breadcrumbs.html' %}
-    <script>
-      // G8: Logged-in User Indicator
-      {% if user %}
-      window.currentUser = {
-        username: "{{ user.username }}",
-        user_id: "{{ user.user_id }}",
-        is_admin: {{ 'true' if user.is_admin else 'false' }}
-      };
-      {% else %}
-      window.currentUser = null;
-      {% endif %}
-    </script>
+{% endblock %}
 
-    <div class="integrations-container">
-      <div class="page-header">
-        <h1>Integration Health</h1>
-        <p class="page-description">
-          Monitor and test your connected services
-        </p>
+{% block main %}
+{% set breadcrumbs = [{"label": "Settings", "url": "/settings"}, {"label": "Integrations", "url": None}] %}
+{% include 'components/breadcrumbs.html' %}
+
+<div class="integrations-container">
+  <div class="page-header">
+    <h1>Integration Health</h1>
+    <p class="page-description">
+      Monitor and test your connected services
+    </p>
+  </div>
+
+  <!-- Overall Status -->
+  <div class="overall-status" id="overall-status">
+    <div class="status-indicator">
+      <div class="status-icon unknown" id="overall-icon">?</div>
+      <div class="status-text">
+        <h2 id="overall-title">Checking...</h2>
+        <p id="overall-subtitle">Loading integration status</p>
       </div>
-
-      <!-- Overall Status -->
-      <div class="overall-status" id="overall-status">
-        <div class="status-indicator">
-          <div class="status-icon unknown" id="overall-icon">?</div>
-          <div class="status-text">
-            <h2 id="overall-title">Checking...</h2>
-            <p id="overall-subtitle">Loading integration status</p>
-          </div>
-        </div>
-        <button class="test-all-btn" id="test-all-btn" onclick="testAllConnections()">
-          Test All Connections
-        </button>
-        <button class="disconnect-all-btn" id="disconnect-all-btn" onclick="disconnectAllIntegrations()" disabled>
-          Disconnect All
-        </button>
-      </div>
-
-      <!-- Integration Cards -->
-      <div class="integrations-list" id="integrations-list">
-        <div class="loading">
-          <div class="loading-spinner"></div>
-          <p>Loading integrations...</p>
-        </div>
-      </div>
-
-      <div class="last-updated" id="last-updated"></div>
     </div>
+    <button class="test-all-btn" id="test-all-btn" onclick="testAllConnections()">
+      Test All Connections
+    </button>
+    <button class="disconnect-all-btn" id="disconnect-all-btn" onclick="disconnectAllIntegrations()" disabled>
+      Disconnect All
+    </button>
+  </div>
 
-    {% include 'components/toast.html' %}
-    <script src="/static/js/toast.js"></script>
-    <script src="/static/js/api-error-parser.js"></script>
-    <script src="/static/js/timestamp-utils.js"></script>
-    <script src="/static/js/chat.js"></script>
-    <script>
-      // Integration icons mapping
-      const ICONS = {
-        notion: '📝',
-        slack: '💬',
-        github: '🐙',
-        calendar: '📅'
-      };
+  <!-- Integration Cards -->
+  <div class="integrations-list" id="integrations-list">
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <p>Loading integrations...</p>
+    </div>
+  </div>
 
-      // OAuth-based integrations that support Connect/Disconnect
-      const OAUTH_INTEGRATIONS = ['slack', 'calendar'];
+  <div class="last-updated" id="last-updated"></div>
+</div>
 
-      // API key integrations with dedicated settings pages (Issue #540, #541)
-      const API_KEY_INTEGRATIONS = ['notion', 'github'];
+{% include 'components/toast.html' %}
+{% endblock %}
 
-      // Status icons for overall health
-      const STATUS_ICONS = {
-        healthy: '✅',
-        degraded: '⚠️',
-        unhealthy: '❌',
-        unknown: '❓'
-      };
+{% block scripts %}
+<script src="/static/js/api-error-parser.js"></script>
+<script>
+  // Integration icons mapping
+  const ICONS = {
+    notion: '📝',
+    slack: '💬',
+    github: '🐙',
+    calendar: '📅'
+  };
 
-      // Load health status on page load
-      document.addEventListener('DOMContentLoaded', () => {
-        // Check for OAuth callback params first
-        checkOAuthCallbackParams();
-        // Then load integrations
-        loadIntegrationsHealth();
-      });
+  // OAuth-based integrations that support Connect/Disconnect
+  const OAUTH_INTEGRATIONS = ['slack', 'calendar'];
 
-      function checkOAuthCallbackParams() {
-        const params = new URLSearchParams(window.location.search);
+  // API key integrations with dedicated settings pages (Issue #540, #541)
+  const API_KEY_INTEGRATIONS = ['notion', 'github'];
 
-        // Check Slack OAuth callback
-        if (params.get('slack_success') === 'true') {
-          const workspace = params.get('slack_workspace') || 'Workspace';
-          showToast('success', `Connected to ${decodeURIComponent(workspace)}`, 'Slack Connected');
-          // Clean up URL
-          window.history.replaceState({}, document.title, '/settings/integrations');
-        } else if (params.get('slack_error')) {
-          const error = params.get('slack_error');
-          showToast('error', `Failed to connect: ${error}`, 'Slack Connection Failed');
-          window.history.replaceState({}, document.title, '/settings/integrations');
-        }
+  // Status icons for overall health
+  const STATUS_ICONS = {
+    healthy: '✅',
+    degraded: '⚠️',
+    unhealthy: '❌',
+    unknown: '❓'
+  };
 
-        // Check Calendar OAuth callback
-        if (params.get('calendar_success') === 'true') {
-          const email = params.get('calendar_email') || 'Calendar';
-          showToast('success', `Connected as ${decodeURIComponent(email)}`, 'Calendar Connected');
-          window.history.replaceState({}, document.title, '/settings/integrations');
-        } else if (params.get('calendar_error')) {
-          const error = params.get('calendar_error');
-          showToast('error', `Failed to connect: ${error}`, 'Calendar Connection Failed');
-          window.history.replaceState({}, document.title, '/settings/integrations');
-        }
-      }
+  // Load health status on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check for OAuth callback params first
+    checkOAuthCallbackParams();
+    // Then load integrations
+    loadIntegrationsHealth();
+  });
 
-      async function loadIntegrationsHealth() {
-        try {
-          const response = await fetch('/api/v1/integrations/health');
-          if (!response.ok) throw new Error('Failed to load health status');
+  function checkOAuthCallbackParams() {
+    const params = new URLSearchParams(window.location.search);
 
-          const data = await response.json();
-          renderOverallStatus(data);
-          renderIntegrations(data.integrations);
-          updateLastUpdated(data.timestamp);
-        } catch (error) {
-          console.error('Failed to load integrations health:', error);
-          showError('Failed to load integration status');
-        }
-      }
+    // Check Slack OAuth callback
+    if (params.get('slack_success') === 'true') {
+      const workspace = params.get('slack_workspace') || 'Workspace';
+      showToast('success', `Connected to ${decodeURIComponent(workspace)}`, 'Slack Connected');
+      // Clean up URL
+      window.history.replaceState({}, document.title, '/settings/integrations');
+    } else if (params.get('slack_error')) {
+      const error = params.get('slack_error');
+      showToast('error', `Failed to connect: ${error}`, 'Slack Connection Failed');
+      window.history.replaceState({}, document.title, '/settings/integrations');
+    }
 
-      function renderOverallStatus(data) {
-        const icon = document.getElementById('overall-icon');
-        const title = document.getElementById('overall-title');
-        const subtitle = document.getElementById('overall-subtitle');
+    // Check Calendar OAuth callback
+    if (params.get('calendar_success') === 'true') {
+      const email = params.get('calendar_email') || 'Calendar';
+      showToast('success', `Connected as ${decodeURIComponent(email)}`, 'Calendar Connected');
+      window.history.replaceState({}, document.title, '/settings/integrations');
+    } else if (params.get('calendar_error')) {
+      const error = params.get('calendar_error');
+      showToast('error', `Failed to connect: ${error}`, 'Calendar Connection Failed');
+      window.history.replaceState({}, document.title, '/settings/integrations');
+    }
+  }
 
-        // Update icon
-        icon.className = `status-icon ${data.overall_status}`;
-        icon.textContent = STATUS_ICONS[data.overall_status] || '❓';
+  async function loadIntegrationsHealth() {
+    try {
+      const response = await fetch('/api/v1/integrations/health');
+      if (!response.ok) throw new Error('Failed to load health status');
 
-        // Update text
-        const statusText = {
-          healthy: 'All Systems Healthy',
-          degraded: 'Some Issues Detected',
-          unhealthy: 'Multiple Issues',
-          unknown: 'Status Unknown'
-        };
-        title.textContent = statusText[data.overall_status] || 'Unknown Status';
-        subtitle.textContent = `${data.healthy_count} of ${data.total_count} integrations healthy`;
-      }
+      const data = await response.json();
+      renderOverallStatus(data);
+      renderIntegrations(data.integrations);
+      updateLastUpdated(data.timestamp);
+    } catch (error) {
+      console.error('Failed to load integrations health:', error);
+      showError('Failed to load integration status');
+    }
+  }
 
-      function renderIntegrations(integrations) {
-        const container = document.getElementById('integrations-list');
+  function renderOverallStatus(data) {
+    const icon = document.getElementById('overall-icon');
+    const title = document.getElementById('overall-title');
+    const subtitle = document.getElementById('overall-subtitle');
 
-        if (!integrations || integrations.length === 0) {
-          container.innerHTML = '<p class="loading">No integrations configured</p>';
-          return;
-        }
+    // Update icon
+    icon.className = `status-icon ${data.overall_status}`;
+    icon.textContent = STATUS_ICONS[data.overall_status] || '❓';
 
-        container.innerHTML = integrations.map(integration => {
-          const isOAuth = OAUTH_INTEGRATIONS.includes(integration.name);
-          const isAPIKey = API_KEY_INTEGRATIONS.includes(integration.name);
-          const isConnected = integration.status !== 'not_configured';
+    // Update text
+    const statusText = {
+      healthy: 'All Systems Healthy',
+      degraded: 'Some Issues Detected',
+      unhealthy: 'Multiple Issues',
+      unknown: 'Status Unknown'
+    };
+    title.textContent = statusText[data.overall_status] || 'Unknown Status';
+    subtitle.textContent = `${data.healthy_count} of ${data.total_count} integrations healthy`;
+  }
 
-          // Determine action buttons based on integration type
-          let actionButtons = '';
+  function renderIntegrations(integrations) {
+    const container = document.getElementById('integrations-list');
 
-          if (isOAuth) {
-            // OAuth integrations: Connect/Disconnect.
-            // #1215: when NOT connected, route to the dedicated settings page
-            // rather than firing the OAuth /connect directly. OAuth-app services
-            // (calendar, slack) need their app credentials (client_id/secret)
-            // configured first — which lives on that page. Firing /connect here
-            // 503s ("OAuth not configured") with no way to fix it from the
-            // dashboard (the dead-end PM hit). The config page handles BOTH
-            // entering credentials AND the connect, so it's the correct entry
-            // point — same pattern the API-key services already use.
-            actionButtons = isConnected ? `
-              <button
-                class="action-btn disconnect-btn"
-                id="disconnect-btn-${integration.name}"
-                onclick="disconnectIntegration('${integration.name}')"
-              >
-                Disconnect
-              </button>
-            ` : `
-              <a
-                href="/settings/integrations/${integration.name}"
-                class="action-btn connect-btn"
-                id="connect-btn-${integration.name}"
-              >
-                Connect
-              </a>
-            `;
-          } else if (isAPIKey) {
-            // API key integrations: Connect/Disconnect via settings page (Issue #540)
-            actionButtons = isConnected ? `
-              <button
-                class="action-btn disconnect-btn"
-                id="disconnect-btn-${integration.name}"
-                onclick="disconnectAPIKeyIntegration('${integration.name}')"
-              >
-                Disconnect
-              </button>
-              <a href="${integration.configure_url}" class="action-btn configure-btn">
-                Settings
-              </a>
-            ` : `
-              <a href="${integration.configure_url}" class="action-btn connect-btn">
-                Connect
-              </a>
-            `;
-          } else if (integration.configure_url) {
-            // Other integrations with configure URL
-            actionButtons = `
-              <a href="${integration.configure_url}" class="action-btn configure-btn">
-                Configure
-              </a>
-            `;
-          }
+    if (!integrations || integrations.length === 0) {
+      container.innerHTML = '<p class="loading">No integrations configured</p>';
+      return;
+    }
 
-          return `
-            <div class="integration-card" id="card-${integration.name}">
-              <div class="integration-info">
-                <div class="integration-icon">${ICONS[integration.name] || '🔌'}</div>
-                <div class="integration-details">
-                  <h3>${integration.display_name}</h3>
-                  <div class="integration-status">
-                    <span class="status-dot ${integration.status}"></span>
-                    <span class="status-message ${integration.error ? 'error' : ''}" id="status-${integration.name}">
-                      ${integration.status_message}
-                    </span>
-                  </div>
-                  ${integration.fix_suggestion ? `
-                    <div class="fix-suggestion" id="fix-${integration.name}">
-                      ${integration.fix_suggestion}
-                    </div>
-                  ` : ''}
-                </div>
-              </div>
-              <div class="integration-actions">
-                <button
-                  class="action-btn test-btn"
-                  id="test-btn-${integration.name}"
-                  onclick="testConnection('${integration.name}')"
-                  ${!integration.can_test ? 'disabled' : ''}
-                >
-                  Test
-                </button>
-                ${actionButtons}
-              </div>
-            </div>
-          `;
-        }).join('');
+    container.innerHTML = integrations.map(integration => {
+      const isOAuth = OAUTH_INTEGRATIONS.includes(integration.name);
+      const isAPIKey = API_KEY_INTEGRATIONS.includes(integration.name);
+      const isConnected = integration.status !== 'not_configured';
 
-        // Update Disconnect All button state
-        const connectedCount = integrations.filter(i => i.status !== 'not_configured').length;
-        const disconnectAllBtn = document.getElementById('disconnect-all-btn');
-        if (disconnectAllBtn) {
-          disconnectAllBtn.disabled = connectedCount === 0;
-        }
-      }
+      // Determine action buttons based on integration type
+      let actionButtons = '';
 
-      async function testConnection(integrationName) {
-        const btn = document.getElementById(`test-btn-${integrationName}`);
-        const statusEl = document.getElementById(`status-${integrationName}`);
-        const card = document.getElementById(`card-${integrationName}`);
-
-        // Set loading state
-        btn.disabled = true;
-        btn.classList.add('testing');
-        btn.textContent = 'Testing...';
-        statusEl.textContent = 'Testing connection...';
-        statusEl.classList.remove('error');
-
-        try {
-          const response = await fetch(`/api/v1/integrations/test/${integrationName}`, {
-            method: 'POST'
-          });
-          const result = await response.json();
-
-          // Update status
-          const dot = card.querySelector('.status-dot');
-          dot.className = `status-dot ${result.success ? 'healthy' : 'failed'}`;
-
-          if (result.success) {
-            statusEl.textContent = `Connected (${result.latency_ms}ms)`;
-            statusEl.classList.remove('error');
-            // Remove any existing fix suggestion
-            const fixEl = document.getElementById(`fix-${integrationName}`);
-            if (fixEl) fixEl.remove();
-
-            showToast('success', `${integrationName} connection successful`, 'Test Passed');
-          } else {
-            statusEl.textContent = result.message;
-            statusEl.classList.add('error');
-
-            // Show fix suggestion if available
-            if (result.fix_suggestion) {
-              let fixEl = document.getElementById(`fix-${integrationName}`);
-              if (!fixEl) {
-                fixEl = document.createElement('div');
-                fixEl.id = `fix-${integrationName}`;
-                fixEl.className = 'fix-suggestion';
-                card.querySelector('.integration-details').appendChild(fixEl);
-              }
-              fixEl.textContent = result.fix_suggestion;
-            }
-
-            showToast('error', result.message, 'Test Failed');
-          }
-        } catch (error) {
-          statusEl.textContent = 'Test failed';
-          statusEl.classList.add('error');
-          showToast('error', `Failed to test ${integrationName}`, 'Test Error');
-        } finally {
-          btn.disabled = false;
-          btn.classList.remove('testing');
-          btn.textContent = 'Test';
-        }
-      }
-
-      async function testAllConnections() {
-        const btn = document.getElementById('test-all-btn');
-        btn.disabled = true;
-        btn.classList.add('testing');
-        btn.textContent = 'Testing...';
-
-        try {
-          const response = await fetch('/api/v1/integrations/test-all', {
-            method: 'POST'
-          });
-          const results = await response.json();
-
-          // Update each integration
-          for (const result of results) {
-            const card = document.getElementById(`card-${result.integration}`);
-            if (!card) continue;
-
-            const dot = card.querySelector('.status-dot');
-            const statusEl = document.getElementById(`status-${result.integration}`);
-
-            dot.className = `status-dot ${result.success ? 'healthy' : 'failed'}`;
-            statusEl.textContent = result.success
-              ? `Connected (${result.latency_ms}ms)`
-              : result.message;
-            statusEl.classList.toggle('error', !result.success);
-          }
-
-          // Count successes
-          const successCount = results.filter(r => r.success).length;
-          const allPassed = successCount === results.length;
-          showToast(
-            allPassed ? 'success' : 'warning',
-            `${successCount} of ${results.length} connections successful`,
-            allPassed ? 'All Tests Passed' : 'Some Tests Failed'
-          );
-
-          // Reload overall status
-          loadIntegrationsHealth();
-        } catch (error) {
-          showToast('error', 'Failed to test connections', 'Test Error');
-        } finally {
-          btn.disabled = false;
-          btn.classList.remove('testing');
-          btn.textContent = 'Test All Connections';
-        }
-      }
-
-      function updateLastUpdated(timestamp) {
-        const el = document.getElementById('last-updated');
-        const date = new Date(timestamp);
-        el.textContent = `Last updated: ${date.toLocaleTimeString()}`;
-      }
-
-      async function connectIntegration(integrationName) {
-        const btn = document.getElementById(`connect-btn-${integrationName}`);
-        if (btn) {
-          btn.disabled = true;
-          btn.textContent = 'Connecting...';
-        }
-
-        try {
-          const response = await fetch(`/api/v1/settings/integrations/${integrationName}/connect`);
-          if (!response.ok) {
-            const error = await response.json();
-            throw new Error(parseApiDetail(error.detail, 'Connection failed'));
-          }
-
-          const data = await response.json();
-
-          if (data.auth_url) {
-            // Redirect to OAuth provider
-            window.location.href = data.auth_url;
-          } else {
-            showToast('error', 'No authorization URL returned', 'Connection Error');
-            if (btn) {
-              btn.disabled = false;
-              btn.textContent = 'Connect';
-            }
-          }
-        } catch (error) {
-          console.error('Connect failed:', error);
-          showToast('error', error.message, 'Connection Failed');
-          if (btn) {
-            btn.disabled = false;
-            btn.textContent = 'Connect';
-          }
-        }
-      }
-
-      async function disconnectIntegration(integrationName) {
-        const btn = document.getElementById(`disconnect-btn-${integrationName}`);
-        const displayName = integrationName.charAt(0).toUpperCase() + integrationName.slice(1);
-
-        Dialog.confirm({
-          title: `Disconnect ${displayName}?`,
-          message: `I'll disconnect your ${displayName} integration. You can set it up again anytime.`,
-          confirmText: 'Disconnect',
-          onConfirm: async () => {
-            if (btn) {
-              btn.disabled = true;
-              btn.textContent = 'Disconnecting...';
-            }
-
-            try {
-              const response = await fetch(`/api/v1/settings/integrations/${integrationName}/disconnect`, {
-                method: 'POST'
-              });
-
-              if (!response.ok) {
-                const error = await response.json();
-                throw new Error(parseApiDetail(error.detail, 'Disconnect failed'));
-              }
-
-              const data = await response.json();
-
-              if (data.success) {
-                showToast('success', data.message || `${displayName} disconnected`, 'Disconnected');
-                // Reload integrations to update UI
-                loadIntegrationsHealth();
-              } else {
-                throw new Error(data.message || 'Disconnect failed');
-              }
-            } catch (error) {
-              console.error('Disconnect failed:', error);
-              showToast('error', error.message, 'Disconnect Failed');
-              if (btn) {
-                btn.disabled = false;
-                btn.textContent = 'Disconnect';
-              }
-            }
-          }
-        });
-      }
-
-      // Disconnect API key integration (Issue #540: Notion, GitHub, etc.)
-      async function disconnectAPIKeyIntegration(integrationName) {
-        const btn = document.getElementById(`disconnect-btn-${integrationName}`);
-        const displayName = integrationName.charAt(0).toUpperCase() + integrationName.slice(1);
-
-        Dialog.confirm({
-          title: `Disconnect ${displayName}?`,
-          message: `I'll disconnect your ${displayName} integration. You can set it up again anytime.`,
-          confirmText: 'Disconnect',
-          onConfirm: async () => {
-            if (btn) {
-              btn.disabled = true;
-              btn.textContent = 'Disconnecting...';
-            }
-
-            try {
-              const response = await fetch(`/api/v1/settings/integrations/${integrationName}/disconnect`, {
-                method: 'POST'
-              });
-
-              if (!response.ok) {
-                const error = await response.json();
-                throw new Error(parseApiDetail(error.detail, 'Disconnect failed'));
-              }
-
-              const data = await response.json();
-
-              if (data.success) {
-                showToast('success', data.message || `${displayName} disconnected`, 'Disconnected');
-                // Reload integrations to update UI
-                loadIntegrationsHealth();
-              } else {
-                throw new Error(data.message || 'Disconnect failed');
-              }
-            } catch (error) {
-              console.error('Disconnect failed:', error);
-              showToast('error', error.message, 'Disconnect Failed');
-              if (btn) {
-                btn.disabled = false;
-                btn.textContent = 'Disconnect';
-              }
-            }
-          }
-        });
-      }
-
-      // Disconnect All integrations (Issue #544)
-      async function disconnectAllIntegrations() {
-        const btn = document.getElementById('disconnect-all-btn');
-
-        // Get list of connected integrations from current page state
-        const allCards = document.querySelectorAll('.integration-card');
-        const connected = [];
-        allCards.forEach(card => {
-          const dot = card.querySelector('.status-dot');
-          if (dot && !dot.classList.contains('not_configured')) {
-            const integrationName = card.id.replace('card-', '');
-            const displayName = card.querySelector('h3')?.textContent || integrationName;
-            connected.push({ name: integrationName, display_name: displayName });
-          }
-        });
-
-        if (connected.length === 0) {
-          showToast('info', 'No integrations to disconnect', 'Nothing to Do');
-          return;
-        }
-
-        // Confirmation dialog
-        const names = connected.map(i => `• ${i.display_name}`).join('\n');
-        Dialog.confirm({
-          title: 'Disconnect all integrations?',
-          message: `I'll disconnect these integrations:\n${names}\n\nYou can set them up again anytime.`,
-          confirmText: 'Disconnect all',
-          onConfirm: async () => {
-            // Update button state
-            if (btn) {
-              btn.disabled = true;
-              btn.classList.add('disconnecting');
-              btn.textContent = 'Disconnecting...';
-            }
-            await performDisconnectAll(btn, connected);
-          }
-        });
-      }
-
-      async function performDisconnectAll(btn, connected) {
-        // Disconnect each integration sequentially
-        let successCount = 0;
-        let failedNames = [];
-
-        for (const integration of connected) {
-          try {
-            const response = await fetch(`/api/v1/settings/integrations/${integration.name}/disconnect`, {
-              method: 'POST'
-            });
-
-            if (response.ok) {
-              const data = await response.json();
-              if (data.success) {
-                successCount++;
-              } else {
-                failedNames.push(integration.display_name);
-              }
-            } else {
-              failedNames.push(integration.display_name);
-            }
-          } catch (error) {
-            console.error(`Failed to disconnect ${integration.name}:`, error);
-            failedNames.push(integration.display_name);
-          }
-        }
-
-        // Show result
-        const total = connected.length;
-        if (successCount === total) {
-          showToast('success', `${successCount} of ${total} integrations disconnected`, 'All Disconnected');
-        } else if (successCount > 0) {
-          showToast('warning', `${successCount} of ${total} disconnected. Failed: ${failedNames.join(', ')}`, 'Partial Disconnect');
-        } else {
-          showToast('error', `Failed to disconnect any integrations`, 'Disconnect Failed');
-        }
-
-        // Reset button and reload UI
-        if (btn) {
-          btn.classList.remove('disconnecting');
-          btn.textContent = 'Disconnect All';
-          // Button will be disabled by renderIntegrations if no connections remain
-        }
-
-        // Reload to update UI state
-        loadIntegrationsHealth();
-      }
-
-      function showError(message) {
-        const container = document.getElementById('integrations-list');
-        container.innerHTML = `
-          <div class="loading" style="color: #dc3545;">
-            <p>⚠️ ${message}</p>
-            <button onclick="loadIntegrationsHealth()" class="test-all-btn" style="margin-top: 16px;">
-              Retry
-            </button>
-          </div>
+      if (isOAuth) {
+        // OAuth integrations: Connect/Disconnect.
+        // #1215: when NOT connected, route to the dedicated settings page
+        // rather than firing the OAuth /connect directly. OAuth-app services
+        // (calendar, slack) need their app credentials (client_id/secret)
+        // configured first — which lives on that page. Firing /connect here
+        // 503s ("OAuth not configured") with no way to fix it from the
+        // dashboard (the dead-end PM hit). The config page handles BOTH
+        // entering credentials AND the connect, so it's the correct entry
+        // point — same pattern the API-key services already use.
+        actionButtons = isConnected ? `
+          <button
+            class="action-btn disconnect-btn"
+            id="disconnect-btn-${integration.name}"
+            onclick="disconnectIntegration('${integration.name}')"
+          >
+            Disconnect
+          </button>
+        ` : `
+          <a
+            href="/settings/integrations/${integration.name}"
+            class="action-btn connect-btn"
+            id="connect-btn-${integration.name}"
+          >
+            Connect
+          </a>
+        `;
+      } else if (isAPIKey) {
+        // API key integrations: Connect/Disconnect via settings page (Issue #540)
+        actionButtons = isConnected ? `
+          <button
+            class="action-btn disconnect-btn"
+            id="disconnect-btn-${integration.name}"
+            onclick="disconnectAPIKeyIntegration('${integration.name}')"
+          >
+            Disconnect
+          </button>
+          <a href="${integration.configure_url}" class="action-btn configure-btn">
+            Settings
+          </a>
+        ` : `
+          <a href="${integration.configure_url}" class="action-btn connect-btn">
+            Connect
+          </a>
+        `;
+      } else if (integration.configure_url) {
+        // Other integrations with configure URL
+        actionButtons = `
+          <a href="${integration.configure_url}" class="action-btn configure-btn">
+            Configure
+          </a>
         `;
       }
 
-      function showToast(type, message, title = null) {
-        // Use existing toast system - matches pattern from todos.html, files.html, etc.
-        // Toast has convenience methods: Toast.error(title, message), Toast.success(title, message), etc.
-        if (typeof Toast !== 'undefined') {
-          // Use provided title or generate a contextual one
-          const toastTitle = title || {
-            'error': 'Connection Error',
-            'success': 'Connection Successful',
-            'warning': 'Connection Warning',
-            'info': 'Connection Status'
-          }[type] || 'Integration Status';
+      return `
+        <div class="integration-card" id="card-${integration.name}">
+          <div class="integration-info">
+            <div class="integration-icon">${ICONS[integration.name] || '🔌'}</div>
+            <div class="integration-details">
+              <h3>${integration.display_name}</h3>
+              <div class="integration-status">
+                <span class="status-dot ${integration.status}"></span>
+                <span class="status-message ${integration.error ? 'error' : ''}" id="status-${integration.name}">
+                  ${integration.status_message}
+                </span>
+              </div>
+              ${integration.fix_suggestion ? `
+                <div class="fix-suggestion" id="fix-${integration.name}">
+                  ${integration.fix_suggestion}
+                </div>
+              ` : ''}
+            </div>
+          </div>
+          <div class="integration-actions">
+            <button
+              class="action-btn test-btn"
+              id="test-btn-${integration.name}"
+              onclick="testConnection('${integration.name}')"
+              ${!integration.can_test ? 'disabled' : ''}
+            >
+              Test
+            </button>
+            ${actionButtons}
+          </div>
+        </div>
+      `;
+    }).join('');
 
-          // Note: Using direct Toast calls here intentionally (#642)
-          // Toast type and message are dynamic from server responses,
-          // so ToastMessages centralization doesn't apply.
-          if (type === 'error' && Toast.error) {
-            Toast.error(toastTitle, message);
-          } else if (type === 'success' && Toast.success) {
-            Toast.success(toastTitle, message);
-          } else if (type === 'warning' && Toast.warning) {
-            Toast.warning(toastTitle, message);
-          } else if (Toast.info) {
-            Toast.info(toastTitle, message);
+    // Update Disconnect All button state
+    const connectedCount = integrations.filter(i => i.status !== 'not_configured').length;
+    const disconnectAllBtn = document.getElementById('disconnect-all-btn');
+    if (disconnectAllBtn) {
+      disconnectAllBtn.disabled = connectedCount === 0;
+    }
+  }
+
+  async function testConnection(integrationName) {
+    const btn = document.getElementById(`test-btn-${integrationName}`);
+    const statusEl = document.getElementById(`status-${integrationName}`);
+    const card = document.getElementById(`card-${integrationName}`);
+
+    // Set loading state
+    btn.disabled = true;
+    btn.classList.add('testing');
+    btn.textContent = 'Testing...';
+    statusEl.textContent = 'Testing connection...';
+    statusEl.classList.remove('error');
+
+    try {
+      const response = await fetch(`/api/v1/integrations/test/${integrationName}`, {
+        method: 'POST'
+      });
+      const result = await response.json();
+
+      // Update status
+      const dot = card.querySelector('.status-dot');
+      dot.className = `status-dot ${result.success ? 'healthy' : 'failed'}`;
+
+      if (result.success) {
+        statusEl.textContent = `Connected (${result.latency_ms}ms)`;
+        statusEl.classList.remove('error');
+        // Remove any existing fix suggestion
+        const fixEl = document.getElementById(`fix-${integrationName}`);
+        if (fixEl) fixEl.remove();
+
+        showToast('success', `${integrationName} connection successful`, 'Test Passed');
+      } else {
+        statusEl.textContent = result.message;
+        statusEl.classList.add('error');
+
+        // Show fix suggestion if available
+        if (result.fix_suggestion) {
+          let fixEl = document.getElementById(`fix-${integrationName}`);
+          if (!fixEl) {
+            fixEl = document.createElement('div');
+            fixEl.id = `fix-${integrationName}`;
+            fixEl.className = 'fix-suggestion';
+            card.querySelector('.integration-details').appendChild(fixEl);
           }
-        } else {
-          console.log(`[${type}] ${message}`);
+          fixEl.textContent = result.fix_suggestion;
+        }
+
+        showToast('error', result.message, 'Test Failed');
+      }
+    } catch (error) {
+      statusEl.textContent = 'Test failed';
+      statusEl.classList.add('error');
+      showToast('error', `Failed to test ${integrationName}`, 'Test Error');
+    } finally {
+      btn.disabled = false;
+      btn.classList.remove('testing');
+      btn.textContent = 'Test';
+    }
+  }
+
+  async function testAllConnections() {
+    const btn = document.getElementById('test-all-btn');
+    btn.disabled = true;
+    btn.classList.add('testing');
+    btn.textContent = 'Testing...';
+
+    try {
+      const response = await fetch('/api/v1/integrations/test-all', {
+        method: 'POST'
+      });
+      const results = await response.json();
+
+      // Update each integration
+      for (const result of results) {
+        const card = document.getElementById(`card-${result.integration}`);
+        if (!card) continue;
+
+        const dot = card.querySelector('.status-dot');
+        const statusEl = document.getElementById(`status-${result.integration}`);
+
+        dot.className = `status-dot ${result.success ? 'healthy' : 'failed'}`;
+        statusEl.textContent = result.success
+          ? `Connected (${result.latency_ms}ms)`
+          : result.message;
+        statusEl.classList.toggle('error', !result.success);
+      }
+
+      // Count successes
+      const successCount = results.filter(r => r.success).length;
+      const allPassed = successCount === results.length;
+      showToast(
+        allPassed ? 'success' : 'warning',
+        `${successCount} of ${results.length} connections successful`,
+        allPassed ? 'All Tests Passed' : 'Some Tests Failed'
+      );
+
+      // Reload overall status
+      loadIntegrationsHealth();
+    } catch (error) {
+      showToast('error', 'Failed to test connections', 'Test Error');
+    } finally {
+      btn.disabled = false;
+      btn.classList.remove('testing');
+      btn.textContent = 'Test All Connections';
+    }
+  }
+
+  function updateLastUpdated(timestamp) {
+    const el = document.getElementById('last-updated');
+    const date = new Date(timestamp);
+    el.textContent = `Last updated: ${date.toLocaleTimeString()}`;
+  }
+
+  async function connectIntegration(integrationName) {
+    const btn = document.getElementById(`connect-btn-${integrationName}`);
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Connecting...';
+    }
+
+    try {
+      const response = await fetch(`/api/v1/settings/integrations/${integrationName}/connect`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(parseApiDetail(error.detail, 'Connection failed'));
+      }
+
+      const data = await response.json();
+
+      if (data.auth_url) {
+        // Redirect to OAuth provider
+        window.location.href = data.auth_url;
+      } else {
+        showToast('error', 'No authorization URL returned', 'Connection Error');
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Connect';
         }
       }
-    </script>
-  </body>
-</html>
+    } catch (error) {
+      console.error('Connect failed:', error);
+      showToast('error', error.message, 'Connection Failed');
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Connect';
+      }
+    }
+  }
+
+  async function disconnectIntegration(integrationName) {
+    const btn = document.getElementById(`disconnect-btn-${integrationName}`);
+    const displayName = integrationName.charAt(0).toUpperCase() + integrationName.slice(1);
+
+    Dialog.confirm({
+      title: `Disconnect ${displayName}?`,
+      message: `I'll disconnect your ${displayName} integration. You can set it up again anytime.`,
+      confirmText: 'Disconnect',
+      onConfirm: async () => {
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = 'Disconnecting...';
+        }
+
+        try {
+          const response = await fetch(`/api/v1/settings/integrations/${integrationName}/disconnect`, {
+            method: 'POST'
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(parseApiDetail(error.detail, 'Disconnect failed'));
+          }
+
+          const data = await response.json();
+
+          if (data.success) {
+            showToast('success', data.message || `${displayName} disconnected`, 'Disconnected');
+            // Reload integrations to update UI
+            loadIntegrationsHealth();
+          } else {
+            throw new Error(data.message || 'Disconnect failed');
+          }
+        } catch (error) {
+          console.error('Disconnect failed:', error);
+          showToast('error', error.message, 'Disconnect Failed');
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = 'Disconnect';
+          }
+        }
+      }
+    });
+  }
+
+  // Disconnect API key integration (Issue #540: Notion, GitHub, etc.)
+  async function disconnectAPIKeyIntegration(integrationName) {
+    const btn = document.getElementById(`disconnect-btn-${integrationName}`);
+    const displayName = integrationName.charAt(0).toUpperCase() + integrationName.slice(1);
+
+    Dialog.confirm({
+      title: `Disconnect ${displayName}?`,
+      message: `I'll disconnect your ${displayName} integration. You can set it up again anytime.`,
+      confirmText: 'Disconnect',
+      onConfirm: async () => {
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = 'Disconnecting...';
+        }
+
+        try {
+          const response = await fetch(`/api/v1/settings/integrations/${integrationName}/disconnect`, {
+            method: 'POST'
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(parseApiDetail(error.detail, 'Disconnect failed'));
+          }
+
+          const data = await response.json();
+
+          if (data.success) {
+            showToast('success', data.message || `${displayName} disconnected`, 'Disconnected');
+            // Reload integrations to update UI
+            loadIntegrationsHealth();
+          } else {
+            throw new Error(data.message || 'Disconnect failed');
+          }
+        } catch (error) {
+          console.error('Disconnect failed:', error);
+          showToast('error', error.message, 'Disconnect Failed');
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = 'Disconnect';
+          }
+        }
+      }
+    });
+  }
+
+  // Disconnect All integrations (Issue #544)
+  async function disconnectAllIntegrations() {
+    const btn = document.getElementById('disconnect-all-btn');
+
+    // Get list of connected integrations from current page state
+    const allCards = document.querySelectorAll('.integration-card');
+    const connected = [];
+    allCards.forEach(card => {
+      const dot = card.querySelector('.status-dot');
+      if (dot && !dot.classList.contains('not_configured')) {
+        const integrationName = card.id.replace('card-', '');
+        const displayName = card.querySelector('h3')?.textContent || integrationName;
+        connected.push({ name: integrationName, display_name: displayName });
+      }
+    });
+
+    if (connected.length === 0) {
+      showToast('info', 'No integrations to disconnect', 'Nothing to Do');
+      return;
+    }
+
+    // Confirmation dialog
+    const names = connected.map(i => `• ${i.display_name}`).join('\n');
+    Dialog.confirm({
+      title: 'Disconnect all integrations?',
+      message: `I'll disconnect these integrations:\n${names}\n\nYou can set them up again anytime.`,
+      confirmText: 'Disconnect all',
+      onConfirm: async () => {
+        // Update button state
+        if (btn) {
+          btn.disabled = true;
+          btn.classList.add('disconnecting');
+          btn.textContent = 'Disconnecting...';
+        }
+        await performDisconnectAll(btn, connected);
+      }
+    });
+  }
+
+  async function performDisconnectAll(btn, connected) {
+    // Disconnect each integration sequentially
+    let successCount = 0;
+    let failedNames = [];
+
+    for (const integration of connected) {
+      try {
+        const response = await fetch(`/api/v1/settings/integrations/${integration.name}/disconnect`, {
+          method: 'POST'
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            successCount++;
+          } else {
+            failedNames.push(integration.display_name);
+          }
+        } else {
+          failedNames.push(integration.display_name);
+        }
+      } catch (error) {
+        console.error(`Failed to disconnect ${integration.name}:`, error);
+        failedNames.push(integration.display_name);
+      }
+    }
+
+    // Show result
+    const total = connected.length;
+    if (successCount === total) {
+      showToast('success', `${successCount} of ${total} integrations disconnected`, 'All Disconnected');
+    } else if (successCount > 0) {
+      showToast('warning', `${successCount} of ${total} disconnected. Failed: ${failedNames.join(', ')}`, 'Partial Disconnect');
+    } else {
+      showToast('error', `Failed to disconnect any integrations`, 'Disconnect Failed');
+    }
+
+    // Reset button and reload UI
+    if (btn) {
+      btn.classList.remove('disconnecting');
+      btn.textContent = 'Disconnect All';
+      // Button will be disabled by renderIntegrations if no connections remain
+    }
+
+    // Reload to update UI state
+    loadIntegrationsHealth();
+  }
+
+  function showError(message) {
+    const container = document.getElementById('integrations-list');
+    container.innerHTML = `
+      <div class="loading" style="color: #dc3545;">
+        <p>⚠️ ${message}</p>
+        <button onclick="loadIntegrationsHealth()" class="test-all-btn" style="margin-top: 16px;">
+          Retry
+        </button>
+      </div>
+    `;
+  }
+
+  function showToast(type, message, title = null) {
+    // Use existing toast system - matches pattern from todos.html, files.html, etc.
+    // Toast has convenience methods: Toast.error(title, message), Toast.success(title, message), etc.
+    if (typeof Toast !== 'undefined') {
+      // Use provided title or generate a contextual one
+      const toastTitle = title || {
+        'error': 'Connection Error',
+        'success': 'Connection Successful',
+        'warning': 'Connection Warning',
+        'info': 'Connection Status'
+      }[type] || 'Integration Status';
+
+      // Note: Using direct Toast calls here intentionally (#642)
+      // Toast type and message are dynamic from server responses,
+      // so ToastMessages centralization doesn't apply.
+      if (type === 'error' && Toast.error) {
+        Toast.error(toastTitle, message);
+      } else if (type === 'success' && Toast.success) {
+        Toast.success(toastTitle, message);
+      } else if (type === 'warning' && Toast.warning) {
+        Toast.warning(toastTitle, message);
+      } else if (Toast.info) {
+        Toast.info(toastTitle, message);
+      }
+    } else {
+      console.log(`[${type}] ${message}`);
+    }
+  }
+</script>
+{% endblock %}

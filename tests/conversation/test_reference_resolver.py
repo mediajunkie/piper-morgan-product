@@ -88,7 +88,10 @@ class TestReferenceResolver:
     def test_definite_reference_resolution(self, resolver, sample_conversation_history):
         """Test definite reference resolution: 'the issue', 'the project'"""
         test_cases = [
-            ("What's the status of the issue?", "issue"),
+            # #1234: the resolver's entity_type for issues is "github_issue" (the established
+            # convention — see test_target_capability_demonstration, which asserts it). The old
+            # "issue" expectation was stale; the resolver correctly resolves all three.
+            ("What's the status of the issue?", "github_issue"),
             ("Update the project timeline", "project"),
             ("Send me the document", "file"),
         ]

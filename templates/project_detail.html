@@ -1,379 +1,433 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>{{ project_name or 'Project' }} - Piper Morgan</title>
-  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
-  <!-- tokens.css MUST be first - defines CSS variables used by other stylesheets -->
-  <link rel="stylesheet" href="/static/css/tokens.css" />
-  <link rel="stylesheet" href="/static/css/toast.css" />
-  <link rel="stylesheet" href="/static/css/dialog.css" />
-  <link rel="stylesheet" href="/static/css/permissions.css" />
-  <link rel="stylesheet" href="/static/css/spacing.css" />
-  <link rel="stylesheet" href="/static/css/chat.css" />
-  <style>
-    body {
-      font-family: var(--font-family);
-      margin: 0;
-      padding: var(--space-md);
-      background: var(--color-background-secondary);
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: var(--color-background-primary);
-      border-radius: var(--border-radius-lg);
-      padding: var(--space-lg);
-      box-shadow: var(--shadow-sm);
-    }
-    .breadcrumb {
-      display: flex;
-      align-items: center;
-      margin-bottom: var(--space-md);
-      font-size: var(--font-size-base);
-      color: var(--color-text-secondary);
-    }
-    .breadcrumb a {
-      color: var(--color-primary);
-      text-decoration: none;
-      transition: var(--transition-color);
-    }
-    .breadcrumb a:hover {
-      color: var(--color-primary-dark);
-      text-decoration: underline;
-    }
-    .breadcrumb-separator {
-      margin: 0 var(--space-sm);
-      color: var(--color-text-light);
-    }
-    .breadcrumb-current {
-      color: var(--color-text-primary);
-      font-weight: var(--font-weight-medium);
-    }
-    /* Project header card */
-    .project-card {
-      background: var(--color-background-tertiary);
-      border: 1px solid var(--color-border-light);
-      border-radius: var(--border-radius-md);
-      padding: var(--space-lg);
-      margin-bottom: var(--space-lg);
-    }
-    .project-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: var(--space-md);
-    }
-    .project-title {
-      display: flex;
-      align-items: center;
-      gap: var(--space-sm);
-    }
-    .project-title h1 {
-      margin: 0;
-      color: var(--color-text-primary);
-      font-size: var(--font-size-2xl);
-    }
-    .project-description {
-      color: var(--color-text-tertiary);
-      margin: 0 0 var(--space-md) 0;
-      line-height: var(--line-height-relaxed);
-    }
-    .project-meta {
-      display: flex;
-      gap: var(--space-lg);
-      font-size: var(--font-size-sm);
-      color: var(--color-text-secondary);
-    }
-    .project-meta-item {
-      display: flex;
-      align-items: center;
-      gap: var(--space-xs);
-    }
-    /* Work items section */
-    .work-items-section {
-      margin-top: var(--space-lg);
-    }
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: var(--space-md);
-    }
-    .section-header h2 {
-      margin: 0;
-      color: var(--color-text-primary);
-      font-size: var(--font-size-xl);
-    }
-    .work-item-count {
-      background: var(--color-background-tertiary);
-      color: var(--color-text-tertiary);
-      padding: var(--space-xs) var(--space-sm);
-      border-radius: var(--border-radius-full);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
-    }
-    /* Work item styles */
-    .work-item {
-      background: var(--color-background-primary);
-      border: 1px solid var(--color-border-light);
-      border-radius: var(--border-radius-md);
-      padding: var(--space-md);
-      margin-bottom: var(--space-sm);
-      transition: var(--transition-shadow);
-    }
-    .work-item:hover {
-      box-shadow: var(--shadow-sm);
-    }
-    .work-item-header {
-      display: flex;
-      align-items: center;
-      gap: var(--space-sm);
-      margin-bottom: var(--space-sm);
-    }
-    .work-item-title {
-      font-weight: var(--font-weight-medium);
-      color: var(--color-text-primary);
-    }
-    .work-item-type {
-      display: inline-block;
-      padding: 2px var(--space-sm);
-      border-radius: var(--border-radius-sm);
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-semibold);
-      text-transform: uppercase;
-    }
-    /* Semantic badge colors - not in token system, intentional */
-    .work-item-type-bug { background: #fee2e2; color: #dc2626; }
-    .work-item-type-feature { background: #dbeafe; color: #2563eb; }
-    .work-item-type-task { background: #e0e7ff; color: #4f46e5; }
-    .work-item-type-improvement { background: #d1fae5; color: #059669; }
-    .work-item-status {
-      display: inline-block;
-      padding: 2px var(--space-sm);
-      border-radius: var(--border-radius-sm);
-      font-size: var(--font-size-xs);
-      background: var(--color-background-tertiary);
-      color: var(--color-text-secondary);
-    }
-    /* Semantic status colors - not in token system, intentional */
-    .work-item-status-open { background: #fef3c7; color: #d97706; }
-    .work-item-status-in_progress { background: #dbeafe; color: #2563eb; }
-    .work-item-status-closed { background: #d1fae5; color: #059669; }
-    .work-item-meta {
-      display: flex;
-      gap: var(--space-md);
-      font-size: var(--font-size-sm);
-      color: var(--color-text-secondary);
-    }
-    /* Empty state */
-    .empty-state {
-      text-align: center;
-      padding: var(--space-2xl) var(--space-md);
-      color: var(--color-text-secondary);
-    }
-    .empty-state-icon {
-      font-size: 3em;
-      margin-bottom: var(--space-md);
-    }
-    .empty-state-title {
-      margin: 0 0 var(--space-sm) 0;
-      color: var(--color-text-tertiary);
-      font-size: var(--font-size-lg);
-    }
-    .empty-state-message {
-      margin: 0;
-      font-size: var(--font-size-base);
-    }
-    /* Error state */
-    .error-state {
-      text-align: center;
-      padding: var(--space-3xl) var(--space-md);
-      color: var(--color-accent-error);
-    }
-    .error-state h1 {
-      font-size: 4em;
-      margin: 0 0 var(--space-md) 0;
-    }
-  </style>
-</head>
-<body>
-  <!-- Include navigation component -->
-  {% include 'components/navigation.html' %}
-  {% include 'components/toast.html' %}
-  {% include 'components/lifecycle_indicator.html' %}
-  {% include 'components/tabs.html' %}
+{% extends "layouts/app_shell.html" %}
+{# F2 #1171: migrated onto app_shell — chrome (nav/footer), the floating widget runtime, #}
+{# and window.currentUser are now shell-owned; this page declares only its content. #}
+{# The inline <style> below is kept verbatim — per-page CSS-tokenization is a #}
+{# follow-on (CXO), out of scope here. #}
 
-  <div class="container">
-    <nav class="breadcrumb">
-      <a href="/">Home</a>
-      <span class="breadcrumb-separator">›</span>
-      <a href="/projects">Projects</a>
-      <span class="breadcrumb-separator">›</span>
-      <span class="breadcrumb-current" id="breadcrumb-project-name">Loading...</span>
-    </nav>
+{% block page_title %}{{ project_name or 'Project' }} - Piper Morgan{% endblock %}
 
-    <!-- Project details header (populated by JS; lives above tabs so name + meta are always visible) -->
-    <div id="project-container">
-      <div class="project-card">
-        <p style="color: var(--color-text-secondary);">Loading project...</p>
-      </div>
-    </div>
+{% block head_extra %}
+<style>
+  body {
+    font-family: var(--font-family);
+    margin: 0;
+    padding: var(--space-md);
+    background: var(--color-background-secondary);
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--color-background-primary);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--space-md);
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+  }
+  .breadcrumb a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: var(--transition-color);
+  }
+  .breadcrumb a:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+  }
+  .breadcrumb-separator {
+    margin: 0 var(--space-sm);
+    color: var(--color-text-light);
+  }
+  .breadcrumb-current {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+  }
+  /* Project header card */
+  .project-card {
+    background: var(--color-background-tertiary);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--border-radius-md);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+  }
+  .project-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--space-md);
+  }
+  .project-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  .project-title h1 {
+    margin: 0;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-2xl);
+  }
+  .project-description {
+    color: var(--color-text-tertiary);
+    margin: 0 0 var(--space-md) 0;
+    line-height: var(--line-height-relaxed);
+  }
+  .project-meta {
+    display: flex;
+    gap: var(--space-lg);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+  .project-meta-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+  /* Work items section */
+  .work-items-section {
+    margin-top: var(--space-lg);
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-md);
+  }
+  .section-header h2 {
+    margin: 0;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-xl);
+  }
+  .work-item-count {
+    background: var(--color-background-tertiary);
+    color: var(--color-text-tertiary);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--border-radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+  }
+  /* Work item styles */
+  .work-item {
+    background: var(--color-background-primary);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--border-radius-md);
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+    transition: var(--transition-shadow);
+  }
+  .work-item:hover {
+    box-shadow: var(--shadow-sm);
+  }
+  .work-item-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+  }
+  .work-item-title {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+  }
+  .work-item-type {
+    display: inline-block;
+    padding: 2px var(--space-sm);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+  }
+  /* Semantic badge colors - not in token system, intentional */
+  .work-item-type-bug { background: #fee2e2; color: #dc2626; }
+  .work-item-type-feature { background: #dbeafe; color: #2563eb; }
+  .work-item-type-task { background: #e0e7ff; color: #4f46e5; }
+  .work-item-type-improvement { background: #d1fae5; color: #059669; }
+  .work-item-status {
+    display: inline-block;
+    padding: 2px var(--space-sm);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-xs);
+    background: var(--color-background-tertiary);
+    color: var(--color-text-secondary);
+  }
+  /* Semantic status colors - not in token system, intentional */
+  .work-item-status-open { background: #fef3c7; color: #d97706; }
+  .work-item-status-in_progress { background: #dbeafe; color: #2563eb; }
+  .work-item-status-closed { background: #d1fae5; color: #059669; }
+  .work-item-meta {
+    display: flex;
+    gap: var(--space-md);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: var(--space-2xl) var(--space-md);
+    color: var(--color-text-secondary);
+  }
+  .empty-state-icon {
+    font-size: 3em;
+    margin-bottom: var(--space-md);
+  }
+  .empty-state-title {
+    margin: 0 0 var(--space-sm) 0;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-lg);
+  }
+  .empty-state-message {
+    margin: 0;
+    font-size: var(--font-size-base);
+  }
+  /* Error state */
+  .error-state {
+    text-align: center;
+    padding: var(--space-3xl) var(--space-md);
+    color: var(--color-accent-error);
+  }
+  .error-state h1 {
+    font-size: 4em;
+    margin: 0 0 var(--space-md) 0;
+  }
+</style>
+{% endblock %}
 
-    <!-- #869 Project Config IA: Tabs (Overview default; Config tab activated by ?tab=settings) -->
-    <div data-tabs-container>
-      <nav class="tabs-strip" role="tablist" aria-label="Project sections">
-        <button
-          class="tab-button"
-          data-tab-id="overview"
-          id="tab-button-overview"
-          role="tab"
-          aria-selected="true"
-          aria-controls="tab-panel-overview"
-        >Overview</button>
-        <button
-          class="tab-button"
-          data-tab-id="settings"
-          id="tab-button-settings"
-          role="tab"
-          aria-selected="false"
-          aria-controls="tab-panel-settings"
-        >Config</button>
-      </nav>
+{% block main %}
+{% include 'components/toast.html' %}
+{% include 'components/lifecycle_indicator.html' %}
+{% include 'components/tabs.html' %}
 
-      <!-- Overview tab: existing work-items section -->
-      <section
-        class="tab-panel"
-        id="tab-panel-overview"
-        data-tab-id="overview"
-        role="tabpanel"
-        aria-labelledby="tab-button-overview"
-      >
-        <div class="work-items-section">
-          <div class="section-header">
-            <h2>Work Items</h2>
-            <span class="work-item-count" id="work-item-count">0</span>
-          </div>
-          <div id="work-items-container">
-            <p style="color: var(--color-text-secondary);">Loading work items...</p>
-          </div>
-        </div>
-      </section>
+<div class="container">
+  <nav class="breadcrumb">
+    <a href="/">Home</a>
+    <span class="breadcrumb-separator">›</span>
+    <a href="/projects">Projects</a>
+    <span class="breadcrumb-separator">›</span>
+    <span class="breadcrumb-current" id="breadcrumb-project-name">Loading...</span>
+  </nav>
 
-      <!-- Config tab: linked repos + integrations via shared partial (#869 Phase 2) -->
-      <section
-        class="tab-panel"
-        id="tab-panel-settings"
-        data-tab-id="settings"
-        role="tabpanel"
-        aria-labelledby="tab-button-settings"
-        hidden
-      >
-        {% include 'components/project_config_panel.html' %}
-      </section>
+  <!-- Project details header (populated by JS; lives above tabs so name + meta are always visible) -->
+  <div id="project-container">
+    <div class="project-card">
+      <p style="color: var(--color-text-secondary);">Loading project...</p>
     </div>
   </div>
 
-  <!-- Dialog component (used by Config tab partial) -->
-  {% include 'components/confirmation-dialog.html' %}
+  <!-- #869 Project Config IA: Tabs (Overview default; Config tab activated by ?tab=settings) -->
+  <div data-tabs-container>
+    <nav class="tabs-strip" role="tablist" aria-label="Project sections">
+      <button
+        class="tab-button"
+        data-tab-id="overview"
+        id="tab-button-overview"
+        role="tab"
+        aria-selected="true"
+        aria-controls="tab-panel-overview"
+      >Overview</button>
+      <button
+        class="tab-button"
+        data-tab-id="settings"
+        id="tab-button-settings"
+        role="tab"
+        aria-selected="false"
+        aria-controls="tab-panel-settings"
+      >Config</button>
+    </nav>
 
-  <!-- JavaScript -->
-  <script src="/static/js/toast.js"></script>
-  <script src="/static/js/toast-messages.js"></script>
-  <script src="/static/js/permissions.js"></script>
-  <script src="/static/js/timestamp-utils.js"></script>
-  <script src="/static/js/dialog.js"></script>
-  <script>
-    // Inject user context from server
-    {% if user %}
-    window.currentUser = {
-      username: "{{ user.username }}",
-      user_id: "{{ user.user_id }}",
-      is_admin: {{ 'true' if user.is_admin else 'false' }}
-    };
-    {% else %}
-    window.currentUser = null;
-    {% endif %}
+    <!-- Overview tab: existing work-items section -->
+    <section
+      class="tab-panel"
+      id="tab-panel-overview"
+      data-tab-id="overview"
+      role="tabpanel"
+      aria-labelledby="tab-button-overview"
+    >
+      <div class="work-items-section">
+        <div class="section-header">
+          <h2>Work Items</h2>
+          <span class="work-item-count" id="work-item-count">0</span>
+        </div>
+        <div id="work-items-container">
+          <p style="color: var(--color-text-secondary);">Loading work items...</p>
+        </div>
+      </div>
+    </section>
 
-    // Get project ID from URL
-    const projectId = "{{ project_id }}";
+    <!-- Config tab: linked repos + integrations via shared partial (#869 Phase 2) -->
+    <section
+      class="tab-panel"
+      id="tab-panel-settings"
+      data-tab-id="settings"
+      role="tabpanel"
+      aria-labelledby="tab-button-settings"
+      hidden
+    >
+      {% include 'components/project_config_panel.html' %}
+    </section>
+  </div>
+</div>
 
-    // Load project and work items on page load
-    document.addEventListener('DOMContentLoaded', async () => {
-      await Promise.all([
-        loadProject(),
-        loadWorkItems()
-      ]);
-      // #869 Phase 2: mount config panel for this project (loads repos +
-      // integrations into the Config tab; tab visibility is independent).
-      if (window.PiperProjectConfigPanel) {
-        window.PiperProjectConfigPanel.mount(projectId);
+<!-- Dialog component (used by Config tab partial) -->
+{% include 'components/confirmation-dialog.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/toast-messages.js"></script>
+<script>
+  // Get project ID from URL
+  const projectId = "{{ project_id }}";
+
+  // Load project and work items on page load
+  document.addEventListener('DOMContentLoaded', async () => {
+    await Promise.all([
+      loadProject(),
+      loadWorkItems()
+    ]);
+    // #869 Phase 2: mount config panel for this project (loads repos +
+    // integrations into the Config tab; tab visibility is independent).
+    if (window.PiperProjectConfigPanel) {
+      window.PiperProjectConfigPanel.mount(projectId);
+    }
+  });
+
+  // Load project details
+  async function loadProject() {
+    try {
+      const response = await fetch(`/api/v1/projects/${projectId}`, {
+        credentials: 'include'
+      });
+
+      if (response.status === 404) {
+        showNotFound();
+        return;
       }
-    });
 
-    // Load project details
-    async function loadProject() {
-      try {
-        const response = await fetch(`/api/v1/projects/${projectId}`, {
-          credentials: 'include'
-        });
-
-        if (response.status === 404) {
-          showNotFound();
-          return;
-        }
-
-        if (!response.ok) {
-          throw new Error('Failed to load project');
-        }
-
-        const project = await response.json();
-        renderProject(project);
-      } catch (error) {
-        console.error('Error loading project:', error);
-        ToastMessages.error('load_error');
+      if (!response.ok) {
+        throw new Error('Failed to load project');
       }
+
+      const project = await response.json();
+      renderProject(project);
+    } catch (error) {
+      console.error('Error loading project:', error);
+      ToastMessages.error('load_error');
+    }
+  }
+
+  // Load work items for this project
+  async function loadWorkItems() {
+    try {
+      const response = await fetch(`/api/v1/projects/${projectId}/work-items`, {
+        credentials: 'include'
+      });
+
+      if (response.status === 404) {
+        // Project not found handled by loadProject
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error('Failed to load work items');
+      }
+
+      const data = await response.json();
+      renderWorkItems(data.work_items || [], data.count || 0);
+    } catch (error) {
+      console.error('Error loading work items:', error);
+      // Don't show toast - project load will handle it
+    }
+  }
+
+  // Render project details
+  function renderProject(project) {
+    // Update breadcrumb
+    document.getElementById('breadcrumb-project-name').textContent = project.name;
+    document.title = `${project.name} - Piper Morgan`;
+
+    // Build lifecycle indicator if present
+    let lifecycleIndicator = '';
+    if (project.lifecycle_state && window.LifecycleIndicator) {
+      const phrase = LifecycleIndicator.getPhrase(project.lifecycle_state);
+      lifecycleIndicator = `
+        <div class="lifecycle-indicator"
+             data-lifecycle-stage="${project.lifecycle_state}"
+             role="status"
+             tabindex="0"
+             aria-label="Lifecycle: ${phrase}">
+          <span class="lifecycle-dot" aria-hidden="true"></span>
+          <span class="lifecycle-phrase">${phrase}</span>
+          <span class="lifecycle-tooltip" role="tooltip">${phrase}</span>
+        </div>
+      `;
     }
 
-    // Load work items for this project
-    async function loadWorkItems() {
-      try {
-        const response = await fetch(`/api/v1/projects/${projectId}/work-items`, {
-          credentials: 'include'
-        });
+    // Format dates
+    const createdAt = project.created_at ? new Date(project.created_at).toLocaleDateString() : 'Unknown';
+    const updatedAt = project.updated_at ? new Date(project.updated_at).toLocaleDateString() : 'Never';
 
-        if (response.status === 404) {
-          // Project not found handled by loadProject
-          return;
-        }
+    const container = document.getElementById('project-container');
+    container.innerHTML = `
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-title">
+            <h1>${escapeHtml(project.name)}</h1>
+            ${lifecycleIndicator}
+          </div>
+        </div>
+        ${project.description ? `<p class="project-description">${escapeHtml(project.description)}</p>` : ''}
+        <div class="project-meta">
+          <div class="project-meta-item">
+            <span>Created:</span>
+            <span>${createdAt}</span>
+          </div>
+          <div class="project-meta-item">
+            <span>Updated:</span>
+            <span>${updatedAt}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
 
-        if (!response.ok) {
-          throw new Error('Failed to load work items');
-        }
+  // Render work items list
+  function renderWorkItems(workItems, count) {
+    document.getElementById('work-item-count').textContent = count;
+    const container = document.getElementById('work-items-container');
 
-        const data = await response.json();
-        renderWorkItems(data.work_items || [], data.count || 0);
-      } catch (error) {
-        console.error('Error loading work items:', error);
-        // Don't show toast - project load will handle it
-      }
+    if (workItems.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state" role="status" aria-label="Empty state">
+          <div class="empty-state-icon" aria-hidden="true">📋</div>
+          <h3 class="empty-state-title">No work items for this project</h3>
+          <p class="empty-state-message">Work items linked to this project will appear here.</p>
+        </div>
+      `;
+      return;
     }
 
-    // Render project details
-    function renderProject(project) {
-      // Update breadcrumb
-      document.getElementById('breadcrumb-project-name').textContent = project.name;
-      document.title = `${project.name} - Piper Morgan`;
+    container.innerHTML = workItems.map(item => {
+      // Build type badge
+      const typeClass = `work-item-type-${item.type || 'task'}`;
+      const typeBadge = `<span class="work-item-type ${typeClass}">${item.type || 'task'}</span>`;
+
+      // Build status badge
+      const statusClass = `work-item-status-${(item.status || 'open').replace(' ', '_')}`;
+      const statusBadge = `<span class="work-item-status ${statusClass}">${item.status || 'open'}</span>`;
 
       // Build lifecycle indicator if present
       let lifecycleIndicator = '';
-      if (project.lifecycle_state && window.LifecycleIndicator) {
-        const phrase = LifecycleIndicator.getPhrase(project.lifecycle_state);
+      if (item.lifecycle_state && window.LifecycleIndicator) {
+        const phrase = LifecycleIndicator.getPhrase(item.lifecycle_state);
         lifecycleIndicator = `
           <div class="lifecycle-indicator"
-               data-lifecycle-stage="${project.lifecycle_state}"
+               data-lifecycle-stage="${item.lifecycle_state}"
+               data-compact="true"
                role="status"
                tabindex="0"
-               aria-label="Lifecycle: ${phrase}">
+               aria-label="Lifecycle: ${phrase}"
+               style="margin-left: 8px;">
             <span class="lifecycle-dot" aria-hidden="true"></span>
             <span class="lifecycle-phrase">${phrase}</span>
             <span class="lifecycle-tooltip" role="tooltip">${phrase}</span>
@@ -381,118 +435,45 @@
         `;
       }
 
-      // Format dates
-      const createdAt = project.created_at ? new Date(project.created_at).toLocaleDateString() : 'Unknown';
-      const updatedAt = project.updated_at ? new Date(project.updated_at).toLocaleDateString() : 'Never';
-
-      const container = document.getElementById('project-container');
-      container.innerHTML = `
-        <div class="project-card">
-          <div class="project-header">
-            <div class="project-title">
-              <h1>${escapeHtml(project.name)}</h1>
-              ${lifecycleIndicator}
-            </div>
+      return `
+        <div class="work-item">
+          <div class="work-item-header">
+            ${typeBadge}
+            <span class="work-item-title">${escapeHtml(item.title)}</span>
+            ${lifecycleIndicator}
           </div>
-          ${project.description ? `<p class="project-description">${escapeHtml(project.description)}</p>` : ''}
-          <div class="project-meta">
-            <div class="project-meta-item">
-              <span>Created:</span>
-              <span>${createdAt}</span>
-            </div>
-            <div class="project-meta-item">
-              <span>Updated:</span>
-              <span>${updatedAt}</span>
-            </div>
+          <div class="work-item-meta">
+            ${statusBadge}
+            ${item.priority ? `<span>Priority: ${item.priority}</span>` : ''}
+            ${item.assignee ? `<span>Assigned: ${item.assignee}</span>` : ''}
           </div>
         </div>
       `;
-    }
+    }).join('');
+  }
 
-    // Render work items list
-    function renderWorkItems(workItems, count) {
-      document.getElementById('work-item-count').textContent = count;
-      const container = document.getElementById('work-items-container');
+  // Show 404 not found
+  function showNotFound() {
+    document.getElementById('breadcrumb-project-name').textContent = 'Not Found';
+    document.title = 'Project Not Found - Piper Morgan';
 
-      if (workItems.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state" role="status" aria-label="Empty state">
-            <div class="empty-state-icon" aria-hidden="true">📋</div>
-            <h3 class="empty-state-title">No work items for this project</h3>
-            <p class="empty-state-message">Work items linked to this project will appear here.</p>
-          </div>
-        `;
-        return;
-      }
+    document.getElementById('project-container').innerHTML = `
+      <div class="error-state">
+        <h1>404</h1>
+        <p>Project not found or you don't have access to it.</p>
+        <a href="/projects" style="color: var(--color-primary);">← Back to Projects</a>
+      </div>
+    `;
 
-      container.innerHTML = workItems.map(item => {
-        // Build type badge
-        const typeClass = `work-item-type-${item.type || 'task'}`;
-        const typeBadge = `<span class="work-item-type ${typeClass}">${item.type || 'task'}</span>`;
+    document.querySelector('.work-items-section').style.display = 'none';
+  }
 
-        // Build status badge
-        const statusClass = `work-item-status-${(item.status || 'open').replace(' ', '_')}`;
-        const statusBadge = `<span class="work-item-status ${statusClass}">${item.status || 'open'}</span>`;
-
-        // Build lifecycle indicator if present
-        let lifecycleIndicator = '';
-        if (item.lifecycle_state && window.LifecycleIndicator) {
-          const phrase = LifecycleIndicator.getPhrase(item.lifecycle_state);
-          lifecycleIndicator = `
-            <div class="lifecycle-indicator"
-                 data-lifecycle-stage="${item.lifecycle_state}"
-                 data-compact="true"
-                 role="status"
-                 tabindex="0"
-                 aria-label="Lifecycle: ${phrase}"
-                 style="margin-left: 8px;">
-              <span class="lifecycle-dot" aria-hidden="true"></span>
-              <span class="lifecycle-phrase">${phrase}</span>
-              <span class="lifecycle-tooltip" role="tooltip">${phrase}</span>
-            </div>
-          `;
-        }
-
-        return `
-          <div class="work-item">
-            <div class="work-item-header">
-              ${typeBadge}
-              <span class="work-item-title">${escapeHtml(item.title)}</span>
-              ${lifecycleIndicator}
-            </div>
-            <div class="work-item-meta">
-              ${statusBadge}
-              ${item.priority ? `<span>Priority: ${item.priority}</span>` : ''}
-              ${item.assignee ? `<span>Assigned: ${item.assignee}</span>` : ''}
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // Show 404 not found
-    function showNotFound() {
-      document.getElementById('breadcrumb-project-name').textContent = 'Not Found';
-      document.title = 'Project Not Found - Piper Morgan';
-
-      document.getElementById('project-container').innerHTML = `
-        <div class="error-state">
-          <h1>404</h1>
-          <p>Project not found or you don't have access to it.</p>
-          <a href="/projects" style="color: var(--color-primary);">← Back to Projects</a>
-        </div>
-      `;
-
-      document.querySelector('.work-items-section').style.display = 'none';
-    }
-
-    // Escape HTML to prevent XSS
-    function escapeHtml(text) {
-      if (!text) return '';
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-  </script>
-</body>
-</html>
+  // Escape HTML to prevent XSS
+  function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+</script>
+{% endblock %}
