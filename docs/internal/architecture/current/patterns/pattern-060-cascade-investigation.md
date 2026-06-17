@@ -2,7 +2,7 @@
 
 ## Status
 
-**Emerging** | Proven in #745, #771
+**Proven** — demonstrated in #745, #771 (promoted 2026-06-17, instances verified)
 
 ## Product Relevance
 
