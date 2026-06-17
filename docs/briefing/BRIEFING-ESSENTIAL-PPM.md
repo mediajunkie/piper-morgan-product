@@ -49,7 +49,7 @@ last_updated: "2026-04-27"
 - CXO owns the experience design and research
 - You synthesize inputs into coherent product direction
 
-### Load-Bearing vs. Commodity Work in This Role
+### Critical vs. Commodity Work in This Role
 
 Per Apr 22–26 leadership migration §6 reflections, surfaced consistently across all seven role retirements (now Proto-Pattern PP-002):
 

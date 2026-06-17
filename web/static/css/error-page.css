@@ -56,7 +56,7 @@
 
 .error-title {
   margin: 0 0 var(--space-lg) 0;
-  font-size: 2em;
+  font-size: var(--font-size-4xl);
   color: var(--color-text-primary);
   font-weight: var(--font-weight-bold);
   line-height: 1.2;
@@ -182,7 +182,7 @@
   }
 
   .error-title {
-    font-size: 1.5em;
+    font-size: var(--font-size-3xl);
     margin-bottom: var(--space-sm);
   }
 
@@ -235,7 +235,7 @@
   }
 
   .error-title {
-    font-size: 1.3em;
+    font-size: var(--font-size-2xl);
     margin-bottom: var(--space-sm);
   }
 
@@ -275,45 +275,45 @@
 /* Dark mode support - intentionally hardcoded for dark mode specific contrast */
 @media (prefers-color-scheme: dark) {
   .error-container {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); /* token-lint-allow: intentional dark-mode-specific contrast (#1172; see block comment) */
   }
 
   .error-content {
-    background: #0f3460;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    background: #0f3460; /* token-lint-allow: intentional dark-mode-specific contrast (#1172) */
+    box-shadow: 0 20px 60px var(--color-overlay-light);
   }
 
   .error-title {
-    color: #ecf0f1;
+    color: #ecf0f1; /* token-lint-allow: intentional dark-mode-specific contrast (#1172) */
   }
 
   .error-message {
-    color: #bdc3c7;
+    color: #bdc3c7; /* token-lint-allow: intentional dark-mode-specific contrast (#1172) */
   }
 
   .error-code {
-    color: #95a5a6;
+    color: #95a5a6; /* token-lint-allow: intentional dark-mode-specific contrast (#1172) */
   }
 
   .error-help {
-    background: #1a472a;
+    background: #1a472a; /* token-lint-allow: intentional dark-mode-specific contrast (#1172) */
     border-left-color: var(--color-accent-success);
   }
 
   .error-help h2 {
-    color: #ecf0f1;
+    color: #ecf0f1; /* token-lint-allow: intentional dark-mode-specific contrast (#1172) */
   }
 
   .error-help li {
-    color: #bdc3c7;
+    color: #bdc3c7; /* token-lint-allow: intentional dark-mode-specific contrast (#1172) */
   }
 
   .error-actions .btn-secondary {
-    background: #2c3e50;
-    color: #ecf0f1;
+    background: #2c3e50; /* token-lint-allow: intentional dark-mode-specific contrast (#1172) */
+    color: #ecf0f1; /* token-lint-allow: intentional dark-mode-specific contrast (#1172) */
   }
 
   .error-actions .btn-secondary:hover {
-    background: #34495e;
+    background: var(--color-neutral-dark-gray-2);
   }
 }

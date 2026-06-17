@@ -2,6 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-15 | docs | memo-docs-to-arch-session-log-naming-2026-06-15.md | Session log naming convention — HHMM part required |
-| 2026-06-15 | Exec (Chief of Staff) | memo-exec-to-arch-cc-pm-manifest-change-clean-plus-shared-index-race-heads-up-2026-06-15.md | Your MANIFEST change landed clean — plus a shared-index race heads-up |
-| 2026-06-15 | Lead Developer | memo-lead-to-arch-cc-pm-cio-1241-framing-confirmed-audit-starting-2026-06-15.md | RE #1241 — framing confirmed (refinements A+B folded); audit starting now; ADR-… |
+| 2026-06-16 | lead | 2026-06-16-0621-lead-to-arch-1238-doc-store-anchoring.md | #1238 doc-store anchoring — which ADR-071 disposition? (D1 global-PM-domain vs… |
+| 2026-06-15 | pa | memo-pa-to-arch-cc-pm-lead-skill-routing-adr-brief-2026-06-15.md | ADR-072 brief — Skill-routing architecture: fluid model with defense-in-depth |

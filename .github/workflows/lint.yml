@@ -12,6 +12,7 @@ on:
       - 'services/**'
       - 'tests/**'
       - 'web/**'
+      - 'templates/**'
       - '*.py'
       - 'pyproject.toml'
       - '.flake8'
@@ -25,6 +26,7 @@ on:
       - 'services/**'
       - 'tests/**'
       - 'web/**'
+      - 'templates/**'
       - '*.py'
       - 'pyproject.toml'
       - '.flake8'
@@ -86,10 +88,30 @@ jobs:
           # are baselined in .token-lint-baseline.txt and migrated down over time.
           python scripts/token_lint.py --baseline .token-lint-baseline.txt web/static/css
 
+      - name: Native-dialog gate (F1 #1170)
+        run: |
+          # Ratchet: fails on a NEW native confirm()/alert()/prompt() in templates/
+          # or web/static/js (use the Dialog component instead — design-floor #1170).
+          # Pre-existing callers are baselined in .native-dialog-lint-baseline.txt
+          # and migrated down as F1's caller-migration lands.
+          python scripts/native_dialog_lint.py --baseline .native-dialog-lint-baseline.txt
+
+      - name: Principal-threading gate (#1252 P6 / ADR-071 D5)
+        run: |
+          # Ratchet: fails on a NEW principal-degradation site —
+          # `context.get("user_id") if ... else None` (silently loses the
+          # principal → unscoped reads). Thread the principal as a required
+          # param from the host boundary instead. Pre-existing sites are
+          # baselined in .principal-threading-baseline.txt and migrated down
+          # as ADR-071 D4 threading lands.
+          python scripts/principal_threading_lint.py --baseline .principal-threading-baseline.txt
+
       - name: Quality summary
         run: |
           echo "## Code Quality Results" >> $GITHUB_STEP_SUMMARY
           echo "✅ ruff format check passed" >> $GITHUB_STEP_SUMMARY
           echo "✅ ruff lint (E9,F63,F7,F82,I) passed" >> $GITHUB_STEP_SUMMARY
           echo "✅ token-discipline gate passed (no new hardcoded values)" >> $GITHUB_STEP_SUMMARY
+          echo "✅ native-dialog gate passed (no new native confirm/alert/prompt)" >> $GITHUB_STEP_SUMMARY
+          echo "✅ principal-threading gate passed (no new context.get user_id degradations)" >> $GITHUB_STEP_SUMMARY
           echo "Environment: Python 3.11" >> $GITHUB_STEP_SUMMARY

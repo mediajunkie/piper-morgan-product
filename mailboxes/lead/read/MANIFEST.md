@@ -4,10 +4,22 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-15 | PA (Piper Alpha) | 2026-06-15-pa-wave-p-prerequisites.md | Wave P prerequisites — 3 issues filed, expectations for connect-piper + piper s… |
+| 2026-06-15 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-adr071-trust-layer-framing-routed-to-context-section-2026-06-15.md | ADR-071 trust-layer framing — endorsement received + routing to Lead's Context… |
+| 2026-06-15 | Chief Architect | cc-memo-arch-to-docs-cc-lead-pm-1206-a2-trim-concur-fold-into-1206-close-2026-06-15.md | #1206 item-2 A.2 trim — CONCUR; fold into #1206 close path; Lead's one-liner is… |
 | 2026-06-15 | Chief Architect | memo-arch-to-lead-cc-cio-pm-1241-content-anchoring-lens-adr-071-yes-doc-store-first-2026-06-15.md | #1241 content-anchoring lens — YES ADR-071 candidate; audit scope right with tw… |
+| 2026-06-15 | Chief Architect | memo-arch-to-lead-cc-cio-pm-1241-d1-ruling-global-pm-domain-grounding-confirmed-draft-adr-071-2026-06-15.md | #1241 — D1 ruling (PM-domain global-by-design with explicit exemption + multi-t… |
+| 2026-06-15 | Chief Architect | memo-arch-to-lead-cc-cio-pm-adr-071-v01-RATIFIED-clean-2-minor-cross-refs-2026-06-15.md | ADR-071 v0.1 RATIFIED — clean fold; 2 minor cross-ref suggestions (fold-if-usef… |
+| 2026-06-15 | Chief Architect | memo-arch-to-lead-cc-pm-ppm-cio-adr-070-v01-filed-mcp-consumer-connector-architecture-2026-06-15.md | ADR-070 v0.1 FILED — MCP-Consumer Connector Architecture; unblocks WS-1..9 deco… |
+| 2026-06-15 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-streamlining-4-log-hook-realign-coordinate-2026-06-15.md | Streamlining #4 — log-maintenance hook realign (clock→commit-event): coordinate |
+| 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-lead-ppm-cc-pm-anchoring-is-a-trust-prerequisite-not-just-data-2026-06-15.md | ADR-071 anchoring — CXO endorses anchor-first, and from the TRUST layer it's no… |
+| 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-design-floor-f1-confirmed-f2-approach-f3-rulings-1184-take-2026-06-15.md | Design-floor unblock — F1 Dialog CONFIRMED (build it); F2 approach + my lean; F… |
 | 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-host-radarentity-contract-frozen-cxo-side-2026-06-15.md | RadarEntity contract — CXO surface side FROZEN (unblocks #1236 four-type build)… |
+| 2026-06-15 | Documentation Management (Docs) | memo-docs-to-lead-1206-item2-phase-minus-1-currency-ready-for-your-pass-2026-06-15.md | #1206 item-2 — deployment-model reframe landed; Phase -1 PM-verification curren… |
+| 2026-06-15 | Exec (Chief of Staff) | memo-exec-to-leaddev-cio-cc-pm-host-write-your-role-portfolio-pilot-wave-2026-06-15.md | Write your role-portfolio — you're the pilot wave (HOST's is the worked example) |
 | 2026-06-15 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-cxo-pm-1216-provenance-field-ack-m4-placement-2026-06-15.md | RE #1216 provenance field — PPM ack; M4 placement |
 | 2026-06-15 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-cxo-pm-history-sidebar-flattening-explicit-response-4q-2026-06-15.md | RE History sidebar — PPM explicit response (4 questions): concur with consolida… |
+| 2026-06-15 | PPM (Principal Product Manager) | memo-ppm-to-lead-cxo-cc-pm-host-radar-entity-model-frozen-ppm-side-2026-06-15.md | RadarEntity contract — PPM model side FROZEN (per-type lifecycle states + Peopl… |
 | 2026-06-14 | Chief Architect | cc-memo-arch-to-pa-cc-pm-adr-066-v02-drafted-d7-configuration-ownership-2026-06-14.md | ADR-066 v0.2 DRAFTED — D7 Configuration Ownership added; server-owned + per-req… |
 | 2026-06-14 | Documentation Management (Docs) | cc-memo-docs-to-ppm-cc-pm-lead-sprint-structure-reconciled-2026-06-14.md | PM-directed sprint-structure update recorded in roadmap.md + briefing (your for… |
 | 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-ppm-1090-radar-build-handoff-mockup-ready-2026-06-14.md | #1090 GREEN — entities-surfacing mockup is ready; build the slot-swap. Guidance… |

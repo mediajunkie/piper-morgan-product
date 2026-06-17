@@ -117,6 +117,10 @@ class TestArtifactRepositoryCRUD:
         assert await repo.get_by_id("a1", owner_id="user-A") is not None
         # admin bypass → found regardless
         assert await repo.get_by_id("a1", owner_id="user-B", is_admin=True) is not None
+        # #1252 D3: the owner-scope filter now applies in the SELECT (not post-hoc);
+        # behavior preserved — owner_id=None is still an explicit unscoped/internal
+        # fetch (existence checks below rely on it). Cross-owner blocking above is
+        # the data-layer-filter assertion.
 
     @pytest.mark.asyncio
     async def test_delete_owner_scoped(self, session):
@@ -133,6 +137,38 @@ class TestArtifactRepositoryCRUD:
     async def test_delete_missing_returns_false(self, session):
         repo = ArtifactRepository(session)
         assert await repo.delete("nope") is False
+
+
+class TestArtifactRename1184:
+    """#1184 — owner-scoped rename (update payload['title']). The rename must NOT
+    introduce an (a,3) leak (the #1241 audit lesson): cross-owner rename → None."""
+
+    @pytest.mark.asyncio
+    async def test_update_title_persists_owner_scoped(self, session):
+        repo = ArtifactRepository(session)
+        await repo.add(_generated(owner="user-A", aid="a1"))
+        updated = await repo.update_title("a1", "Q3 Planning Notes", owner_id="user-A")
+        assert updated is not None
+        assert updated.payload.get("title") == "Q3 Planning Notes"
+        # persisted across a fresh read (JSON-column mutation actually flushed)
+        got = await repo.get_by_id("a1")
+        assert got.payload.get("title") == "Q3 Planning Notes"
+
+    @pytest.mark.asyncio
+    async def test_update_title_blocks_cross_owner(self, session):
+        repo = ArtifactRepository(session)
+        await repo.add(_generated(owner="user-A", aid="a1"))
+        # cross-owner rename refused → None, title untouched (no (a,3) leak)
+        assert await repo.update_title("a1", "Hacked", owner_id="user-B") is None
+        got = await repo.get_by_id("a1")
+        assert (got.payload or {}).get("title") != "Hacked"
+        # admin bypass (the #470 pattern) works
+        assert await repo.update_title("a1", "AdminSet", owner_id="user-B", is_admin=True) is not None
+
+    @pytest.mark.asyncio
+    async def test_update_title_missing_returns_none(self, session):
+        repo = ArtifactRepository(session)
+        assert await repo.update_title("nope", "X", owner_id="user-A") is None
 
     @pytest.mark.asyncio
     async def test_list_filter_by_source_type(self, session):

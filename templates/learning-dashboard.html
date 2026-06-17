@@ -819,11 +819,16 @@
             const toggleBtn = document.getElementById('toggleLearningBtn');
             const currentlyEnabled = toggleBtn.textContent.includes('Disable');
 
-            const confirmMsg = currentlyEnabled
-                ? 'Disable learning? (Existing data will be preserved)'
-                : 'Enable learning?';
-
-            if (!confirm(confirmMsg)) return;
+            // #1170: Dialog.confirm, not native confirm
+            const confirmed = await Dialog.confirm({
+                title: currentlyEnabled ? 'Disable learning?' : 'Enable learning?',
+                message: currentlyEnabled
+                    ? 'Existing learned data will be preserved.'
+                    : 'Piper will resume learning from your activity.',
+                danger: currentlyEnabled,
+                confirmText: currentlyEnabled ? 'Disable' : 'Enable',
+            });
+            if (!confirmed) return;
 
             toggleBtn.disabled = true;
 

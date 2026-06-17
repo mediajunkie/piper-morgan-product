@@ -36,10 +36,13 @@ class TestNavigationVocabulary:
         # Old label should not be present (checking nav context, not URL)
         assert ">Todos</a>" not in nav_content
 
-    def test_files_renamed_to_documents(self, nav_content):
-        """Files should be labeled 'Documents'."""
+    def test_documents_and_files_both_present(self, nav_content):
+        """Both 'Documents' (knowledge docs) and 'Files' (uploads/artifacts) are
+        distinct nav entries — PM-confirmed 2026-06-15. #1146 wired the /files
+        orphan page as its own entry, superseding the earlier Files→Documents
+        consciousness-relabel (#419/#684) which predated that distinct page."""
         assert ">Documents</a>" in nav_content
-        assert ">Files</a>" not in nav_content
+        assert ">Files</a>" in nav_content
 
     def test_lists_renamed_to_collections(self, nav_content):
         """Lists should be labeled 'Collections'."""

@@ -31,7 +31,7 @@ button:not(:disabled),
 button:hover:not(:disabled),
 [role="button"]:hover:not([aria-disabled="true"]) {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px var(--color-overlay-subtle);
 }
 
 /* Button focus state (keyboard) */
@@ -46,7 +46,7 @@ button:focus-visible:not(:disabled),
 button:active:not(:disabled),
 [role="button"]:active:not([aria-disabled="true"]) {
   transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* token-lint-allow: one-off active-state shadow alpha (#1172) */
 }
 
 /* Primary button hover */
@@ -399,7 +399,7 @@ select:focus {
 @media (prefers-color-scheme: dark) {
   button:hover:not(:disabled),
   [role="button"]:hover:not([aria-disabled="true"]) {
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15); /* token-lint-allow: dark-mode-specific shadow alpha (#1172) */
   }
 
   input:hover::placeholder,
@@ -411,7 +411,7 @@ select:focus {
   .card:hover:not(.no-hover),
   .item:hover:not(.no-hover),
   .list-item:hover:not(.no-hover) {
-    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.12); /* token-lint-allow: dark-mode-specific shadow alpha (#1172) */
   }
 
   .icon-button:hover {

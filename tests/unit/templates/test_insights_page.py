@@ -261,3 +261,20 @@ class TestInsightCardTemplate:
         template = soup.find("template", id="insight-card-template")
         sources = template.find(class_="insight-card-sources")
         assert sources is not None
+
+
+class TestInsightsGlobalNav1251:
+    """#1251 item 1 (Lead lane): the /insights page must include the global nav
+    chrome that every other page has — it was rendering without it."""
+
+    def test_includes_global_navigation(self, insights_html):
+        """Page includes the shared navigation component."""
+        assert "{% include 'components/navigation.html' %}" in insights_html
+
+    def test_nav_include_is_inside_content_block_before_page_body(self, insights_html):
+        """The nav include sits at the top of the content block (renders into the
+        body, ahead of the insights-page container) — not stranded outside it."""
+        content_idx = insights_html.index("{% block content %}")
+        nav_idx = insights_html.index("components/navigation.html")
+        page_idx = insights_html.index('class="insights-page"')
+        assert content_idx < nav_idx < page_idx

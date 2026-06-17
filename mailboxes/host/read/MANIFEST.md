@@ -3,6 +3,12 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-cio-cc-pm-host-shared-index-race-on-mailbox-bridge-needs-serialization-2026-06-15.md | Shared-main-checkout index race on mailbox-bridge commits — needs a serializati… |
+| 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-leaddev-cio-cc-pm-host-write-your-role-portfolio-pilot-wave-2026-06-15.md | Write your role-portfolio — you're the pilot wave (HOST's is the worked example) |
+| 2026-06-15 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-pm-lead-dev-streamlining-joint-recommendation-2026-06-15.md | RE: Lead Dev streamlining — my ops/efficiency angle, folded into a co-sign-read… |
+| 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-host-radarentity-contract-frozen-cxo-side-2026-06-15.md | RadarEntity contract — CXO surface side FROZEN (unblocks #1236 four-type build)… |
+| 2026-06-15 | docs | memo-docs-to-host-session-log-close-marker-2026-06-15.md | Session log close marker — canonical format reminder |
+| 2026-06-15 | Exec (Chief of Staff) | memo-exec-to-host-cc-pm-pilot-kickoff-DRAFT-leaddev-cio-for-your-review-2026-06-15.md | Pilot kickoff DRAFT for your review — Lead Dev + CIO role-portfolios (per your… |
 | 2026-06-14 | Chief Architect | memo-arch-to-host-cc-docs-pm-decisions-log-claude-md-added-recording-decisions-section-2026-06-14.md | decisions.log reinstatement — CLAUDE.md "Recording decisions" section added; Do… |
 | 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-pa-cc-pm-ppm-host-1217-pm-confirmed-plus-people-network-is-layer2-entity-2026-06-14.md | #1217 — PM confirmed both gaps + elevated Gap 1 into a capability: the people/a… |
 | 2026-06-14 | Exec (Chief of Staff) | memo-exec-to-host-cc-pm-role-portfolio-framework-RATIFIED-review-phase-unblocked-2026-06-14.md | RATIFIED — PM ratified the role-portfolio framework; your review phase is unblo… |

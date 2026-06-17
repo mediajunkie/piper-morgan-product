@@ -13,11 +13,13 @@ import pytest
 
 from web.api.routes import artifacts as artifacts_route
 from web.api.routes.artifacts import (
+    RenameArtifactRequest,
     SaveArtifactRequest,
     _artifact_filename,
     delete_artifact,
     download_artifact,
     list_artifacts,
+    rename_artifact,
     save_artifact,
 )
 from services.domain.models import Artifact, ArtifactSourceType
@@ -138,6 +140,36 @@ class TestDownloadArtifact:
                 await download_artifact("nope", current_user=_USER)
         assert ei.value.status_code == 404
 
+    @pytest.mark.asyncio
+    async def test_download_format_txt_serves_plain_text(self):
+        """#1184 — format=txt serves the same content as text/plain + .txt."""
+        art = Artifact(id="art-d", content="# Summary\nbody", owner_id="user-355",
+                       source_type=ArtifactSourceType.GENERATED, payload={"title": "My Notes"})
+        repo = MagicMock()
+        repo.get_by_id = AsyncMock(return_value=art)
+        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
+            artifacts_route, "ArtifactRepository", return_value=repo
+        ):
+            resp = await download_artifact("art-d", format="txt", current_user=_USER)
+        assert resp.media_type == "text/plain"
+        assert "My-Notes.txt" in resp.headers["content-disposition"]
+        assert resp.body == b"# Summary\nbody"  # content stored once; format is an export concern
+
+    @pytest.mark.asyncio
+    async def test_download_unknown_format_400_fail_fast(self):
+        """#1184 — unknown format → 400 before any fetch (pdf/docx are later)."""
+        from fastapi import HTTPException
+
+        repo = MagicMock()
+        repo.get_by_id = AsyncMock(return_value=None)
+        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
+            artifacts_route, "ArtifactRepository", return_value=repo
+        ):
+            with pytest.raises(HTTPException) as ei:
+                await download_artifact("art-d", format="pdf", current_user=_USER)
+        assert ei.value.status_code == 400
+        repo.get_by_id.assert_not_awaited()  # fail-fast: no fetch on a bad format
+
 
 class TestDeleteArtifact:
     @pytest.mark.asyncio
@@ -174,3 +206,50 @@ class TestArtifactFilename:
 
     def test_already_md(self):
         assert _artifact_filename("notes.md", "x") == "notes.md"
+
+
+class TestRenameArtifact1184:
+    """#1184 — PATCH /artifacts/{id} rename. Owner-scoped (the repo enforces it;
+    the handler 404s on the None that cross-owner/missing returns)."""
+
+    @pytest.mark.asyncio
+    async def test_rename_owner_scoped_returns_new_filename(self):
+        renamed = Artifact(
+            id="a1", content="x", source_type=ArtifactSourceType.GENERATED,
+            owner_id="user-355", payload={"title": "Q3 Planning Notes"},
+        )
+        repo = MagicMock()
+        repo.update_title = AsyncMock(return_value=renamed)
+        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
+            artifacts_route, "ArtifactRepository", return_value=repo
+        ):
+            resp = await rename_artifact(
+                "a1", RenameArtifactRequest(title="Q3 Planning Notes"), current_user=_USER
+            )
+        repo.update_title.assert_awaited_once()
+        # owner-scoped (no (a,3) leak — the rename passes the principal)
+        assert repo.update_title.call_args.kwargs.get("owner_id") == "user-355"
+        assert resp["id"] == "a1"
+        assert resp["title"] == "Q3 Planning Notes"
+        assert resp["filename"] == "Q3-Planning-Notes.md"  # title drives the projected filename
+
+    @pytest.mark.asyncio
+    async def test_rename_cross_owner_or_missing_404(self):
+        from fastapi import HTTPException
+
+        repo = MagicMock()
+        repo.update_title = AsyncMock(return_value=None)  # repo returns None for cross-owner/missing
+        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
+            artifacts_route, "ArtifactRepository", return_value=repo
+        ):
+            with pytest.raises(HTTPException) as ei:
+                await rename_artifact("a1", RenameArtifactRequest(title="X"), current_user=_USER)
+        assert ei.value.status_code == 404
+
+    @pytest.mark.asyncio
+    async def test_rename_empty_title_400(self):
+        from fastapi import HTTPException
+
+        with pytest.raises(HTTPException) as ei:
+            await rename_artifact("a1", RenameArtifactRequest(title="   "), current_user=_USER)
+        assert ei.value.status_code == 400

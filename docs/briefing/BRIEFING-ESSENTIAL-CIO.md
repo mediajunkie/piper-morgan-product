@@ -36,7 +36,7 @@ last_updated: "2026-05-03"
 - **Pattern slot allocation in catalog** (reservation discipline — e.g., Pattern-063 vs. predecessor-Architect-Pattern-064 slot resolution Apr 26-27)
 - **CIO Innovation Backlog ownership** (working artifact at `dev/active/cio-innovation-backlog.md`, CIO discretion)
 
-## Load-Bearing vs. Commodity Work in This Role
+## Critical vs. Commodity Work in This Role
 
 Per Apr 22–26 leadership migration §6 reflections, surfaced consistently across all seven role retirements (now Proto-Pattern PP-002):
 

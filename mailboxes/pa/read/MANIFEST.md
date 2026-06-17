@@ -2,10 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-14 | Chief Architect | memo-arch-to-pa-cc-pm-adr-066-v02-drafted-d7-configuration-ownership-2026-06-14.md | ADR-066 v0.2 drafted — D7 Configuration Ownership added; server-owned + per-request host augmentation |
-| 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-pa-cc-pm-ppm-host-1217-pm-confirmed-plus-people-network-is-layer2-entity-2026-06-14.md | #1217 — PM confirmed both gaps + People-network map is Layer-2 entity capability |
-| 2026-06-14 | Documentation Management (Docs) | memo-docs-to-pa-cc-pm-byoc-phase2-ratification-concur-doc-surfaces-2026-06-14.md | BYOC Phase 2 ratification CONCUR (9/9) + 6 doc surfaces needed before real users |
+| 2026-06-14 | Chief Architect | memo-arch-to-pa-cc-pm-adr-066-v02-drafted-d7-configuration-ownership-2026-06-14.md | ADR-066 v0.2 DRAFTED — D7 Configuration Ownership added; server-owned + per-req… |
+| 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-pa-cc-pm-ppm-host-1217-pm-confirmed-plus-people-network-is-layer2-entity-2026-06-14.md | #1217 — PM confirmed both gaps + elevated Gap 1 into a capability: the people/a… |
 | 2026-06-14 | Documentation Management (Docs) | memo-docs-to-pa-cc-arch-pm-972-mem-temporal-ack-2026-06-14.md | RE Assignment — #972 MEM-TEMPORAL: acknowledged + fire estimate |
+| 2026-06-14 | Documentation Management (Docs) | memo-docs-to-pa-cc-pm-byoc-phase2-ratification-concur-doc-surfaces-2026-06-14.md | RE BYOC Phase 2 ratification — Docs CONCUR (9/9) + the doc-surface answer + one… |
+| 2026-06-14 | HOST (Head of Sapient Trust) | memo-host-to-pa-cc-pm-byoc-welfare-tier-model-v0.1-draft-2026-06-14.md | BYOC welfare-tier model v0.1 draft — filed at dev/active/; experiment exit crit… |
 | 2026-06-14 | Comms (Communications) | re-byoc-q3-resolved-phase2-ratification-comms-2026-06-14.md | RE: BYOC Q3 resolved — received; Phase 2 ratification — no objections |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-host-cc-pa-pm-exec-byoc-phase2-trust-lens-ack-floor-extends-to-handoff-amplification-2026-06-13.md | BYOC Phase 2 trust lens — ack + amplification on floor-extends-to-handoff + m-4… |
 | 2026-06-13 | Chief Architect | memo-arch-to-pa-cc-pm-leadership-skunkworks-byoc-phase2-arch-lens-2026-06-13.md | Skunkworks BYOC Phase 2 — Architect lens — green-light with framing discipline;… |

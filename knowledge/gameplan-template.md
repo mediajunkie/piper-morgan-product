@@ -1,5 +1,5 @@
-# Gameplan Template v9.4 - Complete Phase Documentation
-*Last Updated: June 12, 2026 (hygiene pass)*
+# Gameplan Template v9.6 - Complete Phase Documentation
+*Last Updated: June 15, 2026 (deployment-model reframe; stale worktree block removed)*
 *Key Addition: Data Flow, Integration Points, Pattern Adaptation, Conversation Design, Post-Completion sections (Issue #490 retrospective)*
 
 ---
@@ -39,38 +39,9 @@ Based on available context, I believe:
 - I think this involves: ____________
 - I assume the current state is: ____________
 
-### Part A.2: Work Characteristics Assessment
+### Part A.2 — Worktree
 
-**Worktree Candidate?** (Check all that apply)
-
-Worktrees ADD value when:
-- [ ] Multiple agents will work in parallel on different files/features
-- [ ] Task duration >30 minutes (main branch may advance)
-- [ ] Multi-component work (e.g., frontend + backend by different agents)
-- [ ] Exploratory/risky changes where easy rollback is valuable
-- [ ] Coordination queue prompt being claimed
-
-Worktrees ADD overhead when:
-- [ ] Single agent, sequential work
-- [ ] Small fixes (<15 min)
-- [ ] Tightly coupled files requiring atomic commits
-- [ ] Time-critical work where setup overhead matters
-
-**Assessment:**
-- [ ] **USE WORKTREE** - 2+ parallel criteria checked
-- [ ] **SKIP WORKTREE** - Overhead criteria dominate
-- [ ] **PM DECISION** - Mixed signals, escalate
-
-**If USE WORKTREE:**
-```bash
-# Agent claims prompt with worktree
-./scripts/worktree-setup.sh <prompt-id> <session-id>
-cd .trees/<prompt-id>-<session>/
-```
-
-**If SKIP WORKTREE:**
-Document rationale: ____________
-(e.g., "Single agent, 5 files, 15 min estimate - worktree overhead exceeds benefit")
+Substantive sessions run in the ephemeral auto-worktree Desktop creates (worktree checkbox); no per-gameplan decision needed. See Branch/Worktree/Mailbox discipline in CLAUDE.md (Option B, canonical 2026-06-12).
 
 ### Part B: PM Verification Required
 
@@ -447,19 +418,23 @@ FROM users WHERE id = '[user_id]';
 
 ### Multi-Agent Deployment (DEFAULT)
 
+**Current deployment model** — four tiers (Arch-ratified 2026-06-14):
+
+1. **One Claude Code session per agent** — each role runs its own session; no Cursor pairing
+2. **Subagents via Task tool** — for parallelizable work (parallel discovery, analysis, test generation)
+3. **Duty-cycle cohort over mailboxes** — cross-role coordination; mailboxes are the cross-agent signaling layer
+4. **Option B ephemeral worktrees** — substantive sessions use the auto-created worktree; push to `origin/main`
+
 #### Phase [X]: [Specific Work Description]
 
-**Deploy: Both Agents (Different Approaches)**
-
-##### Claude Code Instructions
+##### Instructions for this phase
 ```markdown
 [Broad investigation/implementation approach]
-- Use subagents for parallel discovery
+- Deploy subagents (Task tool) for parallel discovery; you orchestrate and synthesize
 - Check patterns across codebase
 - Find all related code
+- Focused implementation disciplines (specific files, exact changes, targeted testing) go in the subagent prompt
 ```
-
-<!-- #1058 hygiene 2026-06-12 (HOST): removed the "Cursor Instructions" sub-block — Cursor Agent is not current practice. The "Deploy: Both Agents (Different Approaches)" / "Multi-Agent Deployment (DEFAULT)" framing above assumes a Claude-Code + Cursor pairing; current practice is Claude Code orchestrating subagents (Task tool). FLAGGED for PM/Lead/Arch: whether to reframe this deployment model to the subagent shape is a practice-judgment call (redesign, not this hygiene trim) — left structurally intact pending ratification. The focused-implementation disciplines (specific files, exact changes, targeted testing) now belong in a subagent prompt. -->
 
 ### Progressive Bookending
 After each subtask completion:
@@ -742,6 +717,8 @@ Before implementing handlers that call integration adapters:
 
 | Version | Date | Key Changes |
 |---------|------|-------------|
+| v9.6 | 2026-06-15 | #1206 item-2 trim (Docs, Arch-concurred 2026-06-15): replaced stale Part A.2 `.trees/` worktree-decision block (deprecated Model A) with one-liner pointing to CLAUDE.md Branch/Worktree/Mailbox discipline (Option B, canonical 2026-06-12). |
+| v9.5 | 2026-06-15 | #1206 item-3 reframe (Docs, Arch-ratified 2026-06-14): replaced "Both Agents / Multi-Agent Deployment DEFAULT" pairing model with four-tier deployment model (one Code session per agent / subagents via Task tool / duty-cycle cohort over mailboxes / Option B ephemeral worktrees); removed #1058 hygiene flags. |
 | v9.4 | 2026-06-12 | #1058 hygiene pass (HOST): removed stale Cursor Agent references (Cursor Instructions sub-block, audit-matrix Cursor row → subagent). Flagged for PM/Lead/Arch ratification (NOT changed): the "Both Agents / Multi-Agent Deployment DEFAULT" pairing model; Phase -1 PM-verification block currency (audit-cascade Phase 1 may cover it). |
 | v9.3 | 2026-01-10 | Added Phase 0.6 (Data Flow), Phase 0.7 (Conversation Design), Phase 0.8 (Post-Completion), Wiring Tests requirement. Issue #490 retrospective learnings. |
 | v9.2 | 2025-12-04 | Added Worktree Assessment in Phase -1 (Issue #463 learning) |

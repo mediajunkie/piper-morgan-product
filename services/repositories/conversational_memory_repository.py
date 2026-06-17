@@ -6,13 +6,28 @@ Part of #657 MEM-ADR054-P1.
 
 from datetime import datetime
 from typing import List
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from services.database.models import ConversationalMemoryEntryDB
 from services.memory.conversational_memory import ConversationalMemoryEntry
+
+
+def _as_uuid_or_none(user_id: str):
+    """Parse a principal string to UUID, or None if malformed.
+
+    #1252 P7: the principal is a users.id-string (a UUID per ADR-071), but a
+    non-UUID identifier must NOT raise here — some consumer paths still pass
+    legacy string ids during the user_id→owner_id transition. A non-UUID can't
+    match a UUID owner_id, so callers treat None as "no match" (return empty).
+    This is a graceful boundary guard, not the D5 degradation ternary.
+    """
+    try:
+        return UUID(user_id)
+    except (ValueError, TypeError, AttributeError):
+        return None
 
 
 class ConversationalMemoryRepository:
@@ -41,6 +56,10 @@ class ConversationalMemoryRepository:
         db_entry = ConversationalMemoryEntryDB(
             id=entry_id,
             user_id=user_id,
+            # #1252 P7 (ADR-071 D2): dual-write the canonical owner_id (UUID)
+            # during the user_id→owner_id transition. Graceful: a non-UUID
+            # principal leaves owner_id NULL rather than raising on save.
+            owner_id=_as_uuid_or_none(user_id),
             conversation_id=entry.conversation_id,
             timestamp=entry.timestamp,
             topic_summary=entry.topic_summary,
@@ -69,9 +88,14 @@ class ConversationalMemoryRepository:
         Returns:
             List of entries ordered most recent first
         """
+        # #1252 P7 (ADR-071 D2): scope by the canonical owner_id (UUID). A
+        # non-UUID principal can't match a UUID owner_id → no rows (graceful).
+        owner_uuid = _as_uuid_or_none(user_id)
+        if owner_uuid is None:
+            return []
         stmt = (
             select(ConversationalMemoryEntryDB)
-            .where(ConversationalMemoryEntryDB.user_id == user_id)
+            .where(ConversationalMemoryEntryDB.owner_id == owner_uuid)
             .where(ConversationalMemoryEntryDB.timestamp >= since)
             .order_by(ConversationalMemoryEntryDB.timestamp.desc())
         )
@@ -92,9 +116,14 @@ class ConversationalMemoryRepository:
         Returns:
             Count of deleted entries
         """
+        # #1252 P7 (ADR-071 D2): scope by the canonical owner_id (UUID); a
+        # non-UUID principal matches nothing → delete 0 (graceful).
+        owner_uuid = _as_uuid_or_none(user_id)
+        if owner_uuid is None:
+            return 0
         stmt = (
             delete(ConversationalMemoryEntryDB)
-            .where(ConversationalMemoryEntryDB.user_id == user_id)
+            .where(ConversationalMemoryEntryDB.owner_id == owner_uuid)
             .where(ConversationalMemoryEntryDB.timestamp < before)
         )
 

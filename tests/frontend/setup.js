@@ -101,6 +101,7 @@ global.loadScript = (relativePath) => {
     ${code}
     return {
       Toast: typeof Toast !== 'undefined' ? Toast : undefined,
+      Dialog: typeof Dialog !== 'undefined' ? Dialog : undefined,
       FormValidation: typeof FormValidation !== 'undefined' ? FormValidation : undefined,
       Validators: typeof Validators !== 'undefined' ? Validators : undefined,
       parseApiDetail: typeof parseApiDetail !== 'undefined' ? parseApiDetail : undefined

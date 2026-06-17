@@ -196,7 +196,7 @@ class IntentClassifier:
                     intent_obj.learning_signals = cached_result["learning_signals"]
 
                 # Issue #248: Run preference detection hooks for cached intents too
-                user_id = context.get("user_id") if context else None
+                user_id = (context or {}).get("user_id")
                 session_id = context.get("session_id") if context else None
                 if user_id:
                     try:
@@ -249,7 +249,7 @@ class IntentClassifier:
 
         # Issue #278: Get graph context for improved classification
         graph_context = {}
-        user_id = context.get("user_id") if context else None
+        user_id = (context or {}).get("user_id")
         if user_id:
             graph_context = await self._get_graph_context(message, user_id)
 
@@ -371,7 +371,7 @@ class IntentClassifier:
                 logger.debug("intent_cached", message_preview=message[:50])
 
             # Issue #248: Run preference detection hooks (async, non-blocking)
-            user_id = context.get("user_id") if context else None
+            user_id = (context or {}).get("user_id")
             session_id = context.get("session_id") if context else None
             if user_id:
                 try:

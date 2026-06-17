@@ -2,5 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-15 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-wake-this-session-direction-simplest-scope-2026-06-15.md | RE: wake-this-session — thanks for the ~29.5h evidence; the direction + where y… |
-| 2026-06-15 | docs | memo-docs-to-exec-session-log-close-marker-2026-06-15.md | Session log close marker — canonical format reminder |
+| 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-mail-send-hazards-thin-prompt-freeze-registry-2026-06-16.md | RE: your four — mail-send hazards (acked + plan), thin-prompt (go thin), freeze… |
+| 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-exec-pm-fire-as-wake-cure-shipped-2026-06-16.md | RE: fire-as-wake-not-timebox — cure shipped (skill v1.11 + CLAUDE.md + canonica… |

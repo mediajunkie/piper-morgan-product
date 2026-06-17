@@ -23,7 +23,14 @@ output=""
 # Safety: --quiet suppresses per-file output; 2>/dev/null prevents stderr leak;
 # script exits 0 on any error path so this never blocks session start.
 if [ -x "$PROJECT_ROOT/scripts/regenerate-mailbox-manifests.py" ]; then
-    "$PROJECT_ROOT/scripts/regenerate-mailbox-manifests.py" --quiet >/dev/null 2>&1 || true
+    # Only regenerate on main — the canonical home of mailbox MANIFESTs (they're committed there).
+    # On a feature-branch worktree this regen just creates unstaged noise that breaks rebases (the
+    # "git checkout -- mailboxes/ before every rebase" tax); mailbox writes go via the main-checkout
+    # bridge, never on feature branches, so a worktree never needs to regenerate. Streamlining #1 (6/15).
+    _cur_branch=$(git -C "$PROJECT_ROOT" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+    if [ "$_cur_branch" = "main" ]; then
+        "$PROJECT_ROOT/scripts/regenerate-mailbox-manifests.py" --quiet >/dev/null 2>&1 || true
+    fi
 fi
 
 # ─── 1. Session Log Continuity ────────────────────────────────────────────────

@@ -10,12 +10,13 @@ Tests critical learning cycle paths:
 Simpler than test_learning_cycle_phase3_phase4.py - focused on API-level testing.
 """
 
+from types import SimpleNamespace
 from uuid import UUID, uuid4
 
 import pytest
 from sqlalchemy import delete, select
 
-from services.database.models import LearnedPattern, LearningSettings
+from services.database.models import LearnedPattern, LearningSettings, User
 from services.database.session_factory import AsyncSessionFactory
 from services.shared_types import PatternType
 from web.api.routes.learning import (
@@ -24,17 +25,42 @@ from web.api.routes.learning import (
     disable_pattern,
     enable_pattern,
     get_settings,
+    list_patterns,
     provide_pattern_feedback,
     update_settings,
 )
 
 TEST_USER_ID = UUID("3f4593ae-5bc9-468d-b08d-8c4c02a5b963")
 
+# #1250 (ADR-071 D4): get_settings/update_settings now take the authenticated
+# principal. These integration tests call the route fns directly, so pass a
+# stand-in carrying the test user_id (the route reads only current_user.user_id).
+_TEST_CLAIMS = SimpleNamespace(user_id=TEST_USER_ID)
+
+# #1252 (ADR-071 D4): a DIFFERENT principal — proves cross-user isolation now
+# that the pattern routes anchor to current_user.user_id (not a shared
+# TEST_USER_ID): one user's routes must not read or mutate another's patterns.
+_OTHER_USER_ID = UUID("9e9e9e9e-0000-0000-0000-000000000001")
+_OTHER_CLAIMS = SimpleNamespace(user_id=_OTHER_USER_ID)
+
 
 @pytest.fixture
 async def clean_test_data():
     """Clean up test data before and after each test."""
     async with AsyncSessionFactory.session_scope_fresh() as session:
+        # #1250 (ADR-071 D4): ensure the test principal exists in `users` — the
+        # learning FKs (learned_patterns/learning_settings → users) require it.
+        # It was absent, so these integration tests had been FK-failing (silently
+        # red). Seeding it makes them valid tests of the anchored-principal path.
+        if await session.get(User, TEST_USER_ID) is None:
+            session.add(
+                User(
+                    id=TEST_USER_ID,
+                    username="test_learning_user",
+                    email="test_learning@example.com",
+                )
+            )
+            await session.commit()
         await session.execute(delete(LearnedPattern).where(LearnedPattern.user_id == TEST_USER_ID))
         await session.execute(
             delete(LearningSettings).where(LearningSettings.user_id == TEST_USER_ID)
@@ -75,7 +101,7 @@ class TestPhase3FeedbackCycle:
 
         # Submit accept feedback
         feedback = PatternFeedback(action="accept", feedback_text="Great!")
-        result = await provide_pattern_feedback(pattern_id, feedback)
+        result = await provide_pattern_feedback(pattern_id, feedback, current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["pattern"]["confidence"] > 0.7  # Increased
@@ -102,7 +128,7 @@ class TestPhase3FeedbackCycle:
 
         # Submit reject feedback
         feedback = PatternFeedback(action="reject", feedback_text="Not helpful")
-        result = await provide_pattern_feedback(pattern_id, feedback)
+        result = await provide_pattern_feedback(pattern_id, feedback, current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["pattern"]["confidence"] < 0.6  # Decreased
@@ -129,11 +155,65 @@ class TestPhase3FeedbackCycle:
 
         # Reject should drop below 0.3 and auto-disable
         feedback = PatternFeedback(action="reject")
-        result = await provide_pattern_feedback(pattern_id, feedback)
+        result = await provide_pattern_feedback(pattern_id, feedback, current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["pattern"]["confidence"] < 0.3
         assert result["pattern"]["enabled"] is False  # Auto-disabled
+
+
+class TestPatternRouteUserIsolation1252:
+    """#1252 (ADR-071 D4): the pattern routes anchor to current_user.user_id,
+    not a shared TEST_USER_ID. A different principal must NOT see or mutate
+    another user's patterns — the cross-user read+write leak closed."""
+
+    @pytest.mark.asyncio
+    async def test_list_patterns_is_scoped_to_principal(self, clean_test_data):
+        """list_patterns returns only the authenticated user's patterns."""
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            session.add(
+                LearnedPattern(
+                    user_id=TEST_USER_ID,
+                    pattern_type=PatternType.COMMAND_SEQUENCE,
+                    pattern_data={"action_type": "test_action"},
+                    confidence=0.7,
+                    enabled=True,
+                )
+            )
+            await session.commit()
+
+        # Owner sees the pattern…
+        owner_view = await list_patterns(current_user=_TEST_CLAIMS)
+        assert owner_view["count"] == 1
+        # …a different principal does not (isolation on read).
+        other_view = await list_patterns(current_user=_OTHER_CLAIMS)
+        assert other_view["count"] == 0
+
+    @pytest.mark.asyncio
+    async def test_enable_pattern_cross_user_is_not_found(self, clean_test_data):
+        """A non-owner cannot mutate another user's pattern (enable → 404-shape)."""
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            pattern = LearnedPattern(
+                user_id=TEST_USER_ID,
+                pattern_type=PatternType.COMMAND_SEQUENCE,
+                pattern_data={"action_type": "test_action"},
+                confidence=0.7,
+                enabled=False,
+            )
+            session.add(pattern)
+            await session.commit()
+            pattern_id = pattern.id
+
+        # Cross-user enable must not find the pattern: the not-found path
+        # returns a 404-shape JSONResponse, never a success dict.
+        result = await enable_pattern(str(pattern_id), current_user=_OTHER_CLAIMS)
+        assert not (isinstance(result, dict) and result.get("success") is True)
+
+        # Definitive proof of isolation: the pattern stays disabled — no
+        # cross-user write happened.
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            row = await session.get(LearnedPattern, pattern_id)
+            assert row.enabled is False
 
 
 class TestLearningSettings:
@@ -142,7 +222,7 @@ class TestLearningSettings:
     @pytest.mark.asyncio
     async def test_get_default_settings(self, clean_test_data):
         """Test getting default settings when none exist."""
-        result = await get_settings()
+        result = await get_settings(current_user=_TEST_CLAIMS)
 
         assert result["configured"] is False
         assert result["settings"]["learning_enabled"] is True  # Default
@@ -154,7 +234,7 @@ class TestLearningSettings:
         """Test updating settings creates new record if none exists."""
         settings_update = SettingsUpdate(learning_enabled=False, suggestion_threshold=0.8)
 
-        result = await update_settings(settings_update)
+        result = await update_settings(settings_update, current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["settings"]["learning_enabled"] is False
@@ -178,7 +258,7 @@ class TestLearningSettings:
 
         # Update settings
         settings_update = SettingsUpdate(learning_enabled=False)
-        result = await update_settings(settings_update)
+        result = await update_settings(settings_update, current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["settings"]["learning_enabled"] is False
@@ -208,7 +288,7 @@ class TestPatternEnableDisable:
             pattern_id = pattern.id
 
         # Disable pattern
-        result = await disable_pattern(str(pattern_id))
+        result = await disable_pattern(str(pattern_id), current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["pattern"]["enabled"] is False
@@ -233,7 +313,7 @@ class TestPatternEnableDisable:
             pattern_id = pattern.id
 
         # Enable pattern
-        result = await enable_pattern(str(pattern_id))
+        result = await enable_pattern(str(pattern_id), current_user=_TEST_CLAIMS)
 
         assert result["success"] is True
         assert result["pattern"]["enabled"] is True
@@ -265,12 +345,12 @@ class TestPerformanceRequirements:
 
         # Warm up
         feedback = PatternFeedback(action="accept")
-        await provide_pattern_feedback(pattern_id, feedback)
+        await provide_pattern_feedback(pattern_id, feedback, current_user=_TEST_CLAIMS)
 
         # Measure
         start = time.perf_counter()
         feedback = PatternFeedback(action="accept")
-        await provide_pattern_feedback(pattern_id, feedback)
+        await provide_pattern_feedback(pattern_id, feedback, current_user=_TEST_CLAIMS)
         elapsed_ms = (time.perf_counter() - start) * 1000
 
         # Should complete quickly (<10ms target)

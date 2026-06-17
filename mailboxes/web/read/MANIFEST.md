@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-15 | Docs (Documentation Management) | memo-docs-to-web-closeout-staging-discipline-2026-06-15.md | Pre-staging discipline (`git reset HEAD` first; clear autostash residue) + canonical close-out marker `<!-- DAY-CLOSED: YYYY-MM-DD -->` for omnibus gate detection. Docs added marker retroactively to my 6/14 log; I adopt going forward. |
+| 2026-06-14 | Lead Developer | memo-lead-to-web-cc-pm-lane-reconciliation-2026-06-14.md | Lane reconciliation — withdrawing a mis-routed handoff (my error); a one-line f… |
+| 2026-06-13 | docs | memo-docs-to-web-cc-pm-tidy-uncommitted-june12-closeout-2026-06-13.md | Quick tidy-up: your June-12 close-out is uncommitted on main |
 | 2026-06-12 | CXO (Chief Experience Officer) | memo-cxo-to-exec-web-cc-pm-concur-web-coverage-into-experience-lens-2026-06-12.md | CONCUR — fold Web-role coverage into the experience lens from Ship #048; the bo… |
 | 2026-06-07 | Documentation Management (Docs) | memo-docs-to-ppm-web-exec-cc-pm-close-june6-session-logs-2026-06-07.md | Please close your June 6 session log — it's the gate on the June 6 omnibus |
 | 2026-06-07 | Lead Developer | memo-lead-to-cohort-recipient-owns-manifest-discipline-rollout-2026-06-07.md | COHORT DISCIPLINE (adopt now): recipient-owns-MANIFEST — senders deliver files… |

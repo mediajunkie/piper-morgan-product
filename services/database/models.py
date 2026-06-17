@@ -435,6 +435,14 @@ class InsightDB(Base, TimestampMixin):
     # propagation patterns; not a FK because insights survive user deletion.
     user_id = Column(String(255), nullable=False, index=True)
 
+    # #1252 P7 (ADR-071 D2): canonical owner principal as a real UUID, added
+    # ALONGSIDE the legacy `user_id` string during the m-40 transition (additive,
+    # non-breaking). Nullable + backfilled (owner_id = user_id::uuid). No FK —
+    # consistent with user_id above ("insights survive user deletion"). Readers
+    # migrate to owner_id in a later increment; user_id is dropped last.
+    # CrossDialectUUID = native UUID on PostgreSQL, CHAR(36) on SQLite (tests).
+    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
+
     # The typed learning, serialized as JSONB. Bridges via from_dict/to_dict
     # on the SurfaceableInsight + ExtractedLearning dataclasses.
     # JSONB().with_variant(JSON, "sqlite") lets unit tests run against
@@ -1170,6 +1178,12 @@ class ConversationDB(Base):
 
     id = Column(String, primary_key=True)
     user_id = Column(String, nullable=False)
+    # #1252 P7 (ADR-071 D2): canonical owner principal as a real UUID, added
+    # ALONGSIDE the legacy `user_id` string (m-40 additive, non-breaking).
+    # Nullable + backfilled (owner_id = user_id::uuid). FK-less (matches user_id).
+    # CrossDialectUUID = native UUID on PostgreSQL, CHAR(36) on SQLite (tests).
+    # Readers migrate to owner_id later; user_id is dropped last.
+    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
     session_id = Column(String, nullable=False)
     title = Column(String, nullable=False, default="")
     # #1180: JSONB on Postgres (production), JSON on SQLite (in-memory unit tests).
@@ -2597,11 +2611,18 @@ class ConversationalMemoryEntryDB(Base):
 
     id = Column(String, primary_key=True)  # UUID as string
     user_id = Column(String, nullable=False, index=True)
+    # #1252 P7 (ADR-071 D2): canonical owner principal as UUID, added alongside
+    # the legacy user_id string (m-40 additive, non-breaking; FK-less).
+    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
     conversation_id = Column(String, ForeignKey("conversations.id"), nullable=False)
 
     timestamp = Column(DateTime(timezone=True), nullable=False)
     topic_summary = Column(String(500), nullable=False)
-    entities_mentioned = Column(postgresql.JSONB, default=list)
+    # #1252: JSONB on Postgres, JSON on SQLite — makes this table unit-testable
+    # against in-memory SQLite (mirrors ConversationDB.context / InsightDB.learning).
+    # Raw postgresql.JSONB could not compile on SQLite (table-create raised, which
+    # then hung the aiosqlite worker). Postgres DDL is unchanged → no migration.
+    entities_mentioned = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), default=list)
     outcome = Column(String(500), nullable=True)
     user_sentiment = Column(String(20), nullable=True)  # positive/neutral/negative
 
@@ -2635,6 +2656,9 @@ class StandupConversationDB(Base, TimestampMixin):
     # Session + user scoping
     session_id = Column(String(255), nullable=False, index=True)
     user_id = Column(String(255), nullable=False, index=True)
+    # #1252 P7 (ADR-071 D2): canonical owner principal as UUID, added alongside
+    # the legacy user_id string (m-40 additive, non-breaking; FK-less).
+    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
 
     # State machine — stores the enum string value (StandupConversationState)
     state = Column(String(50), nullable=False, index=True)

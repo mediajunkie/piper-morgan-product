@@ -4,7 +4,7 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.18
+version: 0.19
 created: 2026-03-16
 updated: 2026-06-03
 ---
@@ -155,10 +155,32 @@ Comms draft template: `docs/internal/planning/comms/blog-post-template.md`
 
 ## Proofread Discipline (read these first — every time)
 
-Before any proofread pass on a draft, **open these two canonical references first**:
+### Step 0: Check the editorial calendar first
 
-1. `docs/internal/planning/comms/blog-post-template.md` — structure, dateline format, heading conventions, footer pattern, frontmatter rules, "what Comms confirms before delivering" checklist
-2. `docs/internal/planning/comms/xian-voice-tone-guide.md` — voice/tone, sentence-structure preferences, transparency patterns, editorial moves applied at voice-pass
+Before opening the draft, look up its row in `docs/internal/planning/comms/editorial-calendar.csv`:
+
+```bash
+grep -i "{title-keyword}" docs/internal/planning/comms/editorial-calendar.csv
+```
+
+Confirm:
+- **pubDate** — when is this scheduled? Is it today, or is there scheduling slack?
+- **status** — `queued` (ready to schedule), `ready` (approved to publish), or other?
+- **workDate / endWorkDate** — the source-work-period; must match the post's dateline
+- **category** — `building`, `insight`, or `ship` (needed for publish-post.js `--category` flag)
+- **draft path** — confirm it matches the file you're about to read
+
+Surface any mismatches before doing anything else. The calendar is the ground truth for scheduling and dateline semantics; the draft is the artifact. A dateline disagreement caught here costs nothing. Caught at publish time, it means a re-push.
+
+Then open the draft and the canonical references below.
+
+### Canonical references (open before reading the draft)
+
+**Open these three, not memory:**
+
+1. `docs/internal/planning/comms/editorial-calendar.csv` row for this post (Step 0 above)
+2. `docs/internal/planning/comms/blog-post-template.md` — structure, dateline format, heading conventions, footer pattern, frontmatter rules, "what Comms confirms before delivering" checklist
+3. `docs/internal/planning/comms/xian-voice-tone-guide.md` — voice/tone, sentence-structure preferences, transparency patterns, editorial moves applied at voice-pass
 
 **Read these first, not memory.** Memory pins capture specific lessons (no semicolons / no superlatives / parenthetical-gloss on first use / comma splices as PM voice / etc.) but the template + voice guide are the source of truth. Working from memory alone is the failure mode that lets template drift slip past unnoticed.
 

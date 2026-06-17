@@ -3,7 +3,7 @@
 /* Container */
 .toast-container {
   position: fixed;
-  top: 80px; /* Below navigation (height 60px) */
+  top: 80px; /* token-lint-allow: positioning offset below nav (height 60px) (#1172) */
   right: var(--space-xl);
   z-index: var(--z-index-toast); /* Above modal for notification visibility */
   display: flex;
@@ -158,7 +158,7 @@
     right: var(--space-md);
     left: var(--space-md);
     max-width: none;
-    top: 70px;
+    top: 70px; /* token-lint-allow: responsive positioning offset (#1172) */
   }
 
   .toast {
@@ -172,7 +172,7 @@
     right: var(--space-sm);
     left: var(--space-sm);
     gap: var(--space-sm);
-    top: 60px;
+    top: 60px; /* token-lint-allow: responsive positioning offset (#1172) */
   }
 
   .toast {

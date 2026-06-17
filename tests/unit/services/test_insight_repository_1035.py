@@ -180,6 +180,41 @@ async def test_get_for_object_filters_by_object_id(session):
     assert {i.id for i in results} == {i1.id, i2.id}
 
 
+async def test_get_for_object_scopes_by_principal_1252(session):
+    """#1252 (a,3) fix: get_for_object scopes to the principal when one is
+    provided. Two users with insights on the SAME object_id must not see each
+    other's — the cross-owner leak (fetch-by-object, no owner filter) closed."""
+    repo = InsightRepository(session)
+    shared = "obj-shared"
+    a1 = _make_insight(user_id="alpha", object_id=shared)
+    a2 = _make_insight(user_id="alpha", object_id=shared)
+    b1 = _make_insight(user_id="beta", object_id=shared)
+    for ins in (a1, a2, b1):
+        await repo.add(ins)
+    await session.commit()
+
+    alpha = await repo.get_for_object(shared, user_id="alpha")
+    assert {i.id for i in alpha} == {a1.id, a2.id}
+    beta = await repo.get_for_object(shared, user_id="beta")
+    assert {i.id for i in beta} == {b1.id}
+
+
+async def test_get_for_object_no_principal_is_unscoped_shim_1252(session):
+    """m-40 shim: omitting the principal returns ALL insights for the object
+    (+ a logged WARNING) — non-breaking until every caller threads the
+    principal. Behaviour-preserving for the pre-existing unscoped callers."""
+    repo = InsightRepository(session)
+    shared = "obj-shared"
+    a1 = _make_insight(user_id="alpha", object_id=shared)
+    b1 = _make_insight(user_id="beta", object_id=shared)
+    for ins in (a1, b1):
+        await repo.add(ins)
+    await session.commit()
+
+    everyone = await repo.get_for_object(shared)
+    assert {i.id for i in everyone} == {a1.id, b1.id}
+
+
 # =============================================================================
 # Push candidate retrieval (get_unsurfaced)
 # =============================================================================

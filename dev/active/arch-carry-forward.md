@@ -2,13 +2,13 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-15 07:30 PT (Fire 46 END; June 14 retroactive close-out + Lead Dev #1241 content-anchoring lens shipped; new cron armed).
+**Last rewritten**: 2026-06-16 17:10 PT (Fire 53 END; #1238 disposition + ADR-072 ack shipped under new wake-discipline; new cron armed).
 
 ---
 
 ## Current cron
 
-- **Job ID**: `175b5163` (armed Fire 46 END ~07:30 PT June 15; previous `90bdd623` CronDelete'd Fire 46 start per Rule 1; died with session at June 14 Fire 44 boundary ~17:15 PT — **third F4 Gap-C instance in 72h, mechanism reproducibility extreme**)
+- **Job ID**: `c01ace0b` (armed Fire 53 END ~17:10 PT June 16; previous `3b67d2b9` CronDelete'd Fire 53 start per Rule 1; died with session at June 15 Fire 51 boundary ~18:48 PT — **4th F4 Gap-C instance in 4 days**, reproducibility extreme)
 - **Expression**: `52 */3 * * *` (3hr-interval bursty-lane Row 1)
 - **Prompt shape**: thin skill-invocation (invokes duty-cycle-tick skill; reads carry-forward + standing-items + escalations from disk)
 - **Mode**: session-only recurring (durable=true passed but response confirms session-only — consistent with F4 RESOLVED finding that durable=true is no-op; Gap-C session-dormancy is the dominant cron-loss mechanism per CIO 6/11)
@@ -18,8 +18,9 @@
 - **2 PM calls open**:
   - User-correction recovery from #1193 (Fire 34 6/12)
   - Workstream-047 spine altitude call (Fire 32 6/12)
-- **Lead Dev #1241 content-anchoring SHIPPED Fire 46** — Lead unblocked; audit started by Lead; ADR-071 candidate authoring lined up Lead-author-Arch-ratify after audit findings.
-- **Architect work queued**: (1) MCP connector ADR + topology (Lead waiting; input doc 6/14); (2) ADR-071 ratification after Lead's audit (#1241); (3) #972 schema review when Docs delivers reconciled fields.
+- **ADR-072 (Skill-routing) drafting watch** — initial framing + timeline shipped Fire 53; v0.1 draft owed when capacity allows.
+- **#1238 doc-store disposition shipped Fire 53** — Lead unblocked; #972 MEM-TEMPORAL field-spec review still pending Docs.
+- **NEW WAKE-DISCIPLINE absorbed (CLAUDE.md 2026-06-15)**: Fire = wake, not time-box. Drain all unblocked work per wake; commits = work-unit boundaries (not stop signals); "Fire N" labels the wake. Cron is idle-wakeup. Applied this fire; multi-stream drain under Fire 53.
 - **CLAUDE.md changes carried**: Option B ephemeral worktree canonical; single-log discipline (session log only); **NEW 6/14: Recording-decisions section** added pointing to ADR/PDR + decisions.log surfaces (HOST + Docs lane for briefing propagation).
 
 ## Recent substantive shipments (last 3 fires)
@@ -33,7 +34,12 @@
 - **Fires 39-43 (Saturday)**: 1 substantive shipment (PA Skunkworks BYOC Phase 2 lens) + 3 acks/relays + 2 quiet routing.
 - **Fire 44 (June 14 15:03 PT)** — 5-stream heavy substantive Sunday: Step-0 self-heal June 13 + #1206 four-tier reframe call + HOST decisions.log → CLAUDE.md + **ADR-066 v0.2 D7 Configuration Ownership AUTHORED** + MCP connector ADR queued. Cron `90bdd623` armed.
 - **Fire 45 (June 14 ~18:52 PT EXPECTED; DID NOT EXECUTE)** — third F4 Gap-C instance in 72h; cron died with session.
-- **Fire 46 (June 15 06:43 PT)** — PM-initiated wake (Lead Dev blocked). **#1241 content-anchoring lens SHIPPED** to Lead + cc PM/CIO: audit framing right + two refinements (2-axis ownership-at-write × scoping-at-read; auth-resolution surface sub-inventory); **YES ADR-071 candidate** "User-Auth Anchoring Pattern for Content Stores" — strawperson 7-section structure proposed (D1-D7 covering when-required / owner-stamped-at-write / scoped-filtered-at-read / principal-resolution-at-boundary / m-41 guard / m-40 migration / multi-tenancy evolution); Lead-author-Arch-ratify lean; doc-store remediation as ADR-071 first-migration-instance NOT bespoke fix (audit → ADR → first-migration sequencing keeps recurrence shape from re-opening). Step-0 self-heal on June 14 also completed. Cron `175b5163` armed.
+- **Fire 47 (June 15 08:05 PT)** — D1 ruling on #1241 PM-domain global-by-design shipped + CXO trust-layer endorsement ack + routing to Lead's ADR-071 Context section; CLAUDE.md HOST mail-vs-GH-comments cohort norm added.
+- **Fire 48 (June 15 08:15 PT)** — **ADR-070 v0.1 FILED**: MCP-Consumer Connector Architecture; 9 D-sections; RECONNECT WS-1..9 decomposition unblocked.
+- **Fire 50 (June 15 18:46 PT)** — #1206 item-2 A.2 trim concur to Docs.
+- **Fire 51 (June 15 18:48 PT)** — Quiet hold.
+- **Fire 52 (June 15 ~21:52 PT EXPECTED; DID NOT EXECUTE)** — 4th F4 Gap-C instance.
+- **Fire 53 (June 16 16:36 PT)** — PM-initiated wake; **drained 3 inbox memos in priority order per new wake-discipline**. (1) **#1238 doc-store disposition** (CONCUR Lead's synthesis: `owner_id = configured PM` + `is_global_pm_domain=true` D1 exemption; marker on DB row not ChromaDB embeddings) → Lead unblocked. (2) **ADR-072 (Skill-routing) ack + timeline + initial framing on 5 ratification decisions** → PA's queue updated; v0.1 draft owed within ~1-2 weeks. (3) decisions.log entries appended for both. Plus Step-0 self-heal on June 15; June 16 session log opened with canonical naming (HHMM + code) per Docs's 6/15 feedback. Cron `c01ace0b` armed.
 
 ## Parked / waiting
 
@@ -59,9 +65,10 @@
 - Lead Dev #1158 + #1124 + #952 + #355 implementation in flight
 - Routines watchdog $70/mo funding decision (PM-gated)
 
-## Carry-forward-to-next-fire (Fire 47+)
+## Carry-forward-to-next-fire (Fire 54+)
 
-- **Next cron fire ~09:52 PT** (Fire 47): MCP connector ADR + topology owed (input doc `docs/internal/architecture/connector-refactor-sprint-scope-2026-06-14.md`); may need split. Plus possible Lead Dev #1241 audit findings + Docs #972 schema reconciliation + cohort responses to ADR-066 v0.2.
-- **F4 reproducibility now extreme** (3 instances in 72h: cron `d0b83566` June 12→13 / `cd920d58` survived, `23174fdc` June 13→14, `90bdd623` June 14→15). Routines watchdog $70/mo continues to strengthen as the cure-rationale. PM-gated.
+- **Next cron fire ~18:52 PT** (Fire 54): possible Lead Dev ack on #1238 disposition + continued (a,3) increment shipments; possible cohort responses on ADR-070/071/072 framing.
+- **ADR-072 v0.1 drafting** — owed within ~1-2 weeks per Fire 53 timeline; not urgent.
+- **F4 reproducibility tracking**: now 4 instances in 4 days. Routines watchdog $70/mo PM-gated cure-rationale continues to strengthen.
 - **2 PM calls open** (escalations doc); respond when PM dispositions.
-- **Day's Architect-blocking critical-path items**: (1) Lead Dev unblocked Fire 46 ✓; (2) Doc store remediation gated on ADR-071 (Lead audit → my ratify → first migration); (3) MCP connector ADR still owed.
+- **Architect critical-path items**: (1) ADR-072 v0.1 draft; (2) ADR-070 cohort ratify watch; (3) Lead Dev #1241 consolidating-refactor and doc-store remediation in flight.

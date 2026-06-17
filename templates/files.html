@@ -420,6 +420,15 @@
           `;
         }
 
+        // #1184: rename — artifacts only (the PATCH endpoint is /api/v1/artifacts), owner/admin only.
+        if (kind === 'artifact' && (isOwner(file) || (window.currentUser && window.currentUser.is_admin))) {
+          actionButtons += `
+            <button class="btn-icon" onclick="renameArtifact('${file.file_id}', '${file.filename}')" title="Rename">
+              ✏️
+            </button>
+          `;
+        }
+
         if (canDeleteFile(file)) {
           actionButtons += `
             <button class="btn-icon btn-danger" onclick="deleteFile('${file.file_id}', '${kind}')" title="Remove">
@@ -739,6 +748,51 @@
             ToastMessages.error('delete_error');
           }
         }
+      });
+    }
+
+    // #1184: rename a saved artifact (owner-scoped via the PATCH endpoint).
+    // Uses the design-floor Dialog form-mode (NOT native prompt — #1170 retires those).
+    function renameArtifact(artifactId, currentFilename) {
+      const current = (currentFilename || '').replace(/\.(md|txt)$/i, '');
+      Dialog.show({
+        mode: 'form',
+        title: 'Rename artifact',
+        confirmText: 'Rename',
+        content: `
+          <div class="form-group">
+            <label for="rename-title-input">New name</label>
+            <input type="text" id="rename-title-input" value="${escapeHtml(current)}"
+                   maxlength="200" aria-label="New artifact name" />
+          </div>
+        `,
+        onConfirm: async () => {
+          const input = document.getElementById('rename-title-input');
+          const newTitle = (input ? input.value : '').trim();
+          if (!newTitle) {
+            ToastMessages.error('validation_error', { body: 'Name cannot be empty.' });
+            return false;  // keep the dialog open (validation failed)
+          }
+          try {
+            const response = await fetch(`/api/v1/artifacts/${artifactId}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({ title: newTitle }),
+            });
+            if (response.ok) {
+              ToastMessages.success('file_renamed');
+              await loadFiles();
+            } else {
+              ToastMessages.error('upload_error', { body: 'Could not rename — try again.' });
+              return false;
+            }
+          } catch (error) {
+            console.error('Error renaming artifact:', error);
+            ToastMessages.error('upload_error', { body: 'Could not rename — try again.' });
+            return false;
+          }
+        },
       });
     }
 

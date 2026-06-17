@@ -96,3 +96,168 @@ Full gate scan — 14 June 14 logs, closure signal check (canonical + non-canoni
 **Side-effect**: PPM's inbox triage (8 memos moved to read/ on disk, uncommitted) was captured in the same commit via MANIFEST regen — memos are safe in ppm/read/, git state now correct.
 
 **Web June 14 log**: still open post-PM-ping. Holding for Web to self-close before proceeding to omnibus synthesis.
+
+## Fire — WORK (post-compaction) — `/cleanup-dev-active` complete
+
+Session resumed after context compaction. Picked up mid-execution from `/cleanup-dev-active` (cycle logs were staged but forensic moves had failed — MISSING errors due to path issue in prior-context script).
+
+**Diagnosis**: files were tracked in git but path execution was off. Root-fix: ran all git mv commands from worktree root. All moves succeeded.
+
+**Cleanup executed** (`7147dd865` + `be958618a`, pushed `12e563f6a`):
+- **Before**: ~200+ files in dev/active/
+- **Archived**: 104 cycle logs (May 25 – June 13) to dev/YYYY/MM/DD/ — omnibus guard OK (June 13 omnibus is current chain terminus)
+- **Archived**: ~90 forensic docs (bootstrap briefs, migration handoffs, PA skunkworks, exec rollups, PPM memos, design artifacts, workstream memos, issue-number working docs) to dated dirs
+- **Moved**: `dev/active/2026-06-15-0647-pa-code-sonnet-log.md` → `dev/2026/06/15/` (was in wrong location)
+- **Deleted**: `weekly-ship-047-draft-2026-06-12.md` (confirmed true duplicate of `docs/public/comms/drafts/` copy)
+- **Removed**: 9 tracked/untracked delta files (ephemeral)
+- **After**: 57 entries in dev/active/ (standing items × 10 roles, carry-forward × 6, duty-cycle-escalations × 10, today's bootstrap/migration × 8, workspace trackers + active docs + exec/cio/comms open items + directories)
+- **Held**: `cycle-log-exec-2026-06-14.md` + `cycle-log-exec-2026-06-15.md` (no June 14/15 omnibus yet)
+
+**Omnibus gate**: still 13/14. Web June 14 log still open. Holding synthesis.
+
+## Fire — WORK (post-compaction) — June 14 omnibus complete
+
+Session resumed after second compaction. Prior work: Web's June 14 close-out added (canonical marker), Web memo on staging discipline sent, duty-cycle-tick updated to v1.9, cleanup-dev-active completed. Omnibus gate: 14/14 (Web closed 07:30, DAY-CLOSED marker added retroactively by Docs).
+
+**June 14 omnibus written** (`docs/omnibus-logs/2026-06-14-omnibus-log.md`):
+- Format: HIGH-COMPLEXITY: COORDINATION (14 source logs; 5-phase timeline)
+- All 14 roles interleaved chronologically; cross-reference gate PASS
+- Canonical refs verified: PDR-002 appendix Layer-2 Vision (WorkItems/Documents/People/Conversations); PP-002 "Critical vs. Commodity Work in a Role"; decisions.log reinstated by Arch+HOST
+- Source log archive: already complete (cleanup-dev-active moved all June 14 logs to dev/2026/06/14/)
+
+**Activity log appended** (Step 10.5 Shape B): 14 rows via Python csv.writer; CSV now 1389 lines
+
+**Committed + pushed**: `c5104bf8d` → merged → `7b94a47e3` on origin/main
+
+**Cycle logs**: `cycle-log-exec-2026-06-14.md` now omnibus-covered (safe to archive). `cycle-log-exec-2026-06-15.md` still active.
+
+## Fire — WORK 10:47 — Exec memo triaged; exec-2026-06-14 cycle log archived
+
+**Dispatch**: WORK PARTS (10:47 PDT; session log exists; not last fire of day).
+**Cron**: `6433c134` confirmed ×1; deleted for Rule-1 work; re-arming at end.
+
+**Mail loop**: 1 unread — Exec RE: session-log close marker. Informational: Exec's cron prompt STOP clause had drifted to write `<!-- DAY-CLOSED -->` in the cycle log rather than the session log; they checked the duty-cycle-tick skill (v1.8 single-surface) and corrected it forward for tonight's 21:32 fire. June 14 counted as-is. No action from Docs. → `mailboxes/docs/read/` + MANIFEST regen (`c1a33016f`, pushed `1759b139b`).
+
+**Task loop**: Exec June 14 cycle log `dev/active/cycle-log-exec-2026-06-14.md` was held by cleanup-dev-active pending the June 14 omnibus. Omnibus now exists (`docs/omnibus-logs/2026-06-14-omnibus-log.md`, `c5104bf8d`). Omnibus guard lifted → archived to `dev/2026/06/14/`.
+
+## Fire — WORK 13:47 (resumed post-compaction) — #1206 items 1+3 shipped
+
+**Dispatch**: WORK PARTS (session exists; not last fire). Working until (0,0) per PM flywheel correction.
+**Cron**: Rule-1 deleted at fire start; re-arm at IDLE.
+**Inbox**: 0 unread.
+
+**#1206 item-3 investigation**: read Docs-to-Arch scoped worklist memo (June 13) + Arch ratification memo (June 14). Key findings:
+- "17-vs-10 STOP-conditions" was a phantom — no "17" in the templates. Cleared.
+- The 3 flag sites were #1058 hygiene comments marking the deployment-model reframe as deferred-pending-ratification.
+- Arch ratified YES on June 14: reframe to four-tier model.
+- "Item-3" and "item-1" both reduce to the same four-tier ratification call (Arch's words).
+
+**Template edits shipped** (`53f38f577`, `origin/main`):
+- `knowledge/agent-prompt-template.md` → v10.4: Multi-Agent Coordination section rewritten to four-tier model; both #1058 hygiene flags removed.
+- `knowledge/gameplan-template.md` → v9.5: Multi-Agent Deployment (DEFAULT) section rewritten to four-tier model; #1058 hygiene flag removed.
+- Four tiers: (1) one Code session per agent, (2) subagents via Task tool, (3) duty-cycle cohort over mailboxes, (4) Option B ephemeral worktrees.
+
+**GH #1206**: commented with evidence (`53f38f577`); items 1+3 marked done; issue stays open for item 2.
+
+**Item 2 handoff**: memo to Lead Dev via mailbox bridge (`8e49d6463`, `080f4aeeb` on `origin/main`). Phase -1 PM-verification currency is Lead/Arch scope; Docs will execute the trim once they agree on scope.
+
+**#972 MEM-TEMPORAL — spec v0.4 shipped** (`c9dea12c8`): reconciled field names with CIO's ratified 4-field schema (PM 2026-06-13). Adopted `valid_from`+`last_verified` (expected) + `valid_until`+`superseded_by` (optional). Replaced v0.3 `ended` with `valid_until` per CIO recommendation. Janus/Klatch alignment incorporated (CIO's direct dinp read, 2026-06-15): `valid_from`+`last_verified` exact match; `valid_until` vs `ended` pending PM bridge. Integration plan updated. GH comment on #972 with evidence.
+
+**Layer C pre-commit hook shipped** (`fd6003a9d`, `82d21767a` on main): `pre-commit-reconcile-drafts.sh` + `settings.json` update. Fires on commits touching `docs/public/comms/drafts/`; runs `reconcile-drafts-calendar.py`; warn-first (exit 2, no hard block) per Comms go-signal 2026-06-13. Pattern-074 preventive layer.
+
+**Task loop state**: blocked items remain blocked (6 escalate branches + 11 stash entries + June 15 omnibus pending). Unblocked queue drained for this fire. → (0,0)
+
+## Fire — WORK 16:46 — Lead Dev memo triaged; Arch concurrence requested for #1206 close
+
+**Dispatch**: WORK PARTS (16:46 PDT). Cron `53bc0823` deleted Rule-1.
+**Inbox**: 1 unread — Lead Dev RE: #1206 item-2 (Phase -1 read done).
+
+**Lead Dev finding** (`memo-lead-to-docs-cc-arch-1206-item2-...`):
+- Phase -1 Part B (PM verification) vs audit-cascade: DISTINCT — keep as-is. Verifies infra reality (live system + PM), not artifact conformance (template checklist). Functional separation, not overlap.
+- Real trim: Part A.2 (Worktree Candidate Assessment, lines ~42–73) references deprecated `.trees/` Model-A setup (`worktree-setup.sh`). Option B ephemeral worktree is the 2026-06-12 canonical; no per-gameplan decision needed. Proposed one-liner replacement.
+- Lead Dev CCed Arch; requesting blessing before execution.
+
+**Mail loop** (`a26d25d45`, `origin/main`):
+- Lead Dev memo triaged to `docs/read/`
+- Sent `mailboxes/arch/inbox/memo-docs-to-arch-1206-item2-a2-worktree-trim-concurrence-request-2026-06-15.md` — Arch concurrence request; Docs executes A.2 trim + closes #1206 on Arch go.
+- Docs/Arch MANIFESTs regenerated.
+
+**Task loop**: still at (0,0) pending Arch response for #1206 close and PM for escalate branches/stash. → quiet hold.
+
+## Fire — WORK 19:xx (post-compaction) — #1206 fully closed
+
+**Dispatch**: WORK PARTS. Session resumed after compaction; Arch concurrence was in inbox.
+
+**Arch concurred** (`memo-arch-to-docs-cc-lead-pm-1206-a2-trim-concur-fold-into-1206-close-2026-06-15.md`): Phase -1 B/C KEEP; A.2 one-liner trim approved; fold into #1206; Docs executes + closes. `scripts/worktree-setup.sh` untouched on disk.
+
+**Executed** (`cbaf50de0`, `76788c7b1` on `origin/main`):
+- Arch memo triaged → `mailboxes/docs/read/`; MANIFEST regen (`cbaf50de0`)
+- `knowledge/gameplan-template.md` → v9.6: Part A.2 `.trees/` block (32 lines) replaced with one-liner pointing to CLAUDE.md Branch/Worktree/Mailbox discipline; title + Last Updated + changelog row updated (`76788c7b1`)
+- GH #1206 comment posted with full evidence (Phase -1 B/C kept rationale + A.2 trim rationale + commit refs) — issue was already closed (Lead Dev or Arch beat us to it)
+
+**All three #1206 items resolved**: item-1 (four-tier model, v9.5/v10.4, `53f38f577`), item-2 (A.2 trim, v9.6, `76788c7b1`), item-3 (same four-tier ratification as item-1).
+
+**Task loop**: (0,0). All unblocked work drained. Remaining blocked: 6 escalate branches (PM), 11 stash entries (PM), June 15 omnibus (cohort close pending).
+
+## Fire — WORK 19:47 — quiet hold; standing-items refresh
+
+**Dispatch**: WORK PARTS (19:47 PDT). Inbox zero. Queue (0,0).
+**Merge-keeper re-scan**: 6 branches — all still escalate, no change from 03:48 sweep.
+**Task loop advance**: updated `dev/active/docs-standing-items.md` — marked #1058 CLOSED (delivered via #1206 today), updated #972 reference to v0.4 spec + P2 remaining items, removed stale Jun 1 pointer, refreshed rolling-completed section. (`dcb9938f0`)
+**→ (0,0). Quiet hold.**
+
+---
+
+## STOP — 22:47 PDT
+
+**Last fire of today**: next fire = 03:17 Tuesday 2026-06-16 (different calendar day). STOP.
+
+**Attention-doc reconciliation (methodology-41)**: `duty-cycle-escalations-docs.md` — no live GH issue refs; all items are resolved or process-observations. No phantom items to clear.
+
+**Sign-off checklist**:
+- `git status` — 1 local modification: `dev/active/merge-keeper-2026-06-15.md` (sweep script output; not a committed surface — sweep log is ephemeral) → intentional carry-over
+- `git log --oneline @{u}..HEAD` — empty (no unpushed commits)
+- `git log --oneline origin/main..HEAD` — empty (fully merged to main)
+- Working tree: clean for all tracked work surfaces
+
+**Day-arc summary (June 15, 2026)**:
+
+Full-day session, 7 substantive fires (03:17 START through 22:47 STOP). PM engaged ~08:xx; work continued through PM pullback.
+
+Key deliverables:
+1. **June 14 omnibus** — HIGH-COMPLEXITY: COORDINATION, 14 roles interleaved, `c5104bf8d`; 14 Shape B activity-log rows appended
+2. **Web June 14 retroactive close-out** + staging-discipline memo (autostash incident diagnosis)
+3. **duty-cycle-tick v1.9** — pre-staging discipline (`git reset HEAD` opening) added to Step 6
+4. **cleanup-dev-active** — ~200+ → 57 files in `dev/active/`; 104 cycle logs + ~90 forensic docs archived
+5. **#1206 (all 3 items)** — gameplan-template v9.5/v9.6 + agent-prompt-template v10.4; four-tier model reframe (Arch-ratified) + stale A.2 worktree block trim (Lead/Arch concurred)
+6. **#972 MEM-TEMPORAL spec v0.4** — field-name reconciliation with CIO's ratified schema (`valid_from`+`last_verified`+`valid_until`+`superseded_by`)
+7. **Layer C pre-commit hook** — `pre-commit-reconcile-drafts.sh` + `settings.json` wired; warn-first per Comms go-signal
+8. **Canonical-marker memos** × 4 (CXO/PPM/HOST/Exec) on DAY-CLOSED format
+9. **Exec + cycle-log-exec-2026-06-14** triaged and archived (omnibus guard lifted)
+
+Blocked carry-ins unchanged: 6 escalate branches (PM), 11 stash entries (PM), June 15 omnibus (cohort close pending tomorrow).
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- `dev/active/docs-carry-forward.md` — fire-state continuity, task queue; primary orientation surface every fire
+- `dev/active/docs-standing-items.md` — task list for unblocked low-pri work (19:47 fire)
+- `dev/active/duty-cycle-escalations-docs.md` — STOP attention-doc reconciliation
+- `dev/active/merge-keeper-2026-06-15.md` — sweep log; confirmed 6 escalate branches unchanged
+- `duty-cycle-tick` skill (v1.9) — fire procedure; referenced throughout
+- `create-omnibus` skill — June 14 omnibus synthesis
+- `cleanup-dev-active` skill — dev/active/ triage
+- `knowledge/gameplan-template.md` — direct edit surface (#1206 items)
+- `knowledge/agent-prompt-template.md` — direct edit surface (#1206 items)
+- `docs/internal/operations/memory-frontmatter-temporal-fields-spec.md` — #972 spec v0.4 edit
+- Arch concurrence memo (`mailboxes/docs/inbox/memo-arch-to-docs-cc-lead-pm-...`) — #1206 go-signal
+- Lead Dev analysis memo (`mailboxes/docs/read/memo-lead-to-docs-cc-arch-...`) — #1206 item-2 scope
+
+**Loaded but not referenced**:
+- `docs/briefing/BRIEFING-CURRENT-STATE.md`
+- `docs/briefing/PROJECT.md`
+
+**Wanted but not found**:
+- Nothing missing. All referenced surfaces were current and findable.
+
+<!-- DAY-CLOSED: 2026-06-15 -->

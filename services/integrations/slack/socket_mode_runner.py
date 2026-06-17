@@ -21,6 +21,8 @@ from typing import Any, Optional
 
 import structlog
 
+from services.integrations.slack.mrkdwn import markdown_to_mrkdwn
+
 logger = structlog.get_logger(__name__)
 
 _MENTION_RE = re.compile(r"<@[A-Z0-9]+>")
@@ -67,9 +69,7 @@ class SlackSocketModeRunner:
 
         async def _listener(client, req: "SocketModeRequest") -> None:
             # Always ack fast — Slack retries unacked envelopes.
-            await client.send_socket_mode_response(
-                SocketModeResponse(envelope_id=req.envelope_id)
-            )
+            await client.send_socket_mode_response(SocketModeResponse(envelope_id=req.envelope_id))
             if req.type != "events_api":
                 return
             event = (req.payload or {}).get("event") or {}
@@ -96,9 +96,7 @@ class SlackSocketModeRunner:
             if not text:
                 return
             channel = event.get("channel")
-            logger.info(
-                "slack_inbound_event", etype=etype, channel=channel, chars=len(text)
-            )
+            logger.info("slack_inbound_event", etype=etype, channel=channel, chars=len(text))
             # #1228: post a "thinking" placeholder first so the user can tell
             # normal LLM latency from a frozen connection, then update it in
             # place with the real reply (or an honest error) when done.
@@ -129,7 +127,11 @@ class SlackSocketModeRunner:
                 logger.error("slack_intent_processing_failed", channel=channel, exc_info=True)
                 reply = "Something went wrong on my end handling that — try me again?"
 
-            await self._post_or_update(channel, placeholder_ts, reply[:4000], thread_ts)
+            # #1227: convert GFM → Slack mrkdwn before the 4000-char truncate
+            # (this path uses the SDK WebClient directly, not slack_client.send_message).
+            await self._post_or_update(
+                channel, placeholder_ts, markdown_to_mrkdwn(reply)[:4000], thread_ts
+            )
         except Exception as e:
             logger.error("slack_inbound_handling_failed", error=str(e), exc_info=True)
 

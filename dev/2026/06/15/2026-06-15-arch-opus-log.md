@@ -15,4 +15,81 @@ PM woke session 06:42 PT with "Lead Dev is blocked until you respond." Session h
 
 ## Per-fire summaries (PM-ratified single-log discipline)
 
-- **Fire 46 (06:43 PT)** — PM-initiated wake; substantive Architect-lens response to Lead Dev #1241 shipped FIRST (Lead unblocked). **#1241 content-anchoring lens** (`memo-arch-to-lead-cc-cio-pm-1241-content-anchoring-lens-adr-071-yes-doc-store-first-2026-06-15.md` + 2 cc PM/CIO): (1) audit framing right + two refinements (2-axis classification: ownership-at-write × scoping-at-read; auth-resolution surface sub-inventory for Optional-degradation traps); (2) **YES ADR-071 candidate** "User-Auth Anchoring Pattern for Content Stores" — strawperson 7-section structure proposed (D1 when-required, D2 owner-stamped-at-write invariant, D3 scoped-filtered-at-read invariant, D4 principal-resolution-at-the-boundary, D5 m-41 guard pattern, D6 m-40 migration shape with `is_global_content` escape hatch, D7 multi-tenancy `user_id`→`org_id` evolution path); Lead-author-Arch-ratify lean since impl context fresh; (3) doc-store remediation as ADR-071's first migration instance, NOT bespoke fix — audit → ADR → first-migration sequencing keeps the recurrence shape PM named from re-opening. Cross-refs: ADR-058 / ADR-063 / ADR-066 v0.2 D7 / ADR-069 / m-30 (instance #6 candidate at content-anchoring boundary) / m-40 (D6 migration) / m-41 (D5 guard, Proven cure-class instance at content-anchoring altitude). Step-0 self-heal on June 14 also completed retroactively. Main commit `fcea9ab77`.
+- **Fire 46 (06:43 PT)** — PM-initiated wake; #1241 content-anchoring lens shipped to Lead + 2 cc (PM/CIO) per source-set-state discipline. Audit framing right + 2 refinements; YES ADR-071 candidate (strawperson 7-section structure); doc-store remediation as ADR-071 first migration instance. Step-0 self-heal on June 14 completed. Main commit `fcea9ab77`.
+
+- **Fire 51 (18:48 PT)** — Quiet hold: inbox 0 (Fire 50 just drained it 2 min ago); no unblocked low-pri Architect work (Lead Dev mid-ADR-071 execution; ADR-070 awaiting Lead-ratify; PA Skunkworks awaiting cohort responses; 2 PM calls still open). No CronDelete (trivial); cron `3b67d2b9` stays armed.
+
+- **Fire 52 (~21:52 PT EXPECTED; DID NOT EXECUTE)** — STOP day-close fire missed; cron `3b67d2b9` died with session at session-dormancy boundary after Fire 51. Fourth F4 Gap-C session-dormancy instance in 4 days. Day's substantive work was complete by Fire 50 (#1206 concur shipped); Fire 51 was a quiet hold. Missing close-out procedural only.
+
+---
+
+## Day arc — June 15 summary
+
+**Heavy Monday substantive shipment day — 5 fires substantive + 1 quiet hold:**
+
+| Fire | Time PT | Deliverable |
+|---|---|---|
+| 46 | 06:43 | #1241 content-anchoring lens to Lead + 2 cc (Lead unblocked from blocking PM-direct flag); Step-0 self-heal on June 14 |
+| 47 | 08:05 | D1 ruling to Lead (PM-domain global-by-design + 3 disciplines); CXO trust-layer endorsement ack; CLAUDE.md HOST mail-vs-GH-comments cohort-norm added |
+| 48 | 08:15 | **ADR-070 v0.1 AUTHORED** (MCP-Consumer Connector Architecture; 9 D-sections; RECONNECT WS-1..9 unblocked) |
+| 49 | 12:59 | **ADR-071 v0.1 RATIFIED** (Lead-authored cleanly with all guidance folded; consolidating refactor + doc-store + WorkItem leg unblocked) |
+| 50 | 18:46 | #1206 item-2 A.2 trim concur to Docs (Lead's analysis right; fold into #1206 close) |
+| 51 | 18:48 | Quiet hold (inbox just drained) |
+
+**Load-bearing finding (June 15)**: **Three-ADR-in-5-days family complete** — ADR-066 v0.2 (Configuration Ownership 6/14) + ADR-070 (MCP-Consumer Connector Architecture 6/15) + ADR-071 (User-Auth Anchoring 6/15). Server-owned state across config + connector-substrate + content at three distinct surfaces; CXO "don't-assert-what-you-can't-substantiate" meta-shape composes throughout; CIO catalog touch on the meta-family is the next watch.
+
+**Carry-overs to June 16:**
+- 2 PM calls open (user-correction recovery; WS-047 spine)
+- Lead Dev executing ADR-071 consolidating refactor + doc-store remediation; #1238 disposition request landed overnight
+- ADR-070 awaiting Lead-ratify
+- PA ADR-072 (Skill-routing architecture) ask + addendum landed overnight
+- F4 Gap-C now 4 instances in 4 days (mechanism reproducibility extreme)
+
+---
+
+## Memory & briefing surfaces referenced this session (per #974)
+
+**Referenced**:
+- `[Anchor on source-set state]` — drove Fire 48 ADR-070 drafting NOW.
+- `[Pre-authorized for any unblocked work]` — drove Fire 46→50 multi-stream throughput.
+- `[Pending PM question doesn't block other work]` — held 2 PM calls open.
+- `[Investigate before extending]` — verified Lead's audit findings + read full input doc before ADR-070.
+- **methodologies**: m-30 (instance #6 candidate via Lead's #1241 audit consumer-trace) / m-38 (drove ADR-070 + ADR-071 standalone tier-decisions) / m-40 (D6/D7 migration shape both ADRs) / m-41 (D5 guards both ADRs + architecture-boundary cure in ADR-066 D7).
+- **ADRs**: ADR-001 / ADR-005 / ADR-029 / ADR-052 (reconciled in ADR-070 D2) / ADR-058 (finished by ADR-070 D9; composes with ADR-071) / ADR-063 / ADR-065 / ADR-066 / ADR-068 / ADR-069 / ADR-070 / ADR-071 — referenced extensively across the day.
+
+**Loaded but not referenced**:
+- BRIEFING-ESSENTIAL-ARCHITECT.md (no reload).
+- Full ADR-058 / ADR-052 text (referenced by name; not re-read).
+
+**Wanted but not found**:
+- A pre-built "three-ADR family" template — composed organically across the week; would have benefited from a meta-pattern catalog entry on "ADR-family-as-architectural-thesis" if it had existed.
+
+---
+
+## Sign-off discipline (retroactive close 2026-06-16 16:40 PT post-Fire-52-cron-death)
+
+```bash
+$ git status --short
+# (clean)
+
+$ git log --oneline @{u}..HEAD
+# (empty — branch fully pushed)
+
+$ git log --oneline origin/main..HEAD
+# (empty — branch reachable from origin/main)
+```
+
+✓ Working tree clean
+✓ All Monday commits on origin/main: ADR-070 + ADR-071 ratification + 3 outbound memos + #1206 concur + decisions.log entries + standing-items refresh.
+
+<!-- DAY-CLOSED: 2026-06-15 -->
+
+— Architect, June 15 closed retroactively 2026-06-16 16:40 PT after Fire 52 cron-death (fourth F4 Gap-C instance in 4 days; mechanism reproducibility extreme). Monday substantive work was complete by Fire 50 18:46 PT; missing close-out procedural only.
+
+- **Fire 50 (18:46 PT)** — PM signal "your 15:52 fire didn't fire; you have mail" (F4 Gap-C #4 instance in 4 days; cron `3b67d2b9` listed but didn't fire — possible mid-session pause or polling-window gap; session re-entered via PM wake). 2 #1206-related memos (Lead Dev to Docs cc Arch + Docs to Arch). Lead Dev's read on item-2 right: Phase -1 PM-verification functionally distinct from audit-cascade (KEEP B/C as-is); genuine trim is Part A.2's stale `.trees/` Model-A block. **CONCUR shipped to Docs + cc Lead/PM**: bless Lead's one-liner replacement (points at CLAUDE.md Branch/Worktree/Mailbox discipline Option B canonical); fold into #1206 close path (cleanest); Docs executes ~15min mechanical edit, bumps gameplan-template v9.5→v9.6, closes #1206. Main commit `3199fe5fa`.
+
+- **Fire 49 (12:59 PT)** — PM signal "Lead Dev may be waiting"; **ADR-071 v0.1 RATIFIED** clean. Lead-authored v0.1 folded every guidance point + 3 draft-notes faithfully (CXO trust framing landed in Context; D4 weighted as half the ADR with 4 sub-decisions properly factored; D1 three disciplines preserved verbatim with #1239 WorkItem render-guard consequence explicit; Open Questions section honors "don't commit to exemption-list mechanism"). Two minor cross-ref suggestions flagged as polish-not-blocking (ADR-070 D8 composition note in D4/D7; F3 #1172 ratchet precedent in D5). **Unblocks**: consolidating refactor (D2 `user_id`→`owner_id`); doc-store remediation (#1238 first migration); Radar WorkItem leg (D1 render-guard, no schema change). **Three-ADR-in-5-days family complete**: ADR-066 v0.2 + ADR-070 + ADR-071. Ratification memo to Lead + cc PM/CIO (`memo-arch-to-lead-cc-cio-pm-adr-071-v01-RATIFIED-clean-2-minor-cross-refs-2026-06-15.md`, main commit `a50dfc853`).
+
+- **Fire 48 (08:15 PT)** — cron-fired; substantive ADR delivery. **ADR-070 v0.1 AUTHORED** (`docs/internal/architecture/current/adrs/adr-070-mcp-consumer-connector-architecture.md`): MCP-Consumer Connector Architecture; 9 D-sections answering Lead's 4 Arch-owned questions + 5 sequencing/maturity decisions. Key calls: (D1) Piper-as-MCP-consumer; native retires; (D2) ADR-052 reconciliation — Piper-as-host vs Piper-as-consumer = 2 distinct boundaries, no actual tension; (D3) MCP server owns OAuth/tokens, Piper stores per-user bindings only — structurally eliminates #1226 silent-config-failure class; (D4) DB-backed user-scoped config kills cwd-relative flat files (composes ADR-066 D7 + ADR-058 + ADR-071 D2); (D5) Connector protocol (`connect/status/resolve/degrade`) + m-41 AST guard; (D6) maturity tiers — Tier 1 (GitHub + Calendar) first, Tier 2 (Slack + Notion) escape valve if MCP server immature; (D7) m-40 layer-then-migrate per connector with native retirement = collapse step; (D8) **identity unification (WS-9 #1233) PREREQUISITE to WS-1**, not parallel — load-bearing sequencing call; (D9) much of RECONNECT frames as finishing ADR-058, not greenfield. **Cover memo to Lead + 3 cc** (PM/PPM/CIO) (`memo-arch-to-lead-cc-pm-ppm-cio-adr-070-v01-filed-mcp-consumer-connector-architecture-2026-06-15.md`, main commit `95bfc5de1`); decisions.log entry appended per CLAUDE.md Recording-decisions discipline; Lead-author-Arch-ratify inverted to Arch-author-Lead-ratify for this ADR. **Three-ADR family** (ADR-066 v0.2 + ADR-070 + ADR-071 in 5 days) named for CIO catalog — server-owned state across config/connector-substrate/content at three distinct surfaces; "don't-assert-what-you-can't-substantiate" meta-shape from CXO trust-layer composes throughout. RECONNECT WS-1..9 decomposition unblocked.
+
+- **Fire 47 (08:05 PT)** — PM-initiated wake (PM "You have mail"); 6 substantive cohort memos. **Lead Dev #1241 audit findings + grounding** — D1-D7 strawperson confirmed with two expansions: (a) D2 becomes consolidating-refactor decision naming `owner_id` UUID-FK canonical, `user_id` string deprecated, no-anchor forbidden — addresses Lead's user_id/owner_id semantic-split finding (3 coexisting styles → the recurrence); (b) D4 expanded to carry half the ADR weight per Lead's resolution-degradation epidemic finding (40+ sites doing `intent.context.get("user_id") if intent.context else None`) — 4 sub-decisions on principal-resolution discipline. **D1 ruling**: PM-domain cluster (products/features/work_items/intents/workflows/tasks) is **global-by-design with explicit-exemption + per-user-render guard + named multi-tenant migration path** (3-layer treatment: schema exemption + render-boundary guard + D6 `tenant_id` not `user_id` migration). Lead-author-Arch-ratify proceeds; D1-ruling memo to Lead + 2 cc (main commit `7b184665e` swept by shared-index race; CC copies dropped separately `f4be13325`). **CXO trust-layer endorsement** (`memo-cxo-to-arch-lead-ppm-cc-pm-anchoring-is-a-trust-prerequisite-not-just-data-2026-06-15.md`): ownership-at-write IS the trust foundation for `provenance: observed` claims + People-map `source: principal_introduced vs other_user_context` + auditability. **Arch ack + routing to Lead's Context section** shipped (`memo-arch-to-cxo-cc-lead-ppm-pm-adr071-trust-layer-framing-routed-to-context-section-2026-06-15.md` + 3 cc Lead/PPM/PM, main commit `d1694c02c`) — three-altitude motivation (data + shape + trust) folds into Lead's authoring; meta-shape "don't-assert-what-you-can't-substantiate" flagged for CIO as methodology-43 / Pattern-074 candidate. **HOST mail-vs-GH-comments cohort norm one-liner** ADDED to CLAUDE.md (worktree side; under Mailbox routing reference) — composes with Recording-decisions section from Fire 44. **Triaged**: 6 source memos to read/; Exec manifest-change-clean note (awareness only); Docs session-log-naming feedback (carry full canonical format `YYYY-MM-DD-HHMM-{role}-{tool}-{model}-log.md` forward from next day's session log; current June 15 log keeps current name to avoid mid-day churn). Lead → PPM "contract-frozen-but-backends-adr071-gated" memo implicitly ratified by my D1 ruling (doc-store-first sequencing within ADR-071; no bespoke fix). **Shared-index race incident**: my D1-ruling memo was swept into CIO's commit `7b184665e` per the race condition Exec flagged 6/15 morning; cc copies dropped separately; mechanism confirmation that the race is real + actionable cure pending CIO design.

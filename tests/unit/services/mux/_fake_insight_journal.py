@@ -128,13 +128,17 @@ class FakeInsightJournal:
         insight.user_response = response
         return insight
 
-    async def get_for_object(self, object_id: str) -> List[SurfaceableInsight]:
+    async def get_for_object(
+        self, object_id: str, user_id: Optional[str] = None
+    ) -> List[SurfaceableInsight]:
+        # #1252 (a,3): mirror the real journal — scope by owner when provided.
         if object_id not in self._by_object:
             return []
         return [
             self._insights[iid]
             for iid in self._by_object[object_id]
             if iid in self._insights
+            and (user_id is None or self._insights[iid].user_id == user_id)
         ]
 
     async def count(self, user_id: Optional[str] = None) -> int:

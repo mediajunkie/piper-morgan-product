@@ -46,6 +46,7 @@ const TOAST_MESSAGES = {
   file_uploaded: { title: 'Uploaded', body: 'File ready' },
   file_deleted: { title: 'Done', body: 'File removed' },
   file_saved: { title: 'Saved', body: 'Added to your files' },  // #355 save-as-artifact
+  file_renamed: { title: 'Renamed', body: 'New name saved' },  // #1184 artifact rename
 
   // Sharing
   shared: { title: 'Shared', body: '' },
@@ -71,6 +72,7 @@ const TOAST_MESSAGES = {
   create_error: { title: 'Couldn\'t create', body: 'Please try again' },
   update_error: { title: 'Couldn\'t save', body: 'Please try again' },
   delete_error: { title: 'Couldn\'t remove', body: 'Please try again' },
+  archive_error: { title: 'Couldn\'t archive', body: 'Please try again' },  // #1170 home conversation archive
   upload_error: { title: 'Couldn\'t upload', body: 'Check file size and try again' },
   save_error: { title: 'Couldn\'t save', body: 'Please try again' },  // #355 save-as-artifact
   download_error: { title: 'Couldn\'t download', body: 'Please try again' },

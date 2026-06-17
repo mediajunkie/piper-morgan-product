@@ -206,7 +206,7 @@ The Flywheel is presented at three layers in the canonical doc:
 
 The pre-v2 "Four Pillars" formulation (July 2025 → April 2026) is superseded; canonical doc explains the v1 → v2 derivation.
 
-For role-specific applications, see each role's BRIEFING-ESSENTIAL-{ROLE}.md "Load-Bearing vs. Commodity Work" section.
+For role-specific applications, see each role's BRIEFING-ESSENTIAL-{ROLE}.md "Critical vs. Commodity Work" section.
 
 ## GitHub Discipline
 

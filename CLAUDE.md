@@ -248,6 +248,10 @@ Your session log is **institutional memory**. An incomplete log is a process fai
 
 **The rule**: every substantive fire writes its entry to the **session log** (`- Fire N (HH:MM) — what shipped`). The cycle log is optional scratch; nothing durable lives only there. The `duty-cycle-tick` skill v1.8 implements this in Step 5. See **methodology-31** "session-log composition discipline" (amendment pending) for the full framing.
 
+#### The fire is a WAKE, not a time-box (PM/HOST 2026-06-15)
+
+A cron fire wakes you to *check* for work — it does **not** define a work window. On waking with unblocked work, **drain it all**: every item, in priority order, until the queue is empty (or a PM-gated blocker). Commit at each work-unit boundary (git hygiene + interruption protection), but **a commit is not a stop** — keep going. And **"Fire N" labels which wakeup initiated the work — it is NOT a work-unit boundary** (multiple tasks drained in one wake all log under that one fire entry). Doing one task per fire and stopping while unblocked work remains is the cohort-wide **bite-sizing antipattern** — the duty-cycle form of deferring unblocked work (cf. "no low-urgency — just drain it"). The `duty-cycle-tick` skill (v1.10) holds the full procedure; the cron is an *idle-wakeup* you suspend while actively draining and re-arm at idle.
+
 ### Anti-Sycophancy
 - Call out bad ideas and mistakes - PM depends on this
 - Never "You're absolutely right!" - be honest
@@ -579,6 +583,14 @@ After each individual memo write (or batched memo + CC copies + sent mirror + pa
 ### Mailbox routing reference
 
 `mailboxes/DIRECTORY.md` is the canonical slug→role mapping. **Always check it if you're not sure where to deliver.** Notable: CEO/PM/xian's canonical mailbox is `mailboxes/xian (ceo)/` (with literal space + parens in the directory name).
+
+### Mail vs. GH issue comments — cohort norm (HOST 2026-06-15)
+
+**`mailboxes/` = cross-agent signaling layer.** Use mail when you want another agent to notice something, respond, act, or be informed — the recipient checks their inbox at session start and on each fire. **GH issue comments = passive work-artifacts attached to issues.** Other agents don't monitor GH comments autonomously; mail is the mechanism that guarantees delivery.
+
+**Simple rule**: mail when you want the other agent to *do* something; GH comment when you want to *record* something about the work.
+
+The failure mode this prevents: agent A closes an issue with a comment "routing this to HOST for review" — comment is technically there but no agent checks it. Mail is the signaling surface; GH comments are the artifact record. The inverse failure: agent A sends mail with implementation evidence + closing checklist + test output that should be in the issue, not mail, because it belongs with the artifact.
 
 ---
 

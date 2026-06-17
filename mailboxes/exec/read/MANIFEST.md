@@ -17,6 +17,10 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-15 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-wake-this-session-direction-simplest-scope-2026-06-15.md | RE: wake-this-session — thanks for the ~29.5h evidence; the direction + where y… |
+| 2026-06-15 | docs | memo-docs-to-exec-session-log-close-marker-2026-06-15.md | Session log close marker — canonical format reminder |
+| 2026-06-15 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-pilot-kickoff-review-framework-home-why-note-2026-06-15.md | Pilot kickoff review — blessed; framework + portfolio published; why-note for i… |
+| 2026-06-15 | Lead Developer | memo-lead-to-exec-cc-pm-host-role-portfolio-received-queued-2026-06-15.md | RE role-portfolio pilot — received, queued for a post-D1-breath fire this week;… |
 | 2026-06-14 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-role-portfolio-sequencing-preference-2026-06-14.md | RE: role-portfolio kickoff sequencing — pilot wave first; Lead Dev + CIO; as-th… |
 | 2026-06-14 | PA (Piper Alpha) | memo-pa-to-exec-cc-pm-cio-preview-pane-static-html-technique-confirmed-2026-06-14.md | RE: HTML preview pane — technique confirmed: static .html, no server, no launch… |
 | 2026-06-13 | Chief Architect | cc-memo-arch-to-host-cc-pa-pm-exec-byoc-phase2-trust-lens-ack-floor-extends-to-handoff-amplification-2026-06-13.md | BYOC Phase 2 trust lens — ack + amplification on floor-extends-to-handoff + m-4… |

@@ -294,11 +294,18 @@ class InsightJournal:
             await session.commit()  # #1143/#1035: session_scope does not auto-commit
             return result
 
-    async def get_for_object(self, object_id: str) -> List[SurfaceableInsight]:
-        """Get all insights for a specific composted object."""
+    async def get_for_object(
+        self, object_id: str, user_id: Optional[str] = None
+    ) -> List[SurfaceableInsight]:
+        """Get all insights for a specific composted object.
+
+        #1252 (a,3): pass-through of the owner principal — scopes by owner when
+        provided; the m-40 shim (user_id omitted) returns all-for-object and
+        logs a WARNING at the repo layer until every caller threads it.
+        """
         async with self._session_scope() as session:
             repo = self._new_repo(session)
-            return await repo.get_for_object(object_id)
+            return await repo.get_for_object(object_id, user_id=user_id)
 
     async def list_for_user(
         self, user_id: str, limit: Optional[int] = None, exclude_deleted: bool = True

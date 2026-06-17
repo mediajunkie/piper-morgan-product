@@ -157,7 +157,7 @@ async def get_conversation_turns(
         # Get the specific conversation by ID and verify ownership
         # Fix for #574: Was using get_latest_for_user() which only returned most recent,
         # causing all other conversations to fail the ownership check
-        conversation = await conv_repo.get_by_id(conversation_id)
+        conversation = await conv_repo.get_by_id(conversation_id, user_id=current_user.sub)
 
         # Debug logging for #574
         logger.info(
@@ -436,7 +436,7 @@ async def get_conversation(
         ConversationListItem with conversation details
     """
     try:
-        conversation = await conv_repo.get_by_id(conversation_id)
+        conversation = await conv_repo.get_by_id(conversation_id, user_id=current_user.sub)
 
         if not conversation:
             raise HTTPException(
@@ -530,7 +530,7 @@ async def update_conversation_title(
             )
 
         # Get conversation and verify ownership
-        conversation = await conv_repo.get_by_id(conversation_id)
+        conversation = await conv_repo.get_by_id(conversation_id, user_id=current_user.sub)
 
         if not conversation:
             raise HTTPException(
@@ -646,7 +646,7 @@ async def update_conversation_state(
             )
 
         # Get conversation and verify ownership
-        conversation = await conv_repo.get_by_id(conversation_id)
+        conversation = await conv_repo.get_by_id(conversation_id, user_id=current_user.sub)
 
         if not conversation:
             raise HTTPException(
@@ -728,7 +728,7 @@ async def delete_conversation(
     """
     try:
         # Get conversation and verify ownership
-        conversation = await conv_repo.get_by_id(conversation_id)
+        conversation = await conv_repo.get_by_id(conversation_id, user_id=current_user.sub)
 
         if not conversation:
             raise HTTPException(

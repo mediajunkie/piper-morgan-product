@@ -38,6 +38,10 @@ class SaveArtifactRequest(BaseModel):
     source_conversation_id: Optional[str] = None
 
 
+class RenameArtifactRequest(BaseModel):
+    title: str
+
+
 @router.post("")
 @router.post("/")
 async def save_artifact(
@@ -136,13 +140,30 @@ def _artifact_filename(title: Optional[str], artifact_id: str) -> str:
     return slug if slug.endswith(".md") else f"{slug}.md"
 
 
+# #1184 — export formats. Content is stored once (markdown); format is a
+# render/export concern. md/txt now; pdf/docx are a later enhancement.
+_DOWNLOAD_FORMATS = {
+    "md": ("text/markdown", ".md"),
+    "txt": ("text/plain", ".txt"),
+}
+
+
 @router.get("/{artifact_id}/download")
 async def download_artifact(
     artifact_id: str,
+    format: str = "md",
     current_user: JWTClaims = Depends(get_current_user),
 ):
-    """Download a generated artifact's content as a text/markdown file (#355 AC).
-    Owner-scoped (not the owner → 404, no existence leak)."""
+    """Download a generated artifact's content (#355 AC) in a chosen format
+    (#1184: ``md``|``txt``; pdf/docx later). Owner-scoped (not the owner → 404,
+    no existence leak). Bad format → 400 (fail fast, before the fetch)."""
+    fmt = (format or "md").lower()
+    if fmt not in _DOWNLOAD_FORMATS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported format '{format}'. Supported: {', '.join(_DOWNLOAD_FORMATS)}.",
+        )
+    media_type, ext = _DOWNLOAD_FORMATS[fmt]
     try:
         async with AsyncSessionFactory.session_scope_fresh() as session:
             repo = ArtifactRepository(session)
@@ -153,10 +174,11 @@ async def download_artifact(
     if artifact is None:
         raise HTTPException(status_code=404, detail="Artifact not found.")
 
-    filename = _artifact_filename((artifact.payload or {}).get("title"), artifact.id)
+    base = _artifact_filename((artifact.payload or {}).get("title"), artifact.id)  # always .md
+    filename = (base[:-3] + ext) if base.endswith(".md") else base
     return Response(
         content=artifact.content or "",
-        media_type="text/markdown",
+        media_type=media_type,
         headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
 
@@ -205,3 +227,28 @@ async def delete_artifact(
         raise HTTPException(status_code=404, detail="Artifact not found.")
     logger.info("artifact_deleted", artifact_id=artifact_id, user_id=current_user.sub)
     return {"deleted": True, "id": artifact_id}
+
+
+@router.patch("/{artifact_id}")
+async def rename_artifact(
+    artifact_id: str,
+    body: RenameArtifactRequest,
+    current_user: JWTClaims = Depends(get_current_user),
+):
+    """Rename a saved artifact (#1184) — updates the title that drives the
+    projected /files filename. Owner-scoped (cross-owner → 404, no existence leak)."""
+    new_title = (body.title or "").strip()
+    if not new_title:
+        raise HTTPException(status_code=400, detail="Title cannot be empty.")
+    try:
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            repo = ArtifactRepository(session)
+            artifact = await repo.update_title(artifact_id, new_title, owner_id=current_user.sub)
+    except Exception as e:
+        logger.error("artifact_rename_failed", error=str(e), artifact_id=artifact_id)
+        raise HTTPException(status_code=500, detail="Failed to rename artifact.")
+    if artifact is None:
+        raise HTTPException(status_code=404, detail="Artifact not found.")
+    filename = _artifact_filename((artifact.payload or {}).get("title"), artifact.id)
+    logger.info("artifact_renamed", artifact_id=artifact_id, user_id=current_user.sub)
+    return {"id": artifact.id, "title": new_title, "filename": filename}
