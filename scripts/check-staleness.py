@@ -27,7 +27,18 @@ REPO = os.environ.get("PIPER_REPO", os.path.dirname(os.path.dirname(os.path.absp
 STALE_DAYS = int(os.environ.get("STALE_DAYS", "21"))
 TODAY = datetime.date.today()
 
-DEFAULT_GLOBS = ["docs/briefing/*.md"]
+# Operating docs = how the cohort works *now* (drift-prone), NOT point-in-time artifacts. We extend by
+# PRECISE globs, not whole-dir sweeps — the candidate dirs mix the two (survey 2026-06-16):
+#   - docs/agent-protocols/  → all 6 are how-we-work protocols (no archives) → glob the dir.
+#   - docs/briefs/cross-pollination/ → 1 live brief (current.md) + ~89 dated archives → current.md ONLY.
+#   - docs/internal/operations/ → runbooks (operating) MIXED with dated audits/reports (snapshots, correctly
+#     "stale" forever). A blanket glob would flood false NO-DATES, so it's DEFERRED to per-doc curation
+#     (Docs-owned: pick the operating-runbook subset + give them freshness frontmatter). Tracked follow-up.
+DEFAULT_GLOBS = [
+    "docs/briefing/*.md",                        # role briefings + ROSTER + ROLE-PORTFOLIO (original set)
+    "docs/agent-protocols/*.md",                 # how-we-work protocols (debugging, git, issue-closure, e2e, …)
+    "docs/briefs/cross-pollination/current.md",  # the LIVE cross-project brief (NOT the dated archive)
+]
 
 DATE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})")
 
