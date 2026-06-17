@@ -32,6 +32,7 @@ Split the 135 logs **by role** (clean partition; role-spread is a key classifier
 
 **Gather-subagent prompt (template — parameterize {ROLE-CLUSTER} + {LOG-GLOB}):**
 > You are a data-extraction subagent (no session log needed; return structured data only). Read every session log matching `{LOG-GLOB}` (these are {ROLE-CLUSTER}'s logs). In each, find the `## Memory & briefing surfaces referenced this session` section and its three sub-buckets (Referenced / Loaded but not referenced / Wanted but not found). Extract each named surface. **Normalize surface names** to a canonical form: a file path (`docs/briefing/PROJECT.md`), a memory pin slug, a methodology/pattern id (`m-36`, `Pattern-072`), or a CLAUDE.md section — collapse paraphrases of the same surface ("the worktree discipline" → `CLAUDE.md#worktree`). Return JSON: `{role, sessions_count, surfaces: [{name, referenced, loaded_not_ref, wanted, example_note}]}` where the three counts are how many of this role's sessions placed the surface in each bucket. Flag any surface you couldn't confidently normalize in a `ambiguous: []` list. Do NOT trim/judge — just tally.
+> **Acceptance criteria (address each in your return):** (a) every log matching the glob was read; (b) the 3-bucket section was located in each log (or the log noted as lacking it); (c) every named surface in all three buckets was extracted + normalized to canonical form; (d) un-normalizable surfaces are in `ambiguous`. **Evidence to include in the return:** `logs_read` (int), `logs_with_section` (int), `surfaces_extracted` (int), plus the `ambiguous` list. Return **data only** — no prose, no session log, no code, no judgement of trim-worthiness (that's Phase 3, CIO).
 
 ### Phase 2 — Aggregate (CIO, in-session)
 Merge the per-cluster JSON → a master per-surface table: `surface → {total_referenced, total_loaded_not_ref, total_wanted, role_spread (# distinct roles referencing), first_seen, last_seen}`. Reconcile the `ambiguous` lists into the canonical surface set. Commit the master table to the analysis doc.
@@ -45,6 +46,26 @@ Per surface, assign:
 
 ### Phase 4 — Recommend + route (CIO)
 Write the analysis report: the master table + the four classification lists + concrete progressive-loading recommendations (the proposed always-load set / demand-load set / create set) + token-savings estimate. File the **implementation follow-up issue** (propose-and-diff; owner-gated per surface). Memo Docs (pilot owner, co-author offer) + HOST (trust-flags).
+
+## Assumptions verified before building (Phase-1 analog — audit-cascade)
+- **Corpus exists + size**: 135 logs carry the 3-bucket section (`grep -rl "Memory & briefing surfaces referenced" dev/2026/` confirmed 2026-06-17).
+- **Format**: the `## Memory & briefing surfaces referenced this session` 3-bucket schema (pilot tracker confirms).
+- **Inputs readable**: pilot tracker + #974 read.
+
+## Success criteria
+- Every surface appearing in the corpus is classified into exactly one of {load-bearing, dead-weight, gap, trust-flag}.
+- A concrete recommended **always-load set / demand-load set / create set**, each with the evidence (counts + role_spread) behind it.
+- A **token-savings estimate** for the demand-load recommendations (the PM-ultra-high payoff).
+- Docs (pilot owner) + HOST (trust lens) looped with findings.
+- Implementation filed as a **separate owner-gated child issue** (propose-and-diff) — this analysis ships recommendations, not removals.
+
+## Phase estimates (rough) + validation
+~5 gather subagents (P1, parallel/minutes) · P2 aggregate ~1 fire · P3 classify ~1 fire · P4 recommend+route ~1 fire; phase-boundary commits → spans fires safely. **Validation ("test" analog):** normalization spot-check (~10 names across clusters collapsed correctly + `ambiguous` reconciled not dropped); role-spread sanity (no load-bearing call on a single role's count); recency check (flag May-only surfaces); total reconciliation (Σ per-cluster sessions == 135 — no cluster silently dropped).
+
+## STOP conditions (escalate to PM, don't push through)
+- >~20% of surfaces un-normalizable → canonical approach too loose; STOP before classifying on noise.
+- 3-bucket format varies enough across roles that extraction is unreliable → STOP + report the format-drift (itself a finding).
+- A recommendation would trim a **safety / identity / discipline** surface on low-reference-count → STOP; that's a HOST trust-flag, never an auto-trim.
 
 ## Outputs
 - `docs/internal/operations/memory-eval-analysis-2026-06-17.md` (master table + classification + recommendations).
