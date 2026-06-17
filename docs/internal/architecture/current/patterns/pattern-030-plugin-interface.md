@@ -1,7 +1,7 @@
 # Pattern-030: Plugin Interface
 
 ## Status
-Experimental (June 3 vision, partially implemented in GitHub integration)
+**Emerging** — partially implemented (GitHub integration + the piper-morgan plugin surface); refreshed 2026-06-17 (was "Experimental, June 3 vision")
 
 ## Context
 To avoid vendor lock-in and enable extensibility across PM tools, Piper Morgan needs a plugin architecture where integrations (GitHub, Jira, Notion, Slack) are pluggable components rather than hardcoded dependencies. This pattern defines the interface contract for plugins.
