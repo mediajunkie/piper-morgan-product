@@ -11,13 +11,14 @@ ruling 2026-06-16).
 
 from __future__ import annotations
 
+import os
 from typing import Optional, Set, Union
 from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from services.database.models import DocumentDB
+from services.database.models import DocumentDB, User
 
 
 def _as_uuid_or_none(value: Union[str, UUID, None]) -> Optional[UUID]:
@@ -34,6 +35,24 @@ def _as_uuid_or_none(value: Union[str, UUID, None]) -> Optional[UUID]:
         return UUID(value)
     except (ValueError, TypeError, AttributeError):
         return None
+
+
+async def resolve_pm_owner_id(session: AsyncSession) -> Optional[UUID]:
+    """Resolve the configured PM's users.id — the doc-store owner for CLI ingest + backfill.
+
+    Resolution order (alpha-scoped; evolves to a formal config / tenant_id per
+    ADR-071 D7):
+      1. env ``PIPER_PM_USER_ID`` (explicit override), if a valid UUID
+      2. the user with ``username == 'xian'`` (the configured PM in alpha)
+      3. None — graceful. ``owner_id`` is provenance; reads still work via
+         ``is_global_pm_domain``, so an unresolved PM never breaks readability.
+    """
+    override = os.environ.get("PIPER_PM_USER_ID")
+    parsed = _as_uuid_or_none(override) if override else None
+    if parsed is not None:
+        return parsed
+    result = await session.execute(select(User.id).where(User.username == "xian"))
+    return _as_uuid_or_none(result.scalar_one_or_none())
 
 
 class DocumentRepository:

@@ -13,6 +13,9 @@ from typing import Any, Dict, List, Optional
 
 from fastapi import UploadFile
 
+from services.database.session_factory import AsyncSessionFactory
+from services.repositories.document_repository import DocumentRepository
+
 from .ingestion import get_ingester
 
 logger = logging.getLogger(__name__)
@@ -21,19 +24,32 @@ logger = logging.getLogger(__name__)
 class DocumentService:
     """Handle document upload and processing operations"""
 
-    def __init__(self):
-        self.ingester = get_ingester()
+    def __init__(self, session_scope=None, ingester=None):
+        # ingester + session_scope are injectable for tests (avoid ChromaDB/embeddings
+        # init and let the relational anchor write target an in-memory SQLite engine).
+        self.ingester = ingester if ingester is not None else get_ingester()
+        self._session_scope = session_scope or AsyncSessionFactory.session_scope
 
-    async def upload_pdf(self, file: UploadFile, metadata: Dict[str, Any]) -> Dict[str, Any]:
+    async def upload_pdf(
+        self,
+        file: UploadFile,
+        metadata: Dict[str, Any],
+        owner_id: Any = None,
+        is_global_pm_domain: bool = False,
+    ) -> Dict[str, Any]:
         """
-        Handle PDF upload with proper file management
+        Handle PDF upload (web/UploadFile path) with proper file management.
+
+        #1238 (ADR-071 P2): writes the relational anchor row (owner_id +
+        is_global_pm_domain) after ChromaDB ingest. Defaults are safe — a web
+        upload is a user's private doc (owner-scoped, not global) unless the
+        caller explicitly opts into the PM-domain by passing is_global_pm_domain=True.
 
         Args:
             file: Uploaded PDF file
             metadata: Document metadata (title, author, domain, etc.)
-
-        Returns:
-            Dict with upload results and document info
+            owner_id: provenance principal (users.id); None = unknown (m-40 graceful)
+            is_global_pm_domain: D1 exemption — readable by any principal when True
         """
         # Validate file type
         if not file.filename.lower().endswith(".pdf"):
@@ -50,8 +66,14 @@ class DocumentService:
                     f"Processing document: {file.filename} into domain: {metadata.get('knowledge_domain')}"
                 )
 
-                # Process the document
-                result = await self.ingester.ingest_pdf(tmp_file_path, metadata)
+                # Ingest into ChromaDB + write the relational anchor row
+                result = await self._ingest_and_anchor(
+                    tmp_file_path,
+                    metadata,
+                    owner_id=owner_id,
+                    is_global_pm_domain=is_global_pm_domain,
+                    source=file.filename,
+                )
 
                 return {
                     "status": "success",
@@ -66,6 +88,85 @@ class DocumentService:
                 # Always clean up temp file
                 if os.path.exists(tmp_file_path):
                     os.unlink(tmp_file_path)
+
+    async def ingest_path(
+        self,
+        file_path: str,
+        metadata: Dict[str, Any],
+        owner_id: Any = None,
+        is_global_pm_domain: bool = False,
+    ) -> Dict[str, Any]:
+        """
+        Path-based ingest for the CLI (the operator already has a real file path).
+
+        Replaces the previous CLI call to ``upload_pdf(file_path, ...)`` which passed
+        a string to an ``UploadFile``-typed method (a no-op/crash). #1238 also writes
+        the relational anchor row. CLI-ingested docs are PM-domain knowledge base, so
+        the CLI passes ``is_global_pm_domain=True`` + the configured-PM ``owner_id``.
+        """
+        if not file_path.lower().endswith(".pdf"):
+            raise ValueError("Only PDF files are currently supported")
+        result = await self._ingest_and_anchor(
+            file_path,
+            metadata,
+            owner_id=owner_id,
+            is_global_pm_domain=is_global_pm_domain,
+            source=file_path,
+        )
+        return {
+            "status": result.get("status", "success"),
+            "message": f"Document '{metadata.get('title', file_path)}' successfully processed",
+            "details": result,
+        }
+
+    async def _ingest_and_anchor(
+        self,
+        file_path: str,
+        metadata: Dict[str, Any],
+        owner_id: Any = None,
+        is_global_pm_domain: bool = False,
+        source: Any = None,
+    ) -> Dict[str, Any]:
+        """Ingest into ChromaDB, then write the relational anchor row (#1238)."""
+        result = await self.ingester.ingest_pdf(file_path, metadata)
+        base_id = result.get("document_id")
+        if base_id:
+            await self._anchor_document(
+                chromadb_base_id=base_id,
+                owner_id=owner_id,
+                is_global_pm_domain=is_global_pm_domain,
+                title=metadata.get("title"),
+                source=source or file_path,
+            )
+        return result
+
+    async def _anchor_document(
+        self,
+        chromadb_base_id: str,
+        owner_id: Any,
+        is_global_pm_domain: bool,
+        title: Any,
+        source: Any,
+    ) -> None:
+        """Write/refresh the relational anchor row for an ingested document (ADR-071 P2).
+
+        Best-effort: ChromaDB and Postgres are not transactional together, so a failed
+        anchor write logs + leaves the doc unanchored (fail-safe — it won't surface in
+        scoped reads until re-ingested, which is idempotent) rather than rolling back a
+        successful ChromaDB ingest.
+        """
+        try:
+            async with self._session_scope() as session:
+                repo = DocumentRepository(session)
+                await repo.upsert_document(
+                    chromadb_base_id,
+                    owner_id=owner_id,
+                    is_global_pm_domain=is_global_pm_domain,
+                    title=title,
+                    source=source,
+                )
+        except Exception as e:  # pragma: no cover - defensive (fail-safe, logged)
+            logger.error(f"Document anchor write failed for {chromadb_base_id}: {e}")
 
     async def find_decisions(self, topic: str = "", timeframe: str = "last_week") -> Dict[str, Any]:
         """Find decisions using existing ChromaDB vector search + metadata filtering

@@ -24,7 +24,10 @@ from sqlalchemy.ext.asyncio import (  # noqa: E402
 )
 
 from services.database.models import DocumentDB  # noqa: E402
-from services.repositories.document_repository import DocumentRepository  # noqa: E402
+from services.repositories.document_repository import (  # noqa: E402
+    DocumentRepository,
+    resolve_pm_owner_id,
+)
 
 pytestmark = pytest.mark.asyncio
 
@@ -90,3 +93,56 @@ class TestReadableBaseIds1238:
     async def test_uuid_object_principal_accepted(self, session):
         repo = await _seed(session)
         assert await repo.get_readable_base_ids(uuid.UUID(_ALPHA)) == {"g1", "p_alpha"}
+
+
+class _FakeResult:
+    def __init__(self, val):
+        self._val = val
+
+    def scalar_one_or_none(self):
+        return self._val
+
+
+class _FakeSession:
+    """Minimal async-session stub for resolve_pm_owner_id logic tests.
+
+    The real `users` table can't be created on SQLite (User.id is postgresql.UUID,
+    which doesn't compile on SQLite), so we stub the DB boundary here and verify
+    the resolution LOGIC. The real query is exercised against dev Postgres by the
+    Phase-4 backfill (resolve → a25db09c / username 'xian').
+    """
+
+    def __init__(self, scalar_value=None):
+        self._scalar_value = scalar_value
+        self.executed = False
+
+    async def execute(self, _stmt):
+        self.executed = True
+        return _FakeResult(self._scalar_value)
+
+
+class TestResolvePmOwnerId1238:
+    async def test_resolves_by_username_query(self):
+        sess = _FakeSession(scalar_value=uuid.UUID(_ALPHA))
+        resolved = await resolve_pm_owner_id(sess)
+        assert str(resolved) == _ALPHA
+        assert sess.executed  # the username query ran
+
+    async def test_env_override_short_circuits_before_query(self, monkeypatch):
+        monkeypatch.setenv("PIPER_PM_USER_ID", _BETA)
+        sess = _FakeSession(scalar_value=uuid.UUID(_ALPHA))
+        resolved = await resolve_pm_owner_id(sess)
+        assert str(resolved) == _BETA
+        assert not sess.executed  # valid override returns before any DB query
+
+    async def test_invalid_env_falls_through_to_username_query(self, monkeypatch):
+        monkeypatch.setenv("PIPER_PM_USER_ID", "not-a-uuid")
+        sess = _FakeSession(scalar_value=uuid.UUID(_ALPHA))
+        resolved = await resolve_pm_owner_id(sess)
+        assert str(resolved) == _ALPHA  # invalid override ignored → username query
+        assert sess.executed
+
+    async def test_none_when_query_empty(self):
+        sess = _FakeSession(scalar_value=None)
+        resolved = await resolve_pm_owner_id(sess)
+        assert resolved is None
