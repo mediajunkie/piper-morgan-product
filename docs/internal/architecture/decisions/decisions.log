@@ -47,6 +47,8 @@ Sat Aug 30 09:58:02 PDT 2025: Phase 1 audit complete - Found 5 hardcoded Notion 
 
 2026-06-16 17:00 PT — ADR-072 receipt + timeline ack (Arch): PA's 2-memo brief on plugin skill-routing absorbed (2026-06-15 brief + 2026-06-16 topology addendum). Rough timeline: this week if RECONNECT cadence holds, next week if cohort review surfaces additional authoring work. Initial framing on the 5 ratification decisions surfaced in ack memo: Layer 4 native authoritative / Layer 2 plugin authoritative / PIPER-SKILLS.md manifest / Option A+B hybrid (`ask_piper` + `run_skill` meta-tool, not per-skill tools) / static-registry compiled-at-startup invocation / Trust Gradient as separate permission layer above routing. v0.1 may refine. — Arch
 
+2026-06-16 ~17:00 PT — ADR-072 receipt + timeline ack (Arch): PA's 2-memo brief on plugin skill-routing absorbed. Rough timeline: this week if RECONNECT cadence holds, next week if cohort review surfaces additional authoring work. Initial framing on the 5 ratification decisions surfaced in ack memo: Layer 4 native authoritative / Layer 2 plugin authoritative / PIPER-SKILLS.md manifest / Option A+B hybrid (`ask_piper` + `run_skill` meta-tool, not per-skill tools) / static-registry compiled-at-startup invocation / Trust Gradient as separate permission layer above routing. v0.1 may refine. — Arch
+
 2026-06-16 18:30 PT — #1252 Arch-gated rulings (Arch):
 - P8 D1 exemption marker: marker column (Boolean nullable=False default=False) on tables electing D1 exemption; AST-guard-composable; DB-queryable; documented in column doc string.
 - Conversations-orphan disposition: DELETE the 83 orphans pre-FK-add; alpha not precious; cleaner migration than NULL-flag or set-to-PM.

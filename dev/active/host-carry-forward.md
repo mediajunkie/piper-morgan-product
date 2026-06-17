@@ -19,12 +19,11 @@
 
 ## Active with PM (teed, awaiting PM)
 
-- **#1058 template hygiene — RECOMMEND CLOSE, teed to PM.** Trim shipped (`3d16873e8`); Lead + Docs + Arch all converged on close. Deferred items in **#1206**. PM closes with one word.
 - **Ship #047 HOST workstream review** — DONE/filed to Exec (`dfd9a25be`).
 
 ## PM-blocked / awaiting-PM (gated, do not self-advance)
 
-- **dev/alpha privacy decision**: `dev/alpha/alpha-tester-roster.md` git-tracked but claims "gitignored" (tester PII committed). `dev/alpha/host-alpha-reping-tiering-2026-06-08.md` (Michelle→Tier 2) **held UNCOMMITTED** pending PM's keep-tracked+fix-note vs gitignore+scrub call. Do NOT commit additional tester PII until PM decides.
+- **dev/alpha privacy — RESOLVED 2026-06-16**: files are gitignored + not tracked (confirmed via git ls-files). Gitignore working correctly; no further PM action needed. Michelle→Tier 2 update stays on disk (gitignored). No additional tester PII to be committed.
 - **Wire #1178-recurring to cc/assign HOST** (so role-health-check auto-issues route to me, not just PM).
 - **Thin-prompt cohort-rollout broadcast nod** (PM nod received June 13; proposal updated June 15 — Model A → Option B, status notes PM-nodded; CIO carries mechanics of cohort broadcast).
 - **Role-portfolio framework** — **RATIFIED 2026-06-14** (PM). Framework published `docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md`; HOST pilot portfolio refreshed `docs/briefing/ROLE-PORTFOLIO-HOST.md`. Exec kickoff BLESSED (June 15); waiting on Lead Dev + CIO pilot portfolios. HOST reviews each within one fire of receipt; batch cohort kickoff after pilots clear.
