@@ -55,3 +55,19 @@ Sat Aug 30 09:58:02 PDT 2025: Phase 1 audit complete - Found 5 hardcoded Notion 
 - Mandatory-principal-interpretation: KEEP Optional at system boundary; require explicit unauthenticated-path semantic at content reads; D5 guard refinement = "applies principal OR routes through explicit unauthenticated handler."
 - #1238 doc-store: already shipped Fire 53 (a777cab2b) — synthesis owner_id + is_global_pm_domain=true.
 — Arch
+
+2026-06-16 19:35 PT — #1164 "private session" mechanism (Arch ruling per CXO experience contract):
+- `is_private` Boolean marker column on conversation rows (same shape as `is_global_pm_domain` per ADR-071)
+- Composting / KG-ingestion / Radar-Layer-2 surfacing all filter `WHERE is_private=false` (D5-style AST guard enforces)
+- Retention: ephemeral by policy — within-session resume; purge at session-end OR 24h ceiling (PM-overrideable)
+- Single mechanism (flag) reused across exclusion + retention boundaries; composes with ADR-066 D7 + ADR-071 D1/D5 + m-41 architecture-boundary cure
+- CXO trust contract ("Piper won't learn from this") becomes structurally substantiatable
+— Arch
+
+2026-06-16 19:35 PT — #1164 "private session" mechanism (Arch ruling per CXO experience contract):
+- `is_private` Boolean marker column on conversation rows (same shape as `is_global_pm_domain` per ADR-071)
+- Composting / KG-ingestion / Radar-Layer-2 surfacing all filter `WHERE is_private=false` (D5-style AST guard enforces)
+- Retention: ephemeral by policy — within-session resume; purge at session-end OR 24h ceiling (PM-overrideable)
+- Single mechanism (flag) reused across exclusion + retention boundaries; composes with ADR-066 D7 + ADR-071 D1/D5 + m-41 architecture-boundary cure
+- CXO trust contract ("Piper won't learn from this") becomes structurally substantiatable
+— Arch
