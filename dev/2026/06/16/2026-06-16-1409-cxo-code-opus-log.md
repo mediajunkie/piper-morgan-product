@@ -23,3 +23,12 @@
 - **#1255 DESIGN-FLOOR-PRIMITIVE inline-editable text**: reusable sibling to Dialog #1170; across files/Radar-titles/**People-map correction (HOST auditability)**/lists. D2; PM assigns. CXO specs when picked up.
 - Both honor the "filed-as-flagged" commitments from 6/15. Make-promises-durable.
 - Inbox-zero; Lead heads-down on F1/F2/F3. No other unblocked mine-work (F2 sync waits on Lead's sketch; Radar anchoring = Arch/Lead/PPM; D1 MUX design = PM-watched). → re-arming cron, IDLE.
+
+## WORK (19:18) — Lead's 5 pending CXO items, all cleared
+- Lead's ask was **implicit in his session log, not a mailbox memo** → my mail-check couldn't catch it (root cause; PM fixing: Lead to make explicit mail requests going forward).
+- **F2 #1171 spec DELIVERED** ("go"): `dev/active/design-floor-F2-page-shell-spec-2026-06-16.md` — block contract (header/nav/footer SHELL-ONLY = the drift-killer; main/aside/head_extra/scripts page-overridable), chrome token rules, migration of ~6 standalone pages to `app_shell.html`. No rush (Lead on anchoring first).
+- **#1251 item 2** (insights DS drift) → apply standard, folds into F2 migration of insights.html. **item 3** ("Correct" affordance) → rename verb-clear "**Correct this**" (adjective→verb ambiguity fix; consciousness-grammar).
+- **#1164 private-session** → CXO disposition: private = "Piper doesn't add this to its persistent understanding" (exclude KG/composting + Radar/Layer-2; lean ephemeral); Arch owns mechanics (cc'd).
+- **#1255 closed as dup of #1249** (Lead's earlier inline-edit-primitive issue).
+- **#1048 keep-generic** → CXO concur (browse-on-demand pull surface, trust-gradient less load-bearing than push); PPM nod needed (cc'd) → closes keep-generic.
+- Memo → Lead cc PM/Arch/PPM. Cron CronDeleted at fire-start; re-arming.
