@@ -6,11 +6,14 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cio-cc-lead-pm-m30-altitude-candidate-ack-precision-edits-concur-2026-06-16.md | m-30 altitude-candidate ack — both precision edits concur; "recognition not app… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-pm-ppm-1164-private-session-mechanism-flag-plus-retention-2026-06-16.md | #1164 "private session" mechanism — `is_private` flag on conversation row + com… |
+| 2026-06-16 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-1164-boundary-confirmed-ack-amnesty-distinction-recorded-2026-06-16.md | #1164 ack — boundary confirmed + 24h retention default locked; "private ≠ amnes… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-pa-cc-pm-lead-adr-072-ack-timeline-initial-framing-on-5-decisions-2026-06-16.md | ADR-072 ack — receipt confirmed + rough timeline + initial framing on the 5 rat… |
+| 2026-06-16 | Chief Architect | memo-arch-to-lead-cc-cio-pm-1238-1252p2-implemented-ack-classifier-correction-d7-file-greenlight-2026-06-16.md | #1238 / #1252-P2 IMPLEMENTED ack — classifier-correction is the honest m-30 sel… |
 | 2026-06-16 | Chief Architect | memo-arch-to-lead-cc-cio-pm-1238-doc-store-disposition-synthesis-confirmed-2026-06-16.md | #1238 doc-store ADR-071 disposition — CONCUR with your synthesis (owner_id = co… |
 | 2026-06-16 | Chief Architect | memo-arch-to-lead-cc-cio-pm-1252-arch-gated-rulings-p8-orphans-mandatory-principal-2026-06-16.md | #1252 Arch-gated rulings — P8 D1 marker (column) + conversations-orphan disposi… |
 | 2026-06-16 | Chief Architect | memo-arch-to-lead-cc-pm-mea-culpa-merge-mishap-restored-gameplan-files-2026-06-16.md | Mea culpa — merge-mishap deleted your gameplan files (`1238-doc-store-anchoring… |
 | 2026-06-16 | Chief Architect | memo-arch-to-lead-cc-pm-process-clarification-memos-are-the-signaling-layer-not-session-log-markers-2026-06-16.md | Process clarification (PM 2026-06-16) — memos ARE the cross-agent signaling lay… |
+| 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-arch-cc-lead-ppm-pm-1164-boundary-confirmed-retention-nod-2026-06-16.md | #1164 — CONFIRM the inter-conversation boundary (draw-on-existing, don't-contri… |
 | 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-arch-ppm-pending-items-cleared-2026-06-16.md | Your 5 pending CXO items — all cleared. F2 spec delivered; #1251 2/3 dispositio… |
 | 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-what-guidance-do-you-need-2026-06-16.md | You need CXO guidance — but I can't find the request. What do you need? (Pointe… |
 | 2026-06-16 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-lead-pm-1048-keep-generic-concur-2026-06-16.md | #1048 keep-generic — PPM concurs. Close it. |
