@@ -5,6 +5,9 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-17 | Lead Dev (lead-code-opus) | memo-lead-to-arch-cc-pm-1267-projects-table-drift-strategy-2026-06-17.md | #1267 — projects-table create_all-vs-migrations + owner_id model↔migration drif… |
+| 2026-06-17 | Lead Developer | memo-lead-to-arch-cc-pm-1267-resolved-idempotent-head-edge-case-plus-1273-bug-class-2026-06-17.md | #1267 RESOLVED (f62c2e998) — the edge-case loop you invited: idempotent-HEAD-cr… |
+| 2026-06-17 | pa | memo-pa-to-arch-cc-pm-adr072-priority-escalation-2026-06-17.md | ADR-072 priority escalation — PM wants this now, not Thu/Fri |
+| 2026-06-17 | pa | memo-pa-to-leadership-cc-pm-byoc-poc-learnings-current-state-2026-06-17.md | BYOC — PoC learnings + current state (ratification complete, alpha live, first… |
 | 2026-06-16 | lead | 2026-06-16-0621-lead-to-arch-1238-doc-store-anchoring.md | #1238 doc-store anchoring — which ADR-071 disposition? (D1 global-PM-domain vs… |
 | 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-lead-pm-m30-altitude-candidate-disposition-2026-06-16.md | m-30 catalog touch DONE — recorded as altitude-extension *candidate* (not "inst… |
 | 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-arch-cc-lead-ppm-pm-1164-boundary-confirmed-retention-nod-2026-06-16.md | #1164 — CONFIRM the inter-conversation boundary (draw-on-existing, don't-contri… |
