@@ -88,10 +88,10 @@ this was a live-state pass and what was verified.
 
 ## Step 3 — Triage into buckets
 
-Sort every item into one of these, by what it asks of the PM:
+Sort every item into one of these, by what it asks of the PM (priority order — **blockers first, always at the top**):
 
-- **🔴 Decision** — needs the PM's call. (If none after verification, say so loudly — an empty decision
-  queue is a feature, not an empty section.)
+- **🛑 Blocker** — work that is STUCK until someone acts. **Renders at the TOP of the board, above everything else** (PM 2026-06-17: *"blockers should be at the top of my attention list"*). **Source**: blockers arrive via **active mail — a role memos the gating role, cc Exec** (the memo-the-gate discipline), NOT the per-role `duty-cycle-escalations-{role}.md` docs — those are scoped to *non-blocking* PM-input by construction (a 2026-06-17 finding: the rollup never carried blockers because the docs exclude them). So for this bucket, sweep your **exec inbox + cc'd blocker memos**, not just the attention docs. If none after the sweep, render "no blocked work" — but the section is always first.
+- **🔴 Decision** — needs the PM's call (the work isn't necessarily stuck). (If none after verification, say so loudly — an empty decision queue is a feature, not an empty section.)
 - **🟡 Drift / awareness** — worth knowing, no decision required (staleness flags, a role's cron not
   registered, an FYI).
 - **⚪ Clean** — roles with no open PM item; one compact line each.
@@ -149,10 +149,14 @@ color-coding and the legend — they carry the at-a-glance meaning.
   <h1>Cohort Attention Rollup</h1>
   <p class="meta">Compiled by {ROLE} · <b>{DATE TIME}</b> · live-state pass · source: {N} duty-cycle attention docs</p>
   <p class="legend">
+    <span>🛑 <b>Blocker</b> — work stuck (TOP)</span>
     <span>🔴 <b>Decision</b> — needs your call</span>
     <span>🟡 <b>Drift/awareness</b> — worth knowing, no decision</span>
     <span>⚪ <b>Clean</b> — no open PM item</span>
   </p>
+
+  <h2>🛑 Blockers — work that's stuck (always FIRST)</h2>
+  <!-- one .item (red border-left) per blocker, sourced from exec-cc'd blocker memos (NOT the non-blocking attention docs); if none: <div class="item clear"><p class="bigclear">✅ No blocked work right now.</p></div> -->
 
   <h2>🔴 Decisions awaiting you</h2>
   <!-- one .item per decision; if none: <div class="item clear"><p class="bigclear">✅ Nothing currently needs your decision.</p></div> -->
