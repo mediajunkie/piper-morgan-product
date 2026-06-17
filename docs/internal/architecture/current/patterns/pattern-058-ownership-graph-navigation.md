@@ -2,7 +2,7 @@
 
 ## Status
 
-**Emerging** | Proven in #435
+**Proven** — demonstrated in #435 Ownership-Model (promoted 2026-06-17, instance verified)
 
 ## Context
 

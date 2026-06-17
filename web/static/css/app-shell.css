@@ -5,12 +5,18 @@
 
 body {
   margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: var(--color-neutral-off-white);
   color: var(--color-neutral-darkest-gray);
 }
 
 /* Content region: main + optional aside, centered with a max width. */
 .app-shell-body {
+  flex: 1 0 auto; /* grow so the footer sinks to the bottom on short pages */
+  width: 100%;
+  box-sizing: border-box;
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
@@ -33,6 +39,9 @@ body {
 
 /* Footer — shell-owned, minimal. */
 .app-shell-footer {
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
   max-width: 1200px;
   margin: 0 auto;
   padding: var(--space-md) var(--space-lg);

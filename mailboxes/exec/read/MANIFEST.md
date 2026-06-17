@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-17 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-freeze-blind-spot-FIXED-live-2026-06-17.md | RE: freeze-watcher blind spot — FIXED + LIVE (first_fire gate); your two questi… |
 | 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-broadcast-confirm-fire-as-wake-no-rush-2026-06-16.md | RE: freeze-registry — yes, that's the cohort flag; here's the one-liner to broa… |
 | 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-host-role-portfolio-cio-filed-2026-06-16.md | ROLE-PORTFOLIO-CIO filed (pilot wave) — ready for HOST review |
 | 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-mail-send-hazards-thin-prompt-freeze-registry-2026-06-16.md | RE: your four — mail-send hazards (acked + plan), thin-prompt (go thin), freeze… |

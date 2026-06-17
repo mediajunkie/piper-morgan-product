@@ -2,7 +2,7 @@
 
 ## Status
 
-**Emerging** | Proven in #433
+**Proven** — demonstrated in #433 Core-Object-Model-Grammar (promoted 2026-06-17, instance verified)
 
 ## Context
 

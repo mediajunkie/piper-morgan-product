@@ -10,6 +10,7 @@ deleting the user-facing notification, and so the insights.html asset wiring
 from pathlib import Path
 
 import pytest
+from jinja2 import Environment, FileSystemLoader
 
 ROOT = Path(__file__).resolve().parents[3]
 
@@ -30,11 +31,17 @@ def home() -> str:
 
 # --- insights.html: confirm + 2 prompts + alert, plus the asset include --------
 
-def test_insights_loads_dialog_assets(insights):
-    # Self-contained Dialog.open needs dialog.js (+ css); insights.html doesn't
-    # include the #confirmation-dialog partial, so these are the only requirement.
-    assert "/static/js/dialog.js" in insights, "insights.html must load dialog.js"
-    assert "/static/css/dialog.css" in insights, "insights.html must load dialog.css"
+def test_insights_loads_dialog_assets():
+    # Self-contained Dialog.open needs dialog.js (+ css). As of F2 #1171 these are
+    # SHELL-OWNED (app_shell.html loads them once; the per-page include was deduped),
+    # so the real requirement — Dialog assets reach the insights page — is verified by
+    # RENDERING insights.html through the shell, not by scanning its source.
+    env = Environment(loader=FileSystemLoader(str(ROOT / "templates")), autoescape=True)
+    html = env.get_template("insights.html").render(
+        trust_stage=1, user={"username": "xian", "user_id": "u1", "is_admin": False}
+    )
+    assert "/static/js/dialog.js" in html, "insights must load dialog.js (via app_shell)"
+    assert "/static/css/dialog.css" in html, "insights must load dialog.css (via app_shell)"
 
 
 def test_insights_delete_uses_dialog_confirm(insights):

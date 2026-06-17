@@ -42,27 +42,30 @@
 <body>
 <div class="wrap">
   <h1>Exec attention board</h1>
-  <p class="ts">as of Tuesday June 16, ~10:05 PM &middot; day-close reconcile &mdash; CIO drained the held queue; escalations-docs fold proposed</p>
+  <p class="ts">as of Wednesday June 17, ~7:25 AM &middot; full cohort sweep (10 attention docs read + GitHub-verified) &mdash; decision queue clean; Ship #047 voice-pass is the one time-relevant item</p>
 
   <div class="metrics">
+    <div class="metric"><p class="lbl">Blockers</p><p class="num" style="color:#c0392b">0</p></div>
     <div class="metric"><p class="lbl">Needs you</p><p class="num" style="color:#3b6d11">0</p></div>
     <div class="metric"><p class="lbl">Voice-pass</p><p class="num" style="color:#854f0b">1</p></div>
     <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">8</p></div>
-    <div class="metric"><p class="lbl">Clean</p><p class="num" style="color:#3b6d11">1</p></div>
   </div>
 
+  <h2><span class="dot" style="background:#c0392b"></span>Blockers &middot; work that's stuck</h2>
+  <p class="clear"><span style="font-size:16px">&#10003;</span> No blocked work right now. Blockers live at the top &mdash; the moment any role memos one to the gate (cc Exec), it lands here first, above everything else.</p>
+
   <h2><span class="dot" style="background:#639922"></span>Needs your decision</h2>
-  <p class="clear"><span style="font-size:16px">&#10003;</span> Verified clean via a full cohort sweep &mdash; nothing needs your decision. Cleared several stale-doc phantoms: #1165 / #1193 / #1133 are closed; the "$70/mo Routines watchdog" is superseded by the shipped launchd watcher; PDR-005 already ratified. One parked, non-urgent call remains: whether Exec co-drives the wake-this-session design &mdash; yours when you want it, not a blocker.</p>
+  <p class="clear"><span style="font-size:16px">&#10003;</span> Verified clean via a full cohort sweep (all 10 attention docs + GitHub) &mdash; nothing needs your decision. The stale docs surfaced candidates that verification cleared: #1193 / #1079 closed (the Arch "recover lost user-corrections" question is moot &mdash; issues closed + the m-41 guard prevents recurrence); the role-portfolio framework is ratified + in pilot (not awaiting ratification); the "$70/mo watchdog" is superseded by the shipped watcher; the Ship #047 spine is decided. One parked, non-urgent call: Exec co-driving the wake-this-session design &mdash; yours when you want it.</p>
 
   <h2><span class="dot" style="background:#854f0b"></span>Needs your voice-pass</h2>
   <div class="card">
     <div class="top"><span class="ttl">Ship #047 &mdash; "the team learned to catch itself"</span><span class="pill bg-amber">voice-pass</span></div>
-    <p>Comms's editorial pass done; accuracy fix applied. Clean and ready for your voice-pass &rarr; publish Wed Jun 17. At <code>docs/public/comms/drafts/weekly-ship-047-draft-2026-06-12.md</code>.</p>
+    <p>Comms's editorial pass done; accuracy fix applied. Clean and ready for your voice-pass &mdash; <b>publish target is TODAY (Wed Jun 17)</b>, so it's the one time-relevant item on your plate. At <code>docs/public/comms/drafts/weekly-ship-047-draft-2026-06-12.md</code>.</p>
   </div>
 
   <h2><span class="dot" style="background:#185fa5"></span>In flight &middot; for awareness</h2>
   <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Role-portfolio pilot &mdash; CIO's filed (1 of 2)</span><p>CIO filed <code>ROLE-PORTFOLIO-CIO.md</code> 6/16 (unilateral mandate = automation-integrity); HOST reviews it. Lead Dev's is queued post-D1. Once both pilots land + HOST reviews, the other 8 roles batch. Kickoff was HOST-blessed with the framework published.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Gap-C / dormancy cure &mdash; LIVE (exec watched)</span><p>CIO built the freeze-registry (my design + an m-36 refinement) and it's live &mdash; the hourly launchd watcher now watches exec (6h threshold). Today's ~5.8h session suspension was a clean test: just under threshold, self-recovered, no false alarm &mdash; a true &gt;6h freeze would have pinged you. The dormancy risk that cost ~29.5h last week is now covered.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Gap-C / dormancy cure &mdash; LIVE, blind spot FIXED</span><p>This morning's overnight dormancy exposed a blind spot (a role that cleanly STOPped then misses its morning START read as "not started yet," so the watcher didn't ping &mdash; you caught it manually). <b>CIO fixed it within the hour</b>: a `first_fire` gate (exec 06:32) now flags a missed START. I verified it's live (registry + freeze-check). Both Gap-C modes &mdash; mid-day freeze AND overnight-into-morning dormancy (the ~29.5h case) &mdash; are now covered. (Detection is hourly, so ~1h latency &mdash; fine for hours-long dormancy.)</p></div></div>
   <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Shared-index race &mdash; fixed (v2)</span><p>CIO shipped <code>mail-send.sh</code> v2 fixing both hazards I flagged (explicit-pathspec staging + no foreign-WIP stash). The deeper cure (push-to-ref unification) is the remaining structural item &mdash; no action from you; benign throughout, no data lost.</p></div></div>
   <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">BYO-colleague &mdash; mostly resolved</span><p>Q1 + Q2 ratified 6/13; Q3 is HOST's welfare-tier model (v0.1 draft, requirements mostly PM-delegated for now) &mdash; evolving, not a hard gate.</p></div></div>
   <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">BYOC Phase 2 &mdash; ratified + live</span><p>9/9 ratified (closed 6/14); hosted endpoint live at alpha.pipermorgan.ai, confirmed end-to-end. Next phases gated on other issues (2b marketplace #1162; 2c per-user keys #1185) &mdash; no action from you.</p></div></div>

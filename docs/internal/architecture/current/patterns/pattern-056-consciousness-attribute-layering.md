@@ -2,7 +2,7 @@
 
 ## Status
 
-**Emerging** | Proven in #434
+**Proven** — demonstrated in #434 Entity-with-Consciousness (promoted 2026-06-17, instance verified)
 
 ## Context
 

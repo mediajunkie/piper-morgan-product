@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-cohort-fire-as-wake-not-timebox-reminder-2026-06-16.md | Cohort reminder — a cron fire is a WAKE, not a time-box (+ the no-rush correcti… |
+| 2026-06-17 | Exec (Chief of Staff) | memo-exec-to-comms-cc-pm-how-to-surface-blocked-work-memo-the-gate-2026-06-17.md | How to surface blocked work so it reaches PM's dashboard — memo the gate, don't… |
