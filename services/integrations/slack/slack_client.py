@@ -17,6 +17,7 @@ import aiohttp
 from aiohttp import ClientSession, ClientTimeout
 
 from .config_service import SlackConfig, SlackConfigService
+from .mrkdwn import markdown_to_mrkdwn
 
 
 class SlackErrorType(Enum):
@@ -190,7 +191,15 @@ class SlackClient:
             )
 
     async def send_message(self, channel: str, text: str, **kwargs) -> SlackResponse:
-        """Send message to Slack channel"""
+        """Send message to Slack channel.
+
+        #1227: the floor emits GitHub-flavored markdown but Slack renders the
+        ``text`` field as mrkdwn, so normalize here — the single chokepoint that
+        response_handler + simple_response_handler both route through. (Applied
+        once per path: socket_mode_runner uses its own WebClient, not this seam,
+        and converts there — so no double-conversion.)
+        """
+        text = markdown_to_mrkdwn(text)
         data = {"channel": channel, "text": text, **kwargs}
 
         # Log the posting attempt
@@ -229,12 +238,13 @@ class SlackClient:
         Added 2026-05-17 (#1085 slice 2). Pairs with `im:history` / `mpim:history`
         scopes for the recent-activity aggregator.
         """
-        return await self._make_request(
-            "GET", "conversations.list?types=im,mpim&limit=200"
-        )
+        return await self._make_request("GET", "conversations.list?types=im,mpim&limit=200")
 
     async def get_conversation_history(
-        self, channel: str, limit: int = 50, oldest: Optional[float] = None,
+        self,
+        channel: str,
+        limit: int = 50,
+        oldest: Optional[float] = None,
         cursor: Optional[str] = None,
     ) -> SlackResponse:
         """Fetch conversation history for a channel.
