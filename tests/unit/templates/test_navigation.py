@@ -95,10 +95,12 @@ class TestNavigationTrustGating:
         assert 'data-min-trust-stage="3"' in nav_content
         assert "nav-learning" in nav_content
 
-    def test_trust_gated_class_exists(self, nav_content):
-        """Trust-gated CSS class exists for hiding items."""
-        assert ".nav-item-trust-gated" in nav_content
-        assert ".trust-visible" in nav_content
+    def test_trust_gated_class_exists(self):
+        """Trust-gated CSS rules exist (moved to nav.css by the #1271 extraction; the
+        class *usage* on <li>s + the JS still live in navigation.html)."""
+        nav_css = Path("web/static/css/nav.css").read_text()
+        assert ".nav-item-trust-gated" in nav_css
+        assert ".trust-visible" in nav_css
 
     def test_trust_stage_javascript_exists(self, nav_content):
         """JavaScript for trust-gating exists."""
@@ -134,31 +136,33 @@ class TestNavigationSearchTrigger:
 
 
 class TestNavigationVisualHierarchy:
-    """Test that nav is visually secondary to home state."""
+    """Test that nav is visually secondary to home state.
+
+    Styles moved to web/static/css/nav.css by the #1271 extraction → these assert
+    against the stylesheet now (token usage from #1264 is preserved verbatim)."""
 
     @pytest.fixture
-    def nav_content(self):
-        """Load navigation template content."""
-        nav_path = Path("templates/components/navigation.html")
-        return nav_path.read_text()
+    def nav_css(self):
+        """Load the extracted nav stylesheet (#1271)."""
+        return Path("web/static/css/nav.css").read_text()
 
-    def test_nav_has_muted_background(self, nav_content):
+    def test_nav_has_muted_background(self, nav_css):
         """Nav background is muted (not white)."""
         # #1264: tokenized — the muted nav bg now comes from a token (was #fafafa).
-        assert "background: var(--color-neutral-off-white)" in nav_content
+        assert "background: var(--color-neutral-off-white)" in nav_css
 
-    def test_nav_has_no_shadow(self, nav_content):
+    def test_nav_has_no_shadow(self, nav_css):
         """Nav has no box-shadow (less prominent)."""
-        assert "box-shadow: none" in nav_content
+        assert "box-shadow: none" in nav_css
 
-    def test_nav_links_have_muted_color(self, nav_content):
+    def test_nav_links_have_muted_color(self, nav_css):
         """Nav links use muted text color."""
         # #1264: tokenized — the muted nav-link color now comes from a token (was #5a6c7d).
-        assert "color: var(--color-text-nav)" in nav_content
+        assert "color: var(--color-text-nav)" in nav_css
 
-    def test_nav_has_smaller_height(self, nav_content):
+    def test_nav_has_smaller_height(self, nav_css):
         """Nav height is reduced (utility, not hero)."""
-        assert "height: 52px" in nav_content
+        assert "height: 52px" in nav_css
 
 
 class TestNavigationAccessibility:
