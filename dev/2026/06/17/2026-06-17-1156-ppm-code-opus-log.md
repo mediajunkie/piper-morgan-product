@@ -44,3 +44,7 @@ Committed + pushed via bridge (commit `1ca72176e`)
 
 **Standing items net change**: #1270 object-model input delivered; ProvenanceSource enum extended; awaiting Lead's answer on generated-docs-exist-today
 
+### Fire 1 — cron (session-only, fa0963b5)
+
+Inbox: 0. Task loop: (0,0) — all standing items blocked or other-owned; cron prompt is stale (entity-model spec + roadmap fold already delivered). IDLE. Re-arming.
+
