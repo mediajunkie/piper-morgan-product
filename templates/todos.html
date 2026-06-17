@@ -1,461 +1,442 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>My Todos - Piper Morgan</title>
-  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
-  <!-- tokens.css MUST be first - defines CSS variables used by other stylesheets -->
-  <link rel="stylesheet" href="/static/css/tokens.css" />
-  <link rel="stylesheet" href="/static/css/toast.css" />
-  <link rel="stylesheet" href="/static/css/dialog.css" />
-  <link rel="stylesheet" href="/static/css/permissions.css" />
-  <link rel="stylesheet" href="/static/css/spacing.css" />
-  <link rel="stylesheet" href="/static/css/chat.css" />
-  <style>
-    body {
-      font-family: var(--font-family);
-      margin: 0;
-      padding: var(--space-md);
-      background: var(--color-background-secondary);
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: var(--color-background-primary);
-      border-radius: var(--border-radius-lg);
-      padding: var(--space-lg);
-      box-shadow: var(--shadow-sm);
-    }
-    .page-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: var(--space-lg);
-    }
-    .page-header h1 {
-      color: var(--color-text-primary);
-      margin: 0;
-    }
-    .breadcrumb {
-      display: flex;
-      align-items: center;
-      margin-bottom: var(--space-md);
-      font-size: var(--font-size-base);
-      color: var(--color-text-secondary);
-    }
-    .breadcrumb a {
-      color: var(--color-primary);
-      text-decoration: none;
-      transition: var(--transition-color);
-    }
-    .breadcrumb a:hover {
-      color: var(--color-primary-dark);
-      text-decoration: underline;
-    }
-    .breadcrumb-separator {
-      margin: 0 var(--space-sm);
-      color: var(--color-text-light);
-    }
-    .breadcrumb-current {
-      color: var(--color-text-primary);
-      font-weight: var(--font-weight-medium);
-    }
-  </style>
-</head>
-<body>
-  <!-- Include navigation component -->
-  {% include 'components/navigation.html' %}
-  {% include 'components/toast.html' %}
-  {% include 'components/confirmation-dialog.html' %}
-  {% include 'components/lifecycle_indicator.html' %}
+{% extends "layouts/app_shell.html" %}
+{# F2 #1171: migrated onto app_shell — chrome (nav/footer), the floating widget runtime, #}
+{# and window.currentUser are now shell-owned; this page declares only its content. #}
+{# The inline <style> below is kept verbatim — per-page CSS-tokenization is a #}
+{# follow-on (CXO), out of scope here. #}
 
-  <div class="container">
-    <nav class="breadcrumb">
-      <a href="/">Home</a>
-      <span class="breadcrumb-separator">›</span>
-      <span class="breadcrumb-current">Todos</span>
-    </nav>
+{% block page_title %}My Todos - Piper Morgan{% endblock %}
 
-    <div class="page-header">
-      <h1>✅ Todos</h1>
-      <button class="create-resource-btn" onclick="createNewTodo()">
-        + Add a todo
-      </button>
-    </div>
+{% block head_extra %}
+<style>
+  body {
+    font-family: var(--font-family);
+    margin: 0;
+    padding: var(--space-md);
+    background: var(--color-background-secondary);
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--color-background-primary);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+  }
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+  }
+  .page-header h1 {
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--space-md);
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+  }
+  .breadcrumb a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: var(--transition-color);
+  }
+  .breadcrumb a:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+  }
+  .breadcrumb-separator {
+    margin: 0 var(--space-sm);
+    color: var(--color-text-light);
+  }
+  .breadcrumb-current {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+  }
+</style>
+{% endblock %}
 
-    <!-- Todos will be rendered here by JavaScript -->
-    <div id="todos-container" class="resource-list">
-      {% set icon = '✅' %}
-      {% set title = 'No todos yet.' %}
-      {% set message = 'Say "add a todo: [your task]" to create one, or I can suggest some based on your open GitHub issues.' %}
-      {% include 'components/empty-state.html' %}
-    </div>
+{% block main %}
+{% include 'components/toast.html' %}
+{% include 'components/confirmation-dialog.html' %}
+{% include 'components/lifecycle_indicator.html' %}
+
+<div class="container">
+  <nav class="breadcrumb">
+    <a href="/">Home</a>
+    <span class="breadcrumb-separator">›</span>
+    <span class="breadcrumb-current">Todos</span>
+  </nav>
+
+  <div class="page-header">
+    <h1>✅ Todos</h1>
+    <button class="create-resource-btn" onclick="createNewTodo()">
+      + Add a todo
+    </button>
   </div>
 
-  <!-- JavaScript -->
-  <script src="/static/js/toast.js"></script>
-  <script src="/static/js/toast-messages.js"></script>
-  <script src="/static/js/dialog.js"></script>
-  <script src="/static/js/permissions.js"></script>
-  <script src="/static/js/timestamp-utils.js"></script>
-    <script src="/static/js/chat.js"></script>
-  <script>
-    // Inject user context from server
-    {% if user %}
-    window.currentUser = {
-      username: "{{ user.username }}",
-      user_id: "{{ user.user_id }}",
-      is_admin: {{ 'true' if user.is_admin else 'false' }}
-    };
-    {% else %}
-    window.currentUser = null;
-    {% endif %}
+  <!-- Todos will be rendered here by JavaScript -->
+  <div id="todos-container" class="resource-list">
+    {% set icon = '✅' %}
+    {% set title = 'No todos yet.' %}
+    {% set message = 'Say "add a todo: [your task]" to create one, or I can suggest some based on your open GitHub issues.' %}
+    {% include 'components/empty-state.html' %}
+  </div>
+</div>
+{% endblock %}
 
-    // Fetch and render todos on page load
-    document.addEventListener('DOMContentLoaded', async () => {
-      await loadTodos();
-    });
+{% block scripts %}
+<script src="/static/js/toast-messages.js"></script>
+<script src="/static/js/dialog.js"></script>
+<script>
+  // Fetch and render todos on page load
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadTodos();
+  });
 
-    // Load todos from API
-    async function loadTodos() {
-      try {
-        const response = await fetch('/api/v1/todos', {
-          credentials: 'include'
-        });
-        if (!response.ok) {
-          throw new Error('Failed to load todos');
-        }
-        const data = await response.json();
-        const todos = data.todos || [];
-
-        renderTodos(todos);
-      } catch (error) {
-        console.error('Error loading todos:', error);
-        ToastMessages.error('load_error');
-      }
-    }
-
-    // Render todos with permission-aware UI
-    function renderTodos(todos) {
-      const container = document.getElementById('todos-container');
-
-      if (todos.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state" role="status" aria-label="Empty state">
-            <div class="empty-state-icon" aria-hidden="true">✅</div>
-            <h2 class="empty-state-title">No todos yet.</h2>
-            <p class="empty-state-message">Say "add a todo: [your task]" to create one, or I can suggest some based on your open GitHub issues.</p>
-          </div>
-        `;
-        return;
-      }
-
-      // Check if all todos are completed
-      if (todos.every(t => t.status === 'completed' || t.completed)) {
-        container.innerHTML = `
-          <div class="empty-state" role="status" aria-label="All complete">
-            <div class="empty-state-icon" aria-hidden="true">🎯</div>
-            <h2 class="empty-state-title">All caught up!</h2>
-            <p class="empty-state-message">Your todo list is clear. Nice work.</p>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = todos.map(todo => {
-        const role = getUserRole(todo);
-        const roleDisplay = formatRole(role);
-
-        // Build action buttons based on permissions
-        let actionButtons = '';
-
-        if (canEdit(todo)) {
-          actionButtons += `
-            <button class="edit-btn" onclick="editTodo('${todo.id}')">
-              Edit
-            </button>
-          `;
-        }
-
-        if (canDelete(todo)) {
-          actionButtons += `
-            <button class="delete-btn" onclick="deleteTodo('${todo.id}')">
-              Remove
-            </button>
-          `;
-        }
-
-        if (canShare(todo)) {
-          actionButtons += `
-            <button class="share-btn" onclick="shareTodo('${todo.id}', '${todo.text}')">
-              Share
-            </button>
-          `;
-        }
-
-        // Build owner indicator
-        const ownerIndicator = !isOwner(todo) ?
-          `<div class="shared-indicator">
-             Owned by: ${todo.owner_username || todo.owner_id}
-           </div>` : '';
-
-        // Build lifecycle indicator (#708 MUX-LIFECYCLE-UI-TODOS)
-        // Only show when lifecycle_state is present (Lifecycle Optionality principle)
-        let lifecycleIndicator = '';
-        if (todo.lifecycle_state && window.LifecycleIndicator) {
-          const phrase = LifecycleIndicator.getPhrase(todo.lifecycle_state);
-          lifecycleIndicator = `
-            <div class="lifecycle-indicator"
-                 data-lifecycle-stage="${todo.lifecycle_state}"
-                 data-compact="true"
-                 role="status"
-                 tabindex="0"
-                 aria-label="Lifecycle: ${phrase}"
-                 style="margin-left: 8px;">
-              <span class="lifecycle-dot" aria-hidden="true"></span>
-              <span class="lifecycle-phrase">${phrase}</span>
-              <span class="lifecycle-tooltip" role="tooltip">${phrase}</span>
-            </div>
-          `;
-        }
-
-        return `
-          <div class="resource-item">
-            <div class="resource-header">
-              <div>
-                <h3 class="resource-title">
-                  ${todo.text}
-                  ${lifecycleIndicator}
-                  <span class="${getRoleBadgeClass(role)}">
-                    ${roleDisplay}
-                  </span>
-                </h3>
-                ${ownerIndicator}
-              </div>
-              <div class="resource-actions">
-                ${actionButtons}
-              </div>
-            </div>
-            <p>Status: ${todo.status || 'pending'}</p>
-            ${todo.due_date ? `<small>Due: ${todo.due_date}</small>` : ''}
-          </div>
-        `;
-      }).join('');
-    }
-
-    // Create new todo
-    function createNewTodo() {
-      Dialog.show({
-        mode: 'form',
-        title: 'Add a Todo',
-        confirmText: 'Add it',
-        content: `
-          <div class="form-group">
-            <label>Todo Text</label>
-            <input type="text" id="new-todo-text" placeholder="What do you need to do?">
-          </div>
-          <div class="form-group">
-            <label>Due Date (optional)</label>
-            <input type="date" id="new-todo-due-date">
-          </div>
-        `,
-        onConfirm: async () => {
-          const text = document.getElementById('new-todo-text').value;
-          const dueDate = document.getElementById('new-todo-due-date').value;
-
-          if (!text) {
-            ToastMessages.error('validation_error', { body: 'Add some text for your todo' });
-            return false;
-          }
-
-          try {
-            const response = await fetch('/api/v1/todos', {
-              method: 'POST',
-              headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify({ title: text, due_date: dueDate }),
-              credentials: 'include'
-            });
-
-            if (response.ok) {
-              ToastMessages.success('todo_created');
-              await loadTodos();
-              return true;
-            } else {
-              const error = await response.json();
-              ToastMessages.error('create_error', { body: error.detail || 'Please try again' });
-              return false;
-            }
-          } catch (error) {
-            console.error('Error creating todo:', error);
-            ToastMessages.error('create_error');
-            return false;
-          }
-        }
+  // Load todos from API
+  async function loadTodos() {
+    try {
+      const response = await fetch('/api/v1/todos', {
+        credentials: 'include'
       });
+      if (!response.ok) {
+        throw new Error('Failed to load todos');
+      }
+      const data = await response.json();
+      const todos = data.todos || [];
+
+      renderTodos(todos);
+    } catch (error) {
+      console.error('Error loading todos:', error);
+      ToastMessages.error('load_error');
+    }
+  }
+
+  // Render todos with permission-aware UI
+  function renderTodos(todos) {
+    const container = document.getElementById('todos-container');
+
+    if (todos.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state" role="status" aria-label="Empty state">
+          <div class="empty-state-icon" aria-hidden="true">✅</div>
+          <h2 class="empty-state-title">No todos yet.</h2>
+          <p class="empty-state-message">Say "add a todo: [your task]" to create one, or I can suggest some based on your open GitHub issues.</p>
+        </div>
+      `;
+      return;
     }
 
-    // Edit todo
-    function editTodo(todoId) {
-      // TODO: Implement edit functionality
-      ToastMessages.info('coming_soon', { body: 'Edit functionality coming soon' });
+    // Check if all todos are completed
+    if (todos.every(t => t.status === 'completed' || t.completed)) {
+      container.innerHTML = `
+        <div class="empty-state" role="status" aria-label="All complete">
+          <div class="empty-state-icon" aria-hidden="true">🎯</div>
+          <h2 class="empty-state-title">All caught up!</h2>
+          <p class="empty-state-message">Your todo list is clear. Nice work.</p>
+        </div>
+      `;
+      return;
     }
 
-    // Delete todo
-    function deleteTodo(todoId) {
-      Dialog.confirm({
-        title: 'Remove this todo?',
-        message: "I'll remove this from your list. This can't be undone.",
-        onConfirm: async () => {
-          try {
-            // TODO: Call API to delete
-            // await fetch(`/api/v1/todos/${todoId}`, { method: 'DELETE' });
+    container.innerHTML = todos.map(todo => {
+      const role = getUserRole(todo);
+      const roleDisplay = formatRole(role);
 
-            ToastMessages.success('todo_deleted');
-            await loadTodos();
-          } catch (error) {
-            console.error('Error deleting todo:', error);
-            ToastMessages.error('delete_error');
-          }
-        }
-      });
-    }
+      // Build action buttons based on permissions
+      let actionButtons = '';
 
-    // Share todo
-    function shareTodo(todoId, todoText) {
-      openShareModal('todos', todoId, todoText);
-    }
-
-    // Generic sharing modal
-    async function openShareModal(resourceType, resourceId, resourceName) {
-      // Fetch current shares
-      let currentShares = [];
-      try {
-        const response = await fetch(`/api/v1/${resourceType}/${resourceId}/shares`, {
-          credentials: 'include'
-        });
-        if (response.ok) {
-          currentShares = await response.json();
-        }
-      } catch (error) {
-        console.error('Error fetching shares:', error);
+      if (canEdit(todo)) {
+        actionButtons += `
+          <button class="edit-btn" onclick="editTodo('${todo.id}')">
+            Edit
+          </button>
+        `;
       }
 
-      Dialog.show({
-        mode: 'form',
-        title: `Share ${resourceName}`,
-        confirmText: 'Done',
-        width: '500px',
-        content: `
-          <div class="share-modal-content">
-            <div class="form-group">
-              <label>Email or User ID</label>
-              <input type="text" id="share-user-input"
-                     placeholder="user@example.com or user-id">
-            </div>
-
-            <div class="form-group">
-              <label>Role</label>
-              <select id="share-role-select">
-                <option value="VIEWER">Viewer (Read only)</option>
-                <option value="EDITOR">Editor (Can edit)</option>
-                <option value="ADMIN">Admin (Can manage shares)</option>
-              </select>
-            </div>
-
-            <button onclick="addShare('${resourceType}', '${resourceId}')"
-                    class="create-resource-btn"
-                    style="width: 100%; margin-top: 12px;">
-              Add Share
-            </button>
-
-            <div class="current-shares" style="margin-top: 24px;">
-              <h4>Currently Shared With</h4>
-              <div id="current-shares-list">
-                ${renderCurrentShares(currentShares, resourceType, resourceId)}
-              </div>
-            </div>
-          </div>
-        `,
-        hideFooter: true
-      });
-    }
-
-    // Render current shares list
-    function renderCurrentShares(shares, resourceType, resourceId) {
-      if (shares.length === 0) {
-        return '<p style="color: var(--color-text-secondary);">Not shared with anyone yet</p>';
-      }
-
-      return shares.map(share => `
-        <div style="display: flex; justify-content: space-between; align-items: center;
-                    padding: var(--space-sm); border: 1px solid var(--color-border-light); border-radius: var(--border-radius-md); margin-bottom: var(--space-sm);">
-          <div>
-            <strong>${share.user_email || share.user_id}</strong>
-            <span class="${getRoleBadgeClass(share.role)}">${formatRole(share.role)}</span>
-          </div>
-          <button onclick="removeShare('${resourceType}', '${resourceId}', '${share.user_id}')"
-                  style="background: var(--color-accent-error); color: var(--color-neutral-white); padding: var(--space-xs) var(--space-sm);
-                         border: none; border-radius: var(--border-radius-sm); cursor: pointer;">
+      if (canDelete(todo)) {
+        actionButtons += `
+          <button class="delete-btn" onclick="deleteTodo('${todo.id}')">
             Remove
           </button>
+        `;
+      }
+
+      if (canShare(todo)) {
+        actionButtons += `
+          <button class="share-btn" onclick="shareTodo('${todo.id}', '${todo.text}')">
+            Share
+          </button>
+        `;
+      }
+
+      // Build owner indicator
+      const ownerIndicator = !isOwner(todo) ?
+        `<div class="shared-indicator">
+           Owned by: ${todo.owner_username || todo.owner_id}
+         </div>` : '';
+
+      // Build lifecycle indicator (#708 MUX-LIFECYCLE-UI-TODOS)
+      // Only show when lifecycle_state is present (Lifecycle Optionality principle)
+      let lifecycleIndicator = '';
+      if (todo.lifecycle_state && window.LifecycleIndicator) {
+        const phrase = LifecycleIndicator.getPhrase(todo.lifecycle_state);
+        lifecycleIndicator = `
+          <div class="lifecycle-indicator"
+               data-lifecycle-stage="${todo.lifecycle_state}"
+               data-compact="true"
+               role="status"
+               tabindex="0"
+               aria-label="Lifecycle: ${phrase}"
+               style="margin-left: 8px;">
+            <span class="lifecycle-dot" aria-hidden="true"></span>
+            <span class="lifecycle-phrase">${phrase}</span>
+            <span class="lifecycle-tooltip" role="tooltip">${phrase}</span>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="resource-item">
+          <div class="resource-header">
+            <div>
+              <h3 class="resource-title">
+                ${todo.text}
+                ${lifecycleIndicator}
+                <span class="${getRoleBadgeClass(role)}">
+                  ${roleDisplay}
+                </span>
+              </h3>
+              ${ownerIndicator}
+            </div>
+            <div class="resource-actions">
+              ${actionButtons}
+            </div>
+          </div>
+          <p>Status: ${todo.status || 'pending'}</p>
+          ${todo.due_date ? `<small>Due: ${todo.due_date}</small>` : ''}
         </div>
-      `).join('');
+      `;
+    }).join('');
+  }
+
+  // Create new todo
+  function createNewTodo() {
+    Dialog.show({
+      mode: 'form',
+      title: 'Add a Todo',
+      confirmText: 'Add it',
+      content: `
+        <div class="form-group">
+          <label>Todo Text</label>
+          <input type="text" id="new-todo-text" placeholder="What do you need to do?">
+        </div>
+        <div class="form-group">
+          <label>Due Date (optional)</label>
+          <input type="date" id="new-todo-due-date">
+        </div>
+      `,
+      onConfirm: async () => {
+        const text = document.getElementById('new-todo-text').value;
+        const dueDate = document.getElementById('new-todo-due-date').value;
+
+        if (!text) {
+          ToastMessages.error('validation_error', { body: 'Add some text for your todo' });
+          return false;
+        }
+
+        try {
+          const response = await fetch('/api/v1/todos', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ title: text, due_date: dueDate }),
+            credentials: 'include'
+          });
+
+          if (response.ok) {
+            ToastMessages.success('todo_created');
+            await loadTodos();
+            return true;
+          } else {
+            const error = await response.json();
+            ToastMessages.error('create_error', { body: error.detail || 'Please try again' });
+            return false;
+          }
+        } catch (error) {
+          console.error('Error creating todo:', error);
+          ToastMessages.error('create_error');
+          return false;
+        }
+      }
+    });
+  }
+
+  // Edit todo
+  function editTodo(todoId) {
+    // TODO: Implement edit functionality
+    ToastMessages.info('coming_soon', { body: 'Edit functionality coming soon' });
+  }
+
+  // Delete todo
+  function deleteTodo(todoId) {
+    Dialog.confirm({
+      title: 'Remove this todo?',
+      message: "I'll remove this from your list. This can't be undone.",
+      onConfirm: async () => {
+        try {
+          // TODO: Call API to delete
+          // await fetch(`/api/v1/todos/${todoId}`, { method: 'DELETE' });
+
+          ToastMessages.success('todo_deleted');
+          await loadTodos();
+        } catch (error) {
+          console.error('Error deleting todo:', error);
+          ToastMessages.error('delete_error');
+        }
+      }
+    });
+  }
+
+  // Share todo
+  function shareTodo(todoId, todoText) {
+    openShareModal('todos', todoId, todoText);
+  }
+
+  // Generic sharing modal
+  async function openShareModal(resourceType, resourceId, resourceName) {
+    // Fetch current shares
+    let currentShares = [];
+    try {
+      const response = await fetch(`/api/v1/${resourceType}/${resourceId}/shares`, {
+        credentials: 'include'
+      });
+      if (response.ok) {
+        currentShares = await response.json();
+      }
+    } catch (error) {
+      console.error('Error fetching shares:', error);
     }
 
-    // Add share
-    async function addShare(resourceType, resourceId) {
-      const userInput = document.getElementById('share-user-input').value;
-      const role = document.getElementById('share-role-select').value;
+    Dialog.show({
+      mode: 'form',
+      title: `Share ${resourceName}`,
+      confirmText: 'Done',
+      width: '500px',
+      content: `
+        <div class="share-modal-content">
+          <div class="form-group">
+            <label>Email or User ID</label>
+            <input type="text" id="share-user-input"
+                   placeholder="user@example.com or user-id">
+          </div>
 
-      if (!userInput) {
-        ToastMessages.error('validation_error', { body: 'Please enter a user email or ID' });
-        return;
-      }
+          <div class="form-group">
+            <label>Role</label>
+            <select id="share-role-select">
+              <option value="VIEWER">Viewer (Read only)</option>
+              <option value="EDITOR">Editor (Can edit)</option>
+              <option value="ADMIN">Admin (Can manage shares)</option>
+            </select>
+          </div>
 
-      try {
-        const response = await fetch(`/api/v1/${resourceType}/${resourceId}/share`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            user_to_share_with: userInput,
-            role: role
-          }),
-          credentials: 'include'
-        });
+          <button onclick="addShare('${resourceType}', '${resourceId}')"
+                  class="create-resource-btn"
+                  style="width: 100%; margin-top: 12px;">
+            Add Share
+          </button>
 
-        if (response.ok) {
-          ToastMessages.success('shared');
-          Dialog.close();
-          await loadTodos();
-        } else {
-          const error = await response.json();
-          ToastMessages.error('share_error', { body: error.message || 'Please try again' });
-        }
-      } catch (error) {
-        console.error('Error sharing:', error);
-        ToastMessages.error('share_error');
-      }
+          <div class="current-shares" style="margin-top: 24px;">
+            <h4>Currently Shared With</h4>
+            <div id="current-shares-list">
+              ${renderCurrentShares(currentShares, resourceType, resourceId)}
+            </div>
+          </div>
+        </div>
+      `,
+      hideFooter: true
+    });
+  }
+
+  // Render current shares list
+  function renderCurrentShares(shares, resourceType, resourceId) {
+    if (shares.length === 0) {
+      return '<p style="color: var(--color-text-secondary);">Not shared with anyone yet</p>';
     }
 
-    // Remove share
-    async function removeShare(resourceType, resourceId, userId) {
-      try {
-        const response = await fetch(
-          `/api/v1/${resourceType}/${resourceId}/share/${userId}`,
-          { method: 'DELETE', credentials: 'include' }
-        );
+    return shares.map(share => `
+      <div style="display: flex; justify-content: space-between; align-items: center;
+                  padding: var(--space-sm); border: 1px solid var(--color-border-light); border-radius: var(--border-radius-md); margin-bottom: var(--space-sm);">
+        <div>
+          <strong>${share.user_email || share.user_id}</strong>
+          <span class="${getRoleBadgeClass(share.role)}">${formatRole(share.role)}</span>
+        </div>
+        <button onclick="removeShare('${resourceType}', '${resourceId}', '${share.user_id}')"
+                style="background: var(--color-accent-error); color: var(--color-neutral-white); padding: var(--space-xs) var(--space-sm);
+                       border: none; border-radius: var(--border-radius-sm); cursor: pointer;">
+          Remove
+        </button>
+      </div>
+    `).join('');
+  }
 
-        if (response.ok) {
-          ToastMessages.success('share_removed');
-          Dialog.close();
-          await loadTodos();
-        } else {
-          ToastMessages.error('share_error', { title: 'Couldn\'t remove', body: 'Please try again' });
-        }
-      } catch (error) {
-        console.error('Error removing share:', error);
+  // Add share
+  async function addShare(resourceType, resourceId) {
+    const userInput = document.getElementById('share-user-input').value;
+    const role = document.getElementById('share-role-select').value;
+
+    if (!userInput) {
+      ToastMessages.error('validation_error', { body: 'Please enter a user email or ID' });
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/v1/${resourceType}/${resourceId}/share`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          user_to_share_with: userInput,
+          role: role
+        }),
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        ToastMessages.success('shared');
+        Dialog.close();
+        await loadTodos();
+      } else {
+        const error = await response.json();
+        ToastMessages.error('share_error', { body: error.message || 'Please try again' });
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+      ToastMessages.error('share_error');
+    }
+  }
+
+  // Remove share
+  async function removeShare(resourceType, resourceId, userId) {
+    try {
+      const response = await fetch(
+        `/api/v1/${resourceType}/${resourceId}/share/${userId}`,
+        { method: 'DELETE', credentials: 'include' }
+      );
+
+      if (response.ok) {
+        ToastMessages.success('share_removed');
+        Dialog.close();
+        await loadTodos();
+      } else {
         ToastMessages.error('share_error', { title: 'Couldn\'t remove', body: 'Please try again' });
       }
+    } catch (error) {
+      console.error('Error removing share:', error);
+      ToastMessages.error('share_error', { title: 'Couldn\'t remove', body: 'Please try again' });
     }
-  </script>
-</body>
-</html>
+  }
+</script>
+{% endblock %}

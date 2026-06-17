@@ -21,6 +21,22 @@ MIGRATED = [
     ("settings-index.html", "Settings"),
     ("work_items.html", "Work Items"),
     ("standup.html", "Standup"),
+    ("account.html", "Account"),
+    ("documents.html", "Documents"),
+    ("files.html", "Files"),
+    ("integrations.html", "Integration"),
+    ("learning-dashboard.html", "Learning"),
+    ("lists.html", "Lists"),
+    ("personality-preferences.html", "Personality"),
+    ("project_detail.html", "Project"),
+    ("projects.html", "Projects"),
+    ("settings_calendar.html", "Calendar"),
+    ("settings_github.html", "GitHub"),
+    ("settings_notion.html", "Notion"),
+    ("settings_projects.html", "Project Settings"),
+    ("settings_slack.html", "Slack"),
+    ("todos.html", "Todos"),
+    ("transparency.html", "Transparency"),
 ]
 
 _USER = {"username": "xian", "user_id": "u1", "is_admin": False}
