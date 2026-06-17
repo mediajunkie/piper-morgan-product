@@ -92,3 +92,17 @@ class TestOwnerIdScoping1252:
         # beta's entry is untouched (cross-owner isolation on delete)
         remaining = (await session.execute(select(ConversationalMemoryEntryDB))).scalars().all()
         assert [r.user_id for r in remaining] == [_BETA]
+
+    async def test_non_uuid_principal_is_graceful(self, session):
+        """A non-UUID principal must NOT raise (legacy ids during transition):
+        save leaves owner_id NULL, reads return empty, delete returns 0."""
+        repo = ConversationalMemoryRepository(session)
+        await repo.save_entry("legacy-string-id", _entry())  # must not raise
+
+        row = (await session.execute(select(ConversationalMemoryEntryDB))).scalar_one()
+        assert row.owner_id is None  # non-UUID → NULL, not a raise
+        assert row.user_id == "legacy-string-id"  # legacy column still written
+
+        since = datetime.now(timezone.utc) - timedelta(hours=1)
+        assert await repo.get_entries_since("legacy-string-id", since) == []
+        assert await repo.delete_entries_before("legacy-string-id", datetime.now(timezone.utc)) == 0
