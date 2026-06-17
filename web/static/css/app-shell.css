@@ -1,7 +1,7 @@
 /* F2 #1171 — page-shell layout. Token-only (F3-clean); zero hardcoded colors/spacing.
-   Chrome (nav + footer) is shell-owned; pages fill {% block main %}. The nav's own
+   Chrome (the nav) is shell-owned; pages fill {% block main %}. The nav's own
    styles live in components/navigation.html (a flagged token-migration follow-on);
-   this file owns the content-region / aside / footer layout around it. */
+   this file owns the content-region / aside layout around it. */
 
 body {
   margin: 0;
@@ -14,7 +14,7 @@ body {
 
 /* Content region: main + optional aside, centered with a max width. */
 .app-shell-body {
-  flex: 1 0 auto; /* grow so the footer sinks to the bottom on short pages */
+  flex: 1 0 auto; /* fill the viewport height (full-height app shell) */
   width: 100%;
   box-sizing: border-box;
   max-width: 1200px;
@@ -35,19 +35,6 @@ body {
   flex: 0 0 320px;
   border-left: var(--border-card);
   padding-left: var(--space-lg);
-}
-
-/* Footer — shell-owned, minimal. */
-.app-shell-footer {
-  flex-shrink: 0;
-  width: 100%;
-  box-sizing: border-box;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: var(--space-md) var(--space-lg);
-  color: var(--color-neutral-medium-gray);
-  font-size: var(--font-size-sm, 13px);
-  border-top: var(--border-card);
 }
 
 @media (max-width: 768px) {

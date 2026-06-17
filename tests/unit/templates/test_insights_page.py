@@ -280,9 +280,9 @@ class TestInsightsMigratedToAppShell1171:
         assert "{% block page_title %}" in insights_html
         assert "{% block head_extra %}" in insights_html
 
-    def test_renders_with_global_nav_and_footer_via_shell(self):
+    def test_renders_with_global_nav_via_shell(self):
         # Real template.render() (NOT curl-200) — the migrated page renders inside the
-        # shell: global nav chrome + footer present, page content lands in {% block main %},
+        # shell: global nav chrome present, page content lands in {% block main %},
         # and the #1251 item-3 "Correct this" label is applied.
         from jinja2 import Environment, FileSystemLoader
 
@@ -290,6 +290,5 @@ class TestInsightsMigratedToAppShell1171:
         env = Environment(loader=FileSystemLoader(str(templates)), autoescape=True)
         html = env.get_template("insights.html").render(trust_stage=1)
         assert "global-nav" in html  # chrome provided by app_shell
-        assert "app-shell-footer" in html  # shell footer
         assert "Insight Journal" in html  # page content rendered into {% block main %}
         assert "Correct this" in html  # #1251 item-3
