@@ -21,3 +21,10 @@
 4. **Close #1171** when the cohort renders inside the shell (grep/test confirms no app-page own-`<html>`/nav); note token-cleanup-pending (nav-component item) as the remaining-to-fully-close.
 
 ## Fires / work
+
+### 04:10–05:40 — F2 #1171: app_shell chrome-COMPLETED + cohort migration STARTED (PM-approved)
+- **CXO unblocked F2** (4 confirms, memo→read/): migrate ~21; standalone-5 stay out of app-shell but **conform to Standard-1**; item-2 CSS + nav-component CSS = separate F3 increments (the nav one **required-to-close** F2 token-only → **filed #1264**); aside v1-off (flip on Radar-UAT).
+- **Investigate-before-extending CATCH** (the load-bearing find): `app_shell` wasn't chrome-complete — the nav it includes carries the floating chat-widget (needs `chat.js`/`marked`/`permissions`) + user-menu (needs `window.currentUser`); the 21 standalone pages each powered those themselves, so a naive migration would **break 21 widgets/user-menus** (+ insights' widget was already non-functional since the #1251 item-1 nav-include). Surfaced to PM → **"Yes, please!"** → **completed app_shell's chrome** (shell-owned, mirrors home.html's proven set; `5a8caf385`). 795 template tests green. *Widget behavior = per-page authed UAT* (render tests verify the runtime is linked, not JS behavior).
+- **Migration recipe PROVEN on the first raw-standalone page** (`advanced-settings`, `03dfb7f15`): strip DOCTYPE/html/head/body + nav-include + dup-scripts; carve `<head>`→`head_extra`, content→`{% block main %}`, title→`page_title`. **Parametrized migration test** (`test_app_shell_migrations_1171.py` — renders-in-shell + no-own-doctype) scales per page. **2 of ~21 migrated** (insights + advanced-settings).
+- **OPEN — surfaced to PM (awaiting steer)**: the remaining ~19 — bulk approach (subagent fan-out [PM-opt-in for the multi-agent spend] vs. solo clusters) + pace (now vs. morning-proper) + the per-page behavior-UAT. PM: *"I've been anticipating this for months"* — months-long design-unification milestone; the structural drift-killer is real.
+- Cron suspended (active work). All on origin/main.
