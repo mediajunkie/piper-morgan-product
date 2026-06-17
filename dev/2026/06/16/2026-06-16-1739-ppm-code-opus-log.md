@@ -42,3 +42,11 @@ PM check-in 17:39 PDT. Cron `875ffc45` deleted (stalled — session-only pattern
 **Note**: Context compacted mid-session; resumed post-compaction. Delivery was interrupted before push — completed on resume.
 
 **Standing items entering idle**: #683 (Lead-gated), PDR-005 (Docs-owned), #5 (unclear), #967 edges (deferred), #1185 (floor-blocked), Ship #048 PA coverage (next kickoff), OQ-3 CXO PDR-002 update (CXO-owned). Queue = (0,0). Cron `fa0963b5` (`26 */4 * * *`) confirmed armed.
+
+### PM-directed — CXO #1048 concur (same session, post-compaction)
+
+PM surfaced new CXO item. Inbox: 2 items.
+- `memo-cxo-to-lead-cc-pm-arch-ppm-pending-items-cleared-2026-06-16.md` — CXO clearing Lead's 5 pending items; PPM asked to concur on #1048 keep-generic
+- `cc-memo-arch-to-cxo-cc-lead-pm-ppm-1164-private-session-mechanism-flag-plus-retention-2026-06-16.md` — Arch cc: `is_private` flag mechanism for #1164; no PPM response requested
+
+**PPM action**: Concurred on #1048 keep-generic. CXO reasoning correct: Insight Journal is pull (browse-on-demand), not push — trust-gradient visual earns its complexity in push contexts only. Stage-specific treatment deferred to polish if user feedback warrants. Told Lead to close #1048. Memo delivered to CXO cc Lead (`memo-ppm-to-cxo-cc-lead-pm-1048-keep-generic-concur-2026-06-16.md`). Both inbox items triaged to read/. Commit `a3c143ee4`.
