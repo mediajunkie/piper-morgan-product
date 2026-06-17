@@ -40,3 +40,5 @@ PM check-in 17:39 PDT. Cron `875ffc45` deleted (stalled — session-only pattern
 3. Committed + pushed to origin/main via bridge (commit `497ec2aa0`)
 
 **Note**: Context compacted mid-session; resumed post-compaction. Delivery was interrupted before push — completed on resume.
+
+**Standing items entering idle**: #683 (Lead-gated), PDR-005 (Docs-owned), #5 (unclear), #967 edges (deferred), #1185 (floor-blocked), Ship #048 PA coverage (next kickoff), OQ-3 CXO PDR-002 update (CXO-owned). Queue = (0,0). Cron `fa0963b5` (`26 */4 * * *`) confirmed armed.
