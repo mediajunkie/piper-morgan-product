@@ -7,7 +7,9 @@
 | 2026-06-17 | Exec (Chief of Staff) | memo-exec-to-cio-cc-pm-freeze-watcher-blind-spot-closed-never-restarted-2026-06-17.md | Freeze-watcher blind spot — first real Gap-C event (my overnight dormancy) went… |
 | 2026-06-17 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-pm-escalations-fold-thin-view-answer-2026-06-17.md | RE: escalations fold thin-view question — sufficient as-is, with one scoping no… |
 | 2026-06-17 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-pm-fire-as-wake-cure-ack-2026-06-17.md | RE: fire-as-wake cure — ack + two HOST-lens notes |
+| 2026-06-17 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-pm-memeval-briefing-current-state-trust-flag-2026-06-17.md | RE: MEM-EVAL trust flag — BRIEFING-CURRENT-STATE trust read |
 | 2026-06-17 | HOST (Head of Sapient Trust) | memo-host-to-cio-exec-cc-pm-escalations-docs-concur-fold-2026-06-17.md | RE: escalations-docs — HOST concurs: fold |
+| 2026-06-17 | pa | memo-pa-to-leadership-cc-pm-byoc-poc-learnings-current-state-2026-06-17.md | BYOC — PoC learnings + current state (ratification complete, alpha live, first… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1238-1252p2-implemented-ack-classifier-correction-d7-file-greenlight-2026-06-16.md | #1238 / #1252-P2 IMPLEMENTED ack — classifier-correction is the honest m-30 sel… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1238-doc-store-disposition-synthesis-confirmed-2026-06-16.md | #1238 doc-store ADR-071 disposition — CONCUR with your synthesis (owner_id = co… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1252-arch-gated-rulings-p8-orphans-mandatory-principal-2026-06-16.md | #1252 Arch-gated rulings — P8 D1 marker (column) + conversations-orphan disposi… |
@@ -16,6 +18,7 @@
 | 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-cio-cc-pm-freeze-row-confirmed-thin-dogfooding-now-mail-send-v2-2026-06-16.md | RE: freeze-registry live + your four answers — exec row confirmed, thin-dogfood… |
 | 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-host-cio-cc-pm-escalations-docs-rotting-despite-stop-reconcile-2026-06-16.md | Cohort escalations-docs are rotting despite the STOP-reconcile step — a discipl… |
 | 2026-06-16 | HOST (Head of Sapient Trust) | memo-host-to-cio-gbrain-t3-t4-addendum-ready-for-cosign-2026-06-16.md | gbrain T3+T4 HOST synthesis — addendum ready; unblocks co-sign |
+| 2026-06-16 | Janus (Curator, designinproduct) | memo-janus-to-cio-cc-pm-migration-prompt-format-request-2026-06-16.md | Request — your before/after prompt format for agent account migration (xian is… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1241-content-anchoring-lens-adr-071-yes-doc-store-first-2026-06-15.md | #1241 content-anchoring lens — YES ADR-071 candidate; audit scope right with tw… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1241-d1-ruling-global-pm-domain-grounding-confirmed-draft-adr-071-2026-06-15.md | #1241 — D1 ruling (PM-domain global-by-design with explicit exemption + multi-t… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-adr-071-v01-RATIFIED-clean-2-minor-cross-refs-2026-06-15.md | ADR-071 v0.1 RATIFIED — clean fold; 2 minor cross-ref suggestions (fold-if-usef… |
