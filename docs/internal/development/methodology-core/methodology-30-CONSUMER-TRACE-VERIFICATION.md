@@ -112,6 +112,19 @@ These are a **stronger instance-class than the originating post-implementation i
 
 **But this is 2-of-3, not Proven** — and held there deliberately, per the entry's own criterion: both instances are the same applier (Lead Dev) in the same architectural arc, so they aren't fully "three independent instances." (CIO note: my 2026-06-08 Day-5 disposition memo initially said "promote to Proven"; on re-reading *this* entry's self-set criterion, that was premature — corrected to "2-of-3, hold Emerging." Verify-the-entry's-own-bar before promoting.) **Promotion completes on a 3rd independent instance** — ideally a different applier role and/or a different work-arc.
 
+### Altitude-extension candidate — the cohort-routing layer (2026-06-16, Arch-surfaced; NOT a promotion-counting instance)
+
+Arch surfaced a same-shape candidate at a **non-code altitude** (`mailboxes/cio/read/cc-memo-arch-to-lead-cc-cio-pm-1252-arch-gated-rulings-...-2026-06-16.md`): a Lead-Dev request for Arch-gated rulings lived in Lead's session log + carry-forward, but Arch's session-start scan path didn't cover those surfaces, so the request wasn't consumed until PM relayed it. Arch's framing: *"Consumer-Trace Verification at the cohort-routing layer rather than the code layer — same shape."*
+
+**The kernel is real.** m-30's core is *upstream existence ≠ downstream consumption* (context-shape exists ≠ LLM call happens). At the routing altitude that becomes *emission ≠ delivery* (a signal was produced ≠ the intended consumer actually scans the surface it landed on). Both fail identically: assuming the producer side implies the consumer side.
+
+**Precise scoping (the honest catalog call — this is why it's a candidate, not an instance):**
+- It is a **retrospective recognition** of the shape, **not an application** of the discipline that caught a drift. The incident was caught by PM relay, not by anyone running a consumer-trace. The promotion bar requires *the discipline applied to catch drift that would otherwise propagate* — so this does **NOT** advance the 2-of-3 tally. (The "#7" numbering in Arch's memo is informal; it doesn't map to this entry's instance count.)
+- **Cross-pattern adjacency, not clean ownership:** at the routing altitude this overlaps HOST's mail-vs-GH signal-surface norm (2026-06-15: a signal recorded where the consumer doesn't look isn't delivered). The incident arguably belongs as much to that norm as to m-30; recorded here as a cross-altitude candidate with the overlap flagged, not claimed.
+- **The mitigation is sound (m-36).** Arch's fix — sweep Lead's session log + carry-forward for "Arch-gated" markers at session-start — is the mechanism-not-vigilance move at the routing layer: the *consumer* expands its scan path to cover the surface the *producer* actually uses. That's the right resolution regardless of which pattern owns the label.
+
+**Disposition:** keep at Emerging (2-of-3 unchanged). If consumer-trace-at-the-routing-layer is *applied* (not just recognized) to catch a dropped cross-agent signal before it costs a block, that would be a genuine 3rd-instance candidate — and a strong one, being a different applier + a different altitude.
+
 Slot 30 reserved May 15 per pre-filing slot-availability check (methodology-28); this filing claims the slot. Filed alongside methodology-31 (Append-Only Autonomous-Cycle Architecture, 2026-05-18) and methodology-32 (Postel for Memo Headers, 2026-05-18) as the May 18 batch.
 
 ---
