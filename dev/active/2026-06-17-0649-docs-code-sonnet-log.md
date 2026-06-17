@@ -26,4 +26,5 @@
 - Website committed + pushed (`c4a41909e`)
 - Editorial calendar row appended; product repo committed + pushed (`a2a64f249`)
 - Draft already at published path (prior session had moved it); no additional mv needed
+- LinkedIn cross-post and URL updates: Dispatch handling; will record URLs when they arrive in inbox
 
