@@ -39,7 +39,7 @@
 
 ## Active threads (no-PM-block)
 
-- **Lead Dev streamlining** (PM-ratified direction 2026-06-13): Joint recommendation (CIO+HOST) CO-SIGNED and presented to PM (June 15). CIO unblocked on Tier-1 quick wins (`start-server.sh` wrapper + MANIFEST-noise suppression). Note: `scripts/mail-send.sh` already shipped by CIO (Tier-2 bridge wrapper). HOST holds coordination-vs-mechanical line as automation lands.
+- **Lead Dev streamlining** (PM-ratified direction 2026-06-13): Joint recommendation CO-SIGNED and presented to PM (June 15). **PM closing loop directly with CIO (2026-06-16)** — Tier-1 approval in PM's hands. HOST holds coordination-vs-mechanical line as automation lands. `scripts/mail-send.sh` already shipped (Tier-2 bridge wrapper).
 
 ## Owed (HOST-lane)
 
