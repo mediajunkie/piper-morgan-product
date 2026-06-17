@@ -133,3 +133,14 @@ PM un-deferred the breaking pass ("go!") + affirmed the Inchworm way (thorough/m
 **Sign-off checklist**: working tree clean (only `data/github_preferences.json` untracked band-aid); all work pushed to origin/main each increment (verified `git branch -r --contains HEAD` at each); nothing stranded. Cron `de784c62` ARMED (next 07:17 START). #1238 awaits PM UAT; F2 cohort awaits CXO confirm; #1164 awaits P7 cutover (Arch-sequenced).
 
 <!-- DAY-CLOSED: 2026-06-16 -->
+
+### Post-close continuation (23:00–23:20 PT) — PM UAT'd #1238; closed it; 3 follow-ups filed
+(Day was closed at 22:48; PM stayed on the late shift + UAT'd, so this appends.)
+- **#1238 UAT PASSED + CLOSED** (`completed`): PM verified live at `/?radar=1` — the "Test Architecture Chapter" Document card renders in Radar (DOCUMENT type, New badge, ● observed). Closed-properly (banner→PASSED + UAT-evidence comment). The (c,3)/#1252-P2 substrate + the DocumentEntitySource both shipped + now user-confirmed.
+- **UAT-login debugging**: PM couldn't log into `xian@pobox.com` → root cause was **login wants the username `xian`, not the email** (+ no password-recovery). The doc-owner resolution (resolve_pm_owner_id → username 'xian' → a25db09c) was actually correct/accessible. Briefly re-owned the doc to m1-test then back to xian (via PIPER_PM_USER_ID override) while diagnosing.
+- **3 follow-ups filed**: **#1260** (D7 PM-identity config, Arch-greenlit) · **#1261** (M5: password recovery + login-identifier clarity for beta) · **#1262** (D1: nav label "History" opens "Radar" panel) · **#1263** (D1: left conversation-list rail not re-skinned to Part-B). [4 total — #1260/#1261 earlier in the close, #1262/#1263 this fire.]
+- **Exec "fire-as-wake-not-timebox" memo** drained → read/ (drove draining #1238-close + the filings now rather than "saving" them). No reply needed.
+- **Deferred (explicit reason)**: F2 ~21-page cohort migration — awaiting CXO's cohort-confirm (memo `d281f2c1c`, 4 decisions). #1164 — awaiting #1257 P7 cutover (Arch-sequenced).
+- **Cron** `de784c62` armed (next 07:17 START). Sign-off: tree clean, all on origin/main.
+
+<!-- DAY-CLOSED: 2026-06-16 (post-close continuation logged above) -->
