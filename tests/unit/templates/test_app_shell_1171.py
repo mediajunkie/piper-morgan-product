@@ -100,3 +100,16 @@ def test_shell_sets_current_user_for_nav_menu(env):
     # no user → explicit null (logged-out / render without a user)
     html2 = _render(env, "{% extends 'layouts/app_shell.html' %}{% block main %}x{% endblock %}")
     assert "window.currentUser = null" in html2
+
+
+def test_shell_owns_skip_link_as_first_focusable(env):
+    # #1265 a11y: the shell owns the "skip to content" link as the FIRST focusable element
+    # (before the nav), targeting the main region — so keyboard users bypass the nav on first Tab.
+    # (Pre-#1265 the per-page skip-links targeted #main-content, which no template actually had.)
+    html = _render(env, "{% extends 'layouts/app_shell.html' %}{% block main %}x{% endblock %}")
+    assert 'class="skip-link"' in html  # the skip-link renders
+    assert 'href="#main-content"' in html  # it targets the main region
+    assert 'id="main-content"' in html  # ...which now exists on the shell <main>
+    assert "/static/css/skip-link.css" in html  # styling is shell-provided
+    # skip-link precedes the nav in source order = first in tab order (bypasses the nav)
+    assert html.index('class="skip-link"') < html.index("global-nav")

@@ -21,10 +21,13 @@
   <link rel="stylesheet" href="/static/css/spacing.css" />
   <link rel="stylesheet" href="/static/css/chat.css" />
   <link rel="stylesheet" href="/static/css/app-shell.css" />
+  <link rel="stylesheet" href="/static/css/skip-link.css" />
 
   {% block head_extra %}{% endblock %}
 </head>
 <body>
+  {# G57/#1265: skip-link is shell-owned + the FIRST focusable element (before nav) so keyboard users bypass the global nav on first Tab. #}
+  {% include 'components/skip-link.html' %}
   {# trust stage available to the nav + page JS before DOMContentLoaded fires. #}
   <script>
     {# G8: logged-in user → the nav user-menu (the nav reads window.currentUser). #}
@@ -45,7 +48,7 @@
   {% include 'components/navigation.html' %}
 
   <div class="app-shell-body">
-    <main class="app-shell-main" role="main">
+    <main id="main-content" class="app-shell-main" role="main" tabindex="-1">
       {% block main %}{% endblock %}
     </main>
     {# Optional Radar/Layer-2 aside. v1: opt-in via show_radar=true (the #1236 #}
