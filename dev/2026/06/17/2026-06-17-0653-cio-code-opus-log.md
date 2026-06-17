@@ -58,5 +58,14 @@ Ran `/audit-cascade` against #1272 + the gameplan + the gather-subagent prompt �
 - **Flagged for PM (code-specific, my read = N/A for analysis)**: web-framework/DB/endpoints infra verification, frontend-backend contract, post-compaction protocol in a single-shot subagent, pytest/files-modified/user-testing-steps evidence.
 - **Result**: drift caught + corrected before spending tokens on 5+ subagents × 135 logs. Plan is **resilient + resumable** (committed); ready for **Phase 1 gather** on PM's nod (or the next autonomous fire). The audit + this checkpoint *is* the resilience PM asked for.
 
+### ~14:45 — MEM-EVAL Phases 1–3 DONE: 134-log gather + analysis (#1272)
+Launched 5 parallel per-role gather subagents → all returned; **completeness verified (134/134 logs, Σ-reconciliation guard passed)**. Aggregated + classified → `docs/internal/operations/memory-eval-analysis-2026-06-17.md`.
+- **Headline**: `MEMORY.md` is the #1 dead-weight (loaded-not-ref 5–11×/cluster, ~10 active pins/role, already over its **40.7KB/24.4KB** limit) → trim + role-condition = biggest token-savings.
+- **Load-bearing (keep always-load)**: `duty-cycle-tick` skill (most-referenced surface), `CLAUDE.md`, the 4 cross-role pins (pre-authorized / make-promises-durable / investigate-before-extending / no-confabulating), m-30/36/41, carry-forwards.
+- **Dead-weight (→ demand-load)**: `PROJECT.md` (ref 0), `ROSTER`, role briefings post-START, role-condition publishing/voice pins (comms-only) + cross-poll (PA/CIO-only).
+- **Gaps**: the big duty-cycle-infra wanted-cluster is mostly **CLOSED** by the freeze-registry; still-open = live board-state surface, canonical-retest history table, canonical ops recipes.
+- **Trust-flag → HOST**: `BRIEFING-CURRENT-STATE` heavily loaded-not-ref (trust question, not a pure trim).
+- Did NOT re-emit the 5 raw JSONs to scratch (token-saving; subagent ids retained for audit/re-query; the analysis doc is the durable synthesized artifact). **Phase 4 next**: file the implementation child-issue (propose-and-diff) + memo Docs (pilot owner) + HOST (trust-flags).
+
 ## Memory & briefing surfaces referenced this session
 *(filled at STOP — #974 3-bucket)*
