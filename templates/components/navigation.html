@@ -31,14 +31,14 @@
   gap: 12px;
   text-decoration: none;
   color: var(--color-text-primary);
-  font-weight: 600;
-  font-size: 18px;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-xl);
 }
 
 .nav-logo {
   height: 32px;
   width: auto;
-  border-radius: 6px;
+  border-radius: var(--border-radius-md);
   object-fit: contain;
 }
 
@@ -62,10 +62,10 @@
   color: #5a6c7d;  /* Muted text - nav is secondary */
   text-decoration: none;
   padding: 8px 12px;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
   transition: background 0.2s, color 0.2s;
-  font-size: 13px;  /* Slightly smaller */
-  font-weight: 500;
+  font-size: var(--font-size-sm);  /* Slightly smaller */
+  font-weight: var(--font-weight-medium);
   line-height: 1;
   display: flex;
   align-items: center;
@@ -79,7 +79,7 @@
 .nav-link.active {
   background: #e3f2fd;
   color: var(--color-primary-decorative);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 /* Search Trigger Styles */
@@ -90,7 +90,7 @@
   padding: 6px 10px;
   background: var(--color-neutral-light-gray);
   border: 1px solid var(--color-neutral-light-gray-4);
-  border-radius: 6px;
+  border-radius: var(--border-radius-md);
   cursor: pointer;
   color: #7f8c8d;
   transition: all 0.2s;
@@ -110,7 +110,7 @@
 
 .nav-search-hint {
   font-size: 11px;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--color-neutral-medium-gray-decorative);
   background: var(--color-neutral-light-gray-2);
   padding: 2px 6px;
@@ -156,10 +156,10 @@
   color: #5a6c7d;  /* Muted text - nav is secondary */
   text-decoration: none;
   padding: 8px 12px;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
   transition: background 0.2s, color 0.2s;
-  font-size: 13px;  /* Slightly smaller */
-  font-weight: 500;
+  font-size: var(--font-size-sm);  /* Slightly smaller */
+  font-weight: var(--font-weight-medium);
   background: none;
   border: none;
   cursor: pointer;
@@ -193,7 +193,7 @@
   min-width: 160px;
   background: white;
   border: 1px solid var(--color-neutral-light-gray-2);
-  border-radius: 8px;
+  border-radius: var(--border-radius-lg);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   padding: 8px 0;
   z-index: 1001;
@@ -209,7 +209,7 @@
   color: var(--color-text-primary);
   text-decoration: none;
   transition: background 0.2s;
-  font-size: 14px;
+  font-size: var(--font-size-base);
 }
 
 .nav-dropdown-item:hover {
@@ -225,7 +225,7 @@
 .nav-dropdown-item.active {
   background: #e3f2fd;
   color: var(--color-primary-decorative);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 /* User Menu Styles */
@@ -240,11 +240,11 @@
   padding: 8px 12px;
   background: var(--color-neutral-light-gray);
   border: 1px solid var(--color-neutral-light-gray-2);
-  border-radius: 8px;
+  border-radius: var(--border-radius-lg);
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
   color: var(--color-text-primary);
 }
 
@@ -261,20 +261,20 @@
 .user-avatar {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: var(--border-radius-full);
   background: var(--color-primary-decorative);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
 }
 
 .user-name {
-  font-size: 14px;
+  font-size: var(--font-size-base);
   color: var(--color-text-primary);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .user-chevron {
@@ -295,7 +295,7 @@
   min-width: 200px;
   background: white;
   border: 1px solid var(--color-neutral-light-gray-2);
-  border-radius: 8px;
+  border-radius: var(--border-radius-lg);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   padding: 8px 0;
   z-index: 1001;
@@ -313,7 +313,7 @@
   color: var(--color-text-primary);
   text-decoration: none;
   transition: background 0.2s;
-  font-size: 14px;
+  font-size: var(--font-size-base);
 }
 
 .dropdown-item:hover {
@@ -354,7 +354,7 @@
   }
 
   .nav-brand {
-    font-size: 16px;
+    font-size: var(--font-size-lg);
     order: 1;
   }
 
