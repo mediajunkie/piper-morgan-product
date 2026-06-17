@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-16 | Arch | memo-arch-to-cxo-cc-lead-pm-ppm-1164-private-session-mechanism-flag-plus-retention-2026-06-16.md | #1164 mechanism honoring CXO contract: is_private flag + 3 exclusion filters (composting/KG/Radar) + 24h ephemeral retention; D5 AST-guard. **CXO CONFIRMED** the inter-conv boundary (draw-existing/don't-contribute-forward) + 24h nod. Build-ready. |
+| 2026-06-16 | PPM | memo-ppm-to-cxo-cc-lead-pm-1048-keep-generic-concur-2026-06-16.md | #1048 keep-generic CONCUR (push≠pull trust-gradient). Dual-nod → #1048 commented, Lead closes. |
 | 2026-06-16 | Lead | memo-lead-to-cxo-cc-pm-pending-cxo-items-2026-06-16.md | The 5 pending CXO items (ask was implicit in Lead's log, not a memo). **CXO CLEARED ALL**: F2 spec delivered; #1251 2/3 dispositioned; #1164 private=not-persisted-to-understanding (Arch mechanics); #1255 closed dup of #1249; #1048 keep-generic (PPM nod). |
 | 2026-06-15 | Lead | memo-lead-to-cxo-cc-pm-design-floor-f1-f2-primitives-sync-request-2026-06-15.md | F1/F2 primitives-sync (the BLOCKER). **CXO CONFIRMED F1** (Dialog.open signature + wrappers; generalize existing dialog.js; prompt nuance) → Lead builds F1. F2 approach confirmed (my lean: server-side include/block). |
 | 2026-06-15 | Lead | memo-lead-to-cxo-cc-pm-1172-f3-remaining-design-calls-are-yours-2026-06-15.md | F3 lint LIVE; 51 baselined violations = CXO design calls (6 categories). **CXO RULED all 6** (var-fallback allow+match; ambiguous=semantic-wins; no-match=comment/replace-purples/mint-alphas; spacing round/comment; radius use-dep; em/rem→token + rem-accessibility flag). 2 PM-flags (purples, px-vs-rem). |

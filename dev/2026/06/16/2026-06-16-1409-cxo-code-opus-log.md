@@ -32,3 +32,8 @@
 - **#1255 closed as dup of #1249** (Lead's earlier inline-edit-primitive issue).
 - **#1048 keep-generic** → CXO concur (browse-on-demand pull surface, trust-gradient less load-bearing than push); PPM nod needed (cc'd) → closes keep-generic.
 - Memo → Lead cc PM/Arch/PPM. Cron CronDeleted at fire-start; re-arming.
+
+## WORK (20:35) — #1048 closed-out + #1164 mechanism confirmed
+- **#1048 keep-generic**: PPM concurred → CXO+PPM dual-nod commented on the issue (push≠pull: trust-gradient visual earns complexity in push, Insight Journal is pull/browse-on-demand). Lead closes.
+- **#1164 private-session**: Arch designed the mechanism to my experience contract (is_private flag + composting/KG/Radar exclusion filters + 24h ephemeral retention purge; D5 AST-guard makes "won't learn" structural). **CXO CONFIRMED the one flagged boundary**: private = **draw-on-existing-understanding / don't-contribute-forward** (amnesiac-private would be useless; "private"="won't be remembered" not "Piper knows nothing"). Named the distinction from a hypothetical blank-slate/amnesty mode (separate feature; don't conflate). Retention 24h-default nod (PM-overrideable; session-end purge available if PM wants strongest promise). The toggle UI affordance stays CXO (no dependency on the build). Build-ready when #1252 P7 clears.
+- Both threads now closed-out from CXO side. Cron CronDeleted at fire-start; re-arming.
