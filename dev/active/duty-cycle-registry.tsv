@@ -2,18 +2,24 @@
 # A row = "watch this role." No row = not watched (not opted in / not migrated). To watch a new role, add a
 # row; that's the whole registration step (no per-fire skill mutation).
 #
-# "Actively cycling right now" is DERIVED from the session-log lifecycle the agent already maintains — NOT a
-# field here (m-36: reuse an existing mechanism instead of a parallel one the agent must remember to update):
-#   • no session log for the role today (on origin/main)  → hasn't STARTed → not checked (no morning false-+)
-#   • session log carries  <!-- DAY-CLOSED -->            → cleanly STOPped → not checked (no overnight false-+)
-#   • else → checked: heartbeat age (newest "(role)"-tagged commit on origin/main) vs threshold_h.
-# A live cycle commits every fire (push-to-main-routinely), so age > threshold_h = genuinely frozen.
+# "Actively cycling right now" is DERIVED from the session-log lifecycle the agent already maintains (m-36):
+#   • session log carries  <!-- DAY-CLOSED -->            → cleanly STOPped today → not checked.
+#   • no session log today AND before first_fire (+grace) → legitimately not STARTed yet → not checked
+#       (kills the morning false-positive).
+#   • no session log today AND PAST first_fire (+grace)   → SHOULD be cycling → CHECK heartbeat age. This is
+#       the closed→never-restarted catch (Exec 2026-06-17): a role that cleanly STOPped + went dormant
+#       overnight + missed its morning START shows a stale heartbeat past first_fire → flagged. (Without this
+#       it read as "just hasn't started yet" and the load-bearing overnight-dormancy Gap-C slipped through.)
+#   • else (STARTed, not yet STOPped)                     → CHECK heartbeat age vs threshold.
+# A live cycle commits every fire (push-to-main-routinely), so age > threshold_h here = genuinely frozen.
 #
 # threshold_h = a bit more than the role's LARGEST in-window inter-fire gap (so a healthy role never trips).
-# wake_start/wake_end = waking/alerting window (local hour, [start,end)); outside it we don't alert PM even if
-#   a role died without STOPping (overnight-courtesy gate — secondary to the DAY-CLOSED gate above).
+# wake_start/wake_end = waking/alerting window (local hour, [start,end)); we don't alert PM outside it.
+# first_fire = the role's first START-fire of the day, HH:MM (the first cron fire at/after wake_start — NOT an
+#   overnight WATCH fire below wake_start). The "should be cycling by now" gate for the closed→never-restarted
+#   catch. cio fires 03:07 (overnight WATCH, < wake_start 7) then 10:07 (START) → first_fire = 10:07.
 # active_since = when the role joined the watch list (bookkeeping only).
-# Columns (TAB-separated): role<TAB>cron_expr<TAB>threshold_h<TAB>wake_start<TAB>wake_end<TAB>active_since
-role	cron_expr	threshold_h	wake_start	wake_end	active_since
-cio	7 3,10,13,16,19,22	8	7	23	2026-06-16
-exec	32 6,9,12,15,18,21	6	6	22	2026-06-16
+# Columns (TAB-separated): role<TAB>cron_expr<TAB>threshold_h<TAB>wake_start<TAB>wake_end<TAB>first_fire<TAB>active_since
+role	cron_expr	threshold_h	wake_start	wake_end	first_fire	active_since
+cio	7 3,10,13,16,19,22	8	7	23	10:07	2026-06-16
+exec	32 6,9,12,15,18,21	6	6	22	06:32	2026-06-16
