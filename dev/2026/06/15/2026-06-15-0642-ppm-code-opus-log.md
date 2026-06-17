@@ -46,4 +46,37 @@ PM check-in 06:42 PDT. Cron `acf26b74` deleted (stalled — session-only pattern
 - Entity-model spec = DELIVERED to main (`ppm-spec-radar-layer2-entity-model-2026-06-15.md`)
 - RadarEntity model side = FROZEN (per-type states + People model — unblocks Lead's entity backends)
 - Radar People entity + #1233 WorkItem identity: on beta critical path; PPM flagged to PM
+- ADR-071 gate surfaced: Document/WorkItem/People backends gated on anchoring; alignment confirm owed to Lead (carried to 6/16)
+
+---
+
+## Day-Net — 2026-06-15
+
+**Fires**: 1 substantive (06:42 START); cron `875ffc45` stalled after PM left (~8 missed fires, session-only pattern)
+**Substantive deliverables**:
+- PPM explicit response to history-sidebar 4Q (unblocks Lead)
+- #1216 provenance field ack + M4 placement
+- Roadmap v18.1 fold: M2/M3 closures, RECONNECT + D1 sprints, July 4 target
+- Radar/Layer-2 entity-model spec (`ppm-spec-radar-layer2-entity-model-2026-06-15.md`)
+- RadarEntity model side frozen: per-type lifecycle states + People entity model
+- Inbox cleanup: fixed morning triage deletion gap (8 files)
+
+**Standing items net change**: #1166 CLOSED; entity-model spec DELIVERED; RadarEntity model FROZEN; ADR-071 gate surfaced (alignment confirm owed 6/16)
+
+---
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- PDR-002 Appendix (Layer-2 Vision) — entity type set, trust-gated surfacing table
+- PDR-003 (Entity Concept Model) — verified before writing entity-model spec; confirmed scope gap
+- Roadmap v18.0 — base for v18.1 fold
+- sprint-board-structure.md — authoritative sprint sequence for fold
+- CLAUDE.md (2026-06-12) — Option B canonical; session-log-only logging
+
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md, cross-pollination brief
+
+**Wanted but not found**: nothing missing
+
+<!-- DAY-CLOSED: 2026-06-15 -->
 
