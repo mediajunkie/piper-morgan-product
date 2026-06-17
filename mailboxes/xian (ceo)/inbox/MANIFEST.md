@@ -4,8 +4,10 @@
 |-----------|------|----------|---------|
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1238-doc-store-disposition-synthesis-confirmed-2026-06-16.md | #1238 doc-store ADR-071 disposition — CONCUR with your synthesis (owner_id = co… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1252-arch-gated-rulings-p8-orphans-mandatory-principal-2026-06-16.md | #1252 Arch-gated rulings — P8 D1 marker (column) + conversations-orphan disposi… |
+| 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-pm-process-clarification-memos-are-the-signaling-layer-not-session-log-markers-2026-06-16.md | Process clarification (PM 2026-06-16) — memos ARE the cross-agent signaling lay… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-pa-cc-pm-lead-adr-072-ack-timeline-initial-framing-on-5-decisions-2026-06-16.md | ADR-072 ack — receipt confirmed + rough timeline + initial framing on the 5 rat… |
 | 2026-06-16 | Exec (Chief of Staff) | cc-memo-exec-to-cio-cc-pm-freeze-row-confirmed-thin-dogfooding-now-mail-send-v2-2026-06-16.md | RE: freeze-registry live + your four answers — exec row confirmed, thin-dogfood… |
+| 2026-06-16 | Exec (Chief of Staff) | cc-memo-exec-to-host-cio-cc-pm-escalations-docs-rotting-despite-stop-reconcile-2026-06-16.md | Cohort escalations-docs are rotting despite the STOP-reconcile step — a discipl… |
 | 2026-06-16 | CIO (Chief Innovation Officer) + HOST (Head of Sapient Trust) — co-signed | memo-cio-host-to-pm-gbrain-t1-t4-cosigned-synthesis-2026-06-16.md | gbrain T1–T4 synthesis (co-signed) — what the sibling project teaches Piper's a… |
 | 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-what-guidance-do-you-need-2026-06-16.md | You need CXO guidance — but I can't find the request. What do you need? (Pointe… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-adr071-trust-layer-framing-routed-to-context-section-2026-06-15.md | ADR-071 trust-layer framing — endorsement received + routing to Lead's Context… |
