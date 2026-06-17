@@ -41,11 +41,10 @@ def test_transparency_template_exists() -> None:
     assert Path("templates/transparency.html").is_file()
 
 
-def test_page_title(soup: BeautifulSoup) -> None:
-    """Page has a Transparency-titled <title>."""
-    title = soup.find("title")
-    assert title is not None
-    assert "transparency" in title.get_text().lower()
+def test_page_title(transparency_html: str) -> None:
+    """Page declares its title via the shell's page_title block (F2 #1171 migration)."""
+    assert "{% block page_title %}" in transparency_html
+    assert "transparency" in transparency_html.lower()
 
 
 # AC-3 (data fetch) --------------------------------------------------------
@@ -53,23 +52,23 @@ def test_page_title(soup: BeautifulSoup) -> None:
 
 def test_fetch_targets_audit_log_endpoint(transparency_html: str) -> None:
     """AC-3: client calls /api/v1/transparency/audit-log/{session_id}."""
-    assert "/api/v1/transparency/audit-log/" in transparency_html, (
-        "transparency.html must fetch from the shipped #1095 endpoint"
-    )
+    assert (
+        "/api/v1/transparency/audit-log/" in transparency_html
+    ), "transparency.html must fetch from the shipped #1095 endpoint"
 
 
 def test_fetch_includes_credentials(transparency_html: str) -> None:
     """AC-3: fetch uses credentials: 'include' for JWT auth (Issue #840)."""
-    assert "credentials: 'include'" in transparency_html, (
-        "Cross-origin / cookie auth requires credentials: 'include'"
-    )
+    assert (
+        "credentials: 'include'" in transparency_html
+    ), "Cross-origin / cookie auth requires credentials: 'include'"
 
 
 def test_active_session_from_localstorage(transparency_html: str) -> None:
     """AC-3: active session id read from piper_active_conversation_id key (#583)."""
-    assert "piper_active_conversation_id" in transparency_html, (
-        "Active session must be sourced from the established localStorage key"
-    )
+    assert (
+        "piper_active_conversation_id" in transparency_html
+    ), "Active session must be sourced from the established localStorage key"
 
 
 # AC-4 (rendering) ---------------------------------------------------------
@@ -100,12 +99,12 @@ def test_renders_severity_with_class_variant(transparency_html: str) -> None:
 
 def test_redacted_marker_styling(transparency_html: str) -> None:
     """AC-5: [REDACTED] occurrences wrapped in a .redacted-marker span for styling."""
-    assert ".redacted-marker" in transparency_html, (
-        "CSS class for the redacted marker must be defined"
-    )
-    assert "renderWithRedactedMarkers" in transparency_html, (
-        "Function that wraps [REDACTED] in styled spans must exist"
-    )
+    assert (
+        ".redacted-marker" in transparency_html
+    ), "CSS class for the redacted marker must be defined"
+    assert (
+        "renderWithRedactedMarkers" in transparency_html
+    ), "Function that wraps [REDACTED] in styled spans must exist"
 
 
 def test_redacted_marker_recognizes_plain_token(transparency_html: str) -> None:
@@ -114,9 +113,9 @@ def test_redacted_marker_recognizes_plain_token(transparency_html: str) -> None:
     Note: ADR-063 specs typed markers <REDACTED-{type}>; current impl uses
     plain [REDACTED] — Pattern-073 instance 8 tracked in #1099 Phase 0.
     """
-    assert r"/\[REDACTED\]/g" in transparency_html, (
-        "Replace regex must match plain [REDACTED] token used by SecurityRedactor"
-    )
+    assert (
+        r"/\[REDACTED\]/g" in transparency_html
+    ), "Replace regex must match plain [REDACTED] token used by SecurityRedactor"
 
 
 # AC-6 (safe fallback states) ----------------------------------------------
@@ -152,9 +151,7 @@ def test_settings_index_links_to_transparency(settings_index_html: str) -> None:
     """AC-7: settings-index.html grid contains a card linking to /transparency."""
     soup = BeautifulSoup(settings_index_html, "html.parser")
     card = soup.find("a", href="/transparency")
-    assert card is not None, (
-        "settings-index.html must contain a card linking to /transparency"
-    )
+    assert card is not None, "settings-index.html must contain a card linking to /transparency"
     # Card must follow the established .settings-card pattern.
     assert "settings-card" in (card.get("class") or [])
 

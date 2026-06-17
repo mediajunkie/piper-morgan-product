@@ -1,8 +1,12 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Personality Preferences - Piper Morgan</title>
-    <link rel="stylesheet" href="/static/css/toast.css" />
+{% extends "layouts/app_shell.html" %}
+{# F2 #1171: migrated onto app_shell — chrome (nav/footer), the floating widget runtime, #}
+{# and window.currentUser are now shell-owned; this page declares only its content. #}
+{# The inline <style> below is kept verbatim — its hardcoded hex / var fallbacks are the #}
+{# per-page CSS-tokenization follow-on (CXO), out of scope here. #}
+
+{% block page_title %}Personality Preferences - Piper Morgan{% endblock %}
+
+{% block head_extra %}
     <link rel="stylesheet" href="/static/css/spinner.css" />
     <link rel="stylesheet" href="/static/css/help-tooltip.css" />
     <link rel="stylesheet" href="/static/css/keyboard-shortcuts.css" />
@@ -10,8 +14,6 @@
     <link rel="stylesheet" href="/static/css/skip-link.css" />
     <link rel="stylesheet" href="/static/css/page-transitions.css" />
     <link rel="stylesheet" href="/static/css/hover-focus-states.css" />
-    <link rel="stylesheet" href="/static/css/spacing.css" />
-    <link rel="stylesheet" href="/static/css/chat.css" />
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -204,10 +206,10 @@
         font-weight: 600;
       }
     </style>
-  </head>
-  <body>
+{% endblock %}
+
+{% block main %}
     {% include 'components/skip-link.html' %}
-    {% include 'components/navigation.html' %}
     {% include 'components/toast.html' %}
     {% include 'components/keyboard-shortcuts.html' %}
     {% set breadcrumbs = [
@@ -215,18 +217,6 @@
       {"label": "Personality", "url": None}
     ] %}
     {% include 'components/breadcrumbs.html' %}
-    <script>
-      // G8: Logged-in User Indicator - Pass user context from server to navigation
-      {% if user %}
-      window.currentUser = {
-        username: "{{ user.username }}",
-        user_id: "{{ user.user_id }}",
-        is_admin: {{ 'true' if user.is_admin else 'false' }}
-      };
-      {% else %}
-      window.currentUser = null;
-      {% endif %}
-    </script>
     <div class="header">
       <h1>🎭 Personality Preferences</h1>
       <p>
@@ -433,7 +423,9 @@
       ></div>
     </div>
     </form>
+{% endblock %}
 
+{% block scripts %}
     <script>
       let currentConfig = {
         warmth_level: 0.7,
@@ -667,7 +659,6 @@
         technical: [Validators.requiredRadio('technical')],
       }, savePreferences);
     </script>
-    <script src="/static/js/toast.js"></script>
     <script src="/static/js/toast-messages.js"></script>
     <script src="/static/js/loading.js"></script>
     <script src="/static/js/help-tooltip.js"></script>
@@ -675,7 +666,4 @@
     <script src="/static/js/focus-manager.js"></script>
     <script src="/static/js/form-validation.js"></script>
     <script src="/static/js/page-transitions.js"></script>
-    <script src="/static/js/timestamp-utils.js"></script>
-    <script src="/static/js/chat.js"></script>
-  </body>
-</html>
+{% endblock %}

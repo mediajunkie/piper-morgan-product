@@ -5,9 +5,8 @@
   Used initially by Project Detail (Overview / Config tabs); designed
   generically for reuse on other surfaces per PDR-003 Phase 1 IA pattern.
 
-  Usage in a parent template:
-
-    {% include 'components/tabs.html' %}
+  Usage in a parent template: include this component once (components/tabs.html)
+  via your include mechanism, then add the tab markup, e.g.:
 
     <div data-tabs-container>
       <nav class="tabs-strip" role="tablist">

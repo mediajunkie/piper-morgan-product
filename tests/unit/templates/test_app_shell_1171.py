@@ -79,3 +79,24 @@ def test_shell_template_has_no_inline_style_attr():
     # chrome styling lives in app-shell.css (token-only); the shell template adds no inline styles.
     shell = (TEMPLATES / "layouts" / "app_shell.html").read_text()
     assert "style=" not in shell
+
+
+def test_shell_provides_chrome_runtime_for_widget(env):
+    # The shell owns the nav-included floating-widget runtime so migrated pages don't
+    # each re-declare it (the F2 chrome-completeness fix). Mirrors home.html's set.
+    html = _render(env, "{% extends 'layouts/app_shell.html' %}{% block main %}x{% endblock %}")
+    assert "/static/js/chat.js" in html  # the widget toggle/send
+    assert "marked" in html  # markdown rendering
+    assert "/static/js/permissions.js" in html  # permission prompts
+
+
+def test_shell_sets_current_user_for_nav_menu(env):
+    # The nav user-menu reads window.currentUser; the shell sets it from {{ user }}.
+    user = {"username": "xian", "user_id": "u1", "is_admin": False}
+    html = _render(
+        env, "{% extends 'layouts/app_shell.html' %}{% block main %}x{% endblock %}", user=user
+    )
+    assert "window.currentUser" in html and "xian" in html
+    # no user → explicit null (logged-out / render without a user)
+    html2 = _render(env, "{% extends 'layouts/app_shell.html' %}{% block main %}x{% endblock %}")
+    assert "window.currentUser = null" in html2
