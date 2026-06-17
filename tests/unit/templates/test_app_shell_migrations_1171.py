@@ -17,6 +17,10 @@ TEMPLATES = Path(__file__).resolve().parents[3] / "templates"
 MIGRATED = [
     ("insights.html", "Insight Journal"),
     ("advanced-settings.html", "Advanced Settings"),
+    ("privacy-settings.html", "Privacy"),
+    ("settings-index.html", "Settings"),
+    ("work_items.html", "Work Items"),
+    ("standup.html", "Standup"),
 ]
 
 _USER = {"username": "xian", "user_id": "u1", "is_admin": False}

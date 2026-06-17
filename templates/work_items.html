@@ -1,348 +1,330 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Work Items - Piper Morgan</title>
-  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
-  <!-- tokens.css MUST be first - defines CSS variables used by other stylesheets -->
-  <link rel="stylesheet" href="/static/css/tokens.css" />
-  <link rel="stylesheet" href="/static/css/toast.css" />
-  <link rel="stylesheet" href="/static/css/dialog.css" />
-  <link rel="stylesheet" href="/static/css/permissions.css" />
-  <link rel="stylesheet" href="/static/css/spacing.css" />
-  <link rel="stylesheet" href="/static/css/chat.css" />
-  <style>
-    body {
-      font-family: var(--font-family);
-      margin: 0;
-      padding: var(--space-md);
-      background: var(--color-background-secondary);
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: var(--color-background-primary);
-      border-radius: var(--border-radius-lg);
-      padding: var(--space-lg);
-      box-shadow: var(--shadow-sm);
-    }
-    .page-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: var(--space-lg);
-    }
-    .create-resource-btn {
-      background: var(--color-primary);
-      color: var(--color-neutral-white);
-      border: none;
-      padding: 10px 20px;
-      border-radius: var(--border-radius-md);
-      cursor: pointer;
-      font-size: var(--font-size-base);
-      transition: var(--transition-background);
-    }
-    .create-resource-btn:hover {
-      background: var(--color-primary-dark);
-    }
-    .page-header h1 {
-      color: var(--color-text-primary);
-      margin: 0;
-    }
-    .breadcrumb {
-      display: flex;
-      align-items: center;
-      margin-bottom: var(--space-md);
-      font-size: var(--font-size-base);
-      color: var(--color-text-secondary);
-    }
-    .breadcrumb a {
-      color: var(--color-primary);
-      text-decoration: none;
-      transition: var(--transition-color);
-    }
-    .breadcrumb a:hover {
-      color: var(--color-primary-dark);
-      text-decoration: underline;
-    }
-    .breadcrumb-separator {
-      margin: 0 var(--space-sm);
-      color: var(--color-text-light);
-    }
-    .breadcrumb-current {
-      color: var(--color-text-primary);
-      font-weight: var(--font-weight-medium);
-    }
-    /* Work item specific styles - semantic colors intentionally hardcoded for type/status badges */
-    .work-item-type {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: var(--border-radius-sm);
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-semibold);
-      text-transform: uppercase;
-      margin-right: var(--space-sm);
-    }
-    /* Semantic badge colors - not in token system, intentional */
-    .work-item-type-bug { background: #fee2e2; color: #dc2626; }
-    .work-item-type-feature { background: #dbeafe; color: #2563eb; }
-    .work-item-type-task { background: #e0e7ff; color: #4f46e5; }
-    .work-item-type-improvement { background: #d1fae5; color: #059669; }
-    .work-item-status {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: var(--border-radius-sm);
-      font-size: var(--font-size-xs);
-      background: var(--color-background-tertiary);
-      color: var(--color-text-secondary);
-    }
-    /* Semantic status colors - not in token system, intentional */
-    .work-item-status-open { background: #fef3c7; color: #d97706; }
-    .work-item-status-in_progress { background: #dbeafe; color: #2563eb; }
-    .work-item-status-closed { background: #d1fae5; color: #059669; }
-    .work-item-external-link {
-      color: var(--color-primary);
-      text-decoration: none;
-      font-size: var(--font-size-sm);
-    }
-    .work-item-external-link:hover {
-      text-decoration: underline;
-    }
-  </style>
-</head>
-<body>
-  <!-- Include navigation component -->
-  {% include 'components/navigation.html' %}
-  {% include 'components/toast.html' %}
-  {% include 'components/confirmation-dialog.html' %}
-  {% include 'components/lifecycle_indicator.html' %}
+{% extends "layouts/app_shell.html" %}
+{# F2 #1171: migrated onto app_shell — chrome (nav/footer), the floating widget runtime, #}
+{# and window.currentUser are now shell-owned; this page declares only its content. #}
+{# The inline <style> below is kept verbatim — its hardcoded hex (semantic badge #}
+{# colors) is the per-page CSS-tokenization follow-on (CXO), out of scope here. #}
 
-  <div class="container">
-    <nav class="breadcrumb">
-      <a href="/">Home</a>
-      <span class="breadcrumb-separator">›</span>
-      <span class="breadcrumb-current">Work Items</span>
-    </nav>
+{% block page_title %}Work Items - Piper Morgan{% endblock %}
 
-    <div class="page-header">
-      <h1>Work Items</h1>
-      <button class="create-resource-btn" onclick="createWorkItem()">
-        + Add work item
-      </button>
-    </div>
+{% block head_extra %}
+<style>
+  body {
+    font-family: var(--font-family);
+    margin: 0;
+    padding: var(--space-md);
+    background: var(--color-background-secondary);
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--color-background-primary);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+  }
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+  }
+  .create-resource-btn {
+    background: var(--color-primary);
+    color: var(--color-neutral-white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    transition: var(--transition-background);
+  }
+  .create-resource-btn:hover {
+    background: var(--color-primary-dark);
+  }
+  .page-header h1 {
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--space-md);
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+  }
+  .breadcrumb a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: var(--transition-color);
+  }
+  .breadcrumb a:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+  }
+  .breadcrumb-separator {
+    margin: 0 var(--space-sm);
+    color: var(--color-text-light);
+  }
+  .breadcrumb-current {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+  }
+  /* Work item specific styles - semantic colors intentionally hardcoded for type/status badges */
+  .work-item-type {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    margin-right: var(--space-sm);
+  }
+  /* Semantic badge colors - not in token system, intentional */
+  .work-item-type-bug { background: #fee2e2; color: #dc2626; }
+  .work-item-type-feature { background: #dbeafe; color: #2563eb; }
+  .work-item-type-task { background: #e0e7ff; color: #4f46e5; }
+  .work-item-type-improvement { background: #d1fae5; color: #059669; }
+  .work-item-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-xs);
+    background: var(--color-background-tertiary);
+    color: var(--color-text-secondary);
+  }
+  /* Semantic status colors - not in token system, intentional */
+  .work-item-status-open { background: #fef3c7; color: #d97706; }
+  .work-item-status-in_progress { background: #dbeafe; color: #2563eb; }
+  .work-item-status-closed { background: #d1fae5; color: #059669; }
+  .work-item-external-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+  }
+  .work-item-external-link:hover {
+    text-decoration: underline;
+  }
+</style>
+{% endblock %}
 
-    <!-- Work items will be rendered here by JavaScript -->
-    <div id="work-items-container" class="resource-list">
-      {% set icon = '📋' %}
-      {% set title = 'No work items yet.' %}
-      {% set message = 'Work items from GitHub, Jira, or other systems will appear here once synced.' %}
-      {% include 'components/empty-state.html' %}
-    </div>
+{% block main %}
+{% include 'components/toast.html' %}
+{% include 'components/confirmation-dialog.html' %}
+{% include 'components/lifecycle_indicator.html' %}
+
+<div class="container">
+  <nav class="breadcrumb">
+    <a href="/">Home</a>
+    <span class="breadcrumb-separator">›</span>
+    <span class="breadcrumb-current">Work Items</span>
+  </nav>
+
+  <div class="page-header">
+    <h1>Work Items</h1>
+    <button class="create-resource-btn" onclick="createWorkItem()">
+      + Add work item
+    </button>
   </div>
 
-  <!-- JavaScript -->
-  <script src="/static/js/toast.js"></script>
-  <script src="/static/js/toast-messages.js"></script>
-  <script src="/static/js/dialog.js"></script>
-  <script src="/static/js/permissions.js"></script>
-  <script src="/static/js/timestamp-utils.js"></script>
-  <script>
-    // Inject user context from server
-    {% if user %}
-    window.currentUser = {
-      username: "{{ user.username }}",
-      user_id: "{{ user.user_id }}",
-      is_admin: {{ 'true' if user.is_admin else 'false' }}
-    };
-    {% else %}
-    window.currentUser = null;
-    {% endif %}
+  <!-- Work items will be rendered here by JavaScript -->
+  <div id="work-items-container" class="resource-list">
+    {% set icon = '📋' %}
+    {% set title = 'No work items yet.' %}
+    {% set message = 'Work items from GitHub, Jira, or other systems will appear here once synced.' %}
+    {% include 'components/empty-state.html' %}
+  </div>
+</div>
+{% endblock %}
 
-    // Fetch and render work items on page load
-    document.addEventListener('DOMContentLoaded', async () => {
-      await loadWorkItems();
+{% block scripts %}
+<script src="/static/js/toast-messages.js"></script>
+<script src="/static/js/dialog.js"></script>
+<script>
+  // Fetch and render work items on page load
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadWorkItems();
+  });
+
+  // Load work items from API
+  async function loadWorkItems() {
+    try {
+      const response = await fetch('/api/v1/work-items', {
+        credentials: 'include'
+      });
+      if (!response.ok) {
+        throw new Error('Failed to load work items');
+      }
+      const data = await response.json();
+      const workItems = data.work_items || [];
+
+      renderWorkItems(workItems);
+    } catch (error) {
+      console.error('Error loading work items:', error);
+      ToastMessages.error('load_error');
+    }
+  }
+
+  // Render work items with lifecycle indicators
+  function renderWorkItems(workItems) {
+    const container = document.getElementById('work-items-container');
+
+    if (workItems.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state" role="status" aria-label="Empty state">
+          <div class="empty-state-icon" aria-hidden="true">📋</div>
+          <h2 class="empty-state-title">No work items yet.</h2>
+          <p class="empty-state-message">Work items from GitHub, Jira, or other systems will appear here once synced.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = workItems.map(item => {
+      // Build type badge
+      const typeClass = `work-item-type-${item.type || 'task'}`;
+      const typeBadge = `<span class="work-item-type ${typeClass}">${item.type || 'task'}</span>`;
+
+      // Build status badge
+      const statusClass = `work-item-status-${(item.status || 'open').replace(' ', '_')}`;
+      const statusBadge = `<span class="work-item-status ${statusClass}">${item.status || 'open'}</span>`;
+
+      // Build lifecycle indicator (#710 MUX-WORKITEMS-VIEW)
+      // Only show when lifecycle_state is present (Lifecycle Optionality principle)
+      let lifecycleIndicator = '';
+      if (item.lifecycle_state && window.LifecycleIndicator) {
+        const phrase = LifecycleIndicator.getPhrase(item.lifecycle_state);
+        lifecycleIndicator = `
+          <div class="lifecycle-indicator"
+               data-lifecycle-stage="${item.lifecycle_state}"
+               data-compact="true"
+               role="status"
+               tabindex="0"
+               aria-label="Lifecycle: ${phrase}"
+               style="margin-left: 8px;">
+            <span class="lifecycle-dot" aria-hidden="true"></span>
+            <span class="lifecycle-phrase">${phrase}</span>
+            <span class="lifecycle-tooltip" role="tooltip">${phrase}</span>
+          </div>
+        `;
+      }
+
+      // Build external link if available
+      let externalLink = '';
+      if (item.external_url) {
+        const sourceName = item.source_system || 'External';
+        externalLink = `<a href="${item.external_url}" target="_blank" rel="noopener noreferrer" class="work-item-external-link">View in ${sourceName} ↗</a>`;
+      }
+
+      return `
+        <div class="resource-item">
+          <div class="resource-header">
+            <div>
+              <h3 class="resource-title">
+                ${typeBadge}
+                ${item.title}
+                ${lifecycleIndicator}
+              </h3>
+              <div style="margin-top: 4px;">
+                ${statusBadge}
+                ${item.priority ? `<span style="margin-left: 8px; color: var(--color-text-secondary); font-size: 0.85em;">Priority: ${item.priority}</span>` : ''}
+              </div>
+            </div>
+          </div>
+          ${item.description ? `<p style="color: var(--color-text-tertiary); margin: 12px 0;">${item.description.substring(0, 200)}${item.description.length > 200 ? '...' : ''}</p>` : ''}
+          <div style="display: flex; gap: 16px; align-items: center; margin-top: 8px; font-size: 0.85em; color: var(--color-text-secondary);">
+            ${item.assignee ? `<span>Assigned: ${item.assignee}</span>` : ''}
+            ${externalLink}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Create work item
+  function createWorkItem() {
+    Dialog.show({
+      mode: 'form',
+      title: 'Add Work Item',
+      confirmText: 'Create',
+      content: `
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div>
+            <label style="display: block; margin-bottom: 4px; font-weight: 500;">Title *</label>
+            <input type="text" id="work-item-title" placeholder="What needs to be done?"
+                   style="width: 100%; padding: 8px; border: 1px solid var(--color-border-light); border-radius: var(--border-radius-md); box-sizing: border-box;">
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 4px; font-weight: 500;">Description</label>
+            <textarea id="work-item-description" placeholder="Details about this work item..."
+                      style="width: 100%; padding: 8px; border: 1px solid var(--color-border-light); border-radius: var(--border-radius-md); min-height: 80px; box-sizing: border-box;"></textarea>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <div style="flex: 1;">
+              <label style="display: block; margin-bottom: 4px; font-weight: 500;">Type</label>
+              <select id="work-item-type" style="width: 100%; padding: 8px; border: 1px solid var(--color-border-light); border-radius: var(--border-radius-md);">
+                <option value="task">Task</option>
+                <option value="bug">Bug</option>
+                <option value="feature">Feature</option>
+                <option value="improvement">Improvement</option>
+              </select>
+            </div>
+            <div style="flex: 1;">
+              <label style="display: block; margin-bottom: 4px; font-weight: 500;">Priority</label>
+              <select id="work-item-priority" style="width: 100%; padding: 8px; border: 1px solid var(--color-border-light); border-radius: var(--border-radius-md);">
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+                <option value="critical">Critical</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      `,
+      onConfirm: async () => {
+        const title = document.getElementById('work-item-title').value.trim();
+        const description = document.getElementById('work-item-description').value.trim();
+        const type = document.getElementById('work-item-type').value;
+        const priority = document.getElementById('work-item-priority').value;
+
+        if (!title) {
+          ToastMessages.error('validation_error', 'Title is required');
+          return;
+        }
+
+        try {
+          const response = await fetch('/api/v1/work-items', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, description, type, priority }),
+            credentials: 'include'
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to create work item');
+          }
+
+          ToastMessages.success('work_item_created');
+          Dialog.close();
+
+          // Reload list separately so errors don't show as create errors
+          try {
+            await loadWorkItems();
+          } catch (reloadError) {
+            console.error('Error reloading work items:', reloadError);
+            // Don't show error toast - item was created successfully
+          }
+        } catch (error) {
+          console.error('Error creating work item:', error);
+          ToastMessages.error('create_error');
+        }
+      }
     });
 
-    // Load work items from API
-    async function loadWorkItems() {
-      try {
-        const response = await fetch('/api/v1/work-items', {
-          credentials: 'include'
-        });
-        if (!response.ok) {
-          throw new Error('Failed to load work items');
-        }
-        const data = await response.json();
-        const workItems = data.work_items || [];
-
-        renderWorkItems(workItems);
-      } catch (error) {
-        console.error('Error loading work items:', error);
-        ToastMessages.error('load_error');
-      }
-    }
-
-    // Render work items with lifecycle indicators
-    function renderWorkItems(workItems) {
-      const container = document.getElementById('work-items-container');
-
-      if (workItems.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state" role="status" aria-label="Empty state">
-            <div class="empty-state-icon" aria-hidden="true">📋</div>
-            <h2 class="empty-state-title">No work items yet.</h2>
-            <p class="empty-state-message">Work items from GitHub, Jira, or other systems will appear here once synced.</p>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = workItems.map(item => {
-        // Build type badge
-        const typeClass = `work-item-type-${item.type || 'task'}`;
-        const typeBadge = `<span class="work-item-type ${typeClass}">${item.type || 'task'}</span>`;
-
-        // Build status badge
-        const statusClass = `work-item-status-${(item.status || 'open').replace(' ', '_')}`;
-        const statusBadge = `<span class="work-item-status ${statusClass}">${item.status || 'open'}</span>`;
-
-        // Build lifecycle indicator (#710 MUX-WORKITEMS-VIEW)
-        // Only show when lifecycle_state is present (Lifecycle Optionality principle)
-        let lifecycleIndicator = '';
-        if (item.lifecycle_state && window.LifecycleIndicator) {
-          const phrase = LifecycleIndicator.getPhrase(item.lifecycle_state);
-          lifecycleIndicator = `
-            <div class="lifecycle-indicator"
-                 data-lifecycle-stage="${item.lifecycle_state}"
-                 data-compact="true"
-                 role="status"
-                 tabindex="0"
-                 aria-label="Lifecycle: ${phrase}"
-                 style="margin-left: 8px;">
-              <span class="lifecycle-dot" aria-hidden="true"></span>
-              <span class="lifecycle-phrase">${phrase}</span>
-              <span class="lifecycle-tooltip" role="tooltip">${phrase}</span>
-            </div>
-          `;
-        }
-
-        // Build external link if available
-        let externalLink = '';
-        if (item.external_url) {
-          const sourceName = item.source_system || 'External';
-          externalLink = `<a href="${item.external_url}" target="_blank" rel="noopener noreferrer" class="work-item-external-link">View in ${sourceName} ↗</a>`;
-        }
-
-        return `
-          <div class="resource-item">
-            <div class="resource-header">
-              <div>
-                <h3 class="resource-title">
-                  ${typeBadge}
-                  ${item.title}
-                  ${lifecycleIndicator}
-                </h3>
-                <div style="margin-top: 4px;">
-                  ${statusBadge}
-                  ${item.priority ? `<span style="margin-left: 8px; color: var(--color-text-secondary); font-size: 0.85em;">Priority: ${item.priority}</span>` : ''}
-                </div>
-              </div>
-            </div>
-            ${item.description ? `<p style="color: var(--color-text-tertiary); margin: 12px 0;">${item.description.substring(0, 200)}${item.description.length > 200 ? '...' : ''}</p>` : ''}
-            <div style="display: flex; gap: 16px; align-items: center; margin-top: 8px; font-size: 0.85em; color: var(--color-text-secondary);">
-              ${item.assignee ? `<span>Assigned: ${item.assignee}</span>` : ''}
-              ${externalLink}
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // Create work item
-    function createWorkItem() {
-      Dialog.show({
-        mode: 'form',
-        title: 'Add Work Item',
-        confirmText: 'Create',
-        content: `
-          <div style="display: flex; flex-direction: column; gap: 16px;">
-            <div>
-              <label style="display: block; margin-bottom: 4px; font-weight: 500;">Title *</label>
-              <input type="text" id="work-item-title" placeholder="What needs to be done?"
-                     style="width: 100%; padding: 8px; border: 1px solid var(--color-border-light); border-radius: var(--border-radius-md); box-sizing: border-box;">
-            </div>
-            <div>
-              <label style="display: block; margin-bottom: 4px; font-weight: 500;">Description</label>
-              <textarea id="work-item-description" placeholder="Details about this work item..."
-                        style="width: 100%; padding: 8px; border: 1px solid var(--color-border-light); border-radius: var(--border-radius-md); min-height: 80px; box-sizing: border-box;"></textarea>
-            </div>
-            <div style="display: flex; gap: 12px;">
-              <div style="flex: 1;">
-                <label style="display: block; margin-bottom: 4px; font-weight: 500;">Type</label>
-                <select id="work-item-type" style="width: 100%; padding: 8px; border: 1px solid var(--color-border-light); border-radius: var(--border-radius-md);">
-                  <option value="task">Task</option>
-                  <option value="bug">Bug</option>
-                  <option value="feature">Feature</option>
-                  <option value="improvement">Improvement</option>
-                </select>
-              </div>
-              <div style="flex: 1;">
-                <label style="display: block; margin-bottom: 4px; font-weight: 500;">Priority</label>
-                <select id="work-item-priority" style="width: 100%; padding: 8px; border: 1px solid var(--color-border-light); border-radius: var(--border-radius-md);">
-                  <option value="low">Low</option>
-                  <option value="medium" selected>Medium</option>
-                  <option value="high">High</option>
-                  <option value="critical">Critical</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        `,
-        onConfirm: async () => {
-          const title = document.getElementById('work-item-title').value.trim();
-          const description = document.getElementById('work-item-description').value.trim();
-          const type = document.getElementById('work-item-type').value;
-          const priority = document.getElementById('work-item-priority').value;
-
-          if (!title) {
-            ToastMessages.error('validation_error', 'Title is required');
-            return;
-          }
-
-          try {
-            const response = await fetch('/api/v1/work-items', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ title, description, type, priority }),
-              credentials: 'include'
-            });
-
-            if (!response.ok) {
-              throw new Error('Failed to create work item');
-            }
-
-            ToastMessages.success('work_item_created');
-            Dialog.close();
-
-            // Reload list separately so errors don't show as create errors
-            try {
-              await loadWorkItems();
-            } catch (reloadError) {
-              console.error('Error reloading work items:', reloadError);
-              // Don't show error toast - item was created successfully
-            }
-          } catch (error) {
-            console.error('Error creating work item:', error);
-            ToastMessages.error('create_error');
-          }
-        }
-      });
-
-      // Focus on title field after dialog opens
-      setTimeout(() => {
-        const titleInput = document.getElementById('work-item-title');
-        if (titleInput) titleInput.focus();
-      }, 100);
-    }
-  </script>
-</body>
-</html>
+    // Focus on title field after dialog opens
+    setTimeout(() => {
+      const titleInput = document.getElementById('work-item-title');
+      if (titleInput) titleInput.focus();
+    }, 100);
+  }
+</script>
+{% endblock %}
