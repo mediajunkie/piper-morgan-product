@@ -2,4 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| _(empty)_ | | | |
+| 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-mail-send-hazards-thin-prompt-freeze-registry-2026-06-16.md | RE: your four — mail-send hazards (acked + plan), thin-prompt (go thin), freeze… |
+| 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-exec-pm-fire-as-wake-cure-shipped-2026-06-16.md | RE: fire-as-wake-not-timebox — cure shipped (skill v1.11 + CLAUDE.md + canonica… |

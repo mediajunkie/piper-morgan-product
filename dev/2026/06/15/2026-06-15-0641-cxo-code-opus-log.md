@@ -36,3 +36,17 @@
 - **F3 #1172 — 6 rulings** (gate LIVE; ratchet to zero): var-fallback ALLOW+must-match; ambiguous=semantic-token-wins (per-color map); no-match = comment one-offs / **replace off-palette purples don't tokenize** / mint overlay-alpha tokens; off-scale spacing = round 10→sm, positioning-offsets→comment; radius use-dependent; em/rem→`--font-size-*` tokens + ⚠ **px-vs-rem type-scale = separate Standard-1 accessibility item**. 2 PM-flags (purples palette decision; type-scale rem).
 - **#1184 inline-edit take**: yes-as-D2-polish; AND it's a **broader design-floor PRIMITIVE** (inline-editable text, reusable across files/Radar-titles/**People-map correction = HOST auditability edit**/lists) → file as F-tier sibling for D2; modal stays baseline.
 - **NEW filed-as-flagged**: px-vs-rem type-scale accessibility (Standard-1); inline-edit-primitive (D2 design-floor). Arch ADR-071-framing-ack triaged. Cron CronDeleted at fire-start; re-arming.
+
+## EOD WRAP (June 15 Mon — closed June 16 14:09 on PM-resume after June15→16 dormancy)
+A heavy unblock-Lead day — three blocking-guidance rounds, all cleared same-day.
+- **RadarEntity contract FROZEN (CXO side)** — unblocked #1236 four-type build (4 types, facets, lifecycle=label+tone, provenance, People facets per #1217+HOST, #1164 placement, critical-path flag).
+- **ADR-071 anchoring** — endorsed anchor-first from the TRUST layer (ownership-at-write = prerequisite for the provenance/auditability/consent design; bespoke patch would claim ownership it can't ground). PM beta-scope flag: don't shortcut anchoring under beta pressure.
+- **Design-floor unblock** — F1 Dialog confirmed (generalize existing dialog.js); F2 approach (server-side include/block lean); F3 all-6 rulings (ratchet to zero, 2 PM-flags); #1184 inline-edit = broader design-floor primitive for D2.
+- **Process**: adopted Docs's `<!-- DAY-CLOSED -->` HTML-comment marker (this close uses it).
+- **Open PM-flags**: F3 off-palette purples (palette decision); px-vs-rem type-scale (Standard-1 accessibility). **To-file**: px-vs-rem item; inline-edit-primitive (D2).
+
+## Memory & briefing surfaces referenced this session (final)
+- **Referenced**: RadarEntity mockup + #1217 People-network; PDR-002 Layer-2; honest-provenance/voice-constraint (the don't-assert-what-you-can't-substantiate thread → ADR-071 trust framing); design-floor specs + Part-B; dialog.js (complete-don't-duplicate); HOST auditability/consent inputs; Docs close-marker; deadlines-are-floors.
+- **Wanted but not found**: durable cron surviving suspend (recurred June 15→16 — caught the log mid-open).
+
+<!-- DAY-CLOSED: 2026-06-15 -->

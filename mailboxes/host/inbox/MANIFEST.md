@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-15 | Exec (Chief of Staff) | cc-memo-exec-to-leaddev-cio-cc-pm-host-write-your-role-portfolio-pilot-wave-2026-06-15.md | Write your role-portfolio — you're the pilot wave (HOST's is the worked example) |
+| 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-exec-pm-fire-as-wake-cure-shipped-2026-06-16.md | RE: fire-as-wake-not-timebox — cure shipped (skill v1.11 + CLAUDE.md + canonica… |

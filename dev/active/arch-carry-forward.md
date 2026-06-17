@@ -2,13 +2,13 @@
 
 **Purpose**: per duty-cycle-tick skill v1.5 — ephemeral session state that replaces the frozen prompt block. Rewritten at end of every substantive fire. Lives alongside (NOT in place of) the durable session log + cycle log.
 
-**Last rewritten**: 2026-06-15 13:20 PT (Fire 49 END; ADR-071 v0.1 RATIFIED; three-ADR family complete; new cron armed).
+**Last rewritten**: 2026-06-16 17:10 PT (Fire 53 END; #1238 disposition + ADR-072 ack shipped under new wake-discipline; new cron armed).
 
 ---
 
 ## Current cron
 
-- **Job ID**: `3b67d2b9` (armed Fire 49 END ~13:20 PT June 15; previous `dd9b6d8f` CronDelete'd Fire 49 start per Rule 1)
+- **Job ID**: `c01ace0b` (armed Fire 53 END ~17:10 PT June 16; previous `3b67d2b9` CronDelete'd Fire 53 start per Rule 1; died with session at June 15 Fire 51 boundary ~18:48 PT — **4th F4 Gap-C instance in 4 days**, reproducibility extreme)
 - **Expression**: `52 */3 * * *` (3hr-interval bursty-lane Row 1)
 - **Prompt shape**: thin skill-invocation (invokes duty-cycle-tick skill; reads carry-forward + standing-items + escalations from disk)
 - **Mode**: session-only recurring (durable=true passed but response confirms session-only — consistent with F4 RESOLVED finding that durable=true is no-op; Gap-C session-dormancy is the dominant cron-loss mechanism per CIO 6/11)
@@ -18,9 +18,9 @@
 - **2 PM calls open**:
   - User-correction recovery from #1193 (Fire 34 6/12)
   - Workstream-047 spine altitude call (Fire 32 6/12)
-- **ADR-071 v0.1 RATIFIED Fire 49** — closed; consolidating refactor + doc-store + WorkItem leg all unblocked for Lead's execution.
-- **ADR-070 v0.1 FILED** — Lead-ratify pending; if Lead refines, will surface Fire 50+.
-- **#972 MEM-TEMPORAL field-spec review** — pending Docs's reconciled-schema delivery; not blocking.
+- **ADR-072 (Skill-routing) drafting watch** — initial framing + timeline shipped Fire 53; v0.1 draft owed when capacity allows.
+- **#1238 doc-store disposition shipped Fire 53** — Lead unblocked; #972 MEM-TEMPORAL field-spec review still pending Docs.
+- **NEW WAKE-DISCIPLINE absorbed (CLAUDE.md 2026-06-15)**: Fire = wake, not time-box. Drain all unblocked work per wake; commits = work-unit boundaries (not stop signals); "Fire N" labels the wake. Cron is idle-wakeup. Applied this fire; multi-stream drain under Fire 53.
 - **CLAUDE.md changes carried**: Option B ephemeral worktree canonical; single-log discipline (session log only); **NEW 6/14: Recording-decisions section** added pointing to ADR/PDR + decisions.log surfaces (HOST + Docs lane for briefing propagation).
 
 ## Recent substantive shipments (last 3 fires)
@@ -36,7 +36,10 @@
 - **Fire 45 (June 14 ~18:52 PT EXPECTED; DID NOT EXECUTE)** — third F4 Gap-C instance in 72h; cron died with session.
 - **Fire 47 (June 15 08:05 PT)** — D1 ruling on #1241 PM-domain global-by-design shipped + CXO trust-layer endorsement ack + routing to Lead's ADR-071 Context section; CLAUDE.md HOST mail-vs-GH-comments cohort norm added.
 - **Fire 48 (June 15 08:15 PT)** — **ADR-070 v0.1 FILED**: MCP-Consumer Connector Architecture; 9 D-sections; RECONNECT WS-1..9 decomposition unblocked.
-- **Fire 49 (June 15 12:59 PT)** — PM signal "Lead Dev may be waiting"; **ADR-071 v0.1 RATIFIED** clean. Lead-authored v0.1 folded all D1 ruling + D2/D4 expansions + 3 draft-notes + CXO trust framing faithfully. Two minor cross-ref polish suggestions (ADR-070 D8 composition; F3 #1172 ratchet precedent) flagged as not-blocking. Ratification memo to Lead + cc PM/CIO. **Unblocks**: consolidating refactor (D2 `user_id`→`owner_id`); doc-store remediation (#1238 first migration instance per D6); Radar WorkItem leg (D1 render-guard, no schema change). **Three-ADR-in-5-days family complete** (ADR-066 v0.2 + ADR-070 + ADR-071). Cron `3b67d2b9` armed.
+- **Fire 50 (June 15 18:46 PT)** — #1206 item-2 A.2 trim concur to Docs.
+- **Fire 51 (June 15 18:48 PT)** — Quiet hold.
+- **Fire 52 (June 15 ~21:52 PT EXPECTED; DID NOT EXECUTE)** — 4th F4 Gap-C instance.
+- **Fire 53 (June 16 16:36 PT)** — PM-initiated wake; **drained 3 inbox memos in priority order per new wake-discipline**. (1) **#1238 doc-store disposition** (CONCUR Lead's synthesis: `owner_id = configured PM` + `is_global_pm_domain=true` D1 exemption; marker on DB row not ChromaDB embeddings) → Lead unblocked. (2) **ADR-072 (Skill-routing) ack + timeline + initial framing on 5 ratification decisions** → PA's queue updated; v0.1 draft owed within ~1-2 weeks. (3) decisions.log entries appended for both. Plus Step-0 self-heal on June 15; June 16 session log opened with canonical naming (HHMM + code) per Docs's 6/15 feedback. Cron `c01ace0b` armed.
 
 ## Parked / waiting
 
@@ -62,9 +65,10 @@
 - Lead Dev #1158 + #1124 + #952 + #355 implementation in flight
 - Routines watchdog $70/mo funding decision (PM-gated)
 
-## Carry-forward-to-next-fire (Fire 49+)
+## Carry-forward-to-next-fire (Fire 54+)
 
-- **Next cron fire ~10:52 PT** (Fire 49): possible Lead Dev ack on ADR-070 + ADR-071 v0.1 draft for ratification + cohort responses to today's three memos (D1 ruling / CXO trust ack / ADR-070). Quiet hold or substantive depending on inbox.
-- **F4 reproducibility tracking**: now 3 instances in 72h. Cure-rationale (Routines watchdog $70/mo PM-gated) continues to strengthen.
+- **Next cron fire ~18:52 PT** (Fire 54): possible Lead Dev ack on #1238 disposition + continued (a,3) increment shipments; possible cohort responses on ADR-070/071/072 framing.
+- **ADR-072 v0.1 drafting** — owed within ~1-2 weeks per Fire 53 timeline; not urgent.
+- **F4 reproducibility tracking**: now 4 instances in 4 days. Routines watchdog $70/mo PM-gated cure-rationale continues to strengthen.
 - **2 PM calls open** (escalations doc); respond when PM dispositions.
-- **Architect critical-path items today**: (1) Lead Dev unblocked ✓; (2) ADR-070 v0.1 filed ✓; (3) ADR-071 ratification pending Lead's draft; (4) Doc store remediation gated on ADR-071 first migration.
+- **Architect critical-path items**: (1) ADR-072 v0.1 draft; (2) ADR-070 cohort ratify watch; (3) Lead Dev #1241 consolidating-refactor and doc-store remediation in flight.

@@ -248,6 +248,10 @@ Your session log is **institutional memory**. An incomplete log is a process fai
 
 **The rule**: every substantive fire writes its entry to the **session log** (`- Fire N (HH:MM) — what shipped`). The cycle log is optional scratch; nothing durable lives only there. The `duty-cycle-tick` skill v1.8 implements this in Step 5. See **methodology-31** "session-log composition discipline" (amendment pending) for the full framing.
 
+#### The fire is a WAKE, not a time-box (PM/HOST 2026-06-15)
+
+A cron fire wakes you to *check* for work — it does **not** define a work window. On waking with unblocked work, **drain it all**: every item, in priority order, until the queue is empty (or a PM-gated blocker). Commit at each work-unit boundary (git hygiene + interruption protection), but **a commit is not a stop** — keep going. And **"Fire N" labels which wakeup initiated the work — it is NOT a work-unit boundary** (multiple tasks drained in one wake all log under that one fire entry). Doing one task per fire and stopping while unblocked work remains is the cohort-wide **bite-sizing antipattern** — the duty-cycle form of deferring unblocked work (cf. "no low-urgency — just drain it"). The `duty-cycle-tick` skill (v1.10) holds the full procedure; the cron is an *idle-wakeup* you suspend while actively draining and re-arm at idle.
+
 ### Anti-Sycophancy
 - Call out bad ideas and mistakes - PM depends on this
 - Never "You're absolutely right!" - be honest
