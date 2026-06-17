@@ -80,6 +80,10 @@ Armed after boot: windowed expression `22 6,9,12,15,18,21 * * *` (offset :22; da
 |------|--------|-------|
 | 06:55 | Session open | DinP/Sonnet boot; first fire |
 | 07:00 | Mailbox triage | 1 memo → read; inbox empty |
-| 07:xx | CronCreate | Windowed cron armed |
-| 07:xx | Token row | cohort-fire-log.tsv |
+| 07:01 | CronCreate | ID 46ad109d · 22 6,9,12,15,18,21 * * * |
+| 07:05 | Token row | cohort-fire-log.tsv committed + pushed |
+| 07:10 | Lint fix | Disable react/no-unescaped-entities (8cdb7cd50 · 74 warnings cleared) |
+| 07:15 | Signup refactor | /try/beta → Buttondown; /newsletter → /blog (c783d7e34 · issues #28/#29 filed+closed) |
+| 07:25 | Alt-text plan | dev/active/alt-text-backfill-plan-2026-06-17.md committed (318 posts; 286 agent-ready) |
+| 09:22 | Cron fire | 9:22 fire; PM active in session; inbox empty; cron armed; absorbed into live session |
 
