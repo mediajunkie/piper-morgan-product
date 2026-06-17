@@ -317,16 +317,15 @@ async def handle_search_documents(query: str, user_id: str) -> Dict:
         Dict with search results
 
     Note:
-        DocumentService.find_decisions() uses ChromaDB for semantic search.
-        It currently doesn't enforce user_id filtering - that would need
-        to be added to the service for full user isolation.
+        DocumentService.find_decisions() is owner-scoped (#1238, ADR-071 P2):
+        passing owner_id filters results to documents the principal may read
+        (owner == principal OR is_global_pm_domain). The user_id here is the principal.
     """
     logger.info("Searching documents", query=query, user_id=user_id)
 
-    # Call existing search method
-    # Note: find_decisions uses ChromaDB but doesn't currently filter by user_id
-    # For MVP, we'll use it as-is and add user filtering in a follow-up
-    results = await _doc_service.find_decisions(topic=query)
+    # #1238: owner-scoped — pass the principal so another user's private docs
+    # aren't surfaced (global PM-domain docs remain readable via the marker).
+    results = await _doc_service.find_decisions(topic=query, owner_id=user_id)
 
     return {
         "query": query,

@@ -21,6 +21,11 @@ from .ingestion import get_ingester
 logger = logging.getLogger(__name__)
 
 
+def _base_id(chunk_id: str) -> str:
+    """ChromaDB chunk id ``pdf_<hash>_chunk_<i>`` → document base id ``pdf_<hash>``."""
+    return chunk_id.rsplit("_chunk_", 1)[0]
+
+
 class DocumentService:
     """Handle document upload and processing operations"""
 
@@ -168,7 +173,31 @@ class DocumentService:
         except Exception as e:  # pragma: no cover - defensive (fail-safe, logged)
             logger.error(f"Document anchor write failed for {chromadb_base_id}: {e}")
 
-    async def find_decisions(self, topic: str = "", timeframe: str = "last_week") -> Dict[str, Any]:
+    async def _readable_base_ids(self, owner_id: Any) -> set:
+        """The set of ChromaDB base_ids the principal may read (#1238, ADR-071 P2).
+
+        Readable = is_global_pm_domain OR owner_id == principal (None/non-UUID → global
+        only, m-40 graceful). The 3 reads intersect ChromaDB results with this set —
+        the marker lives on the documents row, not in ChromaDB metadata (Arch ruling).
+        """
+        async with self._session_scope() as session:
+            return await DocumentRepository(session).get_readable_base_ids(owner_id)
+
+    @staticmethod
+    def _chunk_readable(results: Dict[str, Any], i: int, readable: set) -> bool:
+        """True if the i-th ChromaDB result is an authorized (readable) document.
+
+        Fail-closed: a result whose base_id can't be determined, or isn't in the
+        readable set, is excluded — un-anchored/unauthorized content is never surfaced.
+        """
+        ids = results.get("ids") if isinstance(results, dict) else None
+        if not ids or not ids[0] or i >= len(ids[0]):
+            return False
+        return _base_id(ids[0][i]) in readable
+
+    async def find_decisions(
+        self, topic: str = "", timeframe: str = "last_week", owner_id: Any = None
+    ) -> Dict[str, Any]:
         """Find decisions using existing ChromaDB vector search + metadata filtering
 
         Uses existing pm_knowledge collection and relationship analysis metadata
@@ -210,9 +239,12 @@ class DocumentService:
                 )
 
             decisions = []
+            readable = await self._readable_base_ids(owner_id)  # #1238: owner-scope
 
             if results and "documents" in results and results["documents"]:
                 for i, doc in enumerate(results["documents"][0]):  # ChromaDB returns nested lists
+                    if not self._chunk_readable(results, i, readable):
+                        continue  # #1238: skip docs the principal may not read
                     metadata = results["metadatas"][0][i] if "metadatas" in results else {}
                     distance = results["distances"][0][i] if "distances" in results else 1.0
 
@@ -274,7 +306,9 @@ class DocumentService:
                 "fallback_mode": True,
             }
 
-    async def get_relevant_context(self, timeframe: str = "yesterday") -> Dict[str, Any]:
+    async def get_relevant_context(
+        self, timeframe: str = "yesterday", owner_id: Any = None
+    ) -> Dict[str, Any]:
         """Get document context using existing ChromaDB temporal filtering
 
         Uses existing pm_knowledge collection and analysis_timestamp metadata
@@ -307,9 +341,12 @@ class DocumentService:
             )
 
             context_docs = []
+            readable = await self._readable_base_ids(owner_id)  # #1238: owner-scope
 
             if results and "documents" in results and results["documents"]:
                 for i, doc in enumerate(results["documents"][0]):
+                    if not self._chunk_readable(results, i, readable):
+                        continue  # #1238: skip docs the principal may not read
                     metadata = results["metadatas"][0][i] if "metadatas" in results else {}
                     distance = results["distances"][0][i] if "distances" in results else 1.0
 
@@ -357,7 +394,7 @@ class DocumentService:
                 "fallback_mode": True,
             }
 
-    async def suggest_documents(self, focus_area: str = "") -> Dict[str, Any]:
+    async def suggest_documents(self, focus_area: str = "", owner_id: Any = None) -> Dict[str, Any]:
         """Suggest documents using existing vector similarity search
 
         Uses existing OpenAI embeddings and project/feature metadata
@@ -368,6 +405,7 @@ class DocumentService:
             collection = self.ingester.collection
 
             suggestions = []
+            readable = await self._readable_base_ids(owner_id)  # #1238: owner-scope
 
             if focus_area:
                 # Semantic search for focus area using existing embeddings
@@ -379,6 +417,8 @@ class DocumentService:
 
                 if results and "documents" in results and results["documents"]:
                     for i, doc in enumerate(results["documents"][0]):
+                        if not self._chunk_readable(results, i, readable):
+                            continue  # #1238: skip docs the principal may not read
                         metadata = results["metadatas"][0][i] if "metadatas" in results else {}
                         distance = results["distances"][0][i] if "distances" in results else 1.0
 
@@ -410,6 +450,8 @@ class DocumentService:
 
                 if results and "documents" in results and results["documents"]:
                     for i, doc in enumerate(results["documents"][0]):
+                        if not self._chunk_readable(results, i, readable):
+                            continue  # #1238: skip docs the principal may not read
                         metadata = results["metadatas"][0][i] if "metadatas" in results else {}
 
                         if doc and len(doc) > 0:
