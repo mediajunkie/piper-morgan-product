@@ -22,6 +22,8 @@ The same surface behavior — "defer to the next fire" — is the antipattern in
 
 Default: when unsure, **drain it** — the antipattern is the common failure; quality-banking is the rare, deliberate exception.
 
+**⚠️ SHARPENED (PM 2026-06-16) — the quality-banking exception needs an EXPLICIT, REAL trigger.** It is legitimate ONLY when you name a concrete capacity trigger *out loud* — **a fresh session** or **a context compaction** — never a vague "this deserves focus." *"No rush" / "not urgent" / "deserves a focused pass" with no named trigger is the antipattern in a quality costume* (PM: *"there is no advantage to saving work… shyness should not be a thing"*). Two valid states only: **do it now**, or **"deferring to a fresh session/compaction because [explicit reason]."** And **don't tell other agents "no rush"** — it plants the imaginary trigger in them (the cohort form of this antipattern). This corrected the original (too-permissive) boundary above — the skill is now v1.12.
+
 ## Evidence (log-sweep 6/08–6/16, 105 logs)
 - Real but **modest + decaying**: ~4–5 of 11 roles show ≥1 clear instance (Exec 6/15 self-caught, PPM 6/9, Arch 6/12, CIO 6/8 & 6/15). By 6/15 the cohort is naming it + self-correcting — an inflection from latent-behavior to named-antipattern-under-remediation.
 - **Wasted productive time**: rough ~3–6 agent-hours/week, concentrated in a few incidents, shrinking. (Larger historical costs were no-op-fire token waste — already cured by windowed cron — and the **Gap-B stranding tax**: deferred work lost to session death, worst on 6/10→11 "6 of 10 agents.")
