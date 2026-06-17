@@ -121,5 +121,8 @@ dev/active/.context-usage-reminded-*
 # generate-delta.py session-start helpers — regenerable per session (Lead Dev tooling), not tracked
 dev/active/delta-*.md
 
+# duty-cycle freeze-watchdog runtime audit log — appended by the launchd job, not tracked
+dev/active/duty-cycle-watchdog.log
+
 # Agent mailboxes — fully tracked for cross-machine sync
 # (Previously ignored read/ but this prevented syncing mail state across devices)
