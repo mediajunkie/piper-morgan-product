@@ -40,8 +40,8 @@ class TestInsightsPageStructure:
         assert "What I've learned from our work together" in insights_html
 
     def test_page_extends_base(self, insights_html):
-        """Page should extend base layout."""
-        assert '{% extends "layouts/base.html" %}' in insights_html
+        """Page should extend the app_shell layout (F2 #1171 migration)."""
+        assert '{% extends "layouts/app_shell.html" %}' in insights_html
 
     def test_has_insights_container(self, soup):
         """Page should have main insights container."""
@@ -263,18 +263,33 @@ class TestInsightCardTemplate:
         assert sources is not None
 
 
-class TestInsightsGlobalNav1251:
-    """#1251 item 1 (Lead lane): the /insights page must include the global nav
-    chrome that every other page has — it was rendering without it."""
+class TestInsightsMigratedToAppShell1171:
+    """F2 #1171: /insights migrated onto app_shell — the global nav chrome is now
+    SHELL-provided (the #1251 item-1 per-page nav include is retired; the shell makes
+    the chrome structurally unavoidable rather than per-page-included)."""
 
-    def test_includes_global_navigation(self, insights_html):
-        """Page includes the shared navigation component."""
-        assert "{% include 'components/navigation.html' %}" in insights_html
+    def test_extends_app_shell(self, insights_html):
+        assert '{% extends "layouts/app_shell.html" %}' in insights_html
 
-    def test_nav_include_is_inside_content_block_before_page_body(self, insights_html):
-        """The nav include sits at the top of the content block (renders into the
-        body, ahead of the insights-page container) — not stranded outside it."""
-        content_idx = insights_html.index("{% block content %}")
-        nav_idx = insights_html.index("components/navigation.html")
-        page_idx = insights_html.index('class="insights-page"')
-        assert content_idx < nav_idx < page_idx
+    def test_per_page_nav_include_retired(self, insights_html):
+        # app_shell owns the chrome now — no per-page nav include needed/wanted.
+        assert "{% include 'components/navigation.html' %}" not in insights_html
+
+    def test_uses_shell_block_names(self, insights_html):
+        assert "{% block main %}" in insights_html
+        assert "{% block page_title %}" in insights_html
+        assert "{% block head_extra %}" in insights_html
+
+    def test_renders_with_global_nav_and_footer_via_shell(self):
+        # Real template.render() (NOT curl-200) — the migrated page renders inside the
+        # shell: global nav chrome + footer present, page content lands in {% block main %},
+        # and the #1251 item-3 "Correct this" label is applied.
+        from jinja2 import Environment, FileSystemLoader
+
+        templates = Path(__file__).resolve().parents[3] / "templates"
+        env = Environment(loader=FileSystemLoader(str(templates)), autoescape=True)
+        html = env.get_template("insights.html").render(trust_stage=1)
+        assert "global-nav" in html  # chrome provided by app_shell
+        assert "app-shell-footer" in html  # shell footer
+        assert "Insight Journal" in html  # page content rendered into {% block main %}
+        assert "Correct this" in html  # #1251 item-3

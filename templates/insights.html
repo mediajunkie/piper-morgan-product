@@ -1,8 +1,8 @@
-{% extends "layouts/base.html" %}
+{% extends "layouts/app_shell.html" %}
 
-{% block title %}Insights | Piper Morgan{% endblock %}
+{% block page_title %}Insights | Piper Morgan{% endblock %}
 
-{% block head %}
+{% block head_extra %}
 <link rel="stylesheet" href="/static/css/dialog.css" />
 <style>
   /* Insights Page Layout (#424 MUX-IMPLEMENT-COMPOST) */
@@ -246,11 +246,9 @@
 </style>
 {% endblock %}
 
-{% block content %}
-{# #1251 item 1 (Lead lane): the /insights page was missing the global nav chrome
-   that every other page includes. Quick `nav` include now, ahead of the F2 #1171
-   page-shell that will make it structurally unavoidable. #}
-{% include 'components/navigation.html' %}
+{% block main %}
+{# F2 #1171: nav chrome is now shell-owned (app_shell includes it) — the #1251 item-1
+   per-page nav include is retired here, exactly as that include's comment anticipated. #}
 <div class="insights-page">
   <header class="insights-header">
     <h1 class="insights-title">Insight Journal</h1>
@@ -345,7 +343,7 @@
     </div>
     <div class="insight-card-actions">
       <button class="insight-action correct" data-action="correct" aria-label="Correct this insight">
-        Correct
+        Correct this
       </button>
       <button class="insight-action confirm" data-action="confirm" aria-label="Confirm this insight">
         That's right
