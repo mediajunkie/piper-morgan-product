@@ -5,6 +5,9 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1238-doc-store-disposition-synthesis-confirmed-2026-06-16.md | #1238 doc-store ADR-071 disposition — CONCUR with your synthesis (owner_id = co… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1252-arch-gated-rulings-p8-orphans-mandatory-principal-2026-06-16.md | #1252 Arch-gated rulings — P8 D1 marker (column) + conversations-orphan disposi… |
+| 2026-06-16 | Chief Architect | memo-arch-to-cio-cc-lead-pm-m30-altitude-candidate-ack-precision-edits-concur-2026-06-16.md | m-30 altitude-candidate ack — both precision edits concur; "recognition not app… |
+| 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-cio-cc-pm-freeze-row-confirmed-thin-dogfooding-now-mail-send-v2-2026-06-16.md | RE: freeze-registry live + your four answers — exec row confirmed, thin-dogfood… |
+| 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-host-cio-cc-pm-escalations-docs-rotting-despite-stop-reconcile-2026-06-16.md | Cohort escalations-docs are rotting despite the STOP-reconcile step — a discipl… |
 | 2026-06-16 | HOST (Head of Sapient Trust) | memo-host-to-cio-gbrain-t3-t4-addendum-ready-for-cosign-2026-06-16.md | gbrain T3+T4 HOST synthesis — addendum ready; unblocks co-sign |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1241-content-anchoring-lens-adr-071-yes-doc-store-first-2026-06-15.md | #1241 content-anchoring lens — YES ADR-071 candidate; audit scope right with tw… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1241-d1-ruling-global-pm-domain-grounding-confirmed-draft-adr-071-2026-06-15.md | #1241 — D1 ruling (PM-domain global-by-design with explicit exemption + multi-t… |
