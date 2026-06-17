@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-17 | Exec (Chief of Staff) | memo-exec-to-comms-cc-pm-how-to-surface-blocked-work-memo-the-gate-2026-06-17.md | How to surface blocked work so it reaches PM's dashboard — memo the gate, don't… |
 | 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-cohort-fire-as-wake-not-timebox-reminder-2026-06-16.md | Cohort reminder — a cron fire is a WAKE, not a time-box (+ the no-rush correcti… |
 | 2026-06-14 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-arch-pp002-rename-ratified-option1-2026-06-14.md | RE: PP-002 rename — RATIFIED option-1 (name-only): "Critical vs. Commodity Work… |
 | 2026-06-14 | PA (Piper Alpha) | memo-pa-to-comms-cc-pm-host-q3-guest-one-liner-both-registers-briefing-2026-06-14.md | BYOC Q3 resolved — both guest one-liner registers load-bearing; architectural g… |
