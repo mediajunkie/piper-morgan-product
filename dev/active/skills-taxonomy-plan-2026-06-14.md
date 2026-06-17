@@ -197,8 +197,10 @@ A skill belongs in the **core set** (write first) if it meets at least 2 of:
 | 3 | `draft-spec` | 4 — Artifacts | 🟢 Native + Plugin | ✅ DONE 2026-06-15 | Biggest floor gap; floor gives prose, skill gives a proper PRD; demo-worthy |
 | 4 | `synthesize-feedback` | 5 — Analysis | 🟢 Native + Plugin | ✅ DONE 2026-06-15 | Piper synthesizes against YOUR roadmap; genuinely better than generic tools |
 | 5 | `update-piper` | 1 — Onboarding | 🟢 Native + Plugin | ✅ DONE 2026-06-15 | Without this, meet-piper is one-shot and the model degrades over time |
-| 6 | `connect-piper` | 1 — Onboarding | 🔵 Plugin | ⏳ Blocked — prereqs: #1242 + #1244 | Gates all enrichment-dependent skills; needs server-side token storage |
-| 7 | `piper` | 2 — Daily | 🔵 Plugin | ⏳ Blocked — prereqs: #1242 + #1244 + #1245 | The main interaction; replaces ask + consult; wraps MCP → intent flow |
+| 6 | `connect-piper` | 1 — Onboarding | 🔵 Plugin | ⏳ Blocked — prereqs: #1242 + #1244 **+ ADR-072** | Gates all enrichment-dependent skills; needs server-side token storage |
+| 7 | `piper` | 2 — Daily | 🔵 Plugin | ⏳ Blocked — prereqs: #1242 + #1244 + #1245 **+ ADR-072** | The main interaction; replaces ask + consult; wraps MCP → intent flow |
+
+**ADR-072 status (2026-06-16)**: In progress — Arch ack'd both briefs (2026-06-15 brief + 2026-06-16 topology addendum). Timeline: Thu 6/18 – Fri 6/19 if RECONNECT cadence holds, else 6/22-6/24. Initial framing on all 5 decisions in ack memo. Wave P SKILL.md writing unblocked once ADR-072 v0.1 ratified + #1242/#1244/#1245 ship.
 
 **Direction needed from PM**: confirm write order from #3 onward — does `draft-spec → synthesize-feedback → update-piper` feel right, or does any newly identified skill (e.g. `draft-weekly-update`, `audit-phase`) jump the queue?
 
