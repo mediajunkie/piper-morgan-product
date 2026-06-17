@@ -1,6 +1,6 @@
 # Lead Dev carry-forward (ephemeral session state — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-16 ~20:30 PDT (#1252 P2 doc-store anchoring SHIPPED + the (c,3) leak CLOSED; #1238 DocumentEntitySource SHIPPED — both on main, ~90 tests green; #1238 OPEN for PM UAT. Conflation found+surfaced: cohort "#1238 doc-store" shorthand ≠ #1238's actual body [Radar source].)
+**Updated**: 2026-06-17 ~06:50 PDT (F2 #1171 cohort migration DONE [21/22 app pages on app_shell, 839 tests]; **#1264 nav-tokenization: color 43/52 + type 18/19 + radius 7/8 BANKED on main, render-verified; spacing(34, off-scale 12px) + 4 color gaps + 1 shadow + 11px/3px + extract-to-nav.css are CXO-palette-gated → memo sent to cxo/inbox; F2 token-only ~75%**. Un-stranded a 04:10 triage commit [committed local-main, never pushed — verify push by content]. PM UAT pending on migrated chrome. Prior 6/16: #1252-P2 + #1238 shipped+closed.)
 **Session**: Opus 4.8, ephemeral worktree `interesting-beaver-7ee19c`, branch `claude/interesting-beaver-7ee19c`
 **Cron**: SUSPENDED (CronList = no jobs; deleted when PM said "proceed with unblocked work"). Canonical expr to re-arm at idle/STOP: `17 22,7,10,13,16,19 * * *`. Cron = idle-wakeup, NOT a work-clock (PM 6/15) — stay suspended while actively building #1238; re-arm only at genuine idle / day-close STOP.
 
