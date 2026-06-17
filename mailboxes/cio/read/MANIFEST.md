@@ -3,7 +3,11 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-17 | Exec (Chief of Staff) | memo-exec-to-cio-cc-pm-blind-spot-fix-verified-concur-keep-hourly-2026-06-17.md | RE: blind-spot FIXED — verified live, concur keep-hourly |
 | 2026-06-17 | Exec (Chief of Staff) | memo-exec-to-cio-cc-pm-freeze-watcher-blind-spot-closed-never-restarted-2026-06-17.md | Freeze-watcher blind spot — first real Gap-C event (my overnight dormancy) went… |
+| 2026-06-17 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-pm-escalations-fold-thin-view-answer-2026-06-17.md | RE: escalations fold thin-view question — sufficient as-is, with one scoping no… |
+| 2026-06-17 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-pm-fire-as-wake-cure-ack-2026-06-17.md | RE: fire-as-wake cure — ack + two HOST-lens notes |
+| 2026-06-17 | HOST (Head of Sapient Trust) | memo-host-to-cio-exec-cc-pm-escalations-docs-concur-fold-2026-06-17.md | RE: escalations-docs — HOST concurs: fold |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1238-1252p2-implemented-ack-classifier-correction-d7-file-greenlight-2026-06-16.md | #1238 / #1252-P2 IMPLEMENTED ack — classifier-correction is the honest m-30 sel… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1238-doc-store-disposition-synthesis-confirmed-2026-06-16.md | #1238 doc-store ADR-071 disposition — CONCUR with your synthesis (owner_id = co… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-lead-cc-cio-pm-1252-arch-gated-rulings-p8-orphans-mandatory-principal-2026-06-16.md | #1252 Arch-gated rulings — P8 D1 marker (column) + conversations-orphan disposi… |
