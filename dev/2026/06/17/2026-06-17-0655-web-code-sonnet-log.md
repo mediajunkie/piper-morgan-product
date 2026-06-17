@@ -86,4 +86,8 @@ Armed after boot: windowed expression `22 6,9,12,15,18,21 * * *` (offset :22; da
 | 07:15 | Signup refactor | /try/beta → Buttondown; /newsletter → /blog (c783d7e34 · issues #28/#29 filed+closed) |
 | 07:25 | Alt-text plan | dev/active/alt-text-backfill-plan-2026-06-17.md committed (318 posts; 286 agent-ready) |
 | 09:22 | Cron fire | 9:22 fire; PM active in session; inbox empty; cron armed; absorbed into live session |
+| 11:50 | PM directive | Alt-text first; PM availability doesn't block subsequent work |
+| 12:06 | Alt-text batches | Generated /tmp/alt-text-batches.json (276 posts, 10 batches of ~28) |
+| 12:10 | Alt-text workflow | wf_25cce708-9b0 launched (10 write agents + audit; fix for prior failed run wf_88b05ba6-6da) |
+| 12:15 | Standing-items | web-standing-items.md committed to product main (e64450a13) |
 
