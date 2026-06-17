@@ -28,7 +28,16 @@
 
 **Possible small ADR-independent task spotted**: the input doc §11 says "the §0 MCP decision should also be appended to `decisions.log` (reinstated 6/13; this is its exact use case)." Will verify whether that landed; if not, a ~5-min append is concrete unblocked work.
 
-**Bootstrap mechanics** (this fire): session log created (this file) · mailbox swept (0 message files; MANIFEST stale — regen via bridge) · worktree confirmed (ephemeral `charming-borg-8957a7`; no `arch-cycle` to retire — already Option B) · cron + token-row + freeze-registry row + report = in progress.
+**Bootstrap mechanics** (this fire — COMPLETE):
+- Session log created (this file); carry-forward updated (migration-complete + operating-model VARIANT + connector-ADR reconciliation note); pushed + verified on origin/main.
+- **Mailbox**: 0 message files (inbox genuinely empty). MANIFEST was stale (listed the Exec fire-as-wake memo already in `read/`) → regenerated via the main-checkout bridge (ff-only sync, explicit paths, untracked CIO/Comms files untouched): inbox→0 entries, read→374. Pushed + verified empty on origin/main (`mail(arch)` commit).
+- **Worktree**: ephemeral `charming-borg-8957a7` (Option B). No `claude/arch-cycle` Model-A worktree exists (verified `git worktree list`) — nothing to retire. Predecessor's ephemeral `sad-buck-d383f4` still listed but its branch is fully merged to main (predecessor sign-off was clean) → leave for auto-cleanup; not manually removing another session's worktree.
+- **Cron**: `cf4a7ecc` = windowed `27 6,9,12,15,18,21 * * *` (offset :27, durable:true → reports session-only = expected Gap-C). Sole cron (CronList was empty pre-create). Prompt CONSTANTS embed the windowed expression for the self-heal re-arm. Freeze-registry row added (arch / threshold 6 / wake 6-22 / first_fire 06:27).
+- **Token row**: appended to `metrics/cohort-fire-log.tsv` (9 cols; `opus-4-8` / `high` / `bootstrap` / `xl`); pushed + verified.
+
+**Verify-First wins this fire (×2)**: (1) connector ADR-070 already shipped 6/15 — not owed (caught before re-authoring); (2) the §0 MCP decision is ALREADY in `decisions.log` (line 18, recorded 6/14 during the RECONNECT audit cascade) — the input-doc §11 micro-task is already done. No connector work owed. Also noted: `decisions.log` lines 36–38 carry the corrected ADR-072 plugin tool topology (5 tools, not 3) — grounding context for ADR-072 later.
+
+**Standing-items note**: nothing in the Active queue changed state this fire (all the same threads); no standing-items rewrite needed beyond the carry-forward update.
 
 ---
 
