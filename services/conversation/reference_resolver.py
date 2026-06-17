@@ -181,7 +181,15 @@ class ReferenceResolver:
         """Find potential entities this reference could resolve to"""
         candidates = []
 
-        for turn in context_turns:
+        # #1234: respect the context window HERE too. _find_candidates can be called
+        # directly (not only via resolve_references, which pre-windows at line ~116), so
+        # limit to the most recent N turns — otherwise anaphora can match stale,
+        # out-of-window entities. (Re-windowing an already-windowed list is a no-op.)
+        windowed_turns = sorted(
+            context_turns, key=lambda t: t.turn_number, reverse=True
+        )[: self.context_window_turns]
+
+        for turn in windowed_turns:
             # Extract entities from assistant responses
             entities = self._extract_entities(turn.assistant_response)
 

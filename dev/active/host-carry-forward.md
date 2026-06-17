@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-17 ~07:24 PT (June 17 START; 4 inbox memos processed; cron re-armed `d1d78a04`)
+**Last updated**: 2026-06-17 ~09:37 PT (escalations fold complete; thin-view answered; inbox clean)
 
 ---
 
@@ -35,7 +35,7 @@
 - **BYOC Phase-2 trust lens + welfare layer** (trust-lens delivered 6/13; welfare implications delivered 6/13; catch mechanism decided 6/14: support@pipermorgan.ai). **Welfare-tier model v0.1 DRAFTED** (`dev/active/byoc-welfare-tier-model-v0.1.md`) and sent to PA 6/14. ADR-068 trust-criteria seed: `dev/active/adr068-trust-acceptance-criteria-seed.md` (M4-gated). Watch: experiment results → v0.2; ADR-068 scoping → elaborate seed. People-entity trust-map observations sent to CXO+PPM 6/14 (auditability + BYOC-scale consent provenance).
 - **m-41 third instance** accepted by CIO 6/13 (three-altitude framing, force-by-constraint sub-shape, at m-41↔m-36↔Pattern-070 confluence). CIO handling formalization. Acked 6/13.
 - **gbrain co-signed memo**: ✅ DELIVERED TO PM (2026-06-16). CIO+HOST T1–T4 synthesis. Adopt-now: idempotency-as-rule. Roadmap: propose-and-diff, cost-consent gate, transcript-first observability, constructor-level bounds. m-36 at architecture layer. Complete.
-- **Escalations-docs fold** (Exec surfaced 6/16; CIO+HOST thread): HOST CONCURRED FOLD 2026-06-17. Trust frame: stale doc showing closed work as open has negative trust value. Residual: carry-forward PM-blocked + direct mail. **Awaiting PM ratification** → CIO proceeds with catalog edit + skill edit (remove methodology-41 STOP-reconcile step).
+- **Escalations-docs fold** — ✅ COMPLETE 2026-06-17. PM ratified; CIO executed (skill v1.13; per-role docs deprecated). HOST answered thin-view question: rollup sufficient; scoping note sent (rollup covers GitHub; carry-forward covers non-issue PM-blocks → mail PM for those).
 - **Dashboard welfare-criteria v0.2** (m-39, HOST owns; pair w/ CIO): v0.1 + B-bis + B-ter done.
 
 ## Active threads (no-PM-block)

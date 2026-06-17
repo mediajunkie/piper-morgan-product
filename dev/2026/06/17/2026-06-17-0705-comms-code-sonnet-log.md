@@ -24,5 +24,7 @@ Prior day (2026-06-16) confirmed NOT closed at start — `<!-- DAY-CLOSED: 2026-
 - **BYOC marketplace narrative**: awaiting Phase 2 advancement
 
 - Fire 0 (07:05 PT) — START. Jun 16 retroactive close written. Gap-C cron self-healed. Inbox: 1 memo (Exec fire-as-wake broadcast — no reply needed; triaging to read/). Surfacing Ship #047 to PM for unblock.
+- Fire 0 continued — PM doing Ship #047 voice-pass + Docs proofread; Comms reviewed draft (mechanical: clean — 0 semicolons, 0 "load-bearing"; flagged `caption: N/A` → Docs caught + PM's edits needed committing before Docs finalized). Ship #047 published. Beat 6 Medium/LinkedIn URLs confirmed live but calendar row not yet updated (Dispatch/PM will add). Absorbed PM principle: info-holder writes it down immediately, no deferral to "owner."
+- Fire 1 (09:12 PT) — Inbox: 2 memos (Exec fire-as-wake duplicate re-introduced by merge + new Exec blocked-work mechanism memo). CronDeleted `48fb81c6` (Rule 1). Triaged both: duplicate deleted from inbox (already in read/); blocked-work memo → read/ (absorbed: blockers = memo the gate cc Exec; non-blocking = attention doc). No current Comms blockers requiring active memo — voice-passes are all non-urgent. Re-arming cron.
 
 ---

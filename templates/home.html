@@ -1,20 +1,14 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Piper Morgan - AI PM Assistant</title>
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
-    <!-- tokens.css MUST be first - defines CSS variables used by other stylesheets -->
-    <link rel="stylesheet" href="/static/css/tokens.css" />
+{% extends "layouts/app_shell.html" %}
+
+{% block page_title %}Piper Morgan - AI PM Assistant{% endblock %}
+
+{% block head_extra %}
+    {# home-specific CSS only — tokens/toast/dialog/skip-link/spacing/chat + favicon are shell-provided #}
     <link rel="stylesheet" href="/static/css/cards.css" />
-    <link rel="stylesheet" href="/static/css/toast.css" />
     <link rel="stylesheet" href="/static/css/spinner.css" />
     <link rel="stylesheet" href="/static/css/session-timeout.css" />
-    <link rel="stylesheet" href="/static/css/dialog.css" />
-    <link rel="stylesheet" href="/static/css/skip-link.css" />
     <link rel="stylesheet" href="/static/css/page-transitions.css" />
     <link rel="stylesheet" href="/static/css/hover-focus-states.css" />
-    <link rel="stylesheet" href="/static/css/spacing.css" />
-    <link rel="stylesheet" href="/static/css/chat.css" />
     <style>
       body {
         font-family: var(--font-family);
@@ -920,34 +914,17 @@
         }
       }
     </style>
-  </head>
-  <body>
-    {% include 'components/skip-link.html' %}
+{% endblock %}
+
+{% block main %}
     {% include 'components/page-transition.html' %}
-    {% set hide_floating_widget = true %}
-    {% include 'components/navigation.html' %}
     {% include 'components/toast.html' %}
     {% include 'components/session-timeout-modal.html' %}
     {% include 'components/confirmation-dialog.html' %}
     {% include 'components/history_sidebar.html' %}
     <script>
-      // G8: Logged-in User Indicator - Pass user context from server to navigation
-      {% if user %}
-      window.currentUser = {
-        username: "{{ user.username }}",
-        user_id: "{{ user.user_id }}",
-        is_admin: {{ 'true' if user.is_admin else 'false' }}
-      };
-      // Issue #419: Trust stage for consciousness-aware home state
-      // Per ADR-053: Trust is invisible to users but effects are noticeable
-      // We expose the stage for adaptive UI, not to show "Stage 2" to users
-      window.trustStage = {{ trust_stage|default(1) }};
+      {# shell sets window.currentUser + window.trustStage; home additionally needs trustStageName #}
       window.trustStageName = "{{ trust_stage_name|default('NEW') }}";
-      {% else %}
-      window.currentUser = null;
-      window.trustStage = 1;
-      window.trustStageName = "NEW";
-      {% endif %}
     </script>
     <!-- Issue #566: Sidebar-ready layout -->
     <!-- Issue #1097 (MUX/UI Round 2 Surface 1): Two-sidebar role differentiation
@@ -976,7 +953,7 @@
         <span>▶</span>
       </button>
 
-      <main class="main-content">
+      <div class="main-content">
         <div class="container">
 
           <!-- Issue #566: Clean greeting area (replaced purple hero) -->
@@ -1071,14 +1048,13 @@
           {% include 'components/chat-inline.html' %}
 
         </div>
-      </main>
+      </div>
     </div>
+{% endblock %}
 
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+{% block scripts %}
     <script src="/assets/bot-message-renderer.js"></script>
-    <script src="/static/js/timestamp-utils.js"></script>
     <script src="/static/js/preferences.js"></script>
-    <script src="/static/js/chat.js"></script>
     <script>
       const API_BASE_URL = "";
       const chatWindow = document.getElementById("chat-window");
@@ -1163,14 +1139,11 @@
         );
       }
     </script>
-    <script src="/static/js/toast.js"></script>
     <script src="/static/js/toast-messages.js"></script>
     <script src="/static/js/loading.js"></script>
     <script src="/static/js/session-timeout.js"></script>
     <script src="/static/js/focus-manager.js"></script>
-    <script src="/static/js/dialog.js"></script>
     <script src="/static/js/page-transitions.js"></script>
-    <script src="/static/js/permissions.js"></script>
     <script src="/static/js/permission-intents.js"></script>
 
     <!-- Post-Setup Orientation Modal (Issue #549) -->
@@ -2008,5 +1981,4 @@
         document.addEventListener('DOMContentLoaded', initHistorySidebar);
       })();
     </script>
-  </body>
-</html>
+{% endblock %}

@@ -5,9 +5,11 @@
 
 ## What and why
 
-318 published blog posts are missing `altText` in `data/editorial-calendar.csv`. The CSV is the source of truth: the `altText` field flows through `editorial-calendar.ts` → `BlogPost.imageAlt` → rendered as `alt=""` on each post's cover image in `BlogPostCard`. The current fallback is the post title, which is a headline, not an image description — poor for accessibility (WCAG) and wasted SEO opportunity.
+276 posts are missing `imageAlt` in `data/blog-metadata.csv`. This is the rendering source: `blog-metadata.csv` → `fetch-blog-posts.js` → `medium-posts.json` → `BlogPost.imageAlt` → rendered as `alt=""` on each post's cover image in `BlogPostCard`. The current fallback is the post title, which is a headline, not an image description — poor for accessibility (WCAG) and wasted SEO opportunity.
 
-**Goal**: fill the `altText` column for all 318 missing-alt published posts. Each entry should be a brief, descriptive caption for the cover image (thematic, since agents can't see the image directly).
+**Note on two CSVs**: `data/editorial-calendar.csv` also has an `altText` column (used by the admin UI / gap tracker, not the renderer). After the backfill, sync matching values back to `editorial-calendar.csv` to keep tracking in sync.
+
+**Goal**: fill the `imageAlt` column for all 276 missing-alt posts in `blog-metadata.csv`. Each entry should be a brief, descriptive caption for the cover image. All entries have `imageSlug` (the actual image filename — primary signal for writing thematic alt text).
 
 ---
 
@@ -15,17 +17,18 @@
 
 | Bucket | Count | How to handle |
 |--------|-------|---------------|
-| Published, missing `altText`, has Medium URL | 286 | Write agent (batch) |
-| Published, missing `altText`, no Medium URL | 32 | Skip for now — flag for manual PM review |
-| Not yet published | ~76 | Out of scope — fill at publish time going forward |
+| Missing `imageAlt`, has excerpt in medium-posts.json | 132 | Write agent (imageSlug + excerpt + title) |
+| Missing `imageAlt`, imageSlug only (no excerpt) | 144 | Write agent (imageSlug + title — still informative) |
+| Already has `imageAlt` | 55 | Skip |
+| **Total target** | **276** | **10 batches of 30** |
 
 ---
 
 ## Data sources
 
-- **`data/editorial-calendar.csv`** — source of truth; `altText` and `caption` are the target fields
-- **`src/data/medium-posts.json`** — contains `title`, `excerpt`, `content` (truncated), `thumbnail` URL, `tags` per post, keyed by path/slug. Agent uses this to understand what the post is about.
-- **Title from CSV** — always available; join key to medium-posts.json by matching title or slug
+- **`data/blog-metadata.csv`** — rendering source of truth; `imageAlt` is the target field. All 331 entries have `imageSlug` (image filename — primary agent signal).
+- **`src/data/medium-posts.json`** — contains `excerpt`, `tags` per post, keyed by slug. Supplemental context for 132 of the 276 missing entries.
+- **`data/editorial-calendar.csv`** — admin tracking only; sync `altText` column here AFTER blog-metadata.csv is updated.
 
 ---
 

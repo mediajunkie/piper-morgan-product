@@ -133,7 +133,8 @@ class TestNavigationVisualHierarchy:
 
     def test_nav_has_muted_background(self, nav_content):
         """Nav background is muted (not white)."""
-        assert "background: #fafafa" in nav_content
+        # #1264: tokenized — the muted nav bg now comes from a token (was #fafafa).
+        assert "background: var(--color-neutral-off-white)" in nav_content
 
     def test_nav_has_no_shadow(self, nav_content):
         """Nav has no box-shadow (less prominent)."""
@@ -141,7 +142,8 @@ class TestNavigationVisualHierarchy:
 
     def test_nav_links_have_muted_color(self, nav_content):
         """Nav links use muted text color."""
-        assert "color: #5a6c7d" in nav_content
+        # #1264: tokenized — the muted nav-link color now comes from a token (was #5a6c7d).
+        assert "color: var(--color-text-nav)" in nav_content
 
     def test_nav_has_smaller_height(self, nav_content):
         """Nav height is reduced (utility, not hero)."""
