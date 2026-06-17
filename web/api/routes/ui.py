@@ -241,6 +241,8 @@ async def home(request: Request):
                 # We don't show "Stage 2" to users, just vary the experience
                 "trust_stage": trust_stage.value,  # Pass as int for template logic
                 "trust_stage_name": trust_stage.name,  # Pass name for debugging/logging
+                # F2 #1266: home renders the INLINE chat → suppress the shell floating widget
+                "hide_floating_widget": True,
                 # Issue #1194 / #1033: composted reflections for the "Recently" module
                 "surfaced_insights": surfaced_insights,
             },

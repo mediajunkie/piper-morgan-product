@@ -28,3 +28,12 @@
 - Draft already at published path (prior session had moved it); no additional mv needed
 - LinkedIn cross-post and URL updates: Dispatch handling; will record URLs when they arrive in inbox
 
+### June 16 omnibus (~ongoing, resumed post-compaction)
+
+- Read all 12 session logs for June 16 (PA, Docs, Lead Dev, Web, Comms, HOST, Exec, CXO, CIO, Code agent, Arch, PPM)
+- Cross-reference gate: PASSED (all mentioned roles have logs)
+- Canonical refs verified: m-30 = `methodology-30-CONSUMER-TRACE-VERIFICATION.md`; ADR-070/071 verified in June 15 omnibus; ADR-072 not yet ratified 6/16 (ack + initial framing only)
+- Format: HIGH-COMPLEXITY — COORDINATION (12 sessions; cascading multi-role coordination chains; cohort-wide methodology correction broadcast)
+- Wrote omnibus to `docs/omnibus-logs/2026-06-16-omnibus-log.md`; 5 phases, ~450 lines; commit `371eea7f5` + pushed to origin/main
+- Activity-log reconciliation (Step 10.5): 12 rows appended to `docs/internal/operations/agent-activity-log.csv` via Python csv.writer; total lines 1413
+
