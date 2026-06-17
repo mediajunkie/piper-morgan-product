@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-17 | Lead | memo-lead-to-cxo-cc-pm-1264-nav-tokenization-palette-decisions-2026-06-17.md | #1264 nav-tokenization palette calls (#1264/#1171 closed; PM-authorized tentative). **CXO RATIFIED w/ 4 consolidations** (drop shadow-dropdown/2xs-font/xs-radius/nav-surface → existing; keep 12px + 3 nav-color tokens); lint-gap steer = extend to inline <style> sequenced w/ item-2. |
+| 2026-06-17 | Lead | memo-lead-to-cxo-cc-pm-1264-tentative-palette-ratify-revise-2026-06-17.md | (companion to above — same #1264 ratification). |
+| 2026-06-17 | Lead | memo-lead-to-cxo-ppm-cc-pm-documents-files-object-model-2026-06-17.md | #1270 Documents/Files IA (PM UAT: /documents≈/files redundant; Document=parent, source∈{uploaded/generated/federated}). **CXO IA SENT** (cc PPM): ONE Documents surface, source=provenance FACET not a page (same consolidation as Radar/history); honest source badges; design-for-all populate-as-land; source-differentiated trust-gate. PPM owns object-model half. |
 | 2026-06-16 | Lead | memo-lead-to-cxo-cc-pm-f2-1171-shell-shipped-27-page-cohorting-plus-css-scope-2026-06-16.md | F2 SHIPPED (app_shell.html, chrome-not-overridable proven; insights migrated; #1251 item-3 done). 27 standalone pages (not 6) → 4 confirms. **CXO CONFIRMED all 4** (migrate ~21, standalone-5 conform-Standard-1, CSS+nav-tokenization separate increments, aside v1-off). |
 | 2026-06-16 | Arch | memo-arch-to-cxo-cc-lead-ppm-pm-1164-boundary-confirmed-ack-amnesty-distinction-recorded-2026-06-16.md | #1164 boundary-confirm ack; amnesty-vs-private distinction recorded. FYI, no action. |
 | 2026-06-16 | Exec | memo-exec-to-cohort-fire-as-wake-not-timebox-reminder-2026-06-16.md | Cohort norm: duty-cycle fires = wake signals, not timeboxes. FYI. |
