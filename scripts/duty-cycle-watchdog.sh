@@ -7,7 +7,8 @@
 # touches no repo state except appending to its own audit log — a smoke detector, never a worker.
 #
 # Design: docs/operations/duty-cycle design/wake-this-session-duty-cycle-design-2026-06-14.md
-# Heartbeat/check: scripts/duty-cycle-freeze-check.sh (per-role last-commit staleness, CIO-only for now).
+# Heartbeat/check: scripts/duty-cycle-freeze-check.sh (registry-driven per-role staleness; the watch list +
+# per-role thresholds/windows live in dev/active/duty-cycle-registry.tsv — cio + exec as of 2026-06-16).
 set -uo pipefail
 
 REPO="${PIPER_REPO:-/Users/xian/Development/piper-morgan/piper-morgan-product}"

@@ -1,37 +1,72 @@
 #!/usr/bin/env bash
 # duty-cycle-freeze-check.sh — detect a SILENTLY frozen duty cycle (the "never silently freeze" backstop).
 #
-# Heartbeat = a role's most recent commit on origin/main. We mandate push-to-main-routinely, so a live
-# cycle commits regularly; a frozen one stops. No dedicated heartbeat file needed.
+# REGISTRY MODE (default): reads dev/active/duty-cycle-registry.tsv — the opt-in list of which roles to
+#   watch, each with its OWN threshold + waking window. A role is checked only while it is ACTIVELY CYCLING
+#   right now, which we derive from the session-log lifecycle the agent already maintains (Exec's
+#   register/de-register intent, realized without a parallel mutation — m-36):
+#     • today's session log for the role does NOT exist on origin/main  → hasn't STARTed yet → skip
+#       (kills the morning false-positive: heartbeat is last night's STOP until the first fire creates the log)
+#     • today's session log carries  <!-- DAY-CLOSED -->                → cleanly STOPped → skip
+#       (kills the post-STOP / overnight false-positive)
+#     • else (STARTed, not yet STOPped, inside the waking window)       → check heartbeat age vs threshold
+#   A live cycle commits every fire (push-to-main-routinely), so age > threshold here = genuinely frozen.
+#   An UNlisted role is never watched (not opted in / not migrated). Both v1 false-positives dissolve.
+# LEGACY/TEST MODE: set DUTY_CYCLE_ROLES (+ optional DUTY_CYCLE_STALE_H / WAKE_START / WAKE_END) to force a
+#   check of those roles against one global threshold, bypassing the registry AND the cycling-state gate.
 #
-# This is the CHECK only (implementation-agnostic). A watcher wraps it and, on STALE output, sends the
-# alert (PushNotification + Slack). Recommended watcher = a launchd OS-job (zero Claude agents); a
-# notify-only scheduled-task is the fallback. The watcher must NEVER do duty-cycle work — read + ping only.
-#
-# Output: one line per stale role  ->  "STALE <role> <hours>h"   (empty output = all healthy / off-hours)
-# Exit 0 always (a watchdog must not fail loudly itself).
+# Heartbeat / session log / DAY-CLOSED are all read from origin/main (no working-tree currency dependency).
+# Output: "STALE <role> <detail>" per frozen role; empty = healthy / off-hours / not-cycling. Exit 0 always
+# (a watchdog must never fail loudly itself). A wrapper (launchd) turns STALE lines into the PM alert.
 set -uo pipefail
 
 REPO="${PIPER_REPO:-/Users/xian/Development/piper-morgan/piper-morgan-product}"
-THRESHOLD_H="${DUTY_CYCLE_STALE_H:-6}"        # hours w/o a tagged commit = suspect freeze (>2 windowed gaps)
-WAKE_START="${WAKE_START:-7}"; WAKE_END="${WAKE_END:-23}"   # only alert during waking hours (local time)
-# Roles to watch. START CIO-ONLY (dogfood — the proven-frozen role). The full-cohort default over-flagged
-# on test (host/cxo/ppm/arch/exec/web read "stale" but were merely quiet or not-yet-migrated, not frozen):
-# a commit-tag heartbeat can't tell "frozen" from "idle / not currently cycling." Cohort extension needs
-# active->silent transition detection (was-committing-recently, then stopped) or an explicit opt-in registry.
-ROLES="${DUTY_CYCLE_ROLES:-cio}"
-
-hour=$(date +%-H)
-if (( hour < WAKE_START || hour >= WAKE_END )); then exit 0; fi   # quiet outside waking hours
-
+REG="${DUTY_CYCLE_REGISTRY:-$REPO/dev/active/duty-cycle-registry.tsv}"
+now=$(date +%s); hour=$(date +%-H); today=$(date +%Y/%m/%d); today_dash=$(date +%Y-%m-%d)
 git -C "$REPO" fetch origin main -q 2>/dev/null || true
-now=$(date +%s)
 
-for role in $ROLES; do
-  # newest origin/main commit whose message carries the role tag "(role)" (e.g. "log(cio):", "mail(docs):")
-  ct=$(git -C "$REPO" log origin/main -1 --format=%ct -F --grep="($role)" --since="7 days ago" 2>/dev/null)
-  [ -z "$ct" ] && continue          # no recent tagged commit -> treat as not-cycling; skip (avoid false alarms)
-  age_h=$(( (now - ct) / 3600 ))
-  (( age_h >= THRESHOLD_H )) && echo "STALE $role ${age_h}h"
-done
+# hours since the role's newest "(role)"-tagged commit on origin/main; non-zero exit if none found
+age_of() {
+  local role="$1" ct
+  ct=$(git -C "$REPO" log origin/main -1 --format=%ct -F --grep="($role)" --since="9 days ago" 2>/dev/null)
+  [ -z "$ct" ] && return 1
+  echo $(( (now - ct) / 3600 ))
+}
+
+# is the role actively cycling right now? (today's session log on origin/main exists AND not yet DAY-CLOSED)
+cycling_now() {
+  local role="$1" path
+  path=$(git -C "$REPO" ls-tree -r --name-only origin/main -- "dev/$today/" 2>/dev/null \
+         | grep -E "${role}-code-opus-log\.md$" | head -1)
+  [ -z "$path" ] && return 1                                                   # not STARTed today
+  # match the CANONICAL close sentinel for TODAY only — `<!-- DAY-CLOSED: YYYY-MM-DD -->` — not a prose
+  # mention of "DAY-CLOSED" (e.g. a continuity link to yesterday). A loose match here is a false-NEGATIVE
+  # (watchdog skips a live-but-frozen role), so keep it strict.
+  git -C "$REPO" show "origin/main:$path" 2>/dev/null | grep -q "<!-- DAY-CLOSED: $today_dash" && return 1
+  return 0
+}
+
+# ── LEGACY / TEST mode (explicit env override; bypasses registry + cycling gate) ──
+if [ -n "${DUTY_CYCLE_ROLES:-}" ]; then
+  thr="${DUTY_CYCLE_STALE_H:-6}"; ws="${WAKE_START:-7}"; we="${WAKE_END:-23}"
+  (( hour < ws || hour >= we )) && exit 0
+  for role in $DUTY_CYCLE_ROLES; do
+    if a=$(age_of "$role"); then (( a >= thr )) && echo "STALE $role ${a}h (threshold ${thr}h, test mode)"; fi
+  done
+  exit 0
+fi
+
+# ── REGISTRY mode (default) ──
+[ -f "$REG" ] || exit 0
+while IFS=$'\t' read -r role cron thr ws we since; do
+  case "$role" in '#'*|''|role) continue ;; esac     # skip comments / blank / header
+  [ -z "${we:-}" ] && continue                        # malformed row → skip
+  (( hour < ws || hour >= we )) && continue           # outside this role's waking/alerting window
+  cycling_now "$role" || continue                     # pre-START or post-STOP → not cycling now → skip
+  if a=$(age_of "$role"); then
+    (( a >= thr )) && echo "STALE $role ${a}h (threshold ${thr}h; cron '$cron')"
+  else
+    echo "STALE $role NO-HEARTBEAT (cycling today but no recent (${role})-tagged commit)"
+  fi
+done < "$REG"
 exit 0
