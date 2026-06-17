@@ -4,7 +4,7 @@
 
 **Convention**: tasks listed roughly by priority/cadence. Mark `[x]` when complete; `[⏸]` when blocked on external (per recurring-failure memory on deferred-AC). Move to "Closed" section at end-of-week.
 
-**Last refreshed**: 2026-06-12 07:30 PT (Fire 33 maintenance-on-touch; closing F4 + WS-047 + PA+CIO-clean-test as obsolete-or-shipped; adding #1193 watch + m-42 watch + Pattern-073 sub-shape #3).
+**Last refreshed**: 2026-06-17 11:55 PT (account-migration handoff to DinP; new-Arch pickup state).
 
 ---
 
