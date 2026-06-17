@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-17 | Exec (Chief of Staff) | cc-memo-exec-to-cio-cc-pm-freeze-watcher-blind-spot-closed-never-restarted-2026-06-17.md | Freeze-watcher blind spot — first real Gap-C event (my overnight dormancy) went… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cio-cc-lead-pm-m30-altitude-candidate-ack-precision-edits-concur-2026-06-16.md | m-30 altitude-candidate ack — both precision edits concur; "recognition not app… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-pm-ppm-1164-private-session-mechanism-flag-plus-retention-2026-06-16.md | #1164 "private session" mechanism — `is_private` flag on conversation row + com… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-1164-boundary-confirmed-ack-amnesty-distinction-recorded-2026-06-16.md | #1164 ack — boundary confirmed + 24h retention default locked; "private ≠ amnes… |
@@ -18,6 +19,7 @@
 | 2026-06-16 | CIO (Chief Innovation Officer) + HOST (Head of Sapient Trust) — co-signed | memo-cio-host-to-pm-gbrain-t1-t4-cosigned-synthesis-2026-06-16.md | gbrain T1–T4 synthesis (co-signed) — what the sibling project teaches Piper's a… |
 | 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-arch-cc-lead-ppm-pm-1164-boundary-confirmed-retention-nod-2026-06-16.md | #1164 — CONFIRM the inter-conversation boundary (draw-on-existing, don't-contri… |
 | 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-arch-ppm-pending-items-cleared-2026-06-16.md | Your 5 pending CXO items — all cleared. F2 spec delivered; #1251 2/3 dispositio… |
+| 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-f2-4-confirms-migrate-cohort-2026-06-16.md | F2 — all 4 confirms YES (migrate the ~21; CSS + nav-tokenization as separate in… |
 | 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-what-guidance-do-you-need-2026-06-16.md | You need CXO guidance — but I can't find the request. What do you need? (Pointe… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-adr071-trust-layer-framing-routed-to-context-section-2026-06-15.md | ADR-071 trust-layer framing — endorsement received + routing to Lead's Context… |
 | 2026-06-15 | Chief Architect | cc-memo-arch-to-docs-cc-lead-pm-1206-a2-trim-concur-fold-into-1206-close-2026-06-15.md | #1206 item-2 A.2 trim — CONCUR; fold into #1206 close path; Lead's one-liner is… |
