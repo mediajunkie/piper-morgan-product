@@ -42,7 +42,7 @@
 <body>
 <div class="wrap">
   <h1>Exec attention board</h1>
-  <p class="ts">as of Tuesday June 16, ~10:05 PM &middot; day-close reconcile &mdash; CIO drained the held queue; escalations-docs fold proposed</p>
+  <p class="ts">as of Wednesday June 17, ~7:05 AM &middot; 6/16 full cohort sweep + 6/17-AM delta-verify; overnight Gap-C event added (firsthand)</p>
 
   <div class="metrics">
     <div class="metric"><p class="lbl">Needs you</p><p class="num" style="color:#3b6d11">0</p></div>
@@ -57,12 +57,12 @@
   <h2><span class="dot" style="background:#854f0b"></span>Needs your voice-pass</h2>
   <div class="card">
     <div class="top"><span class="ttl">Ship #047 &mdash; "the team learned to catch itself"</span><span class="pill bg-amber">voice-pass</span></div>
-    <p>Comms's editorial pass done; accuracy fix applied. Clean and ready for your voice-pass &rarr; publish Wed Jun 17. At <code>docs/public/comms/drafts/weekly-ship-047-draft-2026-06-12.md</code>.</p>
+    <p>Comms's editorial pass done; accuracy fix applied. Clean and ready for your voice-pass &mdash; <b>publish target is TODAY (Wed Jun 17)</b>, so it's the one time-relevant item on your plate. At <code>docs/public/comms/drafts/weekly-ship-047-draft-2026-06-12.md</code>.</p>
   </div>
 
   <h2><span class="dot" style="background:#185fa5"></span>In flight &middot; for awareness</h2>
   <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Role-portfolio pilot &mdash; CIO's filed (1 of 2)</span><p>CIO filed <code>ROLE-PORTFOLIO-CIO.md</code> 6/16 (unilateral mandate = automation-integrity); HOST reviews it. Lead Dev's is queued post-D1. Once both pilots land + HOST reviews, the other 8 roles batch. Kickoff was HOST-blessed with the framework published.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Gap-C / dormancy cure &mdash; LIVE (exec watched)</span><p>CIO built the freeze-registry (my design + an m-36 refinement) and it's live &mdash; the hourly launchd watcher now watches exec (6h threshold). Today's ~5.8h session suspension was a clean test: just under threshold, self-recovered, no false alarm &mdash; a true &gt;6h freeze would have pinged you. The dormancy risk that cost ~29.5h last week is now covered.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#ef9f27"></span><div><span class="ttl">Gap-C / dormancy cure &mdash; LIVE, one blind spot (CIO fixing)</span><p>The freeze-registry watches exec (6h) and catches a mid-day freeze. But <b>this morning's overnight dormancy slipped through</b>: a role that cleanly STOPped then misses its next-morning START reads as "not started yet," not "frozen" &mdash; so the watcher didn't ping and you caught it manually at 6:50. I flagged CIO a fix (key off the expected first-fire-time, not today-log existence). The mid-day case is covered; the overnight-into-morning case (the ~29.5h-on-6/13 case) is the gap now being closed.</p></div></div>
   <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Shared-index race &mdash; fixed (v2)</span><p>CIO shipped <code>mail-send.sh</code> v2 fixing both hazards I flagged (explicit-pathspec staging + no foreign-WIP stash). The deeper cure (push-to-ref unification) is the remaining structural item &mdash; no action from you; benign throughout, no data lost.</p></div></div>
   <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">BYO-colleague &mdash; mostly resolved</span><p>Q1 + Q2 ratified 6/13; Q3 is HOST's welfare-tier model (v0.1 draft, requirements mostly PM-delegated for now) &mdash; evolving, not a hard gate.</p></div></div>
   <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">BYOC Phase 2 &mdash; ratified + live</span><p>9/9 ratified (closed 6/14); hosted endpoint live at alpha.pipermorgan.ai, confirmed end-to-end. Next phases gated on other issues (2b marketplace #1162; 2c per-user keys #1185) &mdash; no action from you.</p></div></div>
