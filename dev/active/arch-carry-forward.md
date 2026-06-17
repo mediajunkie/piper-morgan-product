@@ -63,12 +63,12 @@
 - Docs #1182 link-rewrite + cleanup-dev-active omnibus-coverage guard
 - Lead-lane detector hook for session-log displacement
 - Lead Dev #1158 + #1124 + #952 + #355 implementation in flight
-- Routines watchdog $70/mo funding decision (PM-gated)
+- ~~Routines watchdog $70/mo funding decision (PM-gated)~~ — STALE-INFO 6/17: Max plan covers; not a PM-funding question; setup-status is outside Arch visibility
 
 ## Carry-forward-to-next-fire (Fire 54+)
 
 - **Next cron fire ~18:52 PT** (Fire 54): possible Lead Dev ack on #1238 disposition + continued (a,3) increment shipments; possible cohort responses on ADR-070/071/072 framing.
 - **ADR-072 v0.1 drafting** — owed within ~1-2 weeks per Fire 53 timeline; not urgent.
-- **F4 reproducibility tracking**: now 4 instances in 4 days. Routines watchdog $70/mo PM-gated cure-rationale continues to strengthen.
+- **F4 reproducibility tracking**: 5 instances in 5 days. Routines watchdog cure-rationale clear; STALE-INFO 6/17: $70/mo funding framing was wrong (Max plan covers); setup-status outside Arch visibility.
 - **2 PM calls open** (escalations doc); respond when PM dispositions.
 - **Architect critical-path items**: (1) ADR-072 v0.1 draft; (2) ADR-070 cohort ratify watch; (3) Lead Dev #1241 consolidating-refactor and doc-store remediation in flight.
