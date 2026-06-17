@@ -937,6 +937,9 @@ class ProjectIntegrationDB(Base):
     config = Column(JSON, nullable=False)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    # Owner anchor (ADR-071 D2; #1252 D2 fold). Nullable for m-40 grace (legacy/unknown
+    # provenance). CrossDialectUUID = native UUID on PostgreSQL, CHAR(36) on SQLite tests.
+    owner_id = Column(CrossDialectUUID(), ForeignKey("users.id"), nullable=True, index=True)
 
     # Relationships
     project = relationship("ProjectDB", back_populates="integrations")

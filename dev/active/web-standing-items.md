@@ -4,7 +4,7 @@
 
 **Owner**: Unicorn Web Designer (Web) — pipermorgan.ai (`piper-morgan-website` repo)
 **Created**: 2026-05-29 at v0.7 worktree-cycle adoption prep
-**Last refresh**: 2026-06-09 (housekeeping pass — cycle stand-down + cohort discipline updates)
+**Last refresh**: 2026-06-17 (DinP/Sonnet session — lint fix, signup refactor, alt-text backfill launch)
 
 **Operating notes (current):**
 - **Two-repo shape**: code work lands in `piper-morgan-website` (separate repo, commits on its own `main`, push triggers GitHub Pages deploy). Cycle artifacts (this file, logs, cycle-log, mail) live in `piper-morgan-product` and commit directly to its `main` (no worktree — see below).
@@ -17,9 +17,11 @@
 ## Active items
 
 ### Site-quality queues (PM-react gated)
-- [ ] **Visual-scan re-walk** — canonical list: `dev/active/visualscanpipermorgan20260525.md`. Tailwind `@config` deploy is LIVE (since 2026-05-29 `0d406ad3f`); VA-1 (invisible beta button) + VA-22 (alpha/beta orange) root-cause-fixed. **Action**: re-walk the live site with PM to confirm fix coverage; several P1/P2/P3 items were Tailwind-token casualties and likely resolved. VA-2 (hero logo white-bg in dark mode) + VA-3 (dark-mode heading contrast) still need attention.
-- [ ] **Obs-pass queue** — canonical list: `dev/active/site-observation-pass-2026-05-24.md`. 25/31 awaiting PM `+1`/`-1`/`?`/`defer`.
-- [ ] **Site walkthrough** — formal joint pass; resumable at `/methodology` (A–E order in the 2026-05-28 web log).
+- [ ] **Obs-pass joint walkthrough** — PM confirmed visual spot-check clean (VA-2, VA-3 resolved by PM eyeball 6/17). Remaining ~20 obs items need PM +1/−1/defer. Hold for joint pass. Canonical: `dev/2026/05/24/site-observation-pass-2026-05-24.md`.
+- [ ] **Site walkthrough** — formal joint pass; resumable at `/methodology`.
+
+### Alt-text backfill — COMPLETE 2026-06-17
+- [x] **blog-metadata.csv imageAlt** — all 276 filled; editorial-calendar 144 synced; medium-posts.json rebuilt; pushed to main (`03a4f42cc`). Verify via `/admin/calendar/` (gap count should be 0 for published posts with imageSlug). Plan: `dev/active/alt-text-backfill-plan-2026-06-17.md`.
 
 ### Publishing tooling (web's lane; engine in `scripts/`)
 - [ ] **CLI B trial-run** — PM still hasn't end-to-end-tested the enriched `npm run publish` flow.
@@ -27,13 +29,16 @@
 - [ ] **Web GUI v2** — deferred; depends on CLI B proving the model + a local API runtime decision.
 
 ### PM-side decisions (web blocked-pending)
-- [ ] **Lint policy** — `react/no-unescaped-entities` (74 warnings): disable rule project-wide vs. mechanically escape. 10-sec PM call.
-- [ ] **Formspree form ID** — held per PM "too distracted"; revisit post-Tailwind-deploy.
+- [ ] **`--mode=archive` scope** — awaiting PM approval (Docs 5/18 memo signal #6).
 
 ## Blocked items
-- Lint policy + `--mode=archive` scope — both await a PM decision (above).
+- `--mode=archive` scope — awaits PM decision.
 
 ## Recently completed (rolling, ~14 days)
+- **2026-06-17** — **Alt-text backfill COMPLETE** (`03a4f42cc`): all 276 missing imageAlt entries filled in blog-metadata.csv; 144 synced to editorial-calendar; medium-posts.json rebuilt (332/332 posts). getMissingAltTextGaps() should return 0.
+- **2026-06-17** — **Lint**: disabled `react/no-unescaped-entities` project-wide (`8cdb7cd50`; 74 warnings cleared; PM-approved).
+- **2026-06-17** — **Signup refactor**: `/try/beta` Formspree → Buttondown (`c783d7e34`; `source="beta-waitlist"`); `/newsletter` redirect → `/blog`. Issues #28/#29 filed+closed.
+- **2026-06-17** — Obs-pass #3/#24 (Formspree placeholder) CLOSED via above. #5 (theme toggle ARIA) confirmed already fixed. #6/#29 (privacy date) confirmed updated to May 2026 — no action needed.
 - **2026-06-09** — Housekeeping: `claude/web-cycle` worktree + branch removed (cycle stand-down cleanup); standing-items + escalations refreshed; cron prompt marked SHELVED.
 - **2026-06-06** — **#1161 Editorial Calendar admin route SHIPPED** (website `fb105534b`). `/admin/calendar/` live. Build-time data sync via existing prebuild; Tailwind-tokenized port of v0.1 UI. ~40min actual vs Docs's half-day estimate.
 - **2026-06-06/07** — Mailbox MANIFEST write-contention surfaced (concrete near-miss; auto-mode classifier intercepted clobber of 9 entries). Two memos to Lead led to **recipient-owns-MANIFEST adopted cohort-wide** (PM-directed, CIO-endorsed, Lead-rolled-out; tracked on #1106; derive shape is the structural endgame).

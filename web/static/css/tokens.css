@@ -113,7 +113,6 @@
                   sans-serif;
 
   /* Font Sizes */
-  --font-size-2xs: 11px; /* #1264 tentative (CXO ratify/revise): nav search-hint badge */
   --font-size-xs: 12px; /* Small captions, labels */
   --font-size-sm: 13px; /* Small text, help text */
   --font-size-base: 14px; /* Body text, default */
@@ -140,7 +139,6 @@
   /* ===== BORDERS & SHADOWS ===== */
 
   /* Border Radius */
-  --border-radius-xs: 3px; /* #1264 tentative (CXO ratify/revise): nav search-hint badge */
   --border-radius-sm: 4px; /* Small rounded corners */
   --border-radius-md: 6px; /* Medium rounded corners */
   --border-radius-lg: 8px; /* Large rounded corners */

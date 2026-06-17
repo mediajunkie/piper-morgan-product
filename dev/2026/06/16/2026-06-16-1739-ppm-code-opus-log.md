@@ -50,3 +50,31 @@ PM surfaced new CXO item. Inbox: 2 items.
 - `cc-memo-arch-to-cxo-cc-lead-pm-ppm-1164-private-session-mechanism-flag-plus-retention-2026-06-16.md` — Arch cc: `is_private` flag mechanism for #1164; no PPM response requested
 
 **PPM action**: Concurred on #1048 keep-generic. CXO reasoning correct: Insight Journal is pull (browse-on-demand), not push — trust-gradient visual earns its complexity in push contexts only. Stage-specific treatment deferred to polish if user feedback warrants. Told Lead to close #1048. Memo delivered to CXO cc Lead (`memo-ppm-to-cxo-cc-lead-pm-1048-keep-generic-concur-2026-06-16.md`). Both inbox items triaged to read/. Commit `a3c143ee4`.
+
+---
+
+## Day-Net — 2026-06-16
+
+**Fires**: 1 substantive (17:39 START); PM-directed #1048 CXO concur mid-session
+**Substantive deliverables**:
+- ADR-071 alignment confirm delivered to Lead (retracted "small add" framing; anchor-first is correct)
+- ADR-070 milestone call: RECONNECT (not M4 or M5); m-38 altitude check: correct, no PDR needed
+- Phase 0 maturity survey assigned to Lead Dev
+- #1048 keep-generic: PPM concurred; CXO + Lead unblocked to close
+
+**Standing items net change**: ADR-071 gate confirmed; ADR-070 milestone placed; #1048 closed (no build)
+
+---
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- `ppm-spec-radar-layer2-entity-model-2026-06-15.md` — confirmed PPM model frozen; entity type set
+- `cc-memo-arch-to-lead-cc-pm-ppm-cio-adr-070-v01-filed-mcp-consumer-connector-architecture-2026-06-15.md` — D-sections and milestone question
+- `memo-lead-to-ppm-cc-arch-cxo-pm-contract-frozen-but-backends-adr071-gated-2026-06-15.md` — #1241 audit findings; ADR-071 gate
+
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md, cross-pollination brief
+
+**Wanted but not found**: nothing missing
+
+<!-- DAY-CLOSED: 2026-06-16 -->
