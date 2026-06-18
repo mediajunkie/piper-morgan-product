@@ -12,13 +12,21 @@ Now: Extracted to separate router module
 """
 
 import structlog
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import HTMLResponse
+
+from web.dev_gate import require_dev_environment
 
 logger = structlog.get_logger()
 
-# Router configuration
-router = APIRouter(tags=["debug", "development"])
+# Router configuration — #1149: dev-only. Every route 404s in production (the
+# canonical dev-route gate), so /debug-markdown is invisible in prod, not merely
+# forbidden. The global auth middleware already 401s it; this is defense-in-depth
+# (don't ship a dev test page to prod at all).
+router = APIRouter(
+    tags=["debug", "development"],
+    dependencies=[Depends(require_dev_environment)],
+)
 
 
 @router.get("/debug-markdown", response_class=HTMLResponse)
