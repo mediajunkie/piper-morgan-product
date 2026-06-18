@@ -9,12 +9,11 @@ from types import SimpleNamespace
 
 from services.integrations.github.repo_resolver import read_user_github_handle
 from services.radar import WorkItemEntitySource
-from web.api.routes.radar import (
-    _build_feed,
-    _filter_issues_by_assignee,
-    _WorkItemProvider,
-    get_radar,
+from services.radar.feed_factory import (  # #1269: source wiring moved here (shared w/ standup)
+    WorkItemProvider,
+    filter_issues_by_assignee,
 )
+from web.api.routes.radar import _build_feed, get_radar
 
 
 def _summary(cid, title, last_activity, turns=2):
@@ -86,7 +85,7 @@ async def test_workitem_provider_returns_empty_when_github_unavailable(monkeypat
             raise RuntimeError("github down")
 
     monkeypatch.setattr(ghmod, "GitHubIntegrationRouter", _BoomRouter)
-    assert await _WorkItemProvider().list_for_user("user-1") == []
+    assert await WorkItemProvider().list_for_user("user-1") == []
 
 
 # --- #6: scope work items to "assigned to me" via the configured GitHub handle ---
@@ -100,20 +99,20 @@ class TestWorkItemAssigneeFilter:
     def test_no_handle_returns_all(self):
         """Opt-in: with no handle configured, all open issues show (prior behavior)."""
         issues = [_issue(1, ["alice"]), _issue(2, [])]
-        assert _filter_issues_by_assignee(issues, None) == issues
-        assert _filter_issues_by_assignee(issues, "") == issues
+        assert filter_issues_by_assignee(issues, None) == issues
+        assert filter_issues_by_assignee(issues, "") == issues
 
     def test_handle_filters_to_assigned(self):
         """With a handle, only issues assigned to it survive ('what's on my plate')."""
         issues = [_issue(1, ["alice", "bob"]), _issue(2, ["carol"]), _issue(3, [])]
-        assert [i["number"] for i in _filter_issues_by_assignee(issues, "bob")] == [1]
+        assert [i["number"] for i in filter_issues_by_assignee(issues, "bob")] == [1]
 
     def test_handle_is_case_insensitive(self):
-        assert len(_filter_issues_by_assignee([_issue(1, ["MediaJunkie"])], "mediajunkie")) == 1
+        assert len(filter_issues_by_assignee([_issue(1, ["MediaJunkie"])], "mediajunkie")) == 1
 
     def test_empty_or_missing_assignees(self):
-        assert _filter_issues_by_assignee(None, "bob") == []
-        assert _filter_issues_by_assignee([{"number": 9}], "bob") == []  # no assignees key
+        assert filter_issues_by_assignee(None, "bob") == []
+        assert filter_issues_by_assignee([{"number": 9}], "bob") == []  # no assignees key
 
     def test_handle_reader_env_fallback(self, monkeypatch):
         """No prefs-file entry + env set → the env handle (single-user beta config)."""

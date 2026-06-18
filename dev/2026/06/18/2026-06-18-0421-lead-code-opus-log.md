@@ -91,3 +91,10 @@ Fire woke me; CronDeleted `0351e020` (Rule 1, substantive). Synced clean. Dispat
 - **CXO #1251 review done**: the 3 semantic action colors (#3b82f6/#ef4444/#10b981 = correct/error/success) → keep as allow-exceptions (already are). 6 cleanup items get a quick CXO keep/token/allow triage after my extraction (done). Item-3 (wording) confirmed fixed. → #1251 item-2 cleanup = small, pending CXO's 6 triage calls.
 - **Exec**: escalations docs **deprecated** → I'll stop maintaining `dev/active/duty-cycle-escalations-lead.md` (STOP no longer reconciles it). Lead-Dev naming + pilot-wave confirmed (informational).
 - **BUILDABLE QUEUE now**: #1269 (gameplan ready → P1 StandupAssembler) · #1270 (Documents object-model, PPM reconcile) · **#1280** (dark-nav, spec committed) · #1251-cleanup (6 items, CXO triage). **#1240 deferred** (PM-confirm pending). Cron `0226250f` armed.
+
+### 08:20 — #1269 P1a: shared EntitySource factory extracted (radar + standup share one wiring)
+PM: "Please proceed" (+ #1280 can go after #1269). Mail confirmed clear (PPM reply = #1240-defer, handled). Building #1269 P1.
+- **`services/radar/feed_factory.py` (new)**: `build_entity_sources(uhs) -> list[EntitySource]` + the providers (ConversationHistoryProvider, WorkItemProvider, filter_issues_by_assignee) moved verbatim from radar.py (web→service layer, so the standup can reuse without a web import). The "derive, don't maintain" foundation — standup = consumer of the SAME sources Radar uses.
+- **`web/api/routes/radar.py`**: thinned — `_build_feed` now `RadarFeed(build_entity_sources(service))`; removed the duplicate providers/constants. test_radar.py imports updated to feed_factory's public names.
+- **Verified**: imports clean (no circular); **29 radar tests green**. Behavior-preserving.
+- **NEXT (#1269 P1b)**: `StandupSummary` + `StandupAssembler.assemble(user_id)` (Yesterday/Today/Blockers = filtered view over the sources) — incl. the flagged lifecycle-vocab reconcile (sources emit coarse labels: open/in-review/blocked/closed, new/recent/stale, active/idle/dormant; map PPM's DONE/RATIFIED/IN_PROGRESS vocab onto those). TDD.
