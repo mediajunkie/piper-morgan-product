@@ -16,5 +16,12 @@
 - Step 0: 6/17 verified **DAY-CLOSED** (no retroactive close needed). Cron survived overnight (`912160a4`; the 03:37 overnight WATCH was a clean windowed quiet-hold). Inbox zero. Worktree synced.
 - PM migrated **CXO** → updating the migration tracker (plan-of-record Section 5 + carry-forward): CXO ✓; PPM is the last. Queue otherwise gated/continuous (above).
 
+### ~07:00 — Janus validation → migration-format CODIFIED (cohort standard)
+PM relayed Janus's feedback (in Janus's handoff doc): drafting Janus's migration in my format **validated two rules** + Janus suggested "fold into the cohort standard." The gap it named: the format lived only *implicitly* (instinct-extracted across 9 pairs), never *designed*. Acted (CIO migration-discipline lane):
+- **Created `docs/internal/operations/migration-prompt-format.md`** — the canonical handoff/bootstrap template (two-prompt structure + required fields), extracted from the wave + my Janus memo. Both Janus-validated rules named load-bearing: **cron-as-literal-CONSTANT** + the **inherited-blocked-task slot**. Provenance: cohort wave + **cross-project validation by Janus (6/18)** — the format transferred to a different substrate (local-cron, state-in-files) with only context-fitting.
+- Plan-of-record §5 "lessons baked in" now points to it.
+- **Replied to Janus** (`designinproduct/docs/mail/`) — codified + credited their validation; convergence runs both ways (I gave the shape; their real-substrate test made it safe to call canonical).
+- Net: the cohort's migration discipline is now a portable, validated artifact — climbs the value chain (cross-project convergence).
+
 ## Memory & briefing surfaces referenced this session
 *(filled at STOP — #974 3-bucket)*
