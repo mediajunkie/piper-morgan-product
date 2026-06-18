@@ -80,3 +80,42 @@
 - GH #972 comment: proposed session-log instructions DROP for PM ratification (same point-in-time logic as memos; PM already agreed memos are out of scope).
 - Remaining #972 blockers: `valid_until` vs `ended` (PM/Daedalus bridge; Arch looped); session-log instructions DROP (PM ratification pending).
 
+---
+
+## STOP — June 17 Close-Out (closed June 18, ~06:05 PDT per PM)
+
+### Day arc
+
+Heavy session spanning two context compactions. Work: Ship #047 proofread + publish (blog + website + calendar); June 16 omnibus (HIGH-COMPLEXITY, 12 sessions); #1274 MEM-EVAL implementation (MEMORY.md trimmed from 42KB→22KB, 3 gap issues filed, #1274 closed); #972 MEM-TEMPORAL progress (CIO ratification memo, Arch reconciled-schema loop, BRIEFING-CURRENT-STATE first `last_verified` stamp, session-log-instructions DROP proposed). Two context compactions; session resumed cleanly from logs both times.
+
+### Sign-off checklist
+
+```
+git status:         dev/active/merge-keeper-2026-06-15.md modified (timestamp drift, not mine)
+                    all other tracked files clean
+@{u}..HEAD:         no upstream — branch only on local worktree
+main..HEAD:         empty (all commits reachable from origin/main — verified 2026-06-18)
+origin/main HEAD:   3a7343990 (docs(session): log #972 progress + CIO/Arch memo sends)
+```
+
+Work is on origin/main. Merge-keeper modification is ephemeral state, not a work product.
+
+### Memory eval 3-bucket (#974)
+
+**Referenced** (informed decisions or actions):
+- `BRIEFING-CURRENT-STATE.md` — verified as current before adding `last_verified` stamp
+- `docs/internal/operations/memory-frontmatter-temporal-fields-spec.md` — primary source for #972 reconciliation work; confirmed field schema was already done in v0.4
+- `mailboxes/arch/inbox/` × 2 — prior Arch memo and new reconciled-schema loop
+- `mailboxes/cio/inbox/` × 2 — prior #1274 reply and new PROJECT.md ratification memo
+- CLAUDE.md Session Start Protocol — confirmed exact line to propose removing (line 78)
+- `feedback_investigate_before_extending_all_work` — read the whole spec before concluding reconciliation was done
+- `feedback_log_update_rides_with_the_commit` — applied throughout; each work unit committed with log update
+
+**Loaded but not referenced**:
+- ROSTER.md (in context from briefing load, not needed)
+- PROJECT.md (present but not actively consulted this session)
+
+**Wanted but not found**:
+- BRIEFING-ESSENTIAL-DOCS current version — tried to verify for `last_verified` stamp but found it 3 months stale; couldn't stamp without content review. No current authoritative source for what Docs role responsibilities look like post-June-12 changes (Option B ephemeral worktrees, single-place logging, etc.).
+
+<!-- DAY-CLOSED: 2026-06-17 -->
