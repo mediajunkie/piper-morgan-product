@@ -7,7 +7,14 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
 
-from web.api.routes.radar import get_radar
+from services.integrations.github.repo_resolver import read_user_github_handle
+from services.radar import WorkItemEntitySource
+from web.api.routes.radar import (
+    _build_feed,
+    _filter_issues_by_assignee,
+    _WorkItemProvider,
+    get_radar,
+)
 
 
 def _summary(cid, title, last_activity, turns=2):
@@ -58,3 +65,62 @@ async def test_radar_lifecycle_derived_from_recency():
     svc = _FakeHistoryService([_summary("c1", "fresh", now)])
     view = await get_radar(current_user=_USER, service=svc)
     assert view.entities[0].lifecycle_state == "active"  # recent → active
+
+
+# --- #1239: WorkItem source registration + graceful-empty contract ---
+
+
+def test_workitem_source_registered_in_feed():
+    """#1239: the live feed wires a WorkItemEntitySource alongside the others."""
+    feed = _build_feed(_FakeHistoryService([]))
+    assert any(isinstance(s, WorkItemEntitySource) for s in feed._sources)
+
+
+async def test_workitem_provider_returns_empty_when_github_unavailable(monkeypatch):
+    """A GitHub hiccup must NEVER blank Radar — the provider degrades to [] (and
+    RadarFeed's per-source isolation is the second guard). #1239 beta path."""
+    import services.integrations.github.github_integration_router as ghmod
+
+    class _BoomRouter:
+        def __init__(self, *a, **k):
+            raise RuntimeError("github down")
+
+    monkeypatch.setattr(ghmod, "GitHubIntegrationRouter", _BoomRouter)
+    assert await _WorkItemProvider().list_for_user("user-1") == []
+
+
+# --- #6: scope work items to "assigned to me" via the configured GitHub handle ---
+
+
+def _issue(num, assignees):
+    return {"number": num, "title": f"#{num}", "state": "open", "assignees": assignees}
+
+
+class TestWorkItemAssigneeFilter:
+    def test_no_handle_returns_all(self):
+        """Opt-in: with no handle configured, all open issues show (prior behavior)."""
+        issues = [_issue(1, ["alice"]), _issue(2, [])]
+        assert _filter_issues_by_assignee(issues, None) == issues
+        assert _filter_issues_by_assignee(issues, "") == issues
+
+    def test_handle_filters_to_assigned(self):
+        """With a handle, only issues assigned to it survive ('what's on my plate')."""
+        issues = [_issue(1, ["alice", "bob"]), _issue(2, ["carol"]), _issue(3, [])]
+        assert [i["number"] for i in _filter_issues_by_assignee(issues, "bob")] == [1]
+
+    def test_handle_is_case_insensitive(self):
+        assert len(_filter_issues_by_assignee([_issue(1, ["MediaJunkie"])], "mediajunkie")) == 1
+
+    def test_empty_or_missing_assignees(self):
+        assert _filter_issues_by_assignee(None, "bob") == []
+        assert _filter_issues_by_assignee([{"number": 9}], "bob") == []  # no assignees key
+
+    def test_handle_reader_env_fallback(self, monkeypatch):
+        """No prefs-file entry + env set → the env handle (single-user beta config)."""
+        monkeypatch.setenv("PIPER_GITHUB_HANDLE", "octocat")
+        assert read_user_github_handle("no-such-user-uuid") == "octocat"
+
+    def test_handle_reader_none_when_unset(self, monkeypatch):
+        """No file entry + no env → None → callers apply no filter (show all)."""
+        monkeypatch.delenv("PIPER_GITHUB_HANDLE", raising=False)
+        assert read_user_github_handle("no-such-user-uuid") is None

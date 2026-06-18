@@ -1,22 +1,22 @@
 ---
-image:
-alt:
-caption:
+image: 'ai-bridge.png'
+alt: 'A worried surveyor inspects a sturdy stone bridge using warped measuring tools—a bent ruler, tangled plumb line, and damaged map—while travelers cross the bridge without concern and a puzzled ghostly AI examines the crooked ruler, realizing the instruments are the real problem.'
+caption: '"Maybe check the ruler?"'
 ---
 
 # Hypothesis Refuted
 
 *May 8–9, 2026*
 
-The system has an automated quality test we run periodically against a panel of scripted user inputs (we call it "the canonical query list" and it started off with a vision I had of something like a morning litany by which an entity might "wake up" and systematically review what it knows. It eventually became a core part of the modeled UX vision and the "colleague" model, and at this point has become a regression test we use to gate each sprint in the MVP milestone that is intended to culminate with a widely shareable beta. 
+The system has an automated quality test we run periodically against a panel of scripted user inputs (we call it "the canonical query list") and it started off with a vision I had of something like a morning litany by which an entity might "wake up" and systematically review what it knows. It eventually became a core part of the modeled UX vision and the "colleague" model, and at this point has become a regression test we use to gate each sprint in the Minimum Valuable Product (MVP) milestone that is intended to culminate with a widely shareable beta. 
 
-In this test, the response to each query gets scored against a rubric — relevance, competence, tone — by a second LLM acting as a judge. The aggregate score is meant to track whether quality is drifting upward or downward as the codebase changes.
+In this test, the response to each query gets scored against a rubric — relevance, competence, tone — by a second large language model (LLM) acting as a judge. The aggregate score is meant to track whether quality is drifting upward or downward as the codebase changes.
 
-On Friday morning May 8, the Lead Dev agent ran the test for the first time after the ethics-floor work and the multi-day M2d shipping arc had landed. The previous baseline, from mid-April, had been 72.1%. The new run came in at 65.6%.
+On Friday morning May 8, my lead developer (Lead Dev) ran the test for the first time after the ethics-floor work and a multi-day shipping arc had landed. The previous baseline, from mid-April, had been 72.1% — the number from the original report, which as it turned out also needed checking. The new run came in at 65.6%.
 
 That's a six-point drop! Lolwat? Six points across a hundred test cases. The system's most recent few weeks of work — multiple major architectural changes, several issues' worth of new behavior — had apparently produced a quality regression.
 
-Lead Dev filed it as a P0 issue, and well they did. The working hypothesis: the LLM had started fabricating responses somewhere in the new code paths. Hallucination regression. The auto-fail rule (any rubric dimension of zero triggers a FAIL) had caught ten cases where the model produced confident answers that didn't track the underlying state.
+Lead Dev filed a critical issue (P0), and well they did. The working hypothesis: the LLM had started fabricating responses somewhere in the new code paths. Hallucination regression. The auto-fail rule (any rubric dimension of zero triggers a FAIL) had caught ten cases where the model produced confident answers that didn't track the underlying state.
 
 That's the hypothesis. The investigation was supposed to confirm it and identify the introduction point.
 
@@ -38,7 +38,7 @@ The aggregate metric had dropped six points because the judge had become more ag
 
 The hypothesis had been: *the system regressed.* The actual finding was: *the measurement instrument and its reference state had both drifted, and the system was approximately where it had been.* Two layers of category error, neither of them in the code we'd shipped.
 
-# Back in the saddle again.
+# Back in the saddle again
 
 By Saturday morning the remediation was queued. Fifteen stale items and a hundred-eleven orphan items got wiped from the canonical fixture. Lead Dev sent a recalibration memo to the experience-design and product-management roles asking them to look at the judge's rubric anchors. Three narrow bug fixes shipped for the actually-real bugs.
 
@@ -52,7 +52,7 @@ The cleanup milestone had a queue of issues describing code that needed to be ha
 
 Then the second issue. Same pattern: the body said one thing, the code said another. Then a third. By the end of Saturday, three of the five cleanup issues in that pass turned out to describe phantom work. The work was deletion, not implementation.
 
-Lead Dev filed it as Pattern-067, *Issue-Body Reality Mismatch.* The counter-discipline: before scoping migration or refactor work, audit whether the body's claims still match the code. The pattern emerged because three instances showed up in a single day's work, but the pattern named a shape that had probably been firing quietly for months.
+Lead Dev named it Pattern 67: *Issue-Body Reality Mismatch.* The counter-discipline: before scoping migration or refactor work, audit whether the body's claims still match the code. The pattern emerged because three instances showed up in a single day's work, but the pattern named a shape that had probably been firing quietly for months.
 
 # Why the two findings rhyme
 
@@ -66,7 +66,7 @@ This is a generalizable trap. Any time a measurement runs against a reference th
 
 Most of what looks like a system regression turns out to be a reference-state drift. The discipline this week's findings landed across both layers is the same: when a measurement or a description has been quietly running ahead of the code it's supposed to track, the fix is to ground-truth the reference, not patch the system. Reset the fixture before re-running the metric. Audit the body before scoping the work. Recalibrate the rubric before chasing the regression.
 
-The day Lead Dev cleared the M2f cleanup, the actual code change for the morning was small. Three narrow bug fixes. A fixture wipe. A rubric memo to two roles. The cleanup sprint deleted a thousand-plus lines of code that nobody had been running for months. The single rubric drop had pointed at all of it, indirectly, by the time we understood what we were actually looking at.
+The day Lead Dev cleared the cleanup milestone, the actual code change for the morning was small. Three narrow bug fixes. A fixture wipe. A rubric memo to two roles. The cleanup sprint deleted a thousand-plus lines of code that nobody had been running for months. The single rubric drop had pointed at all of it, indirectly, by the time we understood what we were actually looking at.
 
 ---
 

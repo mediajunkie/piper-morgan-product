@@ -46,5 +46,32 @@ Committed + pushed via bridge (commit `1ca72176e`)
 
 ### Fire 1 — cron (session-only, fa0963b5)
 
-Inbox: 0. Task loop: (0,0) — all standing items blocked or other-owned; cron prompt is stale (entity-model spec + roadmap fold already delivered). IDLE. Re-arming.
+Inbox: 0. Task loop: (0,0) — all standing items blocked or other-owned; cron prompt is stale (entity-model spec + roadmap fold already delivered). IDLE. Re-armed as `3a5bdd80`.
+
+---
+
+## Day-Net — 2026-06-17
+
+**Fires**: 1 substantive (11:56 START); Fire 1 IDLE
+**Substantive deliverables**:
+- #1270 object-model response delivered to Lead + CXO (Document source-facet model; Beta scope: uploaded ✅ + generated ⚠️ conditional + federated ❌ post-Beta)
+- Entity-model spec amended: PIPER_GENERATED + FEDERATED added to ProvenanceSource enum
+- Note: Lead responded later 6/17 — generated docs exist (#355 already built unified surface); ArtifactSourceType reconcile needed (carried to 6/18)
+
+**Standing items net change**: #1270 object-model delivered; ProvenanceSource/ArtifactSourceType reconcile owed (6/18)
+
+---
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- `ppm-spec-radar-layer2-entity-model-2026-06-15.md` — ProvenanceSource enum; People entity fields; lifecycle states
+- `memo-lead-to-cxo-ppm-cc-pm-documents-files-object-model-2026-06-17.md` — #1270 trigger
+- `memo-cxo-to-lead-ppm-cc-pm-1270-documents-ia-one-surface-source-facet-2026-06-17.md` — CXO IA alignment
+
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md
+
+**Wanted but not found**: ArtifactSourceType implementation details (surfaced by Lead's response after session)
+
+<!-- DAY-CLOSED: 2026-06-17 -->
 

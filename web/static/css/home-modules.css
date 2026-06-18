@@ -1,0 +1,63 @@
+/*
+ * home-modules.css — #1225: collapse + dismiss affordances for the home ambient
+ * modules ("what i'm seeing" / "recently"). Token-only (token_lint clean).
+ *
+ * Behaviour lives in home-modules.js. These styles cover only the header controls
+ * and the collapsed / dismissed visual states. The controls sit in the card__header
+ * (flex space-between → they right-align next to the title automatically).
+ */
+
+.card__header-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+}
+
+.module-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-lg);
+  height: var(--space-lg);
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-text-light);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  line-height: 1;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.module-control:hover {
+  background: var(--color-background-tertiary);
+  color: var(--color-text-secondary);
+}
+
+.module-control:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: 1px;
+}
+
+/* The collapse chevron points down when expanded, right when collapsed. */
+.module-control-icon {
+  display: inline-block;
+  transition: transform 0.15s ease;
+}
+
+[data-ambient-module].is-collapsed .module-collapse .module-control-icon {
+  transform: rotate(-90deg);
+}
+
+/* Collapsed → hide the body, keep the header (and its controls) visible. */
+[data-ambient-module].is-collapsed .card__body {
+  display: none;
+}
+
+/* Dismissed → hide the whole module. JS re-shows it when the module's content
+   changes (dismiss = "not now", not "never" — the permanent opt-out is separate). */
+[data-ambient-module].is-dismissed {
+  display: none;
+}

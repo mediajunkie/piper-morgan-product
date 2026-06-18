@@ -44,10 +44,18 @@ class TestNavigationVocabulary:
         assert ">Documents</a>" in nav_content
         assert ">Files</a>" in nav_content
 
-    def test_lists_renamed_to_collections(self, nav_content):
-        """Lists should be labeled 'Collections'."""
-        assert ">Collections</a>" in nav_content
-        assert ">Lists</a>" not in nav_content
+    def test_lists_labeled_lists(self, nav_content):
+        """#1268 (CXO 2026-06-17): the rail is labeled 'Lists' (was 'Collections') — match the
+        /lists route + the user's word (descriptive-names discipline)."""
+        assert ">Lists</a>" in nav_content
+        assert ">Collections</a>" not in nav_content
+
+    def test_history_trigger_labeled_radar(self, nav_content):
+        """#1262 (CXO 2026-06-17): the trigger opens the Radar/Layer-2 panel → labeled 'Radar'
+        (was 'History'). The id stays nav-history-trigger (JS wiring); only the label changes."""
+        assert 'id="nav-history-trigger"' in nav_content  # wiring preserved
+        assert 'aria-label="View Radar"' in nav_content
+        assert 'aria-label="View history"' not in nav_content
 
     def test_learning_kept_as_is(self, nav_content):
         """Learning should remain 'Learning' (already action-oriented)."""

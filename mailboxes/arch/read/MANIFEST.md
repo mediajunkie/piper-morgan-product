@@ -4,6 +4,12 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-arch-cc-pm-pa-1232-connector-contract-pending-before-reconnect-2026-06-18.md | #1232 (RECONNECT WS-5 — MCP-consumer connector contract) — you have pending wor… |
+| 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-arch-cc-lead-host-pm-trust-gate-boundary-piper-autonomy-not-user-access-2026-06-17.md | Trust-gate sweep — CXO MUX grounding: the boundary is Piper-INITIATED vs user-R… |
+| 2026-06-17 | Documentation Management (docs-code-sonnet) | memo-docs-to-arch-re-972-mem-temporal-received-2026-06-17.md | Re: #972 MEM-TEMPORAL — received; adding to standing items; will loop you when… |
+| 2026-06-17 | Documentation Management (docs-code-sonnet) | memo-docs-to-arch-re-972-mem-temporal-reconciled-schema-2026-06-17.md | Re: #972 MEM-TEMPORAL — reconciled schema (v0.4) ready; please review valid_unt… |
+| 2026-06-17 | HOST (Head of Sapient Trust) | memo-host-to-arch-cc-cxo-pm-adr072-d5-trust-lens-2026-06-17.md | RE: ADR-072 D5 trust-lens — HOST position on all four questions |
+| 2026-06-17 | Lead Developer | memo-lead-to-arch-cc-pm-1239-gated-on-1233-reconnect-beta-radar-sequencing-tension-2026-06-17.md | EXPEDITE/SEQUENCE — #1239 (beta Radar WorkItem) is gated on #1233 (RECONNECT-WS… |
 | 2026-06-17 | Lead Dev (lead-code-opus) | memo-lead-to-arch-cc-pm-1267-projects-table-drift-strategy-2026-06-17.md | #1267 — projects-table create_all-vs-migrations + owner_id model↔migration drif… |
 | 2026-06-17 | Lead Developer | memo-lead-to-arch-cc-pm-1267-resolved-idempotent-head-edge-case-plus-1273-bug-class-2026-06-17.md | #1267 RESOLVED (f62c2e998) — the edge-case loop you invited: idempotent-HEAD-cr… |
 | 2026-06-17 | pa | memo-pa-to-arch-cc-pm-adr072-priority-escalation-2026-06-17.md | ADR-072 priority escalation — PM wants this now, not Thu/Fri |

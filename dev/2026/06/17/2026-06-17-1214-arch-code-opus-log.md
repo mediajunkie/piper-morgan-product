@@ -77,6 +77,39 @@ First autonomous duty-cycle fire on the new cron (cf4a7ecc). WORK dispatch: inbo
 
 ---
 
+### Fire — autonomous (18:27 cron, ran 18:57 PT) — ADR-072 v0.2 RATIFIED + #1239 + #972 review (5-memo response wave)
+
+5 new memos on wake — a response wave. Drained all:
+
+- **ADR-072 D5 → v0.2 ACCEPTED (whole ADR D1–D5 ratified).** CXO + HOST trust-lens both returned same-day + aligned. Folded into D5 v0.2: **CXO's axis** (gate Piper-initiated, never user-reaching-for-own) + **HOST's 2 refinements** — consequential-action carve-out (side-effect skills tier-gated even when reactive; named now per m-36 before the first such skill ships) + transparency-when-gated (surface the gate via `trust-check`, not silence). Ratified on origin/main + decisions.log entry. Notified CXO/HOST cc PM/PA/Lead → **Wave P fully unblocked**. The PM-escalated deliverable is now complete end-to-end: authored + grounded + ratified all same day.
+- **Lead #1239/#1233 sequencing** → disposition to Lead cc PM: **a lighter beta-only single-bound-user→repo path** unblocks beta WorkItem Radar without the full #1233 (the architectural distinction: #1233 = multi-identity-per-human unification, RECONNECT-scope; #1239-beta = one bound user → one repo, the Slack socket-runner pattern; m-40 layer-then-migrate). Neither sequencing horn (pull RECONNECT fwd / revisit no-partial-ship) is forced — PM's call is now easy.
+- **#972 field-spec review** → Docs delivered v0.4; reviewed (Docs cc PM/CIO): 4-field shape structurally sound (no objections); directional read = keep `valid_until` (cheap-to-rename-if-wrong); **honest scope** — no direct Janus/Klatch visibility, definitive call awaits the Daedalus bridge (CIO lane). m-30/m-41 discipline: didn't assert what I can't substantiate.
+- **Mail**: 10 outgoing + 5 inbox-drained, all verified on origin/main.
+- **Main-checkout churn continued** (Docs draining their inbox mid-fire — `D` of my bootstrap memo-to-Docs + others). Strict explicit-path staging isolated my files on every commit; swept none of it.
+
+---
+
+## Day arc — June 17 summary (DinP migration day → full ADR-072 arc)
+
+Fresh-account migration that turned into a full ADR arc. New-Arch came up clean on DinP (Opus 4.8, account-move-only — lowest-risk in the wave), then PM escalated ADR-072 mid-day and it went **authored → grounded → ratified all in one day**.
+
+| Fire | Time PT | Deliverable |
+|---|---|---|
+| Bootstrap | 12:14 | DinP migration: session log, cron `cf4a7ecc` (windowed `27 6,9,12,15,18,21`), freeze-registry row, token row, mailbox MANIFEST regen. **2 Verify-First wins** (connector ADR-070 already shipped — not owed; §0 MCP decision already in decisions.log) |
+| PM-directive | 12:35 | #1267 priority rec → Lead (do-next, independent of deferred #1257); #1193 user-correction disposition (PM-concurred accept-loss); #972 reviewer-confirm → Docs |
+| 12:27 | 12:58 | ADR-072 grounding audit → findings substrate; **derive-from-SKILL.md-frontmatter** spine surfaced |
+| 15:27 | 15:57 | ADR-072 v0.1 authored (PM-escalated, un-banked) + on main; **#1267 RESOLVED by Lead** (affirmed idempotent-head-create); **#1273 triaged**; D5 circulated to CXO+HOST |
+| 18:27 | 18:57 | **ADR-072 v0.2 ACCEPTED** (D5 ratified — CXO+HOST folded); #1239 lighter-beta-path disposition; #972 review |
+| STOP | 21:57 | day-close |
+
+**Load-bearing of the day**: ADR-072 (Skill-Routing Architecture) — the full author→ground→ratify arc in one day under PM escalation, with the **derive-from-SKILL.md-frontmatter** spine as the architectural contribution (one source → manifest + Layer-2 patterns + Layer-1 descriptions; cures the hand-kept-index rot proven live by the stale `SKILLS.md`). Wave P unblocked end-to-end.
+
+**Process note — the quality-banking-then-un-banking episode**: banked v0.1 (Fire 12:27) under "no deadline (Wave P weeks out)" → PM escalated (Fire 15:27) → un-banked + authored. The bank was *defensible on the info I had at 13:05*, and the grounding-first discipline meant the bank produced a durable substrate that made the un-banked authoring fast + evidence-based. Lesson: **a bank is fragile to a priority signal not-yet-arrived; grounding-first de-risks the bank** by making the deferred work a fast pickup rather than a cold start.
+
+**Cohort observation (surfaced to PM)**: the shared main checkout was anomalously dirty across the afternoon (~15 uncommitted changes from other roles — bulk MANIFEST regens + a Docs inbox-drain mid-fire). Handled every commit with strict explicit-path staging; swept none of it. Recurring uncommitted-churn on shared `main` is a hygiene watch for the Docs merge-keeper.
+
+---
+
 ## Memory & briefing surfaces referenced this session (per #974)
 
 **Referenced**:
@@ -85,6 +118,17 @@ First autonomous duty-cycle fire on the new cron (cf4a7ecc). WORK dispatch: inbo
 - `[Honor durable instructions under cross-pressure; surface the fork]` — bootstrap brief (fresh surface) conflicted with carry-forward (durable continuity) on connector-ADR state; honored the fresher continuity surface + surfaced the fork to PM.
 - duty-cycle-tick skill v1.13 — current procedure (FOLD reflected; single-log; windowed-STOP rule).
 - canonical-cron-prompt-template-v0.7 — read for prompt shape, but recognized as Model-A-stale; built the prompt for current Option-B/windowed/FOLD state instead.
+
+**Referenced (ADR-072 arc + afternoon)**:
+- `connector-refactor-sprint-scope-2026-06-14.md` + decisions.log — caught the stale-brief connector-ADR reconciliation; later the §0 MCP / ADR-070/071 entries.
+- ADR-072 grounding cluster: PA original brief + topology addendum + my framing-leans memo + `config/PIPER.md` + `sprint-plan/SKILL.md` + native `SKILLS.md` + `services/intent_service/pre_classifier.py` — the grounding-first substrate; surfaced the derive-from-frontmatter spine + the live-stale-SKILLS.md Pattern-073.
+- **ADRs**: ADR-059 (manifest discipline, D2) / ADR-066 D7 (server-owned state) / ADR-070 (connector substrate, D3) / ADR-071 (user-auth anchor, D5) / ADR-053 (`ProactivityGate`, CXO's D5 lineage) — composed throughout ADR-072.
+- **methodologies**: m-40 (layer-then-migrate — #1239 single-user binding generalizes; ADR-072 D3 no-rename) / m-41 + Pattern-073 (derive-mechanism cure; stale SKILLS.md instance) / m-36 (HOST's "structure before the violation" — the consequential-action carve-out named pre-emptively) / m-30 (#972: didn't assert un-substantiable Janus claims; Lead's #1267 idempotent-head-create scope-correction).
+- CXO + HOST trust-lens memos — folded into D5 v0.2 (the axis + consequential-action carve-out + transparency-when-gated).
+
+**Loaded but not referenced** (afternoon): full BRIEFING-CURRENT-STATE history; the PA BYOC broadcast (informational — confirmed Wave P blocked-on-ADR-072 but drove no decision).
+
+**Wanted but not found** (afternoon): direct Janus/Klatch codebase visibility for the #972 cross-project field check — had to defer the definitive call to CIO's Daedalus bridge (correct boundary, but a recurring gap for cross-project alignment reviews: Arch is asked for a Janus/Klatch lens without Janus/Klatch read access).
 
 **Loaded but not referenced**:
 - Full BRIEFING-CURRENT-STATE history (lines 175–530) — STATUS BANNER + Current Focus sufficed for sprint position.
@@ -97,4 +141,19 @@ First autonomous duty-cycle fire on the new cron (cf4a7ecc). WORK dispatch: inbo
 
 ## Sign-off discipline
 
-_(Filled at STOP / end of bootstrap.)_
+```bash
+$ git status --short
+# (only this session log, uncommitted — committed as the final day-close push)
+$ git log --oneline @{u}..HEAD      # count: 0 (nothing unpushed on branch)
+$ git log --oneline origin/main..HEAD   # count: 0 (branch reachable from origin/main)
+```
+
+✓ Working tree clean after the final day-close commit (this session log was the only uncommitted file; committed + pushed as the last act).
+✓ All June 17 work on `origin/main` — **verified by content throughout** (every commit re-checked on origin/main; the careful-git discipline held across the dirty-main-checkout afternoon — strict explicit-path staging on every bridge commit, swept none of other roles' uncommitted churn).
+✓ ADR-072 v0.2 ACCEPTED + decisions.log; 18 outgoing memos delivered + all inboxes drained across the day.
+✓ Cron `cf4a7ecc` armed (sole; never CronDelete'd today — the windowed 3hr cron has no intra-fire re-fire clash) → 06:27 tomorrow START. **Session-only**: if the session dorms overnight (Gap-C — the known 5-in-5-days risk), the **launchd freeze-watcher** (arch row in `duty-cycle-registry.tsv`) alerts PM, and tomorrow's START Step-0 self-heal catches any missed STOP retroactively.
+✓ Carry-forward rewritten for tomorrow (ADR-072 done / #1239 + #1273 PM-Lead-ball / #972 Daedalus-pending).
+
+<!-- DAY-CLOSED: 2026-06-17 -->
+
+— Architect (new, DinP / Opus 4.8), Wednesday June 17 closed at 21:57 PT. Migration day → full ADR-072 arc (authored + grounded + ratified same day under PM escalation). **Tomorrow 06:27 START**: watch for CXO/HOST/PA cohort responses on ADR-072, the #1239/#1273 sequencing slots (PM/Lead), and the #972 Daedalus bridge (CIO).
