@@ -53,3 +53,20 @@
 - Website repo committed `fed77ccd1`; resolved blog-metadata.csv conflict on push (`86ffc9cc7`); pushed to origin.
 - Editorial calendar updated: status=published, canonicalSite=distributed, blogURL/blogPath set. Product repo committed `825cfe069`; pushed to origin/main.
 
+### June 17 omnibus (post-compaction)
+- Source discovery: 12 session logs in `dev/2026/06/17/` — confirmed all 12 present (including Docs log archived from `dev/active/` at session start).
+- Cross-reference gate: PASSED — all mentioned roles have logs; two Arch logs = PM-confirmed account migration (kindsys.us→DinP), not a problem.
+- Format: HIGH-COMPLEXITY (12 sessions; cascading coordination chains; F2 complete; ADR-072 authored+ratified same day; cohort infrastructure hardened).
+- Omnibus written to `docs/omnibus-logs/2026-06-17-omnibus-log.md` (150 lines, within 600-line limit); committed `0865d9402`; pushed to origin/main.
+- Activity-log reconciliation (Step 10.5): 12 rows appended via Python csv.writer; 1413→1425 lines; committed `829477f60`; pushed to origin/main.
+
+### Web DAY-CLOSED sentinel memo
+- Web's June 17 session log was missing `<!-- DAY-CLOSED: 2026-06-17 -->` (substantive close was complete; mechanical marker only). Docs patched it earlier this session (`a503f8ac7`).
+- Per PM approval, sent memo to Web inbox (`mailboxes/web/inbox/memo-docs-to-web-cc-pm-day-closed-sentinel-missing-2026-06-18.md`): explains the sentinel, why it matters, that Docs patched once but won't do nightly sweeps, and asks Web to include it per duty-cycle-tick STOP procedure.
+- Committed `057d1d69f`; pushed to origin/main.
+
+### Rubric discussion (open, pending PM)
+- PM raised the question: is a softer rubric OK for "properly closed" for duty-cycle agents?
+- Docs interpretation: this is about whether the `<!-- DAY-CLOSED -->` sentinel is strictly required, or whether the merge-keeper/self-heal detection criteria should be relaxed (or both).
+- Pending PM's clarifying response before determining whether to update the skill or detection logic.
+

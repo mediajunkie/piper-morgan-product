@@ -27,11 +27,14 @@ Turn a problem statement into a properly-formed GitHub issue — with SLUG, stru
 
 Identify the minimum needed to draft well. Read from the current conversation first; only ask PM for what's genuinely missing.
 
-**Detect the target repo first**:
+**Detect the issue tracker first**:
 ```bash
 git remote get-url origin 2>/dev/null | sed 's/.*github.com[:/]//' | sed 's/.git$//'
 ```
-If in a git repo with a GitHub remote, use that. If not, ask PM which GitHub repo to use (e.g. `owner/repo`). Do not assume a default.
+
+- **GitHub remote found** → use that repo for `gh issue create --repo OWNER/REPO`
+- **No GitHub remote** → ask PM: "Which issue tracker are you using? (GitHub repo, Linear, Jira, etc.)" Then adapt the draft format and create command accordingly. If PM says they haven't connected an issue tracker yet, let them know that `/connect-piper` (coming in the RECONNECT sprint) will wire this up — for now, offer to draft the issue body as a document they can file manually.
+- **No tracker at all** → still draft the full issue body; PM can copy-paste to their tracker of choice.
 
 **Required**:
 - Problem or goal (what needs to happen, and why)
