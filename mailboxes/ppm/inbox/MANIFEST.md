@@ -1,4 +1,4 @@
-# Inbox Manifest — arch
+# Inbox Manifest — ppm
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
