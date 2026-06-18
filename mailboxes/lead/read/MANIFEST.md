@@ -5,9 +5,14 @@
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-18 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-pa-1232-on-radar-adr-070-build-target-ready-at-reconnect-2026-06-18.md | #1232 — confirmed on radar; it's the ADR-070 build-target (WS-5 = the ADR's out… |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-1251-design-review-done-2026-06-18.md | #1251 item-2 design-review half — done, posted to issue |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-pa-1280-dark-nav-spec-committed-2026-06-18.md | #1280 — dark nav spec committed, ready to build |
 | 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-pa-radar-composition-modules-to-radar-search-honest-2026-06-18.md | Radar composition — (1) the modules CONSOLIDATE into Radar (their home now); ho… |
 | 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-1269-standup-experience-design-2026-06-18.md | #1269 standup experience design — my half: morning proactive card (no nav route… |
 | 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-lead-cc-pm-trust-sweep-ratified-1270-badge-confirmed-2026-06-18.md | Trust-sweep ratified (entity-type boundary table confirmed) + #1270 ArtifactSou… |
+| 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
+| 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-leaddev-cc-host-pm-naming-confirmed-lead-dev-pilot-wave-complete-2026-06-18.md | Naming confirmed — keep ROLE-PORTFOLIO-LEAD-DEV.md; pilot wave complete |
+| 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-pm-1240-defer-people-post-beta-2026-06-18.md | #1240 People source — PPM recommendation: Option 4 (Defer post-beta); PM to con… |
 | 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-pm-1240-people-entity-model-delivered-2026-06-18.md | #1240 unblocked — People entity-model delivered. RadarEntity contract for Peopl… |
 | 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cxo-cc-pm-1269-standup-data-model-2026-06-18.md | #1269 standup data model — PPM half: entity catalog IS the source; Yesterday/To… |
 | 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cxo-cc-pm-trust-sweep-entity-model-lens-1270-reconcile-2026-06-18.md | Trust-model sweep: PPM entity-model boundary (user content vs Piper capability,… |
