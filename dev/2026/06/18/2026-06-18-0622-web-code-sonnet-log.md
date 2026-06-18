@@ -29,4 +29,5 @@
 |------|--------|-------|
 | 06:47 | Cron fire | 06:22 fire (new day); cron armed; inbox empty; no unblocked work; queue unchanged |
 | 06:50 | Mailbox triage | 2 memos → read: Docs (DAY-CLOSED sentinel; adopted), Exec (escalations docs deprecated; no web action needed) |
+| 09:47 | Cron fire | 09:22 fire; cron armed; inbox files still git-tracked (rm'd but not staged); fixed with git rm |
 
