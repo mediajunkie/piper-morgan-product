@@ -7,7 +7,8 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
 
-from web.api.routes.radar import get_radar
+from services.radar import WorkItemEntitySource
+from web.api.routes.radar import _build_feed, _WorkItemProvider, get_radar
 
 
 def _summary(cid, title, last_activity, turns=2):
@@ -58,3 +59,25 @@ async def test_radar_lifecycle_derived_from_recency():
     svc = _FakeHistoryService([_summary("c1", "fresh", now)])
     view = await get_radar(current_user=_USER, service=svc)
     assert view.entities[0].lifecycle_state == "active"  # recent → active
+
+
+# --- #1239: WorkItem source registration + graceful-empty contract ---
+
+
+def test_workitem_source_registered_in_feed():
+    """#1239: the live feed wires a WorkItemEntitySource alongside the others."""
+    feed = _build_feed(_FakeHistoryService([]))
+    assert any(isinstance(s, WorkItemEntitySource) for s in feed._sources)
+
+
+async def test_workitem_provider_returns_empty_when_github_unavailable(monkeypatch):
+    """A GitHub hiccup must NEVER blank Radar — the provider degrades to [] (and
+    RadarFeed's per-source isolation is the second guard). #1239 beta path."""
+    import services.integrations.github.github_integration_router as ghmod
+
+    class _BoomRouter:
+        def __init__(self, *a, **k):
+            raise RuntimeError("github down")
+
+    monkeypatch.setattr(ghmod, "GitHubIntegrationRouter", _BoomRouter)
+    assert await _WorkItemProvider().list_for_user("user-1") == []
