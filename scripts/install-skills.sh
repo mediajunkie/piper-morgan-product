@@ -9,16 +9,13 @@ BRANCH="main"
 BASE_URL="https://raw.githubusercontent.com/${REPO}/${BRANCH}/.claude/skills"
 SKILLS_DIR="${HOME}/.claude/skills"
 
-# PM-facing skills (curated — excludes internal agent workflow skills)
+# PM-facing skills (alpha set — audited for external use)
 SKILLS=(
   "sprint-plan"
   "stakeholder-update"
-  "propose-feature"
   "draft-issue"
-  "trust-check"
-  "brief-coding-agent"
-  "synthesize-feedback"
   "draft-spec"
+  "synthesize-feedback"
 )
 
 echo "Installing Piper Morgan PM skills..."
@@ -55,6 +52,6 @@ fi
 
 echo ""
 echo "Restart Claude Code to pick them up as slash commands."
-echo "Try: /sprint-plan, /stakeholder-update, /propose-feature"
+echo "Try: /sprint-plan, /draft-issue, /synthesize-feedback"
 echo ""
 echo "Questions? https://github.com/${REPO}"
