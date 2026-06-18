@@ -891,6 +891,28 @@ class IntentService:
                 )
                 return await self._start_standup_conversation(user_id, session_id)
 
+            # Issue #1269: a standup QUERY ("give me my standup", "what's my standup") →
+            # the DERIVED on-demand standup (StandupAssembler over the live entity catalog),
+            # routed deterministically BEFORE classification. The LLM classifier conflates
+            # these with get_project_status (verified: "give me my standup" → get_project_status,
+            # conf 1.0), so they never reached _handle_standup_query and Piper improvised a
+            # fabricated standup. The interactive `/standup` capture flow is separate (above).
+            if self._is_standup_query(message):
+                self.logger.info(
+                    "Standup query detected - routing to derived on-demand standup (#1269)",
+                    user_id=user_id,
+                    session_id=session_id,
+                )
+                standup_intent = Intent(
+                    category=IntentCategory.STATUS,
+                    action="get_standup",
+                    original_message=message,
+                    confidence=1.0,
+                )
+                return await self._handle_standup_query(
+                    standup_intent, standup_intent.id, user_id
+                )
+
             # Issue #197 Phase 2B: Ethics enforcement at universal entry point
             # Check ENABLE_ETHICS_ENFORCEMENT environment variable (default: False for gradual rollout)
             ethics_enabled = os.getenv("ENABLE_ETHICS_ENFORCEMENT", "false").lower() == "true"
@@ -2393,6 +2415,28 @@ class IntentService:
         # The rail short-circuits before this routing; anything without a rail entry
         # falls through to the generic query handler (which itself floors the unknown case).
         return await self._handle_generic_query(intent, workflow_id, session_id)
+
+    @staticmethod
+    def _is_standup_query(message: str) -> bool:
+        """#1269: detect a request for the on-demand DERIVED standup ("give me my standup",
+        "what's my standup", "show my standup") so it routes to the StandupAssembler rather
+        than the LLM classifier (which conflates standup with get_project_status — verified
+        2026-06-18). Deterministic + unit-testable. Does NOT match the interactive `/standup`
+        command (handled separately) or incidental mentions ("how do I run a standup meeting")."""
+        m = " ".join(message.strip().lower().rstrip("?!.").split())
+        if "standup" not in m or m.startswith("/"):
+            return False
+        cues = (
+            "my standup",  # give me / show / what's / see / get … my standup
+            "standup please",
+            "today's standup",
+            "todays standup",
+            "standup for today",
+            "give me the standup",
+            "show me the standup",
+            "me the standup",
+        )
+        return any(cue in m for cue in cues)
 
     async def _handle_standup_query(
         self, intent: Intent, workflow_id: str, user_id: Optional[str] = None
