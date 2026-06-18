@@ -39,6 +39,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from services.auth.jwt_service import JWTClaims, JWTService
 from services.domain.models import RequestContext
+from services.llm.request_key import request_api_key
 from web.utils.error_responses import internal_error, validation_error
 
 logger = structlog.get_logger()
@@ -331,9 +332,13 @@ async def process_intent(
         # Issue #490: Pass user_id to service for user-specific features
         # ADR-051 Phase 3: Pass RequestContext alongside old params (dual pattern)
         # ctx is None for unauthenticated requests - service handles gracefully
-        result = await intent_service.process_intent(
-            message=message, session_id=session_id, user_id=user_id, ctx=ctx
-        )
+        # #1162 BYOC: a hosted user may supply their OWN Anthropic key per request via
+        # the X-User-Api-Key header (Claude Desktop env). Bind it for this request's LLM
+        # calls (reset in the context manager's finally); absent → server key. Never logged.
+        with request_api_key(request.headers.get("X-User-Api-Key")):
+            result = await intent_service.process_intent(
+                message=message, session_id=session_id, user_id=user_id, ctx=ctx
+            )
 
         # Format HTTP response from service result
         response = {
