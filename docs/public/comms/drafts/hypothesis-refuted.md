@@ -66,7 +66,7 @@ The day Lead Dev cleared the M2f cleanup, the actual code change for the morning
 
 ---
 
-*Next on Building Piper Morgan: [TEASE PENDING — confirm next-scheduled-item at calendar update].*
+*Next on Building Piper Morgan: a new rubric almost becomes a duplicate of an existing one — same name, different assumptions, two authors who hadn't talked. It got caught in the ninety minutes before the drift would have accumulated.*
 
 *Where in your work has a measurement or a description been silently running ahead of the system it's supposed to track? What would grounding the reference look like?*
 
