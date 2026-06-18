@@ -304,6 +304,9 @@
   .radar-card-meta { font-size: 0.74rem; color: var(--color-text, #555); margin: 6px 0 0; }
   .radar-card-prov { font-size: 0.64rem; color: var(--color-text-muted, #687a7c); margin: 6px 0 0; }
   .radar-card--example { border-style: dashed; opacity: 0.92; }
+  .radar-card--clickable { cursor: pointer; transition: border-color 0.15s ease; }
+  .radar-card--clickable:hover { border-color: var(--color-primary, #2077b2); }
+  .radar-card--clickable:focus-visible { outline: var(--focus-outline); outline-offset: 1px; }
   .radar-empty { font-size: 0.84rem; line-height: 1.5; padding: var(--space-md, 16px); }
   .radar-empty-title { font-weight: 600; margin: 0 0 6px; color: var(--color-text, #1f2933); }
   .radar-empty-sub { margin: 0; color: var(--color-text-muted, #687a7c); }
@@ -679,13 +682,30 @@
           const topic = item.getAttribute('data-topic');
           options.onSelect({ id, topic });
           close();
+          return;
+        }
+        // #1090 swap: a Radar card opens its referent by entity type — Conversation
+        // resumes the chat (same path the History list used), Work item opens the
+        // GitHub issue, Document goes to the Documents page.
+        const card = e.target.closest('.radar-card[data-ref]');
+        if (card) {
+          const type = card.getAttribute('data-entity-type');
+          const ref = card.getAttribute('data-ref');
+          if (type === 'Conversation') {
+            if (options.onSelect) { options.onSelect({ id: ref }); }
+            close();
+          } else if (type === 'Work item') {
+            window.open(ref, '_blank', 'noopener');
+          } else if (type === 'Document') {
+            window.location.href = '/documents';
+          }
         }
       });
 
-      // Keyboard navigation for items
+      // Keyboard navigation for items + radar cards
       content.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
-          const item = e.target.closest('.history-item');
+          const item = e.target.closest('.history-item, .radar-card[data-ref]');
           if (item) {
             e.preventDefault();
             item.click();
@@ -724,6 +744,15 @@
       const card = document.createElement('article');
       card.className = 'radar-card' + (entity.provenance === 'example' ? ' radar-card--example' : '');
       card.setAttribute('role', 'listitem');
+      // #1090 swap: make the card navigable (the History list was click-to-resume;
+      // the Radar feed replaces it, so each card must open its referent). Routing by
+      // entity_type happens in the delegated click handler. Example cards have no ref.
+      if (entity.ref) {
+        card.setAttribute('data-entity-type', entity.entity_type || '');
+        card.setAttribute('data-ref', entity.ref);
+        card.setAttribute('tabindex', '0');
+        card.classList.add('radar-card--clickable');
+      }
 
       const top = document.createElement('div');
       top.className = 'radar-card-top';

@@ -112,18 +112,21 @@
                   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
                   sans-serif;
 
-  /* Font Sizes */
-  --font-size-xs: 12px; /* Small captions, labels */
-  --font-size-sm: 13px; /* Small text, help text */
-  --font-size-base: 14px; /* Body text, default */
-  --font-size-md: 15px; /* Slightly larger body text */
-  --font-size-lg: 16px; /* Large body text, form fields */
-  --font-size-xl: 18px; /* Large, prominent text */
-  --font-size-2xl: 20px; /* Section titles */
-  --font-size-3xl: 24px; /* Page titles */
-  --font-size-4xl: 32px; /* Large headlines */
-  --font-size-5xl: 48px; /* Hero text, main headlines */
-  --font-size-6xl: 72px; /* Extra large (error page icons) */
+  /* Font Sizes — rem-based (#1254 a11y): values are 1:1 with the prior px scale at the
+     16px root default (0 visual change), but now scale with the user's browser/OS font
+     preference, which px ignored. rem = relative to <html> (no html font-size override
+     exists → root = 16px). px-in-comment = the equivalent at default root size. */
+  --font-size-xs: 0.75rem; /* 12px — small captions, labels */
+  --font-size-sm: 0.8125rem; /* 13px — small text, help text */
+  --font-size-base: 0.875rem; /* 14px — body text, default */
+  --font-size-md: 0.9375rem; /* 15px — slightly larger body text */
+  --font-size-lg: 1rem; /* 16px — large body text, form fields */
+  --font-size-xl: 1.125rem; /* 18px — large, prominent text */
+  --font-size-2xl: 1.25rem; /* 20px — section titles */
+  --font-size-3xl: 1.5rem; /* 24px — page titles */
+  --font-size-4xl: 2rem; /* 32px — large headlines */
+  --font-size-5xl: 3rem; /* 48px — hero text, main headlines */
+  --font-size-6xl: 4.5rem; /* 72px — extra large (error page icons) */
 
   /* Font Weights */
   --font-weight-normal: 400;

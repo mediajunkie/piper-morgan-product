@@ -234,6 +234,27 @@ def _read_user_default_repository(user_key: str) -> Optional[str]:
         return None
 
 
+def read_user_github_handle(user_id) -> Optional[str]:
+    """The bound user's GitHub login, for scoping Radar work items to "assigned to me"
+    (#1239 / #6). Reads ``github_username`` from the same per-user GitHub-prefs store as
+    the repo binding, falling back to the ``PIPER_GITHUB_HANDLE`` env var. Returns None
+    when unset → callers apply NO assignee filter (show all open issues), so this is an
+    opt-in enhancement, never a regression.
+
+    This is the single-bound-user form of the #1233 identity map: one configured handle
+    now, generalizes to the unified user→identity record later with no rework."""
+    try:
+        if user_id is not None and os.path.exists(_GITHUB_PREFERENCES_FILE):
+            with open(_GITHUB_PREFERENCES_FILE, "r") as f:
+                all_prefs = json.load(f)
+            handle = (all_prefs.get(str(user_id)) or {}).get("github_username")
+            if handle:
+                return handle
+    except Exception as e:
+        logger.warning(f"Reading github handle from {_GITHUB_PREFERENCES_FILE} failed: {e}")
+    return os.environ.get("PIPER_GITHUB_HANDLE") or None
+
+
 async def _resolve_from_default_project(user_id: UUID) -> Optional[ResolvedRepo]:
     """Resolve via the user's DEFAULT (primary), non-archived project (#1192(b)-v1).
 
