@@ -47,3 +47,16 @@ Rationale:
 
 Routing to PM for milestone/partial-ship confirmation (Lead explicitly flagged this). Memo sent to Lead + cc PM.
 
+#### Cron + registry
+
+- Windowed cron `d98a245c` created: `52 6,9,12,15,18,21 * * *` (durable, PPM per-lane :52 slot)
+- PPM row added to `dev/active/duty-cycle-registry.tsv` (freeze-watchdog opt-in)
+- Fire 0 row appended to `metrics/cohort-fire-log.tsv`
+- All committed + pushed to origin/main (`e4209b33b` + `3593012cf`)
+
+#### Migration note
+
+Account: Anthropic → DinP (xian@designinproduct.com). Model: Opus 4.8 → Sonnet 4.6. Option B ephemeral worktree confirmed. No Model-A `ppm-cycle` branch exists (prior Opus session was already on a different ephemeral worktree; nothing to retire).
+
+**Status**: Boot complete. Inbox 2/2 processed. Deliverable: People-source deferral decision sent to Lead + PM. Cron running. Session active.
+
