@@ -1,6 +1,10 @@
 # Lead Dev carry-forward (ephemeral session state — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-17 ~17:35 PT. **▶▶ NEXT ACTION: #1263 (left-rail Part-B re-skin) — but PM is live-testing #1173 first (both are home-surface; let PM isolate). Then continue D1 unblocked in recommended order. ◀◀**
+**Updated**: 2026-06-17 ~18:05 PT. **▶▶ D1 Lead-buildable UNBLOCKED WORK = DRAINED. #1173 + #1263 shipped (await PM live-test). The rest of D1 is gated on cohort decisions — ALL gate-owners now memo'd (nothing lingering). ◀◀**
+- ✅ **#1173** (chat-page conformance, Option A — `5ad56aa97`) + ✅ **#1263** (rail empty-state Part-B — `7a73b770f`). Both home-surface; **AWAIT PM LIVE-TEST**. Token-clean, render-green.
+- **D1 remainder = gated, gate-owners memo'd**: CXO punch-list (`2ba1a72ae`: #1254 px→rem [rec: rem], #1268 5-IA, #1262 label, #1263-copy-ratify, #1270-badge-ratify, #1048 stage-visual, #1225 home-modules) · PPM (#1270 object-model, #1240 People — prior memos) · Arch (#1239/#1233 sequencing) · #1269 (design pass — PM milestone) · #1271-b + #1251-item2 (CXO-sequenced w/ per-page tokenization).
+- **NEXT when cohort responds**: implement each CXO decision (mostly mechanical) in their priority order. **NO un-memo'd blocked items; NO un-done unblocked items.** SKUNK (#1162) = server-side done + handed off (PA plugin + ops Caddy/deploy); D1-only per PM.
+- **Cron `f39b7088` armed. Server PID 63579 (cwd=worktree → live).**
 - **D1-ONLY focus** (PM 17:30): prioritize D1 unblocked before SKUNK; don't reach outside the design sprint.
 - **#1173 (C1 chat-page conformance) DONE — Option A** (`5ad56aa97`): home chat now full-height + anchored input (was a fixed 300px box); `.chat-inline-container`/`.chat-window`/`.chat-form` (chat.css) + home `.main-content`/`.container` full-height flex. Ambient modules above (deviation-registered; deeper comp → CXO #1225). token_lint PASS, 79 render green, chat.css 200. **AWAITING PM LIVE-TEST** (visual cascade on the home PM UAT'd).
 - **#1263 next** (left conversation-list rail → Part-B/Card standard, applies existing `c3ee98ac8`; also home-surface). Then the rest of D1 unblocked.
