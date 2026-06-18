@@ -1,9 +1,9 @@
 # ADR-072: Skill-Routing Architecture — Fluid Model with Defense-in-Depth
 
-**Status**: PROPOSED (v0.1) — D5 pending CXO + HOST trust-lens review
+**Status**: ACCEPTED (v0.2) — D1–D4 Arch-ratified in-lane; **D5 ratified 2026-06-17 with CXO + HOST trust-lens folded** (both aligned: gate Piper-initiated, never user-reaching-for-own; + HOST's consequential-action carve-out + transparency-when-gated)
 **Date**: 2026-06-17
 **Author**: Chief Architect
-**Deciders**: Architect (author), PM (direction-ratified the "fluid model with defense-in-depth" framing 2026-06-15), PA (brief + topology correction), Lead Dev (implementation), CXO + HOST (D5 trust-lens, pending)
+**Deciders**: Architect (author), PM (direction-ratified the "fluid model with defense-in-depth" framing 2026-06-15), PA (brief + topology correction), Lead Dev (implementation), CXO + HOST (D5 trust-lens, folded + ratified 2026-06-17)
 **Supersedes / superseded by**: none
 **Related**: ADR-059 (PIPER.md capability accuracy), ADR-066 D7 (Configuration Ownership / server-owned state), ADR-070 (MCP-Consumer Connector Architecture), ADR-071 (User-Auth Anchoring / Trust Gradient anchor), #1106 (MANIFEST derive mechanism), methodology-40 (layer-then-migrate), methodology-41 (mechanism-displaces-unreferenced-discipline), Pattern-073 (documentation-asserted-behavior drift)
 **Unblocks**: Wave P plugin-path skills (`connect-piper` + `piper`); #1245 (PIPER-SKILL-MERGE)
@@ -73,8 +73,18 @@ This is **methodology-41** (mechanism-displaces-unreferenced-discipline) applied
 ### D4 — Skill procedure invocation on the plugin path
 **A static registry DERIVED from `SKILL.md` (frontmatter + body) at server start; inject the procedure into response context when a `skill_hint` fires (Layer 3); server-owned per ADR-066 D7; hot-reload.** `SKILL.md` is a self-contained prompt-layer procedure; on the plugin path the server loads + injects it (it doesn't "execute" it — the LLM does, from the injected procedure). Dynamic per-invocation file reads would add startup-latency + race risk; compiling the registry at server start gives O(1) lookup and immutable runtime state. `PIPER.md` already uses cached hot-reload (changes take effect without restart) — the same mechanism keeps the skill registry fresh. This is #1245's build target.
 
-### D5 — Trust Gradient × routing *(PENDING CXO + HOST trust-lens review)*
-**The Trust Gradient is a separate permission layer ABOVE Layers 1–4: the Gradient decides *should-we* (is proactive skill invocation permitted for this user/tier); routing decides *which-one*.** Composing them in one layer would conflate "permission to act" with "what action to take." **Reactive** (PM-asked) skill invocation is tier-independent — if a PM asks for it, route it. **Proactive** skill surfacing (Piper offers a `propose-feature` or `compost-review` unprompted) is what the Gradient gates. The per-user tier lookup is possible because of **ADR-071** (the user-auth anchor). The **CXO "don't-assert-what-you-can't-substantiate" trust shape applies**: routing must not surface a proactive skill proposal whose trust-gradient permission isn't substantiable. *This decision touches the trust contract, not just mechanism — it is marked PENDING and circulates to CXO + HOST before ratification.*
+### D5 — Trust Gradient × routing *(RATIFIED v0.2 — CXO + HOST trust-lens folded 2026-06-17)*
+**The Trust Gradient is a separate permission layer ABOVE Layers 1–4: the Gradient decides *should-we* (is the invocation permitted for this user/tier); routing decides *which-one*.** HOST confirmed the separation is **load-bearing, not just clean** — conflating them puts trust-property verification *inside* routing logic, making routing decisions trust-contract decisions (no longer testable per-layer or auditable as a unit). Keep the separation.
+
+**The axis (CXO):** the Gradient governs **Piper's forwardness / Piper taking action** — *never* the user's access to their own content. Discriminator: **Piper-initiated** (proactive surfacing, autonomous action) = trust-gate-eligible; **user-reaching-for-their-own** (user-invoked skill execution, viewing own data) = **never gated**. Invoking a skill the user explicitly asked for is the user reaching for a capability — not gated. (The gradient is Gate B / `ProactivityGate`, ADR-053 — built for "may Piper show up uninvited, how forward"; D5 keeps it pointed there, not at user access.)
+
+**The reactive line, sharpened (HOST):** reactive (user-asked) invocation is tier-independent for **information skills** (no side effects — `propose-feature` / `trust-check` / `compost-review`: the explicit ask *is* consent). But **consequential-action skills** — those that modify state, send external messages, spend credits, or take hard-to-reverse actions — are **tier-gated even when reactive**: "did the PM ask?" is necessary but not sufficient; the tier tells whether the account authorized that *class of action* for Piper. **The discriminator is side-effects, not just who-initiated.** Wave P skills are information-only today, so D5 names the consequential-action carve-out *now*, before the first such skill ships (m-36 — structure before the violation).
+
+**Substantiability / fail-closed (HOST confirmed):** never surface a proactive proposal whose trust-gradient permission isn't substantiable — if the Gradient can't confirm permission, **don't surface** (the cost of an unwanted proactive proposal exceeds the cost of a withheld one). Same fail-closed shape as `PROTECTED_JOB_NAMES` MCP-caller gating.
+
+**Transparency when gated (HOST):** when the Gradient gates a proactive proposal, the routing layer **surfaces that the gate exists** (via `trust-check` or a minimal transparency signal) — *not silence*. Silent non-action is itself a trust gap even when the action was correctly withheld; the user should understand why Piper did or didn't offer something. (Composes with HOST's People-entity trust-map legibility work.)
+
+The per-user tier lookup is possible because of **ADR-071** (the user-auth anchor). **RATIFIED** — CXO + HOST both confirmed the separation honors the trust contract (CXO: "ratify if it gates proactive, not user-invoked execution" — it does); the consequential-action carve-out + transparency signal are folded.
 
 ---
 
@@ -109,10 +119,10 @@ This is **methodology-41** (mechanism-displaces-unreferenced-discipline) applied
 ---
 
 ## Open questions (v0.1 defers)
-1. **D5 trust-lens** — circulate to CXO + HOST; ratify before any proactive-surfacing ships.
+1. ~~**D5 trust-lens** — circulate to CXO + HOST~~ — **DONE 2026-06-17**: both folded into D5 v0.2 (consequential-action carve-out + transparency-when-gated); D5 ratified. Proactive-surfacing rules are now set.
 2. **Derive-registry scope** — server-side registry is canonical; a generated `PIPER-SKILLS.md` is a committed *artifact* of it (regenerated by script, never hand-edited) — confirm at build.
 3. **Trigger-phrase collision rule** — the confidence/ordering discipline for overlapping skill triggers in Layer 2.
 4. **#1245 scope confirmation** — confirm the D2/D4 derive mechanism is precisely what #1245 builds.
 
 ## Status / Evolution
-v0.1 PROPOSED — captures all 5 ratification decisions with evidence-backed positions (per PA's escalation: a v0.1 capturing the positions unblocks Wave P planning immediately). D1–D4 are Arch-ratifiable within lane. **D5 is PENDING** CXO + HOST trust-lens. Lead Dev implements #1245 against this; refinements fold into v0.2.
+v0.2 ACCEPTED (2026-06-17) — all 5 decisions ratified. D1–D4 Arch-ratified in-lane; **D5 ratified** with CXO + HOST trust-lens folded (consequential-action carve-out + transparency-when-gated). Authored v0.1 + ratified same day per PM's escalation (grounding-first pass made the fast turnaround evidence-based). Lead Dev implements #1245 against this; further refinements fold into v0.3.
