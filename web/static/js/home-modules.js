@@ -66,7 +66,12 @@
   function applyCollapse(moduleEl) {
     var id = moduleEl.dataset.moduleId;
     var btn = moduleEl.querySelector(".module-collapse");
-    var collapsed = lsGet(COLLAPSE_KEY + id) === "1";
+    // #3 (PM 2026-06-18): ambient modules default COLLAPSED so the full-height chat
+    // is never occluded — collapsed unless the user explicitly expanded ("0"). The
+    // template also server-renders is-collapsed, so the default has no collapse-flash.
+    // (Interim; CXO owns the fuller composition — cap module height/total, modules
+    // yield to chat / chat maximizes when active.)
+    var collapsed = lsGet(COLLAPSE_KEY + id) !== "0";
     moduleEl.classList.toggle("is-collapsed", collapsed);
     if (btn) btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
   }

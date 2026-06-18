@@ -59,13 +59,27 @@ class TestControlsRenderAtStage3:
 
     def test_controls_are_accessible(self, env):
         html = _render(env, trust_stage=3)
-        # collapse button announces expanded state + controls the body it hides
-        assert 'aria-expanded="true"' in html
+        # collapse button announces collapsed state (default-collapsed, #3) + controls
+        # the body it hides
+        assert 'aria-expanded="false"' in html
         assert 'aria-controls="places-container"' in html
         assert 'aria-controls="recently-cards"' in html
         # both actions carry a label (icon-only buttons)
         assert 'aria-label="Collapse what i\'m seeing"' in html
         assert 'aria-label="Dismiss what i\'m seeing for now"' in html
+
+    def test_modules_default_collapsed_so_chat_is_not_occluded(self, env):
+        """#3 (PM 2026-06-18): ambient modules server-render COLLAPSED by default so
+        the full-height chat (#1173) is never buried. Both module sections carry
+        is-collapsed in the template (no collapse-flash); home-modules.js expands only
+        if the user explicitly did. Interim — CXO owns the fuller composition."""
+        html = _render(env, trust_stage=3)
+        # both ambient sections render collapsed in the markup
+        assert 'class="card places-section is-collapsed"' in html
+        assert 'class="card is-collapsed" id="recently-section"' in html
+        # the JS default is collapsed-unless-explicitly-expanded ("0")
+        js = Path("web/static/js/home-modules.js").read_text()
+        assert 'lsGet(COLLAPSE_KEY + id) !== "0"' in js
 
 
 class TestTrustGatingPreserved:
