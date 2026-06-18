@@ -1,62 +1,69 @@
-# PPM Standing Items — Task List (duty-cycle Task Loop source)
+# PPM Standing Items — Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Purpose**: the duty-cycle "task list" per v0.6 architectural decision 1 (reframed standing-items tracker; no new doc). Task Loop drains this in priority order until all blocked-or-empty.
-**Created**: 2026-05-28 (duty-cycle adoption, final wave)
+**Last rewritten**: 2026-06-18 (Fire 1, 09:52 PDT)
+**Purpose**: duty-cycle carry-forward; rewritten each fire to reflect current queue
 
 ---
 
-## Active lane work (priority order)
+## Entity-model lane (PPM is designated owner, 6/15)
 
-| # | Item | Priority | Status | Unblocked? | Notes |
-|---|---|---|---|---|---|
-| 1 | **#1128 ROADMAP-REFRESH** | medium | **CLOSED 6/3 — v18 canonical** | DONE | roadmap.md stale. delta-assessment (5/28) → v17 draft (5/30, `00cee8d47`, distributed `15f8a05ae`) → **v18 draft (6/2, `roadmap-v18-draft-2026-06-02.md`): PA §M5/BYOC review ABSORBED** (Daedalus referent explicit; Outcomes date corrected; PoC PASSED-5/19 sharpened; Janus meta-coordinator line). **CIO §Methodology review ABSORBED 6/3** (corpus 29→37, patterns 62→74, methodology-as-operational-capability prose). **Both section reviews now in (PA + CIO) → v18 READY FOR PM RATIFICATION** (escalated to attention doc 6/3). Comms external-language frame = parallel polish (v18.1-able), not gating internal canonical. **Packaging correction folded 6/3** (PA relay of PM 6/1): plugin is the canonical Anthropic package (not MCPB) — §Distribution build sequence + §Timeline corrected; CT reconciled to v2.3.2. v18 still ratification-ready, now packaging-correct. **v18 RATIFIED 6/3 + Docs canonical swap DONE** — `roadmap.md` now shows v18 ("PM-ratified June 3"), v16.0 archived. **#1128 CLOSED.** The v17→v18 arc complete: delta (5/28) → v17 (5/30) → v18 (PA §M5 + CIO §Methodology + EC-2/CT/packaging corrections) → ratified + canonical (6/3). (HTML canonical re-render available on PM request.) |
-| 2 | **#967 Backlog Deep Review — Surviving Edges** | low | **FIRST M3 REVIEW DONE 6/10** | YES | **First M3 review pass complete 6/10** (GH comment posted). Edges 4 + 9 marked no-longer-relevant (programmatic-verification + multi-agent-as-code both superseded by methodology). Edges 1/2/5 valid defers (no trigger yet). Edges 6/7/8/10 covered by active/closed issues. **Gap flagged**: Slack component tests (`tests/unit/test_slack_components.py`) were never audited during M2 as intended — brief memo → Lead Dev cc PM for M3 inclusion. AC2 satisfied (first M3 review done). Issue stays open until all defers resolve. |
-| 3 | **PDR-005 → v1.0** | medium | **✅ v1.0 RATIFIED 6/5 — BYOC is a Foundational PDR** | DONE (PPM); Docs swapping | EC-2 flag-back (6/3) → Arch + CXO both qualifier-needed → PPM synthesized → CXO confirmed faithful ("take it to PM"). **FOLDED into `PDR-005-...-v0.6-2026-06-03.md`** (6/3): EC-2 platform-affordance-bounded qualifier + paired AC-1 surface-presence-detection mechanism + Q7 per-host-claim-map note + open-q 11 RESOLVED. **Remaining v1.0 gates**: (1) **Comms external-language frame** — nudged 6/3 as "the last input before v1.0→PM"; (2) PM ratification (after Comms frame). **Lead Dev read FOLDED into v0.6** (6/3): added the three-way classification — structural platform-bounded (push/event/channel; qualifier applies) vs scope-bounded (token scopes; stays zero-tolerance) vs not-yet-built (stays zero-tolerance). All three lenses now in. **EC-2 now FULLY cohort-concurred (6/3): Arch + CXO + Lead all explicitly concur "fold to v1.0."** Lead's optional legibility split applied (signpost-bolded the felt-layer pivots). **M3+ forward-flag (Lead)**: the AC-1 surface-presence-detection mechanism (per-host capability-claim map + boundary-explanation phrasing + handshake-time host-affordance probe) is real M3+ packaging/integration work — lands with the Q7 companion ADR (Architect's lane); doesn't exist in production yet; when it lands, EC-2 gets a concrete enforcement check-point. CT v2.5 sub-dim deferrable to v1.1. **6/3 evening: Comms external-language frame FOLDED** (§External-Language Frame) + line-376 plugin correction + CT v2.3.2 → **all v1.0 inputs in → RATIFICATION-READY; escalated to PM** (attention doc). **PM RATIFIED v1.0 6/5** (with conviction given lived experience — skunkworks thin-plugin PoC #1145 rungs 1+2 = working proof of decision-rule b). Docs swaps draft → canonical PDR-005 v1.0 (their lane, PA relay). **Q6/Q7 companion ADRs now unblocked in Architect's lane.** The BYOC PDR I first flagged should-be-a-PDR in my Apr 360 → v1.0. PPM-complete; closes on Docs swap. (Comms voice-pass on outward copy remains PM's, non-gating.)
+Canonical spec: `docs/internal/product/pdr/ppm-spec-radar-layer2-entity-model-2026-06-15.md`
+(addenda 2026-06-17: ProvenanceSource extensions; 2026-06-18: ArtifactSourceType reconcile mapping table)
 
-## Active lane work — new (6/5–6/6)
+All 4 entity types modeled. PPM owns the RadarEntity contract shape; Lead implements.
 
-| # | Item | Priority | Status | Unblocked? | Notes |
-|---|---|---|---|---|---|
-| 8 | **Ship #046 workstream review** (window May 29–Jun 4) | medium | **DRAFTED + DELIVERED 6/6** | done | Exec kickoff 6/5. PPM/product lens; window holds the big PPM arc (v18 ratify, PDR-005 v1.0, #683 A+B DoD, duty-cycle adoption, EC-2 synthesis). File to `mailboxes/exec/inbox/workstream-046-ppm-DATE.md` (CC PA). Backstop per Exec (Time-Lord). **Next focused-fire deliverable.** Use full-session-log source discipline (per PM 6/2 correction). |
-| 9 | **#1158 summarize floor-vs-handler product position** | low | **PRODUCT-RESOLVED 6/9** | done | PPM position delivered 6/8 (source-access discriminator). **Both concurs in 6/8**: CXO (zero bespoke output UX; fetch-OFFER = single experience-bearing surface; already designed+good; record as deliberate) + Lead Dev (source_type slot already shipped `1d70dfd19`; #1158 = widen enum + fetch-augment routing, NOT net-new). **Spec updated 6/9** with both concurs. **Closing handoff memo → Lead/Arch/CXO cc PM** (delivered 6/9): product decision resolved; implementation = widen source_type enum + add fetch-augment routing (Lead/Arch-owned); reopen-trigger stands (summary-as-artifact = new use-case when it surfaces). PPM scope CLOSED. |
-| 10 | **#1166 Type-2-Dreaming roadmap-fit + PDR** | medium | **4-LENS CONVERGENCE COMPLETE 6/9** | advancing | PPM lens delivered 6/7 (roadmap-fit YES / discovery-spike / post-M3 / PDR-on-convergence). Arch concur 6/8 (clean 4/4). CXO + CIO lenses 6/8. **4-lens convergence synthesized 6/9** into ledger `dev/active/1166-type2-dreaming-spike-prep-2026-06-08.md` (COMPLETE / spike-ready post-M3). Key synthesis: CXO = err-toward-silence governing constraint; event-justified surfacing; "prepared-for" hard framing; flows-into-#1174; peer-facing early-instance. CIO = novelty confirmed (triangulated); honesty boundary for Comms ("first to operationalize threat-rehearsal as product-memory"); Candidate-13 distinction; propose-and-diff trust constraint. **Light convergence-complete note → Arch/CXO/CIO cc PM delivered 6/9.** **PPM next**: roadmap-slot at next refresh (Arch-blessed); PDR opens on spike-convergence (PPM-owns); spike itself post-M3 (persistence dependency). |
-| 4 | **EC-2 platform-affordance-bounded qualifier cohort flag-back** | low | **RESOLVED 6/3** | done → folded into #3 | flag-back sent 6/3 AM → Arch + CXO replied same morning, both qualifier-needed with genuine examples → PPM synthesized + re-circulated (see #3). Disposition closed; remaining EC-2 work (fold qualifier into PDR-005 after Lead's read) tracked under #3 PDR-005 path. |
-| 7 | **HOST Agent 360 v0.3 fielding** | low | **DONE 6/3** | done | Completed in the 13:16 quiet-cycle (well ahead of ~Jun 10 backstop). Response `mailboxes/host/inbox/agent-360-response-ppm-code-opus-2026-06-03.md`: general §1-7 + §8 PPM + §9 tacit + §10 observer block (V1) + V2-adopter bonus. Diff-vs-v0.2 highlights: my v0.2 "BYOC should be a PDR" → became PDR-005; predicted Code wins all landed; predicted losses (PM-conversation, continuity) didn't materialize. Friction surfaced: mailbox-bridge as automation candidate (`deliver-memo` helper). |
-| 5 | **Multi-Agent API characterization** | low | open | unclear | per CIO May 18 Outcomes disposition; may have reassigned with the May 24 Outcomes lane reassignment to PA+CIO. Needs clarification before advancing. |
-| 6 | **#683 Layer A — interface-verification DoD** | medium | **INTEGRATED (6/2)** | done (PPM scope) | **PPM Layer A integration COMPLETE 6/2**: canonical DoD doc `docs/internal/development/interface-verification-dod-layer-a.md` (promoted CIO draft) + Sub-Epic Gating Protocol item 5 in `m2-structure.md` + Class B note on Review Gates norm in `roadmap.md`. Placement = Class B (sub-epic gate) requirement per PM ratification 5/30. **Remaining for full #683 close (not PPM-Layer-A)**: Lead Dev operational-check recipe + CXO methodology-30 grounding-review + Layer B (CXO experience-DoD — **drafted fresh by CXO 2026-06-02**, `done-criteria-layer-b-experience-2026-06-02.md` `833871245`; A+B co-review before canonical landing) + literal PR-review-checklist AC + service-type-interface matrix AC. Do NOT close #683 yet. **A+B co-review (6/3)**: CXO Layer B v0.1 ready → PPM answered the 3 co-review questions (Q1 landing = standalone Layer B doc + Sub-Epic Gating item 6 + extend Class B note, siblings to Layer A; Q2 = hard-gate-committed-scope/graded-finding-out-of-scope, symmetric with A; Q3 = cite-CT-by-file + reconcile v2.3.2-vs-v2.4 drift). CXO folded → Layer B v0.2; **A+B PAIR LANDED CANONICAL 6/3**: `docs/internal/development/experience-verification-dod-layer-b.md` (promoted) + Sub-Epic Gating item 6 + Review Gates Class B note names both layers + Layer A cross-ref updated. "Done means done at two layers" is now an enforceable gate. **Remaining for GitHub-issue close** (not the DoD itself): broader #683 ACs (PR-review-checklist line + service-type→interface matrix) + Lead Dev operational-check recipe. **PR-review-checklist AC DONE 6/3** (added the #683 two-layer-DoD item to `CONTRIBUTING.md` §"Before Submitting" + PR-template Checklist). Remaining: service-type/interface matrix (deferred — more substantial; benefits from Lead Dev input) + Lead Dev operational-check recipe (pending). DoD is live; 1 of 2 PPM-ownable close-ACs done. **Corrected-premise note (CXO flag 6/2):** the May 28 PPM memo `memo-ppm-to-cxo-...683-parallel-pairing-confirmed-2026-05-28.md` confabulated two artifact refs (a "Layer B as drafted" + an in-reply-to CXO memo) — both never existed; CXO never drafted Layer B until 6/2. My Layer A was correctly queued-on-CIO-draft; there was simply no Layer B to pair against yet. DoD doc corrected; CXO acked. |
+| Item | Status | Gate |
+|---|---|---|
+| **#1237 4-type Radar (3-of-4 for M5)** | Awaiting Lead build | ADR-071 anchoring path (Lead's call); confirmed 3-of-4 by PM 6/18 |
+| **#1240 PeopleEntitySource** | **DEFERRED post-beta** (PM 6/18) | #1281 filed under Dot Releases (Post-MVP); spec complete |
+| **#1281 People entity source** | Post-beta; spec ready | Source mechanism TBD (session extraction or introduce-person flow) |
+| **#1269 standup skill** | PPM model + CXO experience design both delivered (6/18) | **PM milestone call needed** before Lead builds (depends on #1237 callable) |
+| **#1270 ArtifactSourceType reconcile** | Mapping table delivered to Lead (6/18) | Lead to build per ProvenanceSource↔ArtifactSourceType table |
+| **Trust-model sweep** | PPM per-entity boundary delivered; CXO ratified (6/18) | Lead implementing (ungate user-content reads; fix stage-definition language) |
+| **People UI treatment** | CXO decided: **silent omission** (6/18) | Recorded on #1237 + #1281 GH comments |
 
-## Next task (queued for next session)
+---
 
-~~**#1128 v17 roadmap draft**~~ — **COMPLETE May 30** (`roadmap-v17-draft-2026-05-30.md` commit `00cee8d47`; distributed `15f8a05ae`).
+## Roadmap
 
-**Primary next tasks** (queued for new worktree-cycle session post-migration):
+| Item | Status | Gate |
+|---|---|---|
+| **Roadmap v18.1/v19 fold** | Owed (carried from 6/15 session) | PM milestone input needed to fold v18 → v18.1 (sprint board = M4→RECONNECT→D1→M5) |
 
-1. **v17 → v18 absorbing PA §M5 review** (May 31, `71220bbfe`):
-   - Daedalus referent: revise to "context-package format to be negotiated with Daedalus (Klatch's lead engineer); on hold while Klatch is paused" (PM clarified Daedalus = Klatch lead engineer)
-   - Outcomes "~May 30 findings" stale → real sequence: CIO methodology-34 synthesis Day 28-29 → PA Outcomes smoke-test scope-memo + execution
-   - §M5 line 127: undersells gated PASSED 5/19 sub-pass 4.a (local plugin install + skill-invoke via `--plugin-dir`; predecessor-pattern study not PDR-005 competitor) — fold concrete result
-   - §Autonomous Operations: add one line on DinP Janus meta-coordinator contrast (cycle architecture generalizing across structurally-different agents, not just uniform cohort)
-   - Still waiting on CIO §Methodology review (no movement since distribution May 30)
+---
 
-2. **Ship #045 workstream review** (Wed Jun 3 drop-dead) — PPM lane: PDR-005 ratification path / Roadmap v17 work + sign-off discipline learning / M2g closure tail / MUX/UI Phase 2 build coordination / standing-items tracker discipline / Q6/Q7 ADR sequencing
+## Ship #048
 
-3. **#683 Layer A integration** (PM-ratified Class B requirement May 30; CIO DoD draft `dev/active/dod-layer-a-interface-verification-DRAFT-cio-2026-05-28.md` ready) — write Review Gates 5-class taxonomy addition + M2d-style completion-criteria entry. methodology-30 strengthened by Architect's May 30 `_fallback_classify` production-orphan catch.
+No Comms kickoff memo yet. Owed on next kickoff cycle.
+
+---
 
 ## Blocked / waiting-on-external
 
 | Item | Blocked on |
 |---|---|
-| PDR-005 v1.0 ratification | PM final gate + Comms external frame + EC-2 flag-back |
-| Multi-Agent characterization | clarification whether PPM-lane or PA+CIO-lane post-May-24-reassignment |
-
-## Done (recent, for context)
-
-- Ship #044 PPM workstream review (filed May 24)
-- PDR-005 v0.5 (CXO §experience absorbed, May 19)
-- HOST 360 item 1.3 BYOC vehicle clarification (closed both sides May 24)
-- Surface 2 + Surface 4 sufficient-signals to Lead Dev (May 18)
+| **#683** | Lead Dev operational-check recipe + service-type/interface matrix (Lead-gated) |
+| **#967** | Edges 1/2/5 still valid defers; no trigger yet |
+| **#1185 M5** | Not in sprint yet (floor-blocked) |
+| **#5 Multi-Agent** | Lane unclear (PA+CIO or PPM?) |
+| **PDR-005** | Docs swap (Docs-owned) |
+| **ADR-071 anchoring** | Lead's lane; gates EntitySource production builds (#1237/#1238/#1239) |
 
 ---
 
-*Duty-cycle Task Loop reads this top-to-bottom; advances unblocked items smallest-scope-first per v0.6.3 idle-advance discipline.*
+## Done (since 6/15 migration — for context)
+
+- People entity-model (RadarEntity contract for PeopleEntitySource) → Lead ✅ 6/18
+- Trust-model sweep (per-entity boundary table) → Lead + CXO ✅ 6/18
+- #1270 ArtifactSourceType reconcile mapping table → Lead ✅ 6/18
+- #1269 standup data model (EntitySource consumer architecture) → Lead + CXO ✅ 6/18
+- #1240 People deferral decision (Option 4; PM-confirmed) → #1281 filed ✅ 6/18
+- CXO empty-door question → silent omission confirmed ✅ 6/18
+- All 4 entity-model types: WorkItem ✅, Document ✅, Conversation ✅, People ✅ (6/15–6/18)
+- ADR-066 m-38 check ✅ (6/15 — ADR already ratified, no re-check needed)
+- History-sidebar-IS-radar Layer 2 resolution ✅ (6/15)
+
+---
+
+*Duty-cycle: drain in priority order until blocked or empty. Rewrite this file each fire.*

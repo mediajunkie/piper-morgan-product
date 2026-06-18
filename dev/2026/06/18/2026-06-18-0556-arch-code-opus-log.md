@@ -41,6 +41,14 @@ Lead flagged **#1232** (RECONNECT WS-5 — the MCP-consumer Connector contract; 
 
 ---
 
+### Fire — autonomous (09:27 cron, ran 09:57 PT) — MCPB language decision + Exec escalations-FOLD ack
+
+2 memos. Drained:
+- **MCPB bundle language (#1282 BYOC-DIST)** → decision to PA cc PM. Re-confirmed my April-10 **Python default** + **test-gate the submission** (PA/PM clean-machine compat-checker test) + **Node pre-authorized** fallback. Grounded in my full April-10 memo; surfaced a **decision-updating nuance**: the plugin server is a **thin ~100-line forwarder** to :8001, so April's "strongest Python argument" (context-assembler reuse) no longer applies → the Node fallback is a clean, reuse-loss-free rewrite. **Tiebreaker**: #1282 is a *distribution* artifact → prefer Node if the test is at all ambiguous (distribution reliability > language consistency for packaging). My architectural read of the bug: it's a pre-flight **compat-CHECK** bug (greps system Python), distinct from uv-managed execution.
+- **Exec escalations-FOLD cohort broadcast** → informational; already adopted at bootstrap (I maintain no per-role escalations doc; PM-attention rides the carry-forward). Drained, no action.
+
+---
+
 ## Memory & briefing surfaces referenced this session (per #974)
 
 _(Accrued through the day; filled at STOP.)_

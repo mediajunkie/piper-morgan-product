@@ -60,3 +60,11 @@ Account: Anthropic → DinP (xian@designinproduct.com). Model: Opus 4.8 → Sonn
 
 **Status**: Boot complete. Inbox 2/2 processed. Deliverable: People-source deferral decision sent to Lead + PM. Cron running. Session active.
 
+### Fire 1 — 09:52 PDT (windowed cron)
+
+Cron re-armed (`0df4d595`; old `d98a245c` deleted). Inbox: empty. No new mail.
+
+Unblocked work: `ppm-standing-items.md` significantly stale (last substantive update 6/9–6/10; PPM lane shifted entirely to entity-model work 6/15). Rewrote to current state — entity-model lane table, roadmap fold owed, Ship #048 owed, blocked items. Done section captures all 6/15–6/18 deliverables.
+
+All standing items either blocked-on-external or awaiting PM gate (#1237 awaits Lead+ADR-071; #1269 awaits PM milestone call; roadmap fold awaits PM input). No unblocked PPM-actionable deliverables at this fire. Queue drained.
+

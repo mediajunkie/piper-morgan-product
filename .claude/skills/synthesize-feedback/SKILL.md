@@ -23,7 +23,7 @@ The difference from just asking Piper: this skill produces a **consistent output
 - You want to close a research spike with a deliverable that can drive roadmap decisions
 - You're preparing for a planning session and need to translate user signal into concrete inputs
 
-**Not for**: a single piece of feedback (just respond to it directly). Not for internal team feedback (different dynamic — use a retro or `sprint-wrap`). Not for quantitative analytics (different skill — `metrics-review`).
+**Not for**: a single piece of feedback (just respond to it directly). Not for internal team feedback (different dynamic — use a retro or retrospective skill). Not for quantitative analytics (different skill — `metrics-review`).
 
 ## The Core Insight
 
@@ -88,7 +88,7 @@ Before writing recommendations, check what you know about the current product:
 - What features already exist that might address this?
 - What's in flight that PM may not have mentioned?
 
-If running with server access: pull Piper's product profile + current sprint state.
+If running with server access: pull your product profile + current sprint state.
 If running natively: use conversation context. Note what you couldn't verify.
 
 This step exists so recommendations say "this is Fast Follow scope, already tracked" instead of "we should build this" when it's already planned.
@@ -240,6 +240,8 @@ Before showing the synthesis to PM:
 
 **Input** (from PM):
 > "Here are notes from 5 interviews I ran with PMs who tried Piper last month. Can you tell me what's coming up and what we should do about it?"
+
+> **Note**: this example is drawn from Piper's own user research. Product-specific references (feature names, team roles) are Piper's — substitute your product's equivalents when using this skill.
 
 **Source material** (paraphrased):
 - Interview 1: "I kept asking it things and it would give me these general answers. I wanted it to know that I'm working on a B2B SaaS product, not a consumer app."
@@ -397,4 +399,4 @@ Three themes dominate: PMs don't know what to ask Piper (onboarding gap), contex
 
 ## Changelog
 
-- **v1.0** (2026-06-15): Initial version. Wave 1 PM skill #4. Distinguishes volume from severity as the core synthesis discipline. Deployment: Native + Plugin.
+- **v1.0** (2026-06-15): Initial version. Distinguishes volume from severity as the core synthesis discipline.
