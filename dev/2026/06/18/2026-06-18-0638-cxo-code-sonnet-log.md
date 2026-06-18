@@ -58,11 +58,41 @@ Inbox triaged. Memos moved to read/. Cron re-armed. C1 (#1173) already CLOSED by
 - Posted to https://github.com/mediajunkie/piper-morgan-product/issues/1236#issuecomment-4742739421
 - Issue stays open: "entity-search subsumes chat-search" AC still unmet
 
+## Session resumed (post-compaction)
+
+- Context compacted and resumed at same point mid-session (#1280 work in-progress).
+- Spec file confirmed present: `dev/active/design-spec-dark-nav-shell-2026-06-18.md` (156 lines, written pre-compaction).
+
+## Fire 1 (resumed) — work done
+
+### Inbox: 2 additional memos processed
+- `memo-lead-to-cxo-cc-pm-pa-1280-need-documented-design-spec-key-page-mocks-2026-06-18.md` → cxo/read/
+- `memo-lead-to-cxo-cc-pm-1251-item2-insights-style-cleanup-design-review-2026-06-18.md` → cxo/read/
+- `memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md` → cxo/read/ (no reply needed; noted: per-role escalations docs deprecated, carry-forward + mail replace them)
+
+### #1280 dark nav design spec — DELIVERED (D1 last step)
+- Spec committed: `dev/active/design-spec-dark-nav-shell-2026-06-18.md`
+  - Dark nav IS committed design (not illustrative) — deliberate visual hierarchy choice
+  - Token model: 7 `--color-nav-*` tokens (bounded dark surface, not full dark mode)
+  - Shell layout: home = `180px / 1fr / 320px`; other pages = `180px / 1fr`
+  - Nav states all specced: default / hover / active / section-label / CTA / footer
+  - Scope: all app-shell pages; responsive/narrow = post-beta only
+- Response memo delivered: `memo-cxo-to-lead-cc-pm-pa-1280-dark-nav-spec-committed-2026-06-18.md`
+  - Lead, PM, PA notified
+- Commits: `91ed09ba2` (spec + delivery), `0323a4d79` (#1251 ack + exec notice moves)
+- Pushed to origin/main ✓
+
+### #1251 design-review ack to Lead
+- Delivered `memo-cxo-to-lead-cc-pm-1251-design-review-done-2026-06-18.md`
+- Confirmed: CXO design review half is done (posted to GH issue Fire 0)
+- 6 non-annotated items queued for cleanup after Lead's insights.css extraction
+
 ## Carry-forward for next fire
 
+- **#1280** spec delivered and on origin/main; Lead builds from here. CXO: monitor build, no blocking action.
 - **#1236** open: entity search is the remaining AC (build lane, not CXO design right now)
 - **Home composition** in-flight with Lead (modules→Radar-panel, side-by-side)
-- **#1251** enforcement half in-flight with Lead; 6-item cleanup pass to follow
+- **#1251** enforcement half in-flight with Lead; 6-item cleanup pass to follow after his extraction
 - **#1269** waiting on Lead/PPM to review and sequence the build
 - **Standing**: #950 floor-quality watch, #992 ethics-decline voice oversight
 
@@ -72,6 +102,7 @@ Inbox triaged. Memos moved to read/. Cron re-armed. C1 (#1173) already CLOSED by
 - Design-floor specs (C1 status check, #1251 design review)
 - Docs close-marker convention (<!-- DAY-CLOSED -->)
 - Mailbox discipline (main-bridge for mail commits; per-memo commit-and-push)
+- `radar-entities-surfacing-mockup-2026-06-14.html` — binding visual reference for #1280 token extraction
 
 ## Sign-off checklist
 - (update at session end)
