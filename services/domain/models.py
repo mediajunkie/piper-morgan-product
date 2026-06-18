@@ -2085,7 +2085,19 @@ class StandupSummary:
     def _today_prose(self) -> str:
         if not self.today:
             return ""
-        return "You're working on " + self._quoted([it.display for it in self.today]) + "."
+        # Work items render as "You're working on …"; calendar events render as a
+        # separate "You have X at <time>." sentence (CXO #1269: calendar makes today real).
+        work = [it.display for it in self.today if it.source != "calendar"]
+        events = [it for it in self.today if it.source == "calendar"]
+        sentences: List[str] = []
+        if work:
+            sentences.append("You're working on " + self._quoted(work) + ".")
+        if events:
+            evs = [
+                f'"{it.display}" at {it.meta}' if it.meta else f'"{it.display}"' for it in events
+            ]
+            sentences.append("You have " + self._oxford(evs) + ".")
+        return " ".join(sentences)
 
     def _watch_prose(self) -> str:
         if not self.watch:

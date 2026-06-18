@@ -28,7 +28,7 @@ when a recently-closed pull lands (#706/post-MVP).
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Any, Optional
 
 import structlog
 
@@ -54,6 +54,7 @@ _SOURCE_TAG = {
 _YESTERDAY_ICON = "✅"
 _TODAY_ICON = "🎯"
 _WATCH_ICON = "⚠️"
+_CALENDAR_ICON = "📅"
 
 
 class StandupAssembler:
@@ -67,10 +68,14 @@ class StandupAssembler:
         sources: list[EntitySource],
         now_epoch: Optional[float] = None,
         stale_days: int = _DEFAULT_STALE_DAYS,
+        calendar_provider: Optional[Any] = None,
     ):
         self._sources = sources
         self._now = now_epoch  # injectable for deterministic tests; None → wall clock
         self._stale_secs = stale_days * _SECONDS_PER_DAY
+        # Optional calendar pull for the Today slot (CXO's "key differentiator"). DI so
+        # tests inject a fake; the real one is StandupCalendarProvider. None → no calendar.
+        self._calendar = calendar_provider
 
     def _now_epoch(self) -> float:
         return self._now if self._now is not None else datetime.now(timezone.utc).timestamp()
@@ -105,6 +110,7 @@ class StandupAssembler:
         summary.watch.sort(
             key=lambda it: 0 if (it.lifecycle_state or "").lower() == "blocked" else 1
         )
+        await self._append_calendar_events(summary, user_id)
         return summary
 
     def _classify(self, e: RadarEntity, now: float) -> Optional[str]:
@@ -164,3 +170,71 @@ class StandupAssembler:
         else:
             meta = "hasn't moved recently"
         return self._item(e, _WATCH_ICON, meta=meta)
+
+    async def _append_calendar_events(self, summary: StandupSummary, user_id: str) -> None:
+        """Append today's calendar events to the Today slot (CXO: calendar is what makes
+        "today" feel real). Per-source isolation: a calendar hiccup never blanks Today."""
+        if self._calendar is None:
+            return
+        try:
+            events = await self._calendar.events_today(user_id)
+        except Exception:
+            logger.warning("standup_calendar_failed", exc_info=True)
+            return
+        for ev in events or []:
+            title = (ev.get("title") or "").strip()
+            if not title:
+                continue
+            summary.today.append(
+                StandupItem(
+                    display=title,
+                    source="calendar",
+                    icon=_CALENDAR_ICON,
+                    meta=ev.get("time", ""),
+                )
+            )
+
+
+class StandupCalendarProvider:
+    """Adapts ``CalendarIntegrationRouter.get_todays_events`` → the assembler's
+    ``events_today(user_id) -> [{title, time}]`` contract. Graceful-empty (returns ``[]``)
+    when the calendar isn't configured / reachable — never raises into the standup. Time is
+    formatted from the event's ``start_time`` as-given (the calendar integration owns
+    timezone-correctness, #586). DI ``router_factory`` keeps it unit-testable."""
+
+    def __init__(self, router_factory: Optional[Any] = None):
+        self._router_factory = router_factory or self._default_router
+
+    @staticmethod
+    def _default_router(user_id: str):
+        from services.integrations.calendar.calendar_integration_router import (
+            CalendarIntegrationRouter,
+        )
+
+        return CalendarIntegrationRouter(user_id=user_id)
+
+    async def events_today(self, user_id: str) -> list[dict]:
+        try:
+            router = self._router_factory(user_id)
+            raw = await router.get_todays_events(user_id=user_id)
+            return [self._normalize(ev) for ev in (raw or [])]
+        except Exception:
+            logger.warning("standup_calendar_provider_failed", exc_info=True)
+            return []
+
+    @staticmethod
+    def _normalize(ev: dict) -> dict:
+        title = (ev.get("title") or ev.get("summary") or "Event").strip()
+        return {"title": title, "time": StandupCalendarProvider._fmt_time(ev.get("start_time"))}
+
+    @staticmethod
+    def _fmt_time(iso: Any) -> str:
+        if not iso:
+            return ""
+        try:
+            dt = datetime.fromisoformat(str(iso).replace("Z", "+00:00"))
+        except (ValueError, TypeError):
+            return ""
+        h12 = dt.hour % 12 or 12
+        ampm = "am" if dt.hour < 12 else "pm"
+        return f"{h12}:{dt.minute:02d}{ampm}" if dt.minute else f"{h12}{ampm}"

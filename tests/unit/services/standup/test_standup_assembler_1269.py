@@ -19,7 +19,7 @@ from __future__ import annotations
 
 from services.domain.models import StandupItem, StandupSummary
 from services.radar.models import EntityType, Provenance, RadarEntity
-from services.standup.assembler import StandupAssembler
+from services.standup.assembler import StandupAssembler, StandupCalendarProvider
 
 NOW = 1_000_000_000.0
 H = 3600.0
@@ -226,3 +226,85 @@ class TestStandupSummaryProse:
         assert "Nothing in progress right now." in prose  # today empty
         assert "Nothing flagged as stuck." in prose  # watch empty (CXO verbatim)
         assert "No completions yesterday" not in prose  # yesterday is NOT empty
+
+
+# --- P2: calendar pull into Today (CXO: "the key differentiator … makes today feel real") ---
+
+
+class _FakeCalendar:
+    def __init__(self, events):
+        self._events = events
+
+    async def events_today(self, user_id):
+        return list(self._events)
+
+
+class _BoomCalendar:
+    async def events_today(self, user_id):
+        raise RuntimeError("calendar down")
+
+
+class TestStandupAssemblerCalendar:
+    async def test_calendar_events_join_today(self):
+        wi = _FakeSource([_ent(EntityType.WORK_ITEM, "open-fresh", "open", NOW - 12 * H)])
+        cal = _FakeCalendar([{"title": "design review", "time": "2pm"}])
+        summary = await StandupAssembler([wi], now_epoch=NOW, calendar_provider=cal).assemble("u1")
+        by = {it.display: it for it in summary.today}
+        assert "design review" in by
+        assert by["design review"].source == "calendar"
+        assert by["design review"].meta == "2pm"
+        assert "open-fresh" in by  # the work item is still there alongside
+
+    async def test_calendar_failure_never_blanks_today(self):
+        wi = _FakeSource([_ent(EntityType.WORK_ITEM, "open-fresh", "open", NOW - 12 * H)])
+        summary = await StandupAssembler(
+            [wi], now_epoch=NOW, calendar_provider=_BoomCalendar()
+        ).assemble("u1")
+        assert "open-fresh" in _displays(summary.today)  # isolation: work survives a cal failure
+        assert all(it.source != "calendar" for it in summary.today)
+
+    async def test_no_calendar_provider_means_no_calendar_items(self):
+        wi = _FakeSource([_ent(EntityType.WORK_ITEM, "open-fresh", "open", NOW - 12 * H)])
+        summary = await StandupAssembler([wi], now_epoch=NOW).assemble("u1")
+        assert all(it.source != "calendar" for it in summary.today)
+
+
+class TestStandupSummaryProseCalendar:
+    def test_today_prose_separates_work_and_calendar(self):
+        s = StandupSummary(
+            today=[
+                _si("onboarding flow", "open"),
+                StandupItem(display="design review", source="calendar", meta="2pm", icon="📅"),
+            ]
+        )
+        prose = s.to_prose()
+        assert "working on" in prose and "onboarding flow" in prose
+        assert "You have" in prose and "design review" in prose and "2pm" in prose
+
+
+class TestStandupCalendarProvider:
+    async def test_normalizes_title_summary_fallback_and_time(self):
+        class _FakeRouter:
+            async def get_todays_events(self, user_id=None):
+                return [
+                    {"title": "Design review", "start_time": "2026-06-18T14:00:00Z"},
+                    {
+                        "summary": "1:1",
+                        "start_time": "2026-06-18T15:30:00Z",
+                    },  # title→summary fallback
+                ]
+
+        prov = StandupCalendarProvider(router_factory=lambda uid: _FakeRouter())
+        out = await prov.events_today("u1")
+        assert {e["title"] for e in out} == {"Design review", "1:1"}
+        times = {e["time"] for e in out}
+        assert "2pm" in times  # 14:00 → 2pm (on the hour)
+        assert "3:30pm" in times  # 15:30 → 3:30pm
+
+    async def test_graceful_empty_when_calendar_unavailable(self):
+        class _BoomRouter:
+            async def get_todays_events(self, user_id=None):
+                raise RuntimeError("no calendar configured")
+
+        prov = StandupCalendarProvider(router_factory=lambda uid: _BoomRouter())
+        assert await prov.events_today("u1") == []  # never raises into the standup
