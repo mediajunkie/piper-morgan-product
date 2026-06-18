@@ -802,7 +802,7 @@
       const titleEl = sidebarElement.querySelector('.history-sidebar-title');
       if (titleEl) titleEl.textContent = '📡 Radar';
       const searchEl = sidebarElement.querySelector('.history-search-input');
-      if (searchEl) searchEl.placeholder = 'Search everything — issues, docs, people, chats…';
+      if (searchEl) searchEl.placeholder = 'Search conversations…';  // entity-search re-earns "everything" (#1236)
 
       // Empty state: explainer + the one labeled example the endpoint returns.
       if (!view || view.state === 'empty') {
