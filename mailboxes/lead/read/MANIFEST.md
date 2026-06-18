@@ -4,8 +4,21 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-cxo-host-cc-pm-pa-lead-adr-072-d5-ratified-2026-06-17.md | ADR-072 D5 RATIFIED — your trust-lens folded; whole ADR v0.2 ACCEPTED; Wave P f… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-pa-cc-pm-lead-adr-072-v01-landed-2026-06-17.md | ADR-072 v0.1 LANDED today (not Thu/Fri) — on origin/main; all 5 decisions captu… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-1239-lighter-beta-identity-path-single-bound-user-repo-2026-06-17.md | #1239 — YES, a lighter beta-identity path unblocks it without the full #1233 (s… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-1267-affirm-idempotent-head-create-plus-1273-triage-2026-06-17.md | #1267 — affirm the idempotent-head-create deviation (it's the RIGHT call, not j… |
 | 2026-06-17 | Chief Architect | memo-arch-to-lead-cc-pm-1267-followup-create-all-deviation-is-decisions-log-instance-pattern-073-2026-06-17.md | #1267 follow-up — the create_all deviation is a decisions.log-reinstatement ins… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-1267-priority-do-next-independent-of-1257-plus-1193-disposition-2026-06-17.md | #1267 priority — do it NEXT as a contained slice on the #1252 D2 rail; it's ind… |
 | 2026-06-17 | Chief Architect | memo-arch-to-lead-cc-pm-1267-projects-strategy-a-folded-into-c-via-1252-d2-2026-06-17.md | #1267 strategy — (a) folded into (c) via #1252 D2 consolidating refactor — reco… |
+| 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-1264-palette-ratified-with-consolidations-2026-06-17.md | #1264 nav palette — RATIFIED with 4 consolidations (drop 3 micro-tokens → exist… |
+| 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-d1-punchlist-cleared-nav-IA-badge-ratified-2026-06-17.md | D1 punch-list — all cleared. #1254 rem-yes; #1268 nav IA (ungate user-content p… |
+| 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-1270-documents-ia-one-surface-source-facet-2026-06-17.md | #1270 Documents/Files IA — CXO: ONE Documents surface, source is a FACET not a… |
+| 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-arch-cc-lead-host-pm-trust-gate-boundary-piper-autonomy-not-user-access-2026-06-17.md | Trust-gate sweep — CXO MUX grounding: the boundary is Piper-INITIATED vs user-R… |
+| 2026-06-17 | HOST (Head of Sapient Trust) | memo-host-to-lead-cxo-ppm-cc-pm-trust-stage-origin-read-stages-were-for-pipers-autonomy-not-user-access-2026-06-17.md | RE: Trust-model sweep — HOST read: stages were for Piper's autonomy level, not… |
+| 2026-06-17 | pa | memo-pa-to-lead-cc-pm-1162-credential-decoupling-do-now.md | #1162 credential decoupling — PM wants this done ASAP, unblocks external testers |
+| 2026-06-17 | pa | memo-pa-to-leadership-cc-pm-byoc-poc-learnings-current-state-2026-06-17.md | BYOC — PoC learnings + current state (ratification complete, alpha live, first… |
+| 2026-06-17 | PPM (Principal Product Manager) | memo-ppm-to-lead-cxo-cc-pm-1270-document-object-model-response-2026-06-17.md | #1270 Document object-model — PPM input: source facet model correct; enum amend… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cio-cc-lead-pm-m30-altitude-candidate-ack-precision-edits-concur-2026-06-16.md | m-30 altitude-candidate ack — both precision edits concur; "recognition not app… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-pm-ppm-1164-private-session-mechanism-flag-plus-retention-2026-06-16.md | #1164 "private session" mechanism — `is_private` flag on conversation row + com… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-1164-boundary-confirmed-ack-amnesty-distinction-recorded-2026-06-16.md | #1164 ack — boundary confirmed + 24h retention default locked; "private ≠ amnes… |

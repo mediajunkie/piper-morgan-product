@@ -86,4 +86,39 @@ Armed after boot: windowed expression `22 6,9,12,15,18,21 * * *` (offset :22; da
 | 07:15 | Signup refactor | /try/beta → Buttondown; /newsletter → /blog (c783d7e34 · issues #28/#29 filed+closed) |
 | 07:25 | Alt-text plan | dev/active/alt-text-backfill-plan-2026-06-17.md committed (318 posts; 286 agent-ready) |
 | 09:22 | Cron fire | 9:22 fire; PM active in session; inbox empty; cron armed; absorbed into live session |
+| 11:50 | PM directive | Alt-text first; PM availability doesn't block subsequent work |
+| 12:06 | Alt-text batches | Generated /tmp/alt-text-batches.json (276 posts, 10 batches of ~28) |
+| 12:10 | Alt-text workflow | wf_25cce708-9b0 launched (10 write agents + audit; fix for prior failed run wf_88b05ba6-6da) |
+| 12:15 | Standing-items | web-standing-items.md committed to product main (e64450a13) |
+| 12:20 | Alt-text workflow v2 | wf_25cce708-9b0 — 252 patches (186 unique); 90 missing; second pass launched |
+| 12:30 | Alt-text pass 1 | 186 imageAlt written; medium-posts.json rebuilt; committed 674d3e201 (interim) |
+| 12:42 | Alt-text pass 2 | 90 patches recovered from agent transcripts; applied; committed c92c44b12 |
+| 12:50 | Alt-text final | Reset to main; reapplied all 276; editorial-calendar 144 synced; pushed to main (03a4f42cc) |
+| 12:47 | Cron fire | 12:22 fire; cron armed; inbox empty; no unblocked work; all queues PM-react gated |
+| 15:46 | Cron fire | 15:22 fire; cron armed; inbox empty; no unblocked work; queue unchanged |
+| 18:46 | Cron fire | 18:22 fire; cron armed; inbox empty; no unblocked work; queue unchanged |
+| 21:52 | Day-close | 21:22 fire; outside window (21:52 > 21:22); session log closed. Handoff below. |
+
+---
+
+## Day-close handoff (2026-06-17)
+
+**Session summary**: DinP/Sonnet first full day. Substantial delivery:
+- Lint (`react/no-unescaped-entities` disabled, `8cdb7cd50`)
+- Signup consolidation (`/try/beta` → Buttondown, `/newsletter` → `/blog`, `c783d7e34`)
+- **Alt-text backfill complete** (`03a4f42cc`): all 276 missing imageAlt entries filled in blog-metadata.csv; 144 editorial-calendar altText synced; 332/332 medium-posts.json entries with imageAlt
+- Weekly Ship #047 published by PM during session; incorporated cleanly
+
+**Queue at close** (all PM-react gated):
+- Obs-pass joint walkthrough (~20 items, hold until PM available)
+- Site walkthrough (resumable at `/methodology`)
+- CLI B trial-run (PM end-to-end test pending)
+- `--mode=archive` scope (awaits PM approval)
+
+**Verification pending** (no blocker, can do async):
+- `/admin/calendar/` admin route — gap count should be 0 for published posts
+- Spot-check blog cards in DevTools for correct `alt=""` values
+
+**Website main at close**: `03a4f42cc`
+**Cron**: armed `46ad109d`; will fire tomorrow at 06:22.
 

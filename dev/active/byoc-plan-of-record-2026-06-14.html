@@ -129,11 +129,11 @@
     <tr>
       <td>
         <div class="track-name">4 — Plugin experience</div>
-        <div class="note">ask-piper · consult-piper · meet-piper</div>
+        <div class="note">5 MCP tools: ask_piper · get_profile · save_profile · get_company_profile · save_company_profile (corrected 2026-06-16)</div>
       </td>
       <td><span class="badge badge-yellow">PARTIAL</span></td>
-      <td>ask-piper: ✓ working end-to-end (MCP → alpha confirmed). consult-piper: ⚠ enrichment fails in Cowork (GitHub not wired), re-ask payload too large in Code. meet-piper: ✓ working; needs connector setup added to onboarding. Design decision: collapse ask + consult into one smart skill (filed for skills work).</td>
-      <td>Enrichment layer gaps. GitHub connector setup in meet-piper.</td>
+      <td>Tool topology corrected 2026-06-16 (actual MCP schemas, not conceptual names): 5 tools, not 3. ask_piper(message): ✓ working end-to-end; all enrichment behavior ("consult-piper") happens server-side within this tool. get_profile/save_profile: ✓ profile I/O working; get_profile description already embeds skill-routing guidance ("call from any skill that wants the user's calibration") = Layer 1 partially implemented. get_company_profile/save_company_profile: ✓ company profile I/O. No separate consult_piper or meet_piper MCP tools — those are user-flow names, not tools. ⚠ Enrichment payload bounding still needed (#1244 — Bug B). Demo guidance from 2026-06-16 LLM-as-judge baseline: trust-check + propose-feature = demo-safe; draft-issue (connector gap) + stakeholder-update (intent misclassification → #1256) = skip until fixed.</td>
+      <td>Enrichment payload bounding (#1244). Stakeholder-update intent vocabulary (#1256). GitHub connector for meet-piper enrichment.</td>
     </tr>
     <tr>
       <td>
@@ -150,8 +150,8 @@
         <div class="note">Loom · pipermorgan.ai · cohort</div>
       </td>
       <td><span class="badge badge-blue">PLANNING</span></td>
-      <td>Loom demo concept: record Piper running in Claude Desktop (+ multiple surfaces) to add to pipermorgan.ai and gauge interest. Alpha cohort: patience strategy — PM will ask people personally / offer to demo. LLM-as-judge synthetic experiment: unblocked, can run now. Beta: fold real human feedback into beta when hosting costs managed + proper announcement.</td>
-      <td>Demo is unblocked. Cohort is a patience game.</td>
+      <td>Loom demo concept: record Piper running in Claude Desktop (+ multiple surfaces) to add to pipermorgan.ai and gauge interest. Alpha cohort: patience strategy — PM will ask people personally / offer to demo. LLM-as-judge synthetic experiment: ✓ DONE 2026-06-16 — results at dev/active/pa-llm-judge-experiment-2026-06-16.md. Findings: 4/5 intent routing correct; 0/5 skill invocation (expected — unauthenticated baseline); two demo-safe scenarios (trust-check, propose-feature); two demo-failures (draft-issue connector gap + stakeholder-update misclassification → #1256). Next: profile-grounded retest after authenticated user runs meet-piper. Beta: fold real human feedback into beta when hosting costs managed + proper announcement.</td>
+      <td>Demo is unblocked (trust-check + propose-feature safe). Loom recording needs PM. Cohort is a patience game.</td>
     </tr>
     <tr>
       <td>
@@ -274,8 +274,8 @@
       <span class="owner">Owner: Lead Dev + CXO · Status: close</span>
     </li>
     <li>
-      <strong>Close BYOC ratification to 9/9</strong> — Docs nudge sent 2026-06-14. One-line response needed.
-      <span class="owner">Owner: Docs · Status: nudge sent</span>
+      <strong>Close BYOC ratification to 9/9</strong> — ✓ DONE. Docs concurred 2026-06-14. All 9 roles green-lit.
+      <span class="owner">Owner: Docs · Status: ✓ CLOSED 2026-06-14</span>
     </li>
     <li>
       <strong>Credential decoupling (Option A)</strong> — ~15 min code change: add PIPER_AUTH_TOKEN env var to server.py, update .mcp.json, add startup error if token missing. Unblocks distribution research.
@@ -286,16 +286,16 @@
       <span class="owner">Owner: Lead Dev · Status: post-M3 queue</span>
     </li>
     <li>
-      <strong>Skills taxonomy — PM direction on Wave 1</strong> — Research complete. 7 clusters, ~30 skills, 6-skill Wave 1 proposed. Piper-unique clusters: Lifecycle + Learning/Trust. See <code>skills-taxonomy-plan-2026-06-14.md</code>.
-      <span class="owner">Owner: PM (direction) + PA (implementation) · Status: proposal ready, awaiting PM direction</span>
+      <strong>Skills taxonomy — Wave 1 + 2 shipped; Wave P blocked</strong> — Wave 1 (5 native skills) + Wave 2 (5 PM-unique skills) = 10 skills complete. Wave P (connect-piper + piper SKILL.md on plugin path) blocked on ADR-072 ratification (Arch targeting Thu 6/18–Fri 6/19) + server prereqs (#1242 MEET-PIPER-GITHUB, #1244 CONSULT-ENRICH-FIX, #1245 PIPER-SKILL-MERGE). See <code>skills-taxonomy-plan-2026-06-14.md</code>.
+      <span class="owner">Owner: PM (direction) + PA (implementation) · Status: Wave 1+2 ✓ DONE; Wave P pending ADR-072</span>
     </li>
     <li>
       <strong>Loom demo</strong> — Record Piper in Desktop (and optionally Code). PM decides surfaces. No blocker.
       <span class="owner">Owner: PM · Status: concept captured</span>
     </li>
     <li>
-      <strong>LLM-as-judge synthetic experiment</strong> — Design scenario set + judge rubric. Run Piper against canonical PM questions. No cohort needed, fully unblocked.
-      <span class="owner">Owner: PA · Status: unblocked, not started</span>
+      <strong>LLM-as-judge synthetic experiment</strong> — ✓ DONE 2026-06-16. 5 queries, unauthenticated baseline, against live intent endpoint. Results: dev/active/pa-llm-judge-experiment-2026-06-16.md. Next: profile-grounded retest after authenticated meet-piper user.
+      <span class="owner">Owner: PA · Status: ✓ DONE 2026-06-16</span>
     </li>
     <li>
       <strong>meet-piper connector setup</strong> — Add GitHub (and Calendar) connector wiring to onboarding interview. Eliminates the Cowork enrichment gap.
@@ -320,8 +320,8 @@
     <div class="oq-context">consult-piper in Code errored on the enriched re-ask — full GitHub issue dump may have hit a Piper parsing limit. Needs investigation before enrichment layer is reliable.</div>
   </div>
   <div class="oq">
-    <div class="oq-q">Smithery listing: low-effort win or premature?</div>
-    <div class="oq-context">Publishing the Piper MCP server to Smithery (smithery.ai) adds Claude Desktop discoverability with minimal effort — just GitHub URL + description. No credential decoupling needed for this path. Worth doing before or after credential work?</div>
+    <div class="oq-q">Smithery listing: low-effort win or premature? ✓ ANSWERED 2026-06-17</div>
+    <div class="oq-context">ANSWERED: After credential work — same blocker applies. Smithery requires a public GitHub repo + smithery.yaml in the repo root. piper-morgan-skunkworks is private, so listing is blocked until the credential-decoupling / public-repo decision lands (same milestone as community catalog, Option A ~15 min code change). Once that lands: add smithery.yaml + submit = low-effort, high Claude Desktop discoverability. Recommendation: fold Smithery listing into the credential-decoupling milestone as a fast-follow (not a separate initiative).</div>
   </div>
 </div>
 

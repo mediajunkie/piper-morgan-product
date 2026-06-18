@@ -62,14 +62,18 @@ async def test_create_tables_from_scratch():
         )
         tables = [row[0] for row in result.fetchall()]
 
-        # Check for essential tables
+        # Check for essential tables.
+        # NOTE: only tables with an ORM model belong here — this test exercises
+        # `Base.metadata.create_all()` (the model-driven path). Removed (#1273) as
+        # model-less legacy tables that create_all neither makes nor should:
+        #   - `alpha_users` — no model; dropped by migration af770c5854fe (data → `users`)
+        #   - `todos` — no model; refactored into items/todo_items (234aa8ec628c)
+        # (The Alembic-migration path is covered by TestModelMigrationCoverage.)
         essential_tables = [
             "users",
-            "alpha_users",
             "user_api_keys",
             "audit_logs",
             "projects",
-            "todos",
             "todo_lists",
             "lists",
             "workflows",

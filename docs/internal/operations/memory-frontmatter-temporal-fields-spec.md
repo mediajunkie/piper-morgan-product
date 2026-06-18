@@ -121,7 +121,7 @@ PM dispositioned both open questions:
 - [x] `check-staleness.py` lint shipped (CIO, P1 — warn+capture-task+fix-asap behavior)
 - [x] Field-name reconciliation — Docs spec updated to v0.4 (this commit)
 - [ ] **Session-log instructions** — recommend DROP by same point-in-time logic as memos (session logs are dated, ephemeral, never "expire"). Flagging for PM ratification rather than guessing.
-- [ ] **Briefings `last_verified` stamp** — 17 briefings have `valid_from`+`last_updated` from May 28 pilot; add `last_verified` as touched (not a bulk-stamp — `last_verified=today` everywhere would lie about re-verification)
+- [~] **Briefings `last_verified` stamp** — 17 briefings have `valid_from`+`last_updated` from May 28 pilot; add `last_verified` as touched (not a bulk-stamp). First stamp: `BRIEFING-CURRENT-STATE.md` stamped `last_verified: 2026-06-17` (Docs, read and verified 6/17). Gap flagged: `BRIEFING-ESSENTIAL-DOCS` is `last_updated: 2026-03-19` — 3 months stale; needs content review before stamp. Other briefings: stamp opportunistically as touched.
 - [ ] **Other standing-doc classes** — ADRs (69), Patterns (80), Methodology (52): add `valid_from`+`last_verified` opportunistically; no bulk-stamp
 - [ ] **`valid_until` vs `ended` PM decision** — PM cross-project bridge to Daedalus/Janus needed; hold until that bridge exists
 - [ ] Close #972 once session-log-instructions disposition lands + PM confirms `valid_until` name

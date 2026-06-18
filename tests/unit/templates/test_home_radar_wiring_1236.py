@@ -1,8 +1,8 @@
 """#1236: home.html Radar surface wiring (content assertions).
 
-home.html loads the Layer-2 Radar surface behind a ?radar=1 feature flag
-(default off → no regression for the existing conversation-list sidebar), and
-falls back to the conversation list if /api/v1/radar fails. The JS render
+home.html loads the Layer-2 Radar surface as the DEFAULT panel (#1090 swap,
+PM-authorized 2026-06-18); ?radar=0 is the escape hatch back to the plain
+conversation list, and it falls back to that list if /api/v1/radar fails. The JS render
 behavior is exercised by the route tests (tests/unit/web/api/routes/test_radar.py)
 + the component render functions (test_history_sidebar.py::TestRadarSurface);
 these guard the home.html wiring that ties the two together.
@@ -40,10 +40,12 @@ def test_load_radar_falls_back_to_history_on_error(home_html):
     assert "falling back to history list" in home_html
 
 
-def test_radar_is_feature_flagged_default_off(home_html):
-    # ?radar=1 gates the new surface; absent the flag, the existing history
-    # list loads unchanged (the default-off no-regression guarantee for PM UAT).
-    assert "new URLSearchParams(window.location.search).get('radar') === '1'" in home_html
-    assert "radarEnabled" in home_html
-    # The else-branch keeps the legacy loader as the default path.
-    assert "if (radarEnabled) {" in home_html
+def test_radar_is_the_default_panel_with_escape_hatch(home_html):
+    # #1090 swap (PM-authorized 2026-06-18; Radar design approved, no real users):
+    # Radar is now the DEFAULT Layer-2 panel. ?radar=0 is the escape hatch back to
+    # the plain conversation list (loadRadar also falls back to it on fetch error).
+    assert "new URLSearchParams(window.location.search).get('radar') === '0'" in home_html
+    assert "radarDisabled" in home_html
+    assert "if (radarDisabled) {" in home_html
+    # The default (no flag / not '0') path loads Radar.
+    assert "loadRadar();" in home_html

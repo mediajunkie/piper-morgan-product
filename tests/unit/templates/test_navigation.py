@@ -44,10 +44,18 @@ class TestNavigationVocabulary:
         assert ">Documents</a>" in nav_content
         assert ">Files</a>" in nav_content
 
-    def test_lists_renamed_to_collections(self, nav_content):
-        """Lists should be labeled 'Collections'."""
-        assert ">Collections</a>" in nav_content
-        assert ">Lists</a>" not in nav_content
+    def test_lists_labeled_lists(self, nav_content):
+        """#1268 (CXO 2026-06-17): the rail is labeled 'Lists' (was 'Collections') — match the
+        /lists route + the user's word (descriptive-names discipline)."""
+        assert ">Lists</a>" in nav_content
+        assert ">Collections</a>" not in nav_content
+
+    def test_history_trigger_labeled_radar(self, nav_content):
+        """#1262 (CXO 2026-06-17): the trigger opens the Radar/Layer-2 panel → labeled 'Radar'
+        (was 'History'). The id stays nav-history-trigger (JS wiring); only the label changes."""
+        assert 'id="nav-history-trigger"' in nav_content  # wiring preserved
+        assert 'aria-label="View Radar"' in nav_content
+        assert 'aria-label="View history"' not in nav_content
 
     def test_learning_kept_as_is(self, nav_content):
         """Learning should remain 'Learning' (already action-oriented)."""
@@ -55,7 +63,11 @@ class TestNavigationVocabulary:
 
 
 class TestNavigationTrustGating:
-    """Test that navigation items are trust-gated."""
+    """Trust-gating governs Piper CAPABILITY surfaces (Check-in / Learning / Insights),
+    NOT the user's own content. Per PM 2026-06-17 + the #732 precedent ("users should
+    always see their own history"): a trust gate must never hide a user's own data from
+    them — "Your stuff" (todos/projects/work-items/files/documents/lists) is always
+    visible. These tests guard that split."""
 
     @pytest.fixture
     def nav_content(self):
@@ -70,24 +82,33 @@ class TestNavigationTrustGating:
         # Specifically check standup link is gated
         assert "nav-standup" in nav_content
 
-    def test_your_stuff_dropdown_requires_stage_3(self, nav_content):
-        """Your stuff dropdown requires trust stage 3+."""
-        assert 'class="nav-dropdown nav-item-trust-gated"' in nav_content
+    def test_your_stuff_dropdown_not_trust_gated(self, nav_content):
+        """"Your stuff" is the user's OWN content → NOT trust-gated (PM 2026-06-17; cf #732).
+        A trust gate governs Piper's autonomy, never a user's access to their own data."""
+        assert 'class="nav-dropdown nav-item-trust-gated"' not in nav_content
+        assert 'class="nav-dropdown"' in nav_content
 
-    def test_documents_requires_stage_4(self, nav_content):
-        """Documents (Files) requires trust stage 4+."""
-        # Check for stage 4 gating on files
-        assert 'data-min-trust-stage="4"' in nav_content
+    def test_user_content_items_not_trust_gated(self, nav_content):
+        """Documents + Collections + Files (the user's own content) are ungated —
+        no stage-4 gate remains; they're present (visible at every stage)."""
+        assert 'data-min-trust-stage="4"' not in nav_content
+        assert "nav-documents" in nav_content
+        assert "nav-lists" in nav_content
         assert "nav-files" in nav_content
 
-    def test_collections_requires_stage_4(self, nav_content):
-        """Collections (Lists) requires trust stage 4+."""
-        assert "nav-lists" in nav_content
+    def test_capability_surfaces_still_gated(self, nav_content):
+        """The trust MECHANISM still applies to Piper CAPABILITY surfaces (not user content):
+        Learning stays stage-3 (progressive feature disclosure). Whether those levels are
+        right is HOST/CXO's trust-model call — but the mechanism must remain wired."""
+        assert 'data-min-trust-stage="3"' in nav_content
+        assert "nav-learning" in nav_content
 
-    def test_trust_gated_class_exists(self, nav_content):
-        """Trust-gated CSS class exists for hiding items."""
-        assert ".nav-item-trust-gated" in nav_content
-        assert ".trust-visible" in nav_content
+    def test_trust_gated_class_exists(self):
+        """Trust-gated CSS rules exist (moved to nav.css by the #1271 extraction; the
+        class *usage* on <li>s + the JS still live in navigation.html)."""
+        nav_css = Path("web/static/css/nav.css").read_text()
+        assert ".nav-item-trust-gated" in nav_css
+        assert ".trust-visible" in nav_css
 
     def test_trust_stage_javascript_exists(self, nav_content):
         """JavaScript for trust-gating exists."""
@@ -123,31 +144,33 @@ class TestNavigationSearchTrigger:
 
 
 class TestNavigationVisualHierarchy:
-    """Test that nav is visually secondary to home state."""
+    """Test that nav is visually secondary to home state.
+
+    Styles moved to web/static/css/nav.css by the #1271 extraction → these assert
+    against the stylesheet now (token usage from #1264 is preserved verbatim)."""
 
     @pytest.fixture
-    def nav_content(self):
-        """Load navigation template content."""
-        nav_path = Path("templates/components/navigation.html")
-        return nav_path.read_text()
+    def nav_css(self):
+        """Load the extracted nav stylesheet (#1271)."""
+        return Path("web/static/css/nav.css").read_text()
 
-    def test_nav_has_muted_background(self, nav_content):
+    def test_nav_has_muted_background(self, nav_css):
         """Nav background is muted (not white)."""
         # #1264: tokenized — the muted nav bg now comes from a token (was #fafafa).
-        assert "background: var(--color-neutral-off-white)" in nav_content
+        assert "background: var(--color-neutral-off-white)" in nav_css
 
-    def test_nav_has_no_shadow(self, nav_content):
+    def test_nav_has_no_shadow(self, nav_css):
         """Nav has no box-shadow (less prominent)."""
-        assert "box-shadow: none" in nav_content
+        assert "box-shadow: none" in nav_css
 
-    def test_nav_links_have_muted_color(self, nav_content):
+    def test_nav_links_have_muted_color(self, nav_css):
         """Nav links use muted text color."""
         # #1264: tokenized — the muted nav-link color now comes from a token (was #5a6c7d).
-        assert "color: var(--color-text-nav)" in nav_content
+        assert "color: var(--color-text-nav)" in nav_css
 
-    def test_nav_has_smaller_height(self, nav_content):
+    def test_nav_has_smaller_height(self, nav_css):
         """Nav height is reduced (utility, not hero)."""
-        assert "height: 52px" in nav_content
+        assert "height: 52px" in nav_css
 
 
 class TestNavigationAccessibility:

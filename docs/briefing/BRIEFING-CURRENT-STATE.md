@@ -3,6 +3,7 @@ type: briefing
 title: BRIEFING-CURRENT-STATE.md - Where We Are Right Now
 valid_from: "2025-09-30"
 last_updated: "2026-06-17"
+last_verified: "2026-06-17"
 ---
 
 # BRIEFING-CURRENT-STATE.md - Where We Are Right Now
