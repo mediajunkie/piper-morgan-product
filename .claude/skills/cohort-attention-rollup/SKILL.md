@@ -49,19 +49,13 @@ So the board now has **two surfaces, pick by the moment:** (1) inline `show_widg
 
 ## Step 1 — Gather the source set
 
-The canonical inputs are the per-role **duty-cycle attention docs**:
+**The per-role `duty-cycle-escalations-{role}.md` docs are DEPRECATED (folded 2026-06-17, skill v1.13) — do NOT use them as a source; they're frozen/stale by definition now.** The canonical inputs post-fold:
 
-```
-dev/active/duty-cycle-escalations-{role}.md
-```
+1. **Per-role carry-forwards** — `dev/active/{role}-carry-forward.md` — the residual home for non-blocking PM-attention items (read + rewritten every substantive fire by each role, so they don't rot the way the old docs did). List: `ls dev/active/*-carry-forward.md`.
+2. **GitHub** — live-verify every candidate (the half-reason the docs were foldable: re-derive truth rather than trust a doc).
+3. **Blocker mail** — your exec inbox + cc'd blocker memos (the active-memo-the-gate path — blockers ride mail, not docs; see the Blocker bucket in Step 3).
 
-…for each cycling role (exec, cio, docs, host, ppm, architect, lead, comms, web, pa, …). List them:
-
-```bash
-ls dev/active/duty-cycle-escalations-*.md
-```
-
-Read each one. Each role's doc is that role's self-reported view of what (if anything) needs PM
+Read the carry-forwards. Each is that role's self-reported view of what (if anything) needs PM
 attention. **Treat them as perspectives, not ground truth** — they can be stale (a role may not have
 refreshed since its last fire). That's exactly what Step 2 corrects.
 
