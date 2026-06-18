@@ -22,9 +22,9 @@
 - ✅ `memo-ppm-to-lead-cxo-cc-pm-trust-sweep-entity-model-lens-1270-reconcile-2026-06-18.md` — PPM trust-sweep + ArtifactSourceType reconcile
 
 **Action items from inbox**:
-1. **Design the standup experience** (#1269) — Lead's gate before build; my half
-2. **Ratify trust-sweep surface calls** — PPM delivered boundary table; no blocking action but confirm
-3. **Acknowledge #1270 reconcile** — PPM tidying; my UX call (per-row badge) already ratified
+1. Design the standup experience (#1269) — Lead's gate before build; my half
+2. Ratify trust-sweep surface calls — PPM delivered boundary table; no blocking action but confirm
+3. Acknowledge #1270 reconcile — PPM tidying; my UX call (per-row badge) already ratified
 
 ## START (06:38)
 
@@ -38,7 +38,7 @@ Confirmed: no old Model-A `claude/cxo-cycle` branch in worktree list (clean).
 
 Design summary:
 - **Surface**: proactive morning card in the home screen (above-chat), not a dedicated nav route. Appears on first open before ~10am; collapses/dismisses after interaction or after ~10am.
-- **Shape**: Yesterday / Today / Blockers — prose narrative, not a dashboard. Reads as literal standup prep text.
+- **Shape**: Yesterday / Today / Watch — prose narrative, not a dashboard. Reads as literal standup prep text. ("Watch" instead of "Blockers" to signal honest confidence on staleness signals.)
 - **No vanity metrics**: replaced by real signal (completions, calendar, blocked/stale items).
 - **Trigger**: morning-first (PM's "offered first thing") = time-aware proactive; NOT a persistent surface.
 - Full design: in outbound memo.
@@ -48,7 +48,15 @@ Design summary:
 → See outbound `memo-cxo-to-ppm-lead-cc-pm-trust-sweep-ratified-1270-badge-confirmed-2026-06-18.md`
 
 - Trust boundary table: ratified. PPM's per-type table correctly applies the Piper-INITIATED vs user-REACHING discriminator.
+- Stage-definition language corollary endorsed: stages describe Piper's behavior, not user entitlements.
 - ArtifactSourceType reconcile: acknowledged. `GENERATED` = canonical for Piper-generated artifacts. `FEDERATED` post-Beta. Per-row badge UX call (✨Generated / ⬆️Uploaded) stands.
+
+## WORK (06:50) — Infrastructure: cron + registry + fire log
+
+- **Cron**: `7e2b8c84` — `47 6,9,12,15,18,21 * * *` — windowed daytime, first fire 06:47
+- **Duty-cycle registry**: CXO row added (`dev/active/duty-cycle-registry.tsv`): threshold 6h, wake 6-22
+- **Cohort fire log**: Fire 0 row appended (`metrics/cohort-fire-log.tsv`)
+- All pushed to origin/main via main-checkout bridge.
 
 ## Memory & briefing surfaces referenced this session
 - (fill at wrap)
