@@ -24,6 +24,6 @@ Prior day (2026-06-17) confirmed properly closed — `<!-- DAY-CLOSED: 2026-06-1
 - Beats 10–13 (Jul 2/7/9/14)
 - Beats 14–16 (Jul 16/21/23)
 
-- Fire 0 (06:12 PT) — START. Jun 17 properly closed. Inbox zero. Noted: PM filled Beat 7 frontmatter overnight (image + alt + caption). Checking current file state before Docs publishes.
+- Fire 0 (06:12 PT) — START. Jun 17 properly closed. Inbox zero. Noted: PM filled Beat 7 frontmatter overnight (image + alt + caption). Checked current file state: YAML caption had unclosed single-quote wrapper — surfaced to PM (fixing). PM requested Comms→Docs publish handoff protocol memo. Written + filed to docs/inbox + xian (ceo)/inbox + comms/sent (`77c6232cd`). Proposal: Comms sends explicit "publish-ready" memo as formal trigger (morning of / evening before); Docs waits for it before running pipeline; return signal = Docs sends URLs to Comms for calendar.
 
 ---
