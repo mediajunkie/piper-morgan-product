@@ -53,3 +53,21 @@ Committed + pushed via bridge.
 
 **Standing items net change**: #1240 unblocked (People entity-model delivered); #1237 4-type umbrella model complete; #1270 ArtifactSourceType reconcile delivered; #1269 standup data model delivered; trust-sweep PPM lens delivered
 
+### Session Resumed (post-compaction)
+
+**Post-compaction inbox cleanup + CIO memo (inbox race condition)**
+
+Compaction hit mid-inbox-cleanup. Resumed and found:
+- 9 inbox files were git rm'd (staged as deletions) pre-compaction
+- inbox/MANIFEST.md had been physically deleted but not staged (` D`)
+- 2 genuinely new items (`memo-cxo-to-lead-ppm-cc-pm-1269-standup-experience-design-2026-06-18.md` + `memo-cxo-to-ppm-lead-cc-pm-trust-sweep-ratified-1270-badge-confirmed-2026-06-18.md`) were already in read/; git detected as renames
+- read/MANIFEST.md had been updated pre-compaction (unstaged)
+
+**Completed**:
+1. Staged inbox/MANIFEST.md deletion (`git rm`)
+2. Staged 2 new read/ files + updated MANIFEST
+3. Committed + pushed to origin/main (commit `210662f52`)
+4. Wrote CIO memo: `memo-ppm-to-cio-cc-pm-inbox-race-condition-analysis-mitigation-2026-06-18.md` — documents the concurrent-agent re-delivery pattern and mitigation options (atomic mailbox mutex, agent read-receipt protocol, inbox lint hook, Option B ephemeral model)
+
+**Root cause of inbox sync issue**: Multiple agents (HOST, Lead, PA, CXO) each delivered to PPM inbox in separate commits between PPM's Fire 0 triage commit and the next pull. When PPM's later pull merged these, the inbox items that had been moved to read/ were re-added (git saw them as new additions on origin, not duplicates of the already-moved files). 7 re-deliveries + 2 genuinely new items = 9 items needing cleanup.
+
