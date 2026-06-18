@@ -386,3 +386,13 @@ class TestBuildUserStandupSummary:
         out = await mod.build_user_standup_summary("user-42")
         assert out is known  # the glue returns the assembled summary
         assert captured["user_id"] == "user-42"  # ...for the requested user
+
+    async def test_anonymous_user_is_honest_empty_without_a_db_hit(self):
+        # No user (anonymous chat) → honest empty summary; must NOT open a DB session.
+        # (If it tried, the unmocked AsyncSessionFactory would hit Postgres in this unit test.)
+        import services.standup.assembler as mod
+
+        for anon in (None, ""):
+            out = await mod.build_user_standup_summary(anon)
+            assert isinstance(out, StandupSummary)
+            assert out.is_empty()

@@ -2395,18 +2395,23 @@ class IntentService:
         return await self._handle_generic_query(intent, workflow_id, session_id)
 
     async def _handle_standup_query(
-        self, intent: Intent, workflow_id: str, session_id: str
+        self, intent: Intent, workflow_id: str, user_id: Optional[str] = None
     ) -> IntentProcessingResult:
         """Handle show_standup/get_standup query actions — the on-demand standup DERIVED
         over the live entity catalog (#1269: StandupAssembler reading the same Radar
         EntitySources + calendar), replacing the hollow source:"fallback" path. This is the
         QUERY/on-demand surface; the interactive ``/standup`` capture flow
         (StandupConversationHandler, #585) is a separate path and is untouched.
+
+        Scopes to the authenticated ``user_id`` (``current_user.sub`` — the SAME identity
+        Radar uses), threaded via the dispatch rail's ``pass_user_id=True``. NOT the
+        session_id — the standup is the user's, not the session's. Anonymous (``user_id``
+        None) → the sources degrade to an honest empty summary.
         """
         try:
             from services.standup.assembler import build_user_standup_summary
 
-            summary = await build_user_standup_summary(session_id)
+            summary = await build_user_standup_summary(user_id)
 
             return IntentProcessingResult(
                 success=True,
