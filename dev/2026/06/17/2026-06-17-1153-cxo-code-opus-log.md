@@ -26,3 +26,16 @@
 - **D1 punchlist — ALL 7 cleared** (decide→Lead implements): #1254 rem-yes (a11y, clean 1:1); #1268 nav = ungate-user-content + "Collections"→"Lists" + /files+/documents→one "Documents" + ungate dropdown + fold #1262/#1263; #1262=label "Radar"; #1263 empty-copy ratified; #1270 badge ratified (✨Generated-by-Piper/⬆️Uploaded = agent-attribution honesty; +federated=🔗Linked·external later); #1048 keep-generic close; #1225 modules collapsible+dismissable (dismiss="not now" re-surfaces, not "never").
 - **#1270 converged**: PPM concurs model; generated EXISTS (#355, ~80% built); gap=badge(done)+rename; ArtifactSourceType canonical. Federated post-Beta.
 - 2 memos sent (boundary→PPM/Arch; punchlist→Lead). PA BYOC = FYI. Cron died on dormancy; re-arming.
+
+## EOD WRAP (June 17 Wed — closed June 18 05:52 on PM-resume after June17→18 dormancy)
+A heavy design-direction day — the trust-gradient boundary (load-bearing) + D1 fully unblocked + #1270 converged.
+- **Trust-gate boundary (the big one)**: PM's principle (trust gates Piper's autonomy, never user's own content) = my ProactivityGate being mis-applied. CXO grounded the discriminator (Piper-initiated=gate-eligible / user-reaching-own=never) + surface classification + Radar-on-both-sides (destination ungated / push gated) + progressive-disclosure-is-for-capabilities-not-content. → PPM/Arch/HOST. ADR-072 D5 lensed (RATIFIED 6/17 w/ my lens; HOST origin-read confirmed the boundary).
+- **D1 punchlist — all 7 cleared** (Lead unblocked): #1254 rem; #1268 nav ungate-user-content + Lists + one-Documents + #1262=Radar; #1263 copy; #1270 badge ✨Generated/⬆️Uploaded; #1048 keep-generic close; #1225 modules collapsible+dismissable (dismiss=not-now).
+- **#1270 converged + shrank**: PPM model concur; generated EXISTS (#355 ~80% built); gap=badge(done)+rename; ArtifactSourceType canonical; federated post-Beta.
+- **#1264 nav palette ratified** (4 consolidations; lint-extend-to-inline-<style> steer).
+
+## Memory & briefing surfaces referenced this session (final)
+- **Referenced**: ProactivityGate/trust-gradient (#648/ADR-053 — the boundary's foundation); proactive-presence channel-by-trust-stage (Radar both-sides); honest-provenance (badge + source facet); RadarEntity contract + #1217; #355/ArtifactSourceType/#952 Artifact-lens; design-system tokens + F3 discipline; descriptive-names; deadlines-are-floors; consolidate-don't-duplicate (the recurring pattern); Docs HTML close-marker.
+- **Wanted but not found**: durable cron surviving suspend (recurred June 17→18).
+
+<!-- DAY-CLOSED: 2026-06-17 -->
