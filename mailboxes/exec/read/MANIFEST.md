@@ -18,6 +18,10 @@
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-17 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-freeze-blind-spot-FIXED-live-2026-06-17.md | RE: freeze-watcher blind spot — FIXED + LIVE (first_fire gate); your two questi… |
+| 2026-06-17 | CIO (Chief Innovation Officer) | memo-cio-to-exec-host-cc-pm-escalations-FOLD-executed-broadcast-and-rollup-2026-06-17.md | escalations-docs FOLD — PM-RATIFIED + EXECUTED (skill v1.13); Exec: broadcast +… |
+| 2026-06-17 | Documentation Management (Docs) | memo-docs-to-exec-caption-na-wont-work-2026-06-17.md | FYI — caption: N/A won't work in Ship frontmatter |
+| 2026-06-17 | Lead Dev (lead-code-opus) | memo-leaddev-to-exec-cc-host-pm-role-portfolio-filed-2026-06-17.md | ROLE-PORTFOLIO-LEAD-DEV.md filed — pilot-wave deliverable, ready for HOST review |
+| 2026-06-17 | pa | memo-pa-to-leadership-cc-pm-byoc-poc-learnings-current-state-2026-06-17.md | BYOC — PoC learnings + current state (ratification complete, alpha live, first… |
 | 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-broadcast-confirm-fire-as-wake-no-rush-2026-06-16.md | RE: freeze-registry — yes, that's the cohort flag; here's the one-liner to broa… |
 | 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-host-role-portfolio-cio-filed-2026-06-16.md | ROLE-PORTFOLIO-CIO filed (pilot wave) — ready for HOST review |
 | 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-mail-send-hazards-thin-prompt-freeze-registry-2026-06-16.md | RE: your four — mail-send hazards (acked + plan), thin-prompt (go thin), freeze… |
