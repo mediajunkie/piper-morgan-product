@@ -62,3 +62,21 @@
 
 **Docs inbox** (from hook): 1 unread — will triage after #1274 close.
 
+### Session resumed post-compaction — #972 MEM-TEMPORAL + CIO memo
+
+**Context recovery**: #1274 closed prior to compaction. PM asked (1) send dedicated CIO memo about CLAUDE.md PROJECT.md demand-load change, (2) work on #972. Session resumed without PM needing to re-brief.
+
+**CIO memo sent** (`367c60c39`):
+- Dedicated ratification request: remove `PROJECT.md` from mandatory CLAUDE.md Step 3 (0× references per MEM-EVAL 134-log corpus); keep in Progressive Loading table only. Standalone memo, not bundled with #1274 reply. CIO inbox.
+
+**Arch memo sent — #972 reconciled schema** (`367c60c39`):
+- Key finding: field reconciliation is ALREADY DONE in spec v0.4 (2026-06-15). `ended` dropped; `valid_from`+`last_verified` (expected) + `valid_until`+`superseded_by` (optional). No further reconciliation work needed.
+- Looped Arch on the one open question: `valid_until` vs Janus `ended`/`validUntil`. CIO CC'd.
+
+**#972 work** (`e829dee87`):
+- `BRIEFING-CURRENT-STATE.md`: added `last_verified: 2026-06-17` (first briefing stamped; read and verified STATUS BANNER + Current Focus 6/17). 17 briefings have `valid_from`+`last_updated` from May 28 pilot; stamping opportunistically as touched.
+- Gap flagged: `BRIEFING-ESSENTIAL-DOCS` is 3 months stale (`last_updated: 2026-03-19`) — needs content review before stamp.
+- Spec integration plan updated: `[~]` for Briefings stamp item with progress note.
+- GH #972 comment: proposed session-log instructions DROP for PM ratification (same point-in-time logic as memos; PM already agreed memos are out of scope).
+- Remaining #972 blockers: `valid_until` vs `ended` (PM/Daedalus bridge; Arch looped); session-log instructions DROP (PM ratification pending).
+
