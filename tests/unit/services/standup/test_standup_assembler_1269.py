@@ -19,7 +19,11 @@ from __future__ import annotations
 
 from services.domain.models import StandupItem, StandupSummary
 from services.radar.models import EntityType, Provenance, RadarEntity
-from services.standup.assembler import StandupAssembler, StandupCalendarProvider
+from services.standup.assembler import (
+    StandupAssembler,
+    StandupCalendarProvider,
+    build_standup_assembler,
+)
 
 NOW = 1_000_000_000.0
 H = 3600.0
@@ -308,3 +312,32 @@ class TestStandupCalendarProvider:
 
         prov = StandupCalendarProvider(router_factory=lambda uid: _BoomRouter())
         assert await prov.events_today("u1") == []  # never raises into the standup
+
+
+# --- the live-wiring factory (the standup's analog of radar's _build_feed) ---
+
+
+class _UHSStub:
+    async def get_history(self, **kwargs):  # not called at construction time
+        raise AssertionError("not expected during wiring")
+
+
+class TestBuildStandupAssembler:
+    def test_wires_live_radar_sources_and_calendar(self):
+        from services.radar import (
+            ConversationEntitySource,
+            DocumentEntitySource,
+            WorkItemEntitySource,
+        )
+
+        asm = build_standup_assembler(_UHSStub())
+        assert isinstance(asm, StandupAssembler)
+        # the SAME EntitySources Radar wires (build_entity_sources — derive-don't-maintain)
+        source_types = {type(s) for s in asm._sources}
+        assert {
+            ConversationEntitySource,
+            DocumentEntitySource,
+            WorkItemEntitySource,
+        } <= source_types
+        # and the real calendar provider for the Today slot
+        assert isinstance(asm._calendar, StandupCalendarProvider)

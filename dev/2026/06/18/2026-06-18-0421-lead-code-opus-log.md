@@ -133,3 +133,8 @@ PM: "resume from the tail" → P1b is the next build per carry-forward. Cron `02
 - **`StandupSummary._today_prose` split**: work items → "You're working on …"; calendar → separate "You have "design review" at 2pm." sentence (CXO's shape).
 - **Verified**: 23/23 #1269 GREEN; **318 standup+features GREEN**. ruff-clean.
 - **NEXT = SURFACING (the loop-closer)**: P4 morning-card (home center col, <10am first-open, dismiss/auto-10am, once/day localStorage — #1225 pattern, real-render) + P5 on-demand chat skill ("give me my standup" via workflow-dispatcher rail, NO new elif) + the `build_standup_assembler(uhs)` live-wiring factory + P6 close. This is substantial + multi-surface + contract-changing (existing standup surfaces use the hollow `MorningStandupWorkflow`/`StandupResult`) → wants its own flywheel pass (gameplan). The data+prose+calendar engine (P1a/P1b/P2/P3) is COMPLETE + tested but not yet user-reachable.
+
+### 09:41 — #1269 live-wiring factory `build_standup_assembler` (TDD GREEN)
+- **`build_standup_assembler(user_history_service, calendar_provider=None) -> StandupAssembler`** (assembler.py) — the standup's analog of radar's `_build_feed`: wires the SAME `build_entity_sources()` Radar uses (derive-don't-maintain) + the real `StandupCalendarProvider`. The bridge every surface (card #1269-P4, chat skill #1269-P5) calls. Lazy feed_factory import (cycle-safe).
+- **Verified**: 24/24 #1269 GREEN. The engine is now instantiable-with-live-deps. Committed `<hash>`.
+- **NOW**: the engine (P1a/P1b/P2/P3 + factory) is COMPLETE + on main + tested, but still not user-reachable. Surfacing (P4/P5/P6) is the loop-closer — substantial + contract-touching → planning it via a gameplan (Phase-0 surface map first).
