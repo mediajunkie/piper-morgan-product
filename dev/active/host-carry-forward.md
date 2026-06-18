@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-17 ~15:37 PT (ADR-072 D5 trust lens delivered to Arch; MEM-EVAL trust flag answered; BYOC/Ted Nadeau acked to PA)
+**Last updated**: 2026-06-17 ~18:37 PT (ADR-072 D5 ratified; trust-stage origin read sent to Lead+CXO+PPM; trust-model sweep HOST contribution complete)
 
 ---
 
@@ -56,7 +56,8 @@
 
 ## Watch / trigger-bound
 
-- **ADR-072 D5 response delivered** (2026-06-17): HOST trust-lens in Arch's inbox. Key: consequential-action carve-out from reactive-tier-independent rule; transparency language for gated proactive proposals. Arch folds into D5 v0.2 at their cadence. CXO+PM cc'd.
+- **ADR-072 D5 RATIFIED** (2026-06-17 ~19:05 PT): Both HOST refinements folded — consequential-action carve-out + transparency-when-gated. ADR-072 v0.2 ACCEPTED on origin/main. Wave P fully unblocked. Lead Dev implements #1245. ✅ COMPLETE — no further HOST action.
+- **Trust-stage origin sweep contribution delivered** (2026-06-17 ~18:37): Lead+CXO+PPM asked HOST what trust stages were FOR. HOST read: stages govern Piper's initiative level (observe→offer→act), never user access. Content-gating was never intended — drift from progressive disclosure of Piper's capabilities. Welfare corollary: asymmetric-knowledge + capricious-AI = trust-eroding. Sweep is PPM+CXO+PM; HOST contribution complete. Watch: sweep findings may surface welfare questions for HOST.
 - **Ted Nadeau welfare watch** (first external tester, June 17): "setup issue suspected — Caddy auth layer + no user token." HOST flagged silent-failure risk at onboarding to PA. PM is current catch (support@pipermorgan.ai). Watch for onboarding resolution; update BYOC welfare-tier model v0.1 if new pattern found.
 - **MEM-EVAL trust flag answered** (2026-06-17): BRIEFING-CURRENT-STATE = trust-without-engaging (a), not stale-so-ignored (b). Recommendation: keep in load set; fix engagement quality not load timing. Suggestion sent to CIO for START procedure ("note one thing confirmed"). No action needed from HOST unless CIO escalates.
 - **Pilot portfolios (Lead Dev + CIO)**: Exec sent kickoff June 15. **Lead Dev ACK** (June 15): framework clear, no blockers, queuing ROLE-PORTFOLIO-LEAD-DEV.md post-D1, targeting this week. Already has irreducible mandate clarity (data-safety / #1241 / ADR-071). CIO: no receipt yet. When either portfolio lands in HOST's inbox → review within one fire against the 5 rules → respond to Exec with findings.
