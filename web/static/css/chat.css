@@ -234,7 +234,17 @@
 }
 
 /* ===== Inline Chat Container (Home Page) ===== */
+/* #1173 (DESIGN-FLOOR-C1): conform the home chat to the converged paradigm —
+   full-height conversation that scrolls INTERNALLY + the input row anchored at the
+   bottom (was a fixed 300px resizable box in a scrolling page = the "unanchored
+   window" defect #1142/#1047). The container is a flex column filling its parent
+   (home's .main-content/.container are made full-height columns). Option A per the
+   #1173 gameplan: home keeps its ambient modules above; the chat region fills below. */
 .chat-inline-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
   background: var(--color-background-primary);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-sm);
@@ -242,11 +252,15 @@
   margin-top: var(--space-md);
 }
 
-.chat-inline-container .chat-window {
-  height: 300px;
-  min-height: 200px;
-  max-height: 500px;
-  resize: vertical;
+/* The conversation fills the column + scrolls internally. The id+class selector
+   overrides the #chat-window id-height rule below (id+class beats id specificity). */
+.chat-inline-container .chat-window,
+.chat-inline-container #chat-window {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  max-height: none;
+  resize: none;
   overflow-y: auto;
   padding: var(--space-md);
   background: var(--color-background-tertiary);
@@ -257,6 +271,7 @@
 
 .chat-inline-container .chat-form {
   display: flex;
+  flex-shrink: 0; /* input row stays anchored at the bottom of the column */
   padding: var(--space-md);
   gap: var(--space-sm);
   margin-bottom: 0;
