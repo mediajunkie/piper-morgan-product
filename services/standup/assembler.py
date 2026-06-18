@@ -238,3 +238,19 @@ class StandupCalendarProvider:
         h12 = dt.hour % 12 or 12
         ampm = "am" if dt.hour < 12 else "pm"
         return f"{h12}:{dt.minute:02d}{ampm}" if dt.minute else f"{h12}{ampm}"
+
+
+def build_standup_assembler(user_history_service, calendar_provider=None) -> StandupAssembler:
+    """Wire a live ``StandupAssembler`` over the SAME EntitySources Radar uses
+    (``build_entity_sources`` — derive-don't-maintain, one wiring not two) plus the real
+    calendar provider. The standup's analog of radar's ``_build_feed``; the surfaces (the
+    morning card #1269-P4, the on-demand chat skill #1269-P5) call this rather than
+    constructing sources themselves.
+    """
+    # Lazy import: keep assembler import-light + avoid any future feed_factory↔standup cycle.
+    from services.radar.feed_factory import build_entity_sources
+
+    return StandupAssembler(
+        build_entity_sources(user_history_service),
+        calendar_provider=calendar_provider or StandupCalendarProvider(),
+    )
