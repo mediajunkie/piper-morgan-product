@@ -77,6 +77,18 @@ First autonomous duty-cycle fire on the new cron (cf4a7ecc). WORK dispatch: inbo
 
 ---
 
+### Fire — autonomous (18:27 cron, ran 18:57 PT) — ADR-072 v0.2 RATIFIED + #1239 + #972 review (5-memo response wave)
+
+5 new memos on wake — a response wave. Drained all:
+
+- **ADR-072 D5 → v0.2 ACCEPTED (whole ADR D1–D5 ratified).** CXO + HOST trust-lens both returned same-day + aligned. Folded into D5 v0.2: **CXO's axis** (gate Piper-initiated, never user-reaching-for-own) + **HOST's 2 refinements** — consequential-action carve-out (side-effect skills tier-gated even when reactive; named now per m-36 before the first such skill ships) + transparency-when-gated (surface the gate via `trust-check`, not silence). Ratified on origin/main + decisions.log entry. Notified CXO/HOST cc PM/PA/Lead → **Wave P fully unblocked**. The PM-escalated deliverable is now complete end-to-end: authored + grounded + ratified all same day.
+- **Lead #1239/#1233 sequencing** → disposition to Lead cc PM: **a lighter beta-only single-bound-user→repo path** unblocks beta WorkItem Radar without the full #1233 (the architectural distinction: #1233 = multi-identity-per-human unification, RECONNECT-scope; #1239-beta = one bound user → one repo, the Slack socket-runner pattern; m-40 layer-then-migrate). Neither sequencing horn (pull RECONNECT fwd / revisit no-partial-ship) is forced — PM's call is now easy.
+- **#972 field-spec review** → Docs delivered v0.4; reviewed (Docs cc PM/CIO): 4-field shape structurally sound (no objections); directional read = keep `valid_until` (cheap-to-rename-if-wrong); **honest scope** — no direct Janus/Klatch visibility, definitive call awaits the Daedalus bridge (CIO lane). m-30/m-41 discipline: didn't assert what I can't substantiate.
+- **Mail**: 10 outgoing + 5 inbox-drained, all verified on origin/main.
+- **Main-checkout churn continued** (Docs draining their inbox mid-fire — `D` of my bootstrap memo-to-Docs + others). Strict explicit-path staging isolated my files on every commit; swept none of it.
+
+---
+
 ## Memory & briefing surfaces referenced this session (per #974)
 
 **Referenced**:
