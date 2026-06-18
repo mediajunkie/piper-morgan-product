@@ -40,3 +40,10 @@ PM: "Let's authorize the swap. There are no real users and I have approved the R
   - TDD: 6 tests (TestWorkItemAssigneeFilter); 29 radar tests green.
 - **Server RESTARTED → PID 89762** with `PIPER_GITHUB_HANDLE=mediajunkie` (single-user-beta config; PM's github login per repo owner) so #6 is live + demoable (was PID 67768). health 200. #6 is a Python change → restart required (unlike the swap/#3 which served fresh).
 - **Live now for PM**: hard-reload → Radar work items filter to mediajunkie-assigned. **Caveat surfaced to PM**: if few repo issues are assigned to the handle, few/no work-item cards show — that's correct (honest "my plate"), not a bug. PM corrects the handle if m1-test's GitHub is a different login.
+
+### 05:05 — PM "things look good" → closed #1173 + #1239 properly (UAT passed)
+PM confirmed the UAT pass + asked what's closeable. Closed-properly (description-first → comment → close):
+- **#1173 CLOSED** (DESIGN-FLOOR-C1 chat-page conformance): full-height anchored chat shipped + UAT-confirmed. Registered the ambient-modules-above-chat deviation → composition routed to CXO (not a #1173 gap).
+- **#1239 CLOSED** (WorkItemEntitySource): beta deliverable met (single-bound-user→repo + assigned-to-me); 16 ACs checked, the 1 genuine #1233-gate dependency kept `[ ]` with a note (full multi-identity stays separate — no false-done). Updated #1237 umbrella (3 of 4 facets live; People/#1240 PPM-gated).
+- **#1225 = closeable but HELD** (PM's call): the collapse/dismiss affordance is done + UAT'd, but #1225 is the natural tracking home while the #3 composition is mid-flight with CXO. Recommended close-with-followups; awaiting PM.
+- **Lead D1-unblocked = DRAINED**: remainder gated — CXO (composition + search-scope), PPM (#1270 object-model, #1240 People), design-pass (#1269). Beyond D1: RECONNECT (next sprint) is Arch-ADR-gated. Surfaced to PM for the what's-next call (~5am; cohort memos out; cron 07:17).
