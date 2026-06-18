@@ -27,3 +27,4 @@
 ## Work log
 
 - (06:37) START — June 17 log closed. June 18 log opened. Inbox empty. Carry-forward reviewed — all major threads stable; v0.2 seed written yesterday. Sapient-trust poll next due ~2026-06-20 (two days out — not yet). Notified CIO that v0.2 seed is ready for pairing (low-priority). Note: CIO pairing-readiness memo (`mailboxes/cio/inbox/memo-host-to-cio-cc-pm-welfare-criteria-v0.2-seed-ready-for-pairing-2026-06-18.md`) swept into CXO session-log commit `726d32b7d` — shared-index race, same family as June 15. Content correct; files on main.
+- (09:37) IDLE — inbox empty; PPM + CXO inboxes clean (no trust-model sweep follow-up yet); all watch threads stable. Carry-forward: v0.2 CIO notification marked done.
