@@ -118,7 +118,16 @@
   function initModule(moduleEl, evaluateDismiss) {
     wireControls(moduleEl);
     applyCollapse(moduleEl);
-    if (evaluateDismiss) applyDismiss(moduleEl);
+    if (evaluateDismiss) {
+      applyDismiss(moduleEl);
+    } else if (lsGet(DISMISS_KEY + moduleEl.dataset.moduleId) !== null) {
+      // Async module that was previously dismissed: hide it NOW rather than
+      // waiting for its content to fetch. Otherwise it renders visible, then
+      // refreshAsync() hides it once the fetch completes → a show-then-hide
+      // flash on reload (#1225 follow-up). refreshAsync() still re-evaluates
+      // against the real content and re-surfaces it if the content changed.
+      moduleEl.classList.add("is-dismissed");
+    }
   }
 
   function init() {
