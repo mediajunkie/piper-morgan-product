@@ -413,7 +413,13 @@ class LLMClient:
         system: Optional[str] = None,
     ) -> str:
         """Get completion from Anthropic"""
-        if not self.anthropic_client:
+        # #1162 BYOC: use the request's user-supplied key (if one was bound at the
+        # /api/v1/intent route) instead of the server's configured client; falls back
+        # to the server client when absent. The key is never logged here.
+        from services.llm.request_key import anthropic_client_for_request
+
+        client = anthropic_client_for_request(self.anthropic_client)
+        if not client:
             raise RuntimeError("Anthropic client not initialized")
 
         # Build request parameters
@@ -432,7 +438,7 @@ class LLMClient:
 
         # Note: Anthropic doesn't support response_format like OpenAI
         # JSON mode must be handled via prompt engineering
-        response = self.anthropic_client.messages.create(**request_params)
+        response = client.messages.create(**request_params)
 
         # Extract actual token counts from response
         prompt_tokens = (

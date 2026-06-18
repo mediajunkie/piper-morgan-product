@@ -615,6 +615,87 @@ class TestSessionScopeCommitContract:
         )
 
 
+class TestModelMigrationCoverage:
+    """#1267 / ADR-071 D5 extension (m-41): every ORM model table MUST have an
+    ``op.create_table`` migration.
+
+    ``project_integrations`` had only ALTER migrations (``4d1e2c3b5f7a`` owner_id,
+    ``d73b3722eb03`` timestamptz) and NO create migration. Both alters are
+    IF-EXISTS-defensive, so a fresh ``alembic upgrade head`` ran clean, SILENTLY
+    skipped the never-created table, and the Projects API 500'd on the missing
+    relation (#1267). That silent-skip is why the gap is invisible at upgrade time.
+
+    A STRUCTURAL guard (not a runtime ``upgrade head`` test) is the durable catch:
+    a dev/test DB that already has the table via ``Base.metadata.create_all()`` (the
+    test-only path) would FALSE-PASS a runtime check while a true fresh-alembic DB
+    stays broken. The structural check can't be fooled by a polluted DB.
+
+    Ratchet-with-baseline: ``KNOWN_UNMIGRATED`` holds pre-existing create_all-era
+    model tables that still lack a create migration. LOWER it as those migrations
+    land; NEVER add to it — a new model table ships with its create migration.
+    #1267 removes ``project_integrations`` from the uncovered set.
+    """
+
+    # create_all-era gaps still lacking a create migration. #1267 fixed
+    # project_integrations (a1267projintegrations); #1273 (a1273coretables) backfilled
+    # intents/stakeholders/tasks/workflows → the set is now EMPTY: every ORM model
+    # table has a create migration. Do NOT add to this set — a new model table must
+    # ship with its create migration. It only shrinks.
+    KNOWN_UNMIGRATED = frozenset()
+
+    _CREATE_TABLE_RE = re.compile(r"""create_table\(\s*["']([a-zA-Z_][a-zA-Z0-9_]*)["']""")
+    _TABLENAME_RE = re.compile(r"""__tablename__\s*=\s*["']([a-zA-Z_][a-zA-Z0-9_]*)["']""")
+
+    def _repo_root(self) -> str:
+        return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    def _migrated_tables(self) -> set:
+        tables: set = set()
+        for path in glob.glob(os.path.join(self._repo_root(), "alembic", "versions", "*.py")):
+            with open(path, encoding="utf-8") as fh:
+                tables.update(self._CREATE_TABLE_RE.findall(fh.read()))
+        return tables
+
+    def _model_tables(self) -> set:
+        tables: set = set()
+        pattern = os.path.join(self._repo_root(), "services", "**", "*.py")
+        for path in glob.glob(pattern, recursive=True):
+            with open(path, encoding="utf-8") as fh:
+                tables.update(self._TABLENAME_RE.findall(fh.read()))
+        return tables
+
+    def test_project_integrations_has_create_migration(self):
+        """#1267 regression: the table whose absence 500'd the Projects API on
+        every pure-alembic DB. Fails until a create_table migration exists."""
+        assert "project_integrations" in self._migrated_tables(), (
+            "project_integrations has no `op.create_table` migration. Its only "
+            "migrations are IF-EXISTS-defensive ALTERs, so a fresh "
+            "`alembic upgrade head` silently skips it → table absent → Projects API "
+            "500 (#1267). Add an idempotent create_table head migration."
+        )
+
+    def test_no_unmigrated_model_tables_beyond_baseline(self):
+        """Every ORM model ``__tablename__`` has a create migration, except the
+        documented create_all-era baseline. A NEW model table without a create
+        migration — or project_integrations before its fix — fails here."""
+        uncovered = self._model_tables() - self._migrated_tables() - self.KNOWN_UNMIGRATED
+        assert not uncovered, (
+            f"ORM model tables with no `op.create_table` migration: {sorted(uncovered)}. "
+            f"A model table must ship with its create migration (a fresh "
+            f"`alembic upgrade head` won't create it otherwise — #1267). Add the "
+            f"migration; do NOT add the table to KNOWN_UNMIGRATED."
+        )
+
+    def test_baseline_stays_tight(self):
+        """KNOWN_UNMIGRATED must not list a table that already HAS a create
+        migration — a stale baseline hides the next regression. It only shrinks."""
+        stale = self.KNOWN_UNMIGRATED & self._migrated_tables()
+        assert not stale, (
+            f"KNOWN_UNMIGRATED lists tables that now HAVE a create migration: "
+            f"{sorted(stale)}. Remove them from the baseline (it only shrinks)."
+        )
+
+
 if __name__ == "__main__":
     # Allow running tests directly for verification
     pytest.main([__file__, "-v"])

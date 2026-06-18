@@ -136,6 +136,26 @@
         font-size: var(--font-size-sm);
       }
 
+      /* #1263: conversation-list empty-state — design-floor treatment (title + hint),
+         consistent with the center modules' card__empty. Tentative copy → CXO ratify. */
+      .no-conversations {
+        text-align: center;
+        padding: var(--space-md);
+        color: var(--color-text-secondary);
+      }
+      .no-conversations-title {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-text-primary);
+        margin: 0 0 var(--space-xs);
+      }
+      .no-conversations-hint {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-light);
+        margin: 0;
+        line-height: 1.45;
+      }
+
       .conversation-group-header {
         font-size: var(--font-size-xs);
         font-weight: var(--font-weight-semibold);
@@ -218,7 +238,7 @@
         padding: 2px 4px;
         cursor: pointer;
         color: var(--color-text-secondary);
-        font-size: 12px;
+        font-size: var(--font-size-xs);
         border-radius: var(--border-radius-sm);
         transition: opacity 0.15s, background 0.15s;
       }
@@ -260,8 +280,11 @@
 
       .main-content {
         flex: 1;
-        padding: var(--space-md);
+        display: flex; /* #1173: full-height column so the chat region fills + anchors */
+        flex-direction: column;
         min-width: 0; /* Prevents flex overflow */
+        height: calc(100vh - 60px); /* below the 60px global nav */
+        padding: var(--space-md);
       }
 
       @media (max-width: 768px) {
@@ -282,6 +305,11 @@
       .container {
         max-width: 800px;
         margin: 0 auto;
+        width: 100%;
+        display: flex; /* #1173: column — ambient modules natural-height, chat fills below */
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
         background: var(--color-background-primary);
         border-radius: var(--border-radius-lg);
         padding: var(--space-lg);
@@ -1343,7 +1371,13 @@
         const listEl = document.getElementById('conversation-list');
 
         if (!conversations || conversations.length === 0) {
-          listEl.innerHTML = '<div class="no-conversations">No conversations yet.<br>Start a new chat!</div>';
+          // #1263: design-floor empty-state treatment (title + hint), consistent with
+          // the center modules' card__empty pattern — was a plain unstyled line.
+          listEl.innerHTML =
+            '<div class="no-conversations">' +
+            '<p class="no-conversations-title">No conversations yet</p>' +
+            '<p class="no-conversations-hint">Start a new chat to begin — your history will live here.</p>' +
+            '</div>';
           return;
         }
 
