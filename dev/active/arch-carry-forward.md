@@ -2,7 +2,7 @@
 
 **Purpose**: per duty-cycle-tick skill v1.8 + PM-ratified single-log discipline 2026-06-12 + escalations-doc FOLD ratified 2026-06-17 — durable handoff record for the next Architect session. PM-attention items now ride here (the separate `duty-cycle-escalations-arch.md` is DEPRECATED 2026-06-17; archived for history).
 
-**Last rewritten**: 2026-06-17 12:14 PT (**new-Arch LIVE on DinP — migration COMPLETE**; bootstrap fire). Predecessor handoff version was 11:55 PT.
+**Last rewritten**: 2026-06-17 21:57 PT (**day-close STOP**; migration day → full ADR-072 arc authored+grounded+ratified same day). New-Arch live on DinP since the 12:14 bootstrap. Predecessor handoff version was 11:55 PT.
 
 ---
 
