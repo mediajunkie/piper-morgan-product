@@ -1,5 +1,5 @@
 ---
-name: draft-issue
+name: piper-draft-issue
 description: Draft a properly-formed GitHub issue for your project repo. Use when
   PM has a problem, bug, feature idea, or task to track. Produces a SLUG, structured
   body (Problem Statement / Goal / Requirements / AC), and correct metadata (priority,

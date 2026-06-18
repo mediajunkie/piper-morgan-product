@@ -11,11 +11,11 @@ SKILLS_DIR="${HOME}/.claude/skills"
 
 # PM-facing skills (alpha set — audited for external use)
 SKILLS=(
-  "sprint-plan"
-  "stakeholder-update"
-  "draft-issue"
-  "draft-spec"
-  "synthesize-feedback"
+  "piper-sprint-plan"
+  "piper-stakeholder-update"
+  "piper-draft-issue"
+  "piper-draft-spec"
+  "piper-synthesize-feedback"
 )
 
 echo "Installing Piper Morgan PM skills..."
@@ -52,6 +52,6 @@ fi
 
 echo ""
 echo "Restart Claude Code to pick them up as slash commands."
-echo "Try: /sprint-plan, /draft-issue, /synthesize-feedback"
+echo "Try: /piper-sprint-plan, /piper-draft-issue, /piper-synthesize-feedback"
 echo ""
 echo "Questions? https://github.com/${REPO}"

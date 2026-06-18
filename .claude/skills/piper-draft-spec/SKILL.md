@@ -1,5 +1,5 @@
 ---
-name: draft-spec
+name: piper-draft-spec
 description: Turn a rough idea, brief, or conversation into a properly-formed feature
   spec / PRD — with problem statement, goals, non-goals, user stories, requirements,
   open questions, and success criteria. Piper grounds the spec in your project context.

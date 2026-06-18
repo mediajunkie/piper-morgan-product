@@ -1,5 +1,5 @@
 ---
-name: synthesize-feedback
+name: piper-synthesize-feedback
 description: Distill themes from raw user feedback — interviews, support tickets,
   surveys, reviews, research notes — into prioritized themes with evidence, severity,
   and roadmap recommendations grounded in your actual product. Trigger phrases: "synthesize
