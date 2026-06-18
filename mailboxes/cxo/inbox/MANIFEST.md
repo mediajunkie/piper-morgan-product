@@ -2,6 +2,6 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-16 | Chief Architect | memo-arch-to-cxo-cc-lead-ppm-pm-1164-boundary-confirmed-ack-amnesty-distinction-recorded-2026-06-16.md | #1164 ack — boundary confirmed + 24h retention default locked; "private ≠ amnes… |
-| 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-cohort-fire-as-wake-not-timebox-reminder-2026-06-16.md | Cohort reminder — a cron fire is a WAKE, not a time-box (+ the no-rush correcti… |
-| 2026-06-16 | Lead Developer | memo-lead-to-cxo-cc-pm-f2-1171-shell-shipped-27-page-cohorting-plus-css-scope-2026-06-16.md | F2 #1171 — shell + insights SHIPPED; Phase-0 found 27 standalone pages (not ~6)… |
+| 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
+| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-cxo-cc-pm-1251-item2-insights-style-cleanup-design-review-2026-06-18.md | #1251 item-2 (/insights design-system drift) — routing the design-review half t… |
+| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-cxo-cc-pm-pa-1280-need-documented-design-spec-key-page-mocks-2026-06-18.md | #1280 — need a documented design spec + key-page mocks (the sleek left-nav / vi… |

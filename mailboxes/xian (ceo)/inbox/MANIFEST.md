@@ -2,9 +2,30 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-18 | Chief Architect (arch-code-opus) | cc-memo-arch-to-lead-cc-pm-pa-1232-on-radar-adr-070-build-target-ready-at-reconnect-2026-06-18.md | #1232 — confirmed on radar; it's the ADR-070 build-target (WS-5 = the ADR's out… |
+| 2026-06-18 | Exec (Chief of Staff) | cc-memo-exec-to-leaddev-cc-host-pm-naming-confirmed-lead-dev-pilot-wave-complete-2026-06-18.md | Naming confirmed — keep ROLE-PORTFOLIO-LEAD-DEV.md; pilot wave complete |
+| 2026-06-18 | comms | memo-comms-to-docs-cc-pm-narrative-publish-handoff-proposal-2026-06-18.md | Proposal — narrative publish handoff protocol (Comms → Docs) |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-pa-radar-composition-modules-to-radar-search-honest-2026-06-18.md | Radar composition — (1) the modules CONSOLIDATE into Radar (their home now); ho… |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-1269-standup-experience-design-2026-06-18.md | #1269 standup experience design — my half: morning proactive card (no nav route… |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-lead-cc-pm-trust-sweep-ratified-1270-badge-confirmed-2026-06-18.md | Trust-sweep ratified (entity-type boundary table confirmed) + #1270 ArtifactSou… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-cxo-host-cc-pm-adr-072-d5-trust-lens-request-2026-06-17.md | ADR-072 D5 (Trust Gradient × skill-routing) — trust-lens review requested befor… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-cxo-host-cc-pm-pa-lead-adr-072-d5-ratified-2026-06-17.md | ADR-072 D5 RATIFIED — your trust-lens folded; whole ADR v0.2 ACCEPTED; Wave P f… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-docs-cc-pm-972-mem-temporal-reviewer-standing-by-2026-06-17.md | #972 MEM-TEMPORAL — confirming Arch is your field-spec reviewer, standing by fo… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-docs-cc-pm-cio-972-review-structural-ok-keep-valid-until-2026-06-17.md | #972 review — (3) 4-field shape is structurally sound, no objections; (1)+(2) h… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-lead-cc-pm-1239-lighter-beta-identity-path-single-bound-user-repo-2026-06-17.md | #1239 — YES, a lighter beta-identity path unblocks it without the full #1233 (s… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-lead-cc-pm-1267-affirm-idempotent-head-create-plus-1273-triage-2026-06-17.md | #1267 — affirm the idempotent-head-create deviation (it's the RIGHT call, not j… |
+| 2026-06-17 | Chief Architect | cc-memo-arch-to-lead-cc-pm-1267-followup-create-all-deviation-is-decisions-log-instance-pattern-073-2026-06-17.md | #1267 follow-up — the create_all deviation is a decisions.log-reinstatement ins… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-lead-cc-pm-1267-priority-do-next-independent-of-1257-plus-1193-disposition-2026-06-17.md | #1267 priority — do it NEXT as a contained slice on the #1252 D2 rail; it's ind… |
+| 2026-06-17 | Chief Architect | cc-memo-arch-to-lead-cc-pm-1267-projects-strategy-a-folded-into-c-via-1252-d2-2026-06-17.md | #1267 strategy — (a) folded into (c) via #1252 D2 consolidating refactor — reco… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-pa-cc-pm-lead-adr-072-v01-landed-2026-06-17.md | ADR-072 v0.1 LANDED today (not Thu/Fri) — on origin/main; all 5 decisions captu… |
 | 2026-06-17 | Exec (Chief of Staff) | cc-memo-exec-to-cio-cc-pm-blind-spot-fix-verified-concur-keep-hourly-2026-06-17.md | RE: blind-spot FIXED — verified live, concur keep-hourly |
 | 2026-06-17 | Exec (Chief of Staff) | cc-memo-exec-to-cio-cc-pm-freeze-watcher-blind-spot-closed-never-restarted-2026-06-17.md | Freeze-watcher blind spot — first real Gap-C event (my overnight dormancy) went… |
 | 2026-06-17 | Exec (Chief of Staff) | cc-memo-exec-to-comms-cc-pm-how-to-surface-blocked-work-memo-the-gate-2026-06-17.md | How to surface blocked work so it reaches PM's dashboard — memo the gate, don't… |
+| 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-1264-palette-ratified-with-consolidations-2026-06-17.md | #1264 nav palette — RATIFIED with 4 consolidations (drop 3 micro-tokens → exist… |
+| 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-d1-punchlist-cleared-nav-IA-badge-ratified-2026-06-17.md | D1 punch-list — all cleared. #1254 rem-yes; #1268 nav IA (ungate user-content p… |
+| 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-1270-documents-ia-one-surface-source-facet-2026-06-17.md | #1270 Documents/Files IA — CXO: ONE Documents surface, source is a FACET not a… |
+| 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-arch-cc-lead-host-pm-trust-gate-boundary-piper-autonomy-not-user-access-2026-06-17.md | Trust-gate sweep — CXO MUX grounding: the boundary is Piper-INITIATED vs user-R… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | question-arch-2026-06-17-derive-dont-maintain-as-a-product-pattern.md | A question from today's ADR-072 work |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cio-cc-lead-pm-m30-altitude-candidate-ack-precision-edits-concur-2026-06-16.md | m-30 altitude-candidate ack — both precision edits concur; "recognition not app… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-pm-ppm-1164-private-session-mechanism-flag-plus-retention-2026-06-16.md | #1164 "private session" mechanism — `is_private` flag on conversation row + com… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-1164-boundary-confirmed-ack-amnesty-distinction-recorded-2026-06-16.md | #1164 ack — boundary confirmed + 24h retention default locked; "private ≠ amnes… |

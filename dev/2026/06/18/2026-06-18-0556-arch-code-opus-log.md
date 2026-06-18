@@ -35,6 +35,12 @@ Genuinely no unblocked substantive work this morning — queue is awaiting cohor
 
 ---
 
+### Mail-loop (06:55, PM-flagged) — #1232 connector contract on radar
+
+Lead flagged **#1232** (RECONNECT WS-5 — the MCP-consumer Connector contract; PM-prompted), asking me to confirm it's on my radar before RECONNECT spins up. Confirmed (Lead cc PM/PA): it's the **ADR-070 build-target** — ADR-070 v0.1 settles the architecture; #1232's first step = translate it into the concrete `Connector` protocol definition + 1–2 proof-port plan the other WS gameplans build against. **Load-bearing dependency**: lands BEFORE WS-1/WS-2 (D3/D4 auth-to-MCP-layer may shrink them). **No action today** (D1 current; RECONNECT is Product Backlog, PM owns timing) — confirmed it's my first RECONNECT action when it activates. Added to carry-forward queued-work #4. Inbox drained.
+
+---
+
 ## Memory & briefing surfaces referenced this session (per #974)
 
 _(Accrued through the day; filled at STOP.)_
