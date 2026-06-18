@@ -122,3 +122,5 @@ Armed after boot: windowed expression `22 6,9,12,15,18,21 * * *` (offset :22; da
 **Website main at close**: `03a4f42cc`
 **Cron**: armed `46ad109d`; will fire tomorrow at 06:22.
 
+<!-- DAY-CLOSED: 2026-06-17 -->
+

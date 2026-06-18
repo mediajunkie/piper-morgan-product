@@ -1,18 +1,18 @@
 ---
 name: draft-issue
-description: Draft a properly-formed GitHub issue for the Piper Morgan repo. Use when
+description: Draft a properly-formed GitHub issue for your project repo. Use when
   PM has a problem, bug, feature idea, or task to track. Produces a SLUG, structured
   body (Problem Statement / Goal / Requirements / AC), and correct metadata (priority,
   labels, milestone, epic). Trigger phrases: "file an issue", "create a ticket",
   "draft an issue", "track this", "we should file a bug for".
 scope: cross-role
-version: 1.0
+version: 1.1
 created: 2026-06-14
 ---
 
 # draft-issue
 
-Turn a problem statement into a properly-formed Piper Morgan GitHub issue — with SLUG, structured body, correct metadata, and checkboxes that `close-issue-properly` can audit at close.
+Turn a problem statement into a properly-formed GitHub issue — with SLUG, structured body, correct metadata, and checkboxes you can audit at close.
 
 ## When to Use
 
@@ -26,6 +26,12 @@ Turn a problem statement into a properly-formed Piper Morgan GitHub issue — wi
 ### Step 1 — Gather context
 
 Identify the minimum needed to draft well. Read from the current conversation first; only ask PM for what's genuinely missing.
+
+**Detect the target repo first**:
+```bash
+git remote get-url origin 2>/dev/null | sed 's/.*github.com[:/]//' | sed 's/.git$//'
+```
+If in a git repo with a GitHub remote, use that. If not, ask PM which GitHub repo to use (e.g. `owner/repo`). Do not assume a default.
 
 **Required**:
 - Problem or goal (what needs to happen, and why)
@@ -134,7 +140,7 @@ Below the draft, show PM the proposed `gh issue create` command so they can appr
 
 ```bash
 gh issue create \
-  --repo mediajunkie/piper-morgan-product \
+  --repo OWNER/REPO \
   --title "SLUG — Full title" \
   --label "enhancement,component: ui" \
   --milestone "MVP" \
@@ -152,7 +158,7 @@ cat > /tmp/issue-draft.md << 'BODY'
 BODY
 
 gh issue create \
-  --repo mediajunkie/piper-morgan-product \
+  --repo OWNER/REPO \
   --title "SLUG — Full title" \
   --label "enhancement" \
   --milestone "MVP" \
@@ -309,7 +315,7 @@ After:  meet-piper walks PM through connecting GitHub; consult-piper enriches fr
 **Proposed create command**:
 ```bash
 gh issue create \
-  --repo mediajunkie/piper-morgan-product \
+  --repo OWNER/REPO \
   --title "MEET-PIPER-GITHUB — Add GitHub connector setup to meet-piper onboarding" \
   --label "enhancement,component: integration" \
   --milestone "MVP" \
