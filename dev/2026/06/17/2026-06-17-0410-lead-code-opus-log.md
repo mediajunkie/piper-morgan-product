@@ -212,3 +212,33 @@ Built WorkItem as a live Radar entity on **Arch's lighter beta path** (`382f7eea
 - **Leak hygiene**: checks `is_configured()` BEFORE `initialize()` → **opens no session for unconfigured users** (better than places.py's order). The configured path still leaks one session/load (router has no `close()` API — pre-existing, shared w/ places.py) → **discovered + filed #1279** (P3 tech-debt).
 - **#1239 KEPT OPEN** pending PM UAT (live work-item cards need a configured github token + Radar render — same gate that closed #1238). Commented #1239 + updated #1237 umbrella (3 of 4 beta Radar types done; Person/#1240 still PPM-gated).
 - **RE-OPENED D1 QUEUE DRAINED**: nav IA (Lists+Radar) · #1262✅ · #1263✅(verified) · #1048✅ · #1270(commented, PPM-gated) · #1254 rem✅ · #1225(shipped, UAT) · #1239(shipped, UAT). Cron re-arm next; surface the 3-item home live-test bundle (#1173/#1263/#1225) + the #1239 UAT to PM.
+
+### 22:00 — PM live-test ENABLED (Stage-3 bump + server restart); live-test in flight
+PM said "Sure!" to enabling the gated UATs. Two blockers found + cleared:
+- **Trust-stage gate**: web user `xian` (a25db09c) was **Stage 1 (NEW)** → the #1225 home modules + the Radar feed (#1239) are Stage-3+ **capability** surfaces (correctly gated per HOST's read) → invisible. **Bumped to Stage 3 (ESTABLISHED)** via `UserTrustProfileRepository.create_or_update` (get-or-create; was no-profile→implicit NEW). **Reversible** (set back to NEW / delete profile when UAT done).
+- **Stale in-memory route**: server PID 63579 ran my templates/CSS/JS fresh (worktree cwd) but its in-memory `radar.py` predated #1239 (Python needs restart). **Restarted env-stripped from the worktree** → PID 67768, health 200, `/api/v1/radar` 401 (live). Schema-drift warning at boot = pre-existing (create_all-vs-alembic; #1267/#1273's class), benign.
+- **Surfaced the full test menu to PM** (7 items): nav Lists/Radar (#1262/#1268) · #1173 full-height chat · #1225 collapse/dismiss (now visible @ Stage 3) · #1263 empty-state · #1239 Radar work-items (route live; **cards need GitHub connected** for the user — no token yet → graceful empty; connect via Settings→Integrations) · #1254 font-scaling.
+- **IN FLIGHT (the one open thread)**: PM live-testing now; I asked "what do you see?" — **awaiting results**. Any bug → fix-forward next.
+
+---
+
+## STOP — DAY-CLOSE 2026-06-17 (22:21 PT, last-of-day fire)
+
+**Day-arc** (Lead Dev, 04:10→22:21 — a big build day): **#1267** projects-500 Beta-blocker FIXED+CLOSED (idempotent head-create migration + D5 model↔migration guard + real from-base verify) → **#1273** the 4 other create_all-era tables (intents/tasks/workflows/stakeholders) migrated+CLOSED, guard baseline now EMPTY (full coverage) → **#1228** Inchworm CLOSED (both halves done) → **#1162** BYOC credential-decoupling server-side done + handed off (PA plugin + ops Caddy) + Caddy security explainer to PA → **#1173** full-height chat + **#1263** empty-state shipped → consolidated D1 punch-list to CXO → **[cohort replied: CXO cleared punch-list + Arch gave #1239 lighter path] → re-opened D1 queue DRAINED**: nav IA (Collections→Lists, History→Radar) · **#1262**✅ · **#1048**✅ (keep-generic + spec decision-record) · **#1254**✅ (font px→rem a11y) · **#1225** home-module collapse/dismiss shipped · **#1239** WorkItemEntitySource (3rd live Radar source, Arch single-bound-user→repo path) shipped · **#1270** statused (PPM-gated) → **PM live-test enabled** (Stage-3 bump + restart). **Discovered + filed #1279** (github-router session leak). All on origin/main; ~16 commits.
+
+**Open threads into tomorrow**: (1) **PM live-test results in flight** — #1173/#1263/#1225 visual + #1239 (needs GitHub connect) + #1254; any bug = fix-forward. (2) **#1225 + #1239 stay OPEN** pending that UAT. (3) **Stage-3 bump is reversible** — revert when UAT done if PM wants. (4) Gated remainder (owners memo'd): #1270-rest + #1240 → PPM · #1269 → design pass · #1271-b/#1251-item2 → CXO.
+
+### Memory & briefing surfaces referenced this session (#974 pilot)
+- **Referenced**: `CLAUDE.md` (restart-env-strip recipe, mailbox-bridge, worktree model — all load-bearing this fire) · `duty-cycle-tick` skill (fire dispatch + this STOP) · `close-issue-properly` skill (#1262/#1048/#1254 description-first closes) · CXO punch-list memo + Arch #1239 memo (drove the whole drain) · `services/radar/sources.py` DocumentEntitySource pattern (mirrored for WorkItem) · `web/api/routes/places.py` (github-router acquisition pattern) · HOST trust-stage memo (confirmed capability-vs-content gate split) · memories `minimal_deliverable_needs_fleshing_out_plan` (#1225 deferred scope), `no_confabulating_expected_steps` (verify-first on #1263 copy + #1048 authorization), `info_holder_writes_it_down` (#1048 spec record).
+- **Loaded but not referenced**: most of the carry-forward's historical sections (RESUME ANCHOR + older 6/16 snapshots) · the comms/docs-lane MEMORY.md index entries.
+- **Wanted but not found**: a `GitHubIntegrationRouter.close()`/context-manager API (its absence = the #1279 leak; wanted, filed) · a dev-override helper to set trust-stage (had to hand-write the create_or_update upsert — minor tooling gap).
+
+### Sign-off checklist
+- `git status` (tracked): clean — no tracked working-tree changes (only others' untracked: data/github_preferences.json, prog logs — not mine).
+- `git log @{u}..HEAD`: empty (branch fully pushed).
+- `git log main..HEAD`: empty (all work reachable from origin/main — verified by content each commit this session).
+- Inbox: clear. Escalations doc: no Open items (methodology-41 reconcile = no-op).
+- Cron: **armed** `0351e020` (expr `17 22,7,10,13,16,19`) — left armed for tomorrow's 07:17 START.
+- Server: PID 67768 up (health 200), serving the worktree fresh + #1239 loaded.
+
+<!-- DAY-CLOSED: 2026-06-17 -->
