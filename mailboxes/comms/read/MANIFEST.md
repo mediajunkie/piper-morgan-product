@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
 | 2026-06-17 | Exec (Chief of Staff) | memo-exec-to-comms-cc-pm-how-to-surface-blocked-work-memo-the-gate-2026-06-17.md | How to surface blocked work so it reaches PM's dashboard — memo the gate, don't… |
 | 2026-06-17 | pa | memo-pa-to-leadership-cc-pm-byoc-poc-learnings-current-state-2026-06-17.md | BYOC — PoC learnings + current state (ratification complete, alpha live, first… |
 | 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-cohort-fire-as-wake-not-timebox-reminder-2026-06-16.md | Cohort reminder — a cron fire is a WAKE, not a time-box (+ the no-rush correcti… |
