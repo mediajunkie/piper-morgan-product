@@ -242,6 +242,20 @@ This specification succeeds if:
 
 ---
 
+## Decision Record
+
+### Insight Journal stage-specific visual treatment — keep generic (MVP)
+
+**Decided 2026-06-16** (CXO + PPM dual-nod; closes #1048, the design question deferred from #1031 Q3).
+
+The Insight Journal **page** does not differentiate its visual presentation by trust stage for MVP. It works at all four stages (server-rendered `window.trustStage` + endpoint behavior); the *presentation* stays generic.
+
+**Rationale**: the Insight Journal is a **Pull-mode / browse-on-demand** surface — the user explicitly came to look. The trust gradient is most load-bearing on **proactive (Push)** surfaces, where "creepy vs. helpful" is at stake — not on a page the user deliberately opened. Stage-specific affordance gating (Options 2/3 in #1048) is post-MVP polish if ever warranted, not a beta requirement.
+
+Supersedes the `Stage-specific visual treatment if any (TBD per spec)` placeholder from #1031.
+
+---
+
 ## Related Specifications
 
 - **D2**: Control Interface Patterns (how users modify what they see)
