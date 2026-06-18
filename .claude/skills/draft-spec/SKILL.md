@@ -153,7 +153,7 @@ Keep them user-facing — not implementation steps.]
 
 ## Design notes
 
-[Wireframes, UX flows, or key interaction decisions — or "None yet; PM/CXO to drive." Don't block the spec on design; note what's known and what's open.]
+[Wireframes, UX flows, or key interaction decisions — or "None yet; PM/design team to drive." Don't block the spec on design; note what's known and what's open.]
 
 ---
 
@@ -208,13 +208,11 @@ Don't present the spec as final — present it as a working draft for PM's corre
 
 ### Step 6 — Create the artifact
 
-Once PM approves, save to the appropriate location:
+Once PM approves, ask where they'd like to save it — or offer to paste the full spec as text they can copy into their preferred tool (doc, Notion, Confluence, etc.).
 
-**For a spec that will become GitHub issues** (most common): save to `dev/active/spec-{SLUG}-{date}.md`, then use `draft-issue` to file requirements as issues.
+**If PM is using GitHub Issues**: use `draft-issue` to file each requirement chunk as an issue after the spec is approved.
 
-**For a formal spec that needs stakeholder review**: save to `docs/specs/{SLUG}-spec-{date}.md`.
-
-**Format**: Markdown. No PDF, no Google Doc, no Notion (unless PM requests it). Markdown is the authoritative format.
+**Format**: Markdown is the default — it pastes cleanly into most tools and can become issues directly.
 
 ---
 
@@ -249,6 +247,8 @@ Before showing the spec to PM:
 
 **Input** (from conversation):
 > "We should have a way for Piper to send me a weekly digest — like a summary of what happened in my product that week. GitHub activity, maybe calendar if it's connected. Something I can read Monday morning."
+
+> **Note**: this example is drawn from Piper's own product development. Product-specific references (feature names, internal roles) are Piper's — substitute your product's equivalents when using this skill.
 
 **SLUG**: `WEEKLY-DIGEST`
 
@@ -321,7 +321,7 @@ PM receives a concise Monday digest that covers GitHub + Calendar activity for t
 - [ ] Piper generates a digest covering the 7-day window ending Sunday 11:59pm
 - [ ] GitHub section: closed issues, merged PRs, new issues opened — grouped by repo
 - [ ] Calendar section: events for the coming week (Mon–Sun), filtered to work calendars
-- [ ] Insights section: any Piper insights that emerged in the prior week (if Trust Gradient ≥ Building)
+- [ ] Insights section: any Piper insights that emerged in the prior week (if assistant has sufficient session context)
 
 ### Delivery
 - [ ] Digest is delivered as a Piper message (in conversation, not email — v1)
@@ -344,7 +344,7 @@ None yet. Digest is text-only in v1 — no UI surface, no email template. Format
 
 - Depends on: GitHub connector (meet-piper Wave 1), Calendar connector (meet-piper Wave 1 if wired)
 - Data fetch: same enrichment layer as consult-piper, called on a Monday cron or user trigger
-- Piper insights: read from Insight Journal (server-side) — gated on Trust Gradient ≥ Building
+- Piper insights: read from session history and stored PM profile — included when enough context exists
 
 ---
 
@@ -354,7 +354,7 @@ None yet. Digest is text-only in v1 — no UI surface, no email template. Format
 |---|---|---|
 | Is Monday delivery via cron or manual trigger only in v1? | xian | Before kick-off |
 | Which calendar provider(s) are in scope for v1 — Google only, or also Outlook? | xian | Before kick-off |
-| Does the digest go into the main conversation thread or a dedicated channel? | CXO | Before design |
+| Does the digest go into the main conversation thread or a dedicated channel? | PM/design lead | Before design |
 
 ---
 
@@ -378,4 +378,4 @@ None yet. Digest is text-only in v1 — no UI surface, no email template. Format
 
 ## Changelog
 
-- **v1.0** (2026-06-15): Initial version. Wave 1 PM skill #3. Deployment: Native + Plugin.
+- **v1.0** (2026-06-15): Initial version.

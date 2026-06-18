@@ -245,4 +245,4 @@ Before presenting the sprint proposal:
 
 ## Changelog
 
-- **v1.0** (2026-06-15): Initial version. Wave 2 PM skill #5. Goal-aligned sprint selection with explicit "in / out / watch" structure, dependency surfacing, and capacity math. Richer with GitHub connector but workable without. No marketplace equivalent that's grounded in your team's actual backlog and velocity. Deployment: Native + Plugin (GitHub data pull requires Plugin path).
+- **v1.0** (2026-06-15): Initial version. Goal-aligned sprint selection with explicit "in / out / watch" structure, dependency surfacing, and capacity math. Richer with GitHub connector but workable without.

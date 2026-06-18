@@ -170,7 +170,7 @@ gh issue create \
 
 Note the issue number returned. If this is a child of an epic, add a comment to the epic linking it:
 ```bash
-gh issue comment EPIC_NUMBER --repo mediajunkie/piper-morgan-product \
+gh issue comment EPIC_NUMBER --repo OWNER/REPO \
   --body "Child issue filed: #NEW_NUMBER (SLUG)"
 ```
 
