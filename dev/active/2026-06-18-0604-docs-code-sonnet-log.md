@@ -65,8 +65,13 @@
 - Per PM approval, sent memo to Web inbox (`mailboxes/web/inbox/memo-docs-to-web-cc-pm-day-closed-sentinel-missing-2026-06-18.md`): explains the sentinel, why it matters, that Docs patched once but won't do nightly sweeps, and asks Web to include it per duty-cycle-tick STOP procedure.
 - Committed `057d1d69f`; pushed to origin/main.
 
-### Rubric discussion (open, pending PM)
-- PM raised the question: is a softer rubric OK for "properly closed" for duty-cycle agents?
-- Docs interpretation: this is about whether the `<!-- DAY-CLOSED -->` sentinel is strictly required, or whether the merge-keeper/self-heal detection criteria should be relaxed (or both).
-- Pending PM's clarifying response before determining whether to update the skill or detection logic.
+### Rubric decision — PM-ratified, committed to decisions.log
+- **Decision**: sentinel stays required; self-heal + merge-keeper heuristics softened for "handoff section present, marker absent" → warn only (soft-close), no retroactive pass. Full retroactive pass reserved for genuinely unclosed sessions.
+- Committed to `docs/internal/architecture/decisions/decisions.log` (`373ba3533`).
+- Skill updates still needed: duty-cycle-tick STOP self-heal + START Step-0 detection (filed as follow-on; not blocking).
+
+### Dispatch Medium syndication — "Hypothesis Refuted"
+- Dispatch syndicated today's "Hypothesis Refuted" post to Medium and updated the editorial calendar.
+- Calendar verified: `mediumURL = https://medium.com/building-piper-morgan/hypothesis-refuted-a2b51f8c7e38`; `canonicalSite = distributed`.
+- LinkedIn fields still empty (normal — syndication typically happens separately).
 

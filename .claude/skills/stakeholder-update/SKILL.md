@@ -213,4 +213,4 @@ Anything you want me to escalate on the Stripe side?
 
 ## Changelog
 
-- **v1.0** (2026-06-15): Initial version. Wave 2 PM skill #4. Audience-calibrated templates for exec, team, investor, customer, and cross-functional updates. Voice discipline and assumption-naming built in. No marketplace equivalent with profile-grounded voice calibration. Deployment: Native + Plugin.
+- **v1.0** (2026-06-15): Initial version. Audience-calibrated templates for exec, team, investor, customer, and cross-functional updates. Voice discipline and assumption-naming built in.

@@ -24,6 +24,7 @@ Prior day (2026-06-17) confirmed properly closed — `<!-- DAY-CLOSED: 2026-06-1
 - Beats 10–13 (Jul 2/7/9/14)
 - Beats 14–16 (Jul 16/21/23)
 
-- Fire 0 (06:12 PT) — START. Jun 17 properly closed. Inbox zero. Noted: PM filled Beat 7 frontmatter overnight (image + alt + caption). Checked current file state: YAML caption had unclosed single-quote wrapper — surfaced to PM (fixing). PM requested Comms→Docs publish handoff protocol memo. Written + filed to docs/inbox + xian (ceo)/inbox + comms/sent (`77c6232cd`). Proposal: Comms sends explicit "publish-ready" memo as formal trigger (morning of / evening before); Docs waits for it before running pipeline; return signal = Docs sends URLs to Comms for calendar.
+- Fire 0 (06:12 PT) — START. Jun 17 properly closed. Inbox zero. Noted: PM filled Beat 7 frontmatter overnight (image + alt + caption). Checked current file state: YAML caption had unclosed single-quote wrapper — surfaced to PM (fixing). PM requested Comms→Docs publish handoff protocol memo. Written + filed to docs/inbox + xian (ceo)/inbox + comms/sent (`77c6232cd`). Proposal: Comms sends explicit "publish-ready" memo as formal trigger (morning of / evening before); Docs waits for it before running pipeline; return signal = Docs sends URLs to Comms for calendar. PM confirmed Beat 7 edits done (fixes + Docs jargon/opacity pass complete). Beat 7 publish-ready signal sent to Docs (`f065349f6`).
+- Fire 1 (09:12 PT) — Duplicate cron (`6de957b1` stale from Jun 17 STOP) cleared. Inbox: Exec cohort broadcast re escalations-doc deprecation (FOLD 2026-06-17, no reply needed). Triaged → read/. Removed stale `dev/active/duty-cycle-escalations-comms.md` (`b96150cf8`). Carry-forward is the PM-attention home going forward; fully compliant.
 
 ---

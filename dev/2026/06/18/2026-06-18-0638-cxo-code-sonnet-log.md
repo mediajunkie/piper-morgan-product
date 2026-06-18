@@ -87,14 +87,40 @@ Inbox triaged. Memos moved to read/. Cron re-armed. C1 (#1173) already CLOSED by
 - Confirmed: CXO design review half is done (posted to GH issue Fire 0)
 - 6 non-annotated items queued for cleanup after Lead's insights.css extraction
 
+## Fire 1.5 — inbox (10:17, post-cron trigger)
+
+### PA: skill naming convention → responded
+- `piper-ask` / `piper-consult` / `piper-meet` (big-endian) — namespace-first for registries + sortability
+- Three named skills through beta (not single `/piper`) — distinct names teach interaction modes
+- Route parity with app routes: aspiration for post-beta, not a current constraint
+- Delivered: `memo-cxo-to-pa-cc-pm-skill-naming-convention-2026-06-18.md`
+
+### PPM #1237 People facet → B: silent omission
+- 3-facet Radar is complete-at-3, not visibly incomplete. No teaser.
+- People ships post-beta as capability gain ("Radar gets smarter"), not gap fill.
+- Delivered: `memo-cxo-to-ppm-cc-pm-1237-people-silent-omission-2026-06-18.md`
+
+## Fire 2 (10:17) — heartbeat
+
+Inbox: empty. All CXO threads gated on other agents:
+- #1280: spec on origin/main; Lead builds
+- #1269: waiting on Lead/PPM to sequence build
+- #1251: waiting on Lead's insights.css extraction
+- #1236: entity search — build lane
+- Home composition: Lead implementing
+- Standing (#950 floor-quality, #992 ethics-decline voice): no regressions observed this fire
+
+No unblocked CXO work. Heartbeat only.
+
 ## Carry-forward for next fire
 
-- **#1280** spec delivered and on origin/main; Lead builds from here. CXO: monitor build, no blocking action.
-- **#1236** open: entity search is the remaining AC (build lane, not CXO design right now)
-- **Home composition** in-flight with Lead (modules→Radar-panel, side-by-side)
-- **#1251** enforcement half in-flight with Lead; 6-item cleanup pass to follow after his extraction
-- **#1269** waiting on Lead/PPM to review and sequence the build
-- **Standing**: #950 floor-quality watch, #992 ethics-decline voice oversight
+- **#1280** spec on origin/main; Lead builds. CXO monitors.
+- **#1237** People deferred post-beta (PPM agreed); silent omission confirmed.
+- Skill naming: `piper-*` big-endian locked; PA submitting with `piper-ask/consult/meet`.
+- **#1251** waiting on Lead's insights.css extraction (6-item triage pending).
+- **#1269** waiting on Lead/PPM build sequencing.
+- **#1236** entity search — build lane, Lead's lane.
+- **Standing**: #950 floor-quality watch, #992 ethics-decline voice oversight.
 
 ## Memory & briefing surfaces referenced this session
 - RadarEntity contract / honest-provenance / don't-assert-what-you-can't-substantiate (search placeholder, badge, trust boundary)
