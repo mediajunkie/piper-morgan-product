@@ -11,55 +11,67 @@
 - **Home composition (my design)**: chat-center, Radar-right, side-by-side. Modules consolidate into Radar panel. Search reverted to "Search conversations…". Lead implementing.
 - **#1164**: ANSWERED (session-level privacy-toggle on provenance pipeline). Do not re-open.
 - **Trust-gate boundary**: Piper-INITIATED vs user-REACHING is the discriminator. Radar both-sides correct. ADR-072 D5 ratified.
-- **Design floor**: F1+F3+F2 ALL BUILT. D1 punchlist all cleared. C1 chat-conformance = next.
-- **#1270 Documents**: converged. Badge ratified. PPM enum-addendum incoming (seen in inbox).
+- **Design floor**: F1+F3+F2 ALL BUILT. C1 CLOSED this morning (PM UAT passed). Design floor 100% done.
+- **#1270 Documents**: converged. Badge ratified. PPM enum-addendum incoming.
 - **Cron**: deleted at migration. Re-arming this session.
-- **Model-A branch `claude/peaceful-almeida-32a5f5`**: clean sign-off by prior session — nothing stranded.
+- **Model-A branch clean**: prior session sign-off was complete.
 
-## Inbox (06:38): 3 memos
-- ✅ `memo-lead-to-cxo-cc-pm-ppm-1269-define-morning-standup-experience-2026-06-18.md` — Lead asking for standup experience design
-- ✅ `memo-ppm-to-lead-cxo-cc-pm-1269-standup-data-model-2026-06-18.md` — PPM delivering data model half
-- ✅ `memo-ppm-to-lead-cxo-cc-pm-trust-sweep-entity-model-lens-1270-reconcile-2026-06-18.md` — PPM trust-sweep + ArtifactSourceType reconcile
-
-**Action items from inbox**:
-1. Design the standup experience (#1269) — Lead's gate before build; my half
-2. Ratify trust-sweep surface calls — PPM delivered boundary table; no blocking action but confirm
-3. Acknowledge #1270 reconcile — PPM tidying; my UX call (per-row badge) already ratified
+## Inbox (06:38): 3 memos — all triaged
+- `memo-lead-to-cxo-cc-pm-ppm-1269-define-morning-standup-experience-2026-06-18.md` — Lead asking for standup experience design
+- `memo-ppm-to-lead-cxo-cc-pm-1269-standup-data-model-2026-06-18.md` — PPM delivering data model half
+- `memo-ppm-to-lead-cxo-cc-pm-trust-sweep-entity-model-lens-1270-reconcile-2026-06-18.md` — PPM trust-sweep + ArtifactSourceType reconcile
 
 ## START (06:38)
 
-Inbox triaged. Memos moved to read/. Cron being re-armed.
+Inbox triaged. Memos moved to read/. Cron re-armed. C1 (#1173) already CLOSED by Lead this morning.
 
-Confirmed: no old Model-A `claude/cxo-cycle` branch in worktree list (clean).
+## Fire 0 (06:38–07:10) — work done
 
-## WORK (06:38) — #1269 standup experience design
+### #1269 standup experience design
+- Delivered `memo-cxo-to-lead-ppm-cc-pm-1269-standup-experience-design-2026-06-18.md`
+- Surface: proactive morning card above chat input, not a dedicated nav route. Before 10am; collapses on interaction.
+- Shape: Yesterday / Today / Watch — prose narrative. "Watch" (not "Blockers") for honest confidence on staleness signals.
+- No vanity metrics: real completions, calendar, blocked/stale items only.
+- PM feedback: "Great design! Off to a good start!"
 
-→ See outbound memo `memo-cxo-to-lead-ppm-cc-pm-1269-standup-experience-design-2026-06-18.md`
+### Trust-sweep + #1270 ratify
+- Delivered `memo-cxo-to-ppm-lead-cc-pm-trust-sweep-ratified-1270-badge-confirmed-2026-06-18.md`
+- Boundary table ratified. Stage-definition language corollary endorsed (Piper-behavior language, not user-entitlement).
+- ArtifactSourceType reconcile acknowledged. Per-row badge (Generated/Uploaded) stands.
 
-Design summary:
-- **Surface**: proactive morning card in the home screen (above-chat), not a dedicated nav route. Appears on first open before ~10am; collapses/dismisses after interaction or after ~10am.
-- **Shape**: Yesterday / Today / Watch — prose narrative, not a dashboard. Reads as literal standup prep text. ("Watch" instead of "Blockers" to signal honest confidence on staleness signals.)
-- **No vanity metrics**: replaced by real signal (completions, calendar, blocked/stale items).
-- **Trigger**: morning-first (PM's "offered first thing") = time-aware proactive; NOT a persistent surface.
-- Full design: in outbound memo.
+### Infrastructure
+- Cron `7e2b8c84` — `47 6,9,12,15,18,21 * * *` — windowed daytime, first fire 06:47
+- Duty-cycle registry: CXO row added (threshold 6h, wake 6-22)
+- Cohort fire log: Fire 0 row appended
+- All pushed to origin/main via main-checkout bridge
 
-## WORK (06:38) — Trust-sweep + #1270 ratify
+### #1251 design review (items 2 + 3)
+- Posted to https://github.com/mediajunkie/piper-morgan-product/issues/1251#issuecomment-4742701540
+- Item 3 (wording): already fixed — "Correct this" / "That's right" in template
+- Item 2 intentional exceptions: warm palette + semantic action colors APPROVED as documented
+- Item 2 non-annotated: 6 items needing annotation or token (border-radius pill, gap 6px, padding 6px, line-height 1.6, empty/loading px values)
+- Primary gap: inline <style> block not covered by token_lint (Lead's enforcement half closes this)
 
-→ See outbound `memo-cxo-to-ppm-lead-cc-pm-trust-sweep-ratified-1270-badge-confirmed-2026-06-18.md`
+### #1236 search placeholder revert
+- Commit 6949d2c35: reverted `renderRadar()` from "Search everything — issues, docs, people, chats…" to honest "Search conversations…"
+- Both static HTML and JS runtime now honest. Comment marks the seam for when entity-search lands.
+- Posted to https://github.com/mediajunkie/piper-morgan-product/issues/1236#issuecomment-4742739421
+- Issue stays open: "entity-search subsumes chat-search" AC still unmet
 
-- Trust boundary table: ratified. PPM's per-type table correctly applies the Piper-INITIATED vs user-REACHING discriminator.
-- Stage-definition language corollary endorsed: stages describe Piper's behavior, not user entitlements.
-- ArtifactSourceType reconcile: acknowledged. `GENERATED` = canonical for Piper-generated artifacts. `FEDERATED` post-Beta. Per-row badge UX call (✨Generated / ⬆️Uploaded) stands.
+## Carry-forward for next fire
 
-## WORK (06:50) — Infrastructure: cron + registry + fire log
-
-- **Cron**: `7e2b8c84` — `47 6,9,12,15,18,21 * * *` — windowed daytime, first fire 06:47
-- **Duty-cycle registry**: CXO row added (`dev/active/duty-cycle-registry.tsv`): threshold 6h, wake 6-22
-- **Cohort fire log**: Fire 0 row appended (`metrics/cohort-fire-log.tsv`)
-- All pushed to origin/main via main-checkout bridge.
+- **#1236** open: entity search is the remaining AC (build lane, not CXO design right now)
+- **Home composition** in-flight with Lead (modules→Radar-panel, side-by-side)
+- **#1251** enforcement half in-flight with Lead; 6-item cleanup pass to follow
+- **#1269** waiting on Lead/PPM to review and sequence the build
+- **Standing**: #950 floor-quality watch, #992 ethics-decline voice oversight
 
 ## Memory & briefing surfaces referenced this session
-- (fill at wrap)
+- RadarEntity contract / honest-provenance / don't-assert-what-you-can't-substantiate (search placeholder, badge, trust boundary)
+- ProactivityGate/trust-gradient (trust boundary ratification)
+- Design-floor specs (C1 status check, #1251 design review)
+- Docs close-marker convention (<!-- DAY-CLOSED -->)
+- Mailbox discipline (main-bridge for mail commits; per-memo commit-and-push)
 
 ## Sign-off checklist
-- (fill at wrap)
+- (update at session end)
