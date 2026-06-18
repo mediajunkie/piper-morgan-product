@@ -2003,6 +2003,42 @@ class StandupPartialCapture:
 
 
 @dataclass
+class StandupSummary:
+    """Derived standup read-model (#1269) — Piper's *derived view* over the observed
+    entity catalog (Conversations / Documents / WorkItems via the Radar EntitySources),
+    assembled by ``services.standup.assembler.StandupAssembler``.
+
+    Deliberately distinct from ``StandupPartialCapture`` (above), which is the
+    *interactive-capture write-state* — what the user typed, persisted alongside a
+    ``StandupConversation`` for escape/resume. This is the *read-side*: what Piper
+    derived from observed data. Same three-slot shape, different provenance and
+    lifecycle (cf. CQRS read-model vs. write-model) — so it is its own type, not an
+    overload of the capture state. Carries the narrative rendering (``to_prose()``,
+    #1269 P3).
+
+    Reuses ``StandupItem`` so derived items render through the same ``standup.html``
+    path (#704); each item's ``source`` is tagged ``radar:{type}`` so the surface can
+    tell derived-from-observed items apart from captured / commit items.
+    """
+
+    yesterday: List["StandupItem"] = field(default_factory=list)
+    today: List["StandupItem"] = field(default_factory=list)
+    blockers: List["StandupItem"] = field(default_factory=list)
+
+    def is_empty(self) -> bool:
+        """True if no slot has any derived item. Honest empty — the surface renders
+        this gracefully ("nothing yet"), never a fabricated "all clear"."""
+        return not (self.yesterday or self.today or self.blockers)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "yesterday": [it.to_dict() for it in self.yesterday],
+            "today": [it.to_dict() for it in self.today],
+            "blockers": [it.to_dict() for it in self.blockers],
+        }
+
+
+@dataclass
 class StandupConversation:
     """
     Domain model for interactive standup conversations.

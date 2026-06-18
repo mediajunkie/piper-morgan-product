@@ -39,3 +39,36 @@ The current standup is hollow: `today_priorities` all `source:"fallback"` (hardc
 
 ## Not in scope
 People-as-a-slot (PPM: emerge as context); insights/learning (Piper's analysis layer, not a real-data summary); attention-scoring (post-MVP — Today ordering uses recency for now).
+
+---
+
+## Phase-0 contract-read FINDINGS (2026-06-18, post-compaction — verify-before-build) ✅
+
+Read the actual source code before writing the assembler. Three findings change the build:
+
+### 1. Lifecycle-vocab reconcile — RESOLVED (the flagged-careful part)
+The EntitySources emit ONLY these `lifecycle_state` strings (from `services/radar/sources.py`), plus an `attention` epoch-seconds field on every `RadarEntity` (the parsed `updated_at`/`last_activity` — this IS our recency timestamp; there is no separate datetime):
+- **Conversation**: `active` (<24h) · `idle` (<7d) · `dormant` (≥7d)  [recency-derived]
+- **Document**: `new` (<24h) · `recent` (<7d) · `stale` (≥7d)  [recency-derived]
+- **WorkItem**: `closed` · `blocked` (label~block) · `in-review` (label~review/in-progress) · `open`  [state+label-derived]
+
+The PPM-vocab in the original filters (`DONE/RESOLVED/CLOSED`, `RATIFIED`, `IN_PROGRESS`, `BLOCKED/STALLED`) does **not** exist in the emitted labels. **The honest mapping uses the real labels + `attention`:**
+- **Yesterday** (what moved in last ~24h) = Conversation `active` + Document `new`. *(Both are recency-fresh.)*
+- **Today** (on my plate) = WorkItem `open` + `in-review` (assigned-to-me via #6) + Document `recent` (+ calendar, P2). *This is what replaces the hardcoded `fallback_priorities`.*
+- **Blockers** = WorkItem `blocked` + stale-still-open: WorkItem `open`/`in-review` with `attention` older than N days (N=3 default, confirm w/ CXO/PM).
+
+### 2. ⚠️ Honest gap — WorkItem source is OPEN-ONLY
+`WorkItemProvider.list_for_user` calls `router.get_open_issues(...)` → the WorkItem source NEVER emits `closed`. So **"Yesterday = closed work items" is unsatisfiable through the live source.** Yesterday is therefore Conversation+Document recency only (which is honest — we surface what we actually observed moved). A future enhancement (#706/post-MVP) could add a recently-closed-issues pull; out of scope for beta. Documented so the empty-ish Yesterday slot isn't mistaken for a bug.
+
+### 3. Complete-not-duplicate — reuse `StandupItem`, NEW `StandupSummary`
+`services/domain/models.py` already has:
+- **`StandupItem`** (line 1901) — the line-item value object (`display/source/lifecycle_state/icon` + `to_dict`/`from_dict`/`__str__`), already consumed by `standup.html` (#704). **REUSE it** — the derived items render through the same template path.
+- **`StandupPartialCapture`** (line 1956) — three slots `yesterday/today/blockers: List[StandupItem]`. Same SHAPE as our summary, BUT it is the **interactive-capture write-state** (user-authored, persisted with `StandupConversation`, escape/resume). Semantically distinct from a system-**derived** read-model. → Create a NEW `StandupSummary` (derived view + `to_prose()`), reusing `StandupItem`; do NOT overload `StandupPartialCapture`.
+
+`StandupItem.source` for derived items: use the entity_type origin — `"radar:conversation"` / `"radar:document"` / `"radar:work_item"` — so the surface can tell derived-from-observed items apart from captured/commit items. `lifecycle_state` carries the coarse label through.
+
+### 4. The existing hollow standup (what #1269 ultimately retires)
+`services/features/morning_standup.py::MorningStandupWorkflow.generate_standup` → `StandupResult`. Its `_get_github_activity` hardcodes `commits: []`, so `yesterday_accomplishments` is always empty, `blockers` is always "No recent GitHub activity detected", `today_priorities` falls to config `fallback_priorities` (the `source:"fallback"` PM saw), and it reports vanity `time_saved_minutes`. The `StandupAssembler` supersedes this as the data source; retiring/rewiring the old workflow + its surfaces (standup.html, MCP skill, consciousness layer) is P5/P6 (surface) — P1b stands up the assembler + domain first. *(Note latent bug for later: `generate_with_documents/issues/calendar` `.append()` plain strings into `List[StandupItem]` — type drift, not #1269's job.)*
+
+### Assembler shape (decided)
+`StandupAssembler(sources: list[EntitySource])` — takes the SAME list `build_entity_sources()` returns (DI; tests pass fakes). `async assemble(user_id) -> StandupSummary`: gather all entities with **per-source isolation** (mirror `RadarFeed.assemble`'s try/except — a failing source must never blank the standup), filter to OBSERVED, partition into slots by `(entity_type, lifecycle_state, attention)`. Pure derivation — no DB. `now_epoch` injectable for deterministic tests (default `datetime.now(timezone.utc).timestamp()`).
