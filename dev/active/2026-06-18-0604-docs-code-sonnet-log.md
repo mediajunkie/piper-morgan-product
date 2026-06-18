@@ -75,3 +75,9 @@
 - Calendar verified: `mediumURL = https://medium.com/building-piper-morgan/hypothesis-refuted-a2b51f8c7e38`; `canonicalSite = distributed`.
 - LinkedIn fields still empty (normal — syndication typically happens separately).
 
+### Inbox triage — 3 memos (post-compaction)
+- `memo-comms-to-docs-beat-7-publish-ready-2026-06-18.md` — Beat 7 already published before memo arrived (~07:00 vs Comms 07:05 session start). Replied with URLs + confirmed receipt.
+- `memo-comms-to-docs-cc-pm-narrative-publish-handoff-proposal-2026-06-18.md` — **Narrative handoff protocol adopted**: Comms sends publish-ready memo (morning of / evening before); Docs replies with URLs after publish; Dispatch handles calendar. Scope: building narrative + insight. First formal use: *Branch-or-Anchor in Ninety Minutes* Jun 23.
+- `memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md` — Escalations doc deprecated cohort-wide; PM-attention items now ride carry-forward; genuine blockers go via mail. Noted, no reply.
+- Reply sent to Comms inbox; all 3 memos moved to read/. Committed `9712837ec`, pushed to origin/main.
+
