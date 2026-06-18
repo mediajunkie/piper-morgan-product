@@ -75,7 +75,6 @@ ls mailboxes/lead/inbox/
 
 # 3. Load current context
 # See docs/briefing/BRIEFING-CURRENT-STATE.md for sprint status
-# See docs/briefing/PROJECT.md for project overview
 
 # 4. Read cross-project brief
 # See docs/briefs/cross-pollination/current.md for insights from sibling projects
