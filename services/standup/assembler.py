@@ -254,3 +254,21 @@ def build_standup_assembler(user_history_service, calendar_provider=None) -> Sta
         build_entity_sources(user_history_service),
         calendar_provider=calendar_provider or StandupCalendarProvider(),
     )
+
+
+async def build_user_standup_summary(user_id: str) -> StandupSummary:
+    """The on-demand standup (#1269 P5/P4): assemble a ``StandupSummary`` over a fresh
+    DB-backed ``UserHistoryService`` (mirrors ``web.api.dependencies.get_user_history_service``)
+    + the live Radar EntitySources + calendar. The chat query path
+    (``IntentService._handle_standup_query`` → "give me my standup") and the morning card
+    call this; the caller renders ``summary.to_prose()`` / ``summary.to_dict()``.
+    """
+    # Lazy imports: this is the only place the standup engine touches the DB/session layer;
+    # keep it out of the import-light assembler core.
+    from services.database.repositories import DBUserHistoryRepository
+    from services.database.session_factory import AsyncSessionFactory
+    from services.memory.user_history import UserHistoryService
+
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        uhs = UserHistoryService(DBUserHistoryRepository(session))
+        return await build_standup_assembler(uhs).assemble(user_id)

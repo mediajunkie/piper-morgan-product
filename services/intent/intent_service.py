@@ -2397,30 +2397,32 @@ class IntentService:
     async def _handle_standup_query(
         self, intent: Intent, workflow_id: str, session_id: str
     ) -> IntentProcessingResult:
-        """Handle show_standup/get_standup query actions via StandupOrchestrationService."""
+        """Handle show_standup/get_standup query actions — the on-demand standup DERIVED
+        over the live entity catalog (#1269: StandupAssembler reading the same Radar
+        EntitySources + calendar), replacing the hollow source:"fallback" path. This is the
+        QUERY/on-demand surface; the interactive ``/standup`` capture flow
+        (StandupConversationHandler, #585) is a separate path and is untouched.
+        """
         try:
-            from services.domain.standup_orchestration_service import StandupOrchestrationService
+            from services.standup.assembler import build_user_standup_summary
 
-            standup_service = StandupOrchestrationService()
-            standup_result = await standup_service.orchestrate_standup_workflow(
-                user_id=session_id, workflow_type="standard"
-            )
+            summary = await build_user_standup_summary(session_id)
 
             return IntentProcessingResult(
                 success=True,
-                message=f"Good morning! Here's your standup:\n\n{standup_result.summary}",
+                message=f"Good morning! {summary.to_prose()}",
                 intent_data={
                     "category": intent.category.value,
                     "action": intent.action,
                     "confidence": intent.confidence,
-                    "context": {"standup_data": standup_result.data},
+                    "context": {"standup_data": summary.to_dict()},
                 },
                 workflow_id=workflow_id,
                 requires_clarification=False,
                 clarification_type=None,
             )
         except Exception as e:
-            self.logger.error(f"Standup service error: {e}")
+            self.logger.error(f"Standup generation error: {e}")
             return IntentProcessingResult(
                 success=True,  # Still success, just degraded
                 message="Unable to generate standup at this time. Please try again later.",

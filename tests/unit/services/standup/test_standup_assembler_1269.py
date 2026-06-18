@@ -341,3 +341,48 @@ class TestBuildStandupAssembler:
         } <= source_types
         # and the real calendar provider for the Today slot
         assert isinstance(asm._calendar, StandupCalendarProvider)
+
+
+# --- P5: the on-demand glue (DB-session → assembler → summary) the chat handler calls ---
+
+
+class _FakeSessionCM:
+    async def __aenter__(self):
+        return "SESSION"
+
+    async def __aexit__(self, *a):
+        return False
+
+
+class TestBuildUserStandupSummary:
+    async def test_opens_a_fresh_session_and_assembles(self, monkeypatch):
+        # Verify the glue's job: open a fresh DB session → wire UHS → build_standup_assembler
+        # → assemble → return the summary. The session/repo/UHS infra are stubbed (proven
+        # elsewhere); we assert the glue delegates to the assembler and returns its summary.
+        import services.standup.assembler as mod
+
+        monkeypatch.setattr(
+            "services.database.session_factory.AsyncSessionFactory",
+            type("F", (), {"session_scope_fresh": staticmethod(lambda: _FakeSessionCM())}),
+        )
+        monkeypatch.setattr(
+            "services.database.repositories.DBUserHistoryRepository",
+            lambda session: ("repo", session),
+        )
+        monkeypatch.setattr(
+            "services.memory.user_history.UserHistoryService",
+            lambda repo: ("uhs", repo),
+        )
+        known = StandupSummary(today=[_si("the thing", "open")])
+        captured = {}
+
+        class _FakeAssembler:
+            async def assemble(self, user_id):
+                captured["user_id"] = user_id
+                return known
+
+        monkeypatch.setattr(mod, "build_standup_assembler", lambda uhs: _FakeAssembler())
+
+        out = await mod.build_user_standup_summary("user-42")
+        assert out is known  # the glue returns the assembled summary
+        assert captured["user_id"] == "user-42"  # ...for the requested user
