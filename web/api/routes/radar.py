@@ -75,6 +75,20 @@ class _ConversationHistoryProvider:
         ]
 
 
+def _filter_issues_by_assignee(issues: list, handle: Optional[str]) -> list:
+    """#6: keep only issues assigned to ``handle`` (case-insensitive), so Radar shows
+    "what's on MY plate" not every open issue in the repo. No handle → all issues (the
+    assignee filter is OPT-IN — absent config preserves the prior show-all behavior).
+    Forward-compatible with #1233 (one configured handle now → unified identity later)."""
+    items = list(issues or [])
+    if not handle:
+        return items
+    h = handle.lower()
+    return [
+        i for i in items if h in [str(a).lower() for a in (i.get("assignees") or [])]
+    ]
+
+
 class _WorkItemProvider:
     """Resolves the SINGLE bound user's configured repo and lists their open GitHub
     work items — Arch's beta path (#1239, m-40 layer-then-migrate): reuse the existing
@@ -82,14 +96,18 @@ class _WorkItemProvider:
     user_id), NOT new user-scoping infra and NOT the full #1233 identity unification.
 
     ``get_open_issues`` auto-resolves the repo from the user_id stashed by ``initialize``
-    (the Slack socket-runner's single-bound-user pattern applied to GitHub). Returns [] when
-    GitHub isn't configured or no repo resolves — graceful empty (RadarFeed's per-source
-    isolation also guards the feed, so a github hiccup never blanks Radar)."""
+    (the Slack socket-runner's single-bound-user pattern applied to GitHub). If a GitHub
+    handle is configured (#6), the issues are scoped to "assigned to me"; otherwise all
+    open issues are shown. Returns [] when GitHub isn't configured or no repo resolves —
+    graceful empty (RadarFeed's per-source isolation also guards the feed)."""
 
     async def list_for_user(self, user_id: str) -> list[dict]:
         try:
             from services.integrations.github.github_integration_router import (
                 GitHubIntegrationRouter,
+            )
+            from services.integrations.github.repo_resolver import (
+                read_user_github_handle,
             )
 
             router = GitHubIntegrationRouter()
@@ -101,8 +119,11 @@ class _WorkItemProvider:
             # initialize(user_id) stashes the user_id so get_open_issues resolves the
             # user-default repo (→ PIPER_DEFAULT_REPO) — the single-bound-user scope.
             await router.initialize(user_id=user_id)
-            issues = await router.get_open_issues(limit=_WORKITEM_FETCH)
-            return list(issues or [])
+            # #6: scope to "assigned to me" when a handle is configured. Fetch wider when
+            # filtering so assigned issues aren't missed beyond the display cap.
+            handle = read_user_github_handle(user_id)
+            issues = await router.get_open_issues(limit=100 if handle else _WORKITEM_FETCH)
+            return _filter_issues_by_assignee(issues, handle)[:_WORKITEM_FETCH]
         except Exception as e:  # never let a github hiccup blank Radar
             logger.warning("radar_workitem_source_failed", error=str(e))
             return []
