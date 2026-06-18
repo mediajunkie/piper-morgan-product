@@ -1925,6 +1925,11 @@ class StandupItem:
     source: str = ""  # "commit" | "work" | "active_repo" | "yesterday_context" | "system"
     lifecycle_state: Optional[str] = None
     icon: str = ""
+    # Optional short context line (e.g. "hasn't moved in 5 days", a calendar time).
+    # Mirrors RadarEntity.meta; populated for derived items (#1269). Defaults empty so
+    # existing constructors / standup.html (which reads display/icon/lifecycle_state)
+    # are unaffected. New field is LAST → positional construction stays valid.
+    meta: str = ""
 
     def __str__(self) -> str:
         """Legacy rendering: `f"{icon} {display}"` matches pre-#1034 format."""
@@ -1939,6 +1944,7 @@ class StandupItem:
             "source": self.source,
             "lifecycle_state": self.lifecycle_state,
             "icon": self.icon,
+            "meta": self.meta,
         }
 
     @classmethod
@@ -1949,6 +1955,7 @@ class StandupItem:
             source=data.get("source", ""),
             lifecycle_state=data.get("lifecycle_state"),
             icon=data.get("icon", ""),
+            meta=data.get("meta", ""),
         )
 
 
@@ -2023,19 +2030,110 @@ class StandupSummary:
 
     yesterday: List["StandupItem"] = field(default_factory=list)
     today: List["StandupItem"] = field(default_factory=list)
-    blockers: List["StandupItem"] = field(default_factory=list)
+    # "Watch" not "Blockers" (CXO #1269): these are Piper-INFERRED potential blockers
+    # (confirmed-blocked + staleness signals), lower-confidence than the user-DECLARED
+    # blockers in StandupPartialCapture. Calling them "blockers" would overstate Piper's
+    # confidence. Within the slot: confirmed-blocked first, then stale ("hasn't moved…").
+    watch: List["StandupItem"] = field(default_factory=list)
 
     def is_empty(self) -> bool:
         """True if no slot has any derived item. Honest empty — the surface renders
         this gracefully ("nothing yet"), never a fabricated "all clear"."""
-        return not (self.yesterday or self.today or self.blockers)
+        return not (self.yesterday or self.today or self.watch)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
             "yesterday": [it.to_dict() for it in self.yesterday],
             "today": [it.to_dict() for it in self.today],
-            "blockers": [it.to_dict() for it in self.blockers],
+            "watch": [it.to_dict() for it in self.watch],
         }
+
+    # --- prose rendering (#1269 P3, CXO experience design) ---
+
+    # verb by the derived item's coarse lifecycle label (yesterday slot).
+    _YESTERDAY_VERBS = {"closed": "closed", "new": "updated", "active": "discussed"}
+
+    @staticmethod
+    def _oxford(parts: List[str]) -> str:
+        """Oxford-comma join: [] → ""; [a] → "a"; [a,b] → "a and b"; [a,b,c] → "a, b, and c"."""
+        parts = [p for p in parts if p]
+        if not parts:
+            return ""
+        if len(parts) == 1:
+            return parts[0]
+        if len(parts) == 2:
+            return f"{parts[0]} and {parts[1]}"
+        return ", ".join(parts[:-1]) + f", and {parts[-1]}"
+
+    @classmethod
+    def _quoted(cls, names: List[str]) -> str:
+        return cls._oxford([f'"{n}"' for n in names])
+
+    def _yesterday_prose(self) -> str:
+        if not self.yesterday:
+            return ""
+        groups: List[Any] = []  # [(verb, [displays])], order-preserving
+        for it in self.yesterday:
+            verb = self._YESTERDAY_VERBS.get((it.lifecycle_state or "").lower(), "worked on")
+            if groups and groups[-1][0] == verb:
+                groups[-1][1].append(it.display)
+            else:
+                groups.append((verb, [it.display]))
+        phrases = [f"{verb} {self._quoted(names)}" for verb, names in groups]
+        return "You " + self._oxford(phrases) + "."
+
+    def _today_prose(self) -> str:
+        if not self.today:
+            return ""
+        return "You're working on " + self._quoted([it.display for it in self.today]) + "."
+
+    def _watch_prose(self) -> str:
+        if not self.watch:
+            return ""
+        parts: List[str] = []
+        for it in self.watch:
+            if (it.lifecycle_state or "").lower() == "blocked":
+                parts.append(f'"{it.display}" is blocked.')
+            else:
+                detail = it.meta or "hasn't moved recently"
+                parts.append(f'"{it.display}" {detail}.')
+        return " ".join(parts)
+
+    def to_prose(self) -> str:
+        """Render an honest spoken-standup narrative (CXO #1269: "say it out loud", the
+        actual things not counts; empty = empty, no filler / fallback copy).
+
+        Deterministic baseline — the floor, no LLM dependency; a richer LLM-polished
+        rendering can layer on at the surface / chat skill (#1269 P4/P5).
+        """
+        if self.is_empty():
+            return (
+                "Nothing to show yet — as you work in connected tools (GitHub, docs, "
+                "chats), your standup fills in here."
+            )
+        sections = [
+            (
+                "**Yesterday** — what got done",
+                self._yesterday_prose(),
+                "No completions yesterday — looks like you were in planning mode.",
+            ),
+            (
+                "**Today** — what's active",
+                self._today_prose(),
+                "Nothing in progress right now.",
+            ),
+            (
+                "**Watch** — what might be stuck",
+                self._watch_prose(),
+                "Nothing flagged as stuck.",
+            ),
+        ]
+        out: List[str] = []
+        for heading, body, empty_msg in sections:
+            out.append(heading)
+            out.append(body or empty_msg)
+            out.append("")
+        return "\n".join(out).strip()
 
 
 @dataclass

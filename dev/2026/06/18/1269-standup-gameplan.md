@@ -72,3 +72,15 @@ The PPM-vocab in the original filters (`DONE/RESOLVED/CLOSED`, `RATIFIED`, `IN_P
 
 ### Assembler shape (decided)
 `StandupAssembler(sources: list[EntitySource])` — takes the SAME list `build_entity_sources()` returns (DI; tests pass fakes). `async assemble(user_id) -> StandupSummary`: gather all entities with **per-source isolation** (mirror `RadarFeed.assemble`'s try/except — a failing source must never blank the standup), filter to OBSERVED, partition into slots by `(entity_type, lifecycle_state, attention)`. Pure derivation — no DB. `now_epoch` injectable for deterministic tests (default `datetime.now(timezone.utc).timestamp()`).
+
+## P3 build note — CXO experience memo alignment (2026-06-18, post-build read) ✅
+
+Read `memo-cxo-to-lead-ppm-cc-pm-1269-standup-experience-design-2026-06-18.md` (binding) before `to_prose`. It refined P1b/P3:
+
+- **Third slot renamed `blockers` → `watch`** (domain field too). CXO's deliberate confidence-calibration: the derived signals are Piper-*inferred* potential blockers, not user-*declared* ones — "calling them Blockers overstates Piper's confidence." Within the slot: confirmed-`blocked` first (labeled "is blocked"), then staleness ("hasn't moved in N days"). The read-model's `watch` is correctly distinct from `StandupPartialCapture.blockers` (the interactive write-state, where the user declared the blocker).
+- **`StandupItem` gained an optional `meta: str = ""`** (backward-compatible, LAST field). The assembler computes the staleness age at assembly time → `meta="hasn't moved in N days"` for stale watch items (blocked items leave it empty; the lifecycle label carries the "why"). Two existing #1034 exact-dict-shape tests updated to include `meta` (the field is an intentional contract extension).
+- **`to_prose()` = deterministic honest narrative — the FLOOR.** No LLM dependency in the domain method (testable, always-works). CXO's "say it out loud" voice approximated via type/lifecycle verbs (closed/updated/discussed) + Oxford-join; Today = "You're working on …"; Watch = blocked-first then stale. Honest-empty: CXO-verbatim "No completions yesterday — looks like you were in planning mode." / "Nothing flagged as stuck."; whole-empty = a single graceful "nothing to show yet" line (no fabricated all-clear). A richer LLM-polished rendering can layer on at the surface/skill (P4/P5) — the floor stays.
+- **Calendar** (P2) appends into the Today prose ("You have a design review at 2pm") — CXO calls calendar "the key differentiator … makes today feel real." Next phase.
+- **Surface (P4)** confirmed by CXO: NOT a nav route — a morning-moment **card** in the home center column, above chat, first-open before ~10am, dismiss/auto-dismiss-at-10am, once/day. After 10am / any time → on-demand via "give me my standup" in chat (P5, the floor). Items are links (WorkItem→GitHub, Document→/documents, calendar→calendar).
+
+*Today-empty ("Nothing in progress right now.") + whole-empty copy are mine (CXO gave verbatim only for yesterday-empty + watch-empty) — flag for CXO confirm at P4 surface review.*

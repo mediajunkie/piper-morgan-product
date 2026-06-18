@@ -12,7 +12,11 @@ epoch, NOT PPM's DONE/RATIFIED/IN_PROGRESS vocab — see ``dev/2026/06/18/1269-s
 
     Yesterday = Conversation `active` + Document `new` + WorkItem `closed`   (moved recently)
     Today     = WorkItem `open`/`in-review` (fresh) + Document `recent`       (on my plate)
-    Blockers  = WorkItem `blocked` + WorkItem `open`/`in-review` gone stale   (> stale_days)
+    Watch     = WorkItem `blocked` (first) + WorkItem `open`/`in-review` stale (> stale_days)
+
+"Watch" not "Blockers" (CXO #1269 experience design): these are Piper-INFERRED potential
+blockers (confidence-calibrated) — confirmed-`blocked` surface first, staleness signals
+follow labeled "hasn't moved in N days". Calling them "blockers" would overstate confidence.
 
 Idle/dormant conversations and stale documents fall into no slot (not "what moved" nor
 "on my plate"). EXAMPLE / SEED provenance is filtered out (honest-provenance, #1214/#1216)
@@ -49,7 +53,7 @@ _SOURCE_TAG = {
 # per-slot presentation hint for standup.html (honest + minimal).
 _YESTERDAY_ICON = "✅"
 _TODAY_ICON = "🎯"
-_BLOCKER_ICON = "⚠️"
+_WATCH_ICON = "⚠️"
 
 
 class StandupAssembler:
@@ -94,8 +98,13 @@ class StandupAssembler:
                 summary.yesterday.append(self._item(e, _YESTERDAY_ICON))
             elif slot == "today":
                 summary.today.append(self._item(e, _TODAY_ICON))
-            elif slot == "blockers":
-                summary.blockers.append(self._item(e, _BLOCKER_ICON))
+            elif slot == "watch":
+                summary.watch.append(self._watch_item(e, now))
+        # Watch ordering (CXO #1269): confirmed-blocked first, then staleness signals.
+        # Stable sort preserves the attention-desc order within each group.
+        summary.watch.sort(
+            key=lambda it: 0 if (it.lifecycle_state or "").lower() == "blocked" else 1
+        )
         return summary
 
     def _classify(self, e: RadarEntity, now: float) -> Optional[str]:
@@ -118,9 +127,9 @@ class StandupAssembler:
             if ls == "closed":
                 return "yesterday"
             if ls == "blocked":
-                return "blockers"
+                return "watch"
             if ls in ("open", "in-review"):
-                return "blockers" if self._is_stale(e.attention, now) else "today"
+                return "watch" if self._is_stale(e.attention, now) else "today"
             return None
 
         # PERSON (and any future type) is not a standup slot — PPM: people emerge as
@@ -133,10 +142,25 @@ class StandupAssembler:
         unknown recency, NOT stale (don't fabricate a stalled blocker from missing data)."""
         return attention > 0 and (now - attention) > self._stale_secs
 
-    def _item(self, e: RadarEntity, icon: str) -> StandupItem:
+    def _item(self, e: RadarEntity, icon: str, meta: str = "") -> StandupItem:
         return StandupItem(
             display=e.title,
             source=_SOURCE_TAG.get(e.entity_type, "radar"),
             lifecycle_state=e.lifecycle_state,
             icon=icon,
+            meta=meta,
         )
+
+    def _watch_item(self, e: RadarEntity, now: float) -> StandupItem:
+        """A Watch item carries an honest "why" in meta: confirmed-blocked items get no
+        extra detail (the lifecycle label says it); stale open/in-review items get the
+        age, so the surface can render "hasn't moved in N days" (CXO #1269). Unknown
+        recency (no timestamp) → "recently" rather than a fabricated day-count."""
+        if (e.lifecycle_state or "").lower() == "blocked":
+            meta = ""
+        elif e.attention > 0:
+            days = max(1, int((now - e.attention) / _SECONDS_PER_DAY))
+            meta = f"hasn't moved in {days} day{'s' if days != 1 else ''}"
+        else:
+            meta = "hasn't moved recently"
+        return self._item(e, _WATCH_ICON, meta=meta)

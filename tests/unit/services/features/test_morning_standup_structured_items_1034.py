@@ -57,6 +57,7 @@ class TestStandupItem:
             source="work",
             lifecycle_state="ratified",
             icon="📋",
+            meta="hasn't moved in 5 days",  # #1269: optional context line
         )
         d = item.to_dict()
         assert d == {
@@ -64,6 +65,7 @@ class TestStandupItem:
             "source": "work",
             "lifecycle_state": "ratified",
             "icon": "📋",
+            "meta": "hasn't moved in 5 days",
         }
 
     def test_to_dict_with_no_lifecycle(self):
@@ -273,6 +275,7 @@ def test_json_format_serializes_structured_items():
         "source": "commit",
         "lifecycle_state": None,
         "icon": "✅",
+        "meta": "",  # #1269: optional context line, empty by default
     }
     second = out["yesterday_accomplishments"][1]
     assert second["lifecycle_state"] == "ratified"
