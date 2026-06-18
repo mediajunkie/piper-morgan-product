@@ -435,3 +435,35 @@ class TestRadarSurface:
     def test_radar_title_branding(self, history_html):
         """Surface relabels to Radar (mockup fidelity) when in radar mode."""
         assert "\U0001f4e1 Radar" in history_html  # 📡 Radar
+
+    # --- #1090 swap: Radar cards must be navigable (the History list was
+    # click-to-resume; the Radar feed replaces it as the default panel) ---
+
+    def test_radar_card_is_navigable(self, history_html):
+        """A card with a ref carries the routing attributes + a focusable, clickable
+        affordance (else graduating Radar-as-default would lose conversation-resume)."""
+        assert "card.setAttribute('data-entity-type'" in history_html
+        assert "card.setAttribute('data-ref', entity.ref)" in history_html
+        assert "card.setAttribute('tabindex', '0')" in history_html
+        assert "card.classList.add('radar-card--clickable')" in history_html
+
+    def test_radar_card_only_clickable_when_ref_present(self, history_html):
+        """Refless cards (e.g. the empty-state example) are not made clickable."""
+        assert "if (entity.ref) {" in history_html
+
+    def test_radar_card_click_routes_by_entity_type(self, history_html):
+        """Delegated click opens the referent: Conversation resumes the chat,
+        Work item opens the issue, Document goes to the Documents page."""
+        assert "e.target.closest('.radar-card[data-ref]')" in history_html
+        assert "if (type === 'Conversation') {" in history_html
+        assert "options.onSelect({ id: ref })" in history_html  # resume the chat
+        assert "window.open(ref, '_blank', 'noopener')" in history_html  # work item
+        assert "window.location.href = '/documents'" in history_html  # document
+
+    def test_radar_card_keyboard_navigable(self, history_html):
+        """Enter/Space activates a radar card (a11y parity with conversation items)."""
+        assert ".history-item, .radar-card[data-ref]" in history_html
+
+    def test_radar_card_clickable_css_present(self, history_html):
+        """Clickable cards show a pointer cursor + a focus ring."""
+        assert ".radar-card--clickable" in history_html

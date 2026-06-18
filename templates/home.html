@@ -2014,12 +2014,14 @@
             onPrivacyToggle: handleHistoryPrivacyToggle
           });
 
-          // Load initial data — #1236: Radar surface behind ?radar=1 (default off → no regression).
-          const radarEnabled = new URLSearchParams(window.location.search).get('radar') === '1';
-          if (radarEnabled) {
-            loadRadar();
-          } else {
+          // #1090 swap (PM-authorized 2026-06-18, Radar design approved, no real users):
+          // Radar is now the DEFAULT Layer-2 panel. ?radar=0 is the escape hatch back to
+          // the plain conversation list (loadRadar also falls back to it on fetch error).
+          const radarDisabled = new URLSearchParams(window.location.search).get('radar') === '0';
+          if (radarDisabled) {
             loadHistoryData();
+          } else {
+            loadRadar();
           }
 
           console.log('#735: History sidebar mounted');
