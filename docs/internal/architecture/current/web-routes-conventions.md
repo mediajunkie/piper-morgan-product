@@ -65,3 +65,27 @@ For genuine exceptions (demos, ops tooling, scaffolds outside the product surfac
 1. Document the exception in this file with the rationale
 2. Cross-reference from CLAUDE.md "API Conventions" section so the rule's reader sees the exceptions
 3. Flag to Architect for awareness — exceptions tend to accumulate without explicit governance
+
+## How to add a DEV-ONLY route (#1149)
+
+A debug/test/dev-tooling route must not be reachable in production — and not merely
+forbidden there, but **invisible** (404, so prod doesn't disclose it exists). The
+canonical gate is `web/dev_gate.py`:
+
+1. Mount the router normally via `RouterInitializer.mount_router(...)` in `web/app.py`.
+2. Hang the gate on the router so it covers every route:
+   ```python
+   from web.dev_gate import require_dev_environment
+   router = APIRouter(tags=["debug"], dependencies=[Depends(require_dev_environment)])
+   ```
+   Every route then 404s when `PIPER_ENVIRONMENT` (or the older `ENVIRONMENT`) is
+   `production`. Default is `development` (the #1087 pattern) → open in dev, closed in
+   prod with no per-deploy config.
+3. Add a test exercising the real behavior (404 in prod, served in dev) — see
+   `tests/unit/web/test_dev_gate_1149.py`.
+
+The global auth middleware already 401s most routes, but this is **defense-in-depth**:
+a dev page shouldn't ship to prod at all. Live examples: `web/api/routes/debug.py`
+(#1149), `web/routers/dev_trust.py` (#1148), `web/routers/dev_composting.py` (#1143).
+*(Follow-up: migrate dev_trust + dev_composting off their hand-rolled copies onto
+`web/dev_gate.require_dev_environment` — small DRY cleanup, not done in #1149's scope.)*
