@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-17 ~18:37 PT (ADR-072 D5 ratified; trust-stage origin read sent to Lead+CXO+PPM; trust-model sweep HOST contribution complete)
+**Last updated**: 2026-06-17 ~21:37 PT (welfare-criteria v0.2 seed written; inbox empty; all watch threads stable)
 
 ---
 
@@ -36,7 +36,7 @@
 - **m-41 third instance** accepted by CIO 6/13 (three-altitude framing, force-by-constraint sub-shape, at m-41↔m-36↔Pattern-070 confluence). CIO handling formalization. Acked 6/13.
 - **gbrain co-signed memo**: ✅ DELIVERED TO PM (2026-06-16). CIO+HOST T1–T4 synthesis. Adopt-now: idempotency-as-rule. Roadmap: propose-and-diff, cost-consent gate, transcript-first observability, constructor-level bounds. m-36 at architecture layer. Complete.
 - **Escalations-docs fold** — ✅ COMPLETE 2026-06-17. PM ratified; CIO executed (skill v1.13; per-role docs deprecated). HOST answered thin-view question: rollup sufficient; scoping note sent (rollup covers GitHub; carry-forward covers non-issue PM-blocks → mail PM for those).
-- **Dashboard welfare-criteria v0.2** (m-39, HOST owns; pair w/ CIO): v0.1 + B-bis + B-ter done.
+- **Dashboard welfare-criteria v0.2** (m-39, HOST owns; pair w/ CIO): **v0.2 seed WRITTEN 2026-06-17** (`dev/active/dashboard-welfare-criteria-host-v0.2-seed.md`). New criteria D (dashboard honesty / no silent non-surfacing), E (consequential-action accountability surface), F (asymmetric-knowledge detection). Three v0.1 open questions answered. Ready for CIO pairing — notify CIO when scheduling.
 
 ## Active threads (no-PM-block)
 
