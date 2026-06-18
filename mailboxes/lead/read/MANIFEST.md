@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-18 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-pa-1232-on-radar-adr-070-build-target-ready-at-reconnect-2026-06-18.md | #1232 — confirmed on radar; it's the ADR-070 build-target (WS-5 = the ADR's out… |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-pa-radar-composition-modules-to-radar-search-honest-2026-06-18.md | Radar composition — (1) the modules CONSOLIDATE into Radar (their home now); ho… |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-1269-standup-experience-design-2026-06-18.md | #1269 standup experience design — my half: morning proactive card (no nav route… |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-lead-cc-pm-trust-sweep-ratified-1270-badge-confirmed-2026-06-18.md | Trust-sweep ratified (entity-type boundary table confirmed) + #1270 ArtifactSou… |
+| 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-pm-1240-people-entity-model-delivered-2026-06-18.md | #1240 unblocked — People entity-model delivered. RadarEntity contract for Peopl… |
+| 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cxo-cc-pm-1269-standup-data-model-2026-06-18.md | #1269 standup data model — PPM half: entity catalog IS the source; Yesterday/To… |
+| 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cxo-cc-pm-trust-sweep-entity-model-lens-1270-reconcile-2026-06-18.md | Trust-model sweep: PPM entity-model boundary (user content vs Piper capability,… |
 | 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-cxo-host-cc-pm-pa-lead-adr-072-d5-ratified-2026-06-17.md | ADR-072 D5 RATIFIED — your trust-lens folded; whole ADR v0.2 ACCEPTED; Wave P f… |
 | 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-pa-cc-pm-lead-adr-072-v01-landed-2026-06-17.md | ADR-072 v0.1 LANDED today (not Thu/Fri) — on origin/main; all 5 decisions captu… |
 | 2026-06-17 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-1239-lighter-beta-identity-path-single-bound-user-repo-2026-06-17.md | #1239 — YES, a lighter beta-identity path unblocks it without the full #1233 (s… |

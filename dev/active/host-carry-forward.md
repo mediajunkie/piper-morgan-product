@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-17 ~21:37 PT (welfare-criteria v0.2 seed written; inbox empty; all watch threads stable)
+**Last updated**: 2026-06-18 ~06:37 PT (new day; June 17 log closed; June 18 log opened; inbox empty)
 
 ---
 
@@ -13,7 +13,7 @@
 - **Account**: DinP (xian@designinproduct.com). Model: sonnet-4-6.
 - **Worktree**: ephemeral Option B (`claude/trusting-faraday-ec4bba`). `claude/host-cycle` retired 2026-06-13.
 - **Cron**: `d1d78a04`, windowed `37 6,9,12,15,18,21 * * *` (re-armed 2026-06-17 START after Gap-C; session-only).
-- **Session log today**: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`
+- **Session log today**: `dev/2026/06/18/2026-06-18-0637-host-code-sonnet-log.md`
 - **Gap-C cure incoming**: CIO proved `mcp__scheduled-tasks` solves cron-death (June 13). Disk-persistent, survives restarts, fires in main checkout. CIO proposing cohort rollout. HOST should be in first cohort — flag interest to CIO.
 - **Migration touch-ups**: thin-prompt proposal Model A → Option B ✅ DONE (fire ~15:37).
 
