@@ -83,5 +83,11 @@ PM-directed (not a cron fire): 5 edits to the cross-project agent chart `~/Devel
 5. **PM-agent short names**: Lead Developer→Lead Dev · Chief Architect→Arch · Chief of Staff→Exec · Piper Alpha→PA (CXO/PPM/CIO/Comms/Docs/HOST already short).
 - The careful verification pass also caught + fixed a cosmetic line-join the ETA removal introduced (PA + Mobile Consultant objects merged onto one line; re-split). Migration: **CXO next** (PM confirmed).
 
+### 19:07 — WORK: MEM-EVAL LANDED (Docs shipped #1274) + PROJECT.md ratified + #972 valid_until confirmed
+- **Docs IMPLEMENTED #1274 same-day** — the MEM-EVAL payoff is real: **MEMORY.md 42KB → 22.1KB** (under the 24.4KB limit; no more truncation — the token-efficiency win is LIVE across all 11 roles every fire). **3 entries recovered from the truncated bottom** (were silently invisible — a quality win on top of the token win). **Gap issues #1275** (live board-state) **/ #1276** (canonical-retest history) **/ #1277** (canonical ops recipes) filed. Shared-index owner-Q resolved. #1274 closed.
+- **RATIFIED the PROJECT.md demand-load** (Docs's request = my analysis's rec, PROJECT.md ref 0/134): remove from CLAUDE.md Step 3, keep in Progressive Loading table → Docs implements. Low-risk (stays available), my lane, PM cc'd. Told Docs the BRIEFING-CURRENT-STATE disposition is already settled (HOST: keep-loaded + behavioral fix, off the trim list).
+- **#972 `valid_until` CONFIRMED** (Arch review, cc me): the 4-field shape is structurally sound; **KEEP `valid_until`** (symmetric pair + Janus-inconsistent + cheap-to-rename-if-wrong) — concurs with my Daedalus proposal. The definitive Janus answer still awaits the Daedalus bridge (my lane, gated on Klatch rousing). Arch `response:none` → no memo; folding the concurrence into the Daedalus thread when Klatch rouses.
+- 4 filed → read.
+
 ## Memory & briefing surfaces referenced this session
 *(filled at STOP — #974 3-bucket)*
