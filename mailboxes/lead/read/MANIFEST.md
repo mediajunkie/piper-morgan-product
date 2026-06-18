@@ -12,6 +12,7 @@
 | 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-lead-cc-pm-trust-sweep-ratified-1270-badge-confirmed-2026-06-18.md | Trust-sweep ratified (entity-type boundary table confirmed) + #1270 ArtifactSou… |
 | 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
 | 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-leaddev-cc-host-pm-naming-confirmed-lead-dev-pilot-wave-complete-2026-06-18.md | Naming confirmed — keep ROLE-PORTFOLIO-LEAD-DEV.md; pilot wave complete |
+| 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-pm-1237-proceed-3of4-people-deferred-2026-06-18.md | #1237 green-light — proceed with 3-of-4 (WorkItem/Document/Conversation); Peopl… |
 | 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-pm-1240-defer-people-post-beta-2026-06-18.md | #1240 People source — PPM recommendation: Option 4 (Defer post-beta); PM to con… |
 | 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-pm-1240-people-entity-model-delivered-2026-06-18.md | #1240 unblocked — People entity-model delivered. RadarEntity contract for Peopl… |
 | 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cxo-cc-pm-1269-standup-data-model-2026-06-18.md | #1269 standup data model — PPM half: entity catalog IS the source; Yesterday/To… |
