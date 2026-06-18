@@ -74,5 +74,14 @@ Launched 5 parallel per-role gather subagents → all returned; **completeness v
 - **PA BYOC state** (leadership cc, informational): ratification 9/9 done; alpha.pipermorgan.ai live; Ted Nadeau = first external tester today; Wave P blocked on ADR-072. No CIO action → filed.
 - 3 filed → read.
 
+### ~17:00 — PM task: agent-chart cleanup (dispatch `registry-ui.html`)
+PM-directed (not a cron fire): 5 edits to the cross-project agent chart `~/Development/dispatch/registry-ui.html` (hardcoded `const DATA`). Committed dispatch `dd8b381`; **40 agents, DATA parses OK**, in PM's Launch preview.
+1. **Theseus — the careful one** (PM-flagged "be careful"): the single entry was mislabeled **"Theseus Prime"** but carried slug `theseus`. **Verified before editing**: real Theseus has **15 Klatch session logs**; the clone "theseus-prime" has **0**. → relabeled "Theseus Prime"→**"Theseus"**, status `done`→`active`, statusText "Active — many ongoing sessions"; the AXT clone stays untracked (no separate entry existed). Dropped the "migrated Apr 4" date (possibly the clone's; avoided asserting it).
+2. **ETA dropped** (PM: drop for now).
+3. **Coding sub-agents combined**: Programmer + Special Assignments → **"Coding Agent"** (slug prog). [FLAGGED to PM: left Vibe Coder separate — fold it too?]
+4. **Dispatch combined**: Dispatch-DinP → **"Dispatch"** (+ project notes). [FLAGGED: read as renaming the -DinP-suffixed agent to the clean "Dispatch" identity; left Dispatch-Kind separate — confirm, or merge both?]
+5. **PM-agent short names**: Lead Developer→Lead Dev · Chief Architect→Arch · Chief of Staff→Exec · Piper Alpha→PA (CXO/PPM/CIO/Comms/Docs/HOST already short).
+- The careful verification pass also caught + fixed a cosmetic line-join the ETA removal introduced (PA + Mobile Consultant objects merged onto one line; re-split). Migration: **CXO next** (PM confirmed).
+
 ## Memory & briefing surfaces referenced this session
 *(filled at STOP — #974 3-bucket)*
