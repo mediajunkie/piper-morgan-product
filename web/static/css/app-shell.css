@@ -5,7 +5,12 @@
 
 body {
   margin: 0;
-  min-height: 100vh;
+  /* #1280 fix: BOUND the shell to the viewport so the rail (and its footer/avatar) stays
+     viewport-height and the center scrolls internally. `min-height` let the page grow with
+     long center content, pushing the rail footer (margin-top:auto) below the fold → "no avatar".
+     (D2/mobile-first: switch to 100dvh + the responsive stack.) */
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   background: var(--color-neutral-off-white);
