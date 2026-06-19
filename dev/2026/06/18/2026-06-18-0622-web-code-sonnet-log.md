@@ -31,3 +31,25 @@
 | 06:50 | Mailbox triage | 2 memos → read: Docs (DAY-CLOSED sentinel; adopted), Exec (escalations docs deprecated; no web action needed) |
 | 09:47 | Cron fire | 09:22 fire; cron armed; inbox files still git-tracked (rm'd but not staged); fixed with git rm |
 
+---
+
+## Day-close (2026-06-18) — retroactive, PM-initiated 2026-06-19
+
+**Reason**: cron stalled after battery outage; session ended without a STOP fire.
+
+**Day arc**: Quiet hold day — all queues PM-react gated, no unblocked website work. Two memos triaged at 06:50 (Docs DAY-CLOSED sentinel adopted; Exec escalations-docs deprecated, no Web action). Website main unchanged from June 17 close (`03a4f42cc`). Cron was armed and running through 09:47 fire; stalled at battery outage thereafter.
+
+**Queue at close** (all PM-react gated, same as open):
+- Obs-pass joint walkthrough (~20 items)
+- Site walkthrough (resumable at `/methodology`)
+- CLI B trial-run (PM end-to-end test pending)
+- `--mode=archive` scope (awaits PM approval)
+
+**Website main at close**: `03a4f42cc` (no new commits this session)
+
+## Memory & briefing surfaces referenced this session
+**Referenced**: Docs DAY-CLOSED sentinel convention (adopted from Docs memo).
+**Loaded but not referenced**: web-standing-items.md, bootstrap brief.
+**Wanted but not found**: nothing.
+
+<!-- DAY-CLOSED: 2026-06-18 -->

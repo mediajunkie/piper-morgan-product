@@ -172,7 +172,7 @@ Standup prose now renders as markdown blocks (not run-on); per-slot enumeration 
 - #1269: plumbing + formatting done; morning-card surface (P4) is next build step
 - #1251, #1283: Lead's build lanes, not CXO-blocked
 
-<!-- DAY-CLOSED -->
+<!-- DAY-CLOSED: 2026-06-18 -->
 
 ## Carry-forward for next fire
 
