@@ -44,27 +44,38 @@ def test_new_chat_cta(html):
     assert 'id="nav-rail-new-chat"' in html and "New chat" in html
 
 
-def test_footer_nav_links_present(html):
-    for label in ("Check in", "Your stuff", "Learning", "Insights", "Radar"):
+def test_footer_utility_links(html):
+    # v2: compact footer utility links — Check in (Stage 3+), Insights, Learning, Settings.
+    assert "nav-rail-utility" in html
+    for label in ("Check in", "Insights", "Learning", "Settings"):
         assert label in html
 
 
-def test_trust_gating_preserved(html):
-    # the JS reads data-min-trust-stage to show/hide — must survive the relocation
-    assert 'data-min-trust-stage="3"' in html  # Check in / Learning
-    assert 'data-min-trust-stage="1"' in html  # Insights / Radar
+def test_check_in_is_the_only_trust_gated_item(html):
+    # v2: only "Check in" is gated (Stage 3+, link-level); Insights/Learning/Settings are plain.
+    assert 'data-min-trust-stage="3"' in html  # Check in
+    assert 'data-min-trust-stage="1"' not in html  # no Stage-1 gating in the v2 footer
     assert "nav-item-trust-gated" in html
 
 
-def test_your_stuff_items(html):
+def test_no_radar_nav_item(html):
+    # v2: the "Radar" item is removed — home IS the Radar (logo links home).
+    assert "nav-history-trigger" not in html
+
+
+def test_your_stuff_in_avatar_menu(html):
+    # v2: "Your stuff" moves from a footer dropdown into the user-avatar menu (the 6 user-content routes).
+    assert "Your stuff" in html  # the avatar-menu label
     for label in ("To-dos", "Projects", "Work Items", "Files", "Documents", "Lists"):
         assert label in html
 
 
-def test_user_menu_in_footer(html):
-    assert 'id="user-menu-button"' in html
-    for label in ("Settings", "Account", "Logout"):
+def test_avatar_menu_has_account_logout_not_settings(html):
+    # v2: avatar menu = Your stuff / Account / Logout. Settings is a FOOTER link, not in the menu.
+    assert 'id="user-menu-button"' in html and 'id="user-dropdown"' in html
+    for label in ("Account", "Logout"):
         assert label in html
+    assert 'id="dropdown-settings"' not in html  # the old in-menu Settings link is gone (now a footer link)
 
 
 def test_is_not_the_old_top_nav(html):

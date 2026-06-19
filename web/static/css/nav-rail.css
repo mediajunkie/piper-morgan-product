@@ -74,51 +74,33 @@
 }
 .nav-rail-new-chat:hover { background: var(--color-primary-dark); }
 
-/* Footer — nav links + user-menu, pinned to the bottom */
+/* Footer — compact utility links + user-avatar menu, pinned to the bottom (#1280 v2: footer
+   utilities at the mock's .tag weight, NOT primary nav). */
 .nav-rail-footer { margin-top: auto; padding-top: var(--space-md); }
-.nav-rail-links { list-style: none; margin: 0 0 var(--space-sm); padding: 0; display: flex; flex-direction: column; gap: 1px; }
 
-.nav-rail-link {
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0.4rem var(--space-sm);
-  border: none;
-  border-radius: var(--border-radius-md);
-  background: none;
-  color: var(--color-nav-text-secondary);
-  font: inherit;
-  text-align: left;
-  text-decoration: none;
-  cursor: pointer;
-}
-.nav-rail-link:hover { background: var(--color-nav-item-hover); color: var(--color-nav-text); }
-.nav-rail-link.active { background: var(--color-nav-item-active); color: var(--color-nav-text); }
+/* Utility links: inline, separator-joined, small + muted. Token note: the v2 spec calls for .62rem;
+   the type scale's smallest is --font-size-xs (.75rem), used here for F3 token-cleanliness (flag at
+   UAT if the exact .62 weight is required → add a smaller type token). */
+.nav-rail-utility { margin-bottom: var(--space-sm); font-size: var(--font-size-xs); line-height: 1.6; }
+.nav-rail-utility-link { color: var(--color-nav-divider); text-decoration: none; }
+.nav-rail-utility-link:hover { color: var(--color-nav-text-secondary); }
+.nav-rail-utility-link.active { color: var(--color-nav-text); }
+.nav-rail-utility-link:not(:last-child)::after { content: " · "; color: var(--color-nav-divider); }
 
-/* Trust-gated items hidden until the nav JS confirms the stage (mirrors the top-nav behavior) */
+/* Trust-gated: hidden until the nav JS confirms the stage. The only gated item is the inline
+   "Check in" utility link → reveal as inline (not block). */
 .nav-item-trust-gated { display: none; }
-.nav-item-trust-gated.trust-visible { display: block; }
+.nav-item-trust-gated.trust-visible { display: inline; }
 
-/* "Your stuff" dropdown (opens within the footer) */
-.nav-rail-group { position: relative; }
-.nav-dropdown-button { display: flex; align-items: center; justify-content: space-between; }
-.nav-dropdown-chevron { width: 0.75rem; height: 0.75rem; margin-left: var(--space-sm); flex: none; }
-.nav-dropdown-menu {
-  list-style: none;
+/* "Your stuff" label inside the user-avatar dropdown (white surface) */
+.nav-rail-user .user-dropdown-label {
   margin: 2px 0;
-  padding: 2px;
-  border-radius: var(--border-radius-md);
-  background: var(--color-nav-item-hover);
-}
-.nav-dropdown-item {
-  display: block;
-  padding: 0.35rem var(--space-sm);
-  border-radius: var(--border-radius-sm);
-  color: var(--color-nav-text-secondary);
-  text-decoration: none;
+  padding: 0.35rem var(--space-sm) 0;
   font-size: var(--font-size-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
 }
-.nav-dropdown-item:hover { background: var(--color-nav-item-hover); color: var(--color-nav-text); }
 
 /* User menu (bottom; dropdown opens upward) */
 .nav-rail-user {
