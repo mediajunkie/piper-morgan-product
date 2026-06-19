@@ -10,7 +10,7 @@ richer lifecycle) flows into the standup for free.
 Phase-0 reconcile (the sources emit coarse recency/label lifecycles + an ``attention``
 epoch, NOT PPM's DONE/RATIFIED/IN_PROGRESS vocab — see ``dev/2026/06/18/1269-standup-gameplan.md``):
 
-    Yesterday = Conversation `active` + Document `new` + WorkItem `closed`   (moved recently)
+    Yesterday = Document `new` + WorkItem `closed`   (completed work)
     Today     = WorkItem `open`/`in-review` (fresh) + Document `recent`       (on my plate)
     Watch     = WorkItem `blocked` (first) + WorkItem `open`/`in-review` stale (> stale_days)
 
@@ -18,8 +18,9 @@ epoch, NOT PPM's DONE/RATIFIED/IN_PROGRESS vocab — see ``dev/2026/06/18/1269-s
 blockers (confidence-calibrated) — confirmed-`blocked` surface first, staleness signals
 follow labeled "hasn't moved in N days". Calling them "blockers" would overstate confidence.
 
-Idle/dormant conversations and stale documents fall into no slot (not "what moved" nor
-"on my plate"). EXAMPLE / SEED provenance is filtered out (honest-provenance, #1214/#1216)
+Conversations are NOT standup items (a chat isn't an accomplishment/priority/blocker — PM
+2026-06-19); stale documents also fall into no slot. EXAMPLE / SEED provenance is filtered
+out (honest-provenance, #1214/#1216)
 — only OBSERVED entities are derived. NB the WorkItem source is open-only
 (``get_open_issues``), so `closed` won't appear live in beta; the rule is kept correct for
 when a recently-closed pull lands (#706/post-MVP).
@@ -119,8 +120,11 @@ class StandupAssembler:
         ls = (e.lifecycle_state or "").lower()
 
         if et == EntityType.CONVERSATION:
-            # Only recently-active conversations are "what moved"; idle/dormant drop.
-            return "yesterday" if ls == "active" else None
+            # A conversation is a chat the user HAD — not an accomplishment, a priority, or a
+            # blocker — so it is NOT a standup item (PM 2026-06-19: an active conversation under
+            # Yesterday rendered as "✅ <chat title>", reading as "you completed having a
+            # standup"). Conversations live in the Radar + chat history, not the standup.
+            return None
 
         if et == EntityType.DOCUMENT:
             if ls == "new":  # touched <24h → moved recently
