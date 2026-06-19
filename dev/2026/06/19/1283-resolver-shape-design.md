@@ -71,3 +71,12 @@ The real probe (next fire, from the ratified shape) enumerates the full set + cl
 6. ADR-073 once the clean probe validates.
 
 **This fire**: the shape design above + preliminary gap list, for Arch ratification (esp. the allowlist representation). Resolver implementation is the next focused fire from the ratified shape — deliberately not rushed at the tail of a long fire, because gap-list accuracy is the whole point.
+
+## Wiring trace (2026-06-19) — for the RECONNECT implementation fire (Lead Dev)
+Read-only trace of the exact build sites, so the implementation fire starts from facts:
+- **mode-4-guard insertion:** `_handle_floor_with_context` (`services/intent/intent_service.py:11074`) — insert between L11142–11145 (AFTER `domain_context_provenance = assembler.get_last_provenance()` :11122 + FloorContext built, BEFORE `floor.respond()` :11146). The LLM answer is produced in `ConversationalFloor.respond()` → `llm.complete()` (`services/intent_service/conversational_floor.py:813`).
+- **⚠️ KEY GAP (Arch value-add B):** `get_last_provenance()` (`context_assembler.py:151–223`) gives per-KEY presence (source + fetch_timestamp via `_KEY_SOURCES` :166–200) but NO per-CAPABILITY/action requirement map. The guard's "was capability-data assembled for this action?" needs a NEW **`CAPABILITY_REQUIRES_CONTEXT`** map (action/category → required context-keys). **Loop Arch** — this is how value-add-B's data-presence signal becomes concrete.
+- **Resolver inputs:** `get_action_workflows()` (`services/intent_service/workflow_dispatcher.py:83`) — importable ✓. `_requires_canonical_handler` (`intent_service.py:10958`) — instance method → **extract to a pure function**. `_FLOOR_ROUTED_CATEGORIES` (`intent_service.py:11052`) — hardcoded in-method → **extract to a module constant**.
+- **Build home:** new `services/intent_service/routing_integrity.py` (`reachability.py`): `FLOOR_ROUTED_CATEGORIES` + `CAPABILITY_REQUIRES_CONTEXT` + `resolve()` + extracted canonical-handler logic.
+
+**STATUS: SHELVED for RECONNECT (post-D1-close).** Per PM sprint-order 2026-06-19: D1 closes first (gate check + canonical-retest rerun); then RECONNECT/M4/M5; D2 last.
