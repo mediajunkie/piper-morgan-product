@@ -30,7 +30,6 @@
   .row p { margin: 1px 0 0; font-size: 13.5px; color: #6b6a64; }
   .bg-red { background: #f7dfda; color: #8c2a1c; }
   .bg-amber { background: #faeeda; color: #633806; }
-  .bg-blue { background: #dce8f5; color: #1d4e7a; }
   @media (prefers-color-scheme: dark) {
     body { background: #1b1b19; color: #e8e6e1; }
     .metric, .card { background: #262624; border-color: rgba(255,255,255,0.1); }
@@ -40,7 +39,6 @@
     .card.act { border-left-color: #e0604f; }
     .bg-red { background: #3a2018; color: #f0a895; }
     .bg-amber { background: #3a2c12; color: #ecc88a; }
-    .bg-blue { background: #16314a; color: #9cc4e8; }
     .row { border-color: rgba(255,255,255,0.08); }
   }
 </style>
@@ -48,40 +46,37 @@
 <body>
 <div class="wrap">
   <h1>Exec attention board</h1>
-  <p class="ts">as of Friday June 19, ~10:45 AM &middot; full sweep-and-verify (8 carry-forwards + GitHub + mail) &mdash; <b>2 you can unblock now</b>; 2 stuck on other agents</p>
+  <p class="ts">as of Friday June 19, ~1:05 PM &middot; incremental update on the 10:45 full sweep (CIO acks + GitHub-verified deltas) &mdash; <b>3 you can act on</b></p>
 
   <div class="metrics">
-    <div class="metric"><p class="lbl">Needs you</p><p class="num" style="color:#c0392b">2</p></div>
-    <div class="metric"><p class="lbl">Blocked on agents</p><p class="num" style="color:#633806">2</p></div>
+    <div class="metric"><p class="lbl">Needs you</p><p class="num" style="color:#c0392b">3</p></div>
+    <div class="metric"><p class="lbl">Blocked on agents</p><p class="num" style="color:#633806">1</p></div>
     <div class="metric"><p class="lbl">Voice-pass</p><p class="num" style="color:#3b6d11">0</p></div>
-    <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">5</p></div>
+    <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">6</p></div>
   </div>
 
-  <h2><span class="dot" style="background:#c0392b"></span>Needs you &middot; you can unblock these now</h2>
+  <h2><span class="dot" style="background:#c0392b"></span>Needs you &middot; you can act on these now</h2>
+  <div class="card act"><div class="top"><span class="ttl">#1259 &mdash; push-to-ref: your swap-nod</span><span class="pill bg-red">CIO waiting on you</span></div>
+    <p>The mailbox-bridge structural fix (mail-send v3, push-to-ref) is <b>done</b> &mdash; built, 12/12 tested, dogfooded, <b>LD-approved</b>. CIO is only waiting on your nod to swap it in as default. Low-risk, and it <b>ends the shared-index NON-FF collisions</b> I keep working around (the cherry-pick-via-throwaway-worktree dance). A one-word "go."</p></div>
   <div class="card act"><div class="top"><span class="ttl">#1269 &mdash; standup formatting: your re-UAT</span><span class="pill bg-red">Lead waiting on you</span></div>
-    <p>Lead shipped the formatting fix (<code>a0f21bdec</code> &mdash; prose renders as markdown blocks, per-slot caps) <b>and</b> migrated the /standup page off the hollow workflow onto the honest /today render. The plumbing already passed your 6/18 UAT (real data, derived correctly). Just needs your eyes on the rendered formatting + the /standup page to let Lead close the loop. <b>OPEN, updated today.</b></p></div>
+    <p>Formatting fix shipped (<code>a0f21bdec</code>) + /standup page migrated onto honest render. Plumbing already passed your 6/18 UAT &mdash; just needs your eyes on the rendered output to close.</p></div>
   <div class="card act"><div class="top"><span class="ttl">#1280 v2 &mdash; home layout: your re-UAT</span><span class="pill bg-red">Lead waiting on you</span></div>
-    <p>The CXO-Radar visual-design home grid is in re-UAT flux (Lead just dropped an internal-jargon rail label, <code>649500bb2</code>). Lead is <b>holding the P4 morning-card</b> until you confirm the v2 home layout &mdash; so your UAT here unblocks the next build step. <b>OPEN, updated today.</b></p></div>
+    <p>Lead's holding the P4 morning-card until you confirm the v2 home layout. Your UAT unblocks the next build step.</p></div>
 
-  <h2><span class="dot" style="background:#633806"></span>Blocked on another agent &middot; for awareness / nudge</h2>
-  <div class="card"><div class="top"><span class="ttl">#1283 (RECONNECT) &mdash; Lead blocked on Arch</span><span class="pill bg-amber">Lead &rarr; Arch</span></div>
-    <p>Lead finished the resolver-shape design and looped Arch for ratification (memo <code>66ee2888f</code>); Lead is <b>blocked on Arch's go</b> (ratify the shape + the intentional-floor-allowlist representation) before structural commits. Arch is active today &mdash; channel's open, no action needed unless it stalls.</p></div>
+  <h2><span class="dot" style="background:#633806"></span>Blocked on another agent &middot; for awareness</h2>
   <div class="card"><div class="top"><span class="ttl">Role-portfolio rollout &mdash; waiting on HOST review</span><span class="pill bg-amber">cohort &rarr; HOST</span></div>
-    <p>Both pilots are filed (<code>ROLE-PORTFOLIO-CIO.md</code> + <code>-LEAD-DEV.md</code>); the cohort batch can't start until HOST reviews them vs the 5 rules. <b>HOST hasn't picked them up</b> (their carry-forward still reads "waiting on the pilots" &mdash; stale; they didn't register the filings). <b>I'm nudging HOST now</b> &mdash; my lane, no action from you.</p></div>
-
-  <h2><span class="dot" style="background:#639922"></span>Lower-urgency decisions</h2>
-  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">#972 &mdash; Janus field-name alignment (cross-project)</span><p>CIO's memory-temporal work needs a field-name-align decision with Janus, but there's no direct Janus mailbox &mdash; needs your cross-project bridge. Longstanding, not time-pressured.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#c9a227"></span><div><span class="ttl">Docs merge-keeper: "6 escalate branches" &mdash; STALE, flagged for refresh</span><p>The 6-branches-pending-your-decision list is from a <b>6/15</b> sweep with none logged since (4 days). Not safe to act on until Docs re-runs it &mdash; I'm flagging Docs to refresh. Don't action as-is.</p></div></div>
+    <p>Both pilots filed; cohort batch can't start until HOST reviews them vs the 5 rules. I nudged HOST (it's in their inbox); HOST is active today but on welfare-criteria so far. Their next fire should pick it up &mdash; no action from you. <i>(#1283's Arch-wait cleared &mdash; Arch ratified the shape; Lead's building it now.)</i></p></div>
 
   <h2><span class="dot" style="background:#185fa5"></span>In flight &middot; for awareness</h2>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Lead session-fork &mdash; detected + HEALED this morning</span><p>Two Lead sessions ran concurrently overnight; disentangled 08:57 (A = sole lead, B retired emeritus, B's cron deleted). B's #1283 design + /standup migration are on main, queued for sprint-review. Full account in <code>fork-incident-2026-06-19.md</code>. Resolved &mdash; awareness only (touches duty-cycle/cron integrity, my watch).</p></div></div>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Gap-C dormancy watcher &mdash; proven again</span><p>Caught the cohort-wide overnight sleep (exec/arch/cio/ppm all flagged Fri AM); the first_fire missed-START gate worked on a real case. Cohort self-restarted by ~07:30. Both freeze modes covered.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Thin-cron dogfood &mdash; verified &rarr; CIO</span><p>Confirmed across 6/16&ndash;6/19 (incl. a date-roll START through compaction); sent CIO the confirmation for the cohort-wide thin-prompt migration. Done.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">"Derive, don't maintain" &mdash; Arch's letter to you</span><p>Reflective product question (not urgent): should Piper derive the status/roadmap artifacts PMs maintain-and-let-rot, like we did for our own infra? At <code>mailboxes/xian (ceo)/inbox/question-arch-2026-06-17-derive-dont-maintain-as-a-product-pattern.md</code> &mdash; for a reflective window.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">BYOC Phase 2 &mdash; live</span><p>Hosted endpoint live (alpha.pipermorgan.ai); alpha re-ping wave in progress (your side: Jake / Rebecca / Michelle). Next phases gated on #1162 / #1185 &mdash; no action.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Sprint assignments &mdash; dispatched (6 agents)</span><p>Today's Q-Audits + FLYWHEEL triage routed: Docs / Comms / CIO / PPM / PA / Web each got a kickoff. CIO already acted (#118 closed). Tracking to completion; no action from you.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">#1283 (RECONNECT) &mdash; unblocked, building</span><p>Arch ratified the resolver-shape; Lead is now building (mode-4 guard → reachability resolver → ADR-073). Was the agent-wait; now in-progress.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">#1287 &mdash; Multi-Agent Coordinator dead-code cleanup</span><p>New, from CIO's #118 review: the bespoke coordinator is confirmed unwired dead code (lapped by harness primitives + the cohort methodology). LD's lane for the `services/` deletion. No action.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Gap-C dormancy watcher &mdash; proven</span><p>Caught the cohort-wide overnight sleep (Fri AM); first_fire missed-START gate works. Both freeze modes covered.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">"Derive, don't maintain" &mdash; Arch's letter to you</span><p>Reflective product question (not urgent) at <code>mailboxes/xian (ceo)/inbox/question-arch-2026-06-17-derive-dont-maintain-as-a-product-pattern.md</code>.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">BYOC Phase 2 &mdash; live</span><p>alpha.pipermorgan.ai live; alpha re-ping wave in progress (your side: Jake / Rebecca / Michelle). Next phases gated on #1162 / #1185.</p></div></div>
 
   <h2><span class="dot" style="background:#3b6d11"></span>Clean &middot; verified resolved</h2>
-  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">Resolved</span><p>#1267 projects-table 500 (fixed 6/17) &middot; #1239 beta-Radar path (Arch disposition delivered) &middot; Comms blocked-on-PM (none active) &middot; escalations-docs FOLD (executed) &middot; overnight cohort dormancy (watcher caught, all restarted) &middot; Ship #047 (published).</p></div></div>
+  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">Resolved since this morning</span><p>#118 closed (superseded) &middot; #1283 Arch-ratified (wait cleared) &middot; thin-cron dogfood confirmed by CIO (cohort already on thin) &middot; sprint triage fully routed &middot; Slack = moot-post-RECONNECT (tracked in RECONNECT, not orphaned) &middot; #1107 closed-superseded &middot; Ship #047 published.</p></div></div>
 </div>
 </body>
 </html>
