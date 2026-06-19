@@ -55,3 +55,16 @@ PM wants this question on the record (not an urgent change — reflection):
 **Note for the design:** the existing duty-cycle + worktree-per-session model already supports the dispatched-developer pattern (own worktree, check-in, the lead integrates). What broke here wasn't that model — it was an accidental duplication of the *lead* role into one shared tree. So the methodology gap is narrow: **prevent accidental lead-duplication** (the START-time ownership marker above), while keeping the door open to *intentionally* spinning up lead-coordinated developers when there's unblocked parallel work. Net effect of this incident was benign — extra work got done, no harm — which is itself a small signal that lead-coordinated parallelism is worth designing deliberately.
 
 — added at PM's request, Session A, 2026-06-19
+
+## Related instance, same day: the mailbox-bridge shared-checkout collision (~09:00)
+A second, milder instance of the **same root hazard** surfaced hours after the fork healed. While Session A was landing a routine memo, the **mailbox bridge** — the single shared `main` checkout every agent commits mail through — was blocked ~15 min: CIO had **uncommitted session files** (`cio-…-log.md`, `cio-carry-forward.md`) sitting in that checkout, and git correctly refused to merge over them. (PM noticed + pinged CIO; it cleared.)
+
+**Why it's the same family as the fork:** both are *two-plus agents sharing one mutable git working tree.* The fork shared a worktree + branch; the bridge shares the main checkout. Same root: **shared mutable tree across agents** → index/merge races, sweep/strand risk.
+
+**The tell (worth confirming):** CIO's *session* files — not just mail — were uncommitted in the main checkout, which suggests CIO may be operating *in* the main checkout rather than its own worktree.
+
+**The fix already exists + is tracked — #1259** (CIO's own design doc, 2026-06-16): *push-to-ref / mail-send v3* — build the mail commit as a git object (`commit-tree` via a throwaway `GIT_INDEX_FILE`) and `git push origin $commit:main`, **removing the shared working tree from the mail path by construction.** Works per-worktree; satisfies the mail-on-main hook intent. `mail-send.sh` v2 (6/16) narrowed the hazard but left the root cause; today's collision *is* that root cause.
+
+**Through-line for the methodology:** the shared-mutable-tree hazard has (at least) two surfaces — **lead-session forking** (fix: worktree-per-session containment + the doppelgänger check, above) and the **mail bridge** (fix: #1259 push-to-ref). Both reduce to *stop sharing a mutable tree across agents.* Prioritizing #1259 closes the bridge surface; the worktree-containment + doppelgänger items close the fork surface.
+
+— added by Session A (Lead Dev) 2026-06-19, per PM's note that the bridge collision belongs in this record
