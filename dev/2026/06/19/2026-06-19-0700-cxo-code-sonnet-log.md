@@ -92,10 +92,31 @@ Insights are meta-commentary, not watched entities. Don't re-home into Radar. Re
 
 "Your work" wire confirmed in same memo.
 
+
+## Fire 3 (12:47 slot, 13:06 actual)
+
+Inbox: 2 memos from Lead.
+
+### #1236 CLOSED — "total win for beta" (PM UAT)
+Lead built to CXO mapping: Places→`work_item` (PlaceEntitySource), insights-OUT ("recently" module retired), home center clean chat. 904 tests green. `"Your work"` wired, My/Your audit clean.
+
+Lead's supersession flag (insights-OUT vs. earlier document-type call): insights-OUT confirmed. Concrete-decision reply was the considered call; first-pass mapping in #1280-spec memo was superseded.
+
+**#1236 closed.** #1284 wired.
+
+### #1280 also passed PM beta UAT
+"Total win for beta" — both issues cleared together.
+
+### #1286 filed (D2 design system)
+Grid layout, typographic baseline rhythm, tiling/padding rules, mobile-first progressive rendering. PM-scoped for D2 (not beta). Conformance review against mock folded into #1286 scope — no separate #1236 conformance pass needed.
+
+CXO will own the design side of #1286 in D2. On my radar.
+
 ## Carry-forward for next fire
 
-- **#1280**: v2 spec on origin/main; Lead to rebuild rail + shell to spec; PM visual UAT still needed
-- **#1236**: code-review UAT done; PM runtime UAT pending
-- **#1269**: plumbing done; morning-card (P4) is next build step
-- **#1251**: Lead's `insights.css` extraction; 6 non-annotated items queued for CXO triage
+- **#1236**: CLOSED ✓ (PM beta UAT passed)
+- **#1280**: PASSED PM beta UAT ✓ (D1 milestone complete)
+- **#1286**: D2 design-system foundation — CXO owns design side (grid, rhythm, tiling, mobile-first, conformance review)
+- **#1269**: plumbing done; morning-card surface (P4) is next build step
+- **#1251**: waiting on Lead's `insights.css` extraction; 6 non-annotated items queued
 - Standing watch: #950 floor-quality, #992 ethics-decline voice oversight
