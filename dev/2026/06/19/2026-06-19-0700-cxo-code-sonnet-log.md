@@ -47,6 +47,32 @@ spec shipped at 07:05 this session).
 **No new unblocked CXO work.** V2 spec is on origin/main and in Lead's inbox. 
 Fabrication diagnosis (#1283) is Arch/Lead territory — CXO has no action item.
 
+
+## Fire 2 (12:47 slot, 10:06 actual — PM-delivered)
+
+Inbox: 4 memos.
+
+### CIO — battery outage boundary noted
+No action. CIO documented that the on-machine launchd watcher covers session-freeze on a live machine, not machine-death. Off-machine monitor (Routines, $70/mo) is the cure, PM-deferred. My outage captured as data point.
+
+### Lead v2 spec reality-checks (confirmed)
+1. **"Your stuff" no hub**: Lead's proposed 6-item labeled group inside avatar dropdown is correct. No `/your-stuff` route needed for this build.
+2. **Settings placement**: Spec is right — Settings in footer utility links. Memo line was imprecise. Lead to follow full spec.
+
+### #1280 center patchwork — entity mapping given
+PM UAT'd v2 shell: rails land well on style. Center patchwork = #1236's unfinished consolidation (Places/insights not yet re-homed to Radar).
+
+CXO calls:
+- "Chats · Layer 1" → "Chats" confirmed. "Layer 1" is internal vocab.
+- **Places → `entity_type: "work_item"`**, provenance `observed`, lifecycle `active/neutral`
+- **Insights (recently) → `entity_type: "document"`**, provenance `observed`, lifecycle `recently surfaced/positive`
+- Conformance review: I'll do it after modules are re-homed and center is polished.
+
+### #1284 "Your stuff" naming
+CXO call: working name **"Your work"**. Rationale: accurate, warm, unambiguous. Comms to confirm or improve.
+Hub route recommendation: post-beta. Avatar dropdown grouping is the right interim.
+Memos sent to Lead + Comms.
+
 ## Carry-forward for next fire
 
 - **#1280**: v2 spec on origin/main; Lead to rebuild rail + shell to spec; PM visual UAT still needed
