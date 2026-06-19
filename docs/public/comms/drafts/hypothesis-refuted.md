@@ -70,7 +70,7 @@ The day Lead Dev cleared the cleanup milestone, the actual code change for the m
 
 ---
 
-*Next on Building Piper Morgan: "Branch-or-Anchor in Ninety Minutes" — a new rubric almost becomes a duplicate of an existing one — same name, different assumptions, two authors who hadn't talked. It got caught in the ninety minutes before the drift would have accumulated.*
+*Next on Building Piper Morgan: "This One's Taken" — on two agents filing the same pattern number independently, and what the collision reveals about growing catalogs.*
 
 *Where in your work has a measurement or a description been silently running ahead of the system it's supposed to track? What would grounding the reference look like?*
 
