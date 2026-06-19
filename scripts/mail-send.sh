@@ -1,49 +1,89 @@
 #!/usr/bin/env bash
-# mail-send.sh v2 — safe mailbox bridge-commit-push (CIO streamlining #2; v2 2026-06-16 fixes Exec's 2 hazards).
+# mail-send.sh v3 — push-to-ref mailbox bridge (#1259). Builds the mail commit as a git OBJECT on top
+# of origin/main and pushes it straight to main — never touching a shared working tree or the local
+# `main` ref. Eliminates the shared-checkout contention class BY CONSTRUCTION: sweep, strand,
+# divergence, and untracked-residue all become impossible because no mail op mutates a shared tree.
 #
-# Commits the EXACT memo files you pass to `main` and pushes them. You still do the routing by hand first
-# (write the memo, cc copies, sent mirror, inbox→read moves), then pass those paths to this script.
+# Same caller interface as v2:  mail-send.sh "mail(role): subject" <path> [path...]
+# You still do the routing by hand first (write the memo, cc copies, sent mirror, inbox→read moves) —
+# but you do it in YOUR OWN worktree (wherever you are), then pass those paths. No `cd` to the main
+# checkout; the main checkout is never touched.
 #
-# v2 changes (Exec 2026-06-15 memo — both hazards trace to the shared working tree):
-#   - Stage by EXPLICIT pathspec (the files you pass) — NOT `git add mailboxes/`. On the shared tree that
-#     directory-add swept a *concurrent* session's in-flight memos into your commit (hazard 1).
-#   - NO auto-stash of foreign WIP. On a non-fast-forward this FAILS LOUD instead — auto-stashing another
-#     session's tracked edits can strand them if this script dies before the pop (hazard 2).
-#   - No MANIFEST regen here: the RECIPIENT is the sole MANIFEST writer (skill v1.7 derive model) and
-#     regenerates during their own Mail Loop / session-start. The sender just commits the memo file(s).
-# (The full race-free cure is push-to-ref from each session's own worktree index — the structural
-#  "mailbox-bridge transparency" item; a wrapper on the shared checkout can only narrow these, not erase them.)
+# How it works (design doc option B — docs/internal/operations/mailbox-bridge-transparency-design-2026-06-16.md):
+#   base = origin/main
+#   throwaway index seeded from base  (GIT_INDEX_FILE → a temp file, NOT the real index)
+#   for each pathspec:
+#     present in worktree → hash-object -w (write blob to the shared object store) + update-index --add
+#     absent  in worktree → update-index --force-remove   (the delete half of a move)
+#   tree = write-tree ; commit = commit-tree tree -p base ; push commit:main
+#   non-FF (someone pushed first) → re-fetch, rebuild on the NEW tip, retry. Mailbox adds are unique
+#   files, so the replay is clean (never conflicts). MANIFESTs are recipient-owned (one writer per
+#   mailbox), so the blind replay is last-writer-wins only across a file no two agents share.
 #
-# Usage:  scripts/mail-send.sh "mail(cio): subject" <path1> [path2 ...]   (paths relative to repo root)
+# Hook interaction: commit-tree is NOT `git commit`, so check-branch.sh (PreToolUse on git commit)
+# doesn't fire — and that is correct: push-to-ref already achieves the hook's intent (mail lands on
+# main immediately). The hook stays as the backstop for any interactive mail commits. Invariant intact.
+#
+# Env overrides (mainly for testing): PIPER_REPO (repo dir; default = current worktree toplevel),
+#   PIPER_MAIL_REMOTE (default origin), PIPER_MAIL_BRANCH (default main).
 set -uo pipefail
-MAIN="${PIPER_REPO:-/Users/xian/Development/piper-morgan/piper-morgan-product}"
-MSG="${1:-}"
-shift || true
+
+REPO="${PIPER_REPO:-$(git rev-parse --show-toplevel 2>/dev/null)}"
+[ -n "$REPO" ] || { echo "mail-send: not in a git repo (set PIPER_REPO)" >&2; exit 2; }
+MSG="${1:-}"; shift || true
 if [ -z "$MSG" ] || [ "$#" -eq 0 ]; then
     echo 'usage: mail-send.sh "mail(role): subject" <path> [path...]   (explicit mailbox paths)' >&2; exit 2
 fi
-G() { git -C "$MAIN" "$@"; }
+G() { git -C "$REPO" "$@"; }
 
-# Refuse non-mailbox paths — this is the mailbox bridge, not a general committer (keeps it scoped + safe).
+# Scope guard: mailbox paths only — this is the mailbox bridge, not a general committer.
 for f in "$@"; do
     case "$f" in mailboxes/*) ;; *) echo "mail-send: refusing non-mailbox path: $f" >&2; exit 2 ;; esac
 done
 
-G add -- "$@"
-if G diff --cached --quiet; then echo "mail-send: nothing staged (paths unchanged?)"; exit 0; fi
-G commit -q -m "$MSG" || { echo "mail-send: commit failed" >&2; exit 1; }
-echo "mail-send: committed — $MSG"
+REMOTE="${PIPER_MAIL_REMOTE:-origin}"
+BRANCH="${PIPER_MAIL_BRANCH:-main}"
+MAX=6
+attempt=0
+TMPIDX=""
+trap 'rm -f "$TMPIDX"' EXIT INT TERM   # temp-index never leaks — even on SIGINT/SIGTERM (LD review nit 1)
+while :; do
+    attempt=$((attempt + 1))
+    G fetch "$REMOTE" "$BRANCH" -q || { echo "mail-send: fetch $REMOTE/$BRANCH failed" >&2; exit 1; }
+    base=$(G rev-parse "$REMOTE/$BRANCH" 2>/dev/null) || { echo "mail-send: no $REMOTE/$BRANCH" >&2; exit 1; }
 
-G fetch origin -q
-if G push origin main 2>/dev/null; then echo "mail-send: pushed to origin/main ✓"; exit 0; fi
+    TMPIDX="$(mktemp "${TMPDIR:-/tmp}/mail-idx.XXXXXX")"
+    GIT_INDEX_FILE="$TMPIDX" G read-tree "$base" || { echo "mail-send: read-tree failed" >&2; exit 1; }
 
-# Non-fast-forward: integrate ONLY if the working tree is clean of OTHER work (never auto-stash → never strand).
-if G diff --quiet && G diff --cached --quiet; then
-    if G rebase origin/main 2>/dev/null && G push origin main 2>/dev/null; then
-        echo "mail-send: rebased onto origin + pushed ✓"; exit 0
+    for f in "$@"; do
+        if [ -f "$REPO/$f" ]; then
+            blob=$(G hash-object -w -- "$f") || { echo "mail-send: hash-object failed: $f" >&2; exit 1; }
+            GIT_INDEX_FILE="$TMPIDX" G update-index --add --cacheinfo "100644,$blob,$f" \
+                || { echo "mail-send: update-index --add failed: $f" >&2; exit 1; }
+        else
+            GIT_INDEX_FILE="$TMPIDX" G update-index --force-remove "$f" \
+                || { echo "mail-send: update-index --force-remove failed: $f" >&2; exit 1; }
+        fi
+    done
+
+    tree=$(GIT_INDEX_FILE="$TMPIDX" G write-tree) || { echo "mail-send: write-tree failed" >&2; exit 1; }
+    rm -f "$TMPIDX"   # prompt per-iteration cleanup; the EXIT/INT/TERM trap is the signal/error backstop
+
+    # No-op guard: identical tree → the paths already match origin; nothing to send.
+    if [ "$tree" = "$(G rev-parse "$base^{tree}")" ]; then
+        echo "mail-send: nothing to send — these paths already match $REMOTE/$BRANCH (already delivered, or a duplicate a concurrent send already landed)"; exit 0
     fi
-fi
-echo "mail-send: NON-FF and other uncommitted work is present — NOT auto-stashing (would risk stranding a" >&2
-echo "          concurrent session). Your commit is safe locally; resolve by hand:" >&2
-echo "          git -C $MAIN status && git -C $MAIN pull --rebase origin main && git -C $MAIN push origin main" >&2
-exit 1
+
+    # commit-tree uses the agent's configured git identity (user.name/email) — all our agents have it set.
+    commit=$(G commit-tree "$tree" -p "$base" -m "$MSG") || { echo "mail-send: commit-tree failed" >&2; exit 1; }
+    if G push "$REMOTE" "$commit:refs/heads/$BRANCH" 2>/dev/null; then
+        echo "mail-send v3: pushed ${commit:0:9} → $REMOTE/$BRANCH ✓ (attempt $attempt)"
+        exit 0
+    fi
+
+    if [ "$attempt" -ge "$MAX" ]; then
+        echo "mail-send: push rejected after $MAX attempts (persistent contention on $REMOTE/$BRANCH) — retry shortly" >&2
+        exit 1
+    fi
+    echo "mail-send: non-fast-forward (another agent pushed first) — rebuilding on the new tip (attempt $attempt)" >&2
+done
