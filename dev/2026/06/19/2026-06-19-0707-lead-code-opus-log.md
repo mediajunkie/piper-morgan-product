@@ -49,3 +49,15 @@ Mail loop found 6 memos — CXO/Arch/CIO/Comms all replied, unblocking the D1 ta
 - Mail: 3 replies bridged (CXO/Arch/CIO) + 6 inbox memos triaged → read/ + lead MANIFESTs regen'd (`ac73d2053`).
 
 Drain complete. Remaining = PM (#1280/#1269 UAT, #1251 close-confirm, #1259 swap-nod) + CXO (#1236 conformance, #1270 IA) + #1283 focused fire. Cron `982b60a2` armed; server 3725.
+
+## Fire (13:47) + PM walk-through — closed the D1 PM-slate
+Cron `982b60a2` healthy (sole); sync clean; inbox empty (no CIO #1259-done ping yet). PM walked the PM-dependent issues one at a time; closed 4 + fixed bugs along the way:
+- **#1280 CLOSED** (PM UAT): dark rail + 3-col + Radar shell. 2 spot-check bugs fixed — footer/avatar off-screen (viewport-bound the shell `body{height:100vh}`) + ⌘K `undefinedundefined` (per-field highlight indices), `5d779a44b`. Design-rigor → #1286 (D2).
+- **#1269 CLOSED** (PM UAT): honest standup. 2 content-fixes — conversations no longer slot into the standup (a chat isn't an accomplishment) + /standup page capped top-4 + "N more" (`1b0ffff65`). Follow-ons #1288 (curation+card), #1289 (retire-hollow).
+- **#1251 CLOSED**: items 1+3 done, item-2 enforcement done; the 18-value tokenize-vs-keep verdict folds into #1286 (D2, CXO-owned — confirmed).
+- **#1227 CLOSED** (PM real-Slack UAT): outbound renders proper `mrkdwn` (bold/code), not raw `**`/`#` (`02db7e4be`).
+- **#1259 GREENLIT** → relayed go to CIO (`6341d6a26`); CIO swaps mail-send-v3→mail-send.sh + updates the discipline, then I switch the bridge. ⚠️ PM flagged #1259 is FLYWHEEL (off-Lead-plate); it crept in via CIO's review-ask + my bridge-switch offer — I should've flagged the lane boundary. Residual ~zero (I just adopt the new mail tool, like every agent).
+- Discovered + filed **#1285** (naive/aware datetime in conversation_manager.transition_state).
+- Server 3725→**36720** (the #1269 deploy; main.py startup ~60-90s — use `curl --retry 90`, not 45).
+- **Remaining PM-slate:** #1250 (learning-toggle re-UAT, in progress; fix live `be10ac7f9`) + #1252 (auth-anchoring close-go).
+- 883 tests green throughout; token-lint clean.
