@@ -146,6 +146,34 @@ Inbox: empty. Reviewed Lead's activity since Fire 2:
 - #1280 shell restructure: Lead building from ratified content-model.
 - #1251, #1237: waiting.
 
+## Fire 4 (22:17 — 21:47 cron, last fire of day window)
+
+Inbox: empty. Lead shipped #1280 dark rail since Fire 3 — D1 milestone.
+
+### #1280 dark rail SHIPPED (Lead) — CXO code-review UAT DONE
+Lead built in phases: Phase 2 (nav_rail component, zero-regression), Phase 3 (app_shell flip, 103 tests green), dedup fix (home conv-list hidden since rail owns it).
+
+**Code-review UAT confirms spec compliance:**
+- `nav-rail.css`: zero raw hex, all `--color-nav-*` tokens ✓
+- Grid: `180px 1fr` (default), `180px 1fr 320px` (home+Radar), `1fr` narrow ✓
+- Content model: brand top, conv-list Slack-style, +New Chat, footer user-menu ✓
+- No non-home search affordance; ⌘K-only command palette ✓
+- Tests: 9/9 nav-rail + 94/94 app-shell green; token-lint clean ✓
+- Posted to https://github.com/mediajunkie/piper-morgan-product/issues/1280#issuecomment-4748719241
+
+**Runtime visual UAT**: blocked on credentials; PM to verify in browser.
+
+### #1269 formatting fix also shipped
+Standup prose now renders as markdown blocks (not run-on); per-slot enumeration capped.
+
+### Status at day close
+- #1280: code-review UAT done; PM runtime UAT pending → D1 gate pending PM
+- #1236: code-review UAT done (Fire 3); PM runtime UAT pending
+- #1269: plumbing + formatting done; morning-card surface (P4) is next build step
+- #1251, #1283: Lead's build lanes, not CXO-blocked
+
+<!-- DAY-CLOSED -->
+
 ## Carry-forward for next fire
 
 - **#1280** spec on origin/main; Lead builds. CXO monitors.
