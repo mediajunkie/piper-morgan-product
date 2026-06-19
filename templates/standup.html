@@ -141,126 +141,59 @@
       '<div class="loading">⏱️ Generating your morning standup...</div>';
 
     try {
-      const startTime = Date.now();
-      // POST to the correct API endpoint with JSON body
-      const response = await fetch("/api/v1/standup/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode: "standard", format: "json" }),
+      // #1269: the HONEST derived standup (StandupAssembler over the live entity
+      // catalog — conversations/work-items/calendar/Watch), NOT the hollow
+      // MorningStandupWorkflow. GET /api/v1/standup/today returns { prose, summary }
+      // — the same narrative + voice the chat standup shows (no fabricated
+      // "time saved / efficiency" vanity metrics).
+      const response = await fetch("/api/v1/standup/today", {
+        method: "GET",
         credentials: "include"
       });
       const data = await response.json();
-      const endTime = Date.now();
 
-      // API returns { success: true, standup: {...}, performance_metrics: {...}, metadata: {...} }
-      if (data.success) {
+      if (response.ok) {
         ToastMessages.success('standup_ready');
-        const standup = data.standup || {};
-        const metrics = data.performance_metrics || {};
+        // #1269: render the honest DERIVED summary (StandupAssembler), preserving
+        // the #704 per-item lifecycle indicators. Same structured format as before
+        // — only the data source changed (honest /today, not hollow /generate).
+        // "Watch" (not "Blockers") per CXO confidence-calibration; item.meta carries
+        // the staleness note ("hasn't moved in N days").
+        const summary = data.summary || {};
+        const renderItems = (items) => (items || []).map((item) => {
+          if (typeof item !== 'object' || item === null) {
+            return `<li>${item}</li>`;
+          }
+          const iconPart = item.icon ? item.icon + ' ' : '';
+          // #704: lifecycle-slot placeholder, replaced post-render with
+          // LifecycleIndicator.create() when lifecycle_state is present.
+          // Items without lifecycle_state emit no slot — graceful degradation.
+          const lifecycleSlot = item.lifecycle_state
+            ? `<span class="lifecycle-slot" data-stage="${item.lifecycle_state}"></span> `
+            : '';
+          const metaPart = item.meta ? ` <span class="standup-item-meta">— ${item.meta}</span>` : '';
+          return `<li>${iconPart}${lifecycleSlot}${item.display || ''}${metaPart}</li>`;
+        }).join("");
         results.innerHTML = `
-                    <div class="success">✅ Standup generated successfully!</div>
-
-                    <div class="metrics">
-                        <div class="metric">
-                            <div class="metric-value">${
-                              metrics.generation_time_with_context ||
-                              metrics.generation_time_formatted ||
-                              metrics.generation_time_ms + "ms"
-                            }</div>
-                            <div class="metric-label">Generation Time</div>
-                        </div>
-                        <div class="metric">
-                            <div class="metric-value">${
-                              metrics.time_saved_formatted ||
-                              (standup.time_saved_minutes ? standup.time_saved_minutes + " min" : "N/A")
-                            }</div>
-                            <div class="metric-label">Time Saved</div>
-                        </div>
-                        <div class="metric">
-                            <div class="metric-value">${
-                              metrics.efficiency_multiplier || "N/A"
-                            }</div>
-                            <div class="metric-label">Efficiency</div>
-                        </div>
-                        <div class="metric">
-                            <div class="metric-value">${
-                              endTime - startTime
-                            }ms</div>
-                            <div class="metric-label">API Response Time</div>
-                        </div>
+                    <div class="section">
+                        <h2>📋 Yesterday</h2>
+                        ${(summary.yesterday && summary.yesterday.length)
+                          ? `<ul>${renderItems(summary.yesterday)}</ul>`
+                          : "<p>Nothing wrapped up yesterday.</p>"}
                     </div>
 
                     <div class="section">
-                        <h2>📋 Yesterday's Accomplishments</h2>
-                        <ul>${(standup.yesterday_accomplishments || [])
-                          .map((item) => {
-                            if (typeof item !== 'object' || item === null) {
-                              return `<li>${item}</li>`;
-                            }
-                            const iconPart = item.icon ? item.icon + ' ' : '';
-                            // #704: lifecycle-slot placeholder, replaced
-                            // post-render with LifecycleIndicator.create()
-                            // when lifecycle_state is present. Empty slot
-                            // for items without lifecycle_state — nothing
-                            // renders, graceful degradation.
-                            const lifecycleSlot = item.lifecycle_state
-                              ? `<span class="lifecycle-slot" data-stage="${item.lifecycle_state}"></span> `
-                              : '';
-                            return `<li>${iconPart}${lifecycleSlot}${item.display || ''}</li>`;
-                          })
-                          .join("")}</ul>
+                        <h2>🎯 Today</h2>
+                        ${(summary.today && summary.today.length)
+                          ? `<ul>${renderItems(summary.today)}</ul>`
+                          : "<p>Nothing in progress right now.</p>"}
                     </div>
 
                     <div class="section">
-                        <h2>🎯 Today's Priorities</h2>
-                        <ul>${(standup.today_priorities || [])
-                          .map((item) => {
-                            if (typeof item !== 'object' || item === null) {
-                              return `<li>${item}</li>`;
-                            }
-                            const iconPart = item.icon ? item.icon + ' ' : '';
-                            // #704: lifecycle-slot placeholder, replaced
-                            // post-render with LifecycleIndicator.create()
-                            // when lifecycle_state is present. Empty slot
-                            // for items without lifecycle_state — nothing
-                            // renders, graceful degradation.
-                            const lifecycleSlot = item.lifecycle_state
-                              ? `<span class="lifecycle-slot" data-stage="${item.lifecycle_state}"></span> `
-                              : '';
-                            return `<li>${iconPart}${lifecycleSlot}${item.display || ''}</li>`;
-                          })
-                          .join("")}</ul>
-                    </div>
-
-                    <div class="section">
-                        <h2>⚠️ Blockers</h2>
-                        ${
-                          standup.blockers &&
-                          standup.blockers.length > 0
-                            ? `<ul>${standup.blockers
-                                .map((item) => {
-                            if (typeof item !== 'object' || item === null) {
-                              return `<li>${item}</li>`;
-                            }
-                            const iconPart = item.icon ? item.icon + ' ' : '';
-                            // #704: lifecycle-slot placeholder, replaced
-                            // post-render with LifecycleIndicator.create()
-                            // when lifecycle_state is present. Empty slot
-                            // for items without lifecycle_state — nothing
-                            // renders, graceful degradation.
-                            const lifecycleSlot = item.lifecycle_state
-                              ? `<span class="lifecycle-slot" data-stage="${item.lifecycle_state}"></span> `
-                              : '';
-                            return `<li>${iconPart}${lifecycleSlot}${item.display || ''}</li>`;
-                          })
-                                .join("")}</ul>`
-                            : "<p>✅ No blockers identified</p>"
-                        }
-                    </div>
-
-                    <div class="section">
-                        <h2>📊 Full Response</h2>
-                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <h2>⚠️ Watch</h2>
+                        ${(summary.watch && summary.watch.length)
+                          ? `<ul>${renderItems(summary.watch)}</ul>`
+                          : "<p>Nothing flagged to watch.</p>"}
                     </div>
                 `;
 
