@@ -64,14 +64,14 @@ def test_no_radar_nav_item(html):
 
 
 def test_your_stuff_in_avatar_menu(html):
-    # v2: "Your stuff" moves from a footer dropdown into the user-avatar menu (the 6 user-content routes).
-    assert "Your stuff" in html  # the avatar-menu label
+    # v2: "Your work" moves from a footer dropdown into the user-avatar menu (the 6 user-content routes).
+    assert "Your work" in html  # the avatar-menu label
     for label in ("To-dos", "Projects", "Work Items", "Files", "Documents", "Lists"):
         assert label in html
 
 
 def test_avatar_menu_has_account_logout_not_settings(html):
-    # v2: avatar menu = Your stuff / Account / Logout. Settings is a FOOTER link, not in the menu.
+    # v2: avatar menu = Your work / Account / Logout. Settings is a FOOTER link, not in the menu.
     assert 'id="user-menu-button"' in html and 'id="user-dropdown"' in html
     for label in ("Account", "Logout"):
         assert label in html

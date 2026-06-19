@@ -21,6 +21,7 @@ from services.radar import (
     ConversationEntitySource,
     DocumentEntitySource,
     EntitySource,
+    PlaceEntitySource,
     WorkItemEntitySource,
 )
 
@@ -93,12 +94,89 @@ class WorkItemProvider:
             return []
 
 
+class PlaceProvider:
+    """Resolves the user's connected external surfaces (GitHub issue-tracking + Calendar)
+    into Places — #1236 home-module consolidation. Mirrors the /api/v1/places route's
+    construction (trust lookup → per-user github/calendar → ``PlaceService.get_visible_places``)
+    so the Radar surfaces the same trust-visible Places the home "what I'm seeing" module did,
+    serialized to the dict shape PlaceEntitySource consumes. Returns [] on any failure
+    (graceful — a place hiccup never blanks Radar/standup)."""
+
+    async def list_for_user(self, user_id: str) -> list[dict]:
+        try:
+            from uuid import UUID
+
+            from services.place.place_service import PlaceService
+            from services.shared_types import TrustStage
+
+            # Trust stage gates which Places are visible (#684 hardness map); default NEW on failure.
+            trust_stage = TrustStage.NEW
+            try:
+                from services.database.session_factory import AsyncSessionFactory
+                from services.repositories.user_trust_profile_repository import (
+                    UserTrustProfileRepository,
+                )
+                from services.trust import TrustComputationService
+
+                async with AsyncSessionFactory.session_scope_fresh() as session:
+                    trust_stage = await TrustComputationService(
+                        UserTrustProfileRepository(session)
+                    ).get_trust_stage(UUID(user_id))
+            except Exception as e:
+                logger.warning("radar_place_trust_lookup_failed", error=str(e))
+
+            # GitHub source — only if the user has a configured token (keychain-first #1192).
+            github_router = None
+            try:
+                from services.integrations.github.github_integration_router import (
+                    GitHubIntegrationRouter,
+                )
+
+                candidate = GitHubIntegrationRouter()
+                await candidate.initialize(user_id=user_id)
+                if candidate.config_service.is_configured(user_id):
+                    github_router = candidate
+            except Exception as e:
+                logger.warning("radar_place_github_init_failed", error=str(e))
+
+            # Calendar source — gated on a real authenticate() (#1196: no fabricated card).
+            calendar_service = None
+            try:
+                from services.integrations.calendar.calendar_integration_router import (
+                    CalendarIntegrationRouter,
+                )
+
+                candidate = CalendarIntegrationRouter()
+                if await candidate.authenticate():
+                    calendar_service = candidate
+            except Exception as e:
+                logger.debug("radar_place_calendar_unavailable", error=str(e))
+
+            service = PlaceService(github_router=github_router, calendar_service=calendar_service)
+            places = await service.get_visible_places(trust_stage)
+            return [
+                {
+                    "id": p.id,
+                    "name": p.name,
+                    "summary": p.summary,
+                    "source_url": p.source_url,
+                    "last_fetched": p.last_fetched.isoformat() if p.last_fetched else None,
+                }
+                for p in places
+            ]
+        except Exception as e:  # never let a place hiccup blank Radar/standup
+            logger.warning("radar_place_source_failed", error=str(e))
+            return []
+
+
 def build_entity_sources(user_history_service: UserHistoryService) -> list[EntitySource]:
     """The live Radar entity sources — Conversations (#1021) + Documents (#1238) +
-    WorkItems (#1239). The single wiring both the Radar feed and the standup consume.
-    Person (#1240) is deferred to 1.0 (no beta source); it registers here when it lands."""
+    WorkItems (#1239) + Places (#1236, the retired home "what I'm seeing" module). The
+    single wiring both the Radar feed and the standup consume. Person (#1240) is deferred
+    to 1.0 (no beta source); it registers here when it lands."""
     return [
         ConversationEntitySource(ConversationHistoryProvider(user_history_service)),
         DocumentEntitySource(get_document_service()),
         WorkItemEntitySource(WorkItemProvider()),
+        PlaceEntitySource(PlaceProvider()),
     ]

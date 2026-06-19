@@ -26,6 +26,13 @@
 # same machine, so it dies too; it can only alert AFTER the machine returns (the next run sees stale
 # heartbeats). Machine-death detection during the outage requires an OFF-machine monitor (the Routines
 # watchdog, PM-deferred $70/mo). Re-raise that only if outages recur or cost work.
+#
+# v0.3 ENHANCEMENT (HOST welfare-criteria, 2026-06-19) — multi-role simultaneous-silence flag: when the
+# two-tier output (🟡 ≥threshold / 🔴 ≥1.5× OR no-heartbeat) lands, add a cohort-scale read: if ≥N roles
+# go 🔴 at the SAME moment, that's an infrastructure event (the machine-death case above at cohort scale),
+# NOT N individual failures — the dashboard should say "infrastructure event suspected (N roles silent
+# since HH:MM)" rather than alarm on N agents. Gated on the welfare-criteria two-tier build; noted here so
+# the implementer finds it. (HOST welfare-criteria v0.3; CIO freeze-registry lane.)
 set -uo pipefail
 
 REPO="${PIPER_REPO:-/Users/xian/Development/piper-morgan/piper-morgan-product}"
