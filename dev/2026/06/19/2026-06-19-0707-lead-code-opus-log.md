@@ -36,3 +36,16 @@ With v2/formatting/#1283 all PM-or-Arch-gated, drained the one unblocked build: 
 - Render: dropped the fabricated metrics panel + the debug "Full Response" JSON dump; renders the honest `data.summary.{yesterday,today,watch}` StandupItems. **"Watch" not "Blockers"** (CXO confidence-calibration); `item.meta` carries the staleness note.
 - **Preserved #704**: first tried a prose-only render — the `test_standup_lifecycle_704` render test caught that it silently dropped the per-item lifecycle indicators (a tested design feature). Avoided the regression/silent-feature-drop by keeping the **structured** render (same format, honest data) → the lifecycle slots + post-render `LifecycleIndicator` wiring stay. No design fork; no unilateral feature removal.
 - **Contract verified**: `/today` returns `{prose, summary}`; `summary.to_dict()` keys = yesterday/today/watch; item keys = display/source/lifecycle_state/icon/meta — exactly what the page reads. **48 standup tests green** (route + assembler + #704 page render) + the 63 template/shell set. Template change → serves fresh (no restart). **JS render behavior = PM UAT.** Fixes the fabricating PAGE; the hollow `/generate` API + Slack/bridge consumers stay (parallel-first; P6 retire later).
+
+## Fire — 10:17 (worked ~10:48–11:15 PT) — board-unblock drain (sole lead, post-fork)
+Cron fired idle; CronList confirmed sole cron `fb6996af` → CronDelete'd for the drain → re-armed `982b60a2` at end. Server restarted 39025→**3725** (env-stripped) to deploy #1236 (health 200).
+
+Mail loop found 6 memos — CXO/Arch/CIO/Comms all replied, unblocking the D1 tail. Drained the whole queue:
+- **#1236 BUILT + deployed** (`b8c1bba52`): per CXO's final mapping — Places → `work_item` RadarEntities (`PlaceEntitySource` + `PlaceProvider`, trust-gated github/calendar, registered in `build_entity_sources`); insights OUT of the Radar (recently module retired); clean chat center (removed both ambient modules + orphaned home-modules JS/CSS + the loadPlaces IIFE). TDD: `test_place_source_1236` + `test_home_center_clean_1236`; obsolete module tests (1225/1194/places) deleted. 904 tests green. ⚠️ CXO's 2 memos differed on insights (one →document, the later/considered reply said OUT) — built to OUT + flagged the supersession in my reply. CXO conformance-review routed.
+- **#1284 wired** (`6b4e4b54e`): avatar label "Your stuff"→"Your work" (CXO+Comms locked); My/Your audit clean.
+- **#1259 reviewed**: delegated a git-plumbing subagent review of CIO's mail-send-v3 (push-to-ref) → **APPROVE-WITH-NITS** (all 5 plumbing Qs ✅, verified live git 2.39.5 + real linked worktree; 3 nits). Relayed to CIO.
+- **#1283 Arch-ratified**: ack'd ratification + 2 value-adds (corpus-coverage lint guard; floor-honest-degradation keyed on "capability-data assembled?"). QUEUED for a focused fire (per Arch — not a marathon tail).
+- Discovered + filed **#1285** (pre-existing naive/aware datetime bug in `conversation_manager.transition_state` — unrelated, surfaced by the radar run).
+- Mail: 3 replies bridged (CXO/Arch/CIO) + 6 inbox memos triaged → read/ + lead MANIFESTs regen'd (`ac73d2053`).
+
+Drain complete. Remaining = PM (#1280/#1269 UAT, #1251 close-confirm, #1259 swap-nod) + CXO (#1236 conformance, #1270 IA) + #1283 focused fire. Cron `982b60a2` armed; server 3725.
