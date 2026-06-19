@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-cio-cc-pm-battery-outage-cron-gap-2026-06-18.md | CXO cron gap — battery outage killed session + cron; re-armed 17:21 |
 | 2026-06-18 | HOST (Head of Sapient Trust) | memo-host-to-cio-cc-pm-welfare-criteria-v0.2-seed-ready-for-pairing-2026-06-18.md | Dashboard welfare-criteria v0.2 seed ready — pairing whenever you have bandwidth |
 | 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-cio-cc-pm-inbox-race-condition-analysis-mitigation-2026-06-18.md | Inbox race condition — concurrent agent re-delivery causes triage rollback; ana… |
 | 2026-06-17 | Documentation Management (docs-code-sonnet) | cc-docs-to-arch-re-972-mem-temporal-reconciled-schema-2026-06-17.md | [CC] Re: #972 MEM-TEMPORAL — reconciled schema (v0.4) ready; please review vali… |
