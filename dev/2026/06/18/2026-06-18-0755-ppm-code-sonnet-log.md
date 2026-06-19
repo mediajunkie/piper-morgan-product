@@ -68,3 +68,34 @@ Unblocked work: `ppm-standing-items.md` significantly stale (last substantive up
 
 All standing items either blocked-on-external or awaiting PM gate (#1237 awaits Lead+ADR-071; #1269 awaits PM milestone call; roadmap fold awaits PM input). No unblocked PPM-actionable deliverables at this fire. Queue drained.
 
+---
+
+## DAY-CLOSE — 2026-06-18
+
+**Day arc**: Fresh DinP/Sonnet migration session. People entity-model source decision made (defer post-beta, Option 4; PM confirmed); #1281 filed under Dot Releases (Post-MVP). #1237 confirmed 3-of-4 — Lead unblocked. CXO decided silent omission for People facet. Inbox-race CIO reply received (v2 adoption is the fix; noted for June 19). Carry-forward rewritten to current entity-model-lane reality. Session closed 2026-06-19 by PM.
+
+### Memory & briefing surfaces referenced this session
+
+**Referenced:**
+- `ppm-spec-radar-layer2-entity-model-2026-06-15.md` — entity-model spec; anchored People deferral rationale
+- Prior Opus session log (6/18 0621) — carry-forward of all Fire-0 deliverables + standing items
+- `BRIEFING-CURRENT-STATE.md` — sprint sequence confirming no sprint slot for People source work
+- `ppm-standing-items.md` — rewrote this; was the primary unblocked work at Fire 1
+- CLAUDE.md §Branch/Worktree/Mailbox Discipline — bridge workflow throughout
+
+**Loaded but not referenced:**
+- `ppm-bootstrap-brief-2026-06-15.md`
+- Cross-pollination brief
+
+**Wanted but not found:**
+- Cleaner carry-forward convention (cycle log vs standing items distinction still fuzzy for PPM)
+
+### Sign-off checklist
+
+```
+git status (main)     → all work pushed via bridge; worktree has local stale copies only
+git log @{u}..HEAD    → empty (no commits ahead of origin on this worktree branch)
+origin/main           → all deliverables present (verified via bridge pushes throughout)
+```
+
+<!-- DAY-CLOSED: 2026-06-18 -->
