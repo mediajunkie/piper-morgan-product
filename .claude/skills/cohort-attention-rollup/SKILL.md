@@ -23,6 +23,8 @@ because some role's doc is stale.
 > (Exec)** as part of org-attention oversight — cohort-wide bottleneck synthesis is Exec's lane (same
 > family as the Weekly Ship synthesis), not the product-assistant lane. Adapt the shape to your working
 > approach; the sections below are the prototype, not a straitjacket.
+>
+> **Spec / judgment companion**: `docs/internal/operations/cohort-attention-rollup-runbook.md` — the *why, when, and how-much* (the refresh-judgment rule, the trust stakes, the closed Exec↔PM loop, worked examples). This skill is the *how*; read the runbook for the judgment behind the steps.
 
 ## When to use
 
