@@ -3,6 +3,7 @@ type: briefing
 title: BRIEFING-ESSENTIAL-DOCS
 valid_from: "2026-03-19"
 last_updated: "2026-03-19"
+last_verified: "2026-06-19"
 ---
 
 # BRIEFING-ESSENTIAL-DOCS
@@ -50,13 +51,12 @@ The discipline: protect time for omnibus synthesis + canonical verification + me
 
 **Mailbox System (v3)** (`mailboxes/`):
 - Use `/deliver-mail` skill for assisted delivery workflow
-- `mailboxes/incoming/` is the drop zone for memos downloaded from web agents
 - `mailboxes/DIRECTORY.md` is the canonical slug-to-role mapping
 - `mailboxes/DELIVERY-LOG.md` tracks each delivery run with timestamps
 - Each role has `inbox/`, `read/`, `sent/`, and `inbox/MANIFEST.md`
 - Memo naming: `memo-YYYY-MM-DD-from-{slug}-to-{slug}[-cc-{slug}...].md`
 - See `docs/internal/development/memo-format-guide.md` for full spec
-- Mailboxes are gitignored — delivery is local-only, not committed
+- Mailboxes are committed to git — mail is the cross-agent signaling layer (mailbox writes go to `main` only, never on feature branches)
 
 **Blog Metadata Pipeline** (cross-repo, `piper-morgan-website`):
 - Source of truth: `data/blog-metadata.csv` (slug, hashId, imageSlug, category, pubDate)

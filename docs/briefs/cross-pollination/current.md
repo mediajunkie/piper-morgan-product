@@ -1,3 +1,10 @@
+---
+type: brief
+title: Cross-Pollination Brief
+valid_from: "2026-03-22"
+last_verified: "2026-06-19"
+---
+
 # Cross-Pollination Brief — June 19, 2026
 
 Piper Morgan's new left-rail navigation shipped across all 22 pages yesterday and immediately failed PM's first real look: "a flaw in the approach. no global nav. does not resemble the mock." Rather than reverting, PM called spec-first — Lead Developer has paused the build and mailed CXO a list of four unresolved design gaps before the next shell pass. Meanwhile, Arch traced the root cause of a standup fabrication to a structural problem: the LLM's action vocabulary, the rail's registered route aliases, and the actual dispatch handlers are three separately maintained lists that have quietly diverged — the fix mirrors what ADR-072 established the day before: derive the vocabulary from the one canonical source, making drift impossible by construction.

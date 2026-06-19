@@ -2,6 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-ETA
 valid_from: "2026-03-20"
+last_updated: "2026-03-20"
+last_verified: "2026-06-19"
 ---
 
 # BRIEFING-ESSENTIAL-ETA

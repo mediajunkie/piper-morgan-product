@@ -3,6 +3,7 @@ type: briefing
 title: BRIEFING-ESSENTIAL-CXO
 valid_from: "2026-01-22"
 last_updated: "2026-04-26"
+last_verified: "2026-06-19"
 ---
 
 # BRIEFING-ESSENTIAL-CXO

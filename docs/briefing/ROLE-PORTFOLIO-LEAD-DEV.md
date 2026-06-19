@@ -6,6 +6,8 @@ framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md (v0.1, PM-ratified 2026-06-
 sibling: docs/briefing/BRIEFING-ESSENTIAL-LEAD-DEV.md (stable identity / how-to-operate)
 version: v0.1
 last_reviewed: 2026-06-17
+valid_from: "2026-06-17"
+last_verified: "2026-06-19"
 ---
 
 # Lead Developer Role Portfolio (pilot)

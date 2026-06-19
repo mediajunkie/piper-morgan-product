@@ -2,6 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-COMMS
 valid_from: "2025-10-19"
+last_updated: "2026-03-19"
+last_verified: "2026-06-19"
 ---
 
 # BRIEFING-ESSENTIAL-COMMS

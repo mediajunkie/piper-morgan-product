@@ -1,3 +1,10 @@
+---
+type: protocol
+title: Issue Closure Protocol
+valid_from: "2026-01-24"
+last_verified: "2026-06-19"
+---
+
 # Issue Closure Protocol
 
 "Closing an issue properly" means updating BOTH the description AND adding a closing comment.
