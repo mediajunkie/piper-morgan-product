@@ -37,6 +37,16 @@ Response memo sent to Lead (CC: PM, PA).
 
 ---
 
+
+## Fire 1 (09:47 slot, 07:06 actual — PM-delivered, cron silent)
+
+Inbox: empty. Cross-pollination brief `2026-06-19.md` landed (Arch's fabrication
+root cause on #1283; brief also recaps #1280 spec gap — already addressed by v2
+spec shipped at 07:05 this session).
+
+**No new unblocked CXO work.** V2 spec is on origin/main and in Lead's inbox. 
+Fabrication diagnosis (#1283) is Arch/Lead territory — CXO has no action item.
+
 ## Carry-forward for next fire
 
 - **#1280**: v2 spec on origin/main; Lead to rebuild rail + shell to spec; PM visual UAT still needed
