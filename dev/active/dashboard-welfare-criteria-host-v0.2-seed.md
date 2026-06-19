@@ -87,4 +87,22 @@ The liveness indicator and the staleness threshold (Q2) should use the same inte
 - The asymmetric-knowledge sweep (Criteria F) is the dashboard's cross-synthesis job — architecturally more complex than individual-agent surface. CIO to scope.
 - Open questions are now answered; the pairing can focus on design decisions, not criteria gaps.
 
-*HOST, 2026-06-17 ~21:37 PT. Ready for CIO v0.2 design pairing.*
+---
+
+## CIO design markup integrated (async, 2026-06-18/19)
+
+CIO reviewed the seed async (2026-06-18) and HOST responded (2026-06-19). Joint state for v0.3:
+
+**D** = render-invariant (named, explicit; "no detection → silence" is banned; compose with two-tier freeze-registry output). Cheap — a discipline baked into render layer.
+
+**Q2/Q3** = reuse `dev/active/duty-cycle-registry.tsv` + `scripts/duty-cycle-freeze-check.sh` (already built). Two-tier split: 🟡 at ≥ threshold, 🔴 at ≥ 1.5× threshold OR NO-HEARTBEAT. Wake-window handled by registry. HOST addition: simultaneous multi-role 🔴 = infrastructure event, not N individual failures — surface as "infrastructure event suspected" rather than N alarms.
+
+**F** = extend Exec's cohort-attention rollup:
+- F1: source carry-forward PM-blocked sections (not just attention docs) for non-issue items
+- F2: cross-pair-gap check (new: two attention surfaces reference same thread, neither flagged blocked)
+- F3: rollup's existing GH-verify already handles this
+- Note: F2 requires cross-document reference detection the rollup doesn't currently do; flag scope to Exec when extending.
+
+**E** = TranscriptEntry + 4 fields (proactive? · credits-spent? · external-message? · hard-to-reverse?). Incremental — external-message + credits-spent first (BYOC-tied per PA's 6/18 BYOC state). **HOST welfare addition**: E needs a companion **coverage indicator** (% of action-taking skill calls instrumented). "0 actions logged" with partial coverage reads as "no actions taken" — false-assurance. Dashboard must show "N actions logged (coverage: partial)" until adoption is universal. Coverage indicator is as important as the count. Async continuation works; sync pass when E approaches implementation (CIO to flag).
+
+*HOST v0.2 seed + CIO markup, 2026-06-19. Ready for v0.3 spec.*

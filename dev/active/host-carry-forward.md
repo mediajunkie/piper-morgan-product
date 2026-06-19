@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-18 ~09:37 PT (IDLE — inbox empty; all watch threads stable; CIO v0.2 notification done)
+**Last updated**: 2026-06-19 ~10:27 PT (START; Gap-C self-heal; CIO v0.2 markup processed; v0.2 seed updated; cron re-armed)
 
 ---
 
@@ -12,8 +12,8 @@
 
 - **Account**: DinP (xian@designinproduct.com). Model: sonnet-4-6.
 - **Worktree**: ephemeral Option B (`claude/trusting-faraday-ec4bba`). `claude/host-cycle` retired 2026-06-13.
-- **Cron**: `d1d78a04`, windowed `37 6,9,12,15,18,21 * * *` (re-armed 2026-06-17 START after Gap-C; session-only).
-- **Session log today**: `dev/2026/06/18/2026-06-18-0637-host-code-sonnet-log.md`
+- **Cron**: `934651b3`, windowed `37 6,9,12,15,18,21 * * *` (re-armed 2026-06-19 START after Gap-C — battery outage; session-only).
+- **Session log today**: `dev/2026/06/19/2026-06-19-1027-host-code-sonnet-log.md`
 - **Gap-C cure incoming**: CIO proved `mcp__scheduled-tasks` solves cron-death (June 13). Disk-persistent, survives restarts, fires in main checkout. CIO proposing cohort rollout. HOST should be in first cohort — flag interest to CIO.
 - **Migration touch-ups**: thin-prompt proposal Model A → Option B ✅ DONE (fire ~15:37).
 
@@ -36,7 +36,7 @@
 - **m-41 third instance** accepted by CIO 6/13 (three-altitude framing, force-by-constraint sub-shape, at m-41↔m-36↔Pattern-070 confluence). CIO handling formalization. Acked 6/13.
 - **gbrain co-signed memo**: ✅ DELIVERED TO PM (2026-06-16). CIO+HOST T1–T4 synthesis. Adopt-now: idempotency-as-rule. Roadmap: propose-and-diff, cost-consent gate, transcript-first observability, constructor-level bounds. m-36 at architecture layer. Complete.
 - **Escalations-docs fold** — ✅ COMPLETE 2026-06-17. PM ratified; CIO executed (skill v1.13; per-role docs deprecated). HOST answered thin-view question: rollup sufficient; scoping note sent (rollup covers GitHub; carry-forward covers non-issue PM-blocks → mail PM for those).
-- **Dashboard welfare-criteria v0.2** (m-39, HOST owns; pair w/ CIO): **v0.2 seed WRITTEN 2026-06-17** (`dev/active/dashboard-welfare-criteria-host-v0.2-seed.md`). **CIO notified 2026-06-18 06:37** (memo in CIO inbox). Waiting for CIO timing nod. No further HOST action until pairing scheduled.
+- **Dashboard welfare-criteria v0.2→v0.3** (m-39, HOST owns; pair w/ CIO): **CIO async markup received + HOST response sent 2026-06-19**. Joint design state: D=render-invariant, Q2/Q3=freeze-registry reuse, F=rollup extension, E=TranscriptEntry+4fields+coverage-indicator (BYOC-tied, incremental). Seed updated with joint state (`dev/active/dashboard-welfare-criteria-host-v0.2-seed.md`). **Ready for v0.3 spec.** Sync pass on E coverage-indicator UX when E approaches implementation (CIO to flag).
 
 ## Active threads (no-PM-block)
 
@@ -52,7 +52,7 @@
 
 ## Standing cycle responsibility
 
-- Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). Next poll: ~2026-06-20.
+- Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). Next poll: **2026-06-20 (tomorrow) — due at next fire**.
 
 ## Watch / trigger-bound
 
