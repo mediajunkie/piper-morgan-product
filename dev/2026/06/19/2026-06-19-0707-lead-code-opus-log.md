@@ -20,3 +20,7 @@ Rebuilt the rail footer to the CXO v2 spec (conversation-first). The v1 "everyth
 - **Strip narrow** (app-shell.css): removed the v1 `@media(max-width:768px)` stack (post-beta per the v2 spec).
 - **105 green** (rail v2 + home persistent-radar render + all-23-page shell regression + insights); token-lint CLEAN. JS behavior (Radar fetch/render/search) = PM UAT.
 - **v2 rebuild COMPLETE** (Increment 1 rail de-clutter + Increment 2 persistent Radar). Deploying for PM re-UAT.
+
+### 07:45 — mail: Arch concurs #1283; PM routes "Your stuff" → CXO+Comms (#1284)
+- **Arch reply (#1283)** (`memo-arch...concur-vocab-first-derive-mode4-first`, triaged → read/): **concur, all of it** — vocab-first derive (not examples), mode-4-guard-first, the shared reachability resolver. No response-requested. One thing to settle when I ping him on the resolver: **how the intentional-floor allowlist is represented** (keep it small/explicit/reviewed — the one hand-maintained surface left). ADR-073 post-validation. (#1283 stays RECONNECT-sprint; build queued.)
+- **PM on "Your stuff"**: it was always a placeholder. Per PM → routed to **CXO (cc Comms, PM, PA)**: settle the nomenclature with Comms + consider a parent hub route for the user's own content (CXO design call). Filed **#1284** (tracker) + memo sent. **Not a #1280 blocker** — v2 ships "Your stuff" + the 6 routes in the avatar menu as the interim; the label/hub swap is a clean follow-up.
