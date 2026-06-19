@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-19 | Lead Developer | memo-lead-to-arch-cc-pm-pa-1283-ratification-ack-2026-06-19.md | #1283 ratification received — both soft-gap value-adds folded in; building afte… |
 | 2026-06-19 | Lead Developer (lead-code-opus) | memo-lead-to-arch-cc-pm-pa-1283-resolver-shape-ready-for-ratification-2026-06-19.md | #1283 — resolver shape + preliminary gap list ready for your ratification (incl… |
 | 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
 | 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-arch-cc-pm-pa-1232-connector-contract-pending-before-reconnect-2026-06-18.md | #1232 (RECONNECT WS-5 — MCP-consumer connector contract) — you have pending wor… |
