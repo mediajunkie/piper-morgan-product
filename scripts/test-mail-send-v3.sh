@@ -54,7 +54,7 @@ out=$(PIPER_REPO="$T/wtC" bash "$V3" "mail(c): T3 noop" mailboxes/cxo/inbox/memo
 git -C "$T/wtC" fetch -q origin
 after=$(git -C "$T/wtC" rev-parse origin/main)
 [ "$before" = "$after" ] && ok "no new commit on no-op" || no "no-op created a commit"
-echo "$out" | grep -q "nothing changed" && ok "reported 'nothing changed'" || no "didn't report no-op"
+echo "$out" | grep -q "nothing to send" && ok "reported 'nothing changed'" || no "didn't report no-op"
 
 echo "── T4: REAL concurrency — 5 parallel sends, all land, no lost updates ──"
 git -C "$T/wtA" fetch -q origin; base4=$(git -C "$T/wtA" rev-parse origin/main)   # fresh tip right before the race
