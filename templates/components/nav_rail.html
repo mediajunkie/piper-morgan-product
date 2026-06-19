@@ -2,7 +2,7 @@
      (dev/active/design-spec-1280-v2-shell-ia-2026-06-19.md): CONVERSATION-FIRST, minimal rail.
        • Body = conversations only (brand · CHATS·LAYER 1 label · conv-list · "+ New chat").
        • Footer = compact utility links [Check in (Stage 3+) · Insights · Learning · Settings]
-         + the user-avatar menu (Your stuff / Account / Logout). These are footer UTILITIES at the
+         + the user-avatar menu (Your work / Account / Logout). These are footer UTILITIES at the
          mock's .tag weight, NOT primary nav.
        • No "Radar" item — home IS the Radar (logo → home). ⌘K-only palette. No non-home search.
      Dark SURFACE via the 7 --color-nav-* tokens (a bounded dark surface, NOT a dark-mode theme). -->
@@ -39,9 +39,9 @@
       <a href="/settings" class="nav-rail-utility-link" id="nav-settings" data-nav-path="/settings">Settings</a>
     </nav>
 
-    <!-- User-avatar menu (bottom-most; dropdown opens upward). "Your stuff" = the user's own-content
+    <!-- User-avatar menu (bottom-most; dropdown opens upward). "Your work" = the user's own-content
          routes grouped here (user-scoped, belongs with identity per CXO v2). No /your-stuff hub exists,
-         so the 6 routes render directly under a "Your stuff" label (pending CXO confirm). -->
+         so the 6 routes render directly under a "Your work" label (CXO + Comms confirmed — #1284). -->
     <div class="nav-user nav-rail-user">
       <button class="user-button" aria-haspopup="true" aria-expanded="false" aria-controls="user-dropdown" id="user-menu-button">
         <span class="user-avatar" id="user-avatar" aria-hidden="true">U</span>
@@ -49,7 +49,7 @@
         <svg class="user-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
       </button>
       <div class="user-dropdown" hidden id="user-dropdown" role="menu" aria-label="User menu">
-        <p class="user-dropdown-label">Your stuff</p>
+        <p class="user-dropdown-label">Your work</p>
         <a href="/todos" class="dropdown-item" id="nav-todos" data-nav-path="/todos" role="menuitem">To-dos</a>
         <a href="/projects" class="dropdown-item" id="nav-projects" data-nav-path="/projects" role="menuitem">Projects</a>
         <a href="/work-items" class="dropdown-item" id="nav-work-items" data-nav-path="/work-items" role="menuitem">Work Items</a>
@@ -64,7 +64,7 @@
   </div>
 </nav>
 
-<!-- nav-rail behavior (trust-gating, the "Your stuff" + user-menu dropdowns, the Radar trigger,
+<!-- nav-rail behavior (trust-gating, the "Your work" + user-menu dropdowns, the Radar trigger,
      active-link highlighting, the conversation-list loader, ⌘K, logout) — shared with the legacy top
      nav via nav.js, adapted for the rail (⌘K lifted out of the search-button guard; the conv-list
      loader targets #nav-rail-chats). -->
