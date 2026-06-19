@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# test-mail-send-v3.sh — isolated test harness for the push-to-ref mail bridge (#1259).
+# test-mail-send.sh — isolated test harness for the push-to-ref mail bridge (#1259).
 # Builds a throwaway origin + clones in a temp dir; never touches the real repo or real mail.
 # Exercises: add, move (inbox→read), no-op, real parallel concurrency (rebuild-retry), and the
 # cure (v3 works while the shared "main checkout" is diverged+dirty, and never touches it).
 set -uo pipefail
 
-V3="$(cd "$(dirname "$0")" && pwd)/mail-send-v3.sh"
+V3="$(cd "$(dirname "$0")" && pwd)/mail-send.sh"
 [ -f "$V3" ] || { echo "missing $V3"; exit 1; }
 export GIT_AUTHOR_NAME=test GIT_AUTHOR_EMAIL=t@t GIT_COMMITTER_NAME=test GIT_COMMITTER_EMAIL=t@t
 T="$(mktemp -d "${TMPDIR:-/tmp}/mailtest.XXXXXX")"

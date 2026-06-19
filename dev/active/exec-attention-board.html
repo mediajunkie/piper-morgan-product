@@ -18,6 +18,7 @@
   .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex: none; }
   .card { background: #fff; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 12px 16px; margin: 0 0 10px; }
   .card.act { border-color: rgba(192,57,43,0.4); border-left: 3px solid #c0392b; }
+  .card.vp { border-left: 3px solid #8e6db3; }
   .card .top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
   .ttl { font-weight: 600; }
   .pill { font-size: 11px; padding: 3px 9px; border-radius: 6px; white-space: nowrap; flex: none; }
@@ -29,7 +30,7 @@
   .row .ttl { font-size: 14px; }
   .row p { margin: 1px 0 0; font-size: 13.5px; color: #6b6a64; }
   .bg-red { background: #f7dfda; color: #8c2a1c; }
-  .bg-amber { background: #faeeda; color: #633806; }
+  .bg-violet { background: #ece3f5; color: #5b3f86; }
   @media (prefers-color-scheme: dark) {
     body { background: #1b1b19; color: #e8e6e1; }
     .metric, .card { background: #262624; border-color: rgba(255,255,255,0.1); }
@@ -38,7 +39,7 @@
     .clear { color: #b8dd8a; }
     .card.act { border-left-color: #e0604f; }
     .bg-red { background: #3a2018; color: #f0a895; }
-    .bg-amber { background: #3a2c12; color: #ecc88a; }
+    .bg-violet { background: #2c2340; color: #c8b3e0; }
     .row { border-color: rgba(255,255,255,0.08); }
   }
 </style>
@@ -46,37 +47,36 @@
 <body>
 <div class="wrap">
   <h1>Exec attention board</h1>
-  <p class="ts">as of Friday June 19, ~1:05 PM &middot; incremental update on the 10:45 full sweep (CIO acks + GitHub-verified deltas) &mdash; <b>3 you can act on</b></p>
+  <p class="ts">as of Friday June 19, ~1:58 PM &middot; full sweep-and-verify by the skill (8 carry-forwards + GitHub + mail) &mdash; <b>queue clearing fast; 2 asks + 1 voice-pass left</b></p>
 
   <div class="metrics">
-    <div class="metric"><p class="lbl">Needs you</p><p class="num" style="color:#c0392b">3</p></div>
-    <div class="metric"><p class="lbl">Blocked on agents</p><p class="num" style="color:#633806">1</p></div>
-    <div class="metric"><p class="lbl">Voice-pass</p><p class="num" style="color:#3b6d11">0</p></div>
-    <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">6</p></div>
+    <div class="metric"><p class="lbl">Needs you</p><p class="num" style="color:#c0392b">1</p></div>
+    <div class="metric"><p class="lbl">Voice-pass</p><p class="num" style="color:#8e6db3">1</p></div>
+    <div class="metric"><p class="lbl">Blockers</p><p class="num" style="color:#3b6d11">0</p></div>
+    <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">5</p></div>
   </div>
 
-  <h2><span class="dot" style="background:#c0392b"></span>Needs you &middot; you can act on these now</h2>
-  <div class="card act"><div class="top"><span class="ttl">#1259 &mdash; push-to-ref: your swap-nod</span><span class="pill bg-red">CIO waiting on you</span></div>
-    <p>The mailbox-bridge structural fix (mail-send v3, push-to-ref) is <b>done</b> &mdash; built, 12/12 tested, dogfooded, <b>LD-approved</b>. CIO is only waiting on your nod to swap it in as default. Low-risk, and it <b>ends the shared-index NON-FF collisions</b> I keep working around (the cherry-pick-via-throwaway-worktree dance). A one-word "go."</p></div>
-  <div class="card act"><div class="top"><span class="ttl">#1269 &mdash; standup formatting: your re-UAT</span><span class="pill bg-red">Lead waiting on you</span></div>
-    <p>Formatting fix shipped (<code>a0f21bdec</code>) + /standup page migrated onto honest render. Plumbing already passed your 6/18 UAT &mdash; just needs your eyes on the rendered output to close.</p></div>
-  <div class="card act"><div class="top"><span class="ttl">#1280 v2 &mdash; home layout: your re-UAT</span><span class="pill bg-red">Lead waiting on you</span></div>
-    <p>Lead's holding the P4 morning-card until you confirm the v2 home layout. Your UAT unblocks the next build step.</p></div>
+  <h2><span class="dot" style="background:#c0392b"></span>Needs you &middot; you can act on these</h2>
+  <div class="card act"><div class="top"><span class="ttl">#1252 &mdash; auth-anchoring: your close-go</span><span class="pill bg-red">Lead waiting on you</span></div>
+    <p>Closeable per your Option-B (additive work done: doc-store anchoring + leak-fixes + D5 guards + jest CI). Lead files a D4-deeper-threading follow-on alongside closing &mdash; just needs your "close it."</p></div>
 
-  <h2><span class="dot" style="background:#633806"></span>Blocked on another agent &middot; for awareness</h2>
-  <div class="card"><div class="top"><span class="ttl">Role-portfolio rollout &mdash; waiting on HOST review</span><span class="pill bg-amber">cohort &rarr; HOST</span></div>
-    <p>Both pilots filed; cohort batch can't start until HOST reviews them vs the 5 rules. I nudged HOST (it's in their inbox); HOST is active today but on welfare-criteria so far. Their next fire should pick it up &mdash; no action from you. <i>(#1283's Arch-wait cleared &mdash; Arch ratified the shape; Lead's building it now.)</i></p></div>
+  <h2><span class="dot" style="background:#8e6db3"></span>Voice-pass</h2>
+  <div class="card vp"><div class="top"><span class="ttl">Comms Beat 8 &mdash; "Branch-or-Anchor"</span><span class="pill bg-violet">Comms waiting on you</span></div>
+    <p>Draft exists, awaiting your voice-pass. Publishes Jun 23; Comms sends it publish-ready to Docs by Jun 22 evening once you've passed it. No rush today.</p></div>
+
+  <h2><span class="dot" style="background:#3b6d11"></span>Blockers</h2>
+  <p class="clear"><span style="font-size:16px">&#10003;</span> No blocked work. HOST's pilot-review (the last cohort wait) cleared; #1283's Arch-wait cleared too &mdash; Lead's building it.</p>
 
   <h2><span class="dot" style="background:#185fa5"></span>In flight &middot; for awareness</h2>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Sprint assignments &mdash; dispatched (6 agents)</span><p>Today's Q-Audits + FLYWHEEL triage routed: Docs / Comms / CIO / PPM / PA / Web each got a kickoff. CIO already acted (#118 closed). Tracking to completion; no action from you.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">#1283 (RECONNECT) &mdash; unblocked, building</span><p>Arch ratified the resolver-shape; Lead is now building (mode-4 guard → reachability resolver → ADR-073). Was the agent-wait; now in-progress.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">#1287 &mdash; Multi-Agent Coordinator dead-code cleanup</span><p>New, from CIO's #118 review: the bespoke coordinator is confirmed unwired dead code (lapped by harness primitives + the cohort methodology). LD's lane for the `services/` deletion. No action.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Gap-C dormancy watcher &mdash; proven</span><p>Caught the cohort-wide overnight sleep (Fri AM); first_fire missed-START gate works. Both freeze modes covered.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">"Derive, don't maintain" &mdash; Arch's letter to you</span><p>Reflective product question (not urgent) at <code>mailboxes/xian (ceo)/inbox/question-arch-2026-06-17-derive-dont-maintain-as-a-product-pattern.md</code>.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">BYOC Phase 2 &mdash; live</span><p>alpha.pipermorgan.ai live; alpha re-ping wave in progress (your side: Jake / Rebecca / Michelle). Next phases gated on #1162 / #1185.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Main-cohort role-portfolio kickoff &mdash; LAUNCHING (Exec)</span><p>HOST passed <b>both</b> pilots (CIO + Lead Dev) on all 5 rules + fixed the framework example. The gate's clear &mdash; I'm kicking off the remaining roles to write their portfolios now. No action from you.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">#1283 (RECONNECT audit) &mdash; building</span><p>Arch ratified the resolver-shape; Lead's building (mode-4 guard → reachability resolver → ADR-073).</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">#1287 &mdash; Multi-Agent Coordinator dead-code cleanup</span><p>From CIO's #118 review; LD's lane for the `services/` deletion.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Sprint assignments &mdash; landing</span><p>6 kickoffs out this morning; CIO already acted (#118 closed). Others pick up on their fires. Tracking.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#c9a227"></span><div><span class="ttl">Docs "6 escalate branches" &mdash; still 4 days stale</span><p>Docs's merge-keeper list (6/15) hasn't refreshed; flagged Docs to re-run before it's actionable. Don't action as-is.</p></div></div>
 
-  <h2><span class="dot" style="background:#3b6d11"></span>Clean &middot; verified resolved</h2>
-  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">Resolved since this morning</span><p>#118 closed (superseded) &middot; #1283 Arch-ratified (wait cleared) &middot; thin-cron dogfood confirmed by CIO (cohort already on thin) &middot; sprint triage fully routed &middot; Slack = moot-post-RECONNECT (tracked in RECONNECT, not orphaned) &middot; #1107 closed-superseded &middot; Ship #047 published.</p></div></div>
+  <h2><span class="dot" style="background:#3b6d11"></span>Clean &middot; resolved (a big afternoon)</h2>
+  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">You cleared Lead's UAT queue today</span><p><b>#1269</b> standup &middot; <b>#1280</b> v2 home &middot; <b>#1227</b> Slack markdown &middot; <b>#1250</b> learning-toggle &middot; <b>#1236</b> Radar &mdash; all closed COMPLETED this afternoon (+ #1173 yesterday). Six items off the board.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">Other resolved</span><p>HOST passed both pilots + fixed framework example &middot; #118 closed (→#1287) &middot; thin-cron dogfood confirmed &middot; Slack = moot-post-RECONNECT &middot; #1107 superseded &middot; Ship #047 published.</p></div></div>
 </div>
 </body>
 </html>
