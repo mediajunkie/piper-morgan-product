@@ -9,25 +9,33 @@
   <main>
     <h1>{{ title }}</h1>
     <p><a href="/api/v1/admin/compose">&larr; back to list</a></p>
-    <form>
+
+    <p id="save-status" class="save-status" aria-live="polite"></p>
+
+    <div id="placeholder-warnings" class="placeholder-warnings" hidden aria-live="polite"></div>
+
+    <form id="compose-form" data-slug="{{ slug }}" data-save-url="/api/v1/admin/compose/{{ slug }}/save">
       <label>
         Image filename:
-        <input type="text" value="{{ frontmatter.image }}" readonly>
+        <input id="field-image" type="text" name="image" value="{{ frontmatter.image }}">
       </label>
       <label>
         Alt text:
-        <input type="text" value="{{ frontmatter.alt }}" readonly>
+        <input id="field-alt" type="text" name="alt" value="{{ frontmatter.alt }}">
       </label>
       <label>
         Caption:
-        <input type="text" value="{{ frontmatter.caption }}" readonly>
+        <input id="field-caption" type="text" name="caption" value="{{ frontmatter.caption }}">
+        <small class="field-hint">If caption contains an apostrophe, wrap the whole value in double quotes: <code>"It's done!"</code></small>
       </label>
       <label>
-        Body (read-only):
-        <textarea readonly rows="30" cols="80">{{ body }}</textarea>
+        Body:
+        <textarea id="field-body" name="body" rows="40" cols="80">{{ body }}</textarea>
       </label>
     </form>
-    <p class="phase-note">(Phase 1 scaffold — editing lands in Phase 2)</p>
+
+    <p class="phase-note">Phase 2 — autosaves 30 s after last change, and on focus-out.</p>
   </main>
+  <script src="/static/admin/compose.js"></script>
 </body>
 </html>

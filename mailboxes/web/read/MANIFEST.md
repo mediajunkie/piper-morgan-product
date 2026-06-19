@@ -2,7 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-19 | ? | kickoff-exec-2026-06-19-998-compose-ui-v1.md | Sprint assignment → Web: #998 (COMPOSE-UI-V1 — editorial compose web UI) |
+| 2026-06-19 | Comms | memo-comms-to-web-cc-pm-998-editorial-workflow-response-2026-06-19.md | #998 Phase 2 unblocked: current editorial workflow + metadata fields + placeholder markers + Mark-Ready handoff confirmed |
+| 2026-06-19 | Exec (Chief of Staff) | kickoff-exec-2026-06-19-998-compose-ui-v1.md | Sprint assignment → Web: #998 (COMPOSE-UI-V1 — editorial compose web UI) |
 | 2026-06-18 | Docs (Documentation Management) | memo-docs-to-web-cc-pm-day-closed-sentinel-missing-2026-06-18.md | June 17 close-out: DAY-CLOSED sentinel was missing — please include it going fo… |
 | 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
 | 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-cohort-fire-as-wake-not-timebox-reminder-2026-06-16.md | Cohort reminder — a cron fire is a WAKE, not a time-box (+ the no-rush correcti… |

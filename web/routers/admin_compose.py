@@ -1,10 +1,11 @@
-"""Admin compose UI routes (Phase 1: read-only scaffold).
+"""Admin compose UI routes (Phase 2: Edit + Autosave).
 
-Issue #998 — lightweight editorial compose UI. Phase 1 provides:
-    GET /admin/compose            — list drafts needing finishing
-    GET /admin/compose/{slug}     — read-only view of a single draft
+Issue #998 — lightweight editorial compose UI.
+    GET  /admin/compose            — list drafts needing finishing
+    GET  /admin/compose/{slug}     — editable detail view
+    POST /admin/compose/{slug}/save — autosave (JSON body)
 
-Phases 2-4 (save, image upload, git operations) are NOT in this file.
+Phases 3-4 (image upload, git operations) are NOT in this file.
 """
 
 from __future__ import annotations
@@ -13,11 +14,12 @@ from datetime import date
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 
 from services.editorial.calendar import list_drafts_needing_finishing
-from services.editorial.draft import parse_draft, resolve_draft_path
+from services.editorial.draft import parse_draft, resolve_draft_path, write_draft
 
 router = APIRouter(prefix="/api/v1/admin/compose", tags=["admin", "compose"])
 
@@ -56,6 +58,28 @@ async def compose_detail(request: Request, slug: str) -> HTMLResponse:
             "body": body,
         },
     )
+
+
+class SavePayload(BaseModel):
+    image: str = ""
+    alt: str = ""
+    caption: str = ""
+    body: str = ""
+
+
+@router.post("/{slug}/save", response_class=JSONResponse)
+async def compose_save(slug: str, payload: SavePayload) -> JSONResponse:
+    """Autosave endpoint — receives form fields as JSON, writes to draft file."""
+    path = resolve_draft_path(slug)
+    if path is None:
+        raise HTTPException(status_code=404, detail=f"Draft not found: {slug}")
+    frontmatter = {
+        "image": payload.image,
+        "alt": payload.alt,
+        "caption": payload.caption,
+    }
+    write_draft(path, frontmatter, payload.body)
+    return JSONResponse({"saved": True, "slug": slug})
 
 
 def _extract_title(body: str) -> str:

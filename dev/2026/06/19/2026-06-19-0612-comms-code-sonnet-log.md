@@ -5,6 +5,7 @@
 **Branch**: claude/silly-hawking-4166de (ephemeral auto-worktree — Option B)
 **Cron**: `f888c245` · `12 6,9,12,15,18,21 * * *`
 
+- Fire 3 (15:35 PT) — Inbox: Exec kickoff for role-portfolio wave (pilots CIO + Lead Dev passed HOST 5-rule review). Read framework + CIO example; drafted `docs/briefing/ROLE-PORTFOLIO-COMMS.md` v0.1. Two irreducible mandates: template-and-YAML gate (won't send publish-ready with failed audit; concrete Jun 19 YAML instance) + narrative-front hold (won't manufacture a beat that hasn't taken shape). Routed to Exec, CC HOST + PM. Kickoff triaged → read/. All committed.
 - Fire 2+ (PM engaged session, ~13:00 PT) — patterns-naming-patterns: PM chose title "This One's Taken"; Comms fixed YAML caption parse error (`'"It's"` → `'"It''s elementary!"'` — doubled apostrophe escape); file renamed `patterns-naming-patterns.md` → `this-ones-taken.md`. Template audit: PASSED (0 semicolons, 0 load-bearing/cohort, all structure + YAML valid). Publish-ready memo sent to Docs inbox (slug `this-ones-taken`, pubDate Jun 20, notes on rename + calendar row update needed). — Web memo triaged (#998 COMPOSE-UI-V1 Phase 2 requirements): replied with full editorial workflow, metadata fields, placeholder markers, "mark ready" handoff design, and partial #1160 Dispatch info (pending skill share). CC PM. All memos committed (`committed below`). Footer-tease lesson recorded: always check editorial-calendar.csv for next scheduled post of ANY category — don't assume next narrative beat.
 
 ---

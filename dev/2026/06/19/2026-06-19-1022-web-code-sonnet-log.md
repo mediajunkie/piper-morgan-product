@@ -34,5 +34,6 @@ Inbox empty (MANIFEST.md only). `1283-resolver-shape-design.md` and `alpha-teste
 | Fire | Time | Action | Notes |
 |------|------|--------|-------|
 | 1 | 10:27 | START | PM-initiated; cron dead (Gap-C self-heal); re-armed 50329081; inbox empty; queue unchanged |
-| 2 | 12:50 | WORK | Sprint assignment received: #998 COMPOSE-UI-V1. Verify-first: Phase 1 already built (router + templates + CSS + editorial services). Phases 2-4 pending — Comms requirements ask sent. Standing items + carry-forward updated. Note: Exec memo said "website repo" but issue is FastAPI in product repo — no clarification needed, proceeding in product repo. |
+| 2 | 12:50 | WORK | Sprint assignment received: #998 COMPOSE-UI-V1. Verify-first: Phase 1 already built (router + templates + CSS + editorial services). Phases 2-4 pending — Comms requirements ask sent. Note: Exec memo said "website repo" but issue is FastAPI in product repo — proceeding there. |
+| 3 | 15:52 | WORK | Comms replied with full Phase 2 requirements. Built Phase 2 (Edit + Autosave): `draft.py` write_draft() + YAML round-trip fix; POST /save route; compose_detail.html editable; compose.js autosave + [..] placeholder scan; compose.css interactive states. Comms memo triaged → read/. Phase 3 gated on PM test stop. |
 

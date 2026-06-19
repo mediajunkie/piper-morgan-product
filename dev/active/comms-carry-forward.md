@@ -22,6 +22,10 @@
 - Beat 8 voice-pass (needed before Jun 22 publish-ready signal)
 - Beats 10–16 voice-pass (pub Jul 2 onward)
 
+## Completed this session
+
+- **Role portfolio** — `docs/briefing/ROLE-PORTFOLIO-COMMS.md` v0.1 filed; routed to Exec (CC HOST + PM) for HOST 5-rule review.
+
 ## Lesson logged
 
 Footer tease discipline: always check `editorial-calendar.csv` for the next post of ANY category — don't assume the next narrative beat. The next scheduled post wins, regardless of category.

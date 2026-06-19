@@ -112,11 +112,28 @@ Grid layout, typographic baseline rhythm, tiling/padding rules, mobile-first pro
 
 CXO will own the design side of #1286 in D2. On my radar.
 
+
+## Fire 4 (15:47 slot, 16:06 actual)
+
+Inbox: 2 items (Exec kickoff + Lead D2 memo).
+
+### Exec — role portfolio wave
+Read framework + CIO pilot. Wrote and filed `docs/briefing/ROLE-PORTFOLIO-CXO.md`.
+
+Portfolio structure: purpose (Colleague Test / collegial AI assistance) → priorities (D2 design system, #1290 nav IA, #1269 morning-card, floor oversight) → standing responsibilities (specs, design calls, floor watch) → seams (Lead/PPM/Comms/HOST + irreducible mandate: the Colleague Test with 3 calibration instances) → currency mechanism (weekly workstream review is the refresh moment).
+
+Routed to Exec + HOST.
+
+### Lead — #1290 D2 nav IA (PM's instinct: work·learning·insights·settings top-level)
+Call: hold for D2, gates on #1284 hub-route decision. Without `/work` hub page, "Work" as top-level nav opens a dropdown = awkward IA. #1290 + #1284 + #1286 interact — design them together as a D2 IA + design-system pass.
+
+Beta: v2 spec ships as-is.
+
 ## Carry-forward for next fire
 
-- **#1236**: CLOSED ✓ (PM beta UAT passed)
-- **#1280**: PASSED PM beta UAT ✓ (D1 milestone complete)
-- **#1286**: D2 design-system foundation — CXO owns design side (grid, rhythm, tiling, mobile-first, conformance review)
-- **#1269**: plumbing done; morning-card surface (P4) is next build step
-- **#1251**: waiting on Lead's `insights.css` extraction; 6 non-annotated items queued
+- **#1236**: CLOSED ✓ / **#1280**: PASSED PM beta UAT ✓ — D1 complete
+- **Role portfolio**: FILED (`docs/briefing/ROLE-PORTFOLIO-CXO.md`); HOST review pending
+- **#1286 / #1290 / #1284**: D2 design-system + nav IA + "Your work" naming — scope together in D2
+- **#1269**: P4 morning-card (Lead's build lane) — design spec sent
+- **#1251**: waiting on Lead's `insights.css` extraction
 - Standing watch: #950 floor-quality, #992 ethics-decline voice oversight
