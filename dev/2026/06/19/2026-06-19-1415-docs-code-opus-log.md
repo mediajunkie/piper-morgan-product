@@ -75,9 +75,56 @@ Rewrite-or-retire per rubric: "retire IF check-mailbox + CLAUDE.md mailbox workf
     dance (confident one-line hazard; convention's "writes-from-worktree-path" intent preserved).
 - Reviewed full `git diff` before commit — clean, all five edits accurate.
 
-## Next (this session)
+- (14:25) — **Committed** `ecfa8ae42` (6 files: tombstone + 4 doc fixes + this log). Non-FF on push
+  (concurrent agent); rebased cleanly onto origin/main, pushed `HEAD:main`. Landed.
+- (14:30) — **Filed discovered-work issue #1292** (discipline-doc Rule 3 broader #1259 reconciliation +
+  obsolete incoming//DELIVERY-LOG.md cleanup). Self-contained for cold pickup.
+- (14:32) — **Memo'd PA** (cc PM, CIO) pointing to #1292 — sent via `scripts/mail-send.sh` push-to-ref
+  (commit `6286f62c0`, attempt 1). **Dogfooded the exact flow the rewritten skill now documents — works.**
+- (14:35) — Reconciled worktree to origin/main (mailbox files were uncommitted post-send, as expected);
+  tree clean, branch even (0/0). Both commits confirmed on origin/main.
 
-- Commit + push to origin/main (non-mailbox → `git push origin HEAD:main`).
-- File discovered-work tracking issue (discipline-doc Rule 3 broader #1259 reconciliation + incoming/ +
-  DELIVERY-LOG.md artifact cleanup) and heads-up PA (synthesis-of-record owner).
-- Sign-off checklist + memory-eval section.
+## Mailbox check (session start, deferred to here)
+
+Docs inbox had 2 unread — both **unrelated to the assigned task**, both **left in inbox** (read for triage,
+not actioned → moving them would hide pending work):
+1. `kickoff-exec-…-role-portfolio-main-cohort-wave.md` — Exec asks Docs to write
+   `docs/briefing/ROLE-PORTFOLIO-DOCS.md` per the framework. Explicitly **no deadline, response-requested:
+   none, pick up on an upcoming fire**. Discretionary Docs work — surfaced to PM, not done here.
+2. `memo-comms-to-docs-this-ones-taken-publish-ready-2026-06-19.md` — Comms flags the "This One's Taken"
+   insight (pubDate 6/20) publish-ready. **Not actioned**: per standing guidance the publish trigger is
+   *PM's* explicit handoff (not Comms's "ready"), and there's an open blocker (PM still finalizing the
+   `ai-detective.png` image). Awaiting PM handoff. Also note the calendar still has the old title/slug
+   (`patterns-naming-patterns`) to update at publish time.
+
+## Outcome
+
+✅ **deliver-mail RETIRED** (tombstone redirect) — completes #1259 step 4. Send→mail-send.sh push-to-ref,
+receive→check-mailbox. All dangling "use /deliver-mail" pointers fixed. Discipline-doc `:67` hazard fixed;
+broader reconciliation routed to PA via #1292. Everything on origin/main; tree clean; push-to-ref verified
+by dogfooding. **No code/tests touched** (docs + skill only) → no test run applicable.
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**
+- `CLAUDE.md` "The mailbox workflow (most-frequent case) — push-to-ref via mail-send.sh" (origin/main) —
+  the canonical send flow I redirected the tombstone to + cited verbatim.
+- `scripts/mail-send.sh` v3 (origin/main) — read the header design notes to document push-to-ref accurately.
+- `docs/internal/operations/mailbox-bridge-transparency-design-2026-06-16.md` (#1259) — confirmed
+  "update deliver-mail skill" was planned step 4 (sanctioned this task).
+- `check-mailbox` skill — confirmed it covers the receive half before deciding to retire.
+- `mailboxes/DIRECTORY.md` — slug/path routing for the PA memo (xian (ceo) space+parens).
+- Memory: `feedback_wait_for_publish_handoff` (didn't auto-run publish), `feedback_investigate_before_extending_all_work`
+  (synced to current origin/main before editing), `feedback_role_official_name_in_parens` (PA disambiguation),
+  `feedback_descriptive_names_not_cryptic_ordinals`, `feedback_mailbox_writes_main_only`.
+
+**Loaded but not referenced**
+- Most of the cohort duty-cycle / role-model-map / cross-pollination memories; the bulk of the skills list.
+
+**Wanted but not found**
+- A repo convention for *retiring* a skill (tombstone vs hard-delete) — none existed; I chose tombstone and
+  documented the rationale + a hard-delete-later note. (Minor process gap; not worth a doc on its own yet.)
+
+## Sign-off
+
+(checklist output appended below at sign-off)
