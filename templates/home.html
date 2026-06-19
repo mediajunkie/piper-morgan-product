@@ -24,6 +24,17 @@
         min-height: 100vh;
       }
 
+      /* #1280 — the left dark rail (app_shell) now owns the conversation list (conv-list-everywhere),
+         so home's own left sidebar is a duplicate → hidden. !important beats the legacy collapse
+         toggle's inline display style. .app-layout is flex, so .main-content fills the freed space.
+         (Clean removal of the markup + the now-dead #conversation-list render is a tracked follow-up;
+         hidden-not-removed keeps initSidebar/loadConversations element refs valid — loadConversations
+         still returns the auto-select id home uses to open the most-recent chat.) */
+      .sidebar,
+      .sidebar-expand-btn {
+        display: none !important;
+      }
+
       .sidebar {
         width: 280px;
         flex-shrink: 0;
@@ -1776,6 +1787,14 @@
       async function initSidebar() {
         // Check URL for conversation parameter
         const params = new URLSearchParams(window.location.search);
+
+        // #1280 — the left rail's "+ New chat" links to /?new=1. Start a fresh conversation
+        // instead of auto-loading the most-recent one (the rail navigates here from any page).
+        if (params.get('new') === '1') {
+          await createNewConversation();
+          return;
+        }
+
         let conversationId = params.get('conversation');
 
         // Issue #583: If no URL param, try localStorage for refresh recovery
