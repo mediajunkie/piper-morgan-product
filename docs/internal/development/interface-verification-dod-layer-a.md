@@ -58,6 +58,33 @@ For any acceptance criterion of the form *"consumer C uses / consumes / touches 
 
 The PPM Review Gates 5-class taxonomy (CEO-approved May 10) routes review by class: PDR-adjacent / **sub-epic gate** / quality-threshold-affecting / integration-pattern-shifting / user-facing-experience. This DoD is a standing **requirement within the sub-epic-gate class (Class B)**: whenever a sub-epic gate closes and any of its acceptance criteria assert a consumer-relationship, the Consumer-Trace above is part of gate close. It composes with — does not replace — the per-sub-epic quality-threshold gates (Colleague Test) and the conceptual-integrity sign-off. See `m2-structure.md` §"Sub-Epic Gating Protocol" item 5.
 
+## Service-type / interface matrix — AC2 (#683)
+
+*Which interfaces each service type is required to support. Use during PR review: identify your service type, then verify the REQUIRED entries are actually wired. CONDITIONAL = required if the service produces a result the user can act on from that surface. Added 2026-06-19 (PPM, sprint assignment from Exec).*
+
+**Current Piper interfaces** (post-D1):
+- **Chat** — conversational surface; intent dispatch → handler → response
+- **Web UI** — browser pages (/home, /radar, /documents, /insights, /standup, /projects, settings)
+- **REST API** — `/api/v1/` endpoints (programmatic access, plugin calls, integration callbacks)
+
+| Service type | Chat | Web UI | REST API | Notes |
+|---|---|---|---|---|
+| **Conversational capability** — responds to user chat messages via intent dispatch (e.g. TrustService, MemoryService, PortfolioService, entity queries) | **REQUIRED** | NOT APPLICABLE | **REQUIRED** | Chat is the primary surface. API enables programmatic access (plugin calls). Web UI page only if capability has a dedicated visual surface. |
+| **Entity source / data feed** — aggregates data for UI surfaces (e.g. WorkItemEntitySource, DocumentEntitySource, ConversationEntitySource) | NOT APPLICABLE | **REQUIRED** | **REQUIRED** | Underlying data layer; reaches the user through Radar and entity pages, not directly through chat. API exposes raw feed for integrations. |
+| **Proactive / push capability** — initiates contact without explicit user request (e.g. standup morning card, insight suggestions, MomentRenderer) | **REQUIRED** | **REQUIRED** | CONDITIONAL | Delivered through chat (the push surface) AND surfaced on /home or proactive panels. API trigger/status only if externally invokable. |
+| **Artifact / document surface** — serves stored artifacts (e.g. insight journal, document retrieval, conversation history export) | **REQUIRED** | **REQUIRED** | **REQUIRED** | Summaries and references through chat; dedicated pages (/insights, /documents) in Web UI; full-content retrieval through API. |
+| **Configuration / account management** — user settings and account state (e.g. trust stage, BYOC config, integration credentials) | NOT APPLICABLE | **REQUIRED** | **REQUIRED** | No chat surface for config. Settings pages in Web UI; API for programmatic config management. |
+| **Background / scheduled service** — runs without user request; produces side effects (e.g. CompostingScheduler, connection health checks) | NOT APPLICABLE | CONDITIONAL | CONDITIONAL | No direct user surface. Web UI: status visible on relevant page if failure is user-actionable. API: trigger + status endpoints only if externally observable. |
+| **Integration connector** — connects Piper to external data sources (e.g. GitHub connector, Slack inbound, RECONNECT) | **REQUIRED** | **REQUIRED** | **REQUIRED** | Setup flow via chat intent. Connector config and status page in Web UI. API for connect/disconnect/status operations. |
+
+**How to use this table during PR review**:
+1. Identify which service type(s) your change touches.
+2. For each REQUIRED entry: confirm the interface is actually wired (Consumer-Trace, step 1–5 above) and include the trace in your PR.
+3. For CONDITIONAL entries: confirm whether the condition applies; if yes, treat as REQUIRED.
+4. For NOT APPLICABLE entries: no wiring expected — flag if you believe an exception applies.
+
+**Pending refinement**: Lead Dev operational-check recipe (runtime assertion vs. integration test vs. smoke-call vs. documented manual trace) — still needed to make the "Consumer-Trace" actionable per row. Noted as pending in the Owners section above; this matrix is additive, not blocking.
+
 ## Source grounding
 
 - methodology-30 (Consumer-Trace Verification): `docs/internal/development/methodology-core/methodology-30-CONSUMER-TRACE-VERIFICATION.md`

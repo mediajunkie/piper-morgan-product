@@ -32,3 +32,20 @@ June 18 log closed (memory eval + DAY-CLOSED sentinel). June 19 log opened.
 - No new PPM action beyond adopting Option 3 practice
 - Moved to read/
 
+### Fire 2 — 12:52 PDT (windowed cron)
+
+Cron re-armed (`d17a2c96` → `810e8e96` deleted earlier; new `d17a2c96` active). Pull-before-triage (Option 3).
+
+**Inbox**: 1 item — Exec kickoff for #683 (MUX-WIRE-DOD).
+
+**#683 sprint work**:
+- Verify-first: read #683 in full + MUX-WIRE parent (#670) + Layer A doc
+- Confirmed: AC1 (DoD updated, Layer A + Layer B canonical) ✅ and AC3 (PR checklist) ✅ both already done
+- AC2 gap confirmed: service-type/interface matrix missing from Layer A doc
+- Drafted + added 7-service-type matrix (Chat / Web UI / REST API columns) to `docs/internal/development/interface-verification-dod-layer-a.md` — reflects current Piper interface landscape (not original CLI/Slack)
+- GH comment on #683 documenting AC2 completion; all 3 ACs now checked
+- Remaining before close: Lead Dev operational-check recipe (noted as pending refinement, not blocking AC2)
+- Kickoff memo moved to read/
+
+Committed + pushed to origin/main.
+
