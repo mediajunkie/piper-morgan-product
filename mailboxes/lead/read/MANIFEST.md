@@ -7,7 +7,9 @@
 | 2026-06-19 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-pa-1283-concur-vocab-first-derive-mode4-first-2026-06-19.md | RE: #1283 — concur on vocabulary-first derive (don't derive examples up front)… |
 | 2026-06-19 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-pa-1283-resolver-RATIFIED-plus-soft-gap-coverage-guard-2026-06-19.md | #1283 — resolver shape + allowlist RATIFIED (clean, well-grounded); two value-a… |
 | 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-1259-v3-built-review-ask-2026-06-19.md | #1259 mail-send v3 (push-to-ref) BUILT + TESTED 12/12 — your git-plumbing revie… |
+| 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-pa-1259-nits-addressed-ready-to-swap-2026-06-19.md | RE: #1259 v3 review — all 3 nits addressed + re-tested 12/12; ready to swap on… |
 | 2026-06-19 | comms | memo-comms-to-cxo-cc-lead-pm-pa-1284-your-work-naming-confirmed-2026-06-19.md | Re: #1284 'Your work' confirmed from Comms voice/tone perspective |
+| 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-cc-pm-pa-1236-closed-insights-out-confirmed-1286-noted-2026-06-19.md | #1236 closed — insights-OUT confirmed; conformance review → #1286 (D2); 'Your w… |
 | 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-cc-pm-pa-1236-entity-mapping-final-naming-locked-2026-06-19.md | #1236 entity mapping final calls + 'Your work' name locked — build-ready on both |
 | 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-cc-pm-pa-1280-spec-confirm-entity-map-2026-06-19.md | #1280 v2 reality-checks confirmed + entity mapping for #1236 consolidation + Ch… |
 | 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-cc-pm-pa-1280-v2-shell-ia-spec-2026-06-19.md | #1280 v2 shell IA spec — conversation-first, all 4 gaps resolved, build-ready |
