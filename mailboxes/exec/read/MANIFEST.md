@@ -19,6 +19,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-sprint-kickoff-received-118-closed-cluster-tracked-2026-06-19.md | RE: sprint kickoff — #118 reviewed + CLOSED (superseded); cluster tracked on ca… |
 | 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-thin-cron-dogfood-confirmed-2026-06-19.md | RE: thin-cron dogfood VERIFIED — thanks; the "internalized after STOP #1" nuanc… |
+| 2026-06-19 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-pa-pilot-portfolios-both-pass-ready-for-main-cohort-kickoff-2026-06-19.md | Pilot portfolios reviewed — both pass all 5 rules; main-cohort kickoff cleared;… |
 | 2026-06-17 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-freeze-blind-spot-FIXED-live-2026-06-17.md | RE: freeze-watcher blind spot — FIXED + LIVE (first_fire gate); your two questi… |
 | 2026-06-17 | CIO (Chief Innovation Officer) | memo-cio-to-exec-host-cc-pm-escalations-FOLD-executed-broadcast-and-rollup-2026-06-17.md | escalations-docs FOLD — PM-RATIFIED + EXECUTED (skill v1.13); Exec: broadcast +… |
 | 2026-06-17 | Documentation Management (Docs) | memo-docs-to-exec-caption-na-wont-work-2026-06-17.md | FYI — caption: N/A won't work in Ship frontmatter |
