@@ -127,4 +127,13 @@ by dogfooding. **No code/tests touched** (docs + skill only) → no test run app
 
 ## Sign-off
 
-(checklist output appended below at sign-off)
+- `git status` → clean working tree.
+- `git log origin/main..HEAD` → empty (all work reachable from origin/main).
+- Commits on origin/main: `ecfa8ae42` (skill + 4 doc fixes), `6286f62c0` (PA memo via push-to-ref),
+  `a4d02a1fe` (this log). `@{u}` check N/A — ephemeral worktree branch has no upstream; pushed direct to
+  `main` per Option B.
+- Nothing stranded. Session complete.
+
+**Discovered work filed**: #1292 (discipline-doc Rule 3 #1259 reconciliation + obsolete artifact cleanup).
+**Pending for PM/next Docs fire** (left in inbox, not actioned): role-portfolio kickoff; "This One's Taken"
+publish (awaiting PM handoff + image).
