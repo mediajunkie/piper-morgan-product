@@ -4,7 +4,7 @@
 
 **Owner**: Unicorn Web Designer (Web) — pipermorgan.ai (`piper-morgan-website` repo)
 **Created**: 2026-05-29 at v0.7 worktree-cycle adoption prep
-**Last refresh**: 2026-06-17 (DinP/Sonnet session — lint fix, signup refactor, alt-text backfill launch)
+**Last refresh**: 2026-06-19 (DinP/Sonnet session — #998 sprint assignment; Comms requirements ask sent)
 
 **Operating notes (current):**
 - **Two-repo shape**: code work lands in `piper-morgan-website` (separate repo, commits on its own `main`, push triggers GitHub Pages deploy). Cycle artifacts (this file, logs, cycle-log, mail) live in `piper-morgan-product` and commit directly to its `main` (no worktree — see below).
@@ -15,6 +15,14 @@
 ---
 
 ## Active items
+
+### #998 COMPOSE-UI-V1 — Editorial compose web UI (product repo FastAPI)
+- [x] **Phase 1** (read-only scaffold) — **DONE** (prior work): `web/routers/admin_compose.py` + templates + CSS + `services/editorial/{calendar,draft}.py` all wired. Route: `GET /api/v1/admin/compose`.
+- [ ] **Phase 2** (Edit + Autosave) — blocked on Comms requirements. Memo sent 2026-06-19.
+- [ ] **Phase 3** (Image Upload) — follows Phase 2.
+- [ ] **Phase 4** (Mark Ready + Git Handoff) — follows Phase 3; also needs `services/editorial/git_ops.py`.
+- **Note**: Exec's kickoff memo said "website repo" but issue lives in `piper-morgan-product` (FastAPI `web/`). Working in product repo. No PM clarification needed — tech decision.
+- **Gate**: Comms requirements reply → Phase 2 unblocked.
 
 ### Site-quality queues (PM-react gated)
 - [ ] **Obs-pass joint walkthrough** — PM confirmed visual spot-check clean (VA-2, VA-3 resolved by PM eyeball 6/17). Remaining ~20 obs items need PM +1/−1/defer. Hold for joint pass. Canonical: `dev/2026/05/24/site-observation-pass-2026-05-24.md`.
