@@ -6,10 +6,10 @@ internals (the #490 wiring-test lesson).
 
 The reconciled slot mapping (Phase-0 finding — the sources emit coarse recency/label
 lifecycles + an `attention` epoch, NOT PPM's DONE/RATIFIED vocab):
-  Yesterday  = Conversation `active` + Document `new` + WorkItem `closed`   (moved recently)
+  Yesterday  = Document `new` + WorkItem `closed`   (completed work; conversations are NOT standup items)
   Today      = WorkItem `open`/`in-review` (fresh) + Document `recent`       (on my plate)
   Watch      = WorkItem `blocked` (first) + WorkItem `open`/`in-review` stale (>stale_days)
-Dropped (in no slot): idle/dormant conversations, stale documents.
+Dropped (in no slot): ALL conversations (not standup items, PM 6/19), stale documents.
 
 The third slot is "Watch" not "Blockers" (CXO #1269): Piper-inferred potential blockers,
 confidence-calibrated — confirmed-blocked surface first, staleness signals follow.
@@ -61,7 +61,7 @@ class _BoomSource:
 def _sources():
     conv = _FakeSource(
         [
-            _ent(EntityType.CONVERSATION, "talked perf", "active", NOW - 12 * H),  # → Yesterday
+            _ent(EntityType.CONVERSATION, "talked perf", "active", NOW - 12 * H),  # → dropped (conversations aren't standup items)
             _ent(EntityType.CONVERSATION, "old thread", "dormant", NOW - 30 * D),  # → dropped
         ]
     )
@@ -93,7 +93,7 @@ class TestStandupAssemblerSlotMapping:
     async def test_yesterday_is_recent_movement(self):
         summary = await StandupAssembler(_sources(), now_epoch=NOW).assemble("u1")
         assert isinstance(summary, StandupSummary)
-        assert _displays(summary.yesterday) == {"talked perf", "spec draft", "done-y"}
+        assert _displays(summary.yesterday) == {"spec draft", "done-y"}  # conversations dropped (PM 6/19)
 
     async def test_today_is_open_plate(self):
         summary = await StandupAssembler(_sources(), now_epoch=NOW).assemble("u1")
@@ -109,6 +109,7 @@ class TestStandupAssemblerSlotMapping:
             _displays(summary.yesterday) | _displays(summary.today) | _displays(summary.watch)
         )
         assert "old thread" not in everything  # dormant conversation
+        assert "talked perf" not in everything  # active conversation — conversations aren't standup items (PM 6/19)
         assert "ancient" not in everything  # stale document
         assert "ex" not in everything  # EXAMPLE provenance (honest-provenance filter)
 
@@ -119,7 +120,6 @@ class TestStandupAssemblerSlotMapping:
         # source tags the derived origin so the surface can tell derived-from-observed
         # items apart from captured/commit items.
         by_display = {it.display: it for it in all_items}
-        assert by_display["talked perf"].source == "radar:conversation"
         assert by_display["spec draft"].source == "radar:document"
         assert by_display["open-fresh"].source == "radar:work_item"
         # coarse lifecycle label carried through verbatim
@@ -150,8 +150,8 @@ class TestStandupAssemblerOrderingAndResilience:
     async def test_per_source_isolation_a_failing_source_never_blanks_the_standup(self):
         conv, doc, wi = _sources()
         summary = await StandupAssembler([conv, _BoomSource(), wi], now_epoch=NOW).assemble("u1")
-        # conv + wi still populate; the boom source just contributes nothing.
-        assert "talked perf" in _displays(summary.yesterday)
+        # wi still populates (conv's items are conversations → dropped); the boom source contributes nothing.
+        assert "done-y" in _displays(summary.yesterday)
         assert "open-fresh" in _displays(summary.today)
         assert "blocked-now" in _displays(summary.watch)
 

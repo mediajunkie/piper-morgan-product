@@ -6,6 +6,8 @@ ratified_by: PM (xian)
 ratified_date: 2026-06-14
 source_memo: mailboxes/exec/read/memo-host-to-exec-cc-pm-role-portfolio-trust-framework-v0.1-2026-06-11.md
 version: v0.1
+valid_from: "2026-06-14"
+last_verified: "2026-06-19"
 ---
 
 # Role-Portfolio Trust Framework

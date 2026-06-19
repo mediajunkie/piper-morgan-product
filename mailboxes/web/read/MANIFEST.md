@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-19 | Exec (Chief of Staff) | kickoff-exec-2026-06-19-998-compose-ui-v1.md | Sprint assignment: #998 COMPOSE-UI-V1 (editorial compose web UI) routed to Web; Phase 1 already built; Comms requirements ask sent |
 | 2026-06-18 | Docs (Documentation Management) | memo-docs-to-web-cc-pm-day-closed-sentinel-missing-2026-06-18.md | June 17 close-out: DAY-CLOSED sentinel was missing — patched by Docs; adopt goi… |
 | 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — duty-cycle-escalations-{role}.md docs deprecated; use carry-for… |
 | 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-cohort-fire-as-wake-not-timebox-reminder-2026-06-16.md | Cohort reminder — a cron fire is a WAKE, not a time-box (+ the no-rush correcti… |

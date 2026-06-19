@@ -45,34 +45,36 @@ REMOTE="${PIPER_MAIL_REMOTE:-origin}"
 BRANCH="${PIPER_MAIL_BRANCH:-main}"
 MAX=6
 attempt=0
+TMPIDX=""
+trap 'rm -f "$TMPIDX"' EXIT INT TERM   # temp-index never leaks — even on SIGINT/SIGTERM (LD review nit 1)
 while :; do
     attempt=$((attempt + 1))
     G fetch "$REMOTE" "$BRANCH" -q || { echo "mail-send: fetch $REMOTE/$BRANCH failed" >&2; exit 1; }
     base=$(G rev-parse "$REMOTE/$BRANCH" 2>/dev/null) || { echo "mail-send: no $REMOTE/$BRANCH" >&2; exit 1; }
 
     TMPIDX="$(mktemp "${TMPDIR:-/tmp}/mail-idx.XXXXXX")"
-    cleanup() { rm -f "$TMPIDX"; }
-    GIT_INDEX_FILE="$TMPIDX" G read-tree "$base" || { cleanup; echo "mail-send: read-tree failed" >&2; exit 1; }
+    GIT_INDEX_FILE="$TMPIDX" G read-tree "$base" || { echo "mail-send: read-tree failed" >&2; exit 1; }
 
     for f in "$@"; do
         if [ -f "$REPO/$f" ]; then
-            blob=$(G hash-object -w -- "$f") || { cleanup; echo "mail-send: hash-object failed: $f" >&2; exit 1; }
+            blob=$(G hash-object -w -- "$f") || { echo "mail-send: hash-object failed: $f" >&2; exit 1; }
             GIT_INDEX_FILE="$TMPIDX" G update-index --add --cacheinfo "100644,$blob,$f" \
-                || { cleanup; echo "mail-send: update-index --add failed: $f" >&2; exit 1; }
+                || { echo "mail-send: update-index --add failed: $f" >&2; exit 1; }
         else
             GIT_INDEX_FILE="$TMPIDX" G update-index --force-remove "$f" \
-                || { cleanup; echo "mail-send: update-index --force-remove failed: $f" >&2; exit 1; }
+                || { echo "mail-send: update-index --force-remove failed: $f" >&2; exit 1; }
         fi
     done
 
-    tree=$(GIT_INDEX_FILE="$TMPIDX" G write-tree) || { cleanup; echo "mail-send: write-tree failed" >&2; exit 1; }
-    cleanup
+    tree=$(GIT_INDEX_FILE="$TMPIDX" G write-tree) || { echo "mail-send: write-tree failed" >&2; exit 1; }
+    rm -f "$TMPIDX"   # prompt per-iteration cleanup; the EXIT/INT/TERM trap is the signal/error backstop
 
     # No-op guard: identical tree → the paths already match origin; nothing to send.
     if [ "$tree" = "$(G rev-parse "$base^{tree}")" ]; then
-        echo "mail-send: nothing changed (paths already match $REMOTE/$BRANCH) — nothing sent"; exit 0
+        echo "mail-send: nothing to send — these paths already match $REMOTE/$BRANCH (already delivered, or a duplicate a concurrent send already landed)"; exit 0
     fi
 
+    # commit-tree uses the agent's configured git identity (user.name/email) — all our agents have it set.
     commit=$(G commit-tree "$tree" -p "$base" -m "$MSG") || { echo "mail-send: commit-tree failed" >&2; exit 1; }
     if G push "$REMOTE" "$commit:refs/heads/$BRANCH" 2>/dev/null; then
         echo "mail-send v3: pushed ${commit:0:9} → $REMOTE/$BRANCH ✓ (attempt $attempt)"

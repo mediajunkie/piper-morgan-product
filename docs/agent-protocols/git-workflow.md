@@ -1,3 +1,10 @@
+---
+type: protocol
+title: Git Workflow Protocol
+valid_from: "2026-01-24"
+last_verified: "2026-06-19"
+---
+
 # Git Workflow Protocol
 
 Feature branch discipline for Claude Code sessions.

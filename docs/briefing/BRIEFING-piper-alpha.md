@@ -2,6 +2,8 @@
 type: briefing
 title: Piper Alpha (PA) — Briefing Document
 valid_from: "2026-03-28"
+last_updated: "2026-03-28"
+last_verified: "2026-06-19"
 ---
 
 # Piper Alpha (PA) — Briefing Document

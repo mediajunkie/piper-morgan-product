@@ -3,6 +3,7 @@ type: briefing
 title: BRIEFING-ESSENTIAL-PPM
 valid_from: "2026-01-09"
 last_updated: "2026-04-27"
+last_verified: "2026-06-19"
 ---
 
 # BRIEFING-ESSENTIAL-PPM

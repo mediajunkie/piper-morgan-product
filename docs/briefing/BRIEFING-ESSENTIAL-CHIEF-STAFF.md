@@ -3,6 +3,7 @@ type: briefing
 title: BRIEFING-ESSENTIAL-CHIEF-STAFF
 valid_from: "2025-10-19"
 last_updated: "2026-04-27"
+last_verified: "2026-06-19"
 ---
 
 # BRIEFING-ESSENTIAL-CHIEF-STAFF
