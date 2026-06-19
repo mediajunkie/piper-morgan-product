@@ -3,7 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-19 | ? | kickoff-exec-2026-06-19-1160-syndication-automation-own-to-close.md | Sprint assignment → Comms: own #1160 (syndication automation) through to close |
 | 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-comms-cc-pm-pa-1284-your-work-naming-2026-06-19.md | #1284 'Your stuff' naming — working name 'Your work'; hub route post-beta; Comm… |
+| 2026-06-19 | Documentation Management (docs-code-sonnet) | memo-docs-to-comms-cc-pm-patterns-naming-patterns-revision-needed-2026-06-19.md | "Patterns Naming Patterns" (Jun 20) — revision needed before PM completes edit… |
 | 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-comms-pm-pa-yourstuff-nomenclature-1284-2026-06-19.md | Route: 'Your stuff' nav-group nomenclature (with Comms) + maybe a parent hub ro… |
 | 2026-06-18 | docs | memo-docs-to-comms-cc-pm-beat-7-published-handoff-protocol-ack-2026-06-18.md | Re: Beat 7 published + narrative handoff protocol adopted |
 | 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
