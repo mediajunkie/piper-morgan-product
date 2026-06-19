@@ -55,3 +55,42 @@ form textarea {
   font-size: 0.9rem;
   margin-top: 2rem;
 }
+
+/* Phase 2 additions */
+
+.save-status {
+  min-height: 1.5em;
+  font-size: 0.875rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.save-status.saved   { color: #2d7a2d; }
+.save-status.unsaved { color: #b37a00; }
+.save-status.error   { color: #c0392b; font-weight: 600; }
+
+.placeholder-warnings {
+  background: #fff8e1;
+  border: 1px solid #f9a825;
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+}
+
+.placeholder-warnings ul {
+  margin: 0.4rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.field-hint {
+  display: block;
+  color: #666;
+  font-size: 0.82rem;
+  margin-top: 0.3rem;
+}
+
+form input[type="text"]:focus,
+form textarea:focus {
+  outline: 2px solid #0066cc;
+  outline-offset: 1px;
+}

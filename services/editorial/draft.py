@@ -1,10 +1,8 @@
-"""Parse a draft markdown file into (frontmatter, body).
+"""Parse and write draft markdown files.
 
 Supports two metadata formats per publish-to-blog SKILL.md v0.8:
     1. YAML frontmatter (file opens with a `---` fence on line 1)
     2. Legacy HTML comments in the body (e.g. `<!-- image: foo.png -->`)
-
-Phase 1 only reads — write-back lands in Phase 2.
 """
 
 from __future__ import annotations
@@ -53,11 +51,11 @@ def _parse_yaml_frontmatter(text: str) -> tuple[Optional[dict], str]:
         key, _, value = line.partition(":")
         key = key.strip().lower()
         value = value.strip()
-        # Strip surrounding quotes if present
-        if (value.startswith('"') and value.endswith('"')) or (
-            value.startswith("'") and value.endswith("'")
-        ):
-            value = value[1:-1]
+        # Unescape YAML quoted scalars — single-quote ('' → ') and double-quote (\" → ")
+        if value.startswith("'") and value.endswith("'") and len(value) >= 2:
+            value = value[1:-1].replace("''", "'")
+        elif value.startswith('"') and value.endswith('"') and len(value) >= 2:
+            value = value[1:-1].replace('\\"', '"').replace("\\\\", "\\")
         if key in _FRONTMATTER_KEYS:
             fm[key] = value
 
@@ -114,3 +112,33 @@ def resolve_draft_path(slug: str, drafts_dir: Path = DRAFTS_DIR) -> Optional[Pat
         if c.exists():
             return c
     return None
+
+
+def _yaml_single_quote(value: str) -> str:
+    """Encode a string as a YAML single-quoted scalar (doubling internal apostrophes)."""
+    return "'" + value.replace("'", "''") + "'"
+
+
+def write_draft(path: Path, frontmatter: dict, body: str) -> None:
+    """Overwrite a draft file with YAML frontmatter + body.
+
+    Existing files are replaced atomically via a temp-file rename to avoid
+    partial writes on autosave.
+    """
+    lines = ["---"]
+    for key in _FRONTMATTER_KEYS:
+        value = frontmatter.get(key, "")
+        lines.append(f"{key}: {_yaml_single_quote(value)}")
+    lines.append("---")
+    lines.append("")
+    content = "\n".join(lines) + body
+    if not content.endswith("\n"):
+        content += "\n"
+    # Atomic write: write to .tmp sibling, then rename
+    tmp = path.with_suffix(".md.tmp")
+    try:
+        tmp.write_text(content, encoding="utf-8")
+        tmp.replace(path)
+    except Exception:
+        tmp.unlink(missing_ok=True)
+        raise

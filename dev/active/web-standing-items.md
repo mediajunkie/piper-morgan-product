@@ -18,11 +18,11 @@
 
 ### #998 COMPOSE-UI-V1 — Editorial compose web UI (product repo FastAPI)
 - [x] **Phase 1** (read-only scaffold) — **DONE** (prior work): `web/routers/admin_compose.py` + templates + CSS + `services/editorial/{calendar,draft}.py` all wired. Route: `GET /api/v1/admin/compose`.
-- [ ] **Phase 2** (Edit + Autosave) — blocked on Comms requirements. Memo sent 2026-06-19.
-- [ ] **Phase 3** (Image Upload) — follows Phase 2.
-- [ ] **Phase 4** (Mark Ready + Git Handoff) — follows Phase 3; also needs `services/editorial/git_ops.py`.
-- **Note**: Exec's kickoff memo said "website repo" but issue lives in `piper-morgan-product` (FastAPI `web/`). Working in product repo. No PM clarification needed — tech decision.
-- **Gate**: Comms requirements reply → Phase 2 unblocked.
+- [x] **Phase 2** (Edit + Autosave) — **DONE 2026-06-19**: POST `/save` route; `write_draft()` + YAML round-trip fix in `draft.py`; editable template; `compose.js` (autosave + placeholder scanner); CSS interactive states.
+- [ ] **Phase 3** (Image Upload) — next; file-input → `drafts/{slug}.{ext}`.
+- [ ] **Phase 4** (Mark Ready + Git Handoff) — needs `services/editorial/git_ops.py` + publish-ready memo to Docs inbox (confirmed by Comms 6/19).
+- **Note**: Exec's kickoff memo said "website repo" but issue lives in `piper-morgan-product` (FastAPI `web/`). Working in product repo.
+- **Gate Phase 3**: PM test stop after Phase 2 (PM-react gated until tested).
 
 ### Site-quality queues (PM-react gated)
 - [ ] **Obs-pass joint walkthrough** — PM confirmed visual spot-check clean (VA-2, VA-3 resolved by PM eyeball 6/17). Remaining ~20 obs items need PM +1/−1/defer. Hold for joint pass. Canonical: `dev/2026/05/24/site-observation-pass-2026-05-24.md`.
