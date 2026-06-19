@@ -1,13 +1,11 @@
 ---
 name: piper-synthesize-feedback
-description: Distill themes from raw user feedback — interviews, support tickets,
-  surveys, reviews, research notes — into prioritized themes with evidence, severity,
-  and roadmap recommendations grounded in your actual product. Trigger phrases: "synthesize
-  this feedback", "what are users saying", "analyze these interviews", "themes from
-  this research", "what should we build based on this".
-scope: cross-role
-version: 1.0
-created: 2026-06-15
+description: >-
+  Take raw user feedback — interview notes, survey responses, support tickets,
+  session transcripts — and extract prioritized themes with recommendations
+  grounded in your actual product. Trigger phrases: "synthesize this feedback",
+  "what are users saying", "themes from these interviews",
+  "analyze this feedback".
 ---
 
 # synthesize-feedback

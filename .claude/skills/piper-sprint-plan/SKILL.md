@@ -1,13 +1,12 @@
 ---
 name: piper-sprint-plan
-description: Scope a sprint from the GitHub backlog — review open issues, apply capacity
-  and velocity, surface dependencies and risks, and produce a proposed sprint with
-  rationale. Works without GitHub connector (manually-supplied backlog) but is significantly
-  richer with it. Trigger phrases: "let's plan the sprint", "help me scope [sprint
-  name]", "what should go in this sprint", "which issues should we tackle next".
-scope: cross-role
-version: 1.0
-created: 2026-06-15
+description: >-
+  Scope a sprint from the GitHub backlog — review open issues, apply capacity
+  and velocity, surface dependencies and risks, and produce a proposed sprint
+  with rationale. Works without GitHub connector (manually-supplied backlog)
+  but is significantly richer with it. Trigger phrases: "let's plan the sprint",
+  "help me scope [sprint name]", "what should go in this sprint",
+  "which issues should we tackle next".
 ---
 
 # sprint-plan

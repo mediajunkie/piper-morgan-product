@@ -1,13 +1,11 @@
 ---
 name: piper-draft-spec
-description: Turn a rough idea, brief, or conversation into a properly-formed feature
-  spec / PRD — with problem statement, goals, non-goals, user stories, requirements,
-  open questions, and success criteria. Piper grounds the spec in your project context.
-  Trigger phrases: "write a spec for", "draft a PRD", "spec this out", "write this
-  up properly", "I want to build X".
-scope: cross-role
-version: 1.0
-created: 2026-06-15
+description: >-
+  Turn a rough idea, brief, or conversation into a properly-formed feature
+  spec / PRD — with problem statement, goals, non-goals, user stories,
+  requirements, open questions, and success criteria. Piper grounds the spec
+  in your project context. Trigger phrases: "write a spec for", "draft a PRD",
+  "spec this out", "write this up properly", "I want to build X".
 ---
 
 # draft-spec
