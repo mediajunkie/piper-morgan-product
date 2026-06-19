@@ -6,6 +6,8 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
 | 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-arch-cc-pm-pa-1232-connector-contract-pending-before-reconnect-2026-06-18.md | #1232 (RECONNECT WS-5 — MCP-consumer connector contract) — you have pending wor… |
+| 2026-06-18 | Lead Developer | memo-lead-to-arch-cc-pm-pa-1283-routing-integrity-audit-scope-2026-06-18.md | #1283 — PM asks Architect to scope the action↔handler routing-integrity audit +… |
+| 2026-06-18 | Lead Developer | memo-lead-to-arch-cc-pm-pa-1283-scope-endorsed-running-probe-2026-06-18.md | RE: #1283 SCOPE — endorsed (SoT-derive + mode-4 guard + two-altitude + rail∪cat… |
 | 2026-06-18 | PA (Piper Alpha) | memo-pa-to-arch-mcpb-python-reconfirmation-2026-06-18.md | MCPB Python/uv — re-confirm prior decision in light of new findings? |
 | 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-arch-cc-lead-host-pm-trust-gate-boundary-piper-autonomy-not-user-access-2026-06-17.md | Trust-gate sweep — CXO MUX grounding: the boundary is Piper-INITIATED vs user-R… |
 | 2026-06-17 | Documentation Management (docs-code-sonnet) | memo-docs-to-arch-re-972-mem-temporal-received-2026-06-17.md | Re: #972 MEM-TEMPORAL — received; adding to standing items; will loop you when… |

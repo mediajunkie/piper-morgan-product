@@ -1,5 +1,5 @@
 ---
-name: sprint-plan
+name: piper-sprint-plan
 description: Scope a sprint from the GitHub backlog — review open issues, apply capacity
   and velocity, surface dependencies and risks, and produce a proposed sprint with
   rationale. Works without GitHub connector (manually-supplied backlog) but is significantly

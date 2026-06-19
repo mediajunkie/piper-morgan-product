@@ -552,7 +552,7 @@ def register_default_workflows() -> None:
         (_qentry(_make_query_dispatch_entry_point("_handle_productivity_query", pass_session_id=True),
                  "productivity query via action dispatch"),
          ["productivity", "my_productivity", "weekly_metrics", "accomplishments"]),
-        (_qentry(_make_query_dispatch_entry_point("_handle_standup_query", pass_session_id=True),
+        (_qentry(_make_query_dispatch_entry_point("_handle_standup_query", pass_user_id=True),
                  "standup query via action dispatch"),
          ["show_standup", "get_standup"]),
         (_qentry(_make_query_dispatch_entry_point("_handle_projects_query", pass_user_id=True),

@@ -1,5 +1,5 @@
 ---
-name: stakeholder-update
+name: piper-stakeholder-update
 description: Draft a stakeholder update memo in PM's voice — knows the PM's communication
   style, who the stakeholders are, what they care about, and how formal the channel
   is. Covers any audience (exec, team, investors, customers). Piper-informed; better

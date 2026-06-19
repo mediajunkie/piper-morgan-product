@@ -231,6 +231,36 @@ class TestStandupSummaryProse:
         assert "Nothing flagged as stuck." in prose  # watch empty (CXO verbatim)
         assert "No completions yesterday" not in prose  # yesterday is NOT empty
 
+    def test_sections_are_block_separated_not_run_on(self):
+        # #1269 PM UAT: prose rendered as a run-on because heading→body used a
+        # single "\n" (a markdown SOFT break = space). Each heading must sit on its
+        # own line (blank-line separated) so marked.js renders distinct sections.
+        s = StandupSummary(
+            yesterday=[_si("auth PR", "closed")],
+            today=[_si("onboarding flow", "open")],
+        )
+        prose = s.to_prose()
+        lines = [ln.strip() for ln in prose.split("\n") if ln.strip()]
+        assert "**Yesterday** — what got done" in lines  # heading alone on its line
+        assert "**Today** — what's active" in lines
+        assert "what got done You" not in prose  # no soft-join run-on
+
+    def test_today_caps_enumeration_with_more_summary(self):
+        # #1269 PM UAT: ~18 work items read out inline. Cap to top-N (the assembler
+        # delivers them attention-ordered) + summarize the remainder as "N more".
+        items = [_si(f"item-{i}", "open") for i in range(6)]
+        prose = StandupSummary(today=items).to_prose()
+        assert "item-0" in prose and "item-3" in prose  # top-4 spoken
+        assert "item-4" not in prose and "item-5" not in prose  # capped, not enumerated
+        assert "2 more" in prose  # 6 - 4 summarized
+
+    def test_watch_caps_enumeration_with_more_summary(self):
+        items = [_si(f"stuck-{i}", "open", meta="hasn't moved in 4 days") for i in range(6)]
+        prose = StandupSummary(watch=items).to_prose()
+        assert "stuck-0" in prose
+        assert "stuck-5" not in prose  # capped
+        assert "2 more flagged" in prose
+
 
 # --- P2: calendar pull into Today (CXO: "the key differentiator … makes today feel real") ---
 
@@ -386,3 +416,13 @@ class TestBuildUserStandupSummary:
         out = await mod.build_user_standup_summary("user-42")
         assert out is known  # the glue returns the assembled summary
         assert captured["user_id"] == "user-42"  # ...for the requested user
+
+    async def test_anonymous_user_is_honest_empty_without_a_db_hit(self):
+        # No user (anonymous chat) → honest empty summary; must NOT open a DB session.
+        # (If it tried, the unmocked AsyncSessionFactory would hit Postgres in this unit test.)
+        import services.standup.assembler as mod
+
+        for anon in (None, ""):
+            out = await mod.build_user_standup_summary(anon)
+            assert isinstance(out, StandupSummary)
+            assert out.is_empty()

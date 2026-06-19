@@ -2053,6 +2053,11 @@ class StandupSummary:
     # verb by the derived item's coarse lifecycle label (yesterday slot).
     _YESTERDAY_VERBS = {"closed": "closed", "new": "updated", "active": "discussed"}
 
+    # #1269 PM UAT: cap how many items are read out loud per slot (the lists arrive
+    # attention-sorted from the assembler, so the first N are the highest-signal);
+    # the remainder is summarized as "N more" rather than enumerated inline.
+    _PROSE_ITEM_CAP = 4
+
     @staticmethod
     def _oxford(parts: List[str]) -> str:
         """Oxford-comma join: [] → ""; [a] → "a"; [a,b] → "a and b"; [a,b,c] → "a, b, and c"."""
@@ -2069,6 +2074,18 @@ class StandupSummary:
     def _quoted(cls, names: List[str]) -> str:
         return cls._oxford([f'"{n}"' for n in names])
 
+    @classmethod
+    def _quoted_capped(cls, names: List[str], cap: int = _PROSE_ITEM_CAP) -> str:
+        """Quote + oxford-join, capping the enumeration at ``cap`` items and
+        summarizing the rest as "N more" (#1269 PM UAT: don't read ~18 items out
+        loud). Callers pass attention-ordered lists, so the kept items are the
+        highest-signal ones."""
+        names = [n for n in names if n]
+        if len(names) <= cap:
+            return cls._quoted(names)
+        shown = [f'"{n}"' for n in names[:cap]]
+        return cls._oxford(shown + [f"{len(names) - cap} more"])
+
     def _yesterday_prose(self) -> str:
         if not self.yesterday:
             return ""
@@ -2079,7 +2096,7 @@ class StandupSummary:
                 groups[-1][1].append(it.display)
             else:
                 groups.append((verb, [it.display]))
-        phrases = [f"{verb} {self._quoted(names)}" for verb, names in groups]
+        phrases = [f"{verb} {self._quoted_capped(names)}" for verb, names in groups]
         return "You " + self._oxford(phrases) + "."
 
     def _today_prose(self) -> str:
@@ -2091,7 +2108,7 @@ class StandupSummary:
         events = [it for it in self.today if it.source == "calendar"]
         sentences: List[str] = []
         if work:
-            sentences.append("You're working on " + self._quoted(work) + ".")
+            sentences.append("You're working on " + self._quoted_capped(work) + ".")
         if events:
             evs = [
                 f'"{it.display}" at {it.meta}' if it.meta else f'"{it.display}"' for it in events
@@ -2102,13 +2119,17 @@ class StandupSummary:
     def _watch_prose(self) -> str:
         if not self.watch:
             return ""
+        shown = self.watch[: self._PROSE_ITEM_CAP]
         parts: List[str] = []
-        for it in self.watch:
+        for it in shown:
             if (it.lifecycle_state or "").lower() == "blocked":
                 parts.append(f'"{it.display}" is blocked.')
             else:
                 detail = it.meta or "hasn't moved recently"
                 parts.append(f'"{it.display}" {detail}.')
+        rest = len(self.watch) - len(shown)
+        if rest:
+            parts.append(f"Plus {rest} more flagged to watch.")
         return " ".join(parts)
 
     def to_prose(self) -> str:
@@ -2140,12 +2161,13 @@ class StandupSummary:
                 "Nothing flagged as stuck.",
             ),
         ]
-        out: List[str] = []
-        for heading, body, empty_msg in sections:
-            out.append(heading)
-            out.append(body or empty_msg)
-            out.append("")
-        return "\n".join(out).strip()
+        # Each heading + body is its own markdown block, separated by a blank
+        # line (#1269 PM UAT: a single "\n" is a markdown SOFT break — it renders
+        # as a space, fusing heading into body as a run-on. "\n\n" forces real
+        # paragraph blocks so marked.js renders distinct sections).
+        return "\n\n".join(
+            f"{heading}\n\n{body or empty_msg}" for heading, body, empty_msg in sections
+        )
 
 
 @dataclass

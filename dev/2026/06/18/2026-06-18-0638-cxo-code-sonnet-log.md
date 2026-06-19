@@ -112,6 +112,68 @@ Inbox: empty. All CXO threads gated on other agents:
 
 No unblocked CXO work. Heartbeat only.
 
+
+## Fire 2 addendum — inbox (10:3x)
+
+### #1280 content-model — ratified
+- Lead found structural gap: spec assumed a left-rail shell; actual `app_shell.html` is a top nav. #1280 is a chrome re-architecture, not a recolor.
+- 5 design calls made:
+  1. Brand/logo at top of rail ✓
+  2. Search → Radar (home); non-home search **deferred** (not a beta requirement; #1236 is the real future)
+  3. User-menu in rail footer (avatar pinned at bottom, `margin-top:auto`) ✓
+  4. Command palette = ⌘K keyboard-triggered only; no nav-resident button ✓
+  5. Non-home rail = Slack-style (same conversation list everywhere) ✓
+- Lead's content-model ratified. Build is now unblocked.
+- Delivered: `memo-cxo-to-lead-cc-pm-pa-1280-content-model-ratified-2026-06-18.md`
+- Commit: `4667bfad7` → pushed to origin/main
+
+
+## Fire 3 (19:06 — 18:47 cron)
+
+Inbox: empty. Reviewed Lead's activity since Fire 2:
+
+### Lead shipped since last fire
+- **#1236 entity-search**: Built — `radarEntityMatches()` filters across title/meta/entity_type/lifecycle_state. Placeholder restored to "Search everything — issues, docs, people, chats…" (honest now). 83 render tests green (6 entity-search assertions). Runtime in-browser UAT awaits PM session.
+- **#1269 plumbing**: `StandupSummary`, `StandupAssembler` (P1a/P1b), `to_prose()` (P3, slot rename blockers→watch per my memo), calendar pull (P2), live-wiring factory, `GET /api/v1/standup/today` endpoint — all built + tested. P4 morning-card + /standup page rewire are the remaining surfaces.
+
+### CXO UAT — #1236 entity-search (code-review pass)
+- Ran 83 render tests locally: all green. Entity-search logic verified correct.
+- Couldn't log in for browser UAT (credentials unavailable). Posted code-review findings to https://github.com/mediajunkie/piper-morgan-product/issues/1236#issuecomment-4747813472
+- Issue stays OPEN: runtime browser UAT needed from PM.
+
+### No unblocked CXO design work
+- #1269 morning-card/page-rewire: design spec'd (my memo); Lead building.
+- #1280 shell restructure: Lead building from ratified content-model.
+- #1251, #1237: waiting.
+
+## Fire 4 (22:17 — 21:47 cron, last fire of day window)
+
+Inbox: empty. Lead shipped #1280 dark rail since Fire 3 — D1 milestone.
+
+### #1280 dark rail SHIPPED (Lead) — CXO code-review UAT DONE
+Lead built in phases: Phase 2 (nav_rail component, zero-regression), Phase 3 (app_shell flip, 103 tests green), dedup fix (home conv-list hidden since rail owns it).
+
+**Code-review UAT confirms spec compliance:**
+- `nav-rail.css`: zero raw hex, all `--color-nav-*` tokens ✓
+- Grid: `180px 1fr` (default), `180px 1fr 320px` (home+Radar), `1fr` narrow ✓
+- Content model: brand top, conv-list Slack-style, +New Chat, footer user-menu ✓
+- No non-home search affordance; ⌘K-only command palette ✓
+- Tests: 9/9 nav-rail + 94/94 app-shell green; token-lint clean ✓
+- Posted to https://github.com/mediajunkie/piper-morgan-product/issues/1280#issuecomment-4748719241
+
+**Runtime visual UAT**: blocked on credentials; PM to verify in browser.
+
+### #1269 formatting fix also shipped
+Standup prose now renders as markdown blocks (not run-on); per-slot enumeration capped.
+
+### Status at day close
+- #1280: code-review UAT done; PM runtime UAT pending → D1 gate pending PM
+- #1236: code-review UAT done (Fire 3); PM runtime UAT pending
+- #1269: plumbing + formatting done; morning-card surface (P4) is next build step
+- #1251, #1283: Lead's build lanes, not CXO-blocked
+
+<!-- DAY-CLOSED -->
+
 ## Carry-forward for next fire
 
 - **#1280** spec on origin/main; Lead builds. CXO monitors.

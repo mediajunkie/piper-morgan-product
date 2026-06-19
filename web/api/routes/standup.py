@@ -750,3 +750,32 @@ async def health_check():
         modes_available=5,
         formats_available=4,
     )
+
+
+class TodayStandupResponse(BaseModel):
+    """#1269 — the honest derived standup: prose narrative + the structured slots."""
+
+    prose: str
+    summary: Dict[str, Any]  # {yesterday, today, watch} of StandupItem dicts
+
+
+@router.get("/today", response_model=TodayStandupResponse)
+async def get_today_standup(
+    current_user: Optional[JWTClaims] = Depends(get_current_user_optional),
+) -> TodayStandupResponse:
+    """#1269 — the on-demand DERIVED standup (StandupAssembler over the live entity
+    catalog: conversations + documents + work items + calendar). The honest surface the
+    `/standup` page + the morning card (#1269 P4) consume.
+
+    PARALLEL to ``POST /generate`` (the legacy MorningStandupWorkflow path): this adds the
+    honest derived standup WITHOUT changing the /generate contract, so the Slack skill +
+    consciousness/personality bridges that depend on ``StandupResult`` stay untouched (the
+    full migration off the hollow path is a later, adapter-guarded step). Scopes to the
+    authenticated user (``current_user.sub`` — the identity Radar uses); anonymous → honest
+    empty. Same chat-path derivation #1269 P5 already ships, exposed as an endpoint.
+    """
+    from services.standup.assembler import build_user_standup_summary
+
+    user_id = current_user.sub if current_user else None
+    summary = await build_user_standup_summary(user_id)
+    return TodayStandupResponse(prose=summary.to_prose(), summary=summary.to_dict())

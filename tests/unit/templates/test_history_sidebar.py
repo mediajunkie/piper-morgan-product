@@ -467,3 +467,35 @@ class TestRadarSurface:
     def test_radar_card_clickable_css_present(self, history_html):
         """Clickable cards show a pointer cursor + a focus ring."""
         assert ".radar-card--clickable" in history_html
+
+    # --- #1236: entity-search that subsumes chat-search (the last unmet AC) ---
+
+    def test_radar_search_placeholder_spans_all_types(self, history_html):
+        """The Radar search 're-earns everything' — placeholder names all entity types,
+        not just conversations (the old conversation-only placeholder is gone)."""
+        assert "Search everything — issues, docs, people, chats" in history_html
+
+    def test_radar_entity_search_filter_defined(self, history_html):
+        """The client-side entity-filter + its render pass are wired."""
+        assert "function renderRadarEntities()" in history_html
+        assert "function radarEntityMatches(entity, q)" in history_html
+
+    def test_radar_search_filters_in_radar_mode(self, history_html):
+        """In Radar mode the search input re-renders the filtered entities (it no longer
+        falls through to the conversation-only onSearch path)."""
+        assert "if (radarMode) {" in history_html
+        assert "renderRadarEntities();" in history_html
+
+    def test_radar_entity_match_spans_searchable_facets(self, history_html):
+        """A match spans every type's searchable facets: title + meta + type + lifecycle."""
+        for facet in (
+            "entity.title",
+            "entity.meta",
+            "entity.entity_type",
+            "entity.lifecycle_state",
+        ):
+            assert facet in history_html
+
+    def test_radar_search_empty_result_message(self, history_html):
+        """A search with no matches reads honestly (not the new-user empty-state)."""
+        assert "Nothing on your Radar matches your search." in history_html

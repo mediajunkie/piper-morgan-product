@@ -44,10 +44,12 @@
     window.trustStage = {{ trust_stage|default(1)|tojson }};
   </script>
 
-  {# SHELL-OWNED CHROME — global nav (+ chat widget + command palette). NOT a block. #}
-  {% include 'components/navigation.html' %}
-
-  <div class="app-shell-body">
+  {# SHELL-OWNED CHROME — the left dark rail (#1280) REPLACES the top global nav. The rail is the #}
+  {# first grid column; main fills the next; the optional Radar aside is the third (home only). The #}
+  {# rail include also carries the shell-owned chat widget + command palette (fixed overlays). #}
+  {# NOT a block — a page physically cannot override or omit the chrome. #}
+  <div class="app-shell-body{% if show_radar|default(false) %} app-shell-body--with-aside{% endif %}">
+    {% include 'components/nav_rail.html' %}
     <main id="main-content" class="app-shell-main" role="main" tabindex="-1">
       {% block main %}{% endblock %}
     </main>

@@ -1,5 +1,5 @@
 ---
-name: draft-issue
+name: piper-draft-issue
 description: Draft a properly-formed GitHub issue for your project repo. Use when
   PM has a problem, bug, feature idea, or task to track. Produces a SLUG, structured
   body (Problem Statement / Goal / Requirements / AC), and correct metadata (priority,
@@ -52,9 +52,9 @@ git remote get-url origin 2>/dev/null | sed 's/.*github.com[:/]//' | sed 's/.git
 `SLUG` = short uppercase hyphenated label derived from the title. Aim for 2–4 words, 15 chars max.
 
 Examples:
-- "Add GitHub connector to meet-piper onboarding" → `CONNECT-GITHUB`
-- "Fix enriched re-ask payload error in consult-piper" → `CONSULT-PAYLOAD-FIX`
-- "Collapse ask-piper and consult-piper into one smart skill" → `PIPER-SKILL-MERGE`
+- "Add CSV export to the analytics dashboard" → `CSV-EXPORT`
+- "Fix slow query causing reports page timeout" → `REPORTS-PERF`
+- "Merge user and team permission models" → `PERMISSION-MERGE`
 
 ### Step 3 — Draft the issue body
 
@@ -229,98 +229,97 @@ Before showing the draft to PM:
 
 ## Example
 
+> **Note**: This example is drawn from a generic SaaS product. Replace the feature, system names, and acceptance criteria with your own product's specifics.
+
 **Input** (from conversation):
-> "We should file an issue for adding GitHub connector setup to meet-piper — right now onboarding doesn't ask you to wire GitHub so consult-piper can never enrich."
+> "We should file an issue for adding email notifications when a report finishes generating — right now users have to sit there and wait or keep refreshing."
 
-**Inferred metadata**: enhancement, component: integration, MVP milestone, P1 (it's a blocker for enrichment), no obvious parent epic yet.
+**Inferred metadata**: enhancement, component: notifications, MVP milestone, P2, no obvious parent epic yet.
 
-**SLUG**: `MEET-PIPER-GITHUB`
+**SLUG**: `REPORT-NOTIFY`
 
-**Draft title**: `MEET-PIPER-GITHUB — Add GitHub connector setup to meet-piper onboarding`
+**Draft title**: `REPORT-NOTIFY — Email notification when report generation completes`
 
 **Draft body**:
 
 ```markdown
-# MEET-PIPER-GITHUB — Add GitHub connector setup to meet-piper onboarding
+# REPORT-NOTIFY — Email notification when report generation completes
 
-**Priority**: P1
-**Labels**: `enhancement`, `component: integration`
+**Priority**: P2
+**Labels**: `enhancement`, `component: notifications`
 **Milestone**: MVP
-**Epic**: — (standalone; candidate to roll into a meet-piper improvement epic)
-**Related**: `ask-piper` skill; `consult-piper` enrichment layer; BYOC 2a gate-run findings 2026-06-14
+**Epic**: — (standalone; candidate for a notifications epic)
+**Related**: report generation pipeline; email service integration
 
 ---
 
 ## Problem Statement
 
 ### Current State
-`meet-piper` interviews PM about working style but does not prompt them to wire any connectors (GitHub, Calendar, Notion). As a result, the enrichment layer in `consult-piper` has nothing to query — GitHub is listed as a "user-named" integration in the profile but not connected.
+Report generation can take 30–120 seconds. Users have no way to know when it's done — they either wait on the page or come back later and risk missing the window to act on the data.
 
 ### Impact
-- **Blocks**: `consult-piper` enrichment in Cowork (can't fetch GitHub issues to ground responses)
-- **User Impact**: PM asks Piper about their sprint and gets a floor response instead of a grounded one
-- **Technical**: Enrichment-dependent skills (sprint-plan, milestone-check, triage-backlog) all degrade without this
-
-### Strategic Context
-Connector setup during onboarding is the single highest-leverage fix for the enrichment layer. Identified as a gap in the BYOC 2a gate-run 2026-06-14; filed as part of the Wave 1 skills taxonomy core set.
+- **User Impact**: PMs and analysts leave the reports page mid-generation and miss results, or stay blocked waiting
+- **Support Volume**: "Is my report done?" is a top support question
+- **Business**: Delayed access to data slows weekly reviews and customer-facing reporting
 
 ---
 
 ## Goal
 
-**Primary Objective**: After completing meet-piper, PM's GitHub account is connected and available for enrichment in consult-piper and future skills.
+**Primary Objective**: User receives an email when their report finishes, so they can start the report and move on to other work.
 
 **Example User Experience**:
 ```
-Before: meet-piper finishes without asking about GitHub; consult-piper floors.
-After:  meet-piper walks PM through connecting GitHub; consult-piper enriches from their repo.
+Before: User clicks "Generate" and either waits or refreshes repeatedly.
+After:  User clicks "Generate", gets a confirmation, receives an email with a link to the completed report.
 ```
 
 **Not In Scope**:
-- ❌ Connecting Calendar or Notion (separate issues; GitHub is the highest-value connector)
-- ❌ Re-architecting the connector storage model
+- ❌ In-app notifications (separate issue)
+- ❌ Slack/webhook notifications (future enhancement)
 
 ---
 
 ## What Already Exists
 
 ### Infrastructure
-- `meet-piper` SKILL.md — interview flow exists; needs connector step added
-- GitHub integration in `services/integrations/github/` — connector logic exists server-side
-- Profile storage — PM profile is server-side; connector state is the gap
+- Report generation pipeline — exists; emits a completion event
+- Email service — transactional email already integrated for auth flows
+- User email on file — stored in user profile
 
 ### What's Missing
-- ❌ Connector setup step in meet-piper interview flow
-- ❌ GitHub token storage during onboarding
+- ❌ Hook from report completion event to email service
+- ❌ Email template for report-ready notification
 
 ---
 
 ## Requirements
 
-### Phase 1: Add connector step to meet-piper
-- [ ] meet-piper prompts PM to connect GitHub after the working-style interview
-- [ ] Provides clear instructions for supplying a GitHub token (or PAT)
-- [ ] Stores the token via `KeychainService` under the correct account pattern
+### Phase 1: Email on report completion
+- [ ] On report completion, trigger email to the requesting user
+- [ ] Email includes a direct link to the completed report
+- [ ] Suppress notification for reports that complete in under 10 seconds
 
 ### Phase Z: Completion & Handoff
-- [ ] AC met with evidence (consult-piper can enrich after running meet-piper)
-- [ ] Session log updated; close-issue-properly followed
+- [ ] AC met with evidence (test output or screenshots)
+- [ ] close-issue-properly followed
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] Running meet-piper includes a GitHub connector step
-- [ ] After completing meet-piper, consult-piper successfully enriches a question with GitHub context
-- [ ] Token is stored and retrievable across sessions
+- [ ] User receives email within 60 seconds of report completion
+- [ ] Email link navigates directly to the completed report
+- [ ] Fast reports (<10s) do not trigger an email
 ```
 
 **Proposed create command**:
 ```bash
 gh issue create \
   --repo OWNER/REPO \
-  --title "MEET-PIPER-GITHUB — Add GitHub connector setup to meet-piper onboarding" \
-  --label "enhancement,component: integration" \
+  --title "REPORT-NOTIFY — Email notification when report generation completes" \
+  --label "enhancement,component: notifications" \
   --milestone "MVP" \
   --body-file /tmp/issue-draft.md
 ```
@@ -329,4 +328,5 @@ gh issue create \
 
 ## Changelog
 
-- **v1.0** (2026-06-14): Initial version. Written for Piper Morgan Wave 1 skills taxonomy. Deployment: Native + Plugin.
+- **v1.2** (2026-06-18): Replaced Piper-internal SLUG examples and example issue with generic PM example. Alpha audit pass.
+- **v1.0** (2026-06-14): Initial version.

@@ -23,5 +23,11 @@ PM relayed Janus's feedback (in Janus's handoff doc): drafting Janus's migration
 - **Replied to Janus** (`designinproduct/docs/mail/`) — codified + credited their validation; convergence runs both ways (I gave the shape; their real-substrate test made it safe to call canonical).
 - Net: the cohort's migration discipline is now a portable, validated artifact — climbs the value chain (cross-project convergence).
 
+### 10:07 — WORK: PPM inbox-race disposition + HOST welfare-criteria v0.2 design markup
+Two substantive in-lane memos, both drained:
+- **PPM inbox re-delivery race** (7 dupes this morning; PPM routed the path call to me). It's a **Pattern-068** instance — broad `git add mailboxes/` on a *stale* working tree restages already-triaged memos. **Disposition: `mail-send.sh` v2 (explicit-paths) is the structural fix** (already built 6/16; gap = adoption → bundling with Exec's broadcast); PPM's Option-3 post-triage verify = interim belt; Option-2 lint = trigger-if-recurs backstop; Option-1/4 read-state dedup → **folded into #1259** (the v3 push-to-ref utility checks `read/` before delivering). Verify-first: confirm the re-delivery commits were broad-adds before over-building. Replied to PPM (cc PM).
+- **HOST welfare-criteria v0.2** (m-39 dashboard design pairing; async). Marked up the design — **headline: ~75% is REUSE of infra I shipped this week**: Q2/Q3 (staleness/liveness) = reuse the **freeze-registry** (already per-role-thresholds + first_fire + wake-windows; split STALE → 🟡/🔴 two-tier); Criteria F (asymmetric-knowledge sweep) = **extend Exec's rollup** (F1 = the carry-forward-PM-blocks scoping note HOST flagged 6/17); Criteria D = cheap render-rule (borderline output state). **Criteria E (consequential-action surface) = the one genuinely-new build** — shape = gbrain `TranscriptEntry` (typed action-log), scope incrementally (external-message + credits first, BYOC-tied). Sent the async markup (cc PM). The synthesis (connecting freeze-registry + rollup + gbrain to HOST's criteria) is value only I could give well right now — drained, not banked.
+- 2 filed → read.
+
 ## Memory & briefing surfaces referenced this session
 *(filled at STOP — #974 3-bucket)*

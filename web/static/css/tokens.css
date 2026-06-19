@@ -57,10 +57,21 @@
   --color-neutral-darkest-gray: #2c3e50; /* Darkest gray for headings */
 
   --color-neutral-light-blue-gray: #bdc3c7; /* Light blue-gray for placeholders, icons */
-  /* #1264 tentative nav-chrome colors (CXO ratify/revise) */
+  /* #1264 tentative nav-chrome colors (CXO ratify/revise) — LIGHT-surface current top nav */
   --color-text-nav: #5a6c7d; /* muted nav-link / dropdown text */
   --color-icon-muted: #7f8c8d; /* muted nav icons / chevrons */
   --color-state-active-bg: #e3f2fd; /* active nav-item background tint */
+
+  /* #1280 nav DARK surface — bounded dark zone for the left-rail nav (NOT app-wide dark
+     mode / no theme system). CXO spec 2026-06-18 (dev/active/design-spec-dark-nav-shell-2026-06-18.md).
+     Nav-scoped CSS references these only — no raw hex in nav CSS after the left-rail lands. */
+  --color-nav-bg: #11212e; /* left nav background */
+  --color-nav-text: #cbd5dc; /* primary nav text (conversation names) */
+  --color-nav-text-muted: #7f97a6; /* section labels ("Chats · Layer 1") */
+  --color-nav-text-secondary: #9fb3c2; /* secondary items (timestamps, metadata) */
+  --color-nav-divider: #5d7385; /* footer dividers, subtle separators */
+  --color-nav-item-hover: rgba(255, 255, 255, 0.07); /* item hover bg */
+  --color-nav-item-active: rgba(255, 255, 255, 0.13); /* active/selected item bg */
 
   /* Special Colors */
   --color-special-blue-dark: #007acc; /* Darker blue for help tooltips, code */

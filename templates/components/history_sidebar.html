@@ -391,6 +391,12 @@
     let searchQuery = '';
     let sidebarElement = null;
     let overlayElement = null;
+    // #1236 — Radar entity-search: retain the loaded Radar view so the search box filters
+    // across ALL entity types client-side (work items · documents · conversations …),
+    // subsuming the old conversation-only search ("re-earn everything").
+    let radarMode = false;
+    let radarView = null;
+    let radarEntities = [];
 
     /**
      * Get month key for grouping (e.g., "2026-02" for February 2026)
@@ -645,7 +651,11 @@
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => {
           searchQuery = searchInput.value.trim();
-          if (options.onSearch) {
+          if (radarMode) {
+            // #1236: the Radar search filters across EVERY entity type on the surface
+            // (work items · documents · conversations …) — subsuming chat-only search.
+            renderRadarEntities();
+          } else if (options.onSearch) {
             options.onSearch(searchQuery);
           }
         }, 300);
@@ -795,17 +805,39 @@
      */
     function renderRadar(view) {
       if (!sidebarElement) return;
-      const content = sidebarElement.querySelector('.history-content');
-      content.innerHTML = '';
+      // #1236 — entity-search: retain the view so the search box can filter all types.
+      radarMode = true;
+      radarView = view || null;
+      radarEntities = (view && view.entities) ? view.entities : [];
 
       // This is the Radar surface, not the conversation list (mockup fidelity).
       const titleEl = sidebarElement.querySelector('.history-sidebar-title');
       if (titleEl) titleEl.textContent = '📡 Radar';
       const searchEl = sidebarElement.querySelector('.history-search-input');
-      if (searchEl) searchEl.placeholder = 'Search conversations…';  // entity-search re-earns "everything" (#1236)
+      // #1236: the search now spans every entity type, not just chats — re-earn "everything".
+      if (searchEl) searchEl.placeholder = 'Search everything — issues, docs, people, chats…';
 
-      // Empty state: explainer + the one labeled example the endpoint returns.
-      if (!view || view.state === 'empty') {
+      renderRadarEntities();
+
+      // Radar has no pagination (v1) — hide load-more.
+      const loadMoreSection = sidebarElement.querySelector('.history-load-more');
+      if (loadMoreSection) loadMoreSection.style.display = 'none';
+    }
+
+    /**
+     * #1236 — render the (optionally search-filtered) Radar entities into the content area.
+     * Called by renderRadar and by the search handler — the client-side entity-search
+     * filters across ALL types currently on the surface (subsuming chat-only search).
+     */
+    function renderRadarEntities() {
+      if (!sidebarElement) return;
+      const content = sidebarElement.querySelector('.history-content');
+      content.innerHTML = '';
+      const q = (searchQuery || '').toLowerCase();
+
+      // Empty Radar (no observed entities at all): explainer + the one labeled example.
+      // Search does not apply — there is nothing to filter.
+      if (!radarView || radarView.state === 'empty') {
         const explain = document.createElement('div');
         explain.className = 'radar-empty';
         const t = document.createElement('p');
@@ -817,14 +849,30 @@
         explain.appendChild(t);
         explain.appendChild(sub);
         content.appendChild(explain);
+        radarEntities.forEach(e => content.appendChild(renderRadarCard(e)));
+        return;
       }
 
-      const entities = (view && view.entities) ? view.entities : [];
-      entities.forEach(e => content.appendChild(renderRadarCard(e)));
+      const matches = q ? radarEntities.filter(e => radarEntityMatches(e, q)) : radarEntities;
+      if (q && matches.length === 0) {
+        const none = document.createElement('p');
+        none.className = 'history-empty-message';
+        none.textContent = 'Nothing on your Radar matches your search.';
+        content.appendChild(none);
+        return;
+      }
+      matches.forEach(e => content.appendChild(renderRadarCard(e)));
+    }
 
-      // Radar has no pagination (v1) — hide load-more.
-      const loadMoreSection = sidebarElement.querySelector('.history-load-more');
-      if (loadMoreSection) loadMoreSection.style.display = 'none';
+    /**
+     * #1236 — does a Radar entity match the search query? Spans the searchable facets of
+     * every entity type: title + meta + entity type + lifecycle state.
+     */
+    function radarEntityMatches(entity, q) {
+      const hay = [(entity.title || ''), (entity.meta || ''),
+                   (entity.entity_type || ''), (entity.lifecycle_state || '')]
+                  .join(' ').toLowerCase();
+      return hay.indexOf(q) !== -1;
     }
 
     /**
