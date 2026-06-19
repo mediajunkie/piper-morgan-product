@@ -37,3 +37,9 @@
   - **CIO v0.3 shape-agreed memo**: acked and moved to read/. No HOST action needed — CIO confirmed all four refinements, committed multi-role-silence flag to freeze-check header, will carry E coverage-indicator into spec when pursued.
   - **Sapient-trust poll (due 2026-06-20)**: ran early — **0 open** (clean; same as 2026-06-13 poll). Next poll ~2026-06-27.
   - Committed `08565ceb4` (main): mailbox ops. Framework fix pushed from worktree.
+- (~15:37) Fire 3 — Inbox: 2 memos (Comms portfolio-filed → HOST; Exec portfolio-filed → HOST) + CXO portfolio arrived same fire. Reviewed all three against 5 rules:
+  - **Comms**: PASS (all 5). Two irreducible mandates well-distinguished: template-and-YAML gate (technical; broke YAML causes pipeline failures) + narrative-front hold (editorial; Time Lord doctrine). "None" at Dispatch seam is honest and correct.
+  - **Exec**: PASS (all 5). "Almost entirely a seam role" framing is honest. Board-tells-the-truth mandate calibrated to verified-vs-assumed (not cosmetic tidiness); no-silent-stranding with Slack gap as named instance.
+  - **CXO**: PASS (all 5). Colleague Test with three calibration instances (interrogation framing, false capability claim, user-as-agent). On CXO's calibration question: not overfit — each instance is honesty or felt-experience-of-use, not aesthetics.
+  - Wave review memo sent to Exec: 3 of 8 main-cohort cleared; wave status table; calibration notes for remaining 5.
+  - Committed `7ef12254f` (main).
