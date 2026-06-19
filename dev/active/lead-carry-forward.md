@@ -1,6 +1,13 @@
 # Lead Dev carry-forward (ephemeral session state — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-18 ~19:10 PT — **CARRY-FORWARD FOR COMPACTION #2** (PM-proposed; long day, context full). D1 nearly done. **Read the D1-REMAINING + CLOSE-READY + SESSION-WISDOM blocks below first.**
+**Updated**: 2026-06-18 22:52 PT — **DAY-CLOSED** (last scheduled fire 22:17; cron armed `240d7d62` for 07:17). Single continuous session ~04:21→22:52, 2 compactions. **Read the D1-REMAINING + CLOSE-READY + SESSION-WISDOM blocks below first.**
+
+## ▶ TOMORROW'S START (07:17) — top of queue
+1. **#1280 dark-nav** — BUILT + deployed (PID 76171); **awaiting PM UAT round 2** (the home-dedup fix from 21:55). PM's turn.
+2. **#1269 formatting** — shipped (`a0f21bdec`); **awaiting PM re-UAT**. PM's turn. Then the substantial increments: /standup page-migration (fixes the still-fabricating PAGE) + P4 morning-card.
+3. **#1283 (RECONNECT) probe** — PM-endorsed "#1283 next"; the INTRICATE rail∪category∪floor reachability resolver → gap-list → mode-4-guard-first. **The next fresh-focus BUILD** (not D1; deferred from the 22:17 marathon-tail deliberately — accuracy-critical, wants fresh focus).
+4. **Close-ready set** (#1227/#1250/#1252) — all PM's-turn (UAT/decision); see CLOSE-READY block. PM is triaging.
+- Cron job-id is **`240d7d62`** (CronList truth; the `100dc3ea` in the body below drifted). Server PID **76171** (env-stripped + `PIPER_GITHUB_HANDLE=mediajunkie`; kill via `pkill -f "main.py"`, not the venv-path form).
 
 ## ▶ D1 REMAINING (PM board filter `is:open sprint:"D1 - Beta design quality"`, 6/18 ~19:00) — 7 issues
 1. **#1236** RADAR entity-search slot-swap — surface + entity-search BUILT (`4c00606b9`); **UAT-pending** (runtime filter behavior).

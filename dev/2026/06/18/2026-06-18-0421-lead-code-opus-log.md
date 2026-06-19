@@ -219,3 +219,45 @@ Suspended cron (Rule 1). Verify-first: read navigation.html (top-nav to relocate
 
 ### ~21:55 — #1280 PM UAT round 1: rail renders ✅; fixed the duplicate conv-list on home
 PM UAT screenshot: the dark rail renders correctly (brand · CHATS list · New Chat · footer nav · m1-test user-menu) — the flip works. But home showed BOTH the rail's conv-list AND home's own `.sidebar` (the light "Recent" middle panel) = duplication. Root: home.html has its own `<aside class="sidebar">` (#565/#1097 "current session continuation") separate from the rail. Fix (home.html): (1) hide `.sidebar` + `.sidebar-expand-btn` (CSS `!important` beats the legacy collapse-toggle's inline style; `.app-layout` is flex → `.main-content` fills) — the rail now owns conv-list-everywhere; (2) wire `initSidebar` → `/?new=1` calls `createNewConversation()` (the rail's "+ New chat" target; bare `/` auto-loads the last chat). Conv-clicks already work (rail → `/?conversation=<id>`, home reads it). 63 render tests green; hidden-not-removed keeps home's `initSidebar`/`loadConversations` refs valid. Clean markup/fetch removal = follow-up. Restarted to deploy.
+
+### 22:17 (fire) — verify-confirm sweep + DAY-CLOSE (last scheduled fire)
+Post-compaction-#2 resume; the 22:17 cron fired (last scheduled fire of today; next 07:17). PM idle ~50min after the 21:55 #1280 UAT exchange. Sync clean, lead inbox empty, one cron (`240d7d62`).
+- **Caught a re-implementation before doing it** (investigate-before-extending): the post-compaction summary listed "#1269 formatting fix" as still-pending; verify-first on `models.py` showed `to_prose()` (2164-2170, the `\n\n` block-render) + `_quoted_capped` (2077-2087, the Today cap) are **already shipped** (`a0f21bdec`). Did NOT re-build. **29 assembler/prose tests green** (main-repo venv — the worktree has none).
+- **Close-issue sweep — re-confirmed the honest finding** (PM "close what we can"; already surfaced 18:56): nothing cleanly closeable solo. `gh issue view`: **#1227** = 41/41 ACs done, banner "⏸ awaiting PM real-Slack round-trip" (one PM UAT from close); **#1250** = fix landed, awaiting PM re-UAT; **#1252** = 27 ACs all unchecked but substantial additive work landed (description drifted) + cutover deferred to #1257 (Option B) → needs a description-reconciliation pass + PM's close-as-deferred call. All three are PM's-turn; surfacing, not force-closing (close-issue-properly).
+- **Server verified live for PM's UAT round 2**: PID 76171, health 200, `nav-rail.css` 200 (the #1280 home-dedup fix is deployed). Home is auth-gated → PM's authenticated round-2 UAT will hit live code.
+- **No new big build this fire — by design**: remaining unblocked work is either PM's-turn (#1280/#1269 UAT-gated) or intricate/substantial fresh-focus work deliberately teed for a focused fire (#1283 RECONNECT probe — accuracy-critical routing resolver; #1269 /standup page-migration). Per don't-stop exception (c): accuracy-critical routing work rushed at hour ~18.5 of a marathon yields a bad gap-list — fresh-focus tomorrow is the right call, not a time-of-day cop-out. Cron stays armed for 07:17.
+
+## DAY-ARC — 2026-06-18 (Lead Dev, ~04:21 → 22:52, single continuous session, 2 compactions)
+- **04:21–05:05** — PM dawn live-test of prior ships: #1225 dismiss-flash fix; **#1090 Radar swap graduated** (Radar = default Layer-2 panel, clickable cards); #3 modules-default-collapsed interim; **#6 assigned-to-me** work-item filter; closed **#1173** + **#1239** (UAT passed).
+- **morning–afternoon** — **#1269 standup reconceived** as a derived view over EntitySources: P1b `StandupAssembler`+`StandupSummary`, P3 `to_prose()` + the "Watch" slot, P2 calendar pull, P5 chat rewire + `GET /api/v1/standup/today`. **Fixed the fabrication bug** (classifier emits `get_project_status` for standup phrasings → fell to the LLM floor → improvised standup; deterministic `_is_standup_query` pre-check fixes it). **Filed #1283** (routing-integrity class).
+- **18:56** — PM UAT: standup **plumbing SUCCESS**; formatting needs work; PM triaged discovered issues (**#1283 → RECONNECT**); close-sweep surfaced; compaction #2.
+- **19:29** — **#1269 formatting fix shipped** (`a0f21bdec`): `\n\n` block-render + per-slot cap.
+- **20:00** — **#1280 dark-nav BUILT + deployed** (PM directive): `nav_rail.html` + `nav-rail.css` (7 dark tokens, token-lint clean) + the flip (top-nav → left-rail grid, `nav.js` extracted) across all 22 shared pages; **103 render tests green**.
+- **21:55** — **#1280 PM UAT round 1**: rail renders ✅; fixed a duplicate conv-list on home (rail owns conv-list-everywhere) + restart.
+- **22:17** — verify-confirm sweep (above) + day-close.
+
+## Memory & briefing surfaces referenced this session
+**Referenced**
+- `close-issue-properly` skill — surface-don't-force-close discipline for the sweep; deferred-AC framing for #1252.
+- `duty-cycle-tick` skill — STOP/last-scheduled-fire logic; cron handling.
+- `lead-carry-forward.md` — post-compaction state (D1-remaining, close-ready set, #1283-scope, server/cron invariants).
+- `1280-dark-nav-gameplan.md` — the CXO-ratified content-model + rail-alongside→flip plan the 20:00 build executed.
+- CLAUDE.md — env-stripped restart gotcha, mailbox-bridge, sign-off discipline, intent-dispatch-rail.
+- `feedback_dont_suggest_stopping_default_to_continuing` — the continue-vs-day-close call (exception (c)).
+- `feedback_investigate_before_extending_all_work` — caught the already-shipped formatting fix before re-building.
+- `feedback_no_confabulating_expected_steps_as_completed` — verified the formatting commit + tests exist before claiming done.
+
+**Loaded but not referenced** — the bulk of MEMORY.md (comms/docs/voice memories); Figma/MCP server instructions; the cross-pollination brief; AWS-pricing MCP instructions.
+
+**Wanted but not found** — none material this session.
+
+## Sign-off (2026-06-18 day-close)
+```
+branch: claude/interesting-beaver-7ee19c
+git status --short (tracked): clean
+git log @{u}..HEAD: empty (nothing unpushed)
+git branch -r --contains HEAD | grep origin/main: origin/main  (HEAD reachable from origin/main)
+```
+All session work is on `origin/main`. Server PID 76171 live (env-stripped, `PIPER_GITHUB_HANDLE=mediajunkie`). Cron `240d7d62` armed (`17 22,7,10,13,16,19`) — next fire 07:17. Tomorrow's START: #1280 + #1269-formatting awaiting PM UAT; #1283 (RECONNECT) probe is the next fresh-focus build (PM-endorsed "#1283 next").
+
+<!-- DAY-CLOSED: 2026-06-18 -->
