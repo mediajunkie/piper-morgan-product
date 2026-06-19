@@ -1,13 +1,13 @@
 # Lead Dev carry-forward (ephemeral session state — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-18 22:52 PT — **DAY-CLOSED** (last scheduled fire 22:17; cron armed `240d7d62` for 07:17). Single continuous session ~04:21→22:52, 2 compactions. **Read the D1-REMAINING + CLOSE-READY + SESSION-WISDOM blocks below first.**
+**Updated**: 2026-06-19 ~08:05 PT — Fri morning fire. **Cron `8278cd31`** armed (re-armed after suspending for the build session). Server **39025** (env-stripped + `PIPER_GITHUB_HANDLE=mediajunkie`; kill via `pkill -f "main.py"`). **Read the QUEUE + D1-REMAINING + CLOSE-READY blocks first.**
 
-## ▶ TOMORROW'S START (07:17) — top of queue
-1. **#1280 dark-nav** — BUILT + deployed (PID 76171); **awaiting PM UAT round 2** (the home-dedup fix from 21:55). PM's turn.
-2. **#1269 formatting** — shipped (`a0f21bdec`); **awaiting PM re-UAT**. PM's turn. Then the substantial increments: /standup page-migration (fixes the still-fabricating PAGE) + P4 morning-card.
-3. **#1283 (RECONNECT) probe** — PM-endorsed "#1283 next"; the INTRICATE rail∪category∪floor reachability resolver → gap-list → mode-4-guard-first. **The next fresh-focus BUILD** (not D1; deferred from the 22:17 marathon-tail deliberately — accuracy-critical, wants fresh focus).
-4. **Close-ready set** (#1227/#1250/#1252) — all PM's-turn (UAT/decision); see CLOSE-READY block. PM is triaging.
-- Cron job-id is **`240d7d62`** (CronList truth; the `100dc3ea` in the body below drifted). Server PID **76171** (env-stripped + `PIPER_GITHUB_HANDLE=mediajunkie`; kill via `pkill -f "main.py"`, not the venv-path form).
+## ▶ QUEUE (6/19 ~08:05) — top
+1. **#1280 v2** — REBUILT + deployed (server 39025): conversation-first rail (Increment 1 `8ffc7e678`) + persistent 320px home Radar column (Increment 2 `dd6b266d5`/`c4d5df31d`); 105 green. **Awaiting PM re-UAT** (JS behavior: rail dropdowns + home Radar fetch/render/search). PM's turn.
+2. **#1269 formatting** — shipped (`a0f21bdec`); **awaiting PM re-UAT**. Then the substantial increments: /standup page-migration + P4 card.
+3. **#1283 (RECONNECT)** — **resolver-shape DESIGN done + looped Arch for ratification** (`dev/2026/06/19/1283-resolver-shape-design.md`; memo `66ee2888f`). **BLOCKED on Arch ratifying the shape + the intentional-floor-allowlist representation** before structural commits (his explicit ask). On his "go": land **mode-4 guard FIRST** → build `services/intent_service/reachability.py` (the resolver + `INTENTIONAL_FLOOR_ALLOWLIST`) → behavioral probe → real gap-list → SoT vocab-derive → static lint → ADR-073. Routing model verified (rail @:1446 / category @:10960+ / floor `_FLOOR_ROUTED_CATEGORIES` @:11052 / legacy fall-through @:11065). Key nuance: **soft-gap** (the #1269 fabrication) is invisible to static reachability → the behavioral golden-corpus + mode-4 guard carry it.
+4. **Close-ready set** (#1227/#1250/#1252) — all PM's-turn (UAT/decision). PM is triaging.
+- Pending-PM (don't block other work): PM re-UAT of #1280 v2 + #1269 formatting; Arch ratification of the #1283 shape.
 
 ## ▶ D1 REMAINING (PM board filter `is:open sprint:"D1 - Beta design quality"`, 6/18 ~19:00) — 7 issues
 1. **#1236** RADAR entity-search slot-swap — surface + entity-search BUILT (`4c00606b9`); **UAT-pending** (runtime filter behavior).
