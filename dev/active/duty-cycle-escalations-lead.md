@@ -10,7 +10,7 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
 
 ## Open
 
-_None currently open (reconciled 2026-06-16 STOP)._
+- **2026-06-18 · CXO (cc PM) · #1280 dark-rail design spec** — Lead is BLOCKED on a detailed #1280 left-rail design spec before rebuilding the 22-page shell. PM UAT (2 rounds) found the flip "doesn't resemble the mock, no global nav"; PM chose spec-first over revert/match-now. Requested via memo `393d4178a` (the 4 gaps: rail-content + full-nav placement · Radar persistent-vs-slide-out · non-home-page layouts · what "no global nav" means). Current flip is LIVE-but-flawed (revert to top nav available in minutes on PM's word). **Awaiting CXO spec.**
 
 ## Resolved
 

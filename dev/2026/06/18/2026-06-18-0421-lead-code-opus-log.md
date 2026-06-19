@@ -266,3 +266,25 @@ All session work is on `origin/main`. Server PID 76171 live (env-stripped, `PIPE
 PM UAT: home is 2-column [rail · chat] — the mock's persistent Radar 3rd column is missing, and I'd crammed the full old nav into the rail footer vs. the mock's minimal rail. PM: *"flaw in the approach. no global nav. does not resemble the mock."* Offered match-now / detailed-spec / (I added revert); PM chose **nail the design spec first**. Right call — the mock is home-only + incomplete (no full-nav placement, no non-home pages) + conflicts with the interim content-model, so guessing again on a 22-page shell would risk a 3rd wrong pass. Used AskUserQuestion (PM explicitly offered the choice).
 - **CXO design-spec REQUESTED** (memo `393d4178a` via bridge, cc PM/PA): the 4 gaps — (1) rail content + where the full nav lives if the rail goes minimal, (2) Radar persistent-vs-slide-out, (3) non-home-page layouts, (4) what "no global nav" means. **Build PAUSED until the spec lands.**
 - **Current #1280 flip stays LIVE-but-flawed** (PM chose keep-live over revert; revert to the top nav is minutes away on PM's word). Reuse-ready: tokens · nav_rail/nav-rail.css/nav.js · the conv-list loader · the render-test harness.
+
+## DAY-CLOSE — 2026-06-18 (23:46 STOP; the 22:17 last-fire firing post-conversation)
+_(This log carries earlier DAY-CLOSED markers from mid-day compaction points; the session ran continuously through them as PM re-engaged. This is the genuine end-of-day close.)_
+
+### Day arc — a very full D1 day across three threads + two compactions
+- **#1269 standup** — post-compaction resume → fixed the chat-routing fabrication bug (classifier emitted `get_project_status`, off-rail → LLM improvised; fix = deterministic `_is_standup_query` pre-check) + deployed; PM UAT'd **PLUMBING SUCCESS** (real derived data). Then the **formatting fix** (markdown block-render + per-slot caps `_quoted_capped`) — shipped + deployed (`a0f21bdec`); awaits PM re-UAT. `/today` endpoint shipped (`9915f49ee`).
+- **#1283 routing-integrity audit class** — filed → Architect SCOPED → I ENDORSED (SoT-derive + mode-4 guard + two-altitude enforcement + rail∪category∪floor) → **PM moved it to RECONNECT** sprint. Clean probe + implement teed up.
+- **#1280 dark-rail shell** — gameplan→build-ready (CXO ratification) → BUILT (rail component Phase 2 + the 22-page flip Phase 3, `a70352e3a`/`c39001cfd`) → PM UAT round 1 (fixed home's duplicate conv-list `f56a6d548`) → **PM UAT round 2: "flaw, no global nav, doesn't resemble the mock" → PM chose spec-first → CXO design-spec REQUESTED (`393d4178a`) → build PAUSED.** Current flip live-but-flawed (revert available on PM's word).
+- Two PM-proposed compactions; carry-forward handoffs written each time.
+
+### Memory & briefing surfaces referenced this session
+- **Referenced**: `lead-carry-forward.md` (continuity — the spine of every resume); the #1269 + #1280 gameplans; the binding mock (`radar-entities-surfacing-mockup-2026-06-14.html`); CLAUDE.md (env-strip invariant, mailbox bridge, sign-off discipline); the `close-issue-properly` skill (issue sweep); the `duty-cycle-tick` skill (fires + this STOP); `token_lint.py` rules + the F2 app-shell test pattern (the #1280 build); the CXO ratification (via carry-forward).
+- **Loaded but not referenced**: the `audit-cascade` skill; most recalled memory files (background, not load-bearing this stretch).
+- **Wanted but not found**: a **complete #1280 design spec** — the mock is home-only + doesn't show where the full nav goes or what non-home pages look like; that gap caused two wrong-ish build passes and is exactly what the CXO spec request (`393d4178a`) now seeks. Same gap: a canonical map of the rail's IA (full-nav placement).
+
+### Sign-off checklist
+- `git status`: clean of tracked changes (only foreign `??` untracked — github_preferences.json + two prog logs, not mine).
+- `git log @{u}..HEAD`: empty (branch pushed). `git log origin/main..HEAD`: empty (all work on origin/main).
+- Cron `100dc3ea` ARMED (`17 22,7,10,13,16,19`) — next fire 07:17 (6/19 START). Server PID 76171.
+- Attention-doc reconciled: no stale Open items; added **#1280→CXO-spec** as a live cross-agent block.
+
+<!-- DAY-CLOSED: 2026-06-18 -->
