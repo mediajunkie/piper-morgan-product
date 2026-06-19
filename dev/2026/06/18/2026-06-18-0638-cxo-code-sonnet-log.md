@@ -112,6 +112,21 @@ Inbox: empty. All CXO threads gated on other agents:
 
 No unblocked CXO work. Heartbeat only.
 
+
+## Fire 2 addendum — inbox (10:3x)
+
+### #1280 content-model — ratified
+- Lead found structural gap: spec assumed a left-rail shell; actual `app_shell.html` is a top nav. #1280 is a chrome re-architecture, not a recolor.
+- 5 design calls made:
+  1. Brand/logo at top of rail ✓
+  2. Search → Radar (home); non-home search **deferred** (not a beta requirement; #1236 is the real future)
+  3. User-menu in rail footer (avatar pinned at bottom, `margin-top:auto`) ✓
+  4. Command palette = ⌘K keyboard-triggered only; no nav-resident button ✓
+  5. Non-home rail = Slack-style (same conversation list everywhere) ✓
+- Lead's content-model ratified. Build is now unblocked.
+- Delivered: `memo-cxo-to-lead-cc-pm-pa-1280-content-model-ratified-2026-06-18.md`
+- Commit: `4667bfad7` → pushed to origin/main
+
 ## Carry-forward for next fire
 
 - **#1280** spec on origin/main; Lead builds. CXO monitors.
