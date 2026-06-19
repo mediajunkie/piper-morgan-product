@@ -73,6 +73,25 @@ CXO call: working name **"Your work"**. Rationale: accurate, warm, unambiguous. 
 Hub route recommendation: post-beta. Avatar dropdown grouping is the right interim.
 Memos sent to Lead + Comms.
 
+
+## Interstitial (10:06 — mail trigger)
+
+Inbox: 2 memos (Comms + Lead).
+
+### Comms — #1284 "Your work" confirmed
+Comms confirmed: accurate, warm, consistent with second-person "your" convention. One flag: audit for any "My [X]" nav labels (consistency check, not a blocker). Name is locked — told Lead to wire it.
+
+### Lead — #1236 entity mapping final calls
+Lead ran the source investigation; two concrete calls needed:
+
+**Places → `work_item` (map existing, no new type)**
+Schema stays frozen. GitHub repo / calendar-as-work-item is semantically imprecise but acceptable for beta. Post-beta can revisit if `place` earns its own type.
+
+**Insights → out of Radar entirely**
+Insights are meta-commentary, not watched entities. Don't re-home into Radar. Remove "recently" home module. Insights accessible via /insights nav + chat + standup. Home center becomes clean chat interface.
+
+"Your work" wire confirmed in same memo.
+
 ## Carry-forward for next fire
 
 - **#1280**: v2 spec on origin/main; Lead to rebuild rail + shell to spec; PM visual UAT still needed
