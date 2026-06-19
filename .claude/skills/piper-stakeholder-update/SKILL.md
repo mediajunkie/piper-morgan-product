@@ -1,14 +1,10 @@
 ---
 name: piper-stakeholder-update
-description: Draft a stakeholder update memo in PM's voice — knows the PM's communication
-  style, who the stakeholders are, what they care about, and how formal the channel
-  is. Covers any audience (exec, team, investors, customers). Piper-informed; better
-  than generic templates because it knows your context. Trigger phrases: "write an
-  update for [audience]", "draft a stakeholder memo", "I need to update [person/team]
-  on [topic]", "help me draft an exec summary".
-scope: cross-role
-version: 1.0
-created: 2026-06-15
+description: >-
+  Write a stakeholder update — progress, decisions, risks, next steps —
+  calibrated to your audience (exec, team, investors, board). Draws on your
+  project context. Trigger phrases: "write a stakeholder update", "draft an
+  update for", "what should I tell [audience]", "write a status update".
 ---
 
 # stakeholder-update

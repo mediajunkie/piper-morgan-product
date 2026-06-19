@@ -1,13 +1,11 @@
 ---
 name: piper-draft-issue
-description: Draft a properly-formed GitHub issue for your project repo. Use when
-  PM has a problem, bug, feature idea, or task to track. Produces a SLUG, structured
-  body (Problem Statement / Goal / Requirements / AC), and correct metadata (priority,
-  labels, milestone, epic). Trigger phrases: "file an issue", "create a ticket",
-  "draft an issue", "track this", "we should file a bug for".
-scope: cross-role
-version: 1.1
-created: 2026-06-14
+description: >-
+  Draft a properly-formed GitHub issue for your project repo. Use when PM has
+  a problem, bug, feature idea, or task to track. Produces a SLUG, structured
+  body (Problem Statement / Goal / Requirements / AC), and correct metadata
+  (priority, labels, milestone, epic). Trigger phrases: "file an issue",
+  "create a ticket", "draft an issue", "track this", "we should file a bug for".
 ---
 
 # draft-issue

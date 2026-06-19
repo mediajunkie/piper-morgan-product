@@ -81,3 +81,15 @@ def test_avatar_menu_has_account_logout_not_settings(html):
 def test_is_not_the_old_top_nav(html):
     # the rail is the NEW chrome — it must not carry the top global-nav container class
     assert 'class="global-nav"' not in html
+
+
+def test_home_renders_persistent_radar_aside():
+    """#1280 v2 — home gets the persistent 320px Radar column (show_radar → app_shell aside)."""
+    from jinja2 import Environment, FileSystemLoader
+
+    env = Environment(loader=FileSystemLoader(str(TEMPLATES)), autoescape=True)
+    html = env.get_template("home.html").render(trust_stage=1, user=_USER, show_radar=True)
+    assert 'id="home-radar-cards"' in html  # the Radar cards container
+    assert 'id="home-radar-search"' in html  # the entity-search field (reuses #1236 filter)
+    assert "what I'm keeping an eye on" in html  # the Radar panel header (mock copy)
+    assert "app-shell-aside" in html  # it fills the shell's 320px aside (show_radar on)

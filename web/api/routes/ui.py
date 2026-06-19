@@ -243,6 +243,8 @@ async def home(request: Request):
                 "trust_stage_name": trust_stage.name,  # Pass name for debugging/logging
                 # F2 #1266: home renders the INLINE chat → suppress the shell floating widget
                 "hide_floating_widget": True,
+                # #1280 v2: home gets the persistent 320px Radar column (app_shell aside)
+                "show_radar": True,
                 # Issue #1194 / #1033: composted reflections for the "Recently" module
                 "surfaced_insights": surfaced_insights,
             },

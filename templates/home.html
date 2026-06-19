@@ -2051,3 +2051,59 @@
       })();
     </script>
 {% endblock %}
+
+{# #1280 v2 — persistent Radar column (home only; show_radar=True from the route fills app_shell's
+   320px aside). Self-contained: markup + style + a DOMContentLoaded script that fetches /api/v1/radar
+   and renders entity cards via the #1236 HistorySidebar.renderRadarCard (pure) + filters via
+   radarEntityMatches. The .radar-card styles are global (history_sidebar.html), so cards inherit them. #}
+{% block aside %}
+<div class="home-radar">
+  <header class="home-radar-head">
+    <h2 class="home-radar-title">📡 Radar</h2>
+    <span class="home-radar-sub">what I'm keeping an eye on</span>
+  </header>
+  <input type="search" class="home-radar-search" id="home-radar-search" placeholder="Search everything — issues, docs, people, chats…" aria-label="Search Radar">
+  <div class="home-radar-cards" id="home-radar-cards" role="list" aria-live="polite">
+    <p class="home-radar-loading">Loading your Radar…</p>
+  </div>
+</div>
+<style>
+  .home-radar-head { margin-bottom: var(--space-md); }
+  .home-radar-title { font-size: var(--font-size-lg); margin: 0; }
+  .home-radar-sub { display: block; font-size: var(--font-size-xs); color: var(--color-text-muted); }
+  .home-radar-search { width: 100%; box-sizing: border-box; padding: var(--space-sm); margin-bottom: var(--space-md); border: var(--border-card); border-radius: var(--border-radius-md); font-size: var(--font-size-sm); }
+  .home-radar-empty, .home-radar-loading { font-size: var(--font-size-sm); color: var(--color-text-muted); }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function initHomeRadar() {
+    const cards = document.getElementById('home-radar-cards');
+    const searchEl = document.getElementById('home-radar-search');
+    if (!cards) return;
+    let entities = [];
+    function render(q) {
+      const HS = window.HistorySidebar || {};
+      if (typeof HS.renderRadarCard !== 'function') { cards.innerHTML = ''; return; }
+      cards.innerHTML = '';
+      const ql = (q || '').toLowerCase();
+      const list = (ql && typeof HS.radarEntityMatches === 'function')
+        ? entities.filter(function (e) { return HS.radarEntityMatches(e, ql); })
+        : entities;
+      if (!list.length) {
+        const p = document.createElement('p');
+        p.className = 'home-radar-empty';
+        p.textContent = ql
+          ? 'Nothing on your Radar matches your search.'
+          : 'Your Radar fills as you work — flag an issue, start a chat, or connect a source.';
+        cards.appendChild(p);
+        return;
+      }
+      list.forEach(function (e) { cards.appendChild(HS.renderRadarCard(e)); });
+    }
+    fetch('/api/v1/radar', { credentials: 'include' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (view) { entities = (view && view.entities) ? view.entities : []; render(''); })
+      .catch(function () { cards.innerHTML = ''; });
+    if (searchEl) searchEl.addEventListener('input', function () { render(searchEl.value); });
+  });
+</script>
+{% endblock %}

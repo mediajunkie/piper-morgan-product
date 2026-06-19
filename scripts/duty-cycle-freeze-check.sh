@@ -20,6 +20,12 @@
 # Heartbeat / session log / DAY-CLOSED are all read from origin/main (no working-tree currency dependency).
 # Output: "STALE <role> <detail>" per frozen role; empty = healthy / off-hours / not-cycling. Exit 0 always
 # (a watchdog must never fail loudly itself). A wrapper (launchd) turns STALE lines into the PM alert.
+#
+# COVERAGE BOUNDARY (CXO battery-outage 2026-06-18): this catches a session-freeze on a LIVE machine. It
+# CANNOT catch a machine-death (battery/crash/logout) while it's happening — the launchd watcher runs ON the
+# same machine, so it dies too; it can only alert AFTER the machine returns (the next run sees stale
+# heartbeats). Machine-death detection during the outage requires an OFF-machine monitor (the Routines
+# watchdog, PM-deferred $70/mo). Re-raise that only if outages recur or cost work.
 set -uo pipefail
 
 REPO="${PIPER_REPO:-/Users/xian/Development/piper-morgan/piper-morgan-product}"

@@ -29,5 +29,24 @@ Two substantive in-lane memos, both drained:
 - **HOST welfare-criteria v0.2** (m-39 dashboard design pairing; async). Marked up the design — **headline: ~75% is REUSE of infra I shipped this week**: Q2/Q3 (staleness/liveness) = reuse the **freeze-registry** (already per-role-thresholds + first_fire + wake-windows; split STALE → 🟡/🔴 two-tier); Criteria F (asymmetric-knowledge sweep) = **extend Exec's rollup** (F1 = the carry-forward-PM-blocks scoping note HOST flagged 6/17); Criteria D = cheap render-rule (borderline output state). **Criteria E (consequential-action surface) = the one genuinely-new build** — shape = gbrain `TranscriptEntry` (typed action-log), scope incrementally (external-message + credits first, BYOC-tied). Sent the async markup (cc PM). The synthesis (connecting freeze-registry + rollup + gbrain to HOST's criteria) is value only I could give well right now — drained, not banked.
 - 2 filed → read.
 
+### RETROACTIVE DAY-CLOSE (written 2026-06-19 07:22 at next START — 6/18 ended abruptly; no STOP fired)
+6/18 ended mid-morning to a **battery outage** (~10:17–17:00, CXO's report `memo-cxo-to-cio-...-battery-outage-cron-gap-2026-06-18.md`): the machine slept after my ~10:50 fire, my session went dormant ~20h (cron `6e422960` survived in-memory; I just resumed 6/19 07:22). So the 6/18 afternoon/evening fires + the 22:07 STOP never fired → this retroactive close per START Step-0 self-heal.
+
+## DAY-ARC — 2026-06-18 (CIO) — short day (4h pre-outage), high cross-project yield
+START 06:38 (PM-engaged) → ~10:50 (battery outage). Despite the short window:
+- **Migration: Arch ✓ + CXO ✓ tracked**; plan-of-record synced; PPM = the last (it migrated later 6/18 — now in the freeze-registry, so the wave is complete).
+- **Janus migration-format CODIFIED** as a canonical template (`migration-prompt-format.md`) — Janus's cross-project validation turned my instinct-extracted format into a designed artifact. Queued for Klatch when they rouse.
+- **PPM inbox-race disposition** (Pattern-068; mail-send v2 = the structural fix → adoption; folded into #1259).
+- **HOST welfare-criteria v0.2 design markup** — ~75% reuse of this week's infra (freeze-registry → liveness/staleness; rollup → asymmetric-knowledge sweep); Criteria E (consequential-action log) = the one new build.
+
 ## Memory & briefing surfaces referenced this session
-*(filled at STOP — #974 3-bucket)*
+- **Referenced**: `duty-cycle-tick` skill; the migration pairs + `cohort-plan-of-record` (CXO/Arch tracking); the **freeze-registry + #1259** (PPM race) + the **welfare-criteria seed + freeze-registry/rollup/gbrain co-sign** (HOST markup — the synthesis); `designinproduct` repo (Janus); `CLAUDE.md`; pins `feedback_investigate_before_extending_all_work`, `feedback_no_confabulating_...`, `feedback_careful_git_sync_on_shared_main`.
+- **Loaded but not referenced**: MEMORY.md (now trimmed to 22KB — the MEM-EVAL trim landed, so materially less dead-weight than prior days); PROJECT/ROSTER.
+- **Wanted but not found**: an **off-machine liveness monitor** — the battery outage exposed the on-machine freeze-watcher's machine-death blind spot (a launchd watcher dies with the machine; can only alert after return). The off-machine Routines watchdog is the candidate (PM-deferred, $70/mo); this outage is a fresh data point for it.
+
+## Sign-off checklist (retroactive)
+- All 6/18 work pushed to origin/main as of the ~10:50 fire (`381ca689e`); the abrupt end was hardware, nothing stranded.
+- `@{u}..HEAD` / `main..HEAD`: empty at the outage (everything committed per-unit through 6/18 morning).
+- Cron: survived (`6e422960`); re-confirmed alive 6/19 07:22.
+
+<!-- DAY-CLOSED: 2026-06-18 -->
