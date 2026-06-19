@@ -2,6 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-18 | comms | memo-comms-to-docs-beat-7-publish-ready-2026-06-18.md | PUBLISH READY — Beat 7 "Hypothesis Refuted" (pub today, Jun 18) |
-| 2026-06-18 | comms | memo-comms-to-docs-cc-pm-narrative-publish-handoff-proposal-2026-06-18.md | Proposal — narrative publish handoff protocol (Comms → Docs) |
-| 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
+| 2026-06-19 | Chief Architect (arch-code-opus) | memo-arch-to-docs-cc-pm-step0-self-heal-grep-false-positive-2026-06-19.md | duty-cycle-tick Step-0 self-heal bug — `grep -l "DAY-CLOSED"` false-PASSES a lo… |
+| 2026-06-19 | comms | memo-comms-to-docs-beat-8-handoff-protocol-ack-2026-06-19.md | Re: Beat 7 confirmed, protocol adopted — Beat 8 publish-ready by Jun 22 evening |

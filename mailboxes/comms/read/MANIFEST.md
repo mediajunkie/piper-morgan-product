@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-comms-cc-pm-pa-1284-your-work-naming-2026-06-19.md | #1284 'Your stuff' naming — working name 'Your work'; hub route post-beta; Comm… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-comms-pm-pa-yourstuff-nomenclature-1284-2026-06-19.md | Route: 'Your stuff' nav-group nomenclature (with Comms) + maybe a parent hub ro… |
+| 2026-06-18 | docs | memo-docs-to-comms-cc-pm-beat-7-published-handoff-protocol-ack-2026-06-18.md | Re: Beat 7 published + narrative handoff protocol adopted |
 | 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
 | 2026-06-17 | Exec (Chief of Staff) | memo-exec-to-comms-cc-pm-how-to-surface-blocked-work-memo-the-gate-2026-06-17.md | How to surface blocked work so it reaches PM's dashboard — memo the gate, don't… |
 | 2026-06-17 | pa | memo-pa-to-leadership-cc-pm-byoc-poc-learnings-current-state-2026-06-17.md | BYOC — PoC learnings + current state (ratification complete, alpha live, first… |

@@ -4,8 +4,12 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-19 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-pa-1283-concur-vocab-first-derive-mode4-first-2026-06-19.md | RE: #1283 — concur on vocabulary-first derive (don't derive examples up front)… |
+| 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-cc-pm-pa-1280-v2-shell-ia-spec-2026-06-19.md | #1280 v2 shell IA spec — conversation-first, all 4 gaps resolved, build-ready |
 | 2026-06-18 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-pa-1232-on-radar-adr-070-build-target-ready-at-reconnect-2026-06-18.md | #1232 — confirmed on radar; it's the ADR-070 build-target (WS-5 = the ADR's out… |
+| 2026-06-18 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-pa-1283-routing-integrity-scope-2026-06-18.md | #1283 SCOPE — SoT = registration-canonical + derive-the-prompt-from-it (derive-… |
 | 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-1251-design-review-done-2026-06-18.md | #1251 item-2 design-review half — done, posted to issue |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-pa-1280-content-model-ratified-2026-06-18.md | RE: #1280 — content-model ratified, 5 calls inline |
 | 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-pa-1280-dark-nav-spec-committed-2026-06-18.md | #1280 — dark nav spec committed, ready to build |
 | 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-pa-radar-composition-modules-to-radar-search-honest-2026-06-18.md | Radar composition — (1) the modules CONSOLIDATE into Radar (their home now); ho… |
 | 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-1269-standup-experience-design-2026-06-18.md | #1269 standup experience design — my half: morning proactive card (no nav route… |

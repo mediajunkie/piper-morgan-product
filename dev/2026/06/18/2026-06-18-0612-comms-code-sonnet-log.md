@@ -28,3 +28,25 @@ Prior day (2026-06-17) confirmed properly closed — `<!-- DAY-CLOSED: 2026-06-1
 - Fire 1 (09:12 PT) — Duplicate cron (`6de957b1` stale from Jun 17 STOP) cleared. Inbox: Exec cohort broadcast re escalations-doc deprecation (FOLD 2026-06-17, no reply needed). Triaged → read/. Removed stale `dev/active/duty-cycle-escalations-comms.md` (`b96150cf8`). Carry-forward is the PM-attention home going forward; fully compliant.
 
 ---
+
+## STOP (retroactive — written 2026-06-19 START)
+
+Session ended without a formal STOP (cron died / session expired after Fire 1). Retroactive close per Step-0 self-heal discipline.
+
+### Day arc
+
+**Beat 7 (*Hypothesis Refuted*)** publish-ready signal sent to Docs after PM + Docs completed all passes (voice, proofread, jargon/opacity). YAML caption fix confirmed. Comms→Docs handoff protocol proposed and filed. Escalations-doc FOLD absorbed; stale doc removed. Whether Docs published Beat 7 on Jun 18 is unconfirmed — check calendar at Jun 19 START.
+
+### Memory & briefing surfaces referenced
+
+**Referenced**: `editorial-calendar.csv` (Beat 7 pub date), `feedback_captions_printed_with_quotation_marks.md` (YAML caption format), `feedback_memo_when_blocked_or_need_lead_guidance.md` (Exec blocked-work mechanism), carry-forward (Beat 7 + BYOC state)
+
+**Loaded but not referenced**: `BRIEFING-CURRENT-STATE.md`, `building-narrative-method.md`
+
+**Wanted but not found**: confirmation Beat 7 actually published (Docs return-URL signal not yet received at log close)
+
+### Sign-off (reconstructed)
+
+Beat 7 publish-ready signal on origin/main (`f065349f6`) ✓. Session log committed through Fire 1 (`b3fd6fd7f`) ✓. No uncommitted substantive work.
+
+<!-- DAY-CLOSED: 2026-06-18 -->

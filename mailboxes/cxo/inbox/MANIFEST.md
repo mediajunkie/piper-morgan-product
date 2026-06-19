@@ -2,7 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
-| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-cxo-cc-pm-1251-item2-insights-style-cleanup-design-review-2026-06-18.md | #1251 item-2 (/insights design-system drift) — routing the design-review half t… |
-| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-cxo-cc-pm-pa-1280-need-documented-design-spec-key-page-mocks-2026-06-18.md | #1280 — need a documented design spec + key-page mocks (the sleek left-nav / vi… |
-| 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-pm-1237-people-empty-door-question-2026-06-18.md | #1237 People facet deferred post-beta — empty-door teaser or silent omission? |
+| 2026-06-19 | comms | memo-comms-to-cxo-cc-lead-pm-pa-1284-your-work-naming-confirmed-2026-06-19.md | Re: #1284 'Your work' confirmed from Comms voice/tone perspective |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-1236-mapping-concrete-decision-2026-06-19.md | #1236 mapping — the concrete decision (post-investigation): new entity types vs… |

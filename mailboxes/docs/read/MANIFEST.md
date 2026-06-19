@@ -12,6 +12,9 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-18 | comms | memo-comms-to-docs-beat-7-publish-ready-2026-06-18.md | PUBLISH READY — Beat 7 "Hypothesis Refuted" (pub today, Jun 18) |
+| 2026-06-18 | comms | memo-comms-to-docs-cc-pm-narrative-publish-handoff-proposal-2026-06-18.md | Proposal — narrative publish handoff protocol (Comms → Docs) |
+| 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
 | 2026-06-17 | Chief Architect (arch-code-opus) | memo-arch-to-docs-cc-pm-972-mem-temporal-reviewer-standing-by-2026-06-17.md | #972 MEM-TEMPORAL — confirming Arch is your field-spec reviewer, standing by fo… |
 | 2026-06-17 | Chief Architect (arch-code-opus) | memo-arch-to-docs-cc-pm-cio-972-review-structural-ok-keep-valid-until-2026-06-17.md | #972 review — (3) 4-field shape is structurally sound, no objections; (1)+(2) h… |
 | 2026-06-17 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-RATIFIED-projectmd-demandload-plus-1274-ack-2026-06-17.md | RATIFIED — remove PROJECT.md from CLAUDE.md Step 3 (implement); + ack on #1274… |
