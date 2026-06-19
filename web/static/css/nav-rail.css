@@ -1,0 +1,182 @@
+/* #1280 — left dark-rail navigation. The CXO-ratified left rail that replaces the top global-nav.
+   Dark SURFACE via the 7 --color-nav-* tokens (a bounded dark surface, NOT a dark-mode theme).
+   Built to the binding mockup (dev/active/radar-entities-surfacing-mockup-2026-06-14.html .nav).
+   Token-only (F3 / token_lint): colors via --color-* tokens; radius via --border-radius-*;
+   font-size via --font-size-*; spacing via --space-* (rem for sub-token tightness). */
+
+.nav-rail {
+  width: 180px;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-md);
+  background: var(--color-nav-bg);
+  color: var(--color-nav-text);
+  font-size: var(--font-size-sm);
+  overflow-y: auto;
+}
+
+/* Brand (top) */
+.nav-rail-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  color: var(--color-nav-text);
+  text-decoration: none;
+  font-weight: var(--font-weight-semibold);
+}
+.nav-rail-logo { width: 1.5rem; height: 1.5rem; }
+.nav-rail-brand-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Section label ("Chats") */
+.nav-rail-section-label {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-nav-text-muted);
+}
+
+/* Conversation list (Slack-style) */
+.nav-rail-chats { display: flex; flex-direction: column; gap: 2px; }
+.nav-rail-chat-item {
+  display: block;
+  padding: 0.35rem var(--space-sm);
+  border-radius: var(--border-radius-md);
+  color: var(--color-nav-text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nav-rail-chat-item:hover { background: var(--color-nav-item-hover); color: var(--color-nav-text); }
+.nav-rail-chat-item.active { background: var(--color-nav-item-active); color: var(--color-nav-text); }
+.nav-rail-chats-empty {
+  margin: 0;
+  padding: 0.35rem var(--space-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-nav-text-muted);
+}
+
+/* + New chat CTA (brand color) */
+.nav-rail-new-chat {
+  display: block;
+  margin-top: var(--space-md);
+  padding: var(--space-sm);
+  border-radius: var(--border-radius-md);
+  background: var(--color-primary);
+  color: var(--color-neutral-white);
+  text-align: center;
+  text-decoration: none;
+  font-weight: var(--font-weight-semibold);
+}
+.nav-rail-new-chat:hover { background: var(--color-primary-dark); }
+
+/* Footer — nav links + user-menu, pinned to the bottom */
+.nav-rail-footer { margin-top: auto; padding-top: var(--space-md); }
+.nav-rail-links { list-style: none; margin: 0 0 var(--space-sm); padding: 0; display: flex; flex-direction: column; gap: 1px; }
+
+.nav-rail-link {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.4rem var(--space-sm);
+  border: none;
+  border-radius: var(--border-radius-md);
+  background: none;
+  color: var(--color-nav-text-secondary);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.nav-rail-link:hover { background: var(--color-nav-item-hover); color: var(--color-nav-text); }
+.nav-rail-link.active { background: var(--color-nav-item-active); color: var(--color-nav-text); }
+
+/* Trust-gated items hidden until the nav JS confirms the stage (mirrors the top-nav behavior) */
+.nav-item-trust-gated { display: none; }
+.nav-item-trust-gated.trust-visible { display: block; }
+
+/* "Your stuff" dropdown (opens within the footer) */
+.nav-rail-group { position: relative; }
+.nav-dropdown-button { display: flex; align-items: center; justify-content: space-between; }
+.nav-dropdown-chevron { width: 0.75rem; height: 0.75rem; margin-left: var(--space-sm); flex: none; }
+.nav-dropdown-menu {
+  list-style: none;
+  margin: 2px 0;
+  padding: 2px;
+  border-radius: var(--border-radius-md);
+  background: var(--color-nav-item-hover);
+}
+.nav-dropdown-item {
+  display: block;
+  padding: 0.35rem var(--space-sm);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-nav-text-secondary);
+  text-decoration: none;
+  font-size: var(--font-size-xs);
+}
+.nav-dropdown-item:hover { background: var(--color-nav-item-hover); color: var(--color-nav-text); }
+
+/* User menu (bottom; dropdown opens upward) */
+.nav-rail-user {
+  position: relative;
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-nav-divider);
+}
+.nav-rail-user .user-button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: 0.4rem var(--space-sm);
+  border: none;
+  border-radius: var(--border-radius-md);
+  background: none;
+  color: var(--color-nav-text);
+  font: inherit;
+  cursor: pointer;
+}
+.nav-rail-user .user-button:hover { background: var(--color-nav-item-hover); }
+.nav-rail-user .user-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--color-neutral-white);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+}
+.nav-rail-user .user-name { flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nav-rail-user .user-chevron { width: 0.75rem; height: 0.75rem; flex: none; }
+.nav-rail-user .user-dropdown {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  margin-bottom: 2px;
+  padding: 2px;
+  border: var(--border-card);
+  border-radius: var(--border-radius-md);
+  background: var(--color-neutral-white);
+  box-shadow: var(--shadow-md);
+  z-index: 10;
+}
+.nav-rail-user .dropdown-item {
+  display: block;
+  padding: var(--space-sm);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+}
+.nav-rail-user .dropdown-item:hover { background: var(--color-neutral-off-white); }
+.nav-rail-user .dropdown-item-danger { color: var(--color-accent-danger); }
+.nav-rail-user .dropdown-divider { margin: 2px 0; border: none; border-top: var(--border-card); }

@@ -1,0 +1,87 @@
+<!-- Left dark-rail navigation (#1280) — the CXO-ratified left rail that REPLACES the top global-nav.
+     Content-model (CXO 2026-06-18 ratification): brand top · conversation-list body (Slack-style,
+     present on every page) · "+ New chat" CTA · footer (pinned bottom) = nav links + trust-gated
+     items + user-menu. ⌘K-only (no search button; the keyboard shortcut still opens the palette).
+     NO non-home search affordance (deferred to #1236, avoids a false-promise search box).
+     Dark SURFACE via the 7 --color-nav-* tokens (#1280 — a bounded dark surface, NOT a dark-mode theme).
+
+     Built rail-alongside the existing top nav (components/navigation.html); app_shell.html flips its
+     include to this in the same issue (#1280 Phase 3). IDs + trust-gating attributes are preserved
+     from navigation.html so the nav behavior JS ports cleanly when the flip wires it. -->
+<link rel="stylesheet" href="/static/css/nav-rail.css">
+
+<nav class="nav-rail" role="navigation" aria-label="Main navigation">
+  <!-- Brand (top) -->
+  <a href="/" class="nav-rail-brand">
+    <img src="/assets/pm-logo.png" alt="Piper Morgan" class="nav-rail-logo">
+    <span class="nav-rail-brand-name">Piper Morgan</span>
+  </a>
+
+  <!-- Chats — the conversation list (Slack-style, present on every page; #1280 conv-list-everywhere).
+       Populated client-side by the conversation loader wired in the flip increment. -->
+  <div class="nav-rail-chats-section">
+    <h3 class="nav-rail-section-label">Chats</h3>
+    <div class="nav-rail-chats" id="nav-rail-chats" aria-label="Recent conversations" aria-live="polite">
+      <p class="nav-rail-chats-empty" id="nav-rail-chats-empty">No conversations yet.</p>
+    </div>
+  </div>
+
+  <!-- + New chat -->
+  <a href="/?new=1" class="nav-rail-new-chat" id="nav-rail-new-chat">+ New chat</a>
+
+  <!-- Footer: nav links + user-menu, pinned to the bottom (margin-top:auto) -->
+  <div class="nav-rail-footer">
+    <ul class="nav-rail-links" id="nav-menu">
+      <!-- Trust-gated: Stage 3+ -->
+      <li class="nav-item-trust-gated" data-min-trust-stage="3"><a href="/standup" class="nav-rail-link" id="nav-standup" data-nav-path="/standup">Check in</a></li>
+      <!-- "Your stuff" = the user's OWN content; NOT trust-gated (a trust gate governs Piper's
+           autonomy, never a user's access to their own data). Opens upward in the footer. -->
+      <li class="nav-rail-group nav-dropdown">
+        <button class="nav-rail-link nav-dropdown-button" id="stuff-dropdown-button" aria-haspopup="true" aria-expanded="false" aria-controls="stuff-dropdown-menu">
+          Your stuff
+          <svg class="nav-dropdown-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" id="stuff-dropdown-menu" role="menu" hidden>
+          <a href="/todos" class="nav-dropdown-item" id="nav-todos" data-nav-path="/todos" role="menuitem">To-dos</a>
+          <a href="/projects" class="nav-dropdown-item" id="nav-projects" data-nav-path="/projects" role="menuitem">Projects</a>
+          <a href="/work-items" class="nav-dropdown-item" id="nav-work-items" data-nav-path="/work-items" role="menuitem">Work Items</a>
+          <a href="/files" class="nav-dropdown-item" id="nav-files" data-nav-path="/files" role="menuitem">Files</a>
+          <a href="/documents" class="nav-dropdown-item" id="nav-documents" data-nav-path="/documents" role="menuitem">Documents</a>
+          <a href="/lists" class="nav-dropdown-item" id="nav-lists" data-nav-path="/lists" role="menuitem">Lists</a>
+        </div>
+      </li>
+      <li class="nav-item-trust-gated" data-min-trust-stage="3"><a href="/learning" class="nav-rail-link" id="nav-learning" data-nav-path="/learning">Learning</a></li>
+      <li class="nav-item-trust-gated" data-min-trust-stage="1"><a href="/insights" class="nav-rail-link" id="nav-insights" data-nav-path="/insights">Insights</a></li>
+      <!-- Radar trigger (opens the Layer-2 panel; #1262 relabel History→Radar; id kept for JS wiring) -->
+      <li class="nav-item-trust-gated" data-min-trust-stage="1">
+        <button class="nav-rail-link nav-history-trigger" id="nav-history-trigger" aria-label="View Radar">Radar</button>
+      </li>
+    </ul>
+
+    <!-- User menu (bottom-most; dropdown opens upward) -->
+    <div class="nav-user nav-rail-user">
+      <button class="user-button" aria-haspopup="true" aria-expanded="false" aria-controls="user-dropdown" id="user-menu-button">
+        <span class="user-avatar" id="user-avatar" aria-hidden="true">U</span>
+        <span class="user-name" id="user-name">User</span>
+        <svg class="user-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+      </button>
+      <div class="user-dropdown" hidden id="user-dropdown" role="menu" aria-label="User menu">
+        <a href="/settings" class="dropdown-item" id="dropdown-settings" role="menuitem">Settings</a>
+        <a href="/account" class="dropdown-item" id="dropdown-account" role="menuitem">Account</a>
+        <hr class="dropdown-divider" role="separator">
+        <a href="#" class="dropdown-item dropdown-item-danger" id="dropdown-logout" onclick="handleLogout(event)" role="menuitem">Logout</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- nav-rail behavior — trust-gating, the "Your stuff" + user-menu dropdowns, the Radar trigger,
+     active-link highlighting, the conversation-list loader, ⌘K (keydown lifted out of the removed
+     search-button guard), and logout — is wired in the flip increment (#1280 Phase 3), porting the
+     existing components/navigation.html script adapted to this markup. Rail-alongside (this file is
+     not yet included by app_shell.html), so no behavior runs until the flip. -->
+
+{% if not hide_floating_widget %}
+{% include 'components/chat-widget.html' %}
+{% endif %}
+{% include 'components/command_palette.html' %}
