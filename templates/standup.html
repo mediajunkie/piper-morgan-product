@@ -160,20 +160,28 @@
         // "Watch" (not "Blockers") per CXO confidence-calibration; item.meta carries
         // the staleness note ("hasn't moved in N days").
         const summary = data.summary || {};
-        const renderItems = (items) => (items || []).map((item) => {
-          if (typeof item !== 'object' || item === null) {
-            return `<li>${item}</li>`;
+        const STANDUP_ITEM_CAP = 4;  // #1269: cap the page like the chat standup (top-N + "N more"), not a full dump
+        const renderItems = (items) => {
+          const all = items || [];
+          let out = all.slice(0, STANDUP_ITEM_CAP).map((item) => {
+            if (typeof item !== 'object' || item === null) {
+              return `<li>${item}</li>`;
+            }
+            const iconPart = item.icon ? item.icon + ' ' : '';
+            // #704: lifecycle-slot placeholder, replaced post-render with
+            // LifecycleIndicator.create() when lifecycle_state is present.
+            // Items without lifecycle_state emit no slot — graceful degradation.
+            const lifecycleSlot = item.lifecycle_state
+              ? `<span class="lifecycle-slot" data-stage="${item.lifecycle_state}"></span> `
+              : '';
+            const metaPart = item.meta ? ` <span class="standup-item-meta">— ${item.meta}</span>` : '';
+            return `<li>${iconPart}${lifecycleSlot}${item.display || ''}${metaPart}</li>`;
+          }).join("");
+          if (all.length > STANDUP_ITEM_CAP) {
+            out += `<li class="standup-item-more">…and ${all.length - STANDUP_ITEM_CAP} more</li>`;
           }
-          const iconPart = item.icon ? item.icon + ' ' : '';
-          // #704: lifecycle-slot placeholder, replaced post-render with
-          // LifecycleIndicator.create() when lifecycle_state is present.
-          // Items without lifecycle_state emit no slot — graceful degradation.
-          const lifecycleSlot = item.lifecycle_state
-            ? `<span class="lifecycle-slot" data-stage="${item.lifecycle_state}"></span> `
-            : '';
-          const metaPart = item.meta ? ` <span class="standup-item-meta">— ${item.meta}</span>` : '';
-          return `<li>${iconPart}${lifecycleSlot}${item.display || ''}${metaPart}</li>`;
-        }).join("");
+          return out;
+        };
         results.innerHTML = `
                     <div class="section">
                         <h2>📋 Yesterday</h2>
