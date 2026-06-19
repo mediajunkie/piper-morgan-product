@@ -192,5 +192,15 @@ Standup prose now renders as markdown blocks (not run-on); per-slot enumeration 
 - Mailbox discipline (main-bridge for mail commits; per-memo commit-and-push)
 - `radar-entities-surfacing-mockup-2026-06-14.html` — binding visual reference for #1280 token extraction
 
-## Sign-off checklist
-- (update at session end)
+## Sign-off checklist (verified 2026-06-19 10:23)
+
+```
+git status         → working tree clean
+git log @{u}..HEAD → (empty — no commits ahead of origin)
+git log main..HEAD → (empty — all work on origin/main)
+```
+
+All work from this session is on `origin/main`. Final push was commit `1375207cb`
+(`log(cxo): Fire 4 (DAY-CLOSED)`). No stranded work.
+
+**Session fully closed.**
