@@ -641,7 +641,9 @@
         const nameMatch = fuzzyMatch(cmd.name, query);
         const descMatch = fuzzyMatch(cmd.description, query);
         const bestMatch = nameMatch.score >= descMatch.score ? nameMatch : descMatch;
-        return { ...cmd, match: bestMatch };
+        // keep name + desc matches SEPARATE so each field highlights with its OWN indices
+        // (applying desc indices to the shorter name name → out-of-range → "undefined" chars).
+        return { ...cmd, match: bestMatch, nameMatch, descMatch };
       })
       .filter(cmd => cmd.match.match)
       .sort((a, b) => b.match.score - a.match.score);
@@ -657,6 +659,7 @@
     let lastIdx = 0;
 
     indices.forEach(idx => {
+      if (idx == null || idx < 0 || idx >= text.length) return;  // guard: out-of-range idx → no "undefined" char
       result += text.slice(lastIdx, idx);
       result += `<span class="match">${text[idx]}</span>`;
       lastIdx = idx + 1;
@@ -712,7 +715,7 @@
       cmds.forEach((cmd, idx) => {
         const globalIdx = filteredCommands.indexOf(cmd);
         const isSelected = globalIdx === selectedIndex;
-        const nameHtml = cmd.match ? highlightMatches(cmd.name, cmd.match.indices) : cmd.name;
+        const nameHtml = cmd.nameMatch && cmd.nameMatch.match ? highlightMatches(cmd.name, cmd.nameMatch.indices) : cmd.name;
 
         html += `
           <div class="command-item ${isSelected ? 'selected' : ''}"
@@ -723,7 +726,7 @@
             ${renderIcon(cmd.icon)}
             <div class="command-item-content">
               <div class="command-item-name">${nameHtml}</div>
-              <div class="command-item-description">${cmd.description}</div>
+              <div class="command-item-description">${cmd.descMatch && cmd.descMatch.match ? highlightMatches(cmd.description, cmd.descMatch.indices) : cmd.description}</div>
             </div>
             ${cmd.shortcut ? `<span class="command-item-shortcut" aria-hidden="true">${cmd.shortcut}</span>` : ''}
           </div>
