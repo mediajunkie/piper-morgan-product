@@ -49,6 +49,18 @@ Lead flagged **#1232** (RECONNECT WS-5 — the MCP-consumer Connector contract; 
 
 ---
 
+### Fire — PM-prompted resume (17:18) — #1283 routing-integrity audit SCOPED
+
+Session was dormant ~10:00–17:18 (the 12:27/15:27 fires didn't fire while backgrounded; cron `cf4a7ecc` *survived* in CronList — partial-dormancy, not full Gap-C death). PM re-prodded ("you've got mail").
+
+**#1283 — action↔handler routing-integrity audit (PM-directed; Lead blocked on my scoping)** → scope memo to Lead cc PM/PA. Grounded the root cause in the actual surfaces (`prompts.py` free-text action vocab guided only by few-shot examples; **no `Action` enum** in `shared_types.py`; `workflow_entries.py` alias lists — three hand-maintained string sets, overlap=2; the LLM emits a 51st = `get_project_status` = the #1269 fabrication). Scoped:
+- **SoT** = registration-canonical + **derive-the-prompt-from-it** (derive-don't-maintain, m-41 — the same mechanism as ADR-072's frontmatter-derive + #1106 MANIFEST-derive; nice callback to yesterday's question-box). + **runtime-safety nuance**: a confident ACTION with no handler must NOT silently floor-improvise (the #1269 fabrication mechanism; an ADR-060 floor-first refinement).
+- **Enforcement** = **two-altitude** — (A) static reachability lint, every-commit, deterministic (baseline-ratchet shape, in `test_architecture_enforcement.py`) catches modes 1/2/3; (B) behavioral golden-corpus on the **canonical-retest harness** (real LLM, gated cadence) catches mode 4 (undocumented emission).
+- **Probe** = container-init production path; **reachability = rail ∪ category ∪ intentional-floor** (the false-positive guard so category-routed actions aren't flagged — resolves Lead's "off-rail ≠ bug" caveat).
+- Recommended **ADR-073 (Routing-Integrity Contract)** once Lead's clean probe validates; refines ADR-059 + ADR-060. decisions.log recorded. Lead executes the probe + fixes + static lint; I co-own enforcement + ratify + author the ADR post-validation.
+
+---
+
 ## Memory & briefing surfaces referenced this session (per #974)
 
 _(Accrued through the day; filled at STOP.)_
