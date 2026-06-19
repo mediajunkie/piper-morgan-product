@@ -127,6 +127,25 @@ No unblocked CXO work. Heartbeat only.
 - Delivered: `memo-cxo-to-lead-cc-pm-pa-1280-content-model-ratified-2026-06-18.md`
 - Commit: `4667bfad7` → pushed to origin/main
 
+
+## Fire 3 (19:06 — 18:47 cron)
+
+Inbox: empty. Reviewed Lead's activity since Fire 2:
+
+### Lead shipped since last fire
+- **#1236 entity-search**: Built — `radarEntityMatches()` filters across title/meta/entity_type/lifecycle_state. Placeholder restored to "Search everything — issues, docs, people, chats…" (honest now). 83 render tests green (6 entity-search assertions). Runtime in-browser UAT awaits PM session.
+- **#1269 plumbing**: `StandupSummary`, `StandupAssembler` (P1a/P1b), `to_prose()` (P3, slot rename blockers→watch per my memo), calendar pull (P2), live-wiring factory, `GET /api/v1/standup/today` endpoint — all built + tested. P4 morning-card + /standup page rewire are the remaining surfaces.
+
+### CXO UAT — #1236 entity-search (code-review pass)
+- Ran 83 render tests locally: all green. Entity-search logic verified correct.
+- Couldn't log in for browser UAT (credentials unavailable). Posted code-review findings to https://github.com/mediajunkie/piper-morgan-product/issues/1236#issuecomment-4747813472
+- Issue stays OPEN: runtime browser UAT needed from PM.
+
+### No unblocked CXO design work
+- #1269 morning-card/page-rewire: design spec'd (my memo); Lead building.
+- #1280 shell restructure: Lead building from ratified content-model.
+- #1251, #1237: waiting.
+
 ## Carry-forward for next fire
 
 - **#1280** spec on origin/main; Lead builds. CXO monitors.
