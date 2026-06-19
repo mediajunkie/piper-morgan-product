@@ -20,8 +20,20 @@
 - **17:12 — late-15:32 fire (heartbeat).** Suspension 13:35→17:12 (~3.6h, sub-threshold). Inbox 0; held threads still on HOST (pilot-portfolio reviews). Quiet-hold + heartbeat. Next 18:32 → then 21:32 STOP/day-close.
 
 ## Memory & briefing surfaces referenced this session
-- (filled at STOP)
+- **Referenced**: `cohort-attention-rollup` skill (the full dashboard rebuild + repoint post-FOLD + blockers-at-top render); `duty-cycle-tick` skill (followed from internalized knowledge across the late-fires); memory pins — `attention_board_sweep_not_vantage` (the verify that caught Ship-#047-published + arch-resumed), `careful_git_sync_on_shared_main` (the broadcast delivery; hit the index.lock + moved-source traps, recovered), `memo_when_blocked_or_need_lead_guidance` (the Comms blocker-mechanism instruction). XPOLL current.md (Arch letter, HOST welfare-criteria).
+- **Loaded but not referenced**: most MEMORY.md entries; the plugin churn (Amplitude/AWS/chrome-devtools connect/disconnect — client tooling).
+- **Wanted but not found**: none blocking.
+
+## STOP / Day-close (2026-06-18) — RETROACTIVE (closed 6/19 AM per Step-0 self-heal; the 21:32 STOP was missed to overnight dormancy)
+
+**Day-arc — a heavy, productive Thursday.** Morning (PM-engaged, ~07:08–08:00): retroactive-closed 6/17; full dashboard rebuild (verify caught Ship #047 *published* + arch *resumed*); **FOLD adaptation** (repointed the rollup source off the deprecated escalations docs → carry-forwards + GitHub + cc'd blocker-mail); **deprecation cohort-broadcast** (8 inboxes; recreated ppm/inbox); **Lead naming-Q answered** (keep LEAD-DEV; pilot wave complete — both pilots filed); triaged 4 memos → read. Then PM went to OpenLaws; the rest of the day was intermittent suspend/resume blips (late fires at 11:36 / 13:35 / 17:12 / 19:11 / 19:40, each a quiet-hold + heartbeat), then dormant ~19:40 onward → **the 21:32 STOP was missed**.
+
+**The watcher proved itself again** — flagged STALE exec at 07:25 Fri (14h, past first_fire 06:32, no 6/19 log) — exactly the missed-START case the 6/17 first_fire fix added. It also caught arch (Thu PM) + cio (Thu eve) + ppm (Fri AM): a cohort-wide Thu-eve→Fri-AM dormancy the watcher surfaced correctly. PM got pinged; the cure is doing its job.
+
+**Sign-off**: clean at last commit (`eebba8759`, 17:12 Thu); all work on origin/main. Nothing lost (the morning's substantive work all committed; the evening was quiet-holds).
+
+<!-- DAY-CLOSED: 2026-06-18 -->
 
 ---
 
-*— Exec (DinP / Opus 4.8), 6/18 START ~07:08 PT.*
+*— Exec (DinP / Opus 4.8), 6/18 START ~07:08 PT, day-closed retroactively 6/19 ~07:40 PT.*
