@@ -49,6 +49,8 @@ Mechanics live in the skill (Step 1 gather, Step 2 live-state verify, "no silent
 
 Verify *every* candidate before it reaches the board: a "needs your call on #X" whose issue is closed is resolved; a stale source doc is flagged as stale, not presented as current; an unverifiable item is marked "unverified," never silently dropped or silently promoted.
 
+**Invoke the skill; don't run the rollup from memory.** This surface has a demonstrated drift failure — the 2026-06-16 "from-vantage, not a real sweep" lapse was precisely a run-from-memory that skipped the skill's Step 1 + Step 2. The skill is the anti-drift enforcement: invoking it (`/cohort-attention-rollup`, or the Skill tool) makes the canonical procedure win over half-remembered habit. This is a **per-surface** judgment, not a universal rule — contrast `duty-cycle-tick`, where high-frequency daily repetition makes an internalized run efficient and reliable. The rule: **high-frequency / low-stakes → internalizing is fine; low-frequency / high-stakes / drift-prone (this rollup) → invoke the skill.** When in doubt on a high-stakes surface, load the skill. *(Honesty note: the 2026-06-19 rollup that prompted this section was itself run from memory — faithfully, but un-enforced. That's the gap this rule closes.)*
+
 ## 5. Structure: blockers-first
 
 Per PM directive 2026-06-17: **"Blockers should be at the top of my attention list."** The board renders in this order:
