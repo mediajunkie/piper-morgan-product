@@ -75,11 +75,11 @@
   </div>
 </nav>
 
-<!-- nav-rail behavior — trust-gating, the "Your stuff" + user-menu dropdowns, the Radar trigger,
-     active-link highlighting, the conversation-list loader, ⌘K (keydown lifted out of the removed
-     search-button guard), and logout — is wired in the flip increment (#1280 Phase 3), porting the
-     existing components/navigation.html script adapted to this markup. Rail-alongside (this file is
-     not yet included by app_shell.html), so no behavior runs until the flip. -->
+<!-- nav-rail behavior (trust-gating, the "Your stuff" + user-menu dropdowns, the Radar trigger,
+     active-link highlighting, the conversation-list loader, ⌘K, logout) — shared with the legacy top
+     nav via nav.js, adapted for the rail (⌘K lifted out of the search-button guard; the conv-list
+     loader targets #nav-rail-chats). -->
+<script src="/static/js/nav.js"></script>
 
 {% if not hide_floating_widget %}
 {% include 'components/chat-widget.html' %}

@@ -12,41 +12,46 @@ body {
   color: var(--color-neutral-darkest-gray);
 }
 
-/* Content region: main + optional aside, centered with a max width. */
+/* #1280 — the shell is a left-rail grid: [rail 180px][main 1fr][optional Radar aside 320px].
+   The dark rail (components/nav_rail.html + nav-rail.css) is the first column and REPLACES the
+   former top nav. Full-width (was max-width:1200px centered) so the rail is flush-left and content
+   fills. Full-height: body is a flex-column (min-height:100vh) and this grid fills it via flex:1 +
+   the 1fr row; main / aside scroll internally. */
 .app-shell-body {
-  flex: 1 0 auto; /* fill the viewport height (full-height app shell) */
+  flex: 1;
+  min-height: 0;
   width: 100%;
   box-sizing: border-box;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  gap: var(--space-lg);
-  padding: var(--space-lg);
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  grid-template-rows: 1fr;
+}
+.app-shell-body--with-aside {
+  grid-template-columns: 180px 1fr 320px;
 }
 
 .app-shell-main {
-  flex: 1 1 auto;
-  min-width: 0; /* let content shrink rather than overflow the flex row */
+  min-width: 0; /* let content shrink rather than overflow the grid cell */
+  padding: var(--space-lg);
+  overflow-y: auto;
 }
 
 /* Optional Radar / Layer-2 aside — the #1236 component fills it where enabled. */
 .app-shell-aside {
-  flex: 0 0 320px;
   border-left: var(--border-card);
-  padding-left: var(--space-lg);
+  padding: var(--space-md);
+  overflow-y: auto;
 }
 
+/* Narrow viewports: stack to one column (full left-rail polish is post-beta, #1280 gameplan). */
 @media (max-width: 768px) {
-  .app-shell-body {
-    flex-direction: column;
-    padding: var(--space-md);
+  .app-shell-body,
+  .app-shell-body--with-aside {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
   }
   .app-shell-aside {
-    flex-basis: auto;
     border-left: none;
     border-top: var(--border-card);
-    padding-left: 0;
-    padding-top: var(--space-md);
   }
 }
