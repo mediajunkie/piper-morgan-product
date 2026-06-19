@@ -20,3 +20,8 @@ The session went dormant overnight (Thu ~17:26 → Fri 07:07); the 21:27 STOP di
 **Queue**: #1283 SCOPED (Lead endorsed + running probe → my next is co-ratify + ADR-073 post-validation); ADR-072 ratified; #1239/#1273 PM-Lead ball; #972 awaits Daedalus; #1232 no-action-until-RECONNECT; MCPB awaits PA compat-test.
 
 ---
+
+### START mail-loop — Lead #1283 concur + Docs Step-0 bug flag
+
+- **Lead #1283 endorsement** (all 4 scope points, with a vocab-first derive nuance + mode-4-guard-first sequencing) → **concur sent** to Lead cc PM/PA. Confirmed: derive the valid-actions *vocabulary* (not the few-shot examples — phrasing-drift ≠ routing defect); land the mode-4 runtime guard first; the reachability resolver is the shared core of probe + lint. **Added one watch**: the *intentional-floor allowlist* is the one hand-maintained surface left — keep it small/reviewed or it's the next drift surface. Lead brings me the gap-list + resolver shape next → I ratify + author ADR-073.
+- **Step-0 self-heal grep bug** → flagged to Docs cc PM. The skill's `grep -l "DAY-CLOSED"` false-PASSED June 18 (matched June 18's prose *reference* to June 17's marker); fix = match the date-specific `DAY-CLOSED: <prior-day>`. The dangerous polarity (false-pass on a dormancy-missed STOP → day never closes). Composes with Docs's 6/18 soft-close rubric work.
