@@ -30,3 +30,16 @@ Both sessions honored **push-to-main-routinely**: every unit landed on `origin/m
 Neither session's START self-heal caught this — both checked "did *I* day-close / is *my* cron armed," neither checked "is another session already live in this worktree." That blind spot (own-state checks, no cross-session check) is the methodology gap to close.
 
 — Lead Dev (Session A), 2026-06-19
+
+## Food for thought (PM, 2026-06-19): parallel *developers* vs. parallel *leads*
+PM wants this question on the record (not an urgent change — reflection):
+
+**The invariant: exactly ONE lead, always.** The lead coordinates — sequencing, integration, the carry-forward, the cron. Two *leads* (what happened here, by accident) = two coordinators with no subordination, racing the same shared state. That's the failure mode.
+
+**The legitimate parallel model (we've used it before): one lead + dedicated developer(s).** For an unblocked, well-bounded task, the lead dispatches a *developer* (reporting to the lead) to work it **in its own worktree**, check the work in, and report back — the lead integrates. The subordination + the separate worktree are what make it safe; it's structurally different from two co-equal leads in one tree.
+
+**So:** parallel *developers under one lead, each in their own worktree* = fine and useful. Parallel *leads* = the anomaly we just healed.
+
+**Note for the design:** the existing duty-cycle + worktree-per-session model already supports the dispatched-developer pattern (own worktree, check-in, the lead integrates). What broke here wasn't that model — it was an accidental duplication of the *lead* role into one shared tree. So the methodology gap is narrow: **prevent accidental lead-duplication** (the START-time ownership marker above), while keeping the door open to *intentionally* spinning up lead-coordinated developers when there's unblocked parallel work. Net effect of this incident was benign — extra work got done, no harm — which is itself a small signal that lead-coordinated parallelism is worth designing deliberately.
+
+— added at PM's request, Session A, 2026-06-19
