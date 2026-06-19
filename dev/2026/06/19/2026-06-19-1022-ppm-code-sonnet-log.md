@@ -49,3 +49,20 @@ Cron re-armed (`d17a2c96` → `810e8e96` deleted earlier; new `d17a2c96` active)
 
 Committed + pushed to origin/main.
 
+### Fire 3 — 15:52 PDT (windowed cron)
+
+Cron re-armed (`8e8dcd88` active). Pull-before-triage (Option 3).
+
+**Inbox**: 1 item — `kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md` — main-cohort role-portfolio wave kickoff from Exec.
+
+**Role portfolio (#PORTFOLIO-PPM)**:
+- Verify-first: read framework (5 rules + surface architecture), ROLE-PORTFOLIO-CIO.md (pilot), ROLE-PORTFOLIO-LEAD-DEV.md (pilot). Absorbed HOST gold-standard notes.
+- Self-authored ROLE-PORTFOLIO-PPM.md at `docs/briefing/ROLE-PORTFOLIO-PPM.md`:
+  - §1 Purpose: synthesis (roundtable convergence) + shape-level gate ("the right thing was built")
+  - §2 Priorities: 6-row table (entity-model lane, roadmap fold, #683, #1269, Ship #048, this portfolio) — each with direction + status + how-we'll-know-it's-moving
+  - §3 Standing: 7 responsibilities (spec pipeline, PDR stewardship, entity-model maintenance, quality-threshold judgment, roadmap maintenance, roundtable synthesis, Ship editorial input)
+  - §4 Seams: 6 seams with freely/sign-off/unilateral tiers; irreducible mandate = "PPM names structural product-model problems before they close" (narrow: fires on structural model problems, not directional disagreement; 3 concrete past instances cited)
+  - §5 Currency: section 2 updated at each weekly workstream review (mechanism, not vigilance — Rule 5)
+- Routed to Exec (cc HOST + PM): `mailboxes/exec/inbox/memo-ppm-to-exec-cc-host-pm-role-portfolio-v01-ready-2026-06-19.md`
+- Kickoff moved to ppm/read/; MANIFESTs updated (exec/inbox, host/inbox, ppm/read)
+

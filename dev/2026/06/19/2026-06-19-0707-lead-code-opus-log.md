@@ -61,3 +61,18 @@ Cron `982b60a2` healthy (sole); sync clean; inbox empty (no CIO #1259-done ping 
 - Server 3725→**36720** (the #1269 deploy; main.py startup ~60-90s — use `curl --retry 90`, not 45).
 - **Remaining PM-slate:** #1250 (learning-toggle re-UAT, in progress; fix live `be10ac7f9`) + #1252 (auth-anchoring close-go).
 - 883 tests green throughout; token-lint clean.
+
+## Fire (continued) — PM-slate close-out + D1-closure pivot
+PM finished the walk-through (last two issues) then redirected to D1 closure.
+- **#1250 CLOSED** (PM re-UAT "learning toggle test passed! ... This is fixed."): learning-toggle persists. PM floated a D2 menu-refactor idea (work / learning / insights / settings top-level + a settings submenu) → captured on **#1290** (D2 nav-IA, CXO).
+- **#1252 CLOSED** ("Your recommendation approved!"): auth-anchoring ((a,3)/(c,3) read-scoping + real-principal) — the multi-tenancy spine for D1.
+- **#1283 trace SHELVED for RECONNECT** (`00c0a09be`): appended a wiring trace to the resolver-shape design (floor entry `_handle_floor_with_context` @intent_service.py:11074; KEY GAP — `get_last_provenance` has per-key but no per-capability map → need a `CAPABILITY_REQUIRES_CONTEXT` map; resolver inputs traced importable/extractable). Resumes after D1; loop Arch on the capability map.
+
+**D1-closure** (PM: "stay on D1 till it's closed — gate check + rerun the canonical query test suite"):
+- **Canonical retest RERUN** — `tests/e2e/test_canonical_conversations.py` (in-process ASGI; env-stripped + `CANONICAL_JUDGE_ENABLED=true`): **221 passed, 1 quality-marginal**, 13 min. **Routing 100% PASS** (no D1 regression). The 1 marginal = Q4 "How do I get help?" (Identity/floor, 6/9, Context=1 — deflects) — **not D1-touched** (git: floor-response changes are #1122/#1196/#1187/#1155/#1030, all pre-D1). Filed **#1293** (floor-quality, RECONNECT). Satisfies the gate's retest bar (no-D1-regression; the matrix runs known/non-D1 marginals — bar is not 100%).
+- **D1-closure remaining (PM-gated):** (a) disposition the 3 open D1 issues — **#1090** UI-1.0-PLAN, **#1164** history-privacy-stub, **#1270** Documents IA — proposed move OUT of D1; (b) 3-gate sign-off (I fill evidence — Gate-2 anti-flattening = the retest scores; Gate-3 multi-tenancy = #1252/#1250; Gate-1 persistence = the D1 test coverage); (c) formal-gate-issue vs inline (PM's choice).
+
+**Slack standup re-UAT (PM, mobile) — verified honest.** PM tested the standup over Slack. Confirmed it's the honest #1269 path (Slack → `socket_mode_runner.py:116` `process_intent` → honest assembler → `to_prose`), and "looks like you were in planning mode" is a *designed* hardcoded empty-Yesterday message (`models.py:2151`), NOT the LLM improvising. Reported the one copy-nuance (it presumes "planning" for any no-completions; the real beta reason is the open-only WI source — `assembler.py:24-26`) on **#1288** as a CXO/D2 copy-refinement (PM: report nuances even if non-blocking).
+- **PA memo sent** (PM ask) via the migrated **`mail-send.sh`** (first use of the push-to-ref bridge — `pushed d43790790 → origin/main ✓`, verified by content): heads-up that the MCP standup-skill (`standup_workflow_skill.py`) still calls the hollow `MorningStandupWorkflow` → migrate to the honest engine per **#1289**, sooner-rather-than-later.
+
+Cron `50daabfb` armed (survived compaction; CronList-verified). Server 36720. Next: PM's D1-closure answers (3 dispositions + gate format) → fill gates → close D1.

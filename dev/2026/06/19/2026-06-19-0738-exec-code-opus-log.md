@@ -30,6 +30,8 @@
 
 - **16:02 — late-15:32 fire (portfolio wave producing).** **Comms filed `ROLE-PORTFOLIO-COMMS.md`** (1/7, self-authored in one fire — same day as the kickoff; two clean irreducible mandates: template-YAML gate + narrative-front hold) + memo'd me cc HOST/PM. Tracked (wave 1/7; remaining Arch/CXO/PPM/Docs/PA/Web), memo → read/. **push-to-ref CONFIRMED clean** — the bridge push went through first-try, no NON-FF cure needed (the #1259 swap works; the all-day dance is over). `deliver-mail` skill retired (CIO push-to-ref cleanup). No PM action (wave progress). Then **drained the unblocked held item: wrote `ROLE-PORTFOLIO-EXEC.md` v0.1** (fire-as-wake — don't defer for "no rush"; the coordinator shouldn't lag the wave it launched). Self-authored against the framework (purpose=one-coordinated-interface-not-11; priorities steerable; seams = almost-all-seam-role; **2 irreducible mandates: board-tells-the-truth + no-silent-stranding**, both with named instances). Filed → HOST cc PM (`e521d2478` + memo `50b936744`, mail-send v3 clean). **Wave now 2/8** (Comms + Exec). Cron `8f2194b1` armed.
 
+- **~16:25 — PM cleared the last two.** PM: "#1252 is closed" (verified CLOSED-COMPLETED 14:21) + "holding off on Comms as we're one blog post ahead" (Beat-8 voice-pass = deliberate defer, not a gap — Time-Lord cadence). **Board → all-clear** (0 needs-you / 0 voice-pass / 0 blockers; in-flight = portfolio wave 2/8 + #1283/#1287/sprint-kickoffs/Docs-stale-flag). Verified #1252 before rendering resolved (board-tells-truth mandate, even on PM's word). Inbox empty.
+
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
 
