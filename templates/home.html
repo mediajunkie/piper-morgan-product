@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/static/css/session-timeout.css" />
     <link rel="stylesheet" href="/static/css/page-transitions.css" />
     <link rel="stylesheet" href="/static/css/hover-focus-states.css" />
-    <link rel="stylesheet" href="/static/css/home-modules.css" />
     <style>
       body {
         font-family: var(--font-family);
@@ -1007,90 +1006,11 @@
           </div>
           {% endif %}
 
-          <!-- Issue #684: Places section (trust-gated - Stage 3+) -->
-          {% if trust_stage|default(1) >= 3 %}
-          <section class="card places-section is-collapsed" id="places-section" data-trust-stage="{{ trust_stage|default(1) }}" data-ambient-module data-module-id="places" data-module-async="true" role="region" aria-labelledby="places-heading">
-            <div class="card__header">
-              <h3 class="card__title" id="places-heading">what i'm seeing</h3>
-              <div class="card__header-controls" role="group" aria-label="what i'm seeing controls">
-                <button type="button" class="module-control module-collapse" data-module-action="collapse" aria-expanded="false" aria-controls="places-container" aria-label="Collapse what i'm seeing" title="Collapse"><span class="module-control-icon" aria-hidden="true">&#9662;</span></button>
-                <button type="button" class="module-control module-dismiss" data-module-action="dismiss" aria-label="Dismiss what i'm seeing for now" title="Not now"><span class="module-control-icon" aria-hidden="true">&#10005;</span></button>
-              </div>
-            </div>
-            <div class="places-container card__body" id="places-container" aria-live="polite">
-              <!-- Place windows rendered here by JavaScript -->
-              <p class="places-loading" id="places-loading" role="status">Looking around...</p>
-            </div>
-          </section>
-          <style>
-            .places-section {
-              margin: var(--space-lg) 0;
-              padding: var(--space-md);
-              background: rgba(255, 255, 255, 0.7);
-              border-radius: var(--border-radius-lg);
-            }
-            .places-header {
-              font-size: var(--font-size-sm);
-              font-weight: var(--font-weight-medium);
-              color: var(--color-text-secondary);
-              margin: 0 0 var(--space-sm) 0;
-              text-transform: lowercase;
-            }
-            .places-container {
-              display: flex;
-              flex-direction: column;
-              gap: var(--space-sm);
-            }
-            .places-loading {
-              font-size: var(--font-size-sm);
-              color: var(--color-text-light);
-              font-style: italic;
-            }
-            .places-empty {
-              font-size: var(--font-size-sm);
-              color: var(--color-text-light);
-            }
-          </style>
-          {% include 'components/place_window.html' %}
-          {% endif %}
-
-          <!-- Issue #1194 / #1033: "Recently" — composted reflections (Stage 3+) -->
-          {% if trust_stage|default(1) >= 3 %}
-          <section class="card is-collapsed" id="recently-section" data-ambient-module data-module-id="recently" role="region" aria-labelledby="recently-heading">
-            <div class="card__header">
-              <h3 class="card__title" id="recently-heading">recently</h3>
-              <div class="card__header-controls" role="group" aria-label="recently controls">
-                <button type="button" class="module-control module-collapse" data-module-action="collapse" aria-expanded="true" aria-controls="recently-cards" aria-label="Collapse recently" title="Collapse"><span class="module-control-icon" aria-hidden="true">&#9662;</span></button>
-                <button type="button" class="module-control module-dismiss" data-module-action="dismiss" aria-label="Dismiss recently for now" title="Not now"><span class="module-control-icon" aria-hidden="true">&#10005;</span></button>
-              </div>
-            </div>
-            <div class="card__body" id="recently-cards" aria-live="polite">
-              {% if surfaced_insights %}
-                {% for insight in surfaced_insights %}
-                <div class="reflection-card" data-insight-id="{{ insight.id }}">{{ insight.text }}</div>
-                {% endfor %}
-              {% else %}
-                <div class="card__empty">
-                  <p class="card__empty-title">Reflections</p>
-                  <p class="card__empty-explainer">Your reflections appear here as Piper composts what you've worked on &mdash; check back after a few sessions.</p>
-                </div>
-              {% endif %}
-            </div>
-          </section>
-          <style>
-            /* #1194: reflection items inside the Card body (B1 tokens; the seed
-               tokens were superseded by the CXO design language — cards.css) */
-            .reflection-card {
-              background: var(--surface-card);
-              border: var(--border-card);
-              border-radius: var(--border-radius-md);
-              padding: var(--space-sm);
-              font-size: var(--font-size-sm);
-              color: var(--color-text-primary);
-              line-height: 1.45;
-            }
-          </style>
-          {% endif %}
+          <!-- #1236 (CXO 2026-06-19): the home "what i'm seeing" (Places) and
+               "recently" (insights) ambient modules were retired for a clean chat
+               center. Places now render as Radar work_item entities (PlaceEntitySource,
+               services/radar); insights are out of the Radar entirely — accessible via
+               /insights, chat, and the standup surface. -->
 
           <!-- Inline chat (always visible on home page) -->
           {% include 'components/chat-inline.html' %}
@@ -1103,7 +1023,6 @@
 {% block scripts %}
     <script src="/assets/bot-message-renderer.js"></script>
     <script src="/static/js/preferences.js"></script>
-    <script src="/static/js/home-modules.js"></script>
     <script>
       const API_BASE_URL = "";
       const chatWindow = document.getElementById("chat-window");
@@ -1833,64 +1752,6 @@
       document.addEventListener('DOMContentLoaded', initSidebar);
     </script>
 
-    <!-- Issue #684: Places loading (trust-gated) -->
-    <script>
-      (function() {
-        'use strict';
-
-        // Only load Places at Stage 3+
-        if (window.trustStage < 3) return;
-
-        // Check if place_window component is loaded
-        if (!window.placeWindowLoaded) {
-          console.warn('#684: place_window component not loaded');
-          return;
-        }
-
-        /**
-         * Load and render Places for the home page.
-         * #1192(d)/#1195: wired to /api/v1/places (the #684 TODO). Sources that
-         * aren't connected return no Place — the empty state is honest.
-         */
-        async function loadPlaces() {
-          const container = document.getElementById('places-container');
-          const loading = document.getElementById('places-loading');
-
-          if (!container) return;
-
-          try {
-            const response = await fetch('/api/v1/places');
-            if (!response.ok) throw new Error('places fetch failed: ' + response.status);
-            const data = await response.json();
-            const places = data.places || [];
-
-            if (loading) loading.style.display = 'none';
-
-            if (places.length === 0) {
-              container.innerHTML = `
-                <div class="card__empty">
-                  <p class="card__empty-title">Places</p>
-                  <p class="card__empty-explainer">Piper notices the places your attention goes as you work. Connect a source to see them here.</p>
-                  <a class="card__empty-action" href="/settings/integrations">Connect a source</a>
-                </div>`;
-            } else {
-              window.PlaceWindow.render(container, places);
-            }
-
-            // #1225: re-evaluate this module's dismiss state now that its content
-            // is rendered (the signature is content-based; at init it was empty).
-            if (window.HomeModules) window.HomeModules.refreshAsync('places');
-
-          } catch (error) {
-            console.error('#684: Failed to load places:', error);
-            if (loading) loading.textContent = 'Could not load places';
-          }
-        }
-
-        // Load Places when DOM is ready
-        document.addEventListener('DOMContentLoaded', loadPlaces);
-      })();
-    </script>
 
     <!-- Issue #735: History Sidebar initialization -->
     <script>

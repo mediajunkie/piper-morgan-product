@@ -191,3 +191,38 @@ class WorkItemEntitySource:
                 )
             )
         return entities
+
+
+class PlaceEntitySource:
+    """Maps the user's Places (#684 "what I'm seeing" — connected external surfaces like
+    GitHub issue-tracking + Calendar) → WorkItem RadarEntities.
+
+    #1236 home-module consolidation: the home "what i'm seeing" module is retired into the
+    Radar. CXO call (2026-06-19): Places map onto the existing ``work_item`` type (no schema
+    expansion for beta — a Place is an external surface where work happens; close enough) with
+    a fixed ``active`` lifecycle. All Places are OBSERVED — PlaceService only yields real
+    connected sources (unconnected/failing ones drop to None upstream), so no fabrication.
+    """
+
+    def __init__(self, place_provider: Any):
+        # place_provider: object exposing `async list_for_user(user_id) -> list[dict]`
+        # with keys: id, name, summary, source_url, last_fetched (ISO str).
+        self._provider = place_provider
+
+    async def fetch(self, user_id: str) -> list[RadarEntity]:
+        rows = await self._provider.list_for_user(user_id)
+        entities: list[RadarEntity] = []
+        for r in rows or []:
+            attention = _parse_ts(_get(r, "last_fetched"))
+            entities.append(
+                RadarEntity(
+                    entity_type=EntityType.WORK_ITEM,
+                    title=_get(r, "name") or "(unnamed place)",
+                    lifecycle_state="active",  # CXO: Places render with a fixed active/neutral lifecycle
+                    provenance=Provenance.OBSERVED,
+                    meta=_get(r, "summary") or "",
+                    attention=attention,
+                    ref=_get(r, "source_url") or _get(r, "id"),
+                )
+            )
+        return entities

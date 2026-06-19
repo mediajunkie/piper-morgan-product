@@ -5,6 +5,7 @@ from .sources import (
     ConversationEntitySource,
     DocumentEntitySource,
     EntitySource,
+    PlaceEntitySource,
     WorkItemEntitySource,
 )
 
@@ -18,4 +19,5 @@ __all__ = [
     "ConversationEntitySource",
     "DocumentEntitySource",
     "WorkItemEntitySource",
+    "PlaceEntitySource",
 ]
