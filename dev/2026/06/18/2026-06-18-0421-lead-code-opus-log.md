@@ -261,3 +261,8 @@ git branch -r --contains HEAD | grep origin/main: origin/main  (HEAD reachable f
 All session work is on `origin/main`. Server PID 76171 live (env-stripped, `PIPER_GITHUB_HANDLE=mediajunkie`). Cron `240d7d62` armed (`17 22,7,10,13,16,19`) — next fire 07:17. Tomorrow's START: #1280 + #1269-formatting awaiting PM UAT; #1283 (RECONNECT) probe is the next fresh-focus build (PM-endorsed "#1283 next").
 
 <!-- DAY-CLOSED: 2026-06-18 -->
+
+### ~22:25 — #1280 PM UAT round 2: "flaw in approach, no global nav, doesn't resemble the mock" → spec-first
+PM UAT: home is 2-column [rail · chat] — the mock's persistent Radar 3rd column is missing, and I'd crammed the full old nav into the rail footer vs. the mock's minimal rail. PM: *"flaw in the approach. no global nav. does not resemble the mock."* Offered match-now / detailed-spec / (I added revert); PM chose **nail the design spec first**. Right call — the mock is home-only + incomplete (no full-nav placement, no non-home pages) + conflicts with the interim content-model, so guessing again on a 22-page shell would risk a 3rd wrong pass. Used AskUserQuestion (PM explicitly offered the choice).
+- **CXO design-spec REQUESTED** (memo `393d4178a` via bridge, cc PM/PA): the 4 gaps — (1) rail content + where the full nav lives if the rail goes minimal, (2) Radar persistent-vs-slide-out, (3) non-home-page layouts, (4) what "no global nav" means. **Build PAUSED until the spec lands.**
+- **Current #1280 flip stays LIVE-but-flawed** (PM chose keep-live over revert; revert to the top nav is minutes away on PM's word). Reuse-ready: tokens · nav_rail/nav-rail.css/nav.js · the conv-list loader · the render-test harness.
