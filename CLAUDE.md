@@ -556,28 +556,27 @@ Filed as a tooling-debt follow-up: a `scripts/store-keychain-creds.py` helper th
 4. **Branch/worktree registry** — agents record their branch + last-commit + status so other agents can see who's working where. Implementation in canonical doc.
 5. **Designated merge-keeper** — Docs runs a daily merge-keeper sweep (`scripts/merge-keeper-sweep.py`) catching anything stranded within 24 hours. See `docs/briefing/BRIEFING-ESSENTIAL-DOCS.md` "Merge-Keeper Sweep" section.
 
-### The mailbox-on-main workflow (most-frequent case)
+### The mailbox workflow (most-frequent case) — push-to-ref via `mail-send.sh`
+
+**As of 2026-06-19 (#1259), mail goes straight to `origin/main` via push-to-ref — no `cd` to the main checkout, no stash, no branch-switch. Do it from your OWN worktree.**
 
 ```bash
-# 1. Stash or commit your in-progress feature work
-git stash push -m "WIP before mail" -- $(git diff --name-only | grep -v '^mailboxes/')
-# 2. Switch to main and pull
-git checkout main && git pull origin main
-# 3. Do the mail operation (write memo, move to read/, etc.)
-# 4. Commit and push immediately
-git add mailboxes/
-git commit -m "mail({role}): {memo subject summary}"
-git push origin main
-# 5. Switch back and resume
-git checkout {your-feature-branch}
-git stash pop  # if you stashed
+# 1. In YOUR worktree, write the memo + cc copies + sent mirror, and do any inbox→read moves
+#    (all at the mailboxes/ paths — just write/mv the files; do NOT git add/commit them).
+# 2. Send — pass EVERY changed path explicitly (new files AND the inbox-side of a move):
+scripts/mail-send.sh "mail({role}): {subject}" \
+    mailboxes/{recipient}/inbox/{memo}.md \
+    "mailboxes/xian (ceo)/inbox/{memo}.md" \
+    mailboxes/{you}/sent/{memo}.md
 ```
 
-The `check-branch.sh` PreToolUse hook **blocks** any commit that touches `mailboxes/` from a non-main branch.
+`mail-send.sh` builds the commit as a git object on top of `origin/main` (`commit-tree` via a throwaway index) and pushes it straight to `main`. It **never touches the shared main checkout or any local `main` ref** — so concurrent agents can't sweep or strand each other and the bridge can't diverge. On a non-fast-forward (another agent pushed first) it rebuilds on the new tip and retries automatically. After sending, the files sit uncommitted on your worktree branch and reconcile on your next sync — that's expected.
+
+The **old bridge dance** (stash → `checkout main` → `git add mailboxes/` → push → switch back) is **retired** — it was the source of the recurring shared-checkout contention (sweep / strand / divergence / untracked-residue) that #1259 fixes. The `check-branch.sh` PreToolUse hook stays as the **backstop**: it still blocks any *interactive* `git commit` touching `mailboxes/` from a non-main branch (`commit-tree` isn't `git commit`, so `mail-send.sh` doesn't trip it — correct, because it already lands mail on `main`). MANIFESTs remain recipient-owned (regen on your own mail-loop / session-start) — don't pass other roles' MANIFESTs.
 
 ### Per-memo commit-and-push norm
 
-After each individual memo write (or batched memo + CC copies + sent mirror + paired triage moves), run the add+commit+push cycle. ~30s overhead per memo. Eliminates asymmetric-visibility windows. CXO-established 2026-04-26.
+After each individual memo write (or batched memo + CC copies + sent mirror + paired triage moves), run `scripts/mail-send.sh` (one push-to-ref per memo). Eliminates asymmetric-visibility windows. CXO-established 2026-04-26; mechanism is push-to-ref since 2026-06-19 (#1259) — no more manual add+commit+push or branch-switching.
 
 ### Mailbox routing reference
 
