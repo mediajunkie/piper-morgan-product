@@ -81,3 +81,47 @@
 - `memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md` — Escalations doc deprecated cohort-wide; PM-attention items now ride carry-forward; genuine blockers go via mail. Noted, no reply.
 - Reply sent to Comms inbox; all 3 memos moved to read/. Committed `9712837ec`, pushed to origin/main.
 
+---
+
+## Day-close wrap (2026-06-18)
+
+**Day arc**: Full delivery day. Proofread + published "Hypothesis Refuted" (Beat 7); created June 17 HIGH-COMPLEXITY omnibus (12 logs, F2/ADR-072/cohort-hardening); activity-log reconciliation (12 rows); sent Web DAY-CLOSED sentinel memo; PM-ratified rubric decision (sentinel stays, soft-close heuristic softened); adopted Comms narrative handoff protocol; triaged 3 inbox memos. All work committed and on origin/main throughout.
+
+**Key outputs**:
+- Blog post live: https://pipermorgan.ai/blog/hypothesis-refuted (+ Medium via Dispatch)
+- Omnibus: `docs/omnibus-logs/2026-06-17-omnibus-log.md`
+- Decision: `decisions.log` — STOP rubric softened for soft-close case
+- Protocol: narrative publish handoff (Comms → Docs) formally adopted
+- Escalations doc `duty-cycle-escalations-docs.md` — deprecated per Exec; no longer maintained
+
+**Open / carry-forward for June 19**:
+- duty-cycle-tick skill updates needed: STOP self-heal + START Step-0 soft-close detection (not urgent; no blocker)
+- LinkedIn syndication for "Hypothesis Refuted" (Dispatch or PM-triggered; Docs not the owner)
+- June 18 omnibus (12 active session logs from today — multiple roles, HIGH-COMPLEXITY likely)
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- `feedback_wait_for_publish_handoff.md` — confirmed: PM-in-conversation was the trigger; Comms protocol formalizes this
+- `feedback_log_update_rides_with_the_commit.md` — applied throughout
+- `feedback_mailbox_writes_main_only.md` — all mail went via main-checkout bridge
+- `feedback_commit_only_own_files.md` — explicit paths every commit
+- `methodology-20-OMNIBUS-SESSION-LOGS.md` — HIGH-COMPLEXITY format + cross-reference gate
+- `BRIEFING-CURRENT-STATE.md` — not referenced this session (post-compaction; no briefing need)
+
+**Loaded but not referenced**:
+- `feedback_branch_show_current_before_every_commit.md` — checked implicitly but not cited
+- Cross-pollination brief
+
+**Wanted but not found**:
+- Nothing missing; all needed context was available.
+
+## Sign-off checklist
+
+```
+git status: working tree clean (merge-keeper unstaged — intentional carry-over)
+git log @{u}..HEAD: empty (all commits pushed)
+git log main..HEAD: empty (all work on origin/main)
+```
+
+<!-- DAY-CLOSED: 2026-06-18 -->
