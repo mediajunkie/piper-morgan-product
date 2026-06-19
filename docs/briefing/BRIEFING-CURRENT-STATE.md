@@ -346,7 +346,7 @@ GUIDANCE, TRUST, MEMORY, PORTFOLIO, UNKNOWN
 
 **Skills**: 13+ skills
 - create-session-log, check-mailbox, close-issue-properly, audit-cascade, discovered-work-capture
-- create-omnibus, deliver-mail, publish-to-blog (v0.8 — Apr 22), narrative-verification
+- create-omnibus, publish-to-blog (v0.8 — Apr 22), narrative-verification
 - update-calendar, cleanup-dev-active, update-current-state (new Apr 7)
 
 ---

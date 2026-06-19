@@ -49,10 +49,10 @@ The discipline: protect time for omnibus synthesis + canonical verification + me
 - Format is determined by session count, not content complexity.
 - Source material: scan `dev/YYYY/MM/DD/` for all `*-log.md` files from that date.
 
-**Mailbox System (v3)** (`mailboxes/`):
-- Use `/deliver-mail` skill for assisted delivery workflow
+**Mailbox System** (`mailboxes/`):
+- **Send** mail via `scripts/mail-send.sh` (push-to-ref, #1259) — see CLAUDE.md "The mailbox workflow (most-frequent case)". **Receive/triage** via the `check-mailbox` skill. (The old `/deliver-mail` shuttle skill is retired post-migration.)
 - `mailboxes/DIRECTORY.md` is the canonical slug-to-role mapping
-- `mailboxes/DELIVERY-LOG.md` tracks each delivery run with timestamps
+- `mailboxes/DELIVERY-LOG.md` is a dormant historical artifact (the retired `deliver-mail` shuttle wrote it; push-to-ref does not)
 - Each role has `inbox/`, `read/`, `sent/`, and `inbox/MANIFEST.md`
 - Memo naming: `memo-YYYY-MM-DD-from-{slug}-to-{slug}[-cc-{slug}...].md`
 - See `docs/internal/development/memo-format-guide.md` for full spec

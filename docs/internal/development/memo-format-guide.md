@@ -17,7 +17,7 @@ memo-YYYY-MM-DD-from-{sender}-to-{recipient}[-cc-{slug1}[-{slug2}...]].md
 - Use slugs from `mailboxes/DIRECTORY.md` (e.g., `lead`, `arch`, `cxo`, not `lead-dev`, `architect`)
 - Date is the date the memo was written
 - Multiple CC recipients are hyphen-separated after `cc-`
-- The filename encodes routing — the `/deliver-mail` skill parses it for distribution
+- The filename encodes routing for readers and MANIFESTs — you place each memo directly at its recipient's `inbox/` path and send it via `scripts/mail-send.sh` (push-to-ref; see CLAUDE.md "mailbox workflow"). There is no auto-parsing distribution step.
 
 ## Header Format
 
@@ -61,7 +61,7 @@ Every memo must begin with:
 
 ## Legacy Memos
 
-Memos created before this convention may not follow the naming format. They still have in-file To/CC headers and can be routed manually. The `/deliver-mail` skill will flag non-standard filenames for manual review.
+Memos created before this convention may not follow the naming format. They still have in-file To/CC headers and can be routed manually — read the headers, place the file at each recipient's `inbox/` path, and send via `scripts/mail-send.sh`.
 
 ---
 

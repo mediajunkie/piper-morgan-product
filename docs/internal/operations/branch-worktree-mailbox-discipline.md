@@ -64,7 +64,7 @@ CLAUDE.md's existing "Git Worktrees" section describes the mechanism. No code or
 
 **How to apply**:
 - All session writes happen from the worktree's checkout path (`/path/to/repo-{branch-suffix}`), not from the main checkout.
-- If a write needs to land on `main` (e.g., mailbox mail), do the standard Rule 3 dance from the *worktree's* checkout: stash → checkout main → write+commit+push → switch back to your branch.
+- If a write needs to land on `main` (e.g., mailbox mail), do it from the *worktree's* checkout via push-to-ref: `scripts/mail-send.sh` for mailbox writes (#1259 — no stash/checkout dance; see CLAUDE.md "mailbox workflow"), or `git push origin HEAD:main` for a committed non-mailbox path. (The old stash → checkout main → push → switch dance is retired.)
 - At session resume, run `git status` from both the worktree path AND the main checkout path. Any divergence is the P-17 shape; commit from wherever the edit physically lives.
 - The discipline applies only when you've adopted a worktree for the session. Sessions entirely on `main` don't have this surface.
 
