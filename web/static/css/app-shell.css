@@ -43,15 +43,5 @@ body {
   overflow-y: auto;
 }
 
-/* Narrow viewports: stack to one column (full left-rail polish is post-beta, #1280 gameplan). */
-@media (max-width: 768px) {
-  .app-shell-body,
-  .app-shell-body--with-aside {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-  }
-  .app-shell-aside {
-    border-left: none;
-    border-top: var(--border-card);
-  }
-}
+/* Narrow/responsive (< 768px): the stacked layout is POST-BETA per the #1280 v2 spec —
+   intentionally not built for M5. The desktop grid applies at all widths for now. */
