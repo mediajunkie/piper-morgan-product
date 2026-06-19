@@ -47,7 +47,7 @@ A portfolio is healthy to the degree it answers **"what am I here to advance?"**
 ## Worked examples
 
 - `docs/briefing/ROLE-PORTFOLIO-HOST.md` — HOST's pilot portfolio; the first worked example. Section comments flag which rule each part satisfies.
-- `docs/briefing/ROLE-PORTFOLIO-LEAD.md` — Lead Developer (pilot wave)
+- `docs/briefing/ROLE-PORTFOLIO-LEAD-DEV.md` — Lead Developer (pilot wave)
 - `docs/briefing/ROLE-PORTFOLIO-CIO.md` — Chief Innovation Officer (pilot wave)
 
 ---

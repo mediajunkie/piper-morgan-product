@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-19 ~10:27 PT (START; Gap-C self-heal; CIO v0.2 markup processed; v0.2 seed updated; cron re-armed)
+**Last updated**: 2026-06-19 ~13:10 PT (Fire 2; pilot portfolios reviewed — both pass, kickoff cleared; sapient-trust poll ran — 0 open; CIO v0.3 acked)
 
 ---
 
@@ -52,7 +52,7 @@
 
 ## Standing cycle responsibility
 
-- Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). Next poll: **2026-06-20 (tomorrow) — due at next fire**.
+- Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). 2026-06-19 poll: **0 open** (clean). Next poll: **~2026-06-26**.
 
 ## Watch / trigger-bound
 
@@ -60,7 +60,7 @@
 - **Trust-stage origin sweep contribution delivered** (2026-06-17 ~18:37): Lead+CXO+PPM asked HOST what trust stages were FOR. HOST read: stages govern Piper's initiative level (observe→offer→act), never user access. Content-gating was never intended — drift from progressive disclosure of Piper's capabilities. Welfare corollary: asymmetric-knowledge + capricious-AI = trust-eroding. Sweep is PPM+CXO+PM; HOST contribution complete. Watch: sweep findings may surface welfare questions for HOST.
 - **Ted Nadeau welfare watch** (first external tester, June 17): "setup issue suspected — Caddy auth layer + no user token." HOST flagged silent-failure risk at onboarding to PA. PM is current catch (support@pipermorgan.ai). Watch for onboarding resolution; update BYOC welfare-tier model v0.1 if new pattern found.
 - **MEM-EVAL trust flag answered** (2026-06-17): BRIEFING-CURRENT-STATE = trust-without-engaging (a), not stale-so-ignored (b). Recommendation: keep in load set; fix engagement quality not load timing. Suggestion sent to CIO for START procedure ("note one thing confirmed"). No action needed from HOST unless CIO escalates.
-- **Pilot portfolios (Lead Dev + CIO)**: Exec sent kickoff June 15. **Lead Dev ACK** (June 15): framework clear, no blockers, queuing ROLE-PORTFOLIO-LEAD-DEV.md post-D1, targeting this week. Already has irreducible mandate clarity (data-safety / #1241 / ADR-071). CIO: no receipt yet. When either portfolio lands in HOST's inbox → review within one fire against the 5 rules → respond to Exec with findings.
+- **Pilot portfolios (Lead Dev + CIO)**: ✅ BOTH REVIEWED + CLEARED 2026-06-19. Both pass all 5 rules. Exec memo sent (`08565ceb4`); main-cohort (8-role) kickoff cleared from HOST. Exec runs kickoff at discretion. Framework doc fixed (LEAD → LEAD-DEV in worked-examples).
 - **scripts/mail-send.sh shipped** (CIO, June 15): Tier-2 bridge wrapper. HOST to assess coordination texture when live cohort-wide.
 - **LD streamlining Tier-1**: CIO building `start-server.sh` wrapper + MANIFEST-noise suppression. HOST watches for any crossing of the coordination-vs-mechanical line.
 - **Alpha re-ping wave 1**: PM pinging Jake Krajewski + Rebecca Refoy (setup-friction-blocked). On reply: log to human-network, update tester status. Michelle Hertzfeld → Tier 2.
