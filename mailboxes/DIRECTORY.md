@@ -18,12 +18,12 @@ Canonical slug-to-role mapping. Used by `/deliver-mail` skill for routing valida
 | `pa` | Piper Alpha | code | PM/CEO assistant, standup synthesis, meeting prep, document review |
 | `xian (ceo)` | CEO / PM / founder (xian) | human | **Canonical CEO mailbox.** Receives memos addressed to or CC'ing CEO, PM, or xian. Directory name contains literal space + parens. |
 | `spec` | Special Assignments | code | Specialist work, activated as needed |
-| `web` | (no agent currently) | n/a | Inbox accumulates website-issue memos; tracked via `docs/internal/operations/website-issues.md`; Docs orchestrates fixes via on-demand Coding Agent subagents |
+| `web` | Web agent — works primarily from the `piper-morgan-website` repo | code | **Standing agent** (PM-confirmed 2026-06-19); checks this inbox for routing. Website + web-UI work (e.g. the editorial compose UI #998) lives in `piper-morgan-website`. Website-issue tracking: `docs/internal/operations/website-issues.md` |
 
 ## Notes
 
 - **code** = Claude Code agent with filesystem access. Can self-serve mailboxes.
-- All seven leadership roles + Lead Dev + Docs migrated to Code (Apr 22–26 wave). The `web` notation in the older directory referred to Claude.ai web sessions; that's no longer current except for `xian (ceo)` (human) and `web` (no current agent).
+- All seven leadership roles + Lead Dev + Docs migrated to Code (Apr 22–26 wave). The `web` notation in the older directory referred to Claude.ai web sessions; that's no longer current except for `xian (ceo)` (human). **`web` is a standing agent** working primarily from the `piper-morgan-website` repo (PM-confirmed 2026-06-19) — it checks this inbox for routing, so route website / web-UI work there.
 - Slugs are lowercase, match directory names under `mailboxes/` exactly (the `xian (ceo)` directory's space + parens are intentional and load-bearing).
 - If a slug doesn't appear here, it's invalid. The `/deliver-mail` skill will reject it.
 
