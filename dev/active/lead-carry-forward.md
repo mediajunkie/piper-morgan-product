@@ -1,25 +1,27 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-20 ~09:45 PT (post #1162 reconciliation + board correction). Sole lead.
+**Updated**: 2026-06-20 ~10:46 PT (after #1185 Phase 1 + the def-of-done reframe). Sole lead.
 
-## ▶ NEXT (RECONNECT Phase-0 — now unblocked)
-The #1162 reconciliation is RESOLVED (below). RECONNECT Phase-0 foundation = **#1185 (identity core)** + **#1229 (WS2 cred-model)** + Architect's **ADR-070**. Next build (PM to pick / confirm sequencing):
-- **#1185 identity core** — prep DONE (gap verified: `user_api_keys` `models.py:190` covers Anthropic → no schema change; core change = user_id-aware key resolution in `services/llm/clients.py` / `LLMConfigService`). Needs a gameplan + audit-cascade gate before building. May split (identity → RECONNECT vs per-user-LLM-key → hosted-beta) — confirm scope with PM.
-- **#1229 WS2** — unified connector credential model (RECONNECT-native).
-- WS5 (#1232) waits on Architect's ADR-070.
+## ▶ PENDING PM DECISION (next-priority pick)
+#1185's core is done (below). Next is a fresh prioritization — surfaced to PM, awaiting pick:
+- **#358 encrypt-at-rest** (Lead rec) — the HARD blocker for safe hosted BYO-key (`keyring` isn't encrypted on the headless droplet). Its own substantial SEC build → own audit-cascade.
+- **Caddy-gate removal** (#1162) — PM + Arch architectural decision (JWT now identifies users; the static gate can come off).
+- **Another RECONNECT WS** (e.g. #1229 WS2 cred-model).
 
 ## ▶ DONE THIS SESSION (2026-06-20)
-- **#1299 — 0.8.8 LIVE on alpha** (version 0.8.8, sqlite 3.40.1, schema at head `a1273coretables`, /health 200). 3-layer fix: pyobjc markers + Dockerfile bullseye→bookworm + the never-run migrate (alembic.ini hardcodes localhost:5433 → (a)+(b) folded into #1299, OPEN). Fix on main + production (`5401a139c`). PA notified (`940837b1c`). Runbook corrected.
-- **#1162 reconciliation RESOLVED + board corrected (PM-approved)**: #1162 (hosted-distro exploration, NOT cred-decoupling) → SKUNK; filed **#1300 (BYOC-CRED-DECOUPLE)** → M5 (the real decouple work, PA option-a); #1185 stays RECONNECT; #1278 stays M5. Corrected scope-§12 (CORRECTION block) + decisions.log + re-pinged Architect (`f8f49c61e` — ADR-070 Phase-0 = #1185+#1229, drop #1162). M5 refactor deferred ("when we get to M5" — PM).
-- Agent-360 owed-item retired (false-positive — Lead already responded Jun 4).
+- **#1299 — 0.8.8 LIVE on alpha** (3-layer fix: Dockerfile bullseye→bookworm + pyobjc markers + the never-run migrate). (a)+(b) folded into #1299 (OPEN). PA notified. Runbook corrected (the broken migrate-mitigation).
+- **#1162 reconciliation + board corrected**: #1162→SKUNK (was mislabeled cred-decoupling; it's hosted-distro exploration), #1300 (BYOC-CRED-DECOUPLE, the real decouple) filed→M5, #1185 stays RECONNECT. §12 CORRECTION + decisions.log + Architect re-pinged.
+- **#1185 audit cascade (gates 1-2) + Phase 1 DONE**: per-user key resolution (`resolve_request_api_key`, header>stored>server) wired at /intent on the #1162 rail; 12 tests. **Reframe: #1185 was ~90% pre-built** (JWT auth + setup.py web-capture existed; only /intent calls LLM → 2a no-op). Def-of-done: #1185 resolution = complete+tested; hosted-beta SAFETY gated on #358 (encrypt — hard dep) + the Caddy-gate decision. Full-route e2e test tracked.
+- Agent-360 owed-item retired (false-positive).
 
 ## ▶ STATE / refs
-- **alpha** = DO droplet 146.190.151.63 / root@piper-alpha; docker-compose /opt/piper; deploy = `/opt/piper/deploy.sh`. On **0.8.8**. Runbook: `docs/internal/operations/alpha-deployment-runbook.md`.
-- RECONNECT 9 WS: WS1 #1226/#1199 · WS2 #1229 · WS3 #1230 · WS4 #1231 · WS5 #1232(ADR-070) · WS6 #1201 · WS7 #1109/#1110 · WS8 #1220 · WS9 #1233. Scope: `connector-refactor-sprint-scope-2026-06-14.md` (§12 corrected). Sprint = Projects-v2 **Sprint** field (project 1 "Building Piper Morgan").
-- Sequence: RECONNECT → M4 → M5 → 0.9.0.
-- **Cron 50daabfb** armed (`17 22,7,10,13,16,19`). Mailbox = `scripts/mail-send.sh` (push-to-ref).
+- **alpha** on **0.8.8** (DO droplet; deploy=`/opt/piper/deploy.sh`; runbook: `docs/internal/operations/alpha-deployment-runbook.md`).
+- #1185 code: `services/llm/request_key.py` (`resolve_request_api_key`), `web/api/routes/intent.py:338` (binding). Tests: `tests/unit/services/llm/test_request_key_resolve_1185.py`. Gameplan: `dev/2026/06/20/1185-gameplan.md`.
+- **#358 finding**: `KeychainService` uses Python `keyring` (macOS Keychain locally → encrypted; the *headless-Linux* backend is NOT guaranteed encrypted → the hosted gate).
+- RECONNECT 9 WS + Phase-0 = #1185(done)+#1229+ADR-070. Scope: `connector-refactor-sprint-scope-2026-06-14.md` (§12 corrected). Sequence: RECONNECT → M4 → M5 → 0.9.0.
+- **Cron 50daabfb** armed (`17 22,7,10,13,16,19`). Mailbox = `scripts/mail-send.sh`.
 
 ## ▶ Methodology this session
-- Deploy = outward-facing → confirm before irreversible; back up + rollback-tag + snapshot first; verify-and-rollback on crash-loop.
-- alembic.ini hardcodes localhost:5433 → in-container migrate silently fails every deploy (#1299 (a)). Run migrate with the app's real engine URL (runbook footgun).
-- **Investigate-before-extending caught the #1162 mislabel** before building on it (read the issue, not the label). The label propagated from PA's BYOC diagrams → §12 → carry-forward — fixed at all three.
+- **Investigate-before-extending** repeatedly paid off: caught the #1162 mislabel; found #1185 was 90% pre-built (read the code, not the issue's 4-part framing); found #358 is a real hosted gate (the keyring backend).
+- Deploy = outward-facing → confirm + back up + verify-and-rollback. `alembic.ini` hardcodes localhost:5433 (#1299 a) → migrate silently failed every deploy.
+- Transient SSH port-22 blip on a verify-fetch (10:46) — push had already landed; SSH-over-443 workaround in CLAUDE.md if it recurs.
