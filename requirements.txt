@@ -223,9 +223,11 @@ grpcio-status==1.71.2
 httplib2==0.31.0
 mcp==1.26.0
 proto-plus==1.26.1
-pyobjc-core==12.1
-pyobjc-framework-cocoa==12.1
-pyobjc-framework-eventkit==12.1
+# macOS-only (EventKit/Cocoa); the platform marker keeps them off the Linux Docker build.
+# #1299: a Mac `pip freeze` strips the marker → the Linux build fails on pyobjc-core. Re-add it.
+pyobjc-core==12.1 ; sys_platform == "darwin"
+pyobjc-framework-cocoa==12.1 ; sys_platform == "darwin"
+pyobjc-framework-eventkit==12.1 ; sys_platform == "darwin"
 pyparsing==3.2.5
 setuptools==80.9.0
 uritemplate==4.2.0
