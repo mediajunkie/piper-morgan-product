@@ -73,3 +73,10 @@ PM: "do whole, one coherent effort; run the audit cascade." Ran it:
 **The gap**: `intent.py:338` binds ONLY the header (`X-User-Api-Key`, Desktop BYOC), never the stored key (hosted web). **Open-Q-2 (token vs account/login) RESOLVED → JWT (token), already in place.**
 
 Gameplan: P1 DB-fallback at the binding (small) · P2 extend beyond /intent + confirm JWT covers hosted testers (the unknown; possible STOP) · P3 capture at /connect (#1300) · P4 encrypt (#358). Subagent decision: solo. **Next: Phase 1 TDD.**
+
+### Phase 1 DONE — DB-resolved key binding (10:30, TDD green)
+- `resolve_request_api_key(header_key, user_id, fetch_stored)` in `services/llm/request_key.py` — **pure** (DB fetch injected); priority header > stored > None.
+- `intent.py:338` wired: `X-User-Api-Key` header (Desktop BYOC) → authed user's STORED key (`UserAPIKeyService.retrieve_user_key`, session via `AsyncSessionFactory.session_scope_fresh()`) → server key. Rides the existing #1162 ContextVar rail.
+- Tests: `tests/unit/services/llm/test_request_key_resolve_1185.py` (6 — resolver matrix + rail-wiring proving a stored key reaches a real Anthropic client). **12 passed** (incl. #1162 regression). `intent.py` imports clean.
+- STOP-check (session availability) resolved: session via AsyncSessionFactory at the binding site.
+- Next: Phase 2 — extend the binding beyond /intent (2a) + investigate JWT-issuance-for-hosted-testers / Caddy-gate (2b, surface for PM+Arch — #1162 gate territory).

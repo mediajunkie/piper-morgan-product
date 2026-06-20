@@ -39,7 +39,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from services.auth.jwt_service import JWTClaims, JWTService
 from services.domain.models import RequestContext
-from services.llm.request_key import request_api_key
+from services.llm.request_key import request_api_key, resolve_request_api_key
 from web.utils.error_responses import internal_error, validation_error
 
 logger = structlog.get_logger()
@@ -332,10 +332,21 @@ async def process_intent(
         # Issue #490: Pass user_id to service for user-specific features
         # ADR-051 Phase 3: Pass RequestContext alongside old params (dual pattern)
         # ctx is None for unauthenticated requests - service handles gracefully
-        # #1162 BYOC: a hosted user may supply their OWN Anthropic key per request via
-        # the X-User-Api-Key header (Claude Desktop env). Bind it for this request's LLM
-        # calls (reset in the context manager's finally); absent → server key. Never logged.
-        with request_api_key(request.headers.get("X-User-Api-Key")):
+        # #1162/#1185 BYOC: resolve this request's Anthropic key — the X-User-Api-Key
+        # header (Claude Desktop BYOC) wins; else the authenticated user's STORED key
+        # (hosted web, #1185), resolved by user_id from user_api_keys; else the server
+        # key. Bound to the request-scoped ContextVar (reset in finally; never logged).
+        async def _fetch_stored_anthropic_key(uid: str):
+            from services.database.session_factory import AsyncSessionFactory
+            from services.security.user_api_key_service import UserAPIKeyService
+
+            async with AsyncSessionFactory.session_scope_fresh() as _s:
+                return await UserAPIKeyService().retrieve_user_key(_s, uid, "anthropic")
+
+        resolved_key = await resolve_request_api_key(
+            request.headers.get("X-User-Api-Key"), user_id, _fetch_stored_anthropic_key
+        )
+        with request_api_key(resolved_key):
             result = await intent_service.process_intent(
                 message=message, session_id=session_id, user_id=user_id, ctx=ctx
             )
