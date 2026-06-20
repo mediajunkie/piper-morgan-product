@@ -1,3 +1,21 @@
+<!--
+  ⚠️ DEAD CODE as of 2026-06-19 — DO NOT EDIT, DO NOT RESTORE NAV STRUCTURE FROM THIS FILE.
+
+  This legacy top global-nav is no longer included by ANY template. The live navigation is
+  templates/components/nav_rail.html (the left dark rail, #1280), included by
+  templates/layouts/app_shell.html. Verified 2026-06-19: no `{% include %}`, TemplateResponse,
+  or render call references this file anywhere in templates/, web/, or services/ — the only
+  remaining "include 'components/navigation.html'" string is the commented-out usage example
+  on the line directly below.
+
+  Retained (NOT deleted) per PM 2026-06-19 — "comment out dead code and plan to remove it when
+  we are sure it's safe." Tracking issue for verified-safe removal: #1298.
+
+  ⚠️ This file encodes SUPERSEDED nav decisions — do not treat it as a source of truth. In
+  particular it still shows BOTH "Documents" and "Files" as separate "Your stuff" entries. That
+  decision was REVERSED in the live nav by #1270's beta band-aid (commit a15012f33), which
+  collapsed them to a single "Documents" surface (/files). Consult nav_rail.html, not this file.
+-->
 <!-- Global Navigation Component -->
 <!-- Usage: {# % include 'components/navigation.html' % #} -->
 

@@ -1,10 +1,12 @@
+---
+image:
+alt:
+caption:
+---
+
 # Extension Without Integration
 
-*March 26, 2026*
-
-[alt text: PLACEHOLDER — cartoon TBD]
-
-*March 13–19*
+*March 13–19, 2026*
 
 Six features. Each one correct. Each one tested. Each one reviewed and approved. And together, they produced chaos.
 
@@ -14,7 +16,7 @@ Three independent systems were each listening for user acceptance. One was built
 
 When they ran simultaneously — which is to say, always — four competing detection points raced to interpret "Sure." The onboarding system thought the user was accepting onboarding. The soft offer system thought they were accepting a capability offer. The workflow system thought they were resuming a suspended session. The user just meant "yes, help me with that."
 
-## The pattern
+# The pattern
 
 Our Lead Developer named it after auditing the codebase and finding six instances of the same structural flaw:
 
@@ -22,9 +24,9 @@ Features get extended independently. Each extension has its own issue, its own a
 
 This isn't a testing failure. The tests were correct — each feature did what it said it would do. It's a *composition* failure. The acceptance criteria for each feature asked "does this feature work?" but never asked "does this feature work when the other five are also running?"
 
-[CHRISTIAN TO POLISH: Does this resonate with your experience on other projects? The pattern seems universal — is there a way to connect it to traditional software teams, not just multi-agent development?]
+I've seen this pattern on traditional teams too. The features get assigned to different engineers, the engineers are in different sprints, and the integration tests — if they exist — come at the end when refactoring is expensive. The word "integration" is in most agile frameworks as a distinct phase precisely because composition is so often treated as someone else's problem. What's different with multi-agent development is speed and invisibility: engineers at least share a standup. Our agents don't.
 
-## Why multi-agent development makes it worse
+# Why multi-agent development makes it worse
 
 In a traditional team, developers share a codebase, sit in the same standup, and sometimes notice when their work overlaps. The collision is accidental but detectable through proximity.
 
@@ -32,9 +34,9 @@ In multi-agent development, each agent works in its own session with its own con
 
 The agents aren't wrong. They're doing exactly what was asked. The gap is structural — it lives between the issue descriptions, not inside them.
 
-[ADD PERSONAL REFLECTION: You've described the PM role as "mailbot" — routing work between agents. Does this pattern suggest the routing needs to include integration context? Or is the fix at a different layer entirely?]
+When I think about what routing between agents actually means, I mostly think about what goes in the memo: the issue, the context, the acceptance criteria. I'm less systematic about what's running elsewhere that might intersect. The "Sure" bug is a reminder that the PM's job isn't just to route feature requests — it's to maintain the integration map. Who's building what, where those builds touch shared infrastructure, what tests would catch the combination. That's harder to write into a memo. It might be the next layer of the craft.
 
-## The fix has two layers
+# The fix has two layers
 
 The immediate fix for our bug was architectural: consolidate the three acceptance systems into a single workflow dispatcher. One detection point, one registry, one routing decision. ADR-059, written, reviewed, and implemented in a single morning.
 
@@ -46,9 +48,7 @@ First, **composition tests**: multi-turn conversation scenarios that exercise fe
 
 Second, **composition audits at milestone boundaries**: before closing a sprint gate, audit every feature that touches the pipeline and verify they've been tested together. Not a full regression — a focused check on the interaction points.
 
-[CONSIDER: Is there a useful analogy here? Musical instruments that each play the right notes but aren't in the same key? Ingredients that are each fine but don't combine into a meal? Or is the technical description clearer without the metaphor?]
-
-## The broader lesson
+# The broader lesson
 
 This pattern isn't specific to AI agents. It's what happens when any team builds features in parallel — microservices teams, platform teams, any organization where different people own different parts of the same user experience. The features work. The tests pass. The composition fails.
 
@@ -58,10 +58,10 @@ The good news is that the detection cycle is also faster. Our audit cascade iden
 
 Speed creates the problem. Speed also enables the fix. The question is whether you have the diagnostic practices to notice before your users do.
 
-[ADD PERSONAL REFLECTION: You caught this because you manually tested Piper and noticed "Sure" didn't work. Pattern-045 (Green Tests, Red User) again. Is there something to say about the role of manual testing as the last line of defense against composition failures?]
+This is Pattern-045 again — Green Tests, Red User. The tests passed. The features shipped. It was a manual "Sure" that exposed the collision. I test things manually out of habit, or distrust, or because I know the edges of this product well enough to poke them. Whatever the reason, it's the human in the loop who caught this one. The composition tests we added afterward are meant to close that gap. We'll see if they do.
 
 ---
 
-_Next on Building Piper Morgan: [TITLE TBD] — [teaser TBD]._
+*Next on Building Piper Morgan: "Branch-or-Anchor in Ninety Minutes" — a new rubric surfaces during a workstream review, nearly duplicates an existing one, and the methodology catalog catches it before the meeting ends.*
 
-_Have you ever shipped features that each worked perfectly in isolation but fell apart when they ran together? What made you notice — a test, a user, or something else?_
+*Have you ever shipped features that each worked perfectly in isolation but fell apart when they ran together? What made you notice — a test, a user, or something else?*

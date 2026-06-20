@@ -1875,9 +1875,12 @@
          * Handle privacy toggle in history sidebar.
          */
         function handleHistoryPrivacyToggle(isPrivate) {
-          console.log('#735: Privacy mode:', isPrivate ? 'enabled' : 'disabled');
-          // TODO: Wire to privacy API when available
-          // For now, just log the action
+          // #1164: the privacy toggle is HIDDEN for beta (the footer carries `hidden` in
+          // history_sidebar.html) — the backend isn't wired (gated on #1089) and a no-op
+          // privacy control misleads users. So this handler is inert until the privacy
+          // feature lands (postponed to the dot-releases milestone): wire it to the privacy
+          // API then, and un-hide the footer.
+          console.log('#735/#1164: Privacy mode (inert — toggle hidden for beta):', isPrivate ? 'enabled' : 'disabled');
         }
 
         /**

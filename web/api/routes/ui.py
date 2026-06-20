@@ -424,21 +424,17 @@ async def files_ui(request: Request):
 @router.get("/documents", response_class=HTMLResponse)
 async def documents_ui(request: Request):
     """
-    Documents page with Piper's perspective (#422 MUX-IMPLEMENT-DOCS-ACCESS).
+    #1270 beta band-aid (PM-approved 2026-06-19): /documents and /files read as
+    near-duplicates (PM UAT 2026-06-17). Collapsed to the single working surface —
+    /files (the fuller file browser, 22 JS fns vs documents.html's 7) — presented under
+    the "Documents" nav label. /documents redirects here so old links/bookmarks survive.
 
-    Shows documents as Place windows with trust-gated visibility (Stage 4+).
-    Provides search, summaries, and Q&A capability.
+    The full source-type object-model refactor (uploaded/generated/federated) plus a
+    restored Q&A-perspective view is #1270 in D2; this band-aid defers documents.html's
+    Stage-4+ perspective (#422) to that refactor. To restore the perspective view, revert
+    this redirect (the old render is in git history) — but reconcile it with #1270 first.
     """
-    templates = _get_templates(request)
-    user_context = _extract_user_context(request)
-    # #1147: server-render trust_stage so documents.html's window.trustStage +
-    # data-min-stage="4" gating works on direct load (was undefined unless
-    # home.html ran first — same Pattern-045 shape #1132 fixed for /insights).
-    trust_stage = await _resolve_trust_stage(user_context)
-    return templates.TemplateResponse(
-        "documents.html",
-        {"request": request, "user": user_context, "trust_stage": trust_stage},
-    )
+    return RedirectResponse(url="/files", status_code=302)
 
 
 @router.get("/insights", response_class=HTMLResponse)

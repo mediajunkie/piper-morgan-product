@@ -336,7 +336,12 @@
       <button class="history-load-more-btn">Load more</button>
     </div>
 
-    <footer class="history-privacy-footer">
+    <!-- #1164: the "private session" backend is not wired yet (gated on #1089). The toggle was a
+         no-op that misleads beta users into thinking a session is private when it isn't, so it is
+         hidden for beta. The privacy feature is postponed to the dot-releases (post-MVP) milestone.
+         Markup is retained (the sidebar JS still queries `.history-privacy-toggle`) so re-enabling
+         is just removing `hidden`. CXO may swap this for a disabled "coming soon" state if preferred. -->
+    <footer class="history-privacy-footer" hidden>
       <button class="history-privacy-toggle" aria-pressed="false">
         <span class="history-privacy-icon">🔒</span>
         <span class="history-privacy-label">Start private session</span>

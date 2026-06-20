@@ -39,14 +39,36 @@ async def compose_list(request: Request) -> HTMLResponse:
     )
 
 
+def _strip_caption_quotes(caption: str) -> str:
+    """Strip the outer double-quote wrapper from a caption for UI display.
+
+    Captions are always stored as '"text"' in YAML (the double-quotes are
+    the spoken-line convention). The UI shows the inner text so PM doesn't
+    hand-type the quotes; write_draft re-adds them on save.
+    """
+    caption = caption.strip()
+    if caption.startswith('"') and caption.endswith('"') and len(caption) >= 2:
+        return caption[1:-1]
+    return caption
+
+
+def _wrap_caption_quotes(caption: str) -> str:
+    """Add the outer double-quote wrapper to a caption before YAML storage."""
+    if not caption:
+        return caption
+    return '"' + caption + '"'
+
+
 @router.get("/{slug}", response_class=HTMLResponse)
 async def compose_detail(request: Request, slug: str) -> HTMLResponse:
-    """Read-only detail view of a draft markdown file."""
+    """Editable detail view of a draft markdown file."""
     path = resolve_draft_path(slug)
     if path is None:
         raise HTTPException(status_code=404, detail=f"Draft not found: {slug}")
     frontmatter, body = parse_draft(path)
-    # Derive a title from the first H1 if present, else slug
+    # Strip the spoken-line double-quote wrapper from caption for UI display
+    frontmatter = dict(frontmatter)
+    frontmatter["caption"] = _strip_caption_quotes(frontmatter.get("caption", ""))
     title = _extract_title(body) or slug
     return templates.TemplateResponse(
         "admin/compose_detail.html",
@@ -76,7 +98,7 @@ async def compose_save(slug: str, payload: SavePayload) -> JSONResponse:
     frontmatter = {
         "image": payload.image,
         "alt": payload.alt,
-        "caption": payload.caption,
+        "caption": _wrap_caption_quotes(payload.caption),
     }
     write_draft(path, frontmatter, payload.body)
     return JSONResponse({"saved": True, "slug": slug})
