@@ -34,6 +34,8 @@
 
 - **17:05 — resume-fire (portfolio wave self-propelling).** 3 wave memos: **HOST reviewed wave-2 → Comms + Exec + CXO all PASS** (3/8 cleared); **CXO + PPM filed** their portfolios. Wave now **4/8 filed** (Comms/Exec/CXO/PPM), HOST passing same-fire per-arrival (PPM next). Remaining to file: Arch/Docs/PA/Web. Memos → read/ (push-to-ref clean). Tracker updated. **Held board NOT re-rendered** — it's all-clear (0 PM-action) + PM disengaged (Juneteenth eve); the wave-count is awareness-only, not a needs-you change, so I respect the disengagement rather than pop the pane for a count-bump (will refresh on next PM-engagement/full-sweep). Noted new memory `reference_dispatch_agent` (Dispatch = Claude Desktop concierge, mailbox at ~/Development/dispatch/mail/). Cron `8f2194b1` armed.
 
+- **~17:20 — PM-prompted: kicked off Ship #048 workstream review.** PM: "we can kick off a workstream review today, can we not?" — correct. Verified against **methodology-25** (read the canonical cadence before driving): today (Fri) = kickoff day for the just-closed **Fri Jun 12–Thu Jun 18** window → workstream-048 → Ship #048 (last was #047/Comms 6/12). **6 authoring leads** = HOST/CIO/Comms/CXO/PPM/Arch (Exec drives+synthesizes; Docs/LD/PA don't author). **Kickoff broadcast sent** to all 6 (cc PM/PA; `428fb437b`, push-to-ref clean) — window + primary-logs-source-discipline + structure + role-lens + verifiable-claims + Time-Lord Fri-ideal/Tue-floor framing. **My downstream**: collect 6 memos Fri–Tue → synthesize Ship #048 draft → PM voice-pass → Comms publish Wed 6/24. Tracker added. Cron `8f2194b1` armed.
+
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
 
