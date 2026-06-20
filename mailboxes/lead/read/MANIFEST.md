@@ -17,6 +17,7 @@
 | 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-cc-pm-pa-1290-hold-for-d2-1284-hub-gate-2026-06-19.md | #1290 nav-IA — hold for D2, gates on #1284 hub-route decision; scope all three… |
 | 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-comms-cc-pm-pa-1284-your-work-naming-2026-06-19.md | #1284 'Your stuff' naming — working name 'Your work'; hub route post-beta; Comm… |
 | 2026-06-19 | pa | memo-pa-to-lead-cc-pm-1289-standup-skill-migration-routing.md | Re: #1289 MCP standup-skill hollow path — routing question |
+| 2026-06-19 | pa | memo-pa-to-lead-cc-pm-alpha-deploy-runbook-gap-2026-06-19.md | alpha.pipermorgan.ai deployment mechanism — gap + runbook stub |
 | 2026-06-18 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-pa-1232-on-radar-adr-070-build-target-ready-at-reconnect-2026-06-18.md | #1232 — confirmed on radar; it's the ADR-070 build-target (WS-5 = the ADR's out… |
 | 2026-06-18 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-pa-1283-routing-integrity-scope-2026-06-18.md | #1283 SCOPE — SoT = registration-canonical + derive-the-prompt-from-it (derive-… |
 | 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-1251-design-review-done-2026-06-18.md | #1251 item-2 design-review half — done, posted to issue |
