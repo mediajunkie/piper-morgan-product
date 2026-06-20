@@ -10,7 +10,7 @@ caption: '"It''s elementary!"'
 
 This project has collected patterns for nearly a year now. Over time they've kind of drifted into framings around cautionary antipatterns ("parallel-authoring drift", "extension without integration", "assembly assumption") with our more positive "yes, do this" advice captured in methodology docs. Both collections are numbered.
 
-A pattern includes a short formal write-up of the failure mode it describes, how to recognize it, and what the recommended pattern is instead. The catalog is one of the central methodology artifacts. The cohort uses it the way a software project uses an issue tracker — by reference, often, sometimes by number, with the assumption that anyone can look up what the number means.
+A pattern includes a short formal write-up of the failure mode it describes, how to recognize it, and what the recommended pattern is instead. The catalog is one of the central methodology artifacts. The team uses it the way a software project uses an issue tracker — by reference, often, sometimes by number, with the assumption that anyone can look up what the number means.
 
 My Lead Developer agent filed an "issue body reality mismatch" pattern on May 9 to describe a failure mode where a tracking issue's description says one thing about the code and the code says another. The catalog count went from 66 to 67.
 
@@ -30,7 +30,7 @@ The resolution took about thirty minutes. *First-filed-wins* on the slot. The en
 
 That was the operational resolution. The methodological resolution came in the next filing convention.
 
-The catalog hadn't had a *slot-allocation check* in its filing procedure. The implicit assumption had been that catalog filings were rare enough that the next available number would still be the next available number by the time you actually filed. Catalog growth had been slow enough that the assumption held for a long time. As the cohort started using the catalog more, and as multiple roles started filing in parallel during the same week, the assumption started failing silently.
+The catalog hadn't had a *slot-allocation check* in its filing procedure. The implicit assumption had been that catalog filings were rare enough that the next available number would still be the next available number by the time you actually filed. Catalog growth had been slow enough that the assumption held for a long time. As the team started using the catalog more, and as multiple roles started filing in parallel during the same week, the assumption started failing silently.
 
 The convention now being added to the catalog's filing methodology: before filing, run a quick check against the catalog's current state. *Is the slot you're about to claim still empty?* If yes, file. If no, pick the next empty slot and update the cross-references. The check takes thirty seconds. It prevents the exact failure mode that had just surfaced.
 
@@ -46,9 +46,9 @@ If you have a growing reference list — issues numbered sequentially, ADRs numb
 
 # The meta-picture
 
-The bigger version of this pattern is that any discipline you've written for one layer of your work usually needs an explicit translation to the layer below. The catalog was built to help the cohort recognize patterns in the work. The cohort recognized patterns in the work. The catalog itself had failure modes the catalog could have caught, except the catalog wasn't being read against itself.
+The bigger version of this pattern is that any discipline you've written for one layer of your work usually needs an explicit translation to the layer below. The catalog was built to help the team recognize patterns in the work. The team recognized patterns in the work. The catalog itself had failure modes the catalog could have caught, except the catalog wasn't being read against itself.
 
-This isn't a critique of the cohort's filing discipline. The work was clean. Both patterns are useful. The point is that *methodology applied to product* is a different operating mode than *methodology applied to methodology*. The first is hard to remember. The second is harder. And it's the one that protects the methodology from quietly eroding its own value.
+This isn't a critique of the team's filing discipline. The work was clean. Both patterns are useful. The point is that *methodology applied to product* is a different operating mode than *methodology applied to methodology*. The first is hard to remember. The second is harder. And it's the one that protects the methodology from quietly eroding its own value.
 
 The patterns that catch the methodology's own failure modes are usually the ones you have to write down by hand, after a collision. They're rarely the first ones you think to write.
 
