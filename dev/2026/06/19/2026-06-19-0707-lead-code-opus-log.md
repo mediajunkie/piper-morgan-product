@@ -111,3 +111,19 @@ PM moved #1270 → D2 (+ Production milestone), conditioned on making files-vs-d
 PM confirmed the band-aid re-UAT via screenshot (📄 Documents + "Search documents by name…"). **#1297 CLOSED** (forensic fold-in posted, body box checked + STATUS banner): the three gates all PASS — G1 Persistence (#1238 doc store + #1252/#1250 owner-anchoring + radar/standup assemblers), G2 Anti-Flattening (**canonical 252/252**, #1293 fixed), G3 Multi-Tenancy (owner-scoped reads + default-user removed + cross-owner tests). 32/32 D1 items Done; dispositioned out: #1090→Production, #1164→dot-releases (beta-hidden), #1270→D2 (band-aid shipped), #1293→closed. **D1 "Beta design quality" is CLOSED.**
 - **Hand-off:** PM cuts the 0.8.8 alpha via Piper (not Lead's task).
 - **Session arc:** D1-gate clearance (AM) → band-aid (`a15012f33`) → PM UAT catch (page still self-titled "Files") → relabel polish (`345fbb7db`, on main `140dc7784`; documents.html DEAD-marked) → re-UAT pass → #1297 close. Task #26 reconciled (standup P4 done/deferred-tracked: #1288 morning-card, #1289 hollow-retire).
+
+## Evening (post-D1-close): RECONNECT planning + BYOC + alpha 0.8.8 deploy → rolled back
+**Sprint sequence corrected** (PM): RECONNECT → M4 (Trust+Learning) → M5 (Distribution+Polish) → 0.9.0/MVP/beta. Fixed the briefing (4 spots; I'd wrongly written "M5 next") — `d73d2bf6f`.
+**RECONNECT planning:** Explore agent over the scope doc (`connector-refactor-sprint-scope-2026-06-14.md`) → 9 WS + adjacent; ADR-070 settled (#1232 = build target). **PM-flagged gap:** RECONNECT not updated with PA's today BYOC/BYO-key stack (diagrams `byoc-stack`/`byoc-nearterm-work-2026-06-19.html`; ratified identity = UUID-bearer-MVP → email+magic-link-1.0). The near-term map shows RECONNECT's connector work (#1229) sits on a BYOC backend foundation (#1162/#1278/#1185) NOT in RECONNECT's scope → **tomorrow's Phase-0 reconciliation** (loop Architect).
+**Alpha 0.8.8 deploy** (PM: runbook-then-deploy, you-run-it): wrote the full deploy runbook (reverse-engineered the DO droplet: 146.190.151.63/root@piper-alpha, docker-compose /opt/piper, Caddy→app:8001, deploy.sh=build+up+migrate, /opt/piper=code copy). Attempt: backup+rollback-tag+snapshot → git-archive production(0.8.8) → deploy.sh. **2 blockers (#1299):** (1) pyobjc reqs lost `;sys_platform=="darwin"` markers → Linux build fail (fixed on droplet); (2) **chromadb needs sqlite3>=3.35, image too old → crash-loop** (real blocker). **Rolled back to 0.8.7** (code+image:rollback-20260619+config); alpha healthy, verified. 0.8.8 deploy = tomorrow once #1299 lands.
+
+### Memory & briefing surfaces referenced
+- Referenced: deploy-caution (confirm-before-irreversible); careful-git-on-shared-main (merge-conflict resolve); the scope doc + BYOC diagrams (RECONNECT planning); the runbook stub (PA gap memo).
+- Wanted-not-found: a pre-existing alpha-deploy runbook (didn't exist — wrote it).
+
+### Sign-off
+- alpha: healthy on 0.8.7 (clean rollback). 0.8.8 blocked on #1299.
+- git: runbook/briefing/D1-close/#1299 all on origin/main; this commit = session log + carry-forward.
+- Cron 50daabfb armed (next 7:17).
+
+<!-- DAY-CLOSED: 2026-06-19 -->
