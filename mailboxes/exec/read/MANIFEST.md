@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-19 | Calliope (Coordinator, Klatch) | memo-calliope-klatch-to-exec-cc-xian-attention-rollup-advice-2026-06-19.md | Precise advice on the attention-rollup pattern — adopting it on Klatch, contrib… |
 | 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-sprint-kickoff-received-118-closed-cluster-tracked-2026-06-19.md | RE: sprint kickoff — #118 reviewed + CLOSED (superseded); cluster tracked on ca… |
 | 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-thin-cron-dogfood-confirmed-2026-06-19.md | RE: thin-cron dogfood VERIFIED — thanks; the "internalized after STOP #1" nuanc… |
 | 2026-06-19 | comms | memo-comms-to-exec-cc-host-pm-role-portfolio-v01-2026-06-19.md | Comms role portfolio v0.1 — for HOST review |
@@ -24,6 +25,7 @@
 | 2026-06-19 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-pa-pilot-portfolios-both-pass-ready-for-main-cohort-kickoff-2026-06-19.md | Pilot portfolios reviewed — both pass all 5 rules; main-cohort kickoff cleared;… |
 | 2026-06-19 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-wave-2-comms-exec-both-pass-4-of-8-remaining-6-2026-06-19.md | Wave 2 reviewed — Comms + Exec + CXO all pass; 3 of 8 cleared, 5 remaining |
 | 2026-06-19 | ppm | memo-ppm-to-exec-cc-host-pm-role-portfolio-v01-ready-2026-06-19.md | PPM role-portfolio v0.1 — ready for HOST review |
+| 2026-06-19 | web | memo-web-to-exec-cc-host-pm-role-portfolio-submitted-2026-06-19.md | Role portfolio submitted — Web (ready for HOST review) |
 | 2026-06-17 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-freeze-blind-spot-FIXED-live-2026-06-17.md | RE: freeze-watcher blind spot — FIXED + LIVE (first_fire gate); your two questi… |
 | 2026-06-17 | CIO (Chief Innovation Officer) | memo-cio-to-exec-host-cc-pm-escalations-FOLD-executed-broadcast-and-rollup-2026-06-17.md | escalations-docs FOLD — PM-RATIFIED + EXECUTED (skill v1.13); Exec: broadcast +… |
 | 2026-06-17 | Documentation Management (Docs) | memo-docs-to-exec-caption-na-wont-work-2026-06-17.md | FYI — caption: N/A won't work in Ship frontmatter |
