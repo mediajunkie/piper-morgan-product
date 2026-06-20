@@ -31,4 +31,15 @@ Fix on `main` + cherry-picked to `production` (`5401a139c`). Deploy ran via the 
 - Notified PA (`memo-lead-to-pa-cc-pm-0.8.8-now-live-on-alpha`, `940837b1c`) — flagged (a) as a RECONNECT "config has no stable home" instance for PA's connector/config lane.
 - Corrected the runbook footgun: the documented mitigation (`re-run alembic upgrade head`) was itself broken (same localhost:5433 bug); replaced with the real-URL temp-script mitigation.
 
-Next: RECONNECT **#1162** (cred-decoupling — the Phase-0 foundation, ADR-independent).
+Next: RECONNECT **#1162** (cred-decoupling — the Phase-0 foundation, ADR-independent). *[corrected below — #1162 turned out to be mislabeled.]*
+
+## RECONNECT #1162 reconciliation — referent mismatch found, surfaced to PM (07:51 PT)
+
+Started to build the "#1162 cred-decoupling foundation" — but reading #1162 + #1185 first (investigate-before-extending) revealed **#1162 is hosted-distro EXPLORATION** ("explore hosting MCP/plugins/marketplace", parent epic #1145 CLOSED), NOT cred-decoupling. My §12 + carry-forward had propagated the mislabel. Verified-from-GitHub:
+- #1162 = hosted-distro exploration · #1282 = plugin packaging/distribution · #1278 = Fly hosting → all **distribution-lane**.
+- #1185 = BYO-KEY-MULTI-TENANT (per-user keys + per-user auth/identity) — the identity half is WS-9's actual dependency.
+- #1229 = RECONNECT-WS2 cred model — already RECONNECT-native.
+
+Decision-a kept #1278 OUT (hosting=distribution-lane); #1162 is hosting too → by that same logic it belongs with #1278, not in RECONNECT. **Corrected mapping surfaced to PM** (RECONNECT Phase-0 = #1185-identity + #1229; distribution = #1162+#1282+#1278) — awaiting confirm before building #1185 + fixing §12 + re-pinging Architect. Gap flagged: the buildable cred-decoupling work (PA option-a plan) appears to have no own issue.
+
+Duty-cycle tick fired 07:17 mid-conversation — cron 50daabfb armed (1 job, Gap-C OK); sync clean; inbox empty; the 1 delta memo already actioned. Presence-aware hold on the #1162 thread; carry-forward rewritten to current state.
