@@ -87,3 +87,8 @@ Gameplan: P1 DB-fallback at the binding (small) · P2 extend beyond /intent + co
 - **Phase 3 (capture): partly exists.** `setup.py` stores the user's anthropic key at setup-complete. #1300 `/connect` = the *plugin* equivalent (separate).
 - **Net**: per-user keys resolve end-to-end for the hosted-web path; Phase 1 was the load-bearing change.
 - **Remaining**: (1) **Caddy-gate removal** — PM/Arch decision (#1162 gate); (2) **encrypt-at-rest (#358)** — keys via `KeychainService` (OS keychain on Mac); the *hosted-Linux* backend is the open question; in-#1185-now vs #358-lane = scope call; (3) **end-to-end integration test** (buildable). Next: integration test (unblocked); (1)+(2) surfaced for PM.
+
+### Phase 4/#358 finding — encrypt-at-rest is a REAL hosted-beta gate (midday)
+`KeychainService` uses Python `keyring` (macOS Keychain locally → encrypted). On the **hosted Linux droplet** (headless, no secret service), `keyring`'s default backend is NOT guaranteed encrypted — fail-backend (raises) or a plaintext/file fallback depending on what's installed; `_verify_keyring_backend` raises on init failure. So **per-user keys resolve (Phase 1) but are not safe at rest on the hosted box until #358** (a deliberate encrypted backend / DB-column encryption). → **#358 is a hard dependency for the hosted-beta cutover, not optional**; it's its own substantial SEC build; #1185 depends on it.
+
+**Definition-of-done (#1185)**: resolution + wiring = **functionally complete + tested** (Phase 1). Hosted-beta SAFETY gated on **#358** (encrypt-at-rest) + **Caddy-gate-removal** decision (#1162, PM/Arch). Full-route integration test = tracked (pieces individually tested; e2e needs the test-DB harness). All three surfaced to PM.
