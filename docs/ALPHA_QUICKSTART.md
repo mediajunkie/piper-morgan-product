@@ -29,23 +29,27 @@
 
 ---
 
-## What's New in 0.8.6
+## What's New in 0.8.8
 
-**M0 Conversational Glue** - Piper now converses naturally. Workflows emerge from conversation; commands are shortcuts, not requirements.
+This release covers three completed milestones (M1 Foundation, M2 Conscious Floor, M3 UI Coherence + Integrations) plus the D1/RECONNECT sprint. Highlights:
 
-**Conversational Lens Tracking** - Follow-up queries resolve correctly based on context ("what about next week?").
+**The Conscious Floor (M2)** — Piper no longer falls back to templates for unmatched queries. An LLM-grounded conversational floor answers in Piper's voice, assembled from your blocked items, active sprint, and recent activity. It says "I don't know" when it lacks context rather than fabricating.
 
-**Multi-Intent Handling** - Compound queries handled coherently ("check my calendar and create an issue").
+**Files experience (M3)** — Full file management: search by name/type, in-browser preview, bulk download (zip), drag & drop upload, freeform tags.
 
-**Soft Workflow Invocation** - Piper offers workflows naturally ("Sounds like you might want to set up a meeting...").
+**Slack inbound rebuilt (M3)** — Inbound Slack messages now route to Piper via Socket Mode (first time since Oct 2025). Outbound, DMs, and @-mentions continue to work.
 
-**Repository Management** - Link GitHub repos to projects during setup or in Settings.
+**BYOC credential layer (D1)** — Bring Your Own Credentials: store your API keys locally in your macOS keychain via the Settings UI. No more copy-pasting keys into config files.
 
-**Bug Fixes** - 7 post-launch issues resolved (error messages, auth, workflow polling).
+**Radar as default workspace (D1)** — The Radar view (priority surfacing, blocked items, recent activity) is now the default home rather than a hidden tab.
 
-**Database Migration Required**: Run `alembic upgrade head` after updating.
+**Navigation rationalized (D1)** — History → Radar, Collections → Lists. Labels now match what the features actually do.
 
-See [Release Notes v0.8.6](releases/RELEASE-NOTES-v0.8.6.md) for full details.
+**Home experience improved (D1)** — Full-height chat on home, compose autosave (your draft survives if you navigate away).
+
+**Database Migration Required**: Run `alembic upgrade head` after updating (migrations span M1–D1).
+
+See [Release Notes v0.8.7](releases/RELEASE-NOTES-v0.8.7.md) (M1+M2+M3) and [v0.8.8](releases/RELEASE-NOTES-v0.8.8.md) (D1/RECONNECT) for full details.
 
 ---
 
@@ -253,22 +257,23 @@ After logging in to http://localhost:8001:
 
 ---
 
-## Testing Focus for 0.8.6
+## Testing Focus for 0.8.8
 
 **What's Stable** (light testing recommended):
 - ✅ Setup wizard (GUI and CLI)
 - ✅ Login/authentication
-- ✅ Chat interface
-- ✅ Lists, todos, projects, files
+- ✅ Lists, Todos, Projects management
+- ✅ Files upload/download/preview/tagging
 - ✅ Integration Dashboard and OAuth connections
-- ✅ Windows installation and setup
+- ✅ Slack outbound, DMs, @-mentions
 
 **Where to Focus Testing** (these need your attention):
-- 🔍 **Installation validator**: Run `python scripts/validate_install.py`
-- 🔍 **Windows setup**: Fresh install on Windows systems
-- 🔍 **Error messages**: Trigger errors and check for helpful fix suggestions
-- 🔍 **Lifecycle indicators**: Check that projects and todos show lifecycle state
-- 🔍 **Accessibility**: Keyboard navigation, screen reader compatibility
+- 🔍 **Conscious Floor**: Ask Piper questions it shouldn't know — does it say "I don't have enough context" rather than inventing an answer?
+- 🔍 **BYOC credentials**: Go to Settings, enter your API keys — do they persist across restarts?
+- 🔍 **Radar as default**: Does Radar load on home? Are your blocked items and priorities surfaced correctly?
+- 🔍 **Navigation labels**: History, Collections — are they relabeled Radar and Lists throughout?
+- 🔍 **Compose autosave**: Start typing a message, navigate away, come back — is your draft there?
+- 🔍 **Files experience**: Upload, preview in-browser, bulk-download as zip, add tags and search by them
 
 ---
 
@@ -434,56 +439,45 @@ After `python main.py` starts the server at http://localhost:8001:
 
 ---
 
-## What's Working in 0.8.6
+## What's Working in 0.8.8
 
-✅ **MUX-IMPLEMENT Complete** (0.8.5):
-   - WCAG 2.1 AA accessibility compliance
-   - Design token system v1.1.0
-   - Lifecycle state persistence for projects, todos, work items, features
-   - New Work Items and Project Detail views
+✅ **Conversational AI (M2 Conscious Floor)**:
+   - LLM-grounded floor for unmatched queries — Piper's voice, not templates
+   - Context assembly: blocked items, active sprint, recent activity, calendar
+   - Antecedent resolution ("it" and "that" resolve correctly across turns)
+   - Honest refusal when context is missing (no fabrication)
 
-✅ **Integration Dashboard & OAuth**:
-   - Real-time health status for all integrations
-   - One-click test buttons
-   - OAuth connect/disconnect for Slack and Calendar
-   - Visual status indicators with fix suggestions
+✅ **Files (M3)**:
+   - Search by name and filter by type
+   - In-browser file preview
+   - Bulk download as zip (checkbox select)
+   - Drag & drop upload (multi-file)
+   - Freeform tags with search
+
+✅ **Integrations**:
+   - Slack: inbound via Socket Mode, outbound, DMs, @-mentions
+   - GitHub: issue summarization from live data, repo resolution, lifecycle
+   - Notion: real append_blocks, URL unfurling
+   - Calendar source aggregator
+
+✅ **BYOC & Settings (D1)**:
+   - API keys stored in macOS keychain via Settings UI
+   - Radar as default home workspace
+   - Navigation: History→Radar, Collections→Lists
 
 ✅ **Setup & Onboarding**:
    - GUI setup wizard with visual interface
    - System health checks
    - API key validation (OpenAI, Anthropic, Gemini, Notion)
-   - User account creation
-   - Portfolio onboarding on first greeting
-   - CLI setup wizard (alternative method)
+   - User account creation and portfolio onboarding
 
-✅ **Authentication & Security**:
-   - Multi-user support, JWT auth with bcrypt
-   - Token blacklist with CASCADE delete
-   - Secure password requirements
-   - Session management
+✅ **Core Infrastructure**:
+   - Multi-user support, JWT auth, bcrypt passwords
+   - PostgreSQL via Docker (port 5433), Redis, ChromaDB
+   - Privacy filter and output filtering
+   - 252/252 canonical regression passing (D1 gate)
 
-✅ **Core Features**:
-   - Database (PostgreSQL via Docker) with UUID-based user IDs
-   - File upload and document processing (PDF, DOCX, TXT, MD, JSON)
-   - Knowledge graph, boundary enforcement
-   - Audit logging
-
-✅ **User Interface** (Stable):
-   - Lists, Todos, Projects management with CRUD operations
-   - Files upload/download/delete (10MB max, 5 formats)
-   - Permission system (share resources, role-based access)
-   - Conversational permission commands
-   - Interactive standup assistant
-   - Logout functionality
-   - Breadcrumb navigation and keyboard navigation
-   - ARIA landmarks throughout
-
-✅ **Quality Validation**:
-   - 5307 automated tests passing
-   - CI/CD quality gates
-   - UI stability improvements (638 template tests)
-
-See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for complete status and known limitations.
+See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for current limitations.
 
 ---
 
@@ -498,12 +492,12 @@ See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for complete status and known
 
 ## Remember
 
-This is **alpha software** (0.8.6). Expect bugs. Don't use for production. You're responsible for API costs. See `ALPHA_AGREEMENT_v2.md` for details.
+This is **alpha software** (0.8.8). Expect bugs. Don't use for production. You're responsible for API costs. See `ALPHA_AGREEMENT_v2.md` for details.
 
-**Testing Focus**: Conversational naturalness is the focus. Does Piper feel like a colleague? Do follow-ups, compound queries, and soft offers work naturally?
+**Testing Focus**: Does the Conscious Floor feel honest? Does Piper say "I don't know" when it should? Does the BYOC credential flow work cleanly? Does Radar surface what matters?
 
 ---
 
 **Happy testing!** 🚀
 
-_Last Updated: February 11, 2026_
+_Last Updated: June 20, 2026_
