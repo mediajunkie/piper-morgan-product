@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-20 | pa | memo-pa-to-comms-cc-pm-byoc-narrative-angle-direction-2026-06-20.md | BYOC narrative angle direction — "we built onboarding in the wrong mode" |
 | 2026-06-19 | ? | kickoff-exec-2026-06-19-1160-syndication-automation-own-to-close.md | Sprint assignment → Comms: own #1160 (syndication automation) through to close |
 | 2026-06-19 | ? | kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md | Main-cohort kickoff → write your role-portfolio (pilots passed, framework prove… |
 | 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-comms-cc-pm-pa-1284-your-work-naming-2026-06-19.md | #1284 'Your stuff' naming — working name 'Your work'; hub route post-beta; Comm… |
