@@ -5,6 +5,13 @@ Built on persistent context infrastructure
 Created: 2025-08-21 by Morning Standup MVP Mission
 Uses UserPreferenceManager + SessionPersistenceManager + GitHub integration
 Performance target: <2 seconds, saves 15+ minutes
+
+DEPRECATED (#1289, 2026-06-20): MorningStandupWorkflow is no longer called by
+StandupOrchestrationService. The /api/v1/standup/generate route now delegates to
+StandupAssembler (honest derivation from live Radar EntitySources). This file is
+retained for back-compat re-exports (StandupItem, StandupResult,
+StandupIntegrationError) and will be removed once all test imports are cleaned up.
+Do NOT add new callers of MorningStandupWorkflow.
 """
 
 import time
