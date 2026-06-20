@@ -39,8 +39,20 @@
 - **20:08 — late-18:32 fire (Web portfolio + cross-project knowledge-transfer).** **Web filed** `ROLE-PORTFOLIO-WEB.md` → portfolio wave **5/8** (Comms/Exec/CXO/PPM/Web; remaining Arch/Docs/PA); Web cleanly corrected my kickoff's "#998=website-repo" → it's product-repo (FastAPI), Web↔LD seam named — no PM action. **Calliope (Klatch coordinator) cross-project ask** — xian-cleared direct routing — wanted my battle-tested attention-rollup shape (4 asks). **Wrote + delivered a full knowledge-transfer** to Klatch's `docs/mail/` (`exec-to-calliope-attention-rollup-shape-and-lessons-2026-06-19.md`, committed to Klatch main `278aac5`, my-file-only pathspec — didn't sweep Calliope's untracked state): format (sort-by-demand-on-PM not topic; who's-waiting tags; stale-labels), cadence (engagement-state flip), the sub-decision→own-row answer, and the wisdom (verify-don't-vantage; trust-instrument-not-report; invoke-the-skill). Sent-mirrored to exec/sent; both inbox memos → read/ (cherry-pick cure on the manual-push NON-FF). **Hyper-circle**: we're co-developing the rollup pattern across projects (xian's framing). Next fire = **21:32 STOP/day-close**. Cron `8f2194b1` armed.
 
 ## Memory & briefing surfaces referenced this session
-- (filled at STOP)
+- **Referenced**: `cohort-attention-rollup` skill + the new runbook (the day's multiple full sweeps); `duty-cycle-tick` (the fires, internalized); **methodology-25** (workstream-review cadence — read before kicking off #048); **ROLE-PORTFOLIO-FRAMEWORK** (my Exec portfolio + the main-cohort kickoff). Memory pins — `attention_board_sweep_not_vantage` (the big verify-catches: 6 closed UAT items mis-listed as "awaiting PM"), `careful_git_sync_on_shared_main` (the shared-index tangles → throwaway-worktree cure, until push-to-ref went live), `project_exec_coordinates_more_through_pm` (the role-direction, pinned today), `kickoff_deadlines_must_be_framed_procedurally` (both wave kickoffs), `sprint_membership_is_project_board_not_labels` (the Projects-v2 sprint triage). New: `reference_dispatch_agent`, `project_janus_klatch_cross_project_agents` (Calliope + Janus). XPOLL current.md.
+- **Loaded but not referenced**: most MEMORY.md entries; the large plugin/skill registry churn + MCP connect/disconnect noise.
+- **Wanted but not found**: a first-class cross-project mailbox bridge (I hand-delivered the Calliope reply into the Klatch repo's `docs/mail/` + pushed its main — worked cleanly, but it's bespoke; Janus's new meta-rollup channel may be the durable answer — pending read).
+
+## STOP / Day-close (2026-06-19) — RETROACTIVE (closed 6/20 AM per Step-0 self-heal; the 21:32 STOP was missed to overnight dormancy)
+
+**Day-arc — the heaviest, most generative day of the run.** The Exec role visibly *matured into the coordination layer* PM asked for. Morning: date-roll START (watcher had caught 6/18's dormancy) → CIO thin-dogfood confirmed → **PM's "do more through you" mandate** landed and I ran with it: full sweep-and-verify rollup (caught a 6-item fake-UAT-backlog phantom), the **attention-rollup runbook v1.0** (spec/judgment companion to the skill, + the invoke-don't-wing rule), a **16-issue sprint triage** (Q-Audits + FLYWHEEL, 3 dispositions caught by verify) → **6 sprint kickoffs** dispatched, the role-direction **pinned to memory**, two PM-surfaces resolved (Web-routing, Slack-moot-post-RECONNECT). Afternoon: PM cleared **6 UAT items in real time** (the queue *cleared*, not backlogged); **HOST passed both pilots** → I **launched the main-cohort portfolio wave** (7 roles) + filed my own Exec portfolio; board went **all-clear**. Evening: **Ship #048 workstream review kicked off** (PM-prompted, per methodology-25); **Calliope/Klatch cross-project rollup knowledge-transfer** delivered (the hyper-circle). Infra win: **#1259 push-to-ref went LIVE** → the all-day shared-index NON-FF dance ended.
+
+**Two waves left self-propelling**: portfolio (5/8 filed, HOST passing same-fire) + workstream-048 (kicked off; Comms's memo already in by Sat AM). **The watcher proved itself a 3rd time** — flagged STALE exec 11h at 07:26 Sat (the overnight dormancy), exactly as designed.
+
+**Sign-off**: clean at last commit (`276acc4db`, ~20:28 Fri); all work on origin/main (incl. the cross-repo Klatch delivery). Nothing lost.
+
+<!-- DAY-CLOSED: 2026-06-19 -->
 
 ---
 
-*— Exec (DinP / Opus 4.8), 6/19 START ~07:40 PT.*
+*— Exec (DinP / Opus 4.8), 6/19 START ~07:40 PT, day-closed retroactively 6/20 ~07:30 PT.*
