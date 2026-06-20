@@ -106,3 +106,8 @@ PM moved #1270 → D2 (+ Production milestone), conditioned on making files-vs-d
 - **Tests:** test_files_search_313 placeholder + empty-state assertions updated; 29 files/nav/smoke green; **a real `template.render()` of files.html asserts it self-titles "Documents"** (UI-fix discipline, not text-grep). documents.html parse-checked (DEAD comment-before-extends is valid Jinja).
 - **Deploy:** server cwd IS this worktree + `env.auto_reload=True` (no override in web/startup.py:228) → relabel live on PM's refresh, **no restart** (server up, health 200).
 - **Awaiting PM's re-UAT of the relabeled page** → then close #1297 + D1 → PM cuts 0.8.8.
+
+## D1 CLOSED ✅ — PM re-UAT passed (page reads "Documents")
+PM confirmed the band-aid re-UAT via screenshot (📄 Documents + "Search documents by name…"). **#1297 CLOSED** (forensic fold-in posted, body box checked + STATUS banner): the three gates all PASS — G1 Persistence (#1238 doc store + #1252/#1250 owner-anchoring + radar/standup assemblers), G2 Anti-Flattening (**canonical 252/252**, #1293 fixed), G3 Multi-Tenancy (owner-scoped reads + default-user removed + cross-owner tests). 32/32 D1 items Done; dispositioned out: #1090→Production, #1164→dot-releases (beta-hidden), #1270→D2 (band-aid shipped), #1293→closed. **D1 "Beta design quality" is CLOSED.**
+- **Hand-off:** PM cuts the 0.8.8 alpha via Piper (not Lead's task).
+- **Session arc:** D1-gate clearance (AM) → band-aid (`a15012f33`) → PM UAT catch (page still self-titled "Files") → relabel polish (`345fbb7db`, on main `140dc7784`; documents.html DEAD-marked) → re-UAT pass → #1297 close. Task #26 reconciled (standup P4 done/deferred-tracked: #1288 morning-card, #1289 hollow-retire).
