@@ -1,4 +1,4 @@
-# Alpha tester email — draft v4
+# Alpha tester email — draft v5
 
 **From**: xian (Christian Crumlish)
 **To**: [alpha tester list]
@@ -23,15 +23,15 @@ I've been building something I think you'll find useful and wanted to give you a
 
 **To install:**
 
-I've attached `piper-morgan-skills.zip`. Unzip it and you'll find 5 files — one per skill. Double-click each one, Claude Desktop opens and asks if you want to add it to your library. Click yes. That's it — they'll show up as slash commands in Claude Desktop (Chat, Cowork, and Code).
+I've attached `piper-morgan-skills.zip`. Unzip it and you'll find 5 files — one per skill. Double-click each one, Claude Desktop opens and asks if you want to add it to your library. Click yes. That's it — they'll show up as slash commands in Claude Desktop (Chat, Cowork, and Code). Restart Claude Desktop to pick them up.
 
-If you prefer the terminal:
+If you use Claude Code (the command-line version), there's a one-liner instead:
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/mediajunkie/piper-morgan-product/main/scripts/install-skills.sh | bash
 ```
 
-Restart Claude after installing either way.
+Then restart Claude Code. (This path is Claude Code only — the zip method works everywhere.)
 
 **What I'm looking for:**
 - Do they actually save you time?
