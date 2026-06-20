@@ -109,3 +109,13 @@ PM: "proceed with #358." Investigated → it's a **true greenfield SEC build** (
 - Tests: 2 new (encrypted-at-rest store+retrieve; keychain fallback) + the 7 existing — **9 passed**.
 - **DISCOVERED + FIXED (pre-existing, since #262)**: the `test_users` fixture set `User.id` to a 45-char string vs the UUID `users.id` column → the ENTIRE `test_user_api_key_service.py` was silently red (every test failed at the users INSERT, before reaching any assertion). Fixed (`id=str(uuid4())`). **Open Q for PM**: was this file in CI? If so CI was red on it; if excluded, why? (cf. #1224 pre-existing failures.)
 - **#358 secret-store FLOOR (dimension A) complete** → #1185's hosted-safety encrypt-at-rest gate is now satisfiable. Dimension B (content/PII compliance) remains deferred (M5).
+
+### #358 Dimension B (PM approved carrying on) — STOP/surface: issue target-list is mostly stale (verify-before-extending #4)
+Verified the B "Fields Encrypted" list vs the real schema:
+- `conversations.content` — **DOESN'T EXIST**.
+- `conversation_turns`: real columns are `user_message` + `assistant_response` (NOT user_content/assistant_content).
+- `uploaded_files.content` — **DOESN'T EXIST**; file content is on disk at `storage_path` (→ storage-layer encryption, separate problem).
+- `patterns.pattern_data` — **JSON** (not Text).
+- `artifacts.content` (Text) — a real PII target **NOT in the issue's list**.
+Real free-text DB PII: `conversation_turns.user_message` + `assistant_response`, `artifacts.content`, `conversations.preview`. No raw text-search on them → transparent TypeDecorator encryption is safe.
+**Surfaced 2 scope calls to PM**: (1) JSONB/JSON structured columns (context/entities/topics/pattern_data) — encrypting breaks queryability (GIN indexes) — in or out? (2) on-disk file content — storage-layer, separate? **Rec**: scope B to the free-text DB columns (user_message/assistant_response/artifacts.content/preview) via @encrypted_column TypeDecorator + zero-downtime migration; defer JSONB + file-content. Gate-removal-safety investigation queued (task #35). Awaiting PM on the scope.
