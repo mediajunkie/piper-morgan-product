@@ -31,15 +31,16 @@ SKILL_MODULE = "services.integrations.mcp.skills.standup_workflow_skill"
 
 @contextmanager
 def _patched_skill_deps():
-    """Patch all the skill's heavy dependencies for in-process instantiation."""
+    """Patch all the skill's heavy dependencies for in-process instantiation.
+
+    #1289: MorningStandupWorkflow / StandupOrchestrationService /
+    SessionPersistenceManager are no longer imported by the skill; patches removed.
+    """
     with (
-        patch(f"{SKILL_MODULE}.MorningStandupWorkflow"),
-        patch(f"{SKILL_MODULE}.StandupOrchestrationService"),
         patch(f"{SKILL_MODULE}.GitHubDomainService"),
         patch(f"{SKILL_MODULE}.SlackDomainService"),
         patch(f"{SKILL_MODULE}.NotionDomainService"),
         patch(f"{SKILL_MODULE}.UserPreferenceManager"),
-        patch(f"{SKILL_MODULE}.SessionPersistenceManager"),
     ):
         yield
 
@@ -60,64 +61,59 @@ def _make_skill():
 
 
 class TestDefect1Instantiation:
-    """Skill construction no longer raises TypeError."""
+    """Skill construction is clean after #1289 swap.
 
-    def test_skill_instantiates_without_typeerror(self):
-        """Real-dep construction succeeds (no patches): smoke test that the
-        wiring fix is genuine, not just test-fixture cleverness.
+    #1289 retired MorningStandupWorkflow + StandupOrchestrationService +
+    SessionPersistenceManager from the skill. The old defect was a TypeError
+    because SessionPersistenceManager needed preference_manager; the fix was
+    sharing one UserPreferenceManager. #1289 goes further: these three classes
+    are no longer imported, so the TypeError can never recur.
+    """
 
-        Note: We patch the heavy domain-service constructors but allow the
-        real UserPreferenceManager + SessionPersistenceManager classes to
-        construct so we exercise the actual coupling fix.
-        """
+    def test_skill_instantiates_without_error(self):
+        """Construction with only domain services patched must not raise."""
         from services.integrations.mcp.skills.standup_workflow_skill import (
             StandupWorkflowSkill,
         )
 
         with (
-            patch(f"{SKILL_MODULE}.MorningStandupWorkflow"),
-            patch(f"{SKILL_MODULE}.StandupOrchestrationService"),
             patch(f"{SKILL_MODULE}.GitHubDomainService"),
             patch(f"{SKILL_MODULE}.SlackDomainService"),
             patch(f"{SKILL_MODULE}.NotionDomainService"),
         ):
-            # UserPreferenceManager + SessionPersistenceManager are NOT patched
-            # — so if the wiring fix regressed, this would raise TypeError.
+            # UserPreferenceManager NOT patched — exercises real wiring in _WorkflowShim.
             skill = StandupWorkflowSkill()
 
         # Skill exists, all expected services initialized
         assert skill.workflow is not None
-        assert skill.orchestration is not None
+        assert skill.workflow.preference_manager is not None
         assert skill.github_service is not None
         assert skill.slack_service is not None
         assert skill._notion_service is not None
+        # orchestration is gone (#1289)
+        assert not hasattr(skill, "orchestration")
 
-    def test_session_persistence_receives_preference_manager(self):
-        """The same UserPreferenceManager instance is shared between
-        workflow.preference_manager and SessionPersistenceManager."""
+    def test_workflow_shim_holds_preference_manager(self):
+        """The _WorkflowShim wraps a UserPreferenceManager so preference helpers work."""
         from services.integrations.mcp.skills.standup_workflow_skill import (
             StandupWorkflowSkill,
+            _WorkflowShim,
         )
 
         with (
-            patch(f"{SKILL_MODULE}.MorningStandupWorkflow") as MockWorkflow,
-            patch(f"{SKILL_MODULE}.StandupOrchestrationService"),
             patch(f"{SKILL_MODULE}.GitHubDomainService"),
             patch(f"{SKILL_MODULE}.SlackDomainService"),
             patch(f"{SKILL_MODULE}.NotionDomainService"),
             patch(f"{SKILL_MODULE}.UserPreferenceManager") as MockPrefMgr,
-            patch(f"{SKILL_MODULE}.SessionPersistenceManager") as MockSessionMgr,
         ):
             pref_instance = MagicMock()
             MockPrefMgr.return_value = pref_instance
 
-            StandupWorkflowSkill()
+            skill = StandupWorkflowSkill()
 
-            # SessionPersistenceManager constructed with the pref instance as kwarg
-            MockSessionMgr.assert_called_once_with(preference_manager=pref_instance)
-            # MorningStandupWorkflow's preference_manager kwarg is the same instance
-            workflow_kwargs = MockWorkflow.call_args.kwargs
-            assert workflow_kwargs["preference_manager"] is pref_instance
+        # _WorkflowShim stores the pref instance; helpers read through .preference_manager
+        assert isinstance(skill.workflow, _WorkflowShim)
+        assert skill.workflow.preference_manager is pref_instance
 
 
 # -------------------------------------------------------------------
