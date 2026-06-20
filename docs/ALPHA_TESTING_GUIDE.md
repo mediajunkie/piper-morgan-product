@@ -1,7 +1,7 @@
 # Piper Morgan Alpha Testing Guide
 
-**Version**: 0.8.6
-**Last Updated**: March 4, 2026
+**Version**: 0.8.8
+**Last Updated**: June 20, 2026
 **For**: Alpha Testers
 
 ---
@@ -9,8 +9,8 @@
 ## Returning Tester? Start Here
 
 If you already have Piper set up and running, skip straight to what matters:
-- **[What's New in 0.8.6](#whats-new-in-086)** - Conversational Glue — Piper now talks like a colleague
-- **[What to Test in 0.8.6](#what-to-test-in-086)** - Priority testing areas for this release
+- **[What's New in 0.8.8](#whats-new-in-088)** - Conscious Floor, BYOC credentials, Radar, Files, nav overhaul
+- **[What to Test in 0.8.8](#what-to-test-in-088)** - Priority testing areas for this release
 - **[Troubleshooting](#chapter-3-troubleshooting)** - If something isn't working
 
 ---
@@ -91,22 +91,22 @@ See `ALPHA_AGREEMENT_v2.md` for complete legal terms.
 
 ---
 
-## What's New in 0.8.6
+## What's New in 0.8.8
 
-**M0 Conversational Glue** - Piper now converses naturally instead of waiting for commands:
+v0.8.8 covers four milestones: M1 Foundation, M2 Conscious Floor, M3 UI Coherence + Integrations, and D1/RECONNECT.
 
-- **Conversational Lens Tracking (#763)**: Piper remembers what you're talking about. Follow-ups like "what about next week?" resolve correctly.
-- **Multi-Intent Handling (#764)**: Compound queries like "check my calendar and create an issue" handled coherently.
-- **Natural Slot Filling (#765)**: When Piper needs info, it asks naturally instead of interrogating.
-- **Soft Workflow Invocation (#767)**: Piper offers workflows conversationally ("Sounds like you might want to set up a meeting...") — no commands needed.
-- **Narrative System (#766)**: Tone adapts to your relationship stage. No more repeated "Is that your main project?" question.
-- **Repository Management**: Link GitHub repos to projects during onboarding or in Settings.
-- **Bug Fixes**: 7 post-launch bugs resolved (error messages, auth, workflow polling).
-- 7,358 automated tests passing (up from 5,253).
+- **The Conscious Floor (M2)**: Piper no longer falls back to templates for unmatched queries. An LLM-grounded conversational floor answers in Piper's voice, assembled from your blocked items, active sprint, and recent activity. It says "I don't know" when context is missing — no fabrication.
+- **BYOC credential layer (D1)**: Store your API keys locally in your macOS keychain via the Settings UI. No more copying keys into config files.
+- **Radar as default workspace (D1)**: The Radar view (priority surfacing, blocked items, recent activity) is now the default home rather than a hidden tab.
+- **Navigation rationalized (D1)**: History → Radar, Collections → Lists. Labels now match what the features actually do.
+- **Home experience improved (D1)**: Full-height chat on home, compose autosave (your draft survives if you navigate away).
+- **Files experience (M3)**: Search by name and filter by type, in-browser preview, bulk download as zip, drag & drop upload, freeform tags with search.
+- **Slack inbound rebuilt (M3)**: Inbound Slack messages now route to Piper via Socket Mode.
+- 252/252 canonical regression tests passing (D1 gate).
 
-**Database Migration Required**: Run `alembic upgrade head` after updating.
+**Database Migration Required**: Run `alembic upgrade head` after updating (migrations span M1–D1).
 
-See [Release Notes v0.8.6](releases/RELEASE-NOTES-v0.8.6.md) for full details.
+See [Release Notes v0.8.7](releases/RELEASE-NOTES-v0.8.7.md) (M1+M2+M3) and [v0.8.8](releases/RELEASE-NOTES-v0.8.8.md) (D1) for full details.
 
 <details>
 <summary><strong>Previous release (0.8.5.3)</strong></summary>
@@ -400,19 +400,19 @@ Click the button to go to the login page and start using Piper Morgan.
 
 This chapter covers what to test and how. If you're already set up, **start here**.
 
-## What to Test in 0.8.6
+## What to Test in 0.8.8
 
-Conversational naturalness is the focus of this release. **Does Piper feel like a colleague, not a chatbot?**
+The conscious floor and BYOC credential layer are the focus. **Does Piper say "I don't know" when it should? Do your API keys persist across restarts?**
 
 ### Priority Testing Areas
 
-1. **Natural Conversation** - Just chat with Piper. Do workflows emerge naturally without explicit commands?
-2. **Follow-ups** - Ask about your calendar, then say "what about next week?" — does Piper understand?
-3. **Compound Queries** - Try "check my calendar and create an issue about the API bug" in one message
-4. **Soft Offers** - When you mention a meeting topic, does Piper offer to create one naturally?
-5. **Onboarding** - Start fresh and go through portfolio setup — is the tone right?
-6. **Repository Linking** - Settings → Projects → link a GitHub repo to a project
-7. **Error Messages** - When things fail, are messages conversational (not raw Python errors)?
+1. **Conscious Floor** - Ask Piper something it shouldn't know — does it say "I don't have enough context" rather than inventing an answer?
+2. **BYOC credentials** - Go to Settings, enter your API keys — do they persist across server restarts?
+3. **Radar as default** - Does Radar load on home? Are your blocked items and priorities surfaced correctly?
+4. **Navigation labels** - Are History/Collections now labeled Radar/Lists consistently throughout the UI?
+5. **Compose autosave** - Start typing a message, navigate away, come back — is your draft still there?
+6. **Files experience** - Upload a file, preview it in-browser, bulk-download as zip, add tags and search by them
+7. **Slack inbound** - If Slack is connected, send a message to Piper — does it arrive and get a response?
 
 ### Basic Functionality Tests
 
@@ -804,7 +804,7 @@ SELECT * FROM users;
 
 ## Questions?
 
-Remember: This is alpha software (version 0.8.6). The GUI setup wizard handles most complexity, but you're still testing early-stage software. Expect bugs and incomplete features.
+Remember: This is alpha software (version 0.8.8). The GUI setup wizard handles most complexity, but you're still testing early-stage software. Expect bugs and incomplete features.
 
 If guided setup seems overwhelming, a hosted version is planned for later in 2026.
 
@@ -821,5 +821,5 @@ Thank you for being an early adopter and helping us improve! 🚀
 
 ---
 
-_Last updated: March 4, 2026_
-_Software version: 0.8.6_
+_Last updated: June 20, 2026_
+_Software version: 0.8.8_
