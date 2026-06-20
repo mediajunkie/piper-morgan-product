@@ -1,29 +1,24 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-20 ~13:35 PT (after #358 secret-store floor shipped). Sole lead.
+**Updated**: 2026-06-20 ~15:10 PT (after #358 Dimension B code-complete). Sole lead.
 
-## ▶ NEXT — prioritization call (surfaced to PM)
-The BYO-key hosted floor is built (#1185 + #358-floor done). Next (PM to pick):
-- **Caddy-gate removal** (#1162) — the LAST #1185 hosted-beta gate; PM + Arch decision (JWT identifies users now).
-- **#358 dimension B** — content/PII encryption (conversations/files/patterns) + ADR-043; the M5-compliance bulk (reuses FieldEncryptionService).
-- **Another RECONNECT WS** (#1229 WS2, etc.).
+## ▶ NEXT — gate-removal-safety investigation (task #35, agreed next-after-B)
+Read-only investigation: which routes require vs optional auth (`/intent` is `get_current_user_optional` → reachable without the gate); what's exposed if the Caddy blanket basic-auth gate is removed; rate-limiting/abuse protection; whether auth must be made **required** OR BYO-key gates access. → bring PM + Arch a clear go/no-go. The REMOVAL *action* ties to the public-distribution milestone; the investigation is now.
+
+## ▶ PENDING PM (non-blocking)
+- **#358 close**: code-complete vs hold-for-deploy (LD leans *hold* — P0 compliance not truly satisfied until `ENCRYPTION_MASTER_KEY` + backfill land on alpha).
 
 ## ▶ DONE (2026-06-20 — big session)
-- **#1299 — 0.8.8 LIVE on alpha** (3-layer fix: bookworm + pyobjc + never-run migrate).
-- **#1162 reconciliation + board** (#1162→SKUNK; #1300 BYOC-CRED-DECOUPLE filed→M5; §12/decisions.log/Architect).
-- **#1185 (per-user keys)** — Phase 1 done+tested (`resolve_request_api_key`, /intent wired, 12 tests). Functionally complete; encrypt-at-rest gate now MET via #358. Last gate: Caddy-gate (#1162).
-- **#358 secret-store FLOOR (A) — DONE+tested+committed (`99299f6f1`)**: P1 `FieldEncryptionService` (AES-256-GCM + HKDF, 9 tests); P2 encrypted `user_api_keys.encrypted_secret` + migration `a358encsecret` (applied+validated) + `UserAPIKeyService` integration + keychain fallback (9 tests). Per-user keys encrypt-at-rest, portable to hosted Linux. Dimension B (content/PII) + ADR-043 deferred (M5).
-- Pre-existing fixture bug fixed (`test_users` string-id vs UUID, silently red since #262); CI-coverage chip spun off (task_4cd9f9bc).
-- Agent-360 retired (false-positive).
+- #1299 → **0.8.8 LIVE on alpha**; #1162 reconciliation + board (#1300 filed); #1185 Phase 1 (per-user keys, functionally complete).
+- **#358 secret-store FLOOR (A)** — `FieldEncryptionService` + encrypted `user_api_keys` (`99299f6f1`).
+- **#358 Dimension B — CODE-COMPLETE**: `EncryptedString` TypeDecorator (P1, 13 tests) → 4 content columns (P2, 3 tests, **no DDL**) → zero-downtime backfill (P3, 3 tests) → perf+close-out (P4). **112 regression green**. Commits `24d8b2044`/`cd591b12f`/`e0744131d`. Deferred → **#1305** (JSONB) + **#1306** (file-content). #358 evidence comment posted.
 
 ## ▶ STATE / refs
-- **alpha** on 0.8.8 (DO droplet; runbook `docs/internal/operations/alpha-deployment-runbook.md`).
-- **#358 code**: `services/security/field_encryption.py` + `user_api_key_service.py` + `models.py` (encrypted_secret) + migration `a358encsecret`. `ENCRYPTION_MASTER_KEY` env (base64 32B) — **MUST set on the hosted box**; `docs/security/key-management.md`.
-- **#1185 code**: `services/llm/request_key.py` (`resolve_request_api_key`) + `intent.py:338`.
-- RECONNECT 9 WS + Phase-0 = #1185(done)+#1229+ADR-070. Sequence: RECONNECT → M4 → M5 → 0.9.0.
+- **alpha** on 0.8.8 (does NOT yet carry #358-B — rides the next deploy). `ENCRYPTION_MASTER_KEY` (base64 32B) must be set on the box; backfill = `scripts/backfill_encrypt_content_358b.py`.
+- **#358-B code**: `services/security/encrypted_types.py` (`EncryptedString`, `MARKER="PMENC1:"`) + `models.py` (4 cols) + the backfill script. Gameplan `dev/2026/06/20/358-dimension-b-gameplan.md`.
+- **#1185 last gate**: Caddy-gate (#1162) — the investigation above informs it.
 - **Cron 50daabfb** armed. Mailbox = `scripts/mail-send.sh`.
 
-## ▶ Methodology this session
-- **Investigate-before-extending** repeatedly paid off: caught the #1162 mislabel; #1185 was 90% pre-built; #358 greenfield; the pre-existing fixture bug.
-- TDD for security-critical crypto (FieldEncryptionService 9 tests; tamper / per-field / no-leak).
-- Postpone-with-a-specific-reason (PM 6/20): deferred #358 dimension B (separable/M5) + the #1185 full-route e2e test (DB-harness) — both tracked.
+## ▶ Methodology
+- **Investigate-before-extending** caught the #358-B target-list staleness (3 of 5 issue columns didn't exist; `pattern_data` is JSON) — the 4th such catch this session.
+- TDD throughout; marker-prefix design → mixed-state-safe zero-downtime migration; **no DDL** (impl=Text → DB type unchanged).
