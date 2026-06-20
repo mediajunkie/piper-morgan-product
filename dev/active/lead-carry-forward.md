@@ -8,6 +8,7 @@
 - **Distribution-lane (M5)** = **#1162 + #1282** (plugin packaging) **+ #1278** (Fly) — all hosting/distribution (consistent with decision-a keeping #1278 out).
 - Gap: the buildable cred-decoupling work (PA option-a plan, `dev/2026/06/07/pa-option-a-decouple-credential-plan-2026-06-07.md`) has no own issue — may need one.
 - **On PM confirm**: fix §12 + re-ping Architect (ADR-070 phasing memo referenced #1162) + start **#1185 identity core**.
+- **#1185 prep DONE (2026-06-20)**: verified `user_api_keys` (`models.py:190`) covers Anthropic → no schema change for the LLM key; gap = `clients.py`→`LLMConfigService.get_api_key("anthropic")` (instance-level, no user_id) → `llm_config_service` env/keychain. Core change = user_id-aware key resolution (user_api_keys first, instance fallback). **May split**: identity (RECONNECT) vs per-user-LLM-key (hosted-beta) — #1162 mapping clarifies. Gameplan + audit-gate await confirm.
 
 ## ▶ STATE
 - **#1299 DONE — 0.8.8 LIVE + healthy on alpha** (07:34 PT). version 0.8.8, sqlite 3.40.1, schema at head (`a1273coretables`), /health 200. Three layered fixes: pyobjc markers + Dockerfile bullseye→bookworm + the never-run migrate (DB was 7 behind — alembic.ini hardcodes localhost:5433). Fix on main + cherry-picked to production (`5401a139c`). (a)+(b) folded into #1299 (kept OPEN). PA notified (`940837b1c`). Runbook corrected (the broken migrate-mitigation). Rollback assets retained on droplet.
