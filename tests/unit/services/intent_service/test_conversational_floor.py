@@ -296,6 +296,20 @@ class TestConversationalFloorSystemPrompt:
         assert "what can you do" not in prompt.lower()
         assert "sorry" not in prompt.lower()
 
+    def test_addendum_answers_orientation_queries_1293(self):
+        """#1293: the capabilities prohibition carries an 'unless asked' carve-out, so the
+        floor answers orientation questions directly instead of deflecting. (Canonical Q4
+        'How do I get help?' was a 6/9 marginal that deflected to 'what are you working
+        on?'.) The behavioral test is the Tier-2 canonical judge (Q4-Identity); this cheap
+        guard keeps the carve-out from silent revert in CI, where the Tier-2 judge does not run."""
+        # normalize whitespace — the prompt's source line-wrapping is incidental (the LLM
+        # collapses it; a phrase like "what are you working on" can wrap mid-source-line)
+        prompt = " ".join(FLOOR_SYSTEM_PROMPT_ADDENDUM.lower().split())
+        assert "orientation question" in prompt
+        assert "how do i get help" in prompt
+        # the prompt must name the deflection failure mode it has to avoid
+        assert "what are you working on" in prompt
+
 
 class TestConversationalFloorForUnhandledExecution:
     """Floor should also handle unhandled EXECUTION actions (Path B)."""
