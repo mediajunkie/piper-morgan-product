@@ -80,3 +80,10 @@ Gameplan: P1 DB-fallback at the binding (small) · P2 extend beyond /intent + co
 - Tests: `tests/unit/services/llm/test_request_key_resolve_1185.py` (6 — resolver matrix + rail-wiring proving a stored key reaches a real Anthropic client). **12 passed** (incl. #1162 regression). `intent.py` imports clean.
 - STOP-check (session availability) resolved: session via AsyncSessionFactory at the binding site.
 - Next: Phase 2 — extend the binding beyond /intent (2a) + investigate JWT-issuance-for-hosted-testers / Caddy-gate (2b, surface for PM+Arch — #1162 gate territory).
+
+### Phase 2 investigation — core essentially done; 2 decisions remain (midday)
+- **2a (extend beyond /intent): NO-OP.** `/intent` is the ONLY LLM-invoking route; every other `LLMClient` use (floor, intent_service, analyzers) runs *under* `process_intent` → already on Phase-1's binding. `setup.py` only *stores* keys (line ~867); the LLMClient mention there is a comment, not a call.
+- **2b (auth): EXISTS.** `web/api/routes/auth.py` — full JWT: `/login`→`generate_access_token`→`auth_token` cookie, `/refresh`, `/logout`. The "no token flow" STOP is moot.
+- **Phase 3 (capture): partly exists.** `setup.py` stores the user's anthropic key at setup-complete. #1300 `/connect` = the *plugin* equivalent (separate).
+- **Net**: per-user keys resolve end-to-end for the hosted-web path; Phase 1 was the load-bearing change.
+- **Remaining**: (1) **Caddy-gate removal** — PM/Arch decision (#1162 gate); (2) **encrypt-at-rest (#358)** — keys via `KeychainService` (OS keychain on Mac); the *hosted-Linux* backend is the open question; in-#1185-now vs #358-lane = scope call; (3) **end-to-end integration test** (buildable). Next: integration test (unblocked); (1)+(2) surfaced for PM.
