@@ -76,3 +76,12 @@ PM finished the walk-through (last two issues) then redirected to D1 closure.
 - **PA memo sent** (PM ask) via the migrated **`mail-send.sh`** (first use of the push-to-ref bridge — `pushed d43790790 → origin/main ✓`, verified by content): heads-up that the MCP standup-skill (`standup_workflow_skill.py`) still calls the hollow `MorningStandupWorkflow` → migrate to the honest engine per **#1289**, sooner-rather-than-later.
 
 Cron `50daabfb` armed (survived compaction; CronList-verified). Server 36720. Next: PM's D1-closure answers (3 dispositions + gate format) → fill gates → close D1.
+
+## D1-closure walk-through (with PM) + #1164 beta-honesty fix
+PM home, walking the D1 dispositions one at a time. Board-state correction (PM: *"we don't use Iteration! We use the custom `sprint` field"* — memory `feedback_sprint_membership` corrected):
+- **#1090** — NOT in D1 (no `sprint` field); milestone **Production** (1.0). My earlier "3 D1 issues incl. #1090" framing was off a stale MVP read. No action — correctly placed. PM confirmed moving/keeping it in Production.
+- **The real D1-sprint issues are #1164 + #1270** (both `sprint="D1 - Beta design quality"`, MVP, Sprint Backlog).
+- **#1293** — PM triaged into D1 (no objection). I'll fix it by making the "how do I get help" floor response genuinely answer (not score-game the non-deterministic judge), then re-verify. D1-close now folds in the #1293 floor fix + a re-verify.
+- **#1164** — PM disposition: postpone the private-session **feature** to dot-releases (PM moving it; gated on #1089 + a design call), and ensure the toggle hides/degrades for beta. **Shipped the beta-hide (`98f1b60a2`):** `history_sidebar.html` `.history-privacy-footer` now `hidden` (markup retained → sidebar JS unaffected; re-enable = remove `hidden`); `home.html` stub flagged inert + #1164/#1089 breadcrumb; `test_privacy_footer_hidden_for_beta_1164` added (183 template tests green). Chose hide over degrade (simplest, no misleading copy; CXO can swap to "coming soon"). Commented #1164 (stays open). The trust risk — a clickable no-op privacy control misleading beta users — is closed for beta.
+
+**D1-close remaining:** #1270 disposition (next) → #1293 floor fix + re-verify → 3-gate sign-off (format TBD by PM) → close.
