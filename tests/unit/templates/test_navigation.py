@@ -1,3 +1,13 @@
+# ⚠️ DEAD-CODE TESTS as of 2026-06-19 — this whole suite tests
+# templates/components/navigation.html, which is itself DEAD: no template includes it; the live
+# nav is templates/components/nav_rail.html (via app_shell, #1280). These tests pass only because
+# the dead file still exists on disk — they verify NO user-facing navigation. Do not extend them,
+# and do not "fix" the live nav by editing navigation.html to satisfy them. They retire together
+# with the dead file — see tracking issue #1298.
+#
+# NOTE: test_documents_and_files_both_present (below) encodes a SUPERSEDED decision. The live nav
+# (nav_rail.html) collapsed Documents+Files into a single "Documents" surface via #1270's beta
+# band-aid (commit a15012f33). The assertion here reflects the OLD dead-file state, not current UX.
 """
 Tests for navigation component (#420 MUX-NAV-UTILITY).
 
