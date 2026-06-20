@@ -1,6 +1,6 @@
 # Alpha Deployment Runbook
 
-**Status**: STUB — deployment mechanism to `alpha.pipermorgan.ai` needs to be confirmed and documented by Lead Dev.
+**Status**: STUB — deploy sequence on the Droplet needs to be confirmed and documented by Lead Dev.
 **Created**: June 19, 2026 (PA)
 **Last Updated**: June 19, 2026
 
@@ -10,40 +10,44 @@
 
 - **Production branch** (`origin/production`) is the stable release surface. As of v0.8.8, it tracks the tagged release commit.
 - **`alpha.pipermorgan.ai`** is the hosted alpha instance where testers access Piper Morgan without a local install.
-- The deployment mechanism that connects a `production` branch push to a live update at `alpha.pipermorgan.ai` is **not yet documented** and may not be automated.
+- **Hosting**: DigitalOcean Droplet (PM-owned). SSH credentials and droplet access are with PM (xian).
+- The deploy sequence on the droplet (git pull, alembic, restart) is not yet documented.
 
 ---
 
-## What we need Lead Dev to confirm
+## What we need Lead Dev to confirm and document
 
-1. **Where is it hosted?** (Fly.io, Railway, Render, EC2, other?)
-2. **How is it triggered?** Does a push to `production` auto-deploy, or is there a manual `fly deploy` / equivalent step?
-3. **What are the environment variables?** `ANTHROPIC_API_KEY`, `POSTGRES_*`, `JWT_SECRET_KEY`, etc. — where are these stored for the alpha instance?
-4. **Database migrations**: does `alembic upgrade head` run automatically or manually at deploy time?
-5. **Is there a health check URL?** Something like `https://alpha.pipermorgan.ai/health` we can hit post-deploy?
+1. **SSH / access**: how Lead Dev (and future agents) SSHs in — key, IP, user.
+2. **Deploy sequence on the droplet**: `git pull origin production`, `pip install`, `alembic upgrade head`, server restart command (systemd? screen? nohup?).
+3. **Environment variables**: are they in a `.env` file on the droplet, or set via droplet console? What vars are needed (`ANTHROPIC_API_KEY`, `POSTGRES_*`, `JWT_SECRET_KEY`, etc.)?
+4. **Database**: is Postgres running on the droplet itself, or external (managed DB)?
+5. **Process management**: how is `main.py` kept running — systemd service, screen session, supervisor?
+6. **Health check URL**: `https://alpha.pipermorgan.ai/health` (or equivalent) to verify deploy succeeded.
+7. **Domain / reverse proxy**: how does `alpha.pipermorgan.ai` resolve to the droplet — nginx? Caddy? Direct port 8001?
 
 ---
 
 ## Release → Deploy sequence (current best understanding)
 
-Until the above is confirmed, the sequence for cutting a release to alpha is:
+Steps 1–2 are done as part of the release runbook. Step 3 is the gap.
 
 ```bash
-# 1. Tag and push release (done as part of release runbook)
+# 1. Tag and push release (complete — done for v0.8.8)
 git tag -a v0.8.X -m "Release v0.8.X — [description]"
-git push origin main
-git push origin v0.8.X
-git push origin HEAD:production --force   # advance production branch
+git push origin main && git push origin v0.8.X
+git push origin HEAD:production --force
 
-# 2. Create GitHub Release
+# 2. Create GitHub Release (complete — done for v0.8.8)
 gh release create v0.8.X --title "..." --notes-file docs/releases/RELEASE-NOTES-v0.8.X.md --latest
 
-# 3. Deploy to alpha.pipermorgan.ai
-# [MECHANISM UNKNOWN — see Lead Dev confirmation above]
-# Likely one of:
-#   fly deploy --config fly.toml          # if Fly.io
-#   git push heroku production:main        # if Heroku
-#   [automatic via CD trigger on production branch push]
+# 3. Deploy to Droplet — SEQUENCE TO BE CONFIRMED BY LEAD DEV
+# ssh <user>@<droplet-ip>
+# cd /path/to/piper-morgan-product
+# git pull origin production
+# source venv/bin/activate
+# pip install -r requirements.txt        # if deps changed
+# alembic upgrade head                   # if migrations pending
+# [restart server process]
 ```
 
 ---
