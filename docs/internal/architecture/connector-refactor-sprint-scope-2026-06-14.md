@@ -194,3 +194,21 @@ A 5-agent audit cascade independently verified every claim in the 12 RECONNECT i
 **Most important finding — grounding gap (→ Arch, for the WS-5 ADR):** the issues/scope don't cite the ADR corpus that governs them. **ADR-058** (Multi-Tenancy Isolation) already settled the WS-2/7/9 cred/OAuth/user-scoping model — much of RECONNECT is *finishing ADR-058*, not greenfield; cite it so Arch doesn't re-derive. **ADR-001** supports the MCP-consumer posture. **ADR-052** (tool-based MCP, no separate servers) must be reconciled with "external MCP server owns auth." The §0 MCP decision should also be appended to `decisions.log` (reinstated 6/13; this is its exact use case).
 
 **New latent bug (out of #1223/#1234 scope, filed separately):** the `/{conversation_id}/turns` display endpoint (`web/api/routes/conversations.py:182`, default `limit=50`, **no offset param**) returns the *oldest* 50 turns of a >50-turn conversation — same wrong-window shape as #1223, lower severity (display, not LLM context).
+
+---
+
+## 12. BYOC reconciliation + sequencing decision (a) — PM-ratified 2026-06-20
+
+After PA's Skunkworks BYOC Phase-2a scoping (2026-06-19: the `byoc-stack-2026-06-19.html` / `byoc-nearterm-work-2026-06-19.html` diagrams + the ratified identity decision), Lead Dev + PM reconciled RECONNECT against it. This **resolves the §8 parked hook** ("D7 OQ-1 lands when Skunkworks BYOC Phase 2a scopes").
+
+**Boundary:**
+- **RECONNECT owns** the connector framework (WS1–WS8) + the BYOC-identity-*keying* for connectors (WS9).
+- **The BYOC backend owns** the hosting + multi-tenant identity/auth/session substrate: **#1278** (Fly deploy), **#1185** (UUID-bearer auth + per-user identity/session/data/knowledge isolation — *finishing ADR-058*), **#1162** (cred-decoupling).
+
+**Decision (a) — PM-ratified 2026-06-20:** the BYOC backend *foundation* — **#1162 (cred-decoupling, "unblocks everything") + the #1185 identity core** — is pulled **INTO RECONNECT as its Phase-0/1 foundation** (vs. sequencing RECONNECT after a separate BYOC sprint). Rationale: they are the substrate the whole connector refactor sits on; splitting them across sprints invites exactly the config-drift RECONNECT exists to kill. **#1278 (Fly hosting) stays distribution-lane** — it's a hosting concern, not a connector-framework one. **PM is reassigning #1162 + #1185 onto the RECONNECT sprint.**
+
+**WS-9 reframe:** identity is now a **UUID-bearer issued at first connect** (#1185, MVP) → email + magic-link (1.0). So WS-9 (#1233) is no longer "merge legacy web `a25db09c` / Slack `009afc8c`" — it becomes **"key connector config to the BYOC identity model,"** a *downstream consumer* of #1185. The two legacy records are a migration detail, not the WS core.
+
+**Updated phasing:** Phase 0 (Arch ADR-070 + **#1162** cred-decoupling + the **#1185** identity core) → Phase 1 (WS1 config store + WS2 creds, on the BYOC identity) → Phase 2 (WS3 resolution + WS4 degradation) → Phase 3 (WS5 protocol ports + WS6 connect-UX + WS7 robustness + WS8 native→MCP migration).
+
+**Next:** loop Architect — (a) shapes ADR-070's phasing + makes #1162/#1185 explicit Phase-0/1 dependencies. Recorded in `decisions.log`.
