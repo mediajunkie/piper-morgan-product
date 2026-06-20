@@ -206,6 +206,11 @@ class UserAPIKey(Base):
     )  # Issue #262 - FK restored with UUID
     provider = Column(String(50), nullable=False)  # openai, anthropic, github, etc
     key_reference = Column(String(500), nullable=False)  # keychain identifier
+    # #358: AES-256-GCM encrypted-at-rest copy of the secret, portable off the OS
+    # keychain onto the hosted Postgres (the droplet has no keychain). Nullable —
+    # legacy/local-dev rows carry only key_reference. Encrypted via FieldEncryptionService
+    # (context "user_api_keys.secret"); see services/security/field_encryption.py.
+    encrypted_secret = Column(Text, nullable=True)
 
     # Key metadata
     is_active = Column(Boolean, default=True, nullable=False)

@@ -20,6 +20,7 @@ from services.database.models import UserAPIKey
 from services.infrastructure.keychain_service import KeychainService
 from services.security.api_key_validator import APIKeyValidator
 from services.security.audit_logger import Action, audit_logger
+from services.security.field_encryption import DecryptionError, FieldEncryptionService
 
 logger = logging.getLogger(__name__)
 
@@ -27,16 +28,24 @@ logger = logging.getLogger(__name__)
 class UserAPIKeyService:
     """Service for managing user-specific API keys with keychain storage"""
 
-    def __init__(self, keychain_service: Optional[KeychainService] = None):
+    def __init__(
+        self,
+        keychain_service: Optional[KeychainService] = None,
+        field_encryption_service: Optional[FieldEncryptionService] = None,
+    ):
         """
         Initialize user API key service.
 
         Args:
             keychain_service: Optional keychain service for testing
+            field_encryption_service: Optional encryptor for at-rest DB storage (#358).
+                None (no ENCRYPTION_MASTER_KEY) → keychain-only (today's local-dev path).
         """
         self._keychain = keychain_service or KeychainService()
         self._llm_config = LLMConfigService()
         self._validator = APIKeyValidator()
+        # #358: encrypt-at-rest store, portable off the OS keychain to the hosted DB.
+        self._encryptor = field_encryption_service or FieldEncryptionService.from_env()
 
     async def store_user_key(
         self,
@@ -190,6 +199,14 @@ class UserAPIKeyService:
             logger.error(f"Failed to store key in keychain: {e}")
             raise ValueError(f"Keychain storage failed: {e}")
 
+        # #358: also encrypt-at-rest in the DB (portable to the hosted box, which has no
+        # OS keychain). None encryptor (no master key) → skip; the keychain remains the store.
+        encrypted_secret = (
+            self._encryptor.encrypt(api_key, "user_api_keys.secret")
+            if self._encryptor
+            else None
+        )
+
         # Check if key record exists
         result = await session.execute(
             select(UserAPIKey).where(
@@ -205,6 +222,7 @@ class UserAPIKeyService:
             existing_key.is_validated = is_valid
             existing_key.last_validated_at = datetime.now(timezone.utc) if is_valid else None
             existing_key.updated_at = datetime.now(timezone.utc)
+            existing_key.encrypted_secret = encrypted_secret  # #358
 
             # Audit log (Issue #249)
             await audit_logger.log_api_key_event(
@@ -235,6 +253,7 @@ class UserAPIKeyService:
                 is_validated=is_valid,
                 last_validated_at=datetime.now(timezone.utc) if is_valid else None,
                 created_by=user_id,
+                encrypted_secret=encrypted_secret,  # #358
             )
             session.add(user_key)
 
@@ -287,6 +306,19 @@ class UserAPIKeyService:
         if not user_key:
             logger.debug(f"No key record found for {user_id}/{provider}")
             return None
+
+        # #358: prefer the encrypted-at-rest secret (works on the hosted box, which has no
+        # OS keychain). Fall back to the keychain for legacy / pre-migration / local rows.
+        if user_key.encrypted_secret and self._encryptor:
+            try:
+                return self._encryptor.decrypt(
+                    user_key.encrypted_secret, "user_api_keys.secret"
+                )
+            except DecryptionError:
+                logger.error(
+                    f"Failed to decrypt stored secret for {user_id}/{provider}; "
+                    "falling back to keychain"
+                )
 
         # Retrieve from keychain
         try:
