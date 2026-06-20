@@ -36,3 +36,13 @@ Drained the full wake (PM woke me with multiple asks + 5 memos):
 - **Role-portfolio (`ROLE-PORTFOLIO-ARCH.md`) → BANKED** to a focused fire (Exec/HOST explicit no-deadline, quality-over-speed). Tracked as carry-forward queued-work #6 with the HOST gold-standard notes + a candidate irreducible-mandate (ADR-ratification + architecture-integrity contracts).
 
 All mailbox work on origin/main; inbox empty.
+
+---
+
+### Fire — autonomous (14:16) — ROLE-PORTFOLIO-ARCH authored (the banked deliverable, un-banked)
+
+Quiet fire (inbox empty, queue in others' courts). Rather than a quiet hold, drained the one substantive owed deliverable — **`ROLE-PORTFOLIO-ARCH.md`** — since it's the weekend (prime time) and "no deadline" shouldn't mean perpetual deferral. (Judgment call: I'd told PM I'd do it on a "focused fire, not the tail of the drain" — and a fresh quiet wake with the queue clear *is* that focused stretch, not the drain's tail.) Grounded first (framework + the CIO + Lead-Dev pilots — verify-first), then authored:
+- **Purpose** = keep the system *coherent by design* as it grows; cross-cutting lever = **derive-don't-maintain** (m-41).
+- **Irreducible mandate** = the **architecture-integrity call**, drawn *deliberately narrow* per HOST's calibration note (Lead-Dev's data-safety-hold model): fires only when a *ratified* contract would be *silently* bypassed — NOT all-code-review. Enforce-that-exceptions-are-recorded vs. PM-decides-disposition; concrete instances cited (#1267 option-b reject, #1283 mode-4 guard, not-re-authoring-a-shipped-ADR).
+- Steering table (Rule 4) + currency-by-weekly-review (Rule 5, dogfoods #972).
+- On origin/main; **routed to Exec cc HOST+PM** for the 5-rule review (flagged the mandate calibration as the part to check). Carry-forward #6 → DONE+ROUTED.
