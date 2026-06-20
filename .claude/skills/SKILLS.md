@@ -2,7 +2,7 @@
 
 This directory contains formalized Agent Skills - self-contained procedural instructions that transform Claude from general-purpose to specialized for specific recurring tasks.
 
-**Last Updated**: 2026-05-15
+**Last Updated**: 2026-06-20
 
 ---
 
@@ -32,6 +32,7 @@ This directory contains formalized Agent Skills - self-contained procedural inst
 | [stakeholder-update](./stakeholder-update/SKILL.md) | Cross-role | Draft a stakeholder update in PM's voice — audience-calibrated templates for exec, team, investor, and cross-functional updates. Better than generic templates because it knows your style and context. Trigger: "write an update for [audience]", "draft a stakeholder memo", "help me draft an exec summary". **Wave 2 PM skill (2026-06-15)** | 1.0 |
 | [sprint-plan](./sprint-plan/SKILL.md) | Cross-role | Scope a sprint from your backlog — select what to pull in with explicit rationale, surface the "out" list and why, flag dependencies, and produce a proposed sprint PM can accept or adjust. Richer with GitHub connector; works without it. Trigger: "let's plan the sprint", "help me scope [sprint]", "which issues should we tackle next". **Wave 2 PM skill (2026-06-15)** | 1.0 |
 | [template-audit](./template-audit/SKILL.md) | Comms | Mechanical pre-publish template audit — run after PM's voice pass, before sending publish-ready signal to Docs. 13-check pass/fail report covering YAML, structure, jargon (cohort/load-bearing), footer tease (from calendar), placeholders, semicolons, word count, acronym sweep. Blocks publish-ready on any FAIL. **Comms (2026-06-19)** | 1.0 |
+| [cut-release](./cut-release/SKILL.md) | Cross-role | Execute a Piper Morgan release end-to-end — pre-flight, version bump, doc updates (version strings AND prose body as separate explicit tasks), git ops, GitHub release, production branch, post-release audit. Prevents the "bumped version but left body content stale" failure mode. Invoke instead of reading the runbook directly. **PA (2026-06-20)** | 1.0 |
 
 ---
 
@@ -59,6 +60,7 @@ Skills for specific workflows or roles.
 ### Tier 3: Specialized Processes
 Less frequent but high-value skills.
 
+- **cut-release** - PA/Lead Dev: execute a full release (pre-flight → doc updates → git ops → GitHub release → audit). Use instead of reading the runbook directly.
 - **pattern-sweep-execution** - *(planned)* 6-week pattern analysis
 - **anti-pattern-scan** - *(planned)* Emergent anti-pattern detection
 - **create-adr** - *(planned)* Architecture decision records

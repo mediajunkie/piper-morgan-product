@@ -17,7 +17,10 @@
   h2 { font-size: 15px; font-weight: 600; margin: 26px 0 11px; display: flex; align-items: center; gap: 9px; }
   .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex: none; }
   .card { background: #fff; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 12px 16px; margin: 0 0 10px; }
+  .card.soft { border-left: 3px solid #c9a227; }
+  .card .top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
   .ttl { font-weight: 600; }
+  .pill { font-size: 11px; padding: 3px 9px; border-radius: 6px; white-space: nowrap; flex: none; }
   .card p { margin: 6px 0 0; font-size: 14px; color: #45443f; }
   .clear { font-size: 14px; color: #3b6d11; margin: 0 0 8px; display: flex; align-items: center; gap: 7px; }
   .row { display: flex; gap: 10px; padding: 9px 2px; border-bottom: 1px solid rgba(0,0,0,0.07); }
@@ -25,12 +28,15 @@
   .rdot { width: 7px; height: 7px; border-radius: 50%; margin-top: 6px; flex: none; }
   .row .ttl { font-size: 14px; }
   .row p { margin: 1px 0 0; font-size: 13.5px; color: #6b6a64; }
+  .bg-amber { background: #faeeda; color: #633806; }
   @media (prefers-color-scheme: dark) {
     body { background: #1b1b19; color: #e8e6e1; }
     .metric, .card { background: #262624; border-color: rgba(255,255,255,0.1); }
     .metric .lbl, .row p, .card p { color: #a8a6a0; }
     .ts { color: #8a8882; }
     .clear { color: #b8dd8a; }
+    .card.soft { border-left-color: #d8b53e; }
+    .bg-amber { background: #3a2c12; color: #ecc88a; }
     .row { border-color: rgba(255,255,255,0.08); }
   }
 </style>
@@ -38,28 +44,34 @@
 <body>
 <div class="wrap">
   <h1>Exec attention board</h1>
-  <p class="ts">as of Friday June 19, ~4:25 PM &middot; you cleared the last two (#1252 closed; Comms voice-pass held &mdash; a blog ahead) &mdash; <b>nothing needs you</b></p>
+  <p class="ts">as of Saturday June 20, ~7:35 AM &middot; day-roll START verify (cohort dormant overnight; carry-forwards + GitHub checked) &mdash; <b>nothing blocking; 2 low-urgency when-you're-ready</b></p>
 
   <div class="metrics">
-    <div class="metric"><p class="lbl">Needs you</p><p class="num" style="color:#3b6d11">0</p></div>
-    <div class="metric"><p class="lbl">Voice-pass</p><p class="num" style="color:#3b6d11">0</p></div>
+    <div class="metric"><p class="lbl">Needs you (now)</p><p class="num" style="color:#3b6d11">0</p></div>
+    <div class="metric"><p class="lbl">When ready</p><p class="num" style="color:#c9a227">2</p></div>
     <div class="metric"><p class="lbl">Blockers</p><p class="num" style="color:#3b6d11">0</p></div>
-    <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">5</p></div>
+    <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">6</p></div>
   </div>
 
-  <h2><span class="dot" style="background:#3b6d11"></span>Nothing needs you</h2>
-  <p class="clear"><span style="font-size:16px">&#10003;</span> Decision queue empty, no voice-pass pending, no blocked work &mdash; all verified (full sweep at 1:58 + #1252/#1259 GitHub-confirmed since). You cleared an unusually full afternoon's queue. The one held item is your call: <b>Comms Beat 8 voice-pass</b> &mdash; deliberately deferred (you're a blog ahead), not dropped; it'll resurface when the cadence needs it.</p>
+  <h2><span class="dot" style="background:#3b6d11"></span>Nothing blocking</h2>
+  <p class="clear"><span style="font-size:16px">&#10003;</span> No blocked work, nothing urgent. You cleared everything Friday; the cohort slept overnight, so nothing new landed on you. The two items below are low-urgency, on your schedule.</p>
+
+  <h2><span class="dot" style="background:#c9a227"></span>When you're ready &middot; low-urgency, your schedule</h2>
+  <div class="card soft"><div class="top"><span class="ttl">Web &mdash; Phase-2 test-confirm (unblocks Phase 3)</span><span class="pill bg-amber">Web, low-urgency</span></div>
+    <p>Web flagged (Fri eve) that Phase 3 (image upload) is gated on your test-stop signal confirming the Phase-2 fixes work. Web has other work meanwhile, so no rush &mdash; I'll confirm it's still the live gate on Web's next fire.</p></div>
+  <div class="card soft"><div class="top"><span class="ttl">Comms Beat 8 &mdash; voice-pass</span><span class="pill bg-amber">you're holding</span></div>
+    <p>Still parked by your call (you're a blog ahead). Publishes Jun 23; Comms needs it by Jun 22 eve. Surfacing only so it doesn't fall off &mdash; held, not flagged.</p></div>
 
   <h2><span class="dot" style="background:#185fa5"></span>In flight &middot; for awareness</h2>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Role-portfolio wave &mdash; 2 of 8 filed</span><p>Comms + Exec filed (both self-authored in one fire). HOST has both for 5-rule review. Remaining: Arch/CXO/PPM/Docs/PA/Web as they hit their fires. Tracking.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">#1283 (RECONNECT audit) &mdash; building</span><p>Arch ratified the resolver-shape; Lead's building (mode-4 guard → reachability resolver → ADR-073).</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">#1287 &mdash; Multi-Agent Coordinator dead-code cleanup</span><p>From CIO's #118 review; LD's lane for the `services/` deletion.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Sprint assignments &mdash; landing</span><p>6 kickoffs out this morning; CIO acted (#118 closed); others on their fires. Tracking.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#c9a227"></span><div><span class="ttl">Docs "6 escalate branches" &mdash; still 4 days stale</span><p>Docs's merge-keeper list (6/15) hasn't refreshed; flagged Docs. Don't action as-is.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Role-portfolio wave &mdash; 5 of 8 filed</span><p>Comms/Exec/CXO/PPM/Web in; HOST passed 3 same-fire. Remaining: Arch/Docs/PA as they fire. Self-propelling.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Ship #048 workstream review &mdash; producing</span><p>Kicked off Fri; Comms's memo already in (1 of 6). HOST/CIO/CXO/PPM/Arch to go (Fri–Tue). I synthesize → your voice-pass → publishes Wed Jun 24.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">#1299 &mdash; 0.8.8 alpha-deploy fix (Lead)</span><p>Lead's fixing 0.8.8 deploy blockers (pyobjc markers + chromadb/sqlite3). <b>Alpha is healthy on 0.8.7 now</b> — in-progress, not a blocker on you.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Janus meta-rollup channel &mdash; opened</span><p>Janus (DinP curator) now aggregates project rollups for your CEO-hat. I feed him the cross-project / portfolio-level subset (not routine PM ops). New coordination layer above this board — no action from you.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">#1283 building · #1287 dead-code cleanup</span><p>RECONNECT audit (Lead, Arch-ratified) + the Multi-Agent Coordinator deletion (LD's lane). Moving.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">BYOC Phase 2 &mdash; live</span><p>alpha.pipermorgan.ai; re-ping wave in progress. Next phases gated on #1162 / #1185.</p></div></div>
 
-  <h2><span class="dot" style="background:#3b6d11"></span>Clean &middot; resolved (a big day)</h2>
-  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">You cleared Lead's UAT queue + the last two asks</span><p><b>#1269</b> standup &middot; <b>#1280</b> v2 home &middot; <b>#1227</b> Slack &middot; <b>#1250</b> learning-toggle &middot; <b>#1236</b> Radar &middot; <b>#1252</b> auth-anchoring &mdash; all closed COMPLETED today (+ #1173 yesterday). Seven items.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">Infra + coordination resolved</span><p>HOST passed both pilots + fixed framework example &middot; #1259 push-to-ref swapped LIVE (NON-FF dance over) &middot; #118 closed (→#1287) &middot; thin-cron dogfood confirmed &middot; Slack = moot-post-RECONNECT &middot; #1107 superseded &middot; Ship #047 published.</p></div></div>
+  <h2><span class="dot" style="background:#3b6d11"></span>Clean &middot; resolved Friday (a big day)</h2>
+  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">Friday's clear</span><p>6 UAT items closed (#1269/#1280/#1227/#1250/#1236/#1252) &middot; #1259 push-to-ref LIVE &middot; HOST passed both pilots &middot; 16-issue sprint triage routed (6 kickoffs) &middot; attention-rollup runbook v1.0 &middot; Slack moot-post-RECONNECT &middot; Calliope cross-project rollup share.</p></div></div>
 </div>
 </body>
 </html>

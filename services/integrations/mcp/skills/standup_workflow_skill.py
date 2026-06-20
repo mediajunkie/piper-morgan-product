@@ -12,17 +12,50 @@ Token reduction: 90%+ vs passing full context
 Execution time: <2 seconds
 """
 
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
 from services.domain.github_domain_service import GitHubDomainService
 from services.domain.notion_domain_service import NotionDomainService
 from services.domain.slack_domain_service import SlackDomainService
-from services.domain.standup_orchestration_service import StandupOrchestrationService
 from services.domain.user_preference_manager import UserPreferenceManager
-from services.features.morning_standup import MorningStandupWorkflow
 from services.integrations.mcp.skills.base_skill import BaseSkill
-from services.orchestration.session_persistence import SessionPersistenceManager
+from services.standup.assembler import build_user_standup_summary
+
+
+def _summary_to_legacy_dict(summary) -> dict:
+    """Adapter: StandupSummary → legacy dict shape consumed by _format_* formatters (#1289).
+
+    The formatters read keys: yesterday_accomplishments, today_priorities, blockers,
+    generated_at. StandupSummary has .yesterday / .today / .watch (lists of StandupItem
+    with .display + .meta). The legacy "blockers" key maps to the Watch slot — callers
+    that need the honest label already read from the formatted output which says "Watch".
+    """
+    def lines(items):
+        return [
+            f"{it.display}{(' — ' + it.meta) if it.meta else ''}"
+            for it in items
+        ]
+
+    return {
+        "yesterday_accomplishments": lines(summary.yesterday),
+        "today_priorities": lines(summary.today),
+        "blockers": lines(summary.watch),   # legacy key; Watch is the honest source
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+    }
+
+
+class _WorkflowShim:
+    """Minimal shim replacing MorningStandupWorkflow (#1289).
+
+    The preference-reading helpers (_get_user_slack_workspace etc.) previously
+    read through ``self.workflow.preference_manager``. Rather than re-plumbing
+    three helpers, we keep the same attribute path via this thin shim.
+    """
+
+    def __init__(self, preference_manager):
+        self.preference_manager = preference_manager
 
 
 class StandupWorkflowSkill(BaseSkill):
@@ -52,22 +85,13 @@ class StandupWorkflowSkill(BaseSkill):
     def __init__(self):
         """Initialize skill with domain services.
 
-        Issue #1113: previously raised TypeError on construction because
-        ``SessionPersistenceManager()`` requires a ``preference_manager`` arg.
-        Now reuses one shared ``UserPreferenceManager`` across the workflow
-        and the session-persistence dependency. Also wires
-        ``_notion_service`` so ``_update_notion`` has something to call when
-        the gate (Issue #693 ``_get_user_notion_database``) opens.
+        #1289: Replaced MorningStandupWorkflow (fabricating /generate path) with the
+        honest engine (build_user_standup_summary from services.standup.assembler).
+        ``self.workflow`` is retained as a thin shim holding a ``UserPreferenceManager``
+        so the preference-reading helpers (_get_user_slack_workspace, _get_user_github_repo,
+        _get_user_notion_database) continue to work without an adapter layer.
         """
-        preference_manager = UserPreferenceManager()
-        self.workflow = MorningStandupWorkflow(
-            preference_manager=preference_manager,
-            session_manager=SessionPersistenceManager(
-                preference_manager=preference_manager
-            ),
-            github_domain_service=GitHubDomainService(),
-        )
-        self.orchestration = StandupOrchestrationService()
+        self.workflow = _WorkflowShim(UserPreferenceManager())
         self.github_service = GitHubDomainService()
         self.slack_service = SlackDomainService()
         self._notion_service = NotionDomainService()
@@ -118,8 +142,9 @@ class StandupWorkflowSkill(BaseSkill):
             output_format = params.get("format", "markdown")
             post_now = params.get("post_now", True)
 
-            # Step 1: Generate standup from persistent context
-            standup = await self.workflow.generate_standup(str(user_id))
+            # Step 1: Generate standup from honest engine (#1289)
+            summary = await build_user_standup_summary(str(user_id))
+            standup = _summary_to_legacy_dict(summary)
 
             # Step 2: Format for requested output type
             formatted_standup = self._format_standup(standup, output_format)
@@ -178,7 +203,7 @@ class StandupWorkflowSkill(BaseSkill):
                 "issues_created": issues_created,
                 "issues_closed": issues_closed,
                 "tokens_saved": tokens_saved,
-                "execution_time_ms": standup.get("generation_time_ms", 0),  # From workflow result
+                "execution_time_ms": 0,  # #1289: honest engine has no timing field
             }
 
         except Exception as e:
@@ -398,7 +423,7 @@ class StandupWorkflowSkill(BaseSkill):
 ## Today's Priorities
 {self._list_items(standup.get('today_priorities', []))}
 
-## Blockers
+## Watch
 {self._list_items(standup.get('blockers', [])) or 'None'}
 """,
             "format": "markdown",
@@ -415,7 +440,7 @@ Yesterday's Accomplishments:
 Today's Priorities:
 {self._list_items_plain(standup.get('today_priorities', []))}
 
-Blockers:
+Watch:
 {self._list_items_plain(standup.get('blockers', [])) or 'None'}
 """,
             "format": "plain",
@@ -449,7 +474,7 @@ Blockers:
 *Today's Priorities:*
 {today}
 
-*Blockers:*
+*Watch:*
 {blockers}"""
 
     def _extract_action_items(self, standup: Dict[str, Any]) -> List[Dict[str, Any]]:
