@@ -99,3 +99,10 @@ PM moved #1270 → D2 (+ Production milestone), conditioned on making files-vs-d
 - #1270 commented; #1296 filed (mail-send.sh worktree residue, CIO #1259 follow-on).
 - **Methodology pin:** PM correction — never read signal from "no reply" in any context (broadened `feedback_ratification_requires_explicit_responses`).
 - **D1-close READY** — all conditions met (#1270 done+D2, #1293 closed, regression 252/252, gates fold-in approved). Next: PM UATs the band-aid → I post the forensic fold-in D1-close comment + close D1 → PM cuts 0.8.8 alpha.
+
+## Band-aid polish (PM UAT caught it) + #1289 Option A routed
+- **#1289 Option A** (PM "I agree A"): posted the `_format_for_slack` adapter spec on #1289 (legacy dict `{yesterday_accomplishments/today_priorities/blockers/generated_at}` ← `build_user_standup_summary()` StandupSummary; watch→blockers) + signaled PA via mail (`memo-lead-to-pa-cc-pm-1289-option-a-adapter-spec`, on main via merge). The standup-skill swap is PA's coding subagent now — self-contained, post-D1.
+- **Band-aid polish** (`345fbb7db` → main `140dc7784`): PM's UAT found the nav collapse + redirect worked, but files.html still self-titled "Files." Relabeled the page self-identity → "Documents": tab title, 📄 H1, add-button, search placeholder, both empty-states, delete-confirm. Upload-mechanism copy (drop-to-upload / source-filter / add-methods / upload-toast) left "files" — accurate (you literally upload files). documents.html (redirect-away dead) marked with a DEAD header per the comment-out rule (D2-retained for the #1270 source-type refactor).
+- **Tests:** test_files_search_313 placeholder + empty-state assertions updated; 29 files/nav/smoke green; **a real `template.render()` of files.html asserts it self-titles "Documents"** (UI-fix discipline, not text-grep). documents.html parse-checked (DEAD comment-before-extends is valid Jinja).
+- **Deploy:** server cwd IS this worktree + `env.auto_reload=True` (no override in web/startup.py:228) → relabel live on PM's refresh, **no restart** (server up, health 200).
+- **Awaiting PM's re-UAT of the relabeled page** → then close #1297 + D1 → PM cuts 0.8.8.
