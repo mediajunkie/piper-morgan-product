@@ -24,7 +24,7 @@ from __future__ import annotations
 
 import contextlib
 from contextvars import ContextVar
-from typing import Any, Iterator, Optional
+from typing import Any, Awaitable, Callable, Iterator, Optional
 
 # Default None = "no per-request key bound; use the server's configured key".
 _user_api_key: ContextVar[Optional[str]] = ContextVar("user_api_key", default=None)
@@ -62,3 +62,30 @@ def anthropic_client_for_request(server_client: Any) -> Any:
 
         return Anthropic(api_key=user_key)
     return server_client
+
+
+async def resolve_request_api_key(
+    header_key: Optional[str],
+    user_id: Optional[str],
+    fetch_stored: Optional[Callable[[str], Awaitable[Optional[str]]]],
+) -> Optional[str]:
+    """Resolve the per-request LLM key: header > stored > None (#1185).
+
+    Priority:
+    - ``header_key`` (the ``X-User-Api-Key`` header — Claude Desktop BYOC) wins, and
+      the DB is never touched: the user supplied an explicit per-call key.
+    - else, for an authenticated ``user_id``, ``fetch_stored(user_id)`` resolves the
+      user's *stored* key (hosted web). ``fetch_stored`` is **injected** (the route
+      supplies the DB-backed ``UserAPIKeyService.retrieve_user_key``), so this stays
+      pure + unit-testable without a database.
+    - else ``None`` → the LLM client falls back to the server's configured key.
+
+    A blank header is treated as absent (falls through to the stored key). The
+    resolved key feeds ``request_api_key(...)`` — same ContextVar, same security
+    properties (per-request, reset-in-finally, never logged).
+    """
+    if header_key:
+        return header_key
+    if user_id and fetch_stored is not None:
+        return await fetch_stored(user_id)
+    return None

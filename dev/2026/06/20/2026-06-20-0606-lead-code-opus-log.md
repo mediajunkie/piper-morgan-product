@@ -58,3 +58,32 @@ PM approved the correction ("apply the recommended board changes; when we get to
 - M5 refactor (consolidate #1282, etc.) **deferred** to "when we get to M5" (PM).
 
 RECONNECT now clean: 9 WS + #1185 (identity) + connector-adjacent (#441/#865/#1227/#1283). Phase-0 foundation = #1185 + #1229 (+ ADR-070). **Next:** gameplan #1185 (or #1229) — PM to pick/sequence.
+
+## #1185 audit cascade (gates 1–2) DONE — COMPLETE-THE-PATTERN, ~70% built (midday)
+
+PM: "do whole, one coherent effort; run the audit cascade." Ran it:
+- **Gate 1 (Issue)**: audited #1185 vs feature.md → fleshed feature-complete (Goal/AC/Testing/Effort/Deps; Open-Q-1 resolved). `dev/2026/06/20/1185-issue-audit.md`. (78fe3a84c)
+- **Gate 2 (Gameplan + audit)**: `dev/2026/06/20/1185-gameplan.md` + `1185-gameplan-audit.md`.
+- **Gate 3 (Prompts)**: N/A — **solo TDD** (shared files `request_key.py`/`intent.py` → parallel subagents would collide).
+
+**KEY FINDING — #1185 is ~70% built (Medium, not Large):** three pieces exist separately, just unwired:
+1. Per-request key rail — `services/llm/request_key.py` (ContextVar + `request_api_key` CM + `anthropic_client_for_request`); `clients.py:_anthropic_complete` already uses it; `complete()` takes `user_id`.
+2. Stored keys — `UserAPIKeyService.retrieve_user_key(session, user_id, provider)`; `user_api_keys` covers anthropic (no schema change).
+3. Auth — `/intent` resolves `user_id` from JWT (#455/#490: `current_user.sub`).
+**The gap**: `intent.py:338` binds ONLY the header (`X-User-Api-Key`, Desktop BYOC), never the stored key (hosted web). **Open-Q-2 (token vs account/login) RESOLVED → JWT (token), already in place.**
+
+Gameplan: P1 DB-fallback at the binding (small) · P2 extend beyond /intent + confirm JWT covers hosted testers (the unknown; possible STOP) · P3 capture at /connect (#1300) · P4 encrypt (#358). Subagent decision: solo. **Next: Phase 1 TDD.**
+
+### Phase 1 DONE — DB-resolved key binding (10:30, TDD green)
+- `resolve_request_api_key(header_key, user_id, fetch_stored)` in `services/llm/request_key.py` — **pure** (DB fetch injected); priority header > stored > None.
+- `intent.py:338` wired: `X-User-Api-Key` header (Desktop BYOC) → authed user's STORED key (`UserAPIKeyService.retrieve_user_key`, session via `AsyncSessionFactory.session_scope_fresh()`) → server key. Rides the existing #1162 ContextVar rail.
+- Tests: `tests/unit/services/llm/test_request_key_resolve_1185.py` (6 — resolver matrix + rail-wiring proving a stored key reaches a real Anthropic client). **12 passed** (incl. #1162 regression). `intent.py` imports clean.
+- STOP-check (session availability) resolved: session via AsyncSessionFactory at the binding site.
+- Next: Phase 2 — extend the binding beyond /intent (2a) + investigate JWT-issuance-for-hosted-testers / Caddy-gate (2b, surface for PM+Arch — #1162 gate territory).
+
+### Phase 2 investigation — core essentially done; 2 decisions remain (midday)
+- **2a (extend beyond /intent): NO-OP.** `/intent` is the ONLY LLM-invoking route; every other `LLMClient` use (floor, intent_service, analyzers) runs *under* `process_intent` → already on Phase-1's binding. `setup.py` only *stores* keys (line ~867); the LLMClient mention there is a comment, not a call.
+- **2b (auth): EXISTS.** `web/api/routes/auth.py` — full JWT: `/login`→`generate_access_token`→`auth_token` cookie, `/refresh`, `/logout`. The "no token flow" STOP is moot.
+- **Phase 3 (capture): partly exists.** `setup.py` stores the user's anthropic key at setup-complete. #1300 `/connect` = the *plugin* equivalent (separate).
+- **Net**: per-user keys resolve end-to-end for the hosted-web path; Phase 1 was the load-bearing change.
+- **Remaining**: (1) **Caddy-gate removal** — PM/Arch decision (#1162 gate); (2) **encrypt-at-rest (#358)** — keys via `KeychainService` (OS keychain on Mac); the *hosted-Linux* backend is the open question; in-#1185-now vs #358-lane = scope call; (3) **end-to-end integration test** (buildable). Next: integration test (unblocked); (1)+(2) surfaced for PM.
