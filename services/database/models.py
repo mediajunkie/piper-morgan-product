@@ -29,6 +29,8 @@ from sqlalchemy import (
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import relationship
 
+from services.security.encrypted_types import EncryptedString  # #358-B: at-rest content encryption
+
 
 class CrossDialectUUID(TypeDecorator):
     """UUID column type that works across PostgreSQL (native UUID) and SQLite (CHAR(36)).
@@ -1177,7 +1179,7 @@ class ArtifactDB(Base):
 
     id = Column(String, primary_key=True)
     owner_id = Column(String, nullable=False)
-    content = Column(Text, default="")
+    content = Column(EncryptedString(context="artifacts.content"), default="")
     source_type = Column(String(50), nullable=False, default="generated")
     lifecycle_state = Column(String(20), nullable=True)
     source_conversation_id = Column(String, nullable=True)
@@ -1260,7 +1262,7 @@ class ConversationDB(Base):
     topics = Column(
         postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list
     )
-    preview = Column(Text, nullable=False, server_default=text("''"))
+    preview = Column(EncryptedString(context="conversations.preview"), nullable=False, server_default=text("''"))
     is_private = Column(Boolean, nullable=False, server_default=text("false"))
     turn_count = Column(Integer, nullable=False, server_default=text("0"))
 
@@ -1320,8 +1322,8 @@ class ConversationTurnDB(Base):
     id = Column(String, primary_key=True)
     conversation_id = Column(String, nullable=False)
     turn_number = Column(Integer, nullable=False, default=0)
-    user_message = Column(Text, nullable=False, default="")
-    assistant_response = Column(Text, nullable=False, default="")
+    user_message = Column(EncryptedString(context="conversation_turns.user_message"), nullable=False, default="")
+    assistant_response = Column(EncryptedString(context="conversation_turns.assistant_response"), nullable=False, default="")
     intent = Column(String, nullable=True)
     # #1180: JSONB on Postgres (production), JSON on SQLite (in-memory unit tests).
     entities = Column(
