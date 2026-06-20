@@ -8,26 +8,25 @@ item from the standup.html template.
 
 Coverage:
 - StandupItem dataclass roundtrip (str + to_dict)
-- Producer (`MorningStandupWorkflow._generate_standup_content`) builds
-  StandupItems with correct source/icon per data category
 - StandupItems with `lifecycle_state` flow through to dict shape
 - JSON formatter (`format_standup`) serializes to structured dicts
-- Backwards-compat: slack/markdown/text formatters work via __str__
+- Backwards-compat: slack/markdown formatters work via __str__
 
-Mirrors the pattern at `tests/unit/services/test_insight_repository_1035.py`
-in scope: thin, focused unit tests on the new schema's contract.
+Updated: 2026-06-20 (#1289) — removed MorningStandupWorkflow pipeline
+producer tests (tests_pipeline_produces_structured_items_from_commits,
+etc.) because _generate_standup_content is no longer called; the
+/generate route delegates to StandupAssembler. StandupItem dataclass
+and formatter tests are retained — those contracts are still in use.
 """
 
 from __future__ import annotations
 
 from datetime import datetime
 from typing import Any, Dict
-from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
 from services.features.morning_standup import (
-    MorningStandupWorkflow,
     StandupItem,
     StandupResult,
 )
@@ -72,166 +71,6 @@ class TestStandupItem:
         item = StandupItem(display="commit", icon="✅", source="commit")
         d = item.to_dict()
         assert d["lifecycle_state"] is None
-
-
-# =============================================================================
-# Pipeline producer behavior
-# =============================================================================
-
-
-@pytest.mark.asyncio
-async def test_pipeline_produces_structured_items_from_commits():
-    """`_generate_standup_content` builds StandupItems from GitHub commits."""
-    workflow = MorningStandupWorkflow(
-        preference_manager=MagicMock(),
-        session_manager=MagicMock(),
-        github_domain_service=MagicMock(),
-        user_id="alpha",
-    )
-    github_activity = {
-        "commits": [{"message": "first commit"}, {"message": "second commit"}],
-    }
-    session_context = {}
-    import time as time_module
-
-    result = await workflow._generate_standup_content(
-        user_id="alpha",
-        session_context=session_context,
-        github_activity=github_activity,
-        start_time=time_module.time(),
-    )
-
-    assert len(result.yesterday_accomplishments) == 2
-    for item in result.yesterday_accomplishments:
-        assert isinstance(item, StandupItem)
-        assert item.source == "commit"
-        assert item.icon == "✅"
-        assert item.lifecycle_state is None
-
-    assert result.yesterday_accomplishments[0].display == "first commit"
-    assert result.yesterday_accomplishments[1].display == "second commit"
-
-
-@pytest.mark.asyncio
-async def test_pipeline_produces_structured_items_from_work_items():
-    """When session_context has yesterday_work, items carry source='work'."""
-    workflow = MorningStandupWorkflow(
-        preference_manager=MagicMock(),
-        session_manager=MagicMock(),
-        github_domain_service=MagicMock(),
-        user_id="alpha",
-    )
-    github_activity = {"commits": []}
-    session_context = {
-        "session_context": {"yesterday_work": ["audit transparency Phase 2"]},
-    }
-    import time as time_module
-
-    result = await workflow._generate_standup_content(
-        user_id="alpha",
-        session_context=session_context,
-        github_activity=github_activity,
-        start_time=time_module.time(),
-    )
-
-    work_items = [
-        i for i in result.yesterday_accomplishments if i.source == "work"
-    ]
-    assert len(work_items) == 1
-    assert work_items[0].display == "audit transparency Phase 2"
-    assert work_items[0].icon == "📋"
-
-
-@pytest.mark.asyncio
-async def test_pipeline_carries_lifecycle_state_when_work_is_dict():
-    """When yesterday_work entries are dicts with lifecycle_state, it propagates."""
-    workflow = MorningStandupWorkflow(
-        preference_manager=MagicMock(),
-        session_manager=MagicMock(),
-        github_domain_service=MagicMock(),
-        user_id="alpha",
-    )
-    github_activity = {"commits": []}
-    session_context = {
-        "session_context": {
-            "yesterday_work": [
-                {"display": "ratified work item", "lifecycle_state": "ratified"}
-            ]
-        },
-    }
-    import time as time_module
-
-    result = await workflow._generate_standup_content(
-        user_id="alpha",
-        session_context=session_context,
-        github_activity=github_activity,
-        start_time=time_module.time(),
-    )
-
-    work_items = [
-        i for i in result.yesterday_accomplishments if i.source == "work"
-    ]
-    assert len(work_items) == 1
-    assert work_items[0].display == "ratified work item"
-    assert work_items[0].lifecycle_state == "ratified"
-    assert work_items[0].icon == "📋"
-
-
-@pytest.mark.asyncio
-async def test_pipeline_active_repos_become_priority_items():
-    workflow = MorningStandupWorkflow(
-        preference_manager=MagicMock(),
-        session_manager=MagicMock(),
-        github_domain_service=MagicMock(),
-        user_id="alpha",
-    )
-    github_activity = {"commits": [{"message": "x"}]}
-    session_context = {"active_repos": ["piper-morgan", "klatch"]}
-    import time as time_module
-
-    result = await workflow._generate_standup_content(
-        user_id="alpha",
-        session_context=session_context,
-        github_activity=github_activity,
-        start_time=time_module.time(),
-    )
-
-    assert all(isinstance(i, StandupItem) for i in result.today_priorities)
-    repo_items = [i for i in result.today_priorities if i.source == "active_repo"]
-    assert {i.display for i in repo_items} == {
-        "Continue work on piper-morgan",
-        "Continue work on klatch",
-    }
-    for item in repo_items:
-        assert item.icon == "🎯"
-        assert item.lifecycle_state is None
-
-
-@pytest.mark.asyncio
-async def test_pipeline_blocker_when_no_commits():
-    workflow = MorningStandupWorkflow(
-        preference_manager=MagicMock(),
-        session_manager=MagicMock(),
-        github_domain_service=MagicMock(),
-        user_id="alpha",
-    )
-    github_activity = {"commits": []}
-    session_context = {}
-    import time as time_module
-
-    result = await workflow._generate_standup_content(
-        user_id="alpha",
-        session_context=session_context,
-        github_activity=github_activity,
-        start_time=time_module.time(),
-    )
-
-    assert len(result.blockers) == 1
-    blocker = result.blockers[0]
-    assert isinstance(blocker, StandupItem)
-    assert blocker.source == "system"
-    assert blocker.icon == "⚠️"
-    assert "No recent GitHub activity" in blocker.display
 
 
 # =============================================================================
