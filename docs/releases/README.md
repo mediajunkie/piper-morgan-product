@@ -6,9 +6,9 @@ This directory contains release notes for all Piper Morgan versions.
 
 ## Current Version
 
-**v0.8.6** (March 4, 2026) - [Release Notes](RELEASE-NOTES-v0.8.6.md)
+**v0.8.8** (June 19, 2026) - [Release Notes](RELEASE-NOTES-v0.8.8.md)
 
-M0 Conversational Glue sprint: 5 core features (lens tracking, multi-intent, slot filling, soft invocation, narrative system), repository management, conversation lifecycle, 7 post-gate bug fixes. 27 issues resolved, 402+ new tests.
+D1/RECONNECT sprint: BYOC credential layer, Radar as default workspace, navigation IA rationalization (History→Radar, Collections→Lists), full-height home chat, compose autosave, source-provenance badges on files. 252/252 canonical regression clean.
 
 ---
 
@@ -16,6 +16,8 @@ M0 Conversational Glue sprint: 5 core features (lens tracking, multi-intent, slo
 
 | Version | Date | Type | Highlights |
 |---------|------|------|------------|
+| [v0.8.8](RELEASE-NOTES-v0.8.8.md) | Jun 19, 2026 | Feature | D1/RECONNECT — BYOC keys, Radar default, nav IA, home UX |
+| [v0.8.7](RELEASE-NOTES-v0.8.7.md) | Jun 14, 2026 | Feature | M1+M2+M3 — Conscious Floor, dispatch rail complete, files UX, Slack inbound |
 | [v0.8.6](RELEASE-NOTES-v0.8.6.md) | Mar 4, 2026 | Feature | M0 Conversational Glue, 27 issues resolved |
 | [v0.8.5.3](RELEASE-NOTES-v0.8.5.3.md) | Feb 11, 2026 | Patch | Windows compatibility, setup UX, 14 issues resolved |
 | [v0.8.5.2](RELEASE-NOTES-v0.8.5.2.md) | Feb 6, 2026 | Patch | Chat persistence, date formatting, calendar fixes |
@@ -59,4 +61,4 @@ For current known issues and limitations, see [ALPHA_KNOWN_ISSUES.md](../ALPHA_K
 
 ---
 
-*Last updated: March 4, 2026*
+*Last updated: June 19, 2026*

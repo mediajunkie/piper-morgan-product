@@ -1,6 +1,6 @@
 # Piper Morgan Alpha - Quick Start
 
-**Version**: 0.8.6
+**Version**: 0.8.8
 **Branch**: `production` (stable alpha releases)
 **For**: Experienced developers who want to dive in fast
 
