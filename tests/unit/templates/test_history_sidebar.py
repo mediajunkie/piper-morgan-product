@@ -283,6 +283,21 @@ class TestPrivacyControls:
         label = template.find(class_="history-privacy-label")
         assert label is not None
 
+    def test_privacy_footer_hidden_for_beta_1164(self, soup):
+        """#1164: the 'Start private session' backend is not wired yet (gated on #1089),
+        so the no-op footer is HIDDEN for beta. Shipping a clickable-but-dead privacy
+        control would mislead beta users into believing a session is private when it is
+        not — a trust risk. The markup is retained (the sidebar JS still queries
+        `.history-privacy-toggle`), so re-enabling when the privacy feature lands
+        (postponed to the dot-releases milestone) is just removing `hidden`."""
+        template = soup.find("template", id="history-sidebar-template")
+        footer = template.find(class_="history-privacy-footer")
+        assert footer is not None, "markup must be retained (the sidebar JS still queries the toggle)"
+        assert footer.has_attr("hidden"), (
+            "the no-op privacy footer must carry `hidden` until the privacy backend "
+            "(#1164 / #1089) lands — a visible no-op privacy control misleads beta users"
+        )
+
 
 class TestOverlay:
     """Tests for modal overlay."""
