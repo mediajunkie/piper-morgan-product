@@ -1,20 +1,20 @@
-# Web carry-forward — 2026-06-19
+# Web carry-forward — 2026-06-19 (STOP)
 
 **Session**: DinP/Sonnet · worktree `claude/condescending-jackson-c9a65b` · cron `22 6,9,12,15,18,21 * * *`
 
 ## Active threads
 
 ### #998 COMPOSE-UI-V1 (product repo FastAPI)
-- Phase 1 + 2: **DONE** (Phase 2 shipped 2026-06-19)
-- **Phase 3** (Image Upload): next — gated on PM testing Phase 2 first at `localhost:8001/api/v1/admin/compose`
-- **Phase 4** (Mark Ready + Git Handoff): needs `services/editorial/git_ops.py` + publish-ready memo to `mailboxes/docs/inbox/` (Comms confirmed)
-- Dispatch syndication data format TBD — Comms will follow up once Dispatch shares their skill
-- **PM test stop needed before Phase 3 proceeds**
+- Phase 1 + 2 + bug fixes: **DONE** (bug fixes shipped `a7c3aa5df` 2026-06-19 ~21:xx)
+- **PM action needed**: restart FastAPI server (`piper-morgan-product/`) to pick up Phase 2's POST `/save` route — then re-test at `localhost:8001/api/v1/admin/compose`
+- **Phase 3** (Image Upload): next — gated on PM test-stop signal confirming Phase 2 fixes work
+- **Phase 4** (Mark Ready + Git Handoff): needs `services/editorial/git_ops.py` + publish-ready memo to Docs inbox
+- **Preview pane**: v2 / nice-to-have — noted; not Phase 3 scope
 
 ### Role portfolio
-- `docs/briefing/ROLE-PORTFOLIO-WEB.md` authored + routed to Exec cc HOST + PM (2026-06-19)
-- Awaiting HOST review; expect v0.2 revision feedback
-- Gap noted: `BRIEFING-ESSENTIAL-WEB.md` doesn't exist — flagged in portfolio + to Exec
+- `docs/briefing/ROLE-PORTFOLIO-WEB.md` v0.1 authored + routed to Exec cc HOST + PM (2026-06-19)
+- HOST review pending; expect v0.2 feedback
+- Gap: `BRIEFING-ESSENTIAL-WEB.md` doesn't exist — flagged in portfolio + to Exec
 
 ## PM-react gated (no recent signal)
 - Obs-pass joint walkthrough (~20 items)
@@ -23,5 +23,5 @@
 - `--mode=archive` scope (awaits PM approval)
 
 ## Cron state
-- Next fire is 21:22 — last fire of today; that fire will be a STOP
-- Re-arm `22 6,9,12,15,18,21 * * *` durable:true (at IDLE / at STOP re-arm)
+- Armed: `22 6,9,12,15,18,21 * * *` durable:true
+- Next fire: 06:22 tomorrow (2026-06-20) → START
