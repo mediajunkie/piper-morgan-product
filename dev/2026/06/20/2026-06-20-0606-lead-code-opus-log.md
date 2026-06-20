@@ -58,3 +58,18 @@ PM approved the correction ("apply the recommended board changes; when we get to
 - M5 refactor (consolidate #1282, etc.) **deferred** to "when we get to M5" (PM).
 
 RECONNECT now clean: 9 WS + #1185 (identity) + connector-adjacent (#441/#865/#1227/#1283). Phase-0 foundation = #1185 + #1229 (+ ADR-070). **Next:** gameplan #1185 (or #1229) — PM to pick/sequence.
+
+## #1185 audit cascade (gates 1–2) DONE — COMPLETE-THE-PATTERN, ~70% built (midday)
+
+PM: "do whole, one coherent effort; run the audit cascade." Ran it:
+- **Gate 1 (Issue)**: audited #1185 vs feature.md → fleshed feature-complete (Goal/AC/Testing/Effort/Deps; Open-Q-1 resolved). `dev/2026/06/20/1185-issue-audit.md`. (78fe3a84c)
+- **Gate 2 (Gameplan + audit)**: `dev/2026/06/20/1185-gameplan.md` + `1185-gameplan-audit.md`.
+- **Gate 3 (Prompts)**: N/A — **solo TDD** (shared files `request_key.py`/`intent.py` → parallel subagents would collide).
+
+**KEY FINDING — #1185 is ~70% built (Medium, not Large):** three pieces exist separately, just unwired:
+1. Per-request key rail — `services/llm/request_key.py` (ContextVar + `request_api_key` CM + `anthropic_client_for_request`); `clients.py:_anthropic_complete` already uses it; `complete()` takes `user_id`.
+2. Stored keys — `UserAPIKeyService.retrieve_user_key(session, user_id, provider)`; `user_api_keys` covers anthropic (no schema change).
+3. Auth — `/intent` resolves `user_id` from JWT (#455/#490: `current_user.sub`).
+**The gap**: `intent.py:338` binds ONLY the header (`X-User-Api-Key`, Desktop BYOC), never the stored key (hosted web). **Open-Q-2 (token vs account/login) RESOLVED → JWT (token), already in place.**
+
+Gameplan: P1 DB-fallback at the binding (small) · P2 extend beyond /intent + confirm JWT covers hosted testers (the unknown; possible STOP) · P3 capture at /connect (#1300) · P4 encrypt (#358). Subagent decision: solo. **Next: Phase 1 TDD.**
