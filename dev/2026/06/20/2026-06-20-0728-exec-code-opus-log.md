@@ -16,7 +16,7 @@
 - Board was **all-clear** at 6/19 16:25 (0 PM-action).
 
 ## Work
-- (fires appended here)
+- **START (~07:30–08:00, PM-initiated date-roll).** Step-0 self-heal: **retroactively closed 6/19** (the heaviest day of the run — full day-arc + memory-eval + DAY-CLOSED; `284ee6e48`). Watcher had caught the overnight dormancy (STALE exec 11h @ 07:26). Created this 6/20 log. **Board = day-roll START verify** (`27f97f504`): cohort provably dormant overnight (carry-forwards Fri-eve; only Lead touched #1299 ~00:30) → all-clear holds; rendered Sat board (0 blocking / 2 low-urgency when-ready: Web Phase-2-test + Comms Beat-8-held / waves in-flight). Verified, not from-vantage (scanned all carry-forwards + freshness). **Mail loop**: (1) **Janus opened the meta-rollup channel** — he aggregates project rollups for xian's CEO-hat; I feed the **CEO-hat subset** (cross-project/portfolio/DinP-strategy), not routine PM-ops. **Ack'd + confirmed** the split, delivered cross-repo to DinP `docs/mail/` main (`931ffa2`). (2) **Comms filed workstream-048** (1/6 for Ship #048) — collected to read/. Both → read/ (`12d6d3026`, cherry-pick cure). Trackers updated (workstream 1/6; Janus channel). Cron `8f2194b1` survived — armed.
 
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
