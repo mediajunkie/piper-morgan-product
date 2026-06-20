@@ -53,8 +53,11 @@
         <a href="/todos" class="dropdown-item" id="nav-todos" data-nav-path="/todos" role="menuitem">To-dos</a>
         <a href="/projects" class="dropdown-item" id="nav-projects" data-nav-path="/projects" role="menuitem">Projects</a>
         <a href="/work-items" class="dropdown-item" id="nav-work-items" data-nav-path="/work-items" role="menuitem">Work Items</a>
-        <a href="/files" class="dropdown-item" id="nav-files" data-nav-path="/files" role="menuitem">Files</a>
-        <a href="/documents" class="dropdown-item" id="nav-documents" data-nav-path="/documents" role="menuitem">Documents</a>
+        <!-- #1270 beta band-aid (PM-approved 2026-06-19): /files and /documents read as near-duplicates
+             (PM UAT). Collapsed to the single working surface — /files (the fuller browser) — under the
+             "Documents" label; /documents redirects here. Full source-type refactor is #1270 in D2.
+             Keeping id=nav-files so nav.js active-state (/files→nav-files) still resolves. -->
+        <a href="/files" class="dropdown-item" id="nav-files" data-nav-path="/files" role="menuitem">Documents</a>
         <a href="/lists" class="dropdown-item" id="nav-lists" data-nav-path="/lists" role="menuitem">Lists</a>
         <hr class="dropdown-divider" role="separator">
         <a href="/account" class="dropdown-item" id="dropdown-account" role="menuitem">Account</a>

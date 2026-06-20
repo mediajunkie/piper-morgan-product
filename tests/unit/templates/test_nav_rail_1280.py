@@ -64,10 +64,13 @@ def test_no_radar_nav_item(html):
 
 
 def test_your_stuff_in_avatar_menu(html):
-    # v2: "Your work" moves from a footer dropdown into the user-avatar menu (the 6 user-content routes).
+    # v2: "Your work" moves from a footer dropdown into the user-avatar menu.
+    # #1270 beta band-aid (2026-06-19): Files collapsed into Documents — the /files page now
+    # serves under the "Documents" label and /documents redirects to it — so 5 items, not 6.
     assert "Your work" in html  # the avatar-menu label
-    for label in ("To-dos", "Projects", "Work Items", "Files", "Documents", "Lists"):
+    for label in ("To-dos", "Projects", "Work Items", "Documents", "Lists"):
         assert label in html
+    assert ">Files</a>" not in html  # #1270: the separate Files nav item is collapsed into Documents
 
 
 def test_avatar_menu_has_account_logout_not_settings(html):
