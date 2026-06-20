@@ -20,16 +20,16 @@ from services.integrations.mcp.skills.standup_workflow_skill import StandupWorkf
 
 @pytest.fixture
 def skill():
-    """Create skill instance with mocked dependencies"""
+    """Create skill instance with mocked dependencies.
+
+    #1289: MorningStandupWorkflow + StandupOrchestrationService + SessionPersistenceManager
+    are no longer imported by the skill; patches removed accordingly.
+    """
     with (
-        patch("services.integrations.mcp.skills.standup_workflow_skill.MorningStandupWorkflow"),
-        patch(
-            "services.integrations.mcp.skills.standup_workflow_skill.StandupOrchestrationService"
-        ),
         patch("services.integrations.mcp.skills.standup_workflow_skill.GitHubDomainService"),
         patch("services.integrations.mcp.skills.standup_workflow_skill.SlackDomainService"),
         patch("services.integrations.mcp.skills.standup_workflow_skill.UserPreferenceManager"),
-        patch("services.integrations.mcp.skills.standup_workflow_skill.SessionPersistenceManager"),
+        patch("services.integrations.mcp.skills.standup_workflow_skill.NotionDomainService"),
     ):
         return StandupWorkflowSkill()
 
@@ -79,22 +79,34 @@ class TestStandupWorkflowSkillValidation:
         assert skill.validate_params({"user_id": "user-123"})
 
 
+_PATCH_ASSEMBLER = "services.integrations.mcp.skills.standup_workflow_skill.build_user_standup_summary"
+
+
 class TestStandupWorkflowSkillExecution:
     """Test main skill execution"""
 
     @pytest.mark.asyncio
     @pytest.mark.smoke
     async def test_execute_success_with_defaults(self, skill, sample_standup):
-        """Execution with default parameters should succeed"""
-        skill.workflow = AsyncMock()
-        skill.workflow.generate_standup = AsyncMock(return_value=sample_standup)
+        """Execution with default parameters should succeed.
 
-        result = await skill.execute({"user_id": sample_standup["user_id"]})
+        #1289: patching build_user_standup_summary (honest engine) instead of
+        the old skill.workflow.generate_standup (hollow MorningStandupWorkflow).
+        _summary_to_legacy_dict is also patched to return the test legacy dict
+        so execution tests don't need a real StandupSummary object.
+        """
+        with (
+            patch(_PATCH_ASSEMBLER, new=AsyncMock(return_value=MagicMock())),
+            patch(
+                "services.integrations.mcp.skills.standup_workflow_skill._summary_to_legacy_dict",
+                return_value=sample_standup,
+            ),
+        ):
+            result = await skill.execute({"user_id": sample_standup["user_id"]})
 
         assert result["success"] is True
         assert "standup" in result
         assert result["tokens_saved"] > 0
-        skill.workflow.generate_standup.assert_called_once()
 
     @pytest.mark.asyncio
     @pytest.mark.smoke
@@ -109,23 +121,28 @@ class TestStandupWorkflowSkillExecution:
     @pytest.mark.smoke
     async def test_execute_respects_include_flags(self, skill, sample_standup):
         """Should respect include_slack, include_github, include_notion flags"""
-        skill.workflow = AsyncMock()
-        skill.workflow.generate_standup = AsyncMock(return_value=sample_standup)
         skill._post_to_slack = AsyncMock(return_value={"success": True})
         skill._process_github_items = AsyncMock(
             return_value={"success": True, "issues_created": 3, "issues_closed": 1}
         )
         skill._update_notion = AsyncMock(return_value={"success": True})
 
-        # Test with only Slack
-        result = await skill.execute(
-            {
-                "user_id": sample_standup["user_id"],
-                "include_slack": True,
-                "include_github": False,
-                "include_notion": False,
-            }
-        )
+        with (
+            patch(_PATCH_ASSEMBLER, new=AsyncMock(return_value=MagicMock())),
+            patch(
+                "services.integrations.mcp.skills.standup_workflow_skill._summary_to_legacy_dict",
+                return_value=sample_standup,
+            ),
+        ):
+            # Test with only Slack
+            result = await skill.execute(
+                {
+                    "user_id": sample_standup["user_id"],
+                    "include_slack": True,
+                    "include_github": False,
+                    "include_notion": False,
+                }
+            )
 
         assert "slack" in result["posted_to"]
         assert "github" not in result["posted_to"]
@@ -135,13 +152,20 @@ class TestStandupWorkflowSkillExecution:
     @pytest.mark.smoke
     async def test_execute_returns_issue_counts(self, skill, sample_standup):
         """Should return created and closed issue counts"""
-        skill.workflow = AsyncMock()
-        skill.workflow.generate_standup = AsyncMock(return_value=sample_standup)
         skill._process_github_items = AsyncMock(
             return_value={"success": True, "issues_created": 5, "issues_closed": 2}
         )
 
-        result = await skill.execute({"user_id": sample_standup["user_id"], "include_github": True})
+        with (
+            patch(_PATCH_ASSEMBLER, new=AsyncMock(return_value=MagicMock())),
+            patch(
+                "services.integrations.mcp.skills.standup_workflow_skill._summary_to_legacy_dict",
+                return_value=sample_standup,
+            ),
+        ):
+            result = await skill.execute(
+                {"user_id": sample_standup["user_id"], "include_github": True}
+            )
 
         assert result["issues_created"] == 5
         assert result["issues_closed"] == 2
@@ -158,7 +182,7 @@ class TestStandupFormatting:
         assert "Daily Standup" in result["content"]
         assert "Yesterday's Accomplishments" in result["content"]
         assert "Today's Priorities" in result["content"]
-        assert "Blockers" in result["content"]
+        assert "Watch" in result["content"]  # #1289: renamed from "Blockers"
         assert result["format"] == "markdown"
 
     @pytest.mark.smoke
@@ -260,20 +284,25 @@ class TestErrorHandling:
     @pytest.mark.smoke
     async def test_execute_slack_failure_continues(self, skill, sample_standup):
         """Slack failure should not stop entire workflow"""
-        skill.workflow = AsyncMock()
-        skill.workflow.generate_standup = AsyncMock(return_value=sample_standup)
         skill._post_to_slack = AsyncMock(side_effect=Exception("Slack API error"))
         skill._process_github_items = AsyncMock(
             return_value={"success": True, "issues_created": 3, "issues_closed": 0}
         )
 
-        result = await skill.execute(
-            {
-                "user_id": sample_standup["user_id"],
-                "include_slack": True,
-                "include_github": True,
-            }
-        )
+        with (
+            patch(_PATCH_ASSEMBLER, new=AsyncMock(return_value=MagicMock())),
+            patch(
+                "services.integrations.mcp.skills.standup_workflow_skill._summary_to_legacy_dict",
+                return_value=sample_standup,
+            ),
+        ):
+            result = await skill.execute(
+                {
+                    "user_id": sample_standup["user_id"],
+                    "include_slack": True,
+                    "include_github": True,
+                }
+            )
 
         # Should still succeed overall
         assert result["success"] is True
