@@ -21,7 +21,7 @@ class TestFileBrowserSearchFilter313:
     def test_search_input_present(self, files_html):
         assert 'id="file-search"' in files_html
         assert 'type="search"' in files_html
-        assert 'Search files by name' in files_html
+        assert 'Search documents by name' in files_html  # #1270: page self-titles "Documents" (files→documents copy)
         # Wired to the filter on every keystroke.
         assert 'oninput="applyFileFilter()"' in files_html
 
@@ -46,5 +46,5 @@ class TestFileBrowserSearchFilter313:
 
     def test_no_match_state_distinct_from_empty_state(self, files_html):
         # "No match" must be honest — distinct from the genuine "no files yet".
-        assert "No files match your search." in files_html
+        assert "No documents match your search." in files_html  # #1270: page self-titles "Documents"
         assert "No documents in your knowledge base yet." in files_html
