@@ -2,7 +2,7 @@
 
 **Status**: COMPLETE — mechanism reverse-engineered from the live droplet by Lead Dev, 2026-06-19 (was a STUB; PA flagged the gap in `memo-pa-to-lead-cc-pm-alpha-deploy-runbook-gap-2026-06-19`).
 **Created**: June 19, 2026 (PA)
-**Last Updated**: June 19, 2026 (Lead Dev — full mechanism + safe procedure)
+**Last Updated**: June 20, 2026 (Lead Dev — the migrate-never-ran finding + corrected mitigation, #1299; 0.8.8 now live). Prior: June 19 (full mechanism + safe procedure)
 
 ---
 
@@ -49,7 +49,38 @@ docker compose build app \
 
 ## ⚠️ Footgun: the migrate races app startup
 
-The Jun-7 (0.8.7) deploy wrote `BUILD_FAIL` — but it was NOT a real failure: the `alembic upgrade` fired while `piper-app` was still `Restarting` (the 30s sleep wasn't long enough), the migrate errored with *"container is restarting"*, so the script marked FAIL. The app stabilized seconds later and ran healthy for 12 days. **Mitigation**: if `BUILD_FAIL` is present after `deploy.sh`, confirm `docker compose ps` shows `app` healthy, then re-run the migrate by hand: `docker compose exec -T app python -m alembic upgrade head`.
+The Jun-7 (0.8.7) deploy wrote `BUILD_FAIL` — but it was NOT a real failure: the `alembic upgrade` fired while `piper-app` was still `Restarting` (the 30s sleep wasn't long enough), the migrate errored with *"container is restarting"*, so the script marked FAIL. The app stabilized seconds later and ran healthy for 12 days. **Mitigation (the race only)**: if `BUILD_FAIL` is present after `deploy.sh`, confirm `docker compose ps` shows `app` healthy. **But do NOT just re-run `docker compose exec -T app python -m alembic upgrade head`** — that hits the deeper bug below and fails the same way.
+
+## ⚠️⚠️ The deeper cause (#1299, found 2026-06-20): the migrate has NEVER actually run via deploy.sh
+
+`alembic.ini:87` hardcodes `sqlalchemy.url = postgresql://piper:...@localhost:5433/piper_morgan` (a dev default), and `alembic/env.py:43` reads that static value verbatim. Inside the app container, postgres is at `postgres:5432`, NOT `localhost:5433` — so `docker compose exec app alembic upgrade head` connects to nothing and errors `connection refused`. **The migrate has silently failed on every deploy**; the DB only stayed usable because schema changes were rare. The 0.8.8 deploy exposed it — the droplet DB was **7 migrations behind** (the entire D1/RECONNECT schema: documents/#1238, owner_id/#1252, project_integrations/#1267, intents/workflows/tasks/stakeholders/#1273). The app was "healthy" (`/health` 200) but hollow.
+
+**Correct mitigation — run the migrate with the app's REAL DB URL** (a temp script in the container that overrides alembic's url with the working engine URL):
+```bash
+cd /opt/piper
+cat > _run_migrate.py <<'PY'
+import os
+from alembic.config import Config
+from alembic import command
+try:
+    from services.database.connection import engine
+    url = str(engine.url)
+except Exception:
+    try:
+        from dotenv import load_dotenv; load_dotenv()
+    except Exception:
+        pass
+    u = os.environ
+    url = f"postgresql://{u['POSTGRES_USER']}:{u['POSTGRES_PASSWORD']}@{u['POSTGRES_HOST']}:{u['POSTGRES_PORT']}/{u['POSTGRES_DB']}"
+cfg = Config("alembic.ini"); cfg.set_main_option("sqlalchemy.url", url)
+command.upgrade(cfg, "head"); print("MIGRATE OK")
+PY
+docker compose exec -T app python /app/_run_migrate.py && rm -f _run_migrate.py
+# verify the head + the schema:
+docker compose exec -T postgres psql -U piper -d piper_morgan -tAc "TABLE alembic_version"
+docker compose restart app   # clean init against the now-complete schema
+```
+The durable fix (make `alembic.ini` env-driven so deploy.sh's migrate just works) is tracked in **#1299 (a) + (b)**.
 
 ## The code-update step (the gap PA flagged)
 
