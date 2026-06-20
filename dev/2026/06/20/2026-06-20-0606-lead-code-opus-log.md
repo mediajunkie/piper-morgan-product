@@ -119,3 +119,9 @@ Verified the B "Fields Encrypted" list vs the real schema:
 - `artifacts.content` (Text) — a real PII target **NOT in the issue's list**.
 Real free-text DB PII: `conversation_turns.user_message` + `assistant_response`, `artifacts.content`, `conversations.preview`. No raw text-search on them → transparent TypeDecorator encryption is safe.
 **Surfaced 2 scope calls to PM**: (1) JSONB/JSON structured columns (context/entities/topics/pattern_data) — encrypting breaks queryability (GIN indexes) — in or out? (2) on-disk file content — storage-layer, separate? **Rec**: scope B to the free-text DB columns (user_message/assistant_response/artifacts.content/preview) via @encrypted_column TypeDecorator + zero-downtime migration; defer JSONB + file-content. Gate-removal-safety investigation queued (task #35). Awaiting PM on the scope.
+
+### #358 Dimension B — scope CONFIRMED + gameplan (gate 2 cleared)
+- **PM approved the corrected scope** (4 free-text Text columns: conversation_turns.user_message + assistant_response, artifacts.content, conversations.preview; defer JSONB + on-disk file content as separate follow-ups).
+- **Gate question** (PM: M5-vs-sooner) → rec'd **SPLIT**: do the investigation soon (read-only/cheap, informs auth-hardening), tie the *removal* to the public-distribution milestone. Task #35 updated.
+- **Gameplan**: `dev/2026/06/20/358-dimension-b-gameplan.md`. Mechanism = `EncryptedString` TypeDecorator (marker-prefix `PMENC1:`, mixed-state-safe, **no-DDL** data-backfill). Audit (`358-dimension-b-gameplan-audit.md`) cleared after 3 fixes (wiring test, regression gate, Phase-0.8 side-effects incl. key-custody). Tasks #36–40.
+- **Next**: Phase 1 — EncryptedString TypeDecorator, TDD.
