@@ -2,7 +2,7 @@
 
 Per duty-cycle substrate: recurring signals to check on each fire's task-loop. Living document — add / remove items as the cycle matures.
 
-**Last refreshed**: 2026-06-03 ~16:15 PT (post-M2-close; PA-flagged staleness correction).
+**Last refreshed**: 2026-06-03 ~16:15 PT (post-M2-close). **⚠️ Broadly stale** — still M2/M3 framing; we're now post-D1 in the RECONNECT sprint. Targeted reconciliation 2026-06-20 (Agent-360 retired); a fuller RECONNECT-era refresh is still pending.
 
 ---
 
@@ -46,7 +46,7 @@ Per duty-cycle substrate: recurring signals to check on each fire's task-loop. L
 ## Cross-agent threads
 
 - **EC-2 capability-claim-consistency (PDR-005 v1.0)** — ✅ Lead Dev concurred on synthesized qualifier (2026-06-03); folding to v1.0. Closed from Lead side.
-- **Agent-360 v0.3 fielding (HOST)** — response requested ~June 10 backstop. Questionnaire at `dev/active/agent-360-questionnaire-v0_3.md`. **OWED: Lead Dev response memo** (§8 role-specific + §7 from Code-era experience, no v0.2 baseline). Queued for a calmer cycle.
+- **Agent-360 v0.3 fielding (HOST)** — ✅ **RESOLVED** (reconciled 2026-06-20). Lead already responded — in the 9/9 by Jun 4; HOST quotes Lead's §9.5 in the v0.3 synthesis to PM (`mailboxes/xian (ceo)/inbox/memo-host-to-pm-agent-360-v0.3-synthesis-2026-06-10.md`). The prior "OWED" was a stale false-positive (this doc predates the Jun-4 response). Next step is PM+HOST "what-to-change" — not a Lead action.
 - **#1142 UI audit + CXO UX discussion** — CXO memo sent 2026-06-02; PM wants UX + web-UI working session. UI-vs-architecture mismatch is the M3 theme-setter.
 
 ---

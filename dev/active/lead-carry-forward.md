@@ -18,7 +18,7 @@
 - **Cron 50daabfb** armed (`17 22,7,10,13,16,19`). Mailbox = `scripts/mail-send.sh` (push-to-ref).
 
 ## ▶ Owed / queued (calmer-cycle)
-- **Agent-360 v0.3 fielding (HOST)** — OWED Lead response memo (June-10 backstop, now overdue). **VERIFY still wanted before writing** (10 days stale; may be closed/superseded). `dev/active/agent-360-questionnaire-v0_3.md`.
+- ~~Agent-360 v0.3 (HOST)~~ ✅ **RESOLVED 2026-06-20** — verified Lead already responded (in the 9/9 by Jun 4; quoted in HOST's Jun-10 synthesis to PM). Was a stale false-positive in standing-items.
 - **Standing-items doc is stale** (June-3 / M2-M3 framing) — refresh to RECONNECT-era when calm.
 
 ## ▶ Methodology this session
