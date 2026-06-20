@@ -201,6 +201,11 @@ A 5-agent audit cascade independently verified every claim in the 12 RECONNECT i
 
 After PA's Skunkworks BYOC Phase-2a scoping (2026-06-19: the `byoc-stack-2026-06-19.html` / `byoc-nearterm-work-2026-06-19.html` diagrams + the ratified identity decision), Lead Dev + PM reconciled RECONNECT against it. This **resolves the §8 parked hook** ("D7 OQ-1 lands when Skunkworks BYOC Phase 2a scopes").
 
+> **⚠️ CORRECTION (2026-06-20, PM-approved) — read as authoritative where it conflicts with the decision-a text below.**
+> The "**#1162 = cred-decoupling**" label below is **wrong**. Reading the live issues revealed **#1162 is `SKUNKWORKS-BYOC-HOSTED-DISTRO` — hosted-distro *exploration*** (a distribution concern, like #1278/#1282), **not** cred-decoupling. The buildable cred-decoupling work (PA's option-a plan, `dev/2026/06/07/pa-option-a-decouple-credential-plan-2026-06-07.md`) had **no tracking issue** — now filed as **#1300** (`BYOC-CRED-DECOUPLE`).
+> **Board corrected 2026-06-20**: **#1162 → SKUNK** (out of RECONNECT), **#1300 → M5**, **#1278 stays M5**, **#1185 stays RECONNECT** (identity core). The internal inconsistency that flagged it: decision-a kept #1278 out as "hosting = distribution-lane," but #1162 is hosting too.
+> **Corrected Phase-0 foundation = #1185 (identity core) + #1229 (RECONNECT-WS2 cred-model, already native)**; the hosting/distribution cluster (#1162 / #1278 / #1282 / #1300) lives in SKUNK / M5, to be organized "when we get to M5" (PM 2026-06-20).
+
 **Boundary:**
 - **RECONNECT owns** the connector framework (WS1–WS8) + the BYOC-identity-*keying* for connectors (WS9).
 - **The BYOC backend owns** the hosting + multi-tenant identity/auth/session substrate: **#1278** (Fly deploy), **#1185** (UUID-bearer auth + per-user identity/session/data/knowledge isolation — *finishing ADR-058*), **#1162** (cred-decoupling).

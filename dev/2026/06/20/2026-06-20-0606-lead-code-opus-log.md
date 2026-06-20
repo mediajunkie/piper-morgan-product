@@ -47,3 +47,14 @@ Duty-cycle tick fired 07:17 mid-conversation — cron 50daabfb armed (1 job, Gap
 **Unblocked housekeeping while #1162 awaits PM:**
 - **Agent-360 owed-item retired** (false-positive). Verified Lead already responded (in the 9/9 by Jun 4; HOST quotes Lead's §9.5 in the Jun-10 synthesis to PM). The standing-items "OWED" predated my Jun-4 response. Retired from standing-items + carry-forward; flagged the standing-items doc as broadly stale (M2/M3 era). (`e581b0768`)
 - **#1185 prep** (de-risking the build #1162 gates — decision-independent, #1185 is the identity foundation either way): verified the open-Q — `user_api_keys` (`services/database/models.py:190`, `UniqueConstraint(user_id, provider)`) **already covers Anthropic** (provider field: "openai, anthropic, github, etc") → **NO schema change** needed for the per-user LLM key. Gap confirmed exactly as #1185 states: `services/llm/clients.py` → `LLMConfigService.get_api_key("anthropic")` (instance-level, no `user_id`) → `llm_config_service` reads env/keychain, no per-user resolution. Core change = a `user_id`-aware key resolution (read `user_api_keys` first, instance fallback). **Open for PM:** #1185 may itself split — identity (per-user auth → RECONNECT) vs per-user-LLM-key (hosted-beta) — the #1162 mapping clarifies. Gameplan + audit-cascade gate await PM's confirm.
+
+## RECONNECT #1162 reconciliation RESOLVED + board corrected (PM-approved, ~09:45 PT)
+
+PM approved the correction ("apply the recommended board changes; when we get to M5 we can decide if that sprint needs refactoring"). Actions applied + verified:
+- **Filed #1300** (BYOC-CRED-DECOUPLE — the real plugin-cred decouple from PA's option-a plan, which had no tracking issue). Body faithful to the plan (3-part design, 6 work items, near-term/end-state, PM open-Qs).
+- **Board** (Projects-v2 Sprint field, project 1; verified via item-list): #1162 (hosted-distro exploration) RECONNECT → **SKUNK** (+ status In Progress → Product Backlog); #1300 added → **M5**; #1185 stays RECONNECT; #1278 stays M5.
+- **Records**: scope-§12 CORRECTION block (decision-a retained for history, marked superseded where conflicting); decisions.log correction line (right after the (a) line); #1300 body lane → M5 confirmed.
+- **Architect re-pinged** (`memo-lead-to-arch-cc-pm-1162-correction`, `f8f49c61e`) — ADR-070 Phase-0 = #1185 + #1229, drop #1162; WS-9 reframe unchanged.
+- M5 refactor (consolidate #1282, etc.) **deferred** to "when we get to M5" (PM).
+
+RECONNECT now clean: 9 WS + #1185 (identity) + connector-adjacent (#441/#865/#1227/#1283). Phase-0 foundation = #1185 + #1229 (+ ADR-070). **Next:** gameplan #1185 (or #1229) — PM to pick/sequence.
