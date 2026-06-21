@@ -16,7 +16,7 @@
 - Janus meta-rollup channel live (CEO-hat feed).
 
 ## Work
-- (fires appended here)
+- **START + PM-requested sweep (~09:02–09:30).** Clean date-roll (6/20 closed properly; no self-heal). Deduped the re-delivered HOST wave-4 memo (Pattern-068, again). **Full sweep-and-verify** (skill procedure; formally invoked 6/20, executed rigorously today): all 8 carry-forwards + GitHub. **New PM-items surfaced + verified**: (1) **Redis exposed on prod Droplet** (port 6379, PA-scan, PM-forwarded) — Lead has the localhost-bind fix, **PENDING PM go** (prod change; gates alpha plugin wave); the new top item, security. (2) **CIO cron-stall cure** — diagnosed the recurring missed-fires (session-crons suppressed-while-backgrounded; watcher detects-but-only-logs, never nudges PM); **awaiting PM's nudge-mechanism choice** (desktop-notif / mailbox / both). (3) **#1286 D2** phone-UAT pending. **Resolved since yesterday**: #1307 **+ #1308** (security thread both closed), **#358** (PM-confirmed hold-for-deploy). Comms 3 low-urgency + 2 voice-pass unchanged. **Board rendered** (`2f4ea71ae`): 2 soon (Redis + CIO-nudge) / 3 when-ready / 2 voice-pass / waves in-flight. **Held**: Ship #048 synth still gated on CIO's workstream lens (5/6); Docs portfolio (last of 8) not yet filed. Cron `8f2194b1` armed.
 
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
