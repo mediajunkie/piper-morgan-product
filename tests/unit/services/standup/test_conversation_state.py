@@ -950,3 +950,59 @@ class TestCleanup:
         await manager.create_conversation("s1", "u1")
         removed = await manager.cleanup_expired(max_age_minutes=60)
         assert removed == 0
+
+
+# ---------------------------------------------------------------------------
+# Timezone regression (2026-06-21)
+# ---------------------------------------------------------------------------
+
+
+class TestTimezoneRegression:
+    """Naive-vs-aware datetime subtraction in ``transition_state``.
+
+    The ``manager`` fixture persists via in-memory SQLite, which drops tzinfo on
+    round-trip → ``created_at`` returns tz-naive. ``transition_state`` then sets
+    ``completed_at`` tz-aware and computes ``completed_at - created_at`` (COMPLETE,
+    conversation_manager.py:339) or ``now(utc) - created_at`` (ABANDONED, :355).
+    Before the fix these raised
+    ``TypeError: can't subtract offset-naive and offset-aware datetimes``;
+    ``ensure_utc`` now coerces the operands. (Prod is unaffected — PostgreSQL
+    ``timestamptz`` returns tz-aware — so this only fired under the test doubles,
+    which is why it escaped CI.)
+    """
+
+    @pytest.mark.smoke
+    async def test_complete_transition_with_naive_created_at(self, manager):
+        conv = await manager.create_conversation("session1", "user1")
+        # Precondition: the SQLite round-trip yields a tz-naive created_at — the
+        # exact trigger for the original crash.
+        fetched = await manager.get_conversation(conv.id)
+        assert fetched.created_at.tzinfo is None
+
+        await manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        await manager.transition_state(conv.id, StandupConversationState.FINALIZING)
+        completed = await manager.transition_state(
+            conv.id, StandupConversationState.COMPLETE
+        )
+
+        assert completed.state == StandupConversationState.COMPLETE
+        assert completed.completed_at is not None
+
+    @pytest.mark.smoke
+    async def test_abandoned_transition_with_naive_created_at(self, manager):
+        conv = await manager.create_conversation("session1", "user1")
+        fetched = await manager.get_conversation(conv.id)
+        assert fetched.created_at.tzinfo is None  # precondition: genuinely naive
+
+        abandoned = await manager.transition_state(
+            conv.id, StandupConversationState.ABANDONED
+        )
+
+        assert abandoned.state == StandupConversationState.ABANDONED
+
+    @pytest.mark.smoke
+    async def test_model_default_timestamps_are_tz_aware(self):
+        """The domain model now defaults to tz-aware UTC at the source."""
+        conv = StandupConversation(session_id="s", user_id="u")
+        assert conv.created_at.tzinfo is not None
+        assert conv.updated_at.tzinfo is not None

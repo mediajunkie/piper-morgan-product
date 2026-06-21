@@ -21,7 +21,7 @@ the manager-level integration tests at
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 
 from services.domain.models import (
@@ -127,9 +127,9 @@ class FakeStandupConversationManager:
             )
         conv.previous_state = conv.state
         conv.state = new_state
-        conv.updated_at = datetime.now()
+        conv.updated_at = datetime.now(timezone.utc)
         if new_state == StandupConversationState.COMPLETE:
-            conv.completed_at = datetime.now()
+            conv.completed_at = datetime.now(timezone.utc)
         return conv
 
     async def add_turn(
@@ -150,10 +150,10 @@ class FakeStandupConversationManager:
             assistant_response=assistant_response,
             intent=intent,
             metadata=metadata or {},
-            completed_at=datetime.now(),
+            completed_at=datetime.now(timezone.utc),
         )
         conv.turns.append(turn)
-        conv.updated_at = datetime.now()
+        conv.updated_at = datetime.now(timezone.utc)
         if len(conv.turns) > self.MAX_TURN_HISTORY:
             conv.turns = conv.turns[-self.MAX_TURN_HISTORY :]
         return turn
@@ -167,7 +167,7 @@ class FakeStandupConversationManager:
         if not conv:
             raise KeyError(f"Conversation not found: {conversation_id}")
         conv.preferences.update(preferences)
-        conv.updated_at = datetime.now()
+        conv.updated_at = datetime.now(timezone.utc)
         return conv
 
     async def set_standup_content(
@@ -181,7 +181,7 @@ class FakeStandupConversationManager:
         if conv.current_standup:
             conv.standup_versions.append(conv.current_standup)
         conv.current_standup = content
-        conv.updated_at = datetime.now()
+        conv.updated_at = datetime.now(timezone.utc)
         return conv
 
     async def update_partial_capture(
@@ -193,7 +193,7 @@ class FakeStandupConversationManager:
         if not conv:
             raise KeyError(f"Conversation not found: {conversation_id}")
         conv.partial_capture = capture
-        conv.updated_at = datetime.now()
+        conv.updated_at = datetime.now(timezone.utc)
         return conv
 
     async def bind_session_id(
@@ -205,11 +205,11 @@ class FakeStandupConversationManager:
         if not conv:
             raise KeyError(f"Conversation not found: {conversation_id}")
         conv.session_id = session_id
-        conv.updated_at = datetime.now()
+        conv.updated_at = datetime.now(timezone.utc)
         return conv
 
     async def cleanup_expired(self, max_age_minutes: int = 60) -> int:
-        now = datetime.now()
+        now = datetime.now(timezone.utc)
         cutoff = now - timedelta(minutes=max_age_minutes)
         expired = [
             cid

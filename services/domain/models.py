@@ -2213,8 +2213,11 @@ class StandupConversation:
     partial_capture: StandupPartialCapture = field(default_factory=StandupPartialCapture)
 
     # Timestamps
-    created_at: datetime = field(default_factory=datetime.now)
-    updated_at: datetime = field(default_factory=datetime.now)
+    # #1079: tz-aware UTC defaults so in-memory timestamps match the DB-issued
+    # (TIMESTAMP WITH TIME ZONE) values and never produce naive-vs-aware
+    # subtraction crashes downstream (e.g. transition-duration / timeout math).
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     completed_at: Optional[datetime] = None
 
     def to_dict(self) -> Dict[str, Any]:
