@@ -20,6 +20,8 @@
 
 - **~09:10 — PM flag → cross-check caught a stale board (big methodology moment).** PM: "Lead may not update their carry-forward when head's down; I check in with them a lot." Acted on it immediately: `git log --since` cross-check of Lead's commit-activity vs what the morning board (rendered from the carry-forward) showed. **Caught 3 stale items within minutes**: (1) **Redis #1311 FIXED + closed 3h prior** — but the board's TOP needs-you ("Redis pending PM go") was sourced from Lead's 24-min-old carry-forward, which lagged its own author's commits → a phantom security needs-you; (2) **Web Phase-2 test** = live (Web's fresh log); (3) **Comms "Extension Without Integration"** = awaiting PM edit, **publish-day today**. **Board corrected** (`13bc93bd4`): Redis → resolved, +Web-Phase-2, +Comms-today-edit (now the 1 real today-clock item). **Captured the refinement durably**: pin `attention_board_sweep_not_vantage` extended + runbook §4/§6/§7 (the heads-down-role rule: *every sweep, cross-check the busiest roles' commit-activity — commits don't lie, trackers do*). This is the sharpest rollup-discipline improvement since the 6/16 from-vantage catch. Cron `8f2194b1` armed.
 
+- **12:23 — late-09:32 fire (quiet; ~3h midday suspension).** Applied the new heads-down rule: `git log --since 09:10` cross-check of Lead — WS-1 RECONNECT building (P1 done, connector config-store + identity collapse), **no new PM-items/blockers** → board stays current (last corrected 09:10). CIO workstream still 5/6 (Ship #048 synth gated). Inbox empty; Comms-today-edit + CIO-nudge still pending PM. Quiet-hold + heartbeat. Cron `8f2194b1` armed.
+
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
 
