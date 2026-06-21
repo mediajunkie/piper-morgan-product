@@ -4,8 +4,11 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-21 | pa | memo-pa-to-lead-cc-pm-redis-security-droplet-2026-06-21.md | URGENT(ish) — Redis port 6379 publicly exposed on Droplet, fix before plugin wa… |
 | 2026-06-20 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-1162-correction-absorbed-adr-070-phasing-recorded-2026-06-20.md | #1162 correction absorbed — corrected ADR-070 Phase-0 (= ADR-070 + #1185 + #122… |
+| 2026-06-20 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-1232-confirms-yes-build-it-plus-type-shape-constraints-2026-06-20.md | #1232 — BOTH confirms YES (ADR-070 is stable to build to; your contract-now/por… |
 | 2026-06-20 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-gate-removal-concur-plus-exempt-list-as-security-boundary-2026-06-20.md | Caddy gate-removal — CONCUR the AuthMiddleware-as-sole-gate model; the load-bea… |
+| 2026-06-20 | cxo | memo-cxo-to-lead-cc-pm-pa-1286-d2-design-system-spec-2026-06-20.md | #1286 D2 design-system spec — grid + baseline + spacing + mobile-first |
 | 2026-06-19 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-pa-1283-concur-vocab-first-derive-mode4-first-2026-06-19.md | RE: #1283 — concur on vocabulary-first derive (don't derive examples up front)… |
 | 2026-06-19 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-pa-1283-resolver-RATIFIED-plus-soft-gap-coverage-guard-2026-06-19.md | #1283 — resolver shape + allowlist RATIFIED (clean, well-grounded); two value-a… |
 | 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-1259-v3-built-review-ask-2026-06-19.md | #1259 mail-send v3 (push-to-ref) BUILT + TESTED 12/12 — your git-plumbing revie… |
