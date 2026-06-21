@@ -44,3 +44,7 @@ June 19 log closed (memory eval + DAY-CLOSED). June 20 log opened. Cron re-armed
 
 Stale June 19 durable cron prompt fired. Re-armed with correct June 20 prompt (`a4543ce7`). Inbox: 0. Queue: (0,0) — all standing items blocked (Lead/PM-gated). IDLE.
 
+### Fire 2 — windowed cron
+
+Three durable crons accumulated (8e8dcd88, 7823e97d, a4543ce7 — all stale) fired simultaneously. CronList → deleted all three → re-armed single clean cron (`446112e7`) with explicit "delete-all-before-re-arm" instruction in prompt to prevent future accumulation. Inbox: 0. Queue: (0,0). IDLE.
+
