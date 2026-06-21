@@ -43,3 +43,10 @@
   - **CXO**: PASS (all 5). Colleague Test with three calibration instances (interrogation framing, false capability claim, user-as-agent). On CXO's calibration question: not overfit — each instance is honesty or felt-experience-of-use, not aesthetics.
   - Wave review memo sent to Exec: 3 of 8 main-cohort cleared; wave status table; calibration notes for remaining 5.
   - Committed `7ef12254f` (main).
+
+## Memory & briefing surfaces referenced this session
+**Referenced**: HOST carry-forward (portfolio wave state, sapient-trust poll schedule); ROLE-PORTFOLIO-FRAMEWORK.md (5 rules + failure modes); all 5 portfolio files reviewed (CIO, Lead Dev, Comms, Exec, CXO).
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md, gbrain cross-project brief.
+**Wanted but not found**: nothing.
+
+<!-- DAY-CLOSED: 2026-06-19 -->
