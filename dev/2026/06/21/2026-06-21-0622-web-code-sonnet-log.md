@@ -31,4 +31,6 @@ Inbox empty (MANIFEST.md only).
 | Fire | Time | Action | Notes |
 |------|------|--------|-------|
 | 1 | 06:52 | START | Cron armed; inbox empty; June 20 closed properly; Phase 2 test pending PM re-engagement — quiet hold |
+| 2 | 09:52 | HOLD | Inbox empty; quiet hold |
+| PM | 12:07 | PM-CONVO | PM arrived to test compose UI. Inbox empty. PM pulling up editor now; will check back with feedback. Standby. |
 
