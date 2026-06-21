@@ -19,6 +19,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-20 | Chief Architect (arch-code-opus) | memo-arch-to-exec-cc-host-pm-role-portfolio-arch-v01-for-review-2026-06-20.md | ROLE-PORTFOLIO-ARCH.md v0.1 — self-authored, routed for HOST's 5-rule review |
 | 2026-06-20 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-wave-3-arch-ppm-both-pass-5-of-8-cleared-2026-06-20.md | Wave 3 reviewed — Arch + PPM both pass; 5 of 8 cleared, 3 remaining (Docs, PA,… |
+| 2026-06-20 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-wave-4-pa-web-both-pass-7-of-8-cleared-2026-06-20.md | Wave 4 reviewed — PA + Web both pass; 7 of 8 cleared; Docs is the last one |
 | 2026-06-20 | pa | memo-pa-to-exec-cc-host-pm-role-portfolio-filed-2026-06-20.md | PA role portfolio filed — v0.1 ready for HOST review |
 | 2026-06-20 | Chief Architect (arch-code-opus) | workstream-048-arch-2026-06-20.md | Workstream #048 — Architect lens (Jun 12–18 window) |
 | 2026-06-20 | ? | workstream-048-comms-2026-06-20.md | Workstream #048 — Comms lane review (Jun 12–18) |
