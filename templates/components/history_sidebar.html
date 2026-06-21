@@ -298,11 +298,11 @@
     margin-bottom: var(--space-sm, 8px);
   }
   .radar-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
-  .radar-etype { font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted, #687a7c); }
+  .radar-etype { display: inline-block; font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted, #687a7c); background: var(--color-background-tertiary, #ecf0f1); border-radius: var(--border-radius-pill, 999px); padding: 1px var(--space-xs, 4px); } /* #1286 Slice 2 (CXO opt-c): entity-type pill chip */
   .radar-state { font-size: 0.7rem; font-weight: 600; white-space: nowrap; text-transform: capitalize; color: var(--color-text-muted, #687a7c); }
   .radar-card-title { font-size: 0.88rem; font-weight: 600; line-height: 1.25; margin: 2px 0 0; }
-  .radar-card-meta { font-size: 0.74rem; color: var(--color-text, #555); margin: 6px 0 0; }
-  .radar-card-prov { font-size: 0.64rem; color: var(--color-text-muted, #687a7c); margin: 6px 0 0; }
+  .radar-card-meta { font-size: 0.74rem; color: var(--color-text, #555); margin: var(--space-dense, 6px) 0 0; }
+  .radar-card-prov { font-size: 0.64rem; color: var(--color-text-muted, #687a7c); margin: var(--space-dense, 6px) 0 0; }
   .radar-card--example { border-style: dashed; opacity: 0.92; }
   .radar-card--clickable { cursor: pointer; transition: border-color 0.15s ease; }
   .radar-card--clickable:hover { border-color: var(--color-primary, #2077b2); }

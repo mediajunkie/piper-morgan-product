@@ -16,7 +16,7 @@ REQUIRED_TOKENS = [
     "--grid-radar-width:",
     "--baseline-unit:",
     "--baseline-rhythm:",
-    "--space-2xs:",
+    "--space-dense:",
     "--border-radius-pill:",
     "--breakpoint-mobile:",
     "--breakpoint-tablet:",
@@ -29,8 +29,9 @@ def test_required_d2_tokens_defined():
     assert not missing, f"#1286 D2 tokens missing from tokens.css: {missing}"
 
 
-def test_space_2xs_is_6px():
-    assert "--space-2xs: 6px" in _TOKENS  # micro-spacing for dense entity surfaces
+def test_space_dense_is_6px_and_2xs_renamed_away():
+    assert "--space-dense: 6px" in _TOKENS  # dense-surface micro-spacing (renamed from --space-2xs per CXO)
+    assert "--space-2xs:" not in _TOKENS  # the old token definition is gone (a comment mentioning the rename would be fine)
 
 
 def test_baseline_rhythm_is_24px():
@@ -61,3 +62,21 @@ def test_shell_grid_no_longer_hardcodes_rail_radar_px():
     # the raw 180px / 320px column widths are gone (replaced by tokens).
     assert "180px 1fr" not in _APP_SHELL
     assert "1fr 320px" not in _APP_SHELL
+
+
+# ── Slice 2 (#1286, CXO-ruled 2026-06-21): radar tiling — pill chip + tokenized dense spacing ──
+_HISTORY_SIDEBAR = (
+    Path(__file__).resolve().parents[2] / "templates" / "components" / "history_sidebar.html"
+).read_text()
+
+
+def test_radar_etype_is_a_pill_chip():
+    # CXO option (c): the entity-type label is a pill chip (badge), not plain text.
+    assert ".radar-etype" in _HISTORY_SIDEBAR
+    idx = _HISTORY_SIDEBAR.index(".radar-etype")
+    assert "--border-radius-pill" in _HISTORY_SIDEBAR[idx : idx + 260]
+
+
+def test_radar_card_dense_margins_use_token():
+    # CXO: tokenize the raw 6px margins in .radar-card via --space-dense (no-visual-change cleanup).
+    assert _HISTORY_SIDEBAR.count("var(--space-dense") >= 2  # radar-card-meta + radar-card-prov

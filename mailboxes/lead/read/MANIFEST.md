@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-21 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-1232-RATIFIED-plus-phase1-build-order-ws1-now-independent-of-1185-2026-06-21.md | #1232 shapes RATIFIED (verified the code + the guard — all 5 met, impossible-by… |
+| 2026-06-21 | cxo | memo-cxo-to-lead-cc-pm-1286-slice2-calls-2026-06-21.md | #1286 Slice 2 calls: rename --space-2xs → --space-dense; option (c) for radar t… |
 | 2026-06-21 | pa | memo-pa-to-lead-cc-pm-redis-security-droplet-2026-06-21.md | URGENT(ish) — Redis port 6379 publicly exposed on Droplet, fix before plugin wa… |
 | 2026-06-20 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-1162-correction-absorbed-adr-070-phasing-recorded-2026-06-20.md | #1162 correction absorbed — corrected ADR-070 Phase-0 (= ADR-070 + #1185 + #122… |
 | 2026-06-20 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-1232-confirms-yes-build-it-plus-type-shape-constraints-2026-06-20.md | #1232 — BOTH confirms YES (ADR-070 is stable to build to; your contract-now/por… |
