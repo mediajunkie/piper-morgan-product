@@ -25,8 +25,22 @@
 - **~21:00 — PM closed #1307 (board input).** PM: "#1307 is closed." Verified **CLOSED-COMPLETED**; **#1162 now unblocked** (open, back with Lead). **Board updated** (`3013a3421`): #1307 → resolved, needs-you-soon 1→0 (nothing urgent), #1162-unblocked noted, workstream 5/6. **Deduped 2 re-delivered workstream inbox copies** (PPM/CXO — Pattern-068 re-delivery race; both confirmed in read/ on origin, so inbox copies were pure dupes; `420a65a1f`). Inbox clean. Board now: 0 urgent / 3 when-ready / 2 voice-pass / waves in-flight (portfolios 7/8, workstream 5/6, only CIO + Docs outstanding). Cron `8f2194b1` armed; next 21:32 STOP.
 
 ## Memory & briefing surfaces referenced this session
-- (filled at STOP)
+- **Referenced**: `cohort-attention-rollup` skill — **formally INVOKED for the first time** (the PM-requested 18:57 sweep; dogfooded the runbook's invoke-the-skill rule PM probed 6/19) + the runbook; `duty-cycle-tick` (the fires, internalized); **methodology-25** (workstream cadence, the #048 context); `project_janus_coordination_2026` + `reference_dispatch_agent` (the Janus meta-rollup channel + cross-repo delivery); memory pins — `attention_board_sweep_not_vantage` (the sweeps + verify-catches: #1307 surfaced, HOST-awaiting-PM-section flagged stale, Web-Phase-2 marked unconfirmed-not-dropped), `careful_git_sync_on_shared_main` (bridge ops + the Pattern-068 re-delivery-race dedupe). XPOLL current.md.
+- **Loaded but not referenced**: most MEMORY.md; the large skill/plugin registry churn.
+- **Wanted but not found**: the **Pattern-068 re-delivery-race structural fix** — PPM/CXO workstream memos re-appeared in inbox after being collected (deduped manually); CIO's mail-send-v3 read-state-dedup is the cure but the race still recurred this session. Worth a nudge to CIO if it persists.
+
+## STOP / Day-close (2026-06-20)
+
+**Day-arc — a steady Saturday; the two coordination waves nearly closed.** Self-heal START (6/19 retroactively closed; watcher caught the overnight dormancy a 3rd time). **Janus meta-rollup channel went LIVE** — confirmed the CEO-hat / PM-hat split, delivered cross-repo to the DinP repo; the rollup pattern is now genuinely cross-project (Piper source · Klatch adopting via Calliope · Janus aggregating). **PM-requested full sweep (18:57)** — first **formal Skill-tool invocation** of the rollup (closing the loop on PM's "was the skill invoked?"); it surfaced **#1307**, a real **security hole** (auth-exempt writable admin_compose), which **PM closed by evening** → #1162 unblocked. Both waves advanced while PM was out: **role-portfolios 7/8 filed** (HOST passed 5; only Docs left), **Ship #048 workstream review 5/6** (only CIO's lens left → then I synthesize the draft for Wed). Cohort shipped #1297/#1294/#1293.
+
+**Board at day-close**: 0 urgent / 3 low-urgency when-ready (#358, beat-steer, GTM-convene) / 2 voice-pass / waves in-flight. Nothing needs PM tonight.
+
+**Held into 6/21**: synthesize Ship #048 once CIO's workstream lands (or Mon/Tue); track the last 2 portfolios (Docs to file; PA+Web HOST-review); the 3 low-urgency + 2 voice-pass items are PM's-when-ready; re-nudge Docs on the 5-day-stale merge-keeper list; watch CIO's stalled-cron diagnosis + the Pattern-068 race.
+
+**Sign-off**: working tree clean; all work verified on origin/main throughout (per-commit `branch -r --contains`). Cron `8f2194b1` left armed (next 06:32 Sun). Exec MANIFESTs regen'd.
+
+<!-- DAY-CLOSED: 2026-06-20 -->
 
 ---
 
-*— Exec (DinP / Opus 4.8), 6/20 START ~07:30 PT.*
+*— Exec (DinP / Opus 4.8), 6/20 START ~07:30 PT, day-closed ~22:10 PT.*
