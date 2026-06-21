@@ -17,27 +17,28 @@
   h2 { font-size: 15px; font-weight: 600; margin: 26px 0 11px; display: flex; align-items: center; gap: 9px; }
   .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex: none; }
   .card { background: #fff; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 12px 16px; margin: 0 0 10px; }
+  .card.act { border-color: rgba(192,57,43,0.4); border-left: 3px solid #c0392b; }
   .card.soft { border-left: 3px solid #c9a227; }
   .card.vp { border-left: 3px solid #8e6db3; }
   .card .top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
   .ttl { font-weight: 600; }
   .pill { font-size: 11px; padding: 3px 9px; border-radius: 6px; white-space: nowrap; flex: none; }
   .card p { margin: 6px 0 0; font-size: 14px; color: #45443f; }
-  .clear { font-size: 14px; color: #3b6d11; margin: 0 0 8px; display: flex; align-items: center; gap: 7px; }
   .row { display: flex; gap: 10px; padding: 9px 2px; border-bottom: 1px solid rgba(0,0,0,0.07); }
   .row:last-child { border-bottom: none; }
   .rdot { width: 7px; height: 7px; border-radius: 50%; margin-top: 6px; flex: none; }
   .row .ttl { font-size: 14px; }
   .row p { margin: 1px 0 0; font-size: 13.5px; color: #6b6a64; }
+  .bg-red { background: #f7dfda; color: #8c2a1c; }
   .bg-amber { background: #faeeda; color: #633806; }
   .bg-violet { background: #ece3f5; color: #5b3f86; }
   @media (prefers-color-scheme: dark) {
     body { background: #1b1b19; color: #e8e6e1; }
     .metric, .card { background: #262624; border-color: rgba(255,255,255,0.1); }
     .metric .lbl, .row p, .card p { color: #a8a6a0; }
-    .ts { color: #8a8882; } .clear { color: #b8dd8a; }
-    .card.soft { border-left-color: #d8b53e; } .card.vp { border-left-color: #a988cc; }
-    .bg-amber { background: #3a2c12; color: #ecc88a; } .bg-violet { background: #2c2340; color: #c8b3e0; }
+    .ts { color: #8a8882; }
+    .card.act { border-left-color: #e0604f; } .card.soft { border-left-color: #d8b53e; } .card.vp { border-left-color: #a988cc; }
+    .bg-red { background: #3a2018; color: #f0a895; } .bg-amber { background: #3a2c12; color: #ecc88a; } .bg-violet { background: #2c2340; color: #c8b3e0; }
     .row { border-color: rgba(255,255,255,0.08); }
   }
 </style>
@@ -45,21 +46,24 @@
 <body>
 <div class="wrap">
   <h1>Exec attention board</h1>
-  <p class="ts">as of Saturday June 20, ~9:00 PM &middot; you closed #1307 (the security item) &mdash; <b>nothing urgent; a few low-urgency on your schedule</b></p>
+  <p class="ts">as of Sunday June 21, ~9:05 AM &middot; full sweep-and-verify by the skill (8 carry-forwards + GitHub + mail) &mdash; <b>2 worth doing soon (1 security), then low-urgency</b></p>
 
   <div class="metrics">
-    <div class="metric"><p class="lbl">Needs you (soon)</p><p class="num" style="color:#3b6d11">0</p></div>
+    <div class="metric"><p class="lbl">Needs you (soon)</p><p class="num" style="color:#c0392b">2</p></div>
     <div class="metric"><p class="lbl">When ready</p><p class="num" style="color:#c9a227">3</p></div>
     <div class="metric"><p class="lbl">Voice-pass</p><p class="num" style="color:#8e6db3">2</p></div>
     <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">5</p></div>
   </div>
 
-  <h2><span class="dot" style="background:#3b6d11"></span>Nothing urgent</h2>
-  <p class="clear"><span style="font-size:16px">&#10003;</span> You closed <b>#1307</b> (the auth-exempt admin_compose hole) &mdash; that was the one worth doing soon, and it's done. <b>#1162</b> (BYOC gate-removal) is now unblocked and back with Lead. Nothing else is time-pressured.</p>
+  <h2><span class="dot" style="background:#c0392b"></span>Needs you, soon</h2>
+  <div class="card act"><div class="top"><span class="ttl">Redis exposed on the prod Droplet &mdash; your go to fix</span><span class="pill bg-red">Lead/PA blocked · security</span></div>
+    <p>PA's scan found <b>Redis port 6379 open on the alpha Droplet</b> (146.190.151.63) &mdash; you forwarded it. Lead has the fix ready (<b>bind to 127.0.0.1</b>, reversible, fallback = DO Cloud Firewall). It's a prod change, so it's <b>pending your go</b>. <b>Highest priority</b> once green-lit; gates the alpha plugin wave.</p></div>
+  <div class="card act"><div class="top"><span class="ttl">CIO's cron-stall cure &mdash; pick the nudge mechanism</span><span class="pill bg-red">CIO, your call</span></div>
+    <p>This is the fix for the "fire didn't go off" mornings you keep hitting. CIO diagnosed it: session-crons are suppressed while the app's backgrounded; the watcher <i>detects</i> the stall but only writes a log &mdash; <b>it never nudges you</b>. CIO has the nudge build ready and needs your pick: <b>desktop notification / PM-mailbox memo / both</b>.</p></div>
 
-  <h2><span class="dot" style="background:#c9a227"></span>When you're ready &middot; low-urgency decisions</h2>
-  <div class="card soft"><div class="top"><span class="ttl">#358 &mdash; close now vs hold for deploy</span><span class="pill bg-amber">Lead, your call</span></div>
-    <p>Lead leans <b>hold</b> (P0 not satisfied until key + backfill land on alpha). Your disposition when convenient.</p></div>
+  <h2><span class="dot" style="background:#c9a227"></span>When you're ready &middot; low-urgency</h2>
+  <div class="card soft"><div class="top"><span class="ttl">#1286 D2 design-system &mdash; phone-UAT</span><span class="pill bg-amber">Lead/CXO</span></div>
+    <p>Responsive shell + mobile drawer shipped; Lead can't headless-verify the visuals. Needs a <b>quick look on your phone</b> (+ CXO conformance) to close. No deadline.</p></div>
   <div class="card soft"><div class="top"><span class="ttl">Building-narrative beats &mdash; your steer</span><span class="pill bg-amber">Comms</span></div>
     <p>5 beat candidates (A–E) awaiting your steer on which to draft. No deadline.</p></div>
   <div class="card soft"><div class="top"><span class="ttl">BYOC GTM task force &mdash; convene?</span><span class="pill bg-amber">Comms</span></div>
@@ -70,14 +74,14 @@
     <p><b>Beat 8</b> "Branch-or-Anchor" (Jun 23; you're holding) + <b>BYOC insight</b> "Built in Our Own Image" (no urgency).</p></div>
 
   <h2><span class="dot" style="background:#185fa5"></span>In flight &middot; for awareness</h2>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Role-portfolio wave &mdash; 7 of 8 filed, 5 passed</span><p>Only Docs left to file. HOST passed 5; PA+Web awaiting review. Nearly done.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Ship #048 workstream review &mdash; 5 of 6 in</span><p>Comms/Arch/HOST/PPM/CXO filed; only <b>CIO</b> left. Then I synthesize → your voice-pass → publishes Wed Jun 24.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Lead's deploy + gate-removal track</span><p>#1162 now unblocked (you cleared #1307); #1299 deploy fix (alpha healthy on 0.8.7); #1283 RECONNECT building; #1287 dead-code. Moving.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Janus meta-rollup channel &mdash; live</span><p>I feed Janus your CEO-hat subset. No CEO-hat item to route this sweep.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Ship #048 workstream review &mdash; 5 of 6</span><p>Only CIO's lens left. Then I synthesize → your voice-pass → publishes Wed Jun 24.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Role-portfolio wave &mdash; 7/8 filed, all 7 passed</span><p>Only Docs left to file, then the wave is complete. I'll nudge Docs if it's not in by Monday.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Lead's RECONNECT + deploy track</span><p>RECONNECT Phase-1 (Arch-gated on #1232 ratify), #358 (held for deploy, your call confirmed), #1162/#1283 moving.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Janus meta-rollup channel &mdash; live</span><p>I feed Janus your CEO-hat subset. No CEO-hat item this sweep (the Redis exposure is operational, your-PM-hat).</p></div></div>
   <div class="row"><span class="rdot" style="background:#c9a227"></span><div><span class="ttl">Docs "6 escalate branches" &mdash; 5 days stale</span><p>Still un-refreshed; don't action as-is. I'll re-nudge Docs.</p></div></div>
 
-  <h2><span class="dot" style="background:#3b6d11"></span>Clean &middot; resolved today</h2>
-  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">Closed Saturday</span><p><b>#1307</b> (admin_compose security hole — you just closed it) · #1297 (D1 closing gate) · #1294 (BYOC connector-absent) · #1293 (floor-quality help). A productive weekend day.</p></div></div>
+  <h2><span class="dot" style="background:#3b6d11"></span>Clean &middot; resolved since yesterday</h2>
+  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">Resolved</span><p><b>#1307 + #1308</b> security thread (admin_compose hole + the auth-exempt-route lint) &mdash; both closed · <b>#358</b> disposition confirmed (hold for deploy) · HOST cleared the last 2 portfolios overnight.</p></div></div>
 </div>
 </body>
 </html>
