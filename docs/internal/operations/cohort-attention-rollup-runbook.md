@@ -70,12 +70,15 @@ Every one of these would have lied to PM if rendered from assumption:
 - **#1165 / #1193 / #1133 / #1079** sat in stale escalations docs as "open decisions" — all **closed**. (6/16)
 - **Docs "6 escalate branches → your decision"** looked like a live PM queue — the sweep was **4 days stale** with none since; flagged needs-refresh, not surfaced as current. (6/19)
 - **HOST "waiting on the pilots"** read as not-yet-filed — both pilots **were filed**; HOST's carry-forward was stale and HOST hadn't registered them. The sweep caught the gap and triggered an Exec nudge. (6/19)
+- **Redis "pending PM's go"** (a *security* needs-you, the board's top item) — Lead had **FIXED + closed it 3h prior** (`#1311`). Lead's carry-forward was only 24 min old but still lagged its own author's commits (heads-down). A `git log --since` cross-check against Lead's commits caught the phantom. (6/21 — the catch that produced the §4 heads-down-role rule below.)
 
 ## 7. Iteration log + open questions
 
 *(PM 2026-06-19: "let's keep iterating." Append here.)*
 
 - **2026-06-19 v1.0** — Runbook created (this doc). Skill already covered mechanics; this adds the judgment layer (refresh rule, trust-stakes), the closed Exec↔PM loop incl. PM's post-back commitment, and the receipts.
+- **2026-06-21 — heads-down-role rule (§4 sharpening).** PM flagged Lead "may not update their carry-forward when head's down." The lesson: **a freshly-written carry-forward can still be stale** — a heads-down role ships commits without updating their tracker. So Step-2 live-verify must include a **`git log --since` cross-check of the busiest/heads-down roles' commit-activity** (Lead especially), reconciled against what their carry-forward claims — *commits don't lie, trackers do*. Caught the Redis phantom within minutes (see §6). Pin `feedback_attention_board_sweep_not_vantage` extended.
+- **2026-06-21 — the cross-check is two-way (PM extension).** PM: *"checking commits is a great idea and perhaps nudging or guiding agents whose trackers are stale can follow from that."* So the commit-cross-check doesn't only correct the board — when it reveals a **stale tracker**, Exec **gently guides the owning agent to refresh it** (heads-down-aware: "when you next surface," never a mid-flow demand). One-way board-correction → **two-way tracker-hygiene loop**: the board stays honest AND the cohort's trackers improve, so future sweeps + PM's direct check-ins both get more reliable. Meta-note PM named: these process improvements come from *the cohort surfacing patterns* + *PM being clear about needs* — neither half alone.
 
 **Open / candidates for the next step:**
 - **Fold §3's sharpened refresh rule + §5 blockers-first ordering into the skill** (the skill's cadence section predates both). Low-risk; the obvious next "tighten the skill against the spec" move.
