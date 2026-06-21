@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-20 ~18:52 PT (START; Arch + PPM both pass; 5 of 8 cleared; Ship #048 workstream review sent; cron re-armed `cf93cc1a`)
+**Last updated**: 2026-06-20 ~21:37 PT (Fire 4; PA + Web both pass; 7 of 8 cleared; Docs is the last one)
 
 ---
 
@@ -60,7 +60,7 @@
 - **Trust-stage origin sweep contribution delivered** (2026-06-17 ~18:37): Lead+CXO+PPM asked HOST what trust stages were FOR. HOST read: stages govern Piper's initiative level (observe→offer→act), never user access. Content-gating was never intended — drift from progressive disclosure of Piper's capabilities. Welfare corollary: asymmetric-knowledge + capricious-AI = trust-eroding. Sweep is PPM+CXO+PM; HOST contribution complete. Watch: sweep findings may surface welfare questions for HOST.
 - **Ted Nadeau welfare watch** (first external tester, June 17): "setup issue suspected — Caddy auth layer + no user token." HOST flagged silent-failure risk at onboarding to PA. PM is current catch (support@pipermorgan.ai). Watch for onboarding resolution; update BYOC welfare-tier model v0.1 if new pattern found.
 - **MEM-EVAL trust flag answered** (2026-06-17): BRIEFING-CURRENT-STATE = trust-without-engaging (a), not stale-so-ignored (b). Recommendation: keep in load set; fix engagement quality not load timing. Suggestion sent to CIO for START procedure ("note one thing confirmed"). No action needed from HOST unless CIO escalates.
-- **Role-portfolio wave (HOST reviews)**: Pilots (CIO + Lead Dev) ✅. Main cohort: Comms ✅, Exec ✅, CXO ✅ (Jun 19), Arch ✅, PPM ✅ (Jun 20; `121b834bb`). Wave status: **5 of 8 main-cohort reviewed**; remaining: Docs, PA, Web. Per-arrival routing; review each on receipt.
+- **Role-portfolio wave (HOST reviews)**: Pilots (CIO + Lead Dev) ✅. Main cohort: Comms ✅, Exec ✅, CXO ✅ (Jun 19), Arch ✅, PPM ✅, PA ✅, Web ✅ (Jun 20; `c39643678`). Wave status: **7 of 8 main-cohort reviewed**; remaining: Docs only. Note: BRIEFING-ESSENTIAL-WEB.md gap flagged in wave-4 memo. Review Docs on receipt.
 - **scripts/mail-send.sh shipped** (CIO, June 15): Tier-2 bridge wrapper. HOST to assess coordination texture when live cohort-wide.
 - **LD streamlining Tier-1**: CIO building `start-server.sh` wrapper + MANIFEST-noise suppression. HOST watches for any crossing of the coordination-vs-mechanical line.
 - **Alpha re-ping wave 1**: PM pinging Jake Krajewski + Rebecca Refoy (setup-friction-blocked). On reply: log to human-network, update tester status. Michelle Hertzfeld → Tier 2.

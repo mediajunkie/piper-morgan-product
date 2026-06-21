@@ -31,5 +31,10 @@
   - **Wave review memo sent to Exec**: 5 of 8 cleared; 3 remaining (Docs, PA, Web).
   - **Ship #048 HOST workstream review written**: welfare/operational health lens; sourced from Jun 12–18 session logs. TL;DR: framework ratified + pilot wave; ADR-072 D5 ratified (both HOST refinements folded); trust-stage origin read delivered; welfare-criteria v0.2 seed; BYOC welfare tier model v0.1. Key surface: trust-stage content-gating drift caught and corrected.
   - Committed `121b834bb` (main).
-  - Cron re-armed (Gap-C self-heal) → see carry-forward for ID.
+  - Cron re-armed (Gap-C self-heal) → `cf93cc1a`.
+- Fire 4 (~21:37) — Inbox: empty. Found PA + Web portfolios landed on origin/main without routing memos to HOST inbox. Reviewed both from git directly.
+  - **PA portfolio — PASS** (all 5 rules): Two mandates correct and well-scoped — product-honesty call (tester relationship; ALPHA_QUICKSTART v0.8.6/v0.8.8 instance) + cross-project integrity call (PA↔PO signal protocol; guards project-boundary). Neither colonizes the other. Release-cut refresh mechanism is smart.
+  - **Web portfolio — PASS** (all 5 rules): Two mandates — a11y hold (WCAG 2.1 AA on public site; 276-alt-text-images instance) + pipeline-integrity hold (silent end-to-end breakage; "nobody else positioned to catch" is the correct framing). Gap flagged honestly: `BRIEFING-ESSENTIAL-WEB.md` doesn't exist yet. Note surfaced to Exec.
+  - **Wave now 7 of 8** — Docs is the last one. Wave update memo sent to Exec (cc PM): `c39643678`.
+  - State: all watch items unchanged (Ted Nadeau unresolved, dashboard v0.3 waiting on CIO, trust-stage sweep watching).
 
