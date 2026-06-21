@@ -310,6 +310,28 @@ def _save_github_preferences(prefs: dict) -> None:
         logger.error("github_preferences_save_failed", error=str(e))
 
 
+async def _dual_write_github_prefs_to_db(owner_sub: str, user_prefs: dict) -> None:
+    """WS-1 (#1226 / #1199): mirror this user's github prefs into the DB-backed
+    connector_configs store, alongside the flat-file write.
+
+    Transitional dual-write — the flat file stays the source of truth until P4 retires it,
+    so this is BEST-EFFORT: a DB failure must NOT fail the save (the flat-file write already
+    succeeded), hence the broad catch + warn. A non-UUID ``owner_sub`` (e.g. a legacy/test
+    id) raises inside the service (owner_id is NOT NULL / D2) and is caught here too — the
+    flat file still carries it. Uses the fresh-engine session (event-loop-safe per #442) +
+    an explicit commit, since ``session_scope_fresh`` does not auto-commit (only
+    ``session_scope`` does, per #1193)."""
+    from services.connectors.config_service import ConnectorConfigService
+    from services.database.session_factory import AsyncSessionFactory
+
+    try:
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            await ConnectorConfigService(session).set_config(owner_sub, "github", user_prefs)
+            await session.commit()
+    except Exception as e:  # best-effort mirror — never break the flat-file save
+        logger.warning("github_preferences_db_dualwrite_failed", error=str(e))
+
+
 # ============================================================================
 # Slack OAuth for Settings
 # ============================================================================
@@ -1866,6 +1888,9 @@ async def save_github_preferences(
 
         all_prefs[str(current_user.sub)] = user_prefs
         _save_github_preferences(all_prefs)
+        # WS-1 (#1226): mirror into the DB-backed connector_configs store (transitional
+        # dual-write; the flat file stays source-of-truth until P4 retires it).
+        await _dual_write_github_prefs_to_db(str(current_user.sub), user_prefs)
 
         logger.info(
             "github_preferences_saved",

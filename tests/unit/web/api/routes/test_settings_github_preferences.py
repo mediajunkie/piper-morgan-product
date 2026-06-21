@@ -267,6 +267,10 @@ class TestSaveGitHubPreferences:
                 "web.api.routes.settings_integrations._save_github_preferences",
                 side_effect=mock_save,
             ),
+            patch(
+                "web.api.routes.settings_integrations._dual_write_github_prefs_to_db",
+                new_callable=AsyncMock,
+            ),
         ):
             result = await save_github_preferences(preferences=preferences, current_user=mock_user)
 
@@ -313,6 +317,10 @@ class TestSaveGitHubPreferences:
                 "web.api.routes.settings_integrations._save_github_preferences",
                 side_effect=mock_save,
             ),
+            patch(
+                "web.api.routes.settings_integrations._dual_write_github_prefs_to_db",
+                new_callable=AsyncMock,
+            ),
         ):
             result = await save_github_preferences(
                 preferences=new_preferences, current_user=mock_user
@@ -354,6 +362,10 @@ class TestSaveGitHubPreferences:
                 "web.api.routes.settings_integrations._save_github_preferences",
                 side_effect=mock_save,
             ),
+            patch(
+                "web.api.routes.settings_integrations._dual_write_github_prefs_to_db",
+                new_callable=AsyncMock,
+            ),
         ):
             await save_github_preferences(preferences=new_preferences, current_user=mock_user)
 
@@ -363,6 +375,45 @@ class TestSaveGitHubPreferences:
             # New user's preferences should be added
             assert "test-user-123" in saved_data
             assert saved_data["test-user-123"]["selected_repositories"] == ["my-org/my-repo"]
+
+    @pytest.mark.asyncio
+    async def test_save_also_dual_writes_to_db(self):
+        """WS-1 (#1226): save mirrors the github prefs into the DB-backed connector_configs store."""
+        mock_user = MagicMock()
+        mock_user.sub = "11111111-1111-1111-1111-111111111111"
+        preferences = GitHubPreferencesRequest(
+            selected_repositories=["o/r"], default_repository="o/r"
+        )
+        dual = AsyncMock()
+        with (
+            patch(
+                "web.api.routes.settings_integrations._load_github_preferences",
+                return_value={},
+            ),
+            patch("web.api.routes.settings_integrations._save_github_preferences"),
+            patch("web.api.routes.settings_integrations._dual_write_github_prefs_to_db", dual),
+        ):
+            await save_github_preferences(preferences=preferences, current_user=mock_user)
+
+        dual.assert_awaited_once()
+        owner_arg, prefs_arg = dual.await_args.args
+        assert owner_arg == "11111111-1111-1111-1111-111111111111"
+        assert prefs_arg["default_repository"] == "o/r"
+
+    @pytest.mark.asyncio
+    async def test_dual_write_swallows_db_failure(self):
+        """WS-1 (#1226): the dual-write helper is best-effort — a DB error is swallowed, not raised
+        (the flat file is the source of truth; a save must never fail on the DB mirror)."""
+        from web.api.routes.settings_integrations import _dual_write_github_prefs_to_db
+
+        with patch(
+            "services.database.session_factory.AsyncSessionFactory.session_scope_fresh",
+            side_effect=RuntimeError("DB down"),
+        ):
+            # must NOT raise
+            await _dual_write_github_prefs_to_db(
+                "11111111-1111-1111-1111-111111111111", {"default_repository": "o/r"}
+            )
 
 
 class TestGitHubPreferencesFileStorage:
