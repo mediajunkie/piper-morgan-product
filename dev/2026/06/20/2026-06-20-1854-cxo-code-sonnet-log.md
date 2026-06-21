@@ -90,3 +90,8 @@ Memo sent to Lead (CC: PM, PA).
 - **#1284 "Your work" hub**: post-beta; avatar dropdown interim is live
 - **Onboarding 1.0**: on design radar; scoping with PPM post-RECONNECT
 - **Standing**: #950 floor-quality, #992 ethics-decline voice oversight
+
+<!-- DAY-CLOSED: 2026-06-20 -->
+
+## Sign-off (verified 2026-06-21 morning fire)
+All work committed and on origin/main. Last push: `84b825cc6` (`spec+mail(cxo): #1286 D2 design-system spec`). No stranded work.
