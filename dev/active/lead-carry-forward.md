@@ -1,33 +1,34 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-20 ~20:00 PT (after #1307 + #1308 — the security gap fully closed). Sole lead.
+**Updated**: 2026-06-21 ~08:05 PT. Sole lead. Session log: `dev/2026/06/21/2026-06-21-0615-lead-code-opus-log.md`
 
-## ▶ NEXT — RECONNECT Phase-1 is Arch/PM-gated
-The cleanly-unblocked RECONNECT work is delivered (WS-5 contract #1232 + the security gap #1307/#1308). Next:
-- **Phase-1 (WS-9 identity → WS-1 config → WS-2 creds)** — gates the connector ports + WS-3/4. **WS-9 (#1233): PM identity call ANSWERED 2026-06-21** — m1-test + xian = same human (PM), unify; PM is sole human → single-identity now, multi-tenant deferrable (ADR-070 OQ-3). Now needs only Arch's ADR-070 confirm; build = merge active `m1-test` ← web-`xian` + key config to it.
-- **Arch's #1232-kickoff reply** (ADR-070 v0.1 stable? type shapes?) — then the ports.
-- #1185 PARKED (gate chain).
+## ▶ NEXT (draining in priority order)
+- **PA Redis prod-fix** — Redis port 6379 exposed on the alpha Droplet (146.190.151.63; PA-flagged, PM forwarded the scan). Option A: Droplet compose `127.0.0.1:6379:6379` + `docker compose up -d` (local-only; reversible). **PENDING PM's go** (prod change; gates the alpha plugin wave). Highest priority once green-lit. Fallback: DO Cloud Firewall rule on 6379.
+- **CXO #1286 D2 design-system** — spec ready (`dev/active/design-spec-1286-d2-design-system-2026-06-20.md`): 7 tokens (grid rails, 8/24px baseline, pill radius), body line-height→24px, mobile-first shell grid; closes #1251 annotation debt. Pre-authorized; draining next (CXO runs a conformance review after).
+- **RECONNECT Phase-1** (WS-9 → WS-1 → WS-2 → ports) — Arch-gated on the #1232 ratify (below). WS-9 PM-answered (single identity). #1185 parked (gate chain).
 
-## ▶ PENDING PM/Arch
-- ~~PM: WS-9 identity disambiguation~~ — ANSWERED 2026-06-21 (same-human, unify; PM sole human). Recorded: #1233 + decisions.log.
-- **Arch**: #1232-kickoff confirms; the #1308 env-gated simplification (FYI).
-- #358 close: hold-for-deploy (PM-confirmed).
+## ▶ PENDING PM / Arch
+- **PM**: Redis prod-fix go (see NEXT).
+- **Arch**: ratify the #1232 sum-type shapes (mail `44e505456` sent 06-21) — then I close the Open-Q-4 thread; deferred ports follow the WS-9/WS-1/WS-2 foundation. Open-Q-5 handoff-vs-orchestrate deferred (doesn't gate the contract).
+- #358 close: hold-for-deploy (PM-confirmed); deploy = set `ENCRYPTION_MASTER_KEY` on the box + run the backfill.
 
-## ▶ DONE (2026-06-20 — very big session)
+## ▶ DONE this session (06-21)
+- Cron reshaped → 05:05 morning (PM-requested); `cbe956dc` (`5 5,8,11,14,17,20`).
+- **WS-9 identity call resolved** (PM): m1-test + xian = same human, unify; PM sole human → single-identity, multi-tenant deferrable (ADR-070 OQ-3). #1233 + decisions.log; `2b47b652b`.
+- **#1232 contract refined to Arch's 5 constraints**: sum types (`Binding|ConnectRequired`, `ResourceHandle|ResolveMiss`) + m-41 no-credential guard; 72 consumer tests green; `e485cca9a`. Looped Arch for ratify.
+
+## ▶ DONE 06-20 (carry)
 - #1299 → 0.8.8 alpha; #1162 reconciliation; #1185 P1 (parked); #358 floor + Dimension B (code-complete; #1305/#1306 deferred).
-- Gate-removal investigation (CONDITIONAL GO) → Arch CONCUR → **both prereqs DONE**:
-  - **#1307** admin_compose removed + closed (instance).
-  - **#1308** exempt-list enforcement lint shipped + closed (the class-fix; m-41). #1162 gate-removal now ready for M5.
-- **#1232 WS-5 connector CONTRACT shipped** (protocol + 4 types + AST-guard + github proof; 14 tests). Ports deferred (D8).
-- Discovered + filed **#1309** (stale onboarding test — GATHERING_REPOS vs COMPLETE).
+- Security gap closed: **#1307** admin_compose removed + **#1308** exempt-list lint (m-41). #1162 gate-removal ready for M5.
+- **#1232 WS-5 contract** shipped (now refined, above). #1309 filed (stale onboarding test).
 
 ## ▶ STATE / refs
-- **#1232**: `services/mcp/consumer/connector.py` + `github_adapter.py` (`IMPLEMENTS_CONNECTOR`). ADR-070 governs.
-- **#1308**: `AUTH_EXEMPT_JUSTIFIED` in `auth_middleware.py` + `tests/test_exempt_list_boundary_1308.py`.
-- **alpha** 0.8.8 (no #358-B/#1232/#1307/#1308 yet — next deploy). `ENCRYPTION_MASTER_KEY` needed on the box for #358-B.
-- **Cron cbe956dc** armed — expr `5 5,8,11,14,17,20 * * *` (morning **05:05**, PM-requested 2026-06-21; daytime every ~3h; last/day-close fire **20:05**; was `17 22,7,10,13,16,19`). Session-only, auto-expires 7d → re-arm on the duty cycle. Mailbox = `scripts/mail-send.sh` — **RECONCILE residue immediately after each send** (`fetch+merge`); it bit twice this session.
+- **#1232**: `services/mcp/consumer/connector.py` (sum types) + `github_adapter.py` + `test_connector_protocol_1232.py` + `test_connector_contract_1232.py` (no-cred guard). ADR-070 governs.
+- **#1308**: `AUTH_EXEMPT_JUSTIFIED` in `auth_middleware.py` + `test_exempt_list_boundary_1308.py`.
+- **alpha** 0.8.8 (no #358-B/#1232/#1307/#1308 yet — next deploy). `ENCRYPTION_MASTER_KEY` needed for #358-B.
+- **Cron cbe956dc** armed — `5 5,8,11,14,17,20` (05:05 morning, 20:05 day-close). Session-only, auto-expires 7d → re-arm on the cycle.
+- **Mailbox** = `scripts/mail-send.sh` (push-to-ref) — **RECONCILE residue immediately after each send**: drop local copies (identical on origin/main) + FF-merge. Worked cleanly this session.
 
 ## ▶ Methodology
-- **Investigate-before-extending**: many catches (latest: #1230 is ADR-gated; the #1308 route-categorization grounded the lint in real data).
-- **m-41 mechanism** (#1308 lint + #1232 AST-guard): make the bad class impossible, don't just fix instances.
-- **Mail-send residue**: reconcile IMMEDIATELY after each send (lesson learned twice — a triage-move residue collided with two later merges).
+- **Investigate-before-extending**: WS-9 — pulled the live users table (480 rows, 478 test) before framing the decision; #1232 — checked shipped types vs Arch's 5 constraints (3 already met) before refactoring.
+- **m-41 mechanism**: the #1232 no-credential guard auto-discovers all connector dataclasses (impossible-by-construction, not vigilance); #1308 lint; #1232 AST-guard.
