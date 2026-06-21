@@ -4,7 +4,7 @@
 
 ## ▶ NEXT (draining in priority order)
 - **PA Redis prod-fix** — Redis port 6379 exposed on the alpha Droplet (146.190.151.63; PA-flagged, PM forwarded the scan). Option A: Droplet compose `127.0.0.1:6379:6379` + `docker compose up -d` (local-only; reversible). **PENDING PM's go** (prod change; gates the alpha plugin wave). Highest priority once green-lit. Fallback: DO Cloud Firewall rule on 6379.
-- **CXO #1286 D2 design-system** — spec ready (`dev/active/design-spec-1286-d2-design-system-2026-06-20.md`): 7 tokens (grid rails, 8/24px baseline, pill radius), body line-height→24px, mobile-first shell grid; closes #1251 annotation debt. Pre-authorized; draining next (CXO runs a conformance review after).
+- **CXO #1286 D2 design-system** — **Slice 1 (tokens/baseline/grid `8f8f9a67d`) + Slice 3 (responsive shell + mobile hamburger drawer `af7cba06b`) SHIPPED** — render+lint-verified; **CXO conformance + PM phone-UAT pending** (can't headless-verify the responsive/drawer visuals). **Slice 2 (radar tiling) HELD for CXO** — spec's dense `.radar-entity-item`/pill tiling ≠ the roomy production `.radar-card`; memo'd CXO 3 options (`e6decb14f`). Can't close #1286 until Slice 2 + the UATs.
 - **RECONNECT Phase-1** (WS-9 → WS-1 → WS-2 → ports) — Arch-gated on the #1232 ratify (below). WS-9 PM-answered (single identity). #1185 parked (gate chain).
 
 ## ▶ PENDING PM / Arch
@@ -15,7 +15,8 @@
 ## ▶ DONE this session (06-21)
 - Cron reshaped → 05:05 morning (PM-requested); `cbe956dc` (`5 5,8,11,14,17,20`).
 - **WS-9 identity call resolved** (PM): m1-test + xian = same human, unify; PM sole human → single-identity, multi-tenant deferrable (ADR-070 OQ-3). #1233 + decisions.log; `2b47b652b`.
-- **#1232 contract refined to Arch's 5 constraints**: sum types (`Binding|ConnectRequired`, `ResourceHandle|ResolveMiss`) + m-41 no-credential guard; 72 consumer tests green; `e485cca9a`. Looped Arch for ratify.
+- **#1232 contract refined to Arch's 5 constraints**: sum types (`Binding|ConnectRequired`, `ResourceHandle|ResolveMiss`) + m-41 no-credential guard; 72 consumer tests green; `e485cca9a`. Looped Arch for ratify (`44e505456`).
+- **#1286 Slice 1 + Slice 3 shipped**: token foundation (`8f8f9a67d`) + responsive shell/mobile-nav drawer (`af7cba06b`); 36 render/regression tests + token_lint green. CXO memo (`e6decb14f`) holds Slice 2.
 
 ## ▶ DONE 06-20 (carry)
 - #1299 → 0.8.8 alpha; #1162 reconciliation; #1185 P1 (parked); #358 floor + Dimension B (code-complete; #1305/#1306 deferred).
