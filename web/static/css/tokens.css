@@ -106,7 +106,7 @@
   /* ===== SPACING ===== */
   /* Already defined in spacing.css, repeated here for completeness */
   --space-xs: 4px; /* 0.5x - micro spacing */
-  --space-2xs: 6px; /* #1286 D2: micro-spacing for dense entity surfaces (Radar items, chips) — value-ordered between xs(4) and sm(8) */
+  --space-dense: 6px; /* #1286 D2: dense-surface micro-spacing (Radar items, chips). Semantic name (CXO 2026-06-21) — describes the use, not an ordinal scale slot. Value sits between xs(4) and sm(8). */
   --space-sm: 8px; /* 1x - small spacing */
   --space-smd: 12px; /* #1264 tentative (CXO ratify/revise): nav 12px rhythm — between sm(8) + md(16) */
   --space-md: 16px; /* 2x - medium spacing */
