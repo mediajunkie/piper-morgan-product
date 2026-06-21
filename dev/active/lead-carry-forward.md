@@ -4,12 +4,12 @@
 
 ## ▶ NEXT — RECONNECT Phase-1 is Arch/PM-gated
 The cleanly-unblocked RECONNECT work is delivered (WS-5 contract #1232 + the security gap #1307/#1308). Next:
-- **Phase-1 (WS-9 identity → WS-1 config → WS-2 creds)** — gates the connector ports + WS-3/4. WS-9 (#1233) needs Arch's confirm **and** PM's identity call (web `a25db09c` = Slack `009afc8c`?).
+- **Phase-1 (WS-9 identity → WS-1 config → WS-2 creds)** — gates the connector ports + WS-3/4. **WS-9 (#1233): PM identity call ANSWERED 2026-06-21** — m1-test + xian = same human (PM), unify; PM is sole human → single-identity now, multi-tenant deferrable (ADR-070 OQ-3). Now needs only Arch's ADR-070 confirm; build = merge active `m1-test` ← web-`xian` + key config to it.
 - **Arch's #1232-kickoff reply** (ADR-070 v0.1 stable? type shapes?) — then the ports.
 - #1185 PARKED (gate chain).
 
 ## ▶ PENDING PM/Arch
-- **PM**: the WS-9 identity disambiguation (web vs Slack record = same human?).
+- ~~PM: WS-9 identity disambiguation~~ — ANSWERED 2026-06-21 (same-human, unify; PM sole human). Recorded: #1233 + decisions.log.
 - **Arch**: #1232-kickoff confirms; the #1308 env-gated simplification (FYI).
 - #358 close: hold-for-deploy (PM-confirmed).
 
