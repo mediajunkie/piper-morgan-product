@@ -22,6 +22,8 @@
 
 - **12:23 — late-09:32 fire (quiet; ~3h midday suspension).** Applied the new heads-down rule: `git log --since 09:10` cross-check of Lead — WS-1 RECONNECT building (P1 done, connector config-store + identity collapse), **no new PM-items/blockers** → board stays current (last corrected 09:10). CIO workstream still 5/6 (Ship #048 synth gated). Inbox empty; Comms-today-edit + CIO-nudge still pending PM. Quiet-hold + heartbeat. Cron `8f2194b1` armed.
 
+- **~12:35 — PM extension: cross-check → guide stale trackers (two-way hygiene loop).** PM endorsed making the commit-cross-check feed back: when it reveals a stale tracker, gently guide the agent to refresh it. **Captured** (pin + runbook §7): one-way board-correction → two-way tracker-hygiene loop (board honest AND trackers improve → future sweeps + PM check-ins more reliable). **First instance**: gentle no-interrupt nudge to Lead — their carry-forward's Redis line still says "pending PM go" but #1311's closed; refresh when they next surface (heads-down on RECONNECT = priority). PM's meta-point logged: improvements come from cohort-pattern-noticing + PM-clarity, neither alone.
+
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
 
