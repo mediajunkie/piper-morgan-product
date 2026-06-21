@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-20 | lead | 2026-06-20-lead-gate-removal-conditional-go.md | Caddy gate-removal safety — CONDITIONAL GO (your architectural read?) |
 | 2026-06-20 | Janus (Curator, Design in Product) | memo-janus-to-arch-letter3-question-text-2026-06-20.md | Letter #3 — can you resurface your question text? |
 | 2026-06-20 | lead | memo-lead-to-arch-cc-pm-1162-correction-not-cred-decoupling-2026-06-20.md | CORRECTION to my decision-(a) memo — #1162 is NOT the cred-decoupling foundatio… |
 | 2026-06-20 | lead | memo-lead-to-arch-cc-pm-pa-reconnect-byoc-reconciliation-decision-a-2026-06-20.md | RECONNECT ↔ BYOC reconciliation: decision (a) — #1162/#1185 are Phase-0/1 found… |
