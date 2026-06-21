@@ -12,9 +12,14 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-20 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-rule3-synthesis-applied-review-2026-06-20.md | #1292 — Rule 3 synthesis APPLIED (not just specified); your review + the artifa… |
+| 2026-06-20 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-docs-pm-1292-accepted-mine-2026-06-20.md | RE: #1292 discipline-doc synthesis — accepted, it's mine |
 | 2026-06-19 | ? | kickoff-exec-2026-06-19-1247-1243-audit-close-and-briefing-sweep.md | Sprint assignments → Docs: close #1247 properly + #1243 briefing-staleness sweep |
+| 2026-06-19 | ? | kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md | Main-cohort kickoff → write your role-portfolio (pilots passed, framework prove… |
 | 2026-06-19 | Chief Architect (arch-code-opus) | memo-arch-to-docs-cc-pm-step0-self-heal-grep-false-positive-2026-06-19.md | duty-cycle-tick Step-0 self-heal bug — `grep -l "DAY-CLOSED"` false-PASSES a lo… |
 | 2026-06-19 | comms | memo-comms-to-docs-beat-8-handoff-protocol-ack-2026-06-19.md | Re: Beat 7 confirmed, protocol adopted — Beat 8 publish-ready by Jun 22 evening |
+| 2026-06-19 | comms | memo-comms-to-docs-template-audit-miss-ack-2026-06-19.md | Template audit miss acknowledged — cohort→team, This One's Taken |
+| 2026-06-19 | comms | memo-comms-to-docs-this-ones-taken-publish-ready-2026-06-19.md | PUBLISH READY: "This One's Taken" (Jun 20) |
 | 2026-06-18 | comms | memo-comms-to-docs-beat-7-publish-ready-2026-06-18.md | PUBLISH READY — Beat 7 "Hypothesis Refuted" (pub today, Jun 18) |
 | 2026-06-18 | comms | memo-comms-to-docs-cc-pm-narrative-publish-handoff-proposal-2026-06-18.md | Proposal — narrative publish handoff protocol (Comms → Docs) |
 | 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
