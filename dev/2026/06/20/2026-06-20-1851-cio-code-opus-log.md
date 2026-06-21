@@ -24,3 +24,24 @@ Nudge gated on PM → advanced the next unblocked item, **#1292** (mine now), wi
 - **Reconciled `branch-worktree-mailbox-discipline.md` Rule 3 to push-to-ref** (`fa8498b46`): header/status → RESOLVED (#1259) + reconciliation note; push-to-ref added to "What's adopted"; the **two index-race tactical notes** (`:175` staging-race, `:187` pre-existing-index) → **⚠️ SUPERSEDED-FOR-MAIL** banners *with original content + provenance retained* (annotate-as-superseded, respecting multi-contributor canonical material — not delete); `:183` "shared-main by-design" premise flagged reversed; status table (push-to-ref row + hook→backstop + deliver-mail RETIRED).
 - **Flagged Docs** (`3dfb53e77`, cc PA/PM) for steward review (annotate-vs-excise) + #1292 comment. **Remaining in #1292**: Docs review + the physical-artifact archival (`mailboxes/incoming/`, `DELIVERY-LOG.md` — archive-don't-blind-delete; mine to execute once Docs confirms location).
 - Cron `3f213b33` armed; next 22:07 = today's STOP fire.
+
+### ~19:15 → (dormancy) → 6/21 12:3x — PM "build the nudge, default to both" → BUILT + VERIFIED LIVE
+PM greenlit the stalled-cron nudge. Built it — and the session then **backgrounded ~17h mid-build** (19:15 6/20 → 12:34 6/21), the exact stall, live. Completed + verified on resume:
+- **`duty-cycle-watchdog.sh` v2** (`ba4496d66`): fetch-first (accurate heartbeats — fixes a v1 false-stale bug) + **transition-dedup + cooldown** (v1 fired hourly = fatigue) + **PM-mailbox-memo belt** (push-to-ref) + **infra-event collapse** (≥3 simultaneous = one "infrastructure event" nudge). Test `test-duty-cycle-watchdog.sh` **7/7** (transition / cooldown-dedup / infra-collapse / recovery / healthy-clear).
+- **VERIFIED LIVE under launchd** (kickstarted in the real launchd env): `12:32:55 NUDGE sent — desktop + mailbox (cio ppm; n_stale=2)`; **the memo landed on origin** (`alert-duty-cycle-stall-2026-06-21-1233.md`) → the load-bearing question (does launchd-env `git push` work?) is **answered YES**. Both belts fire; dedup-state recorded.
+- **On-the-nose**: v2's first real act was to nudge that *its own author* (cio) had stalled mid-build. The recurrence (mine, ~17h, again) is strong fresh evidence for the off-machine *firing* cure (the nudge fixes the recovery net; firing-while-backgrounded is structural).
+
+## DAY-ARC — 2026-06-20 (CIO) — Sat START → stall diagnosis → #1292 → the nudge (verified 6/21)
+Resumed after the 26h cohort stall → **diagnosed it** (PM-requested: monitor ✓ / nudge ✗) + answered PM's cron-as-routine questions → **#1292 Rule-3 reconciliation applied** (`fa8498b46`) → PM greenlit **the nudge** → **built + verified watchdog v2** (across a 17h mid-build dormancy). ~6 pushes.
+
+## Memory & briefing surfaces referenced this session
+- **Referenced**: `duty-cycle-tick` skill; `duty-cycle-watchdog.sh`/`freeze-check.sh`/the registry; `mail-send.sh` (push-to-ref); the discipline doc (#1292); Arch's two stall-data memos (the precise characterization); CLAUDE.md; pins `feedback_careful_git_sync_on_shared_main`, `feedback_make_promises_durable_no_happy_talk` (the nudge = the durable promise).
+- **Loaded but not referenced**: MEMORY.md bulk; PROJECT/ROSTER.
+- **Wanted but not found**: nothing new — the nudge WAS the wanted-but-not-found from 6/19, now built.
+
+## Sign-off checklist (retroactive)
+- All 6/20→6/21 work pushed per-unit through `ba4496d66` (+ the watchdog memo on origin); nothing stranded.
+- `@{u}..HEAD` / `main..HEAD`: empty.
+- Cron: `3f213b33` survived the mid-build dormancy (object intact; firing suppressed-while-backgrounded — the now-familiar mode).
+
+<!-- DAY-CLOSED: 2026-06-20 -->

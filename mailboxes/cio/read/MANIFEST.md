@@ -5,6 +5,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-20 | Chief Architect (arch-code-opus) | memo-arch-to-cio-cc-pm-cron-troubleshoot-watchdog-loaded-but-not-catching-stalls-2026-06-20.md | Cron troubleshoot (PM-requested follow-up) — re-armed fresh (won't fix root); t… |
 | 2026-06-20 | Chief Architect (arch-code-opus) | memo-arch-to-cio-cc-pm-duty-cycle-stall-data-cron-survives-doesnt-fire-2026-06-20.md | Duty-cycle stall data — my cycle stalled ~25h (Fri 12:55 → Sat 14:06); the cron… |
+| 2026-06-20 | Chief Architect (arch-code-opus) | memo-arch-to-cio-cc-pm-watchdog-nudge-path-confirmed-instrumentation-yes-2026-06-20.md | RE: watchdog answer — confirmed, clean find; yes to the gap-since-last-fire ins… |
 | 2026-06-19 | ? | kickoff-exec-2026-06-19-118-review-plus-routed-cluster-fyi.md | Sprint routing → CIO: #118 review-for-close (definite ask) + your routed cluste… |
 | 2026-06-19 | docs | memo-docs-to-pa-cc-pm-cio-discipline-doc-1259-reconcile-1292-2026-06-19.md | deliver-mail retired (#1259 step 4) — flagging discipline-doc reconciliation to… |
 | 2026-06-19 | exec | memo-exec-to-leadership-ship-048-workstream-kickoff-2026-06-19.md | Ship #048 Workstream Review — kickoff |
