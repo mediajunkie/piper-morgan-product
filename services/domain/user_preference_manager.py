@@ -8,6 +8,7 @@ Follows Excellence Flywheel: Tests First → Implementation → Evidence-based p
 
 import asyncio
 import json
+import logging
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Union
@@ -15,6 +16,8 @@ from uuid import UUID
 from zoneinfo import ZoneInfo, available_timezones
 
 from services.session.session_manager import ConversationSession
+
+logger = logging.getLogger(__name__)
 
 # ============================================================================
 # Reminder Preference Keys (Issue #161 Task 2)
@@ -874,12 +877,31 @@ class UserPreferenceManager:
     # Default Repo Preference Methods (Issue #1042)
     # ========================================================================
 
+    async def _read_default_repo_from_db(self, user_id: UUID) -> Optional[str]:
+        """WS-1 (#1226 / #1199): read default_repository from the DB-backed connector_configs
+        store (ADR-070 D4). Best-effort — None on any DB error so the caller falls back to the
+        legacy in-memory preference (honest-degrade). The in-memory store is writer-less in
+        practice (#1042/#1050 → it always returned None for standup), so the DB is the real
+        source now."""
+        try:
+            from services.connectors.config_service import ConnectorConfigService
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope() as session:
+                return await ConnectorConfigService(session).get_default_repo(user_id)
+        except Exception as e:
+            logger.warning("DB default-repo read failed (falling back to in-memory): %s", e)
+            return None
+
     async def get_default_repo(self, user_id: UUID) -> Optional[str]:
         """Get the user's default GitHub repo.
 
-        Returns:
-            ``owner/name`` string, or None if not set.
+        WS-1 (#1226): reads the DB-backed connector_configs store first, falling back to the
+        legacy in-memory preference (writer-less in practice). Returns ``owner/name`` or None.
         """
+        db_value = await self._read_default_repo_from_db(user_id)
+        if db_value:
+            return db_value
         return await self.get_preference(DEFAULT_REPO, user_id=user_id, default=None)
 
     async def set_default_repo(self, user_id: UUID, value: Optional[str]) -> None:
