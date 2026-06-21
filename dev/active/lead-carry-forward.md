@@ -3,12 +3,12 @@
 **Updated**: 2026-06-21 ~08:05 PT. Sole lead. Session log: `dev/2026/06/21/2026-06-21-0615-lead-code-opus-log.md`
 
 ## ▶ NEXT (draining in priority order)
-- **PA Redis prod-fix** — Redis port 6379 exposed on the alpha Droplet (146.190.151.63; PA-flagged, PM forwarded the scan). Option A: Droplet compose `127.0.0.1:6379:6379` + `docker compose up -d` (local-only; reversible). **PENDING PM's go** (prod change; gates the alpha plugin wave). Highest priority once green-lit. Fallback: DO Cloud Firewall rule on 6379.
+- ✅ **PA Redis prod-fix DONE** (PM-approved 2026-06-21) — 6379 now `127.0.0.1`-only on the alpha Droplet (was `0.0.0.0`+IPv6); redis recreated, app unaffected (Up 26h healthy; app→redis ping True), public 401. Backup `/opt/piper/docker-compose.yml.bak-2026-06-21-redis-bind`. Tracked+closed **#1311**; PA confirmed. Plugin-wave Redis blocker cleared.
 - **CXO #1286 D2 design-system** — **Slice 1 (tokens/baseline/grid `8f8f9a67d`) + Slice 3 (responsive shell + mobile hamburger drawer `af7cba06b`) SHIPPED** — render+lint-verified; **CXO conformance + PM phone-UAT pending** (can't headless-verify the responsive/drawer visuals). **Slice 2 (radar tiling) HELD for CXO** — spec's dense `.radar-entity-item`/pill tiling ≠ the roomy production `.radar-card`; memo'd CXO 3 options (`e6decb14f`). Can't close #1286 until Slice 2 + the UATs.
 - **RECONNECT Phase-1** (WS-9 → WS-1 → WS-2 → ports) — Arch-gated on the #1232 ratify (below). WS-9 PM-answered (single identity). #1185 parked (gate chain).
 
 ## ▶ PENDING PM / Arch
-- **PM**: Redis prod-fix go (see NEXT).
+- ~~PM: Redis prod-fix go~~ — DONE 2026-06-21 (#1311).
 - **Arch**: ratify the #1232 sum-type shapes (mail `44e505456` sent 06-21) — then I close the Open-Q-4 thread; deferred ports follow the WS-9/WS-1/WS-2 foundation. Open-Q-5 handoff-vs-orchestrate deferred (doesn't gate the contract).
 - #358 close: hold-for-deploy (PM-confirmed); deploy = set `ENCRYPTION_MASTER_KEY` on the box + run the backfill.
 

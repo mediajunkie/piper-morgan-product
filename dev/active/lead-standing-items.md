@@ -26,7 +26,7 @@ D2 design-system (#1286, CXO-led) runs alongside.
 **Security / encrypt-at-rest**:
 - ✅ **#1307 + #1308** security gap closed (admin_compose removed + exempt-list enforcement lint, m-41). #1162 gate-removal ready for M5.
 - ⏳ **#358** encrypt-at-rest (floor + Dimension B content cols) — code-complete, **deploy-held**: set `ENCRYPTION_MASTER_KEY` on the box + run `scripts/backfill_encrypt_content_358b.py` on the next alpha deploy.
-- 🔴 **Redis exposure** (PA memo `…redis-security-droplet-2026-06-21`, PM forwarded the scan) — port 6379 public on the alpha Droplet. **Pending PM go** for the localhost-bind fix (Option A: compose `127.0.0.1:6379:6379`). Gates the alpha plugin wave. On fix: file+close a tracked issue.
+- ✅ **Redis exposure FIXED** (2026-06-21, #1311) — 6379 now `127.0.0.1`-only on the alpha Droplet (Option A localhost-bind); app unaffected; backup saved; PA confirmed. Was PA-flagged.
 
 **D2 design-system (#1286, CXO-led)**:
 - ✅ Slice 1 (token foundation) + Slice 3 (responsive shell + mobile drawer) shipped — render+lint-verified; **CXO conformance + PM phone-UAT pending**.
@@ -49,7 +49,7 @@ D2 design-system (#1286, CXO-led) runs alongside.
 
 - **Arch** ← Lead: ratify the #1232 sum-type shapes (`44e505456`); confirm ADR-070 phasing for Phase-1. Then the ports unblock.
 - **CXO** ← Lead: the Slice-2 radar-tiling decision (`e6decb14f`, 3 options) + the #1286 conformance review (Slice 1+3).
-- **PM** ← Lead: Redis prod-fix go; #1286 mobile-nav phone UAT.
+- **PM** ← Lead: #1286 mobile-nav phone UAT. (Redis go DONE → #1311.)
 
 ---
 
