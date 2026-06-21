@@ -38,3 +38,10 @@
   - **Wave now 7 of 8** — Docs is the last one. Wave update memo sent to Exec (cc PM): `c39643678`.
   - State: all watch items unchanged (Ted Nadeau unresolved, dashboard v0.3 waiting on CIO, trust-stage sweep watching).
 
+## Memory & briefing surfaces referenced this session
+**Referenced**: HOST carry-forward (portfolio wave state); ROLE-PORTFOLIO-FRAMEWORK.md (5 rules); ROLE-PORTFOLIO-ARCH.md, ROLE-PORTFOLIO-PPM.md, ROLE-PORTFOLIO-PA.md, ROLE-PORTFOLIO-WEB.md (all four reviewed and cleared).
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md.
+**Wanted but not found**: nothing.
+
+<!-- DAY-CLOSED: 2026-06-20 -->
+
