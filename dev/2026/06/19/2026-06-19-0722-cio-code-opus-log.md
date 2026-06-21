@@ -62,3 +62,21 @@ The structural bridge fix is now the cohort default:
 - **Verified the deliver-mail retirement** (PM-greenlit check): `ecfa8ae42` is an accurate tombstone — redirects send→`mail-send.sh` push-to-ref / receive→`check-mailbox`; its v3 description (commit-tree, throwaway index, never-touches-shared-tree, rebuild-retry) **matches my implementation exactly**; the discipline-doc `:67` fix is correct. ✓ The spawned-session work is sound.
 - **Drained an unblocked in-lane find**: the **`duty-cycle-tick` skill itself still pointed agents at the RETIRED main-worktree bridge** (Step 6) + Model-A refs (Steps 2/6, descriptive). Reconciled to Model-B + push-to-ref (`f17c18ad8`): non-mail = `push origin HEAD:main`; mailbox = `mail-send.sh` push-to-ref; fixed all 5 stale refs. My lane (duty-cycle owner); same post-#1259 doc-reconciliation class as the deliver-mail retirement.
 - **#1292** (PA's discipline-doc Rule-3 synthesis) is the remaining push-to-ref reconciliation thread — PA-owned; I'm available (I shipped the change). Cron armed `3f213b33`; next 19:07.
+
+### RETROACTIVE DAY-CLOSE (written 2026-06-20 18:54 at next START — 6/19 went dormant after the 16:19 fire; no STOP)
+After the 16:19 fire the session went dormant ~26h (cron `3f213b33` SURVIVED in CronList but didn't FIRE while backgrounded — the cohort-wide stall PM flagged 6/20; Arch's "cron survives, doesn't fire" characterization). So the 6/19 19:07/22:07 fires + STOP never fired → retroactive close per Step-0.
+
+## DAY-ARC — 2026-06-19 (CIO) — a marathon: battery-recovery → migration retro → #1259 shipped end-to-end
+START (battery-outage recovery; 6/18 retro-closed) → **migration-wave retrospective** (wave complete, all 11 home) → **LD bridge-block incident** (unblocked + root-caused the shared-checkout divergence) → **#1259 push-to-ref**: BUILT + TESTED 12/12 + DOGFOODED → LD-approved (nits) → **SWAPPED LIVE** (mail-send.sh IS push-to-ref; CLAUDE.md workflow updated; deliver-mail retired by Docs + verified; duty-cycle-tick skill reconciled) → **#118 closed** superseded (+#1287) → HOST welfare-criteria v0.3 + Exec thin-cron verified → **16:19 Gap-C re-arm**. ~14 pushes to origin/main. The shared-checkout mail-contention class is structurally gone.
+
+## Memory & briefing surfaces referenced this session
+- **Referenced**: the #1259 design doc + mail-send v2/v3; CLAUDE.md mailbox discipline; the freeze-check + duty-cycle-tick skill; LD's review; HOST/Exec/Docs/PA memos; migration plan-of-record §5; pins `feedback_investigate_before_extending_all_work`, `feedback_no_confabulating_...`, `feedback_careful_git_sync_on_shared_main`, `feedback_write_new_files_to_worktree_path_in_model_a` (the footgun bit + I caught it).
+- **Loaded but not referenced**: MEMORY.md bulk (trimmed 22KB); PROJECT/ROSTER.
+- **Wanted but not found**: a **NUDGE surface** — the freeze-watcher detects stalls (it logged hourly ALERTs all weekend) but the alert reaches only a log file, never PM. The detect-but-don't-nudge gap is what let the cohort stall persist ~26h. (Surfaced hard by the 6/20 stall; the build is queued.)
+
+## Sign-off checklist (retroactive)
+- All 6/19 work pushed per-unit through `fa61691f0` (the 16:19 fire); the abrupt end was session-dormancy (cron suppressed-while-backgrounded), nothing stranded.
+- `@{u}..HEAD` / `main..HEAD`: empty at dormancy.
+- Cron: `3f213b33` survived (object intact); the FIRING was suppressed, not the cron.
+
+<!-- DAY-CLOSED: 2026-06-19 -->
