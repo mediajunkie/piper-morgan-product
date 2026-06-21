@@ -22,6 +22,8 @@
 
 - **19:05 — late-18:32 fire (workstream collection).** Fired ~1 min post-sweep. Collected **PPM workstream-048** (the one that bounced in the earlier shared-checkout race — now cleanly in read/) + **CXO workstream-048** (just arrived). **Workstream-048 → 5/6** (Comms/Arch/HOST/PPM/CXO); only **CIO** left → then I synthesize the Ship #048 draft. Board held (4→5 wave bump is awareness-only; PM's on the #1307 call). Inbox clean. Cron `8f2194b1` armed; next 21:32 = STOP/day-close.
 
+- **~21:00 — PM closed #1307 (board input).** PM: "#1307 is closed." Verified **CLOSED-COMPLETED**; **#1162 now unblocked** (open, back with Lead). **Board updated** (`3013a3421`): #1307 → resolved, needs-you-soon 1→0 (nothing urgent), #1162-unblocked noted, workstream 5/6. **Deduped 2 re-delivered workstream inbox copies** (PPM/CXO — Pattern-068 re-delivery race; both confirmed in read/ on origin, so inbox copies were pure dupes; `420a65a1f`). Inbox clean. Board now: 0 urgent / 3 when-ready / 2 voice-pass / waves in-flight (portfolios 7/8, workstream 5/6, only CIO + Docs outstanding). Cron `8f2194b1` armed; next 21:32 STOP.
+
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
 
