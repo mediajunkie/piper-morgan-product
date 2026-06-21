@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
+from unittest.mock import AsyncMock, patch
+from uuid import uuid4
 
 from services.integrations.github.repo_resolver import read_user_github_handle
 from services.radar import WorkItemEntitySource
@@ -114,12 +116,33 @@ class TestWorkItemAssigneeFilter:
         assert filter_issues_by_assignee(None, "bob") == []
         assert filter_issues_by_assignee([{"number": 9}], "bob") == []  # no assignees key
 
-    def test_handle_reader_env_fallback(self, monkeypatch):
-        """No prefs-file entry + env set → the env handle (single-user beta config)."""
-        monkeypatch.setenv("PIPER_GITHUB_HANDLE", "octocat")
-        assert read_user_github_handle("no-such-user-uuid") == "octocat"
+    async def test_handle_reader_env_fallback(self, monkeypatch):
+        """No DB config entry + env set → the env handle (single-user beta config).
 
-    def test_handle_reader_none_when_unset(self, monkeypatch):
-        """No file entry + no env → None → callers apply no filter (show all)."""
+        WS-1 P4: the handle reader is now async + DB-backed (connector_configs is the SOLE
+        store). Patch the DB read to an empty config so the env fallback is the only source.
+        """
+        monkeypatch.setenv("PIPER_GITHUB_HANDLE", "octocat")
+        with patch(
+            "services.connectors.config_service.ConnectorConfigService.get_config",
+            new=AsyncMock(return_value={}),
+        ):
+            assert await read_user_github_handle("no-such-user-uuid") == "octocat"
+
+    async def test_handle_reader_none_when_unset(self, monkeypatch):
+        """No DB config entry + no env → None → callers apply no filter (show all)."""
         monkeypatch.delenv("PIPER_GITHUB_HANDLE", raising=False)
-        assert read_user_github_handle("no-such-user-uuid") is None
+        with patch(
+            "services.connectors.config_service.ConnectorConfigService.get_config",
+            new=AsyncMock(return_value={}),
+        ):
+            assert await read_user_github_handle("no-such-user-uuid") is None
+
+    async def test_handle_reader_db_value_used(self, monkeypatch):
+        """WS-1 P4: a ``github_username`` in the DB config is returned (and beats the env var)."""
+        monkeypatch.setenv("PIPER_GITHUB_HANDLE", "envhandle")
+        with patch(
+            "services.connectors.config_service.ConnectorConfigService.get_config",
+            new=AsyncMock(return_value={"github_username": "dbhandle"}),
+        ):
+            assert await read_user_github_handle(uuid4()) == "dbhandle"

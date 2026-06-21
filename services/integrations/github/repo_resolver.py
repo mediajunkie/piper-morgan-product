@@ -25,7 +25,6 @@ silently fall back to a hardcoded repo.
 
 from __future__ import annotations
 
-import json
 import logging
 import os
 import re
@@ -37,12 +36,9 @@ logger = logging.getLogger(__name__)
 
 ENV_DEFAULT_REPO = "PIPER_DEFAULT_REPO"
 
-# #1192 slice (a): the persistent GitHub-preferences store the settings UI writes
-# (web/api/routes/settings_integrations.py `GITHUB_PREFERENCES_FILE`). Keyed by
-# user id (= JWT `sub`, a UUID string); each entry holds `default_repository` as
-# an "owner/name" full_name. The user-default resolution path reads this so that
-# designating a default repo in the UI actually reaches the chat-path resolver.
-_GITHUB_PREFERENCES_FILE = "data/github_preferences.json"
+# WS-1 P4 (#1226 / #1199): the flat-file GitHub-preferences store
+# (data/github_preferences.json) was RETIRED 2026-06-21. The user-default and github-handle
+# resolution paths read the DB-backed connector_configs store (ADR-070 D4) — the SOLE store.
 
 ResolutionSource = Literal[
     "explicit", "project", "default_project", "user_default", "env_var"
@@ -219,39 +215,31 @@ async def _resolve_from_project(project_id: str) -> Optional[ResolvedRepo]:
         return None
 
 
-def _read_user_default_repository(user_key: str) -> Optional[str]:
-    """Read ``default_repository`` for a user from the persistent GitHub-prefs
-    store the settings UI writes (#573). Returns None if the file, the user
-    entry, or the field is absent. Path is cwd-relative — same as the writer."""
-    try:
-        if not os.path.exists(_GITHUB_PREFERENCES_FILE):
-            return None
-        with open(_GITHUB_PREFERENCES_FILE, "r") as f:
-            all_prefs = json.load(f)
-        return (all_prefs.get(user_key) or {}).get("default_repository") or None
-    except Exception as e:
-        logger.warning(f"Reading {_GITHUB_PREFERENCES_FILE} failed: {e}")
-        return None
-
-
-def read_user_github_handle(user_id) -> Optional[str]:
+async def read_user_github_handle(user_id) -> Optional[str]:
     """The bound user's GitHub login, for scoping Radar work items to "assigned to me"
-    (#1239 / #6). Reads ``github_username`` from the same per-user GitHub-prefs store as
-    the repo binding, falling back to the ``PIPER_GITHUB_HANDLE`` env var. Returns None
-    when unset → callers apply NO assignee filter (show all open issues), so this is an
-    opt-in enhancement, never a regression.
+    (#1239 / #6). Reads ``github_username`` from the user's DB-backed connector config
+    (connector_configs, ADR-070 D4 — the SOLE store as of WS-1 P4), falling back to the
+    ``PIPER_GITHUB_HANDLE`` env var. Returns None when unset → callers apply NO assignee
+    filter (show all open issues), so this is an opt-in enhancement, never a regression.
+
+    Best-effort: any DB error (or a None/non-UUID ``user_id``, which the store reads as a
+    graceful miss → empty config) falls through to the env var / None — a github hiccup must
+    never blank Radar.
 
     This is the single-bound-user form of the #1233 identity map: one configured handle
     now, generalizes to the unified user→identity record later with no rework."""
     try:
-        if user_id is not None and os.path.exists(_GITHUB_PREFERENCES_FILE):
-            with open(_GITHUB_PREFERENCES_FILE, "r") as f:
-                all_prefs = json.load(f)
-            handle = (all_prefs.get(str(user_id)) or {}).get("github_username")
+        if user_id is not None:
+            from services.connectors.config_service import ConnectorConfigService
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope() as session:
+                config = await ConnectorConfigService(session).get_config(user_id, "github")
+            handle = config.get("github_username")
             if handle:
                 return handle
     except Exception as e:
-        logger.warning(f"Reading github handle from {_GITHUB_PREFERENCES_FILE} failed: {e}")
+        logger.warning(f"Reading github handle from connector config failed: {e}")
     return os.environ.get("PIPER_GITHUB_HANDLE") or None
 
 
@@ -299,9 +287,11 @@ async def _resolve_from_default_project(user_id: UUID) -> Optional[ResolvedRepo]
 
 async def _read_user_default_repo_from_db(user_id: UUID) -> Optional[str]:
     """WS-1 (#1226 / #1199): read ``default_repository`` from the DB-backed
-    connector_configs store (ADR-070 D4). Best-effort — returns None on any DB
-    error so the caller falls back to the flat file (honest-degrade). Uses
-    ``session_scope()`` to mirror the other repo_resolver DB reads (#1192(b))."""
+    connector_configs store (ADR-070 D4) — the SOLE store as of P4. Best-effort —
+    returns None on any DB error (honest-degrade: the user-default path simply
+    yields nothing and resolution falls through to the env-var fallback, NOT to a
+    second store). Uses ``session_scope()`` to mirror the other repo_resolver DB
+    reads (#1192(b))."""
     try:
         from services.connectors.config_service import ConnectorConfigService
         from services.database.session_factory import AsyncSessionFactory
@@ -309,27 +299,24 @@ async def _read_user_default_repo_from_db(user_id: UUID) -> Optional[str]:
         async with AsyncSessionFactory.session_scope() as session:
             return await ConnectorConfigService(session).get_default_repo(user_id)
     except Exception as e:
-        logger.warning("DB default-repo read failed (falling back to flat file): %s", e)
+        logger.warning("DB default-repo read failed: %s", e)
         return None
 
 
 async def _resolve_from_user_default(user_id: UUID) -> Optional[ResolvedRepo]:
     """Return the user's default_repo preference, or None.
 
-    WS-1 (#1226): reads the DB-backed connector_configs store FIRST, then falls
-    back to the persistent flat-file store (``data/github_preferences.json`` via
-    ``_read_user_default_repository``) the settings UI also writes. The writer
-    dual-writes both during the transition (P3b), so the DB is authoritative and
-    the flat-file fallback is honest-degrade until P4 retires the flat file.
+    WS-1 P4 (#1226 / #1199): reads ``default_repository`` from the DB-backed
+    connector_configs store (ADR-070 D4) — the SOLE store. The flat-file store
+    (``data/github_preferences.json``) and the in-memory ``UserPreferenceManager``
+    path were RETIRED 2026-06-21; there is now ONE canonical store.
 
-    #1192 slice (a) history: the flat file replaced the old in-memory
-    ``UserPreferenceManager`` path (#1042), which re-instantiated empty on every
-    call and never resolved. The DB store now subsumes both.
+    History: the flat file (#1192 slice a) replaced the old in-memory
+    ``UserPreferenceManager`` path (#1042) which never resolved; P4 retired the
+    flat file too once the DB store subsumed both.
     """
     try:
-        value = await _read_user_default_repo_from_db(user_id)  # WS-1: DB-first
-        if not value:
-            value = _read_user_default_repository(str(user_id))  # flat-file fallback
+        value = await _read_user_default_repo_from_db(user_id)  # WS-1 P4: DB is the sole store
         if not value:
             return None
         try:

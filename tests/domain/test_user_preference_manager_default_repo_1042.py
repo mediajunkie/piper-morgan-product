@@ -1,4 +1,12 @@
-"""Tests for default_repo preference helpers (Issue #1042)."""
+"""Tests for default_repo preference helpers (Issue #1042).
+
+WS-1 P4 (#1226 / #1199): the in-memory default-repo store was RETIRED — the DB-backed
+connector_configs store is the SOLE store. ``get_default_repo`` is DB-only;
+``UserPreferenceManager.set_default_repo`` was removed (zero non-test callers — writes go
+through ``ConnectorConfigService.set_default_repo``). The in-memory round-trip / validation /
+fallback tests are gone with the machinery they covered; ``DEFAULT_REPO`` is retained as a
+stable preference-key name (the #1050 active_repos tests guard it against aliasing).
+"""
 
 from __future__ import annotations
 
@@ -15,9 +23,8 @@ from services.domain.user_preference_manager import (
 
 @pytest.fixture(autouse=True)
 def _db_default_repo_off():
-    """WS-1 (#1226): get_default_repo now reads the DB-backed store FIRST. Default it OFF
-    (None) for every test so the in-memory round-trip/validation assertions stay deterministic
-    + DB-free; the DB-first tests below override this with their own patch."""
+    """WS-1 P4: get_default_repo reads the DB-backed store. Default it OFF (None) for every test
+    so assertions stay deterministic + DB-free; the DB-value test below overrides this."""
     with patch.object(
         UserPreferenceManager, "_read_default_repo_from_db", new=AsyncMock(return_value=None)
     ):
@@ -29,37 +36,9 @@ def manager() -> UserPreferenceManager:
     return UserPreferenceManager()
 
 
-class TestDefaultRepoRoundTrip:
-    """``get_default_repo`` / ``set_default_repo`` round-trip."""
-
-    async def test_default_is_none_when_never_set(self, manager):
-        user_id = uuid4()
-        assert await manager.get_default_repo(user_id) is None
-
-    async def test_set_then_get_round_trip(self, manager):
-        user_id = uuid4()
-        await manager.set_default_repo(user_id, "myorg/myrepo")
-        assert await manager.get_default_repo(user_id) == "myorg/myrepo"
-
-    async def test_set_to_none_clears(self, manager):
-        user_id = uuid4()
-        await manager.set_default_repo(user_id, "myorg/myrepo")
-        await manager.set_default_repo(user_id, None)
-        assert await manager.get_default_repo(user_id) is None
-
-    async def test_per_user_isolation(self, manager):
-        user_a = uuid4()
-        user_b = uuid4()
-        await manager.set_default_repo(user_a, "a-org/a-repo")
-        await manager.set_default_repo(user_b, "b-org/b-repo")
-        assert await manager.get_default_repo(user_a) == "a-org/a-repo"
-        assert await manager.get_default_repo(user_b) == "b-org/b-repo"
-
-
 class TestDefaultRepoFromDB:
-    """WS-1 (#1226): get_default_repo reads the DB-backed connector_configs store FIRST,
-    falling back to the legacy in-memory preference. The autouse fixture defaults the DB read
-    OFF; these tests turn it on."""
+    """WS-1 P4 (#1226 / #1199): get_default_repo reads the DB-backed connector_configs store —
+    the SOLE store. The autouse fixture defaults the DB read OFF; these tests turn it on."""
 
     _DB = "services.domain.user_preference_manager.UserPreferenceManager._read_default_repo_from_db"
 
@@ -68,43 +47,19 @@ class TestDefaultRepoFromDB:
         with patch(self._DB, new=AsyncMock(return_value="dborg/dbrepo")):
             assert await manager.get_default_repo(user_id) == "dborg/dbrepo"
 
-    async def test_db_beats_in_memory(self, manager):
+    async def test_db_miss_returns_none(self, manager):
+        """WS-1 P4: a DB miss returns None — there is no second store to fall back to."""
         user_id = uuid4()
-        await manager.set_default_repo(user_id, "memorg/memrepo")  # legacy in-memory
-        with patch(self._DB, new=AsyncMock(return_value="dborg/dbrepo")):
-            assert await manager.get_default_repo(user_id) == "dborg/dbrepo"  # DB-first
-
-    async def test_db_miss_falls_back_to_in_memory(self, manager):
-        user_id = uuid4()
-        await manager.set_default_repo(user_id, "memorg/memrepo")
-        # autouse fixture returns None from DB → honest-degrade to the in-memory value
-        assert await manager.get_default_repo(user_id) == "memorg/memrepo"
-
-
-class TestDefaultRepoValidation:
-    """Setter rejects values outside the ``owner/name`` shape."""
-
-    @pytest.mark.parametrize(
-        "bad_value",
-        [
-            "no-slash",
-            "owner/",
-            "/name",
-            "owner/name/extra",
-            "owner name",
-            "owner/name with space",
-            "",
-        ],
-    )
-    async def test_rejects_invalid(self, manager, bad_value):
-        user_id = uuid4()
-        with pytest.raises(ValueError):
-            await manager.set_default_repo(user_id, bad_value)
+        # autouse fixture returns None from DB → get_default_repo returns None
+        assert await manager.get_default_repo(user_id) is None
 
 
 class TestDefaultRepoConstants:
-    """Smoke checks on exported constants."""
+    """Smoke checks on exported constants.
+
+    ``DEFAULT_REPO`` is retained post-P4 as the stable preference-key name (no longer a live
+    read/write target). Renaming it would break the #1050 active_repos distinctness guard.
+    """
 
     def test_preference_key_is_stable(self):
-        # Renaming would break persisted user data — guard against drift.
         assert DEFAULT_REPO == "default_repo"

@@ -284,52 +284,39 @@ def _save_notion_preferences(prefs: dict) -> None:
         logger.error("notion_preferences_save_failed", error=str(e))
 
 
-# Simple file-based storage for GitHub preferences (Issue #573)
-# Same pattern as Slack, Calendar, and Notion - could be moved to DB later
-GITHUB_PREFERENCES_FILE = "data/github_preferences.json"
-
-
-def _load_github_preferences() -> dict:
-    """Load all GitHub preferences from file."""
+# WS-1 (#1226 / #1199): GitHub connector prefs live in the DB-backed connector_configs store
+# (ADR-070 D4). The flat-file store (data/github_preferences.json) + the in-memory
+# UserPreferenceManager were RETIRED 2026-06-21 — there is now ONE canonical store. These two
+# helpers are the single read/write path for the github config blob
+# ({selected_repositories, default_repository, github_username}).
+async def _load_github_prefs_db(owner_sub: str) -> dict:
+    """The user's github connector config from the DB store. Returns {} on miss OR DB error
+    (best-effort read — a settings page should still render if the DB hiccups)."""
     try:
-        if os.path.exists(GITHUB_PREFERENCES_FILE):
-            with open(GITHUB_PREFERENCES_FILE, "r") as f:
-                return json.load(f)
+        from services.connectors.config_service import ConnectorConfigService
+        from services.database.session_factory import AsyncSessionFactory
+
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            return await ConnectorConfigService(session).get_config(owner_sub, "github")
     except Exception as e:
-        logger.warning("github_preferences_load_failed", error=str(e))
-    return {}
+        logger.warning("github_prefs_db_load_failed", error=str(e))
+        return {}
 
 
-def _save_github_preferences(prefs: dict) -> None:
-    """Save all GitHub preferences to file."""
-    try:
-        os.makedirs(os.path.dirname(GITHUB_PREFERENCES_FILE), exist_ok=True)
-        with open(GITHUB_PREFERENCES_FILE, "w") as f:
-            json.dump(prefs, f, indent=2)
-    except Exception as e:
-        logger.error("github_preferences_save_failed", error=str(e))
-
-
-async def _dual_write_github_prefs_to_db(owner_sub: str, user_prefs: dict) -> None:
-    """WS-1 (#1226 / #1199): mirror this user's github prefs into the DB-backed
-    connector_configs store, alongside the flat-file write.
-
-    Transitional dual-write — the flat file stays the source of truth until P4 retires it,
-    so this is BEST-EFFORT: a DB failure must NOT fail the save (the flat-file write already
-    succeeded), hence the broad catch + warn. A non-UUID ``owner_sub`` (e.g. a legacy/test
-    id) raises inside the service (owner_id is NOT NULL / D2) and is caught here too — the
-    flat file still carries it. Uses the fresh-engine session (event-loop-safe per #442) +
-    an explicit commit, since ``session_scope_fresh`` does not auto-commit (only
-    ``session_scope`` does, per #1193)."""
+async def _save_github_prefs_db(owner_sub: str, prefs: dict) -> None:
+    """MERGE the given keys into the user's github connector config in the DB store (preserves
+    untouched keys like github_username). RAISES on failure — the DB is the only store now, so a
+    write error must surface (silent failure would be data loss). Fresh-engine session
+    (event-loop-safe #442) + explicit commit (session_scope_fresh doesn't auto-commit)."""
     from services.connectors.config_service import ConnectorConfigService
     from services.database.session_factory import AsyncSessionFactory
 
-    try:
-        async with AsyncSessionFactory.session_scope_fresh() as session:
-            await ConnectorConfigService(session).set_config(owner_sub, "github", user_prefs)
-            await session.commit()
-    except Exception as e:  # best-effort mirror — never break the flat-file save
-        logger.warning("github_preferences_db_dualwrite_failed", error=str(e))
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        svc = ConnectorConfigService(session)
+        merged = await svc.get_config(owner_sub, "github")
+        merged.update(prefs)
+        await svc.set_config(owner_sub, "github", merged)
+        await session.commit()
 
 
 # ============================================================================
@@ -1802,9 +1789,8 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
 
                 data = await response.json()
 
-        # Load user's saved preferences
-        all_prefs = _load_github_preferences()
-        user_prefs = all_prefs.get(str(current_user.sub), {})
+        # Load user's saved preferences (WS-1: DB store)
+        user_prefs = await _load_github_prefs_db(str(current_user.sub))
         selected_repos = user_prefs.get("selected_repositories", [])
 
         # Build repository list with selection status
@@ -1848,8 +1834,7 @@ async def get_github_preferences(current_user: JWTClaims = Depends(get_current_u
     Issue #573: GitHub repository preferences
     """
     try:
-        all_prefs = _load_github_preferences()
-        user_prefs = all_prefs.get(str(current_user.sub), {})
+        user_prefs = await _load_github_prefs_db(str(current_user.sub))
 
         logger.info("github_preferences_loaded", user_id=str(current_user.sub))
 
@@ -1878,19 +1863,12 @@ async def save_github_preferences(
     Issue #573: GitHub repository preferences
     """
     try:
-        all_prefs = _load_github_preferences()
-
-        # Store preferences for this user
+        # Store preferences for this user (WS-1: DB store is the single home)
         user_prefs = {
             "selected_repositories": preferences.selected_repositories,
             "default_repository": preferences.default_repository,
         }
-
-        all_prefs[str(current_user.sub)] = user_prefs
-        _save_github_preferences(all_prefs)
-        # WS-1 (#1226): mirror into the DB-backed connector_configs store (transitional
-        # dual-write; the flat file stays source-of-truth until P4 retires it).
-        await _dual_write_github_prefs_to_db(str(current_user.sub), user_prefs)
+        await _save_github_prefs_db(str(current_user.sub), user_prefs)
 
         logger.info(
             "github_preferences_saved",

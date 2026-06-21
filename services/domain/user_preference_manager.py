@@ -73,15 +73,15 @@ CALENDAR_OFFER_STATES = frozenset({"offered", "declined", "deferred", "accepted"
 # ============================================================================
 
 DEFAULT_REPO = "default_repo"
-"""User's default GitHub repo as 'owner/name' string.
+"""Legacy in-memory preference key for the user's default GitHub repo ('owner/name').
 
-Used by repo_resolver when no project context is available. Issue #1042
-removes hardcoded 'piper-morgan-product' / 'mediajunkie' fallbacks; this
-preference is one of the resolution paths (project-scoped → user default →
-env-var → UnresolvedRepoError).
-
-UI for setting this preference is folded into #869 (Project config IA) per
-PM Q6 disposition 2026-05-04.
+WS-1 P4 (#1226 / #1199): the in-memory default-repo store was RETIRED 2026-06-21 — the
+canonical default-repo home is the DB-backed connector_configs store (ADR-070 D4), read via
+``get_default_repo`` → ``_read_default_repo_from_db`` and written via
+``ConnectorConfigService.set_default_repo``. This constant is RETAINED only as the stable
+preference-key name that ``ACTIVE_REPOS`` documents itself against (the two keys must stay
+distinct — see #1050 and ``test_user_preference_manager_active_repos_1050``); it is no longer
+a live read/write target here.
 """
 
 
@@ -878,11 +878,11 @@ class UserPreferenceManager:
     # ========================================================================
 
     async def _read_default_repo_from_db(self, user_id: UUID) -> Optional[str]:
-        """WS-1 (#1226 / #1199): read default_repository from the DB-backed connector_configs
-        store (ADR-070 D4). Best-effort — None on any DB error so the caller falls back to the
-        legacy in-memory preference (honest-degrade). The in-memory store is writer-less in
-        practice (#1042/#1050 → it always returned None for standup), so the DB is the real
-        source now."""
+        """WS-1 P4 (#1226 / #1199): read default_repository from the DB-backed connector_configs
+        store (ADR-070 D4) — the SOLE store. Best-effort — None on any DB error (honest-degrade:
+        ``get_default_repo`` simply returns None; there is no second store to fall back to). The
+        old in-memory preference was writer-less in practice (#1042/#1050 → always None for
+        standup) and was RETIRED in P4."""
         try:
             from services.connectors.config_service import ConnectorConfigService
             from services.database.session_factory import AsyncSessionFactory
@@ -890,41 +890,21 @@ class UserPreferenceManager:
             async with AsyncSessionFactory.session_scope() as session:
                 return await ConnectorConfigService(session).get_default_repo(user_id)
         except Exception as e:
-            logger.warning("DB default-repo read failed (falling back to in-memory): %s", e)
+            logger.warning("DB default-repo read failed: %s", e)
             return None
 
     async def get_default_repo(self, user_id: UUID) -> Optional[str]:
         """Get the user's default GitHub repo.
 
-        WS-1 (#1226): reads the DB-backed connector_configs store first, falling back to the
-        legacy in-memory preference (writer-less in practice). Returns ``owner/name`` or None.
+        WS-1 P4 (#1226 / #1199): reads the DB-backed connector_configs store — the SOLE store.
+        The legacy in-memory preference path was RETIRED 2026-06-21 (it was writer-less in
+        practice). Returns ``owner/name`` or None.
+
+        Writes go through ``ConnectorConfigService.set_default_repo`` (the settings UI / DB
+        layer); ``UserPreferenceManager.set_default_repo`` was removed with the in-memory store
+        (it had zero non-test callers).
         """
-        db_value = await self._read_default_repo_from_db(user_id)
-        if db_value:
-            return db_value
-        return await self.get_preference(DEFAULT_REPO, user_id=user_id, default=None)
-
-    async def set_default_repo(self, user_id: UUID, value: Optional[str]) -> None:
-        """Set the user's default GitHub repo.
-
-        Args:
-            user_id: User ID
-            value: ``owner/name`` string, or None to clear
-
-        Raises:
-            ValueError: When ``value`` is non-None and not in ``owner/name``
-                shape (matches ``[A-Za-z0-9._-]+/[A-Za-z0-9._-]+``).
-        """
-        if value is not None:
-            import re
-
-            if not re.match(r"^[A-Za-z0-9._\-]+/[A-Za-z0-9._\-]+$", value):
-                raise ValueError(
-                    f"Invalid default_repo value {value!r}; "
-                    "expected 'owner/name' shape "
-                    "(e.g., 'myorg/myproject')"
-                )
-        await self.set_preference(DEFAULT_REPO, value, user_id=user_id)
+        return await self._read_default_repo_from_db(user_id)
 
     # ========================================================================
     # Active Repos Preference Methods (Issue #1050 STANDUP-ACTIVE-REPOS)
