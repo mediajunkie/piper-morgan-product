@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-20 | PPM (Principal Product Manager) | workstream-048-ppm-2026-06-20.md | Ship #048 workstream review — PPM product/gates/roadmap lens (Jun 12–18) |
+| 2026-06-20 | cxo | workstream-048-cxo-2026-06-20.md | Ship #048 workstream review — CXO lane (Jun 12–18) |
