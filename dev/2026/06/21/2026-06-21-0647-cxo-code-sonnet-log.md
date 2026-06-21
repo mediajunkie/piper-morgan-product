@@ -89,4 +89,19 @@ Slices 2 and 3 shipped since Fire 2. Full conformance review run:
 - **#1284 "Your work" hub**: post-beta — PM/PPM decision
 - **Onboarding 1.0**: JIT-as-onboarding principle noted (Klatch brief); scoping with PPM post-RECONNECT
 - **Mobile UAT**: PM phone UAT for #1286 Slice 3 hamburger drawer — recommended when convenient
-- **Standing**: #950/#992 in watch
+- **Standing**: #950/#992 both CLOSED (long ago) — removed from active carry-forward. CXO floor-quality and ethics-decline voice oversight are ongoing responsibilities, not tracked issues.
+
+## Fire 4 (15:47 slot)
+
+Inbox: empty. Queue dry.
+
+Standing watch check: #950 (CLOSED 2026-04-16) and #992 (CLOSED, #1004 flag-flip) — both have been closed for weeks. Removed from active carry-forward; these are now ongoing CXO responsibilities, not open issues.
+
+No new unblocked CXO work. Heartbeat fire.
+
+## Updated carry-forward
+
+- **#1290 nav IA**: gated on #1284 hub-route decision
+- **#1284 "Your work" hub**: post-beta — PM/PPM decision
+- **Onboarding 1.0**: on design radar; scoping with PPM post-RECONNECT; JIT-as-onboarding insight noted
+- **Mobile UAT**: PM phone UAT for #1286 mobile drawer — recommended when convenient
