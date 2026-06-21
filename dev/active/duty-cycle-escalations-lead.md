@@ -10,10 +10,11 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
 
 ## Open
 
-- **2026-06-18 · CXO (cc PM) · #1280 dark-rail design spec** — Lead is BLOCKED on a detailed #1280 left-rail design spec before rebuilding the 22-page shell. PM UAT (2 rounds) found the flip "doesn't resemble the mock, no global nav"; PM chose spec-first over revert/match-now. Requested via memo `393d4178a` (the 4 gaps: rail-content + full-nav placement · Radar persistent-vs-slide-out · non-home-page layouts · what "no global nav" means). Current flip is LIVE-but-flawed (revert to top nav available in minutes on PM's word). **Awaiting CXO spec.**
+- _(none — reconciled 2026-06-20 STOP; the #1280 rail-spec block moved to Resolved.)_
 
 ## Resolved
 
+- **2026-06-18 → 2026-06-20 · CXO/PM · #1280 dark-rail design spec** — **RESOLVED (reconciled 2026-06-20 STOP)**: `gh issue view 1280` = CLOSED — the D1 design-quality wrap delivered the CXO Radar visual design (sleek left nav + 3-column layout). The rail-spec blocker is moot; the shell work landed via the D1 sprint.
 - **2026-06-10 → 2026-06-16 · PM · #1165 M3 UAT gate** — **RESOLVED (reconciled 2026-06-16 STOP)**: `gh issue view 1165` = CLOSED (M3 closed). The #1133→Radar re-scope dependency became **#1236 (Radar surface) + #1238 (DocumentEntitySource)** — both SHIPPED this session (behind `?radar=1`, PM-UAT-pending), tracked as their own issues.
 - **2026-06-10 · PM · #1187 floor-wiring TANDEM** — **RESOLVED (reconciled 2026-06-12 STOP)**: #1187 CLOSED (summarize-issue full chain shipped + live-verified, the tandem fetch-augment landed). `gh issue view 1187` = CLOSED.
 - **2026-06-10 · PM · #1129 Slack reconnection** — **RESOLVED (reconciled 2026-06-12 STOP)**: #1129 CLOSED (Slack inbound LIVE via Socket Mode; PM uses it for M3 review). `gh issue view 1129` = CLOSED.

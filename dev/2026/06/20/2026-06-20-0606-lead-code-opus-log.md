@@ -152,3 +152,32 @@ PM chose **option (2): activate the ADR-070 build.**
 
 ### #1308 — exempt-list enforcement lint BUILT (the #1307 class-fix, Arch's rec)
 Gameplan `dev/2026/06/20/1308-gameplan.md`. Built: `AUTH_EXEMPT_JUSTIFIED` allowlist (`auth_middleware.py`) + `tests/test_exempt_list_boundary_1308.py` (**4 tests green**). The lint asserts every writable exempt route is justified → a new exempt+writable+prod route **fails the build** (the #1307 class made impossible). Categorized the current writable exempt routes (auth-bootstrap, setup-wizard prefix, `/intent` optional-auth, `admin/trust/set-stage` env-gated) — all justified → the lint passes, **confirming admin_compose's removal left no hole**. Plus a no-stale-entries test (keeps the allowlist honest). **Simplification noted for Arch**: env-gated collapsed into the justified-allowlist-with-reason (vs auto-detecting `require_dev_environment`, which 404s at request-time, not statically detectable). **#1162 gate-removal prereq satisfied.**
+
+---
+
+## DAY-CLOSE — 2026-06-20 (STOP, 22:47 PT)
+
+**Day-arc** (an exceptionally large session), in order:
+1. **#1299 → 0.8.8 LIVE on alpha** (3-layer fix: bookworm + pyobjc + never-run migrate).
+2. **#1162 reconciliation** + board (#1162→SKUNK; #1300 filed→M5).
+3. **#1185 P1** (per-user LLM keys; 12 tests) — PARKED (gate chain).
+4. **#358 secret-store floor (A) + Dimension B** (content/PII encrypt-at-rest: FieldEncryptionService + EncryptedString + 4 cols + zero-downtime backfill; ~40 tests). Deferred → #1305/#1306.
+5. **Gate-removal-safety investigation** → CONDITIONAL GO; Arch CONCUR.
+6. **RECONNECT review** (2 self-corrections to PM: #1185+#358 ARE Phase-0; #1230 is ADR-gated, not the quick win).
+7. **#1232 WS-5 connector CONTRACT** (protocol + 4 types + AST-guard + github proof; 14 tests) — the RECONNECT keystone. Ports deferred (D8).
+8. **#1307** admin_compose deleted+closed (security instance) + **#1308** exempt-list enforcement lint shipped+closed (the class). Both #1162 gate-removal prereqs DONE.
+- Filed: #1300, #1305, #1306, #1307, #1308, #1309. Closed: #1307, #1308.
+
+**End-state**: RECONNECT Phase-1 (WS-9 identity → WS-1/2 → ports) is Arch/PM-gated — pending PM's WS-9 identity call + Arch's #1232-kickoff reply. #1185 parked. #358 hold-for-deploy.
+
+### Memory & briefing surfaces referenced this session
+- **Referenced**: ADR-070 (the #1232 build target); `connector-refactor-sprint-scope-2026-06-14.md` (RECONNECT phasing — corrected my sidetrack read); gameplan-template v9.6; audit-cascade + close-issue-properly skills; CLAUDE.md (git/mail discipline, comment-out-dead-code exception); Arch memos (gate-removal concur, #1162-correction); the #1185/#358/#1232/#1308 gameplans + gate-removal findings doc.
+- **Loaded but not referenced**: most of MEMORY.md (code-heavy session; comms/Docs-lane memories not load-bearing).
+- **Wanted but not found**: a documented **"mail-send residue reconcile" procedure** — learned the hard way twice (a triage-move's uncommitted residue collided with two later merges; fix = blob-verify-identical → rm + checkout → re-merge). Worth a CLAUDE.md / skill note: **after each `mail-send.sh`, `fetch+merge origin/main` immediately** so the move lands on your branch and can't accumulate into a collision.
+
+### Sign-off checklist
+- `git status`: clean (only pre-existing untracked: 2 prog-code logs + data/github_preferences.json — not mine).
+- `@{u}..HEAD` / `main..HEAD`: empty after the day-close commit (verified at push).
+- Cron 50daabfb: ARMED (1 job; next 07:17 Sun).
+
+<!-- DAY-CLOSED: 2026-06-20 -->
