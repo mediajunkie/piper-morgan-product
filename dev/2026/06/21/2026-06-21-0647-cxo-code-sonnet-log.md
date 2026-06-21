@@ -48,9 +48,26 @@ Noting for the onboarding design thread with PA + PPM.
 
 Heartbeat fire. Queue dry.
 
+## Fire 2 (09:47 slot)
+
+Inbox: 1 memo — Lead re #1286 Slice 1 shipped + Slice 2 fork.
+
+### #1286 Slice 1 confirmed shipped (commit `8f8f9a67d`)
+
+9 tokens in — grid rail/radar widths, baseline unit/rhythm, `--space-2xs` (6px), `--border-radius-pill` (999px), 3 breakpoints, 24px body baseline. 8 tests + lint clean.
+
+### Slice 2 design calls made
+
+**Call 1 — rename**: `--space-2xs` → `--space-dense: 6px`. `2xs` implies smaller-than-xs in convention; "dense" is semantic and unambiguous.
+
+**Call 2 — radar tiling**: option (c) middle. Pill-chip `.radar-etype` using `--border-radius-pill` (meaningful visual upgrade — type tag becomes a badge, not text). Keep `.radar-card` at 16px padding (PM-UAT'd, density fine at current entity count). Tokenize raw `6px` in `.radar-card` meta using `--space-dense` (lint-clean, no visual change).
+
+Memo delivered to Lead (CC: PM).
+
 ## Carry-forward for next fire
 
-- **#1286**: Lead's build lane; CXO conformance review pending post-implementation
+- **#1286 Slice 2**: Lead building (rename + pill-chip + tokenize); CXO conformance review pending post-Slice-2
+- **#1286 Slice 3**: Lead proceeding on mobile-nav (hamburger/drawer); CXO + PM phone UAT pending
 - **#1290 / #1284**: D2, gated on hub-route decision
-- **Onboarding 1.0**: JIT-as-onboarding principle noted (Klatch brief); surface to PA + PPM in next relevant thread
+- **Onboarding 1.0**: JIT-as-onboarding principle noted (Klatch brief); surface to PA + PPM
 - **Standing**: #950/#992 in watch
