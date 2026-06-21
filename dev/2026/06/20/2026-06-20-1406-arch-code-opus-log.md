@@ -46,3 +46,13 @@ Quiet fire (inbox empty, queue in others' courts). Rather than a quiet hold, dra
 - **Irreducible mandate** = the **architecture-integrity call**, drawn *deliberately narrow* per HOST's calibration note (Lead-Dev's data-safety-hold model): fires only when a *ratified* contract would be *silently* bypassed — NOT all-code-review. Enforce-that-exceptions-are-recorded vs. PM-decides-disposition; concrete instances cited (#1267 option-b reject, #1283 mode-4 guard, not-re-authoring-a-shipped-ADR).
 - Steering table (Rule 4) + currency-by-weekly-review (Rule 5, dogfoods #972).
 - On origin/main; **routed to Exec cc HOST+PM** for the 5-rule review (flagged the mandate calibration as the part to check). Carry-forward #6 → DONE+ROUTED.
+
+---
+
+### Fire — PM-prompted resume (18:50) — cron troubleshoot + gate-removal security review
+
+Another stall (~14:16 → 18:50; 15:27 + 18:27 fires didn't fire). PM: "your cron isn't working — troubleshoot and/or report to CIO; you have mail."
+- **Cron troubleshoot**: re-armed fresh (`CronDelete cf4a7ecc` → `CronCreate 3597d4a1`, same windowed expr) — but the cron was *armed the whole time* (not a stale object), so re-arm doesn't address the root (background-suppression). **Key finding**: the launchd watchdog **IS loaded** (`com.pipermorgan.duty-cycle-watchdog`, exit 0) + my freeze-registry row **IS correct** — yet PM still re-prods → the gap is the watchdog's **detection/alert effectiveness**, not registration. Asked CIO to verify whether it alerted during the 25h stall (the load-bearing check). Report sent (cc PM); carry-forward cron-state updated.
+- **Lead gate-removal security review** (#1162/#1307) → architectural read to Lead cc PM. **CONCUR** AuthMiddleware-as-sole-gate (correct model; realizes ADR-058+071; Caddy is redundant perimeter). **Load-bearing add**: the auth-exempt list IS the attack surface once Caddy's gone → **treat it as a security boundary, enforce-by-lint, fail-closed** (same shape as the #1283 intentional-floor allowlist). Recommended an enforcement test (exempt route ⇒ read-only OR env-gated OR justified-allowlist → #1307-class fails the build). Rate-limiting = global ASGI fail-closed + Redis. GO once #1307 closed + lint lands. Carry-forward #7. (Nice coherence: the same fail-closed + enforce-by-lint discipline as #1283 + the model↔migration guard — the architecture-integrity lane.)
+
+All on origin/main; inbox empty. Cron re-armed (3597d4a1) — though background-suppression persists; resume on PM signal.

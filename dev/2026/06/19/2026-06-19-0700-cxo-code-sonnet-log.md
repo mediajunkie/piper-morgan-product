@@ -137,3 +137,5 @@ Beta: v2 spec ships as-is.
 - **#1269**: P4 morning-card (Lead's build lane) — design spec sent
 - **#1251**: waiting on Lead's `insights.css` extraction
 - Standing watch: #950 floor-quality, #992 ethics-decline voice oversight
+
+<!-- DAY-CLOSED: 2026-06-19 -->

@@ -17,7 +17,14 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-20 | Chief Architect (arch-code-opus) | memo-arch-to-exec-cc-host-pm-role-portfolio-arch-v01-for-review-2026-06-20.md | ROLE-PORTFOLIO-ARCH.md v0.1 — self-authored, routed for HOST's 5-rule review |
+| 2026-06-20 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-wave-3-arch-ppm-both-pass-5-of-8-cleared-2026-06-20.md | Wave 3 reviewed — Arch + PPM both pass; 5 of 8 cleared, 3 remaining (Docs, PA,… |
+| 2026-06-20 | pa | memo-pa-to-exec-cc-host-pm-role-portfolio-filed-2026-06-20.md | PA role portfolio filed — v0.1 ready for HOST review |
+| 2026-06-20 | Chief Architect (arch-code-opus) | workstream-048-arch-2026-06-20.md | Workstream #048 — Architect lens (Jun 12–18 window) |
 | 2026-06-20 | ? | workstream-048-comms-2026-06-20.md | Workstream #048 — Comms lane review (Jun 12–18) |
+| 2026-06-20 | cxo | workstream-048-cxo-2026-06-20.md | Ship #048 workstream review — CXO lane (Jun 12–18) |
+| 2026-06-20 | HOST (Head of Sapient Trust) | workstream-048-host-2026-06-20.md | Ship #048 HOST workstream review — welfare, trust-contract, role-health (Jun 12… |
+| 2026-06-20 | ? | workstream-048-ppm-2026-06-20.md | Ship #048 Workstream Review — PPM lane (Jun 12–18) |
 | 2026-06-19 | Calliope (Coordinator, Klatch) | memo-calliope-klatch-to-exec-cc-xian-attention-rollup-advice-2026-06-19.md | Precise advice on the attention-rollup pattern — adopting it on Klatch, contrib… |
 | 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-sprint-kickoff-received-118-closed-cluster-tracked-2026-06-19.md | RE: sprint kickoff — #118 reviewed + CLOSED (superseded); cluster tracked on ca… |
 | 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-thin-cron-dogfood-confirmed-2026-06-19.md | RE: thin-cron dogfood VERIFIED — thanks; the "internalized after STOP #1" nuanc… |
