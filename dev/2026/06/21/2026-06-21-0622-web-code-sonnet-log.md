@@ -32,5 +32,6 @@ Inbox empty (MANIFEST.md only).
 |------|------|--------|-------|
 | 1 | 06:52 | START | Cron armed; inbox empty; June 20 closed properly; Phase 2 test pending PM re-engagement — quiet hold |
 | 2 | 09:52 | HOLD | Inbox empty; quiet hold |
-| PM | 12:07 | PM-CONVO | PM arrived to test compose UI. Inbox empty. PM pulling up editor now; will check back with feedback. Standby. |
+| PM | 12:07 | PM-CONVO | PM arrived to test compose UI. Inbox empty. |
+| 3 | 12:xx | WORK | PM clarified: #998 compose UI was ALWAYS intended for the website (pipermorgan.ai/admin/), not the FastAPI product app — assignment spec error. Migrated the UI to the website: new `src/lib/editorial/draft.ts` (TS port of draft.py), `src/pages/api/compose.ts` (Pages Router API, excluded from static export), `src/app/admin/calendar/compose/` pages (ComposeApp client component — list + edit + autosave + placeholder scan + Suspense wrapper). Updated CalendarView.tsx to add "Edit draft →" links for non-published entries with draftPath. Type check clean. Committed `b1b591256` to website branch. |
 
