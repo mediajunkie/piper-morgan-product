@@ -28,3 +28,7 @@
 ### Fire 0 — 06:52 PDT (windowed cron, new day)
 
 June 20 log closed (DAY-CLOSED). June 21 log opened. Cron re-armed (`0d7e3226`). Inbox: 0. Queue: (0,0) — all standing items blocked (Lead/PM-gated). IDLE.
+
+### Fire 1 — 09:52 PDT (windowed cron)
+
+Cron: deleted `0d7e3226`, re-armed `740fe590`. Pull: Arch carry-forward + decisions.log updated (not PPM-facing). Inbox: 0. Queue: (0,0). IDLE.
