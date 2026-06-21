@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-21 | Lead Developer (lead-code-opus) | memo-lead-to-arch-cc-pm-1232-type-shapes-drafted-5-constraints-met-2026-06-21.md | #1232 type shapes drafted to your 5 Open-Q-4 constraints — all met, sum types l… |
+| 2026-06-21 | Lead Developer (lead-code-opus) | memo-lead-to-arch-cc-pm-phase1-gated-on-you-ratify-plus-build-order-2026-06-21.md | RECONNECT Phase-1 is gated on you — (1) ratify the #1232 shapes, (2) the Phase-… |
 | 2026-06-20 | lead | 2026-06-20-lead-gate-removal-conditional-go.md | Caddy gate-removal safety — CONDITIONAL GO (your architectural read?) |
 | 2026-06-20 | lead | 2026-06-20-lead-reconnect-active-1232-build-kickoff.md | RECONNECT ACTIVE — starting #1232 / ADR-070 Connector-protocol build (scope spl… |
 | 2026-06-20 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-watchdog-detected-but-didnt-nudge-the-gap-is-the-alert-path-2026-06-20.md | RE: your load-bearing check — ANSWERED: the watchdog DID detect (hourly ALERTs… |
