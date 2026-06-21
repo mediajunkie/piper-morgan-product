@@ -312,14 +312,6 @@ RouterInitializer.mount_router(
     "Preferences API",  # Issue #248 rewired
 )
 
-# Issue #998 Phase 1: Editorial compose UI (read-only scaffold)
-RouterInitializer.mount_router(
-    app,
-    "web.routers.admin_compose",
-    "router",
-    "Admin Compose UI (Issue #998 Phase 1)",
-)
-
 # Issue #1148: Dev-only trust-stage GUI — lets UAT reach trust-gated surfaces.
 # Every route 404s in production (PIPER_ENVIRONMENT gate); see web/routers/dev_trust.py.
 RouterInitializer.mount_router(

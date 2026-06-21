@@ -1,1 +1,1 @@
-"""Web routers (Phase 1: admin_compose for Issue #998)."""
+"""Web routers (dev/admin scaffolds — e.g. dev_trust, dev_composting)."""

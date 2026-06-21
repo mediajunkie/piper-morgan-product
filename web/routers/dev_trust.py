@@ -67,7 +67,7 @@ router = APIRouter(
 )
 
 # Self-contained templates (web/templates/), isolated from the production UI
-# tree (repo-root templates/) — same pattern as web/routers/admin_compose.py.
+# tree (repo-root templates/) — the self-contained dev-router templates pattern.
 _TEMPLATES_DIR = Path(__file__).resolve().parent.parent / "templates"
 templates = Jinja2Templates(directory=str(_TEMPLATES_DIR))
 
