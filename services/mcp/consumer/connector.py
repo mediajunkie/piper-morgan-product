@@ -9,7 +9,7 @@ silently empty — an unconfigured/unresolvable connector says "connect me" / "h
 what's missing".
 
 The four **methods** are settled by ADR-070 D5. The **result-type shapes** are
-Lead-authored per ADR-070 Open-Q-4 and **Arch-ratified 2026-06-20** (v2): the outcomes
+Lead-authored per ADR-070 Open-Q-4 and **Arch-ratified 2026-06-21** (v2; constraints 06-20): the outcomes
 are explicit SUM types — ``ConnectResult = Binding | ConnectRequired`` and
 ``ResolveResult = ResourceHandle | ResolveMiss`` — so the "I don't have it" case is a
 first-class, must-be-handled variant, not a nullable field a caller can ``or {}`` away.
