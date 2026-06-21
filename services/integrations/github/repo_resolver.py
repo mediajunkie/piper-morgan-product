@@ -297,19 +297,39 @@ async def _resolve_from_default_project(user_id: UUID) -> Optional[ResolvedRepo]
         return None
 
 
+async def _read_user_default_repo_from_db(user_id: UUID) -> Optional[str]:
+    """WS-1 (#1226 / #1199): read ``default_repository`` from the DB-backed
+    connector_configs store (ADR-070 D4). Best-effort — returns None on any DB
+    error so the caller falls back to the flat file (honest-degrade). Uses
+    ``session_scope()`` to mirror the other repo_resolver DB reads (#1192(b))."""
+    try:
+        from services.connectors.config_service import ConnectorConfigService
+        from services.database.session_factory import AsyncSessionFactory
+
+        async with AsyncSessionFactory.session_scope() as session:
+            return await ConnectorConfigService(session).get_default_repo(user_id)
+    except Exception as e:
+        logger.warning("DB default-repo read failed (falling back to flat file): %s", e)
+        return None
+
+
 async def _resolve_from_user_default(user_id: UUID) -> Optional[ResolvedRepo]:
     """Return the user's default_repo preference, or None.
 
-    #1192 slice (a): reads the PERSISTENT GitHub-preferences store the settings
-    UI writes (``data/github_preferences.json``, keyed by user id / JWT sub,
-    holding ``default_repository`` as an "owner/name" full_name). The older
-    ``UserPreferenceManager`` path (#1042) was in-memory AND re-instantiated
-    empty on every call, so it never resolved — the UI setter and this reader
-    were two disconnected stores. This bridges them at the read side, so
-    designating a default repo in the UI reaches the chat-path resolver.
+    WS-1 (#1226): reads the DB-backed connector_configs store FIRST, then falls
+    back to the persistent flat-file store (``data/github_preferences.json`` via
+    ``_read_user_default_repository``) the settings UI also writes. The writer
+    dual-writes both during the transition (P3b), so the DB is authoritative and
+    the flat-file fallback is honest-degrade until P4 retires the flat file.
+
+    #1192 slice (a) history: the flat file replaced the old in-memory
+    ``UserPreferenceManager`` path (#1042), which re-instantiated empty on every
+    call and never resolved. The DB store now subsumes both.
     """
     try:
-        value = _read_user_default_repository(str(user_id))
+        value = await _read_user_default_repo_from_db(user_id)  # WS-1: DB-first
+        if not value:
+            value = _read_user_default_repository(str(user_id))  # flat-file fallback
         if not value:
             return None
         try:

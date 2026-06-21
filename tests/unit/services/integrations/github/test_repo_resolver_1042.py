@@ -17,6 +17,18 @@ from services.integrations.github.repo_resolver import (
 )
 
 
+@pytest.fixture(autouse=True)
+def _db_default_repo_off():
+    """WS-1 (#1226): repo_resolver now reads the DB-backed default-repo FIRST. Default it OFF
+    (returns None) for every test so the existing flat-file/env/project assertions stay
+    deterministic + DB-free; the DB-first tests below override this with their own patch."""
+    with patch(
+        "services.integrations.github.repo_resolver._read_user_default_repo_from_db",
+        new=AsyncMock(return_value=None),
+    ):
+        yield
+
+
 class TestParseFullName:
     """``owner/name`` parsing accepts valid shapes and rejects bad ones."""
 
@@ -131,6 +143,38 @@ class TestUserDefaultPreference:
             resolved = await resolve_repo(user_id=uuid4())
         assert resolved.source == "user_default"
         assert resolved.full_name == "userowner/userrepo"
+
+
+class TestUserDefaultFromDB:
+    """WS-1 (#1226): path 3 reads the DB-backed connector_configs store FIRST, falling back
+    to the flat JSON file (honest-degrade). The autouse fixture defaults the DB read OFF;
+    these tests turn it on."""
+
+    _DB = "services.integrations.github.repo_resolver._read_user_default_repo_from_db"
+    _JSON = "services.integrations.github.repo_resolver._read_user_default_repository"
+
+    async def test_db_value_used_when_set(self, monkeypatch):
+        monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
+        with patch(self._DB, new=AsyncMock(return_value="dbowner/dbrepo")):
+            resolved = await resolve_repo(user_id=uuid4())
+        assert resolved == ResolvedRepo(owner="dbowner", name="dbrepo", source="user_default")
+
+    async def test_db_beats_json(self, monkeypatch):
+        monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
+        with patch(self._DB, new=AsyncMock(return_value="dbowner/dbrepo")), patch(
+            self._JSON, return_value="jsonowner/jsonrepo"
+        ):
+            resolved = await resolve_repo(user_id=uuid4())
+        assert resolved.full_name == "dbowner/dbrepo"  # DB-first
+
+    async def test_db_miss_falls_back_to_json(self, monkeypatch):
+        monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
+        with patch(self._DB, new=AsyncMock(return_value=None)), patch(
+            self._JSON, return_value="jsonowner/jsonrepo"
+        ):
+            resolved = await resolve_repo(user_id=uuid4())
+        assert resolved.full_name == "jsonowner/jsonrepo"  # honest-degrade to flat file
+        assert resolved.source == "user_default"
 
 
 class TestReadUserDefaultRepository:
