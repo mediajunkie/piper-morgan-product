@@ -61,3 +61,32 @@ PA flagged multi-surface onboarding as a 1.0 design challenge. Response sent:
 - **Onboarding 1.0**: on design radar; scoping with PPM post-RECONNECT
 - **Standing**: #950 floor-quality, #992 ethics-decline voice oversight
 - **Cron**: re-arm for June 20 (windowed 47 6,9,12,15,18,21 * * *)
+
+---
+
+## Fire 1 (21:47 cron)
+
+Inbox: empty. #1269 CLOSED + #1251 CLOSED (PM UAT walk-through with Lead, June 20 daytime). D2 design stack unblocked.
+
+### #1286 D2 design-system spec — FILED
+
+Spec: `dev/active/design-spec-1286-d2-design-system-2026-06-20.md`
+
+Four areas addressed (per PM direction on #1286):
+1. **Grid**: `--grid-rail-width: 180px`, `--grid-radar-width: 320px` — tokenizes the shell grid
+2. **Typographic baseline rhythm**: 8px base unit, 24px rhythm; body 14px/24px (`line-height: var(--baseline-rhythm)`)
+3. **Spacing/tiling**: `--space-2xs: 6px` (Radar micro-spacing), `--border-radius-pill: 999px` (entity type chips) — closes #1251 annotation gaps
+4. **Mobile-first grid**: 480px/768px/1024px breakpoints; mobile = single column + hamburger drawer; tablet = `180px 1fr`; desktop = full shell
+
+7 new tokens total. Conformance review against mockup: CXO runs after Lead ships D2.
+
+Memo sent to Lead (CC: PM, PA).
+
+## Updated carry-forward
+
+- **#1269**: CLOSED ✓ | **#1251**: CLOSED ✓ (PM walk-through June 20)
+- **#1286 D2 design-system**: spec filed → Lead's build lane
+- **#1290 nav IA**: still gates on #1284 hub-route decision — hold for D2
+- **#1284 "Your work" hub**: post-beta; avatar dropdown interim is live
+- **Onboarding 1.0**: on design radar; scoping with PPM post-RECONNECT
+- **Standing**: #950 floor-quality, #992 ethics-decline voice oversight
