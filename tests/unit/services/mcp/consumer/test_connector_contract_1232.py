@@ -90,3 +90,35 @@ def test_github_adapter_satisfies_runtime_connector_protocol():
     from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
     assert isinstance(GitHubMCPSpatialAdapter(), Connector)
+
+
+def test_no_return_type_exposes_credential_material():
+    """ADR-070 D3 + Arch #1232 constraint 5: no connector result/return type may carry raw
+    token / refresh-token / secret. A type that *could* hold a credential violates D3
+    structurally (the MCP server owns tokens; Piper stores bindings only). Auto-discovers
+    every dataclass defined in connector.py, so new return types are checked by construction."""
+    import dataclasses
+    import inspect
+
+    forbidden = (
+        "token",
+        "secret",
+        "password",
+        "credential",
+        "api_key",
+        "apikey",
+        "access_key",
+        "private_key",
+        "refresh",
+    )
+    offenders = []
+    for _, obj in inspect.getmembers(connector):
+        if dataclasses.is_dataclass(obj) and getattr(obj, "__module__", "") == connector.__name__:
+            for f in dataclasses.fields(obj):
+                if any(sub in f.name.lower() for sub in forbidden):
+                    offenders.append(f"{obj.__name__}.{f.name}")
+    assert not offenders, (
+        "#1232 D3 SECURITY BOUNDARY: connector return types must not carry credential material, "
+        f"but found credential-named field(s): {offenders}. Per ADR-070 D3 the external MCP server "
+        "owns OAuth/tokens; Piper stores bindings only. Store a binding_id, not a token."
+    )

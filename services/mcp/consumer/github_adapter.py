@@ -19,11 +19,13 @@ from services.integrations.spatial_adapter import (
 )
 
 from .connector import (
+    ConnectRequired,
     ConnectorStatus,
     ConnectorStatusState,
     ConnectResult,
     DegradationReason,
     DegradationResponse,
+    ResolveMiss,
     ResolveResult,
     ResourceQuery,
 )
@@ -66,12 +68,12 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
     IMPLEMENTS_CONNECTOR = True  # #1232: AST-guard (test_connector_contract_1232) enforces the 4 methods
 
     async def connect(self, user_id: str) -> ConnectResult:
-        return ConnectResult(
-            bound=False,
-            connect_required=DegradationResponse(
+        # Honest stub: not wired yet → the must-be-handled ConnectRequired variant.
+        return ConnectRequired(
+            degradation=DegradationResponse(
                 reason=DegradationReason.CONNECT_REQUIRED,
                 user_message="GitHub isn't wired on the MCP-consumer path yet (deferred port).",
-            ),
+            )
         )
 
     async def status(self, user_id: str) -> ConnectorStatus:
@@ -81,12 +83,12 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         )
 
     async def resolve(self, user_id: str, resource: ResourceQuery) -> ResolveResult:
-        return ResolveResult(
-            resolved=False,
+        # Honest stub: not wired yet → the must-be-handled ResolveMiss variant.
+        return ResolveMiss(
             degradation=DegradationResponse(
                 reason=DegradationReason.CONNECT_REQUIRED,
                 user_message="GitHub resolve via the MCP-consumer path is the deferred port.",
-            ),
+            )
         )
 
     async def degrade(self, reason: DegradationReason) -> DegradationResponse:
