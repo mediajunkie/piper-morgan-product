@@ -38,3 +38,11 @@ The app has its **own global `AuthMiddleware`** (JWT) that gates every route exc
 - **Add rate-limiting (#2) before public BYOC exposure.**
 - Then the removal itself is a one-line Caddy-config change (drop the basic-auth directive), tied to the public-distribution milestone.
 - #1 is small and worth doing now regardless of the gate (defense-in-depth). **Filed as #1307** (blocks #1162). Lead Dev can take it once PM confirms dev-only vs prod-use.
+
+## Arch's review (2026-06-20) — CONCUR + the class-fix
+Arch (gate-removal concur memo, 2026-06-20):
+- **CONCUR** AuthMiddleware-as-sole-gate — the *correct* model; perimeter-only (Caddy) is the dated, semantically-blind pattern; app-owned auth realizes ADR-058 + ADR-071.
+- **Load-bearing add**: once Caddy is gone, the auth-exempt list IS the attack surface → it's a security boundary, needing an **enforcement lint**: every exempt route must be read-only **or** env-gated **or** on an `AUTH_EXEMPT_JUSTIFIED` allowlist (fail-closed). Makes #1307's class impossible-by-construction. → **#1308**.
+- **Rate-limiting**: global ASGI fail-closed default + slowapi per-route (intent / login) + **Redis-backed** (in-process = the #1109 class).
+- **#1307**: fixed by **removal** (PM-directed) — admin_compose deleted (`0466fd09d`); **CLOSED**.
+- **GO on gate-removal once #1307 (done) + #1308 (lint) land** + rate-limiting before public exposure. The removal itself is M5/distribution-time.
