@@ -56,3 +56,49 @@ Another stall (~14:16 → 18:50; 15:27 + 18:27 fires didn't fire). PM: "your cro
 - **Lead gate-removal security review** (#1162/#1307) → architectural read to Lead cc PM. **CONCUR** AuthMiddleware-as-sole-gate (correct model; realizes ADR-058+071; Caddy is redundant perimeter). **Load-bearing add**: the auth-exempt list IS the attack surface once Caddy's gone → **treat it as a security boundary, enforce-by-lint, fail-closed** (same shape as the #1283 intentional-floor allowlist). Recommended an enforcement test (exempt route ⇒ read-only OR env-gated OR justified-allowlist → #1307-class fails the build). Rate-limiting = global ASGI fail-closed + Redis. GO once #1307 closed + lint lands. Carry-forward #7. (Nice coherence: the same fail-closed + enforce-by-lint discipline as #1283 + the model↔migration guard — the architecture-integrity lane.)
 
 All on origin/main; inbox empty. Cron re-armed (3597d4a1) — though background-suppression persists; resume on PM signal.
+
+---
+
+### Fire — STOP (21:57, last fire) — #1232 RECONNECT confirms + CIO watchdog ack
+
+The re-armed cron (3597d4a1) **fired this time** (app foregrounded). 2 memos, both drained-before-STOP:
+- **CIO watchdog answer**: confirmed my diagnosis exactly — the watchdog DETECTED my stall hourly all weekend (threshold-correct) but only `echo`'d to a log, **never reached PM** (the nudge/alert path is the whole gap). CIO building the nudge (on-transition + multi-role-collapse). **Acked** (cc PM) + confirmed I'll log **gap-since-last-fire** per fire for their threshold-tuning. (Gap this fire: ~3h since the 18:50 re-prod — within window.)
+- **🟢 RECONNECT ACTIVE — Lead building #1232** (the connector contract, my #1 RECONNECT priority). Grounded in ADR-070 (re-read D2/D3/D5/D8 + Open-Qs), then **confirmed both** (ADR-070 stable to build to; the contract-now/ports-later split is exactly the WS-5 intent) + gave the **Open-Q-4 type-shape constraints** (sum-types so honest-degradation is first-class non-maskable — D5 + the #1283 floor-degrade principle; no token in any return type — D3) + **confirmed Open-Q-5** (no durable OAuth-state on Piper; handoff-vs-orchestrate is a build-time UX call, doesn't gate the contract). My role is now confirm/constrain/ratify (Lead-author/Arch-ratify); watch for his drafted type shapes. Responded tonight (not banked) because it's active-build alignment, not deep authoring — keeps Lead aligned before structural commits.
+
+---
+
+## Day arc — June 20 summary (DinP day 4 / Saturday; PM-prompted throughout — cron stalls + a full slate)
+
+A weekend of PM re-prods (the cron kept stalling — background-suppression), but a productive slate each wake:
+
+| Fire | Time PT | Deliverable |
+|---|---|---|
+| START+drain | 14:06 | June 19 retroactive close; **CIO stall memo**; Lead #1162 corrected-phasing ack'd; **workstream-048-arch** sent; **Janus Letter-#3 filed** (dispatch); role-portfolio banked |
+| role-portfolio | 14:16 | **ROLE-PORTFOLIO-ARCH.md authored + routed** to Exec/HOST (the banked deliverable, un-banked on a fresh quiet fire) |
+| troubleshoot | 18:50 | **Cron troubleshoot** (re-arm 3597d4a1; watchdog-loaded-but-no-nudge finding → CIO); **gate-removal security review** (exempt-list-as-security-boundary lint → Lead) |
+| STOP | 21:57 | **#1232 RECONNECT confirms** (Lead building the connector contract) + CIO watchdog ack |
+
+**Load-bearing of the day**: **RECONNECT activated** + my #1232 confirms (the connector contract is now being built — my keystone RECONNECT deliverable, in confirm/ratify mode). Plus the cron-stall root-caused to the watchdog nudge-path (with CIO), the role-portfolio shipped, and the gate-removal security read (exempt-list-as-security-boundary — coherent with the #1283 fail-closed/enforce-by-lint lane).
+
+**Process note**: a recurring-PM-re-prod day (the cron background-suppression). The diagnosis is now precise (detection works; the launchd nudge path is the gap) and CIO has the fix scoped. Interim: resume on PM signal. Started logging gap-since-last-fire for CIO's threshold tuning.
+
+## Memory & briefing surfaces referenced this session (per #974)
+
+**Referenced**: ADR-070 (re-read D2/D3/D5/D8 + Open-Qs to ground the #1232 confirms — investigate-before-extending) · ADR-058/066-D7/071 (the connector auth/config/identity family) · the role-portfolio framework + CIO pilot (for the ROLE-PORTFOLIO-ARCH shape + irreducible-mandate calibration) · m-41 (the derive/enforce + the #1232 guard + the exempt-list lint) · m-30 (grounded confirms in the actual ADR text, not memory) · `[Honor durable instructions]` / `[weekends-are-prime-time]` (un-banked the role-portfolio on a fresh quiet fire) · carry-forward + the delta-doc continuity surface.
+**Loaded but not referenced**: xpoll; the broader cohort broadcasts.
+**Wanted but not found**: an off-machine session-liveness mechanism — the on-machine launchd watcher can't cure *firing* (only recovery); surfaced to CIO as the structural follow-up.
+
+## Sign-off discipline
+
+```bash
+$ git log --oneline origin/main..HEAD   # 0 — all June 20 work on origin/main (verified per-fire)
+$ git status --short                     # clean apart from this close
+```
+
+✓ All June 20 work on `origin/main` — verified by content at each fire (June-19 retroactive close, role-portfolio, CIO stall+troubleshoot, gate-removal review, workstream-048, #1232 confirms).
+✓ Carry-forward current (#1232 RECONNECT-active w/ confirms sent; role-portfolio done+routed; gate-removal #7; cron-state).
+✓ Cron `3597d4a1` armed (re-armed 18:50) — leave armed for tomorrow's 06:27 (modulo background-suppression; resume on PM signal).
+
+<!-- DAY-CLOSED: 2026-06-20 -->
+
+— Architect (DinP / Opus 4.8), Saturday June 20 closed at 21:57 PT. Day 4 on DinP: RECONNECT activated + #1232 connector-contract confirms; role-portfolio shipped; cron-stall root-caused with CIO. **Tomorrow**: watch for Lead's #1232 drafted type shapes (review/ratify) + HOST's role-portfolio 5-rule review.
