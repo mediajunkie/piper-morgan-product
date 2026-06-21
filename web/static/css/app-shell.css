@@ -1,15 +1,18 @@
 /* F2 #1171 — page-shell layout. Token-only (F3-clean); zero hardcoded colors/spacing.
-   Chrome (the nav) is shell-owned; pages fill {% block main %}. The nav's own
-   styles live in components/navigation.html (a flagged token-migration follow-on);
-   this file owns the content-region / aside layout around it. */
+   Chrome (the nav) is shell-owned; pages fill {% block main %}. The nav's own styles live
+   in components/nav_rail.html + nav-rail.css; this file owns the content-region / aside
+   layout around it.
+
+   #1286 D2 Slice 3 — MOBILE-FIRST: single column by default; the rail is an off-canvas
+   drawer (positioning in nav-rail.css) reached via the mobile top-bar hamburger. min-width
+   breakpoints restore the in-flow rail (tablet) and the Radar aside (desktop, home only). */
 
 body {
   margin: 0;
-  /* #1280 fix: BOUND the shell to the viewport so the rail (and its footer/avatar) stays
-     viewport-height and the center scrolls internally. `min-height` let the page grow with
-     long center content, pushing the rail footer (margin-top:auto) below the fold → "no avatar".
-     (D2/mobile-first: switch to 100dvh + the responsive stack.) */
-  height: 100vh;
+  /* #1280: BOUND the shell to the viewport so the rail (+ its footer/avatar) stays
+     viewport-height and the center scrolls internally. #1286 D2: 100dvh so mobile browser
+     chrome (the URL bar) doesn't clip the shell. */
+  height: 100dvh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -20,22 +23,55 @@ body {
   line-height: var(--baseline-rhythm);
 }
 
-/* #1280 — the shell is a left-rail grid: [rail 180px][main 1fr][optional Radar aside 320px].
-   The dark rail (components/nav_rail.html + nav-rail.css) is the first column and REPLACES the
-   former top nav. Full-width (was max-width:1200px centered) so the rail is flush-left and content
-   fills. Full-height: body is a flex-column (min-height:100vh) and this grid fills it via flex:1 +
-   the 1fr row; main / aside scroll internally. */
+/* #1286 D2 Slice 3 — mobile top-bar (hamburger + brand). Mobile-first: visible by default,
+   hidden at the tablet breakpoint where the in-flow rail takes over. */
+.app-shell-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: 0 0 auto;
+  height: var(--touch-target-min);
+  padding: 0 var(--space-md);
+  background: var(--color-nav-bg);
+  color: var(--color-nav-text);
+}
+.app-shell-hamburger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch-target-min);
+  min-height: var(--touch-target-min);
+  background: none;
+  border: none;
+  color: var(--color-nav-text);
+  font-size: var(--font-size-2xl);
+  line-height: 1;
+  cursor: pointer;
+}
+.app-shell-topbar-brand {
+  color: var(--color-nav-text);
+  text-decoration: none;
+  font-weight: var(--font-weight-semibold);
+}
+/* Backdrop behind the open drawer (mobile). The `hidden` attr keeps it display:none until
+   mobile-nav.js opens the drawer; then this rule (no display set) shows it as a full overlay. */
+.app-shell-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--color-overlay-light);
+  z-index: var(--z-index-sticky);
+}
+
+/* The left-rail grid. #1286 D2 mobile-first: single column (the rail is off-canvas here),
+   so the grid is just <main>. */
 .app-shell-body {
   flex: 1;
   min-height: 0;
   width: 100%;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: var(--grid-rail-width) 1fr;
+  grid-template-columns: 1fr;
   grid-template-rows: 1fr;
-}
-.app-shell-body--with-aside {
-  grid-template-columns: var(--grid-rail-width) 1fr var(--grid-radar-width);
 }
 
 .app-shell-main {
@@ -44,12 +80,32 @@ body {
   overflow-y: auto;
 }
 
-/* Optional Radar / Layer-2 aside — the #1236 component fills it where enabled. */
+/* Radar / Layer-2 aside — desktop-only (hidden on mobile + tablet; Radar stays reachable
+   from the chat surface). The #1236 component fills it where enabled. */
 .app-shell-aside {
-  border-left: var(--border-card);
-  padding: var(--space-md);
-  overflow-y: auto;
+  display: none;
 }
 
-/* Narrow/responsive (< 768px): the stacked layout is POST-BETA per the #1280 v2 spec —
-   intentionally not built for M5. The desktop grid applies at all widths for now. */
+/* ── Tablet (>= --breakpoint-tablet): rail returns in-flow; mobile top-bar + backdrop hide. ── */
+@media (min-width: 768px) { /* token-lint-allow --breakpoint-tablet (media conditions can't use var()) */
+  .app-shell-topbar,
+  .app-shell-backdrop {
+    display: none;
+  }
+  .app-shell-body {
+    grid-template-columns: var(--grid-rail-width) 1fr;
+  }
+}
+
+/* ── Desktop (>= --breakpoint-desktop): the Radar aside joins the grid (home only). ── */
+@media (min-width: 1024px) { /* token-lint-allow --breakpoint-desktop */
+  .app-shell-body--with-aside {
+    grid-template-columns: var(--grid-rail-width) 1fr var(--grid-radar-width);
+  }
+  .app-shell-aside {
+    display: block;
+    border-left: var(--border-card);
+    padding: var(--space-md);
+    overflow-y: auto;
+  }
+}

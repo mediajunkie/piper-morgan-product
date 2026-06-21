@@ -5,8 +5,7 @@
    font-size via --font-size-*; spacing via --space-* (rem for sub-token tightness). */
 
 .nav-rail {
-  width: 180px;
-  height: 100%;
+  width: var(--grid-rail-width);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -15,6 +14,29 @@
   color: var(--color-nav-text);
   font-size: var(--font-size-sm);
   overflow-y: auto;
+  /* #1286 D2 Slice 3 — mobile-first: the rail is an off-canvas drawer. It slides in on
+     .nav-rail--open (toggled by mobile-nav.js from the top-bar hamburger). Restored to an
+     in-flow grid column at the tablet breakpoint below. */
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  z-index: var(--z-index-modal);
+  transform: translateX(-100%);
+  transition: transform var(--transition-duration-normal) var(--transition-timing-ease-in-out);
+}
+.nav-rail--open {
+  transform: translateX(0);
+}
+
+/* Tablet+ (>= --breakpoint-tablet): the rail is an in-flow grid column again. */
+@media (min-width: 768px) { /* token-lint-allow --breakpoint-tablet */
+  .nav-rail {
+    position: static;
+    transform: none;
+    height: 100%;
+    z-index: auto;
+  }
 }
 
 /* Brand (top) */
