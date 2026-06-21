@@ -9,7 +9,7 @@
 
 ## ▶ PENDING PM / Arch
 - ~~PM: Redis prod-fix go~~ — DONE 2026-06-21 (#1311).
-- **Arch**: ratify the #1232 sum-type shapes (mail `44e505456` sent 06-21) — then I close the Open-Q-4 thread; deferred ports follow the WS-9/WS-1/WS-2 foundation. Open-Q-5 handoff-vs-orchestrate deferred (doesn't gate the contract).
+- **Arch** (explicit Phase-1 block-flag sent `c61b26718` 06-21, cc PM): (1) ratify the #1232 sum-type shapes (`44e505456`) → closes Open-Q-4; (2) **the build-order call** — does Phase-1 start by un-parking #1185, or build WS-1 (D4 config) independently first? My side idle-ready (WS-9 identity answered, #1229 native). Open-Q-5 handoff-vs-orchestrate deferred (doesn't gate the contract).
 - #358 close: hold-for-deploy (PM-confirmed); deploy = set `ENCRYPTION_MASTER_KEY` on the box + run the backfill.
 
 ## ▶ DONE this session (06-21)
