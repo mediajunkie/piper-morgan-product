@@ -40,3 +40,7 @@ June 19 log closed (memory eval + DAY-CLOSED). June 20 log opened. Cron re-armed
 - Key theme surfaced: three structural problems caught before build (People provenance gap, taxonomy drift, ADR-071 gate scope)
 - Both inbox items moved to ppm/read/; MANIFESTs updated
 
+### Fire 1 — 21:52 PDT (windowed cron)
+
+Stale June 19 durable cron prompt fired. Re-armed with correct June 20 prompt (`a4543ce7`). Inbox: 0. Queue: (0,0) — all standing items blocked (Lead/PM-gated). IDLE.
+
