@@ -15,6 +15,7 @@ are awaited. The Fake mirrors the async API in-memory; tests use it instead
 of MagicMock for the manager-shaped argument.
 """
 
+from datetime import datetime, timezone
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -198,6 +199,34 @@ class TestStandupProcessAdapter:
         manager = FakeStandupConversationManager()
         conv = await manager.create_conversation("session1", "user1")
         await manager.transition_state(conv.id, StandupConversationState.GENERATING)
+
+        with patch.object(adapter, "_get_components", return_value=(manager, None)):
+            result = await adapter.check_active("user1", "session1")
+
+        assert result is True
+
+    @pytest.mark.smoke
+    @pytest.mark.asyncio
+    async def test_check_active_handles_naive_updated_at(self):
+        """Regression (2026-06-21): a tz-naive ``updated_at`` must not crash check_active.
+
+        ``check_active`` computes ``datetime.now(timezone.utc) - updated_at``. When the
+        conversation has not round-tripped through the ``timestamptz`` column — an
+        in-memory object, or a backend that drops tzinfo — ``updated_at`` is tz-naive
+        and the raw subtraction raised
+        ``TypeError: can't subtract offset-naive and offset-aware datetimes``.
+        ``ensure_utc`` now coerces it. The naive value here is a *UTC wall-clock* with
+        tzinfo stripped (what SQLite/asyncpg return), so elapsed stays ~0 and the
+        conversation is still active.
+        """
+        adapter = StandupProcessAdapter()
+
+        manager = FakeStandupConversationManager()
+        conv = await manager.create_conversation("session1", "user1")
+        await manager.transition_state(conv.id, StandupConversationState.GENERATING)
+        # Simulate a tz-naive timestamp: tzinfo dropped, UTC wall-clock retained.
+        conv.updated_at = datetime.now(timezone.utc).replace(tzinfo=None)
+        assert conv.updated_at.tzinfo is None  # precondition: genuinely naive
 
         with patch.object(adapter, "_get_components", return_value=(manager, None)):
             result = await adapter.check_active("user1", "session1")

@@ -64,10 +64,29 @@ Inbox: 1 memo — Lead re #1286 Slice 1 shipped + Slice 2 fork.
 
 Memo delivered to Lead (CC: PM).
 
+## Fire 3 (12:47 slot)
+
+Inbox: empty.
+
+### #1286 CXO conformance review — PASS → CLOSED
+
+Slices 2 and 3 shipped since Fire 2. Full conformance review run:
+
+**Evidence checklist**:
+- Tokens: 9 in `tokens.css` — `--space-dense: 6px` (renamed from `--space-2xs`), `--border-radius-pill: 999px`, grid widths, baseline rhythm, 3 breakpoints ✓
+- Body baseline: `font-size: var(--font-size-base); line-height: var(--baseline-rhythm)` in `app-shell.css` ✓
+- Radar tiling: `.radar-etype` has `border-radius: var(--border-radius-pill)` + `padding: 1px var(--space-xs)` — pill chip confirmed ✓; `.radar-card-meta`/`.radar-card-prov` use `var(--space-dense, 6px)` ✓; `.radar-card` at 16px padding (option c held) ✓
+- Mobile shell: `.app-shell-body` defaults to `grid-template-columns: 1fr`; 768px restores `var(--grid-rail-width) 1fr`; 1024px adds radar aside ✓; hamburger+drawer wired in template IDs ✓; JS clean and defensive ✓
+- Tests: 10/10 pass ✓; token_lint rc=0 ✓
+
+**One minor**: `.radar-etype font-size: 0.6rem` is raw (sub-token, intentional micro-badge sizing). Flagged in issue for future `--font-size-chip` token. Not blocking.
+
+**Issue #1286 CLOSED** ✓. Memo to PM (CC Lead) delivered: conformance pass, mobile phone UAT recommended.
+
 ## Carry-forward for next fire
 
-- **#1286 Slice 2**: Lead building (rename + pill-chip + tokenize); CXO conformance review pending post-Slice-2
-- **#1286 Slice 3**: Lead proceeding on mobile-nav (hamburger/drawer); CXO + PM phone UAT pending
-- **#1290 / #1284**: D2, gated on hub-route decision
-- **Onboarding 1.0**: JIT-as-onboarding principle noted (Klatch brief); surface to PA + PPM
+- **#1290 nav IA**: gated on #1284 hub-route decision
+- **#1284 "Your work" hub**: post-beta — PM/PPM decision
+- **Onboarding 1.0**: JIT-as-onboarding principle noted (Klatch brief); scoping with PPM post-RECONNECT
+- **Mobile UAT**: PM phone UAT for #1286 Slice 3 hamburger drawer — recommended when convenient
 - **Standing**: #950/#992 in watch

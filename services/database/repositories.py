@@ -2608,7 +2608,7 @@ class StandupConversationRepository:
         because StandupConversation aggregates state (turns, preferences,
         context) that's mutated atomically by the manager.
         """
-        from datetime import datetime
+        from datetime import datetime, timezone
 
         from services.database.models import StandupConversationDB
 
@@ -2640,7 +2640,10 @@ class StandupConversationRepository:
             else {"yesterday": [], "today": [], "blockers": []}
         )
         row.completed_at = conversation.completed_at
-        row.updated_at = datetime.now()
+        # #1079: tz-aware UTC to match the timestamptz column and the manager's
+        # tz-aware writes; naive here is interpreted per DB session tz and feeds
+        # naive-vs-aware subtraction crashes in timeout/duration math.
+        row.updated_at = datetime.now(timezone.utc)
         await self.session.flush()
 
     async def delete(self, conversation_id: str) -> bool:
