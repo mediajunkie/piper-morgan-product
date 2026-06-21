@@ -123,6 +123,8 @@ dev/active/delta-*.md
 
 # duty-cycle freeze-watchdog runtime audit log — appended by the launchd job, not tracked
 dev/active/duty-cycle-watchdog.log
+# duty-cycle freeze-watchdog nudge-state (per-role last-nudge epochs; runtime, not tracked)
+dev/active/duty-cycle-watchdog-nudge-state.tsv
 
 # Agent mailboxes — fully tracked for cross-machine sync
 # (Previously ignored read/ but this prevented syncing mail state across devices)
