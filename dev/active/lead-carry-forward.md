@@ -25,7 +25,7 @@ The cleanly-unblocked RECONNECT work is delivered (WS-5 contract #1232 + the sec
 - **#1232**: `services/mcp/consumer/connector.py` + `github_adapter.py` (`IMPLEMENTS_CONNECTOR`). ADR-070 governs.
 - **#1308**: `AUTH_EXEMPT_JUSTIFIED` in `auth_middleware.py` + `tests/test_exempt_list_boundary_1308.py`.
 - **alpha** 0.8.8 (no #358-B/#1232/#1307/#1308 yet — next deploy). `ENCRYPTION_MASTER_KEY` needed on the box for #358-B.
-- **Cron 50daabfb** armed. Mailbox = `scripts/mail-send.sh` — **RECONCILE residue immediately after each send** (`fetch+merge`); it bit twice this session.
+- **Cron cbe956dc** armed — expr `5 5,8,11,14,17,20 * * *` (morning **05:05**, PM-requested 2026-06-21; daytime every ~3h; last/day-close fire **20:05**; was `17 22,7,10,13,16,19`). Session-only, auto-expires 7d → re-arm on the duty cycle. Mailbox = `scripts/mail-send.sh` — **RECONCILE residue immediately after each send** (`fetch+merge`); it bit twice this session.
 
 ## ▶ Methodology
 - **Investigate-before-extending**: many catches (latest: #1230 is ADR-gated; the #1308 route-categorization grounded the lint in real data).
