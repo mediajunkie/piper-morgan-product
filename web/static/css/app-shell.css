@@ -15,6 +15,9 @@ body {
   flex-direction: column;
   background: var(--color-neutral-off-white);
   color: var(--color-neutral-darkest-gray);
+  /* #1286 D2: establish the body baseline — 14px on the 24px (3 × 8px) rhythm. */
+  font-size: var(--font-size-base);
+  line-height: var(--baseline-rhythm);
 }
 
 /* #1280 — the shell is a left-rail grid: [rail 180px][main 1fr][optional Radar aside 320px].
@@ -28,11 +31,11 @@ body {
   width: 100%;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: 180px 1fr;
+  grid-template-columns: var(--grid-rail-width) 1fr;
   grid-template-rows: 1fr;
 }
 .app-shell-body--with-aside {
-  grid-template-columns: 180px 1fr 320px;
+  grid-template-columns: var(--grid-rail-width) 1fr var(--grid-radar-width);
 }
 
 .app-shell-main {
