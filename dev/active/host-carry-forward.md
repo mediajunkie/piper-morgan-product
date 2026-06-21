@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-19 ~15:37 PT (Fire 3; Comms + Exec + CXO portfolio wave — all 3 pass; 3 of 8 main-cohort cleared; 5 remaining: Arch/PPM/Docs/PA/Web)
+**Last updated**: 2026-06-20 ~18:52 PT (START; Arch + PPM both pass; 5 of 8 cleared; Ship #048 workstream review sent; cron re-armed `cf93cc1a`)
 
 ---
 
@@ -12,8 +12,8 @@
 
 - **Account**: DinP (xian@designinproduct.com). Model: sonnet-4-6.
 - **Worktree**: ephemeral Option B (`claude/trusting-faraday-ec4bba`). `claude/host-cycle` retired 2026-06-13.
-- **Cron**: `934651b3`, windowed `37 6,9,12,15,18,21 * * *` (re-armed 2026-06-19 START after Gap-C — battery outage; session-only).
-- **Session log today**: `dev/2026/06/19/2026-06-19-1027-host-code-sonnet-log.md`
+- **Cron**: `cf93cc1a`, windowed `37 6,9,12,15,18,21 * * *` (re-armed 2026-06-20 START after Gap-C — new session; session-only).
+- **Session log today**: `dev/2026/06/20/2026-06-20-1852-host-code-sonnet-log.md`
 - **Gap-C cure incoming**: CIO proved `mcp__scheduled-tasks` solves cron-death (June 13). Disk-persistent, survives restarts, fires in main checkout. CIO proposing cohort rollout. HOST should be in first cohort — flag interest to CIO.
 - **Migration touch-ups**: thin-prompt proposal Model A → Option B ✅ DONE (fire ~15:37).
 
@@ -60,7 +60,7 @@
 - **Trust-stage origin sweep contribution delivered** (2026-06-17 ~18:37): Lead+CXO+PPM asked HOST what trust stages were FOR. HOST read: stages govern Piper's initiative level (observe→offer→act), never user access. Content-gating was never intended — drift from progressive disclosure of Piper's capabilities. Welfare corollary: asymmetric-knowledge + capricious-AI = trust-eroding. Sweep is PPM+CXO+PM; HOST contribution complete. Watch: sweep findings may surface welfare questions for HOST.
 - **Ted Nadeau welfare watch** (first external tester, June 17): "setup issue suspected — Caddy auth layer + no user token." HOST flagged silent-failure risk at onboarding to PA. PM is current catch (support@pipermorgan.ai). Watch for onboarding resolution; update BYOC welfare-tier model v0.1 if new pattern found.
 - **MEM-EVAL trust flag answered** (2026-06-17): BRIEFING-CURRENT-STATE = trust-without-engaging (a), not stale-so-ignored (b). Recommendation: keep in load set; fix engagement quality not load timing. Suggestion sent to CIO for START procedure ("note one thing confirmed"). No action needed from HOST unless CIO escalates.
-- **Role-portfolio wave (HOST reviews)**: Pilots (CIO + Lead Dev) ✅ cleared Fire 2. Main cohort: Comms ✅, Exec ✅, CXO ✅ (cleared Fire 3; `7ef12254f`). Wave status: **3 of 8 main-cohort reviewed**; remaining: Arch, PPM, Docs, PA, Web. Per-arrival routing works; review each on receipt. Wave review memo sent to Exec with calibration notes for remaining 5.
+- **Role-portfolio wave (HOST reviews)**: Pilots (CIO + Lead Dev) ✅. Main cohort: Comms ✅, Exec ✅, CXO ✅ (Jun 19), Arch ✅, PPM ✅ (Jun 20; `121b834bb`). Wave status: **5 of 8 main-cohort reviewed**; remaining: Docs, PA, Web. Per-arrival routing; review each on receipt.
 - **scripts/mail-send.sh shipped** (CIO, June 15): Tier-2 bridge wrapper. HOST to assess coordination texture when live cohort-wide.
 - **LD streamlining Tier-1**: CIO building `start-server.sh` wrapper + MANIFEST-noise suppression. HOST watches for any crossing of the coordination-vs-mechanical line.
 - **Alpha re-ping wave 1**: PM pinging Jake Krajewski + Rebecca Refoy (setup-friction-blocked). On reply: log to human-network, update tester status. Michelle Hertzfeld → Tier 2.

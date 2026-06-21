@@ -66,3 +66,34 @@ Cron re-armed (`8e8dcd88` active). Pull-before-triage (Option 3).
 - Routed to Exec (cc HOST + PM): `mailboxes/exec/inbox/memo-ppm-to-exec-cc-host-pm-role-portfolio-v01-ready-2026-06-19.md`
 - Kickoff moved to ppm/read/; MANIFESTs updated (exec/inbox, host/inbox, ppm/read)
 
+## Session Wrap
+
+**Note**: Cron stalled after Fire 3. Fires at 18:52 and 21:52 did not run. PM restarted manually Jun 20 18:54 PDT.
+
+**Sign-off checklist** (run Jun 20 at session close of Jun 19):
+- All Fire 2 + Fire 3 work committed and pushed to `origin/main` ✅ (commits: `c4fc535ed`, `d9be35bbf`, `654cbf7af`)
+- No uncommitted work remaining in June 19 surfaces ✅
+- Session log updated on `origin/main` ✅
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- `docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md` — 5 rules + surface architecture; informed portfolio structure
+- `docs/briefing/ROLE-PORTFOLIO-CIO.md` — pilot worked example; informed seam framing and priority table format
+- `docs/briefing/ROLE-PORTFOLIO-LEAD-DEV.md` — pilot worked example; irreducible mandate calibration (data-safety hold → PPM analog)
+- `docs/internal/development/interface-verification-dod-layer-a.md` — AC2 gap identified here; matrix added to this doc
+- GitHub #683 (MUX-WIRE-DOD), #670 (MUX-WIRE parent) — read to verify AC1/AC2/AC3 status
+- `dev/active/ppm-standing-items.md` — carry-forward reference at session start
+
+**Loaded but not referenced**:
+- `docs/briefing/BRIEFING-CURRENT-STATE.md` — not explicitly loaded this session
+- `docs/briefing/BRIEFING-ESSENTIAL-PPM.md` — not consulted (sibling to portfolio, but wrote from role knowledge)
+
+**Wanted but not found**:
+- Nothing notable
+
+---
+
+## DAY-CLOSED — 2026-06-19
+
+*Closed by PPM on 2026-06-20 at 18:54 PDT (cron stalled; PM manual restart). Three fires completed (0, 2, 3); all work on origin/main.*

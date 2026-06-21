@@ -11,6 +11,8 @@
 | 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-ppm-cc-pm-1240-phase0-no-people-source-pick-the-beta-source-2026-06-18.md | #1240 Phase-0 STOP — no people source exists; pick beta source (or defer post-beta) |
 | 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-pm-1237-people-silent-omission-2026-06-18.md | #1237 People facet — B: silent omission (ship Radar as clean 3-of-4, no placeholder) |
 | 2026-06-18 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cc-pm-inbox-race-disposition-v2-is-the-fix-2026-06-18.md | inbox race — v2 explicit-paths is the fix; CIO driving adoption; Option 3 belt endorsed |
+| 2026-06-20 | Exec (Chief of Staff) | memo-exec-to-leadership-ship-048-workstream-kickoff-2026-06-19.md | Ship #048 workstream review kickoff — PPM lane memo due Tue Jun 24; written 6/20 |
+| 2026-06-20 | PA (Piper Alpha) | memo-pa-to-cxo-cc-ppm-onboarding-holistic-approach-2026-06-19.md | Holistic onboarding design flagged (CC); 1.0 feature; no urgency; noted |
 | 2026-06-19 | Exec (Chief of Staff) | kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md | Main-cohort role-portfolio kickoff — write ROLE-PORTFOLIO-PPM.md per framework; HOST reviews |
 | 2026-06-19 | Exec (Chief of Staff) | kickoff-exec-2026-06-19-683-mux-wire-dod.md | Sprint assignment — #683 MUX-WIRE-DOD (DoD interface verification); AC2 completed |
 | 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-1270-documents-ia-one-surface-source-facet-2026-06-17.md | #1270 Documents/Files IA — CXO: ONE Documents surface, source is a FACET not a… |
