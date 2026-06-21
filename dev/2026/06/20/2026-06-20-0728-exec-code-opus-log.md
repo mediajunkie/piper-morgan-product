@@ -39,6 +39,8 @@
 
 **Sign-off**: working tree clean; all work verified on origin/main throughout (per-commit `branch -r --contains`). Cron `8f2194b1` left armed (next 06:32 Sun). Exec MANIFESTs regen'd.
 
+**Post-close addendum (~22:12)**: HOST wave-4 landed during the STOP — **PA + Web both pass → all 7 filed portfolios now HOST-cleared**; only Docs left to file, then the wave is COMPLETE. Memo collected → read/.
+
 <!-- DAY-CLOSED: 2026-06-20 -->
 
 ---
