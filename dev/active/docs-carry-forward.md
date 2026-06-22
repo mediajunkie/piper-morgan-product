@@ -1,11 +1,15 @@
 # Docs Carry-Forward
-**Updated**: 2026-06-21 13:47 PDT (Fire 1 — duty cycle tick)
-**Cron**: `17 3,10,13,16,19,22 * * *` (armed; job 9eb97927)
-**Session log**: `dev/active/2026-06-21-1200-docs-code-sonnet-log.md`
+**Updated**: 2026-06-21 22:47 PDT (STOP — day-closed)
+**Cron**: `17 3,10,13,16,19,22 * * *` (armed; job 9eb97927; next fire 03:17 Jun 22)
+**Session log**: `dev/2026/06/21/2026-06-21-1200-docs-code-sonnet-log.md` (DAY-CLOSED: 2026-06-21 ✓)
 
 ---
 
-## June 21 completed so far
+## START checklist for June 22
+- [ ] **June 21 omnibus** — gate check: wait for cohort to close June 21 logs, then synthesize (source set in `dev/2026/06/21/`)
+- [ ] Reconcile any held-cleanup decisions if PM answered (see below)
+
+## June 21 completed
 
 - ✅ June 20 logs: all 12 closed (1407 marker added)
 - ✅ June 20 Docs log: wrapped + archived to dev/2026/06/20/
