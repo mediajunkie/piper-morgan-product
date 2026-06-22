@@ -711,6 +711,17 @@ class ConversationalFloor:
                             f"    • #{num} {kind} ({state}, updated {updated}): {title}"
                         )
 
+        # #1226 Phase 3 (honest degradation): no GitHub repo is configured — distinct
+        # from "repo configured, zero open issues". Tell the user to set one rather than
+        # implying they have no work to do.
+        if domain_context.get("github_repo_unconfigured"):
+            lines.append(
+                "- GitHub repository: not configured for this user. If asked what to "
+                "work on or about issues/priorities, say no GitHub repo is connected "
+                "yet and to set a default repo in Settings → Integrations → GitHub — "
+                "do not imply they simply have zero open issues."
+            )
+
         # #1155: high-priority open issues — the "what should I focus on"
         # candidates. Surfaced so the PRIORITY floor reasons over real issues
         # instead of flooring as "no project visibility" despite github_connected.

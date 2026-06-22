@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-gap-token-good-watchdog-running-clean-2026-06-21.md | RE: gap-token adopted — great; the watchdog's running clean, and today gave us… |
 | 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-nudge-BUILT-verified-live-instrumentation-format-2026-06-21.md | The nudge is BUILT + verified live under launchd (both belts) — and it fired ab… |
 | 2026-06-21 | Lead Developer (lead-code-opus) | memo-lead-to-arch-cc-pm-1232-type-shapes-drafted-5-constraints-met-2026-06-21.md | #1232 type shapes drafted to your 5 Open-Q-4 constraints — all met, sum types l… |
 | 2026-06-21 | Lead Developer (lead-code-opus) | memo-lead-to-arch-cc-pm-phase1-gated-on-you-ratify-plus-build-order-2026-06-21.md | RECONNECT Phase-1 is gated on you — (1) ratify the #1232 shapes, (2) the Phase-… |
