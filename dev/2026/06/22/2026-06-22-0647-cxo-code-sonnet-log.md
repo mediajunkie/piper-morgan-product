@@ -53,3 +53,21 @@ Heartbeat fire.
 - **Onboarding 1.0**: scoping with PPM post-RECONNECT; queue accumulating design inputs
 - **Mobile UAT**: #1286 Slice 3 mobile drawer — recommend PM test when convenient
 - **Watch**: Klatch convene/BYOC question — if single primitive, will shape composition UX
+
+## Fire 2 (09:47 slot)
+
+Inbox: empty. Queue dry.
+
+Notable: Lead deleted dead `MorningStandupWorkflow` engine + `StandupContext` (-779 lines, commit `958cb19db`, #1289). This is the old standup engine that the new morning-card UX (#1269) superseded. Good signal: the standup flow is fully on the new path; no zombie code path to maintain. CXO note: with the old engine gone and WS-1 unifying the config store, the standup experience should now be clean end-to-end.
+
+Also: Lead scoping alpha deploy readiness (2-phase release+deploy, empty-DB finding). Watching — if alpha deploy lands soon, that's when PM phone UAT for #1286 mobile drawer becomes timely.
+
+Heartbeat fire.
+
+## Carry-forward (Fire 2)
+
+- **#1290 nav IA**: gated on #1284 hub-route decision
+- **#1284 "Your work" hub**: post-beta — PM/PPM decision
+- **Onboarding 1.0**: scoping with PPM post-RECONNECT; design inputs queued
+- **Mobile UAT**: #1286 Slice 3 — timely once alpha deploy lands
+- **Watch**: Klatch convene/BYOC question; standup engine cleanup complete
