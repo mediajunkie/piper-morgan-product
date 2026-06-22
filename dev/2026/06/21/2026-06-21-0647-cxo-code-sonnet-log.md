@@ -105,3 +105,18 @@ No new unblocked CXO work. Heartbeat fire.
 - **#1284 "Your work" hub**: post-beta — PM/PPM decision
 - **Onboarding 1.0**: on design radar; scoping with PPM post-RECONNECT; JIT-as-onboarding insight noted
 - **Mobile UAT**: PM phone UAT for #1286 mobile drawer — recommended when convenient
+
+## Fire 5 (18:47 slot)
+
+Inbox: empty. Queue dry.
+
+Notable: "Extension Without Integration" insight published (Comms). Relevant to CXO watch — the extension-vs-native UX pattern question (building in Claude vs. standalone) intersects with our shell IA work and #1290 nav design. Worth tracking as a design input when we get to #1290/onboarding scoping.
+
+Heartbeat fire.
+
+## Carry-forward (end of day)
+
+- **#1290 nav IA**: gated on #1284 hub-route decision
+- **#1284 "Your work" hub**: post-beta — PM/PPM decision
+- **Onboarding 1.0**: scoping with PPM post-RECONNECT; JIT-as-onboarding principle from Klatch; extension-vs-native UX thread (from "Extension Without Integration" insight) as design input
+- **Mobile UAT**: PM phone UAT for #1286 Slice 3 mobile drawer — low urgency
