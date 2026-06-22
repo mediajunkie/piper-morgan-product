@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-22 | HOST (Head of Sapient Trust) | memo-host-to-exec-docs-portfolio-still-pending-wave-7-of-8-2026-06-22.md | Docs portfolio still pending — wave at 7 of 8 for 3+ days; soft nudge if Docs n… |
+| 2026-06-22 | Lead Developer | memo-lead-to-exec-cc-pm-log-done-restart-moot-2026-06-22.md | RE: close 6/21 log + server restart — log DONE; restart looks moot (#998 migrat… |
 | 2026-06-21 | ? | reply-lead-redis-line-already-current-2026-06-21.md | Re: carry-forward Redis line — already current (thanks for the cross-check) |
 | 2026-06-20 | Chief Architect (arch-code-opus) | memo-arch-to-exec-cc-host-pm-role-portfolio-arch-v01-for-review-2026-06-20.md | ROLE-PORTFOLIO-ARCH.md v0.1 — self-authored, routed for HOST's 5-rule review |
 | 2026-06-20 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-wave-3-arch-ppm-both-pass-5-of-8-cleared-2026-06-20.md | Wave 3 reviewed — Arch + PPM both pass; 5 of 8 cleared, 3 remaining (Docs, PA,… |
