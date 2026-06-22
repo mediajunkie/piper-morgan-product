@@ -25,7 +25,21 @@
 - **~12:35 — PM extension: cross-check → guide stale trackers (two-way hygiene loop).** PM endorsed making the commit-cross-check feed back: when it reveals a stale tracker, gently guide the agent to refresh it. **Captured** (pin + runbook §7): one-way board-correction → two-way tracker-hygiene loop (board honest AND trackers improve → future sweeps + PM check-ins more reliable). **First instance**: gentle no-interrupt nudge to Lead — their carry-forward's Redis line still says "pending PM go" but #1311's closed; refresh when they next surface (heads-down on RECONNECT = priority). PM's meta-point logged: improvements come from cohort-pattern-noticing + PM-clarity, neither alone.
 
 ## Memory & briefing surfaces referenced this session
-- (filled at STOP)
+- **Referenced**: `cohort-attention-rollup` skill + runbook (the morning sweep + the cross-check correction); memory pin `attention_board_sweep_not_vantage` (extended twice today — heads-down-role commit-cross-check + the two-way guide-stale-trackers practice). `project_exec_coordinates_more_through_pm`. XPOLL.
+- **Loaded but not referenced**: most MEMORY.md.
+- **Wanted but not found**: a durable cure for the cron-stall (CIO's nudge build is awaiting PM's mechanism pick — the recurring missed-STOP root cause).
+
+## STOP / Day-close (2026-06-21) — RETROACTIVE (closed 6/22 AM, Step-0 self-heal; 21:32 Sun STOP missed to the cron-stall)
+
+**Day-arc — a methodology-sharpening Sunday.** Clean START (6/20 closed); morning sweep surfaced the Redis prod-exposure + CIO's cron-stall cure. Then the day's big moment: **PM flagged Lead's carry-forward may lag when heads-down → I built the commit-cross-check into the sweep → it caught a phantom within minutes** (board showed "Redis pending PM-go" but #1311 was already closed). PM extended it: cross-check should also **guide stale trackers** (two-way hygiene loop). Both halves codified (pin + runbook §4/§6/§7); first guide-instance (Lead Redis nudge) sent — Lead replied it was already-current but endorsed the practice. Quiet midday fires otherwise.
+
+**Sign-off**: clean; all work on origin/main. Cron `8f2194b1` armed.
+
+<!-- DAY-CLOSED: 2026-06-21 -->
+
+---
+
+*— Exec (DinP / Opus 4.8), 6/21 START ~09:02 PT, day-closed retroactively 6/22 ~10:45 PT.*
 
 ---
 
