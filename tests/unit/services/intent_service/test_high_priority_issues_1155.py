@@ -49,6 +49,18 @@ def _patch_router(open_issues):
     )
 
 
+def _patch_resolve_repo(unresolved: bool):
+    """#1226 Phase 3: patch repo_resolver.resolve_repo — raise UnresolvedRepoError
+    (no repo configured) or return a resolved repo."""
+    from services.integrations.github.repo_resolver import UnresolvedRepoError
+
+    if unresolved:
+        mock = AsyncMock(side_effect=UnresolvedRepoError("no repo"))
+    else:
+        mock = AsyncMock(return_value=MagicMock(full_name="o/r", owner="o", name="r"))
+    return patch("services.integrations.github.repo_resolver.resolve_repo", new=mock)
+
+
 class TestComputeHighPriorityIssues:
     @pytest.mark.asyncio
     async def test_ranks_priority_labeled_first_then_recency(self):
@@ -67,10 +79,22 @@ class TestComputeHighPriorityIssues:
         assert result["open_issue_count"] == 4
 
     @pytest.mark.asyncio
-    async def test_empty_open_issues_returns_none(self):
-        with _patch_router([]):
+    async def test_empty_with_repo_returns_none(self):
+        # Repo IS configured but genuinely has zero open issues → None (stays silent/normal).
+        with _patch_router([]), _patch_resolve_repo(unresolved=False):
             result = await ContextAssembler()._compute_high_priority_issues("uid")
         assert result is None
+
+    @pytest.mark.asyncio
+    async def test_no_repo_returns_unconfigured_flag(self):
+        # #1226 Phase 3: empty + NO repo resolves → honest-degrade signal (not a silent None).
+        with _patch_router([]), _patch_resolve_repo(unresolved=True):
+            result = await ContextAssembler()._compute_high_priority_issues("uid")
+        assert result == {
+            "high_priority_issues": [],
+            "open_issue_count": 0,
+            "github_repo_unconfigured": True,
+        }
 
     @pytest.mark.asyncio
     async def test_caps_at_five(self):
@@ -98,6 +122,13 @@ class TestGatherHighPriorityIssues:
         result = await ContextAssembler()._gather_high_priority_issues_context(None)
         assert result == {}
 
+    @pytest.mark.asyncio
+    async def test_gather_threads_unconfigured_flag(self):
+        # #1226 Phase 3: the no-repo signal survives the cache unpack → reaches domain_context.
+        with _patch_router([]), _patch_resolve_repo(unresolved=True):
+            result = await ContextAssembler()._gather_high_priority_issues_context("uid")
+        assert result.get("github_repo_unconfigured") is True
+
 
 class TestFloorFormatsHighPriorityIssues:
     def _floor(self):
@@ -123,3 +154,11 @@ class TestFloorFormatsHighPriorityIssues:
     def test_empty_high_priority_issues_no_section(self):
         out = self._floor()._format_domain_context({"high_priority_issues": []})
         assert "High-priority open issues" not in out
+
+    def test_unconfigured_repo_renders_honest_message(self):
+        # #1226 Phase 3: no repo configured → floor context tells the user to set one,
+        # explicitly NOT implying they simply have zero open issues.
+        out = self._floor()._format_domain_context({"github_repo_unconfigured": True})
+        assert "not configured" in out.lower()
+        assert "Settings" in out
+        assert "do not imply" in out.lower()
