@@ -5,9 +5,13 @@
 
 ---
 
-## June 22 in progress
-- 🔄 **June 21 omnibus** — gate PASSED (all 13 closed; self-healed 2 task-agent markers at START). Synthesis subagent running (background).
+## June 22 done so far
+- ✅ **June 21 omnibus** — 199 lines, HIGH-COMPLEXITY: EXECUTION, 13 sources (`261753a28`). Self-healed 2 task-agent markers at START.
+- ✅ **Activity-log CSV fix** — quoted 2 June 19 rows (CXO, Docs) that had unquoted commas in notes (`63a33ee68`). Byte-level fix to preserve mixed line endings.
 - [ ] Reconcile any held-cleanup decisions if PM answered (see below)
+
+## Latent finding (flag, not fix)
+- `agent-activity-log.csv` has **mixed line endings** (1241 CRLF / 234 LF). Editing it with Read/Edit/Write normalizes endings → huge spurious diffs; use byte-level edits until normalized. A deliberate normalize pass (~234-line churn) is the real fix — needs a quiet moment + is its own commit.
 
 ## June 21 completed
 
