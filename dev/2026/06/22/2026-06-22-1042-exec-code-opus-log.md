@@ -19,7 +19,7 @@
 **Held**: Ship #048 synth gated on CIO workstream lens (5/6); portfolio wave 7/8 (Docs last); board PM-items (Comms today-edit, CIO nudge-pick, #1286 phone-UAT, etc.).
 
 ## Work
-- (fires appended here)
+- **START + full sweep + Monday coordination (~10:42–11:15).** 6/21 self-heal-closed; 6/22 opened. **Full sweep** (skill procedure + Lead commit cross-check). **Dominant finding: cron-stall Monday logjam** — pa/web/docs/cio haven't STARTed (cron-stall), blocking the **6/21 omnibus** (Docs=author, asleep), the **blog-editing UI** (Web asleep), and **Ship #048 synth** (CIO asleep, owes last lens). **Lead decisions surfaced** (cross-check): **alpha-deploy prod-push = PM-go** (Lead drained #1199/#1289/#1311; deploy teed up, closes #358) + **#1286 phone-UAT** + #1226 UX/roadmap (low). **Blog-UI reality**: #998 Phase-2 edit/save built but needs a **server restart** to activate + Phase-4 publish-handoff not built → PM's "edit tomorrow's post today" plan needs the restart (Web asleep). **PA blocks** (Wave-P, profile-retest) = technical deps, NOT PM (+ PA carry-forward 5d stale, PA asleep). **Coordination sent**: Lead nudge (close 6/21 log + restart FastAPI for the blog-UI, cc PM) + PPM nudge (close 6/21 log) — both for the omnibus + PM's blog plan. Board rendered (`54b086269`). **Resolved**: #1311/#1199/#1289, "Extension Without Integration" published Sun. Cron `8f2194b1` armed.
 
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
