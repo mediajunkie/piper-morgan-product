@@ -1,7 +1,7 @@
 # Piper Morgan Alpha Testing Guide
 
-**Version**: 0.8.8
-**Last Updated**: June 20, 2026
+**Version**: 0.8.9
+**Last Updated**: June 22, 2026
 **For**: Alpha Testers
 
 ---
@@ -9,8 +9,8 @@
 ## Returning Tester? Start Here
 
 If you already have Piper set up and running, skip straight to what matters:
-- **[What's New in 0.8.8](#whats-new-in-088)** - Conscious Floor, BYOC credentials, Radar, Files, nav overhaul
-- **[What to Test in 0.8.8](#what-to-test-in-088)** - Priority testing areas for this release
+- **[What's New in 0.8.9](#whats-new-in-089)** - Connector infra, field encryption, mobile nav, Radar rename
+- **[What to Test in 0.8.9](#what-to-test-in-089)** - Priority testing areas for this release
 - **[Troubleshooting](#chapter-3-troubleshooting)** - If something isn't working
 
 ---
@@ -76,7 +76,7 @@ This guide has three main sections:
 
 **⚠️ ALPHA SOFTWARE WARNING ⚠️**
 
-This is pre-release alpha software (version 0.8.6). By proceeding, you acknowledge:
+This is pre-release alpha software (version 0.8.9). By proceeding, you acknowledge:
 
 1. **Expected Issues**: Bugs, crashes, and incomplete features are normal
 2. **Data Loss Risk**: Your data may be lost at any time without warning
@@ -91,22 +91,28 @@ See `ALPHA_AGREEMENT_v2.md` for complete legal terms.
 
 ---
 
-## What's New in 0.8.8
+## What's New in 0.8.9
 
-v0.8.8 covers four milestones: M1 Foundation, M2 Conscious Floor, M3 UI Coherence + Integrations, and D1/RECONNECT.
+v0.8.9 closes three fronts: connector infrastructure (RECONNECT WS-1), field-level security, and Design D2 (token system + mobile nav + Radar rename).
 
-- **The Conscious Floor (M2)**: Piper no longer falls back to templates for unmatched queries. An LLM-grounded conversational floor answers in Piper's voice, assembled from your blocked items, active sprint, and recent activity. It says "I don't know" when context is missing — no fabrication.
-- **BYOC credential layer (D1)**: Store your API keys locally in your macOS keychain via the Settings UI. No more copying keys into config files.
-- **Radar as default workspace (D1)**: The Radar view (priority surfacing, blocked items, recent activity) is now the default home rather than a hidden tab.
-- **Navigation rationalized (D1)**: History → Radar, Collections → Lists. Labels now match what the features actually do.
-- **Home experience improved (D1)**: Full-height chat on home, compose autosave (your draft survives if you navigate away).
-- **Files experience (M3)**: Search by name and filter by type, in-browser preview, bulk download as zip, drag & drop upload, freeform tags with search.
-- **Slack inbound rebuilt (M3)**: Inbound Slack messages now route to Piper via Socket Mode.
-- 252/252 canonical regression tests passing (D1 gate).
+- **Connector config (RECONNECT WS-1)**: Connector configuration now lives in the database, not an ephemeral JSON file. Repo config and integration state survive restarts. When GitHub isn't configured, Piper says so honestly.
+- **Real standup pipeline**: The hollow `MorningStandupWorkflow` is retired; `StandupAssembler` is the live pipeline. Ask Piper for your standup in chat.
+- **Field encryption**: User secrets (API keys) are now encrypted at rest using AES-256-GCM with HKDF per-field key derivation.
+- **Per-user LLM key routing**: Your BYOC key is now routed per-request. The BYOC credential flow (from D1) is end-to-end complete.
+- **Auth hardening**: `admin_compose` route removed; auth-exempt-list lint-enforced.
+- **Design D2 — token system + mobile nav**: Design token system applied to the app shell; responsive shell; mobile nav (hamburger → drawer); Documents → Radar rename throughout.
+- **Dockerfile → bookworm**: Debian 12 base image for chromadb SQLite ≥3.35 support.
 
-**Database Migration Required**: Run `alembic upgrade head` after updating (migrations span M1–D1).
+**Database Migration Required**: Run `alembic upgrade head` (includes secret-column encryption migration).
 
-See [Release Notes v0.8.7](releases/RELEASE-NOTES-v0.8.7.md) (M1+M2+M3) and [v0.8.8](releases/RELEASE-NOTES-v0.8.8.md) (D1) for full details.
+See [Release Notes v0.8.9](releases/RELEASE-NOTES-v0.8.9.md) for full details.
+
+<details>
+<summary><strong>Previous release (0.8.8 — D1/RECONNECT)</strong></summary>
+
+Conscious Floor, BYOC credential layer, Radar as default workspace, navigation IA (History→Radar, Collections→Lists), full-height home chat, compose autosave, source-provenance badges on files. 252/252 canonical regression clean.
+
+</details>
 
 <details>
 <summary><strong>Previous release (0.8.5.3)</strong></summary>
@@ -400,19 +406,19 @@ Click the button to go to the login page and start using Piper Morgan.
 
 This chapter covers what to test and how. If you're already set up, **start here**.
 
-## What to Test in 0.8.8
+## What to Test in 0.8.9
 
-The conscious floor and BYOC credential layer are the focus. **Does Piper say "I don't know" when it should? Do your API keys persist across restarts?**
+Connector persistence, standup quality, and the security migration are the focus. **Does config survive restarts? Does Piper say "not connected" when it should? Does the standup pipeline return real data?**
 
 ### Priority Testing Areas
 
-1. **Conscious Floor** - Ask Piper something it shouldn't know — does it say "I don't have enough context" rather than inventing an answer?
-2. **BYOC credentials** - Go to Settings, enter your API keys — do they persist across server restarts?
-3. **Radar as default** - Does Radar load on home? Are your blocked items and priorities surfaced correctly?
-4. **Navigation labels** - Are History/Collections now labeled Radar/Lists consistently throughout the UI?
-5. **Compose autosave** - Start typing a message, navigate away, come back — is your draft still there?
-6. **Files experience** - Upload a file, preview it in-browser, bulk-download as zip, add tags and search by them
-7. **Slack inbound** - If Slack is connected, send a message to Piper — does it arrive and get a response?
+1. **Connector config persistence** - Configure a GitHub repo, restart the server — does it remember the config?
+2. **Honest no-repo UX** - Remove or skip GitHub config — does Piper tell you it's not connected rather than guessing or failing silently?
+3. **Standup via chat** - Ask "what's my standup?" in the chat — does `StandupAssembler` return a real, assembled response (not a generic template)?
+4. **BYOC key routing** - Enter your API key in Settings, make a few requests — confirm your key is being used (check your provider's usage dashboard)
+5. **Mobile nav** - Open Piper on a phone or narrow browser window — does the hamburger → drawer nav work correctly?
+6. **Radar rename** - Is "Radar" (not "Documents") the label throughout the nav, page headers, and breadcrumbs?
+7. **Existing features still working** - Conscious Floor, files experience, Slack inbound, BYOC key persistence
 
 ### Basic Functionality Tests
 
@@ -804,7 +810,7 @@ SELECT * FROM users;
 
 ## Questions?
 
-Remember: This is alpha software (version 0.8.8). The GUI setup wizard handles most complexity, but you're still testing early-stage software. Expect bugs and incomplete features.
+Remember: This is alpha software (version 0.8.9). The GUI setup wizard handles most complexity, but you're still testing early-stage software. Expect bugs and incomplete features.
 
 If guided setup seems overwhelming, a hosted version is planned for later in 2026.
 
@@ -821,5 +827,5 @@ Thank you for being an early adopter and helping us improve! 🚀
 
 ---
 
-_Last updated: June 20, 2026_
-_Software version: 0.8.8_
+_Last updated: June 22, 2026_
+_Software version: 0.8.9_

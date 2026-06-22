@@ -1,41 +1,41 @@
-# Alpha Known Issues (v0.8.8)
+# Alpha Known Issues (v0.8.9)
 
-**Version**: 0.8.8
-**Last Updated**: June 20, 2026
+**Version**: 0.8.9
+**Last Updated**: June 22, 2026
 
 This document helps alpha testers avoid wasting time on things we already know about.
 
-v0.8.8 covers four closed milestones: M1 Foundation, M2 Conscious Floor, M3 UI Coherence + Integrations, and D1/RECONNECT. The D1 gate closed at 252/252 canonical regression tests passing. What's below are the rough edges that survived those gates.
+v0.8.9 covers the full stack through D1/RECONNECT plus RECONNECT WS-1, the security layer (field encryption + auth hardening), and Design D2 (token system + mobile nav + Radar rename). The 252/252 canonical regression baseline (D1 gate) is unchanged. What's below are the rough edges that survived those gates.
 
 ---
 
-## Recent Improvements (Fixed in D1/0.8.8)
+## Recent Improvements (Fixed in 0.8.9)
 
 These are the changes alpha testers are most likely to notice. If something on this list still seems broken for you, please report it.
 
-### Piper no longer fabricates when it doesn't know
+### Connector config now persists across restarts
 
-The Conscious Floor (M2) replaced the template fallback with an LLM-grounded response assembled from your actual context — blocked items, active sprint, recent activity. When Piper doesn't have context, it says "I don't have enough context for that" instead of generating a plausible-but-invented response. This is a significant honesty improvement; please report any fabrications you encounter.
+GitHub repo config and integration preferences are now stored in the database. Restarts no longer lose your connector configuration. When GitHub isn't configured, Piper now surfaces an honest "not connected" state rather than guessing or failing silently.
 
-### BYOC credential layer
+### Real standup pipeline
 
-You can now store your API keys (OpenAI, Anthropic, Notion, etc.) in your macOS keychain via Settings → Integrations. No more editing config files or re-entering keys after restarts. Known rough edge: the Settings UI sometimes requires re-pasting despite the key being saved server-side — see #1105 below.
+The hollow `MorningStandupWorkflow` is retired. `StandupAssembler` is the live pipeline — it draws from connector data and Radar sources. Ask Piper for your standup in the chat interface.
 
-### Navigation renamed to match reality
+### User secrets encrypted at rest
 
-History is now Radar. Collections is now Lists. The labels in the nav now match what the features actually do.
+The `user_api_keys` table now stores secrets encrypted (AES-256-GCM, HKDF per-field key derivation). Any existing plaintext secrets are migrated on `alembic upgrade head`. BYOC keys are now routed per-request, completing the end-to-end BYOC flow.
 
-### Radar is the default home
+### Auth hardening
 
-The Radar view (blocked items, priority surfacing, recent activity) is now the default workspace instead of a hidden tab. Compose autosave also landed — your draft survives navigation away.
+`admin_compose` route removed. Auth exemption list is now lint-enforced — no new exemptions without an explicit rationale comment.
 
-### Files experience rebuilt (M3)
+### Documents → Radar rename
 
-Full file management: search by name/type, in-browser preview, bulk download as zip, drag & drop upload, freeform tags with search.
+The "Documents" nav label is renamed to "Radar" throughout — nav, page headers, breadcrumbs. Standup content and work items are first-class Radar data sources.
 
-### Slack inbound rebuilt (M3)
+### Mobile nav
 
-Inbound Slack messages now route to Piper via Socket Mode (Socket Mode was the fix for the inbound regression that started Oct 2025). Outbound, DMs, and @-mentions continue to work.
+Mobile nav is implemented (hamburger → drawer pattern). The responsive shell adapts across viewport widths. The design token system is fully applied to the app shell.
 
 ---
 
@@ -62,14 +62,14 @@ _None currently at P0._
 
 ---
 
-## RECONNECT Carryover (Being Worked)
+## Carryover (Being Worked)
 
-These are known architectural rough edges tracked for the RECONNECT sprint:
+These are known architectural rough edges from prior sprints:
 
 | Issue | What You Might See | Status |
 |-------|-------------------|--------|
-| [#1226](https://github.com/mediajunkie/piper-morgan-product/issues/1226) | Connector repo-resolution is fragile — config has no stable home | RECONNECT-WS1 scope; architectural refactor planned |
-| [#1270](https://github.com/mediajunkie/piper-morgan-product/issues/1270) | Documents/Files object model is a nav band-aid — `/documents` and `/files` collapsed under one nav item | D2 scope; the nav label works but the object model distinction is deferred |
+| [#1110](https://github.com/mediajunkie/piper-morgan-product/issues/1110) | Slack latent bug — `_make_request` calls `get_config()` without `user_id` | RECONNECT-WS7 scope; in progress |
+| [#1258](https://github.com/mediajunkie/piper-morgan-product/issues/1258) | LAUNCH-ENV: inherited empty Anthropic env vars can shadow real key at server startup | Known; strip vars with `env -u ANTHROPIC_API_KEY ...` on launch |
 
 ---
 
@@ -77,8 +77,8 @@ These are known architectural rough edges tracked for the RECONNECT sprint:
 
 | Feature | Status | What Works | What Doesn't |
 |---------|--------|------------|--------------|
-| **BYOC credentials** | Partial | Keys stored in keychain; server reads them correctly | Settings UI re-paste bug (#1105); macOS keychain only |
-| **Data encryption** | Partial | API keys encrypted in keychain, passwords bcrypt-hashed | Data at rest not fully encrypted; use test data only |
+| **BYOC credentials** | Mostly complete | Keys stored in keychain; server reads correctly; per-request routing live | Settings UI re-paste bug (#1105); macOS keychain only |
+| **Data encryption** | Partial | `user_api_keys` secrets encrypted at rest (0.8.9); passwords bcrypt-hashed | Content/PII at rest not yet encrypted; use test data only |
 | **GitHub OAuth** | Not started | PAT token auth works | OAuth connect flow planned for a future release |
 | **History privacy toggle** | UI stub only | Toggle renders correctly | No backend — doesn't do anything yet (#1164) |
 
@@ -86,28 +86,32 @@ These are known architectural rough edges tracked for the RECONNECT sprint:
 
 ## Needs Testing
 
-These features are complete in 0.8.8 but need real-world validation:
+These features are complete in 0.8.9 but need real-world validation:
 
 | Feature | What to Test | How to Access |
 |---------|--------------|---------------|
-| **Conscious Floor** | Ask Piper things it shouldn't know — does it say "I don't have enough context" or does it fabricate? | Just chat normally |
-| **BYOC credentials** | Enter API keys in Settings, restart the server — do they persist? | Settings → Integrations |
-| **Radar** | Are your blocked items, priorities, and recent activity surfaced on home? | Default home view |
-| **Compose autosave** | Start typing, navigate away, come back — is the draft still there? | Home chat compose area |
-| **Files bulk download** | Upload 3+ files, checkbox-select them, download as zip | /files |
-| **Slack inbound** | If Slack is connected, send Piper a message — does it arrive and respond? | Slack DM to Piper bot |
-| **Floor honesty** | Ask "what todos do I have?" with no todos — does Piper say it doesn't see any, or invent some? | Fresh account, no todos |
+| **Connector config persistence** | Configure a GitHub repo, restart the server — does it remember? | Settings → Integrations |
+| **Honest no-repo UX** | Skip or remove GitHub config — does Piper say "not connected" rather than guessing? | Remove repo config, ask about issues |
+| **StandupAssembler** | Ask "what's my standup?" in chat — do you get a real, assembled response? | Chat interface |
+| **Per-user LLM key routing** | Enter BYOC key, make requests — confirm your provider usage dashboard shows activity | Settings → API Keys, then provider dashboard |
+| **Mobile nav** | Open on a phone or narrow browser window — does hamburger → drawer work? | Narrow the browser window |
+| **Radar rename** | Is "Radar" the label everywhere — nav, page headers, breadcrumbs? | All navigation surfaces |
+| **Conscious Floor** | Ask Piper things it shouldn't know — does it say "I don't have enough context" or fabricate? | Just chat normally |
+| **BYOC key persistence** | Enter API keys in Settings, restart the server — do they persist? | Settings → Integrations |
 
 ---
 
 ## What Works
 
 - **Conversational AI**: LLM-grounded floor for unmatched queries; antecedent resolution ("it" / "that"); honest refusal when context is missing
+- **Connector infrastructure**: DB-backed config, survives restarts; honest no-repo UX; `StandupAssembler` pipeline
+- **Security**: AES-256-GCM field encryption; encrypted `user_api_keys` secrets; per-user LLM key routing; auth-exempt lint enforcement
 - **Files**: Search, preview, bulk download, drag & drop upload, freeform tags
+- **Design**: Token system applied to app shell; responsive shell; mobile nav; Documents → Radar rename
 - **Integrations**: Slack (inbound via Socket Mode, outbound, DMs, @-mentions); GitHub (issue summarization, repo resolution, lifecycle); Notion (append_blocks, URL unfurling); Calendar
-- **BYOC & Settings**: API keys in macOS keychain via Settings UI; Radar as default home; nav renamed
+- **BYOC & Settings**: API keys in macOS keychain via Settings UI; per-request key routing; Radar as default home
 - **Setup & Onboarding**: GUI setup wizard, system health checks, API key validation, user account creation
-- **Core Infrastructure**: Multi-user, JWT auth, bcrypt passwords; PostgreSQL, Redis, ChromaDB; 252/252 canonical regression passing
+- **Core Infrastructure**: Multi-user, JWT auth, bcrypt passwords; PostgreSQL, Redis, ChromaDB (Debian 12/bookworm); 252/252 canonical regression baseline
 
 ---
 
@@ -115,7 +119,7 @@ These features are complete in 0.8.8 but need real-world validation:
 
 | Sprint | Focus | Status |
 |--------|-------|--------|
-| RECONNECT | Connector refactor — config stability, repo-resolution hardening | Next up |
+| RECONNECT (remaining WS) | Connector refactor continued — WS7 Slack latent bug, remaining WS | Active |
 | M4: Trust + Learning | Learning system, trust gradient, preference persistence | Backlog |
 | M5: Distribution + Polish | Registration flow, priority engine, polish | Backlog |
 | Beta (0.9.0) | Target: July 4, 2026 | — |
@@ -141,8 +145,8 @@ ERROR MESSAGE: [if any]
 
 - [ALPHA_QUICKSTART.md](ALPHA_QUICKSTART.md) — Quick setup
 - [ALPHA_TESTING_GUIDE.md](ALPHA_TESTING_GUIDE.md) — What to test and how
-- [Release Notes v0.8.8](releases/RELEASE-NOTES-v0.8.8.md) — Full D1 changelog
+- [Release Notes v0.8.9](releases/RELEASE-NOTES-v0.8.9.md) — Full 0.8.9 changelog
 
 ---
 
-_Last Updated: June 20, 2026_
+_Last Updated: June 22, 2026_
