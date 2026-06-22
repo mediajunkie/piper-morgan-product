@@ -548,6 +548,13 @@ Filed as a tooling-debt follow-up: a `scripts/store-keychain-creds.py` helper th
 
 **Canonical doc**: `docs/internal/operations/branch-worktree-mailbox-discipline.md` (v1.0, PA-hosted synthesis published 2026-04-29). **Read that doc for the full rule set, status, and rationale.** This section is a 60-second summary of the load-bearing rules so an agent in mid-session can get the gist without leaving CLAUDE.md.
 
+> ### ⚠️ HARD RULE (data-loss prevention, PM-mandated 2026-06-21) — NEVER run destructive git in PM's main checkout
+> **The main checkout (`/Users/xian/Development/piper-morgan/piper-morgan-product/`) is PM's live workspace.** PM edits prose there and saves *without committing in real time*, so any command that discards unstaged working-tree changes destroys PM's work with **no recovery path**. PM lost voice-pass edits **twice on 2026-06-21** to a duty-cycle commit that ran `git checkout -- .` to clear MANIFEST noise before a rebase.
+> - **NEVER, in the main checkout:** `git checkout -- .` · `git checkout -- <broad-path>` · `git reset --hard` · `git stash`/`stash -u` · any sweep that discards working-tree state.
+> - **All agent commits go from YOUR worktree** (`git push origin HEAD:main`); mail goes via `scripts/mail-send.sh` (push-to-ref). Neither touches the main checkout's working tree — that's the whole point of Model-B + push-to-ref.
+> - **MANIFEST noise:** clear only by **surgical explicit path** (`git checkout -- mailboxes/{role}/inbox/MANIFEST.md`), never `git checkout -- mailboxes/` or broader.
+> - **Rebase/merge blocked by unstaged changes in the main checkout? STOP.** Do NOT clear. Investigate what they are first — **if they're PM's work, leave them and find another path** (push from your worktree). PM's principle: *"fix your mistakes directly, not with sweeping careless irreversible steps."*
+
 ### The five rules at a glance
 
 1. **Worktree per substantive session — Option B (ephemeral)** — run in the ephemeral auto-worktree Desktop creates per session; push finished units to `origin/main`. Dedicated `claude/{role}-cycle` worktrees (Model A) are **deprecated** (PM-approved exception only; **no current exceptions** — LD's 6/12 determination: ephemeral suffices even for the dev-server). Tiny mailbox-only or housekeeping passes can stay on `main`. Source of truth: `cohort-plan-of-record-2026-06-12.html`.
