@@ -1,7 +1,7 @@
 # Alpha Tester Pre-Qualification Email Template
 
 **Version**: 2.6
-**For**: Piper Morgan 0.8.8 Alpha Release
+**For**: Piper Morgan 0.8.9 Alpha Release
 **Purpose**: Internal template for PM to send to potential alpha testers
 **Last Updated**: June 20, 2026
 
@@ -44,7 +44,7 @@ Accounts & API Keys You'll Need:
 □ Budget $5-20 for API testing costs
 □ Notion account (optional but recommended)
 
-**WHAT MAKES THIS EASY (0.8.8)**
+**WHAT MAKES THIS EASY (0.8.9)**
 
 Our GUI setup wizard (`python main.py` → opens in browser) will:
 - Check your system automatically (Docker, Python, ports, database)
@@ -55,16 +55,16 @@ Our GUI setup wizard (`python main.py` → opens in browser) will:
 - Set up the database and services for you
 - Take about 10-15 minutes total (or 30-45 minutes if Docker installation is needed)
 
-Once set up, your API keys are stored in your macOS keychain via Settings → Integrations (BYOC credential layer, new in 0.8.8). No more re-entering keys after restarts.
+Once set up, your API keys are stored in your macOS keychain via Settings → Integrations (BYOC credential layer). In 0.8.9, they're also encrypted at rest and routed per-request — no more re-entering keys after restarts, and your key is yours end-to-end.
 
 After setup, you can optionally configure your preferences (`python main.py preferences`) to personalize how Piper works for you.
 
 **CRITICAL DISCLAIMERS**
 
-This is ALPHA software (version 0.8.8). That means:
+This is ALPHA software (version 0.8.9). That means:
 - It will have bugs and rough edges
 - It might crash or lose data
-- Security is not fully audited (data not yet encrypted at rest)
+- Security is not fully audited (API key secrets are encrypted; content/PII at rest not yet encrypted)
 - You're responsible for your API charges
 - Not for mission-critical work
 - Not for employer machines (without permission)
@@ -75,7 +75,7 @@ Week 1: Guided setup call (30 mins) + initial testing
 Week 2-3: You test, I fix bugs you find
 Week 4+: Quick weekly check-ins
 
-Setup, login, and core features are stable in 0.8.8. **Focus your testing on**: the Conscious Floor (does Piper say "I don't know" when it should?), BYOC credentials (do your API keys persist across restarts?), and Radar as the default workspace. The goal is finding PM workflows that delight you, despite the rough edges.
+Setup, login, and core features are stable in 0.8.9. **Focus your testing on**: connector config persistence (does it survive restarts?), the standup pipeline (ask Piper for your standup in chat), mobile nav (does the hamburger → drawer work?), and the Radar rename (is "Radar" consistent everywhere?). The goal is finding PM workflows that delight you, despite the rough edges.
 
 **STILL INTERESTED?**
 
@@ -154,7 +154,7 @@ Attachments:
 Before sending:
 
 - [ ] Personalize name and tester number
-- [ ] Verify all technical claims are current for version 0.8.8
+- [ ] Verify all technical claims are current for version 0.8.9
 - [ ] Attach current documentation (from docs/)
 - [ ] Schedule setup call before sending confirmation
 - [ ] Update internal tracking (who's in alpha cohort)
@@ -169,7 +169,7 @@ Before sending:
 **Documentation References**: Always reference official docs by filename:
 - `ALPHA_TESTING_GUIDE.md` (not "the guide")
 - `ALPHA_AGREEMENT_v2.md` (not "the legal doc")
-- Version 0.8.8 (not "alpha" or "latest")
+- Version 0.8.9 (not "alpha" or "latest")
 
 **Support Commitment**: Only promise what you can deliver. Small cohort (2-5) is manageable for close support.
 
@@ -187,5 +187,5 @@ Before sending:
 ---
 
 _Template Version: 2.6_
-_For Software Version: 0.8.8_
-_Last Updated: June 20, 2026_
+_For Software Version: 0.8.9_
+_Last Updated: June 22, 2026_
