@@ -120,3 +120,49 @@ Heartbeat fire.
 - **#1284 "Your work" hub**: post-beta — PM/PPM decision
 - **Onboarding 1.0**: scoping with PPM post-RECONNECT; JIT-as-onboarding principle from Klatch; extension-vs-native UX thread (from "Extension Without Integration" insight) as design input
 - **Mobile UAT**: PM phone UAT for #1286 Slice 3 mobile drawer — low urgency
+
+## Fire 6 (21:47 slot — final fire of day)
+
+Inbox: empty. Queue dry.
+
+Day summary from cohort: Arch day-closed (RECONNECT Phase-1 unblocked — #1232 ratified + sequenced); PA day-closed (Redis fixed, v0.1.3.mcpb + bundled uv); Lead: #1226 + #1289 closed, #1312 DB-drift filed; Comms: Beat 8 review done; HOST + PPM idle.
+
+Sign-off checklist (2026-06-21 21:47):
+- `git status`: clean in CXO surfaces ✓
+- `git log @{u}..HEAD`: empty (nothing ahead of upstream) ✓
+- `git log origin/main..HEAD`: empty (fully merged) ✓
+
+## Day totals (June 21)
+
+| Fire | Time | Action |
+|------|------|--------|
+| 1 | 06:47 | Heartbeat — overnight digest, Klatch JIT principle noted |
+| 2 | 09:47 | #1286 Slice 2 calls: rename `--space-2xs`→`--space-dense`; option (c) pill-chip `.radar-etype` |
+| 3 | 12:47 | #1286 CXO conformance PASS → CLOSED; memo to PM re mobile UAT |
+| 4 | 15:47 | #950/#992 confirmed closed; carry-forward pruned |
+| 5 | 18:47 | "Extension Without Integration" live; noted as onboarding design input |
+| 6 | 21:47 | Day-close; sign-off clean |
+
+**Closed today**: #1286 ✓
+
+<!-- DAY-CLOSED: 2026-06-21 -->
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- `docs/briefing/BRIEFING-ESSENTIAL-CXO.md` — role scope + lane (CXO = experience/Colleague Test/floor/ethics voice)
+- `dev/active/design-spec-1286-d2-design-system-2026-06-20.md` — the spec I authored; used for conformance review
+- `docs/briefs/cross-pollination/current.md` (June 21) — Klatch composition gesture (JIT-as-onboarding principle)
+- `web/static/css/tokens.css` — conformance review; verified token names + values
+- `templates/components/history_sidebar.html` — verified `.radar-etype` pill-chip implementation
+- `web/static/css/app-shell.css` — verified responsive grid + mobile hamburger
+- `web/static/css/nav-rail.css` — verified drawer off-canvas implementation
+- `web/static/js/mobile-nav.js` — verified JS wiring
+- `tests/unit/test_design_system_1286.py` — ran 10 tests; all pass
+
+**Loaded but not referenced**:
+- `docs/briefing/BRIEFING-CURRENT-STATE.md` (staleness check — deferred to Docs)
+- `docs/internal/architecture/current/adrs/` (no ADR work this session)
+
+**Wanted but not found**:
+- #1284 hub-route decision — no issue or memo surfaced; this is the gating item for #1290; would help to know when PM/Arch plan to decide
