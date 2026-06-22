@@ -61,3 +61,8 @@ RECONNECT Phase-1 Arch/PM-gated. Security gap closed (#1307 instance + #1308 cla
 ## State / next
 - RECONNECT Phase-1 gate is now **Arch-only** (WS-9 identity call answered). Awaiting Arch's #1232-kickoff reply (ADR-070 v0.1 stable? result-type shapes?); PM is handling the Arch touch-base.
 - Cron `cbe956dc` armed (05:05 morning). #358 hold-for-deploy. #1185 parked. #1309 (stale onboarding test) filed for the onboarding owner.
+
+## DAY-CLOSE (retroactive, written 2026-06-22 — PM took over 6/21 evening before the STOP day-part ran, so this is the catch-up close Docs needs for the omnibus)
+**Day-arc 06-21**: WS-1 / #1199 closed (connector config → DB sole store) · #1226 Phase-3 honest-degrade shipped · #1289 verified (PA-done) + closed · DB↔model drift diagnosed → filed #1312 · cron-organizing methodology regression corrected (cron deleted; CIO memo'd `e69576a88`). All work on origin/main.
+**Sign-off**: all 6/21 commits pushed to origin/main; the session ran continuously into 6/22 (continuation logged in `dev/2026/06/22/2026-06-22-0811-lead-code-opus-log.md`).
+<!-- DAY-CLOSED: 2026-06-21 -->
