@@ -32,7 +32,7 @@ The alpha droplet's DB is **empty** (0 conversations, 0 documents, no github-pre
 
 ## Prereqs / decisions for PM
 1. **`ENCRYPTION_MASTER_KEY`** — generate a fresh 32-byte base64 key, add to `/opt/piper/.env`, and **back it up somewhere durable** (password manager / keychain). Since alpha has no encrypted data yet, generating fresh is zero-risk now — but once data exists, losing this key = unreadable data. Generate: `python -c "import os,base64; print(base64.b64encode(os.urandom(32)).decode())"` (or `openssl rand -base64 32`).
-2. **Version number** — 0.8.8 → ? Given the payload (whole RECONNECT sprint + encryption + design system), **0.9.0** fits a minor bump. Your call; the release-runbook drives the bump.
+2. **Version number** — 0.8.8 → **0.8.9** (PM-confirmed 2026-06-22). 0.9.0 is reserved for the beta / MVP-complete (M4+M5), so this interim alpha cut is a 0.8.x point bump. **Release-cutting loops in PA** (version bump → merge main→production → tag, per the release-runbook) — not cut solo.
 3. **MCPB clean-machine test** — the third batten-down item; separate from this deploy (does not block it).
 
 ## Deploy sequence
