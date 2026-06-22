@@ -20,6 +20,13 @@
 
 - ✅ **Published "Extension Without Integration"** (insight, 2026-06-21) — website `683e312e7`, product `2b1bc790d`, hashId `6db4781ea389`. Deploy building at publish time. **Syndication (Medium/LinkedIn) pending — PM owns; calendar fields left empty for it.**
 - ✅ **June 20 omnibus** — HIGH-COMPLEXITY COORDINATION, 12 sources, 361 lines (`2af4d58a7`)
+- ✅ **#1292 CLOSED by CIO** — archival landed at my recommended location; both memos triaged
+- ✅ **dev/active partial cleanup** — 2 cycle logs + 1 dup log archived/removed; 102 gitignored delta ephemera + credential identified (not repo clutter)
+
+## Cleanup carry — dedicated pass needed
+
+- **dev/active ~84 tracked files** (target <15). Remainder is mostly live trackers (KEEP) + ambiguous other-role artifacts (migration handoffs, merge-keeper reports [may hold pending-PM escalate-branch state], incident docs, design-specs, pa-skunk research). Needs per-owner confirmation or a careful dedicated pass — not safe to bulk-sweep.
+- **Minor flag**: gitignored Google OAuth `client_secret_*.json` sits in dev/active (PM-dropped, not leaked to git). Fine where it is; noted for awareness.
 
 ## State flags
 
