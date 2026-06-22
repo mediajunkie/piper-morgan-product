@@ -1,6 +1,6 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-21 ~15:05 PT. Sole lead. Session log: `dev/2026/06/21/2026-06-21-0615-lead-code-opus-log.md`
+**Updated**: 2026-06-21 ~18:00 PT. Sole lead. Session log: `dev/2026/06/21/2026-06-21-0615-lead-code-opus-log.md`
 
 ## ▶ NEXT (draining in priority order)
 - ✅ **PA Redis prod-fix DONE** (PM-approved 2026-06-21) — 6379 now `127.0.0.1`-only on the alpha Droplet (was `0.0.0.0`+IPv6); redis recreated, app unaffected (Up 26h healthy; app→redis ping True), public 401. Backup `/opt/piper/docker-compose.yml.bak-2026-06-21-redis-bind`. Tracked+closed **#1311**; PA confirmed. Plugin-wave Redis blocker cleared.
@@ -10,7 +10,7 @@
   - **P4 (retire flat/in-memory) DONE** — clean cutover (PM-directed 2026-06-21: pre-prod + no users = zero-risk window; deferring inverts the risk). DB is now the SOLE github-config store: settings + resolver + UPM + feed_factory all DB-only; `github_username` also DB-backed; flat-file + in-memory machinery DELETED (net −314 lines). Verified: touched suites green + full unit+domain smoke **8003 passed / 19 pre-existing fails only** (zero new regressions). #1199 "exactly one store" AC now MET. **P5** **#1199 CLOSED 2026-06-21** (all 44 ACs met + Completion Matrix filled + real-PG e2e-verified: write→settings+resolver+standup all agree); **#1226 stays OPEN** (umbrella — honest-degrade UX + dead-path decision + first-run + WS-2…9 remain).
   - **Discovered + filed**: DB↔model drift `task_59a7a442` (autogenerate unusable — STILL OPEN). The 9-test datetime-tz bug `task_640ecba1` was **FIXED by another agent (#1079, commit 980e58b36)** — verified green (91 passed). #1185 parked (sibling).
 - **▶ NEXT BUILD — PM priority-pick pending** (3 candidates, PM to sequence):
-  - **(a) #1226 Phase-3 honest-degrade UX** — scoped 2026-06-21 (Fire 15:04): of the 5 `UnresolvedRepoError` catch sites, `intent_service.py:8797` ALREADY honest-degrades; `query_router.py:916` (`federated_search`) silently sets `github_issues=[]` (a SEARCH path); the other 3 (`github_integration_router:434`, `github_spatial:437`, `query_router_spatial_migration:274`) are graceful lower-level helpers (correct as-is). **Build question**: does the floor render intent_service's honest ValueError to the user or swallow it into generic "no open issues"? → needs floor-flow trace + a gameplan.
+  - **(a) #1226 Phase-3 honest-degrade UX — PRIMARY PATH SHIPPED** (Fire 17:58, `304dfe2c1`, PM-directed). The "what should I work on?" silent-"no open issues"-on-no-repo bug is fixed: `context_assembler._compute_high_priority_issues` distinguishes no-repo from zero-issues (resolvability check on the empty path) → `github_repo_unconfigured` flag threads through cache+context → `conversational_floor` renders an honest "set a repo in Settings" directive. 5 TDD tests; 284 green. **Remaining (next increment, lower-value)**: `federated_search` search-path mirror (marginal) + auto-default/onboarding first-run UX (CXO-adjacent) + Phase-2 dead-path decision. Phase-3 commented on #1226.
   - **(b) Held alpha-deploy** (batten-down: Droplet deploy + MCPB clean-machine test + #1289 callers — per PM project memory `project_alpha_tester_email_held`).
   - **(c) DB↔model drift** (`task_59a7a442` — autogenerate unusable until reconciled; latent migration hazard).
 
