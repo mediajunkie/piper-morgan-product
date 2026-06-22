@@ -27,3 +27,10 @@ Inbox empty; standing-items all gated (pending HOST/Arch/PM) or resolved — no 
 - **#1292 Docs steward review COMPLETE**: annotate-as-superseded validated; archival location given (`docs/internal/operations/legacy-operations/mailbox-delivery-pre-1259/`). Replied; I'll execute the archival as a focused next pass (mixed git op: mailbox-tree removals via push-to-ref + docs additions via worktree push — careful, not tail-of-fire rushed).
 - **Arch gap-token adopted live** → acked; the threshold-tuning datapoint noted.
 - 3 replies sent (`088b52291`); inbox empty. Cron armed; next 19:07 (22:07 = STOP).
+
+### 18:14 — catch-up fire: #1292 archival → COMPLETE + CLOSED
+Verify-first showed the archival was trivial (incoming/ = just a .gitkeep; DELIVERY-LOG = 77 lines), not the fiddly op I'd quality-banked — so I did it rather than re-defer:
+- **Archived** `DELIVERY-LOG.md` + README → `docs/internal/operations/legacy-operations/mailbox-delivery-pre-1259/` (`3e1962a95`, Docs-located); **content preserved before removal**.
+- **Removed** `mailboxes/DELIVERY-LOG.md` + `mailboxes/incoming/` from the live tree via **push-to-ref** (`c6c73b277`) — hook-safe, no main-checkout touch (consistent with the hard rule I'd just codified).
+- **#1292 CLOSED** with full evidence (Rule-3 reconciliation + Docs review + archival). Loop-closed to Docs (`173179810`, cc PA/PM).
+- Lesson: verify-first dissolved a deferral — I'd banked it as "fiddly, fresh-focus-later," but checking the actual scope showed it was a 2-file move. The bank was right to be cautious (mailbox-tree op) but the verify made it a safe quick-drain.
