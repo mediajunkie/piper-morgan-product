@@ -1,6 +1,6 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-21 ~19:50 PT. Sole lead. Session log: `dev/2026/06/21/2026-06-21-0615-lead-code-opus-log.md`
+**Updated**: 2026-06-22 ~08:15 PT. Sole lead. Session log: `dev/2026/06/21/2026-06-21-0615-lead-code-opus-log.md`
 
 ## ▶ NEXT (draining in priority order)
 - ✅ **PA Redis prod-fix DONE** (PM-approved 2026-06-21) — 6379 now `127.0.0.1`-only on the alpha Droplet (was `0.0.0.0`+IPv6); redis recreated, app unaffected (Up 26h healthy; app→redis ping True), public 401. Backup `/opt/piper/docker-compose.yml.bak-2026-06-21-redis-bind`. Tracked+closed **#1311**; PA confirmed. Plugin-wave Redis blocker cleared.
@@ -11,7 +11,7 @@
   - **Discovered + filed**: DB↔model drift `task_59a7a442` (autogenerate unusable — STILL OPEN). The 9-test datetime-tz bug `task_640ecba1` was **FIXED by another agent (#1079, commit 980e58b36)** — verified green (91 passed). #1185 parked (sibling).
 - **▶ NEXT — unblocked-unilateral lead-code DRAINED this continuation; remainder is PM/Arch/product-gated:**
   - **#1226 Phase 1–3 lead-code — DONE** (commented). Honest-degrade UX shipped (`d98a6857d`); Phase-2 dead-paths reframed LATENT-not-broken (resolve given project↔repo data → "no-permanently-dead-path" AC met); first-run met via the prompt-half. Umbrella stays OPEN for WS-2…9.
-  - **#1289 (retire hollow MorningStandupWorkflow) — CLOSED** (PA-done, lead-verified, 686 standup tests green). **Optional pre-prod follow-up flagged to PM**: delete the dead ~400-line fabricating `MorningStandupWorkflow` class (kept deprecate-marked per dead-code-rule; deletion needs PM's nod — trust-hazard + pre-prod cut-clean both argue delete).
+  - **#1289 — CLOSED + dead class DELETED** (PA migration + lead verify; PM approved the pre-prod deletion 06-22). `morning_standup.py` **832→53 lines (−779)** — removed the fabricating `MorningStandupWorkflow` engine + dead `StandupContext`; kept `StandupItem`/`StandupResult`/`StandupIntegrationError` (honest path reuses them). 686 standup tests green; no test changes needed (refs were stale comments).
   - **#1312 (DB↔model drift) — FILED + diagnosed** (supersedes `task_59a7a442`): root cause = `alembic/env.py` imports only `connection.Base`, never the model modules → false-positive "removed" tables; the fix reveals the TRUE drift is **~111 diffs**. Reconciliation = Arch-eye (multi-Base: `personality` own-Base) + careful per-diff, schema-risky → **NOT solo-now**; full remediation in the issue.
   - **Gated candidates (PM to sequence)**: alpha-deploy batten-down (PM-go for the prod push; #1289 was one of its items, now done) · #1226 first-run auto-default (UX/product) + populate-vs-latent project-links (roadmap) · #1312 reconciliation (Arch-eye).
 
