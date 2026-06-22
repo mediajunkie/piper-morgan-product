@@ -1,6 +1,6 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-06-21 ~18:00 PT. Sole lead. Session log: `dev/2026/06/21/2026-06-21-0615-lead-code-opus-log.md`
+**Updated**: 2026-06-21 ~19:50 PT. Sole lead. Session log: `dev/2026/06/21/2026-06-21-0615-lead-code-opus-log.md`
 
 ## ▶ NEXT (draining in priority order)
 - ✅ **PA Redis prod-fix DONE** (PM-approved 2026-06-21) — 6379 now `127.0.0.1`-only on the alpha Droplet (was `0.0.0.0`+IPv6); redis recreated, app unaffected (Up 26h healthy; app→redis ping True), public 401. Backup `/opt/piper/docker-compose.yml.bak-2026-06-21-redis-bind`. Tracked+closed **#1311**; PA confirmed. Plugin-wave Redis blocker cleared.
@@ -9,10 +9,11 @@
   - **P0** WS-9 identity collapse → canonical `owner_id` = m1-test `009afc8c`. **P1** `connector_configs` table (model + migration `000baa96d800`, 7 tests). **P2** `ConnectorConfigRepository`+`ConnectorConfigService` (`services/connectors/`, 12 tests). **P3a** backfill json→DB; **P3b** settings writer dual-writes the DB; **P3c** `repo_resolver` reads DB-first+json-fallback (the canonical chat path); **P3d** `UserPreferenceManager.get_default_repo` DB-first → **standup always-None bug FIXED**. ~90 tests green across the touched suites.
   - **P4 (retire flat/in-memory) DONE** — clean cutover (PM-directed 2026-06-21: pre-prod + no users = zero-risk window; deferring inverts the risk). DB is now the SOLE github-config store: settings + resolver + UPM + feed_factory all DB-only; `github_username` also DB-backed; flat-file + in-memory machinery DELETED (net −314 lines). Verified: touched suites green + full unit+domain smoke **8003 passed / 19 pre-existing fails only** (zero new regressions). #1199 "exactly one store" AC now MET. **P5** **#1199 CLOSED 2026-06-21** (all 44 ACs met + Completion Matrix filled + real-PG e2e-verified: write→settings+resolver+standup all agree); **#1226 stays OPEN** (umbrella — honest-degrade UX + dead-path decision + first-run + WS-2…9 remain).
   - **Discovered + filed**: DB↔model drift `task_59a7a442` (autogenerate unusable — STILL OPEN). The 9-test datetime-tz bug `task_640ecba1` was **FIXED by another agent (#1079, commit 980e58b36)** — verified green (91 passed). #1185 parked (sibling).
-- **▶ NEXT BUILD — PM priority-pick pending** (3 candidates, PM to sequence):
-  - **(a) #1226 Phase-3 honest-degrade UX — PRIMARY PATH SHIPPED** (Fire 17:58, `304dfe2c1`, PM-directed). The "what should I work on?" silent-"no open issues"-on-no-repo bug is fixed: `context_assembler._compute_high_priority_issues` distinguishes no-repo from zero-issues (resolvability check on the empty path) → `github_repo_unconfigured` flag threads through cache+context → `conversational_floor` renders an honest "set a repo in Settings" directive. 5 TDD tests; 284 green. **Remaining (next increment, lower-value)**: `federated_search` search-path mirror (marginal) + auto-default/onboarding first-run UX (CXO-adjacent) + Phase-2 dead-path decision. Phase-3 commented on #1226.
-  - **(b) Held alpha-deploy** (batten-down: Droplet deploy + MCPB clean-machine test + #1289 callers — per PM project memory `project_alpha_tester_email_held`).
-  - **(c) DB↔model drift** (`task_59a7a442` — autogenerate unusable until reconciled; latent migration hazard).
+- **▶ NEXT — unblocked-unilateral lead-code DRAINED this continuation; remainder is PM/Arch/product-gated:**
+  - **#1226 Phase 1–3 lead-code — DONE** (commented). Honest-degrade UX shipped (`d98a6857d`); Phase-2 dead-paths reframed LATENT-not-broken (resolve given project↔repo data → "no-permanently-dead-path" AC met); first-run met via the prompt-half. Umbrella stays OPEN for WS-2…9.
+  - **#1289 (retire hollow MorningStandupWorkflow) — CLOSED** (PA-done, lead-verified, 686 standup tests green). **Optional pre-prod follow-up flagged to PM**: delete the dead ~400-line fabricating `MorningStandupWorkflow` class (kept deprecate-marked per dead-code-rule; deletion needs PM's nod — trust-hazard + pre-prod cut-clean both argue delete).
+  - **#1312 (DB↔model drift) — FILED + diagnosed** (supersedes `task_59a7a442`): root cause = `alembic/env.py` imports only `connection.Base`, never the model modules → false-positive "removed" tables; the fix reveals the TRUE drift is **~111 diffs**. Reconciliation = Arch-eye (multi-Base: `personality` own-Base) + careful per-diff, schema-risky → **NOT solo-now**; full remediation in the issue.
+  - **Gated candidates (PM to sequence)**: alpha-deploy batten-down (PM-go for the prod push; #1289 was one of its items, now done) · #1226 first-run auto-default (UX/product) + populate-vs-latent project-links (roadmap) · #1312 reconciliation (Arch-eye).
 
 ## ▶ PENDING PM / Arch
 - ~~PM: Redis prod-fix go~~ — DONE 2026-06-21 (#1311).
@@ -35,7 +36,7 @@
 - **#1232**: `services/mcp/consumer/connector.py` (sum types) + `github_adapter.py` + `test_connector_protocol_1232.py` + `test_connector_contract_1232.py` (no-cred guard). ADR-070 governs.
 - **#1308**: `AUTH_EXEMPT_JUSTIFIED` in `auth_middleware.py` + `test_exempt_list_boundary_1308.py`.
 - **alpha** 0.8.8 (no #358-B/#1232/#1307/#1308 yet — next deploy). `ENCRYPTION_MASTER_KEY` needed for #358-B.
-- **Cron cbe956dc** armed — `5 5,8,11,14,17,20` (05:05 morning, 20:05 day-close). Session-only, auto-expires 7d → re-arm on the cycle.
+- **Cron DELETED** (`cbe956dc` removed) per PM's flywheel-not-cron correction 6/21 — the flywheel runs continuously + cron-independently; the cron is only an idle/away wake-timer. **Re-arm ONLY on reaching genuine idle while awaiting PM** (so a stepped-away PM still gets STOP/START + mail self-wake). While actively working or in live PM conversation: NO cron. Memo'd CIO (`e69576a88`); memory `feedback_flywheel_is_continuous_not_cron_chunked`.
 - **Mailbox** = `scripts/mail-send.sh` (push-to-ref) — **RECONCILE residue immediately after each send**: drop local copies (identical on origin/main) + FF-merge. Worked cleanly this session.
 
 ## ▶ Methodology
