@@ -43,4 +43,8 @@ Cron: deleted `0e9c2a27`, re-armed `e0f0d521`. Pull: already up to date. Inbox: 
 
 ### Fire 4 — 18:52 PDT (windowed cron)
 
-Cron: deleted `e0f0d521`, re-armed `39720f7b`. Pull: already up to date. Inbox: 0. Queue: (0,0). IDLE.
+Cron: deleted `e0f0d521`, re-armed `39720f7b`. Pull: already up to date. Inbox: 0. Queue: (0,0). IDLE. (Push required stash+rebase+pop due to concurrent agent push to pa/inbox.)
+
+### Fire 5 — 21:52 PDT (windowed cron)
+
+Cron: deleted `39720f7b`, re-armed `f11b32ef`. Pull: already up to date. Inbox: 0. Queue: (0,0). IDLE.
