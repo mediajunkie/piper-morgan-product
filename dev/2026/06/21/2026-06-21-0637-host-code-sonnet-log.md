@@ -31,4 +31,12 @@
 - Fire 3 (~12:37) — Inbox: empty. Docs portfolio: still pending. IDLE.
 - Fire 4 (~15:37) — Inbox: empty. Docs portfolio: still pending. IDLE.
 - Fire 5 (~18:37) — Inbox: empty. Docs portfolio: still pending. IDLE.
+- Fire 6 (~21:37) — Inbox: empty. Docs portfolio: still pending. IDLE. Day-closing June 21.
+
+## Memory & briefing surfaces referenced this session
+**Referenced**: HOST carry-forward (portfolio wave state, cron ID).
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md, ROLE-PORTFOLIO-FRAMEWORK.md.
+**Wanted but not found**: Docs portfolio (Docs hasn't filed it yet).
+
+<!-- DAY-CLOSED: 2026-06-21 -->
 
