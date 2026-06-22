@@ -136,3 +136,5 @@ uncommitted work lives ONLY in the worktree
 - **Wanted but not found**: a note that `cd <bare-main-path>` from a nested worktree session
   lands in MAIN (not the worktree) — would have saved ~20 min. (The walk-up note covers venv
   resolution but not the cwd/checkout flip.)
+
+<!-- DAY-CLOSED: 2026-06-21 (retroactive — task agent, content-complete, no STOP fire; self-healed at Docs START) -->
