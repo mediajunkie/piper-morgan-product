@@ -134,5 +134,5 @@ This is the *alpha* — a single droplet, manual deploy. The *beta* hosted backe
 
 - [Release Runbook](release-runbook.md) — full release process (version bump, git ops, GitHub release)
 - [CI/CD Smoke Test Runbook](ci-cd-smoke-test-runbook.md) — quality gate before release
-- [Release Notes v0.8.8](../../releases/RELEASE-NOTES-v0.8.8.md) — current production release
+- [Release Notes v0.8.9](../../releases/RELEASE-NOTES-v0.8.9.md) — current production release
 - `memo-pa-to-lead-cc-pm-alpha-deploy-runbook-gap-2026-06-19` — the gap report this runbook closes
