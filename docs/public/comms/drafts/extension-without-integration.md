@@ -1,26 +1,31 @@
 ---
-image:
-alt:
-caption:
+image: 'ai-valets.png'
+alt: "A hotel guest's casual gesture triggers four eager valets at once—one grabs the keys, one offers the elevator, and two compete over the same suitcase, while a translucent observer realizes the coordination problem."
+caption: '"I''ve got it!"'
 ---
 
 # Extension Without Integration
 
 *March 13–19, 2026*
 
-Six features. Each one correct. Each one tested. Each one reviewed and approved. And together, they produced chaos.
+Six features. Each one working and passing its tests. Together, they produced chaos.
 
-We discovered the pattern while investigating a conversation continuity bug. A user would say "Sure" after Piper offered to help, and instead of continuing the conversation, Piper would treat it as a brand-new query. Not a hard bug to describe. But the root cause took three days to surface.
+We ran into this pattern while investigating a conversation continuity bug: A user would say "Sure" after Piper made an offer to help with something, and instead of continuing the conversation, Piper would treat it as a brand-new query. It's an easy bug to describe but the root cause took three days to surface.
 
-Three independent systems were each listening for user acceptance. One was built for onboarding (#824). One for workflow hijack recovery (#888). One for soft capability offers (#852). Each had its own detection logic. Each worked correctly in isolation. Each passed its tests.
+Three independent systems were each listening for user acceptance. 
+* One was built for onboarding. 
+* One for workflow hijack recovery. 
+* One for soft capability offers. 
+
+Each had its own detection logic. Each worked correctly in isolation. Each passed its tests.
 
 When they ran simultaneously — which is to say, always — four competing detection points raced to interpret "Sure." The onboarding system thought the user was accepting onboarding. The soft offer system thought they were accepting a capability offer. The workflow system thought they were resuming a suspended session. The user just meant "yes, help me with that."
 
 # The pattern
 
-Our Lead Developer named it after auditing the codebase and finding six instances of the same structural flaw:
+Our Lead Developer agent called it out after auditing the codebase and finding six instances of the same structural flaw:
 
-Features get extended independently. Each extension has its own issue, its own acceptance criteria, its own tests. Each one passes review. Nobody tests how they compose.
+> Features get extended independently. Each extension has its own issue, its own acceptance criteria, its own tests. Each one passes review. Nobody tests how they compose.
 
 This isn't a testing failure. The tests were correct — each feature did what it said it would do. It's a *composition* failure. The acceptance criteria for each feature asked "does this feature work?" but never asked "does this feature work when the other five are also running?"
 
@@ -38,7 +43,7 @@ When I think about what routing between agents actually means, I mostly think ab
 
 # The fix has two layers
 
-The immediate fix for our bug was architectural: consolidate the three acceptance systems into a single workflow dispatcher. One detection point, one registry, one routing decision. ADR-059, written, reviewed, and implemented in a single morning.
+The immediate fix for our bug was architectural: consolidate the three acceptance systems into a single workflow dispatcher. One detection point, one registry, one routing decision — written, reviewed, and implemented in a single morning.
 
 But the meta-fix is recognizing the pattern *before* it ships. Every feature that touches a shared pipeline — in our case, the offer/classification/handler chain — needs integration acceptance criteria. Not "does this feature work?" but "does this feature work in a multi-turn conversation where the other features are also active?"
 
@@ -58,7 +63,7 @@ The good news is that the detection cycle is also faster. Our audit cascade iden
 
 Speed creates the problem. Speed also enables the fix. The question is whether you have the diagnostic practices to notice before your users do.
 
-This is Pattern-045 again — Green Tests, Red User. The tests passed. The features shipped. It was a manual "Sure" that exposed the collision. I test things manually out of habit, or distrust, or because I know the edges of this product well enough to poke them. Whatever the reason, it's the human in the loop who caught this one. The composition tests we added afterward are meant to close that gap. We'll see if they do.
+This is another instance of our Pattern-045, "Green Tests, Red User." The tests passed. The features shipped. It was a manual "Sure" that exposed the collision. I test things manually out of habit, or distrust, or because I know the edges of this product well enough to poke them. Whatever the reason, it's the human in the loop who caught this one. The composition tests we added afterward are meant to close that gap. We'll see if they do.
 
 ---
 
