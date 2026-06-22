@@ -1,12 +1,12 @@
 # Docs Carry-Forward
-**Updated**: 2026-06-21 22:47 PDT (STOP — day-closed)
-**Cron**: `17 3,10,13,16,19,22 * * *` (armed; job 9eb97927; next fire 03:17 Jun 22)
-**Session log**: `dev/2026/06/21/2026-06-21-1200-docs-code-sonnet-log.md` (DAY-CLOSED: 2026-06-21 ✓)
+**Updated**: 2026-06-22 10:47 PDT (START)
+**Cron**: `17 3,10,13,16,19,22 * * *` (armed; job 9eb97927)
+**Session log**: `dev/active/2026-06-22-1047-docs-code-sonnet-log.md`
 
 ---
 
-## START checklist for June 22
-- [ ] **June 21 omnibus** — gate check: wait for cohort to close June 21 logs, then synthesize (source set in `dev/2026/06/21/`)
+## June 22 in progress
+- 🔄 **June 21 omnibus** — gate PASSED (all 13 closed; self-healed 2 task-agent markers at START). Synthesis subagent running (background).
 - [ ] Reconcile any held-cleanup decisions if PM answered (see below)
 
 ## June 21 completed

@@ -18,3 +18,4 @@
 
 ## Work Log
 
+- START (10:47 PT) — Self-healed 2 task-agent June 21 markers, opened session log (`83b469dc4`). Launched June 21 omnibus synthesis subagent (13 logs, HIGH-COMPLEXITY, background).
