@@ -18,7 +18,7 @@
 
 ## Pending / unblocked
 
-- [ ] **Publish "Extension Without Integration"** (insight, pubDate 2026-06-21) — awaiting PM handoff signal; draft at `docs/public/comms/drafts/draft-insight-extension-without-integration.md`
+- ✅ **Published "Extension Without Integration"** (insight, 2026-06-21) — website `683e312e7`, product `2b1bc790d`, hashId `6db4781ea389`. Deploy building at publish time. **Syndication (Medium/LinkedIn) pending — PM owns; calendar fields left empty for it.**
 - ✅ **June 20 omnibus** — HIGH-COMPLEXITY COORDINATION, 12 sources, 361 lines (`2af4d58a7`)
 
 ## State flags
