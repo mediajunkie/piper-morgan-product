@@ -42,19 +42,26 @@ now=$(date +%s); hour=$(date +%-H); min=$(date +%-M); now_min=$(( hour * 60 + mi
 today=$(date +%Y/%m/%d); today_dash=$(date +%Y-%m-%d)
 git -C "$REPO" fetch origin main -q 2>/dev/null || true
 
-# hours since the role's newest "(role)"-tagged commit on origin/main; non-zero exit if none found
+# hours since the role's newest heartbeat on origin/main; non-zero exit if none found.
+# Heartbeat = the more-recent of: (a) a "(role)"-tagged commit message, OR (b) any commit touching the
+# role's session log (ANY model — opus/sonnet/…). (b) is robust to commit-tag drift — e.g. ppm's
+# "docs(session): PPM …" style, which (a)'s "(ppm)" grep misses. (CIO fix 2026-06-22, after ppm
+# false-staled 40h while firing every cycle — PM caught it; the (role)-grep + opus-only assumptions
+# were migration-era and broke as roles moved to Sonnet + the session-commit tag style.)
 age_of() {
-  local role="$1" ct
+  local role="$1" ct ct2 newest
   ct=$(git -C "$REPO" log origin/main -1 --format=%ct -F --grep="($role)" --since="9 days ago" 2>/dev/null)
-  [ -z "$ct" ] && return 1
-  echo $(( (now - ct) / 3600 ))
+  ct2=$(git -C "$REPO" log origin/main -1 --format=%ct --since="9 days ago" -- ":(glob)dev/**/*-${role}-code-*log.md" 2>/dev/null)
+  newest=$(printf '%s\n%s\n' "$ct" "$ct2" | grep -E '^[0-9]+$' | sort -nr | head -1)
+  [ -z "$newest" ] && return 1
+  echo $(( (now - newest) / 3600 ))
 }
 
 # should this role be checked right now? args: role, first_fire(HH:MM). 0 = check, 1 = skip.
 cycling_now() {
   local role="$1" ff="$2" path ff_h ff_m ff_min
   path=$(git -C "$REPO" ls-tree -r --name-only origin/main -- "dev/$today/" 2>/dev/null \
-         | grep -E "${role}-code-opus-log\.md$" | head -1)
+         | grep -E "${role}-code-.*log\.md$" | head -1)   # any model (opus/sonnet/…), not opus-only
   if [ -z "$path" ]; then
     # No today-log. Distinguish "legitimately pre-START" from "missed START → frozen" (Exec 2026-06-17 fix,
     # closes the closed→never-restarted blind spot — the overnight-dormancy Gap-C). Gate on first_fire+grace.
@@ -88,7 +95,7 @@ while IFS=$'\t' read -r role cron thr ws we ff since; do
   if a=$(age_of "$role"); then
     (( a >= thr )) && echo "STALE $role ${a}h (threshold ${thr}h; cron '$cron')"
   else
-    echo "STALE $role NO-HEARTBEAT (should be cycling but no recent (${role})-tagged commit)"
+    echo "STALE $role NO-HEARTBEAT (should be cycling but no recent (${role}) commit or session-log update)"
   fi
 done < "$REG"
 exit 0

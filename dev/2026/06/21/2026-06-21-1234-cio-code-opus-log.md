@@ -34,3 +34,18 @@ Verify-first showed the archival was trivial (incoming/ = just a .gitkeep; DELIV
 - **Removed** `mailboxes/DELIVERY-LOG.md` + `mailboxes/incoming/` from the live tree via **push-to-ref** (`c6c73b277`) — hook-safe, no main-checkout touch (consistent with the hard rule I'd just codified).
 - **#1292 CLOSED** with full evidence (Rule-3 reconciliation + Docs review + archival). Loop-closed to Docs (`173179810`, cc PA/PM).
 - Lesson: verify-first dissolved a deferral — I'd banked it as "fiddly, fresh-focus-later," but checking the actual scope showed it was a 2-file move. The bank was right to be cautious (mailbox-tree op) but the verify made it a safe quick-drain.
+
+## DAY-ARC — 2026-06-21 (CIO) — Sun: nudge verified + a data-loss hard rule + #1292 closed
+START (post-mid-build-stall) → stall diagnosis answered to PM (monitor✓/nudge✗) → **nudge v2 verified live** → **#1292 reconciliation + closed** → 18:06: **DATA-LOSS HARD RULE codified** (Comms-reported: PM lost edits 2× to `git checkout -- .` in main checkout) → #1292 archival. Then dormant overnight (~17h, cron `3f213b33` survived). ~10 pushes.
+
+## Memory & briefing surfaces referenced this session
+- **Referenced**: `duty-cycle-watchdog.sh`/`freeze-check.sh`/registry; CLAUDE.md (hard-rule home); the discipline doc (#1292); Comms/Docs/Arch memos; `mail-send.sh`; pins `feedback_never_touch_pm_main_checkout_working_tree` (the hard-rule's basis), `feedback_careful_git_sync_on_shared_main`, `feedback_make_promises_durable`.
+- **Loaded but not referenced**: MEMORY.md bulk; PROJECT/ROSTER.
+- **Wanted but not found**: nothing new (the off-machine *firing* cure remains the known PM-gated structural item).
+
+## Sign-off checklist (retroactive)
+- All 6/21 work pushed per-unit through `2224b770d`; nothing stranded.
+- `@{u}..HEAD` / `main..HEAD`: empty at dormancy.
+- Cron `3f213b33` survived the overnight dormancy (suppress-while-backgrounded).
+
+<!-- DAY-CLOSED: 2026-06-21 -->
