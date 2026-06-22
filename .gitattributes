@@ -4,5 +4,8 @@
 scripts/**/*.sh text eol=lf
 .pre-commit-hooks/*.sh text eol=lf
 
+# Force LF line endings for CSV files (csv.writer defaults to CRLF on all platforms)
+*.csv text eol=lf
+
 # Use bd merge for beads JSONL files
 .beads/beads.jsonl merge=beads
