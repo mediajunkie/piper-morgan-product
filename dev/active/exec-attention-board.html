@@ -46,20 +46,18 @@
 <body>
 <div class="wrap">
   <h1>Exec attention board</h1>
-  <p class="ts">as of Monday June 22, ~10:50 AM &middot; full sweep + commit cross-check (Lead heads-down) &mdash; <b>1 logjam to clear, 1 deploy-go, then low-urgency</b></p>
+  <p class="ts">as of Monday June 22, ~11:00 AM &middot; you woke PA/Web/CIO (logjam clearing) &mdash; <b>1 real decision left: 2 deploy calls</b></p>
 
   <div class="metrics">
-    <div class="metric"><p class="lbl">Needs you (soon)</p><p class="num" style="color:#c0392b">2</p></div>
+    <div class="metric"><p class="lbl">Needs you (soon)</p><p class="num" style="color:#c0392b">1</p></div>
     <div class="metric"><p class="lbl">When ready</p><p class="num" style="color:#c9a227">4</p></div>
     <div class="metric"><p class="lbl">Voice-pass</p><p class="num" style="color:#8e6db3">2</p></div>
     <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">4</p></div>
   </div>
 
   <h2><span class="dot" style="background:#c0392b"></span>Needs you, soon</h2>
-  <div class="card act"><div class="top"><span class="ttl">Cron-stall logjam &mdash; 4 agents asleep, blocking 3 threads</span><span class="pill bg-red">cohort · the recurring cron-stall</span></div>
-    <p><b>pa, web, docs, cio haven't STARTed Monday</b> (the cron-stall — their fires don't fire backgrounded). That blocks: the <b>6/21 omnibus</b> (Docs is the author, asleep), the <b>blog-editing UI</b> (Web asleep), and <b>Ship #048 synthesis</b> (CIO asleep, owes the last lens). <b>Two ways to clear it</b>: pick CIO's nudge-mechanism (the durable cure — desktop-notif / mailbox / both) <i>or</i> wake those 4 agents now. I've nudged the awake stragglers (lead, ppm) to close their 6/21 logs.</p></div>
-  <div class="card act"><div class="top"><span class="ttl">Alpha-deploy batten-down &mdash; your go for the prod push</span><span class="pill bg-red">Lead, your call</span></div>
-    <p>Lead's drained the unblocked work (#1199, #1289, #1311 all closed); the alpha prod-deploy push is teed up and needs your green-light. Sets `ENCRYPTION_MASTER_KEY` + runs the backfill on the box (also closes #358).</p></div>
+  <div class="card act"><div class="top"><span class="ttl">Alpha prod-deploy &mdash; 2 decisions to actually ship it</span><span class="pill bg-red">Lead, your call</span></div>
+    <p>You green-lit the <i>prep</i> (the readiness check) — Lead did it and found the deploy is <b>low-risk</b> (alpha DB is empty → backfills are no-ops). The prod push itself needs <b>two calls from you</b>: <b>(1) generate the ENCRYPTION_MASTER_KEY</b> for the droplet `.env`, and <b>(2) the version number</b> (Lead suggests <b>0.9.0</b>). Full plan: `dev/2026/06/22/alpha-deploy-readiness-2026-06-22.md` (2-phase: cut release → deploy). Then it closes #358.</p></div>
 
   <h2><span class="dot" style="background:#c9a227"></span>When you're ready &middot; low-urgency</h2>
   <div class="card soft"><div class="top"><span class="ttl">Blog-editing UI &mdash; for tomorrow's post</span><span class="pill bg-amber">Web · prereq pending</span></div>
@@ -76,6 +74,7 @@
     <p><b>Beat 8</b> "Branch-or-Anchor" (Jun 23) + <b>BYOC insight</b> "Built in Our Own Image". No clock.</p></div>
 
   <h2><span class="dot" style="background:#185fa5"></span>In flight &middot; for awareness</h2>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Cron-stall logjam &mdash; clearing (you woke them)</span><p>CIO, Web, PA all STARTed after your pings (CIO already fixed a freeze-check false-stale bug PM caught); Docs active. The omnibus + Ship #048 lens + blog-UI now just follow as they work through it — no longer blocked on a wake.</p></div></div>
   <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Lead &mdash; RECONNECT WS-1, heads-down + productive</span><p>#1199 closed end-to-end, #1289 dead-class deleted (−779 lines), connector config-store building. The morning's active builder; I'm cross-checking commits, not just the tracker.</p></div></div>
   <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Role-portfolio wave &mdash; 7/8, all passed</span><p>Only Docs left to file (Docs asleep). Wave completes when Docs wakes + files.</p></div></div>
   <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Ship #048 workstream review &mdash; 5/6</span><p>Only CIO's lens left (CIO asleep). I synthesize → your voice-pass → Wed Jun 24 once it lands.</p></div></div>
