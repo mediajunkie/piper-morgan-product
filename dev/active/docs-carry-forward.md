@@ -19,11 +19,11 @@
 ## Pending / unblocked
 
 - [ ] **Publish "Extension Without Integration"** (insight, pubDate 2026-06-21) — awaiting PM handoff signal; draft at `docs/public/comms/drafts/draft-insight-extension-without-integration.md`
-- [ ] **June 20 omnibus** — gate check: all 12 June 20 logs closed ✅; ready to synthesize
+- ✅ **June 20 omnibus** — HIGH-COMPLEXITY COORDINATION, 12 sources, 361 lines (`2af4d58a7`)
 
 ## State flags
 
 - Inbox: **0 unread**
 - June 19 omnibus: **DONE**
-- June 20 omnibus: **pending** (gate passes; can synthesize)
+- June 20 omnibus: **DONE**
 - Unblocked task queue: **(0,0)** except blog post (PM-gated)
