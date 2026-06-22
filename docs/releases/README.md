@@ -6,9 +6,9 @@ This directory contains release notes for all Piper Morgan versions.
 
 ## Current Version
 
-**v0.8.8** (June 19, 2026) - [Release Notes](RELEASE-NOTES-v0.8.8.md)
+**v0.8.9** (June 22, 2026) - [Release Notes](RELEASE-NOTES-v0.8.9.md)
 
-D1/RECONNECT sprint: BYOC credential layer, Radar as default workspace, navigation IA rationalization (History→Radar, Collections→Lists), full-height home chat, compose autosave, source-provenance badges on files. 252/252 canonical regression clean.
+RECONNECT WS-1 + security + design D2: DB-backed connector config, StandupAssembler promoted, AES-256-GCM field encryption, encrypted secret store, per-user LLM key wiring, admin_compose removed, auth-exempt lint enforcement, token system, responsive shell, mobile nav, Documents→Radar rename.
 
 ---
 
@@ -16,6 +16,7 @@ D1/RECONNECT sprint: BYOC credential layer, Radar as default workspace, navigati
 
 | Version | Date | Type | Highlights |
 |---------|------|------|------------|
+| [v0.8.9](RELEASE-NOTES-v0.8.9.md) | Jun 22, 2026 | Feature | RECONNECT WS-1 + security + design D2 — connector infra, field encryption, token system |
 | [v0.8.8](RELEASE-NOTES-v0.8.8.md) | Jun 19, 2026 | Feature | D1/RECONNECT — BYOC keys, Radar default, nav IA, home UX |
 | [v0.8.7](RELEASE-NOTES-v0.8.7.md) | Jun 14, 2026 | Feature | M1+M2+M3 — Conscious Floor, dispatch rail complete, files UX, Slack inbound |
 | [v0.8.6](RELEASE-NOTES-v0.8.6.md) | Mar 4, 2026 | Feature | M0 Conversational Glue, 27 issues resolved |
@@ -61,4 +62,4 @@ For current known issues and limitations, see [ALPHA_KNOWN_ISSUES.md](../ALPHA_K
 
 ---
 
-*Last updated: June 19, 2026*
+*Last updated: June 22, 2026*

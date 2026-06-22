@@ -71,3 +71,18 @@ Heartbeat fire.
 - **Onboarding 1.0**: scoping with PPM post-RECONNECT; design inputs queued
 - **Mobile UAT**: #1286 Slice 3 — timely once alpha deploy lands
 - **Watch**: Klatch convene/BYOC question; standup engine cleanup complete
+
+## Fire 3 (12:47 slot)
+
+Inbox: empty. Queue dry.
+
+Lead is triage-ing RECONNECT (14-issue dispositions) and targeting v0.8.9 release (not 0.9.0). Two CXO signals in the background: (1) when 0.8.9 deploys to alpha, that's when #1286 mobile UAT is timely; (2) when RECONNECT lands, onboarding scoping with PPM becomes unblocked. Both pending Lead's build pace.
+
+Heartbeat fire.
+
+## Carry-forward (Fire 3)
+
+- **#1290 nav IA**: gated on #1284
+- **#1284**: post-beta — PM/PPM decision
+- **Onboarding 1.0**: post-RECONNECT + post-v0.8.9; design inputs queued
+- **Mobile UAT**: #1286 Slice 3 — timely once 0.8.9 on alpha

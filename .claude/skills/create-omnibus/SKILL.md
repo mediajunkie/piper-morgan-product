@@ -307,7 +307,7 @@ If any pre-target logs exist, archive them too — they were missed by previous 
 
 2. For mail-only / web-side activity captured via the cross-reference gate (e.g., "Exec active by mail, no local log; reconstructed from outbound to 11 inboxes"), append one row with role = canonical name, slug = best-fit, environment = `web`, `log_filename` = empty or descriptor like `web-mail-only`, notes = brief description.
 
-3. Use Python `csv.writer` with `quoting=csv.QUOTE_MINIMAL` to handle commas in notes. Never `echo >>` — corrupts CSV.
+3. Use Python `csv.writer` with `quoting=csv.QUOTE_MINIMAL, lineterminator='\n'` to handle commas in notes and enforce LF endings (`.gitattributes` enforces LF on checkout, but `csv.writer` defaults to CRLF — specify explicitly). Never `echo >>` — corrupts CSV.
 
 4. Commit + push as a separate commit immediately after the omnibus commit; suggested message:
    ```

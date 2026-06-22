@@ -18,3 +18,4 @@
 
 - Fire 0 (06:22 PT) — START. Jun 21 DAY-CLOSED ✓. Sync clean. Inbox: zero. ⚠️ Beat 8 publishes TOMORROW — PM voice-pass needed today.
 - Fire 1 (09:22 PT) — Sync clean, inbox zero. Beat 8 voice-pass pending. Quiet hold.
+- Fire 2 (12:22 PT) — Sync clean, inbox zero. ⚠️ Beat 8 window narrowing — noon; publish-ready needs to reach Docs today for Jun 23 publish. Flagged to PM. Holding.
