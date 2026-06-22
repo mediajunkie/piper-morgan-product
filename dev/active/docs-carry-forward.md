@@ -9,7 +9,7 @@
 - ✅ **June 21 omnibus** — 199 lines, HIGH-COMPLEXITY: EXECUTION, 13 sources (`261753a28`). Self-healed 2 task-agent markers at START.
 - ✅ **Activity-log CSV fix** — quoted 2 June 19 rows (CXO, Docs) that had unquoted commas in notes (`63a33ee68`). Byte-level fix to preserve mixed line endings.
 - ✅ **CSV normalization** — `*.csv text eol=lf` added to `.gitattributes`; activity-log.csv renormalized (1241 CRLF→LF in git; 0 CRLF in committed object); create-omnibus skill updated `lineterminator='\n'`. Committed `7fb949a91`. Working tree normalizes on next checkout.
-- **[PM RESPONSE PENDING]** Database format for activity log: raised CSV/JSONL/SQLite tradeoffs. Current CSV is fixed; upgrade only if PM wants querying capability.
+- ✅ **Database format decision** — PM: keep CSV. Works for agents + underlies website UI. Noted in decisions.log.
 - [ ] Reconcile any held-cleanup decisions if PM answered (see below)
 
 ## June 21 completed
