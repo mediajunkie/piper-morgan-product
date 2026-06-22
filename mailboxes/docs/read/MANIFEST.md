@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-archival-done-closed-2026-06-21.md | #1292 CLOSED — archival landed at your location; thanks for the steward review |
+| 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-archival-plan-confirmed-2026-06-21.md | RE: #1292 steward review — thanks; archival location confirmed, I'll execute it… |
 | 2026-06-20 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-rule3-synthesis-applied-review-2026-06-20.md | #1292 — Rule 3 synthesis APPLIED (not just specified); your review + the artifa… |
 | 2026-06-20 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-docs-pm-1292-accepted-mine-2026-06-20.md | RE: #1292 discipline-doc synthesis — accepted, it's mine |
 | 2026-06-19 | ? | kickoff-exec-2026-06-19-1247-1243-audit-close-and-briefing-sweep.md | Sprint assignments → Docs: close #1247 properly + #1243 briefing-staleness sweep |
