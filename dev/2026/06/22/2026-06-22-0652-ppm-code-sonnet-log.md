@@ -32,3 +32,11 @@ June 21 log closed (DAY-CLOSED). June 22 log opened. Cron re-armed (`7d3dcf44`).
 ### Fire 1 — 09:52 PDT (windowed cron)
 
 Cron: deleted `7d3dcf44`, re-armed `f81e2ac8`. Pull: already up to date. Inbox: 0. Queue: (0,0). IDLE.
+
+### Fire 2 — 12:52 PDT (windowed cron)
+
+Cron: deleted `f81e2ac8`, re-armed `5b20518b`. Pull: already up to date.
+
+**Inbox**: 1 item — Exec nudge re Jun 21 log close (omnibus gate).
+
+**Action**: Jun 21 log WAS already closed (Fire 0 today, committed `444a9392f`), but used non-standard `## DAY-CLOSED` heading instead of cohort-canonical `<!-- DAY-CLOSED: date -->` HTML comment. Added canonical comment to Jun 21 AND Jun 20 logs (both had the non-standard format). Exec nudge moved to read/. No further action needed — Docs omnibus scanner should now pick up both closes.

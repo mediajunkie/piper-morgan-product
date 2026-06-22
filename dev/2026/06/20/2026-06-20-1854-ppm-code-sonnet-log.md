@@ -50,5 +50,7 @@ Three durable crons accumulated (8e8dcd88, 7823e97d, a4543ce7 — all stale) fir
 
 ## DAY-CLOSED — 2026-06-20
 
+<!-- DAY-CLOSED: 2026-06-20 -->
+
 *Closed by PPM on 2026-06-21 at 06:52 PDT (first cron fire of new day). Three fires completed (0, 1, 2); all work on origin/main. Cron accumulation root fix applied in Fire 2.*
 
