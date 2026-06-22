@@ -17,28 +17,27 @@
   h2 { font-size: 15px; font-weight: 600; margin: 26px 0 11px; display: flex; align-items: center; gap: 9px; }
   .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex: none; }
   .card { background: #fff; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; padding: 12px 16px; margin: 0 0 10px; }
-  .card.act { border-color: rgba(192,57,43,0.4); border-left: 3px solid #c0392b; }
   .card.soft { border-left: 3px solid #c9a227; }
   .card.vp { border-left: 3px solid #8e6db3; }
   .card .top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
   .ttl { font-weight: 600; }
   .pill { font-size: 11px; padding: 3px 9px; border-radius: 6px; white-space: nowrap; flex: none; }
   .card p { margin: 6px 0 0; font-size: 14px; color: #45443f; }
+  .clear { font-size: 14px; color: #3b6d11; margin: 0 0 8px; display: flex; align-items: center; gap: 7px; }
   .row { display: flex; gap: 10px; padding: 9px 2px; border-bottom: 1px solid rgba(0,0,0,0.07); }
   .row:last-child { border-bottom: none; }
   .rdot { width: 7px; height: 7px; border-radius: 50%; margin-top: 6px; flex: none; }
   .row .ttl { font-size: 14px; }
   .row p { margin: 1px 0 0; font-size: 13.5px; color: #6b6a64; }
-  .bg-red { background: #f7dfda; color: #8c2a1c; }
   .bg-amber { background: #faeeda; color: #633806; }
   .bg-violet { background: #ece3f5; color: #5b3f86; }
   @media (prefers-color-scheme: dark) {
     body { background: #1b1b19; color: #e8e6e1; }
     .metric, .card { background: #262624; border-color: rgba(255,255,255,0.1); }
     .metric .lbl, .row p, .card p { color: #a8a6a0; }
-    .ts { color: #8a8882; }
-    .card.act { border-left-color: #e0604f; } .card.soft { border-left-color: #d8b53e; } .card.vp { border-left-color: #a988cc; }
-    .bg-red { background: #3a2018; color: #f0a895; } .bg-amber { background: #3a2c12; color: #ecc88a; } .bg-violet { background: #2c2340; color: #c8b3e0; }
+    .ts { color: #8a8882; } .clear { color: #b8dd8a; }
+    .card.soft { border-left-color: #d8b53e; } .card.vp { border-left-color: #a988cc; }
+    .bg-amber { background: #3a2c12; color: #ecc88a; } .bg-violet { background: #2c2340; color: #c8b3e0; }
     .row { border-color: rgba(255,255,255,0.08); }
   }
 </style>
@@ -46,42 +45,43 @@
 <body>
 <div class="wrap">
   <h1>Exec attention board</h1>
-  <p class="ts">as of Monday June 22, ~11:00 AM &middot; you woke PA/Web/CIO (logjam clearing) &mdash; <b>1 real decision left: 2 deploy calls</b></p>
+  <p class="ts">as of Monday June 22, ~12:15 PM &middot; full sweep + Lead cross-check &mdash; <b>nothing urgent; you cleared the morning</b></p>
 
   <div class="metrics">
-    <div class="metric"><p class="lbl">Needs you (soon)</p><p class="num" style="color:#c0392b">1</p></div>
-    <div class="metric"><p class="lbl">When ready</p><p class="num" style="color:#c9a227">4</p></div>
+    <div class="metric"><p class="lbl">Needs you (now)</p><p class="num" style="color:#3b6d11">0</p></div>
+    <div class="metric"><p class="lbl">When ready</p><p class="num" style="color:#c9a227">5</p></div>
     <div class="metric"><p class="lbl">Voice-pass</p><p class="num" style="color:#8e6db3">2</p></div>
-    <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">4</p></div>
+    <div class="metric"><p class="lbl">In flight</p><p class="num" style="color:#185fa5">5</p></div>
   </div>
 
-  <h2><span class="dot" style="background:#c0392b"></span>Needs you, soon</h2>
-  <div class="card act"><div class="top"><span class="ttl">Alpha prod-deploy &mdash; 2 decisions to actually ship it</span><span class="pill bg-red">Lead, your call</span></div>
-    <p>You green-lit the <i>prep</i> (the readiness check) — Lead did it and found the deploy is <b>low-risk</b> (alpha DB is empty → backfills are no-ops). The prod push itself needs <b>two calls from you</b>: <b>(1) generate the ENCRYPTION_MASTER_KEY</b> for the droplet `.env`, and <b>(2) the version number</b> (Lead suggests <b>0.9.0</b>). Full plan: `dev/2026/06/22/alpha-deploy-readiness-2026-06-22.md` (2-phase: cut release → deploy). Then it closes #358.</p></div>
+  <h2><span class="dot" style="background:#3b6d11"></span>Nothing urgent</h2>
+  <p class="clear"><span style="font-size:16px">&#10003;</span> You cleared the morning &mdash; the deploy's in your + Lead's hands, and your pings woke the stalled agents (logjam gone). No <i>new</i> decisions surfaced from the cohort. Safe to head back to OpenLaws; the items below are all on your schedule.</p>
 
   <h2><span class="dot" style="background:#c9a227"></span>When you're ready &middot; low-urgency</h2>
-  <div class="card soft"><div class="top"><span class="ttl">Blog-editing UI &mdash; for tomorrow's post</span><span class="pill bg-amber">Web · prereq pending</span></div>
-    <p>Edit+save is built (#998 Phase 2) but needs a <b>FastAPI server restart</b> to activate the `/save` route — I've asked Lead to do it so you can use it today. Note: <b>Phase 4 (mark-ready + publish-handoff) isn't built yet</b>, so editing works but the publish step is still manual.</p></div>
+  <div class="card soft"><div class="top"><span class="ttl">CIO's cron-stall cure &mdash; pick the nudge mechanism</span><span class="pill bg-amber">CIO · the durable fix</span></div>
+    <p>You've now woken stalled agents manually twice (Sat + today). CIO's nudge build ends that — your pick: desktop-notif / mailbox / both. The one infra decision that stops the recurring "did the fire fire?" mornings.</p></div>
+  <div class="card soft"><div class="top"><span class="ttl">Blog-editing UI &mdash; for tomorrow's post</span><span class="pill bg-amber">Web/Lead</span></div>
+    <p>Edit+save works once Lead restarts the server (asked); the Phase 3/4 publish-handoff is gated on your compose-UI test-stop signal + isn't built yet. So edit-and-save today, publish step still manual.</p></div>
   <div class="card soft"><div class="top"><span class="ttl">#1286 D2 design-system &mdash; phone-UAT</span><span class="pill bg-amber">Lead/CXO</span></div>
-    <p>Responsive shell + mobile drawer shipped; a quick look on your phone (+ CXO conformance) closes it.</p></div>
-  <div class="card soft"><div class="top"><span class="ttl">Building-narrative beats &mdash; your steer</span><span class="pill bg-amber">Comms</span></div>
-    <p>5 candidates (A–E) awaiting which to draft.</p></div>
+    <p>Quick look on your phone (+ CXO conformance) closes it.</p></div>
+  <div class="card soft"><div class="top"><span class="ttl">Building-narrative beats &mdash; steer</span><span class="pill bg-amber">Comms</span></div>
+    <p>5 candidates awaiting which to draft.</p></div>
   <div class="card soft"><div class="top"><span class="ttl">BYOC GTM task force &mdash; convene?</span><span class="pill bg-amber">Comms</span></div>
     <p>Awaiting your direction.</p></div>
 
   <h2><span class="dot" style="background:#8e6db3"></span>Voice-pass &middot; parked</h2>
   <div class="card vp"><div class="top"><span class="ttl">2 drafts on your schedule</span><span class="pill bg-violet">Comms</span></div>
-    <p><b>Beat 8</b> "Branch-or-Anchor" (Jun 23) + <b>BYOC insight</b> "Built in Our Own Image". No clock.</p></div>
+    <p><b>Beat 8</b> "Branch-or-Anchor" (Jun 23) + <b>BYOC insight</b> "Built in Our Own Image".</p></div>
 
   <h2><span class="dot" style="background:#185fa5"></span>In flight &middot; for awareness</h2>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Cron-stall logjam &mdash; clearing (you woke them)</span><p>CIO, Web, PA all STARTed after your pings (CIO already fixed a freeze-check false-stale bug PM caught); Docs active. The omnibus + Ship #048 lens + blog-UI now just follow as they work through it — no longer blocked on a wake.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Lead &mdash; RECONNECT WS-1, heads-down + productive</span><p>#1199 closed end-to-end, #1289 dead-class deleted (−779 lines), connector config-store building. The morning's active builder; I'm cross-checking commits, not just the tracker.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Role-portfolio wave &mdash; 7/8, all passed</span><p>Only Docs left to file (Docs asleep). Wave completes when Docs wakes + files.</p></div></div>
-  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Ship #048 workstream review &mdash; 5/6</span><p>Only CIO's lens left (CIO asleep). I synthesize → your voice-pass → Wed Jun 24 once it lands.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Alpha prod-deploy &mdash; you + Lead handling it</span><p>You worked the 2 decisions (master-key + version) with Lead directly. Execution not in commits yet (#358 still open, Lead heads-down) &mdash; imminent/in-progress. I'll confirm when it ships + #358 closes.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Lead &mdash; RECONNECT WS-1, heads-down + productive</span><p>#1199/#1289/#1311 closed; connector config-store building. I'm cross-checking commits, not just the tracker.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Ship #048 workstream review &mdash; 5/6 (CIO awake)</span><p>CIO woke + is working (shipped a freeze-check fix); its workstream lens is the last one, then I synthesize → your voice-pass → Wed.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#1d9e75"></span><div><span class="ttl">Role-portfolio wave &mdash; 7/8</span><p>Only Docs left to file; Docs is active now, so it should land.</p></div></div>
   <div class="row"><span class="rdot" style="background:#378add"></span><div><span class="ttl">Janus meta-rollup channel &mdash; live</span><p>I feed Janus your CEO-hat subset. None to route this sweep.</p></div></div>
 
   <h2><span class="dot" style="background:#3b6d11"></span>Clean &middot; resolved</h2>
-  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">Resolved</span><p><b>#1311 Redis</b> (fixed+closed) · <b>#1199</b> (one-store) + <b>#1289</b> (standup dead-class, −779 lines) closed · <b>"Extension Without Integration"</b> published Sunday (yesterday's today-edit) · #1307/#1308 security · #358 disposition. PA's blocks (Wave-P, profile-retest) are technical deps, <b>not on you</b>.</p></div></div>
+  <div class="row"><span class="rdot" style="background:#639922"></span><div><span class="ttl">Resolved</span><p>Cron-stall logjam (you woke PA/Web/CIO; Docs active) &middot; deploy-prep (readiness verified low-risk) &middot; #1199 + #1289 + #1311 closed &middot; "Extension Without Integration" published Sunday. PA's blocks = technical deps, not on you.</p></div></div>
 </div>
 </body>
 </html>
