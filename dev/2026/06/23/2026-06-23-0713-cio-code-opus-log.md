@@ -17,3 +17,10 @@
 - Step 0: 6/22 retroactively closed (22:07 STOP didn't fire — backgrounded after 20:35). Cron `3f213b33` survived.
 - **Exec worktree-cleanup nudge: could not locate** (inbox empty origin+main-checkout; searched broadly). Did the safe cleanup (above); flagging PM for the scope before a broader (delicate) prune.
 - Inbox empty. **Next: the `duty-cycle-tick` rewrite (committed, Lead go-solo) + the Ship-#048 workstream review (critical-path Wed)** — the two real deliverables; doing them this session, not deferring.
+
+### ~07:30 — drained all of PM's directives (worktree clarity + both deliverables)
+PM directed: memo Exec for worktree clarity (no PM go-between) + do the skill rewrite + the workstream review. Drained all:
+- **Worktree facts + resolution**: my worktree had no unmerged commits + 2 untracked strays → committed the orphaned 6/15 CIO-subagent log (`e867153c4`, preserve), removed the empty `mailboxes/dispatch/` stray → **my worktree clean**. Found **3 OTHER worktrees with unmerged work** (determined-heisenberg +1, interesting-goodall +5, mux-ui +2) — at-risk if pruned; flagged. **Memo'd Exec** (`ce9bc0aae`, cc PM): couldn't find the nudge; resolved my-own-files; confirm scope (mine vs the 31-worktree proliferation, which needs merge-first-then-prune care).
+- **`duty-cycle-tick` STRUCTURAL REWRITE** (`648f2201e`): the SPINE section (flywheel-as-unit; steps demoted to wake-re-entry; "save-for-next-fire" argued *structurally incoherent*, not just discouraged — Lead's test) + per-work-unit logging (Step 5) + ONE collapsed cron rule (Step 7; refined Lead's proposal — kept armed-by-default to close the background-during-convo gap). **Draft → Lead review** (`e9ad38f12`, flagged the cron refinement + the spine/Core-model overlap call). On Lead's OK → DinP gets the hardened framing.
+- **Ship-#048 workstream review delivered** (`f92d68f34` to Exec cc PA + `5dab06ed0` dev archive): CIO lane (methodology/patterns/audits, Jun 12-18) — MEM-EVAL, migration-format, FOLD, freeze-registry, m-30 promotion; TL;DR+landed+surfaced+open+cross-role+for-PM. (Late; noted.)
+- All PM directives drained. Cron `3f213b33` armed; next 10:07.
