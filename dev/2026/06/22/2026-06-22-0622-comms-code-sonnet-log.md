@@ -19,3 +19,24 @@
 - Fire 0 (06:22 PT) — START. Jun 21 DAY-CLOSED ✓. Sync clean. Inbox: zero. ⚠️ Beat 8 publishes TOMORROW — PM voice-pass needed today.
 - Fire 1 (09:22 PT) — Sync clean, inbox zero. Beat 8 voice-pass pending. Quiet hold.
 - Fire 2 (12:22 PT) — Sync clean, inbox zero. ⚠️ Beat 8 window narrowing — noon; publish-ready needs to reach Docs today for Jun 23 publish. Flagged to PM. Holding.
+- Fires 3–5 (15:12–21:42 PT) — retroactive STOP. All PM-gated. Beat 8 voice-pass never came. Quiet day.
+
+## STOP — June 22, 2026 (retroactive — closed Jun 23 06:25)
+
+### Day arc
+
+Entirely PM-gated. Beat 8 voice-pass and Extension Without Integration re-voice-pass both pending. All fires quiet holds.
+
+### Open items for Jun 23
+
+- **Beat 8 "Branch-or-Anchor"** (TODAY Jun 23) — PM voice-pass → template-audit → publish-ready to Docs
+- **Extension Without Integration** — PM re-voice-pass pending; no pub date pressure
+- **Beat candidates A–E** — awaiting PM steer
+- **BYOC insight** — PM voice-pass when convenient
+- **#1160, BYOC GTM** — blocked
+
+### Memory & briefing surfaces referenced
+
+**Referenced**: duty-cycle-tick skill. **Loaded but not referenced**: BRIEFING-CURRENT-STATE.md. **Wanted but not found**: nothing.
+
+<!-- DAY-CLOSED: 2026-06-22 -->
