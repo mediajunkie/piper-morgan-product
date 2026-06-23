@@ -27,6 +27,8 @@
 
 - **~9:45 AM fire (server errors + model switch to Sonnet; CIO nudge investigation + board refresh).** PM relay: server errors interrupted the 9:32 fire; PM switched to Sonnet 4.6 for reliability. Two PM signals: (1) Comms cleaned Beat-8, **PM editing it right now** (voice-pass in progress); (2) CIO reports nudge inbox is empty. **CIO nudge verified on origin/main** via `git ls-tree` — `mailboxes/cio/inbox/nudge-exec-2026-06-23-ship048-lens-now-critical-path-for-wed.md` is confirmed at `fb98b2235`. CIO's own start log (`5a0298755`, committed 07:21 after the nudge) already lists **"deliverables today = skill-rewrite + workstream-review"** — the message is through. CIO's inbox-empty claim is a fetch-timing artifact (they need `git fetch`), not a delivery failure. Board updated (`5a8389e78`): Beat-8 → "voice-pass in progress"; Ship #048 row → CIO has it as today's deliverable. **Exec inbox empty**. Monitoring CIO commits for workstream lens.
 
+- **~10:02 AM — duty-cycle-tick skill (WORK PARTS).** Cron `8f2194b1` armed; sync clean; inbox EMPTY (MANIFEST.md only). Carry-forward rewritten (`dc30eaa1a`) — ★ 6/23 block: Ship#048 draft ready, wave 8/8 complete, v0.8.9 deployed, Beat-8 published. Exec read/ MANIFEST regenned (487 entries, `c03b2ae29`). Queue at (0,0). Cron armed; next fire 12:32.
+
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
 
