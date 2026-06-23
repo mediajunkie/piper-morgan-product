@@ -2,7 +2,7 @@
 
 **Status**: COMPLETE — mechanism reverse-engineered from the live droplet by Lead Dev, 2026-06-19 (was a STUB; PA flagged the gap in `memo-pa-to-lead-cc-pm-alpha-deploy-runbook-gap-2026-06-19`).
 **Created**: June 19, 2026 (PA)
-**Last Updated**: June 20, 2026 (Lead Dev — the migrate-never-ran finding + corrected mitigation, #1299; 0.8.8 now live). Prior: June 19 (full mechanism + safe procedure)
+**Last Updated**: June 22, 2026 (Lead Dev — **0.8.9 deployed live**; corrected the #1299 migrate script for 0.8.9 [db singleton, not `engine`; POSTGRES_PASSWORD unset]; added the secrets-must-be-named-in-app gotcha + the encryption round-trip smoke). Prior: June 20 (migrate-never-ran, #1299; 0.8.8); June 19 (full mechanism + safe procedure)
 
 ---
 
@@ -55,32 +55,46 @@ The Jun-7 (0.8.7) deploy wrote `BUILD_FAIL` — but it was NOT a real failure: t
 
 `alembic.ini:87` hardcodes `sqlalchemy.url = postgresql://piper:...@localhost:5433/piper_morgan` (a dev default), and `alembic/env.py:43` reads that static value verbatim. Inside the app container, postgres is at `postgres:5432`, NOT `localhost:5433` — so `docker compose exec app alembic upgrade head` connects to nothing and errors `connection refused`. **The migrate has silently failed on every deploy**; the DB only stayed usable because schema changes were rare. The 0.8.8 deploy exposed it — the droplet DB was **7 migrations behind** (the entire D1/RECONNECT schema: documents/#1238, owner_id/#1252, project_integrations/#1267, intents/workflows/tasks/stakeholders/#1273). The app was "healthy" (`/health` 200) but hollow.
 
-**Correct mitigation — run the migrate with the app's REAL DB URL** (a temp script in the container that overrides alembic's url with the working engine URL):
+**Correct mitigation — run the migrate with the app's REAL DB URL** (a temp script in the container that overrides alembic's url with the working engine URL).
+
+> **⚠️ 2026-06-22 correction (verified on the 0.8.9 deploy).** The previous script (`from services.database.connection import engine`) is **stale**: connection.py exports a module-level `db = DatabaseConnection()` **singleton** (the engine is a class attribute, not a module export) → `ImportError`. The env-var fallback *also* fails on the droplet — `POSTGRES_PASSWORD` is **unset** (the app uses connection.py's default; the postgres password is compose-hardcoded `dev_changeme_in_production`), so an `os.environ`-built URL has an empty password → `fe_sendauth: no password supplied`. Use `db._build_database_url()` (the app's own URL logic + real creds), sync-ified for alembic's psycopg2:
+
 ```bash
 cd /opt/piper
 cat > _run_migrate.py <<'PY'
 import os
+os.chdir("/app")
 from alembic.config import Config
 from alembic import command
-try:
-    from services.database.connection import engine
-    url = str(engine.url)
-except Exception:
-    try:
-        from dotenv import load_dotenv; load_dotenv()
-    except Exception:
-        pass
-    u = os.environ
-    url = f"postgresql://{u['POSTGRES_USER']}:{u['POSTGRES_PASSWORD']}@{u['POSTGRES_HOST']}:{u['POSTGRES_PORT']}/{u['POSTGRES_DB']}"
+from services.database.connection import db      # module-level DatabaseConnection() singleton
+raw = db._build_database_url()                    # postgresql+asyncpg://user:realpw@host:port/db[?ssl]
+url = raw.replace("+asyncpg", "").split("?")[0]   # sync psycopg2 URL; drop async-only ssl query
 cfg = Config("alembic.ini"); cfg.set_main_option("sqlalchemy.url", url)
-command.upgrade(cfg, "head"); print("MIGRATE OK")
+command.upgrade(cfg, "head")
+print("MIGRATE OK @", url.rsplit("@", 1)[-1])     # host:port/db only — never log creds
 PY
-docker compose exec -T app python /app/_run_migrate.py && rm -f _run_migrate.py
-# verify the head + the schema:
+docker compose cp _run_migrate.py app:/tmp/_run_migrate.py && docker compose exec -T app python /tmp/_run_migrate.py
+rm -f _run_migrate.py
+# verify the head + restart clean against the now-complete schema:
 docker compose exec -T postgres psql -U piper -d piper_morgan -tAc "TABLE alembic_version"
-docker compose restart app   # clean init against the now-complete schema
+docker compose restart app
 ```
 The durable fix (make `alembic.ini` env-driven so deploy.sh's migrate just works) is tracked in **#1299 (a) + (b)**.
+
+## ⚠️⚠️ Secrets/env vars must be NAMED in the app service (found 2026-06-22, the 0.8.9 deploy)
+
+`/opt/piper/.env` is **not** auto-loaded into the app container. The `app` (and `orchestration`) compose services use an explicit `environment:` list, **not** `env_file:` — so only vars *named* in that list reach the container. A new secret placed in `.env` alone is invisible to the app. (And `docker compose restart` never re-reads env config — only `up -d` / recreate does.)
+
+This bit the 0.8.9 deploy: `ENCRYPTION_MASTER_KEY` was correctly in `.env`, every structural check passed (version / migrate / schema / health / site), but `FieldEncryptionService.from_env()` returned `None` → encrypt-at-rest silently no-op'd. **The repo `docker-compose.yml` now names `ENCRYPTION_MASTER_KEY=${ENCRYPTION_MASTER_KEY:-}` in both `app` + `orchestration`** (commit on main 2026-06-22) — so a deploy from a `production` that carries that commit just works. **Until then**, the droplet is patched via `docker-compose.override.yml`:
+```bash
+# /opt/piper/docker-compose.override.yml — under `services:` add:
+#   app:
+#     environment:
+#       - ENCRYPTION_MASTER_KEY=${ENCRYPTION_MASTER_KEY}
+docker compose up -d app   # recreate (NOT restart) to pick up the new env
+docker compose exec -T app printenv ENCRYPTION_MASTER_KEY >/dev/null && echo PRESENT || echo ABSENT  # verify w/o printing the value
+```
+**The rule**: any new secret the app needs must be *both* in `.env` *and* named in the app's `environment:` (repo compose, or the droplet override).
 
 ## The code-update step (the gap PA flagged)
 
@@ -119,7 +133,16 @@ cd /opt/piper && ./deploy.sh
 cat BUILD_OK 2>/dev/null && echo "BUILD_OK" || tail -20 deploy.log
 docker compose ps                                              # app healthy?
 docker exec piper-app grep -m1 '^version' /app/pyproject.toml  # = target version?
-curl -s -o /dev/null -w 'site → %{http_code}\n' https://alpha.pipermorgan.ai/   # 200/302, not 5xx
+curl -s -o /dev/null -w 'site → %{http_code}\n' https://alpha.pipermorgan.ai/   # 200/302/401 (gate), not 5xx
+# feature smoke — encrypt-at-rest actually works (structural-green != feature-working; this caught the 0.8.9 key gap):
+cat > _verify_enc.py <<'PY'
+import os; os.chdir("/app")
+from services.security.field_encryption import FieldEncryptionService
+svc = FieldEncryptionService.from_env(); assert svc, "no ENCRYPTION_MASTER_KEY in app env"
+assert svc.decrypt(svc.encrypt("x", "smoke"), "smoke") == "x", "round-trip mismatch"
+print("ENCRYPTION ROUND-TRIP OK")
+PY
+docker compose cp _verify_enc.py app:/tmp/_verify_enc.py && docker compose exec -T app python /tmp/_verify_enc.py; rm -f _verify_enc.py
 ```
 **If `BUILD_FAIL`:** apply the footgun mitigation (re-run the migrate once `app` is healthy).
 **Rollback if broken:** `tar xzf "$B/opt-piper-code.tar.gz" -C /opt/piper` → retag the `rollback-*` image back to `piper-morgan-stable-app` → `docker compose up -d app`.
