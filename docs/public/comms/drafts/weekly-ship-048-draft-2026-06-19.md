@@ -54,6 +54,10 @@ methodology-30 (Consumer-Trace Verification) was promoted from Emerging to Prove
 
 The building-narrative hold lifted Jun 16 and Beats 14–16 (Jul 16/21/23) were drafted and calendared in the same fire. The Comms→Docs handoff protocol formalized Jun 18: explicit publish-ready memo as the trigger, live URL as the return signal. First formal use that same day. BYOC narrative also unblocked as a standing item — framing available: "intake doubles as proof of the working relationship, the moat a static questionnaire can't produce."
 
+[![A worried surveyor inspects a sturdy stone bridge using warped measuring tools—a bent ruler, tangled plumb line, and damaged map—while travelers cross the bridge without concern and a puzzled ghostly AI examines the crooked ruler, realizing the instruments are the real problem.](ai-bridge.png)](https://pipermorgan.ai/blog/hypothesis-refuted)
+
+*"Maybe check the ruler?"* — from *[Hypothesis Refuted](https://pipermorgan.ai/blog/hypothesis-refuted)*
+
 ## 📊 Governance & operations
 
 **Role-portfolio trust framework ratified and wave launched.** PM ratified the framework Jun 14 (five rules, HOST's pilot as the worked example), and the wave kicked off immediately — five of eight main-cohort portfolios passed their 5-rule review within five days. The structural trust property the framework makes visible: a portfolio is healthy to the degree it answers "what am I here to advance?" and unhealthy to the degree it reads "what am I allowed to work on?"
