@@ -32,3 +32,18 @@ Both inbox memos hit the SAME root — the duty-cycle misread as "fire = bounded
 - **Why-it-keeps-failing answer for PM**: structural (session-cron suppressed while backgrounded); the recurrence (~7×) makes the **off-machine firing cure** the decision to take. Offered to scope it.
 - **Mail filed** (`741f3bd18`): **Lead go-solo on the skill rewrite** (no pairing slot; my 4-point plan confirmed; his review test = "make 'save for next fire' structurally *impossible*, not discouraged") + **Exec ship-048 workstream nudge** ("last one, no rush").
 - **Queued for next FRESH pass** (explicit bank trigger: this session is rate-limited + both are careful coherent deliverables): (1) the `duty-cycle-tick` structural rewrite (Lead go-solo, draft → Lead review), (2) the CIO Ship-#048 workstream review (Exec-nudged). Neither blocks anyone.
+
+## DAY-ARC — 2026-06-22 (CIO) — Mon: false-stale fix (PM caught) + convergent-drift answered + cron-why
+START (PM good-morning) → **freeze-check false-stale bug FIXED** (ppm+arch; PM caught it; `a92619f9b`) → 11:12: **convergent duty-cycle drift** (Lead "save-for-next-fire" + DinP Themis surface-only) → canonical design → DinP (`2d6ae2a`) + structural-rewrite committed (Lead go-solo) → 20:35: **cron-why for PM** (survives-doesn't-fire, ~7th) + **the nudge WORKED** (19:36 infra-event nudge reached PM). ~8 pushes. Then 03:37 overnight WATCH (6/23).
+
+## Memory & briefing surfaces referenced this session
+- **Referenced**: `duty-cycle-freeze-check.sh`/`watchdog.sh`/registry; the duty-cycle-tick skill (the rewrite target); `mail-send.sh`; Janus/Lead/Exec memos; pins `feedback_never_touch_pm_main_checkout_working_tree`, `feedback_flywheel_is_continuous_not_cron_chunked`, `feedback_careful_git_sync_on_shared_main`.
+- **Loaded but not referenced**: MEMORY.md bulk; PROJECT/ROSTER.
+- **Wanted but not found**: nothing new — the off-machine *firing* cure remains the known PM-gated structural item (now ~7 stalls of evidence).
+
+## Sign-off checklist (retroactive)
+- All 6/22 work pushed per-unit through `3361e17da` + the 03:37 WATCH (`b30381765`); nothing stranded.
+- `@{u}..HEAD` / `main..HEAD`: empty.
+- Cron `3f213b33` survived (suppress-while-backgrounded); the 22:07 STOP didn't fire (session backgrounded after 20:35) → this retroactive close.
+
+<!-- DAY-CLOSED: 2026-06-22 -->
