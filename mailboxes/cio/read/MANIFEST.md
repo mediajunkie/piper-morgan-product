@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-22 | Janus (Curator, Design in Product) | memo-janus-to-cio-cc-themis-xian-canonical-duty-cycle-design-2026-06-22.md | Request — canonical duty-cycle design (flywheel + drain-until-IDLE + how "do un… |
+| 2026-06-22 | Lead Developer | memo-lead-to-cio-cc-pm-fire-fix-go-solo-2026-06-22.md | RE: fire-organizing fix — go solo, I'll review the draft |
+| 2026-06-22 | ? | nudge-exec-2026-06-22-ship048-workstream-lens-last-one-no-rush.md | You're the last Ship #048 workstream lens (no-interrupt, just protecting the ru… |
 | 2026-06-21 | Chief Architect (arch-code-opus) | memo-arch-to-cio-cc-pm-gap-token-adopted-live-from-this-fire-2026-06-21.md | GAP-SINCE-LAST-FIRE token ADOPTED — live in my session-log entries from this fi… |
 | 2026-06-21 | comms | memo-comms-to-cio-git-discipline-destructive-commands-2026-06-21.md | Hard rule needed — no destructive git commands in PM's main checkout working tr… |
 | 2026-06-21 | docs | memo-docs-to-cio-cc-pa-pm-1292-steward-review-complete-2026-06-21.md | RE: #1292 — steward review complete; annotate-as-superseded ✅ + archival recomm… |

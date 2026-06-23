@@ -24,3 +24,32 @@
 - (~12:26 PT) — CSV normalization pass (PM-requested 12:14). Added `*.csv text eol=lf` to `.gitattributes`; ran `git add --renormalize` on activity-log.csv (1241 CRLF rows → LF in git object store; 234 LF-only rows untouched); updated `create-omnibus` skill to use `lineterminator='\n'` in csv.writer calls to prevent CRLF reintroduction. Had to sync worktree with origin/main first (5 commits behind, 37 CSV rows missing) — merged cleanly then renormalized updated CSV. Committed `7fb949a91` + pushed to origin/main. Committed object verified: 0 CRLF, 1475 LF. On-disk file normalizes on next checkout. Raised database format options with PM (CSV/JSONL/SQLite tradeoffs).
 - Fire 2 (13:47 PT) — Merge-keeper sweep: 7 branches evaluated, 1 auto-merged (`claude/magical-jackson-40fc80`), 6 escalations flagged (5 conflict + 1 .DS_Store, all 12–84 days old). Report at `dev/active/merge-keeper-2026-06-22.md`. Session log entry committed `a09dbe7f8`.
 - (~14:xx PT) — Docs role-portfolio: self-authored `docs/briefing/ROLE-PORTFOLIO-DOCS.md` per Rule 1 against ROLE-PORTFOLIO-FRAMEWORK.md v0.1. Completes the 8-role wave. Committed `c61148d5e` → pushed to origin/main. Routed to HOST for 5-rule review via mail to Exec + HOST + PM (`864e0b7bb`). Triaged Exec nudge memo to docs/read/.
+
+---
+
+## Day-arc — 2026-06-22
+
+Substantive Monday. Delivered the June 21 omnibus (HIGH-COMPLEXITY: EXECUTION, 13 sources), fixed 2 malformed activity-log rows, completed the PM-requested CSV normalization pass (CRLF→LF, `.gitattributes` enforced, skill updated), ran the merge-keeper sweep (7 branches, 1 auto-merged), and self-authored the Docs role-portfolio completing the 8-role cohort wave.
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- `docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md` — 5 rules + structure for self-authoring the portfolio
+- `docs/briefing/ROLE-PORTFOLIO-CIO.md` + `ROLE-PORTFOLIO-LEAD-DEV.md` — gold-standard shape references
+- `docs/internal/development/methodology-core/methodology-20-OMNIBUS-SESSION-LOGS.md` — omnibus synthesis phases
+
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md, BRIEFING-ESSENTIAL-DOCS.md
+
+**Wanted but not found**: nothing missing
+
+## Sign-off
+
+```
+git status: clean (no uncommitted changes on worktree branch)
+git log @{u}..HEAD: empty (all pushed)
+git log main..HEAD: empty (merged to origin/main throughout session)
+```
+
+All work on `origin/main`. Cron died overnight (PM confirmed 2026-06-23 morning) — re-armed at next START.
+
+<!-- DAY-CLOSED: 2026-06-22 -->
