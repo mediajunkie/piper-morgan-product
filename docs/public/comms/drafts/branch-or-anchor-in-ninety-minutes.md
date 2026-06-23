@@ -1,7 +1,7 @@
 ---
-image:
-alt:
-caption:
+image: 'ai-librarian.png'
+alt: 'A translucent AI librarian pauses before shelving a new book that resembles an established series, then creates a neighboring shelf with a visible lineage link, recognizing that similar appearance does not mean the same category.'
+caption: '"Not so fast there!"'
 ---
 
 # Branch-or-Anchor in Ninety Minutes
