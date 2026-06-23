@@ -87,6 +87,18 @@ The Code-era pattern reverses the Chat-era pattern (omnibus as primary input). F
 - **Workstream review naming + routing** unchanged.
 - **Verifiable-claims discipline** unchanged — actually strengthens, since primary-source reading reduces paraphrase-drift risk.
 
+### Canonical sources for facts; role voice for everything else
+
+There are two distinct kinds of content in a workstream memo, and they come from different sources:
+
+**1. Objective facts** — what published, when, at what URL; what issues closed; what ADRs were ratified; what test results said. For these, consult the canonical source: the editorial calendar (`docs/internal/planning/comms/editorial-calendar.csv`) for publication records, GitHub for issue and PR state, the ADR directory for ratified records. Do not rely on memory or session-log recall for facts that have an authoritative record elsewhere. Memory drifts; canonical records don't.
+
+**2. Role perspective** — what you noticed, what you personally touched, how something felt from your lane, the nuance and detail only your vantage captures. For these, your direct experience is the primary and best source. No canonical record can substitute for "here is what I observed while working on this." Session logs are the right primary source here.
+
+The distinction matters at synthesis time: exec picks up your perspective and judgment; PM fact-checks verifiable claims against canonical sources before the Ship publishes. A fact that doesn't match the canonical record creates a correction loop at synthesis or PM voice-pass. Anchoring facts in canonical sources from the start short-circuits that loop; reserving your role voice for perspective and detail ensures the synthesis captures what only you can see.
+
+**For Comms specifically**: the editorial calendar is the canonical source for all publication claims (count, dates, titles, platforms). Even if you worked on every piece, check the calendar rather than counting from memory — the calendar is the record of what actually published, including pieces that may have published automatically or without direct Comms involvement that week.
+
 ## Naming and Routing
 
 ### Filename standard
@@ -156,6 +168,7 @@ Per Exec Apr 19 standing norm (`memo-exec-to-host-verifiable-claims-2026-04-19.m
 | Write about the in-flight week | The cadence is most-recent-closed only | Wait until Friday after the window closes |
 | Synthesize from omnibus alone | Code-era pattern is primary-logs-first | Read session logs in `dev/YYYY/MM/DD/`; use omnibus as coverage check |
 | Assert comparative claims without source-check | Apr 19 verifiable-claims discipline | Source-check, downgrade, or flag as unverified |
+| Report publication counts, dates, or titles from memory | Memory drifts; counts mis-state; PM discovers errors at voice-pass | Check the editorial calendar (`docs/internal/planning/comms/editorial-calendar.csv`) for any verifiable publication fact |
 | Try to write the Ship narrative in the workstream memo | Workstream memo is role-scoped *input*; Ship is exec synthesis | Write your role's lens; let exec synthesize |
 | Wait for full-week clarity before drafting | Tuesday EOD is the last-resort floor; PM does not prefer late drafts | Draft Friday/weekend; iterate if late material lands |
 | File on a feature branch | Apr 26 mailbox-discipline norm: mailbox writes go to main only | Switch to main, file, commit+push, return to branch |
@@ -190,6 +203,9 @@ PM clarified the writing window in chat: Fri–Tue, ideally Sat/Sun "in the bank
 
 ### Source-discipline shift (April 27, 2026)
 PM directive Apr 27: workstream reviews now read primary session logs first; omnibus = coverage check, not primary input. Effective Ship #041 onward. Code-era visibility makes primary-source reading nearly as fast as omnibus, with materially higher fidelity.
+
+### Canonical-source / role-voice distinction added (June 23, 2026)
+Comms's Ship #048 workstream review (Jun 20) missed one publication ("Critical vs Commodity Work in a Role," Jun 13) and mis-stated normal cadence as "above cadence" — root cause was counting from memory rather than checking the editorial calendar. Exec (Jun 23 PM directive) added the "canonical sources for facts; role voice for everything else" section and the corresponding anti-pattern row. The editorial calendar is now named as the canonical source for all publication claims.
 
 ### Methodology-core filing (April 27, 2026)
 This entry filed under CIO authority per Apr 26 HOST/CIO split. HOST holds the live-comms surface; this is the durable companion.
