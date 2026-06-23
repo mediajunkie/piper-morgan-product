@@ -57,10 +57,21 @@
   --color-neutral-darkest-gray: #2c3e50; /* Darkest gray for headings */
 
   --color-neutral-light-blue-gray: #bdc3c7; /* Light blue-gray for placeholders, icons */
-  /* #1264 tentative nav-chrome colors (CXO ratify/revise) */
+  /* #1264 tentative nav-chrome colors (CXO ratify/revise) — LIGHT-surface current top nav */
   --color-text-nav: #5a6c7d; /* muted nav-link / dropdown text */
   --color-icon-muted: #7f8c8d; /* muted nav icons / chevrons */
   --color-state-active-bg: #e3f2fd; /* active nav-item background tint */
+
+  /* #1280 nav DARK surface — bounded dark zone for the left-rail nav (NOT app-wide dark
+     mode / no theme system). CXO spec 2026-06-18 (dev/active/design-spec-dark-nav-shell-2026-06-18.md).
+     Nav-scoped CSS references these only — no raw hex in nav CSS after the left-rail lands. */
+  --color-nav-bg: #11212e; /* left nav background */
+  --color-nav-text: #cbd5dc; /* primary nav text (conversation names) */
+  --color-nav-text-muted: #7f97a6; /* section labels ("Chats · Layer 1") */
+  --color-nav-text-secondary: #9fb3c2; /* secondary items (timestamps, metadata) */
+  --color-nav-divider: #5d7385; /* footer dividers, subtle separators */
+  --color-nav-item-hover: rgba(255, 255, 255, 0.07); /* item hover bg */
+  --color-nav-item-active: rgba(255, 255, 255, 0.13); /* active/selected item bg */
 
   /* Special Colors */
   --color-special-blue-dark: #007acc; /* Darker blue for help tooltips, code */
@@ -95,6 +106,7 @@
   /* ===== SPACING ===== */
   /* Already defined in spacing.css, repeated here for completeness */
   --space-xs: 4px; /* 0.5x - micro spacing */
+  --space-dense: 6px; /* #1286 D2: dense-surface micro-spacing (Radar items, chips). Semantic name (CXO 2026-06-21) — describes the use, not an ordinal scale slot. Value sits between xs(4) and sm(8). */
   --space-sm: 8px; /* 1x - small spacing */
   --space-smd: 12px; /* #1264 tentative (CXO ratify/revise): nav 12px rhythm — between sm(8) + md(16) */
   --space-md: 16px; /* 2x - medium spacing */
@@ -105,6 +117,14 @@
   --space-4xl: 56px; /* 7x - 4x extra large */
   --space-5xl: 64px; /* 8x - 5x extra large */
 
+  /* ===== GRID + BREAKPOINTS (#1286 D2) ===== */
+  --grid-rail-width: 180px; /* left nav-rail column */
+  --grid-radar-width: 320px; /* Radar panel column (home only) */
+  /* Breakpoints — source-of-truth for media-query values (not applied as properties) */
+  --breakpoint-mobile: 480px; /* single-column floor */
+  --breakpoint-tablet: 768px; /* two-column: rail + content */
+  --breakpoint-desktop: 1024px; /* full shell: rail + content (+ Radar on home) */
+
   /* ===== TYPOGRAPHY ===== */
 
   /* Font Family */
@@ -112,18 +132,21 @@
                   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
                   sans-serif;
 
-  /* Font Sizes */
-  --font-size-xs: 12px; /* Small captions, labels */
-  --font-size-sm: 13px; /* Small text, help text */
-  --font-size-base: 14px; /* Body text, default */
-  --font-size-md: 15px; /* Slightly larger body text */
-  --font-size-lg: 16px; /* Large body text, form fields */
-  --font-size-xl: 18px; /* Large, prominent text */
-  --font-size-2xl: 20px; /* Section titles */
-  --font-size-3xl: 24px; /* Page titles */
-  --font-size-4xl: 32px; /* Large headlines */
-  --font-size-5xl: 48px; /* Hero text, main headlines */
-  --font-size-6xl: 72px; /* Extra large (error page icons) */
+  /* Font Sizes — rem-based (#1254 a11y): values are 1:1 with the prior px scale at the
+     16px root default (0 visual change), but now scale with the user's browser/OS font
+     preference, which px ignored. rem = relative to <html> (no html font-size override
+     exists → root = 16px). px-in-comment = the equivalent at default root size. */
+  --font-size-xs: 0.75rem; /* 12px — small captions, labels */
+  --font-size-sm: 0.8125rem; /* 13px — small text, help text */
+  --font-size-base: 0.875rem; /* 14px — body text, default */
+  --font-size-md: 0.9375rem; /* 15px — slightly larger body text */
+  --font-size-lg: 1rem; /* 16px — large body text, form fields */
+  --font-size-xl: 1.125rem; /* 18px — large, prominent text */
+  --font-size-2xl: 1.25rem; /* 20px — section titles */
+  --font-size-3xl: 1.5rem; /* 24px — page titles */
+  --font-size-4xl: 2rem; /* 32px — large headlines */
+  --font-size-5xl: 3rem; /* 48px — hero text, main headlines */
+  --font-size-6xl: 4.5rem; /* 72px — extra large (error page icons) */
 
   /* Font Weights */
   --font-weight-normal: 400;
@@ -136,6 +159,10 @@
   --line-height-normal: 1.4;
   --line-height-relaxed: 1.6;
 
+  /* Baseline rhythm (#1286 D2): 8px grid base; 24px body baseline (3 × 8px, 14px text) */
+  --baseline-unit: 8px;
+  --baseline-rhythm: 24px;
+
   /* ===== BORDERS & SHADOWS ===== */
 
   /* Border Radius */
@@ -144,6 +171,7 @@
   --border-radius-lg: 8px; /* Large rounded corners */
   --border-radius-xl: 12px; /* Extra large rounded corners */
   --border-radius-full: 50%; /* Circular borders */
+  --border-radius-pill: 999px; /* #1286 D2: pill shape for entity-type chips/tags (rectangular, not circular) */
 
   /* Box Shadows */
   --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.1); /* Small shadow */

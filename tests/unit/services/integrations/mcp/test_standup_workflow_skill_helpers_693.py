@@ -31,17 +31,17 @@ def _patched_skill_deps():
 
     Mirrors the fixture pattern in
     ``tests/unit/integrations/mcp/test_standup_workflow_skill.py`` so the
-    skill can be constructed without touching the real
-    MorningStandupWorkflow / SessionPersistenceManager / domain services.
+    skill can be constructed without touching the real domain services.
+
+    #1289: MorningStandupWorkflow / StandupOrchestrationService /
+    SessionPersistenceManager are no longer imported by the skill; patches removed.
     """
     module = "services.integrations.mcp.skills.standup_workflow_skill"
     with (
-        patch(f"{module}.MorningStandupWorkflow"),
-        patch(f"{module}.StandupOrchestrationService"),
         patch(f"{module}.GitHubDomainService"),
         patch(f"{module}.SlackDomainService"),
         patch(f"{module}.UserPreferenceManager"),
-        patch(f"{module}.SessionPersistenceManager"),
+        patch(f"{module}.NotionDomainService"),
     ):
         yield
 

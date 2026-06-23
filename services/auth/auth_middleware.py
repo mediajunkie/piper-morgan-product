@@ -93,7 +93,6 @@ EXEMPT_STATIC_ASSET_PATHS: List[str] = [
 
 # Localhost-only scaffolds. Not exposed externally; auth would be ceremony.
 EXEMPT_LOCALHOST_SCAFFOLD_PATHS: List[str] = [
-    "/api/v1/admin/compose",  # Issue #998 Phase 1: editorial compose UI (migrated #1075)
     "/api/v1/admin/trust",  # Issue #1148: dev trust-stage UI (router 404s in production)
 ]
 
@@ -108,6 +107,29 @@ DEFAULT_EXCLUDE_PATHS: List[str] = [
     *EXEMPT_STATIC_ASSET_PATHS,
     *EXEMPT_LOCALHOST_SCAFFOLD_PATHS,
 ]
+
+
+# ─── #1308: auth-exempt WRITABLE routes must be JUSTIFIED (the exempt list is a
+#     security boundary) ────────────────────────────────────────────────────────
+# Once the perimeter (Caddy) gate is removed (#1162), this exempt list IS the entire
+# attack surface. Every exempt route with a WRITE method (POST/PUT/PATCH/DELETE) must
+# appear here with a reason, or the `TestAuthExemptListIsASecurityBoundary` lint
+# (tests/test_exempt_list_boundary_1308.py) fails the build — making the #1307 class
+# (exempt + writable + prod-reachable) impossible by omission. A key is an exact path
+# OR a trailing-"/" prefix. Read-only exempt routes need no entry. Env-gated dev routes
+# are listed here with reason "env-gated" (they 404 in prod via require_dev_environment).
+AUTH_EXEMPT_JUSTIFIED: Dict[str, str] = {
+    # Auth bootstrap — can't require auth to authenticate.
+    "/api/v1/auth/login": "auth bootstrap (login)",
+    "/api/v1/auth/logout": "auth bootstrap (logout)",
+    "/api/v1/auth/refresh": "auth bootstrap (token refresh, #857)",
+    # Setup wizard — runs pre-account-creation.
+    "/api/v1/setup/": "setup wizard, pre-account-creation",
+    # Optional-auth — handles auth inline; the LLM call is gated by BYO-key (#490 / #1185).
+    "/api/v1/intent": "optional-auth (inline user resolution); LLM gated by BYO-key",
+    # Env-gated dev tooling — 404s in production via dev_trust's require_dev_environment.
+    "/api/v1/admin/trust/set-stage": "env-gated dev-only (dev_trust); 404s in prod",
+}
 
 
 class AuthMiddleware(BaseHTTPMiddleware):

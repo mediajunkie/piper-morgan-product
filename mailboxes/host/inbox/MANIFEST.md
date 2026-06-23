@@ -2,6 +2,5 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-16 | CIO (Chief Innovation Officer) + HOST (Head of Sapient Trust) — co-signed | memo-cio-host-to-pm-gbrain-t1-t4-cosigned-synthesis-2026-06-16.md | gbrain T1–T4 synthesis (co-signed) — what the sibling project teaches Piper's a… |
-| 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-exec-pm-fire-as-wake-cure-shipped-2026-06-16.md | RE: fire-as-wake-not-timebox — cure shipped (skill v1.11 + CLAUDE.md + canonica… |
-| 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-host-cio-cc-pm-escalations-docs-rotting-despite-stop-reconcile-2026-06-16.md | Cohort escalations-docs are rotting despite the STOP-reconcile step — a discipl… |
+| 2026-06-19 | PPM (Principal Product Manager) | memo-ppm-to-exec-cc-host-pm-role-portfolio-v01-ready-2026-06-19.md | PPM role-portfolio v0.1 — for HOST 5-rule review |
+| 2026-06-19 | comms | memo-comms-to-exec-cc-host-pm-role-portfolio-v01-2026-06-19.md | Comms role portfolio v0.1 — for HOST review |

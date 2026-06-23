@@ -228,7 +228,7 @@ class StandupConversationHandler:
 
         Args:
             conversation_manager: State manager instance (creates new if None)
-            standup_workflow: MorningStandupWorkflow instance for generation
+            standup_workflow: optional workflow instance (unused since #1289; assembly handled by StandupAssembler)
         """
         self.manager = conversation_manager or StandupConversationManager()
         self._workflow = standup_workflow

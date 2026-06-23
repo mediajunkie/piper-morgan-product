@@ -76,3 +76,43 @@ Each agent gets its own checkout of `main` used only for mail.
 This is the same shape as the freeze-registry and the v2 hazards: *mechanism over vigilance* (m-36). The bridge asks every agent to be careful on shared state; push-to-ref makes carefulness unnecessary by removing the shared state. Filed under the CIO unilateral mandate (automation that could silently strand/sweep another agent's work gets fixed structurally, not papered over).
 
 — CIO, 2026-06-16
+
+---
+
+## v3 BUILD + TEST — 2026-06-19 (CIO)
+
+**Status: BUILT + TESTED (12/12 green). Gated on Lead Dev plumbing review before the cohort swap.**
+
+Built after the same hazard **blocked Lead Dev** on 2026-06-19 (and hit CIO + PA the same morning) — the recurrence PM flagged as "uncommitted work on a shared checkout." Root cause confirmed live: the main checkout's local `main` is a hand-maintained second head that drifts from origin/main (origin races ahead via worktree `push HEAD:main`; local `main` only advances via bridge commits + manual pulls), so mail ops accumulate stranded commits + untracked residue until the bridge jams. Push-to-ref removes the shared tree from the path → the whole class is gone.
+
+### Files
+- **`scripts/mail-send-v3.sh`** — the implementation (option B). Same caller interface as v2. Runs from any worktree; defaults `PIPER_REPO` to the current worktree toplevel. Env overrides (`PIPER_REPO`/`PIPER_MAIL_REMOTE`/`PIPER_MAIL_BRANCH`) exist for the test harness.
+- **`scripts/test-mail-send-v3.sh`** — isolated harness (throwaway origin + clones in a temp dir; never touches real mail).
+
+### How it works (as built)
+`base = origin/main` → throwaway index seeded from base (`GIT_INDEX_FILE` → temp file) → per pathspec: present in worktree ⇒ `hash-object -w` + `update-index --add --cacheinfo 100644,<blob>,<path>`; absent ⇒ `update-index --force-remove` (the delete half of an inbox→read move) → `write-tree` → `commit-tree -p base` → `push <commit>:refs/heads/main`. Non-FF ⇒ re-fetch, rebuild on the new tip, retry (cap 6). No-op guard: identical tree ⇒ nothing sent.
+
+### Test evidence (`bash scripts/test-mail-send-v3.sh` → 12 passed, 0 failed)
+1. **Add** — memo lands on origin/main, correct content, linear history.
+2. **Move** — inbox→read: read/ copy added AND inbox/ copy removed, both halves in one commit.
+3. **No-op guard** — paths already matching origin ⇒ no commit, reports "nothing changed."
+4. **Real concurrency (5 parallel sends)** — all 5 land; **exactly +5 linear commits, no merges, no lost updates** — the rebuild-retry loop holds under genuine parallelism.
+5. **The cure** — with the shared "main checkout" deliberately **diverged (stranded local commit) + dirty (uncommitted WIP) + untracked-residue**, a send still **succeeds** and leaves that checkout's HEAD and WIP **byte-for-byte untouched** (nothing swept, nothing stranded). This is the structural proof: mail no longer depends on or mutates the shared tree.
+
+### Workflow implication (for the rollout)
+v3 is cleanest **run from your own worktree**: write the memo/cc/sent/move files where you are, then `mail-send.sh "msg" <paths>`. No `cd` to the main checkout, no bridge dance, no stash/pop — and the main checkout is never touched. v3 is back-compatible (same interface; still works if run from the main checkout, just leaves the old untracked residue there), so the swap breaks no callers, but the discipline doc should recommend worktree-based mail.
+
+### Rollout (GATED — do not swap live until cleared)
+1. **Lead Dev reviews the git plumbing** in `mail-send-v3.sh` (the asks below). Shared infra; CIO authored, LD sanity-checks.
+2. PM nod.
+3. Swap: `git mv scripts/mail-send-v3.sh scripts/mail-send.sh` (or replace contents); keep `test-mail-send-v3.sh` as the regression test.
+4. Update the mailbox discipline (CLAUDE.md "mailbox-on-main workflow" + the `deliver-mail` skill) to the worktree-mail flow. Keep `check-branch.sh` as the backstop (commit-tree doesn't trip it; interactive mail commits still must be on main).
+
+### Lead Dev review asks (the fiddly bits)
+- The throwaway-index dance (`GIT_INDEX_FILE` + `read-tree`/`update-index`/`write-tree`) — correct + leak-free? (temp index `rm`'d on every exit path.)
+- `update-index --add --cacheinfo 100644,<blob>,<path>` (comma form) — fine across our git versions? (passed on the local version; flag if any agent's git is older.)
+- The move encoding (present⇒add / absent⇒`--force-remove`) — correct for inbox→read, and for a memo that's a pure delete?
+- The rebuild-retry loop — is the cap (6) + the "one-file adds replay cleanly" assumption sound? Same-file concurrent writes are last-writer-wins (mitigated by recipient-owns-MANIFEST single-writer); acceptable?
+- Anything about running from a *linked worktree* (shared object store, shared refs) that the standalone-clone test wouldn't have surfaced?
+
+— CIO, 2026-06-19

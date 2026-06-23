@@ -29,6 +29,8 @@ from sqlalchemy import (
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import relationship
 
+from services.security.encrypted_types import EncryptedString  # #358-B: at-rest content encryption
+
 
 class CrossDialectUUID(TypeDecorator):
     """UUID column type that works across PostgreSQL (native UUID) and SQLite (CHAR(36)).
@@ -206,6 +208,11 @@ class UserAPIKey(Base):
     )  # Issue #262 - FK restored with UUID
     provider = Column(String(50), nullable=False)  # openai, anthropic, github, etc
     key_reference = Column(String(500), nullable=False)  # keychain identifier
+    # #358: AES-256-GCM encrypted-at-rest copy of the secret, portable off the OS
+    # keychain onto the hosted Postgres (the droplet has no keychain). Nullable —
+    # legacy/local-dev rows carry only key_reference. Encrypted via FieldEncryptionService
+    # (context "user_api_keys.secret"); see services/security/field_encryption.py.
+    encrypted_secret = Column(Text, nullable=True)
 
     # Key metadata
     is_active = Column(Boolean, default=True, nullable=False)
@@ -586,6 +593,43 @@ class DocumentDB(Base, TimestampMixin):
     source = Column(String(1000), nullable=True)
 
     # created_at / updated_at from TimestampMixin
+
+
+class ConnectorConfig(Base, TimestampMixin):
+    """RECONNECT WS-1 (#1226 / #1199) — DB-backed connector config: the single stable home for a
+    user's per-connector settings (e.g. the GitHub default repo). Replaces the cwd-fragile
+    data/github_preferences.json + the in-memory writer-less UserPreferenceManager + the github
+    config_service path. ADR-070 D4 (DB-backed) · ADR-071 D2 (owner_id FK) + D7 (tenant_id
+    named-not-built, m-40 multi-tenant-READY). Holds NO credential material (D3 — creds live in
+    the keychain; this is config like default_repository / selected_repositories).
+    """
+
+    __tablename__ = "connector_configs"
+
+    id = Column(CrossDialectUUID(), primary_key=True, default=uuid.uuid4)
+    # Owner = the settled single identity (WS-9-collapse). FK -> users.id (ADR-071 D2). NOT NULL:
+    # config must belong to someone (unlike Document provenance, which is nullable).
+    owner_id = Column(CrossDialectUUID(), ForeignKey("users.id"), nullable=False, index=True)
+    # m-40 multi-tenant-READY: NAMED, not built. NULL = single-tenant; no code branches on it yet
+    # (ADR-071 D7). When #1185 / public-BYOC lands, WS-1 generalizes to the (tenant, owner)
+    # composite without a re-stamp.
+    tenant_id = Column(CrossDialectUUID(), nullable=True, index=True)
+    # Which connector this config is for: "github" / "slack" / "calendar" / "notion".
+    connector = Column(String(50), nullable=False)
+    # Connector-agnostic config blob (github = {"default_repository", "selected_repositories"}).
+    # JSONB on Postgres / JSON on the SQLite test backend (#1038 cross-dialect pattern).
+    # NO credential material (D3) — only settings.
+    config = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"),
+        nullable=False,
+        default=dict,
+        server_default=text("'{}'"),
+    )
+    # created_at / updated_at from TimestampMixin
+
+    __table_args__ = (
+        UniqueConstraint("owner_id", "connector", name="uq_connector_config_owner_connector"),
+    )
 
 
 class Product(Base):
@@ -1172,7 +1216,7 @@ class ArtifactDB(Base):
 
     id = Column(String, primary_key=True)
     owner_id = Column(String, nullable=False)
-    content = Column(Text, default="")
+    content = Column(EncryptedString(context="artifacts.content"), default="")
     source_type = Column(String(50), nullable=False, default="generated")
     lifecycle_state = Column(String(20), nullable=True)
     source_conversation_id = Column(String, nullable=True)
@@ -1255,7 +1299,7 @@ class ConversationDB(Base):
     topics = Column(
         postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list
     )
-    preview = Column(Text, nullable=False, server_default=text("''"))
+    preview = Column(EncryptedString(context="conversations.preview"), nullable=False, server_default=text("''"))
     is_private = Column(Boolean, nullable=False, server_default=text("false"))
     turn_count = Column(Integer, nullable=False, server_default=text("0"))
 
@@ -1315,8 +1359,8 @@ class ConversationTurnDB(Base):
     id = Column(String, primary_key=True)
     conversation_id = Column(String, nullable=False)
     turn_number = Column(Integer, nullable=False, default=0)
-    user_message = Column(Text, nullable=False, default="")
-    assistant_response = Column(Text, nullable=False, default="")
+    user_message = Column(EncryptedString(context="conversation_turns.user_message"), nullable=False, default="")
+    assistant_response = Column(EncryptedString(context="conversation_turns.assistant_response"), nullable=False, default="")
     intent = Column(String, nullable=True)
     # #1180: JSONB on Postgres (production), JSON on SQLite (in-memory unit tests).
     entities = Column(

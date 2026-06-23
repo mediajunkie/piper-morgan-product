@@ -64,7 +64,7 @@ CLAUDE.md's existing "Git Worktrees" section describes the mechanism. No code or
 
 **How to apply**:
 - All session writes happen from the worktree's checkout path (`/path/to/repo-{branch-suffix}`), not from the main checkout.
-- If a write needs to land on `main` (e.g., mailbox mail), do the standard Rule 3 dance from the *worktree's* checkout: stash → checkout main → write+commit+push → switch back to your branch.
+- If a write needs to land on `main` (e.g., mailbox mail), do it from the *worktree's* checkout via push-to-ref: `scripts/mail-send.sh` for mailbox writes (#1259 — no stash/checkout dance; see CLAUDE.md "mailbox workflow"), or `git push origin HEAD:main` for a committed non-mailbox path. (The old stash → checkout main → push → switch dance is retired.)
 - At session resume, run `git status` from both the worktree path AND the main checkout path. Any divergence is the P-17 shape; commit from wherever the edit physically lives.
 - The discipline applies only when you've adopted a worktree for the session. Sessions entirely on `main` don't have this surface.
 
@@ -140,9 +140,11 @@ If recurrence persists, the next escalation is *blocking* (the precompact hook c
 
 ---
 
-## Rule 3 — Atomic mailbox writes (toward regenerate-from-filesystem)
+## Rule 3 — Atomic mailbox writes (push-to-ref + regenerate-from-filesystem)
 
-**Status: PARTIAL — mailbox-on-main hook ADOPTED; deliver-mail (b) IN FLIGHT (Lead Dev sizing)**
+**Status: RESOLVED (2026-06-19, #1259) — synthesis by CIO 2026-06-20.** The send now goes via **push-to-ref** (`scripts/mail-send.sh`), which removes the shared `main` working tree from the mail path *by construction*; MANIFEST regenerate-from-filesystem is ADOPTED; the `deliver-mail` skill is RETIRED. **The shared-checkout race class this rule was built to manage is structurally eliminated** — the two "tactical note" subsections below (staging-area race, pre-existing index state) are superseded-for-mail and retained only as historical record.
+
+> **Reconciliation note (CIO, #1292, 2026-06-20):** this Rule was written for the *old* bridge model — agents committing mail directly on the shared `main` checkout. Push-to-ref (#1259) ended that model. Mail commits are now built as git objects on top of `origin/main` (`commit-tree` via a throwaway index) and pushed straight to `main`, from each agent's own worktree — no shared index, no shared working tree, no branch-switch. What remains load-bearing from this Rule: (1) the `check-branch.sh` backstop, (2) MANIFEST-as-derivative-artifact, (3) the channel-discipline note. What's superseded: the shared-`main`-working-tree framing and its two index-race tactical notes.
 
 Direct edits to `mailboxes/{role}/inbox/MANIFEST.md` from multiple branches produce conflicts because manifests are append-only. Two paths considered; consensus on (b) as the destination:
 
@@ -156,7 +158,8 @@ Direct edits to `mailboxes/{role}/inbox/MANIFEST.md` from multiple branches prod
 
 ### What's adopted (cont.)
 
-- **`deliver-mail` (b1) regenerate-from-filesystem**: ADOPTED — `scripts/regenerate-mailbox-manifests.py` (Lead Dev commit `4df51302`, Apr 28). Frontmatter-parsing per PA preference; SessionStart hook runs regen for the current role's manifest each session. Bridge skipped per Lead Dev judgment.
+- **`deliver-mail` (b1) regenerate-from-filesystem**: ADOPTED — `scripts/regenerate-mailbox-manifests.py` (Lead Dev commit `4df51302`, Apr 28). Frontmatter-parsing per PA preference; SessionStart hook runs regen for the current role's manifest each session. Bridge skipped per Lead Dev judgment. (The recipient remains the sole MANIFEST writer — push-to-ref doesn't change that.)
+- **Push-to-ref send mechanism** (#1259, swapped live 2026-06-19, LD-reviewed): ADOPTED — `scripts/mail-send.sh` builds the mail commit on `origin/main` via `commit-tree` + a throwaway `GIT_INDEX_FILE`, then pushes `<commit>:main`, rebuild-retrying on non-fast-forward. Runs from any worktree; **never touches the shared `main` working tree or local `main` ref**. Canonical procedure: CLAUDE.md "The mailbox workflow (most-frequent case)". The `deliver-mail` skill (option **a**) is RETIRED (2026-06-19, `ecfa8ae42`) — it described the obsolete chat-era web↔code PM-shuttle.
 
 ### Rationale
 
@@ -172,7 +175,9 @@ The two channels are **complementary, not a hierarchy** — use both for their r
 
 Origin: 2026-06-07 — a Lead Dev Phase-3 re-scope request to Architect lived only as a #1124 issue comment; Architect, checking `arch/inbox`, correctly found no request and stood by. Resolved by re-sending as a mailbox memo. PM directive: "don't rely on github to notify agents."
 
-### Tactical note — staging-area race when multiple agents are on `main`
+### Tactical note — staging-area race when multiple agents are on `main` — ⚠️ SUPERSEDED-FOR-MAIL (push-to-ref #1259, 2026-06-19)
+
+> **Superseded for mail (CIO #1292, 2026-06-20):** mail no longer commits on the shared `main` working tree — `mail-send.sh` (push-to-ref) builds via a throwaway index + `commit-tree`, so this staging-area race cannot arise for a mail op. The "shared-`main` working tree is by-design" premise in the *Not a rule* paragraph below is **reversed**: push-to-ref removes the shared tree from the mail path by construction. Retained as historical record (rich provenance); in the Model-B world even non-mail writes go via `git push origin HEAD:main` from a worktree, so the shared-main index is no longer a normal write surface.
 
 **Convention, not enforced rule** (HOST May 10): when on `main` with other agents potentially active, the `.git/index` (staging area) is a shared mutable resource. Concurrent operations from other agents can silently re-write the index between your `git add` and your `git commit`. Symptom: `nothing added to commit, untracked files present` after a `git add` that verbose-output confirmed succeeded.
 
@@ -184,7 +189,9 @@ Origin: 2026-06-07 — a Lead Dev Phase-3 re-scope request to Architect lived on
 
 **Provenance**: May 10 PPM-stranded-commits incident (Code agent special-assignment session). Related findings: branch-drift (named-state mutation, May 7 + May 9 memory chain) and residue-drift (cross-agent residue accumulation, May 9-10 PreCompact-hook first-incident debrief). Common parent shape: shared working tree + concurrent agent activity → silent mutation of stable-looking state. Named-state mutations (branch HEAD) get rule-enforcement; transient-state mutations (index) get convention.
 
-### Tactical note — pre-existing index state when committing on `main`
+### Tactical note — pre-existing index state when committing on `main` — ⚠️ SUPERSEDED-FOR-MAIL (push-to-ref #1259, 2026-06-19)
+
+> **Superseded for mail (CIO #1292, 2026-06-20):** same root as the note above — push-to-ref never commits on the shared `main` checkout, so pre-existing-index residue cannot contaminate a mail commit. Retained as historical record; the `reset → stage → diff → READ FULL → commit` discipline still applies to any direct on-main commit, which Model-B + push-to-ref have made rare-to-nonexistent.
 
 **Convention, not enforced rule** (Docs May 15): when on `main` with other agents potentially active, the `.git/index` may already contain pre-staged files from other agents/sessions/hooks before you start. Symptom: your "one-file commit" lands with N other files in `git show --stat`.
 
@@ -292,8 +299,10 @@ This is not a branch-discipline rule per se — it's about authoring shared inst
 | Rule 1 — worktree per substantive session | ADOPTED (CLAUDE.md) | All agents |
 | Rule 2 — commit-before-close | ADOPTED (CLAUDE.md); SessionStop hook IN FLIGHT | Lead Dev for hook |
 | Rule 2 — per-memo commit-and-push norm | ADOPTED (CLAUDE.md) | All agents |
-| Rule 3 — mailbox-on-main hook | ADOPTED (`check-branch.sh`) | Docs (own) |
-| Rule 3 — `deliver-mail` (b1) regenerate-from-filesystem | ADOPTED (commit `4df51302`) | Lead Dev |
+| Rule 3 — push-to-ref send mechanism (#1259) | ADOPTED (swapped live 2026-06-19, `mail-send.sh`; LD-reviewed) | CIO |
+| Rule 3 — mailbox-on-main hook (now the backstop) | ADOPTED (`check-branch.sh`) | Docs (own) |
+| Rule 3 — MANIFEST (b1) regenerate-from-filesystem | ADOPTED (commit `4df51302`) | Lead Dev |
+| Rule 3 — `deliver-mail` skill | RETIRED 2026-06-19 (`ecfa8ae42`, superseded by push-to-ref + check-mailbox) | Docs |
 | Rule 4 — branch/worktree registry | ADOPTED in shape; auto-pop IN FLIGHT | PA hosts; Lead Dev for script |
 | Rule 5 — Docs as merge-keeper | ADOPTED | Docs |
 | Rule 5 — `merge-keeper-sweep.py` automation | ADOPTED (commit `f63c2acf`) | Lead Dev |

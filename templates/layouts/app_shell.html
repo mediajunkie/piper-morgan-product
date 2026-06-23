@@ -44,10 +44,20 @@
     window.trustStage = {{ trust_stage|default(1)|tojson }};
   </script>
 
-  {# SHELL-OWNED CHROME — global nav (+ chat widget + command palette). NOT a block. #}
-  {% include 'components/navigation.html' %}
-
-  <div class="app-shell-body">
+  {# SHELL-OWNED CHROME — the left dark rail (#1280) REPLACES the top global nav. The rail is the #}
+  {# first grid column; main fills the next; the optional Radar aside is the third (home only). The #}
+  {# rail include also carries the shell-owned chat widget + command palette (fixed overlays). #}
+  {# NOT a block — a page physically cannot override or omit the chrome. #}
+  {# #1286 D2 Slice 3 — mobile top-bar (CSS display:none at >= tablet bp). The hamburger toggles #}
+  {# the rail into an off-canvas drawer; the backdrop dismisses it. /static/js/mobile-nav.js wires it. #}
+  <header class="app-shell-topbar" role="banner">
+    <button class="app-shell-hamburger" id="app-shell-hamburger" type="button"
+            aria-label="Open navigation" aria-controls="nav-rail" aria-expanded="false">&#9776;</button>
+    <a href="/" class="app-shell-topbar-brand">Piper Morgan</a>
+  </header>
+  <div class="app-shell-backdrop" id="app-shell-backdrop" hidden></div>
+  <div class="app-shell-body{% if show_radar|default(false) %} app-shell-body--with-aside{% endif %}">
+    {% include 'components/nav_rail.html' %}
     <main id="main-content" class="app-shell-main" role="main" tabindex="-1">
       {% block main %}{% endblock %}
     </main>
@@ -67,6 +77,8 @@
   <script src="/static/js/toast.js"></script>
   <script src="/static/js/permissions.js"></script>
   <script src="/static/js/dialog.js"></script>
+  {# #1286 D2 Slice 3 — wires the mobile top-bar hamburger → off-canvas rail drawer. #}
+  <script src="/static/js/mobile-nav.js"></script>
 
   {% block scripts %}{% endblock %}
 </body>

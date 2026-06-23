@@ -1,6 +1,6 @@
 # Piper Morgan Versioning Strategy
 
-## Current Version: 0.8.6
+## Current Version: 0.8.9
 
 ## Versioning Scheme
 

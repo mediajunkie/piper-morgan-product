@@ -17,6 +17,18 @@ from services.integrations.github.repo_resolver import (
 )
 
 
+@pytest.fixture(autouse=True)
+def _db_default_repo_off():
+    """WS-1 (#1226): repo_resolver now reads the DB-backed default-repo FIRST. Default it OFF
+    (returns None) for every test so the existing flat-file/env/project assertions stay
+    deterministic + DB-free; the DB-first tests below override this with their own patch."""
+    with patch(
+        "services.integrations.github.repo_resolver._read_user_default_repo_from_db",
+        new=AsyncMock(return_value=None),
+    ):
+        yield
+
+
 class TestParseFullName:
     """``owner/name`` parsing accepts valid shapes and rejects bad ones."""
 
@@ -95,82 +107,60 @@ class TestUnresolved:
 class TestUserDefaultPreference:
     """Path 3: user's ``default_repo`` preference.
 
-    #1192 slice (a): the resolver reads the persistent GitHub-prefs store the
-    settings UI writes (``data/github_preferences.json``, via
-    ``_read_user_default_repository``) — NOT the old in-memory
-    UserPreferenceManager (which never resolved). We patch that reader.
+    WS-1 P4 (#1226 / #1199): the resolver reads the DB-backed connector_configs store
+    (``_read_user_default_repo_from_db``) — the SOLE store. The flat-file store and the
+    old in-memory UserPreferenceManager path are RETIRED. We patch the DB reader.
     """
 
-    _READER = "services.integrations.github.repo_resolver._read_user_default_repository"
+    _READER = "services.integrations.github.repo_resolver._read_user_default_repo_from_db"
 
     async def test_user_default_used_when_set(self, monkeypatch):
         monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
-        user_id = uuid4()
-        # The reader is keyed by str(user_id); return that user's full_name.
-        with patch(self._READER, side_effect=lambda key: "userowner/userrepo" if key == str(user_id) else None):
-            resolved = await resolve_repo(user_id=user_id)
+        with patch(self._READER, new=AsyncMock(return_value="userowner/userrepo")):
+            resolved = await resolve_repo(user_id=uuid4())
         assert resolved == ResolvedRepo(
             owner="userowner", name="userrepo", source="user_default"
         )
 
     async def test_user_default_none_when_no_entry_falls_through(self, monkeypatch):
         monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
-        with patch(self._READER, return_value=None):
+        with patch(self._READER, new=AsyncMock(return_value=None)):
             with pytest.raises(UnresolvedRepoError):
                 await resolve_repo(user_id=uuid4())
 
     async def test_user_default_malformed_value_skipped(self, monkeypatch):
         monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
-        with patch(self._READER, return_value="not-a-valid-fullname"):
+        with patch(self._READER, new=AsyncMock(return_value="not-a-valid-fullname")):
             with pytest.raises(UnresolvedRepoError):
                 await resolve_repo(user_id=uuid4())
 
     async def test_user_default_beats_env(self, monkeypatch):
         monkeypatch.setenv(ENV_DEFAULT_REPO, "env/repo")
-        with patch(self._READER, return_value="userowner/userrepo"):
+        with patch(self._READER, new=AsyncMock(return_value="userowner/userrepo")):
             resolved = await resolve_repo(user_id=uuid4())
         assert resolved.source == "user_default"
         assert resolved.full_name == "userowner/userrepo"
 
 
-class TestReadUserDefaultRepository:
-    """#1192 slice (a): the persistent-store reader (real JSON file I/O)."""
+class TestUserDefaultFromDB:
+    """WS-1 P4 (#1226 / #1199): path 3 reads the DB-backed connector_configs store — the SOLE
+    store. The autouse fixture defaults the DB read OFF; these tests turn it on."""
 
-    def _write(self, tmp_path, monkeypatch, payload):
-        import json as _json
+    _DB = "services.integrations.github.repo_resolver._read_user_default_repo_from_db"
 
-        from services.integrations.github import repo_resolver
+    async def test_db_value_used_when_set(self, monkeypatch):
+        monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
+        with patch(self._DB, new=AsyncMock(return_value="dbowner/dbrepo")):
+            resolved = await resolve_repo(user_id=uuid4())
+        assert resolved == ResolvedRepo(owner="dbowner", name="dbrepo", source="user_default")
 
-        f = tmp_path / "github_preferences.json"
-        f.write_text(_json.dumps(payload))
-        monkeypatch.setattr(repo_resolver, "_GITHUB_PREFERENCES_FILE", str(f))
-
-    def test_returns_full_name_for_user(self, tmp_path, monkeypatch):
-        from services.integrations.github.repo_resolver import _read_user_default_repository
-
-        self._write(tmp_path, monkeypatch, {"user-abc": {"default_repository": "o/r"}})
-        assert _read_user_default_repository("user-abc") == "o/r"
-
-    def test_returns_none_for_unknown_user(self, tmp_path, monkeypatch):
-        from services.integrations.github.repo_resolver import _read_user_default_repository
-
-        self._write(tmp_path, monkeypatch, {"someone-else": {"default_repository": "o/r"}})
-        assert _read_user_default_repository("user-abc") is None
-
-    def test_returns_none_when_file_absent(self, tmp_path, monkeypatch):
-        from services.integrations.github import repo_resolver
-        from services.integrations.github.repo_resolver import _read_user_default_repository
-
-        monkeypatch.setattr(
-            repo_resolver, "_GITHUB_PREFERENCES_FILE", str(tmp_path / "nonexistent.json")
-        )
-        assert _read_user_default_repository("user-abc") is None
-
-    def test_returns_none_when_field_missing(self, tmp_path, monkeypatch):
-        from services.integrations.github.repo_resolver import _read_user_default_repository
-
-        self._write(tmp_path, monkeypatch, {"user-abc": {"selected_repositories": ["o/r"]}})
-        assert _read_user_default_repository("user-abc") is None
+    async def test_db_miss_unresolved(self, monkeypatch):
+        """WS-1 P4: a DB miss yields nothing on path 3 (no second store to fall back to). With
+        no env var set, resolution falls through to ``UnresolvedRepoError``."""
+        monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
+        with patch(self._DB, new=AsyncMock(return_value=None)):
+            with pytest.raises(UnresolvedRepoError):
+                await resolve_repo(user_id=uuid4())
 
 
 class TestDefaultProjectResolution:
@@ -182,7 +172,8 @@ class TestDefaultProjectResolution:
     """
 
     _DEFAULT_PROJ = "services.integrations.github.repo_resolver._resolve_from_default_project"
-    _READER = "services.integrations.github.repo_resolver._read_user_default_repository"
+    # WS-1 P4: the user-default source is the DB reader (flat-file reader retired).
+    _READER = "services.integrations.github.repo_resolver._read_user_default_repo_from_db"
 
     async def test_default_project_repo_used_when_present(self, monkeypatch):
         monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
@@ -200,7 +191,7 @@ class TestDefaultProjectResolution:
 
         proj = RR(owner="projowner", name="projrepo", source="default_project")
         with patch(self._DEFAULT_PROJ, new=AsyncMock(return_value=proj)), patch(
-            self._READER, return_value="prefowner/prefrepo"
+            self._READER, new=AsyncMock(return_value="prefowner/prefrepo")
         ):
             result = await resolve_repo(user_id=uuid4())
         assert result.source == "default_project"  # project outranks preference
@@ -208,7 +199,7 @@ class TestDefaultProjectResolution:
     async def test_no_default_project_falls_through_to_user_default(self, monkeypatch):
         monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
         with patch(self._DEFAULT_PROJ, new=AsyncMock(return_value=None)), patch(
-            self._READER, return_value="prefowner/prefrepo"
+            self._READER, new=AsyncMock(return_value="prefowner/prefrepo")
         ):
             result = await resolve_repo(user_id=uuid4())
         assert result.source == "user_default"

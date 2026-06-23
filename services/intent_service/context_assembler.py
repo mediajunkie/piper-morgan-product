@@ -1276,6 +1276,8 @@ class ContextAssembler:
             "open_issue_count": cached.get(
                 "open_issue_count", len(cached["high_priority_issues"])
             ),
+            # #1226 Phase 3: preserve the no-repo signal through the cache unpack.
+            "github_repo_unconfigured": cached.get("github_repo_unconfigured", False),
         }
 
     async def _compute_high_priority_issues(
@@ -1298,6 +1300,17 @@ class ContextAssembler:
 
             all_open = await github.get_open_issues(limit=100)
             if not all_open:
+                # #1226 Phase 3 (honest degradation): tell "no GitHub repo configured"
+                # apart from "repo configured but genuinely zero open issues". The
+                # resolvability check runs ONLY on the empty path (zero cost when the
+                # user has issues), so the no-repo case carries a signal up to the floor
+                # instead of collapsing into a silent "no open issues".
+                if not await self._github_repo_resolves(user_id):
+                    return {
+                        "high_priority_issues": [],
+                        "open_issue_count": 0,
+                        "github_repo_unconfigured": True,
+                    }
                 return None
 
             def _priority_rank(issue: dict) -> int:
@@ -1332,6 +1345,26 @@ class ContextAssembler:
                 "context_assembler_high_priority_issues_error", error=str(e)
             )
             return None
+
+    async def _github_repo_resolves(self, user_id: str = None) -> bool:
+        """#1226 Phase 3: True iff a GitHub repo resolves for this user.
+
+        Distinguishes "no repo configured" from "repo configured, zero open issues"
+        on the empty path. Best-effort: any resolution failure (incl.
+        ``UnresolvedRepoError``) → False (treated as unconfigured)."""
+        from uuid import UUID
+
+        from services.integrations.github.repo_resolver import resolve_repo
+
+        try:
+            uid = UUID(user_id) if user_id and user_id != "system" else None
+        except (ValueError, TypeError):
+            uid = None
+        try:
+            await resolve_repo(user_id=uid)
+            return True
+        except Exception:
+            return False
 
     # ------------------------------------------------------------------
     # #985: Active milestones gatherer

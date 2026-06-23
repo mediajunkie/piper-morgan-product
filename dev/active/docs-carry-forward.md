@@ -1,39 +1,45 @@
 # Docs Carry-Forward
-**Updated**: 2026-06-15 22:47 PDT (STOP — day-closed)
-**Cron**: `17 3,10,13,16,19,22 * * *` (armed; next fire 03:17 Tue Jun 16)
-**Session log**: `dev/2026/06/15/2026-06-15-0317-docs-code-sonnet-log.md` (DAY-CLOSED ✓)
+**Updated**: 2026-06-22 12:30 PDT
+**Cron**: `17 3,10,13,16,19,22 * * *` (armed; job 9eb97927)
+**Session log**: `dev/active/2026-06-22-1047-docs-code-sonnet-log.md`
 
 ---
 
-## June 15 completed (full)
+## June 22 done so far
+- ✅ **June 21 omnibus** — 199 lines, HIGH-COMPLEXITY: EXECUTION, 13 sources (`261753a28`). Self-healed 2 task-agent markers at START.
+- ✅ **Activity-log CSV fix** — quoted 2 June 19 rows (CXO, Docs) that had unquoted commas in notes (`63a33ee68`). Byte-level fix to preserve mixed line endings.
+- ✅ **CSV normalization** — `*.csv text eol=lf` added to `.gitattributes`; activity-log.csv renormalized (1241 CRLF→LF in git; 0 CRLF in committed object); create-omnibus skill updated `lineterminator='\n'`. Committed `7fb949a91`. Working tree normalizes on next checkout.
+- ✅ **Database format decision** — PM: keep CSV. Works for agents + underlies website UI. Noted in decisions.log.
+- [ ] Reconcile any held-cleanup decisions if PM answered (see below)
 
-- ✅ June 14 omnibus — HIGH-COMPLEXITY: COORDINATION, 14 sessions (`c5104bf8d`)
-- ✅ Activity log — 14 Shape B rows appended
-- ✅ Web June 14 close-out — canonical DAY-CLOSED marker added retroactively
-- ✅ Web memo — staging discipline + autostash incident diagnosis sent
-- ✅ duty-cycle-tick v1.9 — pre-staging discipline added to Step 6 (`79785a49c`)
-- ✅ cleanup-dev-active — ~200+ → 57 files in dev/active/
-- ✅ Exec memo triaged → read/; cycle-log-exec-2026-06-14 archived
-- ✅ 4 canonical-marker memos sent (CXO/PPM/HOST/Exec)
-- ✅ **#1206 all 3 items** — gameplan-template v9.5/v9.6 + agent-prompt-template v10.4 (`53f38f577`, `76788c7b1`)
-- ✅ **#972 MEM-TEMPORAL spec v0.4** — field-names reconciled (`c9dea12c8`)
-- ✅ **Layer C pre-commit hook** — warn-first, Comms go-signal (`fd6003a9d`)
-- ✅ Standing-items refresh — #1058 closed, #972 updated to v0.4, stale pointer removed (`dcb9938f0`)
+## June 21 completed
 
-## Carry into June 16
+- ✅ June 20 logs: all 12 closed (1407 marker added)
+- ✅ June 20 Docs log: wrapped + archived to dev/2026/06/20/
+- ✅ June 21 session log: created
+- ✅ June 19 omnibus: HIGH-COMPLEXITY: COORDINATION, 12 sources, 450 lines (`c788eca8c`)
+- ✅ Activity log: 12 Shape B rows appended
+- ✅ Docs inbox: 0 unread (2 CIO #1292 memos triaged → read/)
+- ✅ CIO #1292 steward review: response sent (`b955b146b`) — annotate-as-superseded ✅, archival rec = legacy-operations/mailbox-delivery-pre-1259/
+- ✅ Duty cycle re-armed
 
-- [ ] **June 15 omnibus** — gate check at START (wait for cohort to close June 15 logs); synthesize once gate passes
-- [ ] **#972 P2 remaining** — briefings `last_verified` stamp (as touched, not bulk); ADRs/patterns/methodology opportunistic; session-log-instructions disposition (PM ratification needed); `valid_until` vs `ended` pending PM bridge to Daedalus
-- [ ] **6 escalate branches** → PM decision pending (merge-keeper sweep log: `dev/active/merge-keeper-2026-06-15.md`)
-- [ ] **11 stash entries** → PM review pending (no change since 6/14)
-- [ ] **cycle-log-exec-2026-06-15.md** — hold in `dev/active/` (no June 15 omnibus yet; omnibus guard applies)
+## Pending / unblocked
+
+- ✅ **Published "Extension Without Integration"** (insight, 2026-06-21) — website `683e312e7`, product `2b1bc790d`, hashId `6db4781ea389`. Deploy building at publish time. **Syndication (Medium/LinkedIn) pending — PM owns; calendar fields left empty for it.**
+- ✅ **June 20 omnibus** — HIGH-COMPLEXITY COORDINATION, 12 sources, 361 lines (`2af4d58a7`)
+- ✅ **#1292 CLOSED by CIO** — archival landed at my recommended location; both memos triaged
+- ✅ **dev/active partial cleanup** — 2 cycle logs + 1 dup log archived/removed; 102 gitignored delta ephemera + credential identified (not repo clutter)
+
+## Cleanup done (6/21 ~20:30) + remaining
+
+- ✅ **`/cleanup-dev-active` run**: archived 18 forensic files (`9f5e20f90`) + earlier 2 cycle logs + 1 dup log. Secret moved out by PM.
+- **Held (~11), need owner OK before archiving** — in-flight/other-role: design-spec-* (×5, Arch/Web/CXO floor+shell work), pa-skunk-research-R1/R2 + pa-llm-judge-experiment (PA), byoc-welfare-tier-model + byoc-plan-of-record + dashboard-welfare-criteria (HOST/Arch), adr-072-grounding-findings (Arch), mem-972-temporal-scoping-plan (CIO), alt-text-backfill-plan (Web), skills-taxonomy-plan. Confirm with each owner whether spent → then archive.
+- **13 index-only phantom files**: tracked in HEAD but absent from disk in both trees (old 3/29–4/07 publish/PM-download artifacts + `(1).html`, `va_decision_reviews_ctr`, `RUN-THIS.html`, `test-local-log.tsv`). Not on disk → not cluttering, can't `git mv`. A `git rm` to drop them from the index would clean the `ls-files` list but is a separate git-hygiene op — flag to PM/Lead before doing.
+- **~45 live duty-cycle state files KEEP by design** (9 roles × carry-forward/standing-items/escalations + backlogs/registries/cron-prompts/cohort-plan/attention-board). The skill's <15 target predates the 9-role duty-cycle expansion; effective floor here is ~40.
 
 ## State flags
 
 - Inbox: **0 unread**
-- June 14 omnibus: **DONE**
-- June 15 omnibus: **pending** (omnibus gate at START tomorrow)
-- Unblocked task queue: **(0,0)**
-- **#1058**: CLOSED
-- **#1206**: CLOSED
-- **#972**: spec at v0.4; P2 items in progress (PM-gated items blocked)
+- June 19 omnibus: **DONE**
+- June 20 omnibus: **DONE**
+- Unblocked task queue: **(0,0)** except blog post (PM-gated)

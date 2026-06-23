@@ -10,10 +10,11 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
 
 ## Open
 
-_None currently open (reconciled 2026-06-16 STOP)._
+- _(none — reconciled 2026-06-20 STOP; the #1280 rail-spec block moved to Resolved.)_
 
 ## Resolved
 
+- **2026-06-18 → 2026-06-20 · CXO/PM · #1280 dark-rail design spec** — **RESOLVED (reconciled 2026-06-20 STOP)**: `gh issue view 1280` = CLOSED — the D1 design-quality wrap delivered the CXO Radar visual design (sleek left nav + 3-column layout). The rail-spec blocker is moot; the shell work landed via the D1 sprint.
 - **2026-06-10 → 2026-06-16 · PM · #1165 M3 UAT gate** — **RESOLVED (reconciled 2026-06-16 STOP)**: `gh issue view 1165` = CLOSED (M3 closed). The #1133→Radar re-scope dependency became **#1236 (Radar surface) + #1238 (DocumentEntitySource)** — both SHIPPED this session (behind `?radar=1`, PM-UAT-pending), tracked as their own issues.
 - **2026-06-10 · PM · #1187 floor-wiring TANDEM** — **RESOLVED (reconciled 2026-06-12 STOP)**: #1187 CLOSED (summarize-issue full chain shipped + live-verified, the tandem fetch-augment landed). `gh issue view 1187` = CLOSED.
 - **2026-06-10 · PM · #1129 Slack reconnection** — **RESOLVED (reconciled 2026-06-12 STOP)**: #1129 CLOSED (Slack inbound LIVE via Socket Mode; PM uses it for M3 review). `gh issue view 1129` = CLOSED.

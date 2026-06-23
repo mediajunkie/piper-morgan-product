@@ -6,9 +6,9 @@ This directory contains release notes for all Piper Morgan versions.
 
 ## Current Version
 
-**v0.8.6** (March 4, 2026) - [Release Notes](RELEASE-NOTES-v0.8.6.md)
+**v0.8.9** (June 22, 2026) - [Release Notes](RELEASE-NOTES-v0.8.9.md)
 
-M0 Conversational Glue sprint: 5 core features (lens tracking, multi-intent, slot filling, soft invocation, narrative system), repository management, conversation lifecycle, 7 post-gate bug fixes. 27 issues resolved, 402+ new tests.
+RECONNECT WS-1 + security + design D2: DB-backed connector config, StandupAssembler promoted, AES-256-GCM field encryption, encrypted secret store, per-user LLM key wiring, admin_compose removed, auth-exempt lint enforcement, token system, responsive shell, mobile nav, Documents→Radar rename.
 
 ---
 
@@ -16,6 +16,9 @@ M0 Conversational Glue sprint: 5 core features (lens tracking, multi-intent, slo
 
 | Version | Date | Type | Highlights |
 |---------|------|------|------------|
+| [v0.8.9](RELEASE-NOTES-v0.8.9.md) | Jun 22, 2026 | Feature | RECONNECT WS-1 + security + design D2 — connector infra, field encryption, token system |
+| [v0.8.8](RELEASE-NOTES-v0.8.8.md) | Jun 19, 2026 | Feature | D1/RECONNECT — BYOC keys, Radar default, nav IA, home UX |
+| [v0.8.7](RELEASE-NOTES-v0.8.7.md) | Jun 14, 2026 | Feature | M1+M2+M3 — Conscious Floor, dispatch rail complete, files UX, Slack inbound |
 | [v0.8.6](RELEASE-NOTES-v0.8.6.md) | Mar 4, 2026 | Feature | M0 Conversational Glue, 27 issues resolved |
 | [v0.8.5.3](RELEASE-NOTES-v0.8.5.3.md) | Feb 11, 2026 | Patch | Windows compatibility, setup UX, 14 issues resolved |
 | [v0.8.5.2](RELEASE-NOTES-v0.8.5.2.md) | Feb 6, 2026 | Patch | Chat persistence, date formatting, calendar fixes |
@@ -59,4 +62,4 @@ For current known issues and limitations, see [ALPHA_KNOWN_ISSUES.md](../ALPHA_K
 
 ---
 
-*Last updated: March 4, 2026*
+*Last updated: June 22, 2026*

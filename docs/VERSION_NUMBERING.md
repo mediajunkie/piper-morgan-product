@@ -1,7 +1,7 @@
 # Piper Morgan Version Numbering Scheme
 
-**Current Version**: 0.8.0 (First Alpha Release)
-**Last Updated**: October 24, 2025
+**Current Version**: 0.8.9 (Alpha — RECONNECT WS-1 + security + design D2; next: 0.9.0 beta at MVP)
+**Last Updated**: June 22, 2026
 
 ---
 
@@ -92,22 +92,18 @@ Within each milestone, marks incremental updates, bug fixes, and improvements.
   - Performance optimization
 
 ### Alpha Era (October 2025 - Present)
-- **0.8.0** (October 24, 2025) - **First Alpha Release** ← YOU ARE HERE
-  - Sprint A1: Critical Infrastructure
-  - Sprint A2: Notion & Errors
-  - Sprint A3: Core Activation
-  - Sprint A4: Standup Epic
-  - Sprint A5: Learning System
-  - Sprint A6: User Infrastructure
-  - Sprint A7: Polish & Buffer
-  - Sprint A8: Alpha Preparation (in progress)
+- **0.8.0** (October 24, 2025) - First Alpha Release
+- **0.8.1–0.8.6** - Alpha updates (Oct 2025 – May 2026)
+- **0.8.7** (June 3, 2026) - M1 Foundation + M2 Conscious Floor stable cut for alpha
+- **0.8.8** (June 19–20, 2026) - D1 close: Radar default home, F2 shell complete, BYOC credential layer, Conscious Floor, Files, Slack inbound, 252/252 regression
+- **0.8.9** (June 22, 2026) - RECONNECT WS-1: DB-backed connector config + StandupAssembler; security: AES-256-GCM field encryption, encrypted secrets, per-user LLM key routing, auth hardening; Design D2: token system, mobile nav, Radar rename ← **CURRENT**
 
 ### Beta Era (Planned)
-- **0.9.0** - First beta release
+- **0.9.0** - Beta / MVP release (wider testing, more self-service, UUID bearer auth)
 - **0.9.x** - Beta updates and refinements
 
-### MVP Era (Planned)
-- **1.0.0** - MVP release
+### Production Era (Planned)
+- **1.0.0** - MVP feature set polished for production release
 - **1.0.x** - Post-MVP bug fixes and improvements
 - **1.1.0+** - Feature additions
 
@@ -228,5 +224,5 @@ No. Alpha versions (0.8.x) are explicitly **not** for production use. See ALPHA_
 
 ---
 
-_Last Updated: October 24, 2025_
+_Last Updated: June 22, 2026_
 _Applies To: Piper Morgan 0.8.0+_

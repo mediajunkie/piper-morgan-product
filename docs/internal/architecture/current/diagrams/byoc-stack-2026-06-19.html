@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piper Morgan Hosted BYOC Stack — 2026-06-19</title>
+<style>
+:root {
+  --text-primary: #1a1a1a;
+  --text-secondary: #666;
+  --bg-secondary: #f5f5f5;
+  --border: #e0e0e0;
+}
+body { margin: 0; padding: 24px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: var(--text-primary); }
+h1 { font-size: 16px; font-weight: 700; margin: 0 0 4px; }
+.meta { font-size: 12px; color: var(--text-secondary); margin-bottom: 20px; }
+.stack-wrap { }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.col-head { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-secondary); margin-bottom: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { background: var(--bg-secondary); padding: 6px 8px; text-align: left; font-size: 11px; font-weight: 600; color: #555; border-bottom: 1px solid var(--border); }
+td { padding: 6px 8px; border-bottom: 1px solid #efefef; vertical-align: top; line-height: 1.4; }
+tr:last-child td { border-bottom: none; }
+.layer { font-weight: 600; font-size: 12px; }
+.badge { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 10px; font-weight: 600; margin-right: 4px; white-space: nowrap; }
+.b-done { background: #d4edda; color: #155724; }
+.b-partial { background: #fff3cd; color: #856404; }
+.b-gap { background: #f8d7da; color: #721c24; }
+.b-road { background: #e8daef; color: #6c3483; }
+.legend { display: flex; gap: 12px; font-size: 11px; margin-bottom: 12px; flex-wrap: wrap; }
+.divider { border-top: 2px solid var(--border); margin: 16px 0; }
+.onboard { margin-top: 0; }
+.issue { font-size: 10px; color: #888; font-family: monospace; }
+</style>
+</head>
+<body>
+<h1>Piper Morgan — Hosted BYOC Stack</h1>
+<p class="meta">Generated 2026-06-19 · PA session · Layers: front-end (Claude Desktop) + backend (Fly.io hosted) + onboarding</p>
+<div class="stack-wrap">
+  <div class="legend">
+    <span><span class="badge b-done">✓ done</span> working</span>
+    <span><span class="badge b-partial">~ partial</span> in progress</span>
+    <span><span class="badge b-gap">✗ gap</span> needed</span>
+    <span><span class="badge b-road">◇ roadmap</span> post-release</span>
+  </div>
+  <div class="cols">
+    <div>
+      <div class="col-head">Front-end (Claude Desktop)</div>
+      <table>
+        <tr><th>Layer</th><th>State</th><th>Gap / PoC needed</th></tr>
+        <tr>
+          <td class="layer">Marketplace</td>
+          <td><span class="badge b-gap">✗ gap</span></td>
+          <td>Submit .mcpb + smithery.yaml<br><span class="issue">#1282 — gate: clean-machine test</span></td>
+        </tr>
+        <tr>
+          <td class="layer">Plugin (.mcpb)</td>
+          <td><span class="badge b-partial">~ partial</span></td>
+          <td>v0.4.0 in skunkworks; pyproject.toml refactor for MCPB<br><span class="issue">#1282</span></td>
+        </tr>
+        <tr>
+          <td class="layer">Skills</td>
+          <td><span class="badge b-done">✓ done</span></td>
+          <td>5 piper-* skills shipped to alpha ✓</td>
+        </tr>
+        <tr>
+          <td class="layer">MCP server</td>
+          <td><span class="badge b-partial">~ partial</span></td>
+          <td>Runs locally; needs to point at hosted endpoint<br><span class="issue">PoC: ngrok/tailscale → Fly.io (#1278)</span></td>
+        </tr>
+        <tr>
+          <td class="layer">Identity (client)</td>
+          <td><span class="badge b-gap">✗ gap</span></td>
+          <td>UUID bearer issued at first connect (MVP); email+magic-link at 1.0<br><span class="issue">#1185</span></td>
+        </tr>
+        <tr>
+          <td class="layer">Connectors (client)</td>
+          <td><span class="badge b-gap">✗ gap</span></td>
+          <td>Wave P: connect-piper skill; OAuth per service<br><span class="issue">#1229</span></td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <div class="col-head">Backend (Fly.io hosted)</div>
+      <table>
+        <tr><th>Layer</th><th>State</th><th>Gap / PoC needed</th></tr>
+        <tr>
+          <td class="layer">Piper API</td>
+          <td><span class="badge b-partial">~ partial</span></td>
+          <td>Works locally; Fly.io deploy blocked on cred decoupling<br><span class="issue">#1278 (LD), #1162</span></td>
+        </tr>
+        <tr>
+          <td class="layer">Auth</td>
+          <td><span class="badge b-gap">✗ gap</span></td>
+          <td>No auth for PoC (PM decision 6/19). MVP: bearer token. 1.0: email+magic-link (Piper-native).<br><span class="issue">#1185</span></td>
+        </tr>
+        <tr>
+          <td class="layer">Identity (backend)</td>
+          <td><span class="badge b-gap">✗ gap</span></td>
+          <td>UUID→profile mapping. 1.0: email→UUID account recovery + multi-device<br><span class="issue">#1185</span></td>
+        </tr>
+        <tr>
+          <td class="layer">Session / state</td>
+          <td><span class="badge b-gap">✗ gap</span></td>
+          <td>Conversation continuity per user (session ID → user context lookup)<br><span class="issue">#1185 + multi-tenant design</span></td>
+        </tr>
+        <tr>
+          <td class="layer">User knowledge</td>
+          <td><span class="badge b-partial">~ partial</span></td>
+          <td>PM profile works; needs per-user isolation<br><span class="issue">#1185</span></td>
+        </tr>
+        <tr>
+          <td class="layer">User data</td>
+          <td><span class="badge b-partial">~ partial</span></td>
+          <td>Single-user now; need UUID→data scoping<br><span class="issue">#1185</span></td>
+        </tr>
+        <tr>
+          <td class="layer">Piper code</td>
+          <td><span class="badge b-done">✓ done</span></td>
+          <td>Core logic working; M5 polish sprint</td>
+        </tr>
+        <tr>
+          <td class="layer">LLM calls (Anthropic)</td>
+          <td><span class="badge b-partial">~ partial</span></td>
+          <td>Server-side key now; BYOC key-passing is post-PoC<br><span class="issue">#1185</span></td>
+        </tr>
+        <tr>
+          <td class="layer">LLM calls (local)</td>
+          <td><span class="badge b-road">◇ roadmap</span></td>
+          <td>Self-hosted small LLM tier — on roadmap, not for initial release<br><span class="issue">post-1.0</span></td>
+        </tr>
+        <tr>
+          <td class="layer">Connectors (backend)</td>
+          <td><span class="badge b-partial">~ partial</span></td>
+          <td>GitHub basic; Calendar/Notion partial; full OAuth needed<br><span class="issue">#1229, #1061</span></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="onboard">
+    <div class="col-head">Onboarding (cuts across both stacks)</div>
+    <table>
+      <tr><th>Layer</th><th>State</th><th>Gap / PoC needed</th></tr>
+      <tr>
+        <td class="layer">BYOC key entry</td>
+        <td><span class="badge b-partial">~ partial</span></td>
+        <td>Plugin user_config field defined; backend receiver not yet wired. Deferred post-PoC.<br><span class="issue">skunkworks PoC step 2</span></td>
+      </tr>
+      <tr>
+        <td class="layer">User identity claim</td>
+        <td><span class="badge b-gap">✗ gap</span></td>
+        <td>UUID issued at first MCP connect (MVP). Email verification at 1.0.<br><span class="issue">#1185</span></td>
+      </tr>
+      <tr>
+        <td class="layer">meet-piper (profile setup)</td>
+        <td><span class="badge b-done">✓ done</span></td>
+        <td>Works for single user; "stranger" adaptation needed for external users</td>
+      </tr>
+      <tr>
+        <td class="layer">Connector setup</td>
+        <td><span class="badge b-gap">✗ gap</span></td>
+        <td>No guided OAuth flows for GitHub, Notion, Calendar<br><span class="issue">#1229 Wave P</span></td>
+      </tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>

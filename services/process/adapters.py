@@ -16,6 +16,7 @@ import structlog
 
 from services.process.registry import GuidedProcess, ProcessCheckResult, ProcessType, SuspendedInfo
 from services.shared_types import IntentCategory
+from services.utils.datetime_utils import ensure_utc
 
 logger = structlog.get_logger(__name__)
 
@@ -298,8 +299,11 @@ class StandupProcessAdapter:
             and conversation.updated_at
             and isinstance(conversation.updated_at, datetime)
         ):
-            # #1079: updated_at is tz-aware (UTC) from the DB; use tz-aware now
-            elapsed = datetime.now(timezone.utc) - conversation.updated_at
+            # #1079: updated_at is tz-aware (UTC) from the DB; use tz-aware now.
+            # ensure_utc coerces a tz-naive updated_at (e.g. an in-memory
+            # conversation not yet round-tripped through the timestamptz column)
+            # so the subtraction never raises naive-vs-aware TypeError.
+            elapsed = datetime.now(timezone.utc) - ensure_utc(conversation.updated_at)
             if elapsed > timedelta(minutes=STANDUP_TIMEOUT_MINUTES):
                 logger.info(
                     "Standup conversation timed out, auto-suspending",

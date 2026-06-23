@@ -33,13 +33,13 @@ def test_users(request):
     test_name = request.node.name
     timestamp = str(int(time.time() * 1000000))[-8:]  # Last 8 digits for uniqueness
     user_a = User(
-        id=f"test_{test_name}_a_{timestamp}",
+        id=str(uuid4()),  # #262: users.id is UUID — string ids fail the column type (pre-existing fixture bug)
         username=f"{test_name}_a_{timestamp}",
         email=f"user_a_{timestamp}@example.com",
         is_active=True,
     )
     user_b = User(
-        id=f"test_{test_name}_b_{timestamp}",
+        id=str(uuid4()),  # #262: users.id is UUID — string ids fail the column type (pre-existing fixture bug)
         username=f"{test_name}_b_{timestamp}",
         email=f"user_b_{timestamp}@example.com",
         is_active=True,
@@ -676,3 +676,104 @@ async def test_retrieve_nonexistent_key_returns_none(test_users, mock_keychain):
         )
 
         assert key is None
+
+
+# ---------------------------------------------------------------------------
+# #358 Phase 2 — encrypted-at-rest user-secret store (the #1185 enabler)
+# ---------------------------------------------------------------------------
+
+
+def _all_pass_report(provider: str, preview: str):
+    """Minimal all-pass ValidationReport (mirrors test_multi_user_key_isolation)."""
+    from services.security.api_key_validator import ValidationReport
+    from services.security.key_leak_detector import LeakCheckResult
+    from services.security.key_strength_analyzer import KeyStrength
+    from services.security.provider_key_validator import ValidationResult
+
+    return ValidationReport(
+        provider=provider,
+        api_key_preview=preview,
+        format_valid=True,
+        format_result=ValidationResult(valid=True, message="ok", provider=provider),
+        strength_acceptable=True,
+        strength_result=KeyStrength(
+            length_score=1.0,
+            entropy_score=0.9,
+            character_diversity_score=1.0,
+            pattern_score=0.9,
+            overall_score=0.9,
+            recommendations=[],
+            security_level="strong",
+        ),
+        leak_safe=True,
+        leak_result=LeakCheckResult(leaked=False, source=None),
+        overall_valid=True,
+        security_level="high",
+        recommendations=[],
+        warnings=[],
+    )
+
+
+@pytest.mark.asyncio
+async def test_secret_encrypted_at_rest_and_round_trips(test_users, mock_keychain):
+    """#358: with an encryptor configured, store writes an encrypted_secret (NOT the
+    plaintext) and retrieve returns the original by decrypting it."""
+    from services.security.field_encryption import FieldEncryptionService
+
+    user_a, _ = test_users
+    enc = FieldEncryptionService(b"K" * 32)
+    service = UserAPIKeyService(keychain_service=mock_keychain, field_encryption_service=enc)
+    key_value = "sk-" + "a" * 48
+
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        session.add(user_a)
+        await session.commit()
+        with patch.object(
+            service._validator,
+            "validate_api_key",
+            return_value=_all_pass_report("openai", "sk-a..."),
+        ):
+            row = await service.store_user_key(
+                session=session,
+                user_id=user_a.id,
+                provider="openai",
+                api_key=key_value,
+                validate=False,
+            )
+        # at-rest: a non-null encrypted_secret that is NOT the plaintext
+        assert row.encrypted_secret
+        assert key_value not in row.encrypted_secret
+        # retrieve decrypts back to the original
+        assert await service.retrieve_user_key(session, user_a.id, "openai") == key_value
+
+
+@pytest.mark.asyncio
+async def test_retrieve_falls_back_to_keychain_without_encrypted_secret(test_users, mock_keychain):
+    """A legacy / pre-migration row has no encrypted_secret → retrieve uses the keychain."""
+    from services.security.field_encryption import FieldEncryptionService
+
+    user_a, _ = test_users
+    enc = FieldEncryptionService(b"K" * 32)
+    service = UserAPIKeyService(keychain_service=mock_keychain, field_encryption_service=enc)
+    value = "sk-" + "c" * 48
+
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        session.add(user_a)
+        await session.commit()
+        with patch.object(
+            service._validator,
+            "validate_api_key",
+            return_value=_all_pass_report("openai", "sk-c..."),
+        ):
+            row = await service.store_user_key(
+                session=session,
+                user_id=user_a.id,
+                provider="openai",
+                api_key=value,
+                validate=False,
+            )
+        # simulate a legacy/pre-migration row: clear the encrypted column (keychain keeps it)
+        row.encrypted_secret = None
+        await session.commit()
+        # retrieve must fall back to the keychain
+        assert await service.retrieve_user_key(session, user_a.id, "openai") == value

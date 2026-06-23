@@ -66,6 +66,54 @@ Launched 5 parallel per-role gather subagents → all returned; **completeness v
 - **Gaps**: the big duty-cycle-infra wanted-cluster is mostly **CLOSED** by the freeze-registry; still-open = live board-state surface, canonical-retest history table, canonical ops recipes.
 - **Trust-flag → HOST**: `BRIEFING-CURRENT-STATE` heavily loaded-not-ref (trust question, not a pure trim).
 - Did NOT re-emit the 5 raw JSONs to scratch (token-saving; subagent ids retained for audit/re-query; the analysis doc is the durable synthesized artifact). **Phase 4 next**: file the implementation child-issue (propose-and-diff) + memo Docs (pilot owner) + HOST (trust-flags).
+- **Phase 4 DONE (same turn)**: child-issue **#1274** (propose-and-diff, owner-gated) + #1272 P1-3 comment + memo to Docs (co-owner) + HOST (trust-flag). MEM-EVAL complete end-to-end.
+
+### 16:37 — WORK: Janus cross-project migration-format (replied) + HOST trust-flag folded + PA BYOC filed
+- **Janus (sibling project, Design in Product) requested the migration prompt format** (xian is migrating Janus next; wants PM-cohort best-practice not ad-hoc). **Replied** with the full handoff/bootstrap format + Janus-fit → `designinproduct/docs/mail/memo-cio-to-janus-...-2026-06-17.md` (pushed `06030c7`): two-prompt structure (before=handoff / after=bootstrap), required fields each, load-bearing-vs-nice-to-have, fitted to Janus's local-cron-re-register-first / state-in-durable-files / manual-fallback-playbook-pointer / inherited-blocked-task-slot. Cross-project migration-discipline convergence (CIO lane; climbs the value chain). Offered a worked cohort pair (HOST's Sonnet move ≈ Janus's Fable→Opus) if useful.
+- **HOST trust-flag read folded into the MEM-EVAL analysis** (+ #1274): BRIEFING-CURRENT-STATE = trust-*without-engaging* (ritual load, trusted-fresh-so-not-interrogated) → **KEEP loaded, NOT demand-load**; fix is behavioral (START-line "note one thing it confirms/adds"; HOST tracks under m-39 dim-B). Off the trim list.
+- **PA BYOC state** (leadership cc, informational): ratification 9/9 done; alpha.pipermorgan.ai live; Ted Nadeau = first external tester today; Wave P blocked on ADR-072. No CIO action → filed.
+- 3 filed → read.
+
+### ~17:00 — PM task: agent-chart cleanup (dispatch `registry-ui.html`)
+PM-directed (not a cron fire): 5 edits to the cross-project agent chart `~/Development/dispatch/registry-ui.html` (hardcoded `const DATA`). Committed dispatch `dd8b381`; **40 agents, DATA parses OK**, in PM's Launch preview.
+1. **Theseus — the careful one** (PM-flagged "be careful"): the single entry was mislabeled **"Theseus Prime"** but carried slug `theseus`. **Verified before editing**: real Theseus has **15 Klatch session logs**; the clone "theseus-prime" has **0**. → relabeled "Theseus Prime"→**"Theseus"**, status `done`→`active`, statusText "Active — many ongoing sessions"; the AXT clone stays untracked (no separate entry existed). Dropped the "migrated Apr 4" date (possibly the clone's; avoided asserting it).
+2. **ETA dropped** (PM: drop for now).
+3. **Coding sub-agents combined**: Programmer + Special Assignments → **"Coding Agent"** (slug prog). [FLAGGED to PM: left Vibe Coder separate — fold it too?]
+4. **Dispatch combined**: Dispatch-DinP → **"Dispatch"** (+ project notes). [FLAGGED: read as renaming the -DinP-suffixed agent to the clean "Dispatch" identity; left Dispatch-Kind separate — confirm, or merge both?]
+5. **PM-agent short names**: Lead Developer→Lead Dev · Chief Architect→Arch · Chief of Staff→Exec · Piper Alpha→PA (CXO/PPM/CIO/Comms/Docs/HOST already short).
+- The careful verification pass also caught + fixed a cosmetic line-join the ETA removal introduced (PA + Mobile Consultant objects merged onto one line; re-split). Migration: **CXO next** (PM confirmed).
+
+### 19:07 — WORK: MEM-EVAL LANDED (Docs shipped #1274) + PROJECT.md ratified + #972 valid_until confirmed
+- **Docs IMPLEMENTED #1274 same-day** — the MEM-EVAL payoff is real: **MEMORY.md 42KB → 22.1KB** (under the 24.4KB limit; no more truncation — the token-efficiency win is LIVE across all 11 roles every fire). **3 entries recovered from the truncated bottom** (were silently invisible — a quality win on top of the token win). **Gap issues #1275** (live board-state) **/ #1276** (canonical-retest history) **/ #1277** (canonical ops recipes) filed. Shared-index owner-Q resolved. #1274 closed.
+- **RATIFIED the PROJECT.md demand-load** (Docs's request = my analysis's rec, PROJECT.md ref 0/134): remove from CLAUDE.md Step 3, keep in Progressive Loading table → Docs implements. Low-risk (stays available), my lane, PM cc'd. Told Docs the BRIEFING-CURRENT-STATE disposition is already settled (HOST: keep-loaded + behavioral fix, off the trim list).
+- **#972 `valid_until` CONFIRMED** (Arch review, cc me): the 4-field shape is structurally sound; **KEEP `valid_until`** (symmetric pair + Janus-inconsistent + cheap-to-rename-if-wrong) — concurs with my Daedalus proposal. The definitive Janus answer still awaits the Daedalus bridge (my lane, gated on Klatch rousing). Arch `response:none` → no memo; folding the concurrence into the Daedalus thread when Klatch rouses.
+- 4 filed → read.
+
+### 22:07 — STOP (day-close)
+Last scheduled fire of today (next 03:07 tomorrow). Inbox zero. Cron stays armed (`912160a4`). No escalations-doc reconcile — that STOP step was *removed* today (the v1.13 fold). Day-close below.
+
+---
+
+## DAY-ARC — 2026-06-17 (CIO) — a big, high-yield day
+START 06:53 (Wed, resumed) → STOP 22:37. Headline: **the cohort's way-of-working improved by-construction on several fronts at once.**
+- **Freeze-watcher closed→never-restarted blind spot FIXED + live** (Exec's overnight dormancy was the first real test; `first_fire` registry gate closes the load-bearing Gap-C). Both Gap-C modes now covered.
+- **Escalations-docs FOLD executed** (skill **v1.13**; PM-ratified + HOST-concurred): removed the vigilance-dependent m-41 STOP-reconcile step + deprecated the per-role escalations docs; residual rides the carry-forward. *(This very STOP is lighter because of it.)*
+- **MEM-EVAL corpus analysis (#1272) — the marquee**: PM-directed resilient method (gameplan → audit-cascade → execute). 134-log gather (5 subagents) → analysis → **Docs IMPLEMENTED #1274 same-day**: MEMORY.md **42KB→22.1KB** (under limit, no more truncation — token win LIVE across 11 roles), 3 truncation-hidden pins recovered, gap issues #1275/#1276/#1277 filed. PROJECT.md demand-load ratified. The audit-cascade + completeness-check each caught real drift before it compounded.
+- **Stale-pattern triage 12a CLOSED** (6 patterns Emerging→Proven, gh-verified; 029→Proven; 030 refreshed; 039 deprecated).
+- **Janus cross-project migration-format** delivered (the cohort's migration discipline traveling to a sibling project).
+- **Agent-chart cleanup** (dispatch registry): Theseus carefully un-mixed-up (verified 15 Klatch logs vs 0 clone) + 4 other edits.
+- **Migration**: Arch ✓ migrated → CXO next. **#972**: valid_until confirmed (Arch+CIO). **HOST trust-flag** resolved.
+- Mail: drained loops with Exec, HOST, Docs, Arch, Janus, PA across the day. mail-send v2 dogfooded throughout; the bridge held.
 
 ## Memory & briefing surfaces referenced this session
-*(filled at STOP — #974 3-bucket)*
+- **Referenced (shaped work)**: `duty-cycle-tick` skill (every fire — the procedure); freeze-check/registry/watchdog scripts (the blind-spot fix); `check-staleness.py` + pattern files (triage); methodology-30/41/42 (catalog: caught m-42 misfit, held m-30 promotion bar); the MEM-EVAL pilot-tracker + 135-log corpus + `gameplan-template`/`agent-prompt-template` (audit-cascade); `dispatch/registry-ui.html` + the Klatch repo (Theseus verification) + designinproduct repo (Janus); `CLAUDE.md` (worktree/mailbox/sign-off — constant); pins — `feedback_investigate_before_extending_all_work` (load-bearing today: caught the m-42 misfit, the 8-missing-logs cluster gap, the chart line-join), `feedback_no_confabulating_expected_steps_as_completed` (verified Theseus before editing), `feedback_careful_git_sync_on_shared_main` + `feedback_write_new_files_to_worktree_path_in_model_a` (cross-project commits), `feedback_pre_authorized_for_unblocked_work_just_do` + the no-rush correction (drain-all default). Mail from Exec/HOST/Docs/Arch/Janus/PA.
+- **Loaded but not referenced**: most MEMORY.md index entries (Ship/voice/blog pins — no comms work today); PROJECT.md/ROSTER (the very dead-weight MEM-EVAL flagged); MCP toolset catalogs.
+- **Wanted but not found**: a pointer to *where cross-project artifacts live* — I had to search to find the agent chart was in the dispatch repo; and the chart's agent labels didn't map 1:1 to PM's terms (Dispatch/sub-agent edits were ambiguous → flagged 2 for confirm). A canonical cross-project-artifact/agent-naming index would close both. (Minor; logged as a gap signal.)
+
+## Sign-off checklist
+- `git status`: clean after this STOP commit.
+- `@{u}..HEAD`: pushed each work-unit through the day; verified empty at each.
+- `main..HEAD`: all units on origin/main. **Cross-project pushed too**: dispatch chart (`dd8b381`), designinproduct Janus memo (`06030c7`).
+- Cron: armed (`912160a4`, `7 3,10,13,16,19,22`); next fire 03:07 (overnight WATCH).
+
+<!-- DAY-CLOSED: 2026-06-17 -->

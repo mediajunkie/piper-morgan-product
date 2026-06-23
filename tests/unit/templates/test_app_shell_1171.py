@@ -34,7 +34,7 @@ def test_shell_renders_with_nav_chrome(env):
         "{% extends 'layouts/app_shell.html' %}{% block main %}<p>HELLO_MAIN</p>{% endblock %}",
     )
     assert "HELLO_MAIN" in html  # the page's content
-    assert "global-nav" in html  # nav chrome included (shell-owned)
+    assert "nav-rail" in html  # nav chrome included (shell-owned, #1280 left dark rail)
     assert "/static/css/app-shell.css" in html
     assert "/static/css/tokens.css" in html
 
@@ -61,7 +61,7 @@ def test_chrome_not_page_overridable(env):
         "{% block footer %}HIJACKED{% endblock %}",
     )
     assert "HIJACKED" not in html  # nonexistent override blocks are ignored by Jinja
-    assert "global-nav" in html  # real chrome still renders
+    assert "nav-rail" in html  # real chrome still renders
 
 
 def test_aside_is_opt_in_via_show_radar(env):
@@ -112,4 +112,4 @@ def test_shell_owns_skip_link_as_first_focusable(env):
     assert 'id="main-content"' in html  # ...which now exists on the shell <main>
     assert "/static/css/skip-link.css" in html  # styling is shell-provided
     # skip-link precedes the nav in source order = first in tab order (bypasses the nav)
-    assert html.index('class="skip-link"') < html.index("global-nav")
+    assert html.index('class="skip-link"') < html.index("nav-rail")

@@ -98,6 +98,16 @@ class ProvenanceSource(str, Enum):
 - `PIPER_GENERATED` — trust context differs from user-sourced; surface must mark as Piper-authored (agent-attribution honesty); no connector-health dependency; Stage 2+ surfacing
 - `FEDERATED` — trust inherits connector health (ADR-070 D5 `degrade()` applies); surface must show source + freshness honestly (`status: "stale"` when connector degraded); Stage 3+ surfacing (trust-gate is most load-bearing here); post-Beta (requires RECONNECT connector infrastructure)
 
+**Addendum 2026-06-18 (#1270 reconcile)**: `ProvenanceSource` is the semantic/spec-layer taxonomy for the entity model (People, WorkItems, Conversations, and cross-entity provenance semantics). `ArtifactSourceType` (`services/domain/models.py:843`: `DOCUMENT | UPLOADED_FILE | INSIGHT | GENERATED`) is the implementation-canonical taxonomy for the artifacts domain — what `/files` and the Artifact table key off. **Do not build against ProvenanceSource in the artifacts domain — use ArtifactSourceType.** Canonical mapping:
+
+| ProvenanceSource (this spec) | ArtifactSourceType (implementation) | Notes |
+|---|---|---|
+| `USER_CONFIRMED` / `SESSION_EXTRACTED` | `DOCUMENT` or `UPLOADED_FILE` | User-brought content |
+| `PIPER_GENERATED` | `GENERATED` | Same concept; GENERATED is canonical in code |
+| `FEDERATED` | Add as `ArtifactSourceType.FEDERATED` when RECONNECT lands | Not yet in code |
+| `SEED` | *(not in ArtifactSourceType)* | Setup concept only; entity-model-layer only |
+| `INFERRED` | *(not in ArtifactSourceType)* | Entity-model provenance; not an artifact creation path |
+
 **On `InsightDB` (M4 work, #1216):**
 - Add `source: ProvenanceSource` field (not nullable; default `SEED` for existing rows)
 - Add `is_seed: bool` derived property (`source == SEED`)

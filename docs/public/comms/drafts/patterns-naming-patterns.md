@@ -12,13 +12,13 @@ The project has a pattern catalog. Numbered entries. Each pattern has a name (pa
 
 In early May the catalog got to Pattern-067.
 
-Pattern-067 was filed on May 9 by the engineering role. The pattern named was *issue-body-reality-mismatch* — the failure mode where a tracking issue's description says one thing about the code and the code says another. Specific shape. Specific counter-discipline. Specific examples from the previous week's cleanup sprint. Filing landed cleanly. Catalog count went from 66 to 67.
+Pattern-067 was filed on May 9 by Lead Dev (engineering). The pattern named was *issue-body-reality-mismatch* — the failure mode where a tracking issue's description says one thing about the code and the code says another. Specific shape. Specific counter-discipline. Specific examples from the previous week's cleanup sprint. Filing landed cleanly. Catalog count went from 66 to 67.
 
-Two days later, on the morning of May 11, the innovation role filed Pattern-067.
+Two days later, on the morning of May 11, the CIO (innovation) filed Pattern-067.
 
 The new Pattern-067 named a different failure mode. *Silent state mutation in shared working tree.* Same number. Different shape. The innovation role had been preparing the filing for a while, the engineering role had filed two days earlier, and the cohort's filing-convention didn't include a check for whether the slot was already taken.
 
-The architecture role noticed first. The next merge into main pulled both files into the same directory and the conflict surfaced at filing time, not authoring time. The two patterns were both real. Both deserved a slot. Neither was wrong about the failure mode it named. The two authors had not been aware of each other's work.
+The Architect (architecture) noticed first. The next merge into main pulled both files into the same directory and the conflict surfaced at filing time, not authoring time. The two patterns were both real. Both deserved a slot. Neither was wrong about the failure mode it named. The two authors had not been aware of each other's work.
 
 If you've been around the project for a while, this shape is recognizable. It's the same shape another entry in the catalog — Pattern-063 — was already named to describe. Parallel-authoring drift: two authors working on the same kind of artifact without each other's visibility, producing things that look correct in isolation and conflict in composition.
 
@@ -32,7 +32,7 @@ That was the operational resolution. The methodological resolution came in the n
 
 The catalog hadn't had a *slot-allocation check* in its filing procedure. The implicit assumption had been that catalog filings were rare enough that the next available number would still be the next available number by the time you actually filed. Catalog growth had been slow enough that the assumption held for a long time. As the cohort started using the catalog more, and as multiple roles started filing in parallel during the same week, the assumption started failing silently.
 
-The new convention: before filing, run a quick check against the catalog's current state. *Is the slot you're about to claim still empty?* If yes, file. If no, pick the next empty slot and update the cross-references. The check takes thirty seconds. It prevents the exact failure mode that had just surfaced.
+The convention now being added to the catalog's filing methodology: before filing, run a quick check against the catalog's current state. *Is the slot you're about to claim still empty?* If yes, file. If no, pick the next empty slot and update the cross-references. The check takes thirty seconds. It prevents the exact failure mode that had just surfaced.
 
 # Why this generalizes
 
@@ -54,7 +54,7 @@ The patterns that catch the methodology's own failure modes are usually the ones
 
 ---
 
-*Next on Building Piper Morgan: [TEASE PENDING — confirm next-scheduled-item at calendar update].*
+*Next on Building Piper Morgan: "Extension Without Integration" — on adding something new to a system without connecting it to what's already there.*
 
 *Where in your work does a discipline live that you've built for the product surface but never explicitly applied to the methodology surface? What collision would surface the gap?*
 

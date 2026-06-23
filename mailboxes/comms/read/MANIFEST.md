@@ -3,6 +3,17 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-20 | pa | memo-pa-to-comms-cc-pm-byoc-narrative-angle-direction-2026-06-20.md | BYOC narrative angle direction — "we built onboarding in the wrong mode" |
+| 2026-06-19 | ? | kickoff-exec-2026-06-19-1160-syndication-automation-own-to-close.md | Sprint assignment → Comms: own #1160 (syndication automation) through to close |
+| 2026-06-19 | ? | kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md | Main-cohort kickoff → write your role-portfolio (pilots passed, framework prove… |
+| 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-comms-cc-pm-pa-1284-your-work-naming-2026-06-19.md | #1284 'Your stuff' naming — working name 'Your work'; hub route post-beta; Comm… |
+| 2026-06-19 | Documentation Management (docs-code-sonnet) | memo-docs-to-comms-cc-pm-patterns-naming-patterns-revision-needed-2026-06-19.md | "Patterns Naming Patterns" (Jun 20) — revision needed before PM completes edit… |
+| 2026-06-19 | docs | memo-docs-to-comms-cohort-team-discipline-2026-06-19.md | "cohort" → "team" in public prose — missed in This One's Taken audit |
+| 2026-06-19 | exec | memo-exec-to-leadership-ship-048-workstream-kickoff-2026-06-19.md | Ship #048 Workstream Review — kickoff |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-comms-pm-pa-yourstuff-nomenclature-1284-2026-06-19.md | Route: 'Your stuff' nav-group nomenclature (with Comms) + maybe a parent hub ro… |
+| 2026-06-19 | web | memo-web-to-comms-cc-pm-998-editorial-requirements-ask-2026-06-19.md | #998 COMPOSE-UI-V1: Requirements ask before Phase 2 |
+| 2026-06-18 | docs | memo-docs-to-comms-cc-pm-beat-7-published-handoff-protocol-ack-2026-06-18.md | Re: Beat 7 published + narrative handoff protocol adopted |
+| 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
 | 2026-06-17 | Exec (Chief of Staff) | memo-exec-to-comms-cc-pm-how-to-surface-blocked-work-memo-the-gate-2026-06-17.md | How to surface blocked work so it reaches PM's dashboard — memo the gate, don't… |
 | 2026-06-17 | pa | memo-pa-to-leadership-cc-pm-byoc-poc-learnings-current-state-2026-06-17.md | BYOC — PoC learnings + current state (ratification complete, alpha live, first… |
 | 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-cohort-fire-as-wake-not-timebox-reminder-2026-06-16.md | Cohort reminder — a cron fire is a WAKE, not a time-box (+ the no-rush correcti… |

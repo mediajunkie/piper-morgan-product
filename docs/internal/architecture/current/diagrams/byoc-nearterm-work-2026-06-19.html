@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piper Morgan — BYOC Near-Term Work Map 2026-06-19</title>
+<style>
+:root {
+  --text-primary: #1a1a1a;
+  --text-secondary: #666;
+  --bg-secondary: #f5f5f5;
+  --border: #e0e0e0;
+}
+body { margin: 0; padding: 24px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: var(--text-primary); }
+h1 { font-size: 16px; font-weight: 700; margin: 0 0 4px; }
+.meta { font-size: 12px; color: var(--text-secondary); margin-bottom: 20px; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 20px; }
+th { background: var(--bg-secondary); padding: 6px 8px; text-align: left; font-size: 11px; font-weight: 600; color: #555; border-bottom: 2px solid var(--border); }
+td { padding: 6px 8px; border-bottom: 1px solid #efefef; vertical-align: top; line-height: 1.4; }
+tr:last-child td { border-bottom: none; }
+.col-head { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-secondary); margin-bottom: 6px; }
+.pri-now { color: #2a7a2a; font-weight: 600; }
+.pri-next { color: #666; }
+.pri-later { color: #999; }
+.issue { font-size: 10px; font-family: monospace; color: #888; }
+.who-pa { color: #1a5276; font-weight: 700; font-size: 11px; }
+.who-lead { color: #7d3c98; font-weight: 700; font-size: 11px; }
+.who-pm { color: #b7950b; font-weight: 700; font-size: 11px; }
+</style>
+</head>
+<body>
+<h1>Piper Morgan — BYOC Near-Term Work Map</h1>
+<p class="meta">Generated 2026-06-19 · PA session · Skunkworks PoC vs. M5 Lead Dev sprint</p>
+
+<div class="col-head">Skunkworks — proof of concept (<span class="who-pa">PA lane</span>)</div>
+<table>
+  <tr><th>Work</th><th>Priority</th><th>What it proves</th><th>Issue</th></tr>
+  <tr>
+    <td><strong>PoC: hosted endpoint connection</strong><br>Point plugin at ngrok/tailscale tunnel → hosted backend; prove the chain without Fly.io wait</td>
+    <td class="pri-now">NOW</td>
+    <td>Plugin ↔ hosted backend works. No auth needed. Unblocks everything downstream.</td>
+    <td class="issue">byoc/tracker.md Step 1</td>
+  </tr>
+  <tr>
+    <td><strong>Identity design decision captured</strong><br>Bearer UUID for PoC + MVP; email+magic-link for 1.0; no third-party IdP dependency</td>
+    <td class="pri-now">NOW ✓</td>
+    <td>Decision documented in byoc/notes/identity-decision-2026-06-19.md</td>
+    <td class="issue">feeds #1185</td>
+  </tr>
+  <tr>
+    <td><strong>Update byoc/tracker.md</strong><br>Reflect v0.4.0 state, PM identity decisions, Piper Open finding, local LLM roadmap item</td>
+    <td class="pri-now">NOW ✓</td>
+    <td>State hygiene — skunkworks continuity</td>
+    <td class="issue">local skunkworks</td>
+  </tr>
+  <tr>
+    <td><strong>Multi-user onboarding design</strong><br>Adapt meet-piper for "stranger" — what does a new external user experience at first connect?</td>
+    <td class="pri-next">NEXT</td>
+    <td>Onboarding gap across full stack — currently assumes PM profile exists</td>
+    <td class="issue">new issue</td>
+  </tr>
+  <tr>
+    <td><strong>MCPB clean-machine test</strong><br>PM runs mcpb pack + install on macOS without system Python + current Claude Desktop</td>
+    <td class="pri-next">NEXT (PM action)</td>
+    <td>Gate for #1282 marketplace submissions</td>
+    <td class="issue">#1282 Phase 1 gate</td>
+  </tr>
+  <tr>
+    <td><strong>BYOC key-passing PoC</strong><br>Add anthropic_api_key to user_config; MCP server receives + forwards to backend</td>
+    <td class="pri-next">NEXT (post-hosted-endpoint)</td>
+    <td>User's own Anthropic key routes through the plugin stack</td>
+    <td class="issue">#1185 step 2</td>
+  </tr>
+  <tr>
+    <td><strong>Piper Open cross-pollination</strong><br>Shared hosted-mcp/ surface in skunkworks; both projects write findings there</td>
+    <td class="pri-next">NEXT</td>
+    <td>Prevents parallel-track waste on same problem</td>
+    <td class="issue">skunkworks infra</td>
+  </tr>
+</table>
+
+<div class="col-head">M5 sprint — Lead Dev implementation (<span class="who-lead">LD lane</span>)</div>
+<table>
+  <tr><th>Work</th><th>Gate</th><th>Issue</th></tr>
+  <tr>
+    <td><strong>Credential decoupling</strong><br>Remove hardcoded localhost assumptions from server config</td>
+    <td>Immediate — unblocks everything below</td>
+    <td class="issue">#1162</td>
+  </tr>
+  <tr>
+    <td><strong>Fly.io deploy</strong><br>Hosted backend reachable from Claude Desktop via plugin MCP</td>
+    <td>#1162 cred decoupling ✓</td>
+    <td class="issue">#1278 (LD, not PA)</td>
+  </tr>
+  <tr>
+    <td><strong>BYOC key receiver in backend</strong><br>Backend accepts per-request user API key, routes to LLM provider</td>
+    <td>Hosted endpoint PoC ✓</td>
+    <td class="issue">#1185 BYO-KEY</td>
+  </tr>
+  <tr>
+    <td><strong>Per-user identity + data isolation</strong><br>UUID bearer → scoped profile, conversation history, KB; email account for 1.0</td>
+    <td>Identity decision ✓ (done 6/19)</td>
+    <td class="issue">#1185 + #1162</td>
+  </tr>
+  <tr>
+    <td><strong>Session / state layer</strong><br>Conversation continuity per user; session ID → user context lookup</td>
+    <td>Per-user identity ✓</td>
+    <td class="issue">new issue — multi-tenant session design</td>
+  </tr>
+  <tr>
+    <td><strong>Connector OAuth flows</strong><br>GitHub, Notion, Calendar — guided OAuth per connector</td>
+    <td>Wave P / RECONNECT sprint</td>
+    <td class="issue">#1229</td>
+  </tr>
+  <tr>
+    <td><strong>Local LLM tier (backend)</strong><br>Self-hosted small LLM as alternative/fallback to Anthropic API</td>
+    <td>Post-1.0 — roadmap only</td>
+    <td class="issue">post-1.0 roadmap</td>
+  </tr>
+</table>
+
+<div class="col-head">PM decisions required (<span class="who-pm">PM lane</span>)</div>
+<table>
+  <tr><th>Decision</th><th>Options / Status</th></tr>
+  <tr>
+    <td><strong>Identity approach</strong></td>
+    <td>✓ <em>Decided 6/19</em>: UUID bearer (PoC + MVP 0.9.0) → email+magic-link (1.0, Piper-native). No third-party IdP dependency. "Login with…" post-1.0 nice-to-have.</td>
+  </tr>
+  <tr>
+    <td><strong>#1278 Fly.io timing</strong></td>
+    <td>Frontload before M5, or hold for M5 sprint? (LD, not PA)</td>
+  </tr>
+  <tr>
+    <td><strong>MCPB clean-machine test</strong></td>
+    <td>PM runs test: macOS, no system Python, current Claude Desktop</td>
+  </tr>
+  <tr>
+    <td><strong>Piper Open cross-pollination mechanism</strong></td>
+    <td>Shared hosted-mcp/ surface in skunkworks (proposed) — is Janus active?</td>
+  </tr>
+</table>
+</body>
+</html>

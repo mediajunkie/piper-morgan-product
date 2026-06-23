@@ -1,0 +1,48 @@
+# Exec (Chief of Staff) — Session Log 2026-06-20
+
+**Role**: Chief of Staff (Exec) | **Tool**: Claude Code | **Model**: Opus 4.8 | **Account**: DinP (xian@designinproduct.com)
+**Session opened**: 2026-06-20 ~07:30 PT (PM-initiated date-roll START — "day close did not fire," overnight dormancy)
+**Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` (branch `claude/mystifying-lumiere-8bebd3`)
+**Cron**: THIN prompt, windowed `32 6,9,12,15,18,21` (`8f2194b1` survived — armed)
+
+## START (6/20 ~07:30) — PM-initiated date-roll
+
+**Dormancy**: session dark ~20:30 Fri → 07:28 Sat (~11h); 6/19's 21:32 STOP missed → 6/19 retroactively closed (Step-0 self-heal). **Watcher caught it** (STALE exec 11h @ 07:26 Sat + arch/cxo/ppm — another cohort-wide overnight sleep; cure working 3rd time). PM woke me 07:27.
+
+**Held into today** (carry-forward authoritative):
+- **Portfolio wave: 5/8 filed** (Comms/Exec/CXO/PPM/Web; HOST passed Comms+Exec+CXO). Remaining to file: **Arch, Docs, PA**. Track + ensure HOST reviews.
+- **Ship #048 workstream review** (kicked off 6/19): **1/6 memos in** (Comms, by Sat AM). 5 to go (HOST/CIO/CXO/PPM/Arch), due Fri–Tue → I synthesize the Ship #048 draft → PM voice-pass → Comms publish Wed 6/24.
+- **Janus meta-rollup channel** — new, in inbox; pending read (cross-project coordination, follows the Calliope rollup-share).
+- Board was **all-clear** at 6/19 16:25 (0 PM-action).
+
+## Work
+- **START (~07:30–08:00, PM-initiated date-roll).** Step-0 self-heal: **retroactively closed 6/19** (the heaviest day of the run — full day-arc + memory-eval + DAY-CLOSED; `284ee6e48`). Watcher had caught the overnight dormancy (STALE exec 11h @ 07:26). Created this 6/20 log. **Board = day-roll START verify** (`27f97f504`): cohort provably dormant overnight (carry-forwards Fri-eve; only Lead touched #1299 ~00:30) → all-clear holds; rendered Sat board (0 blocking / 2 low-urgency when-ready: Web Phase-2-test + Comms Beat-8-held / waves in-flight). Verified, not from-vantage (scanned all carry-forwards + freshness). **Mail loop**: (1) **Janus opened the meta-rollup channel** — he aggregates project rollups for xian's CEO-hat; I feed the **CEO-hat subset** (cross-project/portfolio/DinP-strategy), not routine PM-ops. **Ack'd + confirmed** the split, delivered cross-repo to DinP `docs/mail/` main (`931ffa2`). (2) **Comms filed workstream-048** (1/6 for Ship #048) — collected to read/. Both → read/ (`12d6d3026`, cherry-pick cure). Trackers updated (workstream 1/6; Janus channel). Cron `8f2194b1` survived — armed.
+
+- **~18:57 — PM-requested mail-review + full sweep (PM back after ~11h Sat-daytime suspension).** **Mail loop** (cohort filed a ton during the workday): Arch + PA portfolios (→ **7/8**), HOST wave-3 review (Arch+PPM pass → **5/8 passed**; confirmed Arch's mandate calibration "don't tighten"), workstream-048 from Arch/HOST/PPM (→ **4/6**); all → read/ (one PPM-move hit a shared-checkout race but PPM's memo is safe on origin via its sent-archive). **Full sweep-and-verify — INVOKED the skill** (Skill tool, per the runbook rule — first formal invocation; dogfooded it). Gathered all 8 carry-forwards + GitHub-verified. **Key find: #1307** — admin_compose is an **auth-exempt writable admin UI (security)**; Lead gated on PM (dev→env-gate vs prod→auth-protect), fixable in minutes, **blocks #1162**. Verified OPEN. Plus low-urgency: #358 close-disposition (Lead leans hold), Comms beat-steer (5 candidates) + BYOC-GTM-taskforce-convene + 2 voice-passes (Beat-8 held, BYOC insight). HOST "awaiting-PM" section = mostly stale-resolved (framework ratified etc.). Docs 6-branches now **5-day stale** (flagged, not surfaced as current). **Board rendered** (`d3464ad7b`): 1 soon (#1307) / 3 when-ready / 2 voice-pass / waves in-flight / 3 closed today (#1297/#1294/#1293). Note: CIO logged a **stalled-cron diagnosis** (watcher detects dormancy but doesn't nudge PM) — CIO's lane, watch for follow-up. Web Phase-2 (this AM) didn't resurface (web carry-forward 21h stale) — unconfirmed, will check Web's next fire (not silently dropped). Cron `8f2194b1` armed.
+
+- **19:05 — late-18:32 fire (workstream collection).** Fired ~1 min post-sweep. Collected **PPM workstream-048** (the one that bounced in the earlier shared-checkout race — now cleanly in read/) + **CXO workstream-048** (just arrived). **Workstream-048 → 5/6** (Comms/Arch/HOST/PPM/CXO); only **CIO** left → then I synthesize the Ship #048 draft. Board held (4→5 wave bump is awareness-only; PM's on the #1307 call). Inbox clean. Cron `8f2194b1` armed; next 21:32 = STOP/day-close.
+
+- **~21:00 — PM closed #1307 (board input).** PM: "#1307 is closed." Verified **CLOSED-COMPLETED**; **#1162 now unblocked** (open, back with Lead). **Board updated** (`3013a3421`): #1307 → resolved, needs-you-soon 1→0 (nothing urgent), #1162-unblocked noted, workstream 5/6. **Deduped 2 re-delivered workstream inbox copies** (PPM/CXO — Pattern-068 re-delivery race; both confirmed in read/ on origin, so inbox copies were pure dupes; `420a65a1f`). Inbox clean. Board now: 0 urgent / 3 when-ready / 2 voice-pass / waves in-flight (portfolios 7/8, workstream 5/6, only CIO + Docs outstanding). Cron `8f2194b1` armed; next 21:32 STOP.
+
+## Memory & briefing surfaces referenced this session
+- **Referenced**: `cohort-attention-rollup` skill — **formally INVOKED for the first time** (the PM-requested 18:57 sweep; dogfooded the runbook's invoke-the-skill rule PM probed 6/19) + the runbook; `duty-cycle-tick` (the fires, internalized); **methodology-25** (workstream cadence, the #048 context); `project_janus_coordination_2026` + `reference_dispatch_agent` (the Janus meta-rollup channel + cross-repo delivery); memory pins — `attention_board_sweep_not_vantage` (the sweeps + verify-catches: #1307 surfaced, HOST-awaiting-PM-section flagged stale, Web-Phase-2 marked unconfirmed-not-dropped), `careful_git_sync_on_shared_main` (bridge ops + the Pattern-068 re-delivery-race dedupe). XPOLL current.md.
+- **Loaded but not referenced**: most MEMORY.md; the large skill/plugin registry churn.
+- **Wanted but not found**: the **Pattern-068 re-delivery-race structural fix** — PPM/CXO workstream memos re-appeared in inbox after being collected (deduped manually); CIO's mail-send-v3 read-state-dedup is the cure but the race still recurred this session. Worth a nudge to CIO if it persists.
+
+## STOP / Day-close (2026-06-20)
+
+**Day-arc — a steady Saturday; the two coordination waves nearly closed.** Self-heal START (6/19 retroactively closed; watcher caught the overnight dormancy a 3rd time). **Janus meta-rollup channel went LIVE** — confirmed the CEO-hat / PM-hat split, delivered cross-repo to the DinP repo; the rollup pattern is now genuinely cross-project (Piper source · Klatch adopting via Calliope · Janus aggregating). **PM-requested full sweep (18:57)** — first **formal Skill-tool invocation** of the rollup (closing the loop on PM's "was the skill invoked?"); it surfaced **#1307**, a real **security hole** (auth-exempt writable admin_compose), which **PM closed by evening** → #1162 unblocked. Both waves advanced while PM was out: **role-portfolios 7/8 filed** (HOST passed 5; only Docs left), **Ship #048 workstream review 5/6** (only CIO's lens left → then I synthesize the draft for Wed). Cohort shipped #1297/#1294/#1293.
+
+**Board at day-close**: 0 urgent / 3 low-urgency when-ready (#358, beat-steer, GTM-convene) / 2 voice-pass / waves in-flight. Nothing needs PM tonight.
+
+**Held into 6/21**: synthesize Ship #048 once CIO's workstream lands (or Mon/Tue); track the last 2 portfolios (Docs to file; PA+Web HOST-review); the 3 low-urgency + 2 voice-pass items are PM's-when-ready; re-nudge Docs on the 5-day-stale merge-keeper list; watch CIO's stalled-cron diagnosis + the Pattern-068 race.
+
+**Sign-off**: working tree clean; all work verified on origin/main throughout (per-commit `branch -r --contains`). Cron `8f2194b1` left armed (next 06:32 Sun). Exec MANIFESTs regen'd.
+
+**Post-close addendum (~22:12)**: HOST wave-4 landed during the STOP — **PA + Web both pass → all 7 filed portfolios now HOST-cleared**; only Docs left to file, then the wave is COMPLETE. Memo collected → read/.
+
+<!-- DAY-CLOSED: 2026-06-20 -->
+
+---
+
+*— Exec (DinP / Opus 4.8), 6/20 START ~07:30 PT, day-closed ~22:10 PT.*

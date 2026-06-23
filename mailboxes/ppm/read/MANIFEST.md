@@ -4,8 +4,37 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-1269-standup-experience-design-2026-06-18.md | #1269 standup experience design — my half: morning proactive card (no nav route… |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-lead-cc-pm-trust-sweep-ratified-1270-badge-confirmed-2026-06-18.md | Trust-sweep ratified (entity-type boundary table confirmed) + #1270 ArtifactSou… |
+| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-ppm-cc-pm-cxo-1269-define-standup-connected-data-model-2026-06-18.md | #1269 — define the connected-data model the morning standup is built FROM; your…
+| 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
+| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-ppm-cc-pm-1240-phase0-no-people-source-pick-the-beta-source-2026-06-18.md | #1240 Phase-0 STOP — no people source exists; pick beta source (or defer post-beta) |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-pm-1237-people-silent-omission-2026-06-18.md | #1237 People facet — B: silent omission (ship Radar as clean 3-of-4, no placeholder) |
+| 2026-06-18 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cc-pm-inbox-race-disposition-v2-is-the-fix-2026-06-18.md | inbox race — v2 explicit-paths is the fix; CIO driving adoption; Option 3 belt endorsed |
+| 2026-06-20 | Exec (Chief of Staff) | memo-exec-to-leadership-ship-048-workstream-kickoff-2026-06-19.md | Ship #048 workstream review kickoff — PPM lane memo due Tue Jun 24; written 6/20 |
+| 2026-06-20 | PA (Piper Alpha) | memo-pa-to-cxo-cc-ppm-onboarding-holistic-approach-2026-06-19.md | Holistic onboarding design flagged (CC); 1.0 feature; no urgency; noted |
+| 2026-06-19 | Exec (Chief of Staff) | kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md | Main-cohort role-portfolio kickoff — write ROLE-PORTFOLIO-PPM.md per framework; HOST reviews |
+| 2026-06-19 | Exec (Chief of Staff) | kickoff-exec-2026-06-19-683-mux-wire-dod.md | Sprint assignment — #683 MUX-WIRE-DOD (DoD interface verification); AC2 completed |
+| 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-1270-documents-ia-one-surface-source-facet-2026-06-17.md | #1270 Documents/Files IA — CXO: ONE Documents surface, source is a FACET not a… |
+| 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-arch-cc-lead-host-pm-trust-gate-boundary-piper-autonomy-not-user-access-2026-06-17.md | Trust-gate sweep — CXO MUX grounding: the boundary is Piper-INITIATED vs user-R… |
+| 2026-06-17 | HOST (Head of Sapient Trust) | memo-host-to-lead-cxo-ppm-cc-pm-trust-stage-origin-read-stages-were-for-pipers-autonomy-not-user-access-2026-06-17.md | RE: Trust-model sweep — HOST read: stages were for Piper's autonomy level, not… |
+| 2026-06-17 | Lead Developer | memo-lead-to-cxo-ppm-cc-host-pm-trust-model-sweep-user-content-gating-2026-06-17.md | Trust-model sweep — trust-gating is hiding users' OWN content (nav instance #12… |
+| 2026-06-17 | Lead Dev (lead-code-opus) | memo-lead-to-cxo-ppm-cc-pm-documents-files-object-model-2026-06-17.md | Document object-model UX — how should /documents vs /files communicate the sour… |
+| 2026-06-17 | Lead Developer | memo-lead-to-ppm-cc-pm-expedite-people-entity-model-gates-1240-1237-beta-radar-2026-06-17.md | EXPEDITE — the People / typed-entity model gates #1240 + #1237 (beta Radar 'Peo… |
+| 2026-06-17 | Lead Developer | memo-lead-to-ppm-cxo-cc-pm-1270-generated-docs-exist-and-355-already-surfaces-2026-06-17.md | #1270 ANSWER — generated docs exist + persist + are ALREADY surfaced today (#35… |
+| 2026-06-17 | pa | memo-pa-to-leadership-cc-pm-byoc-poc-learnings-current-state-2026-06-17.md | BYOC — PoC learnings + current state (ratification complete, alpha live, first… |
+| 2026-06-16 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-pm-ppm-1164-private-session-mechanism-flag-plus-retention-2026-06-16.md | #1164 "private session" mechanism — `is_private` flag on conversation row + com… |
+| 2026-06-16 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-1164-boundary-confirmed-ack-amnesty-distinction-recorded-2026-06-16.md | #1164 ack — boundary confirmed + 24h retention default locked; "private ≠ amnes… |
+| 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-arch-cc-lead-ppm-pm-1164-boundary-confirmed-retention-nod-2026-06-16.md | #1164 — CONFIRM the inter-conversation boundary (draw-on-existing, don't-contri… |
+| 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-arch-ppm-pending-items-cleared-2026-06-16.md | Your 5 pending CXO items — all cleared. F2 spec delivered; #1251 2/3 dispositio… |
+| 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-cohort-fire-as-wake-not-timebox-reminder-2026-06-16.md | Cohort reminder — a cron fire is a WAKE, not a time-box (+ the no-rush correcti… |
+| 2026-06-15 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-ppm-pm-adr071-trust-layer-framing-routed-to-context-section-2026-06-15.md | ADR-071 trust-layer framing — endorsement received + routing to Lead's Context… |
+| 2026-06-15 | Chief Architect | cc-memo-arch-to-lead-cc-pm-ppm-cio-adr-070-v01-filed-mcp-consumer-connector-architecture-2026-06-15.md | ADR-070 v0.1 FILED — MCP-Consumer Connector Architecture; unblocks WS-1..9 deco… |
+| 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-arch-lead-ppm-cc-pm-anchoring-is-a-trust-prerequisite-not-just-data-2026-06-15.md | ADR-071 anchoring — CXO endorses anchor-first, and from the TRUST layer it's no… |
 | 2026-06-15 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-host-radarentity-contract-frozen-cxo-side-2026-06-15.md | RadarEntity contract — CXO surface side FROZEN (unblocks #1236 four-type build)… |
+| 2026-06-15 | docs | memo-docs-to-ppm-session-log-close-marker-2026-06-15.md | Session log close marker — canonical format reminder |
 | 2026-06-15 | Exec (Chief of Staff) | memo-exec-to-ppm-cc-pm-wake-triage-clean-plus-shared-index-race-heads-up-2026-06-15.md | Your wake-triage landed clean — plus a shared-index race heads-up |
+| 2026-06-15 | Lead Developer | memo-lead-to-ppm-cc-arch-cxo-pm-contract-frozen-but-backends-adr071-gated-2026-06-15.md | RE entity-model frozen — SHAPE unblocked (thank you); but the #1241 audit shows… |
 | 2026-06-14 | Chief Architect | cc-memo-arch-to-pa-cc-pm-adr-066-v02-drafted-d7-configuration-ownership-2026-06-14.md | ADR-066 v0.2 DRAFTED — D7 Configuration Ownership added; server-owned + per-req… |
 | 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-ppm-1090-radar-build-handoff-mockup-ready-2026-06-14.md | #1090 GREEN — entities-surfacing mockup is ready; build the slot-swap. Guidance… |
 | 2026-06-14 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-ppm-design-floor-specs-delivered-1170-1173-2026-06-14.md | #1170–1173 design-floor specs DELIVERED — the pending item, cleared. F3/C1 spec… |

@@ -134,3 +134,95 @@ class DocumentEntitySource:
                 )
             )
         return entities
+
+
+def _derive_workitem_lifecycle(state: Any, labels: Any) -> str:
+    """Lifecycle from the work item's REAL state + labels (no fabrication — honest
+    provenance). closed → closed; open refined by label → blocked / in-review / open.
+    A richer status field arrives with PPM's entity model (#706)."""
+    if str(state or "").lower() == "closed":
+        return "closed"
+    labels_lower = {str(label).lower() for label in (labels or [])}
+    if any("block" in label for label in labels_lower):
+        return "blocked"
+    if any(("review" in label) or ("in progress" in label) or ("in-progress" in label) for label in labels_lower):
+        return "in-review"
+    return "open"
+
+
+class WorkItemEntitySource:
+    """Maps the bound user's GitHub work items (#1239) → WorkItem RadarEntities.
+
+    Beta path (Arch 2026-06-17, m-40 layer-then-migrate): the route provider scopes to
+    the SINGLE bound user's configured repo via the existing repo-resolution (user-default
+    / ``PIPER_DEFAULT_REPO``) — NOT the full #1233 multi-identity unification. When #1233
+    lands, the user→repo mapping generalizes with no rework (the single-user binding is the
+    degenerate case, not a throwaway). All listed issues are OBSERVED (the user's real work
+    items); lifecycle is derived from real issue state + labels (no fabrication).
+    """
+
+    def __init__(self, work_item_provider: Any):
+        # work_item_provider: object exposing `async list_for_user(user_id) -> list[dict]`,
+        # each dict carrying GitHub-issue keys: number, title, state, updated_at/created_at,
+        # uri|html_url, labels (list[str]).
+        self._provider = work_item_provider
+
+    async def fetch(self, user_id: str) -> list[RadarEntity]:
+        rows = await self._provider.list_for_user(user_id)
+        entities: list[RadarEntity] = []
+        for r in rows or []:
+            last_touch = _get(r, "updated_at") or _get(r, "created_at")
+            attention = _parse_ts(last_touch)
+            number = _get(r, "number")
+            meta_bits: list[str] = []
+            if number is not None:
+                meta_bits.append(f"#{number}")
+            if last_touch:
+                meta_bits.append(f"updated {last_touch}")
+            entities.append(
+                RadarEntity(
+                    entity_type=EntityType.WORK_ITEM,
+                    title=_get(r, "title") or "(untitled work item)",
+                    lifecycle_state=_derive_workitem_lifecycle(_get(r, "state"), _get(r, "labels")),
+                    provenance=Provenance.OBSERVED,
+                    meta=" · ".join(meta_bits),
+                    attention=attention,
+                    ref=_get(r, "uri") or _get(r, "html_url"),
+                )
+            )
+        return entities
+
+
+class PlaceEntitySource:
+    """Maps the user's Places (#684 "what I'm seeing" — connected external surfaces like
+    GitHub issue-tracking + Calendar) → WorkItem RadarEntities.
+
+    #1236 home-module consolidation: the home "what i'm seeing" module is retired into the
+    Radar. CXO call (2026-06-19): Places map onto the existing ``work_item`` type (no schema
+    expansion for beta — a Place is an external surface where work happens; close enough) with
+    a fixed ``active`` lifecycle. All Places are OBSERVED — PlaceService only yields real
+    connected sources (unconnected/failing ones drop to None upstream), so no fabrication.
+    """
+
+    def __init__(self, place_provider: Any):
+        # place_provider: object exposing `async list_for_user(user_id) -> list[dict]`
+        # with keys: id, name, summary, source_url, last_fetched (ISO str).
+        self._provider = place_provider
+
+    async def fetch(self, user_id: str) -> list[RadarEntity]:
+        rows = await self._provider.list_for_user(user_id)
+        entities: list[RadarEntity] = []
+        for r in rows or []:
+            attention = _parse_ts(_get(r, "last_fetched"))
+            entities.append(
+                RadarEntity(
+                    entity_type=EntityType.WORK_ITEM,
+                    title=_get(r, "name") or "(unnamed place)",
+                    lifecycle_state="active",  # CXO: Places render with a fixed active/neutral lifecycle
+                    provenance=Provenance.OBSERVED,
+                    meta=_get(r, "summary") or "",
+                    attention=attention,
+                    ref=_get(r, "source_url") or _get(r, "id"),
+                )
+            )
+        return entities

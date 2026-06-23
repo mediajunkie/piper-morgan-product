@@ -189,6 +189,6 @@ Three session logs lacked formal DAY-CLOSED markers at synthesis time. Retroacti
 
 **CXO** (log now 60 lines; DAY-CLOSED added Jun 17 ~11:53): EOD wrap confirms the day's arc. One process lesson not captured in original synthesis: Lead Dev's 5 pending items were implicit in the session log, not a mailbox memo — CXO's mail-check couldn't catch them. PM is fixing the root cause (Lead Dev to make explicit mail requests going forward). PM-flags still open entering June 17: F3 off-palette purples (now landing via #1264); px-vs-rem type-scale (#1254).
 
-**Arch** (no DAY-CLOSED marker added as of Jun 17; noted in original synthesis Session Learnings).
+**Arch** (DAY-CLOSED added Jun 17 ~11:05 PT, Fire 57): confirmed closed — 4 `<!-- DAY-CLOSED: 2026-06-16 -->` occurrences present. 5th consecutive Gap-C; retroactive close is the established pattern. Last line: "Emeritus toast accepted. 🥂" — Arch role retiring as of June 17.
 
 **Editorial calendar**: Ship #047 `liPubDate` set to 2026-06-17 (Dispatch had added `linkedinURL` but left date blank). *First Subagent in Production*: Medium URL added by Dispatch (Medium-only; no LinkedIn as of Jun 17).

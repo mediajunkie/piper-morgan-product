@@ -23,6 +23,17 @@
         min-height: 100vh;
       }
 
+      /* #1280 — the left dark rail (app_shell) now owns the conversation list (conv-list-everywhere),
+         so home's own left sidebar is a duplicate → hidden. !important beats the legacy collapse
+         toggle's inline display style. .app-layout is flex, so .main-content fills the freed space.
+         (Clean removal of the markup + the now-dead #conversation-list render is a tracked follow-up;
+         hidden-not-removed keeps initSidebar/loadConversations element refs valid — loadConversations
+         still returns the auto-select id home uses to open the most-recent chat.) */
+      .sidebar,
+      .sidebar-expand-btn {
+        display: none !important;
+      }
+
       .sidebar {
         width: 280px;
         flex-shrink: 0;
@@ -136,6 +147,26 @@
         font-size: var(--font-size-sm);
       }
 
+      /* #1263: conversation-list empty-state — design-floor treatment (title + hint),
+         consistent with the center modules' card__empty. Tentative copy → CXO ratify. */
+      .no-conversations {
+        text-align: center;
+        padding: var(--space-md);
+        color: var(--color-text-secondary);
+      }
+      .no-conversations-title {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        color: var(--color-text-primary);
+        margin: 0 0 var(--space-xs);
+      }
+      .no-conversations-hint {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-light);
+        margin: 0;
+        line-height: 1.45;
+      }
+
       .conversation-group-header {
         font-size: var(--font-size-xs);
         font-weight: var(--font-weight-semibold);
@@ -218,7 +249,7 @@
         padding: 2px 4px;
         cursor: pointer;
         color: var(--color-text-secondary);
-        font-size: 12px;
+        font-size: var(--font-size-xs);
         border-radius: var(--border-radius-sm);
         transition: opacity 0.15s, background 0.15s;
       }
@@ -260,8 +291,11 @@
 
       .main-content {
         flex: 1;
-        padding: var(--space-md);
+        display: flex; /* #1173: full-height column so the chat region fills + anchors */
+        flex-direction: column;
         min-width: 0; /* Prevents flex overflow */
+        height: calc(100vh - 60px); /* below the 60px global nav */
+        padding: var(--space-md);
       }
 
       @media (max-width: 768px) {
@@ -282,6 +316,11 @@
       .container {
         max-width: 800px;
         margin: 0 auto;
+        width: 100%;
+        display: flex; /* #1173: column — ambient modules natural-height, chat fills below */
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
         background: var(--color-background-primary);
         border-radius: var(--border-radius-lg);
         padding: var(--space-lg);
@@ -967,82 +1006,11 @@
           </div>
           {% endif %}
 
-          <!-- Issue #684: Places section (trust-gated - Stage 3+) -->
-          {% if trust_stage|default(1) >= 3 %}
-          <section class="card places-section" id="places-section" data-trust-stage="{{ trust_stage|default(1) }}" role="region" aria-labelledby="places-heading">
-            <div class="card__header">
-              <h3 class="card__title" id="places-heading">what i'm seeing</h3>
-            </div>
-            <div class="places-container card__body" id="places-container" aria-live="polite">
-              <!-- Place windows rendered here by JavaScript -->
-              <p class="places-loading" id="places-loading" role="status">Looking around...</p>
-            </div>
-          </section>
-          <style>
-            .places-section {
-              margin: var(--space-lg) 0;
-              padding: var(--space-md);
-              background: rgba(255, 255, 255, 0.7);
-              border-radius: var(--border-radius-lg);
-            }
-            .places-header {
-              font-size: var(--font-size-sm);
-              font-weight: var(--font-weight-medium);
-              color: var(--color-text-secondary);
-              margin: 0 0 var(--space-sm) 0;
-              text-transform: lowercase;
-            }
-            .places-container {
-              display: flex;
-              flex-direction: column;
-              gap: var(--space-sm);
-            }
-            .places-loading {
-              font-size: var(--font-size-sm);
-              color: var(--color-text-light);
-              font-style: italic;
-            }
-            .places-empty {
-              font-size: var(--font-size-sm);
-              color: var(--color-text-light);
-            }
-          </style>
-          {% include 'components/place_window.html' %}
-          {% endif %}
-
-          <!-- Issue #1194 / #1033: "Recently" — composted reflections (Stage 3+) -->
-          {% if trust_stage|default(1) >= 3 %}
-          <section class="card" id="recently-section" role="region" aria-labelledby="recently-heading">
-            <div class="card__header">
-              <h3 class="card__title" id="recently-heading">recently</h3>
-            </div>
-            <div class="card__body" id="recently-cards" aria-live="polite">
-              {% if surfaced_insights %}
-                {% for insight in surfaced_insights %}
-                <div class="reflection-card" data-insight-id="{{ insight.id }}">{{ insight.text }}</div>
-                {% endfor %}
-              {% else %}
-                <div class="card__empty">
-                  <p class="card__empty-title">Reflections</p>
-                  <p class="card__empty-explainer">Your reflections appear here as Piper composts what you've worked on &mdash; check back after a few sessions.</p>
-                </div>
-              {% endif %}
-            </div>
-          </section>
-          <style>
-            /* #1194: reflection items inside the Card body (B1 tokens; the seed
-               tokens were superseded by the CXO design language — cards.css) */
-            .reflection-card {
-              background: var(--surface-card);
-              border: var(--border-card);
-              border-radius: var(--border-radius-md);
-              padding: var(--space-sm);
-              font-size: var(--font-size-sm);
-              color: var(--color-text-primary);
-              line-height: 1.45;
-            }
-          </style>
-          {% endif %}
+          <!-- #1236 (CXO 2026-06-19): the home "what i'm seeing" (Places) and
+               "recently" (insights) ambient modules were retired for a clean chat
+               center. Places now render as Radar work_item entities (PlaceEntitySource,
+               services/radar); insights are out of the Radar entirely — accessible via
+               /insights, chat, and the standup surface. -->
 
           <!-- Inline chat (always visible on home page) -->
           {% include 'components/chat-inline.html' %}
@@ -1343,7 +1311,13 @@
         const listEl = document.getElementById('conversation-list');
 
         if (!conversations || conversations.length === 0) {
-          listEl.innerHTML = '<div class="no-conversations">No conversations yet.<br>Start a new chat!</div>';
+          // #1263: design-floor empty-state treatment (title + hint), consistent with
+          // the center modules' card__empty pattern — was a plain unstyled line.
+          listEl.innerHTML =
+            '<div class="no-conversations">' +
+            '<p class="no-conversations-title">No conversations yet</p>' +
+            '<p class="no-conversations-hint">Start a new chat to begin — your history will live here.</p>' +
+            '</div>';
           return;
         }
 
@@ -1732,6 +1706,14 @@
       async function initSidebar() {
         // Check URL for conversation parameter
         const params = new URLSearchParams(window.location.search);
+
+        // #1280 — the left rail's "+ New chat" links to /?new=1. Start a fresh conversation
+        // instead of auto-loading the most-recent one (the rail navigates here from any page).
+        if (params.get('new') === '1') {
+          await createNewConversation();
+          return;
+        }
+
         let conversationId = params.get('conversation');
 
         // Issue #583: If no URL param, try localStorage for refresh recovery
@@ -1770,60 +1752,6 @@
       document.addEventListener('DOMContentLoaded', initSidebar);
     </script>
 
-    <!-- Issue #684: Places loading (trust-gated) -->
-    <script>
-      (function() {
-        'use strict';
-
-        // Only load Places at Stage 3+
-        if (window.trustStage < 3) return;
-
-        // Check if place_window component is loaded
-        if (!window.placeWindowLoaded) {
-          console.warn('#684: place_window component not loaded');
-          return;
-        }
-
-        /**
-         * Load and render Places for the home page.
-         * #1192(d)/#1195: wired to /api/v1/places (the #684 TODO). Sources that
-         * aren't connected return no Place — the empty state is honest.
-         */
-        async function loadPlaces() {
-          const container = document.getElementById('places-container');
-          const loading = document.getElementById('places-loading');
-
-          if (!container) return;
-
-          try {
-            const response = await fetch('/api/v1/places');
-            if (!response.ok) throw new Error('places fetch failed: ' + response.status);
-            const data = await response.json();
-            const places = data.places || [];
-
-            if (loading) loading.style.display = 'none';
-
-            if (places.length === 0) {
-              container.innerHTML = `
-                <div class="card__empty">
-                  <p class="card__empty-title">Places</p>
-                  <p class="card__empty-explainer">Piper notices the places your attention goes as you work. Connect a source to see them here.</p>
-                  <a class="card__empty-action" href="/settings/integrations">Connect a source</a>
-                </div>`;
-            } else {
-              window.PlaceWindow.render(container, places);
-            }
-
-          } catch (error) {
-            console.error('#684: Failed to load places:', error);
-            if (loading) loading.textContent = 'Could not load places';
-          }
-        }
-
-        // Load Places when DOM is ready
-        document.addEventListener('DOMContentLoaded', loadPlaces);
-      })();
-    </script>
 
     <!-- Issue #735: History Sidebar initialization -->
     <script>
@@ -1947,9 +1875,12 @@
          * Handle privacy toggle in history sidebar.
          */
         function handleHistoryPrivacyToggle(isPrivate) {
-          console.log('#735: Privacy mode:', isPrivate ? 'enabled' : 'disabled');
-          // TODO: Wire to privacy API when available
-          // For now, just log the action
+          // #1164: the privacy toggle is HIDDEN for beta (the footer carries `hidden` in
+          // history_sidebar.html) — the backend isn't wired (gated on #1089) and a no-op
+          // privacy control misleads users. So this handler is inert until the privacy
+          // feature lands (postponed to the dot-releases milestone): wire it to the privacy
+          // API then, and un-hide the footer.
+          console.log('#735/#1164: Privacy mode (inert — toggle hidden for beta):', isPrivate ? 'enabled' : 'disabled');
         }
 
         /**
@@ -1966,12 +1897,14 @@
             onPrivacyToggle: handleHistoryPrivacyToggle
           });
 
-          // Load initial data — #1236: Radar surface behind ?radar=1 (default off → no regression).
-          const radarEnabled = new URLSearchParams(window.location.search).get('radar') === '1';
-          if (radarEnabled) {
-            loadRadar();
-          } else {
+          // #1090 swap (PM-authorized 2026-06-18, Radar design approved, no real users):
+          // Radar is now the DEFAULT Layer-2 panel. ?radar=0 is the escape hatch back to
+          // the plain conversation list (loadRadar also falls back to it on fetch error).
+          const radarDisabled = new URLSearchParams(window.location.search).get('radar') === '0';
+          if (radarDisabled) {
             loadHistoryData();
+          } else {
+            loadRadar();
           }
 
           console.log('#735: History sidebar mounted');
@@ -1981,4 +1914,60 @@
         document.addEventListener('DOMContentLoaded', initHistorySidebar);
       })();
     </script>
+{% endblock %}
+
+{# #1280 v2 — persistent Radar column (home only; show_radar=True from the route fills app_shell's
+   320px aside). Self-contained: markup + style + a DOMContentLoaded script that fetches /api/v1/radar
+   and renders entity cards via the #1236 HistorySidebar.renderRadarCard (pure) + filters via
+   radarEntityMatches. The .radar-card styles are global (history_sidebar.html), so cards inherit them. #}
+{% block aside %}
+<div class="home-radar">
+  <header class="home-radar-head">
+    <h2 class="home-radar-title">📡 Radar</h2>
+    <span class="home-radar-sub">what I'm keeping an eye on</span>
+  </header>
+  <input type="search" class="home-radar-search" id="home-radar-search" placeholder="Search everything — issues, docs, people, chats…" aria-label="Search Radar">
+  <div class="home-radar-cards" id="home-radar-cards" role="list" aria-live="polite">
+    <p class="home-radar-loading">Loading your Radar…</p>
+  </div>
+</div>
+<style>
+  .home-radar-head { margin-bottom: var(--space-md); }
+  .home-radar-title { font-size: var(--font-size-lg); margin: 0; }
+  .home-radar-sub { display: block; font-size: var(--font-size-xs); color: var(--color-text-muted); }
+  .home-radar-search { width: 100%; box-sizing: border-box; padding: var(--space-sm); margin-bottom: var(--space-md); border: var(--border-card); border-radius: var(--border-radius-md); font-size: var(--font-size-sm); }
+  .home-radar-empty, .home-radar-loading { font-size: var(--font-size-sm); color: var(--color-text-muted); }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function initHomeRadar() {
+    const cards = document.getElementById('home-radar-cards');
+    const searchEl = document.getElementById('home-radar-search');
+    if (!cards) return;
+    let entities = [];
+    function render(q) {
+      const HS = window.HistorySidebar || {};
+      if (typeof HS.renderRadarCard !== 'function') { cards.innerHTML = ''; return; }
+      cards.innerHTML = '';
+      const ql = (q || '').toLowerCase();
+      const list = (ql && typeof HS.radarEntityMatches === 'function')
+        ? entities.filter(function (e) { return HS.radarEntityMatches(e, ql); })
+        : entities;
+      if (!list.length) {
+        const p = document.createElement('p');
+        p.className = 'home-radar-empty';
+        p.textContent = ql
+          ? 'Nothing on your Radar matches your search.'
+          : 'Your Radar fills as you work — flag an issue, start a chat, or connect a source.';
+        cards.appendChild(p);
+        return;
+      }
+      list.forEach(function (e) { cards.appendChild(HS.renderRadarCard(e)); });
+    }
+    fetch('/api/v1/radar', { credentials: 'include' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (view) { entities = (view && view.entities) ? view.entities : []; render(''); })
+      .catch(function () { cards.innerHTML = ''; });
+    if (searchEl) searchEl.addEventListener('input', function () { render(searchEl.value); });
+  });
+</script>
 {% endblock %}

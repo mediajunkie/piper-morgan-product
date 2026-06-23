@@ -95,4 +95,32 @@ Armed after boot: windowed expression `22 6,9,12,15,18,21 * * *` (offset :22; da
 | 12:42 | Alt-text pass 2 | 90 patches recovered from agent transcripts; applied; committed c92c44b12 |
 | 12:50 | Alt-text final | Reset to main; reapplied all 276; editorial-calendar 144 synced; pushed to main (03a4f42cc) |
 | 12:47 | Cron fire | 12:22 fire; cron armed; inbox empty; no unblocked work; all queues PM-react gated |
+| 15:46 | Cron fire | 15:22 fire; cron armed; inbox empty; no unblocked work; queue unchanged |
+| 18:46 | Cron fire | 18:22 fire; cron armed; inbox empty; no unblocked work; queue unchanged |
+| 21:52 | Day-close | 21:22 fire; outside window (21:52 > 21:22); session log closed. Handoff below. |
+
+---
+
+## Day-close handoff (2026-06-17)
+
+**Session summary**: DinP/Sonnet first full day. Substantial delivery:
+- Lint (`react/no-unescaped-entities` disabled, `8cdb7cd50`)
+- Signup consolidation (`/try/beta` → Buttondown, `/newsletter` → `/blog`, `c783d7e34`)
+- **Alt-text backfill complete** (`03a4f42cc`): all 276 missing imageAlt entries filled in blog-metadata.csv; 144 editorial-calendar altText synced; 332/332 medium-posts.json entries with imageAlt
+- Weekly Ship #047 published by PM during session; incorporated cleanly
+
+**Queue at close** (all PM-react gated):
+- Obs-pass joint walkthrough (~20 items, hold until PM available)
+- Site walkthrough (resumable at `/methodology`)
+- CLI B trial-run (PM end-to-end test pending)
+- `--mode=archive` scope (awaits PM approval)
+
+**Verification pending** (no blocker, can do async):
+- `/admin/calendar/` admin route — gap count should be 0 for published posts
+- Spot-check blog cards in DevTools for correct `alt=""` values
+
+**Website main at close**: `03a4f42cc`
+**Cron**: armed `46ad109d`; will fire tomorrow at 06:22.
+
+<!-- DAY-CLOSED: 2026-06-17 -->
 

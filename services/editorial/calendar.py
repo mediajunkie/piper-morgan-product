@@ -60,34 +60,30 @@ def _parse_pubdate(raw: str) -> Optional[date]:
         return None
 
 
+_DONE_STATUSES = frozenset({"published"})
+
+
 def list_drafts_needing_finishing(
     today: date,
     horizon_days: int = 7,
     calendar_path: Path = CALENDAR_PATH,
 ) -> list[dict]:
-    """Return CSV rows with status=drafted whose pubDate is blank or in
-    [today, today + horizon_days]. Each row is augmented with a 'slug' key.
+    """Return all calendar rows that are not yet published, augmented with a 'slug' key.
+
+    Includes drafted, queued, and blank-status rows. Excludes published rows only.
+    The pubDate horizon filter is intentionally removed — PM wants to see all
+    in-flight posts regardless of scheduled date.
     """
     if not calendar_path.exists():
         return []
 
-    horizon_end = today + timedelta(days=horizon_days)
     results: list[dict] = []
     with calendar_path.open("r", newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             status = (row.get("status") or "").strip().lower()
-            if status != "drafted":
+            if status in _DONE_STATUSES:
                 continue
-            pub_raw = (row.get("pubDate") or "").strip()
-            if pub_raw:
-                pub = _parse_pubdate(pub_raw)
-                if pub is None:
-                    # Unparseable date — treat as blank (candidate)
-                    pass
-                elif not (today <= pub <= horizon_end):
-                    continue
-            # Either blank or in-window: candidate
             augmented = dict(row)
             augmented["slug"] = _derive_slug(row)
             results.append(augmented)

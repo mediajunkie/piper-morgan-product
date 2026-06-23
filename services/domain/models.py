@@ -1925,6 +1925,11 @@ class StandupItem:
     source: str = ""  # "commit" | "work" | "active_repo" | "yesterday_context" | "system"
     lifecycle_state: Optional[str] = None
     icon: str = ""
+    # Optional short context line (e.g. "hasn't moved in 5 days", a calendar time).
+    # Mirrors RadarEntity.meta; populated for derived items (#1269). Defaults empty so
+    # existing constructors / standup.html (which reads display/icon/lifecycle_state)
+    # are unaffected. New field is LAST → positional construction stays valid.
+    meta: str = ""
 
     def __str__(self) -> str:
         """Legacy rendering: `f"{icon} {display}"` matches pre-#1034 format."""
@@ -1939,6 +1944,7 @@ class StandupItem:
             "source": self.source,
             "lifecycle_state": self.lifecycle_state,
             "icon": self.icon,
+            "meta": self.meta,
         }
 
     @classmethod
@@ -1949,6 +1955,7 @@ class StandupItem:
             source=data.get("source", ""),
             lifecycle_state=data.get("lifecycle_state"),
             icon=data.get("icon", ""),
+            meta=data.get("meta", ""),
         )
 
 
@@ -2003,6 +2010,167 @@ class StandupPartialCapture:
 
 
 @dataclass
+class StandupSummary:
+    """Derived standup read-model (#1269) — Piper's *derived view* over the observed
+    entity catalog (Conversations / Documents / WorkItems via the Radar EntitySources),
+    assembled by ``services.standup.assembler.StandupAssembler``.
+
+    Deliberately distinct from ``StandupPartialCapture`` (above), which is the
+    *interactive-capture write-state* — what the user typed, persisted alongside a
+    ``StandupConversation`` for escape/resume. This is the *read-side*: what Piper
+    derived from observed data. Same three-slot shape, different provenance and
+    lifecycle (cf. CQRS read-model vs. write-model) — so it is its own type, not an
+    overload of the capture state. Carries the narrative rendering (``to_prose()``,
+    #1269 P3).
+
+    Reuses ``StandupItem`` so derived items render through the same ``standup.html``
+    path (#704); each item's ``source`` is tagged ``radar:{type}`` so the surface can
+    tell derived-from-observed items apart from captured / commit items.
+    """
+
+    yesterday: List["StandupItem"] = field(default_factory=list)
+    today: List["StandupItem"] = field(default_factory=list)
+    # "Watch" not "Blockers" (CXO #1269): these are Piper-INFERRED potential blockers
+    # (confirmed-blocked + staleness signals), lower-confidence than the user-DECLARED
+    # blockers in StandupPartialCapture. Calling them "blockers" would overstate Piper's
+    # confidence. Within the slot: confirmed-blocked first, then stale ("hasn't moved…").
+    watch: List["StandupItem"] = field(default_factory=list)
+
+    def is_empty(self) -> bool:
+        """True if no slot has any derived item. Honest empty — the surface renders
+        this gracefully ("nothing yet"), never a fabricated "all clear"."""
+        return not (self.yesterday or self.today or self.watch)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "yesterday": [it.to_dict() for it in self.yesterday],
+            "today": [it.to_dict() for it in self.today],
+            "watch": [it.to_dict() for it in self.watch],
+        }
+
+    # --- prose rendering (#1269 P3, CXO experience design) ---
+
+    # verb by the derived item's coarse lifecycle label (yesterday slot).
+    _YESTERDAY_VERBS = {"closed": "closed", "new": "updated", "active": "discussed"}
+
+    # #1269 PM UAT: cap how many items are read out loud per slot (the lists arrive
+    # attention-sorted from the assembler, so the first N are the highest-signal);
+    # the remainder is summarized as "N more" rather than enumerated inline.
+    _PROSE_ITEM_CAP = 4
+
+    @staticmethod
+    def _oxford(parts: List[str]) -> str:
+        """Oxford-comma join: [] → ""; [a] → "a"; [a,b] → "a and b"; [a,b,c] → "a, b, and c"."""
+        parts = [p for p in parts if p]
+        if not parts:
+            return ""
+        if len(parts) == 1:
+            return parts[0]
+        if len(parts) == 2:
+            return f"{parts[0]} and {parts[1]}"
+        return ", ".join(parts[:-1]) + f", and {parts[-1]}"
+
+    @classmethod
+    def _quoted(cls, names: List[str]) -> str:
+        return cls._oxford([f'"{n}"' for n in names])
+
+    @classmethod
+    def _quoted_capped(cls, names: List[str], cap: int = _PROSE_ITEM_CAP) -> str:
+        """Quote + oxford-join, capping the enumeration at ``cap`` items and
+        summarizing the rest as "N more" (#1269 PM UAT: don't read ~18 items out
+        loud). Callers pass attention-ordered lists, so the kept items are the
+        highest-signal ones."""
+        names = [n for n in names if n]
+        if len(names) <= cap:
+            return cls._quoted(names)
+        shown = [f'"{n}"' for n in names[:cap]]
+        return cls._oxford(shown + [f"{len(names) - cap} more"])
+
+    def _yesterday_prose(self) -> str:
+        if not self.yesterday:
+            return ""
+        groups: List[Any] = []  # [(verb, [displays])], order-preserving
+        for it in self.yesterday:
+            verb = self._YESTERDAY_VERBS.get((it.lifecycle_state or "").lower(), "worked on")
+            if groups and groups[-1][0] == verb:
+                groups[-1][1].append(it.display)
+            else:
+                groups.append((verb, [it.display]))
+        phrases = [f"{verb} {self._quoted_capped(names)}" for verb, names in groups]
+        return "You " + self._oxford(phrases) + "."
+
+    def _today_prose(self) -> str:
+        if not self.today:
+            return ""
+        # Work items render as "You're working on …"; calendar events render as a
+        # separate "You have X at <time>." sentence (CXO #1269: calendar makes today real).
+        work = [it.display for it in self.today if it.source != "calendar"]
+        events = [it for it in self.today if it.source == "calendar"]
+        sentences: List[str] = []
+        if work:
+            sentences.append("You're working on " + self._quoted_capped(work) + ".")
+        if events:
+            evs = [
+                f'"{it.display}" at {it.meta}' if it.meta else f'"{it.display}"' for it in events
+            ]
+            sentences.append("You have " + self._oxford(evs) + ".")
+        return " ".join(sentences)
+
+    def _watch_prose(self) -> str:
+        if not self.watch:
+            return ""
+        shown = self.watch[: self._PROSE_ITEM_CAP]
+        parts: List[str] = []
+        for it in shown:
+            if (it.lifecycle_state or "").lower() == "blocked":
+                parts.append(f'"{it.display}" is blocked.')
+            else:
+                detail = it.meta or "hasn't moved recently"
+                parts.append(f'"{it.display}" {detail}.')
+        rest = len(self.watch) - len(shown)
+        if rest:
+            parts.append(f"Plus {rest} more flagged to watch.")
+        return " ".join(parts)
+
+    def to_prose(self) -> str:
+        """Render an honest spoken-standup narrative (CXO #1269: "say it out loud", the
+        actual things not counts; empty = empty, no filler / fallback copy).
+
+        Deterministic baseline — the floor, no LLM dependency; a richer LLM-polished
+        rendering can layer on at the surface / chat skill (#1269 P4/P5).
+        """
+        if self.is_empty():
+            return (
+                "Nothing to show yet — as you work in connected tools (GitHub, docs, "
+                "chats), your standup fills in here."
+            )
+        sections = [
+            (
+                "**Yesterday** — what got done",
+                self._yesterday_prose(),
+                "No completions yesterday — looks like you were in planning mode.",
+            ),
+            (
+                "**Today** — what's active",
+                self._today_prose(),
+                "Nothing in progress right now.",
+            ),
+            (
+                "**Watch** — what might be stuck",
+                self._watch_prose(),
+                "Nothing flagged as stuck.",
+            ),
+        ]
+        # Each heading + body is its own markdown block, separated by a blank
+        # line (#1269 PM UAT: a single "\n" is a markdown SOFT break — it renders
+        # as a space, fusing heading into body as a run-on. "\n\n" forces real
+        # paragraph blocks so marked.js renders distinct sections).
+        return "\n\n".join(
+            f"{heading}\n\n{body or empty_msg}" for heading, body, empty_msg in sections
+        )
+
+
+@dataclass
 class StandupConversation:
     """
     Domain model for interactive standup conversations.
@@ -2045,8 +2213,11 @@ class StandupConversation:
     partial_capture: StandupPartialCapture = field(default_factory=StandupPartialCapture)
 
     # Timestamps
-    created_at: datetime = field(default_factory=datetime.now)
-    updated_at: datetime = field(default_factory=datetime.now)
+    # #1079: tz-aware UTC defaults so in-memory timestamps match the DB-issued
+    # (TIMESTAMP WITH TIME ZONE) values and never produce naive-vs-aware
+    # subtraction crashes downstream (e.g. transition-duration / timeout math).
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     completed_at: Optional[datetime] = None
 
     def to_dict(self) -> Dict[str, Any]:

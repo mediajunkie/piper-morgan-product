@@ -95,3 +95,22 @@ class TestSmokeStatic:
         assert (
             response.status_code == 404
         ), "Missing static file should return 404, not 500 (mounting is working)"
+
+    def test_documents_route_redirects_to_files_1270(self):
+        """#1270 beta band-aid (PM-approved 2026-06-19): /documents and /files read as
+        near-duplicates; collapsed to the single working surface (/files) under the
+        "Documents" nav label. The /documents route must redirect to /files so old links
+        survive. Calls the route function directly — the auth middleware 401s unauthed
+        TestClient requests before the route runs, so a direct call is the cleanest way to
+        verify the redirect itself. Revert only after reconciling with #1270."""
+        import asyncio
+        from unittest.mock import MagicMock
+
+        from fastapi.responses import RedirectResponse
+
+        from web.api.routes.ui import documents_ui
+
+        result = asyncio.run(documents_ui(MagicMock()))
+        assert isinstance(result, RedirectResponse)
+        assert result.status_code == 302
+        assert result.headers["location"] == "/files"

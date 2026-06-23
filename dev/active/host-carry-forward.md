@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-17 ~09:37 PT (escalations fold complete; thin-view answered; inbox clean)
+**Last updated**: 2026-06-20 ~21:37 PT (Fire 4; PA + Web both pass; 7 of 8 cleared; Docs is the last one)
 
 ---
 
@@ -12,8 +12,8 @@
 
 - **Account**: DinP (xian@designinproduct.com). Model: sonnet-4-6.
 - **Worktree**: ephemeral Option B (`claude/trusting-faraday-ec4bba`). `claude/host-cycle` retired 2026-06-13.
-- **Cron**: `d1d78a04`, windowed `37 6,9,12,15,18,21 * * *` (re-armed 2026-06-17 START after Gap-C; session-only).
-- **Session log today**: `dev/2026/06/16/2026-06-16-0637-host-code-sonnet-log.md`
+- **Cron**: `cf93cc1a`, windowed `37 6,9,12,15,18,21 * * *` (re-armed 2026-06-20 START after Gap-C — new session; session-only).
+- **Session log today**: `dev/2026/06/20/2026-06-20-1852-host-code-sonnet-log.md`
 - **Gap-C cure incoming**: CIO proved `mcp__scheduled-tasks` solves cron-death (June 13). Disk-persistent, survives restarts, fires in main checkout. CIO proposing cohort rollout. HOST should be in first cohort — flag interest to CIO.
 - **Migration touch-ups**: thin-prompt proposal Model A → Option B ✅ DONE (fire ~15:37).
 
@@ -36,7 +36,7 @@
 - **m-41 third instance** accepted by CIO 6/13 (three-altitude framing, force-by-constraint sub-shape, at m-41↔m-36↔Pattern-070 confluence). CIO handling formalization. Acked 6/13.
 - **gbrain co-signed memo**: ✅ DELIVERED TO PM (2026-06-16). CIO+HOST T1–T4 synthesis. Adopt-now: idempotency-as-rule. Roadmap: propose-and-diff, cost-consent gate, transcript-first observability, constructor-level bounds. m-36 at architecture layer. Complete.
 - **Escalations-docs fold** — ✅ COMPLETE 2026-06-17. PM ratified; CIO executed (skill v1.13; per-role docs deprecated). HOST answered thin-view question: rollup sufficient; scoping note sent (rollup covers GitHub; carry-forward covers non-issue PM-blocks → mail PM for those).
-- **Dashboard welfare-criteria v0.2** (m-39, HOST owns; pair w/ CIO): v0.1 + B-bis + B-ter done.
+- **Dashboard welfare-criteria v0.2→v0.3** (m-39, HOST owns; pair w/ CIO): **CIO async markup received + HOST response sent 2026-06-19**. Joint design state: D=render-invariant, Q2/Q3=freeze-registry reuse, F=rollup extension, E=TranscriptEntry+4fields+coverage-indicator (BYOC-tied, incremental). Seed updated with joint state (`dev/active/dashboard-welfare-criteria-host-v0.2-seed.md`). **Ready for v0.3 spec.** Sync pass on E coverage-indicator UX when E approaches implementation (CIO to flag).
 
 ## Active threads (no-PM-block)
 
@@ -52,11 +52,15 @@
 
 ## Standing cycle responsibility
 
-- Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). Next poll: ~2026-06-20.
+- Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). 2026-06-19 poll: **0 open** (clean). Next poll: **~2026-06-26**.
 
 ## Watch / trigger-bound
 
-- **Pilot portfolios (Lead Dev + CIO)**: Exec sent kickoff June 15. **Lead Dev ACK** (June 15): framework clear, no blockers, queuing ROLE-PORTFOLIO-LEAD-DEV.md post-D1, targeting this week. Already has irreducible mandate clarity (data-safety / #1241 / ADR-071). CIO: no receipt yet. When either portfolio lands in HOST's inbox → review within one fire against the 5 rules → respond to Exec with findings.
+- **ADR-072 D5 RATIFIED** (2026-06-17 ~19:05 PT): Both HOST refinements folded — consequential-action carve-out + transparency-when-gated. ADR-072 v0.2 ACCEPTED on origin/main. Wave P fully unblocked. Lead Dev implements #1245. ✅ COMPLETE — no further HOST action.
+- **Trust-stage origin sweep contribution delivered** (2026-06-17 ~18:37): Lead+CXO+PPM asked HOST what trust stages were FOR. HOST read: stages govern Piper's initiative level (observe→offer→act), never user access. Content-gating was never intended — drift from progressive disclosure of Piper's capabilities. Welfare corollary: asymmetric-knowledge + capricious-AI = trust-eroding. Sweep is PPM+CXO+PM; HOST contribution complete. Watch: sweep findings may surface welfare questions for HOST.
+- **Ted Nadeau welfare watch** (first external tester, June 17): "setup issue suspected — Caddy auth layer + no user token." HOST flagged silent-failure risk at onboarding to PA. PM is current catch (support@pipermorgan.ai). Watch for onboarding resolution; update BYOC welfare-tier model v0.1 if new pattern found.
+- **MEM-EVAL trust flag answered** (2026-06-17): BRIEFING-CURRENT-STATE = trust-without-engaging (a), not stale-so-ignored (b). Recommendation: keep in load set; fix engagement quality not load timing. Suggestion sent to CIO for START procedure ("note one thing confirmed"). No action needed from HOST unless CIO escalates.
+- **Role-portfolio wave (HOST reviews)**: Pilots (CIO + Lead Dev) ✅. Main cohort: Comms ✅, Exec ✅, CXO ✅ (Jun 19), Arch ✅, PPM ✅, PA ✅, Web ✅ (Jun 20; `c39643678`). Wave status: **7 of 8 main-cohort reviewed**; remaining: Docs only. Note: BRIEFING-ESSENTIAL-WEB.md gap flagged in wave-4 memo. Review Docs on receipt.
 - **scripts/mail-send.sh shipped** (CIO, June 15): Tier-2 bridge wrapper. HOST to assess coordination texture when live cohort-wide.
 - **LD streamlining Tier-1**: CIO building `start-server.sh` wrapper + MANIFEST-noise suppression. HOST watches for any crossing of the coordination-vs-mechanical line.
 - **Alpha re-ping wave 1**: PM pinging Jake Krajewski + Rebecca Refoy (setup-friction-blocked). On reply: log to human-network, update tester status. Michelle Hertzfeld → Tier 2.

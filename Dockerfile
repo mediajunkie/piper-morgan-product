@@ -2,8 +2,12 @@
 # PM-055 Step 2: Docker configuration for Python 3.11 consistency
 # Created: 2025-07-22
 
-# Use Python 3.11-slim base image for PM-055 compliance
-FROM python:3.11-slim-bullseye
+# Use Python 3.11-slim base image for PM-055 compliance.
+# MUST be slim-bookworm (Debian 12 → sqlite 3.40.1): chromadb requires sqlite >= 3.35.
+# slim-bullseye (Debian 11) ships sqlite 3.34.1 and crash-loops the app on startup (#1299).
+# Do NOT downgrade to bullseye. The live 0.8.7 droplet image was bookworm; the repo had
+# drifted to bullseye, which broke the 0.8.8 deploy (rolled back 2026-06-19).
+FROM python:3.11-slim-bookworm
 
 # Set Python version environment variable for verification
 ENV PYTHON_VERSION=3.11

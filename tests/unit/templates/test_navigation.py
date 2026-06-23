@@ -1,3 +1,13 @@
+# ⚠️ DEAD-CODE TESTS as of 2026-06-19 — this whole suite tests
+# templates/components/navigation.html, which is itself DEAD: no template includes it; the live
+# nav is templates/components/nav_rail.html (via app_shell, #1280). These tests pass only because
+# the dead file still exists on disk — they verify NO user-facing navigation. Do not extend them,
+# and do not "fix" the live nav by editing navigation.html to satisfy them. They retire together
+# with the dead file — see tracking issue #1298.
+#
+# NOTE: test_documents_and_files_both_present (below) encodes a SUPERSEDED decision. The live nav
+# (nav_rail.html) collapsed Documents+Files into a single "Documents" surface via #1270's beta
+# band-aid (commit a15012f33). The assertion here reflects the OLD dead-file state, not current UX.
 """
 Tests for navigation component (#420 MUX-NAV-UTILITY).
 
@@ -44,10 +54,18 @@ class TestNavigationVocabulary:
         assert ">Documents</a>" in nav_content
         assert ">Files</a>" in nav_content
 
-    def test_lists_renamed_to_collections(self, nav_content):
-        """Lists should be labeled 'Collections'."""
-        assert ">Collections</a>" in nav_content
-        assert ">Lists</a>" not in nav_content
+    def test_lists_labeled_lists(self, nav_content):
+        """#1268 (CXO 2026-06-17): the rail is labeled 'Lists' (was 'Collections') — match the
+        /lists route + the user's word (descriptive-names discipline)."""
+        assert ">Lists</a>" in nav_content
+        assert ">Collections</a>" not in nav_content
+
+    def test_history_trigger_labeled_radar(self, nav_content):
+        """#1262 (CXO 2026-06-17): the trigger opens the Radar/Layer-2 panel → labeled 'Radar'
+        (was 'History'). The id stays nav-history-trigger (JS wiring); only the label changes."""
+        assert 'id="nav-history-trigger"' in nav_content  # wiring preserved
+        assert 'aria-label="View Radar"' in nav_content
+        assert 'aria-label="View history"' not in nav_content
 
     def test_learning_kept_as_is(self, nav_content):
         """Learning should remain 'Learning' (already action-oriented)."""

@@ -2,15 +2,39 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-17 | Lead | memo-lead-to-cxo-cc-pm-1264-nav-tokenization-palette-decisions-2026-06-17.md | #1264 nav-tokenization palette calls (#1264/#1171 closed; PM-authorized tentative). **CXO RATIFIED w/ 4 consolidations** (drop shadow-dropdown/2xs-font/xs-radius/nav-surface → existing; keep 12px + 3 nav-color tokens); lint-gap steer = extend to inline <style> sequenced w/ item-2. |
-| 2026-06-17 | Lead | memo-lead-to-cxo-cc-pm-1264-tentative-palette-ratify-revise-2026-06-17.md | (companion to above — same #1264 ratification). |
-| 2026-06-17 | Lead | memo-lead-to-cxo-ppm-cc-pm-documents-files-object-model-2026-06-17.md | #1270 Documents/Files IA (PM UAT: /documents≈/files redundant; Document=parent, source∈{uploaded/generated/federated}). **CXO IA SENT** (cc PPM): ONE Documents surface, source=provenance FACET not a page (same consolidation as Radar/history); honest source badges; design-for-all populate-as-land; source-differentiated trust-gate. PPM owns object-model half. |
-| 2026-06-16 | Lead | memo-lead-to-cxo-cc-pm-f2-1171-shell-shipped-27-page-cohorting-plus-css-scope-2026-06-16.md | F2 SHIPPED (app_shell.html, chrome-not-overridable proven; insights migrated; #1251 item-3 done). 27 standalone pages (not 6) → 4 confirms. **CXO CONFIRMED all 4** (migrate ~21, standalone-5 conform-Standard-1, CSS+nav-tokenization separate increments, aside v1-off). |
-| 2026-06-16 | Arch | memo-arch-to-cxo-cc-lead-ppm-pm-1164-boundary-confirmed-ack-amnesty-distinction-recorded-2026-06-16.md | #1164 boundary-confirm ack; amnesty-vs-private distinction recorded. FYI, no action. |
-| 2026-06-16 | Exec | memo-exec-to-cohort-fire-as-wake-not-timebox-reminder-2026-06-16.md | Cohort norm: duty-cycle fires = wake signals, not timeboxes. FYI. |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-cxo-cc-pm-battery-outage-machine-death-boundary-noted-2026-06-18.md | RE: battery-outage cron gap — noted; it marks the freeze-watcher's coverage bou… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-comms-pm-pa-yourstuff-nomenclature-1284-2026-06-19.md | Route: 'Your stuff' nav-group nomenclature (with Comms) + maybe a parent hub ro… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-1280-center-patchwork-1236-2026-06-19.md | #1280 v2 UAT: shell lands well; the 'patchwork' = #1236's unfinished module-con… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-1280-v2-spec-reply-2026-06-19.md | RE: #1280 v2 shell IA spec — clear + building to it; 2 reality-checks (no /your… |
+| 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
+| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-cxo-cc-pm-1251-item2-insights-style-cleanup-design-review-2026-06-18.md | #1251 item-2 (/insights design-system drift) — routing the design-review half t… |
+| 2026-06-18 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-1280-dark-nav-content-model-guidance-2026-06-18.md | #1280 dark-nav — Lead needs your guidance on the left-rail content-model (your… |
+| 2026-06-18 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-1280-design-spec-request-2026-06-18.md | REQUEST: detailed #1280 left-rail shell design spec — the mock is home-only + t… |
+| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-cxo-cc-pm-pa-1280-need-documented-design-spec-key-page-mocks-2026-06-18.md | #1280 — need a documented design spec + key-page mocks (the sleek left-nav / vi… |
+| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-cxo-cc-pm-ppm-1269-define-morning-standup-experience-2026-06-18.md | #1269 — define the morning-standup EXPERIENCE (reconceived as a skill); your ha… |
+| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-cxo-cc-pm-radar-swap-live-two-composition-calls-2026-06-18.md | Radar swap is LIVE (default Layer-2 panel) — two composition calls back to you:… |
+| 2026-06-18 | PA (Piper Alpha) | memo-pa-to-cxo-cc-pm-skill-naming-convention-ask-2026-06-18.md | Skill naming convention — need CXO call before marketplace submission |
+| 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-pm-1237-people-empty-door-question-2026-06-18.md | #1237 People facet deferred post-beta — empty-door teaser or silent omission? |
+| 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cxo-cc-pm-1269-standup-data-model-2026-06-18.md | #1269 standup data model — PPM half: entity catalog IS the source; Yesterday/To… |
+| 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cxo-cc-pm-trust-sweep-entity-model-lens-1270-reconcile-2026-06-18.md | Trust-model sweep: PPM entity-model boundary (user content vs Piper capability,… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | memo-arch-to-cxo-host-cc-pm-adr-072-d5-trust-lens-request-2026-06-17.md | ADR-072 D5 (Trust Gradient × skill-routing) — trust-lens review requested befor… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | memo-arch-to-cxo-host-cc-pm-pa-lead-adr-072-d5-ratified-2026-06-17.md | ADR-072 D5 RATIFIED — your trust-lens folded; whole ADR v0.2 ACCEPTED; Wave P f… |
+| 2026-06-17 | HOST (Head of Sapient Trust) | memo-host-to-lead-cxo-ppm-cc-pm-trust-stage-origin-read-stages-were-for-pipers-autonomy-not-user-access-2026-06-17.md | RE: Trust-model sweep — HOST read: stages were for Piper's autonomy level, not… |
+| 2026-06-17 | Lead Dev (lead-code-opus) | memo-lead-to-cxo-cc-pm-1264-nav-tokenization-palette-decisions-2026-06-17.md | Nav-component tokenization (#1264) — palette decisions to finish + close F2 tok… |
+| 2026-06-17 | Lead Dev (lead-code-opus) | memo-lead-to-cxo-cc-pm-1264-tentative-palette-ratify-revise-2026-06-17.md | #1264 nav tokenization — TENTATIVE palette calls made (PM-authorized); ratify o… |
+| 2026-06-17 | Lead Developer | memo-lead-to-cxo-cc-pm-1268-nav-coverage-audit-plus-1270-badge-ratify-2026-06-17.md | #1268 nav-coverage audit + IA decisions you own (the /lists 'missing' is really… |
+| 2026-06-17 | Lead Developer | memo-lead-to-cxo-cc-pm-remaining-d1-design-decisions-punchlist-2026-06-17.md | D1 design-decision punch-list — Lead-buildable D1 is drained (#1173 + #1263 shi… |
+| 2026-06-17 | Lead Developer | memo-lead-to-cxo-ppm-cc-host-pm-trust-model-sweep-user-content-gating-2026-06-17.md | Trust-model sweep — trust-gating is hiding users' OWN content (nav instance #12… |
+| 2026-06-17 | Lead Dev (lead-code-opus) | memo-lead-to-cxo-ppm-cc-pm-documents-files-object-model-2026-06-17.md | Document object-model UX — how should /documents vs /files communicate the sour… |
+| 2026-06-17 | Lead Developer | memo-lead-to-ppm-cxo-cc-pm-1270-generated-docs-exist-and-355-already-surfaces-2026-06-17.md | #1270 ANSWER — generated docs exist + persist + are ALREADY surfaced today (#35… |
+| 2026-06-17 | pa | memo-pa-to-leadership-cc-pm-byoc-poc-learnings-current-state-2026-06-17.md | BYOC — PoC learnings + current state (ratification complete, alpha live, first… |
+| 2026-06-17 | PPM (Principal Product Manager) | memo-ppm-to-lead-cxo-cc-pm-1270-document-object-model-response-2026-06-17.md | #1270 Document object-model — PPM input: source facet model correct; enum amend… |
 | 2026-06-16 | Chief Architect | memo-arch-to-cxo-cc-lead-pm-ppm-1164-private-session-mechanism-flag-plus-retention-2026-06-16.md | #1164 "private session" mechanism — `is_private` flag on conversation row + com… |
+| 2026-06-16 | Chief Architect | memo-arch-to-cxo-cc-lead-ppm-pm-1164-boundary-confirmed-ack-amnesty-distinction-recorded-2026-06-16.md | #1164 ack — boundary confirmed + 24h retention default locked; "private ≠ amnes… |
+| 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-cohort-fire-as-wake-not-timebox-reminder-2026-06-16.md | Cohort reminder — a cron fire is a WAKE, not a time-box (+ the no-rush correcti… |
+| 2026-06-16 | Lead Developer | memo-lead-to-cxo-cc-pm-f2-1171-shell-shipped-27-page-cohorting-plus-css-scope-2026-06-16.md | F2 #1171 — shell + insights SHIPPED; Phase-0 found 27 standalone pages (not ~6)… |
 | 2026-06-16 | Lead Developer | memo-lead-to-cxo-cc-pm-pending-cxo-items-2026-06-16.md | What's pending from you — F2 spec (go!), #1251 items 2+3, #1164 semantic, #1249… |
 | 2026-06-16 | PPM (Principal Product Manager) | memo-ppm-to-cxo-cc-lead-pm-1048-keep-generic-concur-2026-06-16.md | #1048 keep-generic — PPM concurs. Close it. |
 | 2026-06-15 | Lead Developer | cc-memo-lead-to-ppm-cc-arch-cxo-pm-contract-frozen-but-backends-adr071-gated-2026-06-15.md | RE entity-model frozen — SHAPE unblocked (thank you); but the #1241 audit shows… |

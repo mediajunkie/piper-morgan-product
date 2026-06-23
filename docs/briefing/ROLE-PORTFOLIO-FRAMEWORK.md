@@ -6,6 +6,8 @@ ratified_by: PM (xian)
 ratified_date: 2026-06-14
 source_memo: mailboxes/exec/read/memo-host-to-exec-cc-pm-role-portfolio-trust-framework-v0.1-2026-06-11.md
 version: v0.1
+valid_from: "2026-06-14"
+last_verified: "2026-06-19"
 ---
 
 # Role-Portfolio Trust Framework
@@ -45,7 +47,7 @@ A portfolio is healthy to the degree it answers **"what am I here to advance?"**
 ## Worked examples
 
 - `docs/briefing/ROLE-PORTFOLIO-HOST.md` — HOST's pilot portfolio; the first worked example. Section comments flag which rule each part satisfies.
-- `docs/briefing/ROLE-PORTFOLIO-LEAD.md` — Lead Developer (pilot wave)
+- `docs/briefing/ROLE-PORTFOLIO-LEAD-DEV.md` — Lead Developer (pilot wave)
 - `docs/briefing/ROLE-PORTFOLIO-CIO.md` — Chief Innovation Officer (pilot wave)
 
 ---

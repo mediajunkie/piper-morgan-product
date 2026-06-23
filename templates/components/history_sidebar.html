@@ -298,12 +298,15 @@
     margin-bottom: var(--space-sm, 8px);
   }
   .radar-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
-  .radar-etype { font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted, #687a7c); }
+  .radar-etype { display: inline-block; font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted, #687a7c); background: var(--color-background-tertiary, #ecf0f1); border-radius: var(--border-radius-pill, 999px); padding: 1px var(--space-xs, 4px); } /* #1286 Slice 2 (CXO opt-c): entity-type pill chip */
   .radar-state { font-size: 0.7rem; font-weight: 600; white-space: nowrap; text-transform: capitalize; color: var(--color-text-muted, #687a7c); }
   .radar-card-title { font-size: 0.88rem; font-weight: 600; line-height: 1.25; margin: 2px 0 0; }
-  .radar-card-meta { font-size: 0.74rem; color: var(--color-text, #555); margin: 6px 0 0; }
-  .radar-card-prov { font-size: 0.64rem; color: var(--color-text-muted, #687a7c); margin: 6px 0 0; }
+  .radar-card-meta { font-size: 0.74rem; color: var(--color-text, #555); margin: var(--space-dense, 6px) 0 0; }
+  .radar-card-prov { font-size: 0.64rem; color: var(--color-text-muted, #687a7c); margin: var(--space-dense, 6px) 0 0; }
   .radar-card--example { border-style: dashed; opacity: 0.92; }
+  .radar-card--clickable { cursor: pointer; transition: border-color 0.15s ease; }
+  .radar-card--clickable:hover { border-color: var(--color-primary, #2077b2); }
+  .radar-card--clickable:focus-visible { outline: var(--focus-outline); outline-offset: 1px; }
   .radar-empty { font-size: 0.84rem; line-height: 1.5; padding: var(--space-md, 16px); }
   .radar-empty-title { font-weight: 600; margin: 0 0 6px; color: var(--color-text, #1f2933); }
   .radar-empty-sub { margin: 0; color: var(--color-text-muted, #687a7c); }
@@ -333,7 +336,12 @@
       <button class="history-load-more-btn">Load more</button>
     </div>
 
-    <footer class="history-privacy-footer">
+    <!-- #1164: the "private session" backend is not wired yet (gated on #1089). The toggle was a
+         no-op that misleads beta users into thinking a session is private when it isn't, so it is
+         hidden for beta. The privacy feature is postponed to the dot-releases (post-MVP) milestone.
+         Markup is retained (the sidebar JS still queries `.history-privacy-toggle`) so re-enabling
+         is just removing `hidden`. CXO may swap this for a disabled "coming soon" state if preferred. -->
+    <footer class="history-privacy-footer" hidden>
       <button class="history-privacy-toggle" aria-pressed="false">
         <span class="history-privacy-icon">🔒</span>
         <span class="history-privacy-label">Start private session</span>
@@ -388,6 +396,12 @@
     let searchQuery = '';
     let sidebarElement = null;
     let overlayElement = null;
+    // #1236 — Radar entity-search: retain the loaded Radar view so the search box filters
+    // across ALL entity types client-side (work items · documents · conversations …),
+    // subsuming the old conversation-only search ("re-earn everything").
+    let radarMode = false;
+    let radarView = null;
+    let radarEntities = [];
 
     /**
      * Get month key for grouping (e.g., "2026-02" for February 2026)
@@ -642,7 +656,11 @@
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => {
           searchQuery = searchInput.value.trim();
-          if (options.onSearch) {
+          if (radarMode) {
+            // #1236: the Radar search filters across EVERY entity type on the surface
+            // (work items · documents · conversations …) — subsuming chat-only search.
+            renderRadarEntities();
+          } else if (options.onSearch) {
             options.onSearch(searchQuery);
           }
         }, 300);
@@ -679,13 +697,30 @@
           const topic = item.getAttribute('data-topic');
           options.onSelect({ id, topic });
           close();
+          return;
+        }
+        // #1090 swap: a Radar card opens its referent by entity type — Conversation
+        // resumes the chat (same path the History list used), Work item opens the
+        // GitHub issue, Document goes to the Documents page.
+        const card = e.target.closest('.radar-card[data-ref]');
+        if (card) {
+          const type = card.getAttribute('data-entity-type');
+          const ref = card.getAttribute('data-ref');
+          if (type === 'Conversation') {
+            if (options.onSelect) { options.onSelect({ id: ref }); }
+            close();
+          } else if (type === 'Work item') {
+            window.open(ref, '_blank', 'noopener');
+          } else if (type === 'Document') {
+            window.location.href = '/documents';
+          }
         }
       });
 
-      // Keyboard navigation for items
+      // Keyboard navigation for items + radar cards
       content.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
-          const item = e.target.closest('.history-item');
+          const item = e.target.closest('.history-item, .radar-card[data-ref]');
           if (item) {
             e.preventDefault();
             item.click();
@@ -724,6 +759,15 @@
       const card = document.createElement('article');
       card.className = 'radar-card' + (entity.provenance === 'example' ? ' radar-card--example' : '');
       card.setAttribute('role', 'listitem');
+      // #1090 swap: make the card navigable (the History list was click-to-resume;
+      // the Radar feed replaces it, so each card must open its referent). Routing by
+      // entity_type happens in the delegated click handler. Example cards have no ref.
+      if (entity.ref) {
+        card.setAttribute('data-entity-type', entity.entity_type || '');
+        card.setAttribute('data-ref', entity.ref);
+        card.setAttribute('tabindex', '0');
+        card.classList.add('radar-card--clickable');
+      }
 
       const top = document.createElement('div');
       top.className = 'radar-card-top';
@@ -766,17 +810,39 @@
      */
     function renderRadar(view) {
       if (!sidebarElement) return;
-      const content = sidebarElement.querySelector('.history-content');
-      content.innerHTML = '';
+      // #1236 — entity-search: retain the view so the search box can filter all types.
+      radarMode = true;
+      radarView = view || null;
+      radarEntities = (view && view.entities) ? view.entities : [];
 
       // This is the Radar surface, not the conversation list (mockup fidelity).
       const titleEl = sidebarElement.querySelector('.history-sidebar-title');
       if (titleEl) titleEl.textContent = '📡 Radar';
       const searchEl = sidebarElement.querySelector('.history-search-input');
+      // #1236: the search now spans every entity type, not just chats — re-earn "everything".
       if (searchEl) searchEl.placeholder = 'Search everything — issues, docs, people, chats…';
 
-      // Empty state: explainer + the one labeled example the endpoint returns.
-      if (!view || view.state === 'empty') {
+      renderRadarEntities();
+
+      // Radar has no pagination (v1) — hide load-more.
+      const loadMoreSection = sidebarElement.querySelector('.history-load-more');
+      if (loadMoreSection) loadMoreSection.style.display = 'none';
+    }
+
+    /**
+     * #1236 — render the (optionally search-filtered) Radar entities into the content area.
+     * Called by renderRadar and by the search handler — the client-side entity-search
+     * filters across ALL types currently on the surface (subsuming chat-only search).
+     */
+    function renderRadarEntities() {
+      if (!sidebarElement) return;
+      const content = sidebarElement.querySelector('.history-content');
+      content.innerHTML = '';
+      const q = (searchQuery || '').toLowerCase();
+
+      // Empty Radar (no observed entities at all): explainer + the one labeled example.
+      // Search does not apply — there is nothing to filter.
+      if (!radarView || radarView.state === 'empty') {
         const explain = document.createElement('div');
         explain.className = 'radar-empty';
         const t = document.createElement('p');
@@ -788,14 +854,30 @@
         explain.appendChild(t);
         explain.appendChild(sub);
         content.appendChild(explain);
+        radarEntities.forEach(e => content.appendChild(renderRadarCard(e)));
+        return;
       }
 
-      const entities = (view && view.entities) ? view.entities : [];
-      entities.forEach(e => content.appendChild(renderRadarCard(e)));
+      const matches = q ? radarEntities.filter(e => radarEntityMatches(e, q)) : radarEntities;
+      if (q && matches.length === 0) {
+        const none = document.createElement('p');
+        none.className = 'history-empty-message';
+        none.textContent = 'Nothing on your Radar matches your search.';
+        content.appendChild(none);
+        return;
+      }
+      matches.forEach(e => content.appendChild(renderRadarCard(e)));
+    }
 
-      // Radar has no pagination (v1) — hide load-more.
-      const loadMoreSection = sidebarElement.querySelector('.history-load-more');
-      if (loadMoreSection) loadMoreSection.style.display = 'none';
+    /**
+     * #1236 — does a Radar entity match the search query? Spans the searchable facets of
+     * every entity type: title + meta + entity type + lifecycle state.
+     */
+    function radarEntityMatches(entity, q) {
+      const hay = [(entity.title || ''), (entity.meta || ''),
+                   (entity.entity_type || ''), (entity.lifecycle_state || '')]
+                  .join(' ').toLowerCase();
+      return hay.indexOf(q) !== -1;
     }
 
     /**
@@ -827,6 +909,8 @@
       toggle: toggle,
       update: update,
       updateRadar: renderRadar,   // #1236 — render the Layer-2 Radar entity surface
+      renderRadarCard: renderRadarCard,   // #1280 v2 — pure entity→card; reused by home's persistent Radar aside
+      radarEntityMatches: radarEntityMatches,   // #1280 v2 — reused by the persistent Radar's search filter
       setPrivacyState: setPrivacyState,
       groupByDate: groupByDate,  // Alias to groupByMonth for compatibility
       groupByMonth: groupByMonth,

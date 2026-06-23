@@ -27,6 +27,7 @@ from services.domain.models import (
     StandupPartialCapture,
 )
 from services.shared_types import StandupConversationState
+from services.utils.datetime_utils import ensure_utc
 
 logger = structlog.get_logger()
 
@@ -335,8 +336,13 @@ class StandupConversationManager:
             await repo.update(conversation)
 
         if new_state == StandupConversationState.COMPLETE:
+            # #1079: coerce both operands to tz-aware UTC. created_at can come
+            # back tz-naive from a backend that drops tzinfo (e.g. SQLite in
+            # tests; defensive for any pre-round-trip object), while completed_at
+            # was just set tz-aware — subtracting the two raw would TypeError.
             duration_seconds = (
-                conversation.completed_at - conversation.created_at
+                ensure_utc(conversation.completed_at)
+                - ensure_utc(conversation.created_at)
             ).total_seconds()
             logger.info(
                 "standup_conversation_completed",
@@ -351,8 +357,9 @@ class StandupConversationManager:
                 ),
             )
         elif new_state == StandupConversationState.ABANDONED:
+            # #1079: created_at may be tz-naive (see COMPLETE branch above).
             duration_seconds = (
-                datetime.now(timezone.utc) - conversation.created_at
+                datetime.now(timezone.utc) - ensure_utc(conversation.created_at)
             ).total_seconds()
             logger.info(
                 "standup_conversation_abandoned",

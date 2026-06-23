@@ -1,3 +1,21 @@
+<!--
+  ⚠️ DEAD CODE as of 2026-06-19 — DO NOT EDIT, DO NOT RESTORE NAV STRUCTURE FROM THIS FILE.
+
+  This legacy top global-nav is no longer included by ANY template. The live navigation is
+  templates/components/nav_rail.html (the left dark rail, #1280), included by
+  templates/layouts/app_shell.html. Verified 2026-06-19: no `{% include %}`, TemplateResponse,
+  or render call references this file anywhere in templates/, web/, or services/ — the only
+  remaining "include 'components/navigation.html'" string is the commented-out usage example
+  on the line directly below.
+
+  Retained (NOT deleted) per PM 2026-06-19 — "comment out dead code and plan to remove it when
+  we are sure it's safe." Tracking issue for verified-safe removal: #1298.
+
+  ⚠️ This file encodes SUPERSEDED nav decisions — do not treat it as a source of truth. In
+  particular it still shows BOTH "Documents" and "Files" as separate "Your stuff" entries. That
+  decision was REVERSED in the live nav by #1270's beta band-aid (commit a15012f33), which
+  collapsed them to a single "Documents" surface (/files). Consult nav_rail.html, not this file.
+-->
 <!-- Global Navigation Component -->
 <!-- Usage: {# % include 'components/navigation.html' % #} -->
 
@@ -47,10 +65,12 @@
           <a href="/work-items" class="nav-dropdown-item" id="nav-work-items" data-nav-path="/work-items" role="menuitem">Work Items</a>
           <!-- #1146: /files was a true nav-orphan (reachable only by URL) — wired here in "Your stuff" -->
           <a href="/files" class="nav-dropdown-item" id="nav-files" data-nav-path="/files" role="menuitem">Files</a>
-          <!-- #1268 / PM 2026-06-17: un-gated — Documents + Collections hold the USER'S OWN content;
-               a trust gate must not hide a user's own data from them. (Label "Collections" → CXO's rename call.) -->
+          <!-- #1268 (CXO IA 2026-06-17): un-gated user-content; "Collections" → "Lists" (match the
+               /lists route + the user's word, descriptive-names discipline). The Files/Documents
+               nav-consolidation to ONE "Documents" rides with the #1270 route-refactor (object-model,
+               PPM-gated) — not a safe nav-only change (would orphan a surface before the routes merge). -->
           <a href="/documents" class="nav-dropdown-item" id="nav-documents" data-nav-path="/documents" role="menuitem">Documents</a>
-          <a href="/lists" class="nav-dropdown-item" id="nav-lists" data-nav-path="/lists" role="menuitem">Collections</a>
+          <a href="/lists" class="nav-dropdown-item" id="nav-lists" data-nav-path="/lists" role="menuitem">Lists</a>
         </div>
       </li>
       <li class="nav-item-trust-gated" data-min-trust-stage="3"><a href="/learning" class="nav-link" id="nav-learning" data-nav-path="/learning">Learning</a></li>
@@ -58,15 +78,17 @@
            Stage 1 to match the journal page's own data-min-stage="1" + R4 pull-mode being
            Stage-1-available. Placement/stage flagged for CXO UX session (sibling of Learning). -->
       <li class="nav-item-trust-gated" data-min-trust-stage="1"><a href="/insights" class="nav-link" id="nav-insights" data-nav-path="/insights">Insights</a></li>
-      <!-- History (#425 MUX-IMPLEMENT-MEMORY-SYNC) -->
-      <!-- Issue #732: Lowered from stage 2 to 1 - users should always see their own history -->
+      <!-- #425 MUX-IMPLEMENT-MEMORY-SYNC; #732 stage-1 (users always see their own).
+           #1262 (CXO 2026-06-17): relabel "History" → "Radar" — this trigger opens the
+           Radar/Layer-2 panel, so the label says what it opens. (id kept nav-history-trigger
+           to preserve JS wiring; only the user-facing label changes.) -->
       <li class="nav-item-trust-gated" data-min-trust-stage="1">
-        <button class="nav-link nav-history-trigger" id="nav-history-trigger" aria-label="View history">
+        <button class="nav-link nav-history-trigger" id="nav-history-trigger" aria-label="View Radar">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="margin-right: 6px;" aria-hidden="true">
             <circle cx="8" cy="8" r="6"/>
             <path d="M8 4v4l2.5 2.5"/>
           </svg>
-          History
+          Radar
         </button>
       </li>
     </ul>

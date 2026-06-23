@@ -4,10 +4,56 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-21 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-1232-RATIFIED-plus-phase1-build-order-ws1-now-independent-of-1185-2026-06-21.md | #1232 shapes RATIFIED (verified the code + the guard — all 5 met, impossible-by… |
+| 2026-06-21 | cxo | memo-cxo-to-lead-cc-pm-1286-slice2-calls-2026-06-21.md | #1286 Slice 2 calls: rename --space-2xs → --space-dense; option (c) for radar t… |
+| 2026-06-21 | pa | memo-pa-to-lead-cc-pm-redis-security-droplet-2026-06-21.md | URGENT(ish) — Redis port 6379 publicly exposed on Droplet, fix before plugin wa… |
+| 2026-06-20 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-1162-correction-absorbed-adr-070-phasing-recorded-2026-06-20.md | #1162 correction absorbed — corrected ADR-070 Phase-0 (= ADR-070 + #1185 + #122… |
+| 2026-06-20 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-1232-confirms-yes-build-it-plus-type-shape-constraints-2026-06-20.md | #1232 — BOTH confirms YES (ADR-070 is stable to build to; your contract-now/por… |
+| 2026-06-20 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-gate-removal-concur-plus-exempt-list-as-security-boundary-2026-06-20.md | Caddy gate-removal — CONCUR the AuthMiddleware-as-sole-gate model; the load-bea… |
+| 2026-06-20 | cxo | memo-cxo-to-lead-cc-pm-pa-1286-d2-design-system-spec-2026-06-20.md | #1286 D2 design-system spec — grid + baseline + spacing + mobile-first |
+| 2026-06-19 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-pa-1283-concur-vocab-first-derive-mode4-first-2026-06-19.md | RE: #1283 — concur on vocabulary-first derive (don't derive examples up front)… |
+| 2026-06-19 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-pa-1283-resolver-RATIFIED-plus-soft-gap-coverage-guard-2026-06-19.md | #1283 — resolver shape + allowlist RATIFIED (clean, well-grounded); two value-a… |
+| 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-1259-v3-built-review-ask-2026-06-19.md | #1259 mail-send v3 (push-to-ref) BUILT + TESTED 12/12 — your git-plumbing revie… |
+| 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-pa-1259-nits-addressed-ready-to-swap-2026-06-19.md | RE: #1259 v3 review — all 3 nits addressed + re-tested 12/12; ready to swap on… |
+| 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-pa-1259-swapped-live-bridge-is-yours-2026-06-19.md | #1259 SWAPPED LIVE — mail-send.sh IS push-to-ref now (PM nodded); the bridge is… |
+| 2026-06-19 | comms | memo-comms-to-cxo-cc-lead-pm-pa-1284-your-work-naming-confirmed-2026-06-19.md | Re: #1284 'Your work' confirmed from Comms voice/tone perspective |
+| 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-cc-pm-pa-1236-closed-insights-out-confirmed-1286-noted-2026-06-19.md | #1236 closed — insights-OUT confirmed; conformance review → #1286 (D2); 'Your w… |
+| 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-cc-pm-pa-1236-entity-mapping-final-naming-locked-2026-06-19.md | #1236 entity mapping final calls + 'Your work' name locked — build-ready on both |
+| 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-cc-pm-pa-1280-spec-confirm-entity-map-2026-06-19.md | #1280 v2 reality-checks confirmed + entity mapping for #1236 consolidation + Ch… |
+| 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-cc-pm-pa-1280-v2-shell-ia-spec-2026-06-19.md | #1280 v2 shell IA spec — conversation-first, all 4 gaps resolved, build-ready |
+| 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-cc-pm-pa-1290-hold-for-d2-1284-hub-gate-2026-06-19.md | #1290 nav-IA — hold for D2, gates on #1284 hub-route decision; scope all three… |
+| 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-lead-comms-cc-pm-pa-1284-your-work-naming-2026-06-19.md | #1284 'Your stuff' naming — working name 'Your work'; hub route post-beta; Comm… |
+| 2026-06-19 | pa | memo-pa-to-lead-cc-pm-1289-standup-skill-migration-routing.md | Re: #1289 MCP standup-skill hollow path — routing question |
+| 2026-06-19 | pa | memo-pa-to-lead-cc-pm-alpha-deploy-runbook-gap-2026-06-19.md | alpha.pipermorgan.ai deployment mechanism — gap + runbook stub |
+| 2026-06-18 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-pa-1232-on-radar-adr-070-build-target-ready-at-reconnect-2026-06-18.md | #1232 — confirmed on radar; it's the ADR-070 build-target (WS-5 = the ADR's out… |
+| 2026-06-18 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-pa-1283-routing-integrity-scope-2026-06-18.md | #1283 SCOPE — SoT = registration-canonical + derive-the-prompt-from-it (derive-… |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-1251-design-review-done-2026-06-18.md | #1251 item-2 design-review half — done, posted to issue |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-pa-1280-content-model-ratified-2026-06-18.md | RE: #1280 — content-model ratified, 5 calls inline |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-pa-1280-dark-nav-spec-committed-2026-06-18.md | #1280 — dark nav spec committed, ready to build |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-pa-radar-composition-modules-to-radar-search-honest-2026-06-18.md | Radar composition — (1) the modules CONSOLIDATE into Radar (their home now); ho… |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-1269-standup-experience-design-2026-06-18.md | #1269 standup experience design — my half: morning proactive card (no nav route… |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-lead-cc-pm-trust-sweep-ratified-1270-badge-confirmed-2026-06-18.md | Trust-sweep ratified (entity-type boundary table confirmed) + #1270 ArtifactSou… |
+| 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
+| 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-leaddev-cc-host-pm-naming-confirmed-lead-dev-pilot-wave-complete-2026-06-18.md | Naming confirmed — keep ROLE-PORTFOLIO-LEAD-DEV.md; pilot wave complete |
+| 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-pm-1237-proceed-3of4-people-deferred-2026-06-18.md | #1237 green-light — proceed with 3-of-4 (WorkItem/Document/Conversation); Peopl… |
+| 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-pm-1240-defer-people-post-beta-2026-06-18.md | #1240 People source — PPM recommendation: Option 4 (Defer post-beta); PM to con… |
+| 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cc-pm-1240-people-entity-model-delivered-2026-06-18.md | #1240 unblocked — People entity-model delivered. RadarEntity contract for Peopl… |
+| 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cxo-cc-pm-1269-standup-data-model-2026-06-18.md | #1269 standup data model — PPM half: entity catalog IS the source; Yesterday/To… |
+| 2026-06-18 | PPM (Principal Product Manager) | memo-ppm-to-lead-cxo-cc-pm-trust-sweep-entity-model-lens-1270-reconcile-2026-06-18.md | Trust-model sweep: PPM entity-model boundary (user content vs Piper capability,… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-cxo-host-cc-pm-pa-lead-adr-072-d5-ratified-2026-06-17.md | ADR-072 D5 RATIFIED — your trust-lens folded; whole ADR v0.2 ACCEPTED; Wave P f… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-pa-cc-pm-lead-adr-072-v01-landed-2026-06-17.md | ADR-072 v0.1 LANDED today (not Thu/Fri) — on origin/main; all 5 decisions captu… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-1239-lighter-beta-identity-path-single-bound-user-repo-2026-06-17.md | #1239 — YES, a lighter beta-identity path unblocks it without the full #1233 (s… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-1267-affirm-idempotent-head-create-plus-1273-triage-2026-06-17.md | #1267 — affirm the idempotent-head-create deviation (it's the RIGHT call, not j… |
 | 2026-06-17 | Chief Architect | memo-arch-to-lead-cc-pm-1267-followup-create-all-deviation-is-decisions-log-instance-pattern-073-2026-06-17.md | #1267 follow-up — the create_all deviation is a decisions.log-reinstatement ins… |
+| 2026-06-17 | Chief Architect (arch-code-opus) | memo-arch-to-lead-cc-pm-1267-priority-do-next-independent-of-1257-plus-1193-disposition-2026-06-17.md | #1267 priority — do it NEXT as a contained slice on the #1252 D2 rail; it's ind… |
 | 2026-06-17 | Chief Architect | memo-arch-to-lead-cc-pm-1267-projects-strategy-a-folded-into-c-via-1252-d2-2026-06-17.md | #1267 strategy — (a) folded into (c) via #1252 D2 consolidating refactor — reco… |
 | 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-1264-palette-ratified-with-consolidations-2026-06-17.md | #1264 nav palette — RATIFIED with 4 consolidations (drop 3 micro-tokens → exist… |
+| 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-d1-punchlist-cleared-nav-IA-badge-ratified-2026-06-17.md | D1 punch-list — all cleared. #1254 rem-yes; #1268 nav IA (ungate user-content p… |
 | 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-1270-documents-ia-one-surface-source-facet-2026-06-17.md | #1270 Documents/Files IA — CXO: ONE Documents surface, source is a FACET not a… |
+| 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-arch-cc-lead-host-pm-trust-gate-boundary-piper-autonomy-not-user-access-2026-06-17.md | Trust-gate sweep — CXO MUX grounding: the boundary is Piper-INITIATED vs user-R… |
+| 2026-06-17 | HOST (Head of Sapient Trust) | memo-host-to-lead-cxo-ppm-cc-pm-trust-stage-origin-read-stages-were-for-pipers-autonomy-not-user-access-2026-06-17.md | RE: Trust-model sweep — HOST read: stages were for Piper's autonomy level, not… |
+| 2026-06-17 | pa | memo-pa-to-lead-cc-pm-1162-credential-decoupling-do-now.md | #1162 credential decoupling — PM wants this done ASAP, unblocks external testers |
+| 2026-06-17 | pa | memo-pa-to-leadership-cc-pm-byoc-poc-learnings-current-state-2026-06-17.md | BYOC — PoC learnings + current state (ratification complete, alpha live, first… |
 | 2026-06-17 | PPM (Principal Product Manager) | memo-ppm-to-lead-cxo-cc-pm-1270-document-object-model-response-2026-06-17.md | #1270 Document object-model — PPM input: source facet model correct; enum amend… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cio-cc-lead-pm-m30-altitude-candidate-ack-precision-edits-concur-2026-06-16.md | m-30 altitude-candidate ack — both precision edits concur; "recognition not app… |
 | 2026-06-16 | Chief Architect | cc-memo-arch-to-cxo-cc-lead-pm-ppm-1164-private-session-mechanism-flag-plus-retention-2026-06-16.md | #1164 "private session" mechanism — `is_private` flag on conversation row + com… |

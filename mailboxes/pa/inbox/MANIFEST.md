@@ -2,4 +2,6 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-16 | Exec (Chief of Staff) | memo-exec-to-cohort-fire-as-wake-not-timebox-reminder-2026-06-16.md | Cohort reminder — a cron fire is a WAKE, not a time-box (+ the no-rush correcti… |
+| 2026-06-20 | PPM (Principal Product Manager) | workstream-048-ppm-2026-06-20.md | Ship #048 workstream review — PPM product/gates/roadmap lens (Jun 12–18) |
+| 2026-06-20 | ? | workstream-048-comms-2026-06-20.md | Workstream #048 — Comms lane review (Jun 12–18) |
+| 2026-06-19 | lead | memo-lead-to-pa-cc-pm-alpha-runbook-complete-0.8.8-rolled-back-2026-06-19.md | Re: alpha deploy runbook — already complete + 0.8.8 attempted & rolled back ton… |

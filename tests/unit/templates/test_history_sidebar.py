@@ -283,6 +283,21 @@ class TestPrivacyControls:
         label = template.find(class_="history-privacy-label")
         assert label is not None
 
+    def test_privacy_footer_hidden_for_beta_1164(self, soup):
+        """#1164: the 'Start private session' backend is not wired yet (gated on #1089),
+        so the no-op footer is HIDDEN for beta. Shipping a clickable-but-dead privacy
+        control would mislead beta users into believing a session is private when it is
+        not — a trust risk. The markup is retained (the sidebar JS still queries
+        `.history-privacy-toggle`), so re-enabling when the privacy feature lands
+        (postponed to the dot-releases milestone) is just removing `hidden`."""
+        template = soup.find("template", id="history-sidebar-template")
+        footer = template.find(class_="history-privacy-footer")
+        assert footer is not None, "markup must be retained (the sidebar JS still queries the toggle)"
+        assert footer.has_attr("hidden"), (
+            "the no-op privacy footer must carry `hidden` until the privacy backend "
+            "(#1164 / #1089) lands — a visible no-op privacy control misleads beta users"
+        )
+
 
 class TestOverlay:
     """Tests for modal overlay."""
@@ -435,3 +450,67 @@ class TestRadarSurface:
     def test_radar_title_branding(self, history_html):
         """Surface relabels to Radar (mockup fidelity) when in radar mode."""
         assert "\U0001f4e1 Radar" in history_html  # 📡 Radar
+
+    # --- #1090 swap: Radar cards must be navigable (the History list was
+    # click-to-resume; the Radar feed replaces it as the default panel) ---
+
+    def test_radar_card_is_navigable(self, history_html):
+        """A card with a ref carries the routing attributes + a focusable, clickable
+        affordance (else graduating Radar-as-default would lose conversation-resume)."""
+        assert "card.setAttribute('data-entity-type'" in history_html
+        assert "card.setAttribute('data-ref', entity.ref)" in history_html
+        assert "card.setAttribute('tabindex', '0')" in history_html
+        assert "card.classList.add('radar-card--clickable')" in history_html
+
+    def test_radar_card_only_clickable_when_ref_present(self, history_html):
+        """Refless cards (e.g. the empty-state example) are not made clickable."""
+        assert "if (entity.ref) {" in history_html
+
+    def test_radar_card_click_routes_by_entity_type(self, history_html):
+        """Delegated click opens the referent: Conversation resumes the chat,
+        Work item opens the issue, Document goes to the Documents page."""
+        assert "e.target.closest('.radar-card[data-ref]')" in history_html
+        assert "if (type === 'Conversation') {" in history_html
+        assert "options.onSelect({ id: ref })" in history_html  # resume the chat
+        assert "window.open(ref, '_blank', 'noopener')" in history_html  # work item
+        assert "window.location.href = '/documents'" in history_html  # document
+
+    def test_radar_card_keyboard_navigable(self, history_html):
+        """Enter/Space activates a radar card (a11y parity with conversation items)."""
+        assert ".history-item, .radar-card[data-ref]" in history_html
+
+    def test_radar_card_clickable_css_present(self, history_html):
+        """Clickable cards show a pointer cursor + a focus ring."""
+        assert ".radar-card--clickable" in history_html
+
+    # --- #1236: entity-search that subsumes chat-search (the last unmet AC) ---
+
+    def test_radar_search_placeholder_spans_all_types(self, history_html):
+        """The Radar search 're-earns everything' — placeholder names all entity types,
+        not just conversations (the old conversation-only placeholder is gone)."""
+        assert "Search everything — issues, docs, people, chats" in history_html
+
+    def test_radar_entity_search_filter_defined(self, history_html):
+        """The client-side entity-filter + its render pass are wired."""
+        assert "function renderRadarEntities()" in history_html
+        assert "function radarEntityMatches(entity, q)" in history_html
+
+    def test_radar_search_filters_in_radar_mode(self, history_html):
+        """In Radar mode the search input re-renders the filtered entities (it no longer
+        falls through to the conversation-only onSearch path)."""
+        assert "if (radarMode) {" in history_html
+        assert "renderRadarEntities();" in history_html
+
+    def test_radar_entity_match_spans_searchable_facets(self, history_html):
+        """A match spans every type's searchable facets: title + meta + type + lifecycle."""
+        for facet in (
+            "entity.title",
+            "entity.meta",
+            "entity.entity_type",
+            "entity.lifecycle_state",
+        ):
+            assert facet in history_html
+
+    def test_radar_search_empty_result_message(self, history_html):
+        """A search with no matches reads honestly (not the new-user empty-state)."""
+        assert "Nothing on your Radar matches your search." in history_html

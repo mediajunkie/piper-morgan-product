@@ -289,6 +289,6 @@ class TestInsightsMigratedToAppShell1171:
         templates = Path(__file__).resolve().parents[3] / "templates"
         env = Environment(loader=FileSystemLoader(str(templates)), autoescape=True)
         html = env.get_template("insights.html").render(trust_stage=1)
-        assert "global-nav" in html  # chrome provided by app_shell
+        assert "nav-rail" in html  # chrome provided by app_shell (#1280 left rail)
         assert "Insight Journal" in html  # page content rendered into {% block main %}
         assert "Correct this" in html  # #1251 item-3

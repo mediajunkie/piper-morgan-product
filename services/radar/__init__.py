@@ -1,7 +1,13 @@
 """Radar — Layer-2 entities-surfacing domain (#1236 / #1090, build to CXO mockup)."""
 from .feed import RadarFeed
 from .models import EntityType, Provenance, RadarEntity, RadarView
-from .sources import ConversationEntitySource, DocumentEntitySource, EntitySource
+from .sources import (
+    ConversationEntitySource,
+    DocumentEntitySource,
+    EntitySource,
+    PlaceEntitySource,
+    WorkItemEntitySource,
+)
 
 __all__ = [
     "EntityType",
@@ -12,4 +18,6 @@ __all__ = [
     "EntitySource",
     "ConversationEntitySource",
     "DocumentEntitySource",
+    "WorkItemEntitySource",
+    "PlaceEntitySource",
 ]

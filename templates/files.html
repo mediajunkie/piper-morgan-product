@@ -5,7 +5,7 @@
 {# hover + drag/drop overlay fallbacks) is the per-page CSS-tokenization follow-on #}
 {# (CXO), out of scope here. #}
 
-{% block page_title %}Files - Piper Morgan{% endblock %}
+{% block page_title %}Documents - Piper Morgan{% endblock %}
 
 {% block head_extra %}
 <style>
@@ -288,17 +288,19 @@
 
   <div class="container">
     <div class="page-header">
-      <h1>📄 Files</h1>
+      <!-- #1270 beta band-aid: this is the working file browser served under the "Documents"
+           label (the /documents route redirects here). Self-titled "Documents" to match the nav. -->
+      <h1>📄 Documents</h1>
       <button class="create-resource-btn" onclick="openUploadDialog()">
-        + Add a file
+        + Add a document
       </button>
     </div>
 
     <!-- #313 G64: file search + type filter (client-side over the loaded list) -->
     <div class="file-filters">
       <input type="search" id="file-search" class="file-search-input"
-             placeholder="Search files by name…" oninput="applyFileFilter()"
-             aria-label="Search files by name" />
+             placeholder="Search documents by name…" oninput="applyFileFilter()"
+             aria-label="Search documents by name" />
       <select id="file-type-filter" class="file-type-select"
               onchange="applyFileFilter()" aria-label="Filter by type">
         <option value="all">All types</option>
@@ -367,7 +369,7 @@
         document.getElementById('files-container').innerHTML = `
           <div class="empty-state" role="status" aria-label="No matches">
             <div class="empty-state-icon" aria-hidden="true">🔍</div>
-            <h2 class="empty-state-title">No files match your search.</h2>
+            <h2 class="empty-state-title">No documents match your search.</h2>
             <p class="empty-state-message">Try a different name, or clear the filter to see everything.</p>
           </div>
         `;
@@ -736,7 +738,7 @@
     function deleteFile(fileId, kind) {
       Dialog.confirm({
         title: kind === 'artifact' ? 'Remove this artifact?' : 'Remove this file?',
-        message: "I'll remove this from your files. This can't be undone.",
+        message: "I'll remove this from your documents. This can't be undone.",
         onConfirm: async () => {
           try {
             // #355: artifacts delete via the artifacts API.

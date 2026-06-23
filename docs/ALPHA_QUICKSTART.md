@@ -1,6 +1,6 @@
 # Piper Morgan Alpha - Quick Start
 
-**Version**: 0.8.6
+**Version**: 0.8.9
 **Branch**: `production` (stable alpha releases)
 **For**: Experienced developers who want to dive in fast
 
@@ -29,23 +29,29 @@
 
 ---
 
-## What's New in 0.8.6
+## What's New in 0.8.9
 
-**M0 Conversational Glue** - Piper now converses naturally. Workflows emerge from conversation; commands are shortcuts, not requirements.
+This release closes three fronts: connector infrastructure (RECONNECT WS-1), field-level security, and the Design D2 token system and mobile nav.
 
-**Conversational Lens Tracking** - Follow-up queries resolve correctly based on context ("what about next week?").
+**Connector infrastructure (RECONNECT WS-1)** — Connector config now lives in the database, not a JSON file or in-memory store. Repo config and integration state survive restarts. When GitHub isn't connected, Piper says so honestly rather than guessing or failing silently.
 
-**Multi-Intent Handling** - Compound queries handled coherently ("check my calendar and create an issue").
+**Real standup pipeline** — The hollow standup workflow is retired. `StandupAssembler` is the real thing: it pulls from live connector data, Radar sources, and your context. Ask Piper for your standup in chat; the `/api/v1/standup/today` endpoint is the canonical path.
 
-**Soft Workflow Invocation** - Piper offers workflows naturally ("Sounds like you might want to set up a meeting...").
+**Field encryption** — User secrets are now encrypted at rest using AES-256-GCM with HKDF per-field key derivation. Your API keys in the database are encrypted, not plaintext. This is the first-generation implementation of the security architecture.
 
-**Repository Management** - Link GitHub repos to projects during setup or in Settings.
+**Per-user LLM key routing** — Your BYOC API key (brought via Settings in D1) is now routed per-request. Each inference call uses your key when present, falling back to the server key. The BYOC credential flow is end-to-end complete.
 
-**Bug Fixes** - 7 post-launch issues resolved (error messages, auth, workflow polling).
+**Auth hardening** — The `admin_compose` route is removed. The auth exemption list is now lint-enforced: any new exemption requires an explicit rationale, or CI fails.
 
-**Database Migration Required**: Run `alembic upgrade head` after updating.
+**Design D2 — token system + mobile nav** — The design token system is fully applied to the app shell. The responsive shell adapts across viewport widths. Mobile nav is implemented (hamburger → drawer), not just tolerated.
 
-See [Release Notes v0.8.6](releases/RELEASE-NOTES-v0.8.6.md) for full details.
+**Documents → Radar** — The "Documents" nav label is renamed to "Radar" throughout. Standup content and work items are now first-class Radar data sources.
+
+**Dockerfile → bookworm** — The production Dockerfile upgrades to Debian 12 (bookworm) to satisfy chromadb's SQLite ≥3.35 requirement.
+
+**Database Migration Required**: Run `alembic upgrade head` after updating (includes secret-column encryption migration).
+
+See [Release Notes v0.8.9](releases/RELEASE-NOTES-v0.8.9.md) for full details.
 
 ---
 
@@ -253,22 +259,25 @@ After logging in to http://localhost:8001:
 
 ---
 
-## Testing Focus for 0.8.6
+## Testing Focus for 0.8.9
 
 **What's Stable** (light testing recommended):
 - ✅ Setup wizard (GUI and CLI)
 - ✅ Login/authentication
-- ✅ Chat interface
-- ✅ Lists, todos, projects, files
+- ✅ Lists, Todos, Projects management
+- ✅ Files upload/download/preview/tagging
 - ✅ Integration Dashboard and OAuth connections
-- ✅ Windows installation and setup
+- ✅ Slack outbound, DMs, @-mentions
+- ✅ Radar as default home workspace
+- ✅ Conscious Floor (honest no-context responses)
 
 **Where to Focus Testing** (these need your attention):
-- 🔍 **Installation validator**: Run `python scripts/validate_install.py`
-- 🔍 **Windows setup**: Fresh install on Windows systems
-- 🔍 **Error messages**: Trigger errors and check for helpful fix suggestions
-- 🔍 **Lifecycle indicators**: Check that projects and todos show lifecycle state
-- 🔍 **Accessibility**: Keyboard navigation, screen reader compatibility
+- 🔍 **Connector config persistence**: Configure a GitHub repo, restart the server — does it remember the config?
+- 🔍 **Honest no-repo UX**: Remove or skip GitHub config — does Piper tell you it's not connected rather than guessing?
+- 🔍 **Standup via chat**: Ask "what's my standup?" in the chat interface — does `StandupAssembler` return a real response?
+- 🔍 **BYOC key routing**: Enter your API key in Settings, make a few requests — confirm your key is being used (check your provider's usage dashboard if unsure)
+- 🔍 **Mobile nav**: Open Piper on a phone or narrow browser window — does the hamburger → drawer nav work?
+- 🔍 **Radar rename**: Is "Radar" (not "Documents") the label throughout the nav and page headers?
 
 ---
 
@@ -434,56 +443,62 @@ After `python main.py` starts the server at http://localhost:8001:
 
 ---
 
-## What's Working in 0.8.6
+## What's Working in 0.8.9
 
-✅ **MUX-IMPLEMENT Complete** (0.8.5):
-   - WCAG 2.1 AA accessibility compliance
-   - Design token system v1.1.0
-   - Lifecycle state persistence for projects, todos, work items, features
-   - New Work Items and Project Detail views
+✅ **Conversational AI (M2 Conscious Floor)**:
+   - LLM-grounded floor for unmatched queries — Piper's voice, not templates
+   - Context assembly: blocked items, active sprint, recent activity, calendar
+   - Antecedent resolution ("it" and "that" resolve correctly across turns)
+   - Honest refusal when context is missing (no fabrication)
 
-✅ **Integration Dashboard & OAuth**:
-   - Real-time health status for all integrations
-   - One-click test buttons
-   - OAuth connect/disconnect for Slack and Calendar
-   - Visual status indicators with fix suggestions
+✅ **Connector Infrastructure (RECONNECT WS-1)**:
+   - DB-backed connector config — survives restarts
+   - Honest no-repo UX when GitHub isn't connected
+   - `StandupAssembler` pipeline replacing the hollow workflow
+
+✅ **Security (field encryption)**:
+   - AES-256-GCM field encryption with HKDF per-field key derivation
+   - `user_api_keys` secret column encrypted at rest
+   - Per-user LLM key routing (BYOC end-to-end complete)
+   - Auth-exempt-list lint enforcement
+
+✅ **Files (M3)**:
+   - Search by name and filter by type
+   - In-browser file preview
+   - Bulk download as zip (checkbox select)
+   - Drag & drop upload (multi-file)
+   - Freeform tags with search
+
+✅ **Design (D2)**:
+   - Token system fully applied to the app shell
+   - Responsive shell (adapts across viewport widths)
+   - Mobile nav (hamburger → drawer)
+   - Documents → Radar rename throughout
+
+✅ **Integrations**:
+   - Slack: inbound via Socket Mode, outbound, DMs, @-mentions
+   - GitHub: issue summarization from live data, repo resolution, lifecycle
+   - Notion: real append_blocks, URL unfurling
+   - Calendar source aggregator
+
+✅ **BYOC & Settings**:
+   - API keys stored in macOS keychain via Settings UI
+   - Per-user LLM key routing per-request
+   - Radar as default home workspace
 
 ✅ **Setup & Onboarding**:
    - GUI setup wizard with visual interface
    - System health checks
    - API key validation (OpenAI, Anthropic, Gemini, Notion)
-   - User account creation
-   - Portfolio onboarding on first greeting
-   - CLI setup wizard (alternative method)
+   - User account creation and portfolio onboarding
 
-✅ **Authentication & Security**:
-   - Multi-user support, JWT auth with bcrypt
-   - Token blacklist with CASCADE delete
-   - Secure password requirements
-   - Session management
+✅ **Core Infrastructure**:
+   - Multi-user support, JWT auth, bcrypt passwords
+   - PostgreSQL via Docker (port 5433), Redis, ChromaDB (Debian 12/bookworm)
+   - Privacy filter and output filtering
+   - 252/252 canonical regression baseline (D1 gate; regression suite unchanged)
 
-✅ **Core Features**:
-   - Database (PostgreSQL via Docker) with UUID-based user IDs
-   - File upload and document processing (PDF, DOCX, TXT, MD, JSON)
-   - Knowledge graph, boundary enforcement
-   - Audit logging
-
-✅ **User Interface** (Stable):
-   - Lists, Todos, Projects management with CRUD operations
-   - Files upload/download/delete (10MB max, 5 formats)
-   - Permission system (share resources, role-based access)
-   - Conversational permission commands
-   - Interactive standup assistant
-   - Logout functionality
-   - Breadcrumb navigation and keyboard navigation
-   - ARIA landmarks throughout
-
-✅ **Quality Validation**:
-   - 5307 automated tests passing
-   - CI/CD quality gates
-   - UI stability improvements (638 template tests)
-
-See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for complete status and known limitations.
+See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for current limitations.
 
 ---
 
@@ -498,12 +513,12 @@ See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for complete status and known
 
 ## Remember
 
-This is **alpha software** (0.8.6). Expect bugs. Don't use for production. You're responsible for API costs. See `ALPHA_AGREEMENT_v2.md` for details.
+This is **alpha software** (0.8.9). Expect bugs. Don't use for production. You're responsible for API costs. See `ALPHA_AGREEMENT_v2.md` for details.
 
-**Testing Focus**: Conversational naturalness is the focus. Does Piper feel like a colleague? Do follow-ups, compound queries, and soft offers work naturally?
+**Testing Focus**: Does connector config persist across restarts? Does Piper say "not connected" honestly when GitHub isn't configured? Does the standup pipeline return real data? Is the Radar label consistent throughout?
 
 ---
 
 **Happy testing!** 🚀
 
-_Last Updated: February 11, 2026_
+_Last Updated: June 22, 2026_

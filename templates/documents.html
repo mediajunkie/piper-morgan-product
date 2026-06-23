@@ -1,3 +1,8 @@
+{# DEAD as of 2026-06-19 (#1270 beta band-aid): the /documents route now REDIRECTS to /files
+   (the working file browser, served under the "Documents" label). This perspective view (#422
+   Stage-4+ Q&A) is no longer reachable. Retained pending the #1270 source-type refactor (D2) —
+   revert the redirect (web/api/routes/ui.py documents_ui) + reconcile this view with the unified
+   Document model then. Do NOT delete without that reconciliation. #}
 {% extends "layouts/app_shell.html" %}
 {# F2 #1171: migrated onto app_shell — chrome (nav/footer), the floating widget runtime, #}
 {# and window.currentUser + window.trustStage are now shell-owned; this page declares #}

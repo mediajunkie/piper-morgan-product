@@ -891,6 +891,28 @@ class IntentService:
                 )
                 return await self._start_standup_conversation(user_id, session_id)
 
+            # Issue #1269: a standup QUERY ("give me my standup", "what's my standup") →
+            # the DERIVED on-demand standup (StandupAssembler over the live entity catalog),
+            # routed deterministically BEFORE classification. The LLM classifier conflates
+            # these with get_project_status (verified: "give me my standup" → get_project_status,
+            # conf 1.0), so they never reached _handle_standup_query and Piper improvised a
+            # fabricated standup. The interactive `/standup` capture flow is separate (above).
+            if self._is_standup_query(message):
+                self.logger.info(
+                    "Standup query detected - routing to derived on-demand standup (#1269)",
+                    user_id=user_id,
+                    session_id=session_id,
+                )
+                standup_intent = Intent(
+                    category=IntentCategory.STATUS,
+                    action="get_standup",
+                    original_message=message,
+                    confidence=1.0,
+                )
+                return await self._handle_standup_query(
+                    standup_intent, standup_intent.id, user_id
+                )
+
             # Issue #197 Phase 2B: Ethics enforcement at universal entry point
             # Check ENABLE_ETHICS_ENFORCEMENT environment variable (default: False for gradual rollout)
             ethics_enabled = os.getenv("ENABLE_ETHICS_ENFORCEMENT", "false").lower() == "true"
@@ -2394,33 +2416,62 @@ class IntentService:
         # falls through to the generic query handler (which itself floors the unknown case).
         return await self._handle_generic_query(intent, workflow_id, session_id)
 
-    async def _handle_standup_query(
-        self, intent: Intent, workflow_id: str, session_id: str
-    ) -> IntentProcessingResult:
-        """Handle show_standup/get_standup query actions via StandupOrchestrationService."""
-        try:
-            from services.domain.standup_orchestration_service import StandupOrchestrationService
+    @staticmethod
+    def _is_standup_query(message: str) -> bool:
+        """#1269: detect a request for the on-demand DERIVED standup ("give me my standup",
+        "what's my standup", "show my standup") so it routes to the StandupAssembler rather
+        than the LLM classifier (which conflates standup with get_project_status — verified
+        2026-06-18). Deterministic + unit-testable. Does NOT match the interactive `/standup`
+        command (handled separately) or incidental mentions ("how do I run a standup meeting")."""
+        m = " ".join(message.strip().lower().rstrip("?!.").split())
+        if "standup" not in m or m.startswith("/"):
+            return False
+        cues = (
+            "my standup",  # give me / show / what's / see / get … my standup
+            "standup please",
+            "today's standup",
+            "todays standup",
+            "standup for today",
+            "give me the standup",
+            "show me the standup",
+            "me the standup",
+        )
+        return any(cue in m for cue in cues)
 
-            standup_service = StandupOrchestrationService()
-            standup_result = await standup_service.orchestrate_standup_workflow(
-                user_id=session_id, workflow_type="standard"
-            )
+    async def _handle_standup_query(
+        self, intent: Intent, workflow_id: str, user_id: Optional[str] = None
+    ) -> IntentProcessingResult:
+        """Handle show_standup/get_standup query actions — the on-demand standup DERIVED
+        over the live entity catalog (#1269: StandupAssembler reading the same Radar
+        EntitySources + calendar), replacing the hollow source:"fallback" path. This is the
+        QUERY/on-demand surface; the interactive ``/standup`` capture flow
+        (StandupConversationHandler, #585) is a separate path and is untouched.
+
+        Scopes to the authenticated ``user_id`` (``current_user.sub`` — the SAME identity
+        Radar uses), threaded via the dispatch rail's ``pass_user_id=True``. NOT the
+        session_id — the standup is the user's, not the session's. Anonymous (``user_id``
+        None) → the sources degrade to an honest empty summary.
+        """
+        try:
+            from services.standup.assembler import build_user_standup_summary
+
+            summary = await build_user_standup_summary(user_id)
 
             return IntentProcessingResult(
                 success=True,
-                message=f"Good morning! Here's your standup:\n\n{standup_result.summary}",
+                message=f"Good morning! {summary.to_prose()}",
                 intent_data={
                     "category": intent.category.value,
                     "action": intent.action,
                     "confidence": intent.confidence,
-                    "context": {"standup_data": standup_result.data},
+                    "context": {"standup_data": summary.to_dict()},
                 },
                 workflow_id=workflow_id,
                 requires_clarification=False,
                 clarification_type=None,
             )
         except Exception as e:
-            self.logger.error(f"Standup service error: {e}")
+            self.logger.error(f"Standup generation error: {e}")
             return IntentProcessingResult(
                 success=True,  # Still success, just degraded
                 message="Unable to generate standup at this time. Please try again later.",

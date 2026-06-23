@@ -23,8 +23,20 @@
 - **~07:30 — Gap-C blind-spot FIXED (CIO, verified).** CIO fixed my morning-flagged blind-spot **within the hour**: a `first_fire` registry column (exec 06:32, cio 10:07 = first START fire ≥ wake_start) gates the closed→never-restarted check (past first_fire + no today-log + stale heartbeat → flagged; 10-min grace). **Verified live** (registry has the column; freeze-check has the gate logic; `6bff4884d`). Concurred keep-hourly on the interval (CIO's rec — ~1h latency is fine for hours-long dormancy; the sub-hour case is where PM's manual catch already works). Updated board Gap-C row → **blind-spot FIXED, both modes covered**; acked CIO (`16eaaf797`). **The dormancy cure that cost ~29.5h on 6/13 is now genuinely complete** — a clean find→fix→verify loop in <1h, and it'd have caught this morning at ~07:00 (just after PM's 06:50 catch). **Held**: Ship #047 voice-pass (PM, publish-day); Lead Dev portfolio (post-D1); escalations-docs fold (HOST→PM); thin-dogfood verification (next autonomous fires).
 
 ## Memory & briefing surfaces referenced this session
-- (filled at STOP)
+- **Referenced**: `duty-cycle-tick` skill (thin-dogfood — invoked it at the 21:32-prior STOP; followed from context the 07:05 fire); `cohort-attention-rollup` skill (the full sweep + the blockers-at-top edit baked in); the CIO memos (freeze-registry, blind-spot fix); memory pins — `attention_board_sweep_not_vantage` (full sweep-and-verify), `memo_when_blocked_or_need_lead_guidance` (instructed Comms on it), `careful_git_sync_on_shared_main` (explicit-paths + reverted foreign drift; hit the moved-source `git add` trap twice — recovered), `investigate_before_extending` (verified the phantoms).
+- **Loaded but not referenced**: most MEMORY.md entries; the resume's plugin flood (OpenLaws/Amplitude — PM's client tooling).
+- **Wanted but not found**: the watcher first_fire fix (was the gap; CIO landed it same-morning).
+
+## STOP / Day-close (2026-06-17) — RETROACTIVE (closed 6/18 AM per Step-0 self-heal)
+
+**Day-arc — a morning-only day** (session suspended ~07:35 Wed → ~07:04 Thu, ~23.5h; the cron survived but couldn't fire into a dormant REPL). PM woke me ~06:50 (overnight dormancy). The morning, in sequence: diagnosed the Gap-C; **found + flagged the watcher blind-spot** (closed→never-restarted) to CIO → CIO fixed it within the hour (`first_fire` gate, verified live) → **dormancy cure complete**; ran the full PM-requested cohort sweep (decision queue verified clean); restructured the board so **blockers sit at the top** (PM directive) + baked it into the rollup skill; instructed Comms on the blocker-reporting mechanism (memo-the-gate-cc-Exec). Then the session went dormant ~07:35.
+
+**The watcher caught it** — flagged `STALE exec` hourly 14:19–21:20 Wed (pinged PM), went quiet overnight (off-hours), and correctly skipped exec pre-06:32 Thu (first_fire gate). The system worked; PM re-woke me Thu 07:04, ~16 min before the watcher's next run would have. Nothing lost — all morning work committed + pushed (through `08f99c500`).
+
+**Sign-off**: clean at last commit (~07:26 Wed); all on origin/main.
+
+<!-- DAY-CLOSED: 2026-06-17 -->
 
 ---
 
-*— Exec (DinP / Opus 4.8), 6/17 START ~06:52 PT.*
+*— Exec (DinP / Opus 4.8), 6/17 START ~06:52 PT, day-closed retroactively 6/18 ~07:08 PT.*

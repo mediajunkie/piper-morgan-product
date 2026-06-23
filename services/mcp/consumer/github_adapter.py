@@ -18,6 +18,17 @@ from services.integrations.spatial_adapter import (
     SpatialPosition,
 )
 
+from .connector import (
+    ConnectRequired,
+    ConnectorStatus,
+    ConnectorStatusState,
+    ConnectResult,
+    DegradationReason,
+    DegradationResponse,
+    ResolveMiss,
+    ResolveResult,
+    ResourceQuery,
+)
 from .consumer_core import MCPConsumerCore
 
 logger = logging.getLogger(__name__)
@@ -48,6 +59,49 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         self.token_counter = TokenCounter()
 
         logger.info("GitHubMCPSpatialAdapter initialized")
+
+    # ── #1232 (RECONNECT WS-5): Connector-protocol conformance (ADR-070 D5) ──
+    # Structural proof that the contract fits this adapter. The full MCP-server
+    # binding / OAuth / DB-config wiring is the deferred port (ADR-070 D8 — needs
+    # WS-9 identity → WS-1 config → WS-2 creds first). The methods here are honest
+    # stubs: they degrade rather than pretend to be wired.
+    IMPLEMENTS_CONNECTOR = True  # #1232: AST-guard (test_connector_contract_1232) enforces the 4 methods
+
+    async def connect(self, user_id: str) -> ConnectResult:
+        # Honest stub: not wired yet → the must-be-handled ConnectRequired variant.
+        return ConnectRequired(
+            degradation=DegradationResponse(
+                reason=DegradationReason.CONNECT_REQUIRED,
+                user_message="GitHub isn't wired on the MCP-consumer path yet (deferred port).",
+            )
+        )
+
+    async def status(self, user_id: str) -> ConnectorStatus:
+        return ConnectorStatus(
+            state=ConnectorStatusState.UNBOUND,
+            detail="MCP-consumer port deferred (ADR-070 D8)",
+        )
+
+    async def resolve(self, user_id: str, resource: ResourceQuery) -> ResolveResult:
+        # Honest stub: not wired yet → the must-be-handled ResolveMiss variant.
+        return ResolveMiss(
+            degradation=DegradationResponse(
+                reason=DegradationReason.CONNECT_REQUIRED,
+                user_message="GitHub resolve via the MCP-consumer path is the deferred port.",
+            )
+        )
+
+    async def degrade(self, reason: DegradationReason) -> DegradationResponse:
+        messages = {
+            DegradationReason.CONNECT_REQUIRED: "Connect GitHub to continue.",
+            DegradationReason.RESOURCE_NOT_FOUND: "That GitHub resource wasn't found.",
+            DegradationReason.UNREACHABLE: "GitHub's MCP server is unreachable right now.",
+            DegradationReason.STALE_TOKEN: "Your GitHub connection needs re-authorizing.",
+        }
+        return DegradationResponse(
+            reason=reason,
+            user_message=messages.get(reason, "The GitHub connector is degraded."),
+        )
 
     async def configure_github_api(
         self, token: Optional[str] = None, api_base: Optional[str] = None

@@ -45,6 +45,8 @@ Plus the `_api_key`-suffix gotcha (KeychainService appends it; bypassing the abs
 ### 2b. Config / prefs storage — cwd-relative flat files (systemic)
 **All four**: `data/{github,calendar,slack,notion}_preferences.json` — read/written relative to the server's launch directory. Not DB-backed, not multi-instance-safe, **silently breaks if the server launches from a different cwd** (the #1226 failure mode). Plus #1199: two competing default-repo stores.
 
+> **UPDATE 2026-06-21 (WS-1 #1199/#1226):** the **GitHub** config is now fully DB-backed — the canonical home is the `connector_configs` table (ADR-070 D4), keyed by `owner_id`. The flat-file `data/github_preferences.json` AND the in-memory `UserPreferenceManager` default-repo store are **RETIRED**: every surface (settings UI read/write, chat `resolve_repo`, standup) now reads/writes the single DB store, end-to-end-verified against real Postgres. The #1199 two-competing-stores problem is **CLOSED**; `UserPreferenceManager.set_default_repo` was removed and `get_default_repo` is DB-only. The `calendar/slack/notion` flat files remain (future workstreams).
+
 ### 2c. Resolution — per-connector, ad-hoc, with dead paths
 - GitHub repo: `resolve_repo` has **five** paths (audit-corrected 2026-06-14): explicit → explicit-`project_id`-linked → default-project-linked → user-default prefs (`data/github_preferences.json`) → `PIPER_DEFAULT_REPO` → else `UnresolvedRepoError`. **All three DB-backed paths are dead DB-wide** (verified live, port 5433): `project_repository_links` = 0 rows, `repositories` = 0 rows, and 0 projects have `is_default=True`. The prefs path is cwd-fragile (present in the worktree, absent from the main checkout); env unset. → **the cwd-fragile flat file is the ONLY resolution path with data.**
 - Other connectors resolve their target resources ad-hoc, each its own way.
@@ -194,3 +196,26 @@ A 5-agent audit cascade independently verified every claim in the 12 RECONNECT i
 **Most important finding — grounding gap (→ Arch, for the WS-5 ADR):** the issues/scope don't cite the ADR corpus that governs them. **ADR-058** (Multi-Tenancy Isolation) already settled the WS-2/7/9 cred/OAuth/user-scoping model — much of RECONNECT is *finishing ADR-058*, not greenfield; cite it so Arch doesn't re-derive. **ADR-001** supports the MCP-consumer posture. **ADR-052** (tool-based MCP, no separate servers) must be reconciled with "external MCP server owns auth." The §0 MCP decision should also be appended to `decisions.log` (reinstated 6/13; this is its exact use case).
 
 **New latent bug (out of #1223/#1234 scope, filed separately):** the `/{conversation_id}/turns` display endpoint (`web/api/routes/conversations.py:182`, default `limit=50`, **no offset param**) returns the *oldest* 50 turns of a >50-turn conversation — same wrong-window shape as #1223, lower severity (display, not LLM context).
+
+---
+
+## 12. BYOC reconciliation + sequencing decision (a) — PM-ratified 2026-06-20
+
+After PA's Skunkworks BYOC Phase-2a scoping (2026-06-19: the `byoc-stack-2026-06-19.html` / `byoc-nearterm-work-2026-06-19.html` diagrams + the ratified identity decision), Lead Dev + PM reconciled RECONNECT against it. This **resolves the §8 parked hook** ("D7 OQ-1 lands when Skunkworks BYOC Phase 2a scopes").
+
+> **⚠️ CORRECTION (2026-06-20, PM-approved) — read as authoritative where it conflicts with the decision-a text below.**
+> The "**#1162 = cred-decoupling**" label below is **wrong**. Reading the live issues revealed **#1162 is `SKUNKWORKS-BYOC-HOSTED-DISTRO` — hosted-distro *exploration*** (a distribution concern, like #1278/#1282), **not** cred-decoupling. The buildable cred-decoupling work (PA's option-a plan, `dev/2026/06/07/pa-option-a-decouple-credential-plan-2026-06-07.md`) had **no tracking issue** — now filed as **#1300** (`BYOC-CRED-DECOUPLE`).
+> **Board corrected 2026-06-20**: **#1162 → SKUNK** (out of RECONNECT), **#1300 → M5**, **#1278 stays M5**, **#1185 stays RECONNECT** (identity core). The internal inconsistency that flagged it: decision-a kept #1278 out as "hosting = distribution-lane," but #1162 is hosting too.
+> **Corrected Phase-0 foundation = #1185 (identity core) + #1229 (RECONNECT-WS2 cred-model, already native)**; the hosting/distribution cluster (#1162 / #1278 / #1282 / #1300) lives in SKUNK / M5, to be organized "when we get to M5" (PM 2026-06-20).
+
+**Boundary:**
+- **RECONNECT owns** the connector framework (WS1–WS8) + the BYOC-identity-*keying* for connectors (WS9).
+- **The BYOC backend owns** the hosting + multi-tenant identity/auth/session substrate: **#1278** (Fly deploy), **#1185** (UUID-bearer auth + per-user identity/session/data/knowledge isolation — *finishing ADR-058*), **#1162** (cred-decoupling).
+
+**Decision (a) — PM-ratified 2026-06-20:** the BYOC backend *foundation* — **#1162 (cred-decoupling, "unblocks everything") + the #1185 identity core** — is pulled **INTO RECONNECT as its Phase-0/1 foundation** (vs. sequencing RECONNECT after a separate BYOC sprint). Rationale: they are the substrate the whole connector refactor sits on; splitting them across sprints invites exactly the config-drift RECONNECT exists to kill. **#1278 (Fly hosting) stays distribution-lane** — it's a hosting concern, not a connector-framework one. **PM is reassigning #1162 + #1185 onto the RECONNECT sprint.**
+
+**WS-9 reframe:** identity is now a **UUID-bearer issued at first connect** (#1185, MVP) → email + magic-link (1.0). So WS-9 (#1233) is no longer "merge legacy web `a25db09c` / Slack `009afc8c`" — it becomes **"key connector config to the BYOC identity model,"** a *downstream consumer* of #1185. The two legacy records are a migration detail, not the WS core.
+
+**Updated phasing:** Phase 0 (Arch ADR-070 + **#1162** cred-decoupling + the **#1185** identity core) → Phase 1 (WS1 config store + WS2 creds, on the BYOC identity) → Phase 2 (WS3 resolution + WS4 degradation) → Phase 3 (WS5 protocol ports + WS6 connect-UX + WS7 robustness + WS8 native→MCP migration).
+
+**Next:** loop Architect — (a) shapes ADR-070's phasing + makes #1162/#1185 explicit Phase-0/1 dependencies. Recorded in `decisions.log`.

@@ -4,7 +4,34 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-gap-token-good-watchdog-running-clean-2026-06-21.md | RE: gap-token adopted — great; the watchdog's running clean, and today gave us… |
+| 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-nudge-BUILT-verified-live-instrumentation-format-2026-06-21.md | The nudge is BUILT + verified live under launchd (both belts) — and it fired ab… |
+| 2026-06-21 | Lead Developer (lead-code-opus) | memo-lead-to-arch-cc-pm-1232-type-shapes-drafted-5-constraints-met-2026-06-21.md | #1232 type shapes drafted to your 5 Open-Q-4 constraints — all met, sum types l… |
+| 2026-06-21 | Lead Developer (lead-code-opus) | memo-lead-to-arch-cc-pm-phase1-gated-on-you-ratify-plus-build-order-2026-06-21.md | RECONNECT Phase-1 is gated on you — (1) ratify the #1232 shapes, (2) the Phase-… |
+| 2026-06-20 | lead | 2026-06-20-lead-gate-removal-conditional-go.md | Caddy gate-removal safety — CONDITIONAL GO (your architectural read?) |
+| 2026-06-20 | lead | 2026-06-20-lead-reconnect-active-1232-build-kickoff.md | RECONNECT ACTIVE — starting #1232 / ADR-070 Connector-protocol build (scope spl… |
+| 2026-06-20 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-watchdog-detected-but-didnt-nudge-the-gap-is-the-alert-path-2026-06-20.md | RE: your load-bearing check — ANSWERED: the watchdog DID detect (hourly ALERTs… |
+| 2026-06-20 | Janus (Curator, Design in Product) | memo-janus-to-arch-letter3-question-text-2026-06-20.md | Letter #3 — can you resurface your question text? |
+| 2026-06-20 | lead | memo-lead-to-arch-cc-pm-1162-correction-not-cred-decoupling-2026-06-20.md | CORRECTION to my decision-(a) memo — #1162 is NOT the cred-decoupling foundatio… |
+| 2026-06-20 | lead | memo-lead-to-arch-cc-pm-pa-reconnect-byoc-reconciliation-decision-a-2026-06-20.md | RECONNECT ↔ BYOC reconciliation: decision (a) — #1162/#1185 are Phase-0/1 found… |
+| 2026-06-19 | ? | kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md | Main-cohort kickoff → write your role-portfolio (pilots passed, framework prove… |
+| 2026-06-19 | exec | memo-exec-to-leadership-ship-048-workstream-kickoff-2026-06-19.md | Ship #048 Workstream Review — kickoff |
+| 2026-06-19 | Lead Developer | memo-lead-to-arch-cc-pm-pa-1283-ratification-ack-2026-06-19.md | #1283 ratification received — both soft-gap value-adds folded in; building afte… |
+| 2026-06-19 | Lead Developer (lead-code-opus) | memo-lead-to-arch-cc-pm-pa-1283-resolver-shape-ready-for-ratification-2026-06-19.md | #1283 — resolver shape + preliminary gap list ready for your ratification (incl… |
+| 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
+| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-arch-cc-pm-pa-1232-connector-contract-pending-before-reconnect-2026-06-18.md | #1232 (RECONNECT WS-5 — MCP-consumer connector contract) — you have pending wor… |
+| 2026-06-18 | Lead Developer | memo-lead-to-arch-cc-pm-pa-1283-routing-integrity-audit-scope-2026-06-18.md | #1283 — PM asks Architect to scope the action↔handler routing-integrity audit +… |
+| 2026-06-18 | Lead Developer | memo-lead-to-arch-cc-pm-pa-1283-scope-endorsed-running-probe-2026-06-18.md | RE: #1283 SCOPE — endorsed (SoT-derive + mode-4 guard + two-altitude + rail∪cat… |
+| 2026-06-18 | PA (Piper Alpha) | memo-pa-to-arch-mcpb-python-reconfirmation-2026-06-18.md | MCPB Python/uv — re-confirm prior decision in light of new findings? |
+| 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-arch-cc-lead-host-pm-trust-gate-boundary-piper-autonomy-not-user-access-2026-06-17.md | Trust-gate sweep — CXO MUX grounding: the boundary is Piper-INITIATED vs user-R… |
+| 2026-06-17 | Documentation Management (docs-code-sonnet) | memo-docs-to-arch-re-972-mem-temporal-received-2026-06-17.md | Re: #972 MEM-TEMPORAL — received; adding to standing items; will loop you when… |
+| 2026-06-17 | Documentation Management (docs-code-sonnet) | memo-docs-to-arch-re-972-mem-temporal-reconciled-schema-2026-06-17.md | Re: #972 MEM-TEMPORAL — reconciled schema (v0.4) ready; please review valid_unt… |
+| 2026-06-17 | HOST (Head of Sapient Trust) | memo-host-to-arch-cc-cxo-pm-adr072-d5-trust-lens-2026-06-17.md | RE: ADR-072 D5 trust-lens — HOST position on all four questions |
+| 2026-06-17 | Lead Developer | memo-lead-to-arch-cc-pm-1239-gated-on-1233-reconnect-beta-radar-sequencing-tension-2026-06-17.md | EXPEDITE/SEQUENCE — #1239 (beta Radar WorkItem) is gated on #1233 (RECONNECT-WS… |
 | 2026-06-17 | Lead Dev (lead-code-opus) | memo-lead-to-arch-cc-pm-1267-projects-table-drift-strategy-2026-06-17.md | #1267 — projects-table create_all-vs-migrations + owner_id model↔migration drif… |
+| 2026-06-17 | Lead Developer | memo-lead-to-arch-cc-pm-1267-resolved-idempotent-head-edge-case-plus-1273-bug-class-2026-06-17.md | #1267 RESOLVED (f62c2e998) — the edge-case loop you invited: idempotent-HEAD-cr… |
+| 2026-06-17 | pa | memo-pa-to-arch-cc-pm-adr072-priority-escalation-2026-06-17.md | ADR-072 priority escalation — PM wants this now, not Thu/Fri |
+| 2026-06-17 | pa | memo-pa-to-leadership-cc-pm-byoc-poc-learnings-current-state-2026-06-17.md | BYOC — PoC learnings + current state (ratification complete, alpha live, first… |
 | 2026-06-16 | lead | 2026-06-16-0621-lead-to-arch-1238-doc-store-anchoring.md | #1238 doc-store anchoring — which ADR-071 disposition? (D1 global-PM-domain vs… |
 | 2026-06-16 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-lead-pm-m30-altitude-candidate-disposition-2026-06-16.md | m-30 catalog touch DONE — recorded as altitude-extension *candidate* (not "inst… |
 | 2026-06-16 | CXO (Chief Experience Officer) | memo-cxo-to-arch-cc-lead-ppm-pm-1164-boundary-confirmed-retention-nod-2026-06-16.md | #1164 — CONFIRM the inter-conversation boundary (draw-on-existing, don't-contri… |

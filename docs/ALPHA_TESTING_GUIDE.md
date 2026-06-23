@@ -1,7 +1,7 @@
 # Piper Morgan Alpha Testing Guide
 
-**Version**: 0.8.6
-**Last Updated**: March 4, 2026
+**Version**: 0.8.9
+**Last Updated**: June 22, 2026
 **For**: Alpha Testers
 
 ---
@@ -9,8 +9,8 @@
 ## Returning Tester? Start Here
 
 If you already have Piper set up and running, skip straight to what matters:
-- **[What's New in 0.8.6](#whats-new-in-086)** - Conversational Glue — Piper now talks like a colleague
-- **[What to Test in 0.8.6](#what-to-test-in-086)** - Priority testing areas for this release
+- **[What's New in 0.8.9](#whats-new-in-089)** - Connector infra, field encryption, mobile nav, Radar rename
+- **[What to Test in 0.8.9](#what-to-test-in-089)** - Priority testing areas for this release
 - **[Troubleshooting](#chapter-3-troubleshooting)** - If something isn't working
 
 ---
@@ -76,7 +76,7 @@ This guide has three main sections:
 
 **⚠️ ALPHA SOFTWARE WARNING ⚠️**
 
-This is pre-release alpha software (version 0.8.6). By proceeding, you acknowledge:
+This is pre-release alpha software (version 0.8.9). By proceeding, you acknowledge:
 
 1. **Expected Issues**: Bugs, crashes, and incomplete features are normal
 2. **Data Loss Risk**: Your data may be lost at any time without warning
@@ -91,22 +91,28 @@ See `ALPHA_AGREEMENT_v2.md` for complete legal terms.
 
 ---
 
-## What's New in 0.8.6
+## What's New in 0.8.9
 
-**M0 Conversational Glue** - Piper now converses naturally instead of waiting for commands:
+v0.8.9 closes three fronts: connector infrastructure (RECONNECT WS-1), field-level security, and Design D2 (token system + mobile nav + Radar rename).
 
-- **Conversational Lens Tracking (#763)**: Piper remembers what you're talking about. Follow-ups like "what about next week?" resolve correctly.
-- **Multi-Intent Handling (#764)**: Compound queries like "check my calendar and create an issue" handled coherently.
-- **Natural Slot Filling (#765)**: When Piper needs info, it asks naturally instead of interrogating.
-- **Soft Workflow Invocation (#767)**: Piper offers workflows conversationally ("Sounds like you might want to set up a meeting...") — no commands needed.
-- **Narrative System (#766)**: Tone adapts to your relationship stage. No more repeated "Is that your main project?" question.
-- **Repository Management**: Link GitHub repos to projects during onboarding or in Settings.
-- **Bug Fixes**: 7 post-launch bugs resolved (error messages, auth, workflow polling).
-- 7,358 automated tests passing (up from 5,253).
+- **Connector config (RECONNECT WS-1)**: Connector configuration now lives in the database, not an ephemeral JSON file. Repo config and integration state survive restarts. When GitHub isn't configured, Piper says so honestly.
+- **Real standup pipeline**: The hollow `MorningStandupWorkflow` is retired; `StandupAssembler` is the live pipeline. Ask Piper for your standup in chat.
+- **Field encryption**: User secrets (API keys) are now encrypted at rest using AES-256-GCM with HKDF per-field key derivation.
+- **Per-user LLM key routing**: Your BYOC key is now routed per-request. The BYOC credential flow (from D1) is end-to-end complete.
+- **Auth hardening**: `admin_compose` route removed; auth-exempt-list lint-enforced.
+- **Design D2 — token system + mobile nav**: Design token system applied to the app shell; responsive shell; mobile nav (hamburger → drawer); Documents → Radar rename throughout.
+- **Dockerfile → bookworm**: Debian 12 base image for chromadb SQLite ≥3.35 support.
 
-**Database Migration Required**: Run `alembic upgrade head` after updating.
+**Database Migration Required**: Run `alembic upgrade head` (includes secret-column encryption migration).
 
-See [Release Notes v0.8.6](releases/RELEASE-NOTES-v0.8.6.md) for full details.
+See [Release Notes v0.8.9](releases/RELEASE-NOTES-v0.8.9.md) for full details.
+
+<details>
+<summary><strong>Previous release (0.8.8 — D1/RECONNECT)</strong></summary>
+
+Conscious Floor, BYOC credential layer, Radar as default workspace, navigation IA (History→Radar, Collections→Lists), full-height home chat, compose autosave, source-provenance badges on files. 252/252 canonical regression clean.
+
+</details>
 
 <details>
 <summary><strong>Previous release (0.8.5.3)</strong></summary>
@@ -400,19 +406,19 @@ Click the button to go to the login page and start using Piper Morgan.
 
 This chapter covers what to test and how. If you're already set up, **start here**.
 
-## What to Test in 0.8.6
+## What to Test in 0.8.9
 
-Conversational naturalness is the focus of this release. **Does Piper feel like a colleague, not a chatbot?**
+Connector persistence, standup quality, and the security migration are the focus. **Does config survive restarts? Does Piper say "not connected" when it should? Does the standup pipeline return real data?**
 
 ### Priority Testing Areas
 
-1. **Natural Conversation** - Just chat with Piper. Do workflows emerge naturally without explicit commands?
-2. **Follow-ups** - Ask about your calendar, then say "what about next week?" — does Piper understand?
-3. **Compound Queries** - Try "check my calendar and create an issue about the API bug" in one message
-4. **Soft Offers** - When you mention a meeting topic, does Piper offer to create one naturally?
-5. **Onboarding** - Start fresh and go through portfolio setup — is the tone right?
-6. **Repository Linking** - Settings → Projects → link a GitHub repo to a project
-7. **Error Messages** - When things fail, are messages conversational (not raw Python errors)?
+1. **Connector config persistence** - Configure a GitHub repo, restart the server — does it remember the config?
+2. **Honest no-repo UX** - Remove or skip GitHub config — does Piper tell you it's not connected rather than guessing or failing silently?
+3. **Standup via chat** - Ask "what's my standup?" in the chat — does `StandupAssembler` return a real, assembled response (not a generic template)?
+4. **BYOC key routing** - Enter your API key in Settings, make a few requests — confirm your key is being used (check your provider's usage dashboard)
+5. **Mobile nav** - Open Piper on a phone or narrow browser window — does the hamburger → drawer nav work correctly?
+6. **Radar rename** - Is "Radar" (not "Documents") the label throughout the nav, page headers, and breadcrumbs?
+7. **Existing features still working** - Conscious Floor, files experience, Slack inbound, BYOC key persistence
 
 ### Basic Functionality Tests
 
@@ -804,7 +810,7 @@ SELECT * FROM users;
 
 ## Questions?
 
-Remember: This is alpha software (version 0.8.6). The GUI setup wizard handles most complexity, but you're still testing early-stage software. Expect bugs and incomplete features.
+Remember: This is alpha software (version 0.8.9). The GUI setup wizard handles most complexity, but you're still testing early-stage software. Expect bugs and incomplete features.
 
 If guided setup seems overwhelming, a hosted version is planned for later in 2026.
 
@@ -821,5 +827,5 @@ Thank you for being an early adopter and helping us improve! 🚀
 
 ---
 
-_Last updated: March 4, 2026_
-_Software version: 0.8.6_
+_Last updated: June 22, 2026_
+_Software version: 0.8.9_

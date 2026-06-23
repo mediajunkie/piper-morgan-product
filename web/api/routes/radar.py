@@ -4,8 +4,9 @@ GET /api/v1/radar → the current user's RadarView (attention-first, observed-on
 entities, or the empty-state teaching example). The JS Radar surface (history-sidebar
 slot now; F2 page-shell aside later) renders this response. The domain lives in
 `services/radar/`; this route only wires the live ConversationEntitySource (#1021
-user-history) into RadarFeed and serializes — WorkItem/Person/Document sources slot
-into `_build_feed` as PPM lands the entity catalog (#706), no surface change.
+user-history), Documents (#1238), and WorkItems (#1239) into RadarFeed and serializes
+— Person slots into `_build_feed` as PPM lands the entity catalog (#706), no surface
+change.
 """
 from __future__ import annotations
 
@@ -17,16 +18,13 @@ from pydantic import BaseModel
 
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
-from services.knowledge_graph.document_service import get_document_service
 from services.memory.user_history import UserHistoryService
-from services.radar import ConversationEntitySource, DocumentEntitySource, RadarFeed
+from services.radar import RadarFeed
+from services.radar.feed_factory import build_entity_sources
 from web.api.dependencies import get_user_history_service
 
 router = APIRouter(prefix="/api/v1/radar", tags=["radar"])
 logger = structlog.get_logger(__name__)
-
-# v1: how many conversations the conversation source pulls as candidate entities.
-_CONVERSATION_FETCH = 25
 
 
 class RadarEntityResponse(BaseModel):
@@ -43,40 +41,11 @@ class RadarViewResponse(BaseModel):
     entities: List[RadarEntityResponse]
 
 
-class _ConversationHistoryProvider:
-    """Adapts UserHistoryService → the `list_summaries(user_id)` shape
-    ConversationEntitySource expects (#1021 summary fields; last_activity as ISO str)."""
-
-    def __init__(self, service: UserHistoryService):
-        self._service = service
-
-    async def list_summaries(self, user_id: str) -> list[dict]:
-        page = await self._service.get_history(
-            user_id=user_id, page=1, page_size=_CONVERSATION_FETCH, include_private=False
-        )
-        return [
-            {
-                "conversation_id": c.conversation_id,
-                "title": c.title,
-                "last_activity": c.last_activity.isoformat() if c.last_activity else None,
-                "turn_count": c.turn_count,
-                "topics": list(c.topics or []),
-                "preview": c.preview or "",
-            }
-            for c in page.conversations
-        ]
-
-
 def _build_feed(service: UserHistoryService) -> RadarFeed:
-    """Live entity sources: Conversations (#1021) + Documents (#1238). WorkItem/Person
-    register here as PPM lands the entity catalog (#706); no surface change when they do.
-    Per-source isolation in RadarFeed means a failing source never blanks the feed."""
-    return RadarFeed(
-        [
-            ConversationEntitySource(_ConversationHistoryProvider(service)),
-            DocumentEntitySource(get_document_service()),
-        ]
-    )
+    """The live Radar feed over the shared EntitySource wiring (#1269 `feed_factory`) —
+    the SAME sources the standup consumes (no duplicate pipeline). Per-source isolation in
+    RadarFeed means a failing source never blanks the feed."""
+    return RadarFeed(build_entity_sources(service))
 
 
 @router.get("", response_model=RadarViewResponse)
