@@ -44,12 +44,13 @@ methodology-30 (Consumer-Trace Verification) was promoted from Emerging to Prove
 
 ## 🌍 External relations & community
 
-**Four pieces in a week — above cadence:**
+**Five pieces — standard cadence (2 insights + 2 narratives + ship):**
 
-- Jun 14 (Sun): "The Solo Founder Paradox" — insight (blog + Medium + LinkedIn)
-- Jun 16 (Mon): "First Subagent in Production" (Beat 6) — building narrative (blog + Medium)
-- Jun 17 (Tue): Ship #047 (Shipping News + LinkedIn)
-- Jun 18 (Thu): "Hypothesis Refuted" (Beat 7) — building narrative (blog + Medium)
+- Sat Jun 13: "Critical vs Commodity Work in a Role" — insight (blog + Medium + LinkedIn)
+- Sun Jun 14: "The Solo Founder Paradox" — insight (blog + Medium + LinkedIn)
+- Tue Jun 16: "First Subagent in Production" (Beat 6) — building narrative (blog + Medium)
+- Wed Jun 17: Ship #047 (Shipping News + LinkedIn)
+- Thu Jun 18: "Hypothesis Refuted" (Beat 7) — building narrative (blog + Medium)
 
 The building-narrative hold lifted Jun 16 and Beats 14–16 (Jul 16/21/23) were drafted and calendared in the same fire. The Comms→Docs handoff protocol formalized Jun 18: explicit publish-ready memo as the trigger, live URL as the return signal. First formal use that same day. BYOC narrative also unblocked as a standing item — framing available: "intake doubles as proof of the working relationship, the moat a static questionnaire can't produce."
 
