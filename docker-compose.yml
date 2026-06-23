@@ -16,6 +16,10 @@ services:
       # PM/PA holds final flip authorization. Default-off in code
       # (services/intent/intent_service.py:627) preserved for env without override.
       - ENABLE_ETHICS_ENFORCEMENT=true
+      # Encrypt-at-rest master key (#358 / #358-B). Must be NAMED here — this service uses
+      # an explicit `environment:` list, not `env_file:`, so .env is NOT auto-loaded into
+      # the container. Empty default → encryption gracefully disabled if unset (local dev).
+      - ENCRYPTION_MASTER_KEY=${ENCRYPTION_MASTER_KEY:-}
     ports:
       - "8001:8001"
     volumes:
@@ -41,6 +45,9 @@ services:
     environment:
       - PYTHON_VERSION=3.11
       - PYTHONPATH=/app
+      # Encrypt-at-rest master key (#358-B) — orchestration touches the DB's encrypted
+      # columns via the shared models, so it needs the same key. Empty default if unset.
+      - ENCRYPTION_MASTER_KEY=${ENCRYPTION_MASTER_KEY:-}
     volumes:
       - .:/app
     depends_on:
