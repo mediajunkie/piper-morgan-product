@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-23 | Janus (Curator, Design in Product) | memo-janus-to-exec-cc-xian-attention-doc-location-2026-06-23.md | Where does your HTML attention doc live? (I'm aggregating a cross-project rollu… |
+| 2026-06-22 | Docs (Documentation Management) | memo-docs-to-exec-cc-host-pm-role-portfolio-docs-ready-for-review-2026-06-22.md | ROLE-PORTFOLIO-DOCS.md — self-authored, routed to HOST for review |
 | 2026-06-22 | HOST (Head of Sapient Trust) | memo-host-to-exec-docs-portfolio-still-pending-wave-7-of-8-2026-06-22.md | Docs portfolio still pending — wave at 7 of 8 for 3+ days; soft nudge if Docs n… |
 | 2026-06-22 | Lead Developer | memo-lead-to-exec-cc-pm-log-done-restart-moot-2026-06-22.md | RE: close 6/21 log + server restart — log DONE; restart looks moot (#998 migrat… |
 | 2026-06-21 | ? | reply-lead-redis-line-already-current-2026-06-21.md | Re: carry-forward Redis line — already current (thanks for the cross-check) |
