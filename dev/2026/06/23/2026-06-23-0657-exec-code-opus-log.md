@@ -31,9 +31,61 @@
 
 - **~11:20 AM–5:21 PM — Ship #048 publication corrections + methodology-25 update + duty cycle re-armed.** PM switched to DinP backup account (weekly limit hit on primary). Resumed conversation at context summary. Investigated Ship #048 publication discrepancies against editorial calendar: found Comms's workstream review missed "Critical vs Commodity Work in a Role" (Jun 13 Sat) entirely, mis-stated "Three posts" in TL;DR while listing four in body, and incorrectly called normal cadence "above cadence." Root cause: from-vantage reporting (memory rather than calendar sweep). Fixed draft: 5-post list in date order, corrected cadence framing (`6e59fc327`, `015594b20`). PM chose "Hypothesis Refuted" (Beat 7) as featured narrative illustration — added linked image + alt + caption below posts list (`c706ac437`). Updated methodology-25 with "canonical sources for facts; role voice for everything else" section + new anti-pattern row + evolution note (`42b527b80`). Cron died with account switch → Gap-C self-heal: re-armed `32 6,9,12,15,18,21` as `e642db02`. PM named Exec primary point of contact; DinP messages may arrive for routing. Inbox empty. Queue (0,0).
 
+- **~18:32–22:02 fires — quiet holds.** Inbox empty both fires. Queue (0,0). Watchdog alert surfaced at 19:39 (`abafd6f75`): 4 roles stale (CIO 8h, Arch 36h, CXO 30h, PPM 13h) — expected, all on primary account that hit weekly limit; PM is aware. Alert already in PM's inbox.
+
+## Day Arc (6/23)
+
+**Opened**: ~06:57 PT, PM-initiated
+**Closed**: ~22:02 PT, STOP
+
+**What shipped today:**
+- 6/22 retroactively closed (Step-0 self-heal; DAY-CLOSED marker written)
+- Janus attention-rollup location answered (board stable path on origin/main)
+- CIO Ship #048 timing nudge sent (critical-path framing + escape hatch)
+- Beat-8 pipeline closed: PM voice-pass → Comms signal → Docs publish (`bc3cf2a6f`)
+- Ship #048 synthesized from all 6 workstream lenses: "The team put it in writing" (`4f3e01f70`)
+- Ship #048 publication errors corrected: added missing Jun 13 post, fixed cadence framing, corrected day labels (`6e59fc327`, `015594b20`)
+- Ship #048 featured illustration added: Hypothesis Refuted / Beat 7 (`c706ac437`)
+- Methodology-25 updated: canonical-source / role-voice distinction + anti-pattern row + evolution note (`42b527b80`)
+- CIO worktree-scope clarification sent (`92ecff23c`)
+- Attention board rendered 3×; carry-forward rewritten
+- Cron re-armed after DinP account switch Gap-C (`e642db02`)
+
+**Carry-forward to 6/24:**
+- 🔴 Ship #048 voice-pass (PM, ready now — publishes Wed 6/24)
+- 🟡 v0.8.9 Droplet deploy (Lead, #358)
+- 🟡 #1286 phone-UAT (PM, quick)
+- 🟡 Blog-editing UI (reconfirm with Web)
+- 🟡 4 stale roles need re-login (PM's account situation — CIO, Arch, CXO, PPM)
+- 🟡 Comms BYOC GTM + insight narrative (unblocked when other roles re-login)
+
 ## Memory & briefing surfaces referenced this session
-- (filled at STOP)
+
+**Referenced:**
+- `methodology-25-WORKSTREAM-REVIEW-CADENCE.md` — updated with canonical-source distinction; the existing verifiable-claims section informed the framing
+- `editorial-calendar.csv` — consulted to identify the missing Jun 13 post and correct Comms's publication count
+- `workstream-048-comms-2026-06-20.md` — the Comms workstream review that had the errors
+- `BRIEFING-ESSENTIAL-EXEC.md` (at START) — role orientation and board-update procedure
+- `exec-carry-forward.md` — read at each fire; rewritten at each substantive fire
+- MEMORY.md index (publishing cadence pin) — confirmed Sat/Sun insight + Tue/Thu narrative + Wed ship = standard 5-piece cadence
+
+**Loaded but not referenced:**
+- `BRIEFING-CURRENT-STATE.md` (loaded at START, nothing to update from Exec lane today)
+- `exec-standing-items.md` (no task-loop work surfaced beyond Ship #048)
+
+**Wanted but not found:**
+- Prior Ship with featured narrative illustration format — checked 046/047, neither had the section; format appears to be new/revived for #048
+
+## Sign-Off Checklist
+
+```
+git status          → working tree clean
+@{u}..HEAD          → empty (nothing ahead of tracked upstream)
+origin/main..HEAD   → empty (all work on origin/main)
+```
+
+<!-- DAY-CLOSED: 2026-06-23 -->
 
 ---
 
-*— Exec (DinP / Opus 4.8), 6/23 START ~06:57 PT.*
+*— Exec (DinP / Sonnet 4.6), 6/23 STOP ~22:02 PT.*
