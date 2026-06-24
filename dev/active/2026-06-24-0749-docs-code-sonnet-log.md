@@ -20,3 +20,4 @@
 ## Work Log
 
 - START (07:49 PT) — June 23 DAY-CLOSED added. Cron re-armed. June 24 session log created.
+- (~08:20 PT) — Published Weekly Ship #048 "The team put it in writing" (ship, pubDate 2026-06-24, workDate 2026-06-12): PM editorial pass complete, Exec added ai-bridge illustration. Fixed: YAML apostrophe in alt text, wrong #047 footer URL/title, caption:N/A, inline image path (ai-bridge.png→/assets/blog-images/hypothesis-refuted.webp). Added per PM: Lead Developer agent first use + Lead Dev thereafter, D1/D2 sprint explanations, RECONNECT context gloss, Radar object-display-layer gloss. Ship #048 calendar entry added (was missing). hashId `2f32fb35d613`, slug `weekly-ship-048-the-team-put-it-in-writing`. Website commit `03db30c0d`. Calendar synced to website (`fa121dd26`). Live at https://pipermorgan.ai/shipping-news/weekly-ship-048-the-team-put-it-in-writing
