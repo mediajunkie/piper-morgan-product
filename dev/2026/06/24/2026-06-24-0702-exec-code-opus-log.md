@@ -22,6 +22,8 @@
 ## Work
 - **(07:02) START** — 6/23 closed clean; sync ok; inbox empty. Cron `e642db02` confirmed. Ship #048 is the critical item today — voice-pass needed from PM before Comms can publish.
 
+- **(~07:53–10:05) Fire 1 — alpha site debugged + fixed; PA memo sent.** PM back at desk, Docs publishing Ship #048. PM flagged alpha.pipermorgan.ai was inaccessible — couldn't find the password. Found Caddy config (username `piperalpha`, bcrypt hash) via SSH to the Droplet. Checked the alpha tester MCP bundle email draft — credentials are placeholders only (`[SHARED_PASSWORD]`), safe to rotate. PM located the password and logged in but got a 502. Investigated: all containers showed `healthy` in docker compose ps but Caddy was logging `dial tcp 172.18.0.5:8001: connect: connection refused`. Root cause: `main.py` had `host="127.0.0.1"` in the uvicorn config — Docker health check passes (runs inside the container) but Caddy (a separate container) can't cross that boundary. Fix: (1) patched `/opt/piper/main.py` on Droplet → `host="0.0.0.0"`, restarted container; (2) added `PIPER_HOST=0.0.0.0` to `/opt/piper/.env` for future deploys; (3) fixed `main.py` in repo with `PIPER_HOST` env var (default `127.0.0.1` for local dev), committed `5f5991c40`. Caddy now reaches app cleanly — alpha is live. Sent PA memo covering bundle credential check + fix summary (`b196068dc`).
+
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
 
