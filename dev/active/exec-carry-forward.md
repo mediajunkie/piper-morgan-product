@@ -1,37 +1,35 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-06-24 ~10:05 AM PT (Fire 1)
+**Last updated**: 2026-06-24 ~16:02 PM PT (Fire 3)
 **Role**: Chief of Staff (Exec) | Sonnet 4.6 | DinP account
 **Cron**: `32 6,9,12,15,18,21` — id `e642db02` (armed)
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3`
 
 ---
 
-## Current state (6/24 ~10:05)
+## Current state (6/24 ~16:02)
 
 ### Shipped today
-- **Alpha site fixed** — uvicorn was bound to `127.0.0.1`, invisible to Caddy across Docker network → 502. Fixed: `host="0.0.0.0"` on Droplet + `PIPER_HOST` env var in repo (`5f5991c40`). `PIPER_HOST=0.0.0.0` added to `/opt/piper/.env` for future deploys. Alpha live at `alpha.pipermorgan.ai`.
-- **PA memo sent** — MCP bundle credential check + alpha fix summary (`b196068dc`).
-
-### In-flight
-- **Ship #048** — Docs is proofing + publishing today (PM confirmed ~07:53). No Exec action needed; Docs owns publish.
-- **#1286 phone-UAT** — PM can now test (alpha is live). Quick check: mobile layout, hamburger drawer, pill chips on Radar entity types. Issue already closed; sanity check only.
+- **Alpha site fixed** — uvicorn host binding (`5f5991c40`); `PIPER_HOST=0.0.0.0` in Droplet `.env`.
+- **PA memo sent** — bundle credential check + alpha fix summary (`b196068dc`).
+- **Ship #048 published** — editorial calendar shows `published` + blog URL (`https://pipermorgan.ai/shipping-news/weekly-ship-048-the-team-put-it-in-writing`). LinkedIn URL not yet captured in calendar — may still be pending or just not recorded.
 
 ### PM-gated / needs re-login
-- **4 stale roles** (CIO, Arch, CXO, PPM) — sessions died with primary account weekly limit 6/23. PM's usage resets later today; re-login when ready.
+- **4 stale roles** (CIO, Arch, CXO, PPM) — watchdog has fired 5× today (06:39, 07:40, 10:40, 12:40, 13:40). PM's primary account usage expected to reset today.
 - **Comms BYOC GTM + insight narrative** — unblocked when Comms re-logins.
 - **v0.8.9 Droplet deploy (#358)** — Lead's lane; confirm close when Lead re-logins.
+- **#1286 phone-UAT** — alpha is live; PM can sanity-check mobile layout/hamburger/pill chips whenever.
 
 ### Standing / low-priority
 - Blog-editing UI: reconfirm readiness with Web (when Web re-logins)
-- Workstream reporting format revisit: PM confirmed yes, pending all portfolios in + roles re-login
+- Workstream reporting format revisit: pending all portfolios in + roles re-login
 
 ---
 
-## PM-attention items (none urgent)
+## PM-attention items
 
-Queue is (0,0) — all remaining items are either in-flight (Ship #048 with Docs) or PM-gated (account re-logins, #1286 sanity).
+None urgent. Queue is (0,0).
 
 ---
 
-*— Exec, 2026-06-24 ~10:05 PT*
+*— Exec, 2026-06-24 ~16:02 PT*
