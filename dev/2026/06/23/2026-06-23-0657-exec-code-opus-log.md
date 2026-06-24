@@ -29,6 +29,8 @@
 
 - **~10:02 AM — duty-cycle-tick skill (WORK PARTS).** Cron `8f2194b1` armed; sync clean; inbox EMPTY (MANIFEST.md only). Carry-forward rewritten (`dc30eaa1a`) — ★ 6/23 block: Ship#048 draft ready, wave 8/8 complete, v0.8.9 deployed, Beat-8 published. Exec read/ MANIFEST regenned (487 entries, `c03b2ae29`). Queue at (0,0). Cron armed; next fire 12:32.
 
+- **~11:20 AM–5:21 PM — Ship #048 publication corrections + methodology-25 update + duty cycle re-armed.** PM switched to DinP backup account (weekly limit hit on primary). Resumed conversation at context summary. Investigated Ship #048 publication discrepancies against editorial calendar: found Comms's workstream review missed "Critical vs Commodity Work in a Role" (Jun 13 Sat) entirely, mis-stated "Three posts" in TL;DR while listing four in body, and incorrectly called normal cadence "above cadence." Root cause: from-vantage reporting (memory rather than calendar sweep). Fixed draft: 5-post list in date order, corrected cadence framing (`6e59fc327`, `015594b20`). PM chose "Hypothesis Refuted" (Beat 7) as featured narrative illustration — added linked image + alt + caption below posts list (`c706ac437`). Updated methodology-25 with "canonical sources for facts; role voice for everything else" section + new anti-pattern row + evolution note (`42b527b80`). Cron died with account switch → Gap-C self-heal: re-armed `32 6,9,12,15,18,21` as `e642db02`. PM named Exec primary point of contact; DinP messages may arrive for routing. Inbox empty. Queue (0,0).
+
 ## Memory & briefing surfaces referenced this session
 - (filled at STOP)
 
