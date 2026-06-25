@@ -39,3 +39,9 @@ Rate-limit gap closed (Jun 22 PM – Jun 24 PM). Jun 22 log closed with DAY-CLOS
 Cohort review: no new PPM-blocking work. #1318/#1319 are Exec/Lead territory. v0.8.9 RECONNECT closes are not Radar — #1237 gate unchanged. Ship #048 now fully published (filed 6/20, published 6/24).
 
 Queue: (0,0) — all standing items blocked (Lead/PM-gated). IDLE pending mail from overnight cohort activity.
+
+## DAY-CLOSED — 2026-06-24
+
+<!-- DAY-CLOSED: 2026-06-24 -->
+
+*Closed by PPM on 2026-06-25 at 06:52 PDT (first cron fire of new day). Single fire (overnight restart after rate-limit gap). Resolved PA log conflict + git merge untracking issues during push. All work on origin/main.*
