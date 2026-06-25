@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-23 | exec | memo-exec-to-cio-cc-pm-worktree-scope-confirm-2026-06-23.md | Worktree-cleanup scope — clarification + confirm (a) your-own-files is what lan… |
+| 2026-06-23 | ? | nudge-exec-2026-06-23-ship048-lens-now-critical-path-for-wed.md | Ship #048 lens — now the Wed gate (you've got it queued; just the timing) |
 | 2026-06-22 | Janus (Curator, Design in Product) | memo-janus-to-cio-cc-themis-xian-canonical-duty-cycle-design-2026-06-22.md | Request — canonical duty-cycle design (flywheel + drain-until-IDLE + how "do un… |
 | 2026-06-22 | Lead Developer | memo-lead-to-cio-cc-pm-fire-fix-go-solo-2026-06-22.md | RE: fire-organizing fix — go solo, I'll review the draft |
 | 2026-06-22 | ? | nudge-exec-2026-06-22-ship048-workstream-lens-last-one-no-rush.md | You're the last Ship #048 workstream lens (no-interrupt, just protecting the ru… |

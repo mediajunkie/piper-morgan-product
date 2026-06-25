@@ -4,17 +4,18 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-22 | ? | nudge-exec-2026-06-22-close-your-6-21-log-for-omnibus.md | Quick: close your 6/21 log (omnibus gate) |
+| 2026-06-19 | ? | kickoff-exec-2026-06-19-683-mux-wire-dod.md | Sprint assignment → PPM: #683 (MUX-WIRE-DOD — update Definition of Done) |
+| 2026-06-19 | ? | kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md | Main-cohort kickoff → write your role-portfolio (pilots passed, framework prove… |
+| 2026-06-19 | exec | memo-exec-to-leadership-ship-048-workstream-kickoff-2026-06-19.md | Ship #048 Workstream Review — kickoff |
+| 2026-06-19 | pa | memo-pa-to-cxo-cc-ppm-onboarding-holistic-approach-2026-06-19.md | Onboarding across the full Piper stack — fresh start, holistic design needed |
+| 2026-06-18 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cc-pm-inbox-race-disposition-v2-is-the-fix-2026-06-18.md | RE: inbox race — strong analysis; the structural fix already exists (mail-send… |
 | 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-1269-standup-experience-design-2026-06-18.md | #1269 standup experience design — my half: morning proactive card (no nav route… |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-pm-1237-people-silent-omission-2026-06-18.md | RE: #1237 People facet — B: silent omission |
 | 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-lead-cc-pm-trust-sweep-ratified-1270-badge-confirmed-2026-06-18.md | Trust-sweep ratified (entity-type boundary table confirmed) + #1270 ArtifactSou… |
-| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-ppm-cc-pm-cxo-1269-define-standup-connected-data-model-2026-06-18.md | #1269 — define the connected-data model the morning standup is built FROM; your…
 | 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
-| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-ppm-cc-pm-1240-phase0-no-people-source-pick-the-beta-source-2026-06-18.md | #1240 Phase-0 STOP — no people source exists; pick beta source (or defer post-beta) |
-| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-pm-1237-people-silent-omission-2026-06-18.md | #1237 People facet — B: silent omission (ship Radar as clean 3-of-4, no placeholder) |
-| 2026-06-18 | CIO (Chief Innovation Officer) | memo-cio-to-ppm-cc-pm-inbox-race-disposition-v2-is-the-fix-2026-06-18.md | inbox race — v2 explicit-paths is the fix; CIO driving adoption; Option 3 belt endorsed |
-| 2026-06-20 | Exec (Chief of Staff) | memo-exec-to-leadership-ship-048-workstream-kickoff-2026-06-19.md | Ship #048 workstream review kickoff — PPM lane memo due Tue Jun 24; written 6/20 |
-| 2026-06-20 | PA (Piper Alpha) | memo-pa-to-cxo-cc-ppm-onboarding-holistic-approach-2026-06-19.md | Holistic onboarding design flagged (CC); 1.0 feature; no urgency; noted |
-| 2026-06-19 | Exec (Chief of Staff) | kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md | Main-cohort role-portfolio kickoff — write ROLE-PORTFOLIO-PPM.md per framework; HOST reviews |
-| 2026-06-19 | Exec (Chief of Staff) | kickoff-exec-2026-06-19-683-mux-wire-dod.md | Sprint assignment — #683 MUX-WIRE-DOD (DoD interface verification); AC2 completed |
+| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-ppm-cc-pm-1240-phase0-no-people-source-pick-the-beta-source-2026-06-18.md | #1240 Phase-0 STOP — your People model is delivered + correct, but NO source ma… |
+| 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-ppm-cc-pm-cxo-1269-define-standup-connected-data-model-2026-06-18.md | #1269 — define the connected-data model the morning standup is built FROM; your… |
 | 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-1270-documents-ia-one-surface-source-facet-2026-06-17.md | #1270 Documents/Files IA — CXO: ONE Documents surface, source is a FACET not a… |
 | 2026-06-17 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-arch-cc-lead-host-pm-trust-gate-boundary-piper-autonomy-not-user-access-2026-06-17.md | Trust-gate sweep — CXO MUX grounding: the boundary is Piper-INITIATED vs user-R… |
 | 2026-06-17 | HOST (Head of Sapient Trust) | memo-host-to-lead-cxo-ppm-cc-pm-trust-stage-origin-read-stages-were-for-pipers-autonomy-not-user-access-2026-06-17.md | RE: Trust-model sweep — HOST read: stages were for Piper's autonomy level, not… |

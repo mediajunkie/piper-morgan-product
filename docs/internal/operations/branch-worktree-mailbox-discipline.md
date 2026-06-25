@@ -274,6 +274,22 @@ Lead Dev was considered and is the wrong fit: deep git mechanics knowledge, but 
 
 - **`scripts/merge-keeper-sweep.py`** (Lead Dev commit `f63c2acf`, Apr 28): ADOPTED. Python; simple-heuristic version (≥24h commit age = wrapped; auto-merge if no conflict / no `.env` / no `.DS_Store` / no large blobs; escalate everything else to `dev/active/merge-keeper-{date}.md`). Default `--dry-run`; `--apply` actually merges. Drops Docs's manual touch from ~30 min/day during active migration weeks to ~5 min/day.
 
+### Worktree-prune extension — rubric + the systematic fold (CIO + Docs, 2026-06-24)
+
+The merge-keeper already merges stranded *branches*; the same safety logic extends one step further to prune stale *worktrees*. The ephemeral-worktree model (Option B) creates one worktree per session but nothing removes them → they accumulate (**31 live as of 2026-06-23**). CIO owns the prune-safety discipline; Docs owns the sweep mechanism. **Rescue before prune, always** — a blind prune of a worktree that's ahead of `origin/main` loses those commits.
+
+**Prune-safety rubric** — a worktree is **safe to remove** iff ALL hold:
+1. **Fully merged** — `git rev-list --count origin/main..<branch> == 0` (no commits ahead).
+2. **Clean** — `git -C <worktree> status --porcelain` empty (no uncommitted/untracked work).
+3. **Not active** — no live session bound to it (see the design-risk note below).
+4. **Not the main checkout.**
+
+Any worktree failing **#1 → rescue first** (merge/preserve the branch via the normal merge-keeper pass), then re-evaluate. Failing **#2 → leave it + flag the owner** (uncommitted work is in-progress state). Failing **#3 → skip silently** (prunable once that session ends).
+
+**Design risk — the "not active" check (Docs, 2026-06-24)**: the branch/worktree register (Rule 4) is only as current as the last agent who updated it, so it can't be the sole authority. Heuristic fallback when the register is stale: **skip any worktree whose last commit is from today**, and/or **cross-reference the session-start hook's known-worktrees list**. This is the open design question for the sweep-code step.
+
+**Status (2026-06-24)**: rubric **canonical (here)**. The sweep-code step (a `prune_worktree` pass added to `merge-keeper-sweep.py`, reusing its `branch_last_commit_age` + `run_git`) is **queued for a fresh focused pass** — it is *destructive* (removes worktrees) and the "not active" heuristic needs care, so it warrants dedicated focus rather than tail-of-session work (quality-banked per the duty-cycle boundary rule; explicit trigger: a fresh session). Docs integrates + tests on the next sweep run once drafted. The one-time rescue+prune of the current 31 pairs CIO with Docs.
+
 ### HOST's role
 
 Watch the merge-keeper, not perform the merges. Track merge-queue depth, branches stale on origin without merge, conflicts piling up. If the merge-keeper is unhealthy or absent, surface as role-health signal.

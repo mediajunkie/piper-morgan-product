@@ -22,4 +22,32 @@
 - START (11:02 PT) — v0.1.3 installed on clean Mac with no error (bundled uv working). Inbox: 9 memos carried from yesterday (CIO #1292 CC ×3, CIO→PA accepted #1292, CXO onboarding ack, Lead Dev Redis fixed, workstream-048 ×3) — all read yesterday, moved to read/. Key flag: Lead Dev filed `alpha-deploy-readiness-2026-06-22.md` in dev/2026/06/22/ — deploy of 314 commits (RECONNECT + encryption + design) is ready pending 2 PM decisions: (1) generate + store ENCRYPTION_MASTER_KEY, (2) version number. MCPB test is separate, does not block deploy.
 - Fire (12:15 PT) — PM flagged RECONNECT sprint board vs. deploy readiness doc mismatch; 0.9.0 is beta-reserved (post-MVP/M4+M5), not for this deploy. Mailed Lead Dev: confirm version (0.8.9?), triage 14 open RECONNECT issues (which to close/defer/review), and use Sprint Backlog→In Progress→Close/Review status fields going forward. Awaiting reply; advancing unblocked work in parallel. Also: removed `anthropic_api_key` from manifest.json user_config (confusing/wrong for alpha testers — auth is via `connect` tool + shared password, not user's Anthropic key). Repacked as v0.1.4.mcpb (41MB). Committed `2a97de3` on mediajunkie/piper-morgan-skunkworks.
 - Fire (~13:00 PT) — Lead Dev triage response received: 0.8.9 confirmed; no buried done-code; 3 issues closeable (#1226/#1232/#1233), 2 genuinely in-progress (#1185/#1283), 9 not-started. PA delivered close direction to Lead Dev ("run /close-issue-properly, don't wait on me" — feedback: stop brokering skill-driven work back to PM). Lead Dev adopted status-field discipline going forward. RECONNECT sprint continues (all in scope; not de-scoping). #441→M5, #865→probably moot (superseded by connector refactor).
-- Fire (~13:30 PT) — Cut v0.8.9 release: 2456 tests, no P0s, all 9 doc surfaces updated with fresh prose, tag v0.8.9 pushed, production branch updated, GitHub Release published. Commits `c6240171c` + `b9a4a7da1` on origin/main. Also: gh project primer written + committed (`afd1189b7`) at docs/internal/operations/gh-project-primer.md — covers Sprint field queries, item-edit, field IDs for Project #1 "Building Piper Morgan" (PVT_kwHOADE-8s4A-JwA). Pending: PM to test v0.1.4.mcpb; Lead Dev to deploy 0.8.9 to Droplet; then send alpha tester plugin email.
+- Fire (~13:30 PT) — Cut v0.8.9 release: 2456 tests, no P0s, all 9 doc surfaces updated with fresh prose, tag v0.8.9 pushed, production branch updated, GitHub Release published. Commits `c6240171c` + `b9a4a7da1` on origin/main. Also: gh project primer written + committed (`afd1189b7`) at docs/internal/operations/gh-project-primer.md — covers Sprint field queries, item-edit, field IDs for Project #1 "Building Piper Morgan" (PVT_kwHOADE-8s4A-JwA). Drafted alpha tester plugin wave email (`dev/2026/06/22/alpha-tester-plugin-email-draft.md`). Pending: PM to test v0.1.4.mcpb; Lead Dev to deploy 0.8.9 to Droplet; then send alpha tester plugin email.
+
+---
+
+## Session Wrap (closed 2026-06-24 retroactively — PM rate limit hit Tue Jun 23)
+
+**Open carry-forwards for next session:**
+- Lead Dev sequencing memo (`memo-lead-to-pa-cc-pm-reconnect-sequencing-2026-06-22.md`) — recommended RECONNECT remainder order: WS-2 → MCP-spine (#1220/#1317) → connect-UX → Slack → independents. Surface to PM for sprint chunking.
+- Follow-up issues filed by Lead Dev: #1314, #1315, #1316, #1317 (WS-5 ports)
+- Droplet deploy 0.8.9 — pending PM's ENCRYPTION_MASTER_KEY add
+- v0.1.4.mcpb full test (PM) — not yet done as of Jun 22
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced:**
+- `docs/briefing/BRIEFING-CURRENT-STATE.md` — version status, sprint state
+- `docs/VERSION_NUMBERING.md` — confirmed 0.8.9 correct, 0.9.0 = beta-reserved
+- `.claude/skills/cut-release/SKILL.md` — executed full release procedure
+- `dev/2026/06/22/alpha-deploy-readiness-2026-06-22.md` — Lead Dev's deploy readiness doc
+- `docs/operations/alpha-onboarding/email-template.md` — reference for plugin wave email draft
+- `dev/2026/06/18/alpha-tester-email-draft.md` — prior skills-wave email (v3) for voice match
+
+**Loaded but not referenced:**
+- Cross-pollination brief, BRIEFING-ESSENTIAL-PA.md (didn't need them today — work was concrete/execution)
+
+**Wanted but not found:**
+- No gaps
+
+<!-- DAY-CLOSED: 2026-06-22 -->
