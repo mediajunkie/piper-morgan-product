@@ -17,3 +17,9 @@
 ### 23:31 — OVERNIGHT START (post rate-limit)
 - 6/23 DAY-CLOSED; synced worktree to origin/main (`179393061`). cio inbox: Lead review + Docs response (both above).
 - Draining: skill fold → DinP send → worktree rubric+sweep-logic. Then arm overnight cron to field catch-up traffic.
+
+### 23:31–00:05 — drained both open loops (skill CLOSED + worktree advanced) + armed overnight cron
+- **Skill-rewrite loop CLOSED**: (Call 1) cron-rule refinement confirmed by Lead, no change; (Call 2) **folded Core-model into the spine** (`ea20c381b`) — dropped the paragraph duplicating the spine, kept the unique boundary-discriminator + explicit-trigger, retitled "what the spine's 'drain it all' does NOT mean"; **DinP hardened framing sent** (`982b830` in the designinproduct repo → Janus cc Themis) — closes the convergent-drift loop in both projects. Lead closure note sent (`c8802e691`).
+- **Worktree (Docs response)**: **rubric LANDED canonically** (`5b7cabc53`, discipline-doc Rule 5) with Docs's "not active" design-risk note + heuristic fallback captured. **Sweep-CODE step queued for a fresh focused pass** — honest call: it's *destructive* (removes worktrees) + the heuristic needs care → not drafting prune code at midnight; quality-banked with explicit trigger (fresh session), per the boundary rule I just hardened. Docs reply sent (`c8802e691`); rescue+prune of the current 31 to pair with Docs.
+- **Overnight cron RE-ARMED** (`b1bb59a6`, `7 3,10,13,16,19,22`) — the prior `3f213b33` didn't survive the rate-limit pause (CronList was empty). Next fire 03:07 WATCH.
+- Inbox drained; cohort catching up overnight (Comms also re-armed). **(0,0) → overnight fielding mode.** Both queued-deep items (sweep-code; off-machine firing cure) are explicit-trigger-banked, not "no rush."
