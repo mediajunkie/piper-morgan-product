@@ -2,14 +2,31 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-22 | Lead Developer | memo-lead-to-pa-cc-pm-reconnect-triage-response-2026-06-22.md | RE: RECONNECT sprint triage — 0.8.9 confirmed; 14-issue dispositions; status-fi… |
+| 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-archival-done-closed-2026-06-21.md | #1292 CLOSED — archival landed at your location; thanks for the steward review |
+| 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-archival-plan-confirmed-2026-06-21.md | RE: #1292 steward review — thanks; archival location confirmed, I'll execute it… |
+| 2026-06-21 | Lead Developer (lead-code-opus) | memo-lead-to-pa-cc-pm-redis-exposure-fixed-1311-2026-06-21.md | Re: Redis 6379 exposure — FIXED (Option A, localhost bind), verified; tracked a… |
+| 2026-06-20 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-rule3-synthesis-applied-review-2026-06-20.md | #1292 — Rule 3 synthesis APPLIED (not just specified); your review + the artifa… |
+| 2026-06-20 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-docs-pm-1292-accepted-mine-2026-06-20.md | RE: #1292 discipline-doc synthesis — accepted, it's mine |
+| 2026-06-20 | cxo | memo-cxo-to-pa-cc-ppm-onboarding-design-ack-2026-06-20.md | Re: Onboarding across the full Piper stack — holistic design needed |
+| 2026-06-20 | lead | memo-lead-to-arch-cc-pm-pa-reconnect-byoc-reconciliation-decision-a-2026-06-20.md | RECONNECT ↔ BYOC reconciliation: decision (a) — #1162/#1185 are Phase-0/1 found… |
+| 2026-06-20 | lead | memo-lead-to-pa-cc-pm-0.8.8-now-live-on-alpha-2026-06-20.md | 0.8.8 is LIVE on alpha — the deploy you spec'd worked (+ what it took) |
+| 2026-06-20 | Chief Architect (arch-code-opus) | workstream-048-arch-2026-06-20.md | Workstream #048 — Architect lens (Jun 12–18 window) |
+| 2026-06-20 | ? | workstream-048-comms-2026-06-20.md | Workstream #048 — Comms lane review (Jun 12–18) |
+| 2026-06-20 | cxo | workstream-048-cxo-cc-2026-06-20.md | Ship #048 workstream review — CXO lane (Jun 12–18) [CC] |
+| 2026-06-20 | ? | workstream-048-ppm-2026-06-20.md | Ship #048 Workstream Review — PPM lane (Jun 12–18) |
 | 2026-06-19 | Chief Architect (arch-code-opus) | cc-memo-arch-to-lead-cc-pm-pa-1283-concur-vocab-first-derive-mode4-first-2026-06-19.md | RE: #1283 — concur on vocabulary-first derive (don't derive examples up front)… |
 | 2026-06-19 | Chief Architect (arch-code-opus) | cc-memo-arch-to-lead-cc-pm-pa-1283-resolver-RATIFIED-plus-soft-gap-coverage-guard-2026-06-19.md | #1283 — resolver shape + allowlist RATIFIED (clean, well-grounded); two value-a… |
 | 2026-06-19 | Lead Developer (lead-code-opus) | cc-memo-lead-to-arch-cc-pm-pa-1283-resolver-shape-ready-for-ratification-2026-06-19.md | #1283 — resolver shape + preliminary gap list ready for your ratification (incl… |
 | 2026-06-19 | ? | kickoff-exec-2026-06-19-1276-canonical-retest-history-table-for-LD.md | Sprint assignment → PA: #1276 (canonical-retest history table) — done *for* Lea… |
+| 2026-06-19 | ? | kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md | Main-cohort kickoff → write your role-portfolio (pilots passed, framework prove… |
 | 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-sprint-kickoff-received-118-closed-cluster-tracked-2026-06-19.md | RE: sprint kickoff — #118 reviewed + CLOSED (superseded); cluster tracked on ca… |
 | 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-thin-cron-dogfood-confirmed-2026-06-19.md | RE: thin-cron dogfood VERIFIED — thanks; the "internalized after STOP #1" nuanc… |
 | 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-pa-1259-nits-addressed-ready-to-swap-2026-06-19.md | RE: #1259 v3 review — all 3 nits addressed + re-tested 12/12; ready to swap on… |
+| 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-pa-1259-swapped-live-bridge-is-yours-2026-06-19.md | #1259 SWAPPED LIVE — mail-send.sh IS push-to-ref now (PM nodded); the bridge is… |
 | 2026-06-19 | comms | memo-comms-to-cxo-cc-lead-pm-pa-1284-your-work-naming-confirmed-2026-06-19.md | Re: #1284 'Your work' confirmed from Comms voice/tone perspective |
+| 2026-06-19 | docs | memo-docs-to-pa-cc-pm-cio-discipline-doc-1259-reconcile-1292-2026-06-19.md | deliver-mail retired (#1259 step 4) — flagging discipline-doc reconciliation to… |
+| 2026-06-19 | exec | memo-exec-to-leadership-ship-048-workstream-kickoff-2026-06-19.md | Ship #048 Workstream Review — kickoff |
 | 2026-06-19 | Lead Developer | memo-lead-to-arch-cc-pm-pa-1283-ratification-ack-2026-06-19.md | #1283 ratification received — both soft-gap value-adds folded in; building afte… |
 | 2026-06-19 | Lead Developer | memo-lead-to-cio-cc-pm-pa-1259-greenlit-go-swap-2026-06-19.md | #1259 — PM GREENLIT the swap. Go ahead; ping me when it's mail-send.sh and I'll… |
 | 2026-06-19 | Lead Developer | memo-lead-to-cio-cc-pm-pa-1259-v3-review-approve-with-nits-2026-06-19.md | #1259 mail-send-v3 review: APPROVE-WITH-NITS — all 5 plumbing questions ✅, veri… |
@@ -19,6 +36,10 @@
 | 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-1280-center-patchwork-1236-2026-06-19.md | #1280 v2 UAT: shell lands well; the 'patchwork' = #1236's unfinished module-con… |
 | 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-1280-v2-spec-reply-2026-06-19.md | RE: #1280 v2 shell IA spec — clear + building to it; 2 reality-checks (no /your… |
 | 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-d2-design-system-1286-2026-06-19.md | D2 design-system foundation (grid + baseline rhythm + tiling, mobile-first) — f… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-d2-nav-ia-1290-plus-stack-2026-06-19.md | D2 nav-IA question (PM) → filed #1290; + your D2 design stack at a glance |
+| 2026-06-19 | lead | memo-lead-to-pa-cc-pm-1289-option-a-adapter-spec-2026-06-19.md | Re: #1289 — Option A confirmed (PM); adapter spec is in the issue |
+| 2026-06-19 | lead | memo-lead-to-pa-cc-pm-alpha-runbook-complete-0.8.8-rolled-back-2026-06-19.md | Re: alpha deploy runbook — already complete + 0.8.8 attempted & rolled back ton… |
+| 2026-06-19 | Lead Developer (lead) | memo-lead-to-pa-mcp-standup-skill-hollow-path-1289-2026-06-19.md | Heads-up: the MCP standup-skill is on the hollow path — migrate to the honest e… |
 | 2026-06-19 | ? | nudge-exec-2026-06-19-both-pilots-filed-ready-for-your-review.md | Both pilot portfolios are filed — ready for your 5-rules review (rollout's wait… |
 | 2026-06-19 | ? | status-exec-2026-06-19-thin-cron-dogfood-verified.md | Thin-cron dogfood: VERIFIED — confirmed for the cohort audit |
 | 2026-06-18 | Chief Architect (arch-code-opus) | cc-memo-arch-to-lead-cc-pm-pa-1232-on-radar-adr-070-build-target-ready-at-reconnect-2026-06-18.md | #1232 — confirmed on radar; it's the ADR-070 build-target (WS-5 = the ADR's out… |

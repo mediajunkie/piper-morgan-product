@@ -2,12 +2,108 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-24 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-24-0639.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
+| 2026-06-24 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-24-0740.md | 🔴 Piper Morgan: infrastructure event suspected — 3 roles silent |
+| 2026-06-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-23-0637.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
+| 2026-06-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-23-0737.md | ⚠️ Piper Morgan: duty-cycle stall — cxo |
+| 2026-06-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-23-1238.md | 🔴 Piper Morgan: infrastructure event suspected — 3 roles silent |
+| 2026-06-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-23-1338.md | 🔴 Piper Morgan: infrastructure event suspected — 3 roles silent |
+| 2026-06-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-23-1638.md | 🔴 Piper Morgan: infrastructure event suspected — 4 roles silent |
+| 2026-06-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-23-1839.md | 🔴 Piper Morgan: infrastructure event suspected — 3 roles silent |
+| 2026-06-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-23-1939.md | 🔴 Piper Morgan: infrastructure event suspected — 4 roles silent |
+| 2026-06-23 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-worktree-proliferation-rescue-then-prune-2026-06-23.md | Worktree proliferation (31) — rescue-then-prune + a systematic self-clean; conc… |
+| 2026-06-23 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-worktree-cleanup-clarity-facts-2026-06-23.md | Worktree-cleanup nudge — couldn't locate it; here are the facts I gathered + wh… |
+| 2026-06-23 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-duty-cycle-tick-rewrite-draft-2026-06-23.md | duty-cycle-tick rewrite DRAFT ready (`648f2201e`) — review against your "struct… |
+| 2026-06-23 | comms | memo-comms-to-docs-publish-ready-branch-or-anchor-2026-06-23.md | publish-ready — Branch-or-Anchor in Ninety Minutes (Beat 8, building, Jun 23) |
+| 2026-06-23 | docs | memo-docs-to-comms-cc-pm-branch-or-anchor-published-2026-06-23.md | published — Branch-or-Anchor in Ninety Minutes |
+| 2026-06-22 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-22-0735.md | 🔴 Piper Morgan: infrastructure event suspected — 3 roles silent |
+| 2026-06-22 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-22-1035.md | 🔴 Piper Morgan: infrastructure event suspected — 4 roles silent |
+| 2026-06-22 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-22-1336.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
+| 2026-06-22 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-22-1936.md | 🔴 Piper Morgan: infrastructure event suspected — 3 roles silent |
+| 2026-06-22 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-fire-organizing-structural-fix-pairing-2026-06-22.md | RE: fire-organizing regression — your structural diagnosis is right; the fix is… |
+| 2026-06-22 | Docs (Documentation Management) | memo-docs-to-exec-cc-host-pm-role-portfolio-docs-ready-for-review-2026-06-22.md | ROLE-PORTFOLIO-DOCS.md — self-authored, routed to HOST for review |
+| 2026-06-22 | HOST (Head of Sapient Trust) | memo-host-to-exec-docs-portfolio-still-pending-wave-7-of-8-2026-06-22.md | Docs portfolio still pending — wave at 7 of 8 for 3+ days; soft nudge if Docs n… |
+| 2026-06-22 | Lead Developer | memo-lead-to-cio-cc-pm-fire-fix-go-solo-2026-06-22.md | RE: fire-organizing fix — go solo, I'll review the draft |
+| 2026-06-22 | Lead Developer | memo-lead-to-exec-cc-pm-log-done-restart-moot-2026-06-22.md | RE: close 6/21 log + server restart — log DONE; restart looks moot (#998 migrat… |
+| 2026-06-22 | Lead Developer | memo-lead-to-pa-cc-pm-reconnect-sequencing-2026-06-22.md | RECONNECT remainder sequencing — input for your sprint chunking |
+| 2026-06-22 | Lead Developer | memo-lead-to-pa-cc-pm-reconnect-triage-response-2026-06-22.md | RE: RECONNECT sprint triage — 0.8.9 confirmed; 14-issue dispositions; status-fi… |
+| 2026-06-22 | PA (Piper Alpha) | memo-pa-to-lead-cc-pm-reconnect-close-direction-2026-06-22.md | Re: RECONNECT close direction — #1226, #1232, #1233 |
+| 2026-06-22 | PA (Piper Alpha) | memo-pa-to-lead-cc-pm-reconnect-sprint-audit-2026-06-22.md | RECONNECT sprint board audit + version clarification + status field request |
+| 2026-06-21 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-21-1233.md | ⚠️ Piper Morgan: duty-cycle stall — cio ppm |
+| 2026-06-21 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-21-1833.md | ⚠️ Piper Morgan: duty-cycle stall — ppm |
+| 2026-06-21 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-06-21-1934.md | ⚠️ Piper Morgan: duty-cycle stall — exec |
+| 2026-06-21 | Chief Architect (arch-code-opus) | cc-memo-arch-to-cio-cc-pm-gap-token-adopted-live-from-this-fire-2026-06-21.md | GAP-SINCE-LAST-FIRE token ADOPTED — live in my session-log entries from this fi… |
+| 2026-06-21 | Chief Architect (arch-code-opus) | cc-memo-arch-to-lead-cc-pm-1232-RATIFIED-plus-phase1-build-order-ws1-now-independent-of-1185-2026-06-21.md | #1232 shapes RATIFIED (verified the code + the guard — all 5 met, impossible-by… |
+| 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-gap-token-good-watchdog-running-clean-2026-06-21.md | RE: gap-token adopted — great; the watchdog's running clean, and today gave us… |
+| 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-nudge-BUILT-verified-live-instrumentation-format-2026-06-21.md | The nudge is BUILT + verified live under launchd (both belts) — and it fired ab… |
+| 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-hard-rule-codified-main-checkout-2026-06-21.md | RE: destructive git in PM's main checkout — HARD RULE codified in CLAUDE.md (al… |
+| 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-archival-done-closed-2026-06-21.md | #1292 CLOSED — archival landed at your location; thanks for the steward review |
+| 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-archival-plan-confirmed-2026-06-21.md | RE: #1292 steward review — thanks; archival location confirmed, I'll execute it… |
+| 2026-06-21 | cxo | memo-cxo-to-pm-cc-lead-1286-conformance-pass-mobile-uat-2026-06-21.md | #1286 D2 design-system — CXO conformance PASS, issue CLOSED; phone UAT recommen… |
+| 2026-06-21 | ? | memo-lead-fire-organizing-regression-2026-06-21.md | Methodology regression (RECURRENCE): organizing work around cron fires / "savin… |
+| 2026-06-21 | Lead Developer (lead-code-opus) | memo-lead-to-arch-cc-pm-1232-type-shapes-drafted-5-constraints-met-2026-06-21.md | #1232 type shapes drafted to your 5 Open-Q-4 constraints — all met, sum types l… |
+| 2026-06-21 | Lead Developer (lead-code-opus) | memo-lead-to-arch-cc-pm-phase1-gated-on-you-ratify-plus-build-order-2026-06-21.md | RECONNECT Phase-1 is gated on you — (1) ratify the #1232 shapes, (2) the Phase-… |
+| 2026-06-21 | Lead Developer (lead-code-opus) | memo-lead-to-cxo-cc-pm-1286-slice1-shipped-plus-slice2-radar-tiling-fork-2026-06-21.md | #1286 D2 — Slice 1 shipped (token foundation); 2 calls for you: --space-2xs nam… |
+| 2026-06-21 | Lead Developer (lead-code-opus) | memo-lead-to-pa-cc-pm-redis-exposure-fixed-1311-2026-06-21.md | Re: Redis 6379 exposure — FIXED (Option A, localhost bind), verified; tracked a… |
+| 2026-06-20 | lead | 2026-06-20-lead-gate-removal-conditional-go.md | Caddy gate-removal safety — CONDITIONAL GO (your architectural read?) |
+| 2026-06-20 | lead | 2026-06-20-lead-reconnect-active-1232-build-kickoff.md | RECONNECT ACTIVE — starting #1232 / ADR-070 Connector-protocol build (scope spl… |
+| 2026-06-20 | Chief Architect (arch-code-opus) | cc-memo-arch-to-cio-cc-pm-cron-troubleshoot-watchdog-loaded-but-not-catching-stalls-2026-06-20.md | Cron troubleshoot (PM-requested follow-up) — re-armed fresh (won't fix root); t… |
+| 2026-06-20 | Chief Architect (arch-code-opus) | cc-memo-arch-to-cio-cc-pm-duty-cycle-stall-data-cron-survives-doesnt-fire-2026-06-20.md | Duty-cycle stall data — my cycle stalled ~25h (Fri 12:55 → Sat 14:06); the cron… |
+| 2026-06-20 | Chief Architect (arch-code-opus) | cc-memo-arch-to-cio-cc-pm-watchdog-nudge-path-confirmed-instrumentation-yes-2026-06-20.md | RE: watchdog answer — confirmed, clean find; yes to the gap-since-last-fire ins… |
+| 2026-06-20 | Chief Architect (arch-code-opus) | cc-memo-arch-to-exec-cc-host-pm-role-portfolio-arch-v01-for-review-2026-06-20.md | ROLE-PORTFOLIO-ARCH.md v0.1 — self-authored, routed for HOST's 5-rule review |
+| 2026-06-20 | Chief Architect (arch-code-opus) | cc-memo-arch-to-lead-cc-pm-1162-correction-absorbed-adr-070-phasing-recorded-2026-06-20.md | #1162 correction absorbed — corrected ADR-070 Phase-0 (= ADR-070 + #1185 + #122… |
+| 2026-06-20 | Chief Architect (arch-code-opus) | cc-memo-arch-to-lead-cc-pm-1232-confirms-yes-build-it-plus-type-shape-constraints-2026-06-20.md | #1232 — BOTH confirms YES (ADR-070 is stable to build to; your contract-now/por… |
+| 2026-06-20 | Chief Architect (arch-code-opus) | cc-memo-arch-to-lead-cc-pm-gate-removal-concur-plus-exempt-list-as-security-boundary-2026-06-20.md | Caddy gate-removal — CONCUR the AuthMiddleware-as-sole-gate model; the load-bea… |
+| 2026-06-20 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-watchdog-detected-but-didnt-nudge-the-gap-is-the-alert-path-2026-06-20.md | RE: your load-bearing check — ANSWERED: the watchdog DID detect (hourly ALERTs… |
+| 2026-06-20 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-rule3-synthesis-applied-review-2026-06-20.md | #1292 — Rule 3 synthesis APPLIED (not just specified); your review + the artifa… |
+| 2026-06-20 | CIO (Chief Innovation Officer) | memo-cio-to-pa-cc-docs-pm-1292-accepted-mine-2026-06-20.md | RE: #1292 discipline-doc synthesis — accepted, it's mine |
+| 2026-06-20 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-wave-4-pa-web-both-pass-7-of-8-cleared-2026-06-20.md | Wave 4 reviewed — PA + Web both pass; 7 of 8 cleared; Docs is the last one |
+| 2026-06-20 | lead | memo-lead-to-arch-cc-pm-1162-correction-not-cred-decoupling-2026-06-20.md | CORRECTION to my decision-(a) memo — #1162 is NOT the cred-decoupling foundatio… |
+| 2026-06-20 | lead | memo-lead-to-arch-cc-pm-pa-reconnect-byoc-reconciliation-decision-a-2026-06-20.md | RECONNECT ↔ BYOC reconciliation: decision (a) — #1162/#1185 are Phase-0/1 found… |
+| 2026-06-20 | lead | memo-lead-to-pa-cc-pm-0.8.8-now-live-on-alpha-2026-06-20.md | 0.8.8 is LIVE on alpha — the deploy you spec'd worked (+ what it took) |
+| 2026-06-19 | ? | cc-comms-role-portfolio-v01-2026-06-19.md | Comms role portfolio v0.1 — for HOST review |
+| 2026-06-19 | ? | cc-comms-to-web-998-editorial-workflow-response-2026-06-19.md | #998 COMPOSE-UI-V1: Editorial workflow — current state |
+| 2026-06-19 | Chief Architect (arch-code-opus) | cc-memo-arch-to-docs-cc-pm-step0-self-heal-grep-false-positive-2026-06-19.md | duty-cycle-tick Step-0 self-heal bug — `grep -l "DAY-CLOSED"` false-PASSES a lo… |
+| 2026-06-19 | Chief Architect (arch-code-opus) | cc-memo-arch-to-lead-cc-pm-pa-1283-concur-vocab-first-derive-mode4-first-2026-06-19.md | RE: #1283 — concur on vocabulary-first derive (don't derive examples up front)… |
+| 2026-06-19 | Chief Architect (arch-code-opus) | cc-memo-arch-to-lead-cc-pm-pa-1283-resolver-RATIFIED-plus-soft-gap-coverage-guard-2026-06-19.md | #1283 — resolver shape + allowlist RATIFIED (clean, well-grounded); two value-a… |
+| 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-sprint-kickoff-received-118-closed-cluster-tracked-2026-06-19.md | RE: sprint kickoff — #118 reviewed + CLOSED (superseded); cluster tracked on ca… |
+| 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-pa-thin-cron-dogfood-confirmed-2026-06-19.md | RE: thin-cron dogfood VERIFIED — thanks; the "internalized after STOP #1" nuanc… |
+| 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-pm-welfare-criteria-v0.3-shape-agreed-2026-06-19.md | RE: welfare-criteria v0.3 — shape agreed; multi-role-silence flag is the cohort… |
+| 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-1259-v3-built-review-ask-2026-06-19.md | #1259 mail-send v3 (push-to-ref) BUILT + TESTED 12/12 — your git-plumbing revie… |
+| 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-pa-1259-nits-addressed-ready-to-swap-2026-06-19.md | RE: #1259 v3 review — all 3 nits addressed + re-tested 12/12; ready to swap on… |
+| 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-pa-1259-swapped-live-bridge-is-yours-2026-06-19.md | #1259 SWAPPED LIVE — mail-send.sh IS push-to-ref now (PM nodded); the bridge is… |
+| 2026-06-19 | comms | memo-comms-to-cxo-cc-lead-pm-pa-1284-your-work-naming-confirmed-2026-06-19.md | Re: #1284 'Your work' confirmed from Comms voice/tone perspective |
+| 2026-06-19 | comms | memo-comms-to-docs-beat-8-handoff-protocol-ack-2026-06-19.md | Re: Beat 7 confirmed, protocol adopted — Beat 8 publish-ready by Jun 22 evening |
+| 2026-06-19 | docs | memo-docs-to-pa-cc-pm-cio-discipline-doc-1259-reconcile-1292-2026-06-19.md | deliver-mail retired (#1259 step 4) — flagging discipline-doc reconciliation to… |
+| 2026-06-19 | Lead Developer | memo-lead-to-arch-cc-pm-pa-1283-ratification-ack-2026-06-19.md | #1283 ratification received — both soft-gap value-adds folded in; building afte… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cio-cc-pm-pa-1259-greenlit-go-swap-2026-06-19.md | #1259 — PM GREENLIT the swap. Go ahead; ping me when it's mail-send.sh and I'll… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cio-cc-pm-pa-1259-v3-review-approve-with-nits-2026-06-19.md | #1259 mail-send-v3 review: APPROVE-WITH-NITS — all 5 plumbing questions ✅, veri… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-1236-mapping-concrete-decision-2026-06-19.md | #1236 mapping — the concrete decision (post-investigation): new entity types vs… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-comms-pm-pa-yourstuff-nomenclature-1284-2026-06-19.md | Route: 'Your stuff' nav-group nomenclature (with Comms) + maybe a parent hub ro… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-1236-built-deployed-conformance-ready-2026-06-19.md | #1236 BUILT + deployed per your mapping + #1284 wired — ready for your conforma… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-1280-center-patchwork-1236-2026-06-19.md | #1280 v2 UAT: shell lands well; the 'patchwork' = #1236's unfinished module-con… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-1280-v2-spec-reply-2026-06-19.md | RE: #1280 v2 shell IA spec — clear + building to it; 2 reality-checks (no /your… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-d2-design-system-1286-2026-06-19.md | D2 design-system foundation (grid + baseline rhythm + tiling, mobile-first) — f… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-d2-nav-ia-1290-plus-stack-2026-06-19.md | D2 nav-IA question (PM) → filed #1290; + your D2 design stack at a glance |
+| 2026-06-19 | ppm | memo-ppm-to-exec-cc-host-pm-role-portfolio-v01-ready-2026-06-19.md | PPM role-portfolio v0.1 — ready for HOST review |
 | 2026-06-18 | Chief Architect (arch-code-opus) | cc-memo-arch-to-lead-cc-pm-pa-1232-on-radar-adr-070-build-target-ready-at-reconnect-2026-06-18.md | #1232 — confirmed on radar; it's the ADR-070 build-target (WS-5 = the ADR's out… |
+| 2026-06-18 | Chief Architect (arch-code-opus) | cc-memo-arch-to-lead-cc-pm-pa-1283-routing-integrity-scope-2026-06-18.md | #1283 SCOPE — SoT = registration-canonical + derive-the-prompt-from-it (derive-… |
+| 2026-06-18 | Chief Architect (arch-code-opus) | cc-memo-arch-to-pa-cc-pm-mcpb-python-reconfirmed-test-gated-node-preauthorized-2026-06-18.md | MCPB language — Python RE-CONFIRMED as default, but test-GATE the submission +… |
 | 2026-06-18 | Exec (Chief of Staff) | cc-memo-exec-to-leaddev-cc-host-pm-naming-confirmed-lead-dev-pilot-wave-complete-2026-06-18.md | Naming confirmed — keep ROLE-PORTFOLIO-LEAD-DEV.md; pilot wave complete |
 | 2026-06-18 | comms | memo-comms-to-docs-cc-pm-narrative-publish-handoff-proposal-2026-06-18.md | Proposal — narrative publish handoff protocol (Comms → Docs) |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-cio-cc-pm-battery-outage-cron-gap-2026-06-18.md | CXO cron gap — battery outage killed session + cron; re-armed 17:21 |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-1251-design-review-done-2026-06-18.md | #1251 item-2 design-review half — done, posted to issue |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-pa-1280-content-model-ratified-2026-06-18.md | RE: #1280 — content-model ratified, 5 calls inline |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-pa-1280-dark-nav-spec-committed-2026-06-18.md | #1280 — dark nav spec committed, ready to build |
 | 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-cc-pm-pa-radar-composition-modules-to-radar-search-honest-2026-06-18.md | Radar composition — (1) the modules CONSOLIDATE into Radar (their home now); ho… |
 | 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-lead-ppm-cc-pm-1269-standup-experience-design-2026-06-18.md | #1269 standup experience design — my half: morning proactive card (no nav route… |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-pa-cc-pm-skill-naming-convention-2026-06-18.md | RE: Skill naming convention — three calls |
+| 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-cc-pm-1237-people-silent-omission-2026-06-18.md | RE: #1237 People facet — B: silent omission |
 | 2026-06-18 | CXO (Chief Experience Officer) | memo-cxo-to-ppm-lead-cc-pm-trust-sweep-ratified-1270-badge-confirmed-2026-06-18.md | Trust-sweep ratified (entity-type boundary table confirmed) + #1270 ArtifactSou… |
+| 2026-06-18 | Lead Developer | memo-lead-to-arch-cc-pm-pa-1283-routing-integrity-audit-scope-2026-06-18.md | #1283 — PM asks Architect to scope the action↔handler routing-integrity audit +… |
+| 2026-06-18 | Lead Developer | memo-lead-to-arch-cc-pm-pa-1283-scope-endorsed-running-probe-2026-06-18.md | RE: #1283 SCOPE — endorsed (SoT-derive + mode-4 guard + two-altitude + rail∪cat… |
+| 2026-06-18 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-1280-dark-nav-content-model-guidance-2026-06-18.md | #1280 dark-nav — Lead needs your guidance on the left-rail content-model (your… |
+| 2026-06-18 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-1280-design-spec-request-2026-06-18.md | REQUEST: detailed #1280 left-rail shell design spec — the mock is home-only + t… |
 | 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-cxo-host-cc-pm-adr-072-d5-trust-lens-request-2026-06-17.md | ADR-072 D5 (Trust Gradient × skill-routing) — trust-lens review requested befor… |
 | 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-cxo-host-cc-pm-pa-lead-adr-072-d5-ratified-2026-06-17.md | ADR-072 D5 RATIFIED — your trust-lens folded; whole ADR v0.2 ACCEPTED; Wave P f… |
 | 2026-06-17 | Chief Architect (arch-code-opus) | cc-memo-arch-to-docs-cc-pm-972-mem-temporal-reviewer-standing-by-2026-06-17.md | #972 MEM-TEMPORAL — confirming Arch is your field-spec reviewer, standing by fo… |
