@@ -59,3 +59,27 @@ class TestSetupMobileLayout:
         """Mobile body padding provides comfortable space around the card."""
         # The mobile block should set padding on body
         assert "padding: 24px" in setup_template_content
+
+
+class TestSetupJsApiPaths:
+    """#1320: setup.js must call setup API routes under the /api/v1 prefix.
+
+    Regression guard for the check-keychain calls that shipped without /api/v1
+    (→ 404s on the onboarding page). The router prefix is /api/v1/setup, so every
+    setup fetch must carry it. (All API routes use /api/v1/ per CLAUDE.md.)
+    """
+
+    @pytest.fixture
+    def setup_js(self) -> str:
+        js_path = Path(__file__).parent.parent.parent.parent / "web" / "static" / "js" / "setup.js"
+        return js_path.read_text()
+
+    def test_check_keychain_uses_api_v1_prefix(self, setup_js):
+        assert "/api/v1/setup/check-keychain/" in setup_js
+
+    def test_no_unprefixed_setup_fetches(self, setup_js):
+        # No fetch() to a bare `/setup/...` API path (must be /api/v1/setup/...).
+        # Matches the backtick-template call form setup.js uses.
+        assert "fetch(`/setup/" not in setup_js
+        assert 'fetch("/setup/' not in setup_js
+        assert "fetch('/setup/" not in setup_js

@@ -54,7 +54,7 @@
         const providers = ['openai', 'anthropic', 'gemini', 'notion'];
         for (const provider of providers) {
             try {
-                const response = await fetch(`/setup/check-keychain/${provider}`);
+                const response = await fetch(`/api/v1/setup/check-keychain/${provider}`);
                 const data = await response.json();
                 const btn = document.querySelector(`.keychain-btn[data-provider="${provider}"]`);
                 if (btn && data.exists) {
@@ -200,7 +200,7 @@
 
     async function checkKeychainForProvider(provider) {
         try {
-            const response = await fetch(`/setup/check-keychain/${provider}`);
+            const response = await fetch(`/api/v1/setup/check-keychain/${provider}`);
             const data = await response.json();
             if (data.exists) {
                 keychainLlmBtn.classList.remove('hidden');
