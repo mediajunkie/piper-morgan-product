@@ -50,3 +50,7 @@ Queue otherwise dry.
 - **Onboarding 1.0**: post-RECONNECT; design inputs queued
 - **Setup UX copy review**: pending #1318 fix — review error/success states for Colleague Test before alpha tester wave
 - **Mobile UAT**: #1286 Slice 3 — alpha is deployed; PM has done some UAT; timely to test the drawer now
+
+## Git hygiene note
+
+The shared main checkout had significant working-tree contention tonight (multiple agents committing overnight; ~30 untracked files that existed on origin/main blocking merge/rebase). Resolution pattern used: sweep all untracked files that exist on origin/main (`git ls-files --others | while; git show origin/main:$f && rm`) then pull --rebase --autostash. This is the cleanest pattern for this recurring scenario without touching other agents' tracked-but-uncommitted changes.

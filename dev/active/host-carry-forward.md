@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-24 ~23:29 PT (START; Docs PASS — wave 8/8 COMPLETE; cron re-armed `b1ec8c33`)
+**Last updated**: 2026-06-25 ~06:37 PT (Fire 1; sapient-trust poll 0 open; next ~2026-07-03; inbox deletion fix)
 
 ---
 
@@ -52,7 +52,7 @@
 
 ## Standing cycle responsibility
 
-- Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). 2026-06-19 poll: **0 open** (clean). Next poll: **~2026-06-26**.
+- Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). 2026-06-19 poll: **0 open** (clean). 2026-06-25 poll: **0 open** (clean). Next poll: **~2026-07-03**.
 
 ## Watch / trigger-bound
 
