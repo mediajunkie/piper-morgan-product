@@ -24,6 +24,7 @@ import webbrowser
 # of truth: every host:port reference below derives from these two constants so
 # they can't drift.
 PIPER_PORT = int(os.environ.get("PIPER_PORT", "8001"))
+PIPER_HOST = os.environ.get("PIPER_HOST", "127.0.0.1")
 PIPER_BASE_URL = f"http://localhost:{PIPER_PORT}"
 
 # Parse arguments early to set logging level
@@ -169,7 +170,7 @@ async def main():
         import uvicorn
 
         if args.verbose:
-            logger.info(f"Starting web server on http://127.0.0.1:{PIPER_PORT}")
+            logger.info(f"Starting web server on http://{PIPER_HOST}:{PIPER_PORT}")
         else:
             # G50: Clear Server Startup Message with all necessary URLs
             # Issue #633: Consciousness-enhanced messaging
@@ -197,7 +198,7 @@ async def main():
 
         config = uvicorn.Config(
             "web.app:app",
-            host="127.0.0.1",
+            host=PIPER_HOST,
             port=PIPER_PORT,
             reload=False,  # Disable reload (incompatible with initialized services)
             # Issue #720: Always show INFO level to display "Application startup complete"
