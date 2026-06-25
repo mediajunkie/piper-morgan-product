@@ -11,7 +11,7 @@
 ### Queued (low-pri, unblocked when bandwidth)
 - **threshold v0.4 = wake-window-aware** — cio's flat 8h is too coarse for a daytime stall; tune against Arch's `GAP-SINCE-LAST-FIRE` data.
 - **Cohort-coverage expansion** — freeze-registry watches 5/11 (cio/exec/arch/cxo/ppm); extend to the rest via **owner-confirmed rows (Exec-coordinated opt-in)**, NOT inferred (false-nudge risk).
-- **Sprint cluster**: #973 / #1153 / #1277 / #1191 / #1287.
+- **Sprint cluster**: #973 / #1277 / #1191 / #1287. (#1153 generate-delta tooling DONE+CLOSED `ab44e595c` 6/25.)
 
 ### Standing / PM-gated
 - **Off-machine firing cure** — the deep structural fix for session-crons-don't-fire-while-backgrounded. Evidence now: ~7 stalls + the Tue rate-limit pause + it's the same caveat I just flagged for Iris. PM's call on cost (~$70/mo Routines, or launchd-wake). I can scope on request.

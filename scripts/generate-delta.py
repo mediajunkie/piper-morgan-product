@@ -73,6 +73,33 @@ def _fallback_cutoff() -> datetime:
     return datetime.now() - timedelta(hours=24)
 
 
+# Valid role-slug charset (matches the mailbox/log convention: lowercase, digits,
+# spaces, parens, hyphens — e.g. "cio", "xian (ceo)"). Notably excludes ".", so a
+# filename fragment like "opus-log.md" (the #1153 mis-parse) is rejected.
+ROLE_SLUG_RE = re.compile(r"[a-z0-9 ()-]+$")
+
+
+def prune_old_deltas(role: str, out_dir: Path, retention_days: int = 7) -> int:
+    """
+    Remove this role's own delta files older than retention_days (#1153 no-prune fix).
+    Deltas are gitignored but accumulated one-per-role-per-day on disk forever.
+    Scoped to delta-{role}-*.md so concurrent roles don't delete each other's files.
+    Returns count removed. Best-effort: tolerates races/permission errors.
+    """
+    if not out_dir.exists():
+        return 0
+    cutoff_ts = (datetime.now() - timedelta(days=retention_days)).timestamp()
+    removed = 0
+    for p in out_dir.glob(f"delta-{role}-*.md"):
+        try:
+            if p.is_file() and p.stat().st_mtime < cutoff_ts:
+                p.unlink()
+                removed += 1
+        except OSError:
+            continue
+    return removed
+
+
 def git_commits_since(cutoff: datetime, limit: int = 20) -> list[str]:
     """Return list of commit summary lines since cutoff (oneline format)."""
     iso = cutoff.strftime("%Y-%m-%dT%H:%M:%S")
@@ -223,6 +250,14 @@ def main() -> int:
 
     role = args.role.lower()
 
+    # Defense-in-depth (#1153): reject implausible role slugs. The hook is the
+    # primary fix, but if a caller ever passes a filename fragment (e.g.
+    # "opus-log.md" from a mis-parse), fail loudly instead of writing a malformed
+    # delta-opus-log.md-{date}.md file.
+    if not ROLE_SLUG_RE.fullmatch(role):
+        print(f"error: implausible role slug {args.role!r} (looks like a filename fragment, not a role)", file=sys.stderr)
+        return 1
+
     if args.cutoff:
         try:
             cutoff = datetime.fromisoformat(args.cutoff)
@@ -239,6 +274,8 @@ def main() -> int:
 
     today = datetime.now().strftime("%Y-%m-%d")
     out_path = REPO_ROOT / "dev" / "active" / f"delta-{role}-{today}.md"
+
+    prune_old_deltas(role, out_path.parent)
 
     write_delta_file(
         role=role,
