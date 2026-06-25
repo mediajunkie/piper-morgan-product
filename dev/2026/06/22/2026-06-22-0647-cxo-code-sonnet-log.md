@@ -86,3 +86,9 @@ Heartbeat fire.
 - **#1284**: post-beta — PM/PPM decision
 - **Onboarding 1.0**: post-RECONNECT + post-v0.8.9; design inputs queued
 - **Mobile UAT**: #1286 Slice 3 — timely once 0.8.9 on alpha
+
+<!-- DAY-CLOSED: 2026-06-22 -->
+
+## Sign-off note (closed retroactively 2026-06-24)
+
+Weekly rate limit hit June 23. June 22 ended after Fire 3 (12:47) — fires 4/5/6 did not occur. All committed work was already on origin/main. No stranded artifacts.
