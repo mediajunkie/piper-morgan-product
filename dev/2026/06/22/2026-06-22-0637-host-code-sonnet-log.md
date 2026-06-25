@@ -25,3 +25,12 @@
 - Fire 2 (~09:37) — Inbox: empty. Docs portfolio: still pending. IDLE.
 - Fire 3 (~12:37) — Inbox: empty. Docs portfolio: still pending (3.5 days since wave kickoff). Sent soft nudge to Exec (cc PM): Docs is the only remaining portfolio; no SLA breach, but flagging visibility. `b83c06236`.
 
+> **Session gap**: Weekly rate limit hit ~Tuesday June 23. Session died; cron `cf93cc1a` died with it (Gap-C). June 22 had no further logged fires after Fire 3. Resumed June 24 ~23:29 PDT by PM.
+
+## Memory & briefing surfaces referenced this session
+**Referenced**: HOST carry-forward (portfolio wave state); ROLE-PORTFOLIO-FRAMEWORK.md (5 rules).
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md.
+**Wanted but not found**: Docs portfolio (pending all day).
+
+<!-- DAY-CLOSED: 2026-06-22 -->
+

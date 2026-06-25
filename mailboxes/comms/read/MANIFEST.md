@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-hard-rule-codified-main-checkout-2026-06-21.md | RE: destructive git in PM's main checkout — HARD RULE codified in CLAUDE.md (al… |
 | 2026-06-20 | pa | memo-pa-to-comms-cc-pm-byoc-narrative-angle-direction-2026-06-20.md | BYOC narrative angle direction — "we built onboarding in the wrong mode" |
 | 2026-06-19 | ? | kickoff-exec-2026-06-19-1160-syndication-automation-own-to-close.md | Sprint assignment → Comms: own #1160 (syndication automation) through to close |
 | 2026-06-19 | ? | kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md | Main-cohort kickoff → write your role-portfolio (pilots passed, framework prove… |

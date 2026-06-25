@@ -32,7 +32,21 @@
 - **20:35 — late-18:32 fire (quiet; PM out, ~3.7h evening suspension).** Nothing landed since 16:54: CIO lens still out (5/6 → Ship #048 synth gated), deploy pre-droplet (#358 open, droplet 0.8.8), Docs portfolio not yet — all 3 awaiting their owners (CIO/Lead/Docs, nudged). Inbox empty; board current (nothing-urgent). Cross-checked recent commits — nothing board-relevant. Quiet-hold + heartbeat (prior 4h old). Next 21:32 = STOP/day-close. Cron `8f2194b1` armed. **PM nudged CIO directly** (~20:36) — reinforcing my workstream-lens nudge; CIO's Ship #048 lens now double-nudged → I synthesize the full 6 the moment it lands (per the cadence: draft when full set in hand). Staying staged for it.
 
 ## Memory & briefing surfaces referenced this session
-- (filled at STOP)
+- **Referenced**: `cohort-attention-rollup` skill + runbook (multiple sweeps, the heads-down commit-cross-check); memory pins — `attention_board_sweep_not_vantage` (the cross-check discipline, extended twice), `project_exec_coordinates_more_through_pm` (the coordinate-through-Exec Monday), `project_version_scheme_090_reserved_for_beta` (the v0.8.9-not-0.9.0 call), `anchor_on_readiness_not_publish_date` (the Ship #048 incomplete-source escalation). XPOLL.
+- **Loaded but not referenced**: most MEMORY.md; the plugin churn.
+- **Wanted but not found**: the cron-stall durable cure (CIO's nudge-mechanism, still PM-pending) — it caused the Monday-morning logjam.
+
+## STOP / Day-close (2026-06-22) — RETROACTIVE (closed 6/23 AM, Step-0; the 21:32 Mon STOP missed + a rate-limit cut off the 22:02 fire mid-orient)
+
+**Day-arc — a heavy coordinate-through-Exec Monday.** Self-heal START. **The cron-stall caused a Monday-morning logjam** (4 agents asleep, blocking omnibus/blog-UI/Ship#048) → surfaced to PM → **PM woke PA/Web/CIO** + Docs active → cleared. **The deploy**: PM worked it with Lead directly → **v0.8.9 cut** (RECONNECT+security+design; 0.8.9 correct per scheme, not 0.9.0) — droplet-push still pending (#358 open). Ran **multiple PM-requested sweeps** as PM dipped in/out; **caught + corrected a stale board item** (blog-UI "needs server-restart" was a stale premise — the compose UI migrated to the website repo; Lead investigated-before-acting). **Nudged Docs/PPM/CIO** (logs + workstream lens) — **Docs filed late-day → portfolio wave 8/8 COMPLETE** (HOST reviews Docs's = the last). **Ship #048 still 5/6** — CIO's lens the lone gate (double-nudged by me + PM); now critical-path for Wed.
+
+**Sign-off**: clean; all work on origin/main. Cron `8f2194b1` armed.
+
+<!-- DAY-CLOSED: 2026-06-22 -->
+
+---
+
+*— Exec (DinP / Opus 4.8), 6/22 START ~10:42 PT, day-closed retroactively 6/23 ~07:00 PT.*
 
 ---
 

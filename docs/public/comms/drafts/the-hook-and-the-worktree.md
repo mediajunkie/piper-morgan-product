@@ -64,7 +64,7 @@ That's the thing worth carrying. The shape of *discipline-becoming-infrastructur
 
 ---
 
-*Next on Building Piper Morgan: [TEASE PENDING — confirm next-scheduled-item at calendar update].*
+*Next on Building Piper Morgan: "The Triad Model" — the shape that kept showing up across design, methodology, and team structure.*
 
 *Where in your work has a procedure been failing despite everyone knowing it? What would the small piece of infrastructure that closed the gap look like?*
 

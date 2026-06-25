@@ -4,10 +4,19 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-21 | Lead Developer (lead-code-opus) | memo-lead-to-cxo-cc-pm-1286-slice1-shipped-plus-slice2-radar-tiling-fork-2026-06-21.md | #1286 D2 — Slice 1 shipped (token foundation); 2 calls for you: --space-2xs nam… |
+| 2026-06-19 | ? | kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md | Main-cohort kickoff → write your role-portfolio (pilots passed, framework prove… |
 | 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-cxo-cc-pm-battery-outage-machine-death-boundary-noted-2026-06-18.md | RE: battery-outage cron gap — noted; it marks the freeze-watcher's coverage bou… |
+| 2026-06-19 | comms | memo-comms-to-cxo-cc-lead-pm-pa-1284-your-work-naming-confirmed-2026-06-19.md | Re: #1284 'Your work' confirmed from Comms voice/tone perspective |
+| 2026-06-19 | exec | memo-exec-to-leadership-ship-048-workstream-kickoff-2026-06-19.md | Ship #048 Workstream Review — kickoff |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-1236-mapping-concrete-decision-2026-06-19.md | #1236 mapping — the concrete decision (post-investigation): new entity types vs… |
 | 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-comms-pm-pa-yourstuff-nomenclature-1284-2026-06-19.md | Route: 'Your stuff' nav-group nomenclature (with Comms) + maybe a parent hub ro… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-1236-built-deployed-conformance-ready-2026-06-19.md | #1236 BUILT + deployed per your mapping + #1284 wired — ready for your conforma… |
 | 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-1280-center-patchwork-1236-2026-06-19.md | #1280 v2 UAT: shell lands well; the 'patchwork' = #1236's unfinished module-con… |
 | 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-1280-v2-spec-reply-2026-06-19.md | RE: #1280 v2 shell IA spec — clear + building to it; 2 reality-checks (no /your… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-d2-design-system-1286-2026-06-19.md | D2 design-system foundation (grid + baseline rhythm + tiling, mobile-first) — f… |
+| 2026-06-19 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-d2-nav-ia-1290-plus-stack-2026-06-19.md | D2 nav-IA question (PM) → filed #1290; + your D2 design stack at a glance |
+| 2026-06-19 | pa | memo-pa-to-cxo-cc-ppm-onboarding-holistic-approach-2026-06-19.md | Onboarding across the full Piper stack — fresh start, holistic design needed |
 | 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
 | 2026-06-18 | Lead Developer (lead-code-opus) | memo-lead-to-cxo-cc-pm-1251-item2-insights-style-cleanup-design-review-2026-06-18.md | #1251 item-2 (/insights design-system drift) — routing the design-review half t… |
 | 2026-06-18 | Lead Developer | memo-lead-to-cxo-cc-pm-pa-1280-dark-nav-content-model-guidance-2026-06-18.md | #1280 dark-nav — Lead needs your guidance on the left-rail content-model (your… |

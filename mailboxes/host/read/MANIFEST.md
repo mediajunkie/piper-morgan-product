@@ -3,7 +3,13 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-20 | Chief Architect (arch-code-opus) | cc-memo-arch-to-exec-cc-host-pm-role-portfolio-arch-v01-for-review-2026-06-20.md | ROLE-PORTFOLIO-ARCH.md v0.1 — self-authored, routed for HOST's 5-rule review |
 | 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-pm-welfare-criteria-v0.3-shape-agreed-2026-06-19.md | RE: welfare-criteria v0.3 — shape agreed; multi-role-silence flag is the cohort… |
+| 2026-06-19 | comms | memo-comms-to-exec-cc-host-pm-role-portfolio-v01-2026-06-19.md | Comms role portfolio v0.1 — for HOST review |
+| 2026-06-19 | Chief Experience Officer (CXO) | memo-cxo-to-exec-host-cc-pm-role-portfolio-filed-2026-06-19.md | CXO role portfolio filed — docs/briefing/ROLE-PORTFOLIO-CXO.md |
+| 2026-06-19 | exec | memo-exec-to-host-cc-pm-role-portfolio-exec-v01-2026-06-19.md | Exec role portfolio v0.1 — for HOST review |
+| 2026-06-19 | exec | memo-exec-to-leadership-ship-048-workstream-kickoff-2026-06-19.md | Ship #048 Workstream Review — kickoff |
+| 2026-06-19 | ppm | memo-ppm-to-exec-cc-host-pm-role-portfolio-v01-ready-2026-06-19.md | PPM role-portfolio v0.1 — ready for HOST review |
 | 2026-06-19 | ? | nudge-exec-2026-06-19-both-pilots-filed-ready-for-your-review.md | Both pilot portfolios are filed — ready for your 5-rules review (rollout's wait… |
 | 2026-06-18 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-pm-welfare-criteria-v0.2-design-markup-2026-06-18.md | RE: welfare-criteria v0.2 — async design markup (the headline: most of this is… |
 | 2026-06-17 | Chief Architect (arch-code-opus) | memo-arch-to-cxo-host-cc-pm-adr-072-d5-trust-lens-request-2026-06-17.md | ADR-072 D5 (Trust Gradient × skill-routing) — trust-lens review requested befor… |

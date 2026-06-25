@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-23 | comms | memo-comms-to-docs-publish-ready-branch-or-anchor-2026-06-23.md | publish-ready — Branch-or-Anchor in Ninety Minutes (Beat 8, building, Jun 23) |
+| 2026-06-22 | ? | nudge-exec-2026-06-22-role-portfolio-last-of-the-wave-no-rush.md | You're the last role-portfolio (no-rush, after the omnibus is fine) |
 | 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-archival-done-closed-2026-06-21.md | #1292 CLOSED — archival landed at your location; thanks for the steward review |
 | 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-archival-plan-confirmed-2026-06-21.md | RE: #1292 steward review — thanks; archival location confirmed, I'll execute it… |
 | 2026-06-20 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-rule3-synthesis-applied-review-2026-06-20.md | #1292 — Rule 3 synthesis APPLIED (not just specified); your review + the artifa… |
