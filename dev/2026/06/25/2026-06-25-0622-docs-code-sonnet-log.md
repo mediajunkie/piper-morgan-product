@@ -27,3 +27,9 @@
 - (~08:15–09:00 PT) — **June 24 omnibus complete** (`docs/omnibus-logs/2026-06-24-omnibus-log.md`, HIGH-COMPLEXITY: 10 agents [Arch absent]; Ship #048 published + alpha 502 fix + HOST wave 8/8 + cohort reconnect; 10 activity-log rows; Docs Jun 24 log archived). Pushed `e9b2946af`.
 - **HOST inbox memo** (`memo-host-to-exec-cc-pm-docs-wave-complete-8-of-8-all-pass-2026-06-24.md`) — acknowledged; wave 8/8 confirmed in Jun 24 omnibus (no action needed, already covered). Move to read/.
 
+---
+
+## Fire 10:17
+
+- **(10:47 PT) — BRIEFING-CURRENT-STATE.md refreshed** (`19bfcb0c2`). STATUS BANNER STALE flag cleared (session-start hook had reported STALE; PA also flagged 4 days stale in Jun 24 log; mandatory refresh per CLAUDE.md standing order). Sections updated: STATUS BANNER Last Updated (Jun 22–25 attest appended), Current Focus (RECONNECT WS-2 active), Inchworm (M2/M3/D1 CLOSED → RECONNECT WS-1 CLOSED/WS-2 active), Recent Progress (June 19–25 section prepended), footer + frontmatter timestamps. 27 lines added, 7 changed. Clean standalone commit, pushed to origin/main.
+
