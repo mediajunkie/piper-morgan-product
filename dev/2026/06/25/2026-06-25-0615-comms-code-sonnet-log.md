@@ -14,4 +14,4 @@
 - **Beat candidates A–E** — awaiting PM steer
 - **BYOC insight** — PM voice-pass when convenient
 
-- Fire 0 (06:15 PT) — START. Jun 24 DAY-CLOSED ✓ (retroactive). Inbox clear. Synced with origin/main. Checking calendar — Beat 9 scheduled today.
+- Fire 0 (06:15 PT) — START. Jun 24 DAY-CLOSED ✓ (retroactive). Inbox clear (2 Jun 23 memos cleared). Synced. Beat 9 pre-edit complete: "cohort" ×6 → "team"; PPM-only attribution (confirmed vs May 15 omnibus — PA was on separate inbox triage, not the 14-commit sprint); commit `4121fd110`. Draft staged for PM voice-pass. Open issues flagged below.
