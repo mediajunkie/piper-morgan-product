@@ -22,3 +22,12 @@ Inbox empty, 8 routine cohort commits, nothing to field. At (0,0) → advanced t
 - **Bug 2 (no-prune)**: script now prunes a role's own deltas >7d each run.
 - **All 4 behaviors verified** (guard rejects / normal works / 10d-old pruned / hook skips the bad shape, extracts cio from good ones). Closed with evidence.
 - Sprint cluster now 4 left (#973/#1277/#1191/#1287). Cron armed; next 16:07.
+
+### 16:37 — WORK fire: inbox empty → #1287 triage (CIO-lane part) → handed Lead
+Inbox empty, 11 routine commits. At (0,0) → advanced #1287 (Multi-Agent Coordinator dead-code removal — the **triage** is the CIO lane; deletion is Lead's). Ran a 4-level consumer-trace (methodology-30):
+- **Verdict: cluster IS dead in production** (no live entry: multi_agent_api unmounted; api/orchestration/ imported by nothing live), **BUT the 6/19 "confirmed-unwired" 4-file list was incomplete** — caught 2 edges that trace missed:
+  - **A dead method in a LIVE file**: `query_learning_loop.optimize_workflow_via_experiments` lazily imports `chain_of_draft`→coordinator; qll is live (web route + intent svc) but the method has NO prod caller (only `test_workflow_optimization`). Removing the 4 files alone → dangling import.
+  - **The cluster is interconnected** (chain_of_draft/kind_communication/3 integration modules/multi_agent_api/both `__init__`s all chain to the coordinator).
+- Posted the **dependency-complete removal set + live-entry checks + test list** to [#1287](https://github.com/mediajunkie/piper-morgan-product/issues/1287#issuecomment-4805100609); **mailed Lead** (`5493ccb58`) the signal-to-act. Exactly the methodology-30 verify-first value (prevented a removal that'd leave dangling imports).
+- Also noted: **#1191** (cloud-surface survey) is a findings-log confirming **the cloud Code surface has no `CronCreate`** → external triggers only — a direct input to the off-machine-cure decision (folded into carry-forward standing item).
+- Cron armed; next 19:07.
