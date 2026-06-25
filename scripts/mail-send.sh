@@ -78,6 +78,32 @@ while :; do
     commit=$(G commit-tree "$tree" -p "$base" -m "$MSG") || { echo "mail-send: commit-tree failed" >&2; exit 1; }
     if G push "$REMOTE" "$commit:refs/heads/$BRANCH" 2>/dev/null; then
         echo "mail-send v3: pushed ${commit:0:9} → $REMOTE/$BRANCH ✓ (attempt $attempt)"
+        # --- #1310: self-reconcile the worktree residue ------------------------------------------
+        # The just-sent paths now live on origin/main but still sit uncommitted in THIS worktree
+        # (new files = untracked; moved/modified = working-tree changes). A later `git merge` then
+        # collides ("untracked files would be overwritten" / "local changes would be overwritten").
+        # Fix: return ONLY these exact paths to their HEAD state so the next merge is collision-free.
+        # SURGICAL by construction — operates strictly on "$@" (paths the caller passed for THIS send,
+        # written seconds ago), never a broad `checkout -- .` / `reset --hard` (HARD RULE). Best-effort:
+        # the push already succeeded, so reconcile errors only warn — they never fail the send.
+        reconcile_fail=0
+        for f in "$@"; do
+            if G cat-file -e "HEAD:$f" 2>/dev/null; then
+                # tracked in HEAD → restore HEAD's version (undo this send's modify/delete);
+                # the eventual merge re-applies the change from origin/main cleanly.
+                G checkout -- "$f" 2>/dev/null || reconcile_fail=1
+            else
+                # untracked new file → drop the local copy (identical content is on origin/main now);
+                # the eventual merge re-adds it as a tracked file cleanly.
+                rm -f "$REPO/$f" 2>/dev/null || reconcile_fail=1
+            fi
+        done
+        if [ "$reconcile_fail" -eq 0 ]; then
+            echo "mail-send: worktree residue reconciled — a later 'git merge $REMOTE/$BRANCH' is now clean (#1310)"
+        else
+            echo "mail-send: warning — residue reconcile hit an edge case; reconcile leftovers by hand before your next merge (mail was sent OK)" >&2
+        fi
+        # ----------------------------------------------------------------------------------------
         exit 0
     fi
 

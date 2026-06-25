@@ -95,6 +95,32 @@ seed_status_after=$(git -C "$SEED" status --porcelain | sort)
 [ "$seed_head_before" = "$seed_head_after" ] && ok "main checkout's local HEAD untouched" || no "main checkout HEAD moved"
 [ "$seed_status_before" = "$seed_status_after" ] && ok "main checkout's dirty WIP untouched (nothing swept/stranded)" || no "main checkout WIP changed"
 
+echo "── T6: #1310 self-reconcile — no residue left on the sender's worktree, later merge is clean ──"
+# Realistic worktree: a feature branch with the agent's own commit ahead of main (so a plain
+# reset-to-main can't apply — the reconcile must be path-scoped, not a branch reset).
+clone wtE
+git -C "$T/wtE" checkout -q -b claude/wtE-cycle
+printf 'agent session-log work\n' > "$T/wtE/dev-note.txt"
+git -C "$T/wtE" add dev-note.txt; git -C "$T/wtE" commit -qm "agent's own commit ahead of main" >/dev/null 2>&1
+# Pre-seed a movable memo onto origin/main (clean ADD), then FF the feature branch to include it.
+printf 'movable\n' > "$T/wtE/mailboxes/cxo/inbox/memo-move-e.md"
+PIPER_REPO="$T/wtE" bash "$V3" "mail(e): T6 pre-seed movable" mailboxes/cxo/inbox/memo-move-e.md >/dev/null 2>&1
+git -C "$T/wtE" fetch -q origin
+git -C "$T/wtE" merge -q origin/main --no-edit >/dev/null 2>&1 || no "T6 pre-seed merge failed (harness bug)"
+# The reconcile scenario: a NEW memo (untracked ADD) + a MOVE of the seeded memo (tracked delete +
+# untracked ADD), all sent in one shot.
+printf 'reconcile test\n' > "$T/wtE/mailboxes/cxo/inbox/memo-e.md"
+mv "$T/wtE/mailboxes/cxo/inbox/memo-move-e.md" "$T/wtE/mailboxes/lead/read/memo-move-e.md"
+PIPER_REPO="$T/wtE" bash "$V3" "mail(e): T6 reconcile" \
+    mailboxes/cxo/inbox/memo-e.md \
+    mailboxes/lead/read/memo-move-e.md \
+    mailboxes/cxo/inbox/memo-move-e.md >/dev/null 2>&1
+residue=$(git -C "$T/wtE" status --porcelain -- mailboxes)
+[ -z "$residue" ] && ok "no mailbox residue left on worktree after send" || no "residue remains: $residue"
+if git -C "$T/wtE" merge -q origin/main --no-edit >/dev/null 2>&1; then ok "later 'git merge origin/main' is collision-free"; else no "merge collided (residue not reconciled)"; fi
+onmain "$T/wtE" mailboxes/cxo/inbox/memo-e.md && ok "the new memo still landed on origin/main" || no "new memo missing on origin"
+gone   "$T/wtE" mailboxes/cxo/inbox/memo-move-e.md && ok "the move's inbox half removed on origin/main" || no "move inbox-half not removed"
+
 echo ""
 echo "════════ RESULT: $PASS passed, $FAIL failed ════════"
 [ "$FAIL" = 0 ] && exit 0 || exit 1
