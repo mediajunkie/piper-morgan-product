@@ -26,3 +26,16 @@
 
 ### 03:37 — overnight WATCH (clean quiet-hold)
 Cron `b1bb59a6` fired the 03:07 WATCH on time (survived → it's holding). Inbox empty; 3 light cohort commits (agents winding down, not heavy catch-up). Nothing actionable; deep items remain fresh-session-banked. Quiet-hold; cron stays armed (next 10:07). Heartbeat commit only.
+
+## DAY-ARC — 2026-06-24 (CIO) — overnight: post-rate-limit recovery + both loops closed
+23:31 OVERNIGHT START (PM-directed after Tue's weekly-rate-limit pause) → **closed both open loops**: duty-cycle-tick rewrite (Lead Call-2 fold `ea20c381b` → **DinP hardened framing sent** `982b830`) + worktree (**rubric landed canonical** `5b7cabc53`; sweep-CODE fresh-session-banked) → **cron re-armed** `b1bb59a6` (prior died in the pause) → 03:37 WATCH clean. ~6 pushes. Overnight fielding mode held; the cron's b1bb59a6 carried into the 6/25 morning.
+
+## Memory & briefing surfaces referenced
+- **Referenced**: duty-cycle-tick skill (the fold target); `branch-worktree-mailbox-discipline.md` Rule 5; `merge-keeper-sweep.py`; Lead/Docs memos; the boundary/explicit-trigger rule (applied to bank the sweep-code); `mail-send.sh` + DinP repo mechanics; pins on careful-git + flywheel-continuous.
+- **Loaded but not referenced**: MEMORY.md bulk; standing-items.
+- **Wanted but not found**: nothing new.
+
+## Sign-off
+- All overnight work pushed per-unit through `935b9f0f9`; nothing stranded. Cron `b1bb59a6` holding (carries to the 6/25 day-log).
+
+<!-- DAY-CLOSED: 2026-06-24 -->
