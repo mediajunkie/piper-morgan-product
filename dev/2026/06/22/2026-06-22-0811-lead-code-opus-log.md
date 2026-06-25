@@ -34,3 +34,31 @@
   **Final verification**: all 5 containers healthy; site 401 (Caddy gate); encryption round-trip OK after 3rd app recreate. Passwords never logged — all generation done on the Droplet side in remote shell scripts, stored only in `/opt/piper/.env`. PM should retrieve and store in 1Password: `ssh root@alpha.pipermorgan.ai 'grep -E "POSTGRES_PASSWORD|REDIS_PASSWORD" /opt/piper/.env'`.
 
   **Remaining pending**: PM UI smoke test (encrypted write path — headless-unreachable); MCPB clean-machine test (before alpha-tester email). Rollback staged until PM smoke confirms.
+
+---
+
+## Session Wrap (Mon Jun 22 → Tue Jun 23 → closed Wed Jun 24 ~23:27 PDT)
+
+**Day arc**: Started 08:05 PDT Mon Jun 22. Closed #1289 (deleted dead `MorningStandupWorkflow` engine, −779 lines); alpha 0.8.9 deploy readiness investigation + sequence doc; RECONNECT sprint audit → 3 issues properly closed (#1226, #1233, #1232) + 4 follow-ups filed (#1314–#1317); RECONNECT remainder sequenced + PA looped. Late evening: alpha 0.8.9 Droplet deploy executed and verified (encryption round-trip OK after override fix). Into Tue Jun 23: security hardening approved by PM — firewall block (DOCKER-USER DROP 5432/6379/8000, boot-persistent), postgres password rotation (dev default → strong random), redis auth (requirepass + healthcheck override). PM tested alpha at ~23:27 Wed Jun 24; site up, rate limit hit Tue caused session gap. Session ends here.
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- `CLAUDE.md` — session start, sign-off, worktree model, mailbox discipline
+- `docs/internal/operations/alpha-deployment-runbook.md` — deploy mechanism, #1299 mitigation, encrypt-at-rest gotcha
+- `docker-compose.yml` — named environment list vs env_file distinction (encryption key fix)
+- `services/database/connection.py` — `POSTGRES_PASSWORD` env var name + fallback default
+- `dev/active/lead-carry-forward.md` — carry-in context for RECONNECT triage
+
+**Loaded but not referenced**: cross-pollination `current.md`, `BRIEFING-CURRENT-STATE.md`
+
+**Wanted but not found**: plaintext Caddy basicauth password (PM found it separately)
+
+## Sign-off checklist
+```
+git status: working tree clean at close
+git log @{u}..HEAD: empty (pushed to origin/main)
+git log main..HEAD: empty (merged)
+```
+
+<!-- DAY-CLOSED: 2026-06-22 -->
