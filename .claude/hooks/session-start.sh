@@ -155,6 +155,15 @@ if [ -d "$LOG_DIR" ]; then
         [ -f "$log" ] || continue
         # Extract slug: filename is YYYY-MM-DD-HHMM-{slug}(-code)?-opus-log.md
         base=$(basename "$log")
+        # Robust slug guard (#1153): require the exact digit YYYY-MM-DD-HHMM- prefix
+        # before the positional strip. The old code blindly stripped ????-??-??-????-,
+        # so a non-standard name like 2026-06-04-code-opus-log.md (no HHMM) had its
+        # 4-char role "code" consumed as the HHMM field → slug="opus-log.md" → a
+        # malformed delta-opus-log.md-*.md file. Skip non-conforming names instead.
+        case "$base" in
+            [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]-*-opus-log.md) ;;
+            *) continue ;;
+        esac
         stripped=${base#????-??-??-????-}
         stripped=${stripped%-opus-log.md}
         slug=${stripped%-code}
