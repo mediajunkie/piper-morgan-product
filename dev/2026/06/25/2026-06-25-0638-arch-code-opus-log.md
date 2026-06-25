@@ -47,3 +47,11 @@ Drained the morning queue in one wake (not bite-sized):
 **#1283 (routing-integrity) — probe-status CORRECTED, no fabrication.** Exec's queue said "Lead's probe results are in, awaiting your review." **Sweep-and-verified: they are NOT in** — no `reachability.py`, no probe artifact, GH issue unchanged since 6/19, Lead's 6/24 log shows the rate-limit week (Opus overloaded Tue→Sonnet; Wed-night START/triage/WATCH only). Last real state = the **6/19 resolver-shape ratification**. Did **not** fabricate an ADR-073 review of a non-existent probe (`[STOP when finding gaps in sources — don't cover for them]`); folded the correction into the Lead memo + flagged I'm ready to author ADR-073 the moment the gap list lands. This is the from-vantage-queue-item failure mode the attention-board sweep-and-verify discipline exists to catch.
 
 Net: the substantive deliverable was the **#1312 multi-Base ruling** (decisive, unblocks Lead's remediation). #1283 stays parked on Lead's probe. Queue otherwise awaiting others. Light hold; next cron fire 09:27.
+
+---
+
+### WATCH (06:54 cron tick) — no-op
+
+<!-- GAP-SINCE-LAST-FIRE: 0.3h -->
+
+Autonomous tick ~16 min after the START drain. Inbox empty; no reply yet to the #1312 ruling (cohort waking — Lead's last activity was 03:35 WATCH); no new commits touching my surfaces. Checked standing-items (all blocked on others — #973 Lead-coordination, ADR-068 M4-trigger, #972 CIO Daedalus, CIO/Exec-owned items) + briefing freshness (fresh, <2d). No unblocked Arch work to advance. Cron `3597d4a1` armed. Staying on the light hold; next fire 09:27.
