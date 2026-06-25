@@ -19,5 +19,5 @@
 
 - **06:45 — #1319 CLOSED (same commit).** Root cause: iOS/Android `100vh` includes hidden browser chrome, centering (`align-items: center`) places the card below the visible fold. Fix: `@media (max-width: 480px)` block overrides body to `align-items: flex-start + padding: 24px`. 3 template tests added. Both issues auto-closed from commit message. Pushed to origin/main (`f109faf63`).
 
-- **06:48 — Alpha deploy in progress.** SCP'd `web/api/routes/setup.py` + `templates/setup.html` to Droplet. `deploy.sh` running on server (builds Docker image + restarts app container). Pending: verify deploy succeeded + container healthy.
+- **06:48 — Alpha deploy + verified.** SCP'd `web/api/routes/setup.py` + `templates/setup.html` to Droplet. Container restarted (`docker compose restart app`). Verified healthy + confirmed with live curl: `POST /api/v1/setup/check-system` now returns `docker_available:true, postgres_ready:true, redis_ready:true, chromadb_ready:true, all_required_ready:true` (Temporal optional, not deployed — correct). Both alpha bundle blockers are fully resolved on the live alpha. PM needs to log in on phone and verify onboarding welcome card renders correctly (mobile layout + system check passing).
 
