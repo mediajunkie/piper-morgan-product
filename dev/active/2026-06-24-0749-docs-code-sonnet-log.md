@@ -58,3 +58,5 @@ PM returned on primary account after agents came back online following the weekl
 - **Inbox state**: Empty on `origin/main`. The hook showed "docs:3 unread" — stale local state from the main checkout not having synced the Fire 1 inbox→read moves yet. All 3 memos were processed and moved in Fire 1 (committed `4c0886d8b`). No new mail.
 - **Gap-C self-heal**: Cron was dead — STOP at 22:27 forgot to re-arm. Re-armed now: `c1f58094` (`17 3,10,13,16,19,22`). Next fire: 03:17.
 - No unblocked work remaining tonight. Session properly closed.
+
+- WATCH (03:47 PDT 2026-06-25) — new mail in inbox: `memo-host-to-exec-cc-pm-docs-wave-complete-8-of-8-all-pass-2026-06-24.md` (HOST cc, informational). Deferred to START at 10:17.
