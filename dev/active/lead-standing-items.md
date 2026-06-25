@@ -34,7 +34,7 @@ D2 design-system (#1286, CXO-led) runs alongside.
 
 **Filed this session (discovered work)**:
 - **#1309** stale onboarding test (GATHERING_REPOS vs COMPLETE) — for the onboarding owner.
-- **#1310** mail-send.sh residue tooling fix (reconcile-after-send) — until it lands, manually reconcile residue after each send.
+- ✅ **#1310** mail-send.sh residue tooling fix — **DONE 2026-06-25** (`c66bc7d6e`): the tool self-reconciles after a successful push; no manual post-send cleanup needed. 16/16 test-mail-send.sh.
 
 **Still-open M3-era (verify relevance on pickup)**:
 - **#1144** TEST-DISCIPLINE-REFACTOR (real SurfaceableInsight/ExtractedLearning fixtures).
@@ -57,7 +57,7 @@ D2 design-system (#1286, CXO-led) runs alongside.
 
 - **Cron** `cbe956dc` armed (`5 5,8,11,14,17,20` — 05:05 morning, 20:05 day-close). Session-only, auto-expires 7d → re-arm on the cycle.
 - **Inbox**: drain `mailboxes/lead/inbox/` to 0; move read items to `read/` per discipline.
-- **mail-send.sh residue**: until #1310 lands, reconcile after each send (drop-local copies + FF-merge) before the next commit/merge.
+- **mail-send.sh residue**: AUTO-reconciled since #1310 (2026-06-25) — the tool drops/restores its own residue after a successful push; no manual cleanup needed.
 - **Sync before commit**: `git fetch origin main && git merge origin/main` (the worktree branch is busy; FF races happen) — verify pushes land on origin/main by content, not exit code.
 - **Briefing freshness**: if `BRIEFING-CURRENT-STATE.md` is > 7d stale, refresh via the `update-current-state` skill (any agent who notices — PM standing request).
 
