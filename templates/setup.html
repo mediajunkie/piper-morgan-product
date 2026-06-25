@@ -298,10 +298,19 @@
         outline-offset: 2px;
       }
 
-      /* Mobile responsiveness for intro panel */
+      /* Mobile: top-align the page so card is visible near top of viewport.
+         On iOS/Android, 100vh includes hidden browser chrome; align-items:center
+         places the card below the visible fold. Switching to flex-start + padding
+         gives predictable placement across all mobile browsers (#1319). */
       @media (max-width: 480px) {
+        body {
+          align-items: flex-start;
+          padding: 24px 0 32px;
+          box-sizing: border-box;
+        }
+
         .piper-intro-panel {
-          padding: 30px 20px;
+          padding: 24px 20px 32px;
         }
 
         .piper-greeting {

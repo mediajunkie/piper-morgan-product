@@ -10,6 +10,7 @@ Issue #390: ALPHA-SETUP-UI Phase 1.1 - Backend API
 import asyncio
 import os
 import subprocess
+import urllib.parse
 import uuid
 from datetime import datetime, timezone
 from typing import Dict, Optional
@@ -161,12 +162,22 @@ class SetupCompleteResponse(BaseModel):
 # Helper Functions (adapted from setup_wizard.py)
 # ============================================================================
 
+# True when running inside a Docker container (/.dockerenv is the standard sentinel).
+# Used to select env-var defaults appropriate for Docker-internal networking vs local dev.
+_IN_DOCKER = os.path.exists("/.dockerenv")
+
 
 async def check_docker() -> bool:
-    """Check if Docker is installed and running (from setup_wizard.py line 254)"""
-    try:
-        import subprocess
+    """Check if Docker is available.
 
+    Inside a Docker container (hosted alpha, CI), Docker-managed services are running
+    by definition — the container itself proves that. Returns True immediately rather
+    than shelling out to a Docker CLI that doesn't exist inside the app container.
+    Local dev: falls back to the CLI check.
+    """
+    if _IN_DOCKER:
+        return True
+    try:
         result = await asyncio.to_thread(
             subprocess.run, ["docker", "--version"], capture_output=True, text=True, timeout=5
         )
@@ -187,29 +198,51 @@ async def check_service_port(host: str, port: int) -> bool:
 
 
 async def check_database() -> bool:
-    """Check PostgreSQL database connectivity (from setup_wizard.py line 477)
+    """Check PostgreSQL database connectivity.
 
-    Note: Uses simple port check to avoid event loop mismatch issues (#445).
-    The AsyncSessionFactory is initialized at app startup and may be in a different
-    event loop than the HTTP request handler.
+    Reads POSTGRES_HOST / POSTGRES_PORT from the environment (loaded by python-dotenv
+    at app startup from .env). On the hosted Droplet these are 'postgres' / 5432 (Docker
+    internal); local dev defaults to localhost:5433 (published port).
     """
-    # Use simple port check instead of session query to avoid event loop issues
-    return await check_service_port("localhost", 5433)
+    host = os.getenv("POSTGRES_HOST", "localhost")
+    port = int(os.getenv("POSTGRES_PORT", "5433"))
+    return await check_service_port(host, port)
 
 
 async def check_redis() -> bool:
-    """Check Redis connectivity (from setup_wizard.py line 462)"""
-    return await check_service_port("localhost", 6379)
+    """Check Redis connectivity.
+
+    Parses host and port from REDIS_URL (e.g. redis://:password@redis:6379).
+    Falls back to localhost:6379 for local dev without REDIS_URL set.
+    """
+    redis_url = os.getenv("REDIS_URL", "redis://localhost:6379")
+    parsed = urllib.parse.urlparse(redis_url)
+    host = parsed.hostname or "localhost"
+    port = parsed.port or 6379
+    return await check_service_port(host, port)
 
 
 async def check_chromadb() -> bool:
-    """Check ChromaDB connectivity (from setup_wizard.py line 467)"""
-    return await check_service_port("localhost", 8000)
+    """Check ChromaDB connectivity.
+
+    Reads CHROMADB_HOST / CHROMADB_PORT from env. Defaults to 'chromadb:8000'
+    when running inside Docker (service name), 'localhost:8000' for local dev.
+    """
+    default_host = "chromadb" if _IN_DOCKER else "localhost"
+    host = os.getenv("CHROMADB_HOST", default_host)
+    port = int(os.getenv("CHROMADB_PORT", "8000"))
+    return await check_service_port(host, port)
 
 
 async def check_temporal() -> bool:
-    """Check Temporal connectivity (from setup_wizard.py line 472)"""
-    return await check_service_port("localhost", 7233)
+    """Check Temporal connectivity.
+
+    Reads TEMPORAL_HOST / TEMPORAL_PORT from env (set in .env on the Droplet).
+    Defaults to localhost:7233 for local dev.
+    """
+    host = os.getenv("TEMPORAL_HOST", "localhost")
+    port = int(os.getenv("TEMPORAL_PORT", "7233"))
+    return await check_service_port(host, port)
 
 
 # ============================================================================
