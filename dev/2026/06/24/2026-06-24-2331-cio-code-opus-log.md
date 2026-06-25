@@ -23,3 +23,6 @@
 - **Worktree (Docs response)**: **rubric LANDED canonically** (`5b7cabc53`, discipline-doc Rule 5) with Docs's "not active" design-risk note + heuristic fallback captured. **Sweep-CODE step queued for a fresh focused pass** — honest call: it's *destructive* (removes worktrees) + the heuristic needs care → not drafting prune code at midnight; quality-banked with explicit trigger (fresh session), per the boundary rule I just hardened. Docs reply sent (`c8802e691`); rescue+prune of the current 31 to pair with Docs.
 - **Overnight cron RE-ARMED** (`b1bb59a6`, `7 3,10,13,16,19,22`) — the prior `3f213b33` didn't survive the rate-limit pause (CronList was empty). Next fire 03:07 WATCH.
 - Inbox drained; cohort catching up overnight (Comms also re-armed). **(0,0) → overnight fielding mode.** Both queued-deep items (sweep-code; off-machine firing cure) are explicit-trigger-banked, not "no rush."
+
+### 03:37 — overnight WATCH (clean quiet-hold)
+Cron `b1bb59a6` fired the 03:07 WATCH on time (survived → it's holding). Inbox empty; 3 light cohort commits (agents winding down, not heavy catch-up). Nothing actionable; deep items remain fresh-session-banked. Quiet-hold; cron stays armed (next 10:07). Heartbeat commit only.
