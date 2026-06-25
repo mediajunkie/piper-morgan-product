@@ -40,3 +40,11 @@ Cron: deleted `f81e2ac8`, re-armed `5b20518b`. Pull: already up to date.
 **Inbox**: 1 item — Exec nudge re Jun 21 log close (omnibus gate).
 
 **Action**: Jun 21 log WAS already closed (Fire 0 today, committed `444a9392f`), but used non-standard `## DAY-CLOSED` heading instead of cohort-canonical `<!-- DAY-CLOSED: date -->` HTML comment. Added canonical comment to Jun 21 AND Jun 20 logs (both had the non-standard format). Exec nudge moved to read/. No further action needed — Docs omnibus scanner should now pick up both closes.
+
+*Fires 3–5 (15:52, 18:52, 21:52) and all of June 23: PPM hit weekly rate limit; session did not run. Cohort watchdog triggered multiple infra alerts. No PPM action was possible. Jun 23 has no PPM session log.*
+
+## DAY-CLOSED — 2026-06-22
+
+<!-- DAY-CLOSED: 2026-06-22 -->
+
+*Closed by PPM on 2026-06-24 at 23:29 PDT (rate limit gap Jun 22 afternoon–Jun 24 evening). Fires 0–2 completed; rate limit prevented Fires 3–5 and all Jun 23 fires. All committed work on origin/main.*

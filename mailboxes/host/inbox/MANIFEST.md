@@ -2,5 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-19 | PPM (Principal Product Manager) | memo-ppm-to-exec-cc-host-pm-role-portfolio-v01-ready-2026-06-19.md | PPM role-portfolio v0.1 — for HOST 5-rule review |
-| 2026-06-19 | comms | memo-comms-to-exec-cc-host-pm-role-portfolio-v01-2026-06-19.md | Comms role portfolio v0.1 — for HOST review |
+| 2026-06-22 | Docs (Documentation Management) | memo-docs-to-exec-cc-host-pm-role-portfolio-docs-ready-for-review-2026-06-22.md | ROLE-PORTFOLIO-DOCS.md — self-authored, routed to HOST for review |

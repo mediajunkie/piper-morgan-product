@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — 2026-06-25 00:05 PT (overnight refresh)</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4;
+          --blocker:#7b1fa2; }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:820px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 .75rem; }
+  .legend { font-size:.8rem; color:var(--mute); margin:.5rem 0 1.5rem; }
+  .legend span { margin-right:1rem; white-space:nowrap; }
+  h2 { font-size:1.05rem; margin:1.75rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.7rem .9rem; margin:.55rem 0; }
+  .item.blocker { border-left-color:var(--blocker); }
+  .item.decision { border-left-color:var(--red); }
+  .item.drift { border-left-color:var(--amber); }
+  .item.clear { border-left-color:var(--green); }
+  .item .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; margin-bottom:.3rem; }
+  .agent { font-weight:700; }
+  .sev { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .4rem;
+         border-radius:4px; background:#eee; color:#444; }
+  .sev.blocker { background:#f3e5f5; color:var(--blocker); }
+  .sev.decision { background:#fde8e8; color:var(--red); }
+  .sev.drift { background:#fdf3e2; color:var(--amber); }
+  .sev.ok { background:#e8f5e9; color:var(--green); }
+  .summary { margin:.2rem 0 .3rem; }
+  .detail { font-size:.87rem; color:#444; margin:.2rem 0; }
+  .links a { color:var(--link); text-decoration:none; font-size:.82rem; margin-right:.9rem; }
+  .links a:hover { text-decoration:underline; }
+  .clean p { color:var(--mute); font-size:.9rem; margin:.2rem 0; }
+  .clean b { color:var(--ink); }
+  .bigclear { font-size:1.05rem; color:var(--green); font-weight:600; }
+  .resolved { font-size:.82rem; color:var(--mute); }
+  .resolved s { color:#aaa; }
+  .stale-tag { font-size:.72rem; background:#fff3cd; color:#856404; border-radius:4px; padding:.1rem .35rem; margin-left:.3rem; }
+  .fresh-tag { font-size:.72rem; background:#e8f5e9; color:var(--green); border-radius:4px; padding:.1rem .35rem; margin-left:.3rem; }
+  footer { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line); color:var(--mute); font-size:.8rem; }
+  .summary-row { display:flex; gap:1rem; margin:1rem 0 1.5rem; flex-wrap:wrap; }
+  .summary-card { flex:1; min-width:130px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:.75rem 1rem; text-align:center; }
+  .summary-card .num { font-size:2rem; font-weight:700; line-height:1; }
+  .summary-card .label { font-size:.78rem; color:var(--mute); margin-top:.25rem; }
+  .num.purple { color:var(--blocker); }
+  .num.red { color:var(--red); }
+  .num.amber { color:var(--amber); }
+  .num.green { color:var(--green); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by Exec · <b>2026-06-25 00:05 PT</b> · overnight refresh · 9 carry-forwards + recent commits read · GitHub-verified all cited issues</p>
+  <p class="meta" style="color:#2d7a3e; background:#e8f5e9; padding:.4rem .7rem; border-radius:6px; display:inline-block;">
+    ✅ Team back online: CIO, HOST, CXO, PA, Web, Comms, Docs all re-armed overnight after rate-limit pause.
+  </p>
+  <p class="legend">
+    <span>🛑 <b>Blocker</b> — work stuck</span>
+    <span>🔴 <b>Decision</b> — needs your call</span>
+    <span>🟡 <b>Drift/awareness</b> — worth knowing</span>
+    <span>⚪ <b>Clean</b> — no open PM item</span>
+  </p>
+
+  <div class="summary-row">
+    <div class="summary-card"><div class="num purple">2</div><div class="label">Blockers</div></div>
+    <div class="summary-card"><div class="num red">1</div><div class="label">Decisions</div></div>
+    <div class="summary-card"><div class="num amber">2</div><div class="label">Awareness</div></div>
+    <div class="summary-card"><div class="num green">6</div><div class="label">Clean / active</div></div>
+  </div>
+
+  <h2>🛑 Blockers — work stuck</h2>
+
+  <div class="item blocker">
+    <div class="top">
+      <span class="agent">Alpha bundle send</span>
+      <span class="sev blocker">BLOCKER</span>
+      <span class="sev blocker">Lead Dev — first tasks on re-login</span>
+    </div>
+    <p class="summary">Two issues gate the alpha tester bundle. Both confirmed OPEN via GitHub.</p>
+    <p class="detail">• <b>#1318</b> — Onboarding system-check shows "Services Not Running / Run: docker compose up -d" on the hosted Droplet. Hardcoded <code>localhost</code> ports instead of Docker-internal addresses. Every alpha tester would see a dev error.</p>
+    <p class="detail">• <b>#1319</b> — Welcome card tiny and low on screen, large gray dead space above. PM confirmed on phone UAT 6/24. Not suitable for mobile testers.</p>
+    <p class="detail">Lead Dev has not yet re-logged in (no carry-forward update since 6/22). These are their first two items when they do.</p>
+    <div class="links"><a href="https://github.com/mediajunkie/piper-morgan-product/issues/1318">#1318</a> <a href="https://github.com/mediajunkie/piper-morgan-product/issues/1319">#1319</a></div>
+  </div>
+
+  <h2>🔴 Decisions awaiting you</h2>
+
+  <div class="item decision">
+    <div class="top">
+      <span class="agent">Lead Dev + Arch</span>
+      <span class="sev decision">DECISION</span>
+      <span class="sev decision">#1312 — schema drift</span>
+    </div>
+    <p class="summary">~111 DB↔model schema diffs surfaced when Alembic env was fixed. Needs Arch review (multi-Base complexity) and PM sequencing call. Not urgent but non-trivial. Lead cannot proceed solo.</p>
+    <p class="detail">Arch carry-forward still from 6/17 — not yet resumed tonight. Once Arch re-logins, this is the natural first paired conversation with Lead Dev.</p>
+    <div class="links"><a href="https://github.com/mediajunkie/piper-morgan-product/issues/1312">#1312</a></div>
+  </div>
+
+  <h2>🟡 Drift / awareness — no decision, worth knowing</h2>
+
+  <div class="item drift">
+    <div class="top">
+      <span class="agent">Lead Dev</span>
+      <span class="sev drift">DRIFT</span>
+      <span class="stale-tag">carry-forward from 6/22</span>
+    </div>
+    <p class="summary">Lead Dev has not yet re-logged in tonight. Carry-forward is from 6/22. Their queue is PM/Arch-gated (alpha deploy batten-down, #1312, #1226 first-run). #358 encryption deploy also waiting on Lead — needs <code>ENCRYPTION_MASTER_KEY</code> set on Droplet by PM before it can close.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top">
+      <span class="agent">Arch</span>
+      <span class="sev drift">DRIFT</span>
+      <span class="stale-tag">carry-forward from 6/17 — 8 days stale</span>
+    </div>
+    <p class="summary">Arch has not re-logged in tonight. Oldest stale carry-forward in the cohort. No acute PM-attention items (all resolved or parked), but Arch is needed for #1312 schema drift and is nominally the next reviewer for Lead's ongoing RECONNECT work (#1283 routing audit awaiting the clean probe results).</p>
+  </div>
+
+  <h2>⚪ Clean — active overnight, no PM item</h2>
+
+  <div class="item clear">
+    <div class="clean">
+      <p><b>CIO</b> <span class="fresh-tag">updated 23:31</span> — Overnight fire complete. duty-cycle-tick rewrite loop closed (fold sent to DinP/Janus). Worktree-prune rubric landed in discipline doc. Sweep-code step quality-banked to a fresh session. Cron re-armed <code>b1bb59a6</code>.</p>
+      <p><b>HOST</b> <span class="fresh-tag">updated 23:29</span> — START complete. Role-portfolio wave 8/8 done (Docs passed). Cron re-armed <code>b1ec8c33</code>. No PM items.</p>
+      <p><b>CXO</b> <span class="fresh-tag">commit 2c8c816</span> — 6/22 retroactively closed, 6/24 overnight START logged. Re-arming. No open PM items surfaced.</p>
+      <p><b>PA</b> <span class="fresh-tag">commit c562a1a</span> — 6/22 closed, 6/24 overnight session started. Inbox triage done (16 items → read/). Alpha bundle ready once #1318/#1319 fixed.</p>
+      <p><b>Web</b> <span class="fresh-tag">updated 6/24</span> — #998 COMPOSE-UI-V1 shipped and live. Phase 3/4 surface to PM when ready. Clean.</p>
+      <p><b>Comms</b> — Beat 8 shipped 6/23. Re-arming overnight. Building narrative beat steer still awaiting PM; no decision needed tonight.</p>
+      <p><b>Docs</b> — June 22 omnibus done, dev/active partially cleaned. Inbox 0. PPM/CXO not yet resuming for Docs omnibus but overnight START logged for 6/24.</p>
+      <p><b>PPM</b> — Session log updated overnight (6/22 closed, 6/24 START). No carry-forward on file; no open PM items surfaced in recent commits.</p>
+    </div>
+  </div>
+
+  <h2>✅ Resolved since last board (23:17 PT)</h2>
+
+  <div class="item clear">
+    <div class="resolved">
+      <s>CIO duty-cycle-tick rewrite loop — CLOSED overnight</s> (fold done + hardened framing sent to DinP Janus/Themis; convergent-drift resolved in both projects)<br>
+      <s>HOST role-portfolio wave — 8/8 COMPLETE</s> (Docs was the last; passed 6/24 23:29)<br>
+      <s>PA inbox (16 items)</s> — triaged to read/ overnight<br>
+      <s>Worktree-prune rubric</s> — landed in discipline doc (CIO 5b7cabc53)
+    </div>
+  </div>
+
+  <footer>
+    <b>Bottom line:</b> Two alpha blockers unchanged (#1318/#1319 — Lead Dev hasn't re-logged yet). One sequencing decision (#1312). The rest of the cohort came back clean overnight — CIO, HOST, CXO, PA, Web, Comms, Docs all re-armed. Lead Dev and Arch are the two not yet back; their queues are PM/Arch-gated once they do return.<br><br>
+    <b>Live-state verification:</b> All cited issues checked via <code>gh issue view</code> at 00:05 PT 6/25. #1318, #1319, #1312, #1283, #998 confirmed OPEN. Recent commits scanned: CIO (3 commits), HOST, CXO, PA, Web all active post-23:00 PT. Lead Dev and Arch: no commits since 6/22 and 6/17 respectively.
+  </footer>
+</div>
+</body>
+</html>
