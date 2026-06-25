@@ -10,7 +10,12 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
 
 ## Open
 
-- _(none — reconciled 2026-06-20 STOP; the #1280 rail-spec block moved to Resolved.)_
+- **2026-06-25 · PM+PA · alpha-tester email gate** — the alpha onboarding blockers (#1318 system-check, #1319 mobile card) are SHIPPED + PM-UAT'd; #358 encryption verified live. **The one remaining pre-email gate is the MCPB clean-machine test** (PM + PA on a non-dev machine). Email v5 + zip are held pending it.
+- **2026-06-25 · PM · UI chat smoke test** — encrypted write path (send a chat message); now unblocked since onboarding works. Headless can't reach the full auth+LLM write path; needs a real PM login. #358 mechanism already proven in-container.
+- **2026-06-25 · PM+Arch · #1312 collapse sequencing + user_id-contract pairing** — Arch ruled the personality orphan-Base collapse; Lead scoped it (multi-caller refactor, not a 2-liner — see #1312 comment). Needs PM execution-sequencing (slots after the alpha gate) + Arch pairing on the user_id-contract destructive-vs-additive call. owner_id re-add rides with #357.
+- **2026-06-25 · PM+PA · RECONNECT remainder sequencing** — connector-refactor remainder (#1220 MCP-spine + #1317 ports, WS-2 #1229) is explicitly PM/PA sprint-chunking (sequencing doc `dev/2026/06/22/reconnect-remainder-sequencing-2026-06-22.md`). Awaiting the sequence to execute. Re-scope candidates flagged: #1230/#1231 (partially delivered, fold into ports).
+- **2026-06-25 · CXO · #1286 Slice 2 (radar tiling)** — Slice 1+3 shipped (render+lint-verified); Slice 2 CXO-gated (3 options memo'd `e6decb14f`); can't close #1286 until Slice 2 + CXO conformance + PM phone-UAT.
+- **2026-06-25 · PM · #1144 / #1131 greenlight** — two M3-era low-pri items (test-discipline refactor; canonical-judge-todo bug). Relevance-to-verify; want a PM greenlight before investing vs. possibly-stale work.
 
 ## Resolved
 
