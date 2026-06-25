@@ -30,3 +30,17 @@ PM directed: memo Exec for worktree clarity (no PM go-between) + do the skill re
 - **Broader 31-worktree proliferation → CIO-owned per Exec** (coordinate w/ Docs as merge-keeper). **Memo'd Docs** (`6ceadd03a`, cc PM): rescue the 3 unmerged (determined-heisenberg/interesting-goodall/mux-ui) BEFORE any prune + a concrete **prune-safety rubric** (merged + clean + not-active + not-main) + the **systematic fix** (ephemeral worktrees never self-clean → fold a worktree-prune pass into the daily merge-keeper sweep). Pending Docs's read.
 - Moved Exec scope-confirm + the (addressed) Ship-048 nudge to read/. **Inbox empty.** Open loops (pending-others): Lead's review of the skill rewrite (→ then DinP); Docs's read on the worktree fold.
 - **(0,0) → advanced a low-pri CIO-lane item (don't-idle): freeze-check FALSE-STALE REGRESSION TEST** (`5d33a9c21`, `scripts/test-duty-cycle-freeze-check.sh`). Locks in the 6/22 fix PM caught (`a92619f9b`) — which had no test. Registry-mode fixture (bare origin + clone): a role cycling via a **SONNET log under an UNTAGGED commit** (the exact ppm shape) must NOT flag + negative control (10h-old MUST flag). **2/2 pass.** Bonus: the first (broken) run emitted exactly `STALE testrole NO-HEARTBEAT` when no heartbeat was found → empirically confirms the test catches the bug-shape. (Hit a `GIT_COMMITTER_DATE` approxidate-rejected snag → switched to `@epoch +0000`.) Cron armed; next 13:07.
+
+## DAY-ARC — 2026-06-23 (CIO) — Tue: drained every PM directive + closed-out the queue, then rate-limited
+07:13 START (PM good-morning) → **drained all 3 PM directives**: worktree clarity (Exec memo, mystery later solved) + **duty-cycle-tick structural rewrite** drafted (`648f2201e`) → Lead + **Ship-#048 workstream review** delivered (`f92d68f34`). 10:29 WORK fire → worktree-nudge mystery solved (was the Ship-048 timing nudge, PM conflated) → broader 31-worktree cleanup kicked to Docs (rubric + systematic-fold proposal). (0,0) low-pri drain → freeze-check false-stale **regression test** (2/2). ~10 pushes through `7bd7e0d90`. Then **PM's weekly rate limit hit (Tue)** → session paused → resumed Wed 23:31. (Both open loops — Lead's review + Docs's response — landed during the pause and are waiting; draining them tonight.)
+
+## Memory & briefing surfaces referenced this session
+- **Referenced**: `duty-cycle-freeze-check.sh`/registry + the new regression test; the duty-cycle-tick skill (rewrite target); `mail-send.sh` push-to-ref; the workstream-048 kickoff + cxo exemplar; Lead/Exec/Docs memos; pins `feedback_idle_means_do_low_priority_not_nothing`, `feedback_never_touch_pm_main_checkout_working_tree`, `feedback_no_test_theatre`/evidence-required.
+- **Loaded but not referenced**: most of MEMORY.md; standing-items beyond the top.
+- **Wanted but not found**: nothing new — off-machine *firing* cure remains the standing PM-gated item.
+
+## Sign-off checklist
+- All 6/23 work pushed per-unit through `7bd7e0d90`; nothing stranded. `@{u}..HEAD` / `main..HEAD`: empty at pause.
+- Pause cause was PM's weekly rate limit (NOT a stall) — the cron's stacked ticks queued and replay as one wake.
+
+<!-- DAY-CLOSED: 2026-06-23 -->
