@@ -33,7 +33,7 @@ D2 design-system (#1286, CXO-led) runs alongside.
 - 🔒 Slice 2 (radar tiling) — **CXO-gated** (spec's dense tiling vs the roomy production `.radar-card`; memo `e6decb14f`, 3 options). Can't close #1286 until Slice 2 + the UATs.
 
 **Filed this session (discovered work)**:
-- **#1309** stale onboarding test (GATHERING_REPOS vs COMPLETE) — for the onboarding owner.
+- ✅ **#1309** stale onboarding test (GATHERING_REPOS vs COMPLETE) — **DONE 2026-06-25** (`854880c7d`): test driven through the #863 repo-linking step (links a repo → COMPLETE), giving that step real integration coverage. 3/3 class tests pass.
 - ✅ **#1310** mail-send.sh residue tooling fix — **DONE 2026-06-25** (`c66bc7d6e`): the tool self-reconciles after a successful push; no manual post-send cleanup needed. 16/16 test-mail-send.sh.
 
 **Still-open M3-era (verify relevance on pickup)**:
