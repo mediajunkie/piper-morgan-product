@@ -466,10 +466,18 @@ class TestOnboardingWiringIntegration:
         response = handler.handle_turn(onboarding_id, "That's all")
         assert response.state == PortfolioOnboardingState.CONFIRMING
 
-        # Handle confirmation
+        # Handle confirmation — flow now proceeds to the optional repo-linking step (#863)
+        # before completing, instead of going straight to COMPLETE.
         response = handler.handle_turn(onboarding_id, "Yes save them")
+        assert response.state == PortfolioOnboardingState.GATHERING_REPOS
+
+        # Link a GitHub repo to the (single) project — exercises the #863 repo-linking
+        # step end-to-end, then completes onboarding.
+        response = handler.handle_turn(onboarding_id, "mediajunkie/testapp")
         assert response.state == PortfolioOnboardingState.COMPLETE
         assert response.is_complete is True
+        # The linked repo was captured on the project.
+        assert response.captured_projects[0]["repo"] == "mediajunkie/testapp"
 
     async def test_singleton_manager_consistency(self):
         """
