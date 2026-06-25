@@ -28,9 +28,53 @@
 
 - **(~19:02–19:15) Fire 4 — #1318 filed; carry-forward updated.** PM shared phone UAT screenshots. Welcome screen loads on mobile. Onboarding system-check fails: "Services Not Running / Run: docker compose up -d" — `web/api/routes/setup.py` hardcodes `localhost:5433/6379/8000`, wrong on Droplet (Docker-internal network). Also checks `docker --version` which doesn't exist inside the app container. Filed #1318 — **blocker for alpha bundle send**. #1286 UAT partial (can't reach chat until #1318 fixed). First task for Lead Dev on re-login. Inbox empty both fires. Ship #048 confirmed published to blog via editorial calendar (blog URL present, status=published). LinkedIn URL not yet recorded — may be pending. 4 stale roles still down; watchdog fired 5× today (all expected from 6/23 account switch). Queue (0,0).
 
+## Day Arc (6/24)
+
+**Opened**: ~07:02 PT, cron START
+**Closed**: ~22:02 PT, STOP
+
+**What shipped today:**
+- Alpha site 502 root-caused (uvicorn `host="127.0.0.1"` invisible to Caddy across Docker network) → fixed on Droplet + repo; `PIPER_HOST` env var added (`5f5991c40`); `PIPER_HOST=0.0.0.0` in `/opt/piper/.env`
+- PA briefed on alpha bundle credential check + fix (`b196068dc`)
+- Ship #048 "The Team Puts It in Writing" — fully closed: published to blog + LinkedIn URL recorded (`68f28d662`)
+- #1318 filed — alpha onboarding system-check fails on hosted Droplet (hardcoded localhost ports); blocker for alpha bundle send; assigned to Lead Dev
+
+**Carry-forward to 6/25:**
+- 🔴 **#1318** — alpha bundle gated; Lead Dev first task on re-login
+- 🟡 4 stale roles re-login (CIO, Arch, CXO, PPM) — primary account expected to reset today/tomorrow
+- 🟡 #1286 phone-UAT — partial; re-test after #1318 fix
+- 🟡 v0.8.9 deploy confirm (#358) — Lead Dev lane
+- 🟡 Comms BYOC GTM + insight narrative — when Comms back
+- 🟡 Blog-editing UI reconfirm — when Web back
+- 🟡 Workstream reporting format revisit — when roles back
+
 ## Memory & briefing surfaces referenced this session
-- (filled at STOP)
+
+**Referenced:**
+- `exec-carry-forward.md` — read at each fire; rewritten at Fire 1 and Fire 4
+- `alpha-deployment-runbook.md` — consulted to find Droplet IP, Caddyfile location, docker-compose paths
+- `MEMORY.md` publishing cadence pin — confirmed Ship #048 blog/LinkedIn cadence
+- `editorial-calendar.csv` — updated Ship #048 LinkedIn URL; verified Ship #048 publish status at Fire 3
+
+**Loaded but not referenced:**
+- `BRIEFING-CURRENT-STATE.md` (loaded at START, no updates needed from Exec lane)
+- `exec-standing-items.md` (empty)
+
+**Wanted but not found:**
+- PIPER_HOST / Docker-env documentation — expected to find some note about the Docker host binding, found nothing; the bug was entirely undocumented
+
+## Sign-Off Checklist
+
+```
+git status          → working tree clean
+@{u}..HEAD          → empty
+origin/main..HEAD   → empty
+```
+
+All work on `origin/main`. ✓
+
+<!-- DAY-CLOSED: 2026-06-24 -->
 
 ---
 
-*— Exec (DinP / Sonnet 4.6), 6/24 START ~07:02 PT.*
+*— Exec (DinP / Sonnet 4.6), 6/24 STOP ~22:02 PT.*
