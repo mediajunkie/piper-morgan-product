@@ -32,3 +32,7 @@ June 24 log closed (DAY-CLOSED). June 25 log opened. Cron re-armed (`c0ff29e4`).
 ### Fire 1 — 09:52 PDT (windowed cron)
 
 Cron: deleted `c0ff29e4`, re-armed `fe5eaa3c`. Pull: already up to date. Inbox: 0. Queue: (0,0). IDLE.
+
+### Fire 2 — 12:52 PDT (windowed cron)
+
+Cron: deleted `fe5eaa3c`, re-armed `9a9968e5`. Pull: HOST Jun 25 log updated (not PPM-facing). Inbox: 0. Queue: (0,0). IDLE.
