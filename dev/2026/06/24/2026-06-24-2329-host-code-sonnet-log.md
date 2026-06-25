@@ -29,4 +29,5 @@
   - **Wave complete: 8/8.** All roles have living portfolios on origin/main. Wave completion memo sent to Exec (cc PM, Docs): `57e7db4e5`. Cross-wave observations: two-mandate structure valid; calibration questions healthy; refresh mechanisms all workflow-native.
   - June 22 log closed with rate-limit gap note. June 23 has no log (session dead).
   - PM asked for Docs nudge — not needed; Docs filed the portfolio on June 22 (same day as my nudge, arrived while session was still live).
+- Fire 2 (~06:37 Jun 25 window / overnight fire) — Inbox: empty. Queue clear — IDLE.
 
