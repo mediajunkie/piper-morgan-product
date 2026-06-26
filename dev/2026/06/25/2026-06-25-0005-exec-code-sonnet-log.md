@@ -43,3 +43,62 @@
 - 🟡 Comms Beat 9 awaiting PM voice-pass.
 
 - **(20:30) CXO live-but-blocked → CIO data point.** PM confirmed CXO stuck a 2nd time today on an approval prompt despite permissive env (now moving). Routed to CIO (`b685c6417`, cc PM): framed "live-but-blocked" as a distinct THIRD liveness category (vs dead-cron + idle-but-alive) — the off-machine firing cure won't reach it, and the root cause (permissive env still prompting) merits a CXO diagnostic. Also corrected carry-forward: Arch on-cycle (PM nudged, was between-fires not stalled); RECONNECT sweep → PM handling direct with Lead/PA (+ floated a sprint-review skill, I can draft spec on ask).
+
+- **(22:02) STOP fire — inbox drained, day closed.** One memo: Arch's #1312 user_id-contract ruling (cc me, primary Lead) — read + triaged. Good news for the #1312 collapse: smaller than feared (trust ×7 are a separate already-UUID repo; `"default_user"` sentinel is dead code), ruled UUID-everywhere, sequencing slots after the alpha gate per PM. Lead+Arch technical coordination — no Exec action.
+
+## Day Arc (6/25)
+
+**Opened**: continuous overnight watch from 6/24 (crossed midnight on PM prompts, not cron).
+**Closed**: 22:02 PT STOP.
+
+**What shipped today (Exec lane):**
+- **Two cohort attention rollups** — 00:05 overnight refresh (`5372a314b`) + 17:20 full sweep (`d1bee998f`), both live-state GitHub-verified, delivered to PM.
+- **Session-log nudges to Lead + Arch** (`1b2d5b08f`) — both caught up after; Lead then cleared both alpha blockers unprompted.
+- **Janus (DinP) day-focus — drained both directions** (19:02 fire): routed 2 PM-site items to Web (`d133ed698`, per PM's "Web owns the site" steer); replied to Janus in DinP repo (`61a2df5`) with alpha status + RECONNECT + blog + routing confirmation. Web actioned same evening (footer byline shipped + newsletter reply sent to Janus).
+- **CXO "live-but-blocked" → CIO data point** (`b685c6417`) — framed it as a distinct third liveness category the off-machine firing cure won't reach; flagged the root-cause diagnostic (permissive env still prompting).
+- **Duty cycle resumed** — re-armed cron `de99f10c` after the cloud/rate-limit gap.
+
+**Cohort day (for the record):**
+- Alpha blockers #1318/#1319 CLOSED + deployed (Lead). New #1320 onboarding auth-loop filed → #1162 Caddy-gate-removal decision (PM+Arch). #1309/#1310/#1286/#1153 closed.
+- #1312 — Arch ruled UUID-everywhere, scoped small; PM-sequence after alpha gate.
+- RECONNECT — PM delegated chunking to Lead; Lead's proposal landed (`0f33d157d`); #1283 → M5; tomorrow's start = Arch WS-2 Q + Chunk 1 (#1229).
+- Blog "The Hook and the Worktree" (Beat 9, slate-closer) PUBLISHED after PM voice-pass.
+- Liveness: Arch on-cycle (PM nudge, was between-fires); CXO stuck 2× on approval prompts (PM cleared both) → CIO data point.
+
+**Carry-forward to 6/26** (full state in `exec-carry-forward.md`):
+- 🛑 Alpha-email gates: MCPB clean-machine test (PM+PA) + #1320 → #1162 Caddy-gate-removal decision (PM+Arch).
+- 🔴 #1312 sequencing (PM, after alpha gate); #1144/#1131 greenlight (PM).
+- 🟡 #358 loose closure; watch Web→Janus newsletter loop closes; watch CIO pickup of the live-but-blocked data point.
+- Parked on PM nod: model-in-logs convention change; sprint-review skill (can draft spec on ask).
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced:**
+- `exec-carry-forward.md` — read/rewritten every fire (the single living state surface)
+- `cohort-attention-rollup` skill — drove both rollups (buckets, live-state pass, delivery)
+- `duty-cycle-tick` skill — fire dispatch (STOP last-fire-of-day rule, mail-loop, push-to-ref)
+- Lead's `reconnect-remainder-sequencing-2026-06-22.md` — the RECONNECT briefing I gave PM
+- `editorial-calendar.csv` — confirmed today's blog (Beat 9) + publish status
+- Janus day-focus memo — drove the Web routing + DinP reply
+- MEMORY pins: "Web ≠ product front-end" (routing the site items correctly), "info-holder writes it down", mail push-to-ref discipline
+
+**Loaded but not referenced:**
+- BRIEFING-CURRENT-STATE (Docs refreshed it today; no Exec edit needed)
+- HOST wave-complete memo (for-record only)
+
+**Wanted but not found:**
+- A canonical "cross-project mail channel" doc — I reverse-engineered the DinP `docs/mail/` flat-drop convention from a prior exec→janus memo + CIO's examples; a one-line pointer in DIRECTORY.md would save the rediscovery.
+
+## Sign-Off Checklist
+
+```
+git status          → clean (tracked); STOP commit pending below
+@{u}..HEAD          → (pushed below)
+origin/main..HEAD   → (pushed below)
+```
+
+<!-- DAY-CLOSED: 2026-06-25 -->
+
+---
+
+*— Exec (DinP / Sonnet 4.6, cloud session), 6/25 STOP ~22:02 PT.*
