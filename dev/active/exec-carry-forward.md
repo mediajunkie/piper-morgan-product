@@ -22,13 +22,23 @@
 - 🔴 **#1144 / #1131** greenlight (PM) — M3-era low-pri, possibly stale.
 
 ### Cohort liveness
-- 🟡 **Arch STALLED** — strong morning (START + #1312 ruling + #1283), silent after 06:54; needs re-prod.
-- 🟡 **CXO STALLED (again)** — recovered 09:07 from an approval-prompt block (PM cleared), wrote 6/24 + hygiene note, then silent; NO 6/25 START. Needs re-prod. Queued: setup-check UX copy review + #1286 Slice 2. **Watch the approval-prompt failure mode** — live-but-blocked looks frozen to the watchdog.
+- ✅ **Arch ON CYCLE** (PM-confirmed ~20:22) — not stalled; was just between fires (unread Lead msg, next fire ~1h out). PM nudged. The earlier 17:20 board "stalled" read was a false alarm (watchdog can't tell between-fires from frozen).
+- 🟡 **CXO — moving again** (PM-confirmed ~20:30). Stuck on an approval prompt **twice today** (~09:00 + evening) despite permissive env; PM cleared both. Queued: setup-check UX copy review + #1286 Slice 2. **→ Routed to CIO** (`b685c6417`, cc PM) as a liveness data point: "live-but-blocked" is a THIRD failure category distinct from cron-stall + idle-but-alive — the off-machine firing cure won't fix it, and the root-cause (why a permissive env still prompts) is worth a CXO diagnostic. Watching for CIO pickup.
 - 🟡 **Exec (me)** flagged 16h-stale by watchdog — false positive (alive on watch).
 
 ### Loose ends
 - 🟡 **#358** encryption deploy — Lead reports deploy verified, GitHub issue still OPEN; needs closing evidence + close.
-- 🟡 **Comms Beat 9** — pre-edit done, awaiting PM voice-pass.
+- 🟡 **Comms Beat 9** "The Hook and the Worktree" (today's blog, slate-closer) — pre-edit done, awaiting PM voice-pass → Docs publishes → Dispatch cross-posts.
+
+### Cross-project (Janus / DinP) — routed 6/25, watching for close
+- **Web ← two PM-site items** (`d133ed698`): newsletter cross-referral (Web → Janus: Piper newsletter name + subscribe URL + preference-center owner) + July-1 site minimums (footer byline + /about book-citation correction). Confirm Web closes the loop with Janus.
+- **Janus reply sent** (DinP `61a2df5`): alpha status, RECONNECT, blog pipeline, site routing.
+
+### Pending PM answers (don't block other work)
+- **Model-in-logs convention change** — recommended (drop model from filename, keep "Model at start" header); awaiting PM nod to route to HOST/CIO/Docs.
+
+### Resolved / handed off
+- **RECONNECT since-6/22 sweep** — PM is assessing RECONNECT **directly with Lead/PA** (not routing the sweep to me). Closed on my side. PM floated a **sprint-review skill** — I can draft the spec when he wants (it would formalize the live-state issue-sweep I did manually today; sibling to cohort-attention-rollup).
 
 ### Clean / active
 Lead Dev (huge day — #1318/#1319/#1309/#1310 closed, #358 deployed, #1320 filed), CIO (#1153 closed, #1287 → Lead, Iris runbook), Docs (omnibus 22/23/24 + BRIEFING refresh), HOST (Fire 4 idle), PPM (Fire 3 idle), Web (#998 live, Phase 3 ready), PA (bundle ready, MCPB-gated).

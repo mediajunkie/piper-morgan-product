@@ -11,7 +11,7 @@
 ### Queued (low-pri, unblocked when bandwidth)
 - **threshold v0.4 = wake-window-aware** — cio's flat 8h is too coarse for a daytime stall; tune against Arch's `GAP-SINCE-LAST-FIRE` data.
 - **Cohort-coverage expansion** — freeze-registry watches 5/11 (cio/exec/arch/cxo/ppm); extend to the rest via **owner-confirmed rows (Exec-coordinated opt-in)**, NOT inferred (false-nudge risk).
-- **Sprint cluster**: #973 / #1277 left. (#1153 DONE+CLOSED `ab44e595c`; **#1287 CIO-triage DONE 6/25** → consumer-traced, verified removal set posted, handed Lead for deletion `5493ccb58`; #1191 is a findings-log, not actionable.)
+- **Sprint cluster**: #973 / #1277 left. (#1153 DONE+CLOSED `ab44e595c`; **#1287 CIO part DONE 6/25** → consumer-traced + Lead surfaced a 3rd edge into methodology/ → I made the **boundary call: Option 1 expand** (`442305797`); Lead executes the full services/+methodology/ deletion pass + closes. #1191 findings-log, not actionable.)
 
 ### Standing / PM-gated
 - **Off-machine firing cure** — the deep structural fix for session-crons-don't-fire-while-backgrounded. Evidence now: ~7 stalls + the Tue rate-limit pause + the Iris caveat. **#1191 cloud-survey finding (folded in)**: the cloud Code surface has **no `CronCreate`** → off-machine firing needs an external trigger (**GitHub Actions cron**, Google Calendar recurring event, or Slack scheduled message). So the cure's option-space = {launchd-on-mac, GitHub Actions, Calendar/Slack scheduler, ~$70/mo Routines}. PM's call on cost; I can scope a comparison on request.
