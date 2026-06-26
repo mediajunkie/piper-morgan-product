@@ -59,3 +59,65 @@ PM directed 6 tasks: (1) run cleanup-dev-active, (2) advise on TODO/FIXME owners
   8. Added `docs/README.md review` section to Quality Checks checklist
   9. Added docs/README.md row to Completion Matrix (split existing "Quality Checks" into root README + docs/README rows)
 
+---
+
+## STOP (~22:47 PDT)
+
+### Day Arc
+
+Long day — PM asked for a 3-day omnibus catch-up after the June 22-23 weekly usage limit gap. Delivered everything asked, plus two unblocked items caught mid-session:
+
+**Omnibus catch-up (primary ask)**: Three omnibus logs written and pushed in a single morning session: June 22 (HIGH-COMPLEXITY, 11 agents), June 23 (STANDARD, 5 agents + 6 absent due to rate limit), June 24 (HIGH-COMPLEXITY, 10 agents). 26 activity-log rows appended in clean commits (Shape B reconciliation for all three days). Three Docs session logs archived from `dev/active/` to dated directories.
+
+**BRIEFING refresh** (STALE hook flag + PA Jun 24 flagging → mandatory): STATUS BANNER updated with Jun 22–25 attest; Inchworm Position updated (M2/M3/D1 CLOSED, RECONNECT WS-1 CLOSED/WS-2 active); Current Focus updated; Recent Progress June 19–25 section prepended. Clean standalone commit `19bfcb0c2`.
+
+**Evening PM multi-task**: Weekly docs audit run (#1313, all sections verified); dev/active cleanup (11 forensic docs archived `9ef2bfb68`); `.github/workflows/weekly-docs-audit.yml` updated (9 stale items fixed — paths, counts, Chesterton note on `/agent` commands, README.md addition). Key findings surfaced: `update-essential-briefings` job had stale `knowledge/` paths; 36/63 TODOs are intentional M4 stubs; `/api/standup` vs `/api/v1/standup/today` discrepancy in `ALPHA_QUICKSTART.md`.
+
+**Still PM-gated at day-end**: "The Hook and the Worktree" publish (pubDate was today) blocked on `image:/alt:/caption:` + line 73 SOURCE NEEDED; Branch-or-Anchor crosspost; CIO worktree rescue+prune.
+
+---
+
+### Memory & Briefing Surfaces Referenced This Session
+
+**Referenced** (informed decisions/actions):
+- `BRIEFING-CURRENT-STATE.md` — target of the refresh; STATUS BANNER/Inchworm/Recent Progress as update surfaces
+- `methodology-20-OMNIBUS-SESSION-LOGS.md` — format selection (HIGH-COMPLEXITY vs STANDARD), timeline rules, activity-log Shape B
+- `duty-cycle-tick` skill — WORK vs STOP dispatch, quiet-hold batching, STOP procedure
+- `docs/internal/operations/agent-activity-log.csv` — Shape B reconciliation rows appended
+- `feedback_never_touch_pm_main_checkout_working_tree.md` — all git operations from worktree only
+- `scripts/mail-send.sh` — push-to-ref for mailbox triage
+- `cleanup-dev-active` skill — dev/active triage decision tree and procedure
+- `.github/workflows/weekly-docs-audit.yml` — 9 stale items identified and fixed
+- `docs/public/comms/drafts/the-hook-and-the-worktree.md` — checked frontmatter + SOURCE NEEDED blockers
+
+**Loaded but not referenced**:
+- `docs/briefing/ROSTER.md` — in context window; roster detail not needed for today's work
+- `docs/briefs/cross-pollination/current.md` — session-start load; omnibus/briefing work didn't need it
+- `docs/agent-protocols/git-workflow.md` — standard ops handled without explicit reference
+
+**Wanted but not found**:
+- Commit hash for the weekly-docs-audit.yml update (evening session note omits it — should be in `git log`)
+- CIO's sweep-code design for worktree prune — expected a draft but still queued
+
+---
+
+### Sign-Off Checklist
+
+```
+$ git status
+ M dev/2026/06/15/merge-keeper-2026-06-15.md       ← PM edit; not Docs output
+ M docs/public/comms/drafts/patterns-naming-patterns.md  ← PM edit; not Docs output
+ D mailboxes/docs/inbox/* (×5)  ← mail-send.sh residue; already on origin/main in read/
+?? mailboxes/docs/read/* (×2)   ← same residue
+
+$ git log --oneline @{u}..HEAD
+(empty — no commits ahead of origin)
+
+$ git log --oneline origin/main..HEAD
+(empty — work is on origin/main)
+```
+
+Working tree has only PM edits and mail-send.sh residue — no Docs outputs untracked. All work on origin/main.
+
+<!-- DAY-CLOSED: 2026-06-25 -->
+
