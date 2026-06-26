@@ -5,7 +5,7 @@
 **🌙 6/25 STOP (22:37) → overnight** — Thu CLOSED (dense day: Iris runbook delivered + #1153 closed + #1287 boundary decision + liveness-model spec). **Cron `b1bb59a6` armed** (standing cycle continues), next **03:07 overnight WATCH**, then 10:07 Fri START. Inbox drained.
 
 ### Live / in-flight
-- **Iris Phase 3 cutover runbook — DELIVERED 6/25** (PM day-focus, via Janus relay; DinP `d0ade03`). Persistent worktree + dedicated `iris/heartbeat` branch + standing daily cron (`17 9`, durable) + verification + the foregrounded-idle caveat. **Offered Janus the Phase-4 off-machine-wake spec on request** — watch for a follow-up from Janus/Calliope.
+- **Iris cutover — runbook PROMOTED to canonical + reconcile done 6/26** (`66ec206`, DinP `docs/operations/duty-cycle/agent-heartbeat-cutover-runbook.md`, agent-agnostic). Reconcile: Iris self-cut-over on `claude/iris` — core PASSES; flagged the `claude/iris` name (prune-sweep risk → rename to `iris/heartbeat`) + confirm `durable:true` to **Calliope** (awaiting). Offered to mirror the liveness model into the canonical home. **Phase-4 off-machine-wake spec** still offered on request.
 - **Worktree cleanup (CIO-owned, pair w/ Docs)**: rubric LANDED canonical (`5b7cabc53`, discipline-doc Rule 5). **Two open pieces**: (1) the **sweep-CODE** (`prune_worktree` in `merge-keeper-sweep.py`) — *destructive* → **banked for a FRESH session** (explicit trigger, not "no rush"); (2) **one-time rescue+prune of the current 31** — pair with Docs (3 unmerged rescued first: determined-heisenberg/interesting-goodall/mux-ui).
 
 ### Queued (low-pri, unblocked when bandwidth)
