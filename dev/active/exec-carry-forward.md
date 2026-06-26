@@ -18,7 +18,7 @@
 
 ### Decisions awaiting PM
 - 🔴 **#1162** Caddy-gate removal (PM+Arch) — paired w/ #1320. STILL OPEN; the live alpha-onboarding decision.
-- 🟢 **#1312** personality-Base collapse — **technical decision DONE** (Arch ruled UUID-everywhere 20:40, scoped SMALL: trust ×7 are a separate UUID repo, sentinel is dead code; invariant-lint skeleton provided). Only **PM sequencing** remains (Arch+Lead concur: after the alpha-tester bundle gate). Lead has the gameplan.
+- ✅ **#1312** personality-Base collapse — **FULLY GREENLIT.** Technical decision done (Arch UUID-everywhere + lint skeleton) + **PM approved timing 6/26 07:45** → proceeds in its agreed slot (after the alpha-tester bundle gate, no pull-forward). Kickoff relayed to Lead cc Arch+PM (`0cfbbc439`). Off my plate → Lead executes when the alpha bundle clears. (Watch: PM to confirm if "approved" meant start-now vs after-alpha — I read it as after-alpha.)
 - 🟢 **RECONNECT remainder** — moving fast under Lead. **#1229 WS-2 CLOSED overnight** (`88a168aff` connector_bindings storage foundation; Arch-gate already cleared via ADR-070 D3). Re-scope RESOLVED (#1230 folds, #1231 pull-forward). Lead now on **Chunk 2 (ports)**. #1283 → M5. No Exec action.
 - 🔴 **#1144 / #1131** greenlight (PM) — M3-era low-pri, possibly stale.
 
