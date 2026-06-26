@@ -12,9 +12,10 @@
 
 ## Current state (6/25 17:25)
 
-### Alpha — gates remaining before tester email
-- 🛑 **MCPB clean-machine test** (PM + PA, non-dev machine) — the ONE remaining pre-send gate. Droplet + onboarding + #1318/#1319 all done + UAT'd. Email v5 + zip held pending it.
-- 🛑 **#1320 onboarding auth-loop** (NEW, onboarding-breaking) — LLM-key validation loops the Caddy basic-auth dialog on hosted browser path (MCP unaffected). Lead fixed one side-bug (check-keychain /api/v1 prefix). PM asks: (a) does it loop in FRESH incognito? (b) PM+Arch: remove the Caddy gate (**#1162**) — redundant now the app self-auths.
+### Alpha — SHIPPED (plugin path live with first tester) ✅
+- ✅ **MCPB plugin alpha IS OUT** — first external tester **Jake Krajewski** actively using it. PA iterating on his feedback: v0.1.4→**v0.1.6** (JSON-trailing-comma fix + install-UX rewrite: explicit "Personal plugins > +" path + "30MB warning = wrong section" callout). The "alpha-tester email send" blocker is RESOLVED for the plugin path.
+- ⏳ **Open (PA→PM)**: does the plugin install flow also have a size cap? PM finds out when testing v0.1.6.
+- 🔴 **#1320 / #1162 — SEPARATE PATH, still live.** #1320 is the *hosted-browser* onboarding auth-loop (Caddy basic-auth) — distinct from the plugin path Jake's on, so it no longer gates the alpha, but it's still an open browser-onboarding bug. Clean fix = #1162 Caddy-gate removal (PM+Arch). Lead asks: does it loop in fresh incognito? **Gated on Arch (re-stalled, see liveness).**
 
 ### Decisions awaiting PM
 - 🔴 **#1162** Caddy-gate removal (PM+Arch) — paired w/ #1320. STILL OPEN; the live alpha-onboarding decision.
@@ -22,13 +23,15 @@
 - 🟢 **RECONNECT remainder** — moving fast under Lead. **#1229 WS-2 CLOSED overnight** (`88a168aff` connector_bindings storage foundation; Arch-gate already cleared via ADR-070 D3). Re-scope RESOLVED (#1230 folds, #1231 pull-forward). Lead now on **Chunk 2 (ports)**. #1283 → M5. No Exec action.
 - 🔴 **#1144 / #1131** greenlight (PM) — M3-era low-pri, possibly stale.
 
-### Cohort liveness — UPDATED 10:02 (flag moved off Arch → CXO+PPM)
-- ✅ **Arch BACK** — roused ~07:30, did retroactive 6/25 close (#1312 fully ruled). Noted its **cron "stalled then died"** → needs re-arm to keep cycling (its own next-turn action). Quiet since 07:30.
-- 🔴 **CXO STALLED** — zero 6/26 activity; watchdog re-flagged 07:44 (`cxo ppm`). The approval-block-prone role. Needs rouse.
-- 🔴 **PPM STALLED** — newly watchdog-flagged 07:44; no 6/26 activity. Needs rouse/verify.
-- **Lead** — PM observed it "waiting for encouragement to continue" (RECURRING habit = bite-sizing antipattern). Nudged 10:10 (`c07898510`, cc PM): durable reframe (flywheel continuous + pre-authorized + finished-increment-is-a-commit-not-a-stop); named the only 2 genuinely-gated items (#1312-after-alpha, #1320/#1162 PM+Arch). **If it recurs → escalate to CIO as duty-cycle-methodology evidence** (CIO's banked "make save-for-next-fire structurally impossible" work).
-- 🔵 **CXO + PPM + CIO** — PM nudged all three ~10:08. Watching for resume.
-- *(CXO history: stuck 2× on approval prompts 6/25, PM cleared both → routed to CIO as the mode-3 "live-but-blocked" datum, `b685c6417`. If CXO is blocked again now, it's the same mode.)*
+### Cohort liveness — UPDATED 13:02
+- ✅ **CXO BACK** — Fire 1 10:55; setup-check UX review **confirmed done**. Recovered from PM's nudge.
+- ✅ **PPM BACK** — Jun 25 closed + Jun 26 log opened 10:56.
+- ✅ **CIO BACK** — shipped banked **freeze-check v0.4** (wake-window-aware threshold, Arch's ask) + Iris cutover reconcile. Active.
+- ✅ **PA active** — alpha-tester (Jake) feedback loop; v0.1.5/v0.1.6 shipped.
+- ✅ **Docs active** — Jun 25 omnibus (10 agents) + Jun 26 START.
+- 🔴 **Arch RE-STALLED** — watchdog re-flagged 12:44. Its cron "stalled then died" (flagged 07:30) and it didn't re-arm → stalled again. **Recurring Arch case; needs another rouse.** NB: CIO's v0.4 tunes the *threshold* (mode 2), not Arch's *cron-death* (mode 1) — Arch's loop won't self-heal without re-arm or the off-machine cure. **Blocks #1320/#1162.**
+- 🟠 **Lead — NOT resumed since 07:17.** My 10:10 keep-draining nudge is unread in its inbox → Lead likely **session-paused, not merely hesitating**. May need a PM *session prod*, not just encouragement. Watching.
+- *(CXO history: stuck 2× on approval prompts 6/25 → CIO mode-3 datum `b685c6417`.)*
 
 ### Loose ends
 - 🟡 **#358** encryption deploy — Lead reports deploy verified, GitHub issue still OPEN; needs closing evidence + close.
