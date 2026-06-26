@@ -1,6 +1,7 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-06-25 ~22:02 PT (STOP / day-close)
+**Last updated**: 2026-06-26 ~07:05 PT (START)
+**Session log today**: `dev/2026/06/26/2026-06-26-0702-exec-code-sonnet-log.md`
 **Role**: Chief of Staff (Exec) | Sonnet 4.6 | DinP account (cloud session)
 **Cron**: `32 6,9,12,15,18,21` — id `de99f10c` (re-armed 6/25; prior `e642db02` died in rate-limit/cloud gap)
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3`
@@ -18,7 +19,7 @@
 ### Decisions awaiting PM
 - 🔴 **#1162** Caddy-gate removal (PM+Arch) — paired w/ #1320. STILL OPEN; the live alpha-onboarding decision.
 - 🟢 **#1312** personality-Base collapse — **technical decision DONE** (Arch ruled UUID-everywhere 20:40, scoped SMALL: trust ×7 are a separate UUID repo, sentinel is dead code; invariant-lint skeleton provided). Only **PM sequencing** remains (Arch+Lead concur: after the alpha-tester bundle gate). Lead has the gameplan.
-- 🟢 **RECONNECT remainder** — **PM delegated chunking to Lead**; Lead's proposal landed (`0f33d157d`). #1283 → M5 (PM call). Tomorrow's Lead start = Arch WS-2 design-Q + Chunk 1 (#1229). Moving under Lead/PA; no longer waiting on me.
+- 🟢 **RECONNECT remainder** — moving fast under Lead. **#1229 WS-2 CLOSED overnight** (`88a168aff` connector_bindings storage foundation; Arch-gate already cleared via ADR-070 D3). Re-scope RESOLVED (#1230 folds, #1231 pull-forward). Lead now on **Chunk 2 (ports)**. #1283 → M5. No Exec action.
 - 🔴 **#1144 / #1131** greenlight (PM) — M3-era low-pri, possibly stale.
 
 ### Cohort liveness
@@ -38,7 +39,8 @@
 - **Model-in-logs convention change** — recommended (drop model from filename, keep "Model at start" header); awaiting PM nod to route to HOST/CIO/Docs.
 
 ### Resolved / handed off
-- **RECONNECT since-6/22 sweep** — PM is assessing RECONNECT **directly with Lead/PA** (not routing the sweep to me). Closed on my side. PM floated a **sprint-review skill** — I can draft the spec when he wants (it would formalize the live-state issue-sweep I did manually today; sibling to cohort-attention-rollup).
+- **RECONNECT since-6/22 sweep** — PM assessing directly with Lead/PA. Closed on my side. PM floated a **sprint-review skill** — I can draft the spec when he wants (sibling to cohort-attention-rollup).
+- **Live-but-blocked → CIO liveness spec** — CLOSED. CIO consolidated my mode-3 datum + Arch's stall + #1191 into `duty-cycle-liveness-model-2026-06-25.md` (`d835de03f`); 3-failure-mode model; build banked for fresh pass. **Forward item (banked by CIO): mode-3 root-cause diagnostic = CIO+Exec+CXO collaborative** — why a permissive session still prompts; don't drop it.
 
 ### Clean / active
 Lead Dev (huge day — #1318/#1319/#1309/#1310 closed, #358 deployed, #1320 filed), CIO (#1153 closed, #1287 → Lead, Iris runbook), Docs (omnibus 22/23/24 + BRIEFING refresh), HOST (Fire 4 idle), PPM (Fire 3 idle), Web (#998 live, Phase 3 ready), PA (bundle ready, MCPB-gated).

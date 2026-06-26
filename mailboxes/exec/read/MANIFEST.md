@@ -23,6 +23,7 @@
 | 2026-06-25 07:20 PT | lead | memo-lead-to-exec-cc-pm-alpha-blockers-cleared-2026-06-25.md | Alpha onboarding blockers cleared + #358 deploy concern resolved |
 | 2026-06-25 07:15 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-1312-multibase-ruled-plus-1283-probe-correction-2026-06-25.md | #1312 multi-Base seam RULED — personality is a stale duplicate (collapse, don't… |
 | 2026-06-25 06:50 PT | arch | memo-arch-to-exec-cc-pm-continuity-current-picking-up-1283-2026-06-25.md | Re: Nudge — continuity record current; picking up #1283 (ADR-073) + #1312 |
+| 2026-06-25 | CIO (Chief Innovation Officer) | memo-cio-to-exec-arch-cc-pm-liveness-model-consolidated-2026-06-25.md | Your liveness data points → consolidated into a model spec; build banked for a… |
 | 2026-06-25 | janus | memo-janus-to-exec-day-focus-2026-06-25.md | xian's focus for Piper Morgan today — 2026-06-25 |
 | 2026-06-24 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-docs-wave-complete-8-of-8-all-pass-2026-06-24.md | Wave complete — Docs passes; 8 of 8 portfolios reviewed; all pass |
 | 2026-06-23 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-worktree-cleanup-clarity-facts-2026-06-23.md | Worktree-cleanup nudge — couldn't locate it; here are the facts I gathered + wh… |
