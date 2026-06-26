@@ -26,7 +26,8 @@
 - ✅ **Arch BACK** — roused ~07:30, did retroactive 6/25 close (#1312 fully ruled). Noted its **cron "stalled then died"** → needs re-arm to keep cycling (its own next-turn action). Quiet since 07:30.
 - 🔴 **CXO STALLED** — zero 6/26 activity; watchdog re-flagged 07:44 (`cxo ppm`). The approval-block-prone role. Needs rouse.
 - 🔴 **PPM STALLED** — newly watchdog-flagged 07:44; no 6/26 activity. Needs rouse/verify.
-- **Lead** quiet since 07:17 (likely deep in ports, only ~3h — not flagged).
+- **Lead** — PM observed it "waiting for encouragement to continue" (RECURRING habit = bite-sizing antipattern). Nudged 10:10 (`c07898510`, cc PM): durable reframe (flywheel continuous + pre-authorized + finished-increment-is-a-commit-not-a-stop); named the only 2 genuinely-gated items (#1312-after-alpha, #1320/#1162 PM+Arch). **If it recurs → escalate to CIO as duty-cycle-methodology evidence** (CIO's banked "make save-for-next-fire structurally impossible" work).
+- 🔵 **CXO + PPM + CIO** — PM nudged all three ~10:08. Watching for resume.
 - *(CXO history: stuck 2× on approval prompts 6/25, PM cleared both → routed to CIO as the mode-3 "live-but-blocked" datum, `b685c6417`. If CXO is blocked again now, it's the same mode.)*
 
 ### Loose ends
