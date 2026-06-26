@@ -121,3 +121,7 @@ Working tree has only PM edits and mail-send.sh residue — no Docs outputs untr
 
 <!-- DAY-CLOSED: 2026-06-25 -->
 
+## Late Addendum — WATCH (03:22 PDT Jun 26)
+
+- **(03:22 PDT Jun 26) — WATCH**: Overnight fire. Inbox zero. No unblocked work. Cron `068afd9b` live. Jun 26 START on morning fire (~10:17).
+
