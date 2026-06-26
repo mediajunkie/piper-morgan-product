@@ -31,4 +31,12 @@
 - Fire 3 (~12:37) — Inbox: empty. IDLE.
 - Fire 4 (~15:37) — Inbox: empty. IDLE.
 - Fire 5 (~18:37) — Inbox: empty. IDLE.
+- Fire 6 (~21:37) — Inbox: empty. IDLE. Day-closing June 25.
+
+## Memory & briefing surfaces referenced this session
+**Referenced**: HOST carry-forward (sapient-trust poll schedule, wave status); ROLE-PORTFOLIO-FRAMEWORK.md (5 rules — for Docs review at START).
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md.
+**Wanted but not found**: nothing.
+
+<!-- DAY-CLOSED: 2026-06-25 -->
 
