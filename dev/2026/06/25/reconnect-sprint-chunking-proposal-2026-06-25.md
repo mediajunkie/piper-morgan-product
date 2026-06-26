@@ -24,9 +24,12 @@ Make connecting a connector a real product flow: Slack inbound setup path (#1201
 OAuth state → Redis (multi-process safe) + the `_make_request` missing-`user_id` latent bug.
 - **Blocked by**: mostly independent (Slack-specific); can slot anytime after Chunk 1. **Size**: S–M.
 
-### Chunk 5 — Independents & Cleanup · `#865` + `#1316` + `#1283`
-Not connector-framework-blocked, schedulable any time: setup-wizard componentize (#865); residual cleanup (#1316: federated_search degrade + WS-1 integration test + ADR-058 identity note); **routing-integrity audit (#1283)** — standalone, delegable, and it produces the gap list Arch needs to author ADR-073.
+### Chunk 5 — Independents & Cleanup · `#865` + `#1316`
+Not connector-framework-blocked, schedulable any time: setup-wizard componentize (#865); residual cleanup (#1316: federated_search degrade + WS-1 integration test + ADR-058 identity note).
 - **Blocked by**: none. **Size**: S each.
+
+### → M5 polish (PM call 2026-06-25) · `#1283` routing-integrity audit
+Moved OUT of the active sprint to **M5 (distro & polish, before launch)** per PM. Rationale: unhandled classifier actions already fall to the floor handler safely (#1124 floor-first dispatch), so this is harden-and-contract, not fix-live-breakage. Building #1283 derives the routing gap list → feeds Arch's **ADR-073 (Routing-Integrity Contract)**, which therefore also lands in M5. Arch needs no action until then (no live block).
 
 ### Parallel track (not connector-mechanics) — Hosted-beta foundation · `#1185` (+ `#1300`)
 BYO-key multi-tenant. Gated on the #1162 follow-on (app-layer invite control + RBAC #357/#1312) — we decided 6/25 to **keep the Caddy gate** for now, so #1185 waits on that. This track gates the 0.9.0 beta; distinct from finishing the connector refactor.
@@ -35,17 +38,19 @@ BYO-key multi-tenant. Gated on the #1162 follow-on (app-layer invite control + R
 
 **Critical path** runs Chunk 1 → Chunk 2 (credential model → spine/ports). The one thing gating it is the **Arch WS-2 design-decision**. So:
 
-1. **Tomorrow AM, first action (no code)**: send Arch the WS-2 design-decision question (does MCP-binding storage shrink #1229?). Unblocks the critical path.
-2. **In parallel, start coding NOW-unblocked**: **#1283 (Chunk 5)** — the only chunk with zero dependencies, it's sprint-tagged, and it derives the exact routing-integrity gap list Arch is waiting on for ADR-073. Clean self-contained first piece of real sprint code.
-3. **Chunk 1 (#1229)** once Arch's decision lands.
-4. **Chunk 2 (spine + ports)** — the bulk; #1230/#1231 fold in.
-5. **Chunks 3 → 4 → 5-remainder** by priority.
-6. **#1185 beta track** when its gate (invite-control + RBAC) clears.
+(Updated 2026-06-25 eve — PM moved #1283 → M5, so it's no longer the unblocked starter.)
 
-**So the answer to "what next": #1283, started immediately, with the Arch WS-2 question fired in parallel** — that gets real sprint code moving tomorrow AM without waiting on anyone, while teeing up the critical path (Chunk 1 → 2).
+1. **Tomorrow AM, first action (no code)**: send Arch the WS-2 design-decision question (does MCP-binding storage shrink #1229?). Unblocks the critical path.
+2. **Then dive into Chunk 1 (#1229)** — the **prep/investigation is unblocked even before Arch answers**: read the existing credential storage (`user_api_keys` table + Keychain path + ADR-058 cred model) and scope the binding-vs-raw-cred options; build the chosen shape the moment Arch's decision lands.
+3. **Chunk 2 (spine + ports)** — the bulk; #1230/#1231 fold in.
+4. **Chunks 3 → 4 → 5** by priority.
+5. **#1185 beta track** when its gate (invite-control + RBAC) clears. **#1283 + ADR-073 → M5.**
+
+**So the answer to "what next": fire the Arch WS-2 question, then dive into Chunk 1 (#1229)** — prep is unblocked now, build follows Arch's answer. Small unblocked fallback if Arch is slow: **#1110** (the self-contained Slack `_make_request` missing-`user_id` latent bug — real code, no deps), so the critical path stays primary instead of context-switching.
 
 ## For PM to ratify / adjust
-- The order (critical path #1229→spine, with #1283 as the unblocked starter)?
+- The order (critical path #1229 → spine; Arch WS-2 question first)?
 - The #1230/#1231 re-scope (fold into ports, don't build standalone)?
-- Is Slack robustness (Chunk 4) higher priority than I've placed it (if Slack is alpha-tester-facing)?
+- Is Slack robustness (Chunk 4) higher priority than I've placed it (if Slack is alpha-tester-facing)? — it's now the main standalone-unblocked option since #1283 moved to M5.
+- #1283 → M5 (PM-decided 2026-06-25). ✓
 - #865 / #1316 / #1283 — keep in the sprint or split out as their own track?
