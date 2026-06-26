@@ -38,7 +38,7 @@ set -uo pipefail
 REPO="${PIPER_REPO:-/Users/xian/Development/piper-morgan/piper-morgan-product}"
 REG="${DUTY_CYCLE_REGISTRY:-$REPO/dev/active/duty-cycle-registry.tsv}"
 FIRST_FIRE_GRACE_MIN="${FIRST_FIRE_GRACE_MIN:-10}"   # minutes past first_fire before a missing log = missed START
-now=$(date +%s); hour=$(date +%-H); min=$(date +%-M); now_min=$(( hour * 60 + min ))
+now=$(date +%s); hour=${FREEZE_CHECK_NOW_HOUR:-$(date +%-H)}; min=$(date +%-M); now_min=$(( hour * 60 + min ))
 today=$(date +%Y/%m/%d); today_dash=$(date +%Y-%m-%d)
 git -C "$REPO" fetch origin main -q 2>/dev/null || true
 
@@ -75,6 +75,33 @@ cycling_now() {
   return 0
 }
 
+# v0.4 (2026-06-26) — WAKE-WINDOW-AWARE threshold derived from the role's OWN cron cadence.
+# A flat per-role threshold is wrong in both directions: too coarse for a daytime stall (Arch 6/25 — a
+# 13.5h daytime stall a flat 8h flagged late; PM beat it at 5.4h) AND too tight overnight (legit overnight
+# gaps false-flag). Fix: from the cron's hour-list, find the EXPECTED inter-fire gap that BRACKETS the
+# current hour, and flag at ~1.5x that gap + 1h grace. Daytime = dense fires → small gap → tight threshold;
+# overnight = one big gap → wide threshold. Self-adjusts per role from its own cron; no manual day/night
+# columns. Falls back to the registry flat $thr if the cron hour-list can't be parsed.
+# args: now_hour, cron_expr ("MIN HOURS …"), fallback_thr → echoes the effective threshold (hours).
+expected_threshold() {
+  # All logic runs in awk BEGIN, so inputs come via -v (NOT $0 — $0 is empty in BEGIN).
+  awk -v cron="$2" -v nh="$1" -v fb="$3" 'BEGIN {
+      if (split(cron, parts, " ") < 2) { print fb; exit }    # cron = "MIN HOURS …"; need the HOURS field
+      n = split(parts[2], h, ",")
+      if (n < 2) { print fb; exit }                          # single-fire / unparseable → fallback
+      for (i=1;i<=n;i++) if (h[i] !~ /^[0-9]+$/) { print fb; exit }
+      for (i=1;i<=n;i++) h[i] = h[i] + 0; nh = nh + 0         # numeric coercion (else awk string-compares "10"<"5")
+      for (i=1;i<=n;i++) for (j=i+1;j<=n;j++) if (h[j]<h[i]) { t=h[i]; h[i]=h[j]; h[j]=t }
+      prev=""; nxt=""
+      for (i=1;i<=n;i++) if (h[i] <= nh) prev=h[i]            # latest fire-hour at/before now
+      for (i=1;i<=n;i++) if (h[i] >  nh) { nxt=h[i]; break }   # earliest fire-hour after now
+      if (prev=="") prev = h[n] - 24                          # before first fire today → last fire yesterday
+      if (nxt=="")  nxt  = h[1] + 24                          # after last fire today  → first fire tomorrow
+      gap = nxt - prev; if (gap < 1) gap = 1
+      print int(gap*3/2) + 1                                  # ~1.5x expected gap + 1h grace
+  }'
+}
+
 # ── LEGACY / TEST mode (explicit env override; bypasses registry + cycling gate) ──
 if [ -n "${DUTY_CYCLE_ROLES:-}" ]; then
   thr="${DUTY_CYCLE_STALE_H:-6}"; ws="${WAKE_START:-7}"; we="${WAKE_END:-23}"
@@ -93,7 +120,8 @@ while IFS=$'\t' read -r role cron thr ws we ff since; do
   (( hour < ws || hour >= we )) && continue           # outside this role's waking/alerting window
   cycling_now "$role" "$ff" || continue               # not-should-be-cycling now → skip
   if a=$(age_of "$role"); then
-    (( a >= thr )) && echo "STALE $role ${a}h (threshold ${thr}h; cron '$cron')"
+    thr_eff=$(expected_threshold "$hour" "$cron" "$thr")    # v0.4 wake-window-aware (falls back to flat $thr)
+    (( a >= thr_eff )) && echo "STALE $role ${a}h (dyn-threshold ${thr_eff}h wake-window-aware; cron '$cron')"
   else
     echo "STALE $role NO-HEARTBEAT (should be cycling but no recent (${role}) commit or session-log update)"
   fi
