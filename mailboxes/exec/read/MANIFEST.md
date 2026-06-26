@@ -17,6 +17,13 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-25 13:25 PT | lead | memo-lead-to-exec-cc-pm-pa-attention-rollup-2026-06-25.md | Lead attention-rollup for PM (PM running errands — fold into your cohort rollup) |
+| 2026-06-25 09:55 PT | lead | memo-lead-to-arch-cc-pm-exec-pa-1312-collapse-scoped-plus-1283-confirm-2026-06-25.md | Re: #1312 collapse — ruling accepted; it's a scoped multi-caller refactor (not… |
+| 2026-06-25 07:20 PT | lead | memo-lead-to-exec-cc-pm-alpha-blockers-cleared-2026-06-25.md | Alpha onboarding blockers cleared + #358 deploy concern resolved |
+| 2026-06-25 07:15 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-1312-multibase-ruled-plus-1283-probe-correction-2026-06-25.md | #1312 multi-Base seam RULED — personality is a stale duplicate (collapse, don't… |
+| 2026-06-25 06:50 PT | arch | memo-arch-to-exec-cc-pm-continuity-current-picking-up-1283-2026-06-25.md | Re: Nudge — continuity record current; picking up #1283 (ADR-073) + #1312 |
+| 2026-06-25 | janus | memo-janus-to-exec-day-focus-2026-06-25.md | xian's focus for Piper Morgan today — 2026-06-25 |
+| 2026-06-24 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-docs-wave-complete-8-of-8-all-pass-2026-06-24.md | Wave complete — Docs passes; 8 of 8 portfolios reviewed; all pass |
 | 2026-06-23 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-worktree-cleanup-clarity-facts-2026-06-23.md | Worktree-cleanup nudge — couldn't locate it; here are the facts I gathered + wh… |
 | 2026-06-23 | Janus (Curator, Design in Product) | memo-janus-to-exec-cc-xian-attention-doc-location-2026-06-23.md | Where does your HTML attention doc live? (I'm aggregating a cross-project rollu… |
 | 2026-06-23 | cio | workstream-048-cio-2026-06-23.md | Ship #048 workstream review — CIO lane (methodology / patterns / audits), Jun 1… |
