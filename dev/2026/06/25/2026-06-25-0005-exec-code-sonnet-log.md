@@ -41,3 +41,5 @@
 - 🟡 **Arch + CXO stalled** — re-prods needed; watch CXO's approval-prompt failure mode.
 - 🟡 #358 loose closure (deploy verified, issue OPEN).
 - 🟡 Comms Beat 9 awaiting PM voice-pass.
+
+- **(20:30) CXO live-but-blocked → CIO data point.** PM confirmed CXO stuck a 2nd time today on an approval prompt despite permissive env (now moving). Routed to CIO (`b685c6417`, cc PM): framed "live-but-blocked" as a distinct THIRD liveness category (vs dead-cron + idle-but-alive) — the off-machine firing cure won't reach it, and the root cause (permissive env still prompting) merits a CXO diagnostic. Also corrected carry-forward: Arch on-cycle (PM nudged, was between-fires not stalled); RECONNECT sweep → PM handling direct with Lead/PA (+ floated a sprint-review skill, I can draft spec on ask).
