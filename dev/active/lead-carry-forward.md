@@ -4,10 +4,12 @@
 
 ## ▶ TOMORROW AM — PLAN READY TO GO (read first)
 **PM removed the sequencing gate (6/25 eve): Lead chunks the RECONNECT sprint myself — PM will ratify or flag concerns.** Plan written: `dev/2026/06/25/reconnect-sprint-chunking-proposal-2026-06-25.md` (STATUS: PROPOSED). **Tomorrow AM, execute it unless PM objects:**
-1. **First (no code)**: fire the **Arch WS-2 design-decision** question (does MCP-binding storage shrink #1229?) — unblocks the critical path (Chunk 1 → Chunk 2 spine/ports).
-2. **Start coding: #1231 GitHub honest-degrade fix** (unblocked, user-facing, RECONNECT WS-4). Replace the silent `return {}` at the not-configured/not-connected sites in `services/intent_service/canonical_handlers.py` (~1422,1433,1480,1501,1511,1513) with an honest "connect me" degrade using the shipped #1232 `DegradationResponse` contract (mirror the calendar pattern). Fixes the #1226 trust shape PM has flagged repeatedly — *before* the tester wave. (Don't-fold-#1231 is a Lead recommendation pending PM ratify; #1230 DOES fold into the ports.)
-3. **Chunk 1 (#1229) prep in parallel** — read `user_api_keys` + Keychain path + ADR-058 cred model; scope binding-vs-raw-cred; build per Arch's answer.
-- **#1283 → M5** (PM 6/25). **Slack (Chunk 4 #1109/#1110) → later** (PM 6/25: "Slack can wait") — no longer the fallback.
+**Sequencing principle (PM 6/25):** order by *Lead's process / context-coherence*, not external urgency (alpha tester count is too low for tester-facing urgency to drive order). So: stay on the dependency spine, minimize context-switching, do everything-for-a-connector in one pass.
+
+1. **First (no code)**: fire the **Arch WS-2 design-decision** question (does MCP-binding storage shrink #1229?) — the one gate on the spine.
+2. **Then Chunk 1 (#1229) — the credential-model foundation.** Prep is unblocked now (read `user_api_keys` + Keychain path + ADR-058 cred model; scope binding-vs-raw); build to Arch's answer when it lands. Stay here rather than context-switch to filler.
+3. **Then Chunk 2 (#1220 spine + #1317 ports).** **Both #1230 AND #1231 fold in per-connector** (PM ratified #1230 fold 6/25; #1231 also folds — no tester-urgency + context-coherence: do each connector's resolution + honest-degrade *while in that connector's port*, one context-load, not a separate canonical_handlers.py pass that gets re-touched at port time). The #1232 contract + m-41 guard enforce honest-degrade as each connector ports.
+- **#1283 → M5** (PM 6/25). **Slack (Chunk 4 #1109/#1110) → later** (PM 6/25: "Slack can wait"). Then #1314/#1315 (data/first-run) → #1316/#865 (cleanup). #1185 beta track gated.
 Chunks: 1=#1229 (cred model, needs Arch Q first) → 2=#1220+#1317 spine/ports (bulk; #1230/#1231 fold in) → 3=connect-UX (#1201/#1314/#1315) → 4=Slack robustness (#1109/#1110) → 5=independents (#865/#1316/#1283). Beta track #1185 gated on #1162 follow-on.
 
 **Still-PM (the not-RECONNECT queue — hold/delegate/do):** #1287 (CIO GO'd, ready), CXO copy fix + debt, #1320 double-login. Surfaced; don't absorb more not-sprint work unilaterally beyond starting RECONNECT per the plan above.

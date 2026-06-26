@@ -24,8 +24,9 @@ Make connecting a connector a real product flow: Slack inbound setup path (#1201
 OAuth state → Redis (multi-process safe) + the `_make_request` missing-`user_id` latent bug. Moved down the order; not the near-term fallback.
 - **Blocked by**: mostly independent (Slack-specific). **Size**: S–M.
 
-### #1231 honest-degrade — PULL FORWARD, do NOT fold (Lead recommendation 6/25, pending PM ratify)
-**The re-scope is asymmetric.** #1230 (resolution) genuinely folds into the ports + the #1314/#1315 data follow-ups (its resolver logic exists; remainder is data-population + per-connector generalization). **#1231 does NOT** — its remainder is the live #1226 trust bug: GitHub `return {}` (silently empty) at ~6 sites in `canonical_handlers.py` when not-configured/not-connected → reads as "no issues" instead of "connect me." The #1232 contract shipped but isn't applied to these sites. **Folding #1231 into the ports defers this user-facing fix to Chunk 2 (weeks).** Small + unblocked now (apply the shipped contract / mirror calendar's pattern). Caveat: the GitHub handler gets touched again when it ports (#1317), but the honest-degrade behavior carries forward. → **Pull the not-configured honest-degrade fix forward as a near-term standalone**; the resolution-miss half rides with #1230/ports.
+### Re-scope RESOLVED (PM 6/25): fold BOTH #1230 and #1231 into the ports
+- **#1230** — fold (PM ratified). Resolver logic exists; remainder = data-population (#1314/#1315) + per-connector generalization (in the ports).
+- **#1231** — fold too. I'd recommended pulling it forward (the live #1226 GitHub-silent-`return {}` trust bug), but PM: alpha-tester count is too low for that tester-facing urgency to drive ordering, and **order should follow Lead's context-coherence** — so do each connector's honest-degrade *while porting that connector* (one context-load), not a separate `canonical_handlers.py` pass that gets re-touched at port time. The #1232 `DegradationResponse` contract + the m-41 guard (every adapter implements degrade) enforce honest-degrade **as each connector ports** → the guarantee isn't lost by folding.
 
 ### Chunk 5 — Independents & Cleanup · `#865` + `#1316`
 Not connector-framework-blocked, schedulable any time: setup-wizard componentize (#865); residual cleanup (#1316: federated_search degrade + WS-1 integration test + ADR-058 identity note).
@@ -43,13 +44,15 @@ BYO-key multi-tenant. Gated on the #1162 follow-on (app-layer invite control + R
 
 (Updated 2026-06-25 eve — PM moved #1283 → M5, so it's no longer the unblocked starter.)
 
-1. **Tomorrow AM, first action (no code)**: send Arch the WS-2 design-decision question (does MCP-binding storage shrink #1229?). Unblocks the critical path.
-2. **Start coding: #1231 GitHub honest-degrade fix** — unblocked, user-facing (the #1226 trust bug), RECONNECT, no dep on Arch or the ports. Replace the silent `return {}` in `canonical_handlers.py` with honest "connect me" degrade via the shipped #1232 contract.
-3. **Chunk 1 (#1229) prep in parallel** — read the cred surface, scope binding-vs-raw; build per Arch's answer.
-4. **Chunk 2 (spine + ports)** — the bulk; **#1230 folds in** (#1231's resolution-miss half rides here; its not-configured half done in step 2).
-5. **Chunks 3 → 5** by priority. **Chunk 4 (Slack) deprioritized.** **#1185 beta track** when its gate clears. **#1283 + ADR-073 → M5.**
+**Ordering principle (PM 6/25): by Lead's process/context-coherence, not external urgency** (tester count too low for tester-facing urgency). Stay on the dependency spine; minimize context-switching.
 
-**So the answer to "what next": fire the Arch WS-2 question, then start #1231 (GitHub honest-degrade)** — the best unblocked, user-facing first move (now that #1283→M5 and Slack waits), with Chunk 1 (#1229) prep alongside.
+1. **Tomorrow AM, first action (no code)**: send Arch the WS-2 design-decision question (does MCP-binding storage shrink #1229?). The one gate on the spine.
+2. **Chunk 1 (#1229) — credential-model foundation.** Prep unblocked now (read the cred surface); build to Arch's answer. Stay here rather than context-switch to filler.
+3. **Chunk 2 (#1220 spine + #1317 ports)** — the bulk; **#1230 + #1231 both fold in per-connector** (resolution + honest-degrade done while in each connector's port; #1232 contract + m-41 guard enforce degrade as each ports).
+4. **#1314/#1315** (data/first-run) → **#1316/#865** (cleanup), by priority. **Chunk 4 (Slack) deprioritized.**
+5. **#1185 beta track** when its gate clears. **#1283 + ADR-073 → M5.**
+
+**So the answer to "what next": fire the Arch WS-2 question, then start Chunk 1 (#1229 credential model)** — the foundation everything else builds on, and the most context-coherent place to begin.
 
 ## For PM to ratify / adjust
 - The order (critical path #1229 → spine; Arch WS-2 question first)?
