@@ -40,3 +40,7 @@ Cron: deleted `fe5eaa3c`, re-armed `9a9968e5`. Pull: HOST Jun 25 log updated (no
 ### Fire 3 — 15:52 PDT (windowed cron)
 
 Cron: deleted `9a9968e5`, re-armed `cf7903cd`. Pull: HOST Jun 25 log heartbeat (not PPM-facing). Inbox: 0. Queue: (0,0). IDLE.
+
+### Fire 4 — 18:52 PDT (windowed cron)
+
+Cron: deleted `cf7903cd`, re-armed `470951f9`. Pull: Exec→Web memo (pm-site-items-from-janus) + Lead attention rollup (not PPM-facing). Inbox: 0. Queue: (0,0). IDLE.
