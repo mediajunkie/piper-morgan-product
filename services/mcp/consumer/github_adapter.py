@@ -18,7 +18,11 @@ from services.integrations.spatial_adapter import (
     SpatialPosition,
 )
 
+from services.connectors.binding_repository import ConnectorBindingRepository
+from services.database.session_factory import AsyncSessionFactory
+
 from .connector import (
+    Binding,
     ConnectRequired,
     ConnectorStatus,
     ConnectorStatusState,
@@ -30,6 +34,8 @@ from .connector import (
     ResourceQuery,
 )
 from .consumer_core import MCPConsumerCore
+
+_GITHUB = "github"
 
 logger = logging.getLogger(__name__)
 
@@ -60,27 +66,46 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
 
         logger.info("GitHubMCPSpatialAdapter initialized")
 
-    # ── #1232 (RECONNECT WS-5): Connector-protocol conformance (ADR-070 D5) ──
-    # Structural proof that the contract fits this adapter. The full MCP-server
-    # binding / OAuth / DB-config wiring is the deferred port (ADR-070 D8 — needs
-    # WS-9 identity → WS-1 config → WS-2 creds first). The methods here are honest
-    # stubs: they degrade rather than pretend to be wired.
+    # ── #1232 (RECONNECT WS-5) Connector-protocol conformance (ADR-070 D5) ──
+    # #1317 port, increment 1 (2026-06-26): connect()/status() now read the per-user
+    # ConnectorBinding store (#1229 / ADR-070 D3 — Piper stores bindings, never raw
+    # tokens). The OAuth redirect-orchestrator + callback that CREATES the binding
+    # (ADR-070 OQ-5: MCP server owns OAuth) is increment 2; resolve() via the MCP
+    # client is increment 3. Honest-degrade throughout (never silently empty).
     IMPLEMENTS_CONNECTOR = True  # #1232: AST-guard (test_connector_contract_1232) enforces the 4 methods
 
     async def connect(self, user_id: str) -> ConnectResult:
-        # Honest stub: not wired yet → the must-be-handled ConnectRequired variant.
+        """Bound already → return the Binding; otherwise the must-be-handled ConnectRequired.
+
+        (#1317 inc.2 adds the redirect-orchestrator + callback that creates the binding —
+        until then an unbound user honestly gets "connect me", never a fake success.)
+        """
+        async with AsyncSessionFactory.session_scope() as session:
+            binding = await ConnectorBindingRepository(session).get(user_id, _GITHUB)
+        if binding is not None and binding.status == ConnectorStatusState.BOUND.value:
+            return Binding(binding_id=str(binding.id))
         return ConnectRequired(
             degradation=DegradationResponse(
                 reason=DegradationReason.CONNECT_REQUIRED,
-                user_message="GitHub isn't wired on the MCP-consumer path yet (deferred port).",
+                user_message="Connect GitHub to continue.",
             )
         )
 
     async def status(self, user_id: str) -> ConnectorStatus:
-        return ConnectorStatus(
-            state=ConnectorStatusState.UNBOUND,
-            detail="MCP-consumer port deferred (ADR-070 D8)",
-        )
+        """The user's GitHub binding health (ADR-070 D5) — read from the binding store, no
+        resource fetch, no token (D3). No binding → UNBOUND (the user must connect)."""
+        async with AsyncSessionFactory.session_scope() as session:
+            binding = await ConnectorBindingRepository(session).get(user_id, _GITHUB)
+        if binding is None:
+            return ConnectorStatus(
+                state=ConnectorStatusState.UNBOUND,
+                detail="No GitHub binding — connect to continue.",
+            )
+        try:
+            state = ConnectorStatusState(binding.status)
+        except ValueError:
+            state = ConnectorStatusState.UNBOUND  # unknown stored status → honest UNBOUND
+        return ConnectorStatus(state=state, detail=f"GitHub binding status: {binding.status}")
 
     async def resolve(self, user_id: str, resource: ResourceQuery) -> ResolveResult:
         # Honest stub: not wired yet → the must-be-handled ResolveMiss variant.
