@@ -22,8 +22,8 @@
 - 🔴 **#1144 / #1131** greenlight (PM) — M3-era low-pri, possibly stale.
 
 ### Cohort liveness
-- 🟡 **Arch STALLED** — strong morning (START + #1312 ruling + #1283), silent after 06:54; needs re-prod.
-- 🟡 **CXO STALLED (again)** — recovered 09:07 from an approval-prompt block (PM cleared), wrote 6/24 + hygiene note, then silent; NO 6/25 START. Needs re-prod. Queued: setup-check UX copy review + #1286 Slice 2. **Watch the approval-prompt failure mode** — live-but-blocked looks frozen to the watchdog.
+- ✅ **Arch ON CYCLE** (PM-confirmed ~20:22) — not stalled; was just between fires (unread Lead msg, next fire ~1h out). PM nudged. The earlier 17:20 board "stalled" read was a false alarm (watchdog can't tell between-fires from frozen).
+- 🟡 **CXO** — recovered 09:07 from an approval-prompt block (PM cleared), wrote 6/24 + hygiene note, then quiet; NO 6/25 START as of 19:00. **PM checking CXO next** (~20:22). Queued: setup-check UX copy review + #1286 Slice 2. **Watch the approval-prompt failure mode** — live-but-blocked looks frozen to the watchdog.
 - 🟡 **Exec (me)** flagged 16h-stale by watchdog — false positive (alive on watch).
 
 ### Loose ends
@@ -35,8 +35,10 @@
 - **Janus reply sent** (DinP `61a2df5`): alpha status, RECONNECT, blog pipeline, site routing.
 
 ### Pending PM answers (don't block other work)
-- **RECONNECT since-6/22 issue sweep** — offered to PM; awaiting his go vs. hand to Lead/PA. Gated on his choice.
 - **Model-in-logs convention change** — recommended (drop model from filename, keep "Model at start" header); awaiting PM nod to route to HOST/CIO/Docs.
+
+### Resolved / handed off
+- **RECONNECT since-6/22 sweep** — PM is assessing RECONNECT **directly with Lead/PA** (not routing the sweep to me). Closed on my side. PM floated a **sprint-review skill** — I can draft the spec when he wants (it would formalize the live-state issue-sweep I did manually today; sibling to cohort-attention-rollup).
 
 ### Clean / active
 Lead Dev (huge day — #1318/#1319/#1309/#1310 closed, #358 deployed, #1320 filed), CIO (#1153 closed, #1287 → Lead, Iris runbook), Docs (omnibus 22/23/24 + BRIEFING refresh), HOST (Fire 4 idle), PPM (Fire 3 idle), Web (#998 live, Phase 3 ready), PA (bundle ready, MCPB-gated).
