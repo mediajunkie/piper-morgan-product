@@ -27,6 +27,11 @@
 
 - **(17:20) Duty cycle resumed** — cron was empty (cloud/rate-limit gap); re-armed `de99f10c` per Gap-C self-heal. Cloud-session caveat: CronCreate may not fire reliably when backgrounded (CIO #1191 finding) — best-effort; PM-presence prompts remain the reliable wake.
 
+- **(19:02) Fire — mail loop drained (7 memos), 2 cross-project routes executed.** Cron healthy (one job). Inbox had 7; 5 already absorbed into today's rollups (Lead rollup/blockers-cleared, Arch #1312/#1283, Lead #1312-scoped), 2 new actionable:
+  - **Janus (DinP) day-focus** → two PM-site items + an alpha-status ask. **Routed both site items to Web** (`d133ed698`, cc PM) per xian's explicit "Web owns the PM site" steer (Janus had assumed Comms; xian flagged misdirection risk): (1) newsletter cross-referral — Web to supply Piper newsletter name + subscribe URL + preference-center owner to Janus; (2) July-1 site minimums (footer byline + /about book-citation correction). **Replied to Janus** in DinP repo (`61a2df5`, cc xian): #1318/#1319 confirmed CLOSED but alpha-email still gated on #1320 + MCPB test; RECONNECT moving (6/22 sequencing doc); today's blog = Beat 9 "The Hook and the Worktree" awaiting PM voice-pass → Docs → Dispatch; both site items routed.
+  - **HOST wave-complete** (response-requested: none) — all 10 role portfolios live on origin/main, 8/8 reviewed + passed. For the record. Cross-wave note for my file: BRIEFING-ESSENTIAL-WEB.md gap (Web's or Docs's call, not mine).
+  - Inbox now empty; MANIFESTs regenerated.
+
 ## Carry-forward to next fire
 
 - 🛑 **Alpha email**: MCPB clean-machine test (PM+PA) is the one remaining send-gate.

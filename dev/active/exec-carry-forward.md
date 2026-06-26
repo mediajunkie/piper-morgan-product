@@ -28,7 +28,15 @@
 
 ### Loose ends
 - 🟡 **#358** encryption deploy — Lead reports deploy verified, GitHub issue still OPEN; needs closing evidence + close.
-- 🟡 **Comms Beat 9** — pre-edit done, awaiting PM voice-pass.
+- 🟡 **Comms Beat 9** "The Hook and the Worktree" (today's blog, slate-closer) — pre-edit done, awaiting PM voice-pass → Docs publishes → Dispatch cross-posts.
+
+### Cross-project (Janus / DinP) — routed 6/25, watching for close
+- **Web ← two PM-site items** (`d133ed698`): newsletter cross-referral (Web → Janus: Piper newsletter name + subscribe URL + preference-center owner) + July-1 site minimums (footer byline + /about book-citation correction). Confirm Web closes the loop with Janus.
+- **Janus reply sent** (DinP `61a2df5`): alpha status, RECONNECT, blog pipeline, site routing.
+
+### Pending PM answers (don't block other work)
+- **RECONNECT since-6/22 issue sweep** — offered to PM; awaiting his go vs. hand to Lead/PA. Gated on his choice.
+- **Model-in-logs convention change** — recommended (drop model from filename, keep "Model at start" header); awaiting PM nod to route to HOST/CIO/Docs.
 
 ### Clean / active
 Lead Dev (huge day — #1318/#1319/#1309/#1310 closed, #358 deployed, #1320 filed), CIO (#1153 closed, #1287 → Lead, Iris runbook), Docs (omnibus 22/23/24 + BRIEFING refresh), HOST (Fire 4 idle), PPM (Fire 3 idle), Web (#998 live, Phase 3 ready), PA (bundle ready, MCPB-gated).
