@@ -1499,3 +1499,13 @@ date,role,slug,environment,model,log_filename,notes
 2026-06-24,Web,web,code,sonnet,2026-06-24-2329-web-code-sonnet-log.md,Overnight START+STOP; Jun 23 retroactively closed; cron re-armed; no code shipped
 2026-06-24,Chief Experience Officer,cxo,code,sonnet,2026-06-24-2330-cxo-code-sonnet-log.md,Overnight reconnect; Jun 22 retroactively closed; gap digest; setup UX copy review concern flagged (post-#1318)
 2026-06-24,Chief Innovation Officer,cio,code,opus,2026-06-24-2331-cio-code-opus-log.md,Overnight reconnect; skill-rewrite loop CLOSED (DinP hardened framing sent); worktree rubric landed in discipline-doc; cron re-armed; WATCH at 03:37
+2026-06-25,Chief of Staff (Exec),exec,code,sonnet,2026-06-25-0005-exec-code-sonnet-log.md,Two cohort attention rollups; session-log nudges to Lead+Arch; Janus DinP routing; #1320 liveness-category to CIO; #1162 gate-removal decision framed
+2026-06-25,Communications,comms,code,sonnet,2026-06-25-0615-comms-code-sonnet-log.md,Beat 9 pre-edit (cohort to team x6 PPM-only attribution); CIO memo backlog sent; Beat 9 published by PM after STOP
+2026-06-25,Documentation Management,docs,code,sonnet,2026-06-25-0622-docs-code-sonnet-log.md,Three omnibuses (Jun 22/23/24); 26 activity-log rows; BRIEFING refresh; dev/active cleanup; weekly-docs-audit.yml 9-item update; weekly audit run
+2026-06-25,Lead Developer,lead,code,opus,2026-06-25-0635-lead-code-opus-log.md,#1318/#1319/#1310/#1309 CLOSED; #1320 filed+investigated+side-bug fixed; Caddy rotation; #1287 verify-first methodology edge surfaced to CIO; #1312 Arch rulings actioned
+2026-06-25,Head of Sapient Trust,host,code,sonnet,2026-06-25-0637-host-code-sonnet-log.md,Sapient-trust poll 0 open; IDLE all day
+2026-06-25,Chief Architect,arch,code,opus,2026-06-25-0638-arch-code-opus-log.md,#1312 multi-Base seam RULED; user_id-contract RULED UUID-everywhere; invariant-lint authored; #1283 probe corrected; cron stalled 09:27-18:27
+2026-06-25,Principal Product Manager,ppm,code,sonnet,2026-06-25-0652-ppm-code-sonnet-log.md,IDLE all day; inbox zero; all standing items PM-gated
+2026-06-25,Web,web,code,sonnet,2026-06-25-0652-web-code-sonnet-log.md,Footer byline shipped to pipermorgan.ai; newsletter facts sent to Exec for Janus
+2026-06-25,Chief Experience Officer,cxo,code,sonnet,2026-06-25-0931-cxo-code-sonnet-log.md,Setup UX Colleague Test review; intro-panel copy proposal; twice blocked on approval prompts
+2026-06-25,Chief Innovation Officer,cio,code,opus,2026-06-25-1037-cio-code-opus-log.md,Iris Phase 3 runbook delivered; #1153 CLOSED; #1287 boundary GO; liveness model spec d835de03f
