@@ -22,10 +22,12 @@
 - 🟢 **RECONNECT remainder** — moving fast under Lead. **#1229 WS-2 CLOSED overnight** (`88a168aff` connector_bindings storage foundation; Arch-gate already cleared via ADR-070 D3). Re-scope RESOLVED (#1230 folds, #1231 pull-forward). Lead now on **Chunk 2 (ports)**. #1283 → M5. No Exec action.
 - 🔴 **#1144 / #1131** greenlight (PM) — M3-era low-pri, possibly stale.
 
-### Cohort liveness
-- ✅ **Arch ON CYCLE** (PM-confirmed ~20:22) — not stalled; was just between fires (unread Lead msg, next fire ~1h out). PM nudged. The earlier 17:20 board "stalled" read was a false alarm (watchdog can't tell between-fires from frozen).
-- 🟡 **CXO — moving again** (PM-confirmed ~20:30). Stuck on an approval prompt **twice today** (~09:00 + evening) despite permissive env; PM cleared both. Queued: setup-check UX copy review + #1286 Slice 2. **→ Routed to CIO** (`b685c6417`, cc PM) as a liveness data point: "live-but-blocked" is a THIRD failure category distinct from cron-stall + idle-but-alive — the off-machine firing cure won't fix it, and the root-cause (why a permissive env still prompts) is worth a CXO diagnostic. Watching for CIO pickup.
-- 🟡 **Exec (me)** flagged 16h-stale by watchdog — false positive (alive on watch).
+### Cohort liveness — UPDATED 10:02 (flag moved off Arch → CXO+PPM)
+- ✅ **Arch BACK** — roused ~07:30, did retroactive 6/25 close (#1312 fully ruled). Noted its **cron "stalled then died"** → needs re-arm to keep cycling (its own next-turn action). Quiet since 07:30.
+- 🔴 **CXO STALLED** — zero 6/26 activity; watchdog re-flagged 07:44 (`cxo ppm`). The approval-block-prone role. Needs rouse.
+- 🔴 **PPM STALLED** — newly watchdog-flagged 07:44; no 6/26 activity. Needs rouse/verify.
+- **Lead** quiet since 07:17 (likely deep in ports, only ~3h — not flagged).
+- *(CXO history: stuck 2× on approval prompts 6/25, PM cleared both → routed to CIO as the mode-3 "live-but-blocked" datum, `b685c6417`. If CXO is blocked again now, it's the same mode.)*
 
 ### Loose ends
 - 🟡 **#358** encryption deploy — Lead reports deploy verified, GitHub issue still OPEN; needs closing evidence + close.
@@ -52,6 +54,6 @@ Lead Dev (huge day — #1318/#1319/#1309/#1310 closed, #358 deployed, #1320 file
 
 ## PM-attention items
 - **MCPB clean-machine test** + **#1320/#1162** = the alpha-email gate.
-- **Re-prod Arch + CXO.**
+- **Re-prod CXO + PPM** (watchdog-flagged 07:44; Arch already back).
 
 *— Exec (DinP / Sonnet 4.6, cloud session), 6/25 17:25 PT*
