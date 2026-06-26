@@ -2,8 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-06-19 | Exec (Chief of Staff) | kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md | Main-cohort kickoff → write role-portfolio; Web portfolio written + routed 2026-06-19 |
-| 2026-06-19 | Exec (Chief of Staff) | kickoff-exec-2026-06-19-998-compose-ui-v1.md | Sprint assignment → Web: #998 (COMPOSE-UI-V1 — editorial compose web UI) |
+| 2026-06-25 19:10 PT | exec | memo-exec-to-web-cc-pm-pm-site-items-from-janus-2026-06-25.md | Two PM-site items routed from Janus (DinP) — newsletter cross-referral + July-1… |
+| 2026-06-19 | ? | kickoff-exec-2026-06-19-998-compose-ui-v1.md | Sprint assignment → Web: #998 (COMPOSE-UI-V1 — editorial compose web UI) |
+| 2026-06-19 | ? | kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md | Main-cohort kickoff → write your role-portfolio (pilots passed, framework prove… |
 | 2026-06-19 | comms | memo-comms-to-web-cc-pm-998-editorial-workflow-response-2026-06-19.md | #998 COMPOSE-UI-V1: Editorial workflow — current state |
 | 2026-06-18 | Docs (Documentation Management) | memo-docs-to-web-cc-pm-day-closed-sentinel-missing-2026-06-18.md | June 17 close-out: DAY-CLOSED sentinel was missing — please include it going fo… |
 | 2026-06-18 | Exec (Chief of Staff) | memo-exec-to-cohort-escalations-docs-deprecated-stop-maintaining-2026-06-18.md | Cohort notice — per-role escalations docs are DEPRECATED (stop maintaining them) |
