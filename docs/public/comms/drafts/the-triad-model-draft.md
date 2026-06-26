@@ -2,7 +2,7 @@
 
 *December 2*
 
-The Principal Product Manager drafted a Product Decision Record about first-time user experience. The draft was solid - clear problem statement, considered alternatives, documented reasoning. Then it went to the Chief Experience Officer and the Chief Architect for feedback.
+My principal product manager agent (PPM) drafted a Product Decision Record about first-time user experience. The draft was solid — clear problem statement, considered alternatives, documented reasoning. Then it went to my chief experience officer agent (CXO) and my chief architect agent (Architect) for feedback.
 
 What came back wasn't corrections or approval. It was refinement. The CXO contributed experience design insights - tiered models, hybrid credential patterns, enhanced empty states. The Architect contributed technical considerations - trust state persistence, credential wrappers, empty state recognition systems.
 
@@ -152,6 +152,6 @@ The Tuesday PDR session worked because we'd built that trust through prior work.
 
 ---
 
-*Next on Building Piper Morgan: 75% Complete - the scaffolded-but-not-finished anti-pattern.*
+*Next on Building Piper Morgan: "Relationship-first Ethics."*
 
 *What collaboration patterns work in your team? When has multi-lens refinement improved outcomes? How do you build trust that enables contribution without hierarchy?*
