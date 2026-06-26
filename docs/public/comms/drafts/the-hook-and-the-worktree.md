@@ -1,7 +1,7 @@
 ---
-image:
-alt:
-caption:
+image: ai-buckets.png
+alt: 'A crowded bridge crossing is surrounded by piles of reminders warning about a missing plank, while a quiet carpenter simply installs the missing board—showing how a small structural fix succeeds where constant vigilance does not.'
+caption: "Mind the gap!"
 ---
 
 # The Hook and the Worktree
@@ -10,11 +10,11 @@ caption:
 
 By the second week of May we'd written a procedure called *close-issue-properly* and turned it into a working skill the agents were supposed to invoke whenever they closed a GitHub issue. The procedure was short. Update the description checkboxes first. Then move the issue to closed. Then add a closing comment with evidence. The order mattered. Boxes checked first because a description with empty checkboxes after a *Closes #N* commit is permanently misleading. The closing-comment evidence reads as the audit trail.
 
-Tuesday May 13 I asked Lead Dev to verify that recent closures had followed the skill.
+Tuesday May 13 I asked the Lead Developer agent to verify that recent closures had followed the skill.
 
 The verification didn't take long. Thirteen of the last thirteen closed issues had unchecked description boxes. The skill existed. The skill named the right failure mode. The skill wasn't firing on any closure cycle the team had run for at least the prior several weeks.
 
-# The remediation
+# Belt, suspenders, and twine
 
 Three layers landed the same day.
 
@@ -28,11 +28,11 @@ Six of the thirteen audited closures turned out to have more than checkbox issue
 
 That's the first arc of this piece. A procedure that wasn't firing got the structural backing it needed in three layers. The arc closed inside thirty-six hours.
 
-# The second arc
+# Worktree woes
 
 Friday May 15 morning my principal product manager agent (PPM) ran a sustained shipping sprint — fourteen commits in a few hours covering five substantive memos, a product-decision document iterating from v0.1 through v0.3, and a workstream review. The sprint happened on the project's shared `main` branch — the working tree everyone uses when they're not on a feature branch.
 
-The sprint produced four distinct *foreign-state-capture* incidents. Each one was a different shape of the same failure mode. Adjacent inbox-to-read mailbox renames getting captured into PPM's commits via git's rename detection. A draft document wiped from PPM's working tree by another agent's concurrent rebase. Index entries getting dropped between staging and commit when a concurrent agent committed in the same window. CXO's tracked-but-unstaged deletions getting absorbed into PPM's session-log commit.
+The sprint produced four distinct *foreign-state-capture* incidents — moments when one agent's uncommitted work ended up folded into another agent's commit. Each one was a different shape of the same failure mode. Adjacent inbox-to-read mailbox renames getting captured into PPM's commits via git's rename detection. A draft document wiped from PPM's working tree by another agent's concurrent rebase. Index entries getting dropped between staging and commit when a concurrent agent committed in the same window. Tracked-but-unstaged deletions from the chief experience officer agent (CXO) getting absorbed into PPM's session-log commit.
 
 The team had a stack of memory pins from the prior five weeks for exactly this category of failure. *Git reset HEAD before staging.* *Verify branch identity before every commit.* *Read every line of `git diff --cached --name-only`.* *Run `git show --stat HEAD | head -30` post-commit and pre-push.* Each pin had landed in response to a specific incident. Each pin worked, in the sense that disciplined application of all of them simultaneously would have prevented the incident that motivated it.
 
@@ -40,9 +40,9 @@ PPM's morning made the limit visible. Layered discipline could *surface* foreign
 
 PPM filed two memos before noon. One pinned a new post-commit verification check ("run `git show --stat HEAD` immediately after every commit"). The other was the structural conclusion: *worktree-default for substantive agent work.* Each substantive session should start by creating a fresh dedicated `git worktree` — a separate checkout of the repo, on its own feature branch, with its own filesystem state. The shared `main` worktree should be reserved for short mailbox-discipline operations where the exposure window is small.
 
-I ratified the directive at 7:13 AM via the chain PPM had filed it through. The documentation role landed the codification in the project's standing instructions by evening. The team started moving substantive work into dedicated worktrees that afternoon. The first-day data was small but consistent: roles that switched mid-day reported clean commits for the rest of the day.
+I ratified the directive at 7:13 AM through PPM's relay. The documentation role landed the codification in the project's standing instructions by evening. The team started moving substantive work into dedicated worktrees that afternoon. The first-day data was small but consistent: roles that switched mid-day reported clean commits for the rest of the day.
 
-# What the two arcs share
+# What the two problems share
 
 Both arcs end in the same shape. Discipline kept failing despite the agents knowing the discipline. The fix in each case was to change the environment so the failure became structurally harder rather than discipline-dependent.
 
@@ -52,7 +52,7 @@ The commit-discipline memory pins had been correct. The team had been holding th
 
 The fancy way to describe this is *moving from discipline to architecture.* The plainer way is that procedures hold for as long as the agents stay disciplined, and infrastructure holds whether they do or not. Past a certain pass-rate ceiling on a recurring failure, the gain from more discipline saturates. The next gain has to come from a different layer.
 
-# What this closed
+# When reminders are not enough
 
 Looking back at the prior three weeks, the same shape shows up at every layer of the project. Issue closures running ahead of evidence. Calibration metrics drifting from their reference state. Feature branches accumulating without merging. Voice-pass discipline operating janitorially because draft-time voice work wasn't being absorbed. Each case had a procedure. Each procedure was correct. Each procedure leaked at the rate procedures leak when the environment doesn't enforce them.
 
@@ -64,10 +64,6 @@ That's the thing worth carrying. The shape of *discipline-becoming-infrastructur
 
 ---
 
-*Next on Building Piper Morgan: "The Triad Model" — the shape that kept showing up across design, methodology, and team structure.*
+*Next on Piper Morgan: "The Triad Model" — the shape that kept showing up across design, methodology, and team structure.*
 
 *Where in your work has a procedure been failing despite everyone knowing it? What would the small piece of infrastructure that closed the gap look like?*
-
-[FACT-CHECK NOTE for PM: Sources verified against May 13, 14, 15 omnibus + memory pin canon. Key facts: May 13 Lead Dev close-issue-properly audit found 13-of-13 unchecked descriptions; three remediation layers same day — memory pin at top of MEMORY.md, #1083 pre-commit hook (Closes #N magic-string scan), PM standing directive "can't close issues improperly and then justify retroactively"; six of 13 reopened with scope-shaped gaps. May 14 first clean application. May 15 PPM 14-commit morning sprint produced 4 foreign-state-capture incidents (adjacent rename detection capture + draft wiped by concurrent rebase + git mv index drops + CXO deletions auto-captured); two memos filed — `feedback_verify_show_stat_post_commit_pre_push.md` (post-commit guard) + `feedback_worktree_default_for_substantive_work.md` (structural fix); PM ratified worktree-default at 7:13 AM via PPM relay; Docs codified in CLAUDE.md by evening. Five-week escalating commit-discipline memory stack: feedback_clear_index_before_staging_on_shared_main + feedback_branch_show_current_before_every_commit + feedback_diff_head_before_editing_shared_file + feedback_verify_show_stat_post_commit_pre_push + feedback_worktree_default_for_substantive_work.]
-
-[SOURCE NEEDED for PM: The four foreign-state-capture incident shapes I named — I rendered them from memory and omnibus core themes; if the actual PPM memo enumerates them differently or in a different order, swap. Also flag if "first-day data: clean commits" is overstated — I have the directive-ratification timestamp but not a quantified day-one outcomes count.]
