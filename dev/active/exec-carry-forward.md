@@ -1,6 +1,6 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-06-25 ~17:25 PT
+**Last updated**: 2026-06-25 ~22:02 PT (STOP / day-close)
 **Role**: Chief of Staff (Exec) | Sonnet 4.6 | DinP account (cloud session)
 **Cron**: `32 6,9,12,15,18,21` — id `de99f10c` (re-armed 6/25; prior `e642db02` died in rate-limit/cloud gap)
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3`
@@ -16,9 +16,9 @@
 - 🛑 **#1320 onboarding auth-loop** (NEW, onboarding-breaking) — LLM-key validation loops the Caddy basic-auth dialog on hosted browser path (MCP unaffected). Lead fixed one side-bug (check-keychain /api/v1 prefix). PM asks: (a) does it loop in FRESH incognito? (b) PM+Arch: remove the Caddy gate (**#1162**) — redundant now the app self-auths.
 
 ### Decisions awaiting PM
-- 🔴 **#1162** Caddy-gate removal (PM+Arch) — paired w/ #1320.
-- 🔴 **#1312** personality-Base collapse — Arch RULED (collapse orphan); Lead scoped (multi-caller refactor); needs PM sequencing (after alpha gate) + Arch pairing on user_id contract.
-- 🔴 **RECONNECT remainder** (PM+PA) — #1220 MCP-spine / #1317 ports / WS-2 #1229 sprint-chunking. Re-scope candidates #1230/#1231.
+- 🔴 **#1162** Caddy-gate removal (PM+Arch) — paired w/ #1320. STILL OPEN; the live alpha-onboarding decision.
+- 🟢 **#1312** personality-Base collapse — **technical decision DONE** (Arch ruled UUID-everywhere 20:40, scoped SMALL: trust ×7 are a separate UUID repo, sentinel is dead code; invariant-lint skeleton provided). Only **PM sequencing** remains (Arch+Lead concur: after the alpha-tester bundle gate). Lead has the gameplan.
+- 🟢 **RECONNECT remainder** — **PM delegated chunking to Lead**; Lead's proposal landed (`0f33d157d`). #1283 → M5 (PM call). Tomorrow's Lead start = Arch WS-2 design-Q + Chunk 1 (#1229). Moving under Lead/PA; no longer waiting on me.
 - 🔴 **#1144 / #1131** greenlight (PM) — M3-era low-pri, possibly stale.
 
 ### Cohort liveness
@@ -28,11 +28,11 @@
 
 ### Loose ends
 - 🟡 **#358** encryption deploy — Lead reports deploy verified, GitHub issue still OPEN; needs closing evidence + close.
-- 🟡 **Comms Beat 9** "The Hook and the Worktree" (today's blog, slate-closer) — pre-edit done, awaiting PM voice-pass → Docs publishes → Dispatch cross-posts.
+- ✅ **Comms Beat 9** "The Hook and the Worktree" — **PUBLISHED 2026-06-25** after PM voice-pass (`6b0d2fc6e`). Done.
 
-### Cross-project (Janus / DinP) — routed 6/25, watching for close
-- **Web ← two PM-site items** (`d133ed698`): newsletter cross-referral (Web → Janus: Piper newsletter name + subscribe URL + preference-center owner) + July-1 site minimums (footer byline + /about book-citation correction). Confirm Web closes the loop with Janus.
-- **Janus reply sent** (DinP `61a2df5`): alpha status, RECONNECT, blog pipeline, site routing.
+### Cross-project (Janus / DinP) — routed 6/25
+- **Web ← two PM-site items** (`d133ed698`): **footer byline SHIPPED** + **newsletter reply SENT to Janus** by Web same evening (`a0fae3a3e`). `/about` book-citation correction is the July-1 remainder. Loop substantially closed.
+- **Janus reply sent** (DinP `61a2df5`).
 
 ### Pending PM answers (don't block other work)
 - **Model-in-logs convention change** — recommended (drop model from filename, keep "Model at start" header); awaiting PM nod to route to HOST/CIO/Docs.
