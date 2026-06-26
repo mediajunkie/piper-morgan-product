@@ -44,3 +44,7 @@ Cron: deleted `9a9968e5`, re-armed `cf7903cd`. Pull: HOST Jun 25 log heartbeat (
 ### Fire 4 — 18:52 PDT (windowed cron)
 
 Cron: deleted `cf7903cd`, re-armed `470951f9`. Pull: Exec→Web memo (pm-site-items-from-janus) + Lead attention rollup (not PPM-facing). Inbox: 0. Queue: (0,0). IDLE.
+
+### Fire 5 — 21:52 PDT (windowed cron)
+
+Cron: deleted `470951f9`, re-armed `0d7bb41f`. Pull required stash/pop — Comms draft (`the-hook-and-the-worktree.md`) blocked merge; stashed, pulled (Lead inbox moves: arch/cio/cxo memos, not PPM-facing), popped. Inbox: 0. Queue: (0,0). IDLE.
