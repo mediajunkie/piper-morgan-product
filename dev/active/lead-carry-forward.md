@@ -2,8 +2,13 @@
 
 **Updated**: 2026-06-25 ~21:55 PT (day-close STOP). Sole lead. Session log: `dev/2026/06/25/2026-06-25-0635-lead-code-opus-log.md`
 
-## ▶ THE FORK FOR TOMORROW (PM-gating, read first)
-PM flagged (6/25 eve) that alpha/skunkworks support has pulled Lead off RECONNECT (the actual sprint), and **"may ask Piper to hold off or delegate to other agents."** Most of the queue below is **not-RECONNECT**. RECONNECT's remainder is itself **PM/PA-sequencing-gated**, so there's no unblocked RECONNECT work to pull until PM/PA sequence it. **The decision PM owes (surfaced, awaiting): hold / delegate / do — the not-RECONNECT queue (#1287, CXO copy, double-login), AND which RECONNECT next-move to start (#1229 or #1283).** Don't keep absorbing not-RECONNECT work unilaterally until PM calls it.
+## ▶ TOMORROW AM — PLAN READY TO GO (read first)
+**PM removed the sequencing gate (6/25 eve): Lead chunks the RECONNECT sprint myself — PM will ratify or flag concerns.** Plan written: `dev/2026/06/25/reconnect-sprint-chunking-proposal-2026-06-25.md` (STATUS: PROPOSED). **Tomorrow AM, execute it unless PM objects:**
+1. **First (no code)**: fire the **Arch WS-2 design-decision** question (does MCP-binding storage shrink #1229?) — unblocks the critical path (Chunk 1 → Chunk 2 spine/ports).
+2. **In parallel, start coding**: **#1283** (routing-integrity probe) — zero deps, sprint-tagged, derives the gap list Arch needs for ADR-073. This is the real-sprint-code first move. (NOTE: the gap list does NOT exist yet — building #1283 IS deriving it; nothing to hand Arch until then.)
+Chunks: 1=#1229 (cred model, needs Arch Q first) → 2=#1220+#1317 spine/ports (bulk; #1230/#1231 fold in) → 3=connect-UX (#1201/#1314/#1315) → 4=Slack robustness (#1109/#1110) → 5=independents (#865/#1316/#1283). Beta track #1185 gated on #1162 follow-on.
+
+**Still-PM (the not-RECONNECT queue — hold/delegate/do):** #1287 (CIO GO'd, ready), CXO copy fix + debt, #1320 double-login. Surfaced; don't absorb more not-sprint work unilaterally beyond starting RECONNECT per the plan above.
 
 ## ▶ READY-TO-EXECUTE (unblocked, but held pending PM's focus call)
 - **#1287 Multi-Agent Coordinator removal — CIO GO'd the full pass (option 1, expand into methodology/).** Removal set = services/-side (multi_agent_coordinator, chain_of_draft, kind_communication, integration/ dir, api/orchestration/ dir, 2 scripts, the dead `query_learning_loop.optimize_workflow_via_experiments` method) + methodology/-side (integration/{orchestration_bridge,enhanced_orchestration_bridge}.py, integration/__init__ re-exports, testing/integration_runner.py, **assess real_scenarios.py at deletion**) + ~10 test files. Execute whole pass → run suite (only removed tests should fail) → close #1287. Verify-first per file at deletion (third trace caught methodology/; do a whole-repo trace, not services/-scoped). NOT done tonight (day-close + PM focus signal). CIO memo `read/`.
