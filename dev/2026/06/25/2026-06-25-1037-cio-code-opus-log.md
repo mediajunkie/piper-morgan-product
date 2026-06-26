@@ -37,3 +37,24 @@ Inbox empty, 11 routine commits. At (0,0) → advanced #1287 (Multi-Agent Coordi
 - **Verified myself** (verify-first, my lane): `AgentType` is the coordinator's internal `CODE`/`CURSOR`/`COORDINATOR` enum (the superseded two-tool model), used only inside the coordinator → not live infra. **Nothing live imports `methodology/`** (zero `from methodology` in services/web/main outside tests). The bridges exist to bridge methodology↔the dead coordinator → dead-but-present. `integration_runner` whole-file dead (only its own test).
 - **DECISION: Option 1 — expand the removal** into the methodology orchestration-bridge layer (pre-prod-cut-clean; no AgentType relocation). Sent Lead the GO + the methodology-side removal set (`442305797`); posted the boundary decision to [#1287](https://github.com/mediajunkie/piper-morgan-product/issues/1287#issuecomment-4805923136). Lead executes the full services/+methodology/ pass + test-verify + closes.
 - Good cross-lane collaboration shape: Lead surfaced-not-guessed; I made the lane call with evidence. Cron armed; next 22:07 (today's STOP).
+
+### 22:37 — STOP fire: fielded 3 lane-mails → consolidated liveness model
+3 unread, all my lane. Drained:
+- **Exec — "live-but-blocked" failure mode** (CXO 2× today, blocked on approval modal despite permissive env). Sharp insight: "stale" conflates **3 modes** (dead-cron / idle-but-alive / live-but-blocked) that look identical; **the off-machine cure only fixes mode 1** (mode 3 = permissions, an external trigger lands behind the same modal).
+- **Arch — full-day daytime stall recurred 6/25** (13.5h, app backgrounded; nudge DETECTED via Exec's rollup but didn't autonomously RESUME — PM manual at 20:21). Verdict: **detection≠resumption**; the resume loop isn't closed on the daytime side.
+- **Comms — git-rule** (destructive cmds in PM's main checkout) — already codified 6/21 in CLAUDE.md HARD RULE (`6d1292d09`); confirmed + offered an ADR.
+- **Consolidated Exec+Arch into a durable spec**: `docs/internal/operations/duty-cycle-liveness-model-2026-06-25.md` (`d835de03f`) — 3 failure modes × which cure fixes which + the detection→resume gap + the off-machine option-space (#1191). **Build banked for a fresh pass** (error-sensitive watchdog infra; senders said no-build-tonight). Replied all 3 (`91b9348a1`).
+
+## DAY-ARC — 2026-06-25 (CIO) — Thu: PM-priority deliverable + 2 issues + cross-lane decision + liveness consolidation
+10:37 START → **Iris Phase 3 cutover runbook** delivered (PM day-focus; DinP `d0ade03`) → 13:37 **#1153** generate-delta tooling fixed+CLOSED (`ab44e595c`) → 16:37 **#1287** consumer-trace triage (cluster dead-in-prod, boundary bigger than 4 files) → 19:37 **#1287 boundary decision** (Lead surfaced a 3rd edge into methodology/; verified → Option 1 expand, GO) → 22:37 STOP: fielded 3 lane-mails → **liveness-model spec** consolidated (`d835de03f`). ~14 pushes. A dense, high-output day.
+
+## Memory & briefing surfaces referenced this session
+- **Referenced**: methodology-30 (consumer-trace — the #1287 triage backbone); `merge-keeper-sweep.py` + the discipline-doc Rule 5; `generate-delta.py` + session-start hook; freeze-watcher/registry; CronCreate mechanics + #1191 cloud finding; CLAUDE.md HARD RULE; pins `feedback_no_prod_caution_in_preprod` (cut-clean), `feedback_idle_means_do_low_priority_not_nothing`, `feedback_never_touch_pm_main_checkout_working_tree`, `feedback_mail_vs_gh_comment` (signal-vs-artifact), `feedback_no_test_theatre`.
+- **Loaded but not referenced**: MEMORY.md bulk; standing-items beyond the sprint cluster.
+- **Wanted but not found**: nothing new — the off-machine cure remains the standing PM-gated item, now better-specified (mode-1-only).
+
+## Sign-off
+- All 6/25 work pushed per-unit through `91b9348a1`; nothing stranded. `@{u}..HEAD` / `main..HEAD`: empty at close.
+- Cron `b1bb59a6` stays ARMED (the standing cycle continues): next 03:07 overnight WATCH, then 10:07 tomorrow's START.
+
+<!-- DAY-CLOSED: 2026-06-25 -->

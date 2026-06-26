@@ -2,19 +2,19 @@
 
 **Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
 
-**☀️ 6/25 morning (10:37 fire)** — Thu. **Cron `b1bb59a6` armed** (`7 3,10,13,16,19,22`; re-armed 6/24 after the prior died in Tue's rate-limit pause), next 13:07. Inbox drained.
+**🌙 6/25 STOP (22:37) → overnight** — Thu CLOSED (dense day: Iris runbook delivered + #1153 closed + #1287 boundary decision + liveness-model spec). **Cron `b1bb59a6` armed** (standing cycle continues), next **03:07 overnight WATCH**, then 10:07 Fri START. Inbox drained.
 
 ### Live / in-flight
 - **Iris Phase 3 cutover runbook — DELIVERED 6/25** (PM day-focus, via Janus relay; DinP `d0ade03`). Persistent worktree + dedicated `iris/heartbeat` branch + standing daily cron (`17 9`, durable) + verification + the foregrounded-idle caveat. **Offered Janus the Phase-4 off-machine-wake spec on request** — watch for a follow-up from Janus/Calliope.
 - **Worktree cleanup (CIO-owned, pair w/ Docs)**: rubric LANDED canonical (`5b7cabc53`, discipline-doc Rule 5). **Two open pieces**: (1) the **sweep-CODE** (`prune_worktree` in `merge-keeper-sweep.py`) — *destructive* → **banked for a FRESH session** (explicit trigger, not "no rush"); (2) **one-time rescue+prune of the current 31** — pair with Docs (3 unmerged rescued first: determined-heisenberg/interesting-goodall/mux-ui).
 
 ### Queued (low-pri, unblocked when bandwidth)
-- **threshold v0.4 = wake-window-aware** — cio's flat 8h is too coarse for a daytime stall; tune against Arch's `GAP-SINCE-LAST-FIRE` data.
+- **🔨 BANKED BUILD — duty-cycle liveness model v2** (spec: `docs/internal/operations/duty-cycle-liveness-model-2026-06-25.md`, fresh-pass trigger): (1) v0.4 wake-window-aware threshold (tight daytime/wide overnight — cio's flat 8h too coarse), (2) 3-category hedged classification (dead-cron/idle-but-alive/live-but-blocked), (3) mode-3 upstream diagnostic w/ CXO+Exec (why permissive sessions hit approval prompts), (4) the resume-loop question (can alert→resume close autonomously?). Error-sensitive watchdog infra → fresh focused pass, not tail-of-session.
 - **Cohort-coverage expansion** — freeze-registry watches 5/11 (cio/exec/arch/cxo/ppm); extend to the rest via **owner-confirmed rows (Exec-coordinated opt-in)**, NOT inferred (false-nudge risk).
 - **Sprint cluster**: #973 / #1277 left. (#1153 DONE+CLOSED `ab44e595c`; **#1287 CIO part DONE 6/25** → consumer-traced + Lead surfaced a 3rd edge into methodology/ → I made the **boundary call: Option 1 expand** (`442305797`); Lead executes the full services/+methodology/ deletion pass + closes. #1191 findings-log, not actionable.)
 
 ### Standing / PM-gated
-- **Off-machine firing cure** — the deep structural fix for session-crons-don't-fire-while-backgrounded. Evidence now: ~7 stalls + the Tue rate-limit pause + the Iris caveat. **#1191 cloud-survey finding (folded in)**: the cloud Code surface has **no `CronCreate`** → off-machine firing needs an external trigger (**GitHub Actions cron**, Google Calendar recurring event, or Slack scheduled message). So the cure's option-space = {launchd-on-mac, GitHub Actions, Calendar/Slack scheduler, ~$70/mo Routines}. PM's call on cost; I can scope a comparison on request.
+- **Off-machine firing cure** — the structural fix for session-crons-don't-fire-while-backgrounded. **REFRAMED 6/25 (Exec's insight, in the liveness-model spec)**: "stale" is 3 modes (dead-cron / idle-but-alive / live-but-blocked); **the off-machine cure fixes ONLY mode 1.** Mode 2 = threshold (v0.4); mode 3 = permissions/upstream (external trigger lands behind the same modal). And **detection≠resumption** (Arch's 13.5h daytime stall 6/25, PM manual-resume — the nudge detected but didn't resume; closing alert→resume autonomously may inherently need off-machine/human). Option-space (mode 1): {launchd, GitHub Actions cron, Calendar/Slack scheduler, ~$70/mo Routines} — cloud has no `CronCreate` (#1191). PM's call on cost; I can scope a comparison. Evidence: ~7 stalls + Tue rate-limit pause + Arch's full-day 6/25 stall.
 - **Freeze-watcher LIVE** (launchd, registry-driven `dev/active/duty-cycle-registry.tsv`) + **regression test** (`5d33a9c21`) locking the 6/22 false-stale fix. On-machine watcher can't catch machine-death during an outage (only after) — that's what the off-machine cure addresses.
 
 ### Recently closed (drop next cycle)
