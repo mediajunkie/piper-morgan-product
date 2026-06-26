@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — 2026-06-25 17:20 PT</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4;
+          --blocker:#7b1fa2; }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:820px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 .75rem; }
+  .legend { font-size:.8rem; color:var(--mute); margin:.5rem 0 1.5rem; }
+  .legend span { margin-right:1rem; white-space:nowrap; }
+  h2 { font-size:1.05rem; margin:1.75rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.7rem .9rem; margin:.55rem 0; }
+  .item.blocker { border-left-color:var(--blocker); }
+  .item.decision { border-left-color:var(--red); }
+  .item.drift { border-left-color:var(--amber); }
+  .item.clear { border-left-color:var(--green); }
+  .item .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; margin-bottom:.3rem; }
+  .agent { font-weight:700; }
+  .sev { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .4rem;
+         border-radius:4px; background:#eee; color:#444; }
+  .sev.blocker { background:#f3e5f5; color:var(--blocker); }
+  .sev.decision { background:#fde8e8; color:var(--red); }
+  .sev.drift { background:#fdf3e2; color:var(--amber); }
+  .sev.ok { background:#e8f5e9; color:var(--green); }
+  .summary { margin:.2rem 0 .3rem; font-weight:500; }
+  .detail { font-size:.87rem; color:#444; margin:.2rem 0; }
+  .ask { font-size:.86rem; color:var(--red); margin:.25rem 0 .1rem; }
+  .links a { color:var(--link); text-decoration:none; font-size:.82rem; margin-right:.9rem; }
+  .links a:hover { text-decoration:underline; }
+  .clean p { color:var(--mute); font-size:.9rem; margin:.2rem 0; }
+  .clean b { color:var(--ink); }
+  .bigclear { font-size:1.05rem; color:var(--green); font-weight:600; }
+  .resolved { font-size:.82rem; color:var(--mute); }
+  .resolved s { color:#aaa; }
+  .stale-tag { font-size:.72rem; background:#fff3cd; color:#856404; border-radius:4px; padding:.1rem .35rem; margin-left:.3rem; }
+  .fresh-tag { font-size:.72rem; background:#e8f5e9; color:var(--green); border-radius:4px; padding:.1rem .35rem; margin-left:.3rem; }
+  footer { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line); color:var(--mute); font-size:.8rem; }
+  .summary-row { display:flex; gap:1rem; margin:1rem 0 1.5rem; flex-wrap:wrap; }
+  .summary-card { flex:1; min-width:120px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:.75rem 1rem; text-align:center; }
+  .summary-card .num { font-size:2rem; font-weight:700; line-height:1; }
+  .summary-card .label { font-size:.78rem; color:var(--mute); margin-top:.25rem; }
+  .num.purple { color:var(--blocker); }
+  .num.red { color:var(--red); }
+  .num.amber { color:var(--amber); }
+  .num.green { color:var(--green); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2 class="sr-only" style="position:absolute;left:-9999px">Cohort attention: 2 blockers, 4 decisions, 4 awareness, cohort largely caught up</h2>
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by Exec · <b>2026-06-25 17:20 PT</b> · live-state verification pass · 9 carry-forwards + Lead's PM-facing rollup folded in · all cited issues GitHub-verified</p>
+  <p class="meta" style="color:#2d7a3e; background:#e8f5e9; padding:.4rem .7rem; border-radius:6px; display:inline-block;">
+    ✅ Big day on alpha: this morning's two blockers (#1318 + #1319) fixed, deployed, and PM-UAT'd. Plus #1309, #1310, #1286 closed.
+  </p>
+  <p class="legend">
+    <span>🛑 <b>Blocker</b> — work stuck</span>
+    <span>🔴 <b>Decision</b> — needs your call</span>
+    <span>🟡 <b>Drift/awareness</b> — worth knowing</span>
+    <span>⚪ <b>Clean</b> — active, no open PM item</span>
+  </p>
+
+  <div class="summary-row">
+    <div class="summary-card"><div class="num purple">2</div><div class="label">Blockers</div></div>
+    <div class="summary-card"><div class="num red">4</div><div class="label">Decisions</div></div>
+    <div class="summary-card"><div class="num amber">4</div><div class="label">Awareness</div></div>
+    <div class="summary-card"><div class="num green">8</div><div class="label">Clean / active</div></div>
+  </div>
+
+  <h2>🛑 Blockers — work stuck</h2>
+
+  <div class="item blocker">
+    <div class="top">
+      <span class="agent">Alpha-tester email send</span>
+      <span class="sev blocker">BLOCKER</span>
+      <span class="sev blocker">PM + PA action</span>
+    </div>
+    <p class="summary">The email + zip are ready and held on a single remaining gate: the <b>MCPB clean-machine test on a non-dev machine</b> (PM + PA). Droplet, onboarding, and #1318/#1319 are all done and UAT'd — this is the last pre-send check per Lead.</p>
+    <p class="detail">Until that test passes on a clean machine, the alpha bundle email stays held.</p>
+  </div>
+
+  <div class="item blocker">
+    <div class="top">
+      <span class="agent">#1320 — onboarding auth-loop</span>
+      <span class="sev blocker">BLOCKER</span>
+      <span class="sev blocker">NEW · onboarding-breaking</span>
+    </div>
+    <p class="summary">Validating the LLM key during onboarding triggers a looping Caddy basic-auth credential dialog on the hosted browser path (MCP path unaffected). Root cause confirmed via chrome-devtools repro: two-layer auth (Caddy gate + the app's own JWT) makes the XHR-heavy pre-login setup flow block on the browser credential dialog. Lead fixed one side-bug already (check-keychain calls were missing the <code>/api/v1</code> prefix → 404s, deployed).</p>
+    <p class="ask">▸ PM ask (a): does it still loop in a <b>fresh incognito window</b>? (vs. stale cache from today's password rotation) — this determines severity.</p>
+    <p class="ask">▸ PM + Arch ask (b): the clean fix is <b>removing the Caddy gate (#1162)</b> — the app has its own auth now, so the basic-auth door is redundant friction. #1320 makes that already-open decision concrete.</p>
+    <div class="links"><a href="https://github.com/mediajunkie/piper-morgan-product/issues/1320">#1320</a> <a href="https://github.com/mediajunkie/piper-morgan-product/issues/1162">#1162 Caddy-gate removal</a></div>
+  </div>
+
+  <h2>🔴 Decisions awaiting you</h2>
+
+  <div class="item decision">
+    <div class="top">
+      <span class="agent">#1162 Caddy-gate removal</span>
+      <span class="sev decision">DECISION</span>
+      <span class="sev decision">PM + Arch</span>
+    </div>
+    <p class="summary">(Paired with #1320 above.) The structural call: remove the redundant Caddy basic-auth gate now that the app authenticates on its own. Was already the open decision on the beta path; #1320 forces the question.</p>
+    <div class="links"><a href="https://github.com/mediajunkie/piper-morgan-product/issues/1162">#1162</a></div>
+  </div>
+
+  <div class="item decision">
+    <div class="top">
+      <span class="agent">#1312 personality-Base collapse</span>
+      <span class="sev decision">DECISION</span>
+      <span class="sev decision">PM sequencing + Arch pairing</span>
+    </div>
+    <p class="summary">Arch ruled it this morning: <code>personality</code> is a stale duplicate Base — collapse the orphan, don't accommodate it. Lead scoped it as a multi-caller refactor (not a 2-liner). Needs PM execution-sequencing (Lead suggests slotting it after the alpha gate) + Arch pairing on the user_id-contract call.</p>
+    <div class="links"><a href="https://github.com/mediajunkie/piper-morgan-product/issues/1312">#1312</a></div>
+  </div>
+
+  <div class="item decision">
+    <div class="top">
+      <span class="agent">RECONNECT remainder sequencing</span>
+      <span class="sev decision">DECISION</span>
+      <span class="sev decision">PM + PA</span>
+    </div>
+    <p class="summary">The connector-refactor remainder (#1220 MCP-spine, #1317 ports, WS-2 #1229) needs PM/PA sprint-chunking per the sequencing doc. Lead is ready to build once the sequence is set. Re-scope candidates flagged: #1230 / #1231.</p>
+  </div>
+
+  <div class="item decision">
+    <div class="top">
+      <span class="agent">#1144 / #1131 greenlight</span>
+      <span class="sev decision">DECISION</span>
+      <span class="sev decision">PM</span>
+    </div>
+    <p class="summary">Two M3-era low-priority items — Lead wants a PM greenlight before investing, since the work may be stale. Low urgency.</p>
+  </div>
+
+  <h2>🟡 Drift / awareness — worth knowing</h2>
+
+  <div class="item drift">
+    <div class="top">
+      <span class="agent">Arch</span>
+      <span class="sev drift">STALLED</span>
+    </div>
+    <p class="summary">Arch did a strong morning — START drain, the #1312 multi-Base ruling, #1283 probe correction — then went silent after its 06:54 fire. Its 09:27 / 12:27 / 15:27 fires didn't fire (cron-survives-doesn't-fire). Watchdog flagged it at 15:43. <b>Needs a re-prod.</b> No PM-decision items pending from Arch beyond the #1312/#1162 pairings already listed above.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top">
+      <span class="agent">CXO</span>
+      <span class="sev drift">STALLED AGAIN</span>
+    </div>
+    <p class="summary">CXO recovered at 09:07 (the approval-prompt block you cleared), wrote up its 6/24 record + a git-hygiene note — then went silent again. <b>Never did its 6/25 START.</b> Stale 6h at the 15:43 alert. <b>Needs another re-prod.</b> Queued work waiting: the setup-check UX copy review (now that #1318 is fixed) + #1286 Slice 2 radar-tiling decision. Watch the approval-prompt failure mode — a live-but-blocked session looks identical to a frozen one to the watchdog.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top">
+      <span class="agent">#358 — encryption deploy</span>
+      <span class="sev drift">LOOSE CLOSURE</span>
+    </div>
+    <p class="summary">Lead reports the #358 deploy verified today, but the GitHub issue is still <b>OPEN</b>. Likely just needs the closing evidence + close — flagging so it doesn't linger as ambiguous.</p>
+    <div class="links"><a href="https://github.com/mediajunkie/piper-morgan-product/issues/358">#358</a></div>
+  </div>
+
+  <div class="item drift">
+    <div class="top">
+      <span class="agent">Exec (me)</span>
+      <span class="sev drift">FALSE STALL FLAG</span>
+    </div>
+    <p class="summary">The watchdog flagged exec as 16h stale in the 15:43 infra-event alert. False positive — I've been alive on overnight/standby watch and responsive to you all day; the freeze-watcher can't distinguish idle-but-alive from frozen. (Same blind spot that mis-read CXO's approval-block as a wake stall.)</p>
+  </div>
+
+  <h2>⚪ Clean — active, no open PM item</h2>
+
+  <div class="item clear">
+    <div class="clean">
+      <p><b>Lead Dev</b> <span class="fresh-tag">very active</span> — Huge day: closed #1318, #1319, #1309, #1310; #358 deployed; filed #1320 + fixed its side-bug; rotated the alpha Caddy password per your request. Everything open on Lead's plate is now PM/Arch/PA-gated (the decisions above).</p>
+      <p><b>CIO</b> <span class="fresh-tag">very active</span> — Closed #1153 (generate-delta tooling); handed #1287 consumer-trace triage to Lead (cluster dead-in-prod but boundary bigger than 4 files); delivered the Iris Phase 3 cutover runbook. Cron firing on schedule.</p>
+      <p><b>Docs</b> <span class="fresh-tag">active</span> — Omnibus caught up through 6/24 (22/23/24 all done); refreshed BRIEFING-CURRENT-STATE with a Jun 22–25 cross-cohort attest.</p>
+      <p><b>HOST</b> <span class="fresh-tag">active</span> — Fire 4, idle; sapient-trust poll 0 open; next review ~Jul 3.</p>
+      <p><b>PPM</b> <span class="fresh-tag">active</span> — Fire 3, inbox 0, idle.</p>
+      <p><b>Web</b> — #998 COMPOSE-UI-V1 shipped and live; Phase 3 (image upload) ready to propose at next PM engagement.</p>
+      <p><b>Comms</b> — Beat 9 pre-edit complete (cohort→team cleanup, PPM-only attribution); <b>your voice-pass is the next step</b> when you have a moment.</p>
+      <p><b>PA</b> — Alpha bundle ready; blocked only on the MCPB clean-machine test (top blocker above). No PA-internal blockers.</p>
+    </div>
+  </div>
+
+  <h2>✅ Resolved since the last board (00:05 PT)</h2>
+
+  <div class="item clear">
+    <div class="resolved">
+      <s>#1318 — alpha onboarding system-check (localhost vs Docker-internal)</s> — CLOSED ✓ (Lead fixed + deployed + PM-UAT'd)<br>
+      <s>#1319 — welcome card tiny/low on mobile</s> — CLOSED ✓ (Lead fixed)<br>
+      <s>#1309 / #1310</s> — CLOSED ✓ (Lead, same session)<br>
+      <s>#1286 — D2 design-system mobile foundation</s> — CLOSED ✓ (was "can't close yet" in Lead's 13:25 memo; GitHub now shows CLOSED)<br>
+      <s>#1312 — schema-drift seam</s> — Arch RULED ✓ (collapse the personality orphan; execution still to sequence)<br>
+      <s>#1153 — generate-delta tooling</s> — CLOSED ✓ (CIO)<br>
+      Lead + Arch both fully caught up on logs after this morning's nudges.
+    </div>
+  </div>
+
+  <footer>
+    <b>Bottom line:</b> The morning's alpha blockers are gone — Lead had a big day. Two things gate the alpha-tester email now: the <b>MCPB clean-machine test</b> (you + PA) and the <b>#1320 onboarding auth-loop</b>, whose clean fix is the <b>#1162 Caddy-gate-removal decision</b> (you + Arch). Plus three lower-urgency sequencing/greenlight calls. On the cohort side, <b>Arch and CXO both stalled after working this morning</b> and need re-prods — CXO via the same approval-block path as before. Everyone else is active and clean.<br><br>
+    <b>Live-state verification:</b> All issues checked via <code>gh issue view</code> at 17:18 PT. OPEN: #1320, #1162, #1312, #358, #1283, #1287. CLOSED: #1318, #1319, #1309, #1310, #1286. Two discrepancies vs. Lead's 13:25 snapshot caught and corrected: #1286 is now CLOSED (Lead said can't-close-yet); #358 deploy verified but issue still OPEN.
+  </footer>
+</div>
+</body>
+</html>
