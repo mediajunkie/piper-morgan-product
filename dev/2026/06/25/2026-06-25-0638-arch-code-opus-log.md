@@ -55,3 +55,21 @@ Net: the substantive deliverable was the **#1312 multi-Base ruling** (decisive, 
 <!-- GAP-SINCE-LAST-FIRE: 0.3h -->
 
 Autonomous tick ~16 min after the START drain. Inbox empty; no reply yet to the #1312 ruling (cohort waking — Lead's last activity was 03:35 WATCH); no new commits touching my surfaces. Checked standing-items (all blocked on others — #973 Lead-coordination, ADR-068 M4-trigger, #972 CIO Daedalus, CIO/Exec-owned items) + briefing freshness (fresh, <2d). No unblocked Arch work to advance. Cron `3597d4a1` armed. Staying on the light hold; next fire 09:27.
+
+---
+
+### PM-prompted resume (20:23) — #1312 user_id-contract RULED + invariant-lint authored
+
+<!-- GAP-SINCE-LAST-FIRE: 13.5h -->
+
+The daytime cron didn't fire 09:27–18:27 (the backgrounding-stall again; Exec's 17:20 rollup flagged "Arch + CXO stalled"). PM prodded at 20:21 — Lead's reply to my morning #1312 ruling was in. (Lead had a very productive day: 20 commits — alpha blockers #1320 onboarding-auth-loop + side-bugs, password rotation, #1287 methodology/ boundary → CIO.)
+
+**Lead's reply**: accepted the #1312 collapse ruling + the one-Base invariant; correctly flagged the collapse is a scoped multi-caller refactor (not a 2-liner) with 3 regression risks (NULL-PK on repoint; the `user_id` String→UUID+FK contract; owner_id additive) — and took my pairing offer on the `user_id`-contract call: (a) UUID-everywhere + retire the `"default_user"` sentinel vs (b) a str-coercion repo boundary.
+
+**Ruled (a) — and grounding dissolved the dilemma.** Read the actual code (Verify-First, not the memo summary): (1) the "trust service ×7" callers are a **different repository** — `trust_computation_service.self.repository` is `UserTrustProfileRepository` (`UserTrustProfileDB`, already `get_by_user_id(user_id: UUID)`) — the personality collapse never touches the trust service (same method name, two repos). (2) The no-arg `get_default()` minting `"default_user"` has **zero callers** → the sentinel is dead; nothing persists it → no destructive-vs-additive dilemma, just delete it. So (a) is correct (ADR-071 D2) **and** small; (b) rejected (preserves the deprecated str contract to dodge a non-existent blast radius). Gave Lead the bounded work list (id-gen via the canonical `from_domain()` not repo hand-construction; cast str→UUID at the seam; m-40 keep `enhance_response(str)` + tighten later; delete the dead sentinel) + the one TDD-verify risk (response_enhancer's runtime user_id must be UUID-castable; cast-at-seam fail-fast = honest). Concurred Lead's scoped-increment + TDD + additive-guardrail plan; sequencing is PM's (after the alpha MCPB gate).
+
+**Invariant-lint authored** (Lead asked, will wire): AST single-Base guard (primary — `only services/database/connection.py` may call `declarative_base()`; red-on-orphan → green-on-delete = a ratchet on the collapse) + registry tablename-uniqueness (secondary). Test skeleton in the memo for `test_architecture_enforcement.py`.
+
+→ memo to Lead cc PM/Exec/PA (`23f1b6a70`) + decisions.log (`78847f006`). **#1283** — Lead confirmed my correction (probe not run; 6/19 last state); standing by for the gap list → ADR-073.
+
+Light hold after the drain. The cron didn't fire all day (stall) — flagging for CIO; PM resumed me manually. Queue otherwise awaiting Lead's #1312 execution + the #1283 probe.
