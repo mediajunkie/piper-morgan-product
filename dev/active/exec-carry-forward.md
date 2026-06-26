@@ -23,7 +23,10 @@
 - 🟢 **RECONNECT remainder** — moving fast under Lead. **#1229 WS-2 CLOSED overnight** (`88a168aff` connector_bindings storage foundation; Arch-gate already cleared via ADR-070 D3). Re-scope RESOLVED (#1230 folds, #1231 pull-forward). Lead now on **Chunk 2 (ports)**. #1283 → M5. No Exec action.
 - 🔴 **#1144 / #1131** greenlight (PM) — M3-era low-pri, possibly stale.
 
-### Cohort liveness — UPDATED 13:02
+### ⚠️ SUSPECTED MACHINE-SLEEP / BACKGROUNDING — 16:02
+**The whole on-machine cohort has been dark since ~11:16** (only my 13:04 cloud commit since). **The launchd watchdog itself stopped firing after 12:44** — if it were running it would have fired hourly alerts as CIO/CXO/PA crossed thresholds this afternoon. Two-signal inference: the machine slept / app backgrounded ~13:00, pausing the session crons AND the watchdog together. This cloud Exec session keeps running because it's not on the sleeping box. **Actionable: ONE machine/app wake should revive the whole cohort** (per the watchdog's own playbook — "if many at once, wake the machine/app"), rather than rousing agents one by one. No mid-day STOP markers exist → this is abnormal silence, not clean end-of-day. *(Not 100% certain — circumstantial; but the wake is the right move either way.)*
+
+### Cohort liveness — last known-good (pre-sleep, ~11:16)
 - ✅ **CXO BACK** — Fire 1 10:55; setup-check UX review **confirmed done**. Recovered from PM's nudge.
 - ✅ **PPM BACK** — Jun 25 closed + Jun 26 log opened 10:56.
 - ✅ **CIO BACK** — shipped banked **freeze-check v0.4** (wake-window-aware threshold, Arch's ask) + Iris cutover reconcile. Active.
