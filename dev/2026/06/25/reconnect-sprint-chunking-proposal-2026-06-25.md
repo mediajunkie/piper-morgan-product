@@ -20,9 +20,12 @@ Port each connector (github/slack/notion/calendar) onto the Connector contract +
 Make connecting a connector a real product flow: Slack inbound setup path (#1201), auto-default repo (#1314), populate/retire project↔repo links (#1315).
 - **Blocked by**: Chunk 2 (ports must exist to connect). **Size**: M.
 
-### Chunk 4 — Slack Robustness · `#1109` + `#1110` (WS-7)
-OAuth state → Redis (multi-process safe) + the `_make_request` missing-`user_id` latent bug.
-- **Blocked by**: mostly independent (Slack-specific); can slot anytime after Chunk 1. **Size**: S–M.
+### Chunk 4 — Slack Robustness · `#1109` + `#1110` (WS-7) — **DEPRIORITIZED (PM 6/25: "Slack can wait")**
+OAuth state → Redis (multi-process safe) + the `_make_request` missing-`user_id` latent bug. Moved down the order; not the near-term fallback.
+- **Blocked by**: mostly independent (Slack-specific). **Size**: S–M.
+
+### #1231 honest-degrade — PULL FORWARD, do NOT fold (Lead recommendation 6/25, pending PM ratify)
+**The re-scope is asymmetric.** #1230 (resolution) genuinely folds into the ports + the #1314/#1315 data follow-ups (its resolver logic exists; remainder is data-population + per-connector generalization). **#1231 does NOT** — its remainder is the live #1226 trust bug: GitHub `return {}` (silently empty) at ~6 sites in `canonical_handlers.py` when not-configured/not-connected → reads as "no issues" instead of "connect me." The #1232 contract shipped but isn't applied to these sites. **Folding #1231 into the ports defers this user-facing fix to Chunk 2 (weeks).** Small + unblocked now (apply the shipped contract / mirror calendar's pattern). Caveat: the GitHub handler gets touched again when it ports (#1317), but the honest-degrade behavior carries forward. → **Pull the not-configured honest-degrade fix forward as a near-term standalone**; the resolution-miss half rides with #1230/ports.
 
 ### Chunk 5 — Independents & Cleanup · `#865` + `#1316`
 Not connector-framework-blocked, schedulable any time: setup-wizard componentize (#865); residual cleanup (#1316: federated_search degrade + WS-1 integration test + ADR-058 identity note).
@@ -41,12 +44,12 @@ BYO-key multi-tenant. Gated on the #1162 follow-on (app-layer invite control + R
 (Updated 2026-06-25 eve — PM moved #1283 → M5, so it's no longer the unblocked starter.)
 
 1. **Tomorrow AM, first action (no code)**: send Arch the WS-2 design-decision question (does MCP-binding storage shrink #1229?). Unblocks the critical path.
-2. **Then dive into Chunk 1 (#1229)** — the **prep/investigation is unblocked even before Arch answers**: read the existing credential storage (`user_api_keys` table + Keychain path + ADR-058 cred model) and scope the binding-vs-raw-cred options; build the chosen shape the moment Arch's decision lands.
-3. **Chunk 2 (spine + ports)** — the bulk; #1230/#1231 fold in.
-4. **Chunks 3 → 4 → 5** by priority.
-5. **#1185 beta track** when its gate (invite-control + RBAC) clears. **#1283 + ADR-073 → M5.**
+2. **Start coding: #1231 GitHub honest-degrade fix** — unblocked, user-facing (the #1226 trust bug), RECONNECT, no dep on Arch or the ports. Replace the silent `return {}` in `canonical_handlers.py` with honest "connect me" degrade via the shipped #1232 contract.
+3. **Chunk 1 (#1229) prep in parallel** — read the cred surface, scope binding-vs-raw; build per Arch's answer.
+4. **Chunk 2 (spine + ports)** — the bulk; **#1230 folds in** (#1231's resolution-miss half rides here; its not-configured half done in step 2).
+5. **Chunks 3 → 5** by priority. **Chunk 4 (Slack) deprioritized.** **#1185 beta track** when its gate clears. **#1283 + ADR-073 → M5.**
 
-**So the answer to "what next": fire the Arch WS-2 question, then dive into Chunk 1 (#1229)** — prep is unblocked now, build follows Arch's answer. Small unblocked fallback if Arch is slow: **#1110** (the self-contained Slack `_make_request` missing-`user_id` latent bug — real code, no deps), so the critical path stays primary instead of context-switching.
+**So the answer to "what next": fire the Arch WS-2 question, then start #1231 (GitHub honest-degrade)** — the best unblocked, user-facing first move (now that #1283→M5 and Slack waits), with Chunk 1 (#1229) prep alongside.
 
 ## For PM to ratify / adjust
 - The order (critical path #1229 → spine; Arch WS-2 question first)?
