@@ -33,3 +33,29 @@
 
 - **(10:47 PT) — BRIEFING-CURRENT-STATE.md refreshed** (`19bfcb0c2`). STATUS BANNER STALE flag cleared (session-start hook had reported STALE; PA also flagged 4 days stale in Jun 24 log; mandatory refresh per CLAUDE.md standing order). Sections updated: STATUS BANNER Last Updated (Jun 22–25 attest appended), Current Focus (RECONNECT WS-2 active), Inchworm (M2/M3/D1 CLOSED → RECONNECT WS-1 CLOSED/WS-2 active), Recent Progress (June 19–25 section prepended), footer + frontmatter timestamps. 27 lines added, 7 changed. Clean standalone commit, pushed to origin/main.
 
+---
+
+## Evening — PM multi-task (approx. 20:35 PT)
+
+PM directed 6 tasks: (1) run cleanup-dev-active, (2) advise on TODO/FIXME ownership, (3) update weekly audit template, (4) Chesterton's Fence research on /agent commands, (5) fix path refs, (6) add docs/README.md review to audit + review it now.
+
+- **(~20:35–21:00 PT) — Weekly docs audit run against #1313** — full audit completed with evidence (session context from compacted earlier portion). All sections verified. Key findings:
+  - Ship #048 glosses (D1/D2/Radar/RECONNECT) confirmed live in blog-content.json — LinkedIn syndication is PM-manual
+  - TODO/FIXME research: 36 of 63 are intentional M4 stubs in `api/todo_management.py`; remaining 27 are implementation TODOs in Lead Dev territory → recommendation: Lead Dev, not Arch
+  - Chesterton's Fence: `/agent` commands traced to commit `86570617e` Nov 5, 2025 — always shorthand for "Agent tool subagent," never a real slash command; safe to reframe
+  - `update-essential-briefings` job silently broken: referenced `knowledge/BRIEFING-ESSENTIAL-*.md` and `knowledge/BRIEFING-CURRENT-STATE.md` — both stale paths (files migrated to `docs/briefing/` Apr 2026)
+  - docs/README.md reviewed: refreshed version (Jun 24) is current; PM's concern was likely the pre-refresh 886-line version. Note: `ALPHA_QUICKSTART.md` L38 has `/api/v1/standup/today` but actual route is `/api/standup` — minor discrepancy in linked alpha doc, not in docs/README.md itself
+
+- **(~21:00–21:20 PT) — dev/active cleanup** — 11 forensic docs archived to dated dirs via `git mv`; commit `9ef2bfb68` merged + pushed to origin/main `17b5d4ea4`
+
+- **(~21:20 PT) — `.github/workflows/weekly-docs-audit.yml` updated** — 7 stale items fixed:
+  1. `/agent` slash commands → subagent task prompts (with Chesterton note)
+  2. app.py annotation: ~750 → ~374 lines
+  3. Pattern count: 50 (Jan 2026) → 74 (Jun 2026)
+  4. Save-findings path: `dev/2025/` → `dev/YYYY/`
+  5. Architecture reference: `docs/architecture/` → `docs/internal/architecture/current/`
+  6. Link integrity list: removed stale `knowledge/BRIEFING-*.md` reference
+  7. `update-essential-briefings` job: `knowledge/` → `docs/briefing/` paths (both BRIEFING-ESSENTIAL-* and BRIEFING-CURRENT-STATE)
+  8. Added `docs/README.md review` section to Quality Checks checklist
+  9. Added docs/README.md row to Completion Matrix (split existing "Quality Checks" into root README + docs/README rows)
+
