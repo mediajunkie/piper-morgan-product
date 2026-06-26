@@ -43,3 +43,23 @@
 
 - **Fire 09:17 (WORK) — Arch #1312 ruling actioned + mail drained.** Duty-cycle fire during PM-engaged window. New mail: Arch ruled the #1312 multi-Base seam is an illusory stale duplicate → **collapse the `personality/models.py` orphan Base, repoint repository, reject multi-`target_metadata`** (one-Base-per-DB invariant). Investigated before extending: read both models + audited callers → found the "clean collapse" is a **scoped multi-caller refactor** (canonical `id` has no PK default; `user_id` UUID+FK vs orphan String-no-FK; `get_default("default_user")` non-UUID sentinel + str-typed callers across trust service/response-enhancer; owner_id #357 pending). Replied to Arch (cc PM/exec/PA) with the deltas + accepted the pairing offer on the user_id-contract call; confirmed #1283 probe-not-run sequencing. Recorded the scoped plan on #1312 (execution = PM sequencing, slots after the alpha-tester gate). **Also fixed a mail residue bug**: 3 earlier triage sends only passed the read/ (add) path not the inbox/ (remove) path, leaving the originals duplicated in inbox on origin/main — removed them; inbox now empty on origin/main. The #1310 self-reconcile worked cleanly on this multi-path send.
 
+- **Fire 21:17 (STOP — day-close).** Last scheduled fire of today (21 = largest cron hour; next 03:17 tomorrow). Final mail brought 3 actionable memos, all triaged to read/: **CIO GO'd #1287** (option 1 — expand the removal into methodology/; full pass ready, NOT executed tonight per day-close + PM focus signal); **Arch's full #1312 user_id-contract ruling** (option a; trust-service is a different repo → collapse smaller than first flagged); **CXO setup-copy review** (1-line intro-panel fix before the alpha wave + a copy-debt to file). PM flagged this session that alpha/skunkworks is pulling Lead off RECONNECT and "may ask to hold off or delegate" → so I'm HOLDING the now-larger not-RECONNECT queue (#1287, CXO copy, double-login) + the RECONNECT next-move (#1229 vs #1283) for PM's hold/delegate/do call rather than absorbing more unilaterally. Carry-forward rewritten with that fork up top; escalations doc reconciled (UI-smoke-test RESOLVED — PM ran it tonight; #1312 down to PM-sequencing-only).
+
+---
+
+## Session Wrap (STOP — 2026-06-25, 06:35 → 21:17 PDT)
+
+**Day arc:** A heavy alpha-readiness day. Shipped + PM-UAT'd the two onboarding blockers (#1318 system-check env-vars, #1319 mobile card); verified #358 encryption live; fixed + closed #1310 (mail-send self-reconcile) and #1309 (onboarding test); landed the stranded Jun-24 log close. Mid-day: rotated the Caddy gate password (PM request); investigated + filed #1320 (onboarding auth-loop — reproduced the Caddy-basic-auth-on-XHR dialog-block via chrome-devtools) and fixed its check-keychain side-bug. Did verify-first on the #1287 coordinator removal → caught a methodology/ consumer layer both prior traces missed → handed the boundary to CIO (who GO'd the expanded removal). Decided #1162 (keep the Caddy gate — it's the alpha's invite mechanism; registration is open). Walked PM through #1320/#1162 + the full RECONNECT board reconciliation; PM ran the encrypted-write-path UI smoke test (satisfied a pending #358 item). Ended by surfacing the not-RECONNECT-vs-sprint focus fork for PM.
+
+**Key discipline wins:** verify-first-on-deletes (the #1287 methodology/ catch); correct-myself-on-new-data (#1283 is sprint-tagged; #1162 gate is load-bearing as the invite control); verify-at-the-user-layer (live curl + PM UAT + browser repro before calling things done).
+
+## Memory & briefing surfaces referenced this session
+**Referenced**: `duty-cycle-tick` skill (WATCH/WORK/STOP dispatch + last-fire-of-day rule); `close-issue-properly` (the #1318/#1319/#1309/#1310 closes); the RECONNECT sequencing doc (`reconnect-remainder-sequencing-2026-06-22.md` — board reconciliation); CLAUDE.md (HARD RULE no-destructive-git-in-main-checkout; mailbox push-to-ref; alpha deploy mechanism); `decisions.log` (recorded #1162; merged Arch's #1312); the #1287/#1312/#1320 issue bodies + CIO/Arch/CXO memos.
+**Loaded but not referenced**: cross-pollination brief; BRIEFING-CURRENT-STATE (Docs refreshed it independently).
+**Wanted but not found**: a canonical "alpha tester flow" doc (hosted-web-onboarding vs MCP-bundle, intended threat model) — I had to infer it for the #1162 gate decision; a short doc would have grounded that call faster.
+
+## Sign-off
+(checklist output appended at commit)
+
+<!-- DAY-CLOSED: 2026-06-25 -->
+
