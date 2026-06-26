@@ -90,17 +90,17 @@ jobs:
                 - **Note**: goes stale quickly during high-velocity sprints — refresh weekly minimum
                 - **Caveat**: the SessionStart hook's staleness flag keys off a date-field quirk and can over-report (e.g. "14 days" when the banner is 2 days old) — trust the in-file STATUS BANNER date, not the hook
 
-              ### 🔍 Automated Audits (Claude Code /agent or manual verification)
+              ### 🔍 Automated Audits (subagent or manual verification)
 
-              **Note**: Agent may choose manual verification instead of launching subagents. Both approaches are acceptable as long as evidence is provided.
+              **Note**: Use the Agent tool (subagents) for these, or do manual verification — both are acceptable as long as evidence is provided. The \`/agent\` form below is a prompt shorthand, not a slash command; rewrite as an Agent tool call when executing.
 
-              - [ ] Run: \`/agent Audit docs/ for stale content older than 30 days\`
-              - [ ] Run: \`/agent Find duplicate files in docs/ and list consolidation opportunities\`
-              - [ ] Run: \`/agent Check for broken links in docs/**/*.md\`
-              - [ ] Run: \`/agent Verify cross-references between methodology files in docs/internal/development/methodology-core/\`
-              - [ ] Run: \`/agent Check for missing cross-references between docs/NAVIGATION.md and docs/internal/development/methodology-core/INDEX.md\`
-              - [ ] Run: \`/agent Verify briefing documents completeness in docs/briefing/\`
-              - [ ] Run: \`/agent Check omnibus logs structure in docs/omnibus-logs/\`
+              - [ ] Subagent: "Audit docs/ for stale content older than 30 days — list files with last-modified dates, flag anything claiming current state that is >30 days old"
+              - [ ] Subagent: "Find duplicate files in docs/ and list consolidation opportunities — look for same-named or near-identical files across directories"
+              - [ ] Subagent: "Check for broken links in docs/**/*.md — internal links to files that no longer exist at the referenced path"
+              - [ ] Subagent: "Verify cross-references between methodology files in docs/internal/development/methodology-core/ — every cross-reference should resolve"
+              - [ ] Subagent: "Check for missing cross-references between docs/NAVIGATION.md and docs/internal/development/methodology-core/INDEX.md"
+              - [ ] Subagent: "Verify briefing documents completeness in docs/briefing/ — check all role briefings exist per ROSTER.md"
+              - [ ] Subagent: "Check omnibus logs structure in docs/omnibus-logs/ — verify continuous coverage, no gaps >2 days"
 
               ### 🔗 Link Integrity Checking (NEW - Feb 2026)
 
@@ -109,7 +109,7 @@ jobs:
               **Priority files** (check these first - high-reference documents):
               - [ ] ADRs: \`docs/internal/architecture/current/adrs/adr-*.md\`
               - [ ] Patterns: \`docs/internal/architecture/current/patterns/pattern-*.md\`
-              - [ ] Briefings: \`docs/briefing/*.md\` and \`knowledge/BRIEFING-*.md\`
+              - [ ] Briefings: \`docs/briefing/*.md\`
 
               **Link types to verify**:
               1. **Internal doc references** (\`../path/to/file.md\`) - Must exist at referenced location
@@ -131,7 +131,7 @@ jobs:
 
               ### 🔧 Infrastructure & Pattern Verification
 
-              - [ ] Check app.py line count: \`wc -l web/app.py\` (trigger refactor at 1000 lines, currently ~750)
+              - [ ] Check app.py line count: \`wc -l web/app.py\` (trigger refactor at 1000 lines, currently ~374)
               - [ ] Verify port 8001 documented everywhere: \`grep -r "8080" docs/ --include="*.md"\` (should be empty)
               - [ ] Check for mock fallbacks: \`grep -r "mock_\\|fallback" services/ --include="*.py"\`
               - [ ] Verify AsyncSessionFactory pattern: \`grep -r "DatabasePool" services/ --include="*.py"\` (should be empty)
@@ -176,7 +176,7 @@ jobs:
               ### 📚 Pattern & Knowledge Capture
 
               - [ ] Update docs/internal/architecture/current/patterns/README.md with:
-                - [ ] New patterns discovered this week (50 total patterns as of Jan 19, 2026)
+                - [ ] New patterns discovered this week (74 patterns as of Jun 2026 — verify current count via \`wc -l\`)
                 - [ ] Check \`docs/internal/architecture/current/patterns/README.md\` for current count
                 - [ ] Verify README.md count matches actual pattern-*.md files in directory
                 - [ ] Update README.md if new patterns (050+) not yet documented
@@ -217,8 +217,15 @@ jobs:
                 - [ ] Check setup instructions match current process (PIPER.user.md vs database config)
                 - [ ] Ensure content is brief and evergreen
                 - [ ] Remove any accidental test content or markdown artifacts
-                - [ ] **Create review document**: Save findings to \`dev/2025/MM/DD/root-readme-review.md\`
+                - [ ] **Create review document**: Save findings to \`dev/YYYY/MM/DD/root-readme-review.md\`
                 - [ ] Note: This is separate from docs/README.md (pmorgan.tech homepage)
+              - [ ] **Review docs/README.md (pmorgan.tech homepage)** — distinct from the GitHub-view root README:
+                - [ ] Verify current version number matches \`pyproject.toml\`
+                - [ ] Verify current capabilities list is accurate (no deprecated features, no missing shipped features)
+                - [ ] Check linked docs (ALPHA_QUICKSTART.md, ALPHA_TESTING_GUIDE.md, ALPHA_KNOWN_ISSUES.md) are current — especially re: standup, authentication, and integration steps
+                - [ ] Verify roadmap section matches active sprint sequence from BRIEFING-CURRENT-STATE
+                - [ ] Ensure no deprecated workflow names (e.g., MorningStandupWorkflow retired via #1289)
+                - [ ] Ensure content is accurate and doesn't reference work-in-progress as shipped
 
               ### 📈 Metrics Collection (Optional)
 
@@ -305,7 +312,8 @@ jobs:
               | Sprint & Roadmap Alignment | ✅/⏸️/❌ | [link or reason] |
               | GitHub Issues Sync | ✅/⏸️/❌ | [link or reason] |
               | Pattern & Knowledge Capture | ✅/⏸️/❌ | [link or reason] |
-              | Quality Checks | ✅/⏸️/❌ | [link or reason] |
+              | Quality Checks (root README.md) | ✅/⏸️/❌ | [link or reason] |
+              | Quality Checks (docs/README.md) | ✅/⏸️/❌ | [link or reason] |
 
               **Legend**:
               - ✅ = Completed with evidence
@@ -331,7 +339,7 @@ jobs:
 
               ### References
               - [CLAUDE.md Project Instructions](../CLAUDE.md)
-              - [Architecture Documentation](../docs/architecture/architecture.md)
+              - [Architecture Documentation](../docs/internal/architecture/current/architecture.md)
               - [Pattern Catalog](../docs/internal/architecture/current/patterns/README.md)
               - [dev/ Directory Structure](../dev/README.md) - Session log retention policy
               - [Navigation Hub](../docs/NAVIGATION.md) - **Check this FIRST for file locations**`,
@@ -366,16 +374,17 @@ jobs:
           # Extract current position from roadmap or current state
           if [ -f "docs/internal/planning/roadmap/roadmap.md" ]; then
             POSITION=$(grep -i "current position\|position:" docs/internal/planning/roadmap/roadmap.md | head -1 | cut -d: -f2 | xargs)
-          elif [ -f "knowledge/BRIEFING-CURRENT-STATE.md" ]; then
-            POSITION=$(grep -i "position:" knowledge/BRIEFING-CURRENT-STATE.md | head -1 | cut -d: -f2 | xargs)
+          elif [ -f "docs/briefing/BRIEFING-CURRENT-STATE.md" ]; then
+            POSITION=$(grep -i "position:" docs/briefing/BRIEFING-CURRENT-STATE.md | head -1 | cut -d: -f2 | xargs)
           else
-            POSITION="1.1.3.2"  # Default fallback
+            POSITION="4.4.3"  # Default fallback (update when position advances)
           fi
 
           echo "Updating essential briefings with position: $POSITION"
 
           # Update all essential briefings with current position
-          for file in knowledge/BRIEFING-ESSENTIAL-*.md; do
+          # Briefings migrated from knowledge/ to docs/briefing/ (Apr 2026)
+          for file in docs/briefing/BRIEFING-ESSENTIAL-*.md; do
             if [ -f "$file" ]; then
               # Update the position line in each briefing
               sed -i "s/Position\*\*: [0-9.]*/Position**: $POSITION/" "$file"
@@ -389,7 +398,7 @@ jobs:
           git config --local user.name "GitHub Action"
 
           if [[ `git status --porcelain` ]]; then
-            git add knowledge/BRIEFING-ESSENTIAL-*.md
+            git add docs/briefing/BRIEFING-ESSENTIAL-*.md
             git commit -m "chore: Update essential briefings position
 
             🤖 Generated with [Claude Code](https://claude.ai/code)"
