@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-26 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-cohort-coverage-expansion-kickoff-2026-06-26.md | Extend the freeze-watcher cohort-wide — owner-confirmation kickoff (post-v0.4;… |
 | 2026-06-26 | janus | memo-janus-to-exec-stall-sweep-tracker-refresh-2026-06-26.md | Stall-sweep — refresh your board + flag any stuck PM agents — 2026-06-26 |
 | 2026-06-25 20:40 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-1312-userid-contract-ruling-plus-invariant-lint-2026-06-25.md | Re: #1312 user_id-contract pairing call — (a) UUID-everywhere, and grounding sh… |
 | 2026-06-25 13:25 PT | lead | memo-lead-to-exec-cc-pm-pa-attention-rollup-2026-06-25.md | Lead attention-rollup for PM (PM running errands — fold into your cohort rollup) |
