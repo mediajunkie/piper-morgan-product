@@ -42,3 +42,13 @@ Drained the catch-up in one wake:
 **Caught up**: #1283→M5 (PM call; ADR-073 M5-deferred); #1312 timing PM-approved (after-alpha; done my side); WS-2/#1229 closed by Lead; #1320/#1162 Caddy-gate = my 6/20 read stands, awaiting PM go (nothing pending from me). Carry-forward refreshed (`a097c0f58`). Both inbox memos → read/.
 
 Cron `ff1df50a` armed (survived the pause). Light hold — queue awaiting Lead's RECONNECT ports (#1317) + the alpha bundle. Available; next fire 09:27 (if it fires).
+
+---
+
+### Fire — autonomous (08:17 tick) — github-mcp provisioning RULED: A (hosted-OAuth)
+
+<!-- GAP-SINCE-LAST-FIRE: 0.2h -->
+
+The cron fired (autonomous tick). 1 new memo — Lead's **github-mcp-server provisioning decision** (exactly the call I flagged in the #1220 ratification: stdio-local vs hosted). It's framed as an Arch/CIO architecture-direction call. **Ruled A (hosted-OAuth)** — and this is the role-portfolio **architecture-integrity** call, so I ruled it decisively rather than presenting a toss-up: **B (local-stdio-PAT) re-introduces the raw-token custody ADR-070 D3 deliberately designed out** (Piper holding each user's PAT to inject into a subprocess — the exact pattern WS-2/#1229's "bindings-not-credentials" collapse removed); **A realizes D3** (server owns the OAuth token; Piper stores only a #1229 binding). A also generalizes (single-user-now → multi-tenant, no re-stamp; same principle as the #1232 Phase-1 ruling); B doesn't. Affirmed the substrate direction (**MCPClient supports both stdio + streamable-HTTP** — the ecosystem uses both; hosted servers are HTTP; ADR-070 substrate must not be transport-locked — build regardless of the GitHub call). Handed PM the **one genuinely-business-gated dimension** (cost/licensing/data-policy on `api.githubcopilot.com`) with a decision tree (A unless a hard blocker → then B-as-temporary-single-user-debt, never B-for-production). → memo to PM cc Lead/Exec/PA (`fa58952c4`) + decisions.log (`4a6541e23`).
+
+Drained. Queue back to: awaiting PM's business-checkpoint on provisioning + Lead's #1317 ports + the alpha bundle. Light hold.
