@@ -36,3 +36,62 @@ Sync clean. Inbox: 1 memo (CIO liveness-model consolidation — the close of las
 - **(16:02) Fire — suspected machine-sleep / cohort dark.** Inbox empty; only my own 13:04 commit since 13:02. Whole on-machine cohort silent since ~11:16 (CIO 11:16 last); **launchd watchdog itself stopped firing after 12:44** (would've fired hourly as roles crossed thresholds). Two-signal inference → machine slept / app backgrounded ~13:00, pausing session crons + watchdog together; this cloud Exec session keeps running (off-box). No mid-day STOP markers = abnormal, not clean EOD. Surfaced to PM: ONE machine/app wake revives the cohort (vs per-agent rouse). Nothing I can do from the cloud session to wake the box. Carry-forward flagged. Cron armed.
 
 - **(19:02) Fire — infra-event WATCHDOG-CONFIRMED.** Cohort still dark (no agent commits since my 16:03). Watchdog fired 🔴 infra-event at 16:45 + 18:45 (4 roles: cio/arch/cxo/ppm, 7-11h stale) — confirms 16:02 machine-sleep inference. Sequence: machine slept ~13:00 → woke ~16:45 (watchdog resumed) → agent sessions stayed dark (alert≠auto-resume). **CIO's freeze-check v0.4 is live + working** (alert shows dyn-threshold-5h-wake-window-aware). Captured as strongest-yet evidence for the off-machine-cure decision (PM-gated): mode-1 machine-sleep took the whole cohort down; detection works, resume doesn't. No memos (recipients down); no re-render (condition unchanged from 16:02, just confirmed). Brief PM surface. Cron armed.
+
+- **(22:02) STOP fire — resume sweep + day close.** One memo: CIO cohort-coverage-expansion kickoff (no-rush) → triaged + queued as Exec coordination (collect 4-field registry rows from 6 unwatched roles; rationale sharpened — Lead's stall went un-alerted because Lead isn't watched). **Resume sweep (promised PM)**: 6 roles back after PM's rounds (Lead 20:52 rate-limit-cleared, CIO/HOST/Web/Comms/PA ~20:5x); **Arch + CXO still down**; PPM/Docs verify. Surfaced to PM (still rounding).
+
+## Day Arc (6/26)
+
+**Opened**: 07:02 START (cron). **Closed**: 22:02 STOP.
+
+**What shipped today (Exec lane):**
+- **Two board renders** — 07:26 PM-present START board (`80916899d`, delivered) + kept current via carry-forward through a high-event day.
+- **#1312 kickoff relayed** (`0cfbbc439`) — PM approved timing → greenlit to Lead (after-alpha slot) cc Arch+PM, with Arch's full ruling + lint skeleton bundled.
+- **Janus (DinP) board + stall-sweep reply** (`89e38c5`) — fed the cross-project hub.
+- **Lead keep-draining nudge** (`c07898510`) — durable bite-sizing reframe (later learned afternoon gap was a rate limit, corrected).
+- **Machine-sleep infra-event — diagnosed + surfaced** (16:02 suspected → 19:02 watchdog-confirmed): two-signal inference (cohort + watchdog both dark), framed the off-machine-cure evidence + the alert≠resume gap.
+- **Resume sweep** at STOP — confirmed 6/8 back for PM.
+
+**Cohort day (for the record):**
+- 🎉 **MCPB plugin alpha SHIPPED** — first external tester Jake Krajewski; PA iterating v0.1.4→v0.1.6 on his install-UX feedback.
+- RECONNECT: #1229 WS-2 closed → Lead into MCP ports (#1317 inc.1).
+- #1312: technical ruling (Arch UUID-everywhere) + PM timing approval = fully greenlit, after-alpha.
+- CIO shipped freeze-check **v0.4** (wake-window-aware threshold) — verified live in tonight's infra alerts.
+- **Machine-sleep ~13:00–evening** took the on-machine cohort down; PM roused 6/8 tonight; Arch+CXO pending.
+
+**Carry-forward to 6/27** (full state in `exec-carry-forward.md`):
+- 🔴 Re-prod **Arch + CXO** (still down); verify PPM/Docs.
+- 🔴 #1320/#1162 browser-onboarding decision (PM+Arch — needs Arch up).
+- 📋 NO-RUSH: cohort-coverage expansion (collect 6 registry rows for CIO); model-in-logs convention; sprint-review skill draft — all parked on PM nod/cadence.
+- 🗓️ **PM tomorrow: move crons back to local** (fixes machine-sleep failure mode + my cloud HTML-delivery friction).
+- ✅ Alpha (plugin) shipped + live with tester Jake; #358 loose-close; mode-3 CXO diagnostic (CIO+Exec+CXO) when CXO stable.
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced:**
+- `exec-carry-forward.md` — single living-state surface, rewritten every fire
+- `cohort-attention-rollup` skill — START board render + live-state pass
+- `duty-cycle-tick` skill — fire dispatch incl. STOP last-fire-of-day rule
+- Watchdog infra-event alerts + `duty-cycle-registry.tsv` — liveness sweeps + the machine-sleep inference
+- CIO liveness-model spec (mode 1/2/3) — framed today's machine-sleep as mode-1 + the off-machine-cure evidence
+- Lead's `reconnect-remainder-sequencing` + PA session log (Jake/alpha-shipped finding)
+- MEMORY pins: mail push-to-ref discipline; "don't suggest stopping"; "Web≠product front-end" (routing); flywheel-continuous (Lead nudge framing)
+
+**Loaded but not referenced:**
+- BRIEFING-CURRENT-STATE (Docs-owned; no Exec edit needed today)
+
+**Wanted but not found:**
+- A rate-limit liveness signal — today surfaced a *4th* "looks-stalled" cause (Lead rate-limited) the watchdog can't distinguish; no surface captures it. Minor CIO-model gap, noted.
+
+## Sign-Off Checklist
+
+```
+git status          → clean (tracked) after STOP commit + mail-send triage
+@{u}..HEAD          → pushed
+origin/main..HEAD   → pushed
+```
+
+<!-- DAY-CLOSED: 2026-06-26 -->
+
+---
+
+*— Exec (DinP / Sonnet 4.6, cloud session), 6/26 STOP ~22:02 PT.*

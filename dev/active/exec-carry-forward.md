@@ -23,6 +23,12 @@
 - 🟢 **RECONNECT remainder** — moving fast under Lead. **#1229 WS-2 CLOSED overnight** (`88a168aff` connector_bindings storage foundation; Arch-gate already cleared via ADR-070 D3). Re-scope RESOLVED (#1230 folds, #1231 pull-forward). Lead now on **Chunk 2 (ports)**. #1283 → M5. No Exec action.
 - 🔴 **#1144 / #1131** greenlight (PM) — M3-era low-pri, possibly stale.
 
+### ✅ RESUME SWEEP — 22:02 (PM rounds mostly worked)
+After the machine-sleep infra-event, PM roused tonight. **6 back ~20:5x**: Lead (20:52 — rate limit cleared), CIO (20:56), HOST (20:57), Web (20:57), Comms (20:53), PA (21:00). **STILL DOWN: Arch (07:30) + CXO (10:55)** — PM still making rounds; these two are the remaining rouse targets. **Verify: PPM + Docs** (no clear 6/26-evening trace). One machine wake revived most; Arch+CXO need individual prods.
+
+### 📋 QUEUED (Exec coordination, NO-RUSH — CIO ask, weekend/Monday)
+**Cohort-coverage expansion of the freeze-watcher** (CIO memo 6/26, read/). v0.4 derives threshold from each role's cron → adding roles is now cheap + correct-by-construction. Registry watches 5/11 (cio/exec/arch/cxo/ppm); **collect confirmed rows from the 6 unwatched: host, comms, docs, web, pa, lead.** Each owner fills 4 fields (~30s): `role | cron_expr | fallback_thr_h | wake_start_h | wake_end_h | first_fire`. Batch to CIO. **Rationale sharpened by today**: Lead's stall went un-alerted *because Lead isn't watched* — expanding coverage closes exactly that gap. Execute when roles are next active (not at day-close).
+
 ### 🔴 INFRASTRUCTURE EVENT — WATCHDOG-CONFIRMED (19:02)
 **Cohort down since ~11:16** (CIO last; only my cloud commits since). Watchdog **🔴 infra-event alerts at 16:45 + 18:45**: 4 roles silent (cio/arch/cxo/ppm, all ~7-11h stale) → "likely machine-asleep/backgrounded; one wake covers it." Confirms my 16:02 inference.
 - **Sequence**: machine slept ~13:00 (watchdog dark 12:44→16:45) → machine woke ~16:45 (watchdog resumed + alerting) → **but agent sessions did NOT auto-resume** (the alert→resume gap Arch's datum proved; a backgrounded session needs manual rouse).
