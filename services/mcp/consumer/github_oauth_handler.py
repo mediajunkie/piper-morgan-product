@@ -31,6 +31,9 @@ _PENDING_STATES: Dict[str, Dict] = {}
 
 _DEFAULT_REDIRECT = "http://localhost:8001/api/v1/settings/integrations/github/callback"
 _DEFAULT_SCOPES = ["repo"]  # repos/issues/PRs; confirm minimal set. Requested in-flow.
+# The self-hosted github-mcp-server URL the binding records + resolve() connects to
+# (ADR-070 C). Set GITHUB_MCP_SERVER_URL per-environment (Droplet → the deployed server).
+_DEFAULT_MCP_SERVER_URL = os.getenv("GITHUB_MCP_SERVER_URL", "http://localhost:9100/mcp")
 
 
 @dataclass
@@ -178,3 +181,32 @@ class GitHubOAuthHandler:
                     return (await response.json()).get("login", "unknown")
         except Exception:
             return "unknown"
+
+
+async def persist_github_connection(
+    session,
+    user_id: str,
+    access_token: str,
+    *,
+    grant_store=None,
+    server_ref: Optional[str] = None,
+) -> None:
+    """Complete a GitHub connection (#1317 inc.2 slice D orchestration).
+
+    Stores the user's OAuth grant encrypted (the #358 store via ``ConnectorGrantStore``)
+    and marks the #1229 ``ConnectorBinding`` BOUND, recording the self-hosted server ref.
+    The binding references the grant by the ``(owner, connector)`` convention — it holds
+    no token (ADR-070 D3). Caller owns the transaction (commit after).
+    """
+    from services.connectors.binding_repository import ConnectorBindingRepository
+
+    from .connector_grant_store import ConnectorGrantStore
+
+    store = grant_store or ConnectorGrantStore()
+    await store.store(session, user_id, "github", access_token)
+    await ConnectorBindingRepository(session).upsert(
+        user_id,
+        "github",
+        status="bound",
+        mcp_server_ref=(server_ref or _DEFAULT_MCP_SERVER_URL),
+    )
