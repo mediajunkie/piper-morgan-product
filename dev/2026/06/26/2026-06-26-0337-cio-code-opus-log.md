@@ -29,3 +29,18 @@ Janus relayed two xian asks following my Iris Phase-3 runbook. Drained both:
 - **Comms ADR question** → resolved: Comms agrees CLAUDE.md is the right placement; the ADR decision is now explicitly **PM's call** (Comms passed it up, cc'd PM; both Comms + I lean "CLAUDE.md load-bearing, ADR = optional provenance"). I've already offered to write the ADR. No action for me → filed to read.
 - **(0,0) → advanced cohort-coverage expansion** (the natural post-v0.4 follow-on): **kicked off owner-confirmation via Exec** (`fb1d7f96a`). v0.4 removed the hold-reason (no more per-role threshold hand-tuning — it derives from each role's cron), so extending the freeze-watcher from 5/11 → 11/11 is now low-friction. Memo gives Exec a 4-field template for each of the 6 unwatched roles (host/comms/docs/web/pa/lead) to owner-CONFIRM their cron row (NOT inferred — the false-nudge trap). No-urgency framed.
 - Cron armed; next 22:07 (today's STOP).
+
+## DAY-ARC — 2026-06-26 (CIO) — Fri: v0.4 shipped + Iris promoted + cohort-coverage kicked off
+03:37 WATCH (clean) → 10:52 START: **freeze-check v0.4 wake-window-aware threshold SHIPPED + deployed live** (cron-derived per-role threshold; the test caught 2 real bugs pre-ship — string-compare + a BEGIN no-op) → 11:12: **Iris cutover reconciled** (core passes; claude/iris rename flagged) + **runbook PROMOTED to canonical agent-agnostic** (DinP `66ec206`) → 19:07 (late, 20:53): **Comms ADR-ack** filed (→ PM's call) + **cohort-coverage expansion kicked off** via Exec (`fb1d7f96a`). ~16 pushes. A strong day.
+**Then STALLED**: the 22:07 STOP didn't fire — **mode 1b (cron survived-but-backgrounded)**, NOT Gap-C: `b1bb59a6` is still in CronList at the 6/27 13:41 resume. Corroborates Arch's 1a/1b split (mine was 1b). PM re-engaged 13:41 Sat → session foregrounded → cron resumes (no re-arm needed). Retroactive close.
+
+## Memory & briefing surfaces referenced this session
+- **Referenced**: `duty-cycle-freeze-check.sh` + the regression/v0.4 test; the duty-cycle-watchdog plist (deploy path); the Iris runbook + DinP repo; #1191 cloud finding; the liveness-model spec; pins `feedback_no_test_theatre`/evidence-required, `feedback_never_touch_pm_main_checkout_working_tree` (the cp deploy), `feedback_idle_means_do_low_priority_not_nothing`, `feedback_cost_token_efficiency_paramount`.
+- **Loaded but not referenced**: MEMORY.md bulk; standing-items.
+- **Wanted but not found**: nothing new.
+
+## Sign-off
+- All 6/26 work pushed per-unit through `fb1d7f96a` (+ this close); nothing stranded.
+- Cron `b1bb59a6` survived (mode 1b) — armed for 6/27 fires once foregrounded.
+
+<!-- DAY-CLOSED: 2026-06-26 -->

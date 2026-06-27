@@ -46,3 +46,20 @@ Cron: deleted `2244527d`, re-armed `d397234f`. Pull: Lead→Arch Shape-B/#1322 s
 Lead→PM GitHub MCP decision (Option A hosted-OAuth vs B local-PAT): not PPM — Arch/PM call per the memo. No PPM action.
 
 Queue: (0,0). IDLE.
+
+### Fire 3 — 15:52 PDT (windowed cron)
+
+Cron: deleted `d397234f`, re-armed `144b1289`. Pull: Comms inbox-proxy ratification + Ship #049 Comms/HOST workstream reviews filed + stall alerts. **Inbox: 1** — Ship #049 workstream kickoff (Exec, new §0 format, backstop Tue Jun 30).
+
+**Action taken**: Ship #049 PPM workstream review written and filed → `mailboxes/exec/inbox/workstream-049-ppm-2026-06-27.md`. Sent copy + dev/ archive. Portfolio section 2 refreshed (Rule 5). Inbox item → read/.
+
+Key findings reported:
+- ADR-071 is the critical path for #1237 (asked PM/Exec: what's the timeline?)
+- Roadmap v18.1 drift accumulating since Jun 3 (asked PM for directional input)
+- Inbox-proxy ratification should improve "needs-decision" extraction velocity for these two blocked items
+
+Inbox: 0. Queue: (0,0). IDLE.
+
+### Fire 4 — 18:52 PDT (windowed cron)
+
+Cron: deleted `144b1289`, re-armed `29b6d12d`. Pull: Lead connector_grant_store + tests (#1317); Arch CIO cure-A memo triaged. Inbox: 2 apparent — both already processed (inbox deletions missed in prior commits; pull restored from origin). Fixed: `git rm` both inbox files → commit. Inbox: 0. Queue: (0,0). IDLE.

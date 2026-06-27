@@ -52,5 +52,16 @@ run "STALE ppm 9h
 lastlog | grep -q "WOULD-NUDGE \[perrole\]: ppm" && ok "new role (ppm) nudged" || no "ppm should nudge → $(lastlog)"
 grep -q "^cio" "$STATE" 2>/dev/null && no "recovered cio still in state" || ok "recovered cio dropped from state"
 
+echo "── T7: Belt 0 — stale → WOULD-FOREGROUND logged (auto-foreground resume attempt) ──"
+: > "$LOG"; : > "$STATE"; run "STALE cio 9h
+"
+grep -q "WOULD-FOREGROUND" "$LOG" && ok "Belt 0 fired auto-foreground on stall" || no "Belt 0 didn't fire → $(cat "$LOG")"
+
+echo "── T8: WATCHDOG_AUTO_FOREGROUND=0 → Belt 0 suppressed (toggle) ──"
+: > "$LOG"; : > "$STATE"; printf 'STALE cio 9h\n' > "$FIX"
+WATCHDOG_DRYRUN=1 WATCHDOG_LOG="$LOG" WATCHDOG_STATE="$STATE" WATCHDOG_AUTO_FOREGROUND=0 \
+  WATCHDOG_NUDGE_COOLDOWN=0 WATCHDOG_FREEZE_CMD="cat '$FIX'" bash "$W"
+grep -q "WOULD-FOREGROUND" "$LOG" && no "Belt 0 fired despite toggle off → $(cat "$LOG")" || ok "Belt 0 suppressed by toggle"
+
 echo ""; echo "════ RESULT: $PASS passed, $FAIL failed ════"
 [ "$FAIL" = 0 ] && exit 0 || exit 1

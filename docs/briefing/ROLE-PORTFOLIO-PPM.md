@@ -3,8 +3,8 @@ type: role-portfolio
 role: PPM (Principal Product Manager)
 status: v0.1 — main-cohort wave
 self-authored-by: PPM
-last_updated: 2026-06-19
-refreshed: 2026-06-19
+last_updated: 2026-06-27
+refreshed: 2026-06-27
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-PPM.md
 refresh_discipline: "section 2 updated as part of each weekly workstream review — can't write the Ship/workstream without restating priorities + status, so the review keeps this current by construction (Rule 5)"
@@ -33,12 +33,12 @@ The why: PM can't synthesize every cross-role lens in real time. PPM exists so t
 
 | Priority | What I'm advancing | Status (June 19) | How we'll know it's moving |
 |---|---|---|---|
-| **Entity-model lane** | RadarEntity contract shape for all 4 entity types; PPM is designated owner (6/15 alignment) | All 4 types modeled (WorkItem/Document/Conversation/People ✅); #1237 3-of-4 confirmed for M5 beta; #1240 deferred → #1281 (post-beta); trust-model sweep + #1270 reconcile delivered | #1237 EntitySources ship against the spec; Lead builds without shape questions bouncing back |
-| **Roadmap v18.1/v19 fold** | Roadmap reflects the current sprint sequence and post-beta arc | v18 canonical (ratified June 3); v18.1 fold owed — sprint board (M4→RECONNECT→D1→M5) not yet reflected in roadmap body | PM reviews the v18.1 draft; fold ratified; roadmap matches the sprint board |
-| **#683 DoD close** | Interface-verification DoD complete and closeable | ACs 1–3 done; Lead Dev operational-check recipe still pending (the one remaining item before close) | Lead Dev delivers the recipe; #683 closes with full AC evidence |
-| **#1269 standup skill** | PM milestone placement for the standup skill | PPM data model + CXO experience design both delivered; awaiting PM milestone call (depends on #1237 callable) | PM makes the call; Lead has a clear lane to build |
-| **Ship #048** | PPM contributes to the next Weekly Ship | No Comms kickoff memo yet | Comms kickoff lands; PPM workstream review drafted on its window |
-| **Role portfolio** | This document | v0.1 being authored now | HOST review passes; portfolio active |
+| **Entity-model lane (#1237)** | 4-type Radar EntitySources built against the spec | BLOCKED: ADR-071 (Arch) → Lead build | ADR-071 filed and settled; Lead has a clear build target |
+| **Roadmap v18.1/v19 fold** | Roadmap reflects post-RECONNECT sprint arc | BLOCKED: PM input needed | PM gives directional input; PPM folds v18.1 |
+| **#683 DoD close** | Interface-verification DoD fully closeable | BLOCKED: Lead Dev recipe pending | Recipe lands; #683 closes with full AC evidence |
+| **#1269 standup skill** | PM milestone placement | BLOCKED: PM milestone call (post-#1237 callable) | PM makes the call; Lead has a clear lane |
+| **Ship #049 PPM lens** | PPM workstream review for Jun 19–25 | COMPLETE ✅ | Filed Jun 27 |
+| **Role portfolio** | Self-authored identity layer | COMPLETE ✅ (v0.1, HOST wave 8/8) | Refreshed by this review (Rule 5) |
 
 ---
 

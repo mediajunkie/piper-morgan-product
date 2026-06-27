@@ -161,3 +161,26 @@ class TestMCPClientStreamableHttp:
 
             called = await client.call_tool("echo", {"text": "via-http"})
             assert any("echo: via-http" in t for t in _texts(called.content))
+
+
+class TestMCPClientHttpAuthHeader:
+    """inc.2 slice C — connect_http forwards an auth header (the user's GitHub OAuth token)
+    to the self-hosted server (ADR-070 C). Network-free: asserts the header is wired into
+    the SDK's http-client factory (security-critical — the token must reach the server)."""
+
+    async def test_auth_header_passed_to_http_client_factory(self, monkeypatch):
+        import services.mcp.consumer.mcp_client as mc
+
+        captured = {}
+
+        def _spy(headers=None, **kw):
+            captured["headers"] = headers
+            raise RuntimeError("stop-before-network")  # short-circuit; only assert wiring
+
+        monkeypatch.setattr(mc, "create_mcp_http_client", _spy)
+        with pytest.raises(RuntimeError):
+            async with MCPClient.connect_http(
+                "http://127.0.0.1:9/mcp", headers={"Authorization": "Bearer user-tok"}
+            ):
+                pass
+        assert captured["headers"] == {"Authorization": "Bearer user-tok"}

@@ -1509,3 +1509,13 @@ date,role,slug,environment,model,log_filename,notes
 2026-06-25,Web,web,code,sonnet,2026-06-25-0652-web-code-sonnet-log.md,Footer byline shipped to pipermorgan.ai; newsletter facts sent to Exec for Janus
 2026-06-25,Chief Experience Officer,cxo,code,sonnet,2026-06-25-0931-cxo-code-sonnet-log.md,Setup UX Colleague Test review; intro-panel copy proposal; twice blocked on approval prompts
 2026-06-25,Chief Innovation Officer,cio,code,opus,2026-06-25-1037-cio-code-opus-log.md,Iris Phase 3 runbook delivered; #1153 CLOSED; #1287 boundary GO; liveness model spec d835de03f
+2026-06-26,Chief Innovation Officer,cio,code,opus,2026-06-26-0337-cio-code-opus-log.md,freeze-check v0.4 (wake-window-aware dynamic threshold; 2 bugs caught by tests); Iris cutover runbook promoted to canonical; WATCH overnight
+2026-06-26,Communications,comms,code,sonnet,2026-06-26-0615-comms-code-sonnet-log.md,1-fire day (machine sleep took afternoon); CIO ADR question (main-checkout HARD RULE) passed to PM
+2026-06-26,Lead Developer,lead,code,sonnet,2026-06-26-0618-lead-code-opus-log.md,#1229 WS-2 closed (ConnectorBinding model + migration + repo; 27/27 green); GitHub port inc.1 shipped; inc.2 blocked on simulation transport — #1220 prerequisite identified
+2026-06-26,Chief of Staff (Exec),exec,code,sonnet,2026-06-26-0702-exec-code-sonnet-log.md,Board rendered (PM + Janus); #1312 relayed; machine-sleep diagnosed (cloud-only session; Exec held board 8h); MCPB alpha live with Jake Krajewski; resume sweep 6/8
+2026-06-26,Documentation Management,docs,code,sonnet,2026-06-26-1017-docs-code-sonnet-log.md,Jun 25 omnibus complete (HIGH-COMPLEXITY 10 agents); 10 activity-log Shape B rows; Gap-C self-heal (20:51)
+2026-06-26,Chief Experience Officer,cxo,code,sonnet,2026-06-26-1051-cxo-code-sonnet-log.md,BRIEFING-CURRENT-STATE refreshed (8-day stale cleared); 1-fire day (cron died after Fire 1)
+2026-06-26,Principal Product Manager,ppm,code,sonnet,2026-06-26-1051-ppm-code-sonnet-log.md,"Queue (0,0) all PM/Lead-gated; 2 fires + PM manual resume at 20:54; IDLE"
+2026-06-26,Head of Sapient Trust (HOST),host,code,sonnet,2026-06-26-2054-host-code-sonnet-log.md,Gap-C self-heal (PM-initiated 20:54); inbox empty; portfolio wave complete; watch items unchanged
+2026-06-26,Web,web,code,sonnet,2026-06-26-2056-web-code-sonnet-log.md,Gap-C self-heal (PM-initiated 20:55); all items PM-gated or external-spec; IDLE
+2026-06-26,Piper Alpha,pa,code,sonnet,,MCPB v0.1.4-v0.1.6 install-UX iteration on Jake Krajewski alpha feedback; PM resumed ~20:50; no Jun 26 session log — inferred from Exec cross-refs

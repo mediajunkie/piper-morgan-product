@@ -18,9 +18,15 @@
 #   - INFRA-EVENT collapse — >=N roles stale at once = "infrastructure event suspected" (one nudge, the
 #     machine-asleep/backgrounded signature) not N alarms (HOST multi-role-silence flag; CIO freeze lane).
 #
+# v2.1 (2026-06-27, CIO): Belt 0 — AUTO-FOREGROUND. The launchd watchdog (which survives the suspension that
+#   freezes the in-app cron) now `open -b`'s the Claude Code app on a stall to un-suspend it → the cron
+#   resumes. Automates PM's manual resume — the (a) cure-shape from the liveness model. Nudge belts stay as
+#   the backstop. Interim measure pending the always-on Mac Mini (which sidesteps mode-1b entirely).
+#
 # Test hooks (used by scripts/test-duty-cycle-watchdog.sh): WATCHDOG_FREEZE_CMD overrides the detector;
-# WATCHDOG_DRYRUN=1 logs "WOULD-NUDGE …" instead of firing belts (+ skips the fetch); WATCHDOG_LOG /
-# WATCHDOG_STATE redirect the runtime files; WATCHDOG_NUDGE_COOLDOWN / WATCHDOG_INFRA_THRESHOLD tune.
+# WATCHDOG_DRYRUN=1 logs "WOULD-NUDGE/WOULD-FOREGROUND …" instead of firing belts (+ skips the fetch);
+# WATCHDOG_LOG / WATCHDOG_STATE redirect runtime files; WATCHDOG_NUDGE_COOLDOWN / WATCHDOG_INFRA_THRESHOLD
+# tune; WATCHDOG_AUTO_FOREGROUND=0 disables Belt 0; WATCHDOG_CLAUDE_APP_ID overrides the bundle id.
 #
 # Design: docs/operations/duty-cycle design/wake-this-session-duty-cycle-design-2026-06-14.md
 set -uo pipefail
@@ -45,6 +51,27 @@ if [ -z "$STALE" ]; then
 fi
 SUMMARY=$(echo "$STALE" | tr '\n' ';' | sed 's/;$//; s/"/\\"/g')
 echo "$ts DETECT: $SUMMARY" >> "$LOG"
+
+# Belt 0 — AUTO-FOREGROUND (mode-1b resume; the (a) cure-shape). The in-process cron freezes when macOS
+# suspends the backgrounded Claude Code app; this watchdog (a SEPARATE launchd process) survives that, so
+# bringing the app forward un-suspends the process → the cron ticks again. This AUTOMATES PM's manual resume
+# (which is itself just foregrounding the window — the proof the mechanism works). Uses `open -b` (Launch
+# Services, NOT an Apple Event) so it needs no Automation/TCC grant and can't deadlock on the busy app
+# (verified: osascript-activate hangs from-within; `open -b` returns clean). Fires on EVERY stale detection
+# (the resume attempt) — self-limiting: once the cron resumes + commits a heartbeat, the next run sees fresh
+# → not stale → no more foregrounding. Toggle WATCHDOG_AUTO_FOREGROUND=0 to disable; the nudge belts below
+# remain the backstop if foreground fails (e.g. launchd-context Launch-Services denial — validates on the
+# first real stall via this log: a FOREGROUND line followed by the role going fresh = it worked).
+if [ "${WATCHDOG_AUTO_FOREGROUND:-1}" = 1 ]; then
+  APP_ID="${WATCHDOG_CLAUDE_APP_ID:-com.anthropic.claude-code}"
+  if [ "$DRYRUN" = 1 ]; then
+    echo "$ts WOULD-FOREGROUND: open -b $APP_ID (stale: $SUMMARY)" >> "$LOG"
+  elif open -b "$APP_ID" 2>/dev/null; then
+    echo "$ts FOREGROUND: open -b $APP_ID (resume attempt; stale: $SUMMARY)" >> "$LOG"
+  else
+    echo "$ts FOREGROUND-FAIL: open -b $APP_ID errored — relying on nudge backstop" >> "$LOG"
+  fi
+fi
 
 stale_roles=$(echo "$STALE" | sed -n 's/^STALE \([^ ]*\).*/\1/p')
 n_stale=$(printf '%s\n' "$stale_roles" | grep -c .)

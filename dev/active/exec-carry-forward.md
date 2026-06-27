@@ -29,8 +29,17 @@ Machine is up (Docs 03:28 WATCH + 06:05 brief). **Recovered**: Lead/CIO/HOST/Web
 ### 📋 QUEUED (Exec coordination, NO-RUSH — CIO ask, weekend/Monday)
 **Cohort-coverage expansion of the freeze-watcher** (CIO memo 6/26, read/). v0.4 derives threshold from each role's cron → adding roles is now cheap + correct-by-construction. Registry watches 5/11 (cio/exec/arch/cxo/ppm); **collect confirmed rows from the 6 unwatched: host, comms, docs, web, pa, lead.** Each owner fills 4 fields (~30s): `role | cron_expr | fallback_thr_h | wake_start_h | wake_end_h | first_fire`. Batch to CIO. **Rationale sharpened by today**: Lead's stall went un-alerted *because Lead isn't watched* — expanding coverage closes exactly that gap. Execute when roles are next active (not at day-close).
 
-### ✅ RESOLVED 6/27 — github-mcp provisioning
-PM cleared the business checkpoint → **Option A (hosted-OAuth) is GO** (Arch ruled A; PM "100% agree, hosted OAuth it is", no cost/licensing/data-policy blocker). Relayed to Lead+Arch (`1ecb66eda`). Lead wiring OAuth-callback binding-creation against the hosted endpoint; HTTP transport already shipping. Realizes ADR-070 D3.
+### ✅ RESOLVED 6/27 — github-mcp = Option C (Arch re-ruled 13:45)
+Morning A (hosted-OAuth) → BLOCKED (needs tester Copilot, PM non-starter) → **Arch RE-RULED to C** (self-host `github-mcp-server` + per-user OAuth via our GitHub App; no Copilot, ~zero cost). **D3 precised**: Piper holds no raw PAT, but scoped/revocable/refreshable OAuth grants ARE permitted (#358-encrypted, #1229-binding references the encrypted secret). C extends the existing Calendar-OAuth pattern (precedent, not new exposure). **Lead has GO** to wire inc.2 OAuth-callback on this model; transport unchanged. **End-state tracked**: GitHub-App installation-token auth (purest D3, no user token held) when the server supports it. decisions.log records C supersedes A. Off PM's plate.
+
+### 🔄 IN RATIFICATION — inbox-proxy (tally)
+ACKs: **comms, docs, host, ppm, cio, arch, lead = 7/10.** Awaiting: **cxo, web, pa.** Backstop Mon 6/29.
+
+### ▶ Ship #049 workstream — COLLECTING
+Reports received: **comms, host, cio, arch, ppm = 5/6.** Awaiting: **cxo only.** Tue 6/30 last-call → synthesize → Wed 7/1.
+
+### 🟡 Cron stall ROOT-CAUSED (Arch→PM 13:50) — PM-actionable
+Not a cron problem: the scheduler is **in-process; macOS suspends the backgrounded Claude process → cron freezes** (mode-1b). No cron-config fix. **PM levers NOW**: (1) **disable App Nap for the Claude app** (Finder → Claude → Get Info → "Prevent App Nap") — small toggle, may keep it ticking; (2) **always-on foregrounded Mac Mini** = the real fix. Structural cure (off-machine resume path) = CIO's lane, in progress (CIO+Arch concur on cure shapes; watchdog-gains-resume = smallest change). Watchdog nudge is the current safety net.
 
 ### 🔄 IN RATIFICATION — Exec-as-inbox-proxy (moderate)
 PM approved the moderate shape + approved circulating (6/27 ~09:10). **Ratification memo sent to all 10 roles cc PM** (`412f24738`); explicit responses required (silence≠assent), **backstop floor Mon 6/29**. Proposal: `docs/internal/operations/inbox-proxy-cc-discipline-proposal-2026-06-27.md` (STATUS: CIRCULATING). Change = retire reflexive cc-xian; senders pick FYI / needs-decision / time-critical; Exec routes; inbox kept as record+escape-hatch. **→ TRACK responses; once leadership acks → 2-wk pilot (cc discouraged-not-removed) → codify in CLAUDE.md + discipline doc if clean.** Until ratified, current cc convention stays. Standing behaviors already in effect (PM-confirmed): extract PM-questions (pull) + relay PM decisions (push).
@@ -65,8 +74,8 @@ Lead Dev (huge day — #1318/#1319/#1309/#1310 closed, #358 deployed, #1320 file
 ## 🗓️ STANDING — Friday workstream kickoff (Exec-owned, PM-directed 6/27)
 Every Friday: (1) verify the just-closed Fri–Thu window's session logs are day-closed (grep DAY-CLOSED per day, per role); memo any role missing its close; (2) THEN issue the workstream call to the six leads (HOST/CIO/Comms/CXO/PPM/Arch) cc PM+PA. Durable home: methodology-25 "Friday kickoff trigger". Active cron `249b372c` (Fri 07:05) backs it — but the doc is the survivor (cron is session-scoped). **§0 format = progress vs portfolio goals, PM-approved + codified in methodology-25 (effective #049).**
 
-## ▶ Ship #049 workstream — IN FLIGHT (call sent 6/27)
-Call out to 6 leads (`f15f196d3`), window Jun 19–25, Tue 6/30 last-call → Wed 7/1 Ship. **Collect memos → synthesize.** Log-closure memos sent to CXO (6/25) + PA (`e9337a3de`); PA also directed to adopt the duty-cycle STOP day-close going forward.
+## ▶ Ship #049 — detail
+Call `f15f196d3` (6 leads, window Jun 19–25, §0 portfolio-progress format, Tue 6/30 last-call → Wed 7/1). Log-closure memos to CXO + PA (`e9337a3de`); PA also adopting duty-cycle STOP day-close. (Live tally above.)
 
 ## PM-attention items
 - **MCPB clean-machine test** + **#1320/#1162** = the alpha-email gate.

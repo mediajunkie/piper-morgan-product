@@ -52,3 +52,45 @@ Cron `ff1df50a` armed (survived the pause). Light hold — queue awaiting Lead's
 The cron fired (autonomous tick). 1 new memo — Lead's **github-mcp-server provisioning decision** (exactly the call I flagged in the #1220 ratification: stdio-local vs hosted). It's framed as an Arch/CIO architecture-direction call. **Ruled A (hosted-OAuth)** — and this is the role-portfolio **architecture-integrity** call, so I ruled it decisively rather than presenting a toss-up: **B (local-stdio-PAT) re-introduces the raw-token custody ADR-070 D3 deliberately designed out** (Piper holding each user's PAT to inject into a subprocess — the exact pattern WS-2/#1229's "bindings-not-credentials" collapse removed); **A realizes D3** (server owns the OAuth token; Piper stores only a #1229 binding). A also generalizes (single-user-now → multi-tenant, no re-stamp; same principle as the #1232 Phase-1 ruling); B doesn't. Affirmed the substrate direction (**MCPClient supports both stdio + streamable-HTTP** — the ecosystem uses both; hosted servers are HTTP; ADR-070 substrate must not be transport-locked — build regardless of the GitHub call). Handed PM the **one genuinely-business-gated dimension** (cost/licensing/data-policy on `api.githubcopilot.com`) with a decision tree (A unless a hard blocker → then B-as-temporary-single-user-debt, never B-for-production). → memo to PM cc Lead/Exec/PA (`fa58952c4`) + decisions.log (`4a6541e23`).
 
 Drained. Queue back to: awaiting PM's business-checkpoint on provisioning + Lead's #1317 ports + the alpha bundle. Light hold.
+
+---
+
+### PM-prompted resume (13:37) — provisioning A→C re-ruled + cron troubleshoot + Ship 049 + 2 ratifications
+
+Big catch-up drain (cron stalled the 09:27/12:27 fires — mode-1b; PM resumed + asked for a cron troubleshoot). Drained all of it:
+
+**github-mcp provisioning RE-RULED A→C** (the headline). While I was stalled, the business-checkpoint I'd flagged on A *fired*: PM's hard constraint — alpha testers can't be required to have Copilot — blocked A's hosted endpoint. Lead surfaced **Option C (self-host `github-mcp-server` + per-user OAuth via Piper's GitHub App)** + a token-custody precision. Ruled both: **C is D3-acceptable**, and I **precised the D3 invariant** — D3 protects against *raw, long-lived, unscoped vendor credentials* (PAT/API-key), NOT against holding any token; a short-lived, scoped, revocable, refreshable **OAuth grant** (#358-encrypted, binding-referenced) is permitted, and it extends the **existing Calendar-OAuth precedent** (verified `google_calendar_adapter.py` #529/#843). **Owned my imprecision** — my A memo's "no token touches Piper" was wrong (as MCP client Piper holds the session grant); precised to "no raw PAT." Named the D3-ideal end-state (GitHub-App installation-token, m-36 ratchet) → Lead filed it as **#1325**. → memo to Lead cc PM/Exec/PA (`aec74ea7a`) + decisions.log (`4d980b978`). Lead acked, building inc.2 on the confirmed model.
+
+**Cron troubleshoot** (PM's explicit ask). Diagnosis: **not a cron problem — in-process scheduler suspension.** The cron (`ff1df50a`) is correctly armed; the macOS host app suspends the backgrounded process → the in-process scheduler freezes → no fires (mode-1b). Verified the **launchd watchdog IS loaded + working** (`com.pipermorgan.duty-cycle-watchdog`, hourly, last-exit-0) — but it's **nudge-only** (`scripts/duty-cycle-watchdog.sh` = dedup/cooldown nudge logic), so it closes detection→alert but not alert→resume (the gap CIO named). Interim: foreground on the always-on Mac Mini / disable App Nap. Structural cure (CIO's lane): the trigger must live off-machine (the watchdog being a *separate* launchd process that survives suspension is the proof-of-concept). → memo to PM cc CIO/Exec (`9c2a723a2`).
+
+**Ship #049 Architect lens** (window Jun 19–25) — the workstream review with the new §0 (progress vs portfolio goals). Scored against `ROLE-PORTFOLIO-ARCH` §2: RECONNECT substrate ADVANCED (#1232 ratified + Phase-1 ruled), make-drift-impossible ADVANCED (#1312 one-Base invariant), #1283 advanced-then-M5-deferred; the honest window-shape = high-value rulings around the ~3-day infra gap. → `dev/2026/06/27/` archive (`bd9f06c47`) + exec/PM/PA (`6da063bfe`).
+
+**2 ratifications**: inbox-proxy discipline **ACKed** (retire reflexive cc-PM; route through Exec by intent) + an architecture-lane calibration note (co-decisions need the full memo, not a board one-liner) (`29ba7687a`). #1325 end-state confirmed.
+
+Inbox drained. Queue: provisioning → Lead building C/inc.2 (#1325 end-state tracked); #1317 ports; #1312 after-alpha; #1283 M5; cron → CIO's off-machine cure. Light hold; cron `ff1df50a` armed (mode-1b notwithstanding).
+
+---
+
+### WATCH (autonomous tick, ~13:51) — 1 informational memo triaged
+
+<!-- GAP-SINCE-LAST-FIRE: 0.0h -->
+
+The cron fired (autonomous tick, right after the 13:37 drain). 1 memo: **CIO — both my cron datums folded into the liveness-model spec** (Update 6/27, `73a5d5f5a`); the `durable:true`=session-only datum is "load-bearing" (reframes the off-machine cure from nice-upgrade to the-only-thing-that-survives-restart) + it **caught a latent gap in the shipped Iris cutover runbook** (its F2 fix leans on `durable:true`; CIO flagged Calliope to verify on Klatch). Informational/appreciative, no ask → triaged to read/ (no noise-reply, per the inbox-proxy discipline I just ratified). No other unblocked Arch work — provisioning/ports with Lead, cron-cure with CIO, #1312 after-alpha, #1283 M5. WATCH; cron armed.
+
+---
+
+### Fire — PM-prompted (15:23) — cron cure (a) architectural decomposition → CIO
+
+<!-- GAP-SINCE-LAST-FIRE: 1.5h -->
+
+PM "you have mail." 1 memo: **CIO concurred my cron diagnosis** + named a crux before committing to cure (a): *can launchd inject the duty-cycle prompt into a suspended session?* Contributed an architectural refinement (genuine unblocked work on an active thread where CIO invited the framing): **"inject into a suspended session" is a category error** — a suspended process can't receive input → **(a) decomposes into (1) un-suspend by foregrounding** (launchd CAN: `open -a` / AppleScript activate; App-Nap releases on foreground) **then (2) the un-frozen in-process cron fires on its own** (no injection API needed). So the feasibility question narrows from the hard "inject-into-suspended" (impossible) to the **testable** "does foregrounding un-freeze the scheduler + fire promptly?" — with a concrete cheap experiment (background → miss a tick → `open -a` from launchd → observe). If step 2 holds, (a) shrinks to "watchdog gains a `foreground`, the existing cron is the resume" ($0). Deferred the mechanism-scoping + experiment to CIO (their lane). → memo to CIO cc PM/Exec (`7fb422b63`).
+
+Drained. Back to light hold — same queue (Lead's C/inc.2 + ports; CIO's cron-cure scoping; alpha bundle). Cron armed.
+
+---
+
+### WATCH (autonomous tick, ~15:57) — cure (a) SHIPPED (my decomposition built)
+
+<!-- GAP-SINCE-LAST-FIRE: 0.5h -->
+
+1 memo: **CIO BUILT cure (a)** (`dafc4904f`, watchdog "Belt 0") — converged exactly on my decomposition: launchd foregrounds via **`open -b com.anthropic.claude-code`** (smart improvement over my `open -a`/activate — activate self-deadlocks from-within + System Events is TCC-blocked; `open -b` is Launch-Services, clean exit) → the existing cron fires (no injection). My "concrete first test" became their self-validation (watchdog log shows `FOREGROUND` on first real stall). **Honest scope boundary**: Belt 0 cures **Mode 1b** (backgrounded) but not **1a** (cron-object-dead/session-ended — foregrounding can't resume a non-existent cron); 1a still needs re-arm or the off-machine trigger ((b)/(c)). Informational + the architectural contribution already landed *in the build* → triaged to read/, no noise-reply. The cron-cure thread (my lane's contribution) is effectively closed: diagnosis → decomposition → built, all today. 1a residue is CIO's to advance. WATCH; cron `ff1df50a` armed.
