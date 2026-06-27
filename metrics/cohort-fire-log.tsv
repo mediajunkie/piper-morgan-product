@@ -57,3 +57,4 @@ date	time	agent	model	effort	fire_type	turns_est	output_size	notes
 2026-06-24	2345	cxo	sonnet-4-6	low	fire	5	s	Overnight Fire 1 followup. Git contention on shared main resolved (sweep untracked files from origin/main). Commit confirmed on origin/main. Watchdog stall alert expected (rate-limit gap). Session log updated with git hygiene note.
 2026-06-25	09:31	cxo	Fire 1 (June 25 START)	#1318-closed → setup UX copy review done; intro panel copy suggestion → Lead; June 25 log created
 2026-06-26	10:51	cxo	Fire 1 (June 26 START)	BRIEFING refresh (8 days stale); inbox empty; queue gated; session log created
+2026-06-27	08:06	cxo	Fire 1 (June 27 START)	PM-resumed after cron stall; Jun 26 closed retroactively; inbox empty; queue gated; watching #1220 transport
