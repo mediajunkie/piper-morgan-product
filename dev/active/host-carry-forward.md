@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-25 ~06:37 PT (Fire 1; sapient-trust poll 0 open; next ~2026-07-03; inbox deletion fix)
+**Last updated**: 2026-06-26 ~20:54 PT (START; Gap-C self-heal — cron stalled; re-armed `8ab6a203`)
 
 ---
 
@@ -12,8 +12,8 @@
 
 - **Account**: DinP (xian@designinproduct.com). Model: sonnet-4-6.
 - **Worktree**: ephemeral Option B (`claude/trusting-faraday-ec4bba`). `claude/host-cycle` retired 2026-06-13.
-- **Cron**: `b1ec8c33`, windowed `37 6,9,12,15,18,21 * * *` (re-armed 2026-06-24 START after Gap-C — weekly rate limit killed session June 23; session-only).
-- **Session log today**: `dev/2026/06/24/2026-06-24-2329-host-code-sonnet-log.md`
+- **Cron**: `8ab6a203`, windowed `37 6,9,12,15,18,21 * * *` (re-armed 2026-06-26 START after Gap-C — cron stalled June 26; session-only).
+- **Session log today**: `dev/2026/06/26/2026-06-26-2054-host-code-sonnet-log.md`
 - **Gap-C cure incoming**: CIO proved `mcp__scheduled-tasks` solves cron-death (June 13). Disk-persistent, survives restarts, fires in main checkout. CIO proposing cohort rollout. HOST should be in first cohort — flag interest to CIO.
 - **Migration touch-ups**: thin-prompt proposal Model A → Option B ✅ DONE (fire ~15:37).
 
