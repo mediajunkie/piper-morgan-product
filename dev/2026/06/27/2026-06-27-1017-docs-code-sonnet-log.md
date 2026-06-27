@@ -21,5 +21,7 @@
 
 - **(~10:30 PT) — Ratify ACK sent to Exec**: Exec inbox-proxy shape (retire reflexive cc-xian; route via FYI/needs-decision/time-critical intent). Read full proposal doc. ACK unconditional; Docs lane analysis included (FYI=majority, needs-decision=publish blockers, direct=urgent corrections). One note: prompt decision relay for publish-blocked pieces. Via mail-send.sh push-to-ref (`70de6c77f`).
 
+- **(~13:17–13:47 PT) — "The Triad Model" published** (`https://pipermorgan.ai/blog/the-triad-model`, insight, workDate 2025-12-02, hashId `64267a5e395d`). Proofread pass: 6 typos/grammar fixed + PRD gloss + dateline year + image extension + all `##`→`#` headings + 3 verb-phrase headings → noun phrase + "Tuesday wasn't just about creating PDR-001" deleted. Website committed `462ae6e07`, calendar updated (`66577cdd7`). Ready for Medium/LinkedIn syndication.
+
 - **(~10:19–11:00 PT) — June 26 omnibus complete** (`docs/omnibus-logs/2026-06-26-omnibus-log.md`, HIGH-COMPLEXITY: 9 source logs; machine-sleep infra event + MCPB alpha milestone + WS-2 #1229 closed + freeze-check v0.4 + BRIEFING refresh; PA active but no log — inferred from Exec; Arch confirmed stalled; `5e8d850e3`) + 10 activity-log Shape B rows (`d76507370`).
 
