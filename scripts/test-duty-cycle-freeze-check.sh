@@ -1,33 +1,33 @@
 #!/usr/bin/env bash
-# Regression test for the FALSE-STALE bug PM caught 2026-06-22.
+# Regression + v0.4 tests for duty-cycle-freeze-check.sh.
 #
-# Symptom: ppm was flagged 40h-stale by the freeze-check while it was firing every
-# cycle. Two migration-era assumptions in duty-cycle-freeze-check.sh caused it:
-#   (1) age_of() found a heartbeat ONLY from a "(role)"-tagged commit message — it
-#       missed ppm's "docs(session): PPM …" tag style → looked dead.
-#   (2) cycling_now() matched ONLY "${role}-code-opus-log.md" — it missed Sonnet-model
-#       logs (…-code-sonnet-log.md) → the live session log was invisible.
-# Fix (commit a92619f9b): age_of() also reads the role's session-log path as a heartbeat
-# (ANY model), and cycling_now() matches "${role}-code-.*log.md" (any model).
+# PART A — FALSE-STALE regression (PM caught 2026-06-22): ppm was flagged 40h-stale while
+# firing every cycle, because (1) age_of() found a heartbeat only from a "(role)"-tagged
+# commit (missed "docs(session): PPM …"), and (2) cycling_now() matched only "-opus-log.md"
+# (missed Sonnet logs). Fix a92619f9b: heartbeat = (role)-tag OR the role's session-log path,
+# any model. Tests reproduce the exact ppm shape (sonnet log + untagged commit) → must not flag;
+# a genuinely-old heartbeat → must flag.
 #
-# This test reproduces a role that is cycling via a SONNET log under an UNTAGGED commit
-# (exactly the ppm shape) and asserts it is NOT flagged stale; plus a negative control
-# (a genuinely old heartbeat MUST still be flagged), so the fix can't regress to either
-# a false-positive or a false-negative.
+# PART B — v0.4 WAKE-WINDOW-AWARE threshold (2026-06-26): the flat per-role threshold is replaced
+# by one derived from the role's cron cadence — the inter-fire gap bracketing the current hour ×
+# ~1.5 + 1h grace. Tight in dense daytime, wide across the big overnight gap. Proof: the SAME age
+# flags in daytime but not in the morning/overnight gap. Plus a fallback test (unparseable cron →
+# flat thr). Uses the FREEZE_CHECK_NOW_HOUR hook to control time-of-day deterministically.
 set -uo pipefail
 
 FC="$(cd "$(dirname "$0")" && pwd)/duty-cycle-freeze-check.sh"
 today=$(date +%Y/%m/%d); today_dash=$(date +%Y-%m-%d)
+NOW=$(date +%s)
+CRON="7 3,10,13,16,19,22"   # cio-shape: daytime gaps 3h (10-13-16-19-22), morning 3→10=7h, overnight 22→3=5h
 PASS=0; FAIL=0; TMPS=()
 ok(){ echo "  ✓ $1"; PASS=$((PASS+1)); }
 no(){ echo "  ✗ $1"; FAIL=$((FAIL+1)); }
 cleanup(){ for d in "${TMPS[@]:-}"; do [ -n "$d" ] && rm -rf "$d"; done; }
 trap cleanup EXIT INT TERM
 
-# Build a fixture repo (bare origin + clone) whose testrole TODAY session log is a
-# SONNET log committed at $1 (unix epoch seconds), under an UNTAGGED "docs(session): …"
-# message. Epoch + "+0000" is the portable GIT_*_DATE form (approxidate is rejected on
-# some gits). Echoes the clone path (use as PIPER_REPO).
+# Fixture: bare origin + clone; testrole TODAY session log is a SONNET log committed at $1 (epoch),
+# under an UNTAGGED "docs(session): …" message (the ppm shape). Epoch "@N +0000" is the portable
+# GIT_*_DATE form. Echoes the clone path (use as PIPER_REPO).
 mkfixture(){
   local when="$1" TMP; TMP=$(mktemp -d); TMPS+=("$TMP")
   git init --bare -q "$TMP/o.git"
@@ -38,28 +38,42 @@ mkfixture(){
     echo "# session log testrole (sonnet)" > "dev/$today/${today_dash}-testrole-code-sonnet-log.md"
     git add -A
     GIT_AUTHOR_DATE="@$when +0000" GIT_COMMITTER_DATE="@$when +0000" \
-      git commit -qm "docs(session): TestRole afternoon work"   # NO "(testrole)" tag — the ppm shape
+      git commit -qm "docs(session): TestRole afternoon work"   # NO "(testrole)" tag
     git push -q origin HEAD:main 2>/dev/null )
   echo "$TMP/w"
 }
 
-# A registry with just testrole: cron, threshold 6h, window 0–24, first_fire 00:00 (past), since today.
-mkreg(){ local TMP="$1"; printf 'role\tcron\tthr\tws\twe\tff\tsince\n' > "$TMP/reg.tsv"
-         printf 'testrole\t0 7,13\t6\t0\t24\t00:00\t%s\n' "$today_dash" >> "$TMP/reg.tsv"; echo "$TMP/reg.tsv"; }
+# Registry with just testrole. args: dir, cron_expr, flat_thr. window 0–24, first_fire 00:00 (past).
+mkreg(){ local TMP="$1" cron="$2" thr="$3"; printf 'role\tcron\tthr\tws\twe\tff\tsince\n' > "$TMP/reg.tsv"
+         printf 'testrole\t%s\t%s\t0\t24\t00:00\t%s\n' "$cron" "$thr" "$today_dash" >> "$TMP/reg.tsv"; echo "$TMP/reg.tsv"; }
 
-echo "freeze-check false-stale regression:"
+run(){ PIPER_REPO="$1" DUTY_CYCLE_REGISTRY="$2" FREEZE_CHECK_NOW_HOUR="$3" bash "$FC" 2>/dev/null; }
 
-# Test 1 — REGRESSION: fresh sonnet log + untagged commit → must NOT be stale.
-W=$(mkfixture "$(date +%s)"); R=$(mkreg "$(dirname "$W")")
-out=$(PIPER_REPO="$W" DUTY_CYCLE_REGISTRY="$R" bash "$FC" 2>/dev/null)
-[ -z "$out" ] && ok "live role (sonnet log, untagged commit) → not flagged" \
-              || no "FALSE-STALE regressed — flagged a live role: $out"
+echo "freeze-check regression + v0.4:"
 
-# Test 2 — NEGATIVE CONTROL: same shape but heartbeat 10h old → MUST be flagged stale.
-W=$(mkfixture "$(( $(date +%s) - 36000 ))"); R=$(mkreg "$(dirname "$W")")
-out=$(PIPER_REPO="$W" DUTY_CYCLE_REGISTRY="$R" bash "$FC" 2>/dev/null)
-echo "$out" | grep -q "STALE testrole" && ok "genuinely-stale role (10h) → correctly flagged" \
-                                        || no "FALSE-NEGATIVE — missed a stale role: '${out:-<empty>}'"
+# A1 — false-stale regression: fresh sonnet log + untagged commit → not flagged (daytime).
+W=$(mkfixture "$NOW"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+[ -z "$out" ] && ok "A1 live role (sonnet log, untagged) → not flagged" || no "A1 FALSE-STALE regressed: $out"
+
+# A2 — negative control: 10h-old heartbeat in daytime (dyn thr ~5h) → flagged.
+W=$(mkfixture "$(( NOW - 36000 ))"); R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "STALE testrole" && ok "A2 10h-old (daytime) → flagged" || no "A2 FALSE-NEGATIVE: '${out:-<empty>}'"
+
+# B1+B2 — v0.4 proof: the SAME 9h age flags in daytime (thr~5) but NOT in the morning gap (thr~11).
+W=$(mkfixture "$(( NOW - 32400 ))")   # 9h old
+R=$(mkreg "$(dirname "$W")" "$CRON" 8)
+out_day=$(run "$W" "$R" 11)           # hour 11: between 10 and 13 → gap 3 → thr ~5
+out_morn=$(run "$W" "$R" 5)           # hour 5: between 3 and 10 → gap 7 → thr ~11
+echo "$out_day" | grep -q "STALE testrole" && ok "B1 v0.4 daytime (thr~5): 9h-old → flagged" || no "B1 v0.4 daytime missed 9h: '${out_day:-<empty>}'"
+[ -z "$out_morn" ] && ok "B2 v0.4 morning gap (thr~11): same 9h-old → NOT flagged (wide)" || no "B2 v0.4 false-flagged 9h overnight: $out_morn"
+
+# B3 — fallback: unparseable cron hours → use the registry flat thr (6h); 7h-old → flagged.
+W=$(mkfixture "$(( NOW - 25200 ))")   # 7h old
+R=$(mkreg "$(dirname "$W")" "0 x,y" 6)
+out=$(run "$W" "$R" 11)
+echo "$out" | grep -q "STALE testrole" && ok "B3 fallback (unparseable cron → flat thr 6): 7h-old → flagged" || no "B3 fallback broken: '${out:-<empty>}'"
 
 echo "── $PASS passed, $FAIL failed ──"
 [ "$FAIL" -eq 0 ]

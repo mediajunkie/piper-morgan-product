@@ -73,3 +73,39 @@ The daytime cron didn't fire 09:27–18:27 (the backgrounding-stall again; Exec'
 → memo to Lead cc PM/Exec/PA (`23f1b6a70`) + decisions.log (`78847f006`). **#1283** — Lead confirmed my correction (probe not run; 6/19 last state); standing by for the gap list → ADR-073.
 
 Light hold after the drain. The cron didn't fire all day (stall) — flagging for CIO; PM resumed me manually. Queue otherwise awaiting Lead's #1312 execution + the #1283 probe.
+
+---
+
+## Day arc — June 25 summary (DinP day 9 / Thursday; #1312 fully ruled across two PM-driven bookends)
+
+A productive day despite a **full-day cron stall** — the cron didn't fire 09:27–18:27 (backgrounding, mode-1b), so PM drove both bookends manually (06:36 resume + 20:21 resume). The substance: **#1312 ruled end-to-end** (multi-Base seam AM + user_id-contract PM), plus continuity recovery from the 6/23–24 rate-limit/busy-signal pause.
+
+| Fire | Time PT | Gap | Deliverable |
+|---|---|---|---|
+| START | 06:38 | ~66h (rate-limit + busy-signal) | continuity restored (June 22 closed, June 25 log, carry-forward refresh, Exec ack) + **#1312 multi-Base seam RULED** (stale-duplicate, collapse) + **#1283 corrected** (probe not in — no fabrication) |
+| WATCH | 06:54 | 0.3h | no-op (16 min post-drain; queue blocked-on-others) |
+| — | 09:27–18:27 | — | **cron stalled all day (mode-1b backgrounding); no fires** |
+| resume | 20:23 | 13.5h | **#1312 user_id-contract RULED** (a/UUID; grounding dissolved the blast radius — trust ×7 = separate UUID repo, sentinel dead) + **invariant-lint authored** + CIO cron-stall datum |
+
+**Load-bearing of the day**: #1312 — both architectural seams ruled (the multi-Base collapse + the user_id contract), each grounded in the actual code (the Verify-First payoff twice: the "multi-Base complexity" was a stale duplicate; the user_id "cross-cutting decision" was a repo conflation). Lead's scoped-increment is unblocked; invariant-lint framed. Plus a clean continuity recovery and a real CIO liveness datum.
+
+## Memory & briefing surfaces referenced this session (per #974)
+
+**Referenced**: `connector.py`/`test_connector_contract_1232.py` family (the #1312 ruling drew on the same make-drift-impossible/m-41 enforcement spine) · ADR-071 D2 (str user_id deprecated → UUID FK canonical — the user_id-contract ruling's anchor) · the actual code surfaces (`personality/models.py`, `database/models.py:2049`, `personality/repository.py`, `trust_computation_service.py`, `user_trust_profile_repository.py`, `response_enhancer.py` — Verify-First grounding) · m-40 (layer-then-migrate — the keep-str-tighten-later seam) · decisions.log (#1267/#1273 create_all-era discipline — the additive-by-default guardrail) · `[Investigate before extending]` + `[STOP when finding gaps in sources]` (the #1283 no-fabrication correction) · carry-forward continuity.
+**Loaded but not referenced**: xpoll brief; the 59-commit cohort delta (scanned for #1287/routing relevance — CIO/Lead-owned, not routed to me).
+**Wanted but not found**: nothing notable — the code surfaces I needed were all present + verifiable.
+
+## Sign-off discipline (retroactive close via June-26 START Step-0 self-heal)
+
+```bash
+$ git log --oneline origin/main..HEAD   # 0 — all June 25 work on origin/main (verified per-fire)
+$ git status --short                     # clean apart from this close
+```
+
+✓ All June 25 work on `origin/main` — verified by content per-fire (#1312 both rulings + decisions.log ×2; Exec ack; CIO datum; invariant framing in the Lead memo).
+✓ Carry-forward current (#1312 both seams ruled, awaiting Lead execution).
+✗ Cron `3597d4a1` did NOT fire the 21:27 STOP (full-day stall) → this day closed retroactively at the 6/26 07:27 START. The cron then fully DIED overnight (CronList empty, Gap-C/mode-1a) → re-armed fresh as `ff1df50a` at the 6/26 START.
+
+<!-- DAY-CLOSED: 2026-06-25 -->
+
+— Architect (DinP / Opus 4.8), Thursday June 25 closed retroactively Friday June 26 ~07:30 PT (the 21:27 STOP stalled). Day 9 on DinP: #1312 fully ruled (multi-Base + user_id), grounded twice. **Friday**: Lead's #1312 execution + #1283 probe to watch; CIO's liveness-model spec to ack.

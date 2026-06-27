@@ -632,6 +632,50 @@ class ConnectorConfig(Base, TimestampMixin):
     )
 
 
+class ConnectorBinding(Base, TimestampMixin):
+    """RECONNECT WS-2 (#1229) — per-user MCP-server binding storage (ADR-070 D3).
+
+    Piper stores ONLY bindings, never raw credentials: the external MCP server owns the
+    connector's OAuth flow + token storage + refresh lifecycle (D3). The four-conventions
+    raw-cred model collapses here to "server-binding-by-user". This is the foundation the WS-5
+    ports (#1317) populate on connect() and read on status()/resolve(). Mirrors the WS-1
+    ConnectorConfig shape: owner_id FK (ADR-071 D2) + named-not-built tenant_id (ADR-071 D7 /
+    m-40 multi-tenant-READY), one binding per (owner, connector), user-scoped per ADR-058.
+    """
+
+    __tablename__ = "connector_bindings"
+
+    id = Column(CrossDialectUUID(), primary_key=True, default=uuid.uuid4)
+    # Owner = the settled single identity (WS-9). FK -> users.id (ADR-071 D2). NOT NULL: a
+    # binding must belong to someone.
+    owner_id = Column(CrossDialectUUID(), ForeignKey("users.id"), nullable=False, index=True)
+    # m-40 multi-tenant-READY: NAMED, not built (ADR-071 D7). NULL = single-tenant.
+    tenant_id = Column(CrossDialectUUID(), nullable=True, index=True)
+    # Which connector this binding is for: "github" / "slack" / "calendar" / "notion".
+    connector = Column(String(50), nullable=False)
+    # The bound MCP server's identity / endpoint reference (D3: "which MCP server identity",
+    # "URL/endpoint reference"). NULL until connect() binds it.
+    mcp_server_ref = Column(String(255), nullable=True)
+    # Binding health (ADR-070 D5 status states): unbound / bound / unreachable / stale.
+    status = Column(String(32), nullable=False, default="unbound")
+    # The bound server's capability profile (D3 "capability profile"). JSONB on Postgres /
+    # JSON on the SQLite test backend (#1038 cross-dialect pattern). Holds NO credentials (D3).
+    capability_profile = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"),
+        nullable=False,
+        default=dict,
+        server_default=text("'{}'"),
+    )
+    # m-40 / D7 transition marker (ADR-070 line 144): native integrations are the deprecated side
+    # during migration. False = MCP-consumer (canonical); True = native-legacy.
+    is_native_legacy = Column(Boolean, nullable=False, default=False)
+    # created_at / updated_at from TimestampMixin
+
+    __table_args__ = (
+        UniqueConstraint("owner_id", "connector", name="uq_connector_binding_owner_connector"),
+    )
+
+
 class Product(Base):
     """Product being managed"""
 
