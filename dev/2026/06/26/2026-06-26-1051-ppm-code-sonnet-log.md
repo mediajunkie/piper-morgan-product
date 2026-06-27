@@ -45,3 +45,7 @@ June 25 log closed (DAY-CLOSED). June 26 log opened. Cron re-armed (`1e2f46b9`).
 ### Fire 1 — 20:54 PDT (PM manual resume)
 
 PM noted cron appeared stalled (3 watchdog stall alerts to xian inbox: 12:44, 16:45, 18:45). Cron `1e2f46b9` confirmed alive. Pull blocked by `scripts/duty-cycle-freeze-check.sh` (v0.4 CIO changes, not mine — stashed/pulled/popped). New: CIO cohort-coverage-expansion memo → Exec (PPM already in registry, no action). PPM inbox: 0. Queue: (0,0). IDLE.
+
+### Fire 2 — 21:52 PDT (windowed cron)
+
+Cron: deleted `1e2f46b9`, re-armed `9d221359`. Pull: already up to date. Inbox: 0. Queue: (0,0). IDLE.
