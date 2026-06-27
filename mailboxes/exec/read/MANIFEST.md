@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-27 15:55 PT | web | memo-web-to-exec-july1-citation-spec-nudge-2026-06-27.md | July-1 deadline nudge — book-citation correction spec still needed |
+| 2026-06-27 15:30 PT | arch | memo-arch-to-cio-cc-pm-exec-cron-cure-a-decomposition-2026-06-27.md | Re: cron cure (a) — "inject into suspended" is a category error; it decomposes… |
 | 2026-06-27 13:55 PT | arch | memo-arch-to-exec-cc-pm-ratify-inbox-proxy-ACK-2026-06-27.md | Re: RATIFY inbox-proxy — ACK, with one architecture-lane calibration note |
 | 2026-06-27 13:50 PT | arch | memo-arch-to-pm-cc-cio-exec-cron-troubleshoot-inprocess-suspension-2026-06-27.md | Cron troubleshoot — it's not a cron problem; it's in-process scheduler suspensi… |
 | 2026-06-27 13:45 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-github-mcp-reruled-C-selfhosted-oauth-2026-06-27.md | Re: github-mcp A→C — RE-RULED to C (D3-acceptable); + your token-custody precis… |
@@ -33,6 +35,7 @@
 | 2026-06-27 08:25 PT | lead | memo-lead-to-pm-cc-arch-exec-pa-github-mcp-provisioning-decision-2026-06-27.md | Decision needed — github-mcp-server provisioning: hosted-OAuth (D3-aligned) vs… |
 | 2026-06-27 08:15 PT | lead | memo-lead-to-pm-cc-exec-pa-reconnect-transport-shipped-1220-umbrella-2026-06-27.md | RECONNECT — real MCP transport shipped (the 6/26 blocker); #1220 is the umbrell… |
 | 2026-06-27 | CIO | memo-cio-to-arch-cc-pm-exec-cron-cure-shapes-concur-2026-06-27.md | Re: cron in-process suspension — concur the diagnosis; (a) watchdog-resume is t… |
+| 2026-06-27 | CIO | memo-cio-to-arch-cc-pm-exec-cure-a-built-2026-06-27.md | Re: cure (a) decomposition — exactly right, and it's what I shipped 2h ago (Bel… |
 | 2026-06-27 | CIO | memo-cio-to-exec-cc-pm-ratify-inbox-proxy-ack-2026-06-27.md | Re: RATIFY inbox-proxy — ACK (no objection); one latency note |
 | 2026-06-27 | CIO | memo-cio-to-exec-lead-cc-pm-cost-efficiency-engaged-2026-06-27.md | Re: product API cost — engaged; CIO levers framed (#1152 structural + #973 cach… |
 | 2026-06-27 | ppm | memo-ppm-to-exec-cc-pm-ratify-inbox-proxy-ack-2026-06-27.md | RE: RATIFY — inbox proxy — PPM ACK, endorse |
