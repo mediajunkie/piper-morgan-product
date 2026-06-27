@@ -1,6 +1,8 @@
 # #1220 (WS-8) — the real MCP-consumer transport — gameplan
 
 **Author**: Lead Dev · **Date**: 2026-06-27 · **Issue**: #1220 (RECONNECT WS-8, the spine prerequisite for the #1317 github port's connect/resolve).
+
+> ⚠️ **SCOPE CORRECTION (2026-06-27, after building inc.1+inc.2)**: reading the full #1220 body, **#1220 is the §0 anchor/UMBRELLA** for the whole connection/auth → MCP migration ("Move integration connection/auth layer to MCP"; AC includes "bespoke OAuth flows retired" + "Arch cross-validation"). This gameplan covers only the **real-transport INFRASTRUCTURE** *under* that umbrella — which is now **DONE** (inc.1+inc.2). **#1220 stays OPEN**; it closes when the per-connector auth migration (#1317 ports) lands + bespoke flows retire. Legacy sim-transport cutover filed as **#1322**. The carry-forward's "build #1220 = the transport" was a fragment-framing; corrected toward the issue body.
 **Design source**: ADR-070 (D5 Connector protocol; OQ-1 Anthropic-published MCP servers) + the #1232 `Connector` protocol (shipped) + #1229 `ConnectorBinding` storage (shipped). Higher-drift (net-new integration) → gameplan + audit gate before building; small TDD increments.
 
 ## Problem statement
