@@ -28,3 +28,17 @@
 - **CIO liveness-model memo** (consolidated my + Exec's datums into `duty-cycle-liveness-model-2026-06-25.md`) — ack pending.
 
 **Plan this START**: ratify/refine #1220 Shape-B (the live arch deliverable) → ack CIO liveness → check the Caddy-gate → carry-forward refresh (#1283→M5, #1312 timing-approved, #1220 added). Draining.
+
+---
+
+### START drain (08:07–08:45) — #1220 Shape-B RATIFIED + CIO ack + caught up
+
+Drained the catch-up in one wake:
+
+**#1220 (real MCP transport) — Shape-B RATIFIED** (the live deliverable Lead flagged for Arch). Read the gameplan + grounded in the code (Verify-First). **Shape B is correct — clean GO, no Arch gate** (Lead's right that ADR-070 D5 already rules the protocol; conformant implementation): SDK-not-hand-roll (`mcp==1.26.0` present), textbook **m-40** (new MCPClient beside the live sim stack → migrate consumers → retire), zero-regression pure-addition, cutover tracked (#1322). **Arch altitude add** (the cutover sequencing Lead flagged): verified `query_router.py:60 enable_mcp_federation=True` + `MCPConsumerCore.simulation_mode` HARDCODED `True` (`client.py:93`, stale "replace with real MCP" POC comment) → **the MCP-federated query path serves simulated data today → #1322 is value-realizing, not optional polish** (it's what makes query routing real; a Pattern-073 deferred-replacement-comment). Ruled the sequencing (ports on real client now; #1322 = deliberate query_router cutover + sim-stack deletion gated on canonical-retest behavioral coverage) + named the **end-state invariant** (one transport; `simulation_mode` test-only + guarded-from-prod — make-drift-impossible family w/ #1312 single-Base + #1283 reachability). → memo to Lead cc PM/Exec/PA (`a182e9596`) + decisions.log (`b75cdf1dc`).
+
+**CIO liveness ack** — concurred the resume-loop framing + **2 new datums**: (1) mode-1 has two flavors — 1a cron-object-dies-from-CronList (6/26+6/27; re-arm fixes) vs 1b survives-but-doesn't-fire-backgrounded (6/25; nothing-local fixes); (2) `CronCreate durable:true` still reports **session-only** → every restart kills the cron, re-arm only buys until the next restart → strongest evidence the waker must live *outside* the session. → memo to CIO cc PM (`5a70eca87`).
+
+**Caught up**: #1283→M5 (PM call; ADR-073 M5-deferred); #1312 timing PM-approved (after-alpha; done my side); WS-2/#1229 closed by Lead; #1320/#1162 Caddy-gate = my 6/20 read stands, awaiting PM go (nothing pending from me). Carry-forward refreshed (`a097c0f58`). Both inbox memos → read/.
+
+Cron `ff1df50a` armed (survived the pause). Light hold — queue awaiting Lead's RECONNECT ports (#1317) + the alpha bundle. Available; next fire 09:27 (if it fires).
