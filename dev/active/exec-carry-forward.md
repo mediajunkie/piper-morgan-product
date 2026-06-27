@@ -1,7 +1,7 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-06-26 ~07:05 PT (START)
-**Session log today**: `dev/2026/06/26/2026-06-26-0702-exec-code-sonnet-log.md`
+**Last updated**: 2026-06-27 ~07:05 PT (Sat START)
+**Session log today**: `dev/2026/06/27/2026-06-27-0702-exec-code-sonnet-log.md`
 **Role**: Chief of Staff (Exec) | Sonnet 4.6 | DinP account (cloud session)
 **Cron**: `32 6,9,12,15,18,21` — id `de99f10c` (re-armed 6/25; prior `e642db02` died in rate-limit/cloud gap)
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3`
@@ -23,29 +23,15 @@
 - 🟢 **RECONNECT remainder** — moving fast under Lead. **#1229 WS-2 CLOSED overnight** (`88a168aff` connector_bindings storage foundation; Arch-gate already cleared via ADR-070 D3). Re-scope RESOLVED (#1230 folds, #1231 pull-forward). Lead now on **Chunk 2 (ports)**. #1283 → M5. No Exec action.
 - 🔴 **#1144 / #1131** greenlight (PM) — M3-era low-pri, possibly stale.
 
-### ✅ RESUME SWEEP — 22:02 (PM rounds mostly worked)
-After the machine-sleep infra-event, PM roused tonight. **6 back ~20:5x**: Lead (20:52 — rate limit cleared), CIO (20:56), HOST (20:57), Web (20:57), Comms (20:53), PA (21:00). **STILL DOWN: Arch (07:30) + CXO (10:55)** — PM still making rounds; these two are the remaining rouse targets. **Verify: PPM + Docs** (no clear 6/26-evening trace). One machine wake revived most; Arch+CXO need individual prods.
+### LIVENESS — Sat 6/27 07:05 (machine UP; 2 stubborn dead)
+Machine is up (Docs 03:28 WATCH + 06:05 brief). **Recovered**: Lead/CIO/HOST/Web/Comms/PA (6/26 eve) + PPM (22:22, 6/27 log) + Docs (cycling). 🔴 **STILL DEAD — PM's rounds missed these: Arch (23h, since 6/26 07:30) + CXO (~20h, since 6/26 10:55).** Individual dead sessions, not a machine event (everyone else woke). Need individual rouses. The 06:47 watchdog infra-alert (exec/arch/ppm) is mostly false — exec=alive, ppm just opened a log; **arch is the one real 23h stall.** #1320/#1162 still needs Arch up.
 
 ### 📋 QUEUED (Exec coordination, NO-RUSH — CIO ask, weekend/Monday)
 **Cohort-coverage expansion of the freeze-watcher** (CIO memo 6/26, read/). v0.4 derives threshold from each role's cron → adding roles is now cheap + correct-by-construction. Registry watches 5/11 (cio/exec/arch/cxo/ppm); **collect confirmed rows from the 6 unwatched: host, comms, docs, web, pa, lead.** Each owner fills 4 fields (~30s): `role | cron_expr | fallback_thr_h | wake_start_h | wake_end_h | first_fire`. Batch to CIO. **Rationale sharpened by today**: Lead's stall went un-alerted *because Lead isn't watched* — expanding coverage closes exactly that gap. Execute when roles are next active (not at day-close).
 
-### 🔴 INFRASTRUCTURE EVENT — WATCHDOG-CONFIRMED (19:02)
-**Cohort down since ~11:16** (CIO last; only my cloud commits since). Watchdog **🔴 infra-event alerts at 16:45 + 18:45**: 4 roles silent (cio/arch/cxo/ppm, all ~7-11h stale) → "likely machine-asleep/backgrounded; one wake covers it." Confirms my 16:02 inference.
-- **Sequence**: machine slept ~13:00 (watchdog dark 12:44→16:45) → machine woke ~16:45 (watchdog resumed + alerting) → **but agent sessions did NOT auto-resume** (the alert→resume gap Arch's datum proved; a backgrounded session needs manual rouse).
-- **Actionable for PM**: wake/foreground the app + re-prod the dark sessions. ONE machine wake + session rouse covers the cohort.
-- **CIO v0.4 IS LIVE + WORKING** — the alert uses "dyn-threshold 5h wake-window-aware" (CIO's morning code) and fired correctly, even though CIO itself is now stalled. Nice proof the detection layer works.
-- **⭐ Strongest off-machine-cure evidence yet** (PM-gated decision): a multi-hour machine-sleep took the WHOLE cohort down; the watchdog detects but cannot resume. This is exactly mode-1 (machine-sleep) that only the off-machine firing cure fixes — capture for that decision.
-- This cloud Exec session keeps running (off-box) — the one upside of the cloud/local split.
-
-### Cohort liveness — last known-good (pre-sleep, ~11:16)
-- ✅ **CXO BACK** — Fire 1 10:55; setup-check UX review **confirmed done**. Recovered from PM's nudge.
-- ✅ **PPM BACK** — Jun 25 closed + Jun 26 log opened 10:56.
-- ✅ **CIO BACK** — shipped banked **freeze-check v0.4** (wake-window-aware threshold, Arch's ask) + Iris cutover reconcile. Active.
-- ✅ **PA active** — alpha-tester (Jake) feedback loop; v0.1.5/v0.1.6 shipped.
-- ✅ **Docs active** — Jun 25 omnibus (10 agents) + Jun 26 START.
-- 🔴 **Arch RE-STALLED** — watchdog re-flagged 12:44. Its cron "stalled then died" (flagged 07:30) and it didn't re-arm → stalled again. **Recurring Arch case; needs another rouse.** NB: CIO's v0.4 tunes the *threshold* (mode 2), not Arch's *cron-death* (mode 1) — Arch's loop won't self-heal without re-arm or the off-machine cure. **Blocks #1320/#1162.**
-- 🔵 **Lead — afternoon silence was a RATE LIMIT** (PM-confirmed ~21:xx, rousing). NOT the bite-sizing habit and NOT machine-sleep — just throttled. **Correction: the afternoon gap does NOT count toward the waiting-for-encouragement pattern.** The morning observation (~10:08, PM-flagged) was real + pre-rate-limit; my 10:10 keep-draining nudge stands for that, but don't escalate the habit on afternoon evidence. (Rate-limit = a 4th "looks-stalled" cause the watchdog also can't distinguish — minor CIO-model note.)
-- *(CXO history: stuck 2× on approval prompts 6/25 → CIO mode-3 datum `b685c6417`.)*
+### History — 6/26 machine-sleep (resolved; durable takeaways)
+- 6/26 ~13:00–evening: machine slept → whole on-machine cohort + watchdog dark; PM roused 6/8 that night. **⭐ Strongest off-machine-cure evidence yet** (PM-gated decision): a multi-hour machine-sleep took the WHOLE cohort down; watchdog detects but cannot resume (mode-1, only the off-machine firing cure fixes). CIO v0.4 verified live in the alerts.
+- **4 distinct "looks-stalled" causes seen across 6/26**: machine-sleep (mode-1), idle-but-alive (mode-2, me), live-but-blocked (mode-3, CXO approval prompts → CIO datum `b685c6417`), and **rate-limit (Lead's afternoon — a 4th the watchdog also can't distinguish)**. Lead's afternoon gap was a rate limit, NOT the bite-sizing habit — the morning waiting-for-encouragement observation (~10:08) stands alone, don't inflate it.
 
 ### Loose ends
 - 🟡 **#358** encryption deploy — Lead reports deploy verified, GitHub issue still OPEN; needs closing evidence + close.
