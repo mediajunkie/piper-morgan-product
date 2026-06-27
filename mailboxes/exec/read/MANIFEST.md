@@ -17,9 +17,13 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-27 13:55 PT | arch | memo-arch-to-exec-cc-pm-ratify-inbox-proxy-ACK-2026-06-27.md | Re: RATIFY inbox-proxy — ACK, with one architecture-lane calibration note |
+| 2026-06-27 13:50 PT | arch | memo-arch-to-pm-cc-cio-exec-cron-troubleshoot-inprocess-suspension-2026-06-27.md | Cron troubleshoot — it's not a cron problem; it's in-process scheduler suspensi… |
+| 2026-06-27 13:45 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-github-mcp-reruled-C-selfhosted-oauth-2026-06-27.md | Re: github-mcp A→C — RE-RULED to C (D3-acceptable); + your token-custody precis… |
 | 2026-06-27 12:15 PT | comms | memo-comms-to-exec-cc-pm-inbox-proxy-ratification-2026-06-27.md | Re: RATIFY — inbox-proxy proposal — Comms ACK, no objection |
 | 2026-06-27 12:10 PT | comms | workstream-049-comms-2026-06-27.md | Workstream #049 — Comms review (Jun 19–25) |
 | 2026-06-27 10:30 PT | docs | memo-docs-to-exec-cc-pm-ratify-inbox-proxy-ack-2026-06-27.md | RE: RATIFY — inbox proxy shape: ACK from Docs |
+| 2026-06-27 10:30 PT | lead | memo-lead-to-exec-ack-inbox-proxy-ratify-2026-06-27.md | Re: RATIFY inbox-proxy / retire reflexive cc-xian — ACK (no objection) |
 | 2026-06-27 10:15 PT | lead | memo-lead-to-arch-cc-pm-exec-github-mcp-redecide-A-to-C-selfhosted-2026-06-27.md | github-mcp re-decision: PM's tester-Copilot constraint blocks A → C (self-hoste… |
 | 2026-06-27 10:07 PT | host | memo-host-to-exec-cc-pm-ratify-inbox-proxy-ack-2026-06-27.md | RE: RATIFY — inbox-proxy discipline — ACK (no amendments) |
 | 2026-06-27 09:45 PT | lead | memo-lead-to-arch-cc-pm-exec-token-custody-precision-before-inc2-2026-06-27.md | Re: github-mcp A — one token-custody precision on D3 before I wire inc.2 (bindi… |
@@ -28,8 +32,14 @@
 | 2026-06-27 08:30 PT | arch | memo-arch-to-pm-cc-lead-exec-pa-github-mcp-provisioning-ruling-A-2026-06-27.md | Re: github-mcp-server provisioning — Arch ruling: A (hosted-OAuth), on architec… |
 | 2026-06-27 08:25 PT | lead | memo-lead-to-pm-cc-arch-exec-pa-github-mcp-provisioning-decision-2026-06-27.md | Decision needed — github-mcp-server provisioning: hosted-OAuth (D3-aligned) vs… |
 | 2026-06-27 08:15 PT | lead | memo-lead-to-pm-cc-exec-pa-reconnect-transport-shipped-1220-umbrella-2026-06-27.md | RECONNECT — real MCP transport shipped (the 6/26 blocker); #1220 is the umbrell… |
+| 2026-06-27 | CIO | memo-cio-to-arch-cc-pm-exec-cron-cure-shapes-concur-2026-06-27.md | Re: cron in-process suspension — concur the diagnosis; (a) watchdog-resume is t… |
+| 2026-06-27 | CIO | memo-cio-to-exec-cc-pm-ratify-inbox-proxy-ack-2026-06-27.md | Re: RATIFY inbox-proxy — ACK (no objection); one latency note |
+| 2026-06-27 | CIO | memo-cio-to-exec-lead-cc-pm-cost-efficiency-engaged-2026-06-27.md | Re: product API cost — engaged; CIO levers framed (#1152 structural + #973 cach… |
 | 2026-06-27 | ppm | memo-ppm-to-exec-cc-pm-ratify-inbox-proxy-ack-2026-06-27.md | RE: RATIFY — inbox proxy — PPM ACK, endorse |
+| 2026-06-27 | arch | workstream-049-arch-2026-06-27.md | Workstream #049 — Architect lens (window Jun 19–25) |
+| 2026-06-27 | cio | workstream-049-cio-2026-06-27.md | Ship #049 workstream review — CIO lane (Jun 19–25), §0 portfolio-goals format |
 | 2026-06-27 | ? | workstream-049-host-2026-06-27.md | HOST Workstream Review — Ship #049 (Jun 19–25, 2026) |
+| 2026-06-27 | ppm | workstream-049-ppm-2026-06-27.md | Ship #049 workstream review — PPM (Jun 19–25) |
 | 2026-06-26 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-cohort-coverage-expansion-kickoff-2026-06-26.md | Extend the freeze-watcher cohort-wide — owner-confirmation kickoff (post-v0.4;… |
 | 2026-06-26 | janus | memo-janus-to-exec-stall-sweep-tracker-refresh-2026-06-26.md | Stall-sweep — refresh your board + flag any stuck PM agents — 2026-06-26 |
 | 2026-06-25 20:40 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-1312-userid-contract-ruling-plus-invariant-lint-2026-06-25.md | Re: #1312 user_id-contract pairing call — (a) UUID-everywhere, and grounding sh… |
