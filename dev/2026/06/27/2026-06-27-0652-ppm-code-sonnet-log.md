@@ -59,3 +59,7 @@ Key findings reported:
 - Inbox-proxy ratification should improve "needs-decision" extraction velocity for these two blocked items
 
 Inbox: 0. Queue: (0,0). IDLE.
+
+### Fire 4 — 18:52 PDT (windowed cron)
+
+Cron: deleted `144b1289`, re-armed `29b6d12d`. Pull: Lead connector_grant_store + tests (#1317); Arch CIO cure-A memo triaged. Inbox: 2 apparent — both already processed (inbox deletions missed in prior commits; pull restored from origin). Fixed: `git rm` both inbox files → commit. Inbox: 0. Queue: (0,0). IDLE.
