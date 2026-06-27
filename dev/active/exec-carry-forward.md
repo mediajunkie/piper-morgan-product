@@ -23,8 +23,13 @@
 - 🟢 **RECONNECT remainder** — moving fast under Lead. **#1229 WS-2 CLOSED overnight** (`88a168aff` connector_bindings storage foundation; Arch-gate already cleared via ADR-070 D3). Re-scope RESOLVED (#1230 folds, #1231 pull-forward). Lead now on **Chunk 2 (ports)**. #1283 → M5. No Exec action.
 - 🔴 **#1144 / #1131** greenlight (PM) — M3-era low-pri, possibly stale.
 
-### ⚠️ SUSPECTED MACHINE-SLEEP / BACKGROUNDING — 16:02
-**The whole on-machine cohort has been dark since ~11:16** (only my 13:04 cloud commit since). **The launchd watchdog itself stopped firing after 12:44** — if it were running it would have fired hourly alerts as CIO/CXO/PA crossed thresholds this afternoon. Two-signal inference: the machine slept / app backgrounded ~13:00, pausing the session crons AND the watchdog together. This cloud Exec session keeps running because it's not on the sleeping box. **Actionable: ONE machine/app wake should revive the whole cohort** (per the watchdog's own playbook — "if many at once, wake the machine/app"), rather than rousing agents one by one. No mid-day STOP markers exist → this is abnormal silence, not clean end-of-day. *(Not 100% certain — circumstantial; but the wake is the right move either way.)*
+### 🔴 INFRASTRUCTURE EVENT — WATCHDOG-CONFIRMED (19:02)
+**Cohort down since ~11:16** (CIO last; only my cloud commits since). Watchdog **🔴 infra-event alerts at 16:45 + 18:45**: 4 roles silent (cio/arch/cxo/ppm, all ~7-11h stale) → "likely machine-asleep/backgrounded; one wake covers it." Confirms my 16:02 inference.
+- **Sequence**: machine slept ~13:00 (watchdog dark 12:44→16:45) → machine woke ~16:45 (watchdog resumed + alerting) → **but agent sessions did NOT auto-resume** (the alert→resume gap Arch's datum proved; a backgrounded session needs manual rouse).
+- **Actionable for PM**: wake/foreground the app + re-prod the dark sessions. ONE machine wake + session rouse covers the cohort.
+- **CIO v0.4 IS LIVE + WORKING** — the alert uses "dyn-threshold 5h wake-window-aware" (CIO's morning code) and fired correctly, even though CIO itself is now stalled. Nice proof the detection layer works.
+- **⭐ Strongest off-machine-cure evidence yet** (PM-gated decision): a multi-hour machine-sleep took the WHOLE cohort down; the watchdog detects but cannot resume. This is exactly mode-1 (machine-sleep) that only the off-machine firing cure fixes — capture for that decision.
+- This cloud Exec session keeps running (off-box) — the one upside of the cloud/local split.
 
 ### Cohort liveness — last known-good (pre-sleep, ~11:16)
 - ✅ **CXO BACK** — Fire 1 10:55; setup-check UX review **confirmed done**. Recovered from PM's nudge.
