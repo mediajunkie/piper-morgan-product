@@ -40,9 +40,46 @@ from services.integrations.spatial_adapter import (
     SpatialPosition,
 )
 
+from mcp.client.stdio import StdioServerParameters
+
+from services.connectors.binding_repository import ConnectorBindingRepository
+from services.database.session_factory import AsyncSessionFactory
+
+from .connector import (
+    Binding,
+    ConnectRequired,
+    ConnectorStatus,
+    ConnectorStatusState,
+    ConnectResult,
+    DegradationReason,
+    DegradationResponse,
+    ResolveMiss,
+    ResolveResult,
+    ResourceHandle,
+    ResourceQuery,
+)
 from .consumer_core import MCPConsumerCore
+from .mcp_client import MCPClient
 
 logger = logging.getLogger(__name__)
+
+# Binding store key for the Calendar connector (mirrors github_adapter's _GITHUB).
+# NOTE: establishes "calendar" as the connector-name convention (matches the spatial
+# territory_id + the RECONNECT scope's user-facing term). Flag if a different key is canonical.
+# NOTE (tech-debt #1323): connect/status/resolve/degrade below mirror github_adapter's
+# binding-backed Connector-protocol logic — to be de-duplicated into a shared
+# BindingBackedConnector mixin once a 3rd connector ports (rule of three).
+_CALENDAR = "calendar"
+
+# The calendar MCP-server tool that resolves a resource → handle. PROVISIONAL
+# (#1230 / #1220 provisioning): the concrete tool name depends on the chosen server.
+_RESOLVE_TOOL = "resolve_resource"
+
+# Stored non-BOUND binding statuses → the honest ResolveMiss reason (#1231).
+_NONBOUND_REASON = {
+    ConnectorStatusState.STALE.value: DegradationReason.STALE_TOKEN,
+    ConnectorStatusState.UNREACHABLE.value: DegradationReason.UNREACHABLE,
+}
 
 
 # =============================================================================
@@ -173,6 +210,104 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
             "GoogleCalendarMCPAdapter initialized with %s",
             "service injection" if config_service else "default config",
         )
+
+    # ── #1232 (RECONNECT WS-5) Connector-protocol conformance (ADR-070 D5) ──
+    # #1317 calendar port (2026-06-27): connect/status/resolve are binding-aware (#1229 /
+    # ADR-070 D3 — bindings, never raw tokens) with the honest-degrade rail (#1231 — never
+    # silently empty). Mirrors github_adapter; to be de-duplicated into a shared mixin at
+    # the 3rd connector (#1323). Live MCP resolution is provisioning-gated (#1220), so a
+    # bound-but-unprovisioned binding honest-degrades to UNREACHABLE (never a fake success).
+    IMPLEMENTS_CONNECTOR = True  # #1232: AST-guard enforces the 4 methods
+
+    async def connect(self, user_id: str) -> ConnectResult:
+        """Bound already → Binding; otherwise the must-be-handled ConnectRequired."""
+        async with AsyncSessionFactory.session_scope() as session:
+            binding = await ConnectorBindingRepository(session).get(user_id, _CALENDAR)
+        if binding is not None and binding.status == ConnectorStatusState.BOUND.value:
+            return Binding(binding_id=str(binding.id))
+        return ConnectRequired(degradation=await self.degrade(DegradationReason.CONNECT_REQUIRED))
+
+    async def status(self, user_id: str) -> ConnectorStatus:
+        """The user's Calendar binding health (ADR-070 D5) — from the binding store, no
+        resource fetch, no token (D3). No binding → UNBOUND (the user must connect)."""
+        async with AsyncSessionFactory.session_scope() as session:
+            binding = await ConnectorBindingRepository(session).get(user_id, _CALENDAR)
+        if binding is None:
+            return ConnectorStatus(
+                state=ConnectorStatusState.UNBOUND,
+                detail="No Google Calendar binding — connect to continue.",
+            )
+        try:
+            state = ConnectorStatusState(binding.status)
+        except ValueError:
+            state = ConnectorStatusState.UNBOUND
+        return ConnectorStatus(
+            state=state, detail=f"Google Calendar binding status: {binding.status}"
+        )
+
+    async def resolve(self, user_id: str, resource: ResourceQuery) -> ResolveResult:
+        """Resolve a Calendar resource to a handle over the real MCP transport (#1220) —
+        honest-degrade throughout (#1231: never silently empty). Live resolution is
+        provisioning-gated (#1220); a bound-but-unprovisioned binding → UNREACHABLE."""
+        async with AsyncSessionFactory.session_scope() as session:
+            binding = await ConnectorBindingRepository(session).get(user_id, _CALENDAR)
+        if binding is None:
+            return ResolveMiss(await self.degrade(DegradationReason.CONNECT_REQUIRED))
+        if binding.status != ConnectorStatusState.BOUND.value:
+            reason = _NONBOUND_REASON.get(binding.status, DegradationReason.CONNECT_REQUIRED)
+            return ResolveMiss(await self.degrade(reason))
+        try:
+            async with self._mcp_client_ctx(binding) as client:
+                handle = await self._resolve_via_mcp(client, resource)
+        except Exception:
+            logger.warning(
+                "Calendar MCP resolve failed (server unreachable/unprovisioned)", exc_info=True
+            )
+            return ResolveMiss(await self.degrade(DegradationReason.UNREACHABLE))
+        if not handle:
+            return ResolveMiss(await self.degrade(DegradationReason.RESOURCE_NOT_FOUND))
+        return ResourceHandle(handle=handle, kind=resource.kind)
+
+    async def degrade(self, reason: DegradationReason) -> DegradationResponse:
+        messages = {
+            DegradationReason.CONNECT_REQUIRED: "Connect Google Calendar to continue.",
+            DegradationReason.RESOURCE_NOT_FOUND: "That Google Calendar resource wasn't found.",
+            DegradationReason.UNREACHABLE: "Google Calendar's MCP server is unreachable right now.",
+            DegradationReason.STALE_TOKEN: "Your Google Calendar connection needs re-authorizing.",
+        }
+        return DegradationResponse(
+            reason=reason,
+            user_message=messages.get(reason, "The Google Calendar connector is degraded."),
+        )
+
+    def _mcp_client_ctx(self, binding):
+        """Async-context yielding a connected MCPClient for this binding (real transport seam)."""
+        return MCPClient.connect_stdio(self._server_params_for(binding))
+
+    def _server_params_for(self, binding) -> StdioServerParameters:
+        """Map a binding's mcp_server_ref → stdio server params. PROVISIONING-GATED (#1220):
+        the calendar MCP-server command (stdio-local vs hosted) is the open infra decision."""
+        raise NotImplementedError(
+            "Calendar MCP-server provisioning is the open #1220 infra decision "
+            "(stdio-local vs hosted); resolve() honest-degrades to UNREACHABLE until then."
+        )
+
+    async def _resolve_via_mcp(self, client: MCPClient, resource: ResourceQuery) -> Optional[str]:
+        """Resolve a resource to a handle via the Calendar MCP server (real round-trip).
+        PROVISIONAL (#1230 / #1220): tool name + args + parsing depend on the chosen server."""
+        result = await client.call_tool(
+            _RESOLVE_TOOL, {"kind": resource.kind, **resource.params}
+        )
+        return self._first_text(result.content) or None
+
+    @staticmethod
+    def _first_text(content) -> str:
+        """First non-empty ``.text`` off an SDK content list (TextContent items)."""
+        for item in content or []:
+            text = getattr(item, "text", None)
+            if text:
+                return text
+        return ""
 
     async def authenticate(self) -> bool:
         """
