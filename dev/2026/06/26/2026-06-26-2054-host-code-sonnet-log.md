@@ -26,4 +26,12 @@
 ## Work log
 
 - START (~20:54) — Gap-C self-heal (cron stalled June 26; PM-initiated). Cron re-armed `8ab6a203`. Inbox: empty. All watch items unchanged. June 24 log retroactively closed.
+- Fire 2 (~21:37) — Inbox: empty. IDLE. Day-closing June 26.
+
+## Memory & briefing surfaces referenced this session
+**Referenced**: HOST carry-forward (cron state, watch items).
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md.
+**Wanted but not found**: nothing.
+
+<!-- DAY-CLOSED: 2026-06-26 -->
 
