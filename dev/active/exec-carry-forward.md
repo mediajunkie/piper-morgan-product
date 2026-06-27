@@ -38,7 +38,7 @@
 - ✅ **PA active** — alpha-tester (Jake) feedback loop; v0.1.5/v0.1.6 shipped.
 - ✅ **Docs active** — Jun 25 omnibus (10 agents) + Jun 26 START.
 - 🔴 **Arch RE-STALLED** — watchdog re-flagged 12:44. Its cron "stalled then died" (flagged 07:30) and it didn't re-arm → stalled again. **Recurring Arch case; needs another rouse.** NB: CIO's v0.4 tunes the *threshold* (mode 2), not Arch's *cron-death* (mode 1) — Arch's loop won't self-heal without re-arm or the off-machine cure. **Blocks #1320/#1162.**
-- 🟠 **Lead — NOT resumed since 07:17.** My 10:10 keep-draining nudge is unread in its inbox → Lead likely **session-paused, not merely hesitating**. May need a PM *session prod*, not just encouragement. Watching.
+- 🔵 **Lead — afternoon silence was a RATE LIMIT** (PM-confirmed ~21:xx, rousing). NOT the bite-sizing habit and NOT machine-sleep — just throttled. **Correction: the afternoon gap does NOT count toward the waiting-for-encouragement pattern.** The morning observation (~10:08, PM-flagged) was real + pre-rate-limit; my 10:10 keep-draining nudge stands for that, but don't escalate the habit on afternoon evidence. (Rate-limit = a 4th "looks-stalled" cause the watchdog also can't distinguish — minor CIO-model note.)
 - *(CXO history: stuck 2× on approval prompts 6/25 → CIO mode-3 datum `b685c6417`.)*
 
 ### Loose ends
