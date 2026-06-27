@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-27 | exec | memo-exec-to-leadership-ship-049-workstream-kickoff-2026-06-27.md | Ship #049 workstream review — CALL (Jun 19–25; new §0 format) |
 | 2026-06-27 | exec | memo-exec-to-cohort-cc-pm-ratify-inbox-proxy-2026-06-27.md | RATIFY — retire reflexive PM cc; route PM-attention through Exec |
 | 2026-06-22 | ? | nudge-exec-2026-06-22-close-your-6-21-log-for-omnibus.md | Quick: close your 6/21 log (omnibus gate) |
 | 2026-06-19 | ? | kickoff-exec-2026-06-19-683-mux-wire-dod.md | Sprint assignment → PPM: #683 (MUX-WIRE-DOD — update Definition of Done) |
