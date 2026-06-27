@@ -26,3 +26,23 @@
 - **~07:00 — Chunk 2 entered: gameplan + GitHub port increment 1 (commit `2be6ecbf5`).** Investigated the MCP-consumer surface (connector.py protocol + github_adapter stubs + MCPProtocolClient plumbing). Resolved the 2 Lead-Dev design calls: OQ-1 → github-mcp-server; OQ-5 → MCP owns OAuth, connect()=redirect-orchestrator, binding created on the callback. Wrote the ports gameplan (`dev/2026/06/26/1317-1220-mcp-ports-gameplan.md`, GitHub-first, 5 TDD increments). **Increment 1 shipped**: github adapter connect()/status() now read the #1229 `ConnectorBinding` store (status→ConnectorStatus; connect→Binding-if-bound-else-ConnectRequired), via session_scope. 6 new tests; 78/78 mcp/consumer suite green (the #1232 contract + no-credential-leak guards still pass). Next: increment 2 (the OAuth callback that creates the binding).
 
 - **~06:45 — #1229 CLOSED properly (WS-2 done).** Status banner on the description (raw-cred phases N/A:superseded-by-D3) + closing comment with evidence; per-connector cred-cleanup folds tracked on #1317 (`comment 4810106920`). **RECONNECT WS-2 complete** — the credential-model foundation. Sprint: 10 of ~23 done (WS-1/5/9/2 + quick-wins + security). Next per the ratified chunking: **Chunk 2 — the MCP spine + ports (#1220 WS-8 + #1317 WS-5)**, the bulk. Two Lead-Dev design calls open it (ADR-070 OQ-1 MCP-server-selection-per-connector; OQ-5 OAuth-handshake-state) before the first port (github).
+
+---
+
+## Session Wrap (STOP — 2026-06-26, 06:18 → ~10:30 PDT; retroactive close 06-27 07:47)
+
+**Day arc:** Back on RECONNECT per PM. **Closed WS-2 (#1229)** — the credential-model foundation: investigate-first found ADR-070 D3 had already cleared the Arch-gate (no wait) + superseded the issue's raw-cred phases → re-scoped to the binding-storage foundation; built + verified + closed (`ConnectorBinding` model + migration applying/reversing on real Postgres + repository + 8 tests; 27/27 connectors green). **Entered Chunk 2 (the bulk):** ports gameplan (OQ-1 → github-mcp-server, OQ-5 → MCP-owns-OAuth); shipped **GitHub port inc.1** (adapter connect()/status() read the binding store; 6 tests; 78/78 consumer suite). **inc.2 blocked → key discovery:** the MCP-consumer transport is simulation-only (`protocol_client.py:179` `NotImplementedError`) + no github-mcp-server → **#1220 (real MCP transport) is the true prerequisite** for the github connect/resolve; recorded the sequencing correction. Exec green-lit "keep draining the ports, you're pre-authorized." #1312 confirmed queued-after-alpha. Net: a workstream closed + the bulk's first increment shipped + the real next step (#1220) identified.
+
+**Discipline win of the day:** investigate-before-extending paid off three times — caught the ADR-070 D3 Arch-gate clearance (saved a round-trip), the stale #1229 issue (avoided building superseded raw-cred work), and the simulation-only transport (avoided building a vapor OAuth flow against a non-existent server).
+
+## Memory & briefing surfaces referenced this session
+**Referenced**: ADR-070 (D3/D5 + OQ-1/4/5 — the load-bearing find of the day); the WS-1 #1199 `connector_configs` pattern (mirrored for bindings); the #1232 `Connector` protocol; `duty-cycle-tick` (START); `close-issue-properly` (#1229 close); CLAUDE.md (alembic/cross-dialect migration + session-scope patterns).
+**Loaded but not referenced**: cross-pollination brief; BRIEFING-CURRENT-STATE.
+**Wanted but not found**: an at-a-glance statement that the MCP-consumer transport was still simulation-only — I discovered it by reading `protocol_client.py`; a note in ADR-070 / the scope doc ("real transport = #1220, not yet built") would have surfaced the #1220-prerequisite before I started down inc.2.
+
+## Sign-off
+```
+git log HEAD..origin/main: empty (all work pushed — #1229, inc.1, gameplan, sequencing-correction docs)
+```
+
+<!-- DAY-CLOSED: 2026-06-26 -->
