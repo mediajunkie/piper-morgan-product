@@ -29,6 +29,7 @@ from services.connectors.binding_repository import ConnectorBindingRepository  #
 from services.database.models import ConnectorBinding  # noqa: E402
 from services.mcp.consumer import github_adapter as gh_mod  # noqa: E402
 from services.mcp.consumer.connector import (  # noqa: E402
+    ConnectRequired,
     DegradationReason,
     ResolveMiss,
     ResourceHandle,
@@ -146,3 +147,51 @@ class TestResolveOverRealTransport:
         res = await adapter.resolve(_ALPHA, ResourceQuery(kind="nonexistent_kind"))
         assert isinstance(res, ResolveMiss)
         assert res.degradation.reason is DegradationReason.RESOURCE_NOT_FOUND
+
+
+class TestConnectActionHint:
+    """inc.2 slice E1 — an unbound connect() offers the connect URL (action_hint)."""
+
+    async def test_unbound_connect_offers_connect_url(self, sm):
+        from services.mcp.consumer.github_adapter import _CONNECT_URL
+
+        res = await GitHubMCPSpatialAdapter().connect(_ALPHA)
+        assert isinstance(res, ConnectRequired)
+        assert res.degradation.action_hint == _CONNECT_URL
+
+
+class TestResolveHttpSeam:
+    """inc.2 slice E2 — the real _mcp_client_ctx connects over HTTP to the binding's
+    server, forwarding the user's stored OAuth grant as the Authorization header."""
+
+    async def test_mcp_client_ctx_connects_http_with_grant_header(self, sm, monkeypatch):
+        await _seed(sm, "bound")  # binding mcp_server_ref="github-mcp-server"
+        import services.mcp.consumer.github_adapter as gh
+
+        class _GS:  # grant store → returns a token, ignores the session
+            def __init__(self, *a, **k):
+                pass
+
+            async def get(self, *a, **k):
+                return "gho_tok"
+
+        monkeypatch.setattr(gh, "ConnectorGrantStore", _GS)
+
+        captured = {}
+
+        @contextlib.asynccontextmanager
+        async def _fake_http(url, headers=None):
+            captured["url"] = url
+            captured["headers"] = headers
+            yield object()  # dummy client; we only assert the connect args
+
+        monkeypatch.setattr(gh.MCPClient, "connect_http", staticmethod(_fake_http))
+
+        async with sm() as s:
+            binding = await ConnectorBindingRepository(s).get(_ALPHA, "github")
+
+        async with gh.GitHubMCPSpatialAdapter()._mcp_client_ctx(binding):
+            pass
+
+        assert captured["url"] == "github-mcp-server"
+        assert captured["headers"] == {"Authorization": "Bearer gho_tok"}
