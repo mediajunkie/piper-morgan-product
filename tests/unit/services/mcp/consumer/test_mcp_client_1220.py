@@ -107,3 +107,57 @@ class TestMCPClientStdioSubprocess:
 
             called = await client.call_tool("echo", {"text": "pong"})
             assert any("echo: pong" in t for t in _texts(called.content))
+
+
+@pytest.mark.integration
+class TestMCPClientStreamableHttp:
+    """inc.4 — prove connect_http against a REAL MCP server over streamable-HTTP.
+
+    Serves the same FastMCP fixture in --http mode as a subprocess and round-trips via
+    MCPClient.connect_http — the hosted-server transport (the companion to connect_stdio,
+    and the one the recommended github-mcp-server provisioning option needs).
+    """
+
+    @pytest.fixture
+    def http_server_url(self):
+        import contextlib as _ctx
+        import socket
+        import subprocess
+        import time
+
+        import httpx
+
+        sock = socket.socket()
+        sock.bind(("127.0.0.1", 0))
+        port = sock.getsockname()[1]
+        sock.close()
+
+        proc = subprocess.Popen([sys.executable, _STDIO_FIXTURE, "--http", "--port", str(port)])
+        url = f"http://127.0.0.1:{port}/mcp"
+        deadline = time.time() + 15
+        ready = False
+        while time.time() < deadline:
+            if proc.poll() is not None:
+                break  # server process died
+            with _ctx.suppress(Exception):
+                httpx.get(url, timeout=0.3)  # any HTTP response (even 4xx) = server is up
+                ready = True
+                break
+            time.sleep(0.1)
+        if not ready:
+            proc.terminate()
+            pytest.fail("HTTP fixture server did not become ready")
+        try:
+            yield url
+        finally:
+            proc.terminate()
+            with _ctx.suppress(Exception):
+                proc.wait(timeout=5)
+
+    async def test_real_http_round_trip(self, http_server_url):
+        async with MCPClient.connect_http(http_server_url) as client:
+            tools = await client.list_tools()
+            assert "echo" in [t.name for t in tools.tools]
+
+            called = await client.call_tool("echo", {"text": "via-http"})
+            assert any("echo: via-http" in t for t in _texts(called.content))

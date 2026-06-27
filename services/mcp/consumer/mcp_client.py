@@ -27,6 +27,7 @@ from typing import Any, AsyncIterator, Dict, Optional, Union
 
 from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
+from mcp.client.streamable_http import streamable_http_client
 from pydantic import AnyUrl
 
 
@@ -67,6 +68,27 @@ class MCPClient:
                 await client.list_resources()
         """
         async with stdio_client(server_params) as (read, write):
+            async with ClientSession(read, write) as session:
+                await session.initialize()
+                yield cls(session)
+
+    @classmethod
+    @asynccontextmanager
+    async def connect_http(cls, url: str) -> AsyncIterator["MCPClient"]:
+        """Production transport for a HOSTED MCP server (streamable-HTTP).
+
+        The companion to ``connect_stdio``: stdio spawns a local server process, HTTP
+        talks to a long-lived hosted server (e.g. an OAuth-owning remote like GitHub's
+        ``api.githubcopilot.com/mcp/``). Usage::
+
+            async with MCPClient.connect_http(url) as client:
+                await client.list_resources()
+
+        Auth (OAuth 2.1 / a pre-authorized httpx client) is a follow-on for the hosted
+        hookup — the SDK takes it via ``streamable_http_client(url, http_client=...)``;
+        this transport-level factory proves the wire, the OAuth flow rides on it next.
+        """
+        async with streamable_http_client(url) as (read, write, *_):
             async with ClientSession(read, write) as session:
                 await session.initialize()
                 yield cls(session)

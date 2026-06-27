@@ -26,5 +26,14 @@ def echo(text: str) -> str:
 
 
 if __name__ == "__main__":
-    # FastMCP defaults to the stdio transport.
-    server.run()
+    import sys
+
+    # `--http --port N` serves the same server over streamable-HTTP (for the
+    # connect_http integration test); otherwise FastMCP's default stdio transport.
+    if "--http" in sys.argv:
+        port = int(sys.argv[sys.argv.index("--port") + 1])
+        server.settings.host = "127.0.0.1"
+        server.settings.port = port
+        server.run(transport="streamable-http")
+    else:
+        server.run()
