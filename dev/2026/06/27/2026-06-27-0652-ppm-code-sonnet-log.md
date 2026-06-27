@@ -30,3 +30,7 @@
 ### Fire 0 — 06:52 PDT (windowed cron, new day)
 
 June 26 log closed (DAY-CLOSED). June 27 log opened. Cron re-armed (`6bf5ee30`). Pull: HOST Jun 27 start + Exec triage. Inbox: 0. Queue: (0,0). IDLE.
+
+### Fire 1 — 09:52 PDT (windowed cron)
+
+Cron: deleted `6bf5ee30`, re-armed `2244527d`. Pull: Exec Jun 27 log + XPOLL Jun 27 brief + stall alert to PM (not PPM-facing). XPOLL noted: Klatch beta gate defined (composition gesture → release cut, July); "design as critical path" framing; DinP trigger-prompts in version control (our cron prompts embedded in session logs — covered). Inbox: 0. Queue: (0,0). IDLE.
