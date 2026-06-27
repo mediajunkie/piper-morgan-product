@@ -52,3 +52,18 @@ They look identical externally ("stale"), opposite local fixes (re-arm vs. nothi
 **`durable:true` does not persist in this environment (the load-bearing datum for the off-machine decision):** `CronCreate durable:true` still reports the job as *"session-only (not written to disk, dies when Claude exits)."* So **the durable flag isn't writing to `.claude/scheduled_tasks.json` here** → **every session restart (busy-signal, compaction, crash) kills the cron**, and re-arming only buys until the next restart. Arch took ~5 restarts in 4 days — the structural reason the daytime stalls recur on him. **This is the strongest evidence yet that the waker must live *outside* the session**: an in-session cron — durable or not — cannot survive the very event (restart) that backgrounds it.
 
 **⚠️ Implication for the Iris cutover runbook (`docs/operations/duty-cycle/` in DinP):** the runbook's **F2 fix relies on `durable:true` persisting across restarts.** If Klatch behaves like this environment (durable reports session-only), F2 is NOT actually fixed by the flag — Iris's standing heartbeat would die on every restart, and the runbook's caveat (off-machine wake = Phase 4) becomes load-bearing, not optional. **Action: have Calliope verify what `durable:true` reports on Klatch** (`CronList` after creating it — does it say "session-only" or "written to disk"?). Flagged to Calliope via the reconcile thread.
+
+### The precise root cause + the cure shapes (Arch diagnosis, 2026-06-27)
+
+**Root cause, named precisely**: the CronCreate scheduler is **in-process**; macOS suspends the Claude process when the app is backgrounded (App Nap / background-suspension), which **freezes the scheduler's timer**. The job object survives (still in CronList — mode-1b), but nothing fires until the app is foregrounded. **No cron-config change, re-arm, or `durable` flag can fix this** — they don't un-suspend the process. (This is *why* durable-reports-session-only matters: the cron shares the fate of the process it's trying to wake.)
+
+**The proof-of-concept is already running**: the **launchd watchdog is a *separate* process**, so it survives the suspension that freezes the in-app cron — which is exactly why it can still detect staleness. That confirms the trigger CAN live off-process; it's the existence proof for the cure.
+
+**Cure shapes (increasing robustness), CIO lane:**
+- **(a) Watchdog gains a RESUME capability** (not just nudge) — the existing launchd watchdog injects the duty-cycle prompt into the session, not only notifies PM. **Smallest change; closes the alert→resume gap directly; $0 (extends what's already running).** Open technical question: *can an external process inject a prompt into a backgrounded/suspended GUI-app session, and via what mechanism?* — that feasibility question is the crux of (a) and the first thing to scope.
+- **(b) Move the trigger off-machine** — a launchd/cron job fires the tick from outside the Claude process (suspension irrelevant).
+- **(c) Full off-machine runner** (cloud cron / always-on host).
+
+**Interim (PM lever)**: an always-on foregrounded machine (the incoming **Mac Mini**) ≈ eliminates mode-1b (the process never backgrounds). Foregrounding the window helps until then; the watchdog nudge remains the safety net.
+
+**CIO next step**: scope (a) — the watchdog-resume injection mechanism — as the smallest cure that closes alert→resume. If injection-into-suspended-session isn't feasible, (b)/(c) become necessary. This is the concrete shape of the PM off-machine decision.
