@@ -32,4 +32,5 @@
   - **Ship #049 workstream review written**: §0 + §1–§6 format, new §0 leads with progress vs. portfolio goals. Window Jun 19–25. Primary sources: session logs Jun 19, 20, 24, 25. Key findings: wave 8/8 COMPLETE (milestone reached); two sapient-trust polls (both 0 open); welfare-criteria v0.3 joint design complete; Ted Nadeau watch ongoing. Filed to Exec (cc PM, PA).
   - **ROLE-PORTFOLIO-HOST.md section 2 refreshed** (Rule 5 / m-36 — review IS the refresh): "BYOC welfare" = on-track; "portfolio rollout" = COMPLETE; "gbrain" = COMPLETE; "people-entity map" + "LD streamlining" = on-track (watching).
 - Fire 4 (~15:37) — Inbox: empty. IDLE.
+- Fire 5 (~18:37) — Inbox: empty. IDLE.
 
