@@ -68,3 +68,11 @@ Big catch-up drain (cron stalled the 09:27/12:27 fires — mode-1b; PM resumed +
 **2 ratifications**: inbox-proxy discipline **ACKed** (retire reflexive cc-PM; route through Exec by intent) + an architecture-lane calibration note (co-decisions need the full memo, not a board one-liner) (`29ba7687a`). #1325 end-state confirmed.
 
 Inbox drained. Queue: provisioning → Lead building C/inc.2 (#1325 end-state tracked); #1317 ports; #1312 after-alpha; #1283 M5; cron → CIO's off-machine cure. Light hold; cron `ff1df50a` armed (mode-1b notwithstanding).
+
+---
+
+### WATCH (autonomous tick, ~13:51) — 1 informational memo triaged
+
+<!-- GAP-SINCE-LAST-FIRE: 0.0h -->
+
+The cron fired (autonomous tick, right after the 13:37 drain). 1 memo: **CIO — both my cron datums folded into the liveness-model spec** (Update 6/27, `73a5d5f5a`); the `durable:true`=session-only datum is "load-bearing" (reframes the off-machine cure from nice-upgrade to the-only-thing-that-survives-restart) + it **caught a latent gap in the shipped Iris cutover runbook** (its F2 fix leans on `durable:true`; CIO flagged Calliope to verify on Klatch). Informational/appreciative, no ask → triaged to read/ (no noise-reply, per the inbox-proxy discipline I just ratified). No other unblocked Arch work — provisioning/ports with Lead, cron-cure with CIO, #1312 after-alpha, #1283 M5. WATCH; cron armed.
