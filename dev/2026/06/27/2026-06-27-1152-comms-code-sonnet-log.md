@@ -22,4 +22,5 @@
 - `memo-exec-to-cohort-cc-pm-ratify-inbox-proxy-2026-06-27.md` — ratification request for inbox-proxy proposal (retire reflexive cc xian; route PM-attention through Exec). PM approved shape, 2-week pilot pending cohort responses. Due Mon 6/29. → read/ (replying now)
 - `memo-exec-to-leadership-ship-049-workstream-kickoff-2026-06-27.md` — Ship #049 workstream review kickoff. New format: §0 progress vs portfolio goals leads. Due Tue 6/30. → read/ (filing review now)
 
-- Fire 0 (11:52 PT) — START. Jun 26 DAY-CLOSED ✓. 2 inbox memos triaged. PM editing Triad Model draft. Filing Ship #049 workstream review + inbox-proxy ratification response.
+- Fire 0 (11:52 PT) — START. Jun 26 DAY-CLOSED ✓. 2 inbox memos triaged. PM editing Triad Model draft. Filed Ship #049 workstream review (`3ccdd4875`) + inbox-proxy ratification ACK (`3ccdd4875`). Jun 26 STOP committed + pushed (`d9411cf12`).
+- Fire 1 (12:15 PT) — WORK. Inbox zero. PM completed Triad Model voice-pass + illustration; Docs ran template audit and is publishing. Quiet hold.
