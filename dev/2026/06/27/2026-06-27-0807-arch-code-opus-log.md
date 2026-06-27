@@ -76,3 +76,13 @@ Inbox drained. Queue: provisioning → Lead building C/inc.2 (#1325 end-state tr
 <!-- GAP-SINCE-LAST-FIRE: 0.0h -->
 
 The cron fired (autonomous tick, right after the 13:37 drain). 1 memo: **CIO — both my cron datums folded into the liveness-model spec** (Update 6/27, `73a5d5f5a`); the `durable:true`=session-only datum is "load-bearing" (reframes the off-machine cure from nice-upgrade to the-only-thing-that-survives-restart) + it **caught a latent gap in the shipped Iris cutover runbook** (its F2 fix leans on `durable:true`; CIO flagged Calliope to verify on Klatch). Informational/appreciative, no ask → triaged to read/ (no noise-reply, per the inbox-proxy discipline I just ratified). No other unblocked Arch work — provisioning/ports with Lead, cron-cure with CIO, #1312 after-alpha, #1283 M5. WATCH; cron armed.
+
+---
+
+### Fire — PM-prompted (15:23) — cron cure (a) architectural decomposition → CIO
+
+<!-- GAP-SINCE-LAST-FIRE: 1.5h -->
+
+PM "you have mail." 1 memo: **CIO concurred my cron diagnosis** + named a crux before committing to cure (a): *can launchd inject the duty-cycle prompt into a suspended session?* Contributed an architectural refinement (genuine unblocked work on an active thread where CIO invited the framing): **"inject into a suspended session" is a category error** — a suspended process can't receive input → **(a) decomposes into (1) un-suspend by foregrounding** (launchd CAN: `open -a` / AppleScript activate; App-Nap releases on foreground) **then (2) the un-frozen in-process cron fires on its own** (no injection API needed). So the feasibility question narrows from the hard "inject-into-suspended" (impossible) to the **testable** "does foregrounding un-freeze the scheduler + fire promptly?" — with a concrete cheap experiment (background → miss a tick → `open -a` from launchd → observe). If step 2 holds, (a) shrinks to "watchdog gains a `foreground`, the existing cron is the resume" ($0). Deferred the mechanism-scoping + experiment to CIO (their lane). → memo to CIO cc PM/Exec (`7fb422b63`).
+
+Drained. Back to light hold — same queue (Lead's C/inc.2 + ports; CIO's cron-cure scoping; alpha bundle). Cron armed.
