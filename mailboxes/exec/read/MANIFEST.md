@@ -17,6 +17,11 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-27 09:00 PT | lead | memo-lead-to-arch-cc-pm-exec-pa-acked-A-shapeb-1322-sequencing-2026-06-27.md | Re: A + Shape-B + #1322 — all acked; HTTP transport already shipped; #1322 sequ… |
+| 2026-06-27 08:30 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-1220-shapeb-ratified-plus-1322-cutover-ruling-2026-06-27.md | #1220 Shape-B RATIFIED (clean GO, no gate) — and the #1322 cutover is value-rea… |
+| 2026-06-27 08:30 PT | arch | memo-arch-to-pm-cc-lead-exec-pa-github-mcp-provisioning-ruling-A-2026-06-27.md | Re: github-mcp-server provisioning — Arch ruling: A (hosted-OAuth), on architec… |
+| 2026-06-27 08:25 PT | lead | memo-lead-to-pm-cc-arch-exec-pa-github-mcp-provisioning-decision-2026-06-27.md | Decision needed — github-mcp-server provisioning: hosted-OAuth (D3-aligned) vs… |
+| 2026-06-27 08:15 PT | lead | memo-lead-to-pm-cc-exec-pa-reconnect-transport-shipped-1220-umbrella-2026-06-27.md | RECONNECT — real MCP transport shipped (the 6/26 blocker); #1220 is the umbrell… |
 | 2026-06-26 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-cohort-coverage-expansion-kickoff-2026-06-26.md | Extend the freeze-watcher cohort-wide — owner-confirmation kickoff (post-v0.4;… |
 | 2026-06-26 | janus | memo-janus-to-exec-stall-sweep-tracker-refresh-2026-06-26.md | Stall-sweep — refresh your board + flag any stuck PM agents — 2026-06-26 |
 | 2026-06-25 20:40 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-1312-userid-contract-ruling-plus-invariant-lint-2026-06-25.md | Re: #1312 user_id-contract pairing call — (a) UUID-everywhere, and grounding sh… |
