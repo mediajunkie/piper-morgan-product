@@ -3,8 +3,8 @@ type: role-portfolio
 role: HOST (Head of Sapient Trust)
 status: PILOT v0.1 — the worked example for the role-portfolio trust framework
 self-authored-by: HOST
-last_updated: 2026-06-15
-refreshed: 2026-06-15
+last_updated: 2026-06-27
+refreshed: 2026-06-27
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-HOST.md
 refresh_discipline: "this doc is updated AS PART OF the weekly workstream review — the review is the refresh moment (Rule 5); if section 2 lags the last few reviews, the portfolio has drifted"
@@ -29,11 +29,11 @@ The one-line: *the role whose job is to notice whether the cohort's trust is acc
 
 | Priority | What I'm advancing | Status (June 15) | How we'll know it's moving |
 |---|---|---|---|
-| **BYOC welfare infrastructure** | The structural safety net before BYOC users bring third-party agents | Welfare-tier model v0.1 filed to PA (6/14); Scale-0 GREEN; gate conditions for 1–3 defined | v0.2 after Phase-2a experiment results; ADR-068 scoped at M4 |
-| **Role-portfolio framework rollout** | Give every lead a self-authored steering instrument | Framework ratified (6/14); HOST pilot authored (this doc); pilot wave (Lead Dev + CIO) kickoff in progress | Pilots pass five-rule review; cohort kickoff sent within 1 week of clearance |
-| **People-entity trust map** (inputs to #1217 + #1236) | People surface in Radar is inspectable, editable, consent-tiered for BYOC | Two HOST inputs delivered to CXO+PPM (6/14); both incorporated in RadarEntity contract frozen by CXO (6/15) | PA drafts rule-language; PPM adds source-provenance field; Arch notes it in ADR-068 consent section |
-| **gbrain synthesis** (HOST + CIO co-sign to PM) | Turn gbrain research into adopted methodology decisions | HOST T1+T2 synthesis sent to CIO (6/15); T1 realized in duty-cycle-tick v1.0 | Co-signed memo delivered to PM; T3+T4 adopted or filed |
-| **Lead Dev streamlining** (HOST/CIO joint) | Automate mechanical friction; protect coordination | Tiered joint recommendation co-signed (6/15) and presented to PM | Tier-1 quick wins shipped; Lead Dev self-reports reduced overhead |
+| **BYOC welfare infrastructure** | The structural safety net before BYOC users bring third-party agents | Scale-0 GREEN; v0.1 filed to PA; Ted Nadeau (first external tester) onboarding issue unresolved — watching for resolution to update model | v0.2 after Phase-2a experiment results; ADR-068 scoped at M4 |
+| **Role-portfolio framework rollout** | Give every lead a self-authored steering instrument | **COMPLETE — 8/8 wave done 2026-06-24** (all leadership roles; cross-wave observations to Exec); portfolios are living instruments owned by each role | Portfolios stay current via each role's weekly review refresh mechanism |
+| **People-entity trust map** (inputs to #1217 + #1236) | People surface in Radar is inspectable, editable, consent-tiered for BYOC | HOST inputs delivered to CXO+PPM (6/14); incorporated in RadarEntity contract; upstream sweep (PPM+CXO+PM) ongoing | PA drafts rule-language; PPM adds source-provenance field; Arch notes it in ADR-068 consent section |
+| **gbrain synthesis** (HOST + CIO co-sign to PM) | Turn gbrain research into adopted methodology decisions | **COMPLETE** — co-signed memo delivered to PM (2026-06-16) | No further HOST action |
+| **Lead Dev streamlining** (HOST/CIO joint) | Automate mechanical friction; protect coordination | Tiered recommendation co-signed (6/15) and presented to PM; waiting on Tier-1 PM/CIO close | Tier-1 quick wins shipped; Lead Dev self-reports reduced overhead |
 
 ## 3. Standing responsibilities (slow-pace — monitoring / sustaining / cadence)
 <!-- Rule 2: named explicitly (half the real work), but UNDER purpose — these are how I sustain the trust infrastructure, not the infrastructure itself. -->

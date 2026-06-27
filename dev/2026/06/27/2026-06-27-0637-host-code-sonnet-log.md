@@ -27,4 +27,8 @@
 
 - Fire 1 (~06:37) — New day (June 27). Inbox: empty. IDLE.
 - Fire 2 (~09:37) — Inbox: empty. IDLE.
+- Fire 3 (~12:37) — Inbox: 2 memos (inbox-proxy ratification + Ship #049 workstream kickoff). Substantive fire:
+  - **Inbox-proxy ratification (Exec → cohort)**: Read proposal. HOST position: ACK, no amendments. Three-bucket model (FYI/needs-decision/time-critical) maps cleanly to HOST's PM-signal patterns. Escape hatches preserved. Ack memo sent to Exec (cc PM).
+  - **Ship #049 workstream review written**: §0 + §1–§6 format, new §0 leads with progress vs. portfolio goals. Window Jun 19–25. Primary sources: session logs Jun 19, 20, 24, 25. Key findings: wave 8/8 COMPLETE (milestone reached); two sapient-trust polls (both 0 open); welfare-criteria v0.3 joint design complete; Ted Nadeau watch ongoing. Filed to Exec (cc PM, PA).
+  - **ROLE-PORTFOLIO-HOST.md section 2 refreshed** (Rule 5 / m-36 — review IS the refresh): "BYOC welfare" = on-track; "portfolio rollout" = COMPLETE; "gbrain" = COMPLETE; "people-entity map" + "LD streamlining" = on-track (watching).
 
