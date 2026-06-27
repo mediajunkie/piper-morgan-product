@@ -22,3 +22,5 @@
 
 ## Work
 - **(07:02) START** — 6/26 closed clean; synced; inbox empty. Morning sweep: machine up, cohort mostly recovered, **Arch + CXO still dead** (the two PM's rounds missed). PM not present (cron fire) → hold board render for first PM engagement; data current. Cron `de99f10c` armed. Quiet-hold.
+
+- **(08:00) Billing clarification → 2 deliverables (PM-requested).** PM confirmed: the unexpected fee = Piper's product API usage (not the agent subscription); the "scaling tier / higher rate limits" email = API side. Resolved the two-pool confusion. Shipped both: (1) durable ref doc `docs/internal/operations/anthropic-billing-model.md` (`744e0f190`) — two surfaces, symptom→surface diagnostic, the refused-overages-but-fee trap, console spend-limit control, efficiency levers; (2) memo to CIO+Lead cc PM (`d72e0e489`) — product API cost now live (tier bump + tester Jake), track the levers (#1152 fallback / Haiku model-routing / cache-hit audit / #973). PM setting console spend-limit in parallel as the hard ceiling.
