@@ -21,6 +21,8 @@ from services.integrations.spatial_adapter import (
 from services.connectors.binding_repository import ConnectorBindingRepository
 from services.database.session_factory import AsyncSessionFactory
 
+from mcp.client.stdio import StdioServerParameters
+
 from .connector import (
     Binding,
     ConnectRequired,
@@ -31,11 +33,24 @@ from .connector import (
     DegradationResponse,
     ResolveMiss,
     ResolveResult,
+    ResourceHandle,
     ResourceQuery,
 )
 from .consumer_core import MCPConsumerCore
+from .mcp_client import MCPClient
 
 _GITHUB = "github"
+
+# The github-mcp-server tool that resolves a resource to a handle. PROVISIONAL
+# (#1230 / #1220 provisioning): the concrete tool name + args depend on the chosen
+# github-mcp-server; isolated here so the resolve() rail is testable against a fixture.
+_RESOLVE_TOOL = "resolve_resource"
+
+# Stored non-BOUND binding statuses → the honest ResolveMiss reason (#1231).
+_NONBOUND_REASON = {
+    ConnectorStatusState.STALE.value: DegradationReason.STALE_TOKEN,
+    ConnectorStatusState.UNREACHABLE.value: DegradationReason.UNREACHABLE,
+}
 
 logger = logging.getLogger(__name__)
 
@@ -108,13 +123,39 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         return ConnectorStatus(state=state, detail=f"GitHub binding status: {binding.status}")
 
     async def resolve(self, user_id: str, resource: ResourceQuery) -> ResolveResult:
-        # Honest stub: not wired yet → the must-be-handled ResolveMiss variant.
-        return ResolveMiss(
-            degradation=DegradationResponse(
-                reason=DegradationReason.CONNECT_REQUIRED,
-                user_message="GitHub resolve via the MCP-consumer path is the deferred port.",
+        """Resolve a GitHub resource to a handle over the real MCP transport (#1220) —
+        honest-degrade throughout (#1231 / ADR-070 D5: never silently empty).
+
+        The binding-aware degrade rail (no binding / stale / unreachable / server-down →
+        the matching ``ResolveMiss``) is server-agnostic and fully real. The concrete
+        github-mcp-server resolution (#1230) rides the real ``MCPClient`` transport; its
+        tool mapping + server provisioning are gated on the #1220 infra decision (see
+        ``_resolve_via_mcp`` / ``_server_params_for``), so a BOUND-but-unprovisioned
+        binding honestly degrades to UNREACHABLE rather than faking a result.
+        """
+        async with AsyncSessionFactory.session_scope() as session:
+            binding = await ConnectorBindingRepository(session).get(user_id, _GITHUB)
+
+        # ── honest-degrade rail (#1231): degrade on binding state, never silently empty ──
+        if binding is None:
+            return ResolveMiss(await self.degrade(DegradationReason.CONNECT_REQUIRED))
+        if binding.status != ConnectorStatusState.BOUND.value:
+            reason = _NONBOUND_REASON.get(binding.status, DegradationReason.CONNECT_REQUIRED)
+            return ResolveMiss(await self.degrade(reason))
+
+        # ── bound → resolve over the real MCP transport; any failure → honest UNREACHABLE ──
+        try:
+            async with self._mcp_client_ctx(binding) as client:
+                handle = await self._resolve_via_mcp(client, resource)
+        except Exception:
+            logger.warning(
+                "GitHub MCP resolve failed (server unreachable/unprovisioned)", exc_info=True
             )
-        )
+            return ResolveMiss(await self.degrade(DegradationReason.UNREACHABLE))
+
+        if not handle:
+            return ResolveMiss(await self.degrade(DegradationReason.RESOURCE_NOT_FOUND))
+        return ResourceHandle(handle=handle, kind=resource.kind)
 
     async def degrade(self, reason: DegradationReason) -> DegradationResponse:
         messages = {
@@ -127,6 +168,56 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             reason=reason,
             user_message=messages.get(reason, "The GitHub connector is degraded."),
         )
+
+    # ── resolve() transport seam (the real MCP path; #1220) ──
+    # Isolated so resolve()'s degrade rail is testable against a fixture-backed client,
+    # and so the provisioning-gated bits below are confined to two small methods.
+
+    def _mcp_client_ctx(self, binding):
+        """Async-context yielding a connected ``MCPClient`` for this binding (real transport).
+
+        Production connects over stdio with params from the binding's server ref. Tests
+        patch this to yield a fixture-backed client (the SDK in-memory transport), so the
+        resolve() rail can be exercised end-to-end without a live server.
+        """
+        return MCPClient.connect_stdio(self._server_params_for(binding))
+
+    def _server_params_for(self, binding) -> StdioServerParameters:
+        """Map a binding's ``mcp_server_ref`` → stdio server params.
+
+        PROVISIONING-GATED (#1220 umbrella): the concrete github-mcp-server command/args
+        (stdio-local-process vs hosted-http) is the open infra decision. Until it lands a
+        bound binding cannot reach a real server, so ``resolve()`` honest-degrades to
+        UNREACHABLE (never a fake success).
+        """
+        raise NotImplementedError(
+            "github-mcp-server provisioning is the open #1220 infra decision "
+            "(stdio-local vs hosted); resolve() honest-degrades to UNREACHABLE until then."
+        )
+
+    async def _resolve_via_mcp(
+        self, client: MCPClient, resource: ResourceQuery
+    ) -> Optional[str]:
+        """Resolve a resource to a handle via the GitHub MCP server (real round-trip).
+
+        Returns the handle string, or ``None`` for a miss. PROVISIONAL (#1230 / #1220):
+        the tool name + args + result parsing depend on the chosen github-mcp-server; the
+        WIRING (binding → real ``MCPClient`` → result → handle) is proven against a FastMCP
+        fixture, with the tool identifier (``_RESOLVE_TOOL``) the one provisional constant.
+        """
+        result = await client.call_tool(
+            _RESOLVE_TOOL, {"kind": resource.kind, **resource.params}
+        )
+        return self._first_text(result.content) or None
+
+    @staticmethod
+    def _first_text(content) -> str:
+        """First non-empty ``.text`` off an SDK content list (TextContent items)."""
+        for item in content or []:
+            text = getattr(item, "text", None)
+            if text:
+                return text
+        return ""
 
     async def configure_github_api(
         self, token: Optional[str] = None, api_base: Optional[str] = None
