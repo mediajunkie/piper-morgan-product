@@ -10,7 +10,7 @@
 
 ### Queued (low-pri, unblocked when bandwidth)
 - **🔨 liveness model v2** (spec: `docs/internal/operations/duty-cycle-liveness-model-2026-06-25.md`): **(1) v0.4 wake-window-aware threshold — DONE 6/26** (cron-derived dyn threshold; cio daytime 8h→~5h, overnight wider; 5/5 test incl. the wake-window proof; live-validated). **Remaining**: (2) 3-category hedged classification (dead-cron/idle-but-alive/live-but-blocked), (3) mode-3 upstream diagnostic w/ CXO+Exec (why permissive sessions hit approval prompts), (4) the resume-loop question (can alert→resume close autonomously? — PM-gated, ties to the off-machine decision). (2)+(3) are next buildable pieces; (4) waits on PM.
-- **Cohort-coverage expansion** — freeze-registry watches 5/11 (cio/exec/arch/cxo/ppm); extend to the rest via **owner-confirmed rows (Exec-coordinated opt-in)**, NOT inferred (false-nudge risk).
+- **Cohort-coverage expansion — KICKED OFF 6/26** (`fb1d7f96a`, Exec memo): extend the freeze-watcher 5/11 → 11/11 (add host/comms/docs/web/pa/lead). v0.4 removed the hold-reason (threshold now auto-derives from cron). **Awaiting Exec-coordinated owner-confirmed rows** (4-field template sent; NOT inferred — false-nudge risk). When rows arrive → add to `duty-cycle-registry.tsv` + verify each.
 - **Sprint cluster**: #973 / #1277 left. (#1153 DONE+CLOSED `ab44e595c`; **#1287 CIO part DONE 6/25** → consumer-traced + Lead surfaced a 3rd edge into methodology/ → I made the **boundary call: Option 1 expand** (`442305797`); Lead executes the full services/+methodology/ deletion pass + closes. #1191 findings-log, not actionable.)
 
 ### Standing / PM-gated
