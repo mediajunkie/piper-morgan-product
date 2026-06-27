@@ -1,7 +1,8 @@
 # Piper Morgan Glossary
 
-**Version**: 1.2
-**Date**: June 10, 2026 (v1.2 — added PDR + role-acronym block + MVP/UAT after a Ship-edit false-unpacking incident; reanimated as the canonical terminology source)
+**Version**: 1.3
+**Date**: June 27, 2026 (v1.3 — added Distribution Surfaces and Formats section: Plugin vs. MCP bundle vs. Skills, Claude surfaces. Triggered by persistent Plugin/MCPB conflation in BYOC docs.)
+**Previous**: June 10, 2026 (v1.2 — added PDR + role-acronym block + MVP/UAT after a Ship-edit false-unpacking incident; reanimated as the canonical terminology source)
 **Purpose**: Define project terminology, jargon, and concepts. **This is the single source of truth for acronym expansions** — never spell out an acronym from memory; look it up here. If a term isn't here, that's a STOP-and-look-up signal (find the originating doc, add it), not a license to guess. The companion lint `scripts/check-acronyms.py` enforces this against drafts.
 
 ---
@@ -365,6 +366,57 @@ Informal task tracking for small items not warranting GitHub issues.
 8. **Data Model/Schema** - Structure definitions
 9. **Events/Workflow** - Process definitions
 10. **Functions/Objects** - Code structures
+
+---
+
+---
+
+## Distribution Surfaces and Formats
+
+> **Stop-and-look-up zone.** Plugin, MCPB, bundle, connector, extension, and skills are frequently conflated. Before writing any doc, email, or instruction that uses these words, check this section. The distinctions matter to testers.
+
+### Claude Surfaces (where users interact with Claude)
+
+**Claude Desktop** — The native Mac/Windows desktop app from Anthropic. Supports MCP bundles (`.mcpb`) installed via the Connectors section. This is the primary surface for BYOC distribution.
+
+**Cowork** — Claude Web (claude.ai) with project/collaboration features. Supports Cowork plugins (`.zip`) installed via the Personal plugins section. A completely different surface from Desktop. **Do not confuse with Desktop.**
+
+**Claude Code** — The CLI tool and IDE extensions (VS Code, JetBrains). Calls MCP connections "Extensions" rather than "Connectors," but they are the same thing. Supports MCPBs.
+
+---
+
+### Distribution Formats (what you install)
+
+**Plugin** (Cowork plugin) — A `.zip` file for **Cowork only**. Contains skills (prompt patterns) and optionally an included MCP server or a manifest. Installs via Personal plugins section in Claude Web. **A Plugin is NOT an MCP bundle and does NOT install in Claude Desktop.**
+
+**MCP bundle / MCPB** — A `.mcpb` file (renamed zip) for **Claude Desktop and Claude Code**. Contains an MCP server process plus optional skills. Installs by:
+- Double-clicking the `.mcpb` file (Claude Desktop opens and prompts), OR
+- Claude Desktop → Connectors (left sidebar) → "+" → select the file
+NOT via the Personal plugins section, NOT via Skills > "Upload a skill." **An MCPB is NOT a plugin.**
+
+**Skills** (prompt patterns) — Markdown instruction files that shape how Claude responds. Skills are format-agnostic: they can be distributed inside a Plugin (for Cowork) or inside an MCPB (for Desktop/Code), or standalone. When users say they received "the skills," they mean a skills-only distribution — no MCP server, no persistent backend. **Skills ≠ Plugin ≠ MCPB.** The skills wave and the MCPB wave are separate distributions.
+
+---
+
+### UI Elements (labels Claude surfaces use)
+
+**Connector** — Claude Desktop's term for an installed MCP server connection. The "+" button in the Connectors sidebar is how you add an MCPB.
+
+**Extension** — Claude Code's term for the same thing Connectors are in Desktop. Same concept, different label. If writing instructions for Desktop, say "Connectors." If writing for Code, say "Extensions."
+
+**Personal plugins** — The install section in Cowork (Claude Web) for Cowork plugins. **Not relevant to MCPB installation.** If a tester lands here, they are in the wrong section.
+
+**Skills > "Upload a skill"** — Cowork's separate upload flow for skills-only zips. Has a 30MB limit. **Completely unrelated to MCPB installation.** If a tester sees "Zip file must be less than 30MB," they are in the wrong section.
+
+---
+
+### Piper-Specific Distribution History
+
+| Wave | Format | Surface | Status |
+|------|--------|---------|--------|
+| Skills wave | Skills (prompt patterns) | Cowork / any surface | Sent to alpha testers |
+| Plugin wave | Cowork plugin (`.zip`) | Cowork only | Sent to alpha testers (early, buggy) |
+| MCPB wave | MCP bundle (`.mcpb`) | Claude Desktop | v0.1.9 — current, in testing |
 
 ---
 

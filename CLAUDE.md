@@ -285,6 +285,7 @@ Load detailed protocols only when needed:
 | Architecture patterns | `docs/internal/architecture/current/patterns/` |
 | ADRs | `docs/internal/architecture/current/adrs/` |
 | Live system state | Use Serena symbolic queries |
+| Terminology / acronyms | `knowledge/piper-morgan-glossary-v1.1.md` — **STOP and read this before writing any content that uses: Plugin, MCPB, MCP bundle, Connector, Extension, Skills, Cowork, Claude Desktop. These terms have precise distinct meanings and are frequently conflated.** |
 
 **Skills** (formalized procedures): `.claude/skills/`
 
