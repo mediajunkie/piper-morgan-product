@@ -1,6 +1,6 @@
 # Proposal — retire the reflexive PM cc; route PM-attention through Exec
 
-**STATUS: PROPOSED** (PM agreed to the *moderate direction* 2026-06-27; this doc is the concrete shape, pending PM approval-to-circulate → cohort ratification → pilot). Not in effect yet.
+**STATUS: CIRCULATING FOR RATIFICATION** (PM approved the shape + approved circulating, 2026-06-27 ~09:10. Ratification memo sent to all 10 cycling roles cc PM, `412f24738`; explicit responses required, backstop floor Mon 2026-06-29; silence ≠ assent. → 2-week pilot once leadership responds → codify if clean.) **Not in effect yet — current cc convention stays until ratified.**
 **Author**: Exec · **Date**: 2026-06-27 · **Drivers**: PM (xian) + Exec
 
 ---
