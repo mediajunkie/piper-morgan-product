@@ -64,6 +64,15 @@ The Ship narrative needs each role's lens (CXO sees voice and experience; CIO se
 | Tue | Last-call for workstream memos; exec begins synthesis |
 | Wed | Ship publishes (LinkedIn + blog) |
 
+### Friday kickoff trigger — Exec-owned (added 2026-06-27, PM-directed)
+
+**Every Friday, Exec begins the cycle by first verifying the week's session logs are complete, then issuing the workstream call.** This is a standing Exec obligation, not a someday-thing — the cadence slipped the week of Ship #049 because nothing forced the Friday kickoff. Concretely, on the first Exec duty-cycle fire each Friday (and as a checklist any Exec session inherits):
+
+1. **Verify the closed window's session logs are day-closed.** For each day Fri–Thu of the just-closed window, confirm a `<!-- DAY-CLOSED: {date} -->` marker exists across the cycling roles (`grep -l "DAY-CLOSED: {date}" dev/YYYY/MM/DD/*log.md`). Any role missing its close → memo that role to retroactively close before the workstream reports are written (an unclosed day is a coverage gap in that role's §0 progress report).
+2. **Then issue the workstream call** to the six authoring leads (HOST/CIO/Comms/CXO/PPM/Arch), cc PM + PA, per the Memo Structure below (§0 leads with progress vs. portfolio goals; see §0 note).
+
+This trigger is backed by a recurring Exec Friday reminder (cron), but the durable home is here — a session-scoped cron dies; this doc does not. Any Exec session reading this on a Friday runs the two steps above.
+
 ## Source-Material Discipline (Code-Era Pattern, Effective Ship #041 Onward)
 
 Per Docs Apr 27 directive (`memo-docs-to-leadership-omnibus-reframing-workstream-review-source-shift-2026-04-27.md`) and PM Apr 27 framing:
@@ -126,8 +135,9 @@ Per the Apr 26 mailbox-on-main norm: file to `main`, commit + push immediately. 
 
 ## Memo Structure (Suggested, Not Hard Template)
 
-Per exec's Ship #040 kickoff memo (`memo-exec-to-leadership-ship-040-workstream-kickoff-2026-04-26.md`):
+Per exec's Ship #040 kickoff memo (`memo-exec-to-leadership-ship-040-workstream-kickoff-2026-04-26.md`), evolved with the §0 portfolio-progress lead (PM-approved 2026-06-27, effective Ship #049):
 
+0. **Progress & milestones vs. portfolio goals** *(NEW — lead with this)* — against the priorities/mandate in your `ROLE-PORTFOLIO-{ROLE}.md`, where did the needle move this window? State milestone status per goal: **on-track / advanced / slipped / blocked**. Outcomes against goals, not just activity. *(Enabled by the role-portfolio wave completing 2026-06-24; the Exec↔HOST portfolio-tied reformat co-designed 6/11.)*
 1. **TL;DR** — 3–5 bullets, headline-of-the-week for your role
 2. **What landed** — concrete deliverables, decisions, artifacts shipped during the window
 3. **What surfaced** — patterns, drift, concerns your role detected
@@ -135,7 +145,7 @@ Per exec's Ship #040 kickoff memo (`memo-exec-to-leadership-ship-040-workstream-
 5. **Cross-role threads worth naming** — connecting tissue *between* roles your role's lens reveals
 6. **For PM/exec consideration** — anything affecting Ship-narrative theme selection or framing
 
-The first three are required; the last three are useful when applicable. Length: aim for what your scope actually generated. A clean 600-word memo with verified claims beats a 2000-word memo asserting from memory.
+§0 + the first three are required; §4–6 are useful when applicable. Length: aim for what your scope actually generated. A clean 600-word memo with verified claims beats a 2000-word memo asserting from memory. **Milestone claims in §0 must be grounded (GitHub/calendar/logs), not aspirational** — same verifiable-claims discipline as the rest.
 
 ## Role-Scoping Discipline
 
