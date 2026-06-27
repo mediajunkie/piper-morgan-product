@@ -34,3 +34,15 @@ June 26 log closed (DAY-CLOSED). June 27 log opened. Cron re-armed (`6bf5ee30`).
 ### Fire 1 — 09:52 PDT (windowed cron)
 
 Cron: deleted `6bf5ee30`, re-armed `2244527d`. Pull: Exec Jun 27 log + XPOLL Jun 27 brief + stall alert to PM (not PPM-facing). XPOLL noted: Klatch beta gate defined (composition gesture → release cut, July); "design as critical path" framing; DinP trigger-prompts in version control (our cron prompts embedded in session logs — covered). Inbox: 0. Queue: (0,0). IDLE.
+
+### Fire 2 — 12:52 PDT (windowed cron)
+
+Cron: deleted `2244527d`, re-armed `d397234f`. Pull: Lead→Arch Shape-B/#1322 sequencing memo + Lead→PM GitHub MCP provisioning decision + test files for #1317; inbox-proxy ratification request landed.
+
+**Inbox**: 1 — `memo-exec-to-cohort-cc-pm-ratify-inbox-proxy-2026-06-27.md` (Exec, requesting explicit ack by Mon Jun 29 backstop).
+
+**Action taken**: PPM ratification response filed → `mailboxes/exec/inbox/memo-ppm-to-exec-cc-pm-ratify-inbox-proxy-ack-2026-06-27.md`. Position: **ACK, endorse, no amendments**. Key note: PPM's "needs-decision" channel is better than PM's 680-item inbox for milestone gate calls; structural mandate flags are time-critical by nature → direct channel preserved. One clarification requested: "relay" means a timeboxed loop, not a silent queue. Inbox memo moved to read/.
+
+Lead→PM GitHub MCP decision (Option A hosted-OAuth vs B local-PAT): not PPM — Arch/PM call per the memo. No PPM action.
+
+Queue: (0,0). IDLE.
