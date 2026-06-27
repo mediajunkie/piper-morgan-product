@@ -14,9 +14,15 @@ Each duty-cycle agent maintains three surfaces: a **session log**, a **durable t
 |---|---|
 | Session log | Standardized, skill-governed (`dev/.../{role}-log.md` + DAY-CLOSED). Solid. |
 | Durable task list = `{role}-standing-items.md` | 10/11 roles have it — **Exec is the gap** (keeps it folded in carry-forward). |
-| "Attention document" | **Was** `duty-cycle-escalations-{role}.md`; **DEPRECATED + folded into the carry-forward 2026-06-17.** BUT the old files still litter `dev/active/` for ~8 roles (half-retired). And CXO + PPM have **no carry-forward** at all. |
+| "Attention document" | **Supposedly** folded into the carry-forward 2026-06-17 (escalations docs deprecated). **REALITY (verified 6/27): the fold was declared but never fully executed — the cohort is SPLIT across two conventions.** |
 
-So: cleanup + standardization is a real Step 0 (stale escalations files; 2 roles missing carry-forward; Exec missing standing-items).
+**⚠️ The attention-surface convention is split (the real Step-0 blocker, found 6/27):**
+- **Lead + Docs still actively run on `duty-cycle-escalations-{role}.md`** as their live attention surface — Lead reconciled its escalations doc at the 6/25 STOP; it holds all of Lead's current Open items. These files are **live, not stale** (a near-miss: a "delete the deprecated files" sweep would have destroyed live attention items — caught by per-file inspection; cf. "investigate before deleting / never sweep up others' work").
+- **Other roles** (arch/cio/host/web/pa/exec) moved PM-attention items into the **carry-forward** (escalations docs old + untouched since ~the fold → content likely migrated, but each needs per-file verification before removal).
+- **CXO has NEITHER** an escalations doc nor a carry-forward — genuinely missing an attention surface.
+- **PPM** runs on its escalations doc (6/6), no carry-forward.
+
+So Step-0 is **not** mechanical cleanup — it's: **(1) decide the canonical attention surface** (carry-forward vs escalations-doc — one wins), **(2) have each role reconcile its OWN live items into it** (not Exec bulk-editing others' files), **(3) then** retire the losing surface + give CXO the canonical one + give Exec a standing-items. The 6/17 fold's lesson repeats: a convention declared but not mechanically enforced silently doesn't happen.
 
 **Prior art exists** — this isn't net-new: `memo-host-to-cio-...-recurring-workflow-owner-routing-2026-06-08` → folded into **methodology m-36 class-2** ("recurring-workflow owner routing"). CIO should bring m-36 to the discussion.
 
@@ -58,7 +64,11 @@ A recurring task has **two separable parts** that are currently conflated/scatte
 1. Registry home: extend `{role}-standing-items.md` with a recurring section, or a separate `{role}-recurring.md`?
 2. Trigger unification: the trigger layer is ~80% built (7 scheduled GH Actions). The real gap is the **binding** (trigger → agent-owned task). Two candidate bindings: **(a) GH Action → mail** (the workflow signals the agent's inbox, which it DOES watch — minimal change, keeps GH Actions as triggers), or **(b) fire-as-scheduler** (agent's registry is the source of truth; fire computes what's due; GH Actions feed or retire). Or both (Action mails + registry owns). Decide one source of truth — no double-fire.
 3. How does m-36 class-2 already frame recurring-workflow routing — does this extend it or supersede it?
-4. Step-0 standardization: clean up stale escalations files, give CXO/PPM carry-forwards, give Exec a standing-items — before layering recurring tasks on top.
+4. **Step-0 is a convention decision, not cleanup** (revised 6/27 after the survey found the split): pick the canonical attention surface, have each role reconcile its OWN items into it, enforce it in the fire — *then* layer recurring tasks. See below.
 
-## Recommended first step
-Before building: **a full survey + standardization pass** of the three surfaces (this note is the start). Then design the recurring-tasks registry + fire-as-scheduler with CIO (m-36 owner). Don't bolt recurring tasks onto an unstandardized base.
+## Recommended first step (revised 6/27 — survey found a split base, not just an uneven one)
+1. **CIO/PM decide the canonical attention surface** (carry-forward vs escalations-doc — one wins). Carry-forward is better-defended (the 6/17 fold already chose it; the cohort-attention rollup reads it) — but it must be **enforced in the fire**, not just declared.
+2. **Each role reconciles its OWN live items** into the canonical surface (Lead/Docs/PPM migrate escalations-doc → carry-forward; CXO creates one; Exec adds a standing-items). Exec coordinates + tracks; Exec does **not** edit others' surfaces.
+3. **Then** retire the losing surface per-role (after that role confirms migration) and build the recurring-tasks registry + fire-as-scheduler on the uniform base (with CIO, m-36 owner).
+
+**Meta-lesson:** the 6/17 fold proves a convention declared without a mechanical enforcement point silently doesn't happen — 10 days later the cohort was still split and nobody noticed until this survey. Whatever Step-0 decides, enforcement must live in the fire (checked every cycle), not in a memo.
