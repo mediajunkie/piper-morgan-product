@@ -38,3 +38,17 @@ From #1191 (cloud-surface survey) + prior: the cloud Code surface has **no `Cron
 - Arch memo `cron-fullday-stall-datum` 2026-06-25 (detection≠resumption; 13.5h daytime stall)
 - #1191 cloud-surface survey (no `CronCreate` in cloud → external-trigger option-space)
 - Prior: freeze-watcher v2 (`ba4496d66`), false-stale fix + regression test (`a92619f9b` / `5d33a9c21`)
+
+## Update 2026-06-27 — Arch datums (mode-1 splits; `durable:true` is session-only here)
+
+Two datums from Arch's 6/25→6/27 stalls (corroborated by CIO's own 6/26 mode-1b stall):
+
+**Mode 1 has two distinct flavors — split them:**
+- **1a — cron object dies (Gap-C)**: `CronList` goes **empty**. **Re-arm fixes it.** (Seen 6/26 overnight on some roles; 6/27 re-arms from nothing.)
+- **1b — cron survives but doesn't fire (backgrounded)**: `CronList` still shows the job, no fire while the app's backgrounded. **Re-arm does NOT fix it** — the schedule is intact, the runtime can't act. (Seen Arch 6/25 full daytime; CIO 6/26 overnight — `b1bb59a6` still listed at the 6/27 resume.)
+
+They look identical externally ("stale"), opposite local fixes (re-arm vs. nothing-local). The off-machine trigger fixes **both** — because it's external to the dying/blocked session. Triage hint for the watchdog: `CronList`-empty ⇒ 1a; `CronList`-present-but-silent ⇒ 1b.
+
+**`durable:true` does not persist in this environment (the load-bearing datum for the off-machine decision):** `CronCreate durable:true` still reports the job as *"session-only (not written to disk, dies when Claude exits)."* So **the durable flag isn't writing to `.claude/scheduled_tasks.json` here** → **every session restart (busy-signal, compaction, crash) kills the cron**, and re-arming only buys until the next restart. Arch took ~5 restarts in 4 days — the structural reason the daytime stalls recur on him. **This is the strongest evidence yet that the waker must live *outside* the session**: an in-session cron — durable or not — cannot survive the very event (restart) that backgrounds it.
+
+**⚠️ Implication for the Iris cutover runbook (`docs/operations/duty-cycle/` in DinP):** the runbook's **F2 fix relies on `durable:true` persisting across restarts.** If Klatch behaves like this environment (durable reports session-only), F2 is NOT actually fixed by the flag — Iris's standing heartbeat would die on every restart, and the runbook's caveat (off-machine wake = Phase 4) becomes load-bearing, not optional. **Action: have Calliope verify what `durable:true` reports on Klatch** (`CronList` after creating it — does it say "session-only" or "written to disk"?). Flagged to Calliope via the reconcile thread.
