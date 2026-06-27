@@ -10,6 +10,7 @@
 - ✅ **Ratify ACK** — Exec inbox-proxy proposal (FYI/needs-decision/time-critical routing shape; `70de6c77f`)
 - ✅ **June 26 omnibus** (HIGH-COMPLEXITY: 9 logs; MCPB alpha + WS-2 + machine-sleep + freeze-check v0.4; PA log absent noted; `5e8d850e3`)
 - ✅ **10 activity-log rows** appended for Jun 26 (Shape B; `d76507370`)
+- ✅ **"The Triad Model" published** (insight, 2025-12-02; `https://pipermorgan.ai/blog/the-triad-model`; hashId `64267a5e395d`; website `462ae6e07`; calendar `66577cdd7`)
 
 ## Pending / PM-gated
 
