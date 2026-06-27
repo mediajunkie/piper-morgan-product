@@ -62,6 +62,12 @@ Lead Dev (huge day — #1318/#1319/#1309/#1310 closed, #358 deployed, #1320 file
 
 ---
 
+## 🗓️ STANDING — Friday workstream kickoff (Exec-owned, PM-directed 6/27)
+Every Friday: (1) verify the just-closed Fri–Thu window's session logs are day-closed (grep DAY-CLOSED per day, per role); memo any role missing its close; (2) THEN issue the workstream call to the six leads (HOST/CIO/Comms/CXO/PPM/Arch) cc PM+PA. Durable home: methodology-25 "Friday kickoff trigger". Active cron `249b372c` (Fri 07:05) backs it — but the doc is the survivor (cron is session-scoped). **§0 format = progress vs portfolio goals, PM-approved + codified in methodology-25 (effective #049).**
+
+## ▶ Ship #049 workstream — IN FLIGHT (call sent 6/27)
+Call out to 6 leads (`f15f196d3`), window Jun 19–25, Tue 6/30 last-call → Wed 7/1 Ship. **Collect memos → synthesize.** Log-closure memos sent to CXO (6/25) + PA (`e9337a3de`); PA also directed to adopt the duty-cycle STOP day-close going forward.
+
 ## PM-attention items
 - **MCPB clean-machine test** + **#1320/#1162** = the alpha-email gate.
 - **Re-prod CXO + PPM** (watchdog-flagged 07:44; Arch already back).
