@@ -70,5 +70,9 @@ $ git log --oneline origin/main..HEAD
 
 PM edits and mail residue only — no Docs outputs untracked. All work on origin/main.
 
-<!-- DAY-CLOSED: 2026-06-26 --> (`docs/omnibus-logs/2026-06-25-omnibus-log.md`, HIGH-COMPLEXITY: 10 agents, alpha gates cleared + #1312 ruled + Beat 9 published + #1287 boundary decision + liveness model; 10 activity-log rows). Commits `45826b3c5` (omnibus) + `e19c7c486` (activity-log Shape B). Key discrepancy resolved: Beat 9 WAS published Jun 25 (after Comms+Docs STOPs; Exec correct, Docs STOP wrap stale). Sources: 9/10 fully closed; CXO unclosed (content through 21:00 captured + noted in omnibus).
+<!-- DAY-CLOSED: 2026-06-26 -->
+
+## Late Addendum — WATCH (03:28 PDT Jun 27)
+
+- **(03:28 PDT Jun 27) — WATCH**: Overnight fire. Inbox zero. No unblocked work. Cron `0dbd50ec` live. Jun 27 START on morning fire (~10:17). (`docs/omnibus-logs/2026-06-25-omnibus-log.md`, HIGH-COMPLEXITY: 10 agents, alpha gates cleared + #1312 ruled + Beat 9 published + #1287 boundary decision + liveness model; 10 activity-log rows). Commits `45826b3c5` (omnibus) + `e19c7c486` (activity-log Shape B). Key discrepancy resolved: Beat 9 WAS published Jun 25 (after Comms+Docs STOPs; Exec correct, Docs STOP wrap stale). Sources: 9/10 fully closed; CXO unclosed (content through 21:00 captured + noted in omnibus).
 
