@@ -39,3 +39,11 @@ PM asked "until the Mac Mini, what's the best option" → I recommended the watc
 - **Belt 0 added to `duty-cycle-watchdog.sh` (v2.1)**: on a stall, `open -b com.anthropic.claude-code` un-suspends the app → the in-app cron resumes. Automates PM's manual resume (which *is* foregrounding — the proof the mechanism works). Fires every stale run (self-limiting once the cron resumes + commits); nudge belts stay as backstop; `WATCHDOG_AUTO_FOREGROUND=0` disables. **Test 9/9** (2 new Belt-0 cases). Deployed to the main-checkout copy the launchd job runs.
 - **Self-validates on the first real stall** (the log will show `FOREGROUND: open -b …` then the role going fresh = it worked). The one residual unknown is whether `open -b` works from the launchd context (vs this shell) — likely yes (LaunchAgent runs in the user GUI session; LaunchServices, no TCC); the nudge backstop covers a failure. **The Mac Mini still sidesteps the whole class.**
 - Cron armed; next 16:07.
+
+### ~15:30 — "you have mail": Arch cure-(a) decomp + CXO datums folded
+- **Arch's cure-(a) decomposition** (cc PM+Exec): "inject into suspended" = category error; (a) = foreground + let-the-cron-fire. **Confirms Belt 0 exactly** (I built it 2h prior). Replied: converged; chose `open -b` over osascript (hangs from-within). Aligned.
+- **CXO's 3 datums** (cc PM+PA) folded into the spec:
+  - **Belt 0 fixes Mode 1b ONLY, not 1a.** CXO hits 1a (session death — CronList empty, carry-forward lost); foregrounding can't resume a *dead* cron. → Belt-0 is a partial cure; off-machine (b/c) stays necessary for 1a. (Real scoping of what I shipped.)
+  - **Mode-2/3 root-cause lead (actionable)**: `~/.claude/settings.json` `autoMode.allow` entries are English prose, not `"Bash(git *)"` patterns → may not match → ops hit the modal. The upstream mode-3 fix (CXO+Exec lane; flagged, didn't edit PM's config).
+  - **`mcp__scheduled-tasks__*` candidate**: pulled the schema — app-tied (not off-machine), but **catch-up-on-next-launch** beats CronCreate's drop-missed-tick → candidate better in-app scheduler (esp. + Belt 0). Logged to evaluate.
+- Spec updated (`3153bbfd0`); both replied (`e56c156d7`). **Inbox empty.**
