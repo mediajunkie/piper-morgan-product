@@ -72,3 +72,38 @@ A recurring task has **two separable parts** that are currently conflated/scatte
 3. **Then** retire the losing surface per-role (after that role confirms migration) and build the recurring-tasks registry + fire-as-scheduler on the uniform base (with CIO, m-36 owner).
 
 **Meta-lesson:** the 6/17 fold proves a convention declared without a mechanical enforcement point silently doesn't happen — 10 days later the cohort was still split and nobody noticed until this survey. Whatever Step-0 decides, enforcement must live in the fire (checked every cycle), not in a memo.
+
+---
+
+## For CIO to execute — summary + recommended next steps
+
+**Framing**: this is the post-improvisation consolidation. The alpha shipped (tester Jake live), RECONNECT is self-propelling — so there's breathing room to do this *deliberately*, not as a fire. Two phases; Phase 1 gates Phase 2.
+
+### Phase 1 — Standardize the base (reconcile the split; must precede Phase 2)
+The 6/17 escalations→carry-forward fold was declared but never executed; the cohort is split. Fix:
+1. **Decide the canonical attention surface** — *recommend carry-forward* (the fold already chose it; the cohort-attention rollup reads it). PM/CIO ratify.
+2. **Each role reconciles its OWN live items** into the canonical surface — Lead/Docs/PPM migrate escalations-doc → carry-forward; **CXO creates one (has neither today)**; **Exec adds a standing-items (the one role missing it)**. Exec coordinates + tracks completion; no role edits another's surface.
+3. **Enforce in the fire** — the duty-cycle-tick skill's START/STOP checks the canonical surface exists + isn't stale, and **fails loud** if missing. This is the load-bearing change: the 6/17 fold failed *because* it had no enforcement point. (CIO's lane — the skill.)
+4. **Retire the losing surface per-role** after that role confirms migration; then delete stale files safely.
+
+### Phase 2 — Build the recurring-tasks layer (on the uniform base)
+1. **Registry** — per-role recurring-tasks list: `task | cadence | last-completed | trigger`. Home: a section in standing-items (recommend) or `{role}-recurring.md`.
+2. **Binding decision** — the trigger layer is ~80% built (7 scheduled GH Actions). Pick one source of truth: *recommend fire-as-scheduler* (agent reads its registry each fire, computes "what's due" from cadence vs last-completed) — uses the daily mechanism already running, closes the GH-issue-awareness gap. GH Actions then either feed the registry or retire (no double-fire).
+3. **Reconcile existing GH Actions** — weekly-docs-audit, quarterly-maintenance, role-health-check, pattern-sweep, dependency-health, link-checker: map each to a role's registry entry; decide feed-vs-retire per workflow.
+4. **Build on m-36 class-2** (recurring-workflow owner routing — CIO's prior art); extend or supersede.
+5. **Enforce in the fire** (same principle as Phase 1).
+
+### Lanes
+- **CIO** (executor): the skill enforcement point, m-36, the registry design, fire-as-scheduler mechanism.
+- **Exec**: coordinates per-role reconciliation + tracks completion; owns the cohort "what's due / who's unmigrated" view.
+- **PM**: the canonical-surface decision + design approval.
+- **Each role**: reconciles its own surface (Phase 1.2).
+
+### Recommended next steps (sequence)
+1. **PM + CIO + Exec discussion** (the one PM flagged) → ratify: canonical surface = carry-forward; the two-phase plan; enforce-in-fire as the non-negotiable.
+2. **CIO drafts the spec** (Phase 1 standardization + Phase 2 registry), building on this note + m-36.
+3. **Exec runs the per-role reconciliation** (memo each role to migrate its own surface; track to done).
+4. **CIO implements fire-enforcement** in duty-cycle-tick (Phase 1.3) — the keystone.
+5. **Then Phase 2**: registry + GH-Action reconciliation.
+
+**Non-negotiable through-line**: every convention here must have a mechanical enforcement point in the fire. A convention in a memo silently doesn't happen (proven twice now: the 6/17 fold + this week's slipped workstream cadence).
