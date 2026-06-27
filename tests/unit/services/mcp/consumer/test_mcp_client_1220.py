@@ -9,13 +9,22 @@ inc.2 integration test.
 Design: gameplan `dev/2026/06/27/1220-real-mcp-transport-gameplan.md` (Shape B —
 a NEW SDK-based client; the legacy sim stack in query_router stays untouched).
 """
-import pytest
-from contextlib import asynccontextmanager
+import sys
+from pathlib import Path
 
+import pytest
+
+from mcp.client.stdio import StdioServerParameters
 from mcp.server.fastmcp import FastMCP
 from mcp.shared.memory import create_connected_server_and_client_session
 
 from services.mcp.consumer.mcp_client import MCPClient
+
+# The real stdio MCP server fixture (spawned as a subprocess by inc.2).
+# This file lives at tests/unit/services/mcp/consumer/ → parents[4] is tests/.
+_STDIO_FIXTURE = str(
+    Path(__file__).resolve().parents[4] / "fixtures" / "mcp" / "stdio_fixture_server.py"
+)
 
 
 @pytest.fixture
@@ -69,8 +78,32 @@ class TestMCPClientRealRoundTrip:
 class TestMCPClientProductionEntryPoint:
     def test_connect_stdio_is_an_async_context_manager_factory(self):
         """The production transport entry-point exists (subprocess round-trip = inc.2)."""
-        from mcp.client.stdio import StdioServerParameters
-
         cm = MCPClient.connect_stdio(StdioServerParameters(command="true", args=[]))
         # asynccontextmanager-wrapped → supports the async-with protocol.
         assert hasattr(cm, "__aenter__") and hasattr(cm, "__aexit__")
+
+
+@pytest.mark.integration
+class TestMCPClientStdioSubprocess:
+    """inc.2 — prove connect_stdio against a REAL MCP server subprocess over OS stdio.
+
+    Spawns the FastMCP fixture server (tests/fixtures/mcp/stdio_fixture_server.py)
+    via StdioServerParameters and round-trips the full production transport path:
+    spawn → initialize → list/read resource + list/call tool. No github-mcp-server
+    needed — the fixture server proves the transport itself.
+    """
+
+    async def test_real_stdio_round_trip(self):
+        params = StdioServerParameters(command=sys.executable, args=[_STDIO_FIXTURE])
+        async with MCPClient.connect_stdio(params) as client:
+            resources = await client.list_resources()
+            assert "file:///greeting.txt" in [str(r.uri) for r in resources.resources]
+
+            read = await client.read_resource("file:///greeting.txt")
+            assert any("hello from a real stdio mcp server" in t for t in _texts(read.contents))
+
+            tools = await client.list_tools()
+            assert "echo" in [t.name for t in tools.tools]
+
+            called = await client.call_tool("echo", {"text": "pong"})
+            assert any("echo: pong" in t for t in _texts(called.content))
