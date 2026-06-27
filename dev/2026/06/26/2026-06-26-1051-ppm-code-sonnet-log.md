@@ -41,3 +41,7 @@ June 25 log closed (DAY-CLOSED). June 26 log opened. Cron re-armed (`1e2f46b9`).
 - Beat 9 "The Hook and the Worktree" published June 25
 
 **Queue**: (0,0) — #1237/#1269/v18.1 fold all PM/Lead-gated. IDLE.
+
+### Fire 1 — 20:54 PDT (PM manual resume)
+
+PM noted cron appeared stalled (3 watchdog stall alerts to xian inbox: 12:44, 16:45, 18:45). Cron `1e2f46b9` confirmed alive. Pull blocked by `scripts/duty-cycle-freeze-check.sh` (v0.4 CIO changes, not mine — stashed/pulled/popped). New: CIO cohort-coverage-expansion memo → Exec (PPM already in registry, no action). PPM inbox: 0. Queue: (0,0). IDLE.
