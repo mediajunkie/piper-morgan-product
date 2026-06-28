@@ -48,13 +48,13 @@ import csv
 import sys
 from pathlib import Path
 
-CALENDAR = Path('docs/internal/planning/comms/editorial-calendar.csv')
-DRAFTS_DIR = Path('docs/public/comms/drafts')
-DRAFTPATH_COL = 'draftPath'
-STATUS_COL = 'status'
-TITLE_COL = 'title'
+CALENDAR = Path("docs/internal/planning/comms/editorial-calendar.csv")
+DRAFTS_DIR = Path("docs/public/comms/drafts")
+DRAFTPATH_COL = "draftPath"
+STATUS_COL = "status"
+TITLE_COL = "title"
 # Statuses for which a draftPath link is expected (active, not-yet-published work).
-ACTIVE_STATUSES = {'drafted', 'queued'}
+ACTIVE_STATUSES = {"drafted", "queued"}
 
 
 def main() -> int:
@@ -66,19 +66,19 @@ def main() -> int:
         return 2
 
     # Files actually on disk in drafts/
-    draft_files = {p.name for p in DRAFTS_DIR.glob('*.md')}
+    draft_files = {p.name for p in DRAFTS_DIR.glob("*.md")}
 
     # Calendar rows: collect draftPath references + per-row checks
     referenced_basenames: set[str] = set()
-    missing_draftpath: list[str] = []   # active rows with empty draftPath
-    stale_draftpath: list[str] = []     # active rows whose draftPath file is gone
+    missing_draftpath: list[str] = []  # active rows with empty draftPath
+    stale_draftpath: list[str] = []  # active rows whose draftPath file is gone
 
     with CALENDAR.open() as f:
         reader = csv.DictReader(f)
         for row in reader:
-            draftpath = (row.get(DRAFTPATH_COL) or '').strip()
-            status = (row.get(STATUS_COL) or '').strip()
-            title = (row.get(TITLE_COL) or '').strip()
+            draftpath = (row.get(DRAFTPATH_COL) or "").strip()
+            status = (row.get(STATUS_COL) or "").strip()
+            title = (row.get(TITLE_COL) or "").strip()
 
             if draftpath:
                 referenced_basenames.add(Path(draftpath).name)
@@ -92,26 +92,34 @@ def main() -> int:
     issues = len(true_orphans) + len(missing_draftpath) + len(stale_draftpath)
 
     if not issues:
-        print(f"✓ drafts<->calendar reconciled: {len(draft_files)} draft files, "
-              f"all linked; no missing/stale draftPath on active rows")
+        print(
+            f"✓ drafts<->calendar reconciled: {len(draft_files)} draft files, "
+            f"all linked; no missing/stale draftPath on active rows"
+        )
         return 0
 
     print(f"❌ drafts<->calendar drift: {issues} issue(s)\n")
 
     if true_orphans:
-        print(f"TRUE ORPHANS ({len(true_orphans)}) — drafts/*.md with no calendar row referencing them:")
+        print(
+            f"TRUE ORPHANS ({len(true_orphans)}) — drafts/*.md with no calendar row referencing them:"
+        )
         for name in true_orphans:
             print(f"   - {name}")
         print()
 
     if missing_draftpath:
-        print(f"MISSING DRAFTPATH ({len(missing_draftpath)}) — active rows with empty draftPath column:")
+        print(
+            f"MISSING DRAFTPATH ({len(missing_draftpath)}) — active rows with empty draftPath column:"
+        )
         for item in sorted(missing_draftpath):
             print(f"   - {item}")
         print()
 
     if stale_draftpath:
-        print(f"STALE DRAFTPATH ({len(stale_draftpath)}) — active rows whose draftPath file is gone:")
+        print(
+            f"STALE DRAFTPATH ({len(stale_draftpath)}) — active rows whose draftPath file is gone:"
+        )
         for item in sorted(stale_draftpath):
             print(f"   - {item}")
         print()
@@ -119,5 +127,5 @@ def main() -> int:
     return 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

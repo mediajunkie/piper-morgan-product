@@ -48,10 +48,10 @@ import datetime as dt
 import sys
 from pathlib import Path
 
-CALENDAR = Path('docs/internal/planning/comms/editorial-calendar.csv')
+CALENDAR = Path("docs/internal/planning/comms/editorial-calendar.csv")
 TODAY = dt.date.today()
 HEADS_UP_DAYS = 14
-URL_COLUMNS = ('mediumURL', 'liPubDate', 'linkedinURL', 'blogURL')
+URL_COLUMNS = ("mediumURL", "liPubDate", "linkedinURL", "blogURL")
 
 
 def parse_date(s: str) -> dt.date | None:
@@ -62,7 +62,7 @@ def parse_date(s: str) -> dt.date | None:
 
 
 def has_publish_urls(row: dict) -> bool:
-    return any((row.get(c) or '').strip() for c in URL_COLUMNS)
+    return any((row.get(c) or "").strip() for c in URL_COLUMNS)
 
 
 def main() -> int:
@@ -77,12 +77,12 @@ def main() -> int:
 
     with CALENDAR.open() as f:
         for row in csv.DictReader(f):
-            status = (row.get('status') or '').strip()
-            pubdate = parse_date(row.get('pubDate') or '')
+            status = (row.get("status") or "").strip()
+            pubdate = parse_date(row.get("pubDate") or "")
 
-            if status == 'drafted':
+            if status == "drafted":
                 drafted.append(row)
-            elif status == 'queued':
+            elif status == "queued":
                 if pubdate is None:
                     # Queued without a pubDate — treat as drafted-and-awaiting
                     drafted.append(row)
@@ -101,10 +101,10 @@ def main() -> int:
         print("  (none)")
     else:
         for row in drafted:
-            title = row.get('title', '').strip()
-            workdate = (row.get('workDate') or '').strip()
-            draftpath = (row.get('draftPath') or '').strip() or '(no draftPath)'
-            theme = (row.get('theme') or '').strip()
+            title = row.get("title", "").strip()
+            workdate = (row.get("workDate") or "").strip()
+            draftpath = (row.get("draftPath") or "").strip() or "(no draftPath)"
+            theme = (row.get("theme") or "").strip()
             print(f"  - {title!r}")
             print(f"      theme={theme} | workDate={workdate} | {draftpath}")
     print()
@@ -115,10 +115,10 @@ def main() -> int:
         print("  (none)")
     else:
         for row in overdue:
-            title = row.get('title', '').strip()
-            pubdate = (row.get('pubDate') or '').strip()
-            draftpath = (row.get('draftPath') or '').strip() or '(no draftPath)'
-            theme = (row.get('theme') or '').strip()
+            title = row.get("title", "").strip()
+            pubdate = (row.get("pubDate") or "").strip()
+            draftpath = (row.get("draftPath") or "").strip() or "(no draftPath)"
+            theme = (row.get("theme") or "").strip()
             days_late = (TODAY - parse_date(pubdate)).days
             print(f"  - {title!r}  [{days_late}d late]")
             print(f"      theme={theme} | pubDate={pubdate} | {draftpath}")
@@ -129,12 +129,12 @@ def main() -> int:
     if not upcoming:
         print("  (none)")
     else:
-        upcoming.sort(key=lambda r: r.get('pubDate', ''))
+        upcoming.sort(key=lambda r: r.get("pubDate", ""))
         for row in upcoming:
-            title = row.get('title', '').strip()
-            pubdate = (row.get('pubDate') or '').strip()
-            draftpath = (row.get('draftPath') or '').strip() or '(no draftPath)'
-            theme = (row.get('theme') or '').strip()
+            title = row.get("title", "").strip()
+            pubdate = (row.get("pubDate") or "").strip()
+            draftpath = (row.get("draftPath") or "").strip() or "(no draftPath)"
+            theme = (row.get("theme") or "").strip()
             print(f"  - {pubdate}  {title!r}")
             print(f"      theme={theme} | {draftpath}")
     print()
@@ -146,5 +146,5 @@ def main() -> int:
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

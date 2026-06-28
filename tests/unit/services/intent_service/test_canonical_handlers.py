@@ -3171,28 +3171,32 @@ class TestGuidanceQuerySynthesisSeam497:
         user_ctx.priorities = ["Ship alpha testing"]
         user_ctx.organization = "Piper Morgan"
 
-        with patch.object(
-            canonical_handlers, "_detect_setup_request", return_value=None
-        ), patch(
-            "services.intent_service.canonical_handlers.user_context_service.get_user_context",
-            new=AsyncMock(return_value=user_ctx),
-        ), patch.object(
-            canonical_handlers,
-            "_get_calendar_context",
-            new=AsyncMock(return_value={"has_calendar": True, "next_meeting": None}),
-        ), patch.object(
-            canonical_handlers,
-            "_get_project_metadata",
-            new=AsyncMock(return_value={"proj": {"has_github": True}}),
-        ), patch.object(
-            canonical_handlers,
-            "_get_priority_metadata",
-            new=AsyncMock(
-                return_value={
-                    "has_github": True,
-                    "high_priority_issues": [{"number": 1}],
-                    "total_open_issues": 5,
-                }
+        with (
+            patch.object(canonical_handlers, "_detect_setup_request", return_value=None),
+            patch(
+                "services.intent_service.canonical_handlers.user_context_service.get_user_context",
+                new=AsyncMock(return_value=user_ctx),
+            ),
+            patch.object(
+                canonical_handlers,
+                "_get_calendar_context",
+                new=AsyncMock(return_value={"has_calendar": True, "next_meeting": None}),
+            ),
+            patch.object(
+                canonical_handlers,
+                "_get_project_metadata",
+                new=AsyncMock(return_value={"proj": {"has_github": True}}),
+            ),
+            patch.object(
+                canonical_handlers,
+                "_get_priority_metadata",
+                new=AsyncMock(
+                    return_value={
+                        "has_github": True,
+                        "high_priority_issues": [{"number": 1}],
+                        "total_open_issues": 5,
+                    }
+                ),
             ),
         ):
             result = await canonical_handlers._handle_guidance_query(
@@ -3228,19 +3232,22 @@ class TestGuidanceQuerySynthesisSeam497:
         user_ctx.priorities = []
         user_ctx.organization = None
 
-        with patch.object(
-            canonical_handlers, "_detect_setup_request", return_value=None
-        ), patch(
-            "services.intent_service.canonical_handlers.user_context_service.get_user_context",
-            new=AsyncMock(return_value=user_ctx),
-        ), patch.object(
-            canonical_handlers,
-            "_get_calendar_context",
-            new=AsyncMock(return_value=None),
-        ), patch.object(
-            canonical_handlers,
-            "_get_priority_metadata",
-            new=AsyncMock(return_value={}),
+        with (
+            patch.object(canonical_handlers, "_detect_setup_request", return_value=None),
+            patch(
+                "services.intent_service.canonical_handlers.user_context_service.get_user_context",
+                new=AsyncMock(return_value=user_ctx),
+            ),
+            patch.object(
+                canonical_handlers,
+                "_get_calendar_context",
+                new=AsyncMock(return_value=None),
+            ),
+            patch.object(
+                canonical_handlers,
+                "_get_priority_metadata",
+                new=AsyncMock(return_value={}),
+            ),
         ):
             result = await canonical_handlers._handle_guidance_query(
                 intent, session_id="s-test", user_id="u-test"

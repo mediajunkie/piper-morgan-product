@@ -431,8 +431,7 @@ class TestArchitecturalRegression:
             # inside identifiers like `_resolve_default_repo`). Use word
             # boundary + match the indentation pattern Python methods follow.
             method_pattern = (
-                rf"def {re.escape(method)}\([^)]*\).*?"
-                rf"(?=\n    (?:async )?def\b|\n\nclass |\Z)"
+                rf"def {re.escape(method)}\([^)]*\).*?" rf"(?=\n    (?:async )?def\b|\n\nclass |\Z)"
             )
             method_match = re.search(method_pattern, content, re.DOTALL)
 

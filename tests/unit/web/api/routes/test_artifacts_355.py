@@ -40,8 +40,9 @@ class TestSaveArtifact:
     async def test_save_persists_generated_artifact_owner_scoped(self):
         repo = MagicMock()
         repo.add = AsyncMock()
-        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
-            artifacts_route, "ArtifactRepository", return_value=repo
+        with (
+            patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()),
+            patch.object(artifacts_route, "ArtifactRepository", return_value=repo),
         ):
             resp = await save_artifact(
                 SaveArtifactRequest(
@@ -77,12 +78,11 @@ class TestSaveArtifact:
     async def test_title_optional_defaults(self):
         repo = MagicMock()
         repo.add = AsyncMock()
-        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
-            artifacts_route, "ArtifactRepository", return_value=repo
+        with (
+            patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()),
+            patch.object(artifacts_route, "ArtifactRepository", return_value=repo),
         ):
-            resp = await save_artifact(
-                SaveArtifactRequest(content="body only"), current_user=_USER
-            )
+            resp = await save_artifact(SaveArtifactRequest(content="body only"), current_user=_USER)
         saved = repo.add.call_args.args[0]
         assert "title" not in saved.payload  # no title → not injected
         assert resp["title"] == "Saved artifact"  # response default
@@ -94,13 +94,17 @@ class TestListArtifacts:
         from services.domain.models import Artifact
 
         a = Artifact(
-            id="art-1", content="x" * 12, source_type=ArtifactSourceType.GENERATED,
-            owner_id="user-355", payload={"title": "T"},
+            id="art-1",
+            content="x" * 12,
+            source_type=ArtifactSourceType.GENERATED,
+            owner_id="user-355",
+            payload={"title": "T"},
         )
         repo = MagicMock()
         repo.list_for_owner = AsyncMock(return_value=[a])
-        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
-            artifacts_route, "ArtifactRepository", return_value=repo
+        with (
+            patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()),
+            patch.object(artifacts_route, "ArtifactRepository", return_value=repo),
         ):
             resp = await list_artifacts(current_user=_USER)
 
@@ -114,12 +118,18 @@ class TestListArtifacts:
 class TestDownloadArtifact:
     @pytest.mark.asyncio
     async def test_download_returns_markdown_attachment(self):
-        art = Artifact(id="art-d", content="# Summary\nbody", owner_id="user-355",
-                       source_type=ArtifactSourceType.GENERATED, payload={"title": "My Notes"})
+        art = Artifact(
+            id="art-d",
+            content="# Summary\nbody",
+            owner_id="user-355",
+            source_type=ArtifactSourceType.GENERATED,
+            payload={"title": "My Notes"},
+        )
         repo = MagicMock()
         repo.get_by_id = AsyncMock(return_value=art)
-        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
-            artifacts_route, "ArtifactRepository", return_value=repo
+        with (
+            patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()),
+            patch.object(artifacts_route, "ArtifactRepository", return_value=repo),
         ):
             resp = await download_artifact("art-d", current_user=_USER)
         repo.get_by_id.assert_awaited_once_with("art-d", owner_id="user-355")
@@ -133,8 +143,9 @@ class TestDownloadArtifact:
 
         repo = MagicMock()
         repo.get_by_id = AsyncMock(return_value=None)  # not found / not owner
-        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
-            artifacts_route, "ArtifactRepository", return_value=repo
+        with (
+            patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()),
+            patch.object(artifacts_route, "ArtifactRepository", return_value=repo),
         ):
             with pytest.raises(HTTPException) as ei:
                 await download_artifact("nope", current_user=_USER)
@@ -143,12 +154,18 @@ class TestDownloadArtifact:
     @pytest.mark.asyncio
     async def test_download_format_txt_serves_plain_text(self):
         """#1184 — format=txt serves the same content as text/plain + .txt."""
-        art = Artifact(id="art-d", content="# Summary\nbody", owner_id="user-355",
-                       source_type=ArtifactSourceType.GENERATED, payload={"title": "My Notes"})
+        art = Artifact(
+            id="art-d",
+            content="# Summary\nbody",
+            owner_id="user-355",
+            source_type=ArtifactSourceType.GENERATED,
+            payload={"title": "My Notes"},
+        )
         repo = MagicMock()
         repo.get_by_id = AsyncMock(return_value=art)
-        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
-            artifacts_route, "ArtifactRepository", return_value=repo
+        with (
+            patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()),
+            patch.object(artifacts_route, "ArtifactRepository", return_value=repo),
         ):
             resp = await download_artifact("art-d", format="txt", current_user=_USER)
         assert resp.media_type == "text/plain"
@@ -162,8 +179,9 @@ class TestDownloadArtifact:
 
         repo = MagicMock()
         repo.get_by_id = AsyncMock(return_value=None)
-        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
-            artifacts_route, "ArtifactRepository", return_value=repo
+        with (
+            patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()),
+            patch.object(artifacts_route, "ArtifactRepository", return_value=repo),
         ):
             with pytest.raises(HTTPException) as ei:
                 await download_artifact("art-d", format="pdf", current_user=_USER)
@@ -176,8 +194,9 @@ class TestDeleteArtifact:
     async def test_delete_owner_scoped(self):
         repo = MagicMock()
         repo.delete = AsyncMock(return_value=True)
-        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
-            artifacts_route, "ArtifactRepository", return_value=repo
+        with (
+            patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()),
+            patch.object(artifacts_route, "ArtifactRepository", return_value=repo),
         ):
             resp = await delete_artifact("art-x", current_user=_USER)
         repo.delete.assert_awaited_once_with("art-x", owner_id="user-355")
@@ -189,8 +208,9 @@ class TestDeleteArtifact:
 
         repo = MagicMock()
         repo.delete = AsyncMock(return_value=False)
-        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
-            artifacts_route, "ArtifactRepository", return_value=repo
+        with (
+            patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()),
+            patch.object(artifacts_route, "ArtifactRepository", return_value=repo),
         ):
             with pytest.raises(HTTPException) as ei:
                 await delete_artifact("nope", current_user=_USER)
@@ -215,13 +235,17 @@ class TestRenameArtifact1184:
     @pytest.mark.asyncio
     async def test_rename_owner_scoped_returns_new_filename(self):
         renamed = Artifact(
-            id="a1", content="x", source_type=ArtifactSourceType.GENERATED,
-            owner_id="user-355", payload={"title": "Q3 Planning Notes"},
+            id="a1",
+            content="x",
+            source_type=ArtifactSourceType.GENERATED,
+            owner_id="user-355",
+            payload={"title": "Q3 Planning Notes"},
         )
         repo = MagicMock()
         repo.update_title = AsyncMock(return_value=renamed)
-        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
-            artifacts_route, "ArtifactRepository", return_value=repo
+        with (
+            patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()),
+            patch.object(artifacts_route, "ArtifactRepository", return_value=repo),
         ):
             resp = await rename_artifact(
                 "a1", RenameArtifactRequest(title="Q3 Planning Notes"), current_user=_USER
@@ -238,9 +262,12 @@ class TestRenameArtifact1184:
         from fastapi import HTTPException
 
         repo = MagicMock()
-        repo.update_title = AsyncMock(return_value=None)  # repo returns None for cross-owner/missing
-        with patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()), patch.object(
-            artifacts_route, "ArtifactRepository", return_value=repo
+        repo.update_title = AsyncMock(
+            return_value=None
+        )  # repo returns None for cross-owner/missing
+        with (
+            patch.object(artifacts_route, "AsyncSessionFactory", _mock_session_ctx()),
+            patch.object(artifacts_route, "ArtifactRepository", return_value=repo),
         ):
             with pytest.raises(HTTPException) as ei:
                 await rename_artifact("a1", RenameArtifactRequest(title="X"), current_user=_USER)

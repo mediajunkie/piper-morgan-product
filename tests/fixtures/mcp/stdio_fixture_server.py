@@ -10,6 +10,7 @@ production transport path, not the in-memory transport used by the inc.1 tests.
 This is a genuine MCP server (unlike ``scripts/mcp_file_server.py``, which is a
 POC simulation). Run directly it speaks the MCP protocol on stdin/stdout.
 """
+
 from mcp.server.fastmcp import FastMCP
 
 server = FastMCP("piper-stdio-fixture")

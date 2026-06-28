@@ -295,9 +295,7 @@ class OutputFilter:
         if profile == Profile.INTERNAL:
             decision.action_taken = Action.PASSTHROUGH
             decision.filtered_content_hash = decision.original_content_hash
-            return FilterResult(
-                is_violation=False, filtered_content=content, decision=decision
-            )
+            return FilterResult(is_violation=False, filtered_content=content, decision=decision)
 
         # Tier 1 — PII + secrets, redact-in-place.
         filtered_content = content
@@ -318,9 +316,7 @@ class OutputFilter:
 
         # Tier 2 — BoundaryEnforcer category check.
         if self._boundary_enforcer is not None:
-            boundary_match = await apply_boundary_rules(
-                filtered_content, self._boundary_enforcer
-            )
+            boundary_match = await apply_boundary_rules(filtered_content, self._boundary_enforcer)
             if boundary_match.is_violation:
                 # Critical: drop the LLM output, substitute canned response.
                 decision.matched_rules.extend(boundary_match.matched_rules)

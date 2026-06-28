@@ -6,6 +6,7 @@ The "I don't have it" case is a first-class, must-be-handled variant — not a n
 caller can ``or {}`` away (D5 never-silently-empty). No return type carries credential material
 (D3) — enforced structurally by ``test_connector_contract_1232.test_no_return_type_exposes_credential_material``.
 """
+
 import dataclasses
 
 import pytest

@@ -46,7 +46,9 @@ class TestGet:
 
     @pytest.mark.asyncio
     async def test_get_returns_deserialized_value_on_hit(self, cache, fake_redis_client):
-        fake_redis_client.get.return_value = json.dumps({"calendar": {"next_meeting": "10am"}}).encode()
+        fake_redis_client.get.return_value = json.dumps(
+            {"calendar": {"next_meeting": "10am"}}
+        ).encode()
         result = await cache.get("context:calendar:user1")
         assert result == {"calendar": {"next_meeting": "10am"}}
 

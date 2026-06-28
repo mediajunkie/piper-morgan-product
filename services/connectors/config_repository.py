@@ -9,6 +9,7 @@ Read/write asymmetry is deliberate: reads degrade gracefully (a None/non-UUID ow
 None, m-40), but writes are STRICT (config must belong to the settled identity — `owner_id`
 is NOT NULL, so `upsert` with a None/non-UUID owner raises rather than silently no-op).
 """
+
 from __future__ import annotations
 
 from typing import Optional, Union

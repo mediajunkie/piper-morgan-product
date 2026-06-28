@@ -33,10 +33,10 @@ Machine is up (Docs 03:28 WATCH + 06:05 brief). **Recovered**: Lead/CIO/HOST/Web
 Morning A (hosted-OAuth) → BLOCKED (needs tester Copilot, PM non-starter) → **Arch RE-RULED to C** (self-host `github-mcp-server` + per-user OAuth via our GitHub App; no Copilot, ~zero cost). **D3 precised**: Piper holds no raw PAT, but scoped/revocable/refreshable OAuth grants ARE permitted (#358-encrypted, #1229-binding references the encrypted secret). C extends the existing Calendar-OAuth pattern (precedent, not new exposure). **Lead has GO** to wire inc.2 OAuth-callback on this model; transport unchanged. **End-state tracked**: GitHub-App installation-token auth (purest D3, no user token held) when the server supports it. decisions.log records C supersedes A. Off PM's plate.
 
 ### 🔄 IN RATIFICATION — inbox-proxy (tally)
-ACKs: **comms, docs, host, ppm, cio, arch, lead = 7/10.** Awaiting: **cxo, web, pa.** Backstop Mon 6/29.
+ACKs: **comms, docs, host, ppm, cio, arch, lead, cxo = 8/10.** Awaiting: **web, pa.** Backstop Mon 6/29. (CXO concurred + asked the FYI-on-other-agent-primary scope Q → answered: drop PM cc, PM via omnibus/Ship; escalate-via-needs-decision if PM must act. Worked-example precedent for the pilot.)
 
-### ▶ Ship #049 workstream — COLLECTING
-Reports received: **comms, host, cio, arch, ppm = 5/6.** Awaiting: **cxo only.** Tue 6/30 last-call → synthesize → Wed 7/1.
+### ▶ Ship #049 workstream — ALL 6 IN ✅ → SYNTHESIZE
+Reports complete: **comms, host, cio, arch, ppm, cxo = 6/6.** **Next: synthesize the Ship #049 narrative** (read all 6 §0-format reports + primary logs Jun 19–25; canonical sources for facts). Tue 6/30 window → Wed 7/1 publish. Can begin synthesis now (all inputs in).
 
 ### 🟡 Cron stall ROOT-CAUSED (Arch→PM 13:50) — PM-actionable
 Not a cron problem: the scheduler is **in-process; macOS suspends the backgrounded Claude process → cron freezes** (mode-1b). No cron-config fix. **PM levers NOW**: (1) **disable App Nap for the Claude app** (Finder → Claude → Get Info → "Prevent App Nap") — small toggle, may keep it ticking; (2) **always-on foregrounded Mac Mini** = the real fix. Structural cure (off-machine resume path) = CIO's lane, in progress (CIO+Arch concur on cure shapes; watchdog-gains-resume = smallest change). Watchdog nudge is the current safety net.

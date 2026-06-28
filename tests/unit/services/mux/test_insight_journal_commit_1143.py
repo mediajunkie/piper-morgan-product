@@ -29,8 +29,9 @@ async def test_add_commits_the_session():
     session.commit = AsyncMock()
     repo = MagicMock()
     repo.add = AsyncMock()
-    with patch.object(InsightJournal, "_session_scope", return_value=_session_cm(session)), patch.object(
-        InsightJournal, "_new_repo", return_value=repo
+    with (
+        patch.object(InsightJournal, "_session_scope", return_value=_session_cm(session)),
+        patch.object(InsightJournal, "_new_repo", return_value=repo),
     ):
         await journal.add(MagicMock())
     repo.add.assert_awaited_once()
@@ -44,8 +45,9 @@ async def test_mark_surfaced_commits_the_session():
     session.commit = AsyncMock()
     repo = MagicMock()
     repo.mark_surfaced = AsyncMock(return_value=MagicMock())
-    with patch.object(InsightJournal, "_session_scope", return_value=_session_cm(session)), patch.object(
-        InsightJournal, "_new_repo", return_value=repo
+    with (
+        patch.object(InsightJournal, "_session_scope", return_value=_session_cm(session)),
+        patch.object(InsightJournal, "_new_repo", return_value=repo),
     ):
         await journal.mark_surfaced("insight-1", "ok")
     repo.mark_surfaced.assert_awaited_once()

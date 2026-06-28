@@ -249,12 +249,8 @@ class TestSaveGitHubPreferences:
         )
 
         save_db = AsyncMock()
-        with patch(
-            "web.api.routes.settings_integrations._save_github_prefs_db", save_db
-        ):
-            result = await save_github_preferences(
-                preferences=preferences, current_user=mock_user
-            )
+        with patch("web.api.routes.settings_integrations._save_github_prefs_db", save_db):
+            result = await save_github_preferences(preferences=preferences, current_user=mock_user)
 
         save_db.assert_awaited_once_with(
             "test-user-123",
@@ -291,8 +287,6 @@ class TestSaveGitHubPreferences:
             new=AsyncMock(side_effect=RuntimeError("DB down")),
         ):
             with pytest.raises(HTTPException) as exc_info:
-                await save_github_preferences(
-                    preferences=preferences, current_user=mock_user
-                )
+                await save_github_preferences(preferences=preferences, current_user=mock_user)
 
         assert exc_info.value.status_code == 500

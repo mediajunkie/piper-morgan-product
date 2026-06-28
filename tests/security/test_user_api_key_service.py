@@ -33,13 +33,17 @@ def test_users(request):
     test_name = request.node.name
     timestamp = str(int(time.time() * 1000000))[-8:]  # Last 8 digits for uniqueness
     user_a = User(
-        id=str(uuid4()),  # #262: users.id is UUID — string ids fail the column type (pre-existing fixture bug)
+        id=str(
+            uuid4()
+        ),  # #262: users.id is UUID — string ids fail the column type (pre-existing fixture bug)
         username=f"{test_name}_a_{timestamp}",
         email=f"user_a_{timestamp}@example.com",
         is_active=True,
     )
     user_b = User(
-        id=str(uuid4()),  # #262: users.id is UUID — string ids fail the column type (pre-existing fixture bug)
+        id=str(
+            uuid4()
+        ),  # #262: users.id is UUID — string ids fail the column type (pre-existing fixture bug)
         username=f"{test_name}_b_{timestamp}",
         email=f"user_b_{timestamp}@example.com",
         is_active=True,

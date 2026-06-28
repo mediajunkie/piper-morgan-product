@@ -98,8 +98,10 @@ class APIKeyValidator:
             # weak pattern or known test key, returning confidence>=0.9),
             # leak_safe still gates as before.
             leak_check_performed = leak_result.confidence > 0.0
-            overall_valid = format_valid and strength_acceptable and (
-                leak_safe if leak_check_performed else True
+            overall_valid = (
+                format_valid
+                and strength_acceptable
+                and (leak_safe if leak_check_performed else True)
             )
 
             # 5. Determine security level

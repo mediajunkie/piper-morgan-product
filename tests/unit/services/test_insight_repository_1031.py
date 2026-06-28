@@ -255,9 +255,7 @@ async def test_get_unsurfaced_excludes_deleted(session):
     await repo.soft_delete(deleted.id, "alpha")
     await session.commit()
 
-    results = await repo.get_unsurfaced(
-        user_id="alpha", trust_stage=4, min_confidence=0.5
-    )
+    results = await repo.get_unsurfaced(user_id="alpha", trust_stage=4, min_confidence=0.5)
     assert {i.id for i in results} == {keeper.id}
 
 

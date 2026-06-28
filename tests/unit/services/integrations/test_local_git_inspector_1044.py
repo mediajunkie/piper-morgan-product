@@ -38,9 +38,9 @@ def test_inspector_error_state_for_non_git_path() -> None:
         # tmp dir is not a git repo
         inspector = LocalGitInspector(repo_path=tmp)
         status = inspector.get_status()
-        assert status.error is not None, (
-            "Non-git path must surface an error in the status, not raise"
-        )
+        assert (
+            status.error is not None
+        ), "Non-git path must surface an error in the status, not raise"
         # When error is set, observation fields are None
         assert status.current_branch is None
         assert status.is_clean is None
@@ -107,9 +107,9 @@ def test_show_branches_does_not_route_to_local_git() -> None:
     for msg in ["show branches", "list branches", "active branches"]:
         intent = PreClassifier.pre_classify(msg)
         action = intent.action if intent else None
-        assert action != "local_git_status_query", (
-            f"Local-git patterns are too greedy: captured {msg!r} (→ {action})"
-        )
+        assert (
+            action != "local_git_status_query"
+        ), f"Local-git patterns are too greedy: captured {msg!r} (→ {action})"
 
 
 # Dispatch ---------------------------------------------------------------
@@ -120,9 +120,9 @@ def test_handler_exists_at_dispatch_level() -> None:
     from services.intent.intent_service import IntentService
 
     # The method must exist on the class
-    assert hasattr(IntentService, "_handle_local_git_status_query"), (
-        "_handle_local_git_status_query must be defined on IntentService"
-    )
+    assert hasattr(
+        IntentService, "_handle_local_git_status_query"
+    ), "_handle_local_git_status_query must be defined on IntentService"
 
 
 def test_dispatch_table_routes_local_git_action() -> None:
@@ -138,9 +138,7 @@ def test_dispatch_table_routes_local_git_action() -> None:
     from pathlib import Path
 
     src = Path("services/intent_service/workflow_entries.py").read_text()
-    assert "local_git_status_query" in src, (
-        "Dispatch table must include local_git_status_query"
-    )
-    assert "_handle_local_git_status_query" in src, (
-        "Dispatch table must call _handle_local_git_status_query"
-    )
+    assert "local_git_status_query" in src, "Dispatch table must include local_git_status_query"
+    assert (
+        "_handle_local_git_status_query" in src
+    ), "Dispatch table must call _handle_local_git_status_query"

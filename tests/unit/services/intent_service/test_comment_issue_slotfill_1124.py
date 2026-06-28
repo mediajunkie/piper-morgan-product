@@ -42,13 +42,16 @@ class TestCommentIssueSlotFilling1124:
     @pytest.mark.asyncio
     async def test_extracted_slots_drive_add_comment(self, intent_service):
         router = _mock_router()
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=router,
-        ), patch(
-            "services.slot_filling.slot_extractor.extract_slots",
-            new_callable=AsyncMock,
-            return_value={"issue_number": "42", "comment_text": "the build is green"},
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=router,
+            ),
+            patch(
+                "services.slot_filling.slot_extractor.extract_slots",
+                new_callable=AsyncMock,
+                return_value={"issue_number": "42", "comment_text": "the build is green"},
+            ),
         ):
             result = await intent_service._handle_comment_issue_query(_intent(), "wf")
 
@@ -61,13 +64,16 @@ class TestCommentIssueSlotFilling1124:
     async def test_issue_number_parsed_from_hash_entity_string(self, intent_service):
         """The ENTITY slot may arrive as '#123' or 'issue 123' — the handler pulls digits."""
         router = _mock_router()
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=router,
-        ), patch(
-            "services.slot_filling.slot_extractor.extract_slots",
-            new_callable=AsyncMock,
-            return_value={"issue_number": "#123", "comment_text": "looks good"},
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=router,
+            ),
+            patch(
+                "services.slot_filling.slot_extractor.extract_slots",
+                new_callable=AsyncMock,
+                return_value={"issue_number": "#123", "comment_text": "looks good"},
+            ),
         ):
             await intent_service._handle_comment_issue_query(_intent(), "wf")
         router.add_comment.assert_awaited_once_with(123, "looks good")
@@ -75,13 +81,16 @@ class TestCommentIssueSlotFilling1124:
     @pytest.mark.asyncio
     async def test_missing_issue_number_asks_for_clarification(self, intent_service):
         router = _mock_router()
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=router,
-        ), patch(
-            "services.slot_filling.slot_extractor.extract_slots",
-            new_callable=AsyncMock,
-            return_value={"issue_number": None, "comment_text": "great work"},
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=router,
+            ),
+            patch(
+                "services.slot_filling.slot_extractor.extract_slots",
+                new_callable=AsyncMock,
+                return_value={"issue_number": None, "comment_text": "great work"},
+            ),
         ):
             result = await intent_service._handle_comment_issue_query(_intent(), "wf")
 
@@ -92,13 +101,16 @@ class TestCommentIssueSlotFilling1124:
     @pytest.mark.asyncio
     async def test_missing_comment_text_asks_for_clarification(self, intent_service):
         router = _mock_router()
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=router,
-        ), patch(
-            "services.slot_filling.slot_extractor.extract_slots",
-            new_callable=AsyncMock,
-            return_value={"issue_number": "42", "comment_text": None},
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=router,
+            ),
+            patch(
+                "services.slot_filling.slot_extractor.extract_slots",
+                new_callable=AsyncMock,
+                return_value={"issue_number": "42", "comment_text": None},
+            ),
         ):
             result = await intent_service._handle_comment_issue_query(_intent(), "wf")
 

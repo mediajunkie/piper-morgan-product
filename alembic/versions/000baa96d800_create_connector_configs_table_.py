@@ -13,6 +13,7 @@ across other tables (standup/token_blacklist/uploaded_files/user_api_keys/users 
 a couple of dropped columns, etc.). That drift is **intentionally excluded** here — this
 migration is connector_configs-only. The drift is filed separately as discovered tech-debt.
 """
+
 from typing import Sequence, Union
 
 import sqlalchemy as sa
@@ -46,9 +47,7 @@ def upgrade() -> None:
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True),
         sa.ForeignKeyConstraint(["owner_id"], ["users.id"]),
         sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint(
-            "owner_id", "connector", name="uq_connector_config_owner_connector"
-        ),
+        sa.UniqueConstraint("owner_id", "connector", name="uq_connector_config_owner_connector"),
     )
     op.create_index(
         op.f("ix_connector_configs_owner_id"), "connector_configs", ["owner_id"], unique=False

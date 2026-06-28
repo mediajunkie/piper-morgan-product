@@ -739,7 +739,9 @@ async def download_bulk(
     if not isinstance(items, list) or not items:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="items list required")
     if len(items) > 50:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Max 50 items per bulk download")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Max 50 items per bulk download"
+        )
 
     if not db._initialized:
         await db.initialize()
@@ -872,7 +874,9 @@ async def set_file_tags(file_id: str, request: Request, body: dict):
             payload["tags"] = tags
             row.payload = payload
         else:
-            result = await session.execute(select(UploadedFileDB).where(UploadedFileDB.id == file_id))
+            result = await session.execute(
+                select(UploadedFileDB).where(UploadedFileDB.id == file_id)
+            )
             row = result.scalar_one_or_none()
             if not row:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")

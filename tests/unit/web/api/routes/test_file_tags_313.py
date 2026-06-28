@@ -43,8 +43,10 @@ class TestNormalizeTags:
 async def test_sets_tags_on_owned_file():
     row = SimpleNamespace(id="f1", owner_id="u1", file_metadata={})
     factory, session = _ctx(row)
-    with patch.object(files_route, "db", SimpleNamespace(_initialized=True, initialize=AsyncMock())), \
-         patch.object(files_route, "AsyncSessionFactory", factory):
+    with (
+        patch.object(files_route, "db", SimpleNamespace(_initialized=True, initialize=AsyncMock())),
+        patch.object(files_route, "AsyncSessionFactory", factory),
+    ):
         resp = await set_file_tags("f1", _req(), {"tags": ["Research", "q3"], "kind": "file"})
     assert resp["tags"] == ["research", "q3"]
     assert row.file_metadata["tags"] == ["research", "q3"]
@@ -54,10 +56,13 @@ async def test_sets_tags_on_owned_file():
 @pytest.mark.asyncio
 async def test_foreign_file_403():
     from fastapi import HTTPException
+
     row = SimpleNamespace(id="f1", owner_id="someone-else", file_metadata={})
     factory, _ = _ctx(row)
-    with patch.object(files_route, "db", SimpleNamespace(_initialized=True, initialize=AsyncMock())), \
-         patch.object(files_route, "AsyncSessionFactory", factory):
+    with (
+        patch.object(files_route, "db", SimpleNamespace(_initialized=True, initialize=AsyncMock())),
+        patch.object(files_route, "AsyncSessionFactory", factory),
+    ):
         with pytest.raises(HTTPException) as ei:
             await set_file_tags("f1", _req(), {"tags": ["x"], "kind": "file"})
     assert ei.value.status_code == 403
@@ -67,8 +72,10 @@ async def test_foreign_file_403():
 async def test_sets_tags_on_owned_artifact_payload():
     row = SimpleNamespace(id="a1", owner_id="u1", payload={"title": "T"})
     factory, session = _ctx(row)
-    with patch.object(files_route, "db", SimpleNamespace(_initialized=True, initialize=AsyncMock())), \
-         patch.object(files_route, "AsyncSessionFactory", factory):
+    with (
+        patch.object(files_route, "db", SimpleNamespace(_initialized=True, initialize=AsyncMock())),
+        patch.object(files_route, "AsyncSessionFactory", factory),
+    ):
         resp = await set_file_tags("a1", _req(), {"tags": ["draft"], "kind": "artifact"})
     assert resp["tags"] == ["draft"]
     assert row.payload == {"title": "T", "tags": ["draft"]}

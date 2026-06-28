@@ -77,7 +77,8 @@ class TestAuthEndpoints:
 
             # Attempt login
             response = await async_client.post(
-                "/api/v1/auth/login", data={"username": "login_test_user", "password": test_password}
+                "/api/v1/auth/login",
+                data={"username": "login_test_user", "password": test_password},
             )
 
             # Verify response
@@ -109,7 +110,8 @@ class TestAuthEndpoints:
         - No token returned
         """
         response = await async_client.post(
-            "/api/v1/auth/login", data={"username": "nonexistent_user_12345", "password": "any_password"}
+            "/api/v1/auth/login",
+            data={"username": "nonexistent_user_12345", "password": "any_password"},
         )
 
         assert response.status_code == 401, "Non-existent user should return 401"
@@ -282,7 +284,9 @@ class TestAuthEndpoints:
         # Test /auth/me endpoint (requires authentication)
         response = client.get("/api/v1/auth/me")
 
-        assert response.status_code == 401, "/api/v1/auth/me should require authentication (401, not 404)"
+        assert (
+            response.status_code == 401
+        ), "/api/v1/auth/me should require authentication (401, not 404)"
 
         error = response.json()
         assert "detail" in error
@@ -347,7 +351,9 @@ class TestAuthEndpoints:
 
         # Step 2: Use token in Authorization: Bearer header
         # Step 3: Call GET /auth/me with that header
-        response = await async_client.get("/api/v1/auth/me", headers={"Authorization": f"Bearer {token}"})
+        response = await async_client.get(
+            "/api/v1/auth/me", headers={"Authorization": f"Bearer {token}"}
+        )
 
         # Step 4: Verify authentication works
         assert response.status_code == 200, f"Bearer auth should work: {response.text}"
@@ -405,7 +411,9 @@ class TestAuthEndpoints:
         - Empty password rejected
         - Returns 401 or 422
         """
-        response = await async_client.post("/api/v1/auth/login", data={"username": "", "password": ""})
+        response = await async_client.post(
+            "/api/v1/auth/login", data={"username": "", "password": ""}
+        )
 
         # Should be error (either validation or auth failure)
         assert response.status_code in [401, 422], "Empty credentials should be rejected"
@@ -501,7 +509,9 @@ async def async_client(db_session):
     db.get_session = mock_get_session
 
     try:
-        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
+        async with httpx.AsyncClient(
+            transport=httpx.ASGITransport(app=app), base_url="http://test"
+        ) as client:
             yield client
     finally:
         # Restore original get_session

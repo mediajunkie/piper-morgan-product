@@ -5,6 +5,7 @@ validate=False (it's an OAuth token, not a vendor API key). The underlying
 UserAPIKeyService is mocked (DI) — this is the wiring/convention contract, not the
 encryption (which #358 already tests).
 """
+
 from unittest.mock import AsyncMock
 
 import pytest

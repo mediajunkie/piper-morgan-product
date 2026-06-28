@@ -26,7 +26,9 @@ class BaseValidationTest:
     (inherited), not here — see #1204.
     """
 
-    async def validate_category(self, category: str, interface: str, intent_service) -> Dict[str, Any]:
+    async def validate_category(
+        self, category: str, interface: str, intent_service
+    ) -> Dict[str, Any]:
         """Validate a category through a specific interface. Returns results."""
         example_query = CATEGORY_EXAMPLES[category]
 

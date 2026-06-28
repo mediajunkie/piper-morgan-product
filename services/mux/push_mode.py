@@ -466,9 +466,7 @@ async def maybe_push(
 # =============================================================================
 
 
-def format_push_for_chat(
-    floor_response: str, payload: FramedPushPayload
-) -> str:
+def format_push_for_chat(floor_response: str, payload: FramedPushPayload) -> str:
     """In-chat renderer for FramedPushPayload (MVP only).
 
     Appends the framed insight to the floor's response with a separator

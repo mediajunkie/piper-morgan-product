@@ -9,6 +9,7 @@ OAuth grants permitted, encrypted-at-rest, binding = pointer).
 ``validate=False`` on store: the grant is an OAuth token forwarded to the self-hosted
 ``github-mcp-server``, not a provider API key to validate against a vendor endpoint.
 """
+
 from __future__ import annotations
 
 from typing import Optional
@@ -37,10 +38,6 @@ class ConnectorGrantStore:
             session, user_id, _provider(connector), access_token, validate=False
         )
 
-    async def get(
-        self, session: AsyncSession, user_id: str, connector: str
-    ) -> Optional[str]:
+    async def get(self, session: AsyncSession, user_id: str, connector: str) -> Optional[str]:
         """Return the user's stored OAuth grant for ``connector``, or ``None``."""
-        return await self._service.retrieve_user_key(
-            session, user_id, _provider(connector)
-        )
+        return await self._service.retrieve_user_key(session, user_id, _provider(connector))

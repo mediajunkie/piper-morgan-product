@@ -69,6 +69,7 @@ class CrossDialectUUID(TypeDecorator):
             return uuid.UUID(value)
         return value
 
+
 import services.domain.models as domain
 from services.mux.lifecycle import LifecycleState
 from services.shared_types import (
@@ -1301,9 +1302,7 @@ class ArtifactDB(Base):
                 if hasattr(artifact.source_type, "value")
                 else str(artifact.source_type)
             ),
-            lifecycle_state=(
-                artifact.lifecycle_state.value if artifact.lifecycle_state else None
-            ),
+            lifecycle_state=(artifact.lifecycle_state.value if artifact.lifecycle_state else None),
             source_conversation_id=artifact.source_conversation_id,
             payload=_payload_json_safe(artifact.payload or {}),
             created_at=artifact.created_at,
@@ -1340,10 +1339,10 @@ class ConversationDB(Base):
     # #1180: the ::jsonb server_default is Postgres-only DDL that SQLite can't
     # parse, so the empty-list default is expressed Python-side (mirrors InsightDB).
     # Production's existing DB server_default is untouched; new rows still get [].
-    topics = Column(
-        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list
+    topics = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list)
+    preview = Column(
+        EncryptedString(context="conversations.preview"), nullable=False, server_default=text("''")
     )
-    preview = Column(EncryptedString(context="conversations.preview"), nullable=False, server_default=text("''"))
     is_private = Column(Boolean, nullable=False, server_default=text("false"))
     turn_count = Column(Integer, nullable=False, server_default=text("0"))
 
@@ -1403,13 +1402,15 @@ class ConversationTurnDB(Base):
     id = Column(String, primary_key=True)
     conversation_id = Column(String, nullable=False)
     turn_number = Column(Integer, nullable=False, default=0)
-    user_message = Column(EncryptedString(context="conversation_turns.user_message"), nullable=False, default="")
-    assistant_response = Column(EncryptedString(context="conversation_turns.assistant_response"), nullable=False, default="")
+    user_message = Column(
+        EncryptedString(context="conversation_turns.user_message"), nullable=False, default=""
+    )
+    assistant_response = Column(
+        EncryptedString(context="conversation_turns.assistant_response"), nullable=False, default=""
+    )
     intent = Column(String, nullable=True)
     # #1180: JSONB on Postgres (production), JSON on SQLite (in-memory unit tests).
-    entities = Column(
-        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=[]
-    )
+    entities = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=[])
     references = Column(
         postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default={}
     )
@@ -2819,9 +2820,7 @@ class StandupConversationDB(Base, TimestampMixin):
     # Standup conversations are short-lived (<30 turns typical) so a
     # nested-JSONB shape avoids the overhead of a separate turns table while
     # preserving the existing ConversationTurn.to_dict() shape.
-    turns = Column(
-        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list
-    )
+    turns = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list)
 
     # Context from integrations (e.g., {"github_activity": [...], "calendar_events": [...]})
     context = Column(
@@ -2867,9 +2866,7 @@ class StandupConversationDB(Base, TimestampMixin):
             session_id=conv.session_id,
             user_id=conv.user_id,
             state=conv.state.value if conv.state else None,
-            previous_state=(
-                conv.previous_state.value if conv.previous_state else None
-            ),
+            previous_state=(conv.previous_state.value if conv.previous_state else None),
             preferences=conv.preferences or {},
             current_standup=conv.current_standup,
             standup_versions=conv.standup_versions or [],
@@ -2921,9 +2918,7 @@ class StandupConversationDB(Base, TimestampMixin):
                         else datetime.now()
                     ),
                     completed_at=(
-                        datetime.fromisoformat(t["completed_at"])
-                        if t.get("completed_at")
-                        else None
+                        datetime.fromisoformat(t["completed_at"]) if t.get("completed_at") else None
                     ),
                 )
             )
@@ -2934,18 +2929,14 @@ class StandupConversationDB(Base, TimestampMixin):
             user_id=self.user_id or "",
             state=StandupConversationState(self.state),
             previous_state=(
-                StandupConversationState(self.previous_state)
-                if self.previous_state
-                else None
+                StandupConversationState(self.previous_state) if self.previous_state else None
             ),
             preferences=dict(self.preferences or {}),
             current_standup=self.current_standup,
             standup_versions=list(self.standup_versions or []),
             turns=turn_objs,
             context=dict(self.context or {}),
-            partial_capture=StandupPartialCapture.from_dict(
-                self.partial_capture or {}
-            ),
+            partial_capture=StandupPartialCapture.from_dict(self.partial_capture or {}),
             created_at=self.created_at or datetime.now(),
             updated_at=self.updated_at or datetime.now(),
             completed_at=self.completed_at,

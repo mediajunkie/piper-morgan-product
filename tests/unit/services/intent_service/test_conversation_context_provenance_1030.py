@@ -59,15 +59,13 @@ class TestTurnProvenanceSidecar:
             ctx._prune_old_turns()
 
         assert len(ctx.turns) == 10, "Turns must be pruned to max_turns"
-        assert len(ctx.turn_provenance) == 10, (
-            "Provenance must be pruned to match turns count"
-        )
+        assert len(ctx.turn_provenance) == 10, "Provenance must be pruned to match turns count"
         # The provenance keys must all be in the remaining turns
         remaining_ids = {t.id for t in ctx.turns}
         provenance_keys = set(ctx.turn_provenance.keys())
-        assert provenance_keys == remaining_ids, (
-            "Provenance keys must match remaining turn ids exactly"
-        )
+        assert (
+            provenance_keys == remaining_ids
+        ), "Provenance keys must match remaining turn ids exactly"
 
     def test_prune_drops_provenance_when_turn_pruned_by_age(self):
         """Mark all turns as stale (>30 min old); assert provenance fully cleared."""

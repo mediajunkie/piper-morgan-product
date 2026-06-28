@@ -71,6 +71,4 @@ class TestCalendarOfferStateConstants:
 
     def test_offer_states_set_matches_design(self):
         # Per gameplan + #790 Q4 disposition.
-        assert CALENDAR_OFFER_STATES == frozenset(
-            {"offered", "declined", "deferred", "accepted"}
-        )
+        assert CALENDAR_OFFER_STATES == frozenset({"offered", "declined", "deferred", "accepted"})

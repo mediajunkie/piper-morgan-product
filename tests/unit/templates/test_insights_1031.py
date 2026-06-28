@@ -65,9 +65,7 @@ class TestCustomEventHandlers:
             ("insights-reset", "/api/v1/insights"),
         ],
     )
-    def test_event_listener_present(
-        self, insights_html: str, event_name: str, expected_url: str
-    ):
+    def test_event_listener_present(self, insights_html: str, event_name: str, expected_url: str):
         """Each custom event has a `window.addEventListener('<event>', ...)`
         and the listener body references the corresponding endpoint."""
         listener_marker = f"addEventListener('{event_name}'"
@@ -127,15 +125,13 @@ class TestTopicTabsVisible:
         tabs = soup.find_all("button", class_="insights-topic-tab")
         rendered_topics = {tab.get("data-topic") for tab in tabs}
         for visible in ["work-patterns", "projects", "preferences", "relationships", "scheduling"]:
-            assert visible in rendered_topics, (
-                f"Topic '{visible}' should be visible post-#1037"
-            )
+            assert visible in rendered_topics, f"Topic '{visible}' should be visible post-#1037"
 
     def test_withheld_comment_removed(self, insights_html: str):
         """Post-#1037: the 'Withheld until #1037' marker is gone."""
-        assert "Withheld until #1037" not in insights_html, (
-            "Withheld-comment marker should be removed; #1037 has shipped"
-        )
+        assert (
+            "Withheld until #1037" not in insights_html
+        ), "Withheld-comment marker should be removed; #1037 has shipped"
 
 
 # =============================================================================
@@ -163,6 +159,6 @@ class TestVocabularyHygiene:
             "i detected",
         ]
         for word in forbidden:
-            assert word not in visible, (
-                f"Surveillance vocabulary '{word}' appears in user-visible text"
-            )
+            assert (
+                word not in visible
+            ), f"Surveillance vocabulary '{word}' appears in user-visible text"

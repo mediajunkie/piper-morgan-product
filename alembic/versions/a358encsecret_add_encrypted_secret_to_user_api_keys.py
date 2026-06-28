@@ -12,6 +12,7 @@ Nullable so legacy / pre-migration / local-dev rows (keychain-only) keep working
 
 Idempotent (safe to re-run against an already-migrated DB): add only if absent.
 """
+
 from typing import Sequence, Union
 
 import sqlalchemy as sa
@@ -29,9 +30,7 @@ def upgrade() -> None:
     insp = sa.inspect(op.get_bind())
     cols = [c["name"] for c in insp.get_columns("user_api_keys")]
     if "encrypted_secret" not in cols:
-        op.add_column(
-            "user_api_keys", sa.Column("encrypted_secret", sa.Text(), nullable=True)
-        )
+        op.add_column("user_api_keys", sa.Column("encrypted_secret", sa.Text(), nullable=True))
 
 
 def downgrade() -> None:

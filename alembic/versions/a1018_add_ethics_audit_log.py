@@ -66,27 +66,15 @@ def upgrade() -> None:
     )
 
     # Per-column indexes (matches Column(..., index=True) declarations).
-    op.create_index(
-        "ix_ethics_audit_log_event_type", "ethics_audit_log", ["event_type"]
-    )
-    op.create_index(
-        "ix_ethics_audit_log_timestamp", "ethics_audit_log", ["timestamp"]
-    )
-    op.create_index(
-        "ix_ethics_audit_log_session_id", "ethics_audit_log", ["session_id"]
-    )
-    op.create_index(
-        "ix_ethics_audit_log_user_id", "ethics_audit_log", ["user_id"]
-    )
+    op.create_index("ix_ethics_audit_log_event_type", "ethics_audit_log", ["event_type"])
+    op.create_index("ix_ethics_audit_log_timestamp", "ethics_audit_log", ["timestamp"])
+    op.create_index("ix_ethics_audit_log_session_id", "ethics_audit_log", ["session_id"])
+    op.create_index("ix_ethics_audit_log_user_id", "ethics_audit_log", ["user_id"])
 
     # Composite indexes matching actual query patterns from
     # audit_transparency.py (per Phase 1 design doc).
-    op.create_index(
-        "idx_ethics_audit_user_time", "ethics_audit_log", ["user_id", "timestamp"]
-    )
-    op.create_index(
-        "idx_ethics_audit_event_time", "ethics_audit_log", ["event_type", "timestamp"]
-    )
+    op.create_index("idx_ethics_audit_user_time", "ethics_audit_log", ["user_id", "timestamp"])
+    op.create_index("idx_ethics_audit_event_time", "ethics_audit_log", ["event_type", "timestamp"])
 
 
 def downgrade() -> None:

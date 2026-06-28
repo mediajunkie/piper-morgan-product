@@ -21,6 +21,7 @@ Usage:
   STALE_DAYS=21 scripts/check-staleness.py   # tune the staleness threshold (default 21)
 Exit code is always 0 (warn-only). Prints a report; the EXPIRED/STALE list is your task queue.
 """
+
 import os, sys, glob, datetime, re
 
 REPO = os.environ.get("PIPER_REPO", os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -35,12 +36,13 @@ TODAY = datetime.date.today()
 #     "stale" forever). A blanket glob would flood false NO-DATES, so it's DEFERRED to per-doc curation
 #     (Docs-owned: pick the operating-runbook subset + give them freshness frontmatter). Tracked follow-up.
 DEFAULT_GLOBS = [
-    "docs/briefing/*.md",                        # role briefings + ROSTER + ROLE-PORTFOLIO (original set)
-    "docs/agent-protocols/*.md",                 # how-we-work protocols (debugging, git, issue-closure, e2e, …)
+    "docs/briefing/*.md",  # role briefings + ROSTER + ROLE-PORTFOLIO (original set)
+    "docs/agent-protocols/*.md",  # how-we-work protocols (debugging, git, issue-closure, e2e, …)
     "docs/briefs/cross-pollination/current.md",  # the LIVE cross-project brief (NOT the dated archive)
 ]
 
 DATE_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})")
+
 
 def frontmatter(path):
     """Return the YAML-ish frontmatter dict (first --- ... --- block), or {} if none."""
@@ -61,6 +63,7 @@ def frontmatter(path):
             fm[k.strip()] = v.strip().strip('"').strip("'")
     return fm
 
+
 def parse_date(val):
     if not val:
         return None
@@ -72,12 +75,14 @@ def parse_date(val):
     except ValueError:
         return None
 
+
 def collect(globs):
     paths = []
     for g in globs:
         g = g if os.path.isabs(g) else os.path.join(REPO, g)
         paths.extend(glob.glob(g))
     return sorted(set(paths))
+
 
 def main():
     globs = sys.argv[1:] or DEFAULT_GLOBS
@@ -120,8 +125,11 @@ def main():
     print(f"\n✓ OK: {len(ok)}   |   #972 adoption: {has_lv}/{len(paths)} carry last_verified")
     actionable = len(expired) + len(stale) + len(nodates)
     if actionable:
-        print(f"\n→ {actionable} doc(s) need attention. Per #972: capture a fix-task for each (warn, not block).")
+        print(
+            f"\n→ {actionable} doc(s) need attention. Per #972: capture a fix-task for each (warn, not block)."
+        )
     return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())

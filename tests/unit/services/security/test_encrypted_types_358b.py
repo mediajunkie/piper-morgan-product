@@ -4,6 +4,7 @@ Unit-level: exercises process_bind_param / process_result_value directly (no DB)
 All tests inject the encryptor so behavior is deterministic regardless of the test
 environment's ENCRYPTION_MASTER_KEY.
 """
+
 import os
 
 import pytest

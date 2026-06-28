@@ -137,9 +137,7 @@ def branch_diff_summary(
     max_blob_size: int = DEFAULT_MAX_BLOB_SIZE,
 ) -> Tuple[int, int, int, List[str]]:
     """Return (files_changed, insertions, deletions, blob_warnings)."""
-    rc, out, _ = run_git(
-        "diff", "--numstat", f"origin/main...origin/{branch}"
-    )
+    rc, out, _ = run_git("diff", "--numstat", f"origin/main...origin/{branch}")
     if rc != 0:
         return 0, 0, 0, []
 
@@ -172,8 +170,11 @@ def branch_diff_summary(
 
     # Check for large blobs via ls-tree on the branch tip vs main
     rc2, blob_out, _ = run_git(
-        "diff", "--diff-filter=AM", "--no-renames",
-        "--raw", f"origin/main...origin/{branch}",
+        "diff",
+        "--diff-filter=AM",
+        "--no-renames",
+        "--raw",
+        f"origin/main...origin/{branch}",
     )
     if rc2 == 0:
         for line in blob_out.splitlines():
@@ -188,9 +189,7 @@ def branch_diff_summary(
                 try:
                     size = int(size_out.strip())
                     if size > max_blob_size:
-                        warnings.append(
-                            f"large blob: {path} ({size:,} bytes)"
-                        )
+                        warnings.append(f"large blob: {path} ({size:,} bytes)")
                 except ValueError:
                     continue
 
@@ -204,9 +203,7 @@ def branch_has_conflicts(branch: str) -> bool:
     if rc != 0 or not base_out.strip():
         return True  # safer to escalate on uncertainty
     base = base_out.strip()
-    rc2, mt_out, _ = run_git(
-        "merge-tree", base, "origin/main", f"origin/{branch}"
-    )
+    rc2, mt_out, _ = run_git("merge-tree", base, "origin/main", f"origin/{branch}")
     if rc2 != 0:
         return True
     # merge-tree prints conflict markers (<<<<<<<) when conflicts exist.
@@ -304,8 +301,11 @@ def perform_merge(branch: str) -> Tuple[bool, str]:
     (success, output_message). Caller has already verified the branch
     is safe to merge."""
     rc, out, err = run_git(
-        "merge", "--no-ff", f"origin/{branch}",
-        "-m", f"merge: {branch} — auto-merged via merge-keeper-sweep"
+        "merge",
+        "--no-ff",
+        f"origin/{branch}",
+        "-m",
+        f"merge: {branch} — auto-merged via merge-keeper-sweep",
     )
     if rc != 0:
         return False, f"merge failed: {err.strip() or out.strip()}"
@@ -349,10 +349,7 @@ def render_log(actions: List[BranchAction], applied: bool) -> str:
         lines.append(f"- **Reason**: {a.reason}")
         lines.append(f"- **Last commit**: {a.last_commit_age_hours:.1f}h ago")
         if a.files_changed:
-            lines.append(
-                f"- **Diff**: {a.files_changed} files, "
-                f"+{a.insertions} -{a.deletions}"
-            )
+            lines.append(f"- **Diff**: {a.files_changed} files, " f"+{a.insertions} -{a.deletions}")
         if a.conflicts:
             lines.append("- **Conflict**: merge-tree reports conflicts against main")
         if a.blob_warnings:

@@ -54,20 +54,20 @@ def test_hardcoded_fake_projects_removed(intent_service_source: str) -> None:
     # Practical check: the literal string "Piper Morgan Platform"
     # cannot appear in the function as a dict value anymore.
     # We allow it in comments/docstrings — but check for the dict pattern.
-    assert '"Piper Morgan Platform"' not in block, (
-        "Hardcoded fake project name must be removed from returned data"
-    )
-    assert '"Issue Tracker Integration"' not in block, (
-        "Hardcoded fake project name must be removed from returned data"
-    )
-    assert '"Documentation Updates"' not in block, (
-        "Hardcoded fake project name must be removed from returned data"
-    )
+    assert (
+        '"Piper Morgan Platform"' not in block
+    ), "Hardcoded fake project name must be removed from returned data"
+    assert (
+        '"Issue Tracker Integration"' not in block
+    ), "Hardcoded fake project name must be removed from returned data"
+    assert (
+        '"Documentation Updates"' not in block
+    ), "Hardcoded fake project name must be removed from returned data"
 
     # The TODO must be gone
-    assert "TODO: Replace hardcoded projects" not in block, (
-        "TODO comment must be removed (work is done)"
-    )
+    assert (
+        "TODO: Replace hardcoded projects" not in block
+    ), "TODO comment must be removed (work is done)"
 
 
 # Real query path wired in -----------------------------------------------
@@ -81,12 +81,8 @@ def test_portfolio_service_imported_in_handler(intent_service_source: str) -> No
     block = src[start:end]
 
     assert "PortfolioService" in block, "Must import or reference PortfolioService"
-    assert "list_active_projects" in block, (
-        "Must call list_active_projects (the real query path)"
-    )
-    assert "user_id=user_id" in block, (
-        "Must pass user_id to scope the query to the asking user"
-    )
+    assert "list_active_projects" in block, "Must call list_active_projects (the real query path)"
+    assert "user_id=user_id" in block, "Must pass user_id to scope the query to the asking user"
 
 
 def test_handler_accepts_user_id_param(intent_service_source: str) -> None:
@@ -111,10 +107,7 @@ def test_caller_passes_user_id(workflow_entries_source: str) -> None:
     src = workflow_entries_source
     # The projects-query entry point must be registered with pass_user_id=True so
     # the factory threads user_id (rather than dropping it back to fake data).
-    assert (
-        '_make_query_dispatch_entry_point("_handle_projects_query", pass_user_id=True)'
-        in src
-    ), (
+    assert '_make_query_dispatch_entry_point("_handle_projects_query", pass_user_id=True)' in src, (
         "projects query entry point must be registered with pass_user_id=True "
         "so user_id is threaded through to _handle_projects_query "
         "(was previously just (intent, workflow_id))"
@@ -122,12 +115,8 @@ def test_caller_passes_user_id(workflow_entries_source: str) -> None:
     # And the pass_user_id branch of the factory must actually append user_id and
     # call the handler with it.
     assert (
-        "getattr(intent_service, handler_attr)(*args)" in src
-        and "args.append(user_id)" in src
-    ), (
-        "the dispatch factory must thread user_id into the handler call "
-        "when pass_user_id is set"
-    )
+        "getattr(intent_service, handler_attr)(*args)" in src and "args.append(user_id)" in src
+    ), "the dispatch factory must thread user_id into the handler call " "when pass_user_id is set"
 
 
 # Safe-fallback paths -----------------------------------------------------
@@ -141,12 +130,12 @@ def test_no_user_id_returns_honest_message(intent_service_source: str) -> None:
     end = src.find("async def ", start + 1)
     block = src[start:end]
     # Must check for None/falsy user_id
-    assert "if not user_id" in block, (
-        "Must guard against missing user_id and return honest fallback"
-    )
-    assert "need to know who you are" in block, (
-        "Fallback copy must honestly say the system can't query without user_id"
-    )
+    assert (
+        "if not user_id" in block
+    ), "Must guard against missing user_id and return honest fallback"
+    assert (
+        "need to know who you are" in block
+    ), "Fallback copy must honestly say the system can't query without user_id"
 
 
 def test_db_error_returns_structured_fallback(intent_service_source: str) -> None:
@@ -157,9 +146,9 @@ def test_db_error_returns_structured_fallback(intent_service_source: str) -> Non
     end = src.find("async def ", start + 1)
     block = src[start:end]
     assert "except Exception" in block, "Must catch DB errors"
-    assert "trouble loading your projects" in block, (
-        "Fallback must surface a user-friendly message on DB error"
-    )
+    assert (
+        "trouble loading your projects" in block
+    ), "Fallback must surface a user-friendly message on DB error"
 
 
 # Documentation discipline ------------------------------------------------
@@ -187,6 +176,4 @@ def test_pattern_073_body_records_instance_8():
     ).read_text()
     # We're not requiring full instance text, just that the issue number is
     # cited so the fix is traceable.
-    assert "#1102" in body, (
-        "Pattern-073 body must reference #1102 as an instance/resolution"
-    )
+    assert "#1102" in body, "Pattern-073 body must reference #1102 as an instance/resolution"

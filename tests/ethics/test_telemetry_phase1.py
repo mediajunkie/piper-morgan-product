@@ -149,9 +149,7 @@ async def test_ambiguous_path_emits_all_phase1_fields():
         )
     )
     enforcer, rec = _make_enforcer(stub)
-    await enforcer.enforce_boundaries(
-        message="ambiguous shaped request", session_id="t_amb"
-    )
+    await enforcer.enforce_boundaries(message="ambiguous shaped request", session_id="t_amb")
     payload = rec.decision_points[0]
     missing = REQUIRED_PHASE1_FIELDS - set(payload.keys())
     assert not missing
@@ -191,9 +189,7 @@ async def test_pass_path_emits_all_phase1_fields():
 @pytest.mark.asyncio
 async def test_disabled_semantic_emits_all_phase1_fields():
     enforcer, rec = _make_enforcer()  # enable_semantic=False
-    await enforcer.enforce_boundaries(
-        message="benign business message", session_id="t_disabled"
-    )
+    await enforcer.enforce_boundaries(message="benign business message", session_id="t_disabled")
     payload = rec.decision_points[0]
     missing = REQUIRED_PHASE1_FIELDS - set(payload.keys())
     assert not missing

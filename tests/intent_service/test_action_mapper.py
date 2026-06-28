@@ -102,9 +102,9 @@ class TestActionMapper:
 
         # All entries must be string→string (the registry contract).
         for k, v in mappings.items():
-            assert isinstance(k, str) and isinstance(v, str), (
-                f"Non-string mapping entry: {k!r} → {v!r}"
-            )
+            assert isinstance(k, str) and isinstance(
+                v, str
+            ), f"Non-string mapping entry: {k!r} → {v!r}"
 
         # Core EXECUTION mappings that every release must carry. New
         # mappings are normal feature work and should not break this test;
@@ -117,18 +117,16 @@ class TestActionMapper:
             "complete_todo": "complete_todo",
         }
         for source, expected_canonical in core_mappings.items():
-            assert source in mappings, (
-                f"Core EXECUTION mapping {source!r} missing from registry"
-            )
+            assert source in mappings, f"Core EXECUTION mapping {source!r} missing from registry"
             assert mappings[source] == expected_canonical, (
                 f"Core mapping {source!r} drifted: "
                 f"expected {expected_canonical!r}, got {mappings[source]!r}"
             )
 
         # Sanity lower-bound (we'd never drop below the core set).
-        assert len(mappings) >= len(core_mappings), (
-            f"Mapping registry shrunk below core: {len(mappings)} < {len(core_mappings)}"
-        )
+        assert len(mappings) >= len(
+            core_mappings
+        ), f"Mapping registry shrunk below core: {len(mappings)} < {len(core_mappings)}"
 
     def test_get_mapping_coverage(self):
         """Test mapping coverage calculation"""

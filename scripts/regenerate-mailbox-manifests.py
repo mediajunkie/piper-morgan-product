@@ -107,11 +107,7 @@ def parse_frontmatter(path: Path) -> dict:
         if match:
             key, value = match.group(1), match.group(2).strip()
             # Strip surrounding quotes if present.
-            if (
-                len(value) >= 2
-                and value[0] == value[-1]
-                and value[0] in ("'", '"')
-            ):
+            if len(value) >= 2 and value[0] == value[-1] and value[0] in ("'", '"'):
                 value = value[1:-1]
             fields[key] = value
 
@@ -263,9 +259,7 @@ def render_manifest(
         for e in entries:
             # Escape any pipe chars in summary to avoid breaking the table.
             safe_summary = e.summary.replace("|", "\\|")
-            lines.append(
-                f"| {e.delivered} | {e.sender} | {e.filename} | {safe_summary} |"
-            )
+            lines.append(f"| {e.delivered} | {e.sender} | {e.filename} | {safe_summary} |")
     lines.append("")  # blank line after table
     if curated_tail:
         lines.append(curated_tail.rstrip("\n"))
@@ -377,15 +371,10 @@ def main() -> int:
 
     total_written = 0
     for role in roles:
-        total_written += regenerate_for_role(
-            role, dry_run=args.dry_run, quiet=args.quiet
-        )
+        total_written += regenerate_for_role(role, dry_run=args.dry_run, quiet=args.quiet)
 
     action = "would update" if args.dry_run else "updated"
-    print(
-        f"[regen-mailbox] {action} {total_written} manifest(s) "
-        f"across {len(roles)} role(s)"
-    )
+    print(f"[regen-mailbox] {action} {total_written} manifest(s) " f"across {len(roles)} role(s)")
     return 0
 
 

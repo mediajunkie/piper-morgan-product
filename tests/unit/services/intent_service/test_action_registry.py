@@ -247,9 +247,7 @@ class TestVerbSourceToLegacyActionShim:
         """Most verbs map to one action regardless of source_type."""
         assert verb_sourcetype_to_legacy_action(Verb.CLOSE) == "close_issue_query"
         # any source_type falls back to the (verb, None) entry
-        assert (
-            verb_sourcetype_to_legacy_action(Verb.CLOSE, "issue") == "close_issue_query"
-        )
+        assert verb_sourcetype_to_legacy_action(Verb.CLOSE, "issue") == "close_issue_query"
 
     def test_mutation_verb_outputs_are_consistent_with_action_to_verb(self):
         """Registry-backed shim outputs round-trip through get_verb (Phase-2 consistency)."""

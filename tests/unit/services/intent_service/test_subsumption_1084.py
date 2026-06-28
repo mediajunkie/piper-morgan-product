@@ -74,11 +74,9 @@ class TestQ25SubsumptionFix:
         """Multi-intent cases without GitHub-specific QUERY actions still route
         through normal subsumption (no false-positive STATUS-drop)."""
         # Greeting + status should still multi-intent
-        result = PreClassifier.detect_multiple_intents(
-            "Hi Piper! What's my current project?"
-        )
+        result = PreClassifier.detect_multiple_intents("Hi Piper! What's my current project?")
         # Should be multi-intent (greeting + status) — subsumption doesn't fire
         categories = {i.category.value.upper() for i in result.intents}
-        assert "STATUS" in categories or "CONVERSATION" in categories, (
-            f"Expected STATUS or CONVERSATION; got {categories}"
-        )
+        assert (
+            "STATUS" in categories or "CONVERSATION" in categories
+        ), f"Expected STATUS or CONVERSATION; got {categories}"

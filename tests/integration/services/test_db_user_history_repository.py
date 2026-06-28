@@ -146,9 +146,7 @@ async def test_search_matches_title_preview_topics(db_session, user_id):
     by_preview = await _make_conversation(
         db_session, user_id, title="Other", preview="thoughts on the roadmap"
     )
-    by_topic = await _make_conversation(
-        db_session, user_id, title="Third", topics=["roadmap"]
-    )
+    by_topic = await _make_conversation(db_session, user_id, title="Third", topics=["roadmap"])
     no_match = await _make_conversation(db_session, user_id, title="Unrelated")
 
     repo = DBUserHistoryRepository(db_session)
@@ -195,9 +193,7 @@ async def test_set_private_round_trip(db_session, user_id):
     await db_session.refresh(conv)
     assert conv.is_private is True
 
-    unflipped = await repo.set_private(
-        user_id=user_id, conversation_id=conv.id, is_private=False
-    )
+    unflipped = await repo.set_private(user_id=user_id, conversation_id=conv.id, is_private=False)
     assert unflipped is True
     await db_session.refresh(conv)
     assert conv.is_private is False

@@ -156,9 +156,7 @@ class TestRunnerNoDivergence:
     @pytest.mark.asyncio
     async def test_violation_probe_clean_pass(self):
         h1 = probe_by_id("h-1")
-        detector = _StubDetector(
-            canned_responses={h1.input: _harassment_violation_output()}
-        )
+        detector = _StubDetector(canned_responses={h1.input: _harassment_violation_output()})
         result = await run_probe(h1, detector)
         assert result.passed
         assert result.diff_types == []
@@ -189,9 +187,7 @@ class TestRunnerDiffTypes:
     @pytest.mark.asyncio
     async def test_unexpected_violation_when_fp_probe_classified_violation(self):
         fp1 = probe_by_id("fp-1")
-        detector = _StubDetector(
-            canned_responses={fp1.input: _harassment_violation_output()}
-        )
+        detector = _StubDetector(canned_responses={fp1.input: _harassment_violation_output()})
         result = await run_probe(fp1, detector)
         assert "unexpected_violation" in result.diff_types
 
@@ -239,18 +235,14 @@ class TestRunnerDiffTypes:
         # Hint quotes phrase from h-1 input verbatim
         leaky_output = _harassment_violation_output(
             redirect_hint=(
-                "When you want to make him look incompetent, pause and "
-                "consider escalation"
+                "When you want to make him look incompetent, pause and " "consider escalation"
             )
         )
         detector = _StubDetector(canned_responses={h1.input: leaky_output})
         result = await run_probe(h1, detector)
         assert "hint_shape_violation" in result.diff_types
         assert result.has_hint_safety_violation
-        assert any(
-            f.rule == "input_substring_leak"
-            for f in result.hint_assertion_failures
-        )
+        assert any(f.rule == "input_substring_leak" for f in result.hint_assertion_failures)
 
     @pytest.mark.asyncio
     async def test_hint_shape_violation_legacy_pattern_word(self):
@@ -262,10 +254,7 @@ class TestRunnerDiffTypes:
         detector = _StubDetector(canned_responses={h1.input: leaky_output})
         result = await run_probe(h1, detector)
         assert "hint_shape_violation" in result.diff_types
-        assert any(
-            f.rule == "legacy_pattern_word"
-            for f in result.hint_assertion_failures
-        )
+        assert any(f.rule == "legacy_pattern_word" for f in result.hint_assertion_failures)
 
     @pytest.mark.asyncio
     async def test_dual_acceptance_alternative_match_passes(self):
@@ -324,17 +313,12 @@ class TestRunnerDiffTypes:
     async def test_hint_shape_violation_refusal_template(self):
         h1 = probe_by_id("h-1")
         leaky_output = _harassment_violation_output(
-            redirect_hint=(
-                "I cannot help with that approach; consider escalation"
-            )
+            redirect_hint=("I cannot help with that approach; consider escalation")
         )
         detector = _StubDetector(canned_responses={h1.input: leaky_output})
         result = await run_probe(h1, detector)
         assert "hint_shape_violation" in result.diff_types
-        assert any(
-            f.rule == "refusal_template"
-            for f in result.hint_assertion_failures
-        )
+        assert any(f.rule == "refusal_template" for f in result.hint_assertion_failures)
 
 
 # ----- Runner: batch + summary -----
@@ -405,8 +389,7 @@ class TestRunnerFullSet:
                 violation_detected=True,
                 category=probe.expected_category,
                 confidence=(
-                    (probe.expected_confidence_range[0]
-                     + probe.expected_confidence_range[1]) / 2
+                    (probe.expected_confidence_range[0] + probe.expected_confidence_range[1]) / 2
                 ),
                 reasoning="stub matches expectation",
                 redirect_hint=safe_hint,
@@ -416,8 +399,7 @@ class TestRunnerFullSet:
                 violation_detected=False,
                 category="none",
                 confidence=(
-                    (probe.expected_confidence_range[0]
-                     + probe.expected_confidence_range[1]) / 2
+                    (probe.expected_confidence_range[0] + probe.expected_confidence_range[1]) / 2
                 ),
                 reasoning="stub says legitimate",
                 redirect_hint=None,
@@ -427,6 +409,4 @@ class TestRunnerFullSet:
         assert len(results) == 20
         # Permissive stub should produce zero divergences
         summary = summarize_results(results)
-        assert summary["passed"] == 20, (
-            f"Unexpected divergences: {summary['diff_type_counts']}"
-        )
+        assert summary["passed"] == 20, f"Unexpected divergences: {summary['diff_type_counts']}"

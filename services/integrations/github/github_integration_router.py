@@ -295,8 +295,7 @@ class GitHubIntegrationRouter:
             resolved = await self._resolve_default_repo()
             if resolved is None:
                 raise RuntimeError(
-                    f"Cannot update GitHub issue #{issue_number}: no repo "
-                    "could be resolved."
+                    f"Cannot update GitHub issue #{issue_number}: no repo " "could be resolved."
                 )
             owner, repo_name = resolved
         return await self._get_integration("update_issue").update_issue(
@@ -403,9 +402,7 @@ class GitHubIntegrationRouter:
         """
         return await self._get_integration("get_issue_by_url").get_issue_by_url(url)
 
-    async def _resolve_default_repo(
-        self, project: Optional[str] = None
-    ) -> Optional[tuple]:
+    async def _resolve_default_repo(self, project: Optional[str] = None) -> Optional[tuple]:
         """Issue #1042: resolve (owner, name) for general queries.
 
         Decision tree per ``repo_resolver``: project-scoped → user default →
@@ -427,9 +424,7 @@ class GitHubIntegrationRouter:
                     user_uuid = None
 
             try:
-                resolved = await resolve_repo(
-                    user_id=user_uuid, project_id=project
-                )
+                resolved = await resolve_repo(user_id=user_uuid, project_id=project)
                 return (resolved.owner, resolved.name)
             except UnresolvedRepoError:
                 logger.warning(

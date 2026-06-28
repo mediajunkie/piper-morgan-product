@@ -94,9 +94,7 @@ class EthicsAuditCleanupJob:
                             error=result.get("error"),
                         )
                 except Exception as e:
-                    logger.error(
-                        "Unexpected error in cleanup loop", error=str(e), exc_info=True
-                    )
+                    logger.error("Unexpected error in cleanup loop", error=str(e), exc_info=True)
 
                 # Sleep until next run, in 5-minute chunks for responsive
                 # shutdown via the _running flag (the cancel-and-await in

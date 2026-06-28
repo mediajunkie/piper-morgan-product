@@ -68,8 +68,12 @@ async def test_workitem_source_maps_issue_as_observed():
 async def test_workitem_lifecycle_from_state_and_labels():
     """Lifecycle is derived from the issue's REAL state + labels (honest provenance),
     not fabricated. open / in-review / blocked / closed."""
-    blocked = (await WorkItemEntitySource(_FakeWorkItems([_issue(labels=["blocked"])])).fetch("u"))[0]
-    review = (await WorkItemEntitySource(_FakeWorkItems([_issue(labels=["in review"])])).fetch("u"))[0]
+    blocked = (await WorkItemEntitySource(_FakeWorkItems([_issue(labels=["blocked"])])).fetch("u"))[
+        0
+    ]
+    review = (
+        await WorkItemEntitySource(_FakeWorkItems([_issue(labels=["in review"])])).fetch("u")
+    )[0]
     closed = (await WorkItemEntitySource(_FakeWorkItems([_issue(state="closed")])).fetch("u"))[0]
     plain = (await WorkItemEntitySource(_FakeWorkItems([_issue()])).fetch("u"))[0]
     assert blocked.lifecycle_state == "blocked"
@@ -82,7 +86,9 @@ async def test_workitem_url_fallback_untitled_and_empty():
     # ref falls back to html_url when the uri key is absent (shape varies by adapter path)
     e = (
         await WorkItemEntitySource(
-            _FakeWorkItems([{"number": 5, "title": None, "state": "open", "html_url": "https://x/5"}])
+            _FakeWorkItems(
+                [{"number": 5, "title": None, "state": "open", "html_url": "https://x/5"}]
+            )
         ).fetch("u")
     )[0]
     assert e.title == "(untitled work item)"
@@ -100,7 +106,14 @@ async def test_workitem_composes_attention_first():
     older_iso = (datetime.now(timezone.utc) - timedelta(days=3)).isoformat()
     conv = ConversationEntitySource(
         _FakeHistory(
-            [{"conversation_id": "c1", "title": "chat", "last_activity": older_iso, "turn_count": 2}]
+            [
+                {
+                    "conversation_id": "c1",
+                    "title": "chat",
+                    "last_activity": older_iso,
+                    "turn_count": 2,
+                }
+            ]
         )
     )
     work = WorkItemEntitySource(_FakeWorkItems([_issue(updated_at=now_iso, title="hot issue")]))

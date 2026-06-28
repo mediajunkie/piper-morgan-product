@@ -38,9 +38,7 @@ def upgrade() -> None:
             "partial_capture",
             postgresql.JSONB(),
             nullable=False,
-            server_default=sa.text(
-                """'{"yesterday": [], "today": [], "blockers": []}'::jsonb"""
-            ),
+            server_default=sa.text("""'{"yesterday": [], "today": [], "blockers": []}'::jsonb"""),
         ),
     )
 

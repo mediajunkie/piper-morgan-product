@@ -32,13 +32,27 @@ import csv
 import sys
 from pathlib import Path
 
-CALENDAR = Path('docs/internal/planning/comms/editorial-calendar.csv')
+CALENDAR = Path("docs/internal/planning/comms/editorial-calendar.csv")
 EXPECTED_FIELDS = 18
 EXPECTED_HEADER = [
-    'title', 'theme', 'status', 'workDate', 'endWorkDate', 'pubDate',
-    'mediumURL', 'liPubDate', 'linkedinURL', 'canonicalSite',
-    'blogURL', 'blogPath', 'cartoon', 'chatDate', 'draftPath',
-    'notes', 'altText', 'caption',
+    "title",
+    "theme",
+    "status",
+    "workDate",
+    "endWorkDate",
+    "pubDate",
+    "mediumURL",
+    "liPubDate",
+    "linkedinURL",
+    "canonicalSite",
+    "blogURL",
+    "blogPath",
+    "cartoon",
+    "chatDate",
+    "draftPath",
+    "notes",
+    "altText",
+    "caption",
 ]
 
 
@@ -66,7 +80,7 @@ def main() -> int:
                 continue
 
             if len(row) != EXPECTED_FIELDS:
-                title_preview = row[0][:60] if row else '<empty row>'
+                title_preview = row[0][:60] if row else "<empty row>"
                 errors.append(
                     f"Line {line_no}: {len(row)} fields (expected {EXPECTED_FIELDS}) "
                     f"— title={title_preview!r}"
@@ -79,9 +93,11 @@ def main() -> int:
         return 1
 
     data_rows = row_count - 1  # subtract header
-    print(f"✓ editorial-calendar.csv: {data_rows} data rows + 1 header, all {EXPECTED_FIELDS} fields, clean")
+    print(
+        f"✓ editorial-calendar.csv: {data_rows} data rows + 1 header, all {EXPECTED_FIELDS} fields, clean"
+    )
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

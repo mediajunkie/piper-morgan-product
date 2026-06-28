@@ -11,6 +11,7 @@ signature exactly (owner_id in, "owner/name" out) so P3 can swap callers without
 changes. Like the repository, this layer flushes but does NOT commit — the caller owns the
 transaction boundary (request handler / workflow), which P3 reconciles per-caller.
 """
+
 from __future__ import annotations
 
 from typing import Optional, Union

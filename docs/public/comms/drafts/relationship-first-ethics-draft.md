@@ -1,6 +1,6 @@
 # Relationship-First Ethics
 
-*November 30*
+*November 30, 2025*
 
 I'd been building an elaborate ethical architecture. A "board" of specialized agents - an ethicist, a devil's advocate, a boundary guardian - that would collectively establish ethical boundaries through multi-agent consensus. Checks and balances. Deliberation. Governance.
 
@@ -98,6 +98,6 @@ Build ethics from sustained relationship. It's simpler than what I was building.
 
 ---
 
-*Next on Building Piper Morgan: Upstream Coordination, Not Conflict Resolution - what coordination queues actually solve.*
+*Next on Building Piper Morgan: "From Briefing to Vision" — from reading sixty ADRs on day one to revising the project vision by day eight.*
 
 *When has simple advice collapsed elaborate plans? How do you distinguish governance-appropriate from relationship-appropriate problems? What role does sustained relationship play in your ethical development?*

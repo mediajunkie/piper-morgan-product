@@ -14,6 +14,7 @@ to this helper is a small follow-up — tracked, not done in #1149's scope.)
 Env resolution mirrors ``services/auth/jwt_service.py`` (#1087): ``PIPER_ENVIRONMENT``
 is canonical, ``ENVIRONMENT`` is the older fallback.
 """
+
 from __future__ import annotations
 
 import os
