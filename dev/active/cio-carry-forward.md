@@ -4,6 +4,11 @@
 
 **☀️ 6/27 Sat (13:41 resume after a mode-1b overnight stall)** — Cron `b1bb59a6` **SURVIVED** (mode-1b backgrounded, NOT Gap-C; armed, next 16:07 — re-engagement resolved it, no re-arm). PM-explicit done: logs caught up (6/26 DAY-CLOSED), **ADR-073 written + indexed** (destructive-git hard rule, PM-approved). Inbox drained (4: Arch datums-fold + ack, inbox-proxy ACK, cost-efficiency engaged, Calliope Iris-durable flag). **Friday shipped: freeze-check v0.4 + Iris runbook canonical + cohort-coverage kickoff.**
 
+### 📌 PM-collaborative — RESURFACE when PM's ready (PM asked me to remind, 6/27)
+- **Ted Nadeau email** — PM has new email from Ted Nadeau to share for **review + discussion**. (Note: a `mailboxes/ted-nadeau/` inbox unread exists — may or may not be the same; PM will share the content.)
+- **Saved articles/links** — PM has recent articles/links saved to **evaluate together**.
+- **HOST CronList** (the other open ask) — PM to paste HOST's `8ab6a203` entry (expr + prompt) to settle the fossil-cron question.
+
 ### Live / in-flight
 - **Ship #049 workstream review — DELIVERED 6/27** (`018568294` → Exec cc PA+PM; dev archive `9259f5243`). §0 portfolio-goals: 1 complete (migration retires), 3 advanced, 2 slipped (#972 + gbrain — flagged for re-slot in §6).
 - **Off-machine cure (a) — PM-APPROVED + LIVE 6/27** (`dafc4904f`, watchdog Belt 0; PM-approved via Exec `96d375c22`). Auto-foreground: on a stall the launchd watchdog `open -b com.anthropic.claude-code` (Launch Services — no TCC/no deadlock; NOT osascript, which hangs from-within) → un-suspends Claude Code → in-app cron resumes. Automates PM's manual resume. Test 9/9; **deployed + default-on** in the launchd-run copy; watchdog is a **LaunchAgent** (user GUI session → open-b reachable). Complete loop (auto-foreground + nudge backstop). **AWAITING FIRST-REAL-STALL VALIDATION** (the log shows `FOREGROUND:` → role-fresh = worked). `WATCHDOG_AUTO_FOREGROUND=0` disables. **Belt-0 = Mode 1b ONLY**; Mode 1a (session death) + machine-sleep → the **(b)/(c) off-machine question PM held** (approval scoped to $0 (a); b/c pending whether (a) proves out). Mac Mini sidesteps the whole class.
