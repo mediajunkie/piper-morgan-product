@@ -76,9 +76,7 @@ def extract_page_id(url: str) -> Optional[str]:
     return match.group(1).lower()
 
 
-async def unfurl_notion_urls(
-    text: Optional[str], notion_router: Any
-) -> List[Dict[str, Any]]:
+async def unfurl_notion_urls(text: Optional[str], notion_router: Any) -> List[Dict[str, Any]]:
     """Unfurl all Notion URLs in a message into title/preview metadata.
 
     Returns one dict per URL found. Each dict has:

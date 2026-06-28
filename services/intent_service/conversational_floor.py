@@ -524,8 +524,7 @@ class ConversationalFloor:
                         tags = i.get("topic_tags", []) or []
                         tag_str = f" [tags: {', '.join(tags[:4])}]" if tags else ""
                         lines.append(
-                            f'    • "{expr}" (conf={conf:.2f}, '
-                            f"observed {obs}x){tag_str}"
+                            f'    • "{expr}" (conf={conf:.2f}, ' f"observed {obs}x){tag_str}"
                         )
                 # Medium 0.5 ≤ conf < 0.75
                 med = ins.get("medium_confidence", [])
@@ -538,8 +537,7 @@ class ConversationalFloor:
                         tags = i.get("topic_tags", []) or []
                         tag_str = f" [tags: {', '.join(tags[:4])}]" if tags else ""
                         lines.append(
-                            f'    • "{expr}" (conf={conf:.2f}, '
-                            f"observed {obs}x){tag_str}"
+                            f'    • "{expr}" (conf={conf:.2f}, ' f"observed {obs}x){tag_str}"
                         )
                 # Low < 0.5
                 low = ins.get("low_confidence", [])
@@ -552,8 +550,7 @@ class ConversationalFloor:
                         tags = i.get("topic_tags", []) or []
                         tag_str = f" [tags: {', '.join(tags[:4])}]" if tags else ""
                         lines.append(
-                            f'    • "{expr}" (conf={conf:.2f}, '
-                            f"observed {obs}x){tag_str}"
+                            f'    • "{expr}" (conf={conf:.2f}, ' f"observed {obs}x){tag_str}"
                         )
                 lines.append(
                     "  - When surfacing these: present them sectioned by "
@@ -662,9 +659,7 @@ class ConversationalFloor:
             blocked = domain_context["blocked_items"]
             if isinstance(blocked, list) and blocked:
                 total = domain_context.get("blocked_count", len(blocked))
-                lines.append(
-                    f"- Blocked items ({total} open issues labeled status: blocked):"
-                )
+                lines.append(f"- Blocked items ({total} open issues labeled status: blocked):")
                 for b in blocked[:10]:
                     if isinstance(b, dict):
                         num = b.get("number", "?")
@@ -697,9 +692,7 @@ class ConversationalFloor:
             if isinstance(activity, list) and activity:
                 total = domain_context.get("recent_activity_count", len(activity))
                 window = domain_context.get("recent_activity_window_days", 7)
-                lines.append(
-                    f"- Recent GitHub activity ({total} events in last {window} days):"
-                )
+                lines.append(f"- Recent GitHub activity ({total} events in last {window} days):")
                 for a in activity:
                     if isinstance(a, dict):
                         num = a.get("number", "?")
@@ -707,9 +700,7 @@ class ConversationalFloor:
                         state = a.get("state", "?")
                         kind = "PR" if a.get("type") == "pr" else "issue"
                         updated = a.get("updated_at", "?")
-                        lines.append(
-                            f"    • #{num} {kind} ({state}, updated {updated}): {title}"
-                        )
+                        lines.append(f"    • #{num} {kind} ({state}, updated {updated}): {title}")
 
         # #1226 Phase 3 (honest degradation): no GitHub repo is configured — distinct
         # from "repo configured, zero open issues". Tell the user to set one rather than
@@ -729,9 +720,7 @@ class ConversationalFloor:
             hp = domain_context["high_priority_issues"]
             if isinstance(hp, list) and hp:
                 total = domain_context.get("open_issue_count", len(hp))
-                lines.append(
-                    f"- High-priority open issues ({total} open; top {len(hp)} shown):"
-                )
+                lines.append(f"- High-priority open issues ({total} open; top {len(hp)} shown):")
                 for it in hp:
                     if isinstance(it, dict):
                         num = it.get("number", "?")
@@ -936,9 +925,7 @@ class ConversationalFloor:
         self.llm_client = LLMClient()
         return self.llm_client
 
-    async def _maybe_append_push(
-        self, primary_message: str, ctx: FloorContext
-    ) -> str:
+    async def _maybe_append_push(self, primary_message: str, ctx: FloorContext) -> str:
         """Issue #1032 INSIGHT-PUSH: call maybe_push and append payload if eligible.
 
         Skips push for:

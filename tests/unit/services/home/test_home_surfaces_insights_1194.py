@@ -16,7 +16,10 @@ from services.shared_types import TrustStage
 
 def _ctx(stage):
     return HomeStateContext(
-        user_id=uuid4(), trust_stage=stage, timestamp=datetime.now(timezone.utc), time_of_day="morning"
+        user_id=uuid4(),
+        trust_stage=stage,
+        timestamp=datetime.now(timezone.utc),
+        time_of_day="morning",
     )
 
 
@@ -45,7 +48,9 @@ def _insight(_id, description, context_tags=None):
 class TestHomeSurfacesInsights:
     @pytest.mark.asyncio
     async def test_stage4_shows_recent_without_consuming(self):
-        journal = _mock_journal([_insight("i1", "the rail migration held"), _insight("i2", "tests stayed green")])
+        journal = _mock_journal(
+            [_insight("i1", "the rail migration held"), _insight("i2", "tests stayed green")]
+        )
         svc = HomeStateService(journal=journal)
         res = await svc.generate_home_state(_ctx(TrustStage.TRUSTED))
         assert len(res.surfaced_insights) == 2
@@ -78,8 +83,11 @@ class TestHomeSurfacesInsights:
         must never surface in the home 'Recently' module, AND must not crowd real
         reflections out of the top-N (we over-fetch then filter)."""
         insights = [
-            _insight(f"seed{i}", "Successfully ratified - this approach was validated",
-                     context_tags=["seed_demo_object", "dev_seed"])
+            _insight(
+                f"seed{i}",
+                "Successfully ratified - this approach was validated",
+                context_tags=["seed_demo_object", "dev_seed"],
+            )
             for i in range(28)
         ] + [
             _insight("real1", "the rail migration held", context_tags=["infra"]),

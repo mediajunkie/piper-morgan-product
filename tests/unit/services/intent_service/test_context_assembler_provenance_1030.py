@@ -91,9 +91,7 @@ class TestGatherContextResetsProvenance:
             "_gather_identity_context",
             AsyncMock(return_value={}),
         ):
-            await assembler.gather_context(
-                intent_category="IDENTITY", user_id="u-test"
-            )
+            await assembler.gather_context(intent_category="IDENTITY", user_id="u-test")
         # stale_key should be gone after the new gather
         assert "stale_key" not in assembler._last_provenance
 
@@ -106,9 +104,7 @@ class TestGatherContextResetsProvenance:
             "_gather_trust_context",
             AsyncMock(return_value={"trust_profile": {"stage": 2}}),
         ):
-            await assembler.gather_context(
-                intent_category="TRUST", user_id="u-test"
-            )
+            await assembler.gather_context(intent_category="TRUST", user_id="u-test")
         prov = assembler.get_last_provenance()
         assert "trust_profile" in prov
         assert prov["trust_profile"]["source"] == "UserTrustProfileRepository"
@@ -120,11 +116,7 @@ class TestGatherContextResetsProvenance:
         with patch.object(
             assembler,
             "_gather_insight_pull_context",
-            AsyncMock(
-                return_value={
-                    "insights": {"high_confidence": [], "is_empty": True}
-                }
-            ),
+            AsyncMock(return_value={"insights": {"high_confidence": [], "is_empty": True}}),
         ):
             await assembler.gather_context(
                 intent_category="MEMORY",
@@ -145,9 +137,7 @@ class TestGatherContextResetsProvenance:
             "_gather_trust_context",
             AsyncMock(return_value={"trust_profile": {"stage": 2}}),
         ):
-            context = await assembler.gather_context(
-                intent_category="TRUST", user_id="u-test"
-            )
+            context = await assembler.gather_context(intent_category="TRUST", user_id="u-test")
         assert "current_time" in context  # ALWAYS set
         prov = assembler.get_last_provenance()
         assert "current_time" not in prov  # but NOT in provenance

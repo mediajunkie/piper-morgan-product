@@ -191,6 +191,7 @@ class TestOrchestrationStandalone:
         assert metrics["performance_target_met"] is True
         assert "agent_utilization" in metrics
 
+
 def run_standalone_tests():
     """Run all standalone tests"""
     print("🧪 Running standalone orchestration tests...")

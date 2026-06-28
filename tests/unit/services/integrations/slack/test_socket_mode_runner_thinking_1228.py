@@ -5,6 +5,7 @@ tell normal LLM latency from a frozen connection, then updates it in place with
 the real reply (or an honest error). These tests pin that behavior at the
 ``_handle_event`` seam with a mocked Slack web client.
 """
+
 from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 

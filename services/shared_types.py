@@ -220,7 +220,9 @@ class StandupConversationState(Enum):
     """
 
     INITIATED = "initiated"  # User requested standup
-    GATHERING_PREFERENCES = "gathering_preferences"  # Asking refinement questions (legacy preference path)
+    GATHERING_PREFERENCES = (
+        "gathering_preferences"  # Asking refinement questions (legacy preference path)
+    )
     GATHERING_YESTERDAY = "gathering_yesterday"  # #900: Capturing yesterday's accomplishments
     GATHERING_TODAY = "gathering_today"  # #900: Capturing today's plan
     GATHERING_BLOCKERS = "gathering_blockers"  # #900: Capturing blockers

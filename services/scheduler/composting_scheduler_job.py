@@ -98,9 +98,7 @@ class CompostingSchedulerJob:
         the `_running` flag (post-#948 pattern).
         """
         if self._running:
-            logger.warning(
-                "CompostingSchedulerJob already running, ignoring start request"
-            )
+            logger.warning("CompostingSchedulerJob already running, ignoring start request")
             return
 
         self._running = True

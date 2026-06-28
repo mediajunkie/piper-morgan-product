@@ -8,6 +8,7 @@ FastMCP fixture. The concrete github-mcp-server tool mapping (#1230) is provisio
 gated (#1220 umbrella); a BOUND-but-unprovisioned binding therefore honestly degrades
 to UNREACHABLE — which is itself asserted here.
 """
+
 from __future__ import annotations
 
 import contextlib
@@ -135,7 +136,9 @@ class TestResolveOverRealTransport:
         await _seed(sm, "bound")
         adapter = GitHubMCPSpatialAdapter()
         _point_at_fixture(adapter, _fixture_server())
-        res = await adapter.resolve(_ALPHA, ResourceQuery(kind="default_repo", params={"owner": "acme"}))
+        res = await adapter.resolve(
+            _ALPHA, ResourceQuery(kind="default_repo", params={"owner": "acme"})
+        )
         assert isinstance(res, ResourceHandle)
         assert res.handle == "gh-handle:default_repo"
         assert res.kind == "default_repo"

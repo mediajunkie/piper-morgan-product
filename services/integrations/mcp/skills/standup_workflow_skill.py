@@ -32,16 +32,14 @@ def _summary_to_legacy_dict(summary) -> dict:
     with .display + .meta). The legacy "blockers" key maps to the Watch slot — callers
     that need the honest label already read from the formatted output which says "Watch".
     """
+
     def lines(items):
-        return [
-            f"{it.display}{(' — ' + it.meta) if it.meta else ''}"
-            for it in items
-        ]
+        return [f"{it.display}{(' — ' + it.meta) if it.meta else ''}" for it in items]
 
     return {
         "yesterday_accomplishments": lines(summary.yesterday),
         "today_priorities": lines(summary.today),
-        "blockers": lines(summary.watch),   # legacy key; Watch is the honest source
+        "blockers": lines(summary.watch),  # legacy key; Watch is the honest source
         "generated_at": datetime.now(timezone.utc).isoformat(),
     }
 
@@ -520,9 +518,7 @@ Created from standup workflow
         parsed_user_id = self._parse_user_id_for_prefs(user_id)
         if parsed_user_id is None:
             return None
-        channel = await self.workflow.preference_manager.get_slack_default_channel(
-            parsed_user_id
-        )
+        channel = await self.workflow.preference_manager.get_slack_default_channel(parsed_user_id)
         if not channel:
             return None
         return {"default_channel": channel}
@@ -542,9 +538,7 @@ Created from standup workflow
         parsed_user_id = self._parse_user_id_for_prefs(user_id)
         if parsed_user_id is None:
             return None
-        return await self.workflow.preference_manager.get_default_repo(
-            parsed_user_id
-        )
+        return await self.workflow.preference_manager.get_default_repo(parsed_user_id)
 
     async def _get_user_notion_database(self, user_id: str) -> Optional[str]:
         """Get configured Notion database for user (Issue #693).
@@ -567,9 +561,7 @@ Created from standup workflow
         parsed_user_id = self._parse_user_id_for_prefs(user_id)
         if parsed_user_id is None:
             return None
-        return await self.workflow.preference_manager.get_notion_database(
-            parsed_user_id
-        )
+        return await self.workflow.preference_manager.get_notion_database(parsed_user_id)
 
     @staticmethod
     def _parse_user_id_for_prefs(user_id: str) -> Optional[UUID]:

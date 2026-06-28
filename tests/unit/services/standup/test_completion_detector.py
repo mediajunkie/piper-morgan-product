@@ -26,9 +26,7 @@ def _empty_capture() -> StandupPartialCapture:
 
 
 def _capture_with_yesterday() -> StandupPartialCapture:
-    return StandupPartialCapture(
-        yesterday=[StandupItem(display="shipped #1052", source="user")]
-    )
+    return StandupPartialCapture(yesterday=[StandupItem(display="shipped #1052", source="user")])
 
 
 # ---------------------------------------------------------------------------
@@ -254,9 +252,7 @@ class TestSpecificityOrdering:
         assert result.reason == "explicit_done"
 
     def test_explicit_done_wins_over_structural(self):
-        capture = StandupPartialCapture(
-            yesterday=[StandupItem(display="x", source="user")]
-        )
+        capture = StandupPartialCapture(yesterday=[StandupItem(display="x", source="user")])
         result = detect_completion(
             user_message="done",
             capture=capture,

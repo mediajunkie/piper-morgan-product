@@ -87,9 +87,7 @@ class TestListIssuesViaMcp_DemoFallbackRemoved:
         ]
 
     @pytest.mark.asyncio
-    async def test_error_logged_at_error_level_on_dual_failure(
-        self, adapter, caplog
-    ):
+    async def test_error_logged_at_error_level_on_dual_failure(self, adapter, caplog):
         """ERROR-level log replaces the prior WARNING + fake data."""
         adapter.list_github_issues_direct.return_value = []
 
@@ -138,9 +136,7 @@ class TestExecuteListIssues_DemoFallbackRemoved:
         exception handler returns [] not 2 hardcoded fake issues."""
         client = _FakeClient(raises=True)
 
-        result = await consumer._execute_list_issues(
-            client, repo="some-repo"
-        )
+        result = await consumer._execute_list_issues(client, repo="some-repo")
 
         assert result == []
 
@@ -148,9 +144,7 @@ class TestExecuteListIssues_DemoFallbackRemoved:
     async def test_no_hardcoded_demo_titles_in_exception_response(self, consumer):
         client = _FakeClient(raises=True)
 
-        result = await consumer._execute_list_issues(
-            client, repo="some-repo"
-        )
+        result = await consumer._execute_list_issues(client, repo="some-repo")
 
         for entry in result:
             assert "MCP Integration Implementation" not in str(entry)

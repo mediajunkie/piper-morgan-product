@@ -101,7 +101,9 @@ class TestCreateNodePublicLevel:
     async def test_clean_content_saved_as_is(self):
         svc = _make_service(harassment_match=False, inappropriate_match=False)
         node = await svc.create_node(
-            name="customer", node_type=NodeType.CONCEPT, description="enterprise client",
+            name="customer",
+            node_type=NodeType.CONCEPT,
+            description="enterprise client",
             privacy_level=PrivacyLevel.PUBLIC,
         )
         assert node.name == "customer"
@@ -114,7 +116,9 @@ class TestCreateNodePublicLevel:
         important property: PUBLIC is for known-clean sources, not a backdoor."""
         svc = _make_service(harassment_match=True, inappropriate_match=True)
         node = await svc.create_node(
-            name="harass-trigger", node_type=NodeType.CONCEPT, description="bully",
+            name="harass-trigger",
+            node_type=NodeType.CONCEPT,
+            description="bully",
             privacy_level=PrivacyLevel.PUBLIC,
         )
         # Content preserved (no redaction)
@@ -137,7 +141,9 @@ class TestCreateNodeStandardLevel:
     async def test_clean_content_saved_as_is(self):
         svc = _make_service(harassment_match=False, inappropriate_match=False)
         node = await svc.create_node(
-            name="customer", node_type=NodeType.CONCEPT, description="enterprise client",
+            name="customer",
+            node_type=NodeType.CONCEPT,
+            description="enterprise client",
             privacy_level=PrivacyLevel.STANDARD,
         )
         assert node.name == "customer"
@@ -148,7 +154,9 @@ class TestCreateNodeStandardLevel:
     async def test_harassment_match_redacts_and_flags(self):
         svc = _make_service(harassment_match=True, inappropriate_match=False)
         node = await svc.create_node(
-            name="harass me", node_type=NodeType.CONCEPT, description="bully content",
+            name="harass me",
+            node_type=NodeType.CONCEPT,
+            description="bully content",
             privacy_level=PrivacyLevel.STANDARD,
         )
         # Content redacted
@@ -164,7 +172,9 @@ class TestCreateNodeStandardLevel:
     async def test_inappropriate_match_redacts_with_correct_reason(self):
         svc = _make_service(harassment_match=False, inappropriate_match=True)
         node = await svc.create_node(
-            name="bad", node_type=NodeType.CONCEPT, description="off content",
+            name="bad",
+            node_type=NodeType.CONCEPT,
+            description="off content",
             privacy_level=PrivacyLevel.STANDARD,
         )
         assert node.name == _FILTERED_MARKER
@@ -175,7 +185,9 @@ class TestCreateNodeStandardLevel:
         """When BOTH predicates match, harassment wins (HOST Q2 severity priority)."""
         svc = _make_service(harassment_match=True, inappropriate_match=True)
         node = await svc.create_node(
-            name="x", node_type=NodeType.CONCEPT, description="y",
+            name="x",
+            node_type=NodeType.CONCEPT,
+            description="y",
             privacy_level=PrivacyLevel.STANDARD,
         )
         assert node.metadata["filter_reason"] == "harassment_pattern_matched"
@@ -187,7 +199,9 @@ class TestCreateNodeStandardLevel:
         """Caller-supplied metadata keys survive the redaction merge."""
         svc = _make_service(harassment_match=True)
         node = await svc.create_node(
-            name="harass", node_type=NodeType.CONCEPT, description="bully",
+            name="harass",
+            node_type=NodeType.CONCEPT,
+            description="bully",
             metadata={"source": "test", "version": 3},
             privacy_level=PrivacyLevel.STANDARD,
         )
@@ -209,7 +223,9 @@ class TestCreateNodeStrictLevel:
     async def test_clean_content_saved_as_is(self):
         svc = _make_service(harassment_match=False, inappropriate_match=False)
         node = await svc.create_node(
-            name="customer", node_type=NodeType.CONCEPT, description="enterprise client",
+            name="customer",
+            node_type=NodeType.CONCEPT,
+            description="enterprise client",
             privacy_level=PrivacyLevel.STRICT,
         )
         assert node.name == "customer"
@@ -221,7 +237,9 @@ class TestCreateNodeStrictLevel:
         svc = _make_service(harassment_match=True, inappropriate_match=False)
         with pytest.raises(PrivacyFilterRejectedError) as exc_info:
             await svc.create_node(
-                name="harass", node_type=NodeType.CONCEPT, description="bully",
+                name="harass",
+                node_type=NodeType.CONCEPT,
+                description="bully",
                 privacy_level=PrivacyLevel.STRICT,
             )
         assert exc_info.value.filter_reason is FilterReason.HARASSMENT_PATTERN_MATCHED
@@ -233,7 +251,9 @@ class TestCreateNodeStrictLevel:
         svc = _make_service(harassment_match=False, inappropriate_match=True)
         with pytest.raises(PrivacyFilterRejectedError) as exc_info:
             await svc.create_node(
-                name="bad", node_type=NodeType.CONCEPT, description="off",
+                name="bad",
+                node_type=NodeType.CONCEPT,
+                description="off",
                 privacy_level=PrivacyLevel.STRICT,
             )
         assert exc_info.value.filter_reason is FilterReason.INAPPROPRIATE_CONTENT_MATCHED
@@ -254,7 +274,9 @@ class TestDefaultPrivacyLevel:
         not reject (STRICT) and not bypass (PUBLIC)."""
         svc = _make_service(harassment_match=True)
         node = await svc.create_node(
-            name="harass", node_type=NodeType.CONCEPT, description="bully",
+            name="harass",
+            node_type=NodeType.CONCEPT,
+            description="bully",
             # privacy_level intentionally omitted
         )
         assert node.name == _FILTERED_MARKER
@@ -539,9 +561,9 @@ class TestSearchNodesPrivacyLevel:
         """STRICT-exclusion stacks correctly with search_term — both filters apply."""
         svc = _make_service()
         nodes_in_repo = [
-            _make_clean_node("hello", "n1"),       # matches 'hello'
-            _make_filtered_node("n2"),              # FILTERED markers don't match 'hello'
-            _make_clean_node("world", "n3"),       # doesn't match 'hello'
+            _make_clean_node("hello", "n1"),  # matches 'hello'
+            _make_filtered_node("n2"),  # FILTERED markers don't match 'hello'
+            _make_clean_node("world", "n3"),  # doesn't match 'hello'
         ]
         svc.repo.get_nodes_by_type = AsyncMock(return_value=nodes_in_repo)
         result = await svc.search_nodes(
@@ -574,14 +596,14 @@ class TestAuditLogIntegration:
     wires this to the singleton; fail-graceful per Architect Q2."""
 
     @pytest.mark.asyncio
-    async def test_standard_filtered_write_logs_audit_decision(
-        self, _mock_audit_transparency
-    ):
+    async def test_standard_filtered_write_logs_audit_decision(self, _mock_audit_transparency):
         """STANDARD redaction path triggers an audit-log entry with
         action="filtered"."""
         svc = _make_service(harassment_match=True)
         await svc.create_node(
-            name="harass me", node_type=NodeType.CONCEPT, description="bully content",
+            name="harass me",
+            node_type=NodeType.CONCEPT,
+            description="bully content",
             privacy_level=PrivacyLevel.STANDARD,
         )
         _mock_audit_transparency.log_ethics_decision.assert_awaited_once()
@@ -594,15 +616,15 @@ class TestAuditLogIntegration:
         assert decision.audit_data["source"] == "kg_privacy_filter"
 
     @pytest.mark.asyncio
-    async def test_strict_rejected_write_logs_audit_decision(
-        self, _mock_audit_transparency
-    ):
+    async def test_strict_rejected_write_logs_audit_decision(self, _mock_audit_transparency):
         """STRICT rejection path triggers an audit-log entry with
         action="rejected" BEFORE the raise."""
         svc = _make_service(harassment_match=True)
         with pytest.raises(PrivacyFilterRejectedError):
             await svc.create_node(
-                name="harass", node_type=NodeType.CONCEPT, description="bully",
+                name="harass",
+                node_type=NodeType.CONCEPT,
+                description="bully",
                 privacy_level=PrivacyLevel.STRICT,
             )
         _mock_audit_transparency.log_ethics_decision.assert_awaited_once()
@@ -612,13 +634,13 @@ class TestAuditLogIntegration:
         assert decision.audit_data["filter_reason"] == "harassment_pattern_matched"
 
     @pytest.mark.asyncio
-    async def test_clean_write_does_not_log_audit(
-        self, _mock_audit_transparency
-    ):
+    async def test_clean_write_does_not_log_audit(self, _mock_audit_transparency):
         """Clean content (no filter event) → no audit-log call."""
         svc = _make_service(harassment_match=False, inappropriate_match=False)
         await svc.create_node(
-            name="customer", node_type=NodeType.CONCEPT, description="enterprise client",
+            name="customer",
+            node_type=NodeType.CONCEPT,
+            description="enterprise client",
             privacy_level=PrivacyLevel.STANDARD,
         )
         _mock_audit_transparency.log_ethics_decision.assert_not_called()
@@ -631,20 +653,22 @@ class TestAuditLogIntegration:
         no audit-log call (even if content would have matched)."""
         svc = _make_service(harassment_match=True, inappropriate_match=True)
         await svc.create_node(
-            name="harass-trigger", node_type=NodeType.CONCEPT, description="bully",
+            name="harass-trigger",
+            node_type=NodeType.CONCEPT,
+            description="bully",
             privacy_level=PrivacyLevel.PUBLIC,
         )
         _mock_audit_transparency.log_ethics_decision.assert_not_called()
 
     @pytest.mark.asyncio
-    async def test_audit_log_entry_carries_session_id(
-        self, _mock_audit_transparency
-    ):
+    async def test_audit_log_entry_carries_session_id(self, _mock_audit_transparency):
         """`session_id` from the create_node call surfaces in the audit
         decision for cross-event correlation."""
         svc = _make_service(harassment_match=True)
         await svc.create_node(
-            name="harass", node_type=NodeType.CONCEPT, description="bully",
+            name="harass",
+            node_type=NodeType.CONCEPT,
+            description="bully",
             session_id="sess-42",
             privacy_level=PrivacyLevel.STANDARD,
         )
@@ -652,9 +676,7 @@ class TestAuditLogIntegration:
         assert decision.session_id == "sess-42"
 
     @pytest.mark.asyncio
-    async def test_audit_log_called_before_repo_save_for_standard(
-        self, _mock_audit_transparency
-    ):
+    async def test_audit_log_called_before_repo_save_for_standard(self, _mock_audit_transparency):
         """STANDARD path order: redact → log audit decision → save.
 
         The audit log captures the DECISION (action + reason + node_type),
@@ -670,22 +692,24 @@ class TestAuditLogIntegration:
             side_effect=lambda d: call_order.append("audit_log")
         )
         await svc.create_node(
-            name="harass", node_type=NodeType.CONCEPT, description="bully",
+            name="harass",
+            node_type=NodeType.CONCEPT,
+            description="bully",
             privacy_level=PrivacyLevel.STANDARD,
         )
         assert call_order == ["audit_log", "repo_save"]
 
     @pytest.mark.asyncio
-    async def test_audit_log_called_before_raise_for_strict(
-        self, _mock_audit_transparency
-    ):
+    async def test_audit_log_called_before_raise_for_strict(self, _mock_audit_transparency):
         """STRICT path: log audit → raise. The audit entry MUST land
         before the raise propagates so we don't lose the record on
         exception paths (per the defense-in-depth framing)."""
         svc = _make_service(harassment_match=True)
         with pytest.raises(PrivacyFilterRejectedError):
             await svc.create_node(
-                name="harass", node_type=NodeType.CONCEPT, description="bully",
+                name="harass",
+                node_type=NodeType.CONCEPT,
+                description="bully",
                 privacy_level=PrivacyLevel.STRICT,
             )
         # Audit-log call happened despite the raise that followed.

@@ -17,6 +17,7 @@ No return type carries credential material (D3); ``test_connector_contract_1232`
 that structurally. Nothing consumes this protocol yet; WS-3 (``resolve``) and WS-4
 (``degrade``) build onto it next.
 """
+
 from __future__ import annotations
 
 import enum

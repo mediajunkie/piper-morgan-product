@@ -95,7 +95,9 @@ async def trigger_composting(request: Request, user_id: str = ""):
             "exercise #1033/#1035 end-to-end."
         )
     else:
-        message = f"Composted {processed} object(s); {result.learnings_extracted} learning(s) written."
+        message = (
+            f"Composted {processed} object(s); {result.learnings_extracted} learning(s) written."
+        )
 
     logger.info(
         "dev_composting_triggered",
@@ -203,9 +205,7 @@ async def seed_composting(
                         }
                     )
             except Exception as e:  # fail-graceful: read-back is evidence, not core
-                logger.warning(
-                    "dev_composting_readback_failed", object_id=oid, error=str(e)
-                )
+                logger.warning("dev_composting_readback_failed", object_id=oid, error=str(e))
 
     response.update(
         {

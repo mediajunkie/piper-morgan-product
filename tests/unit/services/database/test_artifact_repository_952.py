@@ -34,9 +34,7 @@ from services.mux.lifecycle import LifecycleState  # noqa: E402
 async def session():
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
     async with engine.begin() as conn:
-        await conn.run_sync(
-            lambda sc: ArtifactDB.__table__.create(sc, checkfirst=True)
-        )
+        await conn.run_sync(lambda sc: ArtifactDB.__table__.create(sc, checkfirst=True))
     SessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
     async with SessionLocal() as s:
         yield s
@@ -77,7 +75,9 @@ class TestArtifactDBRoundTrip:
         """A document-Artifact (datetime in payload) persists JSON-safe — the
         datetime-aware codec keeps ArtifactDB.payload storable."""
         doc = Document(
-            id="art-doc", title="t", content="body",
+            id="art-doc",
+            title="t",
+            content="body",
             created_at=datetime(2026, 6, 9, 9, 0, 0),
             updated_at=datetime(2026, 6, 9, 9, 0, 0),
             last_accessed=datetime(2026, 6, 9, 9, 0, 0),
@@ -163,7 +163,9 @@ class TestArtifactRename1184:
         got = await repo.get_by_id("a1")
         assert (got.payload or {}).get("title") != "Hacked"
         # admin bypass (the #470 pattern) works
-        assert await repo.update_title("a1", "AdminSet", owner_id="user-B", is_admin=True) is not None
+        assert (
+            await repo.update_title("a1", "AdminSet", owner_id="user-B", is_admin=True) is not None
+        )
 
     @pytest.mark.asyncio
     async def test_update_title_missing_returns_none(self, session):
@@ -175,9 +177,13 @@ class TestArtifactRename1184:
         repo = ArtifactRepository(session)
         await repo.add(_generated(owner="u", aid="g1"))
         doc_art = Artifact.from_document(
-            Document(id="d1", content="x",
-                     created_at=datetime(2026, 6, 9), updated_at=datetime(2026, 6, 9),
-                     last_accessed=datetime(2026, 6, 9))
+            Document(
+                id="d1",
+                content="x",
+                created_at=datetime(2026, 6, 9),
+                updated_at=datetime(2026, 6, 9),
+                last_accessed=datetime(2026, 6, 9),
+            )
         )
         doc_art.owner_id = "u"
         await repo.add(doc_art)

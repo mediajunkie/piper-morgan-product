@@ -44,8 +44,7 @@ def test_left_rail_aria_label_distinguishes_from_history_sidebar(soup: Beautiful
     assert aria_label, "Left rail must have aria-label"
     # Must be distinct from right slide-out's "Conversation history"
     assert aria_label.lower() != "conversation history", (
-        "Left rail aria-label must differ from right slide-out's "
-        "'Conversation history' label"
+        "Left rail aria-label must differ from right slide-out's " "'Conversation history' label"
     )
 
 
@@ -59,6 +58,6 @@ def test_left_rail_has_recent_section_header(soup: BeautifulSoup) -> None:
         "Left rail must have a .sidebar-section-header element to make the "
         "current-session-continuation role visible"
     )
-    assert "recent" in header.get_text().strip().lower(), (
-        "Section header text must convey recency (left rail role per Round 2)"
-    )
+    assert (
+        "recent" in header.get_text().strip().lower()
+    ), "Section header text must convey recency (left rail role per Round 2)"

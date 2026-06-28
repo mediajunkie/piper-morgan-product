@@ -99,16 +99,17 @@ class TestInsightPullEnrichment:
         mock_session_factory.session_scope.return_value.__aenter__ = AsyncMock(
             return_value=MagicMock()
         )
-        mock_session_factory.session_scope.return_value.__aexit__ = AsyncMock(
-            return_value=None
-        )
+        mock_session_factory.session_scope.return_value.__aexit__ = AsyncMock(return_value=None)
 
-        with patch(
-            "services.database.repositories.InsightRepository",
-            return_value=mock_repo,
-        ), patch(
-            "services.database.session_factory.AsyncSessionFactory",
-            mock_session_factory,
+        with (
+            patch(
+                "services.database.repositories.InsightRepository",
+                return_value=mock_repo,
+            ),
+            patch(
+                "services.database.session_factory.AsyncSessionFactory",
+                mock_session_factory,
+            ),
         ):
             assembler = ContextAssembler()
             ctx = await assembler._gather_insight_pull_context(user_id="u-test")
@@ -147,16 +148,17 @@ class TestInsightPullEnrichment:
         mock_session_factory.session_scope.return_value.__aenter__ = AsyncMock(
             return_value=MagicMock()
         )
-        mock_session_factory.session_scope.return_value.__aexit__ = AsyncMock(
-            return_value=None
-        )
+        mock_session_factory.session_scope.return_value.__aexit__ = AsyncMock(return_value=None)
 
-        with patch(
-            "services.database.repositories.InsightRepository",
-            return_value=mock_repo,
-        ), patch(
-            "services.database.session_factory.AsyncSessionFactory",
-            mock_session_factory,
+        with (
+            patch(
+                "services.database.repositories.InsightRepository",
+                return_value=mock_repo,
+            ),
+            patch(
+                "services.database.session_factory.AsyncSessionFactory",
+                mock_session_factory,
+            ),
         ):
             assembler = ContextAssembler()
             ctx = await assembler._gather_insight_pull_context(user_id="u-test")
@@ -182,16 +184,17 @@ class TestInsightPullEnrichment:
         mock_session_factory.session_scope.return_value.__aenter__ = AsyncMock(
             return_value=MagicMock()
         )
-        mock_session_factory.session_scope.return_value.__aexit__ = AsyncMock(
-            return_value=None
-        )
+        mock_session_factory.session_scope.return_value.__aexit__ = AsyncMock(return_value=None)
 
-        with patch(
-            "services.database.repositories.InsightRepository",
-            return_value=mock_repo,
-        ), patch(
-            "services.database.session_factory.AsyncSessionFactory",
-            mock_session_factory,
+        with (
+            patch(
+                "services.database.repositories.InsightRepository",
+                return_value=mock_repo,
+            ),
+            patch(
+                "services.database.session_factory.AsyncSessionFactory",
+                mock_session_factory,
+            ),
         ):
             assembler = ContextAssembler()
             ctx = await assembler._gather_insight_pull_context(user_id="u-test")
@@ -203,9 +206,7 @@ class TestInsightPullEnrichment:
     async def test_pull_insights_db_error_returns_empty_not_raises(self):
         """DB exception → empty insights dict (fail-graceful)."""
         mock_session_factory = MagicMock()
-        mock_session_factory.session_scope.side_effect = RuntimeError(
-            "simulated DB failure"
-        )
+        mock_session_factory.session_scope.side_effect = RuntimeError("simulated DB failure")
 
         with patch(
             "services.database.session_factory.AsyncSessionFactory",
@@ -222,15 +223,18 @@ class TestInsightPullEnrichment:
         """gather_context with (MEMORY, pull_insights) must call the new gatherer,
         not the legacy _gather_memory_context."""
         assembler = ContextAssembler()
-        with patch.object(
-            assembler,
-            "_gather_insight_pull_context",
-            AsyncMock(return_value={"insights": {"is_empty": True, "total_count": 0}}),
-        ) as mock_insight, patch.object(
-            assembler,
-            "_gather_memory_context",
-            AsyncMock(return_value={"conversation_history_summary": {}}),
-        ) as mock_memory:
+        with (
+            patch.object(
+                assembler,
+                "_gather_insight_pull_context",
+                AsyncMock(return_value={"insights": {"is_empty": True, "total_count": 0}}),
+            ) as mock_insight,
+            patch.object(
+                assembler,
+                "_gather_memory_context",
+                AsyncMock(return_value={"conversation_history_summary": {}}),
+            ) as mock_memory,
+        ):
             ctx = await assembler.gather_context(
                 intent_category="MEMORY",
                 user_id="u-test",
@@ -245,15 +249,18 @@ class TestInsightPullEnrichment:
     async def test_gather_context_get_memory_still_uses_legacy_gatherer(self):
         """Regression: (MEMORY, get_memory) must still route to _gather_memory_context."""
         assembler = ContextAssembler()
-        with patch.object(
-            assembler,
-            "_gather_insight_pull_context",
-            AsyncMock(return_value={"insights": {}}),
-        ) as mock_insight, patch.object(
-            assembler,
-            "_gather_memory_context",
-            AsyncMock(return_value={"conversation_history_summary": {}}),
-        ) as mock_memory:
+        with (
+            patch.object(
+                assembler,
+                "_gather_insight_pull_context",
+                AsyncMock(return_value={"insights": {}}),
+            ) as mock_insight,
+            patch.object(
+                assembler,
+                "_gather_memory_context",
+                AsyncMock(return_value={"conversation_history_summary": {}}),
+            ) as mock_memory,
+        ):
             await assembler.gather_context(
                 intent_category="MEMORY",
                 user_id="u-test",

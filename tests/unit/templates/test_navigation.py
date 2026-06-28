@@ -93,7 +93,7 @@ class TestNavigationTrustGating:
         assert "nav-standup" in nav_content
 
     def test_your_stuff_dropdown_not_trust_gated(self, nav_content):
-        """"Your stuff" is the user's OWN content → NOT trust-gated (PM 2026-06-17; cf #732).
+        """ "Your stuff" is the user's OWN content → NOT trust-gated (PM 2026-06-17; cf #732).
         A trust gate governs Piper's autonomy, never a user's access to their own data."""
         assert 'class="nav-dropdown nav-item-trust-gated"' not in nav_content
         assert 'class="nav-dropdown"' in nav_content

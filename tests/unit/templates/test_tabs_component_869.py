@@ -87,7 +87,7 @@ class TestTabsComponentAccessibility:
     def test_aria_role_attributes_referenced_in_docs(self, tabs_html):
         # Usage example documents role="tablist" and role="tab"
         assert "tablist" in tabs_html
-        assert "role=" in tabs_html or 'aria-selected' in tabs_html
+        assert "role=" in tabs_html or "aria-selected" in tabs_html
 
     def test_focus_visible_styling(self, tabs_html):
         # Keyboard focus has visible outline
@@ -95,7 +95,10 @@ class TestTabsComponentAccessibility:
 
     def test_aria_selected_toggling_logic(self, tabs_html):
         # JS toggles aria-selected on activation
-        assert 'setAttribute(\'aria-selected\'' in tabs_html or "setAttribute('aria-selected'" in tabs_html
+        assert (
+            "setAttribute('aria-selected'" in tabs_html
+            or "setAttribute('aria-selected'" in tabs_html
+        )
 
 
 class TestProjectDetailTabsIntegration:

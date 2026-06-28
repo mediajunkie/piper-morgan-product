@@ -4,6 +4,7 @@ Tests the linter that catches hardcoded color/spacing/radius/type values in CSS
 (everything should come from tokens.css custom properties). The grep/stylelint
 spec (CXO design-floor F3) defines the catch/allow rules these tests encode.
 """
+
 from __future__ import annotations
 
 from collections import Counter
@@ -16,6 +17,7 @@ def _cats(text):
 
 
 # --- Color literals (catch) -------------------------------------------------
+
 
 def test_hex_color_is_violation():
     assert "color" in _cats("a { color: #ff0000; }")
@@ -50,6 +52,7 @@ def test_bare_hex_alongside_a_var_is_still_caught():
 
 # --- border-radius (catch; one scale) ---------------------------------------
 
+
 def test_radius_literal_is_violation():
     assert "radius" in _cats("a { border-radius: 4px; }")
 
@@ -64,6 +67,7 @@ def test_radius_percent_and_zero_are_clean():
 
 
 # --- spacing px (catch) -----------------------------------------------------
+
 
 def test_spacing_px_is_violation():
     assert "spacing" in _cats("a { padding: 16px; }")
@@ -83,6 +87,7 @@ def test_hairline_and_zero_and_relative_spacing_are_clean():
 
 
 # --- type scale (catch) -----------------------------------------------------
+
 
 def test_font_size_literal_is_violation():
     assert "type" in _cats("a { font-size: 14px; }")
@@ -104,19 +109,26 @@ def test_line_height_with_unit_is_violation():
 
 # --- allow-list comment -----------------------------------------------------
 
+
 def test_inline_allow_comment_suppresses():
     assert find_violations("a { color: #fff; /* token-lint-allow */ }") == []
 
 
 # --- clean stylesheet -------------------------------------------------------
 
+
 def test_baseline_ratchet_tolerates_existing_flags_new():
     baseline = Counter(["a.css|color|color: #fff", "a.css|spacing|padding: 10px"])
     # same set → nothing new
     assert new_against_baseline(Counter(baseline), baseline) == Counter()
     # one new violation added
-    current = Counter(["a.css|color|color: #fff", "a.css|spacing|padding: 10px",
-                       "b.css|radius|border-radius: 18px"])
+    current = Counter(
+        [
+            "a.css|color|color: #fff",
+            "a.css|spacing|padding: 10px",
+            "b.css|radius|border-radius: 18px",
+        ]
+    )
     new = new_against_baseline(current, baseline)
     assert list(new.elements()) == ["b.css|radius|border-radius: 18px"]
     # a fixed violation is not "new" (ratchet only fails on additions)

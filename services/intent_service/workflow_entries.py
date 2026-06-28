@@ -115,9 +115,7 @@ async def run_update_document_workflow(
         )
         return None
 
-    return await intent_service._handle_update_document_notion(
-        intent, workflow_id, session_id
-    )
+    return await intent_service._handle_update_document_notion(intent, workflow_id, session_id)
 
 
 async def run_changes_query_workflow(
@@ -543,26 +541,58 @@ def register_default_workflows() -> None:
         )
 
     _query_cohort: list[tuple[WorkflowEntry, list[str]]] = [
-        (_qentry(_make_query_dispatch_entry_point("_handle_local_git_status_query"),
-                 "local-git-status via action dispatch"),
-         ["local_git_status_query", "local_git_status"]),
-        (_qentry(_make_query_dispatch_entry_point("_handle_search_documents_notion", pass_session_id=True),
-                 "search-documents (Notion) via action dispatch"),
-         ["search_documents", "find_documents", "search_notion"]),
-        (_qentry(_make_query_dispatch_entry_point("_handle_productivity_query", pass_session_id=True),
-                 "productivity query via action dispatch"),
-         ["productivity", "my_productivity", "weekly_metrics", "accomplishments"]),
-        (_qentry(_make_query_dispatch_entry_point("_handle_standup_query", pass_user_id=True),
-                 "standup query via action dispatch"),
-         ["show_standup", "get_standup"]),
-        (_qentry(_make_query_dispatch_entry_point("_handle_projects_query", pass_user_id=True),
-                 "projects query via action dispatch"),
-         ["list_projects", "show_projects"]),
-        (_qentry(_make_query_dispatch_entry_point("_handle_attention_query", pass_session_id=True, pass_user_id=True),
-                 "attention query via action dispatch"),
-         ["attention_query", "needs_attention", "what_needs_attention", "attention_items"]),
-        (_qentry(run_todo_query_workflow, "todo list/next query via action dispatch"),
-         ["list_todos_query", "list_completed_todos", "next_todo_query"]),
+        (
+            _qentry(
+                _make_query_dispatch_entry_point("_handle_local_git_status_query"),
+                "local-git-status via action dispatch",
+            ),
+            ["local_git_status_query", "local_git_status"],
+        ),
+        (
+            _qentry(
+                _make_query_dispatch_entry_point(
+                    "_handle_search_documents_notion", pass_session_id=True
+                ),
+                "search-documents (Notion) via action dispatch",
+            ),
+            ["search_documents", "find_documents", "search_notion"],
+        ),
+        (
+            _qentry(
+                _make_query_dispatch_entry_point(
+                    "_handle_productivity_query", pass_session_id=True
+                ),
+                "productivity query via action dispatch",
+            ),
+            ["productivity", "my_productivity", "weekly_metrics", "accomplishments"],
+        ),
+        (
+            _qentry(
+                _make_query_dispatch_entry_point("_handle_standup_query", pass_user_id=True),
+                "standup query via action dispatch",
+            ),
+            ["show_standup", "get_standup"],
+        ),
+        (
+            _qentry(
+                _make_query_dispatch_entry_point("_handle_projects_query", pass_user_id=True),
+                "projects query via action dispatch",
+            ),
+            ["list_projects", "show_projects"],
+        ),
+        (
+            _qentry(
+                _make_query_dispatch_entry_point(
+                    "_handle_attention_query", pass_session_id=True, pass_user_id=True
+                ),
+                "attention query via action dispatch",
+            ),
+            ["attention_query", "needs_attention", "what_needs_attention", "attention_items"],
+        ),
+        (
+            _qentry(run_todo_query_workflow, "todo list/next query via action dispatch"),
+            ["list_todos_query", "list_completed_todos", "next_todo_query"],
+        ),
     ]
     for entry, aliases in _query_cohort:
         for alias in aliases:
@@ -573,15 +603,29 @@ def register_default_workflows() -> None:
     # floor fallback. Handlers reused unchanged. analyze_document is 3-arg (session_id);
     # strategic_planning + learn_pattern are 2-arg.
     _final_ifheads: list[tuple[WorkflowEntry, list[str]]] = [
-        (_qentry(_make_query_dispatch_entry_point("_handle_analyze_document_notion", pass_session_id=True),
-                 "analyze-document (Notion) via action dispatch"),
-         ["analyze_document", "analyze_file"]),
-        (_qentry(_make_query_dispatch_entry_point("_handle_strategic_planning"),
-                 "strategic-planning via action dispatch"),
-         ["strategic_planning", "create_plan"]),
-        (_qentry(_make_query_dispatch_entry_point("_handle_learn_pattern"),
-                 "learn-pattern via action dispatch"),
-         ["learn_pattern", "detect_pattern"]),
+        (
+            _qentry(
+                _make_query_dispatch_entry_point(
+                    "_handle_analyze_document_notion", pass_session_id=True
+                ),
+                "analyze-document (Notion) via action dispatch",
+            ),
+            ["analyze_document", "analyze_file"],
+        ),
+        (
+            _qentry(
+                _make_query_dispatch_entry_point("_handle_strategic_planning"),
+                "strategic-planning via action dispatch",
+            ),
+            ["strategic_planning", "create_plan"],
+        ),
+        (
+            _qentry(
+                _make_query_dispatch_entry_point("_handle_learn_pattern"),
+                "learn-pattern via action dispatch",
+            ),
+            ["learn_pattern", "detect_pattern"],
+        ),
     ]
     for entry, aliases in _final_ifheads:
         for alias in aliases:

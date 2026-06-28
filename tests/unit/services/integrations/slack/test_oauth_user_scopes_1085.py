@@ -20,16 +20,14 @@ def test_user_scopes_default_includes_search_read() -> None:
     src = SOURCE_FILE.read_text()
     # Locate the user_scopes default block
     block_marker = "Default user-token scopes (Issue #1085 slice 3 prep)"
-    assert block_marker in src, (
-        "OAuth handler must have a documented user_scopes default block"
-    )
+    assert block_marker in src, "OAuth handler must have a documented user_scopes default block"
     # search:read must appear after the marker (within the same defaults block)
     start = src.find(block_marker)
     end = src.find("# Build authorization parameters", start)
     block = src[start:end] if end > start else src[start:]
-    assert '"search:read"' in block, (
-        "Default user_scopes must include search:read for the search.messages API"
-    )
+    assert (
+        '"search:read"' in block
+    ), "Default user_scopes must include search:read for the search.messages API"
 
 
 def test_user_scopes_block_is_caller_overridable() -> None:
@@ -41,9 +39,9 @@ def test_user_scopes_block_is_caller_overridable() -> None:
     end = src.find("# Build authorization parameters", start)
     block = src[start:end]
     # The default block must guard with `if not user_scopes:`
-    assert "if not user_scopes:" in block, (
-        "Defaults must only apply when caller hasn't passed user_scopes"
-    )
+    assert (
+        "if not user_scopes:" in block
+    ), "Defaults must only apply when caller hasn't passed user_scopes"
 
 
 def test_change_documented_with_issue_reference() -> None:
@@ -54,9 +52,7 @@ def test_change_documented_with_issue_reference() -> None:
     end = src.find("# Build authorization parameters", start)
     block = src[start:end]
     assert "#1085" in block, "Change must cite #1085"
-    assert "search.messages" in block, (
-        "Comment must explain why search:read is required"
-    )
+    assert "search.messages" in block, "Comment must explain why search:read is required"
 
 
 def test_search_read_is_user_token_scope_not_bot() -> None:
@@ -73,6 +69,6 @@ def test_search_read_is_user_token_scope_not_bot() -> None:
     assert user_start > bot_start, "user_scopes block must come AFTER bot scopes block"
     bot_block = src[bot_start:user_start]
     # search:read must NOT appear in the bot scopes block
-    assert '"search:read"' not in bot_block, (
-        "search:read is a user-token scope; must not be in bot scopes block"
-    )
+    assert (
+        '"search:read"' not in bot_block
+    ), "search:read is a user-token scope; must not be in bot scopes block"

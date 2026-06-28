@@ -16,6 +16,7 @@ DRY-RUN by default (no writes). Pass --apply to execute (single transaction). Id
 re-running after apply finds 0 xian rows and is a no-op. The xian users row is LEFT as a
 tombstone (audit_logs still references it; WS-1 simply anchors to m1-test).
 """
+
 import argparse
 import os
 
@@ -34,10 +35,10 @@ PLAN = [
     ("documents", "owner_id", "repoint"),
     ("learned_patterns", "user_id", "repoint"),
     ("lists", "owner_id", "repoint"),
-    ("projects", "owner_id", "repoint_projects"),   # UNIQUE(owner_id,name): keep canonical on clash
-    ("user_trust_profiles", "user_id", "delete"),   # no user_id-unique → delete stale, don't dup
-    ("token_blacklist", "user_id", "delete"),       # logout artifact — meaningless to re-point
-    ("audit_logs", "user_id", "leave"),             # history integrity — do not rewrite
+    ("projects", "owner_id", "repoint_projects"),  # UNIQUE(owner_id,name): keep canonical on clash
+    ("user_trust_profiles", "user_id", "delete"),  # no user_id-unique → delete stale, don't dup
+    ("token_blacklist", "user_id", "delete"),  # logout artifact — meaningless to re-point
+    ("audit_logs", "user_id", "leave"),  # history integrity — do not rewrite
 ]
 
 
@@ -98,7 +99,8 @@ def main():
             elif action == "delete":
                 if apply:
                     c.execute(
-                        text(f'DELETE FROM "{table}" WHERE CAST("{col}" AS text) = :m'), {"m": MERGE}
+                        text(f'DELETE FROM "{table}" WHERE CAST("{col}" AS text) = :m'),
+                        {"m": MERGE},
                     )
                 print(f"  {table}.{col}: {n} -> DELETE stale [{mode}]")
 

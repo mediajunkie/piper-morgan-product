@@ -7,6 +7,7 @@ adapters don't break the build, but a declared connector cannot silently skip
 honest-degradation or status. Mirrors the TestSessionScopeCommitContract (#1193)
 AST-enforcement pattern.
 """
+
 import ast
 import glob
 import os
@@ -26,7 +27,9 @@ def _declaring_classes(path):
         if isinstance(node, ast.ClassDef):
             declares = any(
                 isinstance(s, ast.Assign)
-                and any(isinstance(t, ast.Name) and t.id == "IMPLEMENTS_CONNECTOR" for t in s.targets)
+                and any(
+                    isinstance(t, ast.Name) and t.id == "IMPLEMENTS_CONNECTOR" for t in s.targets
+                )
                 for s in node.body
             )
             if declares:

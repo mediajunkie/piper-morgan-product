@@ -67,9 +67,7 @@ class FakeStandupConversationManager:
         self._conversations[conv.id] = conv
         return conv
 
-    async def get_conversation(
-        self, conversation_id: str
-    ) -> Optional[StandupConversation]:
+    async def get_conversation(self, conversation_id: str) -> Optional[StandupConversation]:
         return self._conversations.get(conversation_id)
 
     async def get_conversation_by_session(
@@ -100,14 +98,9 @@ class FakeStandupConversationManager:
                 return conv
         return None
 
-    async def get_suspended_for_user(
-        self, user_id: str
-    ) -> Optional[StandupConversation]:
+    async def get_suspended_for_user(self, user_id: str) -> Optional[StandupConversation]:
         for conv in reversed(list(self._conversations.values())):
-            if (
-                conv.user_id == user_id
-                and conv.state == StandupConversationState.SUSPENDED
-            ):
+            if conv.user_id == user_id and conv.state == StandupConversationState.SUSPENDED:
                 return conv
         return None
 
@@ -214,8 +207,7 @@ class FakeStandupConversationManager:
         expired = [
             cid
             for cid, c in self._conversations.items()
-            if c.updated_at < cutoff
-            and c.state != StandupConversationState.COMPLETE
+            if c.updated_at < cutoff and c.state != StandupConversationState.COMPLETE
         ]
         for cid in expired:
             del self._conversations[cid]

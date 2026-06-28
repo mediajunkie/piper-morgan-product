@@ -57,19 +57,13 @@ class SeedCompostable:
     )
     type: str = "seed_demo_object"
     category: str = "dev_seed"
-    created_at: datetime = field(
-        default_factory=lambda: datetime.now() - timedelta(days=120)
-    )
-    updated_at: datetime = field(
-        default_factory=lambda: datetime.now() - timedelta(days=35)
-    )
+    created_at: datetime = field(default_factory=lambda: datetime.now() - timedelta(days=120))
+    updated_at: datetime = field(default_factory=lambda: datetime.now() - timedelta(days=35))
     lifecycle_state: LifecycleState = LifecycleState.ARCHIVED
     lifecycle_history: List[LifecycleTransition] = field(default_factory=list)
 
 
-def make_seed_compostable(
-    object_id: str, title: str = "Alpha testing approach"
-) -> SeedCompostable:
+def make_seed_compostable(object_id: str, title: str = "Alpha testing approach") -> SeedCompostable:
     """Build a synthetic full-journey compostable object.
 
     The history walks the canonical maturation-then-retirement path so the

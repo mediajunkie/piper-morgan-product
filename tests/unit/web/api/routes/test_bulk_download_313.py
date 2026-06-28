@@ -42,15 +42,21 @@ def _file_row(fid, owner, path):
 
 @pytest.mark.asyncio
 async def test_zips_owned_files_and_skips_foreign(tmp_path):
-    p1 = tmp_path / "a.txt"; p1.write_text("alpha")
-    p2 = tmp_path / "b.txt"; p2.write_text("bravo")
+    p1 = tmp_path / "a.txt"
+    p1.write_text("alpha")
+    p2 = tmp_path / "b.txt"
+    p2.write_text("bravo")
     rows = {
         "f1": _file_row("f1", "u1", p1),
         "f2": _file_row("f2", "someone-else", p2),  # foreign → skipped
     }
-    with patch.object(files_route, "db", SimpleNamespace(_initialized=True, initialize=AsyncMock())), \
-         patch.object(files_route, "AsyncSessionFactory", _session_ctx(rows)):
-        resp = await download_bulk(_req(), {"items": [{"id": "f1", "kind": "file"}, {"id": "f2", "kind": "file"}]})
+    with (
+        patch.object(files_route, "db", SimpleNamespace(_initialized=True, initialize=AsyncMock())),
+        patch.object(files_route, "AsyncSessionFactory", _session_ctx(rows)),
+    ):
+        resp = await download_bulk(
+            _req(), {"items": [{"id": "f1", "kind": "file"}, {"id": "f2", "kind": "file"}]}
+        )
     assert resp.headers["X-Added"] == "1"
     assert resp.headers["X-Skipped"] == "1"
     zf = zipfile.ZipFile(io.BytesIO(resp.body))
@@ -61,6 +67,7 @@ async def test_zips_owned_files_and_skips_foreign(tmp_path):
 @pytest.mark.asyncio
 async def test_empty_items_400():
     from fastapi import HTTPException
+
     with pytest.raises(HTTPException) as ei:
         await download_bulk(_req(), {"items": []})
     assert ei.value.status_code == 400
@@ -70,8 +77,11 @@ async def test_empty_items_400():
 async def test_all_inaccessible_404(tmp_path):
     rows = {"f9": _file_row("f9", "someone-else", tmp_path / "x.txt")}
     from fastapi import HTTPException
-    with patch.object(files_route, "db", SimpleNamespace(_initialized=True, initialize=AsyncMock())), \
-         patch.object(files_route, "AsyncSessionFactory", _session_ctx(rows)):
+
+    with (
+        patch.object(files_route, "db", SimpleNamespace(_initialized=True, initialize=AsyncMock())),
+        patch.object(files_route, "AsyncSessionFactory", _session_ctx(rows)),
+    ):
         with pytest.raises(HTTPException) as ei:
             await download_bulk(_req(), {"items": [{"id": "f9", "kind": "file"}]})
     assert ei.value.status_code == 404
@@ -80,6 +90,7 @@ async def test_all_inaccessible_404(tmp_path):
 @pytest.mark.asyncio
 async def test_over_50_items_400():
     from fastapi import HTTPException
+
     with pytest.raises(HTTPException) as ei:
         await download_bulk(_req(), {"items": [{"id": str(i)} for i in range(51)]})
     assert ei.value.status_code == 400

@@ -302,9 +302,7 @@ class TestActionWorkflows:
         )
         register_workflow(
             "by_action",
-            WorkflowEntry(
-                entry_point=AsyncMock(), description="action", action_triggered=True
-            ),
+            WorkflowEntry(entry_point=AsyncMock(), description="action", action_triggered=True),
         )
 
         action_workflows = get_action_workflows()
@@ -349,9 +347,7 @@ class TestUpdateDocumentWorkflowEntry:
 
         assert await run_update_document_workflow(session_id="s", context={}) is None
         assert (
-            await run_update_document_workflow(
-                session_id="s", context={"intent": MagicMock()}
-            )
+            await run_update_document_workflow(session_id="s", context={"intent": MagicMock()})
             is None
         )
 
@@ -376,9 +372,7 @@ class TestChangesQueryWorkflowEntry:
         )
 
         assert result is sentinel
-        mock_service._handle_changes_query.assert_awaited_once_with(
-            mock_intent, None, "sess-7"
-        )
+        mock_service._handle_changes_query.assert_awaited_once_with(mock_intent, None, "sess-7")
 
     @pytest.mark.asyncio
     async def test_missing_context_returns_none(self):

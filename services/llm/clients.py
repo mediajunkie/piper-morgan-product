@@ -38,6 +38,7 @@ def _build_temperature_kwarg(model_value: str, configured_temperature: float) ->
         return {}
     return {"temperature": configured_temperature}
 
+
 logger = structlog.get_logger()
 
 # Fallback preference order — tried in sequence if the primary provider fails.

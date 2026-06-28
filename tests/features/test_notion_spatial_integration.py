@@ -237,9 +237,7 @@ class TestNotionMCPProtocol:
         adapter = _adapter_with_mock_client()
         adapter._notion_client.pages.retrieve.return_value = {
             "id": "page_1",
-            "properties": {
-                "title": {"title": [{"text": {"content": "Test Page"}}]}
-            },
+            "properties": {"title": {"title": [{"text": {"content": "Test Page"}}]}},
             "url": "https://notion.so/page_1",
             "created_time": "2025-08-12T10:00:00Z",
             "last_edited_time": "2025-08-12T12:00:00Z",

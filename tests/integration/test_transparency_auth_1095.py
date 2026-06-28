@@ -137,25 +137,17 @@ class TestAdminScopedEndpoints:
     def test_stats_403_without_admin(self, client, jwt_svc):
         """Non-admin user gets 403 on stats endpoint."""
         token = _mint_token(jwt_svc, user_id=TEST_USER_ID)
-        response = client.get(
-            "/api/v1/transparency/stats", headers=_auth(token)
-        )
-        assert response.status_code == 403, (
-            f"Non-admin should get 403; got {response.status_code}"
-        )
+        response = client.get("/api/v1/transparency/stats", headers=_auth(token))
+        assert response.status_code == 403, f"Non-admin should get 403; got {response.status_code}"
 
     def test_cleanup_403_without_admin(self, client, jwt_svc):
         token = _mint_token(jwt_svc, user_id=TEST_USER_ID)
-        response = client.post(
-            "/api/v1/transparency/cleanup", headers=_auth(token)
-        )
+        response = client.post("/api/v1/transparency/cleanup", headers=_auth(token))
         assert response.status_code == 403
 
     def test_health_403_without_admin(self, client, jwt_svc):
         token = _mint_token(jwt_svc, user_id=TEST_USER_ID)
-        response = client.get(
-            "/api/v1/transparency/health", headers=_auth(token)
-        )
+        response = client.get("/api/v1/transparency/health", headers=_auth(token))
         assert response.status_code == 403
 
 

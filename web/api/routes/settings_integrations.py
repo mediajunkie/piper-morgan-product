@@ -1043,9 +1043,7 @@ async def handle_github_callback(
     mark the binding BOUND (#1317 inc.2). Redirects back to /settings/integrations."""
     if error:
         logger.warning("github_settings_oauth_denied", error=error)
-        return RedirectResponse(
-            url=f"/settings/integrations?github_error={error}", status_code=302
-        )
+        return RedirectResponse(url=f"/settings/integrations?github_error={error}", status_code=302)
     if not code or not state:
         logger.warning(
             "github_settings_oauth_missing_params", has_code=bool(code), has_state=bool(state)

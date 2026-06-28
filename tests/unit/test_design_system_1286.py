@@ -5,6 +5,7 @@ the 9 new tokens, the 24px body baseline applied via token (not raw px → token
 the shell grid tokenized (rail/radar widths from tokens, not raw 180px/320px). No behavioral
 change at desktop. The responsive/mobile-nav stack is Slice 2.
 """
+
 from pathlib import Path
 
 _CSS = Path(__file__).resolve().parents[2] / "web" / "static" / "css"
@@ -30,8 +31,12 @@ def test_required_d2_tokens_defined():
 
 
 def test_space_dense_is_6px_and_2xs_renamed_away():
-    assert "--space-dense: 6px" in _TOKENS  # dense-surface micro-spacing (renamed from --space-2xs per CXO)
-    assert "--space-2xs:" not in _TOKENS  # the old token definition is gone (a comment mentioning the rename would be fine)
+    assert (
+        "--space-dense: 6px" in _TOKENS
+    )  # dense-surface micro-spacing (renamed from --space-2xs per CXO)
+    assert (
+        "--space-2xs:" not in _TOKENS
+    )  # the old token definition is gone (a comment mentioning the rename would be fine)
 
 
 def test_baseline_rhythm_is_24px():

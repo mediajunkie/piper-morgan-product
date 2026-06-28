@@ -438,7 +438,5 @@ class GitHubSpatialIntelligence:
                 # Best effort: caller passed only repo name, no resolver path
                 # available; return graceful empty result.
                 return {"number": issue_number, "error": "no_owner_resolved"}
-        result = await self.mcp_adapter._call_github_api(
-            f"/repos/{slug}/issues/{issue_number}"
-        )
+        result = await self.mcp_adapter._call_github_api(f"/repos/{slug}/issues/{issue_number}")
         return result or {"number": issue_number}

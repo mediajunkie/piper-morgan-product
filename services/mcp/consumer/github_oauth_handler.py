@@ -10,6 +10,7 @@ OAuth grants permitted, encrypted-at-rest, binding = pointer).
 
 State is user_id-bound, single-use, and expiring (CSRF + multi-tenant isolation, #734).
 """
+
 from __future__ import annotations
 
 import base64
@@ -72,7 +73,9 @@ class GitHubOAuthHandler:
 
                 kc = KeychainService()
                 client_id = client_id or (kc.get_api_key("github_oauth_client_id") or "")
-                client_secret = client_secret or (kc.get_api_key("github_oauth_client_secret") or "")
+                client_secret = client_secret or (
+                    kc.get_api_key("github_oauth_client_secret") or ""
+                )
             except Exception:
                 pass  # keychain unavailable → empty (handler still constructs; flow fails honestly)
         return client_id, client_secret
@@ -109,7 +112,9 @@ class GitHubOAuthHandler:
         nonce = state_data.get("nonce")
         user_id = state_data.get("user_id")
         if not nonce or not user_id or nonce not in _PENDING_STATES:
-            logger.warning("github_oauth_state_invalid", has_nonce=bool(nonce), has_uid=bool(user_id))
+            logger.warning(
+                "github_oauth_state_invalid", has_nonce=bool(nonce), has_uid=bool(user_id)
+            )
             return False, None
 
         nonce_data = _PENDING_STATES[nonce]
@@ -155,9 +160,14 @@ class GitHubOAuthHandler:
             ) as response:
                 data = await response.json()
                 if response.status != 200 or "access_token" not in data:
-                    logger.error("github_token_exchange_failed", status=response.status,
-                                 error=data.get("error", "unknown"))
-                    raise ValueError(f"GitHub token exchange failed: {data.get('error', response.status)}")
+                    logger.error(
+                        "github_token_exchange_failed",
+                        status=response.status,
+                        error=data.get("error", "unknown"),
+                    )
+                    raise ValueError(
+                        f"GitHub token exchange failed: {data.get('error', response.status)}"
+                    )
                 expires_in = data.get("expires_in")
                 return GitHubOAuthTokens(
                     access_token=data["access_token"],
@@ -173,8 +183,10 @@ class GitHubOAuthHandler:
             async with aiohttp.ClientSession() as session:
                 async with session.get(
                     self.USER_URL,
-                    headers={"Authorization": f"Bearer {access_token}",
-                             "Accept": "application/vnd.github+json"},
+                    headers={
+                        "Authorization": f"Bearer {access_token}",
+                        "Accept": "application/vnd.github+json",
+                    },
                 ) as response:
                     if response.status != 200:
                         return "unknown"

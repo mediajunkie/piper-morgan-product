@@ -93,8 +93,7 @@ def format_preference_saved_conscious(preference_name: str, value: Any) -> str:
     # see #1199). If/when this is wired to a persistent store, the caller can
     # add future-tense language deliberately.
     return (
-        f"Got it - I've set {readable_name} to '{value}'. "
-        f"Anything else you'd like to adjust?"
+        f"Got it - I've set {readable_name} to '{value}'. " f"Anything else you'd like to adjust?"
     )
 
 

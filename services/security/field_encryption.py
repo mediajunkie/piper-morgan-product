@@ -13,6 +13,7 @@ Security properties (load-bearing — keep them):
 - a wrong key / wrong context / tampered token **raises** ``DecryptionError`` — never
   returns garbage plaintext.
 """
+
 from __future__ import annotations
 
 import base64
@@ -90,9 +91,7 @@ class FieldEncryptionService:
             aes = AESGCM(self._subkey(context))
             return aes.decrypt(nonce, ct, None).decode("utf-8")
         except (InvalidTag, ValueError) as e:
-            raise DecryptionError(
-                "decryption failed (wrong key/context or tampered token)"
-            ) from e
+            raise DecryptionError("decryption failed (wrong key/context or tampered token)") from e
 
     def __repr__(self) -> str:  # never expose key material
         return f"<FieldEncryptionService key=***{_KEY_LEN}B>"

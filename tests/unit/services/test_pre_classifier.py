@@ -594,9 +594,9 @@ class TestPreClassifier:
                 f"{query!r} routed to {intent.category} (expected MEMORY/pull_insights); "
                 "insight-pull queries must reach the floor with insight-repo enrichment"
             )
-            assert intent.action == "pull_insights", (
-                f"{query!r} routed to {intent.action} (expected pull_insights)"
-            )
+            assert (
+                intent.action == "pull_insights"
+            ), f"{query!r} routed to {intent.action} (expected pull_insights)"
 
     @pytest.mark.smoke
     def test_memory_get_memory_still_works_after_pull_insights(self):
@@ -613,9 +613,9 @@ class TestPreClassifier:
         for query in memory_history_queries:
             intent = PreClassifier.pre_classify(query)
             assert intent is not None, f"No pre-classification for: {query!r}"
-            assert intent.category == IntentCategory.MEMORY, (
-                f"{query!r} routed to {intent.category} (expected MEMORY)"
-            )
+            assert (
+                intent.category == IntentCategory.MEMORY
+            ), f"{query!r} routed to {intent.category} (expected MEMORY)"
             assert intent.action == "get_memory", (
                 f"{query!r} routed to {intent.action} (expected get_memory); "
                 "conversation-history queries must NOT misroute to pull_insights"
@@ -698,6 +698,6 @@ class TestPreClassifier:
         for query in current_time_queries:
             intent = PreClassifier.pre_classify(query)
             assert intent is not None, f"No pre-classification for: {query!r}"
-            assert intent.category == IntentCategory.TEMPORAL, (
-                f"{query!r} routed to {intent.category} (expected TEMPORAL)"
-            )
+            assert (
+                intent.category == IntentCategory.TEMPORAL
+            ), f"{query!r} routed to {intent.category} (expected TEMPORAL)"

@@ -1,4 +1,5 @@
 """#358-B Phase 3 — backfill tests: idempotent encrypt, scope-guard, key-refusal."""
+
 from __future__ import annotations
 
 import base64
@@ -45,9 +46,7 @@ def test_require_encryptor_refuses_without_key(monkeypatch):
 async def test_backfill_column_encrypts_unmarked_idempotently(monkeypatch):
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
     async with engine.begin() as conn:
-        await conn.run_sync(
-            lambda sc: ConversationTurnDB.__table__.create(sc, checkfirst=True)
-        )
+        await conn.run_sync(lambda sc: ConversationTurnDB.__table__.create(sc, checkfirst=True))
     SessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
     # Seed plaintext via the ORM with NO key (passthrough writes plaintext to the raw row).
@@ -76,12 +75,10 @@ async def test_backfill_column_encrypts_unmarked_idempotently(monkeypatch):
     # Raw row is now marked ciphertext that decrypts back.
     async with engine.connect() as conn:
         raw = (
-            await conn.execute(
-                text("SELECT user_message FROM conversation_turns WHERE id='t0'")
-            )
+            await conn.execute(text("SELECT user_message FROM conversation_turns WHERE id='t0'"))
         ).scalar()
     assert raw.startswith(MARKER) and "plain user 0" not in raw
-    assert svc.decrypt(raw[len(MARKER):], ctx) == "plain user 0"
+    assert svc.decrypt(raw[len(MARKER) :], ctx) == "plain user 0"
 
     # ORM reads it back as plaintext; the un-backfilled column reads as legacy plaintext
     # (mixed plaintext+ciphertext state reads correctly).
@@ -93,9 +90,7 @@ async def test_backfill_column_encrypts_unmarked_idempotently(monkeypatch):
     # Idempotent re-run → 0 newly encrypted; row count preserved.
     async with engine.connect() as conn:
         n2 = await backfill_column(conn, "conversation_turns", "user_message", ctx, svc)
-        cnt = (
-            await conn.execute(text("SELECT COUNT(*) FROM conversation_turns"))
-        ).scalar()
+        cnt = (await conn.execute(text("SELECT COUNT(*) FROM conversation_turns"))).scalar()
     assert n2 == 0
     assert cnt == 3
 

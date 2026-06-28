@@ -47,9 +47,9 @@ class TestCompostedExperiencePhrase:
             "after analyzing",
         ]
         for forbidden in forbidden_starts:
-            assert not phrase.startswith(forbidden), (
-                f"COMPOSTED phrase should not start with surveillance framing: {phrase!r}"
-            )
+            assert not phrase.startswith(
+                forbidden
+            ), f"COMPOSTED phrase should not start with surveillance framing: {phrase!r}"
 
 
 class TestAllStagesHaveExperiencePhrases:
@@ -69,6 +69,6 @@ class TestAllStagesHaveExperiencePhrases:
         """No two stages should share an experience phrase — that would
         make the lifecycle UI ambiguous in narrative output."""
         phrases = [stage.experience_phrase for stage in LifecycleState]
-        assert len(phrases) == len(set(phrases)), (
-            f"Duplicate experience phrases across stages: {phrases}"
-        )
+        assert len(phrases) == len(
+            set(phrases)
+        ), f"Duplicate experience phrases across stages: {phrases}"

@@ -280,7 +280,10 @@ class SlackIntegrationRouter:
             raise RuntimeError("No Slack integration available for test_auth")
 
     async def get_conversation_history(
-        self, channel: str, limit: int = 100, cursor: str = None,
+        self,
+        channel: str,
+        limit: int = 100,
+        cursor: str = None,
         oldest: Optional[float] = None,
     ) -> SlackResponse:
         """

@@ -104,17 +104,15 @@ def test_template_topic_tabs_are_visible() -> None:
     html = Path("templates/insights.html").read_text()
     for topic_id in KNOWN_TOPICS:
         marker = f'data-topic="{topic_id}"'
-        assert marker in html, (
-            f"Topic tab for {topic_id!r} must be visible in the template"
-        )
+        assert marker in html, f"Topic tab for {topic_id!r} must be visible in the template"
 
 
 def test_template_no_longer_marks_topic_tabs_as_withheld() -> None:
     """The {# Withheld... #} jinja comment block is gone."""
     html = Path("templates/insights.html").read_text()
-    assert "Withheld until #1037" not in html, (
-        "The withheld-tabs comment must be removed; #1037 has shipped"
-    )
+    assert (
+        "Withheld until #1037" not in html
+    ), "The withheld-tabs comment must be removed; #1037 has shipped"
 
 
 # API integration --------------------------------------------------------

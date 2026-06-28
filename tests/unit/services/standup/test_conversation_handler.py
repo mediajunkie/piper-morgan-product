@@ -119,9 +119,7 @@ class TestStartConversation:
 
     @pytest.fixture
     def handler(self):
-        return StandupConversationHandler(
-            conversation_manager=FakeStandupConversationManager()
-        )
+        return StandupConversationHandler(conversation_manager=FakeStandupConversationManager())
 
     @pytest.mark.asyncio
     async def test_start_creates_conversation(self, handler):
@@ -164,9 +162,7 @@ class TestHandleTurnInitiated:
 
     @pytest.fixture
     def handler(self):
-        return StandupConversationHandler(
-            conversation_manager=FakeStandupConversationManager()
-        )
+        return StandupConversationHandler(conversation_manager=FakeStandupConversationManager())
 
     @pytest_asyncio.fixture
     async def conversation(self, handler):
@@ -225,9 +221,7 @@ class TestHandleTurnGathering:
 
     @pytest.fixture
     def handler(self):
-        return StandupConversationHandler(
-            conversation_manager=FakeStandupConversationManager()
-        )
+        return StandupConversationHandler(conversation_manager=FakeStandupConversationManager())
 
     @pytest_asyncio.fixture
     async def gathering_conversation(self, handler):
@@ -252,9 +246,7 @@ class TestHandleTurnRefining:
 
     @pytest.fixture
     def handler(self):
-        return StandupConversationHandler(
-            conversation_manager=FakeStandupConversationManager()
-        )
+        return StandupConversationHandler(conversation_manager=FakeStandupConversationManager())
 
     @pytest_asyncio.fixture
     async def refining_conversation(self, handler):
@@ -322,9 +314,7 @@ class TestHandleTurnFinalizing:
 
     @pytest.fixture
     def handler(self):
-        return StandupConversationHandler(
-            conversation_manager=FakeStandupConversationManager()
-        )
+        return StandupConversationHandler(conversation_manager=FakeStandupConversationManager())
 
     @pytest_asyncio.fixture
     async def finalizing_conversation(self, handler):
@@ -356,9 +346,7 @@ class TestHandleTerminalStates:
 
     @pytest.fixture
     def handler(self):
-        return StandupConversationHandler(
-            conversation_manager=FakeStandupConversationManager()
-        )
+        return StandupConversationHandler(conversation_manager=FakeStandupConversationManager())
 
     @pytest.mark.asyncio
     async def test_complete_state_returns_ended(self, handler):
@@ -479,9 +467,7 @@ class TestRefinementLogic:
 
     @pytest.fixture
     def handler(self):
-        return StandupConversationHandler(
-            conversation_manager=FakeStandupConversationManager()
-        )
+        return StandupConversationHandler(conversation_manager=FakeStandupConversationManager())
 
     @pytest_asyncio.fixture
     async def conversation_with_content(self, handler):
@@ -516,9 +502,7 @@ class TestFullConversationFlow:
 
     @pytest.fixture
     def handler(self):
-        return StandupConversationHandler(
-            conversation_manager=FakeStandupConversationManager()
-        )
+        return StandupConversationHandler(conversation_manager=FakeStandupConversationManager())
 
     @pytest.mark.asyncio
     async def test_quick_flow(self, handler):
@@ -754,9 +738,7 @@ class TestMonitoringIntegration:
 
     @pytest.fixture
     def handler(self):
-        return StandupConversationHandler(
-            conversation_manager=FakeStandupConversationManager()
-        )
+        return StandupConversationHandler(conversation_manager=FakeStandupConversationManager())
 
     @pytest.fixture
     def handler_with_workflow(self):

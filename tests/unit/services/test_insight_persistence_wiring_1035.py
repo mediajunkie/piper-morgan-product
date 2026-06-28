@@ -78,9 +78,7 @@ def _make_insight(*, user_id: str = "alpha", confidence: float = 0.85) -> Surfac
 
 async def test_insight_persists_across_sessions(shared_engine):
     """Write in session A, read in session B (fresh) — insight survives."""
-    SessionLocal = async_sessionmaker(
-        shared_engine, class_=AsyncSession, expire_on_commit=False
-    )
+    SessionLocal = async_sessionmaker(shared_engine, class_=AsyncSession, expire_on_commit=False)
 
     insight = _make_insight()
 
@@ -103,9 +101,7 @@ async def test_insight_persists_across_sessions(shared_engine):
 
 async def test_user_scoping_holds_across_sessions(shared_engine):
     """Bravo's insights stay invisible to alpha across sessions."""
-    SessionLocal = async_sessionmaker(
-        shared_engine, class_=AsyncSession, expire_on_commit=False
-    )
+    SessionLocal = async_sessionmaker(shared_engine, class_=AsyncSession, expire_on_commit=False)
 
     alpha_insight = _make_insight(user_id="alpha")
     bravo_insight = _make_insight(user_id="bravo")
@@ -127,9 +123,7 @@ async def test_user_scoping_holds_across_sessions(shared_engine):
 
 async def test_mark_surfaced_persists_across_sessions(shared_engine):
     """Surface event written in session A is visible in session B."""
-    SessionLocal = async_sessionmaker(
-        shared_engine, class_=AsyncSession, expire_on_commit=False
-    )
+    SessionLocal = async_sessionmaker(shared_engine, class_=AsyncSession, expire_on_commit=False)
 
     insight = _make_insight()
 
@@ -154,9 +148,7 @@ async def test_mark_surfaced_persists_across_sessions(shared_engine):
 
 async def test_clear_persists_per_user_across_sessions(shared_engine):
     """Per-user clear removes only that user's insights, durably."""
-    SessionLocal = async_sessionmaker(
-        shared_engine, class_=AsyncSession, expire_on_commit=False
-    )
+    SessionLocal = async_sessionmaker(shared_engine, class_=AsyncSession, expire_on_commit=False)
 
     async with SessionLocal() as session_a:
         repo = InsightRepository(session_a)

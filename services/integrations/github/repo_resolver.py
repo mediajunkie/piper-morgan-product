@@ -40,9 +40,7 @@ ENV_DEFAULT_REPO = "PIPER_DEFAULT_REPO"
 # (data/github_preferences.json) was RETIRED 2026-06-21. The user-default and github-handle
 # resolution paths read the DB-backed connector_configs store (ADR-070 D4) — the SOLE store.
 
-ResolutionSource = Literal[
-    "explicit", "project", "default_project", "user_default", "env_var"
-]
+ResolutionSource = Literal["explicit", "project", "default_project", "user_default", "env_var"]
 
 _FULL_NAME_RE = re.compile(r"^[A-Za-z0-9._\-]+/[A-Za-z0-9._\-]+$")
 
@@ -77,9 +75,7 @@ class UnresolvedRepoError(Exception):
 def parse_full_name(value: str) -> tuple[str, str]:
     """Parse `owner/name` into a tuple, raising ValueError on bad shape."""
     if not value or not _FULL_NAME_RE.match(value):
-        raise ValueError(
-            f"Invalid repo full_name {value!r}; expected 'owner/name' shape"
-        )
+        raise ValueError(f"Invalid repo full_name {value!r}; expected 'owner/name' shape")
     owner, name = value.split("/", 1)
     return owner, name
 
