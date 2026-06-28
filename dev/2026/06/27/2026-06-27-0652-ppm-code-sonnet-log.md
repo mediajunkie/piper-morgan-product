@@ -81,3 +81,24 @@ Fold covers: RECONNECT WS-1 CLOSED (June 22, v0.8.9) + WS-2 ACTIVE; ADRs 070/071
 - Roadmap fold: v18.2 proposal delivered to PM → awaiting review/ratification
 
 Inbox: 0. Queue: (0,0). IDLE.
+
+### Fire 6 — 22:22 PDT (PM manual resume)
+
+Cron: deleted `48d6c004`, re-armed `20d4cbe9`. Pull: up to date. **Inbox: 2**.
+
+**Item 1 — Exec: CXO + PPM both unblocked on entity-model surface**
+ADR-071 D2/D6 discharges CXO's owner-scoping freeze too. Combined M4 session (trust-gradient OQ-2 + onboarding scoping) queued at RECONNECT landing — Exec tracking trigger. No PPM action now.
+
+**Item 2 — Exec: People #1281 source-population one-pager (PM-directed)**
+Wrote and filed one-pager → PM inbox (CC exec/lead/arch).
+Recommendation: A-first (introduce-person flow — user_confirmed, M4, no connector dependency), B-layer (connector-import when WS-2 lands), C-later (session-extraction post-beta, pending OQ-2 ruling).
+
+**PM in-conversation milestone update**:
+- PA sorted M5 → polish/distribution/other (31 issues) → 3 M3-leftover sprints (answers FORK 1 on sprint sequence)
+- PA wiped sprint assignments during sort; forensic recovery underway (PA owns)
+- **Production milestone: Oct 30** (PM in-conversation decision)
+- **Fast-follow: moves later** (TBD)
+- **Beta date: TBD** — PM said "August 1 or later"; still pending exact confirmation
+- Roadmap v18.2 fold: gated on beta date + three sprint identities from PA recovery
+
+Inbox: 0. Queue: (0,0) — roadmap fold gated on beta date. IDLE pending PM.
