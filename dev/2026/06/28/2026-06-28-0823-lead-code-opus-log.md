@@ -48,3 +48,25 @@ manual testing/review this morning.
   source / design call (PM flagged resolve_repo as vestigial); (b) mutating handlers
   (close/comment issue) — WRITES via the grant, need write-path verification + PM's OK before
   touching real GitHub while PM tests. Holding both for PM's testing feedback.
+
+- **~11:10 — Mail check (PM-asked).** 2 Exec cc memos → read/: roadmap-forks-resolved (order =
+  [3 M3 child sprints] → RECONNECT WS-2 → M4; beta Aug 1 / prod Oct 30) + People-entity
+  source-population one-pager. Both PPM-owned M4 work; I'm cc for future build-input
+  (post-RECONNECT). One note saved: memo-2's "GitHub collaborators import" People-source option
+  could be fed by the #1317 connector — surface when PPM drafts. No action now.
+
+- **~11:30 — #1322 sim-transport half: FINDING = it's DEAD CODE, not a live path. Retirement
+  STARTED (PM-greenlit, Arch-flagged).** Traced every path: the simulation transport
+  (`PiperMCPClient simulation_mode=True` / `MCPProtocolClient` / `MCPConsumerCore`) is dormant —
+  chat GitHub = real REST always (`_call_github_api`); sim reached only via
+  `list_issues_via_mcp` ← `query_router.federated_search` ← a `__main__` demo; `main.py` serves
+  no MCP surface; `server_core` federated_search = POC stub; `connect_to_mcp` = 0 callers. So
+  Arch's "behavioral-coverage-before-delete" premise (live sim path) is moot. **Flagged Arch**
+  (memo cc PM) + **captured the executable removal plan on #1322** (comment 4827173746): ~8
+  source + 19 test files, 5-step order + m-36 guard. **Increment 1 SHIPPED**: removed the dead
+  federation/demo surface — `query_router_spatial_migration.py` (dead `__main__` demo) + 8
+  integration tests (spatial-federation suite ×5 + pm033c-mcp-server ×2 + its runner; the
+  `--collect-only` gate caught the orphaned runner straggler). Unit suites **176 green**;
+  integration collects clean (890). **Next**: inc.2 `query_router.federated_search` + dormant
+  `mcp_consumer` (now caller-less post inc.1); inc.3 github_adapter sim methods + #1088
+  demo-fallback; inc.4 the orphaned sim classes; inc.5 m-36 guard.

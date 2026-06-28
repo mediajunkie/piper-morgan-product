@@ -1,20 +1,17 @@
-# Web carry-forward — 2026-06-27 (STOP)
+# Web carry-forward — 2026-06-28 (active)
 
-**Session**: DinP/Sonnet · cron `22 6,9,12,15,18,21 * * *` · next fire: 06:22 2026-06-28
+**Session**: DinP/Sonnet · cron `22 6,9,12,15,18,21 * * *` · started 11:10
 
 ## Active threads
 
 ### #998 COMPOSE-UI-V1 — SHIPPED
 - PR #30 merged 2026-06-23; live on pipermorgan.ai
-- Phase 3 (Image Upload): PM-gated; send as `needs-decision` to Exec once inbox-proxy pilot is live
+- Phase 3 (Image Upload): PM-gated; send as `needs-decision` to Exec once inbox-proxy pilot active
 - Phase 4 (Mark Ready + Git Handoff): queued after Phase 3
 
-### July-1 site minimums (due 2026-07-01)
+### July-1 site minimums — BOTH COMPLETE ✓
 - [x] Footer byline: "Built by Christian Crumlish · designinproduct.com" — SHIPPED (ef9881df0)
-- [ ] Book-citation correction on `/about` — STAGED, awaiting Exec prefix confirm
-  - Local commit `d925aa68c` on website/main (NOT pushed — deploy hold)
-  - Staged text: *Author of **Product Management for UX People** (Rosenfeld).*
-  - Unblock: Exec relays PM-confirmed prefix → push immediately → deploys within minutes
+- [x] Book-citation `/about`: "Author of Product Management for UX People (Rosenfeld)" — SHIPPED (d925aa68c, 2026-06-28)
 
 ### Newsletter cross-referral (Janus DinP)
 - Subscribe URL + preference-center info: sent to Exec 2026-06-25
@@ -27,9 +24,11 @@
 ### Role portfolio
 - `ROLE-PORTFOLIO-WEB.md` v0.1 routed; HOST review pending
 
-## Critical watch
-- **July-1 book-citation**: Exec is confirming prefix with PM — reply expected soon; push immediately on confirm (3 days to deadline)
+## PM-react gated
+- Phase 3 (Image Upload) proposal
+- Newsletter editorial name (PM/Comms)
 
 ## Cron state
-- Armed: (re-arming now) · `22 6,9,12,15,18,21 * * *`
-- Next fire: 06:22 2026-06-28 → START
+- **IDLE** — cron suspended per Exec lean-throttle (2026-06-28)
+- Resume: "restore" broadcast from Exec after Wed Jul-1 ~9pm PT quota reset
+- Re-arm: `22 6,9,12,15,18,21 * * *` on restore signal

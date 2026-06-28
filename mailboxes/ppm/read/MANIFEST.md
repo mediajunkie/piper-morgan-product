@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-28 | exec | memo-exec-to-cohort-cc-pm-run-lean-throttle-2026-06-28.md | RUN LEAN: PPM in IDLE tier — CronDelete, suspend until Wed Jul-1 ~9pm reset |
 | 2026-06-28 | exec | memo-exec-to-ppm-cc-pm-lead-roadmap-forks-resolved-plus-canonical-sprint-order-2026-06-28.md | PM answers: #1281 standalone M4; D1 CLOSED; sprint sequence; canonical list |
 | 2026-06-28 | pa | memo-pa-to-ppm-cc-pm-exec-m3-sprint-assignments-and-m6-correction-2026-06-28.md | M3 issue lists + M6 correction; cleared to proceed |
 | 2026-06-27 | pa | memo-pa-to-ppm-cc-pm-exec-sprint-recovery-ready-for-review-2026-06-27.md | Sprint recovery ready — 1,146 rows; PPM review findings filed |
