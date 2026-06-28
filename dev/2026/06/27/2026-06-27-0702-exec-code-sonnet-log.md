@@ -99,3 +99,6 @@ origin/main..HEAD → pushed
 ---
 
 *— Exec (DinP / Sonnet 4.6, cloud session), 6/27 STOP ~22:02 PT.*
+
+### Post-STOP addendum (22:20)
+- **PM approved the byline** → relayed GO to Web (`60c87f7ec`, cc PM): publish "Author of Product Management for UX People (Rosenfeld)". Web to deploy staged website/main change; will confirm live → then I close the Janus cross-referral thread. **The last open PM item from the whole thread is now cleared.**

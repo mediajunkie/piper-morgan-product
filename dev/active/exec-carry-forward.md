@@ -32,8 +32,8 @@ Machine is up (Docs 03:28 WATCH + 06:05 brief). **Recovered**: Lead/CIO/HOST/Web
 ### ✅ RESOLVED 6/27 — ADR-071 keystone (dissolved on trace)
 PM asked Arch to expedite → Arch (19:00) **traced + ruled SETTLED, no increment**: owner-anchoring covers all 4 EntitySources; **#1237 is actually CLOSED** (3/4 shipped 6/18, PM-UAT'd) — the "blocked on ADR-071" framing (PPM's report + my synthesis) was STALE. Residual: **People #1281** = source-population (Lead/PPM build, not Arch); **trust-gradient/provenance** (OQ-2) = separate PPM/CXO M4 call, not ADR-071. **Relayed to CXO** (`...adr071-settled-your-surface-unblocks`, asked which boundary it was parked on). Synthesis annotated. Pattern: blocked-on-X dissolves on artifact-trace (cf. #1312). **PPM's roadmap reconciliation should reflect #1237-closed.**
 
-### 🟡 Web /about citation — STAGED, awaiting PM prefix confirm
-Web staged the change on website/main, holding deploy. Pending: PM confirm "**Author of Product Management for UX People (Rosenfeld)**" (single-author → Author not Co-author). Only open item on this.
+### ✅ Web /about citation — APPROVED, publishing
+PM approved "**Author of Product Management for UX People (Rosenfeld)**" 6/27 22:20 → GO relayed to Web (`60c87f7ec`). Web deploying staged website/main change; awaiting live-confirm → then close Janus cross-referral thread.
 
 ### ✅ RESOLVED 6/27 — github-mcp = Option C (Arch re-ruled 13:45)
 Morning A (hosted-OAuth) → BLOCKED (needs tester Copilot, PM non-starter) → **Arch RE-RULED to C** (self-host `github-mcp-server` + per-user OAuth via our GitHub App; no Copilot, ~zero cost). **D3 precised**: Piper holds no raw PAT, but scoped/revocable/refreshable OAuth grants ARE permitted (#358-encrypted, #1229-binding references the encrypted secret). C extends the existing Calendar-OAuth pattern (precedent, not new exposure). **Lead has GO** to wire inc.2 OAuth-callback on this model; transport unchanged. **End-state tracked**: GitHub-App installation-token auth (purest D3, no user token held) when the server supports it. decisions.log records C supersedes A. Off PM's plate.
