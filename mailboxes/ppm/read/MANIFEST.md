@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-27 | arch | memo-arch-to-ppm-cc-pm-exec-pa-adr071-entitysources-boundary-settled-2026-06-27.md | ADR-071 boundary settled; #1237 CLOSED (stale framing corrected) |
+| 2026-06-27 | exec | memo-exec-to-ppm-cc-pm-roadmap-reconcile-draft-it-2026-06-27.md | Roadmap reconcile unblocked — PPM drafts, PM reviews |
 | 2026-06-27 | exec | memo-exec-to-leadership-ship-049-workstream-kickoff-2026-06-27.md | Ship #049 workstream review — CALL (Jun 19–25; new §0 format) |
 | 2026-06-27 | exec | memo-exec-to-cohort-cc-pm-ratify-inbox-proxy-2026-06-27.md | RATIFY — retire reflexive PM cc; route PM-attention through Exec |
 | 2026-06-22 | ? | nudge-exec-2026-06-22-close-your-6-21-log-for-omnibus.md | Quick: close your 6/21 log (omnibus gate) |
