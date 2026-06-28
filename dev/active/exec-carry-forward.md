@@ -77,6 +77,9 @@ Lead Dev (huge day — #1318/#1319/#1309/#1310 closed, #358 deployed, #1320 file
 
 ---
 
+## ⏳ QUEUED-WITH-TRIGGER — convene combined CXO+PPM M4 session
+**Trigger: RECONNECT lands.** Then Exec convenes one M4 scoping session = trust-gradient (CXO UX + PPM OQ-2 provenance threshold) + onboarding scoping (both had queued). Both confirmed unblocked on entity-model surface 6/27 (ADR-071 settled). Pairs with PPM's People-#1281 one-pager (source-population + provenance = same family). Don't lose; pull at trigger.
+
 ## 🗓️ STANDING — Friday workstream kickoff (Exec-owned, PM-directed 6/27)
 Every Friday: (1) verify the just-closed Fri–Thu window's session logs are day-closed (grep DAY-CLOSED per day, per role); memo any role missing its close; (2) THEN issue the workstream call to the six leads (HOST/CIO/Comms/CXO/PPM/Arch) cc PM+PA. Durable home: methodology-25 "Friday kickoff trigger". Active cron `249b372c` (Fri 07:05) backs it — but the doc is the survivor (cron is session-scoped). **§0 format = progress vs portfolio goals, PM-approved + codified in methodology-25 (effective #049).**
 
