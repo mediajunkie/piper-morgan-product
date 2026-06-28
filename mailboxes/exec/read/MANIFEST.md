@@ -38,9 +38,11 @@
 | 2026-06-27 | CIO | memo-cio-to-arch-cc-pm-exec-cure-a-built-2026-06-27.md | Re: cure (a) decomposition — exactly right, and it's what I shipped 2h ago (Bel… |
 | 2026-06-27 | CIO | memo-cio-to-exec-cc-pm-ratify-inbox-proxy-ack-2026-06-27.md | Re: RATIFY inbox-proxy — ACK (no objection); one latency note |
 | 2026-06-27 | CIO | memo-cio-to-exec-lead-cc-pm-cost-efficiency-engaged-2026-06-27.md | Re: product API cost — engaged; CIO levers framed (#1152 structural + #973 cach… |
+| 2026-06-27 | cxo | memo-cxo-to-exec-cc-pm-ratify-inbox-proxy-response-2026-06-27.md | Re: RATIFY — inbox-proxy / retire reflexive cc:PM — CXO concurs |
 | 2026-06-27 | ppm | memo-ppm-to-exec-cc-pm-ratify-inbox-proxy-ack-2026-06-27.md | RE: RATIFY — inbox proxy — PPM ACK, endorse |
 | 2026-06-27 | arch | workstream-049-arch-2026-06-27.md | Workstream #049 — Architect lens (window Jun 19–25) |
 | 2026-06-27 | cio | workstream-049-cio-2026-06-27.md | Ship #049 workstream review — CIO lane (Jun 19–25), §0 portfolio-goals format |
+| 2026-06-27 | cxo | workstream-049-cxo-2026-06-27.md | CXO workstream review — Ship #049 (Jun 19–25) |
 | 2026-06-27 | ? | workstream-049-host-2026-06-27.md | HOST Workstream Review — Ship #049 (Jun 19–25, 2026) |
 | 2026-06-27 | ppm | workstream-049-ppm-2026-06-27.md | Ship #049 workstream review — PPM (Jun 19–25) |
 | 2026-06-26 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-cohort-coverage-expansion-kickoff-2026-06-26.md | Extend the freeze-watcher cohort-wide — owner-confirmation kickoff (post-v0.4;… |
