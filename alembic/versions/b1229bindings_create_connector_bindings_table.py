@@ -12,6 +12,7 @@ populate on connect(). Mirrors the WS-1 connector_configs migration (000baa96d80
 ADDITIVE: creates exactly one new table; touches nothing else. (The pre-existing DB<->model
 drift surfaced by autogenerate across other tables is intentionally excluded — filed as #1312.)
 """
+
 from typing import Sequence, Union
 
 import sqlalchemy as sa
@@ -36,7 +37,9 @@ def upgrade() -> None:
         sa.Column("tenant_id", CrossDialectUUID(), nullable=True),
         sa.Column("connector", sa.String(length=50), nullable=False),
         sa.Column("mcp_server_ref", sa.String(length=255), nullable=True),
-        sa.Column("status", sa.String(length=32), server_default=sa.text("'unbound'"), nullable=False),
+        sa.Column(
+            "status", sa.String(length=32), server_default=sa.text("'unbound'"), nullable=False
+        ),
         sa.Column(
             "capability_profile",
             postgresql.JSONB(astext_type=sa.Text()).with_variant(sa.JSON(), "sqlite"),
@@ -48,9 +51,7 @@ def upgrade() -> None:
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True),
         sa.ForeignKeyConstraint(["owner_id"], ["users.id"]),
         sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint(
-            "owner_id", "connector", name="uq_connector_binding_owner_connector"
-        ),
+        sa.UniqueConstraint("owner_id", "connector", name="uq_connector_binding_owner_connector"),
     )
     op.create_index(
         op.f("ix_connector_bindings_owner_id"), "connector_bindings", ["owner_id"], unique=False

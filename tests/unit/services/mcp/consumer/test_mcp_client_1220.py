@@ -9,6 +9,7 @@ inc.2 integration test.
 Design: gameplan `dev/2026/06/27/1220-real-mcp-transport-gameplan.md` (Shape B —
 a NEW SDK-based client; the legacy sim stack in query_router stays untouched).
 """
+
 import sys
 from pathlib import Path
 

@@ -434,12 +434,14 @@ class TestUnknownCategoryFallback:
         with patch.object(
             assembler,
             "_gather_status_priority_context",
-            new=AsyncMock(return_value={
-                "pending_todos": [{"text": "ship the thing"}],
-                "completed_todos": [],
-                "projects": ["alpha"],
-                "priorities": [],
-            }),
+            new=AsyncMock(
+                return_value={
+                    "pending_todos": [{"text": "ship the thing"}],
+                    "completed_todos": [],
+                    "projects": ["alpha"],
+                    "priorities": [],
+                }
+            ),
         ) as mock_gather:
             result = await assembler.gather_context(
                 intent_category="UNKNOWN",
@@ -484,12 +486,16 @@ class TestContextContractEmptyDataWarning:
     async def test_empty_data_warning_emitted_when_no_keys(self):
         """STATUS reaches floor with no data keys → context_contract_empty_data fires."""
         from services.intent_service import context_assembler as ca_module
+
         assembler = ContextAssembler()
-        with patch.object(
-            assembler,
-            "_gather_status_priority_context",
-            new=AsyncMock(return_value={}),  # gather returns empty
-        ), patch.object(ca_module.logger, "warning") as mock_warn:
+        with (
+            patch.object(
+                assembler,
+                "_gather_status_priority_context",
+                new=AsyncMock(return_value={}),  # gather returns empty
+            ),
+            patch.object(ca_module.logger, "warning") as mock_warn,
+        ):
             await assembler.gather_context(
                 intent_category="STATUS",
                 user_id="test-user",
@@ -497,32 +503,38 @@ class TestContextContractEmptyDataWarning:
             )
         # First positional arg of structlog .warning() is the event name
         events = [call.args[0] for call in mock_warn.call_args_list if call.args]
-        assert "context_contract_empty_data" in events, (
-            f"Expected context_contract_empty_data warning; got: {events}"
-        )
+        assert (
+            "context_contract_empty_data" in events
+        ), f"Expected context_contract_empty_data warning; got: {events}"
 
     @pytest.mark.asyncio
     async def test_empty_data_warning_NOT_emitted_when_data_present(self):
         """STATUS reaches floor WITH data keys → no warning."""
         from services.intent_service import context_assembler as ca_module
+
         assembler = ContextAssembler()
-        with patch.object(
-            assembler,
-            "_gather_status_priority_context",
-            new=AsyncMock(return_value={
-                "pending_todos": [{"text": "x"}],
-                "projects": ["alpha"],
-            }),
-        ), patch.object(ca_module.logger, "warning") as mock_warn:
+        with (
+            patch.object(
+                assembler,
+                "_gather_status_priority_context",
+                new=AsyncMock(
+                    return_value={
+                        "pending_todos": [{"text": "x"}],
+                        "projects": ["alpha"],
+                    }
+                ),
+            ),
+            patch.object(ca_module.logger, "warning") as mock_warn,
+        ):
             await assembler.gather_context(
                 intent_category="STATUS",
                 user_id="test-user",
                 session_id="s1",
             )
         events = [call.args[0] for call in mock_warn.call_args_list if call.args]
-        assert "context_contract_empty_data" not in events, (
-            f"Did not expect empty-data warning; got: {events}"
-        )
+        assert (
+            "context_contract_empty_data" not in events
+        ), f"Did not expect empty-data warning; got: {events}"
 
 
 # -------------------------------------------------------------------
@@ -590,8 +602,12 @@ class TestContextAssemblerCaching:
             "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
             return_value=mock_router,
         ):
-            r1 = await assembler._gather_calendar_context(user_id="00000000-0000-0000-0000-000000000001")
-            r2 = await assembler._gather_calendar_context(user_id="00000000-0000-0000-0000-000000000001")
+            r1 = await assembler._gather_calendar_context(
+                user_id="00000000-0000-0000-0000-000000000001"
+            )
+            r2 = await assembler._gather_calendar_context(
+                user_id="00000000-0000-0000-0000-000000000001"
+            )
 
         assert r1 == r2
         assert cache.compute_count == 1, "second call must be served from cache"
@@ -611,8 +627,12 @@ class TestContextAssemblerCaching:
             "services.todo.todo_management_service.TodoManagementService",
             return_value=mock_svc,
         ):
-            r1 = await assembler._get_pending_todos_cached(user_id="00000000-0000-0000-0000-000000000001", limit=10)
-            r2 = await assembler._get_pending_todos_cached(user_id="00000000-0000-0000-0000-000000000001", limit=10)
+            r1 = await assembler._get_pending_todos_cached(
+                user_id="00000000-0000-0000-0000-000000000001", limit=10
+            )
+            r2 = await assembler._get_pending_todos_cached(
+                user_id="00000000-0000-0000-0000-000000000001", limit=10
+            )
 
         assert r1 == r2
         assert cache.compute_count == 1
@@ -633,8 +653,12 @@ class TestContextAssemblerCaching:
             "services.todo.todo_management_service.TodoManagementService",
             return_value=mock_svc,
         ):
-            r_temporal = await assembler._get_pending_todos_cached(user_id="00000000-0000-0000-0000-000000000001", limit=10)
-            r_status = await assembler._get_pending_todos_cached(user_id="00000000-0000-0000-0000-000000000001", limit=5)
+            r_temporal = await assembler._get_pending_todos_cached(
+                user_id="00000000-0000-0000-0000-000000000001", limit=10
+            )
+            r_status = await assembler._get_pending_todos_cached(
+                user_id="00000000-0000-0000-0000-000000000001", limit=5
+            )
 
         assert len(r_temporal["pending_todos"]) == 8  # all stored
         assert len(r_status["pending_todos"]) == 5  # sliced
@@ -649,9 +673,7 @@ class TestContextAssemblerCaching:
 
         # Force the compute path to take the "no profile loaded" branch
         # which is deterministic without DB.
-        with _patch(
-            "services.database.session_factory.AsyncSessionFactory"
-        ) as mock_factory:
+        with _patch("services.database.session_factory.AsyncSessionFactory") as mock_factory:
             mock_session = AsyncMock()
             mock_factory.session_scope.return_value.__aenter__.return_value = mock_session
             mock_session.execute = AsyncMock()
@@ -993,7 +1015,9 @@ class TestGatherRecentActivityContext:
         """Mock GitHubIntegrationRouter exposing the MCP adapter path."""
         router = MagicMock()
         router.initialize = AsyncMock()
-        router._resolve_default_repo = AsyncMock(return_value=("mediajunkie", "piper-morgan-product"))
+        router._resolve_default_repo = AsyncMock(
+            return_value=("mediajunkie", "piper-morgan-product")
+        )
         adapter = MagicMock()
         adapter.list_github_issues_direct = AsyncMock(return_value=items)
         router.mcp_adapter = adapter
@@ -1003,6 +1027,7 @@ class TestGatherRecentActivityContext:
     def _iso(days_ago):
         """Build a UTC ISO timestamp `days_ago` days ago."""
         from datetime import datetime, timedelta, timezone
+
         dt = datetime.now(timezone.utc) - timedelta(days=days_ago)
         return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -1246,10 +1271,18 @@ class TestGatherRecentActivityContext:
         return router
 
     @staticmethod
-    def _calendar_event(start_days_ago, *, title="Standup", duration_minutes=30,
-                       attendees=3, status="confirmed", is_all_day=False):
+    def _calendar_event(
+        start_days_ago,
+        *,
+        title="Standup",
+        duration_minutes=30,
+        attendees=3,
+        status="confirmed",
+        is_all_day=False,
+    ):
         """Build a calendar event dict matching google_calendar_adapter shape."""
         from datetime import datetime, timedelta, timezone
+
         start = datetime.now(timezone.utc) - timedelta(days=start_days_ago)
         end = start + timedelta(minutes=duration_minutes)
         return {
@@ -1272,12 +1305,15 @@ class TestGatherRecentActivityContext:
         events = [self._calendar_event(2, title="Sprint Demo")]
         github_router = self._make_github_router(items=[])
         cal_router = self._make_calendar_router(events=events)
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=github_router,
-        ), patch(
-            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-            return_value=cal_router,
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=github_router,
+            ),
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=cal_router,
+            ),
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
         assert "recent_activity" in result
@@ -1301,15 +1337,20 @@ class TestGatherRecentActivityContext:
         ]
         github_router = self._make_github_router(items=[])
         cal_router = self._make_calendar_router(events=events)
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=github_router,
-        ), patch(
-            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-            return_value=cal_router,
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=github_router,
+            ),
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=cal_router,
+            ),
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
-        cal_titles = [i["title"] for i in result["recent_activity"] if i.get("source") == "calendar"]
+        cal_titles = [
+            i["title"] for i in result["recent_activity"] if i.get("source") == "calendar"
+        ]
         assert "Holiday" not in cal_titles
         assert "Standup" in cal_titles
 
@@ -1323,15 +1364,20 @@ class TestGatherRecentActivityContext:
         ]
         github_router = self._make_github_router(items=[])
         cal_router = self._make_calendar_router(events=events)
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=github_router,
-        ), patch(
-            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-            return_value=cal_router,
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=github_router,
+            ),
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=cal_router,
+            ),
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
-        cal_titles = [i["title"] for i in result["recent_activity"] if i.get("source") == "calendar"]
+        cal_titles = [
+            i["title"] for i in result["recent_activity"] if i.get("source") == "calendar"
+        ]
         assert "Recent" in cal_titles
         assert "Ancient" not in cal_titles
 
@@ -1352,19 +1398,22 @@ class TestGatherRecentActivityContext:
         github_router = self._make_github_router(items=github_items)
         # Calendar router that raises on get_events_in_range
         bad_cal_router = MagicMock()
-        bad_cal_router.get_events_in_range = AsyncMock(
-            side_effect=Exception("calendar API down")
-        )
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=github_router,
-        ), patch(
-            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-            return_value=bad_cal_router,
+        bad_cal_router.get_events_in_range = AsyncMock(side_effect=Exception("calendar API down"))
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=github_router,
+            ),
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=bad_cal_router,
+            ),
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
         # GitHub items still returned despite calendar failure
-        github_items_returned = [i for i in result["recent_activity"] if i.get("source") == "github"]
+        github_items_returned = [
+            i for i in result["recent_activity"] if i.get("source") == "github"
+        ]
         assert len(github_items_returned) == 1
 
     @pytest.mark.asyncio
@@ -1375,12 +1424,15 @@ class TestGatherRecentActivityContext:
         bad_github_router.initialize = AsyncMock(side_effect=Exception("github down"))
         events = [self._calendar_event(1, title="Sync")]
         cal_router = self._make_calendar_router(events=events)
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=bad_github_router,
-        ), patch(
-            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-            return_value=cal_router,
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=bad_github_router,
+            ),
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=cal_router,
+            ),
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
         # Calendar item still returned despite GitHub failure
@@ -1415,12 +1467,15 @@ class TestGatherRecentActivityContext:
         ]
         github_router = self._make_github_router(items=github_items)
         cal_router = self._make_calendar_router(events=events)
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=github_router,
-        ), patch(
-            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-            return_value=cal_router,
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=github_router,
+            ),
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=cal_router,
+            ),
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
         # Order should be: new gh (1d) → middle cal (3d) → old gh (5d)
@@ -1433,12 +1488,15 @@ class TestGatherRecentActivityContext:
         assembler = ContextAssembler()
         github_router = self._make_github_router(items=[])
         cal_router = self._make_calendar_router(events=[])
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=github_router,
-        ), patch(
-            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-            return_value=cal_router,
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=github_router,
+            ),
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=cal_router,
+            ),
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
         assert result == {}
@@ -1481,6 +1539,7 @@ class TestGatherRecentActivityContext:
     def _slack_message(days_ago, *, user="U_OTHER", text="hello"):
         """Build a Slack message dict with `ts` `days_ago` ago."""
         from datetime import datetime, timedelta, timezone
+
         ts = (datetime.now(timezone.utc) - timedelta(days=days_ago)).timestamp()
         return {"ts": f"{ts:.6f}", "user": user, "text": text, "type": "message"}
 
@@ -1492,19 +1551,21 @@ class TestGatherRecentActivityContext:
         cal_router = self._make_calendar_router(events=[])
         slack_router = self._make_slack_router(
             channels=[{"id": "D123", "is_mpim": False}],
-            messages_per_channel={
-                "D123": [self._slack_message(1, text="hey there")]
-            },
+            messages_per_channel={"D123": [self._slack_message(1, text="hey there")]},
         )
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=github_router,
-        ), patch(
-            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-            return_value=cal_router,
-        ), patch(
-            "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
-            return_value=slack_router,
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=github_router,
+            ),
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=cal_router,
+            ),
+            patch(
+                "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
+                return_value=slack_router,
+            ),
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
         slack_items = [i for i in result["recent_activity"] if i.get("source") == "slack"]
@@ -1527,15 +1588,19 @@ class TestGatherRecentActivityContext:
             channels=[{"id": "G456", "is_mpim": True}],
             messages_per_channel={"G456": [self._slack_message(1, text="group msg")]},
         )
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=github_router,
-        ), patch(
-            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-            return_value=cal_router,
-        ), patch(
-            "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
-            return_value=slack_router,
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=github_router,
+            ),
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=cal_router,
+            ),
+            patch(
+                "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
+                return_value=slack_router,
+            ),
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
         slack_items = [i for i in result["recent_activity"] if i.get("source") == "slack"]
@@ -1561,15 +1626,19 @@ class TestGatherRecentActivityContext:
         # Slack router raises on list
         bad_slack = MagicMock()
         bad_slack.list_im_channels = AsyncMock(side_effect=Exception("slack down"))
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=github_router,
-        ), patch(
-            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-            return_value=cal_router,
-        ), patch(
-            "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
-            return_value=bad_slack,
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=github_router,
+            ),
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=cal_router,
+            ),
+            patch(
+                "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
+                return_value=bad_slack,
+            ),
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
         sources = {i.get("source") for i in result["recent_activity"]}
@@ -1587,15 +1656,19 @@ class TestGatherRecentActivityContext:
         bad_list_slack.list_im_channels = AsyncMock(
             return_value=self._slack_response(success=False, data={})
         )
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=github_router,
-        ), patch(
-            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-            return_value=cal_router,
-        ), patch(
-            "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
-            return_value=bad_list_slack,
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=github_router,
+            ),
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=cal_router,
+            ),
+            patch(
+                "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
+                return_value=bad_list_slack,
+            ),
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
         # No sources had data → empty result
@@ -1612,10 +1685,12 @@ class TestGatherRecentActivityContext:
         slack_router.list_im_channels = AsyncMock(
             return_value=self._slack_response(
                 success=True,
-                data={"channels": [
-                    {"id": "D_BAD", "is_mpim": False},
-                    {"id": "D_GOOD", "is_mpim": False},
-                ]},
+                data={
+                    "channels": [
+                        {"id": "D_BAD", "is_mpim": False},
+                        {"id": "D_GOOD", "is_mpim": False},
+                    ]
+                },
             )
         )
 
@@ -1629,15 +1704,19 @@ class TestGatherRecentActivityContext:
 
         slack_router.get_conversation_history = AsyncMock(side_effect=_history)
 
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-            return_value=github_router,
-        ), patch(
-            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-            return_value=cal_router,
-        ), patch(
-            "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
-            return_value=slack_router,
+        with (
+            patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+                return_value=github_router,
+            ),
+            patch(
+                "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+                return_value=cal_router,
+            ),
+            patch(
+                "services.integrations.slack.slack_integration_router.SlackIntegrationRouter",
+                return_value=slack_router,
+            ),
         ):
             result = await assembler._gather_recent_activity_context(user_id="u1")
         slack_items = [i for i in result["recent_activity"] if i.get("source") == "slack"]
@@ -1728,10 +1807,13 @@ class TestFetchSlackMentionsItems:
         session_mock = _make_aiohttp_session_mock([{"ok": False, "error": "invalid_auth"}])
 
         assembler = ContextAssembler()
-        with patch(
-            "services.infrastructure.keychain_service.KeychainService",
-            return_value=mock_keychain,
-        ), patch("aiohttp.ClientSession", return_value=session_mock):
+        with (
+            patch(
+                "services.infrastructure.keychain_service.KeychainService",
+                return_value=mock_keychain,
+            ),
+            patch("aiohttp.ClientSession", return_value=session_mock),
+        ):
             result = await assembler._fetch_slack_mentions_items(user_id="u1")
 
         assert result == []
@@ -1745,31 +1827,36 @@ class TestFetchSlackMentionsItems:
         # Compute a within-window timestamp (1 day ago)
         recent_ts = (datetime.now() - timedelta(days=1)).timestamp()
 
-        session_mock = _make_aiohttp_session_mock([
-            # auth.test response
-            {"ok": True, "user": "alice"},
-            # search.messages response
-            {
-                "ok": True,
-                "messages": {
-                    "matches": [
-                        {
-                            "ts": f"{recent_ts:.6f}",
-                            "text": "Hey @alice, can you look at this?",
-                            "user": "U2BOB",
-                            "channel": {"id": "C123", "name": "general"},
-                            "permalink": "https://example.slack.com/archives/C123/p1",
-                        }
-                    ]
+        session_mock = _make_aiohttp_session_mock(
+            [
+                # auth.test response
+                {"ok": True, "user": "alice"},
+                # search.messages response
+                {
+                    "ok": True,
+                    "messages": {
+                        "matches": [
+                            {
+                                "ts": f"{recent_ts:.6f}",
+                                "text": "Hey @alice, can you look at this?",
+                                "user": "U2BOB",
+                                "channel": {"id": "C123", "name": "general"},
+                                "permalink": "https://example.slack.com/archives/C123/p1",
+                            }
+                        ]
+                    },
                 },
-            },
-        ])
+            ]
+        )
 
         assembler = ContextAssembler()
-        with patch(
-            "services.infrastructure.keychain_service.KeychainService",
-            return_value=mock_keychain,
-        ), patch("aiohttp.ClientSession", return_value=session_mock):
+        with (
+            patch(
+                "services.infrastructure.keychain_service.KeychainService",
+                return_value=mock_keychain,
+            ),
+            patch("aiohttp.ClientSession", return_value=session_mock),
+        ):
             result = await assembler._fetch_slack_mentions_items(user_id="u1")
 
         assert len(result) == 1
@@ -1792,34 +1879,39 @@ class TestFetchSlackMentionsItems:
         recent_ts = (datetime.now() - timedelta(days=1)).timestamp()
         old_ts = (datetime.now() - timedelta(days=60)).timestamp()
 
-        session_mock = _make_aiohttp_session_mock([
-            {"ok": True, "user": "alice"},
-            {
-                "ok": True,
-                "messages": {
-                    "matches": [
-                        {
-                            "ts": f"{recent_ts:.6f}",
-                            "text": "recent ping",
-                            "user": "U1",
-                            "channel": {"id": "C123"},
-                        },
-                        {
-                            "ts": f"{old_ts:.6f}",
-                            "text": "ancient ping",
-                            "user": "U2",
-                            "channel": {"id": "C456"},
-                        },
-                    ]
+        session_mock = _make_aiohttp_session_mock(
+            [
+                {"ok": True, "user": "alice"},
+                {
+                    "ok": True,
+                    "messages": {
+                        "matches": [
+                            {
+                                "ts": f"{recent_ts:.6f}",
+                                "text": "recent ping",
+                                "user": "U1",
+                                "channel": {"id": "C123"},
+                            },
+                            {
+                                "ts": f"{old_ts:.6f}",
+                                "text": "ancient ping",
+                                "user": "U2",
+                                "channel": {"id": "C456"},
+                            },
+                        ]
+                    },
                 },
-            },
-        ])
+            ]
+        )
 
         assembler = ContextAssembler()
-        with patch(
-            "services.infrastructure.keychain_service.KeychainService",
-            return_value=mock_keychain,
-        ), patch("aiohttp.ClientSession", return_value=session_mock):
+        with (
+            patch(
+                "services.infrastructure.keychain_service.KeychainService",
+                return_value=mock_keychain,
+            ),
+            patch("aiohttp.ClientSession", return_value=session_mock),
+        ):
             result = await assembler._fetch_slack_mentions_items(user_id="u1")
 
         assert len(result) == 1
@@ -1848,29 +1940,34 @@ class TestFetchSlackMentionsItems:
 
         recent_ts = (datetime.now() - timedelta(days=1)).timestamp()
 
-        session_mock = _make_aiohttp_session_mock([
-            {"ok": True, "user": "alice"},
-            {
-                "ok": True,
-                "messages": {
-                    "matches": [
-                        {"text": "no-ts-here", "user": "U1", "channel": {"id": "C1"}},
-                        {
-                            "ts": f"{recent_ts:.6f}",
-                            "text": "valid-ping",
-                            "user": "U2",
-                            "channel": {"id": "C2"},
-                        },
-                    ]
+        session_mock = _make_aiohttp_session_mock(
+            [
+                {"ok": True, "user": "alice"},
+                {
+                    "ok": True,
+                    "messages": {
+                        "matches": [
+                            {"text": "no-ts-here", "user": "U1", "channel": {"id": "C1"}},
+                            {
+                                "ts": f"{recent_ts:.6f}",
+                                "text": "valid-ping",
+                                "user": "U2",
+                                "channel": {"id": "C2"},
+                            },
+                        ]
+                    },
                 },
-            },
-        ])
+            ]
+        )
 
         assembler = ContextAssembler()
-        with patch(
-            "services.infrastructure.keychain_service.KeychainService",
-            return_value=mock_keychain,
-        ), patch("aiohttp.ClientSession", return_value=session_mock):
+        with (
+            patch(
+                "services.infrastructure.keychain_service.KeychainService",
+                return_value=mock_keychain,
+            ),
+            patch("aiohttp.ClientSession", return_value=session_mock),
+        ):
             result = await assembler._fetch_slack_mentions_items(user_id="u1")
 
         assert len(result) == 1

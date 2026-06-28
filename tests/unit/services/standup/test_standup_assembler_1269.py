@@ -61,7 +61,9 @@ class _BoomSource:
 def _sources():
     conv = _FakeSource(
         [
-            _ent(EntityType.CONVERSATION, "talked perf", "active", NOW - 12 * H),  # → dropped (conversations aren't standup items)
+            _ent(
+                EntityType.CONVERSATION, "talked perf", "active", NOW - 12 * H
+            ),  # → dropped (conversations aren't standup items)
             _ent(EntityType.CONVERSATION, "old thread", "dormant", NOW - 30 * D),  # → dropped
         ]
     )
@@ -93,7 +95,10 @@ class TestStandupAssemblerSlotMapping:
     async def test_yesterday_is_recent_movement(self):
         summary = await StandupAssembler(_sources(), now_epoch=NOW).assemble("u1")
         assert isinstance(summary, StandupSummary)
-        assert _displays(summary.yesterday) == {"spec draft", "done-y"}  # conversations dropped (PM 6/19)
+        assert _displays(summary.yesterday) == {
+            "spec draft",
+            "done-y",
+        }  # conversations dropped (PM 6/19)
 
     async def test_today_is_open_plate(self):
         summary = await StandupAssembler(_sources(), now_epoch=NOW).assemble("u1")
@@ -109,7 +114,9 @@ class TestStandupAssemblerSlotMapping:
             _displays(summary.yesterday) | _displays(summary.today) | _displays(summary.watch)
         )
         assert "old thread" not in everything  # dormant conversation
-        assert "talked perf" not in everything  # active conversation — conversations aren't standup items (PM 6/19)
+        assert (
+            "talked perf" not in everything
+        )  # active conversation — conversations aren't standup items (PM 6/19)
         assert "ancient" not in everything  # stale document
         assert "ex" not in everything  # EXAMPLE provenance (honest-provenance filter)
 

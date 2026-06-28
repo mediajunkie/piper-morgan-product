@@ -185,9 +185,9 @@ class ReferenceResolver:
         # directly (not only via resolve_references, which pre-windows at line ~116), so
         # limit to the most recent N turns — otherwise anaphora can match stale,
         # out-of-window entities. (Re-windowing an already-windowed list is a no-op.)
-        windowed_turns = sorted(
-            context_turns, key=lambda t: t.turn_number, reverse=True
-        )[: self.context_window_turns]
+        windowed_turns = sorted(context_turns, key=lambda t: t.turn_number, reverse=True)[
+            : self.context_window_turns
+        ]
 
         for turn in windowed_turns:
             # Extract entities from assistant responses

@@ -445,7 +445,9 @@ async def test_password_change_validation(real_client, integration_db):
         "new_password": "Short1!",
         "new_password_confirm": "Short1!",
     }
-    response = await real_client.post("/api/v1/auth/change-password", json=change_data, headers=headers)
+    response = await real_client.post(
+        "/api/v1/auth/change-password", json=change_data, headers=headers
+    )
     assert response.status_code == 400, "Too short password should be rejected"
 
     # Test 2: Missing uppercase
@@ -454,7 +456,9 @@ async def test_password_change_validation(real_client, integration_db):
         "new_password": "lowercase123!",
         "new_password_confirm": "lowercase123!",
     }
-    response = await real_client.post("/api/v1/auth/change-password", json=change_data, headers=headers)
+    response = await real_client.post(
+        "/api/v1/auth/change-password", json=change_data, headers=headers
+    )
     assert response.status_code == 400, "Missing uppercase should be rejected"
 
     # Test 3: Missing lowercase
@@ -463,7 +467,9 @@ async def test_password_change_validation(real_client, integration_db):
         "new_password": "UPPERCASE123!",
         "new_password_confirm": "UPPERCASE123!",
     }
-    response = await real_client.post("/api/v1/auth/change-password", json=change_data, headers=headers)
+    response = await real_client.post(
+        "/api/v1/auth/change-password", json=change_data, headers=headers
+    )
     assert response.status_code == 400, "Missing lowercase should be rejected"
 
     # Test 4: Missing digit
@@ -472,7 +478,9 @@ async def test_password_change_validation(real_client, integration_db):
         "new_password": "NoDigits!Pass",
         "new_password_confirm": "NoDigits!Pass",
     }
-    response = await real_client.post("/api/v1/auth/change-password", json=change_data, headers=headers)
+    response = await real_client.post(
+        "/api/v1/auth/change-password", json=change_data, headers=headers
+    )
     assert response.status_code == 400, "Missing digit should be rejected"
 
     # Test 5: Missing special character
@@ -481,7 +489,9 @@ async def test_password_change_validation(real_client, integration_db):
         "new_password": "NoSpecial123",
         "new_password_confirm": "NoSpecial123",
     }
-    response = await real_client.post("/api/v1/auth/change-password", json=change_data, headers=headers)
+    response = await real_client.post(
+        "/api/v1/auth/change-password", json=change_data, headers=headers
+    )
     assert response.status_code == 400, "Missing special character should be rejected"
 
     # Test 6: Passwords don't match
@@ -490,7 +500,9 @@ async def test_password_change_validation(real_client, integration_db):
         "new_password": "Valid@Pass123",
         "new_password_confirm": "Different@Pass1",
     }
-    response = await real_client.post("/api/v1/auth/change-password", json=change_data, headers=headers)
+    response = await real_client.post(
+        "/api/v1/auth/change-password", json=change_data, headers=headers
+    )
     assert response.status_code == 400, "Non-matching passwords should be rejected"
     assert "do not match" in response.json()["detail"].lower()
 
@@ -500,6 +512,8 @@ async def test_password_change_validation(real_client, integration_db):
         "new_password": "Valid@NewPass1",
         "new_password_confirm": "Valid@NewPass1",
     }
-    response = await real_client.post("/api/v1/auth/change-password", json=change_data, headers=headers)
+    response = await real_client.post(
+        "/api/v1/auth/change-password", json=change_data, headers=headers
+    )
     assert response.status_code == 401, "Wrong current password should be rejected"
     assert "current password" in response.json()["detail"].lower()

@@ -6,6 +6,7 @@ binding exists. (Increment 2 adds the OAuth callback that CREATES the binding pe
 increment 3 wires resolve().) Verified against an in-memory ConnectorBinding store with the
 adapter's `session_scope` pointed at the test session.
 """
+
 from __future__ import annotations
 
 import contextlib

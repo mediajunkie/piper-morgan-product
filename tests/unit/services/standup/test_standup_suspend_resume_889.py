@@ -44,9 +44,7 @@ class TestSuspendedExclusionInLookups:
     async def test_get_conversation_by_session_excludes_suspended(self):
         """SUSPENDED conversations are not 'active' and should not be found by default."""
         conv = await self.manager.create_conversation("sess-1", "user-1")
-        await self.manager.transition_state(
-            conv.id, StandupConversationState.GATHERING_PREFERENCES
-        )
+        await self.manager.transition_state(conv.id, StandupConversationState.GATHERING_PREFERENCES)
         await self.manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
 
         result = await self.manager.get_conversation_by_session("sess-1")
@@ -56,14 +54,10 @@ class TestSuspendedExclusionInLookups:
     async def test_get_conversation_by_session_includes_suspended_when_requested(self):
         """With include_suspended=True, SUSPENDED conversations are returned."""
         conv = await self.manager.create_conversation("sess-1", "user-1")
-        await self.manager.transition_state(
-            conv.id, StandupConversationState.GATHERING_PREFERENCES
-        )
+        await self.manager.transition_state(conv.id, StandupConversationState.GATHERING_PREFERENCES)
         await self.manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
 
-        result = await self.manager.get_conversation_by_session(
-            "sess-1", include_suspended=True
-        )
+        result = await self.manager.get_conversation_by_session("sess-1", include_suspended=True)
         assert result is not None
         assert result.id == conv.id
         assert result.state == StandupConversationState.SUSPENDED
@@ -85,9 +79,7 @@ class TestSuspendedExclusionInLookups:
         await self.manager.transition_state(conv.id, StandupConversationState.GENERATING)
         await self.manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
 
-        result = await self.manager.get_conversation_by_user(
-            "user-1", include_suspended=True
-        )
+        result = await self.manager.get_conversation_by_user("user-1", include_suspended=True)
         assert result is not None
         assert result.state == StandupConversationState.SUSPENDED
 
@@ -417,19 +409,15 @@ class TestBindSessionIdResume:
         await manager.bind_session_id(conv.id, "sess-B")
 
         # Post-bind: findable by new session, NOT findable by old session
-        after_new = await manager.get_conversation_by_session(
-            "sess-B", include_suspended=True
-        )
+        after_new = await manager.get_conversation_by_session("sess-B", include_suspended=True)
         assert after_new is not None
         assert after_new.id == conv.id
         assert after_new.session_id == "sess-B"
 
-        after_old = await manager.get_conversation_by_session(
-            "sess-A", include_suspended=True
-        )
-        assert after_old is None, (
-            "Old session should no longer find the conversation after re-binding"
-        )
+        after_old = await manager.get_conversation_by_session("sess-A", include_suspended=True)
+        assert (
+            after_old is None
+        ), "Old session should no longer find the conversation after re-binding"
 
     @pytest.mark.asyncio
     async def test_bind_session_id_preserves_conversation_state(self):
@@ -438,9 +426,7 @@ class TestBindSessionIdResume:
 
         conv = await manager.create_conversation("sess-A", "user-1")
         await manager.transition_state(conv.id, StandupConversationState.GENERATING)
-        await manager.set_standup_content(
-            conv.id, "**Yesterday**: shipped X\n**Today**: ship Y"
-        )
+        await manager.set_standup_content(conv.id, "**Yesterday**: shipped X\n**Today**: ship Y")
         await manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
 
         await manager.bind_session_id(conv.id, "sess-B")

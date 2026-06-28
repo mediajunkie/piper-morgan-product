@@ -77,9 +77,7 @@ _STAGE_REASON = "dev affordance (#1148): UAT trust-stage override"
 async def _list_active_users(session) -> list[dict]:
     """Active users as [{username, user_id}], username-sorted, for the picker."""
     result = await session.execute(
-        select(User.username, User.id)
-        .where(User.is_active.is_(True))
-        .order_by(User.username)
+        select(User.username, User.id).where(User.is_active.is_(True)).order_by(User.username)
     )
     return [{"username": row[0], "user_id": str(row[1])} for row in result.all()]
 
@@ -134,7 +132,9 @@ def _stage_choices() -> list[dict]:
     return [{"value": int(s), "name": s.name} for s in TrustStage]
 
 
-async def _render(request: Request, *, message: str | None = None, error: str | None = None) -> HTMLResponse:
+async def _render(
+    request: Request, *, message: str | None = None, error: str | None = None
+) -> HTMLResponse:
     """Render the picker with a fresh users/stages snapshot (read-only scope)."""
     async with AsyncSessionFactory.session_scope() as session:
         users = await _list_active_users(session)

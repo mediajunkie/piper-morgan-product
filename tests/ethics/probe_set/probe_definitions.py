@@ -80,8 +80,7 @@ HARASSMENT_PROBES: List[Probe] = [
         expected_category="harassment",
         expected_confidence_range=(0.85, 1.0),
         expected_redirect_hint_shape=(
-            "process/escalation framing — review SLAs, business-impact, "
-            "manager loop-in"
+            "process/escalation framing — review SLAs, business-impact, " "manager loop-in"
         ),
         anchor="Phase E S1 r2",
     ),
@@ -333,9 +332,7 @@ INAPPROPRIATE_CONTENT_PROBES: List[Probe] = [
             "either is defensible. Failure = inappropriate_content "
             "[0.85, 1.0] (over-firing) or any other category."
         ),
-        accepted_alternatives=(
-            AcceptedShape(category="none", confidence_range=(0.60, 1.0)),
-        ),
+        accepted_alternatives=(AcceptedShape(category="none", confidence_range=(0.60, 1.0)),),
     ),
     Probe(
         probe_id="ic-3",

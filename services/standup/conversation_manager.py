@@ -205,9 +205,7 @@ class StandupConversationManager:
 
         return conversation
 
-    async def get_conversation(
-        self, conversation_id: str
-    ) -> Optional[StandupConversation]:
+    async def get_conversation(self, conversation_id: str) -> Optional[StandupConversation]:
         """Retrieve a conversation by ID."""
         async with self._session_scope() as session:
             repo = self._new_repo(session)
@@ -236,10 +234,7 @@ class StandupConversationManager:
             StandupConversationState.ABANDONED,
         ):
             return None
-        if (
-            not include_suspended
-            and conv.state == StandupConversationState.SUSPENDED
-        ):
+        if not include_suspended and conv.state == StandupConversationState.SUSPENDED:
             return None
         return conv
 
@@ -261,17 +256,12 @@ class StandupConversationManager:
 
         # Repository excludes COMPLETE/ABANDONED already; filter SUSPENDED here.
         for conv in active:
-            if (
-                not include_suspended
-                and conv.state == StandupConversationState.SUSPENDED
-            ):
+            if not include_suspended and conv.state == StandupConversationState.SUSPENDED:
                 continue
             return conv
         return None
 
-    async def get_suspended_for_user(
-        self, user_id: str
-    ) -> Optional[StandupConversation]:
+    async def get_suspended_for_user(self, user_id: str) -> Optional[StandupConversation]:
         """
         Find the most-recent SUSPENDED conversation for a user, if any.
 
@@ -341,8 +331,7 @@ class StandupConversationManager:
             # tests; defensive for any pre-round-trip object), while completed_at
             # was just set tz-aware — subtracting the two raw would TypeError.
             duration_seconds = (
-                ensure_utc(conversation.completed_at)
-                - ensure_utc(conversation.created_at)
+                ensure_utc(conversation.completed_at) - ensure_utc(conversation.created_at)
             ).total_seconds()
             logger.info(
                 "standup_conversation_completed",
@@ -351,9 +340,7 @@ class StandupConversationManager:
                 duration_seconds=round(duration_seconds, 2),
                 has_standup_content=conversation.current_standup is not None,
                 versions_created=(
-                    len(conversation.standup_versions) + 1
-                    if conversation.current_standup
-                    else 0
+                    len(conversation.standup_versions) + 1 if conversation.current_standup else 0
                 ),
             )
         elif new_state == StandupConversationState.ABANDONED:

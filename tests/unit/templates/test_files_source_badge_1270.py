@@ -10,6 +10,7 @@ silently drop the provenance labeling.
 Same content-assertion pattern as test_files_rename_1184 (the rename affordance
 is also inline `renderFiles` JS). The badge palette is tentative pending CXO ratify.
 """
+
 from pathlib import Path
 
 import pytest

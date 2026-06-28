@@ -113,9 +113,7 @@ class ConversationKnowledgeGraphIntegration:
             # Use session-scoped repository for queries
             async with AsyncSessionFactory.session_scope() as session:
                 repo = KnowledgeGraphRepository(session)
-                kg_service = KnowledgeGraphService(
-                    knowledge_graph_repository=repo
-                )
+                kg_service = KnowledgeGraphService(knowledge_graph_repository=repo)
 
                 # Query for concept-related nodes
                 # Extract potential concept mentions from message

@@ -103,17 +103,13 @@ class UserAPIKeyService:
                 if not validation_report.strength_acceptable:
                     entropy_score = validation_report.strength_result.entropy_score
                     entropy_pct = int(entropy_score * 100)
-                    error_messages.append(
-                        f"Key too weak: entropy {entropy_pct}% (required: 70%)"
-                    )
+                    error_messages.append(f"Key too weak: entropy {entropy_pct}% (required: 70%)")
                 if not validation_report.leak_safe:
                     source = validation_report.leak_result.source or "known_leak_database"
                     error_messages.append(f"Key found in breach database: {source}")
 
                 error_detail = (
-                    " | ".join(error_messages)
-                    if error_messages
-                    else "Security validation failed"
+                    " | ".join(error_messages) if error_messages else "Security validation failed"
                 )
                 logger.warning(f"API key validation failed for {provider}: {error_detail}")
 
@@ -202,9 +198,7 @@ class UserAPIKeyService:
         # #358: also encrypt-at-rest in the DB (portable to the hosted box, which has no
         # OS keychain). None encryptor (no master key) → skip; the keychain remains the store.
         encrypted_secret = (
-            self._encryptor.encrypt(api_key, "user_api_keys.secret")
-            if self._encryptor
-            else None
+            self._encryptor.encrypt(api_key, "user_api_keys.secret") if self._encryptor else None
         )
 
         # Check if key record exists
@@ -311,9 +305,7 @@ class UserAPIKeyService:
         # OS keychain). Fall back to the keychain for legacy / pre-migration / local rows.
         if user_key.encrypted_secret and self._encryptor:
             try:
-                return self._encryptor.decrypt(
-                    user_key.encrypted_secret, "user_api_keys.secret"
-                )
+                return self._encryptor.decrypt(user_key.encrypted_secret, "user_api_keys.secret")
             except DecryptionError:
                 logger.error(
                     f"Failed to decrypt stored secret for {user_id}/{provider}; "

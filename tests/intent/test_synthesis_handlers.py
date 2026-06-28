@@ -716,12 +716,15 @@ class TestSynthesisHandlers:
         mock_cfg = MagicMock()
         mock_cfg.get_authentication_token.return_value = "ghp_valid"
 
-        with patch(
-            "services.integrations.github.config_service.GitHubConfigService",
-            return_value=mock_cfg,
-        ), patch(
-            "services.integrations.github.issue_fetch.fetch_issue_with_comments",
-            new=AsyncMock(return_value=mock_issue),
+        with (
+            patch(
+                "services.integrations.github.config_service.GitHubConfigService",
+                return_value=mock_cfg,
+            ),
+            patch(
+                "services.integrations.github.issue_fetch.fetch_issue_with_comments",
+                new=AsyncMock(return_value=mock_issue),
+            ),
         ):
             # Mock LLM client
             mock_llm_response = {

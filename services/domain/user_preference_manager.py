@@ -850,13 +850,9 @@ class UserPreferenceManager:
             One of None | "offered" | "declined" | "deferred" | "accepted".
             None means the user has never been offered calendar setup.
         """
-        return await self.get_preference(
-            CALENDAR_SETUP_OFFERED, user_id=user_id, default=None
-        )
+        return await self.get_preference(CALENDAR_SETUP_OFFERED, user_id=user_id, default=None)
 
-    async def set_calendar_setup_offer_state(
-        self, user_id: UUID, state: Optional[str]
-    ) -> None:
+    async def set_calendar_setup_offer_state(self, user_id: UUID, state: Optional[str]) -> None:
         """Set the calendar-setup offer state for user.
 
         Args:
@@ -923,9 +919,7 @@ class UserPreferenceManager:
         """
         return await self.get_preference(ACTIVE_REPOS, user_id=user_id, default=None)
 
-    async def set_active_repos(
-        self, user_id: UUID, value: Optional[List[str]]
-    ) -> None:
+    async def set_active_repos(self, user_id: UUID, value: Optional[List[str]]) -> None:
         """Set the user's active GitHub repos list.
 
         Args:
@@ -968,13 +962,9 @@ class UserPreferenceManager:
         Returns:
             Channel name string (e.g., "#standups"), or None if not set.
         """
-        return await self.get_preference(
-            SLACK_DEFAULT_CHANNEL, user_id=user_id, default=None
-        )
+        return await self.get_preference(SLACK_DEFAULT_CHANNEL, user_id=user_id, default=None)
 
-    async def set_slack_default_channel(
-        self, user_id: UUID, value: Optional[str]
-    ) -> None:
+    async def set_slack_default_channel(self, user_id: UUID, value: Optional[str]) -> None:
         """Set the user's default Slack channel.
 
         Args:
@@ -989,13 +979,11 @@ class UserPreferenceManager:
         if value is not None:
             if not isinstance(value, str):
                 raise TypeError(
-                    f"Invalid slack_default_channel value {value!r}; "
-                    "expected str or None"
+                    f"Invalid slack_default_channel value {value!r}; " "expected str or None"
                 )
             if not value.strip():
                 raise ValueError(
-                    "slack_default_channel cannot be empty/whitespace; "
-                    "use None to clear instead"
+                    "slack_default_channel cannot be empty/whitespace; " "use None to clear instead"
                 )
         await self.set_preference(SLACK_DEFAULT_CHANNEL, value, user_id=user_id)
 
@@ -1005,13 +993,9 @@ class UserPreferenceManager:
         Returns:
             Notion database ID string, or None if not set.
         """
-        return await self.get_preference(
-            NOTION_DATABASE, user_id=user_id, default=None
-        )
+        return await self.get_preference(NOTION_DATABASE, user_id=user_id, default=None)
 
-    async def set_notion_database(
-        self, user_id: UUID, value: Optional[str]
-    ) -> None:
+    async def set_notion_database(self, user_id: UUID, value: Optional[str]) -> None:
         """Set the user's Notion database ID.
 
         Args:
@@ -1024,14 +1008,10 @@ class UserPreferenceManager:
         """
         if value is not None:
             if not isinstance(value, str):
-                raise TypeError(
-                    f"Invalid notion_database value {value!r}; "
-                    "expected str or None"
-                )
+                raise TypeError(f"Invalid notion_database value {value!r}; " "expected str or None")
             if not value.strip():
                 raise ValueError(
-                    "notion_database cannot be empty/whitespace; "
-                    "use None to clear instead"
+                    "notion_database cannot be empty/whitespace; " "use None to clear instead"
                 )
         await self.set_preference(NOTION_DATABASE, value, user_id=user_id)
 

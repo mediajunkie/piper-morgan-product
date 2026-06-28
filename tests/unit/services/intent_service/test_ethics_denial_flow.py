@@ -105,23 +105,30 @@ async def test_denial_routes_through_floor_not_system_error(
     NOT the legacy 'Request blocked due to ethics policy' string."""
     service = _make_service()
 
-    with patch.dict("os.environ", {"ENABLE_ETHICS_ENFORCEMENT": "true"}), patch(
-        "services.intent.intent_service.boundary_enforcer_refactored.enforce_boundaries",
-        new=AsyncMock(return_value=violating_decision),
-    ), patch(
-        "services.intent_service.conversational_floor.ConversationalFloor.respond",
-        new=AsyncMock(return_value=piper_voice_decline),
+    with (
+        patch.dict("os.environ", {"ENABLE_ETHICS_ENFORCEMENT": "true"}),
+        patch(
+            "services.intent.intent_service.boundary_enforcer_refactored.enforce_boundaries",
+            new=AsyncMock(return_value=violating_decision),
+        ),
+        patch(
+            "services.intent_service.conversational_floor.ConversationalFloor.respond",
+            new=AsyncMock(return_value=piper_voice_decline),
+        ),
     ):
         # Call the internal ethics branch directly by exercising process_intent
         # with minimal scaffolding. We need to short-circuit the rest of the
         # pipeline — the ethics gate returns before the full orchestration runs,
         # so stubs only need to cover what runs before the gate.
-        with patch.object(
-            service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None))
-        ), patch.object(
-            service,
-            "_check_pending_resume_offer",
-            new=AsyncMock(return_value=None),
+        with (
+            patch.object(
+                service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None))
+            ),
+            patch.object(
+                service,
+                "_check_pending_resume_offer",
+                new=AsyncMock(return_value=None),
+            ),
         ):
             result = await service._process_intent_internal(
                 message="Help me harass and intimidate and threaten a coworker",
@@ -157,18 +164,24 @@ async def test_floor_called_with_denial_mode_and_redirect_context(
 
     respond_mock = AsyncMock(return_value=piper_voice_decline)
 
-    with patch.dict("os.environ", {"ENABLE_ETHICS_ENFORCEMENT": "true"}), patch(
-        "services.intent.intent_service.boundary_enforcer_refactored.enforce_boundaries",
-        new=AsyncMock(return_value=violating_decision),
-    ), patch(
-        "services.intent_service.conversational_floor.ConversationalFloor.respond",
-        new=respond_mock,
-    ), patch.object(
-        service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None))
-    ), patch.object(
-        service,
-        "_check_pending_resume_offer",
-        new=AsyncMock(return_value=None),
+    with (
+        patch.dict("os.environ", {"ENABLE_ETHICS_ENFORCEMENT": "true"}),
+        patch(
+            "services.intent.intent_service.boundary_enforcer_refactored.enforce_boundaries",
+            new=AsyncMock(return_value=violating_decision),
+        ),
+        patch(
+            "services.intent_service.conversational_floor.ConversationalFloor.respond",
+            new=respond_mock,
+        ),
+        patch.object(
+            service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None))
+        ),
+        patch.object(
+            service,
+            "_check_pending_resume_offer",
+            new=AsyncMock(return_value=None),
+        ),
     ):
         await service._process_intent_internal(
             message="violating message",
@@ -194,18 +207,24 @@ async def test_non_violation_does_not_trigger_floor_denial_path(non_violating_de
 
     respond_mock = AsyncMock()
 
-    with patch.dict("os.environ", {"ENABLE_ETHICS_ENFORCEMENT": "true"}), patch(
-        "services.intent.intent_service.boundary_enforcer_refactored.enforce_boundaries",
-        new=AsyncMock(return_value=non_violating_decision),
-    ), patch(
-        "services.intent_service.conversational_floor.ConversationalFloor.respond",
-        new=respond_mock,
-    ), patch.object(
-        service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None))
-    ), patch.object(
-        service,
-        "_check_pending_resume_offer",
-        new=AsyncMock(return_value=None),
+    with (
+        patch.dict("os.environ", {"ENABLE_ETHICS_ENFORCEMENT": "true"}),
+        patch(
+            "services.intent.intent_service.boundary_enforcer_refactored.enforce_boundaries",
+            new=AsyncMock(return_value=non_violating_decision),
+        ),
+        patch(
+            "services.intent_service.conversational_floor.ConversationalFloor.respond",
+            new=respond_mock,
+        ),
+        patch.object(
+            service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None))
+        ),
+        patch.object(
+            service,
+            "_check_pending_resume_offer",
+            new=AsyncMock(return_value=None),
+        ),
     ):
         # The method will fail downstream (no classifier deps) — that's fine.
         # We only care that the denial-path floor call was not made.
@@ -229,15 +248,20 @@ async def test_ethics_disabled_skips_gate_entirely(violating_decision):
 
     enforcer_mock = AsyncMock(return_value=violating_decision)
 
-    with patch.dict("os.environ", {"ENABLE_ETHICS_ENFORCEMENT": "false"}), patch(
-        "services.intent.intent_service.boundary_enforcer_refactored.enforce_boundaries",
-        new=enforcer_mock,
-    ), patch.object(
-        service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None))
-    ), patch.object(
-        service,
-        "_check_pending_resume_offer",
-        new=AsyncMock(return_value=None),
+    with (
+        patch.dict("os.environ", {"ENABLE_ETHICS_ENFORCEMENT": "false"}),
+        patch(
+            "services.intent.intent_service.boundary_enforcer_refactored.enforce_boundaries",
+            new=enforcer_mock,
+        ),
+        patch.object(
+            service, "_check_active_guided_process", new=AsyncMock(return_value=(None, None))
+        ),
+        patch.object(
+            service,
+            "_check_pending_resume_offer",
+            new=AsyncMock(return_value=None),
+        ),
     ):
         try:
             await service._process_intent_internal(

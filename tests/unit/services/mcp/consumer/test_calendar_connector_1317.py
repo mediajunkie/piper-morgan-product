@@ -7,6 +7,7 @@ Calendar's connect/status/resolve are now binding-aware with the honest-degrade 
 logic is exercised in depth by the github tests; these assert calendar is wired with the
 right connector-name ("calendar") + the degrade rail + a real-transport round-trip.
 """
+
 from __future__ import annotations
 
 import contextlib

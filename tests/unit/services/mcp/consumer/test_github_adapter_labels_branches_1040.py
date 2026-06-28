@@ -39,9 +39,7 @@ class TestListLabels:
         assert result[0]["name"] == "bug"
         assert result[0]["color"] == "d73a4a"
         assert result[1]["description"] == ""  # None → empty string
-        adapter._call_github_api.assert_awaited_once_with(
-            "repos/o/r/labels", {"per_page": 100}
-        )
+        adapter._call_github_api.assert_awaited_once_with("repos/o/r/labels", {"per_page": 100})
 
     async def test_empty_response(self, adapter):
         adapter._call_github_api.return_value = None

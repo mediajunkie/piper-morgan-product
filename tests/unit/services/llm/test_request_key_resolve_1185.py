@@ -5,6 +5,7 @@ user_id) > None (→ server key fallback). The resolver is **pure** — the DB-b
 stored-key fetch is injected, so this unit-tests without a database. The route
 (/api/v1/intent) wires the real fetch (UserAPIKeyService.retrieve_user_key).
 """
+
 import pytest
 
 from services.llm.request_key import resolve_request_api_key

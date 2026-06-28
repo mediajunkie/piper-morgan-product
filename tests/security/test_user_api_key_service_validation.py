@@ -118,12 +118,12 @@ async def test_store_user_key_validates_format(test_user, mock_keychain, mock_ll
 
         error_message = str(exc_info.value)
         # Error should mention format failure
-        assert "format" in error_message.lower(), (
-            f"Expected format-failure message, got: {error_message}"
-        )
-        assert "validation failed" in error_message.lower(), (
-            f"Expected validation-failed wording, got: {error_message}"
-        )
+        assert (
+            "format" in error_message.lower()
+        ), f"Expected format-failure message, got: {error_message}"
+        assert (
+            "validation failed" in error_message.lower()
+        ), f"Expected validation-failed wording, got: {error_message}"
 
         # Critical: keychain should NOT have been called
         mock_keychain.store_api_key.assert_not_called()
@@ -167,9 +167,9 @@ async def test_store_user_key_validates_strength(test_user, mock_keychain, mock_
         # Error wording should reference weakness, entropy, or leak/breach
         # (depending on which gate caught it — both are blocking).
         msg_lower = error_message.lower()
-        assert any(w in msg_lower for w in ("weak", "entropy", "breach", "leak")), (
-            f"Expected strength/leak-failure message, got: {error_message}"
-        )
+        assert any(
+            w in msg_lower for w in ("weak", "entropy", "breach", "leak")
+        ), f"Expected strength/leak-failure message, got: {error_message}"
         # Keychain should not have been called
         mock_keychain.store_api_key.assert_not_called()
 
@@ -212,9 +212,9 @@ async def test_store_user_key_blocks_known_test_key(test_user, mock_keychain, mo
         # OR weak pattern (1234567890 also matches a weak pattern,
         # whichever the quick-check catches first).
         msg_lower = error_message.lower()
-        assert any(w in msg_lower for w in ("breach", "leak", "weak", "test")), (
-            f"Expected leak/test-key-failure message, got: {error_message}"
-        )
+        assert any(
+            w in msg_lower for w in ("breach", "leak", "weak", "test")
+        ), f"Expected leak/test-key-failure message, got: {error_message}"
 
         # Keychain should not have been called
         mock_keychain.store_api_key.assert_not_called()
@@ -325,9 +325,7 @@ async def test_store_user_key_audit_logs_validation_failure(
         invalid_key = "not-a-valid-format-12345"
 
         # Patch the audit_logger to observe call activity
-        with patch(
-            "services.security.user_api_key_service.audit_logger"
-        ) as mock_audit_logger:
+        with patch("services.security.user_api_key_service.audit_logger") as mock_audit_logger:
             mock_audit_logger.log_api_key_event = AsyncMock()
 
             with pytest.raises(ValueError):
@@ -343,7 +341,8 @@ async def test_store_user_key_audit_logs_validation_failure(
             # Specifically: no log_api_key_event(action="key_stored",
             # status="success", ...) call should have been made.
             success_calls = [
-                call for call in mock_audit_logger.log_api_key_event.call_args_list
+                call
+                for call in mock_audit_logger.log_api_key_event.call_args_list
                 if call.kwargs.get("action") == "key_stored"
                 and call.kwargs.get("status") == "success"
             ]
@@ -357,7 +356,8 @@ async def test_store_user_key_audit_logs_validation_failure(
             # status="failed", ...) call should have been made, with provider,
             # key_preview, failure_reason, and failed_checks captured in details.
             failure_calls = [
-                call for call in mock_audit_logger.log_api_key_event.call_args_list
+                call
+                for call in mock_audit_logger.log_api_key_event.call_args_list
                 if call.kwargs.get("action") == "key_validation_failed"
                 and call.kwargs.get("status") == "failed"
             ]
@@ -374,9 +374,9 @@ async def test_store_user_key_audit_logs_validation_failure(
             assert "failure_reason" in details
             assert "failed_checks" in details
             # PII protection: full key value must NEVER appear in audit details.
-            assert invalid_key not in str(details), (
-                f"Full key value leaked into audit details: {details}"
-            )
+            assert invalid_key not in str(
+                details
+            ), f"Full key value leaked into audit details: {details}"
             # key_preview is first 8 chars + "..." (or "<too_short>" if key < 9 chars)
             assert details["key_preview"] in (f"{invalid_key[:8]}...", "<too_short>")
 

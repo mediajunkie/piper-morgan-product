@@ -541,9 +541,7 @@ class ContextAssembler:
 
         return context
 
-    async def _gather_insight_pull_context(
-        self, user_id: str = None
-    ) -> Dict[str, Any]:
+    async def _gather_insight_pull_context(self, user_id: str = None) -> Dict[str, Any]:
         """
         Issue #1030 INSIGHT-PULL: Gather composted insights from InsightRepository
         for pull-mode chat responses ("What have you learned about X?").
@@ -606,9 +604,7 @@ class ContextAssembler:
                 #   expression from ins.learning.{insight|pattern|correction}.expression
                 learning = getattr(ins, "learning", None)
                 confidence_val = (
-                    float(getattr(learning, "confidence", 0.0) or 0.0)
-                    if learning
-                    else 0.0
+                    float(getattr(learning, "confidence", 0.0) or 0.0) if learning else 0.0
                 )
                 # #1216: drop internal/seed-provenance tags before they reach the
                 # floor prompt. Surfacing them (e.g. "uat-anniversary-2026-05-28",
@@ -618,9 +614,7 @@ class ContextAssembler:
                 # surface, so the floor presents insights honestly by CONFIDENCE.
                 # Real fix = a first-class provenance field (PPM lane, per the CXO
                 # honest-provenance principle); this removes the leaked signal.
-                _raw_tags = (
-                    list(getattr(learning, "topic_tags", []) or []) if learning else []
-                )
+                _raw_tags = list(getattr(learning, "topic_tags", []) or []) if learning else []
                 topic_tags_val = [
                     t
                     for t in _raw_tags
@@ -980,9 +974,7 @@ class ContextAssembler:
             return None
         return {
             "pending_todos": cached["pending_todos"][:limit],
-            "pending_todo_count": cached.get(
-                "pending_todo_count", len(cached["pending_todos"])
-            ),
+            "pending_todo_count": cached.get("pending_todo_count", len(cached["pending_todos"])),
         }
 
     async def _compute_pending_todos(self, user_id: str) -> Optional[Dict[str, Any]]:
@@ -993,9 +985,7 @@ class ContextAssembler:
             from services.todo.todo_management_service import TodoManagementService
 
             todo_svc = TodoManagementService()
-            pending = await todo_svc.list_todos(
-                user_id=UUID(user_id), include_completed=False
-            )
+            pending = await todo_svc.list_todos(user_id=UUID(user_id), include_completed=False)
             if not pending:
                 return None
             return {
@@ -1036,9 +1026,7 @@ class ContextAssembler:
             from services.todo.todo_management_service import TodoManagementService
 
             todo_svc = TodoManagementService()
-            all_todos = await todo_svc.list_todos(
-                user_id=UUID(user_id), include_completed=True
-            )
+            all_todos = await todo_svc.list_todos(user_id=UUID(user_id), include_completed=True)
             completed = [t for t in all_todos if getattr(t, "completed", False)]
             if not completed:
                 return None
@@ -1053,9 +1041,7 @@ class ContextAssembler:
             logger.warning("context_assembler_completed_todos_error", error=str(e))
             return None
 
-    async def _get_projects_cached(
-        self, user_id: str, limit: int = 5
-    ) -> Optional[Dict[str, Any]]:
+    async def _get_projects_cached(self, user_id: str, limit: int = 5) -> Optional[Dict[str, Any]]:
         """Cached projects list (from `projects` table). TTL 5min.
 
         Key: `context:projects:{user_id}`. TTL-only invalidation (Q3=c).
@@ -1119,16 +1105,13 @@ class ContextAssembler:
         try:
             from services.user_context_service import user_context_service
 
-            user_ctx = await user_context_service.get_user_context(
-                session_id=None, user_id=user_id
-            )
+            user_ctx = await user_context_service.get_user_context(session_id=None, user_id=user_id)
             if not user_ctx:
                 return None
             result: Dict[str, Any] = {}
             if hasattr(user_ctx, "projects") and user_ctx.projects:
                 result["projects"] = [
-                    {"name": p} if isinstance(p, str) else p
-                    for p in user_ctx.projects[:10]
+                    {"name": p} if isinstance(p, str) else p for p in user_ctx.projects[:10]
                 ]
             if hasattr(user_ctx, "priorities") and user_ctx.priorities:
                 # #496: the floor formatter (conversational_floor._format_domain_context)
@@ -1153,9 +1136,7 @@ class ContextAssembler:
     # invalidation (GitHub label changes happen out-of-band).
     # ------------------------------------------------------------------
 
-    async def _gather_blocked_items_context(
-        self, user_id: str = None
-    ) -> Dict[str, Any]:
+    async def _gather_blocked_items_context(self, user_id: str = None) -> Dict[str, Any]:
         """Gather blocked-items context for STATUS / PRIORITY queries.
 
         Returns:
@@ -1181,9 +1162,7 @@ class ContextAssembler:
             return None
         return {
             "blocked_items": cached["blocked_items"][:limit],
-            "blocked_count": cached.get(
-                "blocked_count", len(cached["blocked_items"])
-            ),
+            "blocked_count": cached.get("blocked_count", len(cached["blocked_items"])),
         }
 
     async def _compute_blocked_items(self, user_id: str) -> Optional[Dict[str, Any]]:
@@ -1208,11 +1187,7 @@ class ContextAssembler:
             if not all_open:
                 return None
 
-            blocked = [
-                issue
-                for issue in all_open
-                if _BLOCKED_LABEL in (issue.get("labels") or [])
-            ]
+            blocked = [issue for issue in all_open if _BLOCKED_LABEL in (issue.get("labels") or [])]
             if not blocked:
                 return None
 
@@ -1245,9 +1220,7 @@ class ContextAssembler:
     # data was connected but never consumed. Cached (5min TTL), fail-graceful.
     # ------------------------------------------------------------------
 
-    async def _gather_high_priority_issues_context(
-        self, user_id: str = None
-    ) -> Dict[str, Any]:
+    async def _gather_high_priority_issues_context(self, user_id: str = None) -> Dict[str, Any]:
         """Gather high-priority open issues for STATUS / PRIORITY queries.
 
         Returns:
@@ -1273,16 +1246,12 @@ class ContextAssembler:
             return None
         return {
             "high_priority_issues": cached["high_priority_issues"][:limit],
-            "open_issue_count": cached.get(
-                "open_issue_count", len(cached["high_priority_issues"])
-            ),
+            "open_issue_count": cached.get("open_issue_count", len(cached["high_priority_issues"])),
             # #1226 Phase 3: preserve the no-repo signal through the cache unpack.
             "github_repo_unconfigured": cached.get("github_repo_unconfigured", False),
         }
 
-    async def _compute_high_priority_issues(
-        self, user_id: str
-    ) -> Optional[Dict[str, Any]]:
+    async def _compute_high_priority_issues(self, user_id: str) -> Optional[Dict[str, Any]]:
         """Compute high-priority issues (uncached) for cache miss.
 
         Fetches up to 100 open issues from the default repo; ranks
@@ -1322,9 +1291,7 @@ class ContextAssembler:
 
             # Stable two-stage sort: recency desc first, then priority asc — so
             # within each priority tier the most-recently-updated leads.
-            ranked = sorted(
-                all_open, key=lambda i: i.get("updated_at") or "", reverse=True
-            )
+            ranked = sorted(all_open, key=lambda i: i.get("updated_at") or "", reverse=True)
             ranked.sort(key=_priority_rank)
 
             return {
@@ -1341,9 +1308,7 @@ class ContextAssembler:
                 "open_issue_count": len(all_open),
             }
         except Exception as e:
-            logger.warning(
-                "context_assembler_high_priority_issues_error", error=str(e)
-            )
+            logger.warning("context_assembler_high_priority_issues_error", error=str(e))
             return None
 
     async def _github_repo_resolves(self, user_id: str = None) -> bool:
@@ -1377,9 +1342,7 @@ class ContextAssembler:
     # specificity.
     # ------------------------------------------------------------------
 
-    async def _gather_active_milestones_context(
-        self, user_id: str = None
-    ) -> Dict[str, Any]:
+    async def _gather_active_milestones_context(self, user_id: str = None) -> Dict[str, Any]:
         """Gather active-milestones context.
 
         Returns:
@@ -1410,9 +1373,7 @@ class ContextAssembler:
             ),
         }
 
-    async def _compute_active_milestones(
-        self, user_id: str
-    ) -> Optional[Dict[str, Any]]:
+    async def _compute_active_milestones(self, user_id: str) -> Optional[Dict[str, Any]]:
         """Compute active-milestones list (uncached).
 
         Calls `list_milestones_via_mcp(state="open")`, sorts by `due_on` asc
@@ -1453,9 +1414,7 @@ class ContextAssembler:
                 "active_milestone_count": len(milestones),
             }
         except Exception as e:
-            logger.warning(
-                "context_assembler_active_milestones_error", error=str(e)
-            )
+            logger.warning("context_assembler_active_milestones_error", error=str(e))
             return None
 
     # ------------------------------------------------------------------
@@ -1471,9 +1430,7 @@ class ContextAssembler:
     # aggregation deferred to follow-ups (PM Q1 disposition).
     # ------------------------------------------------------------------
 
-    async def _gather_recent_activity_context(
-        self, user_id: str = None
-    ) -> Dict[str, Any]:
+    async def _gather_recent_activity_context(self, user_id: str = None) -> Dict[str, Any]:
         """Gather recent-activity context for STATUS / TEMPORAL queries.
 
         Returns:
@@ -1508,9 +1465,7 @@ class ContextAssembler:
             ),
         }
 
-    async def _compute_recent_activity(
-        self, user_id: str
-    ) -> Optional[Dict[str, Any]]:
+    async def _compute_recent_activity(self, user_id: str) -> Optional[Dict[str, Any]]:
         """Compute recent-activity list (uncached) across multiple sources.
 
         Aggregates per-source helpers (GitHub + calendar + Slack DMs +
@@ -1534,18 +1489,13 @@ class ContextAssembler:
         # keep the first one encountered (DM aggregator's, which includes
         # the full text and a stable channel_type label).
         seen_slack_keys = {
-            (i.get("channel"), i.get("ts"))
-            for i in slack_items
-            if i.get("channel") and i.get("ts")
+            (i.get("channel"), i.get("ts")) for i in slack_items if i.get("channel") and i.get("ts")
         }
         slack_mention_items = [
-            i for i in slack_mention_items
-            if (i.get("channel"), i.get("ts")) not in seen_slack_keys
+            i for i in slack_mention_items if (i.get("channel"), i.get("ts")) not in seen_slack_keys
         ]
 
-        all_items = (
-            github_items + calendar_items + slack_items + slack_mention_items
-        )
+        all_items = github_items + calendar_items + slack_items + slack_mention_items
         if not all_items:
             return None
 
@@ -1559,9 +1509,7 @@ class ContextAssembler:
             "recent_activity_window_days": _RECENT_ACTIVITY_WINDOW_DAYS,
         }
 
-    async def _fetch_github_activity_items(
-        self, user_id: str
-    ) -> List[Dict[str, Any]]:
+    async def _fetch_github_activity_items(self, user_id: str) -> List[Dict[str, Any]]:
         """Fetch GitHub issues + PRs within the activity window.
 
         Per-source helper for `_compute_recent_activity`. Fail-graceful:
@@ -1622,14 +1570,10 @@ class ContextAssembler:
                 for i in recent
             ]
         except Exception as e:
-            logger.warning(
-                "context_assembler_github_activity_error", error=str(e)
-            )
+            logger.warning("context_assembler_github_activity_error", error=str(e))
             return []
 
-    async def _fetch_calendar_activity_items(
-        self, user_id: str
-    ) -> List[Dict[str, Any]]:
+    async def _fetch_calendar_activity_items(self, user_id: str) -> List[Dict[str, Any]]:
         """Fetch past calendar meetings within the activity window (#1086).
 
         Calendar-as-activity is a distinct lens from `_gather_calendar_context`
@@ -1692,14 +1636,10 @@ class ContextAssembler:
                 )
             return items
         except Exception as e:
-            logger.warning(
-                "context_assembler_calendar_activity_error", error=str(e)
-            )
+            logger.warning("context_assembler_calendar_activity_error", error=str(e))
             return []
 
-    async def _fetch_slack_activity_items(
-        self, user_id: str
-    ) -> List[Dict[str, Any]]:
+    async def _fetch_slack_activity_items(self, user_id: str) -> List[Dict[str, Any]]:
         """Fetch the user's recent Slack DM activity (#1085 slice 2 — V1).
 
         V1 shape: messages in the user's direct-message channels (`im` + `mpim`)
@@ -1782,14 +1722,10 @@ class ContextAssembler:
                     )
             return items
         except Exception as e:
-            logger.warning(
-                "context_assembler_slack_activity_error", error=str(e)
-            )
+            logger.warning("context_assembler_slack_activity_error", error=str(e))
             return []
 
-    async def _fetch_slack_mentions_items(
-        self, user_id: str
-    ) -> List[Dict[str, Any]]:
+    async def _fetch_slack_mentions_items(self, user_id: str) -> List[Dict[str, Any]]:
         """Fetch the user's recent Slack @-mentions (#1085 slice 3).
 
         Uses Slack's `search.messages` Web API method, which requires a USER
@@ -1887,9 +1823,7 @@ class ContextAssembler:
                 # than the flat top-level channel ID returned by
                 # `conversations.history`. Normalize to the same shape.
                 channel_obj = msg.get("channel") or {}
-                channel_id = (
-                    channel_obj.get("id") if isinstance(channel_obj, dict) else None
-                )
+                channel_id = channel_obj.get("id") if isinstance(channel_obj, dict) else None
                 items.append(
                     {
                         "source": "slack",
@@ -1904,7 +1838,5 @@ class ContextAssembler:
                 )
             return items
         except Exception as e:
-            logger.warning(
-                "context_assembler_slack_mentions_error", error=str(e)
-            )
+            logger.warning("context_assembler_slack_mentions_error", error=str(e))
             return []

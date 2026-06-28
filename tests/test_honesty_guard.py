@@ -32,8 +32,11 @@ ROOTS = ("services", "web")
 
 
 def _repo_root():
-    return os.path.dirname(os.path.dirname(os.path.abspath(__file__))) \
-        if os.path.basename(os.path.dirname(os.path.abspath(__file__))) == "tests" else "."
+    return (
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        if os.path.basename(os.path.dirname(os.path.abspath(__file__))) == "tests"
+        else "."
+    )
 
 
 def test_no_banned_robot_script_phrases():
@@ -55,6 +58,5 @@ def test_no_banned_robot_script_phrases():
                             violations.append(f"{path}:{lineno}: {phrase!r}")
     assert not violations, (
         "Banned robot-script phrase(s) reintroduced (see #1196/#1197/#1198 — "
-        "false action/monitoring/retry/memory claims or sycophancy):\n"
-        + "\n".join(violations)
+        "false action/monitoring/retry/memory claims or sycophancy):\n" + "\n".join(violations)
     )

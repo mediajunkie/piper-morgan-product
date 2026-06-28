@@ -82,9 +82,7 @@ def _parse_legacy_comments(text: str) -> dict:
         if m:
             v = m.group(1).strip()
             # Strip quotes if present
-            if (v.startswith('"') and v.endswith('"')) or (
-                v.startswith("'") and v.endswith("'")
-            ):
+            if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
                 v = v[1:-1]
             fm[key] = v
     return fm

@@ -20,6 +20,7 @@ Two construction modes:
     spawns the MCP server subprocess over stdio, initializes the session, and
     yields a connected client.
 """
+
 from __future__ import annotations
 
 from contextlib import AsyncExitStack, asynccontextmanager
@@ -49,9 +50,7 @@ class MCPClient:
         """List the tools the connected MCP server exposes (real call)."""
         return await self._session.list_tools()
 
-    async def call_tool(
-        self, name: str, arguments: Optional[Dict[str, Any]] = None
-    ):
+    async def call_tool(self, name: str, arguments: Optional[Dict[str, Any]] = None):
         """Invoke a tool by name with arguments (real call)."""
         return await self._session.call_tool(name, arguments or {})
 

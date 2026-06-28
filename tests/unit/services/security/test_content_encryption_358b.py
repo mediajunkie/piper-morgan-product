@@ -4,6 +4,7 @@ Real round-trip against in-memory async SQLite (the #952/#1035 pattern). Proves 
 target columns are wired to EncryptedString and that, with a master key configured,
 the value is ciphertext at rest (raw SQL) but plaintext through the ORM.
 """
+
 from __future__ import annotations
 
 import base64
@@ -52,9 +53,7 @@ def test_target_columns_are_encrypted_string_with_per_field_context():
 async def test_turn_content_encrypted_at_rest_round_trips():
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
     async with engine.begin() as conn:
-        await conn.run_sync(
-            lambda sc: ConversationTurnDB.__table__.create(sc, checkfirst=True)
-        )
+        await conn.run_sync(lambda sc: ConversationTurnDB.__table__.create(sc, checkfirst=True))
     SessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
     async with SessionLocal() as s:
         s.add(
@@ -100,9 +99,7 @@ async def test_artifact_content_encrypted_at_rest_round_trips():
         )
         await s.commit()
     async with engine.connect() as conn:
-        raw = (
-            await conn.execute(sa_text("SELECT content FROM artifacts WHERE id='a1'"))
-        ).scalar()
+        raw = (await conn.execute(sa_text("SELECT content FROM artifacts WHERE id='a1'"))).scalar()
     assert raw.startswith(MARKER) and "sensitive doc body" not in raw
     async with SessionLocal() as s:
         art = await s.get(ArtifactDB, "a1")

@@ -58,9 +58,7 @@ class TestTransparencyRoutePrefixes:
         from web.app import app
 
         registered_paths = [r.path for r in app.routes if hasattr(r, "path")]
-        pre_migration_paths = [
-            p for p in registered_paths if p.startswith("/transparency/")
-        ]
-        assert pre_migration_paths == [], (
-            f"Pre-migration paths still registered: {pre_migration_paths}"
-        )
+        pre_migration_paths = [p for p in registered_paths if p.startswith("/transparency/")]
+        assert (
+            pre_migration_paths == []
+        ), f"Pre-migration paths still registered: {pre_migration_paths}"

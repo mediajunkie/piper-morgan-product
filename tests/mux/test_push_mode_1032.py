@@ -79,28 +79,20 @@ def _trust_service(stage: int):
 @pytest.mark.asyncio
 class TestTrustGate:
     async def test_stage_1_blocked(self):
-        eligible = await is_eligible_by_trust(
-            user_id="alpha", trust_service=_trust_service(1)
-        )
+        eligible = await is_eligible_by_trust(user_id="alpha", trust_service=_trust_service(1))
         assert eligible is False
 
     async def test_stage_2_blocked(self):
-        eligible = await is_eligible_by_trust(
-            user_id="alpha", trust_service=_trust_service(2)
-        )
+        eligible = await is_eligible_by_trust(user_id="alpha", trust_service=_trust_service(2))
         assert eligible is False
 
     async def test_stage_3_stable_eligible(self):
         # No promotion timestamp = treated as stable (acceptable per design)
-        eligible = await is_eligible_by_trust(
-            user_id="alpha", trust_service=_trust_service(3)
-        )
+        eligible = await is_eligible_by_trust(user_id="alpha", trust_service=_trust_service(3))
         assert eligible is True
 
     async def test_stage_4_stable_eligible(self):
-        eligible = await is_eligible_by_trust(
-            user_id="alpha", trust_service=_trust_service(4)
-        )
+        eligible = await is_eligible_by_trust(user_id="alpha", trust_service=_trust_service(4))
         assert eligible is True
 
     async def test_stage_3_within_stability_window_blocked(self):
@@ -360,9 +352,7 @@ class TestMaybePush:
             topic_tags=["t1"],
         )
         mock_journal.get_unsurfaced = AsyncMock(return_value=[relevant_insight])
-        result = await maybe_push(
-            ctx, journal=mock_journal, trust_service=_trust_service(4)
-        )
+        result = await maybe_push(ctx, journal=mock_journal, trust_service=_trust_service(4))
         assert result is not None
         assert isinstance(result, FramedPushPayload)
         assert result.insight_id == relevant_insight.id
@@ -388,12 +378,8 @@ class TestMaybePush:
         low_relevance = _make_insight(applies_to_entities=["a"])  # 2
         high_relevance = _make_insight(applies_to_entities=["a", "b"], topic_tags=["t1"])  # 5
         mock_journal = AsyncMock()
-        mock_journal.get_unsurfaced = AsyncMock(
-            return_value=[low_relevance, high_relevance]
-        )
-        result = await maybe_push(
-            ctx, journal=mock_journal, trust_service=_trust_service(4)
-        )
+        mock_journal.get_unsurfaced = AsyncMock(return_value=[low_relevance, high_relevance])
+        result = await maybe_push(ctx, journal=mock_journal, trust_service=_trust_service(4))
         assert result is not None
         assert result.insight_id == high_relevance.id
 

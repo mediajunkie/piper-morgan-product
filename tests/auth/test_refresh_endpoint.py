@@ -81,12 +81,14 @@ class TestRefreshEndpoint:
 
             # Both cookies should be set on the response
             assert "auth_token" in response.cookies, "Response should set new auth_token cookie"
-            assert "refresh_token" in response.cookies, "Response should set new refresh_token cookie"
+            assert (
+                "refresh_token" in response.cookies
+            ), "Response should set new refresh_token cookie"
 
             # Rotation: new refresh-token value differs from input
-            assert response.cookies["refresh_token"] != refresh_token, (
-                "New refresh token should differ from input (rotation per #857 AC)"
-            )
+            assert (
+                response.cookies["refresh_token"] != refresh_token
+            ), "New refresh token should differ from input (rotation per #857 AC)"
 
         finally:
             async_client.cookies.clear()
@@ -111,9 +113,9 @@ class TestRefreshEndpoint:
 
         response = await async_client.post("/api/v1/auth/refresh")
 
-        assert response.status_code == 401, (
-            f"Refresh with no cookie should return 401: {response.text}"
-        )
+        assert (
+            response.status_code == 401
+        ), f"Refresh with no cookie should return 401: {response.text}"
 
         error = response.json()
         # Accept either the raw {detail} shape OR the friendly {message} shape
@@ -144,9 +146,9 @@ class TestRefreshEndpoint:
         try:
             response = await async_client.post("/api/v1/auth/refresh")
 
-            assert response.status_code == 401, (
-                f"Invalid refresh token should return 401: {response.text}"
-            )
+            assert (
+                response.status_code == 401
+            ), f"Invalid refresh token should return 401: {response.text}"
 
             error = response.json()
             body_text = (error.get("detail") or error.get("message") or "").lower()
@@ -158,18 +160,18 @@ class TestRefreshEndpoint:
                 for k, v in response.headers.raw
                 if k.lower() == b"set-cookie"
             ]
-            assert any("auth_token=" in h for h in set_cookie_headers), (
-                f"auth_token Set-Cookie missing on 401. Headers: {set_cookie_headers!r}"
-            )
-            assert any("refresh_token=" in h for h in set_cookie_headers), (
-                f"refresh_token Set-Cookie missing on 401. Headers: {set_cookie_headers!r}"
-            )
+            assert any(
+                "auth_token=" in h for h in set_cookie_headers
+            ), f"auth_token Set-Cookie missing on 401. Headers: {set_cookie_headers!r}"
+            assert any(
+                "refresh_token=" in h for h in set_cookie_headers
+            ), f"refresh_token Set-Cookie missing on 401. Headers: {set_cookie_headers!r}"
             # Cookie-clearing semantics: delete_cookie sets Max-Age=0 (or empty value)
             for cookie_name in ("auth_token", "refresh_token"):
                 matching = [h for h in set_cookie_headers if h.startswith(f"{cookie_name}=")]
                 assert matching, f"{cookie_name} clear header missing"
                 # delete_cookie emits Max-Age=0
-                assert any("Max-Age=0" in h or 'expires=' in h.lower() for h in matching), (
+                assert any("Max-Age=0" in h or "expires=" in h.lower() for h in matching), (
                     f"{cookie_name} should be cleared (Max-Age=0 or expires-past). "
                     f"Got: {matching!r}"
                 )
@@ -177,9 +179,7 @@ class TestRefreshEndpoint:
             async_client.cookies.clear()
 
     @pytest.mark.asyncio
-    async def test_refresh_endpoint_rotates_refresh_token(
-        self, async_client, db_session
-    ):
+    async def test_refresh_endpoint_rotates_refresh_token(self, async_client, db_session):
         """
         Verify refresh token rotation: new refresh cookie value differs from input (#857).
 
@@ -196,9 +196,7 @@ class TestRefreshEndpoint:
         from services.auth.password_service import PasswordService
         from services.database.models import User
 
-        await db_session.execute(
-            sql_delete(User).where(User.email == "refresh_rotate@example.com")
-        )
+        await db_session.execute(sql_delete(User).where(User.email == "refresh_rotate@example.com"))
         await db_session.commit()
 
         ps = PasswordService()
@@ -222,15 +220,15 @@ class TestRefreshEndpoint:
             async_client.cookies.set("refresh_token", input_refresh_token)
             response = await async_client.post("/api/v1/auth/refresh")
 
-            assert response.status_code == 200, (
-                f"Refresh should succeed for rotation check: {response.text}"
-            )
+            assert (
+                response.status_code == 200
+            ), f"Refresh should succeed for rotation check: {response.text}"
 
             new_refresh_token = response.cookies.get("refresh_token")
             assert new_refresh_token is not None, "Response must set new refresh_token cookie"
-            assert new_refresh_token != input_refresh_token, (
-                "Rotation AC: new refresh-cookie value MUST differ from input refresh token"
-            )
+            assert (
+                new_refresh_token != input_refresh_token
+            ), "Rotation AC: new refresh-cookie value MUST differ from input refresh token"
 
         finally:
             async_client.cookies.clear()
@@ -240,9 +238,7 @@ class TestRefreshEndpoint:
             await db_session.commit()
 
     @pytest.mark.asyncio
-    async def test_login_now_issues_refresh_token_cookie(
-        self, async_client, db_session
-    ):
+    async def test_login_now_issues_refresh_token_cookie(self, async_client, db_session):
         """
         Verify /api/v1/auth/login now issues a refresh_token cookie alongside auth_token (#857).
 
@@ -256,9 +252,7 @@ class TestRefreshEndpoint:
         from services.auth.password_service import PasswordService
         from services.database.models import User
 
-        await db_session.execute(
-            sql_delete(User).where(User.email == "refresh_login@example.com")
-        )
+        await db_session.execute(sql_delete(User).where(User.email == "refresh_login@example.com"))
         await db_session.commit()
 
         ps = PasswordService()
@@ -282,18 +276,19 @@ class TestRefreshEndpoint:
             assert response.status_code == 200, f"Login should succeed: {response.text}"
 
             # Both cookies must be present
-            assert "auth_token" in response.cookies, (
-                "Login should still set auth_token cookie (preserved behavior)"
-            )
-            assert "refresh_token" in response.cookies, (
-                "Login should now set refresh_token cookie (#857)"
-            )
+            assert (
+                "auth_token" in response.cookies
+            ), "Login should still set auth_token cookie (preserved behavior)"
+            assert (
+                "refresh_token" in response.cookies
+            ), "Login should now set refresh_token cookie (#857)"
 
             # Verify refresh_token cookie flags by inspecting Set-Cookie headers
-            set_cookie_headers = response.headers.get_list("set-cookie") \
-                if hasattr(response.headers, "get_list") else [
-                    v.decode() for k, v in response.headers.raw if k.lower() == b"set-cookie"
-                ]
+            set_cookie_headers = (
+                response.headers.get_list("set-cookie")
+                if hasattr(response.headers, "get_list")
+                else [v.decode() for k, v in response.headers.raw if k.lower() == b"set-cookie"]
+            )
             if set_cookie_headers and isinstance(set_cookie_headers[0], tuple):
                 set_cookie_strs = [v.decode() for k, v in set_cookie_headers]
             else:
@@ -304,20 +299,20 @@ class TestRefreshEndpoint:
                 (h for h in set_cookie_strs if h.lower().startswith("refresh_token=")),
                 None,
             )
-            assert refresh_header is not None, (
-                f"refresh_token Set-Cookie header missing. Headers: {set_cookie_strs!r}"
-            )
+            assert (
+                refresh_header is not None
+            ), f"refresh_token Set-Cookie header missing. Headers: {set_cookie_strs!r}"
 
             refresh_header_lower = refresh_header.lower()
-            assert "httponly" in refresh_header_lower, (
-                f"refresh_token cookie should be HttpOnly: {refresh_header!r}"
-            )
-            assert "samesite=lax" in refresh_header_lower, (
-                f"refresh_token cookie should have SameSite=Lax: {refresh_header!r}"
-            )
-            assert "max-age=604800" in refresh_header_lower, (
-                f"refresh_token cookie should have Max-Age=604800 (7 days): {refresh_header!r}"
-            )
+            assert (
+                "httponly" in refresh_header_lower
+            ), f"refresh_token cookie should be HttpOnly: {refresh_header!r}"
+            assert (
+                "samesite=lax" in refresh_header_lower
+            ), f"refresh_token cookie should have SameSite=Lax: {refresh_header!r}"
+            assert (
+                "max-age=604800" in refresh_header_lower
+            ), f"refresh_token cookie should have Max-Age=604800 (7 days): {refresh_header!r}"
 
         finally:
             async_client.cookies.clear()

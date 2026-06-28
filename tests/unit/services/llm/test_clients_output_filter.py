@@ -46,9 +46,7 @@ class _MockBoundaryEnforcer:
         return _MockBoundaryDecision(is_violation=flag, violation_type="harassment")
 
 
-def _build_client_with_filter(
-    boundary_enforcer=None, raw_responses: list[str] | None = None
-):
+def _build_client_with_filter(boundary_enforcer=None, raw_responses: list[str] | None = None):
     """Build an LLMClient with a real OutputFilter + a mocked _complete_raw.
 
     The `raw_responses` list scripts what `_complete_raw` returns on
@@ -65,9 +63,7 @@ def _build_client_with_filter(
     responses = list(raw_responses or [])
 
     # AsyncMock with side_effect=list returns successive items per call.
-    client._complete_raw = AsyncMock(
-        side_effect=responses if responses else [""]
-    )
+    client._complete_raw = AsyncMock(side_effect=responses if responses else [""])
     return client
 
 
@@ -98,9 +94,7 @@ class TestBackwardCompatibility:
 
         with patch.object(LLMClient, "_init_clients", lambda self: None):
             client = LLMClient()
-        client._complete_raw = AsyncMock(
-            return_value="Email is alice@example.com here."
-        )
+        client._complete_raw = AsyncMock(return_value="Email is alice@example.com here.")
 
         result = await client.complete(task_type="conversation", prompt="hi")
 
@@ -130,9 +124,7 @@ class TestWithFilterClean:
             raw_responses=['{"action": "create_issue", "email": "alice@example.com"}']
         )
 
-        result = await client.complete(
-            task_type="intent_classification", prompt="hi"
-        )
+        result = await client.complete(task_type="intent_classification", prompt="hi")
 
         assert "alice@example.com" in result  # internal profile passes through
         assert REDACTED_TOKEN not in result
@@ -146,9 +138,7 @@ class TestWithFilterClean:
 class TestWithFilterRedaction:
     @pytest.mark.asyncio
     async def test_pii_redacted_in_place(self):
-        client = _build_client_with_filter(
-            raw_responses=["Reach me at alice@example.com please."]
-        )
+        client = _build_client_with_filter(raw_responses=["Reach me at alice@example.com please."])
 
         result = await client.complete(task_type="conversation", prompt="hi")
 

@@ -98,9 +98,7 @@ class TestTodoMutationInvocations:
         fake_todo = MagicMock()
         mock_repo_instance = MagicMock()
         mock_repo_instance.create_todo = AsyncMock(return_value=fake_todo)
-        monkeypatch.setattr(
-            tms_module, "TodoRepository", lambda session: mock_repo_instance
-        )
+        monkeypatch.setattr(tms_module, "TodoRepository", lambda session: mock_repo_instance)
 
         # Patch the invalidation hook so we can assert on it
         mock_invalidate = AsyncMock()
@@ -126,9 +124,7 @@ class TestTodoMutationInvocations:
         scope_cm = MagicMock()
         scope_cm.__aenter__ = AsyncMock(return_value=mock_session)
         scope_cm.__aexit__ = AsyncMock(return_value=None)
-        monkeypatch.setattr(
-            tms_module.AsyncSessionFactory, "session_scope", lambda: scope_cm
-        )
+        monkeypatch.setattr(tms_module.AsyncSessionFactory, "session_scope", lambda: scope_cm)
 
         # First case: complete succeeds (repo returns a todo)
         mock_repo_success = MagicMock()
@@ -140,9 +136,7 @@ class TestTodoMutationInvocations:
             mock_invalidate,
         )
 
-        monkeypatch.setattr(
-            tms_module, "TodoRepository", lambda s: mock_repo_success
-        )
+        monkeypatch.setattr(tms_module, "TodoRepository", lambda s: mock_repo_success)
         service = tms_module.TodoManagementService()
         uid = UUID("00000000-0000-0000-0000-000000000001")
         await service.complete_todo(todo_id=uid, user_id=uid)
@@ -152,9 +146,7 @@ class TestTodoMutationInvocations:
         mock_invalidate.reset_mock()
         mock_repo_fail = MagicMock()
         mock_repo_fail.complete_todo = AsyncMock(return_value=None)
-        monkeypatch.setattr(
-            tms_module, "TodoRepository", lambda s: mock_repo_fail
-        )
+        monkeypatch.setattr(tms_module, "TodoRepository", lambda s: mock_repo_fail)
         await service.complete_todo(todo_id=uid, user_id=uid)
         mock_invalidate.assert_not_awaited()
 
@@ -169,9 +161,7 @@ class TestTodoMutationInvocations:
         scope_cm = MagicMock()
         scope_cm.__aenter__ = AsyncMock(return_value=mock_session)
         scope_cm.__aexit__ = AsyncMock(return_value=None)
-        monkeypatch.setattr(
-            tms_module.AsyncSessionFactory, "session_scope", lambda: scope_cm
-        )
+        monkeypatch.setattr(tms_module.AsyncSessionFactory, "session_scope", lambda: scope_cm)
 
         mock_repo = MagicMock()
         mock_repo.delete_todo = AsyncMock(return_value=True)

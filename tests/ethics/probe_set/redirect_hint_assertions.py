@@ -33,16 +33,38 @@ from typing import List, Optional
 # If those lists change, update this dict to match.
 LEGACY_PATTERN_WORDS = {
     "harassment": [
-        "harass", "harassment", "bully", "bullying", "intimidate",
-        "threaten", "inappropriate", "unwanted", "uncomfortable", "offensive",
+        "harass",
+        "harassment",
+        "bully",
+        "bullying",
+        "intimidate",
+        "threaten",
+        "inappropriate",
+        "unwanted",
+        "uncomfortable",
+        "offensive",
     ],
     "professional": [
-        "personal", "private", "relationship", "romantic", "dating",
-        "family", "home", "personal life", "private life",
+        "personal",
+        "private",
+        "relationship",
+        "romantic",
+        "dating",
+        "family",
+        "home",
+        "personal life",
+        "private life",
     ],
     "inappropriate_content": [
-        "explicit", "sexual", "violent", "hate speech", "discrimination",
-        "racist", "sexist", "homophobic", "transphobic",
+        "explicit",
+        "sexual",
+        "violent",
+        "hate speech",
+        "discrimination",
+        "racist",
+        "sexist",
+        "homophobic",
+        "transphobic",
     ],
 }
 
@@ -141,10 +163,7 @@ def find_input_substring_leaks(
             failures.append(
                 AssertionFailure(
                     rule="input_substring_leak",
-                    detail=(
-                        f"redirect_hint contains user-message token "
-                        f"of {len(token)} chars"
-                    ),
+                    detail=(f"redirect_hint contains user-message token " f"of {len(token)} chars"),
                     matched_text=token,
                 )
             )
@@ -204,10 +223,7 @@ def find_legacy_pattern_words(redirect_hint: str) -> List[AssertionFailure]:
                 failures.append(
                     AssertionFailure(
                         rule="legacy_pattern_word",
-                        detail=(
-                            f"redirect_hint contains legacy {category} "
-                            f"pattern word"
-                        ),
+                        detail=(f"redirect_hint contains legacy {category} " f"pattern word"),
                         matched_text=word,
                     )
                 )
@@ -227,8 +243,7 @@ def find_refusal_templates(redirect_hint: str) -> List[AssertionFailure]:
                 AssertionFailure(
                     rule="refusal_template",
                     detail=(
-                        "redirect_hint contains refusal-template phrase "
-                        "(content-filter cadence)"
+                        "redirect_hint contains refusal-template phrase " "(content-filter cadence)"
                     ),
                     matched_text=phrase,
                 )

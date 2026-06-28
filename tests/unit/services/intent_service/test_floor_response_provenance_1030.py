@@ -33,9 +33,7 @@ class TestFloorContextProvenanceField:
 
     def test_can_set_provenance(self):
         prov = {"calendar": {"source": "GoogleCalendar"}}
-        ctx = FloorContext(
-            user_message="hi", session_id="s", domain_context_provenance=prov
-        )
+        ctx = FloorContext(user_message="hi", session_id="s", domain_context_provenance=prov)
         assert ctx.domain_context_provenance == prov
 
 
@@ -92,9 +90,7 @@ class TestBuildResponseProvenance:
 
     def test_empty_when_no_provenance_passed(self):
         floor = _floor()
-        ctx = FloorContext(
-            user_message="hi", session_id="s", domain_context={"calendar": {}}
-        )
+        ctx = FloorContext(user_message="hi", session_id="s", domain_context={"calendar": {}})
         assert floor._build_response_provenance(ctx) == {}
 
     def test_empty_when_no_overlap(self):
@@ -142,9 +138,7 @@ class TestRespondPopulatesFloorResponseProvenance:
             session_id="s-test",
             user_id="u-test",
             domain_context={"current_time": "10:00 AM", "calendar": {}},
-            domain_context_provenance={
-                "calendar": {"source": "GoogleCalendar"}
-            },
+            domain_context_provenance={"calendar": {"source": "GoogleCalendar"}},
         )
         result = await floor.respond(ctx)
         # Provenance still has calendar (it was in both dicts)

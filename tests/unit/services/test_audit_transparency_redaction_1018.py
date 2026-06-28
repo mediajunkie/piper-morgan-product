@@ -67,9 +67,7 @@ async def test_redaction_runs_before_db_write(decision_with_pii):
             captured_entries.append(entry)
 
     # Patch the repo constructor + the session_scope context manager.
-    with patch(
-        "services.database.repositories.EthicsAuditRepository", _CapturingRepo
-    ):
+    with patch("services.database.repositories.EthicsAuditRepository", _CapturingRepo):
         with patch(
             "services.database.session_factory.AsyncSessionFactory.session_scope"
         ) as mock_scope:
@@ -89,9 +87,7 @@ async def test_redaction_runs_before_db_write(decision_with_pii):
             await audit.log_ethics_decision(decision_with_pii)
 
     # Verify the entry was captured
-    assert len(captured_entries) == 1, (
-        f"expected exactly 1 add() call, got {len(captured_entries)}"
-    )
+    assert len(captured_entries) == 1, f"expected exactly 1 add() call, got {len(captured_entries)}"
     entry = captured_entries[0]
 
     # Redaction should have replaced the email + phone shape in the audit_data
@@ -99,12 +95,12 @@ async def test_redaction_runs_before_db_write(decision_with_pii):
     persisted_email = str(persisted_audit_data.get("user_email", ""))
     persisted_phone = str(persisted_audit_data.get("phone", ""))
 
-    assert "[REDACTED]" in persisted_email or "alice@example.com" not in persisted_email, (
-        f"expected email to be redacted, got: {persisted_email!r}"
-    )
-    assert "[REDACTED]" in persisted_phone or "555-123-4567" not in persisted_phone, (
-        f"expected phone to be redacted, got: {persisted_phone!r}"
-    )
+    assert (
+        "[REDACTED]" in persisted_email or "alice@example.com" not in persisted_email
+    ), f"expected email to be redacted, got: {persisted_email!r}"
+    assert (
+        "[REDACTED]" in persisted_phone or "555-123-4567" not in persisted_phone
+    ), f"expected phone to be redacted, got: {persisted_phone!r}"
 
     # Redacted flag should be True (preserved from AuditLogEntry default)
     assert entry.redacted is True
@@ -123,9 +119,7 @@ async def test_redaction_preserves_non_pii_fields(decision_with_pii):
         async def add(self, entry):
             captured_entries.append(entry)
 
-    with patch(
-        "services.database.repositories.EthicsAuditRepository", _CapturingRepo
-    ):
+    with patch("services.database.repositories.EthicsAuditRepository", _CapturingRepo):
         with patch(
             "services.database.session_factory.AsyncSessionFactory.session_scope"
         ) as mock_scope:
@@ -163,9 +157,7 @@ async def test_log_ethics_decision_swallows_db_failures(decision_with_pii):
         async def add(self, entry):
             raise RuntimeError("simulated DB failure")
 
-    with patch(
-        "services.database.repositories.EthicsAuditRepository", _FailingRepo
-    ):
+    with patch("services.database.repositories.EthicsAuditRepository", _FailingRepo):
         with patch(
             "services.database.session_factory.AsyncSessionFactory.session_scope"
         ) as mock_scope:

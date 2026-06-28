@@ -141,9 +141,9 @@ class TestConceptualIntegrityVocabulary:
             "COMPOSTED",
         ]
         for word in forbidden:
-            assert word.lower() not in label.lower(), (
-                f"Forbidden vocabulary '{word}' in label for days={days}: '{label}'"
-            )
+            assert (
+                word.lower() not in label.lower()
+            ), f"Forbidden vocabulary '{word}' in label for days={days}: '{label}'"
 
 
 # =============================================================================
@@ -172,9 +172,7 @@ class TestComputeStaleness:
         now = datetime(2026, 5, 3, tzinfo=timezone.utc)
         old_list_ts = now - timedelta(days=180)
         recent_item = now - timedelta(days=2)
-        result = compute_staleness(
-            old_list_ts, [recent_item], threshold_days=60, now=now
-        )
+        result = compute_staleness(old_list_ts, [recent_item], threshold_days=60, now=now)
         assert result.is_stale is False
         assert result.days_since_update == 2
 

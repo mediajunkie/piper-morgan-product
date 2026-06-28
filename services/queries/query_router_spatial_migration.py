@@ -272,10 +272,7 @@ class QueryRouterSpatialEnhancement:
                 resolved = await resolve_repo()
                 repositories = [f"{resolved.owner}/{resolved.name}"]
             except UnresolvedRepoError:
-                logger.warning(
-                    "CI/CD search: no repo could be resolved; skipping "
-                    "(Issue #1042)"
-                )
+                logger.warning("CI/CD search: no repo could be resolved; skipping " "(Issue #1042)")
                 return []
             cicd_pipelines = await self.cicd_spatial.mcp_adapter.search_pipelines(
                 query, repositories, limit=10

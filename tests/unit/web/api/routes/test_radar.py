@@ -2,6 +2,7 @@
 ConversationEntitySource → RadarFeed → response), mocking only the external
 UserHistoryService (per the #490 wiring-test lesson — don't mock internals).
 """
+
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
@@ -20,8 +21,13 @@ from web.api.routes.radar import _build_feed, get_radar
 
 def _summary(cid, title, last_activity, turns=2):
     return SimpleNamespace(
-        conversation_id=cid, title=title, last_activity=last_activity,
-        turn_count=turns, topics=[], preview="...", is_private=False,
+        conversation_id=cid,
+        title=title,
+        last_activity=last_activity,
+        turn_count=turns,
+        topics=[],
+        preview="...",
+        is_private=False,
     )
 
 
@@ -31,8 +37,11 @@ class _FakeHistoryService:
 
     async def get_history(self, user_id, page, page_size, include_private):
         return SimpleNamespace(
-            conversations=self._conversations, total_count=len(self._conversations),
-            page=page, page_size=page_size, has_more=False,
+            conversations=self._conversations,
+            total_count=len(self._conversations),
+            page=page,
+            page_size=page_size,
+            has_more=False,
         )
 
 
@@ -42,8 +51,7 @@ _USER = SimpleNamespace(sub="user-1")
 async def test_radar_populated_is_attention_first_and_observed():
     now = datetime.now(timezone.utc)
     older = now - timedelta(days=400)
-    svc = _FakeHistoryService([_summary("c1", "old chat", older),
-                               _summary("c2", "new chat", now)])
+    svc = _FakeHistoryService([_summary("c1", "old chat", older), _summary("c2", "new chat", now)])
     view = await get_radar(current_user=_USER, service=svc)
 
     assert view.state == "populated"

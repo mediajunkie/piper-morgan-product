@@ -37,7 +37,10 @@ MIGRATED = [
     ("settings_slack.html", "Slack"),
     ("todos.html", "Todos"),
     ("transparency.html", "Transparency"),
-    ("home.html", "New Chat"),  # chat landing page (#1266 — inline chat; hide_floating_widget via route)
+    (
+        "home.html",
+        "New Chat",
+    ),  # chat landing page (#1266 — inline chat; hide_floating_widget via route)
 ]
 
 _USER = {"username": "xian", "user_id": "u1", "is_admin": False}

@@ -76,11 +76,7 @@ def _format_full_results_table(results: List[ProbeRunResult]) -> str:
             f"{r.expected_confidence_range[1]:.2f}]"
         )
         actual = f"{r.actual_output.category} / {r.actual_output.confidence:.2f}"
-        violation_match = (
-            "✓"
-            if r.expected_violation == r.actual_output.violation_detected
-            else "✗"
-        )
+        violation_match = "✓" if r.expected_violation == r.actual_output.violation_detected else "✗"
         diffs = ", ".join(r.diff_types) if r.diff_types else "—"
         rows.append(
             f"| {r.probe_id} | {expected} | {actual} | {violation_match} | "
@@ -96,9 +92,7 @@ def _format_hint_assertion_failures(results: List[ProbeRunResult]) -> str:
         if not r.hint_assertion_failures:
             continue
         rows.append(f"\n### {r.probe_id}")
-        rows.append(
-            f"\n**Detector hint**: {r.actual_output.redirect_hint!r}"
-        )
+        rows.append(f"\n**Detector hint**: {r.actual_output.redirect_hint!r}")
         rows.append(f"\n**Failures**:\n")
         for f in r.hint_assertion_failures:
             rows.append(f"- `{f.rule}` — matched: `{f.matched_text!r}` ({f.detail})")
@@ -130,9 +124,7 @@ def _format_per_probe_detail(results: List[ProbeRunResult]) -> str:
         if r.hint_assertion_failures:
             rows.append("\n**Hint assertion failures**:")
             for f in r.hint_assertion_failures:
-                rows.append(
-                    f"- `{f.rule}`: matched `{f.matched_text!r}` ({f.detail})"
-                )
+                rows.append(f"- `{f.rule}`: matched `{f.matched_text!r}` ({f.detail})")
     return "\n".join(rows)
 
 
@@ -205,13 +197,7 @@ async def main_async(output_path: Optional[Path] = None) -> Path:
 
     if output_path is None:
         ts = timestamp.astimezone()
-        base_dir = (
-            PROJECT_ROOT
-            / "dev"
-            / f"{ts.year:04d}"
-            / f"{ts.month:02d}"
-            / f"{ts.day:02d}"
-        )
+        base_dir = PROJECT_ROOT / "dev" / f"{ts.year:04d}" / f"{ts.month:02d}" / f"{ts.day:02d}"
         output_path = _next_run_path(base_dir)
 
     report = _render_report(
@@ -237,10 +223,7 @@ def main() -> int:
         nargs="?",
         type=Path,
         default=None,
-        help=(
-            "Optional output path. Default: "
-            "dev/YYYY/MM/DD/1004-probe-set-v0-1-run-N.md"
-        ),
+        help=("Optional output path. Default: " "dev/YYYY/MM/DD/1004-probe-set-v0-1-run-N.md"),
     )
     args = parser.parse_args()
     asyncio.run(main_async(output_path=args.output_path))

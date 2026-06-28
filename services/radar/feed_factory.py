@@ -9,6 +9,7 @@ without importing from `web/`.
 
 Providers moved here verbatim from `web/api/routes/radar.py` (#1239 behavior preserved).
 """
+
 from __future__ import annotations
 
 from typing import Optional

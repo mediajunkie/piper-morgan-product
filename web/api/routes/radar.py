@@ -8,6 +8,7 @@ user-history), Documents (#1238), and WorkItems (#1239) into RadarFeed and seria
 — Person slots into `_build_feed` as PPM lands the entity catalog (#706), no surface
 change.
 """
+
 from __future__ import annotations
 
 from typing import List, Optional

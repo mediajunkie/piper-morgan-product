@@ -399,9 +399,7 @@ class TestConversationHistoryInPrompt:
 
     def test_history_caps_at_8_turns(self):
         """Only the most-recent 8 turns appear; older ones are pruned."""
-        history = [
-            {"role": "user", "content": f"turn-{i}"} for i in range(15)
-        ]
+        history = [{"role": "user", "content": f"turn-{i}"} for i in range(15)]
         prompt = _build_extraction_prompt(
             "follow-up",
             MEETING_TEMPLATE,

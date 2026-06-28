@@ -100,9 +100,7 @@ class TestConceptualIntegrityVocabulary:
             "COMPOSTED",
         ],
     )
-    def test_no_uppercase_lifecycle_in_visible_text(
-        self, lists_html: str, stage_name: str
-    ):
+    def test_no_uppercase_lifecycle_in_visible_text(self, lists_html: str, stage_name: str):
         """No bare uppercase lifecycle stage in visible (non-script/style) text."""
         soup = BeautifulSoup(lists_html, "html.parser")
         for tag in soup(["script", "style"]):
