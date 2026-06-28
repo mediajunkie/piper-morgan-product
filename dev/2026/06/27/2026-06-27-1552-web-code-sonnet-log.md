@@ -34,4 +34,5 @@ Inbox empty.
 | Fire | Time | Action | Notes |
 |------|------|--------|-------|
 | 1 | 15:52 | START | June 26 DAY-CLOSED confirmed. Inbox empty. July-1 deadline approaching (book-citation, 4 days). Nudge sent to Exec. |
+| 2 | 18:52 | WORK | Exec replied with citation spec. Staged change on website/main (commit d925aa68c, not pushed): "Author of Product Management for UX People (Rosenfeld)." Holding push pending Exec prefix confirm with PM. Reply sent to Exec. Memo moved to read/. |
 

@@ -94,3 +94,17 @@ Drained. Back to light hold — same queue (Lead's C/inc.2 + ports; CIO's cron-c
 <!-- GAP-SINCE-LAST-FIRE: 0.5h -->
 
 1 memo: **CIO BUILT cure (a)** (`dafc4904f`, watchdog "Belt 0") — converged exactly on my decomposition: launchd foregrounds via **`open -b com.anthropic.claude-code`** (smart improvement over my `open -a`/activate — activate self-deadlocks from-within + System Events is TCC-blocked; `open -b` is Launch-Services, clean exit) → the existing cron fires (no injection). My "concrete first test" became their self-validation (watchdog log shows `FOREGROUND` on first real stall). **Honest scope boundary**: Belt 0 cures **Mode 1b** (backgrounded) but not **1a** (cron-object-dead/session-ended — foregrounding can't resume a non-existent cron); 1a still needs re-arm or the off-machine trigger ((b)/(c)). Informational + the architectural contribution already landed *in the build* → triaged to read/, no noise-reply. The cron-cure thread (my lane's contribution) is effectively closed: diagnosis → decomposition → built, all today. 1a residue is CIO's to advance. WATCH; cron `ff1df50a` armed.
+
+---
+
+### Fire — autonomous (18:27 cron, ran 18:57) — ADR-071 EntitySources-promise boundary CONFIRMED SETTLED (PPM unblock)
+
+<!-- GAP-SINCE-LAST-FIRE: 3.0h -->
+
+The 18:27 cron **fired cleanly** (~3h interval) — a good cron datum (no stall this slot). 1 memo: **Exec relayed PM's ask to expedite ADR-071** — the #049 synthesis flagged it as the single highest-leverage unblock (gating PPM #1237 entity-model + CXO #1290 nav). Question: does ADR-071 already settle the EntitySources-promise boundary, or need an increment?
+
+**Investigated before ruling (the payoff)**: traced the referent — **#1237 is CLOSED** (6/18; 3-of-4 sources shipped, built to the ADR-071 pattern + PM-UAT'd) and the PPM entity-model spec is **build-ready + already uses `owner_id`** (its OQ-1/2/3 are M4 product-scoping, not ADR-071 gates); the one open type (People/#1281) is gated on **source-population, not ADR-071**. So the "#1237 gated on ADR-071" framing was **stale** — the gate is discharged.
+
+**Ruled: ADR-071 already settles the boundary; no increment.** The 4 types map cleanly (PM-domain = global-by-design+render-guard D1; Conversation/Document = owner-anchored; People/stakeholders = owner-anchored D6). **Drew a disambiguation** to prevent mis-routing: "anchor-first trust governs which sources can be promised" conflates two boundaries — (1) who-can-see = owner-scoping = ADR-071's lane (SETTLED) vs (2) which-provenance-is-surfaceable = the trust-gradient / PPM OQ-2 (ADR-072-D5-adjacent, a PPM/CXO M4 call, NOT an ADR-071 increment). If PPM's blocker is (1) they're clear now; if (2), it routes to the trust-gradient, not ADR-071. → unblock memo to PPM cc PM/Exec/PA (`76c0f704c`) + decisions.log (`e8d149a78`). Unblocks two parked lanes on a gate that was already discharged.
+
+Drained. Light hold — same queue (Lead's C/inc.2 + ports; alpha bundle). Cron armed + firing.
