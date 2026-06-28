@@ -52,3 +52,50 @@
 - **(17:50) Ship #049 workstream synthesis — DRAFTED (all 6 reports in).** PM directed begin; framed it "primarily a report to me now." Read all 6 §0-format reports + synthesized → `dev/active/exec-ship-049-workstream-synthesis-2026-06-27.md`: §0 cross-cohort progress-vs-goals aggregate (6 milestones closed; honest blocked/slipped column — PPM's 4 all upstream-gated, CIO 2 deliberate slips); through-lines (improvisation→infrastructure / make-drift-impossible / continuity-under-repair / flywheel-working); **consolidated PM-needs ranked by leverage** (ADR-071 timeline unblocks 2 lanes #1; roadmap fold #2; off-machine cure #3; narrative steer #4). Recommended Ship theme: "the week the team turned improvisation into infrastructure." First run of the §0 format — it works; the aggregate progress-vs-goals view is genuinely more PM-useful than activity lists. Delivered to PM; feeds Comms's public draft.
 
 - **(18:10) 4 PM directives relayed** (`f89b66bd0`, all cc PM): (1) **Arch — expedite ADR-071** (keystone blocking PPM #1237 + CXO nav; ask = is the EntitySources-promise boundary already-settled [→1-line confirm] or needs an increment [→expedite ahead of M5]). (2) **PPM — roadmap reconciliation = DRAFT IT** (PM's unstick is delegation not cold input: PPM drafts from the known M4→RECONNECT→M5→0.9.0 arc → PM reviews; flag only genuine forks). (3) **CIO — $0 cure shape APPROVED** (cure-(a)/watchdog-resume; proceed/harden/deploy; off-machine b/c still open). (4) **Comms — propose the next narrative arc** (review logs since Beat 9 closed; arc can end-yesterday or stay open, don't force-fit the gap; beats ~1-4 days following the storyline; PM reviews→approves→drafts→then insight-mining). Also: saved "fold" as a crutch word (PM flag) → memory + stopped using it.
+
+- **(19:02) ADR-071 keystone DISSOLVED on trace + CXO relay.** Arch expedited (19:00): traced the referent → ADR-071 EntitySources boundary **already SETTLED** (owner-anchoring, 4 types, no increment) AND **#1237 actually CLOSED** (3/4 shipped 6/18) — the "blocked on ADR-071" framing (PPM report + my synthesis) was STALE (cf. #1312 dissolve pattern). Residual = People #1281 (source-population, Lead/PPM build) + trust-gradient OQ-2 (PPM/CXO M4 call, not ADR-071). **Relayed to CXO** (`...adr071-settled`, since Arch didn't cc it; asked which boundary it was parked on). **Corrected my synthesis** (annotated the #1 PM-need as resolved/stale). Web citation: staged on website/main, holding for PM prefix confirm (only open item there). Surfaced correction to PM. Triaged 2 → read/.
+
+- **(19:30) People-entity #1281 one-pager requested (PM ask).** PM asked (a) where to see the byline detail → pointed to the Web-citation memo path + gave inline (Co-author/Designing Social Interfaces/O'Reilly → Author/Product Management for UX People/Rosenfeld; staged on website/main, holding for PM prefix confirm). (b) Is PPM looped on People source-population + ask for a one-pager → sharpened into explicit ask to PPM (cc PM/Lead/Arch, `292dec161`): scope the People (#1281) source-population mechanism (options: session-extraction / introduce-person flow / connector-import; recommended + provenance/OQ-2 note; build sketch [Lead]; owner_id UUID-FK per Arch D2; roadmap fit). Route to PM via me. The one real residual now that ADR-071/#1237 cleared.
+
+- **(22:02) STOP fire — day-close.** Inbox 2: CXO ADR-071 clarification (freeze was boundary-1 owner-scoping → **confirmed unblocked**; trust-gradient is its live M4 question) + CIO cure-(a)-confirmed-live (loop closed). **Relayed to PPM** (cc PM/CXO, `0db7c24dc`): both unblocked on entity-model surface; **combined CXO+PPM M4 session (trust-gradient + onboarding) queued with trigger = RECONNECT lands**, Exec to convene. Queued-with-trigger added to carry-forward. Triaged 2 → read/.
+
+## Day Arc (6/27, Sat)
+
+**Opened**: 07:02 START. **Closed**: 22:02 STOP. A heavy, high-value PM-collaboration day.
+
+**What shipped (Exec lane):**
+- **Fresh attention board** (13:44) — diffed forward; cohort fully recovered post-machine-sleep.
+- **Ship #049 workstream synthesis** — all 6 §0-format reports → progress-vs-goals aggregate + ranked PM-needs + Ship theme ("improvisation→infrastructure"). First run of the §0 format; it works.
+- **Workstream cadence recovered** — #049 call sent (had slipped) → all 6 reports collected; §0 format codified in methodology-25; **Friday-kickoff trigger built** (doc + cron `249b372c`).
+- **Inbox-proxy convention**: PM-approved → circulated → **8/10 ratified** (awaiting web/pa) → 2-wk pilot pending.
+- **Anthropic billing** clarified (two-pool doc) + product-API cost-efficiency thread to CIO+Lead.
+- **Relayed a cascade of PM decisions**: github-mcp A→C→C-confirmed; #1312 timing; $0 cure approved (CIO confirms live); ADR-071 expedite→dissolved-on-trace (settled + #1237 closed; stale framing caught); roadmap reconciliation delegated to PPM; Comms next-arc proposal; People-#1281 one-pager requested; Web citation spec sourced.
+- **2 standing behaviors + 2 crutch-word notes** saved to memory (extract-PM-questions, relay-PM-decisions; "fold"); recurring-tasks design note + CIO execution brief (for the CIO discussion).
+
+**Carry-forward to 6/28:**
+- 🟡 **PM byline confirm** — Web /about citation staged, holding on PM's one-line prefix ("Author of Product Management for UX People (Rosenfeld)").
+- ▶ Awaiting (drafts coming): PPM roadmap reconciliation; PPM People-#1281 one-pager; Comms next-arc proposal. Relay to PM on arrival.
+- ⏳ Combined CXO+PPM M4 session — convene when RECONNECT lands.
+- 🔄 Inbox-proxy: 2 ACKs left (web, pa) → then pilot. #1144/#1131 greenlight (PM, low-pri).
+- 🟢 Resolved today: github-mcp=C, #1312 ruled+timed, ADR-071 settled/#1237 closed, $0 cure live, #049 synthesis.
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced:** exec-carry-forward (living state, every fire) · cohort-attention-rollup skill (13:44 board) · duty-cycle-tick skill (fire dispatch, STOP) · methodology-25 (workstream cadence — edited: Friday trigger + §0) · all 6 workstream-049 reports (synthesis) · Janus DinP homepage-review (citation spec) · MEMORY pins (relay-decisions, extract-questions, "fold"/"load-bearing" crutch words, mail push-to-ref, Web≠product-frontend routing).
+
+**Loaded not referenced:** BRIEFING-CURRENT-STATE (Docs-owned).
+
+**Wanted but not found:** a cohort "who's tracking a stale-closed issue as blocked" check — PPM tracked closed #1237 as its blocked #1; Arch's artifact-trace caught it. A periodic open-vs-tracked reconciliation would catch this class (noted for the recurring-tasks design).
+
+## Sign-Off Checklist
+```
+git status        → clean (tracked) after STOP commit + mail-send triage
+@{u}..HEAD        → pushed
+origin/main..HEAD → pushed
+```
+
+<!-- DAY-CLOSED: 2026-06-27 -->
+
+---
+
+*— Exec (DinP / Sonnet 4.6, cloud session), 6/27 STOP ~22:02 PT.*
