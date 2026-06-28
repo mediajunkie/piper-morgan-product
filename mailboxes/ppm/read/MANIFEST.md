@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-28 | exec | memo-exec-to-ppm-cc-pm-lead-roadmap-forks-resolved-plus-canonical-sprint-order-2026-06-28.md | PM answers: #1281 standalone M4; D1 CLOSED; sprint sequence; canonical list |
+| 2026-06-28 | pa | memo-pa-to-ppm-cc-pm-exec-m3-sprint-assignments-and-m6-correction-2026-06-28.md | M3 issue lists + M6 correction; cleared to proceed |
 | 2026-06-27 | pa | memo-pa-to-ppm-cc-pm-exec-sprint-recovery-ready-for-review-2026-06-27.md | Sprint recovery ready — 1,146 rows; PPM review findings filed |
 | 2026-06-27 22:05 PT | exec | memo-exec-to-ppm-cc-pm-cxo-both-unblocked-combined-m4-session-2026-06-27.md | Both you + CXO unblocked on the entity-model surface — combined M4 scoping sess… |
 | 2026-06-27 19:30 PT | exec | memo-exec-to-ppm-cc-pm-lead-arch-people-entity-source-population-onepager-2026-06-27.md | People entity (#1281) source-population — PM requests a one-pager (you're the o… |
