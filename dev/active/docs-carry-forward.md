@@ -1,5 +1,5 @@
 # Docs Carry-Forward
-**Updated**: 2026-06-27 22:25 PDT (DAY-CLOSED)
+**Updated**: 2026-06-28 03:47 PDT (WATCH)
 **Cron**: `17 3,10,13,16,19,22 * * *` (armed — STOP leaves cron armed)
 **Session log**: `dev/2026/06/27/2026-06-27-1017-docs-code-sonnet-log.md` (DAY-CLOSED ✓)
 
@@ -14,7 +14,7 @@
 
 ## Pending / PM-gated (carry to Jun 28)
 
-- **Branch-or-Anchor crosspost** — Medium/LinkedIn pending; Beat 8 + Beat 9 + Triad Model syndication all need URLs (PM-gated)
+- **Branch-or-Anchor crosspost** — Medium/LinkedIn pending; Beat 8 + Beat 9 need URLs (PM-gated); Triad Model syndication ✅ DONE (`979ceb4d9`)
 - **CIO worktree rescue+prune** — CIO owns sweep-code; 3 unmerged worktrees to rescue first
 - **June 27 omnibus** — write when all Jun 27 logs are closed (active today: HOST/PPM/Exec/PA/Lead/CXO/Arch/Docs + others)
 - **PA Jun 26 log gap** — flagged in omnibus; check if Jun 27 PA log has retroactive close
