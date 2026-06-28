@@ -1,7 +1,7 @@
 # Piper Morgan Glossary
 
-**Version**: 1.3
-**Date**: June 27, 2026 (v1.3 — added Distribution Surfaces and Formats section: Plugin vs. MCP bundle vs. Skills, Claude surfaces. Triggered by persistent Plugin/MCPB conflation in BYOC docs.)
+**Version**: 1.4
+**Date**: June 27, 2026 (v1.4 — rewrote Distribution Surfaces and Formats with PM-ratified taxonomy + Piper Open research. Corrected: Cowork is a Desktop product not Claude.ai; plugin wave came before skills wave; MCPB install paths; surface/format support matrix.)
 **Previous**: June 10, 2026 (v1.2 — added PDR + role-acronym block + MVP/UAT after a Ship-edit false-unpacking incident; reanimated as the canonical terminology source)
 **Purpose**: Define project terminology, jargon, and concepts. **This is the single source of truth for acronym expansions** — never spell out an acronym from memory; look it up here. If a term isn't here, that's a STOP-and-look-up signal (find the originating doc, add it), not a license to guess. The companion lint `scripts/check-acronyms.py` enforces this against drafts.
 
@@ -373,50 +373,70 @@ Informal task tracking for small items not warranting GitHub issues.
 
 ## Distribution Surfaces and Formats
 
-> **Stop-and-look-up zone.** Plugin, MCPB, bundle, connector, extension, and skills are frequently conflated. Before writing any doc, email, or instruction that uses these words, check this section. The distinctions matter to testers.
+> **Stop-and-look-up zone.** Plugin, MCPB, bundle, connector, extension, and skills are frequently conflated. Before writing any doc, email, or instruction that uses these words, check this section. Source of truth: PM-ratified taxonomy (2026-06-27) + Piper Open research `capabilities-by-surface-2026-06-26.md` (best current snapshot, some verify-items still open).
 
-### Claude Surfaces (where users interact with Claude)
+---
 
-**Claude Desktop** — The native Mac/Windows desktop app from Anthropic. Supports MCP bundles (`.mcpb`) installed via the Connectors section. This is the primary surface for BYOC distribution.
+### Claude Interfaces and their products
 
-**Cowork** — Claude Web (claude.ai) with project/collaboration features. Supports Cowork plugins (`.zip`) installed via the Personal plugins section. A completely different surface from Desktop. **Do not confuse with Desktop.**
+Four interfaces, each with sub-products:
 
-**Claude Code** — The CLI tool and IDE extensions (VS Code, JetBrains). Calls MCP connections "Extensions" rather than "Connectors," but they are the same thing. Supports MCPBs.
+| Interface | Products | Notes |
+|-----------|----------|-------|
+| **Claude.ai** (website) | Chat, Code (paid), Design | Design not relevant to us |
+| **Claude Desktop** (app) | Chat, Cowork, Code | Three distinct sub-surfaces |
+| **Claude Mobile** (app) | Chat, Code, Dispatch | Dispatch can drive Cowork + cloud agents |
+| **Claude Code CLI** | Code | Also integrates into VS Code, JetBrains, etc. |
+
+**Cowork** is a product within **Claude Desktop** — not Claude.ai, not a separate website. This is a frequent source of confusion.
+
+---
+
+### What each format supports by surface
+
+| Format | Claude.ai Chat | Desktop Chat | Desktop Cowork | Desktop Code | Mobile | Claude Code CLI |
+|--------|---------------|--------------|----------------|--------------|--------|-----------------|
+| **Plugin** (`.zip`) | no | no | **yes** | yes | no | yes |
+| **MCPB** (`.mcpb`) | via web UI¹ | via Settings→Extensions | via Connectors | no | no | no |
+| **Skill** (`.skill`) | yes | yes | yes | yes | verify | yes |
+| **Remote MCP** (URL) | yes | yes | yes | yes | gallery/sync | yes |
+
+¹ Claude.com has a pathway for installing connectors from a local MCPB file (per PM, 2026-06-27); double-clicking an MCPB installs into the Desktop app. Piper Open research notes this as partially verify-pending.
 
 ---
 
 ### Distribution Formats (what you install)
 
-**Plugin** (Cowork plugin) — A `.zip` file for **Cowork only**. Contains skills (prompt patterns) and optionally an included MCP server or a manifest. Installs via Personal plugins section in Claude Web. **A Plugin is NOT an MCP bundle and does NOT install in Claude Desktop.**
+**Plugin** — A `.zip` file containing skills and an MCP server. Designed for **Claude Desktop Cowork**; also works in Desktop Code and Claude Code CLI. Does **not** self-install on double-click (unlike `.mcpb` and `.skill`). Installs via the Plugins section within Cowork or via CLI. **A Plugin is NOT an MCPB.**
 
-**MCP bundle / MCPB** — A `.mcpb` file (renamed zip) for **Claude Desktop and Claude Code**. Contains an MCP server process plus optional skills. Installs by:
-- Double-clicking the `.mcpb` file (Claude Desktop opens and prompts), OR
-- Claude Desktop → Connectors (left sidebar) → "+" → select the file
-NOT via the Personal plugins section, NOT via Skills > "Upload a skill." **An MCPB is NOT a plugin.**
+**MCP bundle / MCPB** — A `.mcpb` file (a zip renamed) for **Claude Desktop**. Contains an MCP server process plus optional skills. Install paths:
+- Double-click → Claude Desktop installs it (to Chat via Settings→Extensions or Cowork's Connectors page)
+- Claude.com web UI → connector install pathway
+- **NOT** via the Skills upload flow. If a tester sees a "30MB limit" warning, they are in the wrong section.
 
-**Skills** (prompt patterns) — Markdown instruction files that shape how Claude responds. Skills are format-agnostic: they can be distributed inside a Plugin (for Cowork) or inside an MCPB (for Desktop/Code), or standalone. When users say they received "the skills," they mean a skills-only distribution — no MCP server, no persistent backend. **Skills ≠ Plugin ≠ MCPB.** The skills wave and the MCPB wave are separate distributions.
+**Skills** — `.skill` files (prompt pattern markdown). Surface-agnostic: distribute standalone or bundled inside a Plugin or MCPB. A skills-only distribution has no MCP server and no persistent backend. **Skills ≠ Plugin ≠ MCPB.**
+
+**Remote MCP** — An MCP server reachable by URL, without any local file install. Users connect by pasting the URL into Settings → Connectors. Works on Claude.ai, Desktop, and Claude Code CLI. Mobile can use gallery connectors or inherit from another surface.
 
 ---
 
-### UI Elements (labels Claude surfaces use)
+### Tier framing (from Piper Open research)
 
-**Connector** — Claude Desktop's term for an installed MCP server connection. The "+" button in the Connectors sidebar is how you add an MCPB.
+**Tier 1** — Plugin installed (Desktop Cowork / Code / Claude Code CLI). Richest experience: skills auto-fire, full toolset.
 
-**Extension** — Claude Code's term for the same thing Connectors are in Desktop. Same concept, different label. If writing instructions for Desktop, say "Connectors." If writing for Code, say "Extensions."
-
-**Personal plugins** — The install section in Cowork (Claude Web) for Cowork plugins. **Not relevant to MCPB installation.** If a tester lands here, they are in the wrong section.
-
-**Skills > "Upload a skill"** — Cowork's separate upload flow for skills-only zips. Has a 30MB limit. **Completely unrelated to MCPB installation.** If a tester sees "Zip file must be less than 30MB," they are in the wrong section.
+**Tier 2** — Remote MCP only (Claude.ai web, Mobile, ChatGPT). Leaner: tools available, no auto-firing plugin skills.
 
 ---
 
 ### Piper-Specific Distribution History
 
-| Wave | Format | Surface | Status |
-|------|--------|---------|--------|
-| Skills wave | Skills (prompt patterns) | Cowork / any surface | Sent to alpha testers |
-| Plugin wave | Cowork plugin (`.zip`) | Cowork only | Sent to alpha testers (early, buggy) |
-| MCPB wave | MCP bundle (`.mcpb`) | Claude Desktop | v0.1.9 — current, in testing |
+| Wave | Format | Date | Recipients | Status |
+|------|--------|------|------------|--------|
+| **Plugin wave** | Plugin zip (`piper-morgan-alpha-byoc-poc.zip`) | Jun 1–9, 2026 | Beatrice (Jun 1), Ted (Jun 7), Michelle + Jake + Rebecca (Jun 9) | Sent — early/buggy; Caddy auth issues |
+| **Skills wave** | `.skill` files + zip | Jun 19, 2026 | ~11 testers | Sent |
+| **MCPB wave** | `.mcpb` (`v0.1.9`) | In testing | PM only | Not yet distributed |
+
+Plugin wave came **first**, then skills, then MCPB. Nobody outside PM has seen an MCPB.
 
 ---
 
