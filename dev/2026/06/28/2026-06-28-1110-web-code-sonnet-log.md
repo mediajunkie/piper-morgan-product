@@ -33,4 +33,5 @@ Inbox: 1 memo (Exec GO on citation — actioning).
 | Fire | Time | Action | Notes |
 |------|------|--------|-------|
 | PM | 11:10 | START+WORK | June 27 DAY-CLOSED confirmed. Exec GO memo in inbox — pushed staged citation commit d925aa68c to website/origin/main. pipermorgan.ai deploying. Confirm sent to Exec. Inbox cleared. |
+| 1 | 12:27 | WORK+IDLE | Exec lean-throttle memo: Web is IDLE tier (no active in-window deliverable). CronDelete executed. ACK sent to Exec. Suspended through Wed Jul-1 9pm reset. |
 
