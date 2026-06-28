@@ -3344,25 +3344,30 @@ class IntentService:
         self.logger.info(f"Processing stale PRs query: {intent.action}")
 
         try:
-            # Import GitHubIntegrationRouter
-            from services.integrations.github.github_integration_router import (
-                GitHubIntegrationRouter,
-            )
+            from datetime import datetime, timedelta, timezone
 
-            # Initialize router (Issue #891: pass user_id for token lookup)
-            github_router = GitHubIntegrationRouter()
             _user_id = _principal_from_intent(intent)
-            await github_router.initialize(user_id=_user_id)
 
-            # Check if GitHub is configured
-            if not github_router.config_service.is_configured(_user_id or "system"):
+            # RECONNECT (#1322 P3): prefer the OAuth connector (search_pull_requests, author:@me);
+            # native-PAT fallback only when not OAuth-connected; honest-degrade otherwise (#1231).
+            from services.mcp.consumer.connector import DegradationReason
+            from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+            connector_result = (
+                await GitHubMCPSpatialAdapter().list_open_prs(_user_id, limit=100)
+                if _user_id
+                else None
+            )
+            if connector_result is not None and connector_result.issues is not None:
+                # search_pull_requests already returns PRs (no pull_request-field filter needed).
+                pr_items = connector_result.issues
+            elif connector_result is not None and (
+                connector_result.degradation.reason is not DegradationReason.CONNECT_REQUIRED
+            ):
+                # Connected but degraded → honest message, never a silent PAT fallback (#1231).
                 return IntentProcessingResult(
                     success=True,
-                    message=(
-                        "I'd love to show you stale PRs, but GitHub isn't configured yet. "
-                        "To enable GitHub integration, please add your GITHUB_TOKEN to your environment "
-                        "or configure it in PIPER.user.md. Once configured, I can track open PRs!"
-                    ),
+                    message=connector_result.degradation.user_message,
                     intent_data={
                         "category": intent.category.value,
                         "action": intent.action,
@@ -3370,24 +3375,41 @@ class IntentService:
                     },
                     workflow_id=workflow_id,
                     requires_clarification=False,
-                    implemented=False,  # Graceful degradation
+                )
+            else:
+                # No principal, OR not OAuth-connected (CONNECT_REQUIRED) → native-PAT fallback.
+                from services.integrations.github.github_integration_router import (
+                    GitHubIntegrationRouter,
                 )
 
-            # Get open issues (includes PRs)
-            from datetime import datetime, timedelta, timezone
-
-            open_items = await github_router.get_open_issues(limit=100)
+                github_router = GitHubIntegrationRouter()
+                await github_router.initialize(user_id=_user_id)
+                if not github_router.config_service.is_configured(_user_id or "system"):
+                    return IntentProcessingResult(
+                        success=True,
+                        message=(
+                            "I'd love to show you stale PRs, but GitHub isn't connected yet. "
+                            "Connect GitHub in Settings → Integrations to track your open PRs."
+                        ),
+                        intent_data={
+                            "category": intent.category.value,
+                            "action": intent.action,
+                            "confidence": intent.confidence,
+                        },
+                        workflow_id=workflow_id,
+                        requires_clarification=False,
+                        implemented=False,  # Graceful degradation
+                    )
+                # Native path mixes issues + PRs → filter to PRs via the pull_request field.
+                open_items = await github_router.get_open_issues(limit=100)
+                pr_items = [item for item in open_items if item.get("pull_request")]
 
             # Filter to PRs older than 7 days
             now = datetime.now(timezone.utc)
             stale_threshold = now - timedelta(days=7)
 
             stale_prs = []
-            for item in open_items:
-                # Only include PRs
-                if not item.get("pull_request"):
-                    continue
-
+            for item in pr_items:
                 created_at_str = item.get("created_at")
                 if created_at_str:
                     created_at = datetime.fromisoformat(created_at_str.replace("Z", "+00:00"))
@@ -3409,18 +3431,17 @@ class IntentService:
             # than 7 days. The prior wording ("All open PRs are less than
             # 7 days old") asserted more than the handler verified.
             if not stale_prs:
-                total_checked = len(open_items)
-                if total_checked == 0:
+                # Pattern-073: report what was actually checked (the PR set), not a stronger claim.
+                checked_count = len(pr_items)
+                if checked_count == 0:
                     message = (
-                        "No open issues or PRs returned from GitHub. "
-                        "This could mean none exist, or there's a configuration "
-                        "or auth issue worth checking."
+                        "No open PRs returned from GitHub. This could mean you have none "
+                        "open, or there's a connection/auth issue worth checking."
                     )
                 else:
                     message = (
-                        f"No stale PRs in the {total_checked} most-recent open "
-                        f"items I checked. (Older PRs may exist beyond the "
-                        f"100-item scan limit.)"
+                        f"No stale PRs among the {checked_count} open PR(s) I checked. "
+                        f"(Older PRs may exist beyond the 100-item scan limit.)"
                     )
             else:
                 lines = [f"**Stale PRs** ({len(stale_prs)} found):\n"]

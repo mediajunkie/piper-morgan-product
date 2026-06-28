@@ -309,8 +309,8 @@ class TestGitHubNotConfiguredGracefulDegradation:
             result = await intent_service._handle_stale_prs(intent, "workflow-id")
 
             assert result.success is True
-            assert "GitHub isn't configured yet" in result.message
-            assert "GITHUB_TOKEN" in result.message
+            assert "isn't connected yet" in result.message
+            assert "Settings" in result.message  # #1322: OAuth connect, not env token
             assert result.implemented is False
 
 
@@ -471,7 +471,7 @@ class TestStalePRsResults:
             result = await intent_service._handle_stale_prs(intent, "workflow-id")
 
             assert result.success is True
-            assert "No stale PRs in the" in result.message
+            assert "No stale PRs among the" in result.message
             assert result.intent_data["stale_count"] == 0
 
 

@@ -33,3 +33,18 @@ manual testing/review this morning.
   **Next P3b**: mutating handlers (close/comment issue — per-issue WRITES via the grant,
   higher-stakes); **P3c**: repo-scoped reads (branches/labels/milestones/releases) are
   entangled with repo-resolution (vestigial path) → a design call, not a clean swap.
+
+- **~09:00 — #1322 P3b: stale-PRs handler → OAuth connector. ALL user-wide GitHub reads now
+  cut over.** Cut `_handle_stale_prs` to `list_open_prs` (connector-first + native fallback +
+  honest-degrade), adding the `if _user_id` principal guard so system/principal-less calls skip
+  straight to native (no pointless DB hit; keeps the legacy None-user tests on the native path).
+  Preserved the Pattern-073 empty-result honesty, now PR-centric ("No stale PRs among the N open
+  PR(s) I checked"). Reconciled 2 existing tests (not-configured → Settings/OAuth message; empty
+  → new wording). **195 green.** **Live-verified**: stale_prs → "Stale PRs (2 found): #1 (166
+  days), #1191 (17 days)" — PM's authored PRs, aged + sorted oldest-first.
+  **Milestone**: issues + PRs + stale-PRs (every user-wide GitHub read in chat) now flow through
+  the OAuth connector, verified live. **Remaining #1322 needs decisions, not solo cutover**:
+  (a) repo-scoped reads (branches/labels/milestones/releases/review-issue) — need a default_repo
+  source / design call (PM flagged resolve_repo as vestigial); (b) mutating handlers
+  (close/comment issue) — WRITES via the grant, need write-path verification + PM's OK before
+  touching real GitHub while PM tests. Holding both for PM's testing feedback.
