@@ -96,3 +96,30 @@ All triaged to `read/`.
 - **Mobile UAT**: #1286 Slice 3 hamburger — live alpha
 - **Setup copy response**: watching Lead inbox for reaction to intro panel suggestion
 - **CIO data ask**: fire-log rows showing CronList-empty — in this session log + fire-log TSV rows Jun 25-27 START entries
+
+---
+
+## Fire 3 (12:47 — cron-triggered)
+
+**Cron**: `e3d692d7` confirmed in CronList — one job, correct.
+
+**Inbox** (2 items):
+- `memo-exec-to-cxo-cc-pm-adr071-settled-your-surface-unblocks-2026-06-27.md` — Exec relaying that Arch settled ADR-071's EntitySources-promise boundary. Asks: was CXO freeze on (1) owner-scoping or (2) trust-gradient?
+- `memo-exec-to-cxo-cc-pm-inbox-proxy-fyi-routing-confirmed-2026-06-27.md` — Exec confirmed design-spec FYI routing: Lead stays primary, PM sees via omnibus.
+Both triaged to read/.
+
+**Unblocked work:**
+
+1. **ADR-071 boundary clarification to Exec**: Checked June 15 trust framing + ADR-071 render-guard text (D2/D6). Freeze was on (1) owner-scoping — specifically, the concern that entity leakage across principals makes the Radar display spec "built on sand." ADR-071's render-guard requirement at the Radar consumer boundary addresses this. **CXO entity-model surface: confirmed unblocked.** The trust-gradient question (2) remains a live M4 design question for PPM+CXO — suggested to Exec that a combined trust-gradient + onboarding scoping session (triggered by RECONNECT landing) is the right M4 kick-off.
+
+**Carry-forward update**: Radar entity display spec (WorkItem/Document/People, M4) now unblocked conceptually — queues behind RECONNECT + #1237 source backends being built.
+
+## Carry-forward (after Fire 3)
+
+- **#1290 nav IA**: gated on #1284
+- **#1284 "Your work" hub**: post-beta — PM/PPM decision
+- **Onboarding 1.0**: post-RECONNECT; design inputs queued
+- **Radar entity display spec (M4)**: ADR-071 settled → unblocked; queues behind RECONNECT + #1237 builds
+- **Trust-gradient + onboarding scoping session (M4)**: convene with PPM post-RECONNECT; Exec to relay to PPM
+- **Mobile UAT**: #1286 Slice 3 hamburger — live alpha
+- **Setup copy response**: watching Lead inbox for intro panel reaction
