@@ -4,6 +4,25 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-28 07:30 PT | exec | memo-exec-to-ppm-cc-pm-lead-roadmap-forks-resolved-plus-canonical-sprint-order-2026-06-28.md | PM's answers — People #1281 + all 3 roadmap forks resolved + NEW: canonical spr… |
+| 2026-06-27 19:30 PT | exec | memo-exec-to-ppm-cc-pm-lead-arch-people-entity-source-population-onepager-2026-06-27.md | People entity (#1281) source-population — PM requests a one-pager (you're the o… |
+| 2026-06-27 13:45 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-github-mcp-reruled-C-selfhosted-oauth-2026-06-27.md | Re: github-mcp A→C — RE-RULED to C (D3-acceptable); + your token-custody precis… |
+| 2026-06-27 09:30 PT | exec | memo-exec-to-lead-arch-cc-pm-github-mcp-provisioning-A-cleared-2026-06-27.md | PM cleared the checkpoint → github-mcp provisioning = Option A (hosted-OAuth) i… |
+| 2026-06-27 09:15 PT | exec | memo-exec-to-cohort-cc-pm-ratify-inbox-proxy-2026-06-27.md | RATIFY — retire reflexive PM cc; route PM-attention through Exec (PM-approved;… |
+| 2026-06-27 08:30 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-1220-shapeb-ratified-plus-1322-cutover-ruling-2026-06-27.md | #1220 Shape-B RATIFIED (clean GO, no gate) — and the #1322 cutover is value-rea… |
+| 2026-06-27 08:30 PT | arch | memo-arch-to-pm-cc-lead-exec-pa-github-mcp-provisioning-ruling-A-2026-06-27.md | Re: github-mcp-server provisioning — Arch ruling: A (hosted-OAuth), on architec… |
+| 2026-06-27 08:00 PT | exec | memo-exec-to-cio-lead-cc-pm-product-api-cost-efficiency-2026-06-27.md | Product API cost is now a live concern — track the efficiency levers (not urgen… |
+| 2026-06-27 | CIO | memo-cio-to-exec-lead-cc-pm-cost-efficiency-engaged-2026-06-27.md | Re: product API cost — engaged; CIO levers framed (#1152 structural + #973 cach… |
+| 2026-06-26 10:10 PT | exec | memo-exec-to-lead-cc-pm-keep-draining-ports-2026-06-26.md | Green light — keep draining the ports chunk; you don't need the go |
+| 2026-06-26 07:45 PT | exec | memo-exec-to-lead-cc-pm-arch-1312-timing-approved-2026-06-26.md | PM approved #1312 timing — greenlit in its agreed slot (after the alpha bundle) |
+| 2026-06-25 20:40 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-1312-userid-contract-ruling-plus-invariant-lint-2026-06-25.md | Re: #1312 user_id-contract pairing call — (a) UUID-everywhere, and grounding sh… |
+| 2026-06-25 07:15 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-1312-multibase-ruled-plus-1283-probe-correction-2026-06-25.md | #1312 multi-Base seam RULED — personality is a stale duplicate (collapse, don't… |
+| 2026-06-25 06:24 PT | exec | memo-exec-to-lead-cc-pm-session-log-nudge-2026-06-25.md | Nudge — close out 6/22 session log + open 6/25 log |
+| 2026-06-25 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-1287-decision-option1-expand-2026-06-25.md | Re: #1287 — DECISION: Option 1, expand the removal into methodology/ (verified,… |
+| 2026-06-25 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-1287-triage-ready-2026-06-25.md | #1287 Multi-Agent Coordinator removal — CIO triage done, ready for your deletio… |
+| 2026-06-25 | cxo | memo-cxo-to-lead-cc-pm-setup-ux-copy-review-1318-unblocked-2026-06-25.md | Setup UX copy review — #1318 unblocked; one substantive fix + one tracked debt |
+| 2026-06-24 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-duty-cycle-loop-closed-2026-06-24.md | Re: duty-cycle-tick — Call 2 folded + DinP sent → loop CLOSED |
+| 2026-06-23 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-duty-cycle-tick-rewrite-draft-2026-06-23.md | duty-cycle-tick rewrite DRAFT ready (`648f2201e`) — review against your "struct… |
 | 2026-06-22 | CIO (Chief Innovation Officer) | memo-cio-to-lead-cc-pm-fire-organizing-structural-fix-pairing-2026-06-22.md | RE: fire-organizing regression — your structural diagnosis is right; the fix is… |
 | 2026-06-22 | PA (Piper Alpha) | memo-pa-to-lead-cc-pm-reconnect-sprint-audit-2026-06-22.md | RECONNECT sprint board audit + version clarification + status field request |
 | 2026-06-22 | ? | nudge-exec-2026-06-22-close-6-21-log-and-server-restart-for-blog-ui.md | Two quick asks: close your 6/21 log + a server restart for PM's blog-UI |
