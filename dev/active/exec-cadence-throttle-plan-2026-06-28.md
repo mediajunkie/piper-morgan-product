@@ -1,6 +1,6 @@
 # Cadence throttle plan — run lean through Wed Jul-1 ~9pm (quota reset)
 
-**STATUS: PROPOSED** (Exec, 2026-06-28 12:15 PT; awaiting PM approval → then Exec broadcasts).
+**STATUS: EXECUTED 2026-06-28 12:35** (PM-approved; Exec cron cut 6x→2x `7007f7f7`; cohort broadcast sent to 10 roles `47b12470b`) (Exec, 2026-06-28 12:15 PT; awaiting PM approval → then Exec broadcasts).
 **Context**: PM at ~25% weekly quota; resets **Wed Jul-1 ~9pm PT**. Largest draw = autonomous duty-cycle fires (many agents × 6/day), much unconsumed midweek while PM's attention is elsewhere. Aligns with Janus's "run lean through Wed" proposal. Goal: avoid PM provisioning a 2nd paid account just to keep unwatched cycles running.
 
 ## The tiers (through Wed 9pm; restore normal after reset)
