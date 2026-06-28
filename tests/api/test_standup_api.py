@@ -22,6 +22,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from services.auth.jwt_service import JWTService
+from services.domain.models import StandupItem
 from services.domain.standup_orchestration_service import StandupIntegrationError
 from services.features.morning_standup import StandupResult
 
@@ -67,8 +68,14 @@ def mock_standup_result():
         user_id="test_user",
         generated_at=datetime(2025, 10, 19, 14, 30, 0),
         generation_time_ms=950,
-        yesterday_accomplishments=["Completed Phase Z", "Fixed all integration issues"],
-        today_priorities=["Start Phase 2 API", "Create comprehensive tests"],
+        yesterday_accomplishments=[
+            StandupItem(display="Completed Phase Z", source="session"),
+            StandupItem(display="Fixed all integration issues", source="session"),
+        ],
+        today_priorities=[
+            StandupItem(display="Start Phase 2 API", source="session"),
+            StandupItem(display="Create comprehensive tests", source="session"),
+        ],
         blockers=[],
         context_source="persistent",
         github_activity={"commits": [{"sha": "abc123", "message": "test commit"}], "prs": []},
