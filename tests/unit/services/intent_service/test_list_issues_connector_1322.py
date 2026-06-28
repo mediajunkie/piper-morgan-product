@@ -38,13 +38,16 @@ def _intent():
 
 @pytest.mark.asyncio
 async def test_uses_connector_issues_when_bound(intent_service):
+    # A page of 1 item but total_count=179 → the count must say 179, not 1 (page-vs-total bug).
     conn_issues = [{"number": 7, "title": "Connector issue", "labels": [{"name": "bug"}]}]
-    with patch(_CONN, new=AsyncMock(return_value=GitHubIssuesResult(issues=conn_issues))):
+    result = GitHubIssuesResult(issues=conn_issues, total=179)
+    with patch(_CONN, new=AsyncMock(return_value=result)):
         with patch(_NATIVE) as native:
             res = await intent_service._handle_list_issues_query(_intent(), "wf")
     assert res.success
-    assert "1 open issue" in res.message
+    assert "179 open issue" in res.message  # counts by total_count, not len(page)
     assert "#7" in res.message
+    assert "174 more" in res.message  # 179 - 5 shown
     native.assert_not_called()  # connector hit → native PAT path never touched
 
 

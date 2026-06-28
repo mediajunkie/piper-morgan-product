@@ -77,6 +77,7 @@ class GitHubIssuesResult:
     """
 
     issues: Optional[List[Dict[str, Any]]] = None
+    total: Optional[int] = None  # TRUE match count (search_issues total_count); issues is a page
     degradation: Optional[DegradationResponse] = None
 
 
@@ -214,7 +215,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return GitHubIssuesResult(degradation=await self.degrade(reason))
         try:
             async with self._mcp_client_ctx(binding) as client:
-                issues = await self._list_issues_via_mcp(client, limit=limit)
+                issues, total = await self._list_issues_via_mcp(client, limit=limit)
         except Exception:
             logger.warning(
                 "GitHub MCP issue-list failed (server unreachable/unprovisioned)", exc_info=True
@@ -222,33 +223,46 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return GitHubIssuesResult(
                 degradation=await self.degrade(DegradationReason.UNREACHABLE)
             )
-        return GitHubIssuesResult(issues=issues)
+        return GitHubIssuesResult(issues=issues, total=total)
 
-    async def _list_issues_via_mcp(self, client: MCPClient, *, limit: int) -> List[Dict[str, Any]]:
+    async def _list_issues_via_mcp(
+        self, client: MCPClient, *, limit: int
+    ) -> "tuple[List[Dict[str, Any]], Optional[int]]":
         """Fetch + parse the user's open issues via github-mcp-server ``search_issues``.
 
-        Real round-trip de-risked against the live server (#1322: 179 issues). GitHub search
-        items already carry the ``{number, title, labels[]}`` shape the chat handlers read, so
-        parsing = extract ``items`` + truncate. ``_ISSUES_TOOL`` is the one provisional id.
+        Returns ``(issue dicts truncated to limit, TRUE total match count)``. The count comes
+        from search_issues' ``total_count`` — a page of ``items`` is far smaller (e.g. 30/page
+        vs 179 total), so the count must NOT be ``len(items)``. Real round-trip de-risked
+        against the live server (#1322). ``_ISSUES_TOOL`` is the one provisional id.
         """
         result = await client.call_tool(_ISSUES_TOOL, {"query": _MY_OPEN_ISSUES_QUERY})
         return self._parse_issue_search(self._first_text(result.content), limit=limit)
 
     @staticmethod
-    def _parse_issue_search(payload: Optional[str], *, limit: int) -> List[Dict[str, Any]]:
-        """Parse a github-mcp-server ``search_issues`` JSON payload → issue dicts (truncated)."""
+    def _parse_issue_search(
+        payload: Optional[str], *, limit: int
+    ) -> "tuple[List[Dict[str, Any]], Optional[int]]":
+        """Parse a ``search_issues`` JSON payload → ``(issue dicts truncated, total match count)``.
+
+        ``total_count`` is authoritative (the full match count); for a ``list_issues`` payload
+        shape (no total_count) the count falls back to the number of items returned.
+        """
         if not payload:
-            return []
+            return [], 0
         try:
             data = json.loads(payload)
         except (ValueError, TypeError):
-            return []
+            return [], None
         if not isinstance(data, dict):
-            return []
+            return [], None
         items = data.get("items")
         if items is None:
             items = data.get("issues")  # tolerate the list_issues payload shape too
-        return (items or [])[:limit]
+        items = items or []
+        total = data.get("total_count")
+        if total is None:
+            total = len(items)  # list_issues shape: count is what we got
+        return items[:limit], total
 
     # ── resolve() transport seam (the real MCP path; #1220) ──
     # Isolated so resolve()'s degrade rail is testable against a fixture-backed client,

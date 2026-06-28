@@ -4328,6 +4328,11 @@ class IntentService:
             )
             if connector_result.issues is not None:
                 issues = connector_result.issues
+                total_count = (
+                    connector_result.total
+                    if connector_result.total is not None
+                    else len(issues)
+                )
             elif (
                 connector_result.degradation
                 and connector_result.degradation.reason is DegradationReason.CONNECT_REQUIRED
@@ -4340,6 +4345,7 @@ class IntentService:
                 github_router = GitHubIntegrationRouter()
                 await github_router.initialize(user_id=_user_id)
                 issues = await github_router.get_open_issues(limit=50)
+                total_count = len(issues)  # native path returns the full list, not a page
             else:
                 # Connected but degraded → honest message, never a silent PAT fallback (#1231).
                 return IntentProcessingResult(
@@ -4353,24 +4359,23 @@ class IntentService:
                 )
 
             if issues:
-                issue_count = len(issues)
-                # Build a summary message
-                message = f"You have **{issue_count} open issue{'s' if issue_count != 1 else ''}**."
+                # total_count is the TRUE match count (search_issues total_count); `issues` is
+                # only a page (e.g. 30 of 179) — count by total_count, show a few recent (#1322).
+                message = (
+                    f"You have **{total_count} open issue{'s' if total_count != 1 else ''}**."
+                )
+                message += "\n\nHere are the most recent:"
+                for issue in issues[:5]:
+                    title = issue.get("title", "Untitled")
+                    number = issue.get("number", "?")
+                    labels = ", ".join(
+                        label.get("name", "") for label in issue.get("labels", [])
+                    )
+                    label_str = f" ({labels})" if labels else ""
+                    message += f"\n- **#{number}**: {title}{label_str}"
 
-                # Show top issues (up to 5)
-                if issue_count > 0:
-                    message += "\n\nHere are the most recent:"
-                    for issue in issues[:5]:
-                        title = issue.get("title", "Untitled")
-                        number = issue.get("number", "?")
-                        labels = ", ".join(
-                            label.get("name", "") for label in issue.get("labels", [])
-                        )
-                        label_str = f" ({labels})" if labels else ""
-                        message += f"\n- **#{number}**: {title}{label_str}"
-
-                    if issue_count > 5:
-                        message += f"\n\n...and {issue_count - 5} more."
+                if total_count > 5:
+                    message += f"\n\n...and {total_count - 5} more."
             else:
                 message = "You don't have any open issues right now."
 
@@ -4381,7 +4386,7 @@ class IntentService:
                     "category": "query",
                     "action": "list_issues_query",
                     "context": {
-                        "issue_count": len(issues) if issues else 0,
+                        "issue_count": total_count if issues else 0,
                     },
                 },
             )

@@ -125,6 +125,26 @@ class TestListOpenIssuesHit:
         assert res.degradation is None
         assert [i["number"] for i in res.issues] == [42, 43]
         assert res.issues[0]["title"] == "First open issue"
+        assert res.total == 2  # total_count from the payload
+
+    async def test_total_reflects_search_total_count_not_page(self, sm):
+        # search_issues returns a PAGE of items but a far larger total_count — the count
+        # must be total_count (179), not len(page) (2). Regression guard for the 30-vs-179 bug.
+        paged = json.dumps(
+            {
+                "total_count": 179,
+                "items": [
+                    {"number": 1, "title": "a", "labels": []},
+                    {"number": 2, "title": "b", "labels": []},
+                ],
+            }
+        )
+        await _seed(sm, "bound")
+        adapter = GitHubMCPSpatialAdapter()
+        _point_at_fixture(adapter, payload=paged)
+        res = await adapter.list_open_issues(_ALPHA)
+        assert res.total == 179  # the TRUE count
+        assert len(res.issues) == 2  # ...but only a page of items
 
     async def test_bound_respects_limit(self, sm):
         await _seed(sm, "bound")
@@ -140,3 +160,4 @@ class TestListOpenIssuesHit:
         res = await adapter.list_open_issues(_ALPHA)
         assert res.degradation is None
         assert res.issues == []
+        assert res.total == 0
