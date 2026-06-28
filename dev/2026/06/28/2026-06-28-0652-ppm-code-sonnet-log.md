@@ -79,3 +79,22 @@ M6 correction acknowledged. Flag 5 from prior review withdrawn. M6 items → UNK
 
 Inbox: 0. Queue: (0,0). IDLE.
 
+---
+
+### Fire 2 — 12:52 PDT
+
+Cron: deleted `bdb91840`, re-armed `dbac94f1`. Pull: up to date. **Inbox: 8** — 7 stale duplicates (deletion bug, not committed); 1 new.
+
+**Inbox cleanup**: 7 items already in read/ were restored by `git pull` because inbox deletions were never committed. Fixed with `git rm` this fire. Lesson re-applied: always use `git rm` on inbox files, never `mv`-without-git-rm.
+
+**New item: Exec run-lean-throttle (12:30 PT, PM-approved)**
+
+PPM is in the **IDLE tier** for the run-lean window:
+> "HOST · CXO · PPM · Web → CronDelete your duty-cycle cron. No active in-window deliverable. Resume when I broadcast 'restore' after the Wed reset."
+
+Exception clause: "Finish any in-hand deliverable first — e.g. PPM routing the roadmap/sprint-list confirm." ✅ Sprint-order canonical list already routed to PM (memo in PM inbox, Fire 1). In-hand deliverable complete.
+
+**Action**: Deleting cron. Suspending until Wed Jul-1 ~9pm PT quota reset (Exec will broadcast restore signal).
+
+Inbox: 0. Queue: (0,0). **SUSPENDED — run-lean through Wed Jul-1 ~9pm.**
+

@@ -19,3 +19,10 @@ Inbox empty. The big event: **Belt 0's first real exercise this morning DISPROVE
 - **What worked**: detection + nudge backstop (exec/arch + cxo/ppm nudged) + dedup. Detect→alert solid; only auto-resume failed.
 - **Conclusion**: (a) doesn't close autonomous-resume → **b/c off-machine is the path** (PM's branch-point resolved). Captured in spec (Update 2026-06-28) + carry-forward. **Recommending PM: disable Belt-0 foreground (keep nudge) + scope (b) = per-role scheduled-task resume (Iris-resume shape).** Reporting to PM now.
 - (Self-validation worked as designed — caught the failure before we relied on it. Honest miss on my build.)
+
+### 13:37 — RUN-LEAN throttle (Exec/PM): complied + fixed the watchdog↔throttle interaction
+Exec relayed PM-approved cohort throttle (run lean → Wed Jul-1 ~9pm quota reset; cut cron cadence to tier). My tier = **KEEP (3×/day)**.
+- **Complied**: cron trimmed **6×→3×/day** (`7 10,16,22`, id `310aa50c`; old `b1bb59a6` deleted; restore expr in the new prompt). This IS the firing-frequency-for-token-cost tradeoff from the fossil analysis, now deliberate.
+- **Caught + fixed a throttle↔watchdog interaction (my lane)**: v0.4 derives thresholds from registry cron-exprs → a throttled role with a stale (normal-cadence) row would **false-alarm** (noise during run-lean). Adjusted the registry (`30cf80d0b` + deployed to main-checkout): cio→`7 10,16,22`; **paused exec** (cut to 2× but row stale → exec must re-post its 2× expr like arch did), **paused cxo/ppm** (IDLE-suspended); arch already self-throttled (`27 8,20`). Watchdog now accurately watches cio+arch only; restore all on Wed.
+- Acked Exec (`700e9b379`) + flagged: exec-post-your-2×-expr; the **Belt-0-auto-resume-FAILED** FYI (net = detect+nudge only, not auto-resume — matters for the "watchdog as liveness net" premise during the throttle).
+- Cron now 3×/day; next 16:07.
