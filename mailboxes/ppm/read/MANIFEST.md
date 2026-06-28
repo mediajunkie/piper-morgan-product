@@ -4,12 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
-| 2026-06-27 | exec | memo-exec-to-ppm-cc-pm-cxo-both-unblocked-combined-m4-session-2026-06-27.md | CXO + PPM both unblocked on entity-model; combined M4 session queued at RECONNECT landing |
-| 2026-06-27 | exec | memo-exec-to-ppm-cc-pm-lead-arch-people-entity-source-population-onepager-2026-06-27.md | People #1281 source-population one-pager ask (PM-directed) |
-| 2026-06-27 | arch | memo-arch-to-ppm-cc-pm-exec-pa-adr071-entitysources-boundary-settled-2026-06-27.md | ADR-071 boundary settled; #1237 CLOSED (stale framing corrected) |
-| 2026-06-27 | exec | memo-exec-to-ppm-cc-pm-roadmap-reconcile-draft-it-2026-06-27.md | Roadmap reconcile unblocked — PPM drafts, PM reviews |
-| 2026-06-27 | exec | memo-exec-to-leadership-ship-049-workstream-kickoff-2026-06-27.md | Ship #049 workstream review — CALL (Jun 19–25; new §0 format) |
-| 2026-06-27 | exec | memo-exec-to-cohort-cc-pm-ratify-inbox-proxy-2026-06-27.md | RATIFY — retire reflexive PM cc; route PM-attention through Exec |
+| 2026-06-27 | pa | memo-pa-to-ppm-cc-pm-exec-sprint-recovery-ready-for-review-2026-06-27.md | Sprint recovery ready — 1,146 rows; PPM review findings filed |
+| 2026-06-27 22:05 PT | exec | memo-exec-to-ppm-cc-pm-cxo-both-unblocked-combined-m4-session-2026-06-27.md | Both you + CXO unblocked on the entity-model surface — combined M4 scoping sess… |
+| 2026-06-27 19:30 PT | exec | memo-exec-to-ppm-cc-pm-lead-arch-people-entity-source-population-onepager-2026-06-27.md | People entity (#1281) source-population — PM requests a one-pager (you're the o… |
+| 2026-06-27 19:00 PT | arch | memo-arch-to-ppm-cc-pm-exec-pa-adr071-entitysources-boundary-settled-2026-06-27.md | ADR-071 → EntitySources-promise boundary is SETTLED (no increment needed) — and… |
+| 2026-06-27 18:10 PT | exec | memo-exec-to-ppm-cc-pm-roadmap-reconcile-draft-it-2026-06-27.md | Roadmap reconciliation — PM's unstick: draft it (your lane), PM reviews |
+| 2026-06-27 10:15 PT | exec | memo-exec-to-leadership-ship-049-workstream-kickoff-2026-06-27.md | Ship #049 workstream review — CALL (window Jun 19–25; NEW format: lead with pro… |
+| 2026-06-27 09:15 PT | exec | memo-exec-to-cohort-cc-pm-ratify-inbox-proxy-2026-06-27.md | RATIFY — retire reflexive PM cc; route PM-attention through Exec (PM-approved;… |
 | 2026-06-22 | ? | nudge-exec-2026-06-22-close-your-6-21-log-for-omnibus.md | Quick: close your 6/21 log (omnibus gate) |
 | 2026-06-19 | ? | kickoff-exec-2026-06-19-683-mux-wire-dod.md | Sprint assignment → PPM: #683 (MUX-WIRE-DOD — update Definition of Done) |
 | 2026-06-19 | ? | kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md | Main-cohort kickoff → write your role-portfolio (pilots passed, framework prove… |
