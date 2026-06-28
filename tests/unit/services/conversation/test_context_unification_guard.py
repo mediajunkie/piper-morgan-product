@@ -52,9 +52,7 @@ class TestSingleWorkingStateMappingPoint:
         peak, two with the [:-1] bug). All history reads go through
         build_recent_history."""
         src = (REPO_ROOT / "services" / "intent" / "intent_service.py").read_text()
-        inline_builders = re.findall(
-            r"for\s+turn\s+in\s+\w*conv\w*\.turns\[", src
-        )
+        inline_builders = re.findall(r"for\s+turn\s+in\s+\w*conv\w*\.turns\[", src)
         assert inline_builders == [], (
             "Inline conversation-history builder(s) found in intent_service.py — "
             f"{inline_builders}. Use build_recent_history() "
@@ -65,9 +63,7 @@ class TestSingleWorkingStateMappingPoint:
         """hydrate_turns_from_db is THE domain→working-state mapping point.
         Catch new callers of get_recent_turns that hand-build working-state
         turns (the mapping must stay in one place)."""
-        ws_src = (
-            REPO_ROOT / "services" / "intent_service" / "conversation_context.py"
-        ).read_text()
+        ws_src = (REPO_ROOT / "services" / "intent_service" / "conversation_context.py").read_text()
         assert "get_recent_turns" in ws_src  # the sanctioned mapping point exists
 
         intent_src = (REPO_ROOT / "services" / "intent" / "intent_service.py").read_text()

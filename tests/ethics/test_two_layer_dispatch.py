@@ -164,9 +164,9 @@ async def test_semantic_block_maps_each_category():
             message=msg,
             session_id=f"t_{category}",
         )
-        assert decision.audit_data["detector"] == "semantic", (
-            f"{category}: expected semantic, got {decision.audit_data['detector']}"
-        )
+        assert (
+            decision.audit_data["detector"] == "semantic"
+        ), f"{category}: expected semantic, got {decision.audit_data['detector']}"
         assert decision.violation_detected is True, f"{category} should trigger"
         assert decision.boundary_type == expected_boundary, f"{category} mapping failed"
 
@@ -290,9 +290,7 @@ async def test_cache_hit_field_propagates_from_detector():
         prior_cache=True,
     )
     enforcer = _make_enforcer(stub)
-    decision = await enforcer.enforce_boundaries(
-        message="Repeated message", session_id="t_cache"
-    )
+    decision = await enforcer.enforce_boundaries(message="Repeated message", session_id="t_cache")
     assert decision.audit_data["cache_hit"] is True
 
 

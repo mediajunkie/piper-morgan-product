@@ -63,3 +63,53 @@ Inbox: 0. Queue: (0,0). IDLE.
 ### Fire 4 — 18:52 PDT (windowed cron)
 
 Cron: deleted `144b1289`, re-armed `29b6d12d`. Pull: Lead connector_grant_store + tests (#1317); Arch CIO cure-A memo triaged. Inbox: 2 apparent — both already processed (inbox deletions missed in prior commits; pull restored from origin). Fixed: `git rm` both inbox files → commit. Inbox: 0. Queue: (0,0). IDLE.
+
+### Fire 5 — 21:52 PDT (windowed cron)
+
+Cron: deleted `29b6d12d`, re-armed `48d6c004`. Pull: Arch ADR-071 correction + Exec roadmap unstick. **Inbox: 2** — both substantive.
+
+**Item 1 — Arch: ADR-071 settled; #1237 framing was stale**
+Correction accepted: #1237 is CLOSED (June 18 — not "awaiting Lead+ADR-071"). ADR-071 boundary settled (owner-anchoring across all 4 types). People (#1281) is source-population gated, not ADR-071. OQ-2 confidence threshold is PPM+CXO M4 call (ADR-072 D5), not an ADR-071 matter. Impl note: `owner_id` is UUID FK → `users.id` (spec's `: str` is a sketch-ism) — forward-carried to Lead for #1281 build.
+Response: `memo-ppm-to-arch-cc-pm-exec-adr071-correction-ack-2026-06-27.md` → arch/inbox.
+
+**Item 2 — Exec: roadmap reconciliation unblocked — PPM drafts, PM reviews**
+PM's unstick: delegation pattern (same as RECONNECT sprint-chunking). Drafted v18.2 fold proposal from known arc → `memo-ppm-to-pm-cc-exec-pa-roadmap-v182-fold-proposal-2026-06-27.md` → PM inbox.
+Fold covers: RECONNECT WS-1 CLOSED (June 22, v0.8.9) + WS-2 ACTIVE; ADRs 070/071/072 landed; entity-model spec delivered + #1237 CLOSED; v0.8.9 released. Three forks flagged for PM: (1) M4 concurrent vs. sequential with WS-2? (2) D1 absorption from WS-1 Design D2? (3) July 4 beta date still firm?
+
+**Standing items corrected** (stale framing removed):
+- ~~#1237 3-of-4 (awaiting Lead+ADR-071)~~ → #1237 CLOSED (June 18); entity-model lane = People (#1281) source-population gated
+- Roadmap fold: v18.2 proposal delivered to PM → awaiting review/ratification
+
+Inbox: 0. Queue: (0,0). IDLE.
+
+### Fire 6 — 22:22 PDT (PM manual resume)
+
+Cron: deleted `48d6c004`, re-armed `20d4cbe9`. Pull: up to date. **Inbox: 2**.
+
+**Item 1 — Exec: CXO + PPM both unblocked on entity-model surface**
+ADR-071 D2/D6 discharges CXO's owner-scoping freeze too. Combined M4 session (trust-gradient OQ-2 + onboarding scoping) queued at RECONNECT landing — Exec tracking trigger. No PPM action now.
+
+**Item 2 — Exec: People #1281 source-population one-pager (PM-directed)**
+Wrote and filed one-pager → PM inbox (CC exec/lead/arch).
+Recommendation: A-first (introduce-person flow — user_confirmed, M4, no connector dependency), B-layer (connector-import when WS-2 lands), C-later (session-extraction post-beta, pending OQ-2 ruling).
+
+**PM in-conversation milestone update**:
+- PA sorted M5 → polish/distribution/other (31 issues) → 3 M3-leftover sprints (answers FORK 1 on sprint sequence)
+- PA wiped sprint assignments during sort; forensic recovery underway (PA owns)
+- **Production milestone: Oct 30** (PM in-conversation decision)
+- **Fast-follow: moves later** (TBD)
+- **Beta date: TBD** — PM said "August 1 or later"; still pending exact confirmation
+- Roadmap v18.2 fold: gated on beta date + three sprint identities from PA recovery
+
+Inbox: 0. Queue: (0,0) — roadmap fold gated on beta date. IDLE pending PM.
+
+**PM in-conversation — milestone decisions CONFIRMED**:
+- Beta (0.9.0): **Aug 1, 2026**
+- Production (1.0): **Oct 30, 2026**
+- Fast-follow: TBD (after Oct 30)
+
+**PM ask**: memo to PA offering to review reconstructed sprint assignments.
+Filed: `memo-ppm-to-pa-cc-pm-exec-sprint-recovery-review-offer-2026-06-27.md` → pa/inbox.
+Also noted: three sprint names/themes needed for roadmap v18.2 fold Sprint Summary — will follow up when PA recovery lands.
+
+Roadmap v18.2 fold: dates confirmed; sprint names pending PA recovery. Will apply fold when sprint identities available.

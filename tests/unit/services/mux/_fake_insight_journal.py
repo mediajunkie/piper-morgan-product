@@ -117,9 +117,7 @@ class FakeInsightJournal:
         )
         return [s[1] for s in scored[:limit]]
 
-    async def mark_surfaced(
-        self, insight_id: str, response: str
-    ) -> Optional[SurfaceableInsight]:
+    async def mark_surfaced(self, insight_id: str, response: str) -> Optional[SurfaceableInsight]:
         insight = self._insights.get(insight_id)
         if insight is None:
             return None
@@ -137,8 +135,7 @@ class FakeInsightJournal:
         return [
             self._insights[iid]
             for iid in self._by_object[object_id]
-            if iid in self._insights
-            and (user_id is None or self._insights[iid].user_id == user_id)
+            if iid in self._insights and (user_id is None or self._insights[iid].user_id == user_id)
         ]
 
     async def count(self, user_id: Optional[str] = None) -> int:

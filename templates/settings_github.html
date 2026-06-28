@@ -417,6 +417,19 @@
       <div class="form-card" id="form-card">
         <h3 id="form-title">Connect GitHub</h3>
 
+        <!-- #1317 (ADR-070 C): OAuth connect — the MCP-connector path, recommended over a pasted PAT -->
+        <div class="form-group" id="oauth-connect-group">
+          <p class="form-hint">
+            Recommended — connect securely with GitHub OAuth (nothing to copy or paste).
+          </p>
+          <button class="btn btn-primary" id="oauth-connect-btn" onclick="connectGitHubOAuth()">
+            Connect with GitHub
+          </button>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid var(--border, #e1e4e8); margin: 1rem 0;" />
+        <p class="form-hint" style="margin-bottom: 0.5rem;">Or connect with a personal access token:</p>
+
         <div class="form-group">
           <label for="token">Personal Access Token</label>
           <input
@@ -483,7 +496,10 @@
     <script src="/static/js/api-error-parser.js"></script>
     <script>
       // Load current status on page load
-      document.addEventListener('DOMContentLoaded', loadGitHubStatus);
+      document.addEventListener('DOMContentLoaded', () => {
+        loadGitHubStatus();
+        checkGitHubOAuthStatus();
+      });
 
       async function loadGitHubStatus() {
         try {
@@ -550,6 +566,42 @@
 
           // Hide repository selection when not connected (Issue #573)
           repoCardEl.style.display = 'none';
+        }
+      }
+
+      // #1317 (ADR-070 C): start the GitHub OAuth flow — fetch the authorize URL
+      // (cookie-auth, same as the other calls here) then redirect the browser to GitHub.
+      async function connectGitHubOAuth() {
+        const btn = document.getElementById('oauth-connect-btn');
+        const original = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Redirecting to GitHub…';
+        try {
+          const resp = await fetch('/api/v1/settings/integrations/github/connect');
+          if (!resp.ok) throw new Error('connect failed: HTTP ' + resp.status);
+          const data = await resp.json();
+          window.location.href = data.auth_url;
+        } catch (e) {
+          btn.disabled = false;
+          btn.textContent = original;
+          alert('Could not start GitHub OAuth: ' + e.message);
+        }
+      }
+
+      // #1317: reflect the OAuth-connector binding (distinct from the native-PAT status above).
+      async function checkGitHubOAuthStatus() {
+        try {
+          const resp = await fetch('/api/v1/settings/integrations/github/oauth-status');
+          if (!resp.ok) return;
+          const data = await resp.json();
+          const group = document.getElementById('oauth-connect-group');
+          if (data.connected && group) {
+            group.innerHTML =
+              '<p class="form-hint" style="color: var(--success, #28a745); font-weight: 600;">' +
+              '✓ Connected with GitHub via OAuth (MCP connector).</p>';
+          }
+        } catch (e) {
+          /* non-fatal — leave the Connect button as-is */
         }
       }
 

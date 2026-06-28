@@ -4,6 +4,7 @@ On a successful OAuth callback: store the user's grant (encrypted #358 store) + 
 #1229 binding BOUND with the self-hosted server ref. Binding holds no token (D3); the
 grant store is mocked (DI) — #358 already tests encryption.
 """
+
 from __future__ import annotations
 
 from unittest.mock import AsyncMock

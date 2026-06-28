@@ -47,9 +47,7 @@ class TestFlagGating:
     @pytest.mark.asyncio
     async def test_flag_off_is_noop(self, monkeypatch):
         monkeypatch.setenv("AUTONOMOUS_EXECUTION_ENABLED", "false")
-        with patch(
-            "services.automation.autonomous_executor.get_autonomous_executor"
-        ) as gae:
+        with patch("services.automation.autonomous_executor.get_autonomous_executor") as gae:
             out = await _svc()._maybe_autoexecute_automation_patterns(
                 [_pattern("list_issues_query", 0.95)], "s1", str(uuid4())
             )
@@ -81,15 +79,14 @@ class TestRealSafetyEnvelope:
     async def _run(self, patterns):
         executor = _fresh_executor()
         dispatch = AsyncMock(return_value={"ok": True, "stub": "read result"})
-        with patch(
-            "services.automation.autonomous_executor.get_autonomous_executor",
-            return_value=executor,
-        ), patch(
-            "services.intent_service.workflow_dispatcher.dispatch_workflow", dispatch
+        with (
+            patch(
+                "services.automation.autonomous_executor.get_autonomous_executor",
+                return_value=executor,
+            ),
+            patch("services.intent_service.workflow_dispatcher.dispatch_workflow", dispatch),
         ):
-            out = await _svc()._maybe_autoexecute_automation_patterns(
-                patterns, "s1", str(uuid4())
-            )
+            out = await _svc()._maybe_autoexecute_automation_patterns(patterns, "s1", str(uuid4()))
         return out, dispatch
 
     @pytest.mark.asyncio
@@ -127,11 +124,12 @@ class TestRealSafetyEnvelope:
         executor = _fresh_executor()
         executor.emergency_stop.is_stopped = MagicMock(return_value=True)
         dispatch = AsyncMock(return_value={"ok": True})
-        with patch(
-            "services.automation.autonomous_executor.get_autonomous_executor",
-            return_value=executor,
-        ), patch(
-            "services.intent_service.workflow_dispatcher.dispatch_workflow", dispatch
+        with (
+            patch(
+                "services.automation.autonomous_executor.get_autonomous_executor",
+                return_value=executor,
+            ),
+            patch("services.intent_service.workflow_dispatcher.dispatch_workflow", dispatch),
         ):
             out = await _svc()._maybe_autoexecute_automation_patterns(
                 [_pattern("list_issues_query", 0.95)], "s1", str(uuid4())
@@ -172,7 +170,9 @@ class TestRealSafetyEnvelope:
             [
                 _pattern("list_issues_query", 0.95, "safe1"),
                 _pattern("create_github_issue", 0.99, "mut1"),
-                _pattern("comment_issue_query", 0.99, "mut2"),  # mutating — blocked by both gates (#1210)
+                _pattern(
+                    "comment_issue_query", 0.99, "mut2"
+                ),  # mutating — blocked by both gates (#1210)
                 _pattern("delete_thing", 0.99, "des1"),
                 _pattern("list_prs_query", 0.93, "safe2"),
             ]
@@ -183,6 +183,8 @@ class TestRealSafetyEnvelope:
 
     @pytest.mark.asyncio
     async def test_pattern_without_action_type_skipped(self):
-        out, dispatch = await self._run([{"pattern_id": "x", "confidence": 0.95, "pattern_data": {}}])
+        out, dispatch = await self._run(
+            [{"pattern_id": "x", "confidence": 0.95, "pattern_data": {}}]
+        )
         assert out == []
         dispatch.assert_not_awaited()

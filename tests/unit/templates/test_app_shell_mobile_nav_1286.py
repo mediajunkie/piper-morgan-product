@@ -6,6 +6,7 @@ toggle JS. Desktop is unchanged — CSS media queries do the responsive switch; 
 display:none until the mobile breakpoint. The rail width is tokenized (single source of truth
 with the grid).
 """
+
 from pathlib import Path
 
 import pytest

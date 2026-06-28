@@ -6,6 +6,7 @@ any exempt route has a WRITE method (POST/PUT/PATCH/DELETE) without a justified 
 in `AUTH_EXEMPT_JUSTIFIED` — the #1307 class (exempt + writable + prod-reachable) made
 impossible-by-construction. Read-only exempt routes need no entry.
 """
+
 WRITE_METHODS = {"POST", "PUT", "PATCH", "DELETE"}
 
 
@@ -30,9 +31,7 @@ def _exempt_writable_routes():
 
 def _is_justified(path, justified):
     """A justified key is an exact path or a trailing-'/' prefix."""
-    return any(
-        path == key or (key.endswith("/") and path.startswith(key)) for key in justified
-    )
+    return any(path == key or (key.endswith("/") and path.startswith(key)) for key in justified)
 
 
 def test_every_writable_exempt_route_is_justified():

@@ -4,6 +4,7 @@ Security-critical, network-free behaviors (state CSRF + user-binding + single-us
 are tested directly; the code-exchange is tested with a mocked aiohttp session (GitHub's
 200-with-error-field quirk included). No real network, no real credentials.
 """
+
 import pytest
 
 from services.mcp.consumer import github_oauth_handler as gh_oauth
@@ -89,9 +90,11 @@ class TestStateVerification:
 class TestCodeExchange:
     async def test_exchange_parses_github_token(self, monkeypatch):
         monkeypatch.setattr(
-            gh_oauth.aiohttp, "ClientSession",
-            lambda *a, **k: _FakeSession(_FakeResp(200, {
-                "access_token": "gho_x", "token_type": "bearer", "scope": "repo"})),
+            gh_oauth.aiohttp,
+            "ClientSession",
+            lambda *a, **k: _FakeSession(
+                _FakeResp(200, {"access_token": "gho_x", "token_type": "bearer", "scope": "repo"})
+            ),
         )
         tokens = await GitHubOAuthHandler()._exchange_code_for_tokens("code123")
         assert tokens.access_token == "gho_x"
@@ -101,7 +104,8 @@ class TestCodeExchange:
     async def test_exchange_github_error_raises(self, monkeypatch):
         # GitHub returns HTTP 200 with an error field on a bad code.
         monkeypatch.setattr(
-            gh_oauth.aiohttp, "ClientSession",
+            gh_oauth.aiohttp,
+            "ClientSession",
             lambda *a, **k: _FakeSession(_FakeResp(200, {"error": "bad_verification_code"})),
         )
         with pytest.raises(ValueError):

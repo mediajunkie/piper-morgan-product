@@ -153,10 +153,7 @@ class TestCuratedTailPreservation:
         assert regen.CURATED_MARKER not in content
 
     def test_extract_curated_tail_unit(self):
-        content = (
-            "# Inbox Manifest — cio\n\n| a | b |\n\n"
-            f"{regen.CURATED_MARKER}\nkeep me\n"
-        )
+        content = "# Inbox Manifest — cio\n\n| a | b |\n\n" f"{regen.CURATED_MARKER}\nkeep me\n"
         tail = regen.extract_curated_tail(content)
         assert tail.startswith(regen.CURATED_MARKER)
         assert "keep me" in tail

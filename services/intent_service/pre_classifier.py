@@ -939,9 +939,7 @@ class PreClassifier:
         # "Why did you mention/suggest/recommend X?" routes to ProvenanceHandler
         # which looks up turn_provenance sidecar. TRUST has overlapping
         # `\bwhy did you (do|just|go ahead)\b` so order matters here.
-        if PreClassifier._matches_patterns(
-            clean_for_matching, PreClassifier.PROVENANCE_PATTERNS
-        ):
+        if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.PROVENANCE_PATTERNS):
             return Intent(
                 category=IntentCategory.PROVENANCE,
                 action="explain_suggestion",
@@ -964,9 +962,7 @@ class PreClassifier:
         # remember about me" (semantic adjacency; different routing).
         # Routes to MEMORY/pull_insights — floor-routed but with InsightRepository
         # context enrichment per context_assembler.
-        if PreClassifier._matches_patterns(
-            clean_for_matching, PreClassifier.INSIGHT_PULL_PATTERNS
-        ):
+        if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.INSIGHT_PULL_PATTERNS):
             return Intent(
                 category=IntentCategory.MEMORY,
                 action="pull_insights",
@@ -1496,7 +1492,11 @@ class PreClassifier:
             # to win specificity — "what branch are we on?" should NOT route to
             # the GitHub list_branches handler (which matches `\bwhat branches?\b`
             # with optional `s`).
-            (PreClassifier.LOCAL_GIT_STATUS_PATTERNS, IntentCategory.QUERY, "local_git_status_query"),
+            (
+                PreClassifier.LOCAL_GIT_STATUS_PATTERNS,
+                IntentCategory.QUERY,
+                "local_git_status_query",
+            ),
             # GitHub patterns
             (PreClassifier.GITHUB_QUERY_PATTERNS, IntentCategory.QUERY, "github_query"),
             # Productivity patterns
@@ -1508,7 +1508,11 @@ class PreClassifier:
             # Issue #1117: completion-history MUST come before TEMPORAL so
             # "when did I complete X" routes to STATUS (floor, honest history
             # answer) not TEMPORAL (current-time).
-            (PreClassifier.COMPLETION_HISTORY_PATTERNS, IntentCategory.STATUS, "check_completion_status"),
+            (
+                PreClassifier.COMPLETION_HISTORY_PATTERNS,
+                IntentCategory.STATUS,
+                "check_completion_status",
+            ),
             # Temporal patterns
             (PreClassifier.TEMPORAL_PATTERNS, IntentCategory.TEMPORAL, "get_current_time"),
             # Issue #671-#675: MUX-WIRE patterns must come BEFORE STATUS to match first

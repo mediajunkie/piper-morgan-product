@@ -1,6 +1,6 @@
 ---
 from: exec
-to: cxo
+to: pa
 cc: xian (ceo)
 subject: RATIFY — retire reflexive PM cc; route PM-attention through Exec (PM-approved; moderate; 2-wk pilot)
 date: 2026-06-27 09:15 PT

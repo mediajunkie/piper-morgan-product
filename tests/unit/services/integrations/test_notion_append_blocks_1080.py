@@ -106,9 +106,7 @@ async def test_adapter_append_blocks_exception_returns_none():
 
     adapter.token_counter.wrap_mcp_call = _passthrough
 
-    result = await adapter.append_blocks(
-        page_id="p1", blocks=[{"type": "paragraph"}]
-    )
+    result = await adapter.append_blocks(page_id="p1", blocks=[{"type": "paragraph"}])
     assert result is None
 
 
@@ -174,8 +172,7 @@ def test_handler_no_longer_calls_update_page_with_empty_properties():
     # the new copy says "Appended to X" which is honest about what
     # actually happened.
     assert "Appended to" in block, (
-        "Success message must reflect the actual append semantics "
-        "(Pattern-073 discipline)"
+        "Success message must reflect the actual append semantics " "(Pattern-073 discipline)"
     )
 
 
@@ -188,9 +185,7 @@ def test_handler_documents_pattern_073_instance_12():
     block = src[start:end]
     assert "#1080" in block, "Handler change must cite #1080"
     assert "Pattern-073" in block, "Handler change must cite Pattern-073"
-    assert "Instance 12" in block, (
-        "Comment should call out this is Instance 12 (handler-layer)"
-    )
+    assert "Instance 12" in block, "Comment should call out this is Instance 12 (handler-layer)"
 
 
 def test_handler_has_honest_failure_fallback():
@@ -200,9 +195,9 @@ def test_handler_has_honest_failure_fallback():
     start = src.find("async def _handle_update_document_notion")
     end = src.find("\n    async def ", start + 1)
     block = src[start:end]
-    assert "append_result is None" in block, (
-        "Handler must check the append result + branch on failure"
-    )
+    assert (
+        "append_result is None" in block
+    ), "Handler must check the append result + branch on failure"
     assert "couldn't append" in block, (
         "Honest failure message must surface the actual failure mode "
         "(string may span lines in the source)"

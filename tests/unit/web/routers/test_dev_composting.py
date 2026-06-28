@@ -53,8 +53,11 @@ class TestProductionGate:
         assert resp.status_code == 404
 
     def test_status_available_in_development(self):
-        client = TestClient(_make_app(job=_make_job(CompostingRunResult(processed_count=0)),
-                                      compost_bin=_make_bin(0)))
+        client = TestClient(
+            _make_app(
+                job=_make_job(CompostingRunResult(processed_count=0)), compost_bin=_make_bin(0)
+            )
+        )
         resp = client.get("/api/v1/admin/composting")
         assert resp.status_code == 200
         assert resp.json()["available"] is True

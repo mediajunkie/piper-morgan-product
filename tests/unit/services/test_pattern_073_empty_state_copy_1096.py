@@ -41,9 +41,9 @@ def test_reminder_copy_does_not_promise_active_notification(
     but the system surfaces reminders passively via context_assembler at
     next-conversation time. The new copy must describe the actual mechanism.
     """
-    assert "I'll remind you to" not in todo_handlers_source, (
-        "Old copy promised active notification that the system doesn't deliver"
-    )
+    assert (
+        "I'll remind you to" not in todo_handlers_source
+    ), "Old copy promised active notification that the system doesn't deliver"
 
 
 def test_reminder_copy_describes_passive_surfacing(
@@ -51,9 +51,9 @@ def test_reminder_copy_describes_passive_surfacing(
 ) -> None:
     """The replacement copy describes the actual surfacing mechanism (passive,
     on next conversation after the reminder time)."""
-    assert "surface this the next time you check in" in todo_handlers_source, (
-        "New copy must describe the passive surfacing mechanism"
-    )
+    assert (
+        "surface this the next time you check in" in todo_handlers_source
+    ), "New copy must describe the passive surfacing mechanism"
 
 
 def test_reminder_copy_uses_saved_not_promise_verb(
@@ -78,8 +78,7 @@ def test_empty_todo_list_drops_universal_mind_claim() -> None:
 
     rendered = _format_empty_list_conscious()
     assert "your mind is clear" not in rendered, (
-        "Pattern-073 violation: empty-todo-list copy must not render "
-        "'mind is clear' to user"
+        "Pattern-073 violation: empty-todo-list copy must not render " "'mind is clear' to user"
     )
 
 
@@ -121,9 +120,7 @@ def test_reminder_handler_documents_pattern_073_reason(
 ) -> None:
     """The reminder handler's new copy includes a comment explaining the
     discipline (so a future agent doesn't restore the 'I'll remind you' phrasing)."""
-    assert "#1096 slice 2" in todo_handlers_source, (
-        "Reminder handler change must cite #1096 slice 2"
-    )
-    assert "Pattern-073" in todo_handlers_source, (
-        "Reminder handler change must cite Pattern-073"
-    )
+    assert (
+        "#1096 slice 2" in todo_handlers_source
+    ), "Reminder handler change must cite #1096 slice 2"
+    assert "Pattern-073" in todo_handlers_source, "Reminder handler change must cite Pattern-073"

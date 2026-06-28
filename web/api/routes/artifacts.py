@@ -29,7 +29,9 @@ logger = structlog.get_logger()
 
 router = APIRouter(prefix="/api/v1/artifacts", tags=["artifacts"])
 
-_MIN_SAVE_LEN = 1  # endpoint accepts any non-empty content; the >500-char gate is a UI affordance (#355)
+_MIN_SAVE_LEN = (
+    1  # endpoint accepts any non-empty content; the >500-char gate is a UI affordance (#355)
+)
 
 
 class SaveArtifactRequest(BaseModel):

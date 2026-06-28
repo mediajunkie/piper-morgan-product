@@ -5,6 +5,7 @@ Mirrors the WS-1 connector-config repo test setup (#1226): in-memory SQLite, sin
 (the full metadata has PG-only types). Verifies get/upsert idempotency + per-owner isolation +
 the strict-write/graceful-read asymmetry + status transitions + field round-trip + defaults.
 """
+
 from __future__ import annotations
 
 import pytest

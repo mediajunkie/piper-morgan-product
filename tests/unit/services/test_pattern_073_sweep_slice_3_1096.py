@@ -45,9 +45,9 @@ def test_patterns_learned_does_not_promise_persistent_memory(
     assert start >= 0 and end > start
     block = src[start:end]
     # The promised-future phrasing must be gone
-    assert "I'll keep these in mind going forward" not in block, (
-        "Pattern-073 violation: promised persistent memory the system doesn't deliver"
-    )
+    assert (
+        "I'll keep these in mind going forward" not in block
+    ), "Pattern-073 violation: promised persistent memory the system doesn't deliver"
 
 
 def test_patterns_learned_describes_bounded_scope(
@@ -89,8 +89,7 @@ def test_next_todo_empty_state_does_not_assert_nothing_pending(
     # Simple heuristic: check that "nothing pending!" with the bang doesn't appear
     # (the old copy had that exclamation; comments don't).
     assert "nothing pending!" not in block, (
-        "Pattern-073 violation: 'nothing pending!' phrasing must be removed "
-        "from rendered output"
+        "Pattern-073 violation: 'nothing pending!' phrasing must be removed " "from rendered output"
     )
 
 

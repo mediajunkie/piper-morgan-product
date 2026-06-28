@@ -38,9 +38,9 @@ def test_session_selector_has_accessible_label(soup: BeautifulSoup) -> None:
     """AC-1: <select> has an associated <label> or aria-label."""
     select = soup.find("select", {"id": "session-selector-input"})
     label = soup.find("label", {"for": "session-selector-input"})
-    assert label is not None or select.get("aria-label"), (
-        "Selector must be labeled (label[for] or aria-label) for accessibility"
-    )
+    assert label is not None or select.get(
+        "aria-label"
+    ), "Selector must be labeled (label[for] or aria-label) for accessibility"
 
 
 def test_conversations_fetch_target(transparency_html: str) -> None:

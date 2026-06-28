@@ -1,5 +1,7 @@
 # Canonical Cron-Prompt Template — v0.7
 
+> ⚠️ **STALE / SUPERSEDED (flagged 2026-06-27, CIO) — DO NOT ARM A CRON FROM THIS.** It describes the **deprecated** model: **Model A** dedicated `claude/{role}-cycle` worktrees (deprecated 2026-06-12), the **mailbox-bridge** (retired by push-to-ref #1259, 2026-06-19), and the **old `{offset} 2,4-23` cron expression**. The current model is **Model B (ephemeral worktree) + the thin cron prompt that delegates to the `duty-cycle-tick` skill + push-to-ref mail + per-role cron exprs** (see `BRIEFING-CURRENT-STATE.md` §Operating Model and the `duty-cycle-tick` skill). To arm a cron, copy a *current* role's thin prompt, not this. A full rewrite to a current canonical template is a CIO follow-up. *(Retained below for history + still-valid design rationale — and as a likely source of any "old-looking" cron still in the wild, e.g. a role armed from this pre-migration.)*
+
 **Purpose**: the normalized middle-weight cron prompt every adopting agent registers. Replaces the per-agent improvisation that produced the cron-script spectrum (Lead ~6 lines too terse for new adopters; CIO/Docs ~40 lines heavier than needed once fluent). This is the cohort-canonical version.
 
 **Filed**: 2026-05-28 by CIO (cycle-design lane) per PM-eager distribution directive (PA relay ~8:15 AM PDT).

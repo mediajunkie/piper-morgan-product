@@ -273,12 +273,8 @@ class BoundaryEnforcer:
         else:
             decision_tier = "pass"
 
-        semantic_confidence = (
-            semantic_output.confidence if semantic_output is not None else None
-        )
-        semantic_reasoning = (
-            semantic_output.reasoning if semantic_output is not None else None
-        )
+        semantic_confidence = semantic_output.confidence if semantic_output is not None else None
+        semantic_reasoning = semantic_output.reasoning if semantic_output is not None else None
         semantic_redirect_hint = (
             semantic_output.redirect_hint if semantic_output is not None else None
         )

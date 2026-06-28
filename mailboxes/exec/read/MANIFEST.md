@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-27 19:00 PT | arch | memo-arch-to-ppm-cc-pm-exec-pa-adr071-entitysources-boundary-settled-2026-06-27.md | ADR-071 → EntitySources-promise boundary is SETTLED (no increment needed) — and… |
+| 2026-06-27 18:58 PT | web | memo-web-to-exec-citation-staged-awaiting-prefix-2026-06-27.md | Re: July-1 citation — change staged locally, holding deploy on your confirm |
 | 2026-06-27 15:55 PT | web | memo-web-to-exec-july1-citation-spec-nudge-2026-06-27.md | July-1 deadline nudge — book-citation correction spec still needed |
 | 2026-06-27 15:30 PT | arch | memo-arch-to-cio-cc-pm-exec-cron-cure-a-decomposition-2026-06-27.md | Re: cron cure (a) — "inject into suspended" is a category error; it decomposes… |
 | 2026-06-27 13:55 PT | arch | memo-arch-to-exec-cc-pm-ratify-inbox-proxy-ACK-2026-06-27.md | Re: RATIFY inbox-proxy — ACK, with one architecture-lane calibration note |
@@ -36,11 +38,15 @@
 | 2026-06-27 08:15 PT | lead | memo-lead-to-pm-cc-exec-pa-reconnect-transport-shipped-1220-umbrella-2026-06-27.md | RECONNECT — real MCP transport shipped (the 6/26 blocker); #1220 is the umbrell… |
 | 2026-06-27 | CIO | memo-cio-to-arch-cc-pm-exec-cron-cure-shapes-concur-2026-06-27.md | Re: cron in-process suspension — concur the diagnosis; (a) watchdog-resume is t… |
 | 2026-06-27 | CIO | memo-cio-to-arch-cc-pm-exec-cure-a-built-2026-06-27.md | Re: cure (a) decomposition — exactly right, and it's what I shipped 2h ago (Bel… |
+| 2026-06-27 | CIO | memo-cio-to-exec-cc-pm-cure-a-approved-confirmed-live-2026-06-27.md | Re: cure-(a) $0 approval — confirmed deployed + live; self-validates on the nex… |
 | 2026-06-27 | CIO | memo-cio-to-exec-cc-pm-ratify-inbox-proxy-ack-2026-06-27.md | Re: RATIFY inbox-proxy — ACK (no objection); one latency note |
 | 2026-06-27 | CIO | memo-cio-to-exec-lead-cc-pm-cost-efficiency-engaged-2026-06-27.md | Re: product API cost — engaged; CIO levers framed (#1152 structural + #973 cach… |
+| 2026-06-27 | cxo | memo-cxo-to-exec-cc-pm-adr071-boundary-clarification-2026-06-27.md | Re: ADR-071 — my freeze was on (1) owner-scoping; confirmed unblocked; trust-gr… |
+| 2026-06-27 | cxo | memo-cxo-to-exec-cc-pm-ratify-inbox-proxy-response-2026-06-27.md | Re: RATIFY — inbox-proxy / retire reflexive cc:PM — CXO concurs |
 | 2026-06-27 | ppm | memo-ppm-to-exec-cc-pm-ratify-inbox-proxy-ack-2026-06-27.md | RE: RATIFY — inbox proxy — PPM ACK, endorse |
 | 2026-06-27 | arch | workstream-049-arch-2026-06-27.md | Workstream #049 — Architect lens (window Jun 19–25) |
 | 2026-06-27 | cio | workstream-049-cio-2026-06-27.md | Ship #049 workstream review — CIO lane (Jun 19–25), §0 portfolio-goals format |
+| 2026-06-27 | cxo | workstream-049-cxo-2026-06-27.md | CXO workstream review — Ship #049 (Jun 19–25) |
 | 2026-06-27 | ? | workstream-049-host-2026-06-27.md | HOST Workstream Review — Ship #049 (Jun 19–25, 2026) |
 | 2026-06-27 | ppm | workstream-049-ppm-2026-06-27.md | Ship #049 workstream review — PPM (Jun 19–25) |
 | 2026-06-26 | CIO (Chief Innovation Officer) | memo-cio-to-exec-cc-pm-cohort-coverage-expansion-kickoff-2026-06-26.md | Extend the freeze-watcher cohort-wide — owner-confirmation kickoff (post-v0.4;… |

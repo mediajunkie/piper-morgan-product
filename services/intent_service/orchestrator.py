@@ -281,7 +281,9 @@ class IntentOrchestrator:
             else:
                 topics = ", ".join(failure_topics)
                 # #1198: no false retry promise — nothing retries in the background.
-                parts.append(f"I wasn't able to check on {topics} right now — ask me again and I'll retry.")
+                parts.append(
+                    f"I wasn't able to check on {topics} right now — ask me again and I'll retry."
+                )
 
         return " ".join(parts)
 

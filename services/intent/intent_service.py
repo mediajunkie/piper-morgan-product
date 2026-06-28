@@ -134,16 +134,29 @@ def _autonomous_execution_enabled() -> bool:
 # Expanding the autonomous-executable set (incl. mutating-with-undo) is #1209.
 _AUTOEXEC_READONLY_ALLOWLIST = frozenset(
     {
-        "list_issues_query", "list_issues",
-        "list_prs_query", "list_prs", "list_pull_requests",
-        "list_milestones_query", "list_milestones",
-        "list_releases_query", "list_releases",
-        "list_labels_query", "list_labels",
-        "list_branches_query", "list_branches",
-        "list_projects", "list_todos_query", "list_completed_todos",
-        "next_todo_query", "get_issue", "get_standup",
-        "local_git_status_query", "attention_query",
-        "shipped_this_week", "shipped_query",
+        "list_issues_query",
+        "list_issues",
+        "list_prs_query",
+        "list_prs",
+        "list_pull_requests",
+        "list_milestones_query",
+        "list_milestones",
+        "list_releases_query",
+        "list_releases",
+        "list_labels_query",
+        "list_labels",
+        "list_branches_query",
+        "list_branches",
+        "list_projects",
+        "list_todos_query",
+        "list_completed_todos",
+        "next_todo_query",
+        "get_issue",
+        "get_standup",
+        "local_git_status_query",
+        "attention_query",
+        "shipped_this_week",
+        "shipped_query",
     }
 )
 
@@ -494,14 +507,10 @@ class IntentService:
                 # function, so the #913/#953 block above raised
                 # UnboundLocalError on its first reference and silently
                 # no-op'd via its except-pass (dead since this import landed).
-                conv_ctx = get_or_create_context(
-                    effective_session_id, user_id=effective_user_id
-                )
+                conv_ctx = get_or_create_context(effective_session_id, user_id=effective_user_id)
                 if conv_ctx.turns:
                     latest_turn = conv_ctx.turns[-1]
-                    turn_provenance_for_db = conv_ctx.turn_provenance.get(
-                        latest_turn.id
-                    )
+                    turn_provenance_for_db = conv_ctx.turn_provenance.get(latest_turn.id)
                 # #953: capture the Layer-4 context slice (lens_stack + last_offer +
                 # floor flags) to persist alongside the turn so it survives restart/refresh.
                 context_state_for_db = conv_ctx.to_persistable_state()
@@ -629,9 +638,7 @@ class IntentService:
                         safety_level=exec_result.safety_level,
                     )
             except Exception as e:
-                self.logger.warning(
-                    f"Autonomous execution attempt failed for {action_type}: {e}"
-                )
+                self.logger.warning(f"Autonomous execution attempt failed for {action_type}: {e}")
         return executed
 
     def _observe_action_verb(self, intent, message: str) -> None:
@@ -909,9 +916,7 @@ class IntentService:
                     original_message=message,
                     confidence=1.0,
                 )
-                return await self._handle_standup_query(
-                    standup_intent, standup_intent.id, user_id
-                )
+                return await self._handle_standup_query(standup_intent, standup_intent.id, user_id)
 
             # Issue #197 Phase 2B: Ethics enforcement at universal entry point
             # Check ENABLE_ETHICS_ENFORCEMENT environment variable (default: False for gradual rollout)
@@ -2252,11 +2257,7 @@ class IntentService:
             manager, handler = _get_standup_components()
 
             # Check for existing active conversation
-            existing = (
-                await manager.get_conversation_by_session(session_id)
-                if session_id
-                else None
-            )
+            existing = await manager.get_conversation_by_session(session_id) if session_id else None
             if existing and existing.state not in (
                 StandupConversationState.COMPLETE,
                 StandupConversationState.ABANDONED,
@@ -2550,9 +2551,7 @@ class IntentService:
             )
 
         # Transform domain Project objects → dicts for format_projects_conscious.
-        project_dicts = [
-            {"name": p.name, "active": not p.is_archived} for p in projects
-        ]
+        project_dicts = [{"name": p.name, "active": not p.is_archived} for p in projects]
 
         return IntentProcessingResult(
             success=True,
@@ -3872,9 +3871,7 @@ class IntentService:
 
             # Confirmed close (or fallback if fetch failed)
             # (Issue #1042: router resolves repo internally)
-            updated_issue = await github_router.update_issue(
-                issue_number, state="closed"
-            )
+            updated_issue = await github_router.update_issue(issue_number, state="closed")
 
             # Get issue title for success message
             title = updated_issue.get("title", f"Issue #{issue_number}")
@@ -4079,9 +4076,7 @@ class IntentService:
 
             # Confirmed reopen (or fallback if fetch failed)
             # (Issue #1042: router resolves repo internally)
-            updated_issue = await github_router.update_issue(
-                issue_number, state="open"
-            )
+            updated_issue = await github_router.update_issue(issue_number, state="open")
 
             # Get issue title for success message
             title = updated_issue.get("title", f"Issue #{issue_number}")
@@ -4244,9 +4239,7 @@ class IntentService:
                 )
 
             # Add the comment (Issue #1042: router resolves repo internally)
-            comment_result = await github_router.add_comment(
-                issue_number, comment_body
-            )
+            comment_result = await github_router.add_comment(issue_number, comment_body)
 
             # Format confirmation message
             comment_preview = comment_body[:50] + "..." if len(comment_body) > 50 else comment_body
@@ -4287,7 +4280,7 @@ class IntentService:
                     message=(
                         "I can add that comment, but I couldn't tell which repository "
                         "the issue is in. Tell me the repo (for example, "
-                        "\"comment on owner/repo#123 saying ...\") or set a default "
+                        '"comment on owner/repo#123 saying ...") or set a default '
                         "repository, and I'll post it."
                     ),
                     intent_data={
@@ -4319,35 +4312,70 @@ class IntentService:
         self.logger.info("Processing list issues query")
 
         try:
-            # Issue #1042: was importing nonexistent GitHubService and passing
-            # repository="piper-morgan" literal; refactored to use the
-            # GitHubIntegrationRouter (self-resolves the repo internally).
-            from services.integrations.github.github_integration_router import (
-                GitHubIntegrationRouter,
-            )
+            _user_id = _principal_from_intent(intent)
 
-            github_router = GitHubIntegrationRouter()
-            issues = await github_router.get_open_issues(limit=50)
+            # RECONNECT (#1322): prefer the per-user OAuth connector (binding + grant →
+            # search_issues, user-wide assignee:@me). Fall back to the native PAT ONLY when
+            # the user hasn't connected GitHub via OAuth yet (CONNECT_REQUIRED) — the
+            # layer-then-migrate transition (D6 retires the PAT path). If they ARE connected
+            # but the connector is degraded (server unreachable / re-auth), degrade honestly
+            # (#1231) rather than masking the real connection state with a silent PAT fallback.
+            from services.mcp.consumer.connector import DegradationReason
+            from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+            connector_result = await GitHubMCPSpatialAdapter().list_open_issues(
+                _user_id, limit=50
+            )
+            if connector_result.issues is not None:
+                issues = connector_result.issues
+                total_count = (
+                    connector_result.total
+                    if connector_result.total is not None
+                    else len(issues)
+                )
+            elif (
+                connector_result.degradation
+                and connector_result.degradation.reason is DegradationReason.CONNECT_REQUIRED
+            ):
+                # Not connected via OAuth → transitional native-PAT fallback (#1042 path).
+                from services.integrations.github.github_integration_router import (
+                    GitHubIntegrationRouter,
+                )
+
+                github_router = GitHubIntegrationRouter()
+                await github_router.initialize(user_id=_user_id)
+                issues = await github_router.get_open_issues(limit=50)
+                total_count = len(issues)  # native path returns the full list, not a page
+            else:
+                # Connected but degraded → honest message, never a silent PAT fallback (#1231).
+                return IntentProcessingResult(
+                    success=True,
+                    message=connector_result.degradation.user_message,
+                    intent_data={
+                        "category": "query",
+                        "action": "list_issues_query",
+                        "context": {"degraded": connector_result.degradation.reason.value},
+                    },
+                )
 
             if issues:
-                issue_count = len(issues)
-                # Build a summary message
-                message = f"You have **{issue_count} open issue{'s' if issue_count != 1 else ''}**."
+                # total_count is the TRUE match count (search_issues total_count); `issues` is
+                # only a page (e.g. 30 of 179) — count by total_count, show a few recent (#1322).
+                message = (
+                    f"You have **{total_count} open issue{'s' if total_count != 1 else ''}**."
+                )
+                message += "\n\nHere are the most recent:"
+                for issue in issues[:5]:
+                    title = issue.get("title", "Untitled")
+                    number = issue.get("number", "?")
+                    labels = ", ".join(
+                        label.get("name", "") for label in issue.get("labels", [])
+                    )
+                    label_str = f" ({labels})" if labels else ""
+                    message += f"\n- **#{number}**: {title}{label_str}"
 
-                # Show top issues (up to 5)
-                if issue_count > 0:
-                    message += "\n\nHere are the most recent:"
-                    for issue in issues[:5]:
-                        title = issue.get("title", "Untitled")
-                        number = issue.get("number", "?")
-                        labels = ", ".join(
-                            label.get("name", "") for label in issue.get("labels", [])
-                        )
-                        label_str = f" ({labels})" if labels else ""
-                        message += f"\n- **#{number}**: {title}{label_str}"
-
-                    if issue_count > 5:
-                        message += f"\n\n...and {issue_count - 5} more."
+                if total_count > 5:
+                    message += f"\n\n...and {total_count - 5} more."
             else:
                 message = "You don't have any open issues right now."
 
@@ -4358,7 +4386,7 @@ class IntentService:
                     "category": "query",
                     "action": "list_issues_query",
                     "context": {
-                        "issue_count": len(issues) if issues else 0,
+                        "issue_count": total_count if issues else 0,
                     },
                 },
             )
@@ -4480,10 +4508,7 @@ class IntentService:
 
             if milestones:
                 count = len(milestones)
-                message = (
-                    f"You have **{count} open milestone"
-                    f"{'s' if count != 1 else ''}**."
-                )
+                message = f"You have **{count} open milestone" f"{'s' if count != 1 else ''}**."
                 if count > 0:
                     # Sort by due_on (None last); show top 5
                     sorted_ms = sorted(
@@ -4496,10 +4521,7 @@ class IntentService:
                         due_raw = m.get("due_on")
                         due = due_raw.split("T")[0] if due_raw else "no due date"
                         open_count = m.get("open_issues", 0)
-                        suffix = (
-                            f" ({open_count} open issue"
-                            f"{'s' if open_count != 1 else ''})"
-                        )
+                        suffix = f" ({open_count} open issue" f"{'s' if open_count != 1 else ''})"
                         message += f"\n- **{title}** — due {due}{suffix}"
                     if count > 5:
                         message += f"\n\n...and {count - 5} more."
@@ -4523,8 +4545,7 @@ class IntentService:
             return IntentProcessingResult(
                 success=True,
                 message=(
-                    "I wasn't able to fetch milestones right now. "
-                    "Please try again in a moment."
+                    "I wasn't able to fetch milestones right now. " "Please try again in a moment."
                 ),
                 intent_data={
                     "category": "query",
@@ -4599,11 +4620,7 @@ class IntentService:
                         "release_count": len(releases) if releases else 0,
                         "latest_version": (
                             next(
-                                (
-                                    r.get("tag_name")
-                                    for r in releases
-                                    if not r.get("prerelease")
-                                ),
+                                (r.get("tag_name") for r in releases if not r.get("prerelease")),
                                 None,
                             )
                             if releases
@@ -4618,8 +4635,7 @@ class IntentService:
             return IntentProcessingResult(
                 success=True,
                 message=(
-                    "I wasn't able to fetch releases right now. "
-                    "Please try again in a moment."
+                    "I wasn't able to fetch releases right now. " "Please try again in a moment."
                 ),
                 intent_data={
                     "category": "query",
@@ -4648,9 +4664,7 @@ class IntentService:
 
             if labels:
                 count = len(labels)
-                message = (
-                    f"You have **{count} label{'s' if count != 1 else ''}**."
-                )
+                message = f"You have **{count} label{'s' if count != 1 else ''}**."
                 # Sort alphabetically for stable presentation
                 sorted_labels = sorted(labels, key=lambda lbl: lbl.get("name", ""))
                 message += "\n"
@@ -4681,8 +4695,7 @@ class IntentService:
             return IntentProcessingResult(
                 success=True,
                 message=(
-                    "I wasn't able to fetch labels right now. "
-                    "Please try again in a moment."
+                    "I wasn't able to fetch labels right now. " "Please try again in a moment."
                 ),
                 intent_data={
                     "category": "query",
@@ -4715,15 +4728,14 @@ class IntentService:
 
             if branches:
                 count = len(branches)
+
                 # Sort: default branch first (if found), then alphabetical
                 def _sort_key(b):
                     name = b.get("name", "")
                     return (0 if name == default_branch else 1, name)
 
                 sorted_branches = sorted(branches, key=_sort_key)
-                message = (
-                    f"You have **{count} branch{'es' if count != 1 else ''}**"
-                )
+                message = f"You have **{count} branch{'es' if count != 1 else ''}**"
                 if default_branch:
                     message += f" (default: `{default_branch}`)."
                 else:
@@ -4761,8 +4773,7 @@ class IntentService:
             return IntentProcessingResult(
                 success=True,
                 message=(
-                    "I wasn't able to fetch branches right now. "
-                    "Please try again in a moment."
+                    "I wasn't able to fetch branches right now. " "Please try again in a moment."
                 ),
                 intent_data={
                     "category": "query",
@@ -4905,7 +4916,7 @@ class IntentService:
                     success=True,
                     message=(
                         "Google Calendar isn't connected yet, so I can't see your meetings. "
-                        "Ask me \"how do I connect Google Calendar?\" and I'll walk you through it — "
+                        'Ask me "how do I connect Google Calendar?" and I\'ll walk you through it — '
                         "once it's connected I can analyze your meeting time."
                     ),
                     intent_data={
@@ -5024,7 +5035,7 @@ class IntentService:
                     success=True,
                     message=(
                         "Google Calendar isn't connected yet, so I can't see your recurring meetings. "
-                        "Ask me \"how do I connect Google Calendar?\" and I'll walk you through it — "
+                        'Ask me "how do I connect Google Calendar?" and I\'ll walk you through it — '
                         "once it's connected I can review what's recurring and how often."
                     ),
                     intent_data={
@@ -5121,7 +5132,7 @@ class IntentService:
                     success=True,
                     message=(
                         "Google Calendar isn't connected yet, so I can't show your week. "
-                        "Ask me \"how do I connect Google Calendar?\" and I'll walk you through it — "
+                        'Ask me "how do I connect Google Calendar?" and I\'ll walk you through it — '
                         "once it's connected I can lay out what's on your schedule."
                     ),
                     intent_data={
@@ -8684,9 +8695,7 @@ Add any additional information here.
         # `intent.original_message` (the model field), but the fetch helpers read
         # `context["original_message"]` to parse the `#N`. Never mutate intent.context.
         context = dict(intent.context or {})
-        context.setdefault(
-            "original_message", getattr(intent, "original_message", "") or ""
-        )
+        context.setdefault("original_message", getattr(intent, "original_message", "") or "")
         source_type = context.get("source_type")
 
         # #1187 robustness: the full classification pipeline (learned-pattern / KG
@@ -11158,9 +11167,8 @@ Content to summarize:
             # a turn, Step 6's `if conv_ctx.turns:` was always False → write
             # never happened. Add the turn explicitly here for the current
             # floor-routed message so the sidecar has somewhere to land.
-            user_msg = (
-                intent.original_message
-                or (intent.context.get("original_message", "") if intent.context else "")
+            user_msg = intent.original_message or (
+                intent.context.get("original_message", "") if intent.context else ""
             )
             # #1122: the outer process_intent now records the in-flight turn for
             # every path, so this site normally just annotates it with the
@@ -11170,9 +11178,7 @@ Content to summarize:
             if conv_ctx.turns and conv_ctx.turns[-1].response is None:
                 if conv_ctx.turns[-1].intent is None:
                     conv_ctx.turns[-1].intent = intent
-            elif user_msg and (
-                not conv_ctx.turns or conv_ctx.turns[-1].message != user_msg
-            ):
+            elif user_msg and (not conv_ctx.turns or conv_ctx.turns[-1].message != user_msg):
                 conv_ctx.add_turn(message=user_msg, intent=intent)
 
             # Issue #1030 R4: write per-turn provenance to the sidecar so future
@@ -11186,7 +11192,11 @@ Content to summarize:
                 # Phase 2 (R6 mitigation): merge push payload provenance if a
                 # push was appended this turn. Floor stashes it in session
                 # state since it doesn't have a handle to ConversationContext.
-                push_state = floor._push_session_state.get(session_id) if hasattr(floor, "_push_session_state") else None
+                push_state = (
+                    floor._push_session_state.get(session_id)
+                    if hasattr(floor, "_push_session_state")
+                    else None
+                )
                 if push_state and "last_push_provenance" in push_state:
                     turn_prov["push_insight"] = push_state["last_push_provenance"]
                     # Consume the stash so it doesn't bleed into the next turn

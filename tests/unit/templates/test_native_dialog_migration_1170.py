@@ -7,6 +7,7 @@ or `Toast`/`ToastMessages` — so a future edit can't satisfy the lint by simply
 deleting the user-facing notification, and so the insights.html asset wiring
 (which loads dialog.js) can't silently regress (Dialog would be undefined).
 """
+
 from pathlib import Path
 
 import pytest
@@ -30,6 +31,7 @@ def home() -> str:
 
 
 # --- insights.html: confirm + 2 prompts + alert, plus the asset include --------
+
 
 def test_insights_loads_dialog_assets():
     # Self-contained Dialog.open needs dialog.js (+ css). As of F2 #1171 these are
@@ -67,6 +69,7 @@ def test_insights_handlers_are_async(insights):
 
 # --- home.html: 3 toast errors + 1 dialog confirm ------------------------------
 
+
 def test_home_delete_uses_dialog_confirm(home):
     assert "await Dialog.confirm(" in home
     assert "Delete this conversation?" in home
@@ -79,6 +82,7 @@ def test_home_errors_use_toast_messages(home):
 
 
 # --- the other migrated files --------------------------------------------------
+
 
 def test_insight_card_uses_dialog_confirm():
     card = _read("templates", "components", "insight_card.html")
@@ -102,6 +106,7 @@ def test_chat_save_error_uses_toast_messages():
 
 
 # --- the new toast key + the gate baseline is at zero --------------------------
+
 
 def test_archive_error_toast_key_exists():
     tm = _read("web", "static", "js", "toast-messages.js")

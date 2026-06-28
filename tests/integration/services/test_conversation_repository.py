@@ -172,9 +172,7 @@ class TestConversationRepository:
             await repo.save_turn(turn)
 
         # most_recent=True with limit=3 -> turns 3,4,5 (newest), chronological order
-        turns = await repo.get_conversation_turns(
-            test_conversation.id, limit=3, most_recent=True
-        )
+        turns = await repo.get_conversation_turns(test_conversation.id, limit=3, most_recent=True)
         assert len(turns) == 3
         assert turns[0].turn_number == 3  # oldest-of-the-newest first
         assert turns[-1].turn_number == 5  # most-recent last (chronological)

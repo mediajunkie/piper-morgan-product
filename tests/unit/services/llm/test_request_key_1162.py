@@ -5,6 +5,7 @@ the request, ALWAYS reset afterward (incl. on exception → no cross-request lea
 a blank header falls back to the server key, and the client-selection uses the
 user key when bound. The route wiring + the LLM call site consume this module.
 """
+
 from services.llm.request_key import (
     anthropic_client_for_request,
     get_request_api_key,

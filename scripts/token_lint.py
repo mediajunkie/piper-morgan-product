@@ -17,6 +17,7 @@ stylelint-declaration-strict-value (tracked on #1172). Usage:
     python scripts/token_lint.py [PATH ...]          # default: web/static/css
     python scripts/token_lint.py --summary           # counts by category
 """
+
 from __future__ import annotations
 
 import re
@@ -46,7 +47,7 @@ def _strip_var(value: str) -> str:
     out = []
     i = 0
     while i < len(value):
-        if value[i:i + 4] == "var(":
+        if value[i : i + 4] == "var(":
             depth, j = 0, i + 3
             while j < len(value):
                 if value[j] == "(":
@@ -62,17 +63,39 @@ def _strip_var(value: str) -> str:
             i += 1
     return "".join(out)
 
+
 SPACING_PROPS = {
-    "margin", "margin-top", "margin-right", "margin-bottom", "margin-left",
-    "padding", "padding-top", "padding-right", "padding-bottom", "padding-left",
-    "gap", "row-gap", "column-gap", "top", "right", "bottom", "left",
-    "inset", "inset-block", "inset-inline",
+    "margin",
+    "margin-top",
+    "margin-right",
+    "margin-bottom",
+    "margin-left",
+    "padding",
+    "padding-top",
+    "padding-right",
+    "padding-bottom",
+    "padding-left",
+    "gap",
+    "row-gap",
+    "column-gap",
+    "top",
+    "right",
+    "bottom",
+    "left",
+    "inset",
+    "inset-block",
+    "inset-inline",
 }
 RADIUS_PROPS = {
-    "border-radius", "border-top-left-radius", "border-top-right-radius",
-    "border-bottom-left-radius", "border-bottom-right-radius",
-    "border-start-start-radius", "border-start-end-radius",
-    "border-end-start-radius", "border-end-end-radius",
+    "border-radius",
+    "border-top-left-radius",
+    "border-top-right-radius",
+    "border-bottom-left-radius",
+    "border-bottom-right-radius",
+    "border-start-start-radius",
+    "border-start-end-radius",
+    "border-end-start-radius",
+    "border-end-end-radius",
 }
 TYPE_PROPS = {"font-size", "font-weight", "line-height"}
 TYPE_KEYWORDS = {"normal", "bold", "bolder", "lighter", "inherit", "initial", "unset", "revert"}
@@ -171,13 +194,18 @@ def new_against_baseline(current: Counter, baseline: Counter) -> Counter:
 
 def main(argv: Optional[List[str]] = None) -> int:
     import argparse
+
     parser = argparse.ArgumentParser(description="token-discipline lint gate (#1172 F3)")
     parser.add_argument("paths", nargs="*", help="CSS files/dirs (default: web/static/css)")
     parser.add_argument("--summary", action="store_true", help="counts by category")
-    parser.add_argument("--baseline", metavar="FILE",
-                        help="ratchet: fail only on violations NOT already in FILE")
-    parser.add_argument("--write-baseline", metavar="FILE",
-                        help="snapshot current violations to FILE (to ratchet down after migrating)")
+    parser.add_argument(
+        "--baseline", metavar="FILE", help="ratchet: fail only on violations NOT already in FILE"
+    )
+    parser.add_argument(
+        "--write-baseline",
+        metavar="FILE",
+        help="snapshot current violations to FILE (to ratchet down after migrating)",
+    )
     ns = parser.parse_args(argv)
 
     files = _gather(ns.paths)
@@ -185,8 +213,12 @@ def main(argv: Optional[List[str]] = None) -> int:
     current = Counter(_signature(p, v) for p, v in results)
 
     if ns.write_baseline:
-        Path(ns.write_baseline).write_text("\n".join(sorted(current.elements())) + "\n", encoding="utf-8")
-        print(f"token-lint: wrote baseline ({sum(current.values())} violation(s)) to {ns.write_baseline}")
+        Path(ns.write_baseline).write_text(
+            "\n".join(sorted(current.elements())) + "\n", encoding="utf-8"
+        )
+        print(
+            f"token-lint: wrote baseline ({sum(current.values())} violation(s)) to {ns.write_baseline}"
+        )
         return 0
 
     if ns.summary:
@@ -199,14 +231,20 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 1 if results else 0
 
     if ns.baseline:
-        base = Counter(ln for ln in Path(ns.baseline).read_text(encoding="utf-8").splitlines() if ln.strip())
+        base = Counter(
+            ln for ln in Path(ns.baseline).read_text(encoding="utf-8").splitlines() if ln.strip()
+        )
         new = new_against_baseline(current, base)
         if new:
-            print(f"token-lint: {sum(new.values())} NEW violation(s) (not in baseline {ns.baseline}):")
+            print(
+                f"token-lint: {sum(new.values())} NEW violation(s) (not in baseline {ns.baseline}):"
+            )
             for sig in sorted(new.elements()):
                 path, cat, snippet = sig.split("|", 2)
                 print(f"  {path}: [{cat}] {snippet}")
-            print(f"\nUse a token from tokens.css, or /* {ALLOW_COMMENT} */ for a documented exception.")
+            print(
+                f"\nUse a token from tokens.css, or /* {ALLOW_COMMENT} */ for a documented exception."
+            )
             return 1
         fixed = sum((base - current).values())
         msg = f"token-lint: no new violations ({sum(current.values())} baselined"
@@ -217,8 +255,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     for p, v in results:
         print(f"{p}:{v.line_no}: [{v.category}] {v.snippet}")
     if results:
-        print(f"\ntoken-lint: {len(results)} violation(s). "
-              f"Use tokens from tokens.css, or add /* {ALLOW_COMMENT} */ for a documented exception.")
+        print(
+            f"\ntoken-lint: {len(results)} violation(s). "
+            f"Use tokens from tokens.css, or add /* {ALLOW_COMMENT} */ for a documented exception."
+        )
     return 1 if results else 0
 
 

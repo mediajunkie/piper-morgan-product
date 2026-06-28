@@ -1043,9 +1043,7 @@ async def handle_github_callback(
     mark the binding BOUND (#1317 inc.2). Redirects back to /settings/integrations."""
     if error:
         logger.warning("github_settings_oauth_denied", error=error)
-        return RedirectResponse(
-            url=f"/settings/integrations?github_error={error}", status_code=302
-        )
+        return RedirectResponse(url=f"/settings/integrations?github_error={error}", status_code=302)
     if not code or not state:
         logger.warning(
             "github_settings_oauth_missing_params", has_code=bool(code), has_state=bool(state)
@@ -1084,6 +1082,24 @@ async def handle_github_callback(
         return RedirectResponse(
             url="/settings/integrations?github_error=callback_failed", status_code=302
         )
+
+
+@router.get("/github/oauth-status")
+async def github_oauth_status(current_user: JWTClaims = Depends(get_current_user)):
+    """Per-user GitHub OAuth-connector binding status (#1317 / ADR-070 C).
+
+    Distinct from the legacy native-PAT status (`GET /github`, system-scoped) — this
+    reflects the user's `connector_binding`, so the Settings page can show the OAuth
+    connection as connected. No token is read or returned (D3).
+    """
+    from services.connectors.binding_repository import ConnectorBindingRepository
+    from services.database.session_factory import AsyncSessionFactory
+    from services.mcp.consumer.connector import ConnectorStatusState
+
+    async with AsyncSessionFactory.session_scope() as session:
+        binding = await ConnectorBindingRepository(session).get(current_user.sub, "github")
+    connected = binding is not None and binding.status == ConnectorStatusState.BOUND.value
+    return {"connected": connected, "status": (binding.status if binding else None)}
 
 
 @router.post("/calendar/disconnect")

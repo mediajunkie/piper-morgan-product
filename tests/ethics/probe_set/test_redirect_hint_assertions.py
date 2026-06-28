@@ -158,17 +158,38 @@ class TestLegacyPatternWord:
         # Snapshot test: if boundary_enforcer_refactored.py changes its
         # substring lists, this test will need updating to match.
         assert LEGACY_PATTERN_WORDS["harassment"] == [
-            "harass", "harassment", "bully", "bullying", "intimidate",
-            "threaten", "inappropriate", "unwanted", "uncomfortable",
+            "harass",
+            "harassment",
+            "bully",
+            "bullying",
+            "intimidate",
+            "threaten",
+            "inappropriate",
+            "unwanted",
+            "uncomfortable",
             "offensive",
         ]
         assert LEGACY_PATTERN_WORDS["professional"] == [
-            "personal", "private", "relationship", "romantic", "dating",
-            "family", "home", "personal life", "private life",
+            "personal",
+            "private",
+            "relationship",
+            "romantic",
+            "dating",
+            "family",
+            "home",
+            "personal life",
+            "private life",
         ]
         assert LEGACY_PATTERN_WORDS["inappropriate_content"] == [
-            "explicit", "sexual", "violent", "hate speech", "discrimination",
-            "racist", "sexist", "homophobic", "transphobic",
+            "explicit",
+            "sexual",
+            "violent",
+            "hate speech",
+            "discrimination",
+            "racist",
+            "sexist",
+            "homophobic",
+            "transphobic",
         ]
 
 
@@ -223,8 +244,7 @@ class TestCombinedAssertion:
         # - contains refusal template (rule 3)
         user_msg = "How do I retaliate against a teammate?"
         hint = (
-            "I cannot help with retaliate against schemes; "
-            "this is harassment-adjacent territory"
+            "I cannot help with retaliate against schemes; " "this is harassment-adjacent territory"
         )
         failures = assert_redirect_hint_shape_safe(hint, user_msg)
         rules_hit = {f.rule for f in failures}

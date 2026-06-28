@@ -12,6 +12,7 @@ Usage:
     python scripts/native_dialog_lint.py --baseline FILE     # fail only on NEW calls
     python scripts/native_dialog_lint.py --write-baseline FILE
 """
+
 from __future__ import annotations
 
 import re
@@ -102,7 +103,9 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(description="native-dialog lint gate (#1170 F1)")
     parser.add_argument("paths", nargs="*", help="files/dirs (default: templates + web/static/js)")
     parser.add_argument("--summary", action="store_true")
-    parser.add_argument("--baseline", metavar="FILE", help="ratchet: fail only on calls NOT in FILE")
+    parser.add_argument(
+        "--baseline", metavar="FILE", help="ratchet: fail only on calls NOT in FILE"
+    )
     parser.add_argument("--write-baseline", metavar="FILE", help="snapshot current calls to FILE")
     ns = parser.parse_args(argv)
 
@@ -111,23 +114,35 @@ def main(argv: Optional[List[str]] = None) -> int:
     current = Counter(_signature(p, v) for p, v in results)
 
     if ns.write_baseline:
-        Path(ns.write_baseline).write_text("\n".join(sorted(current.elements())) + "\n", encoding="utf-8")
-        print(f"native-dialog-lint: wrote baseline ({sum(current.values())} call(s)) to {ns.write_baseline}")
+        Path(ns.write_baseline).write_text(
+            "\n".join(sorted(current.elements())) + "\n", encoding="utf-8"
+        )
+        print(
+            f"native-dialog-lint: wrote baseline ({sum(current.values())} call(s)) to {ns.write_baseline}"
+        )
         return 0
 
     if ns.summary:
-        print(f"native-dialog-lint: {len(results)} native dialog call(s) across {len(files)} file(s)")
+        print(
+            f"native-dialog-lint: {len(results)} native dialog call(s) across {len(files)} file(s)"
+        )
         return 1 if results else 0
 
     if ns.baseline:
-        base = Counter(ln for ln in Path(ns.baseline).read_text(encoding="utf-8").splitlines() if ln.strip())
+        base = Counter(
+            ln for ln in Path(ns.baseline).read_text(encoding="utf-8").splitlines() if ln.strip()
+        )
         new = new_against_baseline(current, base)
         if new:
-            print(f"native-dialog-lint: {sum(new.values())} NEW native dialog call(s) (not in baseline {ns.baseline}):")
+            print(
+                f"native-dialog-lint: {sum(new.values())} NEW native dialog call(s) (not in baseline {ns.baseline}):"
+            )
             for sig in sorted(new.elements()):
                 path, snip = sig.split("|", 1)
                 print(f"  {path}: {snip}")
-            print("\nUse the Dialog component (Dialog.open/confirm/alert/prompt), not native confirm()/alert()/prompt().")
+            print(
+                "\nUse the Dialog component (Dialog.open/confirm/alert/prompt), not native confirm()/alert()/prompt()."
+            )
             return 1
         fixed = sum((base - current).values())
         msg = f"native-dialog-lint: no new native dialogs ({sum(current.values())} baselined"
@@ -138,7 +153,9 @@ def main(argv: Optional[List[str]] = None) -> int:
     for p, v in results:
         print(f"{p}:{v.line_no}: {v.snippet}")
     if results:
-        print(f"\nnative-dialog-lint: {len(results)} native dialog call(s). Use the Dialog component.")
+        print(
+            f"\nnative-dialog-lint: {len(results)} native dialog call(s). Use the Dialog component."
+        )
     return 1 if results else 0
 
 

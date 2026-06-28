@@ -167,6 +167,7 @@ def _parse_items_from_message(message: str, *, source: str = "user") -> List[Sta
             items.append(StandupItem(display=line, source=source))
     return items
 
+
 logger = structlog.get_logger()
 
 
@@ -358,9 +359,7 @@ class StandupConversationHandler:
 
         # Cancel
         if any(word in message_lower for word in ["no", "not now", "cancel", "later", "nope"]):
-            await self.manager.transition_state(
-                conversation.id, StandupConversationState.ABANDONED
-            )
+            await self.manager.transition_state(conversation.id, StandupConversationState.ABANDONED)
             return ConversationResponse(
                 message="No problem! Just say 'standup' when you're ready.",
                 state=StandupConversationState.ABANDONED,
@@ -392,9 +391,7 @@ class StandupConversationHandler:
         capture = conversation.partial_capture or StandupPartialCapture()
         if not _is_skip_signal(user_message):
             capture.yesterday.extend(_parse_items_from_message(user_message))
-        conversation = await self.manager.update_partial_capture(
-            conversation.id, capture
-        )
+        conversation = await self.manager.update_partial_capture(conversation.id, capture)
 
         signal = detect_completion(
             user_message=user_message,
@@ -430,9 +427,7 @@ class StandupConversationHandler:
         capture = conversation.partial_capture or StandupPartialCapture()
         if not _is_skip_signal(user_message):
             capture.today.extend(_parse_items_from_message(user_message))
-        conversation = await self.manager.update_partial_capture(
-            conversation.id, capture
-        )
+        conversation = await self.manager.update_partial_capture(conversation.id, capture)
 
         signal = detect_completion(
             user_message=user_message,
@@ -473,9 +468,7 @@ class StandupConversationHandler:
             capture.blockers.extend(_parse_items_from_message(user_message))
         conversation = await self.manager.update_partial_capture(conversation.id, capture)
 
-        await self.manager.transition_state(
-            conversation.id, StandupConversationState.GENERATING
-        )
+        await self.manager.transition_state(conversation.id, StandupConversationState.GENERATING)
         return await self._generate_standup(conversation, context)
 
     async def _handle_gathering(
@@ -490,9 +483,7 @@ class StandupConversationHandler:
         await self.manager.update_preferences(conversation.id, preferences)
 
         # Move to generating
-        await self.manager.transition_state(
-            conversation.id, StandupConversationState.GENERATING
-        )
+        await self.manager.transition_state(conversation.id, StandupConversationState.GENERATING)
         return await self._generate_standup(conversation, context)
 
     async def _handle_generating(
@@ -505,9 +496,7 @@ class StandupConversationHandler:
         # This shouldn't normally be called - generating is transient
         # But handle it by showing current standup
         if conversation.current_standup:
-            await self.manager.transition_state(
-                conversation.id, StandupConversationState.REFINING
-            )
+            await self.manager.transition_state(conversation.id, StandupConversationState.REFINING)
             return ConversationResponse(
                 message=(
                     f"Here's your standup:\n\n{conversation.current_standup}\n\n"
@@ -578,9 +567,7 @@ class StandupConversationHandler:
         context: Dict[str, Any],
     ) -> ConversationResponse:
         """Handle FINALIZING state - confirming completion."""
-        await self.manager.transition_state(
-            conversation.id, StandupConversationState.COMPLETE
-        )
+        await self.manager.transition_state(conversation.id, StandupConversationState.COMPLETE)
         return ConversationResponse(
             message="Your standup is ready! Have a great day!",
             state=StandupConversationState.COMPLETE,
@@ -640,9 +627,7 @@ class StandupConversationHandler:
             )
 
             await self.manager.set_standup_content(conversation.id, standup_content)
-            await self.manager.transition_state(
-                conversation.id, StandupConversationState.REFINING
-            )
+            await self.manager.transition_state(conversation.id, StandupConversationState.REFINING)
 
             return ConversationResponse(
                 message=(
@@ -878,9 +863,7 @@ class StandupConversationHandler:
         """Handle graceful fallback when generation fails."""
         basic = self._generate_basic_standup({})
         await self.manager.set_standup_content(conversation.id, basic)
-        await self.manager.transition_state(
-            conversation.id, StandupConversationState.REFINING
-        )
+        await self.manager.transition_state(conversation.id, StandupConversationState.REFINING)
 
         return ConversationResponse(
             message=(

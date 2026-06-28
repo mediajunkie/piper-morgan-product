@@ -90,16 +90,11 @@ class TestMaybeAppendPushBehavior:
     async def test_no_payload_returns_unchanged_message(self):
         floor = _floor()
         ctx = _ctx()
-        with patch(
-            "services.mux.push_mode.maybe_push", new=AsyncMock(return_value=None)
-        ):
+        with patch("services.mux.push_mode.maybe_push", new=AsyncMock(return_value=None)):
             result = await floor._maybe_append_push("primary response", ctx)
             assert result == "primary response"
             # last_push_at NOT updated when no payload
-            assert (
-                floor._push_session_state.get("s-test", {}).get("last_push_at")
-                is None
-            )
+            assert floor._push_session_state.get("s-test", {}).get("last_push_at") is None
 
     @pytest.mark.asyncio
     async def test_payload_appends_framed_text_and_affordances(self):
@@ -109,9 +104,7 @@ class TestMaybeAppendPushBehavior:
             insight_id="ins-1",
             framed_text="By the way, I've noticed you tend to work in focused mornings.",
         )
-        with patch(
-            "services.mux.push_mode.maybe_push", new=AsyncMock(return_value=payload)
-        ):
+        with patch("services.mux.push_mode.maybe_push", new=AsyncMock(return_value=payload)):
             result = await floor._maybe_append_push("primary response", ctx)
         assert "primary response" in result
         assert payload.framed_text in result
@@ -119,10 +112,7 @@ class TestMaybeAppendPushBehavior:
         assert "Not now" in result or "quiet insights" in result
         assert "Tell me more" in result
         # Cooldown updated
-        assert (
-            floor._push_session_state.get("s-test", {}).get("last_push_at")
-            is not None
-        )
+        assert floor._push_session_state.get("s-test", {}).get("last_push_at") is not None
 
     @pytest.mark.asyncio
     async def test_push_error_is_fail_graceful(self):
@@ -172,9 +162,7 @@ class TestRespondSessionMuteFlow:
 
         ctx = _ctx(user_message="Don't surface insights right now please")
         # Stub push integration since we're testing mute-flip not the push call
-        with patch.object(
-            floor, "_maybe_append_push", new=AsyncMock(side_effect=lambda m, c: m)
-        ):
+        with patch.object(floor, "_maybe_append_push", new=AsyncMock(side_effect=lambda m, c: m)):
             await floor.respond(ctx)
 
         assert floor._push_session_state.get("s-test", {}).get("mute_active") is True
@@ -186,9 +174,7 @@ class TestRespondSessionMuteFlow:
         floor.llm_client.complete = AsyncMock(return_value="Sure, here's the status.")
 
         ctx = _ctx(user_message="What's the project status?")
-        with patch.object(
-            floor, "_maybe_append_push", new=AsyncMock(side_effect=lambda m, c: m)
-        ):
+        with patch.object(floor, "_maybe_append_push", new=AsyncMock(side_effect=lambda m, c: m)):
             await floor.respond(ctx)
 
         # Either no entry or mute_active False
@@ -204,23 +190,15 @@ class TestRespondSessionMuteFlow:
 
         # Turn 1: mute trigger
         ctx1 = _ctx(user_message="Mute insights")
-        with patch.object(
-            floor, "_maybe_append_push", new=AsyncMock(side_effect=lambda m, c: m)
-        ):
+        with patch.object(floor, "_maybe_append_push", new=AsyncMock(side_effect=lambda m, c: m)):
             await floor.respond(ctx1)
-        assert (
-            floor._push_session_state.get("s-test", {}).get("mute_active") is True
-        )
+        assert floor._push_session_state.get("s-test", {}).get("mute_active") is True
 
         # Turn 2: ordinary query — state should persist
         ctx2 = _ctx(user_message="What's my next task?")
-        with patch.object(
-            floor, "_maybe_append_push", new=AsyncMock(side_effect=lambda m, c: m)
-        ):
+        with patch.object(floor, "_maybe_append_push", new=AsyncMock(side_effect=lambda m, c: m)):
             await floor.respond(ctx2)
-        assert (
-            floor._push_session_state.get("s-test", {}).get("mute_active") is True
-        )
+        assert floor._push_session_state.get("s-test", {}).get("mute_active") is True
 
     @pytest.mark.asyncio
     async def test_new_session_id_resets_state(self):
@@ -232,19 +210,13 @@ class TestRespondSessionMuteFlow:
         # Session A: mute (use phrasing the SESSION_MUTE_PATTERNS regex matches:
         # mute-verb directly followed by insights-noun).
         ctxA = _ctx(session_id="session-A", user_message="Don't surface insights")
-        with patch.object(
-            floor, "_maybe_append_push", new=AsyncMock(side_effect=lambda m, c: m)
-        ):
+        with patch.object(floor, "_maybe_append_push", new=AsyncMock(side_effect=lambda m, c: m)):
             await floor.respond(ctxA)
-        assert (
-            floor._push_session_state.get("session-A", {}).get("mute_active") is True
-        )
+        assert floor._push_session_state.get("session-A", {}).get("mute_active") is True
 
         # Session B: brand new session_id; should NOT be muted (state is per-session)
         ctxB = _ctx(session_id="session-B", user_message="What's up?")
-        with patch.object(
-            floor, "_maybe_append_push", new=AsyncMock(side_effect=lambda m, c: m)
-        ):
+        with patch.object(floor, "_maybe_append_push", new=AsyncMock(side_effect=lambda m, c: m)):
             await floor.respond(ctxB)
         sessB = floor._push_session_state.get("session-B", {})
         assert sessB.get("mute_active", False) is False

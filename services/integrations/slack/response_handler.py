@@ -582,9 +582,7 @@ class SlackResponseHandler:
 
             slack_user_id = slack_context.get("user_id")
             slack_session_id = (
-                slack_context.get("thread_ts")
-                or slack_context.get("channel_id")
-                or "slack-default"
+                slack_context.get("thread_ts") or slack_context.get("channel_id") or "slack-default"
             )
 
             try:
@@ -595,8 +593,7 @@ class SlackResponseHandler:
                 )
             except Exception as exc:
                 self.logger.error(
-                    f"intent_service direct dispatch failed for intent "
-                    f"{intent.action}: {exc}",
+                    f"intent_service direct dispatch failed for intent " f"{intent.action}: {exc}",
                     exc_info=True,
                 )
                 return None
@@ -647,6 +644,7 @@ class SlackResponseHandler:
                 from services.integrations.slack.notion_url_unfurler import (
                     format_notion_refs_for_slack,
                 )
+
                 refs_block = format_notion_refs_for_slack(notion_refs)
                 if refs_block:
                     response_content = f"{response_content}\n\n{refs_block}"

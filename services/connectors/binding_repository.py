@@ -9,6 +9,7 @@ Read/write asymmetry is deliberate: reads degrade gracefully (a None/non-UUID ow
 m-40), but writes are STRICT (a binding must belong to the settled identity — `owner_id` is
 NOT NULL, so a write with a None/non-UUID owner raises rather than silently no-op).
 """
+
 from __future__ import annotations
 
 from typing import Optional, Union

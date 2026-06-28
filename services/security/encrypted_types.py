@@ -19,6 +19,7 @@ so production never silently stores plaintext *under* the encryption marker.
 
 Security: this layer logs no values — never the master key, the plaintext, or the ciphertext.
 """
+
 from __future__ import annotations
 
 import logging
@@ -91,8 +92,6 @@ class EncryptedString(TypeDecorator):
         svc = self._service
         if svc is None:
             # Marked ciphertext but no key: do NOT silently return the raw token.
-            raise DecryptionError(
-                "encrypted value present but ENCRYPTION_MASTER_KEY is unset"
-            )
-        token = value[len(MARKER):]
+            raise DecryptionError("encrypted value present but ENCRYPTION_MASTER_KEY is unset")
+        token = value[len(MARKER) :]
         return svc.decrypt(token, self._context)  # DecryptionError propagates

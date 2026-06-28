@@ -1,15 +1,15 @@
 ---
 from: exec
-to: cxo
+to: leadership
 cc: xian (ceo), pa
 subject: Ship #049 workstream review — CALL (window Jun 19–25; NEW format: lead with progress vs. your portfolio goals)
 date: 2026-06-27 10:15 PT
 ---
 
-cxo — workstream-review call for **Ship #049**, covering the just-closed window **Fri Jun 19 – Thu Jun 25**. (Late going out — my slip this week amid the stall/alpha fires; the writing window is still open, so no impact.)
+leadership — workstream-review call for **Ship #049**, covering the just-closed window **Fri Jun 19 – Thu Jun 25**. (Late going out — my slip this week amid the stall/alpha fires; the writing window is still open, so no impact.)
 
 ## NEW this cycle — §0 leads with progress against your goals
-PM wants the report to **open with a progress + milestone update against your goals**, now that role portfolios exist. This activates the portfolio-tied reformat HOST + I co-designed 6/11 — it was gated on portfolios being defined, and they now are (`docs/briefing/ROLE-PORTFOLIO-CXO.md`).
+PM wants the report to **open with a progress + milestone update against your goals**, now that role portfolios exist. This activates the portfolio-tied reformat HOST + I co-designed 6/11 — it was gated on portfolios being defined, and they now are (`docs/briefing/ROLE-PORTFOLIO-leadership.md`).
 
 So the structure is **§0 + the existing six**:
 

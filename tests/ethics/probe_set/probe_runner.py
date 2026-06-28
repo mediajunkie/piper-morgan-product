@@ -48,8 +48,7 @@ class _DetectorProtocol(Protocol):
         self,
         message: str,
         context: Optional[dict] = None,
-    ) -> SemanticDetectorOutput:
-        ...
+    ) -> SemanticDetectorOutput: ...
 
 
 @dataclass
@@ -93,11 +92,7 @@ def _evaluate_against_shape(
     elif (not expected_violation) and actual.violation_detected:
         diffs.append("unexpected_violation")
 
-    if (
-        expected_violation
-        and actual.violation_detected
-        and expected_category != actual.category
-    ):
+    if expected_violation and actual.violation_detected and expected_category != actual.category:
         diffs.append("category_mismatch")
 
     low, high = expected_band
@@ -144,7 +139,7 @@ async def run_probe(
     # any alternative produces zero diffs.
     if primary_diffs and probe.accepted_alternatives:
         for alt in probe.accepted_alternatives:
-            alt_violation = (alt.category != "none")
+            alt_violation = alt.category != "none"
             alt_diffs = _evaluate_against_shape(
                 probe,
                 actual,
@@ -239,10 +234,7 @@ def format_divergence_table(results: List[ProbeRunResult]) -> str:
         actual_conf = f"{r.actual_output.confidence:.2f}"
         diffs = ", ".join(r.diff_types)
         hint_fails = (
-            "; ".join(
-                f"{f.rule}={f.matched_text!r}"
-                for f in r.hint_assertion_failures
-            )
+            "; ".join(f"{f.rule}={f.matched_text!r}" for f in r.hint_assertion_failures)
             if r.hint_assertion_failures
             else ""
         )

@@ -56,9 +56,9 @@ class TestPatternMatching:
     )
     def test_each_pattern_fires(self, text, expected_label):
         matched = detect_surveillance_phrasing(text)
-        assert expected_label in matched, (
-            f"Expected pattern '{expected_label}' to match in: {text!r}; got {matched}"
-        )
+        assert (
+            expected_label in matched
+        ), f"Expected pattern '{expected_label}' to match in: {text!r}; got {matched}"
 
 
 # =============================================================================
@@ -82,9 +82,9 @@ class TestSafeVariants:
     )
     def test_safe_text_clean(self, text):
         matched = detect_surveillance_phrasing(text)
-        assert matched == [], (
-            f"Safe text triggered surveillance pattern: {text!r}; matched: {matched}"
-        )
+        assert (
+            matched == []
+        ), f"Safe text triggered surveillance pattern: {text!r}; matched: {matched}"
 
 
 # =============================================================================
@@ -188,24 +188,24 @@ class TestProbeSetVerdicts:
                         "rationale": probe.get("rationale"),
                     }
                 )
-        assert not failures, (
-            f"{len(failures)} probe(s) failed:\n"
-            + "\n".join(f"  - {f['id']}: expected {f['expected']}, got {f['actual']}; matched={f['matched']}" for f in failures)
+        assert not failures, f"{len(failures)} probe(s) failed:\n" + "\n".join(
+            f"  - {f['id']}: expected {f['expected']}, got {f['actual']}; matched={f['matched']}"
+            for f in failures
         )
 
     def test_pass_probes_round_trip_safe_surface(self):
         """Probes labeled 'pass' should round-trip through safe_surface unchanged."""
         for probe in self.probes:
             if probe["verdict"] == "pass":
-                assert safe_surface(probe["input"]) == probe["input"], (
-                    f"Pass probe {probe['id']!r} got modified by safe_surface"
-                )
+                assert (
+                    safe_surface(probe["input"]) == probe["input"]
+                ), f"Pass probe {probe['id']!r} got modified by safe_surface"
 
     def test_reject_probes_yield_fallback(self):
         """Probes labeled 'reject' should be replaced with the fallback."""
         for probe in self.probes:
             if probe["verdict"] == "reject":
                 result = safe_surface(probe["input"])
-                assert result == SURVEILLANCE_FALLBACK_MESSAGE, (
-                    f"Reject probe {probe['id']!r} did not yield fallback: {result!r}"
-                )
+                assert (
+                    result == SURVEILLANCE_FALLBACK_MESSAGE
+                ), f"Reject probe {probe['id']!r} did not yield fallback: {result!r}"

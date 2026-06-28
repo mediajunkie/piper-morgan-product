@@ -87,7 +87,7 @@ def _strip_leading_frame(text: str) -> str:
     low = stripped.lower()
     for frag in _LEADING_FRAME_FRAGMENTS:
         if low.startswith(frag):
-            return stripped[len(frag):]
+            return stripped[len(frag) :]
     return text
 
 

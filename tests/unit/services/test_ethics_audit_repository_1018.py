@@ -170,15 +170,9 @@ async def test_summarize_recent_groups_by_event_type(session):
 async def test_summarize_recent_extracts_boundary_breakdown(session):
     repo = EthicsAuditRepository(session)
     base = datetime.now(timezone.utc)
-    await repo.add(
-        _make_entry(timestamp=base, details={"boundary_type": "harassment"})
-    )
-    await repo.add(
-        _make_entry(timestamp=base, details={"boundary_type": "harassment"})
-    )
-    await repo.add(
-        _make_entry(timestamp=base, details={"boundary_type": "data_privacy"})
-    )
+    await repo.add(_make_entry(timestamp=base, details={"boundary_type": "harassment"}))
+    await repo.add(_make_entry(timestamp=base, details={"boundary_type": "harassment"}))
+    await repo.add(_make_entry(timestamp=base, details={"boundary_type": "data_privacy"}))
     await session.commit()
 
     summary = await repo.summarize_recent(days=1)

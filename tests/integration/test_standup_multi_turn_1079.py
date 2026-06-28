@@ -79,9 +79,9 @@ class TestStandupMultiTurnState:
         r1 = await intent_service.process_intent(
             "/standup", session_id=fresh_session_id, user_id=test_user_id
         )
-        assert r1.intent_data["action"] == "standup_started", (
-            f"Expected standup_started on Turn 1; got {r1.intent_data.get('action')}"
-        )
+        assert (
+            r1.intent_data["action"] == "standup_started"
+        ), f"Expected standup_started on Turn 1; got {r1.intent_data.get('action')}"
 
         r2 = await intent_service.process_intent(
             "quick", session_id=fresh_session_id, user_id=test_user_id
@@ -105,9 +105,9 @@ class TestStandupMultiTurnState:
         )
         assert r2.intent_data["action"] == "standup_conversation_turn"
         # 3-part flow starts with the yesterday question
-        assert "yesterday" in r2.message.lower(), (
-            f"Expected 3-part flow start (yesterday question); got {r2.message[:120]!r}"
-        )
+        assert (
+            "yesterday" in r2.message.lower()
+        ), f"Expected 3-part flow start (yesterday question); got {r2.message[:120]!r}"
 
     @pytest.mark.asyncio
     async def test_q150_no_path_acknowledges_cancellation(
@@ -122,9 +122,9 @@ class TestStandupMultiTurnState:
         )
         assert r2.intent_data["action"] == "standup_conversation_turn"
         # ABANDONED state acknowledgement
-        assert "no problem" in r2.message.lower(), (
-            f"Expected cancellation acknowledgement; got {r2.message[:120]!r}"
-        )
+        assert (
+            "no problem" in r2.message.lower()
+        ), f"Expected cancellation acknowledgement; got {r2.message[:120]!r}"
 
 
 class TestStandupConversationPersistence:
@@ -163,9 +163,7 @@ class TestStandupConversationPersistence:
         )
 
         reg = get_process_registry()
-        adapter = next(
-            h for h in reg._handlers if isinstance(h, StandupProcessAdapter)
-        )
+        adapter = next(h for h in reg._handlers if isinstance(h, StandupProcessAdapter))
         is_active = await adapter.check_active(test_user_id, fresh_session_id)
         assert is_active is True, (
             "check_active must recognize fresh standup conversations. "

@@ -141,9 +141,7 @@ class TestDefect2CreateIssueKwarg:
             "user_id": str(uuid4()),
         }
 
-        result = await skill._process_github_items(
-            user_id=str(uuid4()), standup=standup
-        )
+        result = await skill._process_github_items(user_id=str(uuid4()), standup=standup)
 
         assert result["success"] is True
         assert result["issues_created"] == 1
@@ -190,9 +188,7 @@ class TestDefect3NotionService:
         skill = _make_skill()
         skill._get_user_notion_database = AsyncMock(return_value="db-abc-123")
         skill._notion_service = MagicMock()
-        skill._notion_service.create_page = AsyncMock(
-            return_value={"id": "page-xyz-789"}
-        )
+        skill._notion_service.create_page = AsyncMock(return_value={"id": "page-xyz-789"})
 
         standup = {
             "generated_at": "2026-05-24",

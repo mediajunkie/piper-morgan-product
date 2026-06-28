@@ -128,9 +128,7 @@ class UniversalListRepository(BaseRepository):
         avoid the per-list query.
         """
         result = await self.session.execute(
-            select(func.max(ListItemDB.added_at)).where(
-                ListItemDB.list_id == list_id
-            )
+            select(func.max(ListItemDB.added_at)).where(ListItemDB.list_id == list_id)
         )
         return result.scalar_one_or_none()
 

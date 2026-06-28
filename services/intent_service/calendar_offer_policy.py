@@ -29,8 +29,7 @@ OFFER_TEXT = (
 )
 
 GUIDANCE_TEXT = (
-    "Calendar isn't connected yet — you can set up Google Calendar at "
-    f"{CALENDAR_SETTINGS_PATH}."
+    "Calendar isn't connected yet — you can set up Google Calendar at " f"{CALENDAR_SETTINGS_PATH}."
 )
 
 
@@ -74,26 +73,18 @@ def decide_calendar_offer(
     """
     # If calendar is connected, no offer needed regardless of any other input.
     if calendar_connected:
-        return CalendarOfferDecision(
-            should_offer=False, offer_text="", new_state=None
-        )
+        return CalendarOfferDecision(should_offer=False, offer_text="", new_state=None)
 
     # First encounter: never offered before.
     if current_state is None:
-        return CalendarOfferDecision(
-            should_offer=True, offer_text=OFFER_TEXT, new_state="offered"
-        )
+        return CalendarOfferDecision(should_offer=True, offer_text=OFFER_TEXT, new_state="offered")
 
     # User is actively asking about calendar — surface guidance regardless
     # of prior decline/defer (they explicitly want help right now).
     if user_intent_mentions_calendar:
-        return CalendarOfferDecision(
-            should_offer=True, offer_text=GUIDANCE_TEXT, new_state=None
-        )
+        return CalendarOfferDecision(should_offer=True, offer_text=GUIDANCE_TEXT, new_state=None)
 
     # Otherwise stay silent: prior states ("offered", "declined", "deferred",
     # "accepted") all mean we shouldn't proactively re-pitch in a generic
     # greeting context.
-    return CalendarOfferDecision(
-        should_offer=False, offer_text="", new_state=None
-    )
+    return CalendarOfferDecision(should_offer=False, offer_text="", new_state=None)

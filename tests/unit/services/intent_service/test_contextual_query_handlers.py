@@ -148,9 +148,7 @@ class TestAttentionQueryRouting:
             # Issue #849: user_id is now threaded through to _handle_attention_query.
             # #1124: the rail's factory passes user_id POSITIONALLY (was a kwarg in the
             # removed elif).
-            mock_handler.assert_called_once_with(
-                intent, mock_workflow.id, "test-session", None
-            )
+            mock_handler.assert_called_once_with(intent, mock_workflow.id, "test-session", None)
 
     @pytest.mark.asyncio
     async def test_routes_needs_attention_action(self, intent_service, mock_workflow):
@@ -633,9 +631,7 @@ class TestPreClassifierRoutingIntegration:
             # Verify handler was called
             # Issue #849: user_id is now threaded through to _handle_attention_query.
             # #1124: the rail's factory passes user_id POSITIONALLY (was a kwarg).
-            mock_handler.assert_called_once_with(
-                pre_intent, mock_workflow.id, "test-session", None
-            )
+            mock_handler.assert_called_once_with(pre_intent, mock_workflow.id, "test-session", None)
             assert result.success is True
 
     @pytest.mark.asyncio

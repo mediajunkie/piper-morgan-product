@@ -32,9 +32,9 @@ def test_audit_completeness_field_removed() -> None:
         end = len(src)
     block = src[start:end]
     # The field as a dict key must not appear in the summary block
-    assert '"audit_completeness"' not in block, (
-        "audit_completeness universal-claim field must be removed (Pattern-073 instance 9)"
-    )
+    assert (
+        '"audit_completeness"' not in block
+    ), "audit_completeness universal-claim field must be removed (Pattern-073 instance 9)"
 
 
 def test_transparency_level_field_removed() -> None:
@@ -45,9 +45,9 @@ def test_transparency_level_field_removed() -> None:
     if end == -1:
         end = len(src)
     block = src[start:end]
-    assert '"transparency_level"' not in block, (
-        "transparency_level universal-claim field must be removed (Pattern-073 instance 10)"
-    )
+    assert (
+        '"transparency_level"' not in block
+    ), "transparency_level universal-claim field must be removed (Pattern-073 instance 10)"
 
 
 def test_verifiable_substitutes_present() -> None:
@@ -58,9 +58,7 @@ def test_verifiable_substitutes_present() -> None:
     if end == -1:
         end = len(src)
     block = src[start:end]
-    assert '"entries_examined"' in block, (
-        "Verifiable entries_examined field must be present"
-    )
+    assert '"entries_examined"' in block, "Verifiable entries_examined field must be present"
     assert '"entries_examined_limit"' in block, (
         "Verifiable entries_examined_limit field must be present so consumers "
         "know the upstream bound"
@@ -101,6 +99,6 @@ def test_pattern_073_body_records_instances_9_and_10() -> None:
         "docs/internal/architecture/current/patterns/pattern-073-documentation-asserted-behavior-drift.md"
     ).read_text()
     assert "#1101" in body, "Pattern-073 body must reference #1101 fix"
-    assert "Instances 9 + 10" in body or "instances 9 + 10" in body.lower() or "9 + 10" in body, (
-        "Pattern-073 body must record instances 9+10 (API-response universal claims)"
-    )
+    assert (
+        "Instances 9 + 10" in body or "instances 9 + 10" in body.lower() or "9 + 10" in body
+    ), "Pattern-073 body must record instances 9+10 (API-response universal claims)"

@@ -27,14 +27,12 @@ class TestMilestonePatterns:
         ],
     )
     def test_positive_match(self, msg):
-        matched = PreClassifier._matches_patterns(
-            msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS
-        )
+        matched = PreClassifier._matches_patterns(msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS)
         assert matched, f"expected match for {msg!r}"
         action = PreClassifier._get_github_action(msg.lower())
-        assert action == "list_milestones_query", (
-            f"expected list_milestones_query for {msg!r}, got {action}"
-        )
+        assert (
+            action == "list_milestones_query"
+        ), f"expected list_milestones_query for {msg!r}, got {action}"
 
     @pytest.mark.parametrize(
         "msg",
@@ -45,9 +43,7 @@ class TestMilestonePatterns:
     )
     def test_negative_no_match(self, msg):
         # These should NOT match the github_query pattern set
-        matched = PreClassifier._matches_patterns(
-            msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS
-        )
+        matched = PreClassifier._matches_patterns(msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS)
         assert not matched, f"unexpected match for {msg!r}"
 
 
@@ -70,14 +66,12 @@ class TestReleasePatterns:
         ],
     )
     def test_positive_match(self, msg):
-        matched = PreClassifier._matches_patterns(
-            msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS
-        )
+        matched = PreClassifier._matches_patterns(msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS)
         assert matched, f"expected match for {msg!r}"
         action = PreClassifier._get_github_action(msg.lower())
-        assert action == "list_releases_query", (
-            f"expected list_releases_query for {msg!r}, got {action}"
-        )
+        assert (
+            action == "list_releases_query"
+        ), f"expected list_releases_query for {msg!r}, got {action}"
 
     @pytest.mark.parametrize(
         "msg",
@@ -87,9 +81,7 @@ class TestReleasePatterns:
         ],
     )
     def test_negative_no_match(self, msg):
-        matched = PreClassifier._matches_patterns(
-            msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS
-        )
+        matched = PreClassifier._matches_patterns(msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS)
         assert not matched, f"unexpected match for {msg!r}"
 
 
@@ -112,9 +104,7 @@ class TestNoRegressionsExistingPatterns:
         ],
     )
     def test_existing_patterns_unchanged(self, msg, expected_action):
-        matched = PreClassifier._matches_patterns(
-            msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS
-        )
+        matched = PreClassifier._matches_patterns(msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS)
         assert matched
         action = PreClassifier._get_github_action(msg.lower())
         assert action == expected_action, f"{msg!r}: expected {expected_action}, got {action}"
@@ -152,9 +142,9 @@ class TestStateFilterPatternsExcluded:
             r"\bprereleases?\b",
         ]
         for pattern in forbidden:
-            assert pattern not in PreClassifier.GITHUB_QUERY_PATTERNS, (
-                f"State-filter pattern {pattern!r} present; should be deferred to #1051"
-            )
+            assert (
+                pattern not in PreClassifier.GITHUB_QUERY_PATTERNS
+            ), f"State-filter pattern {pattern!r} present; should be deferred to #1051"
 
 
 class TestActionRegistry:
@@ -164,19 +154,13 @@ class TestActionRegistry:
         from services.intent_service.action_registry import ACTION_REGISTRY, ActionDisposition
 
         assert ("QUERY", "list_milestones_query") in ACTION_REGISTRY
-        assert (
-            ACTION_REGISTRY[("QUERY", "list_milestones_query")]
-            == ActionDisposition.WORKFLOW
-        )
+        assert ACTION_REGISTRY[("QUERY", "list_milestones_query")] == ActionDisposition.WORKFLOW
 
     def test_releases_action_registered(self):
         from services.intent_service.action_registry import ACTION_REGISTRY, ActionDisposition
 
         assert ("QUERY", "list_releases_query") in ACTION_REGISTRY
-        assert (
-            ACTION_REGISTRY[("QUERY", "list_releases_query")]
-            == ActionDisposition.WORKFLOW
-        )
+        assert ACTION_REGISTRY[("QUERY", "list_releases_query")] == ActionDisposition.WORKFLOW
 
 
 class TestLensInference:

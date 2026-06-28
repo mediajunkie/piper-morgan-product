@@ -193,4 +193,3 @@ class LLMDomainService:
     def is_initialized(self) -> bool:
         """Check if service is initialized"""
         return self._initialized
-

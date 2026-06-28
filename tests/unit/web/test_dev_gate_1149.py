@@ -16,6 +16,7 @@ from web.dev_gate import is_production, require_dev_environment
 
 # --- the gate logic ---
 
+
 def test_is_production_true_only_when_explicit(monkeypatch):
     monkeypatch.setenv("PIPER_ENVIRONMENT", "production")
     assert is_production() is True
@@ -39,6 +40,7 @@ def test_require_dev_environment_noop_in_dev(monkeypatch):
 
 
 # --- the debug route's real behavior ---
+
 
 def _debug_client() -> TestClient:
     from web.api.routes.debug import router

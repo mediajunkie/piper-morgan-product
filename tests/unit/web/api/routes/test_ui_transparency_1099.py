@@ -17,15 +17,15 @@ class TestTransparencyRoute:
 
     def test_transparency_handler_exists(self):
         """Route handler function is defined in web.api.routes.ui."""
-        assert hasattr(ui_routes, "transparency_ui"), (
-            "transparency_ui handler must exist in web.api.routes.ui"
-        )
+        assert hasattr(
+            ui_routes, "transparency_ui"
+        ), "transparency_ui handler must exist in web.api.routes.ui"
 
     def test_handler_is_async(self):
         """Per FastAPI conventions, the handler is async."""
-        assert inspect.iscoroutinefunction(ui_routes.transparency_ui), (
-            "transparency_ui must be an async function"
-        )
+        assert inspect.iscoroutinefunction(
+            ui_routes.transparency_ui
+        ), "transparency_ui must be an async function"
 
     def test_docstring_cites_issue_and_adr(self):
         """Pattern-073 discipline: handler docstring must cite #1099 + ADR-063
@@ -37,6 +37,4 @@ class TestTransparencyRoute:
     def test_route_registered_in_router(self):
         """The /transparency path is registered on the ui router."""
         paths = {route.path for route in ui_routes.router.routes}
-        assert "/transparency" in paths, (
-            "/transparency must be registered on the ui router"
-        )
+        assert "/transparency" in paths, "/transparency must be registered on the ui router"

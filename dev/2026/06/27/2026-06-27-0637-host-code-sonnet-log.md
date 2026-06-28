@@ -33,4 +33,12 @@
   - **ROLE-PORTFOLIO-HOST.md section 2 refreshed** (Rule 5 / m-36 — review IS the refresh): "BYOC welfare" = on-track; "portfolio rollout" = COMPLETE; "gbrain" = COMPLETE; "people-entity map" + "LD streamlining" = on-track (watching).
 - Fire 4 (~15:37) — Inbox: empty. IDLE.
 - Fire 5 (~18:37) — Inbox: empty. IDLE.
+- Fire 6 (~21:37) — Inbox: empty. IDLE. Day-closing June 27.
+
+## Memory & briefing surfaces referenced this session
+**Referenced**: HOST carry-forward (cron state, watch items); ROLE-PORTFOLIO-HOST.md (section 2 refresh — rule 5); session logs Jun 19/20/24/25 (Ship 049 workstream review sourcing); ROLE-PORTFOLIO-FRAMEWORK.md (§6 framing).
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md.
+**Wanted but not found**: nothing.
+
+<!-- DAY-CLOSED: 2026-06-27 -->
 

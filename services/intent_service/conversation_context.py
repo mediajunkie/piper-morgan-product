@@ -178,9 +178,7 @@ class ConversationContext:
         # (R2 risk from R4 design). Keep only entries for turns still present.
         if self.turn_provenance:
             kept_ids = {t.id for t in self.turns}
-            self.turn_provenance = {
-                k: v for k, v in self.turn_provenance.items() if k in kept_ids
-            }
+            self.turn_provenance = {k: v for k, v in self.turn_provenance.items() if k in kept_ids}
 
         # #763: Clear lens stack when all turns are pruned
         if not self.turns:

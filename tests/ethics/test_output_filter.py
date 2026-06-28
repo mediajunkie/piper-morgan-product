@@ -165,7 +165,7 @@ class TestApplySecretRules:
         assert "secret:aws_access_key" in result.matched_rules
 
     def test_redacts_bearer_token(self):
-        content = 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
+        content = "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
         filtered, result = apply_secret_rules(content)
         assert "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" not in filtered
         assert "secret:bearer_token" in result.matched_rules

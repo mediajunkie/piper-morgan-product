@@ -18,6 +18,7 @@ this script makes no LLM calls):
     ENCRYPTION_MASTER_KEY=<base64-32B> POSTGRES_PORT=5433 \
         venv/bin/python -m scripts.backfill_encrypt_content_358b
 """
+
 from __future__ import annotations
 
 import asyncio

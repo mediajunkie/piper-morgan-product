@@ -6,8 +6,10 @@ spatial adapter pattern for external system integration.
 """
 
 import asyncio
+import json
 import logging
 from contextlib import asynccontextmanager
+from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
 import aiohttp
@@ -50,6 +52,12 @@ _RESOLVE_TOOL = "resolve_resource"
 # surfaced as the connect action_hint on a CONNECT_REQUIRED honest-degrade.
 _CONNECT_URL = "/api/v1/settings/integrations/github/connect"
 
+# The github-mcp-server tool + canonical query for the user's open issues (#1322 cutover).
+# search_issues is user-wide (assignee:@me, across repos) → no repo resolution, sidestepping
+# the vestigial resolve_repo / #1230. De-risked live (179 issues). Isolated for testability.
+_ISSUES_TOOL = "search_issues"
+_MY_OPEN_ISSUES_QUERY = "assignee:@me is:open is:issue"
+
 # Stored non-BOUND binding statuses → the honest ResolveMiss reason (#1231).
 _NONBOUND_REASON = {
     ConnectorStatusState.STALE.value: DegradationReason.STALE_TOKEN,
@@ -57,6 +65,20 @@ _NONBOUND_REASON = {
 }
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class GitHubIssuesResult:
+    """Connector issue-fetch result (#1322): issues on success, else an honest degrade.
+
+    Exactly one of ``issues`` / ``degradation`` is set. Chat handlers branch on it —
+    issues → answer; degradation → the honest "Connect GitHub" message (+ connect link),
+    never a silent empty list (#1231).
+    """
+
+    issues: Optional[List[Dict[str, Any]]] = None
+    total: Optional[int] = None  # TRUE match count (search_issues total_count); issues is a page
+    degradation: Optional[DegradationResponse] = None
 
 
 class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
@@ -91,7 +113,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
     # tokens). The OAuth redirect-orchestrator + callback that CREATES the binding
     # (ADR-070 OQ-5: MCP server owns OAuth) is increment 2; resolve() via the MCP
     # client is increment 3. Honest-degrade throughout (never silently empty).
-    IMPLEMENTS_CONNECTOR = True  # #1232: AST-guard (test_connector_contract_1232) enforces the 4 methods
+    IMPLEMENTS_CONNECTOR = (
+        True  # #1232: AST-guard (test_connector_contract_1232) enforces the 4 methods
+    )
 
     async def connect(self, user_id: str) -> ConnectResult:
         """Bound already → return the Binding; otherwise the must-be-handled ConnectRequired.
@@ -103,9 +127,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             binding = await ConnectorBindingRepository(session).get(user_id, _GITHUB)
         if binding is not None and binding.status == ConnectorStatusState.BOUND.value:
             return Binding(binding_id=str(binding.id))
-        return ConnectRequired(
-            degradation=await self.degrade(DegradationReason.CONNECT_REQUIRED)
-        )
+        return ConnectRequired(degradation=await self.degrade(DegradationReason.CONNECT_REQUIRED))
 
     async def status(self, user_id: str) -> ConnectorStatus:
         """The user's GitHub binding health (ADR-070 D5) — read from the binding store, no
@@ -171,6 +193,77 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             action_hint=(_CONNECT_URL if reason is DegradationReason.CONNECT_REQUIRED else None),
         )
 
+    # ── #1322 cutover: the user's open issues over the OAuth connector ──
+    async def list_open_issues(self, user_id: str, *, limit: int = 50) -> GitHubIssuesResult:
+        """List the user's open GitHub issues over the per-user OAuth connector (#1322).
+
+        The RECONNECT chat-cutover read primitive — reads via the user's binding + grant
+        (``search_issues``, user-wide ``assignee:@me`` across repos → no repo resolution,
+        sidestepping the vestigial ``resolve_repo`` / #1230), NOT the native shared PAT.
+        Honest-degrade throughout (#1231, never a silent empty): no binding → CONNECT_REQUIRED
+        (+ connect link); non-bound → its stored reason; bound-but-server-unreachable →
+        UNREACHABLE. Mirrors ``resolve()``'s rail; the chat handlers branch on the result.
+        """
+        async with AsyncSessionFactory.session_scope() as session:
+            binding = await ConnectorBindingRepository(session).get(user_id, _GITHUB)
+        if binding is None:
+            return GitHubIssuesResult(
+                degradation=await self.degrade(DegradationReason.CONNECT_REQUIRED)
+            )
+        if binding.status != ConnectorStatusState.BOUND.value:
+            reason = _NONBOUND_REASON.get(binding.status, DegradationReason.CONNECT_REQUIRED)
+            return GitHubIssuesResult(degradation=await self.degrade(reason))
+        try:
+            async with self._mcp_client_ctx(binding) as client:
+                issues, total = await self._list_issues_via_mcp(client, limit=limit)
+        except Exception:
+            logger.warning(
+                "GitHub MCP issue-list failed (server unreachable/unprovisioned)", exc_info=True
+            )
+            return GitHubIssuesResult(
+                degradation=await self.degrade(DegradationReason.UNREACHABLE)
+            )
+        return GitHubIssuesResult(issues=issues, total=total)
+
+    async def _list_issues_via_mcp(
+        self, client: MCPClient, *, limit: int
+    ) -> "tuple[List[Dict[str, Any]], Optional[int]]":
+        """Fetch + parse the user's open issues via github-mcp-server ``search_issues``.
+
+        Returns ``(issue dicts truncated to limit, TRUE total match count)``. The count comes
+        from search_issues' ``total_count`` — a page of ``items`` is far smaller (e.g. 30/page
+        vs 179 total), so the count must NOT be ``len(items)``. Real round-trip de-risked
+        against the live server (#1322). ``_ISSUES_TOOL`` is the one provisional id.
+        """
+        result = await client.call_tool(_ISSUES_TOOL, {"query": _MY_OPEN_ISSUES_QUERY})
+        return self._parse_issue_search(self._first_text(result.content), limit=limit)
+
+    @staticmethod
+    def _parse_issue_search(
+        payload: Optional[str], *, limit: int
+    ) -> "tuple[List[Dict[str, Any]], Optional[int]]":
+        """Parse a ``search_issues`` JSON payload → ``(issue dicts truncated, total match count)``.
+
+        ``total_count`` is authoritative (the full match count); for a ``list_issues`` payload
+        shape (no total_count) the count falls back to the number of items returned.
+        """
+        if not payload:
+            return [], 0
+        try:
+            data = json.loads(payload)
+        except (ValueError, TypeError):
+            return [], None
+        if not isinstance(data, dict):
+            return [], None
+        items = data.get("items")
+        if items is None:
+            items = data.get("issues")  # tolerate the list_issues payload shape too
+        items = items or []
+        total = data.get("total_count")
+        if total is None:
+            total = len(items)  # list_issues shape: count is what we got
+        return items[:limit], total
+
     # ── resolve() transport seam (the real MCP path; #1220) ──
     # Isolated so resolve()'s degrade rail is testable against a fixture-backed client,
     # and so the provisioning-gated bits below are confined to two small methods.
@@ -191,9 +284,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         async with MCPClient.connect_http(binding.mcp_server_ref, headers=headers) as client:
             yield client
 
-    async def _resolve_via_mcp(
-        self, client: MCPClient, resource: ResourceQuery
-    ) -> Optional[str]:
+    async def _resolve_via_mcp(self, client: MCPClient, resource: ResourceQuery) -> Optional[str]:
         """Resolve a resource to a handle via the GitHub MCP server (real round-trip).
 
         Returns the handle string, or ``None`` for a miss. PROVISIONAL (#1230 / #1220):
@@ -201,9 +292,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         WIRING (binding → real ``MCPClient`` → result → handle) is proven against a FastMCP
         fixture, with the tool identifier (``_RESOLVE_TOOL``) the one provisional constant.
         """
-        result = await client.call_tool(
-            _RESOLVE_TOOL, {"kind": resource.kind, **resource.params}
-        )
+        result = await client.call_tool(_RESOLVE_TOOL, {"kind": resource.kind, **resource.params})
         return self._first_text(result.content) or None
 
     @staticmethod
@@ -427,9 +516,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         endpoint = f"repos/{owner}/{repo_name}/issues/{issue_number}/comments"
         return await self._post_github_api(endpoint, {"body": body})
 
-    async def list_github_issues_direct(
-        self, repo: str, owner: str
-    ) -> List[Dict[str, Any]]:
+    async def list_github_issues_direct(self, repo: str, owner: str) -> List[Dict[str, Any]]:
         """List GitHub issues directly via GitHub API.
 
         Issue #1042: ``repo`` and ``owner`` are now required positional args
@@ -580,9 +667,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error listing milestones for {owner}/{repo}: {e}")
             return []
 
-    async def list_releases(
-        self, repo: str, owner: str
-    ) -> List[Dict[str, Any]]:
+    async def list_releases(self, repo: str, owner: str) -> List[Dict[str, Any]]:
         """List GitHub releases for a repo (Issue #1039).
 
         Args:
@@ -628,9 +713,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error listing releases for {owner}/{repo}: {e}")
             return []
 
-    async def list_labels(
-        self, repo: str, owner: str
-    ) -> List[Dict[str, Any]]:
+    async def list_labels(self, repo: str, owner: str) -> List[Dict[str, Any]]:
         """List GitHub labels for a repo (Issue #1040).
 
         Args:
@@ -665,9 +748,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error listing labels for {owner}/{repo}: {e}")
             return []
 
-    async def list_branches(
-        self, repo: str, owner: str
-    ) -> List[Dict[str, Any]]:
+    async def list_branches(self, repo: str, owner: str) -> List[Dict[str, Any]]:
         """List GitHub branches for a repo (Issue #1040).
 
         Args:
@@ -709,9 +790,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error listing branches for {owner}/{repo}: {e}")
             return []
 
-    async def get_repository_info(
-        self, repo: str, owner: str
-    ) -> Optional[Dict[str, Any]]:
+    async def get_repository_info(self, repo: str, owner: str) -> Optional[Dict[str, Any]]:
         """Fetch repository metadata (used to identify default_branch).
 
         Issue #1040: needed by branch handler to identify which branch is
@@ -1020,9 +1099,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error creating spatial object for GitHub issue {issue_number}: {e}")
             return None
 
-    async def list_issues_via_mcp(
-        self, repo: str, owner: str
-    ) -> List[Dict[str, Any]]:
+    async def list_issues_via_mcp(self, repo: str, owner: str) -> List[Dict[str, Any]]:
         """
         List GitHub issues via MCP protocol with fallback to GitHub API.
 

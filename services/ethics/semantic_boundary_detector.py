@@ -584,7 +584,7 @@ class SemanticBoundaryDetector:
             text = text.split("\n", 1)[1] if "\n" in text else text[3:]
             # Strip closing fence
             if text.endswith("```"):
-                text = text[: -3].rstrip()
+                text = text[:-3].rstrip()
 
         try:
             payload = json.loads(text)
