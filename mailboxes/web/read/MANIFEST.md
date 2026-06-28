@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-06-27 22:20 PT | exec | memo-exec-to-web-cc-pm-citation-byline-APPROVED-publish-2026-06-27.md | GO — PM approved the byline copy; publish the /about citation change |
 | 2026-06-27 16:10 PT | exec | memo-exec-to-web-cc-pm-july1-citation-spec-2026-06-27.md | Re: July-1 citation spec — found it (Janus 6/23 homepage-review) |
 | 2026-06-27 09:15 PT | exec | memo-exec-to-cohort-cc-pm-ratify-inbox-proxy-2026-06-27.md | RATIFY — retire reflexive PM cc; route PM-attention through Exec (PM-approved;… |
 | 2026-06-25 19:10 PT | exec | memo-exec-to-web-cc-pm-pm-site-items-from-janus-2026-06-25.md | Two PM-site items routed from Janus (DinP) — newsletter cross-referral + July-1… |

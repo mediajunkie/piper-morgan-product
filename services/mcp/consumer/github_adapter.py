@@ -57,6 +57,9 @@ _CONNECT_URL = "/api/v1/settings/integrations/github/connect"
 # the vestigial resolve_repo / #1230. De-risked live (179 issues). Isolated for testability.
 _ISSUES_TOOL = "search_issues"
 _MY_OPEN_ISSUES_QUERY = "assignee:@me is:open is:issue"
+# PRs (#1322 P3): search_pull_requests, same payload shape, user-wide "PRs I opened".
+_PRS_TOOL = "search_pull_requests"
+_MY_OPEN_PRS_QUERY = "author:@me is:open is:pr"
 
 # Stored non-BOUND binding statuses → the honest ResolveMiss reason (#1231).
 _NONBOUND_REASON = {
@@ -193,16 +196,40 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             action_hint=(_CONNECT_URL if reason is DegradationReason.CONNECT_REQUIRED else None),
         )
 
-    # ── #1322 cutover: the user's open issues over the OAuth connector ──
+    # ── #1322 cutover: the user's open issues / PRs over the OAuth connector ──
     async def list_open_issues(self, user_id: str, *, limit: int = 50) -> GitHubIssuesResult:
         """List the user's open GitHub issues over the per-user OAuth connector (#1322).
 
         The RECONNECT chat-cutover read primitive — reads via the user's binding + grant
         (``search_issues``, user-wide ``assignee:@me`` across repos → no repo resolution,
         sidestepping the vestigial ``resolve_repo`` / #1230), NOT the native shared PAT.
+        """
+        return await self._search_via_connector(
+            user_id, tool=_ISSUES_TOOL, query=_MY_OPEN_ISSUES_QUERY, limit=limit
+        )
+
+    async def list_open_prs(self, user_id: str, *, limit: int = 50) -> GitHubIssuesResult:
+        """List the user's open GitHub pull requests over the OAuth connector (#1322 P3).
+
+        Same binding-aware rail as ``list_open_issues`` — ``search_pull_requests`` with the
+        user-wide ``author:@me`` query (PRs you opened, across repos). The result's ``issues``
+        field holds the PR item page (``GitHubIssuesResult`` serves both issue + PR searches —
+        identical ``total_count`` + ``items`` payload shape, verified live).
+        """
+        return await self._search_via_connector(
+            user_id, tool=_PRS_TOOL, query=_MY_OPEN_PRS_QUERY, limit=limit
+        )
+
+    async def _search_via_connector(
+        self, user_id: str, *, tool: str, query: str, limit: int
+    ) -> GitHubIssuesResult:
+        """Binding-aware GitHub search over the OAuth connector → (item page + true total), or
+        an honest degrade — the shared rail behind ``list_open_issues`` / ``list_open_prs``.
+
         Honest-degrade throughout (#1231, never a silent empty): no binding → CONNECT_REQUIRED
         (+ connect link); non-bound → its stored reason; bound-but-server-unreachable →
-        UNREACHABLE. Mirrors ``resolve()``'s rail; the chat handlers branch on the result.
+        UNREACHABLE. Mirrors ``resolve()``'s rail. (Rule-of-three dedup of the per-connector
+        rail into a shared mixin is tracked as #1323.)
         """
         async with AsyncSessionFactory.session_scope() as session:
             binding = await ConnectorBindingRepository(session).get(user_id, _GITHUB)
@@ -215,28 +242,18 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return GitHubIssuesResult(degradation=await self.degrade(reason))
         try:
             async with self._mcp_client_ctx(binding) as client:
-                issues, total = await self._list_issues_via_mcp(client, limit=limit)
+                result = await client.call_tool(tool, {"query": query})
+                items, total = self._parse_issue_search(
+                    self._first_text(result.content), limit=limit
+                )
         except Exception:
             logger.warning(
-                "GitHub MCP issue-list failed (server unreachable/unprovisioned)", exc_info=True
+                "GitHub MCP search failed (server unreachable/unprovisioned)", exc_info=True
             )
             return GitHubIssuesResult(
                 degradation=await self.degrade(DegradationReason.UNREACHABLE)
             )
-        return GitHubIssuesResult(issues=issues, total=total)
-
-    async def _list_issues_via_mcp(
-        self, client: MCPClient, *, limit: int
-    ) -> "tuple[List[Dict[str, Any]], Optional[int]]":
-        """Fetch + parse the user's open issues via github-mcp-server ``search_issues``.
-
-        Returns ``(issue dicts truncated to limit, TRUE total match count)``. The count comes
-        from search_issues' ``total_count`` — a page of ``items`` is far smaller (e.g. 30/page
-        vs 179 total), so the count must NOT be ``len(items)``. Real round-trip de-risked
-        against the live server (#1322). ``_ISSUES_TOOL`` is the one provisional id.
-        """
-        result = await client.call_tool(_ISSUES_TOOL, {"query": _MY_OPEN_ISSUES_QUERY})
-        return self._parse_issue_search(self._first_text(result.content), limit=limit)
+        return GitHubIssuesResult(issues=items, total=total)
 
     @staticmethod
     def _parse_issue_search(

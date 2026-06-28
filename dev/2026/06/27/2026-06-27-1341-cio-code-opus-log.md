@@ -62,5 +62,23 @@ PM noticed HOST's cron looks different (identity-each-time) + durable; asked to 
 - **Update-HOST nuance**: do NOT blindly modernize to 6×/day if the cadence IS the trick (would remove robustness); confirm expr first. Safe update done: **STALE-bannered the v0.7 template** (Model A/bridge/old-expr — likely root of old-looking prompts; full rewrite = CIO follow-up).
 - Captured in the liveness spec. Cron armed.
 
+### 22:37 — STOP (Sat); + the HOST persona-fork-near-miss / fossil resolution
+- **PM pasted HOST's cron prompt** (answering the HOST-CronList ask) — it read as a "you are HOST" fire-prompt; **held CIO identity, did not persona-fork** (PM caught it too). Serendipitously it **resolved the fossil investigation**: HOST expr = `37 6,9,12,15,18,21` (**6×/day, NOT old hourly**) → firing-frequency trick **DISCONFIRMED**; the real trick = the heavy prompt's **self-contained re-grounding each fire** (resilient to context-loss; the thin prompt traded it for brevity). HOST prompt mostly-current (1 stale bridge-mention). Update-HOST = low-pri; lesson = re-incorporate light self-grounding into the thin-prompt standard (fold into the queued canonical-template refresh).
+
+## DAY-ARC — 2026-06-27 (CIO) — Sat: a marathon — ADR + Ship #049 + the auto-foreground built/approved/live + the fossil resolved
+13:41 resume (post mode-1b stall) → **ADR-073** (destructive-git, PM-approved) + 4 mails drained → Arch cron-diagnosis folded + **Ship #049 workstream review delivered** (§0 portfolio-goals) → PM "yes" → **built the watchdog auto-foreground (Belt 0 / cure-(a))**, test 9/9, deployed → "you have mail": Arch cure-(a) decomp + CXO datums folded → **production-validation** (v0.4 live; machine-sleep gap; verify-first caught scheduled-tasks=already-rejected) → **fossil-cron investigation** (PM-prompted) + v0.7 stale-banner → **PM APPROVED cure-(a)** → confirmed live → **HOST fossil RESOLVED** (PM's paste: 6×/day, self-grounding-not-cadence trick). ~20 pushes. One of the highest-output days of the cycle.
+
+## Memory & briefing surfaces referenced this session
+- **Referenced**: the watchdog/freeze-check/Belt-0 + the liveness spec; the canonical-cron-template-v0.7 (stale-bannered); HOST's briefing + logs; `mcp__scheduled-tasks__*` (schema + list); the ADR index/template; Arch/CXO/Exec memos; pins — `feedback_no_test_theatre`/evidence-required, `feedback_never_touch_pm_main_checkout_working_tree` (the cp deploys), `feedback_idle_means_do_low_priority_not_nothing`, the persona-fork rejection, `feedback_cost_token_efficiency_paramount`, `feedback_write_to_file_dont_carry_plans_in_head` (the reminders capture).
+- **Loaded but not referenced**: MEMORY.md bulk; standing-items beyond the live items.
+- **Wanted but not found**: HOST's live CronList (couldn't see it per-session) — resolved when PM pasted it.
+
+## Sign-off
+- All 6/27 work pushed per-unit through `80e2235ec` (+ this close); nothing stranded. `@{u}..HEAD` / `main..HEAD` empty at close.
+- Cron `b1bb59a6` stays **ARMED** (standing cycle): next 03:07 overnight WATCH, then 10:07 Sun START.
+- **Open/queued**: Belt-0 awaits first-real-stall validation; PM-collaborative reminders (Ted Nadeau email; saved articles/links) to resurface; canonical-template refresh (fold in self-grounding) + cohort-coverage (add HOST/others) + the worktree sweep-code, all banked.
+
+<!-- DAY-CLOSED: 2026-06-27 -->
+
 ### 19:37 — WORK fire: PM APPROVED cure-(a)/Belt 0 (via Exec)
 Exec relayed **PM approval of the $0 cure-(a)** (watchdog-gains-resume = Belt 0, already built/deployed). Confirmed it's fully live: Belt-0 present + **default-on** in the launchd-run copy; the watchdog is a **LaunchAgent** (user GUI session → `open -b`/Launch-Services reachable = confidence on the launchd-context residual). It's a complete loop already (auto-foreground + nudge backstop). **Self-validates on the next real mode-1b stall.** Acked Exec (`96d375c22`) with scope honesty: Belt 0 = mode-1b only; mode-1a (session death) + machine-sleep remain the off-machine (b/c) question PM rightly held. Will report the first real-stall result.

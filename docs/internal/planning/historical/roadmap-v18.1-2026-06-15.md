@@ -1,12 +1,9 @@
-# Piper Morgan Roadmap v18.2
+# Piper Morgan Roadmap v18.1
 
-**Date**: June 28, 2026 (v18.2 fold: RECONNECT WS-1 CLOSED; three M3-followon sprints added; milestone dates updated; ADRs 070/071/072 landed; entity-model spec delivered + #1237 CLOSED; body narrative per v18.1 June 15, 2026)
+**Date**: June 15, 2026 (v18.1 fold: M2/M3 closures, RECONNECT + D1 new sprints, sprint-board structure from `sprint-board-structure.md` PM-updated 2026-06-14; body narrative per v18.0 June 2, 2026)
 **Author**: PPM, with leadership review (PA — §M5/BYOC + skunkworks **ABSORBED v18**; CIO — §Methodology **ABSORBED v18 (6/3)**; CXO — §Differentiator stack EC framework; Architect — §Architectural commitments AC framework; Lead Dev — §M2g + Phase 2 build; Comms — external-language frame pending)
-**Status**: Active. **PM-ratified June 3, 2026** (relay via PA). **v18.1 sprint-board fold June 15, 2026** (PPM). **v18.2 fold June 28, 2026** (PPM): RECONNECT WS-1 closed Jun 22 + WS-2 active; three M3-followon sprints (M3-Quality/Health/Security) added; beta moved Aug 1 + production Oct 30; ADRs 070/071/072 landed; entity-model spec delivered; #1237 CLOSED. v18.1 archived at `docs/internal/planning/historical/roadmap-v18.1-2026-06-15.md`.
-**Supersedes**: v18.1 (June 15, 2026, archived); v17.0-draft (May 30, 2026, `00cee8d47`); v16.0 (May 10, 2026)
-**v18.2 correction pass** (June 28, 2026, Fire 1): (n) **D1 CLOSED** corrected — D1 was framed as future in v18.2 initial fold; #1297 sign-off was June 20 (bulk closed June 17–19); corrected to CLOSED in Sprint Summary, body, and Timeline. #1270 (Document source-type refactor) noted as straggler into M4. (o) **Sprint sequence corrected**: order is M3-Quality → M3-Health → M3-Security (concurrent with WS-2 in Lead Dev lane) → M4; M4 starts after both WS-2 closes AND M3 followon sprints complete. (p) **M3-Quality issue count**: 8 open (4 closed Jun 27 by subagents: #1253/#1301/#1302/#1303). (q) **Downstream milestones added** to Timeline: fast-follow, dot-release, enterprise (all TBD after Oct 30 production). (r) **#1326 filed** — introduce-person flow standalone M4 issue (per PM Jun 28 via Exec). M4 section updated to reference it.
-
-**v18.2 changelog** (June 28, 2026): (h) **RECONNECT WS-1 CLOSED** (June 22, v0.8.9): shipped StandupAssembler (#1199), connector-protocol (#1232/#1233), security batch (#358/#1185/#1307/#1308), Design D2 (#1286/#1238/#1239). RECONNECT WS-2 now active (GitHub MCP + calendar integration). (i) **Three M3-followon sprints added**: M3-Quality (bugs/CI, 12 issues), M3-Health (tech debt, 10 issues), M3-Security (security/infra/portability, 9 issues) — follow RECONNECT in the sprint sequence. (j) **Milestone dates updated**: beta (0.9.0) → **August 1, 2026** (was July 4); production (1.0) → **October 30, 2026** (was August 1); fast-follow TBD. (k) **ADRs landed**: ADR-070 (MCP consumer/connector architecture), ADR-071 (user auth anchoring — owner-anchoring settled across all four entity types), ADR-072 (skill routing architecture). (l) **Entity-model spec ✅ DELIVERED** (PPM M4 deliverable): RadarEntity contract + 4-type model. **#1237 CLOSED** June 18 (3-of-4: WorkItem/Document/Conversation shipped + PM-UAT'd). People (#1281) source-population gated (owner-anchoring boundary settled per ADR-071). (m) v0.8.9 released June 22 (RECONNECT WS-1 milestone release).
+**Status**: Active. **PM-ratified June 3, 2026** (relay via PA). **v18.1 sprint-board fold June 15, 2026** (PPM): M2 CLOSED June 3, M3 CLOSED, RECONNECT + D1 added to body. Both section reviews absorbed (PA §M5/BYOC + CIO §Methodology); packaging-correct (plugin-is-canonical, MCPB→plugin fix folded 6/3). Comms external-language frame pending. v16.0 archived at `docs/internal/planning/historical/roadmap-v16.0-2026-05-10.md` per the v15→v16 precedent.
+**Supersedes**: v17.0-draft (May 30, 2026, `00cee8d47` — the version PA reviewed against); v16.0 (May 10, 2026) to be archived at `docs/internal/planning/historical/roadmap-v16.0-2026-05-10.md` per the v15.0 archive pattern
 **v18.1 changelog** (June 15, 2026): (e) Sprint-board structure folded: M2 CLOSED June 3, M3 CLOSED; RECONNECT — Connector Refactor + D1 — Beta design quality added as new sprints; Sprint Summary table updated; §Current Position, §M2g, §M3, §Timeline updated; §Autonomous Operations updated (Model A deprecated June 12, Option B ephemeral canonical). (f) Entity-model spec added as M4 PPM deliverable; #1216 provenance field placed M4. (g) ADR-066 v0.2 (D7 Configuration Ownership) noted in §Architectural commitments. Comms external-language frame + PDR-005 v1.0 ratification still pending.
 
 **v18 changelog** (June 2–3, 2026): (a) PA §M5/BYOC review absorbed — Daedalus referent made explicit (Klatch's lead engineer; on hold while Klatch paused); Outcomes "~May 30 findings" target corrected to the CIO-synthesis-gated sequence; §M5 PoC result sharpened (sub-pass 4.a gated PASSED 5/19); Janus meta-coordinator line added to §Autonomous Operations. (b) **CIO §Methodology review absorbed (6/3)** — corpus extended methodology-29→37 (m-32 Postel-for-Headers, m-33 Session-Type-Git-Scope, m-34 Cohort-Discipline-as-Moat FILED, m-35 Asymmetric-Discipline, m-36 Mechanism-Beats-Vigilance, m-37 Coverage-Audit-Gate); Pattern catalog reconciled 62→74; methodology-as-operational-capability prose. (c) **BYOC packaging model corrected (PM 6/1 via PA, 6/3)** — the canonical Anthropic package is the **plugin** (config + CLAUDE.md + skills + MCP server), not MCPB; §Distribution build sequence + §Timeline "Beta via plugin distribution" updated. (d) **CT citations reconciled to v2.3.2** (the "v2.4" was a never-landed proposal).
@@ -38,9 +35,7 @@
 
 ## Current Position
 
-**M3 CLOSED. RECONNECT WS-1 CLOSED (June 22, v0.8.9). RECONNECT WS-2 ACTIVE** (GitHub MCP connector + calendar integration, Lead Dev lane). **D1 CLOSED (June 20, 2026)**; #1270 (Document source-type refactor) straggler/carry-over. Sprint sequence: **M3-Quality → M3-Health → M3-Security** (cohort priority; concurrent with RECONNECT WS-2 in Lead Dev lane) **→ M4 → M5.** M4 starts after both WS-2 closes AND M3 followon sprints complete. MVP milestone = 0.9.0 beta, **August 1, 2026** (revised from July 4; production Oct 30).
-
-Entity-model spec ✅ DELIVERED (PPM M4 deliverable). #1237 CLOSED June 18 (3-of-4: WorkItem/Document/Conversation shipped). People (#1281) source-population gated — introduce-person flow scoping in progress (PPM one-pager filed Jun 27). ADRs 070/071/072 landed.
+**M3 CLOSED. M4 — Trust + Learning is next.** RECONNECT (Connector Refactor, discovered work + architectural decision) follows M4; Lead Dev scoping. D1 (Beta design quality) follows RECONNECT. M5 (Distribution + Polish) is the final MVP sprint. MVP milestone = 0.9.0 beta, **due July 4, 2026**.
 
 Differentiator stack pillars 1-2 (Context Methodology + Conscious Floor) operational at the floor. **Pillar 3 (Artifact Persistence) DELIVERED in M3.** Pillar 4 (Trust + Learning) = M4 territory — concrete landing sites include #1032 (push-insight trust-gating), the entity-model spec for Radar/Layer-2 (PPM deliverable), and #1216 (provenance field — honest-provenance data model for `InsightDB`). PDR-005 v0.5 → v1.0 path open. V2 Duty Cycle (now Option B ephemeral per cohort-plan-of-record June 12) operational across cohort.
 
@@ -116,41 +111,20 @@ ADRs landed May 16: ADR-062 (e2e Phase 0), ADR-063 (User-Facing Audit Envelope R
 
 Composting data model delivered. Artifact persistence infrastructure shipped. M3 closed (per sprint-board-structure.md, 2026-06-14).
 
-### M4 — Trust + Learning ⏭️ QUEUED (follows M3-Security)
+### M4 — Trust + Learning ⏭️ NEXT
 
-Trust graduation MVP must be credible first step toward full model. Concrete M4 landing sites:
+**Next sprint.** Trust graduation MVP must be credible first step toward full model. Concrete M4 landing sites:
 - **#1032** — push-insight trust-gating (first concrete touch surface)
-- **#1216** — provenance field (`source`/`is_seed` on `InsightDB`) — honest-provenance data model; M4 placement per PPM 2026-06-15
-- **~~Entity-model spec (PPM deliverable)~~ ✅ DELIVERED** — RadarEntity contract + 4-type model. **#1237 CLOSED** June 18 (3-of-4 shipped: WorkItem/Document/Conversation). People (#1281) source-population gated; introduce-person flow scoping in progress (PPM one-pager Jun 27; OQ-2 trust-gradient = PPM+CXO M4 call).
-- **People entity (#1281)** — introduce-person flow (Option A: user_confirmed, no connector dependency); layers connector-import (Option B) when RECONNECT WS-2 lands. **#1326 filed (M4 scope)**: introduce-person standalone issue per PM Jun 28.
+- **#1216** — provenance field (`source`/`is_seed` on `InsightDB`) — honest-provenance data model; M4 placement per PPM 2026-06-15 (trust property: the surface should tell the truth about what it knows)
+- **Entity-model spec** (PPM deliverable) — formal object-model for Radar/Layer-2 entity types (WorkItems, Documents, People with relationship network, Conversations as facet, lifecycle events); prerequisite for Radar/Layer-2 honest surfacing
 
-**Combined CXO+PPM M4 session** queued at RECONNECT landing (Exec tracking trigger): trust-gradient (OQ-2) + onboarding scoping.
+### RECONNECT — Connector Refactor 🔍 Lead Dev Scoping
 
-### RECONNECT — Connector Refactor
+New sprint (not in v18.0). Discovered work + architectural decision. Lead Dev scoping. Follows M4 in the MVP-milestone sequence.
 
-**WS-1** ✅ **CLOSED** (June 22, v0.8.9)
+### D1 — Beta Design Quality —
 
-Shipped: #1199 StandupAssembler, #1232/#1233 connector-protocol, security batch (#358/#1185/#1307/#1308), Design D2 (#1286 token system + responsive shell + mobile nav, #1238 Documents→Radar, #1239 Radar sources). ADR-070 (MCP consumer/connector architecture) landed. v0.8.9 is the WS-1 milestone release.
-
-**WS-2** 🔍 **ACTIVE**
-
-GitHub MCP connector + calendar integration. ADR-071 owner-anchoring governs connector trust model. GitHub provisioning decision pending PM/Arch (Lead Dev memo in PM inbox: Option A hosted-OAuth vs B local-stdio-PAT).
-
-### M3-Quality — Bugs + CI 🗓️ QUEUED (concurrent with RECONNECT WS-2)
-
-8 open issues (4 closed Jun 27 by subagents: #1253/#1301/#1302/#1303). Bugs, test failures, CI stability. New sprint (PA forensic recovery Jun 27; PM-approved).
-
-### M3-Health — Tech Debt 🗓️ QUEUED (follows M3-Quality)
-
-10 issues. Dead code, tech debt, code health. New sprint (PA forensic recovery Jun 27; PM-approved).
-
-### M3-Security — Security + Infrastructure 🗓️ QUEUED (follows M3-Health)
-
-9 issues. Security, infrastructure, portability. New sprint (PA forensic recovery Jun 27; PM-approved).
-
-### D1 — Beta Design Quality ✅ CLOSED (June 20, 2026)
-
-Design bar for MVP release. **#1297 sign-off June 20** (bulk of D1 issues closed June 17–19). **#1270** (Document source-type refactor) is the one open straggler/carry-over into M4.
+New sprint (not in v18.0). Design bar for MVP release. Follows RECONNECT.
 
 ### M5 — Distribution + Polish
 
@@ -307,15 +281,11 @@ Per v16.0 (still operating): trigger-based audit cadence; CIO self-approval auth
 | **M0** | Conversational Glue | ✅ COMPLETE (v0.8.6, Mar 4) |
 | **M1** | MVP Foundation | ✅ COMPLETE (gate closed Apr 11) |
 | **M2** | Conscious Floor + Action Handlers | ✅ CLOSED (June 3, 2026) |
-| **M3** | Artifact Persistence | ✅ CLOSED (per sprint-board-structure.md, 2026-06-14) |
-| **RECONNECT WS-1** | Connector Refactor (security, connector-protocol, Design D2, StandupAssembler) | ✅ CLOSED (June 22, v0.8.9) |
-| **RECONNECT WS-2** | GitHub MCP connector + calendar integration | 🔍 ACTIVE |
-| **M3-Quality** | Bugs, test failures, CI (8 open; 4 closed Jun 27) | 🗓️ QUEUED (concurrent with WS-2) |
-| **M3-Health** | Dead code, tech debt (10 issues) | 🗓️ QUEUED |
-| **M3-Security** | Security, infrastructure, portability (9 issues) | 🗓️ QUEUED |
-| **D1** | Beta design quality | ✅ CLOSED (June 20, 2026); #1270 straggler |
-| **M4** | Trust + Learning | 🗓️ QUEUED (#1032 trust-gating; #1216 provenance; #1326 introduce-person) |
-| **M5** | Distribution + Polish | — (final MVP sprint; PDR-005 BYOC feeds 1.0 scope) |
+| **M3** | Artifact Persistence | ✅ COMPLETE (per sprint-board-structure.md, 2026-06-14) |
+| **M4** | Trust + Learning | ⏭️ NEXT MVP sprint (#1032 Push-insight trust-gating is first concrete touch surface) |
+| **RECONNECT** | Connector Refactor | 🔍 Lead Dev scoping (discovered work + architectural decision) |
+| **D1** | Beta design quality | — (design bar for MVP release) |
+| **M5** | Distribution + Polish | — (final MVP sprint; polish bugs/issues/tests + distribution plan; PDR-005 BYOC feeds 1.0 scope) |
 
 *(MVP-milestone sprint sequence per `sprint-board-structure.md`, PM-updated 2026-06-14. The Production milestone that follows anticipates DIST — Desktop distro + D2 — Release design quality.)*
 
@@ -342,26 +312,19 @@ Per v16.0 (still operating): trigger-based audit cadence; CIO self-approval auth
 - [x] Ship #044 PPM workstream review filed (May 24; window May 15-21)
 - [x] **M2 CLOSED** (June 3, 2026)
 - [x] **M3 — Artifact Persistence CLOSED** (June 2026; per sprint-board-structure.md)
-- [x] **D1 — Beta Design Quality CLOSED** (June 20, 2026); #1297 sign-off; #1270 (Document source-type refactor) straggler into M4
 - [x] ADR-066 v0.2 — D7 Configuration Ownership (server-owned + per-request host augmentation; "run anywhere" structural) — Architect, June 14
 - [x] Duty Cycle v0.7 → Option B ephemeral worktree canonical; Model A worktrees deprecated (cohort-plan-of-record June 12)
 
 ### Estimated forward sequence
 
-- **M3-Quality** (8 open issues): bugs, test failures, CI stability — *concurrent with RECONNECT WS-2 (Lead Dev lane)*
-- **RECONNECT WS-2** (active, Lead Dev): GitHub MCP connector + calendar integration
-- **M3-Health** (10 issues): dead code, tech debt
-- **M3-Security** (9 issues): security, infrastructure, portability
-- *[M4 starts after both WS-2 closes AND M3 sprints complete]*
-- **M4 — Trust + Learning**: #1032 trust-gating, #1216 provenance field, #1326 introduce-person flow (#1281 source-population); combined CXO+PPM session at RECONNECT landing
+- **M4 — Trust + Learning** (next sprint): #1032, #1216 provenance field, entity-model spec (PPM deliverable)
+- **RECONNECT — Connector Refactor** (Lead Dev scoping): follows M4
+- **D1 — Beta design quality**: design bar for MVP release; follows RECONNECT
 - **M5 — Distribution + Polish** (final MVP sprint): polish bugs/issues/tests + distribution plan; PDR-005 BYOC feeds 1.0 scope
-- **MVP milestone (0.9.0 beta): August 1, 2026** (revised Jun 27; was July 4)
+- **MVP milestone (0.9.0 beta) target: July 4, 2026**
 - PDR-005 v0.5 → v1.0 ratification (cohort flag-back on EC-2 + Comms external frame + PM ratification)
 - Companion BYOC ADRs Q6 + Q7 land in Architect's lane post-PDR-005-v1.0
-- **Production milestone (1.0): October 30, 2026** (revised Jun 27; was August 1): DIST (Desktop distro) + D2 (Release design quality)
-- **Fast-follow**: TBD (after October 30)
-- **Dot-release**: TBD (after fast-follow)
-- **Enterprise**: TBD
+- Production milestone (1.0, due August 1, 2026): DIST (Desktop distro) + D2 (Release design quality)
 
 ---
 
@@ -390,7 +353,6 @@ Per v16.0 (still operating): trigger-based audit cadence; CIO self-approval auth
 
 ## Change Log
 
-- **v18.2 (June 28, 2026)**: Post-RECONNECT WS-1 fold (PPM). RECONNECT split into WS-1 (CLOSED Jun 22, v0.8.9) + WS-2 (active). Three M3-followon sprints added: M3-Quality (bugs/CI, 12 issues), M3-Health (tech debt, 10 issues), M3-Security (security/infra, 9 issues) — from PA's M5 forensic sort. Milestone dates revised: beta Aug 1, production Oct 30, fast-follow TBD. ADRs 070/071/072 landed. Entity-model spec delivered; #1237 CLOSED (3-of-4, Jun 18). M4 section updated (entity-model delivered; People introduce-person flow scoping). v18.1 archived.
 - **v18.1 (June 15, 2026)**: Sprint-board structure fold (PPM). M2 CLOSED June 3; M3 CLOSED (Artifact Persistence delivered). RECONNECT (Connector Refactor) + D1 (Beta design quality) added as new sprints in body narrative and Sprint Summary. §Current Position, §M2g, §M3 status updated. §Autonomous Operations updated: Model A worktrees deprecated June 12; Option B (ephemeral) canonical; cycle log simplified to session-log-only. Timeline extended with M2/M3 closures, forward sequence with M4→RECONNECT→D1→M5→July 4. Entity-model spec added as M4 PPM deliverable; #1216 provenance field placed M4. ADR-066 v0.2 D7 noted. Docs-added stopgap banner removed (this fold is the formal record).
 - **v17.0 (May 30, 2026)**: Major refresh covering May 10 → May 30 substantive deltas. PDR-005 v0.3 → v0.5 (BYOC near-canonical; Architect AC + CXO EC fill-ins absorbed). MUX/UI Round 2 CEO-ratified; Phase 2 build operational on three lanes; ADR-062/063/064 landed. V2 Duty Cycle shipped (v0.6 → v0.7.0; 7+ agents cycling; PPM+CXO+Comms+Web cleared to adopt via launch-in-worktree). Platform-laps strategic reframe + Anthropic Outcomes investigation lane (PA-leads + CIO-co-author). Methodology corpus expanded substantially (methodology-27→34; Pattern-067→073). M2f closed; M2g closure tail. Ships #043 + #044. New §Autonomous Operations + §Platform-Laps Strategic Frame sections.
 - **v16.0 (May 10, 2026)**: Major refresh covering Apr 11 → May 10 deltas. M2 sub-epic restructure; #992 ETHICS-ACTIVATE arc closed; methodology corpus expansion; BYOC PDR-005 discovery thread; all-leadership Code migration arc; new roadmap-refresh cadence. (To be archived at `docs/internal/planning/historical/roadmap-v16.0-2026-05-10.md`.)
@@ -400,4 +362,4 @@ Per v16.0 (still operating): trigger-based audit cadence; CIO self-approval auth
 
 ---
 
-*v18.2 — PPM 2026-06-28. Post-RECONNECT WS-1 fold. Canonical `roadmap.md`.*
+*v18.1 — PPM 2026-06-15. Sprint-board structure folded. Canonical `roadmap.md`.*

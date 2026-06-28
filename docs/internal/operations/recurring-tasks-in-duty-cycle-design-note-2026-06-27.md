@@ -107,3 +107,13 @@ The 6/17 escalations→carry-forward fold was declared but never executed; the c
 5. **Then Phase 2**: registry + GH-Action reconciliation.
 
 **Non-negotiable through-line**: every convention here must have a mechanical enforcement point in the fire. A convention in a memo silently doesn't happen (proven twice now: the 6/17 fold + this week's slipped workstream cadence).
+
+---
+
+## Addendum (PM, 2026-06-28) — roadmap currency is the same problem
+
+PM principle: **"the roadmap should not have stale information about what sprints are open or closed if it has that level of detail."** Two cures (PM named both):
+1. **Update it more frequently** (like BRIEFING-CURRENT-STATE) → a *recurring task* (fits this note's registry directly — "PPM: reconcile roadmap weekly").
+2. **Reduce its issue-by-issue dependency** → don't duplicate sprint open/closed status in roadmap prose; let a **maintained single source of truth** (the canonical sprint-order list requested 6/28 + the GH Projects Sprint field) own open/closed, and the roadmap reference it at higher altitude.
+
+**Recommendation: do (2) primarily, (1) as backstop.** The canonical sprint-order list (PPM, in progress) is exactly (2) — it removes the roadmap's need to track issue-level status by hand. The roadmap then carries narrative/sequence; the list + GH board carry live status. This is why the 3 stale-as-pending framings happened (#1237, D1, ADR-071): the roadmap duplicated status it couldn't keep current. Make the duplication unnecessary. CIO discussion: a periodic open-vs-tracked scrub (recurring task) is the (1) backstop.
