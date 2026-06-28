@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RECONNECT — GitHub Connector Test Plan (2026-06-28)</title>
+<style>
+  :root { --fg:#1a1a1a; --muted:#666; --accent:#2563eb; --ok:#15803d; --line:#e5e7eb; --bg:#fafafa; --card:#fff; }
+  * { box-sizing:border-box; }
+  body { font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; color:var(--fg); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  main { max-width:760px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .2rem; }
+  .sub { color:var(--muted); margin:0 0 1.5rem; font-size:.9rem; }
+  h2 { font-size:1.1rem; margin:1.8rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:1rem 1.1rem; margin:.7rem 0; }
+  .card h3 { margin:0 0 .35rem; font-size:1rem; }
+  .pill { display:inline-block; font-size:.72rem; font-weight:600; text-transform:uppercase; letter-spacing:.03em; color:var(--accent); background:#eff6ff; padding:.12rem .5rem; border-radius:999px; margin-bottom:.4rem; }
+  .step { margin:.2rem 0; }
+  .step b { color:var(--muted); font-weight:600; }
+  .expect { background:#f0fdf4; border-left:3px solid var(--ok); padding:.5rem .7rem; border-radius:4px; margin-top:.5rem; font-size:.93rem; }
+  .expect code, code { background:#f3f4f6; padding:.05rem .3rem; border-radius:4px; font-size:.88em; }
+  .chk { color:var(--muted); font-size:.9rem; margin-top:.5rem; }
+  ol.q { padding-left:0; list-style:none; counter-reset:q; }
+  ol.q > li { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:8px; padding:.9rem 1rem; margin:.7rem 0; counter-increment:q; }
+  ol.q > li::before { content:"Q" counter(q); font-weight:700; color:var(--accent); margin-right:.5rem; }
+  .note { color:var(--muted); font-size:.85rem; }
+  .pre { background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:.8rem 1rem; font-size:.92rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>RECONNECT — GitHub Connector: what to test &amp; what to decide</h1>
+  <p class="sub">Sun 2026-06-28 · local staging (not a release) · Lead Dev</p>
+
+  <h2>Before you start</h2>
+  <div class="pre">
+    <div class="step">✅ The stack is already running: app on <code>http://localhost:8001</code>, the self-hosted <code>github-mcp-server</code> on :8082, your GitHub binding = <b>bound</b>.</div>
+    <div class="step" style="margin-top:.5rem;">🔑 <b>Log in fresh first</b> — your browser session expired overnight. Open <code>http://localhost:8001</code> and sign in. (Same account → your GitHub connection still applies.)</div>
+  </div>
+
+  <h2>What to test (4 checks)</h2>
+
+  <div class="card">
+    <span class="pill">Surface: Settings page</span>
+    <h3>1 · The connection badge</h3>
+    <div class="step"><b>Go to</b> Settings → Integrations → GitHub.</div>
+    <div class="expect">Expect the OAuth section to read <b>“✓ Connected with GitHub via OAuth (MCP connector).”</b> (This is the badge I fixed — it used to wrongly say “disconnected.”)</div>
+    <div class="chk">☐ Pass &nbsp; ☐ Looks off</div>
+  </div>
+
+  <div class="card">
+    <span class="pill">Surface: Chat</span>
+    <h3>2 · Open issues</h3>
+    <div class="step"><b>Ask Piper:</b> “How many open issues do I have?”</div>
+    <div class="expect">Expect <b>“You have 179 open issues”</b> + a few recent ones (e.g. #1325, #1324). Fetched live through your OAuth connection — no PAT.</div>
+    <div class="chk">☐ Pass &nbsp; ☐ Wrong count / wrong items</div>
+  </div>
+
+  <div class="card">
+    <span class="pill">Surface: Chat</span>
+    <h3>3 · Pull requests</h3>
+    <div class="step"><b>Ask Piper:</b> “Show my pull requests.”</div>
+    <div class="expect">Expect <b>“You have 2 open PRs”</b> → #1191 and #1, each with a link.</div>
+    <div class="chk">☐ Pass &nbsp; ☐ Wrong</div>
+  </div>
+
+  <div class="card">
+    <span class="pill">Surface: Chat</span>
+    <h3>4 · Stale PRs</h3>
+    <div class="step"><b>Ask Piper:</b> “Show me stale PRs.” (or “any old PRs?”)</div>
+    <div class="expect">Expect <b>“Stale PRs (2 found)”</b> → #1 (~166 days old), #1191 (~17 days old), oldest first.</div>
+    <div class="chk">☐ Pass &nbsp; ☐ Wrong</div>
+  </div>
+
+  <p class="note">If a chat answer says “Connect GitHub…” or “unreachable,” that’s the honest-degrade path — tell me and I’ll check the binding/server. If the page won’t load, the app may need a restart — ping me.</p>
+
+  <h2>Questions I need you to answer</h2>
+  <ol class="q">
+    <li><b>Issue/PR scope — your items, or a repo’s?</b><br>
+      The connector reports <b>your</b> assigned open issues (<code>assignee:@me</code>) and <b>your</b> authored open PRs (<code>author:@me</code>) <b>across all repos</b> — not a single repo’s. Going user-wide is what let us drop the vestigial repo-resolution.<br>
+      <span class="note">→ Is “your items across repos” the right meaning, or did you want repo-scoped (one repo’s issues/PRs)?</span></li>
+
+    <li><b>Repo-scoped reads — wire them, or leave them?</b><br>
+      Branches / labels / milestones / releases / “review issue #N” inherently need to know <b>which</b> repo. That needs a default-repo source (the live per-user <code>default_repo</code> path), which you likely don’t have set.<br>
+      <span class="note">→ Want a default-repo mechanism so these work via the connector, or leave them on the native path for now?</span></li>
+
+    <li><b>Mutating actions — cut over, or hold?</b><br>
+      “Close issue #N” and “comment on #N” are <b>writes</b> to your real GitHub through the connection. Higher-stakes; I’d verify the write path before flipping them.<br>
+      <span class="note">→ OK to cut writes over (after a write-path check), or hold them on native for now?</span></li>
+  </ol>
+
+  <p class="note" style="margin-top:1.5rem;">Everything above is on <code>origin/main</code>; nothing is in production. Reads (issues/PRs/stale-PRs) are cut over &amp; verified; the sim-transport dead-code retirement is underway (increment 1 shipped). — Lead</p>
+</main>
+</body>
+</html>
