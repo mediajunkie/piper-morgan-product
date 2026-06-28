@@ -102,3 +102,14 @@ Recommendation: A-first (introduce-person flow — user_confirmed, M4, no connec
 - Roadmap v18.2 fold: gated on beta date + three sprint identities from PA recovery
 
 Inbox: 0. Queue: (0,0) — roadmap fold gated on beta date. IDLE pending PM.
+
+**PM in-conversation — milestone decisions CONFIRMED**:
+- Beta (0.9.0): **Aug 1, 2026**
+- Production (1.0): **Oct 30, 2026**
+- Fast-follow: TBD (after Oct 30)
+
+**PM ask**: memo to PA offering to review reconstructed sprint assignments.
+Filed: `memo-ppm-to-pa-cc-pm-exec-sprint-recovery-review-offer-2026-06-27.md` → pa/inbox.
+Also noted: three sprint names/themes needed for roadmap v18.2 fold Sprint Summary — will follow up when PA recovery lands.
+
+Roadmap v18.2 fold: dates confirmed; sprint names pending PA recovery. Will apply fold when sprint identities available.
