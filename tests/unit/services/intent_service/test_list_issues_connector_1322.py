@@ -86,3 +86,43 @@ async def test_honest_degrade_when_connected_but_unreachable(intent_service):
             res = await intent_service._handle_list_issues_query(_intent(), "wf")
     assert "unreachable" in res.message.lower()
     native.assert_not_called()  # connected → no silent PAT fallback (#1231)
+
+
+# ── #1322 P3: the PRs handler mirrors the issues handler ──
+_CONN_PRS = "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_open_prs"
+
+
+def _prs_intent():
+    return Intent(
+        category=IntentCategory.QUERY,
+        action="list_prs_query",
+        context={"original_message": "show my prs"},
+    )
+
+
+@pytest.mark.asyncio
+async def test_prs_use_connector_when_bound(intent_service):
+    conn_prs = [{"number": 5, "title": "My PR", "html_url": "http://x/5", "labels": []}]
+    result = GitHubIssuesResult(issues=conn_prs, total=2)
+    with patch(_CONN_PRS, new=AsyncMock(return_value=result)):
+        with patch(_NATIVE) as native:
+            res = await intent_service._handle_list_prs_query(_prs_intent(), "wf")
+    assert res.success
+    assert "2 open PR" in res.message  # counts by total
+    assert "#5" in res.message
+    native.assert_not_called()  # connector hit → native PAT path never touched
+
+
+@pytest.mark.asyncio
+async def test_prs_honest_degrade_when_unreachable(intent_service):
+    degrade = GitHubIssuesResult(
+        degradation=DegradationResponse(
+            reason=DegradationReason.UNREACHABLE,
+            user_message="GitHub's MCP server is unreachable right now.",
+        )
+    )
+    with patch(_CONN_PRS, new=AsyncMock(return_value=degrade)):
+        with patch(_NATIVE) as native:
+            res = await intent_service._handle_list_prs_query(_prs_intent(), "wf")
+    assert "unreachable" in res.message.lower()
+    native.assert_not_called()  # connected → no silent PAT fallback (#1231)

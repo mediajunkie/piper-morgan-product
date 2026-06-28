@@ -76,12 +76,12 @@ async def _seed(maker, status):
         await s.commit()
 
 
-def _point_at_fixture(adapter, *, payload=_PAYLOAD, raises=False):
-    """Patch _mcp_client_ctx to yield a FastMCP-backed client exposing search_issues."""
-    server = FastMCP("github-issues-fixture")
+def _point_at_fixture(adapter, *, payload=_PAYLOAD, raises=False, tool=None):
+    """Patch _mcp_client_ctx to yield a FastMCP-backed client exposing the given search tool."""
+    server = FastMCP("github-search-fixture")
 
-    @server.tool(name=gh_mod._ISSUES_TOOL)
-    def search_issues(query: str) -> str:
+    @server.tool(name=tool or gh_mod._ISSUES_TOOL)
+    def search(query: str) -> str:
         return payload
 
     @contextlib.asynccontextmanager
@@ -161,3 +161,32 @@ class TestListOpenIssuesHit:
         assert res.degradation is None
         assert res.issues == []
         assert res.total == 0
+
+
+class TestListOpenPRs:
+    """#1322 P3 — list_open_prs shares the rail but targets search_pull_requests."""
+
+    async def test_bound_returns_parsed_prs_via_pr_tool(self, sm):
+        # Fixture exposes ONLY search_pull_requests → proves list_open_prs uses the PR tool
+        # (if it called search_issues it would miss and return []).
+        pr_payload = json.dumps(
+            {
+                "total_count": 2,
+                "items": [
+                    {"number": 5, "title": "My PR", "html_url": "http://x/5", "labels": []},
+                    {"number": 6, "title": "Another PR", "html_url": "http://x/6", "labels": []},
+                ],
+            }
+        )
+        await _seed(sm, "bound")
+        adapter = GitHubMCPSpatialAdapter()
+        _point_at_fixture(adapter, payload=pr_payload, tool=gh_mod._PRS_TOOL)
+        res = await adapter.list_open_prs(_ALPHA)
+        assert res.degradation is None
+        assert [i["number"] for i in res.issues] == [5, 6]
+        assert res.total == 2
+
+    async def test_no_binding_degrades_connect_required(self, sm):
+        res = await GitHubMCPSpatialAdapter().list_open_prs(_ALPHA)
+        assert res.issues is None
+        assert res.degradation.reason is DegradationReason.CONNECT_REQUIRED

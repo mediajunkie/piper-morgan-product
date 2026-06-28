@@ -1410,7 +1410,12 @@ class TestListPRsResults:
 
     @pytest.mark.asyncio
     async def test_returns_not_configured_message(self, intent_service):
-        """Test handler returns graceful message when GitHub is not configured"""
+        """Not OAuth-connected AND native not configured → graceful connect prompt.
+
+        #1322 P3: the PR handler is connector-first; with no binding (CONNECT_REQUIRED) it
+        falls back to native, and when native is also unconfigured it points the user at the
+        OAuth connect flow (Settings → Integrations), not the deprecated GITHUB_TOKEN env path.
+        """
         intent = Intent(
             category=IntentCategory.QUERY,
             action="list_prs_query",
@@ -1428,7 +1433,8 @@ class TestListPRsResults:
             result = await intent_service._handle_list_prs_query(intent, "test-workflow-id")
 
             assert result.success is True
-            assert "GitHub isn't configured" in result.message
+            assert "isn't connected" in result.message
+            assert "Settings" in result.message
 
     @pytest.mark.asyncio
     async def test_handles_error_gracefully(self, intent_service):

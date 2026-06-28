@@ -4415,41 +4415,63 @@ class IntentService:
         self.logger.info("Processing list PRs query")
 
         try:
-            from services.integrations.github.github_integration_router import (
-                GitHubIntegrationRouter,
-            )
-
-            github_router = GitHubIntegrationRouter()
             _user_id = _principal_from_intent(intent)
-            await github_router.initialize(user_id=_user_id)
 
-            # Check if GitHub is configured
-            if not github_router.config_service.is_configured(_user_id or "system"):
+            # RECONNECT (#1322 P3): prefer the OAuth connector (search_pull_requests, author:@me).
+            # Native-PAT fallback only when not OAuth-connected; honest-degrade otherwise (#1231).
+            from services.mcp.consumer.connector import DegradationReason
+            from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+            connector_result = await GitHubMCPSpatialAdapter().list_open_prs(_user_id, limit=50)
+            if connector_result.issues is not None:
+                prs = connector_result.issues
+                pr_count = (
+                    connector_result.total
+                    if connector_result.total is not None
+                    else len(prs)
+                )
+            elif (
+                connector_result.degradation
+                and connector_result.degradation.reason is DegradationReason.CONNECT_REQUIRED
+            ):
+                # Not connected via OAuth → transitional native-PAT fallback (#851 path).
+                from services.integrations.github.github_integration_router import (
+                    GitHubIntegrationRouter,
+                )
+
+                github_router = GitHubIntegrationRouter()
+                await github_router.initialize(user_id=_user_id)
+                if not github_router.config_service.is_configured(_user_id or "system"):
+                    return IntentProcessingResult(
+                        success=True,
+                        message=(
+                            "I'd love to show you your pull requests, but GitHub isn't connected "
+                            "yet. Connect GitHub in Settings → Integrations to see your PRs."
+                        ),
+                        intent_data={
+                            "category": "query",
+                            "action": "list_prs_query",
+                            "context": {"configured": False},
+                        },
+                    )
+                # Native path mixes issues + PRs → filter to PRs via the pull_request field.
+                open_items = await github_router.get_open_issues(limit=100)
+                prs = [item for item in open_items if item.get("pull_request")]
+                pr_count = len(prs)
+            else:
+                # Connected but degraded → honest message, never a silent PAT fallback (#1231).
                 return IntentProcessingResult(
                     success=True,
-                    message=(
-                        "I'd love to show you your pull requests, but GitHub isn't configured yet. "
-                        "To enable GitHub integration, please add your GITHUB_TOKEN to your environment "
-                        "or configure it in PIPER.user.md. Once configured, I can list your PRs!"
-                    ),
+                    message=connector_result.degradation.user_message,
                     intent_data={
                         "category": "query",
                         "action": "list_prs_query",
-                        "context": {"configured": False},
+                        "context": {"degraded": connector_result.degradation.reason.value},
                     },
                 )
 
-            # Get open items (includes PRs via pull_request field)
-            open_items = await github_router.get_open_issues(limit=100)
-
-            # Filter to only PRs
-            prs = [item for item in open_items if item.get("pull_request")]
-
             if prs:
-                pr_count = len(prs)
                 message = f"You have **{pr_count} open PR{'s' if pr_count != 1 else ''}**."
-
-                # Show top PRs (up to 5)
                 message += "\n\nHere are the most recent:"
                 for pr in prs[:5]:
                     title = pr.get("title", "Untitled")
@@ -4471,7 +4493,7 @@ class IntentService:
                     "category": "query",
                     "action": "list_prs_query",
                     "context": {
-                        "pr_count": len(prs),
+                        "pr_count": pr_count,
                     },
                 },
             )
