@@ -28,14 +28,12 @@ class TestLabelPatterns:
         ],
     )
     def test_positive_match(self, msg):
-        matched = PreClassifier._matches_patterns(
-            msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS
-        )
+        matched = PreClassifier._matches_patterns(msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS)
         assert matched, f"expected match for {msg!r}"
         action = PreClassifier._get_github_action(msg.lower())
-        assert action == "list_labels_query", (
-            f"expected list_labels_query for {msg!r}, got {action}"
-        )
+        assert (
+            action == "list_labels_query"
+        ), f"expected list_labels_query for {msg!r}, got {action}"
 
     @pytest.mark.parametrize(
         "msg",
@@ -45,9 +43,7 @@ class TestLabelPatterns:
         ],
     )
     def test_negative_no_match(self, msg):
-        matched = PreClassifier._matches_patterns(
-            msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS
-        )
+        matched = PreClassifier._matches_patterns(msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS)
         assert not matched, f"unexpected match for {msg!r}"
 
 
@@ -70,14 +66,12 @@ class TestBranchPatterns:
         ],
     )
     def test_positive_match(self, msg):
-        matched = PreClassifier._matches_patterns(
-            msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS
-        )
+        matched = PreClassifier._matches_patterns(msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS)
         assert matched, f"expected match for {msg!r}"
         action = PreClassifier._get_github_action(msg.lower())
-        assert action == "list_branches_query", (
-            f"expected list_branches_query for {msg!r}, got {action}"
-        )
+        assert (
+            action == "list_branches_query"
+        ), f"expected list_branches_query for {msg!r}, got {action}"
 
     @pytest.mark.parametrize(
         "msg",
@@ -87,9 +81,7 @@ class TestBranchPatterns:
         ],
     )
     def test_negative_no_match(self, msg):
-        matched = PreClassifier._matches_patterns(
-            msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS
-        )
+        matched = PreClassifier._matches_patterns(msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS)
         assert not matched, f"unexpected match for {msg!r}"
 
 
@@ -111,9 +103,7 @@ class TestNoRegressionsExistingPatterns:
         ],
     )
     def test_existing_patterns_unchanged(self, msg, expected_action):
-        matched = PreClassifier._matches_patterns(
-            msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS
-        )
+        matched = PreClassifier._matches_patterns(msg.lower(), PreClassifier.GITHUB_QUERY_PATTERNS)
         assert matched
         action = PreClassifier._get_github_action(msg.lower())
         assert action == expected_action, f"{msg!r}: expected {expected_action}, got {action}"
@@ -126,19 +116,13 @@ class TestActionRegistry:
         from services.intent_service.action_registry import ACTION_REGISTRY, ActionDisposition
 
         assert ("QUERY", "list_labels_query") in ACTION_REGISTRY
-        assert (
-            ACTION_REGISTRY[("QUERY", "list_labels_query")]
-            == ActionDisposition.WORKFLOW
-        )
+        assert ACTION_REGISTRY[("QUERY", "list_labels_query")] == ActionDisposition.WORKFLOW
 
     def test_branches_action_registered(self):
         from services.intent_service.action_registry import ACTION_REGISTRY, ActionDisposition
 
         assert ("QUERY", "list_branches_query") in ACTION_REGISTRY
-        assert (
-            ACTION_REGISTRY[("QUERY", "list_branches_query")]
-            == ActionDisposition.WORKFLOW
-        )
+        assert ACTION_REGISTRY[("QUERY", "list_branches_query")] == ActionDisposition.WORKFLOW
 
 
 class TestLensInference:

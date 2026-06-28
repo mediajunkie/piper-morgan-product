@@ -89,10 +89,7 @@ class TestListLabelsHandler:
         assert "don't see any labels" in result.message
 
     async def test_truncates_at_20(self, intent_service):
-        many = [
-            {"name": f"label-{i:02d}", "color": "ffffff", "description": ""}
-            for i in range(25)
-        ]
+        many = [{"name": f"label-{i:02d}", "color": "ffffff", "description": ""} for i in range(25)]
         with patch(
             "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
         ) as MockRouter:
@@ -186,8 +183,7 @@ class TestListBranchesHandler:
 
     async def test_truncates_at_20(self, intent_service):
         many = [
-            {"name": f"feature-{i:02d}", "protected": False, "commit_sha": ""}
-            for i in range(25)
+            {"name": f"feature-{i:02d}", "protected": False, "commit_sha": ""} for i in range(25)
         ]
         with patch(
             "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
@@ -210,9 +206,7 @@ class TestListBranchesHandler:
             mock_router = AsyncMock()
             mock_router.list_branches_via_mcp = AsyncMock(
                 return_value={
-                    "branches": [
-                        {"name": "release/v1", "protected": True, "commit_sha": "a"}
-                    ],
+                    "branches": [{"name": "release/v1", "protected": True, "commit_sha": "a"}],
                     "default_branch": "main",
                 }
             )

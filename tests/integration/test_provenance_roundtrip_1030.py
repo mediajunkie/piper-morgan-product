@@ -195,9 +195,7 @@ class TestProvenanceRoundtrip:
         conv_ctx = ConversationContext()
         turn1 = conv_ctx.add_turn(message="what's my calendar today?")
         turn1.response = "You have a 2pm meeting."
-        conv_ctx.turn_provenance[turn1.id] = {
-            "calendar": {"source": "CalendarIntegrationRouter"}
-        }
+        conv_ctx.turn_provenance[turn1.id] = {"calendar": {"source": "CalendarIntegrationRouter"}}
 
         turn2 = conv_ctx.add_turn(message="what's blocked?")
         turn2.response = "#1089 is blocked."

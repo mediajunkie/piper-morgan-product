@@ -572,8 +572,7 @@ class CompostingSchedulerPhase:
             app.state.compost_bin = compost_bin
 
             print(
-                "✅ Composting scheduler started "
-                "(ticks hourly; quiet-hours composting per spec)"
+                "✅ Composting scheduler started " "(ticks hourly; quiet-hours composting per spec)"
             )
         except Exception as e:
             print(f"⚠️ Failed to start composting scheduler: {e}")
@@ -582,10 +581,7 @@ class CompostingSchedulerPhase:
     @staticmethod
     async def shutdown(app) -> None:
         print("\n🌱 Shutting down Composting Scheduler Job...")
-        if (
-            hasattr(app.state, "composting_scheduler_job")
-            and app.state.composting_scheduler_job
-        ):
+        if hasattr(app.state, "composting_scheduler_job") and app.state.composting_scheduler_job:
             try:
                 await app.state.composting_scheduler_job.stop()
                 print("✅ Composting scheduler stopped")

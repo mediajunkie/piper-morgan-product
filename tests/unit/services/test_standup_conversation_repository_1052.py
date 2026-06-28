@@ -46,9 +46,7 @@ async def session():
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
     async with engine.begin() as conn:
         await conn.run_sync(
-            lambda sync_conn: StandupConversationDB.__table__.create(
-                sync_conn, checkfirst=True
-            )
+            lambda sync_conn: StandupConversationDB.__table__.create(sync_conn, checkfirst=True)
         )
     SessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
     async with SessionLocal() as s:
@@ -171,9 +169,7 @@ class TestGetActiveForUser:
     async def test_returns_active_conversations(self, session):
         repo = StandupConversationRepository(session)
         active = _make_conv(user_id="alpha", state=StandupConversationState.GATHERING_PREFERENCES)
-        suspended = _make_conv(
-            user_id="alpha", state=StandupConversationState.SUSPENDED
-        )
+        suspended = _make_conv(user_id="alpha", state=StandupConversationState.SUSPENDED)
         await repo.add(active)
         await repo.add(suspended)
 
@@ -192,9 +188,7 @@ class TestGetActiveForUser:
 
     async def test_excludes_abandoned_state(self, session):
         repo = StandupConversationRepository(session)
-        abandoned = _make_conv(
-            user_id="alpha", state=StandupConversationState.ABANDONED
-        )
+        abandoned = _make_conv(user_id="alpha", state=StandupConversationState.ABANDONED)
         await repo.add(abandoned)
 
         result = await repo.get_active_for_user("alpha")

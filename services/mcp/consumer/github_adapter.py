@@ -7,6 +7,7 @@ spatial adapter pattern for external system integration.
 
 import asyncio
 import logging
+from contextlib import asynccontextmanager
 from typing import Any, Dict, List, Optional
 
 import aiohttp
@@ -21,8 +22,6 @@ from services.integrations.spatial_adapter import (
 from services.connectors.binding_repository import ConnectorBindingRepository
 from services.database.session_factory import AsyncSessionFactory
 
-from mcp.client.stdio import StdioServerParameters
-
 from .connector import (
     Binding,
     ConnectRequired,
@@ -36,6 +35,7 @@ from .connector import (
     ResourceHandle,
     ResourceQuery,
 )
+from .connector_grant_store import ConnectorGrantStore
 from .consumer_core import MCPConsumerCore
 from .mcp_client import MCPClient
 
@@ -45,6 +45,10 @@ _GITHUB = "github"
 # (#1230 / #1220 provisioning): the concrete tool name + args depend on the chosen
 # github-mcp-server; isolated here so the resolve() rail is testable against a fixture.
 _RESOLVE_TOOL = "resolve_resource"
+
+# The Settings route that starts the GitHub OAuth connect flow (#1317 inc.2 slice E) —
+# surfaced as the connect action_hint on a CONNECT_REQUIRED honest-degrade.
+_CONNECT_URL = "/api/v1/settings/integrations/github/connect"
 
 # Stored non-BOUND binding statuses → the honest ResolveMiss reason (#1231).
 _NONBOUND_REASON = {
@@ -87,7 +91,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
     # tokens). The OAuth redirect-orchestrator + callback that CREATES the binding
     # (ADR-070 OQ-5: MCP server owns OAuth) is increment 2; resolve() via the MCP
     # client is increment 3. Honest-degrade throughout (never silently empty).
-    IMPLEMENTS_CONNECTOR = True  # #1232: AST-guard (test_connector_contract_1232) enforces the 4 methods
+    IMPLEMENTS_CONNECTOR = (
+        True  # #1232: AST-guard (test_connector_contract_1232) enforces the 4 methods
+    )
 
     async def connect(self, user_id: str) -> ConnectResult:
         """Bound already → return the Binding; otherwise the must-be-handled ConnectRequired.
@@ -99,12 +105,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             binding = await ConnectorBindingRepository(session).get(user_id, _GITHUB)
         if binding is not None and binding.status == ConnectorStatusState.BOUND.value:
             return Binding(binding_id=str(binding.id))
-        return ConnectRequired(
-            degradation=DegradationResponse(
-                reason=DegradationReason.CONNECT_REQUIRED,
-                user_message="Connect GitHub to continue.",
-            )
-        )
+        return ConnectRequired(degradation=await self.degrade(DegradationReason.CONNECT_REQUIRED))
 
     async def status(self, user_id: str) -> ConnectorStatus:
         """The user's GitHub binding health (ADR-070 D5) — read from the binding store, no
@@ -167,37 +168,30 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         return DegradationResponse(
             reason=reason,
             user_message=messages.get(reason, "The GitHub connector is degraded."),
+            action_hint=(_CONNECT_URL if reason is DegradationReason.CONNECT_REQUIRED else None),
         )
 
     # ── resolve() transport seam (the real MCP path; #1220) ──
     # Isolated so resolve()'s degrade rail is testable against a fixture-backed client,
     # and so the provisioning-gated bits below are confined to two small methods.
 
-    def _mcp_client_ctx(self, binding):
-        """Async-context yielding a connected ``MCPClient`` for this binding (real transport).
+    @asynccontextmanager
+    async def _mcp_client_ctx(self, binding):
+        """Yield a connected ``MCPClient`` for this binding — streamable-HTTP to the
+        self-hosted ``github-mcp-server`` (ADR-070 C), forwarding the user's stored OAuth
+        grant as the ``Authorization`` header. ``binding.mcp_server_ref`` is the server
+        URL; the grant lives in the #358 store (the binding row holds no token — D3).
 
-        Production connects over stdio with params from the binding's server ref. Tests
-        patch this to yield a fixture-backed client (the SDK in-memory transport), so the
-        resolve() rail can be exercised end-to-end without a live server.
+        Tests patch this method to yield a fixture-backed client (bypassing the live
+        connect). A connect failure / missing grant surfaces as ``resolve()`` UNREACHABLE.
         """
-        return MCPClient.connect_stdio(self._server_params_for(binding))
+        async with AsyncSessionFactory.session_scope() as session:
+            grant = await ConnectorGrantStore().get(session, str(binding.owner_id), _GITHUB)
+        headers = {"Authorization": f"Bearer {grant}"} if grant else None
+        async with MCPClient.connect_http(binding.mcp_server_ref, headers=headers) as client:
+            yield client
 
-    def _server_params_for(self, binding) -> StdioServerParameters:
-        """Map a binding's ``mcp_server_ref`` → stdio server params.
-
-        PROVISIONING-GATED (#1220 umbrella): the concrete github-mcp-server command/args
-        (stdio-local-process vs hosted-http) is the open infra decision. Until it lands a
-        bound binding cannot reach a real server, so ``resolve()`` honest-degrades to
-        UNREACHABLE (never a fake success).
-        """
-        raise NotImplementedError(
-            "github-mcp-server provisioning is the open #1220 infra decision "
-            "(stdio-local vs hosted); resolve() honest-degrades to UNREACHABLE until then."
-        )
-
-    async def _resolve_via_mcp(
-        self, client: MCPClient, resource: ResourceQuery
-    ) -> Optional[str]:
+    async def _resolve_via_mcp(self, client: MCPClient, resource: ResourceQuery) -> Optional[str]:
         """Resolve a resource to a handle via the GitHub MCP server (real round-trip).
 
         Returns the handle string, or ``None`` for a miss. PROVISIONAL (#1230 / #1220):
@@ -205,9 +199,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         WIRING (binding → real ``MCPClient`` → result → handle) is proven against a FastMCP
         fixture, with the tool identifier (``_RESOLVE_TOOL``) the one provisional constant.
         """
-        result = await client.call_tool(
-            _RESOLVE_TOOL, {"kind": resource.kind, **resource.params}
-        )
+        result = await client.call_tool(_RESOLVE_TOOL, {"kind": resource.kind, **resource.params})
         return self._first_text(result.content) or None
 
     @staticmethod
@@ -431,9 +423,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         endpoint = f"repos/{owner}/{repo_name}/issues/{issue_number}/comments"
         return await self._post_github_api(endpoint, {"body": body})
 
-    async def list_github_issues_direct(
-        self, repo: str, owner: str
-    ) -> List[Dict[str, Any]]:
+    async def list_github_issues_direct(self, repo: str, owner: str) -> List[Dict[str, Any]]:
         """List GitHub issues directly via GitHub API.
 
         Issue #1042: ``repo`` and ``owner`` are now required positional args
@@ -584,9 +574,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error listing milestones for {owner}/{repo}: {e}")
             return []
 
-    async def list_releases(
-        self, repo: str, owner: str
-    ) -> List[Dict[str, Any]]:
+    async def list_releases(self, repo: str, owner: str) -> List[Dict[str, Any]]:
         """List GitHub releases for a repo (Issue #1039).
 
         Args:
@@ -632,9 +620,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error listing releases for {owner}/{repo}: {e}")
             return []
 
-    async def list_labels(
-        self, repo: str, owner: str
-    ) -> List[Dict[str, Any]]:
+    async def list_labels(self, repo: str, owner: str) -> List[Dict[str, Any]]:
         """List GitHub labels for a repo (Issue #1040).
 
         Args:
@@ -669,9 +655,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error listing labels for {owner}/{repo}: {e}")
             return []
 
-    async def list_branches(
-        self, repo: str, owner: str
-    ) -> List[Dict[str, Any]]:
+    async def list_branches(self, repo: str, owner: str) -> List[Dict[str, Any]]:
         """List GitHub branches for a repo (Issue #1040).
 
         Args:
@@ -713,9 +697,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error listing branches for {owner}/{repo}: {e}")
             return []
 
-    async def get_repository_info(
-        self, repo: str, owner: str
-    ) -> Optional[Dict[str, Any]]:
+    async def get_repository_info(self, repo: str, owner: str) -> Optional[Dict[str, Any]]:
         """Fetch repository metadata (used to identify default_branch).
 
         Issue #1040: needed by branch handler to identify which branch is
@@ -1024,9 +1006,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error creating spatial object for GitHub issue {issue_number}: {e}")
             return None
 
-    async def list_issues_via_mcp(
-        self, repo: str, owner: str
-    ) -> List[Dict[str, Any]]:
+    async def list_issues_via_mcp(self, repo: str, owner: str) -> List[Dict[str, Any]]:
         """
         List GitHub issues via MCP protocol with fallback to GitHub API.
 

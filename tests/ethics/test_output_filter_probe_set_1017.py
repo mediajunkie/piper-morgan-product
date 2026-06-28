@@ -183,7 +183,9 @@ PII_PROBES: List[OutputFilterProbe] = [
         expected_action=Action.REDACT_IN_PLACE,
         expected_severity=Severity.HIGH,
         expected_matched_rules=["secret:bearer_token"],
-        leaked_strings=["eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature"],
+        leaked_strings=[
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature"
+        ],
         expected_in_output=[REDACTED_TOKEN],
         notes="Bearer JWT — CXO re-cast",
     ),
@@ -386,8 +388,7 @@ def _assert_audit_envelope_no_raw_pii(decision, leaked_strings):
     audit_str = str(audit_dict)
     for leaked in leaked_strings:
         assert leaked not in audit_str, (
-            f"Audit envelope leaked raw PII/secret '{leaked}' — "
-            f"hash-only invariant violated"
+            f"Audit envelope leaked raw PII/secret '{leaked}' — " f"hash-only invariant violated"
         )
 
 
@@ -406,28 +407,28 @@ async def test_pii_probe(probe):
 
     # Filtered content checks
     for leaked in probe.leaked_strings:
-        assert leaked not in result.filtered_content, (
-            f"{probe.probe_id}: leaked '{leaked}' remained in filtered content"
-        )
+        assert (
+            leaked not in result.filtered_content
+        ), f"{probe.probe_id}: leaked '{leaked}' remained in filtered content"
     for must_contain in probe.expected_in_output:
-        assert must_contain in result.filtered_content, (
-            f"{probe.probe_id}: expected '{must_contain}' missing from output"
-        )
+        assert (
+            must_contain in result.filtered_content
+        ), f"{probe.probe_id}: expected '{must_contain}' missing from output"
 
     # Decision shape
-    assert result.decision.action_taken == probe.expected_action, (
-        f"{probe.probe_id}: expected {probe.expected_action}, got {result.decision.action_taken}"
-    )
-    assert result.decision.severity == probe.expected_severity, (
-        f"{probe.probe_id}: expected severity {probe.expected_severity}, got {result.decision.severity}"
-    )
+    assert (
+        result.decision.action_taken == probe.expected_action
+    ), f"{probe.probe_id}: expected {probe.expected_action}, got {result.decision.action_taken}"
+    assert (
+        result.decision.severity == probe.expected_severity
+    ), f"{probe.probe_id}: expected severity {probe.expected_severity}, got {result.decision.severity}"
     for rule_id in probe.expected_matched_rules:
-        assert rule_id in result.decision.matched_rules, (
-            f"{probe.probe_id}: expected rule '{rule_id}' missing from matched_rules"
-        )
-    assert result.decision.redactions_count >= 1, (
-        f"{probe.probe_id}: expected redactions_count >= 1, got {result.decision.redactions_count}"
-    )
+        assert (
+            rule_id in result.decision.matched_rules
+        ), f"{probe.probe_id}: expected rule '{rule_id}' missing from matched_rules"
+    assert (
+        result.decision.redactions_count >= 1
+    ), f"{probe.probe_id}: expected redactions_count >= 1, got {result.decision.redactions_count}"
 
     # Hash-only audit invariant
     _assert_audit_envelope_no_raw_pii(result.decision, probe.leaked_strings)
@@ -446,18 +447,18 @@ async def test_boundary_probe(probe):
         session_id=f"probe-session-{probe.probe_id}",
     )
 
-    assert result.is_violation, (
-        f"{probe.probe_id}: expected boundary violation flag, got is_violation=False"
-    )
-    assert result.filtered_content == CANNED_VIOLATION_RESPONSE, (
-        f"{probe.probe_id}: expected canned response, got {result.filtered_content!r}"
-    )
+    assert (
+        result.is_violation
+    ), f"{probe.probe_id}: expected boundary violation flag, got is_violation=False"
+    assert (
+        result.filtered_content == CANNED_VIOLATION_RESPONSE
+    ), f"{probe.probe_id}: expected canned response, got {result.filtered_content!r}"
     assert result.decision.action_taken == Action.CANNED_SUBSTITUTE
     assert result.decision.severity == Severity.CRITICAL
     for rule_id in probe.expected_matched_rules:
-        assert rule_id in result.decision.matched_rules, (
-            f"{probe.probe_id}: expected rule '{rule_id}' missing"
-        )
+        assert (
+            rule_id in result.decision.matched_rules
+        ), f"{probe.probe_id}: expected rule '{rule_id}' missing"
 
 
 @pytest.mark.parametrize("probe", CONTROL_PROBES, ids=lambda p: p.probe_id)
@@ -475,20 +476,20 @@ async def test_control_probe_no_false_positive(probe):
         session_id=f"probe-session-{probe.probe_id}",
     )
 
-    assert not result.is_violation, (
-        f"{probe.probe_id}: false-positive — is_violation fired on control input"
-    )
+    assert (
+        not result.is_violation
+    ), f"{probe.probe_id}: false-positive — is_violation fired on control input"
     assert result.filtered_content == probe.input_text, (
         f"{probe.probe_id}: false-positive — content modified by filter\n"
         f"  original: {probe.input_text!r}\n"
         f"  filtered: {result.filtered_content!r}"
     )
-    assert result.decision.action_taken == Action.PASSTHROUGH, (
-        f"{probe.probe_id}: expected PASSTHROUGH, got {result.decision.action_taken}"
-    )
-    assert result.decision.matched_rules == [], (
-        f"{probe.probe_id}: false-positive — rules fired: {result.decision.matched_rules}"
-    )
+    assert (
+        result.decision.action_taken == Action.PASSTHROUGH
+    ), f"{probe.probe_id}: expected PASSTHROUGH, got {result.decision.action_taken}"
+    assert (
+        result.decision.matched_rules == []
+    ), f"{probe.probe_id}: false-positive — rules fired: {result.decision.matched_rules}"
     assert result.decision.redactions_count == 0
 
 

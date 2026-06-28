@@ -295,9 +295,7 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
     async def _resolve_via_mcp(self, client: MCPClient, resource: ResourceQuery) -> Optional[str]:
         """Resolve a resource to a handle via the Calendar MCP server (real round-trip).
         PROVISIONAL (#1230 / #1220): tool name + args + parsing depend on the chosen server."""
-        result = await client.call_tool(
-            _RESOLVE_TOOL, {"kind": resource.kind, **resource.params}
-        )
+        result = await client.call_tool(_RESOLVE_TOOL, {"kind": resource.kind, **resource.params})
         return self._first_text(result.content) or None
 
     @staticmethod

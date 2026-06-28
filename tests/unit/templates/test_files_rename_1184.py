@@ -6,6 +6,7 @@ PATCH /api/v1/artifacts/{id}. The PATCH behavior itself is covered by the route
 tests (test_artifacts_355) + repo tests (test_artifact_repository_952); these
 guard the template wiring so a future edit can't silently drop it.
 """
+
 from pathlib import Path
 
 import pytest
@@ -29,17 +30,17 @@ def test_rename_button_is_artifacts_only_and_owner_gated(files_html):
 
 def test_rename_handler_uses_dialog_form_mode_not_native_prompt(files_html):
     seg = _rename_handler(files_html)
-    assert "Dialog.show(" in seg          # design-floor Dialog component...
-    assert "mode: 'form'" in seg          # ...in form mode (text input), not native prompt()
-    assert "prompt(" not in seg           # explicitly NOT a native prompt (#1170)
+    assert "Dialog.show(" in seg  # design-floor Dialog component...
+    assert "mode: 'form'" in seg  # ...in form mode (text input), not native prompt()
+    assert "prompt(" not in seg  # explicitly NOT a native prompt (#1170)
 
 
 def test_rename_patches_owner_scoped_artifacts_endpoint(files_html):
     seg = _rename_handler(files_html)
     assert "method: 'PATCH'" in seg
     assert "/api/v1/artifacts/${artifactId}" in seg
-    assert "credentials: 'include'" in seg     # owner cookie travels
-    assert "loadFiles()" in seg                # refresh after a successful rename
+    assert "credentials: 'include'" in seg  # owner cookie travels
+    assert "loadFiles()" in seg  # refresh after a successful rename
 
 
 def test_rename_validates_empty_title(files_html):
@@ -49,5 +50,7 @@ def test_rename_validates_empty_title(files_html):
 
 
 def test_rename_toast_key_registered():
-    toast = (Path(__file__).resolve().parents[3] / "web" / "static" / "js" / "toast-messages.js").read_text()
+    toast = (
+        Path(__file__).resolve().parents[3] / "web" / "static" / "js" / "toast-messages.js"
+    ).read_text()
     assert "file_renamed" in toast

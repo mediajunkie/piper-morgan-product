@@ -132,9 +132,7 @@ def resolve_model_alias(model_id: str) -> str:
     if resolved != model_id:
         import structlog
 
-        structlog.get_logger().warning(
-            "model_alias_resolved", from_id=model_id, to_id=resolved
-        )
+        structlog.get_logger().warning("model_alias_resolved", from_id=model_id, to_id=resolved)
     return resolved
 
 

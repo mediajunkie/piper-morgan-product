@@ -47,9 +47,7 @@ class TestSaveTurnPersistsContextState:
         turn = MagicMock(conversation_id="conv-1")
         state = {"lens_stack": ["issues"], "last_offer": None}
 
-        with patch(_FACTORY_TARGET, _mock_factory()), patch(
-            _REPO_TARGET, return_value=repo
-        ):
+        with patch(_FACTORY_TARGET, _mock_factory()), patch(_REPO_TARGET, return_value=repo):
             await mgr._save_turn_to_database(turn, user_id="user-1", context_state=state)
 
         repo.save_turn.assert_awaited_once()
@@ -61,9 +59,7 @@ class TestSaveTurnPersistsContextState:
         repo = _mock_repo()
         turn = MagicMock(conversation_id="conv-1")
 
-        with patch(_FACTORY_TARGET, _mock_factory()), patch(
-            _REPO_TARGET, return_value=repo
-        ):
+        with patch(_FACTORY_TARGET, _mock_factory()), patch(_REPO_TARGET, return_value=repo):
             await mgr._save_turn_to_database(turn, user_id="user-1")  # context_state=None
 
         repo.save_turn.assert_awaited_once()
@@ -78,9 +74,7 @@ class TestLoadContextState:
         state = {"lens_stack": ["calendar"], "last_response_was_floor": True}
         repo.load_context_state = AsyncMock(return_value=state)
 
-        with patch(_FACTORY_TARGET, _mock_factory()), patch(
-            _REPO_TARGET, return_value=repo
-        ):
+        with patch(_FACTORY_TARGET, _mock_factory()), patch(_REPO_TARGET, return_value=repo):
             got = await mgr.load_context_state("conv-1")
 
         assert got == state
@@ -103,8 +97,6 @@ class TestLoadContextState:
         repo = _mock_repo()
         repo.save_context_state = AsyncMock(side_effect=RuntimeError("boom"))
         turn = MagicMock(conversation_id="conv-1")
-        with patch(_FACTORY_TARGET, _mock_factory()), patch(
-            _REPO_TARGET, return_value=repo
-        ):
+        with patch(_FACTORY_TARGET, _mock_factory()), patch(_REPO_TARGET, return_value=repo):
             # must not raise
             await mgr._save_turn_to_database(turn, user_id="u", context_state={"lens_stack": []})

@@ -70,7 +70,9 @@ def test_your_stuff_in_avatar_menu(html):
     assert "Your work" in html  # the avatar-menu label
     for label in ("To-dos", "Projects", "Work Items", "Documents", "Lists"):
         assert label in html
-    assert ">Files</a>" not in html  # #1270: the separate Files nav item is collapsed into Documents
+    assert (
+        ">Files</a>" not in html
+    )  # #1270: the separate Files nav item is collapsed into Documents
 
 
 def test_avatar_menu_has_account_logout_not_settings(html):
@@ -78,7 +80,9 @@ def test_avatar_menu_has_account_logout_not_settings(html):
     assert 'id="user-menu-button"' in html and 'id="user-dropdown"' in html
     for label in ("Account", "Logout"):
         assert label in html
-    assert 'id="dropdown-settings"' not in html  # the old in-menu Settings link is gone (now a footer link)
+    assert (
+        'id="dropdown-settings"' not in html
+    )  # the old in-menu Settings link is gone (now a footer link)
 
 
 def test_is_not_the_old_top_nav(html):

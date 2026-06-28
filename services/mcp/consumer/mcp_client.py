@@ -20,14 +20,15 @@ Two construction modes:
     spawns the MCP server subprocess over stdio, initializes the session, and
     yields a connected client.
 """
+
 from __future__ import annotations
 
-from contextlib import asynccontextmanager
+from contextlib import AsyncExitStack, asynccontextmanager
 from typing import Any, AsyncIterator, Dict, Optional, Union
 
 from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
-from mcp.client.streamable_http import streamable_http_client
+from mcp.client.streamable_http import create_mcp_http_client, streamable_http_client
 from pydantic import AnyUrl
 
 
@@ -49,9 +50,7 @@ class MCPClient:
         """List the tools the connected MCP server exposes (real call)."""
         return await self._session.list_tools()
 
-    async def call_tool(
-        self, name: str, arguments: Optional[Dict[str, Any]] = None
-    ):
+    async def call_tool(self, name: str, arguments: Optional[Dict[str, Any]] = None):
         """Invoke a tool by name with arguments (real call)."""
         return await self._session.call_tool(name, arguments or {})
 
@@ -74,24 +73,33 @@ class MCPClient:
 
     @classmethod
     @asynccontextmanager
-    async def connect_http(cls, url: str) -> AsyncIterator["MCPClient"]:
+    async def connect_http(
+        cls, url: str, headers: Optional[Dict[str, str]] = None
+    ) -> AsyncIterator["MCPClient"]:
         """Production transport for a HOSTED MCP server (streamable-HTTP).
 
         The companion to ``connect_stdio``: stdio spawns a local server process, HTTP
-        talks to a long-lived hosted server (e.g. an OAuth-owning remote like GitHub's
-        ``api.githubcopilot.com/mcp/``). Usage::
+        talks to a long-lived hosted server. ``headers`` carries per-request auth — e.g.
+        ``{"Authorization": "Bearer <user's GitHub OAuth token>"}`` forwarded to our
+        self-hosted ``github-mcp-server`` (ADR-070 option C). Usage::
 
-            async with MCPClient.connect_http(url) as client:
+            async with MCPClient.connect_http(url, headers={"Authorization": ...}) as client:
                 await client.list_resources()
-
-        Auth (OAuth 2.1 / a pre-authorized httpx client) is a follow-on for the hosted
-        hookup — the SDK takes it via ``streamable_http_client(url, http_client=...)``;
-        this transport-level factory proves the wire, the OAuth flow rides on it next.
         """
-        async with streamable_http_client(url) as (read, write, *_):
-            async with ClientSession(read, write) as session:
-                await session.initialize()
-                yield cls(session)
+        async with AsyncExitStack() as stack:
+            http_client = None
+            if headers:
+                # SDK builds an httpx.AsyncClient carrying the auth header; we own its
+                # lifecycle via the stack (caller-supplied → not closed by the transport).
+                http_client = await stack.enter_async_context(
+                    create_mcp_http_client(headers=headers)
+                )
+            read, write, *_ = await stack.enter_async_context(
+                streamable_http_client(url, http_client=http_client)
+            )
+            session = await stack.enter_async_context(ClientSession(read, write))
+            await session.initialize()
+            yield cls(session)
 
 
 def _as_url(uri: Union[str, AnyUrl]) -> AnyUrl:

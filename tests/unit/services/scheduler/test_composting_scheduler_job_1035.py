@@ -43,9 +43,7 @@ def _build_scheduler(
         quiet_hours=quiet_hours if quiet_hours is not None else [2, 3, 4],
         min_pending=min_pending,
     )
-    scheduler = CompostingScheduler(
-        compost_bin=bin_, pipeline=pipeline, schedule=schedule
-    )
+    scheduler = CompostingScheduler(compost_bin=bin_, pipeline=pipeline, schedule=schedule)
     return bin_, scheduler
 
 

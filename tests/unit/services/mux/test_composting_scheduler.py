@@ -545,7 +545,9 @@ class TestCompostingSchedulerRun:
         await scheduler.run(force=True)
 
         # Check that insights have framed expressions
-        insights = list((await journal.get_for_object("obj-1") + await journal.get_for_object("obj-2")))
+        insights = list(
+            (await journal.get_for_object("obj-1") + await journal.get_for_object("obj-2"))
+        )
         assert len(insights) >= 1
 
         # At least one should have framing

@@ -5,6 +5,7 @@ the design-floor F1 "Done = no native confirm/alert reachable" grep gate. Native
 dialogs are off-brand + unstyleable; callers must use the `Dialog` component.
 Mirrors the F3 token-lint (scripts/token_lint.py) baseline-ratchet pattern.
 """
+
 from __future__ import annotations
 
 from scripts.native_dialog_lint import find_native_dialogs
@@ -15,6 +16,7 @@ def _has(text):
 
 
 # --- native calls (flag) ----------------------------------------------------
+
 
 def test_bare_confirm_flagged():
     assert _has("if (!confirm('Delete this?')) return;")
@@ -40,6 +42,7 @@ def test_confirm_after_bang_or_paren_flagged():
 
 # --- Dialog component + non-dialog calls (allow) ----------------------------
 
+
 def test_dialog_component_methods_allowed():
     assert not _has("Dialog.confirm({ title: 'x', onConfirm: f });")
     assert not _has("Dialog.alert({ title: 'Done' });")
@@ -48,7 +51,7 @@ def test_dialog_component_methods_allowed():
 
 def test_toast_and_other_calls_allowed():
     assert not _has("ToastMessages.error('upload_error');")
-    assert not _has("this.confirmCallback();")   # not confirm( — has chars between
+    assert not _has("this.confirmCallback();")  # not confirm( — has chars between
     assert not _has("confirmBtn.addEventListener('click', f);")
 
 
@@ -67,6 +70,7 @@ def test_function_definition_not_flagged():
 
 
 # --- snippet content --------------------------------------------------------
+
 
 def test_violation_reports_the_call():
     v = find_native_dialogs("a();\nalert('boom');\nb();")

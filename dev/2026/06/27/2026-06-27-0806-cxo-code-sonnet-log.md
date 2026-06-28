@@ -51,10 +51,48 @@ Fire: heartbeat.
 
 ---
 
-## Carry-forward
+## Carry-forward (after Fire 1)
 
 - **#1290 nav IA**: gated on #1284
 - **#1284 "Your work" hub**: post-beta — PM/PPM decision
 - **Onboarding 1.0**: post-RECONNECT; design inputs queued; watching #1220 transport progress
 - **Mobile UAT**: #1286 Slice 3 hamburger — live alpha; timely for PM to test
 - **Setup copy response**: watching Lead inbox for reaction to intro panel suggestion
+
+---
+
+## Fire 2 (09:47 — cron-triggered; continued in live session)
+
+**Cron**: `e3d692d7` confirmed in CronList — one job, correct expression.
+
+**Inbox** (4 items — gap-C self-heal pulled new items on rebase):
+- `memo-cio-to-cxo-cc-pm-datums-folded-belt0-scope-2026-06-27.md` — CIO reply to cron-stall memo:
+  - Belt-0 (auto-foreground watchdog) deployed; fixes Mode 1b (backgrounded, cron survives); does NOT fix CXO's Mode 1a (session death, CronList empty)
+  - `autoMode.allow` format finding called "actionable gold" — potential root cause for live-but-blocked Mode 2; flagged as PM/env config to fix; CIO won't edit settings.json unilaterally
+  - `mcp__scheduled-tasks__*`: local + app-tied (not off-machine cure), but catch-up-on-next-launch beats CronCreate's drop-missed-tick; CIO evaluating
+  - CIO asks for raw fire-log rows showing CronList-empty-on-resume
+- 3 Exec memos: already in `read/` from Fire 1; git rm completed (inbox copies were tracked but not deleted in earlier commit)
+All triaged to `read/`.
+
+**Inbox git hygiene fix**: discovered that `mv` + `git add new-path` without `git rm old-path` left inbox copies tracked. Used `git mv` + `git rm` to clean up properly.
+
+**Unblocked work drained:**
+
+1. **Ratification response — Exec (inbox-proxy proposal)**: Concurred. FYI→Exec, needs-decision→Exec, time-critical→PM direct. Confirmed design-spec memos to Lead drop PM cc and PM sees via omnibus. Filed to Exec inbox.
+
+2. **Ship #049 workstream review** (window Jun 19–25): Filed to Exec inbox with §0 portfolio-goals lead.
+   - #1286 D2 design-system: CLOSED ✓ (advanced — spec → 3 slices → conformance review in 48h)
+   - #1269 standup morning-card: CLOSED ✓ (P4 shipped, zombie engine deleted)
+   - #1290 nav IA: BLOCKED (gated on #1284, confirmed post-beta)
+   - #1284 "Your work": ON-TRACK (naming called, hub deferred per plan)
+   - Floor-quality + ethics-voice: ON-TRACK (no regressions)
+   - Surfaced: spec-build velocity pattern; JIT-as-onboarding principle; alpha experience monitoring model
+   
+## Carry-forward (after Fire 2)
+
+- **#1290 nav IA**: gated on #1284
+- **#1284 "Your work" hub**: post-beta — PM/PPM decision
+- **Onboarding 1.0**: post-RECONNECT; design inputs queued
+- **Mobile UAT**: #1286 Slice 3 hamburger — live alpha
+- **Setup copy response**: watching Lead inbox for reaction to intro panel suggestion
+- **CIO data ask**: fire-log rows showing CronList-empty — in this session log + fire-log TSV rows Jun 25-27 START entries

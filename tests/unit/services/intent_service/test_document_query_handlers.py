@@ -114,8 +114,7 @@ class TestDocumentSlotExtraction:
         # content hint should mention multiple phrasings, not just 'with'
         content_hint = slots["content"].extraction_hint.lower()
         assert any(
-            phrase in content_hint
-            for phrase in ["with", "by adding", "paragraph"]
+            phrase in content_hint for phrase in ["with", "by adding", "paragraph"]
         ), "content extraction_hint should name the natural-phrasing variants"
 
 
@@ -186,12 +185,15 @@ class TestUpdateDocumentNotFound:
         the LLM would have extracted from the message — keeps the test focused
         on the not-found branch without touching live LLM.
         """
-        with patch(
-            "services.integrations.notion.notion_integration_router.NotionIntegrationRouter"
-        ) as MockRouter, patch(
-            "services.slot_filling.slot_extractor.extract_slots",
-            new_callable=AsyncMock,
-            return_value={"doc_name": "nonexistent", "content": None},
+        with (
+            patch(
+                "services.integrations.notion.notion_integration_router.NotionIntegrationRouter"
+            ) as MockRouter,
+            patch(
+                "services.slot_filling.slot_extractor.extract_slots",
+                new_callable=AsyncMock,
+                return_value={"doc_name": "nonexistent", "content": None},
+            ),
         ):
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
@@ -234,12 +236,15 @@ class TestUpdateDocumentMultipleMatches:
 
         #1121 update 2026-05-27: extract_slots patched (no live LLM).
         """
-        with patch(
-            "services.integrations.notion.notion_integration_router.NotionIntegrationRouter"
-        ) as MockRouter, patch(
-            "services.slot_filling.slot_extractor.extract_slots",
-            new_callable=AsyncMock,
-            return_value={"doc_name": "project", "content": None},
+        with (
+            patch(
+                "services.integrations.notion.notion_integration_router.NotionIntegrationRouter"
+            ) as MockRouter,
+            patch(
+                "services.slot_filling.slot_extractor.extract_slots",
+                new_callable=AsyncMock,
+                return_value={"doc_name": "project", "content": None},
+            ),
         ):
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
@@ -302,12 +307,15 @@ class TestUpdateDocumentSuccess:
         Also: handler now uses append_blocks (post-#1080), not update_page
         — mock updated accordingly.
         """
-        with patch(
-            "services.integrations.notion.notion_integration_router.NotionIntegrationRouter"
-        ) as MockRouter, patch(
-            "services.slot_filling.slot_extractor.extract_slots",
-            new_callable=AsyncMock,
-            return_value={"doc_name": "README", "content": "new instructions"},
+        with (
+            patch(
+                "services.integrations.notion.notion_integration_router.NotionIntegrationRouter"
+            ) as MockRouter,
+            patch(
+                "services.slot_filling.slot_extractor.extract_slots",
+                new_callable=AsyncMock,
+                return_value={"doc_name": "README", "content": "new instructions"},
+            ),
         ):
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
@@ -324,9 +332,7 @@ class TestUpdateDocumentSuccess:
             # #1080 ships append_blocks (not update_page) for the
             # update_document handler — see services/intent/intent_service.py
             # _handle_update_document_notion lines ~2790-2810
-            mock_router.append_blocks = AsyncMock(
-                return_value={"results": [{"id": "block-456"}]}
-            )
+            mock_router.append_blocks = AsyncMock(return_value={"results": [{"id": "block-456"}]})
             MockRouter.return_value = mock_router
 
             result = await intent_service._handle_update_document_notion(

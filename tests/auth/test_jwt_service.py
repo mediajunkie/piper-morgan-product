@@ -92,7 +92,7 @@ class TestJWTService:
         from services.auth.jwt_service import JWTService
 
         jwt_service = JWTService()
-        token = _gen_test_token(jwt_service,user_id=TEST_USER_ID, username="testuser")
+        token = _gen_test_token(jwt_service, user_id=TEST_USER_ID, username="testuser")
 
         # Verify format: header.payload.signature
         parts = token.split(".")
@@ -122,7 +122,7 @@ class TestJWTService:
         user_id = TEST_USER_ID
         username = "claimtester"
 
-        token = _gen_test_token(jwt_service,user_id=user_id, username=username)
+        token = _gen_test_token(jwt_service, user_id=user_id, username=username)
 
         # Decode without verification to check claims
         payload = _decode_unsafe(token)
@@ -150,7 +150,7 @@ class TestJWTService:
         jwt_service = JWTService()
 
         before_time = datetime.now(timezone.utc)
-        token = _gen_test_token(jwt_service,user_id=TEST_USER_ID, username="expuser")
+        token = _gen_test_token(jwt_service, user_id=TEST_USER_ID, username="expuser")
         after_time = datetime.now(timezone.utc)
 
         payload = _decode_unsafe(token)
@@ -484,7 +484,8 @@ class TestJWTService:
         jwt_service = JWTService()
 
         try:
-            token = _gen_test_token(jwt_service,
+            token = _gen_test_token(
+                jwt_service,
                 user_id=TEST_USER_ID,
                 username="claimsuser",
                 additional_claims={"role": "admin", "department": "engineering"},
@@ -538,7 +539,7 @@ class TestJWTService:
 
         tokens = []
         for _ in range(3):
-            token = _gen_test_token(jwt_service,user_id=TEST_USER_ID, username="uniqueuser")
+            token = _gen_test_token(jwt_service, user_id=TEST_USER_ID, username="uniqueuser")
             tokens.append(token)
             time.sleep(0.01)  # Small delay to ensure different iat
 

@@ -25,6 +25,7 @@ Usage:
   python3 scripts/check-acronyms.py --glossary path/to/glossary.md draft.md
 Exit 0 = no hard findings, 1 = at least one ⛔ FALSE-UNPACK (gate-able).
 """
+
 import re
 import sys
 import os
@@ -64,7 +65,7 @@ def check(draft_path, terms):
     findings = []
     for acro, (canon, kind) in terms.items():
         cw = words(canon)
-        hard = (kind == "literal")
+        hard = kind == "literal"
         # forward form:  ACRONYM (gloss)
         for m in re.finditer(rf"\b{re.escape(acro)}\b\s*\(([^)]{{2,80}})\)", text):
             gloss = m.group(1).strip()
@@ -72,23 +73,35 @@ def check(draft_path, terms):
                 continue
             if words(gloss) != cw:
                 kindtag = "FALSE-UNPACK" if hard else "ROLE-GLOSS?"
-                findings.append((kindtag, hard,
-                                 f'"{acro} ({gloss})" — glossary expansion is "{canon}"'))
+                findings.append(
+                    (kindtag, hard, f'"{acro} ({gloss})" — glossary expansion is "{canon}"')
+                )
         # reverse form:  expansion words (ACRONYM)
         for m in re.finditer(rf"([A-Za-z][\w\- ]{{3,80}}?)\s*\(\s*{re.escape(acro)}\s*\)", text):
-            lead = words(m.group(1))[-len(cw):]
+            lead = words(m.group(1))[-len(cw) :]
             if lead != cw:
                 kindtag = "FALSE-UNPACK" if hard else "ROLE-GLOSS?"
-                findings.append((kindtag, hard,
-                                 f'"...{m.group(1).strip()} ({acro})" — glossary expansion is "{canon}"'))
+                findings.append(
+                    (
+                        kindtag,
+                        hard,
+                        f'"...{m.group(1).strip()} ({acro})" — glossary expansion is "{canon}"',
+                    )
+                )
         # un-introduced: acronym used with no gloss in either form, anywhere
         if re.search(rf"\b{re.escape(acro)}\b", text):
-            glossed = re.search(rf"\b{re.escape(acro)}\b\s*\(", text) or \
-                      re.search(rf"\(\s*{re.escape(acro)}\s*\)", text)
+            glossed = re.search(rf"\b{re.escape(acro)}\b\s*\(", text) or re.search(
+                rf"\(\s*{re.escape(acro)}\s*\)", text
+            )
             if not glossed:
-                findings.append(("NO-GLOSS", False,
-                                 f'"{acro}" used without a first-use gloss '
-                                 f'(introduce once as "{canon} ({acro})" then use "{acro}")'))
+                findings.append(
+                    (
+                        "NO-GLOSS",
+                        False,
+                        f'"{acro}" used without a first-use gloss '
+                        f'(introduce once as "{canon} ({acro})" then use "{acro}")',
+                    )
+                )
     return findings
 
 
@@ -98,7 +111,7 @@ def main():
     if "--glossary" in args:
         i = args.index("--glossary")
         glossary = args[i + 1]
-        del args[i:i + 2]
+        del args[i : i + 2]
     if not args:
         print(__doc__)
         sys.exit(2)
@@ -117,12 +130,16 @@ def main():
                 if hard:
                     hard_total += 1
     if hard_total:
-        print(f"\n{hard_total} hard finding(s) (⛔ FALSE-UNPACK) — must fix. "
-              f"⚠️/ℹ️ are advisory (NO-GLOSS may be intentional; ROLE-GLOSS may be a "
-              f"deliberate functional description).")
+        print(
+            f"\n{hard_total} hard finding(s) (⛔ FALSE-UNPACK) — must fix. "
+            f"⚠️/ℹ️ are advisory (NO-GLOSS may be intentional; ROLE-GLOSS may be a "
+            f"deliberate functional description)."
+        )
         sys.exit(1)
-    print("✓ no hard acronym findings "
-          f"({len(terms)} glossary terms checked; advisory items above if any)")
+    print(
+        "✓ no hard acronym findings "
+        f"({len(terms)} glossary terms checked; advisory items above if any)"
+    )
     sys.exit(0)
 
 

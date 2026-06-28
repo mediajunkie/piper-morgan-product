@@ -117,9 +117,7 @@ def _build_extraction_prompt(
             history_lines.append(f"{role}: {content}")
         if history_lines:
             history_section = (
-                "\nRecent conversation (most recent last):\n"
-                + "\n".join(history_lines)
-                + "\n"
+                "\nRecent conversation (most recent last):\n" + "\n".join(history_lines) + "\n"
             )
             antecedent_instructions = (
                 "- Resolve antecedent phrases like 'the doc', 'that doc', 'that one', "

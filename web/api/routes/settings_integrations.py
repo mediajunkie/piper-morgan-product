@@ -1000,6 +1000,90 @@ async def handle_calendar_callback(
         )
 
 
+# ── GitHub connector OAuth (#1317 inc.2 / ADR-070 option C) ──
+# Mirrors the calendar flow: connect → GitHub OAuth App authorize → callback stores the
+# user's grant (encrypted #358 store) + marks the #1229 binding BOUND. The grant is
+# forwarded (Authorization header) to our self-hosted github-mcp-server at resolve-time.
+@router.get("/github/connect")
+async def connect_github(
+    current_user: JWTClaims = Depends(get_current_user),
+):
+    """Start the GitHub OAuth flow from Settings. Returns the authorization URL + state."""
+    try:
+        from services.mcp.consumer.github_oauth_handler import GitHubOAuthHandler
+
+        handler = GitHubOAuthHandler()
+        if not handler.client_id or not handler.client_secret:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="GitHub OAuth not configured (missing OAuth App client_id/secret).",
+            )
+        auth_url, state = handler.generate_authorization_url(user_id=current_user.sub)
+        logger.info(
+            "github_settings_oauth_started", user_id=current_user.sub, state=state[:8] + "..."
+        )
+        return {"auth_url": auth_url, "state": state}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("github_settings_oauth_start_failed", error=str(e), exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to start GitHub OAuth: {str(e)}",
+        )
+
+
+@router.get("/github/callback")
+async def handle_github_callback(
+    code: Optional[str] = None,
+    state: Optional[str] = None,
+    error: Optional[str] = None,
+):
+    """Handle the GitHub OAuth callback: verify state → exchange code → store the grant +
+    mark the binding BOUND (#1317 inc.2). Redirects back to /settings/integrations."""
+    if error:
+        logger.warning("github_settings_oauth_denied", error=error)
+        return RedirectResponse(url=f"/settings/integrations?github_error={error}", status_code=302)
+    if not code or not state:
+        logger.warning(
+            "github_settings_oauth_missing_params", has_code=bool(code), has_state=bool(state)
+        )
+        return RedirectResponse(
+            url="/settings/integrations?github_error=missing_params", status_code=302
+        )
+    try:
+        from services.database.session_factory import AsyncSessionFactory
+        from services.mcp.consumer.github_oauth_handler import (
+            GitHubOAuthHandler,
+            persist_github_connection,
+        )
+
+        result = await GitHubOAuthHandler().handle_oauth_callback(code, state)
+        user_id = result.get("user_id")
+        access_token = result["tokens"].access_token
+
+        async with AsyncSessionFactory.session_scope() as session:
+            await persist_github_connection(session, user_id, access_token)
+            await session.commit()
+
+        login = quote(result.get("login", "github"))
+        logger.info("github_settings_oauth_success", user_id=user_id, login=result.get("login"))
+        return RedirectResponse(
+            url=f"/settings/integrations?github_success=true&github_login={login}",
+            status_code=302,
+        )
+    except ValueError as e:
+        logger.warning("github_settings_oauth_validation_error", error=str(e))
+        return RedirectResponse(
+            url="/settings/integrations?github_error=callback_failed", status_code=302
+        )
+    except Exception as e:
+        logger.error("github_settings_oauth_callback_error", error=str(e), exc_info=True)
+        return RedirectResponse(
+            url="/settings/integrations?github_error=callback_failed", status_code=302
+        )
+
+
 @router.post("/calendar/disconnect")
 async def disconnect_calendar(
     current_user: JWTClaims = Depends(get_current_user),

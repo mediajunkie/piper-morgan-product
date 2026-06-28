@@ -78,10 +78,9 @@ class TestLogOutputFilterDecision:
 
                 return _Ctx()
 
-        with patch(
-            "services.database.repositories.EthicsAuditRepository", _FakeRepo
-        ), patch(
-            "services.database.session_factory.AsyncSessionFactory", _FakeFactory
+        with (
+            patch("services.database.repositories.EthicsAuditRepository", _FakeRepo),
+            patch("services.database.session_factory.AsyncSessionFactory", _FakeFactory),
         ):
             await at.log_output_filter_decision(decision)
 
@@ -127,10 +126,9 @@ class TestLogOutputFilterDecision:
 
                 return _Ctx()
 
-        with patch(
-            "services.database.repositories.EthicsAuditRepository", _FakeRepo
-        ), patch(
-            "services.database.session_factory.AsyncSessionFactory", _FakeFactory
+        with (
+            patch("services.database.repositories.EthicsAuditRepository", _FakeRepo),
+            patch("services.database.session_factory.AsyncSessionFactory", _FakeFactory),
         ):
             await at.log_output_filter_decision(decision)
 
@@ -180,10 +178,9 @@ class TestLogOutputFilterDecision:
 
                 return _Ctx()
 
-        with patch(
-            "services.database.repositories.EthicsAuditRepository", _FakeRepo
-        ), patch(
-            "services.database.session_factory.AsyncSessionFactory", _FakeFactory
+        with (
+            patch("services.database.repositories.EthicsAuditRepository", _FakeRepo),
+            patch("services.database.session_factory.AsyncSessionFactory", _FakeFactory),
         ):
             await at.log_output_filter_decision(decision)
 
@@ -222,10 +219,9 @@ class TestLogOutputFilterDecision:
 
                 return _Ctx()
 
-        with patch(
-            "services.database.repositories.EthicsAuditRepository", _FailingRepo
-        ), patch(
-            "services.database.session_factory.AsyncSessionFactory", _FakeFactory
+        with (
+            patch("services.database.repositories.EthicsAuditRepository", _FailingRepo),
+            patch("services.database.session_factory.AsyncSessionFactory", _FakeFactory),
         ):
             # No exception should escape:
             await at.log_output_filter_decision(decision)
@@ -261,10 +257,9 @@ class TestLogOutputFilterDecision:
 
                 return _Ctx()
 
-        with patch(
-            "services.database.repositories.EthicsAuditRepository", _FakeRepo
-        ), patch(
-            "services.database.session_factory.AsyncSessionFactory", _FakeFactory
+        with (
+            patch("services.database.repositories.EthicsAuditRepository", _FakeRepo),
+            patch("services.database.session_factory.AsyncSessionFactory", _FakeFactory),
         ):
             await at.log_output_filter_decision(decision)
 

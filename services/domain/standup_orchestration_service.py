@@ -27,7 +27,9 @@ from services.standup.assembler import StandupCalendarProvider, build_standup_as
 __all__ = ["StandupOrchestrationService", "StandupIntegrationError"]
 
 
-def _summary_to_result(summary: StandupSummary, user_id: str, generation_time_ms: int) -> StandupResult:
+def _summary_to_result(
+    summary: StandupSummary, user_id: str, generation_time_ms: int
+) -> StandupResult:
     """Adapt StandupSummary (assembler output) → StandupResult (route layer shape).
 
     Maps:

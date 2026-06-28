@@ -38,8 +38,17 @@ class TestPlaceToPayload:
         p = _place()
         payload = _place_to_payload(p)
         # Exactly the keys place_window.html's renderer reads.
-        for key in ("id", "place_type", "name", "confidence", "summary",
-                    "source_url", "hardness", "staleness", "details"):
+        for key in (
+            "id",
+            "place_type",
+            "name",
+            "confidence",
+            "summary",
+            "source_url",
+            "hardness",
+            "staleness",
+            "details",
+        ):
             assert key in payload
         assert payload["confidence"] == "high"
         assert payload["summary"] == "I see 3 open issues"
@@ -53,15 +62,17 @@ async def test_unconnected_sources_yield_empty_honest_list():
     gh.config_service.is_configured.return_value = False
     cal = MagicMock()
     cal.authenticate = AsyncMock(return_value=False)
-    with patch(
-        "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-        return_value=gh,
-    ), patch(
-        "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-        return_value=cal,
-    ), patch(
-        "services.trust.TrustComputationService"
-    ) as trust_cls:
+    with (
+        patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=gh,
+        ),
+        patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=cal,
+        ),
+        patch("services.trust.TrustComputationService") as trust_cls,
+    ):
         trust_cls.return_value.get_trust_stage = AsyncMock()
         result = await list_places(current_user=_USER)
     assert result["places"] == []
@@ -79,17 +90,18 @@ async def test_connected_github_yields_place_at_stage4():
     cal.authenticate = AsyncMock(return_value=False)
     svc = MagicMock()
     svc.get_visible_places = AsyncMock(return_value=[_place()])
-    with patch(
-        "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-        return_value=gh,
-    ), patch(
-        "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-        return_value=cal,
-    ), patch(
-        "services.place.place_service.PlaceService", return_value=svc
-    ), patch(
-        "services.trust.TrustComputationService"
-    ) as trust_cls:
+    with (
+        patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=gh,
+        ),
+        patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=cal,
+        ),
+        patch("services.place.place_service.PlaceService", return_value=svc),
+        patch("services.trust.TrustComputationService") as trust_cls,
+    ):
         trust_cls.return_value.get_trust_stage = AsyncMock(return_value=TrustStage.TRUSTED)
         result = await list_places(current_user=_USER)
     assert len(result["places"]) == 1
@@ -107,15 +119,19 @@ async def test_trust_lookup_failure_degrades_not_crashes():
     gh.config_service.is_configured.return_value = False
     cal = MagicMock()
     cal.authenticate = AsyncMock(side_effect=RuntimeError("no creds"))
-    with patch(
-        "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-        return_value=gh,
-    ), patch(
-        "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
-        return_value=cal,
-    ), patch(
-        "services.database.session_factory.AsyncSessionFactory.session_scope_fresh",
-        side_effect=RuntimeError("db down"),
+    with (
+        patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
+            return_value=gh,
+        ),
+        patch(
+            "services.integrations.calendar.calendar_integration_router.CalendarIntegrationRouter",
+            return_value=cal,
+        ),
+        patch(
+            "services.database.session_factory.AsyncSessionFactory.session_scope_fresh",
+            side_effect=RuntimeError("db down"),
+        ),
     ):
         result = await list_places(current_user=_USER)
     assert result["places"] == []  # degraded, honest, no 500

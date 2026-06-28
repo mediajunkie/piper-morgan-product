@@ -799,12 +799,15 @@ class TestCanonicalGroundTruthMocked:
                 "is_all_day": False,
             }
         ]
-        with patch.object(
-            CalendarIntegrationRouter, "authenticate", new=AsyncMock(return_value=True)
-        ), patch.object(
-            CalendarIntegrationRouter,
-            "get_events_in_range",
-            new=AsyncMock(return_value=known),
+        with (
+            patch.object(
+                CalendarIntegrationRouter, "authenticate", new=AsyncMock(return_value=True)
+            ),
+            patch.object(
+                CalendarIntegrationRouter,
+                "get_events_in_range",
+                new=AsyncMock(return_value=known),
+            ),
         ):
             data = await send_canonical_query(
                 e2e_client, "what's my week look like?", "gtmock-cal", e2e_auth_headers
@@ -825,10 +828,13 @@ class TestCanonicalGroundTruthMocked:
             CalendarIntegrationRouter,
         )
 
-        with patch.object(
-            CalendarIntegrationRouter, "authenticate", new=AsyncMock(return_value=True)
-        ), patch.object(
-            CalendarIntegrationRouter, "get_events_in_range", new=AsyncMock(return_value=[])
+        with (
+            patch.object(
+                CalendarIntegrationRouter, "authenticate", new=AsyncMock(return_value=True)
+            ),
+            patch.object(
+                CalendarIntegrationRouter, "get_events_in_range", new=AsyncMock(return_value=[])
+            ),
         ):
             data = await send_canonical_query(
                 e2e_client, "what's my week look like?", "gtmock-cal-empty", e2e_auth_headers
@@ -854,12 +860,15 @@ class TestCanonicalGroundTruthMocked:
         )
 
         boom = "P1GTadapterboommarker"  # raw text that must NOT reach the user
-        with patch.object(
-            CalendarIntegrationRouter, "authenticate", new=AsyncMock(return_value=True)
-        ), patch.object(
-            CalendarIntegrationRouter,
-            "get_events_in_range",
-            new=AsyncMock(side_effect=RuntimeError(boom)),
+        with (
+            patch.object(
+                CalendarIntegrationRouter, "authenticate", new=AsyncMock(return_value=True)
+            ),
+            patch.object(
+                CalendarIntegrationRouter,
+                "get_events_in_range",
+                new=AsyncMock(side_effect=RuntimeError(boom)),
+            ),
         ):
             data = await send_canonical_query(
                 e2e_client, "what's my week look like?", "gtmock-cal-err", e2e_auth_headers
@@ -867,9 +876,9 @@ class TestCanonicalGroundTruthMocked:
         msg = data.get("message") or ""
         assert len(msg) > 10, f"degradation response too short/empty: {msg!r}"
         low = msg.lower()
-        assert boom.lower() not in low, (
-            f"#876 violation: raw exception text leaked to the user. Response: {msg[:200]}"
-        )
+        assert (
+            boom.lower() not in low
+        ), f"#876 violation: raw exception text leaked to the user. Response: {msg[:200]}"
         for raw in ("traceback", "runtimeerror"):
             assert raw not in low, f"raw error fingerprint '{raw}' leaked: {msg[:200]}"
 

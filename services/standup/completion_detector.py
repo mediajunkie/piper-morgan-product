@@ -105,10 +105,7 @@ def detect_completion(
     # don't auto-advance from blockers based purely on capture-completeness;
     # the user still needs to send a message to trigger the handler. This
     # signal is therefore informational for the handler, not load-bearing.
-    if (
-        current_state == StandupConversationState.GATHERING_BLOCKERS
-        and capture.is_complete()
-    ):
+    if current_state == StandupConversationState.GATHERING_BLOCKERS and capture.is_complete():
         return CompletionSignal(is_complete=True, reason="structural_full")
 
     return CompletionSignal(is_complete=False, reason=None)

@@ -5,6 +5,7 @@ owner_id FK (ADR-071 D2), multi-tenant-READY via a named-not-built tenant_id (AD
 and credential-free (D3 — creds stay in the keychain). These assert the model's structural
 contract (the additive migration creates the matching table).
 """
+
 import uuid
 
 from services.database.models import ConnectorConfig
@@ -53,6 +54,8 @@ def test_no_credential_columns_d3():
 
 
 def test_instantiable_with_owner_and_connector():
-    cc = ConnectorConfig(owner_id=uuid.uuid4(), connector="github", config={"default_repository": "o/r"})
+    cc = ConnectorConfig(
+        owner_id=uuid.uuid4(), connector="github", config={"default_repository": "o/r"}
+    )
     assert cc.connector == "github"
     assert cc.config["default_repository"] == "o/r"

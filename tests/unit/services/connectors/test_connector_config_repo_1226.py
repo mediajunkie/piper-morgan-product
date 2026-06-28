@@ -5,6 +5,7 @@ setup (in-memory SQLite, single-table create — the full metadata has PG-only t
 repo get/upsert idempotency + per-owner isolation + the strict-write/graceful-read asymmetry,
 and the service's github default-repo accessors (the UserPreferenceManager drop-in).
 """
+
 from __future__ import annotations
 
 import uuid

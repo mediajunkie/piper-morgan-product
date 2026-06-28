@@ -5,6 +5,7 @@ wraps the #1021 user-history (the only live entity type today); WorkItem / Perso
 Document sources register here as PPM lands the entity catalog (#706) — the surface
 does not change when they do. That is the point of this seam.
 """
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -42,7 +43,9 @@ def _derive_conversation_lifecycle(last_activity_epoch: float) -> str:
 
 
 def _get(summary: Any, key: str, default: Any = None) -> Any:
-    return summary.get(key, default) if isinstance(summary, dict) else getattr(summary, key, default)
+    return (
+        summary.get(key, default) if isinstance(summary, dict) else getattr(summary, key, default)
+    )
 
 
 class ConversationEntitySource:
@@ -145,7 +148,10 @@ def _derive_workitem_lifecycle(state: Any, labels: Any) -> str:
     labels_lower = {str(label).lower() for label in (labels or [])}
     if any("block" in label for label in labels_lower):
         return "blocked"
-    if any(("review" in label) or ("in progress" in label) or ("in-progress" in label) for label in labels_lower):
+    if any(
+        ("review" in label) or ("in progress" in label) or ("in-progress" in label)
+        for label in labels_lower
+    ):
         return "in-review"
     return "open"
 

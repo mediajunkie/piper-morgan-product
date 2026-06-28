@@ -155,17 +155,12 @@ class HomeStateService:
             journal = self._get_journal()
             # #1214: over-fetch then drop dev/seed insights so seeded rows can't
             # crowd real reflections out of the top-N.
-            insights = await journal.list_for_user(
-                str(context.user_id), limit=_RECENCY_FETCH_CAP
-            )
+            insights = await journal.list_for_user(str(context.user_id), limit=_RECENCY_FETCH_CAP)
             real = [
-                ins
-                for ins in insights
-                if not _DEV_SEED_TAGS.intersection(ins.context_tags or [])
+                ins for ins in insights if not _DEV_SEED_TAGS.intersection(ins.context_tags or [])
             ]
             return [
-                {"id": ins.id, "text": frame_insight_for_surfacing(ins)}
-                for ins in real[:limit]
+                {"id": ins.id, "text": frame_insight_for_surfacing(ins)} for ins in real[:limit]
             ]
         except Exception as e:
             logger.warning(f"home recent-reflections surfacing failed: {e}")

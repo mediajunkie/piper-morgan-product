@@ -175,7 +175,11 @@ def write_delta_file(
     lines: list[str] = []
     lines.append(f"# Delta — {role} — {today}")
     lines.append("")
-    src = f"from session log `{cutoff_source}`" if cutoff_source else "24h fallback (no recent log found)"
+    src = (
+        f"from session log `{cutoff_source}`"
+        if cutoff_source
+        else "24h fallback (no recent log found)"
+    )
     lines.append(f"**Cutoff**: {cutoff_str} ({src})")
     lines.append("")
 
@@ -242,10 +246,16 @@ def emit_signal(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Generate delta-since-last-session for an agent role")
+    parser = argparse.ArgumentParser(
+        description="Generate delta-since-last-session for an agent role"
+    )
     parser.add_argument("--role", required=True, help="Role slug (e.g., cio, lead, host)")
-    parser.add_argument("--cutoff", help="Override cutoff ISO timestamp (default: detect from session log)")
-    parser.add_argument("--quiet", action="store_true", help="Suppress signal output (still writes file)")
+    parser.add_argument(
+        "--cutoff", help="Override cutoff ISO timestamp (default: detect from session log)"
+    )
+    parser.add_argument(
+        "--quiet", action="store_true", help="Suppress signal output (still writes file)"
+    )
     args = parser.parse_args()
 
     role = args.role.lower()
@@ -255,7 +265,10 @@ def main() -> int:
     # "opus-log.md" from a mis-parse), fail loudly instead of writing a malformed
     # delta-opus-log.md-{date}.md file.
     if not ROLE_SLUG_RE.fullmatch(role):
-        print(f"error: implausible role slug {args.role!r} (looks like a filename fragment, not a role)", file=sys.stderr)
+        print(
+            f"error: implausible role slug {args.role!r} (looks like a filename fragment, not a role)",
+            file=sys.stderr,
+        )
         return 1
 
     if args.cutoff:

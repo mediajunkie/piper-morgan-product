@@ -251,9 +251,7 @@ class StandupProcessAdapter:
             self._manager, self._handler = _get_standup_components()
         return self._manager, self._handler
 
-    async def _get_conversation(
-        self, user_id: Optional[str], session_id: Optional[str]
-    ):
+    async def _get_conversation(self, user_id: Optional[str], session_id: Optional[str]):
         """Look up a standup conversation by session_id (primary) or user_id."""
         manager, _ = self._get_components()
 
@@ -383,9 +381,7 @@ class StandupProcessAdapter:
 
         manager, _ = self._get_components()
         try:
-            await manager.transition_state(
-                conversation.id, StandupConversationState.SUSPENDED
-            )
+            await manager.transition_state(conversation.id, StandupConversationState.SUSPENDED)
             logger.info(
                 "Standup conversation suspended",
                 conversation_id=conversation.id,
@@ -423,9 +419,7 @@ class StandupProcessAdapter:
 
         return SuspendedInfo(
             process_type=ProcessType.STANDUP,
-            suspended_at=(
-                suspended.updated_at if hasattr(suspended, "updated_at") else None
-            ),
+            suspended_at=(suspended.updated_at if hasattr(suspended, "updated_at") else None),
             description="Your standup was paused. Want to pick it up?",
         )
 

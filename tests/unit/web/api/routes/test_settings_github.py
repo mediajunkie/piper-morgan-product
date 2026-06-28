@@ -290,7 +290,9 @@ class TestGitHubConfigServiceKeychainFallback:
         from services.integrations.github.config_service import GitHubConfigService
 
         mock_keychain = MagicMock()
-        mock_keychain.get_api_key.return_value = "ghp_system_keychain"  # should be ignored for env-present
+        mock_keychain.get_api_key.return_value = (
+            "ghp_system_keychain"  # should be ignored for env-present
+        )
 
         with (
             patch.dict("os.environ", {"GITHUB_TOKEN": "ghp_env_token"}, clear=True),

@@ -70,8 +70,14 @@ class TestFilterReason:
     def test_membership_check_via_value(self):
         """Lookup from audit-log entries serialized as plain strings."""
         assert FilterReason("harassment_pattern_matched") is FilterReason.HARASSMENT_PATTERN_MATCHED
-        assert FilterReason("inappropriate_content_matched") is FilterReason.INAPPROPRIATE_CONTENT_MATCHED
-        assert FilterReason("boundary_principle_violation") is FilterReason.BOUNDARY_PRINCIPLE_VIOLATION
+        assert (
+            FilterReason("inappropriate_content_matched")
+            is FilterReason.INAPPROPRIATE_CONTENT_MATCHED
+        )
+        assert (
+            FilterReason("boundary_principle_violation")
+            is FilterReason.BOUNDARY_PRINCIPLE_VIOLATION
+        )
 
     def test_distinct_values(self):
         """No accidental duplicate string values across reason members."""

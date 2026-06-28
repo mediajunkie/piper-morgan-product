@@ -38,9 +38,7 @@ logger = get_ethics_logger(__name__)
 transparency_router = APIRouter(prefix="/api/v1/transparency", tags=["transparency"])
 
 
-async def _require_session_owner_or_admin(
-    session_id: str, current_user: JWTClaims
-) -> None:
+async def _require_session_owner_or_admin(session_id: str, current_user: JWTClaims) -> None:
     """403 unless JWT user owns the session (per ConversationDB) or is admin.
 
     #1095: session_id-as-path-param surfaces a privilege-escalation risk
@@ -52,9 +50,7 @@ async def _require_session_owner_or_admin(
     if is_admin:
         return
     async with AsyncSessionFactory.session_scope_fresh() as db:
-        result = await db.execute(
-            select(ConversationDB).where(ConversationDB.id == session_id)
-        )
+        result = await db.execute(select(ConversationDB).where(ConversationDB.id == session_id))
         conv = result.scalar_one_or_none()
     if conv is None or str(conv.user_id) != str(current_user.sub):
         # Uniform 403 — don't differentiate "doesn't exist" from "not yours"

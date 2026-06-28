@@ -100,11 +100,7 @@ async def test_unfurl_returns_empty_when_router_is_none() -> None:
 async def test_unfurl_happy_path_returns_title() -> None:
     notion_router = MagicMock()
     notion_router.get_page = AsyncMock(
-        return_value={
-            "properties": {
-                "title": {"title": [{"text": {"content": "Design Doc"}}]}
-            }
-        }
+        return_value={"properties": {"title": {"title": [{"text": {"content": "Design Doc"}}]}}}
     )
     text = "https://www.notion.so/Design-Doc-abc123def456abc123def456abc12345"
     refs = await unfurl_notion_urls(text, notion_router)
@@ -119,11 +115,7 @@ async def test_unfurl_uses_name_property_for_database_rows() -> None:
     """Database rows store title under properties.Name instead of properties.title."""
     notion_router = MagicMock()
     notion_router.get_page = AsyncMock(
-        return_value={
-            "properties": {
-                "Name": {"title": [{"text": {"content": "DB Row"}}]}
-            }
-        }
+        return_value={"properties": {"Name": {"title": [{"text": {"content": "DB Row"}}]}}}
     )
     text = "https://www.notion.so/DB-Row-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
     refs = await unfurl_notion_urls(text, notion_router)
@@ -227,6 +219,7 @@ async def test_spatial_adapter_preserves_notion_refs_through_response_context() 
         }
     }
     import asyncio
+
     adapter._lock = asyncio.Lock()
 
     response_context = await adapter.get_response_context("1234.5678")
@@ -252,6 +245,7 @@ async def test_spatial_adapter_defaults_notion_refs_to_empty_list() -> None:
         }
     }
     import asyncio
+
     adapter._lock = asyncio.Lock()
 
     response_context = await adapter.get_response_context("1234.5678")

@@ -146,9 +146,7 @@ async def test_regenerate_chain_persists_both_attempts(db_session):
     entries = await repo.find_by_session(session_id, limit=10)
     # Sort newest-first per repository default; second attempt should be first.
     assert len(entries) == 2
-    attempts = sorted(
-        entries, key=lambda e: e.details["attempt_number"]
-    )
+    attempts = sorted(entries, key=lambda e: e.details["attempt_number"])
     assert attempts[0].details["attempt_number"] == 1
     assert attempts[0].details["prior_attempt_decision_id"] is None
     assert attempts[1].details["attempt_number"] == 2
@@ -169,9 +167,7 @@ async def test_llm_client_end_to_end_writes_audit_row(db_session):
 
     with patch.object(LLMClient, "_init_clients", lambda self: None):
         client = LLMClient(output_filter=output_filter)
-    client._complete_raw = AsyncMock(
-        return_value="Contact alice@example.com for help."
-    )
+    client._complete_raw = AsyncMock(return_value="Contact alice@example.com for help.")
 
     result = await client.complete(
         task_type="conversation",

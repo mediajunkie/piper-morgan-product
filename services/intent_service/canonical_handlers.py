@@ -293,7 +293,9 @@ class CanonicalHandlers:
             # Helper looks up offer state + trust stage and decides whether to surface a one-time
             # offer or stay silent based on prior state.
             elif not temporal_summary.get("calendar_connected", True):
-                logger.info("Calendar not connected - applying trust-gated offer policy (Issue #790)")
+                logger.info(
+                    "Calendar not connected - applying trust-gated offer policy (Issue #790)"
+                )
                 calendar_context["calendar_connected"] = False
                 offer_text = await self._apply_calendar_offer(
                     user_id=user_id, user_intent_mentions_calendar=False
@@ -1369,9 +1371,7 @@ class CanonicalHandlers:
 
             user_uuid = UUID(user_id)
             preference_manager = UserPreferenceManager()
-            current_state = await preference_manager.get_calendar_setup_offer_state(
-                user_uuid
-            )
+            current_state = await preference_manager.get_calendar_setup_offer_state(user_uuid)
 
             trust_stage = TrustStage.NEW
             try:

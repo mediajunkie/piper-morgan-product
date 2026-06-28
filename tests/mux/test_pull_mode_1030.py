@@ -120,10 +120,11 @@ class TestProbeSetVerdicts:
             expected = probe["verdict"]
             actual = "trigger" if is_pull_trigger(text) else "no-trigger"
             if actual != expected:
-                failures.append({"id": probe["id"], "input": text, "expected": expected, "actual": actual})
-        assert not failures, (
-            f"{len(failures)} probe(s) failed:\n"
-            + "\n".join(f"  - {f['id']}: expected {f['expected']}, got {f['actual']}" for f in failures)
+                failures.append(
+                    {"id": probe["id"], "input": text, "expected": expected, "actual": actual}
+                )
+        assert not failures, f"{len(failures)} probe(s) failed:\n" + "\n".join(
+            f"  - {f['id']}: expected {f['expected']}, got {f['actual']}" for f in failures
         )
 
 
@@ -163,7 +164,9 @@ class TestExtractContext:
 # =============================================================================
 
 
-def _make_insight(*, confidence: float, expression: str = "you front-load smaller tasks") -> SurfaceableInsight:
+def _make_insight(
+    *, confidence: float, expression: str = "you front-load smaller tasks"
+) -> SurfaceableInsight:
     learning = ExtractedLearning(
         pattern=Pattern(description=expression),
         confidence=confidence,
@@ -279,9 +282,7 @@ class TestTrustStageConsistency:
 @pytest.mark.asyncio
 class TestRespondToPull:
     async def test_empty_message_yields_fallback(self):
-        result = await respond_to_pull(
-            user_message="", user_id="alpha", journal=AsyncMock()
-        )
+        result = await respond_to_pull(user_message="", user_id="alpha", journal=AsyncMock())
         assert result == NO_INSIGHTS_RESPONSE
 
     async def test_journal_returns_empty_yields_fallback(self):

@@ -106,6 +106,7 @@ class TestSummarizeFloorWiring1187:
 
     def test_floor_renders_summary_source_with_summarize_guidance(self):
         from services.intent_service.conversational_floor import ConversationalFloor
+
         block = ConversationalFloor()._format_domain_context(
             {"summary_source": {"content": "the issue body here", "metadata": {}}}
         )
@@ -114,6 +115,7 @@ class TestSummarizeFloorWiring1187:
 
     def test_floor_skips_empty_summary_source(self):
         from services.intent_service.conversational_floor import ConversationalFloor
+
         block = ConversationalFloor()._format_domain_context(
             {"summary_source": {"content": "", "metadata": {}}}
         )
@@ -159,9 +161,11 @@ def _patched(*, token="ghp_valid", resolved=None, issue=_RAW_ISSUE, resolve_exc=
         if resolve_exc
         else AsyncMock(return_value=resolved or _resolved())
     )
-    with patch(_CONFIG, return_value=cfg), patch(_RESOLVE, resolve_mock), patch(
-        _FETCH, AsyncMock(return_value=issue)
-    ) as fetch_mock:
+    with (
+        patch(_CONFIG, return_value=cfg),
+        patch(_RESOLVE, resolve_mock),
+        patch(_FETCH, AsyncMock(return_value=issue)) as fetch_mock,
+    ):
         yield fetch_mock
 
 
@@ -198,7 +202,11 @@ class TestGap1IssueNumberExtraction1187:
     async def test_explicit_repository_skips_resolve(self, intent_service):
         with _patched() as fetch_mock:
             await intent_service._fetch_issue_content(
-                {"original_message": "summarize #1124", "repository": "owner/repo", "issue_number": 1124}
+                {
+                    "original_message": "summarize #1124",
+                    "repository": "owner/repo",
+                    "issue_number": 1124,
+                }
             )
         args = fetch_mock.await_args.args
         assert args[0] == "owner" and args[1] == "repo"
@@ -245,7 +253,10 @@ class TestGap1IssueNumberExtraction1187:
             category=IntentCategory.SYNTHESIS,
             action="summarize",
             original_message="summarize github issue #1124",
-            context={"source_type": "github_issue", "original_message": "summarize github issue #1124"},
+            context={
+                "source_type": "github_issue",
+                "original_message": "summarize github issue #1124",
+            },
         )
         with _patched():
             result = await intent_service._fetch_summary_source_content(intent)

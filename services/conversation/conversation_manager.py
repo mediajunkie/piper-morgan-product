@@ -260,9 +260,7 @@ class ConversationManager:
             await self._handle_redis_failure(e)
             return None
 
-    async def _save_to_cache(
-        self, conversation_id: str, turns: List[ConversationTurn]
-    ) -> None:
+    async def _save_to_cache(self, conversation_id: str, turns: List[ConversationTurn]) -> None:
         """Save recent turns to Redis cache with circuit breaker"""
         if self.redis_circuit_open or not self.redis_client:
             return

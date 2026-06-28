@@ -46,7 +46,9 @@ async def test_place_source_maps_place_as_observed_work_item():
 async def test_place_source_untitled_fallback_ref_to_id_and_empty():
     e = (
         await PlaceEntitySource(
-            _FakePlaces([{"id": "calendar-today", "name": None, "summary": None, "source_url": None}])
+            _FakePlaces(
+                [{"id": "calendar-today", "name": None, "summary": None, "source_url": None}]
+            )
         ).fetch("u1")
     )[0]
     assert e.title == "(unnamed place)"
@@ -57,7 +59,16 @@ async def test_place_source_untitled_fallback_ref_to_id_and_empty():
 async def test_place_composes_into_radar_attention_first():
     now_iso = datetime.now(timezone.utc).isoformat()
     places = PlaceEntitySource(
-        _FakePlaces([{"id": "p1", "name": "your calendar", "summary": "1 meeting today", "last_fetched": now_iso}])
+        _FakePlaces(
+            [
+                {
+                    "id": "p1",
+                    "name": "your calendar",
+                    "summary": "1 meeting today",
+                    "last_fetched": now_iso,
+                }
+            ]
+        )
     )
     view = await RadarFeed([places]).assemble("u1")
     assert view.state == "populated"

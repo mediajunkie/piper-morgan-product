@@ -49,9 +49,7 @@ def upgrade() -> None:
         sa.Column("surfaced_count", sa.Integer(), nullable=False, server_default=sa.text("0")),
         sa.Column("last_surfaced", sa.DateTime(timezone=True), nullable=True),
         sa.Column("user_response", sa.String(length=50), nullable=True),
-        sa.Column(
-            "min_trust_stage", sa.Integer(), nullable=False, server_default=sa.text("1")
-        ),
+        sa.Column("min_trust_stage", sa.Integer(), nullable=False, server_default=sa.text("1")),
         sa.Column(
             "connected_insights",
             postgresql.JSONB(astext_type=sa.Text()),
@@ -86,12 +84,8 @@ def upgrade() -> None:
     # Composite indexes matching InsightJournal query patterns:
     #   - get_for_context(user_id, ...) ordered by recency → user_id + created_at
     #   - get_unsurfaced(user_id, ...) → user_id + surfaced_count
-    op.create_index(
-        "idx_insights_user_created", "insights", ["user_id", "created_at"]
-    )
-    op.create_index(
-        "idx_insights_user_surfaced", "insights", ["user_id", "surfaced_count"]
-    )
+    op.create_index("idx_insights_user_created", "insights", ["user_id", "created_at"])
+    op.create_index("idx_insights_user_surfaced", "insights", ["user_id", "surfaced_count"])
 
 
 def downgrade() -> None:

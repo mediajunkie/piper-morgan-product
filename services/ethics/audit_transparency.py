@@ -437,9 +437,7 @@ class AuditTransparency:
 
             return cleaned_count
         except Exception as e:
-            self.ethics_logger.log_boundary_violation(
-                "audit_cleanup_error", {"error": str(e)}
-            )
+            self.ethics_logger.log_boundary_violation("audit_cleanup_error", {"error": str(e)})
             return 0
 
     def _redact_audit_data(self, audit_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -486,9 +484,7 @@ class AuditTransparency:
                 )
                 recent_24h = recent_result.scalar_one() or 0
         except Exception as e:
-            self.ethics_logger.log_boundary_violation(
-                "transparency_stats_error", {"error": str(e)}
-            )
+            self.ethics_logger.log_boundary_violation("transparency_stats_error", {"error": str(e)})
             total = -1  # sentinel: stats unavailable
             recent_24h = -1
 

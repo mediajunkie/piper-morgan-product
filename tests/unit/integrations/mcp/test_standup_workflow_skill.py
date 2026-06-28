@@ -79,7 +79,9 @@ class TestStandupWorkflowSkillValidation:
         assert skill.validate_params({"user_id": "user-123"})
 
 
-_PATCH_ASSEMBLER = "services.integrations.mcp.skills.standup_workflow_skill.build_user_standup_summary"
+_PATCH_ASSEMBLER = (
+    "services.integrations.mcp.skills.standup_workflow_skill.build_user_standup_summary"
+)
 
 
 class TestStandupWorkflowSkillExecution:

@@ -133,9 +133,7 @@ class TestNoTechnicalLabelsInTemplate:
             "COMPOSTED",
         ],
     )
-    def test_no_uppercase_stage_name_in_visible_text(
-        self, standup_html: str, stage_name: str
-    ):
+    def test_no_uppercase_stage_name_in_visible_text(self, standup_html: str, stage_name: str):
         """No bare uppercase stage name should appear in standup.html as
         visible text. (Not a hard test — uppercase names may appear in code
         comments. So we check that the count is zero in *visible* text by

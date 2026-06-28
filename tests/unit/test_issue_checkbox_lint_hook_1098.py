@@ -157,4 +157,5 @@ def test_hook_file_exists_and_is_executable() -> None:
     """Sanity check the hook is still present + executable."""
     assert HOOK_PATH.is_file(), "Hook script must exist"
     import os
+
     assert os.access(HOOK_PATH, os.X_OK), "Hook script must be executable"

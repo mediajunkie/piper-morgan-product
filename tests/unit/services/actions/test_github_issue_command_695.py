@@ -114,9 +114,7 @@ class TestHappyPath:
     async def test_envelope_extracts_id_fallback_when_number_missing(self):
         """If router returns 'id' but not 'number', envelope still populates issue_id."""
         svc = _svc(return_value={"id": 99999, "url": "https://api.github.com/repos/x/x/issues/1"})
-        cmd = GithubIssueCommand(
-            {"repo": "test-org/test-repo"}, {"github_service": svc}
-        )
+        cmd = GithubIssueCommand({"repo": "test-org/test-repo"}, {"github_service": svc})
 
         result = await cmd.execute()
 
@@ -154,9 +152,7 @@ class TestErrorPaths:
     async def test_auth_failure_returns_error_envelope(self):
         """GitHubAuthFailedError → status=error with auth message."""
         svc = _svc(side_effect=GitHubAuthFailedError({"reason": "token rejected"}))
-        cmd = GithubIssueCommand(
-            {"repo": "test-org/test-repo"}, {"github_service": svc}
-        )
+        cmd = GithubIssueCommand({"repo": "test-org/test-repo"}, {"github_service": svc})
 
         result = await cmd.execute()
 
@@ -169,9 +165,7 @@ class TestErrorPaths:
     async def test_rate_limit_returns_error_envelope(self):
         """GitHubRateLimitError → status=error with rate-limit message."""
         svc = _svc(side_effect=GitHubRateLimitError(retry_after=60))
-        cmd = GithubIssueCommand(
-            {"repo": "test-org/test-repo"}, {"github_service": svc}
-        )
+        cmd = GithubIssueCommand({"repo": "test-org/test-repo"}, {"github_service": svc})
 
         result = await cmd.execute()
 
@@ -183,9 +177,7 @@ class TestErrorPaths:
     async def test_unexpected_exception_returns_error_envelope(self):
         """Generic exception → status=error with raw error string."""
         svc = _svc(side_effect=RuntimeError("network blip"))
-        cmd = GithubIssueCommand(
-            {"repo": "test-org/test-repo"}, {"github_service": svc}
-        )
+        cmd = GithubIssueCommand({"repo": "test-org/test-repo"}, {"github_service": svc})
 
         result = await cmd.execute()
 
@@ -203,13 +195,9 @@ class TestServiceResolution:
     async def test_injected_service_wins_over_lazy_construct(self):
         """If context has github_service, lazy import path is never hit."""
         svc = _svc(return_value=_ok_issue())
-        cmd = GithubIssueCommand(
-            {"repo": "test-org/test-repo"}, {"github_service": svc}
-        )
+        cmd = GithubIssueCommand({"repo": "test-org/test-repo"}, {"github_service": svc})
 
-        with patch(
-            "services.domain.github_domain_service.GitHubDomainService"
-        ) as MockSvcClass:
+        with patch("services.domain.github_domain_service.GitHubDomainService") as MockSvcClass:
             await cmd.execute()
 
         MockSvcClass.assert_not_called()
@@ -223,9 +211,7 @@ class TestServiceResolution:
 
         # Patch the symbol at the import-target module so lazy import inside
         # _get_github_service picks up the mock.
-        with patch(
-            "services.domain.github_domain_service.GitHubDomainService"
-        ) as MockSvcClass:
+        with patch("services.domain.github_domain_service.GitHubDomainService") as MockSvcClass:
             mock_instance = MagicMock()
             mock_instance.create_issue = AsyncMock(return_value=_ok_issue())
             MockSvcClass.return_value = mock_instance
@@ -241,9 +227,7 @@ class TestServiceResolution:
         params = {"repo": "test-org/test-repo"}
         cmd = GithubIssueCommand(params, {"user_id": "u1"})
 
-        with patch(
-            "services.domain.github_domain_service.GitHubDomainService"
-        ) as MockSvcClass:
+        with patch("services.domain.github_domain_service.GitHubDomainService") as MockSvcClass:
             mock_instance = MagicMock()
             mock_instance.create_issue = AsyncMock(return_value=_ok_issue())
             MockSvcClass.return_value = mock_instance
@@ -284,9 +268,7 @@ class TestDomainServiceSignature1112:
         # — this is the regression-test discipline: if router signature drifts
         # again, this mock will reject the call and the test fails.
         mock_router = MagicMock(spec=GitHubIntegrationRouter)
-        mock_router.create_issue = AsyncMock(
-            return_value={"number": 1, "html_url": "https://x"}
-        )
+        mock_router.create_issue = AsyncMock(return_value={"number": 1, "html_url": "https://x"})
 
         svc = GitHubDomainService(github_agent=mock_router)
         result = await svc.create_issue(
@@ -316,9 +298,7 @@ class TestDomainServiceSignature1112:
         )
 
         mock_router = MagicMock(spec=GitHubIntegrationRouter)
-        mock_router.create_issue = AsyncMock(
-            return_value={"number": 2, "html_url": "https://x"}
-        )
+        mock_router.create_issue = AsyncMock(return_value={"number": 2, "html_url": "https://x"})
 
         svc = GitHubDomainService(github_agent=mock_router)
         await svc.create_issue(
@@ -352,9 +332,7 @@ class TestDomainServiceSignature1112:
         )
 
         mock_router = MagicMock(spec=GitHubIntegrationRouter)
-        mock_router.create_issue = AsyncMock(
-            return_value={"number": 3, "html_url": "https://x"}
-        )
+        mock_router.create_issue = AsyncMock(return_value={"number": 3, "html_url": "https://x"})
 
         svc = GitHubDomainService(github_agent=mock_router)
         # Matches cli/commands/issues.py:776 call site exactly
@@ -379,12 +357,8 @@ class TestDomainServiceSignature1112:
         )
 
         mock_router = MagicMock(spec=GitHubIntegrationRouter)
-        mock_router.create_issue = AsyncMock(
-            side_effect=GitHubAuthFailedError({"reason": "nope"})
-        )
+        mock_router.create_issue = AsyncMock(side_effect=GitHubAuthFailedError({"reason": "nope"}))
 
         svc = GitHubDomainService(github_agent=mock_router)
         with pytest.raises(GitHubAuthFailedError):
-            await svc.create_issue(
-                repo_name="o/r", title="t", body="b", labels=[], assignees=[]
-            )
+            await svc.create_issue(repo_name="o/r", title="t", body="b", labels=[], assignees=[])

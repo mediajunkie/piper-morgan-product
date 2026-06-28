@@ -58,9 +58,7 @@ class TestExplicitResolution:
 
     async def test_explicit_returns_resolved(self):
         resolved = await resolve_repo(explicit="myorg/myrepo")
-        assert resolved == ResolvedRepo(
-            owner="myorg", name="myrepo", source="explicit"
-        )
+        assert resolved == ResolvedRepo(owner="myorg", name="myrepo", source="explicit")
 
     async def test_explicit_wins_over_env(self, monkeypatch):
         monkeypatch.setenv(ENV_DEFAULT_REPO, "ignored/value")
@@ -78,9 +76,7 @@ class TestEnvVarFallback:
     async def test_env_var_used_when_nothing_else_resolves(self, monkeypatch):
         monkeypatch.setenv(ENV_DEFAULT_REPO, "envowner/envrepo")
         resolved = await resolve_repo()
-        assert resolved == ResolvedRepo(
-            owner="envowner", name="envrepo", source="env_var"
-        )
+        assert resolved == ResolvedRepo(owner="envowner", name="envrepo", source="env_var")
 
     async def test_env_var_invalid_falls_through_to_unresolved(self, monkeypatch):
         monkeypatch.setenv(ENV_DEFAULT_REPO, "bad-shape")
@@ -118,9 +114,7 @@ class TestUserDefaultPreference:
         monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
         with patch(self._READER, new=AsyncMock(return_value="userowner/userrepo")):
             resolved = await resolve_repo(user_id=uuid4())
-        assert resolved == ResolvedRepo(
-            owner="userowner", name="userrepo", source="user_default"
-        )
+        assert resolved == ResolvedRepo(owner="userowner", name="userrepo", source="user_default")
 
     async def test_user_default_none_when_no_entry_falls_through(self, monkeypatch):
         monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
@@ -190,16 +184,18 @@ class TestDefaultProjectResolution:
         from services.integrations.github.repo_resolver import ResolvedRepo as RR
 
         proj = RR(owner="projowner", name="projrepo", source="default_project")
-        with patch(self._DEFAULT_PROJ, new=AsyncMock(return_value=proj)), patch(
-            self._READER, new=AsyncMock(return_value="prefowner/prefrepo")
+        with (
+            patch(self._DEFAULT_PROJ, new=AsyncMock(return_value=proj)),
+            patch(self._READER, new=AsyncMock(return_value="prefowner/prefrepo")),
         ):
             result = await resolve_repo(user_id=uuid4())
         assert result.source == "default_project"  # project outranks preference
 
     async def test_no_default_project_falls_through_to_user_default(self, monkeypatch):
         monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
-        with patch(self._DEFAULT_PROJ, new=AsyncMock(return_value=None)), patch(
-            self._READER, new=AsyncMock(return_value="prefowner/prefrepo")
+        with (
+            patch(self._DEFAULT_PROJ, new=AsyncMock(return_value=None)),
+            patch(self._READER, new=AsyncMock(return_value="prefowner/prefrepo")),
         ):
             result = await resolve_repo(user_id=uuid4())
         assert result.source == "user_default"

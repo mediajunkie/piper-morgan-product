@@ -54,9 +54,7 @@ async def manager():
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
     async with engine.begin() as conn:
         await conn.run_sync(
-            lambda sync_conn: StandupConversationDB.__table__.create(
-                sync_conn, checkfirst=True
-            )
+            lambda sync_conn: StandupConversationDB.__table__.create(sync_conn, checkfirst=True)
         )
     SessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
@@ -181,9 +179,7 @@ class TestConversationLifecycle:
         conv = await manager.create_conversation("session1", "user1")
         await manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
 
-        found = await manager.get_conversation_by_session(
-            "session1", include_suspended=True
-        )
+        found = await manager.get_conversation_by_session("session1", include_suspended=True)
         assert found is not None
         assert found.id == conv.id
 
@@ -236,15 +232,11 @@ class TestStateTransitions:
         assert result.state == StandupConversationState.GENERATING
 
     async def test_initiated_to_abandoned(self, manager, conversation):
-        result = await manager.transition_state(
-            conversation.id, StandupConversationState.ABANDONED
-        )
+        result = await manager.transition_state(conversation.id, StandupConversationState.ABANDONED)
         assert result.state == StandupConversationState.ABANDONED
 
     async def test_initiated_to_suspended(self, manager, conversation):
-        result = await manager.transition_state(
-            conversation.id, StandupConversationState.SUSPENDED
-        )
+        result = await manager.transition_state(conversation.id, StandupConversationState.SUSPENDED)
         assert result.state == StandupConversationState.SUSPENDED
 
     async def test_gathering_to_generating(self, manager, conversation):
@@ -257,89 +249,55 @@ class TestStateTransitions:
         assert result.state == StandupConversationState.GENERATING
 
     async def test_generating_to_refining(self, manager, conversation):
-        await manager.transition_state(
-            conversation.id, StandupConversationState.GENERATING
-        )
-        result = await manager.transition_state(
-            conversation.id, StandupConversationState.REFINING
-        )
+        await manager.transition_state(conversation.id, StandupConversationState.GENERATING)
+        result = await manager.transition_state(conversation.id, StandupConversationState.REFINING)
         assert result.state == StandupConversationState.REFINING
 
     async def test_generating_to_finalizing(self, manager, conversation):
-        await manager.transition_state(
-            conversation.id, StandupConversationState.GENERATING
-        )
+        await manager.transition_state(conversation.id, StandupConversationState.GENERATING)
         result = await manager.transition_state(
             conversation.id, StandupConversationState.FINALIZING
         )
         assert result.state == StandupConversationState.FINALIZING
 
     async def test_refining_to_generating(self, manager, conversation):
-        await manager.transition_state(
-            conversation.id, StandupConversationState.GENERATING
-        )
-        await manager.transition_state(
-            conversation.id, StandupConversationState.REFINING
-        )
+        await manager.transition_state(conversation.id, StandupConversationState.GENERATING)
+        await manager.transition_state(conversation.id, StandupConversationState.REFINING)
         result = await manager.transition_state(
             conversation.id, StandupConversationState.GENERATING
         )
         assert result.state == StandupConversationState.GENERATING
 
     async def test_full_path_to_complete(self, manager, conversation):
-        await manager.transition_state(
-            conversation.id, StandupConversationState.GENERATING
-        )
-        await manager.transition_state(
-            conversation.id, StandupConversationState.FINALIZING
-        )
-        result = await manager.transition_state(
-            conversation.id, StandupConversationState.COMPLETE
-        )
+        await manager.transition_state(conversation.id, StandupConversationState.GENERATING)
+        await manager.transition_state(conversation.id, StandupConversationState.FINALIZING)
+        result = await manager.transition_state(conversation.id, StandupConversationState.COMPLETE)
         assert result.state == StandupConversationState.COMPLETE
         assert result.completed_at is not None
 
     async def test_suspended_to_initiated(self, manager, conversation):
-        await manager.transition_state(
-            conversation.id, StandupConversationState.SUSPENDED
-        )
-        result = await manager.transition_state(
-            conversation.id, StandupConversationState.INITIATED
-        )
+        await manager.transition_state(conversation.id, StandupConversationState.SUSPENDED)
+        result = await manager.transition_state(conversation.id, StandupConversationState.INITIATED)
         assert result.state == StandupConversationState.INITIATED
 
     async def test_suspended_to_abandoned(self, manager, conversation):
-        await manager.transition_state(
-            conversation.id, StandupConversationState.SUSPENDED
-        )
-        result = await manager.transition_state(
-            conversation.id, StandupConversationState.ABANDONED
-        )
+        await manager.transition_state(conversation.id, StandupConversationState.SUSPENDED)
+        result = await manager.transition_state(conversation.id, StandupConversationState.ABANDONED)
         assert result.state == StandupConversationState.ABANDONED
 
     async def test_invalid_transition_raises(self, manager, conversation):
         with pytest.raises(InvalidStateTransitionError) as exc_info:
-            await manager.transition_state(
-                conversation.id, StandupConversationState.COMPLETE
-            )
+            await manager.transition_state(conversation.id, StandupConversationState.COMPLETE)
         assert "Cannot transition" in str(exc_info.value)
 
     async def test_transition_unknown_conversation_raises_keyerror(self, manager):
         with pytest.raises(KeyError):
-            await manager.transition_state(
-                "nonexistent", StandupConversationState.GENERATING
-            )
+            await manager.transition_state("nonexistent", StandupConversationState.GENERATING)
 
-    async def test_terminal_states_have_no_outbound_transitions(
-        self, manager, conversation
-    ):
-        await manager.transition_state(
-            conversation.id, StandupConversationState.ABANDONED
-        )
+    async def test_terminal_states_have_no_outbound_transitions(self, manager, conversation):
+        await manager.transition_state(conversation.id, StandupConversationState.ABANDONED)
         with pytest.raises(InvalidStateTransitionError):
-            await manager.transition_state(
-                conversation.id, StandupConversationState.GENERATING
-            )
+            await manager.transition_state(conversation.id, StandupConversationState.GENERATING)
 
 
 # ---------------------------------------------------------------------------
@@ -375,9 +333,7 @@ class TestThreePartGatheringTransitions:
         await manager.transition_state(
             conversation.id, StandupConversationState.GATHERING_YESTERDAY
         )
-        await manager.transition_state(
-            conversation.id, StandupConversationState.GATHERING_TODAY
-        )
+        await manager.transition_state(conversation.id, StandupConversationState.GATHERING_TODAY)
         result = await manager.transition_state(
             conversation.id, StandupConversationState.GATHERING_BLOCKERS
         )
@@ -387,12 +343,8 @@ class TestThreePartGatheringTransitions:
         await manager.transition_state(
             conversation.id, StandupConversationState.GATHERING_YESTERDAY
         )
-        await manager.transition_state(
-            conversation.id, StandupConversationState.GATHERING_TODAY
-        )
-        await manager.transition_state(
-            conversation.id, StandupConversationState.GATHERING_BLOCKERS
-        )
+        await manager.transition_state(conversation.id, StandupConversationState.GATHERING_TODAY)
+        await manager.transition_state(conversation.id, StandupConversationState.GATHERING_BLOCKERS)
         result = await manager.transition_state(
             conversation.id, StandupConversationState.GENERATING
         )
@@ -412,9 +364,7 @@ class TestThreePartGatheringTransitions:
         await manager.transition_state(
             conversation.id, StandupConversationState.GATHERING_YESTERDAY
         )
-        await manager.transition_state(
-            conversation.id, StandupConversationState.GATHERING_TODAY
-        )
+        await manager.transition_state(conversation.id, StandupConversationState.GATHERING_TODAY)
         result = await manager.transition_state(
             conversation.id, StandupConversationState.GENERATING
         )
@@ -424,13 +374,9 @@ class TestThreePartGatheringTransitions:
         await manager.transition_state(
             conversation.id, StandupConversationState.GATHERING_YESTERDAY
         )
-        await manager.transition_state(
-            conversation.id, StandupConversationState.SUSPENDED
-        )
+        await manager.transition_state(conversation.id, StandupConversationState.SUSPENDED)
         # Resume back to INITIATED
-        await manager.transition_state(
-            conversation.id, StandupConversationState.INITIATED
-        )
+        await manager.transition_state(conversation.id, StandupConversationState.INITIATED)
         # Re-enter gathering
         result = await manager.transition_state(
             conversation.id, StandupConversationState.GATHERING_YESTERDAY
@@ -441,12 +387,8 @@ class TestThreePartGatheringTransitions:
         await manager.transition_state(
             conversation.id, StandupConversationState.GATHERING_YESTERDAY
         )
-        await manager.transition_state(
-            conversation.id, StandupConversationState.GATHERING_TODAY
-        )
-        result = await manager.transition_state(
-            conversation.id, StandupConversationState.ABANDONED
-        )
+        await manager.transition_state(conversation.id, StandupConversationState.GATHERING_TODAY)
+        result = await manager.transition_state(conversation.id, StandupConversationState.ABANDONED)
         assert result.state == StandupConversationState.ABANDONED
 
     async def test_blockers_cannot_skip_back_to_yesterday(self, manager, conversation):
@@ -454,12 +396,8 @@ class TestThreePartGatheringTransitions:
         await manager.transition_state(
             conversation.id, StandupConversationState.GATHERING_YESTERDAY
         )
-        await manager.transition_state(
-            conversation.id, StandupConversationState.GATHERING_TODAY
-        )
-        await manager.transition_state(
-            conversation.id, StandupConversationState.GATHERING_BLOCKERS
-        )
+        await manager.transition_state(conversation.id, StandupConversationState.GATHERING_TODAY)
+        await manager.transition_state(conversation.id, StandupConversationState.GATHERING_BLOCKERS)
         with pytest.raises(InvalidStateTransitionError):
             await manager.transition_state(
                 conversation.id, StandupConversationState.GATHERING_YESTERDAY
@@ -494,44 +432,32 @@ class TestPhase4SuspendedDirectResume:
     @pytest_asyncio.fixture
     async def suspended_conversation(self, manager):
         conv = await manager.create_conversation("s1", "u1")
-        await manager.transition_state(
-            conv.id, StandupConversationState.GATHERING_YESTERDAY
-        )
-        await manager.transition_state(
-            conv.id, StandupConversationState.SUSPENDED
-        )
+        await manager.transition_state(conv.id, StandupConversationState.GATHERING_YESTERDAY)
+        await manager.transition_state(conv.id, StandupConversationState.SUSPENDED)
         return conv
 
-    async def test_suspended_to_gathering_yesterday(
-        self, manager, suspended_conversation
-    ):
+    async def test_suspended_to_gathering_yesterday(self, manager, suspended_conversation):
         result = await manager.transition_state(
             suspended_conversation.id,
             StandupConversationState.GATHERING_YESTERDAY,
         )
         assert result.state == StandupConversationState.GATHERING_YESTERDAY
 
-    async def test_suspended_to_gathering_today(
-        self, manager, suspended_conversation
-    ):
+    async def test_suspended_to_gathering_today(self, manager, suspended_conversation):
         result = await manager.transition_state(
             suspended_conversation.id,
             StandupConversationState.GATHERING_TODAY,
         )
         assert result.state == StandupConversationState.GATHERING_TODAY
 
-    async def test_suspended_to_gathering_blockers(
-        self, manager, suspended_conversation
-    ):
+    async def test_suspended_to_gathering_blockers(self, manager, suspended_conversation):
         result = await manager.transition_state(
             suspended_conversation.id,
             StandupConversationState.GATHERING_BLOCKERS,
         )
         assert result.state == StandupConversationState.GATHERING_BLOCKERS
 
-    async def test_suspended_to_initiated_still_works(
-        self, manager, suspended_conversation
-    ):
+    async def test_suspended_to_initiated_still_works(self, manager, suspended_conversation):
         # Legacy resume path preserved
         result = await manager.transition_state(
             suspended_conversation.id, StandupConversationState.INITIATED
@@ -551,9 +477,7 @@ class TestPhase4ResumeHelpers:
     def test_next_uncaptured_part_with_yesterday_returns_today(self):
         from services.standup.conversation_handler import _next_uncaptured_part_state
 
-        cap = StandupPartialCapture(
-            yesterday=[StandupItem(display="x", source="user")]
-        )
+        cap = StandupPartialCapture(yesterday=[StandupItem(display="x", source="user")])
         result = _next_uncaptured_part_state(cap)
         assert result == StandupConversationState.GATHERING_TODAY
 
@@ -695,12 +619,8 @@ class TestTurnManagement:
         assert turn.user_message == "hello"
 
     async def test_turns_persist(self, manager, conversation):
-        await manager.add_turn(
-            conversation.id, user_message="first", assistant_response="r1"
-        )
-        await manager.add_turn(
-            conversation.id, user_message="second", assistant_response="r2"
-        )
+        await manager.add_turn(conversation.id, user_message="first", assistant_response="r1")
+        await manager.add_turn(conversation.id, user_message="second", assistant_response="r2")
 
         fetched = await manager.get_conversation(conversation.id)
         assert len(fetched.turns) == 2
@@ -722,9 +642,7 @@ class TestTurnManagement:
 
     async def test_add_turn_unknown_conversation_raises_keyerror(self, manager):
         with pytest.raises(KeyError):
-            await manager.add_turn(
-                "nonexistent", user_message="x", assistant_response="y"
-            )
+            await manager.add_turn("nonexistent", user_message="x", assistant_response="y")
 
 
 # ---------------------------------------------------------------------------
@@ -791,13 +709,9 @@ class TestPartialCapturePersistence:
 
     async def test_update_partial_capture_unknown_raises_keyerror(self, manager):
         with pytest.raises(KeyError):
-            await manager.update_partial_capture(
-                "nonexistent", StandupPartialCapture()
-            )
+            await manager.update_partial_capture("nonexistent", StandupPartialCapture())
 
-    async def test_partial_capture_round_trip_preserves_item_metadata(
-        self, manager, conversation
-    ):
+    async def test_partial_capture_round_trip_preserves_item_metadata(self, manager, conversation):
         capture = StandupPartialCapture(
             yesterday=[
                 StandupItem(
@@ -981,9 +895,7 @@ class TestTimezoneRegression:
 
         await manager.transition_state(conv.id, StandupConversationState.GENERATING)
         await manager.transition_state(conv.id, StandupConversationState.FINALIZING)
-        completed = await manager.transition_state(
-            conv.id, StandupConversationState.COMPLETE
-        )
+        completed = await manager.transition_state(conv.id, StandupConversationState.COMPLETE)
 
         assert completed.state == StandupConversationState.COMPLETE
         assert completed.completed_at is not None
@@ -994,9 +906,7 @@ class TestTimezoneRegression:
         fetched = await manager.get_conversation(conv.id)
         assert fetched.created_at.tzinfo is None  # precondition: genuinely naive
 
-        abandoned = await manager.transition_state(
-            conv.id, StandupConversationState.ABANDONED
-        )
+        abandoned = await manager.transition_state(conv.id, StandupConversationState.ABANDONED)
 
         assert abandoned.state == StandupConversationState.ABANDONED
 

@@ -56,19 +56,21 @@ class TestProvenanceHandlerDBFallback:
         mock_session_factory.session_scope.return_value.__aenter__ = AsyncMock(
             return_value=MagicMock()
         )
-        mock_session_factory.session_scope.return_value.__aexit__ = AsyncMock(
-            return_value=None
-        )
+        mock_session_factory.session_scope.return_value.__aexit__ = AsyncMock(return_value=None)
 
-        with patch(
-            "services.intent_service.conversation_context.get_or_create_context",
-            return_value=fresh_ctx,
-        ), patch(
-            "services.database.repositories.ConversationRepository",
-            return_value=mock_repo,
-        ), patch(
-            "services.database.session_factory.AsyncSessionFactory",
-            mock_session_factory,
+        with (
+            patch(
+                "services.intent_service.conversation_context.get_or_create_context",
+                return_value=fresh_ctx,
+            ),
+            patch(
+                "services.database.repositories.ConversationRepository",
+                return_value=mock_repo,
+            ),
+            patch(
+                "services.database.session_factory.AsyncSessionFactory",
+                mock_session_factory,
+            ),
         ):
             result = await ch._handle_provenance_query(
                 intent, session_id="s-test", user_id="u-test"
@@ -95,19 +97,21 @@ class TestProvenanceHandlerDBFallback:
         mock_session_factory.session_scope.return_value.__aenter__ = AsyncMock(
             return_value=MagicMock()
         )
-        mock_session_factory.session_scope.return_value.__aexit__ = AsyncMock(
-            return_value=None
-        )
+        mock_session_factory.session_scope.return_value.__aexit__ = AsyncMock(return_value=None)
 
-        with patch(
-            "services.intent_service.conversation_context.get_or_create_context",
-            return_value=fresh_ctx,
-        ), patch(
-            "services.database.repositories.ConversationRepository",
-            return_value=mock_repo,
-        ), patch(
-            "services.database.session_factory.AsyncSessionFactory",
-            mock_session_factory,
+        with (
+            patch(
+                "services.intent_service.conversation_context.get_or_create_context",
+                return_value=fresh_ctx,
+            ),
+            patch(
+                "services.database.repositories.ConversationRepository",
+                return_value=mock_repo,
+            ),
+            patch(
+                "services.database.session_factory.AsyncSessionFactory",
+                mock_session_factory,
+            ),
         ):
             result = await ch._handle_provenance_query(
                 intent, session_id="s-test", user_id="u-test"
@@ -124,16 +128,17 @@ class TestProvenanceHandlerDBFallback:
         fresh_ctx = ConversationContext()
 
         mock_session_factory = MagicMock()
-        mock_session_factory.session_scope.side_effect = RuntimeError(
-            "simulated DB outage"
-        )
+        mock_session_factory.session_scope.side_effect = RuntimeError("simulated DB outage")
 
-        with patch(
-            "services.intent_service.conversation_context.get_or_create_context",
-            return_value=fresh_ctx,
-        ), patch(
-            "services.database.session_factory.AsyncSessionFactory",
-            mock_session_factory,
+        with (
+            patch(
+                "services.intent_service.conversation_context.get_or_create_context",
+                return_value=fresh_ctx,
+            ),
+            patch(
+                "services.database.session_factory.AsyncSessionFactory",
+                mock_session_factory,
+            ),
         ):
             result = await ch._handle_provenance_query(
                 intent, session_id="s-test", user_id="u-test"
@@ -152,20 +157,21 @@ class TestProvenanceHandlerDBFallback:
         ctx = ConversationContext()
         turn = ctx.add_turn(message="what's blocked?")
         turn.response = "#1089 is blocked."
-        ctx.turn_provenance[turn.id] = {
-            "blocked_items": {"source": "GitHubIntegrationRouter"}
-        }
+        ctx.turn_provenance[turn.id] = {"blocked_items": {"source": "GitHubIntegrationRouter"}}
 
         mock_session_factory = MagicMock()
         # If session_scope is called, this will be True
         mock_session_factory.session_scope = MagicMock()
 
-        with patch(
-            "services.intent_service.conversation_context.get_or_create_context",
-            return_value=ctx,
-        ), patch(
-            "services.database.session_factory.AsyncSessionFactory",
-            mock_session_factory,
+        with (
+            patch(
+                "services.intent_service.conversation_context.get_or_create_context",
+                return_value=ctx,
+            ),
+            patch(
+                "services.database.session_factory.AsyncSessionFactory",
+                mock_session_factory,
+            ),
         ):
             result = await ch._handle_provenance_query(
                 intent, session_id="s-test", user_id="u-test"

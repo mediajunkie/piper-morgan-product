@@ -2175,9 +2175,7 @@ class EthicsAuditRepository:
 
     async def count(self) -> int:
         """Total row count (used by /transparency/stats)."""
-        result = await self.session.execute(
-            select(func.count(EthicsAuditLogDB.entry_id))
-        )
+        result = await self.session.execute(select(func.count(EthicsAuditLogDB.entry_id)))
         return result.scalar_one() or 0
 
 
@@ -2217,9 +2215,7 @@ class InsightRepository:
 
     async def get(self, insight_id: str):
         """Fetch a single insight by id; returns SurfaceableInsight or None."""
-        result = await self.session.execute(
-            select(InsightDB).where(InsightDB.id == insight_id)
-        )
+        result = await self.session.execute(select(InsightDB).where(InsightDB.id == insight_id))
         row = result.scalar_one_or_none()
         return row.to_domain() if row else None
 
@@ -2241,19 +2237,13 @@ class InsightRepository:
         filters = [InsightDB.user_id == user_id]
         if exclude_deleted:
             filters.append(InsightDB.is_deleted == False)
-        stmt = (
-            select(InsightDB)
-            .where(and_(*filters))
-            .order_by(InsightDB.created_at.desc())
-        )
+        stmt = select(InsightDB).where(and_(*filters)).order_by(InsightDB.created_at.desc())
         if limit is not None:
             stmt = stmt.limit(limit)
         result = await self.session.execute(stmt)
         return [row.to_domain() for row in result.scalars().all()]
 
-    async def update_user_correction(
-        self, insight_id: str, user_id: str, correction_text: str
-    ):
+    async def update_user_correction(self, insight_id: str, user_id: str, correction_text: str):
         """Record the user's free-text correction for an insight (#1031 Q2).
 
         Verifies user owns the insight (auth-scoping defense in depth).
@@ -2342,9 +2332,7 @@ class InsightRepository:
         """
         stmt = select(InsightDB).where(InsightDB.object_id == object_id)
         if user_id is None:
-            logger.warning(
-                "insight_get_for_object_without_principal", object_id=object_id
-            )
+            logger.warning("insight_get_for_object_without_principal", object_id=object_id)
         else:
             stmt = stmt.where(InsightDB.user_id == user_id)
         result = await self.session.execute(stmt)
@@ -2434,8 +2422,7 @@ class InsightRepository:
 
         # All candidate insights for this user that pass trust gate
         result = await self.session.execute(
-            select(InsightDB)
-            .where(
+            select(InsightDB).where(
                 InsightDB.user_id == user_id,
                 InsightDB.min_trust_stage <= trust_stage,
                 # #1031: exclude soft-deleted from Pull retrieval
@@ -2480,9 +2467,7 @@ class InsightRepository:
         Increments `surfaced_count`, sets `last_surfaced=now()`,
         sets `user_response`. Returns updated SurfaceableInsight or None.
         """
-        result = await self.session.execute(
-            select(InsightDB).where(InsightDB.id == insight_id)
-        )
+        result = await self.session.execute(select(InsightDB).where(InsightDB.id == insight_id))
         row = result.scalar_one_or_none()
         if row is None:
             return None
@@ -2555,9 +2540,7 @@ class StandupConversationRepository:
         from services.database.models import StandupConversationDB
 
         result = await self.session.execute(
-            select(StandupConversationDB).where(
-                StandupConversationDB.id == conversation_id
-            )
+            select(StandupConversationDB).where(StandupConversationDB.id == conversation_id)
         )
         row = result.scalar_one_or_none()
         return row.to_domain() if row else None
@@ -2613,15 +2596,11 @@ class StandupConversationRepository:
         from services.database.models import StandupConversationDB
 
         result = await self.session.execute(
-            select(StandupConversationDB).where(
-                StandupConversationDB.id == conversation.id
-            )
+            select(StandupConversationDB).where(StandupConversationDB.id == conversation.id)
         )
         row = result.scalar_one_or_none()
         if row is None:
-            raise ValueError(
-                f"StandupConversation {conversation.id!r} not found for update"
-            )
+            raise ValueError(f"StandupConversation {conversation.id!r} not found for update")
 
         row.session_id = conversation.session_id
         row.user_id = conversation.user_id
@@ -2653,9 +2632,7 @@ class StandupConversationRepository:
         from services.database.models import StandupConversationDB
 
         result = await self.session.execute(
-            sa_delete(StandupConversationDB).where(
-                StandupConversationDB.id == conversation_id
-            )
+            sa_delete(StandupConversationDB).where(StandupConversationDB.id == conversation_id)
         )
         return bool(result.rowcount)
 

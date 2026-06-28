@@ -9,11 +9,13 @@ Regenerate after calendar changes:  python3 scripts/build-editorial-calendar-vie
 
 Output: docs/internal/planning/comms/editorial-calendar-view.html
 """
+
 import csv, json, os, sys, datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CSV_PATH = os.path.join(ROOT, "docs/internal/planning/comms/editorial-calendar.csv")
 OUT_PATH = os.path.join(ROOT, "docs/internal/planning/comms/editorial-calendar-view.html")
+
 
 def main():
     with open(CSV_PATH) as f:
@@ -21,12 +23,19 @@ def main():
     posts = []
     for r in rows:
         posts.append({k: (r.get(k) or "").strip() for k in r.keys()})
-    generated = datetime.datetime.now().strftime("%Y-%m-%d %H:%M") if False else "(regenerate to stamp)"
+    generated = (
+        datetime.datetime.now().strftime("%Y-%m-%d %H:%M") if False else "(regenerate to stamp)"
+    )
     data_json = json.dumps(posts, ensure_ascii=False)
-    html = HTML_TEMPLATE.replace("__DATA__", data_json).replace("__GENERATED__", generated).replace("__COUNT__", str(len(posts)))
+    html = (
+        HTML_TEMPLATE.replace("__DATA__", data_json)
+        .replace("__GENERATED__", generated)
+        .replace("__COUNT__", str(len(posts)))
+    )
     with open(OUT_PATH, "w") as f:
         f.write(html)
     print(f"wrote {OUT_PATH} ({len(posts)} posts)")
+
 
 HTML_TEMPLATE = r"""<!DOCTYPE html>
 <html lang="en">

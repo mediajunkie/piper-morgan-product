@@ -292,7 +292,9 @@ class TestPrivacyControls:
         (postponed to the dot-releases milestone) is just removing `hidden`."""
         template = soup.find("template", id="history-sidebar-template")
         footer = template.find(class_="history-privacy-footer")
-        assert footer is not None, "markup must be retained (the sidebar JS still queries the toggle)"
+        assert (
+            footer is not None
+        ), "markup must be retained (the sidebar JS still queries the toggle)"
         assert footer.has_attr("hidden"), (
             "the no-op privacy footer must carry `hidden` until the privacy backend "
             "(#1164 / #1089) lands — a visible no-op privacy control misleads beta users"

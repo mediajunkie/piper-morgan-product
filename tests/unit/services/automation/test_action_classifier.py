@@ -34,8 +34,7 @@ class TestMutatingQuerySuffixNotSafe:
         They are state-changing and must require confirmation (never auto-exec)."""
         result = clf.classify_action(action)
         assert result.safety_level != ActionSafetyLevel.SAFE, (
-            f"{action} classified SAFE — the #1210 regression "
-            f"(reason: {result.reason})"
+            f"{action} classified SAFE — the #1210 regression " f"(reason: {result.reason})"
         )
         assert result.safety_level == ActionSafetyLevel.REQUIRES_CONFIRMATION
 
@@ -65,11 +64,11 @@ class TestReadQueryActionsStaySafe:
         [
             "list_issues_query",
             "list_prs_query",
-            "list_labels_query",   # collision check: "labels" token != "label" verb
+            "list_labels_query",  # collision check: "labels" token != "label" verb
             "list_milestones_query",
             "next_todo_query",
-            "attention_query",     # verb-less read — SAFE only via the "query" token
-            "shipped_query",       # verb-less read
+            "attention_query",  # verb-less read — SAFE only via the "query" token
+            "shipped_query",  # verb-less read
             "get_issue",
         ],
     )
@@ -101,7 +100,9 @@ class TestKeywordClassification:
         assert result.safety_level == ActionSafetyLevel.DESTRUCTIVE
         assert clf.is_safe_for_auto_execution(action, confidence=1.0) is False
 
-    @pytest.mark.parametrize("action", ["create_issue", "comment_on_pr", "add_label", "send_message"])
+    @pytest.mark.parametrize(
+        "action", ["create_issue", "comment_on_pr", "add_label", "send_message"]
+    )
     def test_confirmation_keywords_require_approval(self, clf, action):
         result = clf.classify_action(action)
         assert result.safety_level == ActionSafetyLevel.REQUIRES_CONFIRMATION

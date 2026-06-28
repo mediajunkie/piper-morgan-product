@@ -4,6 +4,7 @@ Domain logic, server-side (NOT client-trusted): the honest-provenance filter
 (#1214/#1216), attention-first ordering, and two-state selection (default real-only /
 empty + one teaching example). The JS surface just renders the resulting RadarView.
 """
+
 from __future__ import annotations
 
 import structlog

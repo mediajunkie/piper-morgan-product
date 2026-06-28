@@ -65,14 +65,8 @@ async def verify() -> int:
 
     print(f"[verify-phase-f-flag] violation_detected={decision.violation_detected}")
     print(f"[verify-phase-f-flag] boundary_type={decision.boundary_type}")
-    print(
-        f"[verify-phase-f-flag] detector="
-        f"{decision.audit_data.get('detector')}"
-    )
-    print(
-        f"[verify-phase-f-flag] decision_tier="
-        f"{decision.audit_data.get('decision_tier')}"
-    )
+    print(f"[verify-phase-f-flag] detector=" f"{decision.audit_data.get('detector')}")
+    print(f"[verify-phase-f-flag] decision_tier=" f"{decision.audit_data.get('decision_tier')}")
     print(f"[verify-phase-f-flag] confidence={decision.audit_data.get('confidence')}")
     print(
         f"[verify-phase-f-flag] semantic_confidence="
@@ -91,13 +85,11 @@ async def verify() -> int:
         )
     if decision.boundary_type != expected_category:
         failures.append(
-            f"boundary_type: got {decision.boundary_type}, "
-            f"expected {expected_category}"
+            f"boundary_type: got {decision.boundary_type}, " f"expected {expected_category}"
         )
     if decision.audit_data.get("detector") != expected_detector:
         failures.append(
-            f"detector: got {decision.audit_data.get('detector')}, "
-            f"expected {expected_detector}"
+            f"detector: got {decision.audit_data.get('detector')}, " f"expected {expected_detector}"
         )
 
     if failures:
