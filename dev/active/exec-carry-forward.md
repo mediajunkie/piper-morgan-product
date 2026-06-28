@@ -29,6 +29,12 @@ Machine is up (Docs 03:28 WATCH + 06:05 brief). **Recovered**: Lead/CIO/HOST/Web
 ### 📋 QUEUED (Exec coordination, NO-RUSH — CIO ask, weekend/Monday)
 **Cohort-coverage expansion of the freeze-watcher** (CIO memo 6/26, read/). v0.4 derives threshold from each role's cron → adding roles is now cheap + correct-by-construction. Registry watches 5/11 (cio/exec/arch/cxo/ppm); **collect confirmed rows from the 6 unwatched: host, comms, docs, web, pa, lead.** Each owner fills 4 fields (~30s): `role | cron_expr | fallback_thr_h | wake_start_h | wake_end_h | first_fire`. Batch to CIO. **Rationale sharpened by today**: Lead's stall went un-alerted *because Lead isn't watched* — expanding coverage closes exactly that gap. Execute when roles are next active (not at day-close).
 
+### ✅ RESOLVED 6/27 — ADR-071 keystone (dissolved on trace)
+PM asked Arch to expedite → Arch (19:00) **traced + ruled SETTLED, no increment**: owner-anchoring covers all 4 EntitySources; **#1237 is actually CLOSED** (3/4 shipped 6/18, PM-UAT'd) — the "blocked on ADR-071" framing (PPM's report + my synthesis) was STALE. Residual: **People #1281** = source-population (Lead/PPM build, not Arch); **trust-gradient/provenance** (OQ-2) = separate PPM/CXO M4 call, not ADR-071. **Relayed to CXO** (`...adr071-settled-your-surface-unblocks`, asked which boundary it was parked on). Synthesis annotated. Pattern: blocked-on-X dissolves on artifact-trace (cf. #1312). **PPM's roadmap reconciliation should reflect #1237-closed.**
+
+### 🟡 Web /about citation — STAGED, awaiting PM prefix confirm
+Web staged the change on website/main, holding deploy. Pending: PM confirm "**Author of Product Management for UX People (Rosenfeld)**" (single-author → Author not Co-author). Only open item on this.
+
 ### ✅ RESOLVED 6/27 — github-mcp = Option C (Arch re-ruled 13:45)
 Morning A (hosted-OAuth) → BLOCKED (needs tester Copilot, PM non-starter) → **Arch RE-RULED to C** (self-host `github-mcp-server` + per-user OAuth via our GitHub App; no Copilot, ~zero cost). **D3 precised**: Piper holds no raw PAT, but scoped/revocable/refreshable OAuth grants ARE permitted (#358-encrypted, #1229-binding references the encrypted secret). C extends the existing Calendar-OAuth pattern (precedent, not new exposure). **Lead has GO** to wire inc.2 OAuth-callback on this model; transport unchanged. **End-state tracked**: GitHub-App installation-token auth (purest D3, no user token held) when the server supports it. decisions.log records C supersedes A. Off PM's plate.
 
