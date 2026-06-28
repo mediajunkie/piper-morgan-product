@@ -226,7 +226,7 @@ def test_authentication_flow_no_token(api_client):
 
     assert response.status_code == 401
     data = response.json()
-    assert "detail" in data
+    assert "message" in data  # APIError handler returns {"message": ...}
 
 
 def test_authentication_flow_invalid_token(api_client):
@@ -239,7 +239,7 @@ def test_authentication_flow_invalid_token(api_client):
 
     assert response.status_code == 401
     data = response.json()
-    assert "detail" in data
+    assert "message" in data  # APIError handler returns {"message": ...}
 
 
 def test_authentication_flow_valid_token(api_client, auth_token):
