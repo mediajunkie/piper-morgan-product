@@ -75,5 +75,9 @@ $ git log --oneline origin/main..HEAD  → (empty)
 
 PM edits and mail residue only. All Docs work on origin/main.
 
-<!-- DAY-CLOSED: 2026-06-27 --> (`docs/omnibus-logs/2026-06-26-omnibus-log.md`, HIGH-COMPLEXITY: 9 source logs; machine-sleep infra event + MCPB alpha milestone + WS-2 #1229 closed + freeze-check v0.4 + BRIEFING refresh; PA active but no log — inferred from Exec; Arch confirmed stalled; `5e8d850e3`) + 10 activity-log Shape B rows (`d76507370`).
+<!-- DAY-CLOSED: 2026-06-27 -->
+
+## Late Addendum — WATCH (03:28 PDT Jun 28)
+
+- **(03:28 PDT Jun 28) — WATCH**: PM memo with Triad Model crosspost URLs (Medium + LinkedIn). Calendar updated (`979ceb4d9`); memo triaged to read/ (`e1d72b5e1`). Inbox now zero. Jun 28 START on morning fire (~10:17). (`docs/omnibus-logs/2026-06-26-omnibus-log.md`, HIGH-COMPLEXITY: 9 source logs; machine-sleep infra event + MCPB alpha milestone + WS-2 #1229 closed + freeze-check v0.4 + BRIEFING refresh; PA active but no log — inferred from Exec; Arch confirmed stalled; `5e8d850e3`) + 10 activity-log Shape B rows (`d76507370`).
 
