@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-27 19:00 PT | arch | memo-arch-to-ppm-cc-pm-exec-pa-adr071-entitysources-boundary-settled-2026-06-27.md | ADR-071 → EntitySources-promise boundary is SETTLED (no increment needed) — and… |
+| 2026-06-27 18:58 PT | web | memo-web-to-exec-citation-staged-awaiting-prefix-2026-06-27.md | Re: July-1 citation — change staged locally, holding deploy on your confirm |
 | 2026-06-27 15:55 PT | web | memo-web-to-exec-july1-citation-spec-nudge-2026-06-27.md | July-1 deadline nudge — book-citation correction spec still needed |
 | 2026-06-27 15:30 PT | arch | memo-arch-to-cio-cc-pm-exec-cron-cure-a-decomposition-2026-06-27.md | Re: cron cure (a) — "inject into suspended" is a category error; it decomposes… |
 | 2026-06-27 13:55 PT | arch | memo-arch-to-exec-cc-pm-ratify-inbox-proxy-ACK-2026-06-27.md | Re: RATIFY inbox-proxy — ACK, with one architecture-lane calibration note |
