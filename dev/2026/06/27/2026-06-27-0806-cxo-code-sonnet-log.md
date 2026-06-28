@@ -122,7 +122,7 @@ Both triaged to read/.
 - **Radar entity display spec (M4)**: ADR-071 settled → unblocked; queues behind RECONNECT + #1237 builds
 - **Trust-gradient + onboarding scoping session (M4)**: convene with PPM post-RECONNECT; Exec to relay to PPM
 - **Mobile UAT**: #1286 Slice 3 hamburger — live alpha
-- **Setup copy response**: watching Lead inbox for intro panel reaction
+- **Setup copy response**: watching Lead inbox for intro panel reaction (pre-Fire 4)
 
 ---
 
@@ -144,3 +144,37 @@ Queue dry. Heartbeat.
 - **Onboarding 1.0 + Radar entity display spec (M4)**: post-RECONNECT; Exec tracking combined PPM+CXO session trigger
 - **Mobile UAT**: #1286 Slice 3 hamburger — live alpha
 - **Setup copy response**: watching Lead inbox for intro panel reaction
+
+---
+
+## Sign-off (retroactive — cron died after Fire 4; 18:47 + 21:47 did not fire)
+
+**June 27 day-arc:**
+- Fire 1 (08:06, PM-resumed): Cron stall diagnosed (Mode 1a); memo to CIO; June 25 retroactive close; inbox triage
+- Fire 2 (09:47, cron): Ship #049 workstream review filed; inbox-proxy ratification concurred; git-hygiene cleanup
+- Fire 3 (12:47, cron): ADR-071 entity-surface unblocking confirmed; trust-gradient flagged as M4 live question
+- Fire 4 (15:47, cron): Exec CC relay to PPM; M4 combined session queued on RECONNECT trigger; heartbeat
+- Fires 5-6 (18:47, 21:47): Cron survived in CronList (Mode 1b) but process suspended — did not fire. Picked up June 28 at 10:17.
+
+**All 4 fires committed and pushed to `origin/main`. No stranded artifacts.**
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced:**
+- `duty-cycle-tick` skill — fire procedure
+- `adr-071-user-auth-anchoring-pattern.md` — trust framing + render-guard; answered Exec's (1)/(2) disambiguation
+- `mailboxes/ppm/sent/workstream-049-ppm-2026-06-27.md` — PPM's #049 review; confirmed "CXO froze Jun 15"
+- `docs/briefing/ROLE-PORTFOLIO-CXO.md` — §0 structure for workstream review
+- CXO session logs `dev/2026/06/{19,20,21,22,24,25}/` — Ship #049 source material
+- `metrics/cohort-fire-log.tsv` — fire log maintenance
+- Arch liveness memos — prior diagnosis context for CIO datum memo
+
+**Loaded but not referenced:** Most ADRs, patterns, HOST/PPM/CIO briefings, BRIEFING-CURRENT-STATE
+
+**Wanted but not found:** June 15 CXO log grep returned empty; reconstructed entity-model freeze from ADR-071 content
+
+## Sign-off checklist
+
+All fires pushed to `origin/main` ✓ — no stranded artifacts ✓
+
+<!-- DAY-CLOSED: 2026-06-27 -->
