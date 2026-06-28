@@ -2,7 +2,7 @@
 
 **Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
 
-**☀️ 6/27 Sat (13:41 resume after a mode-1b overnight stall)** — Cron `b1bb59a6` **SURVIVED** (mode-1b backgrounded, NOT Gap-C; armed, next 16:07 — re-engagement resolved it, no re-arm). PM-explicit done: logs caught up (6/26 DAY-CLOSED), **ADR-073 written + indexed** (destructive-git hard rule, PM-approved). Inbox drained (4: Arch datums-fold + ack, inbox-proxy ACK, cost-efficiency engaged, Calliope Iris-durable flag). **Friday shipped: freeze-check v0.4 + Iris runbook canonical + cohort-coverage kickoff.**
+**🌙 6/27 Sat DAY-CLOSED (22:37 STOP) → overnight** — Cron `b1bb59a6` **ARMED** (standing; next **03:07 overnight WATCH**, then 10:07 Sun START). A marathon Saturday: **ADR-073** (destructive-git, PM-approved) · **Ship #049 workstream review** delivered · **watchdog auto-foreground (Belt 0 / cure-(a)) built → PM-APPROVED → live** · **fossil-cron RESOLVED** (HOST = 6×/day, no firing-trick; real trick = heavy prompt's self-contained re-grounding). Inbox drained. (Earlier in the week: freeze-check v0.4 + Iris runbook canonical + cohort-coverage kickoff.)
 
 ### 📌 PM-collaborative — RESURFACE when PM's ready (PM asked me to remind, 6/27)
 - **Ted Nadeau email** — PM has new email from Ted Nadeau to share for **review + discussion**. (Note: a `mailboxes/ted-nadeau/` inbox unread exists — may or may not be the same; PM will share the content.)
