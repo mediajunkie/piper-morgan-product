@@ -4312,15 +4312,45 @@ class IntentService:
         self.logger.info("Processing list issues query")
 
         try:
-            # Issue #1042: was importing nonexistent GitHubService and passing
-            # repository="piper-morgan" literal; refactored to use the
-            # GitHubIntegrationRouter (self-resolves the repo internally).
-            from services.integrations.github.github_integration_router import (
-                GitHubIntegrationRouter,
-            )
+            _user_id = _principal_from_intent(intent)
 
-            github_router = GitHubIntegrationRouter()
-            issues = await github_router.get_open_issues(limit=50)
+            # RECONNECT (#1322): prefer the per-user OAuth connector (binding + grant →
+            # search_issues, user-wide assignee:@me). Fall back to the native PAT ONLY when
+            # the user hasn't connected GitHub via OAuth yet (CONNECT_REQUIRED) — the
+            # layer-then-migrate transition (D6 retires the PAT path). If they ARE connected
+            # but the connector is degraded (server unreachable / re-auth), degrade honestly
+            # (#1231) rather than masking the real connection state with a silent PAT fallback.
+            from services.mcp.consumer.connector import DegradationReason
+            from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+            connector_result = await GitHubMCPSpatialAdapter().list_open_issues(
+                _user_id, limit=50
+            )
+            if connector_result.issues is not None:
+                issues = connector_result.issues
+            elif (
+                connector_result.degradation
+                and connector_result.degradation.reason is DegradationReason.CONNECT_REQUIRED
+            ):
+                # Not connected via OAuth → transitional native-PAT fallback (#1042 path).
+                from services.integrations.github.github_integration_router import (
+                    GitHubIntegrationRouter,
+                )
+
+                github_router = GitHubIntegrationRouter()
+                await github_router.initialize(user_id=_user_id)
+                issues = await github_router.get_open_issues(limit=50)
+            else:
+                # Connected but degraded → honest message, never a silent PAT fallback (#1231).
+                return IntentProcessingResult(
+                    success=True,
+                    message=connector_result.degradation.user_message,
+                    intent_data={
+                        "category": "query",
+                        "action": "list_issues_query",
+                        "context": {"degraded": connector_result.degradation.reason.value},
+                    },
+                )
 
             if issues:
                 issue_count = len(issues)
