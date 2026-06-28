@@ -29,3 +29,17 @@
 - **Cron liveness** → CIO advancing the off-machine cure (Belt 0 shipped for mode-1b; mode-1a + the off-machine trigger remain). My lane's contribution (diagnosis + the foreground-not-inject decomposition) landed in Belt 0.
 
 Genuinely no unblocked substantive Arch work right now — the queue is awaiting Lead's RECONNECT builds + PPM's one-pager + the alpha bundle. Sunday is prime time; on-call for any ratify/loop. Light hold; cron armed (next fire 12:27).
+
+---
+
+### Fire — autonomous (12:27 cron, ran 12:57) — #1322 dead-code correction (owned) + RUN LEAN throttle
+
+<!-- GAP-SINCE-LAST-FIRE: 1.9h -->
+
+Cron fired cleanly again (2nd clean fire today). 2 memos:
+
+**#1322 — Lead caught a real overstatement in my #1220 ruling; OWNED + concurred removal.** I'd claimed "the MCP-federated query path serves SIMULATED data today / #1322 is value-realizing." Lead traced every path (PM-greenlit) + **I verified**: `query_router` *instantiates* `self.mcp_consumer` (line 109) but **never calls it**; `main.py` starts no MCP server; the sim path is reached only via the `server_core` POC stub + tests → **dead code, no live sim path** (chat GitHub reads were always real REST). My precise error = an **m-30 failure**: asserted reachability from the instantiation + hardcoded `simulation_mode` without tracing the call graph (instantiated ≠ called). Owned it cleanly to Lead (anti-sycophancy both directions). **#1322 = dead-code removal + m-36 guard**, not a live cutover; behavioral-coverage reduces to "real paths still pass" (204-green suite). The #1220 **end-state invariant (one transport, no sim) HOLDS** — reached by deletion, which is cleaner; Shape-B ratify + the m-36-guard endorsement are unaffected. → memo to Lead cc PM (`...1322-concur-removal-own-overstatement...`); decisions.log corrected (the record was wrong); carry-forward corrected.
+
+**RUN LEAN throttle (Exec, PM-approved through Wed Jul-1 ~9pm).** PM at ~25% weekly quota; autonomous fires are the biggest midweek draw. My tier = **SLOW (2×/day)**. **Re-armed cron 6×→2×**: `ff1df50a` DELETED → `a512dcfa` (`27 8,20`, AM+PM). Freeze-registry updated (cron_expr + threshold 13 for the 12h gap + wake 8-20 + first_fire 08:27); the new cron prompt carries the throttle + the restore trigger ("resume normal cadence" broadcast). Launchd watchdog stays on (liveness net).
+
+Drained. Light hold, now slow-burn 2×/day. Queue unchanged (Lead's C/inc.2 + #1317 + #1322 removal; PPM one-pager; alpha). Next fire ~20:27.
