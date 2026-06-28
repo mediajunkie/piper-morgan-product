@@ -123,3 +123,24 @@ Both triaged to read/.
 - **Trust-gradient + onboarding scoping session (M4)**: convene with PPM post-RECONNECT; Exec to relay to PPM
 - **Mobile UAT**: #1286 Slice 3 hamburger — live alpha
 - **Setup copy response**: watching Lead inbox for intro panel reaction
+
+---
+
+## Fire 4 (15:47 — cron-triggered)
+
+**Cron**: `e3d692d7` confirmed.
+
+**Inbox** (1 CC memo):
+- `memo-exec-to-ppm-cc-pm-cxo-both-unblocked-combined-m4-session-2026-06-27.md` — Exec relayed CXO's M4 combined-session proposal to PPM. Exec is tracking the RECONNECT-landing trigger to convene. No CXO action.
+
+**Cohort signal**: Lead shipped two new test files for #1322 (GitHub issues connector) — RECONNECT progress continues.
+
+Queue dry. Heartbeat.
+
+## Carry-forward (after Fire 4)
+
+- **#1290 nav IA**: gated on #1284
+- **#1284 "Your work" hub**: post-beta — PM/PPM decision
+- **Onboarding 1.0 + Radar entity display spec (M4)**: post-RECONNECT; Exec tracking combined PPM+CXO session trigger
+- **Mobile UAT**: #1286 Slice 3 hamburger — live alpha
+- **Setup copy response**: watching Lead inbox for intro panel reaction
