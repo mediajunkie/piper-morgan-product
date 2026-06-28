@@ -24,3 +24,16 @@
 
 - Fire 0 (11:52 PT) — START. Jun 26 DAY-CLOSED ✓. 2 inbox memos triaged. PM editing Triad Model draft. Filed Ship #049 workstream review (`3ccdd4875`) + inbox-proxy ratification ACK (`3ccdd4875`). Jun 26 STOP committed + pushed (`d9411cf12`).
 - Fire 1 (12:15 PT) — WORK. Inbox zero. PM completed Triad Model voice-pass + illustration; Docs ran template audit and is publishing. Quiet hold.
+- Fires 2–4 (PM engaged) — Relationship-first Ethics (Jun 28) editorial pass: dateline year added (`*November 30, 2025*`), footer tease fixed ("Upstream Coordination" → "From Briefing to Vision", Jun 30). Template audit run pre-voice-pass (PM's request — correct sequence going forward): 2 FAILs (frontmatter absent; 4 PLACEHOLDERs), 11 PASS. Both FAILs are PM-owned. Draft staged for PM voice-pass Jun 28.
+
+## STOP — June 27, 2026 (retroactive — closed Jun 28 15:10)
+
+**Day arc**: Full Saturday. Workstream #049 review filed to Exec (new §0 format; 9-beat arc closed headline). Inbox-proxy ratification ACK sent. Triad Model published (Docs handled audit + publish). Relationship-first Ethics pre-edited + template-audited; 2 PM-owned FAILs remain. Sequence corrected: audit before voice-pass going forward.
+
+**Open for Jun 28+**: Relationship-first Ethics — PM voice-pass + frontmatter + PLACEHOLDERs → publish today. Beat 8 Medium URL outstanding. Beat candidates A–E unsteered. Extension Without Integration re-voice-pass pending. ADR question in PM's inbox.
+
+**Memory & briefing surfaces**: ROLE-PORTFOLIO-COMMS.md (§0 goals); Jun 19–25 session logs (workstream source); editorial-calendar.csv (footer tease, next-post lookup); template-audit skill; duty-cycle-tick skill.
+**Loaded but not referenced**: BRIEFING-CURRENT-STATE.md.
+**Wanted but not found**: nothing.
+
+<!-- DAY-CLOSED: 2026-06-27 -->
