@@ -29,3 +29,22 @@
   - 28 PPM-approved MEDIUM items (RECONNECT, D1/D2, SKUNK, M5, M3-Q/H/S)
 - M6 open issue list compiled (7 items) for PM manual assignment
 - Inbox cleared
+
+### Afternoon — Inchworm map audit + final unknowns resolution
+
+- PM shared master inchworm map (Bike app — most authoritative sprint-to-task source)
+- Cross-referenced all unknowns against map + GitHub milestones
+- **Key audit finding**: Enterprise/Fast Follow/Production milestone items need no sprint — eliminated ~20 "unknowns" from consideration
+- **M6 list correction**: of 7 items given to PM for manual assignment, 6 are Fast Follow (no sprint needed): #104, #106, #465, #546, #568, #760 — only #558 was MVP
+- **Remaining MVP items for PM assignment**: 9 items (#558, #998, #1167, #1190, #1211, #1217, #1235, #1241, #1296)
+- PM assigned #558 (MUX-STANDUP-CONVERSE) → M4; assigning remaining 8 manually
+- PM completed all remaining MVP assignments:
+  - #1296 → FLYWHEEL (CIO to action — memo sent)
+  - #1241 → M4
+  - #1235 → RECONNECT (possibly completed, needs proper close — existing status "Review for accuracy")
+  - #1217 → M4
+  - #1211 → M5 (polish)
+  - #1190 → M5 (polish)
+  - #1167 → M5 (distribution)
+  - #998 → Closed as superseded (incorrect issue)
+- Sprint recovery complete: all open MVP-milestone issues now have sprint assignments
