@@ -1086,6 +1086,24 @@ async def handle_github_callback(
         )
 
 
+@router.get("/github/oauth-status")
+async def github_oauth_status(current_user: JWTClaims = Depends(get_current_user)):
+    """Per-user GitHub OAuth-connector binding status (#1317 / ADR-070 C).
+
+    Distinct from the legacy native-PAT status (`GET /github`, system-scoped) — this
+    reflects the user's `connector_binding`, so the Settings page can show the OAuth
+    connection as connected. No token is read or returned (D3).
+    """
+    from services.connectors.binding_repository import ConnectorBindingRepository
+    from services.database.session_factory import AsyncSessionFactory
+    from services.mcp.consumer.connector import ConnectorStatusState
+
+    async with AsyncSessionFactory.session_scope() as session:
+        binding = await ConnectorBindingRepository(session).get(current_user.sub, "github")
+    connected = binding is not None and binding.status == ConnectorStatusState.BOUND.value
+    return {"connected": connected, "status": (binding.status if binding else None)}
+
+
 @router.post("/calendar/disconnect")
 async def disconnect_calendar(
     current_user: JWTClaims = Depends(get_current_user),
