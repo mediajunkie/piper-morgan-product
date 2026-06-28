@@ -7,7 +7,7 @@
 ### 📌 PM-collaborative — RESURFACE when PM's ready (PM asked me to remind, 6/27)
 - **Ted Nadeau email** — PM has new email from Ted Nadeau to share for **review + discussion**. (Note: a `mailboxes/ted-nadeau/` inbox unread exists — may or may not be the same; PM will share the content.)
 - **Saved articles/links** — PM has recent articles/links saved to **evaluate together**.
-- **HOST CronList** (the other open ask) — PM to paste HOST's `8ab6a203` entry (expr + prompt) to settle the fossil-cron question.
+- **HOST CronList — RESOLVED 6/27** (PM pasted HOST's fire prompt): expr = `37 6,9,12,15,18,21` (**6×/day, NOT old hourly `2,4-23`**) → **firing-frequency fossil-trick DISCONFIRMED** (so "firing regularly" = low-activity + foregrounding, not a cadence trick). BUT the heavy identity-establishing prompt IS a real *different* trick: **self-contained re-grounding each fire** (role + paths + procedure inline → resilient to context-loss/compaction) — the thin prompt traded it for brevity. (Meta: the incident itself proves the self-grounding strength — a heavy "you are HOST" prompt nearly persona-forked a CIO.) Alignment: HOST prompt mostly-current (Option B / mail-send.sh / keep-armed / single-surface ✓) + 1 stale bit (still mentions the deprecated mailbox-bridge alongside mail-send). **Update-HOST = LOW-PRI** (functionally fine; slim-to-thin is cosmetic, but KEEP some self-grounding given the trick). Lesson for the thin prompt: re-incorporate a little self-grounding.
 
 ### Live / in-flight
 - **Ship #049 workstream review — DELIVERED 6/27** (`018568294` → Exec cc PA+PM; dev archive `9259f5243`). §0 portfolio-goals: 1 complete (migration retires), 3 advanced, 2 slipped (#972 + gbrain — flagged for re-slot in §6).
