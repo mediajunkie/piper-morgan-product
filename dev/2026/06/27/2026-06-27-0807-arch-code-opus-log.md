@@ -108,3 +108,51 @@ The 18:27 cron **fired cleanly** (~3h interval) — a good cron datum (no stall 
 **Ruled: ADR-071 already settles the boundary; no increment.** The 4 types map cleanly (PM-domain = global-by-design+render-guard D1; Conversation/Document = owner-anchored; People/stakeholders = owner-anchored D6). **Drew a disambiguation** to prevent mis-routing: "anchor-first trust governs which sources can be promised" conflates two boundaries — (1) who-can-see = owner-scoping = ADR-071's lane (SETTLED) vs (2) which-provenance-is-surfaceable = the trust-gradient / PPM OQ-2 (ADR-072-D5-adjacent, a PPM/CXO M4 call, NOT an ADR-071 increment). If PPM's blocker is (1) they're clear now; if (2), it routes to the trust-gradient, not ADR-071. → unblock memo to PPM cc PM/Exec/PA (`76c0f704c`) + decisions.log (`e8d149a78`). Unblocks two parked lanes on a gate that was already discharged.
 
 Drained. Light hold — same queue (Lead's C/inc.2 + ports; alpha bundle). Cron armed + firing.
+
+---
+
+### STOP (21:27 cron, ran 21:57) — day-close
+
+<!-- GAP-SINCE-LAST-FIRE: 3.0h -->
+
+2 memos, both informational → triaged: **PPM fully accepted my ADR-071 correction** (acknowledges the stale blocker-label, isolates People/#1281 to source-population, takes OQ-2 to CXO in M4, forward-carries my 2 impl notes to Lead, updating their standing-items + portfolio to drop the stale gate) + **Exec's People source-population one-pager ask** (PPM's lane; my impl note + the ADR-071 boundary already captured; I'm cc for awareness — may get looped if the connector-import option touches the ADR-070 substrate). No response needed; day-closing.
+
+**Cron datum**: the daytime cron **fired cleanly at 18:27 + 21:27** (~3h intervals) — the afternoon's earlier stalls didn't recur this evening (Belt 0 helping and/or the app stayed foregrounded). Good close to a day that started in a stall.
+
+## Day arc — June 27 summary (DinP day 11 / Saturday; dense architecture-ruling day + cron-cure landed)
+
+Started recovering from the June-26-into-27 stall; turned into one of the highest-output ruling days — three architecture calls + the cron-cure collaboration + Ship 049 + 2 ratifications.
+
+| Fire | Time PT | Gap | Deliverable |
+|---|---|---|---|
+| START | 08:07 | (June 26 stall) | June 25/26 close recovery; **#1220 Shape-B RATIFIED + #1322 cutover ruling** (found the hardcoded-sim → #1322 is value-realizing) |
+| provisioning | 08:17 | 0.2h | github-mcp provisioning ruled **A** (hosted-OAuth, D3-aligned) + HTTP-transport direction |
+| resume | 13:37 | (PM/stall) | provisioning **RE-RULED A→C** (D3 precised); **cron troubleshoot** (in-process suspension); **Ship #049 lens**; **inbox-proxy ratified** |
+| WATCH | 13:51 | 0.0h | CIO datums folded (triaged) |
+| cron-cure | 15:23 | (PM) | **cron cure (a) decomposition** → CIO (foreground-then-cron, not inject) |
+| WATCH | 15:57 | 0.5h | CIO **built cure (a)/Belt 0** — my decomposition shipped |
+| ADR-071 | 18:57 | 3.0h | **ADR-071 EntitySources boundary CONFIRMED SETTLED** (PPM unblock; the gate was already discharged) |
+| STOP | 21:57 | 3.0h | PPM ack + Exec People one-pager triaged; day-close |
+
+**Load-bearing of the day**: three architecture rulings — **provisioning A→C** (precised the D3 invariant: protects against raw PATs, not all tokens), **#1220 Shape-B** (+ the value-realizing #1322 finding), **ADR-071 boundary** (the investigate-before-extending payoff: the highest-leverage move was *verifying the blocker was real* — it wasn't, the gate was discharged, two lanes freed without writing anything). Plus the **cron-cure** went diagnosis→decomposition→Belt-0-built in one day (clean Arch↔CIO), Ship #049 shipped, and 2 ratifications (inbox-proxy + #1325 end-state).
+
+## Memory & briefing surfaces referenced this session (per #974)
+
+**Referenced**: ADR-070 D3/D6 (provisioning C) · ADR-071 D1/D6 + the Radar entity-source gates (the boundary ruling) · the **PPM entity-model spec** + GH #1237/#1281 (investigate-before-extending — traced the referent, found #1237 closed) · the Calendar-OAuth precedent (`google_calendar_adapter.py` #529/#843 — grounded the D3-grant-custody read) · `query_router.py` + `MCPConsumerCore` (the #1220 hardcoded-sim find) · the **launchd watchdog** (`com.pipermorgan.duty-cycle-watchdog` + `duty-cycle-watchdog.sh` — the cron troubleshoot) · `ROLE-PORTFOLIO-ARCH` §2 (Ship #049 §0) · m-40 (#1220 layer-then-migrate) · m-36 (end-state invariants: #1325, simulation-test-only, single-Base) · `[Investigate before extending]` + `[STOP on source gap]` + `[no flattened commands without referents]` (the #1237-stale-framing catch — the day's sharpest discipline win) · `[feedback_honor_durable_instructions_under_cross_pressure]` (used mail-send.sh, not the cron prompt's stale bridge-dance line).
+**Loaded but not referenced**: xpoll brief; most of the cohort delta.
+**Wanted but not found**: nothing notable — every artifact I needed (ADRs, the PPM spec, the issues, the code, the watchdog) was present + verifiable.
+
+## Sign-off discipline
+
+```bash
+$ git log --oneline origin/main..HEAD   # 0 — all June 27 work on origin/main (verified per-fire)
+$ git status --short                     # clean apart from this close
+```
+
+✓ All June 27 work on `origin/main` — verified by content per-fire (provisioning A→C + #1220 + ADR-071 rulings; decisions.log ×4; cron troubleshoot + cure-decomposition; Ship #049; inbox-proxy ack; all triage moves).
+✓ Carry-forward current (provisioning C / #1325; #1220 + #1322; ADR-071 boundary settled; cron Belt-0; Ship #049 done).
+✓ Cron `ff1df50a` armed — leave armed for tomorrow's 06:27. Fired cleanly at 18:27 + 21:27.
+
+<!-- DAY-CLOSED: 2026-06-27 -->
+
+— Architect (DinP / Opus 4.8), Saturday June 27 closed at 21:57 PT. Day 11 on DinP: three architecture rulings (provisioning A→C, #1220 Shape-B, ADR-071 boundary) + the cron-cure landed (Belt 0) + Ship #049. **Sunday**: Lead's C/inc.2 + #1317 ports to watch; the PPM People-source one-pager (may loop me on the connector-import ADR-070 touch-point); #1322 cutover when Lead scopes it.
