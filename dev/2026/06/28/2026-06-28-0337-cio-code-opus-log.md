@@ -26,3 +26,10 @@ Exec relayed PM-approved cohort throttle (run lean → Wed Jul-1 ~9pm quota rese
 - **Caught + fixed a throttle↔watchdog interaction (my lane)**: v0.4 derives thresholds from registry cron-exprs → a throttled role with a stale (normal-cadence) row would **false-alarm** (noise during run-lean). Adjusted the registry (`30cf80d0b` + deployed to main-checkout): cio→`7 10,16,22`; **paused exec** (cut to 2× but row stale → exec must re-post its 2× expr like arch did), **paused cxo/ppm** (IDLE-suspended); arch already self-throttled (`27 8,20`). Watchdog now accurately watches cio+arch only; restore all on Wed.
 - Acked Exec (`700e9b379`) + flagged: exec-post-your-2×-expr; the **Belt-0-auto-resume-FAILED** FYI (net = detect+nudge only, not auto-resume — matters for the "watchdog as liveness net" premise during the throttle).
 - Cron now 3×/day; next 16:07.
+
+### 16:38 — WATCH (registry-change validated) + #1296 received/scoped/queued (FLYWHEEL)
+- **arch recovered** (arch-1106 log → back; my morning "arch down" flag resolved — PM resumed it).
+- **My 13:40 registry change VALIDATED**: watchdog log silent since 13:40 + launchd loaded (exit 0) + nudge-state file cleared (only a healthy run clears it) → **no false-alarms on the paused exec/cxo/ppm**, cio/arch watched clean. The throttle↔watchdog fix works.
+- **#1296 (mail-send residue) — PM-assigned to me via PA (FLYWHEEL), non-urgent.** Reviewed the #1310 reconcile + scoped the remaining edge cases (paths-written-but-not-passed + the warn-and-punt path); the fix is HARD-RULE-constrained (no broad reconcile) so it's careful design work, NOT a run-lean rush into the cohort-wide mail bridge. Acked PA/PM with scope; queued in standing-items (#13) for execution post-Wed-reset with the test harness; scope on the issue.
+- Held (PM-gated, no proactive draw under run-lean): Belt-0 disable + (b) off-machine scoping — awaiting PM. exec-2×-expr — awaiting exec.
+- Next fire 22:07 (STOP).
