@@ -86,6 +86,13 @@ Every Friday: (1) verify the just-closed Fri–Thu window's session logs are day
 ## ▶ Ship #049 — detail
 Call `f15f196d3` (6 leads, window Jun 19–25, §0 portfolio-progress format, Tue 6/30 last-call → Wed 7/1). Log-closure memos to CXO + PA (`e9337a3de`); PA also adopting duty-cycle STOP day-close. (Live tally above.)
 
+
+## ⚡ INCOMING (PM 6/28) — quota strain → slower cadences / idle some agents (next couple days)
+PM taxing quota hard; **probably moving to slower cadences or idling some agents ~2 days.** PM clearing all inboxes today. **Exec to operationalize on PM's word** (coordination lane): propose a cadence-reduction plan + which agents idle vs keep; **include slowing my OWN exec cron** (6x/day → fewer) as part of the cut. Don't act unilaterally yet — await PM's go/plan. Most in-flight items are low-urgency or near-done, so a slowdown is low-risk.
+
+## 📐 PM PRINCIPLE (6/28) — roadmap must not carry stale open/closed detail
+If the roadmap has sprint open/closed detail, it can't go stale. Cure = the canonical sprint-order list (PPM, in progress) + GH Sprint field own live status; roadmap references at altitude (don't duplicate). Backstop = recurring open-vs-tracked scrub. Captured in recurring-tasks design note. Drove the 3 stale-as-pending framings this week.
+
 ## PM-attention items
 - **MCPB clean-machine test** + **#1320/#1162** = the alpha-email gate.
 - **Re-prod CXO + PPM** (watchdog-flagged 07:44; Arch already back).
