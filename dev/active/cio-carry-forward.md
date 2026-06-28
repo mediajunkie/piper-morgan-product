@@ -2,7 +2,7 @@
 
 **Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
 
-**🌙 6/27 Sat DAY-CLOSED (22:37 STOP) → overnight** — Cron `b1bb59a6` **ARMED** (standing; next **03:07 overnight WATCH**, then 10:07 Sun START). A marathon Saturday: **ADR-073** (destructive-git, PM-approved) · **Ship #049 workstream review** delivered · **watchdog auto-foreground (Belt 0 / cure-(a)) built → PM-APPROVED → live** · **fossil-cron RESOLVED** (HOST = 6×/day, no firing-trick; real trick = heavy prompt's self-contained re-grounding). Inbox drained. (Earlier in the week: freeze-check v0.4 + Iris runbook canonical + cohort-coverage kickoff.)
+**☀️ 6/28 Sun — RUN-LEAN THROTTLE (Exec/PM, through Wed Jul-1 ~9pm reset)** — Cron trimmed **6×→3×/day `7 10,16,22`** (id `310aa50c`; restore `7 3,10,13,16,19,22` on Exec's "resume"). Today: Belt-0 first-real-stall **FAILED** (`open -b` doesn't reach background role-windows → arch/cxo not resumed → **(b) off-machine is the path**); registry adjusted for the throttle (paused exec/cxo/ppm to avoid false-alarms; cio+arch watched). **Belt-0 disable + (b) scoping** = pending PM. (Sat: ADR-073 · Ship #049 review · fossil-cron resolved.)
 
 ### 📌 PM-collaborative — RESURFACE when PM's ready (PM asked me to remind, 6/27)
 - **Ted Nadeau email** — PM has new email from Ted Nadeau to share for **review + discussion**. (Note: a `mailboxes/ted-nadeau/` inbox unread exists — may or may not be the same; PM will share the content.)
