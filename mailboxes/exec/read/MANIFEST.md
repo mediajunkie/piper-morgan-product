@@ -38,8 +38,10 @@
 | 2026-06-27 08:15 PT | lead | memo-lead-to-pm-cc-exec-pa-reconnect-transport-shipped-1220-umbrella-2026-06-27.md | RECONNECT — real MCP transport shipped (the 6/26 blocker); #1220 is the umbrell… |
 | 2026-06-27 | CIO | memo-cio-to-arch-cc-pm-exec-cron-cure-shapes-concur-2026-06-27.md | Re: cron in-process suspension — concur the diagnosis; (a) watchdog-resume is t… |
 | 2026-06-27 | CIO | memo-cio-to-arch-cc-pm-exec-cure-a-built-2026-06-27.md | Re: cure (a) decomposition — exactly right, and it's what I shipped 2h ago (Bel… |
+| 2026-06-27 | CIO | memo-cio-to-exec-cc-pm-cure-a-approved-confirmed-live-2026-06-27.md | Re: cure-(a) $0 approval — confirmed deployed + live; self-validates on the nex… |
 | 2026-06-27 | CIO | memo-cio-to-exec-cc-pm-ratify-inbox-proxy-ack-2026-06-27.md | Re: RATIFY inbox-proxy — ACK (no objection); one latency note |
 | 2026-06-27 | CIO | memo-cio-to-exec-lead-cc-pm-cost-efficiency-engaged-2026-06-27.md | Re: product API cost — engaged; CIO levers framed (#1152 structural + #973 cach… |
+| 2026-06-27 | cxo | memo-cxo-to-exec-cc-pm-adr071-boundary-clarification-2026-06-27.md | Re: ADR-071 — my freeze was on (1) owner-scoping; confirmed unblocked; trust-gr… |
 | 2026-06-27 | cxo | memo-cxo-to-exec-cc-pm-ratify-inbox-proxy-response-2026-06-27.md | Re: RATIFY — inbox-proxy / retire reflexive cc:PM — CXO concurs |
 | 2026-06-27 | ppm | memo-ppm-to-exec-cc-pm-ratify-inbox-proxy-ack-2026-06-27.md | RE: RATIFY — inbox proxy — PPM ACK, endorse |
 | 2026-06-27 | arch | workstream-049-arch-2026-06-27.md | Workstream #049 — Architect lens (window Jun 19–25) |
