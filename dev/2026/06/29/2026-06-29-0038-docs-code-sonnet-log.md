@@ -39,7 +39,8 @@
   - Cross-reference gate: PASS (11/11 logs; Lead↔Arch dead-code concurrence verified; throttle 10/10 ACKs consistent)
   - Format: HIGH-COMPLEXITY: EXECUTION (11 agents, parallel tracks + throttle cascade coordination thread)
   - Omnibus written: `docs/omnibus-logs/2026-06-28-omnibus-log.md` (173 lines) → committed (`1c2ce3a72`)
-  - 11 activity-log Shape B rows appended (1532→1543) → this commit
+  - 11 activity-log Shape B rows appended (1532→1543) → `1e05065c7`
+- **(~11:10 PDT — second compaction resume) — carry-forward updated** (`d2bdfd83a`): June 29 done items reconciled (syndication, calendar-view fix, omnibus, activity-log). Queue (0,0); IDLE.
 
 ---
 
