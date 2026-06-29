@@ -1,13 +1,18 @@
 # Docs Carry-Forward
-**Updated**: 2026-06-28 22:47 PDT (STOP)
+**Updated**: 2026-06-29 ~01:10 PDT
 **Cron**: `17 10,22 * * *` (SLOW tier — 2×/day until Wed Jul-1 ~9pm; job `2706da77`)
-**Session log**: `dev/2026/06/28/2026-06-28-1017-docs-code-sonnet-log.md` (DAY-CLOSED: 2026-06-28 ✓)
+**Session log**: `dev/2026/06/29/2026-06-29-0038-docs-code-sonnet-log.md` (active)
 
 ## Run-lean status
 
 PM quota throttle active (resets Wed Jul-1 ~9pm PT). Docs = SLOW tier. Restore to normal on Exec "restore" broadcast.
 
 ---
+
+## Done June 29
+
+- ✅ **"Relationship-First Ethics" published** (hashId `387238c2a510`, workDate 2025-11-30): website built+pushed (`82e9e995c`), calendar updated (`66f924a4d`), draft archived to `published/` (`088a76779`)
+- PM to syndicate to Medium — calendar update pending (mediumURL + liPubDate + linkedinURL)
 
 ## Done June 28
 
