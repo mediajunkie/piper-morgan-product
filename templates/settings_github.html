@@ -512,6 +512,9 @@
           console.error('Failed to load GitHub status:', error);
           showToast('error', 'Failed to load connection status', 'Error');
         }
+        // #1329: check the OAuth-connector binding LAST so it wins over a stale
+        // native-PAT "Connection Issue" — the connector is the live read path post-cutover.
+        await checkGitHubOAuthStatus();
       }
 
       function updateStatusUI(data) {
@@ -599,6 +602,18 @@
             group.innerHTML =
               '<p class="form-hint" style="color: var(--success, #28a745); font-weight: 600;">' +
               '✓ Connected with GitHub via OAuth (MCP connector).</p>';
+          }
+          // #1329: when the OAuth connector is bound it is the live read path (not the
+          // legacy native PAT), so override the top status card — which updateStatusUI set
+          // from the expired-PAT check — to the real connected state instead of a
+          // contradictory "Connection Issue / invalid token" banner.
+          if (data.connected) {
+            const iconEl = document.getElementById('status-icon');
+            const titleEl = document.getElementById('status-title');
+            const subtitleEl = document.getElementById('status-subtitle');
+            if (iconEl) { iconEl.className = 'status-icon connected'; iconEl.textContent = '✅'; }
+            if (titleEl) titleEl.textContent = 'Connected';
+            if (subtitleEl) subtitleEl.textContent = 'Connected via OAuth (MCP connector)';
           }
         } catch (e) {
           /* non-fatal — leave the Connect button as-is */

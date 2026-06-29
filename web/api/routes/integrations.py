@@ -303,6 +303,29 @@ async def check_all_connections(current_user: JWTClaims = Depends(get_current_us
     return results
 
 
+async def _github_oauth_bound(user_id: Optional[str]) -> bool:
+    """True if the user has a BOUND github OAuth-connector binding (#1329 / ADR-070 C).
+
+    GitHub health follows the OAuth connector after the #1322 cutover, not the legacy
+    native PAT — so a dead/expired PAT must NOT make GitHub read as unhealthy when the
+    connector is bound and the chat reads work through it. Mirrors the binding check in
+    ``GET /github/oauth-status``.
+    """
+    if not user_id:
+        return False
+    try:
+        from services.connectors.binding_repository import ConnectorBindingRepository
+        from services.database.session_factory import AsyncSessionFactory
+        from services.mcp.consumer.connector import ConnectorStatusState
+
+        async with AsyncSessionFactory.session_scope() as session:
+            binding = await ConnectorBindingRepository(session).get(user_id, "github")
+        return binding is not None and binding.status == ConnectorStatusState.BOUND.value
+    except Exception as e:
+        logger.warning("github oauth-binding health check failed", error=str(e))
+        return False
+
+
 async def _check_integration_health(
     integration_id: str, metadata: Dict[str, Any], user_id: Optional[str] = None
 ) -> IntegrationStatus:
@@ -316,6 +339,19 @@ async def _check_integration_health(
             visible — fine for non-user-scoped integrations).
     """
     try:
+        # RECONNECT (#1329): GitHub health follows the OAuth connector binding, not the
+        # legacy native PAT. A BOUND connector → healthy (the chat reads go through it),
+        # even if the old PAT is expired. Takes precedence over the native config/health.
+        if integration_id == "github" and await _github_oauth_bound(user_id):
+            return IntegrationStatus(
+                name=integration_id,
+                display_name=metadata["display_name"],
+                status="healthy",
+                status_message="Connected via OAuth (MCP connector)",
+                configure_url=metadata.get("configure_url"),
+                can_test=True,
+            )
+
         # Try to get cached health status or check configuration
         config_status = await _get_integration_config_status(integration_id, user_id=user_id)
 
