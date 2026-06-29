@@ -12,7 +12,10 @@ PM quota throttle active (resets Wed Jul-1 ~9pm PT). Docs = SLOW tier. Restore t
 ## Done June 29
 
 - ✅ **"Relationship-First Ethics" published** (hashId `387238c2a510`, workDate 2025-11-30): website built+pushed (`82e9e995c`), calendar updated (`66f924a4d`), draft archived to `published/` (`088a76779`)
-- PM to syndicate to Medium — calendar update pending (mediumURL + liPubDate + linkedinURL)
+- ✅ **"Relationship-First Ethics" syndication complete**: LinkedIn URL + Medium URL both in calendar (`36271d48e`, `additional calendar commit`)
+- ✅ **editorial-calendar-view.html staleness fix**: rebuilt via script (`37da1933c`); update-calendar skill v1.1 now includes rebuild step (`b8f9a4b0f`)
+- ✅ **June 28 omnibus** (HIGH-COMPLEXITY: 11 logs; RECONNECT P3 milestone + sprint recovery + Belt-0 disable + cohort throttle; `1c2ce3a72`)
+- ✅ **11 activity-log rows** for Jun 28 (Shape B; 1532→1543; `1e05065c7`)
 
 ## Done June 28
 
