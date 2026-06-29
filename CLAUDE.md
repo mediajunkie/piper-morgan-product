@@ -10,23 +10,23 @@ Instructions for Claude Code agents working in this repository.
 
 | Role | Briefing | Session Log Slug |
 |------|----------|-----------------|
-| Lead Developer | `BRIEFING-ESSENTIAL-LEAD-DEV.md` | `lead-code-opus` |
-| Piper Alpha (PA) | `BRIEFING-piper-alpha.md` | `pa-opus` |
-| Chief Architect | `BRIEFING-ESSENTIAL-ARCHITECT.md` | `arch-code-opus` |
-| Chief of Staff (exec) | `BRIEFING-ESSENTIAL-CHIEF-STAFF.md` | `exec-code-opus` |
-| Chief Experience Officer (CXO) | `BRIEFING-ESSENTIAL-CXO.md` | `cxo-code-opus` |
-| Chief Innovation Officer (CIO) | `BRIEFING-ESSENTIAL-CIO.md` | `cio-code-opus` |
-| Principal Product Manager (PPM) | `BRIEFING-ESSENTIAL-PPM.md` | `ppm-code-opus` |
-| Head of Sapient Trust (HOST) | `BRIEFING-ESSENTIAL-HOST.md` | `host-code-opus` |
-| Communications | `BRIEFING-ESSENTIAL-COMMS.md` | `comms-code-opus` |
-| Documentation Management (Docs) | `BRIEFING-ESSENTIAL-DOCS.md` | `docs-code-opus` |
+| Lead Developer | `BRIEFING-ESSENTIAL-LEAD-DEV.md` | `lead-code` |
+| Piper Alpha (PA) | `BRIEFING-piper-alpha.md` | `pa-code` |
+| Chief Architect | `BRIEFING-ESSENTIAL-ARCHITECT.md` | `arch-code` |
+| Chief of Staff (exec) | `BRIEFING-ESSENTIAL-CHIEF-STAFF.md` | `exec-code` |
+| Chief Experience Officer (CXO) | `BRIEFING-ESSENTIAL-CXO.md` | `cxo-code` |
+| Chief Innovation Officer (CIO) | `BRIEFING-ESSENTIAL-CIO.md` | `cio-code` |
+| Principal Product Manager (PPM) | `BRIEFING-ESSENTIAL-PPM.md` | `ppm-code` |
+| Head of Sapient Trust (HOST) | `BRIEFING-ESSENTIAL-HOST.md` | `host-code` |
+| Communications | `BRIEFING-ESSENTIAL-COMMS.md` | `comms-code` |
+| Documentation Management (Docs) | `BRIEFING-ESSENTIAL-DOCS.md` | `docs-code` |
 | Coding Agent | `BRIEFING-ESSENTIAL-AGENT.md` | `prog-code` |
 
-All seven leadership roles + Lead Dev + Docs are on Code as of 2026-04-26 (migration wave Apr 22–26: HOST, CIO, Comms, CXO, PPM, Architect, Exec). Role slugs use `-code-opus` to indicate Claude Code (vs. `-opus` for legacy Chat sessions in historical logs).
+All seven leadership roles + Lead Dev + Docs are on Code as of 2026-04-26 (migration wave Apr 22–26: HOST, CIO, Comms, CXO, PPM, Architect, Exec). Role slugs use `-code` to indicate Claude Code. Historical logs (pre-2026-06-29) used `-code-opus` or `-code-sonnet` — model was dropped from filenames 2026-06-29 (model changes mid-session; the log header is the correct home for model tracking).
 
 **Canonical role roster**: `docs/briefing/ROSTER.md` codifies the tiering (7 leadership + 3 staff + specialized) with one-line lane summaries and slug + briefing pointers. Read it when you need the org-shape view; come back to the table above for the assignment-flow view.
 
-**If no role is assigned**, you are a **general-purpose Claude Code agent** working on Piper Morgan. Use the role slug `code-opus` for your session log. Do not assume you are the Lead Developer — ask PM what role you should take if the task is ambiguous.
+**If no role is assigned**, you are a **general-purpose Claude Code agent** working on Piper Morgan. Use the role slug `code` for your session log. Do not assume you are the Lead Developer — ask PM what role you should take if the task is ambiguous.
 
 **Session logs**: `dev/active/YYYY-MM-DD-HHMM-[role-slug]-log.md`
 
@@ -67,7 +67,7 @@ Context pressure that triggers shortcuts is the wave tumbling you. Turn into it 
 ```bash
 # 1. Create session log FIRST (even if you think you'll be quick)
 mkdir -p dev/$(date +%Y/%m/%d)
-# Create: dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-[role]-code-opus-log.md
+# Create: dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-[role]-code-log.md
 
 # 2. Check mailbox
 ls mailboxes/lead/inbox/
@@ -370,10 +370,10 @@ We're colleagues - "xian" and "Claude". No formal hierarchy.
 
 **Working documents location**: `dev/YYYY/MM/DD/`
 
-**Session log naming**: `YYYY-MM-DD-HHMM-{role}-{tool}-{model}-log.md`
+**Session log naming**: `YYYY-MM-DD-HHMM-{role}-{tool}-log.md`
 - Your role slug depends on your assigned role (see role table above)
 - Your tool is `code` for Claude Code
-- Your model is `opus`
+- Model is tracked in the log **header** (not the filename) — record it there, especially if PM changes it mid-session. Historical logs (pre-2026-06-29) include `-opus` or `-sonnet` in the filename; leave those as-is.
 
 **Session log maintenance**:
 - Create log at TRUE session start only (use `/create-session-log` skill)
