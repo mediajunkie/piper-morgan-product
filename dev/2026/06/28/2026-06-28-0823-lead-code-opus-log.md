@@ -70,3 +70,23 @@ manual testing/review this morning.
   integration collects clean (890). **Next**: inc.2 `query_router.federated_search` + dormant
   `mcp_consumer` (now caller-less post inc.1); inc.3 github_adapter sim methods + #1088
   demo-fallback; inc.4 the orphaned sim classes; inc.5 m-36 guard.
+
+- **~12:00 — PM answered the 3 chat-cutover decisions + I delivered a test plan.** Built an HTML
+  test plan (`dev/2026/06/28/reconnect-github-test-plan-2026-06-28.html`, SendUserFile'd) — 4
+  checks (badge + issues/PRs/stale-PRs chat) + the 3 questions. **PM decisions**: Q1 = a
+  resolution hierarchy (explicit→infer+trust→ask→smart-default; current user-wide = the get-all
+  default branch) + Q2 = default-repo mechanism → filed **#1327**; Q3 = **cut writes
+  (close/comment) over** to the connector (write-path capable: grant has `repo` scope + tools
+  exist; first real write = PM-chosen target, not unsolicited) → **#1322 comment 4828041009**.
+  Key dependency surfaced: writes + repo-scoped reads both need "which repo" → **#1327
+  default-repo is the foundation** that unblocks both. Build order: #1327 → repo-scoped reads →
+  writes.
+
+- **~13:00 — PM away until ~6/29; entering AUTONOMOUS mode (RUN-LEAN/KEEP tier).** PM authorized
+  autonomous RECONNECT work while away. Given this session's extreme length (compaction risk),
+  trusting the continuity infra (wave-pattern) over grinding core surgery here: **refreshed
+  `dev/active/lead-carry-forward.md`** to current end-6/28 state with the autonomous queue
+  (sim-retirement inc.2–5 per #1322 plan → #1327 default-repo backend), the PM-gated list (writes
+  live-verify, set-default UX, alpha release — NOT autonomous), and the staging/restart refs.
+  **Armed a 3×/day KEEP-tier cron** (per the throttle) so fresh-context fires execute the
+  methodical increments. Inbox clean; everything on origin/main; staging stack up for PM testing.
