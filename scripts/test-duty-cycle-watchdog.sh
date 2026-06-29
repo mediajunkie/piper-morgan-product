@@ -52,10 +52,16 @@ run "STALE ppm 9h
 lastlog | grep -q "WOULD-NUDGE \[perrole\]: ppm" && ok "new role (ppm) nudged" || no "ppm should nudge → $(lastlog)"
 grep -q "^cio" "$STATE" 2>/dev/null && no "recovered cio still in state" || ok "recovered cio dropped from state"
 
-echo "── T7: Belt 0 — stale → WOULD-FOREGROUND logged (auto-foreground resume attempt) ──"
+echo "── T7: Belt 0 — DEFAULT OFF (disabled 6/28), but fires when explicitly enabled (=1) ──"
+# T7a: default (no WATCHDOG_AUTO_FOREGROUND) → stale → NO foreground (the 6/28 disable)
 : > "$LOG"; : > "$STATE"; run "STALE cio 9h
 "
-grep -q "WOULD-FOREGROUND" "$LOG" && ok "Belt 0 fired auto-foreground on stall" || no "Belt 0 didn't fire → $(cat "$LOG")"
+grep -q "WOULD-FOREGROUND" "$LOG" && no "Belt 0 fired by default — should be OFF since 6/28 → $(cat "$LOG")" || ok "Belt 0 OFF by default (disabled 6/28)"
+# T7b: explicitly enabled (=1) → stale → foreground fires (mechanism preserved for single-window/Mac-Mini)
+: > "$LOG"; : > "$STATE"; printf 'STALE cio 9h\n' > "$FIX"
+WATCHDOG_DRYRUN=1 WATCHDOG_LOG="$LOG" WATCHDOG_STATE="$STATE" WATCHDOG_AUTO_FOREGROUND=1 \
+  WATCHDOG_NUDGE_COOLDOWN=0 WATCHDOG_FREEZE_CMD="cat '$FIX'" bash "$W"
+grep -q "WOULD-FOREGROUND" "$LOG" && ok "Belt 0 still fires when explicitly enabled (=1)" || no "Belt 0 didn't fire when enabled → $(cat "$LOG")"
 
 echo "── T8: WATCHDOG_AUTO_FOREGROUND=0 → Belt 0 suppressed (toggle) ──"
 : > "$LOG"; : > "$STATE"; printf 'STALE cio 9h\n' > "$FIX"

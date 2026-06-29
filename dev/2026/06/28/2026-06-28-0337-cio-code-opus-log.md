@@ -26,3 +26,17 @@ Exec relayed PM-approved cohort throttle (run lean → Wed Jul-1 ~9pm quota rese
 - **Caught + fixed a throttle↔watchdog interaction (my lane)**: v0.4 derives thresholds from registry cron-exprs → a throttled role with a stale (normal-cadence) row would **false-alarm** (noise during run-lean). Adjusted the registry (`30cf80d0b` + deployed to main-checkout): cio→`7 10,16,22`; **paused exec** (cut to 2× but row stale → exec must re-post its 2× expr like arch did), **paused cxo/ppm** (IDLE-suspended); arch already self-throttled (`27 8,20`). Watchdog now accurately watches cio+arch only; restore all on Wed.
 - Acked Exec (`700e9b379`) + flagged: exec-post-your-2×-expr; the **Belt-0-auto-resume-FAILED** FYI (net = detect+nudge only, not auto-resume — matters for the "watchdog as liveness net" premise during the throttle).
 - Cron now 3×/day; next 16:07.
+
+### 16:38 — WATCH (registry-change validated) + #1296 received/scoped/queued (FLYWHEEL)
+- **arch recovered** (arch-1106 log → back; my morning "arch down" flag resolved — PM resumed it).
+- **My 13:40 registry change VALIDATED**: watchdog log silent since 13:40 + launchd loaded (exit 0) + nudge-state file cleared (only a healthy run clears it) → **no false-alarms on the paused exec/cxo/ppm**, cio/arch watched clean. The throttle↔watchdog fix works.
+- **#1296 (mail-send residue) — PM-assigned to me via PA (FLYWHEEL), non-urgent.** Reviewed the #1310 reconcile + scoped the remaining edge cases (paths-written-but-not-passed + the warn-and-punt path); the fix is HARD-RULE-constrained (no broad reconcile) so it's careful design work, NOT a run-lean rush into the cohort-wide mail bridge. Acked PA/PM with scope; queued in standing-items (#13) for execution post-Wed-reset with the test harness; scope on the issue.
+- Held (PM-gated, no proactive draw under run-lean): Belt-0 disable + (b) off-machine scoping — awaiting PM. exec-2×-expr — awaiting exec.
+- Next fire 22:07 (STOP).
+
+### ~17:40 — PM-directed: DISABLE Belt-0 + SCOPE the off-machine cure (both DONE)
+PM: "yes, disable belt-0 and scope the off machine cure."
+- **Belt-0 DISABLED** (`8bc01cc28`): watchdog v2.2, default `WATCHDOG_AUTO_FOREGROUND=0` (was 1), full comment on why (validated-failed 6/28, window-throttle). Block kept (off) for single-window/Mac-Mini case + history; `=1` re-enables. Nudge backstop untouched. Tests rewritten (T7→T7a default-off + T7b enabled-fires) → **10/10**. Deployed to main-checkout (verified clean first; deployed copy confirmed `:-0`).
+- **(b) SCOPED** → `docs/internal/operations/off-machine-resume-cure-scope-2026-06-28.md`. **Verify-first paid off**: read the actual Iris runbook → it's a *Phase-3 durable-cron* (in-app), NOT an off-machine resume; the off-machine cure is the unbuilt "Phase 4." So I **corrected my earlier "Iris/scheduled-task" lead** (in-app = same backgrounding limit; scheduled-tasks = catch-up-on-relaunch, app-dependent). The real reframe: cure must be **SPAWN-FRESH, not wake-existing**. Scope lays out B1 (launchd→headless `claude -p` spawn — recommended interim, with 6 open questions + a cheap do-first validation spike), B2 (Mac Mini — durable, subsumes B1), B3 (cloud — held). Honest recommendation: **don't build B1 if Mac Mini is imminent** (throwaway); spike-first if weeks-out; $0 phone-nudge floor win either way.
+- Corrected the liveness spec (lines 83 + 105) to match + cross-ref the scope. Updated carry-forward (both lines).
+- **Pending PM**: Mac-Mini timing (build-vs-wait) + approve the spike + optional phone-nudge.
