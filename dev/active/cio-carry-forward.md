@@ -2,7 +2,18 @@
 
 **Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
 
-**☀️ 6/28 Sun — RUN-LEAN THROTTLE (Exec/PM, through Wed Jul-1 ~9pm reset)** — Cron trimmed **6×→3×/day `7 10,16,22`** (id `310aa50c`; restore `7 3,10,13,16,19,22` on Exec's "resume"). Today: Belt-0 first-real-stall **FAILED** → **PM-approved both fixes, DONE**: (1) **Belt-0 DISABLED** (watchdog v2.2, default off, deployed, tests 10/10; nudge backstop unchanged); (2) **(b) off-machine cure SCOPED** → [`off-machine-resume-cure-scope-2026-06-28.md`](../../docs/internal/operations/off-machine-resume-cure-scope-2026-06-28.md) — lead = B1 (launchd→headless `claude -p` spawn-fresh; corrected my earlier "Iris/scheduled-task" lead = in-app, same backgrounding limit); durable fix = B2 Mac Mini. **NOW pending PM: Mac-Mini timing (build-B1-vs-wait) + approve the cheap validation spike + optional $0 phone-nudge.** Registry adjusted for throttle (paused exec/cxo/ppm; cio+arch watched, validated no-false-alarm). (Sat: ADR-073 · Ship #049 · fossil-cron resolved.)
+**☀️ 6/29 Mon — RUN-LEAN THROTTLE** (through Wed Jul-1 ~9pm reset) — Cron **3×/day `7 10,16,22`** (id `310aa50c`; restore `7 3,10,13,16,19,22` on Exec's "resume").
+
+**10:07 fire — two major deliveries:**
+1. **Session-log naming convention** (`dc79a78d3`): model dropped from filenames (PM-approved 6/29 07:02). New format `YYYY-MM-DD-HHMM-{role}-code-log.md`. CLAUDE.md + skill + hook + generate-delta.py all updated; backward-compatible (old logs untouched; parsers accept both). 
+2. **Belt 4 / B1 spawn-fresh** (`5db1e874b`): PM greenlit B1 via Janus (Mac Mini July 6, too far). Validation spike PASSED (auth works headless). Watchdog v2.3 implements Belt 4 (default off, `WATCHDOG_AUTO_SPAWN_ROLES=""`). 14/14 tests. Deployed to main-checkout. **To enable CIO**: set `WATCHDOG_AUTO_SPAWN_ROLES=cio` in launchd plist environment.
+
+**NOW pending PM**:
+- **Enable B1 for CIO** in launchd plist (set `WATCHDOG_AUTO_SPAWN_ROLES=cio` + optional `WATCHDOG_B4_SPAWN_TTL=7200`). Recommend testing on next real stall after run-lean reset.
+- Optional $0 phone-nudge (Belt 3 → ntfy/Pushover): still a floor win orthogonal to B1.
+- **Run-lean restore** (Wed Jul-1 ~9pm): on Exec's "resume" → `CronDelete 310aa50c` + `CronCreate "7 3,10,13,16,19,22"` (full prompt); restore registry rows for exec/cxo/ppm.
+
+Registry: cio+arch watched, validated no-false-alarm. (6/28: Belt-0 validated-FAILED → disabled; (b) cure scoped.)
 
 ### 📌 PM-collaborative — RESURFACE when PM's ready (PM asked me to remind, 6/27)
 - **Ted Nadeau email** — PM has new email from Ted Nadeau to share for **review + discussion**. (Note: a `mailboxes/ted-nadeau/` inbox unread exists — may or may not be the same; PM will share the content.)
