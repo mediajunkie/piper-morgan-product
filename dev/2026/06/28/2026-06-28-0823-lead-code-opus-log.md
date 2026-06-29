@@ -100,3 +100,17 @@ manual testing/review this morning.
   query_router imports clean; **176 green**; integration collects **890 clean** (the
   `--collect-only` gate found no orphaned importers). Cron intact (Gap-C OK). **Next: inc.3**
   (github_adapter sim methods `list_issues_via_mcp`/`connect_to_mcp` + #1088 demo-fallback + tests).
+
+- **Fire cont. (~00:25 6/29) — PM clarified the operating model + #1322 inc.3a shipped.** PM:
+  maintain an **attention doc** for drop-ins; **report in chat then continue** unblocked work;
+  **idle (mail-check only) when nothing's unblocked**. Refreshed `dev/active/duty-cycle-escalations-lead.md`
+  (current PM drop-in items at top; old 6/25 items flagged stale). **inc.3a**: removed dead
+  `connect_to_mcp` from github_adapter (caller-less; committed; imports clean). **inc.3-remainder
+  STOPPED for a fresh fire**: investigating the removal of `list_issues_via_mcp` + `get_issue_via_mcp`
+  (both caller-less) surfaced a **4-test-file blast radius** — 2 are integration tests
+  (`test_github_mcp_router_integration`, `test_github_integration`) that may exercise REAL REST via
+  the `_via_mcp` fallback wrappers → need real-vs-sim investigation + possible update, not deletion.
+  That's investigation-heavy live-connector surgery → wrong to grind in this extreme session;
+  scoped precisely in the carry-forward for a fresh-context fire. Per PM's model, the remaining
+  RECONNECT autonomous work is now this kind of fresh-fire surgery (inc.3-rem, inc.4) or PM-gated
+  (#1327 UX, writes, alpha) → going to mail-check-idle until the next fire / PM.
