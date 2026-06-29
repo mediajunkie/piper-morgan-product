@@ -577,8 +577,18 @@ async def _test_slack(user_id: Optional[str] = None) -> Dict[str, Any]:
 
 
 async def _test_github(user_id: Optional[str] = None) -> Dict[str, Any]:
-    """Test GitHub API connection using stored PAT (Issue #562)"""
+    """Test GitHub connection (Issue #562).
+
+    #1329: the OAuth connector is the live read path post-#1322 cutover, so a BOUND
+    connector means "connected" regardless of the legacy native PAT — report success
+    and skip the native-PAT probe. Falls back to the native PAT test only when there is
+    no OAuth binding.
+    """
     try:
+        # #1329: OAuth connector takes precedence — a bound connector is connected.
+        if await _github_oauth_bound(user_id):
+            return {"success": True, "message": "Connected via OAuth (MCP connector)"}
+
         import aiohttp
 
         from services.infrastructure.keychain_service import KeychainService

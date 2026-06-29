@@ -54,3 +54,13 @@ async def test_non_github_integration_unaffected_by_oauth_shortcircuit():
         )
     assert status.status == "not_configured"
     bound.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_github_test_button_succeeds_when_oauth_bound():
+    """The Integration-Health 'Test' button reports success via the connector when BOUND,
+    without probing the (possibly dead) native PAT — keeps it consistent with the health row."""
+    with patch.object(integrations, "_github_oauth_bound", new=AsyncMock(return_value=True)):
+        result = await integrations._test_github(user_id="u1")
+    assert result["success"] is True
+    assert "OAuth" in result.get("message", "")
