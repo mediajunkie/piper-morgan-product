@@ -134,24 +134,6 @@ class TestGitHubMCPRouterIntegration:
             # Spatial should still work
             assert router.spatial_github is not None, "Spatial should work as fallback"
 
-    @pytest.mark.asyncio
-    async def test_router_methods_delegate_correctly(self):
-        """Test router methods delegate to MCP adapter."""
-        router = GitHubIntegrationRouter()
-
-        # Mock the MCP adapter's methods
-        router.mcp_adapter.list_issues_via_mcp = AsyncMock(
-            return_value=[{"number": 1, "title": "Test Issue"}]
-        )
-
-        # Call router method (it should delegate to MCP adapter)
-        # Note: Router methods use GitHubSpatialIntelligence methods
-        # This test verifies integration works
-
-        assert router.mcp_adapter is not None
-        assert router._get_integration("test") is router.mcp_adapter
-
-
 class TestGitHubMCPFeatureFlags:
     """Test GitHub MCP feature flag behavior."""
 

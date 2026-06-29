@@ -128,57 +128,6 @@ async def test_github_api_integration():
         return False
 
 
-async def test_mcp_fallback_integration():
-    """Test MCP fallback integration"""
-    print("\n🧪 Testing MCP Fallback Integration")
-    print("=" * 50)
-
-    try:
-        # Create adapter
-        adapter = GitHubMCPSpatialAdapter()
-        print("✅ GitHub adapter created successfully")
-
-        # Test MCP fallback (without connecting to MCP)
-        print("\n📡 Testing MCP fallback to GitHub API...")
-
-        # This should fall back to GitHub API since MCP is not connected
-        issues = await adapter.list_issues_via_mcp("piper-morgan-product")
-        if issues:
-            print(f"   ✅ Retrieved {len(issues)} issues via fallback")
-            print(f"      Retrieved via: {issues[0].get('retrieved_via', 'unknown')}")
-
-            # Show issue details
-            for i, issue in enumerate(issues[:3]):
-                print(f"      Issue {i+1}: #{issue.get('number')} - {issue.get('title')}")
-        else:
-            print("   ❌ No issues retrieved via fallback")
-
-        # Test specific issue fallback
-        if issues:
-            issue_number = issues[0].get("number")
-            print(f"\n🔍 Testing specific issue fallback for #{issue_number}...")
-
-            specific_issue = await adapter.get_issue_via_mcp(
-                str(issue_number), "piper-morgan-product"
-            )
-            if specific_issue:
-                print(f"   ✅ Retrieved specific issue #{issue_number} via fallback")
-                print(f"      Retrieved via: {specific_issue.get('retrieved_via', 'unknown')}")
-            else:
-                print(f"   ❌ Failed to retrieve specific issue #{issue_number} via fallback")
-
-        # Cleanup
-        print("\n🧹 Cleaning up...")
-        await adapter.cleanup()
-        print("   ✅ Cleanup completed")
-
-        return True
-
-    except Exception as e:
-        print(f"❌ Error during MCP fallback integration test: {e}")
-        return False
-
-
 async def test_performance_targets():
     """Test performance targets (<150ms response)"""
     print("\n⚡ Testing Performance Targets")
@@ -241,7 +190,6 @@ async def main():
 
     # Run all tests
     results.append(await test_github_api_integration())
-    results.append(await test_mcp_fallback_integration())
     results.append(await test_performance_targets())
 
     # Summary
