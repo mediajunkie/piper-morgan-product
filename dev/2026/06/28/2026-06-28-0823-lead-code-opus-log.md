@@ -114,3 +114,30 @@ manual testing/review this morning.
   scoped precisely in the carry-forward for a fresh-context fire. Per PM's model, the remaining
   RECONNECT autonomous work is now this kind of fresh-fire surgery (inc.3-rem, inc.4) or PM-gated
   (#1327 UX, writes, alpha) → going to mail-check-idle until the next fire / PM.
+
+- **~00:40 6/29 — Jun-22 PA memos resolved (PM-flagged).** PM spotted 2 unprocessed PA memos
+  (Jun 22) on their **local main** checkout: `reconnect-just-run-the-skill` +
+  `reconnect-close-direction` — PA's PM-relayed direction to `close-issue-properly` on **#1226,
+  #1232, #1233**. **Verified: all 3 were already CLOSED 2026-06-22** (#1226 WS-1, #1232 WS-5 with
+  **#1317 split out as the ports issue per PA**, #1233 WS-9 identity). So the direction was fully
+  executed that day; the memos are **stale**. Root cause they lingered: they're committed to PM's
+  *local main* but were **never pushed to origin/main**, so my worktree (origin/main) never saw
+  them. Not touching PM's checkout (HARD RULE) — flagged the cleanup to PM (delete locally, or
+  push + I triage to read/).
+
+---
+
+## STOP — DAY-CLOSE (2026-06-28, closed ~00:40 6/29 PT, per PM)
+
+**Day-arc (the 6/27→6/29 continuous RECONNECT arc):** Built the whole GitHub MCP connector — #1220 real transport (stdio+HTTP), #1317 github + calendar ports (binding-aware honest-degrade), A→C provisioning ruled, inc.2 OAuth connector (A–E). **Stood it up LIVE in local staging** (OAuth connect → binding bound → reads PM's real GitHub: get_me/179 issues/2 PRs) + badge fix. **#1322 chat-reads cutover** P2/P3 (issues/PRs/stale-PRs all via the connector, count-fix P2.1) — verified live. **#1322 sim-transport retirement**: finding (it's DEAD CODE, Arch concurred) + executable plan + **inc.1, inc.2, inc.3a shipped** (inc.3-rem scoped for a fresh fire). **#1327 filed** (PM's Q1 resolution hierarchy + Q2 default-repo); **Q3 writes-cutover** recorded. Delivered a connector **test plan** (HTML) to PM. Set up **autonomous mode** (carry-forward + 3×/day KEEP-tier cron + attention doc) for PM's away-window.
+
+### Memory & briefing surfaces referenced this session
+- **Referenced**: CLAUDE.md (HARD-RULE never-touch-main-checkout; push-to-ref mail; restart-strip-ANTHROPIC); carry-forward (state continuity); #1322/#1327/ADR-070 (connector model + D3 token-custody); duty-cycle-tick skill (fire procedure, Gap-C); close-issue-properly (the Jun-22 directions); feedback memories (cost-efficiency-paramount, keep-building/don't-defer, mailbox-discipline, never-touch-PM-checkout).
+- **Loaded but not referenced**: most plugin skills (amplitude/atlassian/aws/runway/etc.); the bulk of deferred MCP tools.
+- **Wanted but not found**: a clean mechanism to triage memos **stranded on PM's local main** (committed-but-unpushed) without touching PM's checkout — current answer is "ask PM to push or delete." Worth a norm.
+
+### Sign-off
+- All work on `origin/main` (every increment pushed HEAD:main). Working tree clean. Inbox (origin/main) clean. Cron armed (25e66c5f, 3×/day). Staging stack up for PM testing.
+- **Resume**: PM back ~05:40 6/29; attention doc `dev/active/duty-cycle-escalations-lead.md` + carry-forward `dev/active/lead-carry-forward.md` carry the state. Next RECONNECT work: #1322 inc.3-remainder (scoped) → inc.4 → inc.5 m-36 guard; then #1327 default-repo backend.
+
+<!-- DAY-CLOSED: 2026-06-28 -->
