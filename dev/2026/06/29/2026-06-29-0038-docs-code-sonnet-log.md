@@ -21,3 +21,5 @@
 
 ## Work Log
 
+- **(~00:50 PDT) — `relationship-first-ethics.md` proofread + committed** (`cb157fae7`): typo fix (committe→committee), bold markers removed from "What relationship-first means practically" section (prose flow), trailing space on heading cleared, old `-draft.md` deleted (PM-approved). Ready for publish pipeline + syndication. PM noted voice guide may need nuancing on heading-style strictness.
+
