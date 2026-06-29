@@ -4424,6 +4424,107 @@ class IntentService:
                 },
             )
 
+    async def _handle_set_default_repo(
+        self, intent: Intent, workflow_id: str
+    ) -> IntentProcessingResult:
+        """Handle conversational "set my default repo to owner/name" (RECONNECT #1327).
+
+        The conversational counterpart to the GUI default-repo setting. Persists the
+        repo as THIS user's default in the DB-backed ``connector_configs`` store
+        (ADR-070 D4) — the SAME key ``repo_resolver.resolve_repo`` reads at path 3
+        (``_resolve_from_user_default``), so the value round-trips into every
+        repo-resolving handler.
+
+        Setting the default is a PREFERENCE, independent of the GitHub OAuth binding:
+        it must work whether or not GitHub is connected (the value is consumed later by
+        ``resolve_repo``), so this handler does NOT construct a GitHub router/connector
+        and does NOT gate on connection state.
+
+        Validation mirrors the close/reopen handlers' issue-number parse: the
+        ``owner/name`` token is parsed out of ``original_message`` and validated with
+        ``parse_full_name``. A bad shape yields a graceful chat nudge — never an
+        exception.
+        """
+        import re
+
+        self.logger.info("Processing set-default-repo query")
+
+        from services.integrations.github.repo_resolver import parse_full_name
+
+        original_message = intent.context.get("original_message", "")
+        _user_id = _principal_from_intent(intent)
+
+        _GRACEFUL_BAD_SHAPE = (
+            "That doesn't look like an `owner/name` repo — try e.g. "
+            "`set my default repo to mediajunkie/piper-morgan-product`."
+        )
+
+        def _bad_shape_result() -> IntentProcessingResult:
+            return IntentProcessingResult(
+                success=True,
+                message=_GRACEFUL_BAD_SHAPE,
+                intent_data={
+                    "category": "query",
+                    "action": "set_default_repo",
+                    "context": {"error": "invalid_repo_shape"},
+                },
+                workflow_id=workflow_id,
+                requires_clarification=True,
+            )
+
+        # Find a candidate owner/name token in the message, then validate it strictly
+        # with parse_full_name (the same validator resolve_repo trusts). The candidate
+        # regex is permissive; parse_full_name is the authority on shape.
+        candidate_match = re.search(r"[\w.\-]+/[\w.\-]+", original_message)
+        if not candidate_match:
+            return _bad_shape_result()
+
+        candidate = candidate_match.group(0)
+        try:
+            owner, name = parse_full_name(candidate)
+        except ValueError:
+            return _bad_shape_result()
+
+        full_name = f"{owner}/{name}"
+
+        try:
+            from services.connectors.config_service import ConnectorConfigService
+            from services.database.session_factory import AsyncSessionFactory
+
+            # session_scope() commits on clean exit (#1193), and set_default_repo
+            # flushes-not-commits (caller owns the txn) — so the write persists here.
+            async with AsyncSessionFactory.session_scope() as session:
+                await ConnectorConfigService(session).set_default_repo(_user_id, full_name)
+
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    f"Done — your default repo is now **{full_name}**. "
+                    "I'll use it whenever you don't name a repo explicitly."
+                ),
+                intent_data={
+                    "category": "query",
+                    "action": "set_default_repo",
+                    "context": {"default_repo": full_name},
+                },
+                workflow_id=workflow_id,
+            )
+        except Exception as e:
+            self.logger.error(f"Failed to set default repo: {e}")
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    "I wasn't able to save your default repo just now. "
+                    "Please try again in a moment."
+                ),
+                intent_data={
+                    "category": "query",
+                    "action": "set_default_repo",
+                    "context": {"error": str(e)},
+                },
+                workflow_id=workflow_id,
+            )
+
     async def _handle_list_prs_query(
         self, intent: Intent, workflow_id: str
     ) -> IntentProcessingResult:
