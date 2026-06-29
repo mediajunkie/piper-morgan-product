@@ -1,3 +1,9 @@
+---
+image: 
+alt: 
+caption: 
+---
+
 # Relationship-First Ethics
 
 *November 30, 2025*
@@ -8,7 +14,7 @@ Sam Zimmerman's feedback was three sentences that collapsed the whole structure:
 
 I'd been designing an organization. He was describing a friendship.
 
-## The multi-agent consensus trap
+# The multi-agent consensus trap
 
 The idea seemed sound. If one agent might make ethical mistakes, multiple agents checking each other would catch those mistakes. Constitutional AI principles, implemented as a parliament of perspectives. Democratic governance for machine behavior.
 
@@ -18,7 +24,7 @@ The problem: ethical behavior isn't primarily about avoiding mistakes. It's abou
 
 Committees deliberate. Relationships understand. The deliberation model assumes ethics is primarily about decisions - this action or that action, permitted or forbidden. But the deeper challenge is developing context for decisions that haven't been specified yet. That context comes from relationship, not rules.
 
-## Sam's three-layer model
+# Sam's three-layer model
 
 Sam proposed three layers instead of my governance structure:
 
@@ -34,7 +40,7 @@ This maps to how human ethical development actually works. We have hard limits (
 
 No committee gave us our ethical style. It came from sustained relationship with people who mattered to us.
 
-## What relationship-first means practically
+# What relationship-first means practically
 
 For an AI system, relationship-first ethics means:
 
@@ -46,7 +52,7 @@ For an AI system, relationship-first ethics means:
 
 [PLACEHOLDER: Relationships where ethical understanding developed over time. How shared history changed what you expected from each other. Trust that exceeded what any rules would specify?]
 
-## Why I built the wrong thing
+# Why I built the wrong thing
 
 Looking back, I built multi-agent consensus because it felt rigorous. Multiple perspectives checking each other. Formal deliberation. Documented decisions. All the things that feel responsible when you're worried about AI ethics.
 
@@ -56,7 +62,7 @@ Sam's feedback pattern is consistent - simplify, trust relationship over elabora
 
 This isn't naive simplicity. It's recognizing that some problems aren't solved by more structure. They're solved by more connection.
 
-## The hard limits still matter
+# The hard limits still matter
 
 Relationship-first doesn't mean relationship-only. The inviolate boundaries exist precisely because some things shouldn't depend on relationship quality. Hard limits protect against relationship failure.
 
@@ -66,7 +72,7 @@ My multi-agent board was all floor. Boundaries checking boundaries. No room for 
 
 [PLACEHOLDER: Hard limits in your own ethical frameworks. Where relationship-derived ethics began and explicit rules ended. The interplay between boundaries and developed understanding?]
 
-## Reframing the architecture
+# Reframing the architecture
 
 The ethical architecture now looks different:
 
@@ -80,7 +86,7 @@ The "board" of ethical agents dissolves. The relationship remains.
 
 This is simpler and probably more effective. Not because complexity was wrong in principle, but because I was adding complexity where relationship would serve better. Governance structures are appropriate for organizations of strangers. Ethical development is appropriate for ongoing relationships.
 
-## What Sam understood
+# What Sam understood
 
 Sam understood something I'd missed: multi-agent consensus is still mechanism. It's just more elaborate mechanism. But the problem wasn't insufficient mechanism - it was insufficient relationship.
 
