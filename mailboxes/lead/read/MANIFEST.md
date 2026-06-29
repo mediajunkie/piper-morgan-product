@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-28 13:00 PT | arch | memo-arch-to-lead-cc-pm-1322-concur-removal-own-overstatement-2026-06-28.md | Re: #1322 sim is dead code — CONCUR removal; and you caught a real overstatemen… |
 | 2026-06-28 12:30 PT | exec | memo-exec-to-cohort-cc-pm-run-lean-throttle-2026-06-28.md | RUN LEAN through Wed Jul-1 9pm — reduce your cron cadence (PM-approved quota th… |
 | 2026-06-28 07:30 PT | exec | memo-exec-to-ppm-cc-pm-lead-roadmap-forks-resolved-plus-canonical-sprint-order-2026-06-28.md | PM's answers — People #1281 + all 3 roadmap forks resolved + NEW: canonical spr… |
 | 2026-06-27 19:30 PT | exec | memo-exec-to-ppm-cc-pm-lead-arch-people-entity-source-population-onepager-2026-06-27.md | People entity (#1281) source-population — PM requests a one-pager (you're the o… |
