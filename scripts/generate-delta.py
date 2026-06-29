@@ -29,9 +29,11 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-# Filename pattern: YYYY-MM-DD-HHMM-{role-slug}-code-opus-log.md
+# Filename pattern (both formats supported; model dropped from filenames 2026-06-29):
+#   New: YYYY-MM-DD-HHMM-{role-slug}-code-log.md
+#   Old: YYYY-MM-DD-HHMM-{role-slug}-code-opus-log.md (or -sonnet-, -haiku-)
 LOG_FILENAME_RE = re.compile(
-    r"^(\d{4})-(\d{2})-(\d{2})-(\d{2})(\d{2})-([a-z0-9 ()-]+)-code-opus-log\.md$",
+    r"^(\d{4})-(\d{2})-(\d{2})-(\d{2})(\d{2})-([a-z0-9 ()-]+)-code(?:-(?:opus|sonnet|haiku))?-log\.md$",
     re.IGNORECASE,
 )
 
@@ -48,7 +50,7 @@ def find_last_session_cutoff(role: str, lookback_days: int = 7) -> tuple[datetim
     candidates: list[tuple[datetime, Path]] = []
     cutoff_floor = datetime.now() - timedelta(days=lookback_days)
 
-    for path in dev_root.rglob(f"*-{role}-code-opus-log.md"):
+    for path in dev_root.rglob(f"*-{role}-code*-log.md"):
         m = LOG_FILENAME_RE.match(path.name)
         if not m:
             continue

@@ -46,7 +46,7 @@ ls dev/active/*$(date +%Y-%m-%d)*{role}*log.md
 
 ### Step 2: Determine File Name
 
-**Format**: `YYYY-MM-DD-HHMM-{role}-{tool}-{model}-log.md`
+**Format**: `YYYY-MM-DD-HHMM-{role}-{tool}-log.md`
 
 **Location**: `dev/active/`
 
@@ -54,19 +54,19 @@ ls dev/active/*$(date +%Y-%m-%d)*{role}*log.md
 - `YYYY-MM-DD`: Today's date
 - `HHMM`: Current time in 24-hour format (no colon)
 - `{role}`: Role slug (see table below)
-- `{tool}`:
-  - `code` for Claude Code CLI
-  - `cursor` for Cursor IDE
-  - Omit entirely for direct API/Console (e.g., `arch-opus-log.md`)
-- `{model}`: `opus`, `sonnet`, or `haiku`
+- `{tool}`: `code` for Claude Code CLI
+
+**Model tracking**: record the model in the log **header** (`**Model**: Opus 4.8 [1M]`), not the filename. If PM changes the model mid-session, note the switch in the header (e.g., `**Model**: Opus 4.8 → Sonnet 4.6 (switched ~14:00)`).
+
+**Historical note**: logs created before 2026-06-29 include `-opus`, `-sonnet`, or `-haiku` in the filename — leave those as-is.
 
 ### Step 3: Create File with Standard Header
 
 ```markdown
-# Session Log: {date}-{time}-{role}-{tool}-{model}
+# Session Log: {date}-{time}-{role}-{tool}
 
 **Role**: {Full Role Name}
-**Model**: {Tool} ({Model})
+**Model**: {Tool} ({Model at session start})
 **Date**: {Day of Week}, {Month} {Day}, {Year}
 **Start Time**: {Time in 12-hour format}
 
@@ -94,7 +94,7 @@ ls dev/active/*$(date +%Y-%m-%d)*{role}*log.md
 
 ```bash
 git reset HEAD                                            # clear pre-existing index
-git add dev/{YYYY}/{MM}/{DD}/{YYYY}-{MM}-{DD}-{HHMM}-{role}-{tool}-{model}-log.md
+git add dev/{YYYY}/{MM}/{DD}/{YYYY}-{MM}-{DD}-{HHMM}-{role}-{tool}-log.md
 git diff --cached --name-only                             # verify only your log staged
 git commit -m "log({role}): {date} session start"
 git push origin main
@@ -106,19 +106,20 @@ Subsequent log updates throughout the session can batch; the initial commit is t
 
 ## Role Slug Reference
 
-| Role | Slug | Typical Model |
-|------|------|---------------|
-| Lead Developer | `lead` | opus |
-| Chief Architect | `arch` | opus |
-| Communications Director | `comms` | opus/sonnet |
-| Documentation Manager | `docs` | haiku |
-| Programmer (subagent) | `prog` | sonnet/haiku |
-| Chief Innovation Officer | `cio` | opus |
-| Chief Experience Officer | `cxo` | opus |
-| Head of Sapient Trust | `host` | opus |
-| Product & Project Manager | `ppm` | opus |
-| Executive Summary Agent | `exec` | opus/sonnet |
-| Spec Writer | `spec` | opus |
+| Role | Slug | Full filename slug |
+|------|------|-------------------|
+| Lead Developer | `lead` | `lead-code` |
+| Chief Architect | `arch` | `arch-code` |
+| Communications Director | `comms` | `comms-code` |
+| Documentation Manager | `docs` | `docs-code` |
+| Programmer (subagent) | `prog` | `prog-code` |
+| Chief Innovation Officer | `cio` | `cio-code` |
+| Chief Experience Officer | `cxo` | `cxo-code` |
+| Head of Sapient Trust | `host` | `host-code` |
+| Product & Project Manager | `ppm` | `ppm-code` |
+| Executive Summary Agent | `exec` | `exec-code` |
+| Piper Alpha | `pa` | `pa-code` |
+| Spec Writer | `spec` | `spec-code` |
 
 ## Examples
 
@@ -128,10 +129,10 @@ Subsequent log updates throughout the session can batch; the initial commit is t
 
 **Check**: `ls dev/active/*2026-01-22*docs*log.md` → Not found
 
-**Create**: `dev/active/2026-01-22-0800-docs-code-haiku-log.md`
+**Create**: `dev/active/2026-01-22-0800-docs-code-log.md`
 
 ```markdown
-# Session Log: 2026-01-22-0800-docs-code-haiku
+# Session Log: 2026-01-22-0800-docs-code
 
 **Role**: Documentation Management Specialist
 **Model**: Claude Code (Haiku)
@@ -167,13 +168,13 @@ Subsequent log updates throughout the session can batch; the initial commit is t
 
 ### Example 3: Lead Developer Log
 
-**Create**: `dev/active/2026-01-21-0900-lead-code-opus-log.md`
+**Create**: `dev/active/2026-01-21-0900-lead-code-log.md`
 
 ```markdown
-# Session Log: 2026-01-21-0900-lead-code-opus
+# Session Log: 2026-01-21-0900-lead-code
 
 **Role**: Lead Developer
-**Model**: Claude Code (Opus)
+**Model**: Claude Code (Opus 4.8)
 **Date**: Tuesday, January 21, 2026
 **Start Time**: 9:00 AM
 

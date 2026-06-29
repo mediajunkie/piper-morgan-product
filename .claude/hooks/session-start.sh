@@ -139,7 +139,7 @@ fi
 
 # ─── 5. Role Identity ────────────────────────────────────────────────────────
 # No default role — agent infers from PM assignment or existing session log.
-# See CLAUDE.md: general-purpose agents use the `code-opus` slug.
+# See CLAUDE.md: general-purpose agents use the `code` slug.
 output+="ROLE: check PM assignment or today's session log (no default)"$'\n'
 
 # ─── 6. Per-role briefing freshness ──────────────────────────────────────────
@@ -147,25 +147,32 @@ output+="ROLE: check PM assignment or today's session log (no default)"$'\n'
 # corresponding BRIEFING-ESSENTIAL file's age. Warn if >14 days stale.
 # Per PM 2026-05-12: 14 days exactly (limited bandwidth = shorter signal).
 # Skipped slugs: eta (one-session role; not worth process), llm (legacy
-# duplicate of LEAD-DEV; pending consolidation), bare code-opus (no role).
+# duplicate of LEAD-DEV; pending consolidation), bare code (no role).
 # If multiple role logs exist today (rare), check each.
+#
+# Supports both filename formats (backward-compatible):
+#   New (2026-06-29+): YYYY-MM-DD-HHMM-{role}-code-log.md
+#   Old (pre-2026-06-29): YYYY-MM-DD-HHMM-{role}-code-opus-log.md (or -sonnet-)
 if [ -d "$LOG_DIR" ]; then
     SEEN_SLUGS=""
-    for log in "$LOG_DIR"/*-opus-log.md; do
+    for log in "$LOG_DIR"/*-log.md; do
         [ -f "$log" ] || continue
-        # Extract slug: filename is YYYY-MM-DD-HHMM-{slug}(-code)?-opus-log.md
-        base=$(basename "$log")
+        # Extract slug from either old or new format.
         # Robust slug guard (#1153): require the exact digit YYYY-MM-DD-HHMM- prefix
         # before the positional strip. The old code blindly stripped ????-??-??-????-,
         # so a non-standard name like 2026-06-04-code-opus-log.md (no HHMM) had its
         # 4-char role "code" consumed as the HHMM field → slug="opus-log.md" → a
         # malformed delta-opus-log.md-*.md file. Skip non-conforming names instead.
+        base=$(basename "$log")
         case "$base" in
-            [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]-*-opus-log.md) ;;
+            [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]-*-log.md) ;;
             *) continue ;;
         esac
         stripped=${base#????-??-??-????-}
-        stripped=${stripped%-opus-log.md}
+        stripped=${stripped%-opus-log.md}   # old format: strip -opus-log.md
+        stripped=${stripped%-sonnet-log.md} # old format: strip -sonnet-log.md
+        stripped=${stripped%-haiku-log.md}  # old format: strip -haiku-log.md
+        stripped=${stripped%-log.md}        # new format: strip -log.md (no-op for old)
         slug=${stripped%-code}
         # Dedup
         case " $SEEN_SLUGS " in *" $slug "*) continue;; esac
