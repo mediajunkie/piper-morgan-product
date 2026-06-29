@@ -5,8 +5,9 @@ description: Update the editorial calendar CSV when PM reports a publication,
   "add Y to the calendar", "update the URL for Z", or provides syndication URLs
   after a publish.
 scope: role-specific
-version: 1.0
+version: 1.1
 created: 2026-03-29
+updated: 2026-06-29
 ---
 
 # update-calendar
@@ -90,10 +91,19 @@ grep "TITLE" docs/internal/planning/comms/editorial-calendar.csv
 
 Confirm the row looks correct and column count matches (18 fields).
 
-### Step 5: Commit
+### Step 5: Rebuild the calendar view
 
 ```bash
-git add docs/internal/planning/comms/editorial-calendar.csv
+python3 scripts/build-editorial-calendar-view.py
+```
+
+This regenerates `docs/internal/planning/comms/editorial-calendar-view.html` from the CSV. Always run after any CSV change to keep the admin view current.
+
+### Step 6: Commit
+
+```bash
+git add docs/internal/planning/comms/editorial-calendar.csv \
+        docs/internal/planning/comms/editorial-calendar-view.html
 git commit -m "editorial calendar: [what changed]"
 ```
 
@@ -127,4 +137,4 @@ git commit -m "editorial calendar: [what changed]"
 
 ---
 
-*v1.0 — Created from publishing workflow experience, Mar 28-29 2026.*
+*v1.1 — Added Step 5: rebuild calendar view HTML after every CSV change (2026-06-29).*
