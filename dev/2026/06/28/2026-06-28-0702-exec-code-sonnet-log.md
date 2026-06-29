@@ -22,3 +22,23 @@
 - **(12:14) Attention sweep + throttle plan (PM ask).** Quota: PM ~25%, resets Wed Jul-1 9pm (Janus data). **Throttle plan drafted** (`exec-cadence-throttle-plan-2026-06-28.md`): IDLE HOST/CXO/PPM, SLOW Arch/Docs/PA/Comms/Exec→2×, KEEP Lead/CIO→3×, watchdog unchanged; Exec cuts own cron first; one broadcast; restore Wed. Aligns w/ Janus lean-through-Wed proposal. **Resolved since 6/27**: Web /about byline LIVE (pipermorgan.ai, July-1 met); PPM shipped canonical sprint-order + v18.2 correction (awaiting PM confirm). **CIO finding: cure-(a)/Belt-0 FAILED first real stall** (open -b foregrounds app not the backgrounded role-window; roles didn't resume) → off-machine (b) is the path; CIO recommends disabling Belt-0 foreground. Arch+CXO back. Triaged 2. **Skipped HTML board render to conserve quota** (cloud=download-chip anyway); text digest to PM instead.
 
 - **(12:35) Throttle EXECUTED (PM approved "Go").** (1) **Exec cron cut 6×→2×** (`32 8,20`, `7007f7f7`; deleted `de99f10c`; Friday workstream cron `249b372c` kept). (2) **Cohort broadcast sent to all 10 roles** (`47b12470b`, cc PM): tiers — IDLE host/cxo/ppm/web (CronDelete til Wed), SLOW 2× arch/docs/pa/comms, KEEP 3× lead/cio; each adjusts own cron on next fire; watchdog stays on; restore after Wed Jul-1 9pm reset. *(zsh gotcha: first fan-out attempt failed — unquoted `$ROLES` doesn't word-split in zsh, only sent+xian landed; redid with literal loop → 10/10 verified.)* Throttle-plan doc → STATUS EXECUTED. **My own next fire is now 20:00** (was 15:02).
+
+- **(21:02) STOP — throttle adopted cohort-wide; day closed.** Inbox 3 ACKs (Web/HOST idled; CIO complied 6→3× + adjusted freeze-registry to pause reduced/idled rows so they don't false-alarm — also paused my exec row, fine for the window). Adoption verified via commits: Arch 6→2× (`27 8,20`), Docs 6→2×, CIO 6→3×, HOST/CXO/Web CronDelete-IDLE, PPM/Lead acked. Throttle fully in effect. Triaged 3 → read/.
+
+## Day Arc (6/28, Sun)
+**Opened** 07:02 START · **Closed** 21:02 STOP (lean cadence after 12:35).
+**Shipped (Exec):** digested+relayed both PPM drafts (People #1281 one-pager → introduce-person=M4-issue; roadmap v18.2 → 3 forks resolved: M4 sequential, D1 verified-closed, beta Aug-1/prod Oct-30); requested canonical sprint-order list; captured PM's roadmap-currency principle (→ canonical-list-as-SoT); attention sweep; **cadence throttle plan approved + EXECUTED** (exec 6→2×, cohort lean broadcast 10/10, ~60-65% fire cut through Wed reset).
+**Cohort:** Web byline LIVE (pipermorgan.ai, July-1 met); PPM shipped canonical sprint-order + v18.2 correction (awaiting PM confirm); CIO **cure-(a)/Belt-0 FAILED first real stall** (open -b can't resume backgrounded role-windows → off-machine (b) is the path); Lead building Option C (#1322).
+**Carry to 6/29 (lean window):** PM confirm on PPM roadmap+sprint-list (low-pri); #1144/#1131 greenlight (low-pri); off-machine continuity (b) decision (post-reset); restore normal cadence after Wed Jul-1 9pm (Exec broadcasts). Comms next-arc proposal still pending.
+
+## Memory & briefing surfaces referenced
+**Referenced:** exec-carry-forward; cohort-attention/duty-cycle skills; methodology-25; both PPM drafts; Janus lean-cadence + quota data; registry (cron cadences); GH (D1 #1297/#1270 verify). **Loaded not ref:** BRIEFING-CURRENT-STATE. **Wanted/not found:** none new.
+
+## Sign-Off
+```
+git status → clean (tracked) after STOP + mail-send triage
+@{u}..HEAD → pushed   ·   origin/main..HEAD → pushed
+```
+<!-- DAY-CLOSED: 2026-06-28 -->
+
+*— Exec (DinP/Sonnet 4.6, cloud, LEAN cadence), 6/28 STOP ~21:02 PT.*
