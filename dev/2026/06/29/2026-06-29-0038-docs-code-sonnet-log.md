@@ -29,4 +29,17 @@
   - Draft archived: `drafts/relationship-first-ethics.md` → `drafts/published/` (`088a76779`); `ai-dancers.png` → `drafts/images-archive/` (untracked, moved in main checkout)
   - Live at: https://pipermorgan.ai/blog/relationship-first-ethics/
   - PM to syndicate to Medium; calendar will need mediumURL + liPubDate + linkedinURL after that
+- **(~07:52–09:00 PDT) — "Relationship-First Ethics" LinkedIn + Medium syndication + calendar updates**:
+  - LinkedIn URL provided by PM: updated calendar liPubDate→2026-06-29 + linkedinURL (`36271d48e`)
+  - Medium URL provided by PM: updated calendar mediumURL (`additional calendar commit`)
+  - Both updates committed and pushed to origin/main
+- **(~09:10 PDT) — editorial-calendar-view.html staleness fix**: PM noticed admin view was stale. Rebuilt from CSV via `python3 scripts/build-editorial-calendar-view.py` (397 posts) → committed (`37da1933c`). Added rebuild step to `update-calendar` skill (v1.1, Step 5 — rebuild before commit) → committed (`b8f9a4b0f`).
+- **(~10:30 PDT — two cron DUTY CYCLE TICKs received) — June 28 omnibus (resuming from compaction)**:
+  - 4 remaining source logs read (CXO, Arch, Web, Comms) — all 11 logs now complete
+  - Cross-reference gate: PASS (11/11 logs; Lead↔Arch dead-code concurrence verified; throttle 10/10 ACKs consistent)
+  - Format: HIGH-COMPLEXITY: EXECUTION (11 agents, parallel tracks + throttle cascade coordination thread)
+  - Omnibus written: `docs/omnibus-logs/2026-06-28-omnibus-log.md` (173 lines) → committed (`1c2ce3a72`)
+  - 11 activity-log Shape B rows appended (1532→1543) → this commit
+
+---
 
