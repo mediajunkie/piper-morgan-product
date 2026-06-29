@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# duty-cycle-watchdog.sh v2 — detect + NUDGE PM (desktop + mailbox memo), dedup'd + infra-collapsed.
+# duty-cycle-watchdog.sh v2.3 — detect + NUDGE PM + SPAWN-FRESH (Belt 4, default off).
 #
 # Run by launchd (a pure OS job — ZERO Claude agents, no persona-fork; the cure for the scheduled-task
 # approach PM rejected 2026-06-14). Hourly it: fetches origin, runs the freeze-check, and on a NEWLY-stale
@@ -18,6 +18,10 @@
 #   - INFRA-EVENT collapse — >=N roles stale at once = "infrastructure event suspected" (one nudge, the
 #     machine-asleep/backgrounded signature) not N alarms (HOST multi-role-silence flag; CIO freeze lane).
 #
+# v2.3 (2026-06-29, CIO): Belt 4 — SPAWN-FRESH. On a single-role stall, invokes `claude -p` in a fresh
+#   detached worktree so the role does a duty-cycle fire without depending on the suspended app. Default OFF
+#   (WATCHDOG_AUTO_SPAWN_ROLES=""); enable per-role: WATCHDOG_AUTO_SPAWN_ROLES="cio exec". Validated-viable
+#   2026-06-29: auth works headless (binary uses ~/.anthropic/ creds; stripped ANTHROPIC_* env safe).
 # v2.2 (2026-06-28, CIO): Belt 0 (AUTO-FOREGROUND) **DISABLED by default** — validated-FAILED on its first
 #   real stall (app-foreground can't reach a backgrounded role's window in the multi-window cohort; see the
 #   Belt-0 block comment + liveness model). The nudge belts are the working net. Off-machine resume cure
@@ -26,9 +30,11 @@
 #   the in-app cron. Automated PM's manual resume — the (a) cure-shape. [Superseded by v2.2 — see above.]
 #
 # Test hooks (used by scripts/test-duty-cycle-watchdog.sh): WATCHDOG_FREEZE_CMD overrides the detector;
-# WATCHDOG_DRYRUN=1 logs "WOULD-NUDGE/WOULD-FOREGROUND …" instead of firing belts (+ skips the fetch);
+# WATCHDOG_DRYRUN=1 logs "WOULD-NUDGE/WOULD-FOREGROUND/WOULD-SPAWN …" instead of firing belts (+ skips fetch);
 # WATCHDOG_LOG / WATCHDOG_STATE redirect runtime files; WATCHDOG_NUDGE_COOLDOWN / WATCHDOG_INFRA_THRESHOLD
-# tune; WATCHDOG_AUTO_FOREGROUND=1 re-enables Belt 0 (default OFF — validated-failed 6/28); WATCHDOG_CLAUDE_APP_ID overrides the bundle id.
+# tune; WATCHDOG_AUTO_FOREGROUND=1 re-enables Belt 0 (default OFF — validated-failed 6/28);
+# WATCHDOG_AUTO_SPAWN_ROLES="cio exec" enables Belt 4 for listed roles (default "" = off);
+# WATCHDOG_B4_SPAWN_TTL overrides the lockfile TTL (default 7200 = 2h); WATCHDOG_CLAUDE_BIN overrides binary path.
 #
 # Design: docs/operations/duty-cycle design/wake-this-session-duty-cycle-design-2026-06-14.md
 set -uo pipefail
@@ -36,10 +42,13 @@ set -uo pipefail
 REPO="${PIPER_REPO:-/Users/xian/Development/piper-morgan/piper-morgan-product}"
 LOG="${WATCHDOG_LOG:-$REPO/dev/active/duty-cycle-watchdog.log}"
 STATE="${WATCHDOG_STATE:-$REPO/dev/active/duty-cycle-watchdog-nudge-state.tsv}"
-COOLDOWN="${WATCHDOG_NUDGE_COOLDOWN:-21600}"   # 6h re-ping while a role stays stale
-INFRA_N="${WATCHDOG_INFRA_THRESHOLD:-3}"        # >=N simultaneous stale = infrastructure event
+COOLDOWN="${WATCHDOG_NUDGE_COOLDOWN:-21600}"          # 6h re-ping while a role stays stale
+INFRA_N="${WATCHDOG_INFRA_THRESHOLD:-3}"               # >=N simultaneous stale = infrastructure event
 FREEZE_CMD="${WATCHDOG_FREEZE_CMD:-$REPO/scripts/duty-cycle-freeze-check.sh}"
 DRYRUN="${WATCHDOG_DRYRUN:-0}"
+SPAWN_ROLES="${WATCHDOG_AUTO_SPAWN_ROLES:-}"           # Belt 4 opt-in per-role; "" = off (default)
+SPAWN_TTL="${WATCHDOG_B4_SPAWN_TTL:-7200}"             # Belt 4 lockfile TTL in seconds (default 2h)
+CLAUDE_BIN="${WATCHDOG_CLAUDE_BIN:-/Users/xian/.local/bin/claude}"  # Belt 4 binary path
 ts=$(date '+%Y-%m-%d %H:%M:%S'); now=$(date +%s)
 
 # Accurate heartbeats: refresh origin/main before checking (read-only; graceful if offline). Skip in dryrun.
@@ -86,6 +95,82 @@ fi
 
 stale_roles=$(echo "$STALE" | sed -n 's/^STALE \([^ ]*\).*/\1/p')
 n_stale=$(printf '%s\n' "$stale_roles" | grep -c .)
+
+# Belt 4 — SPAWN-FRESH — default OFF (WATCHDOG_AUTO_SPAWN_ROLES="").
+# On a single-role stall, invokes `claude -p` in a fresh detached worktree so the role does a full
+# duty-cycle fire without depending on the suspended/backgrounded app. NOT for infra-events (whole
+# cohort stale = likely machine-sleep; a single spawn won't cover it). Self-limiting via lockfile.
+# Validated-viable 2026-06-29: headless auth works (binary uses ~/.anthropic/ creds; ANTHROPIC_* stripped).
+# Enable per-role: launchd plist sets WATCHDOG_AUTO_SPAWN_ROLES="cio exec" in environment.
+#
+# Per-role spawn prompts: embedded below. Must be self-contained (fresh session, no prior context).
+# Currently only CIO is implemented; extend by adding a case branch.
+if [ -n "$SPAWN_ROLES" ] && [ "$n_stale" -lt "$INFRA_N" ]; then
+  for role in $stale_roles; do
+    # Is this role opted in?
+    case " $SPAWN_ROLES " in *" $role "*) ;; *) continue ;; esac
+
+    # Lockfile guard: skip if a spawn is already in-flight or recently completed
+    LOCKFILE="${STATE%.tsv}.b4-lock-$role"
+    if [ -f "$LOCKFILE" ]; then
+      if stat -f %m "$LOCKFILE" >/dev/null 2>&1; then
+        LMTIME=$(stat -f %m "$LOCKFILE")
+      else
+        LMTIME=$(stat -c %Y "$LOCKFILE")
+      fi
+      lockage=$(( now - LMTIME ))
+      if [ "$lockage" -lt "$SPAWN_TTL" ]; then
+        echo "$ts B4-SKIP: $role (lock within ${SPAWN_TTL}s TTL; age=${lockage}s)" >> "$LOG"
+        continue
+      fi
+      rm -f "$LOCKFILE"  # stale lock — clear and re-spawn
+    fi
+
+    # Build per-role spawn prompt (must be self-contained)
+    case "$role" in
+      cio)
+        SPAWN_PROMPT="You are CIO (Chief Innovation Officer) for Piper Morgan (role-slug: cio), resuming from a watchdog-detected stall (B4 spawn-fresh). Working directory is the repo root. Read dev/active/cio-carry-forward.md and dev/active/cio-standing-items.md. Check mailboxes/cio/inbox/ for new mail. Drain all unblocked CIO work using the duty-cycle-tick skill. Commit and push to origin/main when done. Exit when the fire is complete. This is a one-shot autonomous session."
+        ;;
+      exec)
+        SPAWN_PROMPT="You are Chief of Staff (Exec) for Piper Morgan (role-slug: exec), resuming from a watchdog-detected stall (B4 spawn-fresh). Read dev/active/exec-carry-forward.md. Check mailboxes/exec/inbox/ for new mail. Drain all unblocked work using the duty-cycle-tick skill. Commit and push to origin/main. Exit when complete."
+        ;;
+      *)
+        echo "$ts B4-SKIP: $role (no spawn prompt defined; add a case branch)" >> "$LOG"
+        continue
+        ;;
+    esac
+
+    if [ "$DRYRUN" = 1 ]; then
+      echo "$ts WOULD-SPAWN [b4]: $role → claude -p in /tmp/b4-spawn-$role" >> "$LOG"
+      continue
+    fi
+
+    # Write lockfile BEFORE spawning (one-shot guard)
+    touch "$LOCKFILE"
+
+    # Create a fresh detached worktree in /tmp (avoids main-checkout HARD RULE; pushes HEAD:main)
+    SPAWN_WDIR="/tmp/b4-spawn-$role-$$"  # PID-unique to avoid collisions
+    if ! git -C "$REPO" worktree add --detach "$SPAWN_WDIR" origin/main >>"$LOG" 2>&1; then
+      echo "$ts B4-FAIL: $role — worktree add failed; see log" >> "$LOG"
+      rm -f "$LOCKFILE"
+      continue
+    fi
+
+    # Spawn headless session; strip ANTHROPIC_* vars to avoid the empty-key trap (CLAUDE.md)
+    env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS \
+      PIPER_REPO="$REPO" \
+      HOME="$HOME" PATH="$PATH" \
+      "$CLAUDE_BIN" -p "$SPAWN_PROMPT" \
+        --model claude-sonnet-4-6 \
+        2>>"$LOG" &
+    SPAWN_PID=$!
+    echo "$ts B4-SPAWNED: $role → pid=$SPAWN_PID wdir=$SPAWN_WDIR" >> "$LOG"
+
+    # Cleanup worktree after spawn exits (background; watchdog exits independently)
+    (wait "$SPAWN_PID" 2>/dev/null; git -C "$REPO" worktree remove --force "$SPAWN_WDIR" >>"$LOG" 2>&1; \
+       rm -f "$LOCKFILE"; echo "$(date '+%Y-%m-%d %H:%M:%S') B4-DONE: $role (pid=$SPAWN_PID; worktree removed)" >> "$LOG") &
+  done
+fi
 
 # Nudge-worthy = newly stale OR cooldown elapsed. awk does the assoc (bash 3.2 has no associative arrays)
 # and rewrites the state to ONLY currently-stale roles (recovered roles drop out → re-stall nudges fresh).

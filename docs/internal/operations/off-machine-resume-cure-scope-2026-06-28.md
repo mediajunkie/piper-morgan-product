@@ -73,3 +73,72 @@ claude -p "<a trivial CIO duty-cycle prompt: read carry-forward, write+commit a 
 3. Optional ~$0 win now: **approve the phone-nudge** floor enhancement.
 
 — CIO, 2026-06-28
+
+---
+
+## Update 2026-06-29 — B1 GREENLIT; spike PASSED; design decisions closed
+
+**PM decision (via Janus, 2026-06-29 AM):** proceed with B1. Mac Mini not arriving until July 6 — too long to wait. B1 and B2 are non-exclusive; Mac Mini can take over as the long-term B2 host when it lands.
+
+### Spike result: PASSED ✅
+
+```bash
+env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS \
+    claude -p "Read first 3 lines of cio-carry-forward.md and return verbatim." \
+    --model claude-haiku-4-5-20251001
+```
+- **Auth without ANTHROPIC_* vars**: ✅ Binary uses `~/.anthropic/` credentials — the launchd env trap is not an issue
+- **File access from worktree**: ✅ Read project files correctly
+- **Exit 0**: ✅
+
+Remaining to validate **during build** (not pre-flight blockers):
+- Does the duty-cycle-tick skill load in headless mode? (if not, embed the core procedure inline in the spawn prompt)
+- Are CronCreate/CronList available headless? (if not, watchdog re-triggers so cron re-arm is deferred — acceptable)
+- Can git commit+push work from a spawned session? (nearly certain yes; the ANTHROPIC_* trap is the only known blocker, and it's cleared)
+
+### Design decisions (closed 2026-06-29)
+
+**Q1: Spawn prompt format**
+Include role identity + core procedure inline (self-contained), plus a reference to `duty-cycle-tick` if the skill loads. The prompt must not assume prior session context. Format:
+
+```
+You are CIO (Chief Innovation Officer) for Piper Morgan, running an autonomous duty-cycle fire triggered by the launchd watchdog (session stall detected). Working directory: <worktree_path>. Read dev/active/cio-carry-forward.md and dev/active/cio-standing-items.md. Check mailboxes/cio/inbox/ for new mail. Drain all unblocked CIO work using the duty-cycle-tick skill. Commit a heartbeat entry to origin/main when done. This is a one-shot session — complete the fire and exit.
+```
+
+**Q2: One-shot guard (cost control)**
+TTL-based lockfile in `$WATCHDOG_STATE` dir:
+- Watchdog writes `b1-active-{role}` before spawning, with a 2× threshold TTL
+- If lockfile exists and is within TTL → skip spawn (already in flight or recently completed)
+- Lockfile ages out automatically (no active cleanup needed)
+- Heartbeat commit (fresh mtime on cio-carry-forward or a dedicated heartbeat file) also signals "done"
+
+**Q3: Worktree for spawned session**
+Create a temporary git worktree from a fresh branch:
+```bash
+git worktree add /tmp/b1-spawn-{role} -b claude/b1-spawn-{role} origin/main
+```
+Run `claude -p` from that directory. After exit, `git worktree remove /tmp/b1-spawn-{role}`.
+The spawn pushes via `git push origin HEAD:main` (standard Model-B path).
+
+**Q4: CronCreate unavailability headless**
+Acceptable. If CronCreate is not available in headless mode, the spawned session can't re-arm the cron — but the watchdog is the triggering mechanism for B1, so re-arm happens at the next watchdog run. The in-process cron re-arm is a belt-and-suspenders addition (Belt-2: future).
+
+### Implementation plan
+
+1. **Extend `duty-cycle-watchdog.sh`** with a Belt-1 block (after the nudge logic, before the Belt-0 commented block):
+   - Check for B1 lockfile; if within TTL → skip
+   - Write lockfile
+   - `git worktree add` to a temp path
+   - Invoke `claude -p "<role-specific spawn prompt>"` in that worktree
+   - `git worktree remove` after exit
+   - Log outcome
+
+2. **Test CIO-only first** before expanding to the cohort registry.
+
+3. **Belt-1 enable flag**: default off (`WATCHDOG_AUTO_SPAWN:-0`), enable per-role via env/registry.
+
+4. **Tests**: add T9/T10 to `test-duty-cycle-watchdog.sh` for Belt-1 (DRYRUN=1 should log `WOULD-SPAWN` instead of actually spawning).
+
+5. **Cohort expansion**: after CIO validation, add to the watchdog for each registered role.
+
+— CIO, 2026-06-29

@@ -69,5 +69,30 @@ WATCHDOG_DRYRUN=1 WATCHDOG_LOG="$LOG" WATCHDOG_STATE="$STATE" WATCHDOG_AUTO_FORE
   WATCHDOG_NUDGE_COOLDOWN=0 WATCHDOG_FREEZE_CMD="cat '$FIX'" bash "$W"
 grep -q "WOULD-FOREGROUND" "$LOG" && no "Belt 0 fired despite toggle off → $(cat "$LOG")" || ok "Belt 0 suppressed by toggle"
 
+echo "── T9: Belt 4 — SPAWN_ROLES=cio, stale cio → WOULD-SPAWN (opt-in) ──"
+: > "$LOG"; : > "$STATE"; run "STALE cio 9h
+" 0
+WATCHDOG_DRYRUN=1 WATCHDOG_LOG="$LOG" WATCHDOG_STATE="$STATE" WATCHDOG_AUTO_SPAWN_ROLES="cio" \
+  WATCHDOG_NUDGE_COOLDOWN=0 WATCHDOG_FREEZE_CMD="cat '$FIX'" bash "$W"
+grep -q "WOULD-SPAWN \[b4\]: cio" "$LOG" && ok "Belt 4 fires for opted-in role (cio)" || no "Belt 4 didn't fire → $(cat "$LOG")"
+
+echo "── T10: Belt 4 — SPAWN_ROLES=cio, stale exec → NO spawn (not opted in) ──"
+: > "$LOG"; : > "$STATE"; printf 'STALE exec 9h\n' > "$FIX"
+WATCHDOG_DRYRUN=1 WATCHDOG_LOG="$LOG" WATCHDOG_STATE="$STATE" WATCHDOG_AUTO_SPAWN_ROLES="cio" \
+  WATCHDOG_NUDGE_COOLDOWN=0 WATCHDOG_FREEZE_CMD="cat '$FIX'" bash "$W"
+grep -q "WOULD-SPAWN" "$LOG" && no "Belt 4 wrongly fired for non-opted-in role (exec) → $(cat "$LOG")" || ok "Belt 4 skipped non-opted-in role"
+
+echo "── T11: Belt 4 — SPAWN_ROLES empty (default off) → no spawn ──"
+: > "$LOG"; : > "$STATE"; run "STALE cio 9h
+" 0
+grep -q "WOULD-SPAWN" "$LOG" && no "Belt 4 fired despite empty SPAWN_ROLES → $(cat "$LOG")" || ok "Belt 4 off by default"
+
+echo "── T12: Belt 4 — infra event (n_stale>=3) → no spawn even if opt-in ──"
+: > "$LOG"; : > "$STATE"
+printf 'STALE cio 9h\nSTALE exec 7h\nSTALE ppm 8h\n' > "$FIX"
+WATCHDOG_DRYRUN=1 WATCHDOG_LOG="$LOG" WATCHDOG_STATE="$STATE" WATCHDOG_AUTO_SPAWN_ROLES="cio exec ppm" \
+  WATCHDOG_NUDGE_COOLDOWN=0 WATCHDOG_FREEZE_CMD="cat '$FIX'" WATCHDOG_INFRA_THRESHOLD=3 bash "$W"
+grep -q "WOULD-SPAWN" "$LOG" && no "Belt 4 fired on infra event — should skip → $(cat "$LOG")" || ok "Belt 4 skipped on infra event (n_stale>=3)"
+
 echo ""; echo "════ RESULT: $PASS passed, $FAIL failed ════"
 [ "$FAIL" = 0 ] && exit 0 || exit 1
