@@ -90,3 +90,13 @@ manual testing/review this morning.
   live-verify, set-default UX, alpha release — NOT autonomous), and the staging/restart refs.
   **Armed a 3×/day KEEP-tier cron** (per the throttle) so fresh-context fires execute the
   methodical increments. Inbox clean; everything on origin/main; staging stack up for PM testing.
+
+- **Fire (~00:06 6/29, autonomous tick) — #1322 sim-retirement inc.2 SHIPPED.** Mail loop:
+  **Arch CONCURRED** (memo → read/: "remove it" — traced it himself, owns the #1220 "live sim
+  path" overstatement as an m-30 miss [instantiated≠called], strongly endorses the m-36 guard).
+  Both gates clear (PM greenlit + Arch concur). **inc.2**: removed `query_router.federated_search`
+  (the caller-less last method) + the dormant `mcp_consumer` wiring (import + param + 2 init
+  lines; kept `github_adapter`, the real connector) + `tests/integration/test_pm033c_mcp_server_config.py`.
+  query_router imports clean; **176 green**; integration collects **890 clean** (the
+  `--collect-only` gate found no orphaned importers). Cron intact (Gap-C OK). **Next: inc.3**
+  (github_adapter sim methods `list_issues_via_mcp`/`connect_to_mcp` + #1088 demo-fallback + tests).
