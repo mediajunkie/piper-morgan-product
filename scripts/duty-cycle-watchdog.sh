@@ -18,15 +18,17 @@
 #   - INFRA-EVENT collapse — >=N roles stale at once = "infrastructure event suspected" (one nudge, the
 #     machine-asleep/backgrounded signature) not N alarms (HOST multi-role-silence flag; CIO freeze lane).
 #
-# v2.1 (2026-06-27, CIO): Belt 0 — AUTO-FOREGROUND. The launchd watchdog (which survives the suspension that
-#   freezes the in-app cron) now `open -b`'s the Claude Code app on a stall to un-suspend it → the cron
-#   resumes. Automates PM's manual resume — the (a) cure-shape from the liveness model. Nudge belts stay as
-#   the backstop. Interim measure pending the always-on Mac Mini (which sidesteps mode-1b entirely).
+# v2.2 (2026-06-28, CIO): Belt 0 (AUTO-FOREGROUND) **DISABLED by default** — validated-FAILED on its first
+#   real stall (app-foreground can't reach a backgrounded role's window in the multi-window cohort; see the
+#   Belt-0 block comment + liveness model). The nudge belts are the working net. Off-machine resume cure
+#   (spawn-fresh) scoped separately; Mac Mini is the durable fix. Re-enable: WATCHDOG_AUTO_FOREGROUND=1.
+# v2.1 (2026-06-27, CIO): Belt 0 — AUTO-FOREGROUND. `open -b`'s the Claude Code app on a stall to un-suspend
+#   the in-app cron. Automated PM's manual resume — the (a) cure-shape. [Superseded by v2.2 — see above.]
 #
 # Test hooks (used by scripts/test-duty-cycle-watchdog.sh): WATCHDOG_FREEZE_CMD overrides the detector;
 # WATCHDOG_DRYRUN=1 logs "WOULD-NUDGE/WOULD-FOREGROUND …" instead of firing belts (+ skips the fetch);
 # WATCHDOG_LOG / WATCHDOG_STATE redirect runtime files; WATCHDOG_NUDGE_COOLDOWN / WATCHDOG_INFRA_THRESHOLD
-# tune; WATCHDOG_AUTO_FOREGROUND=0 disables Belt 0; WATCHDOG_CLAUDE_APP_ID overrides the bundle id.
+# tune; WATCHDOG_AUTO_FOREGROUND=1 re-enables Belt 0 (default OFF — validated-failed 6/28); WATCHDOG_CLAUDE_APP_ID overrides the bundle id.
 #
 # Design: docs/operations/duty-cycle design/wake-this-session-duty-cycle-design-2026-06-14.md
 set -uo pipefail
@@ -52,6 +54,15 @@ fi
 SUMMARY=$(echo "$STALE" | tr '\n' ';' | sed 's/;$//; s/"/\\"/g')
 echo "$ts DETECT: $SUMMARY" >> "$LOG"
 
+# Belt 0 — AUTO-FOREGROUND — **DISABLED 2026-06-28 (PM-approved), default off.** VALIDATED-FAILED on its
+# first real stall (6/28 AM): it FOREGROUND-fired 4× but the stalled roles did NOT resume, because `open -b`
+# foregrounds the *app* (one window) while each role runs in its own window and macOS/Chromium keep BACKGROUND
+# windows throttled even when the app is frontmost → app-foreground can't reach the specific stalled role's
+# window. Too coarse for the multi-window cohort. The off-machine cure (spawn-fresh, not wake-existing) is the
+# path — see duty-cycle-liveness-model + the off-machine-resume-cure scope. Block kept (off) for history +
+# the single-window/Mac-Mini case where foregrounding the sole window WOULD work; set WATCHDOG_AUTO_FOREGROUND=1
+# to re-enable. The nudge belts below are the working liveness net (detect+alert; dedup'd).
+# --- original rationale (pre-failure), retained ---
 # Belt 0 — AUTO-FOREGROUND (mode-1b resume; the (a) cure-shape). The in-process cron freezes when macOS
 # suspends the backgrounded Claude Code app; this watchdog (a SEPARATE launchd process) survives that, so
 # bringing the app forward un-suspends the process → the cron ticks again. This AUTOMATES PM's manual resume
@@ -62,7 +73,7 @@ echo "$ts DETECT: $SUMMARY" >> "$LOG"
 # → not stale → no more foregrounding. Toggle WATCHDOG_AUTO_FOREGROUND=0 to disable; the nudge belts below
 # remain the backstop if foreground fails (e.g. launchd-context Launch-Services denial — validates on the
 # first real stall via this log: a FOREGROUND line followed by the role going fresh = it worked).
-if [ "${WATCHDOG_AUTO_FOREGROUND:-1}" = 1 ]; then
+if [ "${WATCHDOG_AUTO_FOREGROUND:-0}" = 1 ]; then
   APP_ID="${WATCHDOG_CLAUDE_APP_ID:-com.anthropic.claude-code}"
   if [ "$DRYRUN" = 1 ]; then
     echo "$ts WOULD-FOREGROUND: open -b $APP_ID (stale: $SUMMARY)" >> "$LOG"

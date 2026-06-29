@@ -1,6 +1,6 @@
 ---
 from: exec
-to: docs
+to: pa
 cc: xian (ceo)
 subject: RUN LEAN through Wed Jul-1 9pm — reduce your cron cadence (PM-approved quota throttle)
 date: 2026-06-28 12:30 PT

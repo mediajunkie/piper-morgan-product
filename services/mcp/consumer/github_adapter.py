@@ -912,36 +912,6 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         except Exception as e:
             logger.error(f"Error storing GitHub context: {e}")
 
-    async def connect_to_mcp(self, mcp_config: Optional[Dict[str, Any]] = None) -> bool:
-        """Connect to GitHub MCP server"""
-        try:
-            logger.info("Connecting to GitHub MCP service")
-
-            # Use provided config or default
-            if mcp_config is None:
-                mcp_config = {
-                    "name": "github",
-                    "version": "1.0.0",
-                    "description": "GitHub MCP Service",
-                    "transport": "stdio",
-                    "simulation_mode": True,
-                    "timeout": 30.0,
-                }
-
-            # Connect to GitHub MCP service
-            success = await self.mcp_consumer.connect("github", mcp_config)
-
-            if success:
-                logger.info("Successfully connected to GitHub MCP service")
-                return True
-            else:
-                logger.error("Failed to connect to GitHub MCP service")
-                return False
-
-        except Exception as e:
-            logger.error(f"Error connecting to GitHub MCP service: {e}")
-            return False
-
     async def map_to_position(self, external_id: str, context: Dict[str, Any]) -> SpatialPosition:
         """
         Map GitHub issue number to spatial position.

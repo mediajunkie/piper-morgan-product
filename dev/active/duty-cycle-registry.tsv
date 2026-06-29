@@ -21,8 +21,11 @@
 # active_since = when the role joined the watch list (bookkeeping only).
 # Columns (TAB-separated): role<TAB>cron_expr<TAB>threshold_h<TAB>wake_start<TAB>wake_end<TAB>first_fire<TAB>active_since
 role	cron_expr	threshold_h	wake_start	wake_end	first_fire	active_since
-cio	7 3,10,13,16,19,22	8	7	23	10:07	2026-06-16
-exec	32 6,9,12,15,18,21	6	6	22	06:32	2026-06-16
+# ── RUN-LEAN THROTTLE (Exec/PM-approved, through Wed Jul-1 ~9pm reset) — rows adjusted/paused so the watchdog
+#    matches the throttled cadences and does NOT false-alarm on intentionally-idled/slowed roles. RESTORE the
+#    normal exprs (commented after each) on Exec's "resume" broadcast. (CIO 2026-06-28.)
+cio	7 10,16,22	10	7	23	10:07	2026-06-16
+# exec	32 6,9,12,15,18,21	6	6	22	06:32	2026-06-16   ← PAUSED: exec cut to 2×/day (run-lean) but row not yet updated → exec, re-add your 2× expr like arch did and I'll un-pause; until then paused to avoid false-alarm
 arch	27 8,20	13	8	20	08:27	2026-06-17
-cxo	47 6,9,12,15,18,21	6	6	22	06:47	2026-06-18
-ppm	52 6,9,12,15,18,21	6	6	22	06:52	2026-06-18
+# cxo	47 6,9,12,15,18,21	6	6	22	06:47	2026-06-18   ← PAUSED: IDLE tier (cron suspended until Wed)
+# ppm	52 6,9,12,15,18,21	6	6	22	06:52	2026-06-18   ← PAUSED: IDLE tier (cron suspended until Wed)

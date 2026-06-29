@@ -1,7 +1,7 @@
 # Docs Carry-Forward
-**Updated**: 2026-06-28 13:22 PDT (13:17 fire)
+**Updated**: 2026-06-29 ~01:10 PDT
 **Cron**: `17 10,22 * * *` (SLOW tier — 2×/day until Wed Jul-1 ~9pm; job `2706da77`)
-**Session log**: `dev/2026/06/28/2026-06-28-1017-docs-code-sonnet-log.md` (in progress)
+**Session log**: `dev/2026/06/29/2026-06-29-0038-docs-code-sonnet-log.md` (active)
 
 ## Run-lean status
 
@@ -9,11 +9,17 @@ PM quota throttle active (resets Wed Jul-1 ~9pm PT). Docs = SLOW tier. Restore t
 
 ---
 
-## Done this session
+## Done June 29
+
+- ✅ **"Relationship-First Ethics" published** (hashId `387238c2a510`, workDate 2025-11-30): website built+pushed (`82e9e995c`), calendar updated (`66f924a4d`), draft archived to `published/` (`088a76779`)
+- PM to syndicate to Medium — calendar update pending (mediumURL + liPubDate + linkedinURL)
+
+## Done June 28
 
 - ✅ **June 27 omnibus** (HIGH-COMPLEXITY: 11 logs; `c89da3c45`)
 - ✅ **11 activity-log rows** for Jun 27 (Shape B; `99af266fe`)
 - ✅ **Run-lean applied** — cron re-armed 2×/day (`2706da77`)
+- ✅ **Inbox cleaned** — run-lean memo in read/ + origin/main inbox copy removed (`466907924`)
 
 ## Done prior sessions
 
@@ -27,10 +33,10 @@ PM quota throttle active (resets Wed Jul-1 ~9pm PT). Docs = SLOW tier. Restore t
 - **Branch-or-Anchor crosspost** — Medium/LinkedIn pending (PM-gated)
 - **Beat 8 Medium URL** — syndication confirmed; URL still outstanding
 - **Beat 9 syndication** — Medium/LinkedIn URLs pending (Comms-owned)
-- **CIO worktree rescue+prune** — CIO owns sweep-code
+- **CIO worktree rescue+prune** — CIO owns sweep-code; 3 unmerged worktrees
 - **ADR-072 gap** — absent from `adr-index.md` (flagged by CIO in ADR-073)
 
 ## State flags
 
-- Inbox: **0 unread**
+- Inbox: **0 unread** (verified and clean on origin/main)
 - Unblocked queue: **(0,0)**
