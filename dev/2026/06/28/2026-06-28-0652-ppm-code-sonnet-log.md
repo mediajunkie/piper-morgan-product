@@ -98,3 +98,60 @@ Exception clause: "Finish any in-hand deliverable first — e.g. PPM routing the
 
 Inbox: 0. Queue: (0,0). **SUSPENDED — run-lean through Wed Jul-1 ~9pm.**
 
+---
+
+## Session Wrap — 2026-06-28
+
+**Closed at PM request (pre-omnibus). Suspending on run-lean (Exec throttle, IDLE tier).**
+
+### Work shipped this session
+
+| Fire | Time | Deliverable |
+|------|------|-------------|
+| 0 | 06:52 | Roadmap v18.2 fold applied (RECONNECT WS-1 CLOSED, WS-2 ACTIVE, 3 M3-followon sprints, beta Aug 1 / prod Oct 30); v18.1 archived |
+| 0 | 06:52 | Sprint recovery review filed to PA — HIGH + most MEDIUM cleared; 6 flags |
+| 1 | 09:52 | #1326 filed — introduce-person standalone M4 issue |
+| 1 | 09:52 | Roadmap v18.2 correction pass — D1 corrected to CLOSED (Jun 20), sprint sequence corrected, M3-Quality count 12→8, downstream milestones added |
+| 1 | 09:52 | `docs/internal/planning/sprint-order.md` created — canonical sprint-order reference; routed to PM for ratification |
+| 1 | 09:52 | M3-Quality/Health/Security sprint assignments cleared to PA (product-model review done) |
+| 2 | 12:52 | Inbox deletion bug fixed — 7 stale inbox items purged via `git rm` (commits now permanent) |
+| 2 | 12:52 | Run-lean throttle ACK'd — cron deleted, session suspended |
+
+### Open items at suspend
+
+- **Sprint-order ratification pending**: `docs/internal/planning/sprint-order.md` in PM inbox for quick confirm
+- **#1269** (standup skill): PM milestone call still needed
+- **Sprint flag items**: #1249 (CXO verify D1 vs D2), #1217/#1246/#1179 (PM direct placement), M5-MVP-Polish old sprint (PM direct)
+- **#1281 People**: introduce-person flow (#1326) in M4 queue; source-population option B/C post-beta
+- **M6/M5-old sprint items**: PM direct input needed — not PPM to route
+
+### Sign-off checklist
+
+```
+git log @{u}..HEAD → (empty — no commits ahead of origin)
+git log origin/main..HEAD → (empty — branch is main, all work merged)
+```
+
+Work is on `origin/main`. Session clean.
+
+### Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- `BRIEFING-CURRENT-STATE.md` — verified the Jun 26 CXO update (false-positive stale warning from hook reading inline text, not YAML)
+- `roadmap.md` v18.1→v18.2 — primary artifact; all edits made inline
+- Exec relay memos — PM decisions on forks 1/2/3, People #1281, canonical sprint-order ask
+- PA sprint recovery CSV — 1,146-row forensic dataset; used for M3-sprint sign-off
+- ADR-071 — confirmed D1 sign-off gate (#1297) + D1 CLOSED framing
+
+**Loaded but not referenced**:
+- `BRIEFING-ESSENTIAL-PPM.md`
+- `ROLE-PORTFOLIO-PPM.md`
+- `sprint-board-structure.md`
+
+**Wanted but not found**:
+- D1 closure date — not in any PPM-accessible doc; came via Exec relay. If Arch or Lead filed a D1 closure note, it would help future PPM to have it cross-referenced in sprint-order.md.
+
+---
+
+*DAY-CLOSED — 2026-06-28. PPM suspended (run-lean IDLE tier). Resume: Wed Jul-1 ~9pm PT on Exec restore broadcast.*
+
