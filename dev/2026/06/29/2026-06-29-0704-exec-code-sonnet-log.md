@@ -13,3 +13,7 @@
 
 - **(07:10) Day plan + attention sweep delivered to PM.** Lean window: board is genuinely quiet. One Wed-reset action item (restore cadence + update registry). No PM decisions needed today.
 
+## Fire 1 (08:32)
+
+- **(09:02) WORK fire — lean.** Inbox clear. Cron verified (2 armed: `7007f7f7` lean + `249b372c` Friday). Carry-forward rewritten to current state (stripped 6/25 stale content; lean window restore plan documented; active items current). No unblocked work beyond carry-forward maintenance. Quiet hold.
+

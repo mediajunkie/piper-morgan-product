@@ -1,100 +1,72 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-06-28 ~07:10 PT (Sun START)
-**Session log today**: `dev/2026/06/28/2026-06-28-0702-exec-code-sonnet-log.md`
+**Last updated**: 2026-06-29 09:02 PT (Mon Fire 1)
+**Session log today**: `dev/2026/06/29/2026-06-29-0704-exec-code-sonnet-log.md`
 **Role**: Chief of Staff (Exec) | Sonnet 4.6 | DinP account (cloud session)
-**Cron**: `32 6,9,12,15,18,21` — id `de99f10c` (re-armed 6/25; prior `e642db02` died in rate-limit/cloud gap)
+**Cron**: `32 8,20` — id `7007f7f7` (LEAN, through Wed Jul-1 ~9pm reset) + Friday `249b372c`
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3`
-**Session log**: `dev/2026/06/25/2026-06-25-0005-exec-code-sonnet-log.md`
-**Session-mode note**: cloud session (HTML → download chips, not preview pane); cloud CronCreate may not fire backgrounded (#1191) — PM-presence prompts are the reliable wake.
 
 ---
 
-## Current state (6/25 17:25)
+## LEAN WINDOW (through Wed Jul-1 ~9pm)
 
-### Alpha — SHIPPED (plugin path live with first tester) ✅
-- ✅ **MCPB plugin alpha IS OUT** — first external tester **Jake Krajewski** actively using it. PA iterating on his feedback: v0.1.4→**v0.1.6** (JSON-trailing-comma fix + install-UX rewrite: explicit "Personal plugins > +" path + "30MB warning = wrong section" callout). The "alpha-tester email send" blocker is RESOLVED for the plugin path.
-- ⏳ **Open (PA→PM)**: does the plugin install flow also have a size cap? PM finds out when testing v0.1.6.
-- 🔴 **#1320 / #1162 — SEPARATE PATH, still live.** #1320 is the *hosted-browser* onboarding auth-loop (Caddy basic-auth) — distinct from the plugin path Jake's on, so it no longer gates the alpha, but it's still an open browser-onboarding bug. Clean fix = #1162 Caddy-gate removal (PM+Arch). Lead asks: does it loop in fresh incognito? **Gated on Arch (re-stalled, see liveness).**
+PM quota at ~87% as of Mon 6/29 07:00. Reset Wed Jul-1 ~9pm.
 
-### Decisions awaiting PM
-- 🔴 **#1162** Caddy-gate removal (PM+Arch) — paired w/ #1320. STILL OPEN; the live alpha-onboarding decision.
-- ✅ **#1312** personality-Base collapse — **FULLY GREENLIT.** Technical decision done (Arch UUID-everywhere + lint skeleton) + **PM approved timing 6/26 07:45** → proceeds in its agreed slot (after the alpha-tester bundle gate, no pull-forward). Kickoff relayed to Lead cc Arch+PM (`0cfbbc439`). Off my plate → Lead executes when the alpha bundle clears. (Watch: PM to confirm if "approved" meant start-now vs after-alpha — I read it as after-alpha.)
-- 🟢 **RECONNECT remainder** — moving fast under Lead. **#1229 WS-2 CLOSED overnight** (`88a168aff` connector_bindings storage foundation; Arch-gate already cleared via ADR-070 D3). Re-scope RESOLVED (#1230 folds, #1231 pull-forward). Lead now on **Chunk 2 (ports)**. #1283 → M5. No Exec action.
-- 🔴 **#1144 / #1131** greenlight (PM) — M3-era low-pri, possibly stale.
+**On restore (Wed 20:32 fire)**:
+1. Broadcast restore-normal cadence to cohort (6×/day) — IDLE roles restore, SLOW roles restore
+2. Update registry rows for exec (2×→6×), cxo, ppm (un-comment paused rows)
+3. Re-arm exec cron 6×/day (delete `7007f7f7`, create new `32 6,9,12,15,18,21`)
 
-### LIVENESS — Sat 6/27 07:05 (machine UP; 2 stubborn dead)
-Machine is up (Docs 03:28 WATCH + 06:05 brief). **Recovered**: Lead/CIO/HOST/Web/Comms/PA (6/26 eve) + PPM (22:22, 6/27 log) + Docs (cycling). **Arch + CXO causes pinned by PM 6/27 AM**: **Arch = busy signal** (Anthropic capacity/rate-limit — same class as Lead's afternoon), **CXO = broken cron** (not an approval-block this time). Both being worked by PM. #1320/#1162 still needs Arch up.
-
-### 📋 QUEUED (Exec coordination, NO-RUSH — CIO ask, weekend/Monday)
-**Cohort-coverage expansion of the freeze-watcher** (CIO memo 6/26, read/). v0.4 derives threshold from each role's cron → adding roles is now cheap + correct-by-construction. Registry watches 5/11 (cio/exec/arch/cxo/ppm); **collect confirmed rows from the 6 unwatched: host, comms, docs, web, pa, lead.** Each owner fills 4 fields (~30s): `role | cron_expr | fallback_thr_h | wake_start_h | wake_end_h | first_fire`. Batch to CIO. **Rationale sharpened by today**: Lead's stall went un-alerted *because Lead isn't watched* — expanding coverage closes exactly that gap. Execute when roles are next active (not at day-close).
-
-### ✅ RESOLVED 6/27 — ADR-071 keystone (dissolved on trace)
-PM asked Arch to expedite → Arch (19:00) **traced + ruled SETTLED, no increment**: owner-anchoring covers all 4 EntitySources; **#1237 is actually CLOSED** (3/4 shipped 6/18, PM-UAT'd) — the "blocked on ADR-071" framing (PPM's report + my synthesis) was STALE. Residual: **People #1281** = source-population (Lead/PPM build, not Arch); **trust-gradient/provenance** (OQ-2) = separate PPM/CXO M4 call, not ADR-071. **Relayed to CXO** (`...adr071-settled-your-surface-unblocks`, asked which boundary it was parked on). Synthesis annotated. Pattern: blocked-on-X dissolves on artifact-trace (cf. #1312). **PPM's roadmap reconciliation should reflect #1237-closed.**
-
-### ✅ Web /about citation — APPROVED, publishing
-PM approved "**Author of Product Management for UX People (Rosenfeld)**" 6/27 22:20 → GO relayed to Web (`60c87f7ec`). Web deploying staged website/main change; awaiting live-confirm → then close Janus cross-referral thread.
-
-### ✅ RESOLVED 6/27 — github-mcp = Option C (Arch re-ruled 13:45)
-Morning A (hosted-OAuth) → BLOCKED (needs tester Copilot, PM non-starter) → **Arch RE-RULED to C** (self-host `github-mcp-server` + per-user OAuth via our GitHub App; no Copilot, ~zero cost). **D3 precised**: Piper holds no raw PAT, but scoped/revocable/refreshable OAuth grants ARE permitted (#358-encrypted, #1229-binding references the encrypted secret). C extends the existing Calendar-OAuth pattern (precedent, not new exposure). **Lead has GO** to wire inc.2 OAuth-callback on this model; transport unchanged. **End-state tracked**: GitHub-App installation-token auth (purest D3, no user token held) when the server supports it. decisions.log records C supersedes A. Off PM's plate.
-
-### 🔄 IN RATIFICATION — inbox-proxy (tally)
-ACKs: **comms, docs, host, ppm, cio, arch, lead, cxo = 8/10.** Awaiting: **web, pa.** Backstop Mon 6/29. (CXO concurred + asked the FYI-on-other-agent-primary scope Q → answered: drop PM cc, PM via omnibus/Ship; escalate-via-needs-decision if PM must act. Worked-example precedent for the pilot.)
-
-### ▶ Ship #049 workstream — ALL 6 IN ✅ → SYNTHESIZE
-Reports complete: **comms, host, cio, arch, ppm, cxo = 6/6.** **Next: synthesize the Ship #049 narrative** (read all 6 §0-format reports + primary logs Jun 19–25; canonical sources for facts). Tue 6/30 window → Wed 7/1 publish. Can begin synthesis now (all inputs in).
-
-### 🟡 Cron stall ROOT-CAUSED (Arch→PM 13:50) — PM-actionable
-Not a cron problem: the scheduler is **in-process; macOS suspends the backgrounded Claude process → cron freezes** (mode-1b). No cron-config fix. **PM levers NOW**: (1) **disable App Nap for the Claude app** (Finder → Claude → Get Info → "Prevent App Nap") — small toggle, may keep it ticking; (2) **always-on foregrounded Mac Mini** = the real fix. Structural cure (off-machine resume path) = CIO's lane, in progress (CIO+Arch concur on cure shapes; watchdog-gains-resume = smallest change). Watchdog nudge is the current safety net.
-
-### 🔄 IN RATIFICATION — Exec-as-inbox-proxy (moderate)
-PM approved the moderate shape + approved circulating (6/27 ~09:10). **Ratification memo sent to all 10 roles cc PM** (`412f24738`); explicit responses required (silence≠assent), **backstop floor Mon 6/29**. Proposal: `docs/internal/operations/inbox-proxy-cc-discipline-proposal-2026-06-27.md` (STATUS: CIRCULATING). Change = retire reflexive cc-xian; senders pick FYI / needs-decision / time-critical; Exec routes; inbox kept as record+escape-hatch. **→ TRACK responses; once leadership acks → 2-wk pilot (cc discouraged-not-removed) → codify in CLAUDE.md + discipline doc if clean.** Until ratified, current cc convention stays. Standing behaviors already in effect (PM-confirmed): extract PM-questions (pull) + relay PM decisions (push).
-
-### History — 6/26 machine-sleep (resolved; durable takeaways)
-- 6/26 ~13:00–evening: machine slept → whole on-machine cohort + watchdog dark; PM roused 6/8 that night. **⭐ Strongest off-machine-cure evidence yet** (PM-gated decision): a multi-hour machine-sleep took the WHOLE cohort down; watchdog detects but cannot resume (mode-1, only the off-machine firing cure fixes). CIO v0.4 verified live in the alerts.
-- **4 distinct "looks-stalled" causes seen across 6/26**: machine-sleep (mode-1), idle-but-alive (mode-2, me), live-but-blocked (mode-3, CXO approval prompts → CIO datum `b685c6417`), and **rate-limit (Lead's afternoon — a 4th the watchdog also can't distinguish)**. Lead's afternoon gap was a rate limit, NOT the bite-sizing habit — the morning waiting-for-encouragement observation (~10:08) stands alone, don't inflate it.
-
-### Loose ends
-- 🟡 **#358** encryption deploy — Lead reports deploy verified, GitHub issue still OPEN; needs closing evidence + close.
-- ✅ **Comms Beat 9** "The Hook and the Worktree" — **PUBLISHED 2026-06-25** after PM voice-pass (`6b0d2fc6e`). Done.
-
-### Cross-project (Janus / DinP) — routed 6/25
-- **Web ← two PM-site items** (`d133ed698`): **footer byline SHIPPED** + **newsletter reply SENT to Janus** by Web same evening (`a0fae3a3e`). `/about` book-citation correction is the July-1 remainder. Loop substantially closed.
-- **Janus reply sent** (DinP `61a2df5`).
-
-### Pending PM answers (don't block other work)
-- **Model-in-logs convention change** — recommended (drop model from filename, keep "Model at start" header); awaiting PM nod to route to HOST/CIO/Docs.
-
-### Resolved / handed off
-- **RECONNECT since-6/22 sweep** — PM assessing directly with Lead/PA. Closed on my side. PM floated a **sprint-review skill** — I can draft the spec when he wants (sibling to cohort-attention-rollup).
-- **Live-but-blocked → CIO liveness spec** — CLOSED. CIO consolidated my mode-3 datum + Arch's stall + #1191 into `duty-cycle-liveness-model-2026-06-25.md` (`d835de03f`); 3-failure-mode model; build banked for fresh pass. **Forward item (banked by CIO): mode-3 root-cause diagnostic = CIO+Exec+CXO collaborative** — why a permissive session still prompts; don't drop it.
-
-### Clean / active
-Lead Dev (huge day — #1318/#1319/#1309/#1310 closed, #358 deployed, #1320 filed), CIO (#1153 closed, #1287 → Lead, Iris runbook), Docs (omnibus 22/23/24 + BRIEFING refresh), HOST (Fire 4 idle), PPM (Fire 3 idle), Web (#998 live, Phase 3 ready), PA (bundle ready, MCPB-gated).
-
-### Resolved today
-#1318, #1319, #1309, #1310, #1286 CLOSED; #1153 CLOSED; #1312 RULED. Lead + Arch logs caught up after morning nudges.
+**Watchdog**: clean per Janus 6/29 sweep. 3 paused rows (exec/cxo/ppm) correctly commented out. No action until Wed.
 
 ---
 
-## ⏳ QUEUED-WITH-TRIGGER — convene combined CXO+PPM M4 session
-**Trigger: RECONNECT lands.** Then Exec convenes one M4 scoping session = trust-gradient (CXO UX + PPM OQ-2 provenance threshold) + onboarding scoping (both had queued). Both confirmed unblocked on entity-model surface 6/27 (ADR-071 settled). Pairs with PPM's People-#1281 one-pager (source-population + provenance = same family). Don't lose; pull at trigger.
+## ACTIVE — self-propelling (no PM input needed)
 
-## 🗓️ STANDING — Friday workstream kickoff (Exec-owned, PM-directed 6/27)
-Every Friday: (1) verify the just-closed Fri–Thu window's session logs are day-closed (grep DAY-CLOSED per day, per role); memo any role missing its close; (2) THEN issue the workstream call to the six leads (HOST/CIO/Comms/CXO/PPM/Arch) cc PM+PA. Durable home: methodology-25 "Friday kickoff trigger". Active cron `249b372c` (Fri 07:05) backs it — but the doc is the survivor (cron is session-scoped). **§0 format = progress vs portfolio goals, PM-approved + codified in methodology-25 (effective #049).**
+- **Lead**: RECONNECT Option C (#1322, per-user OAuth, self-hosted `github-mcp-server`) — building actively, not blocked
+- **CIO**: continuity infra; off-machine cure-(b) scope post-reset
+- **Comms**: next-arc proposal inbound (2×/day cadence, hasn't landed yet)
+- **Docs**: omnibus + merge-keeper sweep
+- **PA**: MCPB gated on PM clean-machine test
 
-## ▶ Ship #049 — detail
-Call `f15f196d3` (6 leads, window Jun 19–25, §0 portfolio-progress format, Tue 6/30 last-call → Wed 7/1). Log-closure memos to CXO + PA (`e9337a3de`); PA also adopting duty-cycle STOP day-close. (Live tally above.)
+---
 
+## PM-ATTENTION QUEUE (low-pri, no rush this week)
 
-## ⚡ INCOMING (PM 6/28) — quota strain → slower cadences / idle some agents (next couple days)
-PM taxing quota hard; **probably moving to slower cadences or idling some agents ~2 days.** PM clearing all inboxes today. **Exec to operationalize on PM's word** (coordination lane): propose a cadence-reduction plan + which agents idle vs keep; **include slowing my OWN exec cron** (6x/day → fewer) as part of the cut. Don't act unilaterally yet — await PM's go/plan. Most in-flight items are low-urgency or near-done, so a slowdown is low-risk.
+- **PPM roadmap v18.2 + canonical sprint-order list**: PPM shipped 6/28; awaiting PM confirm (low-pri, non-blocking)
+- **#1144 / #1131 greenlight** (low-pri; possibly stale)
 
-## 📐 PM PRINCIPLE (6/28) — roadmap must not carry stale open/closed detail
-If the roadmap has sprint open/closed detail, it can't go stale. Cure = the canonical sprint-order list (PPM, in progress) + GH Sprint field own live status; roadmap references at altitude (don't duplicate). Backstop = recurring open-vs-tracked scrub. Captured in recurring-tasks design note. Drove the 3 stale-as-pending framings this week.
+---
 
-## PM-attention items
-- **MCPB clean-machine test** + **#1320/#1162** = the alpha-email gate.
-- **Re-prod CXO + PPM** (watchdog-flagged 07:44; Arch already back).
+## IN RATIFICATION
 
-*— Exec (DinP / Sonnet 4.6, cloud session), 6/25 17:25 PT*
+**Inbox-proxy convention**: 8/10 ACKs (web + pa pending; both IDLE-throttled). Backstop was Mon 6/29.
+- PM mentioned possibility of eliminating PM inbox entirely (standing exec-as-inbox-proxy). This was broader than the moderate shape in the proposal — track but don't act unilaterally.
+- **Option**: start 2-week pilot at 8/10 (web/pa are IDLE — they'll see the memo when they restore). Can do now. PM's call.
+
+---
+
+## QUEUED-WITH-TRIGGER
+
+- **Combined CXO+PPM M4 session**: convene when RECONNECT lands (Exec to initiate). Trust-gradient (OQ-2) + onboarding scoping. Both unblocked on entity-model surface (ADR-071 settled).
+
+---
+
+## STANDING
+
+- **Friday workstream kickoff** (cron `249b372c`, 07:05): verify DAY-CLOSED for all roles in the window → then issue #050 call to 6 leads cc PM+PA. **§0 format** (progress vs portfolio goals, per methodology-25).
+- **Ship #049**: ALL 6 REPORTS IN ✅. Synthesis compiled 6/27 (`exec-ship-049-workstream-synthesis-2026-06-27.md`). **Comms drafts public Ship for Wed 7/1** — waiting on Comms next-arc arc pick + their draft.
+
+---
+
+## RESOLVED (recent, for reference)
+
+- ADR-071 keystone dissolved on trace (Arch 6/27) — boundary settled; #1237 actually closed 6/18
+- Web /about byline LIVE (pipermorgan.ai, July-1 met)
+- Throttle executed 6/28 12:35 — cohort lean, 10/10 adopted
+- Beat 9 "The Hook and the Worktree" published 6/25
+- D1 sprint closed (gate #1297, 6/20) — confirmed on GH
+
+---
+
+*— Exec (DinP / Sonnet 4.6, cloud session), 6/29 09:02 PT*
