@@ -38,7 +38,6 @@ from .connector import (
     ResourceQuery,
 )
 from .connector_grant_store import ConnectorGrantStore
-from .consumer_core import MCPConsumerCore
 from .mcp_client import MCPClient
 
 _GITHUB = "github"
@@ -94,7 +93,6 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
 
     def __init__(self):
         super().__init__("github_mcp")
-        self.mcp_consumer = MCPConsumerCore()
         self._lock = asyncio.Lock()
         self._issue_to_position: Dict[str, int] = {}
         self._position_to_issue: Dict[int, str] = {}
@@ -1086,129 +1084,6 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             logger.error(f"Error creating spatial object for GitHub issue {issue_number}: {e}")
             return None
 
-    async def list_issues_via_mcp(self, repo: str, owner: str) -> List[Dict[str, Any]]:
-        """
-        List GitHub issues via MCP protocol with fallback to GitHub API.
-
-        Issue #1042: ``repo`` and ``owner`` are now required positional args
-        (was defaulted to "piper-morgan-product"). The fallback to
-        ``list_github_issues_direct`` now threads ``owner`` through.
-
-        Args:
-            repo: Repository name
-            owner: Repository owner
-
-        Returns:
-            List of GitHub issues
-        """
-        try:
-
-            async def _operation():
-                # Try MCP first
-                if self.mcp_consumer.is_connected():
-                    issues = await self.mcp_consumer.execute("list_issues", repo=repo)
-                    if issues and len(issues) > 0:
-                        logger.info(f"Retrieved {len(issues)} issues from GitHub via MCP")
-                        return issues
-
-                # Fallback to direct GitHub API
-                logger.info("MCP not available, falling back to GitHub API")
-
-                # Ensure GitHub API is configured for fallback
-                if not self._session:
-                    await self.configure_github_api()
-
-                issues = await self.list_github_issues_direct(repo, owner)
-                if issues:
-                    logger.info(f"Retrieved {len(issues)} issues from GitHub API")
-                    return issues
-
-                # Issue #1088 (#999 follow-up): both MCP and GitHub API failed.
-                # Removed the prior 2-issue demo_fallback fixture (fabrication-shape:
-                # downstream consumers that don't inspect `retrieved_via` would render
-                # fake issues as real). Empty list with ERROR log is the operational
-                # signal; callers handle empty lists fail-graceful.
-                logger.error(
-                    "github_adapter_dual_failure",
-                    repo=repo,
-                    owner=owner,
-                    detail="Both MCP and GitHub REST API failed; returning empty list",
-                )
-                return []
-
-            result = await self.token_counter.wrap_mcp_call(
-                "github_list_issues_via_mcp",
-                _operation(),
-                input_data=f"repo={repo}",
-            )
-            logger.info(f"Retrieved {len(result)} issues via MCP for repo {repo}")
-            return result
-
-        except Exception as e:
-            logger.error(f"Error listing GitHub issues via MCP: {e}")
-            return []
-
-    async def get_issue_via_mcp(
-        self, issue_number: str, repo: str, owner: str
-    ) -> Optional[Dict[str, Any]]:
-        """
-        Get specific GitHub issue via MCP protocol with fallback to GitHub API.
-
-        Issue #1042: ``repo`` and ``owner`` are now required positional args
-        (was defaulted to "piper-morgan-product").
-
-        Args:
-            issue_number: GitHub issue number
-            repo: Repository name
-            owner: Repository owner
-
-        Returns:
-            GitHub issue data if found, None otherwise
-        """
-        try:
-
-            async def _operation():
-                # Try MCP first
-                if self.mcp_consumer.is_connected():
-                    # This would use the MCP protocol to fetch specific issue data
-                    # For now, return basic info
-                    mcp_issue = {
-                        "number": issue_number,
-                        "repository": repo,
-                        "title": f"Issue #{issue_number}",
-                        "state": "open",
-                        "retrieved_via": "mcp",
-                    }
-                    logger.info(f"Retrieved issue #{issue_number} via MCP")
-                    return mcp_issue
-
-                # Fallback to direct GitHub API
-                logger.info(f"MCP not available, trying GitHub API for issue #{issue_number}")
-
-                # Ensure GitHub API is configured for fallback
-                if not self._session:
-                    await self.configure_github_api()
-
-                issue = await self.get_github_issue_direct(issue_number, repo, owner)
-                if issue:
-                    return issue
-
-                # Final fallback
-                logger.warning(f"Issue #{issue_number} not found via MCP or GitHub API")
-                return None
-
-            result = await self.token_counter.wrap_mcp_call(
-                "github_get_issue_via_mcp",
-                _operation(),
-                input_data=f"issue_number={issue_number},repo={repo}",
-            )
-            logger.info(f"Retrieved issue #{issue_number} via MCP")
-            return result
-
-        except Exception as e:
-            logger.error(f"Error getting GitHub issue {issue_number} via MCP: {e}")
-            return None
-
     async def get_response_context(self, issue_number: str) -> Optional[Dict[str, Any]]:
         """
         Get response context for GitHub issue.
@@ -1234,7 +1109,6 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 "github_issues": len(self._issue_to_position),
                 "spatial_positions": len(self._position_to_issue),
                 "context_entries": len(self._context_storage),
-                "mcp_connected": self.mcp_consumer.is_connected(),
             }
 
     async def cleanup_old_mappings(self, max_age_hours: int = 24) -> int:
@@ -1255,9 +1129,6 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
     async def disconnect(self):
         """Disconnect from MCP service and cleanup GitHub API session"""
         try:
-            # Disconnect MCP consumer
-            await self.mcp_consumer.disconnect()
-
             # Close GitHub API session
             if self._session:
                 await self._session.close()
