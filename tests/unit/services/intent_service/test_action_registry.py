@@ -170,6 +170,8 @@ class TestNoStubPhrases:
             "list_todos_query",
             "list_completed_todos",
             "next_todo_query",
+            # RECONNECT #1327: conversational set-default-repo
+            "set_default_repo",
         }
         known_handled_execution_actions = {"complete_todo"}
 

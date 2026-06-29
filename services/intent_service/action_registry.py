@@ -78,6 +78,9 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("QUERY", "list_issues_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "list_prs_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "review_issue_query"): ActionDisposition.WORKFLOW,
+    # RECONNECT #1327: conversational "set my default repo to owner/name" — a per-user
+    # preference write (connector_configs), dispatched via the workflow rail.
+    ("QUERY", "set_default_repo"): ActionDisposition.WORKFLOW,
     # Issue #1039: GitHub milestone + release listing
     ("QUERY", "list_milestones_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "list_releases_query"): ActionDisposition.WORKFLOW,
@@ -132,6 +135,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "list_issues_query"): "List open issues",
     ("QUERY", "list_prs_query"): "Show me open pull requests",
     ("QUERY", "review_issue_query"): "Show me issue #42",
+    ("QUERY", "set_default_repo"): "set my default repo to mediajunkie/piper-morgan-product",
     ("QUERY", "list_milestones_query"): "Show milestones",
     ("QUERY", "list_releases_query"): "Recent releases",
     ("QUERY", "list_labels_query"): "List labels",
@@ -224,6 +228,7 @@ class Verb(Enum):
     ANALYZE = "analyze"  # analytical synthesis (blockers)
     # ---- Management ----
     MANAGE = "manage"  # portfolio / repo management
+    SET = "set"  # set a per-user preference/setting (default repo, …) (#1327)
     # ---- Object mutations ----
     CLOSE = "close"
     REOPEN = "reopen"
@@ -271,6 +276,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "list_issues_query": Verb.LIST,
     "list_prs_query": Verb.LIST,
     "review_issue_query": Verb.GET,
+    "set_default_repo": Verb.SET,  # RECONNECT #1327
     "list_milestones_query": Verb.LIST,
     "list_releases_query": Verb.LIST,
     "list_labels_query": Verb.LIST,

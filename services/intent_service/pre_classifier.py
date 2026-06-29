@@ -816,6 +816,24 @@ class PreClassifier:
         r"\b(?:show|list|view)\s+(?:my\s+)?(?:all\s+)?(?:archived\s+)?projects\b",
     ]
 
+    # Set-default-repo patterns (RECONNECT #1327 gap 1) — conversational counterpart
+    # to the GUI default-repo setting. MUST be checked BEFORE REPO_MANAGEMENT_PATTERNS
+    # (which captures "add owner/repo to ..." / link/connect) because these phrasings
+    # are more specific: they all carry the word "default" alongside repo/repository.
+    # The owner/name token is parsed out of original_message by the handler (mirrors
+    # the issue-number parse in the close/reopen handlers), so these patterns only
+    # need to RECOGNIZE the intent, not capture the repo.
+    SET_DEFAULT_REPO_PATTERNS = [
+        # "set/change/make my default repo to owner/name" (+ repository, + "my", + "to")
+        r"\b(?:set|change|update|make)\s+(?:my\s+)?default\s+repo(?:sitory)?\b",
+        # "use owner/name as my default repo[sitory]"
+        r"\buse\s+[\w.-]+/[\w.-]+\s+as\s+(?:my\s+)?default\s+repo(?:sitory)?\b",
+        # "make owner/name my default repo[sitory]"
+        r"\bmake\s+[\w.-]+/[\w.-]+\s+(?:my\s+)?default\s+repo(?:sitory)?\b",
+        # "my default repo[sitory] is owner/name" / "... should be owner/name"
+        r"\b(?:my\s+)?default\s+repo(?:sitory)?\s+(?:is|should be|=)\s+[\w.-]+/[\w.-]+",
+    ]
+
     # Repository management patterns (Issue #862)
     REPO_MANAGEMENT_PATTERNS = [
         # Link operations - "link owner/repo to project"
@@ -976,6 +994,23 @@ class PreClassifier:
             return Intent(
                 category=IntentCategory.MEMORY,
                 action="get_memory",
+                confidence=1.0,
+                context={"original_message": message},
+            )
+
+        # RECONNECT #1327: Check SET_DEFAULT_REPO before DOCUMENT_QUERY and
+        # REPO_MANAGEMENT. It must precede DOCUMENT_QUERY because a phrasing like
+        # "change my default repo to owner/name" otherwise matches the document
+        # "change ... to" pattern. These set-default patterns are highly specific
+        # (they require the literal "default repo[sitory]"), so they steal no
+        # legitimate document or repo-management queries. Routes a per-user
+        # preference write, distinct from linking a repo to a project (manage_repos).
+        if PreClassifier._matches_patterns(
+            clean_for_matching, PreClassifier.SET_DEFAULT_REPO_PATTERNS
+        ):
+            return Intent(
+                category=IntentCategory.QUERY,
+                action="set_default_repo",
                 confidence=1.0,
                 context={"original_message": message},
             )

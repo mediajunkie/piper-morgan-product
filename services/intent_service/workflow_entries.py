@@ -465,6 +465,16 @@ def register_default_workflows() -> None:
         action_triggered=True,
     )
 
+    # RECONNECT #1327 gap 1: conversational "set my default repo to owner/name".
+    # 2-arg (intent, workflow_id) handler, reused via the standard factory. Routed
+    # via the action-dispatch rail (action_triggered) — NOT a hand-coded elif branch.
+    set_default_repo_entry = WorkflowEntry(
+        entry_point=_make_query_dispatch_entry_point("_handle_set_default_repo"),
+        description="Set-default-repo via action dispatch (#1327)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
+
     _default_entries: dict[str, WorkflowEntry] = {
         "meeting": WorkflowEntry(
             entry_point=start_meeting_workflow,
@@ -492,6 +502,8 @@ def register_default_workflows() -> None:
         # #1124: content generation (synthesis category).
         "generate_content": generate_content_entry,
         "create_content": generate_content_entry,
+        # RECONNECT #1327 gap 1: set-default-repo (QUERY category, pre-classifier action).
+        "set_default_repo": set_default_repo_entry,
     }
 
     # #1124 step 3 cohort 2: GitHub read-query cohort — one shared entry point per
