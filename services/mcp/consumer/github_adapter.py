@@ -23,6 +23,11 @@ from services.integrations.spatial_adapter import (
 
 from services.connectors.binding_repository import ConnectorBindingRepository
 from services.database.session_factory import AsyncSessionFactory
+from services.integrations.github.repo_resolver import (
+    ResolvedRepo,
+    UnresolvedRepoError,
+    resolve_repo,
+)
 
 from .connector import (
     Binding,
@@ -60,6 +65,16 @@ _MY_OPEN_ISSUES_QUERY = "assignee:@me is:open is:issue"
 _PRS_TOOL = "search_pull_requests"
 _MY_OPEN_PRS_QUERY = "author:@me is:open is:pr"
 
+# ── #1327 gap 2: repo-scoped read tools (github-mcp-server, authoritative tool names) ──
+# These REQUIRE a target repo (resolve_repo) — unlike the user-wide search tools above.
+# NOTE: github-mcp-server has NO milestones tool → milestones stay native-PAT (#1039), NOT here.
+_BRANCHES_TOOL = "list_branches"  # args: owner, repo, page, perPage
+_LABELS_TOOL = "list_label"  # args: owner, repo  (the server's tool is singular "list_label")
+_RELEASES_TOOL = "list_releases"  # args: owner, repo, page, perPage
+# Single-issue read is the CONSOLIDATED issue_read tool (method="get"), not a get_issue tool.
+_ISSUE_READ_TOOL = "issue_read"  # args: owner, repo, issue_number, method
+_ISSUE_READ_GET = "get"
+
 # Stored non-BOUND binding statuses → the honest ResolveMiss reason (#1231).
 _NONBOUND_REASON = {
     ConnectorStatusState.STALE.value: DegradationReason.STALE_TOKEN,
@@ -80,6 +95,34 @@ class GitHubIssuesResult:
 
     issues: Optional[List[Dict[str, Any]]] = None
     total: Optional[int] = None  # TRUE match count (search_issues total_count); issues is a page
+    degradation: Optional[DegradationResponse] = None
+
+
+@dataclass
+class GitHubRepoScopedResult:
+    """Connector repo-scoped LIST-read result (#1327 gap 2): items on success, else honest degrade.
+
+    The repo-scoped counterpart to ``GitHubIssuesResult`` — for branches / labels / releases,
+    which target ONE repo (resolved via ``resolve_repo``). Exactly one of ``items`` /
+    ``degradation`` is set. ``resolved_repo`` (``owner/name``) is surfaced on success so the
+    handler can name the repo it read. ``REPO_UNRESOLVED`` degradation = the "which repo?" case
+    (no target repo) — never a silent empty, never get-all (#1231 / #1327 doc-of-record).
+    """
+
+    items: Optional[List[Dict[str, Any]]] = None
+    resolved_repo: Optional[str] = None  # "owner/name" on a hit (which repo we read)
+    degradation: Optional[DegradationResponse] = None
+
+
+@dataclass
+class GitHubIssueResult:
+    """Connector single-issue read result (#1327 gap 2, "review issue #N"): item or honest degrade.
+
+    Like ``GitHubRepoScopedResult`` but a single ``item`` dict (one issue) rather than a list.
+    """
+
+    item: Optional[Dict[str, Any]] = None
+    resolved_repo: Optional[str] = None
     degradation: Optional[DegradationResponse] = None
 
 
@@ -187,6 +230,10 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             DegradationReason.RESOURCE_NOT_FOUND: "That GitHub resource wasn't found.",
             DegradationReason.UNREACHABLE: "GitHub's MCP server is unreachable right now.",
             DegradationReason.STALE_TOKEN: "Your GitHub connection needs re-authorizing.",
+            DegradationReason.REPO_UNRESOLVED: (
+                "Which repo? I couldn't tell which repository you mean — name one "
+                "(e.g. `owner/name`), link a repo to your project, or set a default repo."
+            ),
         }
         return DegradationResponse(
             reason=reason,
@@ -278,6 +325,298 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         if total is None:
             total = len(items)  # list_issues shape: count is what we got
         return items[:limit], total
+
+    # ── #1327 gap 2: repo-scoped reads over the OAuth connector (branches/labels/releases/issue) ──
+    # Mirror the #1322 user-wide rail, but repo-scoped: resolve_repo() FIRST (a target repo is
+    # REQUIRED), then call the github-mcp-server repo-scoped tool with {owner, repo, ...}. On
+    # UnresolvedRepoError → honest REPO_UNRESOLVED ("which repo?"), never silent-empty / get-all.
+
+    async def list_branches_connector(
+        self, user_id: str, *, explicit_repo: Optional[str] = None, project_id=None
+    ) -> GitHubRepoScopedResult:
+        """List a repo's branches over the OAuth connector (#1327). Tool: ``list_branches``.
+
+        The pattern-establishing repo-scoped read. Resolves the target repo via
+        ``resolve_repo`` then reads via the user's binding + grant — NOT the native shared PAT.
+        Branch dicts are normalized to ``{name, protected, commit_sha}`` (the shape the handler
+        + the native ``list_branches`` already use).
+        """
+        return await self._repo_scoped_list_via_connector(
+            user_id,
+            tool=_BRANCHES_TOOL,
+            parse=self._parse_branches,
+            explicit_repo=explicit_repo,
+            project_id=project_id,
+        )
+
+    async def list_labels_connector(
+        self, user_id: str, *, explicit_repo: Optional[str] = None, project_id=None
+    ) -> GitHubRepoScopedResult:
+        """List a repo's labels over the OAuth connector (#1327). Tool: ``list_label``.
+
+        Label dicts normalized to ``{name, color, description, html_url}`` (the native shape).
+        """
+        return await self._repo_scoped_list_via_connector(
+            user_id,
+            tool=_LABELS_TOOL,
+            parse=self._parse_labels,
+            explicit_repo=explicit_repo,
+            project_id=project_id,
+        )
+
+    async def list_releases_connector(
+        self, user_id: str, *, explicit_repo: Optional[str] = None, project_id=None
+    ) -> GitHubRepoScopedResult:
+        """List a repo's releases over the OAuth connector (#1327). Tool: ``list_releases``.
+
+        Release dicts normalized to ``{tag_name, name, published_at, prerelease, draft,
+        html_url, body}`` (the native shape; body truncated to keep memory bounded).
+        """
+        return await self._repo_scoped_list_via_connector(
+            user_id,
+            tool=_RELEASES_TOOL,
+            parse=self._parse_releases,
+            explicit_repo=explicit_repo,
+            project_id=project_id,
+        )
+
+    async def get_issue_connector(
+        self,
+        user_id: str,
+        *,
+        issue_number: int,
+        explicit_repo: Optional[str] = None,
+        project_id=None,
+    ) -> GitHubIssueResult:
+        """Read a single repo issue over the OAuth connector (#1327, "review issue #N").
+
+        Tool: the consolidated ``issue_read`` with ``method="get"`` (github-mcp-server has no
+        standalone ``get_issue``). Resolves the repo via ``resolve_repo`` (honoring an explicit
+        ``owner/name`` from "issue #N in owner/name"). Issue dict normalized to the native
+        ``get_github_issue_direct`` shape so the handler renders identically.
+        """
+        resolved = await self._resolve_or_degrade(
+            user_id, explicit_repo=explicit_repo, project_id=project_id
+        )
+        if isinstance(resolved, DegradationResponse):
+            return GitHubIssueResult(degradation=resolved)
+
+        binding_or_degrade = await self._bound_binding_or_degrade(user_id)
+        if isinstance(binding_or_degrade, DegradationResponse):
+            return GitHubIssueResult(degradation=binding_or_degrade)
+
+        try:
+            async with self._mcp_client_ctx(binding_or_degrade) as client:
+                result = await client.call_tool(
+                    _ISSUE_READ_TOOL,
+                    {
+                        "owner": resolved.owner,
+                        "repo": resolved.name,
+                        "issue_number": issue_number,
+                        "method": _ISSUE_READ_GET,
+                    },
+                )
+                item = self._parse_issue_detail(self._first_text(result.content))
+        except Exception:
+            logger.warning(
+                "GitHub MCP issue_read failed (server unreachable/unprovisioned)", exc_info=True
+            )
+            return GitHubIssueResult(degradation=await self.degrade(DegradationReason.UNREACHABLE))
+        return GitHubIssueResult(item=item, resolved_repo=resolved.full_name)
+
+    async def _repo_scoped_list_via_connector(
+        self, user_id: str, *, tool: str, parse, explicit_repo=None, project_id=None
+    ) -> GitHubRepoScopedResult:
+        """Shared repo-scoped LIST rail: resolve_repo → bound binding → call tool → parse, or
+        an honest degrade — the rail behind ``list_branches/labels/releases_connector``.
+
+        Order mirrors the #1322 ``_search_via_connector`` rail with repo resolution prepended:
+        UnresolvedRepoError → REPO_UNRESOLVED ("which repo?"); no binding → CONNECT_REQUIRED
+        (+ link); non-bound → stored reason; bound-but-unreachable → UNREACHABLE. Never a silent
+        empty (#1231). ``parse`` maps the tool's JSON payload → normalized item dicts.
+        """
+        resolved = await self._resolve_or_degrade(
+            user_id, explicit_repo=explicit_repo, project_id=project_id
+        )
+        if isinstance(resolved, DegradationResponse):
+            return GitHubRepoScopedResult(degradation=resolved)
+
+        binding_or_degrade = await self._bound_binding_or_degrade(user_id)
+        if isinstance(binding_or_degrade, DegradationResponse):
+            return GitHubRepoScopedResult(degradation=binding_or_degrade)
+
+        try:
+            async with self._mcp_client_ctx(binding_or_degrade) as client:
+                result = await client.call_tool(
+                    tool, {"owner": resolved.owner, "repo": resolved.name}
+                )
+                items = parse(self._first_text(result.content))
+        except Exception:
+            logger.warning(
+                "GitHub MCP repo-scoped read failed (server unreachable/unprovisioned)",
+                exc_info=True,
+            )
+            return GitHubRepoScopedResult(
+                degradation=await self.degrade(DegradationReason.UNREACHABLE)
+            )
+        return GitHubRepoScopedResult(items=items, resolved_repo=resolved.full_name)
+
+    async def _resolve_or_degrade(self, user_id, *, explicit_repo=None, project_id=None):
+        """Resolve the target repo, or return a REPO_UNRESOLVED degrade ("which repo?").
+
+        Repo-scoped reads REQUIRE a repo (#1327 doc-of-record): an ``UnresolvedRepoError`` must
+        become an honest "which repo?" — NEVER a get-all or a silent empty (#1231). Returns a
+        ``ResolvedRepo`` on success or a ``DegradationResponse`` the caller wraps in its result.
+        """
+        user_uuid = self._coerce_user_uuid(user_id)
+        try:
+            return await resolve_repo(
+                user_id=user_uuid, project_id=project_id, explicit=explicit_repo
+            )
+        except UnresolvedRepoError:
+            return await self.degrade(DegradationReason.REPO_UNRESOLVED)
+
+    async def _bound_binding_or_degrade(self, user_id):
+        """Return the user's BOUND github binding, or the honest degrade for its absence/state.
+
+        The binding half of the #1322 rail, factored out so the repo-scoped reads share it:
+        no binding → CONNECT_REQUIRED (+ connect link); non-bound status → its mapped reason.
+        """
+        async with AsyncSessionFactory.session_scope() as session:
+            binding = await ConnectorBindingRepository(session).get(user_id, _GITHUB)
+        if binding is None:
+            return await self.degrade(DegradationReason.CONNECT_REQUIRED)
+        if binding.status != ConnectorStatusState.BOUND.value:
+            reason = _NONBOUND_REASON.get(binding.status, DegradationReason.CONNECT_REQUIRED)
+            return await self.degrade(reason)
+        return binding
+
+    @staticmethod
+    def _coerce_user_uuid(user_id):
+        """Coerce a user_id to a UUID for resolve_repo's user-default lookup (None on non-UUID).
+
+        resolve_repo's user-scoped paths take a UUID; a non-UUID / None principal simply skips
+        those paths (the explicit/project/env paths still apply) — never an error."""
+        from uuid import UUID
+
+        if isinstance(user_id, UUID):
+            return user_id
+        if isinstance(user_id, str):
+            try:
+                return UUID(user_id)
+            except (ValueError, TypeError):
+                return None
+        return None
+
+    @staticmethod
+    def _parse_branches(payload: Optional[str]) -> List[Dict[str, Any]]:
+        """Parse a ``list_branches`` JSON array → normalized ``{name, protected, commit_sha}``."""
+        out = []
+        for b in GitHubMCPSpatialAdapter._json_array(payload):
+            commit = b.get("commit") or {}
+            out.append(
+                {
+                    "name": b.get("name", ""),
+                    "protected": bool(b.get("protected")),
+                    "commit_sha": commit.get("sha", "") if isinstance(commit, dict) else "",
+                }
+            )
+        return out
+
+    @staticmethod
+    def _parse_labels(payload: Optional[str]) -> List[Dict[str, Any]]:
+        """Parse a ``list_label`` JSON array → normalized ``{name, color, description, html_url}``."""
+        out = []
+        for label in GitHubMCPSpatialAdapter._json_array(payload):
+            out.append(
+                {
+                    "name": label.get("name", ""),
+                    "color": label.get("color", ""),
+                    "description": label.get("description") or "",
+                    "html_url": label.get("url") or label.get("html_url"),
+                }
+            )
+        return out
+
+    @staticmethod
+    def _parse_releases(payload: Optional[str]) -> List[Dict[str, Any]]:
+        """Parse a ``list_releases`` JSON array → the native release dict shape (body truncated)."""
+        out = []
+        for r in GitHubMCPSpatialAdapter._json_array(payload):
+            body = r.get("body") or ""
+            if len(body) > 500:
+                body = body[:500] + "..."
+            out.append(
+                {
+                    "tag_name": r.get("tag_name", ""),
+                    "name": r.get("name") or r.get("tag_name", ""),
+                    "published_at": r.get("published_at"),
+                    "prerelease": bool(r.get("prerelease")),
+                    "draft": bool(r.get("draft")),
+                    "html_url": r.get("html_url"),
+                    "body": body,
+                }
+            )
+        return out
+
+    @staticmethod
+    def _parse_issue_detail(payload: Optional[str]) -> Optional[Dict[str, Any]]:
+        """Parse an ``issue_read`` (method=get) JSON object → the native get_issue_direct shape.
+
+        Returns ``None`` for an empty/unparseable payload (handler renders "couldn't find #N").
+        """
+        if not payload:
+            return None
+        try:
+            data = json.loads(payload)
+        except (ValueError, TypeError):
+            return None
+        if not isinstance(data, dict) or not data:
+            return None
+        labels = data.get("labels") or []
+        assignees = data.get("assignees") or []
+        return {
+            "number": data.get("number"),
+            "title": data.get("title"),
+            "description": data.get("body", ""),
+            "body": data.get("body", ""),
+            "state": data.get("state"),
+            "uri": data.get("html_url"),
+            "html_url": data.get("html_url"),
+            "labels": [
+                lbl.get("name", "") if isinstance(lbl, dict) else lbl for lbl in labels
+            ],
+            "assignees": [
+                a.get("login", "") if isinstance(a, dict) else a for a in assignees
+            ],
+            "milestone": (
+                data.get("milestone", {}).get("title")
+                if isinstance(data.get("milestone"), dict)
+                else None
+            ),
+            "user": (data.get("user") or {}).get("login")
+            if isinstance(data.get("user"), dict)
+            else None,
+            "retrieved_via": "github_connector",
+        }
+
+    @staticmethod
+    def _json_array(payload: Optional[str]) -> List[Dict[str, Any]]:
+        """Parse a JSON payload to a list of dicts (tolerant): ``[]`` on empty/non-list/error.
+
+        github-mcp-server repo-scoped list tools return a JSON array; some wrap it as
+        ``{"items": [...]}`` — tolerate both shapes (mirrors ``_parse_issue_search``)."""
+        if not payload:
+            return []
+        try:
+            data = json.loads(payload)
+        except (ValueError, TypeError):
+            return []
+        if isinstance(data, dict):
+            data = data.get("items") or data.get("branches") or []
+        if not isinstance(data, list):
+            return []
+        return [item for item in data if isinstance(item, dict)]
 
     # ── resolve() transport seam (the real MCP path; #1220) ──
     # Isolated so resolve()'s degrade rail is testable against a fixture-backed client,

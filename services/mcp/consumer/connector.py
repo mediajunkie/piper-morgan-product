@@ -41,6 +41,7 @@ class DegradationReason(enum.Enum):
     RESOURCE_NOT_FOUND = "resource_not_found"  # a resolve-miss
     UNREACHABLE = "unreachable"  # the MCP server is down
     STALE_TOKEN = "stale_token"  # bound but needs re-auth
+    REPO_UNRESOLVED = "repo_unresolved"  # #1327: repo-scoped read but no target repo — "which repo?"
 
 
 @dataclass(frozen=True)
