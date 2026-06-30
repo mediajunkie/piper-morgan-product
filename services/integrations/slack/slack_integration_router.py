@@ -318,12 +318,16 @@ class SlackIntegrationRouter:
         else:
             raise RuntimeError("No Slack integration available for list_users")
 
-    async def test_auth(self, user_id: Optional[str] = None) -> SlackResponse:
+    async def test_auth(
+        self, user_id: Optional[str] = None, use_user_token: bool = False
+    ) -> SlackResponse:
         """
         Test authentication.
 
         Args:
             user_id: User identifier scoping credentials (#1110).
+            use_user_token: #1338 — validate the user token (xoxp-) instead of the bot
+                token (e.g. to discover the user's handle for search.messages).
 
         Returns:
             SlackResponse: Authentication test results
@@ -337,9 +341,43 @@ class SlackIntegrationRouter:
         if client:
             if is_legacy:
                 self._warn_deprecation_if_needed("test_auth", is_legacy)
-            return await client.test_auth()
+            return await client.test_auth(use_user_token=use_user_token)
         else:
             raise RuntimeError("No Slack integration available for test_auth")
+
+    async def search_messages(
+        self,
+        query: str,
+        user_id: Optional[str] = None,
+        count: int = 20,
+        sort: str = "timestamp",
+        sort_dir: str = "desc",
+    ) -> SlackResponse:
+        """
+        Search messages via Slack's USER-only `search.messages` method (#1338).
+
+        Args:
+            query: Slack search query (e.g. ``@handle`` for mentions).
+            user_id: User identifier scoping credentials (#1110); the user token is used.
+            count/sort/sort_dir: Slack search params.
+
+        Returns:
+            SlackResponse: Search results (honest-degrades if no user token configured).
+
+        Raises:
+            RuntimeError: If no Slack integration is available
+        """
+        self._ensure_config_service("search_messages")
+        client, is_legacy = self._get_preferred_integration("search_messages", user_id)
+
+        if client:
+            if is_legacy:
+                self._warn_deprecation_if_needed("search_messages", is_legacy)
+            return await client.search_messages(
+                query, count=count, sort=sort, sort_dir=sort_dir
+            )
+        else:
+            raise RuntimeError("No Slack integration available for search_messages")
 
     async def get_conversation_history(
         self,

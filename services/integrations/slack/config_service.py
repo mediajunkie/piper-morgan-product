@@ -38,6 +38,10 @@ class SlackConfig:
 
     # Authentication
     bot_token: str = ""
+    # #1338: user token (xoxp-) for USER-only Web API methods (e.g. search.messages,
+    # which a bot token cannot call). User-scoped, persisted as the `slack_user`
+    # keychain key after OAuth. Empty when the user hasn't granted user scopes.
+    user_token: str = ""
     app_token: str = ""
     signing_secret: str = ""
 
@@ -213,6 +217,8 @@ class SlackConfigService:
         keychain = KeychainService()
         # User-scoped token (per ADR-058)
         keychain_bot_token = keychain.get_api_key("slack_bot", username=user_id) or ""
+        # #1338: user token (xoxp-) for USER-only methods (search.messages), user-scoped
+        keychain_user_token = keychain.get_api_key("slack_user", username=user_id) or ""
         # App credentials (shared, no user scoping)
         keychain_client_id = keychain.get_api_key("slack_client_id") or ""
         keychain_client_secret = keychain.get_api_key("slack_client_secret") or ""
@@ -221,6 +227,13 @@ class SlackConfigService:
         # bot_token is user-scoped
         bot_token = (
             os.getenv("SLACK_BOT_TOKEN") or auth_config.get("bot_token") or keychain_bot_token or ""
+        )
+        # user_token is user-scoped (same 4-layer priority as bot_token) — #1338
+        user_token = (
+            os.getenv("SLACK_USER_TOKEN")
+            or auth_config.get("user_token")
+            or keychain_user_token
+            or ""
         )
         # client_id/secret are app credentials (shared)
         client_id = (
@@ -239,6 +252,7 @@ class SlackConfigService:
         return SlackConfig(
             # Authentication (4-layer priority for bot_token, user-scoped)
             bot_token=bot_token,
+            user_token=user_token,  # #1338: USER-only methods (search.messages)
             app_token=os.getenv("SLACK_APP_TOKEN", auth_config.get("app_token", "")),
             signing_secret=os.getenv("SLACK_SIGNING_SECRET", auth_config.get("signing_secret", "")),
             # API Configuration

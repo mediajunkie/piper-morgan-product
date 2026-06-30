@@ -1736,18 +1736,19 @@ class ContextAssembler:
         after a successful OAuth callback (alongside the existing `slack_bot`
         token used by the DM aggregator).
 
-        Implementation note: this method does its own aiohttp call rather than
-        going through `SlackIntegrationRouter` / `SlackClient`. The router/
-        client layer's `_make_request` currently uses the bot token only +
-        calls `config_service.get_config()` without user_id (which `get_config`
-        requires per Issue #734); a clean abstraction for user-token requests
-        is deferred to a follow-up issue. Today's slice 3 mirrors the same
-        pragmatic pattern used by `_test_slack` in `web/api/routes/integrations.py`.
+        Implementation note (#1338): this method now goes through
+        `SlackIntegrationRouter.test_auth(use_user_token=True)` +
+        `SlackIntegrationRouter.search_messages()` rather than its own aiohttp
+        call. The client layer's `_make_request` now supports a user-token path
+        (`use_user_token=True`) and user-scoped `get_config(user_id)` (#1110), so
+        the prior direct-aiohttp workaround (deferred from #1085 slice 3) is
+        retired. Honest-degrades when no user token is configured (the router's
+        user-token path returns an auth error → [] here).
 
         Per-source helper for `_compute_recent_activity`. Fail-graceful: returns
-        [] on any error (no user token in keychain / auth.test fails /
-        search.messages fails / network error). Caps at 20 most-recent mentions
-        within `_RECENT_ACTIVITY_WINDOW_DAYS`; final aggregator caps at
+        [] on any error (no user token / auth.test fails / search.messages fails
+        / network error). Caps at 20 most-recent mentions within
+        `_RECENT_ACTIVITY_WINDOW_DAYS`; final aggregator caps at
         `_RECENT_ACTIVITY_CAP`.
 
         Each item carries `source: 'slack'`, `channel_type: 'mention'` to
@@ -1760,45 +1761,31 @@ class ContextAssembler:
         de-dup here.
         """
         try:
-            import aiohttp
+            from services.integrations.slack.config_service import SlackConfigService
+            from services.integrations.slack.slack_integration_router import (
+                SlackIntegrationRouter,
+            )
 
-            from services.infrastructure.keychain_service import KeychainService
+            config_service = SlackConfigService()
+            slack = SlackIntegrationRouter(config_service=config_service)
 
-            keychain = KeychainService()
-            user_token = keychain.get_api_key("slack_user", username=user_id)
-            if not user_token:
+            # Step 1: auth.test (USER token) to discover the user's Slack handle
+            # so we can build the `@<handle>` mention query. #1338: routed through
+            # the router's user-token path (honest-degrades if no user token).
+            auth_resp = await slack.test_auth(user_id=user_id, use_user_token=True)
+            if not auth_resp or not auth_resp.success:
+                return []
+            slack_handle = (auth_resp.data or {}).get("user")
+            if not slack_handle:
                 return []
 
-            async with aiohttp.ClientSession() as session:
-                # Step 1: auth.test to discover the user's Slack handle so we
-                # can build the `@<handle>` mention query.
-                async with session.get(
-                    "https://slack.com/api/auth.test",
-                    headers={"Authorization": f"Bearer {user_token}"},
-                ) as resp:
-                    auth_data = await resp.json()
-                if not auth_data.get("ok"):
-                    return []
-                slack_handle = auth_data.get("user")
-                if not slack_handle:
-                    return []
-
-                # Step 2: search.messages for mentions of @<handle>, newest first.
-                params = {
-                    "query": f"@{slack_handle}",
-                    "count": "20",
-                    "sort": "timestamp",
-                    "sort_dir": "desc",
-                }
-                async with session.get(
-                    "https://slack.com/api/search.messages",
-                    headers={"Authorization": f"Bearer {user_token}"},
-                    params=params,
-                ) as resp:
-                    search_data = await resp.json()
-            if not search_data.get("ok"):
+            # Step 2: search.messages for mentions of @<handle>, newest first.
+            search_resp = await slack.search_messages(
+                f"@{slack_handle}", user_id=user_id, count=20
+            )
+            if not search_resp or not search_resp.success:
                 return []
-            matches = (search_data.get("messages") or {}).get("matches") or []
+            matches = ((search_resp.data or {}).get("messages") or {}).get("matches") or []
 
             # Filter to time window + convert to items.
             now = datetime.now(timezone.utc)

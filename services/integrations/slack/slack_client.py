@@ -128,17 +128,38 @@ class SlackClient:
         endpoint: str,
         data: Optional[Dict[str, Any]] = None,
         headers: Optional[Dict[str, str]] = None,
+        use_user_token: bool = False,
+        params: Optional[Dict[str, Any]] = None,
     ) -> SlackResponse:
-        """Make HTTP request to Slack API with error handling"""
+        """Make HTTP request to Slack API with error handling.
+
+        #1338: ``use_user_token=True`` authenticates with the user token (xoxp-) instead
+        of the bot token — required for USER-only methods like ``search.messages``. If the
+        user token isn't configured, this honest-degrades (returns an auth-error
+        SlackResponse) rather than calling Slack with an empty bearer. ``params`` sends
+        query-string params (search.messages is a GET/params method, not JSON-body).
+        """
         await self._ensure_session()
         await self._check_rate_limit()
 
         config = self.config_service.get_config(self.user_id)
         url = f"{config.api_base_url}/{endpoint}"
 
+        # #1338: select bot vs user token; honest-degrade if the user token is absent.
+        token = config.user_token if use_user_token else config.bot_token
+        if use_user_token and not token:
+            return SlackResponse(
+                success=False,
+                data={},
+                error=SlackError(
+                    type=SlackErrorType.AUTHENTICATION_ERROR,
+                    message="No Slack user token configured (user-only method requires xoxp- token)",
+                ),
+            )
+
         # Prepare headers
         request_headers = {
-            "Authorization": f"Bearer {config.bot_token}",
+            "Authorization": f"Bearer {token}",
             "Content-Type": "application/json",
         }
         if headers:
@@ -151,7 +172,11 @@ class SlackClient:
             self._requests_this_minute += 1
 
             async with self._session.request(
-                method=method, url=url, json=request_data, headers=request_headers
+                method=method,
+                url=url,
+                json=request_data,
+                params=params,
+                headers=request_headers,
             ) as response:
                 response_data = await response.json()
 
@@ -306,10 +331,39 @@ class SlackClient:
         """List all users"""
         return await self._make_request("GET", "users.list")
 
-    async def test_auth(self) -> SlackResponse:
-        """Test authentication"""
+    async def search_messages(
+        self,
+        query: str,
+        count: int = 20,
+        sort: str = "timestamp",
+        sort_dir: str = "desc",
+    ) -> SlackResponse:
+        """Search messages via `search.messages` (#1338).
+
+        A USER-only Web API method (a bot token cannot call it), so it authenticates
+        with the user token and sends query-string params. Honest-degrades via
+        `_make_request` when no user token is configured.
+        """
+        return await self._make_request(
+            "GET",
+            "search.messages",
+            use_user_token=True,
+            params={
+                "query": query,
+                "count": str(count),
+                "sort": sort,
+                "sort_dir": sort_dir,
+            },
+        )
+
+    async def test_auth(self, use_user_token: bool = False) -> SlackResponse:
+        """Test authentication. #1338: ``use_user_token=True`` validates the user token
+        (xoxp-) instead of the bot token — used to discover the user's handle for
+        search.messages."""
         self.logger.info("SLACK_PIPELINE: Testing Slack authentication...")
-        response = await self._make_request("GET", "auth.test")
+        response = await self._make_request(
+            "GET", "auth.test", use_user_token=use_user_token
+        )
 
         if response.success:
             auth_data = response.data
