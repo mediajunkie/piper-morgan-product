@@ -500,7 +500,8 @@ class SlackWebhookRouter:
             scope_list = scopes.split(",") if scopes else None
             user_scope_list = user_scopes.split(",") if user_scopes else None
 
-            auth_url, state = self.oauth_handler.generate_authorization_url(
+            # Issue #1109: generate_authorization_url is async (Redis-backed state)
+            auth_url, state = await self.oauth_handler.generate_authorization_url(
                 scopes=scope_list, user_scopes=user_scope_list
             )
 
@@ -526,7 +527,8 @@ class SlackWebhookRouter:
         try:
             user_id = self._get_connector_user_id()
             config = self.config_service.get_config(user_id) if user_id else None
-            oauth_status = self.oauth_handler.get_oauth_status()
+            # Issue #1109: get_oauth_status is async (counts state via Redis SCAN)
+            oauth_status = await self.oauth_handler.get_oauth_status()
             spatial_analytics = self.spatial_mapper.get_spatial_analytics()
 
             health_data = {

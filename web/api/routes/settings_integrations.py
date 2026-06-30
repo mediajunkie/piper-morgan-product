@@ -357,7 +357,8 @@ async def connect_slack(
         )
 
         # Issue #734: Pass user_id for multi-tenant state
-        auth_url, state = handler.generate_authorization_url(
+        # Issue #1109: generate_authorization_url is async (Redis-backed state)
+        auth_url, state = await handler.generate_authorization_url(
             user_id=current_user.sub, redirect_uri=redirect_uri if redirect_uri else None
         )
 
@@ -2170,7 +2171,8 @@ async def get_slack_oauth_url(
         oauth_handler = SlackOAuthHandler(config_service)
 
         # Issue #734: Pass user_id for multi-tenant state
-        auth_url, state = oauth_handler.generate_authorization_url(user_id=current_user.sub)
+        # Issue #1109: generate_authorization_url is async (Redis-backed state)
+        auth_url, state = await oauth_handler.generate_authorization_url(user_id=current_user.sub)
 
         return {
             "success": True,
