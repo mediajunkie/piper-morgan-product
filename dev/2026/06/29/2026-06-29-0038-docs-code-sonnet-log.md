@@ -39,8 +39,39 @@
   - Cross-reference gate: PASS (11/11 logs; Lead↔Arch dead-code concurrence verified; throttle 10/10 ACKs consistent)
   - Format: HIGH-COMPLEXITY: EXECUTION (11 agents, parallel tracks + throttle cascade coordination thread)
   - Omnibus written: `docs/omnibus-logs/2026-06-28-omnibus-log.md` (173 lines) → committed (`1c2ce3a72`)
-  - 11 activity-log Shape B rows appended (1532→1543) → `1e05065c7`
-- **(~11:10 PDT — second compaction resume) — carry-forward updated** (`d2bdfd83a`): June 29 done items reconciled (syndication, calendar-view fix, omnibus, activity-log). Queue (0,0); IDLE.
+  - 11 activity-log Shape B rows appended (1532→1543) → this commit
 
 ---
+
+## STOP — Day-Close (22:47 PDT — last scheduled fire of 2026-06-29)
+
+**Day-arc (June 29):** Relationship-First Ethics publish pipeline completed start-to-finish — website build, blog live, LinkedIn + Medium syndication, calendar fully updated with all URLs. Fixed stale admin editorial-calendar-view.html and upgraded the `update-calendar` skill (v1.1) to always rebuild the view after CSV changes. June 28 omnibus complete (HIGH-COMPLEXITY, 11 logs, 173 lines) + 11 activity-log Shape B rows appended. All work on `origin/main`.
+
+**Sign-off checklist:**
+```
+git status         → 3 pre-existing PM drafts (not mine); otherwise clean
+@{u}..HEAD         → empty (all pushed to origin/main)
+main..HEAD         → empty
+```
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- `docs/briefing/BRIEFING-CURRENT-STATE.md` — sprint status context for omnibus
+- `docs/internal/development/methodology-core/methodology-20-OMNIBUS-SESSION-LOGS.md` — format selection, phase structure, validation checklist, line limits
+- `docs/internal/planning/comms/editorial-calendar.csv` — canonical source for all calendar updates and publish pipeline
+- `.claude/skills/update-calendar/SKILL.md` — procedure followed; updated to v1.1
+- `.claude/skills/create-omnibus/SKILL.md` — procedure followed
+- `dev/active/docs-carry-forward.md` — state continuity across fires
+- All 11 June 28 source logs — primary omnibus inputs
+- `feedback_never_touch_pm_main_checkout_working_tree` (memory) — referenced repeatedly when navigating main-checkout vs worktree writes
+
+**Loaded but not referenced**:
+- `docs/briefing/PROJECT.md`
+- `docs/briefing/BRIEFING-ESSENTIAL-DOCS.md`
+
+**Wanted but not found**:
+- Nothing significant; omnibus source set was complete (cross-reference gate PASS on all 11 logs)
+
+<!-- DAY-CLOSED: 2026-06-29 -->
 
