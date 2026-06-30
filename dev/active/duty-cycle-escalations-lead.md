@@ -10,12 +10,13 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
 
 ## Open
 
-### ⏳ CURRENT — drop-in catch-up (2026-06-29, autonomous/run-lean)
-- **2026-06-29 · PM · Test the GitHub connector** — staging up (`localhost:8001` + `:8082`, your binding bound). Issues/PRs/stale-PRs reads are LIVE via your OAuth connection. Test plan: `dev/2026/06/28/reconnect-github-test-plan-2026-06-28.html`; **log in fresh first**. Your feedback steers the rest.
-- **2026-06-29 · PM · First real WRITE (close/comment) needs you** — cutover decided (#1322 Q3); I won't make an unsolicited write to a live issue → you pick a target (or OK a throwaway).
-- **2026-06-29 · PM/CXO · set-default-repo UX (#1327 Q2)** — resolution backend is buildable autonomously; the "set your default repo" UI likely wants CXO input. Build backend-only now, or hold for the UX call?
-- **2026-06-29 · PM · Alpha release timing** — connector ships in a future `main`→`production` release (prod 536 behind). Your call; NOT autonomous.
-- **2026-06-29 · FYI (no action)** — sim-transport retirement underway (Arch concurred "remove it"): inc.1+2 done, inc.3–5 queued + scoped; autonomous. #1327 hierarchy's infer/ask steps = M4/OQ-2 trust-gradient (Arch). All work on origin/main; inbox clean; KEEP-tier 3×/day cron.
+### ⏳ CURRENT — for PM (reconciled 2026-06-29 STOP, after the connector-build day)
+- **2026-06-29 · PM · ⭐ VERIFY #1331 (the trust fix)** — "add a milestone to my default repo" must now **honestly DECLINE**, not fake "Milestone created ✓". The one verify that matters most (a confabulated write is a trust-breaker). Live in staging.
+- **2026-06-29 · PM · First real WRITE target — #1322 Q3** — the writes CUTOVER (close/comment/create as real connector writes) is still the next build, PM-gated: you pick a safe target (the test project works). The trust FLOOR is in (#1331 honest-degrade); real writes come next.
+- **2026-06-29 · PM · Alpha release timing** — connector ships in a future `main`→`production` release. Your call; NOT autonomous.
+- **2026-06-29 · ✅ RESOLVED · set-default-repo (#1327 Q2)** — DONE: build #1 conversational "set my default repo to X" (PM-verified "bingo") + gap-3 GUI repo-config cutover (18 repos live). Both GUI + conversational shipped.
+- **2026-06-29 · ✅ RESOLVED · GitHub connector test** — PM verified badge/status (#1329 "github success") + set-default. Connector reads (issues/PRs/branches/releases/issue) live-de-risked. Optional remaining: PM spot-check the repo-scoped reads in chat.
+- **2026-06-29 · FYI · #1327 now-buildable scope COMPLETE** — resolution doc + set-default + reads + repo-config all live. Remaining #1327 = later layers (explain-rules meta + M4 trust-gated infer/ask, Arch). Sim-transport (#1322): inc.1–3 done; inc.4 (dead-subsystem removal) PACED for usage. RECONNECT backlog: #1330, inc.4, Slack (last), #1230 reconcile (PPM), floor-confab deepening (#1331 follow-up, HOST/Arch).
 
 ### ⚠️ older items below are 2026-06-25 (pre the RECONNECT connector build) — largely superseded; reconcile at next STOP
 - **2026-06-25 · TOP DECISION · PM focus call: hold / delegate / do the not-RECONNECT queue** — PM flagged (6/25 eve) that alpha/skunkworks support is pulling Lead off RECONNECT (the sprint) and "may ask Piper to hold off or delegate." Unblocked-tonight but HELD pending PM's call: **#1287** (CIO GO'd the full coordinator removal — option 1, expand into methodology/; ready to execute), **CXO setup intro-panel copy fix** (1-line, recommended before the alpha wave) + **copy-debt issue to file**, **#1320 double-login follow-up** (file). Also held: which **RECONNECT next-move** to start — **#1229** (needs a quick Arch design-decision first) or **#1283** (sprint-tagged, no deps, delegable). RECONNECT remainder is itself PM/PA-sequencing-gated, so there's no unblocked RECONNECT work to pull until sequenced. **Lead is holding all of the above rather than absorbing more not-sprint work unilaterally.**
