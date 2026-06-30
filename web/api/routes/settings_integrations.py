@@ -22,6 +22,12 @@ from starlette.responses import RedirectResponse
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
 
+# #1327 gap 3: the Settings repo-config dropdown reads repos over the per-user OAuth connector
+# (mirroring the #1322 chat-read cutover). Imported at module level so the connector-first rail
+# in get_github_repositories is patchable in tests.
+from services.mcp.consumer.connector import DegradationReason
+from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
 logger = structlog.get_logger(__name__)
 
 router = APIRouter(prefix="/api/v1/settings/integrations", tags=["settings-integrations"])
@@ -1843,61 +1849,50 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
     Get list of accessible GitHub repositories for the user.
 
     Returns repository IDs, names, and current selection status.
-    Requires a connected GitHub account.
+
+    #1327 gap 3 cutover: prefer the per-user OAuth connector (binding + grant →
+    ``search_repositories`` user:@me), mirroring the #1322 chat-read cutover. Fall back to the
+    native shared PAT ONLY when the user is not OAuth-connected (``CONNECT_REQUIRED``) — the
+    layer-then-migrate transition (D6 retires the PAT path). If they ARE connected but the
+    connector is degraded (server unreachable / re-auth), surface an honest error rather than
+    masking the real connection state with a silent PAT fallback or a silent empty (#1231).
+
     Issue #573: GitHub repository preferences
     """
-    import aiohttp
-
-    from services.infrastructure.keychain_service import KeychainService
-
     try:
-        keychain = KeychainService()
-        token = keychain.get_api_key(
-            "github_token", username=current_user.sub
-        )  # Issue #849: User-scoped key for multi-tenancy isolation
-
-        # Also check environment variables as fallback
-        if not token:
-            token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
-
-        if not token:
+        # --- Connector-first (#1327 gap 3): the user's own repos over the OAuth connector. ---
+        connector_result = await GitHubMCPSpatialAdapter().search_user_repositories(
+            current_user.sub, limit=100
+        )
+        if connector_result.repositories is not None:
+            repo_dicts = connector_result.repositories  # normalized {id,name,full_name,description}
+            source = "connector"
+        elif (
+            connector_result.degradation
+            and connector_result.degradation.reason is DegradationReason.CONNECT_REQUIRED
+        ):
+            # Not OAuth-connected → transitional native-PAT fallback (#1042 path).
+            repo_dicts = await _list_repos_native_pat(current_user.sub)
+            source = "native_pat"
+        else:
+            # Connected but degraded (unreachable / stale) → honest error, never a silent PAT
+            # fallback or silent empty (#1231).
+            logger.warning(
+                "github_repositories_degraded",
+                user_id=str(current_user.sub),
+                reason=connector_result.degradation.reason.value,
+            )
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="GitHub not connected. Please add your token first.",
+                status_code=status.HTTP_502_BAD_GATEWAY,
+                detail=connector_result.degradation.user_message,
             )
 
-        # Fetch repositories from GitHub API
-        async with aiohttp.ClientSession() as session:
-            async with session.get(
-                "https://api.github.com/user/repos",
-                headers={
-                    "Authorization": f"Bearer {token}",
-                    "Accept": "application/vnd.github.v3+json",
-                    "X-GitHub-Api-Version": "2022-11-28",
-                },
-                params={"per_page": 100, "sort": "updated"},
-            ) as response:
-                if response.status != 200:
-                    error_text = await response.text()
-                    logger.error(
-                        "github_repository_list_failed",
-                        status=response.status,
-                        error=error_text,
-                    )
-                    raise HTTPException(
-                        status_code=status.HTTP_502_BAD_GATEWAY,
-                        detail=f"Failed to fetch repositories from GitHub: {response.status}",
-                    )
-
-                data = await response.json()
-
-        # Load user's saved preferences (WS-1: DB store)
+        # Load user's saved preferences (WS-1: DB store) + merge selection status.
         user_prefs = await _load_github_prefs_db(str(current_user.sub))
         selected_repos = user_prefs.get("selected_repositories", [])
 
-        # Build repository list with selection status
         repositories = []
-        for repo in data:
+        for repo in repo_dicts:
             full_name = repo.get("full_name", "")
             repositories.append(
                 GitHubRepositoryInfo(
@@ -1913,6 +1908,7 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
             "github_repositories_fetched",
             count=len(repositories),
             user_id=str(current_user.sub),
+            source=source,
         )
 
         return GitHubRepositoryListResponse(repositories=repositories)
@@ -1925,6 +1921,51 @@ async def get_github_repositories(current_user: JWTClaims = Depends(get_current_
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to fetch repository list: {str(e)}",
         )
+
+
+async def _list_repos_native_pat(user_sub: str) -> list:
+    """Transitional native-PAT repo list (the #1042 fallback when not OAuth-connected).
+
+    Returns raw GitHub-API repo dicts (``id/name/full_name/description`` among the fields). Raises
+    HTTP 401 when no PAT is configured (keychain user-scoped key #849, then env fallback), and HTTP
+    502 when the GitHub API call fails — the same surfaces the handler used pre-cutover. Retired by
+    ADR-070 D6 once the OAuth connector is the sole path."""
+    import aiohttp
+
+    from services.infrastructure.keychain_service import KeychainService
+
+    keychain = KeychainService()
+    token = keychain.get_api_key("github_token", username=user_sub)  # #849 user-scoped
+    if not token:
+        token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="GitHub not connected. Please add your token first.",
+        )
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get(
+            "https://api.github.com/user/repos",
+            headers={
+                "Authorization": f"Bearer {token}",
+                "Accept": "application/vnd.github.v3+json",
+                "X-GitHub-Api-Version": "2022-11-28",
+            },
+            params={"per_page": 100, "sort": "updated"},
+        ) as response:
+            if response.status != 200:
+                error_text = await response.text()
+                logger.error(
+                    "github_repository_list_failed",
+                    status=response.status,
+                    error=error_text,
+                )
+                raise HTTPException(
+                    status_code=status.HTTP_502_BAD_GATEWAY,
+                    detail=f"Failed to fetch repositories from GitHub: {response.status}",
+                )
+            return await response.json()
 
 
 @router.get("/github/preferences", response_model=GitHubPreferencesResponse)
