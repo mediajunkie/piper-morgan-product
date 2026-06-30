@@ -6539,35 +6539,30 @@ class IntentService:
                 original_message=intent.original_message,
             )
 
-            # If we got the generic fallback, use the conversational floor instead
+            # #1333 (Arch-ruled 2026-06-30): an EXECUTION action that reaches this branch
+            # has NO registered handler (not in the rail's get_action_workflows AND not
+            # mapped by ActionMapper above) — it is, BY CONSTRUCTION, unwired. It must
+            # DETERMINISTICALLY honest-decline. It must NEVER route to the conversational
+            # floor, which — being a helpful LLM — confabulates a success ("done ✓") for
+            # an action that never ran (the #1331 trust-breaker PM hit). This DERIVES the
+            # decline from "reached this branch" — no hand-maintained action list (the
+            # former unwired_writes.UNWIRED_WRITE_ACTIONS registration is retired; the
+            # branch itself is the signal — Arch's derive-don't-list contract). Curated
+            # per-action copy still wins; otherwise a curated/generic honest decline.
             if specific_fallback == self._GENERIC_FALLBACK_TEXT:
-                # Issue #907: Route through conversational floor for genuine engagement
-                from services.intent_service.conversational_floor import (
-                    ConversationalFloor,
-                    FloorContext,
-                )
+                from services.intent_service.unwired_writes import get_unwired_write_decline
 
-                # #1122: shared builder (excludes the in-flight turn)
-                history = build_recent_history(session_id, user_id)
-
-                floor_ctx = FloorContext(
-                    user_message=intent.original_message
-                    or (intent.context.get("original_message", "") if intent.context else ""),
-                    session_id=session_id,
-                    user_id=user_id,
-                    conversation_history=history,
-                    intent_category="EXECUTION",
-                    intent_action=mapped_action,
-                    intent_confidence=intent.confidence,
+                fallback_message = get_unwired_write_decline(intent.action)
+                self.logger.info(
+                    "unwired_execution_honest_degrade_1333",
+                    action=intent.action,
+                    mapped_action=mapped_action,
                 )
-                floor = ConversationalFloor()
-                floor_response = await floor.respond(floor_ctx)
-                fallback_message = floor_response.message
             else:
                 fallback_message = specific_fallback
 
             return IntentProcessingResult(
-                success=True,  # Changed from False to prevent 422
+                success=True,  # honest decline, not an error (avoid 422)
                 message=fallback_message,
                 intent_data={
                     "category": intent.category.value,
@@ -6575,7 +6570,9 @@ class IntentService:
                     "mapped_action": mapped_action,
                     "confidence": intent.confidence,
                     "unhandled": True,  # Flag for analytics
-                    "floor_hit": specific_fallback == self._GENERIC_FALLBACK_TEXT,  # #907
+                    # #1333: unwired EXECUTION now honest-declines deterministically;
+                    # it NEVER reaches the floor (floor_hit retired for this path).
+                    "unwired_action": True,
                 },
                 # Issue #878: No handler ran — don't set workflow_id or frontend will poll and timeout
                 workflow_id=None,
