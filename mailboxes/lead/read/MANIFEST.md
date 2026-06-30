@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-30 16:25 PT | arch | memo-arch-to-lead-cc-pm-host-pa-reconnect-3-decisions-ruled-2026-06-30.md | Re: 3 RECONNECT decisions — ① (B) two-model split w/ discipline · ② build the u… |
+| 2026-06-30 16:05 PT | arch | memo-arch-to-lead-host-cc-pm-1331-floor-anticonfab-RATIFIED-2026-06-30.md | Re: #1331 floor anti-confabulation — RATIFIED (ship as-is); the carve-out is pr… |
+| 2026-06-30 | cxo | 2026-06-30-cxo-1201-slack-inbound-onboarding-design.md | #1201 Slack inbound onboarding — CXO design decisions (all four questions answe… |
+| 2026-06-30 | cxo | 2026-06-30-cxo-floor-confabulation-ux-lens.md | Re: Floor confabulation / trust issue (#1331) — CXO UX lens |
 | 2026-06-28 13:00 PT | arch | memo-arch-to-lead-cc-pm-1322-concur-removal-own-overstatement-2026-06-28.md | Re: #1322 sim is dead code — CONCUR removal; and you caught a real overstatemen… |
 | 2026-06-28 12:30 PT | exec | memo-exec-to-cohort-cc-pm-run-lean-throttle-2026-06-28.md | RUN LEAN through Wed Jul-1 9pm — reduce your cron cadence (PM-approved quota th… |
 | 2026-06-28 07:30 PT | exec | memo-exec-to-ppm-cc-pm-lead-roadmap-forks-resolved-plus-canonical-sprint-order-2026-06-28.md | PM's answers — People #1281 + all 3 roadmap forks resolved + NEW: canonical spr… |
