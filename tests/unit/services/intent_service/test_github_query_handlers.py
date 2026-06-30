@@ -701,16 +701,32 @@ class TestReviewIssueResults:
             "assignees": [{"login": "developer1"}, {"login": "developer2"}],
         }
 
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
-        ) as MockRouter:
-            mock_router = MagicMock()
-            mock_router.config_service.is_configured.return_value = True
-            mock_router.initialize = AsyncMock()
-            mock_router.get_issue = AsyncMock(return_value=mock_issue)
-            MockRouter.return_value = mock_router
+        # #1327 cutover: connector is preferred first. Simulate "not OAuth-connected"
+        # (CONNECT_REQUIRED) so the handler falls back to the native PAT path this test exercises.
+        from services.mcp.consumer.connector import DegradationReason, DegradationResponse
+        from services.mcp.consumer.github_adapter import GitHubIssueResult
 
-            result = await intent_service._handle_review_issue_query(intent, "workflow-id")
+        connect_required = GitHubIssueResult(
+            degradation=DegradationResponse(
+                reason=DegradationReason.CONNECT_REQUIRED,
+                user_message="Connect GitHub to continue.",
+                action_hint="/api/v1/settings/integrations/github/connect",
+            )
+        )
+        with patch(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.get_issue_connector",
+            new=AsyncMock(return_value=connect_required),
+        ):
+            with patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
+            ) as MockRouter:
+                mock_router = MagicMock()
+                mock_router.config_service.is_configured.return_value = True
+                mock_router.initialize = AsyncMock()
+                mock_router.get_issue = AsyncMock(return_value=mock_issue)
+                MockRouter.return_value = mock_router
+
+                result = await intent_service._handle_review_issue_query(intent, "workflow-id")
 
             assert result.success is True
             assert "Issue #123: Fix authentication bug" in result.message
@@ -753,15 +769,31 @@ class TestReviewIssueResults:
             context={"original_message": "show me issue #123"},
         )
 
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
-        ) as MockRouter:
-            mock_router = MagicMock()
-            mock_router.config_service.is_configured.return_value = False
-            mock_router.initialize = AsyncMock()
-            MockRouter.return_value = mock_router
+        # #1327 cutover: connector preferred → CONNECT_REQUIRED falls back to native; native is
+        # also unconfigured → the "GitHub isn't configured" graceful message this test asserts.
+        from services.mcp.consumer.connector import DegradationReason, DegradationResponse
+        from services.mcp.consumer.github_adapter import GitHubIssueResult
 
-            result = await intent_service._handle_review_issue_query(intent, "workflow-id")
+        connect_required = GitHubIssueResult(
+            degradation=DegradationResponse(
+                reason=DegradationReason.CONNECT_REQUIRED,
+                user_message="Connect GitHub to continue.",
+                action_hint="/api/v1/settings/integrations/github/connect",
+            )
+        )
+        with patch(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.get_issue_connector",
+            new=AsyncMock(return_value=connect_required),
+        ):
+            with patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
+            ) as MockRouter:
+                mock_router = MagicMock()
+                mock_router.config_service.is_configured.return_value = False
+                mock_router.initialize = AsyncMock()
+                MockRouter.return_value = mock_router
+
+                result = await intent_service._handle_review_issue_query(intent, "workflow-id")
 
             assert result.success is True
             assert "GitHub isn't configured yet" in result.message
@@ -1034,16 +1066,32 @@ class TestGitHubIssueHandlerErrors:
             context={"original_message": "show me issue #123"},
         )
 
-        with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
-        ) as MockRouter:
-            mock_router = MagicMock()
-            mock_router.config_service.is_configured.return_value = True
-            mock_router.initialize = AsyncMock()
-            mock_router.get_issue = AsyncMock(side_effect=Exception("Issue not found"))
-            MockRouter.return_value = mock_router
+        # #1327 cutover: connector preferred → CONNECT_REQUIRED falls back to native, whose
+        # get_issue raises → the graceful error path this test exercises.
+        from services.mcp.consumer.connector import DegradationReason, DegradationResponse
+        from services.mcp.consumer.github_adapter import GitHubIssueResult
 
-            result = await intent_service._handle_review_issue_query(intent, "workflow-id")
+        connect_required = GitHubIssueResult(
+            degradation=DegradationResponse(
+                reason=DegradationReason.CONNECT_REQUIRED,
+                user_message="Connect GitHub to continue.",
+                action_hint="/api/v1/settings/integrations/github/connect",
+            )
+        )
+        with patch(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.get_issue_connector",
+            new=AsyncMock(return_value=connect_required),
+        ):
+            with patch(
+                "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
+            ) as MockRouter:
+                mock_router = MagicMock()
+                mock_router.config_service.is_configured.return_value = True
+                mock_router.initialize = AsyncMock()
+                mock_router.get_issue = AsyncMock(side_effect=Exception("Issue not found"))
+                MockRouter.return_value = mock_router
+
+                result = await intent_service._handle_review_issue_query(intent, "workflow-id")
 
             assert result.success is False
             assert "reviewing that issue" in result.message

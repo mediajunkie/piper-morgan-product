@@ -38,6 +38,29 @@ def intent_service():
     return service
 
 
+@pytest.fixture(autouse=True)
+def _releases_connector_not_connected():
+    """#1327 cutover: the releases handler now prefers the OAuth connector. These #1039 tests
+    exercise the NATIVE-PAT render path, so force the connector to report CONNECT_REQUIRED →
+    the handler falls back to native, unchanged. (Milestones have NO connector tool → that
+    handler is untouched by #1327 and needs no patch.)"""
+    from services.mcp.consumer.connector import DegradationReason, DegradationResponse
+    from services.mcp.consumer.github_adapter import GitHubRepoScopedResult
+
+    cr = GitHubRepoScopedResult(
+        degradation=DegradationResponse(
+            reason=DegradationReason.CONNECT_REQUIRED,
+            user_message="Connect GitHub to continue.",
+            action_hint="/api/v1/settings/integrations/github/connect",
+        )
+    )
+    with patch(
+        "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_releases_connector",
+        new=AsyncMock(return_value=cr),
+    ):
+        yield
+
+
 class TestListMilestonesHandler:
     """_handle_list_milestones_query — Issue #1039."""
 

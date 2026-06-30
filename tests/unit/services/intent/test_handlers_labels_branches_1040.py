@@ -36,6 +36,31 @@ def intent_service():
     return service
 
 
+@pytest.fixture(autouse=True)
+def _connector_not_connected():
+    """#1327 cutover: branches/labels handlers now prefer the OAuth connector. These #1040
+    tests exercise the NATIVE-PAT render path, so force the connector to report
+    CONNECT_REQUIRED (not OAuth-connected) → the handler falls back to native, unchanged."""
+    from services.mcp.consumer.connector import DegradationReason, DegradationResponse
+    from services.mcp.consumer.github_adapter import GitHubRepoScopedResult
+
+    cr = GitHubRepoScopedResult(
+        degradation=DegradationResponse(
+            reason=DegradationReason.CONNECT_REQUIRED,
+            user_message="Connect GitHub to continue.",
+            action_hint="/api/v1/settings/integrations/github/connect",
+        )
+    )
+    with patch(
+        "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_labels_connector",
+        new=AsyncMock(return_value=cr),
+    ), patch(
+        "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_branches_connector",
+        new=AsyncMock(return_value=cr),
+    ):
+        yield
+
+
 class TestListLabelsHandler:
     """_handle_list_labels_query — Issue #1040."""
 
