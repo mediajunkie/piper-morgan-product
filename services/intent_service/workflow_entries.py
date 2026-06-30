@@ -475,6 +475,15 @@ def register_default_workflows() -> None:
         action_triggered=True,
     )
 
+    # RECONNECT #1327 build #2: conversational "what's my default repo" — the read
+    # counterpart. Same 2-arg (intent, workflow_id) factory + action-dispatch rail.
+    get_default_repo_entry = WorkflowEntry(
+        entry_point=_make_query_dispatch_entry_point("_handle_get_default_repo"),
+        description="Get-default-repo via action dispatch (#1327)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
+
     # #1331 TRUST: honest-degrade unwired WRITE actions. The LLM classifier can emit
     # write actions (e.g. create_milestone) with NO real handler; left alone they
     # fall to the floor, which CONFABULATES "created ✓" without writing anything.
@@ -519,6 +528,8 @@ def register_default_workflows() -> None:
         "create_content": generate_content_entry,
         # RECONNECT #1327 gap 1: set-default-repo (QUERY category, pre-classifier action).
         "set_default_repo": set_default_repo_entry,
+        # RECONNECT #1327 build #2: get-default-repo (read counterpart).
+        "get_default_repo": get_default_repo_entry,
     }
 
     # #1331: fan the honest-degrade entry over every recognized-but-unwired WRITE

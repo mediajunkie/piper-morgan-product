@@ -4565,6 +4565,81 @@ class IntentService:
                 workflow_id=workflow_id,
             )
 
+    async def _handle_get_default_repo(
+        self, intent: Intent, workflow_id: str
+    ) -> IntentProcessingResult:
+        """Handle conversational "what's my default repo?" (RECONNECT #1327 build #2).
+
+        The READ counterpart to ``_handle_set_default_repo``. PM UAT (2026-06-30):
+        asked "what is my default repo again?", Piper floored honestly ("I don't have
+        it in the context I have") — correct per the no-guess floor rule, but unhelpful,
+        because the default IS persisted in the DB-backed ``connector_configs`` store
+        (ADR-070 D4). This handler reads it via ``ConnectorConfigService.get_default_repo``
+        — the SAME key the set handler writes and ``repo_resolver.resolve_repo`` reads at
+        path 3 (``_resolve_from_user_default``) — and reports it.
+
+        Reading the default is a PREFERENCE read, independent of the GitHub OAuth
+        binding: it must work whether or not GitHub is connected (the value is a stored
+        string), so this handler does NOT construct a GitHub router/connector and does
+        NOT gate on connection state. When no default is set it returns a graceful,
+        helpful nudge telling the user how to set one — never an exception.
+        """
+        self.logger.info("Processing get-default-repo query")
+
+        _user_id = _principal_from_intent(intent)
+
+        try:
+            from services.connectors.config_service import ConnectorConfigService
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope() as session:
+                repo = await ConnectorConfigService(session).get_default_repo(_user_id)
+
+            if repo:
+                return IntentProcessingResult(
+                    success=True,
+                    message=(
+                        f"Your default repo is **{repo}**. "
+                        "I use it whenever you don't name a repo explicitly."
+                    ),
+                    intent_data={
+                        "category": "query",
+                        "action": "get_default_repo",
+                        "context": {"default_repo": repo},
+                    },
+                    workflow_id=workflow_id,
+                )
+
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    "You haven't set a default repo yet — tell me "
+                    "`set my default repo to owner/name` "
+                    "(e.g. `mediajunkie/piper-morgan-product`) and I'll remember it."
+                ),
+                intent_data={
+                    "category": "query",
+                    "action": "get_default_repo",
+                    "context": {"default_repo": None},
+                },
+                workflow_id=workflow_id,
+            )
+        except Exception as e:
+            self.logger.error(f"Failed to get default repo: {e}")
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    "I wasn't able to look up your default repo just now. "
+                    "Please try again in a moment."
+                ),
+                intent_data={
+                    "category": "query",
+                    "action": "get_default_repo",
+                    "context": {"error": str(e)},
+                },
+                workflow_id=workflow_id,
+            )
+
     async def _handle_unwired_write(
         self, intent: Intent, workflow_id: str
     ) -> IntentProcessingResult:
