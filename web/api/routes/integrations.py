@@ -434,6 +434,22 @@ async def _get_integration_config_status(integration_id: str, user_id: Optional[
         if integration_id == "notion":
             if os.environ.get("NOTION_API_TOKEN") or os.environ.get("NOTION_API_KEY"):
                 return "configured"
+            # #1337: user-scoped path. save_notion_key stores the key in the #358
+            # user-secret store (UserAPIKeyService, provider "notion") — NOT the keychain
+            # that slack/calendar use. Health was env-only and missed this, so a
+            # UI-configured Notion read "not configured." Mirror the user-scoped intent.
+            if user_id:
+                try:
+                    from services.database.session_factory import AsyncSessionFactory
+                    from services.security.user_api_key_service import UserAPIKeyService
+
+                    async with AsyncSessionFactory.session_scope_fresh() as session:
+                        if await UserAPIKeyService().retrieve_user_key(
+                            session, user_id, "notion"
+                        ):
+                            return "configured"
+                except Exception:
+                    pass
         elif integration_id == "slack":
             # Env-var path (production / explicit-config deployment)
             if os.environ.get("SLACK_BOT_TOKEN"):

@@ -139,6 +139,58 @@ class TestIntegrationConfigStatus:
             status = await _get_integration_config_status("calendar")
             assert status == "configured"
 
+    @pytest.mark.asyncio
+    async def test_notion_configured_via_user_scoped_key_1337(self):
+        """#1337: UI-configured Notion (user-scoped #358 store) must read 'configured' —
+        the notion branch was env-only and missed the user-scoped key save_notion_key writes."""
+        mock_session = AsyncMock()
+        mock_scope = MagicMock()
+        mock_scope.__aenter__ = AsyncMock(return_value=mock_session)
+        mock_scope.__aexit__ = AsyncMock(return_value=False)
+        mock_factory = MagicMock()
+        mock_factory.session_scope_fresh.return_value = mock_scope
+        mock_svc = MagicMock()
+        mock_svc.retrieve_user_key = AsyncMock(return_value="secret-notion-key")
+
+        with (
+            patch.dict("os.environ", {}, clear=True),
+            patch("services.database.session_factory.AsyncSessionFactory", mock_factory),
+            patch(
+                "services.security.user_api_key_service.UserAPIKeyService",
+                return_value=mock_svc,
+            ),
+        ):
+            status = await _get_integration_config_status("notion", user_id="user-123")
+
+        assert status == "configured"
+        mock_svc.retrieve_user_key.assert_awaited_once()
+        args, _ = mock_svc.retrieve_user_key.call_args
+        assert args[1] == "user-123" and args[2] == "notion"
+
+    @pytest.mark.asyncio
+    async def test_notion_not_configured_when_no_user_key_1337(self):
+        """#1337: no env var + no user-scoped key → stays not_configured (no false positive)."""
+        mock_session = AsyncMock()
+        mock_scope = MagicMock()
+        mock_scope.__aenter__ = AsyncMock(return_value=mock_session)
+        mock_scope.__aexit__ = AsyncMock(return_value=False)
+        mock_factory = MagicMock()
+        mock_factory.session_scope_fresh.return_value = mock_scope
+        mock_svc = MagicMock()
+        mock_svc.retrieve_user_key = AsyncMock(return_value=None)
+
+        with (
+            patch.dict("os.environ", {}, clear=True),
+            patch("services.database.session_factory.AsyncSessionFactory", mock_factory),
+            patch(
+                "services.security.user_api_key_service.UserAPIKeyService",
+                return_value=mock_svc,
+            ),
+        ):
+            status = await _get_integration_config_status("notion", user_id="user-123")
+
+        assert status == "not_configured"
+
 
 class TestSingleIntegrationTest:
     """Tests for POST /api/v1/integrations/test/{integration_name}"""
