@@ -9,5 +9,9 @@
 
 ## Work
 
-- **(09:02) START + inbox triage.** Janus zombie-sweep memo (6/29, already read) → moved to read/; pushed deletion+read MANIFEST to main via mail-send.sh. Inbox clear.
+- **(09:02) START + inbox triage + cohort scan.** Janus zombie-sweep memo (6/29 residue from inbox-deletion not reaching main) → moved to read/ properly + pushed via mail-send.sh. Inbox clear. Cohort scan via git log since 6/29 STOP:
+  - **Lead**: huge overnight — #1330/#1331/#1327/#1332/#1333/#1334/#1335/#1336/#1337 all closed/shipped. RECONNECT gate-cell green; autonomous queue drained. Excellent.
+  - **Comms**: editing "From Briefing to Vision" (7:30am) — a narrative arc piece, NOT the Ship #049 draft.
+  - **Watchdog**: ⚠️ Arch stall — 43h against 19h threshold (`27 8,20`). Alert in PM inbox.
+  - **Action: 2 memos sent** (`4b0c42ee8`): (1) Arch nudge — resume when ready, lean window in effect, nothing critical gated; (2) Comms — Ship #049 draft needed TODAY (publish Wed Jul-1), synthesis at `exec-ship-049-workstream-synthesis-2026-06-27.md`.
 
