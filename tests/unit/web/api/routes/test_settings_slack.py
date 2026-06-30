@@ -131,9 +131,12 @@ class TestGetSlackOAuthUrl:
     async def test_returns_authorization_url(self):
         """Should return OAuth authorization URL and state"""
         mock_oauth_handler = MagicMock()
-        mock_oauth_handler.generate_authorization_url.return_value = (
-            "https://slack.com/oauth/v2/authorize?client_id=test&scope=chat:write",
-            "secure_state_token",
+        # Issue #1109: generate_authorization_url is async → AsyncMock
+        mock_oauth_handler.generate_authorization_url = AsyncMock(
+            return_value=(
+                "https://slack.com/oauth/v2/authorize?client_id=test&scope=chat:write",
+                "secure_state_token",
+            )
         )
 
         # Issue #734: Mock current_user with user_id

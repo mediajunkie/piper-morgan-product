@@ -41,6 +41,45 @@ from services.integrations.slack.workspace_navigator import (
     WorkspaceNavigator,
 )
 
+from contextlib import asynccontextmanager
+
+
+# Issue #1109: the Slack OAuth nonce store moved to Redis (multi-process safe),
+# so generate_authorization_url + handle_oauth_callback are async and Redis-
+# backed. fakeredis isn't installed here; patch RedisFactory.redis_scope with a
+# shared in-memory fake so the nonce written on /connect is visible to /callback.
+class _FakeRedis:
+    def __init__(self):
+        self.store: dict = {}
+
+    async def setex(self, key, ttl_seconds, value):
+        self.store[key] = value.encode() if isinstance(value, str) else value
+        return True
+
+    async def get(self, key):
+        return self.store.get(key)
+
+    async def getdel(self, key):
+        return self.store.pop(key, None)
+
+    async def close(self):
+        pass
+
+
+@pytest.fixture
+def patched_oauth_redis():
+    fake = _FakeRedis()
+
+    @asynccontextmanager
+    async def _scope():
+        yield fake
+
+    with patch(
+        "services.integrations.slack.oauth_handler.RedisFactory.redis_scope",
+        side_effect=_scope,
+    ):
+        yield fake
+
 
 class TestCompleteOAuthToSpatialWorkflow:
     """
@@ -89,7 +128,12 @@ class TestCompleteOAuthToSpatialWorkflow:
     @patch("httpx.AsyncClient.post")
     @pytest.mark.smoke
     async def test_oauth_flow_creates_spatial_workspace_territory(
-        self, mock_post, oauth_handler, workspace_navigator, spatial_memory_store
+        self,
+        mock_post,
+        oauth_handler,
+        workspace_navigator,
+        spatial_memory_store,
+        patched_oauth_redis,
     ):
         """
         TDD: OAuth success should automatically initialize spatial workspace territory
@@ -98,7 +142,8 @@ class TestCompleteOAuthToSpatialWorkflow:
         """
         # STEP 1: Generate OAuth authorization URL (registers state)
         # Issue #734: Now requires user_id for multi-tenancy
-        auth_url, state = oauth_handler.generate_authorization_url(user_id="test-user-123")
+        # Issue #1109: generate_authorization_url is async (Redis-backed state)
+        auth_url, state = await oauth_handler.generate_authorization_url(user_id="test-user-123")
         assert state is not None, "OAuth state should be generated"
 
         # Mock successful OAuth response (async response from httpx)

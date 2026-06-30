@@ -42,9 +42,12 @@ class TestSlackOAuthTrigger:
                 "services.integrations.slack.oauth_handler.SlackOAuthHandler"
             ) as MockHandler:
                 mock_instance = MagicMock()
-                mock_instance.generate_authorization_url.return_value = (
-                    "https://slack.com/oauth/v2/authorize?client_id=test&scope=chat:write",
-                    "state_abc123",
+                # Issue #1109: generate_authorization_url is async → AsyncMock
+                mock_instance.generate_authorization_url = AsyncMock(
+                    return_value=(
+                        "https://slack.com/oauth/v2/authorize?client_id=test&scope=chat:write",
+                        "state_abc123",
+                    )
                 )
                 MockHandler.return_value = mock_instance
 
@@ -84,9 +87,12 @@ class TestSlackOAuthTrigger:
             ) as MockHandler:
                 mock_instance = MagicMock()
                 # Simulating URL with scopes parameter
-                mock_instance.generate_authorization_url.return_value = (
-                    "https://slack.com/oauth/v2/authorize?client_id=test&scope=chat:write,channels:read",
-                    "state_xyz789",
+                # Issue #1109: generate_authorization_url is async → AsyncMock
+                mock_instance.generate_authorization_url = AsyncMock(
+                    return_value=(
+                        "https://slack.com/oauth/v2/authorize?client_id=test&scope=chat:write,channels:read",
+                        "state_xyz789",
+                    )
                 )
                 MockHandler.return_value = mock_instance
 
@@ -246,9 +252,12 @@ class TestSlackOAuthStartEndpoint:
                 "services.integrations.slack.oauth_handler.SlackOAuthHandler"
             ) as MockHandler:
                 mock_instance = MagicMock()
-                mock_instance.generate_authorization_url.return_value = (
-                    "https://slack.com/oauth/v2/authorize?test=1",
-                    "test_state",
+                # Issue #1109: generate_authorization_url is async → AsyncMock
+                mock_instance.generate_authorization_url = AsyncMock(
+                    return_value=(
+                        "https://slack.com/oauth/v2/authorize?test=1",
+                        "test_state",
+                    )
                 )
                 MockHandler.return_value = mock_instance
 
@@ -292,9 +301,12 @@ class TestSlackOAuthStartEndpoint:
                     "services.integrations.slack.oauth_handler.SlackOAuthHandler"
                 ) as MockHandler:
                     mock_instance = MagicMock()
-                    mock_instance.generate_authorization_url.return_value = (
-                        "https://slack.com/oauth/v2/authorize",
-                        "state",
+                    # Issue #1109: generate_authorization_url is async → AsyncMock
+                    mock_instance.generate_authorization_url = AsyncMock(
+                        return_value=(
+                            "https://slack.com/oauth/v2/authorize",
+                            "state",
+                        )
                     )
                     MockHandler.return_value = mock_instance
 

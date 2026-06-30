@@ -10,6 +10,7 @@ Provides OAuth 2.0 flow management for Slack app installation including:
 - Integration with spatial metaphor system
 """
 
+import json
 import logging
 import secrets
 import time
@@ -20,12 +21,19 @@ from urllib.parse import urlencode, urlparse
 import httpx
 
 from services.api.errors import SlackAuthFailedError
+from services.cache.redis_factory import RedisFactory
 from services.intent_service.canonical_handlers import CanonicalHandlers
 
 from .config_service import SlackConfigService
 from .spatial_mapper import SlackSpatialMapper
 
 logger = logging.getLogger(__name__)
+
+# Redis key prefix for OAuth nonce state (#1109 RECONNECT WS-7).
+# Each in-flight OAuth nonce is stored at f"{OAUTH_STATE_KEY_PREFIX}{nonce}"
+# with a Redis TTL set from the state's expiry — multi-process safe, and the
+# TTL replaces the old manual expired-state cleanup sweep.
+OAUTH_STATE_KEY_PREFIX = "slack:oauth:state:"
 
 
 class SlackOAuthHandler:
@@ -36,14 +44,21 @@ class SlackOAuthHandler:
     spatial workspace initialization and secure token management.
     """
 
-    # OAuth nonce store — class-level so state persists across handler
-    # instances. Routes create a fresh SlackOAuthHandler() per request;
-    # an instance-level dict (the prior shape) would lose the nonce stored
-    # during /connect by the time /callback looks it up. Production
-    # deployment should swap this for Redis (multi-process safe).
-    # Surfaced 2026-05-21 during PM's OAuth re-auth; previously masked by
-    # never having completed an end-to-end OAuth on this code path.
-    _oauth_states: Dict[str, Dict[str, Any]] = {}
+    # OAuth nonce store lives in Redis (#1109 RECONNECT WS-7) — multi-process
+    # safe. Each nonce is a key f"{OAUTH_STATE_KEY_PREFIX}{nonce}" holding the
+    # JSON state data, with a Redis TTL set from the state's expiry so entries
+    # auto-expire (no manual cleanup needed). Replaces the prior class-level
+    # dict, which only worked single-process (state stored during /connect by
+    # one worker was invisible to a /callback handled by another).
+    # History: in-process dict surfaced 2026-05-21 during PM's OAuth re-auth
+    # (an instance-level dict had lost the nonce across the /connect→/callback
+    # request boundary); the class-level dict fixed single-process but not the
+    # multi-process case this issue addresses.
+
+    @staticmethod
+    def _state_key(nonce: str) -> str:
+        """Redis key for a given OAuth nonce."""
+        return f"{OAUTH_STATE_KEY_PREFIX}{nonce}"
 
     def __init__(self, config_service: Optional[SlackConfigService] = None):
         self.config_service = config_service or SlackConfigService()
@@ -55,7 +70,7 @@ class SlackOAuthHandler:
 
         logger.info("SlackOAuthHandler initialized")
 
-    def generate_authorization_url(
+    async def generate_authorization_url(
         self,
         user_id: str,
         scopes: Optional[list] = None,
@@ -105,15 +120,28 @@ class SlackOAuthHandler:
             # Encode state as base64 JSON
             state = base64.urlsafe_b64encode(json.dumps(state_data).encode()).decode().rstrip("=")
 
-            # Store nonce with metadata for verification
-            self._oauth_states[nonce] = {
-                "created_at": datetime.utcnow(),
-                "expires_at": datetime.utcnow() + timedelta(minutes=15),
+            # Store nonce with metadata for verification, in Redis with a TTL set
+            # from the expiry window (#1109). datetimes are serialized as ISO
+            # strings; the TTL (15 min) auto-expires the entry — no manual
+            # cleanup. created_at/expires_at are retained for defensive
+            # validation and parity with the prior in-process shape.
+            created_at = datetime.utcnow()
+            expires_at = created_at + timedelta(minutes=15)
+            ttl_seconds = max(1, int((expires_at - created_at).total_seconds()))
+            nonce_payload = {
+                "created_at": created_at.isoformat(),
+                "expires_at": expires_at.isoformat(),
                 "scopes": scopes,
                 "user_scopes": user_scopes,
                 "redirect_uri": redirect_uri or config.redirect_uri,
                 "user_id": user_id,  # Also store for verification
             }
+            async with RedisFactory.redis_scope() as redis:
+                await redis.setex(
+                    self._state_key(nonce),
+                    ttl_seconds,
+                    json.dumps(nonce_payload),
+                )
 
             # Default scopes for spatial metaphor capabilities (bot token)
             if not scopes:
@@ -192,7 +220,7 @@ class SlackOAuthHandler:
 
         try:
             # Verify state parameter and extract user_id
-            is_valid, user_id = self._verify_oauth_state(state)
+            is_valid, user_id = await self._verify_oauth_state(state)
             if not is_valid:
                 raise SlackAuthFailedError("Invalid or expired OAuth state")
 
@@ -205,8 +233,10 @@ class SlackOAuthHandler:
             except (ValueError, json.JSONDecodeError):
                 raise SlackAuthFailedError("Could not decode state parameter")
 
-            # Get stored state data and clean up (single-use)
-            nonce_data = self._oauth_states.pop(nonce, {})
+            # Atomically fetch + remove stored state (single-use) from Redis
+            # (#1109). GETDEL guarantees the nonce can't be replayed by a
+            # concurrent callback even across processes.
+            nonce_data = await self._pop_oauth_state(nonce)
             expected_redirect_uri = nonce_data.get("redirect_uri")
 
             # Verify redirect URI if provided
@@ -242,23 +272,60 @@ class SlackOAuthHandler:
 
         except Exception as e:
             logger.error(f"OAuth callback handling failed: {e}")
-            # Clean up state on failure - try to extract nonce
+            # Clean up state on failure - try to extract nonce (#1109: remove
+            # from Redis so a failed attempt can't leave a replayable nonce).
             try:
                 padded = state + "=" * (4 - len(state) % 4)
                 decoded = base64.urlsafe_b64decode(padded)
                 state_data = json.loads(decoded)
                 nonce = state_data.get("nonce")
                 if nonce:
-                    self._oauth_states.pop(nonce, None)
+                    await self._pop_oauth_state(nonce)
             except Exception:
                 pass
             raise SlackAuthFailedError(f"OAuth callback failed: {e}") from e
 
-    def _verify_oauth_state(self, state: str) -> Tuple[bool, Optional[str]]:
+    @staticmethod
+    def _deserialize_nonce_data(raw: Optional[Any]) -> Optional[Dict[str, Any]]:
+        """Decode a Redis-stored nonce payload (bytes or str JSON) to a dict.
+
+        Returns None if the value is absent or not decodable.
+        """
+        if raw is None:
+            return None
+        if isinstance(raw, (bytes, bytearray)):
+            raw = raw.decode()
+        try:
+            return json.loads(raw)
+        except (ValueError, json.JSONDecodeError):
+            logger.warning("Corrupt OAuth nonce payload in Redis")
+            return None
+
+    async def _read_oauth_state(self, nonce: str) -> Optional[Dict[str, Any]]:
+        """Read (non-destructive) the stored state for a nonce from Redis."""
+        async with RedisFactory.redis_scope() as redis:
+            raw = await redis.get(self._state_key(nonce))
+        return self._deserialize_nonce_data(raw)
+
+    async def _pop_oauth_state(self, nonce: str) -> Dict[str, Any]:
+        """Atomically fetch + delete the stored state for a nonce (single-use).
+
+        Uses Redis GETDEL so the read and delete are atomic — a concurrent
+        callback (even in another process) cannot replay the same nonce.
+        Returns {} if the nonce is absent.
+        """
+        async with RedisFactory.redis_scope() as redis:
+            raw = await redis.getdel(self._state_key(nonce))
+        return self._deserialize_nonce_data(raw) or {}
+
+    async def _verify_oauth_state(self, state: str) -> Tuple[bool, Optional[str]]:
         """
         Verify OAuth state parameter and extract user_id.
 
         Issue #734: SEC-MULTITENANCY - Extract user_id from state.
+        Issue #1109: Nonce store is Redis (multi-process safe). This read is
+        non-destructive — the single-use pop happens in handle_oauth_callback
+        via GETDEL.
 
         Args:
             state: The base64-encoded state parameter from callback
@@ -287,16 +354,25 @@ class SlackOAuthHandler:
             )
             return False, None
 
-        if nonce not in self._oauth_states:
+        nonce_data = await self._read_oauth_state(nonce)
+        if not nonce_data:
+            # Missing key: never stored, already popped (single-use), or
+            # TTL-expired in Redis — all rejected.
             logger.warning(f"Unknown OAuth nonce: {nonce[:8]}...")
             return False, None
 
-        nonce_data = self._oauth_states[nonce]
+        # Defensive expiration check (Redis TTL normally removes expired keys,
+        # but the stored expires_at is the authoritative window). expires_at is
+        # an ISO string (#1109).
+        try:
+            expires_at = datetime.fromisoformat(nonce_data["expires_at"])
+        except (KeyError, ValueError):
+            logger.warning(f"OAuth nonce missing/invalid expires_at: {nonce[:8]}...")
+            return False, None
 
-        # Check expiration
-        if datetime.utcnow() > nonce_data["expires_at"]:
+        if datetime.utcnow() > expires_at:
             logger.warning(f"Expired OAuth state for nonce: {nonce[:8]}...")
-            self._oauth_states.pop(nonce, None)
+            await self._pop_oauth_state(nonce)
             return False, None
 
         # Verify user_id matches stored value (prevent tampering)
@@ -309,11 +385,12 @@ class SlackOAuthHandler:
 
         return True, user_id
 
-    def verify_oauth_state(self, state: str) -> Tuple[bool, Optional[str]]:
+    async def verify_oauth_state(self, state: str) -> Tuple[bool, Optional[str]]:
         """
         Public method to verify OAuth state and extract user_id.
 
         Issue #734: SEC-MULTITENANCY - State verification for multi-tenant.
+        Issue #1109: Now async (Redis-backed nonce store).
 
         Args:
             state: The base64-encoded state parameter from callback
@@ -321,7 +398,7 @@ class SlackOAuthHandler:
         Returns:
             Tuple of (is_valid, user_id). user_id is None if invalid.
         """
-        return self._verify_oauth_state(state)
+        return await self._verify_oauth_state(state)
 
     def _verify_redirect_uri(self, received: str, expected: str) -> bool:
         """Verify redirect URI matches expected value"""
@@ -593,36 +670,28 @@ class SlackOAuthHandler:
             logger.error(f"Failed to store workspace tokens: {e}")
             raise SlackAuthFailedError(f"Token storage failed: {e}") from e
 
-    def cleanup_expired_states(self) -> int:
-        """Clean up expired OAuth states (housekeeping)"""
+    # Issue #1109: cleanup_expired_states() was removed. Redis TTL auto-expires
+    # OAuth nonce keys, so no manual housekeeping sweep is needed.
 
-        current_time = datetime.utcnow()
-        expired_states = []
+    async def get_oauth_status(self) -> Dict[str, Any]:
+        """Get OAuth handler status and metrics.
 
-        for state, data in self._oauth_states.items():
-            if current_time > data["expires_at"]:
-                expired_states.append(state)
-
-        for state in expired_states:
-            self._oauth_states.pop(state, None)
-
-        if expired_states:
-            logger.info(f"Cleaned up {len(expired_states)} expired OAuth states")
-
-        return len(expired_states)
-
-    def get_oauth_status(self) -> Dict[str, Any]:
-        """Get OAuth handler status and metrics"""
-
-        current_time = datetime.utcnow()
-        active_states = sum(
-            1 for data in self._oauth_states.values() if current_time <= data["expires_at"]
-        )
+        Issue #1109: in-flight OAuth flows are counted via a Redis SCAN over the
+        nonce key prefix. Every key present is live (TTL removes expired ones),
+        so active == total. Degrades gracefully if Redis is unreachable.
+        """
+        active_states = 0
+        try:
+            async with RedisFactory.redis_scope() as redis:
+                async for _ in redis.scan_iter(match=f"{OAUTH_STATE_KEY_PREFIX}*"):
+                    active_states += 1
+        except Exception as e:  # pragma: no cover - health endpoint resilience
+            logger.warning(f"Could not count OAuth states from Redis: {e}")
 
         return {
             "handler_status": "operational",
             "active_oauth_flows": active_states,
-            "total_state_entries": len(self._oauth_states),
+            "total_state_entries": active_states,
             "spatial_mapper_status": self.spatial_mapper.get_spatial_analytics(),
             "auth_endpoints": {
                 "authorization_url": self.auth_url,

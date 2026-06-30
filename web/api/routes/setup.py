@@ -1219,7 +1219,8 @@ async def start_slack_oauth(
         redirect_uri = os.getenv("SLACK_SETUP_REDIRECT_URI", os.getenv("SLACK_REDIRECT_URI", ""))
 
         # Issue #734: Pass user_id for multi-tenant state
-        auth_url, state = handler.generate_authorization_url(
+        # Issue #1109: generate_authorization_url is async (Redis-backed state)
+        auth_url, state = await handler.generate_authorization_url(
             user_id=current_user.sub, redirect_uri=redirect_uri if redirect_uri else None
         )
 

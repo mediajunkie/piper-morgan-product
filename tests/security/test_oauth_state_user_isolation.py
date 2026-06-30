@@ -26,6 +26,49 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
+from contextlib import asynccontextmanager, contextmanager
+
+
+# ---------------------------------------------------------------------------
+# Issue #1109: the Slack OAuth nonce store moved to Redis, so the Slack-handler
+# tests below exercise async, Redis-backed methods. fakeredis is not installed
+# in this env, so we patch RedisFactory.redis_scope with a tiny in-memory fake
+# that captures exactly the surface the handler uses (setex/get/getdel).
+# ---------------------------------------------------------------------------
+class _FakeRedis:
+    def __init__(self):
+        self.store: Dict[str, bytes] = {}
+
+    async def setex(self, key, ttl_seconds, value):
+        self.store[key] = value.encode() if isinstance(value, str) else value
+        return True
+
+    async def get(self, key):
+        return self.store.get(key)
+
+    async def getdel(self, key):
+        return self.store.pop(key, None)
+
+    async def close(self):
+        pass
+
+
+@contextmanager
+def _patched_slack_oauth_redis():
+    """Patch the Slack OAuth handler's RedisFactory.redis_scope with a shared
+    in-memory fake for the duration of the block."""
+    fake = _FakeRedis()
+
+    @asynccontextmanager
+    async def _scope():
+        yield fake
+
+    with patch(
+        "services.integrations.slack.oauth_handler.RedisFactory.redis_scope",
+        side_effect=_scope,
+    ):
+        yield fake
+
 
 class TestOAuthStateEncoding:
     """Tests for OAuth state encoding with user_id."""
@@ -83,8 +126,12 @@ class TestOAuthStateEncoding:
         with pytest.raises((ValueError, TypeError)):
             handler.generate_authorization_url()  # No user_id
 
-    def test_slack_generate_state_includes_user_id(self):
-        """Slack handler must also include user_id in state."""
+    async def test_slack_generate_state_includes_user_id(self):
+        """Slack handler must also include user_id in state.
+
+        Issue #1109: generate_authorization_url is async (Redis-backed nonce
+        store); Redis is patched with an in-memory fake to keep this hermetic.
+        """
         from services.integrations.slack.config_service import SlackConfigService
         from services.integrations.slack.oauth_handler import SlackOAuthHandler
 
@@ -92,7 +139,8 @@ class TestOAuthStateEncoding:
         handler = SlackOAuthHandler(config_service=config_service)
         user_id = "slack-user-123"
 
-        auth_url, state = handler.generate_authorization_url(user_id=user_id)
+        with _patched_slack_oauth_redis():
+            auth_url, state = await handler.generate_authorization_url(user_id=user_id)
 
         state_data = _decode_oauth_state(state)
         assert state_data is not None, "State should be valid JSON"
@@ -169,8 +217,13 @@ class TestOAuthStateDecoding:
 
         assert is_valid is False, "Tampered state should fail verification"
 
-    def test_slack_verify_state_returns_user_id(self):
-        """Slack handler verification should also return user_id."""
+    async def test_slack_verify_state_returns_user_id(self):
+        """Slack handler verification should also return user_id.
+
+        Issue #1109: generate/verify are async (Redis-backed nonce store);
+        Redis is patched with a shared in-memory fake so the nonce stored on
+        generate is visible to verify within the test.
+        """
         from services.integrations.slack.config_service import SlackConfigService
         from services.integrations.slack.oauth_handler import SlackOAuthHandler
 
@@ -178,9 +231,9 @@ class TestOAuthStateDecoding:
         handler = SlackOAuthHandler(config_service=config_service)
         user_id = "slack-decode-user"
 
-        auth_url, state = handler.generate_authorization_url(user_id=user_id)
-
-        is_valid, extracted_user_id = handler.verify_oauth_state(state)
+        with _patched_slack_oauth_redis():
+            auth_url, state = await handler.generate_authorization_url(user_id=user_id)
+            is_valid, extracted_user_id = await handler.verify_oauth_state(state)
 
         assert is_valid is True
         assert extracted_user_id == user_id
