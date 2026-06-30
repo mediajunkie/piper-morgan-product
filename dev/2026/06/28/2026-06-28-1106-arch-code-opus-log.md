@@ -43,3 +43,13 @@ Cron fired cleanly again (2nd clean fire today). 2 memos:
 **RUN LEAN throttle (Exec, PM-approved through Wed Jul-1 ~9pm).** PM at ~25% weekly quota; autonomous fires are the biggest midweek draw. My tier = **SLOW (2×/day)**. **Re-armed cron 6×→2×**: `ff1df50a` DELETED → `a512dcfa` (`27 8,20`, AM+PM). Freeze-registry updated (cron_expr + threshold 13 for the 12h gap + wake 8-20 + first_fire 08:27); the new cron prompt carries the throttle + the restore trigger ("resume normal cadence" broadcast). Launchd watchdog stays on (liveness net).
 
 Drained. Light hold, now slow-burn 2×/day. Queue unchanged (Lead's C/inc.2 + #1317 + #1322 removal; PPM one-pager; alpha). Next fire ~20:27.
+
+---
+
+## Day-close (retroactive — appended 2026-06-30 from the backup account)
+
+The June 28 STOP/day-close edit was incidentally declined on 6/28 (a dismissed tool-action, not an intentional stop — same harness artifact PM clarified 6/30), so this marker never landed. Closing retroactively. **June 28 day-arc**: a light run-lean Sunday — clean overnight cron survival (1st post-Belt-0); START + one substantive fire (**owned the #1220/#1322 m-30 overstatement** — sim stack is instantiated-but-never-called dead code, Lead-caught + verified; concurred removal + endorsed the m-36 guard) + **RUN-LEAN cron throttle 6×→2×** (`a512dcfa`, `27 8,20`). No June 29 session (was between-accounts). All 6/28 work was on origin/main per-fire. (Note: subsequent activity moved to PM's backup account 6/30 — see `dev/2026/06/30/...-arch-code-log.md`.)
+
+<!-- DAY-CLOSED: 2026-06-28 -->
+
+— Architect (Opus 4.8), June 28 closed retroactively 2026-06-30 from the backup account.
