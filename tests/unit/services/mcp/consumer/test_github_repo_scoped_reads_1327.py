@@ -1,4 +1,4 @@
-"""#1327 gap 2 — GitHub OAuth-connector repo-scoped reads (branches/labels/releases/issue #N).
+"""#1327 gap 2 — GitHub OAuth-connector repo-scoped reads (branches/releases/issue #N).
 
 The repo-scoped counterparts to #1322's user-wide `list_open_issues`/`list_open_prs`. Each
 reads via the per-user OAuth connector (binding + grant → the github-mcp-server tool) AFTER
@@ -7,9 +7,11 @@ resolving the target repo through `resolve_repo()`. Repo-scoped reads REQUIRE a 
 silent-empty, never get-all (#1231 / #1327 doc-of-record).
 
 github-mcp-server tools used (authoritative, official README):
-  branches → `list_branches`(owner, repo) · labels → `list_label`(owner, repo) ·
-  releases → `list_releases`(owner, repo) · single issue → `issue_read`(owner, repo,
-  issue_number, method="get"). Milestones have NO MCP tool → stay native (not tested here).
+  branches → `list_branches`(owner, repo) · releases → `list_releases`(owner, repo) ·
+  single issue → `issue_read`(owner, repo, issue_number, method="get").
+  Milestones AND labels have NO list MCP tool → stay native (not tested here). github-mcp-server
+  exposes only `get_label` (ONE label by name), not a list-labels tool; the gap-2 `list_label`
+  cutover returned `unknown tool` live and was reverted.
 
 TDD vs FastMCP fixtures (no live github-mcp-server needed); `resolve_repo` is monkeypatched.
 """
@@ -53,12 +55,6 @@ _BRANCHES = json.dumps(
     [
         {"name": "main", "protected": True, "commit": {"sha": "abc"}},
         {"name": "feature/x", "protected": False, "commit": {"sha": "def"}},
-    ]
-)
-_LABELS = json.dumps(
-    [
-        {"name": "bug", "color": "d73a4a", "description": "Something broke"},
-        {"name": "enhancement", "color": "a2eeef", "description": ""},
     ]
 )
 _RELEASES = json.dumps(
@@ -195,24 +191,8 @@ class TestListBranchesConnector:
         assert res.items == []
 
 
-class TestListLabelsConnector:
-    async def test_bound_returns_parsed_labels(self, sm, resolves):
-        await _seed(sm, "bound")
-        adapter = GitHubMCPSpatialAdapter()
-        _point_at_fixture(adapter, tool=gh_mod._LABELS_TOOL, payload=_LABELS)
-        res = await adapter.list_labels_connector(_ALPHA)
-        assert res.degradation is None
-        assert [lbl["name"] for lbl in res.items] == ["bug", "enhancement"]
-        assert res.items[0]["description"] == "Something broke"
-
-    async def test_unresolved_repo_degrades_which_repo(self, sm, unresolved):
-        await _seed(sm, "bound")
-        res = await GitHubMCPSpatialAdapter().list_labels_connector(_ALPHA)
-        assert res.degradation.reason is DegradationReason.REPO_UNRESOLVED
-
-    async def test_no_binding_degrades_connect_required(self, sm, resolves):
-        res = await GitHubMCPSpatialAdapter().list_labels_connector(_ALPHA)
-        assert res.degradation.reason is DegradationReason.CONNECT_REQUIRED
+# Labels: reverted to native (github-mcp-server has no list-labels tool, only get_label for ONE
+# label) — no connector class here. Native-labels behavior: test_handlers_labels_branches_1040.py.
 
 
 class TestListReleasesConnector:

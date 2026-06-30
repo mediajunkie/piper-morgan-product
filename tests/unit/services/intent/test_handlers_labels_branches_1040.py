@@ -37,10 +37,14 @@ def intent_service():
 
 
 @pytest.fixture(autouse=True)
-def _connector_not_connected():
-    """#1327 cutover: branches/labels handlers now prefer the OAuth connector. These #1040
-    tests exercise the NATIVE-PAT render path, so force the connector to report
-    CONNECT_REQUIRED (not OAuth-connected) → the handler falls back to native, unchanged."""
+def _branches_connector_not_connected():
+    """#1327 cutover: the BRANCHES handler prefers the OAuth connector. These #1040 tests
+    exercise the NATIVE-PAT render path, so force the branches connector to report
+    CONNECT_REQUIRED (not OAuth-connected) → the handler falls back to native, unchanged.
+
+    LABELS is NOT patched here: it was reverted to native (github-mcp-server has no list-labels
+    tool — `list_label` returned `unknown tool` live), so the labels handler goes straight
+    through the native router with no connector call, exactly like milestones."""
     from services.mcp.consumer.connector import DegradationReason, DegradationResponse
     from services.mcp.consumer.github_adapter import GitHubRepoScopedResult
 
@@ -52,9 +56,6 @@ def _connector_not_connected():
         )
     )
     with patch(
-        "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_labels_connector",
-        new=AsyncMock(return_value=cr),
-    ), patch(
         "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_branches_connector",
         new=AsyncMock(return_value=cr),
     ):

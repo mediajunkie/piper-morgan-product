@@ -67,9 +67,11 @@ _MY_OPEN_PRS_QUERY = "author:@me is:open is:pr"
 
 # ── #1327 gap 2: repo-scoped read tools (github-mcp-server, authoritative tool names) ──
 # These REQUIRE a target repo (resolve_repo) — unlike the user-wide search tools above.
-# NOTE: github-mcp-server has NO milestones tool → milestones stay native-PAT (#1039), NOT here.
+# NOTE: github-mcp-server has NO list tool for milestones OR labels → both stay native-PAT
+# (#1039 / #1040), NOT here. (Labels was briefly cut to a `list_label` connector tool in gap 2
+# and reverted: live, `list_label` returned `unknown tool`; the server exposes only `get_label`,
+# fetching ONE label by name, with no list-labels tool.)
 _BRANCHES_TOOL = "list_branches"  # args: owner, repo, page, perPage
-_LABELS_TOOL = "list_label"  # args: owner, repo  (the server's tool is singular "list_label")
 _RELEASES_TOOL = "list_releases"  # args: owner, repo, page, perPage
 # Single-issue read is the CONSOLIDATED issue_read tool (method="get"), not a get_issue tool.
 _ISSUE_READ_TOOL = "issue_read"  # args: owner, repo, issue_number, method
@@ -102,7 +104,7 @@ class GitHubIssuesResult:
 class GitHubRepoScopedResult:
     """Connector repo-scoped LIST-read result (#1327 gap 2): items on success, else honest degrade.
 
-    The repo-scoped counterpart to ``GitHubIssuesResult`` — for branches / labels / releases,
+    The repo-scoped counterpart to ``GitHubIssuesResult`` — for branches / releases,
     which target ONE repo (resolved via ``resolve_repo``). Exactly one of ``items`` /
     ``degradation`` is set. ``resolved_repo`` (``owner/name``) is surfaced on success so the
     handler can name the repo it read. ``REPO_UNRESOLVED`` degradation = the "which repo?" case
@@ -326,7 +328,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             total = len(items)  # list_issues shape: count is what we got
         return items[:limit], total
 
-    # ── #1327 gap 2: repo-scoped reads over the OAuth connector (branches/labels/releases/issue) ──
+    # ── #1327 gap 2: repo-scoped reads over the OAuth connector (branches/releases/issue) ──
     # Mirror the #1322 user-wide rail, but repo-scoped: resolve_repo() FIRST (a target repo is
     # REQUIRED), then call the github-mcp-server repo-scoped tool with {owner, repo, ...}. On
     # UnresolvedRepoError → honest REPO_UNRESOLVED ("which repo?"), never silent-empty / get-all.
@@ -349,20 +351,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             project_id=project_id,
         )
 
-    async def list_labels_connector(
-        self, user_id: str, *, explicit_repo: Optional[str] = None, project_id=None
-    ) -> GitHubRepoScopedResult:
-        """List a repo's labels over the OAuth connector (#1327). Tool: ``list_label``.
-
-        Label dicts normalized to ``{name, color, description, html_url}`` (the native shape).
-        """
-        return await self._repo_scoped_list_via_connector(
-            user_id,
-            tool=_LABELS_TOOL,
-            parse=self._parse_labels,
-            explicit_repo=explicit_repo,
-            project_id=project_id,
-        )
+    # NOTE: there is intentionally NO list_labels_connector. github-mcp-server has no list-labels
+    # tool (only get_label for ONE label by name), so labels stays native (#1040) — mirror
+    # milestones. The gap-2 `list_label` connector cutover was reverted (live: `unknown tool`).
 
     async def list_releases_connector(
         self, user_id: str, *, explicit_repo: Optional[str] = None, project_id=None
@@ -428,7 +419,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         self, user_id: str, *, tool: str, parse, explicit_repo=None, project_id=None
     ) -> GitHubRepoScopedResult:
         """Shared repo-scoped LIST rail: resolve_repo → bound binding → call tool → parse, or
-        an honest degrade — the rail behind ``list_branches/labels/releases_connector``.
+        an honest degrade — the rail behind ``list_branches/releases_connector``.
 
         Order mirrors the #1322 ``_search_via_connector`` rail with repo resolution prepended:
         UnresolvedRepoError → REPO_UNRESOLVED ("which repo?"); no binding → CONNECT_REQUIRED
@@ -523,20 +514,7 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             )
         return out
 
-    @staticmethod
-    def _parse_labels(payload: Optional[str]) -> List[Dict[str, Any]]:
-        """Parse a ``list_label`` JSON array → normalized ``{name, color, description, html_url}``."""
-        out = []
-        for label in GitHubMCPSpatialAdapter._json_array(payload):
-            out.append(
-                {
-                    "name": label.get("name", ""),
-                    "color": label.get("color", ""),
-                    "description": label.get("description") or "",
-                    "html_url": label.get("url") or label.get("html_url"),
-                }
-            )
-        return out
+    # NOTE: no _parse_labels — labels reverted to native (no github-mcp-server list-labels tool).
 
     @staticmethod
     def _parse_releases(payload: Optional[str]) -> List[Dict[str, Any]]:
