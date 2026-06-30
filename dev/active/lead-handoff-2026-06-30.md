@@ -23,6 +23,9 @@
 - **#1336** — [placeholder] expand/refactor canonical-query regression for connector states (bound/unbound/unreachable) + trust-property assertions. Triage later.
 
 ## What to do on resume (priority order, all unblocked unless noted)
+
+> ⭐ **ACTIVE WORK (PM directive 2026-06-30, ~99% usage): execute the SLACK plan** → `dev/2026/06/30/slack-reconnect-plan-2026-06-30.md`. PM moved Slack up from "last" (team on slow cycles + the rest of the autonomous queue is drained). **First step: #1110** (thread `user_id` into `SlackClient.get_config` — `slack_client.py:57/77/89/116`; check #1085's masking; TDD). Then #1334 (slack-dup disconnect) → #1109 (Redis OAuth state) → #1201 (inbound onboarding, CXO-gated). Slack = keychain model (ADR-058), not the binding model.
+
 1. **Field any PM testing findings first** (PM is testing async; their findings outrank backlog).
 2. **#1333** deterministic fabrication category-rule — the highest-value structural build; clean. (Loop HOST/Arch on the trust-contract; ratification already in flight.)
 3. **#1334** — connector-agnostic disconnect + fix the slack-dup route (slack-dup pairs with Slack work, which is LAST).
