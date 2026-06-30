@@ -1823,6 +1823,25 @@ async def disconnect_github(current_user: JWTClaims = Depends(get_current_user))
         config_service = GitHubConfigService()
         config_service.clear_cache()
 
+        # RECONNECT (#1330): a full disconnect must also clear the OAuth connector binding
+        # + revoke the #358 grant — the inverse of persist_github_connection (store grant +
+        # upsert BOUND). Without this, disconnect removes only the native PAT while the
+        # binding stays BOUND, so the badge/health still read "Connected via OAuth" and chat
+        # reads keep working through the connector. Best-effort: no binding/grant is fine.
+        try:
+            from services.connectors.binding_repository import ConnectorBindingRepository
+            from services.database.session_factory import AsyncSessionFactory
+            from services.mcp.consumer.connector import ConnectorStatusState
+            from services.mcp.consumer.connector_grant_store import ConnectorGrantStore
+
+            async with AsyncSessionFactory.session_scope() as session:
+                await ConnectorBindingRepository(session).set_status(
+                    current_user.sub, "github", ConnectorStatusState.UNBOUND.value
+                )
+                await ConnectorGrantStore().delete(session, current_user.sub, "github")
+        except Exception as e:
+            logger.warning("github_oauth_binding_clear_failed", error=str(e))
+
         logger.info("github_disconnected")
 
         return {

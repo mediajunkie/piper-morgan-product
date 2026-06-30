@@ -75,8 +75,6 @@ class TestGitHubTokenLifecycle849:
         mock_keychain = MagicMock()
         mock_config = MagicMock()
         mock_config.clear_cache = MagicMock()
-        mock_router = MagicMock()
-        mock_router.test_connection.return_value = {"authenticated": True, "username": "testuser"}
         mock_user = MagicMock()
         mock_user.sub = "user-123"
 
@@ -87,8 +85,10 @@ class TestGitHubTokenLifecycle849:
                 return_value=mock_config,
             ),
             patch(
-                "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
-                return_value=mock_router,
+                "services.integrations.github.token_validator.verify_github_token",
+                new=AsyncMock(
+                    return_value={"authenticated": True, "username": "testuser"}
+                ),
             ),
             patch(
                 "services.infrastructure.keychain_service.KeychainService",

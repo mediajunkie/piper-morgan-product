@@ -50,3 +50,18 @@ class TestConnectorGrantStore:
         assert _provider("github") == "github_mcp_oauth"
         assert _provider("calendar") == "calendar_mcp_oauth"
         assert _provider("github") != _provider("calendar")
+
+    async def test_delete_revokes_the_grant(self):
+        # #1330: delete is the disconnect inverse of store — same connector-scoped key.
+        svc = AsyncMock()
+        svc.delete_user_key.return_value = True
+        ok = await ConnectorGrantStore(service=svc).delete(_SESSION, _ALPHA, "github")
+        assert ok is True
+        args, _ = svc.delete_user_key.call_args
+        assert args[1] == _ALPHA and args[2] == "github_mcp_oauth"
+
+    async def test_delete_missing_is_false(self):
+        # nothing stored → idempotent no-op (so disconnect never fails on a missing grant)
+        svc = AsyncMock()
+        svc.delete_user_key.return_value = False
+        assert await ConnectorGrantStore(service=svc).delete(_SESSION, _ALPHA, "github") is False

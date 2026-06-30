@@ -41,3 +41,8 @@ class ConnectorGrantStore:
     async def get(self, session: AsyncSession, user_id: str, connector: str) -> Optional[str]:
         """Return the user's stored OAuth grant for ``connector``, or ``None``."""
         return await self._service.retrieve_user_key(session, user_id, _provider(connector))
+
+    async def delete(self, session: AsyncSession, user_id: str, connector: str) -> bool:
+        """Revoke (delete) the user's stored OAuth grant for ``connector`` — the disconnect
+        inverse of ``store`` (#1330). Idempotent: returns ``False`` if no grant was stored."""
+        return await self._service.delete_user_key(session, user_id, _provider(connector))

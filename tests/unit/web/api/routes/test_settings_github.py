@@ -241,6 +241,65 @@ class TestDisconnectGitHub:
             assert result["success"] is True
             assert result["message"] == "GitHub disconnected"
 
+    @pytest.mark.asyncio
+    async def test_disconnect_clears_oauth_binding_and_grant_1330(self):
+        """#1330: disconnect must also UNBIND the OAuth connector + revoke the #358 grant —
+        else the badge/health still read 'Connected via OAuth' and chat reads keep working
+        through the connector after Disconnect (it only cleared the native PAT before)."""
+        mock_keychain = MagicMock()
+        mock_config_service = MagicMock()
+        mock_config_service.clear_cache = MagicMock()
+
+        mock_user = MagicMock()
+        mock_user.sub = "test-user-123"
+
+        # async context manager for AsyncSessionFactory.session_scope()
+        mock_session = AsyncMock()
+        mock_scope = MagicMock()
+        mock_scope.__aenter__ = AsyncMock(return_value=mock_session)
+        mock_scope.__aexit__ = AsyncMock(return_value=False)
+        mock_factory = MagicMock()
+        mock_factory.session_scope.return_value = mock_scope
+
+        mock_binding_repo = MagicMock()
+        mock_binding_repo.set_status = AsyncMock()
+        mock_grant_store = MagicMock()
+        mock_grant_store.delete = AsyncMock(return_value=True)
+
+        with (
+            patch.dict("os.environ", {"GITHUB_TOKEN": "ghp_test"}, clear=True),
+            patch(
+                "services.infrastructure.keychain_service.KeychainService",
+                return_value=mock_keychain,
+            ),
+            patch(
+                "services.integrations.github.config_service.GitHubConfigService",
+                return_value=mock_config_service,
+            ),
+            patch(
+                "services.database.session_factory.AsyncSessionFactory", mock_factory
+            ),
+            patch(
+                "services.connectors.binding_repository.ConnectorBindingRepository",
+                return_value=mock_binding_repo,
+            ),
+            patch(
+                "services.mcp.consumer.connector_grant_store.ConnectorGrantStore",
+                return_value=mock_grant_store,
+            ),
+        ):
+            result = await disconnect_github(current_user=mock_user)
+
+        assert result["success"] is True
+        # binding marked UNBOUND (badge/health/reads all gate on status == BOUND)
+        mock_binding_repo.set_status.assert_awaited_once_with(
+            "test-user-123", "github", "unbound"
+        )
+        # #358 OAuth grant revoked
+        mock_grant_store.delete.assert_awaited_once()
+        gargs, _ = mock_grant_store.delete.call_args
+        assert gargs[1] == "test-user-123" and gargs[2] == "github"
+
 
 class TestIntegrationRegistryGitHubUrl:
     """Tests for GitHub configure_url in INTEGRATION_REGISTRY (Issue #541)"""
