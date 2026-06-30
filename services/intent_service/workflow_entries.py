@@ -475,6 +475,21 @@ def register_default_workflows() -> None:
         action_triggered=True,
     )
 
+    # #1331 TRUST: honest-degrade unwired WRITE actions. The LLM classifier can emit
+    # write actions (e.g. create_milestone) with NO real handler; left alone they
+    # fall to the floor, which CONFABULATES "created ✓" without writing anything.
+    # Each unwired write registers an action-triggered entry routing to
+    # _handle_unwired_write (2-arg, standard factory) so the action-dispatch rail
+    # intercepts it BEFORE the floor and returns an honest decline. The covered set
+    # is the single source of truth in services.intent_service.unwired_writes.
+    # NOTE: honest-degrade FLOOR only — performs NO write (#1322 Q3 owns real writes).
+    unwired_write_entry = WorkflowEntry(
+        entry_point=_make_query_dispatch_entry_point("_handle_unwired_write"),
+        description="Honest-degrade unwired write via action dispatch (#1331)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
+
     _default_entries: dict[str, WorkflowEntry] = {
         "meeting": WorkflowEntry(
             entry_point=start_meeting_workflow,
@@ -505,6 +520,15 @@ def register_default_workflows() -> None:
         # RECONNECT #1327 gap 1: set-default-repo (QUERY category, pre-classifier action).
         "set_default_repo": set_default_repo_entry,
     }
+
+    # #1331: fan the honest-degrade entry over every recognized-but-unwired WRITE
+    # action (create_milestone, create_release, …). Keyed on the classifier's
+    # free-form action string so the rail (`intent.action in get_action_workflows()`)
+    # intercepts before the floor. Source of truth: unwired_writes.UNWIRED_WRITE_ACTIONS.
+    from services.intent_service.unwired_writes import UNWIRED_WRITE_ACTIONS
+
+    for _unwired_action in UNWIRED_WRITE_ACTIONS:
+        _default_entries[_unwired_action] = unwired_write_entry
 
     # #1124 step 3 cohort 2: GitHub read-query cohort — one shared entry point per
     # handler (built by the factory), fanned out to that handler's classifier aliases.
