@@ -4640,50 +4640,11 @@ class IntentService:
                 workflow_id=workflow_id,
             )
 
-    async def _handle_unwired_write(
-        self, intent: Intent, workflow_id: str
-    ) -> IntentProcessingResult:
-        """Honest-degrade handler for recognized-but-unwired WRITE actions (#1331).
-
-        The trust fix: the LLM classifier can emit write actions (e.g.
-        ``create_milestone``) for which NO real handler exists. Left alone, such an
-        action falls through to the conversational floor (the LLM), which
-        CONFABULATES a success message ("Milestone created ✓") even though no write
-        ever happened. This handler is wired onto the ADR-059 / #1124
-        action-dispatch rail (via ``services.intent_service.unwired_writes`` →
-        ``workflow_entries``) so the action is intercepted BEFORE the floor — and
-        answered with a brief, honest decline instead.
-
-        SCOPE: honest-degrade FLOOR only. This performs NO write — it constructs no
-        GitHub router/connector/service and mutates nothing. Real connector-backed
-        writes are #1322 Q3. The decline names the capability, says it's not
-        available *yet*, and points to the GitHub alternative (per #1331 tone:
-        honest, brief, not over-apologetic). It NEVER fabricates success.
-
-        Returns ``success=True`` (graceful — this is an expected, well-formed
-        decline, not an error/422), with ``intent_data.unwired_write = True`` for
-        analytics + audit.
-        """
-        from services.intent_service.unwired_writes import get_unwired_write_decline
-
-        action = intent.action or "unknown"
-        self.logger.info(
-            "unwired_write_honest_degrade",
-            action=action,
-            reason="no_real_handler_decline_instead_of_confabulate",
-        )
-
-        return IntentProcessingResult(
-            success=True,
-            message=get_unwired_write_decline(action),
-            intent_data={
-                "category": (intent.category.value if intent.category else "execution"),
-                "action": action,
-                "unwired_write": True,
-                "confidence": getattr(intent, "confidence", None),
-            },
-            workflow_id=workflow_id,
-        )
+    # #1333 (2026-06-30): `_handle_unwired_write` (the rail-dispatched honest-degrade
+    # handler for the hand-listed unwired writes) was RETIRED. The decline is now derived
+    # at `_handle_execution_intent`'s else-branch (any unwired EXECUTION action declines
+    # by construction, no list/registration). Curated copy lives in
+    # `unwired_writes.get_unwired_write_decline`, called directly from that branch.
 
     async def _handle_list_prs_query(
         self, intent: Intent, workflow_id: str
