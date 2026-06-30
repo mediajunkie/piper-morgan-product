@@ -238,6 +238,22 @@ async def process_intent(
         message = request_data.get("message", "")
         session_id = request_data.get("session_id", "default_session")
 
+        # #1332 diagnostic: capture the exact payload when the message arrives empty,
+        # so the (intermittent) "your message came through empty" can be root-caused on
+        # next occurrence — distinguishes {message: ""} (frontend sent blank) vs no
+        # "message" key (payload shape) vs an empty body (content-length 0 / transport).
+        if not message or not message.strip():
+            logger.warning(
+                "intent_empty_message_payload_1332",
+                request_keys=sorted(request_data.keys()),
+                message_repr=repr(message),
+                content_length=request.headers.get("content-length"),
+                content_type=request.headers.get("content-type"),
+                user_agent=(request.headers.get("user-agent") or "")[:80],
+                session_id=session_id,
+                has_auth=current_user is not None,
+            )
+
         # Issue #490: Extract user_id from authenticated user if available
         user_id = current_user.sub if current_user else None
 
