@@ -494,9 +494,12 @@ async def get_slack_channels(current_user: JWTClaims = Depends(get_current_user)
     Issue #570: Slack Channel Selection Settings
     """
     try:
+        from services.integrations.slack.config_service import SlackConfigService
         from services.integrations.slack.slack_client import SlackClient
 
-        client = SlackClient()
+        # #1110: SlackClient requires a config_service AND a user_id (ADR-058
+        # multi-tenancy). This route has the authenticated user in scope.
+        client = SlackClient(config_service=SlackConfigService(), user_id=current_user.sub)
         response = await client.list_channels()
 
         if not response.success:
@@ -2071,21 +2074,47 @@ async def get_slack_settings():
 
         if bot_token:
             # Validate the token by testing connection
+            from services.integrations.slack.config_service import SlackConfigService
             from services.integrations.slack.slack_integration_router import SlackIntegrationRouter
 
-            router_instance = SlackIntegrationRouter()
-            test_result = await router_instance.test_auth()
+            # #1110: This endpoint has no authenticated user (no Depends), but a
+            # Slack API call requires a user_id (ADR-058 multi-tenancy). The
+            # workspace-level status check uses the connector-owner user id
+            # (SLACK_CONNECTOR_USER_ID, the #759 alpha pattern). Per the #1110
+            # guardrail we do NOT fall back to None — if no connector user is
+            # configured we report that honestly instead of recreating the bug.
+            connector_user_id = os.environ.get("SLACK_CONNECTOR_USER_ID")
+            if not connector_user_id:
+                return {
+                    "configured": True,
+                    "valid": False,
+                    "workspace": None,
+                    "bot_id": None,
+                    "error": (
+                        "SLACK_CONNECTOR_USER_ID not configured; cannot validate "
+                        "workspace connection (multi-tenancy requires a user id)."
+                    ),
+                }
 
-            is_valid = test_result.get("ok", False)
-            team_name = test_result.get("team")
-            bot_id = test_result.get("bot_id")
+            router_instance = SlackIntegrationRouter(config_service=SlackConfigService())
+            test_response = await router_instance.test_auth(user_id=connector_user_id)
+
+            # test_auth returns a SlackResponse dataclass, not a dict.
+            is_valid = bool(getattr(test_response, "success", False))
+            data = getattr(test_response, "data", {}) or {}
+            team_name = data.get("team")
+            bot_id = data.get("bot_id")
+            error = None
+            if not is_valid:
+                err_obj = getattr(test_response, "error", None)
+                error = getattr(err_obj, "message", None) if err_obj else "Slack auth failed"
 
             return {
                 "configured": True,
                 "valid": is_valid,
                 "workspace": team_name if is_valid else None,
                 "bot_id": bot_id if is_valid else None,
-                "error": test_result.get("error") if not is_valid else None,
+                "error": error,
             }
         else:
             return {

@@ -151,13 +151,23 @@ class SlackResponseHandler:
 
             self._intent_service = intent_service
 
-            # Initialize Slack client with fallback
+            # Initialize Slack client with fallback.
+            # #1110: SlackClient requires a user_id at construction (ADR-058),
+            # but this handler is built once with no user context (user_id is
+            # per inbound event, available later in slack_context). So the
+            # default client is the SlackIntegrationRouter — a startup singleton
+            # that builds its per-user SlackClient lazily per send. This also
+            # matches the production path, where SlackWebhookRouter injects the
+            # router here. The send sites pass user_id from slack_context.
             if slack_client is None:
-                logger.info("Initializing SlackClient with defaults")
+                logger.info("Initializing SlackIntegrationRouter with defaults")
                 from services.integrations.slack.config_service import SlackConfigService
+                from services.integrations.slack.slack_integration_router import (
+                    SlackIntegrationRouter,
+                )
 
                 config_service = SlackConfigService()
-                slack_client = SlackClient(config_service)
+                slack_client = SlackIntegrationRouter(config_service)
             self.slack_client = slack_client
 
             # Keep original logger for backward compatibility
@@ -305,6 +315,13 @@ class SlackResponseHandler:
         thread_ts = slack_context.get("thread_ts")
         if thread_ts:
             message_params["thread_ts"] = thread_ts
+
+        # #1110: resolve outbound credentials by the CONNECTOR-OWNER's Piper
+        # user_id (not the sender's Slack user_id). Harmless for a raw
+        # SlackClient (ignores the kwarg; user_id was bound at construction).
+        message_params["user_id"] = slack_context.get("connector_user_id") or slack_context.get(
+            "user_id"
+        )
 
         # Send consolidated message
         response = await self.slack_client.send_message(**message_params)
@@ -677,6 +694,12 @@ class SlackResponseHandler:
             thread_ts = slack_context.get("thread_ts")
             if thread_ts:
                 message_params["thread_ts"] = thread_ts
+
+            # #1110: outbound credentials use the connector-owner's Piper
+            # user_id (not the sender's Slack user_id).
+            message_params["user_id"] = slack_context.get(
+                "connector_user_id"
+            ) or slack_context.get("user_id")
 
             # Send message via Slack client
             response = await self.slack_client.send_message(**message_params)

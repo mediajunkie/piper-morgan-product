@@ -1666,7 +1666,8 @@ class ContextAssembler:
             slack = SlackIntegrationRouter(config_service=config_service)
 
             # List the user's DM channels (im + mpim).
-            list_resp = await slack.list_im_channels()
+            # #1110: scope credential lookup to this user (ADR-058 multi-tenancy).
+            list_resp = await slack.list_im_channels(user_id=user_id)
             if not list_resp or not list_resp.success:
                 return []
             channels = list_resp.data.get("channels", []) if list_resp.data else []
@@ -1688,7 +1689,7 @@ class ContextAssembler:
                 channel_type = "mpim" if channel.get("is_mpim") else "im"
                 try:
                     hist_resp = await slack.get_conversation_history(
-                        channel_id, limit=20, oldest=cutoff_slack_ts
+                        channel_id, limit=20, oldest=cutoff_slack_ts, user_id=user_id
                     )
                 except Exception:
                     # Per-channel fail-graceful: continue with other channels.

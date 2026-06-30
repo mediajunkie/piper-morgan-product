@@ -254,6 +254,10 @@ class SlackSpatialAdapter(BaseSpatialAdapter):
                 "thread_ts": context.get("path_id") or context.get("thread_ts"),
                 "workspace_id": context.get("territory_id"),
                 "user_id": context.get("user_id"),
+                # #1110: connector-owner Piper user_id, distinct from the sender's
+                # Slack user_id above. The response handler uses it to resolve
+                # outbound bot credentials (SlackConfigService.get_config).
+                "connector_user_id": context.get("connector_user_id"),
                 "attention_level": context.get("attention_level", "medium"),
                 "navigation_intent": context.get("navigation_intent", "monitor"),
                 "content": context.get("content", ""),

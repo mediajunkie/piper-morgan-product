@@ -871,6 +871,9 @@ class SlackWebhookRouter:
                 "territory_id": team_id,
                 "room_id": channel_id,
                 "user_id": user_id,
+                # #1110: user_id above is the SENDER's Slack ID; credential
+                # lookup needs the connector-owner's Piper user_id (#759).
+                "connector_user_id": self._get_connector_user_id(),
                 "content": message_text,
                 "attention_level": "medium",
                 "emotional_valence": "neutral",
@@ -928,6 +931,8 @@ class SlackWebhookRouter:
                 "room_id": channel_id,
                 "original_channel_id": channel_id,  # Preserve original Slack channel ID
                 "user_id": user_id,
+                # #1110: connector-owner Piper user_id for outbound credentials.
+                "connector_user_id": self._get_connector_user_id(),
                 "content": event.get("text", ""),
                 "attention_level": "high",
                 "emotional_valence": "positive",
@@ -1010,6 +1015,8 @@ class SlackWebhookRouter:
                 "territory_id": team_id,
                 "room_id": channel_id,
                 "user_id": user_id,
+                # #1110: connector-owner Piper user_id for outbound credentials.
+                "connector_user_id": self._get_connector_user_id(),
                 "attention_level": "medium",
                 "emotional_valence": emotional_valence,
                 "navigation_intent": "monitor",
