@@ -1,6 +1,12 @@
+---
+image: 
+alt: 
+caption: 
+---
+
 # From Briefing to Vision
 
-*March 30 – April 10*
+*March 30 – April 10, 2026*
 
 Day one, the new agent read sixty architectural decision records. Forty-seven patterns. Fifteen omnibus logs. Twelve cross-pollination briefs. The roadmap. The vision document. The autobiography. Eight hours of absorbing nine months of institutional knowledge.
 
@@ -10,7 +16,7 @@ Day eleven, the same agent created ten GitHub issues in a single session — eac
 
 Between those two days, something happened that I'm still thinking about.
 
-## The cold start
+# The cold start
 
 [ADD PERSONAL DETAIL — the decision to create PA, what role it was meant to fill, what the CIO's briefing was designed to do]
 
@@ -18,7 +24,7 @@ When a new person joins a team, there's an onboarding period. You give them docu
 
 AI agents have the same cold-start problem, but compressed. PA read everything we had in a day. The question was whether reading translates into understanding, and whether understanding translates into useful work.
 
-## The progression
+# The progression
 
 Day two: PA synthesized eighteen session logs and seven workstream memos from the migration day into a midday briefing. Then it produced a five-layer context mapping — an analytical framework that nobody had asked for, mapping how context flows through both the agent team and the product codebase. The CIO called it an original contribution.
 
@@ -34,7 +40,7 @@ Day nine: PA researched platform feasibility for a distribution strategy nobody 
 
 Day eleven: Ten issues created. Sprint plan executed.
 
-## What compounded
+# What compounded
 
 The reading mattered, but not the way I expected.
 
@@ -44,7 +50,7 @@ PA didn't get smarter by reading more documents. It got more useful by accumulat
 
 This is the same pattern that makes the project's multi-agent system work: accumulated context creates compound returns. The first session is expensive — all reading, minimal output. But each subsequent session builds on what came before. By day eight, PA was surfacing insights that changed the project's direction.
 
-## The cost nobody talks about
+# The cost nobody talks about
 
 Day one cost eight hours of pure knowledge acquisition before a single useful deliverable appeared. For a human hire, we'd call this orientation and wouldn't think twice. For an AI agent, there's a temptation to skip it — just give the agent a task and let it figure things out.
 
@@ -54,7 +60,7 @@ Every shortcut we've tried with agent onboarding has failed. Agents without cont
 
 The CIO spent weeks preparing PA's briefing. The five-layer context model, the voice guidance, the relationship framing, the explicit "what you don't need to know" section. That preparation didn't just help PA start faster. It shaped how PA thinks about the project — and the thinking is what produced the strategic insights that changed our roadmap.
 
-## Eleven days
+# Eleven days
 
 From reading briefings to revising the project vision. From absorbing patterns to surfacing patterns nobody had named. From filing issues to reframing the MVP.
 
@@ -66,6 +72,6 @@ The question I keep coming back to: if this is what happens when an agent has su
 
 ---
 
-*Next on Building Piper Morgan: [PLACEHOLDER].*
+*Next on Building Piper Morgan: "The Airport Corrections" — how real-time feedback from the road flipped the duty-cycle design.*
 
 *How long does it take a new team member to go from reading the docs to changing the direction?*
