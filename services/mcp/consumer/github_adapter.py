@@ -64,6 +64,12 @@ _MY_OPEN_ISSUES_QUERY = "assignee:@me is:open is:issue"
 # PRs (#1322 P3): search_pull_requests, same payload shape, user-wide "PRs I opened".
 _PRS_TOOL = "search_pull_requests"
 _MY_OPEN_PRS_QUERY = "author:@me is:open is:pr"
+# Repos (#1327 gap 3): the Settings repo-config dropdown — the user's OWN repos. search_repositories
+# is user-wide (user:@me, across the user's repos) → no repo resolution, mirroring the search_issues
+# rail. De-risked live (18 repos via user:@me; payload {total_count, incomplete_results, items[]} —
+# same shape as search_issues). Isolated for testability.
+_REPOS_TOOL = "search_repositories"
+_MY_REPOS_QUERY = "user:@me"
 
 # ── #1327 gap 2: repo-scoped read tools (github-mcp-server, authoritative tool names) ──
 # These REQUIRE a target repo (resolve_repo) — unlike the user-wide search tools above.
@@ -97,6 +103,21 @@ class GitHubIssuesResult:
 
     issues: Optional[List[Dict[str, Any]]] = None
     total: Optional[int] = None  # TRUE match count (search_issues total_count); issues is a page
+    degradation: Optional[DegradationResponse] = None
+
+
+@dataclass
+class GitHubReposResult:
+    """Connector repo-LISTING result (#1327 gap 3): the user's own repos, else honest degrade.
+
+    The Settings repo-config dropdown counterpart to ``GitHubIssuesResult`` — a user-wide
+    ``search_repositories`` (``user:@me``, no repo resolution). Exactly one of ``repositories`` /
+    ``degradation`` is set; the handler branches on it (repos → dropdown; degradation → the honest
+    "Connect GitHub" / re-auth / unreachable message), never a silent empty list (#1231). Each repo
+    dict is normalized to the ``GitHubRepositoryInfo`` shape (``id/name/full_name/description``).
+    """
+
+    repositories: Optional[List[Dict[str, Any]]] = None
     degradation: Optional[DegradationResponse] = None
 
 
@@ -266,6 +287,72 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         return await self._search_via_connector(
             user_id, tool=_PRS_TOOL, query=_MY_OPEN_PRS_QUERY, limit=limit
         )
+
+    # ── #1327 gap 3 cutover: the user's OWN repos over the OAuth connector (Settings dropdown) ──
+    async def search_user_repositories(
+        self, user_id: str, *, limit: int = 100
+    ) -> GitHubReposResult:
+        """List the user's own GitHub repos over the per-user OAuth connector (#1327 gap 3).
+
+        The Settings repo-config dropdown read primitive — reads via the user's binding + grant
+        (``search_repositories``, user-wide ``user:@me`` across the user's repos → no repo
+        resolution, mirroring the #1322 ``list_open_issues`` rail), NOT the native shared PAT.
+        Honest-degrade throughout (#1231, never a silent empty): no binding → CONNECT_REQUIRED
+        (+ connect link); non-bound → its stored reason; bound-but-unreachable → UNREACHABLE.
+        Each repo dict is normalized to the ``GitHubRepositoryInfo`` shape.
+        """
+        binding_or_degrade = await self._bound_binding_or_degrade(user_id)
+        if isinstance(binding_or_degrade, DegradationResponse):
+            return GitHubReposResult(degradation=binding_or_degrade)
+        try:
+            async with self._mcp_client_ctx(binding_or_degrade) as client:
+                result = await client.call_tool(_REPOS_TOOL, {"query": _MY_REPOS_QUERY})
+                repos = self._parse_repo_search(self._first_text(result.content), limit=limit)
+        except Exception:
+            logger.warning(
+                "GitHub MCP search_repositories failed (server unreachable/unprovisioned)",
+                exc_info=True,
+            )
+            return GitHubReposResult(degradation=await self.degrade(DegradationReason.UNREACHABLE))
+        return GitHubReposResult(repositories=repos)
+
+    @staticmethod
+    def _parse_repo_search(payload: Optional[str], *, limit: int) -> List[Dict[str, Any]]:
+        """Parse a ``search_repositories`` JSON payload → normalized repo dicts (truncated to limit).
+
+        github-mcp-server returns ``{total_count, incomplete_results, items[]}`` (verified live);
+        tolerate a bare list too. Each item → ``{id, name, full_name, description}`` (the
+        ``GitHubRepositoryInfo`` shape), with a null/missing description normalized to ``""``
+        (mirroring the native dropdown). Empty/unparseable payload → ``[]`` (the empty-list,
+        not a degrade — the binding rail owns the honest-degrade decision)."""
+        if not payload:
+            return []
+        try:
+            data = json.loads(payload)
+        except (ValueError, TypeError):
+            return []
+        if isinstance(data, dict):
+            items = data.get("items")
+            if items is None:
+                items = data.get("repositories")
+            items = items or []
+        elif isinstance(data, list):
+            items = data
+        else:
+            return []
+        out = []
+        for repo in items[:limit]:
+            if not isinstance(repo, dict):
+                continue
+            out.append(
+                {
+                    "id": repo.get("id", 0),
+                    "name": repo.get("name", ""),
+                    "full_name": repo.get("full_name", ""),
+                    "description": repo.get("description") or "",
+                }
+            )
+        return out
 
     async def _search_via_connector(
         self, user_id: str, *, tool: str, query: str, limit: int
