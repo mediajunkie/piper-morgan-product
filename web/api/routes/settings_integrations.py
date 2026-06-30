@@ -442,28 +442,42 @@ async def disconnect_slack(current_user: JWTClaims = Depends(get_current_user)):
     """
     Disconnect Slack integration.
 
-    Removes stored tokens from environment/keychain.
-    Note: Does not revoke tokens on Slack's side.
+    Removes the user-scoped stored tokens (keychain, #849), revokes OAuth access on
+    Slack's side, and clears the Slack env vars. #1334: consolidated from a duplicate
+    /slack/disconnect route — the prior live def removed the keychain creds but skipped
+    the Slack-side revoke; the shadowed dup revoked but leaked the keychain creds.
     """
     try:
         from services.infrastructure.keychain_service import KeychainService
 
         keychain = KeychainService()
 
-        # Try to remove from keychain
+        # Remove user-scoped tokens from keychain (#849 multi-tenancy isolation)
         try:
-            keychain.delete_api_key(
-                "slack_bot", username=current_user.sub
-            )  # Issue #849: User-scoped key for multi-tenancy isolation
-            keychain.delete_api_key(
-                "slack_user", username=current_user.sub
-            )  # Issue #849: Also remove user token on disconnect
+            keychain.delete_api_key("slack_bot", username=current_user.sub)
+            keychain.delete_api_key("slack_user", username=current_user.sub)
         except Exception:
             pass
 
-        # Clear from environment (won't persist after restart)
-        if "SLACK_BOT_TOKEN" in os.environ:
-            del os.environ["SLACK_BOT_TOKEN"]
+        # #1334: revoke on Slack's side too (best-effort; previously only in the dup)
+        try:
+            from services.integrations.slack.config_service import SlackConfigService
+            from services.integrations.slack.oauth_handler import SlackOAuthHandler
+
+            workspace_id = os.environ.get("SLACK_TEAM_ID", "default")
+            oauth_handler = SlackOAuthHandler(SlackConfigService())
+            await oauth_handler.revoke_workspace_access(workspace_id)
+        except Exception as revoke_error:
+            logger.warning(
+                "slack_revoke_warning",
+                error=str(revoke_error),
+                message="Could not revoke via Slack API; cleared local creds",
+            )
+
+        # Clear env (won't persist after restart)
+        os.environ.pop("SLACK_BOT_TOKEN", None)
+        os.environ.pop("SLACK_TEAM_ID", None)
+        os.environ.pop("SLACK_APP_TOKEN", None)
 
         logger.info("slack_disconnected")
 
@@ -2172,49 +2186,8 @@ async def get_slack_oauth_url(
         )
 
 
-@router.post("/slack/disconnect")
-async def disconnect_slack(current_user: JWTClaims = Depends(get_current_user)):
-    """
-    Disconnect Slack integration.
-
-    Revokes OAuth access and removes stored tokens.
-    Issue #528: ALPHA-SETUP-SLACK
-    """
-    try:
-        # Get workspace ID if available
-        workspace_id = os.environ.get("SLACK_TEAM_ID", "default")
-
-        # Try to revoke via OAuth handler
-        try:
-            from services.integrations.slack.config_service import SlackConfigService
-            from services.integrations.slack.oauth_handler import SlackOAuthHandler
-
-            config_service = SlackConfigService()
-            oauth_handler = SlackOAuthHandler(config_service)
-            await oauth_handler.revoke_workspace_access(workspace_id)
-        except Exception as revoke_error:
-            logger.warning(
-                "slack_revoke_warning",
-                error=str(revoke_error),
-                message="Could not revoke via API, clearing local config",
-            )
-
-        # Clear environment variables (they'll need to be re-set on restart)
-        # Note: In production, this would clear from secure storage
-        os.environ.pop("SLACK_BOT_TOKEN", None)
-        os.environ.pop("SLACK_TEAM_ID", None)
-        os.environ.pop("SLACK_APP_TOKEN", None)
-
-        logger.info("slack_disconnected", workspace_id=workspace_id)
-
-        return {
-            "success": True,
-            "message": "Slack disconnected",
-        }
-
-    except Exception as e:
-        logger.error("slack_disconnect_failed", error=str(e), exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to disconnect Slack: {str(e)}",
-        )
+# NOTE: the second `/slack/disconnect` definition (Issue #528) was removed here in
+# #1334 — it was a shadowed duplicate (FastAPI used the first-registered route above).
+# Its Slack-side OAuth-revoke behavior was merged into the canonical def above; this
+# def also leaked the user-scoped keychain creds (it cleared only env), so it was the
+# worse of the two to keep live.

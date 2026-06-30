@@ -256,6 +256,48 @@ class TestDisconnectSlack:
             assert result["success"] is True
             assert result["message"] == "Slack disconnected"
 
+    @pytest.mark.asyncio
+    async def test_clears_user_scoped_keychain_and_revokes_1334(self):
+        """#1334: the consolidated disconnect must do BOTH — delete the user-scoped
+        keychain creds (slack_bot + slack_user, #849) AND revoke on Slack's side. The
+        two prior duplicate defs each did only one (the live one skipped the revoke;
+        the shadowed one leaked the keychain creds)."""
+        import os
+
+        mock_keychain = MagicMock()
+        mock_oauth_handler = MagicMock()
+        mock_oauth_handler.revoke_workspace_access = AsyncMock(return_value=True)
+        mock_user = MagicMock()
+        mock_user.sub = "user-789"
+
+        with (
+            patch.dict(
+                "os.environ",
+                {"SLACK_BOT_TOKEN": "xoxb", "SLACK_TEAM_ID": "T999"},
+                clear=True,
+            ),
+            patch(
+                "services.infrastructure.keychain_service.KeychainService",
+                return_value=mock_keychain,
+            ),
+            patch("services.integrations.slack.config_service.SlackConfigService"),
+            patch(
+                "services.integrations.slack.oauth_handler.SlackOAuthHandler",
+                return_value=mock_oauth_handler,
+            ),
+        ):
+            result = await disconnect_slack(current_user=mock_user)
+
+        assert result["success"] is True
+        # user-scoped keychain creds removed (#849) — the behavior the dead dup lacked
+        mock_keychain.delete_api_key.assert_any_call("slack_bot", username="user-789")
+        mock_keychain.delete_api_key.assert_any_call("slack_user", username="user-789")
+        # Slack-side revoke — the behavior the prior live route lacked
+        mock_oauth_handler.revoke_workspace_access.assert_called_once_with("T999")
+        # env cleared
+        assert "SLACK_BOT_TOKEN" not in os.environ
+        assert "SLACK_TEAM_ID" not in os.environ
+
 
 class TestIntegrationRegistrySlackUrl:
     """Tests for Slack configure_url in INTEGRATION_REGISTRY (Issue #528)"""
