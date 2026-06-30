@@ -500,9 +500,22 @@ class SlackWebhookRouter:
             scope_list = scopes.split(",") if scopes else None
             user_scope_list = user_scopes.split(",") if user_scopes else None
 
+            # Issue #1339: generate_authorization_url REQUIRES the connector-owner's
+            # Piper user_id (#759/#734) — it's embedded in the OAuth state. Without it
+            # the call raises ValueError. This is the connector OWNER, not the message
+            # sender's Slack id (#1110). Fail loudly + clearly if it isn't configured.
+            connector_user_id = self._get_connector_user_id()
+            if not connector_user_id:
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail="Slack connector owner not configured (SLACK_CONNECTOR_USER_ID)",
+                )
+
             # Issue #1109: generate_authorization_url is async (Redis-backed state)
             auth_url, state = await self.oauth_handler.generate_authorization_url(
-                scopes=scope_list, user_scopes=user_scope_list
+                user_id=connector_user_id,
+                scopes=scope_list,
+                user_scopes=user_scope_list,
             )
 
             return JSONResponse(
@@ -514,6 +527,8 @@ class SlackWebhookRouter:
                 status_code=200,
             )
 
+        except HTTPException:
+            raise
         except Exception as e:
             logger.error(f"Error generating OAuth URL: {e}")
             raise HTTPException(
