@@ -3499,38 +3499,11 @@ class IntentService:
         self.logger.info(f"Processing review issue query: {intent.action}")
 
         try:
-            # Import GitHubIntegrationRouter
-            from services.integrations.github.github_integration_router import (
-                GitHubIntegrationRouter,
-            )
-
-            # Initialize router (Issue #891: pass user_id for token lookup)
-            github_router = GitHubIntegrationRouter()
-            _user_id = _principal_from_intent(intent)
-            await github_router.initialize(user_id=_user_id)
-
-            # Check if GitHub is configured
-            if not github_router.config_service.is_configured(_user_id or "system"):
-                return IntentProcessingResult(
-                    success=True,
-                    message=(
-                        "I'd love to show you issue details, but GitHub isn't configured yet. "
-                        "To enable GitHub integration, please add your GITHUB_TOKEN to your environment "
-                        "or configure it in PIPER.user.md."
-                    ),
-                    intent_data={
-                        "category": intent.category.value,
-                        "action": intent.action,
-                        "confidence": intent.confidence,
-                    },
-                    workflow_id=workflow_id,
-                    requires_clarification=False,
-                    implemented=False,  # Graceful degradation
-                )
-
-            # Parse issue number from message
             import re
 
+            _user_id = _principal_from_intent(intent)
+
+            # Parse issue number FIRST (graceful ask if missing — no connector call wasted).
             original_message = intent.context.get("original_message", "")
             match = re.search(r"#?(\d+)", original_message)
 
@@ -3549,8 +3522,70 @@ class IntentService:
 
             issue_number = int(match.group(1))
 
-            # Fetch issue details (Issue #1042: router resolves repo internally)
-            issue = await github_router.get_issue(issue_number)
+            # Optional explicit repo from "issue #N in owner/name" → threaded into resolve_repo.
+            explicit_repo = None
+            repo_match = re.search(r"\bin\s+([\w.\-]+/[\w.\-]+)", original_message)
+            if repo_match:
+                explicit_repo = repo_match.group(1)
+
+            # RECONNECT (#1327 gap 2): connector-first (issue_read method=get, repo via
+            # resolve_repo); native-PAT fallback only when not OAuth-connected; honest-degrade
+            # otherwise (REPO_UNRESOLVED "which repo?" / UNREACHABLE) — never silent PAT (#1231).
+            from services.mcp.consumer.connector import DegradationReason
+            from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+            connector_result = await GitHubMCPSpatialAdapter().get_issue_connector(
+                _user_id, issue_number=issue_number, explicit_repo=explicit_repo
+            )
+            if connector_result.item is not None:
+                issue = connector_result.item
+            elif (
+                connector_result.degradation
+                and connector_result.degradation.reason is DegradationReason.CONNECT_REQUIRED
+            ):
+                # Not connected via OAuth → transitional native-PAT fallback (#1042 path).
+                from services.integrations.github.github_integration_router import (
+                    GitHubIntegrationRouter,
+                )
+
+                github_router = GitHubIntegrationRouter()
+                await github_router.initialize(user_id=_user_id)
+                if not github_router.config_service.is_configured(_user_id or "system"):
+                    return IntentProcessingResult(
+                        success=True,
+                        message=(
+                            "I'd love to show you issue details, but GitHub isn't configured yet. "
+                            "To enable GitHub integration, please add your GITHUB_TOKEN to your "
+                            "environment or configure it in PIPER.user.md."
+                        ),
+                        intent_data={
+                            "category": intent.category.value,
+                            "action": intent.action,
+                            "confidence": intent.confidence,
+                        },
+                        workflow_id=workflow_id,
+                        requires_clarification=False,
+                        implemented=False,  # Graceful degradation
+                    )
+                # Fetch issue details (Issue #1042: router resolves repo internally)
+                issue = await github_router.get_issue(issue_number)
+            else:
+                # Connected but degraded (REPO_UNRESOLVED "which repo?" / UNREACHABLE) → honest.
+                return IntentProcessingResult(
+                    success=True,
+                    message=connector_result.degradation.user_message,
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                        "degraded": connector_result.degradation.reason.value,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=(
+                        connector_result.degradation.reason
+                        is DegradationReason.REPO_UNRESOLVED
+                    ),
+                )
 
             # #969: Guard against None (API returns None if issue not found or not configured)
             if issue is None:
@@ -3570,18 +3605,23 @@ class IntentService:
                     requires_clarification=False,
                 )
 
-            # Format issue details
+            # Format issue details. Labels/assignees may be dicts (raw GitHub API) OR plain
+            # strings (the normalized native get_github_issue_direct shape + the #1327 connector
+            # parser) — tolerate both so neither path crashes (was dict-only → crashed on the
+            # normalized string shape).
             title = issue.get("title", "Untitled")
             state = issue.get("state", "unknown")
             labels = issue.get("labels", [])
             label_names = (
-                [label.get("name", "") for label in labels] if isinstance(labels, list) else []
+                [(lbl.get("name", "") if isinstance(lbl, dict) else lbl) for lbl in labels]
+                if isinstance(labels, list)
+                else []
             )
-            body = issue.get("body", "No description")
+            body = issue.get("body", "No description") or "No description"
             body_preview = body[:200] + "..." if len(body) > 200 else body
             assignees = issue.get("assignees", [])
             assignee_names = (
-                [assignee.get("login", "") for assignee in assignees]
+                [(a.get("login", "") if isinstance(a, dict) else a) for a in assignees]
                 if isinstance(assignees, list)
                 else []
             )
@@ -4711,12 +4751,36 @@ class IntentService:
         """
         self.logger.info("Processing list releases query")
         try:
-            from services.integrations.github.github_integration_router import (
-                GitHubIntegrationRouter,
-            )
+            _user_id = _principal_from_intent(intent)
 
-            github_router = GitHubIntegrationRouter()
-            releases = await github_router.list_releases_via_mcp()
+            # RECONNECT (#1327 gap 2): connector-first (list_releases, repo via resolve_repo);
+            # native-PAT fallback only when not OAuth-connected; honest-degrade otherwise (#1231).
+            from services.mcp.consumer.connector import DegradationReason
+            from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+            connector_result = await GitHubMCPSpatialAdapter().list_releases_connector(_user_id)
+            if connector_result.items is not None:
+                releases = connector_result.items
+            elif (
+                connector_result.degradation
+                and connector_result.degradation.reason is DegradationReason.CONNECT_REQUIRED
+            ):
+                from services.integrations.github.github_integration_router import (
+                    GitHubIntegrationRouter,
+                )
+
+                github_router = GitHubIntegrationRouter()
+                releases = await github_router.list_releases_via_mcp()
+            else:
+                return IntentProcessingResult(
+                    success=True,
+                    message=connector_result.degradation.user_message,
+                    intent_data={
+                        "category": "query",
+                        "action": "list_releases_query",
+                        "context": {"degraded": connector_result.degradation.reason.value},
+                    },
+                )
 
             if releases:
                 count = len(releases)
@@ -4799,12 +4863,36 @@ class IntentService:
         """
         self.logger.info("Processing list labels query")
         try:
-            from services.integrations.github.github_integration_router import (
-                GitHubIntegrationRouter,
-            )
+            _user_id = _principal_from_intent(intent)
 
-            github_router = GitHubIntegrationRouter()
-            labels = await github_router.list_labels_via_mcp()
+            # RECONNECT (#1327 gap 2): connector-first (list_label, repo via resolve_repo);
+            # native-PAT fallback only when not OAuth-connected; honest-degrade otherwise (#1231).
+            from services.mcp.consumer.connector import DegradationReason
+            from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+            connector_result = await GitHubMCPSpatialAdapter().list_labels_connector(_user_id)
+            if connector_result.items is not None:
+                labels = connector_result.items
+            elif (
+                connector_result.degradation
+                and connector_result.degradation.reason is DegradationReason.CONNECT_REQUIRED
+            ):
+                from services.integrations.github.github_integration_router import (
+                    GitHubIntegrationRouter,
+                )
+
+                github_router = GitHubIntegrationRouter()
+                labels = await github_router.list_labels_via_mcp()
+            else:
+                return IntentProcessingResult(
+                    success=True,
+                    message=connector_result.degradation.user_message,
+                    intent_data={
+                        "category": "query",
+                        "action": "list_labels_query",
+                        "context": {"degraded": connector_result.degradation.reason.value},
+                    },
+                )
 
             if labels:
                 count = len(labels)
@@ -4861,14 +4949,46 @@ class IntentService:
         """
         self.logger.info("Processing list branches query")
         try:
-            from services.integrations.github.github_integration_router import (
-                GitHubIntegrationRouter,
-            )
+            _user_id = _principal_from_intent(intent)
 
-            github_router = GitHubIntegrationRouter()
-            payload = await github_router.list_branches_via_mcp()
-            branches = payload.get("branches", [])
-            default_branch = payload.get("default_branch", "") or ""
+            # RECONNECT (#1327 gap 2): prefer the per-user OAuth connector (binding + grant →
+            # list_branches), resolving the repo via resolve_repo(). Fall back to the native PAT
+            # ONLY when not OAuth-connected (CONNECT_REQUIRED). REPO_UNRESOLVED → "which repo?";
+            # any other degrade → honest message — never a silent PAT fallback (#1231).
+            from services.mcp.consumer.connector import DegradationReason
+            from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+            connector_result = await GitHubMCPSpatialAdapter().list_branches_connector(_user_id)
+            if connector_result.items is not None:
+                branches = connector_result.items
+                # The connector tool returns branches only; default-branch identification is a
+                # separate repo-info read (native path enriches it). Connector path omits it for
+                # now — render without the "(default: …)" annotation, never fabricate one.
+                default_branch = ""
+            elif (
+                connector_result.degradation
+                and connector_result.degradation.reason is DegradationReason.CONNECT_REQUIRED
+            ):
+                from services.integrations.github.github_integration_router import (
+                    GitHubIntegrationRouter,
+                )
+
+                github_router = GitHubIntegrationRouter()
+                payload = await github_router.list_branches_via_mcp()
+                branches = payload.get("branches", [])
+                default_branch = payload.get("default_branch", "") or ""
+            else:
+                # Connected but degraded (REPO_UNRESOLVED "which repo?" / UNREACHABLE / stale) →
+                # honest message, never a silent PAT fallback (#1231).
+                return IntentProcessingResult(
+                    success=True,
+                    message=connector_result.degradation.user_message,
+                    intent_data={
+                        "category": "query",
+                        "action": "list_branches_query",
+                        "context": {"degraded": connector_result.degradation.reason.value},
+                    },
+                )
 
             if branches:
                 count = len(branches)
