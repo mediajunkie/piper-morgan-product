@@ -106,7 +106,7 @@ class TestSendMessageSeamConverts:
             captured["data"] = data
             return MagicMock(success=True)
 
-        client = SlackClient(config_service=MagicMock())
+        client = SlackClient(config_service=MagicMock(), user_id="u1")
         client._make_request = _capture
 
         await client.send_message(channel="C1", text="**bold** and *i*\n# H")

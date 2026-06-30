@@ -29,10 +29,12 @@ class SlackIntegrationRouter:
     Delegates to basic SlackClient for legacy mode.
 
     Examples:
-        # Basic usage with spatial intelligence
+        # Basic usage with spatial intelligence. The router is a singleton; the
+        # per-user SlackClient is built lazily per operation, so pass user_id on
+        # each call (#1110, multi-tenancy / ADR-058).
         router = SlackIntegrationRouter(config_service)
-        await router.send_message("#general", "Hello world!")
-        channels = await router.list_channels()
+        await router.send_message("#general", "Hello world!", user_id="U123")
+        channels = await router.list_channels(user_id="U123")
 
         # Feature flag control
         # USE_SPATIAL_SLACK=true (default) - uses SlackSpatialAdapter + SlackClient
@@ -45,46 +47,78 @@ class SlackIntegrationRouter:
     """
 
     def __init__(self, config_service=None):
-        """Initialize router with feature flag checking and config service"""
+        """Initialize router with feature flag checking and config service.
+
+        #1110: The router is a startup SINGLETON (e.g. SlackPlugin builds one at
+        module import, ReminderScheduler / SlackWebhookRouter each hold one for
+        their lifetime). user_id, however, is per-OPERATION (per request, per
+        reminder-user, per inbound event). So the underlying ``SlackClient`` —
+        which requires a user_id because ``SlackConfigService.get_config`` does —
+        is built LAZILY per operation via ``_get_client(user_id)`` rather than
+        eagerly here. The spatial adapter (which has no user scoping) is still
+        built eagerly because it is shared across users.
+        """
         # Use FeatureFlags service for consistency with other routers
         self.use_spatial = FeatureFlags.should_use_spatial_slack()
         self.allow_legacy = FeatureFlags.is_legacy_slack_allowed()
 
-        # Store config service for SlackClient initialization
+        # Store config service for lazy per-operation SlackClient construction
         self.config_service = config_service
 
-        # Initialize spatial integration (adapter + client coordination)
+        # Spatial adapter is user-agnostic → safe to build eagerly and share.
         self.spatial_adapter = None
-        self.spatial_client = None
+
+        # Per-user lazily-built clients (keyed by user_id). The router caches one
+        # SlackClient per user so repeated operations reuse the HTTP session.
+        self._clients_by_user: Dict[str, Any] = {}
 
         if self.use_spatial:
             try:
                 from .spatial_adapter import SlackSpatialAdapter
 
                 self.spatial_adapter = SlackSpatialAdapter()
-
-                # Initialize spatial client if config provided
-                if config_service:
-                    from .slack_client import SlackClient
-
-                    self.spatial_client = SlackClient(config_service)
-
             except ImportError as e:
                 warnings.warn(f"Spatial Slack unavailable: {e}")
 
-        # Initialize legacy integration (basic client only)
-        self.legacy_client = None
+    @property
+    def spatial_client(self):
+        """Deprecated eager accessor retained for status/back-compat.
 
-        if self.allow_legacy:
-            try:
-                # Initialize legacy client if config provided
-                if config_service:
-                    from .slack_client import SlackClient
+        #1110: clients are now built lazily per user, so there is no single
+        long-lived spatial client. Returns the most-recently-built client if any
+        (for ``get_integration_status`` introspection) else None. Operational
+        code must go through :meth:`_get_client`.
+        """
+        return next(iter(self._clients_by_user.values()), None)
 
-                    self.legacy_client = SlackClient(config_service)
+    @property
+    def legacy_client(self):
+        """Deprecated eager accessor; see :attr:`spatial_client`. Kept for
+        status introspection only (#1110 lazy-client migration)."""
+        return next(iter(self._clients_by_user.values()), None)
 
-            except ImportError as e:
-                warnings.warn(f"Legacy Slack unavailable: {e}")
+    def _get_client(self, user_id: str):
+        """Lazily build (and per-user cache) a SlackClient for an operation.
+
+        #1110: user_id is required end-to-end. Raises if no config_service was
+        provided at construction (mirrors the prior eager-None behavior) or if
+        the caller supplied no user_id (a true user-less Slack op is a bug — see
+        the guardrail in the issue).
+        """
+        if not self.config_service:
+            return None
+        if not user_id:
+            raise ValueError(
+                "user_id is required for Slack operations (multi-tenancy, "
+                "ADR-058/#734). The router cannot build a SlackClient without it."
+            )
+        client = self._clients_by_user.get(user_id)
+        if client is None:
+            from .slack_client import SlackClient
+
+            client = SlackClient(self.config_service, user_id=user_id)
+            self._clients_by_user[user_id] = client
+        return client
 
     def _ensure_config_service(self, operation: str):
         """Ensure config service is available for SlackClient operations"""
@@ -95,25 +129,35 @@ class SlackIntegrationRouter:
                 "SlackIntegrationRouter(config_service)"
             )
 
-    def _get_preferred_integration(self, operation: str) -> Tuple[Optional[Any], bool]:
+    def _get_preferred_integration(
+        self, operation: str, user_id: Optional[str] = None
+    ) -> Tuple[Optional[Any], bool]:
         """
         Get preferred Slack integration based on feature flags and availability.
 
         Args:
             operation: Name of operation being performed
+            user_id: User identifier for the operation (#1110). Required for any
+                operation that actually issues a Slack API call; may be omitted
+                only for user-agnostic introspection (e.g. status/context-mgr).
 
         Returns:
             Tuple of (slack_client_instance, is_legacy_used)
 
         Note: For spatial mode, spatial_adapter is available via get_spatial_adapter()
         """
+        # #1110: client is built lazily per user. The same SlackClient serves
+        # both spatial and legacy delegation; is_legacy reflects the active mode
+        # for deprecation warnings only.
+        client = self._get_client(user_id) if user_id else None
+
         # Try spatial first if enabled
-        if self.use_spatial and self.spatial_client:
-            return self.spatial_client, False
+        if self.use_spatial and client:
+            return client, False
 
         # Fall back to legacy if allowed
-        elif self.allow_legacy and self.legacy_client:
-            return self.legacy_client, True
+        elif self.allow_legacy and client:
+            return client, True
 
         # No integration available
         else:
@@ -131,13 +175,17 @@ class SlackIntegrationRouter:
 
     # SlackClient method delegation (primary interface)
 
-    async def send_message(self, channel: str, text: str, **kwargs) -> SlackResponse:
+    async def send_message(
+        self, channel: str, text: str, user_id: Optional[str] = None, **kwargs
+    ) -> SlackResponse:
         """
         Send message to Slack channel.
 
         Args:
             channel: Slack channel ID or name
             text: Message text
+            user_id: User identifier scoping credentials (#1110, required for the
+                underlying Slack API call).
             **kwargs: Additional Slack API parameters
 
         Returns:
@@ -147,7 +195,7 @@ class SlackIntegrationRouter:
             RuntimeError: If no Slack integration is available or config missing
         """
         self._ensure_config_service("send_message")
-        client, is_legacy = self._get_preferred_integration("send_message")
+        client, is_legacy = self._get_preferred_integration("send_message", user_id)
 
         if client:
             if is_legacy:
@@ -159,12 +207,13 @@ class SlackIntegrationRouter:
                 "Enable USE_SPATIAL_SLACK=true or check SlackClient setup."
             )
 
-    async def get_channel_info(self, channel: str) -> SlackResponse:
+    async def get_channel_info(self, channel: str, user_id: Optional[str] = None) -> SlackResponse:
         """
         Get channel information.
 
         Args:
             channel: Slack channel ID or name
+            user_id: User identifier scoping credentials (#1110).
 
         Returns:
             SlackResponse: Channel information
@@ -173,7 +222,7 @@ class SlackIntegrationRouter:
             RuntimeError: If no Slack integration is available or config missing
         """
         self._ensure_config_service("get_channel_info")
-        client, is_legacy = self._get_preferred_integration("get_channel_info")
+        client, is_legacy = self._get_preferred_integration("get_channel_info", user_id)
 
         if client:
             if is_legacy:
@@ -182,13 +231,16 @@ class SlackIntegrationRouter:
         else:
             raise RuntimeError("No Slack integration available for get_channel_info")
 
-    async def list_im_channels(self) -> SlackResponse:
+    async def list_im_channels(self, user_id: Optional[str] = None) -> SlackResponse:
         """List the authenticated user's direct-message channels (im + mpim).
 
         Added 2026-05-17 (#1085 slice 2) for recent-activity aggregator.
+
+        Args:
+            user_id: User identifier scoping credentials (#1110).
         """
         self._ensure_config_service("list_im_channels")
-        client, is_legacy = self._get_preferred_integration("list_im_channels")
+        client, is_legacy = self._get_preferred_integration("list_im_channels", user_id)
         if client:
             if is_legacy:
                 self._warn_deprecation_if_needed("list_im_channels", is_legacy)
@@ -196,9 +248,12 @@ class SlackIntegrationRouter:
         else:
             raise RuntimeError("No Slack integration available for list_im_channels")
 
-    async def list_channels(self) -> SlackResponse:
+    async def list_channels(self, user_id: Optional[str] = None) -> SlackResponse:
         """
         List all channels.
+
+        Args:
+            user_id: User identifier scoping credentials (#1110).
 
         Returns:
             SlackResponse: List of all channels
@@ -207,7 +262,7 @@ class SlackIntegrationRouter:
             RuntimeError: If no Slack integration is available
         """
         self._ensure_config_service("list_channels")
-        client, is_legacy = self._get_preferred_integration("list_channels")
+        client, is_legacy = self._get_preferred_integration("list_channels", user_id)
 
         if client:
             if is_legacy:
@@ -216,12 +271,13 @@ class SlackIntegrationRouter:
         else:
             raise RuntimeError("No Slack integration available for list_channels")
 
-    async def get_user_info(self, user: str) -> SlackResponse:
+    async def get_user_info(self, user: str, user_id: Optional[str] = None) -> SlackResponse:
         """
         Get user information.
 
         Args:
-            user: Slack user ID or name
+            user: Slack user ID or name (the user to look up)
+            user_id: User identifier scoping credentials of the CALLER (#1110).
 
         Returns:
             SlackResponse: User information
@@ -230,7 +286,7 @@ class SlackIntegrationRouter:
             RuntimeError: If no Slack integration is available
         """
         self._ensure_config_service("get_user_info")
-        client, is_legacy = self._get_preferred_integration("get_user_info")
+        client, is_legacy = self._get_preferred_integration("get_user_info", user_id)
 
         if client:
             if is_legacy:
@@ -239,9 +295,12 @@ class SlackIntegrationRouter:
         else:
             raise RuntimeError("No Slack integration available for get_user_info")
 
-    async def list_users(self) -> SlackResponse:
+    async def list_users(self, user_id: Optional[str] = None) -> SlackResponse:
         """
         List all users.
+
+        Args:
+            user_id: User identifier scoping credentials (#1110).
 
         Returns:
             SlackResponse: List of all users
@@ -250,7 +309,7 @@ class SlackIntegrationRouter:
             RuntimeError: If no Slack integration is available
         """
         self._ensure_config_service("list_users")
-        client, is_legacy = self._get_preferred_integration("list_users")
+        client, is_legacy = self._get_preferred_integration("list_users", user_id)
 
         if client:
             if is_legacy:
@@ -259,9 +318,12 @@ class SlackIntegrationRouter:
         else:
             raise RuntimeError("No Slack integration available for list_users")
 
-    async def test_auth(self) -> SlackResponse:
+    async def test_auth(self, user_id: Optional[str] = None) -> SlackResponse:
         """
         Test authentication.
+
+        Args:
+            user_id: User identifier scoping credentials (#1110).
 
         Returns:
             SlackResponse: Authentication test results
@@ -270,7 +332,7 @@ class SlackIntegrationRouter:
             RuntimeError: If no Slack integration is available
         """
         self._ensure_config_service("test_auth")
-        client, is_legacy = self._get_preferred_integration("test_auth")
+        client, is_legacy = self._get_preferred_integration("test_auth", user_id)
 
         if client:
             if is_legacy:
@@ -285,6 +347,7 @@ class SlackIntegrationRouter:
         limit: int = 100,
         cursor: str = None,
         oldest: Optional[float] = None,
+        user_id: Optional[str] = None,
     ) -> SlackResponse:
         """
         Get conversation history for a channel.
@@ -294,6 +357,7 @@ class SlackIntegrationRouter:
             limit: Number of messages to retrieve (default: 100, max: 1000)
             cursor: Cursor for pagination
             oldest: Slack timestamp; messages older are excluded (#1085 slice 2)
+            user_id: User identifier scoping credentials (#1110).
 
         Returns:
             SlackResponse: Conversation history data
@@ -302,7 +366,7 @@ class SlackIntegrationRouter:
             RuntimeError: If no Slack integration is available or config missing
         """
         self._ensure_config_service("get_conversation_history")
-        client, is_legacy = self._get_preferred_integration("get_conversation_history")
+        client, is_legacy = self._get_preferred_integration("get_conversation_history", user_id)
 
         if client:
             if is_legacy:
@@ -314,7 +378,12 @@ class SlackIntegrationRouter:
             raise RuntimeError("No Slack integration available for get_conversation_history")
 
     async def get_thread_replies(
-        self, channel: str, thread_ts: str, limit: int = 100, cursor: str = None
+        self,
+        channel: str,
+        thread_ts: str,
+        limit: int = 100,
+        cursor: str = None,
+        user_id: Optional[str] = None,
     ) -> SlackResponse:
         """
         Get replies in a thread.
@@ -324,6 +393,7 @@ class SlackIntegrationRouter:
             thread_ts: Timestamp of the parent message
             limit: Number of replies to retrieve (default: 100, max: 1000)
             cursor: Cursor for pagination
+            user_id: User identifier scoping credentials (#1110).
 
         Returns:
             SlackResponse: Thread replies data
@@ -332,7 +402,7 @@ class SlackIntegrationRouter:
             RuntimeError: If no Slack integration is available or config missing
         """
         self._ensure_config_service("get_thread_replies")
-        client, is_legacy = self._get_preferred_integration("get_thread_replies")
+        client, is_legacy = self._get_preferred_integration("get_thread_replies", user_id)
 
         if client:
             if is_legacy:
@@ -341,7 +411,9 @@ class SlackIntegrationRouter:
         else:
             raise RuntimeError("No Slack integration available for get_thread_replies")
 
-    async def add_reaction(self, channel: str, timestamp: str, name: str) -> SlackResponse:
+    async def add_reaction(
+        self, channel: str, timestamp: str, name: str, user_id: Optional[str] = None
+    ) -> SlackResponse:
         """
         Add reaction to a message.
 
@@ -349,6 +421,7 @@ class SlackIntegrationRouter:
             channel: Channel ID containing the message
             timestamp: Timestamp of the message to react to
             name: Reaction name (emoji without colons, e.g., "thumbsup")
+            user_id: User identifier scoping credentials (#1110).
 
         Returns:
             SlackResponse: Reaction addition result
@@ -357,7 +430,7 @@ class SlackIntegrationRouter:
             RuntimeError: If no Slack integration is available or config missing
         """
         self._ensure_config_service("add_reaction")
-        client, is_legacy = self._get_preferred_integration("add_reaction")
+        client, is_legacy = self._get_preferred_integration("add_reaction", user_id)
 
         if client:
             if is_legacy:

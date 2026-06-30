@@ -434,6 +434,12 @@ class SimpleSlackResponseHandler:
         if thread_ts:
             message_params["thread_ts"] = thread_ts
 
+        # #1110: outbound credentials use the connector-owner's Piper user_id
+        # (not the sender's Slack user_id).
+        message_params["user_id"] = slack_context.get("connector_user_id") or slack_context.get(
+            "user_id"
+        )
+
         # Send message
         response = await self.slack_client.send_message(**message_params)
 

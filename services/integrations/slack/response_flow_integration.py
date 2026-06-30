@@ -183,6 +183,16 @@ class ResponseFlowIntegration:
         self, response_target: ResponseTarget, response_content: ResponseContent
     ) -> bool:
         """Send response to Slack with retry logic"""
+        # #1110: a Slack API call requires a user_id (ADR-058 multi-tenancy).
+        # The response target carries the owning user; without it we cannot
+        # resolve credentials, so fail clearly rather than pass None downstream.
+        if not response_target.user_id:
+            self.logger.error(
+                "Cannot send Slack response: response_target.user_id is missing "
+                "(required for multi-tenant credential lookup, #1110)."
+            )
+            return False
+
         for attempt in range(self._max_retries):
             try:
                 async with SlackIntegrationRouter(self.config_service) as slack_client:
@@ -191,6 +201,7 @@ class ResponseFlowIntegration:
                         "channel": response_target.channel_id,
                         "text": response_content.text,
                         "response_type": response_content.response_type,
+                        "user_id": response_target.user_id,
                     }
 
                     # Add thread_ts if available

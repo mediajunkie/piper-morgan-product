@@ -55,8 +55,27 @@ class SlackResponse:
 class SlackClient:
     """Production Slack API client"""
 
-    def __init__(self, config_service: SlackConfigService):
+    def __init__(self, config_service: SlackConfigService, user_id: str):
+        """Construct a Slack client scoped to a single user.
+
+        Args:
+            config_service: SlackConfigService for credential resolution.
+            user_id: User identifier scoping credential lookups. REQUIRED —
+                ``SlackConfigService.get_config`` requires it (ADR-058 / #734),
+                so a SlackClient with no user_id cannot make a single API call.
+                We refuse to construct one rather than fail later with a confusing
+                TypeError deep in the request path (#1110).
+
+        Raises:
+            ValueError: If ``user_id`` is None or empty.
+        """
+        if not user_id:
+            raise ValueError(
+                "user_id is required for SlackClient (multi-tenancy, ADR-058/#734). "
+                "A client without a user_id cannot call get_config()."
+            )
         self.config_service = config_service
+        self.user_id = user_id
         self.logger = logging.getLogger(__name__)
         self._session: Optional[ClientSession] = None
         self._rate_limit_reset = 0
@@ -75,7 +94,7 @@ class SlackClient:
     async def _ensure_session(self):
         """Ensure HTTP session is available"""
         if self._session is None or self._session.closed:
-            config = self.config_service.get_config()
+            config = self.config_service.get_config(self.user_id)
             timeout = ClientTimeout(total=config.timeout_seconds)
             self._session = ClientSession(timeout=timeout)
 
@@ -87,7 +106,7 @@ class SlackClient:
     async def _check_rate_limit(self):
         """Check and enforce rate limiting"""
         current_time = time.time()
-        config = self.config_service.get_config()
+        config = self.config_service.get_config(self.user_id)
 
         # Reset counter if minute has passed
         if current_time - self._last_request_time >= 60:
@@ -114,7 +133,7 @@ class SlackClient:
         await self._ensure_session()
         await self._check_rate_limit()
 
-        config = self.config_service.get_config()
+        config = self.config_service.get_config(self.user_id)
         url = f"{config.api_base_url}/{endpoint}"
 
         # Prepare headers
@@ -190,7 +209,9 @@ class SlackClient:
                 ),
             )
 
-    async def send_message(self, channel: str, text: str, **kwargs) -> SlackResponse:
+    async def send_message(
+        self, channel: str, text: str, user_id: Optional[str] = None, **kwargs
+    ) -> SlackResponse:
         """Send message to Slack channel.
 
         #1227: the floor emits GitHub-flavored markdown but Slack renders the
@@ -198,6 +219,12 @@ class SlackClient:
         response_handler + simple_response_handler both route through. (Applied
         once per path: socket_mode_runner uses its own WebClient, not this seam,
         and converts there — so no double-conversion.)
+
+        #1110: ``user_id`` is accepted (and ignored) so callers that route
+        through either the router OR a raw SlackClient can pass it uniformly.
+        A raw client is already bound to its user at construction
+        (``self.user_id``); the explicit param exists only to keep it OUT of
+        ``**kwargs`` so it never leaks into the chat.postMessage payload.
         """
         text = markdown_to_mrkdwn(text)
         data = {"channel": channel, "text": text, **kwargs}

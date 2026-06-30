@@ -251,7 +251,11 @@ class StandupReminderJob:
 
             # Send DM via SlackIntegrationRouter
             # User ID as channel = Direct Message
-            response = await self.slack_router.send_message(channel=user_id, text=message)
+            # #1110: the reminder recipient IS the user whose credentials we use,
+            # so user_id scopes both the DM target and the config lookup.
+            response = await self.slack_router.send_message(
+                channel=user_id, text=message, user_id=user_id
+            )
 
             # Check if send was successful
             # SlackResponse has success property
