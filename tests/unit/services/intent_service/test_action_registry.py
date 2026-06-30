@@ -172,6 +172,8 @@ class TestNoStubPhrases:
             "next_todo_query",
             # RECONNECT #1327: conversational set-default-repo
             "set_default_repo",
+            # RECONNECT #1327 build #2: conversational get-default-repo (read)
+            "get_default_repo",
         }
         known_handled_execution_actions = {"complete_todo"}
 

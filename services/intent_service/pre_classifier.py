@@ -834,6 +834,26 @@ class PreClassifier:
         r"\b(?:my\s+)?default\s+repo(?:sitory)?\s+(?:is|should be|=)\s+[\w.-]+/[\w.-]+",
     ]
 
+    # Get-default-repo patterns (RECONNECT #1327 build #2) — the INVERSE of
+    # SET_DEFAULT_REPO_PATTERNS: read the per-user default-repo preference so Piper
+    # can answer "what is my default repo again?" instead of flooring (PM UAT
+    # 2026-06-30). DISJOINT from the set patterns by construction: these require a
+    # read verb ("what/which/show") + the literal "default repo[sitory]", whereas
+    # the set patterns require a write verb ("set/change/update/make/use"). No
+    # owner/name token is involved (it's a read), so these only RECOGNIZE the intent.
+    GET_DEFAULT_REPO_PATTERNS = [
+        # "what's/what is my default repo[sitory]" (+ "again", "?", "set", etc.)
+        r"\bwhat(?:'s|\s+is)?\s+(?:my\s+)?default\s+repo(?:sitory)?\b",
+        # "what default repo[sitory] do I have / is set / ..."
+        r"\bwhat\s+default\s+repo(?:sitory)?\b",
+        # "which (repo[sitory]) is my default" / "which is my default repo"
+        r"\bwhich\s+(?:repo(?:sitory)?\s+)?is\s+(?:my\s+)?default(?:\s+repo(?:sitory)?)?\b",
+        # "show/see/tell me my default repo[sitory]"
+        r"\b(?:show|see|tell\s+me|get)\s+(?:my\s+)?default\s+repo(?:sitory)?\b",
+        # "(what is) my default repo[sitory]" bare — only when no set verb leads it
+        r"^(?:my\s+)?default\s+repo(?:sitory)?\??$",
+    ]
+
     # Repository management patterns (Issue #862)
     REPO_MANAGEMENT_PATTERNS = [
         # Link operations - "link owner/repo to project"
@@ -994,6 +1014,23 @@ class PreClassifier:
             return Intent(
                 category=IntentCategory.MEMORY,
                 action="get_memory",
+                confidence=1.0,
+                context={"original_message": message},
+            )
+
+        # RECONNECT #1327 build #2: Check GET_DEFAULT_REPO before SET_DEFAULT_REPO
+        # and DOCUMENT_QUERY. The read patterns ("what/which/show ... default repo")
+        # are disjoint from the set patterns (set/change/update/make/use) by
+        # construction, so ordering between the two is safe; GET first lets a read
+        # phrasing win deterministically. Must precede DOCUMENT_QUERY because
+        # "show my default repo" would otherwise match a document/show pattern.
+        # Routes a per-user preference READ (no write, no owner/name token).
+        if PreClassifier._matches_patterns(
+            clean_for_matching, PreClassifier.GET_DEFAULT_REPO_PATTERNS
+        ):
+            return Intent(
+                category=IntentCategory.QUERY,
+                action="get_default_repo",
                 confidence=1.0,
                 context={"original_message": message},
             )

@@ -81,6 +81,9 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     # RECONNECT #1327: conversational "set my default repo to owner/name" — a per-user
     # preference write (connector_configs), dispatched via the workflow rail.
     ("QUERY", "set_default_repo"): ActionDisposition.WORKFLOW,
+    # RECONNECT #1327 build #2: conversational "what's my default repo" — the read
+    # counterpart (connector_configs), dispatched via the workflow rail.
+    ("QUERY", "get_default_repo"): ActionDisposition.WORKFLOW,
     # Issue #1039: GitHub milestone + release listing
     ("QUERY", "list_milestones_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "list_releases_query"): ActionDisposition.WORKFLOW,
@@ -136,6 +139,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "list_prs_query"): "Show me open pull requests",
     ("QUERY", "review_issue_query"): "Show me issue #42",
     ("QUERY", "set_default_repo"): "set my default repo to mediajunkie/piper-morgan-product",
+    ("QUERY", "get_default_repo"): "what is my default repo?",
     ("QUERY", "list_milestones_query"): "Show milestones",
     ("QUERY", "list_releases_query"): "Recent releases",
     ("QUERY", "list_labels_query"): "List labels",
@@ -277,6 +281,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "list_prs_query": Verb.LIST,
     "review_issue_query": Verb.GET,
     "set_default_repo": Verb.SET,  # RECONNECT #1327
+    "get_default_repo": Verb.GET,  # RECONNECT #1327 build #2
     "list_milestones_query": Verb.LIST,
     "list_releases_query": Verb.LIST,
     "list_labels_query": Verb.LIST,
