@@ -1,14 +1,17 @@
 """#1327 gap 2 — repo-scoped chat handlers prefer the per-user OAuth connector.
 
-The branches / labels / releases / "review issue #N" handlers now read via the OAuth
-connector (`GitHubMCPSpatialAdapter.{list_branches,list_labels,list_releases,get_issue}_connector`)
+The branches / releases / "review issue #N" handlers now read via the OAuth
+connector (`GitHubMCPSpatialAdapter.{list_branches,list_releases,get_issue}_connector`)
 when the user has a binding, falling back to the native PAT ONLY when not connected
 (CONNECT_REQUIRED), and degrading honestly otherwise — REPO_UNRESOLVED renders a "which repo?"
 nudge, UNREACHABLE an honest message; never a silent PAT fallback that hides connection state
 (#1231). Mirrors the #1322 issues/PRs handler cutover.
 
-Milestones are intentionally NOT here — github-mcp-server has no milestone tool, so that
-handler stays native (a separate test would only assert the native path is unchanged).
+Milestones AND labels are intentionally NOT here — github-mcp-server has no milestone tool and
+no list-labels tool (only `get_label` for ONE label by name), so both handlers stay native
+(a separate test would only assert the native path is unchanged). Labels was briefly cut to the
+connector in gap 2 and reverted: live, `list_label` returns `unknown tool`. Native-labels
+behavior is covered by tests/unit/services/intent/test_handlers_labels_branches_1040.py.
 """
 
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -26,7 +29,6 @@ from services.shared_types import IntentCategory
 
 _NATIVE = "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
 _BRANCHES = "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_branches_connector"
-_LABELS = "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_labels_connector"
 _RELEASES = "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_releases_connector"
 _ISSUE = "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.get_issue_connector"
 
@@ -122,45 +124,8 @@ class TestBranchesHandler:
         native.assert_not_called()  # connected but no repo → ask, never native get-all
 
 
-# ── Labels ──
-class TestLabelsHandler:
-    @pytest.mark.asyncio
-    async def test_uses_connector_when_bound(self, intent_service):
-        items = [{"name": "bug", "description": "broke"}, {"name": "enhancement", "description": ""}]
-        result = GitHubRepoScopedResult(items=items, resolved_repo="octo/hello")
-        with patch(_LABELS, new=AsyncMock(return_value=result)):
-            with patch(_NATIVE) as native:
-                res = await intent_service._handle_list_labels_query(
-                    _intent("list_labels_query", "what labels"), "wf"
-                )
-        assert res.success
-        assert "2 label" in res.message
-        assert "bug" in res.message
-        native.assert_not_called()
-
-    @pytest.mark.asyncio
-    async def test_falls_back_to_native_when_not_connected(self, intent_service):
-        degrade = GitHubRepoScopedResult(degradation=_connect_required())
-        native_router = MagicMock()
-        native_router.list_labels_via_mcp = AsyncMock(return_value=[{"name": "bug", "description": ""}])
-        with patch(_LABELS, new=AsyncMock(return_value=degrade)):
-            with patch(_NATIVE, return_value=native_router):
-                res = await intent_service._handle_list_labels_query(
-                    _intent("list_labels_query", "what labels"), "wf"
-                )
-        assert "bug" in res.message
-        native_router.list_labels_via_mcp.assert_awaited_once()
-
-    @pytest.mark.asyncio
-    async def test_which_repo_when_unresolved(self, intent_service):
-        degrade = GitHubRepoScopedResult(degradation=_which_repo())
-        with patch(_LABELS, new=AsyncMock(return_value=degrade)):
-            with patch(_NATIVE) as native:
-                res = await intent_service._handle_list_labels_query(
-                    _intent("list_labels_query", "what labels"), "wf"
-                )
-        assert "which repo" in res.message.lower()
-        native.assert_not_called()
+# ── Labels: reverted to native (github-mcp-server has no list-labels tool) — no connector
+#    test here; native-labels behavior is covered by test_handlers_labels_branches_1040.py. ──
 
 
 # ── Releases ──

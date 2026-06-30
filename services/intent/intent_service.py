@@ -4905,39 +4905,21 @@ class IntentService:
         Routes label listing through the GitHub integration router which
         resolves the repo via repo_resolver (#1042). Plain-text presentation
         per Q3 disposition; visual swatches deferred to CXO copy review (#1043).
+
+        NATIVE path (NOT the OAuth connector): github-mcp-server has NO list-labels tool —
+        only ``get_label`` (fetch ONE label by name). The #1327 gap-2 cutover to a
+        ``list_label`` connector tool was reverted (live, ``list_label`` returned
+        ``unknown tool`` → labels degraded UNREACHABLE for OAuth users). Labels therefore
+        stays native, exactly like milestones (also no github-mcp-server tool).
         """
         self.logger.info("Processing list labels query")
         try:
-            _user_id = _principal_from_intent(intent)
+            from services.integrations.github.github_integration_router import (
+                GitHubIntegrationRouter,
+            )
 
-            # RECONNECT (#1327 gap 2): connector-first (list_label, repo via resolve_repo);
-            # native-PAT fallback only when not OAuth-connected; honest-degrade otherwise (#1231).
-            from services.mcp.consumer.connector import DegradationReason
-            from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
-
-            connector_result = await GitHubMCPSpatialAdapter().list_labels_connector(_user_id)
-            if connector_result.items is not None:
-                labels = connector_result.items
-            elif (
-                connector_result.degradation
-                and connector_result.degradation.reason is DegradationReason.CONNECT_REQUIRED
-            ):
-                from services.integrations.github.github_integration_router import (
-                    GitHubIntegrationRouter,
-                )
-
-                github_router = GitHubIntegrationRouter()
-                labels = await github_router.list_labels_via_mcp()
-            else:
-                return IntentProcessingResult(
-                    success=True,
-                    message=connector_result.degradation.user_message,
-                    intent_data={
-                        "category": "query",
-                        "action": "list_labels_query",
-                        "context": {"degraded": connector_result.degradation.reason.value},
-                    },
-                )
+            github_router = GitHubIntegrationRouter()
+            labels = await github_router.list_labels_via_mcp()
 
             if labels:
                 count = len(labels)
