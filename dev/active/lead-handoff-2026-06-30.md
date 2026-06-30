@@ -18,7 +18,8 @@
 ## Issues filed today (the "make it structural" thread — PM pushed twice on point-fix-vs-general)
 - **#1333** — fabrication is a category problem: generalize the unwired-action honest-decline from a LIST (`unwired_writes.py`) to a CATEGORY rule (any action-classified intent w/ no handler → deterministic decline). Five-whys in the issue. **Clean next build** (generalizes existing code). ADR-worthy (Arch/HOST).
 - **#1334** — connector-agnostic disconnect helper (recurrence-proof #1330) + **duplicate `/slack/disconnect` route** bug (lines 440 & 2146; live one may not revoke Slack-side).
-- **#1335** — RECONNECT GATE: the connector-refactor coverage matrix (8 considerations × connectors); audit closed issues against it before declaring connector-refactor done. GitHub row verified; calendar/slack/notion rows = to-audit.
+- **#1335** — RECONNECT GATE: connector-refactor coverage matrix (8 considerations × connectors). **AUDITED this session** (results in #1335 comment): github ✅; calendar/slack/notion are keychain-model so binding-cells are N/A-until-migrated; binding model is github-only. **Gate done-when: #1337 + #1334 fixed + an Arch decision on whether to migrate the keychain connectors onto the binding model (or accept the two-model split).**
+- **#1337** — NEW (from the gate audit): Notion health is env-var-only, missing the user-scoped keychain → UI-configured Notion reads "not configured." Parallel to #1329; clean small fix (mirror slack/calendar health branches). Good next concrete build.
 - **#1336** — [placeholder] expand/refactor canonical-query regression for connector states (bound/unbound/unreachable) + trust-property assertions. Triage later.
 
 ## What to do on resume (priority order, all unblocked unless noted)
