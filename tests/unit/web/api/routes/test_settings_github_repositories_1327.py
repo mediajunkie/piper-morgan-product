@@ -17,7 +17,12 @@ import pytest
 
 from services.mcp.consumer.connector import DegradationReason, DegradationResponse
 from services.mcp.consumer.github_adapter import GitHubReposResult
-from web.api.routes.settings_integrations import get_github_repositories
+from web.api.routes.settings_integrations import (
+    GitHubPreferencesRequest,
+    get_github_preferences,
+    get_github_repositories,
+    save_github_preferences,
+)
 
 _ADAPTER = "web.api.routes.settings_integrations.GitHubMCPSpatialAdapter"
 _PREFS = "web.api.routes.settings_integrations._load_github_prefs_db"
@@ -222,3 +227,59 @@ class TestRepositoriesConnectRequiredFallsBackToPat:
                     os.environ["GITHUB_TOKEN"] = old_github
                 if old_gh:
                     os.environ["GH_TOKEN"] = old_gh
+
+
+class TestPreferencesAreOAuthAgnostic:
+    """#1327 gap 3 — the prefs endpoints (load/save selected repos + default) are already
+    DB-backed via the connector_configs store (ADR-070 D4) with NO native-PAT gating, so they
+    work for OAuth-connected users unchanged. These confirm the prefs path touches neither the
+    native PAT (keychain/aiohttp) NOR a connector binding — it is purely the DB store.
+    """
+
+    @pytest.mark.asyncio
+    async def test_get_preferences_does_not_touch_pat_or_connector(self):
+        mock_user = MagicMock()
+        mock_user.sub = "user-uuid-1"
+
+        saved = {
+            "selected_repositories": ["mediajunkie/piper-morgan-product"],
+            "default_repository": "mediajunkie/piper-morgan-product",
+        }
+        with (
+            patch(_PREFS, new=AsyncMock(return_value=saved)),
+            # Neither the native PAT nor the connector adapter may be consulted for prefs.
+            patch("aiohttp.ClientSession", side_effect=AssertionError("native PAT used")),
+            patch(_ADAPTER, side_effect=AssertionError("connector used for prefs")),
+        ):
+            result = await get_github_preferences(current_user=mock_user)
+
+        assert result.selected_repositories == ["mediajunkie/piper-morgan-product"]
+        assert result.default_repository == "mediajunkie/piper-morgan-product"
+
+    @pytest.mark.asyncio
+    async def test_save_preferences_does_not_touch_pat_or_connector(self):
+        mock_user = MagicMock()
+        mock_user.sub = "user-uuid-1"
+
+        preferences = GitHubPreferencesRequest(
+            selected_repositories=["mediajunkie/piper-morgan-product"],
+            default_repository="mediajunkie/piper-morgan-product",
+        )
+        save_db = AsyncMock()
+        with (
+            patch("web.api.routes.settings_integrations._save_github_prefs_db", save_db),
+            patch("aiohttp.ClientSession", side_effect=AssertionError("native PAT used")),
+            patch(_ADAPTER, side_effect=AssertionError("connector used for prefs")),
+        ):
+            result = await save_github_preferences(
+                preferences=preferences, current_user=mock_user
+            )
+
+        save_db.assert_awaited_once_with(
+            "user-uuid-1",
+            {
+                "selected_repositories": ["mediajunkie/piper-morgan-product"],
+                "default_repository": "mediajunkie/piper-morgan-product",
+            },
+        )
+        assert result.default_repository == "mediajunkie/piper-morgan-product"
