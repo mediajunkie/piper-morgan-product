@@ -90,11 +90,21 @@ async def resolve_repo(
 
     Decision tree (first match wins):
 
-    1. ``explicit`` (str "owner/name") — caller passed it directly
-    2. ``project_id`` — first Repository linked to the project (by linked_at)
-    3. ``user_id`` — user's ``default_repo`` preference
-    4. ``$PIPER_DEFAULT_REPO`` env var (dev fallback; logs deprecation warning)
-    5. Otherwise → raise ``UnresolvedRepoError``
+    1. ``explicit`` (str "owner/name") — caller passed it directly (source="explicit")
+    2. ``project_id`` — first Repository linked to that project, by linked_at
+       (source="project")
+    3. ``user_id``'s DEFAULT project's linked repo (#1192b; source="default_project")
+    4. ``user_id``'s ``default_repo`` preference (source="user_default")
+    5. ``$PIPER_DEFAULT_REPO`` env var (dev fallback; logs deprecation warning;
+       source="env_var")
+    6. Otherwise → raise ``UnresolvedRepoError``
+
+    Paths 2–4 are DB-backed: each is structurally live but returns None when its
+    data is absent (project unlinked / no default project / no preference) — an
+    empty-data miss, NOT a dead branch (#1230). Per-path proof-tests
+    (test_repo_resolver_paths_1230) assert each path can still resolve given
+    seeded data, so a reorder can't silently leave a *code*-dead path; populating
+    the data is #1199 (storage) / #1314 (auto-default) / #1315 (activate links).
 
     Args:
         user_id: Authenticated user UUID. Used for the user-default lookup.
@@ -270,10 +280,19 @@ async def _resolve_from_default_project(user_id: UUID) -> Optional[ResolvedRepo]
             )
             project_id = result.scalar_one_or_none()
 
+        # #1230 guard: distinguish "no default project" from "default project has
+        # no linked repo" — same None result, different remediation (create/mark a
+        # default project vs link a repo to it). Kept at debug (resolution is hot).
         if project_id is None:
+            logger.debug("default-project resolution: user %s has no default project", user_id)
             return None
         repo = await _resolve_from_project(project_id)
         if repo is None:
+            logger.debug(
+                "default-project resolution: user %s default project %s has no linked repo",
+                user_id,
+                project_id,
+            )
             return None
         return ResolvedRepo(owner=repo.owner, name=repo.name, source="default_project")
     except Exception as e:
