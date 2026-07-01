@@ -179,7 +179,14 @@ async def get_conversation_turns(
             )
             return []
 
-        turns = await conv_repo.get_conversation_turns(conversation_id, limit=limit)
+        # #1235: return the NEWEST `limit` turns (still chronologically ordered), not the
+        # oldest. This endpoint restores a conversation for viewing/continuing (#563); a
+        # conversation longer than `limit` should show where the user left off, not turns
+        # 1..limit from the start. Reuses the #1223 `most_recent` machinery. (If a
+        # "scroll back to older turns" viewer is needed later, add offset pagination then.)
+        turns = await conv_repo.get_conversation_turns(
+            conversation_id, limit=limit, most_recent=True
+        )
         logger.info("DEBUG #574: turns fetched", turn_count=len(turns))
 
         # Issue #788: Add Z suffix to indicate UTC timezone for proper JS parsing

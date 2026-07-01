@@ -105,6 +105,28 @@ class TestGetConversationTurns:
         assert result[1].turn_number == 2
 
     @pytest.mark.asyncio
+    async def test_requests_most_recent_window_issue_1235(
+        self, mock_current_user, mock_conversation
+    ):
+        """#1235: the /turns restore endpoint must fetch the NEWEST `limit` turns, not the
+        oldest — a >limit conversation should show where the user left off, not turns
+        1..limit. Asserts the endpoint passes most_recent=True (the #1223 machinery)."""
+        mock_repo = MagicMock()
+        mock_repo.get_by_id = AsyncMock(return_value=mock_conversation)
+        mock_repo.get_conversation_turns = AsyncMock(return_value=[])
+
+        await get_conversation_turns(
+            conversation_id=mock_conversation.id,
+            limit=50,
+            current_user=mock_current_user,
+            conv_repo=mock_repo,
+        )
+
+        mock_repo.get_conversation_turns.assert_awaited_once_with(
+            mock_conversation.id, limit=50, most_recent=True
+        )
+
+    @pytest.mark.asyncio
     async def test_returns_empty_list_for_new_conversation_no_turns_issue_583(
         self, mock_current_user, mock_conversation
     ):
