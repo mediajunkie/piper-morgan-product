@@ -54,6 +54,14 @@ def test_cxo_copy_and_setup_steps_present(rendered):
     assert "api.slack.com/apps" in rendered  # the setup link
 
 
+def test_event_subscription_step_present(rendered):
+    """#1201 AC: instructions MUST cover the event subscriptions — without them the
+    bot connects via Socket Mode but receives no events (non-working setup)."""
+    assert "Event Subscriptions" in rendered
+    assert "message.im" in rendered
+    assert "app_mention" in rendered
+
+
 def test_js_wires_both_endpoints_and_loads_on_start(rendered):
     assert "/api/v1/settings/integrations/slack/inbound/status" in rendered
     assert "/api/v1/settings/integrations/slack/app-token" in rendered
