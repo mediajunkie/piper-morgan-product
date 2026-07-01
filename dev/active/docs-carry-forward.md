@@ -22,15 +22,18 @@ Quota reset today (Wed Jul-1 ~9pm PT). Exec broadcasts normal-cadence restore at
 - ✅ **June 29 omnibus** (HIGH-COMPLEXITY: 10 logs; `7d1b96090`)
 - ✅ **10 activity-log rows** for Jun 29 (1543→1553)
 
+## Done this PM fire (Jul-1 ~15:48)
+
+- ✅ **Ship #049 published** — proofread corrected (ADR-1312 error, issue#s in prose, Lead Dev gloss, frontmatter); publish pipeline complete; website commit `32a7f87a5`; calendar updated; draft archived. Published at: `/shipping-news/weekly-ship-049-the-team-builds-its-own-reliability`
+- ✅ **Exec memo sent** — ADR-1312 source-debug request; sent to exec + pa cc via push-to-ref `11b8562a7`
+
 ## Next session (Jul-1 22:17 STOP)
 
-- [ ] **Ship #049 status** — check if PM has done voice-pass and provided go-ahead; if yes: publish pipeline (needs PM image for frontmatter). PM-gated.
 - [ ] **Run-lean restore** — check for Exec memo after 20:32 fire; resume normal cadence if confirmed
 - [ ] Day-close: write STOP section + DAY-CLOSED sentinel; update carry-forward
 
 ## Pending / PM-gated
 
-- **Ship #049 publish** — needs PM voice-pass + image + explicit handoff
 - **"From Briefing to Vision" syndication URLs** (Medium/LinkedIn) — PM-gated; update calendar when provided
 - **Branch-or-Anchor crosspost** — Medium/LinkedIn pending (PM-gated)
 - **Beat 8 Medium URL** — syndication confirmed; URL outstanding
