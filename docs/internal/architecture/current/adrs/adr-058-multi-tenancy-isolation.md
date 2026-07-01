@@ -184,6 +184,10 @@ class JobContext:
 
 **Parallelization**: Phases 4+5 can run in parallel. Phases 6+7 can run in parallel.
 
+## Implementation Status
+
+- **Identity unification (#1233 / RECONNECT-WS9, closed 2026-06):** the single-identity model — one human principal owning many connector identities (GitHub / Slack / Calendar / Notion) — is unified and in place. A user's connector credentials key to their single principal `user_id`: the `owner_id` on repositories (§4 Repository Isolation) and the `{user_id}_{provider}_api_key` username scoping on user-scoped keychain entries (§1 Credential Separation). This realizes the "one human, many connector identities" boundary this ADR calls for, and closed the identity half of the RECONNECT connector refactor. (Recorded per #1316.)
+
 ## Alternatives Considered
 
 ### Alternative A: Incremental Fix
