@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-01 15:25 PT | arch | memo-arch-to-lead-cc-pm-pa-host-1342-1231-connector-framework-boundaries-2026-07-01.md | Re: #1342 + #1231 — one ruling (they're the same question): SHARE #1232's vocab… |
 | 2026-06-30 16:25 PT | arch | memo-arch-to-lead-cc-pm-host-pa-reconnect-3-decisions-ruled-2026-06-30.md | Re: 3 RECONNECT decisions — ① (B) two-model split w/ discipline · ② build the u… |
 | 2026-06-30 16:05 PT | arch | memo-arch-to-lead-host-cc-pm-1331-floor-anticonfab-RATIFIED-2026-06-30.md | Re: #1331 floor anti-confabulation — RATIFIED (ship as-is); the carve-out is pr… |
 | 2026-06-30 | cxo | 2026-06-30-cxo-1201-slack-inbound-onboarding-design.md | #1201 Slack inbound onboarding — CXO design decisions (all four questions answe… |
