@@ -30,6 +30,30 @@ def _get_database_url() -> str:
     return f"postgresql+asyncpg://{user}:{password}@{host}:{port}/{database}"
 
 
+def get_sync_migration_url() -> str:
+    """The SYNC PostgreSQL URL for Alembic migrations, resolved from the ENVIRONMENT.
+
+    #1299(a): alembic.ini hardcoded `...@localhost:5433`, so the in-container migrate
+    connected to localhost:5433 (wrong — postgres is at `postgres:5432` there) and failed
+    silently on every deploy (root cause of the hollow 0.8.8). `alembic/env.py` uses this
+    so the migrate works in any context — container, local, CI.
+
+    Mirrors ``_get_database_url`` but with alembic's SYNC driver (no ``+asyncpg``). Honors
+    an explicit ``ALEMBIC_DATABASE_URL`` / ``DATABASE_URL`` override (async URLs normalized
+    to sync); else builds from ``POSTGRES_*`` with the local-dev defaults (localhost:5433)
+    PRESERVED so local dev is unaffected.
+    """
+    explicit = os.getenv("ALEMBIC_DATABASE_URL") or os.getenv("DATABASE_URL")
+    if explicit:
+        return explicit.replace("postgresql+asyncpg://", "postgresql://")
+    user = os.getenv("POSTGRES_USER", "piper")
+    password = os.getenv("POSTGRES_PASSWORD", "dev_changeme_in_production")
+    host = os.getenv("POSTGRES_HOST", "localhost")
+    port = os.getenv("POSTGRES_PORT", "5433")
+    database = os.getenv("POSTGRES_DB", "piper_morgan")
+    return f"postgresql://{user}:{password}@{host}:{port}/{database}"
+
+
 class AsyncSessionFactory:
     """Factory for creating async database sessions with automatic resource management
 

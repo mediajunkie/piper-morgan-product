@@ -28,6 +28,10 @@ target_metadata = Base.metadata
 # ... etc.
 
 
+# #1299(a): env-driven migration URL lives with the DB layer (testable; shared).
+from services.database.session_factory import get_sync_migration_url as _resolve_db_url
+
+
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
@@ -40,7 +44,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    url = _resolve_db_url()  # #1299(a): env-driven, not the hardcoded ini value
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -59,8 +63,13 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
+    # #1299(a): override the ini's hardcoded sqlalchemy.url with the env-resolved URL.
+    # Set it on the section dict (not via config.set_main_option) to bypass ConfigParser
+    # %-interpolation — DB passwords can contain '%'.
+    section = config.get_section(config.config_ini_section, {})
+    section["sqlalchemy.url"] = _resolve_db_url()
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
+        section,
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
