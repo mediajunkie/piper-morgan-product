@@ -38,11 +38,13 @@ That's not a team that has fixed its reliability. It's a team that is building i
 
 ## 🌍 External relations & community
 
-**Three publications this window, including the close of a nine-beat arc:**
+**Five pieces — standard cadence (2 insights + 2 narratives + ship):**
 
-*[URLs to be added by PM — Sat Jun 21 insight, Tue/Thu piece]*
-
-- **Thu Jun 25: "[The Hook and the Worktree](https://pipermorgan.ai/blog/)" (Beat 9)** — the final building narrative in the nine-beat arc. The arc started with cold-start immersion and ended with the team's own infrastructure story. It's closed; what comes next is a new arc, not yet announced.
+- Sat Jun 20: "[This One's Taken](https://pipermorgan.ai/blog/this-ones-taken)" — insight (blog + [Medium](https://medium.com/building-piper-morgan/this-ones-taken-5387d9d5d21d) + [LinkedIn](https://www.linkedin.com/pulse/ones-taken-christian-crumlish-hwixc/))
+- Sun Jun 21: "[Extension Without Integration](https://pipermorgan.ai/blog/extension-without-integration)" — insight (blog + [Medium](https://mediajunkie.medium.com/8921d917f37f))
+- Tue Jun 23: "[Branch-or-Anchor in Ninety Minutes](https://pipermorgan.ai/blog/branch-or-anchor-in-ninety-minutes)" (Beat 8) — building narrative (blog + [Medium](https://medium.com/building-piper-morgan/branch-or-anchor-in-ninety-minutes-346b2e218337))
+- Wed Jun 24: [Ship #048](https://pipermorgan.ai/shipping-news/weekly-ship-048-the-team-put-it-in-writing) (Shipping News)
+- Thu Jun 25: "[The Hook and the Worktree](https://pipermorgan.ai/blog/the-hook-and-the-worktree)" (Beat 9) — building narrative (blog + [Medium](https://medium.com/building-piper-morgan/the-hook-and-the-worktree-ff5a173b4d36))
 
 Beat 9 closing in the same week as the liveness infrastructure shipping is the kind of resonance you can't plan. The nine beats were about a team building toward continuity — and in week nine, the infrastructure to make that continuity automatic started working.
 
