@@ -1,6 +1,6 @@
 ---
-image: 
-alt: 
+image: piper-ship.png
+alt: A child and a crew of robots checking each other's work on a boat.
 caption: 
 ---
 
@@ -20,15 +20,15 @@ That's not a team that has fixed its reliability. It's a team that is building i
 
 ## 🎯 Product & experience
 
-**D2 design-system closed in 48 hours.** The Chief Experience Officer agent (CXO) completed #1286 — spec to three implementation slices to PM beta UAT — faster than any D-sprint so far. The standup card crossed the finish line too: the zombie engine (#1269) that had been quietly generating stale standup output was deleted rather than patched. Deletion is the honest resolution when the alternative is a bandaid on fabrication.
+**D2 design-system closed in 48 hours.** The Chief Experience Officer agent (CXO) took the design-system sprint from spec to three implementation slices to PM beta UAT — faster than any D-sprint so far. The standup card crossed the finish line too: the zombie standup engine that had been quietly generating stale standup output was deleted rather than patched. Deletion is the honest resolution when the alternative is a bandaid on fabrication.
 
 **Role-portfolio wave complete: 8/8.** The Head of Sapient Trust agent (HOST) closed the final portfolio review ahead of the target pace. These portfolios were designed to ask "what am I here to advance?" not "what am I allowed to do?" — and this week that distinction produced a real catch: the Web agent's portfolio surfaced a missing essential briefing document that no other mechanism had flagged. Rule 1 working.
 
 ## ⚙️ Engineering & architecture
 
-**Connector contract ratified.** The Chief Architect agent ratified ADR-070 (MCP-Consumer Connector) — the substrate the connectors refactor (RECONNECT, now in active build) had been waiting on. Same week, Arch ruled ADR-1312 end-to-end: the schema-drift case, both seams, verified against live code. Three instances of the same architectural pattern this window: derive-don't-maintain, make-drift-impossible-by-construction. A no-credential guard, a reachability lint, a one-Base invariant — none of these rely on review catching the problem after the fact. They make the problem structurally impossible.
+**Connector contract ratified.** The Chief Architect agent ratified ADR-070 (MCP-Consumer Connector) — the substrate the connectors refactor (RECONNECT, now in active build) had been waiting on. Same week, Arch ruled the schema-drift case end-to-end — both seams, verified against live code. Three instances of the same architectural pattern this window: derive-don't-maintain, make-drift-impossible-by-construction. A no-credential guard, a reachability lint, a one-Base invariant — none of these rely on review catching the problem after the fact. They make the problem structurally impossible.
 
-**Push-to-ref shipped.** The Chief Innovation Officer agent (CIO) shipped #1259, which eliminates a whole class of shared-checkout contention bugs. Previously, writing to a shared mailbox required acquiring the main checkout, stashing, switching branches, committing, switching back, unstashing — a sequence that corrupted other agents' working state often enough that it needed a hard rule. Now a single script invocation builds the commit as a git object on top of `origin/main` directly. The contention class is structurally gone, not worked around.
+**Push-to-ref shipped.** The Chief Innovation Officer agent (CIO) shipped the push-to-ref mechanism, which eliminates a whole class of shared-checkout contention bugs. Previously, writing to a shared mailbox required acquiring the main checkout, stashing, switching branches, committing, switching back, unstashing — a sequence that corrupted other agents' working state often enough that it needed a hard rule. Now a single script invocation builds the commit as a git object on top of `origin/main` directly. The contention class is structurally gone, not worked around.
 
 ## 🔬 Methodology & process innovation
 
@@ -56,7 +56,7 @@ Beat 9 closing in the same week as the liveness infrastructure shipping is the k
 
 # 🎯 Coming up next week
 
-RECONNECT — the connectors refactor that ADR-070 had been waiting on — is now in active build with Lead Dev moving fast. The People entity source-population mechanism is scoped for M4. The off-machine continuity decision is queued: detection works, automated recovery is the open question. The nine-beat arc just closed, which means the next public narrative direction is up to PM.
+RECONNECT — the connectors refactor that ADR-070 had been waiting on — is now in active build with the Lead Developer agent moving fast. The People entity source-population mechanism is scoped for M4. The off-machine continuity decision is queued: detection works, automated recovery is the open question. The nine-beat arc just closed, which means the next public narrative direction is up to PM.
 
 ---
 
