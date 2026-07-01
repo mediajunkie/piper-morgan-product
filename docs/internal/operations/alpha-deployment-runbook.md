@@ -30,7 +30,31 @@
 2. **How is deploy triggered?** **Manually.** SSH in and run `/opt/piper/deploy.sh`. No push-to-`production` auto-deploy; no CI deploy workflow.
 3. **Where are the env vars?** `/opt/piper/.env` on the droplet (not in the repo). Preserve it across deploys.
 4. **Migrations?** `deploy.sh` runs `docker compose exec -T app python -m alembic upgrade head` after a 30s wait. ⚠️ See the footgun.
-5. **Health URL?** `https://alpha.pipermorgan.ai/health` (401 = the Caddy auth gate; the app's own `/health` answers on `app:8001` inside the docker network).
+5. **Health URL?** `https://alpha.pipermorgan.ai/health` (401 = the Caddy auth gate; the app's own `/health` answers on `app:8001` inside the docker network). ⚠️ **The gate is being removed — see below (#1320); once applied, `/health` returns 200.**
+
+## Caddy auth-gate removal (#1320 — PM-decided 2026-07-01) — DROPLET ACTION
+
+**Decision (PM, 2026-07-01):** remove the Caddy basic-auth gate. It is now **redundant friction** — the app has its own JWT auth (#358), the setup wizard is auth-exempt, and the exempt list is hardened + lint-guarded (#1308, `TestAuthExemptListIsASecurityBoundary`). The gate actively **breaks onboarding**: the pre-login, XHR-heavy setup flow triggers Caddy's `401 WWW-Authenticate: Basic` → the browser credential dialog loops (#1320 symptom, confirmed via chrome-devtools).
+
+**Why it's safe to remove:** once the gate is gone, the exempt list *is* the entire attack surface (per #1308). It's read-only + justified-writes-only. The one #1320 repo change (auth-exempting the two read-only slack/calendar `app-credentials/status` GETs — booleans only, never secrets; write siblings stay auth-required) is already merged.
+
+**Procedure (SSH to the droplet — NOT a repo change; `Caddyfile` is droplet-local at `/opt/piper/Caddyfile`):**
+```bash
+ssh root@piper-alpha                       # 146.190.151.63
+cp /opt/piper/Caddyfile /opt/piper/Caddyfile.bak-1320   # back up first
+# Edit /opt/piper/Caddyfile — delete the basic_auth block inside the
+# `alpha.pipermorgan.ai { … }` site block, leaving just:
+#   alpha.pipermorgan.ai {
+#       reverse_proxy app:8001
+#   }
+docker exec piper-caddy caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile \
+  || docker compose -f /opt/piper/docker-compose.yml restart caddy
+# Verify — was 401, now 200:
+curl -s -o /dev/null -w "%{http_code}\n" https://alpha.pipermorgan.ai/health
+```
+Then confirm the onboarding flow (fresh incognito): the LLM-key validation no longer pops the basic-auth dialog. Update this runbook's "401 = gate" lines to "200" once applied.
+
+
 
 ## `deploy.sh` (the on-droplet script)
 
