@@ -1,35 +1,32 @@
 # Docs Carry-Forward
-**Updated**: 2026-06-29 ~01:10 PDT
+**Updated**: 2026-06-30 ~22:47 PDT (STOP)
 **Cron**: `17 10,22 * * *` (SLOW tier — 2×/day until Wed Jul-1 ~9pm; job `2706da77`)
-**Session log**: `dev/2026/06/29/2026-06-29-0038-docs-code-sonnet-log.md` (active)
+**Session log**: `dev/2026/06/30/2026-06-30-1047-docs-code-log.md` (DAY-CLOSED ✓)
 
 ## Run-lean status
 
-PM quota throttle active (resets Wed Jul-1 ~9pm PT). Docs = SLOW tier. Restore to normal on Exec "restore" broadcast.
+PM quota throttle active (resets Wed Jul-1 ~9pm PT). Docs = SLOW tier. Next fire: 10:17 Jul-1 (START).
 
 ---
 
+## Done June 30
+
+- ✅ **"From Briefing to Vision" publish pipeline committed** (`beabf2776`): calendar updated (status→published, pubDate 2026-06-30, blogURL pipermorgan.ai/blog/from-briefing-to-vision/, ai-observatory, altText/caption), draft archived to `published/`. Syndication (Medium/LinkedIn) pending PM action.
+- ✅ **June 29 omnibus** (HIGH-COMPLEXITY: 10 logs; RECONNECT #1327 scope COMPLETE + #1331 trust catch + #1329 CLOSED + CIO naming convention + Belt 4; `7d1b96090`)
+- ✅ **10 activity-log rows** for Jun 29 (Shape B; 1543→1553; same commit)
+
 ## Done June 29
 
-- ✅ **"Relationship-First Ethics" published** (hashId `387238c2a510`, workDate 2025-11-30): website built+pushed (`82e9e995c`), calendar updated (`66f924a4d`), draft archived to `published/` (`088a76779`)
-- ✅ **"Relationship-First Ethics" syndication complete**: LinkedIn URL + Medium URL both in calendar (`36271d48e`, `additional calendar commit`)
-- ✅ **editorial-calendar-view.html staleness fix**: rebuilt via script (`37da1933c`); update-calendar skill v1.1 now includes rebuild step (`b8f9a4b0f`)
-- ✅ **June 28 omnibus** (HIGH-COMPLEXITY: 11 logs; RECONNECT P3 milestone + sprint recovery + Belt-0 disable + cohort throttle; `1c2ce3a72`)
-- ✅ **11 activity-log rows** for Jun 28 (Shape B; 1532→1543; `1e05065c7`)
+- ✅ **"Relationship-First Ethics" published + syndicated** (LinkedIn + Medium URLs in calendar)
+- ✅ **editorial-calendar-view.html staleness fix**; update-calendar skill v1.1
+- ✅ **June 28 omnibus** (HIGH-COMPLEXITY: 11 logs; `1c2ce3a72`)
+- ✅ **11 activity-log rows** for Jun 28 (1532→1543)
 
-## Done June 28
+## Next session (Jul-1 START)
 
-- ✅ **June 27 omnibus** (HIGH-COMPLEXITY: 11 logs; `c89da3c45`)
-- ✅ **11 activity-log rows** for Jun 27 (Shape B; `99af266fe`)
-- ✅ **Run-lean applied** — cron re-armed 2×/day (`2706da77`)
-- ✅ **Inbox cleaned** — run-lean memo in read/ + origin/main inbox copy removed (`466907924`)
-
-## Done prior sessions
-
-- ✅ **Ratify ACK** — Exec inbox-proxy proposal
-- ✅ **June 26 omnibus** (HIGH-COMPLEXITY: 9 logs)
-- ✅ **10 activity-log rows** for Jun 26
-- ✅ **Triad Model published** + syndication URLs in calendar
+- [ ] June 30 omnibus gate check (Lead/prog active — 20 commits; check session-start hook for log count)
+- [ ] `build-editorial-calendar-view.py` bug (`AttributeError: list.strip()`) — flag to Lead Dev (likely CSV row overflow from a quoted altText with commas)
+- [ ] "From Briefing to Vision" syndication URLs (Medium/LinkedIn) — PM-gated; update calendar when provided
 
 ## Pending / PM-gated
 
@@ -38,8 +35,9 @@ PM quota throttle active (resets Wed Jul-1 ~9pm PT). Docs = SLOW tier. Restore t
 - **Beat 9 syndication** — Medium/LinkedIn URLs pending (Comms-owned)
 - **CIO worktree rescue+prune** — CIO owns sweep-code; 3 unmerged worktrees
 - **ADR-072 gap** — absent from `adr-index.md` (flagged by CIO in ADR-073)
+- **build-editorial-calendar-view.py bug** — needs Lead Dev investigation
 
 ## State flags
 
-- Inbox: **0 unread** (verified and clean on origin/main)
-- Unblocked queue: **(0,0)**
+- Inbox: **0 unread**
+- Unblocked queue: **(0,0)** — STOP
