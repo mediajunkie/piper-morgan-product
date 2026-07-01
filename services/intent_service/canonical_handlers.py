@@ -782,7 +782,7 @@ class CanonicalHandlers:
             # Standard moderate detail
             message = self._format_standard_status(projects, user_context, project_metadata)
 
-        message += self._github_unavailable_nudge(project_metadata)  # #1231
+        message += self._degrade_nudge(project_metadata)  # #1231
 
         project_context = {
             "projects": projects,
@@ -1045,7 +1045,7 @@ class CanonicalHandlers:
         else:
             message = self._format_project_list_standard(projects, project_metadata)
 
-        message += self._github_unavailable_nudge(project_metadata)  # #1231
+        message += self._degrade_nudge(project_metadata)  # #1231
 
         return {
             "message": message,
@@ -1190,13 +1190,12 @@ class CanonicalHandlers:
                     details.append(f"    Labels: {labels}")
         elif priority_metadata.get("has_github"):
             details.append("\n\n*No high-priority (P0/P1) GitHub issues found.*")
-        elif priority_metadata.get("github_unavailable"):
-            # #1231 honest-degrade: surface "connect me" instead of silently omitting
-            # GitHub (the #1226 silent-empty shape). Copy: placeholder pending CXO voice-pass.
-            details.append(
-                "\n\n*GitHub isn't connected yet — connect it and I'll surface your "
-                "high-priority issues here.*"
-            )
+        elif priority_metadata.get("degrade_reason"):
+            # #1231 (Arch-ratified): derive the "connect me" nudge from the shared
+            # reason→copy policy — not a silent omission, not an inline string.
+            from services.intent_service.degradation_copy import degrade_nudge
+
+            details.append(f"\n\n*{degrade_nudge(priority_metadata['degrade_reason'])}*")
 
         if user_context.organization:
             details.append(f"\n\nOrganization context: {user_context.organization}")
@@ -1412,17 +1411,17 @@ class CanonicalHandlers:
             logger.warning(f"Calendar offer policy failed: {e}")
             return ""
 
-    def _github_unavailable_nudge(self, metadata: Dict) -> str:
-        """#1231 honest-degrade: a "connect me" nudge to append when GitHub enrichment was
-        skipped because GitHub is not-configured/not-connected — instead of silently
-        omitting GitHub (the #1226 silent-empty shape). Returns '' when GitHub is available.
-        Placeholder copy pending CXO voice-pass. (Surfaced once at the handler, not per item.)"""
-        if metadata and metadata.get("__github_unavailable__"):
-            return (
-                "\n\n*GitHub isn't connected yet — connect it and I'll show open issues "
-                "for your projects here.*"
-            )
-        return ""
+    def _degrade_nudge(self, metadata: Dict) -> str:
+        """#1231 (Arch-ratified): the "connect me" nudge to append ONCE when a connector was
+        skipped (not-configured/not-connected), derived from the shared reason→copy policy —
+        never a silent omission. '' when the connector is available. Once-per-response for
+        connector-level degrade (Arch: per-item only for partial/item-level misses)."""
+        reason = metadata.get("__degrade_reason__") if metadata else None
+        if reason is None:
+            return ""
+        from services.intent_service.degradation_copy import degrade_nudge
+
+        return f"\n\n*{degrade_nudge(reason)}*"
 
     async def _get_project_metadata(self, projects: list) -> Dict[str, Dict]:
         """
@@ -1443,8 +1442,10 @@ class CanonicalHandlers:
             github_plugin = registry.get_plugin("github")
 
             if not github_plugin or not github_plugin.is_configured():
+                from services.mcp.consumer.connector import DegradationReason
+
                 logger.debug("GitHub not configured — honest-degrade (#1231)")
-                return {"__github_unavailable__": "not_configured"}
+                return {"__degrade_reason__": DegradationReason.NOT_CONFIGURED}
 
             # Import and instantiate GitHub domain service
             from services.domain.github_domain_service import GitHubDomainService
@@ -1454,8 +1455,10 @@ class CanonicalHandlers:
             # Check connection status
             connection_status = github_service.get_connection_status()
             if not connection_status.get("connected"):
+                from services.mcp.consumer.connector import DegradationReason
+
                 logger.debug("GitHub not connected — honest-degrade (#1231)")
-                return {"__github_unavailable__": "not_connected"}
+                return {"__degrade_reason__": DegradationReason.CONNECT_REQUIRED}
 
             # Get repositories list
             repos = github_service.list_repositories()
@@ -1528,10 +1531,13 @@ class CanonicalHandlers:
             try:
                 config_service = GitHubConfigService()
                 if not config_service.is_configured(user_id):
-                    # #1231 honest-degrade: don't silently return {} (reads as "no
-                    # issues"); signal not-configured so the formatter says "connect me".
+                    # #1231 (Arch-ratified): carry the DegradationReason so the formatter
+                    # surfaces "connect me" via the shared copy policy, never a silent {}.
+                    # NOT_CONFIGURED = onboard gap (never set up), distinct from CONNECT_REQUIRED.
+                    from services.mcp.consumer.connector import DegradationReason
+
                     logger.debug("GitHub not configured for user — honest-degrade (#1231)")
-                    return {"github_unavailable": "not_configured"}
+                    return {"degrade_reason": DegradationReason.NOT_CONFIGURED}
             except Exception:
                 return {}
 
@@ -1544,8 +1550,11 @@ class CanonicalHandlers:
             # Check connection status
             connection_status = github_service.get_connection_status()
             if not connection_status.get("connected"):
+                # Configured but this user hasn't connected → CONNECT_REQUIRED (reconnect gap).
+                from services.mcp.consumer.connector import DegradationReason
+
                 logger.debug("GitHub not connected — honest-degrade (#1231)")
-                return {"github_unavailable": "not_connected"}
+                return {"degrade_reason": DegradationReason.CONNECT_REQUIRED}
 
             # Get default repository from config
             github_config = piper_config_loader.load_github_config()

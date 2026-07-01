@@ -3131,8 +3131,10 @@ class TestIntegrationTipLogic847:
 
             # Should have checked config service with user_id
             mock_config.is_configured.assert_called_once_with("test-user")
-            # Config says not configured → #1231 honest-degrade marker (was silent {})
-            assert result == {"github_unavailable": "not_configured"}
+            # Config says not configured → #1231 honest-degrade reason (was silent {})
+            from services.mcp.consumer.connector import DegradationReason
+
+            assert result == {"degrade_reason": DegradationReason.NOT_CONFIGURED}
 
     @pytest.mark.asyncio
     async def test_get_calendar_context_returns_none_without_user_id(self, canonical_handlers):
