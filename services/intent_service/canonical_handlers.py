@@ -782,6 +782,8 @@ class CanonicalHandlers:
             # Standard moderate detail
             message = self._format_standard_status(projects, user_context, project_metadata)
 
+        message += self._github_unavailable_nudge(project_metadata)  # #1231
+
         project_context = {
             "projects": projects,
             "spatial_pattern": spatial_pattern,
@@ -1042,6 +1044,8 @@ class CanonicalHandlers:
             message = self._format_project_list_granular(projects, project_metadata)
         else:
             message = self._format_project_list_standard(projects, project_metadata)
+
+        message += self._github_unavailable_nudge(project_metadata)  # #1231
 
         return {
             "message": message,
@@ -1408,6 +1412,18 @@ class CanonicalHandlers:
             logger.warning(f"Calendar offer policy failed: {e}")
             return ""
 
+    def _github_unavailable_nudge(self, metadata: Dict) -> str:
+        """#1231 honest-degrade: a "connect me" nudge to append when GitHub enrichment was
+        skipped because GitHub is not-configured/not-connected — instead of silently
+        omitting GitHub (the #1226 silent-empty shape). Returns '' when GitHub is available.
+        Placeholder copy pending CXO voice-pass. (Surfaced once at the handler, not per item.)"""
+        if metadata and metadata.get("__github_unavailable__"):
+            return (
+                "\n\n*GitHub isn't connected yet — connect it and I'll show open issues "
+                "for your projects here.*"
+            )
+        return ""
+
     async def _get_project_metadata(self, projects: list) -> Dict[str, Dict]:
         """
         Issue #18: Get real project metadata from GitHub.
@@ -1427,8 +1443,8 @@ class CanonicalHandlers:
             github_plugin = registry.get_plugin("github")
 
             if not github_plugin or not github_plugin.is_configured():
-                logger.debug("GitHub not configured, returning empty project metadata")
-                return {}
+                logger.debug("GitHub not configured — honest-degrade (#1231)")
+                return {"__github_unavailable__": "not_configured"}
 
             # Import and instantiate GitHub domain service
             from services.domain.github_domain_service import GitHubDomainService
@@ -1438,8 +1454,8 @@ class CanonicalHandlers:
             # Check connection status
             connection_status = github_service.get_connection_status()
             if not connection_status.get("connected"):
-                logger.debug("GitHub not connected, returning empty project metadata")
-                return {}
+                logger.debug("GitHub not connected — honest-degrade (#1231)")
+                return {"__github_unavailable__": "not_connected"}
 
             # Get repositories list
             repos = github_service.list_repositories()

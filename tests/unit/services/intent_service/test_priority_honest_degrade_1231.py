@@ -54,3 +54,38 @@ def test_detailed_priorities_no_github_text_when_genuinely_empty(handlers):
     out = handlers._format_detailed_priorities(["Ship beta"], uc, {})
     assert "connect it" not in out.lower()
     assert "isn't connected" not in out.lower()
+
+
+# ---- project-metadata slice ----
+
+
+@pytest.mark.asyncio
+async def test_project_metadata_not_configured_signals_degrade(handlers):
+    with patch("services.intent_service.canonical_handlers.get_plugin_registry") as reg:
+        plugin = MagicMock()
+        plugin.is_configured.return_value = False
+        reg.return_value.get_plugin.return_value = plugin
+        md = await handlers._get_project_metadata(["Proj A"])
+    assert md == {"__github_unavailable__": "not_configured"}  # not silent {}
+
+
+@pytest.mark.asyncio
+async def test_project_metadata_not_connected_signals_degrade(handlers):
+    with (
+        patch("services.intent_service.canonical_handlers.get_plugin_registry") as reg,
+        patch("services.domain.github_domain_service.GitHubDomainService") as DS,
+    ):
+        plugin = MagicMock()
+        plugin.is_configured.return_value = True
+        reg.return_value.get_plugin.return_value = plugin
+        DS.return_value.get_connection_status.return_value = {"connected": False}
+        md = await handlers._get_project_metadata(["Proj A"])
+    assert md == {"__github_unavailable__": "not_connected"}
+
+
+def test_github_unavailable_nudge_surfaces_on_marker_else_silent(handlers):
+    assert "connect" in handlers._github_unavailable_nudge(
+        {"__github_unavailable__": "not_connected"}
+    ).lower()
+    assert handlers._github_unavailable_nudge({}) == ""  # available/empty → silent
+    assert handlers._github_unavailable_nudge({"MyProj": {"has_github": True}}) == ""
