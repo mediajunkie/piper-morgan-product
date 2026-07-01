@@ -2,7 +2,7 @@
 layout: layouts/brief.njk
 title: "Cross-Pollination Brief — July 1, 2026"
 ogTitle: "Cross-Pollination Brief — July 1, 2026"
-ogDescription: "Three findings close out the RECONNECT sprint: per-user Anthropic key binding now covers both /intent and /documents routes; Slack inbound onboarding ships with Socket Mode lifecycle; and the B1 spawn-fresh watchdog proves the off-machine cure for stalled duty cycles is a fresh headless process, not foregrounding an existing one."
+ogDescription: "Three findings from the RECONNECT sprint (roughly midpoint): per-user Anthropic key binding now covers both /intent and /documents routes; Slack inbound onboarding ships with Socket Mode lifecycle; and the B1 spawn-fresh watchdog proves the off-machine cure for stalled duty cycles is a fresh headless process, not foregrounding an existing one."
 date: 2026-07-01
 status: substantive
 sources_checked:
@@ -14,7 +14,7 @@ window: "2026-06-30 to 2026-07-01"
 
 # Cross-Pollination Brief — July 1, 2026
 
-Three PM engineering milestones close the RECONNECT sprint: per-user Anthropic key binding is now complete across all LLM-serving routes, Slack inbound onboarding ships as a runtime-startable feature, and CIO's B1 spawn-fresh watchdog passes its 14-test suite — establishing that the right off-machine cure for stalled duty-cycle sessions is a fresh headless process, not an attempt to foreground a suspended one. Klatch held a lean day on quota conservation; launch copy (release notes, README, LinkedIn, Product Hunt drafts) is complete and queued. On the DinP side: xian's consulting practice launches publicly today with the LinkedIn announcement.
+Three PM engineering milestones land from the RECONNECT sprint (roughly midpoint): per-user Anthropic key binding is now complete across all LLM-serving routes, Slack inbound onboarding ships as a runtime-startable feature, and CIO's B1 spawn-fresh watchdog passes its 14-test suite — establishing that the right off-machine cure for stalled duty-cycle sessions is a fresh headless process, not an attempt to foreground a suspended one. Klatch held a lean day on quota conservation; launch copy (release notes, README, LinkedIn, Product Hunt drafts) is complete and queued. On the DinP side: xian's consulting practice launches publicly today with the LinkedIn announcement.
 
 *Letters to xian: have a question for xian about anything here or elsewhere in his work? File `question-{from}-{date}-{topic}.md` to dispatch mail. AI prompts human; one letter featured at the end of each brief.*
 
