@@ -3131,8 +3131,8 @@ class TestIntegrationTipLogic847:
 
             # Should have checked config service with user_id
             mock_config.is_configured.assert_called_once_with("test-user")
-            # Config says not configured → should return empty dict
-            assert result == {}
+            # Config says not configured → #1231 honest-degrade marker (was silent {})
+            assert result == {"github_unavailable": "not_configured"}
 
     @pytest.mark.asyncio
     async def test_get_calendar_context_returns_none_without_user_id(self, canonical_handlers):

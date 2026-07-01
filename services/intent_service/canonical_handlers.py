@@ -1186,6 +1186,13 @@ class CanonicalHandlers:
                     details.append(f"    Labels: {labels}")
         elif priority_metadata.get("has_github"):
             details.append("\n\n*No high-priority (P0/P1) GitHub issues found.*")
+        elif priority_metadata.get("github_unavailable"):
+            # #1231 honest-degrade: surface "connect me" instead of silently omitting
+            # GitHub (the #1226 silent-empty shape). Copy: placeholder pending CXO voice-pass.
+            details.append(
+                "\n\n*GitHub isn't connected yet — connect it and I'll surface your "
+                "high-priority issues here.*"
+            )
 
         if user_context.organization:
             details.append(f"\n\nOrganization context: {user_context.organization}")
@@ -1505,10 +1512,10 @@ class CanonicalHandlers:
             try:
                 config_service = GitHubConfigService()
                 if not config_service.is_configured(user_id):
-                    logger.debug(
-                        "GitHub not configured for user, returning empty priority metadata"
-                    )
-                    return {}
+                    # #1231 honest-degrade: don't silently return {} (reads as "no
+                    # issues"); signal not-configured so the formatter says "connect me".
+                    logger.debug("GitHub not configured for user — honest-degrade (#1231)")
+                    return {"github_unavailable": "not_configured"}
             except Exception:
                 return {}
 
@@ -1521,8 +1528,8 @@ class CanonicalHandlers:
             # Check connection status
             connection_status = github_service.get_connection_status()
             if not connection_status.get("connected"):
-                logger.debug("GitHub not connected, returning empty priority metadata")
-                return {}
+                logger.debug("GitHub not connected — honest-degrade (#1231)")
+                return {"github_unavailable": "not_connected"}
 
             # Get default repository from config
             github_config = piper_config_loader.load_github_config()
