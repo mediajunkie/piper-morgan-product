@@ -1,5 +1,18 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
+**Updated**: 2026-07-01 ~16:05 PT. Session log: `dev/2026/07/01/2026-07-01-0531-lead-code-log.md`.
+
+## ▶ CURRENT (7/1 ~16:05) — READ THIS FIRST (supersedes the 6/30 block below)
+**RECONNECT feature-work is WRAPPED.** 7/1 closed #1201 (Slack inbound onboarding), #1230 (→split #1342), #1316 (→Dot Releases), #1231 cleanup (Arch-ruled DegradationReason unification), #1320 (bug-2 fixed; Caddy = droplet-apply pending PM); plus 6/30's #1338/#1339/#1109/#1334/#1335 all closed. HEAD==origin/main; 1 cron; inbox empty.
+**⭐ ACTIVE BUILD: #1342 — connector-agnostic target resolution (Arch-ruled: a SEPARATE resolution service, not a 5th Connector method; `decisions.log` 2026-07-01 ~15:25/15:40).**
+- **Inc 1 DONE** (~16:05): new `services/integrations/resolution/` module — `ResolvedTarget{source,connector,payload}` + `ResolutionSource` **promoted as-is** (repo_resolver re-exports → back-compat) + `ResolvedRepo.to_target()` seam. Additive, 229 green, on main.
+- **Inc 2 = NEXT (drain target):** adapt `resolve_repo` to offer `ResolvedTarget` + thread its callers (github_adapter / router / query-handlers) to `.payload`; **preserve the #1230 proof-tests + `source` labels.**
+- **Inc 3:** calendar = **design-on-paper only** (m-40 build-on-demand).
+**Open follow-ons (gated / low-pri):** #1231 CXO copy voice-pass (`degradation_copy.py`, memo sent) + primary-path live-verify · #1320 Caddy droplet-apply (PM/infra) + fresh-incognito verify · #1316 (Dot Releases) · #1340 (/connect-fold from #1185) · **PM-led RECONNECT gate-close live-verify** (#1201 round-trip, #1338 mentions, #1299b deploy) · **inc.4 sim dead-subsystem removal = usage-paced.**
+**⚠️ INFRA RISK (flagged to PM):** isolation:worktree agents' file tools resolve to PM's nested MAIN CHECKOUT — 2 strays this session, both caught + main verified intact; **hold file-writing worktree-agents until mitigated.**
+
+---
+
 **Updated**: 2026-06-29 21:54 PT (DAY-CLOSED). Sole lead. Session log: `dev/2026/06/29/2026-06-29-0749-lead-code-opus-log.md` (DAY-CLOSED marker set).
 ## ⭐ END-OF-SESSION STATE (6/30 ~19:15 PT) — READ THIS FIRST
 **Today shipped + closed:** #1331, #1109 (hygiene) · #1330, #1333, #1334 (both parts), #1335 (gate), #1337, #1338, #1339 · #1235, #1299a · **#1185 per-user LLM keys (CLOSED — /intent + /documents both bind; /connect-fold→#1340).** All on origin/main; staging health 200; sign-off clean; inbox empty.
