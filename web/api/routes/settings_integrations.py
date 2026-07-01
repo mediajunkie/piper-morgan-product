@@ -444,42 +444,13 @@ async def disconnect_slack(current_user: JWTClaims = Depends(get_current_user)):
     Disconnect Slack integration.
 
     Removes the user-scoped stored tokens (keychain, #849), revokes OAuth access on
-    Slack's side, and clears the Slack env vars. #1334: consolidated from a duplicate
-    /slack/disconnect route — the prior live def removed the keychain creds but skipped
-    the Slack-side revoke; the shadowed dup revoked but leaked the keychain creds.
+    Slack's side, and clears the Slack env vars. #1334 P1 consolidated the duplicate
+    route; #1334-P2 delegates the clearing to the uniform `disconnect_connector` helper.
     """
     try:
-        from services.infrastructure.keychain_service import KeychainService
+        from services.connectors.disconnect import disconnect_connector
 
-        keychain = KeychainService()
-
-        # Remove user-scoped tokens from keychain (#849 multi-tenancy isolation)
-        try:
-            keychain.delete_api_key("slack_bot", username=current_user.sub)
-            keychain.delete_api_key("slack_user", username=current_user.sub)
-        except Exception:
-            pass
-
-        # #1334: revoke on Slack's side too (best-effort; previously only in the dup)
-        try:
-            from services.integrations.slack.config_service import SlackConfigService
-            from services.integrations.slack.oauth_handler import SlackOAuthHandler
-
-            workspace_id = os.environ.get("SLACK_TEAM_ID", "default")
-            oauth_handler = SlackOAuthHandler(SlackConfigService())
-            await oauth_handler.revoke_workspace_access(workspace_id)
-        except Exception as revoke_error:
-            logger.warning(
-                "slack_revoke_warning",
-                error=str(revoke_error),
-                message="Could not revoke via Slack API; cleared local creds",
-            )
-
-        # Clear env (won't persist after restart)
-        os.environ.pop("SLACK_BOT_TOKEN", None)
-        os.environ.pop("SLACK_TEAM_ID", None)
-        os.environ.pop("SLACK_APP_TOKEN", None)
-
+        await disconnect_connector(current_user.sub, "slack")
         logger.info("slack_disconnected")
 
         return {
@@ -1136,18 +1107,12 @@ async def disconnect_calendar(
     Removes stored refresh token from keychain.
     Note: Does not revoke tokens on Google's side.
     Issue #839: Use user-scoped keychain key
+    #1334-P2: clearing delegated to the uniform `disconnect_connector` helper.
     """
     try:
-        from services.infrastructure.keychain_service import KeychainService
+        from services.connectors.disconnect import disconnect_connector
 
-        keychain = KeychainService()
-
-        # Remove refresh token from keychain (user-scoped key)
-        try:
-            keychain.delete_api_key(f"google_calendar_{current_user.sub}")
-        except Exception:
-            pass
-
+        await disconnect_connector(current_user.sub, "calendar")
         logger.info("calendar_disconnected", user_id=current_user.sub)
 
         return {
@@ -1500,22 +1465,15 @@ async def disconnect_notion(current_user: JWTClaims = Depends(get_current_user))
     """
     Disconnect Notion integration.
 
-    Removes API key from keychain.
+    Removes API key from keychain AND the user-scoped #358 store where save_notion_key
+    actually writes (#1337 — clearing only keychain left the real token behind).
     Issue #540: ALPHA-SETUP-NOTION stuck state recovery
+    #1334-P2: clearing delegated to the uniform `disconnect_connector` helper.
     """
-    from services.infrastructure.keychain_service import KeychainService
-
     try:
-        keychain = KeychainService()
+        from services.connectors.disconnect import disconnect_connector
 
-        # Remove from keychain
-        try:
-            keychain.delete_api_key(
-                "notion", username=current_user.sub
-            )  # Issue #849: User-scoped key for multi-tenancy isolation
-        except Exception:
-            pass  # Key might not exist
-
+        await disconnect_connector(current_user.sub, "notion")
         logger.info("notion_disconnected")
 
         return {
@@ -1816,50 +1774,13 @@ async def disconnect_github(current_user: JWTClaims = Depends(get_current_user))
 
     Removes token from keychain and environment.
     Issue #541: ALPHA-SETUP-GITHUB stuck state recovery
+    #1334-P2: clearing (keychain PAT + env + config-cache + OAuth binding + #358 grant,
+    #1330) is delegated to the uniform `disconnect_connector` helper.
     """
-    from services.infrastructure.keychain_service import KeychainService
+    from services.connectors.disconnect import disconnect_connector
 
     try:
-        keychain = KeychainService()
-
-        # Remove from keychain
-        try:
-            keychain.delete_api_key(
-                "github_token", username=current_user.sub
-            )  # Issue #849: User-scoped key for multi-tenancy isolation
-        except Exception:
-            pass  # Key might not exist
-
-        # Clear from environment
-        os.environ.pop("GITHUB_TOKEN", None)
-        os.environ.pop("GITHUB_API_TOKEN", None)
-        os.environ.pop("GH_TOKEN", None)
-
-        # Clear config cache
-        from services.integrations.github.config_service import GitHubConfigService
-
-        config_service = GitHubConfigService()
-        config_service.clear_cache()
-
-        # RECONNECT (#1330): a full disconnect must also clear the OAuth connector binding
-        # + revoke the #358 grant — the inverse of persist_github_connection (store grant +
-        # upsert BOUND). Without this, disconnect removes only the native PAT while the
-        # binding stays BOUND, so the badge/health still read "Connected via OAuth" and chat
-        # reads keep working through the connector. Best-effort: no binding/grant is fine.
-        try:
-            from services.connectors.binding_repository import ConnectorBindingRepository
-            from services.database.session_factory import AsyncSessionFactory
-            from services.mcp.consumer.connector import ConnectorStatusState
-            from services.mcp.consumer.connector_grant_store import ConnectorGrantStore
-
-            async with AsyncSessionFactory.session_scope() as session:
-                await ConnectorBindingRepository(session).set_status(
-                    current_user.sub, "github", ConnectorStatusState.UNBOUND.value
-                )
-                await ConnectorGrantStore().delete(session, current_user.sub, "github")
-        except Exception as e:
-            logger.warning("github_oauth_binding_clear_failed", error=str(e))
-
+        await disconnect_connector(current_user.sub, "github")
         logger.info("github_disconnected")
 
         return {

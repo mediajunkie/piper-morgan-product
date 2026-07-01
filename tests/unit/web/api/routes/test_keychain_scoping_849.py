@@ -290,16 +290,18 @@ class TestDisconnectKeyCorrectness849:
 
     @pytest.mark.asyncio
     async def test_slack_disconnect_source_uses_correct_keys(self):
-        """Slack disconnect must delete slack_bot and slack_user with username, not slack_bot_token."""
+        """Slack disconnect must delete slack_bot and slack_user with username, not
+        slack_bot_token. #1334-P2: the clearing moved to the uniform disconnect helper
+        (`services.connectors.disconnect`), so inspect that source (user_id form)."""
         import inspect
 
-        from web.api.routes import settings_integrations
+        from services.connectors import disconnect
 
-        source = inspect.getsource(settings_integrations)
+        source = inspect.getsource(disconnect)
 
         # Verify user-scoped key deletion (code may be split across lines by black)
-        assert '"slack_bot", username=current_user.sub' in source
-        assert '"slack_user", username=current_user.sub' in source
+        assert '"slack_bot", username=user_id' in source
+        assert '"slack_user", username=user_id' in source
         assert 'delete_api_key("slack_bot_token")' not in source
 
     @pytest.mark.asyncio

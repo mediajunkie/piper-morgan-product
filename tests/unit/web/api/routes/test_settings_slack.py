@@ -242,9 +242,12 @@ class TestDisconnectSlack:
 
     @pytest.mark.asyncio
     async def test_handles_missing_token_gracefully(self):
-        """Should succeed even if no token exists to clear"""
+        """Should succeed even if no token exists to clear (#1334-P2: clearing is
+        best-effort in the disconnect_connector helper)."""
         mock_oauth_handler = MagicMock()
         mock_oauth_handler.revoke_workspace_access = AsyncMock(return_value=True)
+        mock_user = MagicMock()
+        mock_user.sub = "test-user-123"
 
         with (
             patch.dict("os.environ", {}, clear=True),
@@ -254,7 +257,7 @@ class TestDisconnectSlack:
                 return_value=mock_oauth_handler,
             ),
         ):
-            result = await disconnect_slack()
+            result = await disconnect_slack(current_user=mock_user)
 
             assert result["success"] is True
             assert result["message"] == "Slack disconnected"
