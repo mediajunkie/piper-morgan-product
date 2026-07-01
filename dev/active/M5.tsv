@@ -1,0 +1,68 @@
+Title	URL	Status
+SEC-ENCRYPT-ATREST: Implement Encryption at Rest for Sensitive Data	https://github.com/mediajunkie/piper-morgan-product/issues/358	Blocked
+INFRA: Token refresh mechanism for seamless session continuity	https://github.com/mediajunkie/piper-morgan-product/issues/857	Done
+ENHANCE: Standup 3-part structural collection and enhanced completion	https://github.com/mediajunkie/piper-morgan-product/issues/900	Done
+UPGRADE: FastAPI/Starlette/httpx to current versions	https://github.com/mediajunkie/piper-morgan-product/issues/921	Done
+SEC: HIBP integration stub — key leak detection returns false safe result	https://github.com/mediajunkie/piper-morgan-product/issues/932	Done
+SEC: API key validation disabled for alpha — no re-enable plan	https://github.com/mediajunkie/piper-morgan-product/issues/933	Done
+TECH-DEBT: BudgetManager + APIUsageTracker have zero database persistence	https://github.com/mediajunkie/piper-morgan-product/issues/935	Done
+TECH-DEBT: UserService stores all user data in in-memory dicts	https://github.com/mediajunkie/piper-morgan-product/issues/936	Done
+Server leaves orphaned processes after stop	https://github.com/mediajunkie/piper-morgan-product/issues/948	Done
+DEV: Server restart reliability — stale .pyc, orphaned processes, startup timing	https://github.com/mediajunkie/piper-morgan-product/issues/949	Done
+SPRINT-MEMBERSHIP-TSV: agent-readable sprint metadata via TSV export (workaround for read:project scope gap)	https://github.com/mediajunkie/piper-morgan-product/issues/1130	Done
+INSIGHT-JOURNAL-INTEGRATION-GAP: page renders but is design-isolated from the rest of the site (MUX vision without integration)	https://github.com/mediajunkie/piper-morgan-product/issues/1134	Done
+test-drift: meeting_time graceful-degradation test expects stale string 'Calendar isn't configured yet'	https://github.com/mediajunkie/piper-morgan-product/issues/1137	Done
+DEBUG-ROUTE-PROD-EXPOSURE: verify web/api/routes/debug.py /debug-markdown is dev-only / not auth-bypassable in prod	https://github.com/mediajunkie/piper-morgan-product/issues/1149	Done
+Learning toggle 500s — hardcoded TEST_USER_ID violates users FK (ADR-071 instance)	https://github.com/mediajunkie/piper-morgan-product/issues/1250	Done
+SEC: admin_compose is an auth-exempt WRITABLE admin UI with no env-gate (only Caddy protects it)	https://github.com/mediajunkie/piper-morgan-product/issues/1307	Done
+[mobile] Welcome card tiny and low on screen — onboarding not mobile-first	https://github.com/mediajunkie/piper-morgan-product/issues/1319	Done
+INFRA-TIMESERIES: Implement Time-Series Database Infrastructure	https://github.com/mediajunkie/piper-morgan-product/issues/371	Product Backlog
+ARCH: WebSocket Infrastructure for Real-Time Communication	https://github.com/mediajunkie/piper-morgan-product/issues/557	Product Backlog
+SEC: Implement actual token revocation on disconnect	https://github.com/mediajunkie/piper-morgan-product/issues/542	Product Backlog
+SEC-KMS-INTEGRATION: Migrate from environment variable to AWS KMS	https://github.com/mediajunkie/piper-morgan-product/issues/482	Product Backlog
+CORE-UX-AUTH-PHASE2: Registration, Password Reset, and Security Polish	https://github.com/mediajunkie/piper-morgan-product/issues/441	Product Backlog
+DIST-MCP-PACKAGE: Package Piper as MCP server	https://github.com/mediajunkie/piper-morgan-product/issues/829	Product Backlog
+DIST-MCP-DOCS: Integration documentation for MCP clients	https://github.com/mediajunkie/piper-morgan-product/issues/830	Product Backlog
+DIST-MCP-REGISTRY: Publish to package registries	https://github.com/mediajunkie/piper-morgan-product/issues/831	Product Backlog
+DIST-MCP-TEST: Integration testing with MCP clients	https://github.com/mediajunkie/piper-morgan-product/issues/832	Product Backlog
+DIST-MCPB-BUNDLE: MCPB packaging for Claude Desktop one-click install	https://github.com/mediajunkie/piper-morgan-product/issues/957	Product Backlog
+DIST-PROJECT-TEMPLATE: Claude Project template for Piper persona	https://github.com/mediajunkie/piper-morgan-product/issues/958	Product Backlog
+DIST-MCP-APPS: Artifact canvas via MCP Apps (in-chat UI)	https://github.com/mediajunkie/piper-morgan-product/issues/959	Product Backlog
+DIST-VISUAL-IDENTITY: Visual identity for MCPB + MCP Apps distribution	https://github.com/mediajunkie/piper-morgan-product/issues/966	Product Backlog
+PERPLEXITY broader sweep — 4 files still reference perplexity beyond the LLMProvider enum	https://github.com/mediajunkie/piper-morgan-product/issues/1028	Product Backlog
+En-masse copy review pass for new M2e handlers + standup prompts	https://github.com/mediajunkie/piper-morgan-product/issues/1043	Product Backlog
+Owner-review: services/publishing/publisher.py retry/fallback (from #997 sweep)	https://github.com/mediajunkie/piper-morgan-product/issues/1001	Product Backlog
+INFRA-OAUTH-MULTI: Multi-OAuth installation infrastructure (broken out from #471; M2f or M5 — PM call)	https://github.com/mediajunkie/piper-morgan-product/issues/1061	Product Backlog
+LLM keychain integration regression — settings UI requires re-paste despite working server-side keychain reads	https://github.com/mediajunkie/piper-morgan-product/issues/1105	Product Backlog
+CANONICAL-TODO-JUDGE-ARTIFACT: stateless judge flags honest todo responses as fabrication (canonical-test user has 4 accumulated todos)	https://github.com/mediajunkie/piper-morgan-product/issues/1131	Product Backlog
+Naming clarity: ActionDisposition.CANONICAL is misleading for floor-routed categories (STATUS/PRIORITY)	https://github.com/mediajunkie/piper-morgan-product/issues/1138	Product Backlog
+Audit task: which PremonitionService methods are dead vs used? frame_insight_for_surfacing IS production-used	https://github.com/mediajunkie/piper-morgan-product/issues/1139	Product Backlog
+INTENT-EMPTY-ORIGINAL-MESSAGE: /intent response returns intent.original_message as empty string	https://github.com/mediajunkie/piper-morgan-product/issues/1151	Product Backlog
+TEST-DISCIPLINE-REFACTOR: use real SurfaceableInsight + ExtractedLearning fixtures, not MagicMock defaults (R4 lesson)	https://github.com/mediajunkie/piper-morgan-product/issues/1144	Product Backlog
+LINUX-BUILD-PORTABILITY: requirements.txt ships macOS-only pyobjc deps without platform markers	https://github.com/mediajunkie/piper-morgan-product/issues/1168	Product Backlog
+SOURCE-TYPE-SLOT-LOCATION: revisit intent.context vs intent.slots for source_type (post slot-filling unification)	https://github.com/mediajunkie/piper-morgan-product/issues/1175	Product Backlog
+HOSTED-DEPLOY-PORTABILITY: hardcoded-local assumptions break a non-localhost deploy (main.py bind + alembic.ini)	https://github.com/mediajunkie/piper-morgan-product/issues/1176	Product Backlog
+VOICE-LINT: attention/spatial references must stay present-tense + session-scoped (no implied cross-session memory)	https://github.com/mediajunkie/piper-morgan-product/issues/1183	Product Backlog
+PIPER-SELF-KNOWLEDGE: support info + help-doc pointers + RAG over own docs (so Piper can answer 'how do you work?')	https://github.com/mediajunkie/piper-morgan-product/issues/1186	Product Backlog
+FILES-FOLLOW-ON: G65 artifact persistence (export/share/versions) + tagging full release — split from #313	https://github.com/mediajunkie/piper-morgan-product/issues/1202	Product Backlog
+KeyAuditService query/report surfaces unwired — deferred to M5 reconsideration with the hosted-credential work (PM 2026-06-12)	https://github.com/mediajunkie/piper-morgan-product/issues/1203	Product Backlog
+Pre-existing test failures (3 clusters: standup conversation-state, perf-indexes, error-message integration) — found during #1180/#1204	https://github.com/mediajunkie/piper-morgan-product/issues/1224	Product Backlog
+ActionClassifier false-negatives block 2 allow-listed reads from auto-exec (list_releases_query, shipped_this_week)	https://github.com/mediajunkie/piper-morgan-product/issues/1219	Product Backlog
+CI hygiene: Code Quality ruff-format gate red cohort-wide (207 files) — likely local-vs-pinned ruff version drift	https://github.com/mediajunkie/piper-morgan-product/issues/1253	Product Backlog
+LAUNCH-ENV: strip inherited empty Anthropic env vars at server startup	https://github.com/mediajunkie/piper-morgan-product/issues/1258	Product Backlog
+[M5] Password recovery + login-identifier clarity for beta	https://github.com/mediajunkie/piper-morgan-product/issues/1261	Product Backlog
+M5: host piper-morgan server on Fly.io for beta launch	https://github.com/mediajunkie/piper-morgan-product/issues/1278	Product Backlog
+GitHubIntegrationRouter has no close() → per-request aiohttp session leak (places.py + radar WorkItem source)	https://github.com/mediajunkie/piper-morgan-product/issues/1279	Product Backlog
+[AUDIT] Action↔handler routing integrity — classifier-emitted actions vs registered handlers (#1269 class)	https://github.com/mediajunkie/piper-morgan-product/issues/1283	Product Backlog
+BUG: naive/aware datetime subtraction in conversation_manager.transition_state (standup COMPLETE path)	https://github.com/mediajunkie/piper-morgan-product/issues/1285	Product Backlog
+Tech-debt: triage + remove unwired Multi-Agent Coordinator code (superseded #118 artifacts)	https://github.com/mediajunkie/piper-morgan-product/issues/1287	Product Backlog
+BYOC-CRED-DECOUPLE: decouple the plugin credential (Option A) — public-marketplace gate + BYO-key on-ramp	https://github.com/mediajunkie/piper-morgan-product/issues/1300	Product Backlog
+Remove dead templates/components/navigation.html + retire its dead-code tests (once nav_rail #1280 confirmed safe)	https://github.com/mediajunkie/piper-morgan-product/issues/1298	Product Backlog
+BUG: test_standup_api.py generates 500s — mock_standup_result fixture uses List[str] but StandupResult expects List[StandupItem] since #1034	https://github.com/mediajunkie/piper-morgan-product/issues/1301	Product Backlog
+BUG: test_cli_standup_integration.py patches cli.commands.standup.SessionManager which no longer exists after CONV-MCP-STANDUP refactor	https://github.com/mediajunkie/piper-morgan-product/issues/1302	Product Backlog
+BUG: test_standup_integration.py::test_authentication_flow_no_token asserts 'detail' key but auth errors now return 'message'	https://github.com/mediajunkie/piper-morgan-product/issues/1303	Product Backlog
+CI gap: DB-backed security test suite never runs in gating CI; main chronically red with no required status checks	https://github.com/mediajunkie/piper-morgan-product/issues/1304	Product Backlog
+SEC-ENCRYPT: encrypt PII-bearing JSON/JSONB structured columns (deferred from #358-B)	https://github.com/mediajunkie/piper-morgan-product/issues/1305	Product Backlog
+SEC-ENCRYPT: encrypt uploaded file content at rest (storage-layer; deferred from #358-B)	https://github.com/mediajunkie/piper-morgan-product/issues/1306	Product Backlog
+Sweep and resolve scattered implementation TODOs in services/ (M5)	https://github.com/mediajunkie/piper-morgan-product/issues/1321	Product Backlog
+audit: hardcoded config values that should be env vars or configurable	https://github.com/mediajunkie/piper-morgan-product/issues/1324	Product Backlog

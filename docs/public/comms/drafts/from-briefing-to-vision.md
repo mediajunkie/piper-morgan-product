@@ -1,5 +1,5 @@
 ---
-image: 'ai-observatory.png
+image: 'ai-observatory.png'
 alt: 'A glowing geometric AI companion climbs a mountain from towering stacks of project documents to an observatory overlooking a vast landscape, symbolizing how accumulated context becomes strategic vision and better judgment over time.'
 caption: "It starts with a single step"
 ---
