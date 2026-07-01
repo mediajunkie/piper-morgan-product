@@ -27,6 +27,8 @@ from services.intent_service.document_handlers import (
     handle_search_documents,
     handle_summarize_document,
 )
+from services.llm.request_key import request_api_key  # #1185: per-user LLM key rail
+from web.utils.llm_key import resolve_user_llm_key  # #1185
 
 router = APIRouter(prefix="/api/v1/documents", tags=["documents"])
 logger = structlog.get_logger(__name__)
@@ -65,7 +67,11 @@ async def analyze_document(
     Issue #290: CORE-ALPHA-DOC-PROCESSING (Test 19)
     """
     try:
-        result = await handle_analyze_document(file_id=file_id, user_id=current_user.user_id)
+        # #1185: bind the caller's stored Anthropic key for this request (header > stored
+        # > server); else document analysis would silently use the server key, not theirs.
+        resolved_key = await resolve_user_llm_key(None, current_user.sub)
+        with request_api_key(resolved_key):
+            result = await handle_analyze_document(file_id=file_id, user_id=current_user.user_id)
         logger.info(
             "Document analyzed",
             file_id=file_id,
@@ -124,9 +130,12 @@ async def ask_question_about_document(
     Issue #290: CORE-ALPHA-DOC-PROCESSING (Test 20)
     """
     try:
-        result = await handle_question_document(
-            file_id=file_id, question=question, user_id=current_user.user_id
-        )
+        # #1185: bind the caller's stored Anthropic key for this request.
+        resolved_key = await resolve_user_llm_key(None, current_user.sub)
+        with request_api_key(resolved_key):
+            result = await handle_question_document(
+                file_id=file_id, question=question, user_id=current_user.user_id
+            )
         logger.info(
             "Question answered",
             file_id=file_id,
@@ -183,9 +192,12 @@ async def summarize_document(
     Issue #290: CORE-ALPHA-DOC-PROCESSING (Test 22)
     """
     try:
-        result = await handle_summarize_document(
-            file_id=file_id, format=format, user_id=current_user.user_id
-        )
+        # #1185: bind the caller's stored Anthropic key for this request.
+        resolved_key = await resolve_user_llm_key(None, current_user.sub)
+        with request_api_key(resolved_key):
+            result = await handle_summarize_document(
+                file_id=file_id, format=format, user_id=current_user.user_id
+            )
         logger.info(
             "Document summarized",
             file_id=file_id,
@@ -254,7 +266,12 @@ async def compare_documents(
                 detail="Maximum 5 documents can be compared at once",
             )
 
-        result = await handle_compare_documents(file_ids=file_ids, user_id=current_user.user_id)
+        # #1185: bind the caller's stored Anthropic key for this request.
+        resolved_key = await resolve_user_llm_key(None, current_user.sub)
+        with request_api_key(resolved_key):
+            result = await handle_compare_documents(
+                file_ids=file_ids, user_id=current_user.user_id
+            )
         logger.info(
             "Documents compared",
             file_count=len(file_ids),
@@ -320,12 +337,15 @@ async def reference_in_conversation(
     Issue #290: CORE-ALPHA-DOC-PROCESSING (Test 21)
     """
     try:
-        result = await handle_reference_in_conversation(
-            message=request.message,
-            file_id=request.file_id,
-            user_id=current_user.user_id,
-            conversation_history=request.conversation_history,
-        )
+        # #1185: bind the caller's stored Anthropic key for this request.
+        resolved_key = await resolve_user_llm_key(None, current_user.sub)
+        with request_api_key(resolved_key):
+            result = await handle_reference_in_conversation(
+                message=request.message,
+                file_id=request.file_id,
+                user_id=current_user.user_id,
+                conversation_history=request.conversation_history,
+            )
         logger.info(
             "Conversational reference processed",
             file_id=request.file_id,
