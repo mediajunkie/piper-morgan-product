@@ -6,6 +6,12 @@ credentials.json
 client_secret_*.json
 *.apps.googleusercontent.com.json
 
+# MCP-bundle build artifacts (large binaries; distribute via releases, not git)
+*.mcpb
+
+# Stray/mis-pathed agent worktree metadata (should be .claude/, not .claire/)
+.claire/
+
 # dependencies
 node_modules/
 /node_modules
