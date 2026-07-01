@@ -96,6 +96,18 @@ EXEMPT_LOCALHOST_SCAFFOLD_PATHS: List[str] = [
     "/api/v1/admin/trust",  # Issue #1148: dev trust-stage UI (router 404s in production)
 ]
 
+# Read-only integration-status checks the setup wizard fires PRE-account-creation (#1320).
+# The onboarding flow runs before login, so these GET "are app credentials configured?"
+# checks 401'd and popped the browser's basic-auth dialog. They return ONLY booleans
+# (configured / has_client_id / has_client_secret — never the secret values; see
+# SlackAppCredentialsStatusResponse), so exempting them is safe. GET-only → no
+# AUTH_EXEMPT_JUSTIFIED entry required (#1308: read-only exempt routes need none). The
+# WRITE siblings (POST .../app-credentials) are intentionally NOT here — they still require auth.
+EXEMPT_SETUP_READONLY_STATUS_PATHS: List[str] = [
+    "/api/v1/settings/integrations/slack/app-credentials/status",
+    "/api/v1/settings/integrations/calendar/app-credentials/status",
+]
+
 # The flat list AuthMiddleware compares against, assembled from category
 # constants above. This keeps the constructor signature unchanged.
 DEFAULT_EXCLUDE_PATHS: List[str] = [
@@ -106,6 +118,7 @@ DEFAULT_EXCLUDE_PATHS: List[str] = [
     *EXEMPT_OAUTH_CALLBACK_PATHS,
     *EXEMPT_STATIC_ASSET_PATHS,
     *EXEMPT_LOCALHOST_SCAFFOLD_PATHS,
+    *EXEMPT_SETUP_READONLY_STATUS_PATHS,
 ]
 
 
