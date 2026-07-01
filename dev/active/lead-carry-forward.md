@@ -7,7 +7,8 @@
 - **#1201** (Slack inbound onboarding UX) → **CXO** (user-facing flow + copy)
 - **#1334 Part 2** (connector-agnostic `disconnect_connector` helper) → **Arch** (binding-migration decision, #1335)
 - **#1109 Phase 2** (env-var-gated in-memory OAuth-state fallback + ratify the async deviation) → **PM** (YAGNI? Redis always up)
-- **#1333** (fabrication list→category rule) → **Arch/HOST**
+- **#1333** (fabrication list→category rule) → **DONE + CLOSED** (Arch-blessed; derived honest-decline at the execution else-branch; killed the list; 1775 green; live). Follow-on: behavioral-corpus fixture (Arch drafts shape → Lead wires into canonical-retest trust-corpus) + HOST transparency-when-declined + ADR-073 fold @M5.
+- **NOW BUILDABLE (Arch/CXO unblocked, 6/30 16:25):** **#1334-P2** uniform `disconnect_connector(user_id, connector)` helper, per-model dispatch inside (Arch-upgraded) · **#1335 gate-close** = (B) two-model split + justified-N/A-with-rationale + named (B)→(A) trigger + decisions.log · **#1201** Slack inbound (CXO full design spec + go-ahead: `slack_app_token` storage + Socket-Mode lifecycle + `/api/v1/slack/inbound/status` + settings surface).
 - **#1335 gate close** → **Arch** binding-model-migration call + the above
 - **inc.4** (sim removal) → ⛔ **HALTED. SPATIAL IS PROTECTED (PM 6/30) — do NOT remove spatial intelligence without PM consult.** The prior "spatial-federation is dead" plan was falsified (github_spatial is LIVE). Any future sim-TRANSPORT-only cleanup must exclude all spatial + re-verify from scratch + get PM/Arch sign-off. See the corrected inc.4 entry in the AUTONOMOUS QUEUE above + memory `project-spatial-intelligence-protected`. NO deletes made.
 - **#1338 manual-verify** + live Slack mentions → gated on PM Slack `search:read` re-auth
