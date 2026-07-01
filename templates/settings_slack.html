@@ -581,6 +581,39 @@
         </div>
       </div>
 
+      <!-- Enable Slack replies (inbound / Socket Mode) — #1201 -->
+      <div class="app-config-card" id="inbound-card">
+        <h3>💬 Enable Slack replies</h3>
+        <p class="description">
+          Piper can reply to direct messages and @mentions in Slack once you set up an
+          app-level token. This is a one-time step in your Slack app settings. Once
+          enabled, you can DM the Piper bot or @mention it in any channel it's in, and
+          it will reply.
+        </p>
+
+        <div id="inbound-status" class="app-config-status not-configured">
+          <span id="inbound-status-icon">⚪</span>
+          <span id="inbound-status-text">Checking…</span>
+        </div>
+
+        <ol class="inbound-steps">
+          <li>Open your <a href="https://api.slack.com/apps" target="_blank" rel="noopener">Slack app settings</a> and select your Piper app.</li>
+          <li>Under <strong>Settings → Socket Mode</strong>, toggle Socket Mode on.</li>
+          <li>Under <strong>Settings → Basic Information → App-Level Tokens</strong>, click <strong>Generate Token and Scopes</strong>.</li>
+          <li>Give it a name (e.g. <code>piper-socket</code>), add the scope <code>connections:write</code>, and click <strong>Generate</strong>.</li>
+          <li>Copy the token — it starts with <code>xapp-</code>.</li>
+        </ol>
+
+        <div class="config-form-group">
+          <label for="slack-app-token">App-level token (<code>xapp-…</code>)</label>
+          <input type="password" id="slack-app-token" placeholder="xapp-1-..." />
+          <p class="help-text">This token lets Piper open a persistent connection to Slack. It's stored securely and never shared.</p>
+        </div>
+        <div class="config-button-group">
+          <button class="btn btn-primary" id="save-app-token-btn" onclick="saveAppToken()">Enable Slack replies</button>
+        </div>
+      </div>
+
       <!-- Channel Settings Card (Issue #570) - Only shown when connected -->
       <div class="channel-settings-card" id="channel-settings-card" style="display: none;">
         <h3>📢 Channel Settings</h3>
@@ -644,7 +677,71 @@
         checkOAuthCallback();
         loadAppCredentialsStatus();  // Issue #576: Check credentials first
         loadSlackStatus();
+        loadInboundStatus();  // #1201: inbound (Socket Mode) status
       });
+
+      // #1201: inbound (Slack replies / Socket Mode) status + app-token save
+      function renderInboundStatus(state) {
+        const icon = document.getElementById('inbound-status-icon');
+        const text = document.getElementById('inbound-status-text');
+        if (!icon || !text) return;
+        if (state === 'listening') {
+          icon.textContent = '🟢';
+          text.textContent = 'Piper is listening in Slack — replies to DMs and @mentions are active.';
+        } else if (state === 'connecting') {
+          icon.textContent = '🟡';
+          text.textContent = "Piper has your token but couldn't open a Slack connection. Try saving the token again.";
+        } else {
+          icon.textContent = '⚪';
+          text.textContent = 'Slack replies not enabled — follow the steps above to enable inbound messages.';
+        }
+      }
+
+      async function loadInboundStatus() {
+        try {
+          const resp = await fetch('/api/v1/settings/integrations/slack/inbound/status', {
+            credentials: 'include'
+          });
+          if (!resp.ok) return;
+          const data = await resp.json();
+          renderInboundStatus(data.state);
+        } catch (e) {
+          // leave the current badge as-is on a transient error
+        }
+      }
+
+      async function saveAppToken() {
+        const input = document.getElementById('slack-app-token');
+        const btn = document.getElementById('save-app-token-btn');
+        const token = (input.value || '').trim();
+        if (!token) return;
+        btn.disabled = true;
+        try {
+          const resp = await fetch('/api/v1/settings/integrations/slack/app-token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ app_token: token })
+          });
+          if (!resp.ok) {
+            let detail = "Couldn't connect to Slack. Double-check that Socket Mode is enabled in your app settings and try again.";
+            try {
+              const err = await resp.json();
+              if (err && err.detail) detail = err.detail;
+            } catch (e) { /* use default */ }
+            showToast('error', detail, 'Slack replies');
+            return;
+          }
+          const data = await resp.json();
+          input.value = '';
+          renderInboundStatus(data.state);
+          showToast('success', 'Slack replies enabled.', 'Slack replies');
+        } catch (e) {
+          showToast('error', "Couldn't connect to Slack. Double-check that Socket Mode is enabled and try again.", 'Slack replies');
+        } finally {
+          btn.disabled = false;
+        }
+      }
 
       function checkOAuthCallback() {
         const params = new URLSearchParams(window.location.search);
