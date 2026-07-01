@@ -40,7 +40,13 @@ ENV_DEFAULT_REPO = "PIPER_DEFAULT_REPO"
 # (data/github_preferences.json) was RETIRED 2026-06-21. The user-default and github-handle
 # resolution paths read the DB-backed connector_configs store (ADR-070 D4) — the SOLE store.
 
-ResolutionSource = Literal["explicit", "project", "default_project", "user_default", "env_var"]
+# ResolutionSource + ResolvedTarget are promoted to the shared resolution module
+# (#1342, Arch-ruled 2026-07-01) — imported here (and re-exported) so existing
+# `from ...repo_resolver import ResolutionSource` callers keep working unchanged.
+from services.integrations.resolution.target import (  # noqa: E402
+    ResolutionSource,
+    ResolvedTarget,
+)
 
 _FULL_NAME_RE = re.compile(r"^[A-Za-z0-9._\-]+/[A-Za-z0-9._\-]+$")
 
@@ -62,6 +68,12 @@ class ResolvedRepo:
     @property
     def full_name(self) -> str:
         return f"{self.owner}/{self.name}"
+
+    def to_target(self) -> ResolvedTarget:
+        """Wrap this GitHub-resolved repo in the connector-agnostic ``ResolvedTarget``
+        envelope (#1342, Arch-ruled): ``source`` carries over, ``connector`` is
+        ``"github"``, and ``payload`` is this ``ResolvedRepo`` (the GitHub payload)."""
+        return ResolvedTarget(source=self.source, connector="github", payload=self)
 
 
 class UnresolvedRepoError(Exception):
