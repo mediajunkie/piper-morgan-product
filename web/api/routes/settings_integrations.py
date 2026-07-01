@@ -15,7 +15,7 @@ from typing import List, Optional
 from urllib.parse import quote
 
 import structlog
-from fastapi import APIRouter, Depends, Form, HTTPException, status
+from fastapi import APIRouter, Depends, Form, HTTPException, Request, status
 from pydantic import BaseModel
 from starlette.responses import RedirectResponse
 
@@ -86,6 +86,23 @@ class SlackAppCredentialsStatusResponse(BaseModel):
     configured: bool
     has_client_id: bool
     has_client_secret: bool
+
+
+class SlackAppTokenRequest(BaseModel):
+    """Request body for saving the Slack app-level token (#1201 inbound)."""
+
+    app_token: str
+
+
+class SlackInboundStatusResponse(BaseModel):
+    """Inbound (Socket Mode) status for the settings surface (#1201).
+
+    state: 'listening' (connected), 'connecting' (token set, not yet connected /
+    connect failed), or 'not_enabled' (no app token stored).
+    """
+
+    connected: bool
+    state: str
 
 
 # ============================================================================
@@ -652,6 +669,83 @@ async def save_slack_app_credentials(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to save Slack app credentials: {str(e)}",
         )
+
+
+@router.post("/slack/app-token")
+async def save_slack_app_token(
+    body: SlackAppTokenRequest,
+    request: Request,
+    current_user: JWTClaims = Depends(get_current_user),
+) -> SlackInboundStatusResponse:
+    """Save the Slack app-level token (xapp-) + start inbound Socket Mode (#1201).
+
+    Enables inbound replies (DM the bot / @mention → Piper responds). The app-level
+    token is a single per-app credential (global keychain `slack_app_token`), independent
+    of the per-user OAuth bot/user tokens — additive, doesn't touch the OAuth flow. On
+    save we (re)start the Socket Mode runner at runtime (no app restart) and return the
+    resulting inbound state so the UI can flip the badge.
+
+    Security: stored via KeychainService (the `_api_key`-suffix contract), never logged.
+    """
+    from services.infrastructure.keychain_service import KeychainService
+    from services.integrations.slack.socket_mode_runner import restart_socket_runner
+
+    token = (body.app_token or "").strip()
+    # Slack app-level tokens are `xapp-…`; reject anything else with a clear message.
+    if not token.startswith("xapp-"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=(
+                "That doesn't look like an app-level token — they start with 'xapp-'. "
+                "Check you copied the right one from Basic Information → App-Level Tokens."
+            ),
+        )
+
+    try:
+        # Global (per-app) key — the Socket Mode runner reads `slack_app_token` unscoped.
+        KeychainService().store_api_key("slack_app_token", token)
+        logger.info("slack_app_token_saved", user_id=str(current_user.sub))
+
+        # Start-on-save: (re)build + connect the runner at runtime.
+        runner = await restart_socket_runner(request.app)
+        connected = bool(runner and runner.is_connected)
+        state = "listening" if connected else "connecting"
+        return SlackInboundStatusResponse(connected=connected, state=state)
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("slack_app_token_save_error", error=str(e), exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to save Slack app token: {str(e)}",
+        )
+
+
+@router.get("/slack/inbound/status", response_model=SlackInboundStatusResponse)
+async def get_slack_inbound_status(
+    request: Request,
+    current_user: JWTClaims = Depends(get_current_user),
+) -> SlackInboundStatusResponse:
+    """Inbound (Socket Mode) status for the Settings→Slack surface (#1201).
+
+    Composes the 3-state view from app-token presence + the runner's live connection:
+    - no app token → 'not_enabled' (gray)
+    - token present + runner connected → 'listening' (green)
+    - token present + runner absent/not-connected → 'connecting' (yellow)
+    """
+    from services.infrastructure.keychain_service import KeychainService
+
+    has_token = bool(
+        os.getenv("SLACK_APP_TOKEN") or KeychainService().get_api_key("slack_app_token")
+    )
+    if not has_token:
+        return SlackInboundStatusResponse(connected=False, state="not_enabled")
+
+    runner = getattr(request.app.state, "slack_socket_runner", None)
+    connected = bool(runner and getattr(runner, "is_connected", False))
+    return SlackInboundStatusResponse(
+        connected=connected, state="listening" if connected else "connecting"
+    )
 
 
 @router.get("/slack/app-credentials/status", response_model=SlackAppCredentialsStatusResponse)

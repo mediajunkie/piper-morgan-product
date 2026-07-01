@@ -57,6 +57,15 @@ class SlackSocketModeRunner:
         self.bound_user_id = bound_user_id
         self._client = None
         self._web = None
+        self._connected = False  # #1201: reflect actual socket state for the status surface
+
+    @property
+    def is_connected(self) -> bool:
+        """True once the Socket Mode websocket is open (set in start, cleared in stop).
+
+        #1201: the inbound-status endpoint composes the user-facing 3-state view
+        (listening / connecting / not-enabled) from this + app-token presence."""
+        return self._connected
 
     async def start(self) -> None:
         from slack_sdk.socket_mode.aiohttp import SocketModeClient
@@ -78,6 +87,7 @@ class SlackSocketModeRunner:
 
         self._client.socket_mode_request_listeners.append(_listener)
         await self._client.connect()
+        self._connected = True  # #1201
         logger.info("slack_socket_mode_connected", bound_user=self.bound_user_id)
 
     async def _handle_event(self, event: dict) -> None:
@@ -149,6 +159,7 @@ class SlackSocketModeRunner:
         await self._web.chat_postMessage(channel=channel, text=text, thread_ts=thread_ts)
 
     async def stop(self) -> None:
+        self._connected = False  # #1201
         try:
             if self._client:
                 await self._client.disconnect()
@@ -185,3 +196,38 @@ async def build_runner(intent_service: Any) -> Optional[SlackSocketModeRunner]:
         bot_token=bot_token,
         bound_user_id=bound_user,
     )
+
+
+async def restart_socket_runner(app: Any) -> Optional[SlackSocketModeRunner]:
+    """(Re)build + start the inbound Socket Mode runner at RUNTIME, on ``app.state`` (#1201).
+
+    Boot starts the runner once (web/startup.py). This lets an app-level token entered
+    *after* boot take effect without an app restart — the token-save route calls it:
+    stop any existing runner, rebuild from the now-stored token, start, and store on
+    ``app.state.slack_socket_runner``.
+
+    Returns the runner, or None if inbound isn't fully configured (no app/bot token,
+    no bound user, or no intent_service) — in which case the stored runner is cleared.
+    Best-effort start: a connect failure keeps the (unconnected) runner object so the
+    status surface can show 'connecting/unavailable' rather than 'not enabled'.
+    """
+    existing = getattr(app.state, "slack_socket_runner", None)
+    if existing is not None:
+        await existing.stop()
+        app.state.slack_socket_runner = None
+
+    intent_service = getattr(app.state, "intent_service", None)
+    if intent_service is None:
+        logger.info("slack_socket_mode_skipped", reason="no intent_service on app.state")
+        return None
+
+    runner = await build_runner(intent_service)
+    if runner is None:
+        return None
+    app.state.slack_socket_runner = runner
+    try:
+        await runner.start()
+    except Exception as e:
+        # Keep the (unconnected) runner so status reads 'connecting', not 'not enabled'.
+        logger.error("slack_socket_runner_start_failed", error=str(e), exc_info=True)
+    return runner
