@@ -1,15 +1,22 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-01 ~16:05 PT. Session log: `dev/2026/07/01/2026-07-01-0531-lead-code-log.md`.
+**Updated**: 2026-07-01 ~18:30 PT. Session log: `dev/2026/07/01/2026-07-01-0531-lead-code-log.md`.
 
-## ▶ CURRENT (7/1 ~16:05) — READ THIS FIRST (supersedes the 6/30 block below)
-**RECONNECT feature-work is WRAPPED.** 7/1 closed #1201 (Slack inbound onboarding), #1230 (→split #1342), #1316 (→Dot Releases), #1231 cleanup (Arch-ruled DegradationReason unification), #1320 (bug-2 fixed; Caddy = droplet-apply pending PM); plus 6/30's #1338/#1339/#1109/#1334/#1335 all closed. HEAD==origin/main; 1 cron; inbox empty.
-**⭐ ACTIVE BUILD: #1342 — connector-agnostic target resolution (Arch-ruled: a SEPARATE resolution service, not a 5th Connector method; `decisions.log` 2026-07-01 ~15:25/15:40).**
-- **Inc 1 DONE** (~16:05): new `services/integrations/resolution/` module — `ResolvedTarget{source,connector,payload}` + `ResolutionSource` **promoted as-is** (repo_resolver re-exports → back-compat) + `ResolvedRepo.to_target()` seam. Additive, 229 green, on main.
-- **Inc 2 = NEXT (drain target):** adapt `resolve_repo` to offer `ResolvedTarget` + thread its callers (github_adapter / router / query-handlers) to `.payload`; **preserve the #1230 proof-tests + `source` labels.**
-- **Inc 3:** calendar = **design-on-paper only** (m-40 build-on-demand).
-**Open follow-ons (gated / low-pri):** #1231 CXO copy voice-pass (`degradation_copy.py`, memo sent) + primary-path live-verify · #1320 Caddy droplet-apply (PM/infra) + fresh-incognito verify · #1316 (Dot Releases) · #1340 (/connect-fold from #1185) · **PM-led RECONNECT gate-close live-verify** (#1201 round-trip, #1338 mentions, #1299b deploy) · **inc.4 sim dead-subsystem removal = usage-paced.**
-**⚠️ INFRA RISK (flagged to PM):** isolation:worktree agents' file tools resolve to PM's nested MAIN CHECKOUT — 2 strays this session, both caught + main verified intact; **hold file-writing worktree-agents until mitigated.**
+## ▶ CURRENT (7/1 ~18:30) — READ THIS FIRST (supersedes the 6/30 block below)
+**RECONNECT buildable scope is FULLY DRAINED.** #1342 (connector-agnostic resolution — Inc 1+2 both done, closed to Arch's ruling) was the last item on the active build queue. Also closed today: #1201, #1230, #1316, #1231 cleanup, #1320 bug-2; 6/30's #1338/#1339/#1109/#1334/#1335. CXO's copy voice-pass on #1201/#1231 applied (43 tests green). HEAD==origin/main; inbox empty. **Dual-account episode (~15:23–16:06) reconciled clean — no damage, see the 18:00 log entry.** Model = Sonnet 5 (PM-switched 7/1).
+
+**⭐ NOTHING is currently unblocked-and-buildable in RECONNECT.** Everything remaining is genuinely gated:
+- #1231 CXO copy voice-pass → **DONE this session.** Remaining: primary-path live-verify (PM/testing).
+- #1320 Caddy droplet-apply → **PM/infra** (no Caddyfile in repo; runbook documented).
+- #1316 → **Dot Releases** (out of sprint, PM-moved).
+- #1340 (/connect-fold from #1185) → separate lane, not scoped yet.
+- **PM-led RECONNECT gate-close live-verify** (#1201 Slack round-trip, #1338 mentions, #1299b deploy) → needs PM/tester with real credentials.
+- **inc.4** sim dead-subsystem removal → usage-paced (large, ~10-file teardown).
+- A future calendar-resolution build (#1342's deferred item) → **on-demand**, no issue exists yet.
+
+**So: check for PM direction / new work before assuming there's an autonomous next step.** If truly idle, inc.4 is the next self-contained thing with an executable plan (#1322 comment 4827173746) — but it's usage-paced by design, not a default fallback to grab.
+
+**⚠️ INFRA RISK (flagged to PM, still open):** isolation:worktree agents' file tools resolve to PM's nested MAIN CHECKOUT — 2 strays this session (6/30), both caught + main verified intact; **hold file-writing worktree-agents until mitigated.**
 
 ---
 
