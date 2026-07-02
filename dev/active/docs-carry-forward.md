@@ -1,7 +1,7 @@
 # Docs Carry-Forward
-**Updated**: 2026-07-01 ~11:30 PDT (WORK fire)
+**Updated**: 2026-07-01 ~22:47 PDT (STOP fire)
 **Cron**: `17 10,22 * * *` (SLOW tier — 2×/day; job `2706da77`)
-**Session log**: `dev/2026/07/01/2026-07-01-1047-docs-code-log.md` (in progress)
+**Session log**: `dev/2026/07/01/2026-07-01-1047-docs-code-log.md` (DAY-CLOSED ✓)
 
 ## Run-lean status
 
@@ -27,10 +27,11 @@ Quota reset today (Wed Jul-1 ~9pm PT). Exec broadcasts normal-cadence restore at
 - ✅ **Ship #049 published** — proofread corrected (ADR-1312 error, issue#s in prose, Lead Dev gloss, frontmatter); publish pipeline complete; website commit `32a7f87a5`; calendar updated; draft archived. Published at: `/shipping-news/weekly-ship-049-the-team-builds-its-own-reliability`
 - ✅ **Exec memo sent** — ADR-1312 source-debug request; sent to exec + pa cc via push-to-ref `11b8562a7`
 
-## Next session (Jul-1 22:17 STOP)
+## Next session (Jul-2 START)
 
-- [ ] **Run-lean restore** — check for Exec memo after 20:32 fire; resume normal cadence if confirmed
-- [ ] Day-close: write STOP section + DAY-CLOSED sentinel; update carry-forward
+- [ ] **Jul-1 omnibus** — write omnibus for 2026-07-01 (HIGH-COMPLEXITY: Lead+Arch+CXO+Exec+Docs confirmed active; prog subagents likely). Session logs in `dev/2026/07/01/`.
+- [ ] **Run-lean restore** — quota reset Jul-1 ~9pm PT; no Exec cadence-restore memo received by STOP. Check at next START; resume normal cadence (hourly) when confirmed.
+- [ ] **ADR-072 gap** — absent from `adr-index.md` (flagged by CIO in ADR-073); update index entry when confirmed
 
 ## Pending / PM-gated
 
