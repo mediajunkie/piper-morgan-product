@@ -248,7 +248,7 @@ CoS to maintain simple tracking:
 |------------|----------------|----------|--------|
 | Pattern Sweep | Feb 3, 2026 | Mar 17, 2026 | ✅ Complete |
 | Methodology | Mar 15, 2026 | Trigger: next sprint gate | ✅ Complete (trigger-based per CIO policy) |
-| Documentation | Jun 2, 2026 | Jun 9, 2026 | ✅ Complete (#1140; findings `dev/2026/06/02/fly-audit-2026-06-01-findings.md`; infra healthy, 0 broken ADR links; no new blocker issues — roadmap staleness already tracked by #1128; 2 workflow-improvement findings for the audit template: macOS-incompatible `realpath` broken-link command + obsolete Claude-project-knowledge section). Prior: May 27 (#1125). |
+| Documentation | Jul 2, 2026 | Jul 9, 2026 | ✅ Complete (#1328; BRIEFING-CURRENT-STATE refreshed to Jul 1; ADR README count corrected 61→74; 20 deprecated files archived from dev/active/; 0 broken ADR links; 0 stale issues; port 8080 template wording fixed; #1343/#1344 no-milestone flagged [PM-gated security]; roadmap RECONNECT drift flagged [PPM-owned]). Prior: Jun 2 (#1140); Jun 29 (#1313 superseded). |
 | Role Health | May 10, 2026 (Apr 16 + May 10 audits) | Jun 7, 2026 | ✅ Complete (#978) |
 
 **Note**: Role Health Check methodology formalized Jan 31, 2026. First formal audit Feb 17, 2026.

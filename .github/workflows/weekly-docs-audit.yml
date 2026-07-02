@@ -132,7 +132,7 @@ jobs:
               ### 🔧 Infrastructure & Pattern Verification
 
               - [ ] Check app.py line count: \`wc -l web/app.py\` (trigger refactor at 1000 lines, currently ~374)
-              - [ ] Verify port 8001 documented everywhere: \`grep -r "8080" docs/ --include="*.md"\` (should be empty)
+              - [ ] Verify port 8080 refs are anti-examples only: \`grep -r "8080" docs/ --include="*.md"\` (expected: 9 matches, all in "not 8080" / "legacy port" context — any NEW match that asserts 8080 as correct is a finding; matches in ports.md, architecture.md, documentation-sync-system.md, port-configuration.md are expected anti-examples)
               - [ ] Check for mock fallbacks: \`grep -r "mock_\\|fallback" services/ --include="*.py"\`
               - [ ] Verify AsyncSessionFactory pattern: \`grep -r "DatabasePool" services/ --include="*.py"\` (should be empty)
               - [ ] Check cursor rules exist: \`ls -la .cursor/rules/\` (5 rule files expected)
