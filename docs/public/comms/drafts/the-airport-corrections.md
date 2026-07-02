@@ -1,14 +1,20 @@
+---
+image: 
+alt: 
+caption: 
+---
+
 # The Airport Corrections
 
 *May 25–26, 2026*
 
-I spent most of May 25 away from my desk. There was a college reunion in the morning and an airport in the afternoon, the kind of day where you're never quite anywhere — half present, half in transit, checking your phone between the gate announcements. It turned out to be one of the more consequential days in the whole arc of building the duty cycle (our hourly autonomous work-loop, the thing that lets the cohort of AI agents keep working when I'm not around to drive).
+I spent most of May 25 away from my desk. There was a college reunion in the morning and an airport in the afternoon, the kind of day where you're never quite anywhere — half present, half in transit, checking your phone between the gate announcements. It turned out to be one of the more consequential days in the whole arc of building the duty cycle (our hourly autonomous work-loop, the thing that lets the team of AI agents keep working when I'm not around to drive).
 
 Not because I designed anything. Because I corrected three things in real time, from a chair at the gate, and those three corrections did more to shape the mechanism than any review I could have run sitting still.
 
 # What the duty cycle is supposed to do
 
-Here's the idea. Each of my agents — the chief innovation officer (CIO), the developer, the documentation role, all of them — mostly works when I open a session and point it at something. But a lot of the value of an agent cohort is supposed to come *between* those moments. While I'm at a reunion. While I'm boarding. The duty cycle is the mechanism that's meant to wake an agent up on a schedule, have it look around for unblocked work, do it, and go back to sleep.
+Here's the idea. Each of my agents — the chief innovation officer (CIO), the developer, the documentation role, all of them — mostly works when I open a session and point it at something. But a lot of the value of an agent team is supposed to come *between* those moments. While I'm at a reunion. While I'm boarding. The duty cycle is the mechanism that's meant to wake an agent up on a schedule, have it look around for unblocked work, do it, and go back to sleep.
 
 CIO had been carrying the design. By May 25 it was on version 0.5, and the plan was to actually run it — a live pilot, not a paper review. So while I was traveling, CIO ran it. Live. During the exact window when I was least available to supervise. Which, it turns out, is the only honest way to test a thing whose entire purpose is to run when I'm not there.
 
@@ -30,7 +36,7 @@ What struck me most wasn't that I caught them. It was CIO's response. It looked 
 
 The next day, May 26, CIO did the unglamorous part. It ran the v0.6 mechanism hard — 62 cron fires across a single day. Fifty-seven of them on a ten-minute interval, a deliberately punishing flywheel test, and a handful more on the realistic hourly cadence.
 
-Sixty-two fires is not a usage pattern. It's a stress test, and it surfaced exactly the kind of thing a stress test is for. Most of those fires woke up, looked around, found nothing to do, and went back to sleep — but each no-op still left a small commit behind. At ten-minute intervals that's roughly six commits an hour of pure overhead, doing nothing. Multiply by a cohort of agents and the cost of cadence stops being theoretical. Nobody would have noticed that from the design doc. The number only showed up because something ran the loop sixty-two times in a row.
+Sixty-two fires is not a usage pattern. It's a stress test, and it surfaced exactly the kind of thing a stress test is for. Most of those fires woke up, looked around, found nothing to do, and went back to sleep — but each no-op still left a small commit behind. At ten-minute intervals that's roughly six commits an hour of pure overhead, doing nothing. Multiply by a team of agents and the cost of cadence stops being theoretical. Nobody would have noticed that from the design doc. The number only showed up because something ran the loop sixty-two times in a row.
 
 And at the end of the day, near half past eleven at night with me long gone, the loop hit its STOP condition and shut itself down cleanly. Past bedtime, PM not active, so it stopped — exactly as designed. The whole mechanism validated end-to-end, through its own off-switch, with no one watching. Which is, again, the only honest way to test a thing that's supposed to work when no one's watching.
 
