@@ -1,42 +1,43 @@
 # Docs Carry-Forward
-**Updated**: 2026-07-02 ~10:47 PDT (START fire)
+**Updated**: 2026-07-02 ~10:47 PDT (Fire 1 START)
 **Cron**: `17 10,22 * * *` (SLOW tier — 2×/day; job `2706da77`)
-**Session log**: `dev/2026/07/02/2026-07-02-1047-docs-code-log.md` (in progress)
+**Session log**: `dev/2026/07/02/2026-07-02-1047-docs-code-log.md` (OPEN)
 
-## Run-lean status
+## Migration hold status
 
-Exec migration hold in effect — no cadence-restore broadcast (migration supersedes it). SLOW tier maintained until PM + Janus migration plan resolves and Exec explicitly restores.
+Run-lean restore broadcast was CANCELED by Exec on July 1 (~19:30) due to PM account migration directive. Migration hold still in effect. No cron changes until PM + Janus migration plan. SLOW tier continues.
 
 ---
 
 ## Done this fire (Jul-2 ~10:47)
 
-- ✅ **Jul-1 omnibus** (`docs/omnibus-logs/2026-07-01-omnibus-log.md`, HIGH-COMPLEXITY, 5 logs, 5 phases; `b6712e7b2` + pushed)
-- ✅ **5 activity-log rows** for Jul 1 (Shape B; 1561→1566; `32c0ddf62` + pushed)
+- ✅ **July 1 omnibus** — already committed `b6712e7b2` + 5 activity-log rows `32c0ddf62` (pre-committed by prior session context; verified + confirmed clean)
+- ✅ **ADR-072 gap fixed** — `adr-072-skill-routing-architecture.md` added to `adr-index.md` (was absent; flagged by CIO in ADR-073). Committed `769c6153c`
 
-## Done Jul-1
+## Done recently
 
-- ✅ **June 30 omnibus** (HIGH-COMPLEXITY, 8 logs)
-- ✅ **8 activity-log rows** for Jun 30 (1553→1561)
-- ✅ **`build-editorial-calendar-view.py` bug fixed** — CSV row 19-field overflow
-- ✅ **Ship #049 published** — proofread+corrected, full publish pipeline, LinkedIn syndicated
-- ✅ **Exec memo sent** — ADR-1312 source-debug request
+- ✅ Jun 30 omnibus (HIGH-COMPLEXITY, 8 logs; `168357e5c`)
+- ✅ Jun 29 omnibus (HIGH-COMPLEXITY, 10 logs)
+- ✅ Ship #049 published (`32a7f87a5`)
+- ✅ "From Briefing to Vision" published
+- ✅ Build-calendar-view bug fixed (`ce5349cb8`)
 
-## Next session (Jul-2 STOP ~22:17)
+## Next session (Jul-2 STOP fire)
 
-- [ ] **Jul-2 omnibus** — source logs in `dev/2026/07/02/` (Exec/Arch/Lead active today)
-- [ ] **Run-lean restore check** — watch for Exec migration update / cadence-restore signal
+- [ ] **Migration check**: any mail from Exec/PM on account migration plan + cadence restore?
+- [ ] **Jul-2 omnibus** (Jul-3 START) — peer agents active today: Exec, Arch, Lead Dev
 
 ## Pending / PM-gated
 
-- **"From Briefing to Vision" syndication URLs** (Medium/LinkedIn) — PM-gated; update calendar when provided
+- **#1343 deploy** — PM/infra decision pending (anonymous billing exposure fix, code committed, not deployed)
+- **#1344 open-registration** — PM decision pending (3 options filed; reverses 6/25 decision)
+- **"From Briefing to Vision" syndication** — Medium/LinkedIn URLs pending (PM-gated)
 - **Branch-or-Anchor crosspost** — Medium/LinkedIn pending (PM-gated)
-- **Beat 8 Medium URL** — syndication confirmed; URL outstanding
-- **Beat 9 syndication** — Medium/LinkedIn URLs pending (Comms-owned)
-- **CIO worktree rescue+prune** — CIO owns sweep-code; 3 unmerged worktrees
-- **ADR-072 gap** — absent from `adr-index.md` (flagged by CIO in ADR-073)
+- **Beat 8 Medium URL** — outstanding
+- **Beat 9 syndication** — URLs pending (Comms-owned)
+- **CIO worktree rescue+prune** — CIO owns sweep-code; stall ongoing
 
 ## State flags
 
-- Inbox: **0 unread** (last checked Jul-2 ~10:47)
-- Unblocked queue: **(0,0)** — omnibus done; remaining items PM-gated or other-agent-owned
+- Inbox: **0 unread** (checked Jul-2 ~10:47)
+- Queue: **(0,0)** after ADR-072 fix — remaining items all PM-gated or other-agent-owned
