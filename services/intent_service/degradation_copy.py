@@ -21,20 +21,21 @@ from services.mcp.consumer.connector import DegradationReason
 # Per-reason nudge templates. `{c}` = connector display name (e.g. "GitHub").
 # Neutral phrasing so one line serves every surface (priority, project, …).
 _NUDGES = {
+    # CXO voice pass 2026-07-01 (mailboxes/lead/inbox/2026-07-01-cxo-copy-passes-1201-1231.md)
     DegradationReason.NOT_CONFIGURED: (
-        "{c} isn't set up yet — connect it in settings and I'll pull your {c} data here."
+        "{c} isn't set up yet — connect it in Settings and I'll pull in your data."
     ),
     DegradationReason.CONNECT_REQUIRED: (
-        "{c} isn't connected yet — connect it and I'll pull your {c} data here."
+        "{c} isn't connected yet — connect it and I'll pull in your data."
     ),
     DegradationReason.STALE_TOKEN: (
-        "Your {c} connection needs re-authorizing — reconnect it and I'll pick back up."
+        "Your {c} connection needs re-authorizing — reconnect it in Settings and I'll pick back up."
     ),
     DegradationReason.UNREACHABLE: (
         "I can't reach {c} right now — try again in a moment."
     ),
     DegradationReason.REPO_UNRESOLVED: (
-        "I couldn't tell which repo you mean — link one to this project or say e.g. 'owner/name'."
+        "I couldn't tell which repo you mean — link one to this project or try 'owner/name'."
     ),
     DegradationReason.RESOURCE_NOT_FOUND: ("I couldn't find that in {c}."),
 }

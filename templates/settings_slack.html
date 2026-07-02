@@ -599,7 +599,7 @@
         <ol class="inbound-steps">
           <li>Open your <a href="https://api.slack.com/apps" target="_blank" rel="noopener">Slack app settings</a> and select your Piper app.</li>
           <li>Under <strong>Settings → Socket Mode</strong>, toggle Socket Mode on.</li>
-          <li>Under <strong>Features → Event Subscriptions</strong>, turn events on, and under <strong>Subscribe to bot events</strong> add <code>message.im</code> and <code>app_mention</code>. (With Socket Mode, no request URL is needed.)</li>
+          <li>Under <strong>Features → Event Subscriptions</strong>, enable events, then under <strong>Subscribe to bot events</strong> add <code>message.im</code> and <code>app_mention</code>. (Socket Mode delivers events directly — no request URL needed.)</li>
           <li>Under <strong>Settings → Basic Information → App-Level Tokens</strong>, click <strong>Generate Token and Scopes</strong>.</li>
           <li>Give it a name (e.g. <code>piper-socket</code>), add the scope <code>connections:write</code>, and click <strong>Generate</strong>.</li>
           <li>Copy the token — it starts with <code>xapp-</code>.</li>
