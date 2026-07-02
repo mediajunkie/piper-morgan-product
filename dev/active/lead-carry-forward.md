@@ -18,6 +18,8 @@
 
 **⚠️ INFRA RISK (flagged to PM, still open):** isolation:worktree agents' file tools resolve to PM's nested MAIN CHECKOUT — 2 strays this session (6/30), both caught + main verified intact; **hold file-writing worktree-agents until mitigated.**
 
+**🔴 SECURITY FIX SHIPPED, NOT YET DEPLOYED — #1343 (highest priority, PM-aware, awaiting deploy decision).** Anonymous `/api/v1/intent` requests could silently bill PM's own Anthropic key (Caddy gate removed 6/29 without the paired server-side fix I flagged 6/17). Code fix merged to origin/main (`resolve_request_api_key` now refuses unauthenticated+keyless instead of falling back to the server key); 11 new tests, 421+ regression green. **The droplet is NOT live-updated yet** — `/opt/piper` is a copy not a git checkout, deploy = `docker compose build` + restart + migrations via `deploy.sh`, code-transfer mechanism not fully documented. **On resume: check with PM whether/how to deploy** (SSH access confirmed working — PM's real keys are present in this sandbox, known_hosts proves prior connection to 146.190.151.63 — but deploying is a bigger action than editing one Caddyfile, flag before attempting).
+
 ---
 
 **Updated**: 2026-06-29 21:54 PT (DAY-CLOSED). Sole lead. Session log: `dev/2026/06/29/2026-06-29-0749-lead-code-opus-log.md` (DAY-CLOSED marker set).
