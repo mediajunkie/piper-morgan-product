@@ -43,8 +43,13 @@ async def test_no_header_no_stored_is_none():
 
 @pytest.mark.asyncio
 async def test_no_user_id_skips_fetch():
-    """Unauthenticated + no header → None, and the DB fetch is never attempted."""
-    assert await resolve_request_api_key(None, None, _fetch_boom) is None
+    """Unauthenticated + no header → refused (#1320), and the DB fetch is never
+    attempted. Was `is None` (silent server-key fallback) before #1320 — that
+    codified the anonymous-billing gap; see test_request_key_anonymous_gate_1320.py."""
+    from services.llm.request_key import AnonymousLLMKeyRequiredError
+
+    with pytest.raises(AnonymousLLMKeyRequiredError):
+        await resolve_request_api_key(None, None, _fetch_boom)
 
 
 @pytest.mark.asyncio
