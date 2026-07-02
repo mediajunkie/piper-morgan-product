@@ -10,6 +10,13 @@ Items raised during cycle fires that need cross-agent or PM attention. Living do
 
 ## Open
 
+### 🔴 CURRENT — TOP PRIORITY (2026-07-01 ~22:10, duty-cycle fire) — SECURITY, needs PM decision
+- **2026-07-01 · PM · #1344 — Alpha registration is fully open, reverses a 2026-06-25 PM decision.** Verified LIVE (no account created): `POST /api/v1/setup/create-user` with an incomplete body → `422` not `401` — zero auth gates it. PM explicitly decided 6/25 (decisions.log ~20:45) to KEEP the Caddy gate specifically because it's the alpha's only invite mechanism; the gate came down 6/29 anyway (undocumented, not by me), silently reversing that decision without its stated prerequisite (app-layer invite control + RBAC, #1185/#357/#1312). **Two PM signals in tension** (6/25 "keep it" vs. today's direction toward removing it for BYOC) — I did NOT unilaterally restore the gate; surfaced for PM's call. Options in the issue: (A) restore the gate now (full clean revert, backup on droplet) — closes this + shrinks #1343's window too; (B) confirm this is now accepted-risk/handled elsewhere; (C) build the real invite-control fix. **PM has NOT yet responded** (as of day-close).
+- **2026-07-01 · PM · #1343 — Anonymous /intent could silently bill PM's own Anthropic key.** Root-caused + **CODE FIX SHIPPED to origin/main** (11 new tests, 421+ regression green) — but **NOT YET DEPLOYED** to alpha.pipermorgan.ai (droplet is a code copy not a git checkout; deploy = full rebuild+restart+migrate, mechanism not fully documented; flagged rather than improvised solo). **PM asked directly "deploy now or handle yourself" — no answer yet as of day-close.**
+- Both trace to the same June 29 Caddy-gate removal (undocumented, not by me). SSH access to the droplet is confirmed working (PM's real keys are present in this sandbox) — the blocker on both is PM's decision, not technical capability.
+
+### ⏳ CURRENT — for PM (reconciled 2026-06-29 STOP, after the connector-build day)
+
 ### ⏳ CURRENT — for PM (reconciled 2026-06-29 STOP, after the connector-build day)
 - **2026-06-29 · PM · ⭐ VERIFY #1331 (the trust fix)** — "add a milestone to my default repo" must now **honestly DECLINE**, not fake "Milestone created ✓". The one verify that matters most (a confabulated write is a trust-breaker). Live in staging.
 - **2026-06-29 · PM · First real WRITE target — #1322 Q3** — the writes CUTOVER (close/comment/create as real connector writes) is still the next build, PM-gated: you pick a safe target (the test project works). The trust FLOOR is in (#1331 honest-degrade); real writes come next.

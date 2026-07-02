@@ -1,20 +1,29 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-01 ~18:30 PT. Session log: `dev/2026/07/01/2026-07-01-0531-lead-code-log.md`.
+**Updated**: 2026-07-01 ~22:15 PT (DAY-CLOSED). Session log: `dev/2026/07/01/2026-07-01-0531-lead-code-log.md`.
 
-## ▶ CURRENT (7/1 ~18:30) — READ THIS FIRST (supersedes the 6/30 block below)
-**RECONNECT buildable scope is FULLY DRAINED.** #1342 (connector-agnostic resolution — Inc 1+2 both done, closed to Arch's ruling) was the last item on the active build queue. Also closed today: #1201, #1230, #1316, #1231 cleanup, #1320 bug-2; 6/30's #1338/#1339/#1109/#1334/#1335. CXO's copy voice-pass on #1201/#1231 applied (43 tests green). HEAD==origin/main; inbox empty. **Dual-account episode (~15:23–16:06) reconciled clean — no damage, see the 18:00 log entry.** Model = Sonnet 5 (PM-switched 7/1).
+## 🔴 CURRENT (7/1 ~22:15) — READ THIS FIRST — TWO OPEN SECURITY QUESTIONS OUTRANK EVERYTHING BELOW
 
-**⭐ NOTHING is currently unblocked-and-buildable in RECONNECT.** Everything remaining is genuinely gated:
-- #1231 CXO copy voice-pass → **DONE this session.** Remaining: primary-path live-verify (PM/testing).
-- #1320 Caddy droplet-apply → **PM/infra** (no Caddyfile in repo; runbook documented).
-- #1316 → **Dot Releases** (out of sprint, PM-moved).
+**#1343 — Anonymous `/api/v1/intent` could silently bill PM's own Anthropic key.** Root-caused (Caddy gate removed 6/29 without the paired server-side fix flagged in a 2026-06-17 memo). **CODE FIX SHIPPED to origin/main** (11 tests, 421+ regression green) — **NOT YET DEPLOYED** to alpha (droplet is a code-copy not a git checkout; deploy = full rebuild+restart+migrate via `deploy.sh`; code-transfer mechanism not fully documented in the runbook). **PM asked directly "deploy now or handle yourself" — NO ANSWER YET.**
+
+**#1344 — Alpha registration is fully open, reverses a 2026-06-25 PM-ratified decision.** decisions.log (6/25 ~20:45): PM explicitly decided to KEEP the Caddy gate because it's the alpha's ONLY invite mechanism (`create_user` has zero registration gating). Verified LIVE (no account created): `POST /api/v1/setup/create-user` incomplete body → `422` not `401` — confirms no gate at all right now. **Two PM signals in tension** (6/25 "keep it" vs. today's direction toward removing it) — did **NOT** unilaterally restore the gate; this is PM's call. 3 options in the issue (restore / accept-risk / build real invite-control).
+
+**Both trace to the same June 29 Caddy-gate removal** (undocumented, not by me). SSH access confirmed fully working (PM's real keys present in this sandbox + known_hosts proof) — **the blocker on both is PM's decision, not capability.** `dev/active/duty-cycle-escalations-lead.md` has the full 🔴 top block — check it FIRST at next session start, before anything else.
+
+**On resume/next fire: check for PM's answer on these two FIRST.** If answered, execute their direction. If still unanswered and this is a routine work-fire (not day-close), these are still HELD threads only — other unblocked work may proceed (per "pending question doesn't block other work") — but there is currently **no other unblocked RECONNECT work** (see below), so in practice: check mail/inbox, then hold.
+
+---
+
+## ▶ RECONNECT status (7/1, still true, now secondary to the above)
+**RECONNECT buildable scope is FULLY DRAINED.** #1342 (connector-agnostic resolution — Inc 1+2 both done, closed to Arch's ruling) was the last item on the active build queue. Also closed today: #1201, #1230, #1316, #1231 cleanup, #1320 bug-2 (though #1320 itself stays open — see #1343/#1344); 6/30's #1338/#1339/#1109/#1334/#1335. CXO's copy voice-pass on #1201/#1231 applied (43 tests green). **Dual-account episode (~15:23–16:06) reconciled clean — no damage.** Model = Sonnet 5 (PM-switched 7/1).
+
+**⭐ Nothing else is currently unblocked-and-buildable:**
+- #1231 CXO copy voice-pass → DONE this session. Remaining: primary-path live-verify (PM/testing).
+- #1316 → Dot Releases (out of sprint, PM-moved).
 - #1340 (/connect-fold from #1185) → separate lane, not scoped yet.
 - **PM-led RECONNECT gate-close live-verify** (#1201 Slack round-trip, #1338 mentions, #1299b deploy) → needs PM/tester with real credentials.
-- **inc.4** sim dead-subsystem removal → usage-paced (large, ~10-file teardown).
-- A future calendar-resolution build (#1342's deferred item) → **on-demand**, no issue exists yet.
-
-**So: check for PM direction / new work before assuming there's an autonomous next step.** If truly idle, inc.4 is the next self-contained thing with an executable plan (#1322 comment 4827173746) — but it's usage-paced by design, not a default fallback to grab.
+- **inc.4** sim dead-subsystem removal → usage-paced (large, ~10-file teardown) — the fallback if truly idle AND the two security questions are unanswered AND you want to advance something (plan: #1322 comment 4827173746).
+- A future calendar-resolution build (#1342's deferred item) → on-demand, no issue exists yet.
 
 **⚠️ INFRA RISK (flagged to PM, still open):** isolation:worktree agents' file tools resolve to PM's nested MAIN CHECKOUT — 2 strays this session (6/30), both caught + main verified intact; **hold file-writing worktree-agents until mitigated.**
 
