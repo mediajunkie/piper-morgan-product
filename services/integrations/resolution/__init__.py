@@ -5,6 +5,7 @@ GitHub ``resolve_repo`` decision tree so the connector framework can share it. S
 ``target.py`` for the ``ResolvedTarget`` envelope + the promoted ``ResolutionSource``.
 """
 
+from services.integrations.resolution.resolver import resolve_target
 from services.integrations.resolution.target import ResolutionSource, ResolvedTarget
 
-__all__ = ["ResolutionSource", "ResolvedTarget"]
+__all__ = ["ResolutionSource", "ResolvedTarget", "resolve_target"]
