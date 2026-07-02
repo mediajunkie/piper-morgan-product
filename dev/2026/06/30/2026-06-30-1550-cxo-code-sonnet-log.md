@@ -66,3 +66,11 @@ Responding to both Lead Dev memos. See sent memos.
 - **#1290 nav IA**: gated on #1284
 - **#1284 "Your work" hub**: post-beta
 - **Onboarding 1.0 + Radar entity display spec (M4)**: post-RECONNECT; Exec tracking combined PPM+CXO trigger
+
+---
+
+## DAY-CLOSE
+
+Fire 2 (Jul 1 duty-cycle fire): two new Lead memos processed — Event Subscriptions copy pass (#1201) + honest-degrade nudge copy pass (#1231). Responses filed. Session continuing in Jul 1 log.
+
+<!-- DAY-CLOSED: 2026-06-30 -->
