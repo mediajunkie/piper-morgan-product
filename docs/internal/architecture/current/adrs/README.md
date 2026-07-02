@@ -4,10 +4,14 @@
 
 This directory contains Architecture Decision Records (ADRs) that document significant architectural decisions, their context, rationale, and consequences.
 
-**Total ADRs**: 61 records (000-060)
+**Total ADRs**: 74 records (000-073)
 
 ## Recent ADRs
 
+- **[ADR-073: No Destructive Git in PM Main Checkout](adr-073-no-destructive-git-in-pm-main-checkout.md)** (Jun 2026) - Prohibition on destructive git in PM's main checkout (pm-work-safety)
+- **[ADR-072: Skill-Routing Architecture](adr-072-skill-routing-architecture.md)** (Jun 2026) - Procedural skills as routing targets (ACCEPTED)
+- **[ADR-071: Connector Registration Pattern](adr-071-connector-registration-pattern.md)** (Jun 2026) - Connector registration and configuration patterns
+- **[ADR-070: MCP Connector Architecture](adr-070-mcp-connector-architecture.md)** (Jun 2026) - MCP server integration as first-class connectors
 - **[ADR-060: Floor-First Routing](adr-060-floor-first-routing.md)** (Mar 2026) - Invert routing: floor handles everything, handlers prove specificity
 - **[ADR-059: Workflow Dispatcher & Offer Consolidation](adr-059-workflow-dispatcher-offer-consolidation.md)** (Mar 2026) - Unified dispatch replacing per-handler workflow management
 - **[ADR-058: Multi-Tenancy Isolation](adr-058-multi-tenancy-isolation.md)** (Mar 2026) - User data isolation patterns
