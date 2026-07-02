@@ -39,7 +39,11 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from services.auth.jwt_service import JWTClaims, JWTService
 from services.domain.models import RequestContext
-from services.llm.request_key import request_api_key, resolve_request_api_key
+from services.llm.request_key import (
+    AnonymousLLMKeyRequiredError,
+    request_api_key,
+    resolve_request_api_key,
+)
 from web.utils.error_responses import internal_error, validation_error
 
 logger = structlog.get_logger()
@@ -168,6 +172,30 @@ def _create_degradation_response(original_message: str, degradation_msg: str) ->
         "preferences": {},
         "error": degradation_msg,
         "error_type": "service_unavailable",
+    }
+
+
+def _create_anonymous_key_required_response(original_message: str) -> dict:
+    """#1320: the honest response when an anonymous (no login, no X-User-Api-Key)
+    request is refused. NOT `_create_degradation_response` — that message ("service
+    unavailable... try again") is misleading here: retrying changes nothing, the
+    remediation is signing in or bringing a key. Same IntentResponse shape, honest
+    case-specific copy (mirrors the #1231/#1333 honest-degrade discipline).
+    """
+    msg = (
+        "I can't process this without you being signed in or supplying your own "
+        "Anthropic API key — sign in, or connect your own key."
+    )
+    return {
+        "message": msg,
+        "intent": {"type": "unknown", "confidence": 0, "action": "clarify"},
+        "workflow_id": None,
+        "requires_clarification": True,
+        "clarification_type": "auth_or_key_required",
+        "suggestions": ["Sign in to continue", "Or connect your own Anthropic API key"],
+        "preferences": {},
+        "error": msg,
+        "error_type": "anonymous_key_required",
     }
 
 
@@ -343,9 +371,15 @@ async def process_intent(
             async with AsyncSessionFactory.session_scope_fresh() as _s:
                 return await UserAPIKeyService().retrieve_user_key(_s, uid, "anthropic")
 
-        resolved_key = await resolve_request_api_key(
-            request.headers.get("X-User-Api-Key"), user_id, _fetch_stored_anthropic_key
-        )
+        try:
+            resolved_key = await resolve_request_api_key(
+                request.headers.get("X-User-Api-Key"), user_id, _fetch_stored_anthropic_key
+            )
+        except AnonymousLLMKeyRequiredError:
+            # #1320: refuse BEFORE touching intent_service/the LLM at all — never
+            # silently bill the server's own key to a fully anonymous caller.
+            logger.warning("intent_anonymous_key_required_1320", session_id=session_id)
+            return _create_anonymous_key_required_response(message)
         with request_api_key(resolved_key):
             result = await intent_service.process_intent(
                 message=message, session_id=session_id, user_id=user_id, ctx=ctx
