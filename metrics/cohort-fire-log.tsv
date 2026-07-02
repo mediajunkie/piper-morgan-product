@@ -68,3 +68,4 @@ date	time	agent	model	effort	fire_type	turns_est	output_size	notes
 2026-07-01	1847	cxo	sonnet-4-6	default	fire-2	4	l	Jul 1 Fire 2 (stacked). Inbox: empty after cleanup. Removed Jun 30 inbox duplicates (read/ copies already existed). Queue dry — all items gated or M4-deferred.
 2026-07-01	1947	cxo	sonnet-4-6	default	fire-3	4	l	Jul 1 Fire 3. Inbox empty, queue dry. Heartbeat.
 2026-07-01	2047	cxo	sonnet-4-6	default	fire-4	4	l	Jul 1 Fire 4. Inbox empty, queue dry. Heartbeat.
+2026-07-01	2147	cxo	sonnet-4-6	default	fire-5	4	l	Jul 1 Fire 5 (last). Inbox empty, queue dry. Day closed — DAY-CLOSED marker written.
