@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-03 | docs | memo-docs-to-ppm-cc-pm-pa-roadmap-reconnect-drift-2026-07-02.md | Roadmap drift — RECONNECT WS-2 shows ACTIVE; v18.3 needed |
+| 2026-07-03 | lead | 2026-06-30-lead-floor-confabulation-cxo-ppm-lens.md | #1331 floor confabulation — PM asked CXO + PPM to weigh in; responded |
+| 2026-07-03 | lead | 2026-06-29-lead-reconnect-sprint-board-corrections.md | RECONNECT sprint board corrections (Done 1→10); #1235 PPM call: move to M3-Quality |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-06-28 12:30 PT | exec | memo-exec-to-cohort-cc-pm-run-lean-throttle-2026-06-28.md | RUN LEAN through Wed Jul-1 9pm — reduce your cron cadence (PM-approved quota th… |
