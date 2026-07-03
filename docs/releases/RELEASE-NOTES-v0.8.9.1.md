@@ -33,9 +33,12 @@ Discovered and fixed during this release's deploy — a container networking bug
 
 ## Testing
 
-- **11,045 tests collected** on this release's codebase (`tests/archive/` excluded per repo convention; **20 pre-existing collection errors** elsewhere in the tree — confirmed unrelated to this release, none touch any file this patch changes; a symptom of `production` being 6 weeks / 983 commits behind `main`, not something introduced here; tracked as [#1346](https://github.com/mediajunkie/piper-morgan-product/issues/1346)).
-- **51 tests targeted at this patch's actual changes pass clean** (resolver-level + route-level + the ratchet lint, run directly against this release's codebase).
-- A full-suite execution run (all 11,045) was not completed within this release cycle — the suite's size makes a full run impractical for a 3-commit targeted hotfix; not attempted beyond the collection check + the changed-file-scoped run above. Recommend a full-suite pass as part of the next full release cut (production ← main).
+**Correction (added same day, after the tag)**: this section originally claimed "20 pre-existing collection errors... a symptom of production being 6 weeks behind main." That was wrong — a self-inflicted testing-methodology error (repeated `-o addopts=` overrides silently dropped pytest.ini's already-correct `--import-mode=importlib`), not a real gap. Full correction trail: [#1346](https://github.com/mediajunkie/piper-morgan-product/issues/1346). Leaving the incorrect original text struck through rather than silently rewriting it:
+
+- ~~11,045 tests collected... 20 pre-existing collection errors... a symptom of production being 6 weeks / 983 commits behind main~~ — **false; see correction above.**
+- **51 tests targeted at this patch's actual changes pass clean** (resolver-level + route-level + the ratchet lint, run directly against this release's codebase) — this part was accurate.
+- **Corrected, verified state (as of the follow-up commit archiving 2 orphaned load tests — see #1346)**: `pytest tests/ --collect-only` on `production`, using its own real default config, reports **11,463 tests, 0 errors**.
+- A full-suite *execution* run (not just collection) was still not completed for this specific hotfix — that part of the original caveat stands. Recommend a full-suite pass as part of the next full release cut (production ← main).
 - **Live functional verification** (see below) is the strongest signal for this specific patch and was completed.
 
 ---
