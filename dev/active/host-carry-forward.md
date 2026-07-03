@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-06-28 ~12:37 PT (run-lean throttle; cron `8ab6a203` SUSPENDED; HOST IDLE until Wed Jul-1 ~9pm PT restore)
+**Last updated**: 2026-07-03 ~01:15 PT (Fire 1 complete; 4 memos sent; 13 inbox→read; cron `2d30cbe4` active)
 
 ---
 
@@ -12,10 +12,17 @@
 
 - **Account**: DinP (xian@designinproduct.com). Model: sonnet-4-6.
 - **Worktree**: ephemeral Option B (`claude/trusting-faraday-ec4bba`). `claude/host-cycle` retired 2026-06-13.
-- **Cron**: SUSPENDED (`8ab6a203` deleted 2026-06-28; PM-approved run-lean throttle). **HOST IDLE until Wed Jul-1 ~9pm PT**. Re-arm `37 6,9,12,15,18,21 * * *` on Exec's restore broadcast.
-- **Session log today**: `dev/2026/06/28/2026-06-28-0637-host-code-sonnet-log.md`
+- **Cron**: ACTIVE (`2d30cbe4`; re-armed 2026-07-03 START; `37 6,9,12,15,18,21 * * *` windowed Gap-C self-heal).
+- **Session log today**: `dev/2026/07/03/2026-07-03-0640-host-code-sonnet-log.md`
 - **Gap-C cure incoming**: CIO proved `mcp__scheduled-tasks` solves cron-death (June 13). Disk-persistent, survives restarts, fires in main checkout. CIO proposing cohort rollout. HOST should be in first cohort — flag interest to CIO.
 - **Migration touch-ups**: thin-prompt proposal Model A → Option B ✅ DONE (fire ~15:37).
+
+## Memos sent 2026-07-03 (awaiting response)
+
+- **#1331 ratification** → Lead (cc Arch, PM): RATIFIED as written; noted unaddressed third failure class (silent-result handler). Lead may proceed with implementation.
+- **#1344 alpha-list coordination** → Lead (cc Arch, PM): confirmed roster at `dev/alpha/alpha-tester-roster.md` (gitignored); proposed single-use token protocol; waiting on Lead's token-format preference to unblock sequencing.
+- **#1333/#1231 D5 trust call** → Arch (cc Lead, PM): honest-capability framing for category-rule decline; three non-negotiable trust properties for degrade-copy; NOT_CONFIGURED enum-add approved. Awaiting Arch+Lead implementation.
+- **Docs audit refactor input** → Docs (cc CIO, PA, PM): monthly infra cadence, HOST welfare lens stays 4-weekly; distributed-cleanup bounded-path approval; weekly/monthly scope split approved. Awaiting Docs's template update.
 
 ## Active with PM (teed, awaiting PM)
 
@@ -52,7 +59,7 @@
 
 ## Standing cycle responsibility
 
-- Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). 2026-06-19 poll: **0 open** (clean). 2026-06-25 poll: **0 open** (clean). Next poll: **~2026-07-03**.
+- Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). 2026-06-19 poll: **0 open** (clean). 2026-06-25 poll: **0 open** (clean). 2026-07-03 poll: **0 open** (clean; 4th consecutive). Next poll: **~2026-07-10**.
 
 ## Watch / trigger-bound
 
@@ -70,4 +77,4 @@
 
 ## Cron
 
-- **WINDOWED `37 6,9,12,15,18,21 * * *`** (PM-ratified 6/11): daytime-only 06:37–21:37, no overnight. ID `6d50bde6` (re-armed 2026-06-14). Keep-armed-default (Rule 2). Gap-C self-heal re-arms from prompt constants → windowed expr embedded in prompt. **Conversion to `mcp__scheduled-tasks` pending CIO cohort rollout** — will eliminate Gap-C entirely.
+- **WINDOWED `37 6,9,12,15,18,21 * * *`** (PM-ratified 6/11): daytime-only 06:37–21:37, no overnight. ID `2d30cbe4` (re-armed 2026-07-03 START; Gap-C self-heal). Keep-armed-default (Rule 2). **Conversion to `mcp__scheduled-tasks` pending CIO cohort rollout** — will eliminate Gap-C entirely.
