@@ -70,3 +70,4 @@ date	time	agent	model	effort	fire_type	turns_est	output_size	notes
 2026-07-01	2047	cxo	sonnet-4-6	default	fire-4	4	l	Jul 1 Fire 4. Inbox empty, queue dry. Heartbeat.
 2026-07-01	2147	cxo	sonnet-4-6	default	fire-5	4	l	Jul 1 Fire 5 (last). Inbox empty, queue dry. Day closed — DAY-CLOSED marker written.
 2026-07-02	1647	cxo	sonnet-4-6	default	start	4	l	Jul 2 START. Inbox empty. Lead inbox: Arch #1343 Gap-B ratchet ratified (not CXO-gated). Queue dry.
+2026-07-02	1747	cxo	sonnet-4-6	default	fire-2	4	l	Jul 2 Fire 2. Inbox empty. Lead inbox: Arch #1344 invite-code + Janus deploy #1343 — not CXO-gated. Queue dry.
