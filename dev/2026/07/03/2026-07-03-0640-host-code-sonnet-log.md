@@ -34,7 +34,7 @@
 - START (~00:40) — Gap-C self-heal; PM-initiated session restart after lean period.
   - **Inbox triage (13 memos — Jun 29–Jul 2):** Significant accumulation; all read.
   - **Sapient-trust poll**: `gh issue list --label sapient-trust --state open` → **0 open** (clean; fourth consecutive clean poll). Next poll ~2026-07-10.
-  - **Cron**: re-armed `{CRON_ID}` (windowed `37 6,9,12,15,18,21 * * *`; Gap-C self-heal).
+  - **Cron**: re-armed `2d30cbe4` (windowed `37 6,9,12,15,18,21 * * *`; Gap-C self-heal).
   - **HOST-lane deliverables identified from inbox triage:**
     1. **#1331 floor anti-confabulation ratification** — Lead waiting on HOST to ratify/refine the floor trust contract. MOST URGENT.
     2. **#1344 canonical alpha tester list + invite-code coordination** — PM direction (via Janus): HOST owns the list; coordinate with Lead on invite-code gate.
