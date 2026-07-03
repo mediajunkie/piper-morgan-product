@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-03 12:15 PT (Fire 4; _NUDGES completeness guard — ACK'd timing sharpening; watch-item captured in #1231 change)
+**Last updated**: 2026-07-03 15:37 PT (Fire 5; dashboard welfare-criteria v0.3 spec published)
 
 ---
 
@@ -50,7 +50,7 @@
 - **m-41 third instance** accepted by CIO 6/13 (three-altitude framing, force-by-constraint sub-shape, at m-41↔m-36↔Pattern-070 confluence). CIO handling formalization. Acked 6/13.
 - **gbrain co-signed memo**: ✅ DELIVERED TO PM (2026-06-16). CIO+HOST T1–T4 synthesis. Adopt-now: idempotency-as-rule. Roadmap: propose-and-diff, cost-consent gate, transcript-first observability, constructor-level bounds. m-36 at architecture layer. Complete.
 - **Escalations-docs fold** — ✅ COMPLETE 2026-06-17. PM ratified; CIO executed (skill v1.13; per-role docs deprecated). HOST answered thin-view question: rollup sufficient; scoping note sent (rollup covers GitHub; carry-forward covers non-issue PM-blocks → mail PM for those).
-- **Dashboard welfare-criteria v0.2→v0.3** (m-39, HOST owns; pair w/ CIO): **CIO async markup received + HOST response sent 2026-06-19**. Joint design state: D=render-invariant, Q2/Q3=freeze-registry reuse, F=rollup extension, E=TranscriptEntry+4fields+coverage-indicator (BYOC-tied, incremental). Seed updated with joint state (`dev/active/dashboard-welfare-criteria-host-v0.2-seed.md`). **Ready for v0.3 spec.** Sync pass on E coverage-indicator UX when E approaches implementation (CIO to flag).
+- **Dashboard welfare-criteria v0.3**: ✅ **SPEC PUBLISHED** 2026-07-03 (`docs/internal/operations/dashboard-welfare-criteria-v0.3.md`). Criteria A–F + Q1–Q3 with all joint design decisions. Implementation lane: CIO. TBD: F2 cross-doc ref detection scope (with Exec); E coverage-indicator UX sync (CIO flags HOST before E ships); 2×/3× multiplier validation against cycle data.
 
 ## Active threads (no-PM-block)
 
