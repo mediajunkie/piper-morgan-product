@@ -1,6 +1,6 @@
-# Comms carry-forward — 2026-07-03 Fire 1 (12:43 PT duty-cycle-tick)
+# Comms carry-forward — 2026-07-03 Fire 2 (15:42 PT duty-cycle-tick)
 
-**Cron**: `7ccdd828` · `12 6,9,12,15,18,21 * * *` (re-armed 9:43 AM after identity correction; confirmed 1 job at 12:43 fire)
+**Cron**: `7ccdd828` · `12 6,9,12,15,18,21 * * *` (confirmed 1 job at both 12:43 and 15:42 fires)
 **Session log**: `dev/2026/07/03/2026-07-03-0943-comms-code-log.md`
 
 ---
@@ -38,13 +38,20 @@ This session was misidentified as Docs starting Jul 2 (PM's own greeting address
 - ✅ **Jun 28 unclosed session log fixed** — retroactive STOP + day-arc + `<!-- DAY-CLOSED: 2026-06-28 -->` written, reconstructed from commits + conversation record.
 - ✅ **"Climbing Higher When the Platform Laps You" (Jul 4) pre-edited** — was `queued`/untouched despite publishing tomorrow. Fixed: 6 section headings H2→H1, footer tease filled correctly ("The Practice That Got Retired," using verified "Next on Building Piper Morgan:" phrasing). Left for PM: 2 FACT-CHECK notes, frontmatter (image/alt/caption).
 
-## Next (Fire 2+)
+## Done Fire 2 (Jul-3 ~15:42)
 
-- [ ] **"Climbing Higher" needs PM voice-pass** before Jul 4 publish — flag to PM, it's tight (pubs tomorrow and hasn't had ANY pass until this fire).
+- ✅ **"The Practice That Got Retired" (Jul 5) pre-edited** — same untouched-despite-near-pubDate pattern as Climbing Higher. Fixed: 6 section headings H2→H1, 3× "cohort"→"team" body-prose, footer tease filled (references Beat 11, Jul 7).
+- 🚩 **Flagged, not fixed**: Beat 11's actual post title is "The Cohort Catches the Cycle" — "cohort" in a headline, more prominent than body prose. Retitling is a content call, not mechanical — left it, used the existing title in this footer tease, to raise with PM when Beat 11 gets its own pre-edit pass.
+- **Pattern noticed**: two posts in a row were sitting at `queued` with zero editorial pass despite near-term pubDates. Worth checking Beat 11 (Jul 7) proactively next fire rather than waiting to discover the same gap again.
+
+## Next (Fire 3+)
+
+- [ ] **"Climbing Higher" (Jul 4) and "The Practice That Got Retired" (Jul 5) both need PM voice-pass** — both are tight on time, neither had any pass until today.
+- [ ] **Check Beat 11 ("The Cohort Catches the Cycle," Jul 7) proactively** — same `queued`-with-no-pass risk, plus surface the title's "cohort" issue to PM.
 - [ ] `comms-standing-items.md` refresh (last touched Jun 17) — still pending, not urgent.
 - [ ] Narrative arc steer — still awaiting PM, no change.
 
 ## State flags
 
 - Inbox: **0 unread**
-- Queue: (0,0) for unblocked mechanical work; standing-items refresh + continue-narrative pass remain as lower-priority fill; Climbing Higher's PM-voice-pass gate is the one time-sensitive item (Jul 4 pubDate)
+- Queue: (0,0) for unblocked mechanical work; Climbing Higher + Practice That Got Retired both need PM voice-pass before their pubDates (Jul 4/5); Beat 11 pre-edit check is next fire's priority
