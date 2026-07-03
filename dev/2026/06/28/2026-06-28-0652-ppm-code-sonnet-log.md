@@ -155,3 +155,5 @@ Work is on `origin/main`. Session clean.
 
 *DAY-CLOSED — 2026-06-28. PPM suspended (run-lean IDLE tier). Resume: Wed Jul-1 ~9pm PT on Exec restore broadcast.*
 
+
+<!-- DAY-CLOSED: 2026-06-28 -->

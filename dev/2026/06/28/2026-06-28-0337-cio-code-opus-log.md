@@ -51,3 +51,4 @@ The 22:37 STOP edit **failed with a spurious "user rejected" message** — PM co
 **Referenced**: `duty-cycle-liveness-model-2026-06-25.md` (Belt-0 validation + (b) scope home); DinP `agent-heartbeat-cutover-runbook.md` (verify-first corrected the Iris-resume misread → reframed (b) as spawn-fresh); `scripts/duty-cycle-watchdog.sh` + test harness (Belt-0 disable); `duty-cycle-registry.tsv` (throttle adjust); CLAUDE.md HARD-RULE (no-broad-reconcile — shaped #1296 scope + this session's main-checkout caution); Exec run-lean memo.
 **Loaded but not referenced**: `cio-innovation-backlog.md`; standing-items resolved rows.
 **Wanted but not found**: a canonical record of headless-`claude -p` capabilities (skill/MCP/auth in a launchd env) — that gap IS the B1 validation spike.
+<!-- DAY-CLOSED: 2026-06-28 -->

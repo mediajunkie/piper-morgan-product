@@ -54,3 +54,5 @@ Exec June 28 log started (07:02). Lead tests for #1322 (GitHub issues connector)
 - **Onboarding 1.0 + Radar entity display spec (M4)**: post-RECONNECT; Exec tracking combined PPM+CXO trigger
 - **Mobile UAT**: #1286 Slice 3 hamburger — live alpha
 - **Setup copy response**: watching Lead inbox for intro panel reaction
+
+<!-- DAY-CLOSED: 2026-06-28 -->
