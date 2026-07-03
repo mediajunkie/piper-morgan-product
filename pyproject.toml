@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "piper-morgan"
-version = "0.8.9"
+version = "0.8.9.1"
 requires-python = ">=3.11.0"
 description = "AI-powered project management assistant"
 

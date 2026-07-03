@@ -6,9 +6,9 @@ This directory contains release notes for all Piper Morgan versions.
 
 ## Current Version
 
-**v0.8.9** (June 22, 2026) - [Release Notes](RELEASE-NOTES-v0.8.9.md)
+**v0.8.9.1** (July 2, 2026) - [Release Notes](RELEASE-NOTES-v0.8.9.1.md)
 
-RECONNECT WS-1 + security + design D2: DB-backed connector config, StandupAssembler promoted, AES-256-GCM field encryption, encrypted secret store, per-user LLM key wiring, admin_compose removed, auth-exempt lint enforcement, token system, responsive shell, mobile nav, Documents→Radar rename.
+Security patch: closed an anonymous LLM-key billing exposure (#1343) discovered same-day during Caddy-gate investigation. Targeted hotfix off v0.8.9, not a full merge from main.
 
 ---
 
@@ -16,6 +16,7 @@ RECONNECT WS-1 + security + design D2: DB-backed connector config, StandupAssemb
 
 | Version | Date | Type | Highlights |
 |---------|------|------|------------|
+| [v0.8.9.1](RELEASE-NOTES-v0.8.9.1.md) | Jul 2, 2026 | Patch (Security) | Closed anonymous LLM-key billing exposure (#1343); hotfix off v0.8.9 |
 | [v0.8.9](RELEASE-NOTES-v0.8.9.md) | Jun 22, 2026 | Feature | RECONNECT WS-1 + security + design D2 — connector infra, field encryption, token system |
 | [v0.8.8](RELEASE-NOTES-v0.8.8.md) | Jun 19, 2026 | Feature | D1/RECONNECT — BYOC keys, Radar default, nav IA, home UX |
 | [v0.8.7](RELEASE-NOTES-v0.8.7.md) | Jun 14, 2026 | Feature | M1+M2+M3 — Conscious Floor, dispatch rail complete, files UX, Slack inbound |

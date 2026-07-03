@@ -1,6 +1,6 @@
 # Piper Morgan Alpha - Quick Start
 
-**Version**: 0.8.9
+**Version**: 0.8.9.1
 **Branch**: `production` (stable alpha releases)
 **For**: Experienced developers who want to dive in fast
 
@@ -521,4 +521,4 @@ This is **alpha software** (0.8.9). Expect bugs. Don't use for production. You'r
 
 **Happy testing!** 🚀
 
-_Last Updated: June 22, 2026_
+_Last Updated: July 2, 2026_

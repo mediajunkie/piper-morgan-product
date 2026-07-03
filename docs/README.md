@@ -15,7 +15,7 @@
 - **[Testing Guide](ALPHA_TESTING_GUIDE.md)** - What to test and how to provide feedback
 - **[Known Issues](ALPHA_KNOWN_ISSUES.md)** - Current limitations and workarounds
 - **[Alpha Agreement](ALPHA_AGREEMENT_v2.md)** - Terms and expectations
-- **[Release Notes v0.8.9](releases/RELEASE-NOTES-v0.8.9.md)** - What's new in the latest release
+- **[Release Notes v0.8.9.1](releases/RELEASE-NOTES-v0.8.9.1.md)** - What's new in the latest release
 
 ### New to the Project?
 
