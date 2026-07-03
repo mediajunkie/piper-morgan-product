@@ -120,9 +120,40 @@ docker compose exec -T app printenv ENCRYPTION_MASTER_KEY >/dev/null && echo PRE
 ```
 **The rule**: any new secret the app needs must be *both* in `.env` *and* named in the app's `environment:` (repo compose, or the droplet override).
 
+## ⚠️⚠️ PIPER_HOST — uvicorn's bind address (found 2026-07-02, the #1343 hotfix deploy — CAUSED A BRIEF OUTAGE)
+
+`main.py` binds uvicorn via `PIPER_HOST = os.environ.get("PIPER_HOST", "127.0.0.1")` — correct default for the bare `python main.py` desktop/CLI path (binding wider would expose a local user's Piper to their LAN), **wrong inside any container**: `127.0.0.1` there means only the app's own process can reach itself — Docker's own port mapping AND sibling-container calls (Caddy → app) both get `connection refused` dialing the container's bridge-network IP.
+
+**What happened**: a clean `git archive origin/production` sync (the documented, correct method) overwrote an old, undocumented, git-untracked droplet-local patch to this exact line — the droplet had apparently been running with a manually-`nano`-edited `main.py` for who knows how long, never committed. The clean sync silently reintroduced the bug → `502` on every route the moment the container recreated. Diagnosed via: `docker logs piper-caddy` showed `dial tcp <app-ip>:8001: connect: connection refused`; confirmed the IP was in fact correct (not stale-DNS) via `docker inspect`; found the literal via `docker exec piper-app grep -n 'host=' /app/main.py`.
+
+**The fix (now in the repo, not droplet-local — commit on main 2026-07-02)**: `docker-compose.yml`'s `app.environment` now names `PIPER_HOST=0.0.0.0` unconditionally (no `${...:-}` escape hatch — there's no compose scenario, local dev or droplet, where loopback-only-inside-the-container is wanted; only the bare-metal `python main.py` path should ever get `127.0.0.1`). A deploy from a `production` that carries this commit just works; until then, same droplet-override pattern as `ENCRYPTION_MASTER_KEY` above (`docker-compose.override.yml` → `PIPER_HOST=0.0.0.0` → `docker compose up -d --force-recreate app`).
+
+**Verify after any deploy** (not just structural-green — this exact bug passed `docker compose ps` "healthy" because Docker's healthcheck used `127.0.0.1` from *inside* the container, masking the bridge-network breakage):
+```bash
+docker exec piper-app printenv PIPER_HOST                                          # = 0.0.0.0
+docker exec piper-caddy wget -qO- --timeout=5 http://piper-app:8001/health         # succeeds (the REAL cross-container path)
+curl -s -o /dev/null -w '%{http_code}\n' https://alpha.pipermorgan.ai/health       # 200
+```
+**The lesson (same shape as the Caddy-gate discovery, #1344)**: an undocumented, git-untracked droplet-local patch is invisible to every future clean deploy and WILL be silently reverted by one. Any droplet-specific fix belongs in git (repo compose + this runbook), not a one-off `nano` edit — or it's a time bomb for the next person who does a deploy correctly.
+
 ## The code-update step (the gap PA flagged)
 
 `/opt/piper` is a copy, not a checkout, so "get new code in" is the one previously-undocumented step. The **`production` branch is the release surface and is public over plain https** (per `scripts/alpha-setup.sh`), so no droplet git credentials are needed.
+
+**⚠️⚠️ Check the production/main divergence BEFORE syncing (found 2026-07-02, the #1343 hotfix deploy).** `production` is a release branch that gets cut occasionally, not continuously synced with `main` — as of 2026-07-02 it was **983 commits behind main** (frozen at the v0.8.9 cut, ~6/22). `git archive origin/main` (instead of `origin/production`) would silently deploy every one of those unreleased commits to the live alpha — not a targeted fix, a de facto unplanned release of three weeks of unreviewed work. Always check first:
+```bash
+git fetch origin production main
+git rev-list --count origin/production..origin/main   # if this is large, do NOT archive main
+```
+**For a targeted hotfix** (the common case — ship one fix without dragging the rest of `main` along): cherry-pick just the needed commit(s) onto a throwaway branch off `origin/production`, archive *that*, never touch `main`'s divergence:
+```bash
+git checkout -b hotfix-NNN origin/production
+git cherry-pick <commit> [<commit> ...]
+git archive HEAD | ssh root@alpha.pipermorgan.ai 'tar -x -C /opt/piper'
+git checkout <your-real-branch>   # git checkout -f + restore CRLF-noise files if a large branch-hop blocks it (see below)
+git branch -D hotfix-NNN
+```
+**Note**: swapping to a very old branch (`production`, 983 commits back) can make git refuse the return checkout over files with CRLF/line-ending normalization drift (`.gitattributes`/`core.autocrlf` churn on CSV-heavy paths especially) — even after `git checkout -- <path>`, since the normalizer re-dirties the file on every write. Verify with `git diff --ignore-all-space <path>` (0 real lines = safe), then `git checkout -f <branch>` to force past it; re-verify content matches `origin/main` afterward.
 
 **Primary method — `git archive` over ssh (code-only, leaves no `.git` on the droplet):**
 ```bash

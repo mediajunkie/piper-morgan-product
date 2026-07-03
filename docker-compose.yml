@@ -20,6 +20,16 @@ services:
       # an explicit `environment:` list, not `env_file:`, so .env is NOT auto-loaded into
       # the container. Empty default → encryption gracefully disabled if unset (local dev).
       - ENCRYPTION_MASTER_KEY=${ENCRYPTION_MASTER_KEY:-}
+      # #1343 incident (2026-07-02): main.py defaults PIPER_HOST to 127.0.0.1 (correct for
+      # the bare `python main.py` desktop/CLI path — binding wider would expose a local
+      # user's Piper to their LAN). But inside a container that default breaks BOTH Docker's
+      # own port-mapping and sibling-container reachability (Caddy got "connection refused"
+      # dialing the app container's bridge IP). Any compose-based run — local dev or the
+      # droplet — needs 0.0.0.0 unconditionally; there's no compose scenario where
+      # loopback-only-inside-the-container is desired. Previously this was patched only as
+      # an undocumented, git-untracked edit directly on the droplet — which is exactly how
+      # it got silently lost on the next clean deploy. Named here so it can't happen again.
+      - PIPER_HOST=0.0.0.0
     ports:
       - "8001:8001"
     volumes:
