@@ -56,3 +56,10 @@
   - **#1344 atomicity flag (LOAD-BEARING from Arch)**: validate-and-consume must be atomic (DB transaction + row-lock or Redis `GETDEL`/Lua). Non-atomic = TOCTOU race → double-spend. Arch CC'd Lead directly — Lead has the constraint. No relay needed from HOST.
   - Arch's memo → `mailboxes/host/read/`.
 
+- Fire 3 (10:40 PDT) — 4 Lead/Arch memos processed; trust-lens pass done; CIO proposal sent.
+  - **#1344 contract closed**: Lead answered token-format + validation contract. Token: 24-char Crockford Base32, `.upper()` normalize. Validation: atomic conditional UPDATE (`WHERE used_at IS NULL RETURNING`) inside `create_user`'s existing DB transaction — burn-and-create commit-or-rollback together (closes TOCTOU and spend-without-account races). Timing: unblocked, #1343 fully live. Arch ratified contract in principle. Lead proceeding to step-2 draft.
+  - **#1333/#1231 trust-lens PASS**: Read `services/intent_service/degradation_copy.py` and `services/intent_service/unwired_writes.py`. Both surfaces PASS all three non-negotiable trust properties. Two watch items (non-blocking): (1) `degrade_nudge()` silent-empty for novel `DegradationReason` members — needs `_NUDGES` entry before any enum growth; (2) `GENERIC_UNWIRED_WRITE_DECLINE`'s "(e.g. GitHub)" will mislead if non-GitHub unwired writes are added. Trust-lens memo → Lead (cc Arch, PM).
+  - **#1331 ACK from Lead**: Ratification acknowledged; third-failure-class watch item registered by Lead. Lead also recorded #1322 gate dependency durably (GH comment + decisions.log) per PPM's alpha-trust lens memo.
+  - **CIO proposal**: PM-directed — routed "sync PM's local after push" convention proposal to CIO for cohort brokering. Memo → CIO (cc PM). PM needs CIO to decide mechanism + CLAUDE.md rollout.
+  - All 4 inbox memos → `mailboxes/host/read/`. `dc5148c5f` on origin/main.
+

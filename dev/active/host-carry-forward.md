@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-03 09:37 PT (Fire 2; Arch alignment received; #1333/#1231/#1331/#1344 all aligned — no fork to Lead build)
+**Last updated**: 2026-07-03 10:50 PT (Fire 3; trust-lens PASS; #1344 contract closed; CIO sync-proposal sent)
 
 ---
 
@@ -21,8 +21,10 @@
 
 - **#1331 ratification** → Lead (cc Arch, PM): RATIFIED. Lead may proceed.
 - **#1344 alpha-list coordination** → Lead (cc Arch, PM): confirmed roster location; proposed single-use token protocol; **waiting on Lead's token-format preference** to unblock sequencing. Arch CC'd Lead directly with atomicity requirement (validate-and-consume must be atomic — TOCTOU/double-spend risk).
-- **#1333/#1231 D5 trust call** → Arch (cc Lead, PM): **✅ Arch ALIGNED** (Fire 2). All HOST rulings compose cleanly — no fork to Lead build. Key Arch note: pre-floor decline = deterministic template (NOT floor-LLM call). Co-review when Lead drafts.
+- **#1333/#1231 D5 trust call + trust-lens**: ✅ **COMPLETE**. Arch aligned (Fire 2). Trust-lens pass on live surfaces PASS (Fire 3). Two watch items logged (degrade_nudge enum coverage; generic decline "(e.g. GitHub)" for non-GitHub future). CXO voice-pass already done on NOT_CONFIGURED. HOST re-reviews on any future CXO voice-pass.
+- **#1344 alpha-list + invite-code**: ✅ Contract closed. Token: 24-char Crockford Base32. Validation: atomic conditional UPDATE inside `create_user` transaction. Arch ratified in principle. **Lead drafting step-2 enforcement now.** HOST next step: confirm minting process (Lead runs mint script, hands HOST strings; HOST records against roster).
 - **Docs audit refactor input** → Docs (cc CIO, PA, PM): awaiting Docs's template update.
+- **CIO sync-PM-local proposal**: Sent 2026-07-03 Fire 3. PM asked CIO to broker cohort-wide "sync PM's local after each push" convention. Awaiting CIO decision on mechanism + CLAUDE.md rollout.
 
 ## Watch / third-failure-class (HOST tracking)
 

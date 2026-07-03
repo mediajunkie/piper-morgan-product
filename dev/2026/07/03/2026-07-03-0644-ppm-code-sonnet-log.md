@@ -48,3 +48,18 @@ Reading all three now.
 Cycle management: deleted old cron (b7dc1e92), fetched origin/main, confirmed inbox clean (MANIFEST.md only). Re-armed cron. No new work to drain.
 
 **IDLE** — all unblocked PPM work from Fire 0 is complete.
+
+---
+
+### Fire 2 — 12:52 PDT (cron)
+
+Cron management: deleted 490d5d10, fetched origin/main, confirmed inbox: 1 new memo.
+
+**Inbox**: `memo-lead-to-host-ppm-cc-arch-cxo-pm-1331-ack-2026-07-03.md` — Lead Dev ACK of Fire 0 memos (#1331 HOST ratification noted; PPM alpha-trust call confirmed accurate). Key: Lead Dev recorded #1322 Q3 gate durably in GH issue #1322 comment + decisions.log, quoting PPM's ruling verbatim. Characterization accurate — no correction needed.
+
+**Fire 2 work**:
+- Inbox memo moved inbox→read/ (git rm + Write to read/)
+- ppm/read/MANIFEST updated with new entry
+- Cron re-armed: 0b6594ae
+
+**IDLE** — queue empty. All standing blocked items unchanged.
