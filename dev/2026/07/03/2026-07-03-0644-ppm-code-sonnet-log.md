@@ -40,3 +40,11 @@ Reading all three now.
 - #683 Lead Dev recipe pending
 - Sprint-order.md PM ratification pending
 - Briefing STALE (14 days) — flagging for Docs/CIO; outside PPM's primary lane but noted
+
+---
+
+### Fire 1 — 09:52 PDT (cron)
+
+Cycle management: deleted old cron (b7dc1e92), fetched origin/main, confirmed inbox clean (MANIFEST.md only). Re-armed cron. No new work to drain.
+
+**IDLE** — all unblocked PPM work from Fire 0 is complete.
