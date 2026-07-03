@@ -1,7 +1,7 @@
 # Release Runbook
 
-**Version**: 1.6
-**Last Updated**: January 31, 2026
+**Version**: 1.7
+**Last Updated**: July 2, 2026
 
 This runbook documents the complete process for releasing a new version of Piper Morgan to production.
 
@@ -58,6 +58,17 @@ git log --oneline v0.8.3..HEAD  # Replace with previous version tag
 
 ## Version Bump
 
+**⚠️ Found 2026-07-02 (v0.8.9.1 release): the `VERSION` file was missing from this section entirely** — despite `docs/versioning.md` calling it "the single source of truth" that `pyproject.toml` "must match." It silently drifted 4 releases behind (frozen at v0.8.5.1 while pyproject.toml correctly advanced through 0.8.6→0.8.9) because nothing in this checklist ever told an agent to touch it. Fixed by adding it explicitly below + a mechanical check that can't be silently skipped.
+
+### 0. Update VERSION file FIRST
+
+```bash
+# Edit VERSION (repo root, plain text, no quotes)
+# Change: X.Y.Z → X.Y.Z+1  (must exactly match the pyproject.toml value below)
+```
+
+- [ ] `VERSION` file updated
+
 ### 1. Update pyproject.toml
 
 ```bash
@@ -66,6 +77,16 @@ git log --oneline v0.8.3..HEAD  # Replace with previous version tag
 ```
 
 - [ ] Version number updated in pyproject.toml
+
+### 2. Verify they match — run this, don't eyeball it
+
+```bash
+python3 scripts/check-version-consistency.py
+# Must print "OK" and exit 0. If it prints MISMATCH, fix before continuing —
+# this is exactly the check that would have caught the 4-release VERSION drift.
+```
+
+- [ ] `check-version-consistency.py` passes
 
 ### 2. Create Release Notes
 
@@ -98,6 +119,11 @@ Create `docs/releases/RELEASE-NOTES-vX.Y.Z.md` with:
   - "Current Version" at top
   - Add row to Version History table
   - Update "Last updated" date at bottom
+- [ ] `docs/VERSION_NUMBERING.md` - Update (found missing from this checklist 2026-07-02 — a
+  THIRD "current version" doc that had silently drifted because nothing ever listed it here):
+  - "Current Version" header
+  - Add entry to the era history list, move the "← **CURRENT**" marker
+  - Update "Last Updated" date
 
 ### 2. Alpha Documentation (MANDATORY - update version numbers)
 
@@ -288,6 +314,8 @@ If any files show up (other than historical release notes), they need updating.
 
 **Why this exists**: The version number grep above catches stale version strings, but content drift is harder to detect. In the v0.8.5 release, we found stale test counts (602 vs 5253), wrong Python versions (3.9 vs 3.11), wrong branch names (`main` vs `production`), and outdated feature labels — none of which would be caught by a version number grep.
 
+**2026-07-02 (v0.8.9.1)**: found a *different* failure class — not content drift within an updated file, but **whole files silently never being updated at all** across multiple releases, because this runbook's own checklist didn't enumerate them. `VERSION` (repo root) had been frozen at v0.8.5.1 for 4 consecutive releases (0.8.6 → 0.8.9) — it simply wasn't listed in "Version Bump" at all, so no agent following this runbook mechanically had reason to touch it, even though `docs/versioning.md` calls it "the single source of truth." `docs/VERSION_NUMBERING.md` (a third "Current Version" doc, not `versioning.md`) was in the same state — never listed anywhere in this runbook. And `docs/versioning.md` itself *was* listed, with specific update steps, yet had still drifted 3 mutually-inconsistent version numbers across the header/history-table/footer over several releases — proof that a listed-but-unenforced checklist item can still silently fail under time pressure. **The fix**: both missing files are now explicit steps (Version Bump §0, §2, Documentation Updates §1, Quick Audit Checklist) — closing the completeness gap — *and* `scripts/check-version-consistency.py` makes the VERSION/pyproject.toml pairing mechanically checkable rather than eyeballed, closing the compliance gap for the one relationship simple enough to automate. The prose-heavy docs (versioning.md, VERSION_NUMBERING.md) remain manual-checklist items — but now at least a complete list.
+
 For each alpha-facing document, verify these content areas are current:
 
 | Content Area | Where to Check | Common Drift |
@@ -350,9 +378,11 @@ For each alpha-facing document, verify these content areas are current:
 | Category | Files | Check For |
 |----------|-------|-----------|
 | **Tier 1: Core Docs** | | |
+| VERSION file | `VERSION` (repo root) | Matches `pyproject.toml` exactly — run `scripts/check-version-consistency.py` |
 | Release Notes | `docs/releases/RELEASE-NOTES-vX.Y.Z.md` | File exists |
 | Release Index | `docs/releases/README.md` | Current Version updated, table row added |
 | Versioning | `docs/versioning.md` | Version at top, history table, footer date |
+| Version Numbering | `docs/VERSION_NUMBERING.md` | Current Version header, era history entry, ← CURRENT marker moved, Last Updated |
 | Briefing | `docs/briefing/BRIEFING-CURRENT-STATE.md` | STATUS BANNER version, Last Updated, history table |
 | **Tier 2: Alpha Docs** | | |
 | Testing Guide | `docs/ALPHA_TESTING_GUIDE.md` | Header version, What's New section, footer |
@@ -380,13 +410,16 @@ For each alpha-facing document, verify these content areas are current:
 - [ ] Recent commits reviewed
 
 ### Version Bump
+- [ ] VERSION file updated
 - [ ] pyproject.toml updated
+- [ ] check-version-consistency.py passes
 - [ ] Release notes created
 
 ### Documentation Updates (MANDATORY)
 - [ ] docs/releases/RELEASE-NOTES-vX.Y.Z.md created
 - [ ] docs/releases/README.md updated
 - [ ] docs/versioning.md updated
+- [ ] docs/VERSION_NUMBERING.md updated
 - [ ] docs/briefing/BRIEFING-CURRENT-STATE.md updated
 - [ ] docs/README.md updated (release notes quick link)
 - [ ] docs/ALPHA_TESTING_GUIDE.md updated
@@ -420,6 +453,7 @@ For each alpha-facing document, verify these content areas are current:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.7 | 2026-07-02 | Fixed a completeness gap (not content drift): VERSION file + docs/VERSION_NUMBERING.md were never listed anywhere in this runbook, so both silently went unmaintained for multiple releases (VERSION frozen 4 releases behind). Added both explicitly to Version Bump / Documentation Updates / Quick Audit Checklist / Completion Matrix, plus `scripts/check-version-consistency.py` to make the VERSION↔pyproject.toml pairing mechanically checkable instead of eyeballed. |
 | 1.6 | 2026-01-31 | Added ALPHA_KNOWN_ISSUES and ALPHA_FEATURE_GUIDE maintenance guidance, updated Completion Matrix |
 | 1.5 | 2026-01-28 | Added Content Accuracy Audit (beyond version grep), consolidated to single email template, updated Completion Matrix |
 | 1.4 | 2026-01-19 | Added Documentation Audit Step with grep command, added Completion Matrix template |
