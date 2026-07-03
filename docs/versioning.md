@@ -1,6 +1,8 @@
 # Piper Morgan Versioning Strategy
 
-## Current Version: 0.8.9
+## Current Version: 0.8.9.1 (released, live on `production`/alpha)
+
+`main`'s own `pyproject.toml`/`VERSION` are still `0.8.9` — unbumped, since 0.8.9.1 was released as a targeted hotfix cherry-picked onto `production` (not a merge-forward from `main`). `main` carries substantially more unreleased work (RECONNECT sprint) pending its own release cut, at which point `main`'s version will bump past 0.8.9.1.
 
 ## Versioning Scheme
 
@@ -86,6 +88,10 @@ During alpha testing, versions follow this pattern:
 
 | Version | Date       | Milestone | Notes                                          |
 | ------- | ---------- | --------- | ---------------------------------------------- |
+| 0.8.9.1 | Jul 2026   | Patch     | Security fix (#1343) — anonymous LLM-key billing exposure closed (hotfix on `production`) |
+| 0.8.9   | Jun 2026   | RECONNECT | RECONNECT WS-1 + security + design D2 — connector infra, field encryption, token system |
+| 0.8.8   | Jun 2026   | RECONNECT | D1/RECONNECT — BYOC keys, Radar default, nav IA, home UX |
+| 0.8.7   | Jun 2026   | M1+M2+M3  | Conscious Floor, dispatch rail complete, files UX, Slack inbound |
 | 0.8.6   | Mar 2026   | M0 Sprint | M0 Conversational Glue, 27 issues resolved     |
 | 0.8.5.3 | Feb 2026   | Patch     | Windows compatibility, setup UX, 14 issues resolved |
 | 0.8.5.2 | Feb 2026   | Patch     | Chat persistence, date formatting, calendar fixes |
@@ -113,5 +119,5 @@ During alpha testing, versions follow this pattern:
 
 ---
 
-_Last updated: March 4, 2026_
-_Current version: 0.8.6_
+_Last updated: July 2, 2026_
+_Current version: 0.8.9.1 (released) — `main` at 0.8.9 pending next cut_
