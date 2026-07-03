@@ -63,3 +63,9 @@
   - **CIO proposal**: PM-directed — routed "sync PM's local after push" convention proposal to CIO for cohort brokering. Memo → CIO (cc PM). PM needs CIO to decide mechanism + CLAUDE.md rollout.
   - All 4 inbox memos → `mailboxes/host/read/`. `dc5148c5f` on origin/main.
 
+- Fire 4 (12:15 PDT) — Arch timing sharpening on `_NUDGES` completeness guard; ACK sent.
+  - **Arch to Lead (cc HOST)**: HOST's watch item ("degrade_nudge() silent-'' for novel enum members") is the m-41 close and should land WITH the #1231 `NOT_CONFIGURED` add — enum is growing NOW. Arch provided test shape (enumerate `DegradationReason`, assert each in `_NUDGES`). Same commit as `NOT_CONFIGURED` add → guard is green on arrival.
+  - HOST ACK → Arch + Lead: concur on timing; watch-item disposition updated from "track if recurs" to "captured in #1231 change, Lead owns, Arch ratifies at step 2."
+  - Second watch item (generic decline "(e.g. GitHub)") confirmed future-conditional — no change.
+  - 1 inbox memo → read/. Network: port 22 timeout → using SSH port 443 fallback.
+
