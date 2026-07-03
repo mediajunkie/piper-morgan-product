@@ -18,7 +18,7 @@ The reframe took a few days to land. It came from the right question — not *di
 
 That's the value-chain question. And the answer changed what the bespoke work had been.
 
-## The reframe
+# The reframe
 
 The bespoke verification harness wasn't a separate product line I now owned and had to defend. It was *training material* for understanding what was coming. Building our own version had taught us how verification harnesses work — what they do well, where they get brittle, what's critical versus what's commodity. When the productized version arrived, we didn't approach it as strangers. We approached it as people who'd been inside one and knew what to look for.
 
@@ -26,7 +26,7 @@ That's a different posture than *they shipped what we built.* That's *we're now 
 
 The disposition I needed sounded something like this: working in an emerging space always means being lapped routinely by the platform. This can't be treated as a problem, a mistake, or wasted sunk cost. It's how you climb higher on the value chain — by building on top of things that are now stable instead of maintaining them yourself.
 
-## Three rules that come out of it
+# Three rules that come out of it
 
 **Don't defend sunk cost.** The bespoke version served you. That's not a reason to keep maintaining it once a stable productized version is available. The serving was its job. The job is done.
 
@@ -36,7 +36,7 @@ The disposition I needed sounded something like this: working in an emerging spa
 
 The answer to that question is the third part: climbing higher.
 
-## What climbing higher actually looks like
+# What climbing higher actually looks like
 
 Every time the platform laps you, you get a bandwidth windfall. You stop maintaining the lower layer. The hours you used to spend on the bespoke shape are now available for something else.
 
@@ -46,7 +46,7 @@ The right thing to do with those hours is to climb. Use the now-stable lower lay
 
 In our case: the verification work was substrate for something I'd been waiting to build — a higher-leverage feedback loop that depended on having stable verification as a primitive. With the platform doing the verification primitive, the higher-leverage thing got cheaper to build. The lap was a windfall.
 
-## The pattern, not the event
+# The pattern, not the event
 
 This isn't a one-time event. It's the shape of working in an emerging space.
 
@@ -58,7 +58,7 @@ The temptation each time will be the same: *but ours is better-fitted, we have h
 
 [FACT-CHECK NOTE for PM: I'm naming verification, memory consolidation, multi-agent, and webhooks as the platform-lap surfaces. Confirm or replace with the canonical list — I have these from memory but want your sign-off on the public articulation.]
 
-## The inverted frame
+# The inverted frame
 
 The frame that flips it all is this: the bespoke work wasn't a product line that's now in competition with the platform. It was *training material* for the moment the platform shows up. You learned things building it that the people who never built it don't know. That knowledge doesn't evaporate when the productized version arrives. It transfers. It becomes the basis on which you adopt the productized version intelligently — knowing where it'll fit clean, knowing where you still need a custom shape, knowing what to test first because you remember which parts were brittle.
 
@@ -66,7 +66,7 @@ The DIY work paid out twice: once as the thing it was while you needed it, and a
 
 That second payout doesn't show up in sunk-cost accounting. Sunk-cost accounting compares *what I built* to *what the platform shipped* and asks whether they overlap. They do. So the math says you wasted effort. But that math is wrong, because the payout you're counting isn't the only one.
 
-## What I almost did
+# What I almost did
 
 I almost wrote a memo arguing why our verification work was different from Outcomes and why we should keep maintaining ours. The memo would have been technically defensible. It would have catalogued the gaps where their version didn't fit our patterns. It would have been a reasonable-sounding piece of work that, if I'd written it, would have committed me to another quarter of maintaining a lower-layer shape that the platform was about to make obsolete.
 
@@ -76,6 +76,6 @@ The frame matters more than the analysis. The analysis can come either way once 
 
 ---
 
-*Next on Building Piper Morgan: [tease for next scheduled piece — confirm when calendar slot lands]*
+*Next on Building Piper Morgan: "The Practice That Got Retired" — sometimes the most valuable thing a practice does is reveal what should replace it.*
 
 *When has a platform productization landed on top of your work? What did you do with the bandwidth windfall? Where did you almost defend sunk cost and catch yourself in time?*

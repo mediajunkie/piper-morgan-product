@@ -1,6 +1,6 @@
-# Comms carry-forward — 2026-07-03 Fire 0 (identity-correction resume)
+# Comms carry-forward — 2026-07-03 Fire 1 (12:43 PT duty-cycle-tick)
 
-**Cron**: `7ccdd828` · `12 6,9,12,15,18,21 * * *` (re-armed 9:43 AM after identity correction)
+**Cron**: `7ccdd828` · `12 6,9,12,15,18,21 * * *` (re-armed 9:43 AM after identity correction; confirmed 1 job at 12:43 fire)
 **Session log**: `dev/2026/07/03/2026-07-03-0943-comms-code-log.md`
 
 ---
@@ -26,14 +26,25 @@ This session was misidentified as Docs starting Jul 2 (PM's own greeting address
 - `comms-standing-items.md` — last refreshed Jun 17; predates most of June's drafting work. Refresh when queue allows.
 - Full mailbox beyond the 3 memos just triaged — worth a clean sweep next fire to confirm nothing else is sitting stale.
 
-## Done this fire (Jul-3 ~09:43)
+## Done Fire 0 (Jul-3 ~09:43)
 
 - ✅ Identity corrected: Docs cron deleted, Comms cron re-armed (`7ccdd828`)
 - ✅ 3 stale mailbox memos read + triaged to read/ (Ship-049 miss owned; narrative-arc ask confirmed still-open; run-lean throttle confirmed superseded)
 - ✅ MANIFESTs regenerated (comms inbox 0 / read 162)
 - ✅ Jul-3 session log created with full identity-drift correction note
 
+## Done Fire 1 (Jul-3 ~12:43)
+
+- ✅ **Jun 28 unclosed session log fixed** — retroactive STOP + day-arc + `<!-- DAY-CLOSED: 2026-06-28 -->` written, reconstructed from commits + conversation record.
+- ✅ **"Climbing Higher When the Platform Laps You" (Jul 4) pre-edited** — was `queued`/untouched despite publishing tomorrow. Fixed: 6 section headings H2→H1, footer tease filled correctly ("The Practice That Got Retired," using verified "Next on Building Piper Morgan:" phrasing). Left for PM: 2 FACT-CHECK notes, frontmatter (image/alt/caption).
+
+## Next (Fire 2+)
+
+- [ ] **"Climbing Higher" needs PM voice-pass** before Jul 4 publish — flag to PM, it's tight (pubs tomorrow and hasn't had ANY pass until this fire).
+- [ ] `comms-standing-items.md` refresh (last touched Jun 17) — still pending, not urgent.
+- [ ] Narrative arc steer — still awaiting PM, no change.
+
 ## State flags
 
 - Inbox: **0 unread**
-- Queue: needs a proper standing-items refresh + continue-narrative pass before claiming (0,0) — today's fire was reconciliation, not full task-loop advancement
+- Queue: (0,0) for unblocked mechanical work; standing-items refresh + continue-narrative pass remain as lower-priority fill; Climbing Higher's PM-voice-pass gate is the one time-sensitive item (Jul 4 pubDate)
