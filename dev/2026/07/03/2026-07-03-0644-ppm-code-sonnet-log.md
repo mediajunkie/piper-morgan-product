@@ -63,3 +63,23 @@ Cron management: deleted 490d5d10, fetched origin/main, confirmed inbox: 1 new m
 - Cron re-armed: 0b6594ae
 
 **IDLE** — queue empty. All standing blocked items unchanged.
+
+---
+
+### Fire 3 — 15:52 PDT (cron)
+
+Cron management: deleted 0b6594ae, fetched origin/main, confirmed inbox: 2 new memos from Lead Dev on #1235.
+
+**Inbox**:
+1. `memo-lead-to-ppm-cc-pm-1235-reverted-pending-pm-2026-07-03.md` — Lead moved #1235 Sprint→M3-Quality per PPM's morning request; PM flagged (closed issue→unstarted sprint misrepresents timeline); reverted to RECONNECT pending PM decision.
+2. `memo-lead-to-ppm-cc-pm-1235-intent-clarification-2026-07-03.md` — Lead asks: PPM rationale = cherry-pick (Option 1) or topical-only (Option 2)?
+
+**PPM response**: topical/categorical (Option 2). Lead's revert correct; PM's flag correct. PPM should have flagged the closed→unstarted-sprint ambiguity before routing. Escalated to PM: 3 options + PPM lean (A: clear the field — no timing misrepresentation; surfaces naturally in M3-Quality triage).
+
+**Fire 3 work**:
+- `memo-ppm-to-pm-cc-lead-1235-sprint-field-decision-2026-07-03.md` filed → PM inbox + Lead CC + sent mirror
+- Both inbox memos moved inbox→read/
+- ppm/read/MANIFEST updated (2 new entries)
+- Cron re-armed: d4e69590
+
+**IDLE** — #1235 now PM-gated. Queue empty.
