@@ -1,41 +1,39 @@
-# Comms carry-forward — 2026-06-20 Fire 3
+# Comms carry-forward — 2026-07-03 Fire 0 (identity-correction resume)
 
-**Cron**: `8b40d022` · `12 6,9,12,15,18,21 * * *`
-**Session log**: `dev/2026/06/20/2026-06-20-0642-comms-code-sonnet-log.md`
+**Cron**: `7ccdd828` · `12 6,9,12,15,18,21 * * *` (re-armed 9:43 AM after identity correction)
+**Session log**: `dev/2026/07/03/2026-07-03-0943-comms-code-log.md`
 
 ---
 
-## Active threads
+## Context: identity drift Jul 2–3, corrected this fire
+
+This session was misidentified as Docs starting Jul 2 (PM's own greeting addressed it that way; session went along without checking). All Jul-2/Jul-3 work under that mislabel is in Docs-slugged logs, not here. PM corrected at 9:43 AM Jul 3. See today's session log for full account. Practical effect: no Comms session log exists between Jun 20 and today — anything below marked "last known" is from the Jun 20 carry-forward / Jun 17 standing-items, not independently re-verified this fire unless noted.
+
+## Active threads (carried from Jun 20, not yet re-verified except where noted)
 
 | Item | State | Next move |
 |---|---|---|
-| **"Extension Without Integration" (insight, Jun 21)** | ⚠️ TOMORROW. Draft prepped. PM testing Web editing interface (noted 2:08 PM). | On PM handoff: run template-audit → publish-ready memo to Docs. |
-| **Beat 8 — Branch-or-Anchor (Jun 23)** | Draft exists. Awaiting PM voice-pass. | Publish-ready memo to Docs by Jun 22 evening. |
-| **BYOC insight — "Built in Our Own Image"** | Draft complete. Calendar row added (queued, May 19-31). | Awaiting PM voice-pass. Then template-audit → publish-ready. No urgency on timing. |
-| **Building narrative — beat candidates (Jun 15–19)** | Five candidates (A-E) surfaced to PM. Awaiting steer. | Await PM steer → calendar rows + draft-blog-post for approved beats. |
-| **#1160 — Syndication automation** | Blocked on Dispatch skill share. | Receive skill → complete audit → close. |
-| **#998 — COMPOSE-UI-V1** | Replied with full workflow. | Follow up with Dispatch skill specifics. |
-| **BYOC GTM task force** | Awaiting PM direction on convening. | PM to convene. |
-| **Beat 6 LinkedIn URL** | Still empty in calendar. | Dispatch/PM. |
+| **Narrative arc steer (candidates A–E, Jun 15-19)** | Still awaiting PM steer as of this fire (confirmed via Jun 27 Exec proxy-nudge memo, just triaged). Front (Beat 16, ends Jun 14) is ~3 weeks behind current work. | Run `continue-narrative` properly when PM's ready to steer — the gap is now large enough it may need re-scoping, not just picking up candidates A-E as-is. |
+| **Ship #049** | Comms missed the Jun 30 draft ask (identity-drift window); Exec drafted directly, PM voice-passed, publish-track. CLOSED, no action, but named honestly in log. | none |
+| **Beats 11–13 (duty-cycle slate)** | Drafted 6/3, awaiting PM voice-pass. Beat 10 (Airport Corrections) already published Jul 2. | PM voice-pass queue |
+| **Beats 14–16** | Drafted 6/16, awaiting PM voice-pass. | PM voice-pass queue |
+| **Beat 6 LinkedIn URL** | Last known: still empty in calendar (Jun 20 note) — not re-verified this fire. | Dispatch/PM |
+| **BYOC marketplace narrative angles** | Last known: unblocked Jun 17, awaiting PM direction on angles — not re-verified this fire. | PM |
+| **#1160 Syndication automation** | Last known: blocked on Dispatch skill share — not re-verified this fire. | Dispatch |
 
-## Completed this session (Jun 20)
+## Not yet re-verified this fire (need a fresh pass, not urgent today)
 
-- Ship-048 workstream review memo filed to Exec (CC PA)
-- Building narrative scan: 5 candidates (A-E) surfaced to PM
-- Beat 7 footer retroactive fix: verified done (predated this session)
-- "This One's Taken" published Jun 20 — calendar URLs confirmed; footer chain intact
-- BYOC insight drafted: `draft-insight-built-in-our-own-image.md` — "We Built Onboarding in Our Own Image"
-- BYOC calendar row added (queued, May 19-31 source window)
-- PA BYOC angle memo triaged → read/
+- `comms-standing-items.md` — last refreshed Jun 17; predates most of June's drafting work. Refresh when queue allows.
+- Full mailbox beyond the 3 memos just triaged — worth a clean sweep next fire to confirm nothing else is sitting stale.
 
-## Building narrative beat candidates (Jun 15–19)
+## Done this fire (Jul-3 ~09:43)
 
-Front: Beat 16 endWorkDate = June 14.
+- ✅ Identity corrected: Docs cron deleted, Comms cron re-armed (`7ccdd828`)
+- ✅ 3 stale mailbox memos read + triaged to read/ (Ship-049 miss owned; narrative-arc ask confirmed still-open; run-lean throttle confirmed superseded)
+- ✅ MANIFESTs regenerated (comms inbox 0 / read 162)
+- ✅ Jul-3 session log created with full identity-drift correction note
 
-| Label | Source dates | Through-line |
-|---|---|---|
-| A — "The Fabricating Standup" | Jun 18 | Standup was LLM-improvised (Pattern-045). Replaced with honest EntitySource-derived view. |
-| B — "The Trust Gate That Wasn't" | Jun 17 | Gate was hiding user's own content. PM principle: gate = Piper's autonomy, not user access. |
-| C — "Read the Mock First" | Jun 17–19 | Dark-rail built wrong, PM UAT caught it, spec-first, rebuilt. Cost of skipping the design artifact. |
-| D — "The Orphan Migration" | Jun 17 | 4 DB tables had no Alembic create migration. Structural file-scan test caught the class. |
-| E — "Two of Me" | Jun 17–18 (PM's call) | Two Lead Dev sessions in parallel, unaware of each other. PM's first-person observation — not in logs. |
+## State flags
+
+- Inbox: **0 unread**
+- Queue: needs a proper standing-items refresh + continue-narrative pass before claiming (0,0) — today's fire was reconciliation, not full task-loop advancement

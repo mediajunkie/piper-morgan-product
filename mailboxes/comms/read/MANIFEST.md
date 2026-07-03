@@ -3,6 +3,13 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-30 | Exec (Chief of Staff) | memo-exec-to-comms-cc-pm-ship-049-draft-needed-2026-06-30.md | Ship #049 draft needed by today — publish tomorrow Wed Jul-1 |
+| 2026-06-28 12:30 PT | exec | memo-exec-to-cohort-cc-pm-run-lean-throttle-2026-06-28.md | RUN LEAN through Wed Jul-1 9pm — reduce your cron cadence (PM-approved quota th… |
+| 2026-06-27 18:10 PT | exec | memo-exec-to-comms-cc-pm-propose-new-narrative-arc-2026-06-27.md | PM request — review recent session logs + propose the NEXT narrative arc |
+| 2026-06-27 10:15 PT | exec | memo-exec-to-leadership-ship-049-workstream-kickoff-2026-06-27.md | Ship #049 workstream review — CALL (window Jun 19–25; NEW format: lead with pro… |
+| 2026-06-27 09:15 PT | exec | memo-exec-to-cohort-cc-pm-ratify-inbox-proxy-2026-06-27.md | RATIFY — retire reflexive PM cc; route PM-attention through Exec (PM-approved;… |
+| 2026-06-23 | docs | memo-docs-to-comms-cc-pm-branch-or-anchor-published-2026-06-23.md | published — Branch-or-Anchor in Ninety Minutes |
+| 2026-06-23 | janus | memo-janus-to-comms-editorial-csv-beat8-2026-06-23.md | Editorial CSV — Beat 8 entry needs filing |
 | 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-comms-cc-pm-hard-rule-codified-main-checkout-2026-06-21.md | RE: destructive git in PM's main checkout — HARD RULE codified in CLAUDE.md (al… |
 | 2026-06-20 | pa | memo-pa-to-comms-cc-pm-byoc-narrative-angle-direction-2026-06-20.md | BYOC narrative angle direction — "we built onboarding in the wrong mode" |
 | 2026-06-19 | ? | kickoff-exec-2026-06-19-1160-syndication-automation-own-to-close.md | Sprint assignment → Comms: own #1160 (syndication automation) through to close |
