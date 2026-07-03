@@ -42,11 +42,31 @@ LOG_DIR="$PROJECT_ROOT/dev/$YEAR/$MONTH/$DAY"
 
 if [ -d "$LOG_DIR" ]; then
     # List today's session logs (any role). Agent should resume their own if listed.
-    LOGS_TODAY=$(find "$LOG_DIR" -maxdepth 1 -name "*-opus-log.md" -type f 2>/dev/null \
+    # Matches both formats (backward-compatible, same as section 6/7):
+    #   New (2026-06-29+): YYYY-MM-DD-HHMM-{role}-code-log.md
+    #   Old (pre-2026-06-29): YYYY-MM-DD-HHMM-{role}-code-opus-log.md (or -sonnet-/-haiku-)
+    # #1153-adjacent fix (2026-07-03): this glob was missed in the 6/29 naming-convention
+    # pass — it still required "-opus-log.md" so this signal silently stopped firing for
+    # any new-format log. Section 6 got the fix; this one didn't.
+    LOGS_TODAY=$(find "$LOG_DIR" -maxdepth 1 -name "*-log.md" -type f 2>/dev/null \
         -exec basename {} \; 2>/dev/null | tr '\n' ',' | sed 's/,$//;s/,/, /g')
     if [ -n "$LOGS_TODAY" ]; then
         output+="SESSION LOGS TODAY: $LOGS_TODAY — resume yours if listed."$'\n'
     fi
+fi
+
+# ─── 1b. Branch/Worktree Check (CXO gap, 2026-07-01) ─────────────────────────
+# Backup-account sessions don't auto-create an ephemeral worktree — the agent
+# lands directly on shared main. Surfaced when CXO's Jun 30 → Jul 1 session
+# committed on main and picked up other agents' + PM's uncommitted state.
+# Detection: a worktree checkout can never be on branch `main` (git refuses to
+# check out a branch that's already checked out elsewhere, and main lives in
+# the primary checkout) — so branch==main implies "this IS the main checkout."
+# Detached-HEAD worktrees (e.g. Belt-4 spawn-fresh) report "HEAD", not "main",
+# so they correctly don't trigger this.
+CUR_BRANCH=$(git -C "$PROJECT_ROOT" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+if [ "$CUR_BRANCH" = "main" ]; then
+    output+="BRANCH: main (shared checkout, not a worktree) — substantive work needs a worktree (CLAUDE.md); mailbox/housekeeping-only is fine here."$'\n'
 fi
 
 # ─── 2. Mailbox Check (all role inboxes) ─────────────────────────────────────
