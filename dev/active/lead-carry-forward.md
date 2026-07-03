@@ -1,16 +1,22 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-02 ~21:53 PT (DAY-CLOSED). Session log: `dev/2026/07/02/2026-07-02-0923-lead-code-log.md`.
+**Updated**: 2026-07-03 ~10:30 PT. Session log: `dev/2026/07/03/2026-07-03-0623-lead-code-log.md`.
 
-## ▶ CURRENT (7/2 DAY-CLOSE) — both prior blockers RESOLVED today. Read this, not the history below.
+## ▶ CURRENT (7/3 ~10:30) — #1344 contract sent to HOST, awaiting their step 2 trigger. Read this, not the history below.
 
-**#1343 — RESOLVED, DEPLOYED, LIVE, and CLOSED.** Deployed as **v0.8.9.1**, tagged + pushed to `origin/production` + GitHub Release published. Live-verified: anonymous `/api/v1/intent` requests get the honest refusal, not a silent bill. PM confirmed close 2026-07-02 evening — issue title/body updated (were stale "NOT YET DEPLOYED") + closed with full evidence comment. Fully done, nothing pending.
+**#1344 — token format + validation contract SENT to HOST, unblocked on their side, my next build item not yet started.** HOST's coordination memo (7/3) asked 3 questions; replied with: token = Crockford Base32, 24 chars, uppercase-normalized; validation = **NOT** a static published set (Arch's atomicity ruling forces this) — proposed a Lead-owned `invite_tokens` DB table with a single conditional `UPDATE...WHERE used_at IS NULL RETURNING token` co-located in `create_user`'s existing transaction (`web/api/routes/setup.py:809`, already uses `session_scope_fresh()`); timing = no blocker, #1343 Gap-B fully closed since 7/2. **⭐ NEXT BUILD (when picked up): draft `create_user`'s invite-gate enforcement per this contract** — the route currently has zero auth (`web/api/routes/setup.py:773`, no `Depends`), per Arch's 7/2 read it needs to lose exempt-status entirely once the invite token is wired. Arch is ready to ratify the boundary shape once drafted. Not started — HOST may want to confirm/adjust the contract first (memo sent, no reply yet).
 
-**#1344 — HANDED TO HOST, not mine to act on.** PM ruled directly: invite codes (durable fix, HOST owns list/issuance) + usage-cap (Arch-shaped, PM/HOST own thresholds) + obscurity as interim. Arch confirmed the invite-code gate **is** the Gap-A fix already scoped — split is Lead drafts / Arch ratifies, HOST hasn't reached out yet. **Nothing to do here until HOST coordinates.**
+**#1343 — RESOLVED, DEPLOYED, LIVE, and CLOSED** (unchanged from 7/2, still true). v0.8.9.1, live-verified, PM-confirmed close.
 
-**Also today (tangential but real)**: cut v0.8.9.1 as PM directed, found + fixed genuine version-doc drift (VERSION frozen 4 releases behind, versioning.md internally inconsistent) across both `main` and `production`, closed the runbook gap that caused it with a real tested check (`scripts/check-version-consistency.py`). Then found + fully corrected my own testing-methodology error (falsely diagnosed a "repo-wide pytest bug" that was actually my own `-o addopts` override habit silently dropping an already-correct config line) — including fixing the already-published v0.8.9.1 release notes + GitHub Release description, not just the GH issue. #1346 filed, corrected twice, fixed, closed with evidence.
+**#1322 (GitHub real writes) — now carries a HARD gate distinct from the general #1331 alpha read.** PPM ruling (7/3): no user-facing write actions until a deterministic **code-level** guard verifies the action executed before Piper claims success (prompt-level #1331 hardening is necessary but explicitly insufficient for this issue specifically). Recorded on the issue ([comment](https://github.com/mediajunkie/piper-morgan-product/issues/1322#issuecomment-4878205511)) + `decisions.log`. This is a precondition on whoever picks up #1322 Q3 — the deterministic guard has to be built FIRST, it's not parallel work. Not started; not currently anyone's active item.
 
-**Next fire: nothing is currently blocked on me.** Check mail first (as always). If nothing new: #1344 waits on HOST; RECONNECT's buildable queue was already fully drained (see below, still true); no manufactured busywork — quiet-hold is the honest state if nothing's moved.
+**#1333/#1231 copy — both already shipped (pre-dates HOST's activation today); flagged to HOST with exact file/commit pointers for their pending trust-lens pass** (`unwired_writes.py`, `degradation_copy.py`). No code changes needed from me here — this was a coordination gap (HOST/Arch's memos assumed future work that already existed), not a build item.
+
+**#1235 — Sprint field moved RECONNECT → M3-Quality** (GitHub Project board hygiene, PPM's request, done+verified via GraphQL).
+
+**Also 7/2 (tangential but real, unchanged)**: v0.8.9.1 cut, version-doc drift fixed, #1346 testing-methodology self-correction (see history below if needed).
+
+**Next fire: nothing blocked on me right now.** Check mail first (as always). If HOST replied to the #1344 contract: that's the trigger to start the `create_user` invite-gate draft. If not: no manufactured busywork — RECONNECT's buildable queue is still fully drained (below, unchanged), quiet-hold is honest if nothing's moved.
 
 ---
 
