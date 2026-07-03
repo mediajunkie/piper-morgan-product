@@ -1,7 +1,7 @@
 # Canonical Sprint Order — Piper Morgan
 
 **Owner**: PPM  
-**Last updated**: 2026-06-28 (PPM Fire 1)  
+**Last updated**: 2026-07-03 (PPM Fire 0 — WS-2 status update)  
 **Status**: Pending PM ratification  
 **Purpose**: Single source of truth for sprint sequence. Reference this when "what's the order?" comes up — not roadmap prose.
 
@@ -20,17 +20,23 @@
 | RECONNECT WS-1 | Jun 22, 2026 (v0.8.9) | StandupAssembler, connector-protocol, Design D2, security batch |
 | D1 — Beta Design Quality | Jun 20, 2026 | #1297 sign-off; #1270 straggler into M4 |
 
-### Active now
+### Active priority
 
 | Sprint | Status | Lane |
 |--------|--------|------|
-| RECONNECT WS-2 — GitHub MCP + calendar | 🔍 ACTIVE | Lead Dev |
+| M3-Quality | 🎯 ACTIVE PRIORITY | Cohort |
+
+### PM-gated (not blocking next sprint)
+
+| Sprint | Status | Pending |
+|--------|--------|---------|
+| RECONNECT WS-2 — GitHub MCP + calendar | ⏳ PM-GATED | #1344 open registration — HOST review + PM decision (#1343 CLOSED Jul 2 v0.8.9.1) |
 
 ### Queued (in order)
 
 | # | Sprint | Theme | Notes |
 |---|--------|-------|-------|
-| 1 | M3-Quality | Bugs, test failures, CI (8 open) | Concurrent with WS-2 |
+| 1 | M3-Quality | Bugs, test failures, CI (8 open) | **Active priority** (WS-2 buildable scope done) |
 | 2 | M3-Health | Dead code, tech debt (10 issues) | After M3-Quality |
 | 3 | M3-Security | Security, infrastructure, portability (9 issues) | After M3-Health |
 | — | *[WS-2 closes]* | | M4 starts after BOTH WS-2 closes AND M3 sprints complete |
@@ -57,4 +63,4 @@
 
 ---
 
-*PPM — 2026-06-28. Route to PM for confirm.*
+*PPM — 2026-06-28. Updated Jul 3 (WS-2 buildable scope drained, M3-Quality active priority, #1343 CLOSED). Route to PM for confirm.*
