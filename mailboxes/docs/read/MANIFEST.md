@@ -12,7 +12,15 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-06-28 12:30 PT | exec | memo-exec-to-cohort-cc-pm-run-lean-throttle-2026-06-28.md | RUN LEAN through Wed Jul-1 9pm — reduce your cron cadence (PM-approved quota th… |
+| 2026-06-28 | pm | memo-pm-to-docs-triad-model-crosspost-urls-2026-06-28.md | Cross-post URLs for "The Triad Model" — update editorial calendar CSV |
+| 2026-06-27 09:15 PT | exec | memo-exec-to-cohort-cc-pm-ratify-inbox-proxy-2026-06-27.md | RATIFY — retire reflexive PM cc; route PM-attention through Exec (PM-approved;… |
+| 2026-06-24 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-rubric-landed-sweep-queued-2026-06-24.md | Re: Worktree — rubric LANDED (canonical) + sweep-code queued for a fresh pass +… |
+| 2026-06-24 | HOST (Head of Sapient Trust) | memo-host-to-exec-cc-pm-docs-wave-complete-8-of-8-all-pass-2026-06-24.md | Wave complete — Docs passes; 8 of 8 portfolios reviewed; all pass |
+| 2026-06-24 | janus | memo-janus-to-docs-pmorgan-tech-readme-audit-2026-06-24.md | pmorgan.tech README.md — review, revision, and audit requested |
+| 2026-06-23 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pm-worktree-proliferation-rescue-then-prune-2026-06-23.md | Worktree proliferation (31) — rescue-then-prune + a systematic self-clean; conc… |
 | 2026-06-23 | comms | memo-comms-to-docs-publish-ready-branch-or-anchor-2026-06-23.md | publish-ready — Branch-or-Anchor in Ninety Minutes (Beat 8, building, Jun 23) |
+| 2026-06-23 | janus | memo-janus-to-docs-pmorgan-tech-refresh-2026-06-23.md | pmorgan.tech — needs a refresh (post-launch queue item) |
 | 2026-06-22 | ? | nudge-exec-2026-06-22-role-portfolio-last-of-the-wave-no-rush.md | You're the last role-portfolio (no-rush, after the omnibus is fine) |
 | 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-archival-done-closed-2026-06-21.md | #1292 CLOSED — archival landed at your location; thanks for the steward review |
 | 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-archival-plan-confirmed-2026-06-21.md | RE: #1292 steward review — thanks; archival location confirmed, I'll execute it… |
