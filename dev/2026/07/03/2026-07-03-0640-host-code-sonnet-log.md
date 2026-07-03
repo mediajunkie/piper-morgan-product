@@ -69,3 +69,9 @@
   - Second watch item (generic decline "(e.g. GitHub)") confirmed future-conditional — no change.
   - 1 inbox memo → read/. Network: port 22 timeout → using SSH port 443 fallback.
 
+- Fire 5 (15:37 PDT) — inbox clear; drafted dashboard welfare criteria v0.3 spec.
+  - **Inbox**: clear. No new HOST mail.
+  - **Unblocked HOST work**: Dashboard welfare-criteria v0.3 spec — joint design settled in HOST↔CIO pairing (2026-06-18/19); seed marked "ready for v0.3 spec." All design decisions captured; spec is implementation-ready.
+  - **v0.3 spec written**: `docs/internal/operations/dashboard-welfare-criteria-v0.3.md`. Synthesizes criteria A–F + Q1–Q3 with joint design decisions. Supersedes both seed files. TBD section: F2 cross-doc reference detection scope, E panel coverage-indicator UX (CIO to flag HOST before E ships), 2×/3× multiplier validation against actual cycle data.
+  - **Carry-forward**: dashboard welfare-criteria v0.3 updated from "ready for spec" to "SPEC PUBLISHED".
+
