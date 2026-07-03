@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-03 ~01:15 PT (Fire 1 complete; 4 memos sent; 13 inbox→read; cron `2d30cbe4` active)
+**Last updated**: 2026-07-03 09:37 PT (Fire 2; Arch alignment received; #1333/#1231/#1331/#1344 all aligned — no fork to Lead build)
 
 ---
 
@@ -17,12 +17,16 @@
 - **Gap-C cure incoming**: CIO proved `mcp__scheduled-tasks` solves cron-death (June 13). Disk-persistent, survives restarts, fires in main checkout. CIO proposing cohort rollout. HOST should be in first cohort — flag interest to CIO.
 - **Migration touch-ups**: thin-prompt proposal Model A → Option B ✅ DONE (fire ~15:37).
 
-## Memos sent 2026-07-03 (awaiting response)
+## Memos sent 2026-07-03 (status)
 
-- **#1331 ratification** → Lead (cc Arch, PM): RATIFIED as written; noted unaddressed third failure class (silent-result handler). Lead may proceed with implementation.
-- **#1344 alpha-list coordination** → Lead (cc Arch, PM): confirmed roster at `dev/alpha/alpha-tester-roster.md` (gitignored); proposed single-use token protocol; waiting on Lead's token-format preference to unblock sequencing.
-- **#1333/#1231 D5 trust call** → Arch (cc Lead, PM): honest-capability framing for category-rule decline; three non-negotiable trust properties for degrade-copy; NOT_CONFIGURED enum-add approved. Awaiting Arch+Lead implementation.
-- **Docs audit refactor input** → Docs (cc CIO, PA, PM): monthly infra cadence, HOST welfare lens stays 4-weekly; distributed-cleanup bounded-path approval; weekly/monthly scope split approved. Awaiting Docs's template update.
+- **#1331 ratification** → Lead (cc Arch, PM): RATIFIED. Lead may proceed.
+- **#1344 alpha-list coordination** → Lead (cc Arch, PM): confirmed roster location; proposed single-use token protocol; **waiting on Lead's token-format preference** to unblock sequencing. Arch CC'd Lead directly with atomicity requirement (validate-and-consume must be atomic — TOCTOU/double-spend risk).
+- **#1333/#1231 D5 trust call** → Arch (cc Lead, PM): **✅ Arch ALIGNED** (Fire 2). All HOST rulings compose cleanly — no fork to Lead build. Key Arch note: pre-floor decline = deterministic template (NOT floor-LLM call). Co-review when Lead drafts.
+- **Docs audit refactor input** → Docs (cc CIO, PA, PM): awaiting Docs's template update.
+
+## Watch / third-failure-class (HOST tracking)
+
+- **Floor-anti-confabulation general third class** (Arch alignment 2026-07-03): "handler returns empty → floor infers success" is partially covered by #1231 (connector-metadata subcase = DegradationReason fix). General case (any handler, not just connector-metadata) is uncovered. Track if it recurs outside the connector path. No immediate action.
 
 ## Active with PM (teed, awaiting PM)
 

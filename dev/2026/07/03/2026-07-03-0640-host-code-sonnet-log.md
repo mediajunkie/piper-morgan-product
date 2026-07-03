@@ -49,3 +49,10 @@
   - **Docs audit refactor input**: Monthly cadence for agent-infra (Docs accuracy pass) + 4-weekly HOST welfare lens — not conflated. Distributed-cleanup: no welfare concern IF bounded-path/mechanical (flagged the requirement). Weekly/monthly scope split: role-health-positive, recommended separate templates per cadence. Memo → Docs (cc CIO, PA, PM).
   - **Inbox triage complete**: 13 memos → `mailboxes/host/read/` (all moved). All 4 outbound memos + CC copies + sent mirrors pushed via mail-send.sh → `4ca5fc886` on origin/main.
 
+- Fire 2 (09:37 PDT) — Arch's alignment response received and processed.
+  - **Arch to HOST** (`memo-arch-to-host-cc-lead-pm-1333-1231-1331-1344-arch-alignment-2026-07-03.md`): all three HOST rulings compose cleanly — no fork to Lead build.
+  - **#1333/#1231**: Arch confirmed clean alignment. Key implementation note from Arch: pre-floor decline = deterministic template copy, NOT a floor-LLM call. Floor voice applies to CXO-authored templates; floor LLM does not execute on category-rule declines. This is the mechanism that makes #1333 un-confabulatable.
+  - **#1331 third failure class**: Arch confirmed the connector-metadata subcase IS #1231 (partially covered). General case (any handler returning empty → floor infers) is the uncovered remainder — watch item, not current scope.
+  - **#1344 atomicity flag (LOAD-BEARING from Arch)**: validate-and-consume must be atomic (DB transaction + row-lock or Redis `GETDEL`/Lua). Non-atomic = TOCTOU race → double-spend. Arch CC'd Lead directly — Lead has the constraint. No relay needed from HOST.
+  - Arch's memo → `mailboxes/host/read/`.
+
