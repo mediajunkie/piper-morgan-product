@@ -4,7 +4,7 @@
 
 ## ▶ CURRENT (7/2 DAY-CLOSE) — both prior blockers RESOLVED today. Read this, not the history below.
 
-**#1343 — RESOLVED, DEPLOYED, LIVE.** PM confirmed the deploy (via a Janus relay-test, then directly). Deployed as a proper versioned dot release, **v0.8.9.1**, tagged + pushed to `origin/production` + GitHub Release published. Caught a real near-miss along the way (almost deployed `main`'s 983-commit-ahead HEAD instead of a minimal `production` hotfix — caught before any container touched, zero impact) and a genuine self-inflicted outage (`PIPER_HOST` container-networking bug from an undocumented droplet patch my sync overwrote — root-caused, fixed properly, verified live). Live-verified: anonymous `/api/v1/intent` requests get the honest refusal, not a silent bill. **#1343 issue itself is still OPEN** (deploy done + live-verified, but not formally closed — PM's call whether to close now or fold into a broader gate-close).
+**#1343 — RESOLVED, DEPLOYED, LIVE, and CLOSED.** Deployed as **v0.8.9.1**, tagged + pushed to `origin/production` + GitHub Release published. Live-verified: anonymous `/api/v1/intent` requests get the honest refusal, not a silent bill. PM confirmed close 2026-07-02 evening — issue title/body updated (were stale "NOT YET DEPLOYED") + closed with full evidence comment. Fully done, nothing pending.
 
 **#1344 — HANDED TO HOST, not mine to act on.** PM ruled directly: invite codes (durable fix, HOST owns list/issuance) + usage-cap (Arch-shaped, PM/HOST own thresholds) + obscurity as interim. Arch confirmed the invite-code gate **is** the Gap-A fix already scoped — split is Lead drafts / Arch ratifies, HOST hasn't reached out yet. **Nothing to do here until HOST coordinates.**
 
