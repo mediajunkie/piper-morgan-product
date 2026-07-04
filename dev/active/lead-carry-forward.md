@@ -1,6 +1,6 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-04 ~11:00 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
+**Updated**: 2026-07-04 ~12:15 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
 
 ## ⭐⭐ RECONNECT EXECUTION MODEL REFOCUSED (PM, 7/4 ~10:45) — READ THIS BEFORE ANYTHING ELSE BELOW
 
@@ -13,9 +13,15 @@
 - Recorded in `docs/internal/architecture/decisions/decisions.log` (2026-07-04 ~10:45 PT entry).
 - Confirmed with PM (not yet Arch-ruled): cicd/devenvironment/gitbook/linear having no live MCP server today is *expected* — building/connecting those servers is itself part of this sprint, not a red flag to raise.
 
-**⭐ NEXT (this is the active work now): finish GitHub (connector #1) completely.** Checklist from #1317's audit: fix #1353 (stale fixture date) + the 3 github-specific failures bundled in #1355 (complexity_estimate scoring, missing `resolve_from_position`, `_call_github_api` not called) → get github's full `tests/integration/` green → re-check for any leftover bespoke/dead code beyond what #1322 already retired (calendar had a vestigial dead `MCPConsumerCore()` instantiation; confirm github doesn't have an equivalent) → only then move to calendar (#1354's 8 tests + #1355's 2 calendar-specific failures + retire calendar's own vestigial `MCPConsumerCore`).
+## ⭐ GitHub (connector #1) completion pass — DONE for tests/bespoke-code; latency + onboarding still unverified (7/4 ~12:15)
 
-**Also in inbox, not yet actioned**: HOST sent the #1344 mint-count (=12) this morning (`mailboxes/lead/inbox/memo-host-to-lead-cc-arch-pm-1344-mint-count-ready-2026-07-04.md`) — real, unblocked work (mint the actual invite tokens), but per the refocus above, GitHub-connector-1 completion is the priority; the mint is small/fast and can slot in without derailing the connector focus, use judgment on sequencing when picked up.
+**`tests/integration/test_github_spatial.py`: 12/12 green** (was 8/12). Fixed: #1353 (stale hardcoded fixture date — rewrote `sample_issue` to use relative dates) + all 3 github failures bundled in #1355 (same date-fixture root cause for one; a stale/typo'd `resolve_from_position` assertion that never existed in this repo's history, fixed to check the real `map_from_position`; and a test calling `get_issue()` with zero repo-resolution context, fixed by mocking `resolve_repo` — confirmed NOT a #1315 regression via `git show` on the pre-#1315 code). **Also deleted** `tests/integration/test_github_deprecation_infrastructure.py` (12 more failures, discovered along the way) — its own target router's docstring says the feature it tests (a 4-week legacy/spatial migration, PM-033b) completed and removed the legacy path October 15, 2025; confirmed the flags aren't read anywhere and the mocked "legacy" class doesn't exist in the repo. Closed #1353; updated #1355 to partial (3/5 done, 2/5 — calendar-side — deliberately deferred to connector #2's turn).
+
+**2 more issues found + filed, deliberately NOT chased further** (tangential to github's scope): **#1356** (`tests/archive/` not actually excluded from pytest collection + an orphaned runner script) and **#1357** (`test_github_api_connection.py`'s 4 real-network tests fail with genuine GitHub 401s only in large combined test runs — ruled out env pollution and leaked mocks via direct checks; landed on "likely rate-limiting, not confirmed" as the honest stopping point after intentionally not chasing it unboundedly; corrected my own first, too-narrow theory in a follow-up comment rather than leave it standing wrong).
+
+**What's genuinely left before GitHub can be called 100% done**: (1) the latency AC ("connect/status no worse than current" — no benchmark exists, not measured); (2) confirming the onboarding UX is coherent end-to-end (github already has a live OAuth "Connect with GitHub" button + badge from earlier RECONNECT work — not re-verified today as part of this specific completion pass, should do a quick live check rather than assume it still works). **Checking in with PM before continuing** given how much ground this turn covered (refocus + memo + decisions.log + this whole test-fix pass) — not silently ploughing further without a checkpoint.
+
+**Also in inbox, not yet actioned**: HOST sent the #1344 mint-count (=12) this morning (`mailboxes/lead/inbox/memo-host-to-lead-cc-arch-pm-1344-mint-count-ready-2026-07-04.md`) — real, unblocked, small work (mint the actual invite tokens). HOST's follow-up session log shows them now "awaiting Lead token list" — this is a live, waiting-on-me item, worth picking up soon regardless of connector-1 sequencing (it's a quick, separate, already-scoped task, not a RECONNECT distraction).
 
 ---
 
