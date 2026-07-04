@@ -1,8 +1,25 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-04 ~10:15 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
+**Updated**: 2026-07-04 ~11:00 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
 
-## ▶ CURRENT (7/4 ~10:15) — PM ruled #1315+#1314, both DONE+closed; #1323 answered; #1317 deferred. #1344 awaiting HOST's count; #1351 MCPB finding open. Read this, not the history below.
+## ⭐⭐ RECONNECT EXECUTION MODEL REFOCUSED (PM, 7/4 ~10:45) — READ THIS BEFORE ANYTHING ELSE BELOW
+
+**PM's ruling, decisions.log 2026-07-04 ~10:45 PT**: RECONNECT succeeds or fails on getting all 8 connectors ported to the #1232 contract with the old bespoke models deprecated (spatial intelligence stays supported separately — not in tension, still protected). Today's audit found only 2/8 ported (github, calendar) and **neither of those 2 actually works yet** (14 pre-existing integration-test failures, #1353/#1354/#1355). PM's diagnosis: the sprint has been working the RECONNECT board breadth-first (evidence: a big share of past "RECONNECT" effort went into Slack, which isn't even architecturally on this model) instead of depth-first, and that's why 2/8-and-broken is where we are.
+
+**New execution model, effective now: ONE connector at a time, driven to fully, literally done before starting the next.** "Done" = contract methods implemented + integration tests green + bespoke/dead code retired + latency AC checked + coherent onboarding (conversational or simple config at signup). **Sequence: connector #1 = GitHub (now) → connector #2 = Calendar (apply lessons from #1) → connector #3+ decided after those two land.** Side-quests (discovered bugs, stale tests, etc.) are expected and still get filed/fixed as found — the discipline is not losing the "8 connectors, one contract" throughline while doing so, not "never do anything else."
+
+**Actions taken on this ruling (all 7/4, all pushed to origin/main):**
+- Memo to Arch (`mailboxes/arch/inbox/memo-lead-to-arch-cc-pm-pa-connector-architectural-alignment-2026-07-04.md`, cc PM+PA) on the architectural-divergence findings from #1317's audit (slack keychain-model vs binding-model, notion's incompatible `connect()`, a gitbook adapter duplicate, a live duplicate spatial tree `services/intelligence/spatial/` vs `services/integrations/spatial/`). PM's explicit ask of Arch: one shared domain model, exceptions only when genuinely justified by connector nature/job-to-be-done. **Not gating connector #1 work on Arch's answer.**
+- Recorded in `docs/internal/architecture/decisions/decisions.log` (2026-07-04 ~10:45 PT entry).
+- Confirmed with PM (not yet Arch-ruled): cicd/devenvironment/gitbook/linear having no live MCP server today is *expected* — building/connecting those servers is itself part of this sprint, not a red flag to raise.
+
+**⭐ NEXT (this is the active work now): finish GitHub (connector #1) completely.** Checklist from #1317's audit: fix #1353 (stale fixture date) + the 3 github-specific failures bundled in #1355 (complexity_estimate scoring, missing `resolve_from_position`, `_call_github_api` not called) → get github's full `tests/integration/` green → re-check for any leftover bespoke/dead code beyond what #1322 already retired (calendar had a vestigial dead `MCPConsumerCore()` instantiation; confirm github doesn't have an equivalent) → only then move to calendar (#1354's 8 tests + #1355's 2 calendar-specific failures + retire calendar's own vestigial `MCPConsumerCore`).
+
+**Also in inbox, not yet actioned**: HOST sent the #1344 mint-count (=12) this morning (`mailboxes/lead/inbox/memo-host-to-lead-cc-arch-pm-1344-mint-count-ready-2026-07-04.md`) — real, unblocked work (mint the actual invite tokens), but per the refocus above, GitHub-connector-1 completion is the priority; the mint is small/fast and can slot in without derailing the connector focus, use judgment on sequencing when picked up.
+
+---
+
+## ▶ PRIOR CURRENT (7/4 ~10:15) — PM ruled #1315+#1314, both DONE+closed; #1323 answered; #1317 deferred [SUPERSEDED BY THE REFOCUS ABOVE — kept for detail, not the governing frame anymore]
 
 **#1315 — DONE + CLOSED.** Retired the dead project↔repo-link resolution paths from `resolve_repo()` per PM's ruling ("retire the dead paths") — `_resolve_from_project`/`_resolve_from_default_project` removed, decision tree now explicit→user_default→env_var→unresolved (was 6 paths, now 4). `ProjectRepositoryLinkDB` itself left in place (now orphaned, but retiring the table is a bigger separate action than what was asked — flagged as a future cleanup candidate). Commit `04358751c`.
 
