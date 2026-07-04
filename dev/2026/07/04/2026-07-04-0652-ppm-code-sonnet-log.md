@@ -42,3 +42,49 @@ Cron management: deleted 8f3a9404, fetched origin/main, inbox: 1 new memo.
 **IDLE** — #1235 resolved. All remaining standing items PM-gated or blocked.
 
 *Post-compaction resumption: Fire 1 push completed via temp-index approach (488302eb5); cron rotated 779513ab → 5dba71c2.*
+
+---
+
+### PM check-in — 10:31 PDT (in-conversation)
+
+PM initiated a one-on-one portfolio review.
+
+**Standing items corrected:**
+- Briefing: NOT 16 days stale — Lead Dev updated Jul 3 ~10:50 + HOST updated Jul 3 ~18:37; session hook was wrong. Briefing is current.
+- Sprint-order.md: **PM ratified** ✅ — removing from carry-forward.
+- #1344: NOT PM-gated — PM already decided (build invite-control); Lead Dev implementing now (v0.8.9.2 shipped Jul 3, invite-token gate live). No longer a standing item.
+- #1269: Closed in D1 (Jun 19) with honest StandupAssembler + `/api/v1/standup/today`. My "BLOCKED on milestone call" was stale.
+
+**GitHub milestones checked** (all visible):
+- MVP: Aug 1, 2026 (97 open)
+- Production: Oct 30, 2026 (9 open)
+- Fast Follow: Nov 19, 2026 (40 open)
+- Dot Releases: Feb 2, 2027 (7 open)
+- Enterprise: Jul 4, 2027 (13 open)
+
+Roadmap inconsistency: Fast Follow shows "TBD" in v18.3; Dot Releases + Enterprise missing entirely. Roadmap v18.4 fold needed (pending — deferred until after beta synthesis).
+
+**New information from PM:**
+- RECONNECT reality: only 2 of 8 connectors worked on; even those 2 aren't live against real MCP servers. "Buildable scope drained" was a limited scope claim, not sprint completion.
+- August 1 beta date is probably not realistic — PM's words.
+- PM is working directly with Lead Dev to clarify that getting all 8 connectors done is the primary RECONNECT goal.
+- PM pushed back on "parallel track" framing — that's a product decision (what does beta require?) not a scheduling decision.
+
+**Memos filed this morning:**
+- Briefing architecture refactor → CIO (CC Docs + PM): `e9e0ed14` (pushed)
+- Beta scope investigation: PM authorized deep dive; 4 research agents run in parallel.
+  - Agent 1: Vision + beta definition (core promise, PDR-005, no formal beta criteria doc)
+  - Agent 2: MVP milestone issues (97 open; ~18-22 hard gates; connector cluster is largest)
+  - Agent 3: Connector state (GitHub + Calendar protocol done + tests pass but not live vs real servers; 6 connectors have zero ADR-070 work)
+  - Agent 4: Shipping pace (v0.8.9.2 shipped Jul 3; alpha testing unblocked; team in delivery arc)
+- Beta scope proposal → PA, CXO, Arch (CC PM): filed 12:15 PDT.
+
+**Proposed beta scope (PPM):**
+- Core floor + context + persistence + trust arc ✅ at beta quality
+- Hard gates: #1241 (multi-tenancy), #1304 (CI), #1312 (schema drift), #358, #542, deploy portability cluster, active crash paths
+- Connector scope for beta: GitHub + Calendar live vs real MCP servers; Slack experimental; everything else deferred
+- August 1: flagged as not achievable; date decision deferred to PM after synthesis
+
+**Outstanding:**
+- Roadmap v18.4 fold (milestone dates + RECONNECT status correction) — pending after synthesis
+- PA/CXO/Arch review responses → PPM consolidates → PM synthesis call
