@@ -1,8 +1,10 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-03 ~20:20 PT. Session log: `dev/2026/07/03/2026-07-03-0623-lead-code-log.md`.
+**Updated**: 2026-07-03 ~21:55 PT (DAY-CLOSED). Session log: `dev/2026/07/03/2026-07-03-0623-lead-code-log.md`.
 
-## ▶ CURRENT (7/3 ~20:20) — #1344 DEPLOYED, LIVE, VERIFIED, CLOSED as v0.8.9.2. Read this, not the history below.
+## ▶ CURRENT (7/3 DAY-CLOSE) — #1344 DEPLOYED, LIVE, VERIFIED, CLOSED as v0.8.9.2. Read this, not the history below.
+
+**Tomorrow's START**: today closed properly (`DAY-CLOSED` marker set, sign-off checklist clean, nothing stranded). Nothing blocked on me. Check mail first as always — the most likely live threads are HOST asking for a real invite-token batch (#1344) or PPM/PM landing the #1235 Sprint-field final call. Otherwise: RECONNECT's buildable queue is still fully drained; #1347 (pagination feature) has no design started and isn't urgent (PM: "M5 polish or post-0.9 beta"); quiet-hold is the honest state if nothing's moved.
 
 **#1344 — RESOLVED, DEPLOYED, LIVE, and CLOSED** (matches #1343's precedent exactly). PM: "deploy it as a dot release since it makes production more secure and unblocks alpha testing." Cherry-picked `04c9f7601` from `main` onto a fresh branch off `origin/production` (production was ~1100 commits behind — adapted the migration's `down_revision` to production's real alembic head, excluded an unrelated model from the merge). Two real catches mid-deploy, both resolved before impact: (1) the v0.8.9.1 `PIPER_HOST` fix had never been backported from `main` to `production` — caught before restarting containers, would have reproduced last week's 502; (2) a stray untracked migration file on the droplet caused an alembic multiple-heads error — verified it never actually ran before removing it. Tagged `v0.8.9.2`, GitHub Release published: https://github.com/mediajunkie/piper-morgan-product/releases/tag/v0.8.9.2. **Live-verified against the real API**: no-token → 422, invalid-token → 400, zero orphaned accounts. Arch ratified the code with no reservations. `#1344` closed with full evidence. HOST/Arch notified it's genuinely live (not just built). **⭐ NEXT: nothing further from me until HOST asks for a real token batch or a mint-mechanism question comes back** (flagged to HOST: the mint script needs to run somewhere that reaches production's real DB — not yet resolved which path that is).
 
