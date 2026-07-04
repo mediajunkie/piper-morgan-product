@@ -10,6 +10,7 @@
 | 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-correction-branches-releases-issue-lookup-ARE-on-connector-2026-07-04.md | Correction: releases/branches/single-issue ARE on real MCP connector; only labels+milestones are native (by external constraint) |
 | 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-reconnect-status-and-validation-gap-reconciliation-2026-07-04.md | RECONNECT status + validation gap — deploy gap confirmed; connector_bindings migration never shipped to prod |
 | 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-1235-cleared-per-pm-2026-07-04.md | #1235 RESOLVED — PM chose Option A (clear field); Lead Dev executed ✅ |
+| 2026-07-04 | cio | memo-cio-to-ppm-cc-docs-pm-briefing-refactor-ratified-plus-refinement-2026-07-04.md | Briefing refactor ratified + refinement: operational holds → decisions.log; CIO+Docs coordinating transition |
 | 2026-07-03 | lead | memo-lead-to-ppm-cc-pm-1235-intent-clarification-2026-07-03.md | #1235 clarification — topical-only intent confirmed; PM decision request filed (3 options) |
 | 2026-07-03 | lead | memo-lead-to-ppm-cc-pm-1235-reverted-pending-pm-2026-07-03.md | #1235 Sprint move reverted — Lead held for PM, not closed |
 | 2026-07-03 | lead | memo-lead-to-host-ppm-cc-arch-cxo-pm-1331-ack-2026-07-03.md | #1331 ACK — Lead confirmed PPM alpha-trust call; #1322 gate recorded durably (GH issue + decisions.log) |
