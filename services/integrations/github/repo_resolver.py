@@ -5,22 +5,23 @@ GitHub adapter, integration router, and intent-service handlers with a
 per-call resolution decision tree:
 
 1. **Explicit arg**: caller passed `owner/name` directly → use it
-2. **Project-scoped**: caller has a project context → return first linked
-   Repository (ordered by ProjectRepositoryLink.linked_at; multi-link case
-   per PM Q2 disposition 2026-05-04 — edge case, deterministic)
-2.5. **Default project** (#1192(b)-v1, PM 2026-06-12): the user's
-   `is_default=True AND is_archived=False` project's linked repo — the model's
-   existing "primary project" expression; no request-threading required
-3. **User default-repo preference**: per-user `default_repo` setting (Issue
+2. **User default-repo preference**: per-user `default_repo` setting (Issue
    #1042 Phase 1.5) → use it
-4. **Env-var fallback**: `PIPER_DEFAULT_REPO` (dev escape hatch per PM Q4
+3. **Env-var fallback**: `PIPER_DEFAULT_REPO` (dev escape hatch per PM Q4
    disposition 2026-05-04) → use it + log a deprecation warning
-5. **Unresolved**: raise `UnresolvedRepoError` for handler to render as a
+4. **Unresolved**: raise `UnresolvedRepoError` for handler to render as a
    graceful "which repo?" message
 
 The function is async (DB lookup paths) and pure (no global state). Callers
 catch `UnresolvedRepoError` and emit a graceful response; they should never
 silently fall back to a hardcoded repo.
+
+RETIRED (#1315, PM-directed 2026-07-04): the project-scoped path
+(``ProjectRepositoryLink``-based) and the default-project path (#1192(b)-v1)
+were removed. `project_repository_links` and `repositories` were empty
+system-wide with no live population path, and PM ruled retire over ship. See
+`_resolve_from_project`/`_resolve_from_default_project`'s prior home in git
+history if this ever needs reviving alongside real project↔repo linking UI.
 """
 
 from __future__ import annotations
@@ -103,24 +104,21 @@ async def resolve_repo(
     Decision tree (first match wins):
 
     1. ``explicit`` (str "owner/name") — caller passed it directly (source="explicit")
-    2. ``project_id`` — first Repository linked to that project, by linked_at
-       (source="project")
-    3. ``user_id``'s DEFAULT project's linked repo (#1192b; source="default_project")
-    4. ``user_id``'s ``default_repo`` preference (source="user_default")
-    5. ``$PIPER_DEFAULT_REPO`` env var (dev fallback; logs deprecation warning;
+    2. ``user_id``'s ``default_repo`` preference (source="user_default")
+    3. ``$PIPER_DEFAULT_REPO`` env var (dev fallback; logs deprecation warning;
        source="env_var")
-    6. Otherwise → raise ``UnresolvedRepoError``
+    4. Otherwise → raise ``UnresolvedRepoError``
 
-    Paths 2–4 are DB-backed: each is structurally live but returns None when its
-    data is absent (project unlinked / no default project / no preference) — an
-    empty-data miss, NOT a dead branch (#1230). Per-path proof-tests
-    (test_repo_resolver_paths_1230) assert each path can still resolve given
-    seeded data, so a reorder can't silently leave a *code*-dead path; populating
-    the data is #1199 (storage) / #1314 (auto-default) / #1315 (activate links).
+    RETIRED (#1315, PM-directed 2026-07-04): the project-scoped path and the
+    default-project path (#1192(b)-v1) were removed — ``project_repository_links``
+    and ``repositories`` were empty system-wide with no population path, and PM
+    ruled retire over ship. ``project_id`` is accepted but currently unused;
+    kept in the signature so callers don't need updating if project-scoped
+    resolution is ever rebuilt alongside real linking UI.
 
     Args:
         user_id: Authenticated user UUID. Used for the user-default lookup.
-        project_id: Active project context. Used for the project-link lookup.
+        project_id: Currently unused (see RETIRED note above).
         explicit: ``owner/name`` string passed by the caller. Highest priority.
 
     Returns:
@@ -135,30 +133,13 @@ async def resolve_repo(
         owner, name = parse_full_name(explicit)
         return ResolvedRepo(owner=owner, name=name, source="explicit")
 
-    # Path 2: project-scoped
-    if project_id:
-        repo = await _resolve_from_project(project_id)
-        if repo is not None:
-            return repo
-
-    # Path 2.5 (#1192(b)-v1): the user's DEFAULT project's linked repo. The
-    # Project model already expresses "primary" (is_default) and active-vs-not
-    # (is_archived) — no separate "active project" concept or request-threading
-    # needed (PM disposition 2026-06-12). Resolved here so every existing caller
-    # gets project-scoped resolution free; per-conversation project SWITCHING
-    # remains the CXO start-screen design thread.
-    if user_id is not None:
-        repo = await _resolve_from_default_project(user_id)
-        if repo is not None:
-            return repo
-
-    # Path 3: user-default preference
+    # Path 2: user-default preference
     if user_id is not None:
         repo = await _resolve_from_user_default(user_id)
         if repo is not None:
             return repo
 
-    # Path 4: env-var dev fallback (logs deprecation warning)
+    # Path 3: env-var dev fallback (logs deprecation warning)
     env_value = os.environ.get(ENV_DEFAULT_REPO)
     if env_value:
         try:
@@ -173,64 +154,19 @@ async def resolve_repo(
             logger.warning(
                 "Repo resolved via PIPER_DEFAULT_REPO env-var fallback "
                 "(%s/%s). This is a dev escape hatch and should not be "
-                "relied on in production. Configure a per-project "
-                "linked-repo or user default_repo preference. (Issue #1042)",
+                "relied on in production. Configure a "
+                "default_repo preference. (Issue #1042)",
                 owner,
                 name,
             )
             return ResolvedRepo(owner=owner, name=name, source="env_var")
 
-    # Path 5: unresolved
+    # Path 4: unresolved
     raise UnresolvedRepoError(
         "No repo could be resolved for this query. "
-        "Pass owner/name explicitly, link a repository to the active project, "
-        "set a default_repo preference, or set PIPER_DEFAULT_REPO."
+        "Pass owner/name explicitly, set a default_repo preference, "
+        "or set PIPER_DEFAULT_REPO."
     )
-
-
-async def _resolve_from_project(project_id: str) -> Optional[ResolvedRepo]:
-    """Return first Repository linked to the project, or None.
-
-    Multi-link resolution (per PM Q2 2026-05-04): order by
-    ProjectRepositoryLink.linked_at ascending; first wins.
-    """
-    try:
-        from sqlalchemy import select
-
-        from services.database.models import (
-            ProjectRepositoryLinkDB,
-            RepositoryDB,
-        )
-        from services.database.session_factory import AsyncSessionFactory
-
-        async with AsyncSessionFactory.session_scope() as session:
-            result = await session.execute(
-                select(RepositoryDB)
-                .join(
-                    ProjectRepositoryLinkDB,
-                    RepositoryDB.id == ProjectRepositoryLinkDB.repository_id,
-                )
-                .where(ProjectRepositoryLinkDB.project_id == project_id)
-                .order_by(ProjectRepositoryLinkDB.linked_at)
-                .limit(1)
-            )
-            repo_db = result.scalar_one_or_none()
-
-        if repo_db is None or not repo_db.full_name:
-            return None
-        try:
-            owner, name = parse_full_name(repo_db.full_name)
-        except ValueError:
-            logger.warning(
-                "Repository %s has malformed full_name %r; skipping",
-                repo_db.id,
-                repo_db.full_name,
-            )
-            return None
-        return ResolvedRepo(owner=owner, name=name, source="project")
-    except Exception as e:
-        logger.warning(f"Project-scoped repo resolution failed: {e}")
-        return None
 
 
 async def read_user_github_handle(user_id) -> Optional[str]:
@@ -259,57 +195,6 @@ async def read_user_github_handle(user_id) -> Optional[str]:
     except Exception as e:
         logger.warning(f"Reading github handle from connector config failed: {e}")
     return os.environ.get("PIPER_GITHUB_HANDLE") or None
-
-
-async def _resolve_from_default_project(user_id: UUID) -> Optional[ResolvedRepo]:
-    """Resolve via the user's DEFAULT (primary), non-archived project (#1192(b)-v1).
-
-    Selection rule (PM 2026-06-12): ``is_default=True AND is_archived=False``
-    for this owner — the model's existing "top priority" expression; no separate
-    active-project flag. The project's repo is then resolved by the existing
-    project-link path (first link by linked_at, per the #1042 Q2 multi-link
-    rule). Returns None when the user has no default project or it has no
-    linked repo — resolution falls through to the user default-repo preference.
-    """
-    try:
-        from sqlalchemy import and_, select
-
-        from services.database.models import ProjectDB
-        from services.database.session_factory import AsyncSessionFactory
-
-        async with AsyncSessionFactory.session_scope() as session:
-            result = await session.execute(
-                select(ProjectDB.id)
-                .where(
-                    and_(
-                        ProjectDB.owner_id == str(user_id),
-                        ProjectDB.is_default == True,  # noqa: E712
-                        ProjectDB.is_archived == False,  # noqa: E712
-                    )
-                )
-                .order_by(ProjectDB.updated_at.desc())
-                .limit(1)
-            )
-            project_id = result.scalar_one_or_none()
-
-        # #1230 guard: distinguish "no default project" from "default project has
-        # no linked repo" — same None result, different remediation (create/mark a
-        # default project vs link a repo to it). Kept at debug (resolution is hot).
-        if project_id is None:
-            logger.debug("default-project resolution: user %s has no default project", user_id)
-            return None
-        repo = await _resolve_from_project(project_id)
-        if repo is None:
-            logger.debug(
-                "default-project resolution: user %s default project %s has no linked repo",
-                user_id,
-                project_id,
-            )
-            return None
-        return ResolvedRepo(owner=repo.owner, name=repo.name, source="default_project")
-    except Exception as e:
-        logger.warning(f"Default-project repo resolution failed: {e}")
-        return None
 
 
 async def _read_user_default_repo_from_db(user_id: UUID) -> Optional[str]:
