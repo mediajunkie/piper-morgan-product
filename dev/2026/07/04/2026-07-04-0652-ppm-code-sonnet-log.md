@@ -40,3 +40,5 @@ Cron management: deleted 8f3a9404, fetched origin/main, inbox: 1 new memo.
 - Cron re-armed: 779513ab
 
 **IDLE** — #1235 resolved. All remaining standing items PM-gated or blocked.
+
+*Post-compaction resumption: Fire 1 push completed via temp-index approach (488302eb5); cron rotated 779513ab → 5dba71c2.*
