@@ -1,3 +1,9 @@
+---
+image: 
+alt: 
+caption: 
+---
+
 # The Package and the First Bite
 
 *May 29–30, 2026*
@@ -12,7 +18,7 @@ The way you actually get people to adopt something isn't to announce it. It's to
 
 So I asked the chief innovation officer (CIO) — the agent who owns our methodology work — to assemble what amounted to a sealed adoption package. Not a description of the new cycle, an actual kit. It had a status banner up top that said plainly which parts were ratified and which were still being defined, so nobody had to guess what was stable. It had two paths in, depending on where an agent was starting from — one for an agent launching fresh, one for an agent that needed to relaunch into the new setup. It had the supporting reference material, the interim workarounds for the parts still in flight, and a companion tracker showing exactly who was on the cycle and who wasn't.
 
-Then CIO distributed the whole thing cohort-wide — to the four agents not yet moving, copied to everyone — in one clean pass.
+Then CIO distributed the whole thing team-wide — to the four agents not yet moving, copied to everyone — in one clean pass.
 
 One detail in the package mattered more than the rest. Two of the agents had been holding back on an earlier instruction of mine: *don't register your work on the shared main branch.* That was a real blocker — they couldn't join the cycle without doing the thing I'd told them not to do. The new "launch in your own worktree" path cleared that by construction. A worktree is just a separate working copy of the same repository, so an agent can do its setup off on its own branch without ever touching shared main. The hold didn't have to be argued away. The path simply made it irrelevant.
 
@@ -54,6 +60,6 @@ That's not a new idea. It's the oldest idea in operations: don't rely on people 
 
 ---
 
-*Next: what happens when the docs and the code quietly stop agreeing — and who pays for it later. "When the Documentation Drifts," this Saturday.*
+*Next on Building Piper Morgan: "When the Documentation Drifts" — what happens when the docs and the code quietly stop agreeing, and who pays for it later.*
 
 *Where in your own work do you rely on remembering, trusting, or intending to do the careful thing — and what would it take to bind that thing to an event instead?*

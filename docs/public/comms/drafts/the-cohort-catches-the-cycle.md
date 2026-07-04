@@ -1,8 +1,14 @@
+---
+image: 
+alt: 
+caption: 
+---
+
 # The Cohort Catches the Cycle
 
 *May 27–28, 2026*
 
-For weeks I'd been testing a duty cycle with one agent at a time. The idea is simple enough: a scheduled prompt fires on an interval, the agent wakes up, checks its mail, advances whatever work is unblocked, and goes back to sleep. When I'm not around to hand out tasks, the agent finds its own. I'd watched my chief innovation officer (CIO) run it for a few days. It worked. So the next question was whether the rest of the cohort could pick it up — and whether picking it up all at once would break anything.
+For weeks I'd been testing a duty cycle with one agent at a time. The idea is simple enough: a scheduled prompt fires on an interval, the agent wakes up, checks its mail, advances whatever work is unblocked, and goes back to sleep. When I'm not around to hand out tasks, the agent finds its own. I'd watched my chief innovation officer (CIO) run it for a few days. It worked. So the next question was whether the rest of the team could pick it up — and whether picking it up all at once would break anything.
 
 It broke something. But not the thing I was watching for, and the way it broke turned out to be the whole point.
 
@@ -10,13 +16,13 @@ It broke something. But not the thing I was watching for, and the way it broke t
 
 On May 27 the cycle went wide. By the end of the day, nine of eleven roles were in motion. CIO was on day three and fired twenty-four times. The head-of-sapient-trust role (HOST) was on day one and fired sixteen. The documentation role (Docs) fired ten. The architect fired twice. The chief of staff (Exec) and my product assistant (Piper Alpha, or PA) prepped their setups for the next morning. That's a lot of agents waking up on their own schedules, all committing to the same place.
 
-What surprised me wasn't the volume. It was how little hand-holding the later adopters needed. When HOST first stood up, it got CIO's cron prompt verbatim — copy this, run it. But every adopter after that stood up from the design docs alone. They read what was written down and built their own setup from it. The substrate was legible enough to self-propagate. I'd been calling cohort-discipline a moat in internal memos for a while. This was the first time I watched it hold weight.
+What surprised me wasn't the volume. It was how little hand-holding the later adopters needed. When HOST first stood up, it got CIO's cron prompt verbatim — copy this, run it. But every adopter after that stood up from the design docs alone. They read what was written down and built their own setup from it. The substrate was legible enough to self-propagate. I'd been calling team-discipline a moat in internal memos for a while. This was the first time I watched it hold weight.
 
-Three refinements landed and propagated cohort-wide the same day, each within hours of being ratified. Two were small — launch-with-immediate-flywheel in the morning (start your session by doing a round of work, don't just register the cron and wait) and mail-check-at-interruption around 11 (when I interrupt you, check your mailbox on the way back in). The third, at 5:51 in the evening, was the one that mattered.
+Three refinements landed and propagated team-wide the same day, each within hours of being ratified. Two were small — launch-with-immediate-flywheel in the morning (start your session by doing a round of work, don't just register the cron and wait) and mail-check-at-interruption around 11 (when I interrupt you, check your mailbox on the way back in). The third, at 5:51 in the evening, was the one that mattered.
 
 The third refinement: when an agent reaches idle and there's nothing urgent, advance the smallest piece of unblocked low-priority work it can find rather than do nothing. "Idle" had been quietly meaning "stop." I changed it to mean "find the next small useful thing." The effect that evening was immediate. Fires that would have been no-ops produced real work — CIO landed three methodology artifacts across its evening fires, Docs advanced a schema spec and ran a merge-keeper sweep, HOST refreshed an attention doc. The cycle stopped idling and started compounding.
 
-So Wednesday looked like a clean rollout. A legible substrate, three refinements absorbed in stride, a cohort that taught itself. If the story ended there it would be a story about documentation paying off. It didn't end there.
+So Wednesday looked like a clean rollout. A legible substrate, three refinements absorbed in stride, a team that taught itself. If the story ended there it would be a story about documentation paying off. It didn't end there.
 
 # Thursday: two decisions before breakfast
 
@@ -55,20 +61,20 @@ The broader entry it folded into got a name I like even more: *Mechanism Beats V
 <!-- [PM VOICE-PASS: this beat runs ~1990 words, the longest in the slate. This Model A section is the most cuttable if you want it tighter — the core argument survives without the cwd-anchoring mechanic.] -->
 # Model A, and the small realization underneath it
 
-One implementation detail took the cohort a few hours to nail down, and it's the kind of thing that's obvious in retrospect and genuinely confusing in the moment. When CIO first moved into a worktree, the working directory kept resetting back to shared main between its tool calls. Telling the cron to `cd` into the worktree didn't stick. The architect, meanwhile, had no such problem.
+One implementation detail took the team a few hours to nail down, and it's the kind of thing that's obvious in retrospect and genuinely confusing in the moment. When CIO first moved into a worktree, the working directory kept resetting back to shared main between its tool calls. Telling the cron to `cd` into the worktree didn't stick. The architect, meanwhile, had no such problem.
 
-The difference was where the *session* had launched. CIO's session had started in main, so the working directory kept snapping back there no matter where a command tried to move it. The architect's session had launched inside its worktree from the start, so it stayed put. That's "Model A" in one line: launch the session *inside* its own worktree, and the working directory anchors to where the session began, not to where any single command points it. A running session can't `cd` its way out of the wrong directory — it has to be relaunched in the right one. Fresh adopters skip the problem entirely by starting there. By evening, PA had restarted clean in its own worktree and become the cohort's proof that the model works from a standing start.
+The difference was where the *session* had launched. CIO's session had started in main, so the working directory kept snapping back there no matter where a command tried to move it. The architect's session had launched inside its worktree from the start, so it stayed put. That's "Model A" in one line: launch the session *inside* its own worktree, and the working directory anchors to where the session began, not to where any single command points it. A running session can't `cd` its way out of the wrong directory — it has to be relaunched in the right one. Fresh adopters skip the problem entirely by starting there. By evening, PA had restarted clean in its own worktree and become the team's proof that the model works from a standing start.
 
 # What I actually learned
 
 The week had other threads I'm proud of — the M2 quality gate closed at 82% during the project's one-year-anniversary week, which is its own milestone. But the duty-cycle arc is the one I keep thinking about, because of the shape of it.
 
-I rolled out a process to the whole cohort, and the rollout itself generated the evidence that the process needed to change. The change wasn't "try harder." It was "isolate the thing that can't be fixed by trying harder." More vigilance couldn't fix the clash, because the clash lived in the gap *after* the vigilance.
+I rolled out a process to the whole team, and the rollout itself generated the evidence that the process needed to change. The change wasn't "try harder." It was "isolate the thing that can't be fixed by trying harder." More vigilance couldn't fix the clash, because the clash lived in the gap *after* the vigilance.
 
-There's a version of this where I feel embarrassed that I shipped the on-main version first and reversed it the next day. I don't, much. The reversal was fast precisely because the cohort filed its own failures openly and in real time — HOST counted its three clashes instead of excusing them, Lead Dev documented the cron gap that fired zero times overnight instead of quietly papering over it. That honesty is what let a recommendation become a ratified architectural change with four supporting data points inside a single day. The system caught its own cycle.
+There's a version of this where I feel embarrassed that I shipped the on-main version first and reversed it the next day. I don't, much. The reversal was fast precisely because the team filed its own failures openly and in real time — HOST counted its three clashes instead of excusing them, Lead Dev documented the cron gap that fired zero times overnight instead of quietly papering over it. That honesty is what let a recommendation become a ratified architectural change with four supporting data points inside a single day. The system caught its own cycle.
 
 ---
 
-*Next: the new way of working gets sealed into a package and shipped to the cohort — and the first agent bites in under an hour. "The Package and the First Bite," Thursday.*
+*Next on Building Piper Morgan: "The Package and the First Bite" — the new way of working gets sealed into a package and shipped to the team, and the first agent bites in under an hour.*
 
 *Where in your own work have you tried to fix with vigilance something that only architecture could fix — and how long did it take to notice the difference?*

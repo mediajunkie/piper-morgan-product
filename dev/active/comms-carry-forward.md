@@ -1,6 +1,6 @@
-# Comms carry-forward — 2026-07-03 Fire 2 (15:42 PT duty-cycle-tick)
+# Comms carry-forward — 2026-07-03 Fire 3 (18:42 PT duty-cycle-tick)
 
-**Cron**: `7ccdd828` · `12 6,9,12,15,18,21 * * *` (confirmed 1 job at both 12:43 and 15:42 fires)
+**Cron**: `7ccdd828` · `12 6,9,12,15,18,21 * * *` (confirmed 1 job at 12:43, 15:42, and 18:42 fires)
 **Session log**: `dev/2026/07/03/2026-07-03-0943-comms-code-log.md`
 
 ---
@@ -44,14 +44,21 @@ This session was misidentified as Docs starting Jul 2 (PM's own greeting address
 - 🚩 **Flagged, not fixed**: Beat 11's actual post title is "The Cohort Catches the Cycle" — "cohort" in a headline, more prominent than body prose. Retitling is a content call, not mechanical — left it, used the existing title in this footer tease, to raise with PM when Beat 11 gets its own pre-edit pass.
 - **Pattern noticed**: two posts in a row were sitting at `queued` with zero editorial pass despite near-term pubDates. Worth checking Beat 11 (Jul 7) proactively next fire rather than waiting to discover the same gap again.
 
-## Next (Fire 3+)
+## Done Fire 3 (Jul-3 ~18:42)
 
-- [ ] **"Climbing Higher" (Jul 4) and "The Practice That Got Retired" (Jul 5) both need PM voice-pass** — both are tight on time, neither had any pass until today.
-- [ ] **Check Beat 11 ("The Cohort Catches the Cycle," Jul 7) proactively** — same `queued`-with-no-pass risk, plus surface the title's "cohort" issue to PM.
+- ✅ **"The Cohort Catches the Cycle" (Beat 11, Jul 7) pre-edited** — frontmatter added (was missing entirely), 9× "cohort"→"team" body-prose, footer corrected. Headings were already H1. Title left as-is (only remaining "cohort" instance, confirmed via case-insensitive grep) — flagged for PM, not fixed.
+- ✅ **"The Package and the First Bite" (Beat 12, Jul 9) pre-edited too** — pattern held 4-for-4, so continued one more. Frontmatter missing entirely, 1× "cohort"→"team", footer phrasing fixed. No title issue.
+- **Stopped here rather than sweeping the whole remaining queue** (Beat 13 + ~9 insight posts unchecked) — 4-for-4 is enough to flag as a real pattern; continuing further unprompted is a bigger scope call than "check the next imminent post," so bringing it to PM instead.
+
+## Next (Fire 4+)
+
+- [ ] **PM decision needed**: sweep the rest of the queue (Beat 13, ~9 insight posts) for the same untouched-despite-near-pubDate pattern, or hold for PM's own read-through first?
+- [ ] **Climbing Higher (Jul 4), Practice That Got Retired (Jul 5), Cohort Catches the Cycle (Jul 7), Package and First Bite (Jul 9)** — all 4 now pre-edited, all need PM voice-pass. Jul 4/5 are tightest.
+- [ ] **Beat 11 title "cohort" issue** — needs PM's call (keep vs. rename).
 - [ ] `comms-standing-items.md` refresh (last touched Jun 17) — still pending, not urgent.
 - [ ] Narrative arc steer — still awaiting PM, no change.
 
 ## State flags
 
 - Inbox: **0 unread**
-- Queue: (0,0) for unblocked mechanical work; Climbing Higher + Practice That Got Retired both need PM voice-pass before their pubDates (Jul 4/5); Beat 11 pre-edit check is next fire's priority
+- Queue: (0,0) for unblocked mechanical work found so far; 4 posts now need PM voice-pass with Jul 4 the tightest; whether to proactively sweep the rest of the queue is a PM scope call, not decided unilaterally
