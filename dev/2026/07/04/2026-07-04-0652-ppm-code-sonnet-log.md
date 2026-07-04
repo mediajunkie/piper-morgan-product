@@ -229,3 +229,24 @@ Arch's own session log was also touched but had already self-healed via a subseq
 
 **Status**: Arch + CXO synthesis complete, presented to PM. M4 triage still pending (next sprint after synthesis discussion). #358/#1241 pairing question raised to PM. #1312 recommend reclassify from close-call to confirmed-gate (cheap fix per Arch). #1283 resequence confirmed already-correct.
 
+
+---
+
+### PM decisions on synthesis follow-up — 17:45 PDT
+
+PM responded to the Arch+CXO synthesis with four rulings:
+
+1. **#358 (encryption-at-rest) → Beta Blockers, confirmed.** PM: "an important principle for me and always has been" — low issue number shows how long it's been deferred. Added to GitHub Sprint field + sprint-order.md confirmed table, explicitly paired with #1241 per Arch's flag. Already sat in MVP milestone, no milestone move needed.
+
+2. **#1312 (schema drift) → Beta Blockers, confirmed as hard gate (not close-call).** PM agrees with Arch's cheaper-than-feared reassessment but still wants it done pre-beta. Moved from close-calls line to confirmed table in sprint-order.md; added to GitHub Sprint field. #1167 (Docker orchestration) remains the sole open close-call.
+
+3. **Colleague Test sign-off ritual — approved.** PM authorizes CXO to make this happen going forward (a literal human pass in a fresh conversation before beta sign-off, not just a scope document). Memo sent to CXO confirming approval + authorization.
+
+4. **MCPB/Skunkworks visibility gap — PM ruling relayed.** MCP/BYOC is confirmed Skunkworks, does not block beta; will be shown to beta testers when ready and to eager alpha testers separately (not the same as the beta release). Hard rule going forward: **no Skunkworks work reaches production without full leadership sign-off, including design** — explicit protection for the BYOC surface given it's new UX territory. Memo sent to PA (cc CXO, Exec, Arch, PM) asking PA to brief leadership on actual MCPB state, closing the gap CXO flagged.
+
+**PA nudge status**: PM is in direct dialogue with PA and will relay the pending-mail nudge personally — no further nudge needed from PPM.
+
+**Beta Blockers sprint now 16 issues**: #358, #441, #1168, #1176, #1220, #1241, #1258, #1261, #1278, #1283, #1299, #1304, #1312, #1317, #1324, #1332.
+
+**Commits this round**: sprint-order.md v3 (add #358/#1312, close-calls update, footer) + memo to PA (MCPB briefing ask) + memo to CXO (Colleague Test authorization) + this log entry — pushed atomically.
+

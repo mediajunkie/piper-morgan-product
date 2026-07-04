@@ -52,8 +52,10 @@ The **Beta Blockers sprint** contains the issues that must close before beta. Al
 | #441 | Registration + password reset (Phase 2/3) | Beta sign-up may be broken independently of #1261 |
 | #1278 | Host piper-morgan server on Fly.io for beta launch | No hosted server = no external beta testers; PM added Jul 4 |
 | #1258 | LAUNCH-ENV: strip inherited Anthropic env vars at server startup | Beta deploy (and any hosted environment) fails if server inherits Claude Code's empty env vars; no auto-fix in place — PM added Jul 4 |
+| #358 | SEC-ENCRYPT-ATREST: Implement Encryption at Rest for Sensitive Data | PM: important principle, always has been; low issue number shows how long it's been deferred -- pairs with #1241 multi-tenancy per Arch's flag |
+| #1312 | DB<->model schema drift: alembic autogenerate unusable (~111 diffs) | Arch: scary part is a stale duplicate not real complexity -- cheaper than the diff count suggests; PM still wants it done pre-beta |
 
-**Close-calls (PM judgment still open):** #1312 (schema drift — 111 Alembic diffs, high migration risk), #1167 (Docker orchestration — only a gate if orchestration is in beta infra scope).
+**Close-calls (PM judgment still open):** #1167 (Docker orchestration — only a gate if orchestration is in beta infra scope). #1312 RESOLVED Jul 4 — PM confirms it's a hard gate (Arch: cheaper than the diff count suggests); moved to confirmed table above.
 
 ### Remaining sprint work (non-gate items move to Production milestone)
 
@@ -87,4 +89,4 @@ Items from these sprints that ARE hard gates are already captured in Beta Blocke
 
 ---
 
-*PPM — 2026-06-28. Updated Jul 3 (WS-2 buildable scope drained, M3-Quality active priority). Updated Jul 4: PM ratified; Beta Blockers sprint added as active priority; MVP milestone = beta gate (explicit); Aug 1 date marked TBD; milestone dates updated from GitHub; RECONNECT connector status corrected; M3/M4/M5 triage disposition noted. Updated Jul 4 (afternoon): #1278 (Fly.io hosting) added to Beta Blockers per PM; MCP distribution cluster (M5) confirmed as Production scope; Beta Blockers sprint created on GitHub project board (Sprint field "Beta Blockers - Hard Gates Only", red, 14 issues); #1258 (LAUNCH-ENV) added per PM; M5 distribution cluster (18 issues) moved to Production milestone.*
+*PPM — 2026-06-28. Updated Jul 3 (WS-2 buildable scope drained, M3-Quality active priority). Updated Jul 4: PM ratified; Beta Blockers sprint added as active priority; MVP milestone = beta gate (explicit); Aug 1 date marked TBD; milestone dates updated from GitHub; RECONNECT connector status corrected; M3/M4/M5 triage disposition noted. Updated Jul 4 (afternoon): #1278 (Fly.io hosting) added to Beta Blockers per PM; MCP distribution cluster (M5) confirmed as Production scope; Beta Blockers sprint created on GitHub project board (Sprint field "Beta Blockers - Hard Gates Only", red, 14 issues); #1258 (LAUNCH-ENV) added per PM; M5 distribution cluster (18 issues) moved to Production milestone. Updated Jul 4 (evening): Arch + CXO beta-scope synthesis processed; #358 (encryption-at-rest) added per PM (paired with #1241 per Arch's flag); #1312 (schema drift) confirmed as hard gate per PM (Arch: cheaper than feared) -- now 16 issues in Beta Blockers sprint. Colleague Test sign-off ritual approved by PM, CXO authorized to implement. MCPB/Skunkworks: PM confirms does not block beta; PA to brief leadership; any Skunkworks-to-production promotion requires full leadership sign-off incl. design.*
