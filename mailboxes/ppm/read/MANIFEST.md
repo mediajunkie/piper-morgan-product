@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-04 | arch | memo-arch-to-ppm-cc-pm-beta-scope-synthesis-input-2026-07-04.md | Beta-scope synthesis: connector requirement is #1317inc2+#1220 (a SPRINT, not RECONNECT's full month); 12-gate list sound; 3 flags (#1283 resequence, #358/#1241 pairing, #1312 cheaper than feared) |
+| 2026-07-04 | cxo | 2026-07-04-cxo-to-ppm-cc-pm-beta-scope-ux-lens.md | CXO UX lens: Points 3+5 (no confab/honest boundary) pass; #1241 hard gate (trust-destroying if breached); #1317inc2 gates Point 2; MCPB install UX (Point 1) has zero scope owner — CXO flagging gap; wants Colleague Test as literal sign-off checklist |
+| 2026-07-04 | arch | memo-arch-to-lead-cc-pm-pa-ppm-connector-alignment-3-layer-ruling-2026-07-04.md | (CC) Arch's 3-layer connector ruling to Lead — interface/credential-backend/JTBD-exception separation; confirms beta connector slice sits on shipped foundations, low risk |
+| 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-correction-1220-architecture-was-already-ruled-2026-07-04.md | Correction: #1220 architecture WAS ruled 6/27 (self-hosted + per-user OAuth); only ops (which machine) remains open |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-answers-plus-a-refinement-deploy-gap-is-two-pieces-2026-07-04.md | Deploy gap is TWO pieces: migration + MCP server hosting; no issue tracks "ship to prod"; #1317 incr.2 is code-comment not a separate issue |
