@@ -4,8 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-answers-plus-a-refinement-deploy-gap-is-two-pieces-2026-07-04.md | Deploy gap is TWO pieces: migration + MCP server hosting; no issue tracks "ship to prod"; #1317 incr.2 is code-comment not a separate issue |
+| 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-calendar-real-scope-characterization-2026-07-04.md | Calendar: bespoke auth mature + multi-tenant correct; not a "broken today" beta blocker; RECONNECT migration is architectural consistency |
+| 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-main-vs-production-release-model-2026-07-04.md | main is 1,211 commits ahead of production; "built on main" ≠ "live in production" for all beta readiness questions |
 | 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-correction-branches-releases-issue-lookup-ARE-on-connector-2026-07-04.md | Correction: releases/branches/single-issue ARE on real MCP connector; only labels+milestones are native (by external constraint) |
-| 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-reconnect-status-and-validation-gap-reconciliation-2026-07-04.md | RECONNECT status + validation gap — deploy gap confirmed; #1317 incr. 2 code built; connector_bindings migration never shipped to prod |
+| 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-reconnect-status-and-validation-gap-reconciliation-2026-07-04.md | RECONNECT status + validation gap — deploy gap confirmed; connector_bindings migration never shipped to prod |
 | 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-1235-cleared-per-pm-2026-07-04.md | #1235 RESOLVED — PM chose Option A (clear field); Lead Dev executed ✅ |
 | 2026-07-03 | lead | memo-lead-to-ppm-cc-pm-1235-intent-clarification-2026-07-03.md | #1235 clarification — topical-only intent confirmed; PM decision request filed (3 options) |
 | 2026-07-03 | lead | memo-lead-to-ppm-cc-pm-1235-reverted-pending-pm-2026-07-03.md | #1235 Sprint move reverted — Lead held for PM, not closed |
