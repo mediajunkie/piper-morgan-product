@@ -137,7 +137,12 @@ class TestGoogleCalendarMCPAdapter:
                 adapter = GoogleCalendarMCPAdapter()
 
                 assert adapter._client_secrets_file == "test_credentials.json"
-                assert adapter._token_file == "test_token.json"
+                # Issue #734 (multi-tenancy): the config service user-scopes any token
+                # filename that doesn't already contain the user_id, to prevent one
+                # user's token file from colliding with another's. No user_id passed
+                # here -> the adapter defaults to "system", so the env var's raw
+                # "test_token.json" is transformed to "test_token_system.json".
+                assert adapter._token_file == "test_token_system.json"
         except ImportError:
             pytest.skip("Google Calendar libraries not available")
 
@@ -291,13 +296,19 @@ class TestCalendarIntegrationUsage:
     """Test Calendar integration is used in production features"""
 
     def test_calendar_used_in_morning_standup(self):
-        """Test that Calendar integration is imported in morning standup"""
-        # Check that morning_standup imports CalendarIntegrationRouter
+        """Test that Calendar integration is used by the standup feature.
+
+        #1289 (2026-06-21) retired the old MorningStandupWorkflow engine that
+        `services.features.morning_standup` used to house — that module is now
+        just back-compat re-exports (StandupItem/StandupResult), with zero
+        Calendar reference. The honest replacement, `services.standup.assembler`,
+        is where CalendarIntegrationRouter actually lives now (StandupCalendarProvider).
+        """
         import inspect
 
-        from services.features import morning_standup
+        from services.standup import assembler
 
-        source = inspect.getsource(morning_standup)
+        source = inspect.getsource(assembler)
         assert "CalendarIntegrationRouter" in source
 
     def test_calendar_used_in_canonical_handlers(self):

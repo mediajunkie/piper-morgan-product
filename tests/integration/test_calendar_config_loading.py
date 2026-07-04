@@ -48,11 +48,13 @@ calendar:
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 # Load config
                 service = CalendarConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-1354")
 
                 # Verify values from PIPER.user.md
                 assert config.client_secrets_file == "test_credentials.json"
-                assert config.token_file == "test_token.json"
+                # Issue #734: token_file is always user-scoped — "test_token.json"
+                # doesn't contain the user_id, so it's transformed to include it.
+                assert config.token_file == "test_token_test-user-1354.json"
                 assert config.calendar_id == "test@calendar.com"
                 assert config.timeout_seconds == 60
                 assert config.circuit_timeout == 600
@@ -82,7 +84,7 @@ calendar:
             with patch.object(Path, "exists", return_value=True):
                 with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                     service = CalendarConfigService()
-                    config = service.get_config()
+                    config = service.get_config("test-user-1354")
 
                     # Verify env var overrides user config
                     assert config.calendar_id == "env_override@calendar.com"
@@ -104,11 +106,12 @@ calendar:
         with patch.object(Path, "exists", return_value=True):
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 service = CalendarConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-1354")
 
                 # Verify defaults
                 assert config.client_secrets_file == "credentials.json"
-                assert config.token_file == "token.json"
+                # Issue #734: the default token_file is already user-scoped from the start.
+                assert config.token_file == "token_test-user-1354.json"
                 assert config.calendar_id == "primary"
                 assert config.timeout_seconds == 30
                 assert config.circuit_timeout == 300
@@ -121,7 +124,7 @@ calendar:
         with patch.object(Path, "exists", return_value=False):
             # Should not raise exception
             service = CalendarConfigService()
-            config = service.get_config()
+            config = service.get_config("test-user-1354")
 
             # Should use defaults
             assert config.calendar_id == "primary"
@@ -147,7 +150,7 @@ calendar:
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 # Should not raise exception
                 service = CalendarConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-1354")
 
                 # Should use defaults
                 assert config.calendar_id == "primary"
@@ -172,7 +175,7 @@ calendar:
         with patch.object(Path, "exists", return_value=True):
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 service = CalendarConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-1354")
 
                 # Verify scopes list properly parsed
                 assert len(config.scopes) == 2
@@ -204,7 +207,7 @@ calendar:
             with patch.object(Path, "exists", return_value=True):
                 with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                     service = CalendarConfigService()
-                    config = service.get_config()
+                    config = service.get_config("test-user-1354")
 
                     # Verify env var overrides user config scopes
                     assert len(config.scopes) == 2
@@ -243,7 +246,7 @@ calendar:
             with patch.object(Path, "exists", return_value=True):
                 with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                     service = CalendarConfigService()
-                    config = service.get_config()
+                    config = service.get_config("test-user-1354")
 
                     # Verify priority order:
                     # 1. calendar_id from env var (highest)
@@ -257,7 +260,8 @@ calendar:
 
                     # Also verify user config values used when no env var
                     assert config.client_secrets_file == "user_credentials.json"
-                    assert config.token_file == "user_token.json"
+                    # Issue #734: user-scoped, same as the other token_file assertions above.
+                    assert config.token_file == "user_token_test-user-1354.json"
         finally:
             # Clean up environment
             if original_env is None:
