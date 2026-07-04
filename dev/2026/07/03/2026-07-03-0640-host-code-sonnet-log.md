@@ -75,3 +75,8 @@
   - **v0.3 spec written**: `docs/internal/operations/dashboard-welfare-criteria-v0.3.md`. Synthesizes criteria A–F + Q1–Q3 with joint design decisions. Supersedes both seed files. TBD section: F2 cross-doc reference detection scope, E panel coverage-indicator UX (CIO to flag HOST before E ships), 2×/3× multiplier validation against actual cycle data.
   - **Carry-forward**: dashboard welfare-criteria v0.3 updated from "ready for spec" to "SPEC PUBLISHED".
 
+- Fire 5 gap-fill (15:50 PDT) — #1344 confirmation memo sent; process failure noted.
+  - **Gap**: Fire 3, I read Lead's token/validation contract memo and marked "#1344 contract closed" in my carry-forward without sending Lead an explicit confirmation. Lead correctly flagged this — Arch's ratification isn't HOST confirming. PM relayed Lead's flag.
+  - **Fix**: confirmation memo sent to Lead (cc Arch, PM) — contract accepted on all three points; Lead may proceed to step 2; minting process agreed (Lead runs script on my count, hands me strings).
+  - **Root cause**: treated "updating carry-forward" as equivalent to "replying to sender." It isn't. A carry-forward update is internal state; a reply memo is the actual signal to the other agent. Will not conflate these again.
+
