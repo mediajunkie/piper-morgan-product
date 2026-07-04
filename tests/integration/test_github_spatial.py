@@ -4,7 +4,7 @@ Following ADR-013: MCP + Spatial Intelligence Pattern
 """
 
 import asyncio
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict
 from unittest.mock import AsyncMock, MagicMock, patch
 
@@ -26,16 +26,27 @@ class TestGitHubSpatialIntelligence:
 
     @pytest.fixture
     def sample_issue(self):
-        """Sample GitHub issue data"""
+        """Sample GitHub issue data.
+
+        Dates are relative to now (#1353/#1355): the original hardcoded
+        absolute dates (~Aug 2025) only satisfied the "2 days ago" / "high
+        urgency" assertions below at authoring time and silently rotted as
+        calendar time passed. `age_days`/`urgency`/`time_to_milestone_days`
+        below all derive from these three fields.
+        """
+        now = datetime.now(timezone.utc)
         return {
             "number": 156,
             "title": "Login authentication failing",
             "state": "open",
-            "created_at": "2025-08-10T10:00:00Z",
-            "updated_at": "2025-08-12T12:00:00Z",
+            "created_at": (now - timedelta(days=2, hours=1)).isoformat(),
+            "updated_at": (now - timedelta(hours=3)).isoformat(),
             "labels": [{"name": "bug"}, {"name": "high-priority"}],
             "assignees": [{"login": "john_doe"}],
-            "milestone": {"title": "v1.2", "due_on": "2025-08-15T00:00:00Z"},
+            "milestone": {
+                "title": "v1.2",
+                "due_on": (now + timedelta(days=2, hours=1)).isoformat(),
+            },
             "comments": 5,
             "reactions": {"total_count": 3},
             "pull_request": None,
@@ -162,9 +173,12 @@ class TestGitHubSpatialIntelligence:
     async def test_github_spatial_mcp_adapter_integration(self, github_spatial):
         """Test integration with existing MCP GitHub adapter"""
         # Verify MCP adapter is properly initialized
+        # (#1355: the adapter's real inverse-mapping method is `map_from_position`
+        # per the SpatialAdapter protocol — `resolve_from_position` never existed
+        # anywhere in this repo's history; this was a stale/typo'd assertion.)
         assert github_spatial.mcp_adapter is not None
         assert hasattr(github_spatial.mcp_adapter, "map_to_position")
-        assert hasattr(github_spatial.mcp_adapter, "resolve_from_position")
+        assert hasattr(github_spatial.mcp_adapter, "map_from_position")
 
         # Test mapping issue to spatial position
         position = await github_spatial.map_issue_to_position("156", {})
@@ -174,9 +188,19 @@ class TestGitHubSpatialIntelligence:
     @pytest.mark.asyncio
     async def test_github_spatial_backward_compatibility(self, github_spatial):
         """Test backward compatibility with existing GitHub integration"""
-        # Should still support basic issue fetching
-        with patch.object(github_spatial.mcp_adapter, "_call_github_api") as mock_api:
+        # Should still support basic issue fetching. get_issue() resolves an
+        # owner via repo_resolver when given a bare repo name (no "/") — mock
+        # that resolution (#1355) rather than depend on ambient PIPER_DEFAULT_REPO
+        # env state / a real user_id, neither of which this call provides.
+        from services.integrations.github.repo_resolver import ResolvedRepo
+
+        with patch.object(github_spatial.mcp_adapter, "_call_github_api") as mock_api, patch(
+            "services.integrations.github.repo_resolver.resolve_repo"
+        ) as mock_resolve:
             mock_api.return_value = {"number": 156}
+            mock_resolve.return_value = ResolvedRepo(
+                owner="mediajunkie", name="piper-morgan-product", source="explicit"
+            )
 
             issue = await github_spatial.get_issue("piper-morgan-product", 156)
             assert issue["number"] == 156

@@ -34,6 +34,6 @@ What we have is a finding: the mode that earns trust in an ongoing working relat
 
 ---
 
-*Next on Building Piper Morgan: [PLACEHOLDER — next scheduled post title and one-line description]*
+*Next on Building Piper Morgan: "Patterns Naming Patterns" — the pattern catalog that names failure modes in the product had a failure mode of its own, and hadn't been reading itself.*
 
 *Where in your own product or service have you designed the first-encounter experience from inside the steady-state experience? What would a first-time user need that you've already learned not to need?*

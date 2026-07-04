@@ -117,6 +117,11 @@ external/ted-multichat/
 dev/alpha/alpha-tester-roster.md
 dev/alpha/host-alpha-reping-tiering*.md
 
+# #1344 minted invite-token batches — live, valid, single-use auth secrets;
+# never commit raw tokens to a public repo. Kept separate from the roster
+# above (trust-zone separation: tokens and identities never share a file).
+dev/alpha/invite-tokens-*.md
+
 # PreCompact hook warnings log — ephemeral per-machine working data,
 # tailed by Docs merge-keeper sweep; not for cross-machine archival.
 dev/active/session-end-warnings.log

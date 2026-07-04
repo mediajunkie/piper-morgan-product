@@ -1,36 +1,26 @@
 # Comms standing items
 
-**Purpose**: persistent (across-days) Comms-side task list — items that aren't tied to a specific blog post or pubDate but need surfacing/advancing as cycle fires advance. Lives across days; not a per-day artifact. (Per-day work goes in `dev/2026/MM/DD/...-comms-code-opus-log.md` + `dev/active/cycle-log-comms-YYYY-MM-DD.md`.)
+**Purpose**: persistent (across-days) Comms-side task list — items that aren't tied to a specific blog post or pubDate but need surfacing/advancing as cycle fires advance. Lives across days; not a per-day artifact. (Per-day work goes in the dated session log under `dev/2026/MM/DD/`.)
 
-**Last refreshed**: 2026-06-17 (Ship #047 published; Beat 6 published; BYOC narrative UNBLOCKED per PA Phase-2 complete memo)
+**Last refreshed**: 2026-07-04 (full sweep of remaining drafting queue; Beat 11 renamed cohort→team; 5 candidate insights A–E drafted and calendared)
 
 ---
 
 ## Active
 
-> **✅ MIGRATION COMPLETE (2026-06-13 18:02 PT).** DinP/Sonnet session underway. comms-cycle worktree retired. Cron `b6c7e1c0` armed (`12 6,9,12,15,18,21 * * *`) — re-armed at STOP Jun 13. Adaptive-interval pilot PAUSED (PM leisurely-cadence directive; spec ratified; resume when lifted). Building-narrative HOLD until ~June 16. *Critical vs Commodity* **PUBLISHED** today (calendar updated with all URLs).
+> **Identity note (2026-07-03/04):** this session was briefly misidentified as Docs for about a day (Jul 2–3) after a greeting mislabel; corrected by PM 2026-07-03 09:43. See that day's session log for the full account. No lasting effect on Comms' own record — this file's gap is just ordinary staleness (last touched Jun 17), not a consequence of the mislabel.
 
 | Topic | State | Owner of next move | Notes |
 |---|---|---|---|
-| ***The Solo Founder Paradox* (Jun 14 insight)** | ✅ COMPLETE. Published + calendar fully updated by Docs/Dispatch (all 3 URLs; draft moved to drafts/published/). | CLOSED | |
-| **Ship #047** | ✅ PUBLISHED 2026-06-17. PM voice-pass + Docs proofread complete. Blog + LinkedIn live (calendar updated by Dispatch). | CLOSED | |
-| **PP-002 rename proposal** | ✅ RATIFIED 6/14 — CIO confirmed option-1 (name-only): "Critical vs. Commodity Work in a Role"; "load-bearing" kept as internal term-of-art. CIO owns execution pass (no-rush). Comms closed. | CLOSED | CIO memo in comms/read/ |
-| **BYOC marketplace narrative** | **UNBLOCKED 6/17** — PA Phase-2 state-of-world memo confirms: 9/9 ratification complete (Jun 12-14); alpha.pipermorgan.ai live; Ted Nadeau = first external tester TODAY (Jun 17). Key framing from PA: "the cold-start interview demonstrates working rules as it collects them — the intake doubles as proof of the working relationship. This is the moat a static questionnaire can't produce." Phase 2b next: public repo decision, Smithery submission, Loom demo. Comms ready to draft marketplace narrative. **Surfaced to PM 6/17; awaiting direction on angles.** | PM (direction on narrative angles) | Foundational frame in PDR-005 external-language section. PA memo: `comms/read/memo-pa-to-leadership-cc-pm-byoc-poc-learnings-current-state-2026-06-17.md` |
-| **Building-narrative slate (Beats 14–16) — first drafts** | ✅ DRAFTED + calendared 6/16 (`fbeb81133`). Beat 14 *Into Production* (Jun 6-7, Jul 16), Beat 15 *What the Running System Found* (Jun 9+11, Jul 21), Beat 16 *Almost Beta* (Jun 12-14, Jul 23). PM approved all three. **Awaiting PM voice-pass** before publish. | PM (voice-pass) | Drafts at `docs/public/comms/drafts/into-production.md`, `what-the-running-system-found.md`, `almost-beta.md`. Beat 16 footer tease TBD (next slate not yet known). |
-| **Duty-cycle slate (Beats 10–13) — first drafts** | ✅ DRAFTED + calendared 6/3 (`91458c53c`). 4 narratives May 25→Jun 2 at Jul 2/7/9/14. Mechanically clean, footer teases filled, fact-checks resolved. **Awaiting PM voice-pass** before publish (like all beats). | PM (voice-pass) | Beat 11 runs ~1990w — Model A section marked most-cuttable. PM-voice-pass markers in Beats 10/11/13. Assessment doc: `dev/active/comms-narrative-assessment-may25-jun2-2026-06-03.md`. |
-| **Agent 360 v0.3 response (HOST)** | ✅ DELIVERED 6/3 ~8:40 PM — `mailboxes/host/inbox/agent-360-response-comms-2026-06-03.md` + sent mirror | HOST (synthesis ~Jun 12) | Full §1-10; diff vs v0.2 baseline. Headline: skill-drift (model-not-migrating) was the surprise; fixed same day. §9.4 flagged tacit-vs-documentable for HOST synthesis. Delivered ahead of ~Jun 10 backstop. |
-| **Ship #045 workstream review memo (Comms lane, May 22–28)** | ✅ FILED 6/2 ~10:2x PM (`bc8b32178`); Exec has READ it (now in exec/read/) | Exec | Drafted from calendar + git + May 24/28 logs. Included attribution correction (PPM v17 rescue = PA's, not Comms `5d61755e7`). |
-| Voice-pass on *When Your AI Makes Things Up* | ✅ PUBLISHED 2026-06-01 per calendar (all URLs present). Standing-items entry was stale. | CLOSED | |
-| Cross-pollination relay of Ted Nadeau memo to Klatch (Janus) | PR #941 merged 2026-05-31 (`f047d9c3e`); content needs to reach Janus via next outgoing brief | Docs/CIO | Comms can surface to Docs in a brief memo if PM doesn't relay |
-| Layer C → pre-commit hook for `reconcile-drafts-calendar.py` | ✅ GO SIGNAL SENT 6/13 (`mailboxes/docs/inbox/layer-c-go-signal-comms-2026-06-13.md`, `58823d721`). Docs to land warn-first + promote to blocking when ready. | Docs (execute) | All 4 layers (A/B/C/D) of orphan-prevention framework now live |
-| Lead Dev #1030/#1032 implementation greenlight | Design doc at `dev/active/insight-pull-push-implementation-design-2026-05-31.md` awaiting PM ratification | PM | Not Comms territory but cohort-visible |
-
-## Voice-pass flags (when PM reaches drafts)
-
-- 9-beat narrative slate (Beats 1–9, pubDates ratified May 24 then BYOC-shift May 30) — most beats need PM voice-pass before publish; Beat 1 (Two Migrations) + Beat 2 (Misfiled Voice Guide) already published
-- **Duty-cycle slate (Beats 10–13, drafted 6/3, pubDates Jul 2/7/9/14)** — all 4 need PM voice-pass before publish. Beat 10 *The Airport Corrections*, Beat 11 *The Cohort Catches the Cycle* (centerpiece, runs long), Beat 12 *The Package and the First Bite*, Beat 13 *The Migration Wave* (resolution; ends operational-not-finished). Footer teases are calendar-derived — re-verify at publish if Wed ships / a Jul 16 narrative land first.
-- Insight orphan rescues (From Abstraction to Worked Example Sat Jul 25, Meta-Observation Pattern Sun Jul 26) — both need voice-pass + frontmatter
-- Narrative orphan rescues (BYOC Tue Jun 2, From Briefing to Vision Tue Jun 30) — both need voice-pass; BYOC is the time-sensitive one (Tue this week)
+| **Narrative arc steer (candidates A–E)** | ✅ ADVANCED 2026-07-04 — PM approved proceeding rather than a formal pick-one steer; all 5 drafted, researched against actual source logs (several turned out richer/different than the original one-line gloss), calendared Aug 16/22/23/29/30. | PM (voice-pass on all 5) | Drafts: `the-fabricating-standup.md`, `the-trust-gate-that-wasnt.md`, `read-the-mock-first.md`, `the-orphan-migration.md`, `two-of-me.md`. Each carries 1-3 genuine PM-input brackets (fact-check sign-offs, personal-anecdote beats). |
+| **Duty-cycle slate (Beats 10–13)** | Beat 10 *The Airport Corrections* **PUBLISHED** 2026-07-02 (Medium URL added same day). Beats 11-13 drafted, full mechanical sweep done 2026-07-04 (frontmatter/headings/cohort→team/footer chain all fixed). Beat 11 **renamed** "The Cohort Catches the Cycle" → "The Team Catches the Cycle" (calendar + admin view + cross-refs all updated). | PM (voice-pass on 11-13) | pubDates: 11=Jul7, 12=Jul9, 13=Jul14. |
+| **Building-narrative slate (Beats 14–16)** | Drafted 6/16, full mechanical sweep done 2026-07-04 (Beat 16's footer TBD resolved — now correctly chains to the Jul 25 insight). | PM (voice-pass) | pubDates: 14=Jul16, 15=Jul21, 16=Jul23. |
+| **Insight batch drafted 6/4** (Mechanism Beats Vigilance, Architecture Wrote Its Own Case, Verify at User Path, Over-Checking Has Dividends, Confabulating a Peer's Unfinished Work) | Full mechanical sweep done 2026-07-04 — 3 of the 5 were missing frontmatter AND dateline entirely, not just empty; footer chain corrected end-to-end. | PM (voice-pass) | pubDates: Aug1/2/8/9/15. |
+| **Climbing Higher When the Platform Laps You** | ✅ PM voice-pass done 2026-07-04, mechanical close-pass done (PM's worktree branch hadn't picked up prior fixes — headings/footer/2 typos caught and fixed). PubDate was Jul 4 (today). | Docs (proofread + publish) | |
+| **The Practice That Got Retired** | Mechanical sweep done, PM voice-pass status unconfirmed as of this refresh. | PM (voice-pass, if not already done) | pubDate Jul 5. |
+| **BYOC onboarding narrative** ("We Built Onboarding in Our Own Image") | ✅ RESOLVED 2026-07-04 — PA delivered PM's narrative-angle direction 6/20 (`memo-pa-to-comms-cc-pm-byoc-narrative-angle-direction-2026-06-20.md`), and a draft matching that direction already existed but had no calendar row (orphaned — no pubDate, placeholder footer). Assigned pubDate Sep 5 (next open Sat/Sun slot; queue is solid through Aug 30), footer fixed, chained from "Two of Me." | PM (voice-pass) | Draft: `docs/public/comms/drafts/draft-insight-built-in-our-own-image.md`. |
+| **BYOC marketplace narrative** (distribution/positioning story — distinct from the item above) | Last known: surfaced to PM 6/17, awaiting direction on angles. Genuinely still unverified — checked mail/logs 2026-07-04, found no direction memo for *this* ask (only found the onboarding one, which is separate). Now ≥17 days stale. | PM (direction) | PA memo: `comms/read/memo-pa-to-leadership-cc-pm-byoc-poc-learnings-current-state-2026-06-17.md` |
+| Cross-pollination relay of Ted Nadeau memo to Klatch (Janus) | ✅ CONFIRMED DONE 2026-07-04 — verified in `docs/briefs/cross-pollination/2026-06-01.md`: full memo content relayed with routing questions for both Janus (role-architecture split) and Klatch/Daedalus (Englishia cell model). Was correctly marked "not re-reported, already covered" in the 6/2 brief. | CLOSED | |
 
 ## Cross-cutting PM topics (verify still alive at next surface; ≥30 days stale flagged)
 
@@ -42,25 +32,16 @@
 
 ## Recently-closed (rolling history; trim to last ~14 days)
 
-- 2026-06-07 "Permission to Pause" PUBLISHED (Sun Jun 7, distributed) — the reframe-not-discard rescue validated (doppelganger was a half-finished rename, not redundancy); "Be Prepared" also published Sat Jun 6
-- 2026-06-07 Adopted recipient-owns-MANIFEST cohort discipline (Lead/#1106) — already compliant (deliver files only, sole writer of own MANIFEST)
-
-- 2026-06-04 5 insights drafted + calendared (Mechanism Beats Vigilance, The Architecture That Wrote Its Own Case, Verify at the User Path, Over-Checking Has Dividends, Confabulating a Peer's Unfinished Work) — Aug 1/2/8/9/15, status drafted, awaiting PM voice-pass. Commit c9e0ba309.
-- 2026-06-04 Layer-C pre-commit hook landed (editorial-calendar-reconcile-warn.sh, warn-first; BLOCK=1 promotes) — orphan-prevention framework now has the git-hook layer
-
-- 2026-06-03 EC-2 external-language frame delivered to PPM (the last PDR-005/BYOC v1.0 input before PM ratification) — closes the PDR-005 external-language carry item
-- 2026-06-03 Building-narrative-method doc + `continue-narrative` skill landed (canonical conceptual-model doc closing the skill-drift gap; §7 PM-knowledge gaps marked for PM fill)
-- 2026-06-03 CIO cycle-methodology-findings memo filed (cron-suppression + worktree-sweep + skill-drift pattern)
-- 2026-06-02/03 Duty cycle launched + running (Fire 0 + June 3 START; cron `:12`)
-- 2026-05-31 PR #941 disposition complete (merged via admin override)
-- 2026-05-31 Layer C landed (draft-blog-post v1.2 with Phase 0 inventory precondition)
-- 2026-05-30 Layer B landed (`scripts/comms-open-topics.py` + slimmed comms-open-topics.md)
-- 2026-05-30 Calendar BYOC cascade (BYOC → Tue Jun 2, Beats 3-9 shift, From Briefing to Vision tail Jun 30)
-- 2026-05-30 Docs disposition execution (Permission to Pause + 15 Sessions back to drafts/ → reconciliation 0 drift)
-- 2026-05-29 Process-tightening proposal to Docs filed (orphan-prevention framework)
-- 2026-05-29 Layer D built (`scripts/reconcile-drafts-calendar.py`)
-- 2026-05-24 Orphan-drafts incident: 4 orphans surfaced → Layer A landed + memory pin sharpened + CIO Pattern-074/methodology-36 closure
-- 2026-05-24 MUX voice-pass cluster Step 2 complete (Surfaces 7/2/4)
+- 2026-07-04 **Full sweep of entire remaining drafting queue** (14 posts) — missing frontmatter (4 files had none at all), missing datelines (5 files), remaining H2→H1 headings, cohort→team throughout, footer-tease chain rebuilt end-to-end after discovering several footers skipped past 1-2 intermediate posts.
+- 2026-07-04 **Beat 11 renamed** "The Cohort Catches the Cycle" → "The Team Catches the Cycle" — file, calendar, admin view (`editorial-calendar-view.html`), and cross-references all updated.
+- 2026-07-04 **5 candidate insights (A–E) drafted** — researched against real source logs rather than the one-line surfacing gloss; calendared Aug 16-30.
+- 2026-07-04 **Editorial calendar admin view regenerated** via `scripts/build-editorial-calendar-view.py` (was stale per PM's Jul 2 flag).
+- 2026-07-02 **The Airport Corrections PUBLISHED** (Beat 10) — Medium URL added same day.
+- 2026-06-29/30 **Relationship-first Ethics** and **From Briefing to Vision** both published.
+- 2026-06-07 "Permission to Pause" PUBLISHED — the reframe-not-discard rescue validated (doppelganger was a half-finished rename, not redundancy); "Be Prepared" also published Sat Jun 6.
+- 2026-06-04 5 insights drafted + calendared (see Active table above — now swept + voice-pass pending).
+- 2026-06-03 Building-narrative-method doc + `continue-narrative` skill landed.
+- 2026-05-24 Orphan-drafts incident: 4 orphans surfaced → Layer A landed + memory pin sharpened.
 
 ---
 

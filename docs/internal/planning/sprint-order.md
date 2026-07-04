@@ -1,9 +1,17 @@
 # Canonical Sprint Order — Piper Morgan
 
 **Owner**: PPM  
-**Last updated**: 2026-07-03 (PPM Fire 0 — WS-2 status update)  
-**Status**: Pending PM ratification  
+**Last updated**: 2026-07-04 (PPM — PM ratified Jul 4; Beta Blockers sprint added; MVP milestone = beta gate; milestone dates updated from GitHub; RECONNECT status corrected)  
+**Status**: PM-ratified 2026-07-04  
 **Purpose**: Single source of truth for sprint sequence. Reference this when "what's the order?" comes up — not roadmap prose.
+
+---
+
+## Beta Release Gate
+
+**Beta (0.9.0) ships when the MVP milestone is complete.** The MVP milestone is the gate — not a calendar date.
+
+The **Beta Blockers sprint** contains the issues that must close before beta. All items in the Beta Blockers sprint stay in the MVP milestone. Everything else currently in the MVP milestone that is not a hard gate moves to the Production milestone and is addressed during the beta period (communicated to beta users as known issues).
 
 ---
 
@@ -18,49 +26,67 @@
 | M2 — Conscious Floor + Action Handlers | Jun 3, 2026 | |
 | M3 — Artifact Persistence | Jun 2026 | |
 | RECONNECT WS-1 | Jun 22, 2026 (v0.8.9) | StandupAssembler, connector-protocol, Design D2, security batch |
-| D1 — Beta Design Quality | Jun 20, 2026 | #1297 sign-off; #1270 straggler into M4 |
+| D1 — Beta Design Quality | Jun 20, 2026 | #1297 sign-off; #1270 straggler carries to Production |
 
 ### Active priority
 
 | Sprint | Status | Lane |
 |--------|--------|------|
-| M3-Quality | 🎯 ACTIVE PRIORITY | Cohort |
+| **Beta Blockers** | 🎯 ACTIVE PRIORITY | All — no theme; hard gates only |
 
-### PM-gated (not blocking next sprint)
+### Confirmed Beta Blockers sprint (as of Jul 4)
 
-| Sprint | Status | Pending |
-|--------|--------|---------|
-| RECONNECT WS-2 — GitHub MCP + calendar | ⏳ PM-GATED | #1344 open registration — HOST review + PM decision (#1343 CLOSED Jul 2 v0.8.9.1) |
+| # | Issue | Why it's a hard gate |
+|---|-------|---------------------|
+| #1241 | Multi-tenancy: content not anchored to user auth | Cross-user data leakage — cannot ship beta |
+| #1304 | CI: security test suite never runs | Can't verify any security fix; main chronically red |
+| #1324 | Hardcoded localhost OAuth redirect + alembic.ini dev DB | Slack OAuth breaks in prod; migrations silently fail on deploys |
+| #1299 | Alembic in-container migration fails | Migrations connect to wrong host on every deploy |
+| #1176 | Server binds 127.0.0.1, not configurable | Unreachable through Docker — beta can't be reached |
+| #1261 | No password recovery; login-by-email absent | Beta tester dead end — labeled beta-blocking in issue |
+| #1332 | User messages intermittently arrive empty | Active reliability failure, reproducible in UAT |
+| #1283 | Action↔handler routing: unregistered action → fabrication | Confident wrong answers with no user signal |
+| #1168 | macOS-only pyobjc deps in requirements.txt | pip install fails on Linux; breaks every fresh deploy |
+| #1317 (incr. 2) | OAuth redirect-orchestrator + callback | External testers cannot connect their own accounts |
+| #1220 | github-mcp-server provisioning decision | Required for per-user connector flow to work |
+| #441 | Registration + password reset (Phase 2/3) | Beta sign-up may be broken independently of #1261 |
+| #1278 | Host piper-morgan server on Fly.io for beta launch | No hosted server = no external beta testers; PM added Jul 4 |
+| #1258 | LAUNCH-ENV: strip inherited Anthropic env vars at server startup | Beta deploy (and any hosted environment) fails if server inherits Claude Code's empty env vars; no auto-fix in place — PM added Jul 4 |
+| #358 | SEC-ENCRYPT-ATREST: Implement Encryption at Rest for Sensitive Data | PM: important principle, always has been; low issue number shows how long it's been deferred -- pairs with #1241 multi-tenancy per Arch's flag |
+| #1312 | DB<->model schema drift: alembic autogenerate unusable (~111 diffs) | Arch: scary part is a stale duplicate not real complexity -- cheaper than the diff count suggests; PM still wants it done pre-beta |
 
-### Queued (in order)
+**Close-calls (PM judgment still open):** #1167 (Docker orchestration — only a gate if orchestration is in beta infra scope). #1312 RESOLVED Jul 4 — PM confirms it's a hard gate (Arch: cheaper than the diff count suggests); moved to confirmed table above.
 
-| # | Sprint | Theme | Notes |
-|---|--------|-------|-------|
-| 1 | M3-Quality | Bugs, test failures, CI (8 open) | **Active priority** (WS-2 buildable scope done) |
-| 2 | M3-Health | Dead code, tech debt (10 issues) | After M3-Quality |
-| 3 | M3-Security | Security, infrastructure, portability (9 issues) | After M3-Health |
-| — | *[WS-2 closes]* | | M4 starts after BOTH WS-2 closes AND M3 sprints complete |
-| 4 | M4 — Trust + Learning | #1032 trust-gating, #1216 provenance, #1326 introduce-person, OQ-2 trust-gradient | Combined CXO+PPM session at RECONNECT landing |
-| 5 | M5 — Distribution + Polish | Polish, bugs, distribution plan | Final MVP sprint; PDR-005 BYOC feeds scope |
+### Remaining sprint work (non-gate items move to Production milestone)
+
+Items from these sprints that ARE hard gates are already captured in Beta Blockers above. The rest move to Production milestone and are addressed during the beta period.
+
+| Sprint | Disposition |
+|--------|-------------|
+| RECONNECT WS-2 (architectural migration) | Continues in parallel; connectors work now via PAT/keychain fallback (PM-verified). Full ADR-070 migration is Production-milestone work. #1317 incr. 2 + #1220 moved to Beta Blockers. |
+| M3-Quality / M3-Health / M3-Security | Triage: hard-gate items → Beta Blockers; remainder → Production milestone |
+| M4 — Trust + Learning | Triage: hard-gate items → Beta Blockers; remainder → Production milestone |
+| M5 — Distribution + Polish | Triage: hard-gate items → Beta Blockers; remainder → Production milestone |
 
 ### Milestones
 
 | Milestone | Target | Notes |
 |-----------|--------|-------|
-| **0.9.0 beta** | **August 1, 2026** | After M5 completes |
-| **1.0 production** | **October 30, 2026** | DIST (Desktop distro) + D2 (Release design quality) |
-| Fast-follow | TBD (after Oct 30) | |
-| Dot-release | TBD (after fast-follow) | |
-| Enterprise | TBD | |
+| **0.9.0 beta** | **TBD — gated on MVP milestone complete** | Aug 1 target not achievable; new date set after Beta Blockers sprint is scoped and Lead Dev gives estimate |
+| **1.0 production** | **Oct 30, 2026** | DIST (Desktop distro) + D2 (Release design quality) |
+| Fast-follow | **Nov 19, 2026** | From GitHub milestone |
+| Dot-release | **Feb 2, 2027** | From GitHub milestone |
+| Enterprise | **Jul 4, 2027** | From GitHub milestone |
 
 ---
 
 ## Notes
 
-- **M4 dependency**: M4 starts after **both** RECONNECT WS-2 closes **and** all three M3 followon sprints complete. These conditions may resolve at different times — M4 waits for the later of the two.
-- **D1 historical slot**: D1 ran concurrently with RECONNECT work and closed June 20. It is complete and not a gate for any queued sprint.
-- **Sprint counts**: M3-Quality/Health/Security are "M3 followon sprints" — work that was sorted from M5-parked issues by PA (Jun 27) and PM-approved as a pre-M4 quality gate.
+- **MVP milestone = beta gate**: Beta (0.9.0) ships when the MVP milestone is clear. The Beta Blockers sprint is the mechanism for making that happen — close the sprint, clear the milestone, ship beta.
+- **Non-gate work belongs in Production**: issues that don't block beta move to the Production milestone and are addressed during the beta period. Beta users are informed of known issues.
+- **RECONNECT connector status**: GitHub and Calendar connections work now via PAT/keychain fallback (PM-verified). RECONNECT is an architectural migration (shared PAT → per-user OAuth + real MCP server), not a fix for broken connectors. The two beta-blocking items from RECONNECT (#1317 incr. 2 + #1220) are in the Beta Blockers sprint; the full migration is Production work.
+- **D1 historical slot**: D1 ran concurrently with RECONNECT and closed June 20. Complete, not a gate for anything.
 
 ---
 
-*PPM — 2026-06-28. Updated Jul 3 (WS-2 buildable scope drained, M3-Quality active priority, #1343 CLOSED). Route to PM for confirm.*
+*PPM — 2026-06-28. Updated Jul 3 (WS-2 buildable scope drained, M3-Quality active priority). Updated Jul 4: PM ratified; Beta Blockers sprint added as active priority; MVP milestone = beta gate (explicit); Aug 1 date marked TBD; milestone dates updated from GitHub; RECONNECT connector status corrected; M3/M4/M5 triage disposition noted. Updated Jul 4 (afternoon): #1278 (Fly.io hosting) added to Beta Blockers per PM; MCP distribution cluster (M5) confirmed as Production scope; Beta Blockers sprint created on GitHub project board (Sprint field "Beta Blockers - Hard Gates Only", red, 14 issues); #1258 (LAUNCH-ENV) added per PM; M5 distribution cluster (18 issues) moved to Production milestone. Updated Jul 4 (evening): Arch + CXO beta-scope synthesis processed; #358 (encryption-at-rest) added per PM (paired with #1241 per Arch's flag); #1312 (schema drift) confirmed as hard gate per PM (Arch: cheaper than feared) -- now 16 issues in Beta Blockers sprint. Colleague Test sign-off ritual approved by PM, CXO authorized to implement. MCPB/Skunkworks: PM confirms does not block beta; PA to brief leadership; any Skunkworks-to-production promotion requires full leadership sign-off incl. design.*

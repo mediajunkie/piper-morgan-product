@@ -12,9 +12,12 @@
 |------------|---------|----------|-------|-------------|
 | Pattern Sweep | 6 weeks | ~1 day | Lead Dev + specialized agents | `dev/active/pattern-sweep-2.0-framework.md` |
 | Methodology Audit | Trigger-based (within 2 weeks of sprint gate closure, 8-week max interval) | ~2 hours | CIO | `methodology-audit-policy-updates-2026-03-16.md` |
-| Documentation Audit | **Weekly** | ~1 hour | CoS / Doc Manager | `.github/workflows/weekly-docs-audit.yml` |
+| Documentation Audit (quality/accuracy) | **Weekly** | ~1 hour | Docs | `.github/workflows/weekly-docs-audit.yml` |
+| Documentation Audit (housekeeping/infra) | **Monthly** (1st Mon) | ~1 hour | Docs | `.github/workflows/monthly-housekeeping-audit.yml` |
 | Workstream Review | Weekly | ~1 hour | CoS + PM | N/A (informal) |
 | Role Health Check | 4 weeks | ~30 min | HOST | `docs/internal/operations/role-health-check-methodology.md` |
+
+**Cadence split ratified 2026-07-04** (HOST + CIO input, PM-authorized): weekly = quality/accuracy (briefing freshness, link integrity, README reviews, sprint alignment); monthly = housekeeping/infra (agent infra, dev/active cleanup, metrics, workflow improvement). HOST runs a separate 4-weekly welfare-lens pass on agent infrastructure.
 
 ---
 
@@ -248,7 +251,8 @@ CoS to maintain simple tracking:
 |------------|----------------|----------|--------|
 | Pattern Sweep | Feb 3, 2026 | Mar 17, 2026 | ✅ Complete |
 | Methodology | Mar 15, 2026 | Trigger: next sprint gate | ✅ Complete (trigger-based per CIO policy) |
-| Documentation | Jul 2, 2026 | Jul 9, 2026 | ✅ Complete (#1328; BRIEFING-CURRENT-STATE refreshed to Jul 1; ADR README count corrected 61→74; 20 deprecated files archived from dev/active/; 0 broken ADR links; 0 stale issues; port 8080 template wording fixed; #1343/#1344 no-milestone flagged [PM-gated security]; roadmap RECONNECT drift flagged [PPM-owned]). Prior: Jun 2 (#1140); Jun 29 (#1313 superseded). |
+| Documentation (weekly — quality/accuracy) | Jul 2, 2026 | Jul 9, 2026 | ✅ Complete (#1328; BRIEFING-CURRENT-STATE refreshed to Jul 1; ADR README count corrected 61→74; 0 broken ADR links; 0 stale issues; roadmap RECONNECT drift flagged). Prior: Jun 2 (#1140); Jun 29 (#1313 superseded). |
+| Documentation (monthly — housekeeping/infra) | Jul 2, 2026 | Aug 3, 2026 | ✅ Complete (absorbed into #1341 quarterly sweep; scope split ratified 2026-07-04; first standalone monthly issue will auto-generate Aug 4, 2026). Prior quarterly sweeps: #1341 (Jul 2). |
 | Role Health | May 10, 2026 (Apr 16 + May 10 audits) | Jun 7, 2026 | ✅ Complete (#978) |
 
 **Note**: Role Health Check methodology formalized Jan 31, 2026. First formal audit Feb 17, 2026.

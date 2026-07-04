@@ -64,6 +64,6 @@ If the documentation is part of the system, the documentation needs to keep bein
 
 ---
 
-*More on Building Piper Morgan soon — including the methodology of how concrete worked examples make architectural abstractions legible.*
+*Next on Building Piper Morgan: "Mechanism Beats Vigilance" — when a failure keeps recurring after everyone's been careful, the fix usually isn't more care. It's a wall.*
 
 *When does writing about a system change the system? When have you noticed your own observations becoming inputs to the work they were observing?*

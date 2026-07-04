@@ -64,6 +64,24 @@ Common synonyms in memo headers (all route to the same mailbox):
 | `pm` | 2026-04-29 | Was a separate PM mailbox; messages migrated to `mailboxes/xian (ceo)/read/`; directory deleted |
 | `ceo` | 2026-04-29 | Briefly created same day in error; reconciled with canonical `xian (ceo)` |
 
+## Cross-project agents (Janus, Klatch, Dispatch) — NOT reached via `mailboxes/`
+
+**Do not create or write to a `mailboxes/{agent}/` directory for a cross-project agent** (Janus, Klatch's agents, Dispatch). This mailbox system is Piper-Morgan-local; cross-project agents live in their own repos and don't poll this one. A `mailboxes/janus/` directory with no prior history is a sign someone (CIO, 2026-07-04) made this exact mistake — it's a dead letter, not a delayed delivery.
+
+**Verified actual locations** (CIO, 2026-07-04 — confirmed by reading each repo directly, not assumed):
+
+| Agent / project | Actual mail location | Convention |
+|---|---|---|
+| Janus (Design in Product) | `~/Development/designinproduct/docs/mail/` | Flat directory; `{from}-to-{to}-{topic}-{date}.md`; committed to `main` on push (same discipline as this repo) |
+| Klatch agents (Daedalus, Calliope, etc.) | `~/Development/klatch/docs/mail/` | Same `docs/mail/` pattern as DinP |
+| Dispatch | `~/Development/dispatch/mail/` | Flat directory; `memo-{from}-to-{to}-{topic}-{date}.md`; see `~/Development/dispatch/PROTOCOLS.md` |
+
+**Prefer routing through Exec rather than writing directly** (PM directive, 2026-07-04): **Exec is this project's primary point of contact for Janus.** Exec already has an established direct relationship (see `mailboxes/exec/read/` for prior Janus↔Exec history going back to April). Send Janus-bound content to `exec` and let Exec relay, rather than reaching into a sibling repo yourself — this avoids exactly the convention-drift problem this section exists to fix. (Direct writes to sibling repos aren't forbidden if the situation calls for it, but Exec-as-relay is the default.)
+
+**Known gap** (#1358, filed 2026-07-04): a durable cross-project `cross-project-mail-routing.md` reference doc was promised back in an April 2026 escalation (Exec→Architect) but never created — this table is a stopgap, not that doc.
+
+These are external repos on the local filesystem, not part of this repo — use `git -C <path>` for any git operations there, and follow that repo's own commit conventions (verify by reading recent commits in `docs/mail/`, don't assume Piper Morgan's mail-send.sh applies). If a cross-project agent's location changes, re-verify by reading their repo rather than trusting this table blindly — it's a snapshot, not a live registry.
+
 ---
 
-*Last updated: 2026-04-29 (CEO mailbox clarification + reconcile pm/ceo confusion + reflect Apr 22–26 migration wave completion).*
+*Last updated: 2026-07-04 (cross-project agent mailbox locations added, verified against source; supersedes the "Jul 4 12:20" CIO fire's discovery that `mailboxes/janus/` was a dead letter). Prior update: 2026-04-29 (CEO mailbox clarification + reconcile pm/ceo confusion + reflect Apr 22–26 migration wave completion).*

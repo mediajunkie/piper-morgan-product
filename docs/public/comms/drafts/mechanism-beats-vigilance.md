@@ -1,8 +1,16 @@
+---
+image: 
+alt: 
+caption: 
+---
+
 # Mechanism Beats Vigilance
+
+*May 28, 2026*
 
 Here's a thing I keep relearning, and I suspect I'm not alone. When you find yourself reminding people — or yourself — to *remember to do X*, you've already lost. Not yet, maybe. But you've signed up for a slow leak. The reminder works most of the time, which is exactly what makes it dangerous. It fails in the one gap where you happened not to be paying attention, and the gap is the whole problem.
 
-We hit a clean version of this last week, in the part of our project that's least glamorous and most instructive — the plumbing that keeps a cohort of AI agents (we call them by their roles: the developer, the architect, the chief of staff) from stepping on each other's work. The lesson that fell out of it is bigger than the plumbing. So let me start with the principle and use the plumbing to show it.
+We hit a clean version of this last week, in the part of our project that's least glamorous and most instructive — the plumbing that keeps a team of AI agents (we call them by their roles: the developer, the architect, the chief of staff) from stepping on each other's work. The lesson that fell out of it is bigger than the plumbing. So let me start with the principle and use the plumbing to show it.
 
 # The principle
 
@@ -22,7 +30,7 @@ Read those two sentences again. They are the same sentence. *Pause when busy.* T
 
 It's wrong. The two rules need *opposite* hardening, and the reason is the only thing that actually matters when you're deciding how to harden a rule — not how it reads, but *when and how it breaks*.
 
-## Why rule one needs a hard pause
+# Why rule one needs a hard pause
 
 Our architect (one of the agents) caught the failure mode for rule one directly. The cron is supposed to fire only when the agent is idle — and the runtime that fires it does try to respect that. But "idle" turns out to be a treacherous word. During a multi-step task, an agent is briefly idle *between every tool call.* Read a file — idle for a beat — write a file — idle for a beat. The cron's idea of "wait until idle" sees those beats as fair game, and a fire slips into the gap between two steps of work the agent is already doing. Now there are two work-loops running in the same session, overlapping, clobbering each other.
 
@@ -30,7 +38,7 @@ The architect's evidence was almost too on-the-nose. The agent ran a command to 
 
 That's the tell. When the failure is that fast — when it lives in the sub-second gaps between an agent's own actions — no amount of *remember to be careful* reaches it, because the carefulness itself has gaps. The fix has to be a hard, positive mechanism: delete the cron as the literal *first* action, before anything else, before even looking around. Make the pause unconditional and front-loaded so there's no window for the fire to sneak into. Rule one tightens.
 
-## Why rule two can relax
+# Why rule two can relax
 
 Now rule two — pause when the human is in conversation. Same shape, *pause when busy.* So you'd tighten it the same way.
 
@@ -50,12 +58,12 @@ First half: when you catch yourself enforcing a *remember to do X*, treat that a
 
 Second half — the sharp one: **promote per failure-mode, not per surface-rule.** Don't harden rules by how they read. Two rules can look like twins and need opposite fixes. Two rules that look unrelated can share a single mechanism. The unit of analysis is the *failure* — its timing, its gap-size, whether an existing structure already covers it — not the sentence that describes the rule.
 
-This is why "we'll just be more careful" is almost always the wrong answer, and not for the reason people usually give. It's not that people are careless. It's that *more careful* doesn't change the structure, so the gap that produced the failure is still there, waiting for the next moment your attention is elsewhere. The agents in our cohort are tireless and don't get bored, and they *still* hit this — which tells me it was never really about attention spans. It was about gaps. Mechanisms close gaps. Vigilance just promises to stand in them.
+This is why "we'll just be more careful" is almost always the wrong answer, and not for the reason people usually give. It's not that people are careless. It's that *more careful* doesn't change the structure, so the gap that produced the failure is still there, waiting for the next moment your attention is elsewhere. The agents on our team are tireless and don't get bored, and they *still* hit this — which tells me it was never really about attention spans. It was about gaps. Mechanisms close gaps. Vigilance just promises to stand in them.
 
 [PM VOICE-PASS: there's room here for one of your "I've seen this before" beats — pre-AI, human-team version of the same lesson (the runbook step everyone skips, the checklist item that becomes a mechanism). Drop in if it earns its place.]
 
 ---
 
-*Next: when a failure keeps happening after everyone's been careful, the fix usually isn't more care — it's a wall. And the case for the wall tends to write itself. "The Architecture That Wrote Its Own Case," tomorrow.*
+*Next on Building Piper Morgan: "The Architecture That Wrote Its Own Case" — when a failure keeps happening after everyone's been careful, the fix usually isn't more care. It's a wall. And the case for the wall tends to write itself.*
 
 *Where in your own work are you paying a vigilance tax — some "remember to do X" you enforce by attention — that's really a mechanism you haven't built yet? And when you go to build it, are you fixing the rule, or the way it actually breaks?*

@@ -129,26 +129,11 @@ jobs:
 
               **Target**: <10 broken internal links in priority files
 
-              ### 🔧 Infrastructure & Pattern Verification
+              ### 📁 Omnibus Coverage Check
 
-              - [ ] Check app.py line count: \`wc -l web/app.py\` (trigger refactor at 1000 lines, currently ~374)
-              - [ ] Verify port 8080 refs are anti-examples only: \`grep -r "8080" docs/ --include="*.md"\` (expected: 9 matches, all in "not 8080" / "legacy port" context — any NEW match that asserts 8080 as correct is a finding; matches in ports.md, architecture.md, documentation-sync-system.md, port-configuration.md are expected anti-examples)
-              - [ ] Check for mock fallbacks: \`grep -r "mock_\\|fallback" services/ --include="*.py"\`
-              - [ ] Verify AsyncSessionFactory pattern: \`grep -r "DatabasePool" services/ --include="*.py"\` (should be empty)
-              - [ ] Check cursor rules exist: \`ls -la .cursor/rules/\` (5 rule files expected)
-              - [ ] Verify pattern count matches: \`ls -1 docs/internal/architecture/current/patterns/pattern-*.md | wc -l\` should match README
-              - [ ] Verify ADR naming convention: \`ls docs/internal/architecture/current/adrs/adr-*.md\` (all lowercase)
-
-              ### 📁 Session Log Management & Omnibus Synthesis
-
-              - [ ] Check for completed session logs in \`dev/YYYY/MM/DD/\` structure
-              - [ ] **Synthesis Identification** (evolving process - handle carefully):
-                - [ ] Review recent session logs for synthesis candidates
-                - [ ] Check if any sessions qualify for omnibus consolidation
-                - [ ] Identify cross-session patterns worth preserving
-                - [ ] Note: Synthesis practices still evolving - defer complex decisions to PM
-              - [ ] Verify no stranded session logs outside \`dev/\` directory structure
-              - [ ] Review \`docs/omnibus-logs/\` for completeness and organization
+              - [ ] Review `docs/omnibus-logs/` — is there an omnibus for each day with 2+ agent sessions in the past week?
+              - [ ] Verify no stranded session logs outside `dev/` directory structure (spot-check `dev/active/`)
+              - [ ] Note: Infrastructure verification, dev/active cleanup, and metrics are in the **Monthly Housekeeping Audit** (FLY-AUDIT Monthly — separate issue, first Monday of month)
 
               ### 🎯 Sprint & Roadmap Alignment
 
@@ -227,22 +212,6 @@ jobs:
                 - [ ] Ensure no deprecated workflow names (e.g., MorningStandupWorkflow retired via #1289)
                 - [ ] Ensure content is accurate and doesn't reference work-in-progress as shipped
 
-              ### 📈 Metrics Collection (Optional)
-
-              - [ ] Document count: \`find docs/ -name "*.md" | wc -l\`
-              - [ ] Archive size: \`du -sh docs/archive/\`
-              - [ ] Active docs size: \`du -sh docs/ --exclude=archive\`
-              - [ ] Code line count: \`find . -name "*.py" -type f -exec wc -l {} + | tail -1\`
-              - [ ] Test coverage if available: \`pytest --cov\`
-
-              ### 🔄 Workflow Improvement (Meta/Recursive)
-
-              - [ ] Review this week's sweep for process improvements
-              - [ ] Check if PM provided feedback on sweep workflow
-              - [ ] Update \`.github/workflows/weekly-docs-audit.yml\` with improvements if needed
-              - [ ] Document improvement ideas for next iteration
-              - [ ] Note: OK if no updates needed this week
-
               ---
 
               **Assigned to**: @mediajunkie
@@ -307,8 +276,7 @@ jobs:
               |---------|--------|----------------|
               | Briefing Freshness | ✅/⏸️/❌ | [link or reason] |
               | Link Integrity Check | ✅/⏸️/❌ | [link or reason] |
-              | Infrastructure Verification | ✅/⏸️/❌ | [link or reason] |
-              | Session Log Management | ✅/⏸️/❌ | [link or reason] |
+              | Omnibus Coverage Check | ✅/⏸️/❌ | [link or reason] |
               | Sprint & Roadmap Alignment | ✅/⏸️/❌ | [link or reason] |
               | GitHub Issues Sync | ✅/⏸️/❌ | [link or reason] |
               | Pattern & Knowledge Capture | ✅/⏸️/❌ | [link or reason] |

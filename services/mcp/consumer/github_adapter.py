@@ -321,10 +321,14 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         """Parse a ``search_repositories`` JSON payload → normalized repo dicts (truncated to limit).
 
         github-mcp-server returns ``{total_count, incomplete_results, items[]}`` (verified live);
-        tolerate a bare list too. Each item → ``{id, name, full_name, description}`` (the
-        ``GitHubRepositoryInfo`` shape), with a null/missing description normalized to ``""``
-        (mirroring the native dropdown). Empty/unparseable payload → ``[]`` (the empty-list,
-        not a degrade — the binding rail owns the honest-degrade decision)."""
+        tolerate a bare list too. Each item → ``{id, name, full_name, description, created_at,
+        archived}`` (the ``GitHubRepositoryInfo`` shape + #1314's auto-default inputs), with a
+        null/missing description normalized to ``""`` (mirroring the native dropdown).
+        ``created_at``/``archived`` (standard GitHub repo fields) default to ``None``/``False``
+        when absent so #1314's "first/oldest active" selection degrades to a stable, defined
+        order rather than raising on an unexpected payload shape. Empty/unparseable payload →
+        ``[]`` (the empty-list, not a degrade — the binding rail owns the honest-degrade
+        decision)."""
         if not payload:
             return []
         try:
@@ -350,6 +354,8 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                     "name": repo.get("name", ""),
                     "full_name": repo.get("full_name", ""),
                     "description": repo.get("description") or "",
+                    "created_at": repo.get("created_at"),
+                    "archived": bool(repo.get("archived", False)),
                 }
             )
         return out
