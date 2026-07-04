@@ -198,3 +198,34 @@ Context compacted again (this session is long). Resumed from summary.
 
 **Rate limit status**: waiting for reset before M4 query.
 
+
+---
+
+### Fire 2 — 13:20–13:35 PDT (cron; user-invoked duty-cycle prompt mid-session)
+
+**Cron rotation**: deleted `5dba71c2`, created `c89f435f` (same schedule `52 6,9,12,15,18,21 * * *`), standing items refreshed to reflect Beta Blockers sprint reality instead of stale Fire-1 items.
+
+**INCIDENT — found and fixed a self-caused content-deletion bug**: PM flagged "mail from Lead Dev" to clear up directly. Investigation revealed my earlier `c27dfaced` commit (processing the CIO memo) had built its git tree across multiple separate tool calls; by commit-tree time, `origin/main` had advanced (other agents pushed in between), so the commit's parent was newer than its tree — silently deleting everything that changed in the gap:
+- CXO's entire session log (`dev/2026/07/04/2026-07-04-1246-cxo-code-log.md`, 58 lines) — deleted
+- 2 lines from shared `decisions.log` (Arch's RECONNECT connector-alignment ruling entry) — deleted
+- CXO's already-completed triage of 2 beta-scope memos — wrongly rewound from `read/` back to `inbox/`
+- CXO's sent copy of their 2026-07-04 UX-lens memo — deleted
+- **PPM's own inbox copy of that same UX-lens memo — deleted, unread** (this was new mail I hadn't processed yet, not a stale duplicate)
+
+Arch's own session log was also touched but had already self-healed via a subsequent commit (same bug, opposite direction, lucky cancellation — not something to rely on).
+
+**Fix**: full restoration via commit `c1f13b9cc`, built as ONE atomic bash invocation (fetch → read-tree → all 6 fixes → write-tree → commit-tree → push, no gap). Verified diff showed exactly the 6 intended restorations, nothing else. All content confirmed byte-identical to pre-damage state.
+
+**Adopted going forward**: every temp-index mailbox commit now runs as a single uninterrupted bash call with a fresh `git fetch` immediately preceding `read-tree` — eliminates the race window regardless of root cause. Documented in the cron prompt's standing items so future fires carry this discipline forward.
+
+**Lead Dev reply** (commit `10fcfa147`): acknowledged their #1220 self-correction (architecture — self-hosted `github-mcp-server` + per-user OAuth via Piper's GitHub App — was already ruled 6/27; only the ops question of which machine remains open), confirmed #1220 stays in Beta Blockers with narrower scope, gave current triage status (M5 done, M4 next, Arch/CXO synthesis just arrived) so Lead Dev doesn't treat the 14-issue list as final, and flagged the git race-condition pattern directly (their reconciliation memo had reappeared in my inbox 3x today — same underlying bug).
+
+**Inbox drained** (commit `62aa04ff5`) — 3 new memos processed:
+1. **Arch beta-scope synthesis** — confirms connector beta-requirement is #1317inc.2 + #1220 (a SPRINT, sitting on shipped foundations: #1232 contract, #1229 store, #1344's OAuth-callback pattern) — explicitly NOT the full 8-connector RECONNECT migration (month-scale, post-beta). 12-gate hard-gate list confirmed architecturally sound, ranks #1304 (CI) + #1241 (multi-tenancy) most non-negotiable. Three flags: (1) #1283 was M5-deferred, now a hard gate — a resequence Arch flags since they authored it (already actioned — #1283 is in the 14-item Beta Blockers sprint); (2) #1241 + #358 (encryption-at-rest) should be a DELIBERATE joint call, not independent — #358 dropped to during-beta without an explicit paired decision; (3) #1312 (schema drift) is cheaper than the 111-diff count suggests — the scary part is a stale duplicate, real fix is tractable, recommend confirming as gate (not close-call).
+2. **CXO UX lens** — Points 3+5 (no confabulation, honest boundary) pass and are the core trust promise to build beta around. #1241 confirmed hard gate (disproportionate trust damage if breached). Point 2 (GitHub works for external users) conditional on #1317inc.2. **New gap flagged**: Point 1 (MCPB install UX) has zero scope owner — CXO has no visibility into M5/MCPB and wants to be involved in the install-flow spec before it ships; first-moment-of-trust risk. **New proposal**: Colleague Test as a literal human-run checklist CXO executes before PM signs off on beta (not just a scope document). Agrees Aug 1 is unachievable at this scope.
+3. **Arch-to-Lead 3-layer connector-alignment ruling** (cc'd) — separates INTERFACE (#1232 contract, no exceptions) / CREDENTIAL BACKEND (keychain vs binding-table vs MCP-owned — implementation detail, not a contract variant) / JTBD VARIATION (the only place real exceptions live; Slack's auth granularity is the one candidate, still expressible within the contract). Rules Slack/Notion migrate the interface, keeps keychain as a legitimate transitional backend, GitBook consolidates to `services/mcp/consumer/`, spatial-tree duplication needs a dedicated Verify-First pass. Background context — reinforces beta connector slice is low-risk.
+
+**PA still silent** — no response since ~12:15/12:45 PT beta-scope memos, despite Exec nudge sent ~16:00 PT. 2 of 3 reviews in hand and converging; flagging to PM for a call on whether to proceed without PA or nudge again.
+
+**Status**: Arch + CXO synthesis complete, presented to PM. M4 triage still pending (next sprint after synthesis discussion). #358/#1241 pairing question raised to PM. #1312 recommend reclassify from close-call to confirmed-gate (cheap fix per Arch). #1283 resequence confirmed already-correct.
+
