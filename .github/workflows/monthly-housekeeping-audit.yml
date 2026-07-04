@@ -1,0 +1,229 @@
+name: Monthly Housekeeping Audit
+
+on:
+  schedule:
+    # Runs first Monday of each month at 9:00 AM Pacific
+    # (0 16 1-7 * 1 = UTC 16:00 on day 1-7 when it's Monday)
+    - cron: "0 16 1-7 * 1"
+  workflow_dispatch: # Allows manual trigger
+
+permissions:
+  issues: write
+  contents: read
+
+# Housekeeping/infrastructure cadence (monthly).
+# Quality/accuracy checks are in weekly-docs-audit.yml.
+# Split ratified 2026-07-04: HOST + CIO input, PM-authorized.
+
+jobs:
+  create-housekeeping-issue:
+    runs-on: ubuntu-latest
+    name: Create Monthly Housekeeping Audit Issue
+
+    steps:
+      - name: Check for existing housekeeping issue
+        id: check-existing
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const now = new Date();
+            const yearMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            const title = `FLY-AUDIT: Monthly Housekeeping - ${yearMonth}`;
+
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'documentation,maintenance,monthly-audit'
+            });
+
+            const existingIssue = issues.data.find(issue =>
+              issue.title.includes('Monthly Housekeeping') &&
+              issue.title.includes(yearMonth)
+            );
+
+            if (existingIssue) {
+              console.log(`Monthly housekeeping issue already exists: #${existingIssue.number}`);
+              return existingIssue.number;
+            }
+            return null;
+
+      - name: Create monthly housekeeping audit issue
+        if: steps.check-existing.outputs.result == 'null'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const today = new Date().toISOString().split('T')[0];
+            const now = new Date();
+            const yearMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `FLY-AUDIT: Monthly Housekeeping - ${yearMonth}`,
+              body: `## Monthly Housekeeping Audit Checklist
+
+              **Generated**: ${today}
+              **Cadence**: Monthly (housekeeping/infrastructure)
+              **Companion**: Weekly quality/accuracy checks are in the separate FLY-AUDIT Weekly Docs Audit issue.
+
+              > **Scope**: This audit covers infrastructure accuracy, agent-infra health, artifact cleanup, and metrics.
+              > It does NOT cover quality/accuracy (briefing freshness, link integrity, README reviews) — those are weekly.
+
+              ---
+
+              ### 🤖 Agent Infrastructure (NEW — per HOST/CIO 2026-07-04 ratification)
+
+              Skills, hooks, and mailbox delivery are living procedures. Monthly correctness sweep:
+
+              - [ ] **Skills audit** (`ls .claude/skills/ | wc -l`): Count skills; for each, verify the referenced files still exist at stated paths.
+                ```bash
+                # Spot-check: does each skill reference real paths?
+                for skill in .claude/skills/*/; do
+                  echo "=== $(basename $skill) ==="; grep -h "^\`\`\`bash" -A 1 "$skill"*.md 2>/dev/null | head -5
+                done
+                ```
+              - [ ] **Hooks audit** (`ls .claude/hooks/`): Verify each hook file exists AND is executable. A hook that doesn't fire is broken.
+                ```bash
+                for hook in .claude/hooks/*.sh; do
+                  [ -x "$hook" ] && echo "OK: $hook" || echo "NOT EXECUTABLE: $hook"
+                done
+                ```
+              - [ ] **Mailbox delivery check**: Verify `mailboxes/DIRECTORY.md` — each slug maps to a real directory under `mailboxes/`. Stale slugs cause silent mis-routing.
+                ```bash
+                grep -oP '^- \*\*[^*]+\*\*.*\`mailboxes/[^/\`]+' mailboxes/DIRECTORY.md | \
+                  while read line; do
+                    dir=$(echo "$line" | grep -oP 'mailboxes/[^\`]+')
+                    [ -d "$dir" ] && echo "OK: $dir" || echo "MISSING: $dir"
+                  done
+                ```
+              - [ ] **DIRECTORY.md ↔ ROSTER.md freshness**: Verify canonical slugs in `mailboxes/DIRECTORY.md` match current role slugs in `docs/briefing/ROSTER.md`. A slug change in ROSTER.md not echoed in DIRECTORY.md = silent mis-routing.
+                ```bash
+                echo "ROSTER slugs:"; grep -oP '`[a-z-]+`' docs/briefing/ROSTER.md | sort -u
+                echo "DIRECTORY slugs:"; grep -oP '`[a-z-]+`' mailboxes/DIRECTORY.md | sort -u
+                ```
+              - [ ] Document any gaps found; file issues for broken hooks or mis-mapped slugs.
+
+              ---
+
+              ### 🔧 Infrastructure & Pattern Verification
+
+              - [ ] Check app.py line count: \`wc -l web/app.py\` (trigger refactor discussion at 1000 lines)
+              - [ ] Verify port 8080 refs are anti-examples only:
+                \`\`\`bash
+                grep -r "8080" docs/ --include="*.md"
+                \`\`\`
+                Expected: 9 matches, all in "not 8080" / "legacy port" context. Any NEW match asserting 8080 as correct is a finding.
+              - [ ] Check for mock fallbacks: \`grep -r "mock_\\|fallback" services/ --include="*.py"\`
+              - [ ] Verify AsyncSessionFactory pattern: \`grep -r "DatabasePool" services/ --include="*.py"\` (should be empty)
+              - [ ] Check cursor rules exist: \`ls -la .cursor/rules/\` (5 rule files expected)
+              - [ ] Verify pattern count matches README:
+                \`\`\`bash
+                ls -1 docs/internal/architecture/current/patterns/pattern-*.md | wc -l
+                grep -c "^| pattern-" docs/internal/architecture/current/patterns/README.md
+                \`\`\`
+              - [ ] Verify ADR naming convention: \`ls docs/internal/architecture/current/adrs/adr-*.md\` (all lowercase, no gaps)
+
+              ---
+
+              ### 📁 dev/active/ Cleanup
+
+              Monthly housekeeping for the working directory. Use the `cleanup-dev-active` skill.
+
+              - [ ] Count files: \`ls dev/active/ | wc -l\` (target: <15)
+              - [ ] Run cleanup-dev-active skill (omnibus-coverage guard first — don't archive cycle logs without their omnibus)
+              - [ ] Archive completed forensic artifacts to dated dirs
+              - [ ] Move forward-looking drafts to `docs/public/comms/drafts/` if stranded here
+              - [ ] Log deleted/archived paths in this issue (audit trail)
+              - [ ] After cleanup: \`ls dev/active/ | wc -l\` (verify reduction)
+
+              **Bounded cleanup reminder (per HOST welfare spec — pending full spec from HOST)**:
+              - Archive: forensic-only artifacts (gameplans, audit findings, sent-memo drafts, completed workstream memos) after omnibus covers their date
+              - Keep: continuously-updated trackers (`*-standing-items.md`, `*-carry-forward.md`, active workspace dirs)
+              - Never delete: session logs, carry-forwards, anything that might be the only copy of work
+
+              ---
+
+              ### 📁 Session Log Archive Check
+
+              - [ ] Verify all session logs older than 7 days are in `dev/YYYY/MM/DD/` (not stranded in `dev/active/`)
+              - [ ] Verify omnibus coverage: every day with 2+ role sessions has an omnibus in `docs/omnibus-logs/`
+                \`\`\`bash
+                ls docs/omnibus-logs/ | tail -20
+                \`\`\`
+              - [ ] Flag any date gap > 2 days in omnibus coverage (report to Docs if gap found — may indicate a missed synthesis)
+
+              ---
+
+              ### 📈 Metrics Snapshot
+
+              - [ ] Document count: \`find docs/ -name "*.md" | wc -l\`
+              - [ ] Pattern file count: \`ls -1 docs/internal/architecture/current/patterns/pattern-*.md | wc -l\`
+              - [ ] ADR count: \`ls -1 docs/internal/architecture/current/adrs/adr-*.md | wc -l\`
+              - [ ] Skills count: \`ls .claude/skills/ | wc -l\`
+              - [ ] Active session logs: \`ls dev/active/*log*.md 2>/dev/null | wc -l\`
+              - [ ] Test count (if available): \`python -m pytest tests/ --collect-only -q 2>/dev/null | tail -3\`
+              - [ ] Record metrics in closing comment for trend tracking
+
+              ---
+
+              ### 🔄 Workflow Improvement (Meta)
+
+              - [ ] Review this month's weekly audits for recurring findings — if something appears 3+ times, file a structural fix issue
+              - [ ] Review \`.github/workflows/weekly-docs-audit.yml\` for template drift
+              - [ ] Review \`.github/workflows/monthly-housekeeping-audit.yml\` (this file) for scope drift
+              - [ ] Any new agent infra surfaces (new skills, hooks, mailbox roles) not yet in the monthly checklist above?
+              - [ ] Update \`docs/internal/operations/staggered-audit-calendar-2026.md\` tracking dashboard
+
+              ---
+
+              **Assigned to**: @mediajunkie
+              **Due**: End of first week of month
+
+              ### ✅ Closing This Issue
+
+              **Use the \`close-issue-properly\` skill when closing.**
+
+              Before closing:
+              1. Update checkboxes in this description
+              2. Add closing comment with evidence + metrics snapshot
+              3. Complete Completion Matrix below
+              4. **Update staggered audit calendar** (\`docs/internal/operations/staggered-audit-calendar-2026.md\`):
+                 - Update "Tracking Dashboard" — Monthly Housekeeping row
+                 - Set "Last Completed" to today's date
+                 - Calculate "Next Due" (~4 weeks out)
+
+              ### 📋 Completion Matrix (REQUIRED)
+
+              | Section | Status | Evidence/Notes |
+              |---------|--------|----------------|
+              | Agent Infrastructure | ✅/⏸️/❌ | |
+              | DIRECTORY↔ROSTER freshness | ✅/⏸️/❌ | |
+              | Infrastructure & Pattern Verification | ✅/⏸️/❌ | |
+              | dev/active/ Cleanup | ✅/⏸️/❌ | |
+              | Session Log Archive Check | ✅/⏸️/❌ | |
+              | Metrics Snapshot | ✅/⏸️/❌ | |
+              | Workflow Improvement | ✅/⏸️/❌ | |
+
+              **Legend**: ✅ = Completed with evidence · ⏸️ = Deferred WITH PM APPROVAL · ❌ = Blocked (requires blocker link)
+
+              ### References
+              - [CLAUDE.md Project Instructions](../CLAUDE.md)
+              - [docs/internal/operations/staggered-audit-calendar-2026.md](../docs/internal/operations/staggered-audit-calendar-2026.md)
+              - [mailboxes/DIRECTORY.md](../mailboxes/DIRECTORY.md)
+              - [docs/briefing/ROSTER.md](../docs/briefing/ROSTER.md)
+              - [cleanup-dev-active skill](../.claude/skills/cleanup-dev-active/)`,
+              labels: ['documentation', 'maintenance', 'monthly-audit', 'fly-audit'],
+              assignees: ['mediajunkie']
+            });
+
+            console.log(`Created monthly housekeeping audit issue #${issue.data.number}`);
+            return issue.data.number;
+
+      - name: Post completion summary
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log('✅ Monthly housekeeping audit workflow completed successfully');
+            console.log('Check GitHub issues for the FLY-AUDIT Monthly Housekeeping checklist');

@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-04 10:45 PT | ppm | cc-memo-ppm-to-cio-cc-docs-pm-briefing-architecture-refactor-2026-07-04.md | [CC] BRIEFING-CURRENT-STATE architecture refactor — PM-approved proposal |
+| 2026-07-04 | cio | memo-cio-to-docs-cc-host-pa-pm-audit-refactor-input-2026-07-04.md | Re: Docs audit template refactor — CIO input (overdue, sorry for the delay) |
 | 2026-07-03 01:00 PT | host | memo-host-to-docs-cc-cio-pa-pm-audit-refactor-input-2026-07-03.md | Re: Docs audit template refactor — HOST input (cadence, distributed-cleanup, sc… |
 | 2026-06-28 12:30 PT | exec | memo-exec-to-cohort-cc-pm-run-lean-throttle-2026-06-28.md | RUN LEAN through Wed Jul-1 9pm — reduce your cron cadence (PM-approved quota th… |
 | 2026-06-28 | pm | memo-pm-to-docs-triad-model-crosspost-urls-2026-06-28.md | Cross-post URLs for "The Triad Model" — update editorial calendar CSV |
