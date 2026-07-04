@@ -1,6 +1,26 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-04 ~13:45 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
+**Updated**: 2026-07-04 ~16:35 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
+
+## ▶ CURRENT (7/4 ~16:35) — Notion ported onto #1232 (real, tested, live); connector status across all 8 now clear
+
+**Answered PM's "is calendar done" + "connector work possible on the other six" directly, with evidence, not assumption:**
+- **Calendar: NOT done.** Test debt closed (36/36), but zero real bindings ever, no server anywhere — the actual #1232 port hasn't started. Feature works fine for users today via the old keychain/direct-API path; not a beta blocker per Arch.
+- **cicd/devenvironment/gitbook/linear: NOT real, wanted features today** — no UI, no routes, no roadmap mention, zero live callers (confirmed this morning), only named in the 2 broad umbrella issues. Design/planning work isn't really actionable here — the prerequisite is a product decision (does Piper want these yet), not mine to presume.
+- **Slack/Notion: real, live features, Arch already ruled concretely on both.** Flagged the tension (full migration is explicitly post-beta per Arch) before starting — **PM said "go for it."**
+
+**Built the Notion migration** (Arch's "smaller" one). New `services/mcp/consumer/notion_adapter.py` — a `NotionMCPAdapter` subclass of the legacy one (22 data-operation methods inherited free, zero duplication), adding the 4 #1232 contract methods (`connect`/`status`/`resolve`/`degrade`) backed by the ALREADY-EXISTING per-user keychain lookup in `NotionConfigService` (Arch's Layer-2 ruling: keychain is a legitimate backend, not a contract exception). **Deliberately did NOT rename/touch the legacy `connect(integration_token)` method** — found ~15 live call sites depend on it (way bigger than Arch's "mostly the signature" framing implied once actually checked — flagged this precisely, didn't just plow ahead) — including `services/intelligence/spatial/notion_spatial.py`, the SAME live-duplicate-tree Arch's ruling said to defer, not touch speculatively. Followed the GitBook precedent from Arch's OWN ruling instead: new canonical adapter in `services/mcp/consumer/`, legacy stays in `services/integrations/mcp/` untouched, retirement is separate future work.
+
+**Fully verified, not just written**: 11 new unit tests green; m-41 AST-guard auto-recognizes it (glob-based, zero test-file changes) — reran, 6/6 green; full existing Notion suite (182 tests, features+integration) — 182 passed, 0 regressions, proving the untouched legacy path stayed untouched. Committed `5050ed024`, pushed clean.
+
+**Where the 8 connectors stand now, precisely:**
+1. **GitHub** — done at the code level (contract + tests + coverage); deploy-to-production is the one real gap, PM/PPM-owned sprint territory.
+2. **Calendar** — test debt closed; full port not started; not urgent (not a beta blocker).
+3. **Notion** — contract methods now real and tested; legacy 22 methods untouched; retiring the legacy module is separate future work.
+4. **Slack** — Arch ruled the shape (same as Notion: migrate interface, keep keychain); not yet built — natural next candidate if more of this work is wanted.
+5–8. **cicd/devenvironment/gitbook/linear** — not real features today; needs a product decision before any design/build work makes sense, not an architecture one.
+
+**Next natural candidate if PM wants to keep going**: Slack's migration, same shape as Notion's — but Slack's single-connector-owner identity mode (#1201) adds one more real wrinkle Notion didn't have (Arch's Layer-3 ruling: expressed within the contract, not a fork) — worth reading #1201's own spec closely before starting, not assuming it's identical to Notion's.
 
 ## ▶ CURRENT (7/4 ~13:45) — Arch RULED; Calendar test debt (#1354+#1355) CLOSED; PPM still mid-triage on Beta Blockers
 
