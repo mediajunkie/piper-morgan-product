@@ -80,6 +80,6 @@ Both of these are pattern-recognition disciplines. Neither happens automatically
 
 ---
 
-*Next on Building Piper Morgan: "The Cohort Catches the Cycle" — a rollout across most of the team, then a reversal, and the architecture writing its own case through four live clashes.*
+*Next on Building Piper Morgan: "The Team Catches the Cycle" — a rollout across most of the team, then a reversal, and the architecture writing its own case through four live clashes.*
 
 *When have you retired a practice that was working? How did you tell the moment of teaching-complete from the moment of momentum? What survived the retirement, and what got cleaned up with it?*

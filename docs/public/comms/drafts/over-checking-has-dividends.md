@@ -1,4 +1,12 @@
+---
+image: 
+alt: 
+caption: 
+---
+
 # Over-Checking Has Dividends
+
+*May 30, 2026*
 
 Most of what I know about process discipline points one direction: don't over-do it. Ship, don't gold-plate. Good enough is good enough. Nine times out of ten, the instinct that needs correcting is the one that wants to polish the corner nobody will ever look at, to add the abstraction layer for the use case that won't arrive, to keep checking a thing that's already fine. We're well-trained to fear over-checking. It looks like wasted effort, and usually it is.
 
@@ -60,6 +68,6 @@ But it's there. The corner you didn't cut is real value, banked quietly. Over-ch
 
 ---
 
-*Next: what happens when one of your own agents asserts a colleague did work that was never done — and why catching it honestly matters more as systems get more autonomous. "Confabulating a Peer's Unfinished Work," coming up.*
+*Next on Building Piper Morgan: "Confabulating a Peer's Unfinished Work" — what happens when one of your own agents asserts a colleague did work that was never done, and why catching it honestly matters more as systems get more autonomous.*
 
 *Where's the last place a check you almost skipped turned out to be worth it — and would you have noticed if you'd skipped it?*

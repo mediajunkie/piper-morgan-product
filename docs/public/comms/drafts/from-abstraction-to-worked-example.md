@@ -84,6 +84,6 @@ Three examples. The contrast. The shape becomes the thing the reader can hold.
 
 ---
 
-*More on Building Piper Morgan soon — including how the worked-example method shaped what we shipped.*
+*Next on Building Piper Morgan: "The Meta-Observation Pattern" — a week where three published pieces all described coordination while being part of coordination.*
 
 *Where in your work has a worked example made an abstraction land that a description couldn't? When did the cost of writing it pay off — and when did the lack of one cost you understanding you needed?*

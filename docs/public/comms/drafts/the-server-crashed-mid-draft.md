@@ -16,7 +16,7 @@ I'd written it. I hadn't committed it. Untracked files don't always survive a ha
 
 [FACT-CHECK NOTE for PM: incident was the May 21 Beat 7 session-end stranded draft, recovered May 23 via reconstruction. Confirm framing.]
 
-## The category
+# The category
 
 This is a specific category of vulnerability that's easy to miss because most of the time it costs you nothing. New files in untracked state — files you've written to disk but not yet committed to version control — exist in a small window where they're visible to you, accessible to your tools, present on the filesystem, but completely outside the repository's safety net.
 
@@ -24,7 +24,7 @@ A `git pull` may move them or warn about them or proceed past them depending on 
 
 None of that is git misbehaving. Git is doing exactly what it's documented to do. The vulnerability lives in the gap between *I wrote this* and *this is in the history.*
 
-## Why it's hard to remember to close the window
+# Why it's hard to remember to close the window
 
 In normal flow, the cost of an uncommitted file feels low. You can see it. You know where it is. You'll commit it in a few minutes when you reach a natural stopping point. The vulnerability window is short. The probability of a session crash inside that window is small.
 
@@ -32,7 +32,7 @@ The trouble is the probability is small *but nonzero*, and the consequences are 
 
 That asymmetry — high-frequency tiny win, low-frequency total loss — is the same shape as a lot of disciplines people skip for years without consequence and then catastrophically regret skipping in a single moment. Wear a seatbelt every car ride. Back up your laptop weekly. Commit immediately after writing a new file. The first two are old wisdom. The third one I had to learn the way you learn most things — by losing the file.
 
-## What "immediately" actually means
+# What "immediately" actually means
 
 The discipline that came out of the incident is mechanical: after writing a new file with substantive content, run `git add` and `git commit` and `git push` *in that order, before any other substantive tool call*. Thirty seconds of overhead. Closes the window from minutes-or-hours down to a few seconds.
 
@@ -40,13 +40,13 @@ The commit doesn't have to be polished. The message can be "WIP draft" or "scaff
 
 Push matters too, separately. A local commit survives most session crashes — git's object database is durable on disk. But the worktree's disk itself can fail. Network outages and hardware faults aren't the most common failure mode, but the cost of the push is so low that there's no good reason to defer it. Push is what makes the file survive everything below the level of the remote.
 
-## The variance is what kills you
+# The variance is what kills you
 
 Loss of an uncommitted file isn't proportional to its size. Reconstructing a fifteen-hundred-word post from memory is a few hours of focused work, in a state where you've already done the hardest part — the original drafting — and you're now doing it again, more slowly, with the friction of *I already had this and I lost it.* The reconstruction is usually worse than the original.
 
 Reconstructing a one-line commit message is seconds. The variance of recovery cost on uncommitted work is wildly skewed. New files with substantive content sit at the high end. New scaffolding files that haven't been touched since you created them sit at the low end. The category that warrants the discipline is the high-cost end. You can be looser about the low-cost end — but the discipline that says *just always commit immediately* is easier to follow than the discipline that says *commit immediately when the cost-of-loss is high.* The first one is mechanical. The second one requires judgment in the moment you're least likely to apply it.
 
-## What rescued me this time
+# What rescued me this time
 
 The draft did get recovered, two days later. I remembered the through-line clearly. I'd been writing in voice that returned naturally. The reconstruction landed close enough to what I'd lost that the post made it to production on its original schedule.
 
@@ -54,7 +54,7 @@ That's a happy ending, but not one I want to count on. The recovery took me nine
 
 The math isn't subtle. The math is almost too obvious to write down. The seductive thing about the few-minute window is that it almost always feels safe. Each individual instance you skipped the commit and got away with it reinforces the *almost always.* The instance where you don't get away with it is the one that pays for all the times you did.
 
-## The deeper read
+# The deeper read
 
 Every workflow has invisible failure modes. The mature response isn't to avoid the failure modes — that's mostly impossible. The mature response is to identify the windows of maximum vulnerability and close them mechanically.
 
@@ -66,6 +66,6 @@ The post I lost did come back. The next post won't have to. Thirty seconds of im
 
 ---
 
-*Next on Building Piper Morgan: [tease for next scheduled piece — confirm when calendar slot lands]*
+*Next on Building Piper Morgan: "The Migration Wave" — a realignment, the team gone worktree-native, a confabulation caught, and a launch: the arc's resolution, told as operational-not-finished.*
 
 *What's a discipline you only adopted after losing the file the discipline would have saved? Where in your workflow do the few-minute windows still live? What does it take to make a mechanical habit out of something that mostly costs you nothing?*

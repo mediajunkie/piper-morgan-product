@@ -1,4 +1,12 @@
+---
+image: 
+alt: 
+caption: 
+---
+
 # The Architecture That Wrote Its Own Case
+
+*May 28, 2026*
 
 There's a kind of failure you can't fix by trying harder. You've already tried harder. You were careful. You did the thing the careful person does — checked, double-checked, built a little ritual to catch the mistake before it happened. And it happened anyway, in the gap your ritual couldn't reach.
 
@@ -59,6 +67,6 @@ The work, at that point, isn't to win the argument. It's to notice that the argu
 
 ---
 
-*Next: a feature can pass every check you can think of and still be unreachable by the person it's for — if you checked the wrong layer. "Verify at the User Path, Not the Data Layer," next weekend.*
+*Next on Building Piper Morgan: "Verify at the User Path, Not the Data Layer" — a feature can pass every check you can think of and still be unreachable by the person it's for, if you checked the wrong layer.*
 
 *Where in your own work are you spending vigilance on a gap that more care can't close — and is the evidence for the structural fix already piling up while you keep tuning the ritual?*

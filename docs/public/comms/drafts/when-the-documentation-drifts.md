@@ -8,7 +8,7 @@ caption:
 
 *May 19–20, 2026*
 
-The morning of May 20, an engineer on the project (Lead Developer, in our role-named cohort) spent the first thirty-five minutes reverting work. A small utility — a skill that synced a manifest file across mailboxes — had run during the previous day's session and done the wrong thing. The skill's documentation said it would append and reconcile. The code, when read carefully, was actually doing replace-with-overwrite. Thirteen mailbox manifests had been wiped and would have to be restored from the last clean commit.
+The morning of May 20, an engineer on the project (Lead Developer, one of the role-named agents on the team) spent the first thirty-five minutes reverting work. A small utility — a skill that synced a manifest file across mailboxes — had run during the previous day's session and done the wrong thing. The skill's documentation said it would append and reconcile. The code, when read carefully, was actually doing replace-with-overwrite. Thirteen mailbox manifests had been wiped and would have to be restored from the last clean commit.
 
 The skill wasn't malicious. Nobody wrote it to be destructive. The docs were honest about the intent. The code was honest about what it did. The honesty just didn't line up — and hadn't, for months.
 
@@ -18,7 +18,7 @@ This is a category in our project's pattern catalog. We call it Documentation-As
 
 [FACT-CHECK NOTE for PM: instance count 14 per memory of the log entry. Confirm.]
 
-## How the gap opens
+# How the gap opens
 
 Documentation gets edited when behavior gets *discussed*. Someone proposes a skill, writes a memo describing what it'll do, and the language in the memo settles. The memo gets read, ratified, filed.
 
@@ -30,7 +30,7 @@ Over months, the two diverge. The diverge is silent because nobody reads the doc
 
 The drift surfaces when those two paths cross — when somebody planning from the docs runs the code and gets a result the docs didn't predict.
 
-## The asymmetry that hides it
+# The asymmetry that hides it
 
 Documentation is read by humans. Code is run by machines.
 
@@ -42,7 +42,7 @@ In our incident: somebody planned the work expecting the manifest sync to append
 
 That's not negligence on either side. That's the geometry of the problem.
 
-## Why the cost is asymmetric too
+# Why the cost is asymmetric too
 
 The cost shape matches the visibility shape. Drift is cheap to introduce — every minor doc edit and every minor code edit risks introducing a tiny mismatch, and most of them never get noticed because nobody invokes the affected path under those specific conditions.
 
@@ -50,7 +50,7 @@ The cost gets paid when the path is invoked. And the cost is paid by the user of
 
 So the cost is asymmetric in time (paid much later than incurred) and asymmetric in person (paid by somebody other than the introducer). That asymmetry is why drift isn't caught at introduction: there's no immediate signal, and the introducer isn't there when the bill arrives.
 
-## What the pattern catalog does
+# What the pattern catalog does
 
 Once we noticed this happening repeatedly, we named it. Pattern-073: Documentation-Asserted Behavior Drift. The naming was the first useful move.
 
@@ -62,7 +62,7 @@ The recovery was thirty-five minutes. The same incident at instance #1 might hav
 
 The drift itself still happens. The catalog doesn't prevent the introduction. What the catalog does is collapse the recovery cost and accumulate the data that will eventually inform prevention.
 
-## What changes about how you read docs
+# What changes about how you read docs
 
 The discipline that comes out of this is mostly about how you treat documentation when stakes are high.
 
@@ -74,7 +74,7 @@ The discipline that comes out of this is mostly about how you treat documentatio
 
 None of this is novel discipline. It's the standard *trust but verify* posture applied to documentation specifically. The reason to make it explicit is that documentation feels authoritative in a way other claims don't. Documentation is a deliberate artifact. Somebody wrote it. Somebody filed it. Somebody read it. That cumulative deliberateness makes it feel like reliable signal — and most of the time it is, which is what makes the gap dangerous when it opens.
 
-## The deeper read
+# The deeper read
 
 The deeper read on this isn't a documentation-hygiene problem. It's an architectural-humility problem.
 
@@ -88,6 +88,6 @@ Thirteen mailbox manifests, thirty-five minutes of recovery, one instance among 
 
 ---
 
-*Next on Building Piper Morgan: [tease for next scheduled piece — confirm when calendar slot lands]*
+*Next on Building Piper Morgan: "The Server Crashed Mid-Draft" — a new file sits in an untracked, unprotected window the moment it's written, and what it costs to forget that.*
 
 *When has documentation drifted out from under you? How did you discover it — and how did the cost get paid? What discipline did you build to limit the next instance?*
