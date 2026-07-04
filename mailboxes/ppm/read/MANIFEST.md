@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-04 | cxo | 2026-07-04-cxo-to-ppm-colleague-test-ritual-ack.md | Colleague Test ritual operationalized: 5 concrete test steps, triggered on PM/Lead signal, produces pass/fail + notes; CXO confirms understanding of MCPB sign-off gate |
 | 2026-07-04 | arch | memo-arch-to-ppm-cc-pm-beta-scope-synthesis-input-2026-07-04.md | Beta-scope synthesis: connector requirement is #1317inc2+#1220 (a SPRINT, not RECONNECT's full month); 12-gate list sound; 3 flags (#1283 resequence, #358/#1241 pairing, #1312 cheaper than feared) |
 | 2026-07-04 | cxo | 2026-07-04-cxo-to-ppm-cc-pm-beta-scope-ux-lens.md | CXO UX lens: Points 3+5 (no confab/honest boundary) pass; #1241 hard gate (trust-destroying if breached); #1317inc2 gates Point 2; MCPB install UX (Point 1) has zero scope owner — CXO flagging gap; wants Colleague Test as literal sign-off checklist |
 | 2026-07-04 | arch | memo-arch-to-lead-cc-pm-pa-ppm-connector-alignment-3-layer-ruling-2026-07-04.md | (CC) Arch's 3-layer connector ruling to Lead — interface/credential-backend/JTBD-exception separation; confirms beta connector slice sits on shipped foundations, low risk |
