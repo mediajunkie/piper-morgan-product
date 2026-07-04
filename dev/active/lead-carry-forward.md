@@ -1,6 +1,18 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-04 ~15:50 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
+**Updated**: 2026-07-04 ~16:30 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
+
+## ▶ CURRENT (7/4 ~16:30) — waiting on Arch's read before scoping MCP-hosting; #1344 mint DONE
+
+**RECONNECT/beta-blocker thread: PAUSED, correctly, waiting on Arch.** PM: get Arch's read on the architectural-alignment memo (sent this morning) before scoping the production MCP-server-hosting question (the "piece 2" gap from the last entry below). Checked directly (not the hook summary) — as of 7/4 ~16:00, neither Arch nor PPM had read my latest memos yet. **Nothing to do here right now except wait** — don't nudge, don't start scoping without the read per PM's explicit sequencing.
+
+**#1344 — 12 tokens minted against production, verified, DONE.** Used the proven 6/22 migrate-fix connection pattern (`db._build_database_url()` inside the app container via `docker compose cp` + `docker compose exec`) rather than trust the mint script's own env-var defaults — same footgun class as the alembic `localhost:5433` bug. Verified via a separate DB query (not just the script's own output) that all 12 are present and unused. Cleaned up both temp-script copies (droplet + in-container, the latter needed `-u root`).
+
+**Real security catch, self-caught before anything leaked**: almost sent the 12 raw token strings to HOST in a mailbox memo — caught myself first: this repo is PUBLIC, mailbox memos commit straight to `origin/main`, that would've put live single-use auth credentials into permanent public git history. Deleted the draft before it was ever committed (verified via `git status` — never left local disk). Flagged to PM rather than guess. **PM's call: store in a gitignored location in PM's local main checkout.** Added `dev/alpha/invite-tokens-*.md` to `.gitignore` (commit `bc6571c8a`, pushed) — `sync-pm-local.sh` correctly no-op'd (PM has uncommitted WIP), so also applied the identical edit directly to PM's main-checkout `.gitignore` (verified via `git check-ignore -v` before/after — confirmed effective) before writing the actual token file to `dev/alpha/invite-tokens-batch-1-2026-07-04.md` there. Sent HOST (cc Arch/PM) a confirmation memo with **zero raw tokens in it** (grepped before sending to be sure) — points to the file instead. **Nothing further needed here** — HOST has what they need to do the roster mapping.
+
+**Next when Arch responds**: scope the production MCP-server hosting decision (stdio-local vs. hosted vs. something else) — the two-piece deploy gap (migration + hosting) is fully characterized and sent to PPM; scoping piece 2 is the next concrete deliverable once Arch's architectural read is in hand.
+
+---
 
 ## ⭐⭐⭐⭐⭐ CORRECTION: the "deploy gap" is TWO pieces, not one — production has no github-mcp-server hosting at all (7/4 ~15:50)
 
