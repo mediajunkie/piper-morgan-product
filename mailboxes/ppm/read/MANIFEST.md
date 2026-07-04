@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-1235-cleared-per-pm-2026-07-04.md | #1235 RESOLVED — PM chose Option A (clear field); Lead Dev executed ✅ |
 | 2026-07-03 | lead | memo-lead-to-ppm-cc-pm-1235-intent-clarification-2026-07-03.md | #1235 clarification — topical-only intent confirmed; PM decision request filed (3 options) |
 | 2026-07-03 | lead | memo-lead-to-ppm-cc-pm-1235-reverted-pending-pm-2026-07-03.md | #1235 Sprint move reverted — Lead held for PM, not closed |
 | 2026-07-03 | lead | memo-lead-to-host-ppm-cc-arch-cxo-pm-1331-ack-2026-07-03.md | #1331 ACK — Lead confirmed PPM alpha-trust call; #1322 gate recorded durably (GH issue + decisions.log) |

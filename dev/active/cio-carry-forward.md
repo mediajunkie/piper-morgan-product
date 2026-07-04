@@ -2,18 +2,23 @@
 
 **Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
 
-**☀️ 6/29 Mon — RUN-LEAN THROTTLE** (through Wed Jul-1 ~9pm reset) — Cron **3×/day `7 10,16,22`** (id `310aa50c`; restore `7 3,10,13,16,19,22` on Exec's "resume").
+**🎆 7/4 Sat — MIGRATION HOLD** (not run-lean anymore, superseded) — cadence-restore broadcast CANCELED per BRIEFING 7/3: PM directive is migrate all roles to dedicated `pipermorgan.ai` account; **all roles stay on LEAN/SLOW crons until migration confirmed**. Cron re-armed 7/4 08:56 at lean expr `7 10,16,22` (id `8037cdf7`, session-scoped — dies at session end, re-arm next START). **Do NOT restore to full cadence on a stale "Wed Jul-1 reset" trigger — that trigger was superseded by the migration hold; the actual unblock condition is migration-confirmed, not a calendar date.**
 
-**10:07 fire — two major deliveries:**
-1. **Session-log naming convention** (`dc79a78d3`): model dropped from filenames (PM-approved 6/29 07:02). New format `YYYY-MM-DD-HHMM-{role}-code-log.md`. CLAUDE.md + skill + hook + generate-delta.py all updated; backward-compatible (old logs untouched; parsers accept both). 
-2. **Belt 4 / B1 spawn-fresh** (`5db1e874b`): PM greenlit B1 via Janus (Mac Mini July 6, too far). Validation spike PASSED (auth works headless). Watchdog v2.3 implements Belt 4 (default off, `WATCHDOG_AUTO_SPAWN_ROLES=""`). 14/14 tests. Deployed to main-checkout. **To enable CIO**: set `WATCHDOG_AUTO_SPAWN_ROLES=cio` in launchd plist environment.
+**Open question for PM (unresolved this fire)**: which Anthropic account is THIS session running under? `docs/migration/pipermorgan-ai-account-migration.md` (`be196657d`, 7/3) has a CIO checklist row, still unconfirmed (☐). No signal available from inside the sandbox to self-determine (no account-identifying env var; checked). If this session IS already on pipermorgan.ai, mark the row ✓ with today's date next session.
 
-**NOW pending PM**:
-- **Enable B1 for CIO** in launchd plist (set `WATCHDOG_AUTO_SPAWN_ROLES=cio` + optional `WATCHDOG_B4_SPAWN_TTL=7200`). Recommend testing on next real stall after run-lean reset.
-- Optional $0 phone-nudge (Belt 3 → ntfy/Pushover): still a floor win orthogonal to B1.
-- **Run-lean restore** (Wed Jul-1 ~9pm): on Exec's "resume" → `CronDelete 310aa50c` + `CronCreate "7 3,10,13,16,19,22"` (full prompt); restore registry rows for exec/cxo/ppm.
+**7/3 (retroactively closed 7/4 — full account in `dev/2026/07/03/...log.md` DAY-CLOSED section)**: naming-convention housekeeping + inbox triage; session-start.sh CXO branch check + a dead-glob fix; mailbox-removal audit — stopped before editing, found + looped in Exec's in-flight pilot instead of duplicating it (still unread by Exec as of Fire 2). Session then stalled 10:10am→next-day uncaught.
 
-Registry: cio+arch watched, validated no-false-alarm. (6/28: Belt-0 validated-FAILED → disabled; (b) cure scoped.)
+**7/4 Fire 1 (08:56 START) — delivered**: retroactive 7/3 DAY-CLOSED (`3b95bd238`) · `scripts/sync-pm-local.sh` (`fd1f75322`, HOST's brokering ask — `--ff-only`, skips on dirty/non-main; found PM's checkout is currently pure-MANIFEST drift, correctly skipped not auto-discarded) · 2 stale CLAUDE.md fixes (retired mailbox-bridge reference; deprecated Model-A cron-prompt path) · overdue Docs audit-refactor reply sent · one honest mail-send commit-message mistake logged (content verified correct, didn't force-push a fix).
+
+**7/4 Fire 2 (10:37 WORK) — delivered**: **`sync-pm-local.sh` real-world finding** — Arch's autonomous session tried to auto-run it per CLAUDE.md guidance and got a permission-classifier denial (no human to approve a path-outside-worktree action); Arch correctly skipped rather than working around it. Added "Known limitation #2" to CLAUDE.md (`a90beef1a`): denial in autonomous sessions is the correct conservative default, not a bug; reliable auto-run needs an explicit PM-granted Bash allowlist entry (config decision, not mine to route around). Mail loop empty otherwise; no other CIO-actionable items surfaced.
+
+**Still open**:
+- **Dashboard welfare-criteria v0.3** — now triaged into `cio-standing-items.md` (item 14, Fire 2). Not yet started; TBD to flag to HOST (Criterion E coverage-indicator UX sync) is the next concrete action when picked up.
+- **PM open question**: which account is this session on? Migration checklist (`docs/migration/pipermorgan-ai-account-migration.md`) still shows CIO ☐.
+- **sync-pm-local.sh permission grant**: PM decision needed if reliable autonomous auto-run is wanted (currently degrades gracefully without it).
+- Exec's inbox-proxy memo (7/3) still unread — parked, not actionable by CIO.
+
+Registry: cio+arch watched, validated no-false-alarm. (6/28: Belt-0 validated-FAILED → disabled; (b) cure scoped; B1/Belt-4 built 6/29, not yet enabled — `WATCHDOG_AUTO_SPAWN_ROLES` still empty.)
 
 ### 📌 PM-collaborative — RESURFACE when PM's ready (PM asked me to remind, 6/27)
 - **Ted Nadeau email** — PM has new email from Ted Nadeau to share for **review + discussion**. (Note: a `mailboxes/ted-nadeau/` inbox unread exists — may or may not be the same; PM will share the content.)

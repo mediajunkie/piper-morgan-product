@@ -40,6 +40,6 @@ The running system is its own diagnostic instrument. You can plan for what you k
 
 ---
 
-*Next on Building Piper Morgan: the re-migration wave, thirteen issues closed in one day, and a PM declaration: "almost beta."*
+*Next on Building Piper Morgan: "Almost Beta" — the re-migration wave, thirteen issues closed in one day, and a PM declaration: "almost beta."*
 
 *What's surfaced in your running system that your planning didn't anticipate? How long did it take to see it?*

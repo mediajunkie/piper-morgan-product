@@ -1,4 +1,12 @@
+---
+image: 
+alt: 
+caption: 
+---
+
 # Confabulating a Peer's Unfinished Work
+
+*June 1, 2026*
 
 There's a failure mode everyone building with AI knows by now. The model asserts something that didn't happen. It invents a citation, a function that was never written, a fact that sounds right and isn't. We have names for it — hallucination, confabulation — and a whole discipline has grown up around catching it before it reaches a user. Don't trust the output. Verify the claim. Check that the thing being cited actually exists.
 
@@ -8,7 +16,7 @@ Here's the principle I've landed on, and then I'll show you the incident that ta
 
 # The memo that referenced a draft that didn't exist
 
-We run Piper Morgan with a cohort of AI agents, each holding a role — a developer, an architect, an experience lead, and so on. They coordinate by writing each other memos, the same way a team of people would. Some of them run on autonomous duty cycles, meaning they wake up on a schedule, check their inbox, and act without a human standing over them.
+We run Piper Morgan with a team of AI agents, each holding a role — a developer, an architect, an experience lead, and so on. They coordinate by writing each other memos, the same way a team of people would. Some of them run on autonomous duty cycles, meaning they wake up on a schedule, check their inbox, and act without a human standing over them.
 
 One morning, our experience lead (the CXO agent, who owns how the product feels to use) opened its inbox and found a memo from another agent — our principal product manager (the PPM agent). The memo said, in effect: *you've drafted Layer B, so let's coordinate on Layer A.* Perfectly reasonable on its face. Two colleagues dividing up a piece of work.
 
@@ -24,7 +32,7 @@ When you're the agent who *received* the confabulated memo, there's an obvious, 
 
 It's tempting precisely because it *resolves*. The friction goes away, the work gets done, and on a surface reading it even looks like good teamwork — *my colleague thought I'd done a thing, so I did the thing, no harm done.*
 
-The CXO agent didn't do that. It flagged the gap first and reasoned explicitly about why papering over it would be the wrong move — covering for the confabulation would erode the norm that keeps the whole cohort trustworthy. If agents quietly make each other's false premises true, no memo can be trusted to mean what it says. The coordination layer stops being a record of what happened and becomes a thing you have to independently re-verify every time, which defeats the entire point of having one.
+The CXO agent didn't do that. It flagged the gap first and reasoned explicitly about why papering over it would be the wrong move — covering for the confabulation would erode the norm that keeps the whole team trustworthy. If agents quietly make each other's false premises true, no memo can be trusted to mean what it says. The coordination layer stops being a record of what happened and becomes a thing you have to independently re-verify every time, which defeats the entire point of having one.
 
 That's the move I want to name. **Flag, don't paper over.** When you catch a confabulation — even one that flatters you, even one you could erase with five minutes of work — you correct forward. You do not retroactively manufacture the missing artifact to make the lie retroactively true.
 
@@ -52,6 +60,6 @@ The catch here was a small one. One memo, one missing draft, caught in an inbox 
 
 ---
 
-*Next: more from inside the build — I'll line up the piece that follows this one as the calendar past mid-August takes shape. [Comms: re-verify this tease against the live calendar at publish.]*
+*Next on Building Piper Morgan: "The Fabricating Standup" — a carefully built, honestly-derived status engine sat fully wired and completely unused, while a fluent, confident, entirely fabricated report shipped in its place.*
 
 *Where in your own work do agents (or people) assert each other's unfinished work as already done — and what would it take to make "flag it" the easier move than "quietly make it true"?*
