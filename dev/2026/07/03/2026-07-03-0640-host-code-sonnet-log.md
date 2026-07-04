@@ -98,3 +98,14 @@
   - **Ted Nadeau welfare watch**: Checked `mailboxes/ted-nadeau/inbox/` — one memo from April 4, 2026 addressed TO Janus (not from Janus). Content: Ted's substantive intellectual correspondence on HPL, Englishia, and Piper Morgan architecture. 3 months old; unresponded. This is a routing gap — Ted is using this channel to communicate with the team but the memo never reached Janus, and there's been no reply. Not a welfare crisis; Ted's onboarding concern (Caddy auth layer + no user token) is a separate thread with PM as catch. Routing gap noted — memo should have reached Janus via Dispatch. No immediate HOST action (routing is not HOST's lane), but flagging the 3-month dormancy.
   - **BRIEFING-CURRENT-STATE.md updated**: Appended "UPDATE July 3 (HOST attest)" block to STATUS BANNER — corrects two stale items (trust-lens pass now COMPLETE; #1344 contract now confirmed) and adds two items not previously in briefing (dashboard welfare-criteria v0.3 SPEC PUBLISHED; mail system health check COMPLETE). Also updated Last Updated section.
 
+- Fire 8 (21:37 PDT) — #1344 step-2 reviewed; trust lens PASS; minting blocked on Arch ratification.
+  - **Origin/main sync**: merged 3 new files — `services/auth/invite_token_service.py` + 2 test files (Lead shipped #1344 step-2 invite-gate enforcement).
+  - **#1344 step-2 trust lens PASS**: Reviewed `invite_token_service.py` and both test files. All three contract terms met:
+    - Token format/normalization: 24-char Crockford Base32, lowercase+dashes handled, ambiguous chars (I/L/O/U) absent ✅
+    - Atomicity: single conditional UPDATE `WHERE used_at IS NULL RETURNING` — no check-then-write; docstring explains the TOCTOU risk ✅; `test_concurrent_registrations_cannot_both_consume_the_same_token` directly exercises the double-spend race with `asyncio.gather` ✅
+    - Burn-and-create: `invite_token` required on `CreateUserRequest`; rejected token → no orphaned account ✅; second-use attempt → no second user ✅
+    - Trust-zone separation: service validates tokens only, never touches PII roster ✅
+  - **Adjacent item acknowledged**: `#1348` (email field Optional/NOT NULL mismatch) filed by Lead — not HOST's lane.
+  - **Trust-lens memo sent**: Lead (cc Arch, PM). Arch needs to ratify before minting proceeds. Minting protocol reconfirmed: HOST gives count → Lead mints → hands HOST strings → HOST records mapping in gitignored roster.
+  - **Inbox**: clear post-sync.
+
