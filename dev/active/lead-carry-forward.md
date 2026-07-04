@@ -1,6 +1,17 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-04 ~12:15 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
+**Updated**: 2026-07-04 ~13:35 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
+
+## ⭐⭐⭐ THE REAL BETA BLOCKER, RECONCILED (7/4 ~13:35) — READ THIS FIRST, supersedes the "GitHub completion" framing below
+
+**Two separate, now-precisely-scoped gaps, not one:**
+
+1. **Deploy/migration gap (the actual beta blocker)**: production's DB has never received the #1229 `connector_bindings` migration (confirmed during yesterday's 7/3 #1344 deploy — production's alembic head is `000baa96d800`, `main`'s `b1229bindings` never shipped). This means **no interaction with the real hosted product can ever see or create a binding** — not a fallback-logic question, the table doesn't exist there. The #1317 inc.2 OAuth routes (`/github/connect`, `/github/callback` in `settings_integrations.py`) ARE built and DO work — verified live today against local staging (real binding, real MCP round-trip, real repos returned for PM's actual account) — they've just never been deployed to a production DB that has the table they need. **This is a "ship an existing migration + release cut" problem, not a "build an OAuth flow from scratch" problem** — much smaller scope than it initially sounded.
+2. **Coverage gap (partial migration, GitHub-specific)**: `GitHubMCPSpatialAdapter` contains BOTH real-MCP methods (issue/PR listing, repo search — confirmed wired into chat via `_handle_list_issues_query`, connector-first with PAT fallback) AND old direct-REST methods (`_call_github_api`, backing milestones/releases/labels/branches/single-issue-lookup) in the SAME class — the direct-API half never got migrated, regardless of binding state.
+
+**How this surfaced**: PM relayed a PPM concern ("we've never really tested the new connector, all testing is on old infra"). Investigated and found MY OWN morning's "connector-1 completion" test-fixing had targeted `GitHubSpatialIntelligence` — the router's own docstring-labeled "direct API — FALLBACK" class, NOT the real MCP adapter. Genuine miss on my part. Then PPM's own memo landed independently claiming "PM has no ConnectorBinding row" + "#1317 inc.2 not yet built" — which conflicted with what I'd just verified (a real, working local binding). Reconciled: PPM was right about production (where the table doesn't exist), I was right about local staging (where it does and works) — we were describing different environments. Full writeup sent to PPM (cc PM): `mailboxes/ppm/inbox/memo-lead-to-ppm-cc-pm-reconnect-status-and-validation-gap-reconciliation-2026-07-04.md`.
+
+**PM is now rethinking what's actually blocking beta** given this — expect that framing to evolve. **Do NOT deploy the migration to production without explicit PM go-ahead** (deploys are consequential, PM's own standing discipline) — but auditing/migrating the *coverage gap* (milestones/releases/labels/branches/single-issue onto real MCP) is genuinely unblocked GitHub-connector-1 work, no permission needed, and is the most direct way to keep advancing "unlocked RECONNECT work" per PM's explicit instruction to continue.
 
 ## ⭐⭐ RECONNECT EXECUTION MODEL REFOCUSED (PM, 7/4 ~10:45) — READ THIS BEFORE ANYTHING ELSE BELOW
 
