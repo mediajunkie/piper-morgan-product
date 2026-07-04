@@ -25,3 +25,18 @@ Day-transition: closed Jul 3 session log (DAY-CLOSED + memory eval), created Jul
 - Briefing STALE — flagged for Docs/CIO
 
 **IDLE** — inbox clean. All standing items PM-gated or blocked.
+
+---
+
+### Fire 1 — 09:52 PDT (cron)
+
+Cron management: deleted 8f3a9404, fetched origin/main, inbox: 1 new memo.
+
+**Inbox**: `memo-lead-to-ppm-cc-pm-1235-cleared-per-pm-2026-07-04.md` — PM ruled Option A (clear the Sprint field on #1235). Lead Dev executed + verified. Matches PPM lean. **#1235 RESOLVED** ✅
+
+**Fire 1 work**:
+- Inbox memo moved inbox→read/
+- ppm/read/MANIFEST updated (1 new entry)
+- Cron re-armed: 779513ab
+
+**IDLE** — #1235 resolved. All remaining standing items PM-gated or blocked.
