@@ -30,7 +30,7 @@ import logging
 import os
 import re
 from dataclasses import dataclass
-from typing import Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 from uuid import UUID
 
 logger = logging.getLogger(__name__)
@@ -245,3 +245,75 @@ async def _resolve_from_user_default(user_id: UUID) -> Optional[ResolvedRepo]:
     except Exception as e:
         logger.warning(f"User-default repo resolution failed: {e}")
         return None
+
+
+def compute_default_default(repos: List[Dict[str, Any]]) -> Optional[str]:
+    """#1314 "default default" — PM's rule (2026-07-04) for auto-setting a fresh user's
+    default repo when they connect GitHub, so a first-run user isn't stuck at zero.
+
+    Rule: if exactly one repo exists, use it (no choice to make). If multiple exist and
+    none is user-designated, fall back to the first/oldest ACTIVE (non-archived) one.
+
+    Each dict is the normalized repo shape from ``GitHubMCPSpatialAdapter._parse_repo_search``
+    (``full_name``, ``created_at``, ``archived``). Edge case PM's rule didn't name: if every
+    repo happens to be archived, falls back to oldest-overall rather than returning nothing —
+    "some default" beats "no default" when repos genuinely exist. A repo with no ``created_at``
+    (malformed/unexpected payload) sorts after every repo with a real timestamp, so it's never
+    picked over one with a known creation date.
+
+    Args:
+        repos: normalized repo dicts to choose from (may be empty).
+
+    Returns:
+        The chosen repo's ``owner/name``, or ``None`` if ``repos`` is empty.
+    """
+    if not repos:
+        return None
+    if len(repos) == 1:
+        return repos[0].get("full_name") or None
+
+    active = [r for r in repos if not r.get("archived", False)]
+    candidates = active if active else repos  # all-archived edge case: fall back to all
+
+    def _sort_key(r: Dict[str, Any]) -> tuple:
+        created = r.get("created_at")
+        return (created is None, created or "")
+
+    oldest = sorted(candidates, key=_sort_key)[0]
+    return oldest.get("full_name") or None
+
+
+async def apply_default_default_if_unset(
+    user_id: "str | UUID", repos: List[Dict[str, Any]]
+) -> None:
+    """Auto-set the user's ``default_repo`` preference per #1314's rule, but ONLY if they
+    don't already have one — never overwrites an explicit user choice. Intended call site:
+    right after a GitHub OAuth connection completes (the first-run moment), not on every
+    query — this persists a preference, it isn't a live per-resolution fallback.
+
+    ``user_id`` accepts ``str`` (the OAuth callback's ``result["user_id"]`` shape) or
+    ``UUID``, mirroring ``ConnectorConfigService``'s own ``Union[str, UUID, None]``.
+
+    No-ops (logs at debug) if ``repos`` is empty — nothing to default to yet.
+    """
+    from services.connectors.config_service import ConnectorConfigService
+    from services.database.session_factory import AsyncSessionFactory
+
+    async with AsyncSessionFactory.session_scope() as session:
+        config_service = ConnectorConfigService(session)
+        existing = await config_service.get_default_repo(user_id)
+        if existing:
+            return  # never override an explicit user preference
+
+        chosen = compute_default_default(repos)
+        if chosen is None:
+            logger.debug("apply_default_default: no repos to default to for user %s", user_id)
+            return
+
+        await config_service.set_default_repo(user_id, chosen)
+        logger.info(
+            "default_repo_auto_set",
+            user_id=str(user_id),
+            default_repo=chosen,
+            repo_count=len(repos),
+        )
