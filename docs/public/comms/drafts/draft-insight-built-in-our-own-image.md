@@ -34,6 +34,6 @@ What we have is a finding: the mode that earns trust in an ongoing working relat
 
 ---
 
-*Next on Building Piper Morgan: [PLACEHOLDER — next scheduled post title and one-line description]*
+*Next on Building Piper Morgan: more from inside the build — the next piece as the calendar takes shape. [Comms: this is the last drafted post in the current queue as of Jul 4 — re-verify and fill this tease once the next beat is scheduled.]*
 
 *Where in your own product or service have you designed the first-encounter experience from inside the steady-state experience? What would a first-time user need that you've already learned not to need?*

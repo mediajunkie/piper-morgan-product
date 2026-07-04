@@ -54,6 +54,6 @@ That's a very human failure mode too, if I'm honest. Anyone who's worked on a te
 
 ---
 
-*Next on Building Piper Morgan: more from inside the build — the next piece as the calendar takes shape. [Comms: this is the last drafted post in the current queue as of Jul 4 — re-verify and fill this tease once the next beat is scheduled.]*
+*Next on Building Piper Morgan: "We Built Onboarding in Our Own Image" — the interaction mode that earns trust in an ongoing working relationship turned out to be the wrong mode for a first encounter.*
 
 *Has a scheduling quirk ever left two versions of the same piece of work running at once in your world — a duplicate meeting, a doubled task, a colleague picking up something you'd already started? What told you it had happened, and what actually saved you?*
