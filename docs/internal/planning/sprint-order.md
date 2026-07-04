@@ -50,6 +50,7 @@ The **Beta Blockers sprint** contains the issues that must close before beta. Al
 | #1317 (incr. 2) | OAuth redirect-orchestrator + callback | External testers cannot connect their own accounts |
 | #1220 | github-mcp-server provisioning decision | Required for per-user connector flow to work |
 | #441 | Registration + password reset (Phase 2/3) | Beta sign-up may be broken independently of #1261 |
+| #1278 | Host piper-morgan server on Fly.io for beta launch | No hosted server = no external beta testers; PM added Jul 4 |
 
 **Close-calls (PM judgment still open):** #1312 (schema drift — 111 Alembic diffs, high migration risk), #1167 (Docker orchestration — only a gate if orchestration is in beta infra scope).
 
@@ -85,4 +86,4 @@ Items from these sprints that ARE hard gates are already captured in Beta Blocke
 
 ---
 
-*PPM — 2026-06-28. Updated Jul 3 (WS-2 buildable scope drained, M3-Quality active priority). Updated Jul 4: PM ratified; Beta Blockers sprint added as active priority; MVP milestone = beta gate (explicit); Aug 1 date marked TBD; milestone dates updated from GitHub; RECONNECT connector status corrected; M3/M4/M5 triage disposition noted.*
+*PPM — 2026-06-28. Updated Jul 3 (WS-2 buildable scope drained, M3-Quality active priority). Updated Jul 4: PM ratified; Beta Blockers sprint added as active priority; MVP milestone = beta gate (explicit); Aug 1 date marked TBD; milestone dates updated from GitHub; RECONNECT connector status corrected; M3/M4/M5 triage disposition noted. Updated Jul 4 (afternoon): #1278 (Fly.io hosting) added to Beta Blockers per PM; MCP distribution cluster (M5) confirmed as Production scope; Beta Blockers sprint created on GitHub project board (Sprint field "Beta Blockers - Hard Gates Only", red, 13 issues).*
