@@ -6,6 +6,10 @@
 
 **Open question for PM (unresolved this fire)**: which Anthropic account is THIS session running under? `docs/migration/pipermorgan-ai-account-migration.md` (`be196657d`, 7/3) has a CIO checklist row, still unconfirmed (☐). No signal available from inside the sandbox to self-determine (no account-identifying env var; checked). If this session IS already on pipermorgan.ai, mark the row ✓ with today's date next session.
 
+**NEW NORM (PM-established this fire): Janus-bound communication routes through Exec, not directly.** Exec is Piper Morgan's designated point of contact for Janus (established relationship since April, I just didn't have it in view). I'd already written directly to Janus this morning before the correction landed — flagged transparently to Exec, not undone (low-stakes, wrong channel). **For any future Janus contact: send to `exec`, let Exec relay — don't reach into `designinproduct/`/`klatch/` myself by default.** DIRECTORY.md updated with this norm.
+
+**Discovered + filed**: #1358 — the Apr-30 promised `cross-project-mail-routing.md` reference doc (Track 1 of an Apr-28 escalation, assigned PA+Docs) was never built. This is the *second* time CIO specifically re-derived the same cross-repo paths from scratch (May 27 + today) because it doesn't exist. Not mine to build (assigned elsewhere) but flagged with both incidents as evidence.
+
 **7/3 (retroactively closed 7/4)**: naming-convention housekeeping, session-start.sh CXO branch check + dead-glob fix, mailbox-removal audit (stopped before editing, looped in Exec instead of duplicating their in-flight pilot). Session stalled 10:10am→next-day uncaught. Full account in `dev/2026/07/03/...log.md` DAY-CLOSED section.
 
 **7/4 Fire 1 (08:56 START)**: retroactive 7/3 DAY-CLOSED · `scripts/sync-pm-local.sh` built (HOST's brokering ask, `--ff-only`) · 2 stale CLAUDE.md fixes · overdue Docs audit-refactor reply · one honest mail-send commit-message mistake logged.
