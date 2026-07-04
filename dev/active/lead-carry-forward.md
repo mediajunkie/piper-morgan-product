@@ -1,8 +1,10 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-03 ~15:58 PT. Session log: `dev/2026/07/03/2026-07-03-0623-lead-code-log.md`.
+**Updated**: 2026-07-03 ~16:10 PT. Session log: `dev/2026/07/03/2026-07-03-0623-lead-code-log.md`.
 
-## ▶ CURRENT (7/3 ~15:58) — #1344 ratified-in-principle, #1235 properly PM-gated, #1231 guard shipped. Read this, not the history below.
+## ▶ CURRENT (7/3 ~16:10) — #1347 filed (pagination feature), #1344 ratified-in-principle, #1235 PM-gated, #1231 guard shipped. Read this, not the history below.
+
+**#1347 filed** — full offset-based backward pagination for conversation history + a transcript-completeness failsafe (PM, 2026-07-03), follow-on to #1235's newest-first default (which already shipped 6/30, `903d6db13` — I initially misdescribed this as still-open to PM from the stale issue body before catching it and checking current code). Not urgent: PM's own timing is "M5 polish pass or even maybe... post-0.9 beta" — deliberately left Sprint/Milestone unset given that stated ambiguity (this morning's sprint-field lesson applied). No design started; the failsafe mechanism itself is an open question (possibly CXO's lane when picked up). Not a current build item — just tracked.
 
 **#1344 — contract RATIFIED IN PRINCIPLE by Arch** (called the shared-transaction co-location an improvement on Arch's own framing — closes a smaller TOCTOU I'd have otherwise missed). Token = Crockford Base32, 24 chars, uppercase-normalized. Validation = Lead-owned `invite_tokens` DB table, atomic conditional `UPDATE...WHERE used_at IS NULL RETURNING token` co-located in `create_user`'s existing transaction (`web/api/routes/setup.py:809`). **⭐ NEXT BUILD (when picked up): draft `create_user`'s invite-gate enforcement** — route currently has zero auth (`setup.py:773`), needs to lose exempt-status once the token is wired (the load-bearing bit per Arch — not the token mechanics). Arch is a fast ratify once drafted. **Not started yet** — this is the standing next-build item.
 
