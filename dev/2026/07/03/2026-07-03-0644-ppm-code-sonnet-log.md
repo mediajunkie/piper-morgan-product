@@ -99,3 +99,11 @@ Cron management: deleted d4e69590, fetched origin/main, inbox clean (MANIFEST.md
 Cron management: deleted 22bdfe19, fetched origin/main, inbox clean (MANIFEST.md only).
 
 **IDLE** — no new work. Cron re-armed for tomorrow (6:52 AM).
+
+---
+
+### Fire 6 — 22:23 PDT (late-queued cron)
+
+Late-firing cron — queued at 21:52 while Fire 5 was processing; fired when REPL went idle. Inbox clean (MANIFEST.md only). No new work.
+
+**IDLE** — no new work. All standing items unchanged.
