@@ -1,8 +1,16 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-04 ~08:10 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
+**Updated**: 2026-07-04 ~09:45 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
 
-## ▶ CURRENT (7/4 ~08:10) — #1235 resolved (cleared), #1344 both gates met awaiting HOST's token count. Read this, not the history below.
+## ▶ CURRENT (7/4 ~09:45) — RECONNECT board audited (2 stale issues closed, 1 follow-up filed); #1344 awaiting HOST's count; #1351 MCPB finding open. Read this, not the history below.
+
+**RECONNECT — real board query done, queue genuinely drained of anything solo-buildable.** 12 open RECONNECT-tagged items traced individually: #1314/#1315 need PM/CXO decisions, #1323 gated on a 3rd connector port (only 2 exist), #1317 needs its own scoping pass before starting. **#1231 and #1320 were stale, not open** — closed both properly with evidence: #1231's core GitHub fix (#1226 class) is done and tested, broader connector-wide scope split to **#1352**; #1320's primary cause + both secondary bugs were already fixed on different days (6/25, 7/1) but the issue never got updated (caught and corrected my own misread of one of these mid-investigation before closing). **Nothing further to pick up here autonomously** — #1352, #1314, #1315, #1317, #1323 are all genuinely gated on someone else or need scoping first.
+
+**#1351 (MCPB credential-theater / shared-session-id finding, filed today)** — real, filed with what's confirmed (billing risk not reopened, worst-case conversation-bleed mechanism doesn't fire) vs. genuinely unverified (Redis/in-process state possibly keyed on the shared session_id). Not yet actioned further; PM said they'll coordinate the server.py migration with PA.
+
+**#1235 — RESOLVED.** PM ruled Option A ("clear"). Done.
+
+**#1344 — both sign-off gates cleanly met, waiting on HOST only.** Minting is fully unblocked on HOST's and Arch's side — the only remaining step is HOST sending an actual tester count. Checked again this morning: not sent yet. **⭐ NEXT: mint tokens the moment HOST sends a count** — still open where exactly the mint script needs to run to insert tokens that validate against production's real DB (flagged 7/3 evening, unresolved).
 
 **#1235 — RESOLVED.** PM ruled Option A ("clear") on PPM's 7/3 escalation. Sprint field cleared via `clearProjectV2ItemFieldValue`, verified `null`. PPM notified. Nothing further here.
 
