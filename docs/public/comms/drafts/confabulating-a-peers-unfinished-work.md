@@ -60,6 +60,6 @@ The catch here was a small one. One memo, one missing draft, caught in an inbox 
 
 ---
 
-*Next on Building Piper Morgan: more from inside the build — the piece that follows this one as the calendar past mid-August takes shape. [Comms: this is the last drafted post in the current queue as of Jul 4 — re-verify and fill this tease once the next beat is scheduled.]*
+*Next on Building Piper Morgan: "The Fabricating Standup" — a carefully built, honestly-derived status engine sat fully wired and completely unused, while a fluent, confident, entirely fabricated report shipped in its place.*
 
 *Where in your own work do agents (or people) assert each other's unfinished work as already done — and what would it take to make "flag it" the easier move than "quietly make it true"?*
