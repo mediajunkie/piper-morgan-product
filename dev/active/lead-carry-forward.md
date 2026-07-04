@@ -1,10 +1,20 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-04 ~09:45 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
+**Updated**: 2026-07-04 ~10:15 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
 
-## ▶ CURRENT (7/4 ~09:45) — RECONNECT board audited (2 stale issues closed, 1 follow-up filed); #1344 awaiting HOST's count; #1351 MCPB finding open. Read this, not the history below.
+## ▶ CURRENT (7/4 ~10:15) — PM ruled #1315+#1314, both DONE+closed; #1323 answered; #1317 deferred. #1344 awaiting HOST's count; #1351 MCPB finding open. Read this, not the history below.
 
-**RECONNECT — real board query done, queue genuinely drained of anything solo-buildable.** 12 open RECONNECT-tagged items traced individually: #1314/#1315 need PM/CXO decisions, #1323 gated on a 3rd connector port (only 2 exist), #1317 needs its own scoping pass before starting. **#1231 and #1320 were stale, not open** — closed both properly with evidence: #1231's core GitHub fix (#1226 class) is done and tested, broader connector-wide scope split to **#1352**; #1320's primary cause + both secondary bugs were already fixed on different days (6/25, 7/1) but the issue never got updated (caught and corrected my own misread of one of these mid-investigation before closing). **Nothing further to pick up here autonomously** — #1352, #1314, #1315, #1317, #1323 are all genuinely gated on someone else or need scoping first.
+**#1315 — DONE + CLOSED.** Retired the dead project↔repo-link resolution paths from `resolve_repo()` per PM's ruling ("retire the dead paths") — `_resolve_from_project`/`_resolve_from_default_project` removed, decision tree now explicit→user_default→env_var→unresolved (was 6 paths, now 4). `ProjectRepositoryLinkDB` itself left in place (now orphaned, but retiring the table is a bigger separate action than what was asked — flagged as a future cleanup candidate). Commit `04358751c`.
+
+**#1314 — DONE + CLOSED.** Implemented PM's "default default" rule verbatim ("default is easy if one exists. if multiple exist and none is designated as primary/default by user then first/oldest active one should be system default"): `compute_default_default()` + `apply_default_default_if_unset()` in `repo_resolver.py`, wired into `handle_github_callback` as a best-effort auto-set at first GitHub connect. 11 new tests, 742-test regression suite green. Commit `5d071137e` (merged `8eddd41ae`). Closed via close-issue-properly with an honest gap disclosure (the OAuth callback route itself has no dedicated test — pre-existing gap, not introduced here).
+
+**#1323 — answered informationally, no code/issue action needed.** Master list = 8 named connectors (github, calendar, slack, notion, cicd, devenvironment, gitbook, linear); only github + calendar ported onto the #1232 4-method Connector protocol so far (2 of 8); no committed timeline for a 3rd.
+
+**#1317 — deferred per PM ("when you get to it run a complete audit cascade and we can discuss").** Standing guidance for whenever it's picked up, not actioned this session.
+
+**Git note for other agents**: pushing this batch hit a real non-fast-forward (Arch had pushed a session-log commit) — `git rebase origin/main` mis-behaved (autostash created but rebase errored out before finishing, leaving `rebase-merge/` half-initialized). `git rebase --abort` recovered cleanly with zero data loss (verified byte-identical via `git diff <autostash-sha>:<path> <path>` before and after). Used `git merge origin/main --no-edit` instead — succeeded with no conflicts. If rebase misbehaves again on this repo, merge is the lower-risk fallback, especially with unrelated pre-existing dirty files in the tree (there's a stray uncommitted `skunkworks/klatch/klatch data model.csv` change + a few untracked files sitting in this worktree that predate this session and aren't mine to touch).
+
+**RECONNECT — real board query done earlier this session, queue genuinely drained of anything solo-buildable beyond the above.** 12 open RECONNECT-tagged items were traced individually this morning; #1314/#1315/#1323/#1317 (above) are now resolved/answered/deferred. **#1231 and #1320 were stale, not open** — closed both properly with evidence: #1231's core GitHub fix (#1226 class) is done and tested, broader connector-wide scope split to **#1352**; #1320's primary cause + both secondary bugs were already fixed on different days (6/25, 7/1) but the issue never got updated (caught and corrected my own misread of one of these mid-investigation before closing). **Nothing further to pick up here autonomously** — #1352 needs scoping/assignment; #1317 is PM-deferred.
 
 **#1351 (MCPB credential-theater / shared-session-id finding, filed today)** — real, filed with what's confirmed (billing risk not reopened, worst-case conversation-bleed mechanism doesn't fire) vs. genuinely unverified (Redis/in-process state possibly keyed on the shared session_id). Not yet actioned further; PM said they'll coordinate the server.py migration with PA.
 
@@ -30,7 +40,7 @@
 
 **`dev/active/lead-standing-items.md` is stale (dated 6/21, describes RECONNECT as still in-flight)** — flagged, not corrected this fire (RUN LEAN; the doc itself defers to carry-forward when they disagree, so it's not actively misleading anyone who reads both). Candidate cleanup whenever there's a lull.
 
-**Next fire: nothing blocked on me right now.** Check mail first (as always). If HOST/Arch respond to the #1344 build (real token batch request, or anything from testing it): that's live work. If PM rules on #1235: apply it (single GraphQL field edit, whichever option PM picks — do not re-litigate). If PPM answers #1347's failsafe-design question: pick it up. Otherwise: no manufactured busywork — RECONNECT's buildable queue is still fully drained, quiet-hold is honest if nothing's moved.
+**Next fire: nothing blocked on me right now.** Check mail first (as always). If HOST/Arch respond to the #1344 build (real token batch request, or anything from testing it): that's live work. If PPM answers #1347's failsafe-design question: pick it up. Otherwise: no manufactured busywork — RECONNECT's buildable queue is still fully drained (#1315/#1314 also cleared this session), quiet-hold is honest if nothing's moved. (#1235 already resolved earlier today — no longer pending.)
 
 ---
 
