@@ -1,8 +1,8 @@
 # Piper Morgan Versioning Strategy
 
-## Current Version: 0.8.9.1 (released, live on `production`/alpha)
+## Current Version: 0.8.9.2 (released, live on `production`/alpha)
 
-`main`'s own `pyproject.toml`/`VERSION` are still `0.8.9` — unbumped, since 0.8.9.1 was released as a targeted hotfix cherry-picked onto `production` (not a merge-forward from `main`). `main` carries substantially more unreleased work (RECONNECT sprint) pending its own release cut, at which point `main`'s version will bump past 0.8.9.1.
+`main`'s own `pyproject.toml`/`VERSION` are still `0.8.9` — unbumped, since both 0.8.9.1 and 0.8.9.2 were released as targeted hotfixes cherry-picked onto `production` (not merges-forward from `main`). `main` carries substantially more unreleased work (RECONNECT sprint) pending its own release cut, at which point `main`'s version will bump past 0.8.9.2.
 
 ## Versioning Scheme
 
@@ -88,6 +88,7 @@ During alpha testing, versions follow this pattern:
 
 | Version | Date       | Milestone | Notes                                          |
 | ------- | ---------- | --------- | ---------------------------------------------- |
+| 0.8.9.2 | Jul 2026   | Patch     | Security fix (#1344) — open-registration exposure closed, invite-token gate (hotfix on `production`) |
 | 0.8.9.1 | Jul 2026   | Patch     | Security fix (#1343) — anonymous LLM-key billing exposure closed (hotfix on `production`) |
 | 0.8.9   | Jun 2026   | RECONNECT | RECONNECT WS-1 + security + design D2 — connector infra, field encryption, token system |
 | 0.8.8   | Jun 2026   | RECONNECT | D1/RECONNECT — BYOC keys, Radar default, nav IA, home UX |
@@ -119,5 +120,5 @@ During alpha testing, versions follow this pattern:
 
 ---
 
-_Last updated: July 2, 2026_
-_Current version: 0.8.9.1 (released) — `main` at 0.8.9 pending next cut_
+_Last updated: July 3, 2026_
+_Current version: 0.8.9.2 (released) — `main` at 0.8.9 pending next cut_

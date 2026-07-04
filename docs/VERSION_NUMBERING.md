@@ -1,7 +1,7 @@
 # Piper Morgan Version Numbering Scheme
 
-**Current Version**: 0.8.9.1 (Alpha, released — security patch, closed #1343; `main` itself is at 0.8.9 pending its next cut; next: 0.9.0 beta at MVP)
-**Last Updated**: July 2, 2026
+**Current Version**: 0.8.9.2 (Alpha, released — security patch, closed #1344; `main` itself is at 0.8.9 pending its next cut; next: 0.9.0 beta at MVP)
+**Last Updated**: July 3, 2026
 
 ---
 
@@ -97,7 +97,8 @@ Within each milestone, marks incremental updates, bug fixes, and improvements.
 - **0.8.7** (June 3, 2026) - M1 Foundation + M2 Conscious Floor stable cut for alpha
 - **0.8.8** (June 19–20, 2026) - D1 close: Radar default home, F2 shell complete, BYOC credential layer, Conscious Floor, Files, Slack inbound, 252/252 regression
 - **0.8.9** (June 22, 2026) - RECONNECT WS-1: DB-backed connector config + StandupAssembler; security: AES-256-GCM field encryption, encrypted secrets, per-user LLM key routing, auth hardening; Design D2: token system, mobile nav, Radar rename
-- **0.8.9.1** (July 2, 2026) - Security patch: closed #1343 anonymous LLM-key billing exposure (hotfix on `production`) ← **CURRENT (released)**. `main` itself is still at 0.8.9, pending its next cut.
+- **0.8.9.1** (July 2, 2026) - Security patch: closed #1343 anonymous LLM-key billing exposure (hotfix on `production`)
+- **0.8.9.2** (July 3, 2026) - Security patch: closed #1344 open-registration exposure, invite-token gate (hotfix on `production`) ← **CURRENT (released)**. `main` itself is still at 0.8.9, pending its next cut.
 
 ### Beta Era (Planned)
 - **0.9.0** - Beta / MVP release (wider testing, more self-service, UUID bearer auth)
