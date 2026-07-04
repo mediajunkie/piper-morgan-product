@@ -88,3 +88,22 @@ Roadmap inconsistency: Fast Follow shows "TBD" in v18.3; Dot Releases + Enterpri
 **Outstanding:**
 - Roadmap v18.4 fold (milestone dates + RECONNECT status correction) — pending after synthesis
 - PA/CXO/Arch review responses → PPM consolidates → PM synthesis call
+
+---
+
+### Post-compaction resumption — 13:30+ PDT
+
+Context compacted mid-roadmap-v18.4 update sequence. Resumed from summary. All pre-compaction memos verified as pushed (confirmed from git log). sprint-order.md verified as NOT yet on origin/main (old Jul 3 "pending ratification" version still on main).
+
+**Incoming from PM (during compaction)**: Lead Dev sending PPM update memo about GitHub connector passing 12/12 tests. PPM inbox currently empty — memo not yet arrived. Will respond when it lands.
+
+**Documents completed (post-compaction)**:
+- sprint-order.md: written to disk pre-compaction; PUSHED to origin/main as part of this fire (see commit below)
+- roadmap.md v18.4: all six sections edited and pushed
+  - Title: v18.3 → v18.4
+  - Date: Jul 3 → Jul 4
+  - Status: appended v18.4 fold note
+  - v18.4 changelog: added (Beta Blockers, RECONNECT correction, milestone dates, #1344 CLOSED)
+  - Current Position: RECONNECT status corrected; Beta Blockers ACTIVE; Aug 1 removed; Production-milestone framing added
+  - Sprint Summary: RECONNECT WS-2 row corrected; Beta Blockers row added as ACTIVE PRIORITY; M3-Quality updated to TRIAGE
+  - Timeline forward sequence: rewritten — Beta Blockers as gate; non-gate items to Production; milestone dates updated (Fast Follow Nov 19, Dot Releases Feb 2 2027, Enterprise Jul 4 2027)
