@@ -1155,6 +1155,21 @@ async def handle_github_callback(
             await persist_github_connection(session, user_id, access_token)
             await session.commit()
 
+        # #1314 "default default": auto-set a first-run user's default_repo so they
+        # aren't stuck at zero. Best-effort — a failure here must never break the
+        # OAuth connection itself, which already succeeded above.
+        try:
+            from services.integrations.github.repo_resolver import (
+                apply_default_default_if_unset,
+            )
+            from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
+
+            repos_result = await GitHubMCPSpatialAdapter().search_user_repositories(user_id)
+            if repos_result.repositories:
+                await apply_default_default_if_unset(user_id, repos_result.repositories)
+        except Exception:
+            logger.warning("default_default_repo_apply_failed", user_id=user_id, exc_info=True)
+
         login = quote(result.get("login", "github"))
         logger.info("github_settings_oauth_success", user_id=user_id, login=result.get("login"))
         return RedirectResponse(

@@ -107,3 +107,23 @@ Cron management: deleted 22bdfe19, fetched origin/main, inbox clean (MANIFEST.md
 Late-firing cron — queued at 21:52 while Fire 5 was processing; fired when REPL went idle. Inbox clean (MANIFEST.md only). No new work.
 
 **IDLE** — no new work. All standing items unchanged.
+
+---
+
+## DAY-CLOSED — 2026-07-03
+
+**Fires**: 0 (PM-initiated), 1–6 (cron, including one late-queued)
+**Work completed**: Roadmap v18.3 fold; #1331 confabulation lens filed; #1322 gate recorded durably by Lead Dev; #1235 sprint-field escalated to PM (3 options); inbox triaged (5 memos processed).
+**Carry-forward**: #1235 PM decision, Sprint-order.md ratification, #1344 PM decision, #1269 PM milestone call, #683 Lead Dev recipe.
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced**:
+- `BRIEFING-CURRENT-STATE.md` — confirmed stale (15 days); flagged for Docs/CIO
+- `roadmap.md` — updated to v18.3
+- `sprint-order.md` — updated; pending PM ratification
+- Sprint field norm (memory) — closed→unstarted-sprint = PM-gate; informed #1235 handling
+
+**Loaded but not referenced**: cross-pollination brief, PROJECT.md
+
+**Wanted but not found**: nothing — all referenced items were accessible

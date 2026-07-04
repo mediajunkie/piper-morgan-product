@@ -429,9 +429,8 @@ class GitHubIntegrationRouter:
             except UnresolvedRepoError:
                 logger.warning(
                     "GitHub general-query: no repo could be resolved "
-                    "(no project-link, no user default_repo, no "
-                    "PIPER_DEFAULT_REPO env var). Returning empty result. "
-                    "(Issue #1042)"
+                    "(no user default_repo, no PIPER_DEFAULT_REPO env var). "
+                    "Returning empty result. (Issue #1042)"
                 )
                 return None
         except Exception as e:

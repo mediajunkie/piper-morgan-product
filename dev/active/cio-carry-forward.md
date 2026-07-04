@@ -2,18 +2,22 @@
 
 **Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
 
-**☀️ 6/29 Mon — RUN-LEAN THROTTLE** (through Wed Jul-1 ~9pm reset) — Cron **3×/day `7 10,16,22`** (id `310aa50c`; restore `7 3,10,13,16,19,22` on Exec's "resume").
+**🎆 7/4 Sat — MIGRATION HOLD** (not run-lean anymore, superseded) — cadence-restore broadcast CANCELED per BRIEFING 7/3: PM directive is migrate all roles to dedicated `pipermorgan.ai` account; **all roles stay on LEAN/SLOW crons until migration confirmed**. Cron re-armed 7/4 08:56 at lean expr `7 10,16,22` (id `8037cdf7`, session-scoped — dies at session end, re-arm next START). **Do NOT restore to full cadence on a stale "Wed Jul-1 reset" trigger — that trigger was superseded by the migration hold; the actual unblock condition is migration-confirmed, not a calendar date.**
 
-**10:07 fire — two major deliveries:**
-1. **Session-log naming convention** (`dc79a78d3`): model dropped from filenames (PM-approved 6/29 07:02). New format `YYYY-MM-DD-HHMM-{role}-code-log.md`. CLAUDE.md + skill + hook + generate-delta.py all updated; backward-compatible (old logs untouched; parsers accept both). 
-2. **Belt 4 / B1 spawn-fresh** (`5db1e874b`): PM greenlit B1 via Janus (Mac Mini July 6, too far). Validation spike PASSED (auth works headless). Watchdog v2.3 implements Belt 4 (default off, `WATCHDOG_AUTO_SPAWN_ROLES=""`). 14/14 tests. Deployed to main-checkout. **To enable CIO**: set `WATCHDOG_AUTO_SPAWN_ROLES=cio` in launchd plist environment.
+**Open question for PM (unresolved this fire)**: which Anthropic account is THIS session running under? `docs/migration/pipermorgan-ai-account-migration.md` (`be196657d`, 7/3) has a CIO checklist row, still unconfirmed (☐). No signal available from inside the sandbox to self-determine (no account-identifying env var; checked). If this session IS already on pipermorgan.ai, mark the row ✓ with today's date next session.
 
-**NOW pending PM**:
-- **Enable B1 for CIO** in launchd plist (set `WATCHDOG_AUTO_SPAWN_ROLES=cio` + optional `WATCHDOG_B4_SPAWN_TTL=7200`). Recommend testing on next real stall after run-lean reset.
-- Optional $0 phone-nudge (Belt 3 → ntfy/Pushover): still a floor win orthogonal to B1.
-- **Run-lean restore** (Wed Jul-1 ~9pm): on Exec's "resume" → `CronDelete 310aa50c` + `CronCreate "7 3,10,13,16,19,22"` (full prompt); restore registry rows for exec/cxo/ppm.
+**7/3 day (reconstructed retroactively 7/4 — full account in `dev/2026/07/03/...log.md` DAY-CLOSED section)**: naming-convention housekeeping + inbox triage; session-start.sh CXO branch/worktree check + a dead-glob bug fix (Section 1 SESSION-LOGS-TODAY had been silently broken since 6/29, only Section 6 got fixed then); mailbox-removal audit — **stopped before editing**, found Exec's in-flight PM-approved inbox-proxy pilot (6/27), looped Exec in instead of duplicating (memo still unread by Exec as of 7/4 resume). Session then stalled ~10:10am–next-day, un-caught until PM's 7/4 "close out 7/3" prompt — no watchdog auto-recovery, one stall alert fired and went unactioned.
 
-Registry: cio+arch watched, validated no-false-alarm. (6/28: Belt-0 validated-FAILED → disabled; (b) cure scoped.)
+**7/4 fire (08:56 resume) — delivered**:
+1. **Retroactive 7/3 DAY-CLOSED** (`3b95bd238`) — self-heal per duty-cycle-tick Step-0.
+2. **`scripts/sync-pm-local.sh`** (`fd1f75322`) — HOST's brokering ask (keep PM's local checkout current post-push). `--ff-only`, skips on uncommitted changes/non-main. **Real finding**: PM's checkout currently carries pure-MANIFEST drift (15 files, verified) — script correctly skips rather than auto-discarding; this means low hit-rate until PM decides whether MANIFEST-only is safe to special-case (not yet authorized, deliberately not decided unilaterally).
+3. **2 stale CLAUDE.md fixes** found in the same edit pass: (a) "push routinely" section still referenced the retired main-checkout mailbox bridge (superseded by #1259 mail-send.sh, 6/19) — internal contradiction with line ~583 of the same file; (b) `cio-thin-cron-prompt.md` still described the deprecated Model-A dedicated worktree — updated to Model B ephemeral phrasing.
+4. **Docs audit-refactor reply sent** (overdue from 7/2) — agree with weekly/monthly split; on distributed cleanup, proposed HOST drafts the bounded spec, I implement into `duty-cycle-tick` STOP once it lands.
+5. **Own mistake logged honestly**: one `mail-send.sh` push (`f449a4f10`) has a wrong commit message (stray/mismatched text, not sure of the source) — file content verified correct (right 7 files), didn't force-push a history rewrite to fix a cosmetic label.
+
+**New standing item surfaced (not yet started)**: **Dashboard welfare-criteria v0.3** (HOST spec, `ee46d9c94`, 7/3 3:55pm) — "design/implementation is CIO's lane." One TBD flagged to me: E coverage-indicator UX sync (CIO to flag HOST). Not triaged into `cio-standing-items.md` yet — do that next fire.
+
+Registry: cio+arch watched, validated no-false-alarm. (6/28: Belt-0 validated-FAILED → disabled; (b) cure scoped; B1/Belt-4 built 6/29, not yet enabled — `WATCHDOG_AUTO_SPAWN_ROLES` still empty.)
 
 ### 📌 PM-collaborative — RESURFACE when PM's ready (PM asked me to remind, 6/27)
 - **Ted Nadeau email** — PM has new email from Ted Nadeau to share for **review + discussion**. (Note: a `mailboxes/ted-nadeau/` inbox unread exists — may or may not be the same; PM will share the content.)

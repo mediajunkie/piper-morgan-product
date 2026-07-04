@@ -157,61 +157,12 @@ class TestUserDefaultFromDB:
                 await resolve_repo(user_id=uuid4())
 
 
-class TestDefaultProjectResolution:
-    """Path 2.5 (#1192(b)-v1): the user's default, non-archived project's repo.
-
-    Selection rule is the model's existing is_default/is_archived — no separate
-    "active project" concept. We patch the resolver-level helper (DB lookup +
-    project-link delegation) the same way the other path tests do.
-    """
-
-    _DEFAULT_PROJ = "services.integrations.github.repo_resolver._resolve_from_default_project"
-    # WS-1 P4: the user-default source is the DB reader (flat-file reader retired).
-    _READER = "services.integrations.github.repo_resolver._read_user_default_repo_from_db"
-
-    async def test_default_project_repo_used_when_present(self, monkeypatch):
-        monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
-        from services.integrations.github.repo_resolver import ResolvedRepo as RR
-
-        resolved = RR(owner="projowner", name="projrepo", source="default_project")
-        with patch(self._DEFAULT_PROJ, new=AsyncMock(return_value=resolved)):
-            result = await resolve_repo(user_id=uuid4())
-        assert result.source == "default_project"
-        assert result.full_name == "projowner/projrepo"
-
-    async def test_default_project_beats_user_default_pref(self, monkeypatch):
-        monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
-        from services.integrations.github.repo_resolver import ResolvedRepo as RR
-
-        proj = RR(owner="projowner", name="projrepo", source="default_project")
-        with (
-            patch(self._DEFAULT_PROJ, new=AsyncMock(return_value=proj)),
-            patch(self._READER, new=AsyncMock(return_value="prefowner/prefrepo")),
-        ):
-            result = await resolve_repo(user_id=uuid4())
-        assert result.source == "default_project"  # project outranks preference
-
-    async def test_no_default_project_falls_through_to_user_default(self, monkeypatch):
-        monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
-        with (
-            patch(self._DEFAULT_PROJ, new=AsyncMock(return_value=None)),
-            patch(self._READER, new=AsyncMock(return_value="prefowner/prefrepo")),
-        ):
-            result = await resolve_repo(user_id=uuid4())
-        assert result.source == "user_default"
-        assert result.full_name == "prefowner/prefrepo"
-
-    async def test_explicit_still_beats_default_project(self, monkeypatch):
-        from services.integrations.github.repo_resolver import ResolvedRepo as RR
-
-        proj = RR(owner="projowner", name="projrepo", source="default_project")
-        with patch(self._DEFAULT_PROJ, new=AsyncMock(return_value=proj)):
-            result = await resolve_repo(user_id=uuid4(), explicit="caller/wins")
-        assert result.source == "explicit"
-
-
 class TestResolutionOrder:
-    """Decision tree priority: explicit > project > user > env > raise."""
+    """Decision tree priority: explicit > user > env > raise.
+
+    RETIRED (#1315, 2026-07-04): TestDefaultProjectResolution (project-scoped +
+    default-project paths) removed along with the resolve_repo paths themselves.
+    """
 
     async def test_env_does_not_override_explicit(self, monkeypatch):
         monkeypatch.setenv(ENV_DEFAULT_REPO, "env/repo")
