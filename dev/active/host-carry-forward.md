@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-03 15:37 PT (Fire 5; dashboard welfare-criteria v0.3 spec published)
+**Last updated**: 2026-07-03 18:28 PT (Fire 6; health check complete; _NUDGES guard watch-item closed)
 
 ---
 
@@ -29,7 +29,7 @@
 ## Watch / third-failure-class (HOST tracking)
 
 - **Floor-anti-confabulation general third class** (Arch alignment 2026-07-03): "handler returns empty → floor infers success" is partially covered by #1231 (connector-metadata subcase = DegradationReason fix). General case (any handler, not just connector-metadata) is uncovered. Track if it recurs outside the connector path. No immediate action.
-- **`_NUDGES` completeness guard** (Arch 2026-07-03 Fire 4 timing sharpening): ✅ **CAPTURED in #1231 change** — no longer a HOST watch item. Test (enumerate `DegradationReason`, assert each in `_NUDGES`) lands with the `NOT_CONFIGURED` add in #1231's step-2 commit. Lead builds, Arch ratifies. HOST disposition: closed.
+- **`_NUDGES` completeness guard**: ✅ **SHIPPED + RATIFIED** (2026-07-03 Fire 6). Lead shipped `test_every_degradation_reason_has_nudge_copy` commit `7b0491f98`; Arch ratified. `NOT_CONFIGURED` entry was already live since 2026-07-01 (CXO voice-pass). Guard is retroactive completeness coverage of already-correct state. Invariant: enumerate `DegradationReason` → assert each in `_NUDGES`; future enum additions without copy fail the build. CLOSED.
 
 ## Active with PM (teed, awaiting PM)
 
