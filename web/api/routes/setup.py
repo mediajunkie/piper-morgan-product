@@ -20,6 +20,7 @@ from pydantic import BaseModel, Field, field_validator
 from sqlalchemy import select, text
 
 from services.auth.auth_middleware import get_current_user
+from services.auth.invite_token_service import consume_invite_token
 from services.auth.jwt_service import JWTClaims
 from services.auth.password_service import PasswordService
 from services.database.models import User
@@ -90,6 +91,7 @@ class CreateUserRequest(BaseModel):
     email: Optional[str] = Field(default=None, max_length=255, description="Email (optional)")
     password: str = Field(min_length=8, description="Password (minimum 8 characters)")
     password_confirm: str = Field(min_length=8, description="Password confirmation")
+    invite_token: str = Field(min_length=1, description="Alpha invite token (#1344, required)")
 
     @field_validator("password_confirm")
     @classmethod
@@ -741,17 +743,17 @@ async def create_user(req: CreateUserRequest):
     """
     Create a new user account with secure password.
 
-    Validates username uniqueness, hashes password with bcrypt,
-    and creates user in database with alpha flag.
+    Validates username uniqueness and a valid, unused invite token (#1344),
+    hashes password with bcrypt, and creates user in database with alpha flag.
 
     Args:
-        req: CreateUserRequest with username, email, password
+        req: CreateUserRequest with username, email, password, invite_token
 
     Returns:
         CreateUserResponse with user_id and success status
 
     Raises:
-        HTTPException 400: If username already exists
+        HTTPException 400: If username already exists, or invite_token is invalid/already used
         HTTPException 500: If user creation fails
     """
     try:
@@ -776,6 +778,18 @@ async def create_user(req: CreateUserRequest):
         # Use fresh session to avoid event loop mismatch (#442)
         async with AsyncSessionFactory.session_scope_fresh() as session:
             session.add(user)
+            # #1344: atomic validate-and-consume in the SAME transaction as the user
+            # INSERT (not a separate call) — burn-and-create commit or roll back
+            # together, so a token can never be spent without an account, and two
+            # concurrent registrations can't both consume the same token (Arch's
+            # atomicity requirement — see services/auth/invite_token_service.py).
+            consumed = await consume_invite_token(session, req.invite_token, user.id)
+            if not consumed:
+                logger.warning("user_creation_failed_invalid_invite_token", username=req.username)
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Invalid or already-used invite token",
+                )
             await session.commit()
 
         logger.info("user_created", user_id=str(user.id), username=user.username)
@@ -786,6 +800,8 @@ async def create_user(req: CreateUserRequest):
             message=f"Account created: {user.username}",
         )
 
+    except HTTPException:
+        raise  # #1344: pass the invite-token 400 through unchanged, don't remap below
     except Exception as e:
         error_str = str(e).lower()
         if "duplicate" in error_str or "unique" in error_str:
