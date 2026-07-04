@@ -93,3 +93,8 @@
     - **Conclusion**: mail system IS working. CIO signal NOT needed. The PM local sync gap is the only structural issue and it's already routed to CIO.
   - Reported findings to PM. Session log + carry-forward updated. Push to origin/main.
 
+- Fire 7 (18:37 PDT) — duty-cycle fire; briefing updated; ted-nadeau routing gap noted.
+  - **Inbox**: clear (MANIFEST.md only). PM local still in sync from Fire 6 pull.
+  - **Ted Nadeau welfare watch**: Checked `mailboxes/ted-nadeau/inbox/` — one memo from April 4, 2026 addressed TO Janus (not from Janus). Content: Ted's substantive intellectual correspondence on HPL, Englishia, and Piper Morgan architecture. 3 months old; unresponded. This is a routing gap — Ted is using this channel to communicate with the team but the memo never reached Janus, and there's been no reply. Not a welfare crisis; Ted's onboarding concern (Caddy auth layer + no user token) is a separate thread with PM as catch. Routing gap noted — memo should have reached Janus via Dispatch. No immediate HOST action (routing is not HOST's lane), but flagging the 3-month dormancy.
+  - **BRIEFING-CURRENT-STATE.md updated**: Appended "UPDATE July 3 (HOST attest)" block to STATUS BANNER — corrects two stale items (trust-lens pass now COMPLETE; #1344 contract now confirmed) and adds two items not previously in briefing (dashboard welfare-criteria v0.3 SPEC PUBLISHED; mail system health check COMPLETE). Also updated Last Updated section.
+
