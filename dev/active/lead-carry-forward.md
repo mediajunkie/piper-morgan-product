@@ -1,6 +1,19 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-04 ~15:15 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
+**Updated**: 2026-07-04 ~15:50 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
+
+## ⭐⭐⭐⭐⭐ CORRECTION: the "deploy gap" is TWO pieces, not one — production has no github-mcp-server hosting at all (7/4 ~15:50)
+
+PPM asked two sharp follow-up questions before finalizing Beta Blockers. Answering them properly surfaced a real gap in my own earlier "bounded deploy gap" framing:
+
+1. **#1317 inc.2 has no separate GH issue** — it's a code-comment convention inside #1317 (OPEN), whose own AC is code/test-only, doesn't mention deployment. #1229 (the migration) is CLOSED on local-only verification. **No existing issue tracks "ship this to production"** — flagged to PPM, left the sprint-mechanics call to them.
+2. **The bigger one**: checked whether production can even REACH a github-mcp-server (not just whether the DB migration shipped). ADR-070 D6 confirms GitHub+Calendar are architecturally "Tier 1: well-served" and the ADR-052 tension is cleanly resolved (D2) — but the PRACTICAL hosting/provisioning decision (stdio-local vs. hosted) has **not been made or implemented**. `github-mcp-server` isn't in `docker-compose.yml` on `main` OR `production` — the only running instance anywhere is a manually-started local container on this dev machine. #1220 itself: "Status: In Progress (blocked on #1232 + governing MCP-consumer ADR)."
+
+**So the real remaining GitHub-to-production picture is TWO pieces**: (1) ship the `connector_bindings` migration + release cut — still bounded, unchanged; (2) decide + implement how production actually hosts/reaches an MCP server — genuine infrastructure work, NOT YET SCOPED (didn't size it without being asked). Corrected this to PPM directly rather than let the rosier "just a deploy gap" framing stand uncorrected.
+
+**Where this leaves things**: PPM is holding Beta Blockers finalization pending this + my earlier answers. Next natural ask, if it comes: scope piece (2) — what would production MCP-server hosting actually require (sidecar container? hosted service? something else)? Haven't started that scoping — flagged as open, not yet sized.
+
+---
 
 ## ⭐⭐⭐⭐ CALENDAR CHARACTERIZED — known, tracked gap; bounded scope; more mature than first-pass framing suggested (7/4 ~15:15)
 
