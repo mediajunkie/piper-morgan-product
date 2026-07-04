@@ -12,7 +12,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from services.intent_service.canonical_handlers import CanonicalHandlers
-from services.intent_service.degradation_copy import degrade_nudge
+from services.intent_service.degradation_copy import _NUDGES, degrade_nudge
 from services.mcp.consumer.connector import DegradationReason
 
 
@@ -115,3 +115,12 @@ def test_policy_is_connector_parameterized():
 
 def test_policy_unknown_reason_is_empty():
     assert degrade_nudge(None) == ""
+
+
+def test_every_degradation_reason_has_nudge_copy():
+    """Completeness guard (Arch/HOST, 2026-07-03): a DegradationReason with no _NUDGES
+    entry silently produces no nudge (honest but useless). Mirrors #1308's derive-don't-
+    list shape — a future reason with missing copy fails the build instead of shipping
+    silent-empty."""
+    missing = [r for r in DegradationReason if r not in _NUDGES]
+    assert not missing, f"DegradationReason members with no nudge copy: {missing}"
