@@ -138,6 +138,14 @@ AUTH_EXEMPT_JUSTIFIED: Dict[str, str] = {
     "/api/v1/auth/refresh": "auth bootstrap (token refresh, #857)",
     # Setup wizard — runs pre-account-creation.
     "/api/v1/setup/": "setup wizard, pre-account-creation",
+    # #1344 (Gap-A closure): create-user's justification is NOT "runs pre-account-creation"
+    # alone (that was the pre-#1344 gap — true, but not a real gate once the Caddy perimeter
+    # that used to restrict wizard access was removed Jun 29). It now requires a valid,
+    # unused, atomically-consumed invite token enforced IN THE HANDLER — a real app-layer
+    # gate independent of any perimeter. Specific entry (not just the blanket prefix above)
+    # so this route's true protection is legible on its own, not implied by the group.
+    "/api/v1/setup/create-user": "requires a valid invite token (#1344), atomically consumed "
+    "in create_user — see services/auth/invite_token_service.py",
     # Optional-auth — handles auth inline; the LLM call is gated by BYO-key (#490 / #1185).
     "/api/v1/intent": "optional-auth (inline user resolution); LLM gated by BYO-key",
     # Env-gated dev tooling — 404s in production via dev_trust's require_dev_environment.

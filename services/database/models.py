@@ -677,6 +677,30 @@ class ConnectorBinding(Base, TimestampMixin):
     )
 
 
+class InviteToken(Base):
+    """#1344 — alpha-registration invite gate (Arch's Gap-A closure; HOST-issued, Lead-enforced).
+
+    Trust-zone separation (HOST/Arch/Lead-agreed 2026-07-03): this table validates TOKENS
+    only, never identities. HOST owns the canonical roster mapping token -> tester identity
+    in a gitignored file outside this DB; this table has no knowledge of who a token was
+    issued to. `token` is the PK directly (natural key — the value IS the lookup), stored
+    normalized-uppercase (Crockford Base32) so comparison is a straight equality check.
+
+    Atomicity (Arch, load-bearing): validate-and-consume MUST be a single conditional UPDATE
+    (`WHERE used_at IS NULL`), never a separate check-then-write — a non-atomic pair has a
+    TOCTOU race where two concurrent registrations both pass validity before either burns the
+    token (double-spend). See services/auth/invite_token_service.py for the enforcement.
+    """
+
+    __tablename__ = "invite_tokens"
+
+    token = Column(String(32), primary_key=True)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    # NULL = unused/valid. Set atomically by the conditional UPDATE at registration.
+    used_at = Column(DateTime(timezone=True), nullable=True)
+    used_by_user_id = Column(CrossDialectUUID(), ForeignKey("users.id"), nullable=True)
+
+
 class Product(Base):
     """Product being managed"""
 
