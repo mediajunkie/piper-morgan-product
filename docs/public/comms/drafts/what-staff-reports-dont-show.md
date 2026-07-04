@@ -8,19 +8,19 @@ caption:
 
 *May 20, 2026*
 
-I was drafting a weekly progress post a few days ago — the kind of synthesis post where I review what the cohort of role-named agents on my project shipped during the past week and report it out. I'd opened all six of the role-specific weekly memos. Read them carefully. Synthesized what they said. Drafted the post. Sent it for review.
+I was drafting a weekly progress post a few days ago — the kind of synthesis post where I review what the team of role-named agents on my project shipped during the past week and report it out. I'd opened all six of the role-specific weekly memos. Read them carefully. Synthesized what they said. Drafted the post. Sent it for review.
 
 The reviewer flagged that I'd missed the entire engineering arc of the week. Half a dozen issue closures had landed in the codebase. None of them appeared in any of the six memos I'd read.
 
 [FACT-CHECK NOTE for PM: Ship #043 v0.2 draft; engineering arc included #921 / #857 / #1071 / #1021 / M2f closure / M2g-A + M2g-B / #1070 / #304 / #1090 per memory pin. Confirm if the public version should mention specifics or stay at "half a dozen issue closures."]
 
-## The mistake
+# The mistake
 
-I'd been treating the six memos as the source set. They weren't. The memos were each role's *perspective* on the week — what that role wanted to surface from its own corner of the project's activity. The source set was something bigger: the daily omnibus logs the documentation role kept aggregating cross-cohort activity, the individual session logs each role wrote at the end of its working sessions, and the actual artifacts produced over the week — commits, issue closures, code changes, memos filed.
+I'd been treating the six memos as the source set. They weren't. The memos were each role's *perspective* on the week — what that role wanted to surface from its own corner of the project's activity. The source set was something bigger: the daily omnibus logs the documentation role kept aggregating cross-team activity, the individual session logs each role wrote at the end of its working sessions, and the actual artifacts produced over the week — commits, issue closures, code changes, memos filed.
 
 The six memos summarized what each role wanted me to know. The source set described what was happening. Those are two different deliverables. I'd been reading the first and assuming I had the second.
 
-## Why staff reports filter
+# Why staff reports filter
 
 This isn't a bug in how the role-memos were written. Filtering is what role-memos are *for.* Each role writes from its perspective on what's important from its role's vantage. The documentation role notes things the documentation role notices. The engineering role notes things the engineering role notices. None of the roles writes a comprehensive log of everything that happened in the week — that would defeat the purpose of having role-specific reports, which is to give the reader a quick view from each angle.
 
@@ -30,7 +30,7 @@ The problem is what happens when you only read the reports. You get the cross-pr
 
 The chief who reads only the staff reports gets a coherent narrative built from the union of the staff's filters. That narrative isn't ground truth. It's the staff's view of ground truth.
 
-## Why I almost didn't notice
+# Why I almost didn't notice
 
 The reason staff-reports-only is the seductive failure mode is that the staff reports are *compact.* They're written for the reader's attention. They distill. They make synthesis fast. If you're under time pressure or attention pressure, the staff reports are an enormous bandwidth saver. You can cover the week in an hour. You can cover the quarter in a day. You can cover the year in a week.
 
@@ -42,11 +42,11 @@ But the gap isn't always small. Sometimes the staff misses something. Sometimes 
 
 The chief reading the source set can.
 
-## What the source set looks like
+# What the source set looks like
 
 For my project, the source set has three components.
 
-The first is omnibus logs — a daily aggregation document the documentation role keeps, listing each role's session activity in chronological cross-cohort order. Reading the day's omnibus shows me what happened across all roles on that day, not just what each role decided to surface in its weekly memo.
+The first is omnibus logs — a daily aggregation document the documentation role keeps, listing each role's session activity in chronological cross-team order. Reading the day's omnibus shows me what happened across all roles on that day, not just what each role decided to surface in its weekly memo.
 
 The second is session logs — each role's per-session record of what it actually did, including the mistakes, the dead ends, the unfinished work, the things that almost got filed but didn't. Session logs are where I see the texture of the work. The staff memos are where I see the conclusions.
 
@@ -54,7 +54,7 @@ The third is the actual artifacts. The commits in the repository. The issues clo
 
 Reading these three layers gives me coverage of what happened. Reading the staff reports gives me coverage of what the staff want me to think happened. Both are useful. Only the first is ground truth.
 
-## The discipline
+# The discipline
 
 The chief reads the logs. Not as a substitute for the staff reports — the staff reports are still doing useful work, and a chief who never reads them would have a different blind spot, missing the staff's framing of the priorities. The discipline is to read both, and to form views on the source set rather than on the staff-mediated summary.
 
@@ -62,7 +62,7 @@ In time-constrained moments, this is hard. The temptation is to skip the source 
 
 The compounding is the thing that matters most. The first time you skip the source set, the cost is approximately zero. The hundredth time, the cost is that your model of the project has drifted from reality by a hundred small unnoticed events, and you no longer have the calibration to detect the drift.
 
-## The generalization
+# The generalization
 
 This isn't really about chiefs of staff. It's about any role that consumes filtered reports from front-line workers.
 
@@ -72,7 +72,7 @@ Same shape in each case. The filter is well-intentioned and structurally appropr
 
 The maturity isn't being suspicious of the staff. It's understanding what staff reports are *for* — which is filtered surfacing, not ground-truth replacement — and reading accordingly.
 
-## What changed for me
+# What changed for me
 
 The weekly post I'd drafted from staff-reports-only got rewritten. The second pass started from the omnibus logs instead, and the engineering arc came back in. The quality of the synthesis improved. More importantly, the act of reading the source set surfaced two other small patterns the staff hadn't yet named — patterns I could carry into the next week's reviews.
 
@@ -80,6 +80,6 @@ The chief reading the source set wasn't a luxury. It was the difference between 
 
 ---
 
-*Next on Building Piper Morgan: [tease for next scheduled piece — confirm when calendar slot lands]*
+*Next on Building Piper Morgan: "What the Running System Found" — the system had been running for three days when we discovered six of nine agents had been quietly doing their logging wrong, and had all self-corrected the same day without anyone noticing.*
 
 *Where in your work do you consume filtered reports from front-line workers? When was the last time you read the source set instead? What did you find that the filter had dropped?*

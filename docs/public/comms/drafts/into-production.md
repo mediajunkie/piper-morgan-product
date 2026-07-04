@@ -44,6 +44,6 @@ The distance from "working" to "deployed" is seven problems you didn't know you 
 
 ---
 
-*Next on Building Piper Morgan: the system had been running for three days when we discovered that six of nine agents had been quietly doing their logging wrong — and had all self-corrected the same day without anyone noticing.*
+*Next on Building Piper Morgan: "Mechanical First, Then Read" — why the mechanical checks come before reading for meaning, and what that order quietly saves.*
 
 *What's the most revealing thing you've learned from running a system in production vs. in development? What had you been carrying that the environment hadn't told you yet?*

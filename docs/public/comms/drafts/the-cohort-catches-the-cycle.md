@@ -4,7 +4,7 @@ alt:
 caption: 
 ---
 
-# The Cohort Catches the Cycle
+# The Team Catches the Cycle
 
 *May 27–28, 2026*
 

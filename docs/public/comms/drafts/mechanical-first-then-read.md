@@ -18,7 +18,7 @@ That's not a writing problem. That's an attention-allocation problem.
 
 [FACT-CHECK NOTE for PM: incident was the Voice-of-a-Denial proofreading miss, May 21 PM correction. Confirm framing.]
 
-## The mistake
+# The mistake
 
 I'd been doing the read-for-meaning pass and assuming that pass would also catch the pattern-violations. The read-for-meaning pass catches meaning errors. It does not, reliably, catch pattern errors.
 
@@ -26,7 +26,7 @@ The reason is structural. When you read for meaning, your brain is doing the hea
 
 So the semicolons sit there, in sentences that read smoothly, and the reading-for-meaning pass approves the sentences because they make sense. The rule was in my head. The character was on the page. The two never met during the pass.
 
-## The fix that emerged
+# The fix that emerged
 
 Run mechanical checks first. Before the read-for-meaning pass.
 
@@ -36,7 +36,7 @@ The semicolons that hide from the meaning-pass don't hide from grep. The pattern
 
 So the discipline became: grep first, read second. The grep finds the violations that hide from the eye. The reading pass then has all of its attention available for what only attention can do — judging whether the argument lands, whether the voice is right, whether the structure builds toward the closer.
 
-## Why this works
+# Why this works
 
 Pattern-recognition for known violations is automatable. Meaning-judgment isn't.
 
@@ -46,7 +46,7 @@ So mechanical-first frees the human attention for the human-only work. The grep 
 
 This isn't a clever trick. It's just splitting the work along the line that matches what the two reviewers — the machine and the human — are each good at. The mistake I was making was *not splitting the work* and asking the human pass to do both jobs. The human pass is good at one of the jobs and bad at the other.
 
-## The lesson generalizes
+# The lesson generalizes
 
 This isn't really about proofreading. It's about any review process where pattern-violations and meaning-violations get mixed.
 
@@ -58,7 +58,7 @@ Design critique: the heuristic-checklist pass catches the visited-link colors an
 
 Same shape in each case. Mechanical pass for findable-by-rule violations. Human pass for the work that requires judgment. Run the mechanical first. Use the human attention for what only human attention can do.
 
-## What the discipline looks like in practice
+# What the discipline looks like in practice
 
 Before a read-for-meaning pass on a post, my actual sequence now is:
 
@@ -72,7 +72,7 @@ Before a read-for-meaning pass on a post, my actual sequence now is:
 
 None of that takes more than a minute or two. All of it surfaces violations the eye glides past. The actual reading pass then starts with a file that's already mechanically clean, and the reading pass can concentrate on what the reading pass is good at.
 
-## The reframe
+# The reframe
 
 I almost decided the original incident — the three missed semicolons — was a personal-discipline failure. *I'm bad at proofreading. I need to try harder. Be more careful next time.*
 
@@ -82,7 +82,7 @@ The reframe is: split the jobs. Run the mechanical job mechanically. Run the hum
 
 This is the same shape as a lot of attention-economics observations. Attention is finite. Spend it on what only attention can do. Automate what doesn't need attention. Don't conflate the two. The mistakes that follow from conflating them aren't *trying-harder* problems. They're allocation problems.
 
-## What I'd watch for
+# What I'd watch for
 
 The discipline is mechanical, but adopting it requires noticing two things:
 
@@ -92,6 +92,6 @@ Second, that the discipline pays out cumulatively. The first time you run the me
 
 ---
 
-*Next on Building Piper Morgan: [tease for next scheduled piece — confirm when calendar slot lands]*
+*Next on Building Piper Morgan: "What Staff Reports Don't Show" — a weekly synthesis post that missed an entire engineering arc because it only read the filtered summaries, not the source.*
 
 *Where in your work are you asking one pass to do two jobs that need different postures? What discipline have you automated that freed your attention for the part you couldn't automate? What does it cost to notice when you're conflating the two?*
