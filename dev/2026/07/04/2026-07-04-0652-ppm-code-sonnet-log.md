@@ -107,3 +107,4 @@ Context compacted mid-roadmap-v18.4 update sequence. Resumed from summary. All p
   - Current Position: RECONNECT status corrected; Beta Blockers ACTIVE; Aug 1 removed; Production-milestone framing added
   - Sprint Summary: RECONNECT WS-2 row corrected; Beta Blockers row added as ACTIVE PRIORITY; M3-Quality updated to TRIAGE
   - Timeline forward sequence: rewritten — Beta Blockers as gate; non-gate items to Production; milestone dates updated (Fast Follow Nov 19, Dot Releases Feb 2 2027, Enterprise Jul 4 2027)
+- **Commit**: `371a9cf2c` — sprint-order v2 + roadmap v18.4 + this log update (pushed to origin/main)
