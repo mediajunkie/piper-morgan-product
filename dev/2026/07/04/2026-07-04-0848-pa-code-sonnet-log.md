@@ -19,3 +19,9 @@
 - Committed June 29 log (was in worktree, unpushed from prior session)
 - Started July 4 log
 - Reading PA inbox now
+
+### ~9:15 AM — Mail triage + MCPB briefing to Lead
+- 14 inbox memos read and moved to read/ via mail-send.sh push-to-ref (bfbb3b08d → origin/main)
+- Sent MCPB briefing to Lead (5 questions answered): source lives in skunkworks, v0.1.9 manual dist, MCPB already points at alpha.pipermorgan.ai (not localhost), #1278 unbuilt, /api/v1/intent is Lead's surface; security finding surfaced (Caddy removal broke connect() credential model)
+- CC'd PM on briefing (Lead had cc'd PM on original request)
+- PA inbox now clear
