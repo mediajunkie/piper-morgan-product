@@ -135,3 +135,66 @@ PM: "Lead Dev has responded — check your mail."
 - Holding beta blocker sprint finalization + PA/CXO/Arch synthesis update until those answers arrive
 
 **Status**: awaiting Lead Dev response on #1317 and #1220 issue status
+
+---
+
+### PM directives + Lead Dev memos — 15:00–17:00 PDT (second compaction period)
+
+**Additional Lead Dev memos processed** (4 more arrived; all moved to ppm/read/):
+
+3. `memo-lead-to-ppm-cc-pm-answers-plus-a-refinement-deploy-gap-is-two-pieces-2026-07-04.md` — deploy gap is TWO pieces: (1) migration + release cut, (2) production MCP server hosting. No existing GitHub issue tracks "ship to prod." #1317 incr. 2 is a code-comment convention within that issue, NOT a separate GH issue.
+4. `memo-lead-to-ppm-cc-pm-calendar-real-scope-characterization-2026-07-04.md` — Calendar: bespoke auth (keychain OAuth) is mature and multi-tenant correct. Works for external beta testers via setup wizard. Not a "broken today" blocker. RECONNECT migration for Calendar is architectural consistency work (Production-milestone).
+5. `memo-lead-to-ppm-cc-pm-main-vs-production-release-model-2026-07-04.md` — origin/main is 1,211 commits ahead of origin/production. Production advances via deliberate cherry-pick release cuts only. "Built on main" ≠ "live in production."
+6. `memo-lead-to-ppm-cc-pm-1235-cleared-per-pm-2026-07-04.md` — PM cleared #1235 (Sprint field); Lead Dev executed. ✅ RESOLVED (was carry-forward; now closed).
+
+**PM directives (five, in-conversation mid-session)**:
+1. Create Beta Blockers sprint on GitHub project board ✅
+2. Scrutinize M5 for hosting/traffic/risk ✅
+3. Go sprint-by-sprint to decide Production moves (active) 
+4. Keep up with mail ✅ (ongoing)
+5. If agents aren't replying, memo Exec ✅
+
+**PM decisions on scope**:
+- MCP distribution (M5 cluster) → Production, not a beta blocker
+- #1278 (Fly.io hosting) → Beta Blockers ✅
+- #1258 (LAUNCH-ENV) → Beta Blockers ✅
+- #1061 (UI framework) → Production ✅
+- #1300 → Production ✅
+- All 18 M5 open non-gate issues → Production milestone ✅
+
+**GitHub board work (Beta Blockers sprint created)**:
+- Sprint field option added: "Beta Blockers - Hard Gates Only" (RED, option ID `0b1b13f2`)
+- Full Sprint field required passing ALL 47+ existing options with color/description — API rejected partial update
+- 14 issues moved to Beta Blockers sprint: #441, #1168, #1176, #1220, #1241, #1258, #1261, #1278, #1283, #1299, #1304, #1317, #1324, #1332
+- Rate limit hit twice during board operations; recovered both times
+
+**Documents pushed (all on origin/main)**:
+- `371a9cf2c` — sprint-order.md v2 + roadmap.md v18.4
+- `e836de41e` — sprint-order.md: #1258 added to Beta Blockers table; footer updated (14 issues)
+- `c27dfaced` — ppm/read/: CIO briefing-refactor ratification memo + MANIFEST
+
+**M5 milestone triage complete** (18 issues moved to Production):
+- `c27dfaced` push confirmed; spot-checked 6 issues, all → Production milestone ✅
+- Issues: #1061, #1300, #829, #830, #831, #832, #957, #958, #959, #966, #1282, #973, #1043, #1183, #1186, #1202, #1211, #1336
+
+**CIO memo processed**: Briefing refactor ratified with refinement — operational holds go to `decisions.log` (not the briefing banner), not new architecture, just enforcing existing 2026-06-13 separation. CIO coordinating with Docs on `update-current-state` skill rewrite + CLAUDE.md staleness-norm re-scope + session-start.sh threshold update. STATUS BANNER to be archived as historical snapshot at cutover. No PPM action required.
+
+**Exec nudge sent**: PA, CXO, Arch sent beta scope memos at 12:15 PT + correction addendum at 12:45 PT; no responses by 16:00 PT. PM directed PPM to alert Exec. Memo sent to exec/inbox + CC to xian (ceo)/inbox.
+
+**Status**: M5 triage complete; awaiting rate limit reset to pull M4 issues for next sprint-by-sprint triage with PM.
+
+---
+
+### Second compaction — ~17:30 PDT
+
+Context compacted again (this session is long). Resumed from summary.
+
+**On resumption:**
+- Spot-checked M5 milestone moves — were NOT on Production (loop hadn't worked pre-compaction)
+- Fixed: ran `gh issue edit` one-by-one for all 18 issues; all confirmed → Production ✅
+- CIO memo processed to read/; Lead Dev re-appear removed from inbox; pushed `c27dfaced`
+- sprint-order.md updated with #1258; pushed `e836de41e`
+- Attempting M4 triage but hit rate limit (32 points remaining; resets 20:48 UTC)
+
+**Rate limit status**: waiting for reset before M4 query.
+
