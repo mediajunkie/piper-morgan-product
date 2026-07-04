@@ -108,3 +108,30 @@ Context compacted mid-roadmap-v18.4 update sequence. Resumed from summary. All p
   - Sprint Summary: RECONNECT WS-2 row corrected; Beta Blockers row added as ACTIVE PRIORITY; M3-Quality updated to TRIAGE
   - Timeline forward sequence: rewritten — Beta Blockers as gate; non-gate items to Production; milestone dates updated (Fast Follow Nov 19, Dot Releases Feb 2 2027, Enterprise Jul 4 2027)
 - **Commit**: `371a9cf2c` — sprint-order v2 + roadmap v18.4 + this log update (pushed to origin/main)
+
+---
+
+### PM in-conversation follow-up — 14:00 PDT
+
+PM: "Lead Dev has responded — check your mail."
+
+**Inbox**: 2 memos from Lead Dev (both processed to read/):
+
+1. `memo-lead-to-ppm-cc-pm-reconnect-status-and-validation-gap-reconciliation-2026-07-04.md` (13:30 PT)
+   - PM's account HAS a ConnectorBinding row — local dev/staging only; production lacks the `connector_bindings` table entirely (migration `b1229bindings` never shipped to prod)
+   - #1317 incr. 2 IS built — `/github/connect` + `/github/callback` exist and work. The blocker is a deploy/migration gap, not a build gap
+   - 12/12 tests fixed for `GitHubSpatialIntelligence` (fallback/direct-API) — NOT the MCP adapter; confirms PPM's validation-gap concern exactly
+   - What's real-MCP vs. old-rail: issues/PRs/repo-search = MCP; milestones/releases/labels/branches/single-issue = old-rail (per Lead's first memo — then corrected in memo 2)
+   - Two distinct blockers: (1) deploy gap (migration + release cut — bounded), (2) coverage gap (several GitHub read capabilities not on MCP rail yet)
+
+2. `memo-lead-to-ppm-cc-pm-correction-branches-releases-issue-lookup-ARE-on-connector-2026-07-04.md` (13:50 PT — SELF-CORRECTION)
+   - Releases, branches, single-issue ARE on real MCP connector (via `intent_service.py` direct calls to `GitHubMCPSpatialAdapter`)
+   - Only labels + milestones remain native — intentional (MCP server has no list tool for either; tried once, reverted after confirming server-side doesn't support it)
+   - Net: GitHub #1 much further along than 13:30 memo stated; deploy gap is still real
+
+**Reply sent** (`64a8b614e`): to lead/inbox + xian (ceo)/inbox
+- Confirmed deploy gap finding
+- Two clarifying questions: #1317 incr. 2 GitHub issue status (AC cover deploy?), and #1220 production provisioning (does prod have github-mcp-server?)
+- Holding beta blocker sprint finalization + PA/CXO/Arch synthesis update until those answers arrive
+
+**Status**: awaiting Lead Dev response on #1317 and #1220 issue status
