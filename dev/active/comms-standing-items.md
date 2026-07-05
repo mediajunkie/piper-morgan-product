@@ -2,7 +2,7 @@
 
 **Purpose**: persistent (across-days) Comms-side task list — items that aren't tied to a specific blog post or pubDate but need surfacing/advancing as cycle fires advance. Lives across days; not a per-day artifact. (Per-day work goes in the dated session log under `dev/2026/MM/DD/`.)
 
-**Last refreshed**: 2026-07-04 (full sweep of remaining drafting queue; Beat 11 renamed cohort→team; 5 candidate insights A–E drafted and calendared)
+**Last refreshed**: 2026-07-05 (Practice That Got Retired published+syndicated; Beats 17-18 drafted, narrative front now at Jun 28; Ship #050 §0 sent)
 
 ---
 
@@ -17,7 +17,9 @@
 | **Building-narrative slate (Beats 14–16)** | Drafted 6/16, full mechanical sweep done 2026-07-04 (Beat 16's footer TBD resolved — now correctly chains to the Jul 25 insight). | PM (voice-pass) | pubDates: 14=Jul16, 15=Jul21, 16=Jul23. |
 | **Insight batch drafted 6/4** (Mechanism Beats Vigilance, Architecture Wrote Its Own Case, Verify at User Path, Over-Checking Has Dividends, Confabulating a Peer's Unfinished Work) | Full mechanical sweep done 2026-07-04 — 3 of the 5 were missing frontmatter AND dateline entirely, not just empty; footer chain corrected end-to-end. | PM (voice-pass) | pubDates: Aug1/2/8/9/15. |
 | **Climbing Higher When the Platform Laps You** | ✅ PM voice-pass done 2026-07-04, mechanical close-pass done (PM's worktree branch hadn't picked up prior fixes — headings/footer/2 typos caught and fixed). PubDate was Jul 4 (today). | Docs (proofread + publish) | |
-| **The Practice That Got Retired** | Mechanical sweep done, PM voice-pass status unconfirmed as of this refresh. | PM (voice-pass, if not already done) | pubDate Jul 5. |
+| **The Practice That Got Retired** | ✅ PUBLISHED 2026-07-05 (hashId `56e79d586c0a`, live well ahead of 8am target) + fully syndicated (Medium + LinkedIn both live same day). | CLOSED | |
+| **Building-narrative front advanced: Beats 17-18** | ✅ DRAFTED 2026-07-05 — "The Trust Architecture Hardens" (Jun15-19, Jul28) + "RECONNECT's Keystone" (Jun20-28, Jul30). Front now sits at Jun 28, up from Jun 14. Researched directly against source omnibus logs; Beat 18's draft caught + I independently verified a factual correction to my own brief (Jake's actual first-tester date, via the project glossary). Footer chain rebuilt end to end (Meta-Observation Pattern → 17 → 18 → Mechanism Beats Vigilance). | PM (voice-pass on both) | Drafts: `the-trust-architecture-hardens.md`, `reconnects-keystone.md`. 1 + 3 PM-input brackets respectively. |
+| **Ship #050 §0** | ✅ SENT 2026-07-05, same-fire per PM's deadline correction (was framed "due Monday," corrected to "due now" — unauthorized-delay antipattern). Covers Jun27-Jul3; owns the Ship #049 miss directly. | Exec (synthesize) | |
 | **BYOC onboarding narrative** ("We Built Onboarding in Our Own Image") | ✅ RESOLVED 2026-07-04 — PA delivered PM's narrative-angle direction 6/20 (`memo-pa-to-comms-cc-pm-byoc-narrative-angle-direction-2026-06-20.md`), and a draft matching that direction already existed but had no calendar row (orphaned — no pubDate, placeholder footer). Assigned pubDate Sep 5 (next open Sat/Sun slot; queue is solid through Aug 30), footer fixed, chained from "Two of Me." | PM (voice-pass) | Draft: `docs/public/comms/drafts/draft-insight-built-in-our-own-image.md`. |
 | **BYOC marketplace narrative** (distribution/positioning story — distinct from the item above) | Last known: surfaced to PM 6/17, awaiting direction on angles. Genuinely still unverified — checked mail/logs 2026-07-04, found no direction memo for *this* ask (only found the onboarding one, which is separate). Now ≥17 days stale. | PM (direction) | PA memo: `comms/read/memo-pa-to-leadership-cc-pm-byoc-poc-learnings-current-state-2026-06-17.md` |
 | Cross-pollination relay of Ted Nadeau memo to Klatch (Janus) | ✅ CONFIRMED DONE 2026-07-04 — verified in `docs/briefs/cross-pollination/2026-06-01.md`: full memo content relayed with routing questions for both Janus (role-architecture split) and Klatch/Daedalus (Englishia cell model). Was correctly marked "not re-reported, already covered" in the 6/2 brief. | CLOSED | |
@@ -33,16 +35,15 @@
 
 ## Recently-closed (rolling history; trim to last ~14 days)
 
+- 2026-07-05 **Beats 17-18 drafted** — narrative front advanced Jun14→Jun28. Orphan-sweep discipline extended to the footer-chain insertion point (Meta-Observation Pattern's footer had to be redirected around the 2 new beats).
+- 2026-07-05 **The Practice That Got Retired PUBLISHED + syndicated** same day.
+- 2026-07-05 **Ship #050 §0 sent same-fire** per PM's unauthorized-delay correction.
 - 2026-07-04 **Full sweep of entire remaining drafting queue** (14 posts) — missing frontmatter (4 files had none at all), missing datelines (5 files), remaining H2→H1 headings, cohort→team throughout, footer-tease chain rebuilt end-to-end after discovering several footers skipped past 1-2 intermediate posts.
 - 2026-07-04 **Beat 11 renamed** "The Cohort Catches the Cycle" → "The Team Catches the Cycle" — file, calendar, admin view (`editorial-calendar-view.html`), and cross-references all updated.
 - 2026-07-04 **5 candidate insights (A–E) drafted** — researched against real source logs rather than the one-line surfacing gloss; calendared Aug 16-30.
 - 2026-07-04 **Editorial calendar admin view regenerated** via `scripts/build-editorial-calendar-view.py` (was stale per PM's Jul 2 flag).
 - 2026-07-02 **The Airport Corrections PUBLISHED** (Beat 10) — Medium URL added same day.
 - 2026-06-29/30 **Relationship-first Ethics** and **From Briefing to Vision** both published.
-- 2026-06-07 "Permission to Pause" PUBLISHED — the reframe-not-discard rescue validated (doppelganger was a half-finished rename, not redundancy); "Be Prepared" also published Sat Jun 6.
-- 2026-06-04 5 insights drafted + calendared (see Active table above — now swept + voice-pass pending).
-- 2026-06-03 Building-narrative-method doc + `continue-narrative` skill landed.
-- 2026-05-24 Orphan-drafts incident: 4 orphans surfaced → Layer A landed + memory pin sharpened.
 
 ---
 
