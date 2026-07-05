@@ -9,6 +9,7 @@ is ready for production deployment with real PM workflows.
 import asyncio
 import time
 from typing import Any, Dict, Optional
+from unittest.mock import patch
 
 import pytest
 
@@ -191,6 +192,13 @@ class TestSpatialIntelligenceValue:
 class TestRateLimitingCompliance:
     """Ensure production rate limiting works under load"""
 
+    @pytest.mark.skip(
+        reason="#1362: tests a bespoke _call_notion_api()/manual-sleep throttle that no "
+        "longer exists -- the adapter now delegates HTTP + auth to the official "
+        "notion-client SDK (see git history of services/integrations/mcp/notion_adapter.py, "
+        "commit ddf5e66f6 era), which owns its own rate-limit handling. Confirmed via grep: "
+        "no _call_notion_api, no sleep-based throttle anywhere in the current adapter."
+    )
     async def test_notion_rate_limiting_compliance(self):
         """Test Notion 3 req/sec compliance"""
         print("\n⏱️ Testing Notion Rate Limiting Compliance")
@@ -220,6 +228,10 @@ class TestRateLimitingCompliance:
         finally:
             await adapter.close()
 
+    @pytest.mark.skip(
+        reason="#1362: same stale premise as test_notion_rate_limiting_compliance above "
+        "-- _call_notion_api() no longer exists."
+    )
     async def test_graceful_throttling(self):
         """Test graceful throttling under load"""
         print("\n🔄 Testing Graceful Throttling Under Load")
@@ -256,33 +268,54 @@ class TestAuthenticationFlows:
     """Test authentication for production deployment"""
 
     async def test_notion_integration_token_flow(self):
-        """Test Notion integration token authentication flow"""
+        """Test Notion integration token authentication flow.
+
+        Fix (2026-07-04/05): `configure_notion_api` doesn't exist -- the real method is
+        `connect_with_token` (renamed 2026-07-04). Also, `test_connection()` makes a
+        real Notion API call; this dev machine has real credentials configured, so
+        the original "no token → fails" assertion was environment-dependent (it
+        passed only on machines/CI with no Notion key set). Mock at the
+        `test_connection()` boundary instead, so this test verifies
+        `connect_with_token`'s own branching/return-value logic deterministically,
+        independent of ambient machine credentials or real network calls.
+        """
         print("\n🔐 Testing Notion Integration Token Flow")
 
-        adapter = NotionMCPAdapter()
+        with patch("services.mcp.consumer.notion_adapter.NotionConfig") as MockConfig:
+            MockConfig.return_value.get_api_key.return_value = None
+            adapter = NotionMCPAdapter()
 
-        try:
-            # Test without token (should fail gracefully)
-            connection_result = await adapter.test_connection()
-            assert not connection_result, "Should fail without token"
+            try:
+                # Test without token (should fail gracefully) -- no key anywhere,
+                # so _notion_client is never initialized.
+                connection_result = await adapter.test_connection()
+                assert not connection_result, "Should fail without token"
 
-            # Test with invalid token (should fail gracefully)
-            await adapter.configure_notion_api("invalid_token")
-            connection_result = await adapter.test_connection()
-            assert not connection_result, "Should fail with invalid token"
+                # Test with invalid token (should fail gracefully)
+                with patch.object(adapter, "test_connection", return_value=False):
+                    connection_result = await adapter.connect_with_token("invalid_token")
+                    assert not connection_result, "Should fail with invalid token"
 
-            # Test token configuration
-            config_result = await adapter.configure_notion_api("test_token")
-            assert config_result, "Should configure successfully with valid token format"
+                # Test token configuration succeeding
+                with patch.object(adapter, "test_connection", return_value=True):
+                    config_result = await adapter.connect_with_token("test_token")
+                    assert config_result, "Should configure successfully with valid token format"
 
-            print("✅ Notion authentication flow validated")
-            return True
+                print("✅ Notion authentication flow validated")
+                return True
 
-        finally:
-            await adapter.close()
+            finally:
+                await adapter.close()
 
     async def test_secure_credential_handling(self):
-        """Test secure credential handling"""
+        """Test secure credential handling.
+
+        Fix (2026-07-04/05): `configure_notion_api` -> `connect_with_token` (renamed 2026-07-04).
+        There's no `_notion_token` attribute to check anymore -- connect_with_token
+        wraps the raw string in a notion_client Client immediately, so the plaintext
+        token is never stored as a bare attribute at all (stricter than the original
+        test's own intent: don't leak the credential).
+        """
         print("\n🔒 Testing Secure Credential Handling")
 
         adapter = NotionMCPAdapter()
@@ -296,9 +329,13 @@ class TestAuthenticationFlows:
             assert "test_token" not in adapter_str, "Token exposed in string representation"
             assert "test_token" not in adapter_repr, "Token exposed in repr representation"
 
-            # Test that internal token is properly stored
-            await adapter.configure_notion_api("test_token")
-            assert adapter._notion_token == "test_token", "Token not properly stored"
+            # Test that the client gets configured, with no raw-token attribute leak
+            with patch.object(adapter, "test_connection", return_value=True):
+                await adapter.connect_with_token("test_token")
+            assert adapter._notion_client is not None, "Client not configured"
+            assert not hasattr(
+                adapter, "_notion_token"
+            ), "Raw token should never be stored as a bare attribute"
 
             print("✅ Secure credential handling verified")
             return True

@@ -35,6 +35,14 @@ class TestPublishCommand:
 
     @pytest.mark.integration
     @pytest.mark.asyncio
+    @pytest.mark.skip(
+        reason="#1363: hardcoded fallback parent page "
+        "'25d11704d8bf81dfb37acbdc143e6a80' confirmed inaccessible via real Notion API "
+        "(ValueError: Parent page not found or not accessible) -- dead test fixture data, "
+        "not a code bug (_validate_parent_exists is correctly rejecting it). Needs a real, "
+        "currently-accessible page ID in the gitignored config/PIPER.user.md under "
+        "notion.development.test_parent to re-enable."
+    )
     async def test_publish_creates_actual_notion_page(self, test_parent_id, test_prefix):
         """CRITICAL: Verify publishing ACTUALLY creates page in Notion"""
         from services.integrations.mcp.notion_adapter import NotionMCPAdapter
