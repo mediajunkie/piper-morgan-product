@@ -507,6 +507,14 @@ GIT_SSH_COMMAND="ssh -p 443" git -c url.'git@ssh.github.com:'.insteadOf='git@git
 
 Non-destructive — it uses a different route for this invocation only and doesn't change repo or SSH config. Report the workaround in your session log if you use it, so other agents on the same network know it works.
 
+## GitHub auto-close has no concept of negation — watch commit message wording near issue numbers
+
+GitHub auto-closes any issue referenced by a `close/closes/closed/fix/fixes/fixed/resolve/resolves/resolved` keyword immediately adjacent to `#N` in a commit message pushed to the default branch — via **plain keyword matching, not semantic understanding**. It cannot tell the difference between "resolved #1278" and "**not yet** resolved: #1278" — both silently close the issue. This isn't hypothetical: it happened on 2026-07-04/05 (PPM), closing a live, unfinished Beta Blocker (#1278) via a commit message that was explicitly trying to say the opposite ("Flagged, not yet resolved: #1278...").
+
+**When referencing an issue number in a commit message and you do NOT want to trigger a close** (flagging something as open, still-blocked, not-yet-done, etc.): avoid putting a close/fix/resolve-family word immediately before the `#N`. Rephrase — "issue #1278 still needs..." or "#1278 remains open, needs..." — or write the number without the `#` (`issue 1278`) if you need the trigger word nearby for readability. After any commit that references an issue you intended to leave open, it costs nothing to verify: `gh api repos/mediajunkie/piper-morgan-product/issues/N --jq .state`.
+
+If you discover an issue was accidentally closed this way: `gh issue reopen N` immediately, and scan recent commit messages for the same pattern — a single bad phrasing habit tends to repeat across a session, so check for more than one casualty.
+
 ## Keychain credential storage — the `_api_key` suffix
 
 When storing app credentials in the macOS keychain (Slack OAuth client_id / client_secret, Notion API tokens, GitHub PATs, Google Calendar credentials, etc.), **use `KeychainService` from `services.infrastructure.keychain_service` — do NOT use the `security` CLI directly**.
