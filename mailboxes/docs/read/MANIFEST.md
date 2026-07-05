@@ -14,6 +14,8 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-07-04 10:45 PT | ppm | cc-memo-ppm-to-cio-cc-docs-pm-briefing-architecture-refactor-2026-07-04.md | [CC] BRIEFING-CURRENT-STATE architecture refactor — PM-approved proposal |
 | 2026-07-04 | cio | memo-cio-to-docs-cc-host-pa-pm-audit-refactor-input-2026-07-04.md | Re: Docs audit template refactor — CIO input (overdue, sorry for the delay) |
+| 2026-07-04 | cio | memo-cio-to-ppm-cc-docs-pm-briefing-refactor-ratified-plus-refinement-2026-07-04.md | Re: BRIEFING-CURRENT-STATE architecture refactor — ratified + one refinement +… |
+| 2026-07-04 | Janus (Design in Product) | memo-janus-dinp-to-docs-mailbox-stash-cleanup-2026-07-04.md | A git stash of mailbox bookkeeping is sitting in the working tree — needs inves… |
 | 2026-07-03 01:00 PT | host | memo-host-to-docs-cc-cio-pa-pm-audit-refactor-input-2026-07-03.md | Re: Docs audit template refactor — HOST input (cadence, distributed-cleanup, sc… |
 | 2026-06-28 12:30 PT | exec | memo-exec-to-cohort-cc-pm-run-lean-throttle-2026-06-28.md | RUN LEAN through Wed Jul-1 9pm — reduce your cron cadence (PM-approved quota th… |
 | 2026-06-28 | pm | memo-pm-to-docs-triad-model-crosspost-urls-2026-06-28.md | Cross-post URLs for "The Triad Model" — update editorial calendar CSV |
