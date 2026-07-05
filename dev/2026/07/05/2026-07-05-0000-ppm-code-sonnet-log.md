@@ -115,3 +115,16 @@ PM: write up the epic breakdown in its own file, add to the docs tree per NAVIGA
 
 **Open question to PM (asked separately, awaiting answer)**: whether to keep Aug 1 as an aspirational/stretch date. PPM's recommendation: no, even softened — three leadership voices already said to remove it, this exact date has already calcified past its original "aspirational" framing once this session, and the newly-expanded 22-issue scope (vs. the smaller set at the time of PPM's earlier timeline estimate) makes the realistic range if anything later than previously estimated. Recommended alternative: no fixed date until Lead Dev's bottom-up estimate lands.
 
+
+---
+
+### Roadmap v18.5 fold — PM asked directly if the canonical roadmap had been updated
+
+It hadn't — roadmap.md was still at v18.4 (Jul 4 morning), stale against everything since (the GitHub-write investigation, the full sprint-by-sprint triage cluster, beta-blockers.md's creation, Aug-1's removal). PM: "is it time for a new version? This is a fairly substantial update" — agreed, folded as v18.5.
+
+**Sections updated**: title, date/author/status header (new v18.5 fold note), new v18.5 changelog entry, Current Position (full rewrite), M4 section (TRIAGE CLOSED), RECONNECT section (TRIAGE CLOSED, 29/35 already-done + 6 moved), M3-Quality/Health/Security sections (all TRIAGE CLOSED), Sprint Summary table (all affected rows), Timeline forward sequence (Aug 1 removed entirely, beta-blockers.md referenced, sequencing recommendation added), Change Log (v18.5 + backfilled v18.4 entry), footer.
+
+**Gap discovered while reconciling against reality**: the old roadmap's M4 section named **#1032** and **#1216** as concrete M4 deliverables. Checked both: #1032 is already CLOSED (fine, no action). **#1216 is OPEN, MVP milestone, and was never part of the M4 sprint triage** — it carries no Sprint-field tag matching the board's "M4 - Trust + Learning" grouping, so it fell through my earlier GitHub-project-board query entirely. Read its body/comments: it's the honest-provenance anchor issue (Piper claimed dev-seed-script placeholder data was "real" in response to "what have you learned about my workstyle") — PM-placed on M4 2026-06-14, still unresolved. Its failure shape (confident false claim about what's real) is materially similar to #1331's, which WAS hard-gated. Flagged clearly in the roadmap (Current Position + M4 section) as an untriaged gap with a Beta-Blocker-candidate lean, NOT silently dropped or claimed as resolved. Surfaced to PM directly rather than buried in the doc edit.
+
+roadmap.md v18.5 pushed.
+

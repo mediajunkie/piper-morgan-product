@@ -1,9 +1,11 @@
-# Piper Morgan Roadmap v18.4
+# Piper Morgan Roadmap v18.5
 
-**Date**: July 4, 2026 (v18.4 fold: Beta Blockers sprint introduced + MVP milestone = beta gate; RECONNECT connector status corrected; milestone dates updated; body narrative per v18.3 July 3, 2026)
+**Date**: July 5, 2026 (v18.5 fold: full sprint-by-sprint triage complete across the whole board; Beta Blockers grew 12→22 issues, organized into 7 epics; GitHub-write-capability investigation resolved; Aug 1 target dropped entirely, no fixed date; body narrative per v18.4 July 4, 2026)
 **Author**: PPM, with leadership review (PA — §M5/BYOC + skunkworks **ABSORBED v18**; CIO — §Methodology **ABSORBED v18 (6/3)**; CXO — §Differentiator stack EC framework; Architect — §Architectural commitments AC framework; Lead Dev — §M2g + Phase 2 build; Comms — external-language frame pending)
-**Status**: Active. **PM-ratified June 3, 2026** (relay via PA). **v18.1 sprint-board fold June 15, 2026** (PPM). **v18.2 fold June 28, 2026** (PPM): RECONNECT WS-1 closed Jun 22 + WS-2 active; three M3-followon sprints (M3-Quality/Health/Security) added; beta moved Aug 1 + production Oct 30; ADRs 070/071/072 landed; entity-model spec delivered; #1237 CLOSED. v18.1 archived at `docs/internal/planning/historical/roadmap-v18.1-2026-06-15.md`. **v18.3 fold July 3, 2026** (PPM): RECONNECT WS-2 buildable scope DRAINED Jul 1; #1343 CLOSED (v0.8.9.1 Jul 2); #1344 PM-gated (HOST); M3-Quality is active cohort priority; #1331 floor confabulation hardening landed. **v18.4 fold July 4, 2026 (PPM)**: Beta Blockers sprint introduced (hard gates only; no theme; 12 confirmed gates); MVP milestone = beta gate — beta ships when MVP milestone is complete, not on a calendar date; Aug 1 target removed as unrealistic; RECONNECT connector status corrected (connectors work via PAT/keychain fallback, PM-verified; full ADR-070 migration is Production milestone work); milestone dates updated from GitHub (Fast Follow Nov 19 2026, Dot Releases Feb 2 2027, Enterprise Jul 4 2027). See sprint-order.md.
+**Status**: Active. **PM-ratified June 3, 2026** (relay via PA). **v18.1 sprint-board fold June 15, 2026** (PPM). **v18.2 fold June 28, 2026** (PPM): RECONNECT WS-1 closed Jun 22 + WS-2 active; three M3-followon sprints (M3-Quality/Health/Security) added; beta moved Aug 1 + production Oct 30; ADRs 070/071/072 landed; entity-model spec delivered; #1237 CLOSED. v18.1 archived at `docs/internal/planning/historical/roadmap-v18.1-2026-06-15.md`. **v18.3 fold July 3, 2026** (PPM): RECONNECT WS-2 buildable scope DRAINED Jul 1; #1343 CLOSED (v0.8.9.1 Jul 2); #1344 PM-gated (HOST); M3-Quality is active cohort priority; #1331 floor confabulation hardening landed. **v18.4 fold July 4, 2026 (PPM)**: Beta Blockers sprint introduced (hard gates only; no theme; 12 confirmed gates); MVP milestone = beta gate — beta ships when MVP milestone is complete, not on a calendar date; Aug 1 target removed as unrealistic; RECONNECT connector status corrected (connectors work via PAT/keychain fallback, PM-verified; full ADR-070 migration is Production milestone work); milestone dates updated from GitHub (Fast Follow Nov 19 2026, Dot Releases Feb 2 2027, Enterprise Jul 4 2027). **v18.5 fold July 5, 2026 (PPM)**: full sprint-by-sprint backlog triage complete (M3-Quality, M3-Health, M3-Security, M4, M5, RECONNECT — every open issue reviewed and dispositioned); GitHub-write-capability forensic investigation resolved (writes are real/wired, not unwired as first assumed; #1220's scope expanded to cover a real write-path credential gap); Beta Blockers sprint grew from 12→22 issues, now organized into 7 epics with recommended sequencing in the new canonical **[beta-blockers.md](beta-blockers.md)** document; Aug 1 dropped entirely (not just marked TBD) — no fixed beta date until Lead Dev's bottom-up estimate against the stabilized 22-issue list. See `beta-blockers.md` (path-to-beta canonical) and sprint-order.md (full sprint sequencing).
 **Supersedes**: v18.1 (June 15, 2026, archived); v17.0-draft (May 30, 2026, `00cee8d47`); v16.0 (May 10, 2026)
+**v18.5 changelog** (July 5, 2026): (bb) **Full sprint-by-sprint backlog triage complete.** Every open issue across M3-Quality, M3-Health, M3-Security, M4, M5, and RECONNECT has been reviewed and dispositioned — either a confirmed Beta Blocker or moved to the Production milestone. (cc) **GitHub-write-capability investigation resolved** (4-agent forensic sweep, git/ADR/session-log/codebase archaeology): GitHub writes (create/update/close/reopen/comment_issue) are real, tested, and dispatch-reachable today — NOT unwired, contrary to the working assumption that opened this investigation. #1331 was narrowly about 6 unrecognized create-verbs (create_milestone etc.), now fixed to honest-decline. Lead Dev's follow-up static trace confirmed writes route through the OLD credential path (manual PAT / shared-token fallback), not the new per-user grant store the read side uses — #1220's scope expanded to include this write-path migration. (dd) **Beta Blockers sprint grew 12→22 issues**, now organized into 7 epics (verification foundation, multi-tenancy/data protection, connector/OAuth cutover, deploy/hosting portability, auth/account lifecycle, correctness bugs, routing/config integrity) with recommended sequencing, promoted to its own canonical document: **[beta-blockers.md](beta-blockers.md)**. sprint-order.md's duplicate table replaced with a pointer to it. (ee) **Aug 1 target dropped entirely** (not merely marked TBD) — three independent leadership reviews (Arch, CXO, PA) concluded the scope doesn't compress to that window; PM concurred. No fixed beta date until Lead Dev gives a bottom-up estimate against the now-stabilized 22-issue list.
+
 **v18.4 changelog** (July 4, 2026): (x) **Beta Blockers sprint introduced** (Jul 4, PM-ratified): 12 confirmed hard gates cherry-picked into a new sprint (no theme; hard gates only — #1241, #1304, #1324, #1299, #1176, #1261, #1332, #1283, #1168, #1317 incr. 2, #1220, #441). MVP milestone = beta gate — beta ships when MVP milestone is complete; Aug 1 target removed as unrealistic. Non-gate items from M3/M4/M5/RECONNECT move to Production milestone, addressed during beta. (y) **RECONNECT connector status corrected**: GitHub + Calendar connectors work via PAT/keychain fallback (PM-verified); RECONNECT is an architectural migration (shared PAT → per-user OAuth + real MCP server transport), not a fix for broken connectors. Full ADR-070 migration is Production milestone work. Beta-blocking connector items: #1317 incr. 2 + #1220 (in Beta Blockers sprint). (z) **Milestone dates updated from GitHub**: Fast Follow Nov 19 2026 (was TBD); Dot Releases Feb 2 2027 (new); Enterprise Jul 4 2027 (new). (aa) **#1344 CLOSED** (invite-control, v0.8.9.2, Jul 3) — was PM-gated in v18.3.
 
 **v18.3 changelog** (July 3, 2026): (s) **RECONNECT WS-2 buildable scope DRAINED (Jul 1)**: #1201/#1230/#1342 CLOSED; #1343 CLOSED (anonymous billing fallback, Jul 2, v0.8.9.1); #1344 PM-gated (open registration, 3 options filed, HOST review pending). WS-2 is no longer blocking M3-Quality start. (t) **v0.8.9.1 released (Jul 2)**: #1343 anonymous billing fallback deployed. (u) **Floor confabulation hardening (#1331, Jun 30)**: `conversational_floor.py` hardened — distrust-prior-done/✓-claims rule; HOST + Arch ratifying. PPM alpha-trust lens filed Jul 3: yellow flag not hard gate (clean re-test → M3 proceeds); real writes (#1322 Q3) hard-gated on deterministic floor guard; alpha scope = read-only until guard lands. (v) **M3-Quality active priority**: WS-2 buildable scope done; M3-Quality (bugs, CI, 8 open) is the active cohort priority. (w) **#1235 re-scoped**: conversation display bug moved from RECONNECT to M3-Quality (PPM call Jul 3).
@@ -42,9 +44,11 @@
 
 ## Current Position
 
-**M3 CLOSED. RECONNECT WS-1 CLOSED (June 22, v0.8.9). RECONNECT WS-2 (architectural migration) in progress.** — #1343 CLOSED (anonymous billing fallback, Jul 2, v0.8.9.1); #1344 CLOSED (invite-control, Jul 3, v0.8.9.2). Connectors work via PAT/keychain fallback (PM-verified); RECONNECT = shared PAT → per-user OAuth migration. **D1 CLOSED (June 20, 2026)**; #1270 straggler carries to Production. **Beta Blockers sprint ACTIVE** (12 hard gates; no theme; see sprint-order.md for full list). MVP milestone = beta gate: **beta ships when MVP milestone is complete** (Aug 1 target removed as unrealistic; new date set after Beta Blockers sprint is scoped and Lead Dev gives estimate). Non-gate items from M3/M4/M5/RECONNECT move to Production milestone — addressed during beta period.
+**Full sprint-by-sprint triage COMPLETE (Jul 4-5, 2026).** M3-Quality, M3-Health, M3-Security, M4, M5, and RECONNECT have all been reviewed issue-by-issue: every open item is either a confirmed Beta Blocker or moved to the Production milestone. **Beta Blockers sprint is now 22 issues across 7 epics** — canonical detail in **[beta-blockers.md](beta-blockers.md)**, not duplicated here. MVP milestone = beta gate: **beta ships when MVP milestone is complete** — no fixed calendar date; Aug 1 has been dropped entirely (not just marked TBD), pending Lead Dev's bottom-up estimate against the now-stabilized list.
 
-Entity-model spec ✅ DELIVERED (PPM M4 deliverable). #1237 CLOSED June 18 (3-of-4: WorkItem/Document/Conversation shipped). People (#1281) source-population gated — introduce-person flow scoping in progress (PPM one-pager filed Jun 27). ADRs 070/071/072 landed.
+**GitHub-write-capability investigation resolved** (Jul 4-5): a forensic sweep triggered by a "were writes ever removed?" question found writes are real and working today; the actual gap is narrower (write-path credential routing, folded into #1220) than first assumed. D1 CLOSED (June 20, 2026); #1270 straggler moved to Production. Connectors work via PAT/keychain fallback (PM-verified); full ADR-070 migration continues as Production-milestone work, with #1317 + #1220 as the beta-relevant slice.
+
+Entity-model spec ✅ DELIVERED (PPM M4 deliverable). #1237 CLOSED June 18 (3-of-4: WorkItem/Document/Conversation shipped). People (#1281) source-population gated — introduce-person flow scoping in progress (PPM one-pager filed Jun 27). ADRs 070/071/072 landed. **Gap surfaced during this fold, not yet triaged**: #1216 (the M4-anchor honest-provenance issue — Piper claimed seeded/dev-placeholder data was "real" in response to a workstyle question) is still OPEN, still MVP-milestone, and was never swept into the M4 sprint triage (it carries no Sprint-field tag matching the board's M4 grouping). Its failure shape is materially similar to #1331's (confident false claim about what's real) — flagging as a likely Beta Blocker candidate pending PM's ruling.
 
 Differentiator stack pillars 1-2 (Context Methodology + Conscious Floor) operational at the floor. **Pillar 3 (Artifact Persistence) DELIVERED in M3.** Pillar 4 (Trust + Learning) = M4 territory — concrete landing sites include #1032 (push-insight trust-gating), the entity-model spec for Radar/Layer-2 (PPM deliverable), and #1216 (provenance field — honest-provenance data model for `InsightDB`). PDR-005 v0.5 → v1.0 path open. V2 Duty Cycle (now Option B ephemeral per cohort-plan-of-record June 12) operational across cohort.
 
@@ -120,15 +124,14 @@ ADRs landed May 16: ADR-062 (e2e Phase 0), ADR-063 (User-Facing Audit Envelope R
 
 Composting data model delivered. Artifact persistence infrastructure shipped. M3 closed (per sprint-board-structure.md, 2026-06-14).
 
-### M4 — Trust + Learning ⏭️ QUEUED (follows M3-Security)
+### M4 — Trust + Learning ✅ TRIAGE CLOSED (Jul 5, 2026)
 
-Trust graduation MVP must be credible first step toward full model. Concrete M4 landing sites:
-- **#1032** — push-insight trust-gating (first concrete touch surface)
-- **#1216** — provenance field (`source`/`is_seed` on `InsightDB`) — honest-provenance data model; M4 placement per PPM 2026-06-15
+All 16 open M4-sprint issues reviewed Jul 4-5: 15 moved to Production milestone as enhancements/infrastructure/scoping work not required to gate beta (#302, #558, #712, #713, #954, #955, #956, #1062, #1166, #1174, #1217, #1242, #1244, #1245, #1326), and #1190 (destructive-mutation confirmation gate) also confirmed Production once the GitHub-write investigation showed it's a narrow UX-polish item, unrelated to credential routing. **#1032** (push-insight trust-gating) is already CLOSED, separate from this sweep. **#1216** (honest-provenance data model, `source`/`is_seed` on `InsightDB`) remains OPEN and was NOT part of the M4 sprint triage (no matching Sprint-field tag) — see Current Position for the flag; its failure shape (confidently claiming seed data is real) closely parallels #1331, and PPM's lean is that it's a Beta Blocker candidate pending PM's call.
+
 - **~~Entity-model spec (PPM deliverable)~~ ✅ DELIVERED** — RadarEntity contract + 4-type model. **#1237 CLOSED** June 18 (3-of-4 shipped: WorkItem/Document/Conversation). People (#1281) source-population gated; introduce-person flow scoping in progress (PPM one-pager Jun 27; OQ-2 trust-gradient = PPM+CXO M4 call).
-- **People entity (#1281)** — introduce-person flow (Option A: user_confirmed, no connector dependency); layers connector-import (Option B) when RECONNECT WS-2 lands. **#1326 filed (M4 scope)**: introduce-person standalone issue per PM Jun 28.
+- **People entity (#1281)** — introduce-person flow (Option A: user_confirmed, no connector dependency); layers connector-import (Option B) when RECONNECT lands. **#1326** (introduce-person standalone issue) moved to Production milestone in this triage pass, same as the rest of M4.
 
-**Combined CXO+PPM M4 session** queued at RECONNECT landing (Exec tracking trigger): trust-gradient (OQ-2) + onboarding scoping.
+**Combined CXO+PPM M4 session** (trust-gradient OQ-2 + onboarding scoping) still queued — M4's sprint-board triage closing doesn't resolve this open design thread, it just clears the issue backlog around it.
 
 ### RECONNECT — Connector Refactor
 
@@ -136,21 +139,21 @@ Trust graduation MVP must be credible first step toward full model. Concrete M4 
 
 Shipped: #1199 StandupAssembler, #1232/#1233 connector-protocol, security batch (#358/#1185/#1307/#1308), Design D2 (#1286 token system + responsive shell + mobile nav, #1238 Documents→Radar, #1239 Radar sources). ADR-070 (MCP consumer/connector architecture) landed. v0.8.9 is the WS-1 milestone release.
 
-**WS-2** ⏳ **buildable scope DRAINED (Jul 1, v0.8.9.1)**
+**WS-2 / full RECONNECT sprint** ✅ **TRIAGE CLOSED (Jul 5, 2026)**
 
-#1343 (anonymous billing fallback) ✅ CLOSED Jul 2 (v0.8.9.1). #1344 (open registration) 🔒 PM-gated (HOST review, 3 options filed, decision pending). GitHub MCP + calendar connector work done — no remaining buildable scope pending PM decision on #1344. ADR-071 owner-anchoring governs trust model.
+35 issues reviewed: 29 were already closed (retain the MVP milestone tag for historical record only, no action needed). Of the 6 genuinely open, all moved to Production milestone (#865, #1322, #1323, #1325, #1327, #1340 — refactor/tech-debt/future-state/explicitly-additive work, none fixing a live regression). **#1317** (per-connector MCP-consumer adapters) and **#1220** (provisioning + write-path credential migration, scope expanded Jul 5) remain in Beta Blockers as the beta-relevant slice — both In Progress, Lead Dev's active thread. #1343 CLOSED (v0.8.9.1, Jul 2); #1344 CLOSED (v0.8.9.2, Jul 3). Full 8-connector ADR-070 migration continues as Production-milestone work, separate from the beta-gating slice.
 
-### M3-Quality — Bugs + CI 🎯 ACTIVE PRIORITY (WS-2 buildable scope done)
+### M3-Quality — Bugs + CI ✅ TRIAGE CLOSED (Jul 5, 2026)
 
-8 open issues (4 closed Jun 27 by subagents: #1253/#1301/#1302/#1303). Bugs, test failures, CI stability. New sprint (PA forensic recovery Jun 27; PM-approved).
+7 issues reviewed (4 closed Jun 27 by subagents before this sweep: #1253/#1301/#1302/#1303). 4 moved to Production (#1151, #1175, #1219, #1224); 3 added to Beta Blockers (#1279 aiohttp session leak, #1285 possible standup-path datetime crash, #1105 settings re-paste friction).
 
-### M3-Health — Tech Debt 🗓️ QUEUED (follows M3-Quality)
+### M3-Health — Tech Debt ✅ TRIAGE CLOSED (Jul 5, 2026)
 
-10 issues. Dead code, tech debt, code health. New sprint (PA forensic recovery Jun 27; PM-approved).
+9 issues, all moved to Production milestone (#1001, #1028, #1131, #1138, #1139, #1144, #1287, #1298, #1321) — clean tech-debt sprint, no live-bug candidates. PM: fine for Lead Dev to cherry-pick when otherwise idle, none block beta.
 
-### M3-Security — Security + Infrastructure 🗓️ QUEUED (follows M3-Health)
+### M3-Security — Security + Infrastructure ✅ TRIAGE CLOSED (Jul 5, 2026)
 
-9 issues. Security, infrastructure, portability. New sprint (PA forensic recovery Jun 27; PM-approved).
+7 issues reviewed: 4 moved to Production (#371, #482, #557, #1203); 3 added to Beta Blockers (#542 token revocation on disconnect, #1305/#1306 encryption sub-scopes split from #358).
 
 ### D1 — Beta Design Quality ✅ CLOSED (June 20, 2026)
 
@@ -313,14 +316,14 @@ Per v16.0 (still operating): trigger-based audit cadence; CIO self-approval auth
 | **M2** | Conscious Floor + Action Handlers | ✅ CLOSED (June 3, 2026) |
 | **M3** | Artifact Persistence | ✅ CLOSED (per sprint-board-structure.md, 2026-06-14) |
 | **RECONNECT WS-1** | Connector Refactor (security, connector-protocol, Design D2, StandupAssembler) | ✅ CLOSED (June 22, v0.8.9) |
-| **RECONNECT WS-2** | Connector architectural migration (shared PAT → per-user OAuth + real MCP server) | 🔄 IN PROGRESS (connectors work via PAT/keychain fallback, PM-verified; full ADR-070 migration is Production scope; #1317 incr. 2 + #1220 → Beta Blockers) |
-| **Beta Blockers** | Hard gates only — no theme (12 confirmed; see sprint-order.md) | 🎯 ACTIVE PRIORITY |
-| **M3-Quality** | Bugs, test failures, CI | 🔀 TRIAGE (hard gates → Beta Blockers; remainder → Production milestone) |
-| **M3-Health** | Dead code, tech debt (10 issues) | 🗓️ QUEUED |
-| **M3-Security** | Security, infrastructure, portability (9 issues) | 🗓️ QUEUED |
-| **D1** | Beta design quality | ✅ CLOSED (June 20, 2026); #1270 straggler |
-| **M4** | Trust + Learning | 🗓️ QUEUED (#1032 trust-gating; #1216 provenance; #1326 introduce-person) |
-| **M5** | Distribution + Polish | — (final MVP sprint; PDR-005 BYOC feeds 1.0 scope) |
+| **RECONNECT (full sprint)** | Connector architectural migration + write-path credential work | ✅ TRIAGE CLOSED Jul 5 (29/35 already done; 6 open → Production; #1317+#1220 → Beta Blockers, In Progress) |
+| **Beta Blockers** | Hard gates only — no theme (22 confirmed, 7 epics; see beta-blockers.md) | 🎯 ACTIVE PRIORITY |
+| **M3-Quality** | Bugs, test failures, CI | ✅ TRIAGE CLOSED Jul 5 (4 → Production, 3 → Beta Blockers) |
+| **M3-Health** | Dead code, tech debt (9 issues) | ✅ TRIAGE CLOSED Jul 5 (all 9 → Production) |
+| **M3-Security** | Security, infrastructure, portability (7 issues) | ✅ TRIAGE CLOSED Jul 5 (4 → Production, 3 → Beta Blockers) |
+| **D1** | Beta design quality | ✅ CLOSED (June 20, 2026); #1270 straggler moved to Production |
+| **M4** | Trust + Learning | ✅ TRIAGE CLOSED Jul 5 (15 → Production; #1216 gap flagged, untriaged, likely Beta Blocker) |
+| **M5** | Distribution + Polish | ✅ TRIAGE CLOSED Jul 4 (18 → Production; #1278/#1258 → Beta Blockers) |
 
 *(MVP-milestone sprint sequence per `sprint-board-structure.md`, PM-updated 2026-06-14. The Production milestone that follows anticipates DIST — Desktop distro + D2 — Release design quality.)*
 
@@ -354,12 +357,14 @@ Per v16.0 (still operating): trigger-based audit cadence; CIO self-approval auth
 ### Estimated forward sequence
 
 - *(Jul 1–3: WS-2 buildable scope drained; v0.8.9.1 released Jul 2; v0.8.9.2 released Jul 3 invite-control; #1331 floor confabulation hardening landed)*
-- **Beta Blockers sprint** (ACTIVE — 12 hard gates; no theme; see sprint-order.md): This sprint is the gate for beta. When it clears, MVP milestone clears, beta ships.
-- *Non-gate items from M3-Quality/M3-Health/M3-Security/M4/M5/RECONNECT move to Production milestone — addressed during beta period; beta users informed of known issues.*
-- **RECONNECT WS-2** — architectural migration ongoing in parallel (connector ADR-070 per-user OAuth; connectors work now via PAT/keychain fallback)
+- *(Jul 4–5: full sprint-by-sprint backlog triage — M3-Quality/Health/Security, M4, M5, RECONNECT all closed; GitHub-write-capability investigation resolved; Beta Blockers grew 12→22 issues; beta-blockers.md created as canonical path-to-beta document)*
+- **Beta Blockers sprint** (ACTIVE — 22 issues, 7 epics; see [beta-blockers.md](beta-blockers.md) for the full list and recommended sequencing). This sprint is the gate for beta. When it clears, MVP milestone clears, beta ships. Recommended order: Epic A (CI verification) first; Epic C (connector/OAuth cutover) continues as Lead Dev's active thread; Epic B (multi-tenancy/data protection) is the long pole, likely its own dedicated block; Epics D/F are batching/subagent-parallelizable; Epics E/G interleave.
+- *Non-gate items from every sprint have been moved to Production milestone — addressed during beta period; beta users informed of known issues.*
+- Lead Dev briefed on the full sprint plan (Jul 5); asked for a sequencing sanity-check and a bottom-up estimate now that scope is stable
+- **#1216 gap flagged, untriaged** — likely Beta Blocker candidate pending PM's ruling (see Current Position / M4 section)
 - PDR-005 v0.5 → v1.0 ratification (cohort flag-back on EC-2 + Comms external frame + PM ratification)
 - Companion BYOC ADRs Q6 + Q7 land in Architect's lane post-PDR-005-v1.0
-- **MVP milestone (0.9.0 beta): TBD** (Aug 1 removed as unrealistic; gated on Beta Blockers sprint complete)
+- **MVP milestone (0.9.0 beta): NO FIXED DATE** — Aug 1 dropped entirely (not TBD-with-an-implied-date); a real date gets set once Lead Dev's bottom-up estimate lands against the stabilized 22-issue Beta Blockers list
 - **Production milestone (1.0): October 30, 2026** (DIST — Desktop distro + D2 — Release design quality)
 - **Fast-follow: November 19, 2026** (from GitHub milestone; was TBD)
 - **Dot Releases: February 2, 2027** (from GitHub milestone)
@@ -392,6 +397,8 @@ Per v16.0 (still operating): trigger-based audit cadence; CIO self-approval auth
 
 ## Change Log
 
+- **v18.5 (July 5, 2026)**: Full sprint-by-sprint triage fold (PPM). Every open issue across M3-Quality, M3-Health, M3-Security, M4, M5, and RECONNECT reviewed and dispositioned (confirmed Beta Blocker or moved to Production milestone). GitHub-write-capability forensic investigation resolved: writes are real/wired today, not unwired; #1220's scope expanded to a confirmed write-path credential gap. Beta Blockers sprint grew 12→22 issues, organized into 7 epics with recommended sequencing, promoted to its own canonical document `beta-blockers.md`. Aug 1 target dropped entirely (three independent leadership reviews + PM concurrence) — no fixed beta date pending Lead Dev's bottom-up estimate. Gap flagged: #1216 (M4 honest-provenance anchor) surfaced as untriaged during this fold, likely Beta Blocker candidate.
+- **v18.4 (July 4, 2026)**: Beta Blockers sprint introduced (PPM, PM-ratified). 12 confirmed hard gates; MVP milestone = beta gate; Aug 1 marked unrealistic (not yet dropped outright — see v18.5); RECONNECT connector status corrected (PAT/keychain fallback works, PM-verified); milestone dates updated from GitHub. #1344 CLOSED.
 - **v18.3 (July 3, 2026)**: RECONNECT WS-2 status fold (PPM). WS-2 buildable scope DRAINED Jul 1 — #1201/#1230/#1342 CLOSED; #1343 CLOSED (v0.8.9.1 Jul 2); #1344 PM-gated (HOST). M3-Quality elevated to active priority. Floor confabulation hardening (#1331 Jun 30) noted; PPM alpha-trust lens filed (yellow flag; writes gate on deterministic floor guard). #1235 re-scoped to M3-Quality.
 - **v18.2 (June 28, 2026)**: Post-RECONNECT WS-1 fold (PPM). RECONNECT split into WS-1 (CLOSED Jun 22, v0.8.9) + WS-2 (active). Three M3-followon sprints added: M3-Quality (bugs/CI, 12 issues), M3-Health (tech debt, 10 issues), M3-Security (security/infra, 9 issues) — from PA's M5 forensic sort. Milestone dates revised: beta Aug 1, production Oct 30, fast-follow TBD. ADRs 070/071/072 landed. Entity-model spec delivered; #1237 CLOSED (3-of-4, Jun 18). M4 section updated (entity-model delivered; People introduce-person flow scoping). v18.1 archived.
 - **v18.1 (June 15, 2026)**: Sprint-board structure fold (PPM). M2 CLOSED June 3; M3 CLOSED (Artifact Persistence delivered). RECONNECT (Connector Refactor) + D1 (Beta design quality) added as new sprints in body narrative and Sprint Summary. §Current Position, §M2g, §M3 status updated. §Autonomous Operations updated: Model A worktrees deprecated June 12; Option B (ephemeral) canonical; cycle log simplified to session-log-only. Timeline extended with M2/M3 closures, forward sequence with M4→RECONNECT→D1→M5→July 4. Entity-model spec added as M4 PPM deliverable; #1216 provenance field placed M4. ADR-066 v0.2 D7 noted. Docs-added stopgap banner removed (this fold is the formal record).
@@ -403,4 +410,4 @@ Per v16.0 (still operating): trigger-based audit cadence; CIO self-approval auth
 
 ---
 
-*v18.3 — PPM 2026-07-03. RECONNECT WS-2 buildable scope drained + M3-Quality active priority fold. Canonical `roadmap.md`.*
+*v18.5 — PPM 2026-07-05. Full sprint-by-sprint triage complete; Beta Blockers at 22 issues/7 epics; canonical path-to-beta detail lives in `beta-blockers.md`. Aug 1 dropped, no fixed beta date. Canonical `roadmap.md`.*
