@@ -1,6 +1,27 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-04 ~16:35 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
+**Updated**: 2026-07-04 ~19:50 PT. Session log: `dev/2026/07/04/2026-07-04-0647-lead-code-log.md`.
+
+## ▶ CURRENT (7/4 ~19:55) — Notion contract+consolidation done and verified; ONE open question back with Arch (shim vs. literal delete); Slack correctly NOT started; connector status final for today
+
+**Notion's contract-conformance and single-implementation consolidation is done and verified** — legacy `services/integrations/mcp/notion_adapter.py` is now a 15-line re-export shim; the real, single, canonical implementation (22 data-operation methods + all 4 #1232 contract methods) lives in `services/mcp/consumer/notion_adapter.py`. Every existing caller (production + full test suite + ~13 debug/manual scripts) works with zero changes to their own code, verified live (`NotionMCPAdapter` from either import path is the literal same class object). Arch reviewed it unprompted and called it "exemplary... the reference application" for connectors #3-8. Full test suite: 201 passed, 3 skipped, 0 regressions (double-verified via stash-and-compare against pre-today code for the 9 pre-existing environment-dependent failures elsewhere in the Notion suite).
+
+**But NOT calling this fully closed** — Arch's memo explicitly asked for "repoint callers → then delete the legacy module," and a shim is a different thing than a literal delete (even though it closes the actual drift-risk Arch named — one implementation now, not two). Flagged this divergence directly to Arch rather than quietly substitute my own judgment for an explicit instruction (`memo-lead-to-arch-cc-pm-notion-followthrough-shim-not-delete-2026-07-04.md`, sent 19:54). Scoped what a real repoint-and-delete would take if Arch wants it anyway (2 production call sites + ~5 real test files — a small, bounded follow-up, not a big one). **Waiting on Arch's answer**; this is the one open thread from today.
+
+**Slack investigated, correctly NOT started.** Checked properly (same rigor as Notion) before committing time to it: this morning's "wrong base class" finding was about the WRONG Slack class (a command-formatter, not a connector). The REAL connector class already extends the correct base class. But Slack's actual complexity is bigger than Notion's — a live three-state status composite depending on an actual running Socket Mode process (`request.app.state.slack_socket_runner.is_connected`), not a simple credential check, plus a dual app-level/per-user credential model. This is genuinely closer to Calendar's remaining-architecture-gap shape than to Notion's bounded case. Sent Arch a correction on the class mixup. Did not start building on the wrong premise, and did not force a partial/dishonest implementation just to have "done something" — matches PM's explicit "don't get into anything super involved" steer.
+
+**Where all 8 connectors stand, precisely, as of tonight:**
+1. **GitHub** — done at the code level; production deploy is the one remaining gap (PM/PPM-owned sprint territory, not mine to unilaterally push).
+2. **Calendar** — test debt closed; full port genuinely not started (real MCP server, real binding, method migration) — bigger lift, not attempted, not urgent (not a beta blocker).
+3. **Notion** — contract-conformant, single canonical implementation, zero regressions, Arch-confirmed exemplary; ONE open question with Arch (shim vs. literal legacy-file deletion) before calling the connector-DoD fully closed.
+4. **Slack** — investigated, correctly deferred: real complexity (live process state, dual credentials) makes this NOT a quick win; needs its own design pass before building, not today's scope.
+5–8. **cicd/devenvironment/gitbook/linear** — not real, wanted features today (no UI, no routes, no roadmap mention, zero live callers) — needs a PM product decision before any design/build work is warranted, not an architecture call.
+
+**Discovered + filed along the way (not fixed, out of scope)**: #1359 — `cli/commands/notion.py` references `self.adapter` 10× but never assigns it (pre-existing bug, unrelated to today's work).
+
+**One thing awaiting a reply: Arch, on shim-vs-delete for Notion's legacy module.** Otherwise nothing blocking. If PM wants more connector work beyond that: the honest options are (a) hold at "Notion effectively done pending one Arch answer, Slack correctly deferred, 4 gated on a product call" as tonight's stopping point, or (b) if PM specifically wants Slack's design question resolved (how to thread live process state into a `status()` check), that's a real, scoped next investigation — but it's a DESIGN question first, not a quick build like Notion was.
+
+---
 
 ## ▶ CURRENT (7/4 ~16:35) — Notion ported onto #1232 (real, tested, live); connector status across all 8 now clear
 
