@@ -1,10 +1,11 @@
 """Notion's #1232 Connector-contract port (Arch's 2026-07-04 3-layer ruling).
 
-Covers `services/mcp/consumer/notion_adapter.py`'s 4 new contract methods
+Covers `services/mcp/consumer/notion_adapter.py`'s 4 contract methods
 (connect/status/resolve/degrade) — keychain-backed (Layer 2), not binding-table
 backed, per Arch's ruling that a keychain grant store is a legitimate Layer-2
-backend, not a contract exception. Also proves the legacy 22 data-operation
-methods are inherited unchanged (zero duplication, zero risk to existing callers).
+backend, not a contract exception. Also proves the 22 data-operation methods
+are all still present after consolidating the legacy module's class body into
+this one canonical implementation (the legacy module is now a re-export shim).
 """
 
 from __future__ import annotations
@@ -88,10 +89,16 @@ class TestNotionConnectorContract:
         assert response.user_message == "The Notion connector is degraded."
 
 
-class TestNotionLegacyMethodsInherited:
-    """The 22 existing data-operation methods must be untouched, not duplicated."""
+class TestNotionDataOperationMethodsPresent:
+    """The 22 existing data-operation methods must all still be present.
 
-    def test_legacy_methods_present(self):
+    Consolidated here (2026-07-04, Arch's follow-through on the reference-port
+    review): this class body moved from the legacy
+    `services.integrations.mcp.notion_adapter` module verbatim -- it's no
+    longer a subclass inheriting them, it's the one canonical implementation.
+    The legacy module is now a thin re-export of this exact class object."""
+
+    def test_data_operation_methods_present(self):
         adapter = NotionMCPAdapter()
         for method in (
             "get_page",
@@ -104,13 +111,11 @@ class TestNotionLegacyMethodsInherited:
         ):
             assert hasattr(adapter, method)
 
-    def test_legacy_connect_signature_is_replaced_by_the_contract_method(self):
-        """The #1232 contract's connect(user_id) -> ConnectResult wins at this
-        subclass level — the legacy connect(integration_token) -> bool is NOT
-        reachable through this class (by design: Python method resolution takes
-        the subclass's definition). The legacy signature stays reachable through
-        the original services.integrations.mcp.notion_adapter.NotionMCPAdapter,
-        which every existing caller still imports unchanged."""
+    def test_contract_connect_and_legacy_connect_with_token_coexist(self):
+        """The #1232 contract's connect(user_id) -> ConnectResult is the only
+        thing named `connect` anywhere now — the old connect(integration_token)
+        was renamed to `connect_with_token` (2026-07-04) specifically to free
+        the `connect` name. Both are real methods on this one class."""
         import inspect
 
         adapter = NotionMCPAdapter()
@@ -118,10 +123,15 @@ class TestNotionLegacyMethodsInherited:
         assert "user_id" in sig.parameters
         assert "integration_token" not in sig.parameters
 
-    def test_is_a_distinct_class_from_the_legacy_one(self):
+        legacy_sig = inspect.signature(adapter.connect_with_token)
+        assert "integration_token" in legacy_sig.parameters
+
+    def test_legacy_module_reexports_the_same_class_object(self):
+        """services.integrations.mcp.notion_adapter is a thin shim now --
+        NOT a copy, NOT a subclass -- the identical class object, so every
+        existing caller that imports from the legacy path keeps working."""
         from services.integrations.mcp.notion_adapter import (
-            NotionMCPAdapter as LegacyNotionMCPAdapter,
+            NotionMCPAdapter as LegacyImportPath,
         )
 
-        assert NotionMCPAdapter is not LegacyNotionMCPAdapter
-        assert issubclass(NotionMCPAdapter, LegacyNotionMCPAdapter)
+        assert NotionMCPAdapter is LegacyImportPath

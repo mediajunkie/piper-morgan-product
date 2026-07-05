@@ -367,7 +367,7 @@ class NotionUserConfig:
                     from services.integrations.mcp.notion_adapter import NotionMCPAdapter
 
                     adapter = NotionMCPAdapter()
-                    await adapter.connect()
+                    await adapter.connect_with_token()
 
                     # Test connectivity by getting user info
                     user_info = await adapter.get_current_user()

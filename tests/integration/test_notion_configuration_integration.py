@@ -336,7 +336,7 @@ class TestNotionConfigurationIntegration:
         assert inspect.iscoroutinefunction(method)
 
         # Test that it can be called without errors (with mocked client)
-        with patch("services.integrations.mcp.notion_adapter.NotionConfig"):
+        with patch("services.mcp.consumer.notion_adapter.NotionConfig"):
             adapter = NotionMCPAdapter()
             adapter._notion_client = MagicMock()
             adapter._notion_client.users.me.return_value = {

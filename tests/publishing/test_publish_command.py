@@ -61,7 +61,7 @@ class TestPublishCommand:
 
             # 4. Verify page content in Notion
             notion = NotionMCPAdapter()
-            await notion.connect()
+            await notion.connect_with_token()
             page = await notion.get_page(result["page_id"])
             assert page is not None, "Created page not found in Notion"
 

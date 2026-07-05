@@ -38,7 +38,7 @@ def _adapter_with_mock_client() -> NotionMCPAdapter:
     NotionConfig so __init__ doesn't try to read env / validate config,
     then injects a MagicMock for the notion-client.Client surface.
     """
-    with patch("services.integrations.mcp.notion_adapter.NotionConfig"):
+    with patch("services.mcp.consumer.notion_adapter.NotionConfig"):
         adapter = NotionMCPAdapter()
     adapter._notion_client = MagicMock()
     return adapter
@@ -95,7 +95,7 @@ class TestNotionConnection:
     @pytest.mark.asyncio
     async def test_test_connection_failure_no_client(self):
         """test_connection() returns False when _notion_client is None."""
-        with patch("services.integrations.mcp.notion_adapter.NotionConfig"):
+        with patch("services.mcp.consumer.notion_adapter.NotionConfig"):
             adapter = NotionMCPAdapter()
         adapter._notion_client = None
 

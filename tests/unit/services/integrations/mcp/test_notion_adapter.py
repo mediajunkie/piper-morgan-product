@@ -14,7 +14,7 @@ class TestNotionAdapterGetCurrentUser:
     def setup_method(self):
         """Set up test fixtures."""
         # Create adapter with mocked config
-        with patch("services.integrations.mcp.notion_adapter.NotionConfig"):
+        with patch("services.mcp.consumer.notion_adapter.NotionConfig"):
             self.adapter = NotionMCPAdapter()
             # Mock the Notion client
             self.adapter._notion_client = MagicMock()
@@ -188,7 +188,7 @@ class TestNotionAdapterGetCurrentUser:
             pytest.skip("NOTION_API_KEY not set - skipping real API test")
 
         # Create adapter with real API key
-        with patch("services.integrations.mcp.notion_adapter.NotionConfig") as MockConfig:
+        with patch("services.mcp.consumer.notion_adapter.NotionConfig") as MockConfig:
             mock_config = MagicMock()
             mock_config.get_api_key.return_value = api_key
             mock_config.validate_config.return_value = True

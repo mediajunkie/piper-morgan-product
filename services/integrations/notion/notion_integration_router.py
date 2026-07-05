@@ -127,7 +127,9 @@ class NotionIntegrationRouter:
         if integration:
             if is_legacy:
                 self._warn_deprecation_if_needed("connect", is_legacy)
-            return await integration.connect(integration_token)
+            # 2026-07-04: the adapter's connect() was renamed to connect_with_token()
+            # to free the name for the #1232 Connector contract's connect(user_id).
+            return await integration.connect_with_token(integration_token)
         else:
             raise RuntimeError(
                 "No Notion integration available for connect. "
