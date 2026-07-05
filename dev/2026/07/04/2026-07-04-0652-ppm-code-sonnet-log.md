@@ -265,3 +265,18 @@ PM responded to the Arch+CXO synthesis with four rulings:
 
 **Status**: genuinely IDLE on unblocked work — inbox clean, M4 blocked on PM, PA synthesis/nudge is PM-owned right now, #683 blocked on Lead Dev. Nothing to drain this fire beyond mechanics.
 
+
+---
+
+### Fire 4 — 19:00 PDT (cron)
+
+**Cron rotation**: deleted `1108f978`, created `088445da` (same schedule), standing items refreshed.
+
+**Inbox check**: clean (MANIFEST.md only).
+
+**Cohort sweep** (beyond own inbox, checking the two open cross-agent threads before re-arming): confirmed via `gh issue list` search that no "ship GitHub connector to production" issue has been filed yet (Lead Dev's flagged gap remains open). Confirmed no new PA beta-scope memo in `mailboxes/pa/sent/` or `ppm/inbox/` since the Arch+CXO synthesis was processed. Noted a Lead Dev→Arch memo in passing cohort traffic ("correction — wrong Slack class, real complexity bigger than framed," commit `72bb23049`) — not addressed to PPM, not Beta-Blockers-relevant, no action taken.
+
+**M4 triage**: still awaiting PM's answer, now carried across 2 fires (Fire 3 → Fire 4) without response. Not treating as stale/escalation-worthy yet — this is a same-session, actively-open question, not an unattended multi-day item.
+
+**Status**: IDLE — inbox clean, no new cohort-wide developments affecting standing items, M4 still the sole blocking item.
+
