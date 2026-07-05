@@ -313,3 +313,50 @@ PM asked three things at once:
 
 **Status**: research agents running; PA response processed; M4 mostly settled except #1190 (blocked on the investigation); nothing else new.
 
+
+---
+
+### GitHub-write investigation completes; OAuth follow-up; M4 executed; M3-Quality presented — 23:00–23:15 PDT
+
+**All 4 research agents completed successfully** (2nd relaunch, ~193k-284k tokens each, 44-93 tool calls each). Cross-verified, convergent finding that overturned the working assumption:
+
+**GitHub writes are NOT unwired.** `create_issue`, `update_issue`, `close_issue`, `reopen_issue`, `comment_issue` are real, tested, dispatch-reachable writes today (`services/intent/intent_service.py:3652/3865/4072/6255`ish → `GitHubIntegrationRouter` → `GitHubMCPSpatialAdapter` → real REST against `api.github.com`). History: real write code existed in a May 2025 pre-repo POC (confirmed via `archive/piper-morgan-0.1.1/github_agent.py` + a captured 2025-05-31 run log — direct match to PM's memory), got deleted in an Oct 15, 2025 "legacy deprecation" refactor (`92ceec15b`) that swapped in a read-only `GitHubSpatialIntelligence` class, then got rebuilt into the MCP adapter across Oct 2025–May 2026. #1331 was narrowly about `create_milestone` + 5 unwired sibling verbs, not the whole write surface — now fixed to honest-decline (#1333). My own July 3 #1322 ruling blocks the *OAuth-cutover* of writes, not today's existing writes.
+
+One agent caught and self-corrected a stale-worktree methodology issue (HEAD was 17 days/2045 commits behind origin/main) before it could produce wrong current-state findings — verified all citations against `origin/main` directly.
+
+**One real open question surfaced, not resolvable by archaeology**: do these existing write handlers route through the per-user OAuth grant (like today's verified read path) or a shared/native token? This determines whether external beta testers can already write as themselves.
+
+**Actions taken**:
+1. Full synthesis delivered to PM in conversation.
+2. Memo to Lead Dev (commit `63060b2cc`): asked for a live test — call create_issue/close_issue through the same per-user OAuth-bound path verified today for reads, confirm which credential is actually used. Lead Dev is already testing today, folded this in.
+3. M4 executed (commit via `gh issue edit`, no git commit needed — GitHub-side only): **15 of 16 M4 issues moved to Production milestone** (#302, #558, #712, #713, #954, #955, #956, #1062, #1166, #1174, #1217, #1242, #1244, #1245, #1326). **#1190 held in MVP milestone** pending Lead Dev's OAuth test result — spot-verified via `gh issue view`.
+4. M3-Quality (7 issues) pulled and presented to PM: 4 leaning Production (#1151, #1175, #1219, #1224), 3 flagged for PM's call — **#1279** (GitHubIntegrationRouter aiohttp session leak, real reliability risk under beta load), **#1285** (possible datetime-subtraction crash in standup COMPLETE path), **#1105** (settings UI re-paste friction, same shape as #1258's setup-friction reasoning). Awaiting PM's answer.
+
+**Status at day-end**: OAuth verification pending Lead Dev; M3-Quality awaiting PM; M3-Health/M3-Security/RECONNECT still queued for sprint-by-sprint triage.
+
+---
+
+## DAY-CLOSED — 2026-07-04
+
+**Sign-off verification**:
+- All mailbox/document work pushed to origin/main throughout the day via atomic temp-index commits (verified diff after every push, all clean).
+- No stray uncommitted local changes — worktree used exclusively for read-only investigation and Bash/gh operations; all durable writes went through the main-checkout temp-index pattern per established discipline.
+- Last commit of the day: `63060b2cc` (Lead Dev OAuth-verification memo) plus this closing log entry (next commit).
+
+**Major incident this session**: a temp-index commit built across multiple separate tool calls (gap between `read-tree` and `commit-tree`'s parent resolution) briefly deleted CXO's session log, 2 lines from the shared decisions.log, and an unread CXO memo. Caught via PM's prompt to check "mail from Lead Dev," fully restored (`c1f13b9cc`), and fixed going forward — every subsequent mailbox/document commit ran as one uninterrupted fetch→edit→push bash invocation. No content permanently lost. This discipline is now baked into the duty-cycle cron prompt for continuity.
+
+**Major product finding this session**: the GitHub-write-capability investigation PM requested (4 parallel forensic research agents, "we can't fudge this") overturned the working assumption that writes were unwired — they're real and working today; the actual remaining gap is narrower (per-user OAuth binding for writes, verification pending) than believed at the start of the investigation.
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced** (informed a decision or action):
+- "CRITICAL: Never touch PM's main checkout working tree" — informed exclusive use of temp-index git plumbing against `origin/main` rather than direct commits in the shared main checkout, all session.
+- "git: verify branch, reset index, read full diff before committing" / "Verify `git show --stat HEAD` post-commit, pre-push" — informed the post-commit diff-verification habit adopted after the race-condition incident (verified every subsequent commit's diff before moving on).
+- "Mailbox writes commit to main only" / "Per-memo commit-and-push for inter-agent mail" — informed every memo delivery this session (Lead Dev, CXO, PA, Arch cc's).
+- "No confabulating expected steps as completed — verify every artifact/commit exists before citing" — directly shaped the decision to verify the reconciliation-memo-reply claim via git history rather than assume, and shaped the entire approach to the GitHub-write-capability investigation ("we can't fudge this").
+- "Commit only explicit file paths — never git add -A" — followed throughout; every temp-index operation targeted named paths.
+
+**Loaded but not referenced**: the large majority of the MEMORY.md index — comms/publishing/editorial-calendar entries, cross-project (Janus/Klatch/Daedalus) entries, HOST/naming entries. None were relevant to PPM's beta-scope work today.
+
+**Wanted but not found**: none. The temp-index race-condition lesson discovered today is fully captured in the incident's own commit message (`c1f13b9cc`) and this session log — per the standing exclusion on saving "debugging solutions or fix recipes" to auto-memory when the commit/log already holds it, no new memory file was created for it; the operating discipline is instead carried forward via the duty-cycle cron prompt's "Mailbox discipline" section each fire.
+
