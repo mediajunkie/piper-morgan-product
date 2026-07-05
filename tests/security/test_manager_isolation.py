@@ -17,6 +17,16 @@ from services.onboarding.portfolio_manager import PortfolioOnboardingManager
 from services.shared_types import PortfolioOnboardingState, StandupConversationState
 from services.standup.conversation_manager import StandupConversationManager
 
+
+class TestDeliberatelyBrokenCanary1304:
+    """TEMPORARY (#1304 Epic A verification) -- proves the new security-tests.yml
+    gate actually catches a real failure, not just that it runs. Will be reverted
+    in the very next commit once the red run is confirmed."""
+
+    def test_this_must_fail(self):
+        assert False, "Deliberate failure to verify #1304's CI gate has teeth"
+
+
 # ADR-059: Mark onboarding-related classes for skip
 
 
