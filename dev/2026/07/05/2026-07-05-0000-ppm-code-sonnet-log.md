@@ -209,3 +209,14 @@ beta-blockers.md updated: fixed a stale "22 issues" section header that survived
 
 **Status**: everything settled. Ready to send the final Lead Dev handoff, then move to organizing Production-milestone contents into proposed post-beta sprints (PM's explicitly next-requested task).
 
+
+---
+
+### CLAUDE.md updated cohort-wide; final Lead Dev handoff sent
+
+Added a durable, cross-agent-visible warning to CLAUDE.md about GitHub's auto-close keyword matching having no negation awareness (the exact mechanism that closed #1278 by accident). Every role writes commit messages referencing issue numbers routinely, so this belongs in the shared instructions, not just this session log.
+
+**Final Lead Dev handoff sent** (supersedes the earlier sprint-plan brief): summarized everything that changed since that first brief — the milestone audit's 16 discrepancies, Beta Blockers growing from 22 to 25, #1278's dependency now fully resolved, the 7 new epic labels, and the two epic-sequencing refinements (#1260-before-#1241, #1216's scope caveat). Same three asks as before (sequencing sanity-check, bottom-up estimate, parallelization flag on D/F), explicit that no blocking dependency should surprise them anywhere in the list. Told them to keep working the connector thread regardless.
+
+**Status**: Beta Blockers work is genuinely done — 25 issues, 7 epics, labeled, sequenced, zero known open dependencies, canonical doc current, Lead Dev briefed. Next: PM wants to organize what's landed in the Production milestone into proposed sprints for after beta testing starts.
+
