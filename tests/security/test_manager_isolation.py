@@ -112,7 +112,7 @@ class TestPortfolioOnboardingManagerIsolation:
 class TestStandupConversationManagerIsolation:
     """Verify StandupConversationManager isolates users."""
 
-    def test_user_a_conversation_not_visible_to_user_b(self):
+    async def test_user_a_conversation_not_visible_to_user_b(self):
         """User A's standup conversation should not be visible to User B."""
         manager = StandupConversationManager()
 
@@ -120,19 +120,19 @@ class TestStandupConversationManagerIsolation:
         user_b_id = str(uuid4())
 
         # User A creates standup conversation
-        conv_a = manager.create_conversation(
+        conv_a = await manager.create_conversation(
             session_id=str(uuid4()),
             user_id=user_a_id,
         )
-        manager.set_standup_content(conv_a.id, "User A's standup content")
+        await manager.set_standup_content(conv_a.id, "User A's standup content")
 
         # User B queries for their conversation
-        conv_b = manager.get_conversation_by_user(user_b_id)
+        conv_b = await manager.get_conversation_by_user(user_b_id)
 
         # User B should have no conversation
         assert conv_b is None
 
-    def test_user_b_gets_own_conversation_not_user_a(self):
+    async def test_user_b_gets_own_conversation_not_user_a(self):
         """User B should get their own conversation, not User A's."""
         manager = StandupConversationManager()
 
@@ -140,53 +140,53 @@ class TestStandupConversationManagerIsolation:
         user_b_id = str(uuid4())
 
         # User A creates conversation with content
-        conv_a = manager.create_conversation(
+        conv_a = await manager.create_conversation(
             session_id=str(uuid4()),
             user_id=user_a_id,
         )
-        manager.set_standup_content(conv_a.id, "User A's standup")
+        await manager.set_standup_content(conv_a.id, "User A's standup")
 
         # User B creates their own conversation
-        conv_b = manager.create_conversation(
+        conv_b = await manager.create_conversation(
             session_id=str(uuid4()),
             user_id=user_b_id,
         )
-        manager.set_standup_content(conv_b.id, "User B's standup")
+        await manager.set_standup_content(conv_b.id, "User B's standup")
 
         # User A queries - should get their own conversation
-        retrieved_a = manager.get_conversation_by_user(user_a_id)
+        retrieved_a = await manager.get_conversation_by_user(user_a_id)
         assert retrieved_a is not None
         assert retrieved_a.user_id == user_a_id
         assert retrieved_a.current_standup == "User A's standup"
 
         # User B queries - should get their own conversation
-        retrieved_b = manager.get_conversation_by_user(user_b_id)
+        retrieved_b = await manager.get_conversation_by_user(user_b_id)
         assert retrieved_b is not None
         assert retrieved_b.user_id == user_b_id
         assert retrieved_b.current_standup == "User B's standup"
 
-    def test_manager_keyed_by_user_id(self):
+    async def test_manager_keyed_by_user_id(self):
         """Creating new conversation for same user should replace old."""
         manager = StandupConversationManager()
 
         user_id = str(uuid4())
 
         # Create first conversation
-        conv_1 = manager.create_conversation(
+        conv_1 = await manager.create_conversation(
             session_id=str(uuid4()),
             user_id=user_id,
         )
-        manager.set_standup_content(conv_1.id, "First standup")
+        await manager.set_standup_content(conv_1.id, "First standup")
 
         # Create second conversation for same user
-        conv_2 = manager.create_conversation(
+        conv_2 = await manager.create_conversation(
             session_id=str(uuid4()),
             user_id=user_id,
         )
-        manager.set_standup_content(conv_2.id, "Second standup")
+        await manager.set_standup_content(conv_2.id, "Second standup")
 
         # Query should return the latest conversation
-        retrieved = manager.get_conversation_by_user(user_id)
+        retrieved = await manager.get_conversation_by_user(user_id)
         assert retrieved is not None
         assert retrieved.id == conv_2.id
         assert retrieved.current_standup == "Second standup"
@@ -215,22 +215,22 @@ class TestManagerRequiresUserId:
                 user_id="",  # Empty should fail
             )
 
-    def test_standup_manager_requires_user_id(self):
+    async def test_standup_manager_requires_user_id(self):
         """StandupConversationManager must require user_id."""
         manager = StandupConversationManager()
 
         with pytest.raises((ValueError, TypeError)):
-            manager.create_conversation(
+            await manager.create_conversation(
                 session_id=str(uuid4()),
                 user_id=None,  # None should fail
             )
 
-    def test_standup_manager_rejects_empty_user_id(self):
+    async def test_standup_manager_rejects_empty_user_id(self):
         """StandupConversationManager must reject empty user_id."""
         manager = StandupConversationManager()
 
         with pytest.raises(ValueError, match="user_id"):
-            manager.create_conversation(
+            await manager.create_conversation(
                 session_id=str(uuid4()),
                 user_id="",  # Empty should fail
             )

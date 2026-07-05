@@ -134,7 +134,7 @@ jobs:
 
     - name: Run tests
       run: |
-        python -m pytest tests/ || echo "No tests found"
+        python -m pytest tests/
 
   windows-clone-test:
     runs-on: windows-latest

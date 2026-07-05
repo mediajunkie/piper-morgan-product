@@ -246,7 +246,7 @@ class UserAPIKeyService:
                 is_active=True,
                 is_validated=is_valid,
                 last_validated_at=datetime.now(timezone.utc) if is_valid else None,
-                created_by=user_id,
+                created_by=str(user_id),
                 encrypted_secret=encrypted_secret,  # #358
             )
             session.add(user_key)
