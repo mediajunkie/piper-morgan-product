@@ -27,16 +27,16 @@ Do this first — it's the prerequisite for trusting every other "done" claim on
 | #1304 | CI gap: DB-backed security test suite never runs in gating CI | Main is chronically red with no required status checks — no other gate's closure is independently verifiable without this |
 
 ### Epic B — Multi-tenancy & data protection (6 issues)
-The highest-stakes cluster, per independent Architect and CXO review. Likely the single largest lift in this list.
+The highest-stakes cluster, per independent Architect and CXO review. Likely the single largest lift in this list. **Internal sequencing note**: #1260 likely needs to land before or alongside the start of #1241's own remediation work, not in either order -- #1241 can't be properly verified with real multi-user testing until genuine per-user identity (#1260) replaces the current alpha-only fallback.
 
 | # | Title | Why it's a hard gate |
 |---|-------|----------------------|
+| #1260 | ADR-071 D7 prerequisite: formal PM-identity config replaces alpha username+env fallback | Likely a real prerequisite for #1241 -- the current alpha-only auth fallback isn't genuine multi-user support. Sequence before #1241. |
 | #1241 | Content not anchored to user auth (multi-tenancy completeness) | Cross-user data leakage — cannot ship beta |
 | #358 | Encryption at rest for sensitive data | PM: an important principle, long-deferred (low issue number) |
 | #1305 | Encrypt PII-bearing JSON/JSONB structured columns | Sibling scope split from #358 |
 | #1306 | Encrypt uploaded file content at rest | Sibling scope split from #358 |
 | #542 | Implement actual token revocation on disconnect | A disconnected tester's token must actually stop working |
-| #1260 | ADR-071 D7 prerequisite: formal PM-identity config replaces alpha username+env fallback | Likely a real prerequisite for #1241 -- the current alpha-only auth fallback isn't genuine multi-user support |
 
 ### Epic C — Connector/OAuth cutover (2 issues)
 Already in progress — Lead Dev's current active thread. Continue, don't restart.
@@ -65,7 +65,7 @@ Already in progress — Lead Dev's current active thread. Continue, don't restar
 | #1105 | Settings UI requires re-paste despite working server-side keychain reads | Setup friction for new external testers; part of PM's broader push toward less crude auth |
 
 ### Epic F — Correctness bugs found in testing (5 issues)
-Isolated, well-scoped fixes — good candidates to pick off quickly.
+Mostly isolated, well-scoped fixes — good candidates to pick off quickly. **Exception: #1216** isn't a quick fix like the other four -- its intended resolution is a real data-model addition (an `is_seed`/`source` provenance field on `InsightDB` + surfacing logic), closer to a small feature than a bug fix. A cheaper interim option exists (extend the same honest-decline/distrust-prior-claims mechanism that fixed #1331 at the prompt/floor level, deferring the full provenance model past beta) -- this is a real scope decision for Lead Dev/PM to make, not something to leave implicit under "quick and batchable."
 
 | # | Title | Why it's a hard gate |
 |---|-------|----------------------|
@@ -89,13 +89,13 @@ Isolated, well-scoped fixes — good candidates to pick off quickly.
 
 1. **Epic A first** — a verification prerequisite, not just another item. Nothing else's "closed" status means much without it.
 2. **Epic C continues in parallel** — already Lead Dev's active thread; don't interrupt momentum.
-3. **Epic B is the long pole** — the biggest architectural lift on this list; likely wants a dedicated multi-day block once A is clear.
-4. **Epics D and F** are largely isolated, well-scoped fixes — strong candidates for batching, or handing to a coding subagent in parallel, so Lead Dev's own attention concentrates on B and C.
+3. **Epic B is the long pole** — the biggest architectural lift on this list; likely wants a dedicated multi-day block once A is clear. Within it, **#1260 before #1241** (see Epic B note).
+4. **Epics D and F** are largely isolated, well-scoped fixes — strong candidates for batching, or handing to a coding subagent in parallel, so Lead Dev's own attention concentrates on B and C. **Exception: #1216** (Epic F) needs a scope decision first (full provenance model vs. cheaper interim honest-decline extension) before it can be batched with the rest.
 5. **Epics E and G** interleave around the above as bandwidth allows.
 
 ## Target date
 
-No fixed date as of 2026-07-05. Sprint-order.md's standing position: a real date gets set once Lead Dev can give a bottom-up estimate against this stabilized 22-issue list — not before.
+No fixed date as of 2026-07-05. Sprint-order.md's standing position: a real date gets set once Lead Dev can give a bottom-up estimate against this stabilized 25-issue list — not before.
 
 ## Change log
 

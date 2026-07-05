@@ -150,3 +150,17 @@ PM's insight, prompted by the #1216 discovery: reliance on Sprint-field tags for
 
 beta-blockers.md and sprint-order.md both updated to reflect the new 25-issue list and the Ongoing milestone.
 
+
+---
+
+### Epic breakdown refined — PM asked whether the audit findings changed the epic structure
+
+PM's question prompted a genuine reconsideration, not just a "which bucket" check. Two real refinements to beta-blockers.md:
+
+- **Epic B**: #1260 (per-user identity config) is likely a prerequisite for #1241 (multi-tenancy remediation), not just thematically related — #1241 can't be properly verified with real multi-user testing until #1260's fallback replacement lands. Reordered the table (#1260 first) and added an explicit within-epic sequencing note; updated the cross-epic "Recommended sequencing" section to call this out.
+- **Epic F**: #1216's intended fix (a real `is_seed`/`source` provenance field on `InsightDB`) is a small feature, not a quick isolated bug fix like #1279/#1285/#1332 — it doesn't fit the epic's "batchable, quick" framing. Flagged a cheaper interim option (extending #1331's honest-decline mechanism at the prompt level, deferring the full provenance model past beta) as a real scope decision for Lead Dev/PM, not something to leave implicit.
+
+Also fixed a stale "22-issue" reference in the Target Date section (should have read 25 since the milestone audit).
+
+beta-blockers.md pushed.
+
