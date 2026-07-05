@@ -98,3 +98,20 @@ PM's framing on why RECONNECT went this deep: "Lead Dev has been hard at work on
 
 **Beta Blockers sprint locked at 22 issues.** Next: PM asked for a fresh epic-level read of the 22 — how many, do they chunk logically — before drafting a sprint-plan briefing for Lead Dev.
 
+
+---
+
+### Beta Blockers promoted to its own canonical document (PM directive)
+
+PM: write up the epic breakdown in its own file, add to the docs tree per NAVIGATION.md, refer to it in mail to Lead Dev. PM's framing: "Between now and beta release I want to refer to that blocker sprint doc as our source of truth of what remains between us and launch. Newly discovered issues will be triaged to determine if they too block beta and if they do they'll be added."
+
+**Created**: `docs/internal/planning/beta-blockers.md` — the 22 issues across 7 epics (A: verification foundation, B: multi-tenancy/data protection, C: connector/OAuth cutover, D: deploy/hosting portability, E: auth/account lifecycle, F: correctness bugs, G: routing/config integrity), with rationale, recommended sequencing, and a maintenance rule for triaging newly-discovered issues in/out.
+
+**Updated `docs/NAVIGATION.md`**: added pointers to both beta-blockers.md and sprint-order.md under the Product Managers section (sprint-order.md wasn't referenced there at all before — a pre-existing gap, fixed in passing).
+
+**Trimmed `sprint-order.md`**: the "Confirmed Beta Blockers sprint" table is replaced with a pointer to beta-blockers.md, to avoid two documents holding the same list and drifting apart over time. sprint-order.md keeps its role as the sequencing document across the whole board; beta-blockers.md is now the focused, living "what stands between us and beta" doc.
+
+**Sent Lead Dev the sprint-plan brief** referencing the new doc: summarized the 7 epics, asked for (1) a sanity check on the epic groupings/sequencing, (2) a bottom-up estimate now that scope is stable at 22, (3) a flag on which of Epic D/F look parallelizable to a coding subagent. No urgency attached — Lead Dev continues Epic C (the active connector thread) regardless.
+
+**Open question to PM (asked separately, awaiting answer)**: whether to keep Aug 1 as an aspirational/stretch date. PPM's recommendation: no, even softened — three leadership voices already said to remove it, this exact date has already calcified past its original "aspirational" framing once this session, and the newly-expanded 22-issue scope (vs. the smaller set at the time of PPM's earlier timeline estimate) makes the realistic range if anything later than previously estimated. Recommended alternative: no fixed date until Lead Dev's bottom-up estimate lands.
+

@@ -42,6 +42,8 @@ Each essential briefing includes triggers for loading detailed documentation as 
 - **[Issue Tracking](internal/planning/current/issues.csv)** - Current PM issue status
 - **[Roadmap](internal/planning/roadmap/)** - Strategic planning and milestones
 - **[Sprint Board Structure](internal/planning/sprint-board-structure.md)** - How milestones, sprints, and board Status are organized (xian's conventions) — **read before any board operations**
+- **[Beta Blockers](internal/planning/beta-blockers.md)** - Canonical source of truth for what remains before beta release (22 issues, 7 epics, recommended sequencing) — living document, updated as issues are triaged in/out
+- **[Sprint Order](internal/planning/sprint-order.md)** - Canonical sprint sequence across the full board
 - **[Backlog Management](internal/planning/current/)** - Priority management and organization
 - **Product Design & Strategy** (`internal/design/`):
   - [Piper Morgan by Analogy](internal/design/piper-morgan-by-analogy.md) — Positioning: same domain as Jira, different paradigm (Colleague vs Tool)
