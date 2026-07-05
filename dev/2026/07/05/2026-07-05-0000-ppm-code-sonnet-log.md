@@ -68,3 +68,20 @@ sprint-order.md v5 pushed with all 3 new rows + footer update.
 
 **M3-Quality fully closed.** Next in sequence: M3-Health (9 open), M3-Security (7 open), RECONNECT — Connector Refactor (35, largely superseded).
 
+
+---
+
+### M3-Health + M3-Security triage closed — PM decisions received (in-conversation)
+
+**M3-Health (9 issues)** — clean tech-debt sprint, no live-bug candidates. PM: "agreed on all of those … they are ok for LD to cherrypick when otherwise idle but they do not block beta." All 9 moved to Production via `gh issue edit`: #1001, #1028, #1131, #1138, #1139, #1144, #1287, #1298, #1321.
+
+**M3-Security (7 issues)** — real teeth this time, several tied directly to today's #358 decision:
+- **4 → Production**: #371 (time-series DB infra, unrelated to security — likely mis-sorted into this sprint), #557 (WebSocket infra, same situation), #1203 (already PM-deferred to M5-reconsideration per a June 12 ruling), **#482** (SEC-KMS-INTEGRATION — PM asked PPM directly for a recommendation rather than accepting a soft flag; PPM's call: Production, since it's ops-side secret-storage hardening rather than a tester-facing trust property like the other three, and doesn't actually connect to the "less crude auth" theme on reflection — PM approved).
+- **3 → Beta Blockers**: **#542** (token revocation on disconnect — a real trust property, was on PPM's very first hard-gate list from this morning's investigation and had fallen out of the refined lists; a disconnected tester's token must actually stop working), **#1305** and **#1306** (both explicitly "deferred from #358-B" — sibling scope of this morning's #358 encryption-at-rest decision, travel with the parent principle).
+
+sprint-order.md v7 pushed — also backfilled the M3-Health sprint-order.md update that was skipped earlier (GitHub moves were executed but the doc update wasn't pushed before moving on to M3-Security).
+
+**Beta Blockers sprint now 22 issues.** **M3-Quality/M3-Health/M3-Security triage cluster is fully closed.**
+
+Next in sequence: RECONNECT — Connector Refactor (35 open, largely superseded by the narrower #1317inc.2/#1220 beta slice per Arch's ruling — most is post-beta full-migration work). This is the last sprint in the triage sequence.
+
