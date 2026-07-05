@@ -64,6 +64,6 @@ If the documentation is part of the system, the documentation needs to keep bein
 
 ---
 
-*Next on Building Piper Morgan: "Mechanism Beats Vigilance" — when a failure keeps recurring after everyone's been careful, the fix usually isn't more care. It's a wall.*
+*Next on Building Piper Morgan: "The Trust Architecture Hardens" — three ADRs land in five days, and by Friday the team is noticeably harder to fool, including by itself.*
 
 *When does writing about a system change the system? When have you noticed your own observations becoming inputs to the work they were observing?*
