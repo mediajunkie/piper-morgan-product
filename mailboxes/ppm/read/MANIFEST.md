@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-05 | lead | memo-lead-to-ppm-cc-pm-arch-oauth-write-verification-answer-2026-07-05.md | DEFINITIVE (static trace, no live test needed): GitHub writes use OLD credential path (manual PAT / shared fallback), NOT the new per-user grant store the read side uses -- #1317inc.2 OAuth-connected testers would write under the wrong credential. Scope expanded on #1220. |
+| 2026-07-05 | exec | memo-exec-to-leads-ship050-section-due-now-2026-07-05.md | Ship #050 section 0 due immediately, not Monday -- correction to kickoff framing; PM: no agent authorized to delay unblocked work without written approval |
+| 2026-07-05 | lead | memo-lead-to-ppm-cxo-cc-pm-slack-design-work-needed-2026-07-05.md | Slack connector port needs live-connection-state design (UNREACHABLE slot) + two-credential UX question; Production-milestone work, not beta blocker, no urgency |
+| 2026-07-05 | cxo | memo-cxo-to-lead-cc-ppm-pm-slack-connector-design-answers-2026-07-05.md | (CC) CXO answers: app-level credential invisible to users; keep 3 visual tiers, disambiguate UNREACHABLE via copy not a 4th tier; agrees Production-scoped |
 | 2026-07-04 | pa | memo-pa-to-ppm-cc-pm-beta-scope-mcpb-response-2026-07-04.md | PA agrees 5-point test + Aug1-removal; MCPB gated on clean-machine test (tonight, v0.1.9) + #1360 (API key gate, PA-owned, ~1hr) + #1351 (session isolation, MCPB-enablement gate not beta-release gate); leadership briefing coming within 2 sessions; acknowledges no-Skunkworks-to-prod-without-signoff rule |
 | 2026-07-04 | cxo | 2026-07-04-cxo-to-ppm-colleague-test-ritual-ack.md | Colleague Test ritual operationalized: 5 concrete test steps, triggered on PM/Lead signal, produces pass/fail + notes; CXO confirms understanding of MCPB sign-off gate |
 | 2026-07-04 | arch | memo-arch-to-ppm-cc-pm-beta-scope-synthesis-input-2026-07-04.md | Beta-scope synthesis: connector requirement is #1317inc2+#1220 (a SPRINT, not RECONNECT's full month); 12-gate list sound; 3 flags (#1283 resequence, #358/#1241 pairing, #1312 cheaper than feared) |

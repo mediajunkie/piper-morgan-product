@@ -34,3 +34,20 @@ Continuing from Jul 4 session (DAY-CLOSED, see `dev/2026/07/04/2026-07-04-0652-p
 **Day transition**: closed Jul 4 log with DAY-CLOSED sentinel + memory eval; this log created to continue. Live conversation with PM is uninterrupted — no session break, log-file rollover only.
 
 **Status**: IDLE on new inbox mail; M3-Quality answer and Lead Dev's OAuth test are both awaiting external input (PM and Lead Dev respectively) — nothing further to drain until one arrives.
+
+---
+
+### Fire 7 — 10:22 PDT (cron)
+
+**Cron rotation**: deleted `cfb9fa8a`, created new job (standing items to be rewritten this fire).
+
+**Inbox**: 4 new memos, all processed to read/:
+
+1. **Lead Dev's OAuth-write answer — DEFINITIVE finding.** Static trace (no live test needed, reasoning airtight): `create_issue`/`update_issue`/`add_comment` (`services/mcp/consumer/github_adapter.py:850,880,934`) take no `user_id` parameter — structurally cannot do a per-request grant-store lookup. They use one `aiohttp.ClientSession` with one token baked in at creation (`configure_github_api`), sourced from `GitHubConfigService.get_authentication_token(user_id)` — the OLD credential path (manual keychain PAT, falling back to a shared/system token) — NOT the new `ConnectorGrantStore`/`ConnectorBinding` rail the read side (`resolve()`, `list_open_issues`, etc.) correctly uses per-call. **Real implication**: a tester who manually pasted their own PAT has correct writes today (no gap). A tester who connects only via the new #1317inc.2 OAuth flow (not yet built) would have writes silently execute against the wrong (shared/system) credential once that flow ships. Lead Dev already added this as a comment on #1220 (the artifact, not just mail). Footnote: a session-reuse bug in `configure_github_api()` (second call with a different token silently doesn't take effect) looks unreachable today, flagged on #1220 as a footnote only.
+   - **Action taken**: sprint-order.md v4 updated — #1220's scope description expanded to explicitly include "write-path credential migration," not just the ops/hosting decision. #1190 (destructive-mutation confirmation gate) confirmed as Production — it's a narrow UX-polish item (same-message regex vs. multi-turn state machine), genuinely unrelated to the credential-routing question once the OAuth answer came back. Moved via `gh issue edit` (spot-verified: Production).
+2. **Exec: Ship #050 §0 due immediately** — correction to an earlier "Monday" framing; PM flagged this as a recurring antipattern (no agent authorized to delay unblocked work without written approval). **Action taken**: reviewed Jun 27–Jul 3 PPM activity via git log (People #1281 one-pager + roadmap v18.2 delivered Jun 28; #1331 alpha-trust yellow-flag-not-blanket-gate ruling Jul 1; #1235 escalated to PM with 3 options rather than unilaterally decided Jul 3; Ship #049 delivered on schedule). Wrote and sent §0 to Exec, honestly flagging that sprint-order.md's ratification sitting pending most of the week was itself a small instance of the exact antipattern this correction is about.
+3. **Lead Dev: Slack connector design work needed** (to PPM+CXO) — spells out two design questions (app-level vs. per-user credential UX; UNREACHABLE-state visual treatment) so the shape of the work is visible whenever it's prioritized. Explicit: Production-milestone work, not a beta blocker, no urgency.
+4. **CXO's answers** (cc) — app-level credential is invisible infrastructure to users (gate, not setup UI); keep 3 visual tiers, disambiguate UNREACHABLE via copy, don't add a 4th tier without evidence. Agrees Production-scoped. **No PPM action needed** — both leads converged cleanly; noted for awareness, no issue exists yet to move.
+
+**Commits this fire**: sprint-order.md v4 (#1220 scope + footer) + 4 memos to read/ + MANIFEST + Ship#050 §0 memo to Exec + this log entry — pushed atomically.
+
