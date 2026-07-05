@@ -19,7 +19,7 @@ This is the single canonical list of issues that must close before Piper Morgan 
 
 The full open backlog was swept sprint-by-sprint (M3-Quality, M3-Health, M3-Security, M4, M5, RECONNECT — 2026-07-04/05), following a deep forensic investigation into GitHub write-action capability that revealed the roadmap's earlier confidence in an August 1 target rested on assumptions that hadn't been verified bottom-up. That investigation is documented in the PPM session logs for 2026-07-04 and 2026-07-05.
 
-## The 25 issues, organized by epic
+## The 23 open issues, organized by epic
 
 ### Epic A — Verification foundation (1 issue)
 Do this first — it's the prerequisite for trusting every other "done" claim on this list.
@@ -48,14 +48,14 @@ Already in progress — Lead Dev's current active thread. Continue, don't restar
 | #1317 | Per-connector MCP-consumer adapters onto the Connector contract | In Progress |
 | #1220 | github-mcp-server provisioning + write-path credential migration | In Progress. Scope expanded 2026-07-05: writes (create/update/close/comment) currently use the old native-PAT/shared-token credential path, not the new per-user grant store the read side uses — a tester connecting via the new OAuth flow would have writes silently misattributed until this migrates too. |
 
-### Epic D — Deploy/hosting portability (5 issues)
+### Epic D — Deploy/hosting portability (3 open issues; 2 closed 2026-07-05)
+
+~~#1168~~ and ~~#1176~~ **closed 2026-07-05** (Lead Dev, Beta Blockers estimate research) — both fixes were already shipped as part of #1299's 2026-06-20 alpha-deploy remediation, but the issues themselves were never separately closed. Verified directly against current `main` before closing (see issue comments for evidence). #1299's own scope also shrank: sub-item (a) verified done, only (b) remains open.
 
 | # | Title | Why it's a hard gate |
 |---|-------|----------------------|
-| #1168 | Linux build portability — macOS-only pyobjc deps in requirements.txt | pip install fails on Linux; breaks every fresh deploy |
-| #1176 | Hosted-deploy portability — hardcoded-local assumptions | Unreachable through Docker/hosted deploy |
 | #1258 | Strip inherited empty Anthropic env vars at server startup | Any hosted environment inheriting Claude Code's empty key fails every LLM call |
-| #1299 | Deploy hardening remainder — alembic env-driven URL + deploy.sh migrate hardening | Migrations fail on hosted deploys |
+| #1299 | Deploy hardening remainder — **only (b) remains**: deploy.sh migrate hardening (real-deploy verification + BUILD_FAIL race disambiguation) | Migrations fail on hosted deploys |
 | #1278 | Host piper-morgan server on Fly.io for beta launch | No hosted server = no external beta testers |
 
 ### Epic E — External-tester auth/account lifecycle (3 issues)
@@ -67,7 +67,7 @@ Already in progress — Lead Dev's current active thread. Continue, don't restar
 | #1105 | Settings UI requires re-paste despite working server-side keychain reads | Setup friction for new external testers; part of PM's broader push toward less crude auth |
 
 ### Epic F — Correctness bugs found in testing (5 issues)
-Mostly isolated, well-scoped fixes — good candidates to pick off quickly. **Exception: #1216** isn't a quick fix like the other four -- its intended resolution is a real data-model addition (an `is_seed`/`source` provenance field on `InsightDB` + surfacing logic), closer to a small feature than a bug fix. A cheaper interim option exists (extend the same honest-decline/distrust-prior-claims mechanism that fixed #1331 at the prompt/floor level, deferring the full provenance model past beta) -- this is a real scope decision for Lead Dev/PM to make, not something to leave implicit under "quick and batchable."
+Mostly isolated, well-scoped fixes — good candidates to pick off quickly. **#1216 scope decision made 2026-07-05 (Lead Dev)**: ship the interim fix for beta — extend the same honest-decline/distrust-prior-claims mechanism that fixed #1331 at the prompt/floor level (small, ~1hr, uses an already-proven pattern) so Piper stops asserting a seed-vs-real distinction it cannot actually verify. The full fix (an `is_seed`/`source` provenance field on `InsightDB` + surfacing logic, ~2-4hrs, a real schema change) is deferred to Production — tracked, not dropped. Rationale: the interim option reliably closes the specific dishonest-claim failure mode using a proven mechanism, without committing beta to a new schema field that every future insight-write path must remember to populate correctly.
 
 | # | Title | Why it's a hard gate |
 |---|-------|----------------------|
@@ -85,7 +85,7 @@ Mostly isolated, well-scoped fixes — good candidates to pick off quickly. **Ex
 | #1312 | DB↔model schema drift (~111 Alembic diffs) | High migration risk; cheaper to fix than the diff count suggests |
 | #1324 | Audit: hardcoded config values that should be env vars | Deploy-portability risk |
 
-**Total: 25 issues across 7 epics.**
+**Total: 23 open issues across 7 epics** (25 minus #1168 and #1176, closed 2026-07-05 with evidence — see Epic D and change log).
 
 ## Recommended sequencing
 
