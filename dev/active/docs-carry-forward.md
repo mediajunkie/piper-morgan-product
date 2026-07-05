@@ -1,7 +1,7 @@
 # Docs Carry-Forward
-**Updated**: 2026-07-04 ~22:47 PDT (Fire 2 — STOP)
+**Updated**: 2026-07-05 ~22:17 PDT (Fire 2 — STOP)
 **Cron**: `17 10,22 * * *` (SLOW tier — 2×/day; re-arm at STOP)
-**Session log**: `dev/2026/07/04/2026-07-04-1047-docs-code-log.md` (DAY-CLOSED: 2026-07-04)
+**Session log**: `dev/2026/07/05/2026-07-05-1047-docs-code-log.md` (DAY-CLOSED: 2026-07-05)
 
 ## Migration hold status
 
@@ -9,31 +9,26 @@ SLOW tier continues. No cron tier changes until PM + Janus migration plan confir
 
 ---
 
-## Done today (Jul-4)
+## Done today (Jul-5)
 
-- ✅ **Audit template split LANDED** — `monthly-housekeeping-audit.yml` created; weekly template trimmed + completion matrix updated; staggered-audit-calendar-2026.md updated. First standalone monthly issue auto-generates Aug 4.
-- ✅ **"Climbing Higher When the Platform Laps You"** published to pipermorgan.ai (hashId=887c7c3d0fc7; workDate=2026-05-06; pubDate=2026-07-04)
-- ✅ **Triad Model edit-pass re-published** (hashId=64267a5e395d — voice-passed version now on pipermorgan.ai; Medium/LinkedIn already had it)
-- ✅ **CIO BRIEFING refactor ratified** — navigation-doc shape confirmed; operational holds → decisions.log refinement; two technical flags for coordinated transition (session-start.sh staleness threshold + CLAUDE.md staleness-norm re-scope); STATUS BANNER → archive as historical snapshot at cutover
-- ✅ **Janus stash@{0} verified superseded + dropped** — all 3 non-MANIFEST files confirmed superseded by origin/main
-- ✅ **Jul-3 omnibus confirmed written**
+- ✅ **Jul-4 omnibus written** — `docs/omnibus-logs/2026-07-04-omnibus-log.md` (196 lines, HIGH-COMPLEXITY, commit `5f4c17ef0`)
+- ✅ **Activity-log rows appended** — 12 rows for Jul-4; 1582→1594 lines (commit `eeaf5b356`)
 
-## Next (Jul-5 START fire, ~10:17)
+## Next (Jul-6 START fire, ~10:17)
 
-- [ ] **Jul-4 omnibus** — write if not already done (large day: Lead, CIO, Arch, HOST, PA, PPM, Exec, Comms, CXO, Docs — plus blog publish + beta-sprint work)
 - [ ] **BRIEFING refactor transition** — awaiting CIO coordination memo; when received, plan `update-current-state` skill rewrite + CLAUDE.md re-scope + session-start.sh threshold
-- [ ] Weekly audit #1329 next due Jul 9
+- [ ] **Weekly audit #1329** — next due Jul 9 (Wednesday)
+- [ ] **BRIEFING freshness check** — briefing was last updated Jul 3 ~10:50 (Lead) + Jul 3 ~18:37 (HOST); Jul-5 may have updates to incorporate (Lead continued; Arch retroactive day-close; etc.)
 
 ## Pending / PM-gated
 
 - **BRIEFING refactor implementation** — CIO coordinating with Docs; waiting for transition plan memo
-- **HOST bounded cleanup spec** — HOST to draft → CIO implements into duty-cycle-tick STOP
+- **HOST bounded cleanup spec** — HOST drafted spec Jul 4; CIO to implement into duty-cycle-tick STOP (CIO confirmed done Jul 4)
 - **#1344 open-registration** — PM decision needed
-- **Roadmap v18.3** — may be moot (PPM roadmap v18.3+ now active); verify at next pass
 - **docs-standing-items.md stale** (last refresh 2026-05-27) — refresh when queue allows
 - **YAML-frontmatter upgrade lane** — ADRs/Patterns/Methodology/.serena still pending
 
 ## State flags
 
-- Inbox: **0 unread**
+- Inbox: **0 unread** (as of 22:17 PDT)
 - Queue: **(0,0)** — BRIEFING transition blocked on CIO memo; all other items PM-gated or other-agent-owned
