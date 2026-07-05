@@ -128,3 +128,25 @@ It hadn't — roadmap.md was still at v18.4 (Jul 4 morning), stale against every
 
 roadmap.md v18.5 pushed.
 
+
+---
+
+### Milestone-based ground-truth audit — PM-directed, found 16 discrepancies
+
+PM's insight, prompted by the #1216 discovery: reliance on Sprint-field tags for triage coverage was fundamentally unsound, especially given a sprint-assignment data-loss incident ~10 days ago that PA caused and the team had to reconstruct "as best we could." Proposed a cleaner ground-truth check: pull every OPEN issue in the MVP milestone directly (a milestone property, not a Sprint-field property) and diff against the Beta Blockers list. Anything open in MVP but not on the list is either a missed blocker or a housekeeping miss.
+
+**Ran it**: 38 open MVP-milestone issues vs. 22 Beta Blockers = 16 discrepancies. Root cause confirmed: several issues were tagged to sprints that had already closed (M2, M3, D1) and were never swept forward when those sprints closed; a whole separate FLYWHEEL (process-improvement) and SKUNK (Skunkworks) category was never part of the active triage sequence at all.
+
+**Resolved** (all executed, spot-verified):
+- **3 → Beta Blockers**: #1216 (honest-provenance/seed-data confabulation, same failure shape as #1331), #1256 (INTENT-VOCAB misclassification bug), #1260 (ADR-071 D7 PM-identity config — likely a real prerequisite for #1241's multi-tenancy work). Beta Blockers now **25 issues**.
+- **4 → Production**: #1167 (resolved via investigation — the broken Dockerfile is the `orchestration`/Temporal-worker service, not the app image #1278 deploys from; already worked around for alpha by skipping that service entirely), #1209 (future-phase AutonomousExecutor work), #1257 (pure architecture refactor), #1284 (nav-group naming/design polish).
+- **9 → new "Ongoing" milestone** (created this session, milestone #10, no target date): #683 (Definition-of-Done process update — also corrected its stale Sprint tag from the closed M2 sprint to FLYWHEEL), plus 6 FLYWHEEL issues (#1160, #1259, #1272, #1275, #1277, #1296) and 2 SKUNK issues (#1162, #1295). PM's reasoning: Production implies "scoped for the 1.0 release," which misrepresents perpetual/parallel-running tracks that have no release-bound completion date — a dedicated milestone represents them honestly.
+
+**Correction on the FLYWHEEL "touches code" rule**: PM clarified the rule is about Piper Morgan *product* code specifically, not any code in the repo — cohort/methodology tooling (mail-send.sh, mailbox infrastructure) doesn't disqualify an issue from FLYWHEEL. Retracted my earlier flag on #1259/#1296 as mis-tagged; they're correctly FLYWHEEL under the clarified rule.
+
+**New discrepancy found and flagged, not yet resolved**: while resolving #1167, found that #1278 (Fly.io hosting, confirmed Beta Blocker) states in its own acceptance criteria that "credential decoupling (#1162)" must ship first — but #1162 is actually the Skunkworks hosted-distro issue; the real credential-decoupling work is #1300, which is currently Production-scoped. PPM's lean (given directly to PM): #1300 likely doesn't need to move into Beta Blockers — its actual scope (public-marketplace protection) is a bigger concern than a small, invite-gated beta cohort needs; recommend correcting #1278's stale reference and softening that acceptance criterion rather than pulling #1300 forward. Awaiting PM's confirmation before editing #1278's issue body.
+
+**Verification**: re-ran the full MVP-milestone pull after all moves — 25 open issues remain, exactly matching the 22 original + 3 new Beta Blockers additions. Zero discrepancy remains between MVP milestone and the Beta Blockers list.
+
+beta-blockers.md and sprint-order.md both updated to reflect the new 25-issue list and the Ongoing milestone.
+
