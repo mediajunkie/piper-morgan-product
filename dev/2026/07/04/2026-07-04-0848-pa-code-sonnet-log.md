@@ -20,6 +20,14 @@
 - Started July 4 log
 - Reading PA inbox now
 
+### ~3:00 PM — PPM response + Layer 2 issue filed + mail triage
+- Responded to PPM's beta scope proposal: five-point test endorsed, MCPB readiness assessed, #1351 flagged as beta blocker for MCPB enablement, Aug 1 date not defensible
+- Acknowledged MCPB/Skunkworks briefing request — full leadership briefing memo to follow within 2 sessions
+- Filed #1360: API key gate on /api/v1/intent (Layer 2 Option A, PA-owned, off RECONNECT critical path)
+- Triaged 6 inbox memos → read/; inbox now clear
+- Clean-machine test procedure handed to PM for tonight's test
+- All pushed to origin/main
+
 ### ~12:30 PM — Alpha security review + MCP roadmap decision
 - Completed 5-layer alpha release security assessment with PM
 - Decision ratified: Option A (shared API key on /api/v1/intent) for controlled alpha/limited beta; per-user auth is the production target
