@@ -1,14 +1,14 @@
 # Ship #050 — Exec Draft from Git Record
-## Window: Jun 27–Jul 3, 2026 | Publish target: Wed Jul 9
+## Window: Jun 26–Jul 2, 2026 (Fri–Thu) | Publish target: Wed Jul 9
 
-**STATUS**: Draft from git record (Exec, Jul 5 08:xx). Lead §0 submissions pending.
+**STATUS**: Draft from git record (Exec, Jul 5). Lead §0 submissions requested. Note: Jul 3 (Thu) was the kickoff day and is the first day of the new window (#051); Jul 4 is also out of window — those items are excluded from this draft.
 Sections marked `[FROM RECORD]` are attested from commits; sections marked `[NEEDS LEAD INPUT]` need the named lead's confirmation or correction.
 
 ---
 
 ## The week in one line
 
-The invite-gate (#1344) shipped live. Arch issued a foundational connector-alignment ruling. The beta scope picture became concrete and unwelcome: Aug 1 is not achievable.
+The invite-gate (#1344) shipped live, closing Gap-A and unblocking alpha minting. Two major trust-infrastructure pieces landed in one week.
 
 ---
 
@@ -16,13 +16,11 @@ The invite-gate (#1344) shipped live. Arch issued a foundational connector-align
 
 **§0 — Progress vs. portfolio goals:** [FROM RECORD]
 
-The week's two most significant deliveries were both trust-infrastructure:
+The week's primary deliveries were trust-infrastructure:
 
-**#1231 — _NUDGES completeness guard** shipped Thu Jul 3. The AST-based m-41 enforcement pattern — every DegradationReason must have corresponding nudge copy — is live and test-gated. Closes a long-standing gap where silent missing nudges were possible.
+**#1231 — _NUDGES completeness guard** shipped. The AST-based m-41 enforcement pattern — every DegradationReason must have corresponding nudge copy — is live and test-gated. Closes the gap where silent missing nudges were possible.
 
-**#1344 — Invite-gate** shipped Thu Jul 3, deployed live as v0.8.9.2. Gap-A (the unauthenticated user-creation path that bypassed invite validation) is durably closed. Arch ratified the atomicity mechanism; HOST ran the trust-lens PASS on step 2. Minting is now unblocked. This was a two-day build from contract to deploy.
-
-**RECONNECT progress**: Jul 4, with PM's direction to go depth-first (GitHub before Calendar), Lead completed Calendar test debt (36/36, two issues closed) and ported the Notion connector onto the #1232 contract — the first application of Arch's new 3-layer ruling, confirmed exemplary. GitHub 12/12 tests green. Slack correctly NOT started (live-runtime design question, needs its own session).
+**#1344 — Invite-gate** shipped and deployed live as v0.8.9.2 (Jun 27–Jul 3 build arc, deploying at week close). Gap-A (unauthenticated user-creation path bypassing invite validation) durably closed. Arch ratified the atomicity mechanism; HOST ran the trust-lens PASS. Minting unblocked.
 
 ---
 
@@ -44,11 +42,7 @@ The ruling reduces the RECONNECT connector migration from "six open questions" t
 
 **§0 — Progress vs. portfolio goals:** [FROM RECORD]
 
-**Roadmap v18.4 + sprint-order v2** shipped and PM-ratified Jul 4.
-
-**Beta scope investigation completed** — the most significant PPM output this week. Finding: Aug 1 is not achievable. ~18–22 hard-gate issues. Core Piper experience is at beta quality; connectors aren't. The Beta Blockers sprint is taking shape (currently 14 issues, still growing: #1278, #358, #1312 added Jul 4). Key insight from Arch: the connector-blocker is a **sprint** on shipped foundations, not a month of re-architecture — don't conflate it with the full RECONNECT migration.
-
-**Outstanding**: GitHub write per-user OAuth verification (Lead Dev task, PPM-requested). Synthesis pending CXO input (not yet received).
+**Beta scope investigation launched**: PPM began scoping what's actually required for beta. Early signal: the core Piper experience is at quality; connectors are not. **[NEEDS LEAD INPUT from PPM — what work falls inside Jun 26–Jul 2 vs. Jul 3+? The roadmap work and beta blocker triage straddled the window close.]**
 
 ---
 
@@ -58,11 +52,7 @@ The ruling reduces the RECONNECT connector migration from "six open questions" t
 
 **#1331 closed** (Jul 3): the #1201 triad-model alignment issue resolved.
 
-**Colleague Test ritual operationalized** (Jul 4): the quality-gate ceremony is live and operational. PPM confirmed.
-
-**Beta scope UX lens** submitted to PPM Jul 4 (Arch/CXO synthesis received and processed).
-
-**Slack status check** Jul 4: confirmed Lead Dev's analysis that Slack connector aligns with #1201 spec — no CXO action required on Slack architecture.
+**#1331 closed** (Jul 3): the #1201 triad-model alignment issue resolved — right at the window edge. **[NEEDS LEAD INPUT from CXO — what belongs in the Jun 26–Jul 2 window for your lane?]**
 
 ---
 
@@ -98,27 +88,19 @@ The ruling reduces the RECONNECT connector migration from "six open questions" t
 
 **§0 — Progress vs. portfolio goals:** [FROM RECORD]
 
-Three posts published in the window (or immediately adjacent):
-- **"The Airport Corrections"** — Jul 2
-- **"Climbing Higher When the Platform Laps You"** — Jul 4 (PM voice-passed)
-- **"The Practice That Got Retired"** — Jul 5 (published this morning)
-
-4+ upcoming posts pre-edited. 2 draft orphans rescued from the queue. Template audit completed.
-
-The queue is no longer empty — Comms has a healthy backlog of pre-edited posts. The publication pipeline is running at cadence.
+In-window publication: **"The Airport Corrections"** — Jul 2. Pre-editing underway for upcoming posts. **[NEEDS LEAD INPUT from Comms — full lane summary for Jun 26–Jul 2 please, including any in-window drafts completed.]**
 
 ---
 
-## Key decisions (Jun 27–Jul 3)
+## Key decisions (Jun 26–Jul 2, in-window)
 
 | Decision | Who | Status |
 |----------|-----|--------|
-| RECONNECT: depth-first, GitHub before Calendar | PM | Ratified Jul 4 |
-| Beta scope: Aug 1 not achievable, connector-blocker = sprint | PPM + Arch | Confirmed Jul 4 |
-| Inbox-proxy pilot: 2-week clock starts Jul 4 | PM | Greenlit Jul 4 |
-| 3-layer connector-alignment ruling | Arch | Live, effective immediately |
-| Arch backup account stood down (dual-session resolved) | Exec + PM | Jul 4 |
 | Audit template split: weekly/monthly separate | HOST + CIO | Ratified |
+| Invite-gate (#1344) approach — shared-txn atomicity | Arch + Lead | Ratified, deployed |
+| #1344 trust-lens PASS (step 2) | HOST | Cleared Jul 3 (window edge) |
+
+*Note: Several major decisions (RECONNECT depth-first, beta scope, inbox-proxy pilot, 3-layer ruling) landed Jul 3–4, which is next week's window (#051). They'll appear in that report.*
 
 ---
 
