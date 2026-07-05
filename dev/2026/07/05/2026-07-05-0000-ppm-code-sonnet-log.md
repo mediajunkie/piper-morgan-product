@@ -164,3 +164,24 @@ Also fixed a stale "22-issue" reference in the Target Date section (should have 
 
 beta-blockers.md pushed.
 
+
+---
+
+### #1278 dependency settled before Lead Dev handoff — PM wanted crystal-clear instructions
+
+PM: "Let's settle that before we hand off to Lead Dev? I want them to have crystal clear instructions from now till we ship." Verified via direct REST API (GraphQL was rate-limited again) that **#1185 (BYO-KEY-MULTI-TENANT) already shipped the actual per-user-key mechanism** — status "DONE (core)... Priority: P1 (beta-gating)". Authenticated users' LLM calls already resolve their own stored, encrypted Anthropic key, security-verified against cross-user leakage. #1340 (the piece I'd moved to Production) is confirmed pure UX polish on top of an already-complete capability — its own body says "the capability is complete... this tracks the UX fold only." #1300 turned out to be unrelated to #1278's actual need (it's about the public-marketplace distribution scenario, a bigger/different concern).
+
+**Resolution, better than the original "soften the AC" plan**: #1278's dependency isn't just mis-cited, it's already satisfied. Edited #1278's GitHub issue body directly — struck through the stale "#1162 must ship first" language, checked that AC item, corrected the Dependencies section to name #1185 (shipped) as the real mechanism, and noted #1340/#1300 as separate, non-blocking, Production-scoped items. #1278 now has zero open dependency. Verified the edit landed via `gh issue view`.
+
+---
+
+### Fire 8 — cron rotation, inbox, standing items rewrite
+
+**Cron rotation**: deleted `7fb14205`, created new job — this fire's prompt was itself hours stale (still listed M3-Quality/Health/Security and RECONNECT as open, all of which closed since), standing items rewritten wholesale.
+
+**Inbox**: 1 new memo — Lead Dev's Slack-connector closure: design questions fully answered (CXO's two calls incorporated), issue **#1364** filed with a complete AC checklist, Production-scoped, no urgency. **Found and fixed a small gap**: #1364 was filed without its milestone actually set (Lead Dev said "Production-milestone" in the memo but the issue itself showed `milestone: null`) — set it to Production directly rather than letting it sit as an untracked open issue, exactly the kind of drift today's milestone audit was built to catch. Memo processed to read/, MANIFEST updated.
+
+**Beta Blockers sprint status**: 25 issues (unchanged this fire). M3-Quality/Health/Security, M4, M5, and RECONNECT are all fully triaged. The Jul 5 milestone-ground-truth audit is closed (16 discrepancies resolved: 3 to Beta Blockers, 4 to Production, 9 to the new **Ongoing** milestone). beta-blockers.md is the canonical source of truth, now with epic-level sequencing refinements (#1260-before-#1241, #1216's scope caveat) and the #1278 dependency fully resolved.
+
+**Still open**: PM's clean-machine MCPB test result (night of Jul 4) not yet reported to PPM. PA's #1351 tracking-home question not yet resolved. Lead Dev's "ship GitHub connector to production" gap still unfiled as an issue. #683 correctly reassigned to the Ongoing milestone this session (no longer "blocked," just perpetually-tracked FLYWHEEL work).
+

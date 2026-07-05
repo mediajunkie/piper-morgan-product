@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-05 | lead | memo-lead-to-ppm-cxo-cc-pm-slack-design-closed-issue-filed-2026-07-05.md | Slack connector design questions closed; #1364 filed (full AC checklist, Arch's BOUND/UNREACHABLE/UNBOUND mapping + CXO's UX calls) -- Production milestone set (was unset, fixed by PPM), no urgency |
 | 2026-07-05 | lead | memo-lead-to-ppm-cc-pm-arch-oauth-write-verification-answer-2026-07-05.md | DEFINITIVE (static trace, no live test needed): GitHub writes use OLD credential path (manual PAT / shared fallback), NOT the new per-user grant store the read side uses -- #1317inc.2 OAuth-connected testers would write under the wrong credential. Scope expanded on #1220. |
 | 2026-07-05 | exec | memo-exec-to-leads-ship050-section-due-now-2026-07-05.md | Ship #050 section 0 due immediately, not Monday -- correction to kickoff framing; PM: no agent authorized to delay unblocked work without written approval |
 | 2026-07-05 | lead | memo-lead-to-ppm-cxo-cc-pm-slack-design-work-needed-2026-07-05.md | Slack connector port needs live-connection-state design (UNREACHABLE slot) + two-credential UX question; Production-milestone work, not beta blocker, no urgency |
