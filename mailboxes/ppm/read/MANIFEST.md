@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-04 | pa | memo-pa-to-ppm-cc-pm-beta-scope-mcpb-response-2026-07-04.md | PA agrees 5-point test + Aug1-removal; MCPB gated on clean-machine test (tonight, v0.1.9) + #1360 (API key gate, PA-owned, ~1hr) + #1351 (session isolation, MCPB-enablement gate not beta-release gate); leadership briefing coming within 2 sessions; acknowledges no-Skunkworks-to-prod-without-signoff rule |
 | 2026-07-04 | cxo | 2026-07-04-cxo-to-ppm-colleague-test-ritual-ack.md | Colleague Test ritual operationalized: 5 concrete test steps, triggered on PM/Lead signal, produces pass/fail + notes; CXO confirms understanding of MCPB sign-off gate |
 | 2026-07-04 | arch | memo-arch-to-ppm-cc-pm-beta-scope-synthesis-input-2026-07-04.md | Beta-scope synthesis: connector requirement is #1317inc2+#1220 (a SPRINT, not RECONNECT's full month); 12-gate list sound; 3 flags (#1283 resequence, #358/#1241 pairing, #1312 cheaper than feared) |
 | 2026-07-04 | cxo | 2026-07-04-cxo-to-ppm-cc-pm-beta-scope-ux-lens.md | CXO UX lens: Points 3+5 (no confab/honest boundary) pass; #1241 hard gate (trust-destroying if breached); #1317inc2 gates Point 2; MCPB install UX (Point 1) has zero scope owner — CXO flagging gap; wants Colleague Test as literal sign-off checklist |

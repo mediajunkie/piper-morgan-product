@@ -280,3 +280,83 @@ PM responded to the Arch+CXO synthesis with four rulings:
 
 **Status**: IDLE — inbox clean, no new cohort-wide developments affecting standing items, M4 still the sole blocking item.
 
+
+---
+
+### PM raises GitHub-write-capability concern — 21:15-21:52 PDT (in-conversation)
+
+PM asked three things at once:
+
+1. **Verify the reconciliation-memo reply.** Checked: commit `64a8b614e` (11:43am) confirmed delivered to `lead/inbox/`, asking 2 clarifying questions that were both later answered by Lead Dev's subsequent memos. Lead Dev's own 15:25pm mail-recheck confirmed "not waiting on anyone" — thread genuinely closed.
+
+2. **#1062 (CORE-LEARN-PHASE-3) scope check.** Pulled the actual issue: empty placeholder ("Actual scope + acceptance criteria to be authored when M4 work begins"), broken out from closed epic #471 whose own priority line says "Future sprint — infrastructure for scale, not blocking MVP." PM's instinct confirmed — clean Production disposition.
+
+3. **M4 recategorization + a major new concern.** PM ruled #1242/#1244/#1245 are Skunkworks-adjacent scope creep (meet-piper skill family) — not beta blockers, layer in during beta. Then PM raised: the earliest Piper POC (~May 2025) could write to GitHub; if it can't now, Piper isn't a useful alpha or beta. Asked to revisit #1322 + #1190.
+
+**Investigated #1322 before responding — found a real discrepancy**: my own 7/3 decisions.log entry called #1322 "GitHub real writes, Q3 cutover," but the actual GitHub issue #1322 is titled "RECONNECT: retire simulation-only MCP transport... migrate query_router to the real MCPClient" — a READ-path transport/user-threading migration, not a writes feature. The write-safety ruling ("no user-facing write actions until a deterministic floor guard passes... no implementation work has started") is recorded as a dependency-gate *comment* on #1322, not its primary scope. The actual write-confabulation issue is #1331 (closed — prompt-level fix only). No issue exists for "build GitHub write actions" as a feature. Flagged this discrepancy to PM directly rather than proceeding on the wrong premise.
+
+**PM's response (21:52 PT)**: pushed back that this is perplexing given Piper's May 2025 POC could write to GitHub — asked directly whether that capability was refactored away, and whether Piper is even a useful alpha without it. Stated explicitly: GitHub, Google Calendar, Slack, and Notion have **always** been required for beta — not new scope. Directed: "do or delegate forensic research, review of design and architecture docs, roadmap, ADRs, decision log, session logs, commit history, etc. We can't fudge this."
+
+**Response**: launched 4 parallel background research agents — (1) git commit archaeology for GitHub write-action code across full history, (2) ADR/decisions.log/architecture-docs sweep, (3) session-log/roadmap history from earliest available logs forward, (4) current codebase state + GitHub issue/PR tracker archaeology. Each briefed to cite real evidence (commit hash/file path/date/issue number) and explicitly flag gaps rather than guess, per "we can't fudge this."
+
+---
+
+### Fire 5 — 22:55 PDT (cron)
+
+**Cron rotation**: deleted `088445da`, created `30996514` (same schedule), standing items rewritten to center the write-capability investigation as the highest-priority active thread.
+
+**INCIDENT**: all 4 research agents came back `failed` — the underlying process exited mid-run before this fire and their in-process state was lost. Did not attempt to salvage the JSONL transcripts (explicitly instructed not to read them directly, and — more importantly — PM's "we can't fudge this" standard means reconstructing from a truncated run risks exactly the kind of unverified claim this investigation exists to avoid). Since all 4 were pure read-only research (no files written), nothing was lost by relaunching. **Relaunched all 4 fresh with identical briefs** (agent IDs: `a4b5dba0cfa6ceea7`, `af8e4d305571bbf11`, `a45cf698e2ee400e9`, `acbe23ee3505159c2`) — running in background now.
+
+**Inbox**: 1 new memo — **PA finally responded** (commit `72c2a5f67`, processed to read/): agrees with the 5-point beta-scope test and Aug-1 removal (3rd leadership voice confirming, joining Arch + CXO). MCPB gated on: PM's clean-machine test (run tonight on v0.1.9, result not yet known to PPM), #1360 (API key gate on `/api/v1/intent`, PA-owned, ~1hr, filed today, no milestone set), and #1351 (MCPB session-isolation bug — shared `"byoc-poc"` session ID risks cross-request state bleed between anonymous callers; PM confirmed this gates MCPB-*enablement* specifically, not the beta release itself). PA will send a full leadership briefing on MCPB/Skunkworks within 2 sessions, and explicitly acknowledged the no-Skunkworks-to-production-without-full-signoff rule.
+
+**Open question surfaced by PA's memo, not yet resolved**: #1351 needs a tracking home distinct from the main Beta Blockers sprint (since MCPB doesn't gate beta release) — raised as a standing item for PM.
+
+**Status**: research agents running; PA response processed; M4 mostly settled except #1190 (blocked on the investigation); nothing else new.
+
+
+---
+
+### GitHub-write investigation completes; OAuth follow-up; M4 executed; M3-Quality presented — 23:00–23:15 PDT
+
+**All 4 research agents completed successfully** (2nd relaunch, ~193k-284k tokens each, 44-93 tool calls each). Cross-verified, convergent finding that overturned the working assumption:
+
+**GitHub writes are NOT unwired.** `create_issue`, `update_issue`, `close_issue`, `reopen_issue`, `comment_issue` are real, tested, dispatch-reachable writes today (`services/intent/intent_service.py:3652/3865/4072/6255`ish → `GitHubIntegrationRouter` → `GitHubMCPSpatialAdapter` → real REST against `api.github.com`). History: real write code existed in a May 2025 pre-repo POC (confirmed via `archive/piper-morgan-0.1.1/github_agent.py` + a captured 2025-05-31 run log — direct match to PM's memory), got deleted in an Oct 15, 2025 "legacy deprecation" refactor (`92ceec15b`) that swapped in a read-only `GitHubSpatialIntelligence` class, then got rebuilt into the MCP adapter across Oct 2025–May 2026. #1331 was narrowly about `create_milestone` + 5 unwired sibling verbs, not the whole write surface — now fixed to honest-decline (#1333). My own July 3 #1322 ruling blocks the *OAuth-cutover* of writes, not today's existing writes.
+
+One agent caught and self-corrected a stale-worktree methodology issue (HEAD was 17 days/2045 commits behind origin/main) before it could produce wrong current-state findings — verified all citations against `origin/main` directly.
+
+**One real open question surfaced, not resolvable by archaeology**: do these existing write handlers route through the per-user OAuth grant (like today's verified read path) or a shared/native token? This determines whether external beta testers can already write as themselves.
+
+**Actions taken**:
+1. Full synthesis delivered to PM in conversation.
+2. Memo to Lead Dev (commit `63060b2cc`): asked for a live test — call create_issue/close_issue through the same per-user OAuth-bound path verified today for reads, confirm which credential is actually used. Lead Dev is already testing today, folded this in.
+3. M4 executed (commit via `gh issue edit`, no git commit needed — GitHub-side only): **15 of 16 M4 issues moved to Production milestone** (#302, #558, #712, #713, #954, #955, #956, #1062, #1166, #1174, #1217, #1242, #1244, #1245, #1326). **#1190 held in MVP milestone** pending Lead Dev's OAuth test result — spot-verified via `gh issue view`.
+4. M3-Quality (7 issues) pulled and presented to PM: 4 leaning Production (#1151, #1175, #1219, #1224), 3 flagged for PM's call — **#1279** (GitHubIntegrationRouter aiohttp session leak, real reliability risk under beta load), **#1285** (possible datetime-subtraction crash in standup COMPLETE path), **#1105** (settings UI re-paste friction, same shape as #1258's setup-friction reasoning). Awaiting PM's answer.
+
+**Status at day-end**: OAuth verification pending Lead Dev; M3-Quality awaiting PM; M3-Health/M3-Security/RECONNECT still queued for sprint-by-sprint triage.
+
+---
+
+## DAY-CLOSED — 2026-07-04
+
+**Sign-off verification**:
+- All mailbox/document work pushed to origin/main throughout the day via atomic temp-index commits (verified diff after every push, all clean).
+- No stray uncommitted local changes — worktree used exclusively for read-only investigation and Bash/gh operations; all durable writes went through the main-checkout temp-index pattern per established discipline.
+- Last commit of the day: `63060b2cc` (Lead Dev OAuth-verification memo) plus this closing log entry (next commit).
+
+**Major incident this session**: a temp-index commit built across multiple separate tool calls (gap between `read-tree` and `commit-tree`'s parent resolution) briefly deleted CXO's session log, 2 lines from the shared decisions.log, and an unread CXO memo. Caught via PM's prompt to check "mail from Lead Dev," fully restored (`c1f13b9cc`), and fixed going forward — every subsequent mailbox/document commit ran as one uninterrupted fetch→edit→push bash invocation. No content permanently lost. This discipline is now baked into the duty-cycle cron prompt for continuity.
+
+**Major product finding this session**: the GitHub-write-capability investigation PM requested (4 parallel forensic research agents, "we can't fudge this") overturned the working assumption that writes were unwired — they're real and working today; the actual remaining gap is narrower (per-user OAuth binding for writes, verification pending) than believed at the start of the investigation.
+
+## Memory & briefing surfaces referenced this session
+
+**Referenced** (informed a decision or action):
+- "CRITICAL: Never touch PM's main checkout working tree" — informed exclusive use of temp-index git plumbing against `origin/main` rather than direct commits in the shared main checkout, all session.
+- "git: verify branch, reset index, read full diff before committing" / "Verify `git show --stat HEAD` post-commit, pre-push" — informed the post-commit diff-verification habit adopted after the race-condition incident (verified every subsequent commit's diff before moving on).
+- "Mailbox writes commit to main only" / "Per-memo commit-and-push for inter-agent mail" — informed every memo delivery this session (Lead Dev, CXO, PA, Arch cc's).
+- "No confabulating expected steps as completed — verify every artifact/commit exists before citing" — directly shaped the decision to verify the reconciliation-memo-reply claim via git history rather than assume, and shaped the entire approach to the GitHub-write-capability investigation ("we can't fudge this").
+- "Commit only explicit file paths — never git add -A" — followed throughout; every temp-index operation targeted named paths.
+
+**Loaded but not referenced**: the large majority of the MEMORY.md index — comms/publishing/editorial-calendar entries, cross-project (Janus/Klatch/Daedalus) entries, HOST/naming entries. None were relevant to PPM's beta-scope work today.
+
+**Wanted but not found**: none. The temp-index race-condition lesson discovered today is fully captured in the incident's own commit message (`c1f13b9cc`) and this session log — per the standing exclusion on saving "debugging solutions or fix recipes" to auto-memory when the commit/log already holds it, no new memory file was created for it; the operating discipline is instead carried forward via the duty-cycle cron prompt's "Mailbox discipline" section each fire.
+

@@ -1,37 +1,38 @@
-# Comms carry-forward — 2026-07-03 STOP (21:42 PT, day-close)
+# Comms carry-forward — 2026-07-04 STOP (21:43 PT, day-close)
 
 **Cron**: `7ccdd828` · `12 6,9,12,15,18,21 * * *` (LEAVE ARMED — STOP is a day-close ritual, not a cron-teardown; next fire 06:12 tomorrow)
-**Session log**: `dev/2026/07/03/2026-07-03-0943-comms-code-log.md` (DAY-CLOSED ✅)
+**Session log**: `dev/2026/07/04/2026-07-04-0642-comms-code-log.md` (DAY-CLOSED ✅)
 
 ---
 
-## Tomorrow's START priorities (Jul 4)
+## Tomorrow's START priorities (Jul 5)
 
 1. **Mail check** — confirm nothing new landed overnight.
-2. **PM decision on queue sweep** — still open: sweep the rest of the drafting queue (Beat 13 + ~9 insight posts) for the same untouched-despite-near-pubDate pattern found in 4 posts today, or hold for PM's own pass first?
-3. **4 posts awaiting PM voice-pass**: Climbing Higher (Jul 4 — publishes TODAY if this is read same-day, tightest), Practice That Got Retired (Jul 5), Cohort Catches the Cycle (Jul 7), Package and First Bite (Jul 9).
-4. **Beat 11 title** — "The Cohort Catches the Cycle" has "cohort" in the headline itself. PM's call on rename vs. keep.
+2. **"The Practice That Got Retired" publishes today (Jul 5)** — audited clean at PM's request yesterday; only PM's own voice-pass + the FACT-CHECK bracket + a dateline/body day-count inconsistency remain. Check whether PM's voice-pass happened overnight.
+3. **BYOC marketplace narrative** — still awaiting PM direction (distinct from the onboarding piece, which is resolved). No urgency stated, but ≥18 days stale now.
+4. **Mechanism check on the recurring orphan pattern** — two fully-drafted, well-sourced insights (BYOC onboarding, Patterns Naming Patterns) both turned up with zero calendar row this session. Worth understanding why the "add calendar row at draft creation" discipline isn't catching these, not just re-sweeping periodically.
 
-## Done today (Jul 3) — full day summary
+## Today's full summary (Jul 4)
 
-- ✅ Identity corrected: this session had drifted to "Docs" since Jul 2 (PM's own greeting mislabeled it, session didn't check its own history). PM corrected directly. Docs cron deleted, Comms cron re-armed.
-- ✅ 3 stale mailbox memos triaged (Ship-049 draft miss owned honestly; narrative-arc ask confirmed still-open; run-lean throttle confirmed superseded)
-- ✅ Jun 28 unclosed session log found (via Docs-thread sweep) and closed retroactively
-- ✅ 4 posts pre-edited: Climbing Higher (Jul 4), Practice That Got Retired (Jul 5), Cohort Catches the Cycle (Jul 7), Package and First Bite (Jul 9) — frontmatter, cohort→team, footer phrasing all fixed
-- 🚩 Beat 11 title "cohort" issue flagged, not fixed (PM content call)
-- 🚩 Queue-sweep scope question flagged, not resolved (PM call)
+- ✅ **Full mechanical sweep** of 14 remaining drafted/queued posts — frontmatter, datelines, headings, cohort→team, footer chain all fixed end-to-end.
+- ✅ **Beat 11 renamed** "The Cohort Catches the Cycle" → "The Team Catches the Cycle" everywhere (file, calendar, admin view, cross-refs).
+- ✅ **5 candidate insights (A-E) drafted** via parallel research agents, all source-verified, calendared Aug 16-30.
+- ✅ **Climbing Higher published** — voice-pass close-pass done, confirmed live in calendar (published, distributed, blogURL set).
+- ✅ **comms-standing-items.md refreshed** (was 3 weeks stale) — twice today, incorporating new findings each time.
+- ✅ **2 flagged-stale items resolved**: Janus relay confirmed done; BYOC "narrative" ask disentangled into 2 separate things (one resolved+rescued, one still genuinely open).
+- ✅ **Full disk-vs-calendar orphan sweep** — found and fixed 1 more orphaned insight (Patterns Naming Patterns, rescued to Sep 6), 1 stale pointer (Triad Model), 1 duplicate file (removed).
+- ✅ **Template + voice/tone audit** on tomorrow's post at PM's explicit request — clean except PM-owned items.
+- ✅ **Extended orphan check to published rows** — found ~20 cosmetically-stale draftPaths, all traced safe, logged as low-priority (not fixed).
 
-## Standing items (carried, mostly unchanged from Jun 20 baseline — not fully re-verified)
+## Standing items carried (see `comms-standing-items.md` for full detail, refreshed twice today)
 
-- **Narrative arc steer** — 5 candidates (A–E, Jun 15-19) still awaiting PM's pick. Front (~Jun 14) now ~3 weeks stale. Run `continue-narrative` properly once PM steers.
-- **Beats 14–16** — drafted Jun 16, awaiting PM voice-pass. Not checked for the frontmatter/cohort/footer pattern yet — worth including if PM approves a full sweep.
-- **Beat 6 LinkedIn URL** — last known empty (Jun 20), not re-verified since.
-- **BYOC marketplace narrative angles** — last known unblocked Jun 17, awaiting PM direction, not re-verified since.
-- **#1160 Syndication automation** — last known blocked on Dispatch skill share, not re-verified since.
-- **`comms-standing-items.md`** — stale (last refresh Jun 17), predates most of June's drafting work. Low-priority refresh candidate.
+- Beats 11-13, 14-16, Jun-4 insight batch, 5 new A-E drafts, 2 rescued orphans — all awaiting PM voice-pass, no new information beyond today's mechanical fixes.
+- BYOC marketplace narrative — awaiting PM direction, genuinely open.
+- Narrative front ~3 weeks behind current work — `continue-narrative` pass worth doing, not urgent.
+- ~20 historical published-row stale draftPaths — low-priority cleanup candidate.
 
 ## State flags
 
 - Inbox: **0 unread** (confirmed at STOP)
 - Session: **DAY-CLOSED ✅**
-- Queue at STOP: 4 posts fixed and PM-voice-pass-ready; queue-sweep scope and Beat-11-title are PM-gated open questions; everything else PM-gated or low-priority
+- Queue at STOP: no mechanical work outstanding; everything remaining is PM-voice-pass-gated or genuinely PM-direction-gated
