@@ -51,3 +51,20 @@ Continuing from Jul 4 session (DAY-CLOSED, see `dev/2026/07/04/2026-07-04-0652-p
 
 **Commits this fire**: sprint-order.md v4 (#1220 scope + footer) + 4 memos to read/ + MANIFEST + Ship#050 §0 memo to Exec + this log entry — pushed atomically.
 
+
+---
+
+### M3-Quality triage closed — PM decisions received (in-conversation)
+
+PM: "1279 - agreed. 1285 - also yes. 1105 - agreed … we are trying to get to less crude auth."
+
+All 7 M3-Quality issues now dispositioned:
+- **4 → Production** (milestone move confirmed via `gh issue edit`): #1151, #1175, #1219, #1224
+- **3 → Beta Blockers** (milestone already MVP; Sprint field set to "Beta Blockers - Hard Gates Only" via GraphQL, confirmed): #1279 (aiohttp session leak — reliability risk under beta load), #1285 (possible datetime crash in standup COMPLETE path), #1105 (settings re-paste friction — PM's framing: part of a broader push toward less crude auth, not an isolated UX fix)
+
+**Beta Blockers sprint now 19 issues**: #358, #441, #1105, #1168, #1176, #1220, #1241, #1258, #1261, #1278, #1279, #1283, #1285, #1299, #1304, #1312, #1317, #1324, #1332.
+
+sprint-order.md v5 pushed with all 3 new rows + footer update.
+
+**M3-Quality fully closed.** Next in sequence: M3-Health (9 open), M3-Security (7 open), RECONNECT — Connector Refactor (35, largely superseded).
+
