@@ -185,3 +185,27 @@ PM: "Let's settle that before we hand off to Lead Dev? I want them to have cryst
 
 **Still open**: PM's clean-machine MCPB test result (night of Jul 4) not yet reported to PPM. PA's #1351 tracking-home question not yet resolved. Lead Dev's "ship GitHub connector to production" gap still unfiled as an issue. #683 correctly reassigned to the Ongoing milestone this session (no longer "blocked," just perpetually-tracked FLYWHEEL work).
 
+
+---
+
+### #1278 accidentally self-closed via commit message — caught by PM's manual check, root-caused and fixed
+
+PM manually checked the MVP milestone directly and noticed #1278 showing closed, prompting the question "why was #1185 on the list of open issues... if it's closed?" Investigation revealed two separate things:
+
+1. **#1185 was never on any audit list** — it came up only during the #1278 dependency investigation (it's the already-shipped per-user-key mechanism), never flagged as an open-MVP discrepancy.
+2. **#1278 itself was genuinely, accidentally closed** — by my own commit `0b92d1a2a` (the milestone-audit push). That commit's message included "Flagged, not yet resolved: #1278 cites the wrong issue number..." — GitHub's auto-close keyword parser does plain-text matching, not semantic negation-awareness, and read "resolved: #1278" as a close instruction, ignoring "not yet" entirely.
+
+**Fixed immediately**: reopened #1278 (`gh issue reopen`), verified all 25 current Beta Blocker issues are open, and scanned every PPM commit message from both Jul 4 and Jul 5 for the same `close/fix/resolve` + `#N` pattern — confirmed #1278 was the only instance. No other accidental closures occurred.
+
+**Lesson captured** (in beta-blockers.md's changelog and here): avoid writing resolve/close/fix language immediately adjacent to a `#N` issue reference in commit messages unless the closure is actually intended — GitHub's matcher has no concept of negation, so "not yet resolved: #N" is exactly as dangerous as "resolved #N."
+
+### Epic labels added; #1340 flagged post-beta-priority
+
+PM asked whether adding GitHub labels for the epics would help — agreed (makes the epic grouping filterable directly on the GitHub board, not just in beta-blockers.md) and executed: created 7 labels (`beta:verification`, `beta:multi-tenancy`, `beta:connector-cutover`, `beta:deploy-portability`, `beta:auth-lifecycle`, `beta:correctness-bugs`, `beta:routing-integrity`), applied across all 25 Beta Blocker issues per their epic membership, spot-verified. Also created and applied `post-beta-priority` to #1340 per PM's explicit call ("ok for production but should be a high priority after beta").
+
+**#1300 discussed, not yet finalized**: PM's lean is post-beta, likely post-1.0 (Dot Releases) given its public-marketplace-distribution scope is a different kind of concern than Fast Follow's quick-iteration scope. PPM agrees with the reasoning. Deferred the exact milestone reassignment to the upcoming Production-sprint-organizing pass (PM's next requested task) rather than deciding it as a one-off.
+
+beta-blockers.md updated: fixed a stale "22 issues" section header that survived an earlier edit pass, documented the label scheme, and recorded the #1278 incident + fix in the changelog.
+
+**Status**: everything settled. Ready to send the final Lead Dev handoff, then move to organizing Production-milestone contents into proposed post-beta sprints (PM's explicitly next-requested task).
+
