@@ -85,3 +85,16 @@ sprint-order.md v7 pushed — also backfilled the M3-Health sprint-order.md upda
 
 Next in sequence: RECONNECT — Connector Refactor (35 open, largely superseded by the narrower #1317inc.2/#1220 beta slice per Arch's ruling — most is post-beta full-migration work). This is the last sprint in the triage sequence.
 
+
+---
+
+### RECONNECT triage closes the sprint-by-sprint cluster — PM approved (in-conversation)
+
+29 of 35 RECONNECT issues turned out to already be closed (spot-verified via `gh issue view` state check) — they retain the MVP milestone tag purely for historical record, no action needed. Of the 6 genuinely open issues, all read as Production: #865 (setup-wizard refactor), #1322 (dead-code transport retirement — its write-path sub-scope already tracked as expanded scope on #1220), #1323 (mixin dedup), #1325 (future-state, "when supported"), #1327 (explicitly self-described as "additive... no regression to fix"), #1340 (onboarding UX tied to already-Production-scoped #1300).
+
+PM approved; all 6 moved to Production milestone. **Sprint-by-sprint triage cluster is now fully complete**: M3-Quality, M3-Health, M3-Security, M4, M5, and RECONNECT have all been reviewed. sprint-order.md v8 pushed.
+
+PM's framing on why RECONNECT went this deep: "Lead Dev has been hard at work on this sprint, but it was getting so deep that it led to our work reassessing the path to beta vs. production" — i.e., the RECONNECT sprint's own scope-creep is what triggered today's whole beta-scope reassessment.
+
+**Beta Blockers sprint locked at 22 issues.** Next: PM asked for a fresh epic-level read of the 22 — how many, do they chunk logically — before drafting a sprint-plan briefing for Lead Dev.
+
