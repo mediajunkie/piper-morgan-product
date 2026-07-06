@@ -28,7 +28,7 @@ Grouped by destination sprint. Each of these overrode either no available eviden
 
 **A12 - Alpha Setup**: #518, #519, #520, #521, #522, #523, #525 (the "Canonical Queries Phase A/B" series)
 
-**Q - Recurring Audits**: #524 ("Pattern Sweep 2.0"), #938 ("Quarterly Maintenance Sweep - Q2 2026") — pattern strongly suggests #1341 ("Quarterly Maintenance Sweep - Q3 2026") belongs here too; flagged to PM, not yet confirmed.
+**Q - Recurring Audits**: #524 ("Pattern Sweep 2.0"), #938 ("Quarterly Maintenance Sweep - Q2 2026"), #1341 ("Quarterly Maintenance Sweep - Q3 2026" — confirmed by PM as an oversight in the original sweep, not a real exception).
 
 **M1 - MVP Foundation**: #241 (closed the same day M1's own gate closed), #926 (the M1 gate issue itself), #945
 
