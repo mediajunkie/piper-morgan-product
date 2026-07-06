@@ -1,72 +1,59 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-06-29 09:02 PT (Mon Fire 1)
-**Session log today**: `dev/2026/06/29/2026-06-29-0704-exec-code-sonnet-log.md`
-**Role**: Chief of Staff (Exec) | Sonnet 4.6 | DinP account (cloud session)
-**Cron**: `32 8,20` — id `7007f7f7` (LEAN, through Wed Jul-1 ~9pm reset) + Friday `249b372c`
+**Last updated**: 2026-07-06 08:03 PT (Mon START/Fire 1)
+**Session log today**: `dev/2026/07/06/2026-07-06-0803-exec-code-log.md`
+**Role**: Chief of Staff (Exec) | Sonnet 4.6 | DinP account (migration to dedicated pipermorgan.ai account pending — row unconfirmed, same open question as CIO's own row)
+**Cron**: `32 8,20 * * *` — id `f28200fd` (LEAN 2×/day, migration-hold cadence; re-armed 7/6 after being found fully unarmed — Gap-C dormancy, see today's log)
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3`
 
 ---
 
-## LEAN WINDOW (through Wed Jul-1 ~9pm)
+## PROCESS NOTE — worktree staleness gap (7/6, self-caught)
 
-PM quota at ~87% as of Mon 6/29 07:00. Reset Wed Jul-1 ~9pm.
-
-**On restore (Wed 20:32 fire)**:
-1. Broadcast restore-normal cadence to cohort (6×/day) — IDLE roles restore, SLOW roles restore
-2. Update registry rows for exec (2×→6×), cxo, ppm (un-comment paused rows)
-3. Re-arm exec cron 6×/day (delete `7007f7f7`, create new `32 6,9,12,15,18,21`)
-
-**Watchdog**: clean per Janus 6/29 sweep. 3 paused rows (exec/cxo/ppm) correctly commented out. No action until Wed.
+This worktree was found **67 commits behind origin/main** at this fire's START, plus 34 untracked never-committed mailbox drafts (7/1–7/4 exec sends that apparently never actually landed via `mail-send.sh`, despite prior session logs narrating them as sent). Fixed: fast-forwarded, verified zero local-only commits lost, cleaned the stale drafts (confirmed via `git log --all` they had zero history anywhere). **Going forward**: `git fetch origin main -q && git status` (checking for "behind") should be the very first move of every fire, before trusting any locally-cached view of inbox/cohort state. Full detail in today's session log.
 
 ---
 
-## ACTIVE — self-propelling (no PM input needed)
+## Ship #050 workstream review — IN PROGRESS
 
-- **Lead**: RECONNECT Option C (#1322, per-user OAuth, self-hosted `github-mcp-server`) — building actively, not blocked
-- **CIO**: continuity infra; off-machine cure-(b) scope post-reset
-- **Comms**: next-arc proposal inbound (2×/day cadence, hasn't landed yet)
-- **Docs**: omnibus + merge-keeper sweep
-- **PA**: MCPB gated on PM clean-machine test
+Kickoff issued 7/3, §0 due **Mon Jul 7 EOD**. Tally as of 7/6 08:03: **6/8 in** — Arch, CXO, PPM, Comms, HOST, CIO. **Outstanding: Lead, PA.**
 
----
-
-## PM-ATTENTION QUEUE (low-pri, no rush this week)
-
-- **PPM roadmap v18.2 + canonical sprint-order list**: PPM shipped 6/28; awaiting PM confirm (low-pri, non-blocking)
-- **#1144 / #1131 greenlight** (low-pri; possibly stale)
+- CIO's §0 has a same-day self-correction: strike the "#972 + gbrain = 2 consecutive slips" framing — both are actually done (CIO's URGENT memo, 7/6). Use the corrected accounting when synthesizing: 2 advanced, 1 new candidate (account migration), 1 explored-not-executed, 2 retired-as-complete.
+- Synthesis itself not yet started — waiting on Lead + PA before compiling. Watch for the Mon EOD deadline; per PM's standing "no delay without approval" directive, don't let synthesis slip past collection.
 
 ---
 
-## IN RATIFICATION
+## OPEN — needs PM
 
-**Inbox-proxy convention**: 8/10 ACKs (web + pa pending; both IDLE-throttled). Backstop was Mon 6/29.
-- PM mentioned possibility of eliminating PM inbox entirely (standing exec-as-inbox-proxy). This was broader than the moderate shape in the proposal — track but don't act unilaterally.
-- **Option**: start 2-week pilot at 8/10 (web/pa are IDLE — they'll see the memo when they restore). Can do now. PM's call.
-
----
-
-## QUEUED-WITH-TRIGGER
-
-- **Combined CXO+PPM M4 session**: convene when RECONNECT lands (Exec to initiate). Trust-gradient (OQ-2) + onboarding scoping. Both unblocked on entity-model surface (ADR-071 settled).
-
----
-
-## STANDING
-
-- **Friday workstream kickoff** (cron `249b372c`, 07:05): verify DAY-CLOSED for all roles in the window → then issue #050 call to 6 leads cc PM+PA. **§0 format** (progress vs portfolio goals, per methodology-25).
-- **Ship #049**: ALL 6 REPORTS IN ✅. Synthesis compiled 6/27 (`exec-ship-049-workstream-synthesis-2026-06-27.md`). **Comms drafts public Ship for Wed 7/1** — waiting on Comms next-arc arc pick + their draft.
+- **HOST**: 1 of 10 testers (Rebecca Refoy) has no email in the roster — blocks her invite code. Needs PM to supply/correct.
+- **Account migration**: both Exec's and CIO's migration-checklist rows are unconfirmed — neither role can self-determine which account it's running under from inside a session. Needs PM's direct confirmation across the board, not just exec.
+- **MCPB production-readiness**: PA's leadership briefing (7/6) starts the formal sign-off process (skunkworks → product requires full leadership sign-off incl. CXO design). No exec action needed yet, just on our radar for when it comes up in planning.
+- **"Climbing Higher" blog post** — published 7/5 without PM's voice-pass (carried from 7/4, still open as of last check — reverify).
+- **MCPB v0.1.9 clean-machine test result** — PM ran this the night of 7/4; PPM/PA still waiting on the result being relayed.
 
 ---
 
 ## RESOLVED (recent, for reference)
 
-- ADR-071 keystone dissolved on trace (Arch 6/27) — boundary settled; #1237 actually closed 6/18
-- Web /about byline LIVE (pipermorgan.ai, July-1 met)
-- Throttle executed 6/28 12:35 — cohort lean, 10/10 adopted
-- Beat 9 "The Hook and the Worktree" published 6/25
-- D1 sprint closed (gate #1297, 6/20) — confirmed on GH
+- **Two-arch-session false alarm — fully closed 7/6.** CIO root-caused it as self-attribution drift (a fire misreading its own commits/cron-ID-bump as a phantom peer session); two durable fixes shipped (CLAUDE.md compaction-recovery default + cadence-change logging in duty-cycle-tick). Arch's formal retraction landed 7/6, cc exec/cio. No further action.
+- **Inbox-proxy pilot**: greenlit 7/4, 2-week clock running (9/10 ACKs). Phase 2 (full PM-mailbox removal) stays parked until pilot completes.
+- **Beta scope nudge** (7/4, to PA/CXO/Arch): all three have since responded (PA 7/4 PM, CXO + Arch since). Nudge closed.
+- **CIO→Janus relay** (Pard design-brief answers + cadence-bump pattern) — check whether this was actioned; last known status was "deferred, explicitly no-rush."
 
 ---
 
-*— Exec (DinP / Sonnet 4.6, cloud session), 6/29 09:02 PT*
+## STANDING
+
+- **Ship #050 synthesis**: compile once Lead + PA land (deadline Mon Jul 7 EOD).
+- **Cohort attention rollup**: last compiled — check date, may need refresh given the volume of 7/6 activity (ADR-074, ADR-075, usage-cap design thread, #1366 componentA thread).
+
+---
+
+## KNOWN-STALE SURFACES (flagged 7/6, not yet fixed)
+
+- **`exec-open-items-tracker.md`**: last updated 2026-06-12 (~3.5 weeks stale) — references Ship #047, pre-dates current duty-cycle version. Needs a full reconciliation pass, not a patch.
+- **`dev/active/duty-cycle-registry.tsv`** exec row: still shows the 6/28 paused-throttle comment, never updated to reflect current LEAN cadence or the migration hold. Watchdog may misread exec's liveness until fixed.
+
+---
+
+*— Exec (DinP / Sonnet 4.6), 7/6 08:03 PT.*
