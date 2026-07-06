@@ -699,18 +699,29 @@ class TestGitHubDefaultRepoScopingEnforcement:
     """#1366 Component A — architectural enforcement for the default-repo scoping fix.
 
     ``piper_config_loader.load_github_config()`` reads ONE file at server-instance
-    level with zero user-scoping. Its ``.default_repository`` field is safe only in
-    a single-user prototype; on a shared instance (alpha.pipermorgan.ai is one
-    today) it would hand every user PM's own default GitHub repo. The per-user,
-    DB-backed source of truth is ``get_user_default_repo(user_id)``
+    level with zero user-scoping. Its ``.default_repository``/``.owner`` fields are
+    safe only in a single-user prototype; on a shared instance (alpha.pipermorgan.ai
+    is one today) they would hand every user PM's own default GitHub repo. The
+    per-user, DB-backed source of truth is ``get_user_default_repo(user_id)``
     (services/integrations/github/repo_resolver.py), which reads
     ``ConnectorConfigService`` (ADR-070 D4).
 
+    Scope, per Arch's ratification note (memo 2026-07-06,
+    "1366-componentA-proceed-plus-lint-scoping"): this targets ONLY the repo-fields
+    (``default_repository``/``owner``) read via the ``github_config`` variable that
+    ``load_github_config()`` conventionally gets assigned to — NOT every
+    ``load_github_config()`` call (``pm_prefix``/``pm_start``/``pm_padding``/
+    ``default_labels``/``api_base`` are a different, legitimately-still-file-backed
+    concern) and NOT ``load_pm_identity_config()``/``resolve_pm_owner_id()``
+    (#1260's Component-C PM-identity path — a structurally separate method, a
+    different field, a non-per-user CLI-ingestion path, legitimate until Component
+    B lands per ADR-071-D1's PM-owner distinction).
+
     Same family as the #1283 reachability lint and the #1307 exempt-list lint:
     impossible-by-construction, not vigilance. Zero tolerance, not a ratchet —
-    there is no legitimate reason for any file to read ``.default_repository``
-    off the unscoped loader, so unlike TestPreFloorDispatchSiteRatchet this has
-    no declining-target track; the allowed count is always 0.
+    there is no legitimate reason for any file to read the repo-fields off the
+    unscoped loader, so unlike TestPreFloorDispatchSiteRatchet this has no
+    declining-target track; the allowed count is always 0.
     """
 
     # Files structurally exempt because they ARE the loader/type definition, not
@@ -720,11 +731,11 @@ class TestGitHubDefaultRepoScopingEnforcement:
         "services/config/github_config.py",  # GitHubConfig dataclass itself
     ]
 
-    UNSCOPED_READ_RE = re.compile(r"\bgithub_config\.default_repository\b")
+    UNSCOPED_READ_RE = re.compile(r"\bgithub_config\.(default_repository|owner)\b")
 
     def test_no_unscoped_default_repository_reads(self):
-        """Fails if any caller reads `.default_repository` off a config object
-        sourced from the unscoped `load_github_config()` loader.
+        """Fails if any caller reads `.default_repository`/`.owner` off a config
+        object sourced from the unscoped `load_github_config()` loader.
 
         Fix: repoint onto `get_user_default_repo(user_id)`
         (services/integrations/github/repo_resolver.py) — see
@@ -753,9 +764,10 @@ class TestGitHubDefaultRepoScopingEnforcement:
                 violations.append(file_path)
 
         assert not violations, (
-            f"Unscoped `.default_repository` read(s) found in: {violations}. "
-            f"On a shared instance this leaks PM's own default GitHub repo to "
-            f"every user (#1366). Use `get_user_default_repo(user_id)` "
+            f"Unscoped `.default_repository`/`.owner` read(s) found in: "
+            f"{violations}. On a shared instance this leaks PM's own default "
+            f"GitHub repo to every user (#1366). Use "
+            f"`get_user_default_repo(user_id)` "
             f"(services/integrations/github/repo_resolver.py) instead of "
             f"`piper_config_loader.load_github_config().default_repository`."
         )
