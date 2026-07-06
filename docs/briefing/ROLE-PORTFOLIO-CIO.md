@@ -3,11 +3,12 @@ type: role-portfolio
 role: CIO (Chief Innovation Officer)
 status: PILOT v0.1 — pilot-wave (with Lead Dev) against the role-portfolio trust framework
 self-authored-by: CIO
-last_updated: 2026-06-16
-refreshed: 2026-06-16
+last_updated: 2026-07-06
+refreshed: 2026-07-06
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-CIO.md
 refresh_discipline: "updated AS PART OF the weekly workstream review — the review is the refresh moment (Rule 5); if section 2 lags the last few reviews, the portfolio has drifted"
+staleness_note: "This doc sat at last_updated 2026-06-16 for 20 days, exactly the '>2 weeks with nothing moved' signal its own section 5 warns about — and it wasn't caught until 2026-07-06, when checking #972/gbrain status for a PM conversation surfaced that both had been done for weeks while this doc (and 2 consecutive Ship workstream reviews) still reported them as open/slipped. See CLAUDE.md discovered-work discipline; noting here rather than quietly fixing so the miss is visible."
 ---
 
 # CIO Role Portfolio (pilot)
@@ -23,17 +24,18 @@ refresh_discipline: "updated AS PART OF the weekly workstream review — the rev
 
 The one-line: *the role whose job is to notice where the cohort's way of working can be made better-by-construction (mechanism, not vigilance — m-36) — and to build, codify, and version those improvements so they hold without anyone having to remember them.* Token-efficiency is the cross-cutting lever (PM ultra-high priority): the best mechanism is also usually the cheaper one.
 
-## 2. Current goals & priorities — June 2026
+## 2. Current goals & priorities — July 2026 (refreshed 7/6, corrected after a 20-day staleness gap)
+
 <!-- Rule 2: medium-pace; changes per sprint. Rule 4: each has a direction + a way to tell it's moving. Rule 5: REFRESHED EACH WEEKLY REVIEW. -->
 
-| Priority | What I'm advancing | Status (June 16) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (July 6) | How we'll know it's moving |
 |---|---|---|---|
-| **Re-migration wave** | the cohort onto DinP/Code, one role at a time | PA · LD · HOST · Comms · Docs · Exec ✓; **Web next** (pair drafted 6/15); Arch/CXO/PPM after | each migrates clean (cron + logs + first-fire report); I draft each pair as PM executes |
-| **Duty-cycle continuity (wake-this-session)** | the cycle never *silently* freezes + agents drain-not-bite-size | launchd freeze-watcher live (CIO-only); **fire-as-wake cure shipped** (skill v1.12); freeze-registry next | watcher catches a real freeze; registry extends watch to cohort; bite-sizing keeps decaying |
-| **Lead-Dev streamlining** | automate mechanical friction; protect coordination | Tier-1/2 shipped (env-strip, MANIFEST-guard, mail-send v2, brief-coding-agent skill); **structural** (main-checkout hygiene, mailbox-bridge push-to-ref) next | LD self-reports less overhead; structural items scoped + built |
-| **#972 temporal-validity** | operating docs can't silently go stale | `check-staleness.py` shipped (#1243, 16/19 flagged); Daedalus cross-project align (`valid_until`); doc-set extension pending | lint wired into Docs START; stale briefings refreshed; PM↔Klatch schemas compatible |
-| **Methodology catalog** | the cohort's learnings codified as mechanisms | m-41 Proven; fire-as-wake doc; catalog cleanup ongoing | patterns codified where they recur; agents cite + apply them |
-| **gbrain cross-project adoption** | sibling-project architecture patterns adopted into Piper | HOST T1–T4 synthesis read; my innovation-lens + co-sign owed | co-signed memo to PM; adopt-now items realized |
+| **PM account migration (pipermorgan.ai)** | account separation — PM-team-exclusive account vs. Janus/Themis/clients | supersedes the retired DinP/Code wave below; not yet started for any Piper Morgan role; duty-cycle continuity mechanics confirmed migration-safe (`docs/migration/pipermorgan-ai-account-migration.md`) | each role's first pipermorgan.ai session confirms cleanly (carry-forward found, cron re-armed); Exec sequences, CIO scopes tooling |
+| **Duty-cycle continuity (wake-this-session)** | the cycle never *silently* freezes + agents drain-not-bite-size + fires are idempotent | B1/Belt-4 spawn-fresh built + spike-validated; self-attribution-drift diagnosed + fixed (7/6); explicit idempotency principle added (gbrain action item, 3 weeks late but done) | watcher catches a real freeze; a re-fire never double-does anything; registry stays in sync with actual cadence |
+| **Lead-Dev streamlining** | automate mechanical friction; protect coordination | quiet this cycle — no new items surfaced; worth checking with Lead directly whether that's genuine or just not visible to me | LD self-reports less overhead; structural items scoped + built |
+| **#972 temporal-validity — CLOSED 2026-06-18** | operating docs can't silently go stale | **DONE.** All acceptance criteria met; `check-staleness.py` shipped; `valid_until` adopted as the Piper Morgan standard, Janus/Klatch aligned. **I reported this as "slipped" in Ship #049 (6/27) and Ship #050 (7/6) without checking the actual issue — both reports were wrong.** Retiring this line; no longer a current goal. | — (closed) |
+| **Methodology catalog** | the cohort's learnings codified as mechanisms | m-41 Proven; self-attribution-drift diagnosis is a fresh instance (7/6); catalog cleanup ongoing | patterns codified where they recur; agents cite + apply them |
+| **gbrain cross-project adoption — COMPLETE 2026-07-06** | sibling-project architecture patterns adopted into Piper | **DONE.** Co-signed synthesis delivered 6/16 (`memo-cio-host-to-pm-gbrain-t1-t4-cosigned-synthesis`); its one concrete action item (explicit idempotency statement) sat unexecuted for 3 weeks — closed today. The "study-and-map" items (propose-and-diff default, cost-consent structural gate, transcript-first observability, constructor-level bounds) are correctly parked as roadmap guidance for when Piper builds its next autonomy layer, not overdue work. **I also mis-reported this as "co-sign owed" in this same stale portfolio doc and in Ship #049/#050.** Retiring this line. | — (closed) |
 
 ## 3. Standing responsibilities (slow-pace — sustaining the operating system)
 <!-- Rule 2: named (half the work), but UNDER purpose — how I sustain the way-of-working, not the thing itself. -->
