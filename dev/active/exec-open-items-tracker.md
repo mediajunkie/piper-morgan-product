@@ -19,7 +19,7 @@ The Jun 12 → Jul 6 window moved almost everything the prior tracker had open: 
 
 | # | Item | Owner | Status | Notes |
 |---|------|-------|--------|-------|
-| 1 | **Ship #050 workstream review (Jun 27–Jul 3)** | exec (synthesize) | **COLLECTING — 6/8 in.** Arch, CXO, PPM, Comms, HOST, CIO submitted. Lead + PA outstanding. | Due Mon Jul 7 EOD. CIO's §0 has a same-day self-correction (struck the "#972/gbrain = 2 slips" framing — both are done); use corrected version when synthesizing. Don't let synthesis slip past the collection deadline per PM's standing no-delay directive. |
+| 1 | **Ship #050 workstream review (Jun 27–Jul 3)** | exec (synthesize) | **COLLECTION COMPLETE — 6/6 in.** Arch, CXO, PPM, Comms, HOST, CIO. (Corrected 7/6: roster is 6 per `methodology-25`, not 8 — Lead Dev was never in-process and PA is cc-only. Confirmed against 10 prior ship cycles.) | Ready to synthesize now — nothing left to collect. CIO's §0 has a same-day self-correction (struck the "#972/gbrain = 2 slips" framing — both are done); use corrected version when synthesizing. |
 | 2 | **Cohort-attention-rollup refresh** | exec (maintains) | **DUE — 9-day gap.** Last compiled 6/27 (`dev/2026/06/27/exec-cohort-attention-rollup-2026-06-27.html`); nothing since despite Ship #048/#049/#050, RECONNECT completion, #1343/#1344 security fixes, invite-gate shipping, and the self-attribution-drift saga. | Candidate for this fire or next — genuinely unblocked, no PM gate. |
 | 3 | **Two stale unowned branches** | Docs/Lead (disposition) | **STILL OPEN.** Likely candidates: `claude/xpoll-brief-staleness-hook` (last commit ~5/10) and one of the `remotes/origin/claude/cxo-mux-surface-{2,7}-2026-05-1{8,9}` branches — all ~7-8 weeks stale, unmerged. | Not exec-fixable (not exec's branches); flagging so it doesn't silently ride another reconciliation. Owner needs to actually decide merge-or-delete. |
 | 4 | **Account migration (pipermorgan.ai)** | PM (confirm) | **NEW — blocked on PM.** Both Exec's and CIO's rows on `docs/migration/pipermorgan-ai-account-migration.md` are unconfirmed; neither role can self-determine which account it's running under from inside a session. | Surfaced independently by CIO's 7/6 §0. Needs PM's direct confirmation across the whole checklist, not just exec+CIO. |
@@ -51,7 +51,7 @@ Pre-Jun-12 history preserved in git history (`exec-open-items-tracker.md` @ comm
 
 ## Standing checks (next reconciliation)
 
-- **Ship #050 synthesis** — compile once Lead + PA land (deadline Mon Jul 7 EOD).
+- **Ship #050 synthesis** — collection complete, ready to compile.
 - **BRIEFING-CURRENT-STATE.md** freshness — check against 7-day window.
 - **dev/active/ cleanup** — recheck file count; cross-role cleanup-coordination candidate if over threshold again.
 - **Gap-C dormancy** — worth cross-checking with CIO/HOST whether the launchd watcher is actually firing; this exec fire found its own cron dead with no alert received.
