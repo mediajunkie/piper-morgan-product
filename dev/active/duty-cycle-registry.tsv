@@ -25,7 +25,8 @@ role	cron_expr	threshold_h	wake_start	wake_end	first_fire	active_since
 #    matches the throttled cadences and does NOT false-alarm on intentionally-idled/slowed roles. RESTORE the
 #    normal exprs (commented after each) on Exec's "resume" broadcast. (CIO 2026-06-28.)
 cio	7 10,16,22	10	7	23	10:07	2026-06-16
-# exec	32 6,9,12,15,18,21	6	6	22	06:32	2026-06-16   ← PAUSED: exec cut to 2×/day (run-lean) but row not yet updated → exec, re-add your 2× expr like arch did and I'll un-pause; until then paused to avoid false-alarm
+exec	32 8,20	13	8	21	08:32	2026-06-16
+# exec pre-throttle expr for reference: 32 6,9,12,15,18,21 (6×/day) — restore when migration hold lifts and cadence returns to normal; see 7/6 exec log for context
 arch	27 6,9,12,15,18,21	4	6	22	06:27	2026-06-17
 # cxo	47 6,9,12,15,18,21	6	6	22	06:47	2026-06-18   ← PAUSED: IDLE tier (cron suspended until Wed)
 # ppm	52 6,9,12,15,18,21	6	6	22	06:52	2026-06-18   ← PAUSED: IDLE tier (cron suspended until Wed)
