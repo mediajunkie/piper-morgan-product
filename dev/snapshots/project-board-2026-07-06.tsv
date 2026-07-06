@@ -118,9 +118,9 @@ issue	state	milestone	sprint	title
 341	CLOSED	MVP	T2 (Test Polish)	TEST: Test Infrastructure Repair (Super Epic)
 384	CLOSED	MVP	T2 (Test Polish)	Investigate pytest collection error for test_performance_indexes_356.py
 473	CLOSED	MVP	T2 (Test Polish)	Tech Debt: P3 Test Reliability Issues
-377	CLOSED	MVP		ALPHA-DOCS-UPDATE - Review and Update Alpha Documentation
-379	CLOSED	MVP		ALPHA-UI-QUICK: Investigation & Triage of UI Issues
-376	CLOSED	MVP		FRONTEND-RBAC-AWARENESS - Frontend Permission Awareness & Sharing UI
+377	CLOSED	MVP	A9 (Alpha Tidy)	ALPHA-DOCS-UPDATE - Review and Update Alpha Documentation
+379	CLOSED	MVP	A9 (Alpha Tidy)	ALPHA-UI-QUICK: Investigation & Triage of UI Issues
+376	CLOSED	MVP	A9 (Alpha Tidy)	FRONTEND-RBAC-AWARENESS - Frontend Permission Awareness & Sharing UI
 322	CLOSED	MVP	A12 - Alpha Setup	ARCH-FIX-SINGLETON: Replace ServiceContainer singleton to enable horizontal scaling
 562	CLOSED	MVP	B1 - Beta Enablers	BUG: Integration Test button uses MCP instead of OAuth token
 488	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-DISCOVERY: Discovery-Oriented Intent Architecture
@@ -139,8 +139,8 @@ issue	state	milestone	sprint	title
 292	CLOSED	Alpha		CORE-ALPHA-AUTH-INTEGRATION-TESTS: Add Integration Tests for Auth (Reduce Mocking)
 286	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-CONVERSATION-PLACEMENT - Fix Handler Architecture
 287	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-TEMPORAL-BUGS - Fix Response Rendering
-291	CLOSED	MVP		CORE-ALPHA-TOKEN-BLACKLIST-FK - Re-add Token Blacklist Foreign Key Constraint
-283	CLOSED	Alpha		CORE-ALPHA-ERROR-MESSAGES - Add Conversational Error Fallbacks
+291	CLOSED	MVP	A8 (Alpha Rolloutj	CORE-ALPHA-TOKEN-BLACKLIST-FK - Re-add Token Blacklist Foreign Key Constraint
+283	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-ERROR-MESSAGES - Add Conversational Error Fallbacks
 284	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-ACTION-MAPPING - Fix Action Name Coordination
 285	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-TODO-INCOMPLETE - Complete Todo System Implementation
 280	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-DATA-LEAK - Remove Personal Data from PIPER.md
@@ -151,21 +151,21 @@ issue	state	milestone	sprint	title
 269	CLOSED	Alpha		CORE-PREF-PERSONALITY-INTEGRATION: Connect Preferences to PersonalityProfile System
 271	CLOSED	Alpha		CORE-KEYS-COST-TRACKING: Integrate Cost Analytics with Real API Call Tracking
 278	CLOSED	Alpha		CORE-KNOW-ENHANCE: Optimize Knowledge Graph for Relationship-Based Reasoning
-254	CLOSED	Alpha		CORE-UX-QUIET: Quiet Startup Mode for Human-Readable Output
-255	CLOSED	Alpha		CORE-UX-STATUS-USER: Status Checker Should Detect Current User
+254	CLOSED	Alpha	A7 (Testing & Bufferj)	CORE-UX-QUIET: Quiet Startup Mode for Human-Readable Output
+255	CLOSED	Alpha	A7 (Testing & Bufferj)	CORE-UX-STATUS-USER: Status Checker Should Detect Current User
 256	CLOSED	Alpha		CORE-UX-BROWSER: Auto-Launch Browser on Startup
-259	CLOSED	Alpha		CORE-USER-ALPHA-TABLE: Create Alpha Users Table
-260	CLOSED	Alpha		CORE-USER-MIGRATION: Alpha to Production User Migration Tool
-261	CLOSED	Alpha		# CORE-USER-XIAN: Migrate xian Superuser to Proper User Structure
+259	CLOSED	Alpha	A7 (Testing & Bufferj)	CORE-USER-ALPHA-TABLE: Create Alpha Users Table
+260	CLOSED	Alpha	A7 (Testing & Bufferj)	CORE-USER-MIGRATION: Alpha to Production User Migration Tool
+261	CLOSED	Alpha	A7 (Testing & Bufferj)	# CORE-USER-XIAN: Migrate xian Superuser to Proper User Structure
 248	CLOSED	MVP	M3 - Artifact Persistence	CONV-LEARN-PREF: Conversational Personality Preference Gathering
 250	CLOSED	Alpha	A7 (Testing & Bufferj)	CORE-KEYS-ROTATION-REMINDERS: Automated Key Rotation Reminders
 252	CLOSED	Alpha		# CORE-KEYS-STRENGTH-VALIDATION: API Key Strength & Security Validation
 253	CLOSED	Alpha		# CORE-KEYS-COST-ANALYTICS: API Cost Tracking & Usage Analytics
-257	CLOSED	Alpha		# CORE-KNOW-BOUNDARY-COMPLETE: Complete BoundaryEnforcer Integration
-258	CLOSED	Alpha		CORE-AUTH-CONTAINER: Fix JWT Service Dependency Injection
+257	CLOSED	Alpha	A7 (Testing & Bufferj)	# CORE-KNOW-BOUNDARY-COMPLETE: Complete BoundaryEnforcer Integration
+258	CLOSED	Alpha	A7 (Testing & Bufferj)	CORE-AUTH-CONTAINER: Fix JWT Service Dependency Injection
 263	CLOSED	MVP		CORE-UX-RESPONSE-HUMANIZATION: Make Responses More Natural and Human-Like
 227	CLOSED	Alpha		CORE-USERS-JWT: Implement Token Blacklist Storage
-237	CLOSED	Alpha		CORE-LLM-SUPPORT: Complete LLM Provider Integration
+237	CLOSED	Alpha	A6 (User Onboarding)	CORE-LLM-SUPPORT: Complete LLM Provider Integration
 229	CLOSED	Alpha		CORE-USERS-PROD: Production Database Configuration
 228	CLOSED	Alpha		CORE-USERS-API: Production API Key Management
 220	CLOSED	Alpha		CORE-LEARN: Comprehensive Learning System
@@ -218,8 +218,8 @@ issue	state	milestone	sprint	title
 128	CLOSED	MVP		UX-FTUX: Wizard Implementation
 97	CLOSED	MVP		MVP-CONFIG-PROMPT: Quick Context Loading via System Prompt
 98	CLOSED	MVP		MVP-USER-DOCS: Document Ingestion for Context
-100	CLOSED	MVP		CONV-FEAT-PROJ: Project Portfolio Awareness
-101	CLOSED	MVP		CONV-FEAT-TIME:Temporal Context System
+100	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CONV-FEAT-PROJ: Project Portfolio Awareness
+101	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CONV-FEAT-TIME:Temporal Context System
 106	OPEN	Fast Follow		CONV-FEAT-STRAT: Strategic Recommendations
 104	OPEN	Fast Follow		CONV-FEAT-ALLOC: Time Allocation Analysis
 103	OPEN	Fast Follow		CONV-FEAT-PRIOR: Priority Calculation Engine
@@ -239,7 +239,7 @@ issue	state	milestone	sprint	title
 276	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	TEST-SMOKE-CI: Integrate smoke tests into GitHub Actions CI pipeline
 275	CLOSED	MVP	M1 - MVP Foundation	TEST-SMOKE-BUG-BUS: Smoke test collection fails with ChromaDB/numpy Bus error on macOS
 251	OPEN	Enterprise		ENT-KEYS-TEAM-SHARING: Team API Key Sharing (Enterprise)
-262	CLOSED	Alpha		CORE-USER-ID-MIGRATION: Migrate users.id from VARCHAR to UUID
+262	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-USER-ID-MIGRATION: Migrate users.id from VARCHAR to UUID
 264	CLOSED	MVP	A7 (Testing & Bufferj)	CORE-UX-ERROR-MESSAGING: Improve Error Messages for Users
 265	CLOSED	MVP	A7 (Testing & Bufferj)	CORE-UX-LOADING-STATES: Add Loading Indicators for Long Operations
 266	CLOSED	MVP	A7 (Testing & Bufferj)	CORE-UX-CONVERSATION-CONTEXT: Improve Conversation Context Tracking
@@ -249,7 +249,7 @@ issue	state	milestone	sprint	title
 273	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	TEST-SMOKE: Smoke test epic on the Testing track
 279	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2025-10-27
 290	CLOSED	MVP	A8 (Alpha Rolloutj	CORE-ALPHA-DOC-PROCESSING - Implement Document Analysis Workflows
-294	CLOSED	Alpha		CORE-ALPHA-ACTIONMAPPER-CLEANUP - Remove Unused Mappings
+294	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-ACTIONMAPPER-CLEANUP - Remove Unused Mappings
 295	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-TODO-PERSISTENCE - Wire TodoHandlers to Database
 297	CLOSED	MVP	A8 (Alpha Rolloutj	CORE-ALPHA-SETUP-PASSWORD: Add password setup to setup wizard
 288	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-LEARNING-INVESTIGATION: Document Learning System
@@ -307,7 +307,7 @@ issue	state	milestone	sprint	title
 325	CLOSED	MVP		DEV-OS-DETECT: Add OS detection to shell scripts for cross-platform compatibility
 367	CLOSED	MVP		DB-JSON-INDEX: Refactor PostgreSQL JSON column indexes to use proper operators
 374	OPEN	Enterprise		Enhancement: Semantic classification for preference detection (post-MVP)
-378	CLOSED	MVP		ALPHA-DEPLOY-PROD: ALPHA-DEPLOY-PROD: Push Clean Build to Production Branch
+378	CLOSED	MVP	A9 (Alpha Tidy)	ALPHA-DEPLOY-PROD: ALPHA-DEPLOY-PROD: Push Clean Build to Production Branch
 368	CLOSED	Alpha	W (Quick Wins)	CONV-MCP-MEASURE Phase 2: Extend Token Counting to All MCP Operations
 369	CLOSED	Alpha	W (Quick Wins)	CONV-MCP-MEASURE Phase 3: Extend Token Counting to All Consumer MCP Adapters
 380	CLOSED	MVP	W (Quick Wins)	Complete SEC-RBAC migration for KnowledgeGraph models
@@ -452,10 +452,10 @@ issue	state	milestone	sprint	title
 582	CLOSED	MVP	A20 - Alpha Testing (round 2)	BUG: Standup command says no projects despite portfolio existing
 586	CLOSED	MVP	A20 - Alpha Testing (round 2)	FEAT: Calendar timezone-aware queries with user context
 587	CLOSED	MVP	A20 - Alpha Testing (round 2)	BUG: Sidebar shows new conversations below old ones with wrong date grouping
-588	CLOSED	MVP		BUG: 'Tomorrow' calendar queries not understood - routes to today's status
+588	CLOSED	MVP	A20 - Alpha Testing (round 2)	BUG: 'Tomorrow' calendar queries not understood - routes to today's status
 589	CLOSED	MVP	A20 - Alpha Testing (round 2)	Intent classifier routes calendar queries to TEMPORAL instead of QUERY
 592	CLOSED	MVP	A20 - Alpha Testing (round 2)	BUG: Markdown rendering regression - displays as plain ASCII
-596	CLOSED	MVP		TEMPORAL handler shows stale/incorrect calendar data
+596	CLOSED	MVP	A20 - Alpha Testing (round 2)	TEMPORAL handler shows stale/incorrect calendar data
 597	CLOSED	MVP	A20 - Alpha Testing (round 2)	ARCH-TEMPORAL-GAPS: Systematic datetime and data presentation issues
 598	CLOSED	MVP	A20 - Alpha Testing (round 2)	UX-AUTO-TITLE: Auto-Title Conversations
 599	CLOSED	MVP	A20 - Alpha Testing (round 2)	UX-SUPPRESS-NULLS: Suppress Null Field Display
@@ -777,7 +777,7 @@ issue	state	milestone	sprint	title
 943	CLOSED	MVP		Handler pre-flight check: verify integration state before attempting action
 944	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-04-06
 945	CLOSED	MVP	M1 - MVP Foundation	TODO triage: todo_management.py has 37 untracked TODOs
-946	CLOSED	MVP		LLM system uses stale keychain keys without user consent during setup
+946	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	LLM system uses stale keychain keys without user consent during setup
 947	CLOSED	MVP		Dual LLM systems (LLMClient vs LLMDomainService) cause hidden config drift
 948	CLOSED	MVP	M5 - Distribution + Polish	Server leaves orphaned processes after stop
 949	CLOSED	MVP	M5 - Distribution + Polish	DEV: Server restart reliability — stale .pyc, orphaned processes, startup timing
@@ -792,14 +792,14 @@ issue	state	milestone	sprint	title
 961	CLOSED	MVP		Audit: catalog all routes that can reach the floor without domain context
 962	CLOSED	MVP		Audit: where else do we 'shortcut around the LLM' in ways that invert the right sequence?
 963	CLOSED	MVP		Pattern-045: canonical handler dead code + dead tests after floor migration
-964	CLOSED	MVP		FLOOR-ETHICS-VERIFY: Verify floor pipeline ethics matches pre-ADR-060 coverage
+964	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	FLOOR-ETHICS-VERIFY: Verify floor pipeline ethics matches pre-ADR-060 coverage
 965	CLOSED	MVP		Temporal canonical handlers produce template responses, fail Colleague Test (Pattern-045)
 966	OPEN	Production	PROD-DIST - MCP Marketplace Distribution	DIST-VISUAL-IDENTITY: Visual identity for MCPB + MCP Apps distribution
 967	CLOSED	MVP		TRACKING: Backlog Deep Review — Surviving Edges
 968	CLOSED	MVP		Reconcile canonical query test v3 routing reference with actual M1 routing
 969	CLOSED	MVP		Two GitHub adapter errors surfaced by M1 canonical retest (Q41, Q60)
-970	CLOSED	MVP		LLM access consolidation: rewire callers to ServiceRegistry (#947 Phase 2)
-971	CLOSED	MVP		Decide: keep, absorb, or delete Pattern-012 LLM adapter infrastructure (#947 Phase 3)
+970	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	LLM access consolidation: rewire callers to ServiceRegistry (#947 Phase 2)
+971	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Decide: keep, absorb, or delete Pattern-012 LLM adapter infrastructure (#947 Phase 3)
 972	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MEM-TEMPORAL: Add temporal validity fields to memory file frontmatter
 973	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	MEM-CACHE-AUDIT: Document stable vs dynamic layers in context assembler
 974	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MEM-EVAL: Session-end memory evaluation question in wrap-up checklist
@@ -845,7 +845,7 @@ issue	state	milestone	sprint	title
 1038	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	1018-TESTS-SQLITE-COMPAT: #1018 repository unit tests fail to render to SQLite
 1039	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	INTENT-COVERAGE-A: Pre-classifier + handlers for GitHub milestones + releases
 1040	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	INTENT-COVERAGE-B: Pre-classifier + handlers for GitHub labels + branches
-1041	CLOSED	MVP		M2-WIRE-TRIAGE: WIRE-* issues #690-695 superseded-by-floor-migration triage
+1041	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	M2-WIRE-TRIAGE: WIRE-* issues #690-695 superseded-by-floor-migration triage
 1042	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	PRE-1039: Remove hardcoded 'piper-morgan-product' repo default in GitHub adapter + handlers
 1043	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	En-masse copy review pass for new M2e handlers + standup prompts
 1044	CLOSED	MVP		FOLLOWUP: Local-git 'what branch are we on?' query handler
