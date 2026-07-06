@@ -19,7 +19,7 @@ This is the single canonical list of issues that must close before Piper Morgan 
 
 The full open backlog was swept sprint-by-sprint (M3-Quality, M3-Health, M3-Security, M4, M5, RECONNECT — 2026-07-04/05), following a deep forensic investigation into GitHub write-action capability that revealed the roadmap's earlier confidence in an August 1 target rested on assumptions that hadn't been verified bottom-up. That investigation is documented in the PPM session logs for 2026-07-04 and 2026-07-05.
 
-## The 21 open issues, organized by epic
+## The 20 open issues, organized by epic
 
 ### Epic A — Verification foundation (1 issue)
 Do this first — it's the prerequisite for trusting every other "done" claim on this list.
@@ -28,16 +28,17 @@ Do this first — it's the prerequisite for trusting every other "done" claim on
 |---|-------|----------------------|
 | #1304 | CI gap: DB-backed security test suite never runs in gating CI | Main is chronically red with no required status checks — no other gate's closure is independently verifiable without this |
 
-### Epic B — Multi-tenancy & data protection (4 open issues; 2 closed 2026-07-05)
+### Epic B — Multi-tenancy & data protection (2 open issues + #358 nearly done; 3 closed total: 2 on 2026-07-05, 1 on 2026-07-06)
 
 ~~#1260~~ and ~~#1241~~ **closed 2026-07-05** (Lead Dev). #1260: done same-day (server-owned PM-identity config replaces a hardcoded username). #1241: turned out to be **already complete** — the audit (`dev/2026/06/15/1241-content-anchoring-audit.md`) and its design output (**ADR-071**, ratified 2026-06-15) already satisfied all 5 of the issue's own deliverables, and the downstream remediation had substantially shipped via #1238 (doc store), #1250 (learning toggle), and #1252 (the main D2-D6 consolidation refactor, closed 2026-06-19) — this issue was simply never closed after that work landed. The one genuinely remaining piece (#1257, the deeper 40+-site read-threading + `user_id`→`owner_id` column drop) is already its own separately-tracked issue, correctly milestone-scoped to **Production**, not a beta blocker. See #1241's closing comment for the full evidence trail.
+
+~~#542~~ **closed 2026-07-06** (Lead Dev) — real Slack `auth.revoke` + Google token-revocation calls implemented (both were previously stubs/absent). Found and fixed a real sequencing bug along the way (Slack's revoke was reading tokens that had already been deleted from keychain, so it could never have actually revoked anything).
 
 | # | Title | Why it's a hard gate |
 |---|-------|----------------------|
 | #358 | Encryption at rest for sensitive data — **both dimensions code-complete + tested (2026-07-06); dimension B live-verified on alpha 6/25; only dimension A's live-alpha check remains, needs droplet access** | PM: an important principle, long-deferred (low issue number) |
 | #1305 | Encrypt PII-bearing JSON/JSONB structured columns | Sibling scope split from #358 |
 | #1306 | Encrypt uploaded file content at rest | Sibling scope split from #358 |
-| #542 | Implement actual token revocation on disconnect | A disconnected tester's token must actually stop working |
 
 **New discovered-work item, not yet triaged into an epic**: **#1366** — `PIPER.user.md` is a single, unscoped, server-instance-level config file; every conversation on a shared instance (alpha.pipermorgan.ai included) gets the same personalization + GitHub default-repo regardless of which user is talking to Piper. Filed 2026-07-06 (Lead Dev), Architect looped in for the architectural call. Live on alpha today, not a future-only concern — PM/PPM's call on formal inclusion here.
 
@@ -86,7 +87,7 @@ Mostly isolated, well-scoped fixes — good candidates to pick off quickly. **#1
 | #1312 | DB↔model schema drift (~111 Alembic diffs) | High migration risk; cheaper to fix than the diff count suggests |
 | #1324 | Audit: hardcoded config values that should be env vars | Deploy-portability risk |
 
-**Total: 21 open issues across 7 epics** (25 minus #1168/#1176/#1260/#1241, all closed 2026-07-05 with evidence — see Epic B, Epic D, and change log).
+**Total: 20 open issues across 7 epics** (25 minus #1168/#1176/#1260/#1241/#542, all closed with evidence — see Epic B, Epic D, and change log).
 
 ## Recommended sequencing
 
