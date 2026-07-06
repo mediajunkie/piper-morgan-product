@@ -40,7 +40,7 @@ Do this first — it's the prerequisite for trusting every other "done" claim on
 | #1305 | Encrypt PII-bearing JSON/JSONB structured columns | Sibling scope split from #358 |
 | #1306 | Encrypt uploaded file content at rest | Sibling scope split from #358 |
 
-**New discovered-work item, not yet triaged into an epic**: **#1366** — `PIPER.user.md` is a single, unscoped, server-instance-level config file; every conversation on a shared instance (alpha.pipermorgan.ai included) gets the same personalization + GitHub default-repo regardless of which user is talking to Piper. Filed 2026-07-06 (Lead Dev), Architect looped in for the architectural call. Live on alpha today, not a future-only concern — PM/PPM's call on formal inclusion here.
+**New discovered-work item, not yet triaged into an epic**: **#1366** — `PIPER.user.md` is a single, unscoped, server-instance-level config file; every conversation on a shared instance (alpha.pipermorgan.ai included) gets the same personalization + GitHub default-repo regardless of which user is talking to Piper. Filed 2026-07-06 (Lead Dev), Architect ruled it decomposes into 3 components: **Component A (GitHub default-repo leak) — DONE 2026-07-06** (migration-completion, no ADR needed; `f04cbeea6`/`1784ae017` on main, enforcement lint shipped). **Component B (system-prompt personalization) — OPEN**, blocked on Architect's ADR-075 (not yet authored). **Component C** (#1260 PM-identity resolution) ruled out of scope — architecturally legitimate, not a leak. Issue stays open for B. Live on alpha today, not a future-only concern — PM/PPM's call on formal epic inclusion.
 
 ### Epic C — Connector/OAuth cutover (2 issues)
 Already in progress — Lead Dev's current active thread. Continue, don't restart.
