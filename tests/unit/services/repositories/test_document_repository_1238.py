@@ -10,6 +10,7 @@ is true OR `owner_id == principal`; a None/non-UUID principal sees global-only
 from __future__ import annotations
 
 import uuid
+from unittest.mock import patch
 
 import pytest
 import pytest_asyncio
@@ -121,10 +122,23 @@ class _FakeSession:
         return _FakeResult(self._scalar_value)
 
 
+def _patch_pm_identity_config(username):
+    """#1260: resolve_pm_owner_id now sources the username from PiperConfigLoader
+    (server-owned config, ADR-066 D7) instead of a hardcoded 'xian' literal --
+    stub that lookup so these tests exercise the query-resolution logic itself,
+    independent of whether this environment's PIPER.user.md has a PM Identity
+    section configured."""
+    return patch(
+        "services.configuration.piper_config_loader.piper_config_loader.load_pm_identity_config",
+        return_value=username,
+    )
+
+
 class TestResolvePmOwnerId1238:
     async def test_resolves_by_username_query(self):
         sess = _FakeSession(scalar_value=uuid.UUID(_ALPHA))
-        resolved = await resolve_pm_owner_id(sess)
+        with _patch_pm_identity_config("xian"):
+            resolved = await resolve_pm_owner_id(sess)
         assert str(resolved) == _ALPHA
         assert sess.executed  # the username query ran
 
@@ -138,14 +152,26 @@ class TestResolvePmOwnerId1238:
     async def test_invalid_env_falls_through_to_username_query(self, monkeypatch):
         monkeypatch.setenv("PIPER_PM_USER_ID", "not-a-uuid")
         sess = _FakeSession(scalar_value=uuid.UUID(_ALPHA))
-        resolved = await resolve_pm_owner_id(sess)
+        with _patch_pm_identity_config("xian"):
+            resolved = await resolve_pm_owner_id(sess)
         assert str(resolved) == _ALPHA  # invalid override ignored → username query
         assert sess.executed
 
     async def test_none_when_query_empty(self):
         sess = _FakeSession(scalar_value=None)
-        resolved = await resolve_pm_owner_id(sess)
+        with _patch_pm_identity_config("xian"):
+            resolved = await resolve_pm_owner_id(sess)
         assert resolved is None
+        assert sess.executed  # query ran (configured username), found nothing
+
+    async def test_none_when_pm_identity_not_configured(self):
+        """#1260: no 'PM Identity' section in PIPER.user.md -> graceful None,
+        same as an absent env override. The query never runs (nothing to look up)."""
+        sess = _FakeSession(scalar_value=uuid.UUID(_ALPHA))
+        with _patch_pm_identity_config(None):
+            resolved = await resolve_pm_owner_id(sess)
+        assert resolved is None
+        assert not sess.executed
 
 
 class TestListForOwner1238:

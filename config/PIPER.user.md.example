@@ -24,6 +24,25 @@
 
 ---
 
+## 🔑 **PM Identity** *(#1260 — names the configured-PM account)*
+
+```yaml
+pm_identity:
+  username: "your-username"   # Must match a real users.username row
+```
+
+**Configuration Instructions**:
+- This names which account is "the configured PM" — the owner stamped on CLI-ingested
+  documents and the backfill target (`resolve_pm_owner_id`, `services/repositories/
+  document_repository.py`).
+- If this section is absent, PM-owner resolution gracefully falls back to `None`
+  (documents stay readable via the global-PM-domain marker; only provenance is affected).
+- `PIPER_PM_USER_ID` (an explicit UUID env var) always overrides this section if set.
+- Single-tenant shape today (one username); ADR-071 D7 names the evolution to a
+  multi-tenant principal when tenant_id lands — same config seam, different resolution.
+
+---
+
 ## 🎯 **Current Focus** *(UPDATE REGULARLY)*
 
 **Primary Objective**: [Your main goal - e.g., Q4 project delivery]

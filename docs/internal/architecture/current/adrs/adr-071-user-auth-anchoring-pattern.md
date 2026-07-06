@@ -102,6 +102,8 @@ Per store: introduce the owner as Optional → backfill where possible OR mark `
 
 Anchoring at `user_id`/`owner_id` today is the single-tenant shape. When multi-tenancy lands (PDR-005 BYOC future + Skunkworks Phase 2c + #1185 per-user keys), the **principal type evolves** — the PM-domain cluster gains `tenant_id` (org/workspace level), and per-user-render guards evolve to `principal IN tenant_set`. **The discipline doesn't change; the principal type does.** Authoring the multi-tenant ADR now would conflate single-tenant remediation with multi-tenant evolution (the variant-preservation trap, m-41 one altitude up) — deferred to a future artifact.
 
+**Concrete first instance (2026-07-05, #1260)**: `resolve_pm_owner_id`'s "which account is the configured PM" resolution moved off a hardcoded `username == 'xian'` literal onto server-owned config (`PiperConfigLoader.load_pm_identity_config()`, the "PM Identity" section of `PIPER.user.md` — ADR-066 D7 convention). Still single-tenant (one configured username) — this is the seam D7 describes, not the multi-tenant migration itself; when `tenant_id` lands, this same config surface is where the principal-type evolution would land.
+
 ---
 
 ## Implementation sequencing (suggested for the refactor; not ADR-decision text)

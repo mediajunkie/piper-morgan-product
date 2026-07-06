@@ -327,6 +327,49 @@ Enhanced conversational context, MCP deployment, pattern validation.
             "sections_count": len(self.cached_config) if self.cached_config else 0,
         }
 
+    def load_pm_identity_config(self) -> Optional[str]:
+        """
+        Load the configured-PM username from PIPER.user.md (#1260, ADR-071 D7 prerequisite).
+
+        Server-owned config (ADR-066 D7), replacing the hardcoded `username == 'xian'`
+        literal that used to live in resolve_pm_owner_id. Single-tenant shape today
+        (one username); ADR-071 D7 names the evolution to a multi-tenant principal
+        when tenant_id lands — same seam, same config surface, different resolution.
+
+        Returns:
+            The configured PM's username, or None if no "PM Identity" section is
+            present (graceful — callers fall through to their own None-handling,
+            same as an absent env override).
+        """
+        try:
+            config = self.load_config()
+            if not config:
+                return None
+
+            pm_identity_section = None
+            for section_name, content in config.items():
+                if "pm identity" in section_name.lower():
+                    pm_identity_section = content
+                    break
+
+            if not pm_identity_section:
+                return None
+
+            yaml_match = re.search(r"```yaml\s*(.*?)\s*```", pm_identity_section, re.DOTALL)
+            if not yaml_match:
+                return None
+
+            pm_identity_data = yaml.safe_load(yaml_match.group(1).strip())
+            if not pm_identity_data or "pm_identity" not in pm_identity_data:
+                return None
+
+            username = pm_identity_data["pm_identity"].get("username")
+            return username if isinstance(username, str) and username else None
+
+        except Exception as e:
+            logger.error("Error loading PM identity configuration", error=str(e))
+            return None
+
     def load_github_config(self):
         """
         Load GitHub configuration from PIPER.user.md

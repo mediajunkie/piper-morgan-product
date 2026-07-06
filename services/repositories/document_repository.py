@@ -40,10 +40,12 @@ def _as_uuid_or_none(value: Union[str, UUID, None]) -> Optional[UUID]:
 async def resolve_pm_owner_id(session: AsyncSession) -> Optional[UUID]:
     """Resolve the configured PM's users.id — the doc-store owner for CLI ingest + backfill.
 
-    Resolution order (alpha-scoped; evolves to a formal config / tenant_id per
-    ADR-071 D7):
+    Resolution order (#1260, ADR-071 D7 prerequisite — replaces the old hardcoded
+    ``username == 'xian'`` literal with server-owned config, ADR-066 D7):
       1. env ``PIPER_PM_USER_ID`` (explicit override), if a valid UUID
-      2. the user with ``username == 'xian'`` (the configured PM in alpha)
+      2. the user named by ``PiperConfigLoader.load_pm_identity_config()`` (the
+         "PM Identity" section of ``PIPER.user.md`` — single-tenant shape today;
+         ADR-071 D7 names the evolution to a tenant principal, same config seam)
       3. None — graceful. ``owner_id`` is provenance; reads still work via
          ``is_global_pm_domain``, so an unresolved PM never breaks readability.
     """
@@ -51,7 +53,13 @@ async def resolve_pm_owner_id(session: AsyncSession) -> Optional[UUID]:
     parsed = _as_uuid_or_none(override) if override else None
     if parsed is not None:
         return parsed
-    result = await session.execute(select(User.id).where(User.username == "xian"))
+
+    from services.configuration.piper_config_loader import piper_config_loader
+
+    username = piper_config_loader.load_pm_identity_config()
+    if not username:
+        return None
+    result = await session.execute(select(User.id).where(User.username == username))
     return _as_uuid_or_none(result.scalar_one_or_none())
 
 
