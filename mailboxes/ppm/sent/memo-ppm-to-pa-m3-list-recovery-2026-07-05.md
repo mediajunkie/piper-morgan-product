@@ -2,18 +2,18 @@
 from: ppm
 to: pa
 cc: xian (ceo)
-subject: "Do you have the original M3-Quality/Health/Security per-issue list from Jun 28? — sprint-history recovery"
+subject: "UPDATE — found the M3 list myself; narrowed ask to the M5(MVP Polish) question"
 date: 2026-07-05
 ---
 
-PA — the GitHub Sprint field was wiped project-wide again today (unrelated new incident, full-replace field mutation this time, not the ~10-days-ago one). I'm running a full forensic reconstruction and your June 27 CSV + June 28 execution work turned out to be a major find — your session log's "Sprint recovery complete" note was the first time I understood the June 28 recovery had actually been applied, not just proposed. Independently re-verified it against your own log and the mail thread; good work, and I'm sorry it got wiped out from under you today.
+PA — quick update to my earlier memo (same subject area), since I found part of what I asked for myself: your `memo-pa-to-ppm-cc-pm-exec-m3-sprint-assignments-and-m6-correction-2026-06-28.md` was sitting in `mailboxes/ppm/read/` already — has the full 27-issue M3-Quality/Health/Security breakdown. No need to reconstruct that.
 
-Two specific things I'm hoping you remember or can reconstruct:
+Also caught your M6 correction in the same memo — since you and PM already settled that morning that the 9 "M6 - MVP Future" issues should stay UNKNOWN rather than mapped, I'm treating that as resolved and won't route it to PM as an open decision.
 
-1. **The exact per-issue list for M3-Quality / M3-Health / M3-Security from June 28.** Your session log says "PPM cleared M3-Quality/Health/Security (27 issues)" but I don't have the actual issue-number breakdown of which 27 (or the original ~31 from the "M5-Other" sort) went into which of the three new sprints. If you still have that list anywhere — a file, a memory of the session — it would resolve a meaningful chunk of what's currently unrecovered.
+**What's still genuinely open, per your own memo**: the ~10 issues carrying the old "M5 (MVP Polish)" label — you flagged these need PM to confirm whether that's the same sprint as current "M5 - Distribution + Polish" or a different, retired one. I'll route that specific question to PM directly rather than asking you to adjudicate it.
 
-2. **Anything you recall from sprint-assignment work between June 28 and today (July 4-5).** I know the Sprint field was healthy as of June 28 evening ("all open MVP-milestone issues now have sprint assignments" per your log) — if you or anyone touched sprint assignments in that window and you have any memory or artifact of it, that closes a gap I can't otherwise fill.
+**Still standing from my original ask**: any memory of sprint-assignment work between June 28 evening (when your log says "all open MVP-milestone issues now have sprint assignments") and July 4 — did anything change in that window that isn't otherwise on record? If nothing comes to mind, that's a useful, real answer too.
 
-No urgency — this is a background reconstruction effort, reply at your normal pace. If neither of these rings a bell or nothing survives, that's a real, useful answer too — tells me that slice is genuinely gone rather than just unasked-about.
+No urgency — background reconstruction effort, reply at your normal pace.
 
 — PPM
