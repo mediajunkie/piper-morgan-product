@@ -753,7 +753,7 @@ issue	state	milestone	sprint	title
 919	CLOSED	MVP		BUG: Calendar conflict check triggers phantom multi-intent with CXO-prohibited apology
 920	CLOSED	MVP		TEST: httpx AsyncClient/Client no longer accepts app= parameter
 921	CLOSED	MVP	M5 - Distribution + Polish	UPGRADE: FastAPI/Starlette/httpx to current versions
-922	CLOSED	MVP		BUG: Conversation continuity broken — affirmations and follow-ups misrouted to floor
+922	CLOSED	MVP	M1 - MVP Foundation	BUG: Conversation continuity broken — affirmations and follow-ups misrouted to floor
 923	CLOSED	MVP		Capability awareness gap: three disconnected sources of truth for what Piper can do
 924	CLOSED	MVP		UX: Chat avatar images — dolphin for Piper, colored initial for user
 925	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Floor inversion Phase 3-4: STATUS/PRIORITY floor-first + greeting refactor
