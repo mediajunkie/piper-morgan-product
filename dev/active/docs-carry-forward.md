@@ -1,7 +1,7 @@
 # Docs Carry-Forward
-**Updated**: 2026-07-05 ~22:17 PDT (Fire 2 — STOP)
-**Cron**: `17 10,22 * * *` (SLOW tier — 2×/day; re-arm at STOP)
-**Session log**: `dev/2026/07/05/2026-07-05-1047-docs-code-log.md` (DAY-CLOSED: 2026-07-05)
+**Updated**: 2026-07-06 ~10:50 PDT (Fire 1 — START WORK)
+**Cron**: `17 10,22 * * *` (SLOW tier — 2×/day; job f33227b7)
+**Session log**: `dev/2026/07/06/2026-07-06-1047-docs-code-log.md`
 
 ## Migration hold status
 
@@ -9,26 +9,26 @@ SLOW tier continues. No cron tier changes until PM + Janus migration plan confir
 
 ---
 
-## Done today (Jul-5)
+## Done this fire (Jul-6 Fire 1)
 
-- ✅ **Jul-4 omnibus written** — `docs/omnibus-logs/2026-07-04-omnibus-log.md` (196 lines, HIGH-COMPLEXITY, commit `5f4c17ef0`)
-- ✅ **Activity-log rows appended** — 12 rows for Jul-4; 1582→1594 lines (commit `eeaf5b356`)
+- ✅ **BRIEFING STATUS BANNER updated** — Jul-4 + Jul-5 cross-cohort attest; frontmatter bumped to 2026-07-06 (commit `ea0d42dd1`)
+- ✅ **PA response sent** — #1368 merge-keeper operational view (commit `f950089ac` via mail-send.sh)
+- ✅ **Inbox triaged** — 2 CC memos moved to read/
 
-## Next (Jul-6 START fire, ~10:17)
+## Next (Jul-6 Fire 2 ~22:17, or Jul-7 START if STOP)
 
-- [ ] **BRIEFING refactor transition** — awaiting CIO coordination memo; when received, plan `update-current-state` skill rewrite + CLAUDE.md re-scope + session-start.sh threshold
-- [ ] **Weekly audit #1329** — next due Jul 9 (Wednesday)
-- [ ] **BRIEFING freshness check** — briefing was last updated Jul 3 ~10:50 (Lead) + Jul 3 ~18:37 (HOST); Jul-5 may have updates to incorporate (Lead continued; Arch retroactive day-close; etc.)
+- [ ] **Weekly audit #1329** — next due Jul 9 (Wednesday); check if auto-generated yet
+- [ ] **BRIEFING refactor transition** — PM-ratified (Jul-4 PPM's proposal); awaiting CIO coordination memo; when received, plan `update-current-state` skill rewrite + CLAUDE.md re-scope + session-start.sh threshold. CIO's Jul-6 append explicitly calls this "pending Docs-coordinated execution."
+- [ ] **Jul-6 omnibus** — will need writing; check Jul-6 source logs at Jul-7 START
 
 ## Pending / PM-gated
 
-- **BRIEFING refactor implementation** — CIO coordinating with Docs; waiting for transition plan memo
-- **HOST bounded cleanup spec** — HOST drafted spec Jul 4; CIO to implement into duty-cycle-tick STOP (CIO confirmed done Jul 4)
+- **BRIEFING refactor implementation** — CIO coordinating with Docs; waiting for CIO transition plan memo
 - **#1344 open-registration** — PM decision needed
 - **docs-standing-items.md stale** (last refresh 2026-05-27) — refresh when queue allows
 - **YAML-frontmatter upgrade lane** — ADRs/Patterns/Methodology/.serena still pending
 
 ## State flags
 
-- Inbox: **0 unread** (as of 22:17 PDT)
-- Queue: **(0,0)** — BRIEFING transition blocked on CIO memo; all other items PM-gated or other-agent-owned
+- Inbox: **0 unread** (as of 10:50 PDT)
+- Queue: **(0,0)** — all unblocked items done this fire; BRIEFING refactor blocked on CIO memo
