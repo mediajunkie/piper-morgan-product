@@ -18,10 +18,11 @@ This worktree was found **67 commits behind origin/main** at this fire's START, 
 
 ## Ship #050 workstream review — IN PROGRESS
 
-Kickoff issued 7/3, §0 due **Mon Jul 7 EOD**. Tally as of 7/6 08:03: **6/8 in** — Arch, CXO, PPM, Comms, HOST, CIO. **Outstanding: Lead, PA.**
+Kickoff issued 7/3. **Roster is 6, not 8 — collection is COMPLETE.** (Self-correction, 7/6 ~10:00: I'd been carrying "Lead + PA outstanding" against a wrongly-assumed 8-role roster. `methodology-25-WORKSTREAM-REVIEW-CADENCE.md` defines the roster as exactly six roles — HOST/CIO/Comms/CXO/PPM/Arch — with PA cc'd only and Lead Dev not part of the process at all. Confirmed against 10 prior ship cycles' filenames, all six-submitter, no exceptions.)
 
+- **All 6 in**: Arch, CXO, PPM, Comms, HOST, CIO.
 - CIO's §0 has a same-day self-correction: strike the "#972 + gbrain = 2 consecutive slips" framing — both are actually done (CIO's URGENT memo, 7/6). Use the corrected accounting when synthesizing: 2 advanced, 1 new candidate (account migration), 1 explored-not-executed, 2 retired-as-complete.
-- Synthesis itself not yet started — waiting on Lead + PA before compiling. Watch for the Mon EOD deadline; per PM's standing "no delay without approval" directive, don't let synthesis slip past collection.
+- **Synthesis can start now** — collection is done, nothing left to wait on.
 
 ---
 

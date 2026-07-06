@@ -2,9 +2,9 @@
 name: create-session-log
 description: Create or resume a session log at session start. Use when starting a new session, when PM assigns work, or after context compaction to find and continue your existing log. Critical for maintaining institutional memory.
 scope: cross-role
-version: 1.1
+version: 1.2
 created: 2026-01-21
-updated: 2026-05-17
+updated: 2026-07-06
 ---
 
 # create-session-log
@@ -33,7 +33,7 @@ Use this skill when:
 Before creating a new log, check if one already exists:
 
 ```bash
-ls dev/active/*$(date +%Y-%m-%d)*{role}*log.md
+ls dev/$(date +%Y/%m/%d)/*{role}*log.md
 ```
 
 **If found**: Continue that log instead of creating a new one. Add a section:
@@ -48,7 +48,7 @@ ls dev/active/*$(date +%Y-%m-%d)*{role}*log.md
 
 **Format**: `YYYY-MM-DD-HHMM-{role}-{tool}-log.md`
 
-**Location**: `dev/active/`
+**Location**: `dev/YYYY/MM/DD/` (e.g. `dev/2026/07/06/2026-07-06-0803-exec-code-log.md`) — logs are created directly in the dated directory, not staged in `dev/active/` first. (Changed 2026-07-06, v1.2: this skill previously said `dev/active/` with a later archival step; that never matched actual practice — every role has created same-day logs directly in the dated directory for some time. CLAUDE.md's Session Discipline section already specified `dev/YYYY/MM/DD/` as the working-documents location; this skill just hadn't been updated to match. PM confirmed no strong preference either way, just pick one and be consistent — picked the dated-directory-from-creation model since it's what CLAUDE.md already says and what the whole cohort already does, avoiding an unnecessary archival step nobody was actually running.)
 
 **Components**:
 - `YYYY-MM-DD`: Today's date
@@ -127,9 +127,9 @@ Subsequent log updates throughout the session can batch; the initial commit is t
 
 **PM says**: "Good morning! You are my docs agent. Create omnibus for yesterday."
 
-**Check**: `ls dev/active/*2026-01-22*docs*log.md` → Not found
+**Check**: `ls dev/2026/01/22/*docs*log.md` → Not found
 
-**Create**: `dev/active/2026-01-22-0800-docs-code-log.md`
+**Create**: `dev/2026/01/22/2026-01-22-0800-docs-code-log.md`
 
 ```markdown
 # Session Log: 2026-01-22-0800-docs-code
@@ -155,7 +155,7 @@ Subsequent log updates throughout the session can batch; the initial commit is t
 
 **PM says**: "Continue working on the anti-pattern index."
 
-**Check**: `ls dev/active/*2026-01-21*docs*log.md`
+**Check**: `ls dev/2026/01/21/*docs*log.md`
 **Found**: `2026-01-21-0750-docs-code-haiku-log.md`
 
 **Action**: Open existing log and add:
@@ -168,7 +168,7 @@ Subsequent log updates throughout the session can batch; the initial commit is t
 
 ### Example 3: Lead Developer Log
 
-**Create**: `dev/active/2026-01-21-0900-lead-code-log.md`
+**Create**: `dev/2026/01/21/2026-01-21-0900-lead-code-log.md`
 
 ```markdown
 # Session Log: 2026-01-21-0900-lead-code
@@ -203,7 +203,7 @@ After compaction, you are mid-session, not starting fresh. Your log from earlier
 1. **DO NOT create a new log** - Your earlier log should exist
 2. **Find and verify it**:
    ```bash
-   ls dev/active/*$(date +%Y-%m-%d)*{role}*log.md
+   ls dev/$(date +%Y/%m/%d)/*{role}*log.md
    ```
 3. **If found**: Add resumption entry immediately:
    ```markdown
@@ -265,13 +265,9 @@ See [PATTERN-FAMILIES.md](../../../docs/internal/architecture/current/patterns/P
 ## Quality Checklist
 
 After creating/resuming a session log:
-- [ ] File is in `dev/active/`
+- [ ] File is in `dev/YYYY/MM/DD/` (the dated directory, not `dev/active/`)
 - [ ] Filename follows convention exactly
 - [ ] Header metadata is complete
 - [ ] Objectives reflect PM's actual instructions
 - [ ] Work log has first timestamped entry
 - [ ] No duplicate same-day log for this role
-
-## After the Session
-
-Session logs in `dev/active/` may be archived to `dev/YYYY/MM/DD/` after the session ends. This is typically handled by PM or documentation processes, not during the session itself.
