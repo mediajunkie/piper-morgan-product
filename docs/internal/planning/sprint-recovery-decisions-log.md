@@ -66,4 +66,23 @@ All 85 issues in the original closedAt-calendar "overlapping candidates" pool ar
 
 ---
 
+## MEDIUM-tier promotion to HIGH — 21 issues applied (2026-07-06)
+
+Of the 93 MEDIUM-confidence issues, calendar cross-check produced two promotable buckets, both now applied and verified live:
+
+- **17 CALENDAR_CONFIRMS_ALONE** (the calendar's own closedAt-window lookup agreed with the explicit-document proposal, no competing candidate): A7 (Testing & Bufferj) — #254, #255, #257, #258, #259, #260, #261; A20 - Alpha Testing (round 2) — #588, #596; M2 - Conscious Floor + Action Handlers — #100, #101, #946, #964, #970, #971, #1041; A6 (User Onboarding) — #237.
+- **4 paren-formatting false alarms**, all genuinely A8 (Alpha Rolloutj [sic — the live option's own name is missing its closing paren]): #262, #283, #291, #294. These had been flagged CALENDAR_CONTRADICTS, but the contradiction was an artifact of my own inconsistent handling of that trailing-parenthesis typo across working files, not a real disagreement — normalizing (stripping parens) before comparing resolved all 4 as genuine A8 matches.
+
+PM approved application of the full high-confidence set beforehand ("high confidence updates approved, yes").
+
+## A9 four-issue cluster resolved by PM memory (2026-07-06)
+
+#376, #377, #378, #379 — PM: "the first 4 are all A9." No calendar or document evidence pointed anywhere for this cluster; PM's direct recollection placed it in A9 (Alpha Tidy), alongside the already-established #270/#357 members. Content is consistent with that call — #376 FRONTEND-RBAC-AWARENESS, #377 ALPHA-DOCS-UPDATE, #378 ALPHA-DEPLOY-PROD, #379 ALPHA-UI-QUICK are all alpha-rollout/deployment-adjacent work. Applied and verified live.
+
+## Methodological insight: cherry-picking and pre-sprint closure (2026-07-06)
+
+PM, on reviewing the harder remaining cases: **"sometimes we cherrypick or things get closed before their sprint starts."** This is a distinct failure mode from calendar-boundary imprecision (the earlier-documented narrow-vs-broad distinction) — an issue can be closed *before* its true home sprint's calendar window even opens, because it was deliberately pulled forward and finished early rather than worked in sequence. The closedAt-vs-calendar method structurally can't detect this: it looks for the window containing the close date, and a cherry-picked issue's close date sits earlier than that window entirely, not inside a neighboring one. No automated fix proposed — this is now a documented reason a low-confidence or seemingly-contradictory case may still be correct, and a reason PM's direct memory is sometimes the only correct source even when the calendar looks like it disagrees.
+
+---
+
 *Log started 2026-07-06 during the Group 1 + Group 2 reconciliation pass. Append further decisions here as remaining groups are reviewed — do not start a new file.*
