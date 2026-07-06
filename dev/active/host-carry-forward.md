@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/06/2026-07-06-0701-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `a833a327`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-06 10:15 PT (Fire 11; usage-cap trust-lens PASS sent; ADR-075 OQ-3 trust-lens sent; MCPB briefing ack sent; sapient-trust 0 open)
+**Last updated**: 2026-07-06 12:45 PT (Fire 12; Rebecca email confirmed; batch 1 10/10 READY TO SEND; PM's call on distribution)
 
 ---
 
@@ -22,7 +22,7 @@
 - **#1331 ratification** → Lead (cc Arch, PM): RATIFIED. Lead may proceed.
 - **#1344 alpha-list coordination** → Lead (cc Arch, PM): confirmed roster location; proposed single-use token protocol; **waiting on Lead's token-format preference** to unblock sequencing. Arch CC'd Lead directly with atomicity requirement (validate-and-consume must be atomic — TOCTOU/double-spend risk).
 - **#1333/#1231 D5 trust call + trust-lens**: ✅ **COMPLETE**. Arch aligned (Fire 2). Trust-lens pass on live surfaces PASS (Fire 3). Two watch items logged (degrade_nudge enum coverage; generic decline "(e.g. GitHub)" for non-GitHub future). CXO voice-pass already done on NOT_CONFIGURED. HOST re-reviews on any future CXO voice-pass.
-- **#1344 alpha-list + invite-code**: ✅ **BATCH 1 MAPPING COMPLETE 2026-07-06**. Gate LIVE as v0.8.9.2. 12 tokens minted (Lead, Jul 4). Assignment file: `dev/alpha/invite-tokens-assignments-batch-1.md` (PM local, gitignored). 10 assignments made; 2 spares held. **One blocker**: Rebecca Refoy no email in roster — token held, delivery blocked pending PM providing her email. 9 others READY TO SEND. PM to distribute via preferred mechanism. Second batch (new relaunch signups) to follow after first cohort onboarded — wait for PM direction.
+- **#1344 alpha-list + invite-code**: ✅ **BATCH 1 MAPPING COMPLETE 2026-07-06**. Gate LIVE as v0.8.9.2. 12 tokens minted (Lead, Jul 4). Assignment file: `dev/alpha/invite-tokens-assignments-batch-1.md` (PM local, gitignored). 10 assignments made; 2 spares held. Rebecca email confirmed (`rrefoy@gmail.com`, via PM→Exec Jul 6). **10/10 READY TO SEND.** PM to distribute via preferred mechanism. Second batch (new relaunch signups) to follow after first cohort onboarded — wait for PM direction.
 - **Docs audit refactor input** → Docs (cc CIO, PA, PM): awaiting Docs's template update.
 - **CIO sync-PM-local proposal**: Sent 2026-07-03 Fire 3. PM asked CIO to broker cohort-wide "sync PM's local after each push" convention. Awaiting CIO decision on mechanism + CLAUDE.md rollout.
 
