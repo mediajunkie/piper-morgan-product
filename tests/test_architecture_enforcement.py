@@ -695,6 +695,72 @@ class TestModelMigrationCoverage:
         )
 
 
+class TestGitHubDefaultRepoScopingEnforcement:
+    """#1366 Component A — architectural enforcement for the default-repo scoping fix.
+
+    ``piper_config_loader.load_github_config()`` reads ONE file at server-instance
+    level with zero user-scoping. Its ``.default_repository`` field is safe only in
+    a single-user prototype; on a shared instance (alpha.pipermorgan.ai is one
+    today) it would hand every user PM's own default GitHub repo. The per-user,
+    DB-backed source of truth is ``get_user_default_repo(user_id)``
+    (services/integrations/github/repo_resolver.py), which reads
+    ``ConnectorConfigService`` (ADR-070 D4).
+
+    Same family as the #1283 reachability lint and the #1307 exempt-list lint:
+    impossible-by-construction, not vigilance. Zero tolerance, not a ratchet —
+    there is no legitimate reason for any file to read ``.default_repository``
+    off the unscoped loader, so unlike TestPreFloorDispatchSiteRatchet this has
+    no declining-target track; the allowed count is always 0.
+    """
+
+    # Files structurally exempt because they ARE the loader/type definition, not
+    # callers — reading/assigning the field here is the implementation, not a leak.
+    ALLOWED_FILES = [
+        "services/configuration/piper_config_loader.py",  # loader builds the value
+        "services/config/github_config.py",  # GitHubConfig dataclass itself
+    ]
+
+    UNSCOPED_READ_RE = re.compile(r"\bgithub_config\.default_repository\b")
+
+    def test_no_unscoped_default_repository_reads(self):
+        """Fails if any caller reads `.default_repository` off a config object
+        sourced from the unscoped `load_github_config()` loader.
+
+        Fix: repoint onto `get_user_default_repo(user_id)`
+        (services/integrations/github/repo_resolver.py) — see
+        services/intent_service/canonical_handlers.py and
+        services/intent/intent_service.py for the #1366 reference fix.
+        """
+        service_files = glob.glob("services/**/*.py", recursive=True) + glob.glob(
+            "web/**/*.py", recursive=True
+        )
+
+        violations = []
+
+        for file_path in service_files:
+            if "__pycache__" in file_path:
+                continue
+            if any(allowed in file_path for allowed in self.ALLOWED_FILES):
+                continue
+
+            try:
+                with open(file_path, "r", encoding="utf-8") as f:
+                    content = f.read()
+            except UnicodeDecodeError:
+                continue
+
+            if self.UNSCOPED_READ_RE.search(content):
+                violations.append(file_path)
+
+        assert not violations, (
+            f"Unscoped `.default_repository` read(s) found in: {violations}. "
+            f"On a shared instance this leaks PM's own default GitHub repo to "
+            f"every user (#1366). Use `get_user_default_repo(user_id)` "
+            f"(services/integrations/github/repo_resolver.py) instead of "
+            f"`piper_config_loader.load_github_config().default_repository`."
+        )
+
+
 if __name__ == "__main__":
     # Allow running tests directly for verification
     pytest.main([__file__, "-v"])

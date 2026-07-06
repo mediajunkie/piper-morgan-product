@@ -35,7 +35,7 @@ def _all_db_paths_off():
     """Default the DB-backed helper to 'no data' (None) so each test lights up
     exactly one path. Individual tests override the helper for the path they prove."""
     with (
-        patch.object(rr, "_read_user_default_repo_from_db", new=AsyncMock(return_value=None)),
+        patch.object(rr, "get_user_default_repo", new=AsyncMock(return_value=None)),
         patch.dict("os.environ", {}, clear=False),
     ):
         # ensure the env path is off unless a test sets it
@@ -51,7 +51,7 @@ async def test_path1_explicit_wins():
 
 
 async def test_path2_user_default_reachable():
-    rr._read_user_default_repo_from_db.return_value = "o/userdef"
+    rr.get_user_default_repo.return_value = "o/userdef"
     got = await resolve_repo(user_id=uuid4())
     assert got.source == "user_default"
 
@@ -72,6 +72,6 @@ async def test_path4_unresolved_when_all_paths_dry():
 async def test_order_explicit_beats_user_default():
     """Ordering proof: when BOTH explicit and user-default have data, explicit wins —
     catches a reorder that would flip their precedence."""
-    rr._read_user_default_repo_from_db.return_value = "o/userdef"
+    rr.get_user_default_repo.return_value = "o/userdef"
     got = await resolve_repo(user_id=uuid4(), explicit="explicit/repo")
     assert got.source == "explicit"

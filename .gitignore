@@ -84,6 +84,11 @@ data/redis/
 # Learning data (runtime-mutated by app — churns on every session)
 data/learning/
 
+# Legacy flat-file GitHub preferences store — superseded by ConnectorConfigService
+# (connector_configs DB table, ADR-070 D4) per WS-1 P4 (#1226/#1199). Runtime
+# artifact only; noticed untracked during #1366 Component A verification.
+data/github_preferences.json
+
 # User configuration files (private, not committed)
 config/PIPER.user.md
 **/PIPER.user.md

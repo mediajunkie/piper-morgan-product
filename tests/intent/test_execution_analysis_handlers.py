@@ -67,6 +67,53 @@ class TestExecutionHandlers:
             assert "placeholder" not in result.message.lower()
 
     @pytest.mark.asyncio
+    async def test_create_issue_uses_user_scoped_default_repo_1366(self, intent_service):
+        """#1366 Component A: when no repository is named in the request, the
+        fallback default repo must come from the per-user get_user_default_repo
+        resolver, not piper_config_loader.load_github_config().default_repository
+        — on a shared instance the unscoped file read would hand every user PM's
+        own default repo."""
+        from uuid import UUID
+
+        user_id = "12345678-1234-5678-1234-567812345678"
+        intent = Intent(
+            original_message="create an issue about testing",
+            category=IntentCategory.EXECUTION,
+            action="create_issue",
+            confidence=0.95,
+            # Deliberately no "repository"/"repo" key — forces the default-repo fallback.
+            context={"title": "Test issue"},
+        )
+
+        with patch("os.getenv", return_value="fake-github-token"), patch(
+            "services.domain.github_domain_service.GitHubDomainService"
+        ) as MockDomainService, patch(
+            "services.integrations.github.repo_resolver.get_user_default_repo",
+            new_callable=AsyncMock,
+        ) as mock_get_default_repo, patch(
+            "services.configuration.piper_config_loader.piper_config_loader"
+        ) as mock_config_loader:
+            mock_domain = MagicMock()
+            mock_domain.create_issue = AsyncMock(
+                return_value={"number": 42, "title": "Test issue"}
+            )
+            MockDomainService.return_value = mock_domain
+            mock_get_default_repo.return_value = "scoped-owner/scoped-repo"
+            mock_config_loader.load_github_config.return_value = MagicMock(
+                default_labels=None
+            )
+
+            result = await intent_service._handle_create_issue(
+                intent, workflow_id="wf-1", session_id="test", user_id=user_id
+            )
+
+            mock_get_default_repo.assert_awaited_once_with(UUID(user_id))
+            assert result.success is True
+            mock_domain.create_issue.assert_awaited_once()
+            _, kwargs = mock_domain.create_issue.call_args
+            assert kwargs["repo_name"] == "scoped-owner/scoped-repo"
+
+    @pytest.mark.asyncio
     async def test_create_issue_attempts_execution(self, intent_service):
         """Verify create_issue handler attempts to execute."""
         intent = Intent(

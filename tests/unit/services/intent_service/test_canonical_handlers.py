@@ -3148,6 +3148,46 @@ class TestIntegrationTipLogic847:
         result = await canonical_handlers._get_priority_metadata(user_id=None)
         assert result == {}
 
+    @pytest.mark.asyncio
+    async def test_get_priority_metadata_uses_user_scoped_default_repo_1366(
+        self, canonical_handlers
+    ):
+        """#1366 Component A: default repo must come from the per-user
+        get_user_default_repo resolver, not the unscoped piper_config_loader
+        file read — on a shared instance the file read would hand every user
+        PM's own default repo."""
+        from uuid import UUID
+
+        user_id = "12345678-1234-5678-1234-567812345678"
+
+        with patch(
+            "services.integrations.github.config_service.GitHubConfigService"
+        ) as MockConfigService, patch(
+            "services.domain.github_domain_service.GitHubDomainService"
+        ) as MockDomainService, patch(
+            "services.integrations.github.repo_resolver.get_user_default_repo",
+            new_callable=AsyncMock,
+        ) as mock_get_default_repo, patch(
+            "services.configuration.piper_config_loader.piper_config_loader"
+        ) as mock_config_loader:
+            mock_config = MagicMock()
+            mock_config.is_configured.return_value = True
+            MockConfigService.return_value = mock_config
+
+            mock_domain = MagicMock()
+            mock_domain.get_connection_status.return_value = {"connected": True}
+            mock_domain.get_open_issues = AsyncMock(return_value=[])
+            MockDomainService.return_value = mock_domain
+
+            mock_get_default_repo.return_value = "scoped-owner/scoped-repo"
+
+            result = await canonical_handlers._get_priority_metadata(user_id=user_id)
+
+            mock_get_default_repo.assert_awaited_once_with(UUID(user_id))
+            # The unscoped file-config loader must not be consulted for the repo field.
+            mock_config_loader.load_github_config.assert_not_called()
+            assert result["repository"] == "scoped-owner/scoped-repo"
+
 
 class TestGuidanceQuerySynthesisSeam497:
     """Issue #497: guard the

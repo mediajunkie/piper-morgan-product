@@ -6696,8 +6696,17 @@ class IntentService:
             repository = intent.context.get("repository") or intent.context.get("repo")
 
             # Issue #494: Fall back to default repository from config
-            if not repository:
-                repository = github_config.default_repository
+            # #1366 Component A: default_repository must come from the per-user,
+            # DB-backed ConnectorConfigService, not the single unscoped file — on a
+            # shared instance the file read would hand every user PM's own default repo.
+            if not repository and user_id:
+                from uuid import UUID
+
+                from services.integrations.github.repo_resolver import (
+                    get_user_default_repo,
+                )
+
+                repository = await get_user_default_repo(UUID(user_id))
                 self.logger.info(
                     f"Using default repository from config: {repository}",
                     extra={"repository": repository, "session_id": session_id},

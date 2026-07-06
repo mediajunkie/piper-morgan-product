@@ -23,7 +23,7 @@ def _db_default_repo_off():
     (returns None) for every test so the existing flat-file/env/project assertions stay
     deterministic + DB-free; the DB-first tests below override this with their own patch."""
     with patch(
-        "services.integrations.github.repo_resolver._read_user_default_repo_from_db",
+        "services.integrations.github.repo_resolver.get_user_default_repo",
         new=AsyncMock(return_value=None),
     ):
         yield
@@ -104,11 +104,11 @@ class TestUserDefaultPreference:
     """Path 3: user's ``default_repo`` preference.
 
     WS-1 P4 (#1226 / #1199): the resolver reads the DB-backed connector_configs store
-    (``_read_user_default_repo_from_db``) — the SOLE store. The flat-file store and the
+    (``get_user_default_repo``) — the SOLE store. The flat-file store and the
     old in-memory UserPreferenceManager path are RETIRED. We patch the DB reader.
     """
 
-    _READER = "services.integrations.github.repo_resolver._read_user_default_repo_from_db"
+    _READER = "services.integrations.github.repo_resolver.get_user_default_repo"
 
     async def test_user_default_used_when_set(self, monkeypatch):
         monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)
@@ -140,7 +140,7 @@ class TestUserDefaultFromDB:
     """WS-1 P4 (#1226 / #1199): path 3 reads the DB-backed connector_configs store — the SOLE
     store. The autouse fixture defaults the DB read OFF; these tests turn it on."""
 
-    _DB = "services.integrations.github.repo_resolver._read_user_default_repo_from_db"
+    _DB = "services.integrations.github.repo_resolver.get_user_default_repo"
 
     async def test_db_value_used_when_set(self, monkeypatch):
         monkeypatch.delenv(ENV_DEFAULT_REPO, raising=False)

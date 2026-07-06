@@ -197,13 +197,20 @@ async def read_user_github_handle(user_id) -> Optional[str]:
     return os.environ.get("PIPER_GITHUB_HANDLE") or None
 
 
-async def _read_user_default_repo_from_db(user_id: UUID) -> Optional[str]:
+async def get_user_default_repo(user_id: UUID) -> Optional[str]:
     """WS-1 (#1226 / #1199): read ``default_repository`` from the DB-backed
-    connector_configs store (ADR-070 D4) — the SOLE store as of P4. Best-effort —
-    returns None on any DB error (honest-degrade: the user-default path simply
-    yields nothing and resolution falls through to the env-var fallback, NOT to a
-    second store). Uses ``session_scope()`` to mirror the other repo_resolver DB
-    reads (#1192(b))."""
+    connector_configs store (ADR-070 D4) — the SOLE, per-user-scoped store as of P4.
+    Best-effort — returns None on any DB error (honest-degrade: the user-default path
+    simply yields nothing and resolution falls through to the env-var fallback, NOT to
+    a second store). Uses ``session_scope()`` to mirror the other repo_resolver DB
+    reads (#1192(b)).
+
+    Promoted from a module-private helper (2026-07-06, #1366 Component A) — this is
+    now the ONE correct way to read a user's default GitHub repo anywhere in the
+    codebase. Every caller that previously read `PIPER.user.md`'s GitHub section
+    directly (unscoped, same value for every user on a shared instance) must resolve
+    through this function instead.
+    """
     try:
         from services.connectors.config_service import ConnectorConfigService
         from services.database.session_factory import AsyncSessionFactory
@@ -228,7 +235,7 @@ async def _resolve_from_user_default(user_id: UUID) -> Optional[ResolvedRepo]:
     flat file too once the DB store subsumed both.
     """
     try:
-        value = await _read_user_default_repo_from_db(user_id)  # WS-1 P4: DB is the sole store
+        value = await get_user_default_repo(user_id)  # WS-1 P4: DB is the sole store
         if not value:
             return None
         try:

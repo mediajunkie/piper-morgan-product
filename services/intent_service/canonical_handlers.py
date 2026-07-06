@@ -1542,7 +1542,6 @@ class CanonicalHandlers:
                 return {}
 
             # Import and instantiate GitHub domain service
-            from services.configuration.piper_config_loader import piper_config_loader
             from services.domain.github_domain_service import GitHubDomainService
 
             github_service = GitHubDomainService()
@@ -1556,9 +1555,16 @@ class CanonicalHandlers:
                 logger.debug("GitHub not connected — honest-degrade (#1231)")
                 return {"degrade_reason": DegradationReason.CONNECT_REQUIRED}
 
-            # Get default repository from config
-            github_config = piper_config_loader.load_github_config()
-            default_repo = github_config.default_repository
+            # Get default repository from the user-scoped resolver (#1366 Component A).
+            # piper_config_loader.load_github_config().default_repository is a single
+            # unscoped file read at server-instance level — on a shared instance it would
+            # hand every user PM's own default repo. ConnectorConfigService (via
+            # get_user_default_repo) is the per-user, DB-backed source of truth.
+            from uuid import UUID
+
+            from services.integrations.github.repo_resolver import get_user_default_repo
+
+            default_repo = await get_user_default_repo(UUID(user_id))
 
             if not default_repo:
                 return {"has_github": True, "high_priority_issues": []}
