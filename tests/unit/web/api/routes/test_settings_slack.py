@@ -211,7 +211,9 @@ class TestDisconnectSlack:
 
             assert result["success"] is True
             assert result["message"] == "Slack disconnected"
-            mock_oauth_handler.revoke_workspace_access.assert_called_once_with("T12345")
+            # 2026-07-06 (#542): revoke_workspace_access now takes user_id, not the
+            # workspace_id env var -- the real per-user token lookup needs user_id.
+            mock_oauth_handler.revoke_workspace_access.assert_called_once_with("test-user-123")
 
     @pytest.mark.asyncio
     async def test_succeeds_even_when_revoke_fails(self):
@@ -299,7 +301,8 @@ class TestDisconnectSlack:
         mock_keychain.delete_api_key.assert_any_call("slack_bot", username="user-789")
         mock_keychain.delete_api_key.assert_any_call("slack_user", username="user-789")
         # Slack-side revoke — the behavior the prior live route lacked
-        mock_oauth_handler.revoke_workspace_access.assert_called_once_with("T999")
+        # 2026-07-06 (#542): takes user_id now, not the workspace_id env var
+        mock_oauth_handler.revoke_workspace_access.assert_called_once_with("user-789")
         # env cleared
         assert "SLACK_BOT_TOKEN" not in os.environ
         assert "SLACK_TEAM_ID" not in os.environ

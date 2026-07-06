@@ -14,7 +14,8 @@ disconnect; the point is to leave NO usable credential behind):
   #358 grant revoke (the #1330 fix).
 - **slack** (ADR-058 keychain): bot+user keychain tokens + Slack-side OAuth revoke
   (the #1334-P1 fix) + env.
-- **calendar** (keychain): user-scoped refresh token.
+- **calendar** (keychain): user-scoped refresh token + Google-side OAuth revoke
+  (the #542 fix — previously local-clear only, never actually revoked).
 - **notion** (keychain + #358 store): keychain key (legacy) AND the user-scoped
   UserAPIKeyService store where `save_notion_key` actually writes (#1337) — clearing
   only the keychain left the real token behind.
@@ -43,7 +44,7 @@ async def disconnect_connector(user_id: str, connector: str) -> None:
     elif connector == "slack":
         await _disconnect_slack(user_id)
     elif connector == "calendar":
-        _disconnect_calendar(user_id)
+        await _disconnect_calendar(user_id)
     elif connector == "notion":
         await _disconnect_notion(user_id)
     else:
@@ -90,35 +91,52 @@ async def _disconnect_slack(user_id: str) -> None:
     from services.infrastructure.keychain_service import KeychainService
 
     keychain = KeychainService()
+
+    # #1334-P1 / #542: revoke on Slack's side BEFORE clearing the keychain -- the
+    # revoke call reads the live token via SlackConfigService, which reads the same
+    # keychain entries deleted below. Revoking after deletion would always find
+    # nothing to revoke (a real ordering bug, fixed 2026-07-06).
+    try:
+        from services.integrations.slack.config_service import SlackConfigService
+        from services.integrations.slack.oauth_handler import SlackOAuthHandler
+
+        oauth_handler = SlackOAuthHandler(SlackConfigService())
+        await oauth_handler.revoke_workspace_access(user_id)
+    except Exception as revoke_error:
+        logger.warning(
+            "slack_revoke_warning",
+            error=str(revoke_error),
+            message="Could not revoke via Slack API; clearing local creds anyway",
+        )
+
     try:
         keychain.delete_api_key("slack_bot", username=user_id)
         keychain.delete_api_key("slack_user", username=user_id)
     except Exception:
         pass
-    # #1334-P1: revoke on Slack's side too (best-effort).
-    try:
-        from services.integrations.slack.config_service import SlackConfigService
-        from services.integrations.slack.oauth_handler import SlackOAuthHandler
-
-        workspace_id = os.environ.get("SLACK_TEAM_ID", "default")
-        oauth_handler = SlackOAuthHandler(SlackConfigService())
-        await oauth_handler.revoke_workspace_access(workspace_id)
-    except Exception as revoke_error:
-        logger.warning(
-            "slack_revoke_warning",
-            error=str(revoke_error),
-            message="Could not revoke via Slack API; cleared local creds",
-        )
     for var in ("SLACK_BOT_TOKEN", "SLACK_TEAM_ID", "SLACK_APP_TOKEN"):
         os.environ.pop(var, None)
 
 
-def _disconnect_calendar(user_id: str) -> None:
+async def _disconnect_calendar(user_id: str) -> None:
     from services.infrastructure.keychain_service import KeychainService
 
     keychain = KeychainService()
+    key_name = f"google_calendar_{user_id}"  # #839 user-scoped key
+
+    # #542: revoke on Google's side before clearing locally (best-effort -- a
+    # revoke failure must never leave the disconnect incomplete).
     try:
-        keychain.delete_api_key(f"google_calendar_{user_id}")  # #839 user-scoped key
+        refresh_token = keychain.get_api_key(key_name)
+        if refresh_token:
+            from services.integrations.calendar.oauth_handler import GoogleCalendarOAuthHandler
+
+            await GoogleCalendarOAuthHandler().revoke_token(refresh_token)
+    except Exception as e:
+        logger.warning("calendar_revoke_attempt_failed", error=str(e))
+
+    try:
+        keychain.delete_api_key(key_name)
     except Exception:
         pass
 

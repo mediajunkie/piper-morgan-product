@@ -699,25 +699,48 @@ class SlackOAuthHandler:
             },
         }
 
-    async def revoke_workspace_access(self, workspace_id: str) -> bool:
-        """Revoke OAuth access for a workspace"""
+    async def revoke_workspace_access(self, user_id: str) -> bool:
+        """Revoke this user's Slack OAuth tokens on Slack's side (#542).
+
+        Renamed from a ``workspace_id`` parameter (2026-07-06): the prior version
+        never made a real API call and took a workspace-level env var that had no
+        relationship to which user was disconnecting. Slack's per-token model means
+        the bot token and user token (if granted, #1338) are revoked independently;
+        each call is best-effort so a missing/already-invalid token never blocks the
+        disconnect from completing.
+        """
+        config = self.config_service.get_config(user_id=user_id)
+        revoke_url = f"{config.api_base_url}/auth.revoke"
+        any_revoked = False
+
+        for token in (config.bot_token, config.user_token):
+            if not token:
+                continue
+            try:
+                async with httpx.AsyncClient() as client:
+                    response = await client.post(
+                        revoke_url,
+                        headers={"Authorization": f"Bearer {token}"},
+                        timeout=config.timeout_seconds,
+                    )
+                    data = response.json()
+                    if data.get("ok"):
+                        any_revoked = True
+                    else:
+                        logger.warning(
+                            f"Slack auth.revoke returned not-ok for user {user_id}: "
+                            f"{data.get('error', 'unknown error')}"
+                        )
+            except Exception as e:
+                logger.warning(f"Slack auth.revoke request failed for user {user_id}: {e}")
 
         try:
-            # This would typically:
-            # 1. Call Slack's auth.revoke API
-            # 2. Remove stored tokens
-            # 3. Clear spatial mapping data
-            # 4. Update configuration
-
-            # Clear spatial cache for workspace
             self.spatial_mapper.clear_spatial_cache()
-
-            logger.info(f"Revoked access for workspace {workspace_id}")
-            return True
-
         except Exception as e:
-            logger.error(f"Failed to revoke workspace access: {e}")
-            return False
+            logger.warning(f"Failed to clear spatial cache during revoke: {e}")
+
+        logger.info(f"Revoke attempted for user {user_id} (any_revoked={any_revoked})")
+        return any_revoked
 
     def get_spatial_capabilities(self, oauth_response: Dict[str, Any]) -> list:
         """

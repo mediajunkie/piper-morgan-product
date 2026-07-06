@@ -71,15 +71,41 @@ async def test_slack_clears_keychain_and_revokes():
 
     keychain.delete_api_key.assert_any_call("slack_bot", username=_U)
     keychain.delete_api_key.assert_any_call("slack_user", username=_U)
-    oauth.revoke_workspace_access.assert_awaited_once_with("T1")
+    # 2026-07-06 (#542): revoke_workspace_access now takes user_id, not workspace_id --
+    # the old workspace_id (from an env var) had no relationship to which user was
+    # disconnecting, and the real per-user token lookup needs user_id anyway.
+    oauth.revoke_workspace_access.assert_awaited_once_with(_U)
 
 
 async def test_calendar_clears_user_scoped_key():
     keychain = MagicMock()
-    with patch(
-        "services.infrastructure.keychain_service.KeychainService", return_value=keychain
+    keychain.get_api_key.return_value = None  # no stored token -> revoke is skipped
+    with (
+        patch("services.infrastructure.keychain_service.KeychainService", return_value=keychain),
     ):
         await disconnect_connector(_U, "calendar")
+    keychain.get_api_key.assert_called_once_with(f"google_calendar_{_U}")
+    keychain.delete_api_key.assert_called_once_with(f"google_calendar_{_U}")
+
+
+async def test_calendar_revokes_before_clearing_1334_542():
+    """#542: a real stored token gets revoked on Google's side before the local
+    keychain entry is cleared (not just deleted, as it was before this fix)."""
+    keychain = MagicMock()
+    keychain.get_api_key.return_value = "refresh-token-abc"
+    oauth = MagicMock()
+    oauth.revoke_token = AsyncMock(return_value=True)
+
+    with (
+        patch("services.infrastructure.keychain_service.KeychainService", return_value=keychain),
+        patch(
+            "services.integrations.calendar.oauth_handler.GoogleCalendarOAuthHandler",
+            return_value=oauth,
+        ),
+    ):
+        await disconnect_connector(_U, "calendar")
+
+    oauth.revoke_token.assert_awaited_once_with("refresh-token-abc")
     keychain.delete_api_key.assert_called_once_with(f"google_calendar_{_U}")
 
 

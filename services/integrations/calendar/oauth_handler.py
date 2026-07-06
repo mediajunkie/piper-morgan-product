@@ -50,6 +50,7 @@ class GoogleCalendarOAuthHandler:
     AUTHORIZATION_URL = "https://accounts.google.com/o/oauth2/v2/auth"
     TOKEN_URL = "https://oauth2.googleapis.com/token"
     USERINFO_URL = "https://www.googleapis.com/oauth2/v2/userinfo"
+    REVOKE_URL = "https://oauth2.googleapis.com/revoke"
 
     # State tokens expire after 15 minutes
     STATE_EXPIRATION = 900
@@ -304,6 +305,33 @@ class GoogleCalendarOAuthHandler:
                     token_type=data.get("token_type", "Bearer"),
                     scope=data.get("scope", ""),
                 )
+
+    async def revoke_token(self, token: str) -> bool:
+        """Revoke a Google OAuth token (#542: actual server-side revocation on disconnect).
+
+        Revoking a refresh token also invalidates any access token derived from it, so
+        callers only need to pass the stored refresh token. Best-effort: a failure here
+        must never block clearing the local credential (Google's own guidance -- an
+        already-invalid/expired token still returns 200; other failures are logged, not
+        raised).
+        """
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.post(
+                    self.REVOKE_URL,
+                    data={"token": token},
+                ) as response:
+                    if response.status == 200:
+                        logger.info("calendar_token_revoked")
+                        return True
+                    logger.warning(
+                        "calendar_token_revoke_failed",
+                        status=response.status,
+                    )
+                    return False
+        except Exception as e:
+            logger.warning("calendar_token_revoke_error", error=str(e))
+            return False
 
     async def _get_user_info(self, access_token: str) -> Dict:
         """Get user email from Google."""
