@@ -52,6 +52,18 @@ The first artifact refresh after this round of decisions used a hand-typed list 
 
 **Confirmed correctly sprint-less (Fast Follow milestone, future work, not a gap)**: #244, #272, #338, #104, #546, #568
 
+**W (Quick Wins)**: #319, #320, #331
+**S1 (Security and Critical Fixes)**: #323, #324, #333
+**FLYWHEEL - Process improvement**: #334, #339, #340
+**A10 - Alpha Testing**: #445, #454
+**A11 - Alpha Polish**: #457, #475, #476, #478, #479
+**P2 - MUX Document Management**: #677, #678, #679, #680, #681 (PM wrote "671" — confirmed via direct lookup that #671 is an unrelated MUX-WIRE issue and #681 is the "document_update_queries routing" issue actually in this cluster; treated as a typo)
+**P1 - MUX Navigation Crisis**: #682
+
+## Group 2 complete (2026-07-06)
+
+All 85 issues in the original closedAt-calendar "overlapping candidates" pool are now resolved and verified against the live board. Group 3 (issues with zero evidence from any automated method — the ~99-issue true gap after the milestone-scoping correction) is next.
+
 ---
 
 *Log started 2026-07-06 during the Group 1 + Group 2 reconciliation pass. Append further decisions here as remaining groups are reviewed — do not start a new file.*
