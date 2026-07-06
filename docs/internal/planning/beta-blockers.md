@@ -34,10 +34,12 @@ Do this first — it's the prerequisite for trusting every other "done" claim on
 
 | # | Title | Why it's a hard gate |
 |---|-------|----------------------|
-| #358 | Encryption at rest for sensitive data | PM: an important principle, long-deferred (low issue number) |
+| #358 | Encryption at rest for sensitive data — **both dimensions code-complete + tested (2026-07-06); dimension B live-verified on alpha 6/25; only dimension A's live-alpha check remains, needs droplet access** | PM: an important principle, long-deferred (low issue number) |
 | #1305 | Encrypt PII-bearing JSON/JSONB structured columns | Sibling scope split from #358 |
 | #1306 | Encrypt uploaded file content at rest | Sibling scope split from #358 |
 | #542 | Implement actual token revocation on disconnect | A disconnected tester's token must actually stop working |
+
+**New discovered-work item, not yet triaged into an epic**: **#1366** — `PIPER.user.md` is a single, unscoped, server-instance-level config file; every conversation on a shared instance (alpha.pipermorgan.ai included) gets the same personalization + GitHub default-repo regardless of which user is talking to Piper. Filed 2026-07-06 (Lead Dev), Architect looped in for the architectural call. Live on alpha today, not a future-only concern — PM/PPM's call on formal inclusion here.
 
 ### Epic C — Connector/OAuth cutover (2 issues)
 Already in progress — Lead Dev's current active thread. Continue, don't restart.
