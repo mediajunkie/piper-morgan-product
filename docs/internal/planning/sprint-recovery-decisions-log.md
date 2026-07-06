@@ -85,4 +85,18 @@ PM, on reviewing the harder remaining cases: **"sometimes we cherrypick or thing
 
 ---
 
+## Three contradicting-tier resolutions, PM-confirmed 2026-07-06 (afternoon)
+
+**#998 — correctly sprint-less, NOT FLYWHEEL.** My proposal (FLYWHEEL) was wrong on a more basic level than sprint choice: PM's own closing comment (missed on first pass because the \ call omitted \) says *"CLOSED. This is an error. The editing and admin UI is attached to pipermorgan.ai, not to the product, and the Web agent already built it."* The real editorial-compose-UI work happened in the **website repo** (Web's lane), not this product repo — #998 is a same-repo placeholder closed as a cross-repo duplicate/error. No sprint value applies; leave empty. PM: *"pro tip: if something seems off, read the comments!"*
+
+**#234 — confirmed C1 (Craft Pride - CRAFT).** PM: *"C1 for sure. It may have not been 'closed properly' till after the work was done?"* — confirming the trailing-edge-slip theory (epic's own body states the work ran Oct 11-14, 2025, inside C1's Oct 10-14 window; the issue's closing comment just landed a day later, Oct 15, sliding the closedAt into A2's window). Already applied.
+
+**#922 — resolved to M1 (MVP Foundation), not the originally-proposed M2.** PM context: *"The floor issue arose as a problem before we dedicated an entire sprint to cleaning it up."* The issue's own comment confirms this precisely: it's the ADR-059 (workflow-dispatcher/offer-consolidation) implementation, closed 2026-03-19 with PM smoke-tests dated 2026-03-20 — five weeks before M2's window even opens (Apr 11). This was the foundational fix that later motivated carving out a dedicated M2 sprint for the same domain ("Conscious Floor + Action Handlers") — thematically M2-adjacent, but chronologically and factually M1 work. Applied and verified live.
+
+## Methodological note: the MVP sprint count changed mid-flight (2026-07-06)
+
+PM: *"Remember, we refactored the MVP sprints at some point. We had six originally, and then we had five, so things changed."* Flagged as context for any remaining M0-M5 boundary judgment calls — a resequencing happened at some point during the MVP track, which may explain some otherwise-odd close-date-vs-window mismatches in that range beyond the already-documented old-M5-relabeling correction. No specific issue reattributed on this note alone; noting it so the pattern is recognized if it recurs in the 56-issue medium-tier artifact.
+
+---
+
 *Log started 2026-07-06 during the Group 1 + Group 2 reconciliation pass. Append further decisions here as remaining groups are reviewed — do not start a new file.*
