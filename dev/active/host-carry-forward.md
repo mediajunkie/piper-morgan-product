@@ -2,9 +2,9 @@
 
 **Purpose**: read-at-fire-time carry-forward for the `duty-cycle-tick` skill. Holds the *genuinely transient* "where am I now" state. Durable owed/queued items also live in the session log; this file is the ephemeral working state the skill reads at START / each fire and rewrites at the end of every substantive fire. See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/06/17/2026-06-17-0724-host-code-sonnet-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `d1d78a04`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
+**Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/06/2026-07-06-0701-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `a833a327`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-04 10:36 PT (Fire 9/START Jul 4; 4 memos processed; mint count=12 sent to Lead)
+**Last updated**: 2026-07-06 07:15 PT (Fire 10/START Jul 6; batch 1 mapping complete; 4 memos sent; cron re-armed `a833a327`)
 
 ---
 
@@ -12,8 +12,8 @@
 
 - **Account**: DinP (xian@designinproduct.com). Model: sonnet-4-6.
 - **Worktree**: ephemeral Option B (`claude/trusting-faraday-ec4bba`). `claude/host-cycle` retired 2026-06-13.
-- **Cron**: ACTIVE (`2d30cbe4`; re-armed 2026-07-03 START; `37 6,9,12,15,18,21 * * *` windowed Gap-C self-heal).
-- **Session log today**: `dev/2026/07/03/2026-07-03-0640-host-code-sonnet-log.md`
+- **Cron**: ACTIVE (`a833a327`; re-armed 2026-07-06 START after Gap-C; `37 6,9,12,15,18,21 * * *` windowed Gap-C self-heal).
+- **Session log today**: `dev/2026/07/06/2026-07-06-0701-host-code-log.md`
 - **Gap-C cure incoming**: CIO proved `mcp__scheduled-tasks` solves cron-death (June 13). Disk-persistent, survives restarts, fires in main checkout. CIO proposing cohort rollout. HOST should be in first cohort — flag interest to CIO.
 - **Migration touch-ups**: thin-prompt proposal Model A → Option B ✅ DONE (fire ~15:37).
 
@@ -22,7 +22,7 @@
 - **#1331 ratification** → Lead (cc Arch, PM): RATIFIED. Lead may proceed.
 - **#1344 alpha-list coordination** → Lead (cc Arch, PM): confirmed roster location; proposed single-use token protocol; **waiting on Lead's token-format preference** to unblock sequencing. Arch CC'd Lead directly with atomicity requirement (validate-and-consume must be atomic — TOCTOU/double-spend risk).
 - **#1333/#1231 D5 trust call + trust-lens**: ✅ **COMPLETE**. Arch aligned (Fire 2). Trust-lens pass on live surfaces PASS (Fire 3). Two watch items logged (degrade_nudge enum coverage; generic decline "(e.g. GitHub)" for non-GitHub future). CXO voice-pass already done on NOT_CONFIGURED. HOST re-reviews on any future CXO voice-pass.
-- **#1344 alpha-list + invite-code**: Gate LIVE as **v0.8.9.2** on `alpha.pipermorgan.ai` (Lead deployed 2026-07-03 20:10). Arch ratified at 19:50 Jul 3 (RATIFIED, clean, no reservations; Gap-A durably closed). HOST trust-lens PASS (Fire 8). **MINT COUNT SENT 2026-07-04**: 12 tokens → Lead minting against production DB, will hand HOST the list. HOST next step: receive token strings → record mapping in gitignored roster → coordinate distribution with PM. Second batch (new relaunch signups) to follow after first cohort onboarded.
+- **#1344 alpha-list + invite-code**: ✅ **BATCH 1 MAPPING COMPLETE 2026-07-06**. Gate LIVE as v0.8.9.2. 12 tokens minted (Lead, Jul 4). Assignment file: `dev/alpha/invite-tokens-assignments-batch-1.md` (PM local, gitignored). 10 assignments made; 2 spares held. **One blocker**: Rebecca Refoy no email in roster — token held, delivery blocked pending PM providing her email. 9 others READY TO SEND. PM to distribute via preferred mechanism. Second batch (new relaunch signups) to follow after first cohort onboarded — wait for PM direction.
 - **Docs audit refactor input** → Docs (cc CIO, PA, PM): awaiting Docs's template update.
 - **CIO sync-PM-local proposal**: Sent 2026-07-03 Fire 3. PM asked CIO to broker cohort-wide "sync PM's local after each push" convention. Awaiting CIO decision on mechanism + CLAUDE.md rollout.
 

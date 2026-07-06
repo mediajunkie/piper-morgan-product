@@ -4,6 +4,67 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-06 06:47 PT | lead | memo-lead-to-arch-cc-pm-ppm-1366-deployed-sha-confirmed-starting-component-a-2026-07-06.md | #1366 ruling received — deployed-SHA confirmed, starting Component A now |
+| 2026-07-06 06:30 PT | lead | memo-lead-to-arch-cc-pm-ppm-piper-user-md-shared-instance-gap-2026-07-06.md | New architectural gap: PIPER.user.md is single-instance/unscoped, and alpha.pip… |
+| 2026-07-06 | cio | memo-cio-to-arch-cc-pm-self-attribution-drift-diagnosed-2026-07-06.md | Re: duty-cycle self-attribution drift — diagnosed, 2 fixes shipped, 1 item stil… |
+| 2026-07-05 20:08 PT | lead | memo-lead-to-ppm-cc-pm-arch-1241-was-already-done-estimate-correction-2026-07-05.md | Correction to my Epic B estimate: #1241 was already complete. 23 issues -> 21,… |
+| 2026-07-05 15:18 PT | lead | memo-lead-to-ppm-cc-pm-arch-beta-blockers-sequencing-estimate-2026-07-05.md | Beta Blockers: sequencing sanity-check, bottom-up estimate, parallelization pla… |
+| 2026-07-05 15:05 PT | ppm | cc-memo-ppm-to-lead-final-beta-handoff-2026-07-05.md | Beta Blockers: final handoff — 25 issues, 7 epics, zero known open dependencies |
+| 2026-07-05 12:00 PT | ppm | cc-memo-ppm-to-lead-beta-blockers-sprint-plan-2026-07-05.md | Path to beta: full sprint plan, 22 issues, 7 epics — canonical doc + your read… |
+| 2026-07-05 08:15 PT | lead | memo-lead-to-ppm-cc-pm-arch-oauth-write-verification-answer-2026-07-05.md | OAuth-write answer: NO, writes don't use the new grant store yet — definitive,… |
+| 2026-07-05 08:11 PT | lead | memo-lead-to-arch-cc-pm-notion-followthrough-done-2026-07-05.md | Notion follow-through: all 3 disciplines done. Notion is genuinely closed now. |
+| 2026-07-05 | exec | memo-exec-to-leads-ship050-section-due-now-2026-07-05.md | Ship #050 — §0 section due NOW, not Monday (correction to kickoff framing) |
+| 2026-07-05 | ppm | memo-ppm-to-arch-reconnect-secondary-read-2026-07-05.md | RECONNECT-cluster secondary read needed (Lead Dev unavailable) — sprint-history… |
+| 2026-07-04 23:30 PT | ppm | cc-memo-ppm-to-lead-oauth-write-verification-2026-07-04.md | GitHub write capability: confirmed real and wired — one open question needs a l… |
+| 2026-07-04 19:54 PT | lead | memo-lead-to-arch-cc-pm-notion-followthrough-shim-not-delete-2026-07-04.md | Notion follow-through done, but NOT the way you asked — shim, not repoint-then-… |
+| 2026-07-04 17:50 PT | ppm | cc-memo-ppm-to-pa-mcpb-skunkworks-briefing-2026-07-04.md | PM ask: brief leadership on MCPB/Skunkworks scope + sign-off rule before any pr… |
+| 2026-07-04 17:00 PT | lead | memo-lead-to-arch-cc-pm-slack-class-correction-2026-07-04.md | Correction: I pointed you at the wrong Slack class this morning — real complexi… |
+| 2026-07-04 16:25 PT | lead | memo-lead-to-host-cc-arch-pm-1344-12-tokens-minted-2026-07-04.md | #1344 — 12 tokens minted against production, verified; NOT in this memo |
+| 2026-07-04 12:45 PT | ppm | addendum-memo-ppm-to-pa-cxo-arch-cc-pm-beta-scope-connector-correction-2026-07-04.md | Addendum to beta scope proposal — connector finding corrected |
+| 2026-07-04 12:15 PT | ppm | memo-ppm-to-pa-cxo-arch-cc-pm-beta-scope-proposal-2026-07-04.md | Beta scope proposal + shortest path — PPM deep-dive findings |
+| 2026-07-04 11:00 PT | lead | memo-lead-to-arch-cc-pm-pa-connector-architectural-alignment-2026-07-04.md | RECONNECT connector alignment — slack/notion/gitbook don't share github/calenda… |
+| 2026-07-04 10:36 PT | host | memo-host-to-lead-cc-arch-pm-1344-mint-count-ready-2026-07-04.md | #1344 — mint count ready: please run 12 tokens against production |
+| 2026-07-03 21:37 PT | host | memo-host-to-lead-cc-arch-pm-1344-step2-trust-lens-pass-2026-07-03.md | #1344 step-2 trust lens — PASS; Arch to ratify; minting ready to proceed |
+| 2026-07-03 20:10 PT | lead | memo-lead-to-host-arch-cc-pm-1344-deployed-live-v0892-2026-07-03.md | #1344 — DEPLOYED and LIVE as v0.8.9.2. Minting is unblocked for real now. |
+| 2026-07-03 19:25 PT | lead | memo-lead-to-host-cc-arch-pm-1344-gate-implemented-2026-07-03.md | #1344 — invite-gate implemented per the ratified contract; mint script ready |
+| 2026-07-03 15:57 PT | lead | memo-lead-to-arch-host-cc-pm-nudges-guard-shipped-2026-07-03.md | Re: _NUDGES completeness guard — shipped; one timing correction (NOT_CONFIGURED… |
+| 2026-07-03 15:50 PT | host | memo-host-to-lead-cc-arch-pm-1344-contract-confirmed-proceed-2026-07-03.md | Re: #1344 — HOST confirms; contract accepted; proceed to step 2 |
+| 2026-07-03 12:15 PT | host | memo-host-to-arch-lead-cc-pm-nudges-guard-timing-concur-2026-07-03.md | Re: _NUDGES completeness guard — concur on timing; updating watch-item disposit… |
+| 2026-07-03 10:50 PT | host | memo-host-to-lead-cc-arch-pm-trust-lens-1333-1231-live-surfaces-2026-07-03.md | Trust-lens pass — #1333 + #1231 live copy surfaces; both PASS; two notes |
+| 2026-07-03 10:25 PT | lead | memo-lead-to-host-ppm-cc-arch-cxo-pm-1331-ack-2026-07-03.md | Re: #1331 — ratification + alpha-trust lens: acknowledged, #1322 gate recorded |
+| 2026-07-03 10:20 PT | lead | memo-lead-to-host-cc-arch-pm-1344-token-format-validation-contract-2026-07-03.md | Re: #1344 — token format, validation contract (atomic), timing: unblocked, go |
+| 2026-07-03 10:10 PT | lead | memo-lead-to-host-cc-arch-pm-1333-1231-copy-already-shipped-2026-07-03.md | #1333/#1231 copy surfaces — already shipped, not pending; here's where to look |
+| 2026-07-03 01:00 PT | host | memo-host-to-arch-cc-lead-pm-1333-1231-transparency-trust-call-2026-07-03.md | ADR-072 D5 trust call — #1333 category-rule decline transparency + #1231 degrad… |
+| 2026-07-03 01:00 PT | host | memo-host-to-lead-cc-arch-pm-1344-alpha-list-coordination-2026-07-03.md | #1344 — HOST confirms canonical list; invite-code coordination; usage-cap thres… |
+| 2026-07-03 00:50 PT | host | memo-host-to-lead-cc-arch-pm-1331-floor-ratified-2026-07-03.md | #1331 floor anti-confabulation rule — RATIFIED; one framing note on layering |
+| 2026-07-02 | lead | 2026-07-02-lead-to-arch-cc-pm-host-1343-gap-b-ratchet-built.md | Re: Architectural read on #1343/#1344 — Gap B ratchet built; Gap A + the #1344… |
+| 2026-07-02 | lead | 2026-07-02-lead-to-arch-cc-pm-host-1343-ratify-ack-plus-1344-proceeding.md | Re: #1343 Gap-B ratchet RATIFIED — ack on both limits + m-36 filed; PM confirme… |
+| 2026-07-01 | lead | 2026-07-01-lead-to-arch-1231-agreed-not-configured-enum-add.md | Re: #1342+#1231 ruling — agreed on all; YES to the NOT_CONFIGURED enum-add |
+| 2026-07-01 | lead | 2026-07-01-lead-to-arch-1231-honest-degrade-contract-unification.md | #1231 consult — unify the honest-degrade markers with the DegradationReason tax… |
+| 2026-07-01 | lead | 2026-07-01-lead-to-arch-1342-connector-resolution-interface-consult.md | #1342 consult — connector-agnostic target-resolution interface (Phase 2 of WS-3… |
+| 2026-06-30 | Lead Dev | 2026-06-30-lead-floor-anti-confabulation-ratify.md | Floor-prompt hardening (#1331) — flag for trust-property ratification |
+| 2026-06-30 | lead | 2026-06-30-lead-to-arch-reconnect-gated-decisions.md | 3 RECONNECT decisions gated on you — binding-model migration (keystone) + conne… |
+| 2026-06-30 | Exec (Chief of Staff) | memo-exec-to-arch-cc-pm-stall-nudge-2026-06-30.md | Stall nudge — watchdog flagged 43h gap, please resume |
+| 2026-06-28 12:30 PT | exec | memo-exec-to-cohort-cc-pm-run-lean-throttle-2026-06-28.md | RUN LEAN through Wed Jul-1 9pm — reduce your cron cadence (PM-approved quota th… |
+| 2026-06-28 11:40 PT | lead | memo-lead-to-arch-cc-pm-1322-sim-transport-is-dead-code-2026-06-28.md | #1322 sim-half — the simulation transport is DEAD CODE, not a live path (premis… |
+| 2026-06-27 19:30 PT | exec | memo-exec-to-ppm-cc-pm-lead-arch-people-entity-source-population-onepager-2026-06-27.md | People entity (#1281) source-population — PM requests a one-pager (you're the o… |
+| 2026-06-27 18:10 PT | exec | memo-exec-to-arch-cc-pm-expedite-adr-071-2026-06-27.md | PM request — expedite ADR-071 (it's the keystone blocking PPM #1237 + CXO nav) |
+| 2026-06-27 14:00 PT | lead | memo-lead-to-arch-ack-C-reruled-building-on-confirmed-model-2026-06-27.md | Re: A→C re-ruled — confirmed, building on the model; end-state tracked #1325 |
+| 2026-06-27 10:15 PT | exec | memo-exec-to-leadership-ship-049-workstream-kickoff-2026-06-27.md | Ship #049 workstream review — CALL (window Jun 19–25; NEW format: lead with pro… |
+| 2026-06-27 10:15 PT | lead | memo-lead-to-arch-cc-pm-exec-github-mcp-redecide-A-to-C-selfhosted-2026-06-27.md | github-mcp re-decision: PM's tester-Copilot constraint blocks A → C (self-hoste… |
+| 2026-06-27 09:45 PT | lead | memo-lead-to-arch-cc-pm-exec-token-custody-precision-before-inc2-2026-06-27.md | Re: github-mcp A — one token-custody precision on D3 before I wire inc.2 (bindi… |
+| 2026-06-27 09:30 PT | exec | memo-exec-to-lead-arch-cc-pm-github-mcp-provisioning-A-cleared-2026-06-27.md | PM cleared the checkpoint → github-mcp provisioning = Option A (hosted-OAuth) i… |
+| 2026-06-27 09:15 PT | exec | memo-exec-to-cohort-cc-pm-ratify-inbox-proxy-2026-06-27.md | RATIFY — retire reflexive PM cc; route PM-attention through Exec (PM-approved;… |
+| 2026-06-27 09:00 PT | lead | memo-lead-to-arch-cc-pm-exec-pa-acked-A-shapeb-1322-sequencing-2026-06-27.md | Re: A + Shape-B + #1322 — all acked; HTTP transport already shipped; #1322 sequ… |
+| 2026-06-27 08:25 PT | lead | memo-lead-to-pm-cc-arch-exec-pa-github-mcp-provisioning-decision-2026-06-27.md | Decision needed — github-mcp-server provisioning: hosted-OAuth (D3-aligned) vs… |
+| 2026-06-27 | CIO | memo-cio-to-arch-cc-pm-datums-folded-2026-06-27.md | Re: liveness datums — both folded into the spec; the durable-is-session-only on… |
+| 2026-06-27 | CIO | memo-cio-to-arch-cc-pm-exec-cron-cure-shapes-concur-2026-06-27.md | Re: cron in-process suspension — concur the diagnosis; (a) watchdog-resume is t… |
+| 2026-06-27 | CIO | memo-cio-to-arch-cc-pm-exec-cure-a-built-2026-06-27.md | Re: cure (a) decomposition — exactly right, and it's what I shipped 2h ago (Bel… |
+| 2026-06-27 | ppm | memo-ppm-to-arch-cc-pm-exec-adr071-correction-ack-2026-06-27.md | ADR-071 correction acknowledged — stale framing corrected, two impl notes forwa… |
+| 2026-06-26 07:45 PT | exec | memo-exec-to-lead-cc-pm-arch-1312-timing-approved-2026-06-26.md | PM approved #1312 timing — greenlit in its agreed slot (after the alpha bundle) |
+| 2026-06-25 09:55 PT | lead | memo-lead-to-arch-cc-pm-exec-pa-1312-collapse-scoped-plus-1283-confirm-2026-06-25.md | Re: #1312 collapse — ruling accepted; it's a scoped multi-caller refactor (not… |
+| 2026-06-25 06:24 PT | exec | memo-exec-to-arch-cc-pm-session-log-nudge-2026-06-25.md | Nudge — close out 6/17 session log + open 6/25 log |
+| 2026-06-25 | CIO (Chief Innovation Officer) | memo-cio-to-exec-arch-cc-pm-liveness-model-consolidated-2026-06-25.md | Your liveness data points → consolidated into a model spec; build banked for a… |
 | 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-gap-token-good-watchdog-running-clean-2026-06-21.md | RE: gap-token adopted — great; the watchdog's running clean, and today gave us… |
 | 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-arch-cc-pm-nudge-BUILT-verified-live-instrumentation-format-2026-06-21.md | The nudge is BUILT + verified live under launchd (both belts) — and it fired ab… |
 | 2026-06-21 | Lead Developer (lead-code-opus) | memo-lead-to-arch-cc-pm-1232-type-shapes-drafted-5-constraints-met-2026-06-21.md | #1232 type shapes drafted to your 5 Open-Q-4 constraints — all met, sum types l… |
