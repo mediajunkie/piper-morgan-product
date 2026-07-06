@@ -4,7 +4,9 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-06 06:47 PT | lead | memo-lead-to-arch-cc-pm-ppm-1366-deployed-sha-confirmed-starting-component-a-2026-07-06.md | #1366 ruling received — deployed-SHA confirmed, starting Component A now |
 | 2026-07-06 06:30 PT | lead | memo-lead-to-arch-cc-pm-ppm-piper-user-md-shared-instance-gap-2026-07-06.md | New architectural gap: PIPER.user.md is single-instance/unscoped, and alpha.pip… |
+| 2026-07-06 | cio | memo-cio-to-arch-cc-pm-self-attribution-drift-diagnosed-2026-07-06.md | Re: duty-cycle self-attribution drift — diagnosed, 2 fixes shipped, 1 item stil… |
 | 2026-07-05 20:08 PT | lead | memo-lead-to-ppm-cc-pm-arch-1241-was-already-done-estimate-correction-2026-07-05.md | Correction to my Epic B estimate: #1241 was already complete. 23 issues -> 21,… |
 | 2026-07-05 15:18 PT | lead | memo-lead-to-ppm-cc-pm-arch-beta-blockers-sequencing-estimate-2026-07-05.md | Beta Blockers: sequencing sanity-check, bottom-up estimate, parallelization pla… |
 | 2026-07-05 15:05 PT | ppm | cc-memo-ppm-to-lead-final-beta-handoff-2026-07-05.md | Beta Blockers: final handoff — 25 issues, 7 epics, zero known open dependencies |
