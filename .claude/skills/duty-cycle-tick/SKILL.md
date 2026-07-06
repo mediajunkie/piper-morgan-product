@@ -39,6 +39,8 @@ Everything else — what's owed, what's active, what's parked — this skill **r
 
 ## Procedure
 
+**A fire is idempotent by design** (gbrain-adoption, HOST+CIO co-signed 2026-06-16 — the one concrete action item from that synthesis, executed here 2026-07-06 after sitting unactioned for three weeks): running this procedure twice against the same state must produce the same safe result as running it once. This isn't incidental — it's why the mail loop is drain-to-empty (a re-run finds nothing left, not a duplicate action), why cadence changes are logged explicitly rather than inferred (Section further down), and why Belt-4 spawn-fresh is safe to trigger on a stale-looking session (worst case: two fires converge on the same already-drained state, neither does anything harmful). If you're ever adding a new step to this procedure, ask whether running it twice in a row would double-do something — if yes, that step needs a check-before-act guard, not just a comment.
+
 ### THE SPINE — the flywheel is the unit of work, not "the fire"
 
 The flywheel runs **continuously and cron-independently**:

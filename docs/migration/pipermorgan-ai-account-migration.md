@@ -20,10 +20,12 @@ Migration = open PM sessions on pipermorgan.ai instead of designinproduct.com.
 
 ## Agent checklist
 
+**Status as of 2026-07-06 (PM-confirmed)**: no Piper Morgan project agent has migrated yet. All Piper Morgan Code agents (including this CIO session) currently run on `designinproduct.com`, same as everyone else in the cohort. The one live pipermorgan.ai instance is **Coral (One Job project, running the Fable model)** — a different project's early adopter, not part of this checklist. Separately, Piper Open and Vergil currently run on `KindSys.us`, which closes end of July 2026 — a real, dated migration those two need before the account itself disappears (tracked here for awareness; not this checklist's roles).
+
 | Agent | Status | Notes |
 |-------|--------|-------|
-| Exec | ☐ | Chief of Staff — first priority (owns attention rollup) |
-| CIO | ☐ | Duty-cycle architecture |
+| Exec | ☐ | Chief of Staff — first priority (owns attention rollup); **typically comes over LAST in a full-team migration** (PM convention) so it can oversee the others' transitions |
+| CIO | ☐ | Duty-cycle architecture — helps scope migration logistics/tooling for the team |
 | Arch | ☐ | ADR author |
 | Lead | ☐ | Lead Developer |
 | HOST | ☐ | Head of Sapient Trust (was HOSR) |
@@ -33,6 +35,17 @@ Migration = open PM sessions on pipermorgan.ai instead of designinproduct.com.
 | PPM | ☐ | Portfolio Program Manager |
 
 Update ☐ → ✓ with date when an agent's first session on pipermorgan.ai is confirmed.
+
+## Duty-cycle continuity assessment (CIO, 2026-07-06)
+
+PM asked to start "at any time," but carefully — specifically calling out routines, scheduled tasks, and crons transferring correctly. Assessed the actual mechanics:
+
+- **CronCreate jobs are session-scoped, not account-scoped.** A cron job lives inside a given Claude Code session process; it has no tie to which Anthropic account authenticated that session. Migrating accounts is mechanically identical to any normal session end + fresh START — the old session's cron dies (as it would regardless of migration), the new session re-arms its own via the existing `duty-cycle-tick` START procedure. **No new mechanism needed.**
+- **The watchdog (`com.pipermorgan.duty-cycle-watchdog`) is account-agnostic by construction** — it's a local launchd bash script, not a Claude session, and it watches shared filesystem state (`duty-cycle-registry.tsv`, session-log timestamps). It needs zero changes for a migration.
+- **Registry rows, carry-forwards, and mailboxes are all filesystem-based** — account-agnostic, transfer automatically since they live in the shared repo, not in any account-specific state.
+- **The one real risk is exactly what the existing protocol already names**: overlapping old-account and new-account sessions for the same role (double-billing risk, and — per this week's Belt-4/self-attribution-drift work — a genuine confusion risk if both sessions are simultaneously active). "Close old before opening new" (protocol step 1-2 below) is the correct, sufficient guard; no additional tooling needed there either.
+
+**Net**: the underlying duty-cycle infrastructure is already migration-safe. The work is sequencing and verification (does each role's first pipermorgan.ai session correctly find its carry-forward, re-arm its cron, and confirm nothing account-specific leaked into any script/hook), not building anything new. Ready whenever Exec wants to sequence it.
 
 ## Account assignments post-migration
 
