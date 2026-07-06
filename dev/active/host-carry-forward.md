@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/06/2026-07-06-0701-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `a833a327`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-06 12:45 PT (Fire 12; Rebecca email confirmed; batch 1 10/10 READY TO SEND; PM's call on distribution)
+**Last updated**: 2026-07-06 15:45 PT (Fire 13; ADR-076 ratified; ADR-075 watching for CXO UX direction)
 
 ---
 
@@ -67,6 +67,11 @@
 ## Standing cycle responsibility
 
 - Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). 2026-06-19 poll: **0 open** (clean). 2026-06-25 poll: **0 open** (clean). 2026-07-03 poll: **0 open** (clean; 4th consecutive). 2026-07-06 poll: **0 open** (clean; 5th consecutive). Next poll: **~2026-07-13**.
+
+## Pending HOST ratification (trigger-bound)
+
+- **ADR-075 v0.2**: waiting on CXO UX direction for OQ-3 neutral-default surface. When CXO confirms: HOST ratifies → Arch cuts v0.2 ACCEPTED. Component-B-scoped, not blocking Lead.
+- **ADR-076**: ✅ RATIFIED (2026-07-06). Lead GO. No further HOST action.
 
 ## Watch / trigger-bound
 
