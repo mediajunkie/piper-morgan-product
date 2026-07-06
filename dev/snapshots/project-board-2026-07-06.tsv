@@ -38,93 +38,93 @@ issue	state	milestone	sprint	title
 429	CLOSED	MVP		MUX-IMPLEMENT-CONTRAST-TESTS: Contrast testing
 403	CLOSED	MVP		MUX-IMPLEMENT: UI Polish
 430	CLOSED	MVP		MUX-IMPLEMENT-THEME-CONSISTENCY: Theme consistency
-711	CLOSED	MVP		MUX-PROJECT-DETAIL-VIEW: Create Project Detail View with Lifecycle
-419	CLOSED	MVP		MUX-NAV-HOME: Home State Design
-420	CLOSED	MVP		MUX-NAV-UTILITY - Navigation Utility Layer
-421	CLOSED	MVP		MUX-NAV-PALETTE - Command Palette & Discovery
-632	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Morning Standup (Functional → Conscious)
-627	CLOSED	MVP		GRAMMAR-TRANSFORM: Personality System (Partial → Conscious)
-407	CLOSED	MVP		MUX-VISION-STANDUP-EXTRACT: Extract consciousness patterns from morning standup
-401	CLOSED	MVP		MUX-VISION: Conceptual architecture
-601	CLOSED	MVP		MUX-MULTICHAT-PHASE0: Schema Design for Conversation Graph
-626	CLOSED	MVP		GRAMMAR-TRANSFORM: Onboarding System (Partial → Conscious)
-408	CLOSED	MVP		MUX-VISION-LIFECYCLE-SPEC: Formalize 8-stage lifecycle with composting
-624	CLOSED	MVP		GRAMMAR-TRANSFORM: Calendar Integration (Partial → Conscious)
-628	CLOSED	MVP		GRAMMAR-TRANSFORM-ETC: Long tail grammar cases (assess is partial or flattened)
-533	CLOSED	MVP		MUX-GATE-3: Integration Phase Complete
-431	CLOSED	MVP		MUX-VISION-LEARN: Learning System Experience Design
-623	CLOSED	MVP		GRAMMAR-TRANSFORM: Feedback System (Partial → Conscious)
-621	CLOSED	MVP		GRAMMAR-TRANSFORM: GitHub Integration (Partial → Conscious)
-620	CLOSED	MVP		GRAMMAR-TRANSFORM: Slack Integration (Partial → Conscious)
-619	CLOSED	MVP		GRAMMAR-TRANSFORM: Intent Classification (Partial → Conscious)
-434	CLOSED	MVP		MUX-TECH-PHASE2-ENTITY: Implement Piper as Entity with Consciousness
-433	CLOSED	MVP		MUX-TECH-PHASE1-GRAMMAR: Implement Core Object Model Grammar
-435	CLOSED	MVP		MUX-TECH-PHASE3-OWNERSHIP: Implement Ownership Model
-532	CLOSED	MVP		MUX-GATE-2: Core Implementation Complete
+711	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-PROJECT-DETAIL-VIEW: Create Project Detail View with Lifecycle
+419	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-NAV-HOME: Home State Design
+420	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-NAV-UTILITY - Navigation Utility Layer
+421	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-NAV-PALETTE - Command Palette & Discovery
+632	CLOSED	MVP	V2 - MUX Integration Mapping	CONSCIOUSNESS-TRANSFORM: Morning Standup (Functional → Conscious)
+627	CLOSED	MVP	V2 - MUX Integration Mapping	GRAMMAR-TRANSFORM: Personality System (Partial → Conscious)
+407	CLOSED	MVP	X1 - MUX Core Tech	MUX-VISION-STANDUP-EXTRACT: Extract consciousness patterns from morning standup
+401	CLOSED	MVP	V1 - MUX Vision Formalization	MUX-VISION: Conceptual architecture
+601	CLOSED	MVP	V2 - MUX Integration Mapping	MUX-MULTICHAT-PHASE0: Schema Design for Conversation Graph
+626	CLOSED	MVP	V2 - MUX Integration Mapping	GRAMMAR-TRANSFORM: Onboarding System (Partial → Conscious)
+408	CLOSED	MVP	V2 - MUX Integration Mapping	MUX-VISION-LIFECYCLE-SPEC: Formalize 8-stage lifecycle with composting
+624	CLOSED	MVP	V2 - MUX Integration Mapping	GRAMMAR-TRANSFORM: Calendar Integration (Partial → Conscious)
+628	CLOSED	MVP	V2 - MUX Integration Mapping	GRAMMAR-TRANSFORM-ETC: Long tail grammar cases (assess is partial or flattened)
+533	CLOSED	MVP	I1 - MUX Interaction	MUX-GATE-3: Integration Phase Complete
+431	CLOSED	MVP	V2 - MUX Integration Mapping	MUX-VISION-LEARN: Learning System Experience Design
+623	CLOSED	MVP	V2 - MUX Integration Mapping	GRAMMAR-TRANSFORM: Feedback System (Partial → Conscious)
+621	CLOSED	MVP	V2 - MUX Integration Mapping	GRAMMAR-TRANSFORM: GitHub Integration (Partial → Conscious)
+620	CLOSED	MVP	V2 - MUX Integration Mapping	GRAMMAR-TRANSFORM: Slack Integration (Partial → Conscious)
+619	CLOSED	MVP	V2 - MUX Integration Mapping	GRAMMAR-TRANSFORM: Intent Classification (Partial → Conscious)
+434	CLOSED	MVP	X1 - MUX Core Tech	MUX-TECH-PHASE2-ENTITY: Implement Piper as Entity with Consciousness
+433	CLOSED	MVP	X1 - MUX Core Tech	MUX-TECH-PHASE1-GRAMMAR: Implement Core Object Model Grammar
+435	CLOSED	MVP	X1 - MUX Core Tech	MUX-TECH-PHASE3-OWNERSHIP: Implement Ownership Model
+532	CLOSED	MVP	X1 - MUX Core Tech	MUX-GATE-2: Core Implementation Complete
 611	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-01-19
-590	CLOSED	MVP		BUG-TESTING: Fix missing test_client fixture in test_api_query_integration.py
-591	CLOSED	MVP		BUG-TESTING: Fix test_cicd_spatial_flow_analysis assertion failure
-593	CLOSED	MVP		TEST-INFRA: Add frontend JavaScript testing framework
-594	CLOSED	MVP		FLY-RUN-RESTART: Document reliable server restart procedure for Claude agents
-583	CLOSED	MVP		BUG: Piper's replies not persisting on refresh
-584	CLOSED	MVP		TECH-DEBT: Document user_id vs session_id patterns for coding agents
-314	CLOSED	MVP		CONV-UX-PERSIST: Conversation History & Persistence
-563	CLOSED	MVP		CONV-PERSIST-1: Session Continuity & Auto-Save
-564	CLOSED	MVP		CONV-PERSIST-2: Timestamps & Session Markers
-566	CLOSED	MVP		CONV-PERSIST-4: Home Page Cleanup & Sidebar Integration
-565	CLOSED	MVP		CONV-PERSIST-3: Conversation History Sidebar (MVP)
-365	CLOSED	MVP		SLACK-ATTENTION-DECAY: Implement pattern learning for attention models
-547	CLOSED	MVP		FTUX-PIPER-INTRO: Add Piper greeting to setup wizard start
-548	CLOSED	MVP		FTUX-EMPTY-STATES: Replace empty state copy with voice guide templates
-549	CLOSED	MVP		FTUX-POST-SETUP: Add post-setup orientation
-102	CLOSED	MVP		CONV-UX-GREET: Calendar Scanning on Greeting
-242	CLOSED	MVP		CONV-MCP-STANDUP-INTERACTIVE: Interactive Standup Assistant
-490	CLOSED	MVP		FTUX-PORTFOLIO: Project Portfolio Onboarding - Multi-Layer User Project Setup
-491	CLOSED	MVP		FTUX-CONCIERGE: Capability Concierge - Self-Aware Capability Discovery & Communication
-494	CLOSED	MVP		FTUX-QUICK-2: Better defaults for GitHub issue creation
-495	CLOSED	MVP		FTUX-QUICK-3: Add calendar context to focus guidance
-484	CLOSED	MVP		ARCH-SCHEMA-VALID: Add Schema Validation Check on Startup
-502	CLOSED	MVP		TEST-FIX: test_bypass_prevention.py fails with 401 - TestClient missing auth
-489	CLOSED	MVP		BUG-P0: Unhandled EXECUTION actions return 422 instead of graceful message
-530	CLOSED	MVP		ALPHA-SETUP-VERIFY: Integration health check dashboard
+590	CLOSED	MVP	A20 - Alpha Testing (round 2)	BUG-TESTING: Fix missing test_client fixture in test_api_query_integration.py
+591	CLOSED	MVP	A20 - Alpha Testing (round 2)	BUG-TESTING: Fix test_cicd_spatial_flow_analysis assertion failure
+593	CLOSED	MVP	A20 - Alpha Testing (round 2)	TEST-INFRA: Add frontend JavaScript testing framework
+594	CLOSED	MVP	A20 - Alpha Testing (round 2)	FLY-RUN-RESTART: Document reliable server restart procedure for Claude agents
+583	CLOSED	MVP	A20 - Alpha Testing (round 2)	BUG: Piper's replies not persisting on refresh
+584	CLOSED	MVP	A20 - Alpha Testing (round 2)	TECH-DEBT: Document user_id vs session_id patterns for coding agents
+314	CLOSED	MVP	B1 - Beta Enablers	CONV-UX-PERSIST: Conversation History & Persistence
+563	CLOSED	MVP	B1 - Beta Enablers	CONV-PERSIST-1: Session Continuity & Auto-Save
+564	CLOSED	MVP	B1 - Beta Enablers	CONV-PERSIST-2: Timestamps & Session Markers
+566	CLOSED	MVP	B1 - Beta Enablers	CONV-PERSIST-4: Home Page Cleanup & Sidebar Integration
+565	CLOSED	MVP	B1 - Beta Enablers	CONV-PERSIST-3: Conversation History Sidebar (MVP)
+365	CLOSED	MVP	B1 - Beta Enablers	SLACK-ATTENTION-DECAY: Implement pattern learning for attention models
+547	CLOSED	MVP	B1 - Beta Enablers	FTUX-PIPER-INTRO: Add Piper greeting to setup wizard start
+548	CLOSED	MVP	B1 - Beta Enablers	FTUX-EMPTY-STATES: Replace empty state copy with voice guide templates
+549	CLOSED	MVP	B1 - Beta Enablers	FTUX-POST-SETUP: Add post-setup orientation
+102	CLOSED	MVP	B1 - Beta Enablers	CONV-UX-GREET: Calendar Scanning on Greeting
+242	CLOSED	MVP	B1 - Beta Enablers	CONV-MCP-STANDUP-INTERACTIVE: Interactive Standup Assistant
+490	CLOSED	MVP	B1 - Beta Enablers	FTUX-PORTFOLIO: Project Portfolio Onboarding - Multi-Layer User Project Setup
+491	CLOSED	MVP	B1 - Beta Enablers	FTUX-CONCIERGE: Capability Concierge - Self-Aware Capability Discovery & Communication
+494	CLOSED	MVP	B1 - Beta Enablers	FTUX-QUICK-2: Better defaults for GitHub issue creation
+495	CLOSED	MVP	B1 - Beta Enablers	FTUX-QUICK-3: Add calendar context to focus guidance
+484	CLOSED	MVP	A12 - Alpha Setup	ARCH-SCHEMA-VALID: Add Schema Validation Check on Startup
+502	CLOSED	MVP	A12 - Alpha Setup	TEST-FIX: test_bypass_prevention.py fails with 401 - TestClient missing auth
+489	CLOSED	MVP	A12 - Alpha Setup	BUG-P0: Unhandled EXECUTION actions return 422 instead of graceful message
+530	CLOSED	MVP	A12 - Alpha Setup	ALPHA-SETUP-VERIFY: Integration health check dashboard
 358	OPEN	MVP	Beta Blockers - Hard Gates Only	SEC-ENCRYPT-ATREST: Implement Encryption at Rest for Sensitive Data
 481	CLOSED	MVP	FLYWHEEL - Process improvement	TEST-INFRA: Re-enable service container tests (disabled_test_service_container.py)
-476	CLOSED	MVP		Learning page layout issues (huge mailbox, jiggling)
-478	CLOSED	MVP		Dialog box styling issues across entity pages
+476	CLOSED	MVP	A11 - Alpha Polish	Learning page layout issues (huge mailbox, jiggling)
+478	CLOSED	MVP	A11 - Alpha Polish	Dialog box styling issues across entity pages
 437	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2025-12-01
 480	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2025-12-08
-453	CLOSED	MVP		Audit: session_scope() vs session_scope_fresh() usage patterns
-389	CLOSED	MVP		ALPHA-ONBOARD-FLAG: Add explicit setup_complete flag for state tracking
-397	CLOSED	MVP		CORE-AUTH-CLI-KEYS: Enhancement: CLI auto-authentication via keychain-stored tokens
-387	CLOSED	MVP		BUG-SETUP-KEYS-REINSTALL: Setup wizard doesn't detect global keychain keys from 0.8.0
-388	CLOSED	MVP		ALPHA-ONBOARD-DETECT: Add setup detection and startup check to main.py
-391	CLOSED	MVP		ALPHA-BUG-DASHBOARD-UI: Fix learning dashboard hardcoded dark mode (like personality-preferences)
-393	CLOSED	MVP		CORE-UX-AUTH: No login UI - users cannot authenticate despite complete backend
-438	CLOSED	MVP		SETUP-WIZARD-HYGIENE: Code hygiene audit for setup_wizard.py
-602	CLOSED	MVP		MUX-MULTICHAT-PHASE0: Finalize ADR-050 Status
-432	CLOSED	MVP		MUX-TECH
+453	CLOSED	MVP	A10 - Alpha Testing	Audit: session_scope() vs session_scope_fresh() usage patterns
+389	CLOSED	MVP	A10 - Alpha Testing	ALPHA-ONBOARD-FLAG: Add explicit setup_complete flag for state tracking
+397	CLOSED	MVP	A10 - Alpha Testing	CORE-AUTH-CLI-KEYS: Enhancement: CLI auto-authentication via keychain-stored tokens
+387	CLOSED	MVP	A10 - Alpha Testing	BUG-SETUP-KEYS-REINSTALL: Setup wizard doesn't detect global keychain keys from 0.8.0
+388	CLOSED	MVP	A10 - Alpha Testing	ALPHA-ONBOARD-DETECT: Add setup detection and startup check to main.py
+391	CLOSED	MVP	A10 - Alpha Testing	ALPHA-BUG-DASHBOARD-UI: Fix learning dashboard hardcoded dark mode (like personality-preferences)
+393	CLOSED	MVP	A10 - Alpha Testing	CORE-UX-AUTH: No login UI - users cannot authenticate despite complete backend
+438	CLOSED	MVP	A10 - Alpha Testing	SETUP-WIZARD-HYGIENE: Code hygiene audit for setup_wizard.py
+602	CLOSED	MVP	X1 - MUX Core Tech	MUX-MULTICHAT-PHASE0: Finalize ADR-050 Status
+432	CLOSED	MVP	I1 - MUX Interaction	MUX-TECH
 568	OPEN	Fast Follow		MUX-CORE-PORTFOLIO-ACROSS: Cross-channel portfolio sharing
 790	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MVP: Trust-gated calendar integration behavior
 760	OPEN	Fast Follow		TECH-DEBT: Add slack_workspaces table for proper team_id → user_id mapping
 558	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	MUX-STANDUP-CONVERSE: LLM-based preference extraction
-474	CLOSED	MVP		MUX-TECH-LISTS: Enable full list management (add/edit/delete items)
-436	CLOSED	MVP		MUX-TECH-PHASE4-COMPOSTING: Implement Composting to Learning Pipeline
-477	CLOSED	MVP		MUX-VISION-LISTS: Refine todo list UX and paradigm
-402	CLOSED	MVP		MUX-INTERACT: Interaction Design
-595	CLOSED	MVP		MUX-INTENT-MULTI: Multi-intent: Greeting + request only handles greeting
-349	CLOSED	MVP		TEST-INFRA-FIXTURES: Fix async_transaction fixture pattern (53 tests)
-277	CLOSED	MVP		TEST-SMOKE-RELY: Improve smoke test discovery and enumeration reliability
-351	CLOSED	MVP		TEST-PHANTOM-AUDIT: Full audit and cleanup of phantom tests
-341	CLOSED	MVP		TEST: Test Infrastructure Repair (Super Epic)
-384	CLOSED	MVP		Investigate pytest collection error for test_performance_indexes_356.py
-473	CLOSED	MVP		Tech Debt: P3 Test Reliability Issues
+474	CLOSED	MVP	I1 - MUX Interaction	MUX-TECH-LISTS: Enable full list management (add/edit/delete items)
+436	CLOSED	MVP	I1 - MUX Interaction	MUX-TECH-PHASE4-COMPOSTING: Implement Composting to Learning Pipeline
+477	CLOSED	MVP	V2 - MUX Integration Mapping	MUX-VISION-LISTS: Refine todo list UX and paradigm
+402	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT: Interaction Design
+595	CLOSED	MVP	X1 - MUX Core Tech	MUX-INTENT-MULTI: Multi-intent: Greeting + request only handles greeting
+349	CLOSED	MVP	T2 (Test Polish)	TEST-INFRA-FIXTURES: Fix async_transaction fixture pattern (53 tests)
+277	CLOSED	MVP	T2 (Test Polish)	TEST-SMOKE-RELY: Improve smoke test discovery and enumeration reliability
+351	CLOSED	MVP	T2 (Test Polish)	TEST-PHANTOM-AUDIT: Full audit and cleanup of phantom tests
+341	CLOSED	MVP	T2 (Test Polish)	TEST: Test Infrastructure Repair (Super Epic)
+384	CLOSED	MVP	T2 (Test Polish)	Investigate pytest collection error for test_performance_indexes_356.py
+473	CLOSED	MVP	T2 (Test Polish)	Tech Debt: P3 Test Reliability Issues
 377	CLOSED	MVP		ALPHA-DOCS-UPDATE - Review and Update Alpha Documentation
 379	CLOSED	MVP		ALPHA-UI-QUICK: Investigation & Triage of UI Issues
 376	CLOSED	MVP		FRONTEND-RBAC-AWARENESS - Frontend Permission Awareness & Sharing UI
-322	CLOSED	MVP		ARCH-FIX-SINGLETON: Replace ServiceContainer singleton to enable horizontal scaling
-562	CLOSED	MVP		BUG: Integration Test button uses MCP instead of OAuth token
-488	CLOSED	MVP		MUX-INTERACT-DISCOVERY: Discovery-Oriented Intent Architecture
-551	CLOSED	MVP		ARCH-COMMANDS: Command Parity Across Interfaces
+322	CLOSED	MVP	A12 - Alpha Setup	ARCH-FIX-SINGLETON: Replace ServiceContainer singleton to enable horizontal scaling
+562	CLOSED	MVP	B1 - Beta Enablers	BUG: Integration Test button uses MCP instead of OAuth token
+488	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-DISCOVERY: Discovery-Oriented Intent Architecture
+551	CLOSED	MVP	I1 - MUX Interaction	ARCH-COMMANDS: Command Parity Across Interfaces
 357	CLOSED	MVP	A9 (Alpha Tidy)	SEC-RBAC: Implement RBAC (Role-Based Access Control)
 318	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2025-11-17
 293	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2025-11-03
@@ -137,15 +137,15 @@ issue	state	milestone	sprint	title
 299	OPEN	Enterprise		AUTH-CONCURRENT-SESSIONS: Add Concurrent Session Handling Test + Architecture
 298	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	AUTH-PASSWORD-CHANGE: Implement Password Change Endpoint + Integration Test
 292	CLOSED	Alpha		CORE-ALPHA-AUTH-INTEGRATION-TESTS: Add Integration Tests for Auth (Reduce Mocking)
-286	CLOSED	Alpha		CORE-ALPHA-CONVERSATION-PLACEMENT - Fix Handler Architecture
-287	CLOSED	Alpha		CORE-ALPHA-TEMPORAL-BUGS - Fix Response Rendering
+286	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-CONVERSATION-PLACEMENT - Fix Handler Architecture
+287	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-TEMPORAL-BUGS - Fix Response Rendering
 291	CLOSED	MVP		CORE-ALPHA-TOKEN-BLACKLIST-FK - Re-add Token Blacklist Foreign Key Constraint
 283	CLOSED	Alpha		CORE-ALPHA-ERROR-MESSAGES - Add Conversational Error Fallbacks
-284	CLOSED	Alpha		CORE-ALPHA-ACTION-MAPPING - Fix Action Name Coordination
-285	CLOSED	Alpha		CORE-ALPHA-TODO-INCOMPLETE - Complete Todo System Implementation
-280	CLOSED	Alpha		CORE-ALPHA-DATA-LEAK - Remove Personal Data from PIPER.md
-282	CLOSED	Alpha		CORE-ALPHA-FILE-UPLOAD - Fix File Upload Functionality
-281	CLOSED	Alpha		CORE-ALPHA-WEB-AUTH - Implement Full Authentication Layer
+284	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-ACTION-MAPPING - Fix Action Name Coordination
+285	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-TODO-INCOMPLETE - Complete Todo System Implementation
+280	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-DATA-LEAK - Remove Personal Data from PIPER.md
+282	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-FILE-UPLOAD - Fix File Upload Functionality
+281	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-WEB-AUTH - Implement Full Authentication Layer
 274	CLOSED	Alpha		TEST-SMOKE-HOOKS: Add smoke tests to pre-commit hooks for immediate feedback
 268	CLOSED	Alpha		# CORE-KEYS-STORAGE-VALIDATION: Add Strength Validation to Key Storage Workflow
 269	CLOSED	Alpha		CORE-PREF-PERSONALITY-INTEGRATION: Connect Preferences to PersonalityProfile System
@@ -158,7 +158,7 @@ issue	state	milestone	sprint	title
 260	CLOSED	Alpha		CORE-USER-MIGRATION: Alpha to Production User Migration Tool
 261	CLOSED	Alpha		# CORE-USER-XIAN: Migrate xian Superuser to Proper User Structure
 248	CLOSED	MVP	M3 - Artifact Persistence	CONV-LEARN-PREF: Conversational Personality Preference Gathering
-250	CLOSED	Alpha		CORE-KEYS-ROTATION-REMINDERS: Automated Key Rotation Reminders
+250	CLOSED	Alpha	A7 (Testing & Bufferj)	CORE-KEYS-ROTATION-REMINDERS: Automated Key Rotation Reminders
 252	CLOSED	Alpha		# CORE-KEYS-STRENGTH-VALIDATION: API Key Strength & Security Validation
 253	CLOSED	Alpha		# CORE-KEYS-COST-ANALYTICS: API Cost Tracking & Usage Analytics
 257	CLOSED	Alpha		# CORE-KNOW-BOUNDARY-COMPLETE: Complete BoundaryEnforcer Integration
@@ -225,7 +225,7 @@ issue	state	milestone	sprint	title
 103	OPEN	Fast Follow		CONV-FEAT-PRIOR: Priority Calculation Engine
 154	CLOSED	MVP		UX-DESIGN: Establish design system for consistent UI development
 241	CLOSED	MVP	M1 - MVP Foundation	CORE-ETHICS-TUNE: Post-Alpha Ethics Optimization
-113	CLOSED	Alpha		INFR-DATA-MIGRATE: Migrate main.py from DatabasePool to AsyncSessionFactory
+113	CLOSED	Alpha	A1 (Critical Infrastructure)	INFR-DATA-MIGRATE: Migrate main.py from DatabasePool to AsyncSessionFactory
 209	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2025-10-06
 164	CLOSED	Alpha	FLYWHEEL - Process improvement	FLY-DOCS: Refactor 2,703-line pattern catalog into structured directory
 213	OPEN	Enterprise		MVP-QUALITY-ENHANCE: Enterprise Infrastructure & Advanced Monitoring
@@ -240,20 +240,20 @@ issue	state	milestone	sprint	title
 275	CLOSED	MVP	M1 - MVP Foundation	TEST-SMOKE-BUG-BUS: Smoke test collection fails with ChromaDB/numpy Bus error on macOS
 251	OPEN	Enterprise		ENT-KEYS-TEAM-SHARING: Team API Key Sharing (Enterprise)
 262	CLOSED	Alpha		CORE-USER-ID-MIGRATION: Migrate users.id from VARCHAR to UUID
-264	CLOSED	MVP		CORE-UX-ERROR-MESSAGING: Improve Error Messages for Users
-265	CLOSED	MVP		CORE-UX-LOADING-STATES: Add Loading Indicators for Long Operations
-266	CLOSED	MVP		CORE-UX-CONVERSATION-CONTEXT: Improve Conversation Context Tracking
+264	CLOSED	MVP	A7 (Testing & Bufferj)	CORE-UX-ERROR-MESSAGING: Improve Error Messages for Users
+265	CLOSED	MVP	A7 (Testing & Bufferj)	CORE-UX-LOADING-STATES: Add Loading Indicators for Long Operations
+266	CLOSED	MVP	A7 (Testing & Bufferj)	CORE-UX-CONVERSATION-CONTEXT: Improve Conversation Context Tracking
 267	CLOSED	MVP		CORE-PREF-QUEST: Structured Preference Questionnaire
 270	CLOSED	MVP	A9 (Alpha Tidy)	CORE-KEYS-ROTATION-WORKFLOW: Apply Rotation Reminders to Key Management Workflows
 272	OPEN	Fast Follow		RESEARCH-TOKENS-THINKING: Investigate Thinking Token Optimization for Chain of Drafts
 273	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	TEST-SMOKE: Smoke test epic on the Testing track
 279	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2025-10-27
-290	CLOSED	MVP		CORE-ALPHA-DOC-PROCESSING - Implement Document Analysis Workflows
+290	CLOSED	MVP	A8 (Alpha Rolloutj	CORE-ALPHA-DOC-PROCESSING - Implement Document Analysis Workflows
 294	CLOSED	Alpha		CORE-ALPHA-ACTIONMAPPER-CLEANUP - Remove Unused Mappings
-295	CLOSED	Alpha		CORE-ALPHA-TODO-PERSISTENCE - Wire TodoHandlers to Database
-297	CLOSED	MVP		CORE-ALPHA-SETUP-PASSWORD: Add password setup to setup wizard
-288	CLOSED	Alpha		CORE-ALPHA-LEARNING-INVESTIGATION: Document Learning System
-289	CLOSED	Alpha		CORE-ALPHA-MIGRATION-PROTOCOL: Create Migration Testing Process
+295	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-TODO-PERSISTENCE - Wire TodoHandlers to Database
+297	CLOSED	MVP	A8 (Alpha Rolloutj	CORE-ALPHA-SETUP-PASSWORD: Add password setup to setup wizard
+288	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-LEARNING-INVESTIGATION: Document Learning System
+289	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-MIGRATION-PROTOCOL: Create Migration Testing Process
 296	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2025-11-10
 308	CLOSED	MVP	M1 - MVP Foundation	INFR-DATA: Repository Pattern & Dependency Cleanup
 305	CLOSED	MVP	M1 - MVP Foundation	CORE-CONFIG-PIPER: PIPER.md Lightweight Configuration System
@@ -274,24 +274,24 @@ issue	state	milestone	sprint	title
 345	CLOSED	MVP		TEST-DISCIPLINE-CATEGORIES: Add test categorization markers (TDD vs regression)
 346	CLOSED	MVP		TEST-INFRA-CONTAINER: Fix OrchestrationEngine fixture (11 tests failing)
 347	CLOSED	MVP		TEST-DISCIPLINE-HOOK: Fix pre-push hook to handle test categories
-348	CLOSED	MVP		TEST-PHANTOM-VALIDATOR: Fix test_api_key_validator.py (44 phantom tests)
-350	CLOSED	MVP		TEST-SMOKE-STATIC: Add smoke tests for static file serving
+348	CLOSED	MVP	T2 (Test Polish)	TEST-PHANTOM-VALIDATOR: Fix test_api_key_validator.py (44 phantom tests)
+350	CLOSED	MVP	T2 (Test Polish)	TEST-SMOKE-STATIC: Add smoke tests for static file serving
 361	CLOSED	MVP		SLACK-SPATIAL: Fix Slack Integration for Alpha Testing
 326	OPEN	Fast Follow		ARCH-MULT-ORG: Design multi-organization (multi-tenant) support architecture
 327	OPEN	Fast Follow		PROCESS-AI-ACCOUNTS: Create separate GitHub accounts for AI agents (Ted suggestion)
 328	OPEN	Fast Follow		OBSERV-CENTRAL: Implement centralized logging, metrics, and monitoring
 329	OPEN	Fast Follow		DATA-ANNOTAT: Implement database annotation system for change rationale tracking
 330	OPEN	Fast Follow		INTEG-EMAIL-MCP: Email integration via Gmail MCP adapter
-331	CLOSED	MVP		docs: Document application-layer stored procedures pattern (ADR)
+331	CLOSED	MVP	W (Quick Wins)	docs: Document application-layer stored procedures pattern (ADR)
 332	CLOSED	MVP	M1 - MVP Foundation	DOCUMENTATION-STORED-PROCS: Document Application-Layer Stored Procedures Pattern (ADR)
-333	CLOSED	MVP		data: Implement soft delete strategy across domain models
-334	CLOSED	MVP		infra: Create database migration rollback testing strategy
+333	CLOSED	MVP	S1 (Security and Critical Fixes)	data: Implement soft delete strategy across domain models
+334	CLOSED	MVP	FLYWHEEL - Process improvement	infra: Create database migration rollback testing strategy
 335	OPEN	Fast Follow		# STYLE-PK-PREFIXED: Adopt Prefixed Primary Key Naming Convention
 336	OPEN	Fast Follow		 DATA-SOFT-DELETE: Implement Soft Delete Strategy Across Domain Models
 337	OPEN	Fast Follow		STYLE-TABLE-SINGULAR: Adopt Singular Table Naming Convention
 338	OPEN	Fast Follow		INFRA-MIGRATION-ROLLBACK - Comprehensive Database Migration Rollback Testing
-339	CLOSED	MVP		style: Adopt prefixed primary key naming convention
-340	CLOSED	MVP		style: Adopt singular table naming convention
+339	CLOSED	MVP	FLYWHEEL - Process improvement	style: Adopt prefixed primary key naming convention
+340	CLOSED	MVP	FLYWHEEL - Process improvement	style: Adopt singular table naming convention
 353	CLOSED	MVP		BUILD-WINDOWS-CLONE: Illegal Character in Filename
 354	CLOSED	MVP		UX-DESIGN-TOKENS: Extract CSS Variables for Consistency
 356	CLOSED	MVP	W (Quick Wins)	PERF-INDEX: Add Missing Composite Database Indexes
@@ -299,105 +299,105 @@ issue	state	milestone	sprint	title
 360	CLOSED	MVP		DEV-PYTHON-311: Upgrade Python from 3.9.6 to 3.11
 362	CLOSED	MVP		DEV-VSCODE-SETUP: Create VSCode Developer Setup Package
 363	CLOSED	MVP		BUG-TEST-SECURITY: Fix RuntimeWarning in test_security_fail_closed_on_error (unawaited coroutine)
-319	CLOSED	MVP		fix: Windows compatibility - Remove colon from archive filename
-320	CLOSED	MVP		perf: Add missing database indexes for MVP query performance
+319	CLOSED	MVP	W (Quick Wins)	fix: Windows compatibility - Remove colon from archive filename
+320	CLOSED	MVP	W (Quick Wins)	perf: Add missing database indexes for MVP query performance
 321	OPEN	Fast Follow		DATA-AUDIT-FIELDS: Standardize audit fields across all domain models
-323	CLOSED	MVP		security: Implement Role-Based Access Control (RBAC)
-324	CLOSED	MVP		security: Implement encryption at rest for sensitive data
+323	CLOSED	MVP	S1 (Security and Critical Fixes)	security: Implement Role-Based Access Control (RBAC)
+324	CLOSED	MVP	S1 (Security and Critical Fixes)	security: Implement encryption at rest for sensitive data
 325	CLOSED	MVP		DEV-OS-DETECT: Add OS detection to shell scripts for cross-platform compatibility
 367	CLOSED	MVP		DB-JSON-INDEX: Refactor PostgreSQL JSON column indexes to use proper operators
 374	OPEN	Enterprise		Enhancement: Semantic classification for preference detection (post-MVP)
 378	CLOSED	MVP		ALPHA-DEPLOY-PROD: ALPHA-DEPLOY-PROD: Push Clean Build to Production Branch
 368	CLOSED	Alpha	W (Quick Wins)	CONV-MCP-MEASURE Phase 2: Extend Token Counting to All MCP Operations
 369	CLOSED	Alpha	W (Quick Wins)	CONV-MCP-MEASURE Phase 3: Extend Token Counting to All Consumer MCP Adapters
-380	CLOSED	MVP		Complete SEC-RBAC migration for KnowledgeGraph models
-370	CLOSED	MVP		BUG: uploaded_files table missing in test database
+380	CLOSED	MVP	W (Quick Wins)	Complete SEC-RBAC migration for KnowledgeGraph models
+370	CLOSED	MVP	W (Quick Wins)	BUG: uploaded_files table missing in test database
 364	OPEN	Enterprise		SLACK-MULTI-WORKSPACE: Support attention across multiple workspaces
 373	OPEN	Enterprise		INFRA-OAUTH-MULTI: Implement Multi-OAuth Installation Infrastructure
-381	CLOSED	MVP		LLM API Compatibility: complete() method rejects 'system' parameter
-382	CLOSED	MVP		INFR-VER-TRACK: Implement Version Tracking System
-383	CLOSED	MVP		USER-SETTINGS-ALPHA: Create basic user settings page with version display
+381	CLOSED	MVP	W (Quick Wins)	LLM API Compatibility: complete() method rejects 'system' parameter
+382	CLOSED	MVP	W (Quick Wins)	INFR-VER-TRACK: Implement Version Tracking System
+383	CLOSED	MVP	W (Quick Wins)	USER-SETTINGS-ALPHA: Create basic user settings page with version display
 385	CLOSED	MVP	M1 - MVP Foundation	INFR-MAINT-REFACTOR: Infrastructure maintenance refactor (as needed)
-396	CLOSED	MVP		ALPHA-ONBOARD-UX: User Onboarding - Bug Fixes & UX Improvements
-390	CLOSED	MVP		ALPHA-SETUP-UI: Add web-based setup UI (setup/onboarding page)
+396	CLOSED	MVP	A10 - Alpha Testing	ALPHA-ONBOARD-UX: User Onboarding - Bug Fixes & UX Improvements
+390	CLOSED	MVP	A10 - Alpha Testing	ALPHA-SETUP-UI: Add web-based setup UI (setup/onboarding page)
 392	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2025-11-24
-386	CLOSED	MVP		TEST-EDGE-USER: Fix invalid UUID format in file resolver and scoring tests
+386	CLOSED	MVP	W (Quick Wins)	TEST-EDGE-USER: Fix invalid UUID format in file resolver and scoring tests
 398	CLOSED	MVP		MUX: Modeled User Experience
-399	CLOSED	MVP		MUX-VISION-OBJECT-MODEL: Formalize the Object Model Discovery
-404	CLOSED	MVP		MUX-VISION-GRAMMAR-CORE: Implement "Entities experience Moments in Places"
-400	CLOSED	MVP		MUX-VISION-CONSCIOUSNESS: Extract and Document Embodied AI Patterns from Morning Standup
-405	CLOSED	MVP		MUX-VISION-METAPHORS: Formalize ownership metaphors (Mind/Senses/Understanding)
-406	CLOSED	MVP		MUX-VISION-FEATURE-MAP: Map existing features to object model
+399	CLOSED	MVP	V1 - MUX Vision Formalization	MUX-VISION-OBJECT-MODEL: Formalize the Object Model Discovery
+404	CLOSED	MVP	X1 - MUX Core Tech	MUX-VISION-GRAMMAR-CORE: Implement "Entities experience Moments in Places"
+400	CLOSED	MVP	X1 - MUX Core Tech	MUX-VISION-CONSCIOUSNESS: Extract and Document Embodied AI Patterns from Morning Standup
+405	CLOSED	MVP	X1 - MUX Core Tech	MUX-VISION-METAPHORS: Formalize ownership metaphors (Mind/Senses/Understanding)
+406	CLOSED	MVP	X1 - MUX Core Tech	MUX-VISION-FEATURE-MAP: Map existing features to object model
 409	CLOSED	MVP		MUX-VISION-JOURNAL-LAYERS: Define Session vs Insight journal architecture
-410	CLOSED	MVP		MUX-INTERACT-CANONICAL-ENHANCE: Evolve canonical queries to orientation system
-411	CLOSED	MVP		MUX-INTERACT-RECOGNITION: Design "did you mean..." interface patterns
-412	CLOSED	MVP		MUX-INTERACT-INTENT-BRIDGE: Bridge current intent classification to recognition
-413	CLOSED	MVP		MUX-INTERACT-TRUST-LEVELS: Define trust gradient mechanics
-414	CLOSED	MVP		MUX-INTERACT-DELEGATION: System-initiated vs user-initiated patterns
-415	CLOSED	MVP		MUX-INTERACT-PREMONITION: When/how Piper surfaces insights
-416	CLOSED	MVP		MUX-INTERACT-WORKSPACE: How Piper navigates between contexts
-417	CLOSED	MVP		MUX-INTERACT-ATTENTION: Attention algorithms based on spatial metaphors
-418	CLOSED	MVP		MUX-INTERACT-MOMENT-UI: How Moments appear in interface
-422	CLOSED	MVP		MUX-IMPLEMENT-DOCS-ACCESS: Implement document retrieval UI
-423	CLOSED	MVP		MUX-IMPLEMENT-LIFECYCLE: Object lifecycle visualization
-424	CLOSED	MVP		MUX-IMPLEMENT-COMPOST: Composting interface
-425	CLOSED	MVP		MUX-IMPLEMENT-MEMORY-SYNC: Memory sync between touchpoints
-426	CLOSED	MVP		MUX-IMPLEMENT-CONSISTENT: Consistent personality across channels
-427	CLOSED	MVP		MUX-IMPLEMENT-CONVERSE-MODEL: Unified conversation model
-439	CLOSED	MVP		ALPHA-SETUP-REFACTOR: Function extraction
-394	CLOSED	MVP		CORE-UX-ERROR-QUAL: No error messages or recovery guidance when things fail
-440	CLOSED	MVP		ALPHA-SETUP-TEST: Setup wizard integration test and KeychainService mocking
+410	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-CANONICAL-ENHANCE: Evolve canonical queries to orientation system
+411	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-RECOGNITION: Design "did you mean..." interface patterns
+412	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-INTENT-BRIDGE: Bridge current intent classification to recognition
+413	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-TRUST-LEVELS: Define trust gradient mechanics
+414	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-DELEGATION: System-initiated vs user-initiated patterns
+415	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-PREMONITION: When/how Piper surfaces insights
+416	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-WORKSPACE: How Piper navigates between contexts
+417	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-ATTENTION: Attention algorithms based on spatial metaphors
+418	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-MOMENT-UI: How Moments appear in interface
+422	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-IMPLEMENT-DOCS-ACCESS: Implement document retrieval UI
+423	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-IMPLEMENT-LIFECYCLE: Object lifecycle visualization
+424	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-IMPLEMENT-COMPOST: Composting interface
+425	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-IMPLEMENT-MEMORY-SYNC: Memory sync between touchpoints
+426	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-IMPLEMENT-CONSISTENT: Consistent personality across channels
+427	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-IMPLEMENT-CONVERSE-MODEL: Unified conversation model
+439	CLOSED	MVP	A11 - Alpha Polish	ALPHA-SETUP-REFACTOR: Function extraction
+394	CLOSED	MVP	A11 - Alpha Polish	CORE-UX-ERROR-QUAL: No error messages or recovery guidance when things fail
+440	CLOSED	MVP	A12 - Alpha Setup	ALPHA-SETUP-TEST: Setup wizard integration test and KeychainService mocking
 441	OPEN	MVP	Beta Blockers - Hard Gates Only	CORE-UX-AUTH-PHASE2: Registration, Password Reset, and Security Polish
-442	CLOSED	MVP		BUG-DB-CONCURRENCY: Database session concurrency error in setup validate-key endpoint
-443	CLOSED	MVP		ALPHA-UX-LOGO: Cosmetic update to alpha UI - Replace PM monogram with dolphin logo
-444	CLOSED	MVP		BUG-UX-DISTRACTION: Server restart triggers browser redirect to auth error page
-446	CLOSED	MVP		ALPHA-UX-BUG: base.css missing - error pages unstyled
-447	CLOSED	MVP		ALPHA-UX-ENHANCE: System check micro-animation for better feedback
-448	CLOSED	MVP		ALPHA-SETUP-CLI: Add Gemini API key to CLI setup wizard
-449	CLOSED	MVP		FLY-MAINT-CLEANUP: Scan and archive deprecated folders
-451	CLOSED	MVP		ALPHA-UX: Suppress error-prone browser auto-open on startup
-452	CLOSED	MVP		INFRA-DB-442: Systematic migration from db.get_session() to session_scope_fresh()
-455	CLOSED	MVP		BUG-P0: Chat submit and Create buttons return 401 - missing auth headers in fetch calls
-456	CLOSED	MVP		BUG-P1: Standup returns errors - endpoint path mismatch
-457	CLOSED	MVP		UX: Page flash/redraw on navigation - transition animation too prominent
-458	CLOSED	MVP		UX: Menu restructure - logo as home link, Stuff submenu, cleanup
+442	CLOSED	MVP	A10 - Alpha Testing	BUG-DB-CONCURRENCY: Database session concurrency error in setup validate-key endpoint
+443	CLOSED	MVP	A10 - Alpha Testing	ALPHA-UX-LOGO: Cosmetic update to alpha UI - Replace PM monogram with dolphin logo
+444	CLOSED	MVP	A10 - Alpha Testing	BUG-UX-DISTRACTION: Server restart triggers browser redirect to auth error page
+446	CLOSED	MVP	A10 - Alpha Testing	ALPHA-UX-BUG: base.css missing - error pages unstyled
+447	CLOSED	MVP	A11 - Alpha Polish	ALPHA-UX-ENHANCE: System check micro-animation for better feedback
+448	CLOSED	MVP	A11 - Alpha Polish	ALPHA-SETUP-CLI: Add Gemini API key to CLI setup wizard
+449	CLOSED	MVP	A12 - Alpha Setup	FLY-MAINT-CLEANUP: Scan and archive deprecated folders
+451	CLOSED	MVP	A10 - Alpha Testing	ALPHA-UX: Suppress error-prone browser auto-open on startup
+452	CLOSED	MVP	A10 - Alpha Testing	INFRA-DB-442: Systematic migration from db.get_session() to session_scope_fresh()
+455	CLOSED	MVP	A10 - Alpha Testing	BUG-P0: Chat submit and Create buttons return 401 - missing auth headers in fetch calls
+456	CLOSED	MVP	A10 - Alpha Testing	BUG-P1: Standup returns errors - endpoint path mismatch
+457	CLOSED	MVP	A11 - Alpha Polish	UX: Page flash/redraw on navigation - transition animation too prominent
+458	CLOSED	MVP	A10 - Alpha Testing	UX: Menu restructure - logo as home link, Stuff submenu, cleanup
 459	CLOSED	MVP		UX: Chat text entry box below fold - needs layout fix
 460	CLOSED	MVP		UX: Learning page shows giant mailbox emoji - layout regression
 461	CLOSED	MVP		BUG: Browser auto-open regression - now requires --browser flag
-462	CLOSED	MVP		P0: Component Integration Gap - Create buttons don't work
-463	OPEN	Ongoing	FLYWHEEL - Process improvement	FLY-COORD-TREES: Git Worktrees for Multi-Agent Coordination
-464	CLOSED	MVP		FLY-COORD-TREES-1: Phase 0-2 MVP - Scripts and Schema
+462	CLOSED	MVP	A10 - Alpha Testing	P0: Component Integration Gap - Create buttons don't work
+463	CLOSED	Ongoing	FLYWHEEL - Process improvement	FLY-COORD-TREES: Git Worktrees for Multi-Agent Coordination
+464	CLOSED	MVP	A10 - Alpha Testing	FLY-COORD-TREES-1: Phase 0-2 MVP - Scripts and Schema
 465	OPEN	Ongoing	FLYWHEEL - Process improvement	FLY-COORD-TREES-2: Phase 3-5 Python Integration (Future)
 466	CLOSED	MVP		Toast API signature mismatch - templates call with 1 arg
 467	CLOSED	MVP		Startup logs show duplicate API key retrieval blocks
-468	CLOSED	MVP		P0: API Contract Mismatch - Create endpoints expect query params, frontends send JSON body
-469	CLOSED	MVP		DI Provider Pattern Incomplete - request.state.db never set
-445	CLOSED	MVP		BUG-ASYNC-LOOP: Database check fails due to event loop mismatch in setup wizard
-454	CLOSED	MVP		fix: Login redirect loop on HTTP due to secure cookie flag
+468	CLOSED	MVP	A10 - Alpha Testing	P0: API Contract Mismatch - Create endpoints expect query params, frontends send JSON body
+469	CLOSED	MVP	A10 - Alpha Testing	DI Provider Pattern Incomplete - request.state.db never set
+445	CLOSED	MVP	A10 - Alpha Testing	BUG-ASYNC-LOOP: Database check fails due to event loop mismatch in setup wizard
+454	CLOSED	MVP	A10 - Alpha Testing	fix: Login redirect loop on HTTP due to secure cookie flag
 471	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	EPIC: Infrastructure - OAuth, Learning, TimeSeries, Conversation
-475	CLOSED	MVP		Hamburger menu never appears on mobile viewport
-479	CLOSED	MVP		CRUD failures: get_todo_repository returns wrong repository type
-485	CLOSED	MVP		BUG-ALPHA-KEY-ERROR: Setup wizard API key validation fails with FK violation on fresh install
-486	CLOSED	MVP		BUG: test_intent_enricher_high_confidence fails - UploadedFile model schema mismatch
-487	CLOSED	MVP		BUG-ALPHA-INTENT: Intent classification failures for capability discovery and project setup
-498	CLOSED	MVP		ALPHA: Project setup returns generic guidance instead of configuration workflow
-499	CLOSED	MVP		ALPHA-CANONICAL: Query #8 - Agenda aggregates calendar + todos + priorities
-500	CLOSED	MVP		ALPHA-CANONICAL: Query #14 - Project-specific status ("What's the status of X?")
-501	CLOSED	MVP		ALPHA-CANONICAL: Query #7 - Historical retrospective ("What did we accomplish yesterday?")
+475	CLOSED	MVP	A11 - Alpha Polish	Hamburger menu never appears on mobile viewport
+479	CLOSED	MVP	A11 - Alpha Polish	CRUD failures: get_todo_repository returns wrong repository type
+485	CLOSED	MVP	S2 (Security Polish)	BUG-ALPHA-KEY-ERROR: Setup wizard API key validation fails with FK violation on fresh install
+486	CLOSED	MVP	A12 - Alpha Setup	BUG: test_intent_enricher_high_confidence fails - UploadedFile model schema mismatch
+487	CLOSED	MVP	S2 (Security Polish)	BUG-ALPHA-INTENT: Intent classification failures for capability discovery and project setup
+498	CLOSED	MVP	S2 (Security Polish)	ALPHA: Project setup returns generic guidance instead of configuration workflow
+499	CLOSED	MVP	S2 (Security Polish)	ALPHA-CANONICAL: Query #8 - Agenda aggregates calendar + todos + priorities
+500	CLOSED	MVP	S2 (Security Polish)	ALPHA-CANONICAL: Query #14 - Project-specific status ("What's the status of X?")
+501	CLOSED	MVP	S2 (Security Polish)	ALPHA-CANONICAL: Query #7 - Historical retrospective ("What did we accomplish yesterday?")
 503	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2025-12-22
-504	CLOSED	MVP		CANONICAL-#9: Last activity temporal query - 'When did we last work on this?'
-505	CLOSED	MVP		CANONICAL-#10: Project duration query - 'How long have we been working on this?'
-506	CLOSED	MVP		CANONICAL-#3: Health check query - 'Are you working properly?'
-507	CLOSED	MVP		CANONICAL-#4: Help/onboarding query - 'How do I get help?'
-508	CLOSED	MVP		CANONICAL-#5: Differentiation query - 'What makes you different?'
-509	CLOSED	MVP		CANONICAL-#11: Project list with metadata - 'What projects are we working on?'
-510	CLOSED	MVP		CANONICAL-#12: Project portfolio health - 'Show me the project landscape'
-511	CLOSED	MVP		CANONICAL-#13: Priority recommendation - 'Which project should I focus on?'
+504	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#9: Last activity temporal query - 'When did we last work on this?'
+505	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#10: Project duration query - 'How long have we been working on this?'
+506	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#3: Health check query - 'Are you working properly?'
+507	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#4: Help/onboarding query - 'How do I get help?'
+508	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#5: Differentiation query - 'What makes you different?'
+509	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#11: Project list with metadata - 'What projects are we working on?'
+510	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#12: Project portfolio health - 'Show me the project landscape'
+511	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#13: Priority recommendation - 'Which project should I focus on?'
 512	CLOSED	MVP		TECH-DEBT: Fix pre-existing test failures (test_intent_enricher, test_llm_intent_classifier)
-514	CLOSED	MVP		Pre-existing test failure: test_empty_message_handling expects exception not raised
-515	CLOSED	MVP		Canonical Query #17: Wire Document Analysis intent to NotionMCPAdapter
-516	CLOSED	MVP		Canonical Query #20: Wire Document Search intent to NotionMCPAdapter
-517	CLOSED	MVP		Update multi-agent coordination protocols
+514	CLOSED	MVP	S2 (Security Polish)	Pre-existing test failure: test_empty_message_handling expects exception not raised
+515	CLOSED	MVP	S2 (Security Polish)	Canonical Query #17: Wire Document Analysis intent to NotionMCPAdapter
+516	CLOSED	MVP	S2 (Security Polish)	Canonical Query #20: Wire Document Search intent to NotionMCPAdapter
+517	CLOSED	MVP	A12 - Alpha Setup	Update multi-agent coordination protocols
 518	CLOSED	MVP	A12 - Alpha Setup	Canonical Queries Phase A: Quick Wins (8 queries)
 519	CLOSED	MVP	A12 - Alpha Setup	Canonical Queries Phase B-1: GitHub Issue Operations (#60, #45, #59)
 520	CLOSED	MVP	A12 - Alpha Setup	Canonical Queries Phase B-2: Slack Slash Commands (#50, #49)
@@ -405,135 +405,135 @@ issue	state	milestone	sprint	title
 522	CLOSED	MVP	A12 - Alpha Setup	Canonical Queries Phase B-4: Document Update (#40)
 523	CLOSED	MVP	A12 - Alpha Setup	Add routing integration tests for Phase A canonical queries
 524	CLOSED	MVP	Q - Recurring Audits	Pattern Sweep 2.0: Multi-Lens Analysis (Nov 20 - Dec 26)
-492	CLOSED	MVP		FTUX-TESTPLAN: Canonical Query Test Matrix for Alpha Testing
-527	CLOSED	MVP		ALPHA-SETUP-NOTION: Add Notion integration to setup wizard
-528	CLOSED	MVP		ALPHA-SETUP-SLACK: Add Slack OAuth to setup wizard
-529	CLOSED	MVP		ALPHA-SETUP-CALENDAR: Add Google Calendar to setup wizard
-531	CLOSED	MVP		MUX-GATE-1: Foundation Phase Complete
-534	CLOSED	MVP		MUX-GATE-4: Interaction Design Complete
-493	CLOSED	MVP		FTUX-QUICK-1: Dynamic capability list from PluginRegistry
-513	CLOSED	MVP		Implement Query #19: Simplified status report generator
+492	CLOSED	MVP	A12 - Alpha Setup	FTUX-TESTPLAN: Canonical Query Test Matrix for Alpha Testing
+527	CLOSED	MVP	A12 - Alpha Setup	ALPHA-SETUP-NOTION: Add Notion integration to setup wizard
+528	CLOSED	MVP	A12 - Alpha Setup	ALPHA-SETUP-SLACK: Add Slack OAuth to setup wizard
+529	CLOSED	MVP	A12 - Alpha Setup	ALPHA-SETUP-CALENDAR: Add Google Calendar to setup wizard
+531	CLOSED	MVP	X1 - MUX Core Tech	MUX-GATE-1: Foundation Phase Complete
+534	CLOSED	MVP	I1 - MUX Interaction	MUX-GATE-4: Interaction Design Complete
+493	CLOSED	MVP	S2 (Security Polish)	FTUX-QUICK-1: Dynamic capability list from PluginRegistry
+513	CLOSED	MVP	S2 (Security Polish)	Implement Query #19: Simplified status report generator
 525	CLOSED	MVP	A12 - Alpha Setup	Retro: Issue #518 Gameplan bypassed CORE-QUERY-1 router pattern
-535	CLOSED	MVP		CORE-KEYS-HIBP: Have I Been Pwned API Integration
-536	CLOSED	MVP		CORE-KEYS-OAUTH-PROVIDERS: OAuth & Integration Key Support
-537	CLOSED	MVP		ALPHA-SETUP-MANAGE: Integration Management Post-Setup
-538	CLOSED	MVP		ALPHA-SETTINGS-INTEGRATIONS: Enhanced Integration Management
+535	CLOSED	MVP	A12 - Alpha Setup	CORE-KEYS-HIBP: Have I Been Pwned API Integration
+536	CLOSED	MVP	A12 - Alpha Setup	CORE-KEYS-OAUTH-PROVIDERS: OAuth & Integration Key Support
+537	CLOSED	MVP	A12 - Alpha Setup	ALPHA-SETUP-MANAGE: Integration Management Post-Setup
+538	CLOSED	MVP	A12 - Alpha Setup	ALPHA-SETTINGS-INTEGRATIONS: Enhanced Integration Management
 539	CLOSED	MVP	I1 - MUX Interaction	Integration Test button uses MCP instead of OAuth token
-540	CLOSED	MVP		Notion integration stuck with no recovery path
-541	CLOSED	MVP		GitHub integration stuck with no recovery path
-543	CLOSED	MVP		CORE-SETTINGS-INTEGRATION: Integration-specific settings (channel selection, calendar sync)
-544	CLOSED	MVP		CORE-SETTING-DISCONNECT: Bulk integration operations (Disconnect All)
+540	CLOSED	MVP	A12 - Alpha Setup	Notion integration stuck with no recovery path
+541	CLOSED	MVP	A12 - Alpha Setup	GitHub integration stuck with no recovery path
+543	CLOSED	MVP	B1 - Beta Enablers	CORE-SETTINGS-INTEGRATION: Integration-specific settings (channel selection, calendar sync)
+544	CLOSED	MVP	B1 - Beta Enablers	CORE-SETTING-DISCONNECT: Bulk integration operations (Disconnect All)
 545	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-01-05
 546	OPEN	Fast Follow		TECH-DEBT: Support alternate issue providers (Jira, Linear, Notion)
-550	CLOSED	MVP		FTUX-CHAT-BRIDGE: Add 'Ask Piper' button to empty states
-552	CLOSED	MVP		STANDUP-CONV-STATE: Conversation State Management
-553	CLOSED	MVP		STANDUP-CONV-FLOW: Multi-Turn Conversation Flow
-554	CLOSED	MVP		STANDUP-CHAT-WIDGET: Chat Interface Integration
-555	CLOSED	MVP		STANDUP-LEARNING: User Preference Learning
-556	CLOSED	MVP		STANDUP-PERF: Performance & Reliability
-561	CLOSED	MVP		MUX-FTUX-CONVERSE: Complete portfolio onboarding conversation flow
-571	CLOSED	MVP		ENHANCE-SETTINGS: Calendar sync preferences
-572	CLOSED	MVP		ENHANCE-SETTINGS: Notion workspace preferences
-573	CLOSED	MVP		ENHANCE-SETTINGS: GitHub repository preferences
-574	CLOSED	MVP		BUG: Conversation history panel does not correctly switch conversations
-559	CLOSED	MVP		TEST-GAP: Integration tests mock internal methods, missing real import/wiring verification
-560	CLOSED	MVP		BUG: Echo/echolalia in onboarding conversation responses
-575	CLOSED	MVP		BUG: Slack OAuth fails with 'Please specify client_id' - missing env configuration
-570	CLOSED	MVP		ENHANCE-SETTINGS: Slack channel selection
-579	CLOSED	MVP		ENHANCE: Notion API Key Configuration in UI (Setup Wizard + Settings)
-578	CLOSED	MVP		ENHANCE: GitHub Personal Access Token Configuration in UI (Setup Wizard + Settings)
-577	CLOSED	MVP		ENHANCE: Google Calendar OAuth Credential Configuration in UI (Setup Wizard + Settings)
-576	CLOSED	MVP		ENHANCE: OAuth App Credential Configuration in UI (Setup Wizard + Settings)
-567	CLOSED	MVP		MUX-INTERACT-CONV-SEARCH: Search within portfolio
-569	CLOSED	MVP		MUX-INTERACT-PORTFOLIO-DEL: Delete/archive projects from portfolio
+550	CLOSED	MVP	B1 - Beta Enablers	FTUX-CHAT-BRIDGE: Add 'Ask Piper' button to empty states
+552	CLOSED	MVP	B1 - Beta Enablers	STANDUP-CONV-STATE: Conversation State Management
+553	CLOSED	MVP	B1 - Beta Enablers	STANDUP-CONV-FLOW: Multi-Turn Conversation Flow
+554	CLOSED	MVP	B1 - Beta Enablers	STANDUP-CHAT-WIDGET: Chat Interface Integration
+555	CLOSED	MVP	B1 - Beta Enablers	STANDUP-LEARNING: User Preference Learning
+556	CLOSED	MVP	B1 - Beta Enablers	STANDUP-PERF: Performance & Reliability
+561	CLOSED	MVP	I1 - MUX Interaction	MUX-FTUX-CONVERSE: Complete portfolio onboarding conversation flow
+571	CLOSED	MVP	B1 - Beta Enablers	ENHANCE-SETTINGS: Calendar sync preferences
+572	CLOSED	MVP	B1 - Beta Enablers	ENHANCE-SETTINGS: Notion workspace preferences
+573	CLOSED	MVP	B1 - Beta Enablers	ENHANCE-SETTINGS: GitHub repository preferences
+574	CLOSED	MVP	B1 - Beta Enablers	BUG: Conversation history panel does not correctly switch conversations
+559	CLOSED	MVP	B1 - Beta Enablers	TEST-GAP: Integration tests mock internal methods, missing real import/wiring verification
+560	CLOSED	MVP	B1 - Beta Enablers	BUG: Echo/echolalia in onboarding conversation responses
+575	CLOSED	MVP	B1 - Beta Enablers	BUG: Slack OAuth fails with 'Please specify client_id' - missing env configuration
+570	CLOSED	MVP	B1 - Beta Enablers	ENHANCE-SETTINGS: Slack channel selection
+579	CLOSED	MVP	B1 - Beta Enablers	ENHANCE: Notion API Key Configuration in UI (Setup Wizard + Settings)
+578	CLOSED	MVP	B1 - Beta Enablers	ENHANCE: GitHub Personal Access Token Configuration in UI (Setup Wizard + Settings)
+577	CLOSED	MVP	B1 - Beta Enablers	ENHANCE: Google Calendar OAuth Credential Configuration in UI (Setup Wizard + Settings)
+576	CLOSED	MVP	B1 - Beta Enablers	ENHANCE: OAuth App Credential Configuration in UI (Setup Wizard + Settings)
+567	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-CONV-SEARCH: Search within portfolio
+569	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-PORTFOLIO-DEL: Delete/archive projects from portfolio
 580	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-01-12
-581	CLOSED	MVP		BUG: Chat input ignores selected conversation from sidebar
-585	CLOSED	MVP		BUG: /standup command routes to STATUS handler instead of interactive standup flow
-582	CLOSED	MVP		BUG: Standup command says no projects despite portfolio existing
-586	CLOSED	MVP		FEAT: Calendar timezone-aware queries with user context
-587	CLOSED	MVP		BUG: Sidebar shows new conversations below old ones with wrong date grouping
+581	CLOSED	MVP	A20 - Alpha Testing (round 2)	BUG: Chat input ignores selected conversation from sidebar
+585	CLOSED	MVP	A20 - Alpha Testing (round 2)	BUG: /standup command routes to STATUS handler instead of interactive standup flow
+582	CLOSED	MVP	A20 - Alpha Testing (round 2)	BUG: Standup command says no projects despite portfolio existing
+586	CLOSED	MVP	A20 - Alpha Testing (round 2)	FEAT: Calendar timezone-aware queries with user context
+587	CLOSED	MVP	A20 - Alpha Testing (round 2)	BUG: Sidebar shows new conversations below old ones with wrong date grouping
 588	CLOSED	MVP		BUG: 'Tomorrow' calendar queries not understood - routes to today's status
-589	CLOSED	MVP		Intent classifier routes calendar queries to TEMPORAL instead of QUERY
-592	CLOSED	MVP		BUG: Markdown rendering regression - displays as plain ASCII
+589	CLOSED	MVP	A20 - Alpha Testing (round 2)	Intent classifier routes calendar queries to TEMPORAL instead of QUERY
+592	CLOSED	MVP	A20 - Alpha Testing (round 2)	BUG: Markdown rendering regression - displays as plain ASCII
 596	CLOSED	MVP		TEMPORAL handler shows stale/incorrect calendar data
-597	CLOSED	MVP		ARCH-TEMPORAL-GAPS: Systematic datetime and data presentation issues
-598	CLOSED	MVP		UX-AUTO-TITLE: Auto-Title Conversations
-599	CLOSED	MVP		UX-SUPPRESS-NULLS: Suppress Null Field Display
-600	CLOSED	MVP		UX-REMOVE-REDUNDANT: Remove Redundant UI Badges
-603	CLOSED	MVP		TEST-INFRA: Fix tests/load/test_cache_effectiveness.py error
-605	CLOSED	MVP		[BUG] Setup Wizard Final Step - Continue Button Non-Functional (Regression)
-604	CLOSED	MVP		UX-EDITABLE-TITLES: Allow users to edit conversation titles
-606	CLOSED	MVP		BUG: Migration 44f5cd40b495 fails on fresh database - references dropped table
-607	CLOSED	MVP		BUG: Fresh install routes to CLI wizard instead of web GUI setup
-608	CLOSED	MVP		UX: Allow /setup access for new user registration even when users exist
-609	CLOSED	MVP		Fresh database bypasses migration check (#605 gap)
-610	CLOSED	MVP		FLY-HOOKS-CLEANUP: Update pre-push hook for release notes location
-612	CLOSED	MVP		MUX-399-P0: Investigation & Pattern Discovery
-613	CLOSED	MVP		MUX-399-P1: Core Grammar Implementation & Lens Infrastructure
-614	CLOSED	MVP		MUX-399-P2: Ownership Model (Native/Federated/Synthetic)
-615	CLOSED	MVP		MUX-399-P3: Lifecycle State Machine with Composting
-616	CLOSED	MVP		MUX-399-P4: Metadata Schema & Journal Extensions
-617	CLOSED	MVP		MUX-399-P4.5: Canonical Query Lens/Substrate Tagging
-618	CLOSED	MVP		MUX-399-PZ: Verification & Anti-Flattening Tests
-622	CLOSED	MVP		GRAMMAR-TRANSFORM: Todo Management (Flattened → Conscious)
-625	CLOSED	MVP		GRAMMAR-TRANSFORM: Conversation Handler (Partial → Conscious)
+597	CLOSED	MVP	A20 - Alpha Testing (round 2)	ARCH-TEMPORAL-GAPS: Systematic datetime and data presentation issues
+598	CLOSED	MVP	A20 - Alpha Testing (round 2)	UX-AUTO-TITLE: Auto-Title Conversations
+599	CLOSED	MVP	A20 - Alpha Testing (round 2)	UX-SUPPRESS-NULLS: Suppress Null Field Display
+600	CLOSED	MVP	A20 - Alpha Testing (round 2)	UX-REMOVE-REDUNDANT: Remove Redundant UI Badges
+603	CLOSED	MVP	A20 - Alpha Testing (round 2)	TEST-INFRA: Fix tests/load/test_cache_effectiveness.py error
+605	CLOSED	MVP	A20 - Alpha Testing (round 2)	[BUG] Setup Wizard Final Step - Continue Button Non-Functional (Regression)
+604	CLOSED	MVP	A20 - Alpha Testing (round 2)	UX-EDITABLE-TITLES: Allow users to edit conversation titles
+606	CLOSED	MVP	A20 - Alpha Testing (round 2)	BUG: Migration 44f5cd40b495 fails on fresh database - references dropped table
+607	CLOSED	MVP	A20 - Alpha Testing (round 2)	BUG: Fresh install routes to CLI wizard instead of web GUI setup
+608	CLOSED	MVP	A20 - Alpha Testing (round 2)	UX: Allow /setup access for new user registration even when users exist
+609	CLOSED	MVP	A20 - Alpha Testing (round 2)	Fresh database bypasses migration check (#605 gap)
+610	CLOSED	MVP	A20 - Alpha Testing (round 2)	FLY-HOOKS-CLEANUP: Update pre-push hook for release notes location
+612	CLOSED	MVP	V1 - MUX Vision Formalization	MUX-399-P0: Investigation & Pattern Discovery
+613	CLOSED	MVP	V1 - MUX Vision Formalization	MUX-399-P1: Core Grammar Implementation & Lens Infrastructure
+614	CLOSED	MVP	V1 - MUX Vision Formalization	MUX-399-P2: Ownership Model (Native/Federated/Synthetic)
+615	CLOSED	MVP	V1 - MUX Vision Formalization	MUX-399-P3: Lifecycle State Machine with Composting
+616	CLOSED	MVP	V1 - MUX Vision Formalization	MUX-399-P4: Metadata Schema & Journal Extensions
+617	CLOSED	MVP	V1 - MUX Vision Formalization	MUX-399-P4.5: Canonical Query Lens/Substrate Tagging
+618	CLOSED	MVP	V1 - MUX Vision Formalization	MUX-399-PZ: Verification & Anti-Flattening Tests
+622	CLOSED	MVP	X1 - MUX Core Tech	GRAMMAR-TRANSFORM: Todo Management (Flattened → Conscious)
+625	CLOSED	MVP	X1 - MUX Core Tech	GRAMMAR-TRANSFORM: Conversation Handler (Partial → Conscious)
 629	CLOSED	MVP		MUX-LISTS: List Management Experience Design
-630	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Loading States (Mechanical → Conscious)
-631	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Error Messages (Mechanical → Conscious)
-633	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: CLI Output (Mechanical → Conscious)
-634	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Search Results (Data → Conscious)
-635	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Files/Projects (Data → Conscious)
-636	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Learning Patterns (Silent → Conscious)
-637	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Settings/Auth (System → Conscious)
-638	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: HTML Templates (Static → Conscious)
-639	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Onboarding flow copy (setup.html)
-640	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Confirmation dialogs system-wide
-641	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Session timeout modal
-642	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Centralize toast message system (JS-side)
-643	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Form validation messages
-644	CLOSED	MVP		BUG-ALPHA-DOCKER: docker-compose failure not detected in alpha-setup.sh
-645	CLOSED	MVP		BUG-ALPHA-RACE: First-load 404 due to browser opening before server ready
-646	CLOSED	MVP		BUG-ALPHA-TOAST: Toast was missing from setup
-647	CLOSED	MVP		TRUST-LEVELS-1: Core Infrastructure (Domain Models & Service)
-648	CLOSED	MVP		TRUST-LEVELS-2: Integration (Intent Pipeline & ProactivityGate)
-649	CLOSED	MVP		TRUST-LEVELS-3: Discussability (TrustExplainer & Intent Handlers)
+630	CLOSED	MVP	X1 - MUX Core Tech	CONSCIOUSNESS-TRANSFORM: Loading States (Mechanical → Conscious)
+631	CLOSED	MVP	X1 - MUX Core Tech	CONSCIOUSNESS-TRANSFORM: Error Messages (Mechanical → Conscious)
+633	CLOSED	MVP	V2 - MUX Integration Mapping	CONSCIOUSNESS-TRANSFORM: CLI Output (Mechanical → Conscious)
+634	CLOSED	MVP	V2 - MUX Integration Mapping	CONSCIOUSNESS-TRANSFORM: Search Results (Data → Conscious)
+635	CLOSED	MVP	V2 - MUX Integration Mapping	CONSCIOUSNESS-TRANSFORM: Files/Projects (Data → Conscious)
+636	CLOSED	MVP	V2 - MUX Integration Mapping	CONSCIOUSNESS-TRANSFORM: Learning Patterns (Silent → Conscious)
+637	CLOSED	MVP	V2 - MUX Integration Mapping	CONSCIOUSNESS-TRANSFORM: Settings/Auth (System → Conscious)
+638	CLOSED	MVP	I1 - MUX Interaction	CONSCIOUSNESS-TRANSFORM: HTML Templates (Static → Conscious)
+639	CLOSED	MVP	I1 - MUX Interaction	CONSCIOUSNESS-TRANSFORM: Onboarding flow copy (setup.html)
+640	CLOSED	MVP	I1 - MUX Interaction	CONSCIOUSNESS-TRANSFORM: Confirmation dialogs system-wide
+641	CLOSED	MVP	I1 - MUX Interaction	CONSCIOUSNESS-TRANSFORM: Session timeout modal
+642	CLOSED	MVP	I1 - MUX Interaction	CONSCIOUSNESS-TRANSFORM: Centralize toast message system (JS-side)
+643	CLOSED	MVP	I1 - MUX Interaction	CONSCIOUSNESS-TRANSFORM: Form validation messages
+644	CLOSED	MVP	A30 - Alpha round 3 testing - setup	BUG-ALPHA-DOCKER: docker-compose failure not detected in alpha-setup.sh
+645	CLOSED	MVP	A30 - Alpha round 3 testing - setup	BUG-ALPHA-RACE: First-load 404 due to browser opening before server ready
+646	CLOSED	MVP	A30 - Alpha round 3 testing - setup	BUG-ALPHA-TOAST: Toast was missing from setup
+647	CLOSED	MVP	I1 - MUX Interaction	TRUST-LEVELS-1: Core Infrastructure (Domain Models & Service)
+648	CLOSED	MVP	I1 - MUX Interaction	TRUST-LEVELS-2: Integration (Intent Pipeline & ProactivityGate)
+649	CLOSED	MVP	I1 - MUX Interaction	TRUST-LEVELS-3: Discussability (TrustExplainer & Intent Handlers)
 650	OPEN	Fast Follow		FUTURE-CONSCIOUSNESS: Settings Reset confirmation pattern
 651	OPEN	Fast Follow		FUTURE-CONSCIOUSNESS: Account Deletion confirmation pattern
-652	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Settings disconnect confirmations
-653	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Learning dashboard clear data confirmation
-654	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Button labels standardization (Delete → Remove)
-655	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Settings pages empty states
-656	CLOSED	MVP		CONSCIOUSNESS-TRANSFORM: Validation messages (required → needs)
-657	CLOSED	MVP		MEM-ADR054-P1: Core Memory Infrastructure
-658	CLOSED	MVP		WORKSPACE-DETECTION: Context switch detection
-659	CLOSED	MVP		WORKSPACE-NAVIGATION: Graceful navigation language
-660	CLOSED	MVP		WORKSPACE-ISOLATION: Context boundary rules
-661	CLOSED	MVP		WORKSPACE-MEMORY: Context-relevant memory retrieval
-662	CLOSED	MVP		MEM-ADR054-P2: Greeting Context Service
-663	CLOSED	MVP		MEM-ADR054-P3: User History Enhancements
-664	CLOSED	MVP		MEM-ADR054-P4: Memory Integration
-665	CLOSED	MVP		COMPOSTING-MODELS: ExtractedLearning and CompostingTrigger types
-666	CLOSED	MVP		COMPOSTING-BIN: Staging area for objects awaiting decomposition
-667	CLOSED	MVP		COMPOSTING-PIPELINE: Wire Extractor to InsightJournal
-668	CLOSED	MVP		COMPOSTING-SCHEDULE: Filing dreams scheduler
-670	CLOSED	MVP		MUX-WIRE: Service-to-Interface Integration Epic
-671	CLOSED	MVP		MUX-WIRE-DISCOVERY: Add 'Help' to DISCOVERY patterns
-672	CLOSED	MVP		MUX-WIRE-PROJECTS-PAGE: Fix /projects page data flow
-673	CLOSED	MVP		MUX-WIRE-TRUST: Add intent patterns + handler for TrustService
-674	CLOSED	MVP		MUX-WIRE-MEMORY: Add intent patterns + handler for MemoryService
-675	CLOSED	MVP		MUX-WIRE-PORTFOLIO: Add intent patterns + handler for PortfolioService
-676	CLOSED	MVP		MUX-WIRE-WORKFLOW-MSG: Remove spurious 'Starting workflow...' messages
-677	CLOSED	MVP		TRUST-FLOOR: Enforce Stage 2 floor once earned
-678	CLOSED	MVP		TRUST-COMPLAINT-FLOOR: Explicit complaint triggers immediate Stage 2 regression
-679	CLOSED	MVP		TRUST-SOFT-REGRESSION: Stage 4→3 soft regression detection
-680	CLOSED	MVP		TRUST-CALIBRATION-DOCS: Add threshold calibration note to code
-681	CLOSED	MVP		TEST-FAILURE: document_update_queries routing to PORTFOLIO instead of QUERY
-682	CLOSED	MVP		MUX-WIRE-USERNAME: Fix username display in header
+652	CLOSED	MVP	I1 - MUX Interaction	CONSCIOUSNESS-TRANSFORM: Settings disconnect confirmations
+653	CLOSED	MVP	I1 - MUX Interaction	CONSCIOUSNESS-TRANSFORM: Learning dashboard clear data confirmation
+654	CLOSED	MVP	I1 - MUX Interaction	CONSCIOUSNESS-TRANSFORM: Button labels standardization (Delete → Remove)
+655	CLOSED	MVP	I1 - MUX Interaction	CONSCIOUSNESS-TRANSFORM: Settings pages empty states
+656	CLOSED	MVP	I1 - MUX Interaction	CONSCIOUSNESS-TRANSFORM: Validation messages (required → needs)
+657	CLOSED	MVP	I1 - MUX Interaction	MEM-ADR054-P1: Core Memory Infrastructure
+658	CLOSED	MVP	I1 - MUX Interaction	WORKSPACE-DETECTION: Context switch detection
+659	CLOSED	MVP	I1 - MUX Interaction	WORKSPACE-NAVIGATION: Graceful navigation language
+660	CLOSED	MVP	I1 - MUX Interaction	WORKSPACE-ISOLATION: Context boundary rules
+661	CLOSED	MVP	I1 - MUX Interaction	WORKSPACE-MEMORY: Context-relevant memory retrieval
+662	CLOSED	MVP	I1 - MUX Interaction	MEM-ADR054-P2: Greeting Context Service
+663	CLOSED	MVP	I1 - MUX Interaction	MEM-ADR054-P3: User History Enhancements
+664	CLOSED	MVP	I1 - MUX Interaction	MEM-ADR054-P4: Memory Integration
+665	CLOSED	MVP	I1 - MUX Interaction	COMPOSTING-MODELS: ExtractedLearning and CompostingTrigger types
+666	CLOSED	MVP	I1 - MUX Interaction	COMPOSTING-BIN: Staging area for objects awaiting decomposition
+667	CLOSED	MVP	I1 - MUX Interaction	COMPOSTING-PIPELINE: Wire Extractor to InsightJournal
+668	CLOSED	MVP	I1 - MUX Interaction	COMPOSTING-SCHEDULE: Filing dreams scheduler
+670	CLOSED	MVP	I1 - MUX Interaction	MUX-WIRE: Service-to-Interface Integration Epic
+671	CLOSED	MVP	I1 - MUX Interaction	MUX-WIRE-DISCOVERY: Add 'Help' to DISCOVERY patterns
+672	CLOSED	MVP	I1 - MUX Interaction	MUX-WIRE-PROJECTS-PAGE: Fix /projects page data flow
+673	CLOSED	MVP	I1 - MUX Interaction	MUX-WIRE-TRUST: Add intent patterns + handler for TrustService
+674	CLOSED	MVP	I1 - MUX Interaction	MUX-WIRE-MEMORY: Add intent patterns + handler for MemoryService
+675	CLOSED	MVP	I1 - MUX Interaction	MUX-WIRE-PORTFOLIO: Add intent patterns + handler for PortfolioService
+676	CLOSED	MVP	I1 - MUX Interaction	MUX-WIRE-WORKFLOW-MSG: Remove spurious 'Starting workflow...' messages
+677	CLOSED	MVP	P2 - MUX Document Management	TRUST-FLOOR: Enforce Stage 2 floor once earned
+678	CLOSED	MVP	P2 - MUX Document Management	TRUST-COMPLAINT-FLOOR: Explicit complaint triggers immediate Stage 2 regression
+679	CLOSED	MVP	P2 - MUX Document Management	TRUST-SOFT-REGRESSION: Stage 4→3 soft regression detection
+680	CLOSED	MVP	P2 - MUX Document Management	TRUST-CALIBRATION-DOCS: Add threshold calibration note to code
+681	CLOSED	MVP	P2 - MUX Document Management	TEST-FAILURE: document_update_queries routing to PORTFOLIO instead of QUERY
+682	CLOSED	MVP	P1 - MUX Navigation Crisis	MUX-WIRE-USERNAME: Fix username display in header
 683	OPEN	Ongoing	FLYWHEEL - Process improvement	MUX-WIRE-DOD: Update Definition of Done to require interface verification
-684	CLOSED	MVP		MUX-NAV-PLACES: Places as Windows Design
-685	CLOSED	MVP		MUX-LIFECYCLE-OBJECTS: Define lifecycle tracking for all object types
+684	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-NAV-PLACES: Places as Windows Design
+685	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-LIFECYCLE-OBJECTS: Define lifecycle tracking for all object types
 686	OPEN	Fast Follow		MUX-LIFECYCLE-ANIMATIONS: Add transition animations for lifecycle stage changes
-687	CLOSED	MVP		DEFERRED-#427: ADR-049 Two-Tier Intent Architecture Implementation
+687	CLOSED	MVP	P3 - MUX Cross-channel Unity	DEFERRED-#427: ADR-049 Two-Tier Intent Architecture Implementation
 688	OPEN	Fast Follow		POST-MVP: ADR-050 Conversation Graph Phase 1-3 Implementation
 689	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-01-26
 690	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	WIRE-BOUNDARY: Wire BoundaryEnforcer in LLM classifier factory
@@ -547,105 +547,105 @@ issue	state	milestone	sprint	title
 698	OPEN	Dot Releases (Post-MVP)		ADVANCED: Guided Process - Planning Sessions
 699	OPEN	Dot Releases (Post-MVP)		ADVANCED: Guided Process - Feedback Sessions
 700	OPEN	Dot Releases (Post-MVP)		ADVANCED: Guided Process - Pending Clarification Handling
-701	CLOSED	MVP		DOCS: Update glossary with Guided Process terminology
+701	CLOSED	MVP	P3 - MUX Cross-channel Unity	DOCS: Update glossary with Guided Process terminology
 702	OPEN	Dot Releases (Post-MVP)		MUX-LIFECYCLE-NOTIFICATIONS: Backend notification queue for lifecycle transitions
 703	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MUX-LIFECYCLE-UI: Lifecycle indicator integration for object displays
 704	CLOSED	MVP	M3 - Artifact Persistence	MUX-LIFECYCLE-UI-A: Morning Standup lifecycle indicator integration
 707	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MUX-INSIGHT-SURFACING: Implement Insight Surfacing Rules
-708	CLOSED	MVP		MUX-LIFECYCLE-UI-TODOS: Wire lifecycle indicators into Todos view
-709	CLOSED	MVP		MUX-LIFECYCLE-UI-PROJECTS: Wire lifecycle indicators into Projects view
-710	CLOSED	MVP		MUX-WORKITEMS-VIEW: Create Work Items View with Lifecycle
+708	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-LIFECYCLE-UI-TODOS: Wire lifecycle indicators into Todos view
+709	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-LIFECYCLE-UI-PROJECTS: Wire lifecycle indicators into Projects view
+710	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-WORKITEMS-VIEW: Create Work Items View with Lifecycle
 712	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	MUX-DOCUMENT-VIEWER: Create Document Viewer with Lifecycle
 713	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	MUX-DOCUMENTS-LIFECYCLE-UI: Wire Lifecycle to Documents View
 714	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MUX-LISTS-LIFECYCLE-UI: Wire Lifecycle/Staleness to Lists View
 715	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MUX-HOME-CONVERSATIONS-LIFECYCLE: Wire Lifecycle to Home/Conversations
 716	OPEN	Fast Follow	M3 - Artifact Persistence	MUX-FEATURES-VIEW: Create Features View with Lifecycle
-718	CLOSED	MVP		BUG: lifecycle_state columns missing from database tables
-720	CLOSED	MVP		BUG-ALPHA: Race condition on first page load - server drops connection
-721	CLOSED	MVP		BUG-ALPHA: Setup wizard pages missing stylesheet - unstyled appearance
-722	CLOSED	MVP		BUG-ALPHA: First-time user routed to login instead of setup wizard
-723	CLOSED	MVP		BUG-ALPHA: Logout not working - user stays logged in
-724	CLOSED	MVP		BUG-ALPHA: LLM API keys stored per-user but retrieved globally - keys not found
-725	CLOSED	MVP		REGRESSION: Chat refresh doesn't show Piper's messages
-726	CLOSED	MVP		REGRESSION: Sidebar not showing current chat
-727	CLOSED	MVP		Text input triggers browser password autofill
-728	CLOSED	MVP		CRITICAL: Portfolio onboarding never saves projects to database
-729	CLOSED	MVP		History button in navigation does nothing
-730	CLOSED	MVP		Username display shows email prefix instead of actual username
-731	CLOSED	MVP		Fix: Conversations not persisting when typing directly in chat
-732	CLOSED	MVP		Fix: History button trust-gated at wrong level
-733	CLOSED	MVP		Debug: Projects not saving during onboarding
-734	CLOSED	MVP		SEC-MULTITENANCY: Multi-Tenancy Isolation Architecture Implementation
-735	CLOSED	MVP		FINISH-HISTORY-SIDEBAR: Mount and Wire History Sidebar Component
-736	CLOSED	MVP		Bug: Projects table unique constraint is global, not per-user (multi-tenancy)
-737	CLOSED	MVP		BUG: Portfolio onboarding 'yes' response routes to small talk instead of continuing flow
-740	CLOSED	MVP		BUG: Entity Extraction Regex Over-Matching in Context Tracker
-741	CLOSED	MVP		BUG: _store_classification uses wrong Intent attributes (message, session_id)
-742	CLOSED	MVP		Enable LLM tests to load API keys from macOS Keychain
-743	CLOSED	MVP		BUG: test_pm039_patterns fails with ContainerNotInitializedError
-744	CLOSED	MVP		BUG: Todo intent handlers fail when Intent.original_message is empty
-745	CLOSED	MVP		BUG: Todo handlers passed user_id="default" instead of authenticated user UUID
-746	CLOSED	MVP		[TECH-DEBT] Auth context injection for hardcoded user_id values
-747	CLOSED	MVP		TECH-DEBT: Schema drift - DateTime vs timestamptz mismatches
-748	CLOSED	MVP		BUG: Todo operations trigger spurious workflow polling
-749	CLOSED	MVP		BUG: Knowledge graph entity query fails with type mismatch
-750	CLOSED	MVP		[#747-A] Create datetime_utils module with timezone-aware helpers
-751	CLOSED	MVP		[#747-B] Fix DateTime model columns with timezone=True (TDD)
-752	CLOSED	MVP		[#747-C] Replace utcnow() in services/database/ (Group A)
-753	CLOSED	MVP		[#747-D] Replace utcnow() in services/ excluding database/ (Group B)
-754	CLOSED	MVP		[#747-E] Replace utcnow() in web/ and tests/ (Group C)
-755	CLOSED	MVP		[#747-F] Integration testing and cross-validation
-756	CLOSED	MVP		TEST-FIX: test_file_resolver_edge_cases - AmbiguousFileReferenceError logic
-757	CLOSED	MVP		TEST-FIX: test_file_scoring_weights - Score boundary assertion
-758	CLOSED	MVP		TEST-FIX: test_all_plugins_functional - CalendarConfigService.is_configured() signature
-759	CLOSED	MVP		TECH-DEBT: Complete #734 multi-tenancy migration - 12 call sites missing user_id
+718	CLOSED	MVP	P3 - MUX Cross-channel Unity	BUG: lifecycle_state columns missing from database tables
+720	CLOSED	MVP	A30 - Alpha round 3 testing - setup	BUG-ALPHA: Race condition on first page load - server drops connection
+721	CLOSED	MVP	A30 - Alpha round 3 testing - setup	BUG-ALPHA: Setup wizard pages missing stylesheet - unstyled appearance
+722	CLOSED	MVP	A30 - Alpha round 3 testing - setup	BUG-ALPHA: First-time user routed to login instead of setup wizard
+723	CLOSED	MVP	A30 - Alpha round 3 testing - setup	BUG-ALPHA: Logout not working - user stays logged in
+724	CLOSED	MVP	A30 - Alpha round 3 testing - setup	BUG-ALPHA: LLM API keys stored per-user but retrieved globally - keys not found
+725	CLOSED	MVP	A30 - Alpha round 3 testing - setup	REGRESSION: Chat refresh doesn't show Piper's messages
+726	CLOSED	MVP	A30 - Alpha round 3 testing - setup	REGRESSION: Sidebar not showing current chat
+727	CLOSED	MVP	A30 - Alpha round 3 testing - setup	Text input triggers browser password autofill
+728	CLOSED	MVP	A30 - Alpha round 3 testing - setup	CRITICAL: Portfolio onboarding never saves projects to database
+729	CLOSED	MVP	A30 - Alpha round 3 testing - setup	History button in navigation does nothing
+730	CLOSED	MVP	A30 - Alpha round 3 testing - setup	Username display shows email prefix instead of actual username
+731	CLOSED	MVP	A30 - Alpha round 3 testing - setup	Fix: Conversations not persisting when typing directly in chat
+732	CLOSED	MVP	A30 - Alpha round 3 testing - setup	Fix: History button trust-gated at wrong level
+733	CLOSED	MVP	A30 - Alpha round 3 testing - setup	Debug: Projects not saving during onboarding
+734	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	SEC-MULTITENANCY: Multi-Tenancy Isolation Architecture Implementation
+735	CLOSED	MVP	A30 - Alpha round 3 testing - setup	FINISH-HISTORY-SIDEBAR: Mount and Wire History Sidebar Component
+736	CLOSED	MVP	A30 - Alpha round 3 testing - setup	Bug: Projects table unique constraint is global, not per-user (multi-tenancy)
+737	CLOSED	MVP	A30 - Alpha round 3 testing - setup	BUG: Portfolio onboarding 'yes' response routes to small talk instead of continuing flow
+740	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: Entity Extraction Regex Over-Matching in Context Tracker
+741	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: _store_classification uses wrong Intent attributes (message, session_id)
+742	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	Enable LLM tests to load API keys from macOS Keychain
+743	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: test_pm039_patterns fails with ContainerNotInitializedError
+744	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: Todo intent handlers fail when Intent.original_message is empty
+745	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: Todo handlers passed user_id="default" instead of authenticated user UUID
+746	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	[TECH-DEBT] Auth context injection for hardcoded user_id values
+747	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	TECH-DEBT: Schema drift - DateTime vs timestamptz mismatches
+748	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: Todo operations trigger spurious workflow polling
+749	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: Knowledge graph entity query fails with type mismatch
+750	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[#747-A] Create datetime_utils module with timezone-aware helpers
+751	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[#747-B] Fix DateTime model columns with timezone=True (TDD)
+752	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[#747-C] Replace utcnow() in services/database/ (Group A)
+753	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[#747-D] Replace utcnow() in services/ excluding database/ (Group B)
+754	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[#747-E] Replace utcnow() in web/ and tests/ (Group C)
+755	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[#747-F] Integration testing and cross-validation
+756	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	TEST-FIX: test_file_resolver_edge_cases - AmbiguousFileReferenceError logic
+757	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	TEST-FIX: test_file_scoring_weights - Score boundary assertion
+758	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	TEST-FIX: test_all_plugins_functional - CalendarConfigService.is_configured() signature
+759	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	TECH-DEBT: Complete #734 multi-tenancy migration - 12 call sites missing user_id
 763	CLOSED	MVP	M0 - Conversational Glue	GLUE-FOLLOWUP: Follow-up recognition with lens inheritance
 764	CLOSED	MVP	M0 - Conversational Glue	GLUE-MULTIINTENT: Multi-intent handling enhancements
 765	CLOSED	MVP	M0 - Conversational Glue	GLUE-SLOTFILL: Natural slot filling without interrogation
 766	CLOSED	MVP	M0 - Conversational Glue	GLUE-MAINPROJ: Fix "Is that your main project?" repeated question
 767	CLOSED	MVP	M0 - Conversational Glue	GLUE-SOFTINVOKE: Soft workflow invocation from natural language
-768	CLOSED	MVP		AUDIT: Systemic timezone handling - naive datetime.now() vs UTC database values
-769	CLOSED	MVP		BUG: TokenBlacklist missing timezone import causes all tokens to be rejected
-770	CLOSED	MVP		BUG: Setup completion fails with timezone mismatch error
-771	CLOSED	MVP		AUDIT: Schema drift - DateTime(timezone=True) models vs timestamp without time zone columns
-772	CLOSED	MVP		BUG: Slack credentials fail to save during setup (401 Unauthorized)
-773	CLOSED	MVP		Schema drift validator false positive: DateTime vs timestamptz
-774	CLOSED	MVP		BUG: Notion API key placeholder shows outdated prefix (secret_ vs ntn_)
-775	CLOSED	MVP		BUG: No keychain option for Notion API key in setup wizard
-776	CLOSED	MVP		BUG: Notion Validate button has wrong color styling
-777	CLOSED	MVP		PATTERN-SWEEP: 2025-12-24 to 2026-02-04
-778	CLOSED	MVP		BUG: FTUX overlay 'Get started' button does nothing
-780	CLOSED	MVP		BUG: History sidebar calls wrong API endpoint (404)
-781	CLOSED	MVP		BUG: Notion plugin crashes on startup - missing user_id argument
-782	CLOSED	MVP		Test needs update: test_notion_config_loading.py for Issue #734 user_id requirement
-783	CLOSED	MVP		Schema drift: knowledge_nodes.embedding_vector model/db type mismatch
-784	CLOSED	MVP		BUG: Calendar plugin is_configured() crashes - same issue as #781
+768	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	AUDIT: Systemic timezone handling - naive datetime.now() vs UTC database values
+769	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: TokenBlacklist missing timezone import causes all tokens to be rejected
+770	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: Setup completion fails with timezone mismatch error
+771	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	AUDIT: Schema drift - DateTime(timezone=True) models vs timestamp without time zone columns
+772	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: Slack credentials fail to save during setup (401 Unauthorized)
+773	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	Schema drift validator false positive: DateTime vs timestamptz
+774	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: Notion API key placeholder shows outdated prefix (secret_ vs ntn_)
+775	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: No keychain option for Notion API key in setup wizard
+776	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: Notion Validate button has wrong color styling
+777	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	PATTERN-SWEEP: 2025-12-24 to 2026-02-04
+778	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: FTUX overlay 'Get started' button does nothing
+780	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: History sidebar calls wrong API endpoint (404)
+781	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: Notion plugin crashes on startup - missing user_id argument
+782	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	Test needs update: test_notion_config_loading.py for Issue #734 user_id requirement
+783	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	Schema drift: knowledge_nodes.embedding_vector model/db type mismatch
+784	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: Calendar plugin is_configured() crashes - same issue as #781
 785	CLOSED	MVP	M0 - Conversational Glue	History Sidebar shows same data as Conversation List - needs differentiation
 786	CLOSED	MVP	M0 - Conversational Glue	GLUE-HISTORY-DIFF: Differentiate History sidebar from Conversation list
-787	CLOSED	MVP		BUG: Conversation not appearing in sidebar after chat
-788	CLOSED	MVP		BUG: 'Invalid Date' shown in conversation sidebar
-789	CLOSED	MVP		BUG: Piper claims 'no meetings' without calendar connected
+787	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: Conversation not appearing in sidebar after chat
+788	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: 'Invalid Date' shown in conversation sidebar
+789	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: Piper claims 'no meetings' without calendar connected
 791	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-02-09
 792	CLOSED	MVP		DOC: Audit all ADRs for broken internal links
 793	CLOSED	MVP		DOC: Add link integrity checking to weekly docs audit
 794	CLOSED	MVP		DOC: Post-recovery cleanup and review of dev/ tree
-795	CLOSED	MVP		[SETUP] uvloop fails to install on Windows - use PEP 508 environment markers
-796	CLOSED	MVP		[DB] Migration 70847a6596f3 fails - 'features' table does not exist
-797	CLOSED	MVP		[SETUP] Windows CRLF line endings break Docker container startup
-798	CLOSED	MVP		[DB] Schema validation reports 6 mismatches - DateTime vs timestamptz and missing table
-799	CLOSED	MVP		[SETUP] Account creation fails with generic error in web setup wizard
-800	CLOSED	MVP		[DOCS] Update docker-compose to docker compose (modern syntax)
-801	CLOSED	MVP		[DOCS] Quick Start claims 30 seconds but takes 4+ hours - improve time estimates
-802	CLOSED	MVP		[DOCS] Create separate setup paths for running vs developing Piper Morgan
-803	CLOSED	MVP		[DOCS] Clarify that main.py must run inside activated virtual environment
-804	CLOSED	MVP		[SETUP] localhost:8001 doesn't work on Windows, 127.0.0.1:8001 does
-805	CLOSED	MVP		[DOCS] Add pip upgrade step before installing requirements
-806	CLOSED	MVP		[SETUP] Create smoke test script to validate successful installation
-807	CLOSED	MVP		[DOCS] Add instructions for browsing PostgreSQL database directly
-808	CLOSED	MVP		[UX] Error messages should include interpretation and fix suggestions
-809	CLOSED	MVP		[SETUP] alpha-setup.bat fails immediately - batch file structure bug
-810	CLOSED	MVP		[CI] Add Windows to GitHub Actions test matrix
-811	CLOSED	MVP		[SETUP] Create Windows smoke test script
+795	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[SETUP] uvloop fails to install on Windows - use PEP 508 environment markers
+796	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[DB] Migration 70847a6596f3 fails - 'features' table does not exist
+797	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[SETUP] Windows CRLF line endings break Docker container startup
+798	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[DB] Schema validation reports 6 mismatches - DateTime vs timestamptz and missing table
+799	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[SETUP] Account creation fails with generic error in web setup wizard
+800	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[DOCS] Update docker-compose to docker compose (modern syntax)
+801	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[DOCS] Quick Start claims 30 seconds but takes 4+ hours - improve time estimates
+802	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[DOCS] Create separate setup paths for running vs developing Piper Morgan
+803	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[DOCS] Clarify that main.py must run inside activated virtual environment
+804	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[SETUP] localhost:8001 doesn't work on Windows, 127.0.0.1:8001 does
+805	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[DOCS] Add pip upgrade step before installing requirements
+806	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[SETUP] Create smoke test script to validate successful installation
+807	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[DOCS] Add instructions for browsing PostgreSQL database directly
+808	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[UX] Error messages should include interpretation and fix suggestions
+809	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[SETUP] alpha-setup.bat fails immediately - batch file structure bug
+810	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[CI] Add Windows to GitHub Actions test matrix
+811	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[SETUP] Create Windows smoke test script
 812	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-02-16
 816	CLOSED	MVP	M0 - Conversational Glue	Dead-end response patterns in error handling (no forward path)
 817	CLOSED	MVP	M0 - Conversational Glue	In-memory stores keyed by session_id only, not user-scoped
@@ -672,47 +672,47 @@ issue	state	milestone	sprint	title
 835	OPEN	Fast Follow	DIST - Desktop distro	DIST-UPDATE: Auto-update mechanism
 836	OPEN	Fast Follow	DIST - Desktop distro	DIST-INSTALLER: Platform installers
 837	OPEN	Fast Follow	DIST - Desktop distro	DIST-FIRST-RUN: First-run experience
-838	CLOSED	MVP		FORM-UNIFIED: Implement unified formality framework
-839	CLOSED	MVP		BUG: Calendar settings showing connected for fresh alpha account
-840	CLOSED	MVP		BUG: Conversation not appearing in history sidebar
-843	CLOSED	MVP		BUG: Calendar queries fail silently despite passing connection test
-847	CLOSED	MVP		UX: Tip suggests connecting already-connected integrations
-850	CLOSED	MVP		GLUE-SOFTINVOKE: Soft invocation pattern coverage gaps in non-standup workflow groups
-851	CLOSED	MVP		INTENT-COVERAGE: Pre-classifier pattern gaps for GitHub entity types beyond issues
-852	CLOSED	MVP		CONV-CONTEXT-OFFER: Track last offer for contextual continuation
-854	CLOSED	MVP		SYSTEMIC: Cross-Turn State Continuity — user identity and offer state lost between turns
-855	CLOSED	MVP		SYSTEMIC: Intent Pipeline Incompleteness — features wired to some handler paths but not others
-841	CLOSED	MVP		BUG: Slot-filling fails to extract entity name from natural sentence during onboarding
+838	CLOSED	MVP	M0 - Conversational Glue	FORM-UNIFIED: Implement unified formality framework
+839	CLOSED	MVP	M0 - Conversational Glue	BUG: Calendar settings showing connected for fresh alpha account
+840	CLOSED	MVP	M0 - Conversational Glue	BUG: Conversation not appearing in history sidebar
+843	CLOSED	MVP	M0 - Conversational Glue	BUG: Calendar queries fail silently despite passing connection test
+847	CLOSED	MVP	M0 - Conversational Glue	UX: Tip suggests connecting already-connected integrations
+850	CLOSED	MVP	M0 - Conversational Glue	GLUE-SOFTINVOKE: Soft invocation pattern coverage gaps in non-standup workflow groups
+851	CLOSED	MVP	M0 - Conversational Glue	INTENT-COVERAGE: Pre-classifier pattern gaps for GitHub entity types beyond issues
+852	CLOSED	MVP	M0 - Conversational Glue	CONV-CONTEXT-OFFER: Track last offer for contextual continuation
+854	CLOSED	MVP	M0 - Conversational Glue	SYSTEMIC: Cross-Turn State Continuity — user identity and offer state lost between turns
+855	CLOSED	MVP	M0 - Conversational Glue	SYSTEMIC: Intent Pipeline Incompleteness — features wired to some handler paths but not others
+841	CLOSED	MVP	M0 - Conversational Glue	BUG: Slot-filling fails to extract entity name from natural sentence during onboarding
 842	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-02-23
-844	CLOSED	MVP		BUG: Soft invocation not triggering for implied workflow needs (#767)
-845	CLOSED	MVP		BUG: 'Open issues' query classified as projects domain
-846	CLOSED	MVP		BUG: 'Yes' confirmation interpreted as greeting, derailing conversation
-849	CLOSED	MVP		SEC-KEYCHAIN: Comprehensive audit and fix of all non-scoped keychain retrieval paths
+844	CLOSED	MVP	M0 - Conversational Glue	BUG: Soft invocation not triggering for implied workflow needs (#767)
+845	CLOSED	MVP	M0 - Conversational Glue	BUG: 'Open issues' query classified as projects domain
+846	CLOSED	MVP	M0 - Conversational Glue	BUG: 'Yes' confirmation interpreted as greeting, derailing conversation
+849	CLOSED	MVP	M0 - Conversational Glue	SEC-KEYCHAIN: Comprehensive audit and fix of all non-scoped keychain retrieval paths
 853	CLOSED	MVP		INFRA-HOOKS: Enhanced SessionStart hook for session continuity
-859	CLOSED	MVP		FEAT: Project integration CRUD API endpoints
-848	CLOSED	MVP		UX: GitHub connection to projects not surfaced in UI
+859	CLOSED	MVP	M0 - Conversational Glue	FEAT: Project integration CRUD API endpoints
+848	CLOSED	MVP	M0 - Conversational Glue	UX: GitHub connection to projects not surfaced in UI
 857	CLOSED	MVP	M5 - Distribution + Polish	INFRA: Token refresh mechanism for seamless session continuity
-860	CLOSED	MVP		FEAT: Setup wizard — project-repo linking step
-861	CLOSED	MVP		FEAT: Settings page — project integration management
-862	CLOSED	MVP		FEAT: Conversational handler — 'link repo to project'
-863	CLOSED	MVP		FEAT: Portfolio onboarding — ask for repos during project setup
-868	CLOSED	MVP		Fix 90+ failing unit tests from route refactoring and API versioning
-867	CLOSED	MVP		FEAT: GitHub API repo validation for link operations
+860	CLOSED	MVP	M0 - Conversational Glue	FEAT: Setup wizard — project-repo linking step
+861	CLOSED	MVP	M0 - Conversational Glue	FEAT: Settings page — project integration management
+862	CLOSED	MVP	M0 - Conversational Glue	FEAT: Conversational handler — 'link repo to project'
+863	CLOSED	MVP	M0 - Conversational Glue	FEAT: Portfolio onboarding — ask for repos during project setup
+868	CLOSED	MVP	M0 - Conversational Glue	Fix 90+ failing unit tests from route refactoring and API versioning
+867	CLOSED	MVP	M0 - Conversational Glue	FEAT: GitHub API repo validation for link operations
 865	OPEN	Production	PROD-DIST - MCP Marketplace Distribution	REFACTOR: Extract setup wizard into component-based steps
-858	CLOSED	MVP		SPEC: Conversation lifecycle specification
-866	CLOSED	MVP		REFACTOR: Repository as first-class domain entity (M2M with Project)
+858	CLOSED	MVP	M0 - Conversational Glue	SPEC: Conversation lifecycle specification
+866	CLOSED	MVP	M0 - Conversational Glue	REFACTOR: Repository as first-class domain entity (M2M with Project)
 869	CLOSED	MVP		Project configuration IA: Project Detail as primary, Settings as overview
-870	CLOSED	MVP		Flaky test: test_verbosity_gradient asserts non-deterministic text lengths
+870	CLOSED	MVP	M0 - Conversational Glue	Flaky test: test_verbosity_gradient asserts non-deterministic text lengths
 871	CLOSED	MVP		UX-HOME-HEADER: Remove legacy POC header area above chat
-872	CLOSED	MVP		BUG: Planning workflow returns raw error instead of conversational prompt — Action Humanizer gap
-873	CLOSED	MVP		BUG: Workflow status check surfaces raw timeout error to user
-874	CLOSED	MVP		BUG: Issue-related soft invocation returns raw 'API error occurred' to user
-875	CLOSED	MVP		SYSTEMIC: Nov 2025 refactor (#385) converted IntentService business errors to HTTP 422, bypassing all friendly error layers
-876	CLOSED	MVP		TECH-DEBT: 56 raw error messages in intent_service.py leak technical/exception text to users
+872	CLOSED	MVP	M0 - Conversational Glue	BUG: Planning workflow returns raw error instead of conversational prompt — Action Humanizer gap
+873	CLOSED	MVP	M0 - Conversational Glue	BUG: Workflow status check surfaces raw timeout error to user
+874	CLOSED	MVP	M0 - Conversational Glue	BUG: Issue-related soft invocation returns raw 'API error occurred' to user
+875	CLOSED	MVP	M0 - Conversational Glue	SYSTEMIC: Nov 2025 refactor (#385) converted IntentService business errors to HTTP 422, bypassing all friendly error layers
+876	CLOSED	MVP	M0 - Conversational Glue	TECH-DEBT: 56 raw error messages in intent_service.py leak technical/exception text to users
 877	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-03-02
-878	CLOSED	MVP		Extraneous workflow polling on unhandled action fallbacks
-879	CLOSED	MVP		GitHubIntegrationRouter.create_issue() missing assignees parameter
-880	CLOSED	MVP		Calendar credential setup fails with 401 Unauthorized
+878	CLOSED	MVP	M0 - Conversational Glue	Extraneous workflow polling on unhandled action fallbacks
+879	CLOSED	MVP	M0 - Conversational Glue	GitHubIntegrationRouter.create_issue() missing assignees parameter
+880	CLOSED	MVP	M0 - Conversational Glue	Calendar credential setup fails with 401 Unauthorized
 881	CLOSED	MVP		ARCH-LAZY-WORKFLOW: Defer workflow creation to async handlers
 882	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-03-09
 883	CLOSED	MVP		ARCH-LAZY-WORKFLOW: Defer Workflow Creation to Async Handlers
@@ -756,13 +756,13 @@ issue	state	milestone	sprint	title
 922	CLOSED	MVP		BUG: Conversation continuity broken — affirmations and follow-ups misrouted to floor
 923	CLOSED	MVP		Capability awareness gap: three disconnected sources of truth for what Piper can do
 924	CLOSED	MVP		UX: Chat avatar images — dolphin for Piper, colored initial for user
-925	CLOSED	MVP		Floor inversion Phase 3-4: STATUS/PRIORITY floor-first + greeting refactor
+925	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Floor inversion Phase 3-4: STATUS/PRIORITY floor-first + greeting refactor
 931	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-03-23
 926	CLOSED	MVP	M1 - MVP Foundation	M1 MVP Foundation Sprint Completion Gate
-927	CLOSED	MVP		E2E: Task lifecycle smoke tests through /api/v1/intent
-928	CLOSED	MVP		E2E: Automated canonical conversation suite
-929	CLOSED	MVP		AAXT: Golden scenarios with DeepEval LLM-as-judge
-930	CLOSED	MVP		CI: Integration for E2E conversations + AAXT nightly
+927	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	E2E: Task lifecycle smoke tests through /api/v1/intent
+928	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	E2E: Automated canonical conversation suite
+929	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	AAXT: Golden scenarios with DeepEval LLM-as-judge
+930	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CI: Integration for E2E conversations + AAXT nightly
 932	CLOSED	MVP	M5 - Distribution + Polish	SEC: HIBP integration stub — key leak detection returns false safe result
 933	CLOSED	MVP	M5 - Distribution + Polish	SEC: API key validation disabled for alpha — no re-enable plan
 934	CLOSED	MVP		INVESTIGATE: services/api/task_management.py — orphaned stub file with ~50 TODOs
@@ -800,78 +800,78 @@ issue	state	milestone	sprint	title
 969	CLOSED	MVP		Two GitHub adapter errors surfaced by M1 canonical retest (Q41, Q60)
 970	CLOSED	MVP		LLM access consolidation: rewire callers to ServiceRegistry (#947 Phase 2)
 971	CLOSED	MVP		Decide: keep, absorb, or delete Pattern-012 LLM adapter infrastructure (#947 Phase 3)
-972	CLOSED	MVP		MEM-TEMPORAL: Add temporal validity fields to memory file frontmatter
+972	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MEM-TEMPORAL: Add temporal validity fields to memory file frontmatter
 973	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	MEM-CACHE-AUDIT: Document stable vs dynamic layers in context assembler
-974	CLOSED	MVP		MEM-EVAL: Session-end memory evaluation question in wrap-up checklist
-975	CLOSED	MVP		MEM-DELTA: 'Delta since last session' context injection at session start
+974	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MEM-EVAL: Session-end memory evaluation question in wrap-up checklist
+975	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MEM-DELTA: 'Delta since last session' context injection at session start
 977	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-04-13
 978	CLOSED	MVP		ROLE-HEALTH-CHECK: 2026-04-13
 979	CLOSED	MVP		DEP: Haiku 3 model retirement — update references before April 19
 980	CLOSED	MVP		HYGIENE: Clean up orphan script tests/test_adapter_final.py causing collection error
 981	CLOSED	MVP		DEVEX: Linter reverts intentional import removals during large deletions
 982	CLOSED	MVP		FLY-AUDIT: Reconcile Excellence Flywheel definition across documentation
-983	CLOSED	MVP		CONTEXT-BLOCKED: Identify and surface blocked items in floor context
-984	CLOSED	MVP		CONTEXT-CACHE: Redis TTL caching for ContextAssembler external calls
-986	CLOSED	MVP		CONTEXT-ACTIVITY: Recent activity feed across integrations for floor context
-985	CLOSED	MVP		CONTEXT-SPRINT: Surface GitHub sprint/milestone data in floor context
+983	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CONTEXT-BLOCKED: Identify and surface blocked items in floor context
+984	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CONTEXT-CACHE: Redis TTL caching for ContextAssembler external calls
+986	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CONTEXT-ACTIVITY: Recent activity feed across integrations for floor context
+985	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CONTEXT-SPRINT: Surface GitHub sprint/milestone data in floor context
 987	CLOSED	MVP		GEMINI-QUOTA: Document / decide paid-tier vs free-tier for Gemini
 988	CLOSED	MVP		GEMINI-JSON: Enable structured JSON output mode for classifier task
-989	CLOSED	MVP		CANONICAL-FIXTURES: Warmed-up user fixture for canonical retest
+989	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CANONICAL-FIXTURES: Warmed-up user fixture for canonical retest
 990	CLOSED	MVP		HYGIENE-MIDDLEWARE: Remove deprecated EthicsBoundaryMiddleware
 991	CLOSED	MVP		ETHICS-RESPONSE-GATE: Decide on post-generation floor content check
-992	CLOSED	MVP		ETHICS-ACTIVATE: Turn on ENABLE_ETHICS_ENFORCEMENT with validation + CXO voice
-993	CLOSED	MVP		SCORER-VOCABULARY: Adopt AAXT six-failure-mode taxonomy for DeepEval scorer output
-994	CLOSED	MVP		TEST-PATHOLOGICAL-TAGS: Tag canonical retest queries as expected-pass vs known_pathological
-995	CLOSED	MVP		FABRICATION-PROBES: Standalone absence probe set (5-10 probes across 5 categories)
+992	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	ETHICS-ACTIVATE: Turn on ENABLE_ETHICS_ENFORCEMENT with validation + CXO voice
+993	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	SCORER-VOCABULARY: Adopt AAXT six-failure-mode taxonomy for DeepEval scorer output
+994	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	TEST-PATHOLOGICAL-TAGS: Tag canonical retest queries as expected-pass vs known_pathological
+995	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	FABRICATION-PROBES: Standalone absence probe set (5-10 probes across 5 categories)
 996	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-04-20
 997	CLOSED	MVP		MOCK-SWEEP: Scoped audit of mock_/fallback patterns in services/ (86 hits)
 998	CLOSED	MVP		COMPOSE-UI-V1: editorial compose web UI (FastAPI /admin/compose)
-1006	CLOSED	MVP		Pre-existing test failure: audit_transparency datetime offset comparison
-1007	CLOSED	MVP		audit_transparency: security redaction not applied to PII strings
-1008	CLOSED	MVP		transparency API: 'object list cannot be used in await' on get_user_audit_log endpoint
+1006	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Pre-existing test failure: audit_transparency datetime offset comparison
+1007	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	audit_transparency: security redaction not applied to PII strings
+1008	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	transparency API: 'object list cannot be used in await' on get_user_audit_log endpoint
 1014	CLOSED	MVP		ARCH-CLEANUP: AuthMiddleware exclude_paths refactor — group 34 entries by category
-1018	CLOSED	MVP		ARCH-CLEANUP: Persist ethics audit log to durable storage (currently in-memory only)
+1018	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	ARCH-CLEANUP: Persist ethics audit log to durable storage (currently in-memory only)
 1027	CLOSED	MVP		Re-point LLMModel.CLAUDE_OPUS to Opus 4 when Anthropic ships it
 1028	OPEN	Production	PROD-TECHDEBT - General Cleanup	PERPLEXITY broader sweep — 4 files still reference perplexity beyond the LLMProvider enum
-1029	CLOSED	MVP		Wire APIUsageTracker into LLMClient (cost tracking from sync call sites)
-1030	CLOSED	MVP		MUX-INSIGHT-PULL: Pull-mode insight surfacing (user-initiated query)
-1031	CLOSED	MVP		MUX-INSIGHT-PASSIVE: Passive-mode insight surfacing (Insight Journal navigation)
-1032	CLOSED	MVP		MUX-INSIGHT-PUSH: Push-mode insight surfacing (Piper-initiated, Stage 3+)
-1033	CLOSED	MVP		MUX-COMPOSTED-EXPERIENCE: COMPOSTED state surfacing + 'filing dreams' framing
-1034	CLOSED	MVP		STANDUP-STRUCTURED-WORKITEMS: Carry structured WorkItems through standup API response
-1035	CLOSED	MVP		MUX-COMPOSTING-ACTIVATION: Wire CompostingScheduler into startup + persist InsightJournal
+1029	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Wire APIUsageTracker into LLMClient (cost tracking from sync call sites)
+1030	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MUX-INSIGHT-PULL: Pull-mode insight surfacing (user-initiated query)
+1031	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MUX-INSIGHT-PASSIVE: Passive-mode insight surfacing (Insight Journal navigation)
+1032	CLOSED	MVP	M4 - Trust + Learning	MUX-INSIGHT-PUSH: Push-mode insight surfacing (Piper-initiated, Stage 3+)
+1033	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MUX-COMPOSTED-EXPERIENCE: COMPOSTED state surfacing + 'filing dreams' framing
+1034	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	STANDUP-STRUCTURED-WORKITEMS: Carry structured WorkItems through standup API response
+1035	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MUX-COMPOSTING-ACTIVATION: Wire CompostingScheduler into startup + persist InsightJournal
 1036	CLOSED	MVP		LISTS-LISTING-WIRE: Wire /api/v1/lists GET to ItemService
 1037	CLOSED	MVP		MUX-INSIGHT-TOPIC-MAPPING: Wire topic filter on Insight Journal (post-MVP)
-1038	CLOSED	MVP		1018-TESTS-SQLITE-COMPAT: #1018 repository unit tests fail to render to SQLite
-1039	CLOSED	MVP		INTENT-COVERAGE-A: Pre-classifier + handlers for GitHub milestones + releases
-1040	CLOSED	MVP		INTENT-COVERAGE-B: Pre-classifier + handlers for GitHub labels + branches
+1038	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	1018-TESTS-SQLITE-COMPAT: #1018 repository unit tests fail to render to SQLite
+1039	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	INTENT-COVERAGE-A: Pre-classifier + handlers for GitHub milestones + releases
+1040	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	INTENT-COVERAGE-B: Pre-classifier + handlers for GitHub labels + branches
 1041	CLOSED	MVP		M2-WIRE-TRIAGE: WIRE-* issues #690-695 superseded-by-floor-migration triage
-1042	CLOSED	MVP		PRE-1039: Remove hardcoded 'piper-morgan-product' repo default in GitHub adapter + handlers
+1042	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	PRE-1039: Remove hardcoded 'piper-morgan-product' repo default in GitHub adapter + handlers
 1043	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	En-masse copy review pass for new M2e handlers + standup prompts
 1044	CLOSED	MVP		FOLLOWUP: Local-git 'what branch are we on?' query handler
 1045	OPEN	Fast Follow		POST-MVP: Project Detail Activity tab — design + content
-1046	CLOSED	MVP		BUG: tests/intent_service/test_action_mapper.py::test_mapping_count drift (expects 26, gets 31)
-999	CLOSED	MVP		Owner-review: services/mcp/consumer/ fallback paths (from #997 sweep)
-1000	CLOSED	MVP		Owner-review: services/auth/ fallback paths (from #997 sweep)
+1046	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	BUG: tests/intent_service/test_action_mapper.py::test_mapping_count drift (expects 26, gets 31)
+999	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Owner-review: services/mcp/consumer/ fallback paths (from #997 sweep)
+1000	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Owner-review: services/auth/ fallback paths (from #997 sweep)
 1001	OPEN	Production	PROD-TECHDEBT - General Cleanup	Owner-review: services/publishing/publisher.py retry/fallback (from #997 sweep)
 1002	CLOSED	MVP		Pre-classifier keyword-match dispatch shadows ethics floor for handler-adjacent input
 1003	CLOSED	MVP		Phase E S1 r2: Harassment-vector input classified as GUIDANCE intent; ethics infrastructure did not engage
 1004	CLOSED	MVP		BoundaryEnforcer: replace substring detector with semantic LLM detector (Fix B+C1, sibling to #1002)
-1005	CLOSED	MVP		Pre-existing test failure: boundary_enforcer.py treats adaptive_enhancement as list, expects dict
+1005	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Pre-existing test failure: boundary_enforcer.py treats adaptive_enhancement as list, expects dict
 1009	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-04-27
-1010	CLOSED	MVP		ARCH-CLEANUP: Refactor knowledge_graph_service.py to domain layer; remove legacy boundary_enforcer.py
+1010	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	ARCH-CLEANUP: Refactor knowledge_graph_service.py to domain layer; remove legacy boundary_enforcer.py
 1011	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	ARCH-DESIGN: Slash-command dispatch precedence — post-MVP design decision needed
 1012	CLOSED	MVP		ARCH-CLEANUP: Small dead-code sweep — phantom import, unused tracker, stub provider, enum cosmetics
 1013	CLOSED	MVP		ARCH-CLEANUP: /auth and /setup route prefixes violate /api/v1/ convention (CLAUDE.md)
-1015	CLOSED	MVP		ARCH: Complete ADR-051 RequestContext migration — finish Phase 2/3 partial adoption
-1016	CLOSED	MVP		ARCH-DESIGN: LLM-touch boundary principle — establish unified architectural posture across all LLM-touching surfaces
-1017	CLOSED	MVP		ARCH-DESIGN: Post-generation content filter for LLM outputs reaching users (PII/safety)
-1019	CLOSED	MVP		ARCH-CLEANUP: adaptive_boundaries scaffolding is alive but inert — complete or remove
-1020	CLOSED	MVP		ARCH-DESIGN: Per-task LLM output validation in OrchestrationEngine workflows (no schema gates between steps)
-1021	CLOSED	MVP		ARCH-CLEANUP: UserHistoryService Layer 3 (long-term memory) has no DB backend
+1015	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	ARCH: Complete ADR-051 RequestContext migration — finish Phase 2/3 partial adoption
+1016	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	ARCH-DESIGN: LLM-touch boundary principle — establish unified architectural posture across all LLM-touching surfaces
+1017	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	ARCH-DESIGN: Post-generation content filter for LLM outputs reaching users (PII/safety)
+1019	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	ARCH-CLEANUP: adaptive_boundaries scaffolding is alive but inert — complete or remove
+1020	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	ARCH-DESIGN: Per-task LLM output validation in OrchestrationEngine workflows (no schema gates between steps)
+1021	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	ARCH-CLEANUP: UserHistoryService Layer 3 (long-term memory) has no DB backend
 1025	CLOSED	MVP		PATTERN-SWEEP: 2026-03-17 to 2026-04-28
-1026	CLOSED	MVP		Pre-existing test failure: tests/orchestration/test_multi_agent_coordinator.py::TestTaskDecomposer::test_decompose_moderate_task
-1047	CLOSED	MVP		M2D-UAT: Manual browser-smoke + a11y + performance verification of M2d shipped surfaces
+1026	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Pre-existing test failure: tests/orchestration/test_multi_agent_coordinator.py::TestTaskDecomposer::test_decompose_moderate_task
+1047	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	M2D-UAT: Manual browser-smoke + a11y + performance verification of M2d shipped surfaces
 1048	CLOSED	MVP		MUX-INSIGHT-STAGE-VISUAL: Decide stage-specific visual treatment for Insight Journal
 1049	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-05-04
 1050	CLOSED	MVP		STANDUP-ACTIVE-REPOS: full active-repos resolution for morning standup (per-project + per-user)
@@ -889,8 +889,8 @@ issue	state	milestone	sprint	title
 1077	CLOSED	MVP		ROLE-HEALTH-CHECK: 2026-05-11
 1078	CLOSED	MVP		Refresh endpoint cookie-clearing silently dropped by friendly-error HTTPException handler
 1079	CLOSED	MVP		DISCOVERED (#1070): /standup 3-part flow does not maintain conversation state across turns
-1080	CLOSED	MVP		NOTION-WRITE: Activate update_document capability (#304 follow-up, demand-gated)
-1081	CLOSED	MVP		NOTION-SLACK-XREF: Verify Slack→Notion cross-references render correctly post-#304 activation (demand-gated)
+1080	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	NOTION-WRITE: Activate update_document capability (#304 follow-up, demand-gated)
+1081	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	NOTION-SLACK-XREF: Verify Slack→Notion cross-references render correctly post-#304 activation (demand-gated)
 1082	CLOSED	MVP		NOTION-TEST-REWRITE: Rewrite test_notion_spatial_integration.py against notion-client library (#304 follow-up)
 1083	CLOSED	MVP		TOOL-ISSUE-CHECKBOX-LINT: Pre-commit hook to enforce close-issue-properly skill
 1084	CLOSED	MVP		Q25 HTTP-path fails despite pre-classifier returning STATUS correctly (#1068 follow-up)
@@ -1022,7 +1022,7 @@ issue	state	milestone	sprint	title
 1196	CLOSED	MVP	M3 - Artifact Persistence	Consciousness morning-greeting fabricates calendar access ('took a look at your calendar... clear day ahead') when unconnected + 'looking at looking at' double-phrasing
 1197	CLOSED	MVP	M3 - Artifact Persistence	Piper's floor voice uses banned sycophancy ('You're absolutely right to call that out') — anti-sycophancy constraint missing from floor prompt
 1198	CLOSED	MVP	M3 - Artifact Persistence	Robot-script audit: 5+ ungated false promises ('I'll remember', 'I'll keep an eye on things') + fix-shape for the honesty guardrail
-1199	CLOSED	MVP		RECONNECT-WS1: Unify the two default-repo/preference stores (github_preferences.json vs in-memory UserPreferenceManager) — child of #1192
+1199	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS1: Unify the two default-repo/preference stores (github_preferences.json vs in-memory UserPreferenceManager) — child of #1192
 1200	CLOSED	MVP	M3 - Artifact Persistence	Q25 'What's the next milestone?' — the standing canonical failure: investigate routing vs stale expectation (known-failures-are-tasks)
 1201	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS6: Slack inbound setup has no product path — Socket Mode/app-token step is invisible, manual, dev-mediated (connect-UX gap, child of the #1192 family)
 1202	OPEN	Production	PROD-DOCS - Documents/Files/Artifacts	FILES-FOLLOW-ON: G65 artifact persistence (export/share/versions) + tagging full release — split from #313
@@ -1055,8 +1055,8 @@ issue	state	milestone	sprint	title
 1229	CLOSED	MVP		RECONNECT-WS2: Unified connector credential model (one convention, typed OAuth-app vs token)
 1230	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS3: Connector resolution correctness — fix resolve_repo + dead default-project path
 1231	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS4: Honest-degradation connector contract (never silently empty)
-1232	CLOSED	MVP		RECONNECT-WS5: MCP-consumer connector contract (Connector protocol; Arch/ADR output)
-1233	CLOSED	MVP		RECONNECT-WS9: Identity unification (one human, many connector identities)
+1232	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS5: MCP-consumer connector contract (Connector protocol; Arch/ADR output)
+1233	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS9: Identity unification (one human, many connector identities)
 1236	CLOSED	MVP	D1 - Beta design quality	RADAR: entities-surfacing slot-swap in the history sidebar (Layer-2) — build to CXO mockup (#1090)
 1234	CLOSED	MVP	D1 - Beta design quality	Reference resolver: 2 pre-existing test failures (context-window limiting + definite-reference accuracy)
 1235	CLOSED	MVP		Conversation /turns display endpoint returns OLDEST 50 turns (no offset/pagination) for long conversations
@@ -1106,7 +1106,7 @@ issue	state	milestone	sprint	title
 1284	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[DESIGN] 'Your stuff' nav group — nomenclature (CXO + Comms) + maybe a parent hub route
 1289	CLOSED	Production		Retire the hollow MorningStandupWorkflow (#1269 P6 — the fabricating /generate path)
 1285	OPEN	MVP	Beta Blockers - Hard Gates Only	BUG: naive/aware datetime subtraction in conversation_manager.transition_state (standup COMPLETE path)
-1286	CLOSED	Production		[D2] Design-system foundation: grid + baseline typographic rhythm + padding/margin/tiling (mobile-first, progressive-rendering)
+1286	CLOSED	Production	RECONNECT - Connector Refactor	[D2] Design-system foundation: grid + baseline typographic rhythm + padding/margin/tiling (mobile-first, progressive-rendering)
 1287	OPEN	Production	PROD-TECHDEBT - General Cleanup	Tech-debt: triage + remove unwired Multi-Agent Coordinator code (superseded #118 artifacts)
 1288	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[DESIGN] Standup content curation + home morning-card (#1269 follow-on, post-beta)
 1290	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[D2][DESIGN] Nav menu structure — work/learning/insights/settings top-level + a Settings submenu? (PM question for CXO)
@@ -1127,7 +1127,7 @@ issue	state	milestone	sprint	title
 1305	OPEN	MVP	Beta Blockers - Hard Gates Only	SEC-ENCRYPT: encrypt PII-bearing JSON/JSONB structured columns (deferred from #358-B)
 1306	OPEN	MVP	Beta Blockers - Hard Gates Only	SEC-ENCRYPT: encrypt uploaded file content at rest (storage-layer; deferred from #358-B)
 1307	CLOSED	MVP	M5 - Distribution + Polish	SEC: admin_compose is an auth-exempt WRITABLE admin UI with no env-gate (only Caddy protects it)
-1308	CLOSED	MVP		SEC-LINT: enforce every auth-exempt route is read-only / env-gated / justified (make #1307's class impossible)
+1308	CLOSED	MVP	RECONNECT - Connector Refactor	SEC-LINT: enforce every auth-exempt route is read-only / env-gated / justified (make #1307's class impossible)
 1309	CLOSED	MVP		[BUG] Stale test: test_onboarding_handler_flow expects COMPLETE but flow now ends at GATHERING_REPOS
 1310	CLOSED	MVP		mail-send.sh leaves uncommitted residue on the worktree branch (collides with later merges)
 1311	CLOSED	MVP		SECURITY: Redis 6379 publicly exposed on alpha Droplet — FIXED (localhost bind)
@@ -1160,6 +1160,6 @@ issue	state	milestone	sprint	title
 1338	CLOSED	MVP		RECONNECT-WS7: Slack user-token request path + migrate _fetch_slack_mentions_items onto the router (deferred from #1110)
 1339	CLOSED	MVP	RECONNECT - Connector Refactor	Slack webhook _get_oauth_authorization_url calls generate_authorization_url without user_id (latent ValueError)
 1340	OPEN	Production	PROD-DIST - MCP Marketplace Distribution	RECONNECT: fold Anthropic-key capture into /connect onboarding (deferred from #1185 Phase 3, ties #1300)
-1341	CLOSED	MVP		Quarterly Maintenance Sweep - Q3 2026
+1341	CLOSED	MVP	Q - Recurring Audits	Quarterly Maintenance Sweep - Q3 2026
 1342	CLOSED	MVP		RECONNECT-WS3 Phase 2: connector-agnostic target resolution (generalize resolve_repo; Arch-gated)
 1364	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	Slack: port to #1232 Connector contract (status() needs live Socket Mode state, not just credential check)
