@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/06/2026-07-06-0701-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `a833a327`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-06 07:15 PT (Fire 10/START Jul 6; batch 1 mapping complete; 4 memos sent; cron re-armed `a833a327`)
+**Last updated**: 2026-07-06 10:15 PT (Fire 11; usage-cap trust-lens PASS sent; ADR-075 OQ-3 trust-lens sent; MCPB briefing ack sent; sapient-trust 0 open)
 
 ---
 
@@ -66,7 +66,7 @@
 
 ## Standing cycle responsibility
 
-- Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). 2026-06-19 poll: **0 open** (clean). 2026-06-25 poll: **0 open** (clean). 2026-07-03 poll: **0 open** (clean; 4th consecutive). Next poll: **~2026-07-10**.
+- Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). 2026-06-19 poll: **0 open** (clean). 2026-06-25 poll: **0 open** (clean). 2026-07-03 poll: **0 open** (clean; 4th consecutive). 2026-07-06 poll: **0 open** (clean; 5th consecutive). Next poll: **~2026-07-13**.
 
 ## Watch / trigger-bound
 
