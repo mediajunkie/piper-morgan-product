@@ -41,3 +41,19 @@
 - Sent MCPB briefing to Lead (5 questions answered): source lives in skunkworks, v0.1.9 manual dist, MCPB already points at alpha.pipermorgan.ai (not localhost), #1278 unbuilt, /api/v1/intent is Lead's surface; security finding surfaced (Caddy removal broke connect() credential model)
 - CC'd PM on briefing (Lead had cc'd PM on original request)
 - PA inbox now clear
+
+### Session Wrap (closed July 6 retrospectively)
+
+**Carry-forward to July 6**:
+- #1360: API key gate on /api/v1/intent — PA-owned, pending clean-machine test result
+- #1351: Session isolation (per-install UUID in server.py) — beta blocker for MCPB, in skunkworks
+- Leadership MCPB/skunkworks briefing memo — committed to within 2 sessions of Jul 4
+- MCP server.py migration from skunkworks — pending PM authorization
+- PM sync regression — PM noted agents used to help keep local main synced; filed for fix Jul 6
+
+**Memory & briefing surfaces referenced this session**:
+- Referenced: BRIEFING-CURRENT-STATE (stale — noted but not updated), decisions.log (appended MCP security posture), ALPHA_QUICKSTART (version check), glossary (MCP/MCPB/BYOC terminology)
+- Loaded but not referenced: ADR index, pattern families
+- Wanted but not found: clean-machine test results (PM was going to test Jul 4 evening; no report received)
+
+<!-- DAY-CLOSED: 2026-07-04 -->
