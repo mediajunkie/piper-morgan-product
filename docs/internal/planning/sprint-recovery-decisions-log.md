@@ -42,9 +42,13 @@ Grouped by destination sprint. Each of these overrode either no available eviden
 
 **C1 (Craft Pride - CRAFT)**: #231 — notable: this wasn't even one of the two candidate sprints the closedAt-calendar method had offered (A2 or A6); PM's memory identified a third option entirely.
 
-**I1 - MUX Interaction**: #539 — notable: title text alone ("Integration Test button uses MCP instead of OAuth token") superficially resembles an unrelated A12-era issue; PM's memory disambiguated correctly where a title-matching approach would likely have guessed wrong.
+**I1 - MUX Interaction**: #539 — notable: title text alone ("Integration Test button uses MCP instead of OAuth token") superficially resembles an unrelated A12-era issue; PM's memory disambiguated correctly where a title-matching approach would likely have guessed wrong. #639 also I1.
 
 **PROD-INFRA - Infra & Security Hardening**: #1291 (closed as a duplicate of #1257, which is itself in PROD-INFRA; assigned for record-completeness rather than left blank, per PM's call)
+
+## Process correction (2026-07-06, same session)
+
+The first artifact refresh after this round of decisions used a hand-typed list of "resolved today" issue numbers to filter the remaining pool, rather than checking the live board directly. That list was incomplete (missed #1141, #1206, #164, #146, #147, #148, #1180, #1204, #1222, #481, #270 — all of which were genuinely already applied and verified, just not included in the removal list), so the refreshed artifact incorrectly still showed 35 remaining when the true number was 22. PM caught this by noticing already-reported issues still appearing as unresolved. Fixed by rebuilding the remaining-issue list from a fresh live query against the board instead of a manually maintained set — the artifact-refresh process now checks ground truth directly rather than tracking its own memory of past mutations, which can't drift the same way.
 
 **Confirmed correctly sprint-less (Fast Follow milestone, future work, not a gap)**: #244, #272, #338, #104, #546, #568
 
