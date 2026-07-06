@@ -35,7 +35,7 @@ This means the recovery method has to vary by sprint type, and every finding nee
 
 **Tier 6 — Domain-authority consultation.** Where the project's own real cohort agents have standing authority PA's June 27 memo already named: CXO on the D1/D2 boundary, Lead Dev on the RECONNECT cluster (deferred — Lead Dev is busy per PM's direction; Architect as secondary read given their ADR-071/073 involvement), PA on what happened to the "31 M5-Other" list and any memory of the June 28–July 4 window.
 
-**Tier 7 — Open issues (162).** closedAt doesn't apply — they haven't closed. These need "what's the currently-intended sprint" logic, not historical reconstruction. Lower priority; not lost history, just未-assigned current work.
+**Tier 7 — Open issues (162).** closedAt doesn't apply — they haven't closed. These need "what's the currently-intended sprint" logic, not historical reconstruction. Lower priority; not lost history, just unassigned current work. **Update 2026-07-06**: verified there are zero open MVP-milestone issues missing a sprint — all 22 already show `Beta Blockers - Hard Gates Only`. The open-issue gap is entirely on later milestones (Fast Follow, Enterprise, Dot Releases), which don't need a sprint value yet. Not a live risk.
 
 **Tier 8 — PM-dependent resolution.** What's left after Tiers 1–7: the inchworm map (PM is repasting this), the 18 CSV rows already flagged needing an explicit PM call, and whatever remains genuinely ambiguous after every automated and cohort-consulted method is exhausted. This is the honest floor — some fraction of ~1,164 issues' history may simply not be recoverable, and I will say so explicitly rather than paper over it with a guess.
 
@@ -49,6 +49,20 @@ A new git-tracked canonical file — issue# | sprint | confidence | tier/method 
 - **Architect**: secondary read on RECONNECT-cluster ambiguous issues, given Lead Dev is unavailable
 - **PA**: what happened to the "31 M5-Other" issue list mentioned in the June 27/28 exchange, and any memory of sprint-assignment work between June 28 and July 4
 
-## Honest scope estimate (running total, will update as tiers execute)
+## PM's inchworm map — a major additional source (2026-07-06)
 
-To be filled in as each tier completes — see session log / next PM update for current numbers.
+PM's personal planning outline (captured in full at `docs/internal/planning/inchworm-map-canonical.md`) turned out to be one of the highest-value sources in this whole effort, for two reasons:
+
+1. **The raw Bike-outliner file (`.bike`, XHTML format) contains 475 direct hyperlinks to GitHub issues** — not just title text, actual `href="https://github.com/.../issues/NNN"` links, giving exact issue-number ground truth with no fuzzy matching needed for anything under a sprint whose name is unambiguous (Alpha-series A1–A31, T1/T2/S1/S2/Q1/B1, the full MUX cluster V1/X1/V2/Interact/Implement-P1-P4, M0). Cross-validation was strong: of the 29 linked issues that already carried a value on the live board, **zero disagreed** with the map.
+2. Where the map's own labels are ambiguous (its "M1"–"M7" section reflects PM's original planning conception, not current GitHub Sprint field names — confirmed two cases, #100/#101, where the map said "M6" but explicit dated documents show the real disposition was a full restructure into M2 and eventual closure as superseded), Tier 1 evidence was used to override the map's label rather than trusting it literally.
+
+A parsing bug (a section-boundary marker matching against leaf-item text, not just headers) was caught and fixed mid-pass — cost about 17 issues' worth of miscategorization before the fix, none of which reached PM.
+
+## Honest scope estimate (final for this pass, 2026-07-06)
+
+**755 of 899 issues (84.0%) now have a well-evidenced sprint proposal**, combining seven independent methods: Tier 0 (265, already applied), Tier 1 explicit dated documents, Tier 2 narrow-window closedAt matches, Tier 3 HIGH-confidence text-mining, title-disambiguation of overlapping windows, inchworm-map slug/title matching, and inchworm-map direct GitHub links. None of this has been written back to GitHub yet — it stays analysis-only until the canonical table is built and PM has signed off, per the standing agreement that recovery has to be safe-by-construction before it's applied.
+
+**144 issues remain with no proposal from any autonomous method.** Breakdown:
+- **~14 issues** carry an inchworm-map label of "M5 (MVP Polish)" or "M6 (MVP Future)" — both retired/superseded planning buckets with no direct current-sprint equivalent. Specific, bounded question for PM: same sprint as current M5, or separate work needing fresh placement?
+- **~85 issues** closed during a window where 2+ sprints overlap — not zero information, a narrowed candidate list, just not resolvable without judgment.
+- **~45 issues** have no evidence from any of the seven methods — open issues with no closedAt, or closed issues with no calendar-window match and no textual/document/map trace found anywhere. This is the genuine floor — the point where PM's own memory and context are the only remaining source, exactly as anticipated when this plan was designed.
