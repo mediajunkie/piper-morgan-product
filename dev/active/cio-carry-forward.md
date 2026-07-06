@@ -8,6 +8,12 @@
 
 **The gap**: stalled after 7/4 19:30 (Fire 6), missed the 22:07 fire, all of 7/5 passed with zero CIO activity (watchdog-flagged). Retroactively closed 7/4 on resume. ~121 cohort commits happened during the gap — NOT individually reviewed; handled via targeted mail-triage + a bounded BRIEFING refresh instead of reading everything.
 
+**Migration facts (PM-confirmed 7/6)**: no Piper Morgan role has moved to pipermorgan.ai yet — this session included, confirmed on `designinproduct.com`. Coral (One Job, Fable model) is the only live pipermorgan.ai instance, a different project. Piper Open/Vergil are on KindSys.us, closing end of July (unrelated). Migration doc updated with a duty-cycle continuity assessment — mechanics already migration-safe, ready whenever Exec sequences it.
+
+**Bash allowlist added** (PM-approved): `sync-pm-local.sh` can now auto-run in autonomous sessions (`.claude/settings.json`).
+
+**Significant self-correction (7/6)**: `ROLE-PORTFOLIO-CIO.md` sat stale 20 days; #972 was actually CLOSED 6/18 and gbrain co-signed 6/16, both mis-reported as "slipped"/"owed" in Ship #049 AND Ship #050 (sent same morning, before this was caught). Sent an urgent correction to Exec/PM/PA before Ship #050 synthesis. Portfolio doc + standing-items fixed. **Lesson for future workstream reviews: `gh issue view` before writing "slipped," don't just trust the portfolio doc's last-known status.**
+
 **7/6 resume fire delivered**:
 1. **Arch's duty-cycle self-attribution drift — diagnosed to root cause** (`docs/internal/operations/duty-cycle-self-attribution-drift-2026-07-06.md`): a fire lost memory of its own prior actions, misread its own commits + a self-changed cron ID as a phantom peer session, held a false stand-down most of 7/4. Two fixes shipped: CLAUDE.md now defaults to "check your own log before hypothesizing a peer" after any context gap; `duty-cycle-tick` now requires cadence changes to be logged unambiguously AND mirrored in `duty-cycle-registry.tsv` (found via my own compounding instance — the exact gap that let my 7/4 bump go unreflected in the registry for 2 days).
 2. **Lead's irreversible-action guardrail ratified** — split into the 2 distinct failure modes Lead's own correction identified (broad-tool-escalation vs. unverified additive/full-replace API semantics), not flattened into one lesson.
