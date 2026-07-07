@@ -773,6 +773,77 @@ class TestGitHubDefaultRepoScopingEnforcement:
         )
 
 
+class TestPersonalizationScopingEnforcement:
+    """ADR-075 D5 — architectural enforcement for the Component B personalization fix.
+
+    ``piper_config_loader.get_system_prompt()`` reads ONE file at server-instance
+    level with zero user-scoping. Category-1 personalization (ADR-075 D1: name/
+    role/timezone/style/focus/portfolio/standing-priorities) must resolve through
+    ``PersonalizationService`` (owner_id-scoped, D2/D4) — never call the raw
+    loader directly on a request path, or every user gets PM's own context
+    (the #1366 leak this component closes).
+
+    Same family as #1283 (reachability) / #1307 (exempt-list) / Component A's
+    ``TestGitHubDefaultRepoScopingEnforcement``: impossible-by-construction, not
+    vigilance. Zero tolerance — there is no legitimate reason for a request-path
+    file to call the raw loader for the system prompt.
+    """
+
+    # Files structurally exempt because they ARE the loader, or the ONE
+    # sanctioned caller of it (PersonalizationService's own D3/PM-fallback
+    # path — the whole point of the service is to be the single seam between
+    # "unscoped file" and "scoped per-user"), or a CLI/batch tool that is NOT
+    # a request path (same category ADR-075 D6 already rules for Component C's
+    # #1260 CLI-ingestion path — DocumentIngester has no web/request caller,
+    # confirmed by direct search, only scripts/validate_322_multiworker.py).
+    ALLOWED_FILES = [
+        "services/configuration/piper_config_loader.py",
+        "services/configuration/personalization_service.py",
+        "services/knowledge_graph/ingestion.py",
+    ]
+
+    UNSCOPED_READ_RE = re.compile(r"\bpiper_config_loader\.get_system_prompt\(\)")
+
+    def test_no_unscoped_system_prompt_reads(self):
+        """Fails if any caller invokes `piper_config_loader.get_system_prompt()`
+        directly instead of resolving through `PersonalizationService`.
+
+        Fix: repoint onto `personalization_service.resolve_system_prompt(user_id,
+        session)` (or `resolve_system_prompt_standalone(user_id)` if no session is
+        already in scope) — see services/intent_service/conversational_floor.py,
+        services/intent_service/classifier.py, services/intent_service/
+        llm_classifier.py for the #1366/ADR-075 Component B reference fix.
+        """
+        service_files = glob.glob("services/**/*.py", recursive=True) + glob.glob(
+            "web/**/*.py", recursive=True
+        )
+
+        violations = []
+
+        for file_path in service_files:
+            if "__pycache__" in file_path:
+                continue
+            if any(allowed in file_path for allowed in self.ALLOWED_FILES):
+                continue
+
+            try:
+                with open(file_path, "r", encoding="utf-8") as f:
+                    content = f.read()
+            except UnicodeDecodeError:
+                continue
+
+            if self.UNSCOPED_READ_RE.search(content):
+                violations.append(file_path)
+
+        assert not violations, (
+            f"Unscoped `piper_config_loader.get_system_prompt()` call(s) found in: "
+            f"{violations}. On a shared instance this leaks PM's own personalization "
+            f"context to every user (#1366/ADR-075). Use "
+            f"`personalization_service.resolve_system_prompt(user_id, session)` "
+            f"instead."
+        )
+
+
 if __name__ == "__main__":
     # Allow running tests directly for verification
     pytest.main([__file__, "-v"])

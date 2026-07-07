@@ -22,9 +22,6 @@ from services.api.errors import (
     NoRelevantKnowledgeError,
 )
 from services.api.serializers import intent_to_dict
-
-# CORE-CONFIG-PIPER: Load PIPER.md configuration for system context
-from services.configuration.piper_config_loader import piper_config_loader
 from services.domain.models import Intent, IntentCategory
 
 # GREAT-4B Phase 3: Intent caching
@@ -154,6 +151,7 @@ class IntentClassifier:
         session: Optional[Any] = None,
         spatial_context: Optional[Dict] = None,
         use_cache: bool = True,
+        user_id: Optional[str] = None,
     ) -> Intent:
         """
         Classify user intent with optional caching.
@@ -165,6 +163,9 @@ class IntentClassifier:
             spatial_context: Optional spatial context
             use_cache: Whether to use cache (default True). Caching only applies
                       to simple message-only classifications without context.
+            user_id: Optional resolved principal (ADR-075 D4) — scopes the
+                classification system prompt to this user's personalization
+                rather than the unscoped file, when provided.
 
         Returns:
             Intent object with classification results
@@ -278,7 +279,7 @@ class IntentClassifier:
         try:
             # Perform classification with confidence scoring
             intent, reasoning = await self._classify_with_reasoning(
-                message, context, file_context, spatial_context
+                message, context, file_context, spatial_context, user_id
             )
 
             # --- ACTION NORMALIZATION ---
@@ -405,6 +406,7 @@ class IntentClassifier:
         session: Optional[Any] = None,
         spatial_context: Optional[Dict] = None,
         use_cache: bool = True,
+        user_id: Optional[str] = None,
     ) -> IntentUnderstanding:
         """
         Grammar-conscious intent classification (Issue #619).
@@ -506,6 +508,7 @@ class IntentClassifier:
                     session=session,
                     spatial_context=spatial_context,
                     use_cache=use_cache,
+                    user_id=user_id,
                 )
 
             # Issue #427: Record this turn in conversation context
@@ -731,6 +734,7 @@ class IntentClassifier:
         context: Optional[Dict] = None,
         session: Optional[Any] = None,
         spatial_context: Optional[Dict] = None,
+        user_id: Optional[str] = None,
     ) -> MultiIntentResult:
         """
         Detect and classify multiple intents in a message (Issue #595).
@@ -771,6 +775,7 @@ class IntentClassifier:
                 context=context,
                 session=session,
                 spatial_context=spatial_context,
+                user_id=user_id,
             )
             return MultiIntentResult(
                 intents=[single_intent],
@@ -792,6 +797,7 @@ class IntentClassifier:
         context: Optional[Dict] = None,
         file_context: str = "",
         spatial_context: Optional[Dict] = None,
+        user_id: Optional[str] = None,
     ) -> Tuple[Intent, Dict[str, Any]]:
         """Classify intent with detailed reasoning"""
         # Prepare context for LLM
@@ -823,6 +829,17 @@ class IntentClassifier:
         )
 
         try:
+            # ADR-075 D4: resolve the classification system prompt through the
+            # per-principal PersonalizationService rather than the unscoped
+            # loader directly — the #1366 leak closure for this call site.
+            from services.configuration.personalization_service import (
+                personalization_service,
+            )
+
+            system_prompt = await personalization_service.resolve_system_prompt_standalone(
+                user_id
+            )
+
             # Use your task-based routing with "intent_classification" task type
             # #988: pass response_format={"type": "json_object"} so Gemini
             # (which needs an explicit flag) returns structured JSON. OpenAI
@@ -832,7 +849,7 @@ class IntentClassifier:
                 task_type="intent_classification",
                 prompt=prompt,
                 context=context,
-                system=piper_config_loader.get_system_prompt(),
+                system=system_prompt,
                 response_format={"type": "json_object"},
             )
 

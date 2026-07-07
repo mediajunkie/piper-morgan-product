@@ -242,6 +242,7 @@ class SimpleSlackResponseHandler:
             message=message,
             context={"user_id": slack_context.get("user_id")},
             spatial_context=spatial_context,
+            user_id=slack_context.get("user_id"),
         )
 
         # Enrich intent context with response targeting

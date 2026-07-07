@@ -395,20 +395,30 @@ class ConversationalFloor:
         self.llm_client = llm_client
         self._system_prompt_base = system_prompt_base
 
-    def _get_system_prompt(self, ctx: FloorContext) -> str:
+    async def _get_system_prompt(self, ctx: FloorContext) -> str:
         """Build the full system prompt: base identity + floor addendum + warmth.
 
         In denial mode (#992 ETHICS-ACTIVATE Phase B), swap the main addendum
         for FLOOR_DENIAL_ADDENDUM so Piper composes the decline in voice rather
         than emitting a system-error string. Warmth guidance is still applied —
         declining warmly is better than declining coldly.
+
+        ADR-075 D4: the base resolves through PersonalizationService (owner_id-
+        scoped, never PM's file for another principal) rather than the
+        unscoped loader directly — the #1366 leak closure for this call site.
         """
         base = self._system_prompt_base
         if base is None:
             try:
-                from services.configuration.piper_config_loader import piper_config_loader
+                from services.configuration.personalization_service import (
+                    personalization_service,
+                )
+                from services.database.session_factory import AsyncSessionFactory
 
-                base = piper_config_loader.get_system_prompt()
+                async with AsyncSessionFactory.session_scope() as session:
+                    base = await personalization_service.resolve_system_prompt(
+                        ctx.user_id, session
+                    )
             except Exception:
                 base = "You are Piper Morgan, an AI product management assistant."
 
@@ -800,7 +810,7 @@ class ConversationalFloor:
         Returns:
             FloorResponse with LLM-generated message and instrumentation data
         """
-        system_prompt = self._get_system_prompt(ctx)
+        system_prompt = await self._get_system_prompt(ctx)
         prompt = self._build_prompt(ctx)
 
         # Issue #1032 INSIGHT-PUSH Step 4: detect NL session-mute trigger

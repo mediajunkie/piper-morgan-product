@@ -229,7 +229,7 @@ class CanonicalHandlers:
         duration_project = self._detect_duration_request(intent)
         if duration_project:
             return await self._handle_temporal_project_duration(
-                intent, session_id, duration_project
+                intent, session_id, duration_project, user_id=user_id
             )
 
         from services.configuration.piper_config_loader import piper_config_loader
@@ -3519,20 +3519,29 @@ What would you like to set up first?"""
         return None
 
     async def _handle_temporal_project_duration(
-        self, intent: Intent, session_id: str, project_name: str
+        self, intent: Intent, session_id: str, project_name: str, user_id: Optional[str] = None
     ) -> Dict:
         """
         Handle 'How long have we been working on X?' queries.
         Issue #505: Calculate project duration from created_at.
+
+        Bug fix (found during ADR-075 Component B, #1366): this previously
+        called `piper_config_loader.get_user_context()`, a method that has
+        never existed on that class (would raise AttributeError any time this
+        handler was actually reached). Repointed to the already-correct,
+        already-user-scoped `user_context_service.get_user_context()` used by
+        every other user-context call site in this file.
         """
         spatial_pattern = None
         if hasattr(intent, "spatial_context") and intent.spatial_context:
             spatial_pattern = intent.spatial_context.get("pattern")
 
         # Try to find project in user_context
-        from services.configuration.piper_config_loader import piper_config_loader
-
-        user_context = piper_config_loader.get_user_context()
+        try:
+            user_context = await user_context_service.get_user_context(session_id, user_id)
+        except Exception as e:
+            logger.error(f"Failed to load user context for duration query: {e}")
+            user_context = None
 
         project_data = None
         created_at = None

@@ -536,6 +536,24 @@ class IntentService:
             except Exception:
                 pass  # Best-effort — don't block response delivery
 
+            # ADR-075 OQ-3 (CXO UX direction): one-time first-response notice
+            # for a principal running on the seeded neutral default — appended
+            # AFTER the answer (capability first, metadata second), never
+            # before, never per-response. Best-effort: a failure here must
+            # never block a successful response from reaching the user.
+            try:
+                from services.configuration.personalization_service import (
+                    personalization_service,
+                )
+
+                notice = await personalization_service.maybe_consume_first_response_notice(
+                    effective_user_id
+                )
+                if notice:
+                    result.message = f"{result.message}\n\n{notice}"
+            except Exception:
+                pass  # Best-effort — don't block response delivery
+
         return result
 
     async def _maybe_autoexecute_automation_patterns(
@@ -1033,7 +1051,7 @@ class IntentService:
                 else None
             )
             multi_result = await self.intent_classifier.classify_multiple(
-                message, context=classification_context
+                message, context=classification_context, user_id=user_id
             )
 
             # Issue #764: Multi-substantive intent orchestration
@@ -1084,7 +1102,7 @@ class IntentService:
                     )
                     intent = multi_result.primary_intent
                     if intent is None:
-                        intent = await self.intent_classifier.classify(message)
+                        intent = await self.intent_classifier.classify(message, user_id=user_id)
 
             elif (
                 multi_result.is_multi_intent
@@ -1118,7 +1136,7 @@ class IntentService:
                 intent = multi_result.primary_intent
                 if intent is None:
                     # No intents detected - fall back to standard classification
-                    intent = await self.intent_classifier.classify(message)
+                    intent = await self.intent_classifier.classify(message, user_id=user_id)
 
             self.logger.info(f"Intent classified as: {intent.category} - {intent.action}")
 

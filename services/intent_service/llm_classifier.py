@@ -15,7 +15,6 @@ from typing import Any, Dict, List, Optional, Tuple
 import structlog
 
 from services.api.errors import IntentClassificationFailedError, LowConfidenceIntentError
-from services.configuration.piper_config_loader import piper_config_loader
 from services.domain.models import Intent, IntentCategory, KnowledgeNode
 from services.intent_service.fuzzy_matcher import correct_common_typos
 from services.knowledge.knowledge_graph_service import KnowledgeGraphService
@@ -112,6 +111,7 @@ class LLMIntentClassifier:
         message: str,
         user_context: Optional[Dict[str, Any]] = None,
         session_id: Optional[str] = None,
+        user_id: Optional[str] = None,
     ) -> Intent:
         """
         Classify user message into intent with multi-stage pipeline
@@ -120,6 +120,9 @@ class LLMIntentClassifier:
             message: User's natural language input
             user_context: Optional context about user/session
             session_id: Optional session identifier for context
+            user_id: Optional resolved principal (ADR-075 D4) — scopes the
+                classification system prompt to this user's personalization
+                rather than the unscoped file, when provided.
 
         Returns:
             Intent with category, action, and confidence score
@@ -127,6 +130,7 @@ class LLMIntentClassifier:
         start_time = datetime.now()
         self.classification_metrics["total_requests"] += 1
         self.current_message = message  # Store for retry functionality
+        self.current_user_id = user_id  # ADR-075 D4: same pattern, for the retry path's prompt
 
         try:
             # Stage 1: Pre-processing
@@ -323,11 +327,21 @@ class LLMIntentClassifier:
             logger.debug(f"[{request_id}] response_format parameter: {response_format}")
             logger.debug(f"[{request_id}] Prompt length: {len(prompt)} characters")
 
+            # ADR-075 D4: resolve through the per-principal PersonalizationService
+            # rather than the unscoped loader directly — #1366 leak closure.
+            from services.configuration.personalization_service import (
+                personalization_service,
+            )
+
+            system_prompt = await personalization_service.resolve_system_prompt_standalone(
+                user_id
+            )
+
             response = await self.llm.complete(
                 task_type="intent_classification",
                 prompt=prompt,
                 response_format=response_format,
-                system=piper_config_loader.get_system_prompt(),
+                system=system_prompt,
             )
 
             logger.debug(f"[{request_id}] LLM response received - length: {len(response)} chars")
@@ -567,11 +581,22 @@ Valid categories: EXECUTION, QUERY, ANALYSIS, UPDATE, SYNTHESIS, STRATEGY, LEARN
 Respond only with valid JSON:"""
 
         try:
+            # ADR-075 D4: same resolution as the primary attempt, keyed off the
+            # user_id stashed in classify() (mirrors the existing
+            # current_message retry-context pattern above).
+            from services.configuration.personalization_service import (
+                personalization_service,
+            )
+
+            system_prompt = await personalization_service.resolve_system_prompt_standalone(
+                getattr(self, "current_user_id", None)
+            )
+
             response = await self.llm.complete(
                 task_type="intent_classification",
                 prompt=strict_prompt,
                 response_format={"type": "json_object"},
-                system=piper_config_loader.get_system_prompt(),
+                system=system_prompt,
             )
             return await self._parse_llm_response_resilient_async(response, attempt)
         except Exception as e:

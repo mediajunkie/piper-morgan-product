@@ -3189,6 +3189,78 @@ class TestIntegrationTipLogic847:
             assert result["repository"] == "scoped-owner/scoped-repo"
 
 
+class TestTemporalProjectDurationBugfix505:
+    """Bug found during ADR-075 Component B (#1366, 2026-07-06):
+    `_handle_temporal_project_duration` called
+    `piper_config_loader.get_user_context()` — a method that has never existed
+    on that class (confirmed via git history: `def get_user_context` never
+    appears in piper_config_loader.py). Any real "how long have we been
+    working on X?" query would have raised AttributeError. No existing test
+    exercised this handler at all, which is how it went undetected since
+    #505 first introduced it.
+
+    Fixed by repointing to `user_context_service.get_user_context(session_id,
+    user_id)` — the same already-correct, already-user-scoped call every
+    other user-context site in this file uses.
+    """
+
+    @pytest.mark.asyncio
+    async def test_does_not_crash_and_calls_correct_service(self, canonical_handlers):
+        from services.domain.models import Intent, IntentCategory
+
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="temporal_query",
+            original_message="how long have we been working on Foo?",
+            confidence=0.9,
+        )
+
+        with patch(
+            "services.intent_service.canonical_handlers.user_context_service"
+        ) as mock_service:
+            mock_context = MagicMock()
+            mock_context.projects = [
+                {"name": "Foo", "created_at": "2026-01-01T00:00:00Z"},
+            ]
+            mock_service.get_user_context = AsyncMock(return_value=mock_context)
+
+            result = await canonical_handlers._handle_temporal_project_duration(
+                intent, session_id="sess-1", project_name="Foo", user_id="user-42"
+            )
+
+            mock_service.get_user_context.assert_awaited_once_with("sess-1", "user-42")
+            assert isinstance(result, dict)
+            assert "message" in result
+
+    @pytest.mark.asyncio
+    async def test_degrades_gracefully_when_user_context_service_fails(
+        self, canonical_handlers
+    ):
+        """The old bug crashed with AttributeError on every call. The fix must
+        degrade to no-match (not re-raise) if the service itself fails, matching
+        every other user-context call site's try/except in this file."""
+        from services.domain.models import Intent, IntentCategory
+
+        intent = Intent(
+            category=IntentCategory.QUERY,
+            action="temporal_query",
+            original_message="how long have we been working on Foo?",
+            confidence=0.9,
+        )
+
+        with patch(
+            "services.intent_service.canonical_handlers.user_context_service"
+        ) as mock_service:
+            mock_service.get_user_context = AsyncMock(side_effect=RuntimeError("db down"))
+
+            result = await canonical_handlers._handle_temporal_project_duration(
+                intent, session_id="sess-1", project_name="Foo", user_id="user-42"
+            )
+
+            assert isinstance(result, dict)
+            assert "message" in result
+
+
 class TestGuidanceQuerySynthesisSeam497:
     """Issue #497: guard the
     _handle_guidance_query -> _synthesize_focus_recommendation -> response seam.

@@ -633,6 +633,75 @@ class ConnectorConfig(Base, TimestampMixin):
     )
 
 
+class PersonalizationContext(Base, TimestampMixin):
+    """ADR-075 D2 — owner_id-scoped, server-owned home for per-user system-prompt
+    personalization (category-1 config per ADR-075 D1: name/role/timezone/style/
+    focus/portfolio/standing-priorities). Extends ADR-071's owner_id-anchoring
+    pattern from content rows to configuration, mirroring ConnectorConfig's shape
+    one layer up.
+
+    Distinct from `PersonalityProfileModel` (personality_profiles table): that
+    table holds HOW Piper talks (warmth/confidence-style/action-orientation/
+    technical-depth — tone traits); this table holds WHAT Piper knows about the
+    user (system-prompt content). Different concerns, deliberately not merged.
+
+    One row per owner (unique). `context` is a flexible JSONB blob mirroring the
+    free-text sections `PiperConfigLoader._format_system_prompt()` already parses
+    from PIPER.user.md (name, role, timezone, communication_style, current_focus,
+    project_portfolio, standing_priorities) — prose content doesn't want a rigid
+    per-field schema.
+
+    `is_seeded_default` marks a row created by lazy-seed-on-first-access (D4/OQ-3)
+    rather than by the user's own customization — lets a future onboarding flow
+    distinguish "never touched their profile" from "explicitly wants this content"
+    without a separate signal. Not a security boundary (both cases are still this
+    owner's own row, read/write-scoped identically) — a UX/analytics marker only.
+
+    D3: PM's own principal never gets a row here in the single-tenant/local-dev
+    case — resolution checks `resolve_pm_owner_id()` first and serves the file
+    directly, matching "no regression to the single-tenant case." A row for PM's
+    own owner_id is harmless if one ever exists (e.g. multi-tenant future), just
+    not the primary path today.
+    """
+
+    __tablename__ = "personalization_contexts"
+
+    id = Column(CrossDialectUUID(), primary_key=True, default=uuid.uuid4)
+    # Owner = the resolved principal (ADR-071 D2). NOT NULL: this config must
+    # belong to someone — there is no global/PM-domain variant of this table.
+    owner_id = Column(
+        CrossDialectUUID(), ForeignKey("users.id"), nullable=False, unique=True, index=True
+    )
+    # m-40 multi-tenant-READY: NAMED, not built (ADR-071 D7). Mirrors ConnectorConfig.
+    tenant_id = Column(CrossDialectUUID(), nullable=True, index=True)
+    # Free-text personalization content. JSONB on Postgres / JSON on SQLite tests
+    # (#1038 cross-dialect pattern), matching ConnectorConfig's `config` column.
+    context = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"),
+        nullable=False,
+        default=dict,
+        server_default=text("'{}'"),
+    )
+    # True if this row was lazy-seeded with the neutral default rather than
+    # customized by the user (ADR-075 OQ-3 / HOST's "real seeded record, not
+    # implicit empty fall-through" requirement). Flipped to False on any
+    # explicit write.
+    is_seeded_default = Column(
+        Boolean, nullable=False, default=True, server_default=text("true")
+    )
+    # ADR-075 OQ-3 (CXO UX direction): has the first-response personalization
+    # notice already been shown to this principal? Distinct from
+    # `is_seeded_default` on purpose — the notice is one-time regardless of
+    # whether the user goes on to customize (CXO: "never reappears post-
+    # personalization / post-seen, whichever Component B tracks cleaner").
+    # Tracking it separately means declining to personalize doesn't cause the
+    # notice to repeat on every subsequent response.
+    has_seen_personalization_notice = Column(
+        Boolean, nullable=False, default=False, server_default=text("false")
+    )
+    # created_at / updated_at from TimestampMixin
+
+
 class ConnectorBinding(Base, TimestampMixin):
     """RECONNECT WS-2 (#1229) — per-user MCP-server binding storage (ADR-070 D3).
 

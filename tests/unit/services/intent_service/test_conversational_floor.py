@@ -521,19 +521,21 @@ class TestDenialModeSystemPrompt:
             system_prompt_base="You are Piper Morgan.",
         )
 
-    def test_non_denial_mode_uses_main_addendum(self):
+    @pytest.mark.asyncio
+    async def test_non_denial_mode_uses_main_addendum(self):
         from services.intent_service.conversational_floor import (
             FLOOR_SYSTEM_PROMPT_ADDENDUM,
         )
 
         floor = self._make_floor()
         ctx = FloorContext(user_message="hi", session_id="s1")
-        prompt = floor._get_system_prompt(ctx)
+        prompt = await floor._get_system_prompt(ctx)
         # Main addendum present
         assert "Think through the problem with them" in prompt
         assert FLOOR_SYSTEM_PROMPT_ADDENDUM[:60] in prompt
 
-    def test_denial_mode_swaps_in_denial_addendum(self):
+    @pytest.mark.asyncio
+    async def test_denial_mode_swaps_in_denial_addendum(self):
         from services.intent_service.conversational_floor import (
             FLOOR_DENIAL_ADDENDUM,
             FLOOR_SYSTEM_PROMPT_ADDENDUM,
@@ -547,7 +549,7 @@ class TestDenialModeSystemPrompt:
             denial_category="harassment",
             redirect_context="hint",
         )
-        prompt = floor._get_system_prompt(ctx)
+        prompt = await floor._get_system_prompt(ctx)
         # Denial addendum present
         assert FLOOR_DENIAL_ADDENDUM[:60] in prompt
         # Main addendum NOT present (swap, not augment)
