@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/06/2026-07-06-0701-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `a833a327`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-06 15:45 PT (Fire 13; ADR-076 ratified; ADR-075 watching for CXO UX direction)
+**Last updated**: 2026-07-06 18:43 PT (Fire 14; ADR-075 v0.2 RATIFIED — Arch may cut ACCEPTED; queue (0,0))
 
 ---
 
@@ -70,7 +70,7 @@
 
 ## Pending HOST ratification (trigger-bound)
 
-- **ADR-075 v0.2**: waiting on CXO UX direction for OQ-3 neutral-default surface. When CXO confirms: HOST ratifies → Arch cuts v0.2 ACCEPTED. Component-B-scoped, not blocking Lead.
+- **ADR-075 v0.2**: ✅ **RATIFIED 2026-07-06 Fire 14** (`acbb5b00c`). CXO UX direction confirmed (first-response injection, capability-affirming, one-time, actionable). All four HOST conditions met. Arch cutting ACCEPTED. Component B: Lead builds D2/D4/D5 + seeded persona + injection; CXO coordinates copy at build. No further HOST trust review until implementation surfaces new welfare question.
 - **ADR-076**: ✅ RATIFIED (2026-07-06). Lead GO. No further HOST action.
 
 ## Watch / trigger-bound
