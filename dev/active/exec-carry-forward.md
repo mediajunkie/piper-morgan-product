@@ -1,9 +1,9 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-06 21:02 PT (Mon STOP)
-**Session log today**: `dev/2026/07/06/2026-07-06-0803-exec-code-log.md` (DAY-CLOSED)
-**Role**: Chief of Staff (Exec) | Sonnet 4.6 | DinP account (migration to dedicated pipermorgan.ai account pending — row unconfirmed, same open question as CIO's own row)
-**Cron**: `32 8,20 * * *` — id `f28200fd` (LEAN 2×/day, migration-hold cadence; re-armed 7/6 after being found fully unarmed — Gap-C dormancy). Registry row also fixed (was paused since 6/28).
+**Last updated**: 2026-07-07 09:02 PT (Tue Fire 1)
+**Session log today**: `dev/2026/07/07/2026-07-07-0902-exec-code-log.md`
+**Role**: Chief of Staff (Exec) | Sonnet 4.6 | DinP account (migration to dedicated pipermorgan.ai account in planning — CIO first mover, template proposed 7/6, PM's timing call, deadline end of month)
+**Cron**: `32 8,20 * * *` — id `9ba08401` (LEAN 2×/day, migration-hold cadence). **Process fix 7/7**: STOP had created a duplicate cron without checking CronList first — always CronList before creating at STOP, not just at START.
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3`
 
 ---
@@ -22,7 +22,12 @@ Real synthesis built 7/6 afternoon from all 6 actual §0s: `dev/2026/07/06/exec-
 
 ---
 
-## OPEN — needs PM
+## OPEN — needs PM (updated 7/7)
+
+- **Batch-1 invite codes — READY, needs PM to actually send them.** Correction to last night's tracking: codes were already minted July 4 (not blocked on my "approval"). `dev/alpha/invite-tokens-assignments-batch-1.md` (PM's local, gitignored) has all 10. One flag: Jake Krajewski's email unconfirmed — verify before sending his.
+- **Account migration**: CIO's starting-point template filed (7/6) — concrete first-mover plan + 3 open questions (sequence after CIO, go/no-go checkpoint or parallel, PM owns timing). Ready whenever the 3-way conversation happens.
+
+## OPEN — needs PM (prior, still open)
 
 - **HOST**: 1 of 10 testers (Rebecca Refoy) has no email in the roster — blocks her invite code. Needs PM to supply/correct.
 - **Account migration**: both Exec's and CIO's migration-checklist rows are unconfirmed — neither role can self-determine which account it's running under from inside a session. Needs PM's direct confirmation across the board, not just exec.
