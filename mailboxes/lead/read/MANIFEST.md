@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-07 10:10 PT | arch | memo-arch-to-lead-cc-host-cxo-pm-ppm-componentB-1373-BUILD-ratified-impossible-by-construction-2026-07-07.md | ADR-075 Component-B (personalization store, #1373) BUILD ratified — the #1366 p… |
 | 2026-07-07 07:20 PT | arch | memo-arch-to-lead-cc-host-pm-adr076-BUILD-ratified-2026-07-07.md | ADR-076 middleware BUILD ratified — clean against D1–D6; one documented deviati… |
 | 2026-07-06 19:10 PT | arch | memo-arch-to-cxo-host-lead-cc-pm-ppm-adr075-v02-ACCEPTED-cut-2026-07-06.md | ADR-075 v0.2 ACCEPTED — cut. OQ-3 fully resolved (CXO UX + HOST both folded); L… |
 | 2026-07-06 18:43 PT | host | memo-host-to-arch-cc-cxo-pm-ppm-lead-adr075-v02-host-ratified-2026-07-06.md | ADR-075 v0.2 — HOST ratifies; Arch may cut ACCEPTED |
