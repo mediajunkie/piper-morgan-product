@@ -33,7 +33,7 @@ Real synthesis built 7/6 afternoon from all 6 actual §0s: `dev/2026/07/06/exec-
 ## DONE — rollup items actioned same evening (7/6)
 
 PM worked through all 6 rollup items same evening:
-- **Beta scope date**: PM says scope was clarified (with PPM, this afternoon) but date deliberately left undecided — NOT an open PM decision, was my stale framing. **Couldn't find this written down anywhere** (checked recent PPM files, sprint-history-recovery-plan) — asked PM for a pointer/summary so it gets recorded properly rather than living only in conversation.
+- **Beta scope date**: PM says scope was clarified (with PPM, this afternoon) but date deliberately left undecided — NOT an open PM decision, was my stale framing. Couldn't find it written down (roadmap is at v18.5, 7/5 — already has "Aug 1 dropped, no date," but nothing capturing today's specific clarification). **Asked PPM directly to fold it into the roadmap as v18.6** (PM's explicit instruction: capture in the roadmap, not just conversation). Watch for the fold; not yet landed as of day-close.
 - **Invite minting**: approved. Relayed to HOST.
 - **Account migration**: PM direction — unhurried, CIO first/Exec last, deadline end of month (Kindsys.us account retiring, pipermorgan.ai moving to Max). PM wants a 3-way (PM+CIO+Exec) planning conversation, not one-off memos. Relayed to CIO, asked them to propose a starting point since they go first.
 - **Web Phase 3**: unblocked — relayed go-ahead to Web.
