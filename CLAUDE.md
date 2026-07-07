@@ -209,6 +209,9 @@ If ANY of these occur, STOP and escalate to PM immediately:
 ### Evidence Required
 Every claim needs proof. "Tests pass" requires terminal output. Issue closure requires implementation evidence.
 
+### Never guess at facts you can look up or ask about
+Database role names, emails, usernames, account details, credentials, config values — if you don't actually know it, look it up from config/source or ask, never guess-and-proceed. A confident wrong guess about a factual detail is worse than a pause to check, especially when it's the input to a diagnostic or a safety-relevant action: a guessed credential or role name that turns out wrong can manufacture a false alarm (e.g., a fabricated "data loss" scare from an invented database role name) that costs far more trust than the ten seconds it takes to verify first.
+
 ### Completion Discipline (Patterns 045, 046, 047)
 - Tests passing ≠ users succeeding
 - Cannot skip work by rationalizing it as "optional"
@@ -264,6 +267,7 @@ Before creating or extending anything, investigate the existing situation fully.
 
 - **Code**: before writing, check if it exists. Most code is 75% complete then abandoned — complete it, don't duplicate it.
 - **Issues, memos, specs, docs**: read the WHOLE source artifact before acting on a fragment of it. An acceptance-criteria line, a quoted instruction, or a routed task often loses its referent when read in isolation — the disambiguating context is usually elsewhere in the *same* document. The author wrote it for a reason and usually wrote down what they meant; read their full artifact before tracing, escalating, or guessing.
+- **Status, priority, and sprint claims**: `gh issue view`/`gh issue list` against GitHub is the source of truth — not a local portfolio doc, tracker, or your own memory of last-known status, all of which go stale silently. A local doc saying "open" or "slipped" is a claim about GitHub state, not a substitute for checking it (concrete incident, 2026-07-06: a CIO portfolio doc sat stale 20 days, causing two consecutive workstream reviews to report a closed issue as "slipped" — one `gh issue view` would have caught it either time).
 - **The cost of skipping**: acting on a fragment produces confident wrong work; passing a fragment along propagates the ambiguity (see "no flattened commands without referents").
 
 The discipline is identical across all of these: understand what exists before you extend it.
