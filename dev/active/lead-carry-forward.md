@@ -1,8 +1,24 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-06 ~23:05 PT (DAY-CLOSED). Session log: `dev/2026/07/06/2026-07-06-0622-lead-code-log.md`.
+**Updated**: 2026-07-07 ~07:25 PT. Session log: `dev/2026/07/07/2026-07-07-0647-lead-code-log.md`.
 
-## ▶ CURRENT (7/6 DAY-CLOSED ~23:05) — Slack ported (4/8); Epic A holds on PM go-ahead; CIO recommends visible-only
+## ▶ CURRENT (7/7 ~07:25) — queue at (0,0): standing-items refreshed, a real doc-drift found+fixed, everything else PM-gated
+
+**Duty cycle**: START fire (06:17 slot, ran ~30 min late). Prior day (7/6) verified DAY-CLOSED properly, no retroactive close needed. Mail drained (0 unread, checked twice this fire). Cron unchanged, armed, exactly one job (`773e1e46`, same expression).
+
+**No PM movement on Epic A (#1304) since last night** — checked GitHub directly (not memory), issue unchanged since 2026-07-05. Still holding for PM's explicit go-ahead on CIO's visible-only recommendation. Not implemented.
+
+**Advanced the (0,0) low-pri item flagged last night**: refreshed `dev/active/lead-standing-items.md` (stale since 6/21) — verified all 21 referenced issues against live GitHub state; 3 (#1232, #1185, #1286) had silently closed since the last refresh. Rewrote every section with current, sourced state. Full detail in today's session log.
+
+**Found and fixed a real doc-vs-GitHub drift, unprompted**: while checking for other unblocked work, `docs/internal/planning/beta-blockers.md` (PPM-owned) turned out to still describe #1278 as closed/flagged — text that predated last night's PM-directed reopen. Corrected the Epic D section, the total-open-count (19→20), and added 2 change-log entries documenting both the reopen and this correction. Board Status field left untouched (PM-gated, unchanged from last night).
+
+**Queue is genuinely at (0,0) now**: mail empty, Epic A PM-gated, the 4 remaining connector ports PM-gated (product-scope question), standing-items current, no other doc-drift found in this pass. Quiet-hold is the honest state, not a stall — nothing manufactured to fill the space.
+
+**Next fire, in order**: (1) check mail (2) if PM has answered the Epic A fork, implement + close #1304 (3) if PM has weighed in on cicd/devenvironment/gitbook/linear's live-MCP-server question, that unblocks Epic C's remaining 4 ports (4) otherwise: quiet-hold is correct, don't force busywork.
+
+---
+
+## ▶ PRIOR CURRENT (7/6 DAY-CLOSED ~23:05) — Slack ported (4/8); Epic A holds on PM go-ahead; CIO recommends visible-only
 
 **Duty cycle**: STOPped cleanly at the last scheduled fire of the day (21:17 slot, ran late to ~22:53 — REPL was busy). Cron re-armed same expression (`17 6,9,12,15,18,21 * * *`) as the final action of this fire. Found + fixed 2 duplicate cron jobs at fire-start (deleted the extra) — if duplicates reappear, check whether something is re-creating without checking CronList first.
 
