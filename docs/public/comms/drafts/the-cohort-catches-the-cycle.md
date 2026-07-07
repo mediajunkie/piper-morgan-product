@@ -66,7 +66,7 @@ The difference was where the *session* had launched. CIO's session had started i
 
 # What I actually learned
 
-The week had other threads I'm proud of. We closed our MVP quality sprint with 82% support for our canonical query test suite (basic questions Piper should be able to answer for anyone) during the project's one-year-anniversary week. The duty cycle has been the game changer, though.
+The week had other threads I'm proud of. We closed our M2 quality gate with 82% support for our canonical query test suite (the everyday questions Piper needs to answer correctly once it's connected to your real accounts and data) during the project's one-year-anniversary week. The duty cycle has been the game changer, though.
 
 I rolled out a process to the whole team, and the rollout itself generated the evidence that the process needed to change. The change wasn't "try harder." It was "isolate the thing that can't be fixed by trying harder." More vigilance couldn't fix the clash, because the clash lived in the gap *after* the vigilance.
 
