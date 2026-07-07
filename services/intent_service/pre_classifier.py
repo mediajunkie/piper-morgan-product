@@ -563,6 +563,28 @@ class PreClassifier:
         r"\bneed\s+to\s+remember\s+to\b",
     ]
 
+    # #1256: stakeholder-update composition — checked BEFORE the document
+    # patterns, because "write a short update for the CEO on where we are
+    # with X" otherwise matches DOCUMENT_QUERY_PATTERNS' loose
+    # `update ... with` shape (the pattern greedily bridges "update for the
+    # CEO ... where we are WITH") and routes to update_document_query at
+    # confidence 1.0 — the handler then asks "which document?" instead of
+    # drafting the memo. Deliberately EXCLUDED here: the bare
+    # "update [person] on [topic]" shape from the issue — too collision-prone
+    # with document/platform phrasings ("update the readme on GitHub");
+    # revisit when the stakeholder-update skill (Wave 2) gives this action a
+    # real procedure.
+    STAKEHOLDER_UPDATE_PATTERNS = [
+        # "write a short update for X" / "write an update for the board"
+        r"\bwrite\s+(?:me\s+)?(?:a|an)?\s*(?:\w+\s+){0,3}update\s+for\b",
+        # "draft a status update for X" / "draft an update for the team"
+        r"\bdraft\s+(?:me\s+)?(?:a|an)?\s*(?:\w+\s+){0,3}update\s+for\b",
+        # "write something to send to X"
+        r"\bwrite\s+something\s+to\s+send\s+to\b",
+        # explicit: "stakeholder update"
+        r"\bstakeholder\s+update\b",
+    ]
+
     # Issue #522: Document update query patterns - Query #40
     DOCUMENT_QUERY_PATTERNS = [
         # Update document patterns
@@ -1048,6 +1070,19 @@ class PreClassifier:
             return Intent(
                 category=IntentCategory.QUERY,
                 action="set_default_repo",
+                confidence=1.0,
+                context={"original_message": message},
+            )
+
+        # #1256: stakeholder-update composition BEFORE document patterns —
+        # "write an update FOR [person]" is outbound communication, not
+        # document modification (see STAKEHOLDER_UPDATE_PATTERNS comment).
+        if PreClassifier._matches_patterns(
+            clean_for_matching, PreClassifier.STAKEHOLDER_UPDATE_PATTERNS
+        ):
+            return Intent(
+                category=IntentCategory.QUERY,
+                action="write_stakeholder_update",
                 confidence=1.0,
                 context={"original_message": message},
             )
@@ -1575,6 +1610,13 @@ class PreClassifier:
             (PreClassifier.PRODUCTIVITY_QUERY_PATTERNS, IntentCategory.QUERY, "productivity_query"),
             # Todo patterns
             (PreClassifier.TODO_QUERY_PATTERNS, IntentCategory.QUERY, "list_todos_query"),
+            # #1256: stakeholder-update BEFORE document (same precedence as the
+            # single-intent path — "update for [person]" is not a doc edit)
+            (
+                PreClassifier.STAKEHOLDER_UPDATE_PATTERNS,
+                IntentCategory.QUERY,
+                "write_stakeholder_update",
+            ),
             # Document patterns
             (PreClassifier.DOCUMENT_QUERY_PATTERNS, IntentCategory.QUERY, "update_document_query"),
             # Issue #1117: completion-history MUST come before TEMPORAL so
