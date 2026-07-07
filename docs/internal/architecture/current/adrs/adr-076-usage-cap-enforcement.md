@@ -1,6 +1,6 @@
 # ADR-076 — Usage-Cap Enforcement (Alpha Load Backstop)
 
-**Status**: ACCEPTED (v0.1, 2026-07-06) — Arch-authored; HOST trust-lens PASS folded; Lead builds.
+**Status**: ACCEPTED (v0.1, 2026-07-06) — Arch-authored; HOST trust-lens PASS folded; **implemented** (#1370, `01c28848b`, 2026-07-06) — `web/middleware/usage_cap_middleware.py`, 12 unit tests, staging/live verification not yet done.
 **Author**: Chief Architect (arch)
 **Reviewers**: HOST (trust-lens — PASS, 2026-07-06), Lead Dev (builder), PM (thresholds ratified 2026-07-04 via HOST).
 **Related**: ADR-070 D5 (honest-failure body), ADR-072 D5 (transparency-when-gated), ADR-075 D4 (honest-degradation), #1162/#1307 (gate-removal — this realizes its rate-limit recommendation), #1109 (in-process-vs-Redis shared-state lesson), #1344 (invite-gate — the *who-registers* boundary; this is the *how-much-load* boundary).
