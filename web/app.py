@@ -45,6 +45,21 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# ADR-076: usage-cap enforcement (rate limit + concurrency cap), Redis-backed.
+# Starlette's add_middleware() inserts at position 0 of the internal stack, so
+# LATER add_middleware() calls become MORE OUTER (execute first on a request).
+# This middleware reads request.state.user_id, which AuthMiddleware sets — so
+# it must be registered BEFORE AuthMiddleware's own add_middleware() call
+# below, not after, or it would run before Auth and never see the resolved
+# principal (verified empirically, not assumed — see usage_cap_middleware.py).
+try:
+    from web.middleware.usage_cap_middleware import UsageCapMiddleware
+
+    app.add_middleware(UsageCapMiddleware)
+    logger.info("✅ UsageCapMiddleware registered (ADR-076 - usage-cap enforcement)")
+except Exception as e:
+    logger.error(f"⚠️ Failed to register UsageCapMiddleware: {e}")
+
 # Issue #393: Register AuthMiddleware to enable cookie-based authentication
 # Must be registered before other middleware so it sets request.state.user_id early
 try:

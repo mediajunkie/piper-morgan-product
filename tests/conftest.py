@@ -223,6 +223,103 @@ def mock_async_session():
     return AsyncMock()
 
 
+class _PermissiveFakeRedis:
+    """A fake Redis client that always lets requests through cleanly.
+
+    Supports exactly the commands UsageCapMiddleware (ADR-076) uses. Reads
+    always report "nothing counted yet" so no test unexpectedly hits the
+    rate limit or concurrency cap; writes are no-ops. This is deliberately
+    permissive, not a behavioral simulation — tests that need to exercise
+    the middleware's actual rate-limit/concurrency-cap/fail-closed logic
+    use their own precise fake (see test_usage_cap_middleware_1370.py),
+    which patches the same target and takes precedence during those tests.
+    """
+
+    async def incr(self, key):
+        return 1
+
+    async def expire(self, key, seconds):
+        return True
+
+    async def ttl(self, key):
+        return -1
+
+    async def zadd(self, key, mapping):
+        return len(mapping)
+
+    async def zscore(self, key, member):
+        return None
+
+    async def zcard(self, key):
+        return 0
+
+    async def zremrangebyscore(self, key, min_score, max_score):
+        return 0
+
+    async def close(self):
+        pass
+
+
+@pytest.fixture(autouse=True)
+def mock_usage_cap_redis(request):
+    """
+    Auto-mock Redis for UsageCapMiddleware (ADR-076) so unit/route tests that
+    exercise the real FastAPI app (`from web.app import app` + `TestClient`)
+    don't fail with 503s when no local Redis is running.
+
+    Investigation (2026-07-06, ADR-076 build): confirmed no Redis service is
+    provisioned in this repo's gating CI (`ci.yml` runs bare `pytest tests/`
+    with no `services:` block — only pm034-llm/e2e-aaxt workflows provision
+    Redis) and none is running in a plain local dev shell without
+    `docker compose up -d`. UsageCapMiddleware fails closed (ADR-076 D4) when
+    Redis is unavailable, meaning EVERY request through the real app — not
+    just usage-cap-specific tests — would get a 503 instead of its expected
+    response. Confirmed by running tests/auth/test_auth_endpoints.py before
+    this fixture existed: test_login_success failed with
+    {"error":"capacity_check_unavailable",...} instead of 200.
+
+    Same shape as mock_token_blacklist above: skip for integration/performance
+    tests (they should exercise real infra deliberately), patch for everything
+    else. The patch target (`RedisFactory.redis_scope`, a classmethod) is the
+    same object regardless of which module's import path names it, so this
+    also covers other code that happens to call it during the same test —
+    intentional, not a side effect to guard against.
+
+    TO DISABLE FOR INVESTIGATION: add your test's ID to a `-k not` filter, or
+    temporarily change autouse=True to autouse=False.
+    """
+    if "integration" in request.keywords or "performance" in request.keywords:
+        yield
+        return
+
+    from contextlib import asynccontextmanager
+
+    # Import the module first to ensure it exists before patching (same
+    # discipline as mock_token_blacklist above) — mock.patch's dotted-string
+    # target resolution needs `services.cache` to already be an attribute of
+    # `services`, which isn't guaranteed for every test file's import chain
+    # (found via tests/integration/test_route_prefixes_1075.py: "AttributeError:
+    # module 'services' has no attribute 'cache'" when nothing else in that
+    # file's imports had pulled in services.cache.redis_factory first).
+    try:
+        from services.cache import redis_factory  # noqa: F401
+    except ImportError:
+        yield
+        return
+
+    fake = _PermissiveFakeRedis()
+
+    @asynccontextmanager
+    async def _scope():
+        yield fake
+
+    with patch(
+        "services.cache.redis_factory.RedisFactory.redis_scope",
+        side_effect=_scope,
+    ):
+        yield
+
+
 # GREAT-5 Phase 1.5: IntentService test fixtures
 # Updated in #212 Phase 0 to add ServiceRegistry initialization (required after #217 refactoring)
 @pytest.fixture
