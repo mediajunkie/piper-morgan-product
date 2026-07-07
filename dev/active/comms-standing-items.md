@@ -2,7 +2,7 @@
 
 **Purpose**: persistent (across-days) Comms-side task list — items that aren't tied to a specific blog post or pubDate but need surfacing/advancing as cycle fires advance. Lives across days; not a per-day artifact. (Per-day work goes in the dated session log under `dev/2026/MM/DD/`.)
 
-**Last refreshed**: 2026-07-05 (Practice That Got Retired published+syndicated; Beats 17-18 drafted, narrative front now at Jun 28; Ship #050 §0 sent)
+**Last refreshed**: 2026-07-07 (Beat 11 fully fact-checked across 2 rounds, ready for Docs handoff)
 
 ---
 
@@ -13,7 +13,7 @@
 | Topic | State | Owner of next move | Notes |
 |---|---|---|---|
 | **Narrative arc steer (candidates A–E)** | ✅ ADVANCED 2026-07-04 — PM approved proceeding rather than a formal pick-one steer; all 5 drafted, researched against actual source logs (several turned out richer/different than the original one-line gloss), calendared Aug 16/22/23/29/30. | PM (voice-pass on all 5) | Drafts: `the-fabricating-standup.md`, `the-trust-gate-that-wasnt.md`, `read-the-mock-first.md`, `the-orphan-migration.md`, `two-of-me.md`. Each carries 1-3 genuine PM-input brackets (fact-check sign-offs, personal-anecdote beats). |
-| **Duty-cycle slate (Beats 10–13)** | Beat 10 *The Airport Corrections* **PUBLISHED** 2026-07-02 (Medium URL added same day). Beats 11-13 drafted, full mechanical sweep done 2026-07-04 (frontmatter/headings/cohort→team/footer chain all fixed). Beat 11 **renamed** "The Cohort Catches the Cycle" → "The Team Catches the Cycle" (calendar + admin view + cross-refs all updated). | PM (voice-pass on 11-13) | pubDates: 11=Jul7, 12=Jul9, 13=Jul14. |
+| **Duty-cycle slate (Beats 10–13)** | Beat 10 *The Airport Corrections* **PUBLISHED** 2026-07-02 (Medium URL added same day). Beat 11 *The Team Catches the Cycle*: PM voice-pass done 2026-07-07 + full grounded fact-check completed (2 rounds) — corrected moat-line misattribution (CIO's phrase, not PM's), HOST/Exec clash timing, inflated roles count, a YAML-breaking caption apostrophe, and an over/under-corrected canonical-query-gate description (settled after PM caught my first pass had over-narrowed it to "just connectors"). **Ready for Docs's proofread — PM said they'd hand it over; still shows `drafted` in the calendar, so that handoff hasn't happened yet as of this fire.** Beats 12-13 still awaiting PM voice-pass. | Docs (once PM hands off) for 11; PM (voice-pass) for 12-13 | pubDates: 11=Jul7 (today), 12=Jul9, 13=Jul14. |
 | **Building-narrative slate (Beats 14–16)** | Drafted 6/16, full mechanical sweep done 2026-07-04 (Beat 16's footer TBD resolved — now correctly chains to the Jul 25 insight). | PM (voice-pass) | pubDates: 14=Jul16, 15=Jul21, 16=Jul23. |
 | **Insight batch drafted 6/4** (Mechanism Beats Vigilance, Architecture Wrote Its Own Case, Verify at User Path, Over-Checking Has Dividends, Confabulating a Peer's Unfinished Work) | Full mechanical sweep done 2026-07-04 — 3 of the 5 were missing frontmatter AND dateline entirely, not just empty; footer chain corrected end-to-end. | PM (voice-pass) | pubDates: Aug1/2/8/9/15. |
 | **Climbing Higher When the Platform Laps You** | ✅ PM voice-pass done 2026-07-04, mechanical close-pass done (PM's worktree branch hadn't picked up prior fixes — headings/footer/2 typos caught and fixed). PubDate was Jul 4 (today). | Docs (proofread + publish) | |
@@ -35,6 +35,7 @@
 
 ## Recently-closed (rolling history; trim to last ~14 days)
 
+- 2026-07-07 **Beat 11 ("The Team Catches the Cycle") fully fact-checked, 2 rounds** — round 1 caught genuine misattribution (PM didn't recall coining "team-discipline as a moat"; traced to CIO's May 18 memo) plus HOST/Exec clash-timing errors and an inflated roles count, all verified against primary source logs rather than the omnibus. Round 2 (after PM's own voice-pass) caught a YAML-breaking caption apostrophe, a stale calendar notes field, an M2/MVP mischaracterization (PM correctly pushed back — reverted, since PM's "MVP" framing was a deliberate accessibility choice consistent with the session's whole editorial direction, not an error), a wrong-from-memory MVP acronym gloss (project glossary deliberately uses "Valuable" not "Viable"), and an over-corrected canonical-query-gate description that PM also caught and I fixed by counting the actual test categories directly. New standing memory saved on distinguishing factual errors from deliberate accessibility trade-offs when fact-checking PM's blog prose.
 - 2026-07-05 **Beats 17-18 drafted** — narrative front advanced Jun14→Jun28. Orphan-sweep discipline extended to the footer-chain insertion point (Meta-Observation Pattern's footer had to be redirected around the 2 new beats).
 - 2026-07-05 **The Practice That Got Retired PUBLISHED + syndicated** same day.
 - 2026-07-05 **Ship #050 §0 sent same-fire** per PM's unauthorized-delay correction.
