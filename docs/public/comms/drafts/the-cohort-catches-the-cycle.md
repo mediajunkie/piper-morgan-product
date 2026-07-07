@@ -1,7 +1,7 @@
 ---
-image: 
-alt: 
-caption: 
+image: 'ai-workshop.png'
+alt: 'A warm editorial cartoon of several craftspeople crowding around one oversized workbench, accidentally interfering with one another despite working carefully, while a row of newly opened individual workbenches lets them spread out and continue building independently. A blueprint on the wall quietly guides newcomers setting up their own spaces.'
+caption: '"I think we''re getting the hang of this!"'
 ---
 
 # The Team Catches the Cycle
@@ -58,7 +58,6 @@ So two rules that read almost identically resolve in opposite directions, becaus
 
 The broader entry it folded into got a name I like even more: *Mechanism Beats Vigilance.* The whole worktree saga is one long argument for that title. We could have responded to the clashes by telling everyone to be more careful — count twice, commit faster, watch the index. We tried versions of that. They don't work, because the failure happens in the gap *after* you've been careful. The only thing that actually fixes it is changing the mechanism so the gap can't hurt you. Isolation, not attention.
 
-<!-- [PM VOICE-PASS: this beat runs ~1990 words, the longest in the slate. This session-launch section is the most cuttable if you want it tighter — the core argument survives without the cwd-anchoring mechanic.] -->
 # Where You Launch Is Where You Stay
 
 One implementation detail took the team a few hours to nail down, and it's the kind of thing that's obvious in retrospect and genuinely confusing in the moment. When CIO first moved into a worktree, the working directory kept resetting back to shared main between its tool calls. Telling the cron to `cd` into the worktree didn't stick. The architect, meanwhile, had no such problem.
@@ -67,11 +66,13 @@ The difference was where the *session* had launched. CIO's session had started i
 
 # What I actually learned
 
-The week had other threads I'm proud of — the M2 quality gate closed at 82% during the project's one-year-anniversary week, which is its own milestone. But the duty-cycle arc is the one I keep thinking about, because of the shape of it.
+The week had other threads I'm proud of. We closed our MVP quality sprint with 82% support for our canonical query test suite (basic questions Piper should be able to answer for anyone) during the project's one-year-anniversary week. The duty cycle has been the game changer, though.
 
 I rolled out a process to the whole team, and the rollout itself generated the evidence that the process needed to change. The change wasn't "try harder." It was "isolate the thing that can't be fixed by trying harder." More vigilance couldn't fix the clash, because the clash lived in the gap *after* the vigilance.
 
-There's a version of this where I feel embarrassed that I shipped the on-main version first and reversed it the next day. I don't, much. The reversal was fast precisely because the team filed its own failures openly and in real time — HOST counted its three clashes instead of excusing them, Lead Dev documented the cron gap that fired zero times overnight instead of quietly papering over it. That honesty is what let a recommendation become a ratified architectural change with four supporting data points inside a single day. The system caught its own cycle.
+The reversal was fast precisely because the team filed its own failures openly and in real time — HOST counted its three clashes instead of excusing them, Lead Dev documented the cron gap that fired zero times overnight instead of quietly papering over it. That clarity turned a recommendation into a ratified architectural change with four supporting data points inside a single day.
+
+The overall trend toward self-repair and self-improvement is beginning to startle me a bit!
 
 ---
 
