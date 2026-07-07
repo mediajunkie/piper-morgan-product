@@ -92,6 +92,9 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("QUERY", "list_branches_query"): ActionDisposition.WORKFLOW,
     # ---- QUERY: Documents ----
     ("QUERY", "update_document_query"): ActionDisposition.WORKFLOW,
+    # #1256: compose an outbound stakeholder update -- FLOOR (the floor drafts
+    # the prose; gateway for the Wave-2 stakeholder-update skill when it lands)
+    ("QUERY", "write_stakeholder_update"): ActionDisposition.FLOOR,
     # ---- QUERY: Contextual ----
     ("QUERY", "changes_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "attention_query"): ActionDisposition.WORKFLOW,
@@ -145,6 +148,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "list_labels_query"): "List labels",
     ("QUERY", "list_branches_query"): "Show branches",
     ("QUERY", "update_document_query"): "Update the project roadmap document",
+    ("QUERY", "write_stakeholder_update"): "Write a short update for the CEO on where we are with alpha testing",
     ("QUERY", "changes_query"): "What changed since yesterday?",
     ("QUERY", "attention_query"): "What needs my attention?",
     ("QUERY", "productivity_query"): "How productive was I this week?",
@@ -245,6 +249,7 @@ class Verb(Enum):
     # `summarize_github_issue`. SUMMARIZE is the subject of SUMMARIZE-TAXONOMY.
     SUMMARIZE = "summarize"
     PRIORITIZE = "prioritize"
+    COMPOSE = "compose"  # #1256: outbound content composition (stakeholder updates)
 
 
 # Bridge: every existing ACTION_REGISTRY action -> its canonical Verb.
@@ -287,6 +292,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "list_labels_query": Verb.LIST,
     "list_branches_query": Verb.LIST,
     "update_document_query": Verb.UPDATE,
+    "write_stakeholder_update": Verb.COMPOSE,
     "changes_query": Verb.GET,
     "attention_query": Verb.GET,
     "productivity_query": Verb.GET,

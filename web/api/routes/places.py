@@ -73,16 +73,19 @@ async def list_places(current_user: JWTClaims = Depends(get_current_user)) -> Di
 
     # GitHub source — only offered to the service if the user has a configured
     # token (keychain-first per #1192); otherwise no github Place at all.
+    # The candidate is tracked separately from github_router so the finally
+    # below closes it even when it doesn't graduate to a source (#1279).
     github_router = None
+    gh_candidate = None
     try:
         from services.integrations.github.github_integration_router import (
             GitHubIntegrationRouter,
         )
 
-        candidate = GitHubIntegrationRouter()
-        await candidate.initialize(user_id=user_id)
-        if candidate.config_service.is_configured(user_id):
-            github_router = candidate
+        gh_candidate = GitHubIntegrationRouter()
+        await gh_candidate.initialize(user_id=user_id)
+        if gh_candidate.config_service.is_configured(user_id):
+            github_router = gh_candidate
     except Exception as e:
         logger.warning("places_github_init_failed", error=str(e))
 
@@ -103,16 +106,22 @@ async def list_places(current_user: JWTClaims = Depends(get_current_user)) -> Di
 
     from services.place.place_service import PlaceService
 
-    service = PlaceService(github_router=github_router, calendar_service=calendar_service)
-    places = await service.get_visible_places(trust_stage)
+    try:
+        service = PlaceService(github_router=github_router, calendar_service=calendar_service)
+        places = await service.get_visible_places(trust_stage)
 
-    payload: List[Dict[str, Any]] = [_place_to_payload(p) for p in places]
-    logger.info(
-        "places_listed",
-        user_id=user_id,
-        trust_stage=trust_stage.name,
-        count=len(payload),
-        github=bool(github_router),
-        calendar=bool(calendar_service),
-    )
-    return {"places": payload, "trust_stage": trust_stage.value}
+        payload: List[Dict[str, Any]] = [_place_to_payload(p) for p in places]
+        logger.info(
+            "places_listed",
+            user_id=user_id,
+            trust_stage=trust_stage.name,
+            count=len(payload),
+            github=bool(github_router),
+            calendar=bool(calendar_service),
+        )
+        return {"places": payload, "trust_stage": trust_stage.value}
+    finally:
+        # #1279: this route constructs a fresh router per request; close its
+        # aiohttp session (router.close() is idempotent + never raises).
+        if gh_candidate is not None:
+            await gh_candidate.close()
