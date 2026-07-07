@@ -1,8 +1,28 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-07 ~07:25 PT. Session log: `dev/2026/07/07/2026-07-07-0647-lead-code-log.md`.
+**Updated**: 2026-07-07 ~10:15 PT. Session log: `dev/2026/07/07/2026-07-07-0647-lead-code-log.md`.
 
-## ▶ CURRENT (7/7 ~07:25) — queue at (0,0): standing-items refreshed, a real doc-drift found+fixed, everything else PM-gated
+## ▶ CURRENT (7/7 ~10:15) — ADR-076 + ADR-075 Component B both fully closed with live evidence; server-owned-state family (070/071/075) complete; queue back at (0,0)
+
+**Duty cycle**: Fire 2 this morning (09:17 slot). Cron unchanged, armed, one job (`773e1e46`).
+
+**Big outcome this fire**: both ADR-076 (#1370, usage-cap middleware) and ADR-075 Component B (#1373, personalization store) got BUILD-ratified by Arch this morning, both flagged "the usual staging/live verify (your AC)" as the one remaining item, and both got that verification done for real and closed. **The server-owned-state family (ADR-070/071/075) is now fully ratified AND fully implemented** — a genuine multi-day arc closed out.
+
+- **ADR-076 live verification**: real local server + real Redis. Rate limit, concurrency cap, and fail-closed all hit their exact documented boundary and response shape. Closed #1370. Test env torn down cleanly after (server killed, `docker compose stop redis` — restored to exactly the pre-test state).
+- **ADR-075 Component B live verification**: direct-service verification against real local Postgres. Distinct-principal scoping, lazy-seeding, and the one-time notice all confirmed against real DB rows. **Honest scope note**: this local dev DB has no real PM identity, so D3's PM-specific sub-case was explicitly skipped (not faked) — flagged precisely on #1373 rather than overclaimed. Closed #1373. Test artifacts (throwaway user + personalization row) fully cleaned up, verified 0 remaining.
+- Updated both ADRs' own status lines to reflect full closure (they still said "not yet done" until this fire).
+
+**Filed #1374** (mail-send.sh residue-reconcile bug) after hitting the exact same edge case on **4 separate triage-moves this fire** — precisely characterized with root cause traced from the actual script, reproduction steps, and the manual fix (which works reliably: `git merge origin/main` + surgical `git checkout HEAD -- <path>`). Not mine to fix right now, but well-documented for whoever picks it up. If this keeps recurring, the manual fix is fast (~10s) — don't let it block anything.
+
+**No PM movement on Epic A (#1304)** — checked again this fire, unchanged since 2026-07-05. Still holding for explicit go-ahead on CIO's visible-only recommendation.
+
+**Queue is back at (0,0)**: mail empty (checked 3x this fire — after ADR-076 close, after ADR-075 close, and once more after HOST's trust-confirmation memo). Epic A PM-gated, the 4 remaining connector ports PM-gated. Nothing else found needing attention this pass.
+
+**Next fire, in order**: (1) check mail (2) if PM has answered the Epic A fork, implement + close #1304 (3) if PM has weighed in on cicd/devenvironment/gitbook/linear's live-MCP-server question, that unblocks Epic C's remaining 4 ports (4) otherwise quiet-hold is correct — the big open threads (ADR-075, ADR-076) are now genuinely done, don't manufacture work to replace them.
+
+---
+
+## ▶ PRIOR CURRENT (7/7 ~07:25) — queue at (0,0): standing-items refreshed, a real doc-drift found+fixed, everything else PM-gated
 
 **Duty cycle**: START fire (06:17 slot, ran ~30 min late). Prior day (7/6) verified DAY-CLOSED properly, no retroactive close needed. Mail drained (0 unread, checked twice this fire). Cron unchanged, armed, exactly one job (`773e1e46`, same expression).
 
