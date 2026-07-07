@@ -99,4 +99,36 @@ PM: *"Remember, we refactored the MVP sprints at some point. We had six original
 
 ---
 
+## MEDIUM-tier "overlapping candidates" batch — 53 issues resolved by PM pattern rules (2026-07-06)
+
+PM reviewed the 55-issue medium-tier artifact and gave title-pattern rules plus explicit issue-number lists rather than going one at a time. All applied and verified live:
+
+- **Title contains "STAND" -> A4 (Standup Epic)**: #119, #161, #162, #240
+- **Title contains "LEARN" -> A5 (Learning System)**, plus explicit #300: #221, #222, #223, #224, #225, #300
+- **The 8-issue S1-vs-W overlap group -> W (Quick Wins)** (calendar agreed both were plausible; PM called it for W across the board): #325, #353, #354, #359, #360, #362, #363, #367
+- **Title contains "TEST" -> T1 (Test Repair)**, plus explicit #361: #342, #343, #344, #345, #346, #347, #361
+- **Title contains "RECONNECT" -> RECONNECT - Connector Refactor**, plus explicit #1235: #1329, #1330, #1335, #1337, #1235
+- **A6 (User Onboarding)**, confirmed by a comment literally reading "Sprint: A6 (80% complete - 4 of 5 issues)": #218, #227, #228, #229, #249
+- **A2 (Notion & Errors)**: #109, #136, #142, #215
+- **C1 (Craft Pride - CRAFT)**: #232 (CORE-CRAFT-GAP), #233 (CORE-CRAFT-PROOF) — completes the CORE-CRAFT trio alongside #234 (CORE-CRAFT-VALID, resolved earlier today). PM's framing: these were epics opened in the Craft Pride sprint after the GREAT Refactor verification found only ~70% completion in many spots — GAP/PROOF/VALID are literally the three phases of that same response.
+- **D1 - Beta design quality**: #1184, #1240
+- **A1 (Critical Infrastructure)**: #145, #216
+- **A3 (Core Activation)**: #197, #198
+- **M2 - Conscious Floor + Action Handlers**: #1132
+- **A10 - Alpha Testing**: #292, #467
+- **A11 - Alpha Polish**: #459, #460, #466
+
+**Precedence note**: several titles matched a pattern rule AND appeared on an explicit numbered list with a different destination (e.g. #215 "CORE-ERROR-STANDARDS" contains "STAND" but was explicitly listed under A2; #363 "BUG-TEST-SECURITY" contains "TEST" but was explicitly listed as part of the S1-vs-W group going to W; #292/#460/#233/#145/#216 similarly). Explicit numbered lists were treated as PM having looked at that specific issue directly, and took precedence over the generic substring rules in every case they overlapped.
+
+## Two items held, not applied (2026-07-06)
+
+- **#461** — PM's message listed it under both "A10 - #461, 467, 292" and "A11 - #459, 460, 461, 466." Appears in both lists; held pending which one is intended.
+- **#922** — PM's message listed it under "D1 - #1184, 1240, 922," but #922 was already resolved to **M1 - MVP Foundation** earlier this same session, on strong direct evidence (the issue's own comment is the ADR-059 workflow-dispatcher implementation, closed 2026-03-19, matching PM's own "arose before we dedicated a sprint" framing). Held rather than overwritten — likely means a different issue number.
+
+## One item with no rule at all (2026-07-06)
+
+**#217** (CORE-LLM-CONFIG: User config for Piper's LLM keys) — three-way overlap between A1, A6, and C1 — wasn't covered by any of PM's pattern or explicit rules. Still open.
+
+---
+
 *Log started 2026-07-06 during the Group 1 + Group 2 reconciliation pass. Append further decisions here as remaining groups are reviewed — do not start a new file.*
