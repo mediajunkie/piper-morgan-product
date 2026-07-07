@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/06/2026-07-06-0701-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `a833a327`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-06 21:47 PT (Fire 15 / STOP; ADR-075 v0.2 ACCEPTED confirmed by Arch; batch-1 distribution approved by PM; DAY-CLOSED)
+**Last updated**: 2026-07-07 07:01 PT (START Fire 1; ADR-076 build ratified by Arch; queue (0,0))
 
 ---
 
@@ -12,8 +12,8 @@
 
 - **Account**: DinP (xian@designinproduct.com). Model: sonnet-4-6.
 - **Worktree**: ephemeral Option B (`claude/trusting-faraday-ec4bba`). `claude/host-cycle` retired 2026-06-13.
-- **Cron**: ACTIVE (`0851d3f9`; re-armed 2026-07-06 STOP; `37 6,9,12,15,18,21 * * *` windowed).
-- **Session log today**: `dev/2026/07/06/2026-07-06-0701-host-code-log.md`
+- **Cron**: ACTIVE (`44b6bf94`; re-armed 2026-07-06 STOP; `37 6,9,12,15,18,21 * * *` windowed).
+- **Session log today**: `dev/2026/07/07/2026-07-07-0701-host-code-log.md`
 - **Gap-C cure incoming**: CIO proved `mcp__scheduled-tasks` solves cron-death (June 13). Disk-persistent, survives restarts, fires in main checkout. CIO proposing cohort rollout. HOST should be in first cohort — flag interest to CIO.
 - **Migration touch-ups**: thin-prompt proposal Model A → Option B ✅ DONE (fire ~15:37).
 
