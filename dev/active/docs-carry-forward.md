@@ -1,7 +1,7 @@
 # Docs Carry-Forward
-**Updated**: 2026-07-06 ~10:50 PDT (Fire 1 — START WORK)
+**Updated**: 2026-07-07 ~11:00 PDT (Fire 1 — START WORK)
 **Cron**: `17 10,22 * * *` (SLOW tier — 2×/day; job f33227b7)
-**Session log**: `dev/2026/07/06/2026-07-06-1047-docs-code-log.md`
+**Session log**: `dev/2026/07/07/2026-07-07-1047-docs-code-log.md`
 
 ## Migration hold status
 
@@ -9,17 +9,18 @@ SLOW tier continues. No cron tier changes until PM + Janus migration plan confir
 
 ---
 
-## Done this fire (Jul-6 Fire 1)
+## Done this fire (Jul-7 Fire 1)
 
-- ✅ **BRIEFING STATUS BANNER updated** — Jul-4 + Jul-5 cross-cohort attest; frontmatter bumped to 2026-07-06 (commit `ea0d42dd1`)
-- ✅ **PA response sent** — #1368 merge-keeper operational view (commit `f950089ac` via mail-send.sh)
-- ✅ **Inbox triaged** — 2 CC memos moved to read/
+- ✅ **Jul-6 activity-log rows appended** — 11 rows (Shape B, 1594→1605 lines; commit `d676a2c89`)
+- ✅ **BRIEFING STATUS BANNER: Jul-6 cross-cohort attest** — ADR-075/076, #1366, Ship #050 §0 6/6 complete, self-attribution-drift, #1368 3-tier; frontmatter→2026-07-07 (commit `19651e02a`)
+- ✅ **Weekly audit workflow bug fixed** — unescaped backticks in JS template literal (lines 134-135); three Monday failures (Jun-22, Jun-29, Jul-6); commit `55904815e`; manually triggered → **#1375 FLY-AUDIT created**
+- ✅ **Merge-keeper sweep** — 6 branches escalated; log at `dev/active/merge-keeper-2026-07-07.md`
 
-## Next (Jul-6 Fire 2 ~22:17, or Jul-7 START if STOP)
+## Next (Jul-7 Fire 2 ~22:17, or STOP if last fire)
 
-- [ ] **Weekly audit #1329** — next due Jul 9 (Wednesday); check if auto-generated yet
-- [ ] **BRIEFING refactor transition** — PM-ratified (Jul-4 PPM's proposal); awaiting CIO coordination memo; when received, plan `update-current-state` skill rewrite + CLAUDE.md re-scope + session-start.sh threshold. CIO's Jul-6 append explicitly calls this "pending Docs-coordinated execution."
-- [ ] **Jul-6 omnibus** — will need writing; check Jul-6 source logs at Jul-7 START
+- [ ] **#1375 Weekly Docs Audit** — run/review audit checklist items; or confirm another agent is assigned; due end-of-day (PM-assigned)
+- [ ] **Merge-keeper escalation memo** — 6 branches need PM decision (ages 26d–99d, all conflict); draft memo to PM via mailbox
+- [ ] **BRIEFING refactor transition** — awaiting CIO coordination memo; when received, plan `update-current-state` skill rewrite + CLAUDE.md re-scope + session-start.sh threshold
 
 ## Pending / PM-gated
 
@@ -27,8 +28,9 @@ SLOW tier continues. No cron tier changes until PM + Janus migration plan confir
 - **#1344 open-registration** — PM decision needed
 - **docs-standing-items.md stale** (last refresh 2026-05-27) — refresh when queue allows
 - **YAML-frontmatter upgrade lane** — ADRs/Patterns/Methodology/.serena still pending
+- **Update Essential Briefings job** (`.github/workflows/weekly-docs-audit.yml`) — `git push` in the job fails with branch-protection bypass; separate pre-existing issue; not blocking
 
 ## State flags
 
-- Inbox: **0 unread** (as of 10:50 PDT)
-- Queue: **(0,0)** — all unblocked items done this fire; BRIEFING refactor blocked on CIO memo
+- Inbox: **0 unread** (as of 10:47 PDT)
+- Queue: **(0,1)** — main fire 1 work done; BRIEFING refactor blocked on CIO memo; audit checklist (#1375) is next unblocked item
