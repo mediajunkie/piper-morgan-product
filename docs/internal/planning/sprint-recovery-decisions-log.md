@@ -145,4 +145,14 @@ PM asked why #922 was flagged as held, given the M1 resolution was already estab
 
 ---
 
+## #461 resolved to A10 (2026-07-06)
+
+PM confirmed A10 after reviewing the issue's own text: "Discovered during alpha testing 2025-12-03" — naming the A10 sprint's own activity directly and landing inside its calendar window. Applied and verified live. This closes out the 5-issue A10/A11 overlap group in full: A10 = {#292, #461, #467}, A11 = {#459, #460, #466}.
+
+## #922's D1 mention was very likely a recency slip, not a data-driven correction (2026-07-06)
+
+PM asked directly why #922 was flagged as held, given M1 was already settled. On inspection: #922 was never part of the 55-issue overlapping-candidates artifact PM was working through (only #1184 and #1240 belong to that artifact's actual D1/RECONNECT-overlap group) — and #922 had just been reported to PM as resolved-to-M1 in the immediately preceding message. The likeliest explanation isn't a digit-transposition typo but a recency slip: the number was fresh from having just been discussed, and got pulled into the D1 list by association rather than being a deliberate new data point. M1 stands; nothing was overwritten.
+
+---
+
 *Log started 2026-07-06 during the Group 1 + Group 2 reconciliation pass. Append further decisions here as remaining groups are reviewed — do not start a new file.*
