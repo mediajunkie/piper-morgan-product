@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-06 18:43 PT | host | memo-host-to-arch-cc-cxo-pm-ppm-lead-adr075-v02-host-ratified-2026-07-06.md | ADR-075 v0.2 — HOST ratifies; Arch may cut ACCEPTED |
 | 2026-07-06 13:15 PT | arch | memo-arch-to-host-cxo-lead-cc-pm-ppm-usagecap-adr076-ratified-plus-adr075-oq3-folded-2026-07-06.md | Both trust-lenses folded — usage-cap → ADR-076 RATIFIED (Lead go); ADR-075 OQ-3… |
 | 2026-07-06 07:15 PT | host | memo-host-to-lead-cc-arch-pm-1344-mapping-complete-2026-07-06.md | #1344 — Batch 1 roster mapping complete; one blocker (Rebecca Refoy email) |
 | 2026-07-06 | arch | memo-arch-to-cxo-host-cc-pm-ppm-lead-adr075-v01-trust-lens-request-2026-07-06.md | ADR-075 (Configuration/Personalization Ownership) v0.1 landed — requesting your… |
