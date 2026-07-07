@@ -86,10 +86,13 @@ class WorkItemProvider:
             router = GitHubIntegrationRouter()
             if not router.config_service.is_configured(user_id):
                 return []
-            await router.initialize(user_id=user_id)
-            handle = await read_user_github_handle(user_id)  # WS-1 P4: now async (DB-backed read)
-            issues = await router.get_open_issues(limit=100 if handle else WORKITEM_FETCH)
-            return filter_issues_by_assignee(issues, handle)[:WORKITEM_FETCH]
+            try:
+                await router.initialize(user_id=user_id)
+                handle = await read_user_github_handle(user_id)  # WS-1 P4: now async (DB-backed read)
+                issues = await router.get_open_issues(limit=100 if handle else WORKITEM_FETCH)
+                return filter_issues_by_assignee(issues, handle)[:WORKITEM_FETCH]
+            finally:
+                await router.close()  # #1279: fresh router per call — release its aiohttp session
         except Exception as e:  # never let a github hiccup blank Radar/standup
             logger.warning("radar_workitem_source_failed", error=str(e))
             return []
@@ -127,16 +130,19 @@ class PlaceProvider:
                 logger.warning("radar_place_trust_lookup_failed", error=str(e))
 
             # GitHub source — only if the user has a configured token (keychain-first #1192).
+            # Candidate tracked separately so the finally below closes it even
+            # when it doesn't graduate to a source (#1279).
             github_router = None
+            gh_candidate = None
             try:
                 from services.integrations.github.github_integration_router import (
                     GitHubIntegrationRouter,
                 )
 
-                candidate = GitHubIntegrationRouter()
-                await candidate.initialize(user_id=user_id)
-                if candidate.config_service.is_configured(user_id):
-                    github_router = candidate
+                gh_candidate = GitHubIntegrationRouter()
+                await gh_candidate.initialize(user_id=user_id)
+                if gh_candidate.config_service.is_configured(user_id):
+                    github_router = gh_candidate
             except Exception as e:
                 logger.warning("radar_place_github_init_failed", error=str(e))
 
@@ -153,18 +159,24 @@ class PlaceProvider:
             except Exception as e:
                 logger.debug("radar_place_calendar_unavailable", error=str(e))
 
-            service = PlaceService(github_router=github_router, calendar_service=calendar_service)
-            places = await service.get_visible_places(trust_stage)
-            return [
-                {
-                    "id": p.id,
-                    "name": p.name,
-                    "summary": p.summary,
-                    "source_url": p.source_url,
-                    "last_fetched": p.last_fetched.isoformat() if p.last_fetched else None,
-                }
-                for p in places
-            ]
+            try:
+                service = PlaceService(
+                    github_router=github_router, calendar_service=calendar_service
+                )
+                places = await service.get_visible_places(trust_stage)
+                return [
+                    {
+                        "id": p.id,
+                        "name": p.name,
+                        "summary": p.summary,
+                        "source_url": p.source_url,
+                        "last_fetched": p.last_fetched.isoformat() if p.last_fetched else None,
+                    }
+                    for p in places
+                ]
+            finally:
+                if gh_candidate is not None:
+                    await gh_candidate.close()  # #1279: release the per-call aiohttp session
         except Exception as e:  # never let a place hiccup blank Radar/standup
             logger.warning("radar_place_source_failed", error=str(e))
             return []

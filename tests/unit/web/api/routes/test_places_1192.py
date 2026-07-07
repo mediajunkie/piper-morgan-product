@@ -59,6 +59,7 @@ async def test_unconnected_sources_yield_empty_honest_list():
     """GitHub unconfigured + calendar unauthenticated → zero places (no fabrication)."""
     gh = MagicMock()
     gh.initialize = AsyncMock()
+    gh.close = AsyncMock()  # #1279: the route now closes the router in a finally
     gh.config_service.is_configured.return_value = False
     cal = MagicMock()
     cal.authenticate = AsyncMock(return_value=False)
@@ -85,6 +86,7 @@ async def test_connected_github_yields_place_at_stage4():
 
     gh = MagicMock()
     gh.initialize = AsyncMock()
+    gh.close = AsyncMock()  # #1279: the route now closes the router in a finally
     gh.config_service.is_configured.return_value = True
     cal = MagicMock()
     cal.authenticate = AsyncMock(return_value=False)
@@ -116,6 +118,7 @@ async def test_connected_github_yields_place_at_stage4():
 async def test_trust_lookup_failure_degrades_not_crashes():
     gh = MagicMock()
     gh.initialize = AsyncMock()
+    gh.close = AsyncMock()  # #1279: the route now closes the router in a finally
     gh.config_service.is_configured.return_value = False
     cal = MagicMock()
     cal.authenticate = AsyncMock(side_effect=RuntimeError("no creds"))

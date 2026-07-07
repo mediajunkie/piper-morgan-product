@@ -172,6 +172,26 @@ class GitHubIntegrationRouter:
             self._initialized = True
             logger.info("GitHubIntegrationRouter initialization complete")
 
+    async def close(self):
+        """Release the resources ``initialize()`` opened (#1279).
+
+        The MCP adapter's ``configure_github_api()`` opens an aiohttp
+        ``ClientSession``; callers that construct a fresh router per request
+        (places route, Radar's WorkItem/Place providers) leaked one session per
+        call because nothing ever closed it ("Unclosed client session" in the
+        logs). Delegates to the adapter's own idempotent ``disconnect()`` —
+        safe to call when never initialized, already closed, or keyless (no
+        session was opened). Never raises: cleanup must not mask the request's
+        real outcome. The spatial fallback holds no session (verified — no
+        aiohttp/httpx/requests state), so there is nothing to close there.
+        """
+        if self.mcp_adapter:
+            try:
+                await self.mcp_adapter.disconnect()
+            except Exception as e:
+                logger.warning(f"GitHubIntegrationRouter close failed (non-fatal): {e}")
+        self._initialized = False
+
     def _get_integration(self, operation: str) -> Any:
         """
         Get the GitHub integration (MCP adapter preferred, spatial fallback).
