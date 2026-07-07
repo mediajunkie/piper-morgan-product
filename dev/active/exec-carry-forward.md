@@ -30,10 +30,16 @@ Real synthesis built 7/6 afternoon from all 6 actual §0s: `dev/2026/07/06/exec-
 - **"Climbing Higher" blog post** — commit history shows normal publish+archive flow but doesn't distinguish whether PM's voice-pass specifically happened. Status genuinely unclear (checked 7/6, couldn't confirm either way) — ask PM directly rather than guess.
 - **MCPB v0.1.9 clean-machine test result** — confirmed still outstanding (PA's own 7/6 briefing says "results not yet received"). PM ran the test night of 7/4; PPM/PA still waiting on relay.
 
-## DONE — rendered 7/6 afternoon, PM present
+## DONE — rollup items actioned same evening (7/6)
 
-- **Cohort-attention-rollup**: rendered live for PM 7/6 ~17:00 (6 needs-decision / 7 in-flight / 3 clean). Top items: beta scope target date, invite minting (now just needs a "go" — roster is 10/10), account migration (0/9 confirmed), Web Phase 3 + newsletter name (small, stuck since June), Ted Nadeau email (stale since 6/27). PM hasn't yet acted on any of these as of day-close — check status at next PM engagement rather than re-render from scratch if nothing's moved.
-- **Worktree-sync discipline conversation with CIO** — PM raised this, I surfaced 3 concrete data points (my own gap, CXO's incident, Arch's T3) in the rollup as a discussion item. **PM hasn't said go/no-go on formally raising it with CIO yet** — don't draft/send anything to CIO until PM confirms.
+PM worked through all 6 rollup items same evening:
+- **Beta scope date**: PM says scope was clarified (with PPM, this afternoon) but date deliberately left undecided — NOT an open PM decision, was my stale framing. **Couldn't find this written down anywhere** (checked recent PPM files, sprint-history-recovery-plan) — asked PM for a pointer/summary so it gets recorded properly rather than living only in conversation.
+- **Invite minting**: approved. Relayed to HOST.
+- **Account migration**: PM direction — unhurried, CIO first/Exec last, deadline end of month (Kindsys.us account retiring, pipermorgan.ai moving to Max). PM wants a 3-way (PM+CIO+Exec) planning conversation, not one-off memos. Relayed to CIO, asked them to propose a starting point since they go first.
+- **Web Phase 3**: unblocked — relayed go-ahead to Web.
+- **Newsletter name**: **investigated, not a fresh decision** — Themis/PM already named it "Now What?" on the DinP side 6/23; it just never crossed over to this repo (Web was still asking as of 6/25, Themis flagged the same gap 6/28). Relayed the resolved name to Web cc Comms, asked them to update on-site references.
+- **Ted/duty-cycle/ideas-list discussion**: PM confirmed wants to do this with CIO directly. Not routing/scheduling this myself unless asked.
+- **Worktree-sync discipline conversation with CIO** — not yet acted on by PM as of this exchange; still an open thread from the rollup, not superseded by anything above.
 
 ---
 
