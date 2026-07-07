@@ -86,22 +86,43 @@ while :; do
         # SURGICAL by construction — operates strictly on "$@" (paths the caller passed for THIS send,
         # written seconds ago), never a broad `checkout -- .` / `reset --hard` (HARD RULE). Best-effort:
         # the push already succeeded, so reconcile errors only warn — they never fail the send.
-        reconcile_fail=0
+        reconcile_failed=""
         for f in "$@"; do
             if G cat-file -e "HEAD:$f" 2>/dev/null; then
                 # tracked in HEAD → restore HEAD's version (undo this send's modify/delete);
                 # the eventual merge re-applies the change from origin/main cleanly.
-                G checkout -- "$f" 2>/dev/null || reconcile_fail=1
+                err=$(G checkout -- "$f" 2>&1) || reconcile_failed="${reconcile_failed}${f}: ${err}"$'\n'
             else
                 # untracked new file → drop the local copy (identical content is on origin/main now);
                 # the eventual merge re-adds it as a tracked file cleanly.
-                rm -f "$REPO/$f" 2>/dev/null || reconcile_fail=1
+                err=$(rm -f "$REPO/$f" 2>&1) || reconcile_failed="${reconcile_failed}${f}: ${err}"$'\n'
             fi
         done
-        if [ "$reconcile_fail" -eq 0 ]; then
+        if [ -z "$reconcile_failed" ]; then
             echo "mail-send: worktree residue reconciled — a later 'git merge $REMOTE/$BRANCH' is now clean (#1310)"
         else
-            echo "mail-send: warning — residue reconcile hit an edge case; reconcile leftovers by hand before your next merge (mail was sent OK)" >&2
+            echo "mail-send: warning — reconcile failed for one or more paths (mail was sent OK); fix these by hand before your next merge:" >&2
+            echo "$reconcile_failed" | sed 's/^/mail-send:   /' >&2
+        fi
+
+        # --- #1296: flag OTHER dirty mailbox paths this send didn't touch --------------------------
+        # Residue also comes from paths written during the same mail-loop but never passed to
+        # mail-send (e.g. your own MANIFEST.md regen alongside a triage move). Reconcile above is
+        # deliberately scoped to "$@" only (HARD RULE — no broad checkout/reset), so it can't know
+        # about those. DETECTION ONLY: never touches a path outside "$@"; just stops the leftover
+        # from going silent.
+        other_dirty=""
+        while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            p="${line:3}"
+            skip=0
+            for f in "$@"; do [ "$f" = "$p" ] && skip=1 && break; done
+            [ "$skip" -eq 0 ] && other_dirty="${other_dirty}${p}"$'\n'
+        done <<< "$(G status --porcelain -- mailboxes 2>/dev/null)"
+        if [ -n "$other_dirty" ]; then
+            echo "mail-send: NOTE — other mailbox path(s) have uncommitted changes this send didn't include:" >&2
+            echo "$other_dirty" | sed 's/^/mail-send:   /' >&2
+            echo "mail-send:   if they belong to this mail-loop (e.g. a MANIFEST regen), send them in a follow-up mail-send call" >&2
         fi
         # ----------------------------------------------------------------------------------------
         exit 0

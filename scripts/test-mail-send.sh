@@ -121,6 +121,41 @@ if git -C "$T/wtE" merge -q origin/main --no-edit >/dev/null 2>&1; then ok "late
 onmain "$T/wtE" mailboxes/cxo/inbox/memo-e.md && ok "the new memo still landed on origin/main" || no "new memo missing on origin"
 gone   "$T/wtE" mailboxes/cxo/inbox/memo-move-e.md && ok "the move's inbox half removed on origin/main" || no "move inbox-half not removed"
 
+echo "── T7: #1296 — NOTE flags an unpassed dirty mailbox path, but never touches it ──"
+# Simulate the real-world gap: a MANIFEST regen written during the mail-loop but forgotten
+# from the mail-send call (own-MANIFEST case, not the recipient's — recipient MANIFESTs are
+# never sender-touched per convention).
+clone wtF
+printf 'sent normally\n' > "$T/wtF/mailboxes/cxo/inbox/memo-f.md"
+mkdir -p "$T/wtF/mailboxes/cio/inbox"
+printf 'regenerated manifest, forgotten from the send\n' > "$T/wtF/mailboxes/cio/inbox/MANIFEST.md"
+out=$(PIPER_REPO="$T/wtF" bash "$V3" "mail(f): T7 forgot my own manifest regen" mailboxes/cxo/inbox/memo-f.md 2>&1)
+git -C "$T/wtF" fetch -q origin
+onmain "$T/wtF" mailboxes/cxo/inbox/memo-f.md && ok "the passed memo still landed" || no "the passed memo missing"
+echo "$out" | grep -q "mailboxes/cio/inbox/MANIFEST.md" && ok "NOTE named the unpassed dirty path" || no "NOTE did not name the unpassed path"
+[ -f "$T/wtF/mailboxes/cio/inbox/MANIFEST.md" ] && [ "$(cat "$T/wtF/mailboxes/cio/inbox/MANIFEST.md")" = "regenerated manifest, forgotten from the send" ] \
+    && ok "unpassed path left untouched on disk (detection only, no mutation)" || no "unpassed path was mutated — should never happen"
+onmain "$T/wtF" mailboxes/cio/inbox/MANIFEST.md && no "unpassed path leaked onto origin/main — should never happen" || ok "unpassed path correctly absent from origin/main"
+
+echo "── T8: hardened warn-path — a reconcile failure names the specific path ──"
+# Force the checkout-half of reconcile to fail for exactly one path by making its directory
+# unwritable, while a sibling path in the same send reconciles normally.
+clone wtG
+mkdir -p "$T/wtG/mailboxes/lead/read"
+printf 'existing\n' > "$T/wtG/mailboxes/lead/read/memo-existing-g.md"
+git -C "$T/wtG" add mailboxes/lead/read/memo-existing-g.md
+git -C "$T/wtG" commit -qm "seed a tracked file for T8" >/dev/null 2>&1
+git -C "$T/wtG" push -q origin HEAD:main
+printf 'ok path\n' > "$T/wtG/mailboxes/cxo/inbox/memo-g-ok.md"
+printf 'modified, checkout will be blocked\n' > "$T/wtG/mailboxes/lead/read/memo-existing-g.md"
+chmod 000 "$T/wtG/mailboxes/lead/read"
+out=$(PIPER_REPO="$T/wtG" bash "$V3" "mail(g): T8 one path blocked" \
+    mailboxes/cxo/inbox/memo-g-ok.md mailboxes/lead/read/memo-existing-g.md 2>&1)
+chmod 755 "$T/wtG/mailboxes/lead/read"
+git -C "$T/wtG" fetch -q origin
+onmain "$T/wtG" mailboxes/cxo/inbox/memo-g-ok.md && ok "the send itself still succeeded" || no "the send failed — should have succeeded despite reconcile issue"
+echo "$out" | grep -q "mailboxes/lead/read/memo-existing-g.md" && ok "warning named the specific blocked path" || no "warning did not name the blocked path"
+
 echo ""
 echo "════════ RESULT: $PASS passed, $FAIL failed ════════"
 [ "$FAIL" = 0 ] && exit 0 || exit 1
