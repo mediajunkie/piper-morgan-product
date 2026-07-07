@@ -2,7 +2,7 @@
 
 **Owner**: PPM
 **Status**: LIVING DOCUMENT — canonical source of truth for what remains between now and beta release (v0.9.0)
-**Last updated**: 2026-07-05
+**Last updated**: 2026-07-06
 **Cross-references**: [sprint-order.md](sprint-order.md) (sprint sequencing across the whole board), [roadmap.md](roadmap/roadmap.md) (strategic plan), GitHub project "Building Piper Morgan" → Sprint field "Beta Blockers - Hard Gates Only"
 
 ---
@@ -21,12 +21,14 @@ The full open backlog was swept sprint-by-sprint (M3-Quality, M3-Health, M3-Secu
 
 ## The 20 open issues, organized by epic
 
-### Epic A — Verification foundation (1 issue)
+### Epic A — Verification foundation (1 issue, 4/5 done)
 Do this first — it's the prerequisite for trusting every other "done" claim on this list.
 
 | # | Title | Why it's a hard gate |
 |---|-------|----------------------|
 | #1304 | CI gap: DB-backed security test suite never runs in gating CI | Main is chronically red with no required status checks — no other gate's closure is independently verifiable without this |
+
+**#1304 status (corrected 2026-07-06, was mis-stated as closed below)**: 4/5 AC items done and verified — gating job built + proven live with teeth (3 real Actions runs incl. a deliberate canary that failed exactly as expected), 2 real bugs found+fixed along the way (`user_api_key_service.py` UUID/str bug, 5 un-awaited async test methods). **Deliberately left OPEN**: flipping GitHub's required-status-check setting is a repo-wide, hard-to-reverse-without-everyone-noticing change to every agent's push/merge behavior — Lead Dev asked for PM's explicit go/no-go rather than deciding unilaterally. **This is the one remaining item: a PM decision, not more engineering.**
 
 ### Epic B — Multi-tenancy & data protection (2 open issues + #358 nearly done; 3 closed total: 2 on 2026-07-05, 1 on 2026-07-06)
 
@@ -50,15 +52,16 @@ Already in progress — Lead Dev's current active thread. Continue, don't restar
 | #1317 | Per-connector MCP-consumer adapters onto the Connector contract | In Progress |
 | #1220 | github-mcp-server provisioning + write-path credential migration | In Progress. Scope expanded 2026-07-05: writes (create/update/close/comment) currently use the old native-PAT/shared-token credential path, not the new per-user grant store the read side uses — a tester connecting via the new OAuth flow would have writes silently misattributed until this migrates too. |
 
-### Epic D — Deploy/hosting portability (3 open issues; 2 closed 2026-07-05)
+### Epic D — Deploy/hosting portability (2 open issues; 3 closed)
 
 ~~#1168~~ and ~~#1176~~ **closed 2026-07-05** (Lead Dev, Beta Blockers estimate research) — both fixes were already shipped as part of #1299's 2026-06-20 alpha-deploy remediation, but the issues themselves were never separately closed. Verified directly against current `main` before closing (see issue comments for evidence). #1299's own scope also shrank: sub-item (a) verified done, only (b) remains open.
+
+~~#1278~~ **shows CLOSED on GitHub (closedAt 2026-07-05T23:18:37Z) — ⚠️ FLAGGED, not confirmed legitimate (found 2026-07-06 ~17:15, Lead Dev).** This is Epic D's headline hard gate ("no hosted server = no external beta testers") and its closure is **unexplained**: zero comments, zero session-log entries, zero decisions.log entries found anywhere, and the issue's own AC checklist still shows every substantive item unchecked (fly.toml, deploy, health check, domain cutover, TESTER-QUICKSTART update — only the dependency item is checked). Timeline: accidentally auto-closed 07-05 19:51 (the commit-keyword incident documented in CLAUDE.md and this doc's change log below) → reopened 21:55 → closed again 23:18, this time via a direct `gh issue close`/API call (no commit_id), not another keyword accident. Two explanations are equally plausible from the evidence: (a) PM made a real, deliberate scope call (e.g., `alpha.pipermorgan.ai` is sufficient for the beta cohort size, Fly.io migration deferred) directly via the GitHub UI without writing it down, or (b) it's a second, undiagnosed accidental/premature closure. **Needs PM confirmation before this epic is reported as more done than it is.**
 
 | # | Title | Why it's a hard gate |
 |---|-------|----------------------|
 | #1258 | Strip inherited empty Anthropic env vars at server startup | Any hosted environment inheriting Claude Code's empty key fails every LLM call |
 | #1299 | Deploy hardening remainder — **only (b) remains**: deploy.sh migrate hardening (real-deploy verification + BUILD_FAIL race disambiguation) | Migrations fail on hosted deploys |
-| #1278 | Host piper-morgan server on Fly.io for beta launch | No hosted server = no external beta testers |
 
 ### Epic E — External-tester auth/account lifecycle (3 issues)
 
@@ -87,7 +90,7 @@ Mostly isolated, well-scoped fixes — good candidates to pick off quickly. **#1
 | #1312 | DB↔model schema drift (~111 Alembic diffs) | High migration risk; cheaper to fix than the diff count suggests |
 | #1324 | Audit: hardcoded config values that should be env vars | Deploy-portability risk |
 
-**Total: 20 open issues across 7 epics** (25 minus #1168/#1176/#1260/#1241/#542, all closed with evidence — see Epic B, Epic D, and change log).
+**Total: 19 open issues across 7 epics** (25 minus #1168/#1176/#1278/#1260/#1241/#542, all showing closed — see Epic B, Epic D, and change log; #1278's closure is flagged, not confirmed legitimate).
 
 ## Recommended sequencing
 
@@ -108,3 +111,4 @@ No fixed date as of 2026-07-05. Lead Dev's bottom-up estimate (memo, 2026-07-05)
 - **2026-07-05 (final)**: #1278's dependency question settled -- verified the actual mechanism (#1185, per-user LLM keys) already shipped; corrected #1278's issue body directly (stale reference + unmet-dependency framing both fixed). **Incident, self-caught and fixed same-day**: the commit message resolving this ("...not yet resolved: #1278...") was parsed by GitHub's naive close-keyword matcher as "resolved #1278" and silently closed the issue -- caught when PM spot-checked the board directly, reopened immediately, and all 25 Beta Blocker issues + all commit messages from both days scanned to confirm no other accidental closures occurred. Lesson: avoid close/fix/resolve wording immediately adjacent to a "#N" reference in commit messages unless the closure is intended, even inside a negated clause -- GitHub's matcher has no concept of negation. Added `beta:<epic>` GitHub labels (7, one per epic) across all 25 issues, and a `post-beta-priority` label on #1340 (PM: high priority for the first Production sprint after beta, since it's the onboarding-polish counterpart to the already-shipped #1185 mechanism).
 - **2026-07-05 (Lead Dev estimate research pass)**: #1168 and #1176 closed with evidence — both fixes shipped as part of #1299's 2026-06-20 alpha-deploy remediation but were never separately closed; verified directly against current `main` (independently re-verified by PPM via `gh issue view`, both confirmed CLOSED/COMPLETED). #1299's own scope reduced: sub-item (a) verified done, only (b) — real-deploy migrate verification + BUILD_FAIL race disambiguation — remains open. #1216's flagged scope decision resolved: ship the interim honest-decline fix for beta (reuses the #1331 mechanism, ~1hr), defer the full `is_seed`/`source` provenance field to Production (independently re-verified by PPM via issue comments). **Beta Blockers count: 25 → 23 open.** Lead Dev's full sequencing-refinement + bottom-up-estimate memo received same day; headline numbers noted above under Target date, full incorporation into the epic tables still pending a dedicated processing pass.
 - **2026-07-05 (Epic B start, major correction)**: #1260 closed same-day (implemented + evidenced). **#1241 closed as already-complete** — starting the estimated 3-5 day audit, Lead Dev checked whether ADR-071 (touched minutes earlier for #1260) already covered #1241's deliverables before beginning fresh work. It did, completely: the audit (`dev/2026/06/15/1241-content-anchoring-audit.md`) and ADR-071 (ratified 2026-06-15) satisfied all 5 stated deliverables, and the downstream remediation had substantially shipped via #1238/#1250/#1252 (closed 2026-06-16 through 2026-06-19) — #1241 itself was simply never closed afterward. The one remaining piece (#1257, deeper read-threading + column drop) is already its own issue, correctly Production-milestone-scoped. **Beta Blockers count: 23 → 21 open.** This corrects the earlier estimate materially: Epic B's critical-path estimate revised down from 9-16 days to roughly 5-9 days; overall wall-clock revised from 3-5 weeks to 2.5-4 weeks. Lesson generalized: always check whether recent, adjacent work already answers an issue's deliverables before treating "still open" as "not started" — this is the same stale-tracking pattern as #1168/#1176 (Epic D) earlier the same day, now confirmed a third time.
+- **2026-07-06 (Lead Dev, full re-verification pass against live GitHub)**: PM asked for a fresh Beta Blockers status after a multi-hour gap. Queried all 25 `beta:*`-labeled issues directly rather than trust the doc's snapshot; found 2 discrepancies the doc had wrong or missed. (1) **Epic A's "Recommended sequencing" line wrongly said #1304 was closed — it is genuinely OPEN.** 4/5 AC done (gating job live + proven with teeth via 3 real CI runs incl. a deliberate canary), the 1 remaining item is a deliberate hold pending PM's go/no-go on flipping the repo-wide required-status-check setting — corrected in the Epic A section. (2) **#1278 (Epic D's headline hard gate) shows CLOSED as of 2026-07-05T23:18:37Z, discovered only now** — this predates today's session (closed last night, missed in this morning's Epic-B-focused edit pass) but has **no comment, no session-log entry, and no decisions.log entry anywhere** explaining it, and the issue's own AC checklist shows the actual Fly.io hosting work still unchecked. Flagged in Epic D as unconfirmed-legitimate pending PM confirmation, rather than silently reporting Epic D as done. **Beta Blockers count: 20 → 19 open** (#1278 moves from open to closed-but-flagged; #542 already reflected closed from this morning). Also #542 closed this morning (Lead Dev) is now reflected in the open count for the first time in this changelog (was already noted in Epic B's prose).
