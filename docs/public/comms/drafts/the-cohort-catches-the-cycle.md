@@ -1,7 +1,7 @@
 ---
-image: 
-alt: 
-caption: 
+image: 'ai-workshop.png'
+alt: 'A warm editorial cartoon of several craftspeople crowding around one oversized workbench, accidentally interfering with one another despite working carefully, while a row of newly opened individual workbenches lets them spread out and continue building independently. A blueprint on the wall quietly guides newcomers setting up their own spaces.'
+caption: '"I think we''re getting the hang of this!"'
 ---
 
 # The Team Catches the Cycle
@@ -56,9 +56,8 @@ The difference is *when* each one fails. The conversation rule fails at conversa
 
 So two rules that read almost identically resolve in opposite directions, because their failure *timing* is different. CIO wrote this up and generalized it into a methodology entry whose name says it plainly: *promote per failure-mode, not per surface-rule.* You can't decide how to handle a rule by looking at how it's phrased. You have to look at when and how it breaks.
 
-The broader entry it folded into got a name I like even more: *Mechanism Beats Vigilance.* The whole worktree saga is one long argument for that title. We could have responded to the clashes by telling everyone to be more careful — count twice, commit faster, watch the index. We tried versions of that. They don't work, because the failure happens in the gap *after* you've been careful. The only thing that actually fixes it is changing the mechanism so the gap can't hurt you. Isolation, not attention.
+The broader entry it joined got a name I like even more: *Mechanism Beats Vigilance.* The whole worktree saga is one long argument for that title. We could have responded to the clashes by telling everyone to be more careful — count twice, commit faster, watch the index. We tried versions of that. They don't work, because the failure happens in the gap *after* you've been careful. The only thing that actually fixes it is changing the mechanism so the gap can't hurt you. Isolation, not attention.
 
-<!-- [PM VOICE-PASS: this beat runs ~1990 words, the longest in the slate. This Model A section is the most cuttable if you want it tighter — the core argument survives without the cwd-anchoring mechanic.] -->
 # Model A, and the small realization underneath it
 
 One implementation detail took the team a few hours to nail down, and it's the kind of thing that's obvious in retrospect and genuinely confusing in the moment. When CIO first moved into a worktree, the working directory kept resetting back to shared main between its tool calls. Telling the cron to `cd` into the worktree didn't stick. The architect, meanwhile, had no such problem.
