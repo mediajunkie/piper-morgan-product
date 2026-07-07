@@ -7,7 +7,7 @@
 
 ## Current state
 
-- **Beat 11 ("The Team Catches the Cycle") is DONE on my end.** PM's voice-pass + 2 full fact-check rounds complete, all fixes committed and verified on origin/main (commits `99f3f361d` through `cf9da4995`, plus standing-items refresh `b59c48187`). Calendar still shows `drafted` — PM said "I'll bring it to Docs for a final proofread and publishing" but that handoff hasn't visibly happened yet. Nothing more for me to do here unless PM or Docs surfaces a question.
+- **Beat 11 ("The Team Catches the Cycle") is DONE on my end and now handed to Docs.** PM's voice-pass + 2 full fact-check rounds complete, all fixes committed and verified on origin/main (commits `99f3f361d` through `cf9da4995`, plus standing-items refresh `b59c48187`). PM confirmed 2026-07-07 12:54 PT: "Will hand off to docs now." Nothing more for me to do here unless Docs surfaces a fact-check question during proofread.
 - **Inbox: 0 unread** (confirmed this fire, post-sync).
 - **PM's ambiguous fragment** ("after the workstream report") — still unclarified, now 2+ days stale. Not re-surfacing again; will let it drop unless it becomes relevant.
 - **New standing memory this session**: `feedback_accessibility_over_precision_in_blog_review.md` — distinguish factual/attribution errors (always flag) from PM's deliberate internal-jargon-for-accessibility trades (don't reflexively "correct" these). Also reaffirmed `feedback_first_person_attribution_vs_event_accuracy.md` (created earlier today, same thread).
