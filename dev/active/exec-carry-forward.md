@@ -1,7 +1,7 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-06 09:15 PT (Mon Fire 2)
-**Session log today**: `dev/2026/07/06/2026-07-06-0803-exec-code-log.md`
+**Last updated**: 2026-07-06 21:02 PT (Mon STOP)
+**Session log today**: `dev/2026/07/06/2026-07-06-0803-exec-code-log.md` (DAY-CLOSED)
 **Role**: Chief of Staff (Exec) | Sonnet 4.6 | DinP account (migration to dedicated pipermorgan.ai account pending — row unconfirmed, same open question as CIO's own row)
 **Cron**: `32 8,20 * * *` — id `f28200fd` (LEAN 2×/day, migration-hold cadence; re-armed 7/6 after being found fully unarmed — Gap-C dormancy). Registry row also fixed (was paused since 6/28).
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3`
@@ -16,13 +16,9 @@ This worktree was found **67 commits behind origin/main** at this fire's START, 
 
 ---
 
-## Ship #050 workstream review — IN PROGRESS
+## Ship #050 workstream review — SYNTHESIS COMPLETE, delivered to PM
 
-Kickoff issued 7/3. **Roster is 6, not 8 — collection is COMPLETE.** (Self-correction, 7/6 ~10:00: I'd been carrying "Lead + PA outstanding" against a wrongly-assumed 8-role roster. `methodology-25-WORKSTREAM-REVIEW-CADENCE.md` defines the roster as exactly six roles — HOST/CIO/Comms/CXO/PPM/Arch — with PA cc'd only and Lead Dev not part of the process at all. Confirmed against 10 prior ship cycles' filenames, all six-submitter, no exceptions.)
-
-- **All 6 in**: Arch, CXO, PPM, Comms, HOST, CIO.
-- CIO's §0 has a same-day self-correction: strike the "#972 + gbrain = 2 consecutive slips" framing — both are actually done (CIO's URGENT memo, 7/6). Use the corrected accounting when synthesizing: 2 advanced, 1 new candidate (account migration), 1 explored-not-executed, 2 retired-as-complete.
-- **Synthesis can start now** — collection is done, nothing left to wait on.
+Real synthesis built 7/6 afternoon from all 6 actual §0s: `dev/2026/07/06/exec-ship-050-workstream-synthesis-2026-07-06.md`. Supersedes the 7/5 git-record scaffold. Delivered to PM in-conversation (portfolio-vs-goals section led, per PM's specific ask). Key finding: PPM/Comms/CIO each hit the same "unflagged drift" failure shape this window — named as a cross-cutting theme. Next: PM voice-pass → Comms drafts public Ship (pub target Wed Jul 9).
 
 ---
 
@@ -34,9 +30,10 @@ Kickoff issued 7/3. **Roster is 6, not 8 — collection is COMPLETE.** (Self-cor
 - **"Climbing Higher" blog post** — commit history shows normal publish+archive flow but doesn't distinguish whether PM's voice-pass specifically happened. Status genuinely unclear (checked 7/6, couldn't confirm either way) — ask PM directly rather than guess.
 - **MCPB v0.1.9 clean-machine test result** — confirmed still outstanding (PA's own 7/6 briefing says "results not yet received"). PM ran the test night of 7/4; PPM/PA still waiting on relay.
 
-## DUE — exec-owned, unblocked, needs PM *present* not PM *action*
+## DONE — rendered 7/6 afternoon, PM present
 
-- **Cohort-attention-rollup**: last compiled 6/27, now a 9-day gap despite heavy cohort activity since (Ship #048/#049/#050, RECONNECT completion, security fixes, invite-gate, self-attribution-drift saga). **Deliberately not compiled during this autonomous fire** — the skill's own cadence rule ties rendering to PM-present engagement ("first PM-present engagement of the day" / "on discuss, refresh"; delivery is an interactive widget, which has no audience during an unattended cron tick). Render at the next PM conversation rather than force it now.
+- **Cohort-attention-rollup**: rendered live for PM 7/6 ~17:00 (6 needs-decision / 7 in-flight / 3 clean). Top items: beta scope target date, invite minting (now just needs a "go" — roster is 10/10), account migration (0/9 confirmed), Web Phase 3 + newsletter name (small, stuck since June), Ted Nadeau email (stale since 6/27). PM hasn't yet acted on any of these as of day-close — check status at next PM engagement rather than re-render from scratch if nothing's moved.
+- **Worktree-sync discipline conversation with CIO** — PM raised this, I surfaced 3 concrete data points (my own gap, CXO's incident, Arch's T3) in the rollup as a discussion item. **PM hasn't said go/no-go on formally raising it with CIO yet** — don't draft/send anything to CIO until PM confirms.
 
 ---
 
