@@ -2,7 +2,7 @@
 
 **Owner**: PPM
 **Status**: LIVING DOCUMENT — canonical source of truth for what remains between now and beta release (v0.9.0)
-**Last updated**: 2026-07-07 (Lead Dev correction pass — #1278 reopen reflected; see change log)
+**Last updated**: 2026-07-07 later (Lead Dev — #1304/#1317/#1105 all closed today, 20→17 open; see change log)
 **Cross-references**: [sprint-order.md](sprint-order.md) (sprint sequencing across the whole board), [roadmap.md](roadmap/roadmap.md) (strategic plan), GitHub project "Building Piper Morgan" → Sprint field "Beta Blockers - Hard Gates Only"
 
 ---
@@ -19,16 +19,11 @@ This is the single canonical list of issues that must close before Piper Morgan 
 
 The full open backlog was swept sprint-by-sprint (M3-Quality, M3-Health, M3-Security, M4, M5, RECONNECT — 2026-07-04/05), following a deep forensic investigation into GitHub write-action capability that revealed the roadmap's earlier confidence in an August 1 target rested on assumptions that hadn't been verified bottom-up. That investigation is documented in the PPM session logs for 2026-07-04 and 2026-07-05.
 
-## The 20 open issues, organized by epic
+## The 17 open issues, organized by epic
 
-### Epic A — Verification foundation (1 issue, 4/5 done)
-Do this first — it's the prerequisite for trusting every other "done" claim on this list.
+### Epic A — Verification foundation ✅ CLOSED 2026-07-07 (0 open)
 
-| # | Title | Why it's a hard gate |
-|---|-------|----------------------|
-| #1304 | CI gap: DB-backed security test suite never runs in gating CI | Main is chronically red with no required status checks — no other gate's closure is independently verifiable without this |
-
-**#1304 status (corrected 2026-07-06, was mis-stated as closed below)**: 4/5 AC items done and verified — gating job built + proven live with teeth (3 real Actions runs incl. a deliberate canary that failed exactly as expected), 2 real bugs found+fixed along the way (`user_api_key_service.py` UUID/str bug, 5 un-awaited async test methods). **Deliberately left OPEN**: flipping GitHub's required-status-check setting is a repo-wide, hard-to-reverse-without-everyone-noticing change to every agent's push/merge behavior — Lead Dev asked for PM's explicit go/no-go rather than deciding unilaterally. **This is the one remaining item: a PM decision, not more engineering.**
+~~#1304~~ **closed 2026-07-07** — 5/5 AC done. The gating job (`Security Test Suite (Postgres)`) had been built + proven live with teeth on 2026-07-05 (3 real Actions runs incl. a deliberate canary); the one held item — making it a **required status check** on `main` — landed 2026-07-07 on PM's explicit "Go" for the visible-only variant (CIO's recommendation: add the check, keep `enforce_admins: false`; flipping enforce_admins would force every agent's push-to-main through PRs, a much larger decision than this issue scoped). Applied via the full-protection PUT with field-by-field before/after verification — the only delta is the new required check. Epic A is fully done: security-suite pass/fail is now a first-class, machine-readable signal on `main`.
 
 ### Epic B — Multi-tenancy & data protection (2 open issues + #358 nearly done; 3 closed total: 2 on 2026-07-05, 1 on 2026-07-06)
 
@@ -42,15 +37,15 @@ Do this first — it's the prerequisite for trusting every other "done" claim on
 | #1305 | Encrypt PII-bearing JSON/JSONB structured columns | Sibling scope split from #358 |
 | #1306 | Encrypt uploaded file content at rest | Sibling scope split from #358 |
 
-**New discovered-work item, not yet triaged into an epic**: **#1366** — `PIPER.user.md` is a single, unscoped, server-instance-level config file; every conversation on a shared instance (alpha.pipermorgan.ai included) gets the same personalization + GitHub default-repo regardless of which user is talking to Piper. Filed 2026-07-06 (Lead Dev), Architect ruled it decomposes into 3 components: **Component A (GitHub default-repo leak) — DONE 2026-07-06** (migration-completion, no ADR needed; `f04cbeea6`/`1784ae017` on main, enforcement lint shipped). **Component B (system-prompt personalization) — OPEN**, blocked on Architect's ADR-075 (not yet authored). **Component C** (#1260 PM-identity resolution) ruled out of scope — architecturally legitimate, not a leak. Issue stays open for B. Live on alpha today, not a future-only concern — PM/PPM's call on formal epic inclusion.
+**#1366 (`PIPER.user.md` unscoped-config leak) — RESOLVED as of 2026-07-07** (update to the note below; kept for the record): Component A (GitHub default-repo) shipped 2026-07-06; **Component B (system-prompt personalization) is now DONE too** — ADR-075 was authored + ACCEPTED 2026-07-06, Component B built the same day (#1373: owner_id-scoped `personalization_contexts` store, neutral-default degradation, enforcement guard), Arch BUILD-ratified it 2026-07-07 as "impossible-by-construction" for the leak, live-verified + closed 2026-07-07. Component C (#1260 mechanism repoint) is a small Production-scoped follow-up per ADR-075 D6. The privacy leak this note originally described is structurally closed on `main` (note: reaches alpha at the next deploy — `main` ≠ `production`).
 
-### Epic C — Connector/OAuth cutover (2 issues)
-Already in progress — Lead Dev's current active thread. Continue, don't restart.
+### Epic C — Connector/OAuth cutover (1 issue; #1317 closed 2026-07-07)
+
+~~#1317~~ **closed 2026-07-07** — all 4 **real** connectors (GitHub, Calendar, Notion, Slack) ported onto the #1232 Connector contract (Slack completed the set 2026-07-06). The other 4 names the issue once listed (cicd/devenvironment/gitbook/linear) were **descoped by explicit PM ruling** (2026-07-05, reconfirmed 2026-07-07): not in scope for 1.0 and never were — never PM-ratified scope in the first place, no live MCP server, no product presence. Descoped ≠ deferred: they do not appear anywhere as pending work; a future want starts as a fresh product decision. PPM notified by memo 2026-07-07.
 
 | # | Title | Status |
 |---|-------|--------|
-| #1317 | Per-connector MCP-consumer adapters onto the Connector contract | In Progress |
-| #1220 | github-mcp-server provisioning + write-path credential migration | In Progress. Scope expanded 2026-07-05: writes (create/update/close/comment) currently use the old native-PAT/shared-token credential path, not the new per-user grant store the read side uses — a tester connecting via the new OAuth flow would have writes silently misattributed until this migrates too. |
+| #1220 | github-mcp-server provisioning + write-path credential migration | In Progress — **Epic C's entire genuine remainder**. Scope expanded 2026-07-05: writes (create/update/close/comment) currently use the old native-PAT/shared-token credential path, not the new per-user grant store the read side uses — a tester connecting via the new OAuth flow would have writes silently misattributed until this migrates too. |
 
 ### Epic D — Deploy/hosting portability (2 open issues; 3 closed)
 
@@ -63,13 +58,14 @@ Already in progress — Lead Dev's current active thread. Continue, don't restar
 | #1258 | Strip inherited empty Anthropic env vars at server startup | Any hosted environment inheriting Claude Code's empty key fails every LLM call |
 | #1299 | Deploy hardening remainder — **only (b) remains**: deploy.sh migrate hardening (real-deploy verification + BUILD_FAIL race disambiguation) | Migrations fail on hosted deploys |
 
-### Epic E — External-tester auth/account lifecycle (3 issues)
+### Epic E — External-tester auth/account lifecycle (2 issues; #1105 closed 2026-07-07)
+
+~~#1105~~ **closed 2026-07-07** (Lead Dev) — confirmed **not a regression** via live browser reproduction: the setup wizard's keychain integration works correctly end-to-end (the "Use Keychain" button appears once an LLM provider is picked from the dropdown, backed by real keychain reads). The original May 19 report was most likely a discoverability gap (the button is invisible until a provider is selected), not breakage. One real dead-code bug found and fixed along the way (a step-2-entry check loop that could never match the LLM providers' shared dynamic button).
 
 | # | Title | Why it's a hard gate |
 |---|-------|----------------------|
 | #441 | Registration, password reset, security polish | Beta sign-up may be broken independently of #1261 |
 | #1261 | Password recovery + login-identifier clarity | Beta tester dead end without it |
-| #1105 | Settings UI requires re-paste despite working server-side keychain reads | Setup friction for new external testers; part of PM's broader push toward less crude auth |
 
 ### Epic F — Correctness bugs found in testing (5 issues)
 Mostly isolated, well-scoped fixes — good candidates to pick off quickly. **#1216 scope decision made 2026-07-05 (Lead Dev)**: ship the interim fix for beta — extend the same honest-decline/distrust-prior-claims mechanism that fixed #1331 at the prompt/floor level (small, ~1hr, uses an already-proven pattern) so Piper stops asserting a seed-vs-real distinction it cannot actually verify. The full fix (an `is_seed`/`source` provenance field on `InsightDB` + surfacing logic, ~2-4hrs, a real schema change) is deferred to Production — tracked, not dropped. Rationale: the interim option reliably closes the specific dishonest-claim failure mode using a proven mechanism, without committing beta to a new schema field that every future insight-write path must remember to populate correctly.
@@ -90,11 +86,11 @@ Mostly isolated, well-scoped fixes — good candidates to pick off quickly. **#1
 | #1312 | DB↔model schema drift (~111 Alembic diffs) | High migration risk; cheaper to fix than the diff count suggests |
 | #1324 | Audit: hardcoded config values that should be env vars | Deploy-portability risk |
 
-**Total: 20 open issues across 7 epics** (25 minus #1168/#1176/#1260/#1241/#542, all genuinely closed — see Epic B, Epic D, and change log. #1278 is back to OPEN as of 2026-07-06 evening — see Epic D above — and is counted among the 20).
+**Total: 17 open issues across 7 epics** (2026-07-07: #1304, #1317, and #1105 all closed today — Epic A fully done, Epic C down to #1220 only, Epic E down to #441+#1261; see the epic sections and change log. #1278 remains OPEN and counted).
 
 ## Recommended sequencing
 
-1. **Epic A first** — a verification prerequisite, not just another item. Nothing else's "closed" status means much without it. **DONE, closed 2026-07-05** (#1304).
+1. **Epic A first** — a verification prerequisite, not just another item. Nothing else's "closed" status means much without it. **DONE, closed 2026-07-07** (#1304 — required check live; this line previously mis-said "closed 2026-07-05" while the issue was still open, corrected 2026-07-06, now genuinely closed).
 2. **Epic C continues in parallel** — already Lead Dev's active thread; don't interrupt momentum.
 3. **Epic B is the critical path, but smaller than first estimated** — #1260 and #1241 both closed 2026-07-05 (#1241 turned out to already be complete, see Epic B note — a stale-open issue, not real remaining work). Remaining: #358, #1305, #1306 (the last two need design decisions not yet made), #542.
 4. **Epics D and F** are largely isolated, well-scoped fixes — strong candidates for batching, or handing to a coding subagent in parallel, so Lead Dev's own attention concentrates on B and C. **Exception: #1216** (Epic F) — scope decision made 2026-07-05 (interim fix for beta, full model deferred to Production).
@@ -114,3 +110,4 @@ No fixed date as of 2026-07-05. Lead Dev's bottom-up estimate (memo, 2026-07-05)
 - **2026-07-06 (Lead Dev, full re-verification pass against live GitHub)**: PM asked for a fresh Beta Blockers status after a multi-hour gap. Queried all 25 `beta:*`-labeled issues directly rather than trust the doc's snapshot; found 2 discrepancies the doc had wrong or missed. (1) **Epic A's "Recommended sequencing" line wrongly said #1304 was closed — it is genuinely OPEN.** 4/5 AC done (gating job live + proven with teeth via 3 real CI runs incl. a deliberate canary), the 1 remaining item is a deliberate hold pending PM's go/no-go on flipping the repo-wide required-status-check setting — corrected in the Epic A section. (2) **#1278 (Epic D's headline hard gate) shows CLOSED as of 2026-07-05T23:18:37Z, discovered only now** — this predates today's session (closed last night, missed in this morning's Epic-B-focused edit pass) but has **no comment, no session-log entry, and no decisions.log entry anywhere** explaining it, and the issue's own AC checklist shows the actual Fly.io hosting work still unchecked. Flagged in Epic D as unconfirmed-legitimate pending PM confirmation, rather than silently reporting Epic D as done. **Beta Blockers count: 20 → 19 open** (#1278 moves from open to closed-but-flagged; #542 already reflected closed from this morning). Also #542 closed this morning (Lead Dev) is now reflected in the open count for the first time in this changelog (was already noted in Epic B's prose).
 - **2026-07-06 (later, Lead Dev) — #1278 REOPENED, per PM direction.** PM confirmed via chat that #1278's second closure needed reopening ("Fly mystery unclear but reopen as we discussed"). Reopened via `gh issue reopen 1278` with a full evidence-trail comment on the issue documenting the complete timeline (accidental keyword-close → PPM reopen → the unexplained second closure). The board's Sprint field confirmed directly from the live project board ("Beta Blockers - Hard Gates Only" — unchanged). The board's separate Status field still shows "Done" post-reopen — held on the standing PM-gate for project-board field edits, flagged to PM rather than corrected unilaterally. **Beta Blockers count: 19 → 20 open** (this document's own Epic D section + total-count line updated same-session on the correction pass below, since the reopen action itself happened in-conversation, not as an edit to this doc).
 - **2026-07-07 (Lead Dev, correction pass)**: this document's Epic D section and total-count line still read from before the 2026-07-06 reopen (a doc-vs-GitHub drift, caught during a routine standing-items refresh, not a fresh investigation) — corrected to reflect #1278 as genuinely OPEN. No new facts here beyond the 2026-07-06 entry above; this is closing the gap between what happened and what this document said.
+- **2026-07-07 (later — three closures in one PM-engaged session; count 20 → 17)**: (1) **#1304 CLOSED, Epic A done** — PM's explicit "Go" on the visible-only required-status-check variant (CIO-recommended); `Security Test Suite (Postgres)` is now a required check on `main`, `enforce_admins` stays false, applied with field-by-field before/after verification of the full-replace protection endpoint. (2) **#1317 CLOSED, Epic C down to #1220 only** — all 4 real connectors ported (GitHub/Calendar/Notion/Slack); cicd/devenvironment/gitbook/linear **descoped by PM ruling** ("not in scope for 1.0 and never were" — never PM-ratified scope; PPM notified by memo). (3) **#1105 CLOSED, Epic E down to #441+#1261** — live browser reproduction proved the keychain integration was never broken (discoverability, not regression); one real dead-code bug fixed along the way. Also refreshed the stale #1366 note (Component B is now built, ratified, live-verified, and closed via ADR-075/#1373 — the leak is structurally closed on `main`, reaching alpha at the next deploy). PM additionally moved #1278 to Sprint Backlog on the board (Status-field discrepancy from the reopen now resolved by PM directly).
