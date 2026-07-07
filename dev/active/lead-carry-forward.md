@@ -26,7 +26,13 @@
 
 **Queue is at (0,0) again**: mail empty (checked repeatedly across all 3 fires today). Epic A PM-gated, the 4 remaining connector ports PM-gated. #1105 was the one available low-pri item this pass, now resolved.
 
-**Next fire, in order**: (1) check mail (2) if PM has answered the Epic A fork, implement + close #1304 (3) if PM has weighed in on cicd/devenvironment/gitbook/linear's live-MCP-server question, that unblocks Epic C's remaining 4 ports (4) otherwise check `lead-standing-items.md`'s remaining M5/backlog items (#1144, #1131, #1162, #1300) for another genuine quick win before quiet-holding — don't manufacture work, but don't reflexively skip the check either.
+**PM engaged directly ~10:41 (and switched model Sonnet 5 → Fable, noted in session-log header).** Key corrections from that exchange, now durable:
+- **"M5" is dead terminology** — the only live sprint in MVP milestone is Beta Blockers. #1105 was MVP/Epic E all along (my doc mislabeled it); #1144/#1131/#1300 = Production, #1162 = Ongoing. Standing-items fixed.
+- **I was never blocked on the sprint** — "(0,0)" was the carry-forward's active-thread view, not the board. **The real queue = Beta Blockers Epics E/F/G unblocked items.** Standing-items now carries a warning block: check `beta-blockers.md` before ever declaring (0,0).
+- **PM's local main was 170 commits behind** — that's why PM saw already-triaged memos as "new mail." `sync-pm-local.sh` no-ops on PM's 24 uncommitted changes (18 MANIFEST regen-noise + PM's real drafts). Offered PM: authorize the surgical MANIFEST clear (HARD-RULE-permitted form) for an immediate fix; durable script refinement → CIO. **Run `sync-pm-local.sh` every fire from now on** (CLAUDE.md standing guidance I'd been skipping — owned to PM).
+- Rebecca/#1344 blocker: already resolved 7/6 (batch 1 is 10/10 ready; delivery is PM+HOST's step, nothing owed from Lead).
+
+**Next (Epic F drain — unblocked, in-sprint, pre-authorized; start immediately)**: (1) **#1279** GitHubIntegrationRouter missing `close()` / per-request aiohttp session leak (2) **#1285** naive/aware datetime crash in `conversation_manager.transition_state` (3) **#1216** interim honest-decline fix (scope already PM-decided 7/5: reuse the #1331 mechanism, ~1hr; full provenance model stays Production) (4) **#1256** stakeholder-update misclassification. Then Epic E's #441+#1261 as one unit (shared password-reset/email code paths). Interleave: if PM answers the #1304 go/no-go → implement + close Epic A same hour; if PM confirms the #1317 descope → re-scope + close it (4/4 real connectors ported), Epic C remainder = #1220 write-path credential migration.
 
 ---
 

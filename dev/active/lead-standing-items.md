@@ -36,12 +36,14 @@ D2 design-system (#1286, CXO-led) is **fully CLOSED** (2026-06-21) — CXO confo
 - ✅ **#1309** stale onboarding test — DONE (`854880c7d`).
 - ✅ **#1310** mail-send.sh residue tooling fix — DONE (`c66bc7d6e`), tool self-reconciles after a successful push. **Caveat added 2026-07-06**: still hit a "reconcile edge case" once (tool warned rather than silently leaving bad state) — the pushed commit was correct but the local worktree needed a manual `git merge origin/main` + surgical single-file `git checkout HEAD -- <path>` to restore. Auto-reconcile is the common case, not a 100% guarantee — know the manual fallback.
 
-**Still-open, verify relevance on pickup** (unchanged since 6/21, not re-investigated this refresh — just confirmed still OPEN on GitHub):
-- **#1144** TEST-DISCIPLINE-REFACTOR (real SurfaceableInsight/ExtractedLearning fixtures).
-- **#1131** CANONICAL-TODO-JUDGE-ARTIFACT (stateless judge flag).
-- **#1162** SKUNKWORKS-BYOC-HOSTED-DISTRO (M5/later).
-- **#1300** BYOC-CRED-DECOUPLE (M5/later).
-- **#1105** LLM keychain UI regression (M5/later).
+**Still-open, NOT current sprint** (milestones GitHub-verified 2026-07-07 — "M5" is dead terminology, these are Production/Ongoing; the only live sprint in the MVP milestone is Beta Blockers):
+- **#1144** TEST-DISCIPLINE-REFACTOR (Production).
+- **#1131** CANONICAL-TODO-JUDGE-ARTIFACT (Production).
+- **#1162** SKUNKWORKS-BYOC-HOSTED-DISTRO (Ongoing).
+- **#1300** BYOC-CRED-DECOUPLE (Production).
+- ~~#1105~~ LLM keychain UI — **CLOSED 2026-07-07** (was MVP milestone / Beta Blockers Epic E all along — the "M5/later" label here was stale; confirmed not-a-regression, dead-code bug fixed + live-verified).
+
+**⚠️ The real task-loop queue when "my threads are drained" is the Beta Blockers sprint itself, not this doc's leftovers.** Epics E (#441+#1261), F (#1279, #1285, #1216-interim, #1256, #1332), and G (#1283, #1324) are full of unblocked, well-scoped, in-sprint items — check `docs/internal/planning/beta-blockers.md` FIRST before declaring (0,0). (Lesson from 2026-07-07: three fires reported "queue at (0,0)" while Epic F sat fully unblocked — the carry-forward's active-thread view is not the sprint board.)
 
 **Closed since last refresh (2026-06-21 → 2026-07-07), for the record**: #1232, #1233, #1185, #1229, #1307, #1308, #1311, #1286, #1309, #1310, plus the M3 cluster already noted closed (#1124 #1142 #1143 #1133 #1134 #976 #953 #669 #995 #1130 #1060).
 
