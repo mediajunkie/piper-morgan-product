@@ -133,10 +133,10 @@ issue	state	milestone	sprint	title
 239	CLOSED	MVP	M1 - MVP Foundation	BUG-TEST-CONFIG:  Fix test_error_handling_with_invalid_config
 316	CLOSED	MVP	M1 - MVP Foundation	UX-POLISH: Polish Sprint - Week 1 & 2 Implementation (7 Features)
 301	CLOSED	MVP	M1 - MVP Foundation	MVP-UX-QUICK: 5 Quick Wins
-300	CLOSED	Alpha		CORE-ALPHA-LEARNING-BASIC - Implement Basic Auto-Learning
+300	CLOSED	Alpha	A5 (Learning System)	CORE-ALPHA-LEARNING-BASIC - Implement Basic Auto-Learning
 299	OPEN	Enterprise		AUTH-CONCURRENT-SESSIONS: Add Concurrent Session Handling Test + Architecture
 298	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	AUTH-PASSWORD-CHANGE: Implement Password Change Endpoint + Integration Test
-292	CLOSED	Alpha		CORE-ALPHA-AUTH-INTEGRATION-TESTS: Add Integration Tests for Auth (Reduce Mocking)
+292	CLOSED	Alpha	A10 - Alpha Testing	CORE-ALPHA-AUTH-INTEGRATION-TESTS: Add Integration Tests for Auth (Reduce Mocking)
 286	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-CONVERSATION-PLACEMENT - Fix Handler Architecture
 287	CLOSED	Alpha	A8 (Alpha Rolloutj	CORE-ALPHA-TEMPORAL-BUGS - Fix Response Rendering
 291	CLOSED	MVP	A8 (Alpha Rolloutj	CORE-ALPHA-TOKEN-BLACKLIST-FK - Re-add Token Blacklist Foreign Key Constraint
@@ -164,41 +164,41 @@ issue	state	milestone	sprint	title
 257	CLOSED	Alpha	A7 (Testing & Bufferj)	# CORE-KNOW-BOUNDARY-COMPLETE: Complete BoundaryEnforcer Integration
 258	CLOSED	Alpha	A7 (Testing & Bufferj)	CORE-AUTH-CONTAINER: Fix JWT Service Dependency Injection
 263	CLOSED	MVP		CORE-UX-RESPONSE-HUMANIZATION: Make Responses More Natural and Human-Like
-227	CLOSED	Alpha		CORE-USERS-JWT: Implement Token Blacklist Storage
+227	CLOSED	Alpha	A6 (User Onboarding)	CORE-USERS-JWT: Implement Token Blacklist Storage
 237	CLOSED	Alpha	A6 (User Onboarding)	CORE-LLM-SUPPORT: Complete LLM Provider Integration
-229	CLOSED	Alpha		CORE-USERS-PROD: Production Database Configuration
-228	CLOSED	Alpha		CORE-USERS-API: Production API Key Management
+229	CLOSED	Alpha	A6 (User Onboarding)	CORE-USERS-PROD: Production Database Configuration
+228	CLOSED	Alpha	A6 (User Onboarding)	CORE-USERS-API: Production API Key Management
 220	CLOSED	Alpha		CORE-LEARN: Comprehensive Learning System
-221	CLOSED	Alpha		CORE-LEARN-A:  Learning Infrastructure Foundation
-222	CLOSED	Alpha		CORE-LEARN-B: Pattern Recognition
-223	CLOSED	Alpha		CORE-LEARN-C: Preference Learning
-224	CLOSED	Alpha		CORE-LEARN-D: Workflow Optimization
-225	CLOSED	Alpha		CORE-LEARN-E: Intelligent Automation
+221	CLOSED	Alpha	A5 (Learning System)	CORE-LEARN-A:  Learning Infrastructure Foundation
+222	CLOSED	Alpha	A5 (Learning System)	CORE-LEARN-B: Pattern Recognition
+223	CLOSED	Alpha	A5 (Learning System)	CORE-LEARN-C: Preference Learning
+224	CLOSED	Alpha	A5 (Learning System)	CORE-LEARN-D: Workflow Optimization
+225	CLOSED	Alpha	A5 (Learning System)	CORE-LEARN-E: Intelligent Automation
 226	CLOSED	Alpha		CORE-LEARN-F: Integration & Polish
-162	CLOSED	Alpha		CORE-STAND-MODES-API: Expose Multi-Modal Generation via REST API
-161	CLOSED	Alpha		CORE-STAND-SLACK-REMIND: Basic Slack Reminder Integration
-119	CLOSED	Alpha		CORE-STAND-FOUND: Morning Standup Feature Implementation (foundation)
+162	CLOSED	Alpha	A4 (Standup Epic)	CORE-STAND-MODES-API: Expose Multi-Modal Generation via REST API
+161	CLOSED	Alpha	A4 (Standup Epic)	CORE-STAND-SLACK-REMIND: Basic Slack Reminder Integration
+119	CLOSED	Alpha	A4 (Standup Epic)	CORE-STAND-FOUND: Morning Standup Feature Implementation (foundation)
 159	OPEN	Enterprise		FEAT-STAND-MODEL: Sprint Model & Team Coordination
 160	CLOSED	MVP	A4 (Standup Epic)	CORE-STAND-DISCUSS: Transform standup from generator to interactive assistant
 178	CLOSED	MVP	A4 (Standup Epic)	CORE-STAND-CHAT: Enable Morning Standup via Chat Interface
-240	CLOSED	Alpha		CORE-STAND: Core functionality for Daily Standup
+240	CLOSED	Alpha	A4 (Standup Epic)	CORE-STAND: Core functionality for Daily Standup
 165	CLOSED	Alpha		CORE-NOTN-UP: Upgrade Notion database API
 99	CLOSED	Alpha		CORE-KNOW: Connect Knowledge Graph to Conversation
 230	CLOSED	Alpha		CORE-KNOW-BOUNDARY: Implement Knowledge Graph Boundary Enforcement
-197	CLOSED	Alpha		CORE-ETHICS-ACTIVATE: Careful Activation of Universal Ethics Middleware
-198	CLOSED	Alpha		CORE-MCP-MIGRATION: Systematic Model Context Protocol Adoption
-215	CLOSED	Alpha		CORE-ERROR-STANDARDS: Standardize Error Handling Across All Endpoints
-109	CLOSED	Alpha		CORE-INT: GitHub Legacy Integration Deprecation Strategy
-136	CLOSED	Alpha		CORE-NOTN-USER: Refactor Notion hardcoded values to user configuration (was PM-129)
-142	CLOSED	Alpha		CORE-NOTN-API: Fix enhanced validation API connectivity for NotionMCPAdapter
+197	CLOSED	Alpha	A3 (Core Activation)	CORE-ETHICS-ACTIVATE: Careful Activation of Universal Ethics Middleware
+198	CLOSED	Alpha	A3 (Core Activation)	CORE-MCP-MIGRATION: Systematic Model Context Protocol Adoption
+215	CLOSED	Alpha	A2 (Notion & Errors)	CORE-ERROR-STANDARDS: Standardize Error Handling Across All Endpoints
+109	CLOSED	Alpha	A2 (Notion & Errors)	CORE-INT: GitHub Legacy Integration Deprecation Strategy
+136	CLOSED	Alpha	A2 (Notion & Errors)	CORE-NOTN-USER: Refactor Notion hardcoded values to user configuration (was PM-129)
+142	CLOSED	Alpha	A2 (Notion & Errors)	CORE-NOTN-API: Fix enhanced validation API connectivity for NotionMCPAdapter
 234	CLOSED	Alpha		CORE-CRAFT-VALID: Verification & Validation
-233	CLOSED	Alpha		CORE-CRAFT-PROOF: Documentation & Test Precision
+233	CLOSED	Alpha	C1 (Craft Pride - CRAFT)	CORE-CRAFT-PROOF: Documentation & Test Precision
 238	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2025-10-13
-232	CLOSED	Alpha		CORE-CRAFT-GAP: Critical Functional Gaps
+232	CLOSED	Alpha	C1 (Craft Pride - CRAFT)	CORE-CRAFT-GAP: Critical Functional Gaps
 212	CLOSED	Alpha		CORE-INTENT-ENHANCE: Classification Accuracy & Pre-Classifier Optimization
 217	CLOSED	Alpha		CORE-LLM-CONFIG: User config for Piper's LLM keys
-216	CLOSED	Alpha		CORE-TEST-CACHE: Fix Cache Metrics Test in Test Environment
-145	CLOSED	Alpha		INFR-DATA-BUG: Fix asyncio initialization bug in Slack integration causing test failures
+216	CLOSED	Alpha	A1 (Critical Infrastructure)	CORE-TEST-CACHE: Fix Cache Metrics Test in Test Environment
+145	CLOSED	Alpha	A1 (Critical Infrastructure)	INFR-DATA-BUG: Fix asyncio initialization bug in Slack integration causing test failures
 105	CLOSED	MVP	A4 (Standup Epic)	UX-PIPER: Response Personality Enhancement
 167	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	INFR-TEST: Review regression testing for gaps
 134	CLOSED	MVP		MVP-CONFIG-NOTN: Notion integration for knowledge management workflows
@@ -234,8 +234,8 @@ issue	state	milestone	sprint	title
 243	OPEN	Enterprise		MVP-STAND-MODES-UI: Advanced Multi-Modal UI Controls
 244	OPEN	Fast Follow		CONV-UX-SLACK: Interactive Slack Standup Features
 246	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2025-10-20
-249	CLOSED	Alpha		CORE-AUDIT-LOGGING: Comprehensive Audit Trail System
-218	CLOSED	Alpha		CORE-USERS-ONBOARD: Alpha User Onboarding Infrastructure
+249	CLOSED	Alpha	A6 (User Onboarding)	CORE-AUDIT-LOGGING: Comprehensive Audit Trail System
+218	CLOSED	Alpha	A6 (User Onboarding)	CORE-USERS-ONBOARD: Alpha User Onboarding Infrastructure
 276	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	TEST-SMOKE-CI: Integrate smoke tests into GitHub Actions CI pipeline
 275	CLOSED	MVP	M1 - MVP Foundation	TEST-SMOKE-BUG-BUS: Smoke test collection fails with ChromaDB/numpy Bus error on macOS
 251	OPEN	Enterprise		ENT-KEYS-TEAM-SHARING: Team API Key Sharing (Enterprise)
@@ -268,15 +268,15 @@ issue	state	milestone	sprint	title
 312	CLOSED	MVP	M3 - Artifact Persistence	CONV-UX-DESIGN: Unified Design System & Token Migration
 315	OPEN	Fast Follow	M3 - Artifact Persistence	CONV-MCP-LIBRARY: Core Skills Library Implementation
 317	CLOSED	MVP	M1 - MVP Foundation	UX-TRANCHE3 - Production-Ready Polish & Accessibility Infrastructure
-342	CLOSED	MVP		TEST-PHANTOM-SPATIAL: Production calling 4 non-existent SlackSpatialMapper methods
-343	CLOSED	MVP		TEST-INFRA-ENUM: Add 5 missing enum values causing 25+ test failures
-344	CLOSED	MVP		TEST-DISCIPLINE-KNOWN: Implement known-failures workflow to unblock critical pushes
-345	CLOSED	MVP		TEST-DISCIPLINE-CATEGORIES: Add test categorization markers (TDD vs regression)
-346	CLOSED	MVP		TEST-INFRA-CONTAINER: Fix OrchestrationEngine fixture (11 tests failing)
-347	CLOSED	MVP		TEST-DISCIPLINE-HOOK: Fix pre-push hook to handle test categories
+342	CLOSED	MVP	T1 (Test Repair)	TEST-PHANTOM-SPATIAL: Production calling 4 non-existent SlackSpatialMapper methods
+343	CLOSED	MVP	T1 (Test Repair)	TEST-INFRA-ENUM: Add 5 missing enum values causing 25+ test failures
+344	CLOSED	MVP	T1 (Test Repair)	TEST-DISCIPLINE-KNOWN: Implement known-failures workflow to unblock critical pushes
+345	CLOSED	MVP	T1 (Test Repair)	TEST-DISCIPLINE-CATEGORIES: Add test categorization markers (TDD vs regression)
+346	CLOSED	MVP	T1 (Test Repair)	TEST-INFRA-CONTAINER: Fix OrchestrationEngine fixture (11 tests failing)
+347	CLOSED	MVP	T1 (Test Repair)	TEST-DISCIPLINE-HOOK: Fix pre-push hook to handle test categories
 348	CLOSED	MVP	T2 (Test Polish)	TEST-PHANTOM-VALIDATOR: Fix test_api_key_validator.py (44 phantom tests)
 350	CLOSED	MVP	T2 (Test Polish)	TEST-SMOKE-STATIC: Add smoke tests for static file serving
-361	CLOSED	MVP		SLACK-SPATIAL: Fix Slack Integration for Alpha Testing
+361	CLOSED	MVP	T1 (Test Repair)	SLACK-SPATIAL: Fix Slack Integration for Alpha Testing
 326	OPEN	Fast Follow		ARCH-MULT-ORG: Design multi-organization (multi-tenant) support architecture
 327	OPEN	Fast Follow		PROCESS-AI-ACCOUNTS: Create separate GitHub accounts for AI agents (Ted suggestion)
 328	OPEN	Fast Follow		OBSERV-CENTRAL: Implement centralized logging, metrics, and monitoring
@@ -292,20 +292,20 @@ issue	state	milestone	sprint	title
 338	OPEN	Fast Follow		INFRA-MIGRATION-ROLLBACK - Comprehensive Database Migration Rollback Testing
 339	CLOSED	MVP	FLYWHEEL - Process improvement	style: Adopt prefixed primary key naming convention
 340	CLOSED	MVP	FLYWHEEL - Process improvement	style: Adopt singular table naming convention
-353	CLOSED	MVP		BUILD-WINDOWS-CLONE: Illegal Character in Filename
-354	CLOSED	MVP		UX-DESIGN-TOKENS: Extract CSS Variables for Consistency
+353	CLOSED	MVP	W (Quick Wins)	BUILD-WINDOWS-CLONE: Illegal Character in Filename
+354	CLOSED	MVP	W (Quick Wins)	UX-DESIGN-TOKENS: Extract CSS Variables for Consistency
 356	CLOSED	MVP	W (Quick Wins)	PERF-INDEX: Add Missing Composite Database Indexes
-359	CLOSED	MVP		ARCH-FIX-WRAPPER: Remove Non-Functional Timeout Wrapper from ResponsePersonalityEnhancer
-360	CLOSED	MVP		DEV-PYTHON-311: Upgrade Python from 3.9.6 to 3.11
-362	CLOSED	MVP		DEV-VSCODE-SETUP: Create VSCode Developer Setup Package
-363	CLOSED	MVP		BUG-TEST-SECURITY: Fix RuntimeWarning in test_security_fail_closed_on_error (unawaited coroutine)
+359	CLOSED	MVP	W (Quick Wins)	ARCH-FIX-WRAPPER: Remove Non-Functional Timeout Wrapper from ResponsePersonalityEnhancer
+360	CLOSED	MVP	W (Quick Wins)	DEV-PYTHON-311: Upgrade Python from 3.9.6 to 3.11
+362	CLOSED	MVP	W (Quick Wins)	DEV-VSCODE-SETUP: Create VSCode Developer Setup Package
+363	CLOSED	MVP	W (Quick Wins)	BUG-TEST-SECURITY: Fix RuntimeWarning in test_security_fail_closed_on_error (unawaited coroutine)
 319	CLOSED	MVP	W (Quick Wins)	fix: Windows compatibility - Remove colon from archive filename
 320	CLOSED	MVP	W (Quick Wins)	perf: Add missing database indexes for MVP query performance
 321	OPEN	Fast Follow		DATA-AUDIT-FIELDS: Standardize audit fields across all domain models
 323	CLOSED	MVP	S1 (Security and Critical Fixes)	security: Implement Role-Based Access Control (RBAC)
 324	CLOSED	MVP	S1 (Security and Critical Fixes)	security: Implement encryption at rest for sensitive data
-325	CLOSED	MVP		DEV-OS-DETECT: Add OS detection to shell scripts for cross-platform compatibility
-367	CLOSED	MVP		DB-JSON-INDEX: Refactor PostgreSQL JSON column indexes to use proper operators
+325	CLOSED	MVP	W (Quick Wins)	DEV-OS-DETECT: Add OS detection to shell scripts for cross-platform compatibility
+367	CLOSED	MVP	W (Quick Wins)	DB-JSON-INDEX: Refactor PostgreSQL JSON column indexes to use proper operators
 374	OPEN	Enterprise		Enhancement: Semantic classification for preference detection (post-MVP)
 378	CLOSED	MVP	A9 (Alpha Tidy)	ALPHA-DEPLOY-PROD: ALPHA-DEPLOY-PROD: Push Clean Build to Production Branch
 368	CLOSED	Alpha	W (Quick Wins)	CONV-MCP-MEASURE Phase 2: Extend Token Counting to All MCP Operations
@@ -361,15 +361,15 @@ issue	state	milestone	sprint	title
 456	CLOSED	MVP	A10 - Alpha Testing	BUG-P1: Standup returns errors - endpoint path mismatch
 457	CLOSED	MVP	A11 - Alpha Polish	UX: Page flash/redraw on navigation - transition animation too prominent
 458	CLOSED	MVP	A10 - Alpha Testing	UX: Menu restructure - logo as home link, Stuff submenu, cleanup
-459	CLOSED	MVP		UX: Chat text entry box below fold - needs layout fix
-460	CLOSED	MVP		UX: Learning page shows giant mailbox emoji - layout regression
+459	CLOSED	MVP	A11 - Alpha Polish	UX: Chat text entry box below fold - needs layout fix
+460	CLOSED	MVP	A11 - Alpha Polish	UX: Learning page shows giant mailbox emoji - layout regression
 461	CLOSED	MVP		BUG: Browser auto-open regression - now requires --browser flag
 462	CLOSED	MVP	A10 - Alpha Testing	P0: Component Integration Gap - Create buttons don't work
 463	CLOSED	Ongoing	FLYWHEEL - Process improvement	FLY-COORD-TREES: Git Worktrees for Multi-Agent Coordination
 464	CLOSED	MVP	A10 - Alpha Testing	FLY-COORD-TREES-1: Phase 0-2 MVP - Scripts and Schema
 465	OPEN	Ongoing	FLYWHEEL - Process improvement	FLY-COORD-TREES-2: Phase 3-5 Python Integration (Future)
-466	CLOSED	MVP		Toast API signature mismatch - templates call with 1 arg
-467	CLOSED	MVP		Startup logs show duplicate API key retrieval blocks
+466	CLOSED	MVP	A11 - Alpha Polish	Toast API signature mismatch - templates call with 1 arg
+467	CLOSED	MVP	A10 - Alpha Testing	Startup logs show duplicate API key retrieval blocks
 468	CLOSED	MVP	A10 - Alpha Testing	P0: API Contract Mismatch - Create endpoints expect query params, frontends send JSON body
 469	CLOSED	MVP	A10 - Alpha Testing	DI Provider Pattern Incomplete - request.state.db never set
 445	CLOSED	MVP	A10 - Alpha Testing	BUG-ASYNC-LOOP: Database check fails due to event loop mismatch in setup wizard
@@ -952,7 +952,7 @@ issue	state	milestone	sprint	title
 1104	CLOSED	MVP		Postgres data wiped on container restart (~2026-05-19 21:00 PT) — named volume should have persisted
 1130	CLOSED	MVP	M5 - Distribution + Polish	SPRINT-MEMBERSHIP-TSV: agent-readable sprint metadata via TSV export (workaround for read:project scope gap)
 1131	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	CANONICAL-TODO-JUDGE-ARTIFACT: stateless judge flags honest todo responses as fabrication (canonical-test user has 4 accumulated todos)
-1132	CLOSED	MVP		TRUST-STAGE-HARDCODED: #1031 AC Q4 marked closed but ui.py hardcodes trust_stage=1 with TODO (Pattern-045 instance)
+1132	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	TRUST-STAGE-HARDCODED: #1031 AC Q4 marked closed but ui.py hardcodes trust_stage=1 with TODO (Pattern-045 instance)
 1133	CLOSED	MVP	M3 - Artifact Persistence	HISTORY-SIDEBAR-UNWIRED: home.html shows History column but no backing endpoint (#566 follow-up; PM-observed)
 1134	CLOSED	MVP	M5 - Distribution + Polish	INSIGHT-JOURNAL-INTEGRATION-GAP: page renders but is design-isolated from the rest of the site (MUX vision without integration)
 1135	CLOSED	MVP		INSIGHT-PULL-NOT-WIRED: #1030 chat pull-mode does not consult InsightRepository (claimed-but-not-built)
@@ -989,7 +989,7 @@ issue	state	milestone	sprint	title
 1168	CLOSED	MVP	Beta Blockers - Hard Gates Only	LINUX-BUILD-PORTABILITY: requirements.txt ships macOS-only pyobjc deps without platform markers
 1169	CLOSED	MVP	D1 - Beta design quality	DESIGN-FLOOR-EPIC: 'not being bad' remediation — design-system enforcement + paradigm conformance (Layer-B complement to #1142)
 1239	CLOSED	MVP		RADAR-WORKITEM-SOURCE — WorkItemEntitySource (Work items as a live Radar entity type)
-1240	CLOSED	MVP		RADAR-PEOPLE-SOURCE — PeopleEntitySource (People as a live Radar entity type)
+1240	CLOSED	MVP	D1 - Beta design quality	RADAR-PEOPLE-SOURCE — PeopleEntitySource (People as a live Radar entity type)
 1237	CLOSED	MVP		RADAR-ENTITY-SOURCES — all four Layer-2 EntitySources for beta (no partial ship)
 1238	CLOSED	MVP		RADAR-DOC-SOURCE — DocumentEntitySource (Document as a live Radar entity type)
 1090	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	UI-1.0-PLAN: scope conversation history + settings UI surfaces for 1.0 launch
@@ -1008,7 +1008,7 @@ issue	state	milestone	sprint	title
 1183	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	VOICE-LINT: attention/spatial references must stay present-tense + session-scoped (no implied cross-session memory)
 1182	CLOSED	MVP		DOCS-LINKROT: 206 broken internal .md links across docs/ (models/models/ doubled-dir is ~72)
 1181	OPEN	Fast Follow		BEING-GOOD-INVITED-WATCH: 'let me know if X' standing-watch — first proactive-presence slice (thin vertical, pluggable channel)
-1184	CLOSED	MVP		ARTIFACT-RENAME-FORMAT: rename saved artifacts + choose save/export format (#355 follow-on)
+1184	CLOSED	MVP	D1 - Beta design quality	ARTIFACT-RENAME-FORMAT: rename saved artifacts + choose save/export format (#355 follow-on)
 1185	CLOSED	MVP	RECONNECT - Connector Refactor	BYO-KEY-MULTI-TENANT: wire LLM path to per-user keys (hosted beta — PM-decided 6/9)
 1186	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	PIPER-SELF-KNOWLEDGE: support info + help-doc pointers + RAG over own docs (so Piper can answer 'how do you work?')
 1187	CLOSED	MVP	M3 - Artifact Persistence	SUMMARIZE-FETCH-AUGMENTATION: fetch source content for floor-rendered summaries (follow-on from #1158)
@@ -1059,7 +1059,7 @@ issue	state	milestone	sprint	title
 1233	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS9: Identity unification (one human, many connector identities)
 1236	CLOSED	MVP	D1 - Beta design quality	RADAR: entities-surfacing slot-swap in the history sidebar (Layer-2) — build to CXO mockup (#1090)
 1234	CLOSED	MVP	D1 - Beta design quality	Reference resolver: 2 pre-existing test failures (context-window limiting + definite-reference accuracy)
-1235	CLOSED	MVP		Conversation /turns display endpoint returns OLDEST 50 turns (no offset/pagination) for long conversations
+1235	CLOSED	MVP	RECONNECT - Connector Refactor	Conversation /turns display endpoint returns OLDEST 50 turns (no offset/pagination) for long conversations
 1241	CLOSED	MVP	Beta Blockers - Hard Gates Only	ARCH-AUDIT: content not anchored to user auth — extent + remediation (multi-tenancy completeness)
 1242	OPEN	Production	PROD-ONBOARD - Meet-Piper Skill-Layer Onboarding	MEET-PIPER-GITHUB — Add GitHub connector setup step to meet-piper onboarding
 1243	CLOSED	MVP	FLYWHEEL - Process improvement	Briefing staleness sweep — #972 check-staleness lint flags 16/19 briefings
@@ -1148,15 +1148,15 @@ issue	state	milestone	sprint	title
 1327	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT: GitHub target resolution — hierarchy (explicit→infer→ask→default) + default-repo mechanism
 1326	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	M4: Introduce-person flow — People entity (Option A, user_confirmed provenance)
 1328	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2026-06-29
-1329	CLOSED	MVP		RECONNECT: integration health + settings banners not OAuth-connector-aware (show stale 401/unknown)
-1330	CLOSED	MVP		RECONNECT: /github/disconnect clears native PAT but not the OAuth binding
+1329	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT: integration health + settings banners not OAuth-connector-aware (show stale 401/unknown)
+1330	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT: /github/disconnect clears native PAT but not the OAuth binding
 1331	CLOSED	MVP		TRUST/RECONNECT: chat confabulates write-success for unwired write actions (create_milestone faked 'Milestone created ✓')
 1332	OPEN	MVP	Beta Blockers - Hard Gates Only	Chat: user messages intermittently arrive EMPTY to the classifier ('your message came through empty')
 1333	CLOSED	MVP		RECONNECT trust: floor fabricates on unhandled ACTIONS — generalize unwired-decline from a list to a category rule (five-whys)
 1334	CLOSED	MVP	RECONNECT - Connector Refactor	Connector disconnect hygiene (swept after #1330): connector-agnostic clearing + duplicate /slack/disconnect route
-1335	CLOSED	MVP		RECONNECT GATE: connector-refactor coverage matrix — audit closed issues before declaring connector-refactor done
+1335	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT GATE: connector-refactor coverage matrix — audit closed issues before declaring connector-refactor done
 1336	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	[placeholder] Expand/refactor canonical-query regression for connector states + trust properties
-1337	CLOSED	MVP		RECONNECT: Notion integration health is env-var-only — misses user-scoped keychain creds (parallel #1329)
+1337	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT: Notion integration health is env-var-only — misses user-scoped keychain creds (parallel #1329)
 1338	CLOSED	MVP		RECONNECT-WS7: Slack user-token request path + migrate _fetch_slack_mentions_items onto the router (deferred from #1110)
 1339	CLOSED	MVP	RECONNECT - Connector Refactor	Slack webhook _get_oauth_authorization_url calls generate_authorization_url without user_id (latent ValueError)
 1340	OPEN	Production	PROD-DIST - MCP Marketplace Distribution	RECONNECT: fold Anthropic-key capture into /connect onboarding (deferred from #1185 Phase 3, ties #1300)
