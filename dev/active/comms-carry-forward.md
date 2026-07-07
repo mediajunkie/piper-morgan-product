@@ -1,31 +1,24 @@
-# Comms carry-forward — 2026-07-06 STOP (21:43 PT, day-close)
+# Comms carry-forward — 2026-07-07, mid-day WORK fire (12:48 PT)
 
-**Cron**: `7ccdd828` · `12 6,9,12,15,18,21 * * *` (LEAVE ARMED — STOP is a day-close ritual, not a cron-teardown; next fire 06:12 tomorrow)
-**Session log**: `dev/2026/07/06/2026-07-06-2140-comms-code-log.md` (DAY-CLOSED ✅)
+**Cron**: `7ccdd828` · `12 6,9,12,15,18,21 * * *` (ARMED — next fire 15:12)
+**Session log**: `dev/2026/07/07/2026-07-07-1103-comms-code-log.md` (open, not yet STOPped today)
 
 ---
 
-## Tomorrow's START priorities (Jul 7)
+## Current state
 
-1. **Mail check** — confirm nothing new landed overnight.
-2. **"The Team Catches the Cycle" publishes today (Jul 7)** — brushed off Jul 6 (1 real fix: PPM acronym gloss), everything else confirmed clean. Check whether PM's voice-pass happened overnight.
-3. **PM's ambiguous fragment** ("after the workstream report") — still unclarified after 2 days. Consider re-surfacing if it seems relevant, or let it drop if it's clearly stale.
-4. **Process discipline note carried forward**: two days running (Jul 5, Jul 6) a real gap surfaced only because a check caught it after the fact — a fire's work committed but not logged (Jul 5), and work described as done but not actually pushed (Jul 6 STOP prep). Worth being more deliberate about verifying origin/main state at the end of *every* substantive exchange, not just at STOP.
+- **Beat 11 ("The Team Catches the Cycle") is DONE on my end.** PM's voice-pass + 2 full fact-check rounds complete, all fixes committed and verified on origin/main (commits `99f3f361d` through `cf9da4995`, plus standing-items refresh `b59c48187`). Calendar still shows `drafted` — PM said "I'll bring it to Docs for a final proofread and publishing" but that handoff hasn't visibly happened yet. Nothing more for me to do here unless PM or Docs surfaces a question.
+- **Inbox: 0 unread** (confirmed this fire, post-sync).
+- **PM's ambiguous fragment** ("after the workstream report") — still unclarified, now 2+ days stale. Not re-surfacing again; will let it drop unless it becomes relevant.
+- **New standing memory this session**: `feedback_accessibility_over_precision_in_blog_review.md` — distinguish factual/attribution errors (always flag) from PM's deliberate internal-jargon-for-accessibility trades (don't reflexively "correct" these). Also reaffirmed `feedback_first_person_attribution_vs_event_accuracy.md` (created earlier today, same thread).
 
-## Done Jul 6 (short day, PM engaged late)
+## Standing items (see `comms-standing-items.md`, refreshed this fire)
 
-- ✅ Jul 5 retroactive DAY-CLOSED (day-arc + sign-off + backfilled fire entry)
-- ✅ Beat 11 brush-off: PPM gloss fixed, everything else confirmed clean, ready for PM voice-pass
-- ✅ Caught + fixed 3 uncommitted files before sign-off (Jul-5 close, Beat-11 fix, today's own log)
-
-## Standing items carried (see `comms-standing-items.md`, last refreshed Jul 5)
-
-- Beats 17-18, 5 A-E insights, 2 rescued orphans, Beats 11-13/14-16, Jun-4 insight batch — all still awaiting PM voice-pass.
+- Beats 12-13, Beats 14-16, 5 A-E insights, Beats 17-18, 2 rescued orphans, Jun-4 insight batch — all still awaiting PM voice-pass.
 - BYOC marketplace narrative — still awaiting PM direction.
 - ~20 historical published-row stale draftPaths — low-priority, not urgent.
 
 ## State flags
 
-- Inbox: **0 unread** (confirmed at STOP)
-- Session: **DAY-CLOSED ✅**
-- Queue at STOP: no mechanical work outstanding; everything remaining is PM-voice-pass-gated or PM-direction-gated
+- Session: open, mid-day, no unblocked mechanical work in queue beyond what's already done
+- Queue at this fire: (0,0) — everything remaining is PM-voice-pass-gated, PM-direction-gated, or awaiting Docs's handoff
