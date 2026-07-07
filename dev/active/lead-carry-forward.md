@@ -1,8 +1,22 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-06 ~23:00 PT. Session log: `dev/2026/07/06/2026-07-06-0622-lead-code-log.md`.
+**Updated**: 2026-07-06 ~23:05 PT (DAY-CLOSED). Session log: `dev/2026/07/06/2026-07-06-0622-lead-code-log.md`.
 
-## ▶ CURRENT (7/6 ~23:00) — ADR-075 Component B DONE + shipped; #1278 reopened; Epic C status check overdue
+## ▶ CURRENT (7/6 DAY-CLOSED ~23:05) — Slack ported (4/8); Epic A holds on PM go-ahead; CIO recommends visible-only
+
+**Duty cycle**: STOPped cleanly at the last scheduled fire of the day (21:17 slot, ran late to ~22:53 — REPL was busy). Cron re-armed same expression (`17 6,9,12,15,18,21 * * *`) as the final action of this fire. Found + fixed 2 duplicate cron jobs at fire-start (deleted the extra) — if duplicates reappear, check whether something is re-creating without checking CronList first.
+
+**Epic A (#1304 required-status-check) — CIO has now weighed in, still holds on PM's explicit go-ahead.** CIO's reply (triaged this fire, `mailboxes/lead/read/memo-cio-to-lead-cc-pm-1304-recommendation-2026-07-06.md`, cc'd to PM already): recommends adding the required status check while leaving `enforce_admins: false` (the visible-but-not-blocking variant) — reasoning: flipping `enforce_admins: true` would force every direct push to `main` through a PR, breaking the cohort's entire push-to-main continuity model (Model B worktrees, `mail-send.sh` push-to-ref, duty-cycle-tick's own commit-and-verify step) — a much bigger decision than #1304 was scoped for. CIO separately floated wiring a CI-status check into duty-cycle-tick's STOP procedure as a good future follow-on, explicitly not part of tonight's close. **Not implementing the branch-protection change yet** — still waiting for PM's own explicit yes (not unilaterally acting on a recommendation, however sound, for a repo-wide setting affecting every agent). **Next fire: if PM has said "go with CIO's read" anywhere in-conversation, implement the status-check-only variant and close #1304.**
+
+**Epic C — Slack ported onto the #1232 Connector contract (task #98, done+shipped this fire's predecessor turn).** `services/mcp/consumer/slack_adapter.py` (new), keychain-backed via `SlackConfigService`, same Layer-2 shape as Notion. Genuine design difference from Notion: Slack has a real default-channel preference (#693) so `resolve()` wires up to it instead of a placeholder miss. 13 new tests, zero regressions. Posted on #1317 (4/8 ported: GitHub/Calendar/Notion/Slack). Remaining 4 (cicd/devenvironment/gitbook/linear) still blocked on the same product/infra question as before — not a coding task, not mine to unblock by writing code.
+
+**`dev/active/lead-standing-items.md` is significantly stale** (last refreshed 2026-06-21 — describes Phase-1 connector ports as still Arch-ratify-gated, when in fact 4/8 ports are now done). Flagged, not fixed tonight — a proper refresh deserves its own fresh-session focus, not a rushed 23:00 edit. **Candidate for next session's first substantive task if nothing more urgent is queued.**
+
+**Next fire, in order**: (1) check mail (2) if PM has answered the Epic A fork, implement + close #1304 (3) if nothing else queued and there's a lull, consider refreshing `lead-standing-items.md` (4) otherwise: cicd/devenvironment/gitbook/linear stay blocked on PM's product-scope call, not mine to chase further without that answer.
+
+---
+
+## ▶ PRIOR CURRENT (7/6 ~23:00) — ADR-075 Component B DONE + shipped; #1278 reopened
 
 **Duty cycle**: cron deleted for this substantive build (Rule 1); re-arm at idle (same expression `17 6,9,12,15,18,21 * * *` — registry row already exists in `dev/active/duty-cycle-registry.tsv`, just needs a live `CronCreate` matching it).
 
