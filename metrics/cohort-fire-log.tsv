@@ -113,3 +113,5 @@ date	time	agent	model	effort	fire_type	turns_est	output_size	notes
 2026-07-06	1947	cxo	sonnet-4-6	default	fire-4	4	l	Jul 6 Fire 4. Inbox empty. DAY-CLOSED.
 2026-07-06	2047	cxo	sonnet-4-6	default	fire-6	4	l	Jul 6 Fire 6. Inbox empty, queue dry. Heartbeat.
 2026-07-06	2047	cxo	sonnet-4-6	default	fire-5	4	l	Jul 6 Fire 5. Inbox empty, queue dry.
+2026-07-06	2147	cxo	sonnet-4-6	default	fire-7	4	l	Jul 6 Fire 7. Inbox empty, queue dry. Day-close.
+2026-07-06	2147	cxo	sonnet-4-6	default	fire-6	4	l	Jul 6 Fire 6 (21:47, window end). Inbox empty. Queue dry.
