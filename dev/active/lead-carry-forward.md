@@ -1,24 +1,32 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-07 ~10:15 PT. Session log: `dev/2026/07/07/2026-07-07-0647-lead-code-log.md`.
+**Updated**: 2026-07-07 ~11:15 PT. Session log: `dev/2026/07/07/2026-07-07-0647-lead-code-log.md`.
 
-## ▶ CURRENT (7/7 ~10:15) — ADR-076 + ADR-075 Component B both fully closed with live evidence; server-owned-state family (070/071/075) complete; queue back at (0,0)
+## ▶ CURRENT (7/7 ~11:15) — #1105 resolved (not a regression, real dead-code bug fixed + live-verified); `.claude/launch.json` added (new reusable UI-verification infra); queue at (0,0)
+
+**Duty cycle**: Fire 3, arrived early (~10:35, not the scheduled 12:17 slot — ran the procedure anyway per idempotent-by-design, found nothing amiss). Cron unchanged, armed, one job (`773e1e46`).
+
+**Picked up a genuine IDLE-time low-pri item rather than reflexively quiet-hold**: #1105 (LLM keychain UI, `beta:auth-lifecycle` labeled — actually Epic E scope, not pure backlog despite standing-items filing it under M5). A prior investigation had already reframed it from "regression" to "possibly UX/wizard-flow issue" and left a clear next step (reproduce live). Read the code first, found a real dead-code bug (`checkKeychainAvailability()`'s loop can never match the shared LLM-provider button's selector). **Went further than code-reading** — used the Preview tools for the first time this session (new `.claude/launch.json`, env-var-stripped server launch) to get a real live browser reproduction: confirmed the dropdown-driven path (the actual mechanism for LLM providers) works correctly end-to-end, meaning **the original "regression" was never real** — most likely explanation is discoverability (button hidden until a provider is picked). Fixed the one real bug (removed 3 dead loop entries), re-verified live post-fix (screenshot, console-clean, 94 Jest tests green), closed #1105 with full evidence.
+
+**`.claude/launch.json` is new, durable infra** — kept intentionally, not scratch. Lets future sessions use `preview_start`/Preview tools directly for UI verification work without re-deriving the env-var-stripped launch command each time.
+
+**Environment discipline held**: killed the manual server before switching to `preview_start` (avoid port conflict), stopped the Preview server + `docker compose stop redis` after — confirmed clean (only `piper-postgres` running, matching pre-investigation baseline). One false alarm caught and correctly NOT acted on: `lsof -ti:8001` still showed a PID after teardown, but it turned out to be an unrelated Claude Desktop helper process, not a stray app server (confirmed via curl — nothing actually listening) — did not touch it.
+
+**Big outcome from Fire 2 (unchanged, still true)**: both ADR-076 (#1370) and ADR-075 Component B (#1373) got BUILD-ratified by Arch, both got real live-verification done, both closed. **The server-owned-state family (ADR-070/071/075) is now fully ratified AND fully implemented.**
+
+- **ADR-076 live verification**: real local server + real Redis. Rate limit, concurrency cap, and fail-closed all hit their exact documented boundary and response shape. Closed #1370.
+- **ADR-075 Component B live verification**: direct-service verification against real local Postgres. Distinct-principal scoping, lazy-seeding, and the one-time notice all confirmed against real DB rows. Honest scope note recorded (no real PM identity in this local DB, that sub-case explicitly skipped not faked). Closed #1373.
+- Both ADRs' status lines updated to reflect full closure.
 
 **Duty cycle**: Fire 2 this morning (09:17 slot). Cron unchanged, armed, one job (`773e1e46`).
 
-**Big outcome this fire**: both ADR-076 (#1370, usage-cap middleware) and ADR-075 Component B (#1373, personalization store) got BUILD-ratified by Arch this morning, both flagged "the usual staging/live verify (your AC)" as the one remaining item, and both got that verification done for real and closed. **The server-owned-state family (ADR-070/071/075) is now fully ratified AND fully implemented** — a genuine multi-day arc closed out.
-
-- **ADR-076 live verification**: real local server + real Redis. Rate limit, concurrency cap, and fail-closed all hit their exact documented boundary and response shape. Closed #1370. Test env torn down cleanly after (server killed, `docker compose stop redis` — restored to exactly the pre-test state).
-- **ADR-075 Component B live verification**: direct-service verification against real local Postgres. Distinct-principal scoping, lazy-seeding, and the one-time notice all confirmed against real DB rows. **Honest scope note**: this local dev DB has no real PM identity, so D3's PM-specific sub-case was explicitly skipped (not faked) — flagged precisely on #1373 rather than overclaimed. Closed #1373. Test artifacts (throwaway user + personalization row) fully cleaned up, verified 0 remaining.
-- Updated both ADRs' own status lines to reflect full closure (they still said "not yet done" until this fire).
-
-**Filed #1374** (mail-send.sh residue-reconcile bug) after hitting the exact same edge case on **4 separate triage-moves this fire** — precisely characterized with root cause traced from the actual script, reproduction steps, and the manual fix (which works reliably: `git merge origin/main` + surgical `git checkout HEAD -- <path>`). Not mine to fix right now, but well-documented for whoever picks it up. If this keeps recurring, the manual fix is fast (~10s) — don't let it block anything.
+**Filed #1374** (mail-send.sh residue-reconcile bug) after hitting the exact same edge case on **4 separate triage-moves across Fires 2-3** — precisely characterized with root cause traced from the actual script, reproduction steps, and the manual fix (which works reliably: `git merge origin/main` + surgical `git checkout HEAD -- <path>`). Not mine to fix right now, but well-documented for whoever picks it up. If this keeps recurring, the manual fix is fast (~10s) — don't let it block anything.
 
 **No PM movement on Epic A (#1304)** — checked again this fire, unchanged since 2026-07-05. Still holding for explicit go-ahead on CIO's visible-only recommendation.
 
-**Queue is back at (0,0)**: mail empty (checked 3x this fire — after ADR-076 close, after ADR-075 close, and once more after HOST's trust-confirmation memo). Epic A PM-gated, the 4 remaining connector ports PM-gated. Nothing else found needing attention this pass.
+**Queue is at (0,0) again**: mail empty (checked repeatedly across all 3 fires today). Epic A PM-gated, the 4 remaining connector ports PM-gated. #1105 was the one available low-pri item this pass, now resolved.
 
-**Next fire, in order**: (1) check mail (2) if PM has answered the Epic A fork, implement + close #1304 (3) if PM has weighed in on cicd/devenvironment/gitbook/linear's live-MCP-server question, that unblocks Epic C's remaining 4 ports (4) otherwise quiet-hold is correct — the big open threads (ADR-075, ADR-076) are now genuinely done, don't manufacture work to replace them.
+**Next fire, in order**: (1) check mail (2) if PM has answered the Epic A fork, implement + close #1304 (3) if PM has weighed in on cicd/devenvironment/gitbook/linear's live-MCP-server question, that unblocks Epic C's remaining 4 ports (4) otherwise check `lead-standing-items.md`'s remaining M5/backlog items (#1144, #1131, #1162, #1300) for another genuine quick win before quiet-holding — don't manufacture work, but don't reflexively skip the check either.
 
 ---
 
