@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/06/2026-07-06-0701-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `a833a327`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-07 07:01 PT (START Fire 1; ADR-076 build ratified by Arch; queue (0,0))
+**Last updated**: 2026-07-07 10:03 PT (Fire 2; ADR-075 Component B trust confirmed; server-owned-state family complete + implemented; queue (0,0))
 
 ---
 
@@ -71,7 +71,7 @@
 
 ## Pending HOST ratification (trigger-bound)
 
-- **ADR-075 v0.2**: ✅ **RATIFIED + ACCEPTED** (2026-07-06; Arch cut v0.2 `19:10 PT`). CXO UX direction: first-response injection, capability-affirming register, one-time, actionable. HOST conditions all met. Component B: Lead builds D2/D4/D5 + seeded PM-assistant persona + injection logic; CXO coordinates final copy at build. No further HOST trust review until implementation surfaces new welfare question.
+- **ADR-075 v0.2**: ✅ **RATIFIED + ACCEPTED + BUILT + BUILD-RATIFIED** (design Jul 6; build Jul 7). Component B (#1373) impossible-by-construction: `owner_id` NOT NULL + FK + unique + index; no unscoped read path; upsert raises on None; OQ-3 contract (seeded real persona + CXO copy) realized in code. Server-owned-state family (ADR-070/071/075) complete AND implemented. #1366 privacy leak structurally closed. No further HOST action.
 - **ADR-076**: ✅ RATIFIED (2026-07-06). Lead GO. No further HOST action.
 
 ## Watch / trigger-bound
