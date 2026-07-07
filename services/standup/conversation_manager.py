@@ -406,7 +406,7 @@ class StandupConversationManager:
             )
 
             conversation.turns.append(turn)
-            conversation.updated_at = datetime.now()
+            conversation.updated_at = datetime.now(timezone.utc)  # #1285: tz-aware, matching the #1079 fix + the DateTime(timezone=True) column
 
             # Issue #556: Memory optimization - trim old turns if exceeding limit
             trimmed = False
@@ -456,7 +456,7 @@ class StandupConversationManager:
                 raise KeyError(f"Conversation not found: {conversation_id}")
 
             conversation.preferences.update(preferences)
-            conversation.updated_at = datetime.now()
+            conversation.updated_at = datetime.now(timezone.utc)  # #1285: tz-aware, matching the #1079 fix + the DateTime(timezone=True) column
             await repo.update(conversation)
 
         return conversation
@@ -492,7 +492,7 @@ class StandupConversationManager:
                 conversation.standup_versions.append(conversation.current_standup)
 
             conversation.current_standup = content
-            conversation.updated_at = datetime.now()
+            conversation.updated_at = datetime.now(timezone.utc)  # #1285: tz-aware, matching the #1079 fix + the DateTime(timezone=True) column
             await repo.update(conversation)
 
         return conversation
@@ -526,7 +526,7 @@ class StandupConversationManager:
                 raise KeyError(f"Conversation not found: {conversation_id}")
 
             conversation.session_id = session_id
-            conversation.updated_at = datetime.now()
+            conversation.updated_at = datetime.now(timezone.utc)  # #1285: tz-aware, matching the #1079 fix + the DateTime(timezone=True) column
             await repo.update(conversation)
 
         return conversation
@@ -556,7 +556,7 @@ class StandupConversationManager:
                 raise KeyError(f"Conversation not found: {conversation_id}")
 
             conversation.partial_capture = capture
-            conversation.updated_at = datetime.now()
+            conversation.updated_at = datetime.now(timezone.utc)  # #1285: tz-aware, matching the #1079 fix + the DateTime(timezone=True) column
             await repo.update(conversation)
 
         return conversation
