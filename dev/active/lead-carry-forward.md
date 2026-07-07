@@ -1,6 +1,22 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-05 ~08:20 PT. Session log: `dev/2026/07/05/2026-07-05-0801-lead-code-log.md` (7/4's is closed out honestly with a `SESSION-INTERRUPTED` marker, not `DAY-CLOSED` — see that log for the interruption/resume record).
+**Updated**: 2026-07-06 ~17:45 PT. Session log: `dev/2026/07/06/2026-07-06-0622-lead-code-log.md`.
+
+## ▶ CURRENT (7/6 ~17:45) — duty cycle now live; ADR-076 usage-cap build is next; #1278 flagged to PM, awaiting answer
+
+**Duty cycle**: cron `e1c017ef` (`17 6,9,12,15,18,21 * * *`), session-scoped (durable:true is a no-op here, matches skill's Gap-C caveat — if this session ends, re-arm on next resume). Registered in `dev/active/duty-cycle-registry.tsv`.
+
+**#1366 Component A: DONE + Arch-ratified.** Both my precision corrections (pm_number_manager.py, UserPreferenceManager) accepted; Arch owns the over-inclusion. ADR-075 (Component B, personalization store) v0.1 landed, now gated on CXO's UX-direction call for v0.2 (not blocking).
+
+**⭐ NEXT UP: ADR-076 (Usage-Cap Enforcement) — ratified, explicit "Lead: go," NOT YET STARTED.** Two mechanisms: (1) per-principal Redis rate limit ≤100/min (sliding-window/token-bucket), (2) instance-wide Redis concurrency gauge ≤10 (TTL-expired on dead sessions). New ASGI middleware after AuthMiddleware, fail-closed on Redis outage, fail-VISIBLY to the user (429+Retry-After+JSON body, never a silent hang) — HOST's trust-lens already folded (don't expose remaining-quota-within-window; DO expose Retry-After+friendly reason). Full design: `mailboxes/lead/read/memo-arch-to-host-lead-cc-pm-usage-cap-enforcement-design-2026-07-06.md`. Reuse candidate: `session_persistence.active_sessions` for the concurrency gauge — check before building a parallel registry. Doc: `docs/internal/architecture/current/adrs/adr-076-usage-cap-enforcement.md`.
+
+**⚠️ Flagged to PM, awaiting answer**: #1278 (Fly.io hosting, Epic D's headline hard gate) shows closed on GitHub since last night with zero explanation anywhere (no comment, no log, no decisions.log entry) and its own AC checklist still shows the actual hosting work unchecked. Full detail in `docs/internal/planning/beta-blockers.md` Epic D section. **Don't treat Epic D as more done than it is until PM confirms.**
+
+**Beta Blockers, live count as of 7/6 ~17:30**: 19 open / 25 total (was 20 this morning — #1278's flagged closure). Epic A: 4/5 done, 1 item PM-gated (required-status-check go/no-go, #1304). Epic B: #358/#1305/#1306 open (design calls needed on the latter two). Epic C: #1317/#1220 open, my active thread, unchanged since yesterday evening. Epic D: #1258/#1299(b) open, #1278 flagged. Epics E/F/G: untouched, no work started yet.
+
+**Next fire, in order**: (1) check mail, (2) if nothing more urgent, start ADR-076's build (ratified, unblocked, real security work) — reuse `session_persistence` if it fits, don't build parallel session tracking. (3) Epic C (#1317/#1220) is still "my active thread" per the doc but hasn't moved in ~20 hours — worth a status check before assuming it's still current. (4) #358/#1305/#1306 need design decisions before they're buildable — not mine to unilaterally decide, flag if picked back up.
+
+---
 
 ## ▶ CURRENT (7/5 ~08:20) — Notion FULLY closed (Arch ratified the shim); 9 pre-existing test failures resolved; PPM's OAuth-write question answered; Slack design memo sent to PPM/CXO
 
