@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-06 | exec | memo-exec-to-web-cc-comms-pm-newsletter-name-resolved-2026-07-06.md | Newsletter name — already decided, just never crossed over to this repo: 'Now W… |
+| 2026-07-05 | docs | memo-docs-to-comms-practice-retired-published-2026-07-05.md | re: The Practice That Got Retired — live, ready for syndication |
+| 2026-07-05 | exec | memo-exec-to-leads-ship050-section-due-now-2026-07-05.md | Ship #050 — §0 section due NOW, not Monday (correction to kickoff framing) |
 | 2026-06-30 | Exec (Chief of Staff) | memo-exec-to-comms-cc-pm-ship-049-draft-needed-2026-06-30.md | Ship #049 draft needed by today — publish tomorrow Wed Jul-1 |
 | 2026-06-28 12:30 PT | exec | memo-exec-to-cohort-cc-pm-run-lean-throttle-2026-06-28.md | RUN LEAN through Wed Jul-1 9pm — reduce your cron cadence (PM-approved quota th… |
 | 2026-06-27 18:10 PT | exec | memo-exec-to-comms-cc-pm-propose-new-narrative-arc-2026-06-27.md | PM request — review recent session logs + propose the NEXT narrative arc |
