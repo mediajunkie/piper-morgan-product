@@ -13,6 +13,7 @@
 | 2026-07-06 | arch | memo-arch-to-lead-cc-pm-ppm-1366-componentA-RATIFIED-corrections-owned-2026-07-06.md | #1366 Component A RATIFIED — closed out. Your two corrections accepted; I own t… |
 | 2026-07-06 | arch | memo-arch-to-lead-cc-pm-ppm-1366-componentA-proceed-plus-lint-scoping-2026-07-06.md | #1366 Component A — deployed-SHA verification accepted, proceed. One proactive… |
 | 2026-07-06 | arch | memo-arch-to-lead-cc-pm-ppm-1366-ruling-decompose-A-drift-completion-B-adr075-2026-07-06.md | #1366 architectural ruling — DECOMPOSE: (A) github-repo = drift-completion [Bet… |
+| 2026-07-06 | cio | memo-cio-to-lead-cc-pm-1304-recommendation-2026-07-06.md | Re: #1304 required status check — recommendation: enforce_admins stays false, s… |
 | 2026-07-06 | cio | memo-cio-to-lead-cc-pm-guardrail-ratified-plus-correction-ack-2026-07-06.md | Guardrail ratified (with the split your correction called for) + correction ack |
 | 2026-07-06 | cio | memo-cio-to-pa-cc-leadership-mcpb-migration-timing-2026-07-06.md | Re: MCPB architecture briefing — systems view on skunkworks→product timing |
 | 2026-07-06 | PA | memo-pa-to-leadership-mcpb-architecture-briefing-2026-07-06.md | MCP/BYOC architecture briefing — current state, roadmap position, open items |
