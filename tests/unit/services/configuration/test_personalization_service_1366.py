@@ -21,8 +21,6 @@ from services.configuration.personalization_service import (
     PersonalizationService,
 )
 
-pytestmark = pytest.mark.asyncio
-
 _PM_ID = UUID("11111111-1111-1111-1111-111111111111")
 _OTHER_USER_ID = "22222222-2222-2222-2222-222222222222"
 
@@ -129,7 +127,7 @@ class TestMaybeConsumeFirstResponseNotice:
 
     async def test_pm_never_gets_notice(self, service):
         with patch(
-            "services.configuration.personalization_service.AsyncSessionFactory"
+            "services.database.session_factory.AsyncSessionFactory"
         ) as MockFactory, patch(
             "services.configuration.personalization_service._resolve_pm_owner_id_safe",
             new=AsyncMock(return_value=_PM_ID),
@@ -147,7 +145,7 @@ class TestMaybeConsumeFirstResponseNotice:
         mock_row = MagicMock(is_seeded_default=True, has_seen_personalization_notice=False)
 
         with patch(
-            "services.configuration.personalization_service.AsyncSessionFactory"
+            "services.database.session_factory.AsyncSessionFactory"
         ) as MockFactory, patch(
             "services.configuration.personalization_service._resolve_pm_owner_id_safe",
             new=AsyncMock(return_value=_PM_ID),
@@ -171,7 +169,7 @@ class TestMaybeConsumeFirstResponseNotice:
         mock_row = MagicMock(is_seeded_default=True, has_seen_personalization_notice=True)
 
         with patch(
-            "services.configuration.personalization_service.AsyncSessionFactory"
+            "services.database.session_factory.AsyncSessionFactory"
         ) as MockFactory, patch(
             "services.configuration.personalization_service._resolve_pm_owner_id_safe",
             new=AsyncMock(return_value=_PM_ID),
@@ -194,7 +192,7 @@ class TestMaybeConsumeFirstResponseNotice:
         mock_row = MagicMock(is_seeded_default=False, has_seen_personalization_notice=False)
 
         with patch(
-            "services.configuration.personalization_service.AsyncSessionFactory"
+            "services.database.session_factory.AsyncSessionFactory"
         ) as MockFactory, patch(
             "services.configuration.personalization_service._resolve_pm_owner_id_safe",
             new=AsyncMock(return_value=_PM_ID),
@@ -213,7 +211,7 @@ class TestMaybeConsumeFirstResponseNotice:
 
     async def test_failure_degrades_to_none_not_raise(self, service):
         with patch(
-            "services.configuration.personalization_service.AsyncSessionFactory"
+            "services.database.session_factory.AsyncSessionFactory"
         ) as MockFactory:
             MockFactory.session_scope.side_effect = RuntimeError("db down")
 
