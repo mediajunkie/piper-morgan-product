@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "piper-server",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "-u", "ANTHROPIC_API_KEY",
+        "-u", "ANTHROPIC_BASE_URL",
+        "-u", "ANTHROPIC_AUTH_TOKEN",
+        "-u", "ANTHROPIC_CUSTOM_HEADERS",
+        "POSTGRES_PORT=5433",
+        "/Users/xian/Development/piper-morgan/piper-morgan-product/venv/bin/python",
+        "main.py"
+      ],
+      "port": 8001
+    }
+  ]
+}

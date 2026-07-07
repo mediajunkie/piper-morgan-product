@@ -49,9 +49,15 @@
         }
     }
 
-    // Check if keys exist in keychain and show buttons
+    // Check if keys exist in keychain and show buttons. Only Notion has a
+    // static, always-present .keychain-btn[data-provider="notion"] element.
+    // openai/anthropic/gemini share one dynamic button (#keychain-llm-btn)
+    // whose data-provider is only set once the LLM dropdown fires its own
+    // `change` handler (see checkKeychainForProvider below) -- querying for
+    // them here always misses (data-provider="" at this point), so they're
+    // omitted rather than left as dead, always-losing lookups (#1105).
     async function checkKeychainAvailability() {
-        const providers = ['openai', 'anthropic', 'gemini', 'notion'];
+        const providers = ['notion'];
         for (const provider of providers) {
             try {
                 const response = await fetch(`/api/v1/setup/check-keychain/${provider}`);
