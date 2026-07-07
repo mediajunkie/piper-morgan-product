@@ -131,8 +131,8 @@ jobs:
 
               ### 📁 Omnibus Coverage Check
 
-              - [ ] Review `docs/omnibus-logs/` — is there an omnibus for each day with 2+ agent sessions in the past week?
-              - [ ] Verify no stranded session logs outside `dev/` directory structure (spot-check `dev/active/`)
+              - [ ] Review \`docs/omnibus-logs/\` — is there an omnibus for each day with 2+ agent sessions in the past week?
+              - [ ] Verify no stranded session logs outside \`dev/\` directory structure (spot-check \`dev/active/\`)
               - [ ] Note: Infrastructure verification, dev/active cleanup, and metrics are in the **Monthly Housekeeping Audit** (FLY-AUDIT Monthly — separate issue, first Monday of month)
 
               ### 🎯 Sprint & Roadmap Alignment
