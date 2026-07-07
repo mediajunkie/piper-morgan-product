@@ -30,7 +30,9 @@
 
         <form id="login-form" class="auth-form">
             <div class="form-group">
-                <label for="username">Username</label>
+                <!-- #1261: either identifier works now; the field NAME stays
+                     `username` (form/API contract), only accepted values widened -->
+                <label for="username">Username or email</label>
                 <input
                     type="text"
                     id="username"
@@ -38,7 +40,7 @@
                     required
                     autocomplete="username"
                     autofocus
-                    placeholder="Enter your username"
+                    placeholder="Your username or email"
                 />
             </div>
 
@@ -62,6 +64,10 @@
         </form>
 
         <div class="auth-footer">
+            <p>
+                <!-- #441/#1261: self-serve entry to the PM-issued-code reset flow -->
+                <a href="/reset-password">Forgot password?</a>
+            </p>
             <p>
                 Don't have an account?
                 <a href="/setup">Start Setup Wizard</a>

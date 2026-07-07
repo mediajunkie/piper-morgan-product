@@ -770,6 +770,30 @@ class InviteToken(Base):
     used_by_user_id = Column(CrossDialectUUID(), ForeignKey("users.id"), nullable=True)
 
 
+class PasswordResetToken(Base):
+    """#441/#1261 — PM-issued password-reset tokens (the beta auth model's answer to
+    "email-based reset" with no mailer in the product: PM/HOST mint a code on request
+    and hand it to the tester over the invite channel that already exists for #1344).
+
+    Faithful sibling of InviteToken (same Crockford format, same natural-key PK, same
+    atomic conditional-UPDATE consumption — see services/auth/password_reset_service.py)
+    with two deliberate differences: the token is BOUND to a user at mint time
+    (user_id NOT NULL — a reset is for a specific account, unlike an identity-blind
+    invite), and it EXPIRES (a reset is requested-then-used within hours; a stale
+    reset code floating around is pure liability, unlike invites whose distribution
+    lag is expected).
+    """
+
+    __tablename__ = "password_reset_tokens"
+
+    token = Column(String(32), primary_key=True)
+    user_id = Column(CrossDialectUUID(), ForeignKey("users.id"), nullable=False, index=True)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    expires_at = Column(DateTime(timezone=True), nullable=False)
+    # NULL = unused/valid. Set atomically by the conditional UPDATE at reset.
+    used_at = Column(DateTime(timezone=True), nullable=True)
+
+
 class Product(Base):
     """Product being managed"""
 

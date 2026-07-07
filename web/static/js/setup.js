@@ -442,6 +442,13 @@
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
         const passwordConfirm = document.getElementById('password-confirm').value;
+        // #1344: create-user REQUIRES an invite token — the wizard previously
+        // omitted it, so every account creation failed with a 422.
+        const inviteToken = document.getElementById('invite-token').value.trim();
+        if (!inviteToken) {
+            showError('Please enter your invite code — alpha access is invite-only.', 'Invite Code Required');
+            return;
+        }
 
         // Fallback password check if FormValidation not loaded
         if (typeof FormValidation === 'undefined' && password !== passwordConfirm) {
@@ -457,7 +464,7 @@
             const response = await fetch('/api/v1/setup/create-user', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, email, password, password_confirm: passwordConfirm })
+                body: JSON.stringify({ username, email, password, password_confirm: passwordConfirm, invite_token: inviteToken })
             });
             const data = await response.json();
 

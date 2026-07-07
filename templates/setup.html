@@ -648,6 +648,20 @@
       <div id="step-3" class="setup-step">
         <h2>Create Your Account</h2>
         <form id="account-form" class="auth-form">
+          <!-- #1344: account creation is invite-gated; the backend REQUIRES this
+               token (the wizard omitted it entirely -- every create 422'd). -->
+          <div class="form-group">
+            <label for="invite-token">Invite code</label>
+            <input
+              type="text"
+              id="invite-token"
+              name="invite_token"
+              required
+              autocomplete="off"
+              placeholder="From your invitation"
+            />
+            <small>Alpha access is invite-only — paste the code you received.</small>
+          </div>
           <div class="form-group">
             <label for="username">Username</label>
             <input
