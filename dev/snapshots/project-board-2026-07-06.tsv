@@ -363,7 +363,7 @@ issue	state	milestone	sprint	title
 458	CLOSED	MVP	A10 - Alpha Testing	UX: Menu restructure - logo as home link, Stuff submenu, cleanup
 459	CLOSED	MVP	A11 - Alpha Polish	UX: Chat text entry box below fold - needs layout fix
 460	CLOSED	MVP	A11 - Alpha Polish	UX: Learning page shows giant mailbox emoji - layout regression
-461	CLOSED	MVP		BUG: Browser auto-open regression - now requires --browser flag
+461	CLOSED	MVP	A10 - Alpha Testing	BUG: Browser auto-open regression - now requires --browser flag
 462	CLOSED	MVP	A10 - Alpha Testing	P0: Component Integration Gap - Create buttons don't work
 463	CLOSED	Ongoing	FLYWHEEL - Process improvement	FLY-COORD-TREES: Git Worktrees for Multi-Agent Coordination
 464	CLOSED	MVP	A10 - Alpha Testing	FLY-COORD-TREES-1: Phase 0-2 MVP - Scripts and Schema
