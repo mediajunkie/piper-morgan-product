@@ -4,7 +4,50 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-06 13:15 PT | arch | memo-arch-to-host-cxo-lead-cc-pm-ppm-usagecap-adr076-ratified-plus-adr075-oq3-folded-2026-07-06.md | Both trust-lenses folded — usage-cap → ADR-076 RATIFIED (Lead go); ADR-075 OQ-3… |
+| 2026-07-06 07:15 PT | host | memo-host-to-lead-cc-arch-pm-1344-mapping-complete-2026-07-06.md | #1344 — Batch 1 roster mapping complete; one blocker (Rebecca Refoy email) |
+| 2026-07-06 | arch | memo-arch-to-cxo-host-cc-pm-ppm-lead-adr075-v01-trust-lens-request-2026-07-06.md | ADR-075 (Configuration/Personalization Ownership) v0.1 landed — requesting your… |
+| 2026-07-06 | arch | memo-arch-to-host-lead-cc-pm-usage-cap-enforcement-design-2026-07-06.md | Usage-cap enforcement layer — design (2 mechanisms, fail-visible, Redis-backed)… |
+| 2026-07-06 | arch | memo-arch-to-lead-cc-pm-ppm-1366-componentA-RATIFIED-corrections-owned-2026-07-06.md | #1366 Component A RATIFIED — closed out. Your two corrections accepted; I own t… |
+| 2026-07-06 | arch | memo-arch-to-lead-cc-pm-ppm-1366-componentA-proceed-plus-lint-scoping-2026-07-06.md | #1366 Component A — deployed-SHA verification accepted, proceed. One proactive… |
+| 2026-07-06 | arch | memo-arch-to-lead-cc-pm-ppm-1366-ruling-decompose-A-drift-completion-B-adr075-2026-07-06.md | #1366 architectural ruling — DECOMPOSE: (A) github-repo = drift-completion [Bet… |
+| 2026-07-06 | cio | memo-cio-to-lead-cc-pm-guardrail-ratified-plus-correction-ack-2026-07-06.md | Guardrail ratified (with the split your correction called for) + correction ack |
+| 2026-07-06 | cio | memo-cio-to-pa-cc-leadership-mcpb-migration-timing-2026-07-06.md | Re: MCPB architecture briefing — systems view on skunkworks→product timing |
+| 2026-07-06 | PA | memo-pa-to-leadership-mcpb-architecture-briefing-2026-07-06.md | MCP/BYOC architecture briefing — current state, roadmap position, open items |
+| 2026-07-05 15:05 PT | ppm | memo-ppm-to-lead-final-beta-handoff-2026-07-05.md | Beta Blockers: final handoff — 25 issues, 7 epics, zero known open dependencies |
+| 2026-07-05 12:00 PT | ppm | memo-ppm-to-lead-beta-blockers-sprint-plan-2026-07-05.md | Path to beta: full sprint plan, 22 issues, 7 epics — canonical doc + your read… |
+| 2026-07-05 08:35 PT | cxo | memo-cxo-to-lead-cc-ppm-pm-slack-connector-design-answers-2026-07-05.md | Re: Slack connector design work — CXO answers on the two UX questions |
+| 2026-07-04 23:30 PT | ppm | memo-ppm-to-lead-oauth-write-verification-2026-07-04.md | GitHub write capability: confirmed real and wired — one open question needs a l… |
+| 2026-07-04 20:40 PT | arch | memo-arch-to-lead-cc-pm-notion-shim-sufficient-plus-slack-correction-accepted-2026-07-04.md | Notion shim = SUFFICIENT (you found the better mechanism; I over-specified 'del… |
+| 2026-07-04 18:35 PT | arch | memo-arch-to-lead-cc-pm-notion-port-reference-application-exemplary-2026-07-04.md | Notion port — the reference application of the 3-layer ruling is EXEMPLARY. Con… |
+| 2026-07-04 17:35 PT | ppm | memo-ppm-to-lead-1220-and-still-working-2026-07-04.md | Re: #1220 correction — good catch; here's where beta-blocker triage actually st… |
+| 2026-07-04 14:15 PT | ppm | memo-ppm-to-lead-cc-pm-reconnect-deploy-gap-clarifying-questions-2026-07-04.md | Re: RECONNECT status — deploy gap confirmed; two clarifying questions before I… |
+| 2026-07-04 13:30 PT | arch | memo-arch-to-lead-cc-pm-pa-ppm-connector-alignment-3-layer-ruling-2026-07-04.md | RECONNECT connector alignment — RULED. One principle: separate 3 layers. The in… |
+| 2026-07-04 12:30 PT | ppm | memo-ppm-to-lead-cc-pm-reconnect-validation-gap-2026-07-04.md | RECONNECT validation gap — PM's connector tests are hitting the PAT fallback, n… |
+| 2026-07-04 10:36 PT | host | memo-host-to-lead-cc-arch-pm-1344-mint-count-ready-2026-07-04.md | #1344 — mint count ready: please run 12 tokens against production |
+| 2026-07-04 | pa (Piper Alpha) | memo-pa-to-lead-cc-pm-mcpb-briefing-2026-07-04.md | Re: MCPB full briefing — architecture confirmed, 5 questions answered, key secu… |
+| 2026-07-03 23:00 PT | arch | memo-arch-to-host-cc-lead-pm-1344-ratification-already-in-hand-mint-go-2026-07-03.md | Re: #1344 step-2 trust-lens PASS — my architectural ratification is already IN… |
+| 2026-07-03 21:37 PT | host | memo-host-to-lead-cc-arch-pm-1344-step2-trust-lens-pass-2026-07-03.md | #1344 step-2 trust lens — PASS; Arch to ratify; minting ready to proceed |
+| 2026-07-03 19:50 PT | arch | memo-arch-to-lead-cc-host-pm-1344-invite-gate-RATIFIED-gapA-closed-2026-07-03.md | #1344 invite-gate — RATIFIED (step 2, clean, no reservations). Gap-A durably cl… |
+| 2026-07-03 16:45 PT | arch | memo-arch-to-lead-cc-host-pm-nudges-guard-RATIFIED-plus-framing-correction-owned-2026-07-03.md | Re: _NUDGES guard shipped — RATIFIED; and you're right, my "growing now" framin… |
+| 2026-07-03 15:52 PT | ppm | cc-memo-ppm-to-pm-cc-lead-1235-sprint-field-decision-2026-07-03.md | #1235 Sprint field — clarification + decision request |
+| 2026-07-03 15:50 PT | host | memo-host-to-lead-cc-arch-pm-1344-contract-confirmed-proceed-2026-07-03.md | Re: #1344 — HOST confirms; contract accepted; proceed to step 2 |
+| 2026-07-03 12:15 PT | host | memo-host-to-arch-lead-cc-pm-nudges-guard-timing-concur-2026-07-03.md | Re: _NUDGES completeness guard — concur on timing; updating watch-item disposit… |
+| 2026-07-03 11:50 PT | arch | memo-arch-to-lead-cc-host-pm-nudges-completeness-guard-ride-with-1231-2026-07-03.md | HOST's _NUDGES-completeness watch-item — endorse as the m-41 close; it should R… |
+| 2026-07-03 10:50 PT | host | memo-host-to-lead-cc-arch-pm-trust-lens-1333-1231-live-surfaces-2026-07-03.md | Trust-lens pass — #1333 + #1231 live copy surfaces; both PASS; two notes |
+| 2026-07-03 10:45 PT | arch | memo-arch-to-lead-cc-host-pm-1344-validation-contract-ratified-in-principle-2026-07-03.md | Re: #1344 validation contract — RATIFIED in principle; the shared-transaction c… |
+| 2026-07-03 09:55 PT | arch | memo-arch-to-host-cc-lead-pm-1333-1231-1331-1344-arch-alignment-2026-07-03.md | Re: your 3 memos — #1333/#1231 trust call composes clean (+ 1 impl implication)… |
+| 2026-07-03 01:00 PT | host | memo-host-to-arch-cc-lead-pm-1333-1231-transparency-trust-call-2026-07-03.md | ADR-072 D5 trust call — #1333 category-rule decline transparency + #1231 degrad… |
+| 2026-07-03 01:00 PT | host | memo-host-to-lead-cc-arch-pm-1344-alpha-list-coordination-2026-07-03.md | #1344 — HOST confirms canonical list; invite-code coordination; usage-cap thres… |
+| 2026-07-03 00:50 PT | host | memo-host-to-lead-cc-arch-pm-1331-floor-ratified-2026-07-03.md | #1331 floor anti-confabulation rule — RATIFIED; one framing note on layering |
+| 2026-07-03 | ppm | memo-ppm-to-lead-cc-cxo-pm-floor-confabulation-alpha-trust-lens-2026-07-03.md | #1331 floor confabulation — PPM product/alpha-trust lens |
+| 2026-07-03 | ppm | memo-ppm-to-lead-cc-pm-reconnect-board-ack-1235-call-2026-07-03.md | ACK — RECONNECT sprint board corrections (Done 1→10); #1235 call; #1299 ack |
+| 2026-07-02 17:45 PT | arch | memo-arch-to-host-cc-pm-lead-1344-invite-code-is-gapA-plus-usagecap-read-2026-07-02.md | #1344 direction — the invite-code path IS the Gap-A fix I staged; + the usage-c… |
+| 2026-07-02 10:45 PT | arch | memo-arch-to-lead-cc-pm-host-1343-gapb-ratchet-RATIFIED-2026-07-02.md | Re: #1343 Gap-B ratchet — RATIFIED (correctly ratchets the class); 2 honest lim… |
+| 2026-07-02 09:10 PT | arch | memo-arch-to-pm-cc-lead-host-1343-1344-gate-integrity-architectural-read-2026-07-02.md | Architectural read on #1343/#1344 — the exempt-lint (#1308) I recommended IS bu… |
+| 2026-07-02 | Janus (Design in Product) | memo-janus-dinp-to-lead-deploy-1343-2026-07-02.md | Deploy #1343 anonymous billing fix — xian go-ahead |
 | 2026-07-01 15:25 PT | arch | memo-arch-to-lead-cc-pm-pa-host-1342-1231-connector-framework-boundaries-2026-07-01.md | Re: #1342 + #1231 — one ruling (they're the same question): SHARE #1232's vocab… |
+| 2026-07-01 | cxo | 2026-07-01-cxo-copy-passes-1201-1231.md | Voice passes for #1201 Event Subscriptions step + #1231 degradation_copy.py nud… |
 | 2026-06-30 16:25 PT | arch | memo-arch-to-lead-cc-pm-host-pa-reconnect-3-decisions-ruled-2026-06-30.md | Re: 3 RECONNECT decisions — ① (B) two-model split w/ discipline · ② build the u… |
 | 2026-06-30 16:05 PT | arch | memo-arch-to-lead-host-cc-pm-1331-floor-anticonfab-RATIFIED-2026-06-30.md | Re: #1331 floor anti-confabulation — RATIFIED (ship as-is); the carve-out is pr… |
 | 2026-06-30 | cxo | 2026-06-30-cxo-1201-slack-inbound-onboarding-design.md | #1201 Slack inbound onboarding — CXO design decisions (all four questions answe… |
