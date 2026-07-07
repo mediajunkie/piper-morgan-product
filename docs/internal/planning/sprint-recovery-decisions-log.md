@@ -131,4 +131,28 @@ PM reviewed the 55-issue medium-tier artifact and gave title-pattern rules plus 
 
 ---
 
+## #217 resolved to C1 (2026-07-06)
+
+PM: "the hint is in the name ('CORE') - C1." Applied and verified live. Note for future reference: this is NOT a general "any CORE-prefixed title is C1" rule (the large majority of Alpha-era issues are CORE-prefixed and were correctly placed in A1-A6 elsewhere in this same session) — it's specific to #217's content (LLM provider key configuration, foundational infra), which fits C1/Craft-Pride's charter of auditing and completing core functionality gaps the GREAT Refactor had left at ~70%.
+
+## Methodological clarification: pattern rules were anchored tokens from the artifact's own groupings, not blind corpus-wide substring search (2026-07-06)
+
+PM, after the STAND/LEARN/TEST/RECONNECT batch: "those rules were about -STAND- and -LEARN- etc. and from the groupings you offered me." The four pattern rules were meant to resolve the SPECIFIC overlapping-candidate groups already surfaced in the artifact (e.g. the 8-issue A4/A5/A6 combo, the 7-issue T1/W/S1 combo) using a recognizable anchored token from within those groups' own titles — not an instruction to sweep the entire ~1300-issue corpus for loose substring matches. Applying them literally as unanchored substring search would have produced false positives (STANDARDS containing STAND, Learning-page containing LEARN, test_-prefixed function names containing TEST) — several of which surfaced and were caught by treating PM's explicit numbered lists as taking precedence over the generic patterns wherever the two conflicted. PM confirmed after the fact: "does seem TEST is slipperier" than the other three tokens.
+
+## #922 conflict, resolved without changing the earlier M1 decision (2026-07-06)
+
+PM asked why #922 was flagged as held, given the M1 resolution was already established earlier the same session. Answer: the conflict wasn't in the *answer* (M1 was and remains solid, backed by the issue's own ADR-059 comment) but in *what to do when a later explicit instruction appears to contradict established state*. PM's pattern-rules message re-listed #922 under D1, which either meant "override M1, I have new information" or was an unintentional slip (most likely, given M1's evidence and how far apart the M1/D1 windows are in time). Silently keeping M1 risks discarding real new direction from PM; silently switching to D1 risks overwriting a well-evidenced decision on what might be a typo. Surfacing the conflict was the safer default; a leaner version of the same instinct would have been to state "keeping M1, didn't reapply D1" directly and invite correction, rather than posing it as a fully open question.
+
+---
+
+## #461 resolved to A10 (2026-07-06)
+
+PM confirmed A10 after reviewing the issue's own text: "Discovered during alpha testing 2025-12-03" — naming the A10 sprint's own activity directly and landing inside its calendar window. Applied and verified live. This closes out the 5-issue A10/A11 overlap group in full: A10 = {#292, #461, #467}, A11 = {#459, #460, #466}.
+
+## #922's D1 mention was very likely a recency slip, not a data-driven correction (2026-07-06)
+
+PM asked directly why #922 was flagged as held, given M1 was already settled. On inspection: #922 was never part of the 55-issue overlapping-candidates artifact PM was working through (only #1184 and #1240 belong to that artifact's actual D1/RECONNECT-overlap group) — and #922 had just been reported to PM as resolved-to-M1 in the immediately preceding message. The likeliest explanation isn't a digit-transposition typo but a recency slip: the number was fresh from having just been discussed, and got pulled into the D1 list by association rather than being a deliberate new data point. M1 stands; nothing was overwritten.
+
+---
+
 *Log started 2026-07-06 during the Group 1 + Group 2 reconciliation pass. Append further decisions here as remaining groups are reviewed — do not start a new file.*

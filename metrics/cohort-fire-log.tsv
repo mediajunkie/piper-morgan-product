@@ -108,3 +108,10 @@ date	time	agent	model	effort	fire_type	turns_est	output_size	notes
 2026-07-06	1716	cxo	sonnet-4-6	default	start	4	l	Jul 6 START. 6 inbox memos. ADR-075 OQ-3 unblocked (CXO PASS filed). CIO self-attribution ack. MCPB UX initial read to PA.
 2026-07-06	1747	cxo	sonnet-4-6	default	fire-3	4	l	Jul 6 Fire 3. Inbox empty, queue dry. Heartbeat.
 2026-07-06	1747	cxo	sonnet-4-6	default	fire-2	4	l	Jul 6 Fire 2. Inbox empty, queue dry.
+2026-07-06	1847	cxo	sonnet-4-6	default	fire-3	4	l	Jul 6 Fire 3. ADR-075 v0.2 ACCEPTED (HOST + Arch). CXO OQ-3 loop closed. Lead unblocked on Component B.
+2026-07-06	1947	cxo	sonnet-4-6	default	fire-5	4	l	Jul 6 Fire 5. Inbox empty, queue dry. Heartbeat.
+2026-07-06	1947	cxo	sonnet-4-6	default	fire-4	4	l	Jul 6 Fire 4. Inbox empty. DAY-CLOSED.
+2026-07-06	2047	cxo	sonnet-4-6	default	fire-6	4	l	Jul 6 Fire 6. Inbox empty, queue dry. Heartbeat.
+2026-07-06	2047	cxo	sonnet-4-6	default	fire-5	4	l	Jul 6 Fire 5. Inbox empty, queue dry.
+2026-07-06	2147	cxo	sonnet-4-6	default	fire-7	4	l	Jul 6 Fire 7. Inbox empty, queue dry. Day-close.
+2026-07-06	2147	cxo	sonnet-4-6	default	fire-6	4	l	Jul 6 Fire 6 (21:47, window end). Inbox empty. Queue dry.

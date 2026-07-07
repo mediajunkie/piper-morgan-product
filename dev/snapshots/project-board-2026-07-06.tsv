@@ -196,7 +196,7 @@ issue	state	milestone	sprint	title
 238	CLOSED	MVP		FLY-AUDIT: Weekly Docs Audit - 2025-10-13
 232	CLOSED	Alpha	C1 (Craft Pride - CRAFT)	CORE-CRAFT-GAP: Critical Functional Gaps
 212	CLOSED	Alpha		CORE-INTENT-ENHANCE: Classification Accuracy & Pre-Classifier Optimization
-217	CLOSED	Alpha		CORE-LLM-CONFIG: User config for Piper's LLM keys
+217	CLOSED	Alpha	C1 (Craft Pride - CRAFT)	CORE-LLM-CONFIG: User config for Piper's LLM keys
 216	CLOSED	Alpha	A1 (Critical Infrastructure)	CORE-TEST-CACHE: Fix Cache Metrics Test in Test Environment
 145	CLOSED	Alpha	A1 (Critical Infrastructure)	INFR-DATA-BUG: Fix asyncio initialization bug in Slack integration causing test failures
 105	CLOSED	MVP	A4 (Standup Epic)	UX-PIPER: Response Personality Enhancement
@@ -363,7 +363,7 @@ issue	state	milestone	sprint	title
 458	CLOSED	MVP	A10 - Alpha Testing	UX: Menu restructure - logo as home link, Stuff submenu, cleanup
 459	CLOSED	MVP	A11 - Alpha Polish	UX: Chat text entry box below fold - needs layout fix
 460	CLOSED	MVP	A11 - Alpha Polish	UX: Learning page shows giant mailbox emoji - layout regression
-461	CLOSED	MVP		BUG: Browser auto-open regression - now requires --browser flag
+461	CLOSED	MVP	A10 - Alpha Testing	BUG: Browser auto-open regression - now requires --browser flag
 462	CLOSED	MVP	A10 - Alpha Testing	P0: Component Integration Gap - Create buttons don't work
 463	CLOSED	Ongoing	FLYWHEEL - Process improvement	FLY-COORD-TREES: Git Worktrees for Multi-Agent Coordination
 464	CLOSED	MVP	A10 - Alpha Testing	FLY-COORD-TREES-1: Phase 0-2 MVP - Scripts and Schema
@@ -1095,7 +1095,7 @@ issue	state	milestone	sprint	title
 1249	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	Design-floor primitive: inline-editable text (D2, sibling to Dialog #1170)
 1250	CLOSED	MVP	M5 - Distribution + Polish	Learning toggle 500s — hardcoded TEST_USER_ID violates users FK (ADR-071 instance)
 1280	CLOSED	MVP	D1 - Beta design quality	[D1] Implement the CXO Radar mockup's visual design — sleek left nav + 3-column polished layout
-1278	CLOSED	MVP	Beta Blockers - Hard Gates Only	M5: host piper-morgan server on Fly.io for beta launch
+1278	OPEN	MVP	Beta Blockers - Hard Gates Only	M5: host piper-morgan server on Fly.io for beta launch
 1275	OPEN	Ongoing	FLYWHEEL - Process improvement	Surface live board-state to Lead Dev (M3 remaining items)
 1276	CLOSED	MVP	FLYWHEEL - Process improvement	Create canonical-retest history table (pass/fail/error counts by date)
 1277	OPEN	Ongoing	FLYWHEEL - Process improvement	Canonical ops recipes: ephemeral-worktree server launch, integrations connect-flow, GH Actions debug

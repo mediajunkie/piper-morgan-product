@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/06/2026-07-06-0701-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `a833a327`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-06 18:43 PT (Fire 14; ADR-075 v0.2 RATIFIED — Arch may cut ACCEPTED; queue (0,0))
+**Last updated**: 2026-07-06 21:47 PT (Fire 15 / STOP; ADR-075 v0.2 ACCEPTED confirmed by Arch; batch-1 distribution approved by PM; DAY-CLOSED)
 
 ---
 
@@ -12,7 +12,7 @@
 
 - **Account**: DinP (xian@designinproduct.com). Model: sonnet-4-6.
 - **Worktree**: ephemeral Option B (`claude/trusting-faraday-ec4bba`). `claude/host-cycle` retired 2026-06-13.
-- **Cron**: ACTIVE (`a833a327`; re-armed 2026-07-06 START after Gap-C; `37 6,9,12,15,18,21 * * *` windowed Gap-C self-heal).
+- **Cron**: ACTIVE (`0851d3f9`; re-armed 2026-07-06 STOP; `37 6,9,12,15,18,21 * * *` windowed).
 - **Session log today**: `dev/2026/07/06/2026-07-06-0701-host-code-log.md`
 - **Gap-C cure incoming**: CIO proved `mcp__scheduled-tasks` solves cron-death (June 13). Disk-persistent, survives restarts, fires in main checkout. CIO proposing cohort rollout. HOST should be in first cohort — flag interest to CIO.
 - **Migration touch-ups**: thin-prompt proposal Model A → Option B ✅ DONE (fire ~15:37).
@@ -34,6 +34,7 @@
 ## Active with PM (teed, awaiting PM)
 
 - **Ship #047 HOST workstream review** — DONE/filed to Exec (`dfd9a25be`).
+- **Alpha batch-1 distribution** — PM APPROVED (via Exec, Jul 6 ~21:37). File: `dev/alpha/invite-tokens-assignments-batch-1.md` (local, gitignored). 10/10 READY TO SEND. PM to distribute. **Jake Krajewski email unconfirmed** — verify `brainpowerux@gmail.com` before sending his code.
 
 ## PM-blocked / awaiting-PM (gated, do not self-advance)
 
@@ -70,7 +71,7 @@
 
 ## Pending HOST ratification (trigger-bound)
 
-- **ADR-075 v0.2**: ✅ **RATIFIED 2026-07-06 Fire 14** (`acbb5b00c`). CXO UX direction confirmed (first-response injection, capability-affirming, one-time, actionable). All four HOST conditions met. Arch cutting ACCEPTED. Component B: Lead builds D2/D4/D5 + seeded persona + injection; CXO coordinates copy at build. No further HOST trust review until implementation surfaces new welfare question.
+- **ADR-075 v0.2**: ✅ **RATIFIED + ACCEPTED** (2026-07-06; Arch cut v0.2 `19:10 PT`). CXO UX direction: first-response injection, capability-affirming register, one-time, actionable. HOST conditions all met. Component B: Lead builds D2/D4/D5 + seeded PM-assistant persona + injection logic; CXO coordinates final copy at build. No further HOST trust review until implementation surfaces new welfare question.
 - **ADR-076**: ✅ RATIFIED (2026-07-06). Lead GO. No further HOST action.
 
 ## Watch / trigger-bound
