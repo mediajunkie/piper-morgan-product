@@ -13,11 +13,24 @@
 #   REVIEW           — expected destination genuinely unknown; Arch/probe decides
 #
 # The 13 mode-1 static candidates are all represented, plus the #1269 original.
+#
+# SEAM MODEL (probe run-1, 2026-07-08): real routing is a 4-surface chain —
+#   pre_classifier (deterministic patterns, pre-LLM) -> LLM classifier ->
+#   action rail (get_action_workflows) -> category handlers / floor
+#   (which ALSO dispatch on action names internally: pull_insights at
+#   conversational_floor.py, write_stakeholder_update, get_identity,
+#   manage_portfolio, get_project_status via pre_classifier + floor).
+# "Handled" therefore means rail-registered OR floor/category-surface handled —
+# a rail-membership check alone undercounts. And a classifier-only probe
+# undercounts correctness: pre_classifier intercepts phrases (e.g. standup)
+# before the LLM ever sees them. Run-1 calibration applied below: expected
+# values corrected to REGISTRY-canonical names where run-1 proved the original
+# draft used aspirational/wrong vocabulary.
 corpus:
   - phrase: "give me my standup"
     expected: action:show_standup     # the #1269 fix — deterministic pre-check
   - phrase: "what's on my calendar today?"
-    expected: category:TEMPORAL
+    expected: action:meeting_time   # run-1: registry-canonical, rail-dispatched (draft said category:TEMPORAL)
   - phrase: "when is my next meeting?"
     expected: category:TEMPORAL
   - phrase: "what am I working on?"
@@ -41,11 +54,11 @@ corpus:
   - phrase: "what time is it?"
     expected: category:TEMPORAL
   - phrase: "show my open issues"
-    expected: action:list_issues
+    expected: action:list_issues_query   # run-1: registry-canonical
   - phrase: "show my open pull requests"
-    expected: action:list_prs
+    expected: action:list_prs_query   # run-1: registry-canonical
   - phrase: "any stale PRs?"
-    expected: action:stale_prs
+    expected: action:stale_prs_query   # run-1: canonical; LIVE GAP — LLM emitted list_stale_prs (5th variant, misses all 4 rail aliases)
   - phrase: "what needs my attention?"
     expected: action:attention_query
   - phrase: "what changed since yesterday?"
@@ -53,11 +66,11 @@ corpus:
   - phrase: "how productive was I this week?"
     expected: action:productivity_query
   - phrase: "list my projects"
-    expected: action:list_projects
+    expected: action:manage_portfolio   # run-1: registry+pre-classifier canonical; floor-surface handled (not rail)
   - phrase: "close issue 42"
-    expected: action:close_issue
+    expected: action:close_issue_query   # run-1: registry-canonical
   - phrase: "comment on issue 42: looks good"
-    expected: action:comment_issue
+    expected: action:comment_issue_query   # run-1: registry-canonical
   - phrase: "what have you learned about my workstyle?"
     expected: action:pull_insights
   - phrase: "set my default repo to acme/widgets"
