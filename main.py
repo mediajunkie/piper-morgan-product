@@ -9,6 +9,13 @@ It initializes services via ServiceContainer and starts the web server.
 # Load environment variables from .env file FIRST (before any other imports)
 from dotenv import load_dotenv
 
+# #1258: an inherited EMPTY ANTHROPIC_API_KEY (a Claude Code shell exports one)
+# would shadow the real key in .env — dotenv never overrides set vars. Strip
+# present-but-empty Anthropic vars BEFORE load_dotenv so hosted/clean launches
+# are robust without the CLAUDE.md `env -u` incantation.
+from services.utils.env_hygiene import strip_empty_anthropic_vars
+
+strip_empty_anthropic_vars()
 load_dotenv()
 
 import argparse
