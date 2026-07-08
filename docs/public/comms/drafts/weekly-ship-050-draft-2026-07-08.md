@@ -4,13 +4,13 @@ alt: A child and a crew of robots checking each other's work on a boat.
 caption:
 ---
 
-# Weekly Ship #050: Built so it can't drift
+# Weekly Ship #050: The first real user
 
-*June 27–July 3, 2026*
+*June 26–July 2, 2026*
 
-Four connectors landed on one contract this week — GitHub, Calendar, Notion, and Slack, all built the same way instead of four separate one-offs. A security gap opened by an unrelated infrastructure change got found and closed the same day, not with a patch that could be silently removed again, but by moving the rule into the code itself. And the invite gate that had been sitting on a design decision for weeks went from ratified contract to live in production. A lot landed this week, and it landed clean.
+Someone outside the team used Piper Morgan for real this week. Jake Krajewski installed the new Claude plugin and started using it — the first person who isn't part of the project putting it to work. The GitHub connector went from simulated to real in the same window, live-verified against 179 actual issues instead of test fixtures. A security gap that opened when an unrelated change removed a safeguard got found and closed before the week was out. And in three separate places, the team replaced "remember to check this" with something that checks itself.
 
-The thread underneath all of it: the team stopped trusting itself to remember rules, and started building things so the rules can't be broken by accident.
+That last part is becoming a habit, not an event.
 
 ---
 
@@ -18,27 +18,25 @@ The thread underneath all of it: the team stopped trusting itself to remember ru
 
 ## 🎯 Product & experience
 
-**Slack setup now has a real onboarding flow.** The experience-design role (CXO) spec'd the full Settings surface for connecting Slack — a six-step setup, three plain-language status states (listening, connecting, not yet enabled), and copy for each one. Built and shipped in the same window.
+**First external user.** Jake Krajewski installed the Claude plugin and started using Piper Morgan through it — the first time someone outside the team has done that. The plugin got two quick rounds of fixes based directly on his feedback, including a packaging bug that would have broken installation for the next person.
 
-**Piper says "I can't do that yet" instead of guessing.** A moment where Piper asserted something that wasn't true anymore surfaced a real gap in how it handles the edges of its own capability. The fix: acknowledge what was asked, name the boundary honestly, offer the next real step. No hedging, no over-apologizing — just a straight answer, and a small pattern that turns out to matter a lot for trust.
+**Piper stopped claiming success it hadn't earned.** A moment surfaced where Piper said "Milestone created" when nothing had actually been created. Fixed the same day, with a rule that generalizes: if the system can't verify an action actually happened, it has to say so rather than claim it did.
 
-**Smaller friction removed**: connecting a GitHub repo is now a conversation instead of a config step, and a couple of confusing connection states got cleaned up.
+**Smaller fixes**: setting a default GitHub repo is now a plain conversation instead of a settings screen, and a confusing GitHub connection status (simultaneously "connected" and "invalid token") got cleaned up.
 
 ## ⚙️ Engineering & architecture
 
-**Four real connectors, one contract.** GitHub, Calendar, Notion, and Slack are all now built against the same connector contract instead of four bespoke implementations that could quietly drift apart from each other. (An earlier internal list had named eight candidate connectors — four of those never had real scope behind them, and are off the list for good, not just deferred.)
+**GitHub, for real.** The connector that talks to GitHub moved off a simulated backend onto a real one this week, live-verified by pulling 179 actual issues rather than test data. The calendar connector got the same architectural treatment, built on the same shared contract instead of its own one-off logic.
 
-**A security gap opened and closed in the same breath.** An unrelated infrastructure change accidentally removed a safety check, opening a narrow window where the system's request path wasn't as protected as it should have been. Found, understood, and fixed the same day — and instead of just restoring the removed check, the fix moved the rule directly into the application layer, where a future infrastructure change can't quietly take it out again.
-
-**The invite gate went live.** The mechanism that makes sure new accounts are created through a real invitation, not an open door, moved from a ratified design straight into production this week — atomic, tested, and done.
+**A security gap opened and closed in the same week.** An unrelated change had quietly removed a safeguard, opening a narrow window where a request could fall back to using the system's own credentials instead of the user's. Found, understood, and shipped as a fix within days — deployed the same week it was discovered.
 
 ## 🔬 Methodology & process innovation
 
-**"Make it impossible to drift" is now how the team builds, not just an architecture preference.** The same principle showed up twice this week in two different places: a list of "things the system won't do" now derives directly from what's actually wired up, instead of a hand-maintained list someone has to remember to update — and the security fix above took the same shape. Neither depends on a human remembering. Both are structurally true.
+**Vigilance keeps losing to mechanism, on purpose.** Three separate times this week, the team took something that depended on a person remembering to check it and turned it into something that checks itself. A stale-session monitor that used to need hand-tuned thresholds now derives them automatically from each role's own schedule. A version-consistency script got wired into the release process as a non-skippable step, after a real mismatch had slipped through before. And an early attempt at automatically waking a stalled session got built, tested, found not to work reliably, and retired the same day rather than left half-working.
 
-**The review-and-correct loop between the architecture role and the lead developer ran hot and clean all week** — catching each other's better ideas and each other's misses, in both directions, as a matter of course rather than an event.
+**Owning a mistake in public, fast.** An architectural call about a piece of code turned out to be wrong — it looked live but was actually unreachable. The person who made the original call corrected it the same day someone else's trace disproved it, no defensiveness, just a fix.
 
-**A cost-conscious throttle got adopted cohort-wide in a single day**, with a false-alarm interaction in the monitoring caught and fixed in the same sitting.
+**The cohort tightened its own belt.** A cost-conscious pace reduction rolled out across the whole team in a single day, catching and fixing a false-alarm side effect in the same sitting.
 
 ## 🌍 External relations & community
 
@@ -52,44 +50,46 @@ The thread underneath all of it: the team stopped trusting itself to remember ru
 
 ## 📊 Governance & operations
 
-**Metrics (Jun 27–Jul 3):**
+**Metrics (Jun 26–Jul 2):**
 
 | Metric | Value |
 |--------|-------|
-| Issues closed | 26 |
-| Connectors unified on one contract | 4 |
+| Issues closed | 25 |
+| Connectors moved to the shared protocol | 2 (GitHub, Calendar) |
 | Publications | 5 |
-| Security gaps found and closed same-day | 1 |
+| Security gaps found and shipped same-week | 1 |
 
-**Coordination note**: the invite-gate's design-to-production handoff ran through eight separate check-ins across the trust and architecture roles with zero coordination breakdowns — each one catching or confirming the last.
+**Milestone dates confirmed**: beta at 0.9.0, production at 1.0, with a fast-follow milestone still to be dated.
+
+**A no-destructive-git rule for the team's shared workspace got formally ratified** this week, after a near-miss made clear it needed to be a rule rather than a habit.
 
 ---
 
 # 🎯 Coming up next week
 
-Beta scope is largely settled. The remaining backlog is burning down fast, and a target date is close behind. Moving the team onto its own dedicated infrastructure is planned but deliberately unhurried — weeks of runway before it needs to happen. The four live connectors are the real beta set, with room to add more later if an actual case shows up for one.
+The connector work continues past GitHub and calendar. A registration-security gap identified this week is still open and is the top priority to close. The team is also moving toward its own dedicated infrastructure accounts, a deliberate, unhurried transition planned over the coming weeks.
 
 ---
 
 # 🚧 Blockers & asks
 
-No significant blockers this week. The main open call is timing — when beta's target date gets picked, given the pace of the remaining backlog.
+**Open registration gap**: a safeguard around new-account creation needs closing before it's fully resolved. In hand, not yet shipped as of this week's close.
 
 ---
 
 # 🔎 This week's learning pattern
 
-## Make it impossible to drift
+## Stop trusting yourself to remember
 
-**Discovery**: The most valuable fixes this week weren't the ones on anyone's plan. They were incident-driven, and every one of them shared the same shape: instead of adding a rule and trusting people to follow it, the team found a way to make breaking the rule structurally impossible.
+**Discovery**: three unrelated fixes this week shared the same shape — each one took a rule that depended on someone remembering to follow it, and moved it into something that enforces itself.
 
-**Example from this week**: the security gap above wasn't a mistake in the security code — it was an unrelated infrastructure change that removed a check nobody realized the two were connected. The fix wasn't "put the check back." It was moving the rule into the application itself, so no future infrastructure change can quietly take it out again. Same principle, different corner: a list of "things the system declines to do" stopped being hand-maintained (and able to silently fall out of sync) and started deriving directly from what's actually wired up.
+**Example from this week**: a monitor that watches for stalled work sessions used to need someone to hand-tune how long is "too long" for each role. This week it started deriving that threshold automatically from each role's own schedule, so it can't drift out of sync the way a hand-set number eventually does. Separately, a version-mismatch bug had slipped through releases before — the fix wasn't a reminder to check next time, it was a script wired directly into the release process that won't let a release proceed with a mismatch.
 
-**Why it matters**: Rules that live in a perimeter, or in a document someone has to remember to check, fail quietly — usually when something else nearby changes for an unrelated reason. Nobody notices until it's already gone wrong. Moving the rule into the thing itself removes the step where a human has to remember.
+**Why it matters**: rules that live in someone's memory, or in a step someone has to remember to run, fail quietly. Nobody notices until the thing they were supposed to prevent has already happened. Encoding the rule into the mechanism itself removes the step where a person has to remember.
 
-**Application beyond this week**: Any rule whose enforcement depends on someone remembering to check it is a rule that's already halfway to breaking. The fix is rarely "communicate the rule better." It's finding the place to encode it so that violating it isn't an option anymore — the same instinct behind putting four different connectors on one shared contract instead of trusting four separate implementations to stay consistent with each other.
+**Application beyond this week**: the same test applies to almost any recurring discipline — if the only thing standing between "works" and "silently breaks" is someone remembering to check, that's worth converting into something structural. It won't always be possible, but it's always worth asking.
 
-**Related patterns**: the connector-unification work above is the same principle applied to architecture instead of security — one contract everything has to satisfy, rather than several things that could each quietly diverge.
+**Related patterns**: the security fix earlier in the week is the same instinct applied under more pressure — closing a gap by making the correct behavior the only path, rather than trusting a rule to be followed.
 
 ---
 
@@ -98,10 +98,10 @@ xian + Piper Morgan Development Team
 
 This is Weekly Ship #050. Previous: [#049 "The Team Builds Its Own Reliability"](https://pipermorgan.ai/shipping-news/weekly-ship-049-the-team-builds-its-own-reliability).
 
-*P.S. Four connectors on one contract, a security hole closed the same day it opened, an invite gate that went from design to production without drama — none of these were the flashy kind of week. They were the kind where things just work because they were built so they couldn't do anything else.*
+*P.S. The moment that stuck with me this week wasn't a metric — it was knowing someone outside the room was actually using this thing. Everything else this week was in service of making sure it holds up when more people do.*
 
 *P.P.S. Full session logs and technical details available in the [GitHub repository](https://github.com/mediajunkie/piper-morgan-product) and [documentation site](https://pmorgan.tech). Yes, you can copy it. That just makes our protocol stronger.*
 
 ---
 
-**Week of June 27–July 3, 2026 | Phase: Alpha testing, beta scoping**
+**Week of June 26–July 2, 2026 | Phase: Alpha testing, first external user**
