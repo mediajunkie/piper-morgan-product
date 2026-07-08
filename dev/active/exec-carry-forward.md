@@ -1,69 +1,51 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-07 09:02 PT (Tue Fire 1)
-**Session log today**: `dev/2026/07/07/2026-07-07-0902-exec-code-log.md`
+**Last updated**: 2026-07-08 09:41 PT (Wed Fire 1)
+**Session log today**: `dev/2026/07/08/2026-07-08-0941-exec-code-log.md`
 **Role**: Chief of Staff (Exec) | Sonnet 4.6 | DinP account (migration to dedicated pipermorgan.ai account in planning — CIO first mover, template proposed 7/6, PM's timing call, deadline end of month)
-**Cron**: `32 8,20 * * *` — id `9ba08401` (LEAN 2×/day, migration-hold cadence). **Process fix 7/7**: STOP had created a duplicate cron without checking CronList first — always CronList before creating at STOP, not just at START.
+**Cron**: `32 8,20 * * *` — id `9ba08401` (LEAN 2×/day, migration-hold cadence). Survived the 7/7 dormancy gap intact.
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3`
 
 ---
 
-## PROCESS NOTE — worktree staleness gap (7/6, self-caught, fixed)
+## ⚠️ LIVE THREAD — worktree/duty-cycle-sync conversation PM wants with CIO
 
-This worktree was found **67 commits behind origin/main** at this fire's START, plus 34 untracked never-committed mailbox drafts (7/1–7/4 exec sends that apparently never actually landed via `mail-send.sh`, despite prior session logs narrating them as sent). Fixed: fast-forwarded, verified zero local-only commits lost, cleaned the stale drafts (confirmed via `git log --all` they had zero history anywhere). **Going forward**: `git fetch origin main -q && git status` (checking for "behind") is now the first move of every fire, before trusting any locally-cached view of inbox/cohort state.
+PM (7/6 evening) said yes to discussing with CIO: Ted Nadeau's email, a list of ideas, and **the current state of the duty cycle**. Also separately floated (same evening) that several agents seem to be struggling with worktree/sync hygiene and wondered about a CIO conversation. Treating these as the same eventual conversation. **Four concrete data points now exist, all fresh**:
+1. My own 7/6 finding: 67 commits behind, dead cron, 34 never-committed mail drafts.
+2. CXO's incident (session-start hook now checks for landing on shared `main` instead of a worktree — implies CXO hit exactly that).
+3. Arch's T3: launch prompt keeps re-homing into a dedicated `arch-backup-0630` worktree instead of ephemeral Option-B — flagged 7/8 as the hazard that fed the original self-attribution-drift incident. Fix is at the harness/launch-config layer (remove the worktree + fix the launch prompt) — needs PM/CIO, not an arch-session action.
+4. **My own 7/7 incident — a full ~24h Gap-C dormancy**: session went dark shortly after the 09:02 START fire, never STOPped, self-recovered only via `SessionStart:resume` this morning after the watchdog's stall alert (24h stale vs. 19h threshold — ~5h detection lag on top of the gap itself). No work lost, but a real, first-hand end-to-end dormancy+detection-lag example. Full reconstruction in `dev/2026/07/07/2026-07-07-0902-exec-code-log.md`'s retroactive STOP section.
 
-**Open question this raised**: the Gap-C dormancy that caused the dead cron (found this morning, zero jobs armed) — the tracker research (below) found the *watchdog-funding* decision was closed months ago (PM: launchd OS-watcher covers it, not a paid external service), but the underlying dormancy itself is evidently still live — no alert was received for this session's dead cron. Worth CIO/HOST cross-check on whether the launchd watcher is actually catching these in practice.
-
----
-
-## Ship #050 workstream review — SYNTHESIS COMPLETE, delivered to PM
-
-Real synthesis built 7/6 afternoon from all 6 actual §0s: `dev/2026/07/06/exec-ship-050-workstream-synthesis-2026-07-06.md`. Supersedes the 7/5 git-record scaffold. Delivered to PM in-conversation (portfolio-vs-goals section led, per PM's specific ask). Key finding: PPM/Comms/CIO each hit the same "unflagged drift" failure shape this window — named as a cross-cutting theme. Next: PM voice-pass → Comms drafts public Ship (pub target Wed Jul 9).
+**Not yet scheduled or raised formally** — PM hasn't said go on convening this with CIO. Don't draft/send anything to CIO about this beyond what's already been said until PM confirms timing.
 
 ---
 
-## OPEN — needs PM (updated 7/7)
+## OPEN — needs PM
 
-- **Batch-1 invite codes — READY, needs PM to actually send them.** Correction to last night's tracking: codes were already minted July 4 (not blocked on my "approval"). `dev/alpha/invite-tokens-assignments-batch-1.md` (PM's local, gitignored) has all 10. One flag: Jake Krajewski's email unconfirmed — verify before sending his.
-- **Account migration**: CIO's starting-point template filed (7/6) — concrete first-mover plan + 3 open questions (sequence after CIO, go/no-go checkpoint or parallel, PM owns timing). Ready whenever the 3-way conversation happens.
-
-## OPEN — needs PM (prior, still open)
-
-- **HOST**: 1 of 10 testers (Rebecca Refoy) has no email in the roster — blocks her invite code. Needs PM to supply/correct.
-- **Account migration**: both Exec's and CIO's migration-checklist rows are unconfirmed — neither role can self-determine which account it's running under from inside a session. Needs PM's direct confirmation across the board, not just exec.
-- **MCPB production-readiness**: PA's leadership briefing (7/6) starts the formal sign-off process (skunkworks → product requires full leadership sign-off incl. CXO design). No exec action needed yet, just on our radar for when it comes up in planning.
-- **"Climbing Higher" blog post** — commit history shows normal publish+archive flow but doesn't distinguish whether PM's voice-pass specifically happened. Status genuinely unclear (checked 7/6, couldn't confirm either way) — ask PM directly rather than guess.
-- **MCPB v0.1.9 clean-machine test result** — confirmed still outstanding (PA's own 7/6 briefing says "results not yet received"). PM ran the test night of 7/4; PPM/PA still waiting on relay.
-
-## DONE — rollup items actioned same evening (7/6)
-
-PM worked through all 6 rollup items same evening:
-- **Beta scope date**: PM says scope was clarified (with PPM, this afternoon) but date deliberately left undecided — NOT an open PM decision, was my stale framing. Couldn't find it written down (roadmap is at v18.5, 7/5 — already has "Aug 1 dropped, no date," but nothing capturing today's specific clarification). **Asked PPM directly to fold it into the roadmap as v18.6** (PM's explicit instruction: capture in the roadmap, not just conversation). Watch for the fold; not yet landed as of day-close.
-- **Invite minting**: approved. Relayed to HOST.
-- **Account migration**: PM direction — unhurried, CIO first/Exec last, deadline end of month (Kindsys.us account retiring, pipermorgan.ai moving to Max). PM wants a 3-way (PM+CIO+Exec) planning conversation, not one-off memos. Relayed to CIO, asked them to propose a starting point since they go first.
-- **Web Phase 3**: unblocked — relayed go-ahead to Web.
-- **Newsletter name**: **investigated, not a fresh decision** — Themis/PM already named it "Now What?" on the DinP side 6/23; it just never crossed over to this repo (Web was still asking as of 6/25, Themis flagged the same gap 6/28). Relayed the resolved name to Web cc Comms, asked them to update on-site references.
-- **Ted/duty-cycle/ideas-list discussion**: PM confirmed wants to do this with CIO directly. Not routing/scheduling this myself unless asked.
-- **Worktree-sync discipline conversation with CIO** — not yet acted on by PM as of this exchange; still an open thread from the rollup, not superseded by anything above.
-
----
+- **Batch-1 invite codes — READY, needs PM to actually send them.** `dev/alpha/invite-tokens-assignments-batch-1.md` (PM's local, gitignored) has all 10. One flag: Jake Krajewski's email unconfirmed — verify before sending his.
+- **Account migration**: CIO's starting-point template filed (7/6) — concrete first-mover plan + 3 open questions (sequence after CIO, go/no-go checkpoint or parallel, PM owns timing). Every row on `docs/migration/pipermorgan-ai-account-migration.md` still unconfirmed. Ready whenever the 3-way (PM+CIO+Exec) conversation happens — PM said unhurried, deadline end of month (Kindsys.us retiring, pipermorgan.ai → Max).
+- **HOST**: Rebecca Refoy's email was supplied 7/6 and relayed — verify this is actually closed (should be, given batch-1 shows 10/10 ready).
+- **MCPB production-readiness**: PA's leadership briefing (7/6) started the formal sign-off process (skunkworks → product needs full leadership sign-off incl. CXO design). No exec action needed yet, just on our radar.
+- **"Climbing Higher" blog post** — still genuinely unclear whether PM's voice-pass happened. Ask directly rather than guess.
+- **MCPB v0.1.9 clean-machine test result** — still outstanding as of last check (7/6). PPM/PA waiting on relay.
+- **Beta scope roadmap fold (v18.6)** — asked PPM 7/6 evening to fold PM's clarified beta scope into the roadmap. Not yet confirmed landed — check `docs/internal/planning/roadmap/roadmap.md` version.
 
 ## RESOLVED (recent, for reference)
 
-- **Two-arch-session false alarm — fully closed 7/6.** CIO root-caused it as self-attribution drift (a fire misreading its own commits/cron-ID-bump as a phantom peer session); two durable fixes shipped (CLAUDE.md compaction-recovery default + cadence-change logging in duty-cycle-tick). Arch's formal retraction landed 7/6, cc exec/cio. No further action.
-- **Inbox-proxy pilot**: greenlit 7/4, 2-week clock running (9/10 ACKs). Phase 2 (full PM-mailbox removal) stays parked until pilot completes.
-- **Beta scope nudge** (7/4, to PA/CXO/Arch): all three have since responded (PA 7/4 PM, CXO + Arch since). Nudge closed.
-- **CIO→Janus relay** (Pard design-brief answers + cadence-bump pattern) — **confirmed already sent 7/5**, verified both memos in `designinproduct/docs/mail/` accurately relay CIO's full content. Fully closed, no further action.
-- **`exec-open-items-tracker.md`** — full reconciliation done 7/6 (was 24 days stale). All 8 prior items resolved/superseded/verified; 8 current items now tracked. See tracker file for detail.
-- **`dev/active/duty-cycle-registry.tsv`** exec row — fixed 7/6 (was paused since 6/28). Live row now reflects current LEAN 2×/day cadence.
+- **Ship #050 synthesis** — delivered 7/6, `dev/2026/07/06/exec-ship-050-workstream-synthesis-2026-07-06.md`. Done, nothing further needed unless PM has edits.
+- **Web Phase 3 + newsletter name** — both unblocked/resolved 7/6 evening. Newsletter-name thread fully closed 7/7 (Comms confirmed "Now What?" and "Building Piper Morgan" are correctly distinct, no cross-contamination).
+- **Two-arch-session false alarm** — fully closed, re-confirmed clean by Arch 7/8.
+- **Duplicate cron (7/6→7/7)** — fixed, re-confirmed clean by Arch 7/8.
+- **Inbox-proxy pilot** — greenlit 7/4, running.
+- **`exec-open-items-tracker.md`** — full reconciliation done 7/6, should still be current — check there for anything not listed above.
 
 ---
 
 ## STANDING
 
-- **Ship #050 synthesis**: compile once Lead + PA land (deadline Mon Jul 7 EOD).
-- **`exec-open-items-tracker.md`** is now the up-to-date source of truth for exec's active items (8 tracked as of 7/6) — check there first before this carry-forward for anything not in the sections above.
+- **Today's cohort-attention rollup** — Arch's 7/8 status memo was explicitly sent "for today's roll-up," meaning PM has asked for one today. Compile fresh when PM engages (per the skill's PM-present cadence rule) rather than pre-rendering into a void.
+- **`exec-open-items-tracker.md`** remains the source of truth for longer-running active items — check there first.
 
 ---
 
-*— Exec (DinP / Sonnet 4.6), 7/6 09:15 PT.*
+*— Exec (DinP / Sonnet 4.6), 7/8 09:41 PT.*
