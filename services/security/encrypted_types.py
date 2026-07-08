@@ -95,3 +95,140 @@ class EncryptedString(TypeDecorator):
             raise DecryptionError("encrypted value present but ENCRYPTION_MASTER_KEY is unset")
         token = value[len(MARKER) :]
         return svc.decrypt(token, self._context)  # DecryptionError propagates
+
+
+class EncryptedJSON(TypeDecorator):
+    """#1305: transparent at-rest encryption for a JSON/JSONB column.
+
+    Two modes, one default-safe design (Arch's ratified condition, 2026-07-07):
+
+    - **Full-value mode** (no whitelist): the whole JSON value is serialized and
+      encrypted; the column stores a single JSON *string* — ``"PMENC1:<token>"``
+      — which is valid JSON, so the column type (JSONB/JSON) is untouched.
+    - **Leaf-split mode** (``plaintext_whitelist=(...)``): for dict values, the
+      whitelisted keys stay as plaintext JSON leaves (server-side SQL on them —
+      e.g. ``pattern_data -> 'action_type'`` — keeps working) and **everything
+      else** is encrypted under a single ``_enc`` leaf. The split is
+      DEFAULT-ENCRYPT: a key not on the whitelist is encrypted *by construction*
+      — a future PII field added to the payload lands encrypted without anyone
+      remembering to update anything (encrypt-a-named-blacklist is the drift
+      class this design exists to prevent).
+
+    Read side mirrors ``EncryptedString``'s contract exactly: an unmarked value
+    (a plain dict/list without ``_enc``, or a non-marker string) is legacy
+    plaintext and passes through (pre-backfill compatibility); a marked value
+    without a key raises ``DecryptionError`` (fail closed, never return the raw
+    token); ``None`` passes through.
+    """
+
+    impl = Text  # overridden per-column via load_dialect_impl of the declared type
+    cache_ok = True
+
+    _ENC_KEY = "_enc"
+
+    def __init__(
+        self,
+        context: str,
+        *args,
+        plaintext_whitelist: tuple = (),
+        encryptor=_UNSET,
+        **kwargs,
+    ):
+        if not context:
+            raise ValueError("EncryptedJSON requires a non-empty context label")
+        self._context = context
+        self._whitelist = tuple(plaintext_whitelist)
+        self._injected = encryptor
+        super().__init__(*args, **kwargs)
+
+    def load_dialect_impl(self, dialect):
+        # Keep the underlying column type JSONB on Postgres / JSON elsewhere —
+        # ciphertext is stored as a JSON string (or an object with an ``_enc``
+        # string leaf), both valid JSON, so no column-type migration is needed.
+        from sqlalchemy import JSON as _JSON
+        from sqlalchemy.dialects import postgresql as _pg
+
+        if dialect.name == "postgresql":
+            return dialect.type_descriptor(_pg.JSONB())
+        return dialect.type_descriptor(_JSON())
+
+    def coerce_compared_value(self, op, value):
+        # Without this, SQLAlchemy runs comparison/index operands through THIS
+        # type's bind processor — so the literal key in
+        # ``pattern_data.op("->")("action_type")`` would itself get ENCRYPTED
+        # and typed JSONB (`json -> jsonb`: no such operator), breaking the one
+        # server-side query the leaf-split whitelist exists to preserve
+        # (learning_handler.py:396). Delegating to the plain JSON type binds
+        # path/index operands as text/int, exactly as before encryption — the
+        # SQLAlchemy-documented recipe for TypeDecorator-around-JSON. Caught by
+        # the real-Postgres proof test, not the unit tests.
+        from sqlalchemy import JSON as _JSON
+
+        return _JSON().coerce_compared_value(op, value)
+
+    @property
+    def _service(self) -> Optional[FieldEncryptionService]:
+        if self._injected is not _UNSET:
+            return self._injected
+        return FieldEncryptionService.from_env()
+
+    # -- write ---------------------------------------------------------------
+    def process_bind_param(self, value, dialect):
+        import json as _json
+
+        if value is None:
+            return None
+        svc = self._service
+        if svc is None:
+            global _warned_no_key
+            if not _warned_no_key:
+                logger.warning(
+                    "ENCRYPTION_MASTER_KEY unset — EncryptedJSON storing plaintext "
+                    "(non-prod fallback; the #1305 backfill refuses to run without the key)"
+                )
+                _warned_no_key = True
+            return value
+
+        if self._whitelist and isinstance(value, dict):
+            # Leaf-split: whitelisted keys plaintext, EVERYTHING ELSE encrypted.
+            plain = {k: v for k, v in value.items() if k in self._whitelist}
+            rest = {k: v for k, v in value.items() if k not in self._whitelist}
+            plain[self._ENC_KEY] = MARKER + svc.encrypt(
+                _json.dumps(rest, default=str), self._context
+            )
+            return plain
+        # Full-value: the whole payload becomes one encrypted JSON string.
+        return MARKER + svc.encrypt(_json.dumps(value, default=str), self._context)
+
+    # -- read ----------------------------------------------------------------
+    def process_result_value(self, value, dialect):
+        import json as _json
+
+        if value is None:
+            return None
+
+        # Leaf-split shape: dict carrying our _enc leaf.
+        if isinstance(value, dict) and self._ENC_KEY in value:
+            token_str = value[self._ENC_KEY]
+            if not isinstance(token_str, str) or not token_str.startswith(MARKER):
+                return value  # not ours — legacy dict that happens to have _enc
+            svc = self._service
+            if svc is None:
+                raise DecryptionError(
+                    "encrypted JSON leaf present but ENCRYPTION_MASTER_KEY is unset"
+                )
+            rest = _json.loads(svc.decrypt(token_str[len(MARKER) :], self._context))
+            merged = {k: v for k, v in value.items() if k != self._ENC_KEY}
+            merged.update(rest)
+            return merged
+
+        # Full-value shape: a marker-prefixed JSON string.
+        if isinstance(value, str) and value.startswith(MARKER):
+            svc = self._service
+            if svc is None:
+                raise DecryptionError(
+                    "encrypted JSON value present but ENCRYPTION_MASTER_KEY is unset"
+                )
+            return _json.loads(svc.decrypt(value[len(MARKER) :], self._context))
+
+        return value  # legacy plaintext (pre-backfill row)

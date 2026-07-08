@@ -29,7 +29,10 @@ from sqlalchemy import (
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import relationship
 
-from services.security.encrypted_types import EncryptedString  # #358-B: at-rest content encryption
+from services.security.encrypted_types import (  # #358-B / #1305: at-rest encryption
+    EncryptedJSON,
+    EncryptedString,
+)
 
 
 class CrossDialectUUID(TypeDecorator):
@@ -1443,7 +1446,9 @@ class ConversationDB(Base):
     session_id = Column(String, nullable=False)
     title = Column(String, nullable=False, default="")
     # #1180: JSONB on Postgres (production), JSON on SQLite (in-memory unit tests).
-    context = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default={})
+    # #1305: PII-bearing structured column — whole-value encrypted (no server-side
+    # SQL reads it; ORM access is transparent). JSONB stays: ciphertext is a JSON string.
+    context = Column(EncryptedJSON(context="conversations.context"), nullable=False, default={})
     is_active = Column(Boolean, nullable=False, default=True)  # DEPRECATED — use lifecycle_state
     # Issue #715: Conversation lifecycle states (spec #858)
     lifecycle_state = Column(String(20), nullable=False, default="active")
@@ -1456,7 +1461,11 @@ class ConversationDB(Base):
     # #1180: the ::jsonb server_default is Postgres-only DDL that SQLite can't
     # parse, so the empty-list default is expressed Python-side (mirrors InsightDB).
     # Production's existing DB server_default is untouched; new rows still get [].
-    topics = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list)
+    # #1305: encrypted whole — the GIN index (idx_conversations_topics_gin) had ZERO
+    # server-side queries (only Python-side filtering post-ORM-load, which decryption
+    # makes transparent) and is DROPPED in migration f1305encjson. Do not re-add an
+    # index here: it would index ciphertext.
+    topics = Column(EncryptedJSON(context="conversations.topics"), nullable=False, default=list)
     preview = Column(
         EncryptedString(context="conversations.preview"), nullable=False, server_default=text("''")
     )
@@ -1527,16 +1536,17 @@ class ConversationTurnDB(Base):
     )
     intent = Column(String, nullable=True)
     # #1180: JSONB on Postgres (production), JSON on SQLite (in-memory unit tests).
-    entities = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=[])
+    # #1305: PII-bearing (extracted entities) — whole-value encrypted.
+    entities = Column(EncryptedJSON(context="conversation_turns.entities"), nullable=False, default=[])
     references = Column(
-        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default={}
-    )
+        EncryptedJSON(context="conversation_turns.references"), nullable=False, default={}
+    )  # #1305
     context_used = Column(
-        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default={}
-    )
+        EncryptedJSON(context="conversation_turns.context_used"), nullable=False, default={}
+    )  # #1305
     turn_metadata = Column(
-        "metadata", postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default={}
-    )
+        "metadata", EncryptedJSON(context="conversation_turns.metadata"), nullable=False, default={}
+    )  # #1305
     processing_time = Column(Float, nullable=True)
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
     completed_at = Column(DateTime(timezone=True), nullable=True)
@@ -2621,7 +2631,14 @@ class LearnedPattern(Base, TimestampMixin):
 
     # Pattern identification
     pattern_type = Column(Enum(PatternType), nullable=False)
-    pattern_data = Column(JSON, nullable=False)  # Flexible pattern storage
+    # #1305 leaf-split (Arch-ratified condition): action_type stays a plaintext JSON
+    # leaf because learning_handler.py queries it server-side (pattern_data -> 'action_type');
+    # EVERY OTHER key is encrypted under _enc BY DEFAULT — a future PII field added to
+    # this payload lands encrypted without anyone remembering to update a list.
+    pattern_data = Column(
+        EncryptedJSON(context="patterns.pattern_data", plaintext_whitelist=("action_type",)),
+        nullable=False,
+    )
 
     # Confidence tracking
     confidence = Column(Float, default=0.5, nullable=False)  # 0.0 to 1.0
