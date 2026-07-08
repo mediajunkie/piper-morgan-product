@@ -21,9 +21,9 @@ from web.api.routes.setup import CreateUserRequest, create_user
 
 
 def _req(token: str, username: str | None = None) -> CreateUserRequest:
-    # NOTE: email is required here even though CreateUserRequest types it Optional —
-    # User.email is NOT NULL at the DB layer (pre-existing mismatch, filed as #1348,
-    # not this issue's concern). Real email keeps these tests exercising #1344 only.
+    # Email is genuinely required as of #1348's fix (2026-07-07): the request
+    # model now matches the DB's NOT NULL + unique constraint (and #1261 made
+    # email a login identifier + the password-reset mint key).
     name = username or f"u_{uuid.uuid4().hex[:10]}"
     return CreateUserRequest(
         username=name,
@@ -105,3 +105,53 @@ async def test_concurrent_registrations_cannot_both_consume_the_same_token(db_se
     assert len(successes) == 1, f"expected exactly one success, got: {results}"
     assert len(failures) == 1
     assert isinstance(failures[0], HTTPException) and failures[0].status_code == 400
+
+
+# ---------------------------------------------------------------------------
+# #1348 — email is required (matches the NOT NULL + unique DB constraint);
+# duplicates name the right field. Fixed 2026-07-07.
+# ---------------------------------------------------------------------------
+
+
+def test_email_is_required_on_the_request_model_1348():
+    """A missing email must be a clean 422 at the model layer — never a
+    Postgres NotNullViolation leaking through as a confusing 500."""
+    with pytest.raises(ValidationError):
+        CreateUserRequest(
+            username="someone",
+            password="a-fine-password",
+            password_confirm="a-fine-password",
+            invite_token="SOMETOKEN",
+        )
+
+
+async def test_duplicate_email_400_names_the_email_field_1348(db_session, unused_token):
+    """Two accounts, same email, different usernames → the 400 must blame the
+    EMAIL (previously it said "Username 'x' already exists" for email dupes)."""
+    from services.auth.invite_token_service import generate_invite_token
+
+    email = f"dupe_{uuid.uuid4().hex[:8]}@test.invalid"
+    first = CreateUserRequest(
+        username=f"u_{uuid.uuid4().hex[:10]}",
+        email=email,
+        password="a-fine-password",
+        password_confirm="a-fine-password",
+        invite_token=unused_token,
+    )
+    await create_user(first)
+
+    token2 = generate_invite_token()
+    db_session.add(InviteToken(token=token2))
+    await db_session.commit()
+    second = CreateUserRequest(
+        username=f"u_{uuid.uuid4().hex[:10]}",  # different username
+        email=email,  # SAME email
+        password="a-fine-password",
+        password_confirm="a-fine-password",
+        invite_token=token2,
+    )
+    with pytest.raises(HTTPException) as exc:
+        await create_user(second)
+    assert exc.value.status_code == 400
+    assert "Email" in exc.value.detail
+    assert email in exc.value.detail

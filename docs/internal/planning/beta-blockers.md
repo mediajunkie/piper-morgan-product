@@ -58,11 +58,11 @@ The full open backlog was swept sprint-by-sprint (M3-Quality, M3-Health, M3-Secu
 | #1258 | Strip inherited empty Anthropic env vars at server startup | Any hosted environment inheriting Claude Code's empty key fails every LLM call |
 | #1299 | Deploy hardening remainder — **only (b) remains**: deploy.sh migrate hardening (real-deploy verification + BUILD_FAIL race disambiguation) | Migrations fail on hosted deploys |
 
-### Epic E — External-tester auth/account lifecycle ✅ CLOSED 2026-07-07 (0 open; #1105 + #441 + #1261 all closed today)
+### Epic E — External-tester auth/account lifecycle ✅ CLOSED 2026-07-07 (0 open; #1105 + #441 + #1261 + #1348 all closed today)
 
 ~~#1105~~ **closed 2026-07-07** (Lead Dev) — confirmed **not a regression** via live browser reproduction: the setup wizard's keychain integration works correctly end-to-end (the "Use Keychain" button appears once an LLM provider is picked from the dropdown, backed by real keychain reads). The original May 19 report was most likely a discoverability gap (the button is invisible until a provider is selected), not breakage. One real dead-code bug found and fixed along the way (a step-2-entry check loop that could never match the LLM providers' shared dynamic button).
 
-~~#441~~ and ~~#1261~~ **closed 2026-07-07** (Lead Dev, one unit — shared auth code paths as this doc's own sequencing note prescribed). The headline find: #441's "beta sign-up may be broken" warning was exactly right — the setup wizard (the ratified #1344 invite-gated registration surface) never sent the REQUIRED invite_token, so **every tester account creation would have 422'd** the moment invites went out; found and fixed before any invite shipped. Also: login accepts email OR username (the exact UAT wall PM hit), and a full password-reset flow shipped as the no-mailer beta model (PM-issued single-use expiring account-bound codes, atomic consumption, mint script) — live browser E2E verified (mint → reset form → login by email with the new password). Phase-4 security polish split to #1378 (Production; CSRF flagged there for an Arch/PM judgment call).
+~~#441~~ and ~~#1261~~ **closed 2026-07-07** (Lead Dev, one unit — shared auth code paths as this doc's own sequencing note prescribed). The headline find: #441's "beta sign-up may be broken" warning was exactly right — the setup wizard (the ratified #1344 invite-gated registration surface) never sent the REQUIRED invite_token, so **every tester account creation would have 422'd** the moment invites went out; found and fixed before any invite shipped. Also: login accepts email OR username (the exact UAT wall PM hit), and a full password-reset flow shipped as the no-mailer beta model (PM-issued single-use expiring account-bound codes, atomic consumption, mint script) — live browser E2E verified (mint → reset form → login by email with the new password). Phase-4 security polish split to #1378 (Production; **CSRF ruled by PM 7/7: public-beta gate** — not needed for the closed invitation beta). **~~#1348~~ also closed 2026-07-07** (PM-added to MVP in the triage session, fixed same hour): email now required on create-user, matching the DB constraint — load-bearing since #1261 made email a login identifier + the reset-mint key; duplicate-email 400s name the right field.
 
 ### Epic F — Correctness bugs found in testing (1 issue; #1279/#1285/#1216/#1256 closed 2026-07-07)
 
@@ -82,7 +82,7 @@ Mostly isolated, well-scoped fixes — good candidates to pick off quickly. **#1
 | #1312 | DB↔model schema drift (~111 Alembic diffs) | High migration risk; cheaper to fix than the diff count suggests |
 | #1324 | Audit: hardcoded config values that should be env vars | Deploy-portability risk |
 
-**Total: 11 open issues across 7 epics** (2026-07-07: NINE closed today — #1304, #1317, #1105, #1279, #1285, #1216, #1256, #441, #1261 — Epic A fully done, Epic C down to #1220 only, Epic E down to #441+#1261; see the epic sections and change log. #1278 remains OPEN and counted).
+**Total: 11 open issues across 7 epics** (#1348 was PM-added AND closed same-session 2026-07-07, so the count is unchanged) (2026-07-07: NINE closed today — #1304, #1317, #1105, #1279, #1285, #1216, #1256, #441, #1261 — Epic A fully done, Epic C down to #1220 only, Epic E down to #441+#1261; see the epic sections and change log. #1278 remains OPEN and counted).
 
 ## Recommended sequencing
 
