@@ -115,3 +115,9 @@ date	time	agent	model	effort	fire_type	turns_est	output_size	notes
 2026-07-06	2047	cxo	sonnet-4-6	default	fire-5	4	l	Jul 6 Fire 5. Inbox empty, queue dry.
 2026-07-06	2147	cxo	sonnet-4-6	default	fire-7	4	l	Jul 6 Fire 7. Inbox empty, queue dry. Day-close.
 2026-07-06	2147	cxo	sonnet-4-6	default	fire-6	4	l	Jul 6 Fire 6 (21:47, window end). Inbox empty. Queue dry.
+2026-07-07	1716	cxo	sonnet-4-6	default	start	4	l	Jul 7 START. ADR-075 Component B BUILD RATIFIED — OQ-3 copy in code, impossible-by-construction. Arc complete.
+2026-07-07	1747	cxo	sonnet-4-6	default	fire-2	4	l	Jul 7 Fire 2. Inbox empty, queue dry.
+2026-07-07	1847	cxo	sonnet-4-6	default	fire-3	4	l	Jul 7 Fire 3. Inbox empty. DAY-CLOSED.
+2026-07-07	1947	cxo	sonnet-4-6	default	fire-4	4	l	Jul 7 Fire 4. Inbox empty, queue dry.
+2026-07-07	2047	cxo	sonnet-4-6	default	fire-5	4	l	Jul 7 Fire 5. Inbox empty, queue dry.
+2026-07-07	2147	cxo	sonnet-4-6	default	fire-6	4	l	Jul 7 Fire 6 (21:47). Gap-C triggered — cron expired; re-armed 16ab9eb6. Inbox empty. Queue dry.

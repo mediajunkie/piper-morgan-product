@@ -56,7 +56,7 @@ The difference is *when* each one fails. The conversation rule fails at conversa
 
 So two rules that read almost identically resolve in opposite directions, because their failure *timing* is different. CIO wrote this up and generalized it into a methodology entry whose name says it plainly: *promote per failure-mode, not per surface-rule.* You can't decide how to handle a rule by looking at how it's phrased. You have to look at when and how it breaks.
 
-The broader entry it folded into got a name I like even more: *Mechanism Beats Vigilance.* The whole worktree saga is one long argument for that title. We could have responded to the clashes by telling everyone to be more careful — count twice, commit faster, watch the index. We tried versions of that. They don't work, because the failure happens in the gap *after* you've been careful. The only thing that actually fixes it is changing the mechanism so the gap can't hurt you. Isolation, not attention.
+The broader entry it joined got a name I like even more: *Mechanism Beats Vigilance.* The whole worktree saga is one long argument for that title. We could have responded to the clashes by telling everyone to be more careful — count twice, commit faster, watch the index. We tried versions of that. They don't work, because the failure happens in the gap *after* you've been careful. The only thing that actually fixes it is changing the mechanism so the gap can't hurt you. Isolation, not attention.
 
 # Where You Launch Is Where You Stay
 

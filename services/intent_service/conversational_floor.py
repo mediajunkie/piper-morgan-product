@@ -584,6 +584,26 @@ class ConversationalFloor:
                     "text when relevant. Filter to the topic in the user's "
                     "question if they asked about something specific."
                 )
+                # #1216 interim (same distrust-unverifiable-claims family as
+                # #1331): the system has NO provenance field on insights —
+                # nothing in the data above says whether an insight came from
+                # live observation or seeded/demo fixtures, so any seed-vs-real
+                # framing from the LLM is confabulated. The full fix (a real
+                # is_seed/source field) is Production-deferred per the 2026-07-05
+                # scope decision on the issue.
+                lines.append(
+                    "  - PROVENANCE — you CANNOT tell where these insights came "
+                    "from (#1216): the data above carries no marker of whether "
+                    "an insight was learned from live observation or came from "
+                    "seeded/demo data. NEVER characterize any insight as a "
+                    "'real observation' versus a 'seed/placeholder/demo entry', "
+                    "and never claim some are genuine while others are "
+                    "test data — you have no way to verify that distinction. "
+                    "If the user asks which are real or where one came from, "
+                    "say plainly that you can't verify an insight's origin "
+                    "from here, and invite them to correct anything that "
+                    "sounds wrong."
+                )
 
         if "calendar" in domain_context:
             cal = domain_context["calendar"]

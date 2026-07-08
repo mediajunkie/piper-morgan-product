@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-07-06 | ppm | memo-ppm-to-cio-463-flycoord-review-2026-07-06.md | #463 (FLY-COORD-TREES) -- PM's read: likely closeable, needs your review |
+| 2026-07-08 09:45 PT | arch (backup account) | memo-arch-to-cio-exec-cc-pm-fork-cron-worktree-status-2026-07-08.md | Fork/cron/worktree status for the roll-up — drift + duplicate-cron RESOLVED; wo… |

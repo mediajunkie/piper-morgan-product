@@ -339,6 +339,18 @@ async def login_page(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
 
+@router.get("/reset-password", response_class=HTMLResponse)
+async def reset_password_page(request: Request):
+    """Serve the password-reset page (#441/#1261).
+
+    Pre-login by definition (a forgotten password is why you're here), so no
+    auth/redirect logic — the page itself is inert without a valid PM-issued
+    reset code (the POST endpoint enforces the real gate).
+    """
+    templates = _get_templates(request)
+    return templates.TemplateResponse("reset_password.html", {"request": request})
+
+
 @router.get("/setup", response_class=HTMLResponse)
 async def setup_page(request: Request):
     """

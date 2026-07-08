@@ -55,11 +55,13 @@ EXEMPT_HEALTH_PATHS: List[str] = [
 # respectively per #1013 Apr 28).
 EXEMPT_AUTH_AND_SETUP_PATHS: List[str] = [
     "/login",  # Issue #393: login UI template
+    "/reset-password",  # #441/#1261: reset UI page (pre-login by definition)
     "/setup",  # Issue #390: setup-wizard UI template
     "/api/v1/auth/login",
     "/api/v1/auth/logout",
     "/api/v1/auth/register",
     "/api/v1/auth/refresh",  # Issue #857: refresh endpoint hit with expired access token
+    "/api/v1/auth/reset-password",  # #441/#1261: forgot-password (see AUTH_EXEMPT_JUSTIFIED)
     "/api/v1/setup",  # All /api/v1/setup/* sub-routes via startswith match
 ]
 
@@ -150,6 +152,13 @@ AUTH_EXEMPT_JUSTIFIED: Dict[str, str] = {
     "/api/v1/intent": "optional-auth (inline user resolution); LLM gated by BYO-key",
     # Env-gated dev tooling — 404s in production via dev_trust's require_dev_environment.
     "/api/v1/admin/trust/set-stage": "env-gated dev-only (dev_trust); 404s in prod",
+    # #441/#1261: forgot-password — the caller can't authenticate by definition. The real
+    # gate is IN THE HANDLER (same shape as create-user's #1344 justification): a valid,
+    # unused, unexpired, account-BOUND reset code, atomically consumed in the same
+    # transaction as the password write. The request never names an account — the code
+    # does — so the endpoint can't be aimed at an arbitrary user.
+    "/api/v1/auth/reset-password": "requires a valid PM-issued reset code (single-use, "
+    "expiring, account-bound), atomically consumed — see services/auth/password_reset_service.py",
 }
 
 

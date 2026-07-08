@@ -7,6 +7,15 @@ from alembic import context
 # Import your SQLAlchemy Base
 from services.database.connection import Base
 
+# #1312: autogenerate compares target_metadata to the DB, so every module that
+# registers tables on the shared Base MUST be imported here — otherwise its
+# tables read as false-positive "removed table" drift (action_humanizations
+# did, before persistence.models was imported). NOTE services/personality/models.py
+# is on its OWN declarative_base(), invisible to this metadata by design until
+# the multi-Base question is resolved (Arch call, tracked on #1312).
+import services.database.models  # noqa: E402,F401
+import services.persistence.models  # noqa: E402,F401
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -32,6 +41,24 @@ target_metadata = Base.metadata
 from services.database.session_factory import get_sync_migration_url as _resolve_db_url
 
 
+def _compare_type(context, inspected_column, metadata_column, inspected_type, metadata_type):
+    """#1312: make ``compare_against_backend`` authoritative for autogenerate.
+
+    Alembic's default type comparison inspects the dialect impl of a
+    TypeDecorator (EncryptedJSON loads as JSONB on Postgres), so the decorator's
+    own ``compare_against_backend`` (which declares the whole JSON family
+    equivalent — ciphertext is valid JSON under json OR jsonb) never gets
+    consulted, and every encrypted-JSON column re-drifts in every run.
+    Returning False = "types are the same"; None falls back to the default.
+    """
+    hook = getattr(metadata_type, "compare_against_backend", None)
+    if callable(hook):
+        same = hook(context.dialect, inspected_type)
+        if same is not None:
+            return not same
+    return None
+
+
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
@@ -50,6 +77,7 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        compare_type=_compare_type,  # #1312
     )
 
     with context.begin_transaction():
@@ -83,6 +111,7 @@ def run_migrations_online() -> None:
             # This is important for development and testing environments where we want
             # partial progress even if some migrations fail.
             transaction_per_migration=True,
+            compare_type=_compare_type,  # #1312
         )
 
         with context.begin_transaction():

@@ -9,7 +9,18 @@ It initializes services via ServiceContainer and starts the web server.
 # Load environment variables from .env file FIRST (before any other imports)
 from dotenv import load_dotenv
 
+# #1258: an inherited EMPTY ANTHROPIC_API_KEY (a Claude Code shell exports one)
+# would shadow the real key in .env — dotenv never overrides set vars. Strip
+# present-but-empty Anthropic vars BEFORE load_dotenv so hosted/clean launches
+# are robust without the CLAUDE.md `env -u` incantation.
+from services.utils.env_hygiene import (
+    strip_empty_anthropic_vars,
+    warn_if_prod_uses_dev_password,
+)
+
+strip_empty_anthropic_vars()
 load_dotenv()
+warn_if_prod_uses_dev_password()  # #1324: unmissable CRITICAL if prod runs the dev default
 
 import argparse
 import asyncio
@@ -25,7 +36,9 @@ import webbrowser
 # they can't drift.
 PIPER_PORT = int(os.environ.get("PIPER_PORT", "8001"))
 PIPER_HOST = os.environ.get("PIPER_HOST", "127.0.0.1")
-PIPER_BASE_URL = f"http://localhost:{PIPER_PORT}"
+# #1324: overridable for deployed servers (health-check + printed/browser URLs
+# were silently wrong off-box); localhost default stays correct for local runs.
+PIPER_BASE_URL = os.environ.get("PIPER_BASE_URL", f"http://localhost:{PIPER_PORT}")
 
 # Parse arguments early to set logging level
 parser = argparse.ArgumentParser(description="Piper Morgan - AI Assistant")

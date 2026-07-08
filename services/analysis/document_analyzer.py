@@ -22,12 +22,16 @@ class DocumentAnalyzer(BaseAnalyzer):
             **kwargs: Additional optional parameters (not used currently)
         """
         try:
-            with open(file_path, "rb") as f:
-                reader = pypdf.PdfReader(f)
-                page_count = len(reader.pages)
-                text = ""
-                for page in reader.pages:
-                    text += page.extract_text() or ""
+            # #1306: bytes via the decrypt seam, never a raw open()
+            import io as _io
+
+            from services.file_context.storage import read_file_from_storage
+
+            reader = pypdf.PdfReader(_io.BytesIO(read_file_from_storage(file_path)))
+            page_count = len(reader.pages)
+            text = ""
+            for page in reader.pages:
+                text += page.extract_text() or ""
             metadata = {"page_count": page_count, "text": text}
             # Empty PDF: summary should be empty string if no text and at least one page
             if not text and page_count > 0:

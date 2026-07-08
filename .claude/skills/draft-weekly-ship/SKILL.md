@@ -149,7 +149,7 @@ Required sections in this order (per template v4.1):
    - `## ⚙️ Engineering & architecture`
    - `## 🔬 Methodology & process innovation`
    - `## 🌍 External relations & community`
-   - `## 📊 Governance & operations` (includes metrics table)
+   - `## 📊 Governance & operations` (includes metrics as a **bullet list**, never a table — PM 2026-07-08)
 6. **`# 🎯 Coming up next week`** — brief paragraph
 7. **`# 🚧 Blockers & asks`** — brief paragraph
 8. **`# 🔎 This week's learning pattern`** with name as `## {Noun-phrase pattern name}` and all 5 components:
@@ -183,7 +183,7 @@ Verify before declaring done:
 - [ ] All 5 workstreams present under "Shipped this week"
 - [ ] Workstreams use correct emoji prefixes (🎯 ⚙️ 🔬 🌍 📊)
 - [ ] Sentence case on all headings (not Title Case)
-- [ ] Metrics table included in Governance & operations
+- [ ] Metrics included in Governance & operations as a **bullet list** (`**Issues closed:** 25`) — NEVER a table; Medium/LinkedIn don't render markdown tables (PM 2026-07-08, supersedes template v4.1's table format). Don't force uninteresting metrics to pad the list.
 - [ ] Previous Ship linked in footer (title verified — do not trust memory)
 - [ ] Phase tag at bottom matches current project phase
 - [ ] Learning pattern has all 5 components (Discovery / Example / Why it matters / Application / Related)
@@ -200,12 +200,13 @@ Verify before declaring done:
 - [ ] **Role-attribution sanity check** — every "the X-role did Y" claim is traceable to a specific memo or omnibus entry (no invented attributions; no swapping who did what)
 - [ ] **Time-since-codification claims** — any "the methodology was N days/weeks old when..." claim verified against the codification commit date (`git log -- docs/internal/development/methodology-core/methodology-NN-*` if applicable)
 
-### Step 7: Save the draft and route for voice-pass
+### Step 7: Save the draft and route for review
 
 - **Save location** (canonical drafting): `dev/active/weekly-ship-{NNN}-draft-{YYYY-MM-DD}.md` on the `claude/{worktree-slug}` branch per worktree-default discipline for substantive output
 - **Public-comms copy**: sync to `docs/public/comms/drafts/weekly-ship-{NNN}-draft-{YYYY-MM-DD}.md` on main so PM can read where they expect
 - **Commit immediately after Write** per the May 17 memory
-- **Route to PM** for voice-pass; flag word count if outside target
+- **Route to PM FIRST — PM gates the handoff to Comms.** PM reads, fact-checks, voice-passes, and *decides when* the draft is ready to enter Comms review (PM, 2026-07-08, after Exec routed a draft to Comms prematurely: *"It's not ready to go to comms yet. I decide that."*). Exec never self-initiates the Comms handoff. Flag word count to PM if outside target.
+- **Comms pre-publish review happens on PM's go** (PM clarification, same day: Exec generally drafts the Ship, but Comms reviews it before publish — a standing step). Comms's `template-audit` skill is their review-of-record; Exec's own Step-6 checklist pass does not substitute for it. Sequence is fixed: draft → PM → Comms → publish.
 
 ---
 
@@ -219,7 +220,7 @@ Verify before declaring done:
 | Use "First time" / "longest" / "most" without checking | Unverified superlative is a common error | 30-second history check, or soften the claim |
 | Use Title Case on workstream headings | Template specifies sentence case | "Product & experience" not "Product & Experience" |
 | Omit a workstream with no activity | Breaks week-over-week comparison | Include with "No significant changes this week" |
-| Skip the metrics table | Template requirement in Governance section | Always include even if numbers are approximate |
+| Metrics as a table, or skipped | Medium/LinkedIn don't render markdown tables (template v4.1's table format is superseded, PM 2026-07-08) | Bullet list (`**Issues closed:** 25`), always included even if approximate |
 | Use semicolons in published prose | PM voice discipline May 13 | Split into two sentences or use em-dash |
 | Refer to Chief of Staff as "CoS" | PM directive May 15 | Use "Exec" or "the Chief" |
 | Bullet-list a reflection-shaped piece | Voice guide May 11: reflection favors declarative paragraphs | Bullets for shopping lists, scoring rubrics, reference material only |
@@ -231,7 +232,7 @@ Verify before declaring done:
 - [ ] All 4 canonical artifacts were open during drafting (process guide / template / voice guide / recent published Ship)
 - [ ] All 6 workstream memos read in full
 - [ ] Omnibus logs spot-checked for substantive claims
-- [ ] Template structure followed in full (5 workstreams + emoji prefixes + sentence case + metrics table + 5-component learning pattern + footer + phase tag)
+- [ ] Template structure followed in full (5 workstreams + emoji prefixes + sentence case + metrics bullet list + 5-component learning pattern + footer + phase tag)
 - [ ] Voice discipline passes (no semicolons, no "load-bearing" in public prose, no "CoS")
 - [ ] Word count: 800–1,200 (or PM-approved overage with rationale)
 - [ ] Draft committed to worktree branch immediately after Write
@@ -267,6 +268,20 @@ The Ship #043 v0.1 failure was not knowing the template existed — it was choos
 
 ## Version history
 
+### v1.5 (2026-07-08, same day as v1.3/v1.4)
+
+**Metrics are a bullet list, never a table** (PM, during Ship #050 review): Medium and LinkedIn don't render markdown tables, so template v4.1's Governance metrics-table format is superseded — use `**Issues closed:** 25` bullets. Don't force uninteresting metrics (e.g. a publications count) just to fill the list. Process guide's former "metrics table is the exception" line retired in the same pass. Also from the same review: the External section's publication list can be followed by one of the window's cartoon illustrations (image linked to its post, exact alt text from the calendar CSV, caption below with its quotation marks preserved).
+
+### v1.4 (2026-07-08, same day as v1.3)
+
+Two corrections from live failures the same day v1.3 shipped:
+1. **PM gates the Comms handoff.** v1.3 named the Comms review step but let Exec self-initiate the routing ("either order"). Exec then routed a draft to Comms before PM had read it — a draft that turned out to contain a headline factual error. PM: *"It's not ready to go to comms yet. I decide that."* Sequence is now fixed: draft → PM (fact-check + voice-pass + handoff decision) → Comms review → publish.
+2. **Evidence-tier discipline for claims** (see `dev/2026/07/08/ship-050-fact-check-2026-07-08.md`): the headline error traced to an *inference* in one agent's log that the omnibus printed as fact ("first external tester actively using it" — the tester had never successfully installed). The omnibus is the fact-check **baseline, not ceiling**: any claim resting solely on a log assertion with no artifact (commit/issue/URL/test output) and no PM witness gets softened, attributed, or cut before it enters a public draft. Step 4-prime's "session log is the ground truth" holds for *what an agent did*; it does not make an agent's inference about *someone else's* experience into ground truth.
+
+### v1.3 (2026-07-08)
+
+Step 7: added the standing **Comms pre-publish review** step (PM clarification, in-conversation: "You generally do draft the weekly ship but Comms reviews it before we publish"). Previously the routing step named only PM's voice-pass; Comms's review had been happening implicitly via the publish pipeline but wasn't a named, mandatory step in this skill. Also relevant context from the same window: Ship #050's window error (see `docs/internal/operations/ship-050-window-date-error-2026-07-08.md`) — the fix there is upstream in the kickoff procedure (compute window formulaically, assert day-of-week, verify delivery landed), not in this skill; noted here so a future reader doesn't add redundant machinery to this file. Step 6's existing day-of-week sanity check already covers the drafting side.
+
 ### v1.2 (2026-05-20, second update same day)
 
 Reordered procedure: omnibus-logs-read is now Step 3 (BEFORE workstream memos), changed from "spot-check" to "REQUIRED, FULL READ." Workstream memos move to Step 4 with explicit guidance to read them "with omnibus context already in head." Added Step 4-prime: pull underlying session logs when omnibus looks thin or memos reference work the omnibus didn't surface.
@@ -283,7 +298,7 @@ Initial skill. Lists canonical artifacts to load before drafting. Names voice-di
 
 ---
 
-*Skill version: 1.2*
+*Skill version: 1.5*
 *Created: 2026-05-19 (v1.0)*
-*Updated: 2026-05-20 (v1.1 — External-section verification step; v1.2 — omnibus is required full read, not spot-check)*
-*Scope: Exec*
+*Updated: 2026-05-20 (v1.1 — External-section verification step; v1.2 — omnibus is required full read, not spot-check); 2026-07-08 (v1.3 — Comms pre-publish review is a named mandatory step; v1.4 — PM gates the Comms handoff + evidence-tier discipline; v1.5 — metrics as bullet list, never a table)*
+*Scope: Exec (drafts); PM (gates); Comms (reviews)*

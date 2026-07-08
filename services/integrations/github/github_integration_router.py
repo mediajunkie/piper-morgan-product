@@ -263,6 +263,34 @@ class GitHubIntegrationRouter:
         """
         return await self._get_integration("list_issues").list_issues(repository, **kwargs)
 
+    async def _try_connector_write(self, method_name: str, **kwargs):
+        """#1220: attempt a write over the per-user OAuth grant.
+
+        Returns the raw issue dict on VERIFIED success (the #1322 read-back
+        guard); ``None`` when the write was definitively never fired (no
+        user_id stashed, no adapter, or a pre-call rail degrade) — the ONLY
+        state where the caller may fall back to the native PAT path without a
+        double-write hazard. A fired-but-unverified write raises: the caller
+        must surface honest uncertainty, never a confident success and never
+        a second write through different credentials.
+        """
+        if not self.mcp_adapter or not self._user_id:
+            return None
+        method = getattr(self.mcp_adapter, method_name, None)
+        if method is None:
+            return None
+        wr = await method(self._user_id, **kwargs)
+        if wr.verified:
+            logger.info("github_write_via_connector_verified")
+            return wr.raw
+        if not wr.attempted:
+            return None  # never fired — safe native fallback
+        raise RuntimeError(
+            "GitHub write could not be verified — it may or may not have "
+            "landed. Check the repository directly before retrying; do not "
+            "assume success."
+        )
+
     async def create_issue(
         self,
         title: str,
@@ -289,6 +317,17 @@ class GitHubIntegrationRouter:
                     "Pass owner/repo_name explicitly or configure default_repo."
                 )
             owner, repo_name = resolved
+        # #1220 write-path cutover: the user's OAuth grant first (read-back
+        # verified, #1322 hard gate); native PAT only when the connector write
+        # was definitively never fired (attempted=False) — a mid-flight failure
+        # must NOT retry through another credential (double-write hazard).
+        wr = await self._try_connector_write(
+            "create_issue_connector",
+            owner=owner, repo=repo_name, title=title, body=body,
+            labels=labels, assignees=assignees,
+        )
+        if wr is not None:
+            return wr
         return await self._get_integration("create_issue").create_issue(
             owner, repo_name, title, body, labels, assignees
         )
@@ -318,6 +357,14 @@ class GitHubIntegrationRouter:
                     f"Cannot update GitHub issue #{issue_number}: no repo " "could be resolved."
                 )
             owner, repo_name = resolved
+        # #1220: connector-first, no-double-write fallback (see create_issue).
+        wr = await self._try_connector_write(
+            "update_issue_connector",
+            owner=owner, repo=repo_name, issue_number=issue_number,
+            title=title, body=body, state=state, labels=labels, assignees=assignees,
+        )
+        if wr is not None:
+            return wr
         return await self._get_integration("update_issue").update_issue(
             owner, repo_name, issue_number, title, body, state, labels, assignees
         )
@@ -344,6 +391,13 @@ class GitHubIntegrationRouter:
                     "no repo could be resolved."
                 )
             owner, repo_name = resolved
+        # #1220: connector-first, no-double-write fallback (see create_issue).
+        wr = await self._try_connector_write(
+            "add_comment_connector",
+            owner=owner, repo=repo_name, issue_number=issue_number, comment=body,
+        )
+        if wr is not None:
+            return wr
         return await self._get_integration("add_comment").add_comment(
             owner, repo_name, issue_number, body
         )

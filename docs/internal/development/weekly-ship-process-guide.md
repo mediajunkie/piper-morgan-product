@@ -110,7 +110,7 @@ Draft the Ship using `knowledge/weekly-ship-template-v4.1.md`. Key requirements:
 
 - **5 workstreams** in order, with emoji prefixes (Product, Engineering, Methodology, External, Governance)
 - **Sentence case** on all headings
-- **No tables** in the Shipped section (LinkedIn/Medium compatibility). Metrics table in Governance is the exception.
+- **No tables anywhere** — LinkedIn/Medium don't render markdown tables. Metrics in Governance go as a bullet list (`**Issues closed:** 25`); the former metrics-table exception is retired (PM, 2026-07-08, Ship #050). Don't force uninteresting metrics to fill the list.
 - **Learning pattern** with all 5 components (Discovery, Example, Why it matters, Application, Related patterns)
 - **Previous Ship link** in footer (title must be verified)
 - **Phase tag** at bottom matching current project phase

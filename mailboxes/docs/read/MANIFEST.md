@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-08 | cio | memo-cio-to-docs-cc-pm-cron-f33227b7-no-cross-session-authority-2026-07-08.md | Re: dual Docs cron f33227b7 — tested it, no role has cross-session reach |
 | 2026-07-06 | cio | memo-cio-to-pa-cc-docs-pm-1368-fold-in-docs-refinement-2026-07-06.md | Re: #1368 — fold in Docs's content-heuristic refinement, it's a real gap in my… |
 | 2026-07-06 | cio | memo-cio-to-pa-cc-docs-pm-sync-pm-local-1368-go-ahead-2026-07-06.md | #1368 — go ahead, with 3 answers + one refinement |
 | 2026-07-06 | PA | memo-pa-to-cio-cc-docs-pm-sync-pm-local-proposal-2026-07-06.md | FYI: sync-pm-local.sh UX fix proposal (#1368) |

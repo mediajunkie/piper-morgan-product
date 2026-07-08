@@ -345,3 +345,34 @@ class TestFloorFormatsInsights:
         out = self._floor()._format_domain_context(domain_context)
         assert "HIGH CONFIDENCE" not in out
         assert "Composted insights" not in out
+
+    def test_format_includes_provenance_honesty_guard_1216(self):
+        """#1216 interim: insights carry no seed-vs-real provenance, so the
+        instruction block must forbid the LLM from asserting that distinction
+        (the UAT bug: two 100%-seeded insights presented as 'real' while others
+        were characterized as 'seed placeholders' — pure confabulation, since
+        InsightDB has no is_seed/source field)."""
+        domain_context = {
+            "insights": {
+                "high_confidence": [
+                    {
+                        "id": "1",
+                        "expression": "batch GitHub issue triage",
+                        "confidence": 0.85,
+                        "topic_tags": [],
+                        "observation_count": 2,
+                    }
+                ],
+                "medium_confidence": [],
+                "low_confidence": [],
+                "total_count": 1,
+                "is_empty": False,
+            },
+        }
+        out = self._floor()._format_domain_context(domain_context)
+        assert "PROVENANCE" in out
+        assert "CANNOT tell where these insights came from" in out
+        assert "NEVER characterize" in out
+        # The guard rides WITH the data — absent insights, absent guard.
+        out_no_insights = self._floor()._format_domain_context({"current_time": "10:00 AM"})
+        assert "PROVENANCE" not in out_no_insights

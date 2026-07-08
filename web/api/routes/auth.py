@@ -125,9 +125,18 @@ async def login(
         # Query user and update last_login in single session
         # Use fresh session to avoid event loop mismatch (#442)
         async with AsyncSessionFactory.session_scope_fresh() as session:
-            # Query user by username
+            # #1261: accept username OR email as the login identifier (PM hit
+            # this wall in UAT — tried email, field wanted username, dead end).
+            # Username takes precedence, then email (both columns are unique;
+            # sequential lookups keep the edge case "one user's username equals
+            # another's email" deterministic instead of MultipleResultsFound).
+            # The form field stays named `username` — existing clients depend
+            # on that contract; only the accepted VALUES widened.
             result = await session.execute(select(User).where(User.username == username))
             user = result.scalar_one_or_none()
+            if user is None and "@" in username:
+                result = await session.execute(select(User).where(User.email == username))
+                user = result.scalar_one_or_none()
 
             # User not found - generic error message for security
             if not user:
@@ -693,4 +702,100 @@ async def change_password(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Password change failed",
+        )
+
+
+# ---------------------------------------------------------------------------
+# #441 Phase 3 / #1261 — password reset via PM-issued reset code (beta model)
+# ---------------------------------------------------------------------------
+from pydantic import BaseModel, Field  # noqa: E402
+
+from services.auth.password_reset_service import consume_reset_token  # noqa: E402
+
+
+class PasswordResetRequest(BaseModel):
+    """Reset payload: the PM-issued code + the new password (pre-login flow)."""
+
+    reset_token: str = Field(min_length=1, description="PM-issued reset code")
+    new_password: str = Field(min_length=8, description="New password")
+    new_password_confirm: str = Field(min_length=8, description="Confirmation")
+
+
+class PasswordResetResponse(BaseModel):
+    success: bool
+    message: str
+
+
+@router.post("/reset-password", response_model=PasswordResetResponse)
+async def reset_password(request: Request, data: PasswordResetRequest):
+    """Reset a forgotten password with a PM-issued reset code (#441/#1261).
+
+    The beta auth model's equivalent of an email reset link: no mailer exists
+    in the product, so PM/HOST mint a single-use, expiring, account-bound code
+    (scripts/mint_password_reset_token.py) and hand it to the tester over the
+    #1344 invite channel. The code determines WHICH account is reset — the
+    request never names a user, so the endpoint can't be pointed at an
+    arbitrary account (you reset exactly the account the code was minted for).
+
+    Security:
+    - Token consumption is a single atomic conditional UPDATE (unused +
+      unexpired), in the SAME transaction as the password write — a burned
+      code and a failed write commit or roll back together.
+    - Generic 400 on any invalid/expired/used code (no oracle for which).
+    - New password strength-validated (same PasswordValidator as change-password).
+    - Auth-exempt by necessity (the caller can't log in — that's the point),
+      justified in AUTH_EXEMPT_JUSTIFIED per #1308.
+    """
+    try:
+        if data.new_password != data.new_password_confirm:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="New passwords do not match",
+            )
+
+        is_valid, error_message = PasswordValidator.validate(data.new_password)
+        if not is_valid:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error_message)
+
+        if not db._initialized:
+            await db.initialize()
+
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            user_id = await consume_reset_token(session, data.reset_token)
+            if user_id is None:
+                logger.warning(
+                    "password_reset_failed_invalid_token",
+                    ip_address=request.client.host if request.client else None,
+                )
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Invalid or expired reset code",
+                )
+
+            password_service = PasswordService()
+            new_hash = password_service.hash_password(data.new_password)
+            result = await session.execute(select(User).where(User.id == user_id))
+            user = result.scalar_one_or_none()
+            if user is None or not user.is_active:
+                # Bound account vanished/deactivated since mint — same generic 400.
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Invalid or expired reset code",
+                )
+            user.password_hash = new_hash
+            user.updated_at = datetime.now(timezone.utc)
+            await session.commit()
+
+        logger.info("password_reset_succeeded", user_id=str(user_id))
+        return PasswordResetResponse(
+            success=True, message="Password reset. You can now log in with your new password."
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("password_reset_failed", error=str(e), exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Password reset failed",
         )

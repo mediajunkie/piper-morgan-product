@@ -847,3 +847,54 @@ class TestPersonalizationScopingEnforcement:
 if __name__ == "__main__":
     # Allow running tests directly for verification
     pytest.main([__file__, "-v"])
+
+
+class TestUploadedFileByteSeamEnforcement:
+    """#1306 (Arch-ratified condition): uploaded-file bytes are touched ONLY via
+    the storage seam (write_file_to_storage / read_file_from_storage in
+    services/file_context/storage.py). This guard makes the un-routed access
+    hard to express: any file that works with uploaded-file storage paths AND
+    does raw byte IO fails the build. The 2026-07-08 inventory routed 7 sites
+    (3 in document_handlers, 1 in document_analyzer, 3 in files.py — including
+    the upload route's bypass write the design memo missed); this keeps the
+    seam count at exactly one in each direction.
+    """
+
+    ALLOWED_FILES = [
+        "services/file_context/storage.py",  # THE seam
+        "scripts/backfill_encrypt_files_1306.py",  # converts legacy files, raw by design
+    ]
+
+    _RAW_BYTE_IO = re.compile(r"\.read_bytes\(\)|open\([^)\n]*,\s*[\"'][rwa]b[\"']")
+    _UPLOAD_TOKENS = re.compile(r"storage_path|[\"']uploads[\"']|Path\([\"']uploads[\"']\)")
+
+    def _scan(self):
+        offenders = []
+        for root in ("services", "web"):
+            for path in glob.glob(os.path.join(root, "**", "*.py"), recursive=True):
+                rel = path.replace(os.sep, "/")
+                if rel in self.ALLOWED_FILES:
+                    continue
+                with open(path, encoding="utf-8", errors="ignore") as f:
+                    src = f.read()
+                if self._UPLOAD_TOKENS.search(src) and self._RAW_BYTE_IO.search(src):
+                    hits = [
+                        f"{rel}:{i}"
+                        for i, line in enumerate(src.splitlines(), 1)
+                        if self._RAW_BYTE_IO.search(line)
+                    ]
+                    offenders.append((rel, hits))
+        return offenders
+
+    def test_no_raw_byte_io_outside_the_storage_seam(self):
+        offenders = self._scan()
+        assert not offenders, (
+            "#1306 SEAM VIOLATION: uploaded-file bytes must flow through "
+            "read_file_from_storage/write_file_to_storage (services/file_context/"
+            "storage.py) — a raw byte read/write in a storage-path-handling file "
+            "bypasses encrypt-at-rest (writes plaintext or reads ciphertext as "
+            f"content). Offenders: {offenders}. Route through the seam, or if a "
+            "file's byte IO is genuinely unrelated to uploaded files, refactor so "
+            "the guard's upload-token heuristic no longer matches (or justify an "
+            "ALLOWED_FILES entry in review)."
+        )

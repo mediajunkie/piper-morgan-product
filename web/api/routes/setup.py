@@ -89,7 +89,12 @@ class CreateUserRequest(BaseModel):
     """Request model for user account creation"""
 
     username: str = Field(min_length=1, max_length=100, description="Username (required)")
-    email: Optional[str] = Field(default=None, max_length=255, description="Email (optional)")
+    # #1348: required, matching the DB (User.email is NOT NULL + unique) — and
+    # since #1261, email is a real login identifier AND the password-reset mint
+    # key, so a user without one would be locked out of both recovery paths.
+    # Previously Optional -> a missing email leaked a Postgres NotNullViolation
+    # as a confusing 500 instead of a clean 422.
+    email: str = Field(min_length=3, max_length=255, description="Email (required)")
     password: str = Field(min_length=8, description="Password (minimum 8 characters)")
     password_confirm: str = Field(min_length=8, description="Password confirmation")
     invite_token: str = Field(min_length=1, description="Alpha invite token (#1344, required)")
@@ -838,10 +843,14 @@ async def create_user(req: CreateUserRequest):
     except Exception as e:
         error_str = str(e).lower()
         if "duplicate" in error_str or "unique" in error_str:
-            logger.warning("user_creation_failed_duplicate", username=req.username)
+            # #1348: email is unique too — say which field collided instead of
+            # blaming the username for an email conflict.
+            field = "Email" if "email" in error_str else "Username"
+            value = req.email if field == "Email" else req.username
+            logger.warning("user_creation_failed_duplicate", username=req.username, field=field)
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Username '{req.username}' already exists",
+                detail=f"{field} '{value}' already exists",
             )
         # Provide helpful error messages for common database issues
         elif "relation" in error_str and "does not exist" in error_str:

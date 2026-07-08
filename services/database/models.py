@@ -29,7 +29,10 @@ from sqlalchemy import (
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import relationship
 
-from services.security.encrypted_types import EncryptedString  # #358-B: at-rest content encryption
+from services.security.encrypted_types import (  # #358-B / #1305: at-rest encryption
+    EncryptedJSON,
+    EncryptedString,
+)
 
 
 class CrossDialectUUID(TypeDecorator):
@@ -120,8 +123,11 @@ class User(Base):
     id = Column(postgresql.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
     # Authentication fields
-    username = Column(String(255), unique=True, nullable=False, index=True)
-    email = Column(String(255), unique=True, nullable=False, index=True)
+    # #1312: uniqueness/indexing declared in __table_args__ under the DB's real
+    # idx_users_* names — column-level flags here would make autogenerate want
+    # duplicate ix_users_* objects forever.
+    username = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=False)
     password_hash = Column(String(500), nullable=True)  # For future password auth
     role = Column(String(50), default="user", nullable=False)
 
@@ -179,6 +185,7 @@ class User(Base):
         Index("idx_users_username", "username", unique=True),
         Index("idx_users_email", "email", unique=True),
         Index("idx_users_active", "is_active"),
+        Index("idx_users_role", "role"),  # #1312: existed in DB, undeclared here
     )
 
     def __repr__(self):
@@ -205,8 +212,8 @@ class UserAPIKey(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(
-        postgresql.UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True
-    )  # Issue #262 - FK restored with UUID
+        postgresql.UUID(as_uuid=True), ForeignKey("users.id"), nullable=False
+    )  # Issue #262 - FK restored with UUID; index declared as idx_user_api_keys_user_id (#1312)
     provider = Column(String(50), nullable=False)  # openai, anthropic, github, etc
     key_reference = Column(String(500), nullable=False)  # keychain identifier
     # #358: AES-256-GCM encrypted-at-rest copy of the secret, portable off the OS
@@ -217,7 +224,7 @@ class UserAPIKey(Base):
 
     # Key metadata
     is_active = Column(Boolean, default=True, nullable=False)
-    is_validated = Column(Boolean, default=False)
+    is_validated = Column(Boolean, default=False, nullable=False, server_default=text("false"))
     last_validated_at = Column(DateTime(timezone=True), nullable=True)
 
     # Audit fields
@@ -270,25 +277,28 @@ class AuditLog(Base, TimestampMixin):
     id = Column(String(255), primary_key=True, default=lambda: str(uuid.uuid4()))
     # NOTE: FK intentionally NOT added - audit logs should persist even if user deleted
     # user_id stores UUID as string for reference only
-    user_id = Column(postgresql.UUID(as_uuid=True), nullable=True, index=True)
-    session_id = Column(String(255), nullable=True, index=True)
+    # #1312: all audit indexes are declared in __table_args__ under the DB's real
+    # idx_audit_* names; column-level index=True flags here generated ten phantom
+    # ix_audit_logs_* wants in every autogenerate run.
+    user_id = Column(postgresql.UUID(as_uuid=True), nullable=True)
+    session_id = Column(String(255), nullable=True)
 
     # Event classification
-    event_type = Column(String(50), nullable=False, index=True)  # auth, api_key, data, system
-    action = Column(String(100), nullable=False, index=True)  # login, logout, store_key, etc
-    resource_type = Column(String(50), nullable=True, index=True)  # user, api_key, token, etc
-    resource_id = Column(String(255), nullable=True, index=True)  # Specific resource identifier
+    event_type = Column(String(50), nullable=False)  # auth, api_key, data, system
+    action = Column(String(100), nullable=False)  # login, logout, store_key, etc
+    resource_type = Column(String(50), nullable=True)  # user, api_key, token, etc
+    resource_id = Column(String(255), nullable=True)  # Specific resource identifier
 
     # Event details
-    status = Column(String(20), nullable=False, index=True)  # success, failed, error
-    severity = Column(String(20), nullable=False, index=True)  # info, warning, error, critical
+    status = Column(String(20), nullable=False)  # success, failed, error
+    severity = Column(String(20), nullable=False)  # info, warning, error, critical
     message = Column(Text, nullable=False)  # Human-readable description
     details = Column(JSON, nullable=True)  # Additional structured data
 
     # Request context
-    ip_address = Column(String(45), nullable=True, index=True)  # IPv4/IPv6 support
+    ip_address = Column(String(45), nullable=True)  # IPv4/IPv6 support
     user_agent = Column(String(500), nullable=True)  # Browser/client info
-    request_id = Column(String(255), nullable=True, index=True)  # Request correlation
+    request_id = Column(String(255), nullable=True)  # Request correlation
     request_path = Column(String(500), nullable=True)  # API endpoint called
 
     # Change tracking
@@ -311,6 +321,8 @@ class AuditLog(Base, TimestampMixin):
         Index("idx_audit_ip", "ip_address"),
         Index("idx_audit_session", "session_id"),
         Index("idx_audit_request", "request_id"),
+        # #1312: existed in DB, undeclared here
+        Index("idx_audit_logs_user_timeline", "user_id", text("created_at DESC")),
     )
 
     def __repr__(self):
@@ -449,7 +461,7 @@ class InsightDB(Base, TimestampMixin):
     # consistent with user_id above ("insights survive user deletion"). Readers
     # migrate to owner_id in a later increment; user_id is dropped last.
     # CrossDialectUUID = native UUID on PostgreSQL, CHAR(36) on SQLite (tests).
-    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
+    owner_id = Column(CrossDialectUUID(), nullable=True)  # index: idx_insights_owner (#1312)
 
     # The typed learning, serialized as JSONB. Bridges via from_dict/to_dict
     # on the SurfaceableInsight + ExtractedLearning dataclasses.
@@ -487,6 +499,9 @@ class InsightDB(Base, TimestampMixin):
     __table_args__ = (
         Index("idx_insights_user_created", "user_id", "created_at"),
         Index("idx_insights_user_surfaced", "user_id", "surfaced_count"),
+        # #1312: existed in DB, undeclared here
+        Index("idx_insights_owner", "owner_id"),
+        Index("idx_insights_user_not_deleted", "user_id", "is_deleted"),
     )
 
     def __repr__(self):
@@ -770,6 +785,30 @@ class InviteToken(Base):
     used_by_user_id = Column(CrossDialectUUID(), ForeignKey("users.id"), nullable=True)
 
 
+class PasswordResetToken(Base):
+    """#441/#1261 — PM-issued password-reset tokens (the beta auth model's answer to
+    "email-based reset" with no mailer in the product: PM/HOST mint a code on request
+    and hand it to the tester over the invite channel that already exists for #1344).
+
+    Faithful sibling of InviteToken (same Crockford format, same natural-key PK, same
+    atomic conditional-UPDATE consumption — see services/auth/password_reset_service.py)
+    with two deliberate differences: the token is BOUND to a user at mint time
+    (user_id NOT NULL — a reset is for a specific account, unlike an identity-blind
+    invite), and it EXPIRES (a reset is requested-then-used within hours; a stale
+    reset code floating around is pure liability, unlike invites whose distribution
+    lag is expected).
+    """
+
+    __tablename__ = "password_reset_tokens"
+
+    token = Column(String(32), primary_key=True)
+    user_id = Column(CrossDialectUUID(), ForeignKey("users.id"), nullable=False, index=True)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    expires_at = Column(DateTime(timezone=True), nullable=False)
+    # NULL = unused/valid. Set atomically by the conditional UPDATE at reset.
+    used_at = Column(DateTime(timezone=True), nullable=True)
+
+
 class Product(Base):
     """Product being managed"""
 
@@ -1022,6 +1061,19 @@ class ProjectDB(Base):
         # Composite unique constraint: project names unique per owner (multi-tenancy)
         # Issue #736: Changed from name-only to (owner_id, name)
         UniqueConstraint("owner_id", "name", name="uq_projects_owner_name"),
+        # #1312: existed in DB, undeclared here (idx_projects_owner and
+        # idx_projects_owner_id are genuinely BOTH in the DB — duplicate-index
+        # cleanup is a phase-3 reconciliation call, not a model edit).
+        Index("idx_projects_is_archived", "is_archived"),
+        Index("idx_projects_name", "name"),
+        Index("idx_projects_owner", "owner_id"),
+        Index("idx_projects_owner_id", "owner_id"),
+        Index(
+            "idx_projects_owner_archived",
+            "owner_id",
+            "is_archived",
+            postgresql_where=text("is_archived = false"),
+        ),
     )
 
     id = Column(String, primary_key=True)
@@ -1030,13 +1082,22 @@ class ProjectDB(Base):
     name = Column(String, nullable=False)  # Unique per owner via __table_args__
     description = Column(Text)
     shared_with = Column(JSON, default=lambda: [])
-    is_default = Column(Boolean, default=False)
-    is_archived = Column(Boolean, default=False)
-    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    # #1312: NOT NULL + server defaults match the DB (autogenerate wanted to
+    # LOOSEN the DB to the model's old nullable shape — always tighten the model).
+    is_default = Column(Boolean, default=False, nullable=False, server_default=text("false"))
+    is_archived = Column(Boolean, default=False, nullable=False, server_default=text("false"))
+    created_at = Column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        nullable=False,
+        server_default=text("CURRENT_TIMESTAMP"),
+    )
     updated_at = Column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),
+        nullable=False,
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     # MUX Lifecycle (#718) - optional lifecycle state for MUX UI indicators
     lifecycle_state = Column(String(50), nullable=True)
@@ -1291,6 +1352,7 @@ class UploadedFileDB(Base):
     __table_args__ = (
         Index("idx_files_owner", "owner_id", "upload_time"),
         Index("idx_files_filename", "filename"),
+        Index("idx_uploaded_files_owner", "owner_id"),  # #1312: in DB, undeclared
     )
 
     def to_domain(self) -> domain.UploadedFile:
@@ -1415,11 +1477,13 @@ class ConversationDB(Base):
     # Nullable + backfilled (owner_id = user_id::uuid). FK-less (matches user_id).
     # CrossDialectUUID = native UUID on PostgreSQL, CHAR(36) on SQLite (tests).
     # Readers migrate to owner_id later; user_id is dropped last.
-    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
+    owner_id = Column(CrossDialectUUID(), nullable=True)  # index: idx_conversations_owner (#1312)
     session_id = Column(String, nullable=False)
     title = Column(String, nullable=False, default="")
     # #1180: JSONB on Postgres (production), JSON on SQLite (in-memory unit tests).
-    context = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default={})
+    # #1305: PII-bearing structured column — whole-value encrypted (no server-side
+    # SQL reads it; ORM access is transparent). JSONB stays: ciphertext is a JSON string.
+    context = Column(EncryptedJSON(context="conversations.context"), nullable=False, default={})
     is_active = Column(Boolean, nullable=False, default=True)  # DEPRECATED — use lifecycle_state
     # Issue #715: Conversation lifecycle states (spec #858)
     lifecycle_state = Column(String(20), nullable=False, default="active")
@@ -1432,7 +1496,11 @@ class ConversationDB(Base):
     # #1180: the ::jsonb server_default is Postgres-only DDL that SQLite can't
     # parse, so the empty-list default is expressed Python-side (mirrors InsightDB).
     # Production's existing DB server_default is untouched; new rows still get [].
-    topics = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=list)
+    # #1305: encrypted whole — the GIN index (idx_conversations_topics_gin) had ZERO
+    # server-side queries (only Python-side filtering post-ORM-load, which decryption
+    # makes transparent) and is DROPPED in migration f1305encjson. Do not re-add an
+    # index here: it would index ciphertext.
+    topics = Column(EncryptedJSON(context="conversations.topics"), nullable=False, default=list)
     preview = Column(
         EncryptedString(context="conversations.preview"), nullable=False, server_default=text("''")
     )
@@ -1446,7 +1514,16 @@ class ConversationDB(Base):
         # Issue #1021: support history pagination / privacy filter / topic search
         Index("idx_conversations_user_last_activity", "user_id", "last_activity_at"),
         Index("idx_conversations_user_private", "user_id", "is_private"),
-        Index("idx_conversations_topics_gin", "topics", postgresql_using="gin"),
+        # #1312: idx_conversations_topics_gin deliberately NOT declared — f1305encjson
+        # DROPPED it (encrypted column; a GIN index would index ciphertext — see the
+        # comment on `topics` above). Declaring it here made autogenerate try to
+        # re-create it every run.
+        # #1312: the five below existed in DB, undeclared here:
+        Index("idx_conversations_user_id", "user_id"),
+        Index("idx_conversations_session_id", "session_id"),
+        Index("idx_conversations_is_active", "is_active"),
+        Index("idx_conversations_owner", "owner_id"),
+        Index("idx_conversations_user_created", "user_id", text("created_at DESC")),
     )
 
     def to_domain(self) -> domain.Conversation:
@@ -1503,24 +1580,33 @@ class ConversationTurnDB(Base):
     )
     intent = Column(String, nullable=True)
     # #1180: JSONB on Postgres (production), JSON on SQLite (in-memory unit tests).
-    entities = Column(postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default=[])
+    # #1305: PII-bearing (extracted entities) — whole-value encrypted.
+    entities = Column(EncryptedJSON(context="conversation_turns.entities"), nullable=False, default=[])
     references = Column(
-        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default={}
-    )
+        EncryptedJSON(context="conversation_turns.references"), nullable=False, default={}
+    )  # #1305
     context_used = Column(
-        postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default={}
-    )
+        EncryptedJSON(context="conversation_turns.context_used"), nullable=False, default={}
+    )  # #1305
     turn_metadata = Column(
-        "metadata", postgresql.JSONB().with_variant(JSON(), "sqlite"), nullable=False, default={}
-    )
+        "metadata", EncryptedJSON(context="conversation_turns.metadata"), nullable=False, default={}
+    )  # #1305
     processing_time = Column(Float, nullable=True)
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
     completed_at = Column(DateTime(timezone=True), nullable=True)
 
     __table_args__ = (
         ForeignKeyConstraint(["conversation_id"], ["conversations.id"], ondelete="CASCADE"),
-        Index("idx_conversation_turns_conversation", "conversation_id", "turn_number"),
-        Index("idx_conversation_turns_created", "created_at"),
+        # #1312: names + set aligned to the DB's real indexes. entities/references
+        # GIN indexes exist in the DB but are NOT declared: those columns are
+        # EncryptedJSON since #1305 (a GIN over ciphertext is dead weight) — the
+        # reconciliation migration drops them DB-side (inventory bucket D3-note).
+        Index("idx_conversation_turns_turn_number", "conversation_id", "turn_number"),
+        Index("idx_conversation_turns_created_at", "created_at"),
+        Index("idx_conversation_turns_conversation_id", "conversation_id"),
+        Index("idx_conversation_turns_conv_created", "conversation_id", text("created_at DESC")),
+        Index("idx_conversation_turns_conv_intent", "conversation_id", "intent"),
+        Index("idx_conversation_turns_intent", "intent"),
     )
 
     def to_domain(self) -> domain.ConversationTurn:
@@ -1923,7 +2009,10 @@ class ListDB(Base):
     is_default = Column(Boolean, default=False, nullable=False)
 
     # Metadata and tags
-    list_metadata = Column("metadata", JSON, default=dict)
+    # #1312: jsonb in the DB; with_variant keeps SQLite unit tests working.
+    list_metadata = Column(
+        "metadata", postgresql.JSONB().with_variant(JSON(), "sqlite"), default=dict
+    )
     tags = Column(postgresql.JSONB, default=list)  # Array of tag strings
 
     # Project associations (many-to-many - L1 Sprint #477)
@@ -2051,10 +2140,16 @@ class ListItemDB(Base):
 
     # Strategic indexes for many-to-many queries
     __table_args__ = (
-        Index("idx_list_items_list_id", "list_id"),
-        Index("idx_list_items_item_id_type", "item_id", "item_type"),
-        Index("idx_list_items_position", "list_id", "position"),
-        Index("idx_list_items_added_by", "added_by"),
+        # #1312: names + set aligned to the DB's real indexes (the model's former
+        # idx_list_items_* names never existed in the DB).
+        Index("idx_list_item_by_list", "list_id"),
+        Index("idx_list_item_by_item", "item_id", "item_type"),
+        Index("idx_list_item_position", "list_id", "position"),
+        Index("idx_list_item_added_by", "added_by"),
+        Index("idx_list_item_added_at", "added_at"),
+        Index("idx_list_item_due", "list_id", "list_due_date"),
+        Index("idx_list_item_priority", "list_id", "list_priority"),
+        Index("idx_unique_list_item", "list_id", "item_id", unique=True),
     )
 
     def to_domain(self) -> domain.ListItem:
@@ -2101,17 +2196,22 @@ class FeedbackDB(Base, TimestampMixin):
     id = Column(String, primary_key=True)
 
     # Core feedback data
-    session_id = Column(String, nullable=False, index=True)
+    session_id = Column(String, nullable=False)  # index: idx_feedback_session_id (#1312)
     feedback_type = Column(String, nullable=False)  # "bug", "feature", "ux", "general"
     rating = Column(Integer)  # 1-5 rating (optional)
     comment = Column(Text, nullable=False)
-    context = Column(JSON, default=dict)  # Additional context data
+    context = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), default=dict
+    )  # Additional context data  (#1312: jsonb in DB)
 
     # User and session context
     user_id = Column(
-        postgresql.UUID(as_uuid=True), ForeignKey("users.id"), nullable=True, index=True
-    )
-    conversation_context = Column(JSON, default=dict)  # Conversation context if available
+        postgresql.UUID(as_uuid=True), ForeignKey("users.id"), nullable=True
+    )  # index: idx_feedback_user_id (#1312)
+    # #1312: these four are jsonb in the DB; with_variant keeps SQLite tests working.
+    conversation_context = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), default=dict
+    )  # Conversation context if available
 
     # Feedback metadata
     source = Column(String, default="api")  # "api", "ui", "conversation"
@@ -2120,8 +2220,12 @@ class FeedbackDB(Base, TimestampMixin):
 
     # Analysis and processing
     sentiment_score = Column(Float)  # -1.0 to 1.0
-    categories = Column(JSON, default=list)  # Auto-detected categories
-    tags = Column(JSON, default=list)  # User or system tags
+    categories = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), default=list
+    )  # Auto-detected categories
+    tags = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"), default=list
+    )  # User or system tags
 
     # Relationships
     user = relationship("User", back_populates="feedback")
@@ -2136,6 +2240,8 @@ class FeedbackDB(Base, TimestampMixin):
         Index("idx_feedback_created_at", "created_at"),
         Index("idx_feedback_user_id", "user_id"),
         Index("idx_feedback_source", "source"),
+        # #1312: existed in DB, undeclared here
+        Index("idx_feedback_user_status_date", "user_id", "status", text("created_at DESC")),
     )
 
     def to_domain(self) -> "Feedback":
@@ -2193,14 +2299,27 @@ class PersonalityProfileModel(Base, TimestampMixin):
     __tablename__ = "personality_profiles"
 
     id = Column(postgresql.UUID(as_uuid=True), primary_key=True)
-    user_id = Column(
-        postgresql.UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, unique=True
-    )
+    # #1312: uniqueness lives in the declared UNIQUE INDEX idx_personality_profiles_user_id
+    # below (matching the DB); a column-level unique=True made autogenerate want an
+    # additional unnamed UniqueConstraint every run.
+    user_id = Column(postgresql.UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     warmth_level = Column(Float, nullable=False, default=0.6)
     confidence_style = Column(String(50), nullable=False, default="contextual")
     action_orientation = Column(String(50), nullable=False, default="medium")
     technical_depth = Column(String(50), nullable=False, default="balanced")
     is_active = Column(Boolean, nullable=False, default=True)
+
+    # #1312: the DB columns are NOT NULL — override TimestampMixin's nullable
+    # versions for THIS table only (other mixin users' DB columns are nullable).
+    created_at = Column(
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+    updated_at = Column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
 
     # Relationships
     user = relationship("User", back_populates="personality_profiles")
@@ -2267,18 +2386,17 @@ class TokenBlacklist(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
 
     # Token identification
-    token_id = Column(String(255), unique=True, nullable=False, index=True)
+    token_id = Column(String(255), nullable=False)  # unique via idx_token_blacklist_token_id (#1312)
     # Issue #291 - FK constraint restored (was temporarily removed for alpha)
     user_id = Column(
         postgresql.UUID(as_uuid=True),
         ForeignKey("users.id", ondelete="CASCADE"),
         nullable=True,
-        index=True,
-    )
+    )  # index: idx_token_blacklist_user_id (#1312)
 
     # Blacklist metadata
     reason = Column(String(50), nullable=False)  # logout, security, admin
-    expires_at = Column(DateTime(timezone=True), nullable=False, index=True)
+    expires_at = Column(DateTime(timezone=True), nullable=False)  # idx_token_blacklist_expires (#1312)
     created_at = Column(
         DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc)
     )
@@ -2597,7 +2715,14 @@ class LearnedPattern(Base, TimestampMixin):
 
     # Pattern identification
     pattern_type = Column(Enum(PatternType), nullable=False)
-    pattern_data = Column(JSON, nullable=False)  # Flexible pattern storage
+    # #1305 leaf-split (Arch-ratified condition): action_type stays a plaintext JSON
+    # leaf because learning_handler.py queries it server-side (pattern_data -> 'action_type');
+    # EVERY OTHER key is encrypted under _enc BY DEFAULT — a future PII field added to
+    # this payload lands encrypted without anyone remembering to update a list.
+    pattern_data = Column(
+        EncryptedJSON(context="patterns.pattern_data", plaintext_whitelist=("action_type",)),
+        nullable=False,
+    )
 
     # Confidence tracking
     confidence = Column(Float, default=0.5, nullable=False)  # 0.0 to 1.0
@@ -2844,10 +2969,10 @@ class ConversationalMemoryEntryDB(Base):
     __tablename__ = "conversational_memory_entries"
 
     id = Column(String, primary_key=True)  # UUID as string
-    user_id = Column(String, nullable=False, index=True)
+    user_id = Column(String, nullable=False)  # index: idx_cme_user_id (#1312)
     # #1252 P7 (ADR-071 D2): canonical owner principal as UUID, added alongside
     # the legacy user_id string (m-40 additive, non-breaking; FK-less).
-    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
+    owner_id = Column(CrossDialectUUID(), nullable=True)  # idx_conversational_memory_entries_owner
     conversation_id = Column(String, ForeignKey("conversations.id"), nullable=False)
 
     timestamp = Column(DateTime(timezone=True), nullable=False)
@@ -2862,7 +2987,12 @@ class ConversationalMemoryEntryDB(Base):
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    __table_args__ = (Index("idx_cme_user_timestamp", "user_id", "timestamp"),)
+    __table_args__ = (
+        Index("idx_cme_user_timestamp", "user_id", "timestamp"),
+        # #1312: existed in DB, undeclared here
+        Index("idx_cme_user_id", "user_id"),
+        Index("idx_conversational_memory_entries_owner", "owner_id"),
+    )
 
 
 class StandupConversationDB(Base, TimestampMixin):
@@ -2892,7 +3022,7 @@ class StandupConversationDB(Base, TimestampMixin):
     user_id = Column(String(255), nullable=False, index=True)
     # #1252 P7 (ADR-071 D2): canonical owner principal as UUID, added alongside
     # the legacy user_id string (m-40 additive, non-breaking; FK-less).
-    owner_id = Column(CrossDialectUUID(), nullable=True, index=True)
+    owner_id = Column(CrossDialectUUID(), nullable=True)  # idx_standup_conversations_owner (#1312)
 
     # State machine — stores the enum string value (StandupConversationState)
     state = Column(String(50), nullable=False, index=True)
@@ -2939,6 +3069,7 @@ class StandupConversationDB(Base, TimestampMixin):
     __table_args__ = (
         Index("idx_standup_conv_user_state", "user_id", "state"),
         Index("idx_standup_conv_session", "session_id"),
+        Index("idx_standup_conversations_owner", "owner_id"),  # #1312: in DB, undeclared
     )
 
     def __repr__(self):

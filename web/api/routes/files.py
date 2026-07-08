@@ -24,7 +24,11 @@ from services.auth.jwt_service import JWTClaims
 from services.database.connection import db
 from services.database.models import UploadedFileDB
 from services.database.session_factory import AsyncSessionFactory
-from services.file_context.storage import save_file_to_storage
+from services.file_context.storage import (  # #1306: the single byte seam
+    read_file_from_storage,
+    save_file_to_storage,
+    write_file_to_storage,
+)
 
 router = APIRouter(prefix="/api/v1/files", tags=["files"])
 logger = structlog.get_logger(__name__)
@@ -132,10 +136,10 @@ async def upload_file(
         safe_filename = f"{timestamp}_{file_id}_{file.filename}"
         safe_file_path = upload_dir / safe_filename
 
-        # 8. Save file to disk
+        # 8. Save file to disk — through the #1306 encrypt seam (this route
+        # previously bypassed save_file_to_storage with a raw open/write).
         try:
-            with open(safe_file_path, "wb") as f:
-                f.write(file_content)
+            write_file_to_storage(safe_file_path, file_content)
 
             logger.info(
                 "file_saved_to_disk",
@@ -680,7 +684,7 @@ async def preview_file(file_id: str, request: Request):
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND, detail="File not found on disk"
                 )
-            raw = file_path.read_bytes()
+            raw = read_file_from_storage(file_path)  # #1306 decrypt seam
             truncated = len(raw) > _PREVIEW_MAX_BYTES
             try:
                 content = raw[:_PREVIEW_MAX_BYTES].decode("utf-8")
@@ -796,7 +800,7 @@ async def download_bulk(
                         if not p.exists():
                             skipped += 1
                             continue
-                        zf.writestr(_dedupe(file.filename or fid), p.read_bytes())
+                        zf.writestr(_dedupe(file.filename or fid), read_file_from_storage(p))  # #1306
                         added += 1
                 except Exception as e:  # one bad item must not kill the zip
                     logger.warning("bulk_download_item_skipped", item_id=fid, error=str(e))

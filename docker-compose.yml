@@ -30,6 +30,10 @@ services:
       # an undocumented, git-untracked edit directly on the droplet — which is exactly how
       # it got silently lost on the next clean deploy. Named here so it can't happen again.
       - PIPER_HOST=0.0.0.0
+      # #1220 (Droplet-sidecar decision, PM+Arch 2026-07-07): the app reaches the
+      # github-mcp-server sidecar below via compose DNS. Overridable per-env; the
+      # code default (localhost:9100) covers bare non-compose runs.
+      - GITHUB_MCP_SERVER_URL=http://github-mcp:8082/mcp
     ports:
       - "8001:8001"
     volumes:
@@ -85,6 +89,20 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  # GitHub MCP server — the #1220 connector transport (Droplet-sidecar decision,
+  # PM + Arch concur 2026-07-07; see decisions.log + the hosting brief memo).
+  # Mirrors the proven local dev container exactly (image/command/port verified
+  # via docker inspect of piper-ghmcp, not invented). No GitHub token env by
+  # design: per ADR-070 D3/OQ-5 the server receives each user's OAuth token
+  # per-connection from the app (the grant store), never a shared credential.
+  github-mcp:
+    image: ghcr.io/github/github-mcp-server
+    container_name: piper-ghmcp
+    command: ["http", "--listen-host", "0.0.0.0"]
+    ports:
+      - "8082:8082"
+    restart: unless-stopped
 
   # Redis - Cache and event queue
   redis:

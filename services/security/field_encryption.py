@@ -84,6 +84,24 @@ class FieldEncryptionService:
         ct = aes.encrypt(nonce, plaintext.encode("utf-8"), None)
         return base64.b64encode(nonce + ct).decode("ascii")
 
+    def encrypt_bytes(self, plaintext: bytes, context: str) -> bytes:
+        """#1306: bytes-native sibling of encrypt() for file content — same
+        AES-256-GCM + per-context HKDF subkey; raw binary out (nonce + ct),
+        no base64 (files are stored as bytes, not text columns)."""
+        aes = AESGCM(self._subkey(context))
+        nonce = os.urandom(_NONCE_LEN)
+        return nonce + aes.encrypt(nonce, plaintext, None)
+
+    def decrypt_bytes(self, blob: bytes, context: str) -> bytes:
+        """#1306: bytes-native sibling of decrypt(). Raises DecryptionError on
+        tamper/wrong-key/short input, mirroring decrypt()'s contract."""
+        try:
+            nonce, ct = blob[:_NONCE_LEN], blob[_NONCE_LEN:]
+            aes = AESGCM(self._subkey(context))
+            return aes.decrypt(nonce, ct, None)
+        except (InvalidTag, ValueError) as e:
+            raise DecryptionError(f"file-content decryption failed: {type(e).__name__}") from e
+
     def decrypt(self, token: str, context: str) -> str:
         try:
             raw = base64.b64decode(token)
