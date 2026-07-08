@@ -41,6 +41,24 @@ target_metadata = Base.metadata
 from services.database.session_factory import get_sync_migration_url as _resolve_db_url
 
 
+def _compare_type(context, inspected_column, metadata_column, inspected_type, metadata_type):
+    """#1312: make ``compare_against_backend`` authoritative for autogenerate.
+
+    Alembic's default type comparison inspects the dialect impl of a
+    TypeDecorator (EncryptedJSON loads as JSONB on Postgres), so the decorator's
+    own ``compare_against_backend`` (which declares the whole JSON family
+    equivalent — ciphertext is valid JSON under json OR jsonb) never gets
+    consulted, and every encrypted-JSON column re-drifts in every run.
+    Returning False = "types are the same"; None falls back to the default.
+    """
+    hook = getattr(metadata_type, "compare_against_backend", None)
+    if callable(hook):
+        same = hook(context.dialect, inspected_type)
+        if same is not None:
+            return not same
+    return None
+
+
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
@@ -59,6 +77,7 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        compare_type=_compare_type,  # #1312
     )
 
     with context.begin_transaction():
@@ -92,6 +111,7 @@ def run_migrations_online() -> None:
             # This is important for development and testing environments where we want
             # partial progress even if some migrations fail.
             transaction_per_migration=True,
+            compare_type=_compare_type,  # #1312
         )
 
         with context.begin_transaction():

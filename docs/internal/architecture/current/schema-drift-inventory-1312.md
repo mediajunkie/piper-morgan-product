@@ -115,9 +115,17 @@ CI guard keeps it that way (generate → assert no ops → delete; fails the bui
 
 ## 6. Proposed remediation sequence (post-deploy)
 
-1. **Model-side-only pass** (no DDL, zero DB risk): D1 names, D3 `__table_args__` declarations,
-   E naming_convention, F type/nullable tightening + EncryptedJSON comparator. This alone
-   should collapse the diff by ~70%. Verified by re-running autogen and counting.
+1. **Model-side-only pass — ✅ DONE 2026-07-08 (Lead)**: D1 names, D3 declarations, F
+   type/nullable tightening + the EncryptedJSON comparator (`compare_against_backend` +
+   an env.py `compare_type` callback — alembic's default compares the dialect impl, so
+   the hook alone never fires). E naming_convention deliberately EXCLUDED (Base-level
+   blast radius — rides the judgment classes). Result: **241 → 89 total ops (41 in
+   upgrade); zero type alters, zero index churn**. The residual is exactly §7's
+   judgment classes + 2 deliberate D2 index wants (idx_conversations_user_session,
+   idx_files_owner composite) + 2 ciphertext-GIN drops (correct DB-side, phase 3).
+   Bonus finds: the model still declared f1305-dropped idx_conversations_topics_gin
+   (removed); projects has a GENUINE duplicate index pair in the DB (idx_projects_owner
+   + idx_projects_owner_id, both declared model-side for now — dedup is a phase-3 call).
 2. **Arch rulings** (§7), then the judgment classes: A (todo_lists finish-or-excise),
    B/C MUX family, C owner_id family, E dropped-FKs.
 3. **One reviewed reconciliation migration** for whatever DB-side changes survive step 2

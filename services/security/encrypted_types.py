@@ -152,6 +152,16 @@ class EncryptedJSON(TypeDecorator):
             return dialect.type_descriptor(_pg.JSONB())
         return dialect.type_descriptor(_JSON())
 
+    def compare_against_backend(self, dialect, conn_type):
+        # #1312: alembic autogenerate reflects the DB column as plain JSON or JSONB
+        # and would flag every EncryptedJSON column as a type change forever
+        # (learned_patterns.pattern_data is `json` in the DB while the dialect impl
+        # is JSONB). Ciphertext is valid JSON under either — the whole JSON family
+        # is equivalent for comparison purposes.
+        from sqlalchemy import JSON as _JSON
+
+        return isinstance(conn_type, _JSON)
+
     def coerce_compared_value(self, op, value):
         # Without this, SQLAlchemy runs comparison/index operands through THIS
         # type's bind processor — so the literal key in
