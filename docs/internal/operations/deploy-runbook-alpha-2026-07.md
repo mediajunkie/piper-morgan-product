@@ -58,6 +58,14 @@ Redis is already on the droplet (#1311) — the usage-cap middleware needs it ru
 in the compose stack, no action expected. **If Redis were somehow down, every request would
 503 by design (fail-closed)** — that's the tell.
 
+**NEW since 2026-07-08 morning**: the github-mcp-server sidecar is now IN docker-compose.yml
+(#1220's hosting half — the Droplet-sidecar decision, implemented). `deploy.sh`'s compose up
+starts it automatically; the app reaches it at `http://github-mcp:8082/mcp` via compose DNS
+(already wired in the app's environment). Smoke check after deploy: 
+`curl -s -m 5 -X POST localhost:8082/mcp -H 'Content-Type: application/json' -d '{}' ` →
+**"Unauthorized" is the HEALTHY response** (the server enforces per-user OAuth per
+connection — a tokenless probe SHOULD be refused; connection-refused/timeout = actually down).
+
 ## Phase 4 — Deploy (on the droplet)
 
 ```bash
