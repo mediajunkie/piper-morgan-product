@@ -7,6 +7,15 @@ from alembic import context
 # Import your SQLAlchemy Base
 from services.database.connection import Base
 
+# #1312: autogenerate compares target_metadata to the DB, so every module that
+# registers tables on the shared Base MUST be imported here — otherwise its
+# tables read as false-positive "removed table" drift (action_humanizations
+# did, before persistence.models was imported). NOTE services/personality/models.py
+# is on its OWN declarative_base(), invisible to this metadata by design until
+# the multi-Base question is resolved (Arch call, tracked on #1312).
+import services.database.models  # noqa: E402,F401
+import services.persistence.models  # noqa: E402,F401
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
