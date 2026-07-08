@@ -341,7 +341,14 @@ _READ_QUERY_COHORT: dict[str, list[str]] = {
         "show_closed_prs",
         "shipped_query",
     ],
-    "_handle_stale_prs": ["stale_prs", "old_prs", "show_stale_prs", "stale_prs_query"],
+    # #1283 probe (2026-07-08): live LLM emitted list_stale_prs past the four aliases.
+    "_handle_stale_prs": [
+        "stale_prs",
+        "old_prs",
+        "show_stale_prs",
+        "stale_prs_query",
+        "list_stale_prs",
+    ],
     "_handle_review_issue_query": [
         "review_issue",
         "show_issue",
@@ -594,7 +601,17 @@ def register_default_workflows() -> None:
                 ),
                 "productivity query via action dispatch",
             ),
-            ["productivity", "my_productivity", "weekly_metrics", "accomplishments"],
+            # #1283 probe (2026-07-08): the registry CANONICAL was missing from its
+            # own handler's alias list (mode-2), and the live LLM emitted
+            # analyze_productivity past all four aliases (mode-4).
+            [
+                "productivity",
+                "my_productivity",
+                "weekly_metrics",
+                "accomplishments",
+                "productivity_query",
+                "analyze_productivity",
+            ],
         ),
         (
             _qentry(

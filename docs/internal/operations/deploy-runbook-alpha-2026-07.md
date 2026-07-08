@@ -34,14 +34,19 @@ docker compose exec -T postgres pg_dump -U piper piper_morgan > ~/piper-backup-$
 ls -lh ~/piper-backup-*.sql   # confirm it's non-trivially sized
 ```
 
-## Phase 2 — Promote main → production branch (from your machine or the droplet)
+## Phase 2 — Promote main → production branch — ✅ DONE EARLY (Lead, 2026-07-08 ~12:15)
 
-```bash
-git fetch origin
-git checkout production && git pull origin production
-git merge origin/main --no-edit     # expect a LARGE merge; no conflicts expected (production is strictly behind)
-git push origin production
-```
+**The cut is frozen at `d1256e0ac` on `origin/production`.** Production was NOT strictly
+behind (the 7/3 v0.8.9.x hotfixes were cherry-picks); the merge had 9 conflicts, all
+resolved (main's code won everywhere; production kept VERSION 0.8.9.2 + its release
+notes + alpha-tester docs; verified: `git diff origin/main` on the result shows ONLY
+those intended artifacts). **Skip this phase during the deploy.** Work continues landing
+on `main` without touching the cut; if we deliberately want something else in the deploy,
+re-promote the same way (Lead can redo it in minutes).
+
+**One decision surfaced for you (not blocking)**: the cut carries VERSION `0.8.9.2`. If
+this deploy should be a visible version bump (`0.8.10`?), say so and it's a one-line
+commit to `production` before deploy — your release call. `0.9.0` stays reserved for beta.
 
 ## Phase 3 — Set the new environment variables on the droplet (BEFORE the app restarts)
 
@@ -99,6 +104,41 @@ docker compose exec -T app python -m alembic current   # confirm head reached: f
 
 If the migrate genuinely failed mid-chain: the DB is transactional per-migration —
 note the failing revision, do NOT retry blindly; ping me with the error.
+
+### ⚠️ Phase 4b — MIGRATION-CHAIN REPAIR (REQUIRED this deploy — found 2026-07-08 during the promote)
+
+The 7/3 hotfix chained `c1344invite` directly onto `000baa96d800` on production, but this
+cut carries main's chain, where **`b1229bindings` (connector_bindings — the #1220 per-user
+grant store) sits between them**. The droplet's `alembic_version` says `c1344invite`, so
+alembic assumes `b1229bindings` already ran and **silently skips it** — `upgrade head`
+"succeeds" while never creating the table. (The hotfix migration's own header documented
+this exact merge moment; the repair below is order-independent — d075/e441/f1305 don't
+depend on connector_bindings — so run it AFTER deploy.sh regardless of what its migrate did.)
+
+```bash
+# 1. Did the skip happen? (NULL/empty = table missing = repair needed — expected)
+docker compose exec -T postgres psql -U piper piper_morgan -tc \
+  "SELECT to_regclass('public.connector_bindings');"
+
+# 2. Apply the one skipped migration, surgically:
+docker compose exec -T app python -m alembic stamp 000baa96d800
+docker compose exec -T app python -m alembic upgrade b1229bindings
+
+# 3. Re-point the version to reality — did deploy.sh's migrate already apply the tail?
+docker compose exec -T postgres psql -U piper piper_morgan -tc \
+  "SELECT to_regclass('public.personalization_contexts');"
+#   present → the tail (d075/e441/f1305) already ran:
+docker compose exec -T app python -m alembic stamp f1305encjson
+#   absent  → tail never ran (e.g. BUILD_FAIL was real this time):
+#   docker compose exec -T app python -m alembic stamp c1344invite
+#   docker compose exec -T app python -m alembic upgrade head
+
+# 4. Verify end state — all four must hold:
+docker compose exec -T app python -m alembic current        # → f1305encjson
+docker compose exec -T postgres psql -U piper piper_morgan -tc \
+  "SELECT to_regclass('public.connector_bindings'), to_regclass('public.personalization_contexts'), to_regclass('public.password_reset_tokens'), to_regclass('public.invite_tokens');"
+# → all four non-NULL
+```
 
 ## Phase 5 — The three backfills (yes, three now — #1306 landed 7/08) (on the droplet, key now present)
 

@@ -290,6 +290,7 @@ Load detailed protocols only when needed:
 | Completion discipline | `docs/agent-protocols/completion-discipline.md` |
 | Architecture patterns | `docs/internal/architecture/current/patterns/` |
 | ADRs | `docs/internal/architecture/current/adrs/` |
+| **Intent routing / LLM responses / action handlers** | `docs/internal/architecture/current/intent-routing-stack.md` — **MANDATORY before touching classification, dispatch, or chat-response behavior.** Routing is a 4-surface chain (pre-classifier → LLM classifier → action rail → category/floor-internal); working from a partial model of it produced 7 false findings in one audit (2026-07-08). If your change makes the doc stale, update it in the same commit. |
 | Live system state | Use Serena symbolic queries |
 | Terminology / acronyms | `knowledge/piper-morgan-glossary-v1.1.md` — **STOP and read this before writing any content that uses: Plugin, MCPB, MCP bundle, Connector, Extension, Skills, Cowork, Claude Desktop. These terms have precise distinct meanings and are frequently conflated.** |
 
