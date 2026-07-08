@@ -1,8 +1,25 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-07 21:50 PT (DAY-CLOSED). Session log: `dev/2026/07/07/2026-07-07-0647-lead-code-log.md` (wrapped, DAY-CLOSED marker set).
+**Updated**: 2026-07-08 ~11:30 PT. Session log: `dev/2026/07/08/2026-07-08-0647-lead-code-log.md` (live).
 
-**STOP note (21:47 fire)**: last scheduled fire of the day; mail empty; day closed clean with sign-off verified. **ELEVEN closed 2026-07-07 (20 → 10 open).** Cron `fcda3c19` left ARMED for tomorrow's 06:17. **Tomorrow's START goes straight to #1306** — the fresh session IS its named trigger; the complete build spec is in the Next-wake block below. Also watch for: PM's deploy (gates invite-sending; carries the 3-command backfill checklist pinned on #358), any Arch/HOST overnight mail.
+## ▶ CURRENT (7/8 ~11:30) — PM's 9:46 batch DRAINED: #1220 write-path built, Epic G audits ALL done (#1324 CLOSED). 7 open. DEPLOY-WATCH ARMED.
+
+**The governing directive (PM 9:46 AM)**: "handle #1220 and Epic G's audits while I attend to morning business; undivided attention for the deploy runbook later today." **All of it is done. The deploy is the next event** — when PM engages: support the runbook live (`docs/internal/operations/deploy-runbook-alpha-2026-07.md`, 7 phases, THREE backfills in Phase 5), then close #358 (dimension-A ciphertext evidence), update #1299b (migrate-step verification), confirm the github-mcp sidecar auto-started (tokenless probe → "Unauthorized" = healthy), then the **PM-present first REAL connector write** (PM picks a throwaway target) — which live-validates tool names and lets #1220 close.
+
+**What shipped this morning (all on origin/main)**:
+- **#1220 write path**: `GitHubWriteResult` typed guard per the #1322 hard gate — `verified` only on same-session `get_issue` read-back; comments additionally need a GitHub-minted `id`; `attempted=False` (pre-call rail degrade) is the ONLY state licensing native-PAT fallback; fired-but-unverified RAISES (no double-write through different creds). 11 tests against real in-memory MCP round-trips. Router create/update/add_comment connector-first.
+- **#1283 static audit**: three-vocabulary reconciliation (prompt 17 / registry 43 / rail 86); the 61 rail-only aliases = load-bearing mode-4 defense, NOT dead code; corpus `tests/fixtures/routing_corpus_1283.yaml` (~29 rows) + Arch memo (AC-4 SSOT: registry grows canonical+aliases, prompt/rail derived). Behavioral probe = LLM-cost, post-deploy, after Arch's corpus pass. Issue OPEN.
+- **#1324 CLOSED** (+follow-ups → **#1379**): main.py `PIPER_BASE_URL` env-overridable; 3 OAuth redirect fallbacks derive from it (`_base_url()`); `warn_if_prod_uses_dev_password()` startup guard (canonical `PIPER_ENVIRONMENT`/`ENVIRONMENT` pair, NOT the issue's imaginary APP_ENV). Runbook Phase 3 now sets `PIPER_BASE_URL=https://alpha.pipermorgan.ai` + the JWT_SECRET_KEY coupling warning (production mode hard-fails auth without it). Two findings didn't survive verification (setup.py fallbacks feed visible wizard probes; byoc isn't in this repo).
+- **#1312 audit COMPLETE, remediation deliberately deferred past the deploy**: env.py model-imports fix landed (upgrade-path verified unaffected); 241 drift ops classified in `docs/internal/architecture/current/schema-drift-inventory-1312.md`. Root-cause CORRECTED: create_all has zero callers, alembic is sole authority. Headline: `todo_lists` = orphaned 75%-complete domain (model+FKs exist, table never migrated; #479 routed DI around it; no live 500 — Todos API uses todo_items). MUX phase-0 family (conversation_links, parent_id, lifecycle_state ×2) = do-NOT-drop, MUX roadmap owns. Arch memo sent: 3 rulings (multi-Base; todo_lists finish-vs-excise; MUX family). **Post-deploy next action = model-side-only pass (~70% diff collapse, no DDL, needs no rulings).** Issue OPEN.
+- Rescued 2 stranded June prog session logs (3 weeks untracked in this worktree).
+
+**Remaining 7**: #358 (deploy closes it), #1220 (deploy tail + PM-present write), #1299b (deploy verifies it), #1278 (backlog; PM coordinates Fly acct/token/region/DNS), #1332 (reproduction-gated), #1283 (Arch corpus pass → behavioral probe), #1312 (model-side pass post-deploy; judgment classes Arch-gated).
+
+**Standing cautions in force**: invites do NOT go out before the deploy; no schema-touching before the deploy; mail-send #1374 edge case (manual fix: merge + surgical checkout); model = Fable (PM 7/7, header-tracked).
+
+---
+
+**PRIOR STOP note (7/7 21:47 fire)**: day closed clean; ELEVEN closed 2026-07-07 (20 → 10 open). (#1306/#1258/#1220-hosting then landed 7/8 morning — see session logs.)
 
 ## ▶ CURRENT (7/7 ~11:15) — #1105 resolved (not a regression, real dead-code bug fixed + live-verified); `.claude/launch.json` added (new reusable UI-verification infra); queue at (0,0)
 
