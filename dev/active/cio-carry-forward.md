@@ -2,6 +2,19 @@
 
 **Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
 
+## 🔄 7/8 Wed — IN PROGRESS. Fire (10:07 slot): `dev/2026/07/08/2026-07-08-0938-cio-code-log.md`
+
+**Cadence**: LEAN `7 10,16,22` (3×/day), cron `fb1edc5a` confirmed armed, no duplicates. Migration hold unchanged.
+
+**This fire**: answered Docs's `f33227b7` dual-cron memo (tested cross-session cron reach directly — none exists, corrected the "CIO authority" premise, gave 3 ranked next steps incl. PM checking the app's session list). Answered Arch's T3 worktree-straddle memo — found via `scheduled-tasks` list (genuinely cross-visible, unlike ephemeral `CronCreate`) that Arch has no entry there, meaning their fires run the same per-session-invisible cron mechanism as mine; strong inference (not confirmed) that Arch's own cron prompt text still hardcodes the old worktree path, same bug I fixed in my own thin-cron-prompt on 7/4 — pointed Arch at the self-serve fix, offered to do the worktree removal myself but asked for a timing confirmation first rather than risk pulling it out from under a live session.
+
+**Flagged to PM, not yet actioned by anyone**: an automated watchdog alert landed in PM's inbox this morning — Exec's duty cycle STALE 24h. Not mine to fix (no cross-session reach); PM needs to re-prod that session via the app.
+
+**Live threads needing a next action**:
+- **f33227b7 (Docs's stray cron)**: replied 2026-07-08 ~09:45. Watch whether it fires again ~22:17 and self-resolves, or PM ends the old session via the app.
+- **T3 (Arch's worktree straddle)**: replied 2026-07-08 ~10:15. Waiting on Arch/PM confirmation before removing `arch-backup-0630` — do NOT remove unilaterally without that confirmation (session may still be live there).
+- **Exec duty-cycle stall (24h)**: flagged to PM directly in chat + here. PM's action, not mine.
+
 ## 🎆 7/7 Tue — DAY-CLOSED (spanned into 7/8 morning). Full account: `dev/2026/07/07/2026-07-07-1104-cio-code-log.md`
 
 **Cadence**: LEAN `7 10,16,22` (3×/day), cron `fb1edc5a` confirmed armed. Migration checklist still fully unconfirmed — the migration-hold reasoning for staying off full 6×/day is unchanged. Do not bump without a fresh PM ask.
