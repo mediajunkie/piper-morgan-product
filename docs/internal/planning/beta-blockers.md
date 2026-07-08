@@ -2,7 +2,7 @@
 
 **Owner**: PPM
 **Status**: LIVING DOCUMENT — canonical source of truth for what remains between now and beta release (v0.9.0)
-**Last updated**: 2026-07-07 evening (Lead Dev — NINE closed today incl. all of Epics A/E; 20→11 open; see change log)
+**Last updated**: 2026-07-07 late (Lead Dev — ELEVEN closed today incl. all of Epics A/E + #1348 + #1305; 20→10 open)
 **Cross-references**: [sprint-order.md](sprint-order.md) (sprint sequencing across the whole board), [roadmap.md](roadmap/roadmap.md) (strategic plan), GitHub project "Building Piper Morgan" → Sprint field "Beta Blockers - Hard Gates Only"
 
 ---
@@ -19,13 +19,13 @@ This is the single canonical list of issues that must close before Piper Morgan 
 
 The full open backlog was swept sprint-by-sprint (M3-Quality, M3-Health, M3-Security, M4, M5, RECONNECT — 2026-07-04/05), following a deep forensic investigation into GitHub write-action capability that revealed the roadmap's earlier confidence in an August 1 target rested on assumptions that hadn't been verified bottom-up. That investigation is documented in the PPM session logs for 2026-07-04 and 2026-07-05.
 
-## The 11 open issues, organized by epic
+## The 10 open issues, organized by epic
 
 ### Epic A — Verification foundation ✅ CLOSED 2026-07-07 (0 open)
 
 ~~#1304~~ **closed 2026-07-07** — 5/5 AC done. The gating job (`Security Test Suite (Postgres)`) had been built + proven live with teeth on 2026-07-05 (3 real Actions runs incl. a deliberate canary); the one held item — making it a **required status check** on `main` — landed 2026-07-07 on PM's explicit "Go" for the visible-only variant (CIO's recommendation: add the check, keep `enforce_admins: false`; flipping enforce_admins would force every agent's push-to-main through PRs, a much larger decision than this issue scoped). Applied via the full-protection PUT with field-by-field before/after verification — the only delta is the new required check. Epic A is fully done: security-suite pass/fail is now a first-class, machine-readable signal on `main`.
 
-### Epic B — Multi-tenancy & data protection (2 open issues + #358 nearly done; 3 closed total: 2 on 2026-07-05, 1 on 2026-07-06)
+### Epic B — Multi-tenancy & data protection (2 open: #358 deploy-gated + #1306; #1305 closed 2026-07-07)
 
 ~~#1260~~ and ~~#1241~~ **closed 2026-07-05** (Lead Dev). #1260: done same-day (server-owned PM-identity config replaces a hardcoded username). #1241: turned out to be **already complete** — the audit (`dev/2026/06/15/1241-content-anchoring-audit.md`) and its design output (**ADR-071**, ratified 2026-06-15) already satisfied all 5 of the issue's own deliverables, and the downstream remediation had substantially shipped via #1238 (doc store), #1250 (learning toggle), and #1252 (the main D2-D6 consolidation refactor, closed 2026-06-19) — this issue was simply never closed after that work landed. The one genuinely remaining piece (#1257, the deeper 40+-site read-threading + `user_id`→`owner_id` column drop) is already its own separately-tracked issue, correctly milestone-scoped to **Production**, not a beta blocker. See #1241's closing comment for the full evidence trail.
 
@@ -34,7 +34,6 @@ The full open backlog was swept sprint-by-sprint (M3-Quality, M3-Health, M3-Secu
 | # | Title | Why it's a hard gate |
 |---|-------|----------------------|
 | #358 | Encryption at rest for sensitive data — **both dimensions code-complete + tested (2026-07-06); dimension B live-verified on alpha 6/25; only dimension A's live-alpha check remains, needs droplet access** | PM: an important principle, long-deferred (low issue number) |
-| #1305 | Encrypt PII-bearing JSON/JSONB structured columns | Sibling scope split from #358 |
 | #1306 | Encrypt uploaded file content at rest | Sibling scope split from #358 |
 
 **#1366 (`PIPER.user.md` unscoped-config leak) — RESOLVED as of 2026-07-07** (update to the note below; kept for the record): Component A (GitHub default-repo) shipped 2026-07-06; **Component B (system-prompt personalization) is now DONE too** — ADR-075 was authored + ACCEPTED 2026-07-06, Component B built the same day (#1373: owner_id-scoped `personalization_contexts` store, neutral-default degradation, enforcement guard), Arch BUILD-ratified it 2026-07-07 as "impossible-by-construction" for the leak, live-verified + closed 2026-07-07. Component C (#1260 mechanism repoint) is a small Production-scoped follow-up per ADR-075 D6. The privacy leak this note originally described is structurally closed on `main` (note: reaches alpha at the next deploy — `main` ≠ `production`).
@@ -82,7 +81,7 @@ Mostly isolated, well-scoped fixes — good candidates to pick off quickly. **#1
 | #1312 | DB↔model schema drift (~111 Alembic diffs) | High migration risk; cheaper to fix than the diff count suggests |
 | #1324 | Audit: hardcoded config values that should be env vars | Deploy-portability risk |
 
-**Total: 11 open issues across 7 epics** (#1348 was PM-added AND closed same-session 2026-07-07, so the count is unchanged) (2026-07-07: NINE closed today — #1304, #1317, #1105, #1279, #1285, #1216, #1256, #441, #1261 — Epic A fully done, Epic C down to #1220 only, Epic E down to #441+#1261; see the epic sections and change log. #1278 remains OPEN and counted).
+**Total: 10 open issues across 7 epics** (2026-07-07 evening: #1305 closed too — ELEVEN closed today incl. the PM-added #1348) (2026-07-07: NINE closed today — #1304, #1317, #1105, #1279, #1285, #1216, #1256, #441, #1261 — Epic A fully done, Epic C down to #1220 only, Epic E down to #441+#1261; see the epic sections and change log. #1278 remains OPEN and counted).
 
 ## Recommended sequencing
 
