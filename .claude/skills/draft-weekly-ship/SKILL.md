@@ -200,12 +200,13 @@ Verify before declaring done:
 - [ ] **Role-attribution sanity check** — every "the X-role did Y" claim is traceable to a specific memo or omnibus entry (no invented attributions; no swapping who did what)
 - [ ] **Time-since-codification claims** — any "the methodology was N days/weeks old when..." claim verified against the codification commit date (`git log -- docs/internal/development/methodology-core/methodology-NN-*` if applicable)
 
-### Step 7: Save the draft and route for voice-pass
+### Step 7: Save the draft and route for review
 
 - **Save location** (canonical drafting): `dev/active/weekly-ship-{NNN}-draft-{YYYY-MM-DD}.md` on the `claude/{worktree-slug}` branch per worktree-default discipline for substantive output
 - **Public-comms copy**: sync to `docs/public/comms/drafts/weekly-ship-{NNN}-draft-{YYYY-MM-DD}.md` on main so PM can read where they expect
 - **Commit immediately after Write** per the May 17 memory
-- **Route to PM** for voice-pass; flag word count if outside target
+- **Route to Comms for pre-publish editorial review** (PM clarification 2026-07-08: Exec generally drafts the Ship, but Comms reviews it before publish — a standing step, not just when Comms happens to be in the loop. Comms's `template-audit` skill is their review-of-record; Exec's own Step-6 checklist pass does not substitute for it.)
+- **Route to PM** for voice-pass; flag word count if outside target. (Comms review and PM voice-pass can run in either order; both complete before publish.)
 
 ---
 
@@ -267,6 +268,10 @@ The Ship #043 v0.1 failure was not knowing the template existed — it was choos
 
 ## Version history
 
+### v1.3 (2026-07-08)
+
+Step 7: added the standing **Comms pre-publish review** step (PM clarification, in-conversation: "You generally do draft the weekly ship but Comms reviews it before we publish"). Previously the routing step named only PM's voice-pass; Comms's review had been happening implicitly via the publish pipeline but wasn't a named, mandatory step in this skill. Also relevant context from the same window: Ship #050's window error (see `docs/internal/operations/ship-050-window-date-error-2026-07-08.md`) — the fix there is upstream in the kickoff procedure (compute window formulaically, assert day-of-week, verify delivery landed), not in this skill; noted here so a future reader doesn't add redundant machinery to this file. Step 6's existing day-of-week sanity check already covers the drafting side.
+
 ### v1.2 (2026-05-20, second update same day)
 
 Reordered procedure: omnibus-logs-read is now Step 3 (BEFORE workstream memos), changed from "spot-check" to "REQUIRED, FULL READ." Workstream memos move to Step 4 with explicit guidance to read them "with omnibus context already in head." Added Step 4-prime: pull underlying session logs when omnibus looks thin or memos reference work the omnibus didn't surface.
@@ -283,7 +288,7 @@ Initial skill. Lists canonical artifacts to load before drafting. Names voice-di
 
 ---
 
-*Skill version: 1.2*
+*Skill version: 1.3*
 *Created: 2026-05-19 (v1.0)*
-*Updated: 2026-05-20 (v1.1 — External-section verification step; v1.2 — omnibus is required full read, not spot-check)*
-*Scope: Exec*
+*Updated: 2026-05-20 (v1.1 — External-section verification step; v1.2 — omnibus is required full read, not spot-check); 2026-07-08 (v1.3 — Comms pre-publish review is a named mandatory step)*
+*Scope: Exec (drafts); Comms (reviews)*

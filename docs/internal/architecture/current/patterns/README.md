@@ -12,6 +12,7 @@ _Format: ADR-style numbered patterns_
 - **Pattern-071 (Audit Logs as Attack Surface)** Emerging — filed 2026-05-15 (Lead Dev; sibling shape of Pattern-064 "Alive Scaffolding" — compliance-shaped scaffolding that actively amplifies leaks vs. passive scaffolding that does nothing; reference implementation #1017 `OutputFilterDecision` hash-only invariant + write-time guard; promotion to Proven contingent on 4-6 week cohort exposure surfacing no required exception path)
 - **Pattern-072 (Registries that Grow into Architectural Shapes)** **Proven** — filed Emerging 2026-05-15 (Lead Dev); promoted to **Proven** 2026-05-16 (CIO) after #1094 ENGINE-DELETION close-out landed Slack handler dispatch as the fourth behavior-deciding consumer of the `task_type` registry, with all four formalization-discipline invariants intact. First sub-day Emerging-to-Proven promotion in the catalog (~6 hours between recognition trigger and Proven trigger).
 - **Pattern-073 (Documentation-Asserted-Behavior Drift)** **Proven** (promoted 2026-05-18) — filed 2026-05-16 (Lead Dev; CIO methodology cosign). Six independent reference instances in ≤48 hours across five narrative-artifact layers (methodology docs / code docstrings / templated user-facing copy / orphan dependency / test fixture vs. classification / incomplete pattern translation). Pattern-064-adjacent sibling at the narrative layer: where Pattern-064 names code-that-looks-live-but-does-nothing, Pattern-073 names narrative-that-asserts-a-contract-the-code-doesn't-honor. Operational recognition discipline: `doc-sync-sweep` v0.1 skill at `.claude/skills/doc-sync-sweep/`. Promotion-to-Proven contingent on one more independent instance within 14 days + skill operating cleanly on a fresh-fix flow by an agent who didn't draft it.
+- **Pattern-074 (Visibility Loss After Premature Retirement)** Emerging — filed 2026-05-24 (CIO per Comms seed memo `memo-comms-to-cio-cc-host-pa-pm-pattern-of-visibility-loss-lapses-plus-guards-2026-05-24.md`). Two reference instances logged within a single day (both Comms-side, May 24, 2026). Needs ≥1 more independent cross-role instance to graduate Emerging → Proven.
 
 CIO carries the catalog-management authority; full index updates per category live below.
 
@@ -215,5 +216,5 @@ Use the anti-pattern index to:
 
 ---
 
-_Last updated: March 3, 2026_
-_Added Human-AI Collaboration Referee (061); total now 62 patterns_
+_Last updated: 2026-07-08 (Docs audit — added Pattern-074 to recent-additions list; footer count corrected)_
+_Total: 74 patterns (001-074) plus template (000). Previous footer noted 62 (as of 2026-03-03, when pattern-061 was last addition tracked here)._

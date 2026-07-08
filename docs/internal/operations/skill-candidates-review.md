@@ -1,6 +1,8 @@
 # Skill candidates review — standing PM+Exec surface
 
-**STATUS: PROPOSED** (Exec draft, 2026-07-08, from PM's suggestion during the Ship #050 window-error discussion — *"We can consider the question of what to skillify maybe as a routine thing that we do on a regular cadence... a very good thing for you and I to talk about."*) Cadence, shape, and the current candidate dispositions below are all pending that conversation — nothing here is ratified.
+**STATUS: RATIFIED — monthly cadence** (PM, 2026-07-08 11:49: *"yes monthly seems right."*) Candidate dispositions below remain first-pass leans pending the first actual review. **CIO + HOST looped in per PM's direction** (same message): CIO for the skill discussion itself (methodology-catalog lane), both CIO and HOST for aligning this cadence with the existing staggered audits (weekly/monthly audit template split, Docs's weekly audit, quarterly sweeps) so this doesn't become a fourth unaligned rhythm.
+
+**PM's framing observation worth keeping visible** (2026-07-08): *"one trend I've noticed in the past few months is emergent self-improvement and self-healing behaviors. Some from the model upgrades perhaps but others from our own harness."* This review is the deliberate channel for that emergent trend — triage what the system is already teaching itself, rather than inventing improvement programs from scratch.
 
 ## Purpose
 
