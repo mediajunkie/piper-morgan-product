@@ -4,6 +4,8 @@
 
 ## ▶ CURRENT (7/8 ~11:30) — PM's 9:46 batch DRAINED: #1220 write-path built, Epic G audits ALL done (#1324 CLOSED). 7 open. DEPLOY-WATCH ARMED.
 
+**THE CUT IS FROZEN (12:15, PM-directed)**: `origin/production = d1256e0ac` — main promoted early so post-cut work on main can't alter the deploy. Real merge (production had 8 hotfix cherry-picks), 9 conflicts resolved, result verified = main's code + intended release artifacts only. **Runbook now has Phase 4b MIGRATION-CHAIN REPAIR (REQUIRED)**: droplet's alembic pointer (c1344invite) would make `upgrade head` silently skip b1229bindings/connector_bindings — verify-then-stamp sequence in the runbook covers both orderings. Version-bump question open with PM (cut carries 0.8.9.2; 0.8.10 = one-line commit if PM wants it). Re-promote only to deliberately add to the cut.
+
 **The governing directive (PM 9:46 AM)**: "handle #1220 and Epic G's audits while I attend to morning business; undivided attention for the deploy runbook later today." **All of it is done. The deploy is the next event** — when PM engages: support the runbook live (`docs/internal/operations/deploy-runbook-alpha-2026-07.md`, 7 phases, THREE backfills in Phase 5), then close #358 (dimension-A ciphertext evidence), update #1299b (migrate-step verification), confirm the github-mcp sidecar auto-started (tokenless probe → "Unauthorized" = healthy), then the **PM-present first REAL connector write** (PM picks a throwaway target) — which live-validates tool names and lets #1220 close.
 
 **What shipped this morning (all on origin/main)**:
