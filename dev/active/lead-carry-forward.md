@@ -17,7 +17,7 @@
 
 **Remaining 7**: #358 (deploy closes it), #1220 (deploy tail + PM-present write), #1299b (deploy verifies it), #1278 (backlog; PM coordinates Fly acct/token/region/DNS), #1332 (reproduction-gated), #1283 (probe DONE; Arch ratification → CI enforcement), #1312 (pass 1 DONE 12:50 — 241→89 ops, residual = judgment classes 1:1 with the 3 Arch rulings; next = rulings → reconciliation migration → CI guard).
 
-**Standing cautions in force**: invites do NOT go out before the deploy; no schema-touching before the deploy; mail-send #1374 edge case (manual fix: merge + surgical checkout); model = Fable (PM 7/7, header-tracked).
+**Standing cautions in force**: invites do NOT go out before the deploy; no schema-touching before the deploy; mail-send #1374 FIXED+CLOSED 15:46 (staged-rename reconcile; sandbox harness scripts/test-mail-send-reconcile.sh — next real triage send doubles as live validation); model = Fable (PM 7/7, header-tracked).
 
 ---
 
