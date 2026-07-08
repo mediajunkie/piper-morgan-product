@@ -114,6 +114,10 @@ advisors/*/outbox/*.tmp
 external/ted-multichat/
 .beads/
 
+# Claude Code auto-memory belongs only at ~/.claude/projects/ (absolute path) —
+# a repo-relative copy here means a session wrote it with the wrong CWD
+.claude/projects/
+
 # Serena auto-generated files
 .serena/project.yml
 .serena/memories/working-docs/
