@@ -10,6 +10,8 @@ caption:
 
 The GitHub connector stopped pretending this week. What had been running against a simulated backend went live — verified by pulling 179 real issues through real authentication, not test fixtures. The calendar connector got the same treatment on the same shared contract. A security gap that opened when an unrelated change removed a safeguard was found one day and fixed the next. And in three separate places, the team replaced "remember to check this" with something that checks itself.
 
+There's an irony here worth owning: the very first Piper Morgan proof of concept could do this competently. That version served exactly one user, with personal credentials wired straight in — this one does it with real per-user authentication, on a contract every connector shares. Coming back around to where you started, for real this time, is a lot of what shipping actually is.
+
 The plugin also got its first serious outside install attempt this week — which failed, and taught us more than a clean install would have. More on that below, because we count it honestly.
 
 ---
@@ -50,16 +52,17 @@ The plugin also got its first serious outside install attempt this week — whic
 - Jul 1: [Weekly Ship #049](https://pipermorgan.ai/shipping-news/weekly-ship-049-the-team-builds-its-own-reliability) — shipping news
 - Jul 2: "[The Airport Corrections](https://pipermorgan.ai/blog/the-airport-corrections)" — building narrative
 
+[![At an airport gate, a traveler supervises a whimsical team of glowing AI helpers tending an autonomous work loop while planes wait outside the windows.](https://pipermorgan.ai/assets/blog-images/the-airport-corrections.webp)](https://pipermorgan.ai/blog/the-airport-corrections)
+
+*"Now don't stray too far before boarding!" — from "[The Airport Corrections](https://pipermorgan.ai/blog/the-airport-corrections)"*
+
 ## 📊 Governance & operations
 
 **Metrics (Jun 26–Jul 2):**
 
-| Metric | Value |
-|--------|-------|
-| Issues closed | 25 |
-| Connectors on the shared protocol | 2 (GitHub, Calendar) |
-| Publications | 5 |
-| Security gaps found and fixed same-week | 1 |
+- **Issues closed:** 25
+- **Connectors on the shared protocol:** 2 (GitHub, Calendar)
+- **Security gaps found and fixed inside the week:** 1
 
 **The milestone ladder got pinned down**: beta ships as version 0.9.0, production as 1.0, with a fast-follow milestone behind it.
 

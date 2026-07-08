@@ -149,7 +149,7 @@ Required sections in this order (per template v4.1):
    - `## ⚙️ Engineering & architecture`
    - `## 🔬 Methodology & process innovation`
    - `## 🌍 External relations & community`
-   - `## 📊 Governance & operations` (includes metrics table)
+   - `## 📊 Governance & operations` (includes metrics as a **bullet list**, never a table — PM 2026-07-08)
 6. **`# 🎯 Coming up next week`** — brief paragraph
 7. **`# 🚧 Blockers & asks`** — brief paragraph
 8. **`# 🔎 This week's learning pattern`** with name as `## {Noun-phrase pattern name}` and all 5 components:
@@ -183,7 +183,7 @@ Verify before declaring done:
 - [ ] All 5 workstreams present under "Shipped this week"
 - [ ] Workstreams use correct emoji prefixes (🎯 ⚙️ 🔬 🌍 📊)
 - [ ] Sentence case on all headings (not Title Case)
-- [ ] Metrics table included in Governance & operations
+- [ ] Metrics included in Governance & operations as a **bullet list** (`**Issues closed:** 25`) — NEVER a table; Medium/LinkedIn don't render markdown tables (PM 2026-07-08, supersedes template v4.1's table format). Don't force uninteresting metrics to pad the list.
 - [ ] Previous Ship linked in footer (title verified — do not trust memory)
 - [ ] Phase tag at bottom matches current project phase
 - [ ] Learning pattern has all 5 components (Discovery / Example / Why it matters / Application / Related)
@@ -220,7 +220,7 @@ Verify before declaring done:
 | Use "First time" / "longest" / "most" without checking | Unverified superlative is a common error | 30-second history check, or soften the claim |
 | Use Title Case on workstream headings | Template specifies sentence case | "Product & experience" not "Product & Experience" |
 | Omit a workstream with no activity | Breaks week-over-week comparison | Include with "No significant changes this week" |
-| Skip the metrics table | Template requirement in Governance section | Always include even if numbers are approximate |
+| Metrics as a table, or skipped | Medium/LinkedIn don't render markdown tables (template v4.1's table format is superseded, PM 2026-07-08) | Bullet list (`**Issues closed:** 25`), always included even if approximate |
 | Use semicolons in published prose | PM voice discipline May 13 | Split into two sentences or use em-dash |
 | Refer to Chief of Staff as "CoS" | PM directive May 15 | Use "Exec" or "the Chief" |
 | Bullet-list a reflection-shaped piece | Voice guide May 11: reflection favors declarative paragraphs | Bullets for shopping lists, scoring rubrics, reference material only |
@@ -232,7 +232,7 @@ Verify before declaring done:
 - [ ] All 4 canonical artifacts were open during drafting (process guide / template / voice guide / recent published Ship)
 - [ ] All 6 workstream memos read in full
 - [ ] Omnibus logs spot-checked for substantive claims
-- [ ] Template structure followed in full (5 workstreams + emoji prefixes + sentence case + metrics table + 5-component learning pattern + footer + phase tag)
+- [ ] Template structure followed in full (5 workstreams + emoji prefixes + sentence case + metrics bullet list + 5-component learning pattern + footer + phase tag)
 - [ ] Voice discipline passes (no semicolons, no "load-bearing" in public prose, no "CoS")
 - [ ] Word count: 800–1,200 (or PM-approved overage with rationale)
 - [ ] Draft committed to worktree branch immediately after Write
@@ -268,6 +268,10 @@ The Ship #043 v0.1 failure was not knowing the template existed — it was choos
 
 ## Version history
 
+### v1.5 (2026-07-08, same day as v1.3/v1.4)
+
+**Metrics are a bullet list, never a table** (PM, during Ship #050 review): Medium and LinkedIn don't render markdown tables, so template v4.1's Governance metrics-table format is superseded — use `**Issues closed:** 25` bullets. Don't force uninteresting metrics (e.g. a publications count) just to fill the list. Process guide's former "metrics table is the exception" line retired in the same pass. Also from the same review: the External section's publication list can be followed by one of the window's cartoon illustrations (image linked to its post, exact alt text from the calendar CSV, caption below with its quotation marks preserved).
+
 ### v1.4 (2026-07-08, same day as v1.3)
 
 Two corrections from live failures the same day v1.3 shipped:
@@ -294,7 +298,7 @@ Initial skill. Lists canonical artifacts to load before drafting. Names voice-di
 
 ---
 
-*Skill version: 1.4*
+*Skill version: 1.5*
 *Created: 2026-05-19 (v1.0)*
-*Updated: 2026-05-20 (v1.1 — External-section verification step; v1.2 — omnibus is required full read, not spot-check); 2026-07-08 (v1.3 — Comms pre-publish review is a named mandatory step; v1.4 — PM gates the Comms handoff + evidence-tier discipline for claims)*
+*Updated: 2026-05-20 (v1.1 — External-section verification step; v1.2 — omnibus is required full read, not spot-check); 2026-07-08 (v1.3 — Comms pre-publish review is a named mandatory step; v1.4 — PM gates the Comms handoff + evidence-tier discipline; v1.5 — metrics as bullet list, never a table)*
 *Scope: Exec (drafts); PM (gates); Comms (reviews)*
