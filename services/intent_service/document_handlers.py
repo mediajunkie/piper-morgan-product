@@ -20,6 +20,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from services.analysis.document_analyzer import DocumentAnalyzer
+from services.file_context.storage import read_file_from_storage  # #1306: the single byte-read seam
 from services.database.connection import db
 from services.database.models import UploadedFileDB
 from services.database.session_factory import AsyncSessionFactory
@@ -142,10 +143,10 @@ async def handle_question_document(file_id: str, question: str, user_id: str) ->
         import pypdf
 
         text_content = ""
-        with open(file_path, "rb") as f:
-            reader = pypdf.PdfReader(f)
-            for page in reader.pages:
-                text_content += page.extract_text() or ""
+        # #1306: bytes via the decrypt seam, never a raw open()
+        reader = pypdf.PdfReader(io.BytesIO(read_file_from_storage(file_path)))
+        for page in reader.pages:
+            text_content += page.extract_text() or ""
 
         # 4. Build Q&A prompt
         prompt = f"""You are answering a question about a document.
@@ -261,10 +262,10 @@ async def handle_compare_documents(file_ids: List[str], user_id: str) -> Dict:
             import pypdf
 
             text_content = ""
-            with open(file_path, "rb") as f:
-                reader = pypdf.PdfReader(f)
-                for page in reader.pages:
-                    text_content += page.extract_text() or ""
+            # #1306: bytes via the decrypt seam, never a raw open()
+            reader = pypdf.PdfReader(io.BytesIO(read_file_from_storage(file_path)))
+            for page in reader.pages:
+                text_content += page.extract_text() or ""
 
             documents.append(
                 {
@@ -408,10 +409,10 @@ async def handle_reference_in_conversation(
         import pypdf
 
         text_content = ""
-        with open(file_path, "rb") as f:
-            reader = pypdf.PdfReader(f)
-            for page in reader.pages[:5]:  # First 5 pages to avoid token overflow
-                text_content += page.extract_text() or ""
+        # #1306: bytes via the decrypt seam, never a raw open()
+        reader = pypdf.PdfReader(io.BytesIO(read_file_from_storage(file_path)))
+        for page in reader.pages[:5]:  # First 5 pages to avoid token overflow
+            text_content += page.extract_text() or ""
 
     # 3. Build conversation context
     conversation_context = ""
