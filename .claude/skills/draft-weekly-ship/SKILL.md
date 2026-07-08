@@ -205,8 +205,8 @@ Verify before declaring done:
 - **Save location** (canonical drafting): `dev/active/weekly-ship-{NNN}-draft-{YYYY-MM-DD}.md` on the `claude/{worktree-slug}` branch per worktree-default discipline for substantive output
 - **Public-comms copy**: sync to `docs/public/comms/drafts/weekly-ship-{NNN}-draft-{YYYY-MM-DD}.md` on main so PM can read where they expect
 - **Commit immediately after Write** per the May 17 memory
-- **Route to Comms for pre-publish editorial review** (PM clarification 2026-07-08: Exec generally drafts the Ship, but Comms reviews it before publish — a standing step, not just when Comms happens to be in the loop. Comms's `template-audit` skill is their review-of-record; Exec's own Step-6 checklist pass does not substitute for it.)
-- **Route to PM** for voice-pass; flag word count if outside target. (Comms review and PM voice-pass can run in either order; both complete before publish.)
+- **Route to PM FIRST — PM gates the handoff to Comms.** PM reads, fact-checks, voice-passes, and *decides when* the draft is ready to enter Comms review (PM, 2026-07-08, after Exec routed a draft to Comms prematurely: *"It's not ready to go to comms yet. I decide that."*). Exec never self-initiates the Comms handoff. Flag word count to PM if outside target.
+- **Comms pre-publish review happens on PM's go** (PM clarification, same day: Exec generally drafts the Ship, but Comms reviews it before publish — a standing step). Comms's `template-audit` skill is their review-of-record; Exec's own Step-6 checklist pass does not substitute for it. Sequence is fixed: draft → PM → Comms → publish.
 
 ---
 
@@ -268,6 +268,12 @@ The Ship #043 v0.1 failure was not knowing the template existed — it was choos
 
 ## Version history
 
+### v1.4 (2026-07-08, same day as v1.3)
+
+Two corrections from live failures the same day v1.3 shipped:
+1. **PM gates the Comms handoff.** v1.3 named the Comms review step but let Exec self-initiate the routing ("either order"). Exec then routed a draft to Comms before PM had read it — a draft that turned out to contain a headline factual error. PM: *"It's not ready to go to comms yet. I decide that."* Sequence is now fixed: draft → PM (fact-check + voice-pass + handoff decision) → Comms review → publish.
+2. **Evidence-tier discipline for claims** (see `dev/2026/07/08/ship-050-fact-check-2026-07-08.md`): the headline error traced to an *inference* in one agent's log that the omnibus printed as fact ("first external tester actively using it" — the tester had never successfully installed). The omnibus is the fact-check **baseline, not ceiling**: any claim resting solely on a log assertion with no artifact (commit/issue/URL/test output) and no PM witness gets softened, attributed, or cut before it enters a public draft. Step 4-prime's "session log is the ground truth" holds for *what an agent did*; it does not make an agent's inference about *someone else's* experience into ground truth.
+
 ### v1.3 (2026-07-08)
 
 Step 7: added the standing **Comms pre-publish review** step (PM clarification, in-conversation: "You generally do draft the weekly ship but Comms reviews it before we publish"). Previously the routing step named only PM's voice-pass; Comms's review had been happening implicitly via the publish pipeline but wasn't a named, mandatory step in this skill. Also relevant context from the same window: Ship #050's window error (see `docs/internal/operations/ship-050-window-date-error-2026-07-08.md`) — the fix there is upstream in the kickoff procedure (compute window formulaically, assert day-of-week, verify delivery landed), not in this skill; noted here so a future reader doesn't add redundant machinery to this file. Step 6's existing day-of-week sanity check already covers the drafting side.
@@ -288,7 +294,7 @@ Initial skill. Lists canonical artifacts to load before drafting. Names voice-di
 
 ---
 
-*Skill version: 1.3*
+*Skill version: 1.4*
 *Created: 2026-05-19 (v1.0)*
-*Updated: 2026-05-20 (v1.1 — External-section verification step; v1.2 — omnibus is required full read, not spot-check); 2026-07-08 (v1.3 — Comms pre-publish review is a named mandatory step)*
-*Scope: Exec (drafts); Comms (reviews)*
+*Updated: 2026-05-20 (v1.1 — External-section verification step; v1.2 — omnibus is required full read, not spot-check); 2026-07-08 (v1.3 — Comms pre-publish review is a named mandatory step; v1.4 — PM gates the Comms handoff + evidence-tier discipline for claims)*
+*Scope: Exec (drafts); PM (gates); Comms (reviews)*
