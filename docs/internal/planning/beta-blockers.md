@@ -2,7 +2,7 @@
 
 **Owner**: PPM
 **Status**: LIVING DOCUMENT — canonical source of truth for what remains between now and beta release (v0.9.0)
-**Last updated**: 2026-07-08 morning (Lead Dev — #1306 closed, Epic B fully built; 20→9 open since 7/07 began)
+**Last updated**: 2026-07-08 morning (Lead Dev — #1306 + #1258 closed; 20→8 open since 7/07 began)
 **Cross-references**: [sprint-order.md](sprint-order.md) (sprint sequencing across the whole board), [roadmap.md](roadmap/roadmap.md) (strategic plan), GitHub project "Building Piper Morgan" → Sprint field "Beta Blockers - Hard Gates Only"
 
 ---
@@ -19,7 +19,7 @@ This is the single canonical list of issues that must close before Piper Morgan 
 
 The full open backlog was swept sprint-by-sprint (M3-Quality, M3-Health, M3-Security, M4, M5, RECONNECT — 2026-07-04/05), following a deep forensic investigation into GitHub write-action capability that revealed the roadmap's earlier confidence in an August 1 target rested on assumptions that hadn't been verified bottom-up. That investigation is documented in the PPM session logs for 2026-07-04 and 2026-07-05.
 
-## The 9 open issues, organized by epic
+## The 8 open issues, organized by epic
 
 ### Epic A — Verification foundation ✅ CLOSED 2026-07-07 (0 open)
 
@@ -45,7 +45,7 @@ The full open backlog was swept sprint-by-sprint (M3-Quality, M3-Health, M3-Secu
 |---|-------|--------|
 | #1220 | github-mcp-server provisioning + write-path credential migration | In Progress — **Epic C's entire genuine remainder**. Scope expanded 2026-07-05: writes (create/update/close/comment) currently use the old native-PAT/shared-token credential path, not the new per-user grant store the read side uses — a tester connecting via the new OAuth flow would have writes silently misattributed until this migrates too. |
 
-### Epic D — Deploy/hosting portability (2 open issues; 3 closed)
+### Epic D — Deploy/hosting portability (1 open: #1299b; #1258 closed 2026-07-08 — empty-var strip proven live; #1278 in Sprint Backlog)
 
 ~~#1168~~ and ~~#1176~~ **closed 2026-07-05** (Lead Dev, Beta Blockers estimate research) — both fixes were already shipped as part of #1299's 2026-06-20 alpha-deploy remediation, but the issues themselves were never separately closed. Verified directly against current `main` before closing (see issue comments for evidence). #1299's own scope also shrank: sub-item (a) verified done, only (b) remains open.
 
@@ -53,7 +53,6 @@ The full open backlog was swept sprint-by-sprint (M3-Quality, M3-Health, M3-Secu
 
 | # | Title | Why it's a hard gate |
 |---|-------|----------------------|
-| #1258 | Strip inherited empty Anthropic env vars at server startup | Any hosted environment inheriting Claude Code's empty key fails every LLM call |
 | #1299 | Deploy hardening remainder — **only (b) remains**: deploy.sh migrate hardening (real-deploy verification + BUILD_FAIL race disambiguation) | Migrations fail on hosted deploys |
 
 ### Epic E — External-tester auth/account lifecycle ✅ CLOSED 2026-07-07 (0 open; #1105 + #441 + #1261 + #1348 all closed today)
@@ -80,7 +79,7 @@ Mostly isolated, well-scoped fixes — good candidates to pick off quickly. **#1
 | #1312 | DB↔model schema drift (~111 Alembic diffs) | High migration risk; cheaper to fix than the diff count suggests |
 | #1324 | Audit: hardcoded config values that should be env vars | Deploy-portability risk |
 
-**Total: 9 open issues across 7 epics** (2026-07-08 morning: #1306 closed — Epic B fully built; #358 closes on the deploy's dimension-A check) (2026-07-07: NINE closed today — #1304, #1317, #1105, #1279, #1285, #1216, #1256, #441, #1261 — Epic A fully done, Epic C down to #1220 only, Epic E down to #441+#1261; see the epic sections and change log. #1278 remains OPEN and counted).
+**Total: 8 open issues across 7 epics** (2026-07-08 morning: #1306 + #1258 closed — Epic B fully built, Epic D down to the deploy-verified #1299b + backlogged #1278) (2026-07-07: NINE closed today — #1304, #1317, #1105, #1279, #1285, #1216, #1256, #441, #1261 — Epic A fully done, Epic C down to #1220 only, Epic E down to #441+#1261; see the epic sections and change log. #1278 remains OPEN and counted).
 
 ## Recommended sequencing
 
