@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-08 | exec | memo-exec-to-comms-cc-pm-HOLD-ship050-review-retracted-2026-07-08.md | HOLD — disregard my earlier Ship #050 review request; draft NOT ready; PM gates… |
+| 2026-07-08 | exec | memo-exec-to-comms-cc-pm-ship050-draft-for-review-2026-07-08.md | Ship #050 draft ready for your pre-publish review — publish target today (Wed J… |
+| 2026-07-08 | exec | memo-exec-to-comms-cc-pm-ship050-ready-for-review-pm-go-2026-07-08.md | Ship #050 — NOW ready for your pre-publish review, on PM's explicit go |
 | 2026-07-06 | exec | memo-exec-to-web-cc-comms-pm-newsletter-name-resolved-2026-07-06.md | Newsletter name — already decided, just never crossed over to this repo: 'Now W… |
 | 2026-07-05 | docs | memo-docs-to-comms-practice-retired-published-2026-07-05.md | re: The Practice That Got Retired — live, ready for syndication |
 | 2026-07-05 | exec | memo-exec-to-leads-ship050-section-due-now-2026-07-05.md | Ship #050 — §0 section due NOW, not Monday (correction to kickoff framing) |
