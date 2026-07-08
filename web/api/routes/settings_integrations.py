@@ -30,6 +30,14 @@ from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
 logger = structlog.get_logger(__name__)
 
+
+def _base_url() -> str:
+    """#1324: deployed servers set PIPER_BASE_URL; OAuth redirect fallbacks derive
+    from it so a missing per-provider redirect env var yields a CORRECT deployed
+    URL instead of silently handing Slack/Google a localhost redirect (which
+    Slack rejects outright on prod)."""
+    return os.getenv("PIPER_BASE_URL", "http://localhost:8001").rstrip("/")
+
 router = APIRouter(prefix="/api/v1/settings/integrations", tags=["settings-integrations"])
 
 
@@ -369,7 +377,7 @@ async def connect_slack(
             "SLACK_SETTINGS_REDIRECT_URI",
             os.getenv(
                 "SLACK_REDIRECT_URI",
-                "http://localhost:8001/api/v1/settings/integrations/slack/callback",
+                f"{_base_url()}/api/v1/settings/integrations/slack/callback",  # #1324
             ),
         )
 
@@ -984,7 +992,7 @@ async def connect_calendar(
         original_redirect = handler.redirect_uri
         handler.redirect_uri = os.getenv(
             "GOOGLE_SETTINGS_REDIRECT_URI",
-            "http://localhost:8001/api/v1/settings/integrations/calendar/callback",
+            f"{_base_url()}/api/v1/settings/integrations/calendar/callback",  # #1324
         )
 
         # Issue #734: Pass user_id for multi-tenant state
@@ -1050,7 +1058,7 @@ async def handle_calendar_callback(
         # Override redirect URI to match what was used in authorization
         handler.redirect_uri = os.getenv(
             "GOOGLE_SETTINGS_REDIRECT_URI",
-            "http://localhost:8001/api/v1/settings/integrations/calendar/callback",
+            f"{_base_url()}/api/v1/settings/integrations/calendar/callback",  # #1324
         )
 
         result = await handler.handle_oauth_callback(code, state)

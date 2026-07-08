@@ -49,10 +49,22 @@ Into however `/opt/piper` injects env (compose env_file / .env — verify which 
 
 ```
 ENCRYPTION_MASTER_KEY=<the base64 key from Phase 0>   # 358/1305 encryption (fail-closed reads need it)
+PIPER_BASE_URL=https://alpha.pipermorgan.ai           # #1324: printed URLs, health check, AND the
+                                                      # Slack/Google OAuth redirect fallbacks all
+                                                      # derive from this now (localhost otherwise)
 # Optional usage-cap tuning — defaults are fine for the cohort (100 req/min, 10 concurrent):
 # USAGE_CAP_RATE_PER_MINUTE=100
 # USAGE_CAP_MAX_CONCURRENT=10
 ```
+
+**#1324 environment-name check (while you're in the .env)**: see whether `ENVIRONMENT` or
+`PIPER_ENVIRONMENT` is already set to `production` there.
+- If YES: the new dev-default-password guard is armed — startup will log CRITICAL if
+  `POSTGRES_PASSWORD` is still the dev default (that's a real finding, not noise).
+- If NO: you MAY set `ENVIRONMENT=production`, but **only if `JWT_SECRET_KEY` is also set in
+  that .env** — production mode makes a missing JWT secret a hard startup failure by design
+  (`services/auth/jwt_service.py`). If neither is set today, note it and we'll wire both
+  deliberately after this deploy rather than improvising mid-run.
 
 Redis is already on the droplet (#1311) — the usage-cap middleware needs it running; it's
 in the compose stack, no action expected. **If Redis were somehow down, every request would
