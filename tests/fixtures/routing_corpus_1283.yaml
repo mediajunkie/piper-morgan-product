@@ -1,0 +1,74 @@
+# #1283 behavioral routing corpus — DRAFT for Architect co-design (2026-07-08).
+#
+# One representative phrasing per user-facing capability. The behavioral probe
+# (step 2) runs each through the REAL classifier chain and asserts the intent
+# lands at `expected` — a registered handler or a category handler — never the
+# unhandled LLM floor. Once ratified, the enforcement test (step 3) consumes
+# this file in CI: a failing route = a failing build (the token-lint /
+# dispatch-ratchet shape).
+#
+# expected values:
+#   action:<name>    — must dispatch via the action rail to this entry
+#   category:<NAME>  — must land in this category's real handler (not improvised)
+#   REVIEW           — expected destination genuinely unknown; Arch/probe decides
+#
+# The 13 mode-1 static candidates are all represented, plus the #1269 original.
+corpus:
+  - phrase: "give me my standup"
+    expected: action:show_standup     # the #1269 fix — deterministic pre-check
+  - phrase: "what's on my calendar today?"
+    expected: category:TEMPORAL
+  - phrase: "when is my next meeting?"
+    expected: category:TEMPORAL
+  - phrase: "what am I working on?"
+    expected: category:STATUS
+  - phrase: "what should I focus on today?"
+    expected: category:PRIORITY
+  - phrase: "what are my top priorities?"
+    expected: category:PRIORITY
+  - phrase: "who am I?"
+    expected: action:get_identity
+  - phrase: "what's my role?"
+    expected: category:IDENTITY
+  - phrase: "how do I create a ticket?"
+    expected: category:GUIDANCE
+  - phrase: "create a ticket for the login bug"
+    expected: category:EXECUTION
+  - phrase: "analyze the file I uploaded"
+    expected: action:analyze_data
+  - phrase: "summarize the document"
+    expected: category:SYNTHESIS
+  - phrase: "what time is it?"
+    expected: category:TEMPORAL
+  - phrase: "show my open issues"
+    expected: action:list_issues
+  - phrase: "show my open pull requests"
+    expected: action:list_prs
+  - phrase: "any stale PRs?"
+    expected: action:stale_prs
+  - phrase: "what needs my attention?"
+    expected: action:attention_query
+  - phrase: "what changed since yesterday?"
+    expected: action:changes_query
+  - phrase: "how productive was I this week?"
+    expected: action:productivity_query
+  - phrase: "list my projects"
+    expected: action:list_projects
+  - phrase: "close issue 42"
+    expected: action:close_issue
+  - phrase: "comment on issue 42: looks good"
+    expected: action:comment_issue
+  - phrase: "what have you learned about my workstyle?"
+    expected: action:pull_insights
+  - phrase: "set my default repo to acme/widgets"
+    expected: action:set_default_repo
+  - phrase: "what is my default repo?"
+    expected: action:get_default_repo
+  - phrase: "write a short update for the CEO on where we are"
+    expected: action:write_stakeholder_update   # #1256's fix
+  - phrase: "update the project plan doc with the new dates"
+    expected: action:update_document_query
+  - phrase: "can you clarify what you meant?"
+    expected: REVIEW   # clarification_needed — mode-1 candidate, destination undecided
+  - phrase: "give me a project status report"
+    expected: REVIEW   # get_current_status vs get_project_status name-drift cluster (#1269 sibling)
