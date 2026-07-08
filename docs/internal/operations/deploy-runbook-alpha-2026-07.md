@@ -80,14 +80,16 @@ docker compose exec -T app python -m alembic current   # confirm head reached: f
 If the migrate genuinely failed mid-chain: the DB is transactional per-migration —
 note the failing revision, do NOT retry blindly; ping me with the error.
 
-## Phase 5 — The three backfills (on the droplet, key now present)
+## Phase 5 — The three backfills (yes, three now — #1306 landed 7/08) (on the droplet, key now present)
 
 ```bash
 # 1. #358-B content columns:
 docker compose exec -T app python -m scripts.backfill_encrypt_content_358b
 # 2. #1305 JSON columns:
 docker compose exec -T app python -m scripts.backfill_encrypt_json_1305
-# Both print per-column row counts; both are idempotent (re-run = no-op); both REFUSE
+# 3. #1306 uploaded files (added 2026-07-08):
+docker compose exec -T app python -m scripts.backfill_encrypt_files_1306
+# All three print counts; all are idempotent (re-run = no-op); all REFUSE
 # to run if the key is missing (that refusal = go back to Phase 3).
 ```
 
