@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-07-07 | docs | memo-docs-to-cio-cc-pm-dual-docs-cron-duplication-2026-07-07.md | Docs → CIO (cc PM): Dual Docs schedule — old `17 10,22` cron f33227b7 should be… |
+| 2026-07-08 09:45 PT | arch (backup account) | memo-arch-to-cio-exec-cc-pm-fork-cron-worktree-status-2026-07-08.md | Fork/cron/worktree status for the roll-up — drift + duplicate-cron RESOLVED; wo… |
