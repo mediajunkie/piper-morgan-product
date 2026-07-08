@@ -88,13 +88,23 @@ while :; do
         # the push already succeeded, so reconcile errors only warn — they never fail the send.
         reconcile_failed=""
         for f in "$@"; do
+            # #1374: reset this path's INDEX entry to HEAD before touching the worktree.
+            # A same-invocation staged rename (`git mv inbox/X read/X` before calling this
+            # script) broke BOTH branches below without this: the source half's ref-less
+            # `checkout -- f` restored from the INDEX (which the mv had already emptied →
+            # silent no-op), and the destination half got rm'd from disk while the index
+            # still claimed it — so the eventual merge saw index == incoming tree, never
+            # rewrote the file, and the memo ended up at NEITHER path (3-for-3 on every
+            # triage-move send). Still surgical: strictly per-path, never a broad reset.
+            G reset -q HEAD -- "$f" 2>/dev/null
             if G cat-file -e "HEAD:$f" 2>/dev/null; then
-                # tracked in HEAD → restore HEAD's version (undo this send's modify/delete);
-                # the eventual merge re-applies the change from origin/main cleanly.
-                err=$(G checkout -- "$f" 2>&1) || reconcile_failed="${reconcile_failed}${f}: ${err}"$'\n'
+                # tracked in HEAD → restore HEAD's version FROM HEAD explicitly (undo this
+                # send's modify/delete); the eventual merge re-applies the change cleanly.
+                err=$(G checkout HEAD -- "$f" 2>&1) || reconcile_failed="${reconcile_failed}${f}: ${err}"$'\n'
             else
-                # untracked new file → drop the local copy (identical content is on origin/main now);
-                # the eventual merge re-adds it as a tracked file cleanly.
+                # not in HEAD (purely-new file, or a rename's destination) → drop the local
+                # copy; with its index entry cleared above, the eventual merge re-creates it
+                # as a tracked file cleanly.
                 err=$(rm -f "$REPO/$f" 2>&1) || reconcile_failed="${reconcile_failed}${f}: ${err}"$'\n'
             fi
         done
