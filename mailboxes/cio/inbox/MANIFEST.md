@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-07-06 | ppm | memo-ppm-to-cio-463-flycoord-review-2026-07-06.md | #463 (FLY-COORD-TREES) -- PM's read: likely closeable, needs your review |
+| 2026-07-07 | docs | memo-docs-to-cio-cc-pm-dual-docs-cron-duplication-2026-07-07.md | Docs → CIO (cc PM): Dual Docs schedule — old `17 10,22` cron f33227b7 should be… |
