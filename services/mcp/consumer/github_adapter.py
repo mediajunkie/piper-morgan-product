@@ -149,6 +149,33 @@ class GitHubIssueResult:
     degradation: Optional[DegradationResponse] = None
 
 
+@dataclass
+class GitHubWriteResult:
+    """#1220 write-path cutover result — carries the #1322 hard-gate verdict.
+
+    ``verified`` is the deterministic action-success guard (ruled 2026-07-01):
+    True ONLY when a read-back through the same connector session confirmed the
+    artifact exists in the expected state — never from trusting the write
+    tool's own response text. Handlers may claim success ONLY on
+    ``verified=True``; ``verified=False`` with a populated ``raw`` means "the
+    write may have landed but could not be confirmed" (honest-uncertain, never
+    a confident ✓). ``degradation`` set = the write did not happen (no binding
+    / unreachable / tool failure) — the standard honest-degrade rail.
+    """
+
+    verified: bool = False
+    # Whether the write tool call was actually FIRED. False only for pre-call
+    # rail failures (no binding / stale) — the one state where a native-PAT
+    # fallback can't double-write. True + verified=False = "may have landed,
+    # unconfirmed": callers must surface honest uncertainty, never retry
+    # through another credential path (#1220 double-write hazard).
+    attempted: bool = True
+    issue_number: Optional[int] = None
+    url: Optional[str] = None
+    raw: Optional[Dict[str, Any]] = None
+    degradation: Optional[DegradationResponse] = None
+
+
 class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
     """
     GitHub MCP spatial adapter implementation.
@@ -359,6 +386,146 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 }
             )
         return out
+
+    # ── #1220 write-path cutover: writes over the per-user OAuth grant ──
+    # Tool names are the github-mcp-server standard set; the PM-present first
+    # REAL write (post-deploy, throwaway target) is the live validation of
+    # these names — a wrong name degrades honestly to UNREACHABLE, never a
+    # silent fake success (#1322 hard gate).
+    _CREATE_ISSUE_TOOL = "create_issue"
+    _UPDATE_ISSUE_TOOL = "update_issue"
+    _ADD_COMMENT_TOOL = "add_issue_comment"
+    _GET_ISSUE_TOOL = "get_issue"
+
+    @staticmethod
+    def _parse_issue_payload(payload: Optional[str]) -> Optional[Dict[str, Any]]:
+        """A single issue JSON object (create/update/get responses); None if unparseable."""
+        if not payload:
+            return None
+        try:
+            data = json.loads(payload)
+        except (ValueError, TypeError):
+            return None
+        return data if isinstance(data, dict) else None
+
+    async def _verified_write(
+        self, user_id: str, *, tool: str, args: Dict[str, Any], expect: Dict[str, Any],
+        require_written_id: bool = False,
+    ) -> "GitHubWriteResult":
+        """The #1322 deterministic action-success guard, applied to one write.
+
+        Sequence: binding rail → write tool call → parse the artifact → READ
+        BACK via get_issue in the SAME session → compare ``expect``ations.
+        ``verified=True`` comes ONLY from the read-back matching — never from
+        the write response alone. Any rail/tool failure → honest degrade;
+        write-parsed-but-readback-failed → verified=False with raw preserved
+        ("may have landed, unconfirmed" — the caller must not claim success).
+        """
+        binding_or_degrade = await self._bound_binding_or_degrade(user_id)
+        if isinstance(binding_or_degrade, DegradationResponse):
+            # Pre-call: the write was never fired — the ONLY safe-fallback state.
+            return GitHubWriteResult(attempted=False, degradation=binding_or_degrade)
+        try:
+            async with self._mcp_client_ctx(binding_or_degrade) as client:
+                result = await client.call_tool(tool, args)
+                written = self._parse_issue_payload(self._first_text(result.content))
+                if require_written_id and not (written or {}).get("id"):
+                    # For comment-writes the created artifact is the COMMENT —
+                    # a GitHub-minted id in the creation response is the
+                    # deterministic evidence (issue-existence alone would
+                    # overclaim). Absent id → honest-uncertain, never a ✓.
+                    logger.warning("github_write_unverifiable_no_artifact_id tool=%s", tool)
+                    return GitHubWriteResult(verified=False, raw=written)
+                number = (written or {}).get("number") or args.get("issue_number")
+                if not number:
+                    # Write response didn't yield an artifact to verify — honest-uncertain.
+                    logger.warning("github_write_unverifiable_no_artifact tool=%s", tool)
+                    return GitHubWriteResult(verified=False, raw=written)
+                readback_result = await client.call_tool(
+                    self._GET_ISSUE_TOOL,
+                    {"owner": args["owner"], "repo": args["repo"], "issue_number": int(number)},
+                )
+                readback = self._parse_issue_payload(self._first_text(readback_result.content))
+        except Exception:
+            # Mid-flight failure: the write MAY have landed before the error —
+            # attempted=True forbids a native retry (double-write hazard).
+            logger.warning("github_write_failed_unreachable tool=%s", tool, exc_info=True)
+            return GitHubWriteResult(
+                attempted=True,
+                degradation=await self.degrade(DegradationReason.UNREACHABLE),
+            )
+        if not readback or readback.get("number") != int(number):
+            return GitHubWriteResult(verified=False, issue_number=int(number), raw=written)
+        for key, expected in expect.items():
+            if readback.get(key) != expected:
+                logger.warning(
+                    "github_write_readback_mismatch tool=%s field=%s", tool, key
+                )
+                return GitHubWriteResult(
+                    verified=False, issue_number=int(number),
+                    url=readback.get("html_url"), raw=readback,
+                )
+        return GitHubWriteResult(
+            verified=True,
+            issue_number=int(number),
+            url=readback.get("html_url"),
+            raw=readback,
+        )
+
+    async def create_issue_connector(
+        self, user_id: str, *, owner: str, repo: str, title: str, body: str,
+        labels: Optional[List[str]] = None, assignees: Optional[List[str]] = None,
+    ) -> "GitHubWriteResult":
+        """Create an issue over the user's OAuth grant, read-back verified (#1220)."""
+        args: Dict[str, Any] = {"owner": owner, "repo": repo, "title": title, "body": body}
+        if labels:
+            args["labels"] = labels
+        if assignees:
+            args["assignees"] = assignees
+        return await self._verified_write(
+            user_id, tool=self._CREATE_ISSUE_TOOL, args=args, expect={"title": title}
+        )
+
+    async def update_issue_connector(
+        self, user_id: str, *, owner: str, repo: str, issue_number: int,
+        title: Optional[str] = None, body: Optional[str] = None,
+        state: Optional[str] = None, labels: Optional[List[str]] = None,
+        assignees: Optional[List[str]] = None,
+    ) -> "GitHubWriteResult":
+        """Update an issue over the user's OAuth grant, read-back verified (#1220)."""
+        args: Dict[str, Any] = {"owner": owner, "repo": repo, "issue_number": issue_number}
+        expect: Dict[str, Any] = {}
+        if title is not None:
+            args["title"] = title
+            expect["title"] = title
+        if body is not None:
+            args["body"] = body
+        if state is not None:
+            args["state"] = state
+            expect["state"] = state
+        if labels is not None:
+            args["labels"] = labels
+        if assignees is not None:
+            args["assignees"] = assignees
+        return await self._verified_write(
+            user_id, tool=self._UPDATE_ISSUE_TOOL, args=args, expect=expect
+        )
+
+    async def add_comment_connector(
+        self, user_id: str, *, owner: str, repo: str, issue_number: int, comment: str
+    ) -> "GitHubWriteResult":
+        """Comment on an issue over the user's OAuth grant (#1220).
+
+        Guard: the creation response must carry a GitHub-minted comment ``id``
+        (deterministic evidence the comment exists — ids only come from
+        successful creation) AND the target issue must read back — issue
+        existence alone would overclaim, a response-id alone wouldn't catch a
+        wrong-session/echo pathology. Both, or honest-uncertain."""
+        args = {"owner": owner, "repo": repo, "issue_number": issue_number, "body": comment}
+        return await self._verified_write(
+            user_id, tool=self._ADD_COMMENT_TOOL, args=args, expect={},
+            require_written_id=True,
+        )
 
     async def _search_via_connector(
         self, user_id: str, *, tool: str, query: str, limit: int
