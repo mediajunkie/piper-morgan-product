@@ -1,51 +1,46 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-08 09:41 PT (Wed Fire 1)
-**Session log today**: `dev/2026/07/08/2026-07-08-0941-exec-code-log.md`
-**Role**: Chief of Staff (Exec) | Sonnet 4.6 | DinP account (migration to dedicated pipermorgan.ai account in planning — CIO first mover, template proposed 7/6, PM's timing call, deadline end of month)
-**Cron**: `32 8,20 * * *` — id `9ba08401` (LEAN 2×/day, migration-hold cadence). Survived the 7/7 dormancy gap intact.
+**Last updated**: 2026-07-08 21:02 PT (Wed STOP)
+**Session log today**: `dev/2026/07/08/2026-07-08-0941-exec-code-log.md` (DAY-CLOSED)
+**Role**: Chief of Staff (Exec) | DinP account (pipermorgan.ai migration in planning — CIO first mover, PM's timing, deadline end of month)
+**Cron**: `32 8,20 * * *` — id `9ba08401`, single, armed; next fire 08:32 Thu Jul 9. (CronList-before-create discipline held — no duplicate today.)
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3`
 
 ---
 
-## ⚠️ LIVE THREAD — worktree/duty-cycle-sync conversation PM wants with CIO
+## ✅ Ship #050 — PUBLISHED + DISTRIBUTED 7/8
 
-PM (7/6 evening) said yes to discussing with CIO: Ted Nadeau's email, a list of ideas, and **the current state of the duty cycle**. Also separately floated (same evening) that several agents seem to be struggling with worktree/sync hygiene and wondered about a CIO conversation. Treating these as the same eventual conversation. **Four concrete data points now exist, all fresh**:
-1. My own 7/6 finding: 67 commits behind, dead cron, 34 never-committed mail drafts.
-2. CXO's incident (session-start hook now checks for landing on shared `main` instead of a worktree — implies CXO hit exactly that).
-3. Arch's T3: launch prompt keeps re-homing into a dedicated `arch-backup-0630` worktree instead of ephemeral Option-B — flagged 7/8 as the hazard that fed the original self-attribution-drift incident. Fix is at the harness/launch-config layer (remove the worktree + fix the launch prompt) — needs PM/CIO, not an arch-session action.
-4. **My own 7/7 incident — a full ~24h Gap-C dormancy**: session went dark shortly after the 09:02 START fire, never STOPped, self-recovered only via `SessionStart:resume` this morning after the watchdog's stall alert (24h stale vs. 19h threshold — ~5h detection lag on top of the gap itself). No work lost, but a real, first-hand end-to-end dormancy+detection-lag example. Full reconstruction in `dev/2026/07/07/2026-07-07-0902-exec-code-log.md`'s retroactive STOP section.
+[Blog](https://pipermorgan.ai/shipping-news/weekly-ship-050-the-connector-gets-real) + LinkedIn, "The Connector Gets Real." Full saga (window error → root cause → fact-check → PM fix rounds → Comms review → publish) in today's session log + `dev/2026/07/08/ship-050-fact-check-2026-07-08.md` + `docs/internal/operations/ship-050-window-date-error-2026-07-08.md`. Comms marked it "ready for Docs handoff" (archive step — Docs's pipeline, just watch it happens).
 
-**Not yet scheduled or raised formally** — PM hasn't said go on convening this with CIO. Don't draft/send anything to CIO about this beyond what's already been said until PM confirms timing.
+## ⚠️ FRIDAY JUL 10 — Ship #051 kickoff, FIRST RUN of the new discipline
 
----
+Window = **Jul 3–9** (compute: prior window Jun 26–Jul 2 + 7 days). Before sending: **(1)** assert Jul 3 is a Friday and Jul 9 is a Thursday (`python3 -c "from datetime import date; print(date(2026,7,3).strftime('%A'), date(2026,7,9).strftime('%A'))"`); **(2)** state the window as explicit dates in the memo body AND the fill-in template (roles copy the template — that's how the #050 error propagated); **(3)** verify `mail-send.sh` prints its `pushed ✓` confirmation and the memo files exist on origin/main after. The Friday cron `249b372c` from the old setup is GONE (session-scoped, long dead) — the kickoff rides the normal 08:32 Friday fire, don't wait for a separate trigger. Note for #051 content: the invite-gate (#1344, v0.8.9.2, Jul 3) and the 20→8 beta-blocker burn-down belong to THIS window.
 
-## OPEN — needs PM
+## OPEN — PM's board (from 7/8 afternoon rollup, PM engaged with it)
 
-- **Batch-1 invite codes — READY, needs PM to actually send them.** `dev/alpha/invite-tokens-assignments-batch-1.md` (PM's local, gitignored) has all 10. One flag: Jake Krajewski's email unconfirmed — verify before sending his.
-- **Account migration**: CIO's starting-point template filed (7/6) — concrete first-mover plan + 3 open questions (sequence after CIO, go/no-go checkpoint or parallel, PM owns timing). Every row on `docs/migration/pipermorgan-ai-account-migration.md` still unconfirmed. Ready whenever the 3-way (PM+CIO+Exec) conversation happens — PM said unhurried, deadline end of month (Kindsys.us retiring, pipermorgan.ai → Max).
-- **HOST**: Rebecca Refoy's email was supplied 7/6 and relayed — verify this is actually closed (should be, given batch-1 shows 10/10 ready).
-- **MCPB production-readiness**: PA's leadership briefing (7/6) started the formal sign-off process (skunkworks → product needs full leadership sign-off incl. CXO design). No exec action needed yet, just on our radar.
-- **"Climbing Higher" blog post** — still genuinely unclear whether PM's voice-pass happened. Ask directly rather than guess.
-- **MCPB v0.1.9 clean-machine test result** — still outstanding as of last check (7/6). PPM/PA waiting on relay.
-- **Beta scope roadmap fold (v18.6)** — asked PPM 7/6 evening to fold PM's clarified beta scope into the roadmap. Not yet confirmed landed — check `docs/internal/planning/roadmap/roadmap.md` version.
+- **Wake + coverage decision**: HOST (last 7/7) / PPM (7/6) / Web (7/5) still dark at close; Comms + CXO recovered same day after PM's follow-up. Root cause: lean-throttle restores never sent (migration hold superseded) + registry watches only 4/11 roles. PM has the un-pause + expand-coverage decision.
+- **Invite codes**: PM to send (local file); verify Jake's email first.
+- **PM↔CIO conversation**: Ted Nadeau email + ideas list + duty-cycle state. CIO active; PM's timing.
+- **Beta date**: 8 blockers left at Lead's pace; PM says pickable soon.
+- **Migration timing**: CIO template ready; EOM deadline.
 
-## RESOLVED (recent, for reference)
+## OWED TO EXEC (chase if silent)
 
-- **Ship #050 synthesis** — delivered 7/6, `dev/2026/07/06/exec-ship-050-workstream-synthesis-2026-07-06.md`. Done, nothing further needed unless PM has edits.
-- **Web Phase 3 + newsletter name** — both unblocked/resolved 7/6 evening. Newsletter-name thread fully closed 7/7 (Comms confirmed "Now What?" and "Building Piper Morgan" are correctly distinct, no cross-contamination).
-- **Two-arch-session false alarm** — fully closed, re-confirmed clean by Arch 7/8.
-- **Duplicate cron (7/6→7/7)** — fixed, re-confirmed clean by Arch 7/8.
-- **Inbox-proxy pilot** — greenlit 7/4, running.
-- **`exec-open-items-tracker.md`** — full reconciliation done 7/6, should still be current — check there for anything not listed above.
+- **CIO + HOST**: skill-review responses (candidates-doc read + audit-cadence alignment proposal) — memo sent 7/8 midday; HOST is dark, so expect CIO first.
+- **PPM**: roadmap v18.6 beta-scope fold (asked 7/6) — blocked on PPM waking.
 
----
+## RESOLVED TODAY (reference)
+
+- T3 worktree straddle — closed by Arch+CIO pair, no PM/harness action needed (straddle had already collapsed; cleanup deferred to natural session-end).
+- Ship #050 window-error root cause — undelivered kickoff (outage casualty) + my mis-derived Jul 5 follow-up; NOT a 6-agent lapse. Fix = repair-readiness (already built) + the Friday discipline above.
+- Skill-candidates review RATIFIED monthly (PM); `docs/internal/operations/skill-candidates-review.md`.
+- `draft-weekly-ship` v1.5: PM gates Comms handoff; evidence tiers (omnibus = baseline not ceiling); metrics as bullets never tables.
 
 ## STANDING
 
-- **Today's cohort-attention rollup** — Arch's 7/8 status memo was explicitly sent "for today's roll-up," meaning PM has asked for one today. Compile fresh when PM engages (per the skill's PM-present cadence rule) rather than pre-rendering into a void.
-- **`exec-open-items-tracker.md`** remains the source of truth for longer-running active items — check there first.
+- `exec-open-items-tracker.md` = source of truth for longer-running items (last full reconcile 7/6; next touch when queue allows).
+- Rollup: render at next PM-present engagement (afternoon 7/8 board is current baseline; diff forward from it).
 
 ---
 
-*— Exec (DinP / Sonnet 4.6), 7/8 09:41 PT.*
+*— Exec, 7/8 21:02 PT.*
