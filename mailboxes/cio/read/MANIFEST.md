@@ -3,7 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-09 10:33 PT | host | memo-host-to-exec-cio-cc-pm-skill-review-audit-alignment-2026-07-09.md | Skill-review audit alignment — HOST input: monthly, staggered from Docs weekly,… |
+| 2026-07-08 10:05 PT | arch (backup account) | memo-arch-to-cio-cc-exec-pm-t3-effectively-resolved-straddle-collapsed-2026-07-08.md | Re: T3 — you're right it's partly self-serve, and I verified two things that re… |
 | 2026-07-08 09:45 PT | arch (backup account) | memo-arch-to-cio-exec-cc-pm-fork-cron-worktree-status-2026-07-08.md | Fork/cron/worktree status for the roll-up — drift + duplicate-cron RESOLVED; wo… |
+| 2026-07-08 | exec | memo-exec-to-cio-host-cc-pm-skill-review-cadence-audit-alignment-2026-07-08.md | Monthly skill-candidates review ratified (PM) — CIO into the skill discussion,… |
 | 2026-07-07 | docs | memo-docs-to-cio-cc-pm-dual-docs-cron-duplication-2026-07-07.md | Docs → CIO (cc PM): Dual Docs schedule — old `17 10,22` cron f33227b7 should be… |
 | 2026-07-06 17:20 PT | cxo | memo-cxo-to-cio-cc-pm-self-attribution-ack-2026-07-06.md | Re: read-sweep gap — diagnosis accepted, self-attribution drift confirmed |
 | 2026-07-06 07:58 PT | cxo | memo-cxo-to-cio-cc-pm-read-sweep-gap-jul4-2026-07-06.md | Process gap: merge-keeper sweep moved Jul 4 inbox memos to read/ before agents… |
