@@ -166,3 +166,62 @@ class TestRouterIsAvailable:
             patch.object(r.config_service, "is_configured", return_value=True),
         ):
             assert await r.is_available() is True
+
+
+class TestIssueRequestSlotFill:
+    """2026-07-09: the classifier schema carries no entity fields and the
+    extraction stage was never wired, so context.repository/title/body had no
+    producer — the live first-real-write landed on the user's stale DEFAULT
+    repo despite an explicitly-named target. Deterministic slot-fill from the
+    message text (house #1066 pattern) is the fix; these pin it."""
+
+    def _f(self):
+        from services.intent.intent_service import IntentService
+
+        return IntentService._slotfill_issue_request
+
+    def test_the_live_sentence_extracts_fully(self):
+        msg = ('Please create an issue in mediajunkie/test-piper-morgan repo titled '
+               '"v0.8.10.3 first connector write" with body "created via the per-user '
+               'OAuth rail, verified by read-back"')
+        slots = self._f()(msg)
+        assert slots["repository"] == "mediajunkie/test-piper-morgan"
+        assert slots["title"] == "v0.8.10.3 first connector write"
+        assert slots["body"] == "created via the per-user OAuth rail, verified by read-back"
+
+    def test_url_and_git_suffix_forms(self):
+        f = self._f()
+        assert f("in https://github.com/acme/widgets please")["repository"] == "acme/widgets"
+        assert f('github.com/acme/widgets.git titled "X"')["repository"] == "acme/widgets"
+
+    def test_fractions_and_dates_never_match(self):
+        f = self._f()
+        assert "repository" not in f("what about 7/9 planning")
+        # inside a real request, the real repo wins over the fraction:
+        assert f("issue about the 1/2 day outage in acme/widgets")["repository"] == "acme/widgets"
+
+    def test_no_slots_returns_empty(self):
+        assert self._f()("create an issue about login bugs") == {}
+
+    @pytest.mark.asyncio
+    async def test_create_uses_slotfilled_repo_over_default(self, svc):
+        """The exact live failure: explicitly-named repo must WIN over the
+        stored default (which pointed at a repo with Issues disabled)."""
+        intent = _intent()
+        intent.context = {}  # what production actually delivers
+        intent.original_message = (
+            'create an issue in mediajunkie/test-piper-morgan titled "T" with body "B"'
+        )
+        created = {"number": 5, "html_url": "u", "title": "T"}
+        with (
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            patch(f"{ROUTER}.create_issue", new=AsyncMock(return_value=created)) as w,
+        ):
+            result = await svc._handle_create_issue(intent, "wf-1", "sess-1")
+        assert result.success
+        kwargs = w.await_args.kwargs
+        assert kwargs["owner"] == "mediajunkie"
+        assert kwargs["repo_name"] == "test-piper-morgan"
+        assert kwargs["title"] == "T"
+        assert kwargs["body"] == "B"

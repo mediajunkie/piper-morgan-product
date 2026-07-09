@@ -6666,6 +6666,47 @@ class IntentService:
         # and route through the conversational floor instead.
         return self._GENERIC_FALLBACK_TEXT
 
+    @staticmethod
+    def _slotfill_issue_request(message: str) -> dict:
+        """Deterministic slot-fill for issue-write requests (2026-07-09).
+
+        Root cause this covers: the classification prompt's JSON schema carries
+        NO entity fields and ENTITY_EXTRACTION_PROMPT has zero callers, so
+        ``intent.context``'s repository/title/body keys were a consumer contract
+        with no producer — every chat-created issue silently used the fallback
+        title and the user's DEFAULT repo (live-proven on alpha: a write aimed
+        at an explicitly-named repo landed on the stale default instead). Same
+        house pattern as the #1066 issue-number regex fallback. The general fix
+        (entity-bearing classifier schema / wiring the orphaned extraction
+        stage) is flagged for ADR-073.
+        """
+        import re as _re
+
+        out: dict = {}
+        if not message:
+            return out
+        # owner/repo — URL form first (else "github.com/owner" would match as
+        # the pair); then a bare pair NOT preceded by a dot/slash (domain guard).
+        m = _re.search(r"github\.com/([A-Za-z0-9._-]+/[A-Za-z0-9._-]+)", message)
+        if not m:
+            # owner must contain a letter — excludes fractions/dates ("1/2",
+            # "7/9"); all-digit orgs (rare) can still use the URL form above.
+            m = _re.search(
+                r"(?<![./\w])((?=[A-Za-z0-9-]*[A-Za-z])[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?/[A-Za-z0-9._-]+)\b",
+                message,
+            )
+        if m:
+            out["repository"] = m.group(1).removesuffix(".git")
+        # titled "..." / title "..." / titled '...'
+        m = _re.search(r"\btitled?\s*[\"\u201c']([^\"\u201d']+)[\"\u201d']", message)
+        if m:
+            out["title"] = m.group(1)
+        # with body "..." / body '...'
+        m = _re.search(r"\bbody\s*[\"\u201c']([^\"\u201d']+)[\"\u201d']", message)
+        if m:
+            out["body"] = m.group(1)
+        return out
+
     def _unverified_write_result(self, e, intent, workflow_id):
         """#1220/#1322: a fired-but-unverified connector write raises with the
         "may or may not have landed" phrasing. Surface that honest uncertainty
@@ -6741,8 +6782,20 @@ class IntentService:
 
             # Extract issue details from intent
             title = intent.context.get("title") or f"Issue: {intent.original_message[:50]}"
-            description = intent.context.get("description") or intent.original_message
-            repository = intent.context.get("repository") or intent.context.get("repo")
+            # 2026-07-09: deterministic slot-fill BEFORE defaults — see
+            # _slotfill_issue_request's docstring for why context is empty here.
+            slots = self._slotfill_issue_request(intent.original_message or "")
+            title = intent.context.get("title") or slots.get("title") or title
+            description = (
+                intent.context.get("description")
+                or slots.get("body")
+                or intent.original_message
+            )
+            repository = (
+                intent.context.get("repository")
+                or intent.context.get("repo")
+                or slots.get("repository")
+            )
 
             # Issue #494: Fall back to default repository from config
             # #1366 Component A: default_repository must come from the per-user,
@@ -6912,11 +6965,17 @@ class IntentService:
 
         try:
 
-            # Extract parameters from intent
+            # Extract parameters from intent — deterministic slot-fill first
+            # (2026-07-09; see _slotfill_issue_request: context arrives empty).
+            slots = self._slotfill_issue_request(intent.original_message or "")
             issue_number = intent.context.get("issue_number")
-            repository = intent.context.get("repository") or intent.context.get("repo")
-            title = intent.context.get("title")
-            body = intent.context.get("body") or intent.context.get("description")
+            repository = (
+                intent.context.get("repository")
+                or intent.context.get("repo")
+                or slots.get("repository")
+            )
+            title = intent.context.get("title") or slots.get("title")
+            body = intent.context.get("body") or intent.context.get("description") or slots.get("body")
             state = intent.context.get("state")
             labels = intent.context.get("labels")
             assignees = intent.context.get("assignees")
