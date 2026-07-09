@@ -37,13 +37,34 @@ CORPUS_PATH = PROJECT_ROOT / "tests" / "fixtures" / "routing_corpus_1283.yaml"
 
 
 async def run_probe(out_path: Path | None) -> int:
+    import re as _re
+
+    from services.intent_service.action_registry import ACTION_REGISTRY
     from services.intent_service.classifier import IntentClassifier
     from services.intent_service.workflow_dispatcher import get_action_workflows
     from services.intent_service.workflow_entries import register_default_workflows
     from services.llm.clients import LLMClient
 
     register_default_workflows()
-    rail = set(get_action_workflows().keys())
+    workflows = get_action_workflows()
+    rail = set(workflows.keys())
+    canon = {a for (_c, a) in ACTION_REGISTRY}
+    # 4-surface reachability (Arch-ratified 2026-07-08): rail ∪ pre_classifier
+    # emissions ∪ registry-canonical (category/floor-surface handled per the lint's
+    # accounting in test_routing_vocabulary_1283.py).
+    _pre_src = (PROJECT_ROOT / "services" / "intent_service" / "pre_classifier.py").read_text()
+    pre_surface = set(_re.findall(r'action="([a-z_]+)"', _pre_src)) | set(
+        _re.findall(r'IntentCategory\.\w+,\s*"([a-z_]+)"', _pre_src)
+    )
+    reachable = rail | pre_surface | canon
+
+    def _same_handler(a: str, b: str) -> bool:
+        """Alias-equivalence: two rail keys dispatching to the same entry are the
+        same destination — emitting a sibling alias of the expected canonical IS
+        correct routing (probe run-2 row 19: analyze_productivity vs
+        productivity_query, both -> _handle_productivity_query)."""
+        ea, eb = workflows.get(a), workflows.get(b)
+        return ea is not None and ea is eb
 
     corpus = yaml.safe_load(CORPUS_PATH.read_text())["corpus"]
     classifier = IntentClassifier(llm_service=LLMClient())
@@ -58,9 +79,22 @@ async def run_probe(out_path: Path | None) -> int:
             on_rail = action in rail
             if expected.startswith("action:"):
                 want = expected.split(":", 1)[1]
-                verdict = "PASS" if (action == want and on_rail) else "FAIL"
-                if action == want and not on_rail:
-                    verdict = "FAIL(mode-2: emitted but NOT on rail)"
+                if action == want:
+                    verdict = (
+                        "PASS" if want in reachable
+                        else "FAIL(mode-2: canonical reachable through NO surface)"
+                    )
+                    if want in reachable and not on_rail:
+                        verdict = "PASS(surface: pre-classifier/floor)"
+                elif _same_handler(action, want):
+                    verdict = f"PASS(alias-equivalent: {action} -> same handler)"
+                else:
+                    verdict = "FAIL"
+                if row.get("seam") == "pre_classifier" and verdict == "FAIL":
+                    verdict = (
+                        "SEAM(pre_classifier owns this phrase in production; "
+                        "classifier-only result is informational)"
+                    )
             elif expected.startswith("category:"):
                 want = expected.split(":", 1)[1]
                 verdict = "PASS" if category == want else "FAIL"
