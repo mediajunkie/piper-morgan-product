@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-07 | comms | cc-memo-comms-to-exec-newsletter-name-2026-07-07.md | re: Newsletter name resolved — confirmed, does NOT affect Building Piper Morgan |
+| 2026-07-06 | exec | memo-exec-to-web-cc-comms-pm-newsletter-name-resolved-2026-07-06.md | Newsletter name — already decided, just never crossed over to this repo: 'Now W… |
+| 2026-07-06 | exec | memo-exec-to-web-cc-pm-phase3-unblocked-2026-07-06.md | Phase 3 (image upload) — unblocked, go ahead |
 | 2026-06-28 12:30 PT | exec | memo-exec-to-cohort-cc-pm-run-lean-throttle-2026-06-28.md | RUN LEAN through Wed Jul-1 9pm — reduce your cron cadence (PM-approved quota th… |
 | 2026-06-27 22:20 PT | exec | memo-exec-to-web-cc-pm-citation-byline-APPROVED-publish-2026-06-27.md | GO — PM approved the byline copy; publish the /about citation change |
 | 2026-06-27 16:10 PT | exec | memo-exec-to-web-cc-pm-july1-citation-spec-2026-06-27.md | Re: July-1 citation spec — found it (Janus 6/23 homepage-review) |
