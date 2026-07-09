@@ -15,6 +15,8 @@ Security Features:
 from dataclasses import dataclass
 from typing import Dict, List, Optional
 
+import os
+
 import keyring
 import structlog
 
@@ -62,20 +64,72 @@ class KeychainService:
             service_name: Service identifier for keychain entries
         """
         self.service_name = service_name
+        # #1382: the encrypted-DB fallback store, active when the OS keyring has no
+        # real backend (hosted Linux resolves to keyring.backends.fail.Keyring —
+        # init "succeeds" there while every operation raises; found live on alpha
+        # 2026-07-08). None = OS keychain in use (the local-dev/Mac path, unchanged).
+        self._db_store = None
         self._verify_keyring_backend()
 
     def _verify_keyring_backend(self) -> None:
-        """Verify keyring backend is available"""
+        """Verify keyring backend availability and select the credential store.
+
+        Selection (#1382): env PIPER_CREDENTIAL_STORE=db forces the encrypted-DB
+        store; =keychain forces the OS keyring (legacy behavior incl. its failure
+        mode); unset → auto: a dead/fail backend with a field encryptor available
+        routes to the DB store. Dead backend AND no encryptor → hard error (fail
+        closed — there is nowhere secure to put a secret).
+        """
+        forced = os.getenv("PIPER_CREDENTIAL_STORE", "").strip().lower()
         try:
             backend = keyring.get_keyring()
+            backend_name = backend.__class__.__name__
+            backend_dead = "fail" in backend.__class__.__module__ or forced == "db"
+        except Exception as e:
+            if forced == "keychain":
+                logger.error(f"Failed to initialize keyring: {e}")
+                raise RuntimeError(f"Keyring initialization failed: {e}")
+            backend_name, backend_dead = "unavailable", True
+
+        if forced == "keychain":
             logger.info(
                 "Keychain service initialized",
-                backend=backend.__class__.__name__,
+                backend=backend_name,
                 service_name=self.service_name,
             )
-        except Exception as e:
-            logger.error(f"Failed to initialize keyring: {e}")
-            raise RuntimeError(f"Keyring initialization failed: {e}")
+            return
+
+        if backend_dead:
+            try:
+                from services.infrastructure.secure_credential_store import (
+                    EncryptedDBCredentialStore,
+                )
+
+                self._db_store = EncryptedDBCredentialStore()
+                logger.info(
+                    "Keychain service initialized",
+                    backend="EncryptedDBCredentialStore (#1382 hosted fallback)",
+                    os_backend=backend_name,
+                    service_name=self.service_name,
+                )
+                return
+            except Exception as e:
+                logger.error(
+                    "keychain_no_secure_store",
+                    os_backend=backend_name,
+                    fallback_error=str(e),
+                )
+                raise RuntimeError(
+                    "No OS keyring backend AND the encrypted-DB fallback is "
+                    f"unavailable ({e}) — refusing to run without a secure "
+                    "credential store (#1382)."
+                )
+
+        logger.info(
+            "Keychain service initialized",
+            backend=backend_name,
+            service_name=self.service_name,
+        )
 
     def store_api_key(self, provider: str, api_key: str, username: Optional[str] = None) -> None:
         """
@@ -96,7 +150,12 @@ class KeychainService:
             raise ValueError("API key cannot be empty")
 
         try:
-            keyring.set_password(self.service_name, self._get_key_name(provider, username), api_key)
+            if self._db_store is not None:
+                self._db_store.store(self._get_key_name(provider, username), api_key)
+            else:
+                keyring.set_password(
+                    self.service_name, self._get_key_name(provider, username), api_key
+                )
             log_identifier = f"{username}/{provider}" if username else provider
             logger.info(f"Stored API key for {log_identifier} in keychain")
         except Exception as e:
@@ -119,7 +178,12 @@ class KeychainService:
             return None
 
         try:
-            key = keyring.get_password(self.service_name, self._get_key_name(provider, username))
+            if self._db_store is not None:
+                key = self._db_store.get(self._get_key_name(provider, username))
+            else:
+                key = keyring.get_password(
+                    self.service_name, self._get_key_name(provider, username)
+                )
             if key:
                 log_identifier = f"{username}/{provider}" if username else provider
                 logger.debug(f"Retrieved API key for {log_identifier} from keychain")
@@ -144,7 +208,14 @@ class KeychainService:
             return False
 
         try:
-            keyring.delete_password(self.service_name, self._get_key_name(provider, username))
+            if self._db_store is not None:
+                found = self._db_store.delete(self._get_key_name(provider, username))
+                if not found:
+                    return False
+            else:
+                keyring.delete_password(
+                    self.service_name, self._get_key_name(provider, username)
+                )
             log_identifier = f"{username}/{provider}" if username else provider
             logger.info(f"Deleted API key for {log_identifier} from keychain")
             return True
