@@ -6785,6 +6785,19 @@ class IntentService:
             # 2026-07-09: deterministic slot-fill BEFORE defaults — see
             # _slotfill_issue_request's docstring for why context is empty here.
             slots = self._slotfill_issue_request(intent.original_message or "")
+            # Permanent write-path diagnostic (2026-07-09): the live first-real-write
+            # chase burned four deploy loops because THIS hop had zero observability
+            # on hosted. One INFO line = message seen, context carried, slots
+            # extracted, action taken. Keep it.
+            _slog_diag = __import__("structlog").get_logger(__name__)
+            _slog_diag.info(
+                "create_issue_inputs",
+                action=intent.action,
+                original_message_head=repr((intent.original_message or "")[:120]),
+                context_keys=sorted(intent.context.keys()) if intent.context else [],
+                context_repo=intent.context.get("repository") or intent.context.get("repo"),
+                slots=slots,
+            )
             title = intent.context.get("title") or slots.get("title") or title
             description = (
                 intent.context.get("description")
