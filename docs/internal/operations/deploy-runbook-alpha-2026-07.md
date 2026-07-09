@@ -1,6 +1,29 @@
 # Alpha Deploy Runbook — the July 2026 "big-bang" deploy
 
-**Written**: 2026-07-07 evening (Lead Dev), for the deploy PM cleared earlier today.
+**Written**: 2026-07-07 evening (Lead Dev). **EXECUTED 2026-07-08 evening (PM + Lead) — v0.8.10
+live on alpha. AS-RUN ANNOTATIONS below marked ▶AS-RUN; this doc is now the verified droplet
+deploy reference** (the "annotate with what you actually see" promise, kept). Key as-run facts
+a future deploy needs:
+
+- **SSH**: `ssh root@146.190.151.63` (`root@piper-alpha`; alpha.pipermorgan.ai resolves there).
+  ⚠️ PM's `~/.ssh/config` alias `droplet` points at a DIFFERENT machine (146.190.46.184) — don't use it.
+- **deploy.sh does NOT refresh code.** Refresh from the Mac first:
+  `git archive origin/production | ssh root@146.190.151.63 'tar -x -C /opt/piper'`
+  (droplet-local `.env` / `docker-compose.override.yml` / `Caddyfile` / `deploy.sh` are untracked → survive).
+- **The container gets DB env from docker-compose.override.yml**, which now carries
+  `POSTGRES_HOST=postgres` + `POSTGRES_PORT=5432` (added 2026-07-08 — this was the ROOT CAUSE of
+  every historical BUILD_FAIL: alembic/backfills in-container fell back to localhost:5433; it was
+  never a startup race, #1299 closed on this). deploy.sh's up-line now includes `github-mcp`.
+- **ENCRYPTION_MASTER_KEY already exists on the droplet** (v0.8.9-era) — NEVER replace it;
+  existing ciphertext dies with it. Phase 0's key generation applies only to a fresh box.
+- **The 4b chain repair was executed** (deploy.sh's migrate ran first and skipped b1229bindings
+  exactly as predicted; repaired with the stamp sequence; one-time — the pointer is clean now).
+- **Backfill results (2026-07-08)**: #1305 encrypted 2 conversations + 4 turns (+4 leaf-split
+  patterns); 358-B and #1306 were no-ops (young DB). All idempotent-clean.
+- **Post-deploy findings wave**: #1380 (no Settings LLM-key UI), #1381 (UTC-as-local-time),
+  #1382 (keychain layer dead on hosted Linux — tier-1 fixed + redeployed same night; tier-2
+  OAuth-token storage gates GitHub connect). Tester dry-run PASSED end-to-end otherwise
+  (invite consumed, wizard key save, chat on the per-user key) — #358 closed on it.
 **Why this deploy matters**: it gates invite-sending (the invite-token system, the wizard
 registration fix, password reset, the personalization-leak fix, and the usage caps are ALL
 on `main` but none on the alpha instance — production's DB doesn't even have the

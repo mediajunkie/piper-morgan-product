@@ -17,7 +17,11 @@ from services.database.connection import db
 from services.database.session_factory import AsyncSessionFactory
 
 from .exceptions import ConfigurationError, ProfileLoadError
-from .models import PersonalityProfileModel
+# #1312 unify-Base (Arch ruling 2026-07-08, re-confirming 2026-06-25): the sibling
+# models.py was a stale pre-#262 duplicate on an ACCIDENTAL separate declarative_base
+# (String user_id vs the DB's UUID) — deleted; this repo now uses the canonical model
+# on the shared Base.
+from services.database.models import PersonalityProfileModel
 from .personality_profile import (
     ActionLevel,
     ConfidenceDisplayStyle,

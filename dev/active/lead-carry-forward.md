@@ -1,16 +1,22 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-08 ~23:00 PT. Session log: `dev/2026/07/08/2026-07-08-0647-lead-code-log.md` (live).
+**Updated**: 2026-07-09 ~09:10 PT. Session log: `dev/2026/07/09/2026-07-09-0647-lead-code-log.md` (live).
 
-## ▶ CURRENT (7/8 ~23:00) — v0.8.10 DEPLOYED TO ALPHA (PM+Lead, live). Tester dry-run PASSED. #358+#1299+#1324 closed today. **5 open.**
+## ▶ CURRENT (7/9 ~09:10) — Arch's two overnight rulings EXECUTED same-morning: #1283 CLOSED (step-3 built, probe 26/0), #1312 rulings 1+3 done (residual 30 ops, all gated). **4 open.** #1382 tier-2 design with Arch.
 
-**The deploy (full story in session log + annotated runbook)**: cut promoted early → real merge (9 conflicts) → 0.8.10 versioned; chain divergence (b1229bindings skip) predicted + repaired live via Phase 4b; backfills ran (explicit -e POSTGRES_HOST/PORT — container env gap, now durably in the droplet override); sidecar up (Unauthorized=healthy); findings wave: **#1380** (no Settings LLM-key UI), **#1381** (UTC-as-local-time in chat), **#1382 CRITICAL** (keychain layer dead on hosted Linux — tier-1 FIXED same night, live-proven by the dry-run; tier-2 = per-user OAuth-token storage design, Arch input wanted — GATES GitHub connect). Dry-run: invite consumed, wizard key-save worked (the fix), encrypted_secret ciphertext (dimension A → #358 CLOSED), chat replied on the per-user key, ADR-075 lazy-seed notice appeared live. #1299 closed (migrate verified real-deploy; BUILD_FAIL was env, never race).
+**Morning drain (all on main)**: 7/8 retroactive DAY-CLOSE (deploy night had no STOP); #1374 fix live-validated on its own triage; **#1382 tier-2 design memo → Arch** (KeychainService encrypted-DB fallback backend now, binding-rail per-connector later; fast concur asked — GATES GitHub connect → PM's invite decision); **#1283 step 3 built + CLOSED** (7 prompt examples canonicalized + stale example from registry phrase; normalize_action shim wired pre-rail; 4-surface reachability lint with DERIVED pre_classifier surface, hand-ledger retired; probe upgraded to ratified predicate → run 3 = 26 PASS/0 FAIL; ADR-073 = Arch's, non-gating); **#1312 rulings 1+3** (personality stale-Base duplicate DELETED + repoint live-proven + one-Base enforcement lint; MUX family parked-with-model incl. ConversationLinkDB with migration-601's own column comments; 41→30 autogen ops).
 
-**Remaining 5**: #1220 (deploy done + write-path built; REMAINING: GitHub connect blocked by #1382 tier-2, THEN PM-present first real write); #1278 (backlog, PM coordinates Fly); #1332 (repro-gated); #1283 (Arch corpus ratification → CI step 3); #1312 (Arch 3 rulings → reconciliation migration → CI guard).
+**Remaining 4**: #1220 (GitHub connect blocked by #1382 tier-2 → then PM-present first real write); #1278 (backlog); #1332 (repro-gated); #1312 (ruling 2 = PM's product confirm on todo_lists excise → phase-3 reviewed reconciliation migration → CI autogen-empty guard → close).
 
-**Next-wake priorities**: (1) **#1382 tier-2 design** — per-user OAuth token storage on hosted (encrypted-DB fallback backend inside KeychainService vs binding-rail grant storage; memo Arch, then build — it unblocks GitHub/Slack/Calendar connects AND #1220's tail); (2) runbook as-run annotations (started, finish); (3) Arch replies on #1283/#1312 if landed. **Invite go/no-go = PM's call** (loop verified minus GitHub connect; 11 codes remain). PM checkout sync + prior standing cautions hold. Model: Fable.
+**PM decisions pending**: (1) invite go/no-go (loop verified minus GitHub connect; 11 codes); (2) todo_lists excise confirm (Arch: excise iff no distinct todo-list feature owed beyond the `lists` rail).
+
+**Next-wake**: Arch's #1382 concur → build same-day (migration + backend + tests + alpha redeploy — completes the tester loop). Then phase-3 migration once PM confirms ruling 2. Runbook as-run annotations DONE (7/9). Model: Fable.
 
 ---
+
+## ▶ PRIOR CURRENT (7/8 ~23:00) — v0.8.10 DEPLOYED
+
+(see 7/8 session log for the full deploy story)
 
 ## ▶ PRIOR CURRENT (7/8 ~11:30) — PM batch drained
 

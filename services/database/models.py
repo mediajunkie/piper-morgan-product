@@ -842,6 +842,11 @@ class Feature(Base):
     hypothesis = Column(Text)
     acceptance_criteria = Column(JSON)  # List of criteria
     status = Column(String, default="draft")
+    # #1312 park-with-model (Arch ruling 3, 2026-07-08): MUX phase-0 (migration 601)
+    # shipped this column DB-side; the model side never merged. Declared to stop the
+    # drift and preserve the meaning-representation for MUX-resume. Nullable, unused
+    # by current code.
+    lifecycle_state = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     updated_at = Column(
         DateTime(timezone=True),
@@ -1592,6 +1597,16 @@ class ConversationTurnDB(Base):
         "metadata", EncryptedJSON(context="conversation_turns.metadata"), nullable=False, default={}
     )  # #1305
     processing_time = Column(Float, nullable=True)
+    # #1312 park-with-model (Arch ruling 3): MUX phase-0 thread-graph column
+    # (migration 601) — the parent-turn link of the conversation-threading
+    # meaning-representation. Declared to stop drift; preserved for MUX-resume.
+    # FK matches the DB's conversation_turns_parent_id_fkey (ON DELETE SET NULL).
+    parent_id = Column(
+        String,
+        ForeignKey("conversation_turns.id", ondelete="SET NULL"),
+        nullable=True,
+        comment="Parent turn ID for threading (self-referential FK)",
+    )
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
     completed_at = Column(DateTime(timezone=True), nullable=True)
 
@@ -1607,6 +1622,7 @@ class ConversationTurnDB(Base):
         Index("idx_conversation_turns_conv_created", "conversation_id", text("created_at DESC")),
         Index("idx_conversation_turns_conv_intent", "conversation_id", "intent"),
         Index("idx_conversation_turns_intent", "intent"),
+        Index("idx_conversation_turns_parent", "parent_id"),  # #1312 park-with-model
     )
 
     def to_domain(self) -> domain.ConversationTurn:
@@ -1643,6 +1659,67 @@ class ConversationTurnDB(Base):
             created_at=turn.created_at,
             completed_at=turn.completed_at,
         )
+
+
+class ConversationLinkDB(Base):
+    """#1312 park-with-model (Arch ruling 3, 2026-07-08) — the MUX phase-0
+    conversation-graph link table (migration 601_mux_multichat_phase0).
+
+    The DB has carried this table since phase-0 shipped; the model side lived on
+    an unmerged MUX branch, so autogenerate proposed DESTROYING it on every run.
+    Declared here to stop the drift and preserve the threading/linking
+    meaning-representation for MUX-resume (protected even while incomplete — the
+    spatial/meaning-intelligence principle). No runtime code reads or writes it
+    yet BY DESIGN; column shapes, FK names/ondelete, and index names match the
+    live DB exactly (information_schema-verified 2026-07-09).
+    """
+
+    __tablename__ = "conversation_links"
+
+    id = Column(String, primary_key=True)
+    conversation_id = Column(String, nullable=False)
+    source_id = Column(String, nullable=False)
+    target_id = Column(String, nullable=False)
+    link_type = Column(
+        String, nullable=False, comment="ConversationLinkType enum value or custom type"
+    )
+    additional_types = Column(
+        postgresql.JSONB().with_variant(JSON(), "sqlite"),
+        nullable=False,
+        default=list,
+        server_default=text("'[]'::jsonb"),
+        comment="For multi-type links per ADR-050",
+    )
+    created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
+    created_by = Column(
+        String, nullable=True, comment="User or system that created the link"
+    )
+
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["conversation_id"],
+            ["conversations.id"],
+            ondelete="CASCADE",
+            name="fk_conversation_links_conversation",
+        ),
+        ForeignKeyConstraint(
+            ["source_id"],
+            ["conversation_turns.id"],
+            ondelete="CASCADE",
+            name="fk_conversation_links_source",
+        ),
+        ForeignKeyConstraint(
+            ["target_id"],
+            ["conversation_turns.id"],
+            ondelete="CASCADE",
+            name="fk_conversation_links_target",
+        ),
+        Index("idx_conversation_links_conversation", "conversation_id"),
+        Index("idx_conversation_links_conv_type", "conversation_id", "link_type"),
+        Index("idx_conversation_links_source", "source_id"),
+        Index("idx_conversation_links_target", "target_id"),
+        Index("idx_conversation_links_type", "link_type"),
+    )
 
 
 class KnowledgeNodeDB(Base):
@@ -2298,7 +2375,9 @@ class PersonalityProfileModel(Base, TimestampMixin):
 
     __tablename__ = "personality_profiles"
 
-    id = Column(postgresql.UUID(as_uuid=True), primary_key=True)
+    # #1312 unify-Base: default carried over from the deleted stale duplicate
+    # (services/personality/models.py) — its create path relied on it.
+    id = Column(postgresql.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     # #1312: uniqueness lives in the declared UNIQUE INDEX idx_personality_profiles_user_id
     # below (matching the DB); a column-level unique=True made autogenerate want an
     # additional unnamed UniqueConstraint every run.
@@ -2522,6 +2601,10 @@ class TodoDB(ItemDB):
 
     # Hierarchical structure
     parent_id = Column(String, ForeignKey("todo_items.id"))
+
+    # #1312 park-with-model (Arch ruling 3): MUX phase-0 column, DB-side since
+    # migration 601; declared to stop drift, preserved for MUX-resume.
+    lifecycle_state = Column(String, nullable=True)
 
     # Scheduling
     due_date = Column(DateTime(timezone=True))
