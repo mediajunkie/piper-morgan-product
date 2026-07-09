@@ -187,13 +187,23 @@ class UserAPIKeyService:
         # Generate keychain reference
         key_reference = self._generate_key_reference(user_id, provider)
 
-        # Store in keychain
+        # Store in keychain — best-effort WHEN the encrypted-DB store is available (#1382).
+        # On hosted Linux the container has no keyring backend, so this write always
+        # fails there; raising here meant the #358 encrypted_secret write below never
+        # ran and every tester's wizard key save died (found live on alpha 2026-07-08).
+        # With an encryptor, encrypted_secret is the durable store and the read path
+        # already prefers it; without one (local keychain-only mode), keychain failure
+        # is still fatal — nothing else would hold the key.
         try:
             self._keychain.store_api_key(provider, api_key, username=user_id)
             logger.info(f"Stored key in keychain: {key_reference}")
         except Exception as e:
-            logger.error(f"Failed to store key in keychain: {e}")
-            raise ValueError(f"Keychain storage failed: {e}")
+            if self._encryptor is None:
+                logger.error(f"Failed to store key in keychain: {e}")
+                raise ValueError(f"Keychain storage failed: {e}")
+            logger.warning(
+                f"Keychain unavailable ({e}); relying on encrypted-at-rest DB store (#1382)"
+            )
 
         # #358: also encrypt-at-rest in the DB (portable to the hosted box, which has no
         # OS keychain). None encryptor (no master key) → skip; the keychain remains the store.
@@ -546,13 +556,28 @@ class UserAPIKeyService:
         # Generate new key reference (same format, but represents the new key)
         new_key_reference = self._generate_key_reference(user_id, provider)
 
-        # Store new key in keychain (overwrites old key)
+        # Store new key in keychain (overwrites old key) — best-effort when the
+        # encrypted-DB store is available; same #1382 hosted-Linux reasoning as store.
         try:
             self._keychain.store_api_key(provider, new_api_key, username=user_id)
             logger.info(f"Stored new key in keychain: {new_key_reference}")
         except Exception as e:
-            logger.error(f"Failed to store new key in keychain: {e}")
-            raise ValueError(f"Keychain storage failed: {e}")
+            if self._encryptor is None:
+                logger.error(f"Failed to store new key in keychain: {e}")
+                raise ValueError(f"Keychain storage failed: {e}")
+            logger.warning(
+                f"Keychain unavailable ({e}); relying on encrypted-at-rest DB store (#1382)"
+            )
+
+        # #1382 (found during the same trace): rotation previously never refreshed
+        # encrypted_secret, so the read path — which PREFERS the encrypted column —
+        # would keep serving the OLD key after every rotation. Refresh it with the
+        # new key (or clear it if no encryptor, keeping column and keychain in step).
+        existing_key.encrypted_secret = (
+            self._encryptor.encrypt(new_api_key, "user_api_keys.secret")
+            if self._encryptor
+            else None
+        )
 
         # Update database record with rotation info
         existing_key.key_reference = new_key_reference

@@ -1,8 +1,18 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-08 ~11:30 PT. Session log: `dev/2026/07/08/2026-07-08-0647-lead-code-log.md` (live).
+**Updated**: 2026-07-08 ~23:00 PT. Session log: `dev/2026/07/08/2026-07-08-0647-lead-code-log.md` (live).
 
-## ▶ CURRENT (7/8 ~11:30) — PM's 9:46 batch DRAINED: #1220 write-path built, Epic G audits ALL done (#1324 CLOSED). 7 open. DEPLOY-WATCH ARMED.
+## ▶ CURRENT (7/8 ~23:00) — v0.8.10 DEPLOYED TO ALPHA (PM+Lead, live). Tester dry-run PASSED. #358+#1299+#1324 closed today. **5 open.**
+
+**The deploy (full story in session log + annotated runbook)**: cut promoted early → real merge (9 conflicts) → 0.8.10 versioned; chain divergence (b1229bindings skip) predicted + repaired live via Phase 4b; backfills ran (explicit -e POSTGRES_HOST/PORT — container env gap, now durably in the droplet override); sidecar up (Unauthorized=healthy); findings wave: **#1380** (no Settings LLM-key UI), **#1381** (UTC-as-local-time in chat), **#1382 CRITICAL** (keychain layer dead on hosted Linux — tier-1 FIXED same night, live-proven by the dry-run; tier-2 = per-user OAuth-token storage design, Arch input wanted — GATES GitHub connect). Dry-run: invite consumed, wizard key-save worked (the fix), encrypted_secret ciphertext (dimension A → #358 CLOSED), chat replied on the per-user key, ADR-075 lazy-seed notice appeared live. #1299 closed (migrate verified real-deploy; BUILD_FAIL was env, never race).
+
+**Remaining 5**: #1220 (deploy done + write-path built; REMAINING: GitHub connect blocked by #1382 tier-2, THEN PM-present first real write); #1278 (backlog, PM coordinates Fly); #1332 (repro-gated); #1283 (Arch corpus ratification → CI step 3); #1312 (Arch 3 rulings → reconciliation migration → CI guard).
+
+**Next-wake priorities**: (1) **#1382 tier-2 design** — per-user OAuth token storage on hosted (encrypted-DB fallback backend inside KeychainService vs binding-rail grant storage; memo Arch, then build — it unblocks GitHub/Slack/Calendar connects AND #1220's tail); (2) runbook as-run annotations (started, finish); (3) Arch replies on #1283/#1312 if landed. **Invite go/no-go = PM's call** (loop verified minus GitHub connect; 11 codes remain). PM checkout sync + prior standing cautions hold. Model: Fable.
+
+---
+
+## ▶ PRIOR CURRENT (7/8 ~11:30) — PM batch drained
 
 **THE CUT IS FROZEN (12:15, PM-directed)**: `origin/production = d1256e0ac` — main promoted early so post-cut work on main can't alter the deploy. Real merge (production had 8 hotfix cherry-picks), 9 conflicts resolved, result verified = main's code + intended release artifacts only. **Runbook now has Phase 4b MIGRATION-CHAIN REPAIR (REQUIRED)**: droplet's alembic pointer (c1344invite) would make `upgrade head` silently skip b1229bindings/connector_bindings — verify-then-stamp sequence in the runbook covers both orderings. Version-bump question open with PM (cut carries 0.8.9.2; 0.8.10 = one-line commit if PM wants it). Re-promote only to deliberately add to the cut.
 
@@ -17,7 +27,7 @@
 
 **Remaining 7**: #358 (deploy closes it), #1220 (deploy tail + PM-present write), #1299b (deploy verifies it), #1278 (backlog; PM coordinates Fly acct/token/region/DNS), #1332 (reproduction-gated), #1283 (probe DONE; Arch ratification → CI enforcement), #1312 (pass 1 DONE 12:50 — 241→89 ops, residual = judgment classes 1:1 with the 3 Arch rulings; next = rulings → reconciliation migration → CI guard).
 
-**Standing cautions in force**: invites do NOT go out before the deploy; no schema-touching before the deploy; mail-send #1374 edge case (manual fix: merge + surgical checkout); model = Fable (PM 7/7, header-tracked).
+**Standing cautions in force**: invites do NOT go out before the deploy; no schema-touching before the deploy; mail-send #1374 FIXED+CLOSED 15:46 (staged-rename reconcile; sandbox harness scripts/test-mail-send-reconcile.sh — next real triage send doubles as live validation); model = Fable (PM 7/7, header-tracked).
 
 ---
 

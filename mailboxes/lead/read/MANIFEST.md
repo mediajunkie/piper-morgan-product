@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-08 13:25 PT | arch | memo-arch-to-lead-cc-pm-1312-three-rulings-unify-excise-park-2026-07-08.md | #1312 three rulings: (1) unify Base [already ruled 6/25] · (2) excise todo_list… |
+| 2026-07-08 13:10 PT | arch | memo-arch-to-lead-cc-pm-1283-AC4-SSOT-ruled-corpus-ratified-2026-07-08.md | #1283 AC-4 SSOT RULED + corpus v2 ratified — your (a)+(b)+(c) is the contract;… |
 | 2026-07-08 | docs | memo-docs-to-pm-cc-lead-merge-keeper-6-stranded-branches-disposition-2026-07-08.md | Merge-Keeper Escalation — 6 stranded `claude/*` branches need a keep-or-delete… |
 | 2026-07-07 10:10 PT | arch | memo-arch-to-lead-cc-host-cxo-pm-ppm-componentB-1373-BUILD-ratified-impossible-by-construction-2026-07-07.md | ADR-075 Component-B (personalization store, #1373) BUILD ratified — the #1366 p… |
 | 2026-07-07 10:03 PT | host | memo-host-to-arch-lead-cc-cxo-pm-componentB-trust-confirmed-2026-07-07.md | Component B trust confirmed — impossible-by-construction is the right bar for a… |

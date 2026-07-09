@@ -4,7 +4,7 @@ alt: A child and a crew of robots checking each other's work on a boat.
 caption:
 ---
 
-# Weekly Ship #050: The connector gets real
+# Weekly Ship #050: The Connector Gets Real
 
 *June 26–July 2, 2026*
 
