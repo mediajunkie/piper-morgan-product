@@ -1,26 +1,17 @@
 # Docs Carry-Forward
-**Updated**: 2026-07-08 ~22:47 PDT (STOP)
+**Updated**: 2026-07-09 ~10:47 PDT (Fire 1 complete)
 **Cron**: `17 10,22 * * *` (SLOW tier — 2×/day; job f33227b7)
-**Session log**: `dev/2026/07/08/2026-07-08-1047-docs-code-log.md` (DAY-CLOSED: 2026-07-08 ✓)
+**Session log**: `dev/2026/07/09/2026-07-09-1047-docs-code-log.md`
 
-## Migration hold status
+## Done this fire (Jul-9 Fire 1)
 
-SLOW tier continues. No cron tier changes until PM + Janus migration plan confirmed.
+- ✅ ADR-077 corrections applied to Jul-8 omnibus + BRIEFING (Arch confirmed routing-integrity = ADR-077)
+- ✅ Arch memo triaged (inbox → read/; MANIFEST on origin/main via 0518 session)
+- ✅ Committed + pushed to origin/main (`74d890940`)
 
----
+## Next (Jul-9 STOP ~22:17 or remaining daytime work)
 
-## Done today (Jul-8)
-
-- ✅ Merge-keeper escalation memo sent to PM (6 stale branches, 26d–99d)
-- ✅ CIO cron memo triaged (f33227b7 per-session confirmed)
-- ✅ #1375 audit fire-2: stale issues (0), briefings (11/11), pattern README fixed (Pattern-074 + footer)
-- ✅ Ship #050 published (correct draft: "the-connector-gets-real", post error/correction cycle)
-- ✅ Dispatch syndication memo sent (LinkedIn target)
-
-## Next (Jul-9 START ~10:17)
-
-- [ ] **Jul-8 omnibus** — HIGH-COMPLEXITY day (≥7 logs); activity-log rows after omnibus; PRIMARY
-- [ ] **#1375 remaining audit sections** — subagent sweeps, README reviews, CITATIONS, roadmap update
+- [ ] **#1375 remaining audit sections** — subagent sweeps (stale >30d content, duplicate files, methodology cross-refs, NAVIGATION↔INDEX), Root README.md review, docs/README.md review, CITATIONS.md completeness, roadmap sprint-completion update; activity-log rows if 0518 session didn't cover them
 - [ ] **PM reply to merge-keeper memo** — 6 stale branches; PM decision pending
 - [ ] **ETA briefing orphan** — flag to CIO (`BRIEFING-ESSENTIAL-ETA.md` not in ROSTER.md)
 
@@ -35,5 +26,5 @@ SLOW tier continues. No cron tier changes until PM + Janus migration plan confir
 
 ## State flags
 
-- Inbox: **0 unread** (22:47 PDT)
-- Queue: **(0,0)** — Jul-8 omnibus is next START task; all other unblocked work done
+- Inbox: **0 unread** (~10:47 PDT)
+- Queue: #1375 remaining sections is the next unblocked item
