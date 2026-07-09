@@ -2,7 +2,15 @@
 
 **Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
 
-## 🔄 7/8 Wed — IN PROGRESS. Fire (10:07 slot): `dev/2026/07/08/2026-07-08-0938-cio-code-log.md`
+## 🔄 7/9 Thu — IN PROGRESS. `dev/2026/07/09/2026-07-09-1032-cio-code-log.md`
+
+**Cadence**: LEAN `7 10,16,22`, cron `13b5541f` (re-armed this morning — old `fb1edc5a` died overnight, Gap-C, not a deliberate change).
+
+**Today's PM-conversation resolved**: f33227b7 — identified the actual session (Docs's primary "Docs 6/14-7/9", `local_b8b89b35-...`) via `list_sessions`, messaged it directly asking it to self-clean its own stale cron via `send_message`. T3 (Arch worktree straddle) — Arch's own follow-up confirmed it's collapsed to one worktree, no active hazard, cleanup deferred to natural session-end, no action needed. Exec's skill-review ask — acknowledged, queued (no deadline). Duplicate-cron root cause — understood (moving between the ephemeral-cron and scheduled-task mechanisms requires an explicit teardown of the old one; easy to miss cross-session), not a mystery needing more digging; worth a small process-doc note but not urgent.
+
+**Next**: PM wants to move to Ted Nadeau catch-up + saved-ideas review today, after this morning's catch-up. Nothing blocking that.
+
+## 🎆 7/8 Wed — DAY-CLOSED (retroactively, Gap-C — session died before the last-fire STOP). Full account: `dev/2026/07/08/2026-07-08-0938-cio-code-log.md`
 
 **Cadence**: LEAN `7 10,16,22` (3×/day), cron `fb1edc5a` confirmed armed, no duplicates. Migration hold unchanged.
 
