@@ -16,8 +16,11 @@
 | Documentation Audit (housekeeping/infra) | **Monthly** (1st Mon) | ~1 hour | Docs | `.github/workflows/monthly-housekeeping-audit.yml` |
 | Workstream Review | Weekly | ~1 hour | CoS + PM | N/A (informal) |
 | Role Health Check | 4 weeks | ~30 min | HOST | `docs/internal/operations/role-health-check-methodology.md` |
+| Skill-Candidates Review | **Monthly (1st Tue)** | ~20 min | PM + Exec (CIO/HOST triage input) | `docs/internal/operations/skill-candidates-review.md` |
 
 **Cadence split ratified 2026-07-04** (HOST + CIO input, PM-authorized): weekly = quality/accuracy (briefing freshness, link integrity, README reviews, sprint alignment); monthly = housekeeping/infra (agent infra, dev/active cleanup, metrics, workflow improvement). HOST runs a separate 4-weekly welfare-lens pass on agent infrastructure.
+
+**Skill-Candidates Review slotted 2026-07-09** (CIO, confirming HOST's proposal): every other row in this table is Monday-anchored (Doc Audit weekly + monthly, Role Health, Pattern Sweep all fire on Mondays per their GH workflow crons below) — 1st Tuesday is a genuinely clean offset, not just adjacent-day cosmetics. One real wrinkle: 1st-Tuesday usually falls the same week as Doc Audit's 1st-Monday housekeeping pass, which is within the "≤2 heavy audits/week" limit but worth naming — if a third heavy audit (Methodology, trigger-based) ever lands the same week, that's the one combination to watch.
 
 ---
 
@@ -254,6 +257,7 @@ CoS to maintain simple tracking:
 | Documentation (weekly — quality/accuracy) | Jul 9, 2026 | Jul 30, 2026 | ✅ Complete (#1375; 3-fire audit Jul 7–9: briefing+omnibus+links fire 1, patterns+briefings+escalation fire 2, GitHub sync+README reviews+stale sweep+methodology cross-refs fire 3; ADR count corrected 70+→78; NAVIGATION.md count corrected 23→43; 10 stale arch docs flagged; methodology-audit-policy-updates-2026-03-16.md missing ref found in 11 files). Prior: Jul 2 (#1328). |
 | Documentation (monthly — housekeeping/infra) | Jul 2, 2026 | Aug 3, 2026 | ✅ Complete (absorbed into #1341 quarterly sweep; scope split ratified 2026-07-04; first standalone monthly issue will auto-generate Aug 4, 2026). Prior quarterly sweeps: #1341 (Jul 2). |
 | Role Health | May 10, 2026 (Apr 16 + May 10 audits) | Jun 7, 2026 | ✅ Complete (#978) |
+| Skill-Candidates Review | *(none yet)* | Aug 4, 2026 (1st Tue) | Ratified 2026-07-08 (PM); slot confirmed 2026-07-09 (CIO/HOST). First review not yet held. |
 
 **Note**: Role Health Check methodology formalized Jan 31, 2026. First formal audit Feb 17, 2026.
 HOSR provided informal baseline assessment Jan 31 showing all roles Low/Medium risk.
