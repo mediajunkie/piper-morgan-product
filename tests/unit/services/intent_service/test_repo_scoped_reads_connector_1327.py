@@ -203,6 +203,8 @@ class TestReviewIssueHandler:
         native_router.initialize = AsyncMock()
         native_router.config_service = MagicMock()
         native_router.config_service.is_configured = MagicMock(return_value=True)
+        # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+        native_router.is_available = AsyncMock(return_value=True)
         native_router.get_issue = AsyncMock(
             return_value={"number": 42, "title": "Native issue", "state": "open", "body": "b"}
         )

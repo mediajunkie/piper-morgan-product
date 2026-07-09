@@ -263,6 +263,38 @@ class GitHubIntegrationRouter:
         """
         return await self._get_integration("list_issues").list_issues(repository, **kwargs)
 
+    async def is_available(self) -> bool:
+        """#1220/#1382: is GitHub usable for THIS user — via the per-user OAuth
+        binding (the tester path on hosted, status BOUND) OR the legacy PAT
+        config (local dev / pre-OAuth users).
+
+        The chat handlers' capability gates previously used the PAT-only
+        ``config_service.is_configured``, which made connected-via-OAuth users
+        read as "not connected" and degrade before any connector call could
+        run — found live during the v0.8.10.1 first-real-write attempt
+        (2026-07-09). This check is the single gate the chat surfaces use.
+        """
+        if self._user_id:
+            try:
+                from services.connectors.binding_repository import (
+                    ConnectorBindingRepository,
+                )
+                from services.database.session_factory import AsyncSessionFactory
+                from services.mcp.consumer.connector import ConnectorStatusState
+
+                async with AsyncSessionFactory.session_scope() as session:
+                    binding = await ConnectorBindingRepository(session).get(
+                        self._user_id, "github"
+                    )
+                if (
+                    binding is not None
+                    and binding.status == ConnectorStatusState.BOUND.value
+                ):
+                    return True
+            except Exception as e:  # binding check is additive — legacy still decides
+                logger.debug(f"is_available binding check failed: {e}")
+        return self.config_service.is_configured(self._user_id or "system")
+
     async def _try_connector_write(self, method_name: str, **kwargs):
         """#1220: attempt a write over the per-user OAuth grant.
 

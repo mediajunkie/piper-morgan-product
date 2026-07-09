@@ -180,6 +180,8 @@ class TestProductivityQueryHandler:
                     mock_gh.return_value.initialize = AsyncMock()
                     mock_gh.return_value.config_service.is_configured.return_value = False
 
+                    # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+                    mock_gh.return_value.is_available = AsyncMock(return_value=False)
                     result = await intent_service._handle_productivity_query(
                         intent, "workflow-123", "user-456"
                     )
@@ -235,6 +237,8 @@ class TestProductivityQueryHandler:
                     mock_gh = MagicMock()
                     mock_gh.initialize = AsyncMock()
                     mock_gh.config_service.is_configured.return_value = True
+                    # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+                    mock_gh.is_available = AsyncMock(return_value=True)
                     mock_gh.get_closed_issues = AsyncMock(return_value=mock_closed_items)
                     mock_gh_class.return_value = mock_gh
 
@@ -276,6 +280,8 @@ class TestProductivityQueryHandler:
                     mock_gh.return_value.initialize = AsyncMock()
                     mock_gh.return_value.config_service.is_configured.return_value = False
 
+                    # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+                    mock_gh.return_value.is_available = AsyncMock(return_value=False)
                     result = await intent_service._handle_productivity_query(
                         intent, "workflow-123", "user-456"
                     )
@@ -356,6 +362,8 @@ class TestProductivityQueryHandler:
                     mock_gh.return_value.initialize = AsyncMock()
                     mock_gh.return_value.config_service.is_configured.return_value = False
 
+                    # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+                    mock_gh.return_value.is_available = AsyncMock(return_value=False)
                     result = await intent_service._handle_productivity_query(
                         intent, "workflow-123", "user-456"
                     )
@@ -431,6 +439,8 @@ class TestProductivityQueryHandler:
                     mock_gh = MagicMock()
                     mock_gh.initialize = AsyncMock()
                     mock_gh.config_service.is_configured.return_value = True
+                    # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+                    mock_gh.is_available = AsyncMock(return_value=True)
                     mock_gh.get_closed_issues = AsyncMock(return_value=mock_closed_items)
                     mock_gh_class.return_value = mock_gh
 
