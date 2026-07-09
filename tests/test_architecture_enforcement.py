@@ -898,3 +898,35 @@ class TestUploadedFileByteSeamEnforcement:
             "the guard's upload-token heuristic no longer matches (or justify an "
             "ALLOWED_FILES entry in review)."
         )
+
+
+class TestSingleDeclarativeBase:
+    """#1312 (Arch invariant, ruled 2026-06-25 + re-confirmed 2026-07-08): ONE
+    declarative Base per physical database. A second declarative_base() creates a
+    parallel metadata invisible to alembic's target_metadata — its tables silently
+    fall out of autogenerate and drift unchecked (services/personality/models.py
+    did exactly this for a year before deletion). Only services/database/connection.py
+    may call declarative_base()."""
+
+    ALLOWED = {os.path.join("services", "database", "connection.py")}
+
+    def test_only_connection_py_creates_a_base(self):
+        offenders = []
+        for root, _dirs, files in os.walk("services"):
+            if "__pycache__" in root:
+                continue
+            for f in files:
+                if not f.endswith(".py"):
+                    continue
+                path = os.path.join(root, f)
+                rel = os.path.relpath(path)
+                if rel in self.ALLOWED:
+                    continue
+                src = open(path, encoding="utf-8", errors="ignore").read()
+                if re.search(r"^\s*Base\s*=\s*declarative_base\(\)", src, re.M):
+                    offenders.append(rel)
+        assert not offenders, (
+            f"Second declarative Base created in: {offenders} — one Base per DB "
+            "(Arch invariant, #1312). Register models on "
+            "services.database.connection.Base instead."
+        )
