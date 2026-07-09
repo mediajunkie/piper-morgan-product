@@ -41,6 +41,19 @@ Additional checks run this fire:
 2. **Roadmap sprint-completion update** — reflect Jul-7 Beta Blocker closes (not yet done; remains ⏳)
 3. **BRIEFING-ESSENTIAL-ETA.md orphan** — exists in `docs/briefing/` but ETA role is not in ROSTER.md. Potential stale/draft briefing. CIO-lane question. Not Docs's call to delete unilaterally — noting for escalation.
 
+---
+
+### 2026-07-09 fire additions (Docs scheduled-task, Haiku subagent sweeps)
+
+Ran the four deferred mechanical sweeps via a bounded Haiku subagent; verified findings before recording.
+
+| Section | Status | Result |
+|---|---|---|
+| **Duplicate-file sweep** | ✅ CLEAN | No `*copy*` / `* 2.*` / `~` / `.bak` variants under `docs/`. |
+| **Stale-content sweep (>60d)** | ⚠️ MEASUREMENT-INVALID | Subagent's `find -mtime` reported "508 files at 2026-03-24" — **this is a checkout-mtime artifact, not real staleness** (verified: `environment-status.md` fs-mtime 2026-03-24 but git-last-commit 2026-01-05; the whole ADR/pattern corpus shares the 2026-03-24 bulk-checkout stamp). **fs-mtime staleness detection is unreliable on this repo.** A real staleness pass must use `git log --format=%ad -- <file>`, not filesystem mtime. Deferred: a git-date-based operational-docs freshness pass (candidate real finds surfaced: `operations/environment-status.md` + `environment-variables.md` genuinely untouched in git since Jan 2026 — worth a targeted refresh, PPM/ops-lane). |
+| **Orphan-briefing (ETA)** | ✅ RESOLVED — NOT AN ORPHAN | 7/8's flag was **wrong**: `BRIEFING-ESSENTIAL-ETA.md` **IS** in `ROSTER.md` (`Exploratory Testing Agent (ETA)`, slug `test`, marked "Dormant (last session March 2026)"). Properly catalogued. Carry-forward item #3 CLEARED; no CIO escalation needed. |
+| **ADR/Pattern numbering** | 🔴 REAL FINDING | Patterns: complete 000–074, no gaps. ADRs: highest 076; **067 and 068 genuinely absent** (free). **Collision catch**: **ADR-073 is already ACCEPTED** ("No Destructive Git in PM's Main Checkout," PM-approved 2026-06-27) — but Arch's 7/8 log plans to author the Routing-Integrity Contract as "ADR-073" (a 6/18-reserved number that got assigned to the git-hard-rule ADR in between). No routing-integrity ADR authored yet → caught pre-authoring. **Flagged to Arch by mail 7/9**; recommended free numbers 067/068/077. Omnibus + briefing attest corrected to not propagate the colliding number. |
+
 ## Note on completion discipline
 
 No checklist item is being marked "deferred" at close (deferral policy requires PM approval). The issue stays **OPEN** and in-progress; the ⏳ sections are scheduled for a later fire this week, which is explicitly allowed ("Thoroughness over speed… can span multiple days"). No silent skipping — every section is accounted for above.
