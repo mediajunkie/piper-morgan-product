@@ -8,7 +8,9 @@
 
 **Today's PM-conversation resolved**: f33227b7 — identified the actual session (Docs's primary "Docs 6/14-7/9", `local_b8b89b35-...`) via `list_sessions`, messaged it directly asking it to self-clean its own stale cron via `send_message`. T3 (Arch worktree straddle) — Arch's own follow-up confirmed it's collapsed to one worktree, no active hazard, cleanup deferred to natural session-end, no action needed. Exec's skill-review ask — acknowledged, queued (no deadline). Duplicate-cron root cause — understood (moving between the ephemeral-cron and scheduled-task mechanisms requires an explicit teardown of the old one; easy to miss cross-session), not a mystery needing more digging; worth a small process-doc note but not urgent.
 
-**Next**: PM wants to move to Ted Nadeau catch-up + saved-ideas review today, after this morning's catch-up. Nothing blocking that.
+**Next**: PM wants to move to Ted Nadeau catch-up + saved-ideas review today. Nothing blocking that.
+
+**16:07 fire**: closed both of Exec's skill-review asks from 7/8 — confirmed HOST's audit-slot proposal (1st Tue, verified against the actual Monday-anchored cluster in `staggered-audit-calendar-2026.md`, not taken on faith) and added it as a proper row in that canonical doc rather than a separate rhythm; gave the report-writing-skill light-vs-full read (light + Exec's own escalation trigger — both open candidates trace to the same Ship #050 incident). Nothing left owed on that thread unless HOST/Exec push back.
 
 ## 🎆 7/8 Wed — DAY-CLOSED (retroactively, Gap-C — session died before the last-fire STOP). Full account: `dev/2026/07/08/2026-07-08-0938-cio-code-log.md`
 
