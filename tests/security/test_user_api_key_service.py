@@ -781,3 +781,114 @@ async def test_retrieve_falls_back_to_keychain_without_encrypted_secret(test_use
         await session.commit()
         # retrieve must fall back to the keychain
         assert await service.retrieve_user_key(session, user_a.id, "openai") == value
+
+
+class _RaisingKeychain:
+    """Simulates the hosted-Linux container: python-keyring has no backend, so
+    every keychain op raises (#1382 — live alpha evidence 2026-07-08)."""
+
+    def store_api_key(self, provider, api_key, username=None):
+        raise RuntimeError("No recommended backend was available.")
+
+    def get_api_key(self, provider, username=None):
+        raise RuntimeError("No recommended backend was available.")
+
+    def delete_api_key(self, provider, username=None):
+        raise RuntimeError("No recommended backend was available.")
+
+
+@pytest.mark.asyncio
+async def test_store_survives_keychain_failure_with_encryptor(test_users):
+    """#1382: on hosted (keychain dead, encryptor present) the wizard key save must
+    SUCCEED via the encrypted-DB store — this exact case failed live on alpha."""
+    from services.security.field_encryption import FieldEncryptionService
+
+    user_a, _ = test_users
+    enc = FieldEncryptionService(b"K" * 32)
+    service = UserAPIKeyService(
+        keychain_service=_RaisingKeychain(), field_encryption_service=enc
+    )
+    key_value = "sk-" + "b" * 48
+
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        session.add(user_a)
+        await session.commit()
+        with patch.object(
+            service._validator,
+            "validate_api_key",
+            return_value=_all_pass_report("openai", "sk-b..."),
+        ):
+            row = await service.store_user_key(
+                session=session,
+                user_id=user_a.id,
+                provider="openai",
+                api_key=key_value,
+                validate=False,
+            )
+        assert row.encrypted_secret and key_value not in row.encrypted_secret
+        # retrieve prefers encrypted_secret — the dead keychain is never consulted
+        assert await service.retrieve_user_key(session, user_a.id, "openai") == key_value
+
+
+@pytest.mark.asyncio
+async def test_store_keychain_failure_fatal_without_encryptor(test_users):
+    """#1382 boundary: keychain-only mode (no encryptor) keeps failure FATAL —
+    nothing else would hold the key."""
+    user_a, _ = test_users
+    service = UserAPIKeyService(keychain_service=_RaisingKeychain())
+    service._encryptor = None  # force local keychain-only mode deterministically
+
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        session.add(user_a)
+        await session.commit()
+        with patch.object(
+            service._validator,
+            "validate_api_key",
+            return_value=_all_pass_report("openai", "sk-c..."),
+        ):
+            with pytest.raises(ValueError, match="Keychain storage failed"):
+                await service.store_user_key(
+                    session=session,
+                    user_id=user_a.id,
+                    provider="openai",
+                    api_key="sk-" + "c" * 48,
+                    validate=False,
+                )
+
+
+@pytest.mark.asyncio
+async def test_rotate_refreshes_encrypted_secret(test_users, mock_keychain):
+    """#1382 (companion bug): rotation must refresh encrypted_secret — the read path
+    prefers the encrypted column, so a stale one would serve the OLD key forever."""
+    from services.security.field_encryption import FieldEncryptionService
+
+    user_a, _ = test_users
+    enc = FieldEncryptionService(b"K" * 32)
+    service = UserAPIKeyService(keychain_service=mock_keychain, field_encryption_service=enc)
+    old_key = "sk-" + "d" * 48
+    new_key = "sk-" + "e" * 48
+
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        session.add(user_a)
+        await session.commit()
+        with patch.object(
+            service._validator,
+            "validate_api_key",
+            return_value=_all_pass_report("openai", "sk-..."),
+        ):
+            await service.store_user_key(
+                session=session,
+                user_id=user_a.id,
+                provider="openai",
+                api_key=old_key,
+                validate=False,
+            )
+            await service.rotate_user_key(
+                session=session,
+                user_id=user_a.id,
+                provider="openai",
+                new_api_key=new_key,
+                validate=False,
+            )
+        # pre-fix this returned old_key (stale ciphertext preferred by the read path)
+        assert await service.retrieve_user_key(session, user_a.id, "openai") == new_key
