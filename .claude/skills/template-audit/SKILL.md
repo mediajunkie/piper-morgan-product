@@ -2,9 +2,9 @@
 name: template-audit
 description: Run a mechanical template audit on a finished blog draft before sending the publish-ready signal to Docs. Use after PM's voice pass is complete. Produces a pass/fail report with specific flags. Blocks the publish-ready signal on any FAIL.
 scope: comms
-version: 1.0
+version: 1.1
 created: 2026-06-19
-updated: 2026-06-19
+updated: 2026-07-09
 ---
 
 # template-audit
@@ -135,7 +135,22 @@ grep -in "cohort" <draft>
 
 Any match = FAIL. Public prose uses "team" (default) or "agent team" (agents-specific context). "Cohort" is fine in session logs, mail, and internal docs — not in published posts.
 
-### 11. Word count — within range
+### 11. AI-writing-tics / cliché constructions
+
+```bash
+grep -inE "(isn't|wasn't) [a-z][^.]{0,60}\. It'?s|wasn't [a-z][^.]{0,60}, it was|-fold\b" <draft>
+```
+
+This one needs judgment, not just the grep above — read the prose for the *rhetorical device*, not only the literal string. Known members of this family (grows over time; add here when a new one gets caught):
+
+- **The negation-reveal cliché**: "It isn't X. It's Y." / "X wasn't Y, it was Z." A dramatic-sounding contrastive construction that reads as an AI tic once it appears more than once in a piece. It can hide in other surface phrasings too — "X was never the answer. Y was" is the same shape wearing different words. **Fix**: usually just state the affirmative directly and drop the negated setup — "It's Y" / "It was Z" / "Y was" — per PM's stated technique. Caught 2026-07-09 (PM: "rife... we need to tighten up the review you do") — found in 3 of 3 drafts checked that day, none caught by the pre-existing checklist. Don't over-apply: a plain factual negative ("the volume held scratch data that rebuilt cleanly") is NOT this pattern — only the tight deny-then-reveal construction is.
+- **"-fold" as a crutch suffix** (e.g., "twofold," "manifold significance") — rephrase plainly.
+- **"load-bearing"** — see #9.
+- **"cohort"** — see #10.
+
+Any confirmed instance of the reveal-cliché or "-fold" = FAIL.
+
+### 12. Word count — within range
 
 ```bash
 wc -w <draft>
@@ -143,15 +158,15 @@ wc -w <draft>
 
 Target: ~800–1,300 words for narratives and insights (markdown word count includes some frontmatter noise — subtract ~10). FAIL if significantly over (>1,600) — flag for PM review, don't auto-block.
 
-### 12. Acronym sweep
+### 13. Acronym sweep
 
 ```bash
 python3 scripts/check-acronyms.py <draft>
 ```
 
-Any `⛔ FALSE-UNPACK` line = FAIL. Warnings are advisory — surface to PM if unexpected. (Skip if script not present; note the skip.)
+Any `⛔ FALSE-UNPACK` line = FAIL. Warnings are advisory — surface to PM if unexpected. (Skip if script not present; note the skip.) NO-GLOSS warnings matching text ONLY inside a `[PM: ...]` editorial bracket or a `[PLACEHOLDER ...]` footer note are false positives — check where the match actually falls before flagging.
 
-### 13. Issue/commit references in narrative prose
+### 14. Issue/commit references in narrative prose
 
 ```bash
 grep -n "#[0-9]\{3,\}\|[a-f0-9]\{7,40\}" <draft>
@@ -178,12 +193,13 @@ Check                        Result
 8. Zero semicolons           ✓ PASS (0)
 9. No "load-bearing"         ✓ PASS
 10. No "cohort"              ✗ FAIL — 4 instances (lines 13, 33, 49×2, 51)
-11. Word count               ✓ PASS (1,104 words)
-12. Acronym sweep            ✓ PASS
-13. Issue refs in prose      ✓ PASS
+11. AI-writing-tics          ✗ FAIL — negation-reveal cliché at lines 17, 29
+12. Word count               ✓ PASS (1,104 words)
+13. Acronym sweep            ✓ PASS
+14. Issue refs in prose      ✓ PASS
 
-VERDICT: FAIL (2 issues)
-ACTION: Fix items 5, 10 before sending publish-ready signal.
+VERDICT: FAIL (3 issues)
+ACTION: Fix items 5, 10, 11 before sending publish-ready signal.
 ```
 
 ## On Failure
