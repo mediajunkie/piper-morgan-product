@@ -2,9 +2,9 @@
 
 **Purpose**: read-at-fire-time carry-forward for the `duty-cycle-tick` skill. Holds the *genuinely transient* "where am I now" state. Durable owed/queued items also live in the session log; this file is the ephemeral working state the skill reads at START / each fire and rewrites at the end of every substantive fire. See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/06/2026-07-06-0701-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `a833a327`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
+**Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/09/2026-07-09-1031-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `44b6bf94`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-07 10:03 PT (Fire 2; ADR-075 Component B trust confirmed; server-owned-state family complete + implemented; queue (0,0))
+**Last updated**: 2026-07-09 10:33 PT (PM-nudge START; Jul 7 retroactively closed; 4 stalled memos processed; batch-1 hold noted; skill-review alignment sent)
 
 ---
 
@@ -13,7 +13,7 @@
 - **Account**: DinP (xian@designinproduct.com). Model: sonnet-4-6.
 - **Worktree**: ephemeral Option B (`claude/trusting-faraday-ec4bba`). `claude/host-cycle` retired 2026-06-13.
 - **Cron**: ACTIVE (`44b6bf94`; re-armed 2026-07-06 STOP; `37 6,9,12,15,18,21 * * *` windowed).
-- **Session log today**: `dev/2026/07/07/2026-07-07-0701-host-code-log.md`
+- **Session log today**: `dev/2026/07/09/2026-07-09-1031-host-code-log.md`
 - **Gap-C cure incoming**: CIO proved `mcp__scheduled-tasks` solves cron-death (June 13). Disk-persistent, survives restarts, fires in main checkout. CIO proposing cohort rollout. HOST should be in first cohort — flag interest to CIO.
 - **Migration touch-ups**: thin-prompt proposal Model A → Option B ✅ DONE (fire ~15:37).
 
@@ -22,7 +22,7 @@
 - **#1331 ratification** → Lead (cc Arch, PM): RATIFIED. Lead may proceed.
 - **#1344 alpha-list coordination** → Lead (cc Arch, PM): confirmed roster location; proposed single-use token protocol; **waiting on Lead's token-format preference** to unblock sequencing. Arch CC'd Lead directly with atomicity requirement (validate-and-consume must be atomic — TOCTOU/double-spend risk).
 - **#1333/#1231 D5 trust call + trust-lens**: ✅ **COMPLETE**. Arch aligned (Fire 2). Trust-lens pass on live surfaces PASS (Fire 3). Two watch items logged (degrade_nudge enum coverage; generic decline "(e.g. GitHub)" for non-GitHub future). CXO voice-pass already done on NOT_CONFIGURED. HOST re-reviews on any future CXO voice-pass.
-- **#1344 alpha-list + invite-code**: ✅ **BATCH 1 MAPPING COMPLETE 2026-07-06**. Gate LIVE as v0.8.9.2. 12 tokens minted (Lead, Jul 4). Assignment file: `dev/alpha/invite-tokens-assignments-batch-1.md` (PM local, gitignored). 10 assignments made; 2 spares held. Rebecca email confirmed (`rrefoy@gmail.com`, via PM→Exec Jul 6). **10/10 READY TO SEND.** PM to distribute via preferred mechanism. Second batch (new relaunch signups) to follow after first cohort onboarded — wait for PM direction.
+- **#1344 alpha-list + invite-code**: ✅ MAPPING COMPLETE. **⏸ INVITES HELD** (PM directive 2026-07-09): batch-1 sending blocked on v0.8.10.1 (GitHub connect fix, #1382 — OS keychain doesn't exist on hosted Linux; encrypted-DB credential store behind KeychainService seam). v0.8.10 deployed + dry-run passed EXCEPT GitHub connect. 11 codes unused. Assignment file: `dev/alpha/invite-tokens-assignments-batch-1.md` (PM local, gitignored). **HOST's list/plan unchanged — this is a when, not a what.** Unblocks when Lead signals 0.8.10.1 live + connect verified.
 - **Docs audit refactor input** → Docs (cc CIO, PA, PM): awaiting Docs's template update.
 - **CIO sync-PM-local proposal**: Sent 2026-07-03 Fire 3. PM asked CIO to broker cohort-wide "sync PM's local after each push" convention. Awaiting CIO decision on mechanism + CLAUDE.md rollout.
 
@@ -34,7 +34,13 @@
 ## Active with PM (teed, awaiting PM)
 
 - **Ship #047 HOST workstream review** — DONE/filed to Exec (`dfd9a25be`).
-- **Alpha batch-1 distribution** — PM APPROVED (via Exec, Jul 6 ~21:37). File: `dev/alpha/invite-tokens-assignments-batch-1.md` (local, gitignored). 10/10 READY TO SEND. PM to distribute. **Jake Krajewski email unconfirmed** — verify `brainpowerux@gmail.com` before sending his code.
+- **Alpha batch-1 distribution** — ⏸ HELD (PM directive Jul 9). Unblocks on v0.8.10.1 + GitHub connect verified. Jake Krajewski email still unconfirmed — verify before sending.
+- **#1220 Droplet sidecar decision** — PM's call. Arch + HOST both aligned (trust-decisive: credential transit invariant). Waiting on PM to land the decision.
+
+## New threads (Jul 9)
+
+- **Monthly skill-review audit alignment** — HOST sent input to Exec + CIO (Jul 9): first Tuesday monthly, offset from Docs weekly, HOST seat for welfare/trust candidates. Waiting on CIO to confirm timing.
+- **Gap-C extended stall Jul 7–9** — duty cycle was silent Jul 8; PM nudged Jul 9. Cron survived in session (`44b6bf94`) but fires had no context to handle. Root cause: session context exhausted after Jul 7 Fire 2. No work was missed (queue was empty). Retroactive Jul 7 close written Jul 9.
 
 ## PM-blocked / awaiting-PM (gated, do not self-advance)
 
