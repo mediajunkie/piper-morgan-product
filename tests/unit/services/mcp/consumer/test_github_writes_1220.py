@@ -72,35 +72,47 @@ def _writable_fixture(adapter, *, break_readback=False, comment_without_id=False
     issues: dict[int, dict] = {}
     counter = {"n": 100}
 
-    @server.tool(name="create_issue")
-    def create_issue(owner: str, repo: str, title: str, body: str = "",
-                     labels: list = None, assignees: list = None) -> str:
-        counter["n"] += 1
-        n = counter["n"]
-        issues[n] = {"number": n, "title": title, "body": body, "state": "open",
-                     "html_url": f"https://github.com/{owner}/{repo}/issues/{n}"}
-        return json.dumps(issues[n])
-
-    @server.tool(name="update_issue")
-    def update_issue(owner: str, repo: str, issue_number: int, title: str = None,
-                     body: str = None, state: str = None, labels: list = None,
-                     assignees: list = None) -> str:
-        it = issues.get(issue_number, {"number": issue_number, "html_url": ""})
-        if title is not None:
-            it["title"] = title
-        if state is not None:
-            it["state"] = state
-        issues[issue_number] = it
-        return json.dumps(it)
+    # Mirrors the REAL github-mcp-server >= v1.2.0 consolidated contract
+    # ("Promote issue fields and deprecate legacy issue write tool"):
+    # issue_write(method=create|update), issue_read(method=get),
+    # add_issue_comment unchanged. The legacy names (create_issue/update_issue/
+    # get_issue) deliberately DO NOT EXIST here — calling them must fail the
+    # same way the pinned v1.5.0 image fails, which is exactly what broke the
+    # live first-real-write on 2026-07-09 while this fixture still modeled the
+    # old dialect and kept the tests green. The fixture drifting from the
+    # pinned image's contract is the failure mode this comment guards.
+    @server.tool(name="issue_write")
+    def issue_write(method: str, owner: str, repo: str, title: str = None,
+                    body: str = None, issue_number: int = None,
+                    state: str = None, labels: list = None,
+                    assignees: list = None) -> str:
+        if method == "create":
+            counter["n"] += 1
+            n = counter["n"]
+            issues[n] = {"number": n, "title": title, "body": body or "",
+                         "state": "open",
+                         "html_url": f"https://github.com/{owner}/{repo}/issues/{n}"}
+            return json.dumps(issues[n])
+        if method == "update":
+            it = issues.get(issue_number, {"number": issue_number, "html_url": ""})
+            if title is not None:
+                it["title"] = title
+            if state is not None:
+                it["state"] = state
+            issues[issue_number] = it
+            return json.dumps(it)
+        raise ValueError(f"unknown method: {method}")
 
     @server.tool(name="add_issue_comment")
-    def add_issue_comment(owner: str, repo: str, issue_number: int, body: str) -> str:
+    def add_issue_comment(owner: str, repo: str, issue_number: int, body: str = "") -> str:
         if comment_without_id:
             return json.dumps({"body": body})  # pathological: no GitHub-minted id
         return json.dumps({"id": 9001, "body": body})
 
-    @server.tool(name="get_issue")
-    def get_issue(owner: str, repo: str, issue_number: int) -> str:
+    @server.tool(name="issue_read")
+    def issue_read(method: str, owner: str, repo: str, issue_number: int) -> str:
+        if method != "get":
+            raise ValueError(f"unknown method: {method}")
         if break_readback:
             return json.dumps({})  # repo "lost" the issue — readback must fail the guard
         it = issues.get(issue_number)
@@ -260,3 +272,23 @@ class TestRouterCutoverMatrix:
         r._get_integration = MagicMock(return_value=native)
         out = await r.create_issue("t", "b", owner="o", repo_name="r")
         assert out == {"native": True}
+
+
+class TestToolContractDrift:
+    async def test_legacy_tool_names_against_current_server_are_unverified_not_success(self, sm):
+        """The 2026-07-09 live failure, pinned as a regression: an adapter speaking
+        the deprecated dialect (create_issue) against the consolidated server must
+        come back fired-but-unverified — NEVER a false success, and NEVER the
+        attempted=False state that would license a PAT-fallback double-write."""
+        from unittest.mock import patch
+
+        await _seed_bound(sm)
+        adapter = GitHubMCPSpatialAdapter()
+        issues = _writable_fixture(adapter)
+        with patch.object(adapter, "_CREATE_ISSUE_TOOL", "create_issue"):
+            wr = await adapter.create_issue_connector(
+                _ALPHA, owner="o", repo="r", title="drift", body="b"
+            )
+        assert wr.verified is False
+        assert wr.attempted is True
+        assert not issues, "no issue may exist after an unknown-tool call"

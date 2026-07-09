@@ -97,7 +97,12 @@ services:
   # design: per ADR-070 D3/OQ-5 the server receives each user's OAuth token
   # per-connection from the app (the grant store), never a shared credential.
   github-mcp:
-    image: ghcr.io/github/github-mcp-server
+    # PINNED (2026-07-09, #1220): floating `latest` silently pulled the v1.2.0+
+    # tool consolidation (create_issue -> issue_write etc.) under production and
+    # broke the connector write path on deploy night. Version bumps are now
+    # deliberate: bump this tag + the adapter tool constants + the FastMCP test
+    # fixture together (services/mcp/consumer/github_adapter.py has the map).
+    image: ghcr.io/github/github-mcp-server:v1.5.0
     container_name: piper-ghmcp
     command: ["http", "--listen-host", "0.0.0.0"]
     ports:

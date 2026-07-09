@@ -90,6 +90,14 @@ _NONBOUND_REASON = {
 }
 
 logger = logging.getLogger(__name__)
+# #1220 (2026-07-09): failure-path evidence must reach the hosted docker logs;
+# the stdlib logger above demonstrably didn't during the live first-real-write
+# failure. structlog is what the rest of services/ emits through (its JSON
+# lines ARE visible in `docker compose logs app`) — use it for the paths a
+# deploy-night debugging session will need.
+import structlog
+
+_slog = structlog.get_logger(__name__)
 
 
 @dataclass
@@ -392,10 +400,19 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
     # REAL write (post-deploy, throwaway target) is the live validation of
     # these names — a wrong name degrades honestly to UNREACHABLE, never a
     # silent fake success (#1322 hard gate).
-    _CREATE_ISSUE_TOOL = "create_issue"
-    _UPDATE_ISSUE_TOOL = "update_issue"
-    _ADD_COMMENT_TOOL = "add_issue_comment"
-    _GET_ISSUE_TOOL = "get_issue"
+    # github-mcp-server v1.2.0 consolidated the issue write/read tools
+    # (release notes: "Promote issue fields and deprecate legacy issue write
+    # tool"): create_issue/update_issue -> issue_write + method, get_issue ->
+    # issue_read + method. Found live 2026-07-09: the droplet's fresh `latest`
+    # pull spoke the new dialect while this adapter spoke the deprecated one —
+    # the PM-present first-real-write caught it exactly as intended. The
+    # compose image is now PINNED (docker-compose.yml) so `latest` can't
+    # silently shift this contract again; bump the pin + these constants +
+    # the test fixture together, deliberately.
+    _CREATE_ISSUE_TOOL = "issue_write"   # + {"method": "create"}
+    _UPDATE_ISSUE_TOOL = "issue_write"   # + {"method": "update"}
+    _ADD_COMMENT_TOOL = "add_issue_comment"  # unchanged by the consolidation
+    _GET_ISSUE_TOOL = "issue_read"       # + {"method": "get"}
 
     @staticmethod
     def _parse_issue_payload(payload: Optional[str]) -> Optional[Dict[str, Any]]:
@@ -428,7 +445,19 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         try:
             async with self._mcp_client_ctx(binding_or_degrade) as client:
                 result = await client.call_tool(tool, args)
-                written = self._parse_issue_payload(self._first_text(result.content))
+                raw_text = self._first_text(result.content)
+                written = self._parse_issue_payload(raw_text)
+                if written is None:
+                    # The response wasn't a parseable artifact — often an in-band
+                    # tool ERROR (e.g. "unknown tool") that call_tool surfaces as
+                    # content rather than an exception. Log the evidence: the
+                    # 2026-07-09 live failure was invisible precisely because
+                    # this text was never recorded anywhere.
+                    _slog.warning(
+                        "github_write_unparseable_response",
+                        tool=tool,
+                        response_head=(raw_text or "")[:300],
+                    )
                 if require_written_id and not (written or {}).get("id"):
                     # For comment-writes the created artifact is the COMMENT —
                     # a GitHub-minted id in the creation response is the
@@ -443,13 +472,19 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                     return GitHubWriteResult(verified=False, raw=written)
                 readback_result = await client.call_tool(
                     self._GET_ISSUE_TOOL,
-                    {"owner": args["owner"], "repo": args["repo"], "issue_number": int(number)},
+                    {
+                        "method": "get",
+                        "owner": args["owner"],
+                        "repo": args["repo"],
+                        "issue_number": int(number),
+                    },
                 )
                 readback = self._parse_issue_payload(self._first_text(readback_result.content))
         except Exception:
             # Mid-flight failure: the write MAY have landed before the error —
             # attempted=True forbids a native retry (double-write hazard).
             logger.warning("github_write_failed_unreachable tool=%s", tool, exc_info=True)
+            _slog.warning("github_write_failed_unreachable", tool=tool)
             return GitHubWriteResult(
                 attempted=True,
                 degradation=await self.degrade(DegradationReason.UNREACHABLE),
@@ -477,7 +512,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         labels: Optional[List[str]] = None, assignees: Optional[List[str]] = None,
     ) -> "GitHubWriteResult":
         """Create an issue over the user's OAuth grant, read-back verified (#1220)."""
-        args: Dict[str, Any] = {"owner": owner, "repo": repo, "title": title, "body": body}
+        args: Dict[str, Any] = {
+            "method": "create", "owner": owner, "repo": repo, "title": title, "body": body,
+        }
         if labels:
             args["labels"] = labels
         if assignees:
@@ -493,7 +530,9 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         assignees: Optional[List[str]] = None,
     ) -> "GitHubWriteResult":
         """Update an issue over the user's OAuth grant, read-back verified (#1220)."""
-        args: Dict[str, Any] = {"owner": owner, "repo": repo, "issue_number": issue_number}
+        args: Dict[str, Any] = {
+            "method": "update", "owner": owner, "repo": repo, "issue_number": issue_number,
+        }
         expect: Dict[str, Any] = {}
         if title is not None:
             args["title"] = title
