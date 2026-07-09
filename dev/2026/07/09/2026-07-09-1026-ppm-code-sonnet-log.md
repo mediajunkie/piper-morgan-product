@@ -1,0 +1,36 @@
+# Session Log: 2026-07-09-1026-ppm-code-sonnet
+
+**Role**: Principal Product Manager (PPM)
+**Model**: Claude Code (Sonnet)
+**Date**: Thursday, July 9, 2026
+**Start Time**: 10:26 AM
+
+## Session Objectives
+
+1. Continue sprint-history recovery (started 2026-07-05/06, see `docs/internal/planning/sprint-recovery-decisions-log.md` and `docs/internal/planning/sprint-history-recovery-plan.md`): PM wants to now work through the LOW-confidence tier (218 issues) — the last remaining piece after the HIGH tier (433+) and MEDIUM tier (93) were fully closed out on 2026-07-06.
+2. Build a reviewable artifact (same interactive style as the HIGH/MEDIUM-tier ones) grouping/sorting the 218 LOW-confidence issues so PM can systematically work through them, "until we get everything labeled."
+
+## Context carried forward from 2026-07-05/06 sessions
+
+- Precipitating incident: a full-replace GraphQL mutation on the Sprint field wiped ~1175 items' Sprint values project-wide (not reversible via API). Recovery effort spanned 2026-07-05 and 07-06.
+- Canonical artifacts (all on `main`, all still authoritative):
+  - `docs/internal/planning/sprint-history-recovery-plan.md` — the tiered method (Tier 0-8)
+  - `docs/internal/planning/inchworm-map-canonical.md` — PM's full inchworm map, captured verbatim
+  - `docs/internal/planning/sprint-recovery-decisions-log.md` — PM's direct memory-based decisions, append-only, DO NOT start a new file
+  - `dev/snapshots/project-board-YYYY-MM-DD.tsv` — mechanical full-board snapshots, refreshed after each batch
+  - `scripts/snapshot-project-board.sh` — the snapshot script
+- Confidence tiers as of end of 2026-07-06: HIGH (433, applied) + 25 more (A9 four + 21 promoted) + 53 medium-pattern-batch + #217 + #461 + #922 = MEDIUM tier (93) fully closed. Remaining: LOW/uncorroborated (218) — explicitly PM's own territory ("Human Owns the Loop") — and 19 true-zero-evidence issues (Group 3 proper, not yet presented as an artifact).
+- Live GitHub identifiers: Project ID `PVT_kwHOADE-8s4A-JwA`, Sprint field ID `PVTSSF_lAHOADE-8s4A-JwAzg2hWcg`. 56 live Sprint option IDs captured in scratchpad `live_sprint_options.tsv` (regenerate if stale).
+- Safe mutation pattern (never full-replace): per-item `updateProjectV2ItemFieldValue` with `singleSelectOptionId`. NEVER use full-replace `updateProjectV2Field` on a field with existing assignments (CLAUDE.md CRITICAL warning).
+- Methodological corrections logged in the decisions log: narrow-vs-broad sprint calendar distinction; cherry-picking/closed-before-sprint-starts; MVP sprint count changed (six→five) mid-flight; pattern rules (STAND/LEARN/TEST/RECONNECT) are anchored tokens from artifact groupings, not corpus-wide substring search; explicit numbered lists take precedence over generic pattern rules.
+
+## Mailbox status (noted, not yet triaged)
+
+19 items in `mailboxes/ppm/inbox/` (MANIFEST.md is stale/untracked — shows empty despite files present). 6 are addressed directly to ppm (not just cc'd): #1249 D2 call (CXO, x2), beta-scope-clarification (Exec), #1241 estimate correction (Lead), beta-blockers sequencing estimate (Lead), #1317 descope ratified (Lead). None flagged urgent by PM in this session; deferring full triage until the LOW-tier artifact work is underway, per PM's explicit immediate ask.
+
+## Work Log
+
+### 10:26 AM - Session Start
+- Created session log (new day, no prior 2026-07-09 PPM log existed)
+- PM resumed duty cycle, asked to build a reviewable artifact for the 218 LOW-confidence sprint-recovery issues
+- Proceeding to pull the LOW-tier data and construct the artifact
