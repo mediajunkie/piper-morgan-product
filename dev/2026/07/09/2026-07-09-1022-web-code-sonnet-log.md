@@ -33,4 +33,5 @@ Inbox: 3 memos — all actioned this fire.
 | Fire | Time | Action | Notes |
 |------|------|--------|-------|
 | PM | 10:22 | START | Gap-C self-heal: cron re-armed. June 28 DAY-CLOSED confirmed. 3 memos actioned. Newsletter name "Now What?" — no on-site placeholder copy found, nothing to update. Phase 3 unblocked — scoping discussion with PM. |
+| Cron (12:52) | 12:52 | WORK | Docs blog dedup memo (2026-07-09): added title-match dedup to `scripts/fetch-blog-posts.js` as third fallback after hashId and slug checks. Also extended post-merge cleanup sweep to remove previously-cached RSS duplicates matched by title. Fixed the "short medium.com/p/xxxxxxxx URL + un-updated calendar" timing gap. Commit `8f8474a47` → website/main, deployed. Reply sent to Docs. |
 
