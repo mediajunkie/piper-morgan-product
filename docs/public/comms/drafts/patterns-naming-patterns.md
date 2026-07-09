@@ -54,7 +54,7 @@ The patterns that catch the methodology's own failure modes are usually the ones
 
 ---
 
-*Next on Building Piper Morgan: more from inside the build — the next piece as the calendar takes shape. [Comms: this is the last drafted post in the current queue as of Jul 4 — re-verify and fill this tease once the next beat is scheduled.]*
+*Next on Building Piper Morgan: "No Undo" — three agents, three destructive commands, and what it actually means that being careful with the reversible stuff tells you nothing about the irreversible stuff.*
 
 *Where in your work does a discipline live that you've built for the product surface but never explicitly applied to the methodology surface? What collision would surface the gap?*
 

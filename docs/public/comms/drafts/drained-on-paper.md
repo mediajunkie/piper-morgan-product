@@ -64,6 +64,6 @@ We called a sprint drained and it wasn't. We trusted a set of tags and they'd dr
 
 ---
 
-*Next on Building Piper Morgan: [PLACEHOLDER — Comms will fill in the actual next post/chain target]*
+*Next on Building Piper Morgan: "Verify at the User Path, Not the Data Layer" — a feature can pass every check you can think of and still be unreachable by the person it's for, if you checked the wrong layer.*
 
 *What's marked done in your own project right now that you haven't actually opened up and checked — and what word are you trusting to carry more weight than it has earned?*

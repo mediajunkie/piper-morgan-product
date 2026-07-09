@@ -66,6 +66,6 @@ I don't want to declare victory. None of this means Piper can't lie to me anymor
 
 ---
 
-*Next on Building Piper Morgan: [PLACEHOLDER — Comms will fill in the actual next post/chain target]*
+*Next on Building Piper Morgan: "Drained on Paper" — we called a sprint finished, and it wasn't, and the word traveled a lot further than the evidence did.*
 
 *Where in your own systems are you still trusting a list, a justification, or a decision on file to stay true on its own — and what would it take to make the thing derive that truth instead of remember it?*

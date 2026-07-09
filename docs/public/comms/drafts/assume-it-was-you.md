@@ -56,6 +56,6 @@ The Architect hit a total, sudden version of this, so it hit it hard. Our memory
 
 ---
 
-*Next on Building Piper Morgan: [PLACEHOLDER — Comms will fill in the actual next post/chain target]*
+*Next on Building Piper Morgan: more from inside the build — the next piece as the calendar takes shape. [Comms: this is the last drafted post in the current queue as of Jul 9 — re-verify and fill this tease once the next beat is scheduled.]*
 
 *The next time something in your work has changed and your first thought is "who did this" — how much would it actually cost to check whether the answer is you? And if the answer is "almost nothing," why isn't that your first move?*
