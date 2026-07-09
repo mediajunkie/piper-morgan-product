@@ -60,7 +60,7 @@ LLM: Claude (Anthropic)
 ```
 
 **Key docs:**
-- [Architecture Decision Records](internal/architecture/current/adrs/adr-index.md) — 70+ decisions with rationale
+- [Architecture Decision Records](internal/architecture/current/adrs/adr-index.md) — 78 decisions with rationale (as of 2026-07-09)
 - [Patterns catalog](internal/architecture/current/patterns/) — reusable implementation patterns
 - [BRIEFING-CURRENT-STATE.md](briefing/BRIEFING-CURRENT-STATE.md) — live sprint status (agents: read this first)
 

@@ -102,7 +102,7 @@ The MUX track establishes Piper's unified object model: **"Entities experience M
 
 - **[Development Tools](internal/development/tools/)** - Setup guides and development workflows
 - **[Active Work](internal/development/active/)** - Current development status
-- **[Methodology](internal/development/methodology-core/)** - Development methodologies (23 core patterns)
+- **[Methodology](internal/development/methodology-core/)** - Development methodologies (43 methodology docs, methodology-00 through -42)
 - **[Methodology Index](internal/development/methodology-core/INDEX.md)** - Comprehensive methodology navigation
 - **[Weekly Ship Process Guide](internal/development/weekly-ship-process-guide.md)** - Ship production process (v1.1)
 - **[Colleague Test (operational v2.1)](internal/testing/colleague-test-rubric.md)** - Canonical scoring rubric (R/C/T 0-3, ≥7/9 pass, decline-path Tone=0 auto-fail)
@@ -167,7 +167,7 @@ The MUX track establishes Piper's unified object model: **"Entities experience M
 │   ├── in-progress/          # Active development
 │   ├── pending-review/       # Files needing review
 │   └── ready-for-integration/ # Completed work
-├── methodology-core/         # 20 development methodologies (see INDEX.md)
+├── methodology-core/         # 43 development methodologies (see INDEX.md)
 ├── tools/                    # Development tools and guides
 └── planning/                 # Current planning cycles
 ```
