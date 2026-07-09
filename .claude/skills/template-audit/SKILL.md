@@ -138,12 +138,12 @@ Any match = FAIL. Public prose uses "team" (default) or "agent team" (agents-spe
 ### 11. AI-writing-tics / cliché constructions
 
 ```bash
-grep -inE "(isn't|wasn't) [a-z][^.]{0,60}\. It'?s|wasn't [a-z][^.]{0,60}, it was|-fold\b" <draft>
+grep -inE "(isn't|wasn't) [a-z][^.]{0,60}\. (It'?s|It was|They were)|wasn't [a-z][^.]{0,60}, it was|-fold\b" <draft>
 ```
 
 This one needs judgment, not just the grep above — read the prose for the *rhetorical device*, not only the literal string. Known members of this family (grows over time; add here when a new one gets caught):
 
-- **The negation-reveal cliché**: "It isn't X. It's Y." / "X wasn't Y, it was Z." A dramatic-sounding contrastive construction that reads as an AI tic once it appears more than once in a piece. It can hide in other surface phrasings too — "X was never the answer. Y was" is the same shape wearing different words. **Fix**: usually just state the affirmative directly and drop the negated setup — "It's Y" / "It was Z" / "Y was" — per PM's stated technique. Caught 2026-07-09 (PM: "rife... we need to tighten up the review you do") — found in 3 of 3 drafts checked that day, none caught by the pre-existing checklist. Don't over-apply: a plain factual negative ("the volume held scratch data that rebuilt cleanly") is NOT this pattern — only the tight deny-then-reveal construction is.
+- **The negation-reveal cliché**: "It isn't X. It's Y." / "X wasn't Y, it was Z." A dramatic-sounding contrastive construction that reads as an AI tic once it appears more than once in a piece. It can hide in other surface phrasings too — "X was never the answer. Y was" is the same shape wearing different words. **Fix**: usually just state the affirmative directly and drop the negated setup — "It's Y" / "It was Z" / "Y was" — per PM's stated technique. Caught 2026-07-09 (PM: "rife... we need to tighten up the review you do") — found in 4 of 4 drafts checked that day, none caught by the pre-existing checklist. The grep above is a starting point, not a substitute for reading: its first version only matched `It's`/`Its` as the follow-up clause and missed 3 real instances phrased as "It was" in the very next draft checked — read every `wasn't`/`isn't` in context, don't just trust a clean grep result. Don't over-apply: a plain factual negative ("the volume held scratch data that rebuilt cleanly") is NOT this pattern — only the tight deny-then-reveal construction is.
 - **"-fold" as a crutch suffix** (e.g., "twofold," "manifold significance") — rephrase plainly.
 - **"load-bearing"** — see #9.
 - **"cohort"** — see #10.

@@ -67,6 +67,6 @@ The work, at that point, isn't to win the argument. It's to notice that the argu
 
 ---
 
-*Next on Building Piper Morgan: "Verify at the User Path, Not the Data Layer" — a feature can pass every check you can think of and still be unreachable by the person it's for, if you checked the wrong layer.*
+*Next on Building Piper Morgan: "The List That Lies" — a milestone that was never created, a door that was never supposed to open, and the same failure wearing two different outfits.*
 
 *Where in your own work are you spending vigilance on a gap that more care can't close — and is the evidence for the structural fix already piling up while you keep tuning the ritual?*

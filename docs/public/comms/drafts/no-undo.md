@@ -62,6 +62,6 @@ The reminder-shaped version of this lesson — *be careful out there* — is the
 
 ---
 
-*Next on Building Piper Morgan: [PLACEHOLDER — Comms will fill in the actual next post/chain target]*
+*Next on Building Piper Morgan: "Assume It Was You" — an agent became convinced a coworker was tampering with its work. There was no coworker.*
 
 *Where in your own work is there an action with no undo that you've been treating like all the others — and what would it take to give it its own moment of pause before you reach for it?*
