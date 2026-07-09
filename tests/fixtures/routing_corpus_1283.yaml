@@ -29,6 +29,9 @@
 corpus:
   - phrase: "give me my standup"
     expected: action:show_standup     # the #1269 fix — deterministic pre-check
+    seam: pre_classifier              # production routing is decided BEFORE the LLM;
+                                      # a classifier-only probe reports this row as
+                                      # informational, never FAIL (run-1 finding)
   - phrase: "what's on my calendar today?"
     expected: action:meeting_time   # run-1: registry-canonical, rail-dispatched (draft said category:TEMPORAL)
   - phrase: "when is my next meeting?"

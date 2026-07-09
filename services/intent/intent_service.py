@@ -1464,7 +1464,14 @@ class IntentService:
             from services.intent_service.workflow_dispatcher import (
                 dispatch_workflow,
                 get_action_workflows,
+                normalize_action,
             )
+
+            # #1283 AC-4 (b): conservative near-miss normalization BEFORE the rail
+            # check — an unknown LLM emission whose prefix-stripped form is a rail
+            # key dispatches there instead of falling past the rail (the probe's
+            # live mode-4 evidence). Known names pass through untouched.
+            intent.action = normalize_action(intent.action)
 
             if intent.action in get_action_workflows():
                 dispatched = await dispatch_workflow(

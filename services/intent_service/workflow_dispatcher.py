@@ -173,3 +173,43 @@ def validate_registry() -> list[str]:
                 f"Workflow '{workflow_type}' resume_point is not callable: {entry.resume_point}"
             )
     return errors
+
+
+# ---------------------------------------------------------------------------
+# #1283 AC-4 (b): near-miss emission normalization — Arch-ratified 2026-07-08.
+#
+# The live probe proved the LLM emits paraphrase VARIANTS of canonical action
+# names that slip past hand-maintained alias lists (run 1: list_stale_prs past
+# four stale aliases; analyze_productivity past four productivity aliases;
+# run 2: get_pull_requests, a third stale-family variant). This shim is the
+# ruled second net UNDER the aliases (additive — never a reason to prune
+# them): a conservative prefix-strip that maps an unknown emission to a rail
+# key only on an EXACT post-strip match — unambiguous by construction. No
+# fuzzy scoring: a wrong confident map is worse than a pass-through (the
+# pass-through still lands in category handling, and the structured log line
+# feeds the alias/vocabulary loop).
+# ---------------------------------------------------------------------------
+
+_NORMALIZE_PREFIXES = ("list_", "get_", "show_", "analyze_", "fetch_", "display_")
+
+
+def normalize_action(action: str) -> str:
+    """Map a near-miss LLM action emission onto its rail key, conservatively.
+
+    Known action (already a rail key) → unchanged. Unknown action whose
+    prefix-stripped form IS a rail key → that key (logged). Anything else →
+    unchanged (falls through to category routing exactly as before this shim).
+    """
+    if not action:
+        return action
+    workflows = get_action_workflows()
+    if action in workflows:
+        return action
+    for prefix in _NORMALIZE_PREFIXES:
+        if action.startswith(prefix):
+            stripped = action[len(prefix):]
+            if stripped in workflows:
+                logger.info("action_normalized", emitted=action, rail_key=stripped)
+                return stripped
+    logger.debug("action_unnormalized", emitted=action)
+    return action

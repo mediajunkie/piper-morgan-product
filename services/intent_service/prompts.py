@@ -229,12 +229,16 @@ Return a JSON object with:
 Examples:
 
 ## Canonical Category Examples:
-- "what's on my calendar today?" → {{"category": "temporal", "action": "get_calendar", "confidence": 0.95}}
-- "when is my next meeting?" → {{"category": "temporal", "action": "get_next_event", "confidence": 0.9}}
-- "what am I working on?" → {{"category": "status", "action": "get_current_status", "confidence": 0.95}}
-- "show my standup" → {{"category": "status", "action": "get_standup_status", "confidence": 0.9}}
-- "what should I focus on today?" → {{"category": "priority", "action": "get_priorities", "confidence": 0.95}}
-- "what are my top priorities?" → {{"category": "priority", "action": "list_priorities", "confidence": 0.9}}
+(#1283 AC-4, Arch-ratified 2026-07-08: action names in these examples teach the
+CLASSIFIER's emission vocabulary — action-routed ones MUST be ACTION_REGISTRY
+canonicals; test_routing_vocabulary_1283.py lints this. Category-routed teaching
+names are allowlisted there. Don't add examples with invented action names.)
+- "what's on my calendar today?" → {{"category": "temporal", "action": "meeting_time", "confidence": 0.95}}
+- "when is my next meeting?" → {{"category": "temporal", "action": "meeting_time", "confidence": 0.9}}
+- "what am I working on?" → {{"category": "status", "action": "get_project_status", "confidence": 0.95}}
+- "show my standup" → {{"category": "status", "action": "show_standup", "confidence": 0.9}}
+- "what should I focus on today?" → {{"category": "priority", "action": "get_top_priority", "confidence": 0.95}}
+- "what are my top priorities?" → {{"category": "priority", "action": "get_top_priority", "confidence": 0.9}}
 - "who am I?" → {{"category": "identity", "action": "get_identity", "confidence": 0.95}}
 - "what's my role?" → {{"category": "identity", "action": "get_role", "confidence": 0.9}}
 - "how do I create a ticket?" → {{"category": "guidance", "action": "provide_guidance", "confidence": 0.9}}
@@ -243,7 +247,8 @@ Examples:
 - "create a ticket for the login bug" → {{"category": "execution", "action": "create_ticket", "confidence": 0.9}}
 - "analyze the file I uploaded" → {{"category": "analysis", "action": "analyze_data", "confidence": 0.8}}
 - "summarize the document" → {{"category": "synthesis", "action": "generate_summary", "confidence": 0.85}}
-- "list all projects" → {{"category": "query", "action": "list_projects", "confidence": 0.95}}
+- "list all projects" → {{"category": "query", "action": "manage_portfolio", "confidence": 0.95}}
+- "show me stale pull requests" → {{"category": "query", "action": "stale_prs_query", "confidence": 0.9}}
 - "hi there" → {{"category": "conversation", "action": "greeting", "confidence": 0.9}}
 - "fix it" → {{"category": "conversation", "action": "clarification_needed", "confidence": 0.7}}
 
