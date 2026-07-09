@@ -2,7 +2,7 @@
 
 **Owner**: PPM
 **Status**: LIVING DOCUMENT — canonical source of truth for what remains between now and beta release (v0.9.0)
-**Last updated**: 2026-07-08 morning (Lead Dev — #1306 + #1258 closed; 20→8 open since 7/07 began)
+**Last updated**: 2026-07-08 night (Lead Dev — **v0.8.10 DEPLOYED to alpha**; #1324, #358, #1299 closed today; 20→5 open since 7/07 began)
 **Cross-references**: [sprint-order.md](sprint-order.md) (sprint sequencing across the whole board), [roadmap.md](roadmap/roadmap.md) (strategic plan), GitHub project "Building Piper Morgan" → Sprint field "Beta Blockers - Hard Gates Only"
 
 ---
@@ -25,7 +25,7 @@ The full open backlog was swept sprint-by-sprint (M3-Quality, M3-Health, M3-Secu
 
 ~~#1304~~ **closed 2026-07-07** — 5/5 AC done. The gating job (`Security Test Suite (Postgres)`) had been built + proven live with teeth on 2026-07-05 (3 real Actions runs incl. a deliberate canary); the one held item — making it a **required status check** on `main` — landed 2026-07-07 on PM's explicit "Go" for the visible-only variant (CIO's recommendation: add the check, keep `enforce_admins: false`; flipping enforce_admins would force every agent's push-to-main through PRs, a much larger decision than this issue scoped). Applied via the full-protection PUT with field-by-field before/after verification — the only delta is the new required check. Epic A is fully done: security-suite pass/fail is now a first-class, machine-readable signal on `main`.
 
-### Epic B — Multi-tenancy & data protection (1 open: #358, deploy-gated ONLY; #1305 closed 7/07, #1306 closed 7/08 — **the epic is fully built**)
+### Epic B — Multi-tenancy & data protection ✅ CLOSED 2026-07-08 (0 open — #358 closed on the v0.8.10 deploy's live dimension-A verification; #1305 closed 7/07, #1306 closed 7/08)
 
 ~~#1260~~ and ~~#1241~~ **closed 2026-07-05** (Lead Dev). #1260: done same-day (server-owned PM-identity config replaces a hardcoded username). #1241: turned out to be **already complete** — the audit (`dev/2026/06/15/1241-content-anchoring-audit.md`) and its design output (**ADR-071**, ratified 2026-06-15) already satisfied all 5 of the issue's own deliverables, and the downstream remediation had substantially shipped via #1238 (doc store), #1250 (learning toggle), and #1252 (the main D2-D6 consolidation refactor, closed 2026-06-19) — this issue was simply never closed after that work landed. The one genuinely remaining piece (#1257, the deeper 40+-site read-threading + `user_id`→`owner_id` column drop) is already its own separately-tracked issue, correctly milestone-scoped to **Production**, not a beta blocker. See #1241's closing comment for the full evidence trail.
 
@@ -33,7 +33,7 @@ The full open backlog was swept sprint-by-sprint (M3-Quality, M3-Health, M3-Secu
 
 | # | Title | Why it's a hard gate |
 |---|-------|----------------------|
-| #358 | Encryption at rest for sensitive data — **both dimensions code-complete + tested (2026-07-06); dimension B live-verified on alpha 6/25; only dimension A's live-alpha check remains, needs droplet access** | PM: an important principle, long-deferred (low issue number) |
+| ~~#358~~ | **CLOSED 2026-07-08** — dimension A live-verified during the v0.8.10 deploy's tester dry-run (fresh account, real invite code, key stored as ciphertext + consumed by a real LLM call). Required same-night #1382 tier-1 fix (keychain dead on hosted Linux blocked every key save). | PM: an important principle, long-deferred |
 
 **#1366 (`PIPER.user.md` unscoped-config leak) — RESOLVED as of 2026-07-07** (update to the note below; kept for the record): Component A (GitHub default-repo) shipped 2026-07-06; **Component B (system-prompt personalization) is now DONE too** — ADR-075 was authored + ACCEPTED 2026-07-06, Component B built the same day (#1373: owner_id-scoped `personalization_contexts` store, neutral-default degradation, enforcement guard), Arch BUILD-ratified it 2026-07-07 as "impossible-by-construction" for the leak, live-verified + closed 2026-07-07. Component C (#1260 mechanism repoint) is a small Production-scoped follow-up per ADR-075 D6. The privacy leak this note originally described is structurally closed on `main` (note: reaches alpha at the next deploy — `main` ≠ `production`).
 
@@ -45,7 +45,7 @@ The full open backlog was swept sprint-by-sprint (M3-Quality, M3-Health, M3-Secu
 |---|-------|--------|
 | #1220 | github-mcp-server provisioning + write-path credential migration | In Progress — **Epic C's entire genuine remainder**. Scope expanded 2026-07-05: writes (create/update/close/comment) currently use the old native-PAT/shared-token credential path, not the new per-user grant store the read side uses — a tester connecting via the new OAuth flow would have writes silently misattributed until this migrates too. |
 
-### Epic D — Deploy/hosting portability (1 open: #1299b; #1258 closed 2026-07-08 — empty-var strip proven live; #1278 in Sprint Backlog)
+### Epic D — Deploy/hosting portability (0 open in-sprint — #1299 closed 2026-07-08 on the real deploy; #1278 remains in Sprint Backlog)
 
 ~~#1168~~ and ~~#1176~~ **closed 2026-07-05** (Lead Dev, Beta Blockers estimate research) — both fixes were already shipped as part of #1299's 2026-06-20 alpha-deploy remediation, but the issues themselves were never separately closed. Verified directly against current `main` before closing (see issue comments for evidence). #1299's own scope also shrank: sub-item (a) verified done, only (b) remains open.
 
@@ -53,7 +53,7 @@ The full open backlog was swept sprint-by-sprint (M3-Quality, M3-Health, M3-Secu
 
 | # | Title | Why it's a hard gate |
 |---|-------|----------------------|
-| #1299 | Deploy hardening remainder — **only (b) remains**: deploy.sh migrate hardening (real-deploy verification + BUILD_FAIL race disambiguation) | Migrations fail on hosted deploys |
+| ~~#1299~~ | **CLOSED 2026-07-08** — migrate ran + succeeded on the v0.8.10 deploy; the BUILD_FAIL "race" dissolved by root cause (container lacked POSTGRES_HOST/PORT — deterministic, durably fixed in the droplet override). Chain-skip of b1229bindings repaired live (Phase 4b). | Migrations fail on hosted deploys |
 
 ### Epic E — External-tester auth/account lifecycle ✅ CLOSED 2026-07-07 (0 open; #1105 + #441 + #1261 + #1348 all closed today)
 
@@ -71,15 +71,15 @@ Mostly isolated, well-scoped fixes — good candidates to pick off quickly. **#1
 |---|-------|----------------------|
 | #1332 | User messages intermittently arrive empty to the classifier | Active reliability failure, reproducible in UAT |
 
-### Epic G — Routing/config integrity (3 issues)
+### Epic G — Routing/config integrity (2 open — #1324 closed 2026-07-08)
 
 | # | Title | Why it's a hard gate |
 |---|-------|----------------------|
 | #1283 | Action↔handler routing integrity audit | Unregistered action → confident wrong answers, no user signal |
 | #1312 | DB↔model schema drift (~111 Alembic diffs) | High migration risk; cheaper to fix than the diff count suggests |
-| #1324 | Audit: hardcoded config values that should be env vars | Deploy-portability risk |
+| ~~#1324~~ | **CLOSED 2026-07-08** — both blockers fixed (PIPER_BASE_URL env-overridable; OAuth redirects derive from it); prod dev-password guard shipped; deferred items → #1379 | Deploy-portability risk |
 
-**Total: 8 open issues across 7 epics** (2026-07-08 morning: #1306 + #1258 closed — Epic B fully built, Epic D down to the deploy-verified #1299b + backlogged #1278) (2026-07-07: NINE closed today — #1304, #1317, #1105, #1279, #1285, #1216, #1256, #441, #1261 — Epic A fully done, Epic C down to #1220 only, Epic E down to #441+#1261; see the epic sections and change log. #1278 remains OPEN and counted).
+**Total: 5 open issues across 7 epics** — #1220 (Epic C), #1278 (backlog), #1332 (Epic F, reproduction-gated), #1283 + #1312 (Epic G, Arch-gated) (2026-07-08 morning: #1306 + #1258 closed — Epic B fully built, Epic D down to the deploy-verified #1299b + backlogged #1278) (2026-07-07: NINE closed today — #1304, #1317, #1105, #1279, #1285, #1216, #1256, #441, #1261 — Epic A fully done, Epic C down to #1220 only, Epic E down to #441+#1261; see the epic sections and change log. #1278 remains OPEN and counted).
 
 ## Recommended sequencing
 
@@ -94,6 +94,8 @@ Mostly isolated, well-scoped fixes — good candidates to pick off quickly. **#1
 No fixed date as of 2026-07-05. Lead Dev's bottom-up estimate (memo, 2026-07-05) is now **materially smaller than first given** following the #1241 correction: Epic A done, Epic B down from an estimated 9-16 days to roughly 5-9 days (only #358/#1305/#1306/#542 remain — #1260 and #1241 together were nearly half that original range and are both closed), Epic D down to ~1 day. Rough total wall-clock, accounting for parallelization once Epic B's remaining items start: **2.5-4 weeks**, revised down from the original 3-5 week estimate. A real ship date still isn't set — this is a rough range, and #1305/#1306's undecided design calls remain the biggest source of uncertainty in it.
 
 ## Change log
+
+- **2026-07-08 (night — THE DEPLOY; count 8→5)**: **v0.8.10 shipped to alpha** (PM + Lead, ~5 PM–11 PM): production cut promoted early (freeze discipline), migration-chain divergence caught pre-flight and repaired live (b1229bindings had been silently skipped off the 7/3 hotfix pointer), three encryption backfills run, sidecar live, tester dry-run PASSED end-to-end (invite code → wizard → key → chat). **#1324 closed** (morning, config audit). **#358 closed** (dimension A live-verified — unlocked by the same-night #1382 tier-1 fix: the keychain layer is dead on hosted Linux and key-saves raised before the encrypted-DB write). **#1299 closed** (migrate verified on a real deploy; BUILD_FAIL root-caused as env, not race). **New issues from the deploy's findings wave**: #1380 (no Settings LLM-key UI), #1381 (server-UTC leaks as local time), #1382 (keychain inoperative on hosted — tier-2 OAuth-token storage design remains, gates GitHub connect), #1379 (config-hygiene follow-ups). **Invite gate**: tester loop verified EXCEPT GitHub connect (#1382 tier-2) — go/no-go is PM's call; 11 unused codes remain.
 
 - **2026-07-05**: Document created. 22 issues confirmed across 7 epics, following the 2026-07-04/05 sprint-by-sprint triage (M3-Quality, M3-Health, M3-Security, M4, M5, RECONNECT) and the GitHub-write-capability forensic investigation. Established as the canonical source of truth per PM.
 - **2026-07-05 (later)**: PM-directed audit found 16 open MVP-milestone issues untracked by the sprint-by-sprint sweep -- root cause: some issues carried Sprint-field tags from sprints that had already closed (M2, M3, D1) and were never swept forward, and a whole separate FLYWHEEL/SKUNK category was never in the triage sequence at all (compounded by a sprint-assignment data-loss incident ~10 days prior). Resolved by a milestone-level ground-truth check (every open MVP issue, not just tagged-sprint issues) rather than continued reliance on Sprint field alone. Result: 3 added to Beta Blockers (#1216, #1256, #1260 -- now 25 issues), 4 to Production (#1167, #1209, #1257, #1284), 9 to a newly-created **Ongoing** milestone (#683, #1160, #1162, #1259, #1272, #1275, #1277, #1295, #1296 -- FLYWHEEL/Skunkworks work with no release-bound completion target, kept separate from Production so it isn't misrepresented as "done by 1.0"). Also found and flagged (not yet resolved): #1278's stated dependency on "credential decoupling (#1162)" cites the wrong issue -- the real credential-decoupling work is #1300, currently Production-scoped -- open question on whether that's a real beta-blocking dependency or a stale/overscoped acceptance criterion.
