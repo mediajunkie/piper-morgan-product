@@ -1,4 +1,4 @@
-"""#1283 — routing-vocabulary reachability lint (Arch-ratified 2026-07-08, ADR-073-bound).
+"""#1283 — routing-vocabulary reachability lint (Arch-ratified 2026-07-08, ADR-077).
 
 The AC-4 ruling: SSOT = ACTION_REGISTRY canonicals; every canonical must be REACHABLE,
 where reachability is the 4-surface predicate —
