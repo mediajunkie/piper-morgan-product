@@ -1,18 +1,19 @@
 # Docs Carry-Forward
-**Updated**: 2026-07-09 ~10:47 PDT (Fire 1 complete)
+**Updated**: 2026-07-09 ~22:47 PDT (STOP)
 **Cron**: `17 10,22 * * *` (SLOW tier — 2×/day; job f33227b7)
-**Session log**: `dev/2026/07/09/2026-07-09-1047-docs-code-log.md`
+**Session log**: `dev/2026/07/09/2026-07-09-1047-docs-code-log.md` (DAY-CLOSED: 2026-07-09 ✓)
 
-## Done this fire (Jul-9 Fire 1)
+## Done today (Jul-9)
 
-- ✅ ADR-077 corrections applied to Jul-8 omnibus + BRIEFING (Arch confirmed routing-integrity = ADR-077)
-- ✅ Arch memo triaged (inbox → read/; MANIFEST on origin/main via 0518 session)
-- ✅ Committed + pushed to origin/main (`74d890940`)
+- ✅ ADR-077 corrections applied to Jul-8 omnibus + BRIEFING (`74d890940`)
+- ✅ Arch memo triaged (inbox → read/)
+- ✅ #1375 Weekly Docs Audit CLOSED (0858 session: fire-3 + close + audit calendar update)
+- ✅ Staggered audit calendar updated with skill-candidates review slot
 
-## Next (Jul-9 STOP ~22:17 or remaining daytime work)
+## Next (Jul-10 START ~10:17)
 
-- [ ] **#1375 remaining audit sections** — subagent sweeps (stale >30d content, duplicate files, methodology cross-refs, NAVIGATION↔INDEX), Root README.md review, docs/README.md review, CITATIONS.md completeness, roadmap sprint-completion update; activity-log rows if 0518 session didn't cover them
-- [ ] **PM reply to merge-keeper memo** — 6 stale branches; PM decision pending
+- [ ] **Activity-log rows** — confirm 0518 session appended Jul-9 rows; append if missing
+- [ ] **PM reply to merge-keeper memo** — 6 stale branches awaiting PM decision
 - [ ] **ETA briefing orphan** — flag to CIO (`BRIEFING-ESSENTIAL-ETA.md` not in ROSTER.md)
 
 ## Pending / PM-gated
@@ -23,8 +24,9 @@
 - **#1344 open-registration** — PM decision needed
 - **docs-standing-items.md stale** (last refresh 2026-05-27) — refresh when queue allows
 - **YAML-frontmatter upgrade lane** — ADRs/Patterns/Methodology/.serena still pending
+- **Blog dedup issue** — mail sent to Web + Lead; systemic blog-first → Medium dedup needed
 
 ## State flags
 
-- Inbox: **0 unread** (~10:47 PDT)
-- Queue: #1375 remaining sections is the next unblocked item
+- Inbox: **0 unread** (22:47 PDT)
+- Queue: **(0,1)** — activity-log check is next START task
