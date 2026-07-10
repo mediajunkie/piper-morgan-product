@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 # Dockerfile for Piper Morgan Main Application
 # PM-055 Step 2: Docker configuration for Python 3.11 consistency
 # Created: 2025-07-22
