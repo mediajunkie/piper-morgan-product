@@ -2,6 +2,16 @@
 
 **Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
 
+## 🔄 7/10 Fri — IN PROGRESS. `dev/2026/07/10/2026-07-10-1021-cio-code-log.md`
+
+**Cadence**: LEAN `7 10,16,22`, cron `772e045e`. **Process note**: found TWO duplicate crons at session start (`13b5541f` + `772e045e`, both same expression) — I never deleted the older one before creating the newer one at 7/9's STOP. Deleted the duplicate immediately. If a future fire ever finds >1 cron again, this is why: STOP's re-arm step needs an explicit delete-then-create, not just create.
+
+**Shipped today**: root-caused + fixed the "briefing keeps reporting stale" loop PM asked about (via Lead) — the SessionStart hook's staleness checks used filesystem mtime, not git history, which is structurally unreliable across ephemeral worktrees. Fixed 4 instances of that bug in `.claude/hooks/session-start.sh` + a separate dead-glob bug that was making one check silently never fire + a resulting ~5s performance regression once the glob was fixed for real — all tested (syntax, output, timing, budget) before shipping. Commit `76f6b5dd4`. Full write-up sent to Lead+Exec (cc PM).
+
+**Owed, not started**: Ship #051 workstream review — Exec's kickoff landed today, window Fri Jul 3–Thu Jul 9, **due Mon Jul 13 EOD**. Added to standing-items.
+
+**Still carried from yesterday**: PM's Ted Nadeau catch-up + saved-ideas review — still hasn't happened, still the most likely opener whenever PM returns to direct conversation.
+
 ## 🎆 7/9 Thu — DAY-CLOSED. Full account: `dev/2026/07/09/2026-07-09-1032-cio-code-log.md`
 
 **Cadence**: LEAN `7 10,16,22`, cron `13b5541f` re-armed as STOP's final action (no cadence change — same lean expression).
