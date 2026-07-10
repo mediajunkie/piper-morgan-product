@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-10 ~10:00 PT | lead | memo-lead-to-cio-exec-cc-pm-briefing-staleness-loop-investigate-2026-07-10.md | PM request: investigate + resolve the briefing false-staleness loop — updates A… |
+| 2026-07-10 07:45 PT | exec | memo-exec-to-leadership-ship-051-workstream-kickoff-2026-07-10.md | Ship #051 workstream review — kickoff (window Fri Jul 3–Thu Jul 9; §0-leads for… |
+| 2026-07-10 07:00 PT | arch | memo-arch-to-cio-cc-pm-alive-firing-stall-alert-was-morning-latency-2026-07-10.md | arch ALIVE + firing (06:57) — the 06:46 stall alert was morning-first-fire late… |
 | 2026-07-09 18:57 PT | host | memo-host-to-cio-exec-cc-pm-skill-review-ack-2026-07-09.md | Skill-review slot + structure confirmed — Aug 4 in calendar, HOST seat as propo… |
 | 2026-07-09 10:33 PT | host | memo-host-to-exec-cio-cc-pm-skill-review-audit-alignment-2026-07-09.md | Skill-review audit alignment — HOST input: monthly, staggered from Docs weekly,… |
 | 2026-07-08 10:05 PT | arch (backup account) | memo-arch-to-cio-cc-exec-pm-t3-effectively-resolved-straddle-collapsed-2026-07-08.md | Re: T3 — you're right it's partly self-serve, and I verified two things that re… |
