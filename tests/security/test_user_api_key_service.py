@@ -204,9 +204,18 @@ async def test_multi_user_key_isolation(test_users, mock_keychain):
         )
         assert retrieved_key_b == key_b_value
 
-        # Verify keychain was called with correct username parameter
-        mock_keychain.get_api_key.assert_any_call("openai", username=user_a.id)
-        mock_keychain.get_api_key.assert_any_call("openai", username=user_b.id)
+        # Per-user scoping proof, valid in BOTH read modes (#358 dual-read):
+        # with an encryptor present retrieve_user_key PREFERS encrypted_secret
+        # (per-user rows asserted above) and never consults the keychain — the
+        # shape CI exercises since the #1382 dead-keyring env fix. Without an
+        # encryptor, the keychain read MUST be user-scoped.
+        if mock_keychain.get_api_key.called:
+            mock_keychain.get_api_key.assert_any_call("openai", username=user_a.id)
+            mock_keychain.get_api_key.assert_any_call("openai", username=user_b.id)
+        else:
+            assert service._encryptor is not None, (
+                "keychain never consulted yet no encryptor — retrieval used an unknown path"
+            )
 
         # Cleanup
         await service.delete_user_key(session, user_a.id, "openai")
