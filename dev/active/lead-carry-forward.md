@@ -8,7 +8,7 @@
 
 **Pending next release cut**: NullPool tightening for #1382's sync engine (Arch build-note (a) — on main `7658ba8ef`-adjacent, not yet on production branch; not urgent, rides the next point release).
 
-**Remaining sprint 3 (evening drain took #1380+#1381)**: #1278 (backlog, PM coordinates Fly); #1312 (PM's todo_lists excise confirm → phase-3 reconciliation migration → autogen-empty CI guard → close); #1332 (fixed in v0.8.10.7, SOAKING — close on a few clean days). #1383 (gate-threading, priority-high) if PM sprints it. **v0.8.10.8 (#1381 user-tz time) + v0.8.10.9 (#1380 Settings LLM-key page) shipped + live-verified same evening; #1384 filed (dead timeout-modal buttons).**
+**Remaining sprint 2 (PM's ruling-2 confirm ~19:00 → #1312 executed to CLOSE same evening: excise + park-with-model + h1312recon + autogen-empty CI guard — autogen is EMPTY for the first time in repo history)**: #1278 (backlog, PM coordinates Fly); #1332 (fixed in v0.8.10.7, SOAKING — close on a few clean days). #1383 (gate-threading, priority-high) + #1384 (timeout-modal buttons) if PM sprints them; #1385 filed (security-suite fixture contamination, found in #1312 verify). **Next release cut carries: h1312recon migration + #1382 NullPool (both safe/idempotent, no urgency).** v0.8.10.8 (#1381) + v0.8.10.9 (#1380) shipped + live-verified earlier this evening.
 
 **Standing state**: cron armed (absorb fires mid-work — the corrected discipline); mid-turn dormancy recurred 2× on 7/9 (harness-level; cron+PM-nudge recovers; keep the wake-timer armed ALWAYS). Droplet: v0.8.10.7, chain g1382creds, sidecar pinned v1.5.0. PM's default repo still 7cups-testbot (stale, harmless now — extraction wins; PM said they'd fix). Model: Fable.
 
