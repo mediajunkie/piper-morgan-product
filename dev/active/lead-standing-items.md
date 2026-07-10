@@ -8,18 +8,18 @@ Per duty-cycle substrate: recurring signals to check on each fire's task-loop. L
 
 ## Sprint position
 
-**RECONNECT sprint, deep into connector-port execution** (Phase-1 foundation — #1232 WS-5 contract, #1233 WS-9 identity, #1229 WS-2 cred-model, #1185 identity core — is fully CLOSED, not gated as the prior version of this doc said). Current front: **porting individual connectors onto the #1232 4-method Connector contract** (#1317, OPEN). Status as of 2026-07-06: **4/8 ported** — GitHub, Calendar, Notion, Slack (Slack shipped 2026-07-06, keychain-backed per ADR-058, same Layer-2 shape as Notion). Remaining 4 (cicd/devenvironment/gitbook/linear) are blocked on a **product/infra question, not a coding task**: does a live MCP server exist (or is one planned) for any of these four? Not mine to unblock by writing code — needs a PM product-scope call. #1220 (WS-8, integration/auth layer → MCP) tracks the same front from the auth-layer side, also OPEN.
+**Beta Blockers sprint, post-v0.8.10 alpha deploy (verified 2026-07-09 evening).** The v0.8.10 release deployed to the alpha droplet 7/8; 7/9 was a nine-point-release day (v0.8.10.1 → .9) that closed the tester-loop GitHub leg end-to-end: OAuth connect (#1382 hosted credential store), first verified connector write (#1220 CLOSED — test-piper-morgan#104, PM's OAuth identity, read-back verified), routing SSOT (#1283 CLOSED per ADR-077), user-tz time (#1381 CLOSED), Settings LLM-key page (#1380 CLOSED). **Invites are ALL-CLEAR** (HOST notified 7/9 evening; PM ready to send codes).
 
-D2 design-system (#1286, CXO-led) is **fully CLOSED** (2026-06-21) — CXO conformance review passed, all 3 slices shipped+verified. No longer a live thread (the prior doc version listed it as open/blocked; verify-before-extend caught this stale).
+**RECONNECT connector-port residue**: 4/8 ported (GitHub, Calendar, Notion, Slack); remaining 4 (cicd/devenvironment/gitbook/linear) still blocked on the PM product-scope call (does a live MCP server exist for any?). #1317 tracks. #1220 no longer tracks this front — it closed on the write-path evidence; per-connector grant-migration (B-per-port) rides each future port per the Arch concur.
 
 ---
 
-## Open-issue surface (current, verified against live GitHub state 2026-07-07)
+## Open-issue surface (current, verified against live GitHub state 2026-07-09 evening)
 
 **RECONNECT connector ports** (#1317 tracking issue, OPEN):
-- ✅ GitHub, Calendar, Notion, Slack — ported (4/8). Slack newest (2026-07-06), standalone adapter (not a subclass/consolidation like Notion's — no pre-existing legacy class to consolidate), real default-channel resolve via `UserPreferenceManager.get_slack_default_channel` (#693).
+- ✅ GitHub, Calendar, Notion, Slack — ported (4/8). Slack newest (2026-07-06).
 - 🔒 cicd/devenvironment/gitbook/linear — blocked on PM product-scope call (does a live MCP server exist/is one planned for any of these). Not a build task until that's answered.
-- #1220 (WS-8, auth-layer → MCP) — OPEN, same front, auth-layer side.
+- ✅ #1220 (WS-8, auth-layer → MCP) — **CLOSED 2026-07-09** (first verified connector write; binding-aware gates across all chat surfaces; #1322 read-back guard live).
 
 **Security / encrypt-at-rest**:
 - ✅ **#1307 + #1308** security gap closed (admin_compose removed + exempt-list enforcement lint, m-41).
@@ -27,10 +27,11 @@ D2 design-system (#1286, CXO-led) is **fully CLOSED** (2026-06-21) — CXO confo
 - **#1305/#1306** (encrypt PII-JSON / uploaded-file-content, both deferred from #358-B) — still OPEN, M5/later.
 - ✅ **Redis exposure FIXED** (#1311, 2026-06-21) — 6379 now `127.0.0.1`-only on the alpha Droplet.
 
-**Beta Blockers epic (as of 2026-07-06 ~17:30, re-verify on pickup — this moves fast)**:
-- Epic A (#1304, CI-gating) — 4/5 AC done+verified live (real Actions runs proving the gate has teeth, 2 real bugs found+fixed along the way). 1 remaining item (required-status-check flip) **PM-gated**: CIO recommends the visible-only variant (status check required, `enforce_admins` stays false — flipping `enforce_admins: true` would force every agent's push-to-main through a PR, breaking the cohort's whole continuity model). Holds on PM's explicit go-ahead, not implemented unilaterally.
-- Epic D (#1278, Fly.io hosting) — OPEN, reopened 2026-07-06 after an accidental-keyword auto-close + an unexplained second closure (full timeline in the issue's evidence comment). AC checklist still shows the actual hosting work unchecked — genuinely not done, not just a bookkeeping gap.
-- Epics B/C/E/F/G — check `beta-blockers.md` directly on pickup; this doc doesn't track their live sub-item state (moves too fast for a standing-items snapshot).
+**Beta Blockers sprint (as of 2026-07-09 evening — re-verify on pickup)**:
+- **3 open, all gated on non-code**: #1278 (Fly.io hosting — PM coordinates; also Epic-D history in the issue), #1312 (phase 3 gated on PM's todo_lists excise confirm; then reviewed reconciliation migration of the 30 residual autogen ops + CI autogen-empty guard), #1332 (root-caused + fixed in v0.8.10.7 — `Intent.original_message` never set by any classifier construction; SOAKING, close after a few clean days).
+- **Filed 7/9, sprint membership = PM's call**: #1383 (Notion/Calendar chat gates don't thread user_id — same class as the GitHub gate bug, priority-high), #1384 (timeout-modal buttons dead — no handlers wired).
+- Epic A (#1304) residue: required-status-check flip still PM-gated (CIO recommends visible-only variant).
+- Closed 7/8–7/9: #1220, #1283, #1380, #1381, #1382, #1379 (deploy runbook, milestone'd), plus the deploy itself.
 
 **Filed 2026-06-25 (discovered work), both DONE**:
 - ✅ **#1309** stale onboarding test — DONE (`854880c7d`).
@@ -43,7 +44,7 @@ D2 design-system (#1286, CXO-led) is **fully CLOSED** (2026-06-21) — CXO confo
 - **#1300** BYOC-CRED-DECOUPLE (Production).
 - ~~#1105~~ LLM keychain UI — **CLOSED 2026-07-07** (was MVP milestone / Beta Blockers Epic E all along — the "M5/later" label here was stale; confirmed not-a-regression, dead-code bug fixed + live-verified).
 
-**⚠️ The real task-loop queue when "my threads are drained" is the Beta Blockers sprint itself, not this doc's leftovers.** Epics E (#441+#1261), F (#1279, #1285, #1216-interim, #1256, #1332), and G (#1283, #1324) are full of unblocked, well-scoped, in-sprint items — check `docs/internal/planning/beta-blockers.md` FIRST before declaring (0,0). (Lesson from 2026-07-07: three fires reported "queue at (0,0)" while Epic F sat fully unblocked — the carry-forward's active-thread view is not the sprint board.)
+**⚠️ The real task-loop queue when "my threads are drained" is the Beta Blockers sprint itself, not this doc's leftovers** — check `docs/internal/planning/beta-blockers.md` FIRST before declaring (0,0). (As of 7/9 evening the sprint is genuinely drained: 3 open, all PM/time-gated — but re-verify on pickup; PM may sprint #1383/#1384.)
 
 **Closed since last refresh (2026-06-21 → 2026-07-07), for the record**: #1232, #1233, #1185, #1229, #1307, #1308, #1311, #1286, #1309, #1310, plus the M3 cluster already noted closed (#1124 #1142 #1143 #1133 #1134 #976 #953 #669 #995 #1130 #1060).
 
