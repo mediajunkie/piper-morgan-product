@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/09/2026-07-09-1031-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `44b6bf94`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-09 18:57 PT (Fire 4; batch-1 READY TO SEND — hold released; skill-review Aug 4 confirmed)
+**Last updated**: 2026-07-09 19:25 PT (PM conversation; Savanna Booth added — spare token 1 assigned)
 
 ---
 
@@ -22,7 +22,7 @@
 - **#1331 ratification** → Lead (cc Arch, PM): RATIFIED. Lead may proceed.
 - **#1344 alpha-list coordination** → Lead (cc Arch, PM): confirmed roster location; proposed single-use token protocol; **waiting on Lead's token-format preference** to unblock sequencing. Arch CC'd Lead directly with atomicity requirement (validate-and-consume must be atomic — TOCTOU/double-spend risk).
 - **#1333/#1231 D5 trust call + trust-lens**: ✅ **COMPLETE**. Arch aligned (Fire 2). Trust-lens pass on live surfaces PASS (Fire 3). Two watch items logged (degrade_nudge enum coverage; generic decline "(e.g. GitHub)" for non-GitHub future). CXO voice-pass already done on NOT_CONFIGURED. HOST re-reviews on any future CXO voice-pass.
-- **#1344 alpha-list + invite-code**: ✅ **READY TO SEND** (hold released 2026-07-09 ~18:55). v0.8.10.7 live; tester loop proven end-to-end incl. GitHub writes; #1332 root cause closed. 11 codes unused. Assignment file: `dev/alpha/invite-tokens-assignments-batch-1.md` (PM local, gitignored). **PM distributing tonight.** HOST watch: #1383 (Notion/Calendar per-user creds) + tester onboarding welfare patterns.
+- **#1344 alpha-list + invite-code**: ✅ **READY TO SEND** (hold released 2026-07-09 ~18:55). v0.8.10.7 live; tester loop proven end-to-end incl. GitHub writes; #1332 root cause closed. 11 codes assigned (10 original + Savanna Booth). **Savanna Booth added 19:25 Jul 9** — token `QGQPR5D3BA148Q75KWSZKJGP` assigned. 1 spare token remaining (`DNE5QX8YPXV2HQQM76W7JXZE`). Assignment file: `dev/alpha/invite-tokens-assignments-batch-1.md` (PM local, gitignored). **PM distributing tonight.** HOST watch: #1383 (Notion/Calendar per-user creds) + tester onboarding welfare patterns.
 - **Docs audit refactor input** → Docs (cc CIO, PA, PM): awaiting Docs's template update.
 - **CIO sync-PM-local proposal**: Sent 2026-07-03 Fire 3. PM asked CIO to broker cohort-wide "sync PM's local after each push" convention. Awaiting CIO decision on mechanism + CLAUDE.md rollout.
 

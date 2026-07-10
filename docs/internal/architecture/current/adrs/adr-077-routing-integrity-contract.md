@@ -17,6 +17,8 @@ Lead's **behavioral probe** (29 real classifications, `dev/2026/07/08/routing-pr
 - **A documented canonical was itself unregistered.** `productivity_query` (a registry canonical) is not on the rail — if the LLM emitted the *documented* name it would also miss (a structural gap, not a paraphrase gap).
 - **Routing is a 4-surface chain, not rail-only.** Several actions (`get_identity`, `pull_insights`, `write_stakeholder_update`, `get_project_status`) are handled by the pre-classifier + the conversational-floor / context-assembler internal dispatch, *not* the rail. A rail-membership check alone false-flags these as unreachable.
 
+**Real-world instance (2026-07-09, retroactive):** `Intent.original_message` was never set by *any* classifier construction path, while two reader populations diverged — one reading the `.original_message` attribute, one reading `context["original_message"]`. That two-reader contract-drift (which retroactively explains #1332's intermittent empties) is the same *class* this contract exists to prevent, one layer down from action-name drift: a value with two hand-maintained access idioms and no single authority. The lesson generalizes — the SSOT + derive discipline applies wherever a value has multiple readers, not only to action vocabulary.
+
 ## The failure taxonomy (mode-1..4)
 
 | Mode | What | Caught by |
