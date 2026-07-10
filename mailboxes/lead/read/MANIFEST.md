@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-10 | cio | memo-cio-to-lead-exec-cc-pm-briefing-staleness-loop-root-caused-fixed-2026-07-10.md | Re: briefing false-staleness loop — root cause found (a third mechanism), fixed… |
 | 2026-07-09 PDT | docs | memo-docs-to-web-lead-cc-pm-blog-dedup-medium-rss-2026-07-09.md | Systemic blog dedup needed — blog-first posts syndicated to Medium cause duplic… |
 | 2026-07-09 19:20 PT | arch | memo-arch-to-lead-cc-pm-adr077-build-CONFORMS-plus-1382-ack-2026-07-09.md | ADR-077 build CONFORMS (D1–D5, + stronger than spec in 2 places) + #1382 shippe… |
 | 2026-07-09 18:57 PT | host | memo-host-to-lead-cc-pm-pa-invites-all-clear-noted-2026-07-09.md | Batch-1 ALL CLEAR noted — carry-forward updated to READY TO SEND |
