@@ -225,3 +225,44 @@ class TestIssueRequestSlotFill:
         assert kwargs["repo_name"] == "test-piper-morgan"
         assert kwargs["title"] == "T"
         assert kwargs["body"] == "B"
+
+
+class TestOriginalMessagePlumbing:
+    """2026-07-09 root cause (#1332/#1220): NO classifier construction path set
+    Intent.original_message — every downstream attribute reader (the floor's
+    "came through empty", regex fallbacks, slot-fills) got "" on classifier-made
+    intents. These pin the plumbing."""
+
+    @pytest.mark.asyncio
+    async def test_classifier_intents_carry_original_message(self):
+        """The keyword-fallback path (cheapest deterministic construction) must
+        set the attribute — representative of the five fixed sites."""
+        from services.intent_service.classifier import IntentClassifier
+
+        c = IntentClassifier(llm_service=object())  # LLM never reached on this path
+        intent = c._fallback_classify("analyze the quarterly numbers please")
+        assert intent.original_message == "analyze the quarterly numbers please"
+
+    @pytest.mark.asyncio
+    async def test_slotfill_falls_back_to_context_original_message(self, svc):
+        """THE live 7cups case, pinned: attribute empty (pre-fix cached intents),
+        context carries the message — slots must still extract and the named
+        repo must win over any default."""
+        intent = _intent()
+        intent.original_message = ""  # what production delivered all evening
+        intent.context = {
+            "original_message": 'create an issue in mediajunkie/test-piper-morgan titled "T" with body "B"',
+            "knowledge_used": [],
+        }
+        created = {"id": "1", "url": "https://github.com/mediajunkie/test-piper-morgan/issues/9"}
+        full = {"number": 9, "title": "T", "html_url": "https://x/9"}
+        with (
+            patch(f"{ROUTER}.initialize", new=AsyncMock()),
+            patch(f"{ROUTER}.is_available", new=AsyncMock(return_value=True)),
+            patch(f"{ROUTER}.create_issue", new=AsyncMock(return_value=full)) as w,
+        ):
+            result = await svc._handle_create_issue(intent, "wf-1", "sess-1")
+        assert result.success
+        kwargs = w.await_args.kwargs
+        assert kwargs["owner"] == "mediajunkie"
+        assert kwargs["repo_name"] == "test-piper-morgan"

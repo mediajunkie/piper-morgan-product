@@ -6784,7 +6784,9 @@ class IntentService:
             title = intent.context.get("title") or f"Issue: {intent.original_message[:50]}"
             # 2026-07-09: deterministic slot-fill BEFORE defaults — see
             # _slotfill_issue_request's docstring for why context is empty here.
-            slots = self._slotfill_issue_request(intent.original_message or "")
+            slots = self._slotfill_issue_request(
+                intent.original_message or intent.context.get("original_message") or ""
+            )
             # Permanent write-path diagnostic (2026-07-09): the live first-real-write
             # chase burned four deploy loops because THIS hop had zero observability
             # on hosted. One INFO line = message seen, context carried, slots
@@ -6980,7 +6982,9 @@ class IntentService:
 
             # Extract parameters from intent — deterministic slot-fill first
             # (2026-07-09; see _slotfill_issue_request: context arrives empty).
-            slots = self._slotfill_issue_request(intent.original_message or "")
+            slots = self._slotfill_issue_request(
+                intent.original_message or intent.context.get("original_message") or ""
+            )
             issue_number = intent.context.get("issue_number")
             repository = (
                 intent.context.get("repository")
