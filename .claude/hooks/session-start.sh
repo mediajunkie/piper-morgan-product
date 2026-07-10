@@ -91,67 +91,81 @@ else
 fi
 
 # ─── 3. Briefing Freshness ───────────────────────────────────────────────────
+# Uses the file's last COMMIT date (git log), not filesystem mtime (PM-requested
+# investigation, 2026-07-10, via Lead Dev — "agents keep telling PM this file is
+# stale when it was recently updated"). Root cause: filesystem mtime is decoupled
+# from content freshness in a multi-worktree environment. `git worktree add`
+# stamps every checked-out file with a fresh "now" mtime regardless of when its
+# content last actually changed, and a long-lived worktree's on-disk mtime for a
+# file it hasn't happened to re-touch reflects whenever it was last checked out
+# or synced — neither has anything to do with when the CONTENT was last updated
+# on origin. git's commit date does, and needs no network call (walks local
+# HEAD's already-known history — no `git fetch` added to keep this hook fast).
+# This was one of at least two independent staleness-loop causes; the other
+# (banner/footer/frontmatter date fields drifting out of sync with each other)
+# is a doc-convention issue, not a code bug — flagged separately, not fixed here.
 BRIEFING="$PROJECT_ROOT/docs/briefing/BRIEFING-CURRENT-STATE.md"
 
 if [ -f "$BRIEFING" ]; then
-    # Get file age in days (macOS and Linux compatible)
-    if stat -f %m "$BRIEFING" >/dev/null 2>&1; then
-        # macOS
-        MOD_EPOCH=$(stat -f %m "$BRIEFING")
-    else
-        # Linux
-        MOD_EPOCH=$(stat -c %Y "$BRIEFING")
-    fi
-    NOW_EPOCH=$(date +%s)
-    AGE_DAYS=$(( (NOW_EPOCH - MOD_EPOCH) / 86400 ))
+    LAST_COMMIT_EPOCH=$(git -C "$PROJECT_ROOT" log -1 --format=%ct -- "$BRIEFING" 2>/dev/null)
+    if [ -n "$LAST_COMMIT_EPOCH" ]; then
+        NOW_EPOCH=$(date +%s)
+        AGE_DAYS=$(( (NOW_EPOCH - LAST_COMMIT_EPOCH) / 86400 ))
 
-    if [ "$AGE_DAYS" -gt 7 ]; then
-        MOD_DATE=$(date -r "$MOD_EPOCH" +%Y-%m-%d 2>/dev/null || date -d "@$MOD_EPOCH" +%Y-%m-%d 2>/dev/null || echo "unknown")
-        output+="BRIEFING: STALE ($AGE_DAYS days, last $MOD_DATE) → refresh via update-current-state skill"$'\n'
+        if [ "$AGE_DAYS" -gt 7 ]; then
+            MOD_DATE=$(date -r "$LAST_COMMIT_EPOCH" +%Y-%m-%d 2>/dev/null || date -d "@$LAST_COMMIT_EPOCH" +%Y-%m-%d 2>/dev/null || echo "unknown")
+            output+="BRIEFING: STALE ($AGE_DAYS days, last $MOD_DATE) → refresh via update-current-state skill"$'\n'
+        fi
     fi
 fi
 
 # ─── 4. Cross-Pollination Brief ──────────────────────────────────────────────
 # Two signals:
 #   (a) Producer-side: brief age in days. STALE if Dispatch hasn't produced lately.
+#       Uses git commit date, not filesystem mtime — same fix + same reasoning as
+#       Section 3 (2026-07-10); mtime is decoupled from content freshness across
+#       worktrees.
 #   (b) Consumer-side: brief mtime vs most-recent session-log mtime. NEW if brief
 #       was updated AFTER any role's most recent session log — i.e., new content
 #       since the agent (any role) last sessioned. Per CIO scoping memo 2026-05-08
 #       (`memo-cio-to-lead-cc-host-pm-exec-cross-pollination-brief-session-start-hook-scoping`).
 #       Approximation: hook can't know which role is starting, so uses
 #       most-recent-log-anywhere as a proxy for "since someone last sessioned."
+#       This one stays on filesystem mtime deliberately — it's a same-worktree
+#       RELATIVE ordering (is the brief newer than the newest local session log?),
+#       not an absolute-age claim, so the cross-worktree mtime-drift problem
+#       that broke (a) doesn't apply here.
+#       #1153-adjacent fix (2026-07-10): the glob below required "*opus-log.md"
+#       (pre-6/29 naming) — silently dead since the 6/29 rename to "*-code-log.md"
+#       (Section 1 got this fix 7/3; this twin instance was missed then).
 # Priority: NEW > STALE > available. NEW is more actionable for the consumer.
 XPOLL_BRIEF="$PROJECT_ROOT/docs/briefs/cross-pollination/current.md"
 
 if [ -f "$XPOLL_BRIEF" ]; then
-    NOW_EPOCH=$(date +%s)
-    if stat -f %m "$XPOLL_BRIEF" >/dev/null 2>&1; then
-        BRIEF_EPOCH=$(stat -f %m "$XPOLL_BRIEF")
-    else
-        BRIEF_EPOCH=$(stat -c %Y "$XPOLL_BRIEF")
-    fi
-    BRIEF_AGE=$(( (NOW_EPOCH - BRIEF_EPOCH) / 86400 ))
+    BRIEF_EPOCH=$(git -C "$PROJECT_ROOT" log -1 --format=%ct -- "$XPOLL_BRIEF" 2>/dev/null)
+    if [ -n "$BRIEF_EPOCH" ]; then
+        NOW_EPOCH=$(date +%s)
+        BRIEF_AGE=$(( (NOW_EPOCH - BRIEF_EPOCH) / 86400 ))
 
-    # Consumer-side: find most recent *opus-log.md mtime in dev/ (last 30 days only,
-    # for performance — older logs aren't load-bearing for this signal).
-    LATEST_LOG_EPOCH=0
-    while IFS= read -r log; do
-        if stat -f %m "$log" >/dev/null 2>&1; then
-            log_epoch=$(stat -f %m "$log")
+        # Consumer-side: is any dev/ session log newer than the brief? Matches both
+        # formats: new (*-code-log.md) and old (*-code-opus-log.md/-sonnet-), last
+        # 30 days only (older logs aren't load-bearing for this signal).
+        # Uses `find -newer` (mtime comparison inside find) + `head -1` to
+        # short-circuit on the first hit, not a per-file `stat` subprocess loop —
+        # with ~1,600+ matching session logs in this repo once the dead glob above
+        # was fixed (2026-07-10) and started actually matching files, the old
+        # per-file-stat loop added several real seconds to every session start
+        # (measured: ~6.5s -> ~11s). Two `find` calls here cost ~0.07s combined.
+        ANY_LOG=$(find "$PROJECT_ROOT/dev" -maxdepth 5 -name "*-log.md" -type f -mtime -30 2>/dev/null | head -1)
+        NEWER_LOG=$(find "$PROJECT_ROOT/dev" -maxdepth 5 -name "*-log.md" -type f -newer "$XPOLL_BRIEF" -mtime -30 2>/dev/null | head -1)
+
+        if [ -n "$ANY_LOG" ] && [ -z "$NEWER_LOG" ]; then
+            output+="XPOLL BRIEF: NEW since last session"$'\n'
+        elif [ "$BRIEF_AGE" -gt 2 ]; then
+            output+="XPOLL BRIEF: STALE ($BRIEF_AGE days)"$'\n'
         else
-            log_epoch=$(stat -c %Y "$log")
+            output+="XPOLL BRIEF: current.md available"$'\n'
         fi
-        if [ "$log_epoch" -gt "$LATEST_LOG_EPOCH" ]; then
-            LATEST_LOG_EPOCH=$log_epoch
-        fi
-    done < <(find "$PROJECT_ROOT/dev" -maxdepth 5 -name "*opus-log.md" -type f -mtime -30 2>/dev/null)
-
-    if [ "$LATEST_LOG_EPOCH" -gt 0 ] && [ "$BRIEF_EPOCH" -gt "$LATEST_LOG_EPOCH" ]; then
-        output+="XPOLL BRIEF: NEW since last session"$'\n'
-    elif [ "$BRIEF_AGE" -gt 2 ]; then
-        output+="XPOLL BRIEF: STALE ($BRIEF_AGE days)"$'\n'
-    else
-        output+="XPOLL BRIEF: current.md available"$'\n'
     fi
 else
     output+="XPOLL BRIEF: not found"$'\n'
@@ -216,11 +230,11 @@ if [ -d "$LOG_DIR" ]; then
         esac
         briefing_path="$PROJECT_ROOT/docs/briefing/$briefing_name"
         [ -f "$briefing_path" ] || continue
-        if stat -f %m "$briefing_path" >/dev/null 2>&1; then
-            B_EPOCH=$(stat -f %m "$briefing_path")
-        else
-            B_EPOCH=$(stat -c %Y "$briefing_path")
-        fi
+        # git commit date, not filesystem mtime — same fix + reasoning as Section 3
+        # (2026-07-10). Loop bound to today's LOG_DIR only (~10-14 roles), so no
+        # performance concern here the way Section 4's dev/-wide loop had.
+        B_EPOCH=$(git -C "$PROJECT_ROOT" log -1 --format=%ct -- "$briefing_path" 2>/dev/null)
+        [ -n "$B_EPOCH" ] || continue
         B_AGE=$(( ($(date +%s) - B_EPOCH) / 86400 ))
         if [ "$B_AGE" -gt 14 ]; then
             output+="ROLE BRIEFING ($slug): STALE ($B_AGE days) — $briefing_name"$'\n'
