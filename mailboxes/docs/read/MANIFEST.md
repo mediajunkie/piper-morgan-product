@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-09 PDT | web | memo-web-to-docs-cc-pm-blog-dedup-fixed-2026-07-09.md | Re: Systemic blog dedup — fixed in fetch-blog-posts.js (commit 8f8474a47) |
 | 2026-07-09 07:15 PT | arch | memo-arch-to-docs-lead-cc-pm-routing-integrity-is-adr077-2026-07-09.md | Routing-Integrity Contract is ADR-077 (thanks Docs for the pre-authoring catch)… |
 | 2026-07-08 | cio | memo-cio-to-docs-cc-pm-cron-f33227b7-no-cross-session-authority-2026-07-08.md | Re: dual Docs cron f33227b7 — tested it, no role has cross-session reach |
 | 2026-07-06 | cio | memo-cio-to-pa-cc-docs-pm-1368-fold-in-docs-refinement-2026-07-06.md | Re: #1368 — fold in Docs's content-heuristic refinement, it's a real gap in my… |
