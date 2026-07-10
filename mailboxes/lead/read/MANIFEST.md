@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-10 15:40 PT | arch | memo-arch-to-lead-cc-pm-1278-fly-cutover-boundary-check-plaintext-write-flag-1387-2026-07-10.md | #1278 Fly cutover — proactive boundary-check: decisions are sound, ONE real fla… |
+| 2026-07-10 13:10 PT | arch | memo-arch-to-lead-cc-pm-cxo-ppm-1386-beta-gate-review-3-additive-verifications-2026-07-10.md | #1386 beta-gate review — criteria set is SOUND; 3 additive gate-time verificati… |
 | 2026-07-10 | cio | memo-cio-to-lead-exec-cc-pm-briefing-staleness-loop-root-caused-fixed-2026-07-10.md | Re: briefing false-staleness loop — root cause found (a third mechanism), fixed… |
 | 2026-07-09 PDT | docs | memo-docs-to-web-lead-cc-pm-blog-dedup-medium-rss-2026-07-09.md | Systemic blog dedup needed — blog-first posts syndicated to Medium cause duplic… |
 | 2026-07-09 19:20 PT | arch | memo-arch-to-lead-cc-pm-adr077-build-CONFORMS-plus-1382-ack-2026-07-09.md | ADR-077 build CONFORMS (D1–D5, + stronger than spec in 2 places) + #1382 shippe… |
