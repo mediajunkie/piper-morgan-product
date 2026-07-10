@@ -33,13 +33,13 @@ def _normalize_pg_url(url: str, *, driver: str) -> str:
             ]
             break
     if driver == "async" and "sslmode=" in url:
+        # asyncpg rejects libpq's ``sslmode`` kwarg but its ``ssl`` parameter
+        # accepts the same mode strings — TRANSLATE, never drop: without an
+        # explicit mode asyncpg defaults to ``prefer`` and attempts TLS, which
+        # Fly's private-network proxy hard-resets (live failure, 2026-07-10).
         import re as _re
 
-        mode = _re.search(r"[?&]sslmode=([a-z-]+)", url)
-        url = _re.sub(r"[?&]sslmode=[a-z-]+", "", url)
-        if mode and mode.group(1) in ("require", "verify-ca", "verify-full"):
-            url += ("&" if "?" in url else "?") + "ssl=true"
-        url = url.rstrip("?&").replace("?&", "?")
+        url = _re.sub(r"([?&])sslmode=", r"\1ssl=", url)
     return url
 
 

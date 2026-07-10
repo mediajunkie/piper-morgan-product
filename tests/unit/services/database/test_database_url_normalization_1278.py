@@ -28,15 +28,17 @@ class TestNormalize:
             "postgresql://piper_morgan:pw@piper-morgan-db.flycast:5432/piper_morgan?sslmode=disable"
         )
 
-    def test_fly_attach_url_async_drops_sslmode_disable(self):
+    def test_fly_attach_url_async_translates_sslmode_disable(self):
+        """TRANSLATE, never drop: asyncpg defaults to ssl=prefer, and the TLS
+        attempt gets hard-reset by Fly's private-network proxy (live 7/10)."""
         assert _normalize_pg_url(FLY_URL, driver="async") == (
-            "postgresql+asyncpg://piper_morgan:pw@piper-morgan-db.flycast:5432/piper_morgan"
+            "postgresql+asyncpg://piper_morgan:pw@piper-morgan-db.flycast:5432/piper_morgan?ssl=disable"
         )
 
-    def test_sslmode_require_becomes_ssl_true_for_asyncpg(self):
+    def test_sslmode_require_becomes_ssl_require_for_asyncpg(self):
         url = "postgres://u:p@h:5432/db?sslmode=require"
         assert _normalize_pg_url(url, driver="async") == (
-            "postgresql+asyncpg://u:p@h:5432/db?ssl=true"
+            "postgresql+asyncpg://u:p@h:5432/db?ssl=require"
         )
 
     def test_already_canonical_urls_pass_through(self):
@@ -61,7 +63,7 @@ class TestResolvers:
         """THE Fly gap: the async resolver must read DATABASE_URL."""
         with patch.dict("os.environ", {"DATABASE_URL": FLY_URL}):
             assert _get_database_url() == (
-                "postgresql+asyncpg://piper_morgan:pw@piper-morgan-db.flycast:5432/piper_morgan"
+                "postgresql+asyncpg://piper_morgan:pw@piper-morgan-db.flycast:5432/piper_morgan?ssl=disable"
             )
 
     def test_migrate_honors_database_url_with_legacy_scheme(self):
