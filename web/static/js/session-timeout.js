@@ -10,6 +10,10 @@ const SessionTimeout = {
   idleMinutesBeforeWarning: 25, // Show warning after this many idle minutes
   warningIntervalSeconds: 1, // Update countdown every N seconds
   logoutUrl: '/logout', // URL to redirect to on logout
+  // #1384: "Continue Working" was a placebo — it reset only the client timer
+  // while the 30-min JWT marched on. The #857 refresh endpoint (httponly
+  // refresh_token cookie, rotates on use) is the real extension.
+  extendUrl: '/api/v1/auth/refresh',
 
   // Internal state
   sessionStartTime: null,
@@ -31,10 +35,31 @@ const SessionTimeout = {
     SessionTimeout.lastActivityTime = Date.now();
 
     // Track user activity
+    // #1384: the modal copy promises "Move your mouse ... to stay signed in"
+    // but mousemove was never tracked (and 'touch' is not a DOM event — the
+    // touchstart listener silently never fired). mousemove is throttled so a
+    // busy pointer doesn't spam the timestamp.
     document.addEventListener('mousedown', () => SessionTimeout.recordActivity());
     document.addEventListener('keydown', () => SessionTimeout.recordActivity());
-    document.addEventListener('touch', () => SessionTimeout.recordActivity());
+    document.addEventListener('touchstart', () => SessionTimeout.recordActivity());
     document.addEventListener('scroll', () => SessionTimeout.recordActivity());
+    let lastMove = 0;
+    document.addEventListener('mousemove', () => {
+      const now = Date.now();
+      if (now - lastMove > 5000) {
+        lastMove = now;
+        SessionTimeout.recordActivity();
+      }
+    });
+
+    // #1384: bind the modal buttons here (template carries no inline onclick).
+    const bind = (id, fn) => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('click', fn);
+    };
+    bind('session-timeout-extend', () => SessionTimeout.extend());
+    bind('session-timeout-logout', () => SessionTimeout.logout());
+    bind('session-timeout-close', () => SessionTimeout.dismiss());
 
     // Start idle timeout check
     SessionTimeout.startIdleCheck();
@@ -160,20 +185,31 @@ const SessionTimeout = {
   /**
    * Extend session (dismiss warning and continue)
    */
-  extend() {
+  async extend() {
     SessionTimeout.lastActivityTime = Date.now();
     SessionTimeout.dismiss();
 
-    // Optional: call API to extend server-side session
+    // #1384: actually extend the server-side session. Cookie-based (#857);
+    // on failure be honest — a dead refresh token means the session WILL end.
     if (SessionTimeout.extendUrl) {
-      fetch(SessionTimeout.extendUrl, { method: 'POST' }).catch((e) =>
-        console.error('Failed to extend session:', e)
-      );
-    }
-
-    // Announce extension
-    if (typeof Toast !== 'undefined' && Toast.success) {
-      Toast.success('Session Extended', 'Your session has been extended.');
+      try {
+        const res = await fetch(SessionTimeout.extendUrl, {
+          method: 'POST',
+          credentials: 'same-origin',
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        if (typeof Toast !== 'undefined' && Toast.success) {
+          Toast.success('Session Extended', 'Your session has been extended.');
+        }
+      } catch (e) {
+        console.error('Failed to extend session:', e);
+        if (typeof Toast !== 'undefined' && Toast.warning) {
+          Toast.warning(
+            'Could Not Extend Session',
+            'Your session could not be renewed — save your work and log in again soon.'
+          );
+        }
+      }
     }
   },
 

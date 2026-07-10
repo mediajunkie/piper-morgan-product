@@ -1,6 +1,9 @@
 {# G52: Session Timeout Warning Modal
    Warns user when session is about to expire and provides options
-   to continue or logout gracefully
+   to continue or logout gracefully.
+   #1384: buttons are wired by session-timeout.js at init (addEventListener) —
+   no inline onclick. Inline handlers are CSP-hostile and were part of the
+   dead-buttons report; JS binding keeps behavior in one place.
 #}
 
 <div
@@ -14,10 +17,10 @@
 >
   <div class="session-timeout-content">
     <button
+      id="session-timeout-close"
       class="session-timeout-close"
       aria-label="Close session warning"
       type="button"
-      onclick="SessionTimeout.dismiss()"
     >
       ✕
     </button>
@@ -36,15 +39,15 @@
 
     <div class="session-timeout-actions">
       <button
+        id="session-timeout-extend"
         class="btn btn-primary"
-        onclick="SessionTimeout.extend()"
         type="button"
       >
         Continue Working
       </button>
       <button
+        id="session-timeout-logout"
         class="btn btn-secondary"
-        onclick="SessionTimeout.logout()"
         type="button"
       >
         Logout Now

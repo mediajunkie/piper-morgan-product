@@ -21,7 +21,10 @@
   z-index: var(--z-index-toast);
   opacity: 0;
   visibility: hidden;
-  transition: var(--transition-all);
+  /* #1384: transition ONLY opacity. `transition: all` animated visibility and
+     pointer-events too, leaving a pointer-dead window while the modal faded in
+     — clicks fell through to the page under it. Interactivity must be instant. */
+  transition: opacity 0.25s ease;
   pointer-events: none;
 }
 
@@ -70,7 +73,8 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--border-radius-sm);
-  transition: var(--transition-all);
+  /* #1384: hover styling only — never `all` in a click-critical overlay */
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .session-timeout-close:hover {
@@ -124,7 +128,8 @@
   border-radius: var(--border-radius-md);
   cursor: pointer;
   font-weight: var(--font-weight-semibold);
-  transition: var(--transition-all);
+  /* #1384: hover styling only — never `all` in a click-critical overlay */
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .session-timeout-actions .btn-primary {
