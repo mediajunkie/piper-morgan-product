@@ -2,32 +2,19 @@
 
 **Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
 
-## 🔄 7/9 Thu — IN PROGRESS. `dev/2026/07/09/2026-07-09-1032-cio-code-log.md`
+## 🎆 7/9 Thu — DAY-CLOSED. Full account: `dev/2026/07/09/2026-07-09-1032-cio-code-log.md`
 
-**Cadence**: LEAN `7 10,16,22`, cron `13b5541f` (re-armed this morning — old `fb1edc5a` died overnight, Gap-C, not a deliberate change).
+**Cadence**: LEAN `7 10,16,22`, cron `13b5541f` re-armed as STOP's final action (no cadence change — same lean expression).
 
-**Today's PM-conversation resolved**: f33227b7 — identified the actual session (Docs's primary "Docs 6/14-7/9", `local_b8b89b35-...`) via `list_sessions`, messaged it directly asking it to self-clean its own stale cron via `send_message`. T3 (Arch worktree straddle) — Arch's own follow-up confirmed it's collapsed to one worktree, no active hazard, cleanup deferred to natural session-end, no action needed. Exec's skill-review ask — acknowledged, queued (no deadline). Duplicate-cron root cause — understood (moving between the ephemeral-cron and scheduled-task mechanisms requires an explicit teardown of the old one; easy to miss cross-session), not a mystery needing more digging; worth a small process-doc note but not urgent.
+**Resolved today, nothing owed**: f33227b7 (found Docs's actual session via `list_sessions`, messaged it directly to self-clean — not yet confirmed whether it acted, but the ball is in its court, not mine); T3 Arch worktree straddle (Arch's own follow-up confirmed resolved, cleanup deferred to natural session-end); skill-candidates-review's two asks from Exec (audit slot confirmed + landed in `staggered-audit-calendar-2026.md`, report-writing-skill read given — HOST confirmed both by evening, thread fully closed); duplicate-cron root cause (understood, not a mystery).
 
-**Next**: PM wants to move to Ted Nadeau catch-up + saved-ideas review today. Nothing blocking that.
+**Didn't happen today, carry forward as the likely opener tomorrow**: PM's stated top priority — Ted Nadeau catch-up + a backlog of saved ideas for discussion. PM went idle after the 16:07 status report; day closed on autonomous fires from there. Not dropped, just not yet reached — if PM opens tomorrow wanting to continue, this is where to pick up.
 
-**16:07 fire**: closed both of Exec's skill-review asks from 7/8 — confirmed HOST's audit-slot proposal (1st Tue, verified against the actual Monday-anchored cluster in `staggered-audit-calendar-2026.md`, not taken on faith) and added it as a proper row in that canonical doc rather than a separate rhythm; gave the report-writing-skill light-vs-full read (light + Exec's own escalation trigger — both open candidates trace to the same Ship #050 incident). Nothing left owed on that thread unless HOST/Exec push back.
+**Banked, not actioned**: the `mcp__ccd_session_mgmt__*` cross-session-messaging capability PM asked me to note — saved to auto-memory (`project_cross_session_messaging_capability.md`), flagged as sitting outside the mailbox audit-trail discipline. PM said "make note," not "route this" — don't push this forward without a fresh PM ask.
 
-## 🎆 7/8 Wed — DAY-CLOSED (retroactively, Gap-C — session died before the last-fire STOP). Full account: `dev/2026/07/08/2026-07-08-0938-cio-code-log.md`
+## Older days
 
-**Cadence**: LEAN `7 10,16,22` (3×/day), cron `fb1edc5a` confirmed armed, no duplicates. Migration hold unchanged.
-
-**This fire**: answered Docs's `f33227b7` dual-cron memo (tested cross-session cron reach directly — none exists, corrected the "CIO authority" premise, gave 3 ranked next steps incl. PM checking the app's session list). Answered Arch's T3 worktree-straddle memo — found via `scheduled-tasks` list (genuinely cross-visible, unlike ephemeral `CronCreate`) that Arch has no entry there, meaning their fires run the same per-session-invisible cron mechanism as mine; strong inference (not confirmed) that Arch's own cron prompt text still hardcodes the old worktree path, same bug I fixed in my own thin-cron-prompt on 7/4 — pointed Arch at the self-serve fix, offered to do the worktree removal myself but asked for a timing confirmation first rather than risk pulling it out from under a live session.
-
-**Flagged to PM, not yet actioned by anyone**: an automated watchdog alert landed in PM's inbox this morning — Exec's duty cycle STALE 24h. Not mine to fix (no cross-session reach); PM needs to re-prod that session via the app.
-
-**Live threads needing a next action**:
-- **f33227b7 (Docs's stray cron)**: replied 2026-07-08 ~09:45. Watch whether it fires again ~22:17 and self-resolves, or PM ends the old session via the app.
-- **T3 (Arch's worktree straddle)**: replied 2026-07-08 ~10:15. Waiting on Arch/PM confirmation before removing `arch-backup-0630` — do NOT remove unilaterally without that confirmation (session may still be live there).
-- **Exec duty-cycle stall (24h)**: flagged to PM directly in chat + here. PM's action, not mine.
-
-## 🎆 7/7 Tue — DAY-CLOSED (spanned into 7/8 morning). Full account: `dev/2026/07/07/2026-07-07-1104-cio-code-log.md`
-
-**Cadence**: LEAN `7 10,16,22` (3×/day), cron `fb1edc5a` confirmed armed. Migration checklist still fully unconfirmed — the migration-hold reasoning for staying off full 6×/day is unchanged. Do not bump without a fresh PM ask.
+7/8 (Gap-C retroactive close) and 7/7 fully detailed in their own session logs (`dev/2026/07/08/...`, `dev/2026/07/07/...`) — nothing outstanding from either beyond what's captured above.
 
 **Shipped**: #1296 closed (mail-send.sh: unpassed-dirty-path detection + hardened warn-path naming, `270573eac`). #1368 closed (`sync-pm-local.sh` v2 — 3-tier classifier + PM-directed per-path-exclusion refinement + a real parens-quoting bug caught by the dry-run gate before it ever touched PM's live checkout, `927720955`). PM's local checkout went from 184 commits / 24+ hrs behind to 0, live-verified with PM's real WIP provably untouched.
 
