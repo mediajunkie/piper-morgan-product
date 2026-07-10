@@ -27,6 +27,7 @@ from typing import List, Optional
 
 import structlog
 from sqlalchemy import create_engine, text
+from sqlalchemy.pool import NullPool
 
 logger = structlog.get_logger(__name__)
 
@@ -57,8 +58,13 @@ class EncryptedDBCredentialStore:
                 if self._engine is None:
                     from services.database.session_factory import get_sync_migration_url
 
+                    # NullPool per the Arch concur's build-note (2026-07-09):
+                    # "short-lived = actually short-lived." Ops are rare
+                    # (connect/settings-time), so every op opens and truly
+                    # closes its connection — no idle sync connection parked
+                    # against Postgres for the process lifetime.
                     self._engine = create_engine(
-                        get_sync_migration_url(), pool_size=1, max_overflow=2
+                        get_sync_migration_url(), poolclass=NullPool
                     )
         return self._engine
 
