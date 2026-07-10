@@ -324,7 +324,7 @@
 </style>
 
 <div class="page">
-  <h2 class="sr-only">Piper Morgan attention rollup for July 10, 2026, 4:42pm: nothing needs Exec right now, but two items are waiting on you directly — sending the batch-1 invites, and the Fly.io cutover's DNS plus OAuth callback step. The Fly migration build finished today: the whole stack is live and smoke-tested. Three roles (PPM, PA, Comms) have been quiet since yesterday morning with no clean day-close and mail piling up — not flagged as broken, worth a direct nudge given that's the same pattern from Thursday.</h2>
+  <h2 class="sr-only">Piper Morgan attention rollup for July 10, 2026, 4:42pm: nothing needs Exec right now, but two items are waiting on you directly — sending the batch-1 invites, and the Fly.io cutover's DNS plus OAuth callback step. The Fly migration build finished today: the whole stack is live and smoke-tested, and a security gap Arch found in the same review was fixed and closed within the hour. Three roles (PPM, PA, Comms) have been quiet since yesterday morning with no clean day-close and mail piling up — not flagged as broken, worth a direct nudge given that's the same pattern from Thursday.</h2>
 
   <div class="masthead">
     <h1>Bridge Log</h1>
@@ -338,7 +338,7 @@
       <div class="label">Need attention</div>
     </div>
     <div class="tally-cell inflight">
-      <div class="num">3</div>
+      <div class="num">2</div>
       <div class="label">In flight</div>
     </div>
     <div class="tally-cell healthy">
@@ -352,8 +352,8 @@
     <ul>
       <li><strong>Briefing false-staleness loop — closed for good.</strong> CIO found the real trigger: the SessionStart hook checked filesystem <em>mtime</em>, not git — structurally unreliable across worktrees, since a fresh checkout stamps "now" regardless of when content last changed. Fixed in 3 instances (<code>76f6b5dd4</code>), plus an unrelated dead-glob bug in the same code that was silently costing ~5-6 seconds per session start. No action needed from you.</li>
       <li><strong>The Fly.io migration (#1278) went from decisions to a live, smoke-tested stack in one afternoon.</strong> Your walkthrough with Lead closed all four decision items (account, DB, Redis/Chroma/gh-mcp, DNS) around midday; by 4:35pm the full stack was built and deployed to <code>piper-morgan.fly.dev</code> — Postgres, Upstash Redis, Chroma, and the GitHub MCP sidecar all live. Five real defects found and fixed en route, including one that would have crash-looped the app and one that left it half-connected (chat working, reads/saves silently hitting localhost). Smoke tests green, parity-confirmed against the droplet.</li>
-      <li><strong>Arch caught a real security gap before it could bite.</strong> A proactive review of the Fly cutover found that field-encryption silently writes tester PII as <em>plaintext</em> if the encryption key is unset in prod — filed as #1387 with a clean proposed fix. Not gating today (cutover isn't finalized and no real tester has hit Fly yet), but it should land before the cutover takes its first real write.</li>
-      <li><strong>#1386 (the beta-close gate) is being refined, not rubber-stamped.</strong> Arch reviewed Lead's draft and proposed two real additive checks: verifying boundaries hold in the <em>deployed</em> build, not just CI, and explicitly scoping whether MCP-federated queries (still simulated, #1322) are in or out of the beta surface. CXO/PPM still owe the three multi-turn test scenarios — normal queue work, not urgent.</li>
+      <li><strong>Arch caught a real security gap — and it was fixed and closed within the hour.</strong> A proactive review of the Fly cutover found that field-encryption silently writes tester PII as <em>plaintext</em> if the encryption key is unset in prod. Filed as #1387 at 4:01pm; Lead shipped a prod-fatal guard (6 pinning tests) and closed it by 4:40pm — same fire the report came in on. No exposure: Fly has zero tester traffic pre-cutover and both live environments already have the key set.</li>
+      <li><strong>#1386 (the beta-close gate) just absorbed a full round of refinement — all three of Arch's proposed checks, one of which was a real gap.</strong> Checking rather than assuming, Lead found the routing-integrity lint (P1) was only running inside the chronically-red CI job — not effectively gating anything green. Now wired into the passing Architecture Enforcement workflow. The other two folded in as new criteria: boundary verification against the <em>deployed</em> build, and federated MCP queries declared explicitly OUT of the beta surface. Gate criteria are now settled; CXO/PPM's three test scenarios are the one piece still outstanding — normal queue work, not urgent.</li>
       <li><strong>Ship #051's kickoff held up under its first live test.</strong> Correct window (Fri Jul 3–Thu Jul 9), and the two submissions in early — Arch and HOST — both used it correctly. The post-#050 date-window fix is holding.</li>
       <li>This morning's stall alert was just first-fire latency, not a real stall — Arch confirmed to CIO, no action needed.</li>
     </ul>
@@ -385,10 +385,10 @@
     <div class="entry">
       <div class="entry-body">
         <div class="entry-row">
-          <span class="entry-title">#1386 beta-close gate — converging</span>
-          <span class="entry-tag">Arch, CXO, PPM</span>
+          <span class="entry-title">#1386 beta-close gate — criteria settled, scenarios pending</span>
+          <span class="entry-tag">CXO, PPM</span>
         </div>
-        <div class="entry-desc">Criteria set is sound; Arch's two additive checks and CXO/PPM's three test scenarios are still being folded in. Not blocking — surfaced so it's not a surprise when it lands on your desk for go/no-go.</div>
+        <div class="entry-desc">All of Arch's review folded in same-day. Only CXO/PPM's three multi-turn test scenarios remain before this is ready for your go/no-go. Not blocking — surfaced so it's not a surprise when it lands on your desk.</div>
       </div>
     </div>
   </div>
@@ -420,7 +420,7 @@
   <div class="section healthy">
     <div class="section-head"><div class="dot"></div><h2>Healthy — active today</h2><div class="rule"></div></div>
     <div class="roster">
-      <div class="chip"><span class="role">Lead</span><span class="time">16:35 &middot; Fly build live</span></div>
+      <div class="chip"><span class="role">Lead</span><span class="time">16:41 &middot; #1387 fixed, #1386 folded</span></div>
       <div class="chip"><span class="role">Arch</span><span class="time">16:01 &middot; #1387 filed</span></div>
       <div class="chip"><span class="role">HOST</span><span class="time">15:59 &middot; Ship #051 filed</span></div>
       <div class="chip"><span class="role">Docs</span><span class="time">10:49</span></div>
