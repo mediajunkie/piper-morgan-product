@@ -6,6 +6,8 @@
 
 **The day**: v0.8.10.1→.7 (seven point releases across two days). The write-path chase peeled five evidenced layers (legacy gates → pinned tool contract → slot-fill → minimal envelope → **Intent.original_message never set by the main classifier — #1332's root**). PM granted droplet autonomy (ssh-agent) → I deploy/diagnose/drive-the-real-route solo now (JWT minted via the app's own service; in-container X-ray repro technique proven). HOST has the invites GO (PM's word ~17:45); PA has the resume-MCP/skills directive + substrate summary.
 
+**Pending next release cut**: NullPool tightening for #1382's sync engine (Arch build-note (a) — on main `7658ba8ef`-adjacent, not yet on production branch; not urgent, rides the next point release).
+
 **Remaining sprint 3 (evening drain took #1380+#1381)**: #1278 (backlog, PM coordinates Fly); #1312 (PM's todo_lists excise confirm → phase-3 reconciliation migration → autogen-empty CI guard → close); #1332 (fixed in v0.8.10.7, SOAKING — close on a few clean days). #1383 (gate-threading, priority-high) if PM sprints it. **v0.8.10.8 (#1381 user-tz time) + v0.8.10.9 (#1380 Settings LLM-key page) shipped + live-verified same evening; #1384 filed (dead timeout-modal buttons).**
 
 **Standing state**: cron armed (absorb fires mid-work — the corrected discipline); mid-turn dormancy recurred 2× on 7/9 (harness-level; cron+PM-nudge recovers; keep the wake-timer armed ALWAYS). Droplet: v0.8.10.7, chain g1382creds, sidecar pinned v1.5.0. PM's default repo still 7cups-testbot (stale, harmless now — extraction wins; PM said they'd fix). Model: Fable.
