@@ -6790,7 +6790,7 @@ class IntentService:
             # on hosted. One INFO line = message seen, context carried, slots
             # extracted, action taken. Keep it.
             _slog_diag = __import__("structlog").get_logger(__name__)
-            _slog_diag.info(
+            _slog_diag.warning(
                 "create_issue_inputs",
                 action=intent.action,
                 original_message_head=repr((intent.original_message or "")[:120]),

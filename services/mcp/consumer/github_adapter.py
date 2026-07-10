@@ -99,6 +99,11 @@ import structlog
 
 _slog = structlog.get_logger(__name__)
 
+# #1220: extract the issue number from a v1.5.0 minimal write envelope's URL.
+import re as _re_mod
+
+_re_issues = _re_mod.compile(r"/issues/(\d+)")
+
 
 @dataclass
 class GitHubIssuesResult:
@@ -442,6 +447,13 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         if isinstance(binding_or_degrade, DegradationResponse):
             # Pre-call: the write was never fired — the ONLY safe-fallback state.
             return GitHubWriteResult(attempted=False, degradation=binding_or_degrade)
+        _slog.warning(
+            "github_write_attempt",
+            tool=tool,
+            method=args.get("method"),
+            owner=args.get("owner"),
+            repo=args.get("repo"),
+        )
         try:
             async with self._mcp_client_ctx(binding_or_degrade) as client:
                 result = await client.call_tool(tool, args)
@@ -467,8 +479,22 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                     return GitHubWriteResult(verified=False, raw=written)
                 number = (written or {}).get("number") or args.get("issue_number")
                 if not number:
+                    # v1.5.0's issue_write returns a MINIMAL envelope ({id, url} — no
+                    # number field; found live 2026-07-09: three real issues created
+                    # while the guard reported honest-uncertainty). The number is in
+                    # the URL — derive it, then verify via read-back as usual.
+                    _url = (written or {}).get("url") or (written or {}).get("html_url") or ""
+                    _m = _re_issues.search(_url)
+                    if _m:
+                        number = int(_m.group(1))
+                if not number:
                     # Write response didn't yield an artifact to verify — honest-uncertain.
                     logger.warning("github_write_unverifiable_no_artifact tool=%s", tool)
+                    _slog.warning(
+                        "github_write_unverifiable_no_artifact",
+                        tool=tool,
+                        written_keys=sorted((written or {}).keys()),
+                    )
                     return GitHubWriteResult(verified=False, raw=written)
                 readback_result = await client.call_tool(
                     self._GET_ISSUE_TOOL,
