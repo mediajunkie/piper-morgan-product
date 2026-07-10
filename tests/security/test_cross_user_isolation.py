@@ -124,51 +124,6 @@ class TestDeleteMethodValidation:
             await repo.delete_list(str(TEST_LIST_ID), owner_id=None)
 
 
-class TestTodoListRepositoryValidation:
-    """Test that TodoListRepository methods reject invalid owner_id"""
-
-    @pytest.mark.asyncio
-    async def test_todolist_get_list_by_id_rejects_none(self, db_session):
-        """TodoListRepository.get_list_by_id should raise ValueError when owner_id is None"""
-        from services.repositories.todo_repository import TodoListRepository
-
-        repo = TodoListRepository(db_session)
-
-        with pytest.raises(ValueError, match="owner_id is required"):
-            await repo.get_list_by_id(str(TEST_LIST_ID), owner_id=None)
-
-    @pytest.mark.asyncio
-    async def test_todolist_update_list_rejects_none(self, db_session):
-        """TodoListRepository.update_list should raise ValueError when owner_id is None"""
-        from services.repositories.todo_repository import TodoListRepository
-
-        repo = TodoListRepository(db_session)
-
-        with pytest.raises(ValueError, match="owner_id is required"):
-            await repo.update_list(str(TEST_LIST_ID), {"name": "Updated"}, owner_id=None)
-
-    @pytest.mark.asyncio
-    async def test_todolist_delete_list_rejects_none(self, db_session):
-        """TodoListRepository.delete_list should raise ValueError when owner_id is None"""
-        from services.repositories.todo_repository import TodoListRepository
-
-        repo = TodoListRepository(db_session)
-
-        with pytest.raises(ValueError, match="owner_id is required"):
-            await repo.delete_list(str(TEST_LIST_ID), owner_id=None)
-
-    @pytest.mark.asyncio
-    async def test_todolist_search_rejects_none(self, db_session):
-        """TodoListRepository.search_lists_by_name should raise ValueError when owner_id is None"""
-        from services.repositories.todo_repository import TodoListRepository
-
-        repo = TodoListRepository(db_session)
-
-        with pytest.raises(ValueError, match="owner_id is required"):
-            # owner_id is first positional arg, query is second
-            await repo.search_lists_by_name(None, "test")
-
-
 class TestTodoRepositoryMethodValidation:
     """Test additional TodoRepository methods reject invalid owner_id"""
 

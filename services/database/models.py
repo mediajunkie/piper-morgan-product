@@ -158,7 +158,10 @@ class User(Base):
 
     # Relationships (Issue #262/#291 - FK constraints restored with UUID)
     personality_profiles = relationship(
-        "PersonalityProfileModel", back_populates="user", lazy="select"
+        "PersonalityProfileModel",
+        back_populates="user",
+        lazy="select",
+        foreign_keys="PersonalityProfileModel.user_id",  # #1312: owner_id FK added; join stays on user_id
     )
     api_keys = relationship(
         "UserAPIKey", back_populates="user", cascade="all, delete-orphan", lazy="select"
@@ -166,7 +169,12 @@ class User(Base):
     blacklisted_tokens = relationship(
         "TokenBlacklist", back_populates="user", cascade="all, delete-orphan", lazy="select"
     )  # Issue #291 - FK restored
-    feedback = relationship("FeedbackDB", back_populates="user", lazy="select")
+    feedback = relationship(
+        "FeedbackDB",
+        back_populates="user",
+        lazy="select",
+        foreign_keys="FeedbackDB.user_id",  # #1312: owner_id FK added; join stays on user_id
+    )
     learned_patterns = relationship(
         "LearnedPattern", back_populates="user", cascade="all, delete-orphan", lazy="select"
     )  # Issue #300 - Learning system
@@ -212,8 +220,12 @@ class UserAPIKey(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(
-        postgresql.UUID(as_uuid=True), ForeignKey("users.id"), nullable=False
+        postgresql.UUID(as_uuid=True),
+        ForeignKey("users.id", name="user_api_keys_user_id_fkey", ondelete="CASCADE"),
+        nullable=False,
     )  # Issue #262 - FK restored with UUID; index declared as idx_user_api_keys_user_id (#1312)
+    # (#1312: FK carries the DB's real name; the DB also carried a duplicate
+    # unnamed-convention FK on the same pair — dropped in the reconciliation migration.)
     provider = Column(String(50), nullable=False)  # openai, anthropic, github, etc
     key_reference = Column(String(500), nullable=False)  # keychain identifier
     # #358: AES-256-GCM encrypted-at-rest copy of the secret, portable off the OS
@@ -280,7 +292,11 @@ class AuditLog(Base, TimestampMixin):
     # #1312: all audit indexes are declared in __table_args__ under the DB's real
     # idx_audit_* names; column-level index=True flags here generated ten phantom
     # ix_audit_logs_* wants in every autogenerate run.
-    user_id = Column(postgresql.UUID(as_uuid=True), nullable=True)
+    user_id = Column(
+        postgresql.UUID(as_uuid=True),
+        ForeignKey("users.id", name="audit_logs_user_id_fkey", ondelete="CASCADE"),
+        nullable=True,
+    )  # #1312: DB has carried this FK since creation; model finally declares it
     session_id = Column(String(255), nullable=True)
 
     # Event classification
@@ -680,13 +696,22 @@ class PersonalizationContext(Base, TimestampMixin):
     """
 
     __tablename__ = "personalization_contexts"
+    __table_args__ = (
+        # #1312: the DB's real constraint name (ADR-071 one-row-per-owner)
+        UniqueConstraint("owner_id", name="uq_personalization_contexts_owner"),
+        # #1312: the DB ALSO carries this unique index (original unique=True+index=True
+        # combo generated both) — redundant with the constraint above, but model=DB-truth;
+        # dedup would be deliberate DDL for another day.
+        Index("ix_personalization_contexts_owner_id", "owner_id", unique=True),
+    )
+
 
     id = Column(CrossDialectUUID(), primary_key=True, default=uuid.uuid4)
     # Owner = the resolved principal (ADR-071 D2). NOT NULL: this config must
     # belong to someone — there is no global/PM-domain variant of this table.
     owner_id = Column(
-        CrossDialectUUID(), ForeignKey("users.id"), nullable=False, unique=True, index=True
-    )
+        CrossDialectUUID(), ForeignKey("users.id"), nullable=False
+    )  # unique + indexed via __table_args__ (#1312: matches DB exactly)
     # m-40 multi-tenant-READY: NAMED, not built (ADR-071 D7). Mirrors ConnectorConfig.
     tenant_id = Column(CrossDialectUUID(), nullable=True, index=True)
     # Free-text personalization content. JSONB on Postgres / JSON on SQLite tests
@@ -1083,7 +1108,11 @@ class ProjectDB(Base):
 
     id = Column(String, primary_key=True)
     # owner_id is UUID in database - must match schema (Issue #479)
-    owner_id = Column(postgresql.UUID(as_uuid=False), ForeignKey("users.id"), nullable=True)
+    owner_id = Column(
+        postgresql.UUID(as_uuid=False),
+        ForeignKey("users.id", name="fk_projects_owner_id", ondelete="CASCADE"),
+        nullable=True,
+    )
     name = Column(String, nullable=False)  # Unique per owner via __table_args__
     description = Column(Text)
     shared_with = Column(JSON, default=lambda: [])
@@ -1344,7 +1373,11 @@ class UploadedFileDB(Base):
     __tablename__ = "uploaded_files"
 
     id = Column(String, primary_key=True)
-    owner_id = Column(postgresql.UUID(as_uuid=False), nullable=False)  # UUID type in database
+    owner_id = Column(
+        postgresql.UUID(as_uuid=False),
+        ForeignKey("users.id", name="fk_uploaded_files_owner_id", ondelete="CASCADE"),
+        nullable=False,
+    )  # UUID type in database; #1312: FK declared to match DB
     filename = Column(String(500), nullable=False)
     file_type = Column(String(255))
     file_size = Column(Integer)
@@ -1735,7 +1768,11 @@ class KnowledgeNodeDB(Base):
     properties = Column(JSON, default=dict)
     session_id = Column(String)  # Legacy - kept for backward compatibility
     # owner_id is UUID in database - must match schema (Issue #479)
-    owner_id = Column(postgresql.UUID(as_uuid=False), ForeignKey("users.id"), nullable=True)
+    owner_id = Column(
+        postgresql.UUID(as_uuid=False),
+        ForeignKey("users.id", name="fk_knowledge_nodes_owner_id", ondelete="CASCADE"),
+        nullable=True,
+    )
     embedding_vector = Column(
         postgresql.ARRAY(Float)
     )  # Will be upgraded to pgvector VECTOR type later
@@ -1808,7 +1845,11 @@ class KnowledgeEdgeDB(Base):
     properties = Column(JSON, default=dict)
     session_id = Column(String)  # Legacy - kept for backward compatibility
     # owner_id is UUID in database - must match schema (Issue #479)
-    owner_id = Column(postgresql.UUID(as_uuid=False), ForeignKey("users.id"), nullable=True)
+    owner_id = Column(
+        postgresql.UUID(as_uuid=False),
+        ForeignKey("users.id", name="fk_knowledge_edges_owner_id", ondelete="CASCADE"),
+        nullable=True,
+    )
     created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     updated_at = Column(
         DateTime(timezone=True),
@@ -1865,115 +1906,6 @@ class KnowledgeEdgeDB(Base):
 
 
 # PM-081: Todo Management System Database Models
-class TodoListDB(Base):
-    """Database model for TodoList with strategic indexing"""
-
-    __tablename__ = "todo_lists"
-
-    # Primary key
-    id = Column(String, primary_key=True)
-
-    # Core fields
-    name = Column(String, nullable=False)
-    description = Column(Text, default="")
-    list_type = Column(Enum(ListType), nullable=False, default=ListType.PERSONAL)
-    ordering_strategy = Column(
-        Enum(OrderingStrategy), nullable=False, default=OrderingStrategy.MANUAL
-    )
-
-    # UI customization
-    color = Column(String(7))  # Hex color codes
-    emoji = Column(String(4))  # Unicode emoji
-
-    # Status flags
-    is_archived = Column(Boolean, default=False, nullable=False)
-    is_default = Column(Boolean, default=False, nullable=False)
-
-    # Metadata and tags
-    list_metadata = Column("metadata", JSON, default=dict)
-    tags = Column(postgresql.JSONB, default=list)  # Array of tag strings
-
-    # Timestamps
-    created_at = Column(
-        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False
-    )
-    updated_at = Column(
-        DateTime(timezone=True),
-        default=lambda: datetime.now(timezone.utc),
-        onupdate=lambda: datetime.now(timezone.utc),
-        nullable=False,
-    )
-
-    # Ownership and sharing - owner_id is UUID in database (Issue #484)
-    owner_id = Column(postgresql.UUID(as_uuid=False), ForeignKey("users.id"), nullable=False)
-    shared_with = Column(postgresql.JSONB, default=list)  # Array of user IDs
-
-    # Performance optimization - cached counts
-    todo_count = Column(Integer, default=0, nullable=False)
-    completed_count = Column(Integer, default=0, nullable=False)
-
-    # Relationships
-    memberships = relationship(
-        "ListMembershipDB", back_populates="todo_list", cascade="all, delete-orphan"
-    )
-
-    # Strategic indexes for performance
-    __table_args__ = (
-        Index("idx_todo_lists_owner_type", "owner_id", "list_type"),
-        Index("idx_todo_lists_owner_archived", "owner_id", "is_archived"),
-        Index(
-            "idx_todo_lists_shared", "shared_with", postgresql_using="gin"
-        ),  # GIN index for JSON array
-        Index("idx_todo_lists_default", "owner_id", "is_default"),
-        Index("idx_todo_lists_tags", "tags", postgresql_using="gin"),  # GIN index for tag search
-    )
-
-    def to_domain(self) -> domain.TodoList:
-        """Convert to domain model"""
-        return domain.TodoList(
-            id=self.id,
-            name=self.name,
-            description=self.description,
-            list_type=self.list_type,
-            ordering_strategy=self.ordering_strategy,
-            color=self.color,
-            emoji=self.emoji,
-            is_archived=self.is_archived,
-            is_default=self.is_default,
-            metadata=self.list_metadata or {},
-            tags=self.tags or [],
-            created_at=self.created_at,
-            updated_at=self.updated_at,
-            owner_id=self.owner_id,
-            shared_with=self.shared_with or [],
-            todo_count=self.todo_count,
-            completed_count=self.completed_count,
-        )
-
-    @classmethod
-    def from_domain(cls, todo_list: domain.TodoList) -> "TodoListDB":
-        """Create from domain model"""
-        return cls(
-            id=todo_list.id,
-            name=todo_list.name,
-            description=todo_list.description,
-            list_type=todo_list.list_type,
-            ordering_strategy=todo_list.ordering_strategy,
-            color=todo_list.color,
-            emoji=todo_list.emoji,
-            is_archived=todo_list.is_archived,
-            is_default=todo_list.is_default,
-            metadata=todo_list.metadata,
-            tags=todo_list.tags,
-            created_at=todo_list.created_at,
-            updated_at=todo_list.updated_at,
-            owner_id=todo_list.owner_id,
-            shared_with=todo_list.shared_with,
-            todo_count=todo_list.todo_count,
-            completed_count=todo_list.completed_count,
-        )
-
-
 class ListMembershipDB(Base):
     """Database model for many-to-many Todo-to-List relationships"""
 
@@ -1983,7 +1915,7 @@ class ListMembershipDB(Base):
     id = Column(String, primary_key=True)
 
     # Foreign keys
-    list_id = Column(String, ForeignKey("todo_lists.id"), nullable=False)
+    list_id = Column(String, ForeignKey("lists.id"), nullable=False)
     todo_id = Column(String, ForeignKey("todo_items.id"), nullable=False)
 
     # Position tracking
@@ -2001,11 +1933,15 @@ class ListMembershipDB(Base):
     list_notes = Column(Text, default="")
 
     # SEC-RBAC ownership - owner_id is UUID in database (Issue #479)
-    owner_id = Column(postgresql.UUID(as_uuid=False), ForeignKey("users.id"), nullable=True)
+    owner_id = Column(
+        postgresql.UUID(as_uuid=False),
+        ForeignKey("users.id", name="fk_list_memberships_owner_id", ondelete="CASCADE"),
+        nullable=True,
+    )
 
-    # Relationships
-    todo_list = relationship("TodoListDB", back_populates="memberships")
-    # Disabled: TodoDB.memberships relationship disabled after foundation refactor
+    # Relationships: none. The list-side ORM relationship died with the orphan
+    # todo-list model (#1312 ruling 2, PM-confirmed 2026-07-09); list_id points
+    # at the universal lists rail, matching the live DB FK.
     # todo = relationship("TodoDB", back_populates="memberships")
 
     # Strategic indexes for many-to-many queries
@@ -2210,7 +2146,11 @@ class ListItemDB(Base):
     list_notes = Column(Text, default="")
 
     # SEC-RBAC ownership - owner_id is UUID in database (Issue #479)
-    owner_id = Column(postgresql.UUID(as_uuid=False), ForeignKey("users.id"), nullable=True)
+    owner_id = Column(
+        postgresql.UUID(as_uuid=False),
+        ForeignKey("users.id", name="fk_list_items_owner_id", ondelete="CASCADE"),
+        nullable=True,
+    )
 
     # Relationships
     list = relationship("ListDB", back_populates="items")
@@ -2285,6 +2225,13 @@ class FeedbackDB(Base, TimestampMixin):
     user_id = Column(
         postgresql.UUID(as_uuid=True), ForeignKey("users.id"), nullable=True
     )  # index: idx_feedback_user_id (#1312)
+    # #1312: SEC-RBAC owner_id shipped DB-side (fk_feedback_owner_id, CASCADE);
+    # model finally declares it — park-with-model, DB is truth.
+    owner_id = Column(
+        postgresql.UUID(as_uuid=False),
+        ForeignKey("users.id", name="fk_feedback_owner_id", ondelete="CASCADE"),
+        nullable=True,
+    )
     # #1312: these four are jsonb in the DB; with_variant keeps SQLite tests working.
     conversation_context = Column(
         postgresql.JSONB().with_variant(JSON(), "sqlite"), default=dict
@@ -2305,7 +2252,7 @@ class FeedbackDB(Base, TimestampMixin):
     )  # User or system tags
 
     # Relationships
-    user = relationship("User", back_populates="feedback")
+    user = relationship("User", back_populates="feedback", foreign_keys=[user_id])
     # related_issues = Column(JSON, default=list)  # Links to related GitHub issues
 
     # Strategic indexes for query performance
@@ -2393,6 +2340,13 @@ class PersonalityProfileModel(Base, TimestampMixin):
     created_at = Column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False
     )
+    # #1312: SEC-RBAC owner_id shipped DB-side (fk_personality_profiles_owner_id,
+    # CASCADE); model finally declares it — park-with-model, DB is truth.
+    owner_id = Column(
+        postgresql.UUID(as_uuid=False),
+        ForeignKey("users.id", name="fk_personality_profiles_owner_id", ondelete="CASCADE"),
+        nullable=True,
+    )
     updated_at = Column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
@@ -2401,7 +2355,7 @@ class PersonalityProfileModel(Base, TimestampMixin):
     )
 
     # Relationships
-    user = relationship("User", back_populates="personality_profiles")
+    user = relationship("User", back_populates="personality_profiles", foreign_keys=[user_id])
 
     # Indexes are defined in the migration
     __table_args__ = (
@@ -3248,3 +3202,20 @@ class StandupConversationDB(Base, TimestampMixin):
             updated_at=self.updated_at or datetime.now(),
             completed_at=self.completed_at,
         )
+
+
+# ============================================================================
+# #1382: hosted credential store (g1382creds). The store itself uses raw SQL
+# via a short-lived sync engine (services/infrastructure/secure_credential_store.py)
+# — this model exists so alembic autogenerate sees the table (park-with-model,
+# #1312 discipline: every live table is declared; DB is truth). Do NOT grow ORM
+# usage here without also considering the store's sync-path design.
+class SecureCredentialDB(Base):
+    """Encrypted-at-rest credential rows, keyed by composed KeychainService name."""
+
+    __tablename__ = "secure_credentials"
+
+    name = Column(String(512), primary_key=True)
+    encrypted_value = Column(Text, nullable=False)
+    created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())

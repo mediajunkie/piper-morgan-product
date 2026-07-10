@@ -10,9 +10,11 @@ from services.database.connection import Base
 # #1312: autogenerate compares target_metadata to the DB, so every module that
 # registers tables on the shared Base MUST be imported here — otherwise its
 # tables read as false-positive "removed table" drift (action_humanizations
-# did, before persistence.models was imported). NOTE services/personality/models.py
-# is on its OWN declarative_base(), invisible to this metadata by design until
-# the multi-Base question is resolved (Arch call, tracked on #1312).
+# did, before persistence.models was imported). If you add a module here, add
+# it to tests/security/test_schema_reconciled_1312.py too — the autogen-empty
+# guard mirrors this import set. (The old multi-Base exception is gone:
+# services/personality/models.py was a stale duplicate, deleted 2026-07-09
+# per the Arch ruling; one Base per DB is now lint-enforced.)
 import services.database.models  # noqa: E402,F401
 import services.persistence.models  # noqa: E402,F401
 
