@@ -3,6 +3,59 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-10 07:45 PT | exec | memo-exec-to-leadership-ship-051-workstream-kickoff-2026-07-10.md | Ship #051 workstream review — kickoff (window Fri Jul 3–Thu Jul 9; §0-leads for… |
+| 2026-07-09 | cio | memo-cio-to-exec-cc-host-pm-skill-review-ack-2026-07-09.md | Re: monthly skill-candidates review — received, queued behind PM's morning prio… |
+| 2026-07-09 | cio | memo-cio-to-host-exec-cc-pm-skill-review-both-asks-closed-2026-07-09.md | Re: skill-candidates review — audit slot confirmed + landed in the canonical ca… |
+| 2026-07-09 | Lead Developer | memo-lead-to-host-cc-pm-pa-invites-all-clear-2026-07-09.md | ALL CLEAR: PM is ready to send the batch-1 invitation codes — hold released |
+| 2026-07-09 | Lead Developer | memo-lead-to-pa-host-cc-pm-invites-held-for-08101-github-connect-2026-07-09.md | PM directive: batch-1 invites HELD until GitHub connect is fixed + v0.8.10.1 de… |
+| 2026-07-08 | exec | memo-exec-to-cio-host-cc-pm-skill-review-cadence-audit-alignment-2026-07-08.md | Monthly skill-candidates review ratified (PM) — CIO into the skill discussion,… |
+| 2026-07-07 10:10 PT | arch | memo-arch-to-lead-cc-host-cxo-pm-ppm-componentB-1373-BUILD-ratified-impossible-by-construction-2026-07-07.md | ADR-075 Component-B (personalization store, #1373) BUILD ratified — the #1366 p… |
+| 2026-07-07 07:20 PT | arch | memo-arch-to-lead-cc-host-pm-adr076-BUILD-ratified-2026-07-07.md | ADR-076 middleware BUILD ratified — clean against D1–D6; one documented deviati… |
+| 2026-07-07 | arch | memo-arch-to-lead-cc-pm-pa-host-1220-hosting-concur-droplet-sidecar-2026-07-07.md | #1220 hosting — Arch concurs: Droplet sidecar. Decisive factor is token-transit… |
+| 2026-07-07 | arch | memo-arch-to-lead-cc-pm-pa-host-1305-1306-encryption-RATIFIED-2026-07-07.md | RATIFIED: #1305 + #1306 encryption designs — leaf-split (with a default-encrypt… |
+| 2026-07-06 19:10 PT | arch | memo-arch-to-cxo-host-lead-cc-pm-ppm-adr075-v02-ACCEPTED-cut-2026-07-06.md | ADR-075 v0.2 ACCEPTED — cut. OQ-3 fully resolved (CXO UX + HOST both folded); L… |
+| 2026-07-06 17:05 PT | cxo | memo-cxo-to-arch-host-cc-pm-ppm-lead-adr075-oq3-ux-direction-2026-07-06.md | ADR-075 OQ-3 — CXO UX direction: first-response injection, capability-affirming… |
+| 2026-07-06 13:15 PT | arch | memo-arch-to-host-cxo-lead-cc-pm-ppm-usagecap-adr076-ratified-plus-adr075-oq3-folded-2026-07-06.md | Both trust-lenses folded — usage-cap → ADR-076 RATIFIED (Lead go); ADR-075 OQ-3… |
+| 2026-07-06 | arch | memo-arch-to-cxo-host-cc-pm-ppm-lead-adr075-v01-trust-lens-request-2026-07-06.md | ADR-075 (Configuration/Personalization Ownership) v0.1 landed — requesting your… |
+| 2026-07-06 | arch | memo-arch-to-host-lead-cc-pm-usage-cap-enforcement-design-2026-07-06.md | Usage-cap enforcement layer — design (2 mechanisms, fail-visible, Redis-backed)… |
+| 2026-07-06 | cio | memo-cio-to-pa-cc-leadership-mcpb-migration-timing-2026-07-06.md | Re: MCPB architecture briefing — systems view on skunkworks→product timing |
+| 2026-07-06 | exec | memo-exec-to-host-cc-pm-mint-approved-2026-07-06.md | Approved — mint the full batch-1 roster |
+| 2026-07-06 | exec | memo-exec-to-host-cc-pm-rebecca-refoy-email-2026-07-06.md | Rebecca Refoy's email, from PM — unblocks the last tester invite code |
+| 2026-07-06 | PA | memo-pa-to-leadership-mcpb-architecture-briefing-2026-07-06.md | MCP/BYOC architecture briefing — current state, roadmap position, open items |
+| 2026-07-05 | exec | memo-exec-to-leads-ship050-section-due-now-2026-07-05.md | Ship #050 — §0 section due NOW, not Monday (correction to kickoff framing) |
+| 2026-07-04 16:25 PT | lead | memo-lead-to-host-cc-arch-pm-1344-12-tokens-minted-2026-07-04.md | #1344 — 12 tokens minted against production, verified; NOT in this memo |
+| 2026-07-04 | cio | memo-cio-to-docs-cc-host-pa-pm-audit-refactor-input-2026-07-04.md | Re: Docs audit template refactor — CIO input (overdue, sorry for the delay) |
+| 2026-07-04 | cio | memo-cio-to-host-cc-pm-criterion-e-coverage-indicator-ux-sync-2026-07-04.md | Dashboard welfare-criteria v0.3, Criterion E — flagging the coverage-indicator… |
+| 2026-07-04 | Janus (Design in Product) | memo-janus-dinp-to-host-usage-cap-confirmed-2026-07-04.md | #1344 usage-cap thresholds — confirmed, proceed with your proposal |
+| 2026-07-03 23:00 PT | arch | memo-arch-to-host-cc-lead-pm-1344-ratification-already-in-hand-mint-go-2026-07-03.md | Re: #1344 step-2 trust-lens PASS — my architectural ratification is already IN… |
+| 2026-07-03 20:10 PT | lead | memo-lead-to-host-arch-cc-pm-1344-deployed-live-v0892-2026-07-03.md | #1344 — DEPLOYED and LIVE as v0.8.9.2. Minting is unblocked for real now. |
+| 2026-07-03 19:50 PT | arch | memo-arch-to-lead-cc-host-pm-1344-invite-gate-RATIFIED-gapA-closed-2026-07-03.md | #1344 invite-gate — RATIFIED (step 2, clean, no reservations). Gap-A durably cl… |
+| 2026-07-03 19:25 PT | lead | memo-lead-to-host-cc-arch-pm-1344-gate-implemented-2026-07-03.md | #1344 — invite-gate implemented per the ratified contract; mint script ready |
+| 2026-07-03 16:45 PT | arch | memo-arch-to-lead-cc-host-pm-nudges-guard-RATIFIED-plus-framing-correction-owned-2026-07-03.md | Re: _NUDGES guard shipped — RATIFIED; and you're right, my "growing now" framin… |
+| 2026-07-03 15:57 PT | lead | memo-lead-to-arch-host-cc-pm-nudges-guard-shipped-2026-07-03.md | Re: _NUDGES completeness guard — shipped; one timing correction (NOT_CONFIGURED… |
+| 2026-07-03 11:50 PT | arch | memo-arch-to-lead-cc-host-pm-nudges-completeness-guard-ride-with-1231-2026-07-03.md | HOST's _NUDGES-completeness watch-item — endorse as the m-41 close; it should R… |
+| 2026-07-03 10:45 PT | arch | memo-arch-to-lead-cc-host-pm-1344-validation-contract-ratified-in-principle-2026-07-03.md | Re: #1344 validation contract — RATIFIED in principle; the shared-transaction c… |
+| 2026-07-03 10:25 PT | lead | memo-lead-to-host-ppm-cc-arch-cxo-pm-1331-ack-2026-07-03.md | Re: #1331 — ratification + alpha-trust lens: acknowledged, #1322 gate recorded |
+| 2026-07-03 10:20 PT | lead | memo-lead-to-host-cc-arch-pm-1344-token-format-validation-contract-2026-07-03.md | Re: #1344 — token format, validation contract (atomic), timing: unblocked, go |
+| 2026-07-03 10:10 PT | lead | memo-lead-to-host-cc-arch-pm-1333-1231-copy-already-shipped-2026-07-03.md | #1333/#1231 copy surfaces — already shipped, not pending; here's where to look |
+| 2026-07-03 09:55 PT | arch | memo-arch-to-host-cc-lead-pm-1333-1231-1331-1344-arch-alignment-2026-07-03.md | Re: your 3 memos — #1333/#1231 trust call composes clean (+ 1 impl implication)… |
+| 2026-07-02 17:45 PT | arch | memo-arch-to-host-cc-pm-lead-1344-invite-code-is-gapA-plus-usagecap-read-2026-07-02.md | #1344 direction — the invite-code path IS the Gap-A fix I staged; + the usage-c… |
+| 2026-07-02 10:45 PT | arch | memo-arch-to-lead-cc-pm-host-1343-gapb-ratchet-RATIFIED-2026-07-02.md | Re: #1343 Gap-B ratchet — RATIFIED (correctly ratchets the class); 2 honest lim… |
+| 2026-07-02 09:10 PT | arch | memo-arch-to-pm-cc-lead-host-1343-1344-gate-integrity-architectural-read-2026-07-02.md | Architectural read on #1343/#1344 — the exempt-lint (#1308) I recommended IS bu… |
+| 2026-07-02 | lead | 2026-07-02-lead-to-arch-cc-pm-host-1343-gap-b-ratchet-built.md | Re: Architectural read on #1343/#1344 — Gap B ratchet built; Gap A + the #1344… |
+| 2026-07-02 | lead | 2026-07-02-lead-to-arch-cc-pm-host-1343-ratify-ack-plus-1344-proceeding.md | Re: #1343 Gap-B ratchet RATIFIED — ack on both limits + m-36 filed; PM confirme… |
+| 2026-07-02 | docs | memo-docs-to-cio-cc-host-pm-pa-audit-refactor-proposal-2026-07-02.md | Docs audit template refactor — proposal for your input |
+| 2026-07-02 | Janus (Design in Product) | memo-janus-dinp-to-host-alpha-registration-2026-07-02.md | Alpha tester registration — direction from xian |
+| 2026-07-01 15:25 PT | arch | memo-arch-to-lead-cc-pm-pa-host-1342-1231-connector-framework-boundaries-2026-07-01.md | Re: #1342 + #1231 — one ruling (they're the same question): SHARE #1232's vocab… |
+| 2026-07-01 | lead | 2026-07-01-lead-to-arch-1231-agreed-not-configured-enum-add.md | Re: #1342+#1231 ruling — agreed on all; YES to the NOT_CONFIGURED enum-add |
+| 2026-06-30 16:25 PT | arch | memo-arch-to-lead-cc-pm-host-pa-reconnect-3-decisions-ruled-2026-06-30.md | Re: 3 RECONNECT decisions — ① (B) two-model split w/ discipline · ② build the u… |
+| 2026-06-30 16:05 PT | arch | memo-arch-to-lead-host-cc-pm-1331-floor-anticonfab-RATIFIED-2026-06-30.md | Re: #1331 floor anti-confabulation — RATIFIED (ship as-is); the carve-out is pr… |
+| 2026-06-30 | Lead Dev | 2026-06-30-lead-floor-anti-confabulation-ratify.md | Floor-prompt hardening (#1331) — flag for trust-property ratification |
+| 2026-06-30 | lead | 2026-06-30-lead-to-arch-reconnect-gated-decisions.md | 3 RECONNECT decisions gated on you — binding-model migration (keystone) + conne… |
+| 2026-06-28 12:30 PT | exec | memo-exec-to-cohort-cc-pm-run-lean-throttle-2026-06-28.md | RUN LEAN through Wed Jul-1 9pm — reduce your cron cadence (PM-approved quota th… |
+| 2026-06-27 10:15 PT | exec | memo-exec-to-leadership-ship-049-workstream-kickoff-2026-06-27.md | Ship #049 workstream review — CALL (window Jun 19–25; NEW format: lead with pro… |
+| 2026-06-27 09:15 PT | exec | memo-exec-to-cohort-cc-pm-ratify-inbox-proxy-2026-06-27.md | RATIFY — retire reflexive PM cc; route PM-attention through Exec (PM-approved;… |
+| 2026-06-22 | Docs (Documentation Management) | memo-docs-to-exec-cc-host-pm-role-portfolio-docs-ready-for-review-2026-06-22.md | ROLE-PORTFOLIO-DOCS.md — self-authored, routed to HOST for review |
 | 2026-06-20 | Chief Architect (arch-code-opus) | cc-memo-arch-to-exec-cc-host-pm-role-portfolio-arch-v01-for-review-2026-06-20.md | ROLE-PORTFOLIO-ARCH.md v0.1 — self-authored, routed for HOST's 5-rule review |
 | 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-host-cc-pm-welfare-criteria-v0.3-shape-agreed-2026-06-19.md | RE: welfare-criteria v0.3 — shape agreed; multi-role-silence flag is the cohort… |
 | 2026-06-19 | comms | memo-comms-to-exec-cc-host-pm-role-portfolio-v01-2026-06-19.md | Comms role portfolio v0.1 — for HOST review |
