@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/09/2026-07-09-1031-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `44b6bf94`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-09 10:33 PT (PM-nudge START; Jul 7 retroactively closed; 4 stalled memos processed; batch-1 hold noted; skill-review alignment sent)
+**Last updated**: 2026-07-09 18:57 PT (Fire 4; batch-1 READY TO SEND — hold released; skill-review Aug 4 confirmed)
 
 ---
 
@@ -22,7 +22,7 @@
 - **#1331 ratification** → Lead (cc Arch, PM): RATIFIED. Lead may proceed.
 - **#1344 alpha-list coordination** → Lead (cc Arch, PM): confirmed roster location; proposed single-use token protocol; **waiting on Lead's token-format preference** to unblock sequencing. Arch CC'd Lead directly with atomicity requirement (validate-and-consume must be atomic — TOCTOU/double-spend risk).
 - **#1333/#1231 D5 trust call + trust-lens**: ✅ **COMPLETE**. Arch aligned (Fire 2). Trust-lens pass on live surfaces PASS (Fire 3). Two watch items logged (degrade_nudge enum coverage; generic decline "(e.g. GitHub)" for non-GitHub future). CXO voice-pass already done on NOT_CONFIGURED. HOST re-reviews on any future CXO voice-pass.
-- **#1344 alpha-list + invite-code**: ✅ MAPPING COMPLETE. **⏸ INVITES HELD** (PM directive 2026-07-09): batch-1 sending blocked on v0.8.10.1 (GitHub connect fix, #1382 — OS keychain doesn't exist on hosted Linux; encrypted-DB credential store behind KeychainService seam). v0.8.10 deployed + dry-run passed EXCEPT GitHub connect. 11 codes unused. Assignment file: `dev/alpha/invite-tokens-assignments-batch-1.md` (PM local, gitignored). **HOST's list/plan unchanged — this is a when, not a what.** Unblocks when Lead signals 0.8.10.1 live + connect verified.
+- **#1344 alpha-list + invite-code**: ✅ **READY TO SEND** (hold released 2026-07-09 ~18:55). v0.8.10.7 live; tester loop proven end-to-end incl. GitHub writes; #1332 root cause closed. 11 codes unused. Assignment file: `dev/alpha/invite-tokens-assignments-batch-1.md` (PM local, gitignored). **PM distributing tonight.** HOST watch: #1383 (Notion/Calendar per-user creds) + tester onboarding welfare patterns.
 - **Docs audit refactor input** → Docs (cc CIO, PA, PM): awaiting Docs's template update.
 - **CIO sync-PM-local proposal**: Sent 2026-07-03 Fire 3. PM asked CIO to broker cohort-wide "sync PM's local after each push" convention. Awaiting CIO decision on mechanism + CLAUDE.md rollout.
 
@@ -39,7 +39,7 @@
 
 ## New threads (Jul 9)
 
-- **Monthly skill-review audit alignment** — HOST sent input to Exec + CIO (Jul 9): first Tuesday monthly, offset from Docs weekly, HOST seat for welfare/trust candidates. Waiting on CIO to confirm timing.
+- **Monthly skill-review audit alignment** — ✅ CLOSED. Aug 4, 2026 (1st Tuesday) confirmed; landed in `staggered-audit-calendar-2026.md` (commit `2563b3273`). HOST seat confirmed (flag welfare/trust, Exec routes, CIO dispositions). No HOST action until Aug 4.
 - **Gap-C extended stall Jul 7–9** — duty cycle was silent Jul 8; PM nudged Jul 9. Cron survived in session (`44b6bf94`) but fires had no context to handle. Root cause: session context exhausted after Jul 7 Fire 2. No work was missed (queue was empty). Retroactive Jul 7 close written Jul 9.
 
 ## PM-blocked / awaiting-PM (gated, do not self-advance)
