@@ -16,12 +16,46 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from .connection import db
 
 
+def _normalize_pg_url(url: str, *, driver: str) -> str:
+    """Normalize an externally-supplied Postgres URL for our engines (#1278).
+
+    Hosted platforms (Fly attach, Heroku-style) hand out ``postgres://`` —
+    a scheme SQLAlchemy 2.x no longer aliases — often with ``?sslmode=``,
+    which asyncpg rejects as a connect kwarg. Map the scheme onto the
+    requested driver and translate/drop sslmode for the async driver
+    (private-network defaults need no TLS; ``require``-class modes become
+    asyncpg's ``ssl=true``).
+    """
+    for prefix in ("postgres://", "postgresql://", "postgresql+asyncpg://"):
+        if url.startswith(prefix):
+            url = ("postgresql://" if driver == "sync" else "postgresql+asyncpg://") + url[
+                len(prefix) :
+            ]
+            break
+    if driver == "async" and "sslmode=" in url:
+        import re as _re
+
+        mode = _re.search(r"[?&]sslmode=([a-z-]+)", url)
+        url = _re.sub(r"[?&]sslmode=[a-z-]+", "", url)
+        if mode and mode.group(1) in ("require", "verify-ca", "verify-full"):
+            url += ("&" if "?" in url else "?") + "ssl=true"
+        url = url.rstrip("?&").replace("?&", "?")
+    return url
+
+
 def _get_database_url() -> str:
     """Build PostgreSQL URL from environment variables.
 
     Duplicated from connection.py to avoid importing the global db instance
     for fresh engine creation.
+
+    #1278: honors an explicit ``DATABASE_URL`` first (the Fly-attach/12-factor
+    convention), normalized for asyncpg; else builds from ``POSTGRES_*`` with
+    local-dev defaults preserved.
     """
+    explicit = os.getenv("DATABASE_URL")
+    if explicit:
+        return _normalize_pg_url(explicit, driver="async")
     user = os.getenv("POSTGRES_USER", "piper")
     password = os.getenv("POSTGRES_PASSWORD", "dev_changeme_in_production")
     host = os.getenv("POSTGRES_HOST", "localhost")
@@ -45,7 +79,7 @@ def get_sync_migration_url() -> str:
     """
     explicit = os.getenv("ALEMBIC_DATABASE_URL") or os.getenv("DATABASE_URL")
     if explicit:
-        return explicit.replace("postgresql+asyncpg://", "postgresql://")
+        return _normalize_pg_url(explicit, driver="sync")  # #1278: postgres:// et al.
     user = os.getenv("POSTGRES_USER", "piper")
     password = os.getenv("POSTGRES_PASSWORD", "dev_changeme_in_production")
     host = os.getenv("POSTGRES_HOST", "localhost")
