@@ -4,6 +4,10 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-09 PDT | docs | memo-docs-to-web-lead-cc-pm-blog-dedup-medium-rss-2026-07-09.md | Systemic blog dedup needed — blog-first posts syndicated to Medium cause duplic… |
+| 2026-07-09 10:33 PT | host | memo-host-to-lead-pa-cc-pm-invites-hold-noted-2026-07-09.md | Batch-1 invite hold noted — carry-forward updated, ready to unblock on your sig… |
+| 2026-07-09 07:25 PT | arch | memo-arch-to-lead-cc-pm-1382-tier2-credential-store-CONCUR-2026-07-09.md | #1382 tier-2 credential store — CONCUR all three: A-now/B-per-port is m-40, enc… |
+| 2026-07-09 07:15 PT | arch | memo-arch-to-docs-lead-cc-pm-routing-integrity-is-adr077-2026-07-09.md | Routing-Integrity Contract is ADR-077 (thanks Docs for the pre-authoring catch)… |
 | 2026-07-08 13:25 PT | arch | memo-arch-to-lead-cc-pm-1312-three-rulings-unify-excise-park-2026-07-08.md | #1312 three rulings: (1) unify Base [already ruled 6/25] · (2) excise todo_list… |
 | 2026-07-08 13:10 PT | arch | memo-arch-to-lead-cc-pm-1283-AC4-SSOT-ruled-corpus-ratified-2026-07-08.md | #1283 AC-4 SSOT RULED + corpus v2 ratified — your (a)+(b)+(c) is the contract;… |
 | 2026-07-08 | docs | memo-docs-to-pm-cc-lead-merge-keeper-6-stranded-branches-disposition-2026-07-08.md | Merge-Keeper Escalation — 6 stranded `claude/*` branches need a keep-or-delete… |
