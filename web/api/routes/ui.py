@@ -486,6 +486,17 @@ async def integrations_page(request: Request):
     )
 
 
+@router.get("/settings/llm-keys", response_class=HTMLResponse)
+async def llm_keys_settings_page(request: Request):
+    """LLM API key management (#1380) — the Settings surface for the
+    /api/v1/keys backend, which was UI-orphaned outside the setup wizard."""
+    templates = _get_templates(request)
+    user_context = _extract_user_context(request)
+    return templates.TemplateResponse(
+        "settings_llm_keys.html", {"request": request, "user": user_context}
+    )
+
+
 @router.get("/settings/integrations/notion", response_class=HTMLResponse)
 async def notion_settings_page(request: Request):
     """Notion API key settings page (Issue #540)"""

@@ -1,0 +1,180 @@
+{% extends "layouts/app_shell.html" %}
+{# #1380: Settings surface for the /api/v1/keys backend (store/list/validate/delete
+   were built and tested long ago but had NO consuming page — the only key UI was
+   setup-wizard Step 2, so existing users could never set or rotate a key. Found
+   live during the 2026-07-08 v0.8.10 deploy smoke (PM: "it should"). #}
+
+{% block page_title %}LLM API Keys - Piper Morgan{% endblock %}
+
+{% block head_extra %}
+<style>
+  .llmkeys-container { max-width: 720px; margin: 0 auto; padding: 1.5rem; }
+  .llmkeys-header h1 { margin-bottom: 0.25rem; }
+  .llmkeys-header p { color: var(--text-secondary, #666); margin-bottom: 1.5rem; }
+  .llmkeys-card {
+    background: var(--surface, #fff); border: 1px solid var(--border, #e2e2e2);
+    border-radius: 10px; padding: 1.25rem; margin-bottom: 1.25rem;
+  }
+  .llmkeys-card h2 { font-size: 1.05rem; margin-bottom: 0.75rem; }
+  .llmkeys-row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+  .llmkeys-row select, .llmkeys-row input[type="password"] {
+    padding: 0.6rem; border: 1px solid var(--border, #ccc); border-radius: 6px; font-size: 0.95rem;
+  }
+  .llmkeys-row input[type="password"] { flex: 1; min-width: 220px; }
+  .llmkeys-btn {
+    padding: 0.55rem 1rem; border: none; border-radius: 6px; cursor: pointer;
+    font-size: 0.92rem; background: var(--accent, #2563eb); color: #fff;
+  }
+  .llmkeys-btn.secondary { background: transparent; color: var(--accent, #2563eb); border: 1px solid currentColor; }
+  .llmkeys-btn.danger { background: transparent; color: #b91c1c; border: 1px solid currentColor; }
+  .llmkeys-btn:disabled { opacity: 0.5; cursor: default; }
+  .llmkeys-table { width: 100%; border-collapse: collapse; }
+  .llmkeys-table th, .llmkeys-table td { text-align: left; padding: 0.55rem 0.5rem; border-bottom: 1px solid var(--border, #eee); font-size: 0.92rem; }
+  .llmkeys-badge { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 999px; font-size: 0.78rem; }
+  .llmkeys-badge.ok { background: #dcfce7; color: #166534; }
+  .llmkeys-badge.warn { background: #fef9c3; color: #854d0e; }
+  .llmkeys-status { margin-top: 0.6rem; font-size: 0.9rem; min-height: 1.2rem; }
+  .llmkeys-status.ok { color: #166534; }
+  .llmkeys-status.err { color: #b91c1c; }
+  .llmkeys-note { font-size: 0.85rem; color: var(--text-secondary, #666); margin-top: 0.75rem; }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="llmkeys-container">
+  <div class="llmkeys-header">
+    <h1>🔑 LLM API Keys</h1>
+    <p>Your own model-provider keys. Stored encrypted at rest; used for your requests only.</p>
+  </div>
+
+  <div class="llmkeys-card">
+    <h2>Add or replace a key</h2>
+    <div class="llmkeys-row">
+      <select id="llm-provider" aria-label="LLM provider">
+        <option value="anthropic">Anthropic (Claude)</option>
+        <option value="openai">OpenAI</option>
+        <option value="gemini">Google (Gemini)</option>
+      </select>
+      <input type="password" id="llm-key-input" placeholder="Paste your API key"
+             autocomplete="off" aria-label="API key" />
+      <button class="llmkeys-btn" id="llm-key-save">Save key</button>
+    </div>
+    <div class="llmkeys-status" id="llm-key-status" role="status"></div>
+    <p class="llmkeys-note">
+      Saving a key for a provider replaces any existing key for that provider.
+      Keys are write-only here — they can never be viewed again after saving.
+    </p>
+  </div>
+
+  <div class="llmkeys-card">
+    <h2>Your stored keys</h2>
+    <table class="llmkeys-table" aria-label="Stored keys">
+      <thead>
+        <tr><th>Provider</th><th>Status</th><th>Added</th><th></th></tr>
+      </thead>
+      <tbody id="llm-keys-tbody">
+        <tr><td colspan="4">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  "use strict";
+  const tbody = document.getElementById("llm-keys-tbody");
+  const statusEl = document.getElementById("llm-key-status");
+  const saveBtn = document.getElementById("llm-key-save");
+  const providerSel = document.getElementById("llm-provider");
+  const keyInput = document.getElementById("llm-key-input");
+
+  function setStatus(text, ok) {
+    statusEl.textContent = text;
+    statusEl.className = "llmkeys-status " + (ok ? "ok" : "err");
+  }
+
+  function esc(text) {
+    const div = document.createElement("div");
+    div.textContent = String(text ?? "");
+    return div.innerHTML;
+  }
+
+  async function refresh() {
+    try {
+      const res = await fetch("/api/v1/keys/list", { credentials: "same-origin" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const keys = await res.json();
+      if (!keys.length) {
+        tbody.innerHTML = '<tr><td colspan="4">No keys stored yet.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = keys.map(function (k) {
+        const badge = k.is_validated
+          ? '<span class="llmkeys-badge ok">validated</span>'
+          : '<span class="llmkeys-badge warn">unvalidated</span>';
+        const added = k.created_at ? new Date(k.created_at).toLocaleDateString() : "—";
+        return "<tr>" +
+          "<td>" + esc(k.provider) + "</td>" +
+          "<td>" + badge + "</td>" +
+          "<td>" + esc(added) + "</td>" +
+          '<td><button class="llmkeys-btn danger" data-del="' + esc(k.provider) + '">Remove</button></td>' +
+          "</tr>";
+      }).join("");
+    } catch (e) {
+      tbody.innerHTML = '<tr><td colspan="4">Could not load keys (' + esc(e.message) + ')</td></tr>';
+    }
+  }
+
+  saveBtn.addEventListener("click", async function () {
+    const provider = providerSel.value;
+    const apiKey = keyInput.value.trim();
+    if (!apiKey) { setStatus("Paste a key first.", false); return; }
+    saveBtn.disabled = true;
+    setStatus("Saving…", true);
+    try {
+      const res = await fetch("/api/v1/keys/store", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ provider: provider, api_key: apiKey }),
+      });
+      const data = await res.json().catch(function () { return {}; });
+      if (!res.ok) {
+        throw new Error(data.detail || ("HTTP " + res.status));
+      }
+      keyInput.value = "";
+      setStatus("Key saved for " + provider + ".", true);
+      refresh();
+    } catch (e) {
+      setStatus("Save failed: " + e.message, false);
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+
+  tbody.addEventListener("click", async function (ev) {
+    const btn = ev.target.closest("button[data-del]");
+    if (!btn) return;
+    const provider = btn.getAttribute("data-del");
+    if (!window.confirm("Remove your " + provider + " key?")) return;
+    btn.disabled = true;
+    try {
+      const res = await fetch("/api/v1/keys/" + encodeURIComponent(provider), {
+        method: "DELETE",
+        credentials: "same-origin",
+      });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      setStatus("Removed " + provider + " key.", true);
+      refresh();
+    } catch (e) {
+      setStatus("Remove failed: " + e.message, false);
+      btn.disabled = false;
+    }
+  });
+
+  refresh();
+})();
+</script>
+{% endblock %}
