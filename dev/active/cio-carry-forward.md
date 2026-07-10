@@ -8,7 +8,7 @@
 
 **Shipped today**: root-caused + fixed the "briefing keeps reporting stale" loop PM asked about (via Lead) — the SessionStart hook's staleness checks used filesystem mtime, not git history, which is structurally unreliable across ephemeral worktrees. Fixed 4 instances of that bug in `.claude/hooks/session-start.sh` + a separate dead-glob bug that was making one check silently never fire + a resulting ~5s performance regression once the glob was fixed for real — all tested (syntax, output, timing, budget) before shipping. Commit `76f6b5dd4`. Full write-up sent to Lead+Exec (cc PM).
 
-**Owed, not started**: Ship #051 workstream review — Exec's kickoff landed today, window Fri Jul 3–Thu Jul 9, **due Mon Jul 13 EOD**. Added to standing-items.
+**Ship #051 DELIVERED** (16:07 fire, 3 days ahead of the Mon Jul 13 EOD deadline) — read own session logs for the whole window directly, refreshed `ROLE-PORTFOLIO-CIO.md` as part of drafting (its Rule 5), filed 825-word §0-§6 review. Flagged one structural pattern to Exec/PM in §6: "duplicate cron" recurred 3 independent times this window (Docs, mine, Arch) — worth a structural fix, not just one-at-a-time catches. Commits `65ae1bdef` (mail) + `56ad88b76` (portfolio doc).
 
 **Still carried from yesterday**: PM's Ted Nadeau catch-up + saved-ideas review — still hasn't happened, still the most likely opener whenever PM returns to direct conversation.
 
