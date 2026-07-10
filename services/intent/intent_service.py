@@ -2641,15 +2641,18 @@ class IntentService:
             # Initialize router
             notion_router = NotionIntegrationRouter()
 
-            # Check if Notion is configured
-            if not notion_router.is_configured():
+            # #1383: gate on the REQUESTING USER's config (UI-saved key included),
+            # not the global no-user check that #781 documents as always-False
+            # until a user context exists. Same shape as the GitHub #1220 fix.
+            _user_id = _principal_from_intent(intent)
+            if not notion_router.is_available(_user_id):
                 return IntentProcessingResult(
                     success=True,
                     message=(
                         "I'd love to help search your documents, but Notion isn't configured yet. "
-                        "To enable document search, please add your NOTION_API_KEY to your environment "
-                        "or configure it in PIPER.user.md. Once configured, I can search your entire "
-                        "Notion workspace for you!"
+                        "To enable document search, connect Notion in Settings → Notion "
+                        "(or set NOTION_API_KEY locally). Once connected, I can search your "
+                        "entire Notion workspace for you!"
                     ),
                     intent_data={
                         "category": intent.category.value,
@@ -2667,7 +2670,7 @@ class IntentService:
             )
 
             # Connect and search
-            await notion_router.connect()
+            await notion_router.connect_for_user(_user_id)
             results = await notion_router.search_notion(
                 query=search_query,
                 filter_type="page",  # Search pages (documents)
@@ -2773,14 +2776,17 @@ class IntentService:
             # Initialize router
             notion_router = NotionIntegrationRouter()
 
-            # Check if Notion is configured
-            if not notion_router.is_configured():
+            # #1383: gate on the REQUESTING USER's config (UI-saved key included),
+            # not the global no-user check that #781 documents as always-False
+            # until a user context exists. Same shape as the GitHub #1220 fix.
+            _user_id = _principal_from_intent(intent)
+            if not notion_router.is_available(_user_id):
                 return IntentProcessingResult(
                     success=True,
                     message=(
                         "I'd love to analyze your document, but Notion isn't configured yet. "
-                        "To enable document analysis, please add your NOTION_API_KEY to your environment "
-                        "or configure it in PIPER.user.md. Alternatively, you can upload a file directly "
+                        "To enable document analysis, connect Notion in Settings → Notion "
+                        "(or set NOTION_API_KEY locally). Alternatively, you can upload a file directly "
                         "and I'll analyze that instead!"
                     ),
                     intent_data={
@@ -2800,7 +2806,7 @@ class IntentService:
             # If no specific document, search for one based on message
             if not document_id:
                 search_query = intent.context.get("original_message", "")
-                await notion_router.connect()
+                await notion_router.connect_for_user(_user_id)
                 results = await notion_router.search_notion(query=search_query, page_size=1)
 
                 if results:
@@ -2831,7 +2837,7 @@ class IntentService:
                     )
 
             # Fetch document content
-            await notion_router.connect()
+            await notion_router.connect_for_user(_user_id)
             page_data = await notion_router.get_page(document_id)
             blocks = await notion_router.get_page_blocks(document_id)
 
@@ -2952,14 +2958,17 @@ class IntentService:
             # Initialize router
             notion_router = NotionIntegrationRouter()
 
-            # Check if Notion is configured
-            if not notion_router.is_configured():
+            # #1383: gate on the REQUESTING USER's config (UI-saved key included),
+            # not the global no-user check that #781 documents as always-False
+            # until a user context exists. Same shape as the GitHub #1220 fix.
+            _user_id = _principal_from_intent(intent)
+            if not notion_router.is_available(_user_id):
                 return IntentProcessingResult(
                     success=True,
                     message=(
                         "I'd love to help update your document, but Notion isn't configured yet. "
-                        "To enable document updates, please add your NOTION_API_KEY to your environment "
-                        "or configure it in PIPER.user.md. Once configured, I can update documents "
+                        "To enable document updates, connect Notion in Settings → Notion "
+                        "(or set NOTION_API_KEY locally). Once connected, I can update documents "
                         "in your Notion workspace!"
                     ),
                     intent_data={
@@ -3036,7 +3045,7 @@ class IntentService:
                 )
 
             # Connect and search for the document
-            await notion_router.connect()
+            await notion_router.connect_for_user(_user_id)
             results = await notion_router.search_notion(
                 query=doc_name,
                 filter_type="page",

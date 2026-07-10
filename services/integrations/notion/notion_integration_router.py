@@ -155,6 +155,46 @@ class NotionIntegrationRouter:
         else:
             raise RuntimeError("No Notion integration available for test_connection")
 
+    def is_available(self, user_id: Optional[str] = None) -> bool:
+        """Per-user availability — the chat-gate check (#1383, GitHub #1220 shape).
+
+        The global ``is_configured()`` below has no user context, and the plugin
+        it delegates to returns False until one is established (#781) — so chat
+        gates using it told users with a UI-saved key "Notion isn't configured."
+        This check resolves the USER's config chain instead: env var > user
+        config > user-scoped keychain (on hosted, the #1382 encrypted-DB store).
+        Principal-less callers fall back to the global check. Never raises —
+        gates degrade, they don't 500.
+        """
+        if user_id:
+            try:
+                cfg = self.config_service or NotionConfigService()
+                return cfg.is_configured(user_id)
+            except Exception:
+                return False
+        try:
+            return self.is_configured()
+        except Exception:
+            return False
+
+    async def connect_for_user(self, user_id: Optional[str] = None) -> bool:
+        """Connect using the USER's resolved token (#1383).
+
+        The bare ``connect()`` resolves from static/env config only, so on
+        hosted a user's UI-saved key never reached the client even after the
+        gate passed. Resolves the same chain as :meth:`is_available` and passes
+        the token explicitly; with no principal or no user token it falls back
+        to ``connect()``'s legacy resolution (local single-tenant unchanged).
+        """
+        token: Optional[str] = None
+        if user_id:
+            try:
+                cfg = self.config_service or NotionConfigService()
+                token = cfg.get_config(user_id).get_api_key() or None
+            except Exception:
+                token = None
+        return await self.connect(integration_token=token)
+
     def is_configured(self) -> bool:
         """
         Check if Notion integration is configured.
