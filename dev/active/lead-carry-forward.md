@@ -1,18 +1,18 @@
 # Lead Dev carry-forward (ephemeral — read at fire-time, not frozen in the prompt)
 
-**Updated**: 2026-07-09 ~09:10 PT. Session log: `dev/2026/07/09/2026-07-09-0647-lead-code-log.md` (live).
+**Updated**: 2026-07-09 ~18:15 PT. Session log: `dev/2026/07/09/2026-07-09-0647-lead-code-log.md` (live).
 
-## ▶ CURRENT (7/9 ~09:10) — Arch's two overnight rulings EXECUTED same-morning: #1283 CLOSED (step-3 built, probe 26/0), #1312 rulings 1+3 done (residual 30 ops, all gated). **4 open.** #1382 tier-2 design with Arch.
+## ▶ CURRENT (7/9 ~18:15) — FIRST VERIFIED CONNECTOR WRITE LIVE (test-piper-morgan#104). #1220 CLOSED. #1332 ROOT-CAUSED (v0.8.10.7). INVITES ALL-CLEAR SENT. **Sprint: 5 open, mostly small.**
 
-**Morning drain (all on main)**: 7/8 retroactive DAY-CLOSE (deploy night had no STOP); #1374 fix live-validated on its own triage; **#1382 tier-2 design memo → Arch** (KeychainService encrypted-DB fallback backend now, binding-rail per-connector later; fast concur asked — GATES GitHub connect → PM's invite decision); **#1283 step 3 built + CLOSED** (7 prompt examples canonicalized + stale example from registry phrase; normalize_action shim wired pre-rail; 4-surface reachability lint with DERIVED pre_classifier surface, hand-ledger retired; probe upgraded to ratified predicate → run 3 = 26 PASS/0 FAIL; ADR-073 = Arch's, non-gating); **#1312 rulings 1+3** (personality stale-Base duplicate DELETED + repoint live-proven + one-Base enforcement lint; MUX family parked-with-model incl. ConversationLinkDB with migration-601's own column comments; 41→30 autogen ops).
+**The day**: v0.8.10.1→.7 (seven point releases across two days). The write-path chase peeled five evidenced layers (legacy gates → pinned tool contract → slot-fill → minimal envelope → **Intent.original_message never set by the main classifier — #1332's root**). PM granted droplet autonomy (ssh-agent) → I deploy/diagnose/drive-the-real-route solo now (JWT minted via the app's own service; in-container X-ray repro technique proven). HOST has the invites GO (PM's word ~17:45); PA has the resume-MCP/skills directive + substrate summary.
 
-**Remaining 4**: #1220 (GitHub connect blocked by #1382 tier-2 → then PM-present first real write); #1278 (backlog); #1332 (repro-gated); #1312 (ruling 2 = PM's product confirm on todo_lists excise → phase-3 reviewed reconciliation migration → CI autogen-empty guard → close).
+**Remaining sprint 5**: #1278 (backlog, PM coordinates Fly); #1312 (PM's todo_lists excise confirm → phase-3 reviewed reconciliation migration → autogen-empty CI guard → close); #1332 (fixed, SOAKING — close on a few clean days); #1380 (Settings LLM-key UI — the /api/v1/keys backend exists, needs a page; next real build); #1381 (UTC-as-local — small, good next unit). Plus #1383 (gate-threading, priority-high, PM may sprint it).
 
-**PM decisions pending**: (1) invite go/no-go (loop verified minus GitHub connect; 11 codes); (2) todo_lists excise confirm (Arch: excise iff no distinct todo-list feature owed beyond the `lists` rail).
-
-**Next-wake**: Arch's #1382 concur → build same-day (migration + backend + tests + alpha redeploy — completes the tester loop). Then phase-3 migration once PM confirms ruling 2. Runbook as-run annotations DONE (7/9). Model: Fable.
+**Standing state**: cron armed (absorb fires mid-work — the corrected discipline); mid-turn dormancy recurred 2× on 7/9 (harness-level; cron+PM-nudge recovers; keep the wake-timer armed ALWAYS). Droplet: v0.8.10.7, chain g1382creds, sidecar pinned v1.5.0. PM's default repo still 7cups-testbot (stale, harmless now — extraction wins; PM said they'd fix). Model: Fable.
 
 ---
+
+## ▶ PRIOR CURRENT (7/9 ~09:10) — Arch rulings executed (see 7/9 log)
 
 ## ▶ PRIOR CURRENT (7/8 ~23:00) — v0.8.10 DEPLOYED
 

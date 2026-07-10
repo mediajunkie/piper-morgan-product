@@ -2,7 +2,7 @@
 
 **Owner**: PPM
 **Status**: LIVING DOCUMENT — canonical source of truth for what remains between now and beta release (v0.9.0)
-**Last updated**: 2026-07-08 night (Lead Dev — **v0.8.10 DEPLOYED to alpha**; #1324, #358, #1299 closed today; 20→5 open since 7/07 began)
+**Last updated**: 2026-07-09 evening (Lead Dev — **v0.8.10.7 live; FIRST VERIFIED CONNECTOR WRITE; #1220 + #1283 CLOSED; invites ALL-CLEAR sent on PM's word**. Sprint gained #1380/#1381/#1382 (PM, 7/09 AM); #1382 closed same day; #1383 filed)
 **Cross-references**: [sprint-order.md](sprint-order.md) (sprint sequencing across the whole board), [roadmap.md](roadmap/roadmap.md) (strategic plan), GitHub project "Building Piper Morgan" → Sprint field "Beta Blockers - Hard Gates Only"
 
 ---
@@ -79,7 +79,7 @@ Mostly isolated, well-scoped fixes — good candidates to pick off quickly. **#1
 | #1312 | DB↔model schema drift (~111 Alembic diffs) | High migration risk; cheaper to fix than the diff count suggests |
 | ~~#1324~~ | **CLOSED 2026-07-08** — both blockers fixed (PIPER_BASE_URL env-overridable; OAuth redirects derive from it); prod dev-password guard shipped; deferred items → #1379 | Deploy-portability risk |
 
-**Total: 5 open issues across 7 epics** — #1220 (Epic C), #1278 (backlog), #1332 (Epic F, reproduction-gated), #1283 + #1312 (Epic G, Arch-gated) (2026-07-08 morning: #1306 + #1258 closed — Epic B fully built, Epic D down to the deploy-verified #1299b + backlogged #1278) (2026-07-07: NINE closed today — #1304, #1317, #1105, #1279, #1285, #1216, #1256, #441, #1261 — Epic A fully done, Epic C down to #1220 only, Epic E down to #441+#1261; see the epic sections and change log. #1278 remains OPEN and counted).
+**Total (2026-07-09 evening): 5 open** — #1278 (backlog), #1312 (PM's todo_lists confirm → reconciliation migration → CI guard), #1332 (ROOT-CAUSED + fixed in v0.8.10.7; soaking before close), #1380 (Settings LLM-key UI), #1381 (timezone) — plus #1383 (Notion/Calendar gate-threading, priority-high) if PM adds it to the sprint. Formerly: **Total: 5 open issues across 7 epics** — #1220 (Epic C), #1278 (backlog), #1332 (Epic F, reproduction-gated), #1283 + #1312 (Epic G, Arch-gated) (2026-07-08 morning: #1306 + #1258 closed — Epic B fully built, Epic D down to the deploy-verified #1299b + backlogged #1278) (2026-07-07: NINE closed today — #1304, #1317, #1105, #1279, #1285, #1216, #1256, #441, #1261 — Epic A fully done, Epic C down to #1220 only, Epic E down to #441+#1261; see the epic sections and change log. #1278 remains OPEN and counted).
 
 ## Recommended sequencing
 
