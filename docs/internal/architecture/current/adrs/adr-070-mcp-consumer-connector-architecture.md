@@ -239,6 +239,26 @@ The GitHub prefs-file band-aid (#1226-trigger M3 work-around) **is not the WS-1 
 
 ---
 
+## Amendment A (2026-07-10) — `mcp_server_ref` stores a logical key, not a topology (resolve at read-time)
+
+**Trigger**: the #1278 Fly cutover silently invalidated PM's GitHub binding — `connector_bindings.mcp_server_ref` stored the literal compose hostname (`http://github-mcp:8082/mcp`), pg_dump/restore carried it verbatim onto Fly where that host doesn't exist, and the binding degraded to UNREACHABLE while reporting BOUND. The failure looked like a server outage, not a config problem. PM asked for a ruling before the #1232 port train mints more literal refs.
+
+**Root cause (category error)**: `mcp_server_ref` conflates *which logical connector-server* (a **deployment-invariant identity**) with *where it lives right now* (a **deployment-variant topology**). Pinning topology into a per-user binding row means every host/topology change silently invalidates bindings, and parallel environments (alpha + beta, live concurrently as of the cutover) cannot share a correct row — one is wrong by construction. Same class as the #1283 / `Intent.original_message` lesson one layer down: a value resolved once at write-time with N read-time consumers and no single read-time authority.
+
+**Ruling — Option B (env-resolved indirection), refining the D-ruling that placed the server ref on the binding:**
+
+- **A1 — the binding stores a logical connector key, not a URL, for managed connectors.** `mcp_server_ref` holds `github` (deployment-invariant); the URL resolves from deployment config at **connect time** (`GITHUB_MCP_SERVER_URL` already exists and is env-correct per-deployment — `github_oauth_handler.py:37`). Topology becomes a deployment property; a host move is a config change, not a per-row invalidation. Drift is impossible-by-construction for managed connectors (the make-drift-impossible spine — same move as ADR-077 derive-the-prompt / #1312 autogen-empty).
+- **A2 — ONE resolve authority, not N read-site interpretations.** A single `resolve_server_ref(ref) -> url` function is the sole authority; every read-site (`github_adapter`, `google_calendar_adapter`, the oauth_handler) routes through it. This is the load-bearing condition — B's value is *lost* if the resolve logic scatters (the #1283 discipline: one resolver, not N consumers each parsing the value). The bind-time `server_ref or _DEFAULT_MCP_SERVER_URL` capture (`github_oauth_handler.py:223`) moves to read-time resolution.
+- **A3 — BYOC preserved by explicit shape-discrimination, made a named contract.** A scheme-prefixed value (`http(s)://…`, `stdio://…`) is a literal self-managed / BYOC override; a bare token is a logical key. This preserves this ADR's deliberate per-user-server intent (PDR-005 BYOC). Caveat, accepted: a BYOC literal *can* still go stale — but that URL names the **user's own** server, whose lifecycle they own (semantically distinct from us moving our infra); re-bind is the honest recovery. The shape-contract lives in the resolver (A2), not as incidental parses at read sites.
+- **A4 — unknown-key resolution honest-degrades, pointing at config.** A logical key with no config mapping → `ResolveMiss` (#1232) → CONNECT_REQUIRED-shaped honest degrade (D5), never silent-empty or crash. The incident's tell was that the degrade looked like an outage; the degrade message must name the missing config, not read as a server being down.
+- **A5 — migration + end-state.** Backfill managed-connector literal refs → logical keys (Lead's one-row Fly repoint, made systematic). Forward-compatible with this ADR's D5 `mcp_server_binding_id` FK-to-registry: the logical key is the near-term realization; a first-class server-binding registry keyed by logical name, resolved per-deployment, is the fuller end-state when per-user server registries land. Optional lint: no managed-connector binding stores a scheme-prefixed ref (the BYOC exception is the only one, and it is explicit).
+
+**Sequencing**: not tonight; before the next connector port mints more rows (Lead). Both live environments have correct refs right now (alpha's compose host; Fly's `.internal`, repointed at cutover) — no runtime gate.
+
+*Amendment A — Chief Architect, 2026-07-10, on Lead's PM-requested design question; Lead leaned B, Arch ruled B + the single-resolver-authority (A2) and honest-degrade (A4) conditions.*
+
+---
+
 ## Decisions.log entry (per CLAUDE.md Recording-decisions discipline)
 
 `2026-06-15 — ADR-070 filed v0.1: Piper-as-MCP-consumer; one Connector protocol; MCP-server owns auth; Piper stores bindings only; DB-backed user-scoped config (kills flat files); tier-2 escape valve; identity unification (WS-9) is prerequisite to WS-1; finishes ADR-058 across native-integration paths. Unblocks RECONNECT WS-1..9 decomposition. Lead Dev: ratify or refine.` — *Arch*
