@@ -66,3 +66,4 @@ date	time	agent	model	effort	fire_type	turns_est	output_size	notes
 2026-06-30	1550	cxo	sonnet-4-6	default	start	4	l	Jun 30 START (15:50, backup account, PM-resumed). Jun 29 = IDLE (throttle). Gap digest: Slack lane drained; #1331 floor fix live-verified. Responded to Lead: (1) floor confabulation UX lens (#1331); (2) #1201 Slack inbound onboarding design spec (all 4 questions answered; go-ahead on backend).
 2026-07-01	1547	cxo	sonnet-4-6	default	fire-1	4	l	Jul 1 Fire 1 — voice pass: #1201 Event Subscriptions step (settings_slack.html) + #1231 degradation_copy.py _NUDGES (NOT_CONFIGURED, CONNECT_REQUIRED, STALE_TOKEN, REPO_UNRESOLVED). Filed to Lead for apply.
 2026-07-10	16:47	cxo	sonnet-4.6	duty-cycle	fire-1	high	1386-scenarios+ship051	corrective-commit-deliverables-landed
+2026-07-10	17:47	cxo	sonnet-4.6	duty-cycle	fire-2	normal	heartbeat	inbox-empty-queue-dry
