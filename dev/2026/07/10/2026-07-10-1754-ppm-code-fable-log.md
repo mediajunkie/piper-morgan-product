@@ -35,6 +35,13 @@ Read the full thread: Lead's review-request memo (07-10 ~10:05), Arch's review (
 - 19 true-zero-evidence issues (Group 3 proper) — artifact not yet built; next after the 13 above
 - PA m3-sprint-reply (07-09): nothing from PA's window; pointed at Lead's Jul 3–4 logs if certainty needed — no action unless the M3 question resurfaces
 
+### ~7:00 PM - LOW tier COMPLETE (218/218) + S2 forensic finding
+- Refreshed the reconciliation artifact from a fresh live-board query (13 remaining, 4 groups with per-row reads); PM resolved all 13 same evening: 10 RECONNECT (PM's memory overrode my per-row title-reads for 6 of them), #1318 SKUNK, #1058 Q, #512 A12
+- Applied + verified: 218/218 — LOW tier complete; the full 744-issue recovery backlog is now closed out
+- PM's #512 observation ("everything marked S2 is *also* A12 — what was actually closed in S2?") → forensic check: all 19 current-S2 issues are pure closedAt-window artifacts (CLOSEDAT_NARROW_HIGH on a 19-day window that didn't deserve narrow trust); 13 are the canonical-query series (same initiative PM assigned to A12); `dev/2025/12/28/github-reorganization-step8.md` shows S2's real contents were formally moved to "A13 - Alpha Setup" (= today's A12, renumbering confirmed via #322/#484/#449/#486 on the live board) — S2 dissolved before executing
+- Recommendation documented in decisions log: bulk-move 19 S2→A12 + mark S2 "dissolved, do not use for closedAt matching" — HELD for PM go-ahead since it overwrites existing values (blast-radius discipline)
+- Commit `d45fd2a68` (decisions log + snapshot)
+
 ## Memory & briefing surfaces referenced this session
 - **Referenced**: sprint-recovery-decisions-log.md (append-only decision record — every batch); CLAUDE.md mailbox discipline + mail-vs-GH-comment norm (memo + condensed issue comment split); feedback_investigate_before_extending_all_work (read full #1386/#1278 threads incl. comments before drafting); feedback_no_confabulating_expected_steps_as_completed (live-board re-verification catching the 18 silently-unapplied mutations); Arch/CXO memos in ppm inbox (direct inputs to the co-sign)
 - **Loaded but not referenced**: BRIEFING-CURRENT-STATE (22 days stale — flagged by hook; not refreshed this session, sprint-recovery + gate input took priority); cross-pollination brief
