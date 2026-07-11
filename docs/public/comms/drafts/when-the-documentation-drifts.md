@@ -12,11 +12,7 @@ The morning of May 20, an engineer on the project (Lead Developer, one of the ro
 
 The skill wasn't malicious. Nobody wrote it to be destructive. The docs were honest about the intent. The code was honest about what it did. The honesty just didn't line up — and hadn't, for months.
 
-[FACT-CHECK NOTE for PM: I have the recovery cost at ~35 min from the May 20 Lead Dev log. Confirm if you want a different framing or precision.]
-
-This is a category in our project's pattern catalog. We call it Documentation-Asserted Behavior Drift. The May 19 incident was instance #14.
-
-[FACT-CHECK NOTE for PM: instance count 14 per memory of the log entry. Confirm.]
+This is a category in our project's pattern catalog. We call it Documentation-Asserted Behavior Drift, and it already had thirteen instances on file before this one.
 
 # How the gap opens
 
@@ -76,7 +72,7 @@ None of this is novel discipline. It's the standard *trust but verify* posture a
 
 # The deeper read
 
-The deeper read on this isn't a documentation-hygiene problem. It's an architectural-humility problem.
+The deeper read on this is an architectural-humility problem, not a documentation-hygiene one.
 
 We are bad at keeping two surfaces in sync over time. We are bad at it as individuals, bad at it as teams, bad at it as projects with reasonable governance. The instinct is to declare a discipline — *we'll keep docs in sync with code* — and assume the discipline will hold. It won't, because the editing pressures on the two surfaces are different and intermittent and asymmetric.
 
