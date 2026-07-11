@@ -393,7 +393,7 @@ issue	state	milestone	sprint	title
 509	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#11: Project list with metadata - 'What projects are we working on?'
 510	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#12: Project portfolio health - 'Show me the project landscape'
 511	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#13: Priority recommendation - 'Which project should I focus on?'
-512	CLOSED	MVP		TECH-DEBT: Fix pre-existing test failures (test_intent_enricher, test_llm_intent_classifier)
+512	CLOSED	MVP	A12 - Alpha Setup	TECH-DEBT: Fix pre-existing test failures (test_intent_enricher, test_llm_intent_classifier)
 514	CLOSED	MVP	S2 (Security Polish)	Pre-existing test failure: test_empty_message_handling expects exception not raised
 515	CLOSED	MVP	S2 (Security Polish)	Canonical Query #17: Wire Document Analysis intent to NotionMCPAdapter
 516	CLOSED	MVP	S2 (Security Polish)	Canonical Query #20: Wire Document Search intent to NotionMCPAdapter
@@ -906,7 +906,7 @@ issue	state	milestone	sprint	title
 1055	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Cleanup: remove legacy boundary_enforcer + alive scaffolding (consolidates Arch May 4 review items 1-3)
 1056	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Test regression: tests/integration/test_knowledge_graph_enhancement.py — causal/temporal edge types missing
 1057	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Test backfill: ContextAssembler UNKNOWN fallback + context_contract_empty_data warning (Arch item 4 of soundness review)
-1058	CLOSED	MVP		Template hygiene review: agent-prompt-template.md + gameplan-template.md (Cursor refs stale + other staleness)
+1058	CLOSED	MVP	Q - Recurring Audits	Template hygiene review: agent-prompt-template.md + gameplan-template.md (Cursor refs stale + other staleness)
 1059	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	Phase -1 investigation: Notion integration doneness vs. conversational-floor architecture (gates #304)
 1061	OPEN	Production	PROD-INFRA - Infra & Security Hardening	INFRA-OAUTH-MULTI: Multi-OAuth installation infrastructure (broken out from #471; M2f or M5 — PM call)
 1062	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	CORE-LEARN-PHASE-3: Learning infrastructure phase 3 (broken out from #471)
@@ -1049,10 +1049,10 @@ issue	state	milestone	sprint	title
 1222	CLOSED	MVP	FLYWHEEL - Process improvement	test_pm_number_format_configurable fails — pm_start not applied in format_pm_number
 1223	CLOSED	MVP	D1 - Beta design quality	get_recent_turns DB fallback returns OLDEST N turns, not most-recent N (ORDER BY turn_number ASC LIMIT N)
 1225	CLOSED	MVP	D1 - Beta design quality	Home 'what I'm seeing' modules have no minimize/dismiss (screen real-estate)
-1226	CLOSED	MVP		RECONNECT-WS1: Connector repo-resolution is fragile — config has no stable home (refactor-sprint input)
-1227	CLOSED	MVP		RECONNECT: Slack outbound replies render raw markdown (**, #) instead of Slack mrkdwn (quick win)
+1226	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS1: Connector repo-resolution is fragile — config has no stable home (refactor-sprint input)
+1227	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT: Slack outbound replies render raw markdown (**, #) instead of Slack mrkdwn (quick win)
 1228	CLOSED	MVP	D1 - Beta design quality	Show a 'thinking/typing' indicator during processing (distinguish latency from a frozen connection)
-1229	CLOSED	MVP		RECONNECT-WS2: Unified connector credential model (one convention, typed OAuth-app vs token)
+1229	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS2: Unified connector credential model (one convention, typed OAuth-app vs token)
 1230	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS3: Connector resolution correctness — fix resolve_repo + dead default-project path
 1231	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS4: Honest-degradation connector contract (never silently empty)
 1232	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS5: MCP-consumer connector contract (Connector protocol; Arch/ADR output)
@@ -1104,7 +1104,7 @@ issue	state	milestone	sprint	title
 1282	OPEN	Production	PROD-DIST - MCP Marketplace Distribution	BYOC-DIST — Plugin packaging and marketplace distribution
 1283	CLOSED	MVP	Beta Blockers - Hard Gates Only	[AUDIT] Action↔handler routing integrity — classifier-emitted actions vs registered handlers (#1269 class)
 1284	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[DESIGN] 'Your stuff' nav group — nomenclature (CXO + Comms) + maybe a parent hub route
-1289	CLOSED	Production		Retire the hollow MorningStandupWorkflow (#1269 P6 — the fabricating /generate path)
+1289	CLOSED	Production	RECONNECT - Connector Refactor	Retire the hollow MorningStandupWorkflow (#1269 P6 — the fabricating /generate path)
 1285	CLOSED	MVP	Beta Blockers - Hard Gates Only	BUG: naive/aware datetime subtraction in conversation_manager.transition_state (standup COMPLETE path)
 1286	CLOSED	Production	RECONNECT - Connector Refactor	[D2] Design-system foundation: grid + baseline typographic rhythm + padding/margin/tiling (mobile-first, progressive-rendering)
 1287	OPEN	Production	PROD-TECHDEBT - General Cleanup	Tech-debt: triage + remove unwired Multi-Agent Coordinator code (superseded #118 artifacts)
@@ -1112,7 +1112,7 @@ issue	state	milestone	sprint	title
 1290	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[D2][DESIGN] Nav menu structure — work/learning/insights/settings top-level + a Settings submenu? (PM question for CXO)
 1291	CLOSED	MVP	PROD-INFRA - Infra & Security Hardening	[REFACTOR] ADR-071 D4 — deeper user_id→owner_id read-threading (deferred from #1252)
 1292	CLOSED	MVP	FLYWHEEL - Process improvement	Reconcile mailbox discipline doc Rule 3 with #1259 push-to-ref; retire obsolete incoming/ + DELIVERY-LOG.md
-1293	CLOSED	MVP		Floor quality: 'How do I get help?' (Identity) deflects instead of answering — canonical Q4 marginal (6/9)
+1293	CLOSED	MVP	RECONNECT - Connector Refactor	Floor quality: 'How do I get help?' (Identity) deflects instead of answering — canonical Q4 marginal (6/9)
 1300	OPEN	Production	PROD-DIST - MCP Marketplace Distribution	BYOC-CRED-DECOUPLE: decouple the plugin credential (Option A) — public-marketplace gate + BYO-key on-ramp
 1294	CLOSED	MVP	SKUNK - Skunkworks projects	BYOC-DIST: Add connector-absent handling to bridge skills (ask-piper, consult-piper)
 1295	OPEN	Ongoing	SKUNK - Skunkworks projects	BYOC-DIST: MCP-only scenario — skills discovery hint in ask_piper response
@@ -1128,16 +1128,16 @@ issue	state	milestone	sprint	title
 1306	CLOSED	MVP	Beta Blockers - Hard Gates Only	SEC-ENCRYPT: encrypt uploaded file content at rest (storage-layer; deferred from #358-B)
 1307	CLOSED	MVP	M5 - Distribution + Polish	SEC: admin_compose is an auth-exempt WRITABLE admin UI with no env-gate (only Caddy protects it)
 1308	CLOSED	MVP	RECONNECT - Connector Refactor	SEC-LINT: enforce every auth-exempt route is read-only / env-gated / justified (make #1307's class impossible)
-1309	CLOSED	MVP		[BUG] Stale test: test_onboarding_handler_flow expects COMPLETE but flow now ends at GATHERING_REPOS
-1310	CLOSED	MVP		mail-send.sh leaves uncommitted residue on the worktree branch (collides with later merges)
-1311	CLOSED	MVP		SECURITY: Redis 6379 publicly exposed on alpha Droplet — FIXED (localhost bind)
+1309	CLOSED	MVP	RECONNECT - Connector Refactor	[BUG] Stale test: test_onboarding_handler_flow expects COMPLETE but flow now ends at GATHERING_REPOS
+1310	CLOSED	MVP	RECONNECT - Connector Refactor	mail-send.sh leaves uncommitted residue on the worktree branch (collides with later merges)
+1311	CLOSED	MVP	RECONNECT - Connector Refactor	SECURITY: Redis 6379 publicly exposed on alpha Droplet — FIXED (localhost bind)
 1312	CLOSED	MVP	Beta Blockers - Hard Gates Only	DB↔model schema drift: alembic autogenerate unusable (~111 diffs) — reconcile model vs DB
 1313	CLOSED	MVP	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-06-22
 1314	CLOSED	MVP	RECONNECT - Connector Refactor	Auto-default / first-run GitHub repo setup (RECONNECT WS-1 follow-up)
 1315	CLOSED	MVP	RECONNECT - Connector Refactor	Populate (or retire) project↔repo links — activate latent resolution paths (RECONNECT WS-1 follow-up)
 1316	OPEN	Dot Releases (Post-MVP)	RECONNECT - Connector Refactor	RECONNECT residual cleanup: federated_search degrade + WS-1 integration test + ADR-058 identity note
 1317	CLOSED	MVP	Beta Blockers - Hard Gates Only	RECONNECT WS-5 ports: implement per-connector MCP-consumer adapters onto the Connector contract
-1318	CLOSED	MVP		[alpha] Setup system-check fails on hosted Droplet — checks localhost ports instead of Docker-internal addresses
+1318	CLOSED	MVP	SKUNK - Skunkworks projects	[alpha] Setup system-check fails on hosted Droplet — checks localhost ports instead of Docker-internal addresses
 1319	CLOSED	MVP	M5 - Distribution + Polish	[mobile] Welcome card tiny and low on screen — onboarding not mobile-first
 1320	CLOSED	MVP	RECONNECT - Connector Refactor	[alpha] Onboarding: Caddy basic-auth credential dialog loops on setup-flow XHRs (LLM key validation)
 1322	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT: retire simulation-only MCP transport (MCPProtocolClient/consumer_core) → migrate query_router to the real MCPClient
@@ -1157,11 +1157,11 @@ issue	state	milestone	sprint	title
 1335	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT GATE: connector-refactor coverage matrix — audit closed issues before declaring connector-refactor done
 1336	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	[placeholder] Expand/refactor canonical-query regression for connector states + trust properties
 1337	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT: Notion integration health is env-var-only — misses user-scoped keychain creds (parallel #1329)
-1338	CLOSED	MVP		RECONNECT-WS7: Slack user-token request path + migrate _fetch_slack_mentions_items onto the router (deferred from #1110)
+1338	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS7: Slack user-token request path + migrate _fetch_slack_mentions_items onto the router (deferred from #1110)
 1339	CLOSED	MVP	RECONNECT - Connector Refactor	Slack webhook _get_oauth_authorization_url calls generate_authorization_url without user_id (latent ValueError)
 1340	OPEN	Production	PROD-DIST - MCP Marketplace Distribution	RECONNECT: fold Anthropic-key capture into /connect onboarding (deferred from #1185 Phase 3, ties #1300)
 1341	CLOSED	MVP	Q - Recurring Audits	Quarterly Maintenance Sweep - Q3 2026
-1342	CLOSED	MVP		RECONNECT-WS3 Phase 2: connector-agnostic target resolution (generalize resolve_repo; Arch-gated)
+1342	CLOSED	MVP	RECONNECT - Connector Refactor	RECONNECT-WS3 Phase 2: connector-agnostic target resolution (generalize resolve_repo; Arch-gated)
 1364	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	Slack: port to #1232 Connector contract (status() needs live Socket Mode state, not just credential check)
 1353	CLOSED	MVP	RECONNECT - Connector Refactor	test_github_spatial_temporal fails: hardcoded fixture date, not a spatial-logic bug
 1354	CLOSED	MVP	RECONNECT - Connector Refactor	test_calendar_config_loading.py: 8 tests broken — get_config() now requires user_id
