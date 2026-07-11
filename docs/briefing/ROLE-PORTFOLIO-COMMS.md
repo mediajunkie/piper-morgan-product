@@ -3,8 +3,8 @@ type: role-portfolio
 role: Comms (Communications Director)
 status: v0.1 — main-cohort wave
 self-authored-by: Comms
-last_updated: 2026-06-19
-refreshed: 2026-06-19
+last_updated: 2026-07-11
+refreshed: 2026-07-11
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-COMMS.md
 refresh_discipline: "updated AS PART OF the weekly workstream review — the review is the refresh moment (Rule 5); if section 2 lags the last few reviews, the portfolio has drifted"
@@ -28,12 +28,12 @@ The one-line: *the role that turns what we're building into a durable, coherent 
 ## 2. Current goals & priorities — June 2026
 <!-- Rule 2: medium-pace; changes per sprint. Rule 4: each has direction + status + "how we'll know it's moving." Rule 5: REFRESHED EACH WEEKLY REVIEW. -->
 
-| Priority | What I'm advancing | Status (Jun 19) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (Jul 11) | How we'll know it's moving |
 |---|---|---|---|
-| **Building narrative cadence** | Keep the Tue/Thu narrative + Sat/Sun insight schedule flowing | Beat 7 published Jun 18 ✓; "This One's Taken" (insight) ready Jun 20 ✓; Beat 8 pending PM voice-pass (due Jun 22 evening) | Posts land on schedule; no slot goes empty because publish-ready signal was late |
-| **Syndication automation (#1160)** | Full audit + close of the publish → Medium → LinkedIn pipeline | Findings delivered to PM; blocked on Dispatch skill share. NAVIGATION.md updated with run-of-show link | #1160 closed with accurate pipeline description; NAVIGATION.md links to Dispatch skill |
-| **Handoff infrastructure** | The Comms→Docs publish-ready memo protocol + run-of-show doc | Protocol established Jun 18; run-of-show drafted by Docs (pending PM ratification); #998 editorial requirements replied to Web | Each publish-ready signal goes out on time; Web's compose UI Phase 2 unblocked; run-of-show ratified |
-| **BYOC narrative** | Draft the BYOC GTM narrative angle once task force convenes | Unblocked (PA memo triaged Jun 18); waiting on PM to convene Comms+PPM+Web task force | Task force kicks off; narrative angle drafted within same session |
+| **Building narrative cadence** | Keep the Tue/Thu narrative + Sat/Sun insight schedule flowing | Beats 11 + 12 published (Jul 7, Jul 9); front extended to Beats 19-20 + 2 new insights (drafted+fact-checked Jul 9, front now Jul 7); "When the Documentation Drifts" (Jul 11) with PM for editing | Posts land on schedule; no slot goes empty because publish-ready signal was late |
+| **Editorial mechanism upgrades** | Turn recurring one-off catches into permanent checks, not vigilance | `template-audit` v1.0→v1.1 (Jul 9): new check for the negation-reveal cliché + other AI-writing tics, after it surfaced in 4 of 4 drafts reviewed one day | Fewer repeat catches of the same issue across sessions; skill version bumps track real gaps closed |
+| **Weekly Ship pipeline** | Fact-check + review before syndication | Ship #050 shipped Jul 8 after a real near-miss (overstated headline claim caught pre-publish, 17-claim re-verification, corrected same day) | Ships go out clean; claims independently verified against primary logs, not just the omnibus |
+| **BYOC narrative** | BYOC marketplace narrative angle | Still blocked — surfaced to PM 6/17, no direction memo yet as of 7/11 (~3+ weeks stale) | Task force convenes; narrative angle drafted within same session |
 
 ---
 
