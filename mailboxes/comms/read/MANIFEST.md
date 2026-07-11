@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-10 07:45 PT | exec | memo-exec-to-leadership-ship-051-workstream-kickoff-2026-07-10.md | Ship #051 workstream review — kickoff (window Fri Jul 3–Thu Jul 9; §0-leads for… |
 | 2026-07-08 | exec | memo-exec-to-comms-cc-pm-HOLD-ship050-review-retracted-2026-07-08.md | HOLD — disregard my earlier Ship #050 review request; draft NOT ready; PM gates… |
 | 2026-07-08 | exec | memo-exec-to-comms-cc-pm-ship050-draft-for-review-2026-07-08.md | Ship #050 draft ready for your pre-publish review — publish target today (Wed J… |
 | 2026-07-08 | exec | memo-exec-to-comms-cc-pm-ship050-ready-for-review-pm-go-2026-07-08.md | Ship #050 — NOW ready for your pre-publish review, on PM's explicit go |
