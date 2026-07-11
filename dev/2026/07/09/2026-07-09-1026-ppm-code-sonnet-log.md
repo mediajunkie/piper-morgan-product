@@ -46,6 +46,7 @@
 - No board mutations this entry -- presentation only, awaiting PM's review
 
 ### 6:05 PM - LOW tier, first pass: 205 of 218 applied
+**[DATE CORRECTION, added 2026-07-10]**: this entry was actually executed **Friday 2026-07-10, ~5:45-6:05 PM** — PM's LOW-tier review reply arrived July 10, not July 9; the session had idled across the day boundary and I logged under the wrong date. Continuation in `dev/2026/07/10/2026-07-10-1754-ppm-code-fable-log.md`.
 - PM reviewed the artifact and returned a dense batch: bulk-approved the M1 (43) and M2 (93) mega-groups minus specific exceptions, plus resolved Q/FLYWHEEL/SKUNK/D1/M0/A8/RECONNECT/T1/A7/C1 groups by pattern or explicit number
 - Cross-referenced every PM-given number against the actual pool data before applying anything (caught that several exceptions came from the M3-only and RECONNECT-only groups, not M1/M2 as first assumed; found and included the full 38-issue FLY-AUDIT title-pattern group per PM's "whole group" instruction; found the one M3-only member (#1058) PM didn't address)
 - Applied via the sprint-by-sprint mutation pattern; a background-launched first pass reported completion but 18 of 205 hadn't actually landed -- caught via full re-verification against live board (not the process's own signal), re-applied the 18 directly, re-verified clean: 205/205 matched, 0 mismatches
