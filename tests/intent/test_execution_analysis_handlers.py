@@ -85,19 +85,22 @@ class TestExecutionHandlers:
             context={"title": "Test issue"},
         )
 
-        with patch("os.getenv", return_value="fake-github-token"), patch(
-            "services.domain.github_domain_service.GitHubDomainService"
-        ) as MockDomainService, patch(
+        # #1220/#1382 (2026-07-09): the write now goes through the ROUTER
+        # (connector-first, #1322-guarded) — mocks repointed from the legacy
+        # GitHubDomainService to GitHubIntegrationRouter.
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter.initialize", new=AsyncMock()
+        ), patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter.is_available", new=AsyncMock(return_value=True)
+        ), patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter.create_issue",
+            new=AsyncMock(return_value={"number": 42, "title": "Test issue"}),
+        ) as mock_create, patch(
             "services.integrations.github.repo_resolver.get_user_default_repo",
             new_callable=AsyncMock,
         ) as mock_get_default_repo, patch(
             "services.configuration.piper_config_loader.piper_config_loader"
         ) as mock_config_loader:
-            mock_domain = MagicMock()
-            mock_domain.create_issue = AsyncMock(
-                return_value={"number": 42, "title": "Test issue"}
-            )
-            MockDomainService.return_value = mock_domain
             mock_get_default_repo.return_value = "scoped-owner/scoped-repo"
             mock_config_loader.load_github_config.return_value = MagicMock(
                 default_labels=None
@@ -109,9 +112,10 @@ class TestExecutionHandlers:
 
             mock_get_default_repo.assert_awaited_once_with(UUID(user_id))
             assert result.success is True
-            mock_domain.create_issue.assert_awaited_once()
-            _, kwargs = mock_domain.create_issue.call_args
-            assert kwargs["repo_name"] == "scoped-owner/scoped-repo"
+            mock_create.assert_awaited_once()
+            kwargs = mock_create.await_args.kwargs
+            assert kwargs["owner"] == "scoped-owner"
+            assert kwargs["repo_name"] == "scoped-repo"
 
     @pytest.mark.asyncio
     async def test_create_issue_attempts_execution(self, intent_service):
@@ -236,20 +240,22 @@ class TestExecutionHandlers:
             )
 
     @pytest.mark.asyncio
-    @patch("services.domain.github_domain_service.GitHubDomainService")
-    async def test_update_issue_success_with_mock(self, mock_github_service, intent_service):
-        """Test successful issue update with mocked GitHubDomainService."""
-        # Mock the GitHub service
-        mock_service_instance = mock_github_service.return_value
-        mock_service_instance.update_issue = AsyncMock(
-            return_value={
-                "number": 123,
-                "title": "Updated Title",
-                "state": "open",
-                "html_url": "https://github.com/test-org/test-repo/issues/123",
-                "updated_at": "2025-10-11T10:30:00Z",
-            }
-        )
+    @patch("services.integrations.github.github_integration_router.GitHubIntegrationRouter.update_issue", new_callable=AsyncMock)
+    @patch("services.integrations.github.github_integration_router.GitHubIntegrationRouter.is_available", new_callable=AsyncMock)
+    @patch("services.integrations.github.github_integration_router.GitHubIntegrationRouter.initialize", new_callable=AsyncMock)
+    async def test_update_issue_success_with_mock(
+        self, _mock_init, mock_available, mock_update, intent_service
+    ):
+        """Test successful issue update through the guarded ROUTER (#1220/#1382 —
+        mocks repointed from the legacy GitHubDomainService)."""
+        mock_available.return_value = True
+        mock_update.return_value = {
+            "number": 123,
+            "title": "Updated Title",
+            "state": "open",
+            "html_url": "https://github.com/test-org/test-repo/issues/123",
+            "updated_at": "2025-10-11T10:30:00Z",
+        }
 
         intent = Intent(
             original_message="update issue 123 with new title",

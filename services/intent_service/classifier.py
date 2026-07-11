@@ -185,6 +185,7 @@ class IntentClassifier:
                 )
                 # Reconstruct Intent object from cached dict
                 intent_obj = Intent(
+                    original_message=message,  # #1332/#1220: attribute was never set — see classify docstring note
                     category=IntentCategory(cached_result["category"]),
                     action=cached_result["action"],
                     confidence=cached_result.get("confidence", 1.0),
@@ -322,6 +323,7 @@ class IntentClassifier:
             if intent.confidence < 0.3 or self._seems_vague(intent):
                 logger.info("Low confidence or vague intent detected, requesting clarification")
                 return Intent(
+                    original_message=message,  # #1332/#1220
                     category=IntentCategory.CONVERSATION,
                     action="clarification_needed",
                     confidence=intent.confidence,
@@ -880,6 +882,10 @@ class IntentClassifier:
                     }
 
             intent = Intent(
+                original_message=message,  # #1332/#1220: the MAIN path never set the
+                # attribute (only context["original_message"]) — every downstream
+                # reader of intent.original_message got "" (the floor's "came
+                # through empty", slot-fills, regex fallbacks). Found live 2026-07-09.
                 category=IntentCategory(parsed["category"].lower()),
                 action=parsed["action"],
                 confidence=parsed["confidence"],
@@ -997,6 +1003,7 @@ class IntentClassifier:
             # Use comprehensive extraction for search_query
             context["search_query"] = self._extract_search_query_comprehensive(message)
             return Intent(
+                original_message=message,  # #1332/#1220
                 category=category,
                 action=action,
                 confidence=0.7,  # Higher confidence for fuzzy match
@@ -1152,6 +1159,7 @@ class IntentClassifier:
             action = "learn_pattern"
 
         return Intent(
+            original_message=message,  # #1332/#1220
             category=category,
             action=action,
             confidence=0.5,  # Lower confidence for fallback

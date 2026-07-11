@@ -33,6 +33,8 @@ def _intent(msg="please comment on issue 42 that the build is green"):
 def _mock_router():
     router = MagicMock()
     router.config_service.is_configured.return_value = True
+    # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+    router.is_available = AsyncMock(return_value=True)
     router.initialize = AsyncMock()
     router.add_comment = AsyncMock(return_value={"html_url": "https://github.com/o/r/issues/42#c1"})
     return router

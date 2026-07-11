@@ -94,6 +94,15 @@ jobs:
           POSTGRES_USER: piper
           POSTGRES_PASSWORD: dev_changeme_in_production
           POSTGRES_DB: piper_morgan
+          # #1382: the CI runner's keyring is dead (headless ubuntu — same as the
+          # droplet), so KeychainService routes to the encrypted-DB store, which
+          # FAIL-CLOSES without a master key (that refusal is the security
+          # property, and it's what turned this suite red 2026-07-09). This
+          # TEST-ONLY 32-byte AES-256 key makes CI exercise the real hosted
+          # configuration: dead keyring + encrypted-DB store + real Postgres.
+          # Deliberately committed, not a secret — ephemeral CI database, no
+          # real credential ever stored. Decodes to "ci-test-only-1382-never-prod!!32".
+          ENCRYPTION_MASTER_KEY: "Y2ktdGVzdC1vbmx5LTEzODItbmV2ZXItcHJvZCEhMzI="
         run: |
           echo "🔒 Running tests/security/ against real Postgres (#1304)"
           python -m pytest tests/security/ -v --tb=short --override-ini="addopts="

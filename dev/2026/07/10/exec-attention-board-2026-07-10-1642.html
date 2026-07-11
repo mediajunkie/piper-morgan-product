@@ -1,0 +1,434 @@
+<title>Piper Morgan — Bridge Log, Jul 10</title>
+
+<style>
+  @font-face {
+    font-family: "system-serif";
+    src: local("Charter"), local("Georgia");
+  }
+
+  :root {
+    --paper: #F2EFE6;
+    --paper-raised: #EAE6D9;
+    --ink: #22271F;
+    --ink-soft: #5A5F51;
+    --ink-faint: #8C9080;
+    --rule: #D8D3C2;
+    --accent: #2D5D6B;
+    --accent-soft: #E4EDEE;
+    --need: #A34A28;
+    --need-bg: #F5E7DE;
+    --inflight: #8A6A1E;
+    --inflight-bg: #F2EAD3;
+    --healthy: #3F6B4C;
+    --healthy-bg: #E3EDE4;
+    --shadow: 0 1px 2px rgba(34,39,31,0.06), 0 4px 14px rgba(34,39,31,0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #181D1B;
+      --paper-raised: #1F2522;
+      --ink: #EDE9DD;
+      --ink-soft: #B4B0A2;
+      --ink-faint: #7A7D71;
+      --rule: #333831;
+      --accent: #6FA6B4;
+      --accent-soft: #22343A;
+      --need: #D97C56;
+      --need-bg: #3A241B;
+      --inflight: #D2AE5A;
+      --inflight-bg: #362E17;
+      --healthy: #7FB894;
+      --healthy-bg: #1E2E23;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 4px 14px rgba(0,0,0,0.25);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #181D1B;
+    --paper-raised: #1F2522;
+    --ink: #EDE9DD;
+    --ink-soft: #B4B0A2;
+    --ink-faint: #7A7D71;
+    --rule: #333831;
+    --accent: #6FA6B4;
+    --accent-soft: #22343A;
+    --need: #D97C56;
+    --need-bg: #3A241B;
+    --inflight: #D2AE5A;
+    --inflight-bg: #362E17;
+    --healthy: #7FB894;
+    --healthy-bg: #1E2E23;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 4px 14px rgba(0,0,0,0.25);
+  }
+  :root[data-theme="light"] {
+    --paper: #F2EFE6;
+    --paper-raised: #EAE6D9;
+    --ink: #22271F;
+    --ink-soft: #5A5F51;
+    --ink-faint: #8C9080;
+    --rule: #D8D3C2;
+    --accent: #2D5D6B;
+    --accent-soft: #E4EDEE;
+    --need: #A34A28;
+    --need-bg: #F5E7DE;
+    --inflight: #8A6A1E;
+    --inflight-bg: #F2EAD3;
+    --healthy: #3F6B4C;
+    --healthy-bg: #E3EDE4;
+    --shadow: 0 1px 2px rgba(34,39,31,0.06), 0 4px 14px rgba(34,39,31,0.05);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+  }
+
+  /* ---- Masthead ---- */
+  .masthead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 14px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .masthead h1 {
+    font-family: "system-serif", Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-weight: 600;
+    font-size: 28px;
+    letter-spacing: 0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .masthead .meta {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+    text-align: right;
+  }
+  .strapline {
+    font-size: 13px;
+    color: var(--ink-faint);
+    font-style: italic;
+    margin: 0 0 32px;
+  }
+
+  /* ---- Tally strip ---- */
+  .tally {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 36px;
+    box-shadow: var(--shadow);
+  }
+  .tally-cell {
+    background: var(--paper-raised);
+    padding: 16px 18px;
+  }
+  .tally-cell .num {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .tally-cell .label {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+  .tally-cell.need .num { color: var(--need); }
+  .tally-cell.inflight .num { color: var(--inflight); }
+  .tally-cell.healthy .num { color: var(--healthy); }
+
+  /* ---- Sections ---- */
+  .section {
+    margin-bottom: 34px;
+  }
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .section-head .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex: none;
+  }
+  .section-head h2 {
+    font-family: "system-serif", Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    color: var(--ink-soft);
+  }
+  .section-head .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  .need .dot { background: var(--need); }
+  .inflight .dot { background: var(--inflight); }
+  .healthy .dot { background: var(--healthy); }
+  .quiet .dot { background: var(--ink-faint); }
+
+  /* ---- Entries ---- */
+  .entry {
+    display: flex;
+    gap: 14px;
+    padding: 14px 16px 14px 14px;
+    border-radius: 4px;
+    background: var(--paper-raised);
+    margin-bottom: 8px;
+    border-left: 3px solid var(--rule);
+  }
+  .need .entry { border-left-color: var(--need); }
+  .inflight .entry { border-left-color: var(--inflight); }
+  .healthy .entry { border-left-color: var(--healthy); }
+  .quiet .entry { border-left-color: var(--ink-faint); }
+
+  .entry-body { flex: 1; min-width: 0; }
+  .entry-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+  .entry-title {
+    font-weight: 600;
+    font-size: 14.5px;
+  }
+  .entry-tag {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+  .entry-desc {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    max-width: 62ch;
+  }
+  .entry-desc strong { color: var(--ink); font-weight: 600; }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.03em;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .pill.need { background: var(--need-bg); color: var(--need); }
+  .pill.inflight { background: var(--inflight-bg); color: var(--inflight); }
+  .pill.healthy { background: var(--healthy-bg); color: var(--healthy); }
+
+  /* ---- Since-last-log ---- */
+  .since {
+    margin-top: 40px;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule);
+  }
+  .since h2 {
+    font-family: "system-serif", Georgia, serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 10px;
+  }
+  .since ul { margin: 0; padding: 0; list-style: none; }
+  .since li {
+    font-size: 13px;
+    color: var(--ink-soft);
+    padding: 5px 0 5px 18px;
+    position: relative;
+  }
+  .since li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--healthy);
+    font-weight: 700;
+  }
+  .since li strong { color: var(--ink); }
+
+  /* ---- Roster (compact healthy-role chips) ---- */
+  .roster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    background: var(--paper-raised);
+    border-left: 3px solid var(--healthy);
+    border-radius: 4px;
+    padding: 8px 12px;
+  }
+  .chip.is-quiet { border-left-color: var(--ink-faint); }
+  .chip .role { font-weight: 600; font-size: 13.5px; }
+  .chip .time {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 10.5px;
+    color: var(--ink-faint);
+  }
+
+  footer {
+    margin-top: 44px;
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.02em;
+  }
+</style>
+
+<div class="page">
+  <h2 class="sr-only">Piper Morgan attention rollup for July 10, 2026, 4:42pm: nothing needs Exec right now, but two items are waiting on you directly — sending the batch-1 invites, and the Fly.io cutover's DNS plus OAuth callback step. The Fly migration build finished today: the whole stack is live and smoke-tested, and a security gap Arch found in the same review was fixed and closed within the hour. Three roles (PPM, PA, Comms) have been quiet since yesterday morning with no clean day-close and mail piling up — not flagged as broken, worth a direct nudge given that's the same pattern from Thursday.</h2>
+
+  <div class="masthead">
+    <h1>Bridge Log</h1>
+    <div class="meta">Fri Jul 10 &middot; 16:42 PT</div>
+  </div>
+  <p class="strapline">Who needs you, what's moving, who's steady — Piper Morgan cohort, this watch.</p>
+
+  <div class="tally">
+    <div class="tally-cell need">
+      <div class="num">0</div>
+      <div class="label">Need attention</div>
+    </div>
+    <div class="tally-cell inflight">
+      <div class="num">2</div>
+      <div class="label">In flight</div>
+    </div>
+    <div class="tally-cell healthy">
+      <div class="num">7</div>
+      <div class="label">Healthy</div>
+    </div>
+  </div>
+
+  <div class="since">
+    <h2>Since the last log — a big Friday</h2>
+    <ul>
+      <li><strong>Briefing false-staleness loop — closed for good.</strong> CIO found the real trigger: the SessionStart hook checked filesystem <em>mtime</em>, not git — structurally unreliable across worktrees, since a fresh checkout stamps "now" regardless of when content last changed. Fixed in 3 instances (<code>76f6b5dd4</code>), plus an unrelated dead-glob bug in the same code that was silently costing ~5-6 seconds per session start. No action needed from you.</li>
+      <li><strong>The Fly.io migration (#1278) went from decisions to a live, smoke-tested stack in one afternoon.</strong> Your walkthrough with Lead closed all four decision items (account, DB, Redis/Chroma/gh-mcp, DNS) around midday; by 4:35pm the full stack was built and deployed to <code>piper-morgan.fly.dev</code> — Postgres, Upstash Redis, Chroma, and the GitHub MCP sidecar all live. Five real defects found and fixed en route, including one that would have crash-looped the app and one that left it half-connected (chat working, reads/saves silently hitting localhost). Smoke tests green, parity-confirmed against the droplet.</li>
+      <li><strong>Arch caught a real security gap — and it was fixed and closed within the hour.</strong> A proactive review of the Fly cutover found that field-encryption silently writes tester PII as <em>plaintext</em> if the encryption key is unset in prod. Filed as #1387 at 4:01pm; Lead shipped a prod-fatal guard (6 pinning tests) and closed it by 4:40pm — same fire the report came in on. No exposure: Fly has zero tester traffic pre-cutover and both live environments already have the key set.</li>
+      <li><strong>#1386 (the beta-close gate) just absorbed a full round of refinement — all three of Arch's proposed checks, one of which was a real gap.</strong> Checking rather than assuming, Lead found the routing-integrity lint (P1) was only running inside the chronically-red CI job — not effectively gating anything green. Now wired into the passing Architecture Enforcement workflow. The other two folded in as new criteria: boundary verification against the <em>deployed</em> build, and federated MCP queries declared explicitly OUT of the beta surface. Gate criteria are now settled; CXO/PPM's three test scenarios are the one piece still outstanding — normal queue work, not urgent.</li>
+      <li><strong>Ship #051's kickoff held up under its first live test.</strong> Correct window (Fri Jul 3–Thu Jul 9), and the two submissions in early — Arch and HOST — both used it correctly. The post-#050 date-window fix is holding.</li>
+      <li>This morning's stall alert was just first-fire latency, not a real stall — Arch confirmed to CIO, no action needed.</li>
+    </ul>
+  </div>
+
+  <div class="section inflight">
+    <div class="section-head"><div class="dot"></div><h2>In flight — waiting on you</h2><div class="rule"></div></div>
+
+    <div class="entry">
+      <div class="entry-body">
+        <div class="entry-row">
+          <span class="entry-title">Fly.io cutover — DNS + OAuth callback</span>
+          <span class="entry-tag">you, then Lead</span>
+        </div>
+        <div class="entry-desc">The build is done and verified. What's left is the actual cutover session: you set the <strong>beta.pipermorgan.ai</strong> CNAME and update the OAuth callback URL; Lead handles the rest (binding repoint, quickstart update, verified write, a parallel-run window, then decommission the droplet). No rush signal from Lead — this is "whenever you get to it," same as the invites below.</div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-body">
+        <div class="entry-row">
+          <span class="entry-title">Batch-1 invite delivery</span>
+          <span class="entry-tag">you + HOST</span>
+        </div>
+        <div class="entry-desc">Unchanged from yesterday — still just the physical send. 11 codes ready, build verified end-to-end. Worth sequencing after the Fly cutover if you'd rather testers land on the new stack from day one, but nothing forces that order.</div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-body">
+        <div class="entry-row">
+          <span class="entry-title">#1386 beta-close gate — criteria settled, scenarios pending</span>
+          <span class="entry-tag">CXO, PPM</span>
+        </div>
+        <div class="entry-desc">All of Arch's review folded in same-day. Only CXO/PPM's three multi-turn test scenarios remain before this is ready for your go/no-go. Not blocking — surfaced so it's not a surprise when it lands on your desk.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section quiet">
+    <div class="section-head"><div class="dot"></div><h2>Quiet since yesterday — not flagged, worth a nudge</h2><div class="rule"></div></div>
+
+    <div class="entry">
+      <div class="entry-body">
+        <div class="entry-row">
+          <span class="entry-title">PPM &amp; PA</span>
+          <span class="entry-tag">~30+ hrs quiet</span>
+        </div>
+        <div class="entry-desc">No activity since Thursday morning, no clean day-close logged, and mail has piled up unread (24 each). No crash or stuck-cron signal — this looks like the same dormancy pattern from earlier in the week, which resolved only once you reached out directly rather than through any tooling fix. Worth the same treatment if you have a moment.</div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-body">
+        <div class="entry-row">
+          <span class="entry-title">Comms</span>
+          <span class="entry-tag">~33 hrs quiet</span>
+        </div>
+        <div class="entry-desc">Same shape as above but milder — only 1 unread, and Ship #050 already shipped clean before it went quiet, so there's less obviously waiting for them. Lower concern, same nudge if convenient.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section healthy">
+    <div class="section-head"><div class="dot"></div><h2>Healthy — active today</h2><div class="rule"></div></div>
+    <div class="roster">
+      <div class="chip"><span class="role">Lead</span><span class="time">16:41 &middot; #1387 fixed, #1386 folded</span></div>
+      <div class="chip"><span class="role">Arch</span><span class="time">16:01 &middot; #1387 filed</span></div>
+      <div class="chip"><span class="role">HOST</span><span class="time">15:59 &middot; Ship #051 filed</span></div>
+      <div class="chip"><span class="role">Docs</span><span class="time">10:49</span></div>
+      <div class="chip"><span class="role">CIO</span><span class="time">10:34 &middot; loop fix shipped</span></div>
+      <div class="chip"><span class="role">Web</span><span class="time">06:52 &middot; opened clean</span></div>
+      <div class="chip is-quiet"><span class="role">CXO</span><span class="time">closed 7/9, not yet fired today</span></div>
+    </div>
+  </div>
+
+  <footer>PIPER MORGAN &middot; EXEC ROLLUP &middot; COMPILED 2026-07-10 16:42 PT FROM LIVE COMMIT HISTORY</footer>
+</div>

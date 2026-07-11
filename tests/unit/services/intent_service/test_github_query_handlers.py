@@ -277,6 +277,8 @@ class TestGitHubNotConfiguredGracefulDegradation:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = False
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=False)
             mock_router.initialize = AsyncMock()
             MockRouter.return_value = mock_router
 
@@ -303,6 +305,8 @@ class TestGitHubNotConfiguredGracefulDegradation:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = False
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=False)
             mock_router.initialize = AsyncMock()
             MockRouter.return_value = mock_router
 
@@ -351,6 +355,8 @@ class TestShippedThisWeekResults:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.get_closed_issues = AsyncMock(return_value=mock_closed_items)
             MockRouter.return_value = mock_router
@@ -377,6 +383,8 @@ class TestShippedThisWeekResults:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.get_closed_issues = AsyncMock(return_value=[])
             MockRouter.return_value = mock_router
@@ -425,6 +433,8 @@ class TestStalePRsResults:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.get_open_issues = AsyncMock(return_value=mock_open_items)
             MockRouter.return_value = mock_router
@@ -464,6 +474,8 @@ class TestStalePRsResults:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.get_open_issues = AsyncMock(return_value=mock_open_items)
             MockRouter.return_value = mock_router
@@ -492,6 +504,8 @@ class TestGitHubHandlerErrors:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.get_closed_issues = AsyncMock(
                 side_effect=Exception("API connection failed")
@@ -519,6 +533,8 @@ class TestGitHubHandlerErrors:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.get_open_issues = AsyncMock(side_effect=Exception("Rate limit exceeded"))
             MockRouter.return_value = mock_router
@@ -722,6 +738,8 @@ class TestReviewIssueResults:
             ) as MockRouter:
                 mock_router = MagicMock()
                 mock_router.config_service.is_configured.return_value = True
+                # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+                mock_router.is_available = AsyncMock(return_value=True)
                 mock_router.initialize = AsyncMock()
                 mock_router.get_issue = AsyncMock(return_value=mock_issue)
                 MockRouter.return_value = mock_router
@@ -749,6 +767,8 @@ class TestReviewIssueResults:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             MockRouter.return_value = mock_router
 
@@ -790,6 +810,8 @@ class TestReviewIssueResults:
             ) as MockRouter:
                 mock_router = MagicMock()
                 mock_router.config_service.is_configured.return_value = False
+                # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+                mock_router.is_available = AsyncMock(return_value=False)
                 mock_router.initialize = AsyncMock()
                 MockRouter.return_value = mock_router
 
@@ -825,6 +847,8 @@ class TestCloseIssueResults:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.update_issue = AsyncMock(return_value=mock_updated_issue)
             MockRouter.return_value = mock_router
@@ -850,6 +874,8 @@ class TestCloseIssueResults:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             # Fuzzy search returns no matches (empty search terms after stripping "close the issue")
             mock_router.get_open_issues = AsyncMock(return_value=[])
@@ -880,6 +906,8 @@ class TestCloseIssueResults:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = False
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=False)
             mock_router.initialize = AsyncMock()
             MockRouter.return_value = mock_router
 
@@ -992,6 +1020,8 @@ class TestCommentIssueResults:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.add_comment = AsyncMock(return_value=mock_comment_result)
             MockRouter.return_value = mock_router
@@ -1018,6 +1048,8 @@ class TestCommentIssueResults:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             MockRouter.return_value = mock_router
 
@@ -1043,6 +1075,8 @@ class TestCommentIssueResults:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = False
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=False)
             mock_router.initialize = AsyncMock()
             MockRouter.return_value = mock_router
 
@@ -1087,6 +1121,8 @@ class TestGitHubIssueHandlerErrors:
             ) as MockRouter:
                 mock_router = MagicMock()
                 mock_router.config_service.is_configured.return_value = True
+                # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+                mock_router.is_available = AsyncMock(return_value=True)
                 mock_router.initialize = AsyncMock()
                 mock_router.get_issue = AsyncMock(side_effect=Exception("Issue not found"))
                 MockRouter.return_value = mock_router
@@ -1112,6 +1148,8 @@ class TestGitHubIssueHandlerErrors:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.update_issue = AsyncMock(side_effect=Exception("Permission denied"))
             MockRouter.return_value = mock_router
@@ -1410,6 +1448,8 @@ class TestListPRsResults:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.get_open_issues = AsyncMock(return_value=mock_open_items)
             MockRouter.return_value = mock_router
@@ -1446,6 +1486,8 @@ class TestListPRsResults:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.get_open_issues = AsyncMock(return_value=mock_open_items)
             MockRouter.return_value = mock_router
@@ -1475,6 +1517,8 @@ class TestListPRsResults:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = False
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=False)
             mock_router.initialize = AsyncMock()
             MockRouter.return_value = mock_router
 

@@ -41,6 +41,8 @@ class TestCommentIssueGracefulRepoResolution:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.add_comment = AsyncMock(
                 side_effect=RuntimeError(
@@ -69,6 +71,8 @@ class TestCommentIssueGracefulRepoResolution:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.config_service.is_configured.return_value = True
+            # #1220/#1382: the gate is now router.is_available() (binding OR PAT)
+            mock_router.is_available = AsyncMock(return_value=True)
             mock_router.initialize = AsyncMock()
             mock_router.add_comment = AsyncMock(
                 side_effect=RuntimeError("GitHub API returned 503 Service Unavailable")

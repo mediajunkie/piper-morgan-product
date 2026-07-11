@@ -1,0 +1,55 @@
+# fly.toml — Piper Morgan server on Fly.io (#1278)
+#
+# Decisions (PM walkthrough 2026-07-10, decisions.log): org `personal`,
+# app `piper-morgan` (piper-morgan.fly.dev; beta.pipermorgan.ai at cutover),
+# Fly Postgres attached (DATABASE_URL secret), Upstash Redis, ChromaDB +
+# github-mcp as sibling Fly apps on private .internal DNS. Caddy's droplet
+# role (TLS/proxy) is handled by Fly's edge — no proxy container here.
+#
+# Secrets (set via `fly secrets set`, NEVER here): ENCRYPTION_MASTER_KEY
+# (the droplet's existing key — ciphertext dies with it if replaced),
+# JWT_SECRET_KEY, ANTHROPIC_API_KEY, GITHUB_OAUTH_CLIENT_ID/SECRET,
+# DATABASE_URL (via postgres attach), REDIS_URL (via redis create).
+
+app = "piper-morgan"
+primary_region = "sjc"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PIPER_ENVIRONMENT = "production"
+  PIPER_HOST = "0.0.0.0"
+  PORT = "8001"
+  PYTHONPATH = "/app"
+  ENABLE_ETHICS_ENFORCEMENT = "true"
+  AUTH_ENABLED = "true"
+  # sibling Fly apps over private networking (6PN)
+  GITHUB_MCP_SERVER_URL = "http://piper-morgan-github-mcp.internal:8082/mcp"
+  CHROMA_HOST = "piper-morgan-chroma.internal"
+  CHROMA_PORT = "8000"
+
+# migrations run in a temp machine with secrets before each deploy —
+# the droplet's deploy.sh migrate step, Fly-native (#1299 lesson: the
+# migrate must never silently not-run).
+[deploy]
+  release_command = "python -m alembic upgrade head"
+
+[http_service]
+  internal_port = 8001
+  force_https = true
+  # beta server stays warm — no scale-to-zero surprises for testers
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "30s"
+    method = "GET"
+    path = "/health"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "1gb"

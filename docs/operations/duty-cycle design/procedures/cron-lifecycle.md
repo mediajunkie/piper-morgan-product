@@ -244,6 +244,22 @@ HOST's low-freq experiment (`37 */3 * * *`) self-woke overnight→morning **with
 
 ---
 
+## Cron-mechanism migration — the orphaned-predecessor gap (CIO, 2026-07-10)
+
+**Distinct from Gaps A/B/C above** — those are about overnight *survival*; this is about *migrating between mechanisms* (e.g. ephemeral `CronCreate` → persistent `scheduled-tasks`, or the reverse). Diagnosed with PM as a `methodology-35` (Asymmetric Discipline) instance: the creation-half of a migration is always performed (the new job visibly exists), but nothing ever specifies deleting the predecessor — and unlike Gap A (where the *same* session can self-heal at STOP), here it usually can't, because the two mechanisms don't share visibility.
+
+**The originating instance**: Docs moved their first-fire from `17 10,22` (ephemeral cron) to `17 5,17` (a `scheduled-tasks` entry) to satisfy a PM schedule-change request. The new scheduled-task was created; the old ephemeral cron (`f33227b7`) was never torn down. Both then ran independently — two full duty-cycle sessions doing overlapping work daily, discovered when Docs noticed two session logs covering the same day's work (see "Detecting it after the fact" below).
+
+**Why this is architecturally harder than Gap A**: `CronList`/`CronDelete` only ever see jobs the *calling session itself* created (confirmed empirically 2026-07-10 — CIO could not see or delete `f33227b7` from a different session; same result testing against Arch's cron the same day). `scheduled-tasks` is a genuinely different, disk-persistent subsystem with its own list — a session on one mechanism cannot see, let alone delete, a job on the other. Once the session that performed the migration moves on, **no other session, and no other mechanism, can ever reach back and delete the orphaned predecessor.** This is a structural tool-surface limit, not a discipline gap alone — no amount of "try harder" fixes it after the fact.
+
+**The discipline (the only fix that actually works, since it has to happen before the visibility window closes)**: when migrating your own cron from one mechanism to another, **self-delete the old mechanism's job as an explicit, named step of the same migration** — before or immediately after creating the new one, in the same session/turn that does the creating. Do not defer it, do not assume "I'll clean it up later" — later, it may be permanently unreachable. Verify both surfaces before considering the migration complete: `CronList` for ephemeral jobs, `mcp__scheduled-tasks__list_scheduled_tasks` for persistent ones (the latter is genuinely cross-session-visible, unlike `CronList` — useful for confirming the new job registered correctly, though it still can't see the old ephemeral job if that's what's being retired).
+
+**Detecting it after the fact** (the backstop, for when the discipline above was missed and the window has closed): you can't inspect another session's cron state directly, but you *can* notice the symptom — two session logs (or two sets of commits) for the same role covering overlapping work in the same day, the way Docs's own read of their day surfaced this instance. Once noticed, `mcp__ccd_session_mgmt__list_sessions` can identify which session owns the stray job (it's cross-visible, unlike cron state itself), and `mcp__ccd_session_mgmt__send_message` can ask that session to self-clean — both used successfully for this exact case 2026-07-10. This is detection-and-nudge, not a direct fix; only the session that created the job can actually delete it.
+
+**Cross-reference**: `methodology-35-ASYMMETRIC-DISCIPLINE-CREATION-WITHOUT-PAIRED-CLEANUP.md` — this instance, paired with the same-mechanism STOP-re-arm fix (this doc's Gap-A family, `duty-cycle-tick/SKILL.md` fixed 2026-07-10), meets the methodology's stated ≥2-instances promotion criterion; promoted Emerging → Proven same day.
+
+---
+
 ## Cron-shape is now experiment-authorized (PM 2026-06-02)
 
 The fixed hourly interval is the *default*, not a mandate. Agents are authorized to experiment with their cron-shape (interval, event-driven, long-interval-when-drained, low-frequency mail-awareness) to fit their lane's work-shape, and to **report results** in `cron-shape-experiments.md`. Bursty/intermittent lanes (Arch, Web) need not run hourly. The Rules above (0/1/2) still govern whatever shape you pick — they're about clash-avoidance, orthogonal to cadence.

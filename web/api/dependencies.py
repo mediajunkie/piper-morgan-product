@@ -32,7 +32,7 @@ from services.database.session_factory import AsyncSessionFactory
 from services.feedback.feedback_service import FeedbackService
 from services.knowledge.knowledge_graph_service import KnowledgeGraphService
 from services.repositories.file_repository import FileRepository
-from services.repositories.todo_repository import TodoListRepository, TodoRepository
+from services.repositories.todo_repository import TodoRepository
 from services.repositories.universal_list_repository import (
     UniversalListItemRepository,
     UniversalListRepository,

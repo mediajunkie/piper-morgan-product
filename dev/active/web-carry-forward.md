@@ -1,34 +1,22 @@
-# Web carry-forward — 2026-06-28 (active)
+# Web carry-forward — 2026-07-09 → 2026-07-10 (handoff)
 
-**Session**: DinP/Sonnet · cron `22 6,9,12,15,18,21 * * *` · started 11:10
+**Session**: DinP/Sonnet · cron `22 6,9,12,15,18,21 * * *` · STOPPED 21:52
 
 ## Active threads
 
-### #998 COMPOSE-UI-V1 — SHIPPED
-- PR #30 merged 2026-06-23; live on pipermorgan.ai
-- Phase 3 (Image Upload): PM-gated; send as `needs-decision` to Exec once inbox-proxy pilot active
+### #998 COMPOSE-UI-V1 Phase 3 (Image Upload)
+- **BLOCKED on PM**: image storage location not yet decided (question posed 10:22 Jul 9)
+- Once answered → build: file picker in `ComposeApp.tsx` + `POST /api/compose/upload` route
 - Phase 4 (Mark Ready + Git Handoff): queued after Phase 3
 
-### July-1 site minimums — BOTH COMPLETE ✓
-- [x] Footer byline: "Built by Christian Crumlish · designinproduct.com" — SHIPPED (ef9881df0)
-- [x] Book-citation `/about`: "Author of Product Management for UX People (Rosenfeld)" — SHIPPED (d925aa68c, 2026-06-28)
-
-### Newsletter cross-referral (Janus DinP)
-- Subscribe URL + preference-center info: sent to Exec 2026-06-25
-- Newsletter editorial name: BLOCKED — PM/Comms call
-
-### Inbox-proxy pilot (Exec proposal)
-- ACK sent 2026-06-26; pilot not yet active
-- Under pilot: Phase 3 proposal routes to Exec as `needs-decision`
+### Blog dedup fix — COMPLETE ✓
+- `scripts/fetch-blog-posts.js` commit `8f8474a47` — title-match dedup, July 9
 
 ### Role portfolio
-- `ROLE-PORTFOLIO-WEB.md` v0.1 routed; HOST review pending
+- `ROLE-PORTFOLIO-WEB.md` v0.1 routed; HOST review pending (not Web's action)
 
 ## PM-react gated
-- Phase 3 (Image Upload) proposal
-- Newsletter editorial name (PM/Comms)
+- Phase 3 image storage location (first PM message received = unblock)
 
 ## Cron state
-- **IDLE** — cron suspended per Exec lean-throttle (2026-06-28)
-- Resume: "restore" broadcast from Exec after Wed Jul-1 ~9pm PT quota reset
-- Re-arm: `22 6,9,12,15,18,21 * * *` on restore signal
+- **ARMED** — `22 6,9,12,15,18,21 * * *` (job `f6bf95cb`, re-armed post-STOP)

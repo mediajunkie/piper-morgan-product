@@ -1,0 +1,409 @@
+<title>Piper Morgan — Bridge Log, Jul 9</title>
+
+<style>
+  @font-face {
+    font-family: "system-serif";
+    src: local("Charter"), local("Georgia");
+  }
+
+  :root {
+    --paper: #F2EFE6;
+    --paper-raised: #EAE6D9;
+    --ink: #22271F;
+    --ink-soft: #5A5F51;
+    --ink-faint: #8C9080;
+    --rule: #D8D3C2;
+    --accent: #2D5D6B;
+    --accent-soft: #E4EDEE;
+    --need: #A34A28;
+    --need-bg: #F5E7DE;
+    --inflight: #8A6A1E;
+    --inflight-bg: #F2EAD3;
+    --healthy: #3F6B4C;
+    --healthy-bg: #E3EDE4;
+    --shadow: 0 1px 2px rgba(34,39,31,0.06), 0 4px 14px rgba(34,39,31,0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #181D1B;
+      --paper-raised: #1F2522;
+      --ink: #EDE9DD;
+      --ink-soft: #B4B0A2;
+      --ink-faint: #7A7D71;
+      --rule: #333831;
+      --accent: #6FA6B4;
+      --accent-soft: #22343A;
+      --need: #D97C56;
+      --need-bg: #3A241B;
+      --inflight: #D2AE5A;
+      --inflight-bg: #362E17;
+      --healthy: #7FB894;
+      --healthy-bg: #1E2E23;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 4px 14px rgba(0,0,0,0.25);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #181D1B;
+    --paper-raised: #1F2522;
+    --ink: #EDE9DD;
+    --ink-soft: #B4B0A2;
+    --ink-faint: #7A7D71;
+    --rule: #333831;
+    --accent: #6FA6B4;
+    --accent-soft: #22343A;
+    --need: #D97C56;
+    --need-bg: #3A241B;
+    --inflight: #D2AE5A;
+    --inflight-bg: #362E17;
+    --healthy: #7FB894;
+    --healthy-bg: #1E2E23;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 4px 14px rgba(0,0,0,0.25);
+  }
+  :root[data-theme="light"] {
+    --paper: #F2EFE6;
+    --paper-raised: #EAE6D9;
+    --ink: #22271F;
+    --ink-soft: #5A5F51;
+    --ink-faint: #8C9080;
+    --rule: #D8D3C2;
+    --accent: #2D5D6B;
+    --accent-soft: #E4EDEE;
+    --need: #A34A28;
+    --need-bg: #F5E7DE;
+    --inflight: #8A6A1E;
+    --inflight-bg: #F2EAD3;
+    --healthy: #3F6B4C;
+    --healthy-bg: #E3EDE4;
+    --shadow: 0 1px 2px rgba(34,39,31,0.06), 0 4px 14px rgba(34,39,31,0.05);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 24px 64px;
+  }
+
+  /* ---- Masthead ---- */
+  .masthead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 14px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .masthead h1 {
+    font-family: "system-serif", Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-weight: 600;
+    font-size: 28px;
+    letter-spacing: 0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .masthead .meta {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+    text-align: right;
+  }
+  .strapline {
+    font-size: 13px;
+    color: var(--ink-faint);
+    font-style: italic;
+    margin: 0 0 32px;
+  }
+
+  /* ---- Tally strip ---- */
+  .tally {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 36px;
+    box-shadow: var(--shadow);
+  }
+  .tally-cell {
+    background: var(--paper-raised);
+    padding: 16px 18px;
+  }
+  .tally-cell .num {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .tally-cell .label {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+  .tally-cell.need .num { color: var(--need); }
+  .tally-cell.inflight .num { color: var(--inflight); }
+  .tally-cell.healthy .num { color: var(--healthy); }
+
+  /* ---- Sections ---- */
+  .section {
+    margin-bottom: 34px;
+  }
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .section-head .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex: none;
+  }
+  .section-head h2 {
+    font-family: "system-serif", Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    color: var(--ink-soft);
+  }
+  .section-head .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  .need .dot { background: var(--need); }
+  .inflight .dot { background: var(--inflight); }
+  .healthy .dot { background: var(--healthy); }
+
+  /* ---- Entries ---- */
+  .entry {
+    display: flex;
+    gap: 14px;
+    padding: 14px 16px 14px 14px;
+    border-radius: 4px;
+    background: var(--paper-raised);
+    margin-bottom: 8px;
+    border-left: 3px solid var(--rule);
+  }
+  .need .entry { border-left-color: var(--need); }
+  .inflight .entry { border-left-color: var(--inflight); }
+  .healthy .entry { border-left-color: var(--healthy); }
+
+  .entry-body { flex: 1; min-width: 0; }
+  .entry-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+  .entry-title {
+    font-weight: 600;
+    font-size: 14.5px;
+  }
+  .entry-tag {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+  .entry-desc {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    max-width: 62ch;
+  }
+  .entry-desc strong { color: var(--ink); font-weight: 600; }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.03em;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .pill.need { background: var(--need-bg); color: var(--need); }
+  .pill.inflight { background: var(--inflight-bg); color: var(--inflight); }
+  .pill.healthy { background: var(--healthy-bg); color: var(--healthy); }
+
+  /* ---- Since-last-log ---- */
+  .since {
+    margin-top: 40px;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule);
+  }
+  .since h2 {
+    font-family: "system-serif", Georgia, serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 10px;
+  }
+  .since ul { margin: 0; padding: 0; list-style: none; }
+  .since li {
+    font-size: 13px;
+    color: var(--ink-soft);
+    padding: 5px 0 5px 18px;
+    position: relative;
+  }
+  .since li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--healthy);
+    font-weight: 700;
+  }
+  .since li strong { color: var(--ink); }
+
+  /* ---- Roster (compact healthy-role chips) ---- */
+  .roster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    background: var(--paper-raised);
+    border-left: 3px solid var(--healthy);
+    border-radius: 4px;
+    padding: 8px 12px;
+  }
+  .chip .role { font-weight: 600; font-size: 13.5px; }
+  .chip .time {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 10.5px;
+    color: var(--ink-faint);
+  }
+
+  footer {
+    margin-top: 44px;
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.02em;
+  }
+</style>
+
+<div class="page">
+  <h2 class="sr-only">Piper Morgan attention rollup for July 9, 2026, 11:00am: nothing needs Exec or PM right now, 3 items in flight, all 10 roles healthy and active within the last hour. Since the last board, CIO, HOST, PA, and CXO all recovered.</h2>
+
+  <div class="masthead">
+    <h1>Bridge Log</h1>
+    <div class="meta">Thu Jul 9 &middot; 11:00 PT</div>
+  </div>
+  <p class="strapline">Who needs you, what's moving, who's steady — Piper Morgan cohort, this watch.</p>
+
+  <div class="tally">
+    <div class="tally-cell need">
+      <div class="num">0</div>
+      <div class="label">Need attention</div>
+    </div>
+    <div class="tally-cell inflight">
+      <div class="num">3</div>
+      <div class="label">In flight</div>
+    </div>
+    <div class="tally-cell healthy">
+      <div class="num">10</div>
+      <div class="label">Healthy</div>
+    </div>
+  </div>
+
+  <div class="since">
+    <h2>Since the last log — the wake-up round worked</h2>
+    <ul>
+      <li><strong>CIO</strong> — was held on a permission to message a stray Docs session; you cleared it. Turned out to be Docs's own primary session with a leftover cron from switching scheduling mechanisms, not an actual duplicate — self-resolving, low-stakes.</li>
+      <li><strong>HOST</strong> — retroactive Jul 7 close, Jul 9 started, and already sent a real proposal (monthly skill review, first Tuesday, offset from Docs's weekly).</li>
+      <li><strong>PA</strong> — closed out the Jul 6 backlog, session started.</li>
+      <li><strong>CXO</strong> — fired, mid a design conversation with you already.</li>
+      <li><strong>PPM</strong> &amp; <strong>Web</strong> — both recovered right after you reached out (carried from the last board).</li>
+    </ul>
+  </div>
+
+  <div class="section inflight">
+    <div class="section-head"><div class="dot"></div><h2>In flight</h2><div class="rule"></div></div>
+
+    <div class="entry">
+      <div class="entry-body">
+        <div class="entry-row">
+          <span class="entry-title">Batch-1 invites</span>
+          <span class="entry-tag">#1382</span>
+        </div>
+        <div class="entry-desc">Held on your directive. Arch concurred on the credential-store design this morning; Lead building now, target is today.</div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-body">
+        <div class="entry-row">
+          <span class="entry-title">Skill-review cadence</span>
+          <span class="entry-tag">HOST&rarr;CIO</span>
+        </div>
+        <div class="entry-desc">HOST proposed monthly, first Tuesday — waiting on CIO to confirm or amend. Not yours to decide, just tracking.</div>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-body">
+        <div class="entry-row">
+          <span class="entry-title">Roadmap v18.6 fold</span>
+          <span class="entry-tag">PPM</span>
+        </div>
+        <div class="entry-desc">Now that PPM's caught up on backlog (218 issues triaged this morning), the beta-scope fold you asked for should be reachable.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section healthy">
+    <div class="section-head"><div class="dot"></div><h2>All 10, active within the hour</h2><div class="rule"></div></div>
+    <div class="roster">
+      <div class="chip"><span class="role">Arch</span><span class="time">10:06</span></div>
+      <div class="chip"><span class="role">CIO</span><span class="time">10:50</span></div>
+      <div class="chip"><span class="role">HOST</span><span class="time">10:36</span></div>
+      <div class="chip"><span class="role">PA</span><span class="time">10:34</span></div>
+      <div class="chip"><span class="role">CXO</span><span class="time">10:36</span></div>
+      <div class="chip"><span class="role">PPM</span><span class="time">10:36</span></div>
+      <div class="chip"><span class="role">Web</span><span class="time">10:25</span></div>
+      <div class="chip"><span class="role">Lead</span><span class="time">08:01</span></div>
+      <div class="chip"><span class="role">Comms</span><span class="time">08:58</span></div>
+      <div class="chip"><span class="role">Docs</span><span class="time">05:32</span></div>
+    </div>
+  </div>
+
+  <footer>PIPER MORGAN &middot; EXEC ROLLUP &middot; COMPILED 2026-07-09 11:00 PT FROM LIVE COMMIT HISTORY</footer>
+</div>

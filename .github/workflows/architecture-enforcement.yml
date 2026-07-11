@@ -55,6 +55,10 @@ jobs:
           echo "Ensuring router architecture compliance"
           echo
           PYTHONPATH=. python -m pytest tests/test_architecture_enforcement.py -v --tb=short
+          echo
+          echo "ADR-077 D4: routing-vocabulary reachability lint (#1386 P1 — a red here"
+          echo "means a shipped action can fabricate; gated HERE because ci.yml is red, #1365)"
+          PYTHONPATH=. python -m pytest tests/unit/services/intent_service/test_routing_vocabulary_1283.py -v --tb=short --override-ini="addopts="
 
       - name: 🚨 Direct Import Violation Check
         run: |

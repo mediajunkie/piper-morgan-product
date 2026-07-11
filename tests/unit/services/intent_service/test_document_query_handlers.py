@@ -146,6 +146,7 @@ class TestUpdateDocumentNotConfigured:
         ) as MockRouter:
             mock_router = MagicMock()
             mock_router.is_configured.return_value = False
+            mock_router.is_available.return_value = False  # #1383 gate
             MockRouter.return_value = mock_router
 
             result = await intent_service._handle_update_document_notion(
@@ -197,7 +198,9 @@ class TestUpdateDocumentNotFound:
         ):
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
+            mock_router.is_available.return_value = True  # #1383 gate
             mock_router.connect = AsyncMock()
+            mock_router.connect_for_user = AsyncMock()  # #1383
             mock_router.search_notion = AsyncMock(return_value=[])
             MockRouter.return_value = mock_router
 
@@ -248,7 +251,9 @@ class TestUpdateDocumentMultipleMatches:
         ):
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
+            mock_router.is_available.return_value = True  # #1383 gate
             mock_router.connect = AsyncMock()
+            mock_router.connect_for_user = AsyncMock()  # #1383
             mock_router.search_notion = AsyncMock(
                 return_value=[
                     {
@@ -319,7 +324,9 @@ class TestUpdateDocumentSuccess:
         ):
             mock_router = MagicMock()
             mock_router.is_configured.return_value = True
+            mock_router.is_available.return_value = True  # #1383 gate
             mock_router.connect = AsyncMock()
+            mock_router.connect_for_user = AsyncMock()  # #1383
             mock_router.search_notion = AsyncMock(
                 return_value=[
                     {

@@ -2641,15 +2641,18 @@ class IntentService:
             # Initialize router
             notion_router = NotionIntegrationRouter()
 
-            # Check if Notion is configured
-            if not notion_router.is_configured():
+            # #1383: gate on the REQUESTING USER's config (UI-saved key included),
+            # not the global no-user check that #781 documents as always-False
+            # until a user context exists. Same shape as the GitHub #1220 fix.
+            _user_id = _principal_from_intent(intent)
+            if not notion_router.is_available(_user_id):
                 return IntentProcessingResult(
                     success=True,
                     message=(
                         "I'd love to help search your documents, but Notion isn't configured yet. "
-                        "To enable document search, please add your NOTION_API_KEY to your environment "
-                        "or configure it in PIPER.user.md. Once configured, I can search your entire "
-                        "Notion workspace for you!"
+                        "To enable document search, connect Notion in Settings → Notion "
+                        "(or set NOTION_API_KEY locally). Once connected, I can search your "
+                        "entire Notion workspace for you!"
                     ),
                     intent_data={
                         "category": intent.category.value,
@@ -2667,7 +2670,7 @@ class IntentService:
             )
 
             # Connect and search
-            await notion_router.connect()
+            await notion_router.connect_for_user(_user_id)
             results = await notion_router.search_notion(
                 query=search_query,
                 filter_type="page",  # Search pages (documents)
@@ -2773,14 +2776,17 @@ class IntentService:
             # Initialize router
             notion_router = NotionIntegrationRouter()
 
-            # Check if Notion is configured
-            if not notion_router.is_configured():
+            # #1383: gate on the REQUESTING USER's config (UI-saved key included),
+            # not the global no-user check that #781 documents as always-False
+            # until a user context exists. Same shape as the GitHub #1220 fix.
+            _user_id = _principal_from_intent(intent)
+            if not notion_router.is_available(_user_id):
                 return IntentProcessingResult(
                     success=True,
                     message=(
                         "I'd love to analyze your document, but Notion isn't configured yet. "
-                        "To enable document analysis, please add your NOTION_API_KEY to your environment "
-                        "or configure it in PIPER.user.md. Alternatively, you can upload a file directly "
+                        "To enable document analysis, connect Notion in Settings → Notion "
+                        "(or set NOTION_API_KEY locally). Alternatively, you can upload a file directly "
                         "and I'll analyze that instead!"
                     ),
                     intent_data={
@@ -2800,7 +2806,7 @@ class IntentService:
             # If no specific document, search for one based on message
             if not document_id:
                 search_query = intent.context.get("original_message", "")
-                await notion_router.connect()
+                await notion_router.connect_for_user(_user_id)
                 results = await notion_router.search_notion(query=search_query, page_size=1)
 
                 if results:
@@ -2831,7 +2837,7 @@ class IntentService:
                     )
 
             # Fetch document content
-            await notion_router.connect()
+            await notion_router.connect_for_user(_user_id)
             page_data = await notion_router.get_page(document_id)
             blocks = await notion_router.get_page_blocks(document_id)
 
@@ -2952,14 +2958,17 @@ class IntentService:
             # Initialize router
             notion_router = NotionIntegrationRouter()
 
-            # Check if Notion is configured
-            if not notion_router.is_configured():
+            # #1383: gate on the REQUESTING USER's config (UI-saved key included),
+            # not the global no-user check that #781 documents as always-False
+            # until a user context exists. Same shape as the GitHub #1220 fix.
+            _user_id = _principal_from_intent(intent)
+            if not notion_router.is_available(_user_id):
                 return IntentProcessingResult(
                     success=True,
                     message=(
                         "I'd love to help update your document, but Notion isn't configured yet. "
-                        "To enable document updates, please add your NOTION_API_KEY to your environment "
-                        "or configure it in PIPER.user.md. Once configured, I can update documents "
+                        "To enable document updates, connect Notion in Settings → Notion "
+                        "(or set NOTION_API_KEY locally). Once connected, I can update documents "
                         "in your Notion workspace!"
                     ),
                     intent_data={
@@ -3036,7 +3045,7 @@ class IntentService:
                 )
 
             # Connect and search for the document
-            await notion_router.connect()
+            await notion_router.connect_for_user(_user_id)
             results = await notion_router.search_notion(
                 query=doc_name,
                 filter_type="page",
@@ -3262,13 +3271,13 @@ class IntentService:
             await github_router.initialize(user_id=_user_id)
 
             # Check if GitHub is configured
-            if not github_router.config_service.is_configured(_user_id or "system"):
+            if not await github_router.is_available():
                 return IntentProcessingResult(
                     success=True,
                     message=(
                         "I'd love to show you what was shipped, but GitHub isn't configured yet. "
-                        "To enable GitHub integration, please add your GITHUB_TOKEN to your environment "
-                        "or configure it in PIPER.user.md. Once configured, I can track closed issues and PRs!"
+                        "To enable GitHub integration, connect GitHub in Settings → Integrations (or set GITHUB_TOKEN locally). "
+                        "Once configured, I can track closed issues and PRs!"
                     ),
                     intent_data={
                         "category": intent.category.value,
@@ -3409,7 +3418,7 @@ class IntentService:
 
                 github_router = GitHubIntegrationRouter()
                 await github_router.initialize(user_id=_user_id)
-                if not github_router.config_service.is_configured(_user_id or "system"):
+                if not await github_router.is_available():
                     return IntentProcessingResult(
                         success=True,
                         message=(
@@ -3575,13 +3584,13 @@ class IntentService:
 
                 github_router = GitHubIntegrationRouter()
                 await github_router.initialize(user_id=_user_id)
-                if not github_router.config_service.is_configured(_user_id or "system"):
+                if not await github_router.is_available():
                     return IntentProcessingResult(
                         success=True,
                         message=(
                             "I'd love to show you issue details, but GitHub isn't configured yet. "
-                            "To enable GitHub integration, please add your GITHUB_TOKEN to your "
-                            "environment or configure it in PIPER.user.md."
+                            "To enable GitHub integration, connect GitHub in Settings → "
+                            "Integrations (or set GITHUB_TOKEN locally)."
                         ),
                         intent_data={
                             "category": intent.category.value,
@@ -3816,13 +3825,12 @@ class IntentService:
             await github_router.initialize(user_id=_user_id)
 
             # Check if GitHub is configured
-            if not github_router.config_service.is_configured(_user_id or "system"):
+            if not await github_router.is_available():
                 return IntentProcessingResult(
                     success=True,
                     message=(
                         "I'd love to close issues for you, but GitHub isn't configured yet. "
-                        "To enable GitHub integration, please add your GITHUB_TOKEN to your environment "
-                        "or configure it in PIPER.user.md."
+                        "To enable GitHub integration, connect GitHub in Settings → Integrations (or set GITHUB_TOKEN locally)."
                     ),
                     intent_data={
                         "category": intent.category.value,
@@ -3988,6 +3996,9 @@ class IntentService:
 
         except Exception as e:
             self.logger.error(f"GitHub close issue query error: {e}")
+            unverified = self._unverified_write_result(e, intent, workflow_id)
+            if unverified is not None:
+                return unverified
             return self._make_error_result(
                 intent=intent,
                 workflow_id=workflow_id,
@@ -4025,13 +4036,12 @@ class IntentService:
             await github_router.initialize(user_id=_user_id)
 
             # Check if GitHub is configured
-            if not github_router.config_service.is_configured(_user_id or "system"):
+            if not await github_router.is_available():
                 return IntentProcessingResult(
                     success=True,
                     message=(
                         "I'd love to reopen issues for you, but GitHub isn't configured yet. "
-                        "To enable GitHub integration, please add your GITHUB_TOKEN to your environment "
-                        "or configure it in PIPER.user.md."
+                        "To enable GitHub integration, connect GitHub in Settings → Integrations (or set GITHUB_TOKEN locally)."
                     ),
                     intent_data={
                         "category": intent.category.value,
@@ -4231,13 +4241,12 @@ class IntentService:
             await github_router.initialize(user_id=_user_id)
 
             # Check if GitHub is configured
-            if not github_router.config_service.is_configured(_user_id or "system"):
+            if not await github_router.is_available():
                 return IntentProcessingResult(
                     success=True,
                     message=(
                         "I'd love to add comments to issues for you, but GitHub isn't configured yet. "
-                        "To enable GitHub integration, please add your GITHUB_TOKEN to your environment "
-                        "or configure it in PIPER.user.md."
+                        "To enable GitHub integration, connect GitHub in Settings → Integrations (or set GITHUB_TOKEN locally)."
                     ),
                     intent_data={
                         "category": intent.category.value,
@@ -4357,6 +4366,9 @@ class IntentService:
 
         except Exception as e:
             self.logger.error(f"GitHub comment issue query error: {e}")
+            unverified = self._unverified_write_result(e, intent, workflow_id)
+            if unverified is not None:
+                return unverified
             # #1159: a repo-resolution failure is a graceful "which repo?" case,
             # not an opaque crash. Detect it and ask, instead of rendering the
             # generic "something unexpected happened" via _make_error_result.
@@ -4709,7 +4721,7 @@ class IntentService:
 
                 github_router = GitHubIntegrationRouter()
                 await github_router.initialize(user_id=_user_id)
-                if not github_router.config_service.is_configured(_user_id or "system"):
+                if not await github_router.is_available():
                     return IntentProcessingResult(
                         success=True,
                         message=(
@@ -5622,7 +5634,7 @@ class IntentService:
                 _user_id = _principal_from_intent(intent)
                 await github_router.initialize(user_id=_user_id)
 
-                if github_router.config_service.is_configured(_user_id or "system"):
+                if await github_router.is_available():
                     # Get closed issues from past 7 days
                     closed_items = await github_router.get_closed_issues(limit=100)
 
@@ -6663,6 +6675,72 @@ class IntentService:
         # and route through the conversational floor instead.
         return self._GENERIC_FALLBACK_TEXT
 
+    @staticmethod
+    def _slotfill_issue_request(message: str) -> dict:
+        """Deterministic slot-fill for issue-write requests (2026-07-09).
+
+        Root cause this covers: the classification prompt's JSON schema carries
+        NO entity fields and ENTITY_EXTRACTION_PROMPT has zero callers, so
+        ``intent.context``'s repository/title/body keys were a consumer contract
+        with no producer — every chat-created issue silently used the fallback
+        title and the user's DEFAULT repo (live-proven on alpha: a write aimed
+        at an explicitly-named repo landed on the stale default instead). Same
+        house pattern as the #1066 issue-number regex fallback. The general fix
+        (entity-bearing classifier schema / wiring the orphaned extraction
+        stage) is flagged for ADR-073.
+        """
+        import re as _re
+
+        out: dict = {}
+        if not message:
+            return out
+        # owner/repo — URL form first (else "github.com/owner" would match as
+        # the pair); then a bare pair NOT preceded by a dot/slash (domain guard).
+        m = _re.search(r"github\.com/([A-Za-z0-9._-]+/[A-Za-z0-9._-]+)", message)
+        if not m:
+            # owner must contain a letter — excludes fractions/dates ("1/2",
+            # "7/9"); all-digit orgs (rare) can still use the URL form above.
+            m = _re.search(
+                r"(?<![./\w])((?=[A-Za-z0-9-]*[A-Za-z])[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?/[A-Za-z0-9._-]+)\b",
+                message,
+            )
+        if m:
+            out["repository"] = m.group(1).removesuffix(".git")
+        # titled "..." / title "..." / titled '...'
+        m = _re.search(r"\btitled?\s*[\"\u201c']([^\"\u201d']+)[\"\u201d']", message)
+        if m:
+            out["title"] = m.group(1)
+        # with body "..." / body '...'
+        m = _re.search(r"\bbody\s*[\"\u201c']([^\"\u201d']+)[\"\u201d']", message)
+        if m:
+            out["body"] = m.group(1)
+        return out
+
+    def _unverified_write_result(self, e, intent, workflow_id):
+        """#1220/#1322: a fired-but-unverified connector write raises with the
+        "may or may not have landed" phrasing. Surface that honest uncertainty
+        verbatim — never let it fall into a generic error (which would imply
+        clean failure) and never invite a blind retry (double-write hazard).
+        Returns a result, or None when e isn't that case."""
+        if "may or may not have landed" not in str(e):
+            return None
+        return IntentProcessingResult(
+            success=True,
+            message=(
+                "I attempted the GitHub write but couldn't verify it landed — "
+                "it may or may not have gone through. Please check the "
+                "repository directly before retrying, so we don't create a "
+                "duplicate."
+            ),
+            intent_data={
+                "category": intent.category.value,
+                "action": intent.action,
+                "confidence": intent.confidence,
+            },
+            workflow_id=workflow_id,
+            requires_clarification=False,
+        )
+
     async def _handle_create_issue(
         self, intent: Intent, workflow_id: str, session_id: str, user_id: str = None
     ) -> IntentProcessingResult:
@@ -6675,27 +6753,26 @@ class IntentService:
         Issue #494: Added better defaults from PIPER.md config.
         Issue #943: Added pre-flight check for GitHub configuration.
         """
-        # Issue #943: Pre-flight check — verify GitHub is configured
-        # Simplified: just check for GITHUB_TOKEN before attempting any API call
-        import os
+        # Issue #943 pre-flight, rebuilt for #1220/#1382 (2026-07-09): the old gate
+        # checked GITHUB_TOKEN/PAT only, so a user connected via the OAuth flow
+        # (the tester path on hosted — no PAT anywhere) was told "not connected"
+        # before any call could run. The router's is_available() recognizes the
+        # per-user OAuth binding OR the legacy PAT config.
+        from services.integrations.github.github_integration_router import (
+            GitHubIntegrationRouter,
+        )
 
-        github_token = os.getenv("GITHUB_TOKEN")
-        if not github_token:
-            # Also check keychain
-            try:
-                from services.infrastructure.keychain_service import KeychainService
+        github_router = GitHubIntegrationRouter()
+        _user_id = user_id or _principal_from_intent(intent)
+        await github_router.initialize(user_id=_user_id)
 
-                github_token = KeychainService().get_api_key("github")
-            except Exception:
-                pass
-
-        if not github_token:
+        if not await github_router.is_available():
             return IntentProcessingResult(
                 success=True,
                 message=(
-                    "GitHub isn't connected yet. To create issues, you'll need to add a "
-                    "GITHUB_TOKEN to your environment or configure it in Settings. "
-                    "Once that's set up, I can create and manage GitHub issues for you!"
+                    "GitHub isn't connected yet. Connect it in Settings → "
+                    "Integrations (or set GITHUB_TOKEN for local use), and "
+                    "I can create and manage GitHub issues for you!"
                 ),
                 intent_data={
                     "category": intent.category.value,
@@ -6708,17 +6785,41 @@ class IntentService:
 
         try:
             from services.configuration.piper_config_loader import piper_config_loader
-            from services.domain.github_domain_service import GitHubDomainService
-
-            github_service = GitHubDomainService()
 
             # Issue #494: Load GitHub config for defaults
             github_config = piper_config_loader.load_github_config()
 
             # Extract issue details from intent
             title = intent.context.get("title") or f"Issue: {intent.original_message[:50]}"
-            description = intent.context.get("description") or intent.original_message
-            repository = intent.context.get("repository") or intent.context.get("repo")
+            # 2026-07-09: deterministic slot-fill BEFORE defaults — see
+            # _slotfill_issue_request's docstring for why context is empty here.
+            slots = self._slotfill_issue_request(
+                intent.original_message or intent.context.get("original_message") or ""
+            )
+            # Permanent write-path diagnostic (2026-07-09): the live first-real-write
+            # chase burned four deploy loops because THIS hop had zero observability
+            # on hosted. One INFO line = message seen, context carried, slots
+            # extracted, action taken. Keep it.
+            _slog_diag = __import__("structlog").get_logger(__name__)
+            _slog_diag.warning(
+                "create_issue_inputs",
+                action=intent.action,
+                original_message_head=repr((intent.original_message or "")[:120]),
+                context_keys=sorted(intent.context.keys()) if intent.context else [],
+                context_repo=intent.context.get("repository") or intent.context.get("repo"),
+                slots=slots,
+            )
+            title = intent.context.get("title") or slots.get("title") or title
+            description = (
+                intent.context.get("description")
+                or slots.get("body")
+                or intent.original_message
+            )
+            repository = (
+                intent.context.get("repository")
+                or intent.context.get("repo")
+                or slots.get("repository")
+            )
 
             # Issue #494: Fall back to default repository from config
             # #1366 Component A: default_repository must come from the per-user,
@@ -6766,13 +6867,20 @@ class IntentService:
             if not labels and github_config.default_labels:
                 labels = github_config.default_labels
 
-            # Create issue
-            issue = await github_service.create_issue(
-                repo_name=repository,
+            # Create issue — through the ROUTER (#1220 write-path cutover):
+            # connector-first over the user's OAuth grant with the #1322
+            # read-back guard; native PAT only when the connector write
+            # definitively never fired. The legacy GitHubDomainService call
+            # this replaces bypassed the guard entirely (the miss the
+            # 2026-07-09 first-real-write attempt exposed).
+            _owner, _repo = repository.split("/", 1)
+            issue = await github_router.create_issue(
                 title=title,
                 body=description,
                 labels=labels or [],
                 assignees=intent.context.get("assignees", []),
+                owner=_owner,
+                repo_name=_repo,
             )
 
             # Issue #494: Include repository info in success message
@@ -6799,6 +6907,9 @@ class IntentService:
             self.logger.error(f"Failed to create issue: {e}")
             error_str = str(e).lower()
             # #943: Detect configuration issues and give actionable message
+            unverified = self._unverified_write_result(e, intent, workflow_id)
+            if unverified is not None:
+                return unverified
             if any(
                 term in error_str
                 for term in [
@@ -6848,25 +6959,24 @@ class IntentService:
         GREAT-4D Phase 1: FULLY IMPLEMENTED
         Issue #943: Added pre-flight check for GitHub configuration.
         """
-        # Issue #943: Pre-flight check — verify GitHub is configured
-        import os
+        # Issue #943 pre-flight, rebuilt for #1220/#1382 (2026-07-09) — same
+        # binding-aware gate as _handle_create_issue: the old PAT-only check
+        # told OAuth-connected users "not connected".
+        from services.integrations.github.github_integration_router import (
+            GitHubIntegrationRouter,
+        )
 
-        github_token = os.getenv("GITHUB_TOKEN")
-        if not github_token:
-            try:
-                from services.infrastructure.keychain_service import KeychainService
+        github_router = GitHubIntegrationRouter()
+        _user_id = user_id or _principal_from_intent(intent)
+        await github_router.initialize(user_id=_user_id)
 
-                github_token = KeychainService().get_api_key("github")
-            except Exception:
-                pass
-
-        if not github_token:
+        if not await github_router.is_available():
             return IntentProcessingResult(
                 success=True,
                 message=(
-                    "GitHub isn't connected yet. To update issues, you'll need to add a "
-                    "GITHUB_TOKEN to your environment or configure it in Settings. "
-                    "Once that's set up, I can manage GitHub issues for you!"
+                    "GitHub isn't connected yet. Connect it in Settings → "
+                    "Integrations (or set GITHUB_TOKEN for local use), and "
+                    "I can manage GitHub issues for you!"
                 ),
                 intent_data={
                     "category": intent.category.value,
@@ -6878,15 +6988,20 @@ class IntentService:
             )
 
         try:
-            from services.domain.github_domain_service import GitHubDomainService
 
-            github_service = GitHubDomainService()
-
-            # Extract parameters from intent
+            # Extract parameters from intent — deterministic slot-fill first
+            # (2026-07-09; see _slotfill_issue_request: context arrives empty).
+            slots = self._slotfill_issue_request(
+                intent.original_message or intent.context.get("original_message") or ""
+            )
             issue_number = intent.context.get("issue_number")
-            repository = intent.context.get("repository") or intent.context.get("repo")
-            title = intent.context.get("title")
-            body = intent.context.get("body") or intent.context.get("description")
+            repository = (
+                intent.context.get("repository")
+                or intent.context.get("repo")
+                or slots.get("repository")
+            )
+            title = intent.context.get("title") or slots.get("title")
+            body = intent.context.get("body") or intent.context.get("description") or slots.get("body")
             state = intent.context.get("state")
             labels = intent.context.get("labels")
             assignees = intent.context.get("assignees")
@@ -6946,15 +7061,19 @@ class IntentService:
                     clarification_type="update_fields_required",
                 )
 
-            # Update issue
-            updated_issue = await github_service.update_issue(
-                repo_name=repository,
+            # Update issue — through the ROUTER (#1220 cutover): connector-first
+            # with the #1322 read-back guard; the legacy GitHubDomainService call
+            # this replaces bypassed it.
+            _owner, _repo = repository.split("/", 1)
+            updated_issue = await github_router.update_issue(
                 issue_number=issue_number,
                 title=title,
                 body=body,
                 state=state,
                 labels=labels,
                 assignees=assignees,
+                owner=_owner,
+                repo_name=_repo,
             )
 
             return IntentProcessingResult(
@@ -6976,6 +7095,9 @@ class IntentService:
 
         except Exception as e:
             self.logger.error(f"Failed to update issue: {e}")
+            unverified = self._unverified_write_result(e, intent, workflow_id)
+            if unverified is not None:
+                return unverified
             return self._make_error_result(
                 intent=intent,
                 workflow_id=workflow_id,

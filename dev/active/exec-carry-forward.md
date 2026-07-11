@@ -1,46 +1,41 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-08 21:02 PT (Wed STOP)
-**Session log today**: `dev/2026/07/08/2026-07-08-0941-exec-code-log.md` (DAY-CLOSED)
+**Last updated**: 2026-07-09 21:02 PT (Thu STOP)
+**Session log today**: `dev/2026/07/09/2026-07-09-0902-exec-code-log.md` (DAY-CLOSED)
 **Role**: Chief of Staff (Exec) | DinP account (pipermorgan.ai migration in planning — CIO first mover, PM's timing, deadline end of month)
-**Cron**: `32 8,20 * * *` — id `9ba08401`, single, armed; next fire 08:32 Thu Jul 9. (CronList-before-create discipline held — no duplicate today.)
+**Cron**: `32 8,20 * * *` — id `9ba08401`, single, armed; next fire 08:32 Fri Jul 10.
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3`
 
 ---
 
-## ✅ Ship #050 — PUBLISHED + DISTRIBUTED 7/8
+## ✅ Two threads closed today — nothing pending on either
 
-[Blog](https://pipermorgan.ai/shipping-news/weekly-ship-050-the-connector-gets-real) + LinkedIn, "The Connector Gets Real." Full saga (window error → root cause → fact-check → PM fix rounds → Comms review → publish) in today's session log + `dev/2026/07/08/ship-050-fact-check-2026-07-08.md` + `docs/internal/operations/ship-050-window-date-error-2026-07-08.md`. Comms marked it "ready for Docs handoff" (archive step — Docs's pipeline, just watch it happens).
+- **Batch-1 invites: GO.** PM gave the word ~17:45. Lead's five point releases (v0.8.10.3→v0.8.10.7) closed the tester loop end-to-end incl. GitHub writes, incl. the #1332 root cause (`Intent.original_message` never set by the classifier). 11 codes ready. **Only remaining step: PM + HOST actually send them** — mechanical, not a decision. #1383 (Notion/Calendar per-user creds) tracked-not-gating, doesn't block batch-1 (GitHub is the flagship connector).
+- **Skill-candidates review: fully closed.** Aug 4 first slot, landed as a real row in `staggered-audit-calendar-2026.md` (not a parallel doc — CIO's own framing of why that matters). HOST's seat confirmed (flag welfare/trust, not veto). Report-writing-skill → light fix, escalation trigger agreed (second non-outage date-bleed error would flip it to full-skill).
 
-## ⚠️ FRIDAY JUL 10 — Ship #051 kickoff, FIRST RUN of the new discipline
+## Rollup — persistent artifact, same URL all day
 
-Window = **Jul 3–9** (compute: prior window Jun 26–Jul 2 + 7 days). Before sending: **(1)** assert Jul 3 is a Friday and Jul 9 is a Thursday (`python3 -c "from datetime import date; print(date(2026,7,3).strftime('%A'), date(2026,7,9).strftime('%A'))"`); **(2)** state the window as explicit dates in the memo body AND the fill-in template (roles copy the template — that's how the #050 error propagated); **(3)** verify `mail-send.sh` prints its `pushed ✓` confirmation and the memo files exist on origin/main after. The Friday cron `249b372c` from the old setup is GONE (session-scoped, long dead) — the kickoff rides the normal 08:32 Friday fire, don't wait for a separate trigger. Note for #051 content: the invite-gate (#1344, v0.8.9.2, Jul 3) and the 20→8 beta-blocker burn-down belong to THIS window.
+`https://claude.ai/code/artifact/5360c6b0-8ff3-401b-b881-9a0c800503fa` — redeployed 3× today tracking the arc from stressed morning (3 need-attention, dark roles) to clean evening (0 need-attention, all 10 active). Durable copies in `dev/2026/07/09/exec-attention-board-2026-07-09-{1034,1100,1935}.html`. First real use of the `Artifact` tool + `artifact-design` skill for this recurring deliverable — worth reusing the same pattern (redeploy in place, don't spawn a new URL) for future rollup refreshes rather than the inline widget, per PM's stated preference ("does not scroll away").
 
-## OPEN — PM's board (from 7/8 afternoon rollup, PM engaged with it)
+## OPEN — light, nothing blocking
 
-- **Wake + coverage decision**: HOST (last 7/7) / PPM (7/6) / Web (7/5) still dark at close; Comms + CXO recovered same day after PM's follow-up. Root cause: lean-throttle restores never sent (migration hold superseded) + registry watches only 4/11 roles. PM has the un-pause + expand-coverage decision.
-- **Invite codes**: PM to send (local file); verify Jake's email first.
-- **PM↔CIO conversation**: Ted Nadeau email + ideas list + duty-cycle state. CIO active; PM's timing.
-- **Beta date**: 8 blockers left at Lead's pace; PM says pickable soon.
-- **Migration timing**: CIO template ready; EOM deadline.
+- **PM↔CIO conversation** (Ted Nadeau email, PM's saved-ideas backlog, duty-cycle state) — unclear if it happened today amid the invite/skill-review work. Check at next START; don't assume either way.
+- **CXO/Lead/HOST/CIO** all fired within the last hour of today; **PPM/Web/PA/Comms** quiet since late-morning bursts (8-10.5h), not DAY-CLOSED but not watchdog-flagged either (still outside the 4-role registry). Normal end-of-day pattern, not a return to Tuesday's dormancy — worth a light re-check at tomorrow's START, not urgent.
+- **Migration timing** — CIO's template ready, PM's own call, EOM deadline. No new movement today.
+- **Beta date** — was 8 blockers Wednesday; not re-checked today given the invite/skill-review focus.
 
-## OWED TO EXEC (chase if silent)
+## RESOLVED (reference, still fresh)
 
-- **CIO + HOST**: skill-review responses (candidates-doc read + audit-cadence alignment proposal) — memo sent 7/8 midday; HOST is dark, so expect CIO first.
-- **PPM**: roadmap v18.6 beta-scope fold (asked 7/6) — blocked on PPM waking.
-
-## RESOLVED TODAY (reference)
-
-- T3 worktree straddle — closed by Arch+CIO pair, no PM/harness action needed (straddle had already collapsed; cleanup deferred to natural session-end).
-- Ship #050 window-error root cause — undelivered kickoff (outage casualty) + my mis-derived Jul 5 follow-up; NOT a 6-agent lapse. Fix = repair-readiness (already built) + the Friday discipline above.
-- Skill-candidates review RATIFIED monthly (PM); `docs/internal/operations/skill-candidates-review.md`.
-- `draft-weekly-ship` v1.5: PM gates Comms handoff; evidence tiers (omnibus = baseline not ceiling); metrics as bullets never tables.
+- ADR-073→077 numbering collision, fully resolved + the numbering norm recorded in `decisions.log`.
+- Six-dark-roles finding (Tue-Wed) — root cause was the never-broadcast lean-throttle restore + thin watchdog registry. All 6 self-recovered once PM engaged directly, same day in most cases. Registry-coverage gap itself is still structurally true (4/11 watched) but no longer urgent — PM's direct-engagement pattern is proving to be a reliable backstop even without registry expansion.
+- Ship #050 — published, no follow-up.
+- `f33227b7` — was Docs's own session with cross-mechanism cron residue, not a rogue duplicate. Corrected in my own record after an imprecise first pass; flagged (not fixed) as a minor imprecision in the Janus memo sent before the correction landed.
 
 ## STANDING
 
-- `exec-open-items-tracker.md` = source of truth for longer-running items (last full reconcile 7/6; next touch when queue allows).
-- Rollup: render at next PM-present engagement (afternoon 7/8 board is current baseline; diff forward from it).
+- `exec-open-items-tracker.md` — source of truth for longer-running items, last full reconcile 7/6, due for a refresh touch soon (multiple items above have moved since).
+- Rollup: redeploy the same artifact URL at next PM-present engagement rather than minting a new one, unless the shape of the board changes enough to warrant a fresh design pass.
 
 ---
 
-*— Exec, 7/8 21:02 PT.*
+*— Exec, 7/9 21:02 PT.*

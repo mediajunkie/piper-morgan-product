@@ -155,4 +155,54 @@ PM asked directly why #922 was flagged as held, given M1 was already settled. On
 
 ---
 
+## LOW tier, first pass: 205 of 218 resolved (2026-07-09)
+
+PM reviewed the 218-issue LOW-tier artifact and, seeing M1/M2 as genuine "epic sprints," approved the two single-guess mega-groups in bulk minus specific exceptions, plus resolved several smaller groups by pattern or explicit number. All applied and verified live:
+
+- **M2 - Conscious Floor + Action Handlers**: bulk-confirmed, 90 issues (the 93-issue single-M2-guess group minus 3 pulled to Q)
+- **M1 - MVP Foundation**: bulk-confirmed, all 43 (no exceptions in this group)
+- **Q - Recurring Audits (44 total)**: the entire 38-issue "FLY-AUDIT"-titled group (weekly docs audits, 2025-10-06 through 2026-06-29 — a clean weekly cadence confirming these are genuinely recurring work regardless of which calendar bucket their close date fell into), plus #978, #1025, #1077 (pulled from the M2-only group), plus #1178, #1182, #1205 (ROLE-HEALTH-CHECK / DOCS-LINKROT / DOCS-TEMPLATE-CURRENCY — audit-flavored content without the FLY-AUDIT title prefix)
+- **FLYWHEEL - Process improvement (4)**: #967 (backlog-review tracking), #1106 (mailbox-MANIFEST sync tooling), #1128 (roadmap staleness), #1292 (mailbox-discipline doc reconciliation) — all pulled from M3-only or RECONNECT-only guesses despite being process/tooling work, not product feature work
+- **SKUNK - Skunkworks projects (2)**: #1157, #1294 — both "BYOC-" prefixed (checked the pool for other BYOC-titled issues; these were the only two, so no broader pattern rule needed)
+- **D1 - Beta design quality (8)**: the whole D1/RECONNECT-overlap group — #1048, #1218, #1223, #1228, #1237, #1238, #1239, #1297
+- **M0 - Conversational Glue (4)**: bulk-confirmed, all of #629, #719, #853, #871
+- **A8 (Alpha Rolloutj (4)**: bulk-confirmed, all of #268, #269, #271, #278
+- **RECONNECT - Connector Refactor (3, explicit picks from multi-candidate groups)**: #1153, #1331, #1333
+- **T1 (Test Repair)**: #274 (from an A8/T1 2-candidate group)
+- **A7 (Testing & Bufferj)**: #256 (the entire 1-issue A7-only group)
+- **C1 (Craft Pride - CRAFT)**: #212 (from an A1/A6/C1 3-candidate group)
+
+**Process note**: the first mutation pass was launched as a background command; the harness reported completion but 18 of the 205 mutations hadn't actually landed when checked directly against the live board (0 mismatches — nothing wrong was written, some simply hadn't been written yet). Caught via a full re-verification pass rather than trusting the background task's own completion signal; re-applied the missing 18 directly (foreground) and re-verified clean. Lesson: for large batches, verify the live board state directly rather than trusting a process's own success signal, background or not.
+
+## Held and flagged, not applied (2026-07-09)
+
+- **#512** — PM: "Neither looks right" (candidates were M5 - Distribution + Polish and S2 - Security Polish). Held, no automated candidate offered as a replacement; needs PM's own read.
+- **#1058** (Template hygiene review: agent-prompt-template.md + gameplan-template.md) — the one member of the 8-issue M3-only group PM didn't address (the other 7 were pulled to FLYWHEEL or Q). Same flavor as the confirmed FLYWHEEL pulls (methodology-template maintenance, not an M3 product feature) — flagged as a likely FLYWHEEL candidate, not applied without confirmation.
+- **11 remaining RECONNECT-only-guess issues** — PM pulled 2 out of this 13-issue group (#1292→FLYWHEEL, #1294→SKUNK) and separately confirmed 3 different issues as RECONNECT from other groups, but didn't confirm the rest of this group as-is the way M0/A8 were confirmed. Of the 11: 5 literally contain "RECONNECT" in the title (#1226, #1227, #1229, #1310, #1311) matching the established title-pattern precedent from the medium tier; the other 6 (#1289, #1293, #1309, #1318, #1338, #1342) don't read as connector-refactor work at all by title. Not applied; surfaced for PM's call.
+- A few of PM's typed issue numbers in the FLY-AUDIT enumeration didn't match anything in the pool (#292, #570, #1171) — each has a plausible single-digit-adjacent real FLY-AUDIT issue in the pool (#296, #580, #1177 respectively). Didn't block anything since "the whole FLY-AUDIT group" was resolved structurally (searched the pool by title), not by the literal enumeration, but noting in case it signals PM was working from a different source than this artifact.
+
+---
+
+## LOW tier COMPLETE — final 13 resolved by PM (2026-07-10 evening)
+
+PM reviewed the refreshed 13-issue artifact and resolved everything. Applied and verified live; **the LOW tier's full 218 are now 218/218 resolved**, which also completes the original 744-issue "evidence existed, never applied" backlog:
+
+- **RECONNECT - Connector Refactor (10)**: #1226, #1227, #1229, #1289, #1293, #1309, #1310, #1311, #1338, #1342 — PM confirmed the whole 11-issue holdout group as RECONNECT except one. Notable: six of these don't *read* as connector work by title (standup-workflow retirement, floor quality, test hygiene, Redis fix, Droplet setup) — my per-row reads guessed other sprints, and PM's memory overrode: they were worked/closed as part of the RECONNECT sprint regardless of title flavor. Reinforces the established lesson that sprint membership is "when/where the work happened," not "what the title sounds like."
+- **SKUNK - Skunkworks projects**: #1318 (mail-send.sh residue)
+- **Q - Recurring Audits**: #1058 (template hygiene review — PM says Q, not the FLYWHEEL I'd guessed; consistent with #982/#1025-style audit-flavored maintenance living in Q)
+- **A12 - Alpha Setup**: #512 (TECH-DEBT: pre-existing test failures — neither offered candidate (M5/S2) was right; PM's memory placed it in A12)
+
+## FLAGGED, evidence gathered, awaiting PM go-ahead: the S2 (Security Polish) block is probably all A12 (2026-07-10)
+
+PM, while resolving #512: *"everything from that period, including everything marked S2 right now (or nearly everything, every one I looked at is **also** A12, which makes me wonder what was actually closed in the S2 sprint!"* PM suggested a log check from that period. Done — findings:
+
+1. **All 19 issues currently marked S2 came from one method**: CLOSEDAT_NARROW_HIGH — pure close-date-in-window assignment (window 2025-12-09 → 12-28). The window is 19 days, which never deserved "narrow" trust. No document, log, or PM decision ever put any of them in S2.
+2. **Their content is the A12 initiative**: 13 of the 19 are the ALPHA-CANONICAL / Canonical-Query series (#499-#516) — the same initiative as #518-#525 ("Canonical Queries Phase A/B"), which PM explicitly assigned to A12 in the Group-2 round. The rest are alpha setup-wizard bugs (#485, #487, #493, #498) and test debt (#513, #514) closed Dec 21-25.
+3. **The smoking gun**: `dev/2025/12/28/github-reorganization-step8.md` — a Dec-28 reorganization plan that formally moved S2's actual committed contents (#358 SEC-ENCRYPT-ATREST, #322 ARCH-FIX-SINGLETON, #484 ARCH-SCHEMA-VALID) **out of S2 into "A13 - Alpha Setup"** — which is today's "A12 - Alpha Setup" (confirmed: #322, #484, #449, #486 all sit in A12 on the live board today; #358 later moved on to Beta Blockers). Session logs from Dec 9-11 show S2's only real activity was *preparatory* (encryption review package for Ted Nadeau, S2 gameplan docs).
+4. **Conclusion**: S2 was a planned sprint that dissolved before executing — prep happened, then the Dec-28 reorg poured its contents into Alpha Setup. Essentially nothing was "closed in S2." The 19 current S2 values are a systematic artifact of the closedAt method trusting a window for a sprint that never really ran.
+
+**Recommendation (pending PM confirmation, since this overwrites 19 existing values rather than filling blanks)**: bulk-move all 19 S2-marked issues → A12, and mark S2 in the recovery calendar as "planned, dissolved into A12 via the 2025-12-28 reorg — do not use for closedAt matching." Also noteworthy for the record: the sprint now named A12 was called **A13** in the Dec-28 reorg doc — a renumbering happened somewhere, consistent with PM's "we had six [MVP sprints], then five" recollection that numbering shifted mid-flight.
+
+---
+
 *Log started 2026-07-06 during the Group 1 + Group 2 reconciliation pass. Append further decisions here as remaining groups are reviewed — do not start a new file.*

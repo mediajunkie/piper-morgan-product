@@ -1,0 +1,13 @@
+# build-context hygiene (#1278): none of these are runtime surfaces.
+# docs/ + knowledge/ + config/ + templates/ + web/static stay IN — runtime reads.
+.git
+.github
+.claude
+dev/
+mailboxes/
+tests/
+venv/
+node_modules/
+*.log
+.dockerignore
+deploy/fly/

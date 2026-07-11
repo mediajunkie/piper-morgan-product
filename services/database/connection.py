@@ -64,6 +64,16 @@ class DatabaseConnection:
         - POSTGRES_SSL_CERT: Path to client certificate (optional)
         - POSTGRES_SSL_KEY: Path to client key (optional)
         """
+        # #1278: honor an explicit DATABASE_URL first (Fly-attach/12-factor),
+        # normalized for asyncpg — the global engine served localhost defaults
+        # on Fly while session_factory (fixed first) worked, splitting the app
+        # into half-connected. ONE convention, both engines.
+        explicit = os.getenv("DATABASE_URL")
+        if explicit:
+            from services.database.session_factory import _normalize_pg_url
+
+            return _normalize_pg_url(explicit, driver="async")
+
         user = os.getenv("POSTGRES_USER", "piper")
         password = os.getenv("POSTGRES_PASSWORD", "dev_changeme_in_production")
         host = os.getenv("POSTGRES_HOST", "localhost")

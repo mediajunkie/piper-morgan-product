@@ -23,6 +23,7 @@ Security: this layer logs no values — never the master key, the plaintext, or 
 from __future__ import annotations
 
 import logging
+import os
 from typing import Optional
 
 from sqlalchemy import Text
@@ -40,6 +41,33 @@ MARKER = "PMENC1:"
 _UNSET = object()
 
 _warned_no_key = False
+
+
+def _no_key_fallback_or_raise(type_name: str, backfill_note: str) -> None:
+    """#1387: the plaintext-write fallback is DEV-ONLY, now enforced.
+
+    In production (``PIPER_ENVIRONMENT``/``ENVIRONMENT`` == "production"), an
+    unset ``ENCRYPTION_MASTER_KEY`` must be FATAL on the write path — never a
+    warn-and-plaintext. Arch's #1278 boundary-check: a host cutover is the
+    highest-risk window for a missing secret, and the silent fallback would
+    write tester PII as plaintext behind one unwatched log line. Mirrors the
+    #1382 credential store's fail-closed constructor. Dev/test keep the
+    fallback (with the one-time warning) so keyless local runs still work.
+    """
+    env = (os.getenv("PIPER_ENVIRONMENT") or os.getenv("ENVIRONMENT") or "").lower()
+    if env == "production":
+        raise RuntimeError(
+            f"{type_name}: ENCRYPTION_MASTER_KEY is unset in a production "
+            "environment — refusing to write plaintext into an encrypted "
+            "column (#1387). Set the secret and restart."
+        )
+    global _warned_no_key
+    if not _warned_no_key:
+        logger.warning(
+            f"ENCRYPTION_MASTER_KEY unset — {type_name} storing plaintext "
+            f"(dev-only fallback, FATAL in production per #1387; {backfill_note})"
+        )
+        _warned_no_key = True
 
 
 class EncryptedString(TypeDecorator):
@@ -74,13 +102,9 @@ class EncryptedString(TypeDecorator):
             return None
         svc = self._service
         if svc is None:
-            global _warned_no_key
-            if not _warned_no_key:
-                logger.warning(
-                    "ENCRYPTION_MASTER_KEY unset — EncryptedString storing plaintext "
-                    "(non-prod fallback; the #358-B backfill refuses to run without the key)"
-                )
-                _warned_no_key = True
+            _no_key_fallback_or_raise(
+                "EncryptedString", "the #358-B backfill refuses to run without the key"
+            )
             return value
         return MARKER + svc.encrypt(value, self._context)
 
@@ -190,13 +214,9 @@ class EncryptedJSON(TypeDecorator):
             return None
         svc = self._service
         if svc is None:
-            global _warned_no_key
-            if not _warned_no_key:
-                logger.warning(
-                    "ENCRYPTION_MASTER_KEY unset — EncryptedJSON storing plaintext "
-                    "(non-prod fallback; the #1305 backfill refuses to run without the key)"
-                )
-                _warned_no_key = True
+            _no_key_fallback_or_raise(
+                "EncryptedJSON", "the #1305 backfill refuses to run without the key"
+            )
             return value
 
         if self._whitelist and isinstance(value, dict):

@@ -21,28 +21,51 @@ from services.intent_service.context_cache import ContextCache
 logger = structlog.get_logger()
 
 
-def _current_time_in_configured_tz() -> str:
-    """Current time in the user's configured timezone, e.g. '12:54 PM PDT'.
+async def _current_time_for_user(user_id=None) -> str:
+    """Current time in the USER's timezone, e.g. '12:54 PM PDT' — or "" (omit).
 
-    #1150: a bare ``datetime.now()`` is the SERVER process's local time, and
-    unlabeled. On a non-local-tz instance (a UTC container, or a dedicated
-    skunkworks instance) that fed the wrong time-of-day to the conversational
-    floor — the floor reasoned "late evening" at 11:30 AM local. Converting to
-    the configured timezone (and labeling it via %Z, which is DST-aware) makes
-    the floor's sense of time correct regardless of where the server runs.
+    #1150 made this configured-tz-aware via the single PM config file; #1381
+    found the hosted consequence: on the multi-user droplet that file (or its
+    naive-``datetime.now()`` fallback — a UTC container clock) fed every user
+    the WRONG local time, and Piper confidently narrated "4:30 AM — you're
+    either an early riser or deep in a late night" at 9:32 PM Pacific.
 
-    Fail-safe: any config / zoneinfo error falls back to the previous naive
-    behavior rather than breaking context assembly (this module never throws).
+    Precedence: the user's own timezone from their personalization context
+    (ADR-075 D1 carries one) → the file config (the single-tenant/local path,
+    unchanged) → EMPTY STRING. The empty string is the #1381 fix's core rule:
+    when we don't know the user's timezone we OMIT the time-of-day flourish
+    (the floor's renderer skips absent keys) rather than guess from the server
+    clock — a wrong confident time is worse than none.
     """
+    tz_name = None
+    if user_id:
+        try:
+            from services.configuration.personalization_repository import (
+                PersonalizationContextRepository,
+            )
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope() as session:
+                row = await PersonalizationContextRepository(session).get(user_id)
+            if row is not None and isinstance(row.context, dict):
+                tz_name = row.context.get("timezone") or None
+        except Exception:
+            tz_name = None  # graceful: fall through to the file config
+    if not tz_name:
+        try:
+            from services.configuration.piper_config_loader import piper_config_loader
+
+            tz_name = piper_config_loader.load_standup_config()["timing"]["timezone"]
+        except Exception:
+            tz_name = None
+    if not tz_name:
+        return ""
     try:
         from zoneinfo import ZoneInfo
 
-        from services.configuration.piper_config_loader import piper_config_loader
-
-        tz_name = piper_config_loader.load_standup_config()["timing"]["timezone"]
         return datetime.now(ZoneInfo(tz_name)).strftime("%I:%M %p %Z")
     except Exception:
-        return datetime.now().strftime("%I:%M %p")
+        return ""
 
 
 # #984: TTL defaults per data type (PM-approved 2026-05-12).
@@ -243,9 +266,12 @@ class ContextAssembler:
         # Issue #1030 R4: reset per-call provenance map at gather_context entry
         self._last_provenance = {}
 
-        # Current time is always useful. #1150: timezone-aware (configured tz)
-        # so the floor's sense of time-of-day is correct on any-tz server.
-        context["current_time"] = _current_time_in_configured_tz()
+        # Current time — in the USER's timezone (#1381) or omitted entirely;
+        # the floor's renderer skips the line when the key is absent. Never
+        # the server clock in user clothing.
+        _ct = await _current_time_for_user(user_id)
+        if _ct:
+            context["current_time"] = _ct
         # current_time has no provenance (always-available system value); we
         # deliberately don't attribute it — it's not a "fact about the user"
         # subject to "why did you cite that?"
