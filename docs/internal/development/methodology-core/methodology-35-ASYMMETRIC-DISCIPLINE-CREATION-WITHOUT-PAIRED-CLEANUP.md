@@ -86,9 +86,14 @@ If Asymmetric Discipline is applied as a watch lens, the following downstream si
 
 ## Notes on this entry's authority + scope
 
-Filed by CIO under self-approval per `methodology-audit-policy-updates-2026-03-16.md`. Status: **Emerging** — one well-evidenced instance (worktree-proliferation) + several candidate-additional instances on watch.
+Filed by CIO under self-approval per `methodology-audit-policy-updates-2026-03-16.md`. Status: **Proven** (promoted 2026-07-10, criterion met — see below). Originally filed **Emerging** — one well-evidenced instance (worktree-proliferation) + several candidate-additional instances on watch.
 
-**Promotion-to-Proven criterion**: ≥2 more independent instances of Asymmetric Discipline surfacing in cohort operation, each paired with a cleanup-half addition that resolves the pain. The retroactive-cleanup pattern (Inbox Gate, cleanup-dev-active, consolidate-memory) suggests the framing already operates implicitly; codification deepens it.
+**Promotion-to-Proven criterion**: ≥2 more independent instances of Asymmetric Discipline surfacing in cohort operation, each paired with a cleanup-half addition that resolves the pain. **Met 2026-07-10** by two independent cron-lifecycle instances, diagnosed the same day with PM:
+
+1. **`duty-cycle-tick`'s STOP re-arm** — the STOP procedure said "re-CronCreate same expr as the final action" without ever specifying a check-and-delete of the existing job first; any agent following it literally while idle at STOP (the normal case) produced a duplicate. Cleanup-half added: `duty-cycle-tick/SKILL.md` fixed at all 4 places using the ambiguous phrasing to require `CronList` → `CronDelete` existing → `CronCreate` → verify-exactly-one; **tested live** against a real session's cron (`772e045e` → `8094d7db`), not simulated.
+2. **Docs's `f33227b7`** — migrating from an ephemeral cron to a `scheduled-tasks` entry (to satisfy a PM schedule-change request) created the new job but never deleted the old mechanism's. Cleanup-half added: `docs/operations/duty-cycle design/procedures/cron-lifecycle.md` § "Cron-mechanism migration — the orphaned-predecessor gap" — the explicit self-delete-as-part-of-the-same-migration discipline, plus a detection-and-nudge backstop (`list_sessions` + `send_message`) for when the discipline is missed and the visibility window has already closed.
+
+The retroactive-cleanup pattern (Inbox Gate, cleanup-dev-active, consolidate-memory) suggested the framing already operated implicitly before this promotion; these two instances are the first *cron-lifecycle* confirmations, and the first where the cleanup-half was both written down and verified rather than just proposed.
 
 Slot 35 per pre-filing slot-availability check (methodology-28); filed in the May 24 methodology batch.
 
