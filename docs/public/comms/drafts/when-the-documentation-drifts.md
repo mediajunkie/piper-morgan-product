@@ -20,7 +20,7 @@ How does this happen? We propose a skill, someone writes a memo describing what 
 
 Sometime later, the engineer writing the code reads the memo, decides on an implementation strategy, and produces something intended to fit. The first pass usually adheres closely to the memo. The second pass, perhaps coming three weeks later, after a bug report, after a refactor for performance, after a related skill changes its expectations, might not.
 
-The planning and the doing have no dynamic connection. Over months, they diverge. The divergence is silent because nobody reads the docs and the code side-by-side as a hobby. (Only a ruthless habit of scrubbing for stale information with every tracked decision even gets you close).
+The planning and the doing have no dynamic connection. Over months, they diverge. The divergence is silent because nobody reads the docs and the code side-by-side as a hobby. (Only a ruthless habit of scrubbing for stale information with every tracked decision even gets you close to keeping things aligned.)
 
 Each source is consulted when its own purpose is in play. The docs get read when somebody's planning. The code gets run when somebody's working.
 
@@ -48,7 +48,7 @@ So the cost is asymmetric in time (paid much later than incurred) and asymmetric
 
 # What the Piper Morgan pattern catalog does
 
-Once we (when I say "we" I usually mean myself and this team of agent roles, in conversation) noticed this happening repeatedly, we named it. Pattern-073: Documentation-Asserted Behavior Drift. Naming something is a good place to start, but identifying a pattern alone doesn't prevent it from recurring. What naming does is help make it recognizable, any accumulated wisdom about it findable. 
+Once we (when I say "we" I usually mean myself and this team of agent roles, in conversation) noticed this happening repeatedly, we named it. Pattern-073: Documentation-Asserted Behavior Drift. Naming something is a good place to start, but identifying a pattern alone doesn't prevent it from recurring. What naming does is help make the pattern recognizable, and helps make any accumulated wisdom about it findable.
 
 When a drift incident lands, the recovery process now has a slot to file the incident into. The slot accumulates instances. The instances become a dataset. The dataset becomes input to discipline — *we know this happens — how often, where, what kinds of code, what kinds of docs, what's the average cost to recover?*
 
@@ -58,7 +58,7 @@ The recovery took a while but not as long as it had the first time we ran into t
 
 The drift itself still happens. It doesn't seem possible to prevent it on every level, at least not at scale. Cataloguing helpful and harmful patterns helps hold down the recovery cost and accumulate the data that will eventually (I hope!) inform prevention.
 
-# What this changes about how your docs
+# What this changes about your docs
 
 This is mostly about how you treat documentation when stakes are high.
 
