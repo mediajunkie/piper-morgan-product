@@ -205,4 +205,16 @@ PM, while resolving #512: *"everything from that period, including everything ma
 
 ---
 
+## Bug found and fixed: #234 was logged "Already applied" but never actually was (2026-07-12)
+
+During a duty-cycle fire, a fresh live-board pull (done specifically to build the Group 3 artifact) turned up #234 as still empty on the Sprint field, despite this log's earlier entry ("2026-07-06 afternoon" section) stating "C1 confirmed... Already applied." Root cause: the mutation was narrated/logged as done but the actual `updateProjectV2ItemFieldValue` call was never made in that turn — a genuine instance of the "no confabulating expected steps as completed" failure mode, self-caught this time only because this fire happened to re-verify against live state rather than trust the log. **Fixed**: applied C1 to #234, verified live. No other issue from that batch showed the same gap on spot-check, but this is a reminder that "logged as applied" is not itself evidence — the live board is.
+
+## Group 3 (true zero-evidence) finalized at 19 — reconciled against a fresh live pull (2026-07-12)
+
+Built the actual Group 3 artifact by re-pulling live (milestone MVP/Alpha/Production, closed, empty Sprint, closedAt before the 2026-07-05 wipe — the pre-wipe cutoff excludes normal new unassigned work from contaminating the wipe-damage set). Fresh pull found 31 candidates, reconciled down to 19 true zero-evidence by excluding: #234 (the bug above — has a decision, just wasn't applied), #998 (deliberately, correctly sprint-less per PM's own closing comment), and 10 issues PM claimed for personal review on 2026-07-06 and never followed up on (#99, #165, #220, #226, #230, #252, #253, #263, #267, #1145 — the "9 October issues" plus #1145; **note the correction: this is 10 issues, not 9 as originally counted** — #1145 was always separate from the October-9 but both groups share the same "PM reviewing personally, no automated resolution" status). 31 − 1 − 1 − 10 = 19, matching the original estimate from before the October/1145/234/998 threads existed — the reconciliation confirms the original count was right, just composed of different specific issues than assumed at the time (this session's extended work absorbed 234 and 998 out of the zero-evidence pool via other means, keeping the total stable).
+
+Artifact published for PM review; full list and closedAt clustering noted there.
+
+---
+
 *Log started 2026-07-06 during the Group 1 + Group 2 reconciliation pass. Append further decisions here as remaining groups are reviewed — do not start a new file.*
