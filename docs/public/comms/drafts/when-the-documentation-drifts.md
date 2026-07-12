@@ -82,7 +82,7 @@ The architecture that acknowledges this can be anti-fragile. Code-as-source-of-t
 
 Wherever the project has information objects that need to stay in sync, they should be coupled mechanically, not relationally. That is, they should automatically derive one from the other, not assert a connection and hope they stay in touch.
 
-Where mechanical coupling isn't feasible, your best bet is to *verify before depending* on anything. The documentation is not a contract. It's a wish. If it was ever true there's no way to know if it has drifted till you check. It's just the geometry of the situation connecting these two objects, and you're inside it whether you want to be or not.
+Where mechanical coupling isn't feasible, your best bet is to *verify before depending* on anything. The documentation is a wish, not a contract. If it was ever true there's no way to know if it has drifted till you check. It's just the geometry of the situation connecting these two objects, and you're inside it whether you want to be or not.
 
 ---
 
