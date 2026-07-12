@@ -2,7 +2,7 @@
 
 **Purpose**: persistent (across-days) Comms-side task list — items that aren't tied to a specific blog post or pubDate but need surfacing/advancing as cycle fires advance. Lives across days; not a per-day artifact. (Per-day work goes in the dated session log under `dev/2026/MM/DD/`.)
 
-**Last refreshed**: 2026-07-11 (Beats 11+12 published; 4 new drafts from Jul 9 added; Jul 11 post in PM's hands)
+**Last refreshed**: 2026-07-11 evening (Jul 11 post published; Ship #051 sent; Jul 12 post preliminary-reviewed ahead of schedule)
 
 ---
 
@@ -25,8 +25,9 @@
 | **BYOC marketplace narrative** (distribution/positioning story — distinct from the item above) | Last known: surfaced to PM 6/17, awaiting direction on angles. Genuinely still unverified — checked mail/logs 2026-07-04, found no direction memo for *this* ask (only found the onboarding one, which is separate). Now ≥17 days stale. | PM (direction) | PA memo: `comms/read/memo-pa-to-leadership-cc-pm-byoc-poc-learnings-current-state-2026-06-17.md` |
 | Cross-pollination relay of Ted Nadeau memo to Klatch (Janus) | ✅ CONFIRMED DONE 2026-07-04 — verified in `docs/briefs/cross-pollination/2026-06-01.md`: full memo content relayed with routing questions for both Janus (role-architecture split) and Klatch/Daedalus (Englishia cell model). Was correctly marked "not re-reported, already covered" in the 6/2 brief. | CLOSED | |
 | **~20 historical `published` calendar rows have stale `draftPath`s** (found 2026-07-04 extending the orphan-sweep to published posts) | Low-priority cosmetic debt, not a live risk — every case traced cleanly to either a normal post-publish move to `drafts/published/` (calendar column just never updated) or a rename/move into an undocumented `drafts/superseded/` subfolder. Nothing is actually lost; all content is genuinely published and live. | Whoever picks up a dedicated calendar-hygiene pass | Not urgent — noted so it isn't silently dropped, not because anything's at risk. |
-| **"When the Documentation Drifts"** (Jul 11 insight) | Preliminary Comms review done 2026-07-11: resolved 2 open fact-check brackets, fixed 1 cliché, and caught a real categorization error — the draft attributed its opening story to "Pattern-073 instance #14," but CIO's own ruling says that story is a separate finding, not Pattern-073 (instance #14 is actually the narrower manifest-staleness angle). Softened rather than asserted the wrong attribution; PM confirmed the softened version reads better for a general audience too. **PM is editing now.** | PM (editing) → Docs | Draft: `when-the-documentation-drifts.md`. |
-| **Ship #051 workstream review** | Exec's kickoff memo (Jul 10) — window Jul3-9, §0-leads format, due **Mon Jul 13 EOD**. Not yet started. | Comms (write §0-6) | File to `mailboxes/exec/inbox/workstream-051-comms-2026-07-DD.md`, cc PM+PA. |
+| **"When the Documentation Drifts"** | ✅ PUBLISHED 2026-07-11 (pipermorgan.ai/blog/when-the-documentation-drifts/) — 3 editorial rounds: the Pattern-073 categorization catch, then 2 rounds of typo/garbled-sentence fixes after PM's voice-pass (PM's edits came from an un-synced copy twice, requiring careful re-merging each time). | CLOSED | |
+| **Ship #051 workstream review** | ✅ SENT 2026-07-11, same-day as kickoff — genuinely unblocked work advanced during a PM-editing gap rather than parked. Window Jul3-9, full §0-6. | Exec (synthesize, due Jul 13) | |
+| **"The Server Crashed Mid-Draft"** (Jul 12 insight) | Preliminary Comms review done 2026-07-11, ahead of schedule: resolved the open fact-check bracket (confirmed genuine, via git log, that the incident was real reconstruction not a recovered branch), caught an unsupported specific-number claim ("ninety minutes" traced to an unrelated story in the same source log — softened), fixed 1 cliché. Status flipped queued→drafted. | PM (voice-pass) | Draft: `the-server-crashed-mid-draft.md`. |
 
 ## Cross-cutting PM topics (verify still alive at next surface; ≥30 days stale flagged)
 
