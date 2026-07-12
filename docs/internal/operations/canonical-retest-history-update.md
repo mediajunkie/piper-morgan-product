@@ -51,6 +51,7 @@ As of Run 12 (2026-06-04): **12 env-errors is normal** — these are Slack/Produ
 | Run 9 | 2026-05-13 | 93.7% | 71.0% | M2g baseline |
 | Run 10 | 2026-05-28 | 93.7% | 82.0% | **M2 gate MET** |
 | Run 11 | 2026-06-03 | 93.4% | 80.3% | Phantom=6 |
-| Run 12 | 2026-06-04 | 93.4% | 85.2% | **Current baseline** |
+| Run 12 | 2026-06-04 | 93.4% | 85.2% | Prior baseline |
+| Run 15 | 2026-07-12 | 88.5%* | 92.0% | **#1386 criterion-2 run** (judge on; 61 routing / 25 judged). *Routing: all 7 misses triaged = 6 corpus-expectation drift (`expected floor, got action/canonical` — the #1220/#1383/Slack/canonicalization handlers now catch what floored when the corpus was written) + Q51 (drift + harness non-UUID user id crashing a UUID-typed owner query; unreachable in prod). **No product routing regression; corpus rev required (ADR-077 D5, Arch ratification) before the routing % is face-readable.** Quality 92% = above the 80–86% normal band. Runs 15/15b identical totals (stable). |
 
 Routing has been stable at 93.4–93.7% since M1 (Apr 11). Quality trend: 66.7% → 85.2% across M2 work. **Normal quality range: 80–86%.** A single run outside that range is judge variance; two consecutive runs outside it is a signal.
