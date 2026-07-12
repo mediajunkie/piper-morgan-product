@@ -217,4 +217,20 @@ Artifact published for PM review; full list and closedAt clustering noted there.
 
 ---
 
+## S2->A12 bulk-move EXECUTED, PM go-ahead received (2026-07-12)
+
+PM: "please go ahead with that move." Re-verified all 19 issues were still S2 immediately before mutating (they were), applied A12 to all 19, re-verified all 19 live afterward (clean, 0 mismatches, matching the discipline established by the #234 catch earlier this same day): #485, #487, #493, #498, #499, #500, #501, #504, #505, #506, #507, #508, #509, #510, #511, #513, #514, #515, #516.
+
+This closes the S2 finding from 2026-07-10: S2 (Security Polish) is now empty of issues on the live board — consistent with the forensic conclusion that it was a planned sprint that dissolved into Alpha Setup (today's A12, called "A13" at the time) via the 2025-12-28 reorg before it ever actually ran. The calendar should be updated to reflect S2 as "dissolved, do not use for closedAt matching" going forward (noted 2026-07-10, still applies).
+
+## Sprint-recovery effort: full status as of 2026-07-12
+
+- HIGH tier (433+): ✅ complete 2026-07-06
+- MEDIUM tier (93): ✅ complete 2026-07-06
+- LOW tier (218): ✅ complete 2026-07-10
+- S2->A12 bulk-move (19): ✅ complete 2026-07-12
+- Group 3 (19 true zero-evidence): artifact built and published 2026-07-12, awaiting PM's review — this is the last open piece, and it's explicitly possible some or all of these 19 are not recoverable
+
+---
+
 *Log started 2026-07-06 during the Group 1 + Group 2 reconciliation pass. Append further decisions here as remaining groups are reviewed — do not start a new file.*

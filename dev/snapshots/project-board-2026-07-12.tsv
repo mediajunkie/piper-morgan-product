@@ -377,26 +377,26 @@ issue	state	milestone	sprint	title
 471	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	EPIC: Infrastructure - OAuth, Learning, TimeSeries, Conversation
 475	CLOSED	MVP	A11 - Alpha Polish	Hamburger menu never appears on mobile viewport
 479	CLOSED	MVP	A11 - Alpha Polish	CRUD failures: get_todo_repository returns wrong repository type
-485	CLOSED	MVP	S2 (Security Polish)	BUG-ALPHA-KEY-ERROR: Setup wizard API key validation fails with FK violation on fresh install
+485	CLOSED	MVP	A12 - Alpha Setup	BUG-ALPHA-KEY-ERROR: Setup wizard API key validation fails with FK violation on fresh install
 486	CLOSED	MVP	A12 - Alpha Setup	BUG: test_intent_enricher_high_confidence fails - UploadedFile model schema mismatch
-487	CLOSED	MVP	S2 (Security Polish)	BUG-ALPHA-INTENT: Intent classification failures for capability discovery and project setup
-498	CLOSED	MVP	S2 (Security Polish)	ALPHA: Project setup returns generic guidance instead of configuration workflow
-499	CLOSED	MVP	S2 (Security Polish)	ALPHA-CANONICAL: Query #8 - Agenda aggregates calendar + todos + priorities
-500	CLOSED	MVP	S2 (Security Polish)	ALPHA-CANONICAL: Query #14 - Project-specific status ("What's the status of X?")
-501	CLOSED	MVP	S2 (Security Polish)	ALPHA-CANONICAL: Query #7 - Historical retrospective ("What did we accomplish yesterday?")
+487	CLOSED	MVP	A12 - Alpha Setup	BUG-ALPHA-INTENT: Intent classification failures for capability discovery and project setup
+498	CLOSED	MVP	A12 - Alpha Setup	ALPHA: Project setup returns generic guidance instead of configuration workflow
+499	CLOSED	MVP	A12 - Alpha Setup	ALPHA-CANONICAL: Query #8 - Agenda aggregates calendar + todos + priorities
+500	CLOSED	MVP	A12 - Alpha Setup	ALPHA-CANONICAL: Query #14 - Project-specific status ("What's the status of X?")
+501	CLOSED	MVP	A12 - Alpha Setup	ALPHA-CANONICAL: Query #7 - Historical retrospective ("What did we accomplish yesterday?")
 503	CLOSED	MVP	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2025-12-22
-504	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#9: Last activity temporal query - 'When did we last work on this?'
-505	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#10: Project duration query - 'How long have we been working on this?'
-506	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#3: Health check query - 'Are you working properly?'
-507	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#4: Help/onboarding query - 'How do I get help?'
-508	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#5: Differentiation query - 'What makes you different?'
-509	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#11: Project list with metadata - 'What projects are we working on?'
-510	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#12: Project portfolio health - 'Show me the project landscape'
-511	CLOSED	MVP	S2 (Security Polish)	CANONICAL-#13: Priority recommendation - 'Which project should I focus on?'
+504	CLOSED	MVP	A12 - Alpha Setup	CANONICAL-#9: Last activity temporal query - 'When did we last work on this?'
+505	CLOSED	MVP	A12 - Alpha Setup	CANONICAL-#10: Project duration query - 'How long have we been working on this?'
+506	CLOSED	MVP	A12 - Alpha Setup	CANONICAL-#3: Health check query - 'Are you working properly?'
+507	CLOSED	MVP	A12 - Alpha Setup	CANONICAL-#4: Help/onboarding query - 'How do I get help?'
+508	CLOSED	MVP	A12 - Alpha Setup	CANONICAL-#5: Differentiation query - 'What makes you different?'
+509	CLOSED	MVP	A12 - Alpha Setup	CANONICAL-#11: Project list with metadata - 'What projects are we working on?'
+510	CLOSED	MVP	A12 - Alpha Setup	CANONICAL-#12: Project portfolio health - 'Show me the project landscape'
+511	CLOSED	MVP	A12 - Alpha Setup	CANONICAL-#13: Priority recommendation - 'Which project should I focus on?'
 512	CLOSED	MVP	A12 - Alpha Setup	TECH-DEBT: Fix pre-existing test failures (test_intent_enricher, test_llm_intent_classifier)
-514	CLOSED	MVP	S2 (Security Polish)	Pre-existing test failure: test_empty_message_handling expects exception not raised
-515	CLOSED	MVP	S2 (Security Polish)	Canonical Query #17: Wire Document Analysis intent to NotionMCPAdapter
-516	CLOSED	MVP	S2 (Security Polish)	Canonical Query #20: Wire Document Search intent to NotionMCPAdapter
+514	CLOSED	MVP	A12 - Alpha Setup	Pre-existing test failure: test_empty_message_handling expects exception not raised
+515	CLOSED	MVP	A12 - Alpha Setup	Canonical Query #17: Wire Document Analysis intent to NotionMCPAdapter
+516	CLOSED	MVP	A12 - Alpha Setup	Canonical Query #20: Wire Document Search intent to NotionMCPAdapter
 517	CLOSED	MVP	A12 - Alpha Setup	Update multi-agent coordination protocols
 518	CLOSED	MVP	A12 - Alpha Setup	Canonical Queries Phase A: Quick Wins (8 queries)
 519	CLOSED	MVP	A12 - Alpha Setup	Canonical Queries Phase B-1: GitHub Issue Operations (#60, #45, #59)
@@ -411,8 +411,8 @@ issue	state	milestone	sprint	title
 529	CLOSED	MVP	A12 - Alpha Setup	ALPHA-SETUP-CALENDAR: Add Google Calendar to setup wizard
 531	CLOSED	MVP	X1 - MUX Core Tech	MUX-GATE-1: Foundation Phase Complete
 534	CLOSED	MVP	I1 - MUX Interaction	MUX-GATE-4: Interaction Design Complete
-493	CLOSED	MVP	S2 (Security Polish)	FTUX-QUICK-1: Dynamic capability list from PluginRegistry
-513	CLOSED	MVP	S2 (Security Polish)	Implement Query #19: Simplified status report generator
+493	CLOSED	MVP	A12 - Alpha Setup	FTUX-QUICK-1: Dynamic capability list from PluginRegistry
+513	CLOSED	MVP	A12 - Alpha Setup	Implement Query #19: Simplified status report generator
 525	CLOSED	MVP	A12 - Alpha Setup	Retro: Issue #518 Gameplan bypassed CORE-QUERY-1 router pattern
 535	CLOSED	MVP	A12 - Alpha Setup	CORE-KEYS-HIBP: Have I Been Pwned API Integration
 536	CLOSED	MVP	A12 - Alpha Setup	CORE-KEYS-OAUTH-PROVIDERS: OAuth & Integration Key Support
