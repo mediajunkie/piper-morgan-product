@@ -959,7 +959,14 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         async with AsyncSessionFactory.session_scope() as session:
             grant = await ConnectorGrantStore().get(session, str(binding.owner_id), _GITHUB)
         headers = {"Authorization": f"Bearer {grant}"} if grant else None
-        async with MCPClient.connect_http(binding.mcp_server_ref, headers=headers) as client:
+        # ADR-070-A (A2): the ONE resolution authority — logical keys resolve
+        # from deployment config; scheme-prefixed BYOC literals pass verbatim.
+        # A ServerRefResolutionError names the missing config (A4) instead of
+        # masquerading as a server outage (the 2026-07-12 Fly incident).
+        from services.connectors.server_ref_resolver import resolve_server_ref
+
+        _server_url = resolve_server_ref(binding.mcp_server_ref, connector=_GITHUB)
+        async with MCPClient.connect_http(_server_url, headers=headers) as client:
             yield client
 
     async def _resolve_via_mcp(self, client: MCPClient, resource: ResourceQuery) -> Optional[str]:

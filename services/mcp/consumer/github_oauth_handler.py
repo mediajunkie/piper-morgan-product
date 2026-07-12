@@ -220,5 +220,8 @@ async def persist_github_connection(
         user_id,
         "github",
         status="bound",
-        mcp_server_ref=(server_ref or _DEFAULT_MCP_SERVER_URL),
+        # ADR-070-A (A1): managed bindings store the LOGICAL KEY; the URL
+        # resolves from deployment config at connect-time (resolve_server_ref).
+        # An explicit server_ref (BYOC literal) still passes through verbatim.
+        mcp_server_ref=(server_ref or "github"),
     )
