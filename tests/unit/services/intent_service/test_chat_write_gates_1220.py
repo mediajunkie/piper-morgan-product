@@ -215,6 +215,14 @@ class TestIssueRequestSlotFill:
         slots = self._f()('file a ticket: "Fix the login redirect"')
         assert slots["title"] == "Fix the login redirect"
 
+    def test_update_to_form_title_extracts(self):
+        """#1386-B3' (the joint-signed substitute phrasing): change the title
+        of issue #N to 'X' — the update fired with no fields before this."""
+        msg = "In mediajunkie/test-piper-morgan, change the title of issue #107 to 'Implement full-text search across nav and global search bar'"
+        slots = self._f()(msg)
+        assert slots["title"] == "Implement full-text search across nav and global search bar"
+        assert slots["repository"] == "mediajunkie/test-piper-morgan"
+
     @pytest.mark.asyncio
     async def test_create_uses_slotfilled_repo_over_default(self, svc):
         """The exact live failure: explicitly-named repo must WIN over the

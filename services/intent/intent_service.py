@@ -6754,6 +6754,16 @@ class IntentService:
             )
             if m:
                 out["title"] = m.group(1)
+        if "title" not in out:
+            # #1386-B3' live find (2026-07-12): the natural update form —
+            # `change/update/rename the title [of issue #N] to 'X'` — carried
+            # neither "titled" nor a colon; the update fired with no fields.
+            m = _re.search(
+                r"\btitle\b[^'\"\u2018\u201c\n]*\bto\s*['\"\u2018\u201c](.+?)['\"\u2019\u201d]",
+                message,
+            )
+            if m:
+                out["title"] = m.group(1)
         # with body "..." / body '...'
         m = _re.search(r"\bbody\s*[\"\u201c']([^\"\u201d']+)[\"\u201d']", message)
         if m:

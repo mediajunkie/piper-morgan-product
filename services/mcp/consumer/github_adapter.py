@@ -427,14 +427,26 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
 
     @staticmethod
     def _parse_issue_payload(payload: Optional[str]) -> Optional[Dict[str, Any]]:
-        """A single issue JSON object (create/update/get responses); None if unparseable."""
+        """A single issue JSON object (create/update/get responses); None if unparseable.
+
+        #1386-B4' live find (2026-07-12): the sidecar HTML-entity-escapes text
+        fields on reads (`Let's` → `Let&#39;s`). Unescape at THE parse boundary
+        so every consumer — display, read-back verify, recall — sees clean
+        text (the verify-side normalization stays as a harmless belt).
+        """
         if not payload:
             return None
         try:
             data = json.loads(payload)
         except (ValueError, TypeError):
             return None
-        return data if isinstance(data, dict) else None
+        if not isinstance(data, dict):
+            return None
+        import html as _html
+
+        return {
+            k: (_html.unescape(v) if isinstance(v, str) else v) for k, v in data.items()
+        }
 
     async def _verified_write(
         self, user_id: str, *, tool: str, args: Dict[str, Any], expect: Dict[str, Any],
