@@ -37,4 +37,5 @@ Inbox: 1 memo (Docs relay) — actioning this fire.
 | Fire | Time | Action | Notes |
 |------|------|--------|-------|
 | PM | 15:06 | START | Gap-C self-heal. Jul 10 CLOSED confirmed. Docs relay actioned. Two assignments received (#1391, #1392). Discussing scope with PM. |
-| PM (15:52) | 15:52 | WORK | #1392 COMPLETE: stripped title prefixes from 2 posts (medium-posts.json, blog-metadata.csv, editorial-calendar.csv); removed duplicate hero `<figure>` from 3 posts in blog-content.json (preserved second figure in thirteen-mailboxes). Website commit 7c2673931, product commit f55a321be. #1391 (admin edit flow) scoping discussion with PM — filesystem API vs git API question open. |
+| PM (15:52) | 15:52 | WORK | #1392 COMPLETE: stripped title prefixes from 2 posts (medium-posts.json, blog-metadata.csv, editorial-calendar.csv); removed duplicate hero `<figure>` from 3 posts in blog-content.json (preserved second figure in thirteen-mailboxes). Website commit 7c2673931, product commit f55a321be. #1391 scoping discussion with PM — local filesystem API confirmed. |
+| PM (16:xx) | 16:xx | WORK | #1391 COMPLETE: compose API now auto-commits after save (no more manual git discipline); split-pane markdown preview added to ComposeEdit; CalendarView edit link now shown for all draftPath entries incl. published. Website commit ac7795185. |
