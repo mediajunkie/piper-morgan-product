@@ -1,30 +1,32 @@
 # Docs Carry-Forward
-**Updated**: 2026-07-10 ~10:47 PDT (Fire 1)
-**Cron**: `17 10,22 * * *` (SLOW tier — 2×/day; job f33227b7)
-**Session log**: `dev/2026/07/10/2026-07-10-1047-docs-code-log.md`
+**Updated**: 2026-07-11 ~18:50 PDT (PM-activated session)
+**Cron**: `17 10,22 * * *` (SLOW tier — 2×/day; job 48e72cda — re-armed this session)
+**Session log**: `dev/2026/07/11/2026-07-11-1726-docs-code-log.md` (PM-activated); also `dev/2026/07/11/2026-07-11-1717-docs-code-log.md` (scheduled-task, DAY-CLOSED)
 
-## Done today (Jul-10 Fire 1)
+## Done this session (Jul-11 PM-activated)
 
-- ✅ Jul-9 omnibus confirmed complete (0518 session — 157 lines, 13 sessions)
-- ✅ Activity-log 13/13 rows for Jul-9 confirmed
-- ✅ ETA briefing "orphan" cleared — IS in ROSTER.md (Exploratory Testing Agent, dormant)
+- ✅ Cron re-armed (48e72cda)
+- ✅ "When the Documentation Drifts" published: live at https://pipermorgan.ai/blog/when-the-documentation-drifts/
+- ✅ Editorial calendar updated (published, blogURL, altText, caption)
+- ✅ Product repo committed + pushed to origin/main (145390211)
 
-## Next (Jul-10 STOP ~22:17 or if PM engages)
+## Next (PM-gated — awaiting syndication)
 
-- [ ] **Jul-9 omnibus amendment** — my 1047 session isn't referenced in the omnibus sources section; check if it needs adding (the omnibus was written before my session's work was pushed)
-- [ ] **PM reply to merge-keeper memo** — 6 stale branches awaiting PM decision (still pending as of 10:47)
-- [ ] **docs-standing-items.md refresh** — stale since 2026-05-27; low-priority unblocked work
+- [ ] **Draft archival** — move draft + image after PM syndicates
+- [ ] **Calendar syndication URLs** — update mediumURL / linkedinURL once PM provides
+- [ ] **Scheduled-task deconfliction** — PM raised; two Docs mechanisms running (scheduled-task `docs-duty-cycle` at `17 5,17` + my CronCreate `48e72cda` at `17 10,22`); PM wants one
+- [ ] **Jul-11 omnibus** — includes today's blog publish; this session not in the 1717 log
+- [ ] **Session log cleanup** — two Docs logs on Jul-11 (scheduled-task + PM-activated)
 
-## Pending / PM-gated
+## Still pending / PM-gated (from carry-forward)
 
-- **Branch deletion** — 6 stale branches awaiting PM confirmation (Jul-8 escalation memo)
+- **PM reply to merge-keeper memo** — 6 stale branches awaiting PM decision (Jul-8 escalation memo)
 - **BRIEFING refactor implementation** — CIO coordinating
-- **f33227b7 cron** — per-session; PM has UI reach; CIO confirmed
-- **#1344 open-registration** — PM decision needed
-- **Blog dedup** — mail sent to Web + Lead Jul-9; systemic fix pending
-- **YAML-frontmatter upgrade lane** — ADRs/Patterns/Methodology/.serena still pending
+- **Blog dedup systemic fix** — mail sent to Web + Lead Jul-9
+- **YAML-frontmatter upgrade lane** — pending
+- **Ship #050 calendar validator error** — pre-existing, 19 fields on that row; needs fix
 
 ## State flags
 
-- Inbox: **0 unread** (10:47 PDT)
-- Queue: **(0,1)** — omnibus amendment check is next; all high-priority done
+- Inbox: **0 unread** (checked at session start)
+- Queue: PM-engaged work complete; awaiting PM syndication + deconfliction discussion
