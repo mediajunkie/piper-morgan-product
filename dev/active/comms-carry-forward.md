@@ -1,24 +1,34 @@
-# Comms carry-forward — 2026-07-11, evening WORK fire (18:42 PT)
+# Comms carry-forward — 2026-07-11 STOP (21:42 PT, day-close)
 
-**Cron**: `da226126` · `12 6,9,12,15,18,21 * * *` (ARMED — next fire 21:12, last of today)
-**Session log**: `dev/2026/07/11/2026-07-11-1331-comms-code-log.md` (open, not yet STOPped today)
+**Cron**: `b3b1eeb7` · `12 6,9,12,15,18,21 * * *` (LEAVE ARMED — STOP is a day-close ritual, not a cron-teardown; next fire 06:12 tomorrow)
+**Session log**: `dev/2026/07/11/2026-07-11-1331-comms-code-log.md` (DAY-CLOSED ✅)
 
 ---
 
-## Current state
+## Tomorrow's START priorities (Jul 12)
 
-- **"When the Documentation Drifts" PUBLISHED** — confirmed live at pipermorgan.ai/blog/when-the-documentation-drifts/. Went through 3 editorial rounds (the Pattern-073 categorization catch, then 2 rounds of typo/garbled-sentence fixes after PM's voice-pass) before going out. Loop fully closed.
-- **"The Server Crashed Mid-Draft" (Jul 12 post) — preliminary review done ahead of schedule.** Resolved the open fact-check bracket (confirmed via git log — genuine reconstruction, not a recovered branch), caught one unsupported specific-number claim ("ninety minutes" traced to an unrelated story in the same source log, softened), fixed 1 cliché. Calendar status flipped queued→drafted (content was already complete). Ready for PM's voice-pass whenever they get to it — not urgent tonight.
-- **Ship #051 workstream review**: sent Jul 11, due Mon Jul 13 EOD. Done, no further action until Exec synthesizes.
-- **Inbox: 0 unread** (confirmed this fire, post-sync).
+1. **Mail check** — confirm nothing new landed overnight.
+2. **"The Server Crashed Mid-Draft" publishes today (Jul 12)** — preliminary reviewed Jul 11 evening (fact-check bracket resolved, 1 unsupported number claim softened, 1 cliché fixed, status flipped to `drafted`). PM said they'd edit it Jul 11 night for same-morning publishing — check whether that edit happened, and if so, do the same post-voice-pass review pattern (typos, cliché re-check, mechanical audit) as the last several posts.
+3. No PM-ambiguous threads currently open.
 
-## Standing items (see `comms-standing-items.md`, refreshed today — still current)
+## Done Jul 11 (full day — crash recovery + 2 published-post threads + prep-ahead)
 
-- Beat 13, Beats 14-16, 5 A-E insights, Beats 19-20 + 2 new insights, "The Server Crashed Mid-Draft" (new today), 2 rescued orphans, Jun-4 insight batch — all awaiting PM voice-pass.
+- ✅ Resumed post-crash: new worktree, cron re-armed (had fully expired), Jul 9 retroactively closed
+- ✅ "When the Documentation Drifts" — 3 editorial rounds (Pattern-073 catch, typo/regression pass, recast-merge pass, final scan) — **PUBLISHED**
+- ✅ Ship #051 workstream review — written + sent same day, due Jul 13
+- ✅ ROLE-PORTFOLIO-COMMS.md §2 refreshed (workstream-review refresh moment)
+- ✅ comms-standing-items.md fully refreshed (was stale since Jul 7)
+- ✅ "The Server Crashed Mid-Draft" — preliminary reviewed ahead of PM asking, ready for tonight's edit
+- ✅ New memory: `feedback_adjacent_story_number_contamination.md` — a real number in a source can belong to a different nearby event, hit twice in one day with identical shape
+
+## Standing items (see `comms-standing-items.md`, refreshed today)
+
+- Beat 13, Beats 14-16, 5 A-E insights, Beats 19-20 + 2 new insights, "The Server Crashed Mid-Draft," 2 rescued orphans, Jun-4 insight batch — all awaiting PM voice-pass.
 - BYOC marketplace narrative — still awaiting PM direction.
 - ~20 historical published-row stale draftPaths — low-priority, not urgent.
 
 ## State flags
 
-- Session: open, evening, one more fire tonight (21:12) which will be the day's STOP
-- Queue at this fire: (0,0) — everything remaining is PM-voice-pass-gated or PM-direction-gated
+- Inbox: **0 unread** (confirmed at STOP)
+- Session: **DAY-CLOSED ✅**
+- Queue at STOP: no mechanical work outstanding; everything remaining is PM-voice-pass-gated or PM-direction-gated
