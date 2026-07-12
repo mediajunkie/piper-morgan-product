@@ -2,7 +2,7 @@
 
 **Purpose**: persistent (across-days) Comms-side task list — items that aren't tied to a specific blog post or pubDate but need surfacing/advancing as cycle fires advance. Lives across days; not a per-day artifact. (Per-day work goes in the dated session log under `dev/2026/MM/DD/`.)
 
-**Last refreshed**: 2026-07-12 morning (closed the historical stale-draftPath cleanup)
+**Last refreshed**: 2026-07-12 morning (Jul 12 post published; stale-draftPath cleanup closed)
 
 ---
 
@@ -27,7 +27,7 @@
 | **Historical stale `draftPath`s** (found 2026-07-04) | ✅ CLOSED 2026-07-12 — all 22 rows fixed during a quiet Sunday-morning fire with nothing else unblocked. 18 corrected to `drafts/published/`, 4 (2 Weekly Ships + 2 posts) to `drafts/superseded/`. Every path verified to actually exist before writing it. | CLOSED | |
 | **"When the Documentation Drifts"** | ✅ PUBLISHED 2026-07-11 (pipermorgan.ai/blog/when-the-documentation-drifts/) — 3 editorial rounds: the Pattern-073 categorization catch, then 2 rounds of typo/garbled-sentence fixes after PM's voice-pass (PM's edits came from an un-synced copy twice, requiring careful re-merging each time). | CLOSED | |
 | **Ship #051 workstream review** | ✅ SENT 2026-07-11, same-day as kickoff — genuinely unblocked work advanced during a PM-editing gap rather than parked. Window Jul3-9, full §0-6. | Exec (synthesize, due Jul 13) | |
-| **"The Server Crashed Mid-Draft"** (Jul 12 insight) | Preliminary Comms review done 2026-07-11, ahead of schedule: resolved the open fact-check bracket (confirmed genuine, via git log, that the incident was real reconstruction not a recovered branch), caught an unsupported specific-number claim ("ninety minutes" traced to an unrelated story in the same source log — softened), fixed 1 cliché. Status flipped queued→drafted. | PM (voice-pass) | Draft: `the-server-crashed-mid-draft.md`. |
+| **"The Server Crashed Mid-Draft"** | ✅ PUBLISHED 2026-07-12 — prelim-reviewed ahead of schedule Jul 11 (resolved a fact-check bracket, softened an unsupported "ninety minutes" claim traced to an unrelated story in the same source log, fixed 1 cliché); PM voice-passed clean (no typos this round, edited from the correct synced baseline); frontmatter + art added same morning. | CLOSED | |
 
 ## Cross-cutting PM topics (verify still alive at next surface; ≥30 days stale flagged)
 
@@ -39,6 +39,9 @@
 
 ## Recently-closed (rolling history; trim to last ~14 days)
 
+- 2026-07-12 **"The Server Crashed Mid-Draft" PUBLISHED** — clean PM voice-pass (no typos, edited from the correct synced baseline this time), frontmatter + art added same morning.
+- 2026-07-12 **Historical stale-draftPath cleanup CLOSED** — all 22 rows fixed during a quiet Sunday-morning fire.
+- 2026-07-11 **"When the Documentation Drifts" PUBLISHED** — 3 editorial rounds; caught a Pattern-073 categorization error before it shipped.
 - 2026-07-09 **`template-audit` upgraded to v1.1** — new check #11 catches the negation-reveal cliché ("it isn't X, it's Y") + "-fold," per PM feedback; caught real instances in 4 of 4 drafts reviewed that day, including PM's own Beat 12 voice-pass.
 - 2026-07-09 **Beats 19-20 + 2 insights drafted, fact-checked, and calendared** (see Active table row above) — front advanced to Jul 7.
 - 2026-07-09 **Beat 12 ("The Package and the First Bite") PUBLISHED** — PM voice-pass + Comms final review (misquote fix, cliché, 2 typos, 1 dropped word).
