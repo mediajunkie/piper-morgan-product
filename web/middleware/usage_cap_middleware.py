@@ -161,6 +161,15 @@ class UsageCapMiddleware(BaseHTTPMiddleware):
                     return _rate_limited_response(retry_after)
 
                 # --- Mechanism 2: concurrency cap (ZSET gauge, TTL-pruned) ---
+                # #1390: AUTHENTICATED principals only. The gauge measures live
+                # user sessions (ADR-076's LLM-cost protection); unauthenticated
+                # requests 401 at auth and never reach an LLM — they are not
+                # session load. Found live on beta day one: ten scanner IPs
+                # filled the 10-slot gauge and starved real users. ip:*
+                # principals remain fully covered by mechanism 1's per-IP rate
+                # limit above.
+                if not principal.startswith("user:"):
+                    return await call_next(request)
                 now = time.time()
                 await redis.zremrangebyscore(
                     CONCURRENCY_GAUGE_KEY, "-inf", now - CONCURRENT_SESSION_IDLE_SECONDS

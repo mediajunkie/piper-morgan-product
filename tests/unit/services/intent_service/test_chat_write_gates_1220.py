@@ -203,6 +203,18 @@ class TestIssueRequestSlotFill:
     def test_no_slots_returns_empty(self):
         assert self._f()("create an issue about login bugs") == {}
 
+    def test_colon_single_quote_title_extracts(self):
+        """#1386-B2 live find: CXO's natural phrasing — no 'titled' keyword,
+        colon-introduced single-quoted title — shipped a garbage fallback."""
+        msg = "Let's track this. Create a GitHub issue in mediajunkie/test-piper-morgan: 'Add search functionality to navigation bar'"
+        slots = self._f()(msg)
+        assert slots["repository"] == "mediajunkie/test-piper-morgan"
+        assert slots["title"] == "Add search functionality to navigation bar"
+
+    def test_colon_double_quote_title_extracts(self):
+        slots = self._f()('file a ticket: "Fix the login redirect"')
+        assert slots["title"] == "Fix the login redirect"
+
     @pytest.mark.asyncio
     async def test_create_uses_slotfilled_repo_over_default(self, svc):
         """The exact live failure: explicitly-named repo must WIN over the
@@ -266,3 +278,50 @@ class TestOriginalMessagePlumbing:
         kwargs = w.await_args.kwargs
         assert kwargs["owner"] == "mediajunkie"
         assert kwargs["repo_name"] == "test-piper-morgan"
+
+
+class TestListIssuesNamedRepo:
+    """#1388 — reads honor an explicitly-named repo (the read-path sibling of
+    the #1220 slotfilled-repo-beats-default rule). Live find: 'show me open
+    issues in mediajunkie/test-piper-morgan' returned the DEFAULT repo's 170."""
+
+    @pytest.mark.asyncio
+    async def test_named_repo_scopes_the_connector_query(self, svc):
+        from services.mcp.consumer.github_adapter import GitHubIssuesResult
+
+        intent = _intent(action="list_issues")
+        intent.context = {}
+        intent.original_message = "show me open issues in mediajunkie/test-piper-morgan"
+        captured = {}
+
+        async def fake_list(self_, user_id, *, limit=50, repository=None):
+            captured["repository"] = repository
+            return GitHubIssuesResult(issues=[], total=0)
+
+        with patch(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_open_issues",
+            new=fake_list,
+        ):
+            result = await svc._handle_list_issues_query(intent, "wf-1")
+        assert captured["repository"] == "mediajunkie/test-piper-morgan"
+        assert "mediajunkie/test-piper-morgan" in result.message
+
+    @pytest.mark.asyncio
+    async def test_no_named_repo_keeps_userwide_default(self, svc):
+        from services.mcp.consumer.github_adapter import GitHubIssuesResult
+
+        intent = _intent(action="list_issues")
+        intent.context = {}
+        intent.original_message = "show me my open github issues"
+        captured = {}
+
+        async def fake_list(self_, user_id, *, limit=50, repository=None):
+            captured["repository"] = repository
+            return GitHubIssuesResult(issues=[], total=0)
+
+        with patch(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_open_issues",
+            new=fake_list,
+        ):
+            await svc._handle_list_issues_query(intent, "wf-1")
+        assert captured["repository"] is None

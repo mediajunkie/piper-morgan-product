@@ -4421,8 +4421,14 @@ class IntentService:
             from services.mcp.consumer.connector import DegradationReason
             from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
+            # #1388: an explicitly-named repo in the request must beat the
+            # user-wide default scope (the read-path sibling of #1220's
+            # slotfilled-repo-beats-default rule for writes).
+            _named_repo = self._slotfill_issue_request(
+                intent.original_message or intent.context.get("original_message") or ""
+            ).get("repository")
             connector_result = await GitHubMCPSpatialAdapter().list_open_issues(
-                _user_id, limit=50
+                _user_id, limit=50, repository=_named_repo
             )
             if connector_result.issues is not None:
                 issues = connector_result.issues
@@ -4459,8 +4465,9 @@ class IntentService:
             if issues:
                 # total_count is the TRUE match count (search_issues total_count); `issues` is
                 # only a page (e.g. 30 of 179) — count by total_count, show a few recent (#1322).
+                _scope = f" in {_named_repo}" if _named_repo else ""
                 message = (
-                    f"You have **{total_count} open issue{'s' if total_count != 1 else ''}**."
+                    f"You have **{total_count} open issue{'s' if total_count != 1 else ''}**{_scope}."
                 )
                 message += "\n\nHere are the most recent:"
                 for issue in issues[:5]:
@@ -4475,7 +4482,11 @@ class IntentService:
                 if total_count > 5:
                     message += f"\n\n...and {total_count - 5} more."
             else:
-                message = "You don't have any open issues right now."
+                message = (
+                    f"No open issues in {_named_repo} right now."
+                    if _named_repo
+                    else "You don't have any open issues right now."
+                )
 
             return IntentProcessingResult(
                 success=True,
@@ -5618,9 +5629,30 @@ class IntentService:
             from services.repositories.todo_repository import TodoRepository
 
             # Get todo completion stats for the past 7 days
+            # #1395 live find (2026-07-12): this queried owner_id=SESSION_id —
+            # principal confusion (the #734/ADR-071 class): zero rows for every
+            # real user since birth, and an asyncpg DataError on non-UUID
+            # session ids (Q51's canonical-run crash). The principal comes from
+            # the sanctioned accessor, same as every other handler.
+            _owner_id = _principal_from_intent(intent)
+            if not _owner_id:
+                return IntentProcessingResult(
+                    success=True,
+                    message=(
+                        "I can pull your productivity stats once you're signed in — "
+                        "I don't have a user to look them up for right now."
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=False,
+                )
             async with AsyncSessionFactory.session_scope() as session:
                 todo_repo = TodoRepository(session)
-                todo_stats = await todo_repo.get_completion_stats(owner_id=session_id, days=7)
+                todo_stats = await todo_repo.get_completion_stats(owner_id=_owner_id, days=7)
 
             # Try to get GitHub stats if configured
             github_stats = None
@@ -6710,6 +6742,18 @@ class IntentService:
         m = _re.search(r"\btitled?\s*[\"\u201c']([^\"\u201d']+)[\"\u201d']", message)
         if m:
             out["title"] = m.group(1)
+        if "title" not in out:
+            # #1386-B2 live find (2026-07-12): the natural colon-introduced form —
+            # `create an issue [in owner/repo]: 'Title here'` — carried no
+            # "titled" keyword, missed extraction, and shipped the garbage
+            # fallback title. A quoted span introduced by a colon after
+            # issue/ticket wording is the title.
+            m = _re.search(
+                r"\b(?:issue|ticket)\b[^:\n]*:\s*['\"\u2018\u201c](.+?)['\"\u2019\u201d]\s*$",
+                message,
+            )
+            if m:
+                out["title"] = m.group(1)
         # with body "..." / body '...'
         m = _re.search(r"\bbody\s*[\"\u201c']([^\"\u201d']+)[\"\u201d']", message)
         if m:

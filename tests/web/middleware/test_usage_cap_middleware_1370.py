@@ -254,3 +254,51 @@ class TestFailClosed:
         call_next.assert_not_called()
         assert result.status_code == 503
         assert result.status_code != 200
+
+
+class TestAnonymousPrincipalsSkipConcurrencyGauge:
+    """#1390 — found live on beta day one: ten scanner IPs filled the 10-slot
+    gauge and authenticated users got 'Instance at capacity'. The gauge
+    measures LIVE USER SESSIONS (ADR-076 LLM-cost protection); unauthenticated
+    requests 401 at auth and never reach an LLM — they are not session load.
+    ip:* principals keep mechanism 1 (per-IP rate limit) and skip mechanism 2."""
+
+    @pytest.mark.asyncio
+    async def test_anon_request_never_enters_the_gauge(self, middleware, patched_redis):
+        request = _make_request(user_id=None, client_ip="203.0.113.7")
+        call_next = AsyncMock(return_value=Mock())
+
+        result = await middleware.dispatch(request, call_next)
+
+        assert result is call_next.return_value
+        assert "ip:203.0.113.7" not in patched_redis.zsets.get(CONCURRENCY_GAUGE_KEY, {})
+        # mechanism 1 still counted it:
+        assert any(k.endswith("ip:203.0.113.7") for k in patched_redis.counters)
+
+    @pytest.mark.asyncio
+    async def test_scanner_flood_cannot_starve_authenticated_user(self, middleware, patched_redis):
+        """THE live incident: 10 distinct crawler IPs at the cap, then a real
+        user arrives — the user must be admitted."""
+        for i in range(MAX_CONCURRENT_SESSIONS):
+            request = _make_request(user_id=None, client_ip=f"198.51.100.{i}")
+            await middleware.dispatch(request, AsyncMock(return_value=Mock()))
+        assert len(patched_redis.zsets.get(CONCURRENCY_GAUGE_KEY, {})) == 0
+
+        user_req = _make_request(user_id="real-tester")
+        call_next = AsyncMock(return_value=Mock())
+        result = await middleware.dispatch(user_req, call_next)
+
+        assert result is call_next.return_value
+        assert "user:real-tester" in patched_redis.zsets[CONCURRENCY_GAUGE_KEY]
+
+    @pytest.mark.asyncio
+    async def test_authenticated_cap_still_enforced(self, middleware, patched_redis):
+        """The user-session protection is unchanged: MAX authenticated users
+        fill the gauge and the next NEW user is refused."""
+        for i in range(MAX_CONCURRENT_SESSIONS):
+            patched_redis.zsets.setdefault(CONCURRENCY_GAUGE_KEY, {})[f"user:u{i}"] = 1e12
+
+        result = await middleware.dispatch(
+            _make_request(user_id="one-too-many"), AsyncMock(return_value=Mock())
+        )
+        assert result.status_code == 503

@@ -151,7 +151,13 @@ class TestProductivityQueryHandler:
         intent = Intent(
             category=IntentCategory.QUERY,
             action="productivity",
-            context={"original_message": "what's my productivity"},
+            # #1395: the handler now reads the principal via
+            # _principal_from_intent (owner_id=session_id was the bug) —
+            # an authenticated request stamps user_id onto context.
+            context={
+                "original_message": "what's my productivity",
+                "user_id": "694d8f4e-0000-0000-0000-000000000042",
+            },
         )
 
         # Mock TodoRepository
@@ -199,7 +205,10 @@ class TestProductivityQueryHandler:
         intent = Intent(
             category=IntentCategory.QUERY,
             action="productivity",
-            context={"original_message": "productivity metrics"},
+            context={
+                "original_message": "productivity metrics",
+                "user_id": "694d8f4e-0000-0000-0000-000000000042",  # #1395 principal
+            },
         )
 
         mock_todo_stats = {

@@ -305,15 +305,21 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         )
 
     # ── #1322 cutover: the user's open issues / PRs over the OAuth connector ──
-    async def list_open_issues(self, user_id: str, *, limit: int = 50) -> GitHubIssuesResult:
-        """List the user's open GitHub issues over the per-user OAuth connector (#1322).
+    async def list_open_issues(
+        self, user_id: str, *, limit: int = 50, repository: Optional[str] = None
+    ) -> GitHubIssuesResult:
+        """List open GitHub issues over the per-user OAuth connector (#1322).
 
         The RECONNECT chat-cutover read primitive — reads via the user's binding + grant
-        (``search_issues``, user-wide ``assignee:@me`` across repos → no repo resolution,
-        sidestepping the vestigial ``resolve_repo`` / #1230), NOT the native shared PAT.
+        (``search_issues``), NOT the native shared PAT. Default scope is user-wide
+        ``assignee:@me`` across repos (no repo resolution, sidestepping the vestigial
+        ``resolve_repo`` / #1230). #1388: an explicitly-named ``repository``
+        ("owner/name") scopes the search to THAT repo's open issues instead —
+        a named repo must always beat the default scope.
         """
+        query = f"repo:{repository} is:issue is:open" if repository else _MY_OPEN_ISSUES_QUERY
         return await self._search_via_connector(
-            user_id, tool=_ISSUES_TOOL, query=_MY_OPEN_ISSUES_QUERY, limit=limit
+            user_id, tool=_ISSUES_TOOL, query=query, limit=limit
         )
 
     async def list_open_prs(self, user_id: str, *, limit: int = 50) -> GitHubIssuesResult:
@@ -517,8 +523,23 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             )
         if not readback or readback.get("number") != int(number):
             return GitHubWriteResult(verified=False, issue_number=int(number), raw=written)
+
+        def _norm(v):
+            # #1386-B2 live find (2026-07-12): the sidecar's read path
+            # HTML-entity-escapes text fields (`Let's` reads back as
+            # `Let&#39;s`) while the write stores raw — so any title with an
+            # apostrophe/&/</> failed verification on a fully-successful
+            # write. Compare entity-normalized on BOTH sides (a user's literal
+            # entity normalizes identically in expect and readback, so the
+            # comparison stays consistent).
+            if isinstance(v, str):
+                import html
+
+                return html.unescape(v)
+            return v
+
         for key, expected in expect.items():
-            if readback.get(key) != expected:
+            if _norm(readback.get(key)) != _norm(expected):
                 logger.warning(
                     "github_write_readback_mismatch tool=%s field=%s", tool, key
                 )
