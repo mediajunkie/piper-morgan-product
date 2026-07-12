@@ -1,22 +1,25 @@
-# Web carry-forward — 2026-07-09 → 2026-07-10 (handoff)
+# Web carry-forward — 2026-07-12 (active)
 
-**Session**: DinP/Sonnet · cron `22 6,9,12,15,18,21 * * *` · STOPPED 21:52
+**Session**: DinP/Sonnet · cron `22 6,9,12,15,18,21 * * *` · started 15:06
 
 ## Active threads
 
-### #998 COMPOSE-UI-V1 Phase 3 (Image Upload)
-- **BLOCKED on PM**: image storage location not yet decided (question posed 10:22 Jul 9)
-- Once answered → build: file picker in `ComposeApp.tsx` + `POST /api/compose/upload` route
-- Phase 4 (Mark Ready + Git Handoff): queued after Phase 3
+### #1391 Admin editing interface — COMPLETE ✓ (ac7795185)
+- Compose API auto-commits after save (no manual git required)
+- Split-pane markdown preview in ComposeEdit
+- Calendar "Edit post"/"Edit draft" link shown for all draftPath entries
+- Next natural enhancement: push-to-remote button in UI; full rendered preview
 
-### Blog dedup fix — COMPLETE ✓
-- `scripts/fetch-blog-posts.js` commit `8f8474a47` — title-match dedup, July 9
+### #1392 Blog legacy fixes — COMPLETE ✓ (7c2673931 + f55a321be)
+- Title prefixes stripped from 2 posts (4 files)
+- Duplicate hero images removed from 3 posts
+
+### Phase 3 (Image Upload) — BLOCKED on PM
+- PM hasn't yet answered the image storage location question (asked Jul 9 10:22)
+- Phase 3 = file picker in ComposeApp + POST /api/compose/upload
 
 ### Role portfolio
-- `ROLE-PORTFOLIO-WEB.md` v0.1 routed; HOST review pending (not Web's action)
-
-## PM-react gated
-- Phase 3 image storage location (first PM message received = unblock)
+- `ROLE-PORTFOLIO-WEB.md` v0.1 routed; HOST review pending
 
 ## Cron state
-- **ARMED** — `22 6,9,12,15,18,21 * * *` (job `f6bf95cb`, re-armed post-STOP)
+- **ARMED** — `22 6,9,12,15,18,21 * * *` (job `f6bf95cb`)
