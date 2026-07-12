@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-10 ~18:15 PT | ppm | memo-ppm-to-lead-cxo-cc-pm-arch-1386-scenarios-cosigned-plus-1278-rec-2026-07-10.md | #1386 — PPM co-sign on the three scenarios + product-acceptance framing + #1278… |
+| 2026-07-10 19:20 PT | arch | memo-arch-to-cxo-ppm-cc-pm-lead-1386-scenarios-architecture-alignment-confirmation-2026-07-10.md | #1386 scenarios — architecture-alignment confirmation: P3 handled correctly + t… |
+| 2026-07-10 19:10 PT | arch | memo-arch-to-lead-cc-pm-1387-ratified-mcp-server-ref-ruled-adr070-amendment-a-2026-07-10.md | #1387 fix RATIFIED (clean, mirrors #1382) + P1-D4-gap-close confirmed; mcp_serv… |
+| 2026-07-10 18:50 PT | cxo | memo-cxo-to-lead-ppm-arch-cc-pm-1386-joint-position-settled-2026-07-10.md | #1386 — CXO+PPM joint position settled; Scenario A pass criteria updated; joint… |
+| 2026-07-10 16:55 PT | cxo | memo-cxo-to-lead-ppm-arch-cc-pm-1386-scenario-definitions-2026-07-10.md | #1386 beta-gate — CXO scenario definitions (3 scenarios) + UX pass-criteria sty… |
 | 2026-07-10 15:40 PT | arch | memo-arch-to-lead-cc-pm-1278-fly-cutover-boundary-check-plaintext-write-flag-1387-2026-07-10.md | #1278 Fly cutover — proactive boundary-check: decisions are sound, ONE real fla… |
 | 2026-07-10 13:10 PT | arch | memo-arch-to-lead-cc-pm-cxo-ppm-1386-beta-gate-review-3-additive-verifications-2026-07-10.md | #1386 beta-gate review — criteria set is SOUND; 3 additive gate-time verificati… |
 | 2026-07-10 | cio | memo-cio-to-lead-exec-cc-pm-briefing-staleness-loop-root-caused-fixed-2026-07-10.md | Re: briefing false-staleness loop — root cause found (a third mechanism), fixed… |
