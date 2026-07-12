@@ -25,7 +25,7 @@ primary_region = "sjc"
   ENABLE_ETHICS_ENFORCEMENT = "true"
   AUTH_ENABLED = "true"
   # sibling Fly apps over private networking (6PN)
-  GITHUB_MCP_SERVER_URL = "http://piper-morgan-github-mcp.internal:8082/mcp"
+  GITHUB_MCP_SERVER_URL = "http://piper-morgan-gh-mcp.internal:8082/mcp"
   CHROMA_HOST = "piper-morgan-chroma.internal"
   CHROMA_PORT = "8000"
 
