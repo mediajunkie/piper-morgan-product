@@ -10,8 +10,8 @@
 
 | Item | State | Next action |
 |---|---|---|
-| **Sprint-recovery: S2→A12 bulk-move (19 issues)** | Recommended 7/10, HELD for PM go-ahead (overwrites existing values) | Awaiting PM's word |
-| **Sprint-recovery: Group 3 (19 true-zero-evidence issues)** | ✅ Built and published this fire | Awaiting PM's review — genuinely may not all be recoverable |
+| **Sprint-recovery: S2→A12 bulk-move (19 issues)** | ✅ Executed + verified — PM go-ahead received | Done. S2 now empty on the board |
+| **Sprint-recovery: Group 3 (19 true-zero-evidence issues)** | ✅ Built and published; PM reviewing next | Await PM's read — this is the last open piece of the whole 7/5 recovery effort |
 | **#1386/#1394 Scenario B re-scope** | ✅ CXO+PPM joint sign-off FINAL as of this fire — folded into #1386 body, #1394 labeled `priority: high` | Watch for Lead's re-execution of rescoped B3/B4; CXO owns the TESTER-QUICKSTART line once Lead's #1394 scope-read lands |
 | **#1278 Fly cutover** | PM appears to be executing DNS cutover (per Lead's 7/12 memo) | Watch for completion + criterion-2 Run 15 results |
 | **#1397 (discovered this fire)** | Filed: `regenerate-mailbox-manifests.py` + duty-cycle-tick Step 2 assume local-disk-matches-origin, false under Option-B ephemeral worktrees | No PPM action needed — flagged for a maintainer; affects the whole cohort, not just PPM |
