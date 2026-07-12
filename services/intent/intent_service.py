@@ -5618,9 +5618,30 @@ class IntentService:
             from services.repositories.todo_repository import TodoRepository
 
             # Get todo completion stats for the past 7 days
+            # #1395 live find (2026-07-12): this queried owner_id=SESSION_id —
+            # principal confusion (the #734/ADR-071 class): zero rows for every
+            # real user since birth, and an asyncpg DataError on non-UUID
+            # session ids (Q51's canonical-run crash). The principal comes from
+            # the sanctioned accessor, same as every other handler.
+            _owner_id = _principal_from_intent(intent)
+            if not _owner_id:
+                return IntentProcessingResult(
+                    success=True,
+                    message=(
+                        "I can pull your productivity stats once you're signed in — "
+                        "I don't have a user to look them up for right now."
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=False,
+                )
             async with AsyncSessionFactory.session_scope() as session:
                 todo_repo = TodoRepository(session)
-                todo_stats = await todo_repo.get_completion_stats(owner_id=session_id, days=7)
+                todo_stats = await todo_repo.get_completion_stats(owner_id=_owner_id, days=7)
 
             # Try to get GitHub stats if configured
             github_stats = None

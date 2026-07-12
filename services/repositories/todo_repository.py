@@ -343,7 +343,8 @@ class TodoRepository(BaseRepository):
             select(func.count(TodoDB.id)).where(
                 and_(
                     TodoDB.owner_id == owner_id,
-                    TodoDB.status == TodoStatus.COMPLETED,
+                    # #1395: the column is VARCHAR — asyncpg rejects raw enum objects
+                    TodoDB.status == TodoStatus.COMPLETED.value,
                     TodoDB.completed_at >= cutoff_date,
                 )
             )
@@ -355,7 +356,7 @@ class TodoRepository(BaseRepository):
             select(func.count(TodoDB.id)).where(
                 and_(
                     TodoDB.owner_id == owner_id,
-                    TodoDB.status.in_([TodoStatus.PENDING, TodoStatus.IN_PROGRESS]),
+                    TodoDB.status.in_([TodoStatus.PENDING.value, TodoStatus.IN_PROGRESS.value]),
                 )
             )
         )
