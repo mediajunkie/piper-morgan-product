@@ -909,6 +909,12 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             return None
         if not isinstance(data, dict) or not data:
             return None
+        # #1386-B4' (2026-07-12): the sidecar HTML-entity-escapes text on reads
+        # (Let's → Let&#39;s) — unescape at THIS parse boundary too, same as
+        # _parse_issue_payload, so the issue-detail view displays clean text.
+        import html as _html
+
+        data = {k: (_html.unescape(v) if isinstance(v, str) else v) for k, v in data.items()}
         labels = data.get("labels") or []
         assignees = data.get("assignees") or []
         return {
