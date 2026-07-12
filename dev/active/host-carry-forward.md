@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/09/2026-07-09-1031-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `44b6bf94`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-11 13:33 PT (START; retroactive Jul 10 STOP written; cron re-armed)
+**Last updated**: 2026-07-11 22:10 PT (STOP; all 11 invite codes cleared; checklist artifact published)
 
 ---
 
