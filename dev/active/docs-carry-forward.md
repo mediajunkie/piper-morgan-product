@@ -1,5 +1,5 @@
 # Docs Carry-Forward
-**Updated**: 2026-07-11 ~18:50 PDT (PM-activated session)
+**Updated**: 2026-07-11 ~19:35 PDT (PM-activated session)
 **Cron**: `17 10,22 * * *` (SLOW tier — 2×/day; job 48e72cda — re-armed this session)
 **Session log**: `dev/2026/07/11/2026-07-11-1726-docs-code-log.md` (PM-activated); also `dev/2026/07/11/2026-07-11-1717-docs-code-log.md` (scheduled-task, DAY-CLOSED)
 
@@ -14,7 +14,7 @@
 
 - [ ] **Draft archival** — move draft + image after PM syndicates
 - [ ] **Calendar syndication URLs** — update mediumURL / linkedinURL once PM provides
-- [ ] **Scheduled-task deconfliction** — PM raised; two Docs mechanisms running (scheduled-task `docs-duty-cycle` at `17 5,17` + my CronCreate `48e72cda` at `17 10,22`); PM wants one
+- [ ] **Scheduled-task deconfliction** — CIO memo sent (`29e4ef36a`), awaiting CIO + PM reply; 5 questions raised (provenance, safety, single-vs-dual, ratify-or-retire, CronCreate-only sufficiency)
 - [ ] **Jul-11 omnibus** — includes today's blog publish; this session not in the 1717 log
 - [ ] **Session log cleanup** — two Docs logs on Jul-11 (scheduled-task + PM-activated)
 
