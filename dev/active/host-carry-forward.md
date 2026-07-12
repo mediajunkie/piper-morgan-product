@@ -34,7 +34,7 @@
 ## Active with PM (teed, awaiting PM)
 
 - **Ship #047 HOST workstream review** — DONE/filed to Exec (`dfd9a25be`).
-- **Alpha batch-1 distribution** — ⏸ HELD (PM directive Jul 9). Unblocks on v0.8.10.1 + GitHub connect verified. Jake Krajewski email still unconfirmed — verify before sending.
+- **Alpha batch-1 distribution** — ✅ **COMPLETE 2026-07-12**. All 11 codes sent by PM ~12:26 PT. Jake email confirmed Jul 11. Welfare watch active.
 - **#1220 Droplet sidecar decision** — PM's call. Arch + HOST both aligned (trust-decisive: credential transit invariant). Waiting on PM to land the decision.
 
 ## New threads (Jul 10)
