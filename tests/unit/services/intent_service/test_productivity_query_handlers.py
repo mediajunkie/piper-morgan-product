@@ -205,7 +205,10 @@ class TestProductivityQueryHandler:
         intent = Intent(
             category=IntentCategory.QUERY,
             action="productivity",
-            context={"original_message": "productivity metrics"},
+            context={
+                "original_message": "productivity metrics",
+                "user_id": "694d8f4e-0000-0000-0000-000000000042",  # #1395 principal
+            },
         )
 
         mock_todo_stats = {
