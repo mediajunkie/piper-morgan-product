@@ -12,7 +12,7 @@ I was drafting a post one evening — somewhere past the halfway point, deep int
 
 It wasn't there.
 
-I'd written it. I hadn't committed it. Untracked files don't always survive a hard session crash. The post was gone.
+I'd saved it, but I hadn't "committed" it. Untracked files don't always survive a hard session crash. The post was gone.
 
 # The category
 
@@ -20,7 +20,7 @@ This is a specific category of vulnerability that's easy to miss because most of
 
 A `git pull` may move them or warn about them or proceed past them depending on flags and conflicts. A `git checkout` to a different branch may or may not preserve them depending on what the destination branch has at the same path. A `git stash -u` will sweep them into the stash and remove them from disk. A session crash that loses the working directory entirely loses them silently, with no rollback path and no diagnostic trail.
 
-None of that is git misbehaving. Git is doing exactly what it's documented to do. The vulnerability lives in the gap between *I wrote this* and *this is in the history.*
+This is git working exactly as documented. The vulnerability lives in the gap between *I wrote this* and *this is in the history.*
 
 # Why it's hard to remember to close the window
 
@@ -28,7 +28,7 @@ In normal flow, the cost of an uncommitted file feels low. You can see it. You k
 
 The trouble is the probability is small *but nonzero*, and the consequences are total. Most of the time the few-minute window costs you nothing. Sometimes it costs you the file.
 
-That asymmetry — high-frequency tiny win, low-frequency total loss — is the same shape as a lot of disciplines people skip for years without consequence and then catastrophically regret skipping in a single moment. Wear a seatbelt every car ride. Back up your laptop weekly. Commit immediately after writing a new file. The first two are old wisdom. The third one I had to learn the way you learn most things — by losing the file.
+That asymmetry — high-frequency tiny win, low-frequency total loss — is why people ignore disciplines for years without consequence and then catastrophically regret skipping in a single moment. Wear a seatbelt every car ride. Back up your laptop weekly. Commit immediately after writing a new file. The first two are old wisdom. The third one I had to learn the way you learn most things — by losing the file. And I still treat it like flossing!
 
 # What "immediately" actually means
 
@@ -43,6 +43,8 @@ Push matters too, separately. A local commit survives most session crashes — g
 Loss of an uncommitted file isn't proportional to its size. Reconstructing a fifteen-hundred-word post from memory is a few hours of focused work, in a state where you've already done the hardest part — the original drafting — and you're now doing it again, more slowly, with the friction of *I already had this and I lost it.* The reconstruction is usually worse than the original.
 
 Reconstructing a one-line commit message is seconds. The variance of recovery cost on uncommitted work is wildly skewed. New files with substantive content sit at the high end. New scaffolding files that haven't been touched since you created them sit at the low end. The category that warrants the discipline is the high-cost end. You can be looser about the low-cost end — but the discipline that says *just always commit immediately* is easier to follow than the discipline that says *commit immediately when the cost-of-loss is high.* The first one is mechanical. The second one requires judgment in the moment you're least likely to apply it.
+
+*I will be honest, though. I am still sloppy about this. Some of it is the context switching. I am editing directly on my Mac, in a file editor. To commit the work after editing means switching to a terminal or development tool. I am lazy. "Can't you do it for me?" is my whiny refrain.*
 
 # What rescued me this time
 
