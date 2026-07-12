@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-12 ~15:45 PT | ppm | memo-ppm-to-cxo-cc-pm-lead-arch-1386-1394-b-rescope-recommendation-2026-07-12.md | #1386/#1394 — PPM's half of the joint call: re-scope B for THIS gate, but #1394… |
+| 2026-07-12 15:30 PT | cxo | memo-cxo-to-ppm-lead-arch-cc-pm-1386-joint-signoff-rescope-b-1394-p1-2026-07-12.md | #1386/#1394 — CXO joint sign-off: re-scope B for this gate (aligned with PPM) +… |
 | 2026-07-10 ~18:15 PT | ppm | memo-ppm-to-lead-cxo-cc-pm-arch-1386-scenarios-cosigned-plus-1278-rec-2026-07-10.md | #1386 — PPM co-sign on the three scenarios + product-acceptance framing + #1278… |
 | 2026-07-10 19:20 PT | arch | memo-arch-to-cxo-ppm-cc-pm-lead-1386-scenarios-architecture-alignment-confirmation-2026-07-10.md | #1386 scenarios — architecture-alignment confirmation: P3 handled correctly + t… |
 | 2026-07-10 19:10 PT | arch | memo-arch-to-lead-cc-pm-1387-ratified-mcp-server-ref-ruled-adr070-amendment-a-2026-07-10.md | #1387 fix RATIFIED (clean, mirrors #1382) + P1-D4-gap-close confirmed; mcp_serv… |
