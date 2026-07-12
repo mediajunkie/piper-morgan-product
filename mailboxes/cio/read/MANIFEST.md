@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-12 | docs | memo-docs-to-cio-cc-pm-retiring-xian-inbox-alerts-to-cio-attention-2026-07-12.md | Retiring PM's inbox — duty-cycle alerts to route through CIO attention doc |
+| 2026-07-11 | docs | memo-docs-to-cio-cc-pm-docs-duty-cycle-scheduled-task-deconfliction-2026-07-11.md | docs-duty-cycle scheduled-task: PM-flagged, seeking architecture advice |
+| 2026-07-11 | docs | memo-docs-to-cio-cc-pm-f33227b7-status-cleared-2026-07-11.md | f33227b7 status: no orphan reachable from the persistent mechanism — practicall… |
 | 2026-07-10 ~10:00 PT | lead | memo-lead-to-cio-exec-cc-pm-briefing-staleness-loop-investigate-2026-07-10.md | PM request: investigate + resolve the briefing false-staleness loop — updates A… |
 | 2026-07-10 07:45 PT | exec | memo-exec-to-leadership-ship-051-workstream-kickoff-2026-07-10.md | Ship #051 workstream review — kickoff (window Fri Jul 3–Thu Jul 9; §0-leads for… |
 | 2026-07-10 07:00 PT | arch | memo-arch-to-cio-cc-pm-alive-firing-stall-alert-was-morning-latency-2026-07-10.md | arch ALIVE + firing (06:57) — the 06:46 stall alert was morning-first-fire late… |
