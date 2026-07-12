@@ -305,15 +305,21 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         )
 
     # ── #1322 cutover: the user's open issues / PRs over the OAuth connector ──
-    async def list_open_issues(self, user_id: str, *, limit: int = 50) -> GitHubIssuesResult:
-        """List the user's open GitHub issues over the per-user OAuth connector (#1322).
+    async def list_open_issues(
+        self, user_id: str, *, limit: int = 50, repository: Optional[str] = None
+    ) -> GitHubIssuesResult:
+        """List open GitHub issues over the per-user OAuth connector (#1322).
 
         The RECONNECT chat-cutover read primitive — reads via the user's binding + grant
-        (``search_issues``, user-wide ``assignee:@me`` across repos → no repo resolution,
-        sidestepping the vestigial ``resolve_repo`` / #1230), NOT the native shared PAT.
+        (``search_issues``), NOT the native shared PAT. Default scope is user-wide
+        ``assignee:@me`` across repos (no repo resolution, sidestepping the vestigial
+        ``resolve_repo`` / #1230). #1388: an explicitly-named ``repository``
+        ("owner/name") scopes the search to THAT repo's open issues instead —
+        a named repo must always beat the default scope.
         """
+        query = f"repo:{repository} is:issue is:open" if repository else _MY_OPEN_ISSUES_QUERY
         return await self._search_via_connector(
-            user_id, tool=_ISSUES_TOOL, query=_MY_OPEN_ISSUES_QUERY, limit=limit
+            user_id, tool=_ISSUES_TOOL, query=query, limit=limit
         )
 
     async def list_open_prs(self, user_id: str, *, limit: int = 50) -> GitHubIssuesResult:

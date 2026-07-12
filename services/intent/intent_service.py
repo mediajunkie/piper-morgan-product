@@ -4421,8 +4421,14 @@ class IntentService:
             from services.mcp.consumer.connector import DegradationReason
             from services.mcp.consumer.github_adapter import GitHubMCPSpatialAdapter
 
+            # #1388: an explicitly-named repo in the request must beat the
+            # user-wide default scope (the read-path sibling of #1220's
+            # slotfilled-repo-beats-default rule for writes).
+            _named_repo = self._slotfill_issue_request(
+                intent.original_message or intent.context.get("original_message") or ""
+            ).get("repository")
             connector_result = await GitHubMCPSpatialAdapter().list_open_issues(
-                _user_id, limit=50
+                _user_id, limit=50, repository=_named_repo
             )
             if connector_result.issues is not None:
                 issues = connector_result.issues
@@ -4459,8 +4465,9 @@ class IntentService:
             if issues:
                 # total_count is the TRUE match count (search_issues total_count); `issues` is
                 # only a page (e.g. 30 of 179) — count by total_count, show a few recent (#1322).
+                _scope = f" in {_named_repo}" if _named_repo else ""
                 message = (
-                    f"You have **{total_count} open issue{'s' if total_count != 1 else ''}**."
+                    f"You have **{total_count} open issue{'s' if total_count != 1 else ''}**{_scope}."
                 )
                 message += "\n\nHere are the most recent:"
                 for issue in issues[:5]:
@@ -4475,7 +4482,11 @@ class IntentService:
                 if total_count > 5:
                     message += f"\n\n...and {total_count - 5} more."
             else:
-                message = "You don't have any open issues right now."
+                message = (
+                    f"No open issues in {_named_repo} right now."
+                    if _named_repo
+                    else "You don't have any open issues right now."
+                )
 
             return IntentProcessingResult(
                 success=True,

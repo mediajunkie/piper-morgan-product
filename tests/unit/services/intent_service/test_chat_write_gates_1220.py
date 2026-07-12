@@ -278,3 +278,50 @@ class TestOriginalMessagePlumbing:
         kwargs = w.await_args.kwargs
         assert kwargs["owner"] == "mediajunkie"
         assert kwargs["repo_name"] == "test-piper-morgan"
+
+
+class TestListIssuesNamedRepo:
+    """#1388 — reads honor an explicitly-named repo (the read-path sibling of
+    the #1220 slotfilled-repo-beats-default rule). Live find: 'show me open
+    issues in mediajunkie/test-piper-morgan' returned the DEFAULT repo's 170."""
+
+    @pytest.mark.asyncio
+    async def test_named_repo_scopes_the_connector_query(self, svc):
+        from services.mcp.consumer.github_adapter import GitHubIssuesResult
+
+        intent = _intent(action="list_issues")
+        intent.context = {}
+        intent.original_message = "show me open issues in mediajunkie/test-piper-morgan"
+        captured = {}
+
+        async def fake_list(self_, user_id, *, limit=50, repository=None):
+            captured["repository"] = repository
+            return GitHubIssuesResult(issues=[], total=0)
+
+        with patch(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_open_issues",
+            new=fake_list,
+        ):
+            result = await svc._handle_list_issues_query(intent, "wf-1")
+        assert captured["repository"] == "mediajunkie/test-piper-morgan"
+        assert "mediajunkie/test-piper-morgan" in result.message
+
+    @pytest.mark.asyncio
+    async def test_no_named_repo_keeps_userwide_default(self, svc):
+        from services.mcp.consumer.github_adapter import GitHubIssuesResult
+
+        intent = _intent(action="list_issues")
+        intent.context = {}
+        intent.original_message = "show me my open github issues"
+        captured = {}
+
+        async def fake_list(self_, user_id, *, limit=50, repository=None):
+            captured["repository"] = repository
+            return GitHubIssuesResult(issues=[], total=0)
+
+        with patch(
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter.list_open_issues",
+            new=fake_list,
+        ):
+            await svc._handle_list_issues_query(intent, "wf-1")
+        assert captured["repository"] is None
