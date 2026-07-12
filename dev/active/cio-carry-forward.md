@@ -1,6 +1,10 @@
 # CIO Carry-Forward — ephemeral session state
 
-**Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
+**Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live **here**, in the section immediately below (corrected 2026-07-12 — this line pointed at `duty-cycle-escalations-cio.md`, deprecated/folded into this file on 2026-06-17; a stale self-reference in my own canonical doc, caught while wiring the watchdog's stall-alert routing to land here).
+
+## PM Attention (fold watchdog alerts + anything else needing PM's call here; Exec's `cohort-attention-rollup` reads this file directly per its own SKILL.md Step 1)
+
+*(none currently)*
 
 ## 🔄 7/10 Fri — IN PROGRESS. `dev/2026/07/10/2026-07-10-1021-cio-code-log.md`
 
