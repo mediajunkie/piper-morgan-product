@@ -53,3 +53,22 @@
 - Held #512 (PM: neither candidate looks right) and flagged #1058 + 11 remaining RECONNECT-only issues as unaddressed -- no mutation applied to any of these 13
 - Decisions log updated with full batch detail + the held/flagged list + the background-task verification lesson; board snapshot refreshed (1204 items -- board grew independently since 07-06, unrelated to this work)
 - Remaining LOW-tier gap: 218 - 205 = 13 (1 held + 12 flagged/unaddressed)
+
+## Day-arc summary
+
+Short day on the calendar, mislabeled at the tail end. Actual July 9 arc: session start, LOW-tier data consolidation (merged six source-evidence files into one issue→candidates mapping, normalized the A8 paren-typo, milestone-scope-checked all 218), and publication of the first LOW-tier reconciliation artifact (33 candidate-set groups). Session then idled; PM's review reply didn't land until the evening of July 10, and the work executed against that reply was logged (at the time) as a same-day continuation — the date drift was caught and corrected in-place (see the "6:05 PM" entry's correction note) and the actual continuation lives in `dev/2026/07/10/2026-07-10-1754-ppm-code-fable-log.md`. Lesson: an idle multi-hour/overnight gap inside one continuous conversation needs an explicit date re-check before the next log entry, not just a clock read.
+
+## Memory & briefing surfaces referenced this session
+
+- **Referenced**: sprint-history-recovery-plan.md + sprint-recovery-decisions-log.md (method + decision record); the six evidence-source JSON files (FINAL_MERGED, forensic_results, tier5_results, inchworm_direct_matches_v2, inchworm_slug_matches, bike_final_v3) — first time consolidated into one lookup rather than read separately; feedback_no_confabulating_expected_steps_as_completed (live GraphQL re-verification of all 218 before presenting, not trusting the multi-day-old snapshot)
+- **Loaded but not referenced**: BRIEFING-CURRENT-STATE (already flagged stale at session start; not refreshed — sprint-recovery had priority)
+- **Wanted but not found**: none of note
+
+## Sign-off
+
+```
+$ git status
+```
+Local worktree checkout shows pre-existing modified/untracked files (`dev/active/duty-cycle-registry.tsv`, `ppm-standing-items.md`, `metrics/cohort-fire-log.tsv`, a stray 6/18 log + memo, `scripts/snapshot-project-board.sh`) — **these predate this session** (identical to the gitStatus snapshot captured at conversation start) and were never touched this session. All work this session was pushed directly to `origin/main` via the temp-index atomic-commit pattern (never through this worktree's local branch/working tree), per the established discipline for this recovery effort — so the usual `@{u}..HEAD` / `main..HEAD` emptiness checks don't apply in the normal sense; verified instead by confirming every commit's `git push origin <sha>:refs/heads/main` succeeded (all did, no failures this session) and spot-checking `git show origin/main:<path>` against intended content after each write.
+
+<!-- DAY-CLOSED: 2026-07-09 -->
