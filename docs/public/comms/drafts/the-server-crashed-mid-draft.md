@@ -14,8 +14,6 @@ It wasn't there.
 
 I'd written it. I hadn't committed it. Untracked files don't always survive a hard session crash. The post was gone.
 
-[FACT-CHECK NOTE for PM: incident was the May 21 Beat 7 session-end stranded draft, recovered May 23 via reconstruction. Confirm framing.]
-
 # The category
 
 This is a specific category of vulnerability that's easy to miss because most of the time it costs you nothing. New files in untracked state — files you've written to disk but not yet committed to version control — exist in a small window where they're visible to you, accessible to your tools, present on the filesystem, but completely outside the repository's safety net.
@@ -50,7 +48,7 @@ Reconstructing a one-line commit message is seconds. The variance of recovery co
 
 The draft did get recovered, two days later. I remembered the through-line clearly. I'd been writing in voice that returned naturally. The reconstruction landed close enough to what I'd lost that the post made it to production on its original schedule.
 
-That's a happy ending, but not one I want to count on. The recovery took me ninety minutes of focused work — a chunk of attention I'd planned to spend on something else. The discipline I now run is the alternative: thirty seconds of commit-immediately, no recovery cost, no ninety-minute detour.
+That's a happy ending, but not one I want to count on. The recovery took a real chunk of focused work — attention I'd planned to spend on something else. The discipline I now run is the alternative: thirty seconds of commit-immediately, no recovery cost, no detour.
 
 The math isn't subtle. The math is almost too obvious to write down. The seductive thing about the few-minute window is that it almost always feels safe. Each individual instance you skipped the commit and got away with it reinforces the *almost always.* The instance where you don't get away with it is the one that pays for all the times you did.
 
@@ -60,7 +58,7 @@ Every workflow has invisible failure modes. The mature response isn't to avoid t
 
 Commit-immediately-after-write is one of those mechanisms. There are others: regular pushes, version-control-everything-not-just-code, treating your editor's autosave as no substitute for git history, treating cloud sync as no substitute for either. Each closes a particular kind of window. None of them are clever. All of them are habits.
 
-The discipline isn't about being unusually careful. It's about recognizing where you're exposed and shortening the window. Once the discipline is muscle memory, the cognitive cost drops to near zero — the keyboard knows to type the commit before the next thought arrives. The vulnerability window collapses from minutes to seconds, and the few-minute window stops existing as a category of risk.
+The discipline is about recognizing where you're exposed and shortening the window, not about being unusually careful. Once the discipline is muscle memory, the cognitive cost drops to near zero — the keyboard knows to type the commit before the next thought arrives. The vulnerability window collapses from minutes to seconds, and the few-minute window stops existing as a category of risk.
 
 The post I lost did come back. The next post won't have to. Thirty seconds of immediate commit closes a window that, in retrospect, never should have been open.
 
