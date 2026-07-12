@@ -122,6 +122,15 @@ def _writable_fixture(adapter, *, break_readback=False, comment_without_id=False
         if break_readback:
             return json.dumps({})  # repo "lost" the issue — readback must fail the guard
         it = issues.get(issue_number)
+        if it:
+            # REAL v1.5.0 behavior (live-observed 2026-07-12, #1386-B2): the READ
+            # path HTML-entity-escapes text fields while the write stores raw —
+            # `Let's` reads back as `Let&#39;s`. The guard must entity-normalize
+            # or every apostrophe'd title reads as a verify mismatch.
+            import html as _html
+
+            it = {k: (_html.escape(v, quote=False) if isinstance(v, str) and k in ("title", "body") else v)
+                  for k, v in it.items()}
         return json.dumps(it if it else {})
 
     @contextlib.asynccontextmanager
@@ -177,6 +186,20 @@ class TestVerifiedCreate:
         )
         assert wr.attempted is True  # may have landed — double-write forbidden
         assert wr.degradation.reason is DegradationReason.UNREACHABLE
+
+
+class TestEntityEscapedReadback:
+    async def test_apostrophe_title_still_verifies(self, sm):
+        """#1386-B2 live: sidecar read escapes `'` → `&#39;`; a successful
+        write with an apostrophe'd title must still verify=True."""
+        await _seed_bound(sm)
+        adapter = GitHubMCPSpatialAdapter()
+        _writable_fixture(adapter)
+        wr = await adapter.create_issue_connector(
+            _ALPHA, owner="o", repo="r",
+            title="Let's add search & filters", body="it's needed",
+        )
+        assert wr.verified is True
 
 
 class TestVerifiedUpdate:

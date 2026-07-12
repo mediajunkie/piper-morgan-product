@@ -517,8 +517,23 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             )
         if not readback or readback.get("number") != int(number):
             return GitHubWriteResult(verified=False, issue_number=int(number), raw=written)
+
+        def _norm(v):
+            # #1386-B2 live find (2026-07-12): the sidecar's read path
+            # HTML-entity-escapes text fields (`Let's` reads back as
+            # `Let&#39;s`) while the write stores raw — so any title with an
+            # apostrophe/&/</> failed verification on a fully-successful
+            # write. Compare entity-normalized on BOTH sides (a user's literal
+            # entity normalizes identically in expect and readback, so the
+            # comparison stays consistent).
+            if isinstance(v, str):
+                import html
+
+                return html.unescape(v)
+            return v
+
         for key, expected in expect.items():
-            if readback.get(key) != expected:
+            if _norm(readback.get(key)) != _norm(expected):
                 logger.warning(
                     "github_write_readback_mismatch tool=%s field=%s", tool, key
                 )

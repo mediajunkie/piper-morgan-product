@@ -203,6 +203,18 @@ class TestIssueRequestSlotFill:
     def test_no_slots_returns_empty(self):
         assert self._f()("create an issue about login bugs") == {}
 
+    def test_colon_single_quote_title_extracts(self):
+        """#1386-B2 live find: CXO's natural phrasing — no 'titled' keyword,
+        colon-introduced single-quoted title — shipped a garbage fallback."""
+        msg = "Let's track this. Create a GitHub issue in mediajunkie/test-piper-morgan: 'Add search functionality to navigation bar'"
+        slots = self._f()(msg)
+        assert slots["repository"] == "mediajunkie/test-piper-morgan"
+        assert slots["title"] == "Add search functionality to navigation bar"
+
+    def test_colon_double_quote_title_extracts(self):
+        slots = self._f()('file a ticket: "Fix the login redirect"')
+        assert slots["title"] == "Fix the login redirect"
+
     @pytest.mark.asyncio
     async def test_create_uses_slotfilled_repo_over_default(self, svc):
         """The exact live failure: explicitly-named repo must WIN over the

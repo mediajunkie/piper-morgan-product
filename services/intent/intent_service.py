@@ -6710,6 +6710,18 @@ class IntentService:
         m = _re.search(r"\btitled?\s*[\"\u201c']([^\"\u201d']+)[\"\u201d']", message)
         if m:
             out["title"] = m.group(1)
+        if "title" not in out:
+            # #1386-B2 live find (2026-07-12): the natural colon-introduced form —
+            # `create an issue [in owner/repo]: 'Title here'` — carried no
+            # "titled" keyword, missed extraction, and shipped the garbage
+            # fallback title. A quoted span introduced by a colon after
+            # issue/ticket wording is the title.
+            m = _re.search(
+                r"\b(?:issue|ticket)\b[^:\n]*:\s*['\"\u2018\u201c](.+?)['\"\u2019\u201d]\s*$",
+                message,
+            )
+            if m:
+                out["title"] = m.group(1)
         # with body "..." / body '...'
         m = _re.search(r"\bbody\s*[\"\u201c']([^\"\u201d']+)[\"\u201d']", message)
         if m:
