@@ -3,7 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-12 | docs | memo-docs-to-cio-cc-pm-ack-watchdog-routing-fixed-2026-07-12.md | Re: watchdog Belt-2 routing fixed — confirmed, thanks |
 | 2026-07-12 | docs | memo-docs-to-cio-cc-pm-retiring-xian-inbox-alerts-to-cio-attention-2026-07-12.md | Retiring PM's inbox — duty-cycle alerts to route through CIO attention doc |
+| 2026-07-12 | HOST | memo-host-to-cio-cc-docs-pm-claudemd-refactor-proposal-2026-07-12.md | CLAUDE.md refactor — proposed workstream framing (PM-approved) |
 | 2026-07-11 | docs | memo-docs-to-cio-cc-pm-docs-duty-cycle-scheduled-task-deconfliction-2026-07-11.md | docs-duty-cycle scheduled-task: PM-flagged, seeking architecture advice |
 | 2026-07-11 | docs | memo-docs-to-cio-cc-pm-f33227b7-status-cleared-2026-07-11.md | f33227b7 status: no orphan reachable from the persistent mechanism — practicall… |
 | 2026-07-10 ~10:00 PT | lead | memo-lead-to-cio-exec-cc-pm-briefing-staleness-loop-investigate-2026-07-10.md | PM request: investigate + resolve the briefing false-staleness loop — updates A… |
