@@ -1,32 +1,35 @@
 # Docs Carry-Forward
-**Updated**: 2026-07-11 ~19:35 PDT (PM-activated session)
-**Cron**: `17 10,22 * * *` (SLOW tier — 2×/day; job 48e72cda — re-armed this session)
-**Session log**: `dev/2026/07/11/2026-07-11-1726-docs-code-log.md` (PM-activated); also `dev/2026/07/11/2026-07-11-1717-docs-code-log.md` (scheduled-task, DAY-CLOSED)
 
-## Done this session (Jul-11 PM-activated)
+**Updated**: 2026-07-12 22:47 PDT (STOP)
+**Session log**: `dev/2026/07/12/2026-07-12-0720-docs-code-log.md` — DAY-CLOSED ✓
+**Cron**: `48e72cda` (`17 10,22 * * *`) — armed, session-scoped
 
-- ✅ Cron re-armed (48e72cda)
-- ✅ "When the Documentation Drifts" published: live at https://pipermorgan.ai/blog/when-the-documentation-drifts/
-- ✅ Editorial calendar updated (published, blogURL, altText, caption)
-- ✅ Product repo committed + pushed to origin/main (145390211)
+---
 
-## Next (PM-gated — awaiting syndication)
+## Active PM threads
 
-- [ ] **Draft archival** — move draft + image after PM syndicates
-- [ ] **Calendar syndication URLs** — update mediumURL / linkedinURL once PM provides
-- [ ] **Scheduled-task deconfliction** — CIO memo sent (`29e4ef36a`), awaiting CIO + PM reply; 5 questions raised (provenance, safety, single-vs-dual, ratify-or-retire, CronCreate-only sufficiency)
-- [ ] **Jul-11 omnibus** — includes today's blog publish; this session not in the 1717 log
-- [ ] **Session log cleanup** — two Docs logs on Jul-11 (scheduled-task + PM-activated)
+None open. PM session ended; no pending responses owed.
 
-## Still pending / PM-gated (from carry-forward)
+---
 
-- **PM reply to merge-keeper memo** — 6 stale branches awaiting PM decision (Jul-8 escalation memo)
-- **BRIEFING refactor implementation** — CIO coordinating
-- **Blog dedup systemic fix** — mail sent to Web + Lead Jul-9
-- **YAML-frontmatter upgrade lane** — pending
-- **Ship #050 calendar validator error** — pre-existing, 19 fields on that row; needs fix
+## Carry-forward tasks (priority order)
 
-## State flags
+1. **docs/ tree audit + cleanup plan** — PM's direct request (relayed by PPM tonight). Starting data from PPM: 4 broken links in roadmap.md (fixed `95413d730`); stale roadmap/README.md; CORE/ candidate for archival. Write audit + plan first, loop PM in before large-scale moves.
 
-- Inbox: **0 unread** (checked at session start)
-- Queue: PM-engaged work complete; awaiting PM syndication + deconfliction discussion
+2. **CLAUDE.md refactor** — PM-greenlit (HOST proposed, CIO acknowledged). Docs executes edits per CIO architecture decisions + tracks provenance. **BLOCKED on CIO scoping note** — do not start until CIO sends it.
+
+3. **Draft archival**: `docs/public/comms/drafts/the-server-crashed-mid-draft.md` + `storm-window.png` → `published/` — pending PM direction.
+
+4. **Jul 9/10 log closure** — PM to nudge CXO + PPM. Nudge memos sent Jul 12. Not a Docs action; tracking only.
+
+5. **Jul 11 omnibus** — pending Jul 10 CXO + PPM log closures.
+
+---
+
+## Standing context
+
+- `docs-duty-cycle` scheduled task **RETIRED** 2026-07-12 22:47 PDT (PM-ratified via CIO). Belt-4 Docs spawn-fresh is replacement. PM must copy+reload plist to activate.
+- PM's inbox retired as routing destination — alerts → CIO attention doc → Exec attention rollup.
+- Blog issues in Web's lane: #1389 (sort structural fix), #1391 (admin interface), #1392 (legacy errors).
+- #1392 caption note: PM confirmed inline captions identical to hero captions on 3 double-image posts — Web removes `<figure><img>` only.
+- Ship #050 calendar validator error — pre-existing, 19 fields on that row; still needs fix.
