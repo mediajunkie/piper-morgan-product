@@ -214,6 +214,27 @@ class AuthMiddleware(BaseHTTPMiddleware):
         if self._should_exclude_path(request.url.path):
             return await call_next(request)
 
+        # "/" is OPTIONAL-auth (not exempt): populate user_id when a valid
+        # cookie is present so the home route (#419/#390) shows the
+        # authenticated app; fall through with no user_id (never 401) for
+        # fresh visitors so the route's smart redirect sends them to /login.
+        # Full exemption (the 2026-07-12 #1399 first cut) skipped token
+        # extraction entirely, so a logged-in user's cookie was never read →
+        # home redirected them back to /login → "pulse and stay" (found live
+        # by PM's Scenario A login, same evening).
+        if request.url.path == "/":
+            token = self._extract_token(request)
+            if token:
+                try:
+                    claims = await self.jwt_service.validate_token(token)
+                    if claims:
+                        request.state.user_claims = claims
+                        request.state.user_id = claims.user_id
+                        request.state.scopes = claims.scopes
+                except Exception:
+                    pass  # invalid/expired cookie on "/" → treat as anonymous
+            return await call_next(request)
+
         # Extract and validate JWT token
         try:
             token = self._extract_token(request)
@@ -289,15 +310,6 @@ class AuthMiddleware(BaseHTTPMiddleware):
 
     def _should_exclude_path(self, path: str) -> bool:
         """Check if path should be excluded from authentication"""
-        # "/" is EXACT-match exempt (never a prefix — that would exempt
-        # everything): the home route's own smart redirect (#390) handles
-        # unauthenticated visitors (→ /login) and leaks nothing. Without this,
-        # a fresh tester's first request got a bare 401 JSON and the only
-        # reachable surface was the setup wizard (live find, 2026-07-12 —
-        # PM's Scenario A attempt on beta; identical on alpha with
-        # invitations already in flight).
-        if path == "/":
-            return True
         return any(path.startswith(exclude) for exclude in self.exclude_paths)
 
     def _extract_token(self, request: Request) -> Optional[str]:

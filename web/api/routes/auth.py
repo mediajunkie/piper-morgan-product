@@ -222,7 +222,11 @@ async def login(
         # Set cookie for web clients
         # Detect if request is HTTPS to set secure flag appropriately
         # This allows HTTP development while enforcing HTTPS cookies in production
-        is_https = request.url.scheme == "https"
+        is_https = (
+            request.headers.get("x-forwarded-proto", request.url.scheme).lower()
+            == "https"
+        )  # behind fly-proxy the internal hop is http; trust the edge proto so the
+        # auth cookie carries Secure on the real HTTPS site (2026-07-12)
         response.set_cookie(
             key="auth_token",
             value=token,
@@ -355,7 +359,11 @@ async def refresh_token(
     )
 
     # Set both cookies (same flags as login)
-    is_https = request.url.scheme == "https"
+    is_https = (
+            request.headers.get("x-forwarded-proto", request.url.scheme).lower()
+            == "https"
+        )  # behind fly-proxy the internal hop is http; trust the edge proto so the
+        # auth cookie carries Secure on the real HTTPS site (2026-07-12)
     response.set_cookie(
         key="auth_token",
         value=new_access_token,
