@@ -1166,39 +1166,58 @@ issue	state	milestone	sprint	title
 1353	CLOSED	MVP	RECONNECT - Connector Refactor	test_github_spatial_temporal fails: hardcoded fixture date, not a spatial-logic bug
 1354	CLOSED	MVP	RECONNECT - Connector Refactor	test_calendar_config_loading.py: 8 tests broken — get_config() now requires user_id
 1355	CLOSED	MVP	RECONNECT - Connector Refactor	5 integration tests fail (3 github_spatial, 2 calendar_integration) — likely accumulated refactor drift, needs triage
-1356	OPEN	Production		tests/archive/ is collected by pytest despite its name (1+ import errors); run_pm012_github_tests.py references deleted test files
-1357	OPEN	Production		test_github_api_connection.py's live 401s appear only in large combined test runs — likely GitHub rate-limiting, not confirmed
+1356	OPEN	Production	PROD-TECHDEBT - General Cleanup	tests/archive/ is collected by pytest despite its name (1+ import errors); run_pm012_github_tests.py references deleted test files
+1357	OPEN	Production	PROD-TECHDEBT - General Cleanup	test_github_api_connection.py's live 401s appear only in large combined test runs — likely GitHub rate-limiting, not confirmed
 1358	OPEN	Production		Cross-project mail-routing reference doc never created (Track 1 from Apr-28 escalation) — 2 recurring incidents
-1359	OPEN	Production		cli/commands/notion.py: self.adapter referenced 10x but never assigned (AttributeError waiting to happen)
+1359	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	cli/commands/notion.py: self.adapter referenced 10x but never assigned (AttributeError waiting to happen)
 1360	OPEN	Production	PUB - Public Beta	Security: add API key gate to /api/v1/intent (replace theater left by Caddy basic-auth removal)
-1361	OPEN	Production		Notion: repoint legacy services/integrations/mcp/notion_adapter.py callers to canonical + delete shim
-1362	OPEN	Production		Notion adapter: rate-limiting tests reference removed _call_notion_api/configure_notion_api (pre-SDK-migration test debt)
-1363	OPEN	Production		test_publish_creates_actual_notion_page: hardcoded fallback test-parent page ID is dead
-1365	OPEN	Production		ci.yml's 'Configuration Validation Test' step is stale — ConfigValidator is a stub that always returns ok
+1361	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	Notion: repoint legacy services/integrations/mcp/notion_adapter.py callers to canonical + delete shim
+1362	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	Notion adapter: rate-limiting tests reference removed _call_notion_api/configure_notion_api (pre-SDK-migration test debt)
+1363	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	test_publish_creates_actual_notion_page: hardcoded fallback test-parent page ID is dead
+1365	OPEN	Production	PROD-TECHDEBT - General Cleanup	ci.yml's 'Configuration Validation Test' step is stale — ConfigValidator is a stub that always returns ok
 1366	CLOSED	MVP	Beta Blockers - Hard Gates Only	PIPER.user.md is a single, unscoped, server-instance-level config file — leaks PM's personal context + GitHub default-repo to every user on a shared instance
-1367	OPEN	Production		test_execution_intent_no_placeholder fails: mocks .classify but code calls .classify_multiple
+1367	OPEN	Production	PROD-TECHDEBT - General Cleanup	test_execution_intent_no_placeholder fails: mocks .classify but code calls .classify_multiple
 1368	CLOSED	Ongoing	FLYWHEEL - Process improvement	UX: smarter sync-pm-local.sh — skip only on PM's prose edits, not on agent noise
-1369	OPEN	Production		Dead code cleanup: async-prompt-queue system (coordination/manifest.json, methodology/coordination/*, worktree-*.sh)
+1369	OPEN	Production	PROD-TECHDEBT - General Cleanup	Dead code cleanup: async-prompt-queue system (coordination/manifest.json, methodology/coordination/*, worktree-*.sh)
 1370	CLOSED	MVP	Beta Blockers - Hard Gates Only	ADR-076: Usage-cap enforcement middleware (rate limit + concurrency cap, Redis-backed)
-1371	OPEN	Production		Test-collection fragility: ModuleNotFoundError for real packages (services.configuration/services.cache) when specific files run together
-1372	OPEN	Production		tests/intent/contracts/: 42 pre-existing failures, ContainerNotInitializedError (ServiceContainer test fragility)
+1371	OPEN	Production	PROD-TECHDEBT - General Cleanup	Test-collection fragility: ModuleNotFoundError for real packages (services.configuration/services.cache) when specific files run together
+1372	OPEN	Production	PROD-TECHDEBT - General Cleanup	tests/intent/contracts/: 42 pre-existing failures, ContainerNotInitializedError (ServiceContainer test fragility)
 1373	CLOSED	MVP	Beta Blockers - Hard Gates Only	ADR-075 Component B: per-user system-prompt personalization (owner_id-scoped, neutral-default degradation)
 1374	CLOSED	Production		mail-send.sh residue reconcile fails when caller passes both sides of a staged rename
 1375	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-07-07
-1376	OPEN	Production		Follow-up to #1279: ~23 more fresh-GitHubIntegrationRouter sites (intent_service, context_assembler, canonical_handlers) never close their aiohttp session
-1377	OPEN	Production		Insight provenance: add is_seed/source field to InsightDB + surface it (full fix deferred from #1216)
+1376	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	Follow-up to #1279: ~23 more fresh-GitHubIntegrationRouter sites (intent_service, context_assembler, canonical_handlers) never close their aiohttp session
+1377	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	Insight provenance: add is_seed/source field to InsightDB + surface it (full fix deferred from #1216)
 1378	OPEN	Production	PUB - Public Beta	Auth security polish (from #441 Phase 4): CSRF [PUBLIC-BETA GATE per PM 7/7] + lockout, timeout warnings, UX niceties
 1343	CLOSED	MVP	Beta Blockers - Hard Gates Only	[SECURITY] Anonymous /api/v1/intent requests could silently bill the server's own Anthropic key — FIXED, deployed as v0.8.9.1, live-verified
 1344	CLOSED	MVP	Beta Blockers - Hard Gates Only	[SECURITY] Alpha registration is currently fully open (Caddy gate removal reversed a 2026-06-25 PM decision to keep it as the invite mechanism) — needs PM decision, not a unilateral fix
-1345	OPEN	Production		Route all LLM-billing paths through one fail-closed wrapper (m-36 structural end-state for #1343's ratchet lint)
+1345	OPEN	Production	PROD-INFRA - Infra & Security Hardening	Route all LLM-billing paths through one fail-closed wrapper (m-36 structural end-state for #1343's ratchet lint)
 1346	CLOSED	MVP	Beta Blockers - Hard Gates Only	tests/load/test_cache_effectiveness.py imports a missing helper module (setup_real_system.py) — the only real collection error; pytest.ini's import-mode was already correct
-1347	OPEN	Production		Conversation history viewer: full backward pagination + transcript-completeness failsafe (follow-on to #1235)
+1347	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	Conversation history viewer: full backward pagination + transcript-completeness failsafe (follow-on to #1235)
 1348	CLOSED	MVP	Beta Blockers - Hard Gates Only	[BUG] create_user 500s with a confusing error when email is omitted (CreateUserRequest.email is Optional but User.email is NOT NULL)
-1349	OPEN	Production		[BUG] test_github_place_has_name asserts repo name in Place.name but Place.name is just 'GitHub' (pre-existing, unrelated to #1344)
-1350	OPEN	Production		[BUG] settings_projects.html missing tokens.css / toast.js / nav include — 3 test failures (pre-existing, unrelated to #1344)
+1349	OPEN	Production	PROD-TECHDEBT - General Cleanup	[BUG] test_github_place_has_name asserts repo name in Place.name but Place.name is just 'GitHub' (pre-existing, unrelated to #1344)
+1350	OPEN	Production	PROD-DESIGN - Design, UX & Product Features	[BUG] settings_projects.html missing tokens.css / toast.js / nav include — 3 test failures (pre-existing, unrelated to #1344)
 1351	OPEN	Production	PUB - Public Beta	[SECURITY] MCPB's connect() credential is theater (Caddy removal broke it) + shared session_id needs a full cross-request-bleed audit
-1352	OPEN	Production		RECONNECT-WS4 follow-up: migrate calendar to the shared degrade(reason) contract + apply to other connectors + general enforcement test
+1352	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	RECONNECT-WS4 follow-up: migrate calendar to the shared degrade(reason) contract + apply to other connectors + general enforcement test
 1380	CLOSED	MVP	Beta Blockers - Hard Gates Only	Settings has no LLM key management — /api/v1/keys backend is UI-orphaned
 1381	CLOSED	MVP	Beta Blockers - Hard Gates Only	Server UTC leaks into chat as the user's local time
-1382	OPEN	MVP	Beta Blockers - Hard Gates Only	Keychain-backed credential layer is inoperative on hosted Linux — blocks wizard key save + all OAuth token storage
+1382	CLOSED	MVP	Beta Blockers - Hard Gates Only	Keychain-backed credential layer is inoperative on hosted Linux — blocks wizard key save + all OAuth token storage
 1379	OPEN	Production	PUB - Public Beta	Config hygiene follow-ups from #1324 audit (post-beta)
+1383	CLOSED	MVP	Beta Blockers - Hard Gates Only	Notion + Calendar chat gates don't thread user_id — same class as the GitHub gate miss (#1220), different flavor
+1384	CLOSED	MVP	Beta Blockers - Hard Gates Only	Session-timeout modal: 'Continue Working' and [x] buttons do nothing
+1385	OPEN	Production	PROD-TECHDEBT - General Cleanup	tests/security cross-file fixture contamination: full-suite runs leak 1111/2222 fixture rows, making isolation tests order-dependent
+1386	OPEN	MVP	Beta Blockers - Hard Gates Only	BETA-GATE: Beta Blockers close-out gate — canonical suite + three CXO/PPM multi-turn scenarios + sign-off
+1387	CLOSED	MVP	Beta Blockers - Hard Gates Only	Field-encryption (#1305) silently writes PLAINTEXT if ENCRYPTION_MASTER_KEY unset — enforce as prod-fatal before Fly cutover (#1278)
+1388	CLOSED	MVP	Beta Blockers - Hard Gates Only	Issue-list reads ignore an explicitly-named repo — default repo wins (read-path sibling of the #1220 slot-fill fix)
+1389	OPEN	MVP	FLYWHEEL - Process improvement	Blog sort: three structural problems with blog-first pubDate ordering
+1390	CLOSED			Usage-cap concurrency gauge: unauthenticated scanner IPs exhaust the 10-session cap, denying authenticated users (found live on beta.pipermorgan.ai)
+1391	OPEN	MVP	FLYWHEEL - Process improvement	Admin editing interface: resume pipermorgan.ai/admin for canonical-doc lookup, in-browser edit, git commit-back
+1392	OPEN	MVP	FLYWHEEL - Process improvement	Blog audit: fix 2 metadata-in-title posts, 3 double-hero-image posts; establish calendar-canonical generation
+1393	OPEN		Beta Blockers - Hard Gates Only	Floor reply leaked raw '[Available context] (none)' scaffolding header to the user (seen live on beta, #1386 Scenario B turn 1)
+1394	OPEN		Beta Blockers - Hard Gates Only	Session continuity gap: prior turns never reach context on the chat path — 'change the title' misroutes to Notion, 'what did we create' finds nothing (IDENTICAL alpha+beta; #1386 Scenario B blocker)
+1395	OPEN		Beta Blockers - Hard Gates Only	Canonical corpus expectation drift: 7 queries expect 'floor' but now route to real handlers (capability growth) — needs a ratified corpus rev (ADR-077 D5) + harness UUID identity fix
+1396	OPEN	Production	PROD-TECHDEBT - General Cleanup	personality_profile.py:235 — "'User' object has no attribute 'preferences'" on preference load (also errors test_milestones_empty_is_honest setup)
+1397	OPEN	MVP	FLYWHEEL - Process improvement	duty-cycle-tick + regenerate-mailbox-manifests.py assume local-disk-matches-origin/main; false under Option-B ephemeral worktrees
+1398	OPEN		Beta Blockers - Hard Gates Only	ADR-070-A A4 half-built: github_adapter flattens ServerRefResolutionError into UNREACHABLE — config errors still masquerade as outages
+1399	CLOSED	MVP	Beta Blockers - Hard Gates Only	Fresh-tester onboarding was unreachable on BOTH hosted environments: '/' and '/register' 401'd, and the only reachable surface was the self-host wizard failing localhost checks (found by PM's Scenario A attempt)
+1400	OPEN		Beta Blockers - Hard Gates Only	Hosted-audit: per-user connector preferences live in local JSON files — vanish on every Fly deploy, invisible to pg_dump, outside the DB isolation model
+1401	OPEN		Beta Blockers - Hard Gates Only	Hosted-audit: uploaded files land on the app machine's EPHEMERAL filesystem — every Fly deploy deletes all tester uploads (doc-upload is in the beta surface)
