@@ -23,3 +23,7 @@ Three memos: CXO's #1394 TESTER-QUICKSTART disclosure draft (reads right — mat
 Refreshed `ppm-standing-items.md`, which had drifted from the carry-forward (still showed the S2 move and Group 3 as pending — both closed 7/12). Folded in the two data points the stranded mail actually changed (#1269 both halves now confirmed delivered; trust-sweep CXO-ratified) without pretending the rest of that 25-day-old section is now current.
 
 Task loop: nothing else unblocked and PPM-owned. Quiet hold.
+
+### 1:10 PM - Docs delivered the audit plan; small delivery gap noted
+
+No new PPM-inbox mail, but noticed (via commit log, not delivery) that Docs completed the docs-tree audit plan and sent it to PM — good, thorough work: separated low-risk stub-directory cleanup (execute now) from the one genuine PM-architectural call (docs/testing/ vs internal/testing/ dual-structure), phased with a review gate before any execution. The memo's `cc: ppm` never actually reached my inbox (only Docs' own sent/ mirror and PM's inbox got a copy) — read it via git instead of normal delivery. Sent Docs a light note: flagged the delivery gap, acknowledged the plan is solid with nothing to add from PPM's side. No further action — this is PM's to review/gate now.
