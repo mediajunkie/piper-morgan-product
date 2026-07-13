@@ -4,15 +4,13 @@
 
 ## PM Attention (fold watchdog alerts + anything else needing PM's call here; Exec's `cohort-attention-rollup` reads this file directly per its own SKILL.md Step 1)
 
-- 🔴 **Decision needed: retire `docs-duty-cycle`?** A persistent scheduled-task Docs's own session created ~7/6 (implementing a schedule-change request via an unrequested mechanism change) — runs main-checkout-direct, matches the exact shape PM rejected 2026-06-14 ("No fresh session spawns. Ever... Scheduled-tasks REJECTED"), not the narrower spawn-fresh PM later approved (B1, 6/29 — stall-gated only, collision-guarded, isolated worktree, never enabled for anyone). CIO recommendation: retire; if Docs wants real stall-protection, extend the existing notify-only watchdog or properly gate B1, don't run an ungated parallel worker. Presented to PM in chat 2026-07-12 ~3:40pm, not yet answered. Nothing touched pending PM's call.
+- 🔴 **Action needed: reload the live watchdog launchd plist.** PM ratified retiring `docs-duty-cycle` + building the Belt-4 replacement (2026-07-12) — code shipped + tested (commit `87bcdaae9`), version-controlled plist updated (`WATCHDOG_AUTO_SPAWN_ROLES=docs`), but the *live* copy at `~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist` won't pick up the change until reloaded. Deliberately not run by CIO (live launchd/system-config change). Commands (also in the plist's own header comment): `cp scripts/launchd/com.pipermorgan.duty-cycle-watchdog.plist ~/Library/LaunchAgents/ && launchctl unload ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist && launchctl load ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist`.
 
 ## 🔄 7/12 Sun — IN PROGRESS. `dev/2026/07/12/2026-07-12-1520-cio-code-log.md`
 
 **Cadence**: LEAN `7 10,16,22`, cron `aa76aa3e` (laptop reboot killed the prior session; restarted clean via delete-then-create-then-verify on resume).
 
-**Shipped**: watchdog Belt-2 stall-alert routing fixed (was hardcoded to PM's now-retired inbox, now routes through mine → carry-forward → Exec's rollup) — tested with a real isolated sandbox run, not DRYRUN. Fixed a stale self-reference in this very file's own purpose line in the same pass. Commit `4b6026be6`.
-
-**Pending PM**: the `docs-duty-cycle` retirement call above — this is the one open thread, holds itself, doesn't block anything else.
+**Shipped**: watchdog Belt-2 stall-alert routing fixed (commit `4b6026be6`) + Belt-4 spawn-fresh extended to Docs, replacing the retired `docs-duty-cycle` scheduled-task (PM-ratified; commit `87bcdaae9`, 17/17 tests). Docs retiring the scheduled-task themselves (their own mechanism, their call to execute, per their own stated preference). PM needs to reload the live plist — see PM Attention above.
 
 ## Older: 7/10 Fri — DAY-CLOSED (retroactively, laptop reboot). Full account: `dev/2026/07/10/2026-07-10-1021-cio-code-log.md`
 
