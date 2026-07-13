@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/12/2026-07-12-0707-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `804553cc`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-12 22:07 PT (STOP — day closed; welfare watch active; memo to CIO pending PM answer; cron armed for 06:37 Jul 13)
+**Last updated**: 2026-07-12 22:15 PT (STOP + post-close memo filed — CLAUDE.md refactor proposal sent to CIO cc Docs+PM; welfare watch active; cron armed for 06:37 Jul 13)
 
 ---
 
@@ -36,6 +36,10 @@
 - **Ship #047 HOST workstream review** — DONE/filed to Exec (`dfd9a25be`).
 - **Alpha batch-1 distribution** — ✅ **COMPLETE 2026-07-12**. All 11 codes sent by PM ~12:26 PT. Jake email confirmed Jul 11. Welfare watch active.
 - **#1220 Droplet sidecar decision** — PM's call. Arch + HOST both aligned (trust-decisive: credential transit invariant). Waiting on PM to land the decision.
+
+## New threads (Jul 12)
+
+- **CLAUDE.md refactor** — ✅ Proposal filed to CIO (cc Docs, PM) 2026-07-12 post-close. PM-approved. CIO leads architecture pass; Docs executes; HOST reviews behavioral-norms completeness pre-ratification. Awaiting CIO scoping note before work begins.
 
 ## New threads (Jul 10)
 
