@@ -94,5 +94,19 @@ WATCHDOG_DRYRUN=1 WATCHDOG_LOG="$LOG" WATCHDOG_STATE="$STATE" WATCHDOG_AUTO_SPAW
   WATCHDOG_NUDGE_COOLDOWN=0 WATCHDOG_FREEZE_CMD="cat '$FIX'" WATCHDOG_INFRA_THRESHOLD=3 bash "$W"
 grep -q "WOULD-SPAWN" "$LOG" && no "Belt 4 fired on infra event — should skip → $(cat "$LOG")" || ok "Belt 4 skipped on infra event (n_stale>=3)"
 
+echo "── T13: Belt 4 — docs case branch (added 2026-07-12) fires when opted in ──"
+: > "$LOG"; : > "$STATE"; printf 'STALE docs 9h\n' > "$FIX"
+WATCHDOG_DRYRUN=1 WATCHDOG_LOG="$LOG" WATCHDOG_STATE="$STATE" WATCHDOG_AUTO_SPAWN_ROLES="docs" \
+  WATCHDOG_NUDGE_COOLDOWN=0 WATCHDOG_FREEZE_CMD="cat '$FIX'" bash "$W"
+grep -q "WOULD-SPAWN \[b4\]: docs" "$LOG" && ok "Belt 4 fires for the new docs case branch" || no "docs case branch didn't fire → $(cat "$LOG")"
+
+echo "── T14: Belt 4 — a role with no case branch (ppm) still safely no-ops, doesn't crash ──"
+: > "$LOG"; : > "$STATE"; printf 'STALE ppm 9h\n' > "$FIX"
+WATCHDOG_DRYRUN=1 WATCHDOG_LOG="$LOG" WATCHDOG_STATE="$STATE" WATCHDOG_AUTO_SPAWN_ROLES="ppm" \
+  WATCHDOG_NUDGE_COOLDOWN=0 WATCHDOG_FREEZE_CMD="cat '$FIX'" bash "$W"
+rc=$?
+[ "$rc" = 0 ] && ok "no-case-branch role exits cleanly (rc=0)" || no "non-zero exit for undefined role → rc=$rc"
+grep -q "B4-SKIP: ppm (no spawn prompt defined" "$LOG" && ok "logs the skip reason for an undefined role" || no "missing skip-reason log → $(cat "$LOG")"
+
 echo ""; echo "════ RESULT: $PASS passed, $FAIL failed ════"
 [ "$FAIL" = 0 ] && exit 0 || exit 1

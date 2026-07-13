@@ -106,7 +106,7 @@ n_stale=$(printf '%s\n' "$stale_roles" | grep -c .)
 # Enable per-role: launchd plist sets WATCHDOG_AUTO_SPAWN_ROLES="cio exec" in environment.
 #
 # Per-role spawn prompts: embedded below. Must be self-contained (fresh session, no prior context).
-# Currently only CIO is implemented; extend by adding a case branch.
+# Implemented: cio, exec, docs (added 2026-07-12). Extend by adding a case branch.
 if [ -n "$SPAWN_ROLES" ] && [ "$n_stale" -lt "$INFRA_N" ]; then
   for role in $stale_roles; do
     # Is this role opted in?
@@ -135,6 +135,9 @@ if [ -n "$SPAWN_ROLES" ] && [ "$n_stale" -lt "$INFRA_N" ]; then
         ;;
       exec)
         SPAWN_PROMPT="You are Chief of Staff (Exec) for Piper Morgan (role-slug: exec), resuming from a watchdog-detected stall (B4 spawn-fresh). Read dev/active/exec-carry-forward.md. Check mailboxes/exec/inbox/ for new mail. Drain all unblocked work using the duty-cycle-tick skill. Commit and push to origin/main. Exit when complete."
+        ;;
+      docs)
+        SPAWN_PROMPT="You are Documentation Management (Docs) for Piper Morgan (role-slug: docs), resuming from a watchdog-detected stall (B4 spawn-fresh). Working directory is the repo root. Read dev/active/docs-carry-forward.md and dev/active/docs-standing-items.md. Check mailboxes/docs/inbox/ for new mail. Drain all unblocked Docs work using the duty-cycle-tick skill. Commit and push to origin/main when done. Exit when the fire is complete. This is a one-shot autonomous session."
         ;;
       *)
         echo "$ts B4-SKIP: $role (no spawn prompt defined; add a case branch)" >> "$LOG"
