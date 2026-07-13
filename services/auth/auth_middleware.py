@@ -289,6 +289,15 @@ class AuthMiddleware(BaseHTTPMiddleware):
 
     def _should_exclude_path(self, path: str) -> bool:
         """Check if path should be excluded from authentication"""
+        # "/" is EXACT-match exempt (never a prefix — that would exempt
+        # everything): the home route's own smart redirect (#390) handles
+        # unauthenticated visitors (→ /login) and leaks nothing. Without this,
+        # a fresh tester's first request got a bare 401 JSON and the only
+        # reachable surface was the setup wizard (live find, 2026-07-12 —
+        # PM's Scenario A attempt on beta; identical on alpha with
+        # invitations already in flight).
+        if path == "/":
+            return True
         return any(path.startswith(exclude) for exclude in self.exclude_paths)
 
     def _extract_token(self, request: Request) -> Optional[str]:

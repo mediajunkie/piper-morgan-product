@@ -169,9 +169,17 @@ class SetupCompleteResponse(BaseModel):
 # Helper Functions (adapted from setup_wizard.py)
 # ============================================================================
 
-# True when running inside a Docker container (/.dockerenv is the standard sentinel).
-# Used to select env-var defaults appropriate for Docker-internal networking vs local dev.
-_IN_DOCKER = os.path.exists("/.dockerenv")
+# True when running on managed/containerized infrastructure — Docker
+# (/.dockerenv sentinel), Fly.io (FLY_APP_NAME — Firecracker microVMs have NO
+# /.dockerenv, the 2026-07-12 beta.pipermorgan.ai live find), or any deployment
+# declaring PIPER_ENVIRONMENT=production. On managed infra the platform runs
+# the services; wizard "system requirements" reflect that instead of probing
+# for a Docker CLI in the tester's browser-facing container.
+_IN_DOCKER = (
+    os.path.exists("/.dockerenv")
+    or bool(os.getenv("FLY_APP_NAME"))
+    or (os.getenv("PIPER_ENVIRONMENT") or "").lower() == "production"
+)
 
 
 async def check_docker() -> bool:
@@ -211,6 +219,12 @@ async def check_database() -> bool:
     at app startup from .env). On the hosted Droplet these are 'postgres' / 5432 (Docker
     internal); local dev defaults to localhost:5433 (published port).
     """
+    # #1278/Fly: 12-factor deployments carry DATABASE_URL, not POSTGRES_* —
+    # honor it first (same convention fix as the engines).
+    db_url = os.getenv("DATABASE_URL")
+    if db_url:
+        parsed = urllib.parse.urlparse(db_url)
+        return await check_service_port(parsed.hostname or "localhost", parsed.port or 5432)
     host = os.getenv("POSTGRES_HOST", "localhost")
     port = int(os.getenv("POSTGRES_PORT", "5433"))
     return await check_service_port(host, port)
@@ -235,6 +249,11 @@ async def check_chromadb() -> bool:
     Reads CHROMADB_HOST / CHROMADB_PORT from env. Defaults to 'chromadb:8000'
     when running inside Docker (service name), 'localhost:8000' for local dev.
     """
+    # Fly names it CHROMA_HOST/CHROMA_PORT (fly.toml [env]) — honor both spellings.
+    if os.getenv("CHROMA_HOST"):
+        return await check_service_port(
+            os.getenv("CHROMA_HOST"), int(os.getenv("CHROMA_PORT", "8000"))
+        )
     default_host = "chromadb" if _IN_DOCKER else "localhost"
     host = os.getenv("CHROMADB_HOST", default_host)
     port = int(os.getenv("CHROMADB_PORT", "8000"))
