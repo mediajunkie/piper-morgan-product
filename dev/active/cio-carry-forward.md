@@ -5,7 +5,7 @@
 ## PM Attention (fold watchdog alerts + anything else needing PM's call here; Exec's `cohort-attention-rollup` reads this file directly per its own SKILL.md Step 1)
 
 - 🔴 **Action needed: reload the live watchdog launchd plist.** Still open as of 7/13 morning (no evidence PM has run it yet — Docs confirmed retiring `docs-duty-cycle` last night, so Belt-4 for Docs stays inactive until this happens). Commands (also in the plist's own header comment): `cp scripts/launchd/com.pipermorgan.duty-cycle-watchdog.plist ~/Library/LaunchAgents/ && launchctl unload ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist && launchctl load ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist`.
-- 🟡 **Drift/awareness: Lead stale 12h+ as of 7/13 ~10:37am** (watchdog-detected 06:43, verified still current via git log + HOST's own 10:07 log independently noting "ADR-078 gated on Lead" — not stale data). No CIO action possible (no cross-session reach); needs a re-prod.
+- 🟡 **Drift/awareness: Lead stale, watchdog re-ping at 12:44pm (18h, dyn-threshold).** Same ongoing stall as this morning's entry, not new. No CIO action possible (no cross-session reach); needs a re-prod. Watchdog dedup's ~6h while still stale, so expect further re-pings until PM prods it.
 
 ## 🎆 7/12 Sun — DAY-CLOSED. Full account: `dev/2026/07/12/2026-07-12-1520-cio-code-log.md`
 
@@ -13,7 +13,7 @@
 
 **Resolved today**: laptop-reboot reorientation (7/10 retroactively closed, cron restarted clean); Docs's `f33227b7` confirmed cleared; watchdog Belt-2 stall-alert routing fixed (was writing into PM's retired inbox — commit `4b6026be6`); `docs-duty-cycle` architecture question resolved with PM — retire (matches the shape PM rejected 6/14) + replace with a properly-gated Belt-4 extension (commit `87bcdaae9`, 17/17 tests). Docs executing their own retirement; PM needs the plist reload (see PM Attention above — unchanged, still open).
 
-**CLAUDE.md refactor scoping — SENT 7/13 ~11:20am.** Full inventory (`dev/active/claude-md-refactor-scoping-cio-2026-07-13.md`): 10 flagged passages with disposition, 3-altitude structure, 4-step pass structure. Sent to HOST (cc Docs, PM), commit `cc70a1d15`. Standing-items #16 moved to "Pending external action" — awaiting HOST read before Docs starts Pass 2. No further CIO action until they respond.
+**CLAUDE.md refactor — CIO lane CLOSED 7/13 ~4:37pm.** HOST reviewed same-day, endorsed all 10 dispositions, one non-blocking flag (preserve a one-sentence consequence statement for the two trust-critical gotcha extractions — GH Projects v2 full-replace, GH auto-close negation) and one corroboration (log-maintenance-reminder hook confirmed still clock-based via HOST's own operating experience — both L237/L388 copies stale, Docs should read the hook directly). Docs cleared to start Pass 2. Standing-items #16 marked done for CIO's lane; HOST does Pass 3 after Docs lands the text changes. Nothing further owed here unless Docs or HOST loop back with a question.
 
 ## Older: 7/10 Fri — DAY-CLOSED (retroactively, laptop reboot). Full account: `dev/2026/07/10/2026-07-10-1021-cio-code-log.md`
 
@@ -51,8 +51,8 @@
 
 ## Live threads needing a next action
 
-- **pipermorgan.ai migration — 3-way plan.** Still queued at Exec as of 7/7 Fire 1 ("ready whenever the 3-way conversation happens"). Not re-checked this entry — check fresh if it's been a few days.
-- **#1304 (CI required status check)** — landed exactly as recommended. Issue still OPEN as of 7/7 — watch for Lead's close.
+- **pipermorgan.ai account migration** — re-verified 7/13. Corrected framing: the "3-way plan" language in this entry didn't hold up against current sources — dropped, no current doc or Exec carry-forward substantiates it. Actual state: `docs/migration/pipermorgan-ai-account-migration.md` checklist unchanged since 7/6 (all 9 roles still ☐, CIO's own duty-cycle-continuity assessment confirms the infra is migration-safe already, "ready whenever Exec wants to sequence it"). Exec's own carry-forward independently flags it as **9+ days stale, first flagged 2026-07-03, re-flagged to PM this session, "worth a real decision, not another silent carry-forward."** PM's call, no deadline set — this session's cadence-hold reasoning (LEAN not full 6×/day) is still valid on the unconfirmed-checklist grounds, unrelated to Exec's own account specifically.
+- ~~**#1304 (CI required status check)**~~ — **CONFIRMED CLOSED 7/7** (verified fresh 7/13 via `gh issue view`), 5/5 AC, closed on the visible-only variant per CIO's own 7/6 recommendation + PM's explicit go. Off the watch list.
 - **Ted Nadeau email + saved articles** — PM flagged 6/27, again 7/6 10:15pm. Still not resurfaced. Aging; consider proactively surfacing if a fire has slack.
 - **Stray memory-path file in PM's checkout** — `.claude/projects/.../memory/feedback_pause_before_irrevocable_actions.md` sitting untracked inside PM's repo working tree rather than at the real memory path. Noticed 7/7 evening, not investigated — flagged as a background task, not chased inline.
 - **Session-lifetime / proactive-recycling idea** (from 7/6 late-night Insights-report dig) — still banked, not scoped. Revisit if a fire has slack.
@@ -72,7 +72,7 @@
 
 - **Liveness model v2**: 3-category hedged classification; mode-3 upstream permissions diagnostic (CXO+Exec); resume-loop question (PM-gated).
 - **Cohort-coverage expansion** — awaiting Exec-coordinated owner-confirmed rows.
-- **Sprint cluster**: #973 / #1277 — last verified genuinely open 7/6; re-verify if this entry survives another week untouched.
+- **Sprint cluster**: #973 / #1277 — re-verified 7/13 (exactly one week later, per this entry's own trigger), both still genuinely OPEN, no activity since 7/4 and 7/5 respectively. Re-verify again if this entry survives another week untouched.
 
 ## Registry
 
