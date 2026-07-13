@@ -1168,7 +1168,7 @@ issue	state	milestone	sprint	title
 1355	CLOSED	MVP	RECONNECT - Connector Refactor	5 integration tests fail (3 github_spatial, 2 calendar_integration) — likely accumulated refactor drift, needs triage
 1356	OPEN	Production	PROD-TECHDEBT - General Cleanup	tests/archive/ is collected by pytest despite its name (1+ import errors); run_pm012_github_tests.py references deleted test files
 1357	OPEN	Production	PROD-TECHDEBT - General Cleanup	test_github_api_connection.py's live 401s appear only in large combined test runs — likely GitHub rate-limiting, not confirmed
-1358	OPEN	Production		Cross-project mail-routing reference doc never created (Track 1 from Apr-28 escalation) — 2 recurring incidents
+1358	OPEN	Ongoing	FLYWHEEL - Process improvement	Cross-project mail-routing reference doc never created (Track 1 from Apr-28 escalation) — 2 recurring incidents
 1359	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	cli/commands/notion.py: self.adapter referenced 10x but never assigned (AttributeError waiting to happen)
 1360	OPEN	Production	PUB - Public Beta	Security: add API key gate to /api/v1/intent (replace theater left by Caddy basic-auth removal)
 1361	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	Notion: repoint legacy services/integrations/mcp/notion_adapter.py callers to canonical + delete shim
@@ -1183,7 +1183,7 @@ issue	state	milestone	sprint	title
 1371	OPEN	Production	PROD-TECHDEBT - General Cleanup	Test-collection fragility: ModuleNotFoundError for real packages (services.configuration/services.cache) when specific files run together
 1372	OPEN	Production	PROD-TECHDEBT - General Cleanup	tests/intent/contracts/: 42 pre-existing failures, ContainerNotInitializedError (ServiceContainer test fragility)
 1373	CLOSED	MVP	Beta Blockers - Hard Gates Only	ADR-075 Component B: per-user system-prompt personalization (owner_id-scoped, neutral-default degradation)
-1374	CLOSED	Production		mail-send.sh residue reconcile fails when caller passes both sides of a staged rename
+1374	CLOSED	Ongoing	FLYWHEEL - Process improvement	mail-send.sh residue reconcile fails when caller passes both sides of a staged rename
 1375	CLOSED	Ongoing	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-07-07
 1376	OPEN	Production	PROD-RECONNECT - Complete Connector Migration	Follow-up to #1279: ~23 more fresh-GitHubIntegrationRouter sites (intent_service, context_assembler, canonical_handlers) never close their aiohttp session
 1377	OPEN	Production	PROD-TRUST - Trust + Learning Continuation	Insight provenance: add is_seed/source field to InsightDB + surface it (full fix deferred from #1216)
