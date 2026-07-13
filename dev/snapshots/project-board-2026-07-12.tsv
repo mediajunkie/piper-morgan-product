@@ -34,10 +34,10 @@ issue	state	milestone	sprint	title
 352	CLOSED	MVP	M1 - MVP Foundation	TEST-SMOKE-E2E: Create core user journey smoke tests
 190	CLOSED	MVP	M1 - MVP Foundation	TEST-QUALITY: Test Reliability for Production Confidence
 761	CLOSED	MVP	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-02-02
-428	CLOSED	MVP		MUX-IMPLEMENT-ARIA: ARIA labels
-429	CLOSED	MVP		MUX-IMPLEMENT-CONTRAST-TESTS: Contrast testing
-403	CLOSED	MVP		MUX-IMPLEMENT: UI Polish
-430	CLOSED	MVP		MUX-IMPLEMENT-THEME-CONSISTENCY: Theme consistency
+428	CLOSED	MVP	P4 - MUX A11y and Polish	MUX-IMPLEMENT-ARIA: ARIA labels
+429	CLOSED	MVP	P4 - MUX A11y and Polish	MUX-IMPLEMENT-CONTRAST-TESTS: Contrast testing
+403	CLOSED	MVP	P4 - MUX A11y and Polish	MUX-IMPLEMENT: UI Polish
+430	CLOSED	MVP	P4 - MUX A11y and Polish	MUX-IMPLEMENT-THEME-CONSISTENCY: Theme consistency
 711	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-PROJECT-DETAIL-VIEW: Create Project Detail View with Lifecycle
 419	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-NAV-HOME: Home State Design
 420	CLOSED	MVP	P3 - MUX Cross-channel Unity	MUX-NAV-UTILITY - Navigation Utility Layer
@@ -201,9 +201,9 @@ issue	state	milestone	sprint	title
 145	CLOSED	Alpha	A1 (Critical Infrastructure)	INFR-DATA-BUG: Fix asyncio initialization bug in Slack integration causing test failures
 105	CLOSED	MVP	A4 (Standup Epic)	UX-PIPER: Response Personality Enhancement
 167	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	INFR-TEST: Review regression testing for gaps
-134	CLOSED	MVP		MVP-CONFIG-NOTN: Notion integration for knowledge management workflows
-95	CLOSED	MVP		MVP-STAND-FTUX: Standup Experience Excellence
-56	CLOSED	MVP		MVP-DOCS-MSG: Message-Scoped Document Context
+134	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MVP-CONFIG-NOTN: Notion integration for knowledge management workflows
+95	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MVP-STAND-FTUX: Standup Experience Excellence
+56	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MVP-DOCS-MSG: Message-Scoped Document Context
 143	CLOSED	MVP	M3 - Artifact Persistence	INFR-CONFIG-PERF: Establish performance benchmarking framework for configuration system
 146	CLOSED	Ongoing	FLYWHEEL - Process improvement	FLY-VERIFY: Implement Three-Tier Verification Pyramid
 147	CLOSED	Ongoing	FLYWHEEL - Process improvement	FLY-VERIFY-HAND: Implement Mandatory Handoff Protocol with Verification
@@ -212,18 +212,18 @@ issue	state	milestone	sprint	title
 65	OPEN	Enterprise		FEAT-VISION: Visual Content Analysis Pipeline
 58	OPEN	Enterprise		FEAT-DASH: Analytics Dashboard Integration
 57	OPEN	Enterprise		FEAT-MEET: Transcript Analysis & Visualization
-114	CLOSED	MVP		INFR-DATA: Remove Legacy DatabasePool Class and Deprecated RepositoryFactory
-115	CLOSED	MVP		INFR-DATA: Fix IntentEnricher Dependency Injection Anti-Pattern
+114	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	INFR-DATA: Remove Legacy DatabasePool Class and Deprecated RepositoryFactory
+115	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	INFR-DATA: Fix IntentEnricher Dependency Injection Anti-Pattern
 66	OPEN	Enterprise		FEAT-PREDICT: Predictive Project Analytics
-128	CLOSED	MVP		UX-FTUX: Wizard Implementation
-97	CLOSED	MVP		MVP-CONFIG-PROMPT: Quick Context Loading via System Prompt
-98	CLOSED	MVP		MVP-USER-DOCS: Document Ingestion for Context
+128	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	UX-FTUX: Wizard Implementation
+97	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MVP-CONFIG-PROMPT: Quick Context Loading via System Prompt
+98	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	MVP-USER-DOCS: Document Ingestion for Context
 100	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CONV-FEAT-PROJ: Project Portfolio Awareness
 101	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CONV-FEAT-TIME:Temporal Context System
 106	OPEN	Fast Follow		CONV-FEAT-STRAT: Strategic Recommendations
 104	OPEN	Fast Follow		CONV-FEAT-ALLOC: Time Allocation Analysis
 103	OPEN	Fast Follow		CONV-FEAT-PRIOR: Priority Calculation Engine
-154	CLOSED	MVP		UX-DESIGN: Establish design system for consistent UI development
+154	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	UX-DESIGN: Establish design system for consistent UI development
 241	CLOSED	MVP	M1 - MVP Foundation	CORE-ETHICS-TUNE: Post-Alpha Ethics Optimization
 113	CLOSED	Alpha	A1 (Critical Infrastructure)	INFR-DATA-MIGRATE: Migrate main.py from DatabasePool to AsyncSessionFactory
 209	CLOSED	MVP	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2025-10-06
@@ -264,7 +264,7 @@ issue	state	milestone	sprint	title
 304	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CONV-INFR-NOTN: Activate Existing Notion Integration
 309	OPEN	Fast Follow	M2 - Conscious Floor + Action Handlers	CONV-MCP-PROTO: DocumentAnalysisSkill Prototype
 310	OPEN	Fast Follow	M2 - Conscious Floor + Action Handlers	CONV-UX-QUICK: Settings & Startup Quick Wins
-311	CLOSED	MVP		CONV-MCP-LIBRARY: Core Skills Library Implementation
+311	CLOSED	MVP	M2 - Conscious Floor + Action Handlers	CONV-MCP-LIBRARY: Core Skills Library Implementation
 312	CLOSED	MVP	M3 - Artifact Persistence	CONV-UX-DESIGN: Unified Design System & Token Migration
 315	OPEN	Fast Follow	M3 - Artifact Persistence	CONV-MCP-LIBRARY: Core Skills Library Implementation
 317	CLOSED	MVP	M1 - MVP Foundation	UX-TRANCHE3 - Production-Ready Polish & Accessibility Infrastructure
@@ -322,13 +322,13 @@ issue	state	milestone	sprint	title
 390	CLOSED	MVP	A10 - Alpha Testing	ALPHA-SETUP-UI: Add web-based setup UI (setup/onboarding page)
 392	CLOSED	MVP	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2025-11-24
 386	CLOSED	MVP	W (Quick Wins)	TEST-EDGE-USER: Fix invalid UUID format in file resolver and scoring tests
-398	CLOSED	MVP		MUX: Modeled User Experience
+398	CLOSED	MVP	P4 - MUX A11y and Polish	MUX: Modeled User Experience
 399	CLOSED	MVP	V1 - MUX Vision Formalization	MUX-VISION-OBJECT-MODEL: Formalize the Object Model Discovery
 404	CLOSED	MVP	X1 - MUX Core Tech	MUX-VISION-GRAMMAR-CORE: Implement "Entities experience Moments in Places"
 400	CLOSED	MVP	X1 - MUX Core Tech	MUX-VISION-CONSCIOUSNESS: Extract and Document Embodied AI Patterns from Morning Standup
 405	CLOSED	MVP	X1 - MUX Core Tech	MUX-VISION-METAPHORS: Formalize ownership metaphors (Mind/Senses/Understanding)
 406	CLOSED	MVP	X1 - MUX Core Tech	MUX-VISION-FEATURE-MAP: Map existing features to object model
-409	CLOSED	MVP		MUX-VISION-JOURNAL-LAYERS: Define Session vs Insight journal architecture
+409	CLOSED	MVP	V2 - MUX Integration Mapping	MUX-VISION-JOURNAL-LAYERS: Define Session vs Insight journal architecture
 410	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-CANONICAL-ENHANCE: Evolve canonical queries to orientation system
 411	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-RECOGNITION: Design "did you mean..." interface patterns
 412	CLOSED	MVP	I1 - MUX Interaction	MUX-INTERACT-INTENT-BRIDGE: Bridge current intent classification to recognition
@@ -626,9 +626,9 @@ issue	state	milestone	sprint	title
 788	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: 'Invalid Date' shown in conversation sidebar
 789	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	BUG: Piper claims 'no meetings' without calendar connected
 791	CLOSED	MVP	Q - Recurring Audits	FLY-AUDIT: Weekly Docs Audit - 2026-02-09
-792	CLOSED	MVP		DOC: Audit all ADRs for broken internal links
-793	CLOSED	MVP		DOC: Add link integrity checking to weekly docs audit
-794	CLOSED	MVP		DOC: Post-recovery cleanup and review of dev/ tree
+792	CLOSED	MVP	Q - Recurring Audits	DOC: Audit all ADRs for broken internal links
+793	CLOSED	MVP	Q - Recurring Audits	DOC: Add link integrity checking to weekly docs audit
+794	CLOSED	MVP	Q - Recurring Audits	DOC: Post-recovery cleanup and review of dev/ tree
 795	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[SETUP] uvloop fails to install on Windows - use PEP 508 environment markers
 796	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[DB] Migration 70847a6596f3 fails - 'features' table does not exist
 797	CLOSED	MVP	A31 - Alpha round 3 testing - workflows	[SETUP] Windows CRLF line endings break Docker container startup
