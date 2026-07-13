@@ -1,0 +1,33 @@
+# ChromaDB sidecar (#1278) — PRIVATE-ONLY: no [http_service], no public IPs.
+# Reachable solely via piper-morgan-chroma.internal:8000 on the org's 6PN.
+app = "piper-morgan-chroma"
+primary_region = "sjc"
+
+[build]
+  image = "chromadb/chroma:latest"
+
+[env]
+  ANONYMIZED_TELEMETRY = "FALSE"
+  ALLOW_RESET = "FALSE"
+  IS_PERSISTENT = "TRUE"
+  # (2026-07-12) chroma :latest (Rust era) binds IPv4-only and ignores the
+  # old CHROMA_SERVER_HOST env — .internal (IPv6-only) can't reach it.
+  # Solution: PRIVATE FLYCAST — the [[services]] block + a private IPv6
+  # allocation lets fly-proxy accept v6 and forward to the machine's v4
+  # bind. Consumers use piper-morgan-chroma.flycast:8000. Still no public IP.
+
+[[mounts]]
+  source = "chroma_data"
+  destination = "/chroma/chroma"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+
+# flycast bridge (see env comment): fly-proxy fronts the IPv4-only bind.
+[[services]]
+  internal_port = 8000
+  protocol = "tcp"
+
+  [[services.ports]]
+    port = 8000
