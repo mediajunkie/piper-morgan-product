@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/13/2026-07-13-0707-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `804553cc`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-13 10:07 PT (fire ~10:07 — xpoll read; ADR-078 PROPOSED+gated on Lead feasibility; Docs duty-cycle retire noted as watch)
+**Last updated**: 2026-07-13 13:07 PT (fire ~13:07 — ADR-078 D1a folded; HOST trust-lens complete; queue (0,0))
 
 ---
 
@@ -40,7 +40,7 @@
 ## New threads (Jul 12)
 
 - **CLAUDE.md refactor** — ✅ Proposal filed to CIO (cc Docs, PM) 2026-07-12. PM-approved. CIO leads architecture pass; Docs executes; HOST reviews behavioral-norms completeness pre-ratification. CIO ack'd (Jul 12 STOP) — scoping note coming before any text touched. Awaiting.
-- **#1394 session-activity ledger** — HOST trust-lens ack sent to Arch (Jul 13 START). ADR-078 PROPOSED (Arch drafted same night). Gated on **Lead's feasibility read**. HOST: no further action until Lead responds or Arch asks.
+- **#1394 session-activity ledger / ADR-078** — ✅ **HOST trust-lens COMPLETE** (Jul 13). D1a `(session_id, user_id)` keying folded into ADR-078 as impossible-by-construction. ADR-078 stays PROPOSED — gated on Lead's ledger-feasibility read + PM/Lead concurrence on pre-classifier direction. No HOST action until those gates close.
 - **Docs duty-cycle retire** — Belt-4 extended as replacement (Jul 12 brief). Watch item: how Docs coverage pattern shifts. No action yet.
 
 ## New threads (Jul 10)
