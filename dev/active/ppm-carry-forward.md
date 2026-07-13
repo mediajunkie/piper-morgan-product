@@ -1,7 +1,7 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-07-12 ~4:15 PM PT (Fire 2, duty-cycle-tick)
+**Last rewritten**: 2026-07-12 ~7:05 PM PT (Fire 3, duty-cycle-tick)
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -11,9 +11,10 @@
 | Item | State | Next action |
 |---|---|---|
 | **Sprint-recovery effort (7/5 field wipe)** | ✅✅✅ **FULLY COMPLETE** as of 2026-07-12 — HIGH/MEDIUM/LOW/S2-correction/Group 3 all applied+verified | None. Closed. See decisions-log final entry if this needs revisiting later |
-| **#1386/#1394 Scenario B re-scope** | ✅ CXO+PPM joint sign-off FINAL as of this fire — folded into #1386 body, #1394 labeled `priority: high` | Watch for Lead's re-execution of rescoped B3/B4; CXO owns the TESTER-QUICKSTART line once Lead's #1394 scope-read lands |
+| **#1386 criterion 3 (scenarios)** | ✅ FULLY CLOSED — C 3/3, re-scoped B 4/4, both PASS live beta 2026-07-12 evening | None. #1394 stays open/tracked as intended, `priority: high` already set |
+| **#1386 overall gate** | Criteria 1/2/4/5/6 still open — Arch (corpus-rev #1395, ADR-070-A check) and PM (Scenario A browser run, criterion-4 window, criterion-6 sign-off) own what's left | Watch only — nothing in PPM's lane remains on this issue |
 | **#1278 Fly cutover** | PM appears to be executing DNS cutover (per Lead's 7/12 memo) | Watch for completion + criterion-2 Run 15 results |
-| **#1397 (discovered this fire)** | Filed: `regenerate-mailbox-manifests.py` + duty-cycle-tick Step 2 assume local-disk-matches-origin, false under Option-B ephemeral worktrees | No PPM action needed — flagged for a maintainer; affects the whole cohort, not just PPM |
+| **#1397 (discovered 7/12)** | Filed: `regenerate-mailbox-manifests.py` + duty-cycle-tick Step 2 assume local-disk-matches-origin, false under Option-B ephemeral worktrees | No PPM action needed — flagged for a maintainer |
 
 ## PM-attention / escalation items (residual home since 6/17 fold)
 
