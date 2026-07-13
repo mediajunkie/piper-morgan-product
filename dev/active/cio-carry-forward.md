@@ -60,7 +60,7 @@
 ## Still open, lower priority
 
 - **Dashboard welfare-criteria v0.3** — Criterion E resolved, full A–F implementation not started (standing-items #14, needs a dedicated build session).
-- **Exec's inbox-proxy pilot** — greenlit 7/4, 2-week clock presumably running; not re-verified since.
+- **Exec's inbox-proxy pilot** — checked 7/13, partial signal only (not fully resolved). Arch's carry-forward shows "inbox-proxy discipline ACKed... 6/27 PM (retire reflexive cc-PM; route through Exec by intent)" — reads like it's already operating as adopted practice, not still on a distinct 2-week evaluation clock. But the 6/27 ACK date doesn't cleanly match the 7/4 "greenlit" memo filename I originally tracked this from — could be two related but different waves, could be the same thing referenced loosely. Not confident enough to rewrite this entry outright; flagging the discrepancy rather than resolving it. Exec would know definitively.
 
 ## Live / in-flight (longer-running)
 
