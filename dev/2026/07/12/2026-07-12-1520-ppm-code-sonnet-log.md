@@ -103,3 +103,9 @@ Confirmed: last commit (`93ff7f044`) is an ancestor of current `origin/main` HEA
 Cron (`52 6,9,12,15,18,21`, job `192e3d47`) remains armed per Rule 2 (keep-armed through PM conversation and PM's overnight absence) — the next fire will apply its own last-fire-of-the-day logic and STOP/WATCH appropriately without needing a manual trigger here.
 
 <!-- DAY-CLOSED: 2026-07-12 -->
+
+---
+
+### Post-close mail check (~10:20 PM PT, cron fire after DAY-CLOSED)
+
+Two memos landed after tonight's close: Arch's #1394 architecture determination (verdict: architectural gap, not wiring — one missing primitive, a session-activity ledger, surfacing at two seams) and the resulting ADR-078 PROPOSED, both addressed to PM/Lead with PPM cc'd for awareness only. No PPM action indicated in either — read for context, triaged to `read/`. Not reopening today's wrap for this; noting it here only for continuity into tomorrow.
