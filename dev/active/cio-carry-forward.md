@@ -13,7 +13,7 @@
 
 **Resolved today**: laptop-reboot reorientation (7/10 retroactively closed, cron restarted clean); Docs's `f33227b7` confirmed cleared; watchdog Belt-2 stall-alert routing fixed (was writing into PM's retired inbox — commit `4b6026be6`); `docs-duty-cycle` architecture question resolved with PM — retire (matches the shape PM rejected 6/14) + replace with a properly-gated Belt-4 extension (commit `87bcdaae9`, 17/17 tests). Docs executing their own retirement; PM needs the plist reload (see PM Attention above — unchanged, still open).
 
-**New, deliberately deferred**: HOST relayed PM's greenlit CLAUDE.md refactor, CIO as architecture lead — no deadline pressure, needs a dedicated scoping session, not squeezed into today's close. Standing-items #16. Next action: send HOST+Docs the scoping note (inventory of "used to be X now Y" passages + belongs-where architecture + pass structure) before touching any text, as HOST explicitly asked.
+**CLAUDE.md refactor scoping — SENT 7/13 ~11:20am.** Full inventory (`dev/active/claude-md-refactor-scoping-cio-2026-07-13.md`): 10 flagged passages with disposition, 3-altitude structure, 4-step pass structure. Sent to HOST (cc Docs, PM), commit `cc70a1d15`. Standing-items #16 moved to "Pending external action" — awaiting HOST read before Docs starts Pass 2. No further CIO action until they respond.
 
 ## Older: 7/10 Fri — DAY-CLOSED (retroactively, laptop reboot). Full account: `dev/2026/07/10/2026-07-10-1021-cio-code-log.md`
 
