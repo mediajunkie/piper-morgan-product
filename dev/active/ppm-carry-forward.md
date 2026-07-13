@@ -1,7 +1,7 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-07-12 ~7:05 PM PT (Fire 3, duty-cycle-tick)
+**Last rewritten**: 2026-07-12 ~10:05 PM PT
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -15,6 +15,8 @@
 | **#1386 overall gate** | Criteria 1/2/4/5/6 still open — Arch (corpus-rev #1395, ADR-070-A check) and PM (Scenario A browser run, criterion-4 window, criterion-6 sign-off) own what's left | Watch only — nothing in PPM's lane remains on this issue |
 | **#1278 Fly cutover** | PM appears to be executing DNS cutover (per Lead's 7/12 memo) | Watch for completion + criterion-2 Run 15 results |
 | **#1397 (discovered 7/12)** | Filed: `regenerate-mailbox-manifests.py` + duty-cycle-tick Step 2 assume local-disk-matches-origin, false under Option-B ephemeral worktrees | No PPM action needed — flagged for a maintainer |
+| **Production-milestone triage** | ✅ COMPLETE — 20 new issues triaged into PROD-* sprints, verified live; roadmap.md folded to v18.6 | 2 issues held (#1358, #1374 — likely Ongoing/FLYWHEEL scope, not Production; flagged, not applied) |
+| **Docs-tree audit request** | Memo sent to Docs (cc PM) per PM directive, with 3 concrete starting data points | Watch for Docs' audit + cleanup plan — not PPM's to execute |
 
 ## PM-attention / escalation items (residual home since 6/17 fold)
 
