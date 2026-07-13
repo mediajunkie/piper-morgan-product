@@ -6,11 +6,13 @@
 
 - 🔴 **Action needed: reload the live watchdog launchd plist.** PM ratified retiring `docs-duty-cycle` + building the Belt-4 replacement (2026-07-12) — code shipped + tested (commit `87bcdaae9`), version-controlled plist updated (`WATCHDOG_AUTO_SPAWN_ROLES=docs`), but the *live* copy at `~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist` won't pick up the change until reloaded. Deliberately not run by CIO (live launchd/system-config change). Commands (also in the plist's own header comment): `cp scripts/launchd/com.pipermorgan.duty-cycle-watchdog.plist ~/Library/LaunchAgents/ && launchctl unload ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist && launchctl load ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist`.
 
-## 🔄 7/12 Sun — IN PROGRESS. `dev/2026/07/12/2026-07-12-1520-cio-code-log.md`
+## 🎆 7/12 Sun — DAY-CLOSED. Full account: `dev/2026/07/12/2026-07-12-1520-cio-code-log.md`
 
-**Cadence**: LEAN `7 10,16,22`, cron `aa76aa3e` (laptop reboot killed the prior session; restarted clean via delete-then-create-then-verify on resume).
+**Cadence**: LEAN `7 10,16,22`, cron re-armed as STOP's final action (no cadence change).
 
-**Shipped**: watchdog Belt-2 stall-alert routing fixed (commit `4b6026be6`) + Belt-4 spawn-fresh extended to Docs, replacing the retired `docs-duty-cycle` scheduled-task (PM-ratified; commit `87bcdaae9`, 17/17 tests). Docs retiring the scheduled-task themselves (their own mechanism, their call to execute, per their own stated preference). PM needs to reload the live plist — see PM Attention above.
+**Resolved today**: laptop-reboot reorientation (7/10 retroactively closed, cron restarted clean); Docs's `f33227b7` confirmed cleared; watchdog Belt-2 stall-alert routing fixed (was writing into PM's retired inbox — commit `4b6026be6`); `docs-duty-cycle` architecture question resolved with PM — retire (matches the shape PM rejected 6/14) + replace with a properly-gated Belt-4 extension (commit `87bcdaae9`, 17/17 tests). Docs executing their own retirement; PM needs the plist reload (see PM Attention above — unchanged, still open).
+
+**New, deliberately deferred**: HOST relayed PM's greenlit CLAUDE.md refactor, CIO as architecture lead — no deadline pressure, needs a dedicated scoping session, not squeezed into today's close. Standing-items #16. Next action: send HOST+Docs the scoping note (inventory of "used to be X now Y" passages + belongs-where architecture + pass structure) before touching any text, as HOST explicitly asked.
 
 ## Older: 7/10 Fri — DAY-CLOSED (retroactively, laptop reboot). Full account: `dev/2026/07/10/2026-07-10-1021-cio-code-log.md`
 
