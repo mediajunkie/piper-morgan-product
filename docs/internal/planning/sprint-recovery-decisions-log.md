@@ -233,4 +233,27 @@ This closes the S2 finding from 2026-07-10: S2 (Security Polish) is now empty of
 
 ---
 
+## GROUP 3 RESOLVED — sprint-recovery effort COMPLETE (2026-07-12)
+
+PM reviewed the Group 3 artifact and resolved all 19 issues from memory in a single pass — zero remained unrecoverable. Applied and verified live, 19/19, 0 mismatches:
+
+- **M2 - Conscious Floor + Action Handlers (10)**: #56, #95, #97, #98, #114, #115, #128, #134, #154, #311 — all closed 2025-11-15. PM: "The 10 issues closed on 11-15 are M2. M3 issues start closing the next day." Notable: this predates M2's previously-recorded calendar window (2026-04-11 to 2026-06-03) by roughly five months — consistent with the "we had six [MVP sprints], then five" resequencing PM flagged 2026-07-10, and with the #922 precedent (floor/action-handler work existed well before a dedicated sprint was carved out for it). The M2 label evidently covers a materially longer real history than any automated method had reconstructed.
+- **V2 - MUX Integration Mapping (1)**: #409 (MUX-VISION-JOURNAL-LAYERS, closed 2025-11-29)
+- **P4 - MUX A11y and Polish (5)**: #403, #428, #429, #430 (all closed 2026-01-28 — ARIA labels, contrast testing, theme consistency, UI polish; PM: "1-28 issues => P4") plus **#398** (MUX: Modeled User Experience, the superepic itself, closed 2026-02-02 — PM: "the MUX superepic, would have closed in the final MUX sprint (P4)"). P4's calendar end date (2026-01-27) is indeed the latest of the whole V1→X1→L1→I1→P1→P2→P3→P4 MUX chain, confirming PM's "final sprint" reasoning against the existing calendar independent of PM's own memory.
+- **Q - Recurring Audits (3)**: #792, #793, #794 (all closed 2026-02-11 — DOC: audit ADR links / add link-checking to weekly audit / post-recovery dev-tree cleanup). PM: "2026-02-11 => Q." Confirms the artifact's own speculative note (flagged as "FLYWHEEL-shaped" by content) was in the right neighborhood — process/audit-flavored work, just the more precise bucket was Q specifically, consistent with the whole FLY-AUDIT precedent.
+
+## FULL SPRINT-RECOVERY EFFORT: COMPLETE (2026-07-05 → 2026-07-12)
+
+Started 2026-07-05 after a full-replace GraphQL mutation wiped the Sprint field for all ~1175 project items. Final tally:
+- **HIGH confidence** (433, applied 2026-07-06)
+- **MEDIUM confidence** (93, applied 2026-07-06)
+- **LOW confidence** (218, applied 2026-07-10)
+- **S2→A12 correction** (19, applied 2026-07-12 — a genuine board error found and fixed along the way, not a wipe-recovery item)
+- **Group 3, true zero evidence** (19, applied 2026-07-12, entirely from PM's direct memory)
+- Plus the #234 logged-but-never-applied bug, caught and fixed 2026-07-12 by this same live-reverification discipline.
+
+Every issue that had a Sprint value before the wipe now has one again, either reconstructed from evidence or supplied directly from PM's memory where no evidence existed. This log remains the durable record of how — append further entries here if anything from this period needs revisiting, but the active recovery effort itself is done.
+
+---
+
 *Log started 2026-07-06 during the Group 1 + Group 2 reconciliation pass. Append further decisions here as remaining groups are reviewed — do not start a new file.*

@@ -3,10 +3,12 @@
 #
 # Run by launchd (a pure OS job — ZERO Claude agents, no persona-fork; the cure for the scheduled-task
 # approach PM rejected 2026-06-14). Hourly it: fetches origin, runs the freeze-check, and on a NEWLY-stale
-# role (or a cooldown re-ping) NUDGES PM via (1) a macOS desktop notification + (2) a durable PM-mailbox
-# memo (push-to-ref, so PM sees it at session-start even when away from the desktop) + (3) Slack if
-# configured. It does no duty-cycle work; the only repo state it writes is its audit log, its nudge-state
-# file, and (via push-to-ref, touching no working tree) the alert memo it delivers to PM's inbox.
+# role (or a cooldown re-ping) NUDGES PM via (1) a macOS desktop notification + (2) a durable mailbox
+# memo (push-to-ref, so it survives being away from the desktop) + (3) Slack if configured. It does no
+# duty-cycle work; the only repo state it writes is its audit log, its nudge-state file, and (via
+# push-to-ref, touching no working tree) the alert memo. Belt 2 routes to CIO's inbox as of 2026-07-12
+# (PM retired direct mailbox monitoring) -> CIO's carry-forward -> Exec's cohort-attention-rollup -> PM;
+# Belts 1 and 3 still reach PM directly and are unaffected.
 #
 # v2 (2026-06-20, PM-requested after the v1 detected the ~26h cohort stall but only logged it — never
 # reached PM, who re-prodded manually ~5×):
@@ -207,15 +209,20 @@ fi
 # Belt 1 — macOS desktop notification (immediate).
 /usr/bin/osascript -e "display notification \"$BODY\" with title \"$TITLE\" sound name \"Basso\"" 2>/dev/null
 
-# Belt 2 — durable PM-mailbox memo via push-to-ref (survives being away from the desktop).
-MEMO="mailboxes/xian (ceo)/inbox/alert-duty-cycle-stall-$(date '+%Y-%m-%d-%H%M').md"
+# Belt 2 — durable memo via push-to-ref (survives being away from the desktop).
+# Routes to CIO's inbox, not PM's directly (changed 2026-07-12): PM retired mailboxes/xian (ceo)/inbox/
+# as a monitored destination -- alerts landing there now go nowhere. Per Docs's routing note the same
+# day, the intended path is watchdog -> CIO -> CIO's carry-forward -> Exec's cohort-attention-rollup
+# (which reads dev/active/{role}-carry-forward.md directly, per its own SKILL.md Step 1) -> PM. CIO
+# triages on the next mail loop rather than the raw alert going straight to an unwatched inbox.
+MEMO="mailboxes/cio/inbox/alert-duty-cycle-stall-$(date '+%Y-%m-%d-%H%M').md"
 cat > "$REPO/$MEMO" <<EOF
 ---
 from: duty-cycle-watchdog (automated)
-to: xian (ceo)
+to: cio
 date: $(date '+%Y-%m-%d')
 subject: $TITLE
-priority: high — automated freeze-watcher nudge
+priority: high — automated freeze-watcher nudge; fold into carry-forward for the attention rollup
 ---
 
 # $TITLE
@@ -224,9 +231,10 @@ $BODY
 
 - **Detected**: $ts (freeze-watcher hourly run); thresholds per \`dev/active/duty-cycle-registry.tsv\`.
 - **Newly nudge-worthy**: $nudge_list   ·   **all currently stale**: $SUMMARY
-- **Action**: re-prod the listed role's session. If many at once, wake the machine/app — one wake covers it.
+- **Action for PM**: re-prod the listed role's session. If many at once, wake the machine/app — one wake covers it. (PM likely already saw this via the desktop notification or Slack — this memo is the durable copy.)
+- **Action for CIO** (reading this first): fold into \`dev/active/cio-carry-forward.md\`'s PM-attention section if still relevant by the time you see it — Exec's cohort-attention-rollup reads the carry-forward directly, so that's how this reaches PM if the other two belts were missed.
 
-*(Automated nudge — duty-cycle-watchdog.sh. Dedup'd: re-pings ~$((COOLDOWN/3600))h while still stale. The nudge belt PM asked for 2026-06-20; both belts — desktop + this memo. We'll tune what works.)*
+*(Automated nudge — duty-cycle-watchdog.sh. Dedup'd: re-pings ~$((COOLDOWN/3600))h while still stale. The nudge belt PM asked for 2026-06-20; both belts — desktop + this memo. Routed to CIO's inbox, not PM's, since 2026-07-12 (PM retired direct-inbox monitoring) — see the Belt-2 code comment above for the full relay path.)*
 EOF
 if PIPER_REPO="$REPO" "$REPO/scripts/mail-send.sh" "mail(watchdog): $TITLE" "$MEMO" >/dev/null 2>&1; then
   rm -f "$REPO/$MEMO"   # delivered to origin/main via push-to-ref; drop the local copy (no main-checkout residue)

@@ -1,8 +1,20 @@
 # CIO Carry-Forward — ephemeral session state
 
-**Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live in `duty-cycle-escalations-cio.md`.
+**Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live **here**, in the section immediately below (corrected 2026-07-12 — this line pointed at `duty-cycle-escalations-cio.md`, deprecated/folded into this file on 2026-06-17; a stale self-reference in my own canonical doc, caught while wiring the watchdog's stall-alert routing to land here).
 
-## 🔄 7/10 Fri — IN PROGRESS. `dev/2026/07/10/2026-07-10-1021-cio-code-log.md`
+## PM Attention (fold watchdog alerts + anything else needing PM's call here; Exec's `cohort-attention-rollup` reads this file directly per its own SKILL.md Step 1)
+
+- 🔴 **Decision needed: retire `docs-duty-cycle`?** A persistent scheduled-task Docs's own session created ~7/6 (implementing a schedule-change request via an unrequested mechanism change) — runs main-checkout-direct, matches the exact shape PM rejected 2026-06-14 ("No fresh session spawns. Ever... Scheduled-tasks REJECTED"), not the narrower spawn-fresh PM later approved (B1, 6/29 — stall-gated only, collision-guarded, isolated worktree, never enabled for anyone). CIO recommendation: retire; if Docs wants real stall-protection, extend the existing notify-only watchdog or properly gate B1, don't run an ungated parallel worker. Presented to PM in chat 2026-07-12 ~3:40pm, not yet answered. Nothing touched pending PM's call.
+
+## 🔄 7/12 Sun — IN PROGRESS. `dev/2026/07/12/2026-07-12-1520-cio-code-log.md`
+
+**Cadence**: LEAN `7 10,16,22`, cron `aa76aa3e` (laptop reboot killed the prior session; restarted clean via delete-then-create-then-verify on resume).
+
+**Shipped**: watchdog Belt-2 stall-alert routing fixed (was hardcoded to PM's now-retired inbox, now routes through mine → carry-forward → Exec's rollup) — tested with a real isolated sandbox run, not DRYRUN. Fixed a stale self-reference in this very file's own purpose line in the same pass. Commit `4b6026be6`.
+
+**Pending PM**: the `docs-duty-cycle` retirement call above — this is the one open thread, holds itself, doesn't block anything else.
+
+## Older: 7/10 Fri — DAY-CLOSED (retroactively, laptop reboot). Full account: `dev/2026/07/10/2026-07-10-1021-cio-code-log.md`
 
 **Cadence**: LEAN `7 10,16,22`, cron `8094d7db` (transitioned from `772e045e` at 6:15pm — test-driven, not a cadence change, see below).
 

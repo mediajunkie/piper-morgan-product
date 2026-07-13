@@ -45,3 +45,15 @@ Board snapshot refreshed post-#234-fix. Decisions log updated with the bug + the
 Re-verified all 19 issues were still S2 immediately before mutating (they were — no drift since the 7/10 finding), applied A12 to all 19, re-verified live afterward: 0 mismatches. S2 (Security Polish) is now empty of issues on the board, consistent with the forensic conclusion that it dissolved into Alpha Setup before ever running. Decisions log updated with the executed list + a full sprint-recovery status rollup (HIGH/MEDIUM/LOW/S2-move all ✅ complete as of today; Group 3 is the only open piece, now in PM's hands). Board snapshot refreshed again.
 
 **The full 899-issue sprint-recovery effort that began 2026-07-05 is now, functionally, done** — everything that could be mechanically or evidentially recovered has been; what remains is 19 issues where no method found anything, which PM is reviewing directly.
+
+### PM resolved Group 3 — all 19, from memory, in one message. Sprint-recovery effort COMPLETE.
+
+PM: "The 10 issues closed on 11-15 are M2. M3 issues start closing the next day. #409 => V2 (MUX-VISION). 1-28 issues => P4. #398 is the MUX superepic, would have closed in the final MUX sprint (P4). 2026-02-11 => Q." Five instructions, zero ambiguity, covering the entire 19-issue set exactly:
+- 10 issues (all closed 2025-11-15) → **M2**
+- #409 → **V2 - MUX Integration Mapping**
+- 4 issues (closed 2026-01-28) + #398 (the MUX superepic, closed 2026-02-02) → **P4 - MUX A11y and Polish**
+- 3 issues (closed 2026-02-11) → **Q - Recurring Audits**
+
+Cross-checked PM's "P4 = final MUX sprint" reasoning against the recovery calendar independent of memory: P4's recorded end date (2026-01-27) is genuinely the latest of the whole V1→X1→L1→I1→P1→P2→P3→P4 chain — confirms the reasoning, doesn't just take it on faith. Verified all 19 still empty before mutating, applied, re-verified all 19 live after (0 mismatches — the #234-taught discipline held here too).
+
+**Sprint-recovery effort, started 2026-07-05 after the field wipe, is COMPLETE**: HIGH (433) + MEDIUM (93) + LOW (218) + S2→A12 correction (19) + Group 3 (19) + the #234 fix. Every issue that had a sprint before the wipe has one again — reconstructed from evidence where evidence existed, supplied directly from PM's memory where it didn't. Final decisions-log entry written marking the close; board snapshot refreshed.
