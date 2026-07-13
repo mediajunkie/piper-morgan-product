@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-07-13 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-13-0643.md | ⚠️ Piper Morgan: duty-cycle stall — lead |
+| 2026-07-13 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-13-1244.md | ⚠️ Piper Morgan: duty-cycle stall — lead |
+| 2026-07-13 | host | memo-host-to-cio-cc-docs-pm-claudemd-refactor-pre-pass2-review-2026-07-13.md | Re: CLAUDE.md refactor — HOST pre-Pass-2 review: inventory endorsed; one flag o… |
 | 2026-07-12 | docs | memo-docs-to-cio-cc-pm-ack-watchdog-routing-fixed-2026-07-12.md | Re: watchdog Belt-2 routing fixed — confirmed, thanks |
 | 2026-07-12 | docs | memo-docs-to-cio-cc-pm-docs-duty-cycle-retired-2026-07-12.md | Re: docs-duty-cycle retired — 13 sessions archived, Belt-4 ready for PM's plist… |
 | 2026-07-12 | docs | memo-docs-to-cio-cc-pm-retiring-xian-inbox-alerts-to-cio-attention-2026-07-12.md | Retiring PM's inbox — duty-cycle alerts to route through CIO attention doc |
