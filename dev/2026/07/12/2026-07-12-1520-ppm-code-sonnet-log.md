@@ -83,3 +83,23 @@ Investigated before extending: pulled the actual Production milestone (99 issues
 PM agreed with the Ongoing/FLYWHEEL lean on the 2 held issues. Applied both (milestone via `gh issue edit --milestone`, Sprint field via the standard mutation), verified live — Production milestone triage is now **99/99 complete**.
 
 PM: "please also update the canonical repo doc of issue assignments so we have backup if the sprints are ever wiped out again." The dated snapshot TSVs already existed and had been refreshed all week, but nothing could actually *use* one to recover — the same gap that let PA's June 27 CSV reconstruction sit unused for weeks after the first wipe. Built `scripts/restore-sprint-field-from-snapshot.py`: reads the latest snapshot, pulls live Sprint values in one paginated sweep, reports every issue that drifted (dry-run by default), and restores via the same safe per-item mutation this whole week used, with a live re-verification pass baked in. **Tested it before calling it done** — ran dry-run against today's fresh snapshot, got "0 drift found," which is the correct answer since nothing had changed since the snapshot was taken; didn't just assert the script works without running it. Wired `CLAUDE.md`'s existing full-replace-wipe warning to point at both the snapshot script and the restore script, and added a closing note to `sprint-recovery-decisions-log.md`. Fresh snapshot committed capturing all of tonight's work.
+
+## Day-arc summary
+
+Opened on a post-reboot recovery (cron, mail, log hygiene) and closed on completing everything the 2026-07-05 field-wipe crisis left open. In between: the LOW tier (218) and Group 3 (19, entirely from PM's memory) finished the sprint-recovery effort start to finish; the #1386 beta-gate got its CXO+PPM joint scenario call, then closed criterion 3 outright when Lead's re-scoped Scenario B passed 4/4; a wrong claim about two missing planning docs got corrected in the same breath PM caught it, which led to actually reading `sprint-order.md`/`beta-blockers.md` in full and discovering the Production-sprint reorganization that caused the original wipe had never been folded into the roadmap — fixed as v18.6; the Production milestone reached full triage at 99/99; and the day closed by building the thing that was actually missing this whole time — a script that turns a board backup into a real restore, not just a document that sits there. Sent Docs a concrete, evidence-backed audit request along the way. Heavy day, clean finish.
+
+## Memory & briefing surfaces referenced this session
+- **Referenced**: sprint-recovery-decisions-log.md (every batch, all day); CLAUDE.md (mailbox discipline, sign-off checklist, the full-replace-wipe warning — read, corrected, and extended); duty-cycle-tick SKILL.md (Steps 1-7, with the Model A/B adaptation noted and now a discovered-work issue, #1397); roadmap.md / sprint-order.md / beta-blockers.md (read in full for the first time this session, not just referenced secondhand); feedback_investigate_before_extending_all_work (read the whole artifact before asserting — directly the lesson of tonight's file-location correction); feedback_no_confabulating_expected_steps_as_completed (the #234 catch two days ago and the restore-script test tonight are the same discipline)
+- **Loaded but not referenced**: BRIEFING-CURRENT-STATE (still stale — flagged repeatedly this week, never refreshed; if this keeps recurring it's worth its own fix rather than a daily footnote)
+- **Wanted but not found**: none of note — tonight's investigation instincts (search broadly via `gh api search/code` rather than trust an assumed path) is itself a lesson worth a memory entry; adding one
+
+## Sign-off
+
+```
+$ git fetch origin main && git merge-base --is-ancestor <last-commit> origin/main
+```
+Confirmed: last commit (`93ff7f044`) is an ancestor of current `origin/main` HEAD (`632a5714b` at sign-off time — cohort activity continued past my last push, all healthy: Arch making real progress on #1394, Host closed its own day). Local worktree checkout carries the same pre-existing, session-independent drift noted every prior wrap this week (frozen since ~June 18, never touched); all of tonight's actual work — 40+ commits — went straight to `origin/main` via the temp-index pattern and was verified live after every mutation, not just after every push.
+
+Cron (`52 6,9,12,15,18,21`, job `192e3d47`) remains armed per Rule 2 (keep-armed through PM conversation and PM's overnight absence) — the next fire will apply its own last-fire-of-the-day logic and STOP/WATCH appropriately without needing a manual trigger here.
+
+<!-- DAY-CLOSED: 2026-07-12 -->

@@ -3,7 +3,16 @@
      Install:  cp scripts/launchd/com.pipermorgan.duty-cycle-watchdog.plist ~/Library/LaunchAgents/
                launchctl load ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist
      Verify:   launchctl list | grep pipermorgan
-     Reinstall this if ~/Library/LaunchAgents is ever wiped. -->
+     Reinstall this if ~/Library/LaunchAgents is ever wiped.
+     On ANY change to this file (including EnvironmentVariables below), the live copy must be
+     re-synced and reloaded for the change to take effect -- launchd reads the plist at load time,
+     not on every fire:
+       cp scripts/launchd/com.pipermorgan.duty-cycle-watchdog.plist ~/Library/LaunchAgents/
+       launchctl unload ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist
+       launchctl load ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist
+     2026-07-12: added WATCHDOG_AUTO_SPAWN_ROLES=docs (PM-ratified, replacing the retired
+     docs-duty-cycle scheduled-task -- see cron-lifecycle.md and the 2026-06-14/06-29 design docs
+     for why this shape, not that one, is the sanctioned persistent mechanism). -->
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
@@ -14,6 +23,11 @@
     <string>/bin/bash</string>
     <string>/Users/xian/Development/piper-morgan/piper-morgan-product/scripts/duty-cycle-watchdog.sh</string>
   </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>WATCHDOG_AUTO_SPAWN_ROLES</key>
+    <string>docs</string>
+  </dict>
   <key>StartInterval</key>
   <integer>3600</integer>
   <key>RunAtLoad</key>
