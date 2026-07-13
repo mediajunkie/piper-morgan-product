@@ -1,36 +1,27 @@
-# Web carry-forward — 2026-07-12 (active)
+# Web carry-forward — 2026-07-12 close (active)
 
-**Session**: DinP/Fable-trial (Sonnet base) · cron `22 6,9,12,15,18,21 * * *` · PM session from 15:06
+**Session**: DinP/Fable-trial · cron `22 6,9,12,15,18,21 * * *` (job ef26183c, ARMED) · day CLOSED 21:52
 
 ## Active threads
 
-### Vercel migration — phases 1–3 SHIPPED ✓, phases 0/4/5 PM-GATED
+### Vercel migration — DEPLOY LIVE, blocked on PM password-hash retry
 - Plan artifact: https://claude.ai/code/artifact/a2ef2c23-9779-4f54-ae29-3d63f5689f88
-- Phase 1 ✓ static export behind STATIC_EXPORT flag (CI-verified green)
-- Phase 2 ✓ GitHub Contents API draft storage, dual-mode compose, SHA concurrency
-  - Branch-protection bypass via owner token CONFIRMED live (commit 323ceefdb on product main)
-- Phase 3 ✓ password login + JWT cookie + fail-closed APIs + Edge middleware + AdminGate
-- **Waiting on PM** (checklist delivered in chat 2026-07-12 evening):
-  1. Vercel account + project (Hobby-vs-Pro decision; Pro $20/mo recommended)
-  2. Fine-grained PAT for piper-morgan-product (Contents R/W) → GITHUB_DRAFT_TOKEN
-  3. Generate ADMIN_SESSION_SECRET + ADMIN_PASSWORD_HASH (commands in .env.example)
-  4. Vercel env vars (incl. NEXT_PUBLIC_GA_MEASUREMENT_ID=G-SVPLRHEEBP)
-  5. Test on *.vercel.app preview, THEN DNS cutover
-- After cutover (Web work): remove gh-pages deploy step + repository_dispatch cleanup (plan Phase 6)
+- Phases 1–3 shipped + CVE fix (website commits through 46cb2611b); GH Pages stayed green
+- Vercel: **Pro plan**, team slug `piper-morgan`, deploy GREEN on Next 15.4.11
+  - Test URL: `piper-morgan-website-git-main-piper-morgan.vercel.app` (behind Vercel deployment protection — PM's browser passes via Vercel SSO; custom domain won't have this layer)
+- **WAITING on PM**: `/admin/login` said "Wrong password" → hash was quoting-mangled at generation. Quoting-proof regen recipe delivered (read -s → stdin → bcryptjs), then bare-paste into Vercel env + redeploy.
+- **Then**: PM e2e on preview (login → edit draft → verify commit in product repo) → DNS cutover (records TBD from Vercel domain settings) → Web does Phase 6 (remove gh-pages deploy step + repository_dispatch cleanup; STATIC_EXPORT env stays for deploy.sh emergency fallback)
+- Env vars status: ADMIN_* + GITHUB_DRAFT_TOKEN evidently set (enforced mode responded); GA id delivered (G-SVPLRHEEBP); SENTRY_* optional, not set
 
-### #1391 Admin editing interface — COMPLETE ✓ (ac7795185, extended by Vercel phases)
-### #1392 Blog legacy fixes — COMPLETE ✓ (7c2673931 + f55a321be)
-
-### Phase 3 (Image Upload) — BLOCKED on PM
-- Image storage location question still open (asked Jul 9 10:22)
-
-### Role portfolio
-- `ROLE-PORTFOLIO-WEB.md` v0.1 routed; HOST review pending
+### Phase 3 (Image Upload) — BLOCKED on PM (image storage location, asked Jul 9)
+### Role portfolio — HOST review pending
+### Type-error cleanup — spun off as chip task_e8c4853a, running in separate session (7 pre-existing TS18047 in blog/nav); nothing landed on main yet at close
 
 ## Notes
-- Worktree node_modules is now a real install (was symlink; npm i jose replaced it). Turbopack panics in worktree — use plain `next dev` if needed.
-- Pre-existing type errors (7, searchParams/pathname nullability in blog/nav components) — spawn-task chip filed; not blocking (ignoreBuildErrors).
-- fs-mode auto-commit now pathspec-scoped (can't sweep other agents' staged files).
+- Worktree node_modules is a REAL install now (npm i jose replaced symlink). Turbopack panics in this worktree → use plain `next dev`.
+- fs-mode auto-commit is pathspec-scoped now (can't sweep other agents' staged files) — defect found live 7/12.
+- Draft serializer round-trips canonically (blank line after frontmatter restored).
+- Secrets recipes: always stdin-based, never argv (zsh quoting/history-expansion mangles passwords — burned once).
 
 ## Cron state
-- **ARMED** — `22 6,9,12,15,18,21 * * *` (re-armed end of Vercel build session)
+- **ARMED** — ef26183c `22 6,9,12,15,18,21 * * *` (session-only; Gap-C self-heal on next turn if session died)
