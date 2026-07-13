@@ -3,7 +3,6 @@ image: 'storm-window.png'
 alt: 'A writer watches as a single page lifts from a neatly stacked manuscript and blows out through a slightly open window, illustrating how a brief window of vulnerability can put valuable work at risk.'
 caption: '"I meant to close that!"'
 ---
-
 # The Server Crashed Mid-Draft
 
 *May 17–21, 2026*
