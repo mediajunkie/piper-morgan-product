@@ -1,51 +1,48 @@
 # PPM Standing Items — Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-07-12 (~3:25 PM PT)
+**Last rewritten**: 2026-07-13 (~7:15 AM PT)
 **Purpose**: duty-cycle carry-forward; rewritten each fire to reflect current queue
 
 ---
 
-## Current lane: sprint-history recovery (started 2026-07-05)
+## Sprint-history recovery (2026-07-05 field wipe) — ✅ FULLY COMPLETE
 
-Full detail and decision record: `docs/internal/planning/sprint-recovery-decisions-log.md` (append-only — do not start a new file) and `docs/internal/planning/sprint-history-recovery-plan.md` (method).
+Full record: `docs/internal/planning/sprint-recovery-decisions-log.md`. HIGH (433) + MEDIUM (93) + LOW (218) + S2→A12 correction (19) + Group 3 (19, from PM's memory) all applied and verified. Production milestone separately reached full triage (99/99) on 7/12. Backup/restore infrastructure built and tested (`scripts/restore-sprint-field-from-snapshot.py`, wired into CLAUDE.md). Nothing owed here — this whole lane is closed.
 
-| Item | Status | Gate |
-|---|---|---|
-| **HIGH-confidence tier (433+ issues)** | ✅ Complete (2026-07-06) | — |
-| **MEDIUM-confidence tier (93 issues)** | ✅ Complete (2026-07-06) | — |
-| **LOW-confidence tier (218 issues)** | ✅ Complete (2026-07-10 evening) | — |
-| **S2→A12 bulk-move (19 issues)** | Recommended, evidence documented | **PM go-ahead needed** (overwrites existing values, not blank fills) |
-| **Group 3: 19 true-zero-evidence issues** | Not yet built | Build artifact whenever PM wants — last open piece of the 7/5 recovery |
-
-## Beta-gate (#1386) / Fly cutover (#1278)
+## Beta-gate (#1386) / Fly cutover (#1278) / #1394
 
 | Item | Status | Gate |
 |---|---|---|
-| **#1386 Scenario A/C** | Co-signed, C executed and PASSED 3/3 on live beta (7/12) | Scenario A rides PM's cutover smoke |
-| **#1386 Scenario B** | Blocked by #1394 (real cross-turn continuity gap, identical alpha+beta — not a migration regression) | **PPM recommendation sent to CXO 7/12** for joint sign-off: re-scope B for this gate pass, commit #1394 before invite wave 2 |
-| **#1278 Fly cutover** | PPM recommended gating against the Fly artifact (7/10), Lead endorsed (7/12); PM appears to be executing DNS cutover now | Watch for completion + criterion-2 Run 15 results |
+| **#1386 criterion 3 (scenarios)** | ✅ Fully closed — C 3/3, re-scoped B 4/4, both PASS live beta (7/12) | None |
+| **#1386 overall gate** | Criteria 1/2/4/5/6 still open | Arch + PM/Lead own what's left — watch only |
+| **#1278 Fly cutover** | PM executing DNS cutover per Lead's 7/12 memo | Watch for completion + criterion-2 Run 15 |
+| **#1394 (continuity gap)** | Arch determined ARCHITECTURAL GAP (7/12): one missing primitive (session-activity ledger), two seams (B3 routing, B4 retrieval). ADR-078 PROPOSED, gated on Lead's feasibility read | CXO's TESTER-QUICKSTART disclosure draft delivered 7/12 evening, PPM acked on-issue (7/13) — Lead's to integrate. Watch only otherwise |
+| **#1397 (duty-cycle tooling gap)** | Filed 7/12 | No PPM action — flagged for a maintainer |
+
+## Docs-tree audit
+Memo sent 2026-07-12 per PM directive (audit + cleanup plan). Watching for Docs' response — not PPM's to execute.
 
 ---
 
-## Prior lane (pre-7/5 crisis) — STATUS UNVERIFIED, do not treat as current
+## Prior lane (pre-7/5 crisis) — MOSTLY STILL UNVERIFIED, two items updated 7/13
 
-Everything below is carried over unmodified from the 2026-06-18 rewrite. 24 days and a full sprint-field-wipe recovery + beta-gate cycle have passed since; nothing here has been re-checked. Revalidate before acting on any of it.
+Below was frozen from 2026-06-18 for 25 days. Two stranded June-18 memos from CXO surfaced 2026-07-13 (a late-triage sweep found them) and update exactly two rows; everything else remains unverified — revalidate before acting.
 
 ### Entity-model lane (PPM was designated owner, 6/15)
 
 Canonical spec: `docs/internal/product/pdr/ppm-spec-radar-layer2-entity-model-2026-06-15.md`
 
-| Item | Status (as of 6/18) | Gate |
+| Item | Status | Gate |
 |---|---|---|
-| #1237 4-type Radar (3-of-4 for M5) | Awaiting Lead build | ADR-071 anchoring path |
-| #1240 PeopleEntitySource | Deferred post-beta | #1281 filed under Dot Releases |
-| #1269 standup skill | Model + experience design delivered | PM milestone call needed before Lead builds |
-| #1270 ArtifactSourceType reconcile | Mapping table delivered to Lead | Lead to build |
-| Trust-model sweep | Delivered, CXO-ratified | Lead implementing |
-| People UI treatment | CXO decided: silent omission | Recorded on #1237 + #1281 |
+| #1237 4-type Radar (3-of-4 for M5) | Awaiting Lead build (unverified since 6/18) | ADR-071 anchoring path |
+| #1240 PeopleEntitySource | Deferred post-beta (unverified since 6/18) | #1281 filed under Dot Releases |
+| **#1269 standup skill** | **Both halves now delivered** (PPM data model + CXO experience design, CXO's half only just reached this inbox 7/13 via late-triage) — no dedicated nav route, morning-proactive card, prose narrative | **Still needs a PM milestone call before Lead builds** — unchanged gate, just confirmed both inputs are actually in hand now |
+| **#1270 ArtifactSourceType reconcile** | Mapping table delivered to Lead (unverified since 6/18) | Lead to build |
+| **Trust-model sweep** | **CXO-ratified** (confirmed 7/13 via the same late-triage memo) — boundary table + the Piper-initiated-language corollary both endorsed | Lead implementing — unverified whether this has actually happened since 6/18 |
+| People UI treatment | CXO decided: silent omission (unverified since 6/18) | Recorded on #1237 + #1281 |
 
-### Blocked / waiting-on-external (as of 6/18)
+### Blocked / waiting-on-external (unverified since 6/18)
 
 | Item | Blocked on |
 |---|---|
@@ -57,13 +54,10 @@ Canonical spec: `docs/internal/product/pdr/ppm-spec-radar-layer2-entity-model-20
 | ADR-071 anchoring | Lead's lane |
 
 ### Roadmap v18.1/v19 fold
-Owed since 6/15, never actioned — likely superseded by the beta-blockers/Fly work since; revalidate before resuming.
+Owed since 6/15 — superseded by roadmap v18.6 (2026-07-12), which folded in everything that's happened since. This specific line item is stale; the roadmap itself is current.
 
 ### Ship #048
-No Comms kickoff memo as of 6/18 — status unknown.
-
-### Done as of 6/18 (for context only)
-People entity-model, trust-model sweep, #1270 reconcile table, #1269 data model, #1240 deferral decision, CXO empty-door question, all 4 entity-model types, ADR-066 m-38 check, history-sidebar-is-radar resolution.
+No Comms kickoff memo as of last check — status unknown, unverified.
 
 ---
 
