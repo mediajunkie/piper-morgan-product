@@ -5,13 +5,13 @@
 >
 > **Disposition policy is operational, not aspirational** (per HOST 360 synthesis pull, Apr 27): at every reconciliation, every item is checked against the >14-day-zero-movement threshold and force-decided here (do / defer-with-explicit-reason / drop). Items don't get parked. If an item recurs at the threshold across reconciliations without movement, the role-holder owes an explicit reason or it drops on the next pass.
 >
-> Last updated: **2026-07-06 ~09:15 AM PT** (full reconciliation after a 24-day gap Jun 12 → Jul 6 — the prior version was anchored to a Ship #047-in-progress worldview, 3 ship cycles behind current reality). Every one of the 8 prior items was verified against git/GitHub/session-log evidence rather than carried forward assumed-stale; see disposition below.
+> Last updated: **2026-07-13 ~09:15 AM PT** (full reconciliation, 7-day gap Jul 6 → Jul 13 — the gap included a cohort-wide outage, so this pass leans harder on git/GitHub verification than usual rather than trusting what any single session remembers). Every item below checked against live evidence, not carried on memory.
 
 ---
 
-## Reconciliation context (Jul 6)
+## Reconciliation context (Jul 13)
 
-The Jun 12 → Jul 6 window moved almost everything the prior tracker had open: Ship #047/#048/#049 all published, #050 mid-cycle (§0 collection, 6/8 in as of this morning); role-portfolio framework reached full 12-role cohort adoption; RECONNECT (GitHub connector) went from design to essentially architecturally complete; the invite-gate (#1344) shipped to production (v0.8.9.2); a real duty-cycle bug (self-attribution drift) was found, diagnosed, and fixed at the CLAUDE.md + skill level; the irreversible-action guardrail was ratified cohort-wide after 3 incidents. **Zero items dropped this pass** — every prior item resolved, superseded, or is still genuinely open (not abandoned).
+The Jul 6 → Jul 13 window was the busiest yet: Ship #050 and #051-kickoff shipped; the entire 744-issue sprint-recovery project closed out completely (incl. a final S2→A12 cleanup + new backup/restore infra so a third field-wipe can't recur); all 11 batch-1 alpha invites sent and testers are live; the Fly.io migration went from decision to fully-cutover production (`beta.pipermorgan.ai` live end-to-end, droplet kept in parallel deliberately); the #1386 beta-close gate is one PM browser-run + two mechanical Arch items from fully closed, having already caught nine product defects pre-tester-exposure; and a genuine Fri-evening-through-Sun laptop outage took 7 of 11 roles offline, which the watchdog correctly diagnosed as infrastructure (not individual failures) and which every affected role self-healed from once given a turn — no stray/duplicate processes resulted. Docs's own duty-cycle mechanism was retired overnight (Jul 12) in favor of a more resilient spawn-fresh design (Belt-4), which is the fix I'd flagged for exactly the fragility class this outage exposed.
 
 ---
 
@@ -19,14 +19,21 @@ The Jun 12 → Jul 6 window moved almost everything the prior tracker had open: 
 
 | # | Item | Owner | Status | Notes |
 |---|------|-------|--------|-------|
-| 1 | **Ship #050 workstream review (Jun 27–Jul 3)** | exec (synthesize) | **COLLECTION COMPLETE — 6/6 in.** Arch, CXO, PPM, Comms, HOST, CIO. (Corrected 7/6: roster is 6 per `methodology-25`, not 8 — Lead Dev was never in-process and PA is cc-only. Confirmed against 10 prior ship cycles.) | Ready to synthesize now — nothing left to collect. CIO's §0 has a same-day self-correction (struck the "#972/gbrain = 2 slips" framing — both are done); use corrected version when synthesizing. |
-| 2 | **Cohort-attention-rollup refresh** | exec (maintains) | **DUE — 9-day gap.** Last compiled 6/27 (`dev/2026/06/27/exec-cohort-attention-rollup-2026-06-27.html`); nothing since despite Ship #048/#049/#050, RECONNECT completion, #1343/#1344 security fixes, invite-gate shipping, and the self-attribution-drift saga. | Candidate for this fire or next — genuinely unblocked, no PM gate. |
-| 3 | **Two stale unowned branches** | Docs/Lead (disposition) | **STILL OPEN.** Likely candidates: `claude/xpoll-brief-staleness-hook` (last commit ~5/10) and one of the `remotes/origin/claude/cxo-mux-surface-{2,7}-2026-05-1{8,9}` branches — all ~7-8 weeks stale, unmerged. | Not exec-fixable (not exec's branches); flagging so it doesn't silently ride another reconciliation. Owner needs to actually decide merge-or-delete. |
-| 4 | **Account migration (pipermorgan.ai)** | PM (confirm) | **NEW — blocked on PM.** Both Exec's and CIO's rows on `docs/migration/pipermorgan-ai-account-migration.md` are unconfirmed; neither role can self-determine which account it's running under from inside a session. | Surfaced independently by CIO's 7/6 §0. Needs PM's direct confirmation across the whole checklist, not just exec+CIO. |
-| 5 | **HOST tester-roster gap (Rebecca Refoy)** | PM (supply) | **NEW — blocked on PM.** 1 of 10 alpha testers has no email in the roster; blocks her invite-code delivery. | Surfaced via HOST's 7/6 §0. Small, discrete PM ask. |
-| 6 | **MCPB production-readiness sign-off** | All leadership (process just started) | **NEW — informational, no action yet.** PA's 7/6 leadership briefing initiates the formal skunkworks→production sign-off PM's standing rule requires (incl. CXO design sign-off). Two known gaps tracked: #1360 (credential verification, pending clean-machine test) and #1351 (session isolation, beta blocker). | On exec's radar for when production-readiness comes up in planning; no coordination needed yet per PA's own memo. |
-| 7 | **"Climbing Higher" blog post voice-pass** | PM (edit) | **CARRIED — reverify.** Published 7/4/7/5 without PM's voice-pass as of last check. | Quick status check owed next fire — may already be resolved. |
-| 8 | **MCPB v0.1.9 clean-machine test result relay** | exec/PM (relay) | **CARRIED.** PM ran the test night of 7/4; PPM/PA still waiting on the result being relayed to them. | Check with PM directly — this is a relay-only task once the result exists. |
+| 1 | **Two stale unowned branches** | Docs/Lead (disposition) | **STILL OPEN, escalated 7/13.** Now confirmed 4 branches, all 8-9 weeks stale with zero movement: `xpoll-brief-staleness-hook` (5/10), `cxo-mux-surface-2` (5/19), `-4` (5/20), `-7` (5/18). | Third reconciliation carrying this — sent a direct memo to Docs+Lead (cc PM) invoking the tracker's own >14-day policy rather than carrying silently again (`fe7ddd854`). If no movement by next reconciliation, will note as PM-escalation-worthy rather than re-carry a 4th time. |
+| 2 | **Account migration (pipermorgan.ai)** | PM (confirm) | **STILL OPEN — 10 days now.** First surfaced CIO's 7/6 §0; re-flagged in my own carry-forward 7/9 and again 7/12 (cron-recreate cycles kept hitting the same unresolved note). | PM's own call, no urgency signal from anyone, but worth an explicit decision rather than another silent carry — this outage is exactly the kind of event a dedicated (non-backup) account might behave differently under. |
+| 3 | **#1386 beta-close gate — final stretch** | PM + Arch | **NEW — nearly done.** Criterion 3 (the multi-turn scenarios) fully closed as of last night: C 3/3, re-scoped B 4/4, nine product defects found-and-fixed same-day before any tester exposure, #1394 correctly scoped and P1-labeled. | Remaining: Arch's #1395 corpus-rev ratification (mechanical) + ADR-070-A A2/A4 code check (non-gating); PM's own Scenario A browser run (doubles as cutover smoke) + criterion-4 window assessment + criterion-6 sign-off. PM already commenting directly on the issue — no chase needed from me, just watching for close. |
+| 4 | **ADR-078 (#1394 architecture) — awaiting build-lens** | Arch → Lead | **NEW — informational.** Arch ruled #1394 a genuine architectural gap (not missing wiring): one primitive (session-activity ledger), two seams. Filed PROPOSED, wants Lead's build-lens before finalizing. | On my radar for when it needs cohort coordination; no exec action yet. |
+| 5 | **MCPB production-readiness sign-off** | All leadership | **CARRIED, unverified — needs a fresh status check.** No visibility into this thread since 7/6; a lot has shipped around it (invites sent, which implies the clean-machine gate passed in practice) but I don't have direct confirmation this specific sign-off thread closed. | Light check owed next reconciliation — may be moot if invites already validated the underlying concern. |
+
+---
+
+## Resolved this pass (verified, not assumed)
+
+- **Ship #050 workstream review** — published (`weekly-ship-050-the-connector-gets-real`), long since distributed.
+- **Cohort-attention-rollup refresh** — not a "gap" item anymore; it's an active standing practice (the Bridge Log), redeployed same-URL through the outage and its recovery. Dropped from Active Items; see Standing Checks.
+- **HOST tester-roster gap (Rebecca Refoy)** — her email was relayed to HOST 7/6; all 11 batch-1 invites (including hers) went out 7/12.
+- **"Climbing Higher" blog post voice-pass** — confirmed via editorial calendar: status `distributed`, full syndication URLs present, published 7/4. The "reverify" carry from 7/6 was already stale by the time it was written.
+- **MCPB v0.1.9 clean-machine test relay** — couldn't find a direct confirming trace either way; folding into item #5 above rather than carrying as its own line, since it's the same underlying thread.
 
 ---
 
@@ -51,10 +58,14 @@ Pre-Jun-12 history preserved in git history (`exec-open-items-tracker.md` @ comm
 
 ## Standing checks (next reconciliation)
 
-- **Ship #050 synthesis** — collection complete, ready to compile.
-- **BRIEFING-CURRENT-STATE.md** freshness — check against 7-day window.
+- **BRIEFING-CURRENT-STATE.md freshness** — CIO fixed the check itself 7/10 (was using filesystem mtime, structurally unreliable across worktrees; now git-log-based). Loop should be closed; worth one more confirm that it's stayed accurate.
 - **dev/active/ cleanup** — recheck file count; cross-role cleanup-coordination candidate if over threshold again.
-- **Gap-C dormancy** — worth cross-checking with CIO/HOST whether the launchd watcher is actually firing; this exec fire found its own cron dead with no alert received.
+- **#1386 close** — check whether it's fully closed by next reconciliation; if still open, find out what's actually blocking (should be down to just PM's browser run + Arch's two mechanical items per this pass).
+- **MCPB production-readiness** (item #5 above) — the deferred status check.
+
+## RESOLVED — Gap-C dormancy, the standing check that predicted this week's outage
+
+7/6's standing check flagged: "worth cross-checking whether the launchd watcher is actually firing; this exec fire found its own cron dead with no alert received." A week later, a genuine multi-day laptop outage killed 7 of 11 roles' session-scoped crons at once — and the watchdog (a different mechanism than what was being asked about here, it turned out — an hourly freeze-watcher, not launchd) caught it correctly: self-diagnosed "infrastructure event, not individual failures" when 4 watched roles went stale together, and paged PM repeatedly until resolved. No stray/duplicate processes resulted from the outage or the recovery. Docs's own duty-cycle — which uses a genuinely different, more resilient mechanism (scheduled-task, not session-scoped cron) — was never affected, and got promoted overnight 7/12 into "Belt-4," the cohort's new resilience direction. This standing check is closed: the underlying question (is the watchdog real and does it work) got a real-world answer, not just a design review.
 
 ---
 
