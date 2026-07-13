@@ -4,7 +4,8 @@
 
 ## PM Attention (fold watchdog alerts + anything else needing PM's call here; Exec's `cohort-attention-rollup` reads this file directly per its own SKILL.md Step 1)
 
-- 🔴 **Action needed: reload the live watchdog launchd plist.** PM ratified retiring `docs-duty-cycle` + building the Belt-4 replacement (2026-07-12) — code shipped + tested (commit `87bcdaae9`), version-controlled plist updated (`WATCHDOG_AUTO_SPAWN_ROLES=docs`), but the *live* copy at `~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist` won't pick up the change until reloaded. Deliberately not run by CIO (live launchd/system-config change). Commands (also in the plist's own header comment): `cp scripts/launchd/com.pipermorgan.duty-cycle-watchdog.plist ~/Library/LaunchAgents/ && launchctl unload ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist && launchctl load ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist`.
+- 🔴 **Action needed: reload the live watchdog launchd plist.** Still open as of 7/13 morning (no evidence PM has run it yet — Docs confirmed retiring `docs-duty-cycle` last night, so Belt-4 for Docs stays inactive until this happens). Commands (also in the plist's own header comment): `cp scripts/launchd/com.pipermorgan.duty-cycle-watchdog.plist ~/Library/LaunchAgents/ && launchctl unload ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist && launchctl load ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist`.
+- 🟡 **Drift/awareness: Lead stale 12h+ as of 7/13 ~10:37am** (watchdog-detected 06:43, verified still current via git log + HOST's own 10:07 log independently noting "ADR-078 gated on Lead" — not stale data). No CIO action possible (no cross-session reach); needs a re-prod.
 
 ## 🎆 7/12 Sun — DAY-CLOSED. Full account: `dev/2026/07/12/2026-07-12-1520-cio-code-log.md`
 
