@@ -256,4 +256,17 @@ Every issue that had a Sprint value before the wipe now has one again, either re
 
 ---
 
+## Backup + restore infrastructure built, so this doesn't happen the same way again (2026-07-12)
+
+PM: "please also update the canonical repo doc of issue assignments so we have backup if the sprints are ever wiped out again." Two things landed:
+
+1. **`dev/snapshots/project-board-YYYY-MM-DD.tsv`** (already existed, refreshed after every batch this whole recovery) is now explicitly the canonical backup — full issue/state/milestone/sprint/title dump, committed to git, dated history preserved.
+2. **`scripts/restore-sprint-field-from-snapshot.py`** (new) actually closes the gap that made the *first* wipe (PA, ~2026-06-25) unrecoverable for weeks: a CSV reconstruction existed but nothing could turn it back into board state, so it just sat there. This script reads the latest snapshot, pulls live values in one paginated sweep, reports every drift, and restores via the same safe per-item mutation this whole recovery used — dry-run by default, `--apply` to execute, live re-verification after. Tested clean against today's snapshot (0 drift, correctly).
+
+`CLAUDE.md`'s existing full-replace-wipe warning now points at both, so the next agent who hits this (if it happens a third time) finds the recovery path in the same place they'd find the warning not to cause it, instead of re-deriving everything from scratch the way this whole week did.
+
+Also: Production milestone triage finished at 99/99 — #1358 and #1374 (PM-agreed) moved to Ongoing milestone + FLYWHEEL sprint, joining the 20 PROD-* applications from earlier tonight.
+
+---
+
 *Log started 2026-07-06 during the Group 1 + Group 2 reconciliation pass. Append further decisions here as remaining groups are reviewed — do not start a new file.*
