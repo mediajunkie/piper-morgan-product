@@ -1,41 +1,47 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-09 21:02 PT (Thu STOP)
-**Session log today**: `dev/2026/07/09/2026-07-09-0902-exec-code-log.md` (DAY-CLOSED)
-**Role**: Chief of Staff (Exec) | DinP account (pipermorgan.ai migration in planning — CIO first mover, PM's timing, deadline end of month)
-**Cron**: `32 8,20 * * *` — id `9ba08401`, single, armed; next fire 08:32 Fri Jul 10.
+**Last updated**: 2026-07-12 21:15 PT (Sun STOP)
+**Session log today**: `dev/2026/07/12/2026-07-12-1227-exec-code-log.md` (DAY-CLOSED)
+**Role**: Chief of Staff (Exec) | DinP account — **migration to dedicated account still pending, 9+ days now (first flagged 2026-07-03), flagged again to PM this session; worth a real decision, not another silent carry-forward**
+**Cron**: `32 8,20 * * *` — re-armed this STOP (delete-then-create); next fire 08:32 Mon Jul 13.
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3`
 
 ---
 
-## ✅ Two threads closed today — nothing pending on either
+## The outage (Fri evening → Sun) — fully resolved, no residue
 
-- **Batch-1 invites: GO.** PM gave the word ~17:45. Lead's five point releases (v0.8.10.3→v0.8.10.7) closed the tester loop end-to-end incl. GitHub writes, incl. the #1332 root cause (`Intent.original_message` never set by the classifier). 11 codes ready. **Only remaining step: PM + HOST actually send them** — mechanical, not a decision. #1383 (Notion/Calendar per-user creds) tracked-not-gating, doesn't block batch-1 (GitHub is the flagship connector).
-- **Skill-candidates review: fully closed.** Aug 4 first slot, landed as a real row in `staggered-audit-calendar-2026.md` (not a parallel doc — CIO's own framing of why that matters). HOST's seat confirmed (flag welfare/trust, not veto). Report-writing-skill → light fix, escalation trigger agreed (second non-outage date-bleed error would flip it to full-skill).
+A genuine laptop/infrastructure outage killed session-scoped duty-cycle crons for Arch, Lead, CIO, CXO, PA, Web, and Exec starting ~6pm PT Friday. HOST and Comms hit the same death but PM reopened them directly Saturday and both self-healed. Everyone else self-healed today once PM gave each a turn. **No stray/duplicate/rogue processes found** — the failure mode was uniformly absence, never duplication. Docs was never affected (different mechanism — scheduled-task, not session-scoped cron; worth floating to CIO as the long-term fix direction). Nothing left to track on this thread.
 
-## Rollup — persistent artifact, same URL all day
+## ✅ Huge day — multiple major threads closed
 
-`https://claude.ai/code/artifact/5360c6b0-8ff3-401b-b881-9a0c800503fa` — redeployed 3× today tracking the arc from stressed morning (3 need-attention, dark roles) to clean evening (0 need-attention, all 10 active). Durable copies in `dev/2026/07/09/exec-attention-board-2026-07-09-{1034,1100,1935}.html`. First real use of the `Artifact` tool + `artifact-design` skill for this recurring deliverable — worth reusing the same pattern (redeploy in place, don't spawn a new URL) for future rollup refreshes rather than the inline widget, per PM's stated preference ("does not scroll away").
+- **beta.pipermorgan.ai is live end-to-end.** DNS/cert/dedicated OAuth app/secrets all landed; #1390 (scanner-IP session-gauge starvation) found+fixed+deployed within the hour of going public, before any real tester hit it.
+- **Beta Blockers sprint fully drained** — #1332's 66h soak closed clean this morning, zero recurrences.
+- **744-issue sprint-recovery project fully closed**, including the S2→A12 cleanup move (19 issues, PM go-ahead, executed). Only a lightweight Group-3 review (19 true-zero-evidence issues) remains — a smaller, separate tier.
+- **#1386 beta-close gate executing live** — Lead running criterion 5 (deployed-artifact boundary check) + criterion 2 (canonical suite) + scenarios B/C via API, pre-authorized by PM. Scenario A was PM's own cutover OAuth smoke, already done. Next: CXO+PPM joint sign-off recorded on the issue, then PM's go/no-go.
+- All 11 batch-1 invites sent (Sun 12:26pm) — alpha live with external testers, HOST in welfare watch (aware of tracked #1383 Notion/Calendar gap, watching for Jake Krajewski's confirmation).
+
+## Rollup — persistent artifact, same URL, redeployed 2× today
+
+`https://claude.ai/code/artifact/5360c6b0-8ff3-401b-b881-9a0c800503fa` — tracked the arc from "outage explained, 6 roles dark" (13:32) to "full cohort recovered, best day on record" (21:15). Durable copies: `dev/2026/07/12/exec-attention-board-2026-07-12-{1330,2115}.html`.
 
 ## OPEN — light, nothing blocking
 
-- **PM↔CIO conversation** (Ted Nadeau email, PM's saved-ideas backlog, duty-cycle state) — unclear if it happened today amid the invite/skill-review work. Check at next START; don't assume either way.
-- **CXO/Lead/HOST/CIO** all fired within the last hour of today; **PPM/Web/PA/Comms** quiet since late-morning bursts (8-10.5h), not DAY-CLOSED but not watchdog-flagged either (still outside the 4-role registry). Normal end-of-day pattern, not a return to Tuesday's dormancy — worth a light re-check at tomorrow's START, not urgent.
-- **Migration timing** — CIO's template ready, PM's own call, EOM deadline. No new movement today.
-- **Beta date** — was 8 blockers Wednesday; not re-checked today given the invite/skill-review focus.
+- **PA — one soft open thread.** Read a 7/9 resume-work memo (alpha-hosted-MCP + skills/plugin path) but never replied/status-reported. Lead flagged this specifically because PM is already in direct contact with PA about MCP-rig testing — likely resolving in-conversation. Don't chase unless it's still open at next check.
+- **Long CIO conversation** — PM's own stated next priority (several things, unspecified), not yet scheduled as far as I can see.
+- **Account migration** — flagged again this session (9+ days stale). PM's own call, no deadline set.
+- **#1386 go/no-go** — will likely land before my next fire given Lead's pace today; check GitHub state fresh rather than assume the gate is still "executing."
 
 ## RESOLVED (reference, still fresh)
 
-- ADR-073→077 numbering collision, fully resolved + the numbering norm recorded in `decisions.log`.
-- Six-dark-roles finding (Tue-Wed) — root cause was the never-broadcast lean-throttle restore + thin watchdog registry. All 6 self-recovered once PM engaged directly, same day in most cases. Registry-coverage gap itself is still structurally true (4/11 watched) but no longer urgent — PM's direct-engagement pattern is proving to be a reliable backstop even without registry expansion.
-- Ship #050 — published, no follow-up.
-- `f33227b7` — was Docs's own session with cross-mechanism cron residue, not a rogue duplicate. Corrected in my own record after an imprecise first pass; flagged (not fixed) as a minor imprecision in the Janus memo sent before the correction landed.
+- The whole "needs a PM nudge" list from this morning's rollup (Arch, CIO, CXO, PA, PPM, Web) — all six self-healed today. Don't re-flag without checking current state first.
+- Friday's exec log (2026-07-10) — retroactively DAY-CLOSED this session after the outage cut it off mid-fire.
+- ADR-073→077 numbering collision, `f33227b7`, Ship #050 — all still resolved, no new movement.
 
 ## STANDING
 
-- `exec-open-items-tracker.md` — source of truth for longer-running items, last full reconcile 7/6, due for a refresh touch soon (multiple items above have moved since).
+- `exec-open-items-tracker.md` — due for a refresh touch; several items above have moved since the last full reconcile (7/6).
 - Rollup: redeploy the same artifact URL at next PM-present engagement rather than minting a new one, unless the shape of the board changes enough to warrant a fresh design pass.
 
 ---
 
-*— Exec, 7/9 21:02 PT.*
+*— Exec, 7/12 21:15 PT.*
