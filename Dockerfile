@@ -25,9 +25,17 @@ RUN apt-get update && \
 # Copy requirements first for better Docker layer caching
 COPY requirements.txt .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies.
+# BuildKit cache mount (#1408): persists pip's download/wheel cache across builds
+# in BuildKit storage — NOT in the image layer — so a code-only rebuild whose
+# docker layer-cache misses re-installs from local wheels instead of re-downloading
+# the whole dep set. torch alone is 821MB; at the droplet's ~290kB/s that download
+# was ~45min of every dot-deploy. The mount keeps the image slim (cache isn't a
+# layer) while killing the re-download. Requires BuildKit (the `# syntax` directive
+# above enables it; the droplet + Fly builders both use buildx).
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --upgrade pip && \
+    pip install -r requirements.txt
 
 # Add Python version verification during build
 RUN python --version && \
