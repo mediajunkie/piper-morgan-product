@@ -1,7 +1,7 @@
 ---
 image: 'migration-wave.png'
 alt: 'A crew of geometric agents operates distinct stations aboard a newly launched ship, while two inspect a painted false hatch as the unfinished vessel gets underway.'
-caption: '"All aboard?"' 
+caption: '"All aboard?"'
 ---
 
 # The Migration Wave
