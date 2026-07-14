@@ -22,7 +22,7 @@ Instructions for Claude Code agents working in this repository.
 | Documentation Management (Docs) | `BRIEFING-ESSENTIAL-DOCS.md` | `docs-code` |
 | Coding Agent | `BRIEFING-ESSENTIAL-AGENT.md` | `prog-code` |
 
-All seven leadership roles + Lead Dev + Docs are on Code as of 2026-04-26 (migration wave Apr 22–26: HOST, CIO, Comms, CXO, PPM, Architect, Exec). Role slugs use `-code` to indicate Claude Code. Historical logs (pre-2026-06-29) used `-code-opus` or `-code-sonnet` — model was dropped from filenames 2026-06-29 (model changes mid-session; the log header is the correct home for model tracking).
+Role slugs use `-code` to indicate Claude Code. Historical logs (pre-2026-06-29) have `-opus` or `-sonnet` in the filename — leave those as-is when you encounter them.
 
 **Canonical role roster**: `docs/briefing/ROSTER.md` codifies the tiering (7 leadership + 3 staff + specialized) with one-line lane summaries and slug + briefing pointers. Read it when you need the org-shape view; come back to the table above for the assignment-flow view.
 
@@ -85,7 +85,7 @@ ls mailboxes/lead/inbox/
 git branch  # Should show claude/* branch, not main
 ```
 
-**Worktree model — Option B (ephemeral), canonical as of 2026-06-12**: substantive sessions run in the **ephemeral auto-worktree** Claude Desktop creates when launched with the worktree checkbox on (random `claude/*` branch name — fine and normal). Do all work there and push finished units to `origin/main`; mailbox writes go via `scripts/mail-send.sh` push-to-ref (see "The mailbox workflow" below) — never touch the main checkout's working tree for any reason, mailbox or otherwise (the old main-checkout bridge this line described was retired by #1259 on 2026-06-19). **Model A — dedicated `claude/{role}-cycle` worktrees — is DEPRECATED** (search clutter; two-pattern confusion; branch persistence isn't load-bearing — the carry-forward on `main` is the continuity mechanism). Exception rubric (PM-approved, case-by-case): a long-lived worktree only for multi-day in-branch WIP that genuinely doesn't push to `main` between sessions. **As of 2026-06-12 there are NO current exceptions** — Lead Dev (the only candidate; its dev-server binds a path) determined empirically that the ephemeral worktree suffices: it nests *inside* the main checkout, so the server's `find_dotenv()` walks up and finds main's `.env`/venv, and a session-start restart is needed anyway for code freshness. The nested-walk-up property generalizes to any ephemeral worktree → no role needs an exception on server-binding grounds. **Canonical source of truth: `dev/active/cohort-plan-of-record-2026-06-12.html`.** (The §"Git Worktrees" section below documents Model-A setup, retained for the exception case + history.)
+**Worktree model — Option B (ephemeral)**: substantive sessions run in the **ephemeral auto-worktree** Claude Desktop creates when launched with the worktree checkbox on. Push finished units to `origin/main`; mailbox writes go via `scripts/mail-send.sh` push-to-ref — never touch the main checkout's working tree. **Model A (dedicated `claude/{role}-cycle` worktrees) is DEPRECATED** — no current exceptions. Lead Dev confirmed empirically that the ephemeral worktree suffices for all roles including dev-server sessions (the worktree nests inside the main checkout, so `.env`/venv discovery still works). Canonical source: `dev/active/cohort-plan-of-record-2026-06-12.html`. See `docs/internal/operations/git-worktrees-model-a-setup.md` for Model-A details if needed.
 
 **If resuming after compaction and no log exists for today → CREATE IT FIRST.**
 Do not proceed with tasks until session log exists.
@@ -155,7 +155,7 @@ Cross-session decisions land in one of two formal surfaces, not just chat or you
 | **ADR / PDR** | `docs/internal/architecture/current/adrs/` (or `pdrs/`) | Formal architectural or product decisions with lasting implications; structured format; reusable pattern; Architect-owned. m-38 (PDR/ADR Tier Separation) governs which tier. |
 | **decisions.log** | `docs/internal/architecture/decisions/decisions.log` | Lightweight in-session technical decisions that don't warrant a full ADR; append a timestamped line or short paragraph; no structure required; any agent can append. |
 
-Session logs are personal work tracking, not the cross-session record. If you make a decision that another agent will need to find next week, it goes in one of the two surfaces above. The decisions.log was dormant Aug 2025 → Jun 2026; reinstated by HOST 2026-06-13 with PM ratification.
+Session logs are personal work tracking, not the cross-session record. If you make a decision that another agent will need to find next week, it goes in one of the two surfaces above.
 
 ### API Conventions
 
@@ -174,7 +174,7 @@ When creating or modifying API routes:
 
 **New action handlers register a workflow-dispatcher entry; they do NOT add an `if/elif intent.action in [...]` branch in `services/intent/intent_service.py`.**
 
-Per ADR-059 + the floor-first architecture, action routing flows through the workflow-dispatcher rail, not hand-coded dispatch chains. #1124 is migrating the legacy chains off one cohort at a time (28→15 sites as of 2026-06-09).
+Per ADR-059 + the floor-first architecture, action routing flows through the workflow-dispatcher rail, not hand-coded dispatch chains. #1124 is migrating the legacy chains off one cohort at a time — see `MAX_DISPATCH_SITES` in `tests/test_architecture_enforcement.py` for the current count.
 
 When adding or migrating an action handler:
 - Add a `WorkflowEntry(..., action_triggered=True)` in `services/intent_service/workflow_entries.py` (mirror the existing cohort entries / the `_make_query_dispatch_entry_point` factory).
@@ -234,7 +234,7 @@ Your session log is **institutional memory**. An incomplete log is a process fai
 - **Log updates ride with the commit** — when you commit a unit of work, the log entry for that work is part of what you commit. Event-based, not clock-based: clocks lose track of when 30 minutes have passed; commits are unmissable events.
 - A "significant unit" = issue closed, feature shipped, decision made, blocker hit, subagent delegated
 - If you're deep in implementation and realize you haven't logged in a while: **stop and log NOW**
-- The `log-maintenance-reminder` hook (currently clock-based — fires when log is stale ≥30 min, checked every 15 Bash calls) is being realigned to event-based per this rule — Lead Dev coordinating the update.
+- The `log-maintenance-reminder` hook is clock-based: fires every 15 Bash tool calls; if the session log is stale ≥30 min, it emits a reminder. Event-based realignment pending — Lead Dev coordinating.
 - **After compaction**: your session log is the ONLY record of what you were doing. If it's not updated, your afternoon's work becomes git-commit archaeology
 
 ⚠️ A session log that stops mid-day is worse than no log at all — it implies work is complete when it isn't. Logs that trail off silently have caused methodology failures that required multi-day remediation.
@@ -248,7 +248,7 @@ Your session log is **institutional memory**. An incomplete log is a process fai
 | **Session log** | **THE log** — the single canonical record; per-session institutional memory; what Docs reads to build the omnibus | `dev/YYYY/MM/DD/…-{role}-…-log.md` | **Permanent** (dated dir) |
 | **Cycle log** | **Optional** per-fire scratch list an agent may keep for its own continuity — NOT a record | `dev/active/cycle-log-{role}-YYYY-MM-DD.md` | **Ephemeral** (`dev/active/` is sprint-cleaned) |
 
-**Background (the displacement trap, PM-flagged 2026-06-09):** the earlier design kept two logs, and the fire loop referenced only the cycle log → agents silently left the session log a stub → durable work vanished when `dev/active/` was sprint-cleaned (a June 3–8 Docs audit found this in 6 of 9 cycling roles). The first fix (v1.5) was *dual-surface* — write to both. **PM's simpler cure (2026-06-12): write to one — the durable one.** One place removes the drift at the source rather than guarding against it; one log can't drift from itself.
+Writing only to the cycle log caused work to vanish when `dev/active/` was sprint-cleaned — six of nine cycling roles lost durable entries in a June 2026 audit. The session log is the one durable surface; one log can't drift from itself.
 
 **The rule**: every substantive fire writes its entry to the **session log** (`- Fire N (HH:MM) — what shipped`). The cycle log is optional scratch; nothing durable lives only there. The `duty-cycle-tick` skill v1.8 implements this in Step 5. See **methodology-31** "session-log composition discipline" (amendment pending) for the full framing.
 
@@ -385,7 +385,7 @@ We're colleagues - "xian" and "Claude". No formal hierarchy.
 **Session log maintenance**:
 - Create log at TRUE session start only (use `/create-session-log` skill)
 - **Log updates ride with the commit** — update the log as part of committing each substantive work unit (event-based, not clock-based) — see "Session Log Maintenance" in Core Principles
-- The `log-maintenance-reminder` hook (PostToolUse on Bash) is currently clock-based (30+ min stale); being realigned to event-based per PM direction — Lead Dev coordinating
+- The `log-maintenance-reminder` hook fires every 15 Bash tool calls; see the hook description above
 - **After compaction**: RESUME existing log (do NOT create new) - add "Session Resumed" entry
 - **One log per role per day** - compaction is continuation, not restart
 - A log that stops mid-session is a **process failure** — it implies work is complete when it isn't
@@ -425,7 +425,7 @@ Pilot collection runs across ≥3 sessions per role before evaluation. Document 
 
 ## Sign-Off Discipline (CRITICAL — read before ending any session)
 
-**Established 2026-04-28** after recurring incidents of session logs stranded on feature branches (Apr 27: 3 leadership session logs were trapped on worktree branches and only reached `origin/main` via Docs's emergency merge-keeper sweep the next morning). Mailbox-discipline norm + hook (Apr 26) caught mail-on-branches. This norm catches *everything else* — chiefly session logs in `dev/`.
+This discipline covers what the mailbox hook doesn't: session logs in `dev/`, code on feature branches, and memos in `dev/active/`.
 
 ### The principle
 
@@ -435,7 +435,7 @@ Pilot collection runs across ≥3 sessions per role before evaluation. Document 
 
 **Don't hold work for sign-off. Push to `origin/main` routinely throughout a session** — after every substantive work unit, and on a regular cadence even mid-task. Your work should reach `origin/main` within minutes of doing it. Two reasons: (1) it is then never stranded or lost; (2) **the duty-cycle continuity model depends on it** — a re-roused or re-armed session reconstructs current state from `main`, so stale-on-disk state means lost context. Many small pushes beat one big sign-off push. The sign-off checklist below is the *last* push of a session, never the *only* one. (For non-mailbox work from an ephemeral worktree: `git push origin HEAD:main`. Mailbox writes go via `mail-send.sh` push-to-ref — see "The mailbox workflow" below; the main-checkout bridge this line used to reference was retired by #1259 on 2026-06-19.)
 
-**After pushing, sync PM's local checkout**: run `scripts/sync-pm-local.sh` (no args). It fast-forwards PM's local main checkout (`--ff-only`, never a merge) so PM sees current state without a manual `git pull`. It silently no-ops if PM's checkout has uncommitted changes or isn't on `main` — PM's in-progress edits always win; a skipped sync is not an error. Call it once per fire / at natural idle points, not after every single commit (HOST proposal 2026-07-03, CIO-brokered mechanism 2026-07-04). **Known limitation #1**: PM's checkout frequently carries MANIFEST.md-only drift from local hook runs, which the script conservatively skips rather than auto-discards — so it may no-op more often than expected until/unless PM decides that narrow case is safe to special-case (not yet authorized; MANIFEST-only auto-discard in PM's checkout is exactly the class of judgment call the HARD RULE below reserves for PM). **Known limitation #2 (found 2026-07-04, Arch; RESOLVED 2026-07-06)**: in autonomous/unattended duty-cycle sessions, the auto-run was being denied by the permission classifier (no human present to approve an action touching a path outside the calling worktree) — the correct conservative default at the time, not a bug. **PM added an explicit allowlist entry** (`.claude/settings.json` → `Bash(scripts/sync-pm-local.sh*)`, 2026-07-06), so autonomous sessions can now run it without a prompt. If you still see it denied after this date, something regressed — flag it, don't route around it.
+**After pushing, sync PM's local checkout**: run `scripts/sync-pm-local.sh` (no args). Fast-forwards PM's local main (`--ff-only`); silently no-ops if PM has uncommitted changes — PM's in-progress work always wins. Run at natural idle points, not after every commit. Autonomous sessions are allowlisted in `.claude/settings.json` — if it's still being denied or no-oping unexpectedly, flag it rather than routing around it.
 
 ### Mandatory sign-off checklist (BEFORE ending any session)
 
@@ -498,79 +498,17 @@ If you skip the sign-off checklist and your work is still on a feature branch wh
 - **Push to origin before signing off** — always
 
 
-## Git Connectivity — SSH over port 443
+## GitHub and Tooling Gotchas
 
-If `git push` / `git fetch` hangs or returns `ssh: connect to host github.com port 22: Operation timed out`, the network is blocking SSH's default port. Common on conference wifi, hotel networks, and some corporate networks. GitHub supports SSH over port 443 as a documented alternative. One-time setup per machine:
+Full incident detail and procedures: `docs/internal/operations/github-and-tooling-gotchas.md`.
 
-```bash
-ssh-keyscan -t rsa,ed25519 -p 443 ssh.github.com 2>/dev/null >> ~/.ssh/known_hosts
-```
+**SSH port 443**: If `git push`/`git fetch` hangs with an SSH timeout, GitHub supports SSH over port 443. See the gotchas doc for the one-time setup command.
 
-Then prefix git operations with:
+**GitHub Projects v2 — NEVER full-replace a single-select field's option list**: `updateProjectV2Field`'s `singleSelectOptions` argument is a full replace with no undo path — this wiped sprint assignments for 1175 items on 2026-07-05. Use the GitHub web UI to add options instead. A backup/restore script pair exists; see the gotchas doc.
 
-```bash
-GIT_SSH_COMMAND="ssh -p 443" git -c url.'git@ssh.github.com:'.insteadOf='git@github.com:' push origin main
-```
+**GitHub auto-close ignores negation**: Pairing a `close/fix/resolve` keyword with `#N` in a commit message closes the issue regardless of surrounding wording — "not yet resolved: #1278" still closes issue 1278; this closed a live Beta Blocker in 2026-07. When referencing an open issue in a commit, rephrase to avoid the keyword near `#N`, or write the number without `#`.
 
-Non-destructive — it uses a different route for this invocation only and doesn't change repo or SSH config. Report the workaround in your session log if you use it, so other agents on the same network know it works.
-
-## NEVER full-replace a GitHub Projects v2 custom field's option list — it silently detaches every item's existing value
-
-**This destroyed the Sprint field's assignments for all 1175 items on the "Building Piper Morgan" project board on 2026-07-05.** `updateProjectV2Field`'s `singleSelectOptions` argument does a **full replace**, not an additive merge. There is no `optionId`-preserving path available through this mutation (the API rejects `optionId` in the input) — submitting the complete option list back (even with every existing option's name/color/description faithfully reproduced) causes GitHub to treat every option as newly created, silently detaching every item's stored reference to the old option IDs. The item's field value doesn't become wrong or hidden — it becomes genuinely empty; the underlying `fieldValues` data for that field, confirmed via direct query, is cleared, not just unresolved.
-
-This is **not reversible via the API**. There is no undo, no version history exposed for Projects v2 custom fields, and no way to recover the old option→item associations once this mutation runs, short of reconstructing them from other evidence (git history of docs that mention sprint assignments in prose, issue comments, milestone data — which survives, since Milestone is a different, more fundamental field — or manual memory).
-
-**There is now a real backup and restore path (built 2026-07-12, after the full week-long recovery from the 2026-07-05 incident above completed).** `scripts/snapshot-project-board.sh` writes a dated full-board snapshot (issue/state/milestone/sprint/title) to `dev/snapshots/project-board-YYYY-MM-DD.tsv`, committed to git — run it after any batch of Sprint-field changes, not just as an afterthought. `scripts/restore-sprint-field-from-snapshot.py` reads the most recent snapshot, pulls current live Sprint values in one paginated sweep, and reports every issue where live drifts from the snapshot (dry-run by default; `--apply` to actually restore, using the same safe per-item `updateProjectV2ItemFieldValue` mutation, with a live re-verification pass after). **The backup is only as good as how recently it was taken** — the discipline is to run the snapshot script after substantive Sprint-field work, not just when a wipe is suspected. The canonical decision record for the 2026-07-05 incident's full recovery (HIGH/MEDIUM/LOW tiers, the S2 correction, the 19 true-zero-evidence issues resolved from PM's memory) is `docs/internal/planning/sprint-recovery-decisions-log.md` — read it before re-deriving anything by hand if this happens again.
-
-**Before adding an option to an existing single-select field**: do it through the GitHub web UI (Project → field settings → add option), which is additive and doesn't touch existing item values. If you must do it via API, test the exact mutation shape against a **throwaway field or a brand-new project** first to confirm it's additive, not full-replace, before running it against a live field with real item assignments. If a mutation's required input shape doesn't offer an ID-preserving path and you aren't certain it's safe, **stop and ask a human** rather than proceeding with the closest-looking working version — "this succeeded when I did something similar earlier" is not the same as "this specific operation is safe."
-
-## GitHub auto-close has no concept of negation — watch commit message wording near issue numbers
-
-GitHub auto-closes any issue referenced by a `close/closes/closed/fix/fixes/fixed/resolve/resolves/resolved` keyword immediately adjacent to `#N` in a commit message pushed to the default branch — via **plain keyword matching, not semantic understanding**. It cannot tell the difference between "resolved #1278" and "**not yet** resolved: #1278" — both silently close the issue. This isn't hypothetical: it happened on 2026-07-04/05 (PPM), closing a live, unfinished Beta Blocker (#1278) via a commit message that was explicitly trying to say the opposite ("Flagged, not yet resolved: #1278...").
-
-**When referencing an issue number in a commit message and you do NOT want to trigger a close** (flagging something as open, still-blocked, not-yet-done, etc.): avoid putting a close/fix/resolve-family word immediately before the `#N`. Rephrase — "issue #1278 still needs..." or "#1278 remains open, needs..." — or write the number without the `#` (`issue 1278`) if you need the trigger word nearby for readability. After any commit that references an issue you intended to leave open, it costs nothing to verify: `gh api repos/mediajunkie/piper-morgan-product/issues/N --jq .state`.
-
-If you discover an issue was accidentally closed this way: `gh issue reopen N` immediately, and scan recent commit messages for the same pattern — a single bad phrasing habit tends to repeat across a session, so check for more than one casualty.
-
-## Keychain credential storage — the `_api_key` suffix
-
-When storing app credentials in the macOS keychain (Slack OAuth client_id / client_secret, Notion API tokens, GitHub PATs, Google Calendar credentials, etc.), **use `KeychainService` from `services.infrastructure.keychain_service` — do NOT use the `security` CLI directly**.
-
-The reason: `KeychainService.store_api_key(provider, value)` (and `get_api_key(provider)`) uses service name `"piper-morgan"` and account name `f"{provider}_api_key"` — note the **`_api_key` suffix** is automatically appended. If you store via `security add-generic-password -s slack_client_id -a slack_client_id ...`, the server's `KeychainService` queries for `piper-morgan / slack_client_id_api_key` and gets nothing — the credential is invisible.
-
-This was the root cause of yesterday's (2026-05-20 evening) Slack OAuth tangle: PM had stored `client_id` via `security` CLI, the server's OAuth init couldn't see it, and the failure mode looked like "Please specify client_id" from Slack. Two migration passes were needed (first to fix `svce`, then to add the `_api_key` suffix).
-
-**Correct way to store creds programmatically** (from a venv-aware Python):
-
-```bash
-./venv/bin/python -c "
-from services.infrastructure.keychain_service import KeychainService
-KeychainService().store_api_key('slack_client_id', '<value>')
-"
-```
-
-**Correct way via `security` CLI** (if you must — e.g., from a shell script with the secret in a temp env var):
-
-```bash
-security add-generic-password -U -s "piper-morgan" -a "slack_client_id_api_key" -w "$VAL"
-# Note: service is "piper-morgan" and account ends with "_api_key"
-```
-
-**Verify what the server actually sees** before troubleshooting "missing credential" errors:
-
-```bash
-./venv/bin/python -c "
-from services.infrastructure.keychain_service import KeychainService
-k = KeychainService()
-for p in ['slack_client_id', 'slack_client_secret', 'notion', 'github']:
-    v = k.get_api_key(p)
-    print(f'{p}: present={bool(v)} len={len(v) if v else 0}')
-"
-```
-
-User-scoped credentials (Slack bot/user tokens, per ADR-058) use `KeychainService.store_api_key(provider, value, username=user_id)`. The account name becomes `f"{user_id}_{provider}_api_key"`. Same gotcha; same recommendation: prefer the abstraction.
-
-Filed as a tooling-debt follow-up: a `scripts/store-keychain-creds.py` helper that wraps `KeychainService` and lets PM paste credentials interactively, so this discipline doesn't have to be remembered.
+**Keychain `_api_key` suffix**: Use `KeychainService` (not the `security` CLI) to store app credentials — the service appends `_api_key` to account names automatically; CLI-stored credentials without that suffix are invisible to the server.
 
 ## Branch / Worktree / Mailbox Discipline (60-second summary)
 
@@ -614,7 +552,7 @@ scripts/mail-send.sh "mail({role}): {subject}" \
 
 `mail-send.sh` builds the commit as a git object on top of `origin/main` (`commit-tree` via a throwaway index) and pushes it straight to `main`. It **never touches the shared main checkout or any local `main` ref** — so concurrent agents can't sweep or strand each other and the bridge can't diverge. On a non-fast-forward (another agent pushed first) it rebuilds on the new tip and retries automatically. After a successful push it **self-reconciles its own residue** (#1310, 2026-06-25): the exact paths you passed are returned to their HEAD state in your worktree (untracked new files dropped, tracked moves/mods restored), so a later `git merge origin/main` is collision-free with **no manual cleanup**. The reconcile is surgical (only those paths, never a broad `checkout -- .`/`reset`) and best-effort (a reconcile edge case warns but never fails an already-sent memo).
 
-The **old bridge dance** (stash → `checkout main` → `git add mailboxes/` → push → switch back) is **retired** — it was the source of the recurring shared-checkout contention (sweep / strand / divergence / untracked-residue) that #1259 fixes. The `check-branch.sh` PreToolUse hook stays as the **backstop**: it still blocks any *interactive* `git commit` touching `mailboxes/` from a non-main branch (`commit-tree` isn't `git commit`, so `mail-send.sh` doesn't trip it — correct, because it already lands mail on `main`). MANIFESTs remain recipient-owned (regen on your own mail-loop / session-start) — don't pass other roles' MANIFESTs.
+The old main-checkout bridge approach is **retired** (#1259, 2026-06-19). The `check-branch.sh` PreToolUse hook stays as the **backstop**: it still blocks any *interactive* `git commit` touching `mailboxes/` from a non-main branch (`commit-tree` isn't `git commit`, so `mail-send.sh` doesn't trip it — correct, because it already lands mail on `main`). MANIFESTs remain recipient-owned (regen on your own mail-loop / session-start) — don't pass other roles' MANIFESTs.
 
 ### Per-memo commit-and-push norm
 
@@ -634,24 +572,6 @@ The failure mode this prevents: agent A closes an issue with a comment "routing 
 
 ---
 
-## Git Worktrees — avoid branch collision between parallel agents
+## Git Worktrees — Model A (DEPRECATED)
 
-A git repo can have only **one branch checked out at a time per working tree**. If two Claude Code sessions are running in the same directory and one checks out a feature branch, the git HEAD flips for the other session too — file contents change out from under the other agent, commits that exist on `main` temporarily disappear from the local view. Happened 2026-04-22 when Lead Dev checked out `claude/992-ethics-activate` while a Docs session was mid-work.
-
-**When to use a worktree**: Any time an agent will be working on a `claude/*` or other non-`main` branch while another agent is likely to be working in the same repo on `main`.
-
-**Setup** (one-time per feature branch):
-
-```bash
-# From the main repo dir, create a sibling checkout of the feature branch:
-git worktree add ../piper-morgan-product-{branch-suffix} {branch-name}
-
-# Example for the #992 ETHICS-ACTIVATE branch:
-git worktree add ../piper-morgan-product-992-ethics-activate claude/992-ethics-activate
-```
-
-Then open Claude Code *in the worktree path*, not the main checkout. Both sessions can run simultaneously — they share `.git/` metadata but have independent checked-out branches and file contents.
-
-**When NOT needed**: If both agents are on `main` (Docs doing omnibus + PA doing a memo sweep, both on main), they can share the one working tree fine. The collision only happens when one agent needs a branch that isn't main.
-
-**Cleanup**: `git worktree remove ../piper-morgan-product-{branch-suffix}` when the feature branch is merged and no longer needed. The worktree list lives in `.git/worktrees/`.
+Model A (dedicated `claude/{role}-cycle` worktrees) is deprecated. Option B ephemeral worktrees are canonical for all roles. For branch-collision context and setup instructions if you need a PM-approved exception: `docs/internal/operations/git-worktrees-model-a-setup.md`.

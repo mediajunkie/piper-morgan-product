@@ -4,7 +4,7 @@
 **Audience**: Agents, developers, architects, and internal contributors
 **Public Documentation**: See [README.md](README.md) for pmorgan.tech public site
 
-**Last Updated**: March 23, 2026
+**Last Updated**: July 14, 2026
 **Status**: ✅ **Complete Internal Navigation System** - Role-based access for development teams
 
 ---
@@ -155,6 +155,32 @@ The MUX track establishes Piper's unified object model: **"Entities experience M
 - Getting started guides and tutorials
 - API documentation and references
 - User manuals and help content
+
+#### Communications (`public/comms/`)
+
+Blog posts and the content pipeline live here:
+
+```
+docs/public/comms/
+└── drafts/               # All blog post drafts (pre-publish)
+    ├── {slug}.md         # PM's working copy — canonical for publish
+    ├── draft-{slug}.md   # Comms draft (may be superseded by PM's copy)
+    ├── stashed-{slug}.md # Indefinitely deferred — not scheduled, not abandoned
+    └── {slug}.png        # Post image (gitignored; must be force-added or moved manually)
+```
+
+**Draft lifecycle:**
+1. **Active draft** — in progress; may have PM's voice-pass edits
+2. **Ready to publish** — template audit passed, PM voice pass done; signal goes to Docs
+3. **Published** — `publish-post.js` run, calendar updated; draft stays in `drafts/` for reference
+4. **Stashed** (`stashed-{slug}.md`) — no current publish date; deferred but not deleted
+
+**`stashed-` prefix convention** (PM-ratified 2026-07-14): rename a draft to `stashed-{slug}.md` when it has no scheduled publish date and no active work. This signals "deferred, not abandoned" to any agent. When PM is ready to resume, rename back to `{slug}.md` and add to the editorial calendar. Do not delete stashed drafts without PM direction.
+
+**Publishing tools:**
+- `scripts/publish-post.js` (always dry-run first)
+- `docs/internal/planning/comms/editorial-calendar.csv` — source of truth for schedule and status
+- `docs/internal/planning/comms/content-publishing-run-of-show.md` — full multi-agent publish sequence
 
 ### 🔒 Internal Documentation (`internal/`)
 
