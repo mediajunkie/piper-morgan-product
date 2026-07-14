@@ -33,3 +33,28 @@ Single job ef26183c confirmed, `22 6,9,12,15,18,21 * * *`.
 | Fire | Time | Action | Notes |
 |------|------|--------|-------|
 | 06:52 tick | 06:52 | START | Prior-day close verified. Inbox zero. Website main unchanged overnight. Vercel thread PM-gated (hash regen). Holding for PM. |
+| 09:53/12:52/15:52 ticks | day | WORK (batched quiet holds) | Inbox zero all day; no repo movement either repo; Vercel thread PM-gated throughout. No PM contact. 18:22/21:22 fires never ran (session dormant) → no same-day STOP; closed retroactively at 07-14 START. |
+
+---
+
+## Day-arc summary (retroactive close, written 2026-07-14 START)
+
+Fully quiet day: opened 06:52, three batched no-op WORK fires, zero mail, zero commits
+in either repo beyond the START entry. The Vercel migration thread stayed PM-gated on
+the password-hash regen all day. Session went dormant before the evening fires, so the
+day-close is retroactive per START Step-0 self-heal.
+
+## Memory-eval (3-bucket)
+
+- **Worth remembering**: nothing new (quiet day).
+- **Session-local**: hash-regen wait state — already in carry-forward.
+- **Neither**: everything else.
+
+## Sign-off checklist
+
+- [x] Website worktree clean at 46cb2611b == origin/main (verified 07-14 START)
+- [x] Product repo: only the START log commit shipped 07-13; verified on origin then
+- [x] Inbox zero at every fire
+- [x] Cron ARMED continuously (ef26183c)
+
+<!-- DAY-CLOSED: 2026-07-13 -->
