@@ -1,27 +1,45 @@
-# Web carry-forward — 2026-07-12 close (active)
+# Web carry-forward — 2026-07-14 (active)
 
-**Session**: DinP/Fable-trial · cron `22 6,9,12,15,18,21 * * *` (job ef26183c, ARMED) · day CLOSED 21:52
+**Session**: DinP/Fable · cron `22 6,9,12,15,18,21 * * *` (job ef26183c, ARMED)
 
 ## Active threads
 
-### Vercel migration — DEPLOY LIVE, blocked on PM password-hash retry
+### Vercel migration — VERIFIED END-TO-END IN PRODUCTION ✓, awaiting PM's DNS cutover
 - Plan artifact: https://claude.ai/code/artifact/a2ef2c23-9779-4f54-ae29-3d63f5689f88
-- Phases 1–3 shipped + CVE fix (website commits through 46cb2611b); GH Pages stayed green
-- Vercel: **Pro plan**, team slug `piper-morgan`, deploy GREEN on Next 15.4.11
-  - Test URL: `piper-morgan-website-git-main-piper-morgan.vercel.app` (behind Vercel deployment protection — PM's browser passes via Vercel SSO; custom domain won't have this layer)
-- **WAITING on PM**: `/admin/login` said "Wrong password" → hash was quoting-mangled at generation. Quoting-proof regen recipe delivered (read -s → stdin → bcryptjs), then bare-paste into Vercel env + redeploy.
-- **Then**: PM e2e on preview (login → edit draft → verify commit in product repo) → DNS cutover (records TBD from Vercel domain settings) → Web does Phase 6 (remove gh-pages deploy step + repository_dispatch cleanup; STATIC_EXPORT env stays for deploy.sh emergency fallback)
-- Env vars status: ADMIN_* + GITHUB_DRAFT_TOKEN evidently set (enforced mode responded); GA id delivered (G-SVPLRHEEBP); SENTRY_* optional, not set
+- 2026-07-14: PM regenerated hash → login SUCCESS → compose edit-save landed on product
+  main as 3a39c078f via fine-grained PAT (branch protection cleared). All 5 critical
+  gotchas closed. Calendar renders 411 entries in serverless build.
+- **PM will trial compose on Thursday's post** (into-production, scheduled 7/16)
+- **DNS cutover: PM-schedulable anytime** — Vercel Settings → Domains → add pipermorgan.ai;
+  registrar: remove GH Pages A records (185.199.108-111.153), add Vercel's shown records
+  (typically A 76.76.21.21 apex + CNAME cname.vercel-dns.com www)
+- **After cutover (Web work)**: Phase 6 — remove gh-pages deploy step from deploy.yml,
+  clean repository_dispatch from update-blog-posts.yml, verify pipermorgan.ai serves
+  `server: Vercel` headers; keep STATIC_EXPORT path for deploy.sh emergency fallback
+- Test URL: piper-morgan-website-git-main-piper-morgan.vercel.app (behind Vercel SSO —
+  PM's browser passes; for agent e2e PM can mint Protection Bypass for Automation secret)
 
-### Phase 3 (Image Upload) — BLOCKED on PM (image storage location, asked Jul 9)
+### Weekly Ship normalization — WAITING on Docs reply
+- Memo sent 07-14: mailboxes/docs/inbox/memo-web-to-docs-cc-pm-weekly-ship-normalization-2026-07-14.md
+- Asks: ship-draft location/format, transform pipeline, draftPath population, legacy-16
+  repo sources, other divergences
+- PM + Web both lean **future-first** (populate draftPath on new ship rows → zero-code
+  compose support; legacy backfill = optional later phase). Ships are SITE-FIRST now,
+  syndicated to LinkedIn after (Web's earlier LinkedIn-canonical picture was stale —
+  only true for the legacy 16, which exist solely as website-repo JSON).
+- Next: Docs particulars → Web drafts joint plan → PM decision
+
+### Phase 3 (Image Upload) — BLOCKED on PM (storage location, asked Jul 9)
 ### Role portfolio — HOST review pending
-### Type-error cleanup — spun off as chip task_e8c4853a, running in separate session (7 pre-existing TS18047 in blog/nav); nothing landed on main yet at close
+### Type-error chip (task_e8c4853a) — separate session; nothing on main yet
 
 ## Notes
-- Worktree node_modules is a REAL install now (npm i jose replaced symlink). Turbopack panics in this worktree → use plain `next dev`.
-- fs-mode auto-commit is pathspec-scoped now (can't sweep other agents' staged files) — defect found live 7/12.
-- Draft serializer round-trips canonically (blank line after frontmatter restored).
-- Secrets recipes: always stdin-based, never argv (zsh quoting/history-expansion mangles passwords — burned once).
+- Product-repo git: ALWAYS absolute `git -C` paths (cwd drifts across reconnects);
+  stage own files BEFORE any stash; `-c rebase.autoStash=true rebase` for the sync
+  dance; "Applied autostash" prints to stderr.
+- Worktree node_modules is a real install; Turbopack panics here → plain `next dev`.
+- Secrets recipes: stdin-based only, never argv (zsh mangles; burned 7/12).
+- Pre-existing stash@{0,1} in product repo belong to other sessions — leave them.
 
 ## Cron state
-- **ARMED** — ef26183c `22 6,9,12,15,18,21 * * *` (session-only; Gap-C self-heal on next turn if session died)
+- **ARMED** — ef26183c `22 6,9,12,15,18,21 * * *`
