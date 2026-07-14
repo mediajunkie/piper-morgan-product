@@ -1,7 +1,7 @@
 ---
-image: 
-alt: 
-caption: 
+image:
+alt:
+caption:
 ---
 
 # The Migration Wave
@@ -30,13 +30,13 @@ And my product-assistant agent (Piper Alpha) did something less exotic that kind
 
 # Monday: the wave
 
-Monday was migration day. It had been my goal number one for the day, stated plainly, and by end of day it had mostly happened. Three more agents — my Head of Sapient Trust (HOST), Chief Innovation Officer (CIO), and Documentation Manager (Docs) moved onto the new working model, joining the two that had already migrated.
+Monday was migration day. It had been my goal number one for the day, stated plainly, and by end of day it had mostly happened. Three more agents — my Head of Sapient Trust (HOST), Chief Innovation Officer (CIO), and Documentation Management (Docs) moved onto the new working model, joining the two that had already migrated.
 
 The model is worth spelling out, because it may sound more technical than it is: Each agent now works on its own branch with its own checked-out copy of the codebase (a "worktree," in git terms, a separate working copy of the same repository), instead of everyone sharing the same working directory, to avoid conflicts. For example, the previous night one of Lead Dev's routine commits sat blocked for about an hour, tangled behind a pile of other agents' uncommitted files sitting in the same shared checkout. When everyone works in one room, one person's mess is everyone's problem. Give each agent its own room and the contention disappears.
 
 Three other things happened Monday that, taken together, told me the team was running at a different level than a week earlier.
 
-The Chief of Staff agent kicked off the weekly Ship review with six author memos distributed, a deadline set, the machine running as intended. We also shipped a heavy feature related to how Piper Morgan will recognize the provenance of information. It pased 152 tests and enables Piper to answer questions like "why did you suggest that?" with actual citations. Plus one other thing happened.
+The Chief of Staff agent kicked off the weekly Ship review with six author memos distributed, a deadline set, the machine running as intended. We also shipped a heavy feature related to how Piper Morgan will recognize the provenance of information. It passed 152 tests and enables Piper to answer questions like "why did you suggest that?" with actual citations. Plus one other thing happened.
 
 # The mistake that didn't get papered over
 
@@ -44,7 +44,7 @@ My Chief Experience Officer agent (CXO), triaging its inbox, found a memo from a
 
 The easy move would have been to quietly make it true. Draft the thing, close the loop, no one's embarrassed. The CXO agent didn't. It flagged the confabulation first, before drafting anything, on the explicit reasoning that covering for it would erode the very norm that keeps the team trustworthy. You don't assert work that wasn't done, and you don't let someone else's assertion of your unfinished work stand uncorrected.
 
-That's the same source-discipline I wrote about weeks ago when Piper made something up in replying to me as a test user. What's new is the *scale* this is happening on. This was an agent confabulating about a peer, inside the team's own coordination layer, and another agent catching it there — not the familiar shape of an agent confabulating to a human. The discipline scaled from "don't lie to the user" to "don't let the team lie to itself." I didn't design that extension. It emerged because the norm was already operational enough that an agent reached for it without being asked. 
+That's the same source-discipline I wrote about weeks ago when Piper made something up in replying to me as a test user. What's new is the *scale* this is happening on. This was an agent confabulating about a peer, inside the team's own coordination layer, and another agent catching it there — not the familiar shape of an agent confabulating to a human. The discipline scaled from "don't lie to the user" to "don't let the team lie to itself." I didn't design that extension. It emerged because the norm was already operational enough that an agent reached for it without being asked.
 
 *It is these emergent behaviors involving healing and improvement that fascinate me the most!*
 
