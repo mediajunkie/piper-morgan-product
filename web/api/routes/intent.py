@@ -44,6 +44,7 @@ from services.llm.request_key import (
     request_api_key,
     resolve_request_api_key,
 )
+from services.ui_messages.user_friendly_errors import make_error_user_friendly
 from web.utils.error_responses import internal_error, validation_error
 
 logger = structlog.get_logger()
@@ -123,9 +124,24 @@ def _extract_degradation_message(error: Exception) -> str:
     if "database" in error_str or "connection" in error_str or "timeout" in error_str:
         return "Database service is temporarily unavailable. Please ensure Docker containers are running and try again."
 
-    # LLM/API errors
-    if "llm" in error_str or "api" in error_str or "openai" in error_str:
-        return "AI service is temporarily unavailable. Please try again in a few moments."
+    # LLM/provider errors — route through the humanizer (UserFriendlyErrorService)
+    # so a PERMANENT config problem (a dead or invalid API key) is reported as
+    # something the user can fix, not a transient "try again" that never
+    # recovers (PM 2026-07-14 honest-degrade). The humanizer distinguishes
+    # quota/auth (fix your key in Settings) from a genuine brief outage.
+    if (
+        "llm" in error_str
+        or "openai" in error_str
+        or "anthropic" in error_str
+        or "api key" in error_str
+        or "insufficient_quota" in error_str
+        or "all configured llm providers failed" in error_str
+        or "api" in error_str
+    ):
+        friendly = make_error_user_friendly(error)
+        recovery = friendly.get("recovery")
+        message = friendly["message"]
+        return f"{message} {recovery}".strip() if recovery else message
 
     # File system errors
     if "file" in error_str or "path" in error_str:

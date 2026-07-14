@@ -20,6 +20,7 @@ from services.consciousness.validation import validate_mvc
 def format_greeting_conscious(
     calendar_summary: Optional[Dict[str, Any]] = None,
     user_name: Optional[str] = None,
+    user_timezone: Optional[str] = None,
 ) -> str:
     """
     Format greeting with consciousness.
@@ -45,8 +46,7 @@ def format_greeting_conscious(
     Returns:
         Conscious narrative greeting
     """
-    now = datetime.now()
-    time_of_day = _get_time_of_day(now.hour)
+    time_of_day = _current_time_of_day(user_timezone)
 
     sections = []
 
@@ -165,6 +165,28 @@ def format_clarification_conscious(
     sections.append("Once I understand these better, I can help more effectively.")
 
     return "\n\n".join(sections)
+
+
+def _current_time_of_day(user_timezone: Optional[str]) -> str:
+    """Day-part for greetings, honoring the honest-timezone rule.
+
+    We only claim a day-part when we actually know the user's timezone. With
+    no tz (a fresh account, no personalization yet), the server clock is UTC —
+    and presenting *its* day-part as the user's is a wrong assumption: a
+    Pacific user at 11am got "Good evening" from an 18:00-UTC server
+    (PM-flagged 2026-07-14, #1381 family). Unknown tz → "unknown" → the
+    greeting builders fall back to a neutral "Hello" with no day-part claim.
+    """
+    if not user_timezone:
+        return "unknown"
+    try:
+        from zoneinfo import ZoneInfo
+
+        now = datetime.now(ZoneInfo(user_timezone))
+    except Exception:
+        # Unknown/invalid tz name — degrade to neutral rather than guess.
+        return "unknown"
+    return _get_time_of_day(now.hour)
 
 
 def _get_time_of_day(hour: int) -> str:

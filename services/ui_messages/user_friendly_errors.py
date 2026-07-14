@@ -35,6 +35,30 @@ class UserFriendlyErrorService:
         # Common technical error patterns and their user-friendly translations
         # NOTE: Order matters! More specific patterns should come first
         self.error_patterns = {
+            # LLM API-key failures (#1381-adjacent, PM 2026-07-14) — these MUST
+            # come before the generic 429/rate-limit pattern below. An exhausted
+            # or invalid key is a PERMANENT config problem the user fixes in
+            # Settings, NOT a transient "slow down and retry" (retrying a dead
+            # key never recovers). "temporarily unavailable, try again" here is a
+            # lie that leaves the user with no path forward.
+            r"insufficient_quota|exceeded your current quota|billing.*hard limit|current quota": {
+                "message": "I can't reach a language model — the API key on your account is out of quota (or its billing needs attention).",
+                "recovery": "Add a funded key under Settings → LLM API Keys, or remove the current key to fall back to the built-in model.",
+                "severity": ErrorSeverity.ERROR,
+                "category": "llm_key",
+            },
+            r"invalid_api_key|incorrect api key|invalid.*x-api-key|authentication_error|invalid api key provided": {
+                "message": "The language-model API key on your account isn't valid.",
+                "recovery": "Check or replace it under Settings → LLM API Keys.",
+                "severity": ErrorSeverity.ERROR,
+                "category": "llm_key",
+            },
+            r"all configured llm providers failed": {
+                "message": "I couldn't reach a language model just now.",
+                "recovery": "If you've added your own API key, check it under Settings → LLM API Keys; otherwise this is usually a brief outage — try again in a moment.",
+                "severity": ErrorSeverity.ERROR,
+                "category": "llm",
+            },
             # Database errors
             r"relation '(\w+)' does not exist": {
                 "message": "I'm having trouble accessing the database. Let me try reconnecting...",
