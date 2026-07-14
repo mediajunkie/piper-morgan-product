@@ -277,21 +277,37 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         try:
             async with self._mcp_client_ctx(binding) as client:
                 handle = await self._resolve_via_mcp(client, resource)
-        except Exception:
+        except Exception as exc:
             logger.warning(
                 "GitHub MCP resolve failed (server unreachable/unprovisioned)", exc_info=True
             )
-            return ResolveMiss(await self.degrade(DegradationReason.UNREACHABLE))
+            return ResolveMiss(await self.degrade(self._degrade_reason_for_exc(exc)))
 
         if not handle:
             return ResolveMiss(await self.degrade(DegradationReason.RESOURCE_NOT_FOUND))
         return ResourceHandle(handle=handle, kind=resource.kind)
+
+    @staticmethod
+    def _degrade_reason_for_exc(exc: BaseException) -> DegradationReason:
+        """#1398/A4: a config-resolution failure degrades as MISCONFIGURED, everything
+        else as UNREACHABLE. One place so the 6 MCP call-sites stay uniform — they all
+        catch ``Exception`` and defer the reason to here rather than hard-coding it."""
+        from services.connectors.server_ref_resolver import ServerRefResolutionError
+
+        if isinstance(exc, ServerRefResolutionError):
+            return DegradationReason.MISCONFIGURED
+        return DegradationReason.UNREACHABLE
 
     async def degrade(self, reason: DegradationReason) -> DegradationResponse:
         messages = {
             DegradationReason.CONNECT_REQUIRED: "Connect GitHub to continue.",
             DegradationReason.RESOURCE_NOT_FOUND: "That GitHub resource wasn't found.",
             DegradationReason.UNREACHABLE: "GitHub's MCP server is unreachable right now.",
+            # #1398/A4: generic-honest — the deployment is misconfigured, but we never
+            # leak the missing env-var name to the user; the config detail lives in the
+            # operator ERROR log (see _mcp_client_ctx). Distinct from UNREACHABLE so a
+            # config problem never reads as a server outage (the 2026-07-12 Fly sting).
+            DegradationReason.MISCONFIGURED: "GitHub isn't configured correctly on this deployment.",
             DegradationReason.STALE_TOKEN: "Your GitHub connection needs re-authorizing.",
             DegradationReason.REPO_UNRESOLVED: (
                 "Which repo? I couldn't tell which repository you mean — name one "
@@ -354,12 +370,12 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
             async with self._mcp_client_ctx(binding_or_degrade) as client:
                 result = await client.call_tool(_REPOS_TOOL, {"query": _MY_REPOS_QUERY})
                 repos = self._parse_repo_search(self._first_text(result.content), limit=limit)
-        except Exception:
+        except Exception as exc:
             logger.warning(
                 "GitHub MCP search_repositories failed (server unreachable/unprovisioned)",
                 exc_info=True,
             )
-            return GitHubReposResult(degradation=await self.degrade(DegradationReason.UNREACHABLE))
+            return GitHubReposResult(degradation=await self.degrade(self._degrade_reason_for_exc(exc)))
         return GitHubReposResult(repositories=repos)
 
     @staticmethod
@@ -524,14 +540,14 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                     },
                 )
                 readback = self._parse_issue_payload(self._first_text(readback_result.content))
-        except Exception:
+        except Exception as exc:
             # Mid-flight failure: the write MAY have landed before the error —
             # attempted=True forbids a native retry (double-write hazard).
             logger.warning("github_write_failed_unreachable tool=%s", tool, exc_info=True)
             _slog.warning("github_write_failed_unreachable", tool=tool)
             return GitHubWriteResult(
                 attempted=True,
-                degradation=await self.degrade(DegradationReason.UNREACHABLE),
+                degradation=await self.degrade(self._degrade_reason_for_exc(exc)),
             )
         if not readback or readback.get("number") != int(number):
             return GitHubWriteResult(verified=False, issue_number=int(number), raw=written)
@@ -651,12 +667,12 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                 items, total = self._parse_issue_search(
                     self._first_text(result.content), limit=limit
                 )
-        except Exception:
+        except Exception as exc:
             logger.warning(
                 "GitHub MCP search failed (server unreachable/unprovisioned)", exc_info=True
             )
             return GitHubIssuesResult(
-                degradation=await self.degrade(DegradationReason.UNREACHABLE)
+                degradation=await self.degrade(self._degrade_reason_for_exc(exc))
             )
         return GitHubIssuesResult(issues=items, total=total)
 
@@ -766,11 +782,11 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                     },
                 )
                 item = self._parse_issue_detail(self._first_text(result.content))
-        except Exception:
+        except Exception as exc:
             logger.warning(
                 "GitHub MCP issue_read failed (server unreachable/unprovisioned)", exc_info=True
             )
-            return GitHubIssueResult(degradation=await self.degrade(DegradationReason.UNREACHABLE))
+            return GitHubIssueResult(degradation=await self.degrade(self._degrade_reason_for_exc(exc)))
         return GitHubIssueResult(item=item, resolved_repo=resolved.full_name)
 
     async def _repo_scoped_list_via_connector(
@@ -800,13 +816,13 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
                     tool, {"owner": resolved.owner, "repo": resolved.name}
                 )
                 items = parse(self._first_text(result.content))
-        except Exception:
+        except Exception as exc:
             logger.warning(
                 "GitHub MCP repo-scoped read failed (server unreachable/unprovisioned)",
                 exc_info=True,
             )
             return GitHubRepoScopedResult(
-                degradation=await self.degrade(DegradationReason.UNREACHABLE)
+                degradation=await self.degrade(self._degrade_reason_for_exc(exc))
             )
         return GitHubRepoScopedResult(items=items, resolved_repo=resolved.full_name)
 
@@ -981,9 +997,27 @@ class GitHubMCPSpatialAdapter(BaseSpatialAdapter):
         # from deployment config; scheme-prefixed BYOC literals pass verbatim.
         # A ServerRefResolutionError names the missing config (A4) instead of
         # masquerading as a server outage (the 2026-07-12 Fly incident).
-        from services.connectors.server_ref_resolver import resolve_server_ref
+        from services.connectors.server_ref_resolver import (
+            ServerRefResolutionError,
+            resolve_server_ref,
+        )
 
-        _server_url = resolve_server_ref(binding.mcp_server_ref, connector=_GITHUB)
+        try:
+            _server_url = resolve_server_ref(binding.mcp_server_ref, connector=_GITHUB)
+        except ServerRefResolutionError as exc:
+            # #1398/A4 — the SINGLE-POINT operator diagnostic (Arch 2026-07-12): a
+            # config problem must surface AS a config problem, at ERROR, naming the
+            # missing var (exc carries "resolves via GITHUB_MCP_SERVER_URL, which is
+            # unset…") — never buried under a "server unreachable" warning. The
+            # per-site catches map this to DegradationReason.MISCONFIGURED (not
+            # UNREACHABLE) via _degrade_reason_for_exc, so neither the operator nor
+            # the user sees a phantom outage.
+            logger.error(
+                f"GitHub MCP server ref is misconfigured — deployment config problem, "
+                f"NOT a server outage: {exc}",
+                exc_info=True,
+            )
+            raise
         async with MCPClient.connect_http(_server_url, headers=headers) as client:
             yield client
 

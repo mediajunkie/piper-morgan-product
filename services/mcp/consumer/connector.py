@@ -41,6 +41,8 @@ class DegradationReason(enum.Enum):
     CONNECT_REQUIRED = "connect_required"  # configured but this user hasn't connected — "connect me"
     RESOURCE_NOT_FOUND = "resource_not_found"  # a resolve-miss
     UNREACHABLE = "unreachable"  # the MCP server is down
+    MISCONFIGURED = "misconfigured"  # #1398/ADR-070-A A4: deployment config problem
+    # (unset/unknown server-ref) — NOT a server outage; must not masquerade as UNREACHABLE
     STALE_TOKEN = "stale_token"  # bound but needs re-auth
     REPO_UNRESOLVED = "repo_unresolved"  # #1327: repo-scoped read but no target repo — "which repo?"
 

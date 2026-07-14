@@ -12,6 +12,7 @@ to UNREACHABLE — which is itself asserted here.
 from __future__ import annotations
 
 import contextlib
+import logging
 
 import pytest
 import pytest_asyncio
@@ -62,10 +63,10 @@ async def sm(monkeypatch):
     await engine.dispose()
 
 
-async def _seed(maker, status):
+async def _seed(maker, status, ref="github-mcp-server"):
     async with maker() as s:
         await ConnectorBindingRepository(s).upsert(
-            _ALPHA, "github", status=status, mcp_server_ref="github-mcp-server"
+            _ALPHA, "github", status=status, mcp_server_ref=ref
         )
         await s.commit()
 
@@ -168,7 +169,11 @@ class TestResolveHttpSeam:
     server, forwarding the user's stored OAuth grant as the Authorization header."""
 
     async def test_mcp_client_ctx_connects_http_with_grant_header(self, sm, monkeypatch):
-        await _seed(sm, "bound")  # binding mcp_server_ref="github-mcp-server"
+        # ADR-070-A (A1): the binding stores the LOGICAL key 'github'; the URL
+        # resolves from deployment config at connect-time. (Pre-A this test seeded a
+        # literal 'github-mcp-server' ref — stale once the resolver landed.)
+        monkeypatch.setenv("GITHUB_MCP_SERVER_URL", "http://gh-mcp.internal:8082/mcp")
+        await _seed(sm, "bound", ref="github")
         import services.mcp.consumer.github_adapter as gh
 
         class _GS:  # grant store → returns a token, ignores the session
@@ -196,5 +201,64 @@ class TestResolveHttpSeam:
         async with gh.GitHubMCPSpatialAdapter()._mcp_client_ctx(binding):
             pass
 
-        assert captured["url"] == "github-mcp-server"
+        assert captured["url"] == "http://gh-mcp.internal:8082/mcp"
         assert captured["headers"] == {"Authorization": "Bearer gho_tok"}
+
+
+class TestMisconfiguredDegrade:
+    """#1398 / ADR-070-A A4 — a server-ref RESOLUTION failure (unset env / unknown key)
+    is a deployment CONFIG problem: it must degrade as MISCONFIGURED and log the missing
+    config at ERROR, never masquerade as UNREACHABLE (the 2026-07-12 Fly phantom-outage).
+    Arch 2026-07-12: the resolver named the config, but the adapter flattened it back to
+    UNREACHABLE — this covers the integration point the 7 resolver tests didn't."""
+
+    async def test_unset_env_degrades_misconfigured_and_logs_config(self, sm, monkeypatch, caplog):
+        import services.mcp.consumer.github_adapter as gh
+
+        # A bound binding storing the logical key 'github', but the deployment's
+        # GITHUB_MCP_SERVER_URL is unset → resolve_server_ref raises (the A4 case).
+        monkeypatch.delenv("GITHUB_MCP_SERVER_URL", raising=False)
+        await _seed(sm, "bound", ref="github")
+
+        class _GS:  # grant present, so resolution (not the grant fetch) is what fails
+            def __init__(self, *a, **k):
+                pass
+
+            async def get(self, *a, **k):
+                return "gho_tok"
+
+        monkeypatch.setattr(gh, "ConnectorGrantStore", _GS)
+
+        with caplog.at_level(logging.ERROR):
+            res = await GitHubMCPSpatialAdapter().resolve(
+                _ALPHA, ResourceQuery(kind="default_repo")
+            )
+
+        assert isinstance(res, ResolveMiss)
+        # config-distinct, NOT UNREACHABLE
+        assert res.degradation.reason is DegradationReason.MISCONFIGURED
+        # generic-honest user message — never leaks the env-var name to testers
+        assert "GITHUB_MCP_SERVER_URL" not in res.degradation.user_message
+        # operator ERROR log names the missing config and calls it misconfigured
+        assert any(
+            r.levelno == logging.ERROR
+            and "misconfigured" in r.getMessage().lower()
+            and "GITHUB_MCP_SERVER_URL" in r.getMessage()
+            for r in caplog.records
+        )
+
+    async def test_non_config_failure_still_unreachable(self, sm):
+        """A genuine transport failure (not a config-resolution error) stays UNREACHABLE —
+        MISCONFIGURED must not swallow real outages."""
+        await _seed(sm, "bound", ref="github")
+        adapter = GitHubMCPSpatialAdapter()
+
+        @contextlib.asynccontextmanager
+        async def _raise_generic(binding):
+            raise RuntimeError("connection reset by peer")
+            yield  # unreachable — present only to make this an async generator
+
+        adapter._mcp_client_ctx = _raise_generic
+        res = await adapter.resolve(_ALPHA, ResourceQuery(kind="default_repo"))
+        assert isinstance(res, ResolveMiss)
+        assert res.degradation.reason is DegradationReason.UNREACHABLE
