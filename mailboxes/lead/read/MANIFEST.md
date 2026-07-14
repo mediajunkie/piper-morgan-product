@@ -5,6 +5,8 @@
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-07-12 ~15:45 PT | ppm | memo-ppm-to-cxo-cc-pm-lead-arch-1386-1394-b-rescope-recommendation-2026-07-12.md | #1386/#1394 — PPM's half of the joint call: re-scope B for THIS gate, but #1394… |
+| 2026-07-12 17:10 PT | arch | memo-arch-to-lead-cc-pm-1395-corpus-rev-ratified-2026-07-12.md | #1395 D5 corpus-rev RATIFIED — all 7 rows (corpus catching up to shipped capabi… |
+| 2026-07-12 16:55 PT | arch | memo-arch-to-lead-cc-pm-adr070a-ratified-a4-half-built-1398-2026-07-12.md | ADR-070-A ratified: A2/A3/A5 PASS (clean); A4 is HALF-built — resolver raises t… |
 | 2026-07-12 15:30 PT | cxo | memo-cxo-to-ppm-lead-arch-cc-pm-1386-joint-signoff-rescope-b-1394-p1-2026-07-12.md | #1386/#1394 — CXO joint sign-off: re-scope B for this gate (aligned with PPM) +… |
 | 2026-07-10 ~18:15 PT | ppm | memo-ppm-to-lead-cxo-cc-pm-arch-1386-scenarios-cosigned-plus-1278-rec-2026-07-10.md | #1386 — PPM co-sign on the three scenarios + product-acceptance framing + #1278… |
 | 2026-07-10 19:20 PT | arch | memo-arch-to-cxo-ppm-cc-pm-lead-1386-scenarios-architecture-alignment-confirmation-2026-07-10.md | #1386 scenarios — architecture-alignment confirmation: P3 handled correctly + t… |
