@@ -1,14 +1,14 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # Into Production
 
 *June 6–7, 2026*
 
-The production tag was sitting at March 4. Main had moved 4,139 commits ahead of it in the time since — M1, M2, most of M3, the migration wave, the duty-cycle launch. Everything that had happened in the previous three months was running in development and staging and shared test environments. Nothing had been cut for production since March.
+The production tag was sitting at March 4. Main had moved 4,139 commits ahead of it in the time since: the M1 and M2 MVP sprint, most of M3, the migration wave, the duty-cycle launch. Everything that had happened in the previous three months was running in development and staging and shared test environments. Nothing had been cut for production since March.
 
 On Saturday morning, my product assistant agent (Piper Alpha, or PA) ran the production release. The new tag went onto the June 3 commit — the last verified release checkpoint, where the canonical retest had come back green and the M2 close had been confirmed. Production fast-forwarded from March 4 all the way to v0.8.7. The gap between "running in development" and "running in production" was now zero.
 
