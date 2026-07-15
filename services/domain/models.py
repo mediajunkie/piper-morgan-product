@@ -1013,6 +1013,24 @@ class Artifact:
         )
 
 
+@dataclass(frozen=True)
+class SessionActivity:
+    """ADR-078 D1 (#1394) read-model — one external artifact a session created
+    (an issue, a doc). Holds an external POINTER (``target_ref`` = 'owner/repo#107'),
+    not content. Owner-scoping is enforced at ``SessionActivityRepository`` (the
+    reader keys on ``owner_id`` by construction — D1a); this frozen record is what
+    the B4 recall reader and B3 antecedent resolver consume."""
+
+    id: str
+    conversation_id: str
+    owner_id: str
+    action_type: str
+    target_ref: str
+    turn_id: Optional[str] = None
+    target_title: Optional[str] = None
+    created_at: Optional[datetime] = None
+
+
 @dataclass
 class DocumentSample:
     """Smart content sampling result"""

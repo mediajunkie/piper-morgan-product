@@ -1806,6 +1806,20 @@ class SessionActivityDB(Base):
         Index("idx_session_activity_conversation", "conversation_id"),
     )
 
+    def to_domain(self):
+        from services.domain import models as domain
+
+        return domain.SessionActivity(
+            id=self.id,
+            conversation_id=self.conversation_id,
+            owner_id=self.owner_id,
+            action_type=self.action_type,
+            target_ref=self.target_ref,
+            turn_id=self.turn_id,
+            target_title=self.target_title,
+            created_at=self.created_at,
+        )
+
 
 class KnowledgeNodeDB(Base):
     """Database model for knowledge graph nodes"""

@@ -2762,6 +2762,70 @@ class ArtifactRepository(BaseRepository):
         return row.to_domain()
 
 
+class SessionActivityRepository(BaseRepository):
+    """ADR-078 D1/D1a (#1394) — owner-scoped persistence for the session-activity
+    ledger (external creations: issue #107, docs). Written by ONE central observer
+    (OQ-3); read by B4 recall now and B3 antecedent resolution later.
+
+    D1a (the non-negotiable, HOST trust-lens): the reader keys on ``owner_id`` BY
+    CONSTRUCTION. ``list_for_session`` REQUIRES ``owner_id`` (not Optional, no admin
+    bypass, no unscoped path) and always filters ``owner_id AND conversation_id`` —
+    so a second user's activity can never be returned. This is deliberately stricter
+    than ``ArtifactRepository.get_by_id`` (which keeps an ``owner_id=None`` internal
+    path): a ledger read feeds resolution context, so an unscoped read here IS the
+    cross-user leak (#1366 / ADR-071 class). Cross-user resolution is not expressible.
+    """
+
+    async def record(
+        self,
+        *,
+        owner_id: str,
+        conversation_id: str,
+        action_type: str,
+        target_ref: str,
+        turn_id: Optional[str] = None,
+        target_title: Optional[str] = None,
+    ) -> domain.SessionActivity:
+        """Write one ledger row (the observer's single call). owner_id is required."""
+        from services.database.models import SessionActivityDB
+
+        row = SessionActivityDB(
+            id=str(uuid.uuid4()),
+            owner_id=str(owner_id),
+            conversation_id=str(conversation_id),
+            action_type=action_type,
+            target_ref=target_ref,
+            turn_id=turn_id,
+            target_title=target_title,
+        )
+        self.session.add(row)
+        await self.session.commit()
+        return row.to_domain()
+
+    async def list_for_session(
+        self,
+        owner_id: str,
+        conversation_id: str,
+        limit: int = 50,
+    ) -> List[domain.SessionActivity]:
+        """D1a owner-scoped reader — ``owner_id`` AND ``conversation_id`` are ALWAYS
+        in the WHERE. There is no owner_id=None / admin path by design; a second
+        user's rows are unreturnable. Newest first."""
+        from services.database.models import SessionActivityDB
+
+        stmt = (
+            select(SessionActivityDB)
+            .where(
+                SessionActivityDB.owner_id == str(owner_id),
+                SessionActivityDB.conversation_id == str(conversation_id),
+            )
+            .order_by(SessionActivityDB.created_at.desc())
+            .limit(limit)
+        )
+        result = await self.session.execute(stmt)
+        return [row.to_domain() for row in result.scalars().all()]
+
+
 # Repository factory
 class RepositoryFactory:
     """Creates repositories with session
