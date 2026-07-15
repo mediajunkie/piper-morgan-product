@@ -82,7 +82,7 @@ Realistic multi-turn test scenarios for the beta-close gate are next up, ahead o
 
 # 🚧 Blockers & asks
 
-**The Bring Your Own Chat (BYOC) marketplace narrative** has been blocked on direction for several weeks now. Piper Alpha is patiently waiting for me to give directon when I've been too busy to repsond. We will get to it soon after the hosted alpha launch.
+**The Bring Your Own Chat (BYOC) marketplace narrative** has been blocked on direction for several weeks now. Piper Alpha is patiently waiting for me to give direction when I've been too busy to respond. We will get to it soon after the hosted alpha launch.
 
 **The duplicate-scheduled-task pattern** (three instances this window) may be worth a structural fix rather than continuing to catch each instance as it appears.
 
