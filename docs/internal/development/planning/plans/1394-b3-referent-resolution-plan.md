@@ -39,10 +39,27 @@ This still honors ADR-078's intent exactly:
 
 B4 left `session_activity.turn_id` null. B3 doesn't strictly need it (it resolves "latest" via `created_at` order), but B3 is the natural time to populate it — requires `save_conversation_turn` to return the persisted turn id so the observer can stamp it. In scope for the B3 build; not a blocker for resolution.
 
+## Capability finding (answers Arch's §4 — a title-update handler DOES exist)
+
+Arch's ratification flagged "no title-update handler → B3 must route to honest-decline, never create_issue (duplicate)." **Build-lens correction, grounded:** the handler exists and works.
+
+- **`_handle_update_issue`** (`intent_service.py:7130`, docstring "FULLY IMPLEMENTED") extracts `title`/`body`/`state`/`labels`/`assignees` (via the same `_slotfill_issue_request`, including the `#1386-B3'` "change the title … to X" to-form), requires ≥1 field, and calls **`github_router.update_issue(title=title, …)`** — which forwards `title` (`github_integration_router.py:367`), a real title change. Tested (`test_execution_analysis_handlers.py`, `test_action_mapper.py`).
+- **Dispatch**: the elif chain `intent_service.py:6515` (`mapped_action in ["update_issue","update_ticket"] → _handle_update_issue`), with `action_mapper` aliasing `modify_issue`/`update_github_issue`/`update_ticket` → `update_issue`. This is **surface-4 (elif) dispatch, not the rail** — which is why a rail-based grounding misses it (the "fourth vocabulary" the routing-stack doc warns about).
+- **So both cases land honestly, no new decline handler needed**: "change the title of #107 **to 'Foo'**" → real update; "change the title of #107" (no new value) → the handler's own validation returns "no fields to update / which title?" honest clarification (`:7230`). Neither is Notion; neither is `create_issue`.
+
+**This corrects P1's expected destination**: the update-issue EXECUTION lane (`update_issue`), NOT a REVIEW/decline lane.
+
+**The REAL risk (replaces "no handler")** — reachability: `update_issue` is **NOT in ACTION_REGISTRY, not rail-registered, not prompt-suggested** (elif-only). `pre_classify` returns None for update phrasings → routing depends on the **LLM classifier** emitting `update_issue`/`modify_issue`/etc. So Arch's `create_issue`-duplicate fear is real *as a classification-misfire risk*, not a missing-handler one — the probe must confirm "change the title of issue owner/repo#107" classifies to `update_issue` (not `create_issue`, not floor).
+
+**Design option (closes the mode-4 gap deterministically)**: since B3 *deterministically* detects update-verb + referent + resolves #107, B3 can **emit the intent directly** (`action=update_issue` + context) rather than rewrite-and-hope-the-LLM-routes-right — B3 becomes effectively a pre-classifier rule for resolved update-requests. Fully deterministic on B3's cases (more D4-clean than leaving the resolved message to the LLM), and it removes the create_issue-duplicate risk *by construction* for exactly the cases B3 handles. This is MORE than "pure message rewrite," so it's Arch's call (OQ-3 below).
+
+**Separate hardening (not blocking B3)**: `update_issue` being registry/rail-invisible is a mode-4 fragility for ALL update requests, not just B3's. Worth adding to ACTION_REGISTRY + rail — a small separate fix; will file.
+
 ## Open questions for Arch
 
-1. **OQ-2 (ADR-078) — detection mechanism**: deterministic patterns (regex on verb+referent, cheap, matches the pre_classifier's deterministic character) vs a small LLM resolution call. **My lean: deterministic** — it keeps surface-1 deterministic/inspectable (the HOST trust-lens "legible intermediate state" argument), and the conservative bar is easier to reason about in patterns than in an LLM's judgment. LLM-resolution reintroduces exactly the non-determinism D4 pushed out. Want your ruling.
-2. **Rewrite form**: message-string rewrite (reuses `_slotfill_issue_request`, one path) vs `intent.context` annotation (cleaner but the classifier prompt won't see it). My lean: **message rewrite** — it makes the resolved referent visible to every downstream surface uniformly, and it's the most testable ("in→out" string transform).
+1. **OQ-2 (ADR-078) — detection mechanism**: deterministic patterns vs a small LLM call. **My lean: deterministic.** *(RULED by Arch 2026-07-15: deterministic.)*
+2. **Rewrite form**: message-string rewrite vs `intent.context` annotation. My lean: **message rewrite.** *(RULED by Arch: message-rewrite; preserve raw `Intent.original_message` per #1332 — store both raw + resolved.)*
+3. **(NEW, from the capability finding) Pure-rewrite vs deterministic-emit**: given B3 already deterministically knows "this is `update_issue` for #107", should B3 (a) rewrite the message and let the LLM classify (mode-4 reachability risk — could misfire to `create_issue`, the duplicate hazard §4 flagged), or (b) **emit the resolved intent directly** (`action=update_issue` + context), closing that hazard by construction for B3's cases? **My lean: (b)** — the honest completion of "deterministic detection," removes the create_issue-duplicate risk rather than relying on the probe to confirm the LLM behaves. More than a string-rewrite, so your call.
 
 ## D5 corpus rows (maps to your P1/P2/N1/N2 preview)
 
