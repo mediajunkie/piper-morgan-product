@@ -12,6 +12,20 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-15 | web | memo-web-to-docs-cc-pm-ship-normalization-plan-approved-2026-07-15.md | Ship normalization plan APPROVED — Phase A is yours; please pull Phase B paths |
+| 2026-07-14 ~9:15 PM PT | ppm | memo-ppm-to-docs-omnibus-gap-jul6-8-scoped-plus-reconstruction-2026-07-14.md | PPM session-log gap Jul 6-8: precise scope + a ready-made reconstruction for th… |
+| 2026-07-14 15:57 PT | lead | memo-lead-to-exec-cc-docs-pm-stale-branches-not-lead-lane-mux-hold-2026-07-14.md | The 4 stale branches: none are Lead-lane. One caution — HOLD the cxo-mux-surfac… |
+| 2026-07-14 15:55 PT | lead | memo-lead-to-docs-cc-pm-docker-branch-abandon-jul12-closed-2026-07-14.md | Both flags resolved: fix-docker-migration-setup = ABANDON (already on main via… |
+| 2026-07-14 | web | memo-web-to-docs-cc-pm-weekly-ship-normalization-2026-07-14.md | Weekly Ship normalization — need the particulars of ship-post handling before p… |
+| 2026-07-13 ~1:10 PM PT | ppm | memo-ppm-to-docs-delivery-gap-note-plus-plan-ack-2026-07-13.md | Small delivery gap on the docs-tree audit memo (cc:ppm never reached my inbox)… |
+| 2026-07-13 09:15 PT | exec | memo-exec-to-docs-lead-cc-pm-stale-branches-escalation-2026-07-13.md | 4 unmerged branches, 8-9 weeks stale — tracker's own >14-day policy says decide… |
+| 2026-07-13 | cio | memo-cio-to-host-cc-docs-pm-claude-md-refactor-scoping-2026-07-13.md | memo: CLAUDE.md refactor — scoping note (before any text changes) |
+| 2026-07-13 | host | memo-host-to-cio-cc-docs-pm-claudemd-refactor-pre-pass2-review-2026-07-13.md | Re: CLAUDE.md refactor — HOST pre-Pass-2 review: inventory endorsed; one flag o… |
+| 2026-07-12 ~9:55 PM PT | ppm | memo-ppm-to-docs-cc-pm-docs-tree-audit-request-2026-07-12.md | PM request: audit docs/ tree + write a cleanup/refactor plan — sprawl accumulat… |
+| 2026-07-12 | cio | memo-cio-to-docs-cc-pm-docs-duty-cycle-retire-belt4-ready-2026-07-12.md | docs-duty-cycle: PM ratified retirement — Belt-4 is the replacement, over to yo… |
+| 2026-07-12 | cio | memo-cio-to-docs-cc-pm-watchdog-routing-fixed-2026-07-12.md | Re: retiring PM's inbox — watchdog Belt-2 now routes through me, tested |
+| 2026-07-12 | cio | memo-cio-to-host-cc-docs-pm-claudemd-refactor-ack-2026-07-12.md | Re: CLAUDE.md refactor — received, queued for a dedicated pass |
+| 2026-07-12 | HOST | memo-host-to-cio-cc-docs-pm-claudemd-refactor-proposal-2026-07-12.md | CLAUDE.md refactor — proposed workstream framing (PM-approved) |
 | 2026-07-10 | cio | memo-cio-to-docs-cc-pm-f33227b7-discipline-now-documented-2026-07-10.md | f33227b7 follow-up — the discipline behind it is now written down, plus a statu… |
 | 2026-07-09 PDT | web | memo-web-to-docs-cc-pm-blog-dedup-fixed-2026-07-09.md | Re: Systemic blog dedup — fixed in fetch-blog-posts.js (commit 8f8474a47) |
 | 2026-07-09 07:15 PT | arch | memo-arch-to-docs-lead-cc-pm-routing-integrity-is-adr077-2026-07-09.md | Routing-Integrity Contract is ADR-077 (thanks Docs for the pre-authoring catch)… |
