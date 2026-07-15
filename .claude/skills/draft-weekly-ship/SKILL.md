@@ -2,7 +2,7 @@
 name: draft-weekly-ship
 description: Draft the Piper Morgan Weekly Ship newsletter from collected workstream memos. Use when PM says "draft the Ship", "draft Ship #NNN", "synthesize the workstream memos", or when all 6 workstream-NNN memos have landed in `mailboxes/exec/inbox/` and a theme has been picked. Loads the canonical artifacts before drafting so memory-of-past-Ships doesn't substitute for structure.
 scope: exec
-version: 1.0
+version: 1.6
 created: 2026-05-19
 ---
 
@@ -62,6 +62,15 @@ Open all 4 in order. Read the process guide first (it tells you what the deliver
 
 - **Window**: Friday through Thursday. Verify the dates in PM's request match.
 - **Theme**: PM-picked, ideally from the 6 workstream memos' convergence. If theme isn't yet picked, surface candidates BEFORE drafting (don't draft on assumed theme).
+
+### Step 2b: HARD GATE — all 6 workstream memos must be in before drafting starts
+
+**Do not begin Step 3 with fewer than 6 of 6 memos present, regardless of deadline pressure.** Check `mailboxes/exec/inbox/` (and `read/` for any already triaged) for `workstream-{NNN}-{role}-*.md` from all six roles: arch, cio, comms, cxo, host, ppm.
+
+- **6 of 6 present** → proceed to Step 3.
+- **Fewer than 6** → STOP. Do not draft, even partially, even as a "placeholder to be filled in." Notify PM directly (chat + a mail note if PM is not in the current conversation) naming exactly which role(s) are missing and how close the pubDate deadline is. Wait for PM's call: extend, PM nudges directly, or (PM's explicit decision only) proceed on a named partial set.
+
+**Why this is a hard gate, not a judgment call**: Ship #051 (2026-07-14) was drafted in full with PPM's memo missing, reasoning that the pubDate was the next day and a nudge had already gone out. PM overrode this directly: *"we cannot write the ship without all the workstream reviews."* PM is the Ship's first audience, not just its final reviewer, and is specifically most interested in the portfolio-goals lens that PPM's §0 carries — a draft missing it is missing the part PM most wants to read, not a minor gap to route around under time pressure. See `feedback_ship_needs_all_workstream_reviews_no_partial_draft.md`. The Friday early-warning check in methodology-25 (workstream-review-cadence) exists to catch a missing memo early in the week, before it becomes a Tuesday-deadline crisis — this gate is the backstop for when that early warning didn't prevent the gap anyway.
 
 ### Step 3: Read ALL omnibus logs in the window — REQUIRED, FULL READ
 
@@ -261,12 +270,18 @@ The Ship #043 v0.1 failure was not knowing the template existed — it was choos
 - `feedback_affirmative_direct_over_disclaim_then_affirmative.md` — voice discipline
 - `feedback_workstream_review_cadence.md` — Fri–Thu window discipline
 - `feedback_workstream_review_scope.md` — Exec synthesizes; 6 leadership roles author
+- `feedback_ship_needs_all_workstream_reviews_no_partial_draft.md` — Step 2b's hard gate
+- `docs/internal/development/methodology-core/methodology-25-WORKSTREAM-REVIEW-CADENCE.md` — Friday kickoff trigger + PM notification + prior-cycle-gap check (the early-warning half of the same fix)
 - [audit-cascade skill](../audit-cascade/SKILL.md) — the parent procedural pattern this skill mirrors
 - [create-omnibus skill](../create-omnibus/SKILL.md) — sibling skill for the omnibus log artifact
 
 ---
 
 ## Version history
+
+### v1.6 (2026-07-14)
+
+**Step 2b: HARD GATE — all 6 workstream memos required before drafting starts, no exceptions for deadline pressure.** Ship #051 was drafted in full (through the audit checklist, committed, pushed) with PPM's memo missing — Exec judged that a nudge had gone out and the pubDate was the next day, so proceeded on 5/6. PM overrode directly: "we cannot write the ship without all the workstream reviews... I am still the first audience for the weekly report and I am especially interested in the portfolio updates." Previously this was a should-wait norm (Anti-Patterns table: "Start drafting after reading 3 of 6 memos") without an enforced stop; v1.6 makes it a hard STOP-and-notify-PM gate at Step 2, before Step 3's omnibus read even begins. Paired with a Friday early-warning mechanism added the same day to methodology-25 (workstream-review-cadence) — that catches a missing memo early in the week; this gate is the backstop if the early warning didn't prevent the gap.
 
 ### v1.5 (2026-07-08, same day as v1.3/v1.4)
 
@@ -298,7 +313,7 @@ Initial skill. Lists canonical artifacts to load before drafting. Names voice-di
 
 ---
 
-*Skill version: 1.5*
+*Skill version: 1.6*
 *Created: 2026-05-19 (v1.0)*
-*Updated: 2026-05-20 (v1.1 — External-section verification step; v1.2 — omnibus is required full read, not spot-check); 2026-07-08 (v1.3 — Comms pre-publish review is a named mandatory step; v1.4 — PM gates the Comms handoff + evidence-tier discipline; v1.5 — metrics as bullet list, never a table)*
+*Updated: 2026-05-20 (v1.1 — External-section verification step; v1.2 — omnibus is required full read, not spot-check); 2026-07-08 (v1.3 — Comms pre-publish review is a named mandatory step; v1.4 — PM gates the Comms handoff + evidence-tier discipline; v1.5 — metrics as bullet list, never a table); 2026-07-14 (v1.6 — Step 2b hard gate: all 6 memos required, no partial drafts under deadline pressure)*
 *Scope: Exec (drafts); PM (gates); Comms (reviews)*

@@ -64,14 +64,18 @@ The Ship narrative needs each role's lens (CXO sees voice and experience; CIO se
 | Tue | Last-call for workstream memos; exec begins synthesis |
 | Wed | Ship publishes (LinkedIn + blog) |
 
-### Friday kickoff trigger — Exec-owned (added 2026-06-27, PM-directed)
+### Friday kickoff trigger — Exec-owned (added 2026-06-27, PM-directed; PM-notification + prior-cycle check added 2026-07-14)
 
 **Every Friday, Exec begins the cycle by first verifying the week's session logs are complete, then issuing the workstream call.** This is a standing Exec obligation, not a someday-thing — the cadence slipped the week of Ship #049 because nothing forced the Friday kickoff. Concretely, on the first Exec duty-cycle fire each Friday (and as a checklist any Exec session inherits):
 
 1. **Verify the closed window's session logs are day-closed.** For each day Fri–Thu of the just-closed window, confirm a `<!-- DAY-CLOSED: {date} -->` marker exists across the cycling roles (`grep -l "DAY-CLOSED: {date}" dev/YYYY/MM/DD/*log.md`). Any role missing its close → memo that role to retroactively close before the workstream reports are written (an unclosed day is a coverage gap in that role's §0 progress report).
-2. **Then issue the workstream call** to the six authoring leads (HOST/CIO/Comms/CXO/PPM/Arch), cc PM + PA, per the Memo Structure below (§0 leads with progress vs. portfolio goals; see §0 note).
+2. **Check the just-published Ship's collection status.** Before issuing the new call, verify whether the Ship draft that went to PM this week was actually built on all 6 memos, or whether Exec proceeded on a partial set (check the draft's routing note / commit message for the prior Ship number). If any role was missing at draft time, name it explicitly in the notification below — this is what catches a repeat-offender gap before it recurs a second week running.
+3. **Then issue the workstream call** to the six authoring leads (HOST/CIO/Comms/CXO/PPM/Arch), cc PM + PA, per the Memo Structure below (§0 leads with progress vs. portfolio goals; see §0 note).
+4. **Notify PM directly, by mail, that the call went out.** Not just logged silently — a short memo to PM's inbox naming: the window dates just opened, the 6 recipients, and (from step 2) any carryover gap from the prior cycle. This gives PM Friday-morning visibility into collection status instead of first learning about a gap at Tuesday's drafting deadline.
 
-This trigger is backed by a recurring Exec Friday reminder (cron), but the durable home is here — a session-scoped cron dies; this doc does not. Any Exec session reading this on a Friday runs the two steps above.
+**Why steps 2 and 4 exist (2026-07-14):** Ship #051's collection gap (PPM's memo still missing) wasn't visible to PM until Exec was mid-draft on the Tuesday deadline — nobody had been tracking or reporting collection status since the Friday kickoff three days earlier. PM: *"we cannot write the ship without all the workstream reviews... I am still the first audience for the weekly report."* The fix has two halves: this Friday notification (early visibility, so PM can nudge a slow role with days of runway instead of hours) and a hard drafting-time gate in the `draft-weekly-ship` skill (Step 2b, v1.6 — refuses to draft on fewer than 6 memos regardless of deadline pressure, the backstop if the early warning doesn't prevent the gap). See `feedback_ship_needs_all_workstream_reviews_no_partial_draft.md`.
+
+This trigger is backed by a recurring Exec Friday reminder (cron), but the durable home is here — a session-scoped cron dies; this doc does not. Any Exec session reading this on a Friday runs the four steps above.
 
 ## Source-Material Discipline (Code-Era Pattern, Effective Ship #041 Onward)
 
@@ -213,6 +217,10 @@ PM clarified the writing window in chat: Fri–Tue, ideally Sat/Sun "in the bank
 
 ### Source-discipline shift (April 27, 2026)
 PM directive Apr 27: workstream reviews now read primary session logs first; omnibus = coverage check, not primary input. Effective Ship #041 onward. Code-era visibility makes primary-source reading nearly as fast as omnibus, with materially higher fidelity.
+
+### Friday PM-notification + prior-cycle-gap check added (July 14, 2026)
+
+Ship #051's PPM memo was still missing when Exec began drafting on the Tuesday deadline, and PM had no visibility into the collection gap until then — the existing Friday kickoff trigger issued the call but never reported back on whether it landed. PM directive (in-conversation, 2026-07-14): "we cannot write the ship without all the workstream reviews... I am still the first audience for the weekly report... we need to figure out a system where I am notified on Friday if the memos has gone out and if any agents haven't been able to reply yet." Added steps 2 and 4 to the Friday kickoff trigger: check the just-published Ship's collection status before issuing the new call, and mail PM a confirmation naming the window, recipients, and any carryover gap. Paired with a hard drafting-time gate added the same day to `draft-weekly-ship` skill v1.6 (Step 2b), which refuses to draft on fewer than 6 memos regardless of deadline pressure.
 
 ### Canonical-source / role-voice distinction added (June 23, 2026)
 Comms's Ship #048 workstream review (Jun 20) missed one publication ("Critical vs Commodity Work in a Role," Jun 13) and mis-stated normal cadence as "above cadence" — root cause was counting from memory rather than checking the editorial calendar. Exec (Jun 23 PM directive) added the "canonical sources for facts; role voice for everything else" section and the corresponding anti-pattern row. The editorial calendar is now named as the canonical source for all publication claims.
