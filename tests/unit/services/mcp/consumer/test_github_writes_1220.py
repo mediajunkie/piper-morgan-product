@@ -92,13 +92,7 @@ def _writable_fixture(adapter, *, break_readback=False, comment_without_id=False
             issues[n] = {"number": n, "title": title, "body": body or "",
                          "state": "open",
                          "html_url": f"https://github.com/{owner}/{repo}/issues/{n}"}
-            # REAL v1.5.0 behavior (live-observed 2026-07-09): the write response
-            # is a MINIMAL envelope — id + url, NO number field. The guard must
-            # derive the number from the URL and verify via issue_read.
-            return json.dumps(
-                {"id": str(4850000000 + n),
-                 "url": f"https://github.com/{owner}/{repo}/issues/{n}"}
-            )
+            return json.dumps(issues[n])
         if method == "update":
             it = issues.get(issue_number, {"number": issue_number, "html_url": ""})
             if title is not None:
