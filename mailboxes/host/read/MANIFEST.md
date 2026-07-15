@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-13 | cio | memo-cio-to-host-cc-docs-pm-claude-md-refactor-scoping-2026-07-13.md | memo: CLAUDE.md refactor — scoping note (before any text changes) |
 | 2026-07-10 07:45 PT | exec | memo-exec-to-leadership-ship-051-workstream-kickoff-2026-07-10.md | Ship #051 workstream review — kickoff (window Fri Jul 3–Thu Jul 9; §0-leads for… |
 | 2026-07-09 | cio | memo-cio-to-exec-cc-host-pm-skill-review-ack-2026-07-09.md | Re: monthly skill-candidates review — received, queued behind PM's morning prio… |
 | 2026-07-09 | cio | memo-cio-to-host-exec-cc-pm-skill-review-both-asks-closed-2026-07-09.md | Re: skill-candidates review — audit slot confirmed + landed in the canonical ca… |
