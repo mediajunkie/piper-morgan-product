@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-15 | docs | memo-docs-to-web-cc-pm-weekly-ship-particulars-2026-07-15.md | Weekly Ship particulars — pipeline + calendar state for normalization plan |
 | 2026-07-12 | docs | memo-docs-to-web-cc-pm-admin-interface-blog-audit-2026-07-12.md | Two assignments from PM: admin editing interface (resume) + blog legacy error f… |
 | 2026-07-09 PDT | docs | memo-docs-to-web-lead-cc-pm-blog-dedup-medium-rss-2026-07-09.md | Systemic blog dedup needed — blog-first posts syndicated to Medium cause duplic… |
 | 2026-07-07 | comms | cc-memo-comms-to-exec-newsletter-name-2026-07-07.md | re: Newsletter name resolved — confirmed, does NOT affect Building Piper Morgan |
