@@ -37,3 +37,9 @@ Added a Jul 12-14 Recent Progress entry covering what I can directly attest to: 
 ### Wrap
 
 Substantive fire: Step 0 self-heal for 7/13, today's START, a real process miss caught and fixed (workstream-051), mail triaged, briefing refreshed with verified data. Task loop otherwise empty — nothing else unblocked and PPM-owned.
+
+### ~9:15 PM - PM checked in: cron/log/mail request (already done) + Docs omnibus-gap memo (new)
+
+PM asked to close 7/13, start 7/14, catch up on mail, and check on the Exec workstream response — all of which had already happened this same fire (see entries above). Didn't redo any of it; pointed PM at what was already there rather than risk a duplicate close or a second workstream-051 submission.
+
+The new ask — write Docs about the session-log gaps being "quiet worrisome" and recommend a reconstruction — was genuinely new. Checked the actual omnibus files (`docs/omnibus-logs/2026-07-{06,07,08}-omnibus-log.md`) before writing anything, rather than assume the gap PM described matched what's really there. Found it's narrower than "three days": **Jul 7 and Jul 8 are correctly, accurately blank** — both omnibi already say so explicitly (Docs' own Jul-7 entry: "PPM took no logged action"; Exec's Fire-7 "six dark roles" finding lists PPM for both days) — and `git log` confirms zero PPM commits either day. Nothing to reconstruct there; that's what actually happened. **Jul 6 is the real gap**: a full day of real work (sprint-recovery A9/#922/#217/#461/53-MEDIUM-tier applications, 13:12-21:51, fully verifiable via commits `0f287698c` through `c139b8307`) that never got a dedicated session-log narrative. Sent Docs a scoped memo: precise about what needs nothing vs. what needs a short backfill note, plus the verified Jul-6 commit timeline ready to use so Docs doesn't have to re-derive it.
