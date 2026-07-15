@@ -18,9 +18,9 @@ The clearest example: a personalization store that could have leaked one tester'
 
 ## 🎯 Product & experience
 
-**The Beta Blockers sprint got built, then driven hard.** From a standing start, a full sprint-by-sprint triage — quality, health, security, and a legacy connector-migration sweep — landed 25 issues in a single scoped sprint: the actual gate between now and beta. A milestone ground-truth audit the same week cross-checked every open issue against that list rather than trusting sprint tags alone, and caught 16 that the tags would have missed. Execution then drove the sprint from 25 open to 4 by the end of the window. The roadmap was reforked twice to match — the beta gate is now the milestone clearing, not a calendar date, and an earlier target date came off the plan as unrealistic.
+**The Beta Blockers sprint got built, then driven hard.** From a standing start, a full sprint-by-sprint triage — quality, health, security, and a legacy connector-migration sweep — landed 25 issues in a single scoped sprint: the actual gate between now and beta. A milestone ground-truth audit the same week cross-checked every open issue against that list rather than trusting sprint tags alone, and caught 16 that the tags would have missed. Execution then drove the sprint from 25 open to 2 by the end of the window. The roadmap was reforked twice to match — the beta gate is now the milestone clearing, not a calendar date, and an earlier target date came off the plan as unrealistic.
 
-**Batch-1 alpha invites are ready, end to end.** All 11 invite codes are mapped to testers (10 originally plus one added mid-window), the tokens-only file and the identity roster stay separate and gitignored, and the tester loop — invite, registration, first chat, a per-user key — was proven working start to finish. One code is held: the tester's email needs verification before it goes out.
+**Batch-1 alpha invites are ready, end to end.** All 11 invite codes are mapped to testers (10 originally plus one added late in the window), the tokens-only file and the identity roster stay separate and gitignored, and the tester loop — invite, registration, first chat, a per-user key — was proven working start to finish. One code is held: the tester's email needs verification before it goes out.
 
 **A colleague, not a checklist.** Before the first beta batch ships, it gets tested the way you'd size up a new hire, not the way you'd run a test suite: does it engage substantively, does it get facts right, does it admit what it can't do instead of making something up, does it keep one tester's data away from another's. The experience-design role (CXO) owns the sign-off, and the gate is built and waiting on the word to run it.
 
@@ -32,7 +32,7 @@ The clearest example: a personalization store that could have leaked one tester'
 
 **The routing-integrity contract closes a real failure class.** Piper could previously sound confident about an action it had no actual handler for — a fabricated success dressed up as a real one. The new contract makes every action Piper claims to take traceable to a real handler, checked automatically.
 
-**A five-release chase ended in one root cause.** Something intermittent had been quietly breaking real writes back to GitHub. Chasing it took nine small releases, each fix revealing another layer underneath — a stale library version, a classifier missing details, an inconsistent message format — until the actual cause surfaced: a single field no code path had ever been wired to set. Once fixed, the first fully verified write went through, read back and confirmed.
+**A five-release chase ended in one root cause.** Something intermittent had been quietly breaking real writes back to GitHub. Chasing it took five small releases, each fix revealing another layer underneath — a stale library version, a classifier missing details, an inconsistent message format — until the actual cause surfaced: a single field no code path had ever been wired to set. Once fixed, the first fully verified write went through, read back and confirmed.
 
 **A database migration history that had drifted for months got reconciled to zero.** After the schema and the migration files fell out of sync, a careful pass — checking real database state against the code, not the other way around — collapsed hundreds of small inconsistencies down to a handful of real judgment calls, then to none. The comparison between what the code expects and what the database actually has now comes up empty, the first time that's been true in this project's history, and it's now checked automatically on every change.
 
@@ -63,7 +63,7 @@ The clearest example: a personalization store that could have leaked one tester'
 - **Issues closed:** ~24
 - **ADRs accepted:** 3 (personalization ownership, usage-cap enforcement, routing integrity)
 - **Point releases shipped:** 9 (v0.8.10.1 through v0.8.10.9)
-- **Beta Blockers sprint:** built from scratch to 25 issues (Jul 3–5), driven to 4 open by end of window
+- **Beta Blockers sprint:** built from scratch to 25 issues (Jul 3–5), driven to 2 open by end of window
 - **Sprint-field records restored:** 526 of ~1,175 (high- and medium-confidence tiers), individually re-verified
 
 **A recurring small failure shape got named rather than fixed piecemeal a fourth time**: three separate instances of a duplicate or stray scheduled task surfaced this window, in three different guises. Each was caught and fixed individually — whether that's worth a structural pass before a fourth instance is a live question for the team.
@@ -80,7 +80,7 @@ Realistic multi-turn test scenarios for the beta-close gate are next up, ahead o
 
 **Jake Krajewski's invite code** is assigned but held until his email is verified.
 
-**The BYOC marketplace narrative** has been blocked on direction for several weeks now — worth an explicit call on whether it's paused or deprioritized, rather than carried forward indefinitely.
+**The Bring Your Own Chat (BYOC) marketplace narrative** has been blocked on direction for several weeks now — worth an explicit call on whether it's paused or deprioritized, rather than carried forward indefinitely.
 
 **The duplicate-scheduled-task pattern** (three instances this window) may be worth a structural fix rather than continuing to catch each instance as it appears.
 
