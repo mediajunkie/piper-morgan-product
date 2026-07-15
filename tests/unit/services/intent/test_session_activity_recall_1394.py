@@ -27,13 +27,12 @@ from services.intent.intent_service import IntentService  # noqa: E402
 from services.intent_service.pre_classifier import PreClassifier  # noqa: E402
 from services.shared_types import IntentCategory  # noqa: E402
 
-pytestmark = pytest.mark.asyncio
-
 _CONV = "conv-recall-1"
 _USER = "owner-recall"
 
 
 class TestRouting:
+    # sync tests — no asyncio marker (they call the deterministic pre_classifier)
     @pytest.mark.parametrize(
         "phrase",
         [
@@ -87,6 +86,8 @@ def _handler_self():
 
 
 class TestHandler:
+    pytestmark = pytest.mark.asyncio  # async tests only
+
     async def test_lists_this_sessions_creations(self, sm):
         async with sm() as s:
             repo = SessionActivityRepository(s)
