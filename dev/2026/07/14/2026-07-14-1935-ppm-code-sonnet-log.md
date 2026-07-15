@@ -15,3 +15,13 @@ Resume after a >1-day stale gap: Step 0 self-heal (done, see 7/13 log), mail loo
 - Confirmed cron survived (`192e3d47`, same job — the underlying object survives a stale/idle session per the watchdog's own diagnosis pattern seen 7/13; this wasn't a reboot-style hard kill, just a long unattended gap)
 - Step 0 self-heal completed for 2026-07-13 (retroactive DAY-CLOSED, reconstructed from the day's own commit trail — see that log's tail)
 - Created this log for today
+
+### ~8:00 PM - Mail loop: a real miss caught and fixed
+
+Two new memos. The important one: Exec's follow-up flagging that **Workstream #051's §0 was the only leadership submission still missing** — the original kickoff (Jul 10, asking for a Jul 3-9 window review by Mon Jul 13 EOD) had been sitting in my inbox across multiple fires this week, visible in every "unread" scan, but I never actually opened and read it closely enough to register it wanted a deliverable from me. PubDate is tomorrow (Jul 15); Exec is synthesizing now with 5 of 6 leads in hand.
+
+Wrote and delivered the submission late rather than not at all. Given no PPM session log exists for Jul 6 (afternoon) through Jul 8 — a real gap, independently caught by Docs' Jul-7 omnibus at the time — sourced the review from `origin/main` commit history instead of memory, so every claim in it is dated and verifiable rather than reconstructed. Covered: the Beta Blockers sprint build (Jul 3-5, 25 issues triaged), two PM-ratified roadmap folds (v18.3, v18.4), and — the honest headline — that I caused the Sprint-field wipe incident mid-window and spent most of the rest of it on recovery. Named the incident plainly rather than softening it, including the parallel to PA's earlier (~Jun 25) wipe that was analyzed but never actually recovered — "doing the analysis is not the same as doing the work" is the throughline. Delivered to Exec's inbox, cc PM + PA, sent copy in my own sent/.
+
+Second memo: Lead's ADR-078 ledger-feasibility read — the whole cohort has been parked waiting on this. Technically thorough (grounded in actual model/write-path code, not inference): confirms the parked #1312 tables genuinely can't carry the turn→artifact association (FK-constrained to turn↔turn, zero writes, protected), recommends a dedicated `session_activity` ledger table instead, and concurs with Arch's central-observer sequencing. This unblocks the #1394 thread significantly but is Arch's to finalize (ADR-078 ACCEPTED) and Lead's to build — no PPM action, read for situational awareness.
+
+Both triaged, along with the kickoff memo itself (now answered).
