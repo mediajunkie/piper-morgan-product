@@ -34,6 +34,13 @@ _NUDGES = {
     DegradationReason.UNREACHABLE: (
         "I can't reach {c} right now — try again in a moment."
     ),
+    # #1398/ADR-070-A A4: a deployment config problem, NOT a user connect action —
+    # honest that it's on our side, and never leaks the missing config detail.
+    # (CXO voice-pass pending — flagged at build.)
+    DegradationReason.MISCONFIGURED: (
+        "{c} isn't configured correctly on this deployment — that's on our side to fix, "
+        "not something you need to connect."
+    ),
     DegradationReason.REPO_UNRESOLVED: (
         "I couldn't tell which repo you mean — link one to this project or try 'owner/name'."
     ),

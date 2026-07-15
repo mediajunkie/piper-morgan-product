@@ -615,6 +615,15 @@ def register_default_workflows() -> None:
         ),
         (
             _qentry(
+                _make_query_dispatch_entry_point(
+                    "_handle_session_activity_query", pass_session_id=True
+                ),
+                "session-activity recall (#1394 / ADR-078 B4) via action dispatch",
+            ),
+            ["session_activity_query", "what_did_we_create", "session_recall"],
+        ),
+        (
+            _qentry(
                 _make_query_dispatch_entry_point("_handle_standup_query", pass_user_id=True),
                 "standup query via action dispatch",
             ),

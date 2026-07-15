@@ -100,6 +100,8 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("QUERY", "attention_query"): ActionDisposition.WORKFLOW,
     # ---- QUERY: Productivity ----
     ("QUERY", "productivity_query"): ActionDisposition.WORKFLOW,
+    # ---- QUERY: Session activity (#1394 / ADR-078 B4) ----
+    ("QUERY", "session_activity_query"): ActionDisposition.WORKFLOW,
     # ---- QUERY: Todos ----
     ("QUERY", "list_todos_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "list_completed_todos"): ActionDisposition.WORKFLOW,
@@ -152,6 +154,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "changes_query"): "What changed since yesterday?",
     ("QUERY", "attention_query"): "What needs my attention?",
     ("QUERY", "productivity_query"): "How productive was I this week?",
+    ("QUERY", "session_activity_query"): "What did we create this session?",
     ("QUERY", "list_todos_query"): "Show me my todos",
     ("QUERY", "list_completed_todos"): "Show me completed todos",
     ("QUERY", "next_todo_query"): "What's my next todo?",
@@ -296,6 +299,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "changes_query": Verb.GET,
     "attention_query": Verb.GET,
     "productivity_query": Verb.GET,
+    "session_activity_query": Verb.GET,
     "list_todos_query": Verb.LIST,
     "list_completed_todos": Verb.LIST,
     "next_todo_query": Verb.GET,
