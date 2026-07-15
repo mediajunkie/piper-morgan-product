@@ -2,7 +2,7 @@
 
 **Purpose**: persistent (across-days) Comms-side task list — items that aren't tied to a specific blog post or pubDate but need surfacing/advancing as cycle fires advance. Lives across days; not a per-day artifact. (Per-day work goes in the dated session log under `dev/2026/MM/DD/`.)
 
-**Last refreshed**: 2026-07-12 morning (Jul 12 post published; stale-draftPath cleanup closed)
+**Last refreshed**: 2026-07-15 morning (Ship #051 + Beat 13 published; Beat 14 pre-reviewed)
 
 ---
 
@@ -13,8 +13,8 @@
 | Topic | State | Owner of next move | Notes |
 |---|---|---|---|
 | **Narrative arc steer (candidates A–E)** | ✅ ADVANCED 2026-07-04 — PM approved proceeding rather than a formal pick-one steer; all 5 drafted, researched against actual source logs (several turned out richer/different than the original one-line gloss), calendared Aug 16/22/23/29/30. | PM (voice-pass on all 5) | Drafts: `the-fabricating-standup.md`, `the-trust-gate-that-wasnt.md`, `read-the-mock-first.md`, `the-orphan-migration.md`, `two-of-me.md`. Each carries 1-3 genuine PM-input brackets (fact-check sign-offs, personal-anecdote beats). |
-| **Duty-cycle slate (Beats 10–13)** | Beat 10 *The Airport Corrections* **PUBLISHED** 2026-07-02. Beat 11 *The Team Catches the Cycle* **PUBLISHED** 2026-07-07 (full 2-round fact-check first — moat misattribution, HOST/Exec timing, inflated roles count, canonical-query-gate over-correction, all corrected). Beat 12 *The Package and the First Bite* **PUBLISHED** 2026-07-09 (PM voice-pass + Comms final review — 1 misquote fix, 1 cliché, 2 typos, 1 dropped word, all caught after the voice-pass). Beat 13 *The Migration Wave* still awaiting PM voice-pass. | PM (voice-pass) for 13 | pubDate 13=Jul14. |
-| **Building-narrative slate (Beats 14–16)** | Drafted 6/16, full mechanical sweep done 2026-07-04 (Beat 16's footer TBD resolved — now correctly chains to the Jul 25 insight). | PM (voice-pass) | pubDates: 14=Jul16, 15=Jul21, 16=Jul23. |
+| **Duty-cycle slate (Beats 10–13)** | ✅ ALL PUBLISHED. Beat 10 *The Airport Corrections* (Jul 2). Beat 11 *The Team Catches the Cycle* (Jul 7, 2-round fact-check). Beat 12 *The Package and the First Bite* (Jul 9). Beat 13 *The Migration Wave* **PUBLISHED 2026-07-14** — full fact-check (3 real corrections: Sunday-holdup misattribution, duty-cycle/worktree-migration conflation, two-unrelated-sevens de-conflation), PM voice-pass, cross-machine merge conflict on frontmatter/image walked through via chat, image gitignore gap discovered (#1403) + fixed. | CLOSED | |
+| **Building-narrative slate (Beats 14–16)** | Beat 14 *Into Production* (pubDate Jul 16) fully fact-checked 2026-07-14 (tag/checkpoint conflation fixed, 7-item Linux-portability list corrected) + pre-reviewed again 2026-07-15 ahead of PM's work session (1 typo from an admin-UI edit, MVP gloss added). Frontmatter/art still pending. Beats 15-16 drafted, mechanical sweep done 2026-07-04. | PM (voice-pass on 14; art + voice-pass on 15-16) | pubDates: 14=Jul16, 15=Jul21, 16=Jul23. |
 | **Insight batch drafted 6/4** (Mechanism Beats Vigilance, Architecture Wrote Its Own Case, Verify at User Path, Over-Checking Has Dividends, Confabulating a Peer's Unfinished Work) | Full mechanical sweep done 2026-07-04 — 3 of the 5 were missing frontmatter AND dateline entirely, not just empty; footer chain corrected end-to-end. | PM (voice-pass) | pubDates: Aug1/2/8/9/15. |
 | **Climbing Higher When the Platform Laps You** | ✅ PM voice-pass done 2026-07-04, mechanical close-pass done (PM's worktree branch hadn't picked up prior fixes — headings/footer/2 typos caught and fixed). PubDate was Jul 4 (today). | Docs (proofread + publish) | |
 | **The Practice That Got Retired** | ✅ PUBLISHED 2026-07-05 (hashId `56e79d586c0a`, live well ahead of 8am target) + fully syndicated (Medium + LinkedIn both live same day). | CLOSED | |
@@ -26,8 +26,10 @@
 | Cross-pollination relay of Ted Nadeau memo to Klatch (Janus) | ✅ CONFIRMED DONE 2026-07-04 — verified in `docs/briefs/cross-pollination/2026-06-01.md`: full memo content relayed with routing questions for both Janus (role-architecture split) and Klatch/Daedalus (Englishia cell model). Was correctly marked "not re-reported, already covered" in the 6/2 brief. | CLOSED | |
 | **Historical stale `draftPath`s** (found 2026-07-04) | ✅ CLOSED 2026-07-12 — all 22 rows fixed during a quiet Sunday-morning fire with nothing else unblocked. 18 corrected to `drafts/published/`, 4 (2 Weekly Ships + 2 posts) to `drafts/superseded/`. Every path verified to actually exist before writing it. | CLOSED | |
 | **"When the Documentation Drifts"** | ✅ PUBLISHED 2026-07-11 (pipermorgan.ai/blog/when-the-documentation-drifts/) — 3 editorial rounds: the Pattern-073 categorization catch, then 2 rounds of typo/garbled-sentence fixes after PM's voice-pass (PM's edits came from an un-synced copy twice, requiring careful re-merging each time). | CLOSED | |
-| **Ship #051 workstream review** | ✅ SENT 2026-07-11, same-day as kickoff — genuinely unblocked work advanced during a PM-editing gap rather than parked. Window Jul3-9, full §0-6. | Exec (synthesize, due Jul 13) | |
+| **Ship #051 workstream review** | ✅ SENT 2026-07-11, same-day as kickoff — genuinely unblocked work advanced during a PM-editing gap rather than parked. Window Jul3-9, full §0-6. | CLOSED (folded into Ship below) | |
 | **"The Server Crashed Mid-Draft"** | ✅ PUBLISHED 2026-07-12 — prelim-reviewed ahead of schedule Jul 11 (resolved a fact-check bracket, softened an unsupported "ninety minutes" claim traced to an unrelated story in the same source log, fixed 1 cliché); PM voice-passed clean (no typos this round, edited from the correct synced baseline); frontmatter + art added same morning. | CLOSED | |
+| **Weekly Ship #051 "Impossible by Construction"** | ✅ PUBLISHED 2026-07-15 — full fact-check found 2 real adjacent-number contaminations (Beta Blockers end-of-window count 4→2, write-path release count 9→5, both verified directly against Lead Dev's own day-close log rather than trusting the digest), BYOC gloss added, invite-timing precision fixed. Separately caught + fixed 2 typos from PM's own admin-UI edit (directon/repsond) — landed via a clean auto-merge after Docs independently fixed the same typos in parallel. P.S. drafted by me first (caught my own negation-reveal cliché slip — new memory instance), PM supplied their own better version, applied with minor mechanical polish. Also cleaned up 4 orphan/duplicate scratch drafts + 1 stray editor-generated jpg that got swept into an unrelated push (PM-approved). | CLOSED | |
+| **`update-calendar` skill corruption incident (2026-07-14)** | ✅ ROOT-CAUSED + FIXED — my own 2 same-day calendar edits used `row[-2]` positional indexing for the `notes` field, actually landing in `altText` (18-col schema); caught by a peer Code session, which repaired the structure and reported the full mechanism. I repaired the row's content, upgraded `update-calendar` to v1.2 (by-name field access mandated, whole-file semantic verification required), and saved a durable memory (`feedback_csv_edit_by_name_never_position.md`). Filed #1406 (separate, low-priority, pre-existing legacy backlog-schema drift found during the integrity scan — not conflated with the incident). | CLOSED | |
 
 ## Cross-cutting PM topics (verify still alive at next surface; ≥30 days stale flagged)
 
@@ -39,6 +41,9 @@
 
 ## Recently-closed (rolling history; trim to last ~14 days)
 
+- 2026-07-15 **Weekly Ship #051 PUBLISHED** — 2 real adjacent-number-contamination corrections, PM's own P.S., 2 typo-fix races resolved via clean auto-merge with a peer session.
+- 2026-07-15 **`update-calendar` skill v1.2 shipped** — root-caused a same-day self-inflicted row corruption (positional indexing bug), now mandates by-name field access + whole-file verification.
+- 2026-07-14 **Beat 13 "The Migration Wave" PUBLISHED** — full fact-check (3 corrections), cross-machine merge conflict walked through via chat, blog-image gitignore gap discovered (#1403).
 - 2026-07-12 **"The Server Crashed Mid-Draft" PUBLISHED** — clean PM voice-pass (no typos, edited from the correct synced baseline this time), frontmatter + art added same morning.
 - 2026-07-12 **Historical stale-draftPath cleanup CLOSED** — all 22 rows fixed during a quiet Sunday-morning fire.
 - 2026-07-11 **"When the Documentation Drifts" PUBLISHED** — 3 editorial rounds; caught a Pattern-073 categorization error before it shipped.
@@ -55,7 +60,6 @@
 - 2026-07-04 **5 candidate insights (A–E) drafted** — researched against real source logs rather than the one-line surfacing gloss; calendared Aug 16-30.
 - 2026-07-04 **Editorial calendar admin view regenerated** via `scripts/build-editorial-calendar-view.py` (was stale per PM's Jul 2 flag).
 - 2026-07-02 **The Airport Corrections PUBLISHED** (Beat 10) — Medium URL added same day.
-- 2026-06-29/30 **Relationship-first Ethics** and **From Briefing to Vision** both published.
 
 ---
 
