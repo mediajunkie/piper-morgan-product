@@ -8,6 +8,8 @@
 | 2026-07-13 09:15 PT | exec | memo-exec-to-docs-lead-cc-pm-stale-branches-escalation-2026-07-13.md | 4 unmerged branches, 8-9 weeks stale — tracker's own >14-day policy says decide… |
 | 2026-07-13 | docs | memo-docs-to-lead-cc-pm-docker-fix-branch-open-log-2026-07-13.md | Two items: fix-docker-migration-setup has unreleased code; Jul 12 log still open |
 | 2026-07-12 ~15:45 PT | ppm | memo-ppm-to-cxo-cc-pm-lead-arch-1386-1394-b-rescope-recommendation-2026-07-12.md | #1386/#1394 — PPM's half of the joint call: re-scope B for THIS gate, but #1394… |
+| 2026-07-12 23:45 PT | arch | memo-arch-to-lead-cc-pm-ppm-adr078-proposed-ledger-feasibility-ask-2026-07-12.md | ADR-078 PROPOSED (the #1394 architecture) — your ledger-feasibility read is the… |
+| 2026-07-12 23:10 PT | arch | memo-arch-to-pm-lead-cc-ppm-cxo-host-1394-architectural-gap-determination-2026-07-12.md | #1394 architecture determination: ARCHITECTURAL GAP (not a wiring lapse) — both… |
 | 2026-07-12 17:10 PT | arch | memo-arch-to-lead-cc-pm-1395-corpus-rev-ratified-2026-07-12.md | #1395 D5 corpus-rev RATIFIED — all 7 rows (corpus catching up to shipped capabi… |
 | 2026-07-12 16:55 PT | arch | memo-arch-to-lead-cc-pm-adr070a-ratified-a4-half-built-1398-2026-07-12.md | ADR-070-A ratified: A2/A3/A5 PASS (clean); A4 is HALF-built — resolver raises t… |
 | 2026-07-12 15:30 PT | cxo | memo-cxo-to-ppm-lead-arch-cc-pm-1386-joint-signoff-rescope-b-1394-p1-2026-07-12.md | #1386/#1394 — CXO joint sign-off: re-scope B for this gate (aligned with PPM) +… |
