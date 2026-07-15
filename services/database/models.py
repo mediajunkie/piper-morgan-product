@@ -1755,6 +1755,58 @@ class ConversationLinkDB(Base):
     )
 
 
+class SessionActivityDB(Base):
+    """ADR-078 D1 — the session-activity ledger (#1394): a durable, owner-scoped
+    record of the EXTERNAL artifacts a session created (issue #107, a doc, ...).
+
+    The missing primitive #1394 needs at two seams: B4 (recall — "what did we
+    create this session") reads it directly; B3 (pre-classifier reference
+    resolution — "change *the title*") will read it, ordered by turn, to resolve
+    a follow-up referent to the last creation. Written by ONE central observer at
+    the #1122 turn-recording seam (ADR-078 OQ-3), never per-handler.
+
+    Holds EXTERNAL POINTERS, not content — ``target_ref`` is 'owner/repo#107',
+    not the issue body (that's ArtifactDB #952's job; a created issue writes no
+    ArtifactDB row, which is exactly why this table exists).
+
+    D1a (owner-scoping, non-negotiable — HOST trust-lens): ``owner_id`` is NOT
+    NULL and every read MUST be scoped to it. See SessionActivityRepository —
+    cross-user resolution is not expressible there (the WHERE keys on owner_id).
+
+    Refs are soft Strings (the ArtifactDB #952 owner-scoped precedent this ADR
+    cites), not hard FKs: keeps the mandatory cross-user test SQLite-runnable and
+    avoids coupling the observer write to turn-insertion ordering. Owner-scoping —
+    the load-bearing integrity property — does not depend on a DB FK. (Flagged to
+    Arch at build-ratify in case hard FKs are wanted; trivial to add.)
+    """
+
+    __tablename__ = "session_activity"
+
+    id = Column(String, primary_key=True)
+    conversation_id = Column(String, nullable=False)
+    # D1a: the read-scoping key — NOT NULL, never resolved session-alone.
+    owner_id = Column(String, nullable=False)
+    turn_id = Column(
+        String, nullable=True, comment="Which turn created it (soft ref conversation_turns.id)"
+    )
+    action_type = Column(
+        String, nullable=False, comment="'issue_created' | 'doc_created' | ..."
+    )
+    target_ref = Column(
+        String, nullable=False, comment="External pointer, e.g. 'owner/repo#107' — NOT content"
+    )
+    target_title = Column(
+        String, nullable=True, comment="Human title for antecedent display (B3)"
+    )
+    created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
+
+    __table_args__ = (
+        # The owner-scoped reader's access path (D1a): owner + conversation, newest first.
+        Index("idx_session_activity_owner_conv", "owner_id", "conversation_id", "created_at"),
+        Index("idx_session_activity_conversation", "conversation_id"),
+    )
+
+
 class KnowledgeNodeDB(Base):
     """Database model for knowledge graph nodes"""
 
