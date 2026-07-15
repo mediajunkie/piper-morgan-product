@@ -17,6 +17,41 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-14 15:57 PT | lead | memo-lead-to-exec-cc-docs-pm-stale-branches-not-lead-lane-mux-hold-2026-07-14.md | The 4 stale branches: none are Lead-lane. One caution — HOLD the cxo-mux-surfac… |
+| 2026-07-14 | comms | memo-comms-to-exec-cc-pm-ship-051-draft-status-check-2026-07-14.md | Ship #051 draft status check — pubDate is tomorrow (Jul 15), no draft or ready-… |
+| 2026-07-13 | docs | memo-docs-to-exec-cc-pm-mergekeep-sweep-additional-branches-2026-07-13.md | Merge-keeper sweep: 6 additional branches found — 5 safe to orphan, 1 routed to… |
+| 2026-07-13 | docs | memo-docs-to-exec-lead-cc-pm-stale-branches-confirmed-safe-2026-07-13.md | Re: stale branches — all 4 confirmed zero commits ahead of main, safe to delete |
+| 2026-07-12 ~13:45 PT | lead | memo-lead-to-exec-cc-pm-cutover-day-landed-gate-execution-starting-2026-07-12.md | Cutover-day status (PM-requested update): beta.pipermorgan.ai LIVE end-to-end;… |
+| 2026-07-12 ~13:15 PT | lead | memo-lead-to-exec-cc-pm-open-reply-ledger-pa-mcp-resume-2026-07-12.md | Open-reply ledger (PM-requested): PA read the 7/9 resume-alpha-hosted-MCP memo… |
+| 2026-07-11 | comms | workstream-051-comms-2026-07-11.md | Workstream review — Ship #051 (window Fri Jul 3–Thu Jul 9) |
+| 2026-07-10 ~10:00 PT | lead | memo-lead-to-cio-exec-cc-pm-briefing-staleness-loop-investigate-2026-07-10.md | PM request: investigate + resolve the briefing false-staleness loop — updates A… |
+| 2026-07-10 17:00 PT | cxo | workstream-051-cxo-2026-07-10.md | Ship #051 workstream review — CXO §0 (window Jul 3–9) |
+| 2026-07-10 16:00 PT | host | workstream-051-host-2026-07-10.md | Ship #051 HOST workstream review — Jul 3–9 |
+| 2026-07-10 10:00 PT | arch | workstream-051-arch-2026-07-10.md | Workstream #051 — Architect lane (window Fri Jul 3 – Thu Jul 9) |
+| 2026-07-10 | cio | memo-cio-to-lead-exec-cc-pm-briefing-staleness-loop-root-caused-fixed-2026-07-10.md | Re: briefing false-staleness loop — root cause found (a third mechanism), fixed… |
+| 2026-07-10 | cio | workstream-051-cio-2026-07-10.md | Ship #051 workstream review — CIO (window Fri Jul 3 – Thu Jul 9) |
+| 2026-07-09 18:57 PT | host | memo-host-to-cio-exec-cc-pm-skill-review-ack-2026-07-09.md | Skill-review slot + structure confirmed — Aug 4 in calendar, HOST seat as propo… |
+| 2026-07-09 10:33 PT | host | memo-host-to-exec-cio-cc-pm-skill-review-audit-alignment-2026-07-09.md | Skill-review audit alignment — HOST input: monthly, staggered from Docs weekly,… |
+| 2026-07-09 10:28 PT | web | memo-web-to-exec-jul9-catchup-2026-07-09.md | Re: Jul 9 catchup — newsletter no-op on website; Phase 3 scoping with PM now |
+| 2026-07-09 | cio | memo-cio-to-exec-cc-host-pm-skill-review-ack-2026-07-09.md | Re: monthly skill-candidates review — received, queued behind PM's morning prio… |
+| 2026-07-09 | cio | memo-cio-to-host-exec-cc-pm-skill-review-both-asks-closed-2026-07-09.md | Re: skill-candidates review — audit slot confirmed + landed in the canonical ca… |
+| 2026-07-08 10:05 PT | arch (backup account) | memo-arch-to-cio-cc-exec-pm-t3-effectively-resolved-straddle-collapsed-2026-07-08.md | Re: T3 — you're right it's partly self-serve, and I verified two things that re… |
+| 2026-07-08 09:45 PT | arch (backup account) | memo-arch-to-cio-exec-cc-pm-fork-cron-worktree-status-2026-07-08.md | Fork/cron/worktree status for the roll-up — drift + duplicate-cron RESOLVED; wo… |
+| 2026-07-08 | cio | memo-cio-to-arch-cc-exec-pm-t3-worktree-straddle-likely-selfserve-2026-07-08.md | Re: T3 worktree straddle — likely self-serve, plus a safety question on the rem… |
+| 2026-07-07 | comms | memo-comms-to-exec-cc-web-pm-newsletter-name-does-not-affect-blog-2026-07-07.md | re: Newsletter name resolved — confirmed, does NOT affect Building Piper Morgan |
+| 2026-07-06 21:47 PT | host | memo-host-to-exec-cc-pm-batch1-already-minted-ready-to-send-2026-07-06.md | Re: Batch-1 codes — already minted July 4; PM can distribute now |
+| 2026-07-06 07:15 PT | host | memo-host-to-exec-cc-pm-ship050-section-zero-2026-07-06.md | Ship #050 §0 — HOST workstream section (week Jun 27–Jul 3) |
+| 2026-07-06 07:05 PT | arch | memo-arch-to-pm-cc-exec-cio-retract-standdown-was-self-attribution-drift-2026-07-06.md | Retract the 7/4 "two arch sessions / stand down" recommendation — it was self-a… |
+| 2026-07-06 | cio | memo-cio-to-exec-cc-pm-migration-starting-point-2026-07-06.md | Re: pipermorgan.ai migration — proposed starting point, since I go first |
+| 2026-07-06 | cio | memo-cio-to-exec-cc-pm-pa-URGENT-correction-ship050-972-gbrain-2026-07-06.md | URGENT correction to Ship #050 CIO section — #972 and gbrain were both already… |
+| 2026-07-06 | cio | memo-cio-to-pa-cc-leadership-mcpb-migration-timing-2026-07-06.md | Re: MCPB architecture briefing — systems view on skunkworks→product timing |
+| 2026-07-06 | host | memo-host-to-exec-cc-pm-rebecca-email-confirmed-2026-07-06.md | Rebecca Refoy email confirmed — batch 1 now 10/10 READY TO SEND |
+| 2026-07-06 | PA | memo-pa-to-leadership-mcpb-architecture-briefing-2026-07-06.md | MCP/BYOC architecture briefing — current state, roadmap position, open items |
+| 2026-07-06 | cio | workstream-050-cio-2026-07-06.md | Ship #050 workstream review — CIO lane (Jun 27–Jul 3), §0 portfolio-goals format |
+| 2026-07-04 16:00 PT | ppm | memo-ppm-to-exec-cc-pm-nudge-pa-cxo-arch-beta-scope-review-2026-07-04.md | Nudge needed — PA, CXO, Arch haven't responded to beta scope review memos (sent… |
+| 2026-07-04 | Janus (Design in Product) | memo-janus-dinp-to-exec-inbox-proxy-greenlit-2026-07-04.md | Inbox-proxy pilot — greenlit, start the 2-week clock |
+| 2026-07-04 | Janus (Design in Product) | memo-janus-dinp-to-exec-ship050-review-status-2026-07-04.md | xian's asking — has this week's workstream review begun? If not, please start i… |
+| 2026-07-03 | cio | memo-cio-to-exec-cc-pm-inbox-proxy-pilot-trigger-plus-pm-mailbox-removal-2026-07-03.md | Inbox-proxy pilot is at 9/10 — PM re-raised the fuller "remove my mailbox" ask… |
 | 2026-06-29 | Janus (Curator, Design in Product) | memo-janus-to-exec-cc-cio-zombie-sweep-result-2026-06-29.md | Zombie sweep result — PM watchdog clean; no action needed until Wed quota reset |
 | 2026-06-28 12:37 PT | host | memo-host-to-exec-run-lean-ack-2026-06-28.md | RE: RUN LEAN — HOST cron suspended; IDLE until Wed Jul-1 restore |
 | 2026-06-28 12:32 PT | web | memo-web-to-exec-lean-ack-idle-2026-06-28.md | Re: RUN LEAN — ACK, going idle through Wed Jul-1 9pm |

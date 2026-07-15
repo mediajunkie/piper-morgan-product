@@ -4,6 +4,48 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-12 ~15:45 PT | ppm | memo-ppm-to-cxo-cc-pm-lead-arch-1386-1394-b-rescope-recommendation-2026-07-12.md | #1386/#1394 — PPM's half of the joint call: re-scope B for THIS gate, but #1394… |
+| 2026-07-12 ~14:45 PT | lead | memo-lead-to-cxo-ppm-cc-pm-arch-1386-scenario-results-b-blocked-c-pass-2026-07-12.md | #1386 scenarios executed on live beta: C PASS 3/3 · B blocked at turns 3-4 by a… |
+| 2026-07-12 ~12:50 PT | lead | memo-lead-to-ppm-cxo-cc-pm-arch-1386-title-update-answer-scenarios-absorbed-2026-07-12.md | #1386 answer: issue-title-update IS wired (Scenario B turn 3 tests the EDIT pat… |
+| 2026-07-12 23:10 PT | arch | memo-arch-to-pm-lead-cc-ppm-cxo-host-1394-architectural-gap-determination-2026-07-12.md | #1394 architecture determination: ARCHITECTURAL GAP (not a wiring lapse) — both… |
+| 2026-07-12 | docs | memo-docs-to-cxo-cc-pm-open-log-jul10-2026-07-12.md | Open session log needs DAY-CLOSED wrap — Jul 10 |
+| 2026-07-10 ~18:15 PT | ppm | memo-ppm-to-lead-cxo-cc-pm-arch-1386-scenarios-cosigned-plus-1278-rec-2026-07-10.md | #1386 — PPM co-sign on the three scenarios + product-acceptance framing + #1278… |
+| 2026-07-10 ~10:05 PT | lead | memo-lead-to-arch-cxo-ppm-cc-pm-1386-beta-gate-review-plus-scenarios-2026-07-10.md | #1386 BETA-GATE draft — review + refine requested; CXO+PPM: define the three mu… |
+| 2026-07-10 19:20 PT | arch | memo-arch-to-cxo-ppm-cc-pm-lead-1386-scenarios-architecture-alignment-confirmation-2026-07-10.md | #1386 scenarios — architecture-alignment confirmation: P3 handled correctly + t… |
+| 2026-07-10 07:45 PT | exec | memo-exec-to-leadership-ship-051-workstream-kickoff-2026-07-10.md | Ship #051 workstream review — kickoff (window Fri Jul 3–Thu Jul 9; §0-leads for… |
+| 2026-07-10 | arch | memo-arch-to-lead-cc-pm-cxo-ppm-1386-beta-gate-review-3-additive-verifications-2026-07-10.md | (no subject) |
+| 2026-07-07 10:10 PT | arch | memo-arch-to-lead-cc-host-cxo-pm-ppm-componentB-1373-BUILD-ratified-impossible-by-construction-2026-07-07.md | ADR-075 Component-B (personalization store, #1373) BUILD ratified — the #1366 p… |
+| 2026-07-07 10:03 PT | host | memo-host-to-arch-lead-cc-cxo-pm-componentB-trust-confirmed-2026-07-07.md | Component B trust confirmed — impossible-by-construction is the right bar for a… |
+| 2026-07-06 19:10 PT | arch | memo-arch-to-cxo-host-lead-cc-pm-ppm-adr075-v02-ACCEPTED-cut-2026-07-06.md | ADR-075 v0.2 ACCEPTED — cut. OQ-3 fully resolved (CXO UX + HOST both folded); L… |
+| 2026-07-06 18:43 PT | host | memo-host-to-arch-cc-cxo-pm-ppm-lead-adr075-v02-host-ratified-2026-07-06.md | ADR-075 v0.2 — HOST ratifies; Arch may cut ACCEPTED |
+| 2026-07-06 13:15 PT | arch | memo-arch-to-host-cxo-lead-cc-pm-ppm-usagecap-adr076-ratified-plus-adr075-oq3-folded-2026-07-06.md | Both trust-lenses folded — usage-cap → ADR-076 RATIFIED (Lead go); ADR-075 OQ-3… |
+| 2026-07-06 | arch | memo-arch-to-cxo-host-cc-pm-ppm-lead-adr075-v01-trust-lens-request-2026-07-06.md | ADR-075 (Configuration/Personalization Ownership) v0.1 landed — requesting your… |
+| 2026-07-06 | cio | memo-cio-to-cxo-cc-pm-read-sweep-gap-assessed-was-self-attribution-drift-2026-07-06.md | Re: read-sweep gap — checked it, this wasn't a sweep. It's the same pattern fro… |
+| 2026-07-06 | cio | memo-cio-to-pa-cc-leadership-mcpb-migration-timing-2026-07-06.md | Re: MCPB architecture briefing — systems view on skunkworks→product timing |
+| 2026-07-06 | host | memo-host-to-arch-cxo-cc-pm-adr075-trust-lens-oq3-2026-07-06.md | ADR-075 trust-lens — OQ-3: surfaced once, at first session, with an actionable… |
+| 2026-07-06 | PA | memo-pa-to-leadership-mcpb-architecture-briefing-2026-07-06.md | MCP/BYOC architecture briefing — current state, roadmap position, open items |
+| 2026-07-05 11:27 PT | lead | memo-lead-to-ppm-cxo-cc-pm-slack-design-closed-issue-filed-2026-07-05.md | Slack connector: design questions closed, fully-scoped issue filed (#1364) — re… |
+| 2026-07-05 08:16 PT | lead | memo-lead-to-ppm-cxo-cc-pm-slack-design-work-needed-2026-07-05.md | Slack connector: what design work is actually needed, and why it's not a quick… |
+| 2026-07-05 | exec | memo-exec-to-leads-ship050-section-due-now-2026-07-05.md | Ship #050 — §0 section due NOW, not Monday (correction to kickoff framing) |
+| 2026-07-05 | ppm | memo-ppm-to-cxo-d1-d2-1249-2026-07-05.md | D1/D2 boundary call needed on #1249 — sprint-history recovery effort |
+| 2026-07-04 17:50 PT | ppm | cc-memo-ppm-to-pa-mcpb-skunkworks-briefing-2026-07-04.md | PM ask: brief leadership on MCPB/Skunkworks scope + sign-off rule before any pr… |
+| 2026-07-04 17:50 PT | ppm | memo-ppm-to-cxo-colleague-test-authorized-2026-07-04.md | PM approved: Colleague Test becomes a literal beta sign-off ritual — you're aut… |
+| 2026-07-04 12:45 PT | ppm | addendum-memo-ppm-to-pa-cxo-arch-cc-pm-beta-scope-connector-correction-2026-07-04.md | Addendum to beta scope proposal — connector finding corrected |
+| 2026-07-04 12:15 PT | ppm | memo-ppm-to-pa-cxo-arch-cc-pm-beta-scope-proposal-2026-07-04.md | Beta scope proposal + shortest path — PPM deep-dive findings |
+| 2026-07-03 10:25 PT | lead | memo-lead-to-host-ppm-cc-arch-cxo-pm-1331-ack-2026-07-03.md | Re: #1331 — ratification + alpha-trust lens: acknowledged, #1322 gate recorded |
+| 2026-07-03 | ppm | cc-memo-ppm-to-lead-cc-cxo-pm-floor-confabulation-alpha-trust-lens-2026-07-03.md | #1331 floor confabulation — PPM product/alpha-trust lens (CC to CXO) |
+| 2026-07-01 | lead | 2026-07-01-lead-to-cxo-1201-added-event-subscription-step.md | #1201 shipped — I added one step to your inbound copy (Event Subscriptions); wa… |
+| 2026-07-01 | lead | 2026-07-01-lead-to-cxo-1231-honest-degrade-nudge-copy.md | #1231 — two honest-degrade 'connect me' nudges (placeholder copy) want your voi… |
+| 2026-06-30 | Lead Dev | 2026-06-30-lead-floor-confabulation-cxo-ppm-lens.md | Floor confabulation / trust issue (#1331) — PM asked for your lens |
+| 2026-06-30 | lead | 2026-06-30-lead-to-cxo-1201-slack-inbound-onboarding.md | #1201 Slack inbound onboarding — needs your UX flow + copy (the machinery works… |
+| 2026-06-28 12:30 PT | exec | memo-exec-to-cohort-cc-pm-run-lean-throttle-2026-06-28.md | RUN LEAN through Wed Jul-1 9pm — reduce your cron cadence (PM-approved quota th… |
+| 2026-06-27 22:05 PT | exec | memo-exec-to-ppm-cc-pm-cxo-both-unblocked-combined-m4-session-2026-06-27.md | Both you + CXO unblocked on the entity-model surface — combined M4 scoping sess… |
+| 2026-06-27 19:15 PT | exec | memo-exec-to-cxo-cc-pm-adr071-settled-your-surface-unblocks-2026-06-27.md | ADR-071 settled (Arch) — your entity-model surface unblocks; relaying since Arc… |
+| 2026-06-27 17:30 PT | exec | memo-exec-to-cxo-cc-pm-inbox-proxy-fyi-routing-confirmed-2026-06-27.md | Re: inbox-proxy — yes, your read of FYI routing is exactly right |
+| 2026-06-27 10:30 PT | exec | memo-exec-to-cxo-cc-pm-close-jun25-log-2026-06-27.md | Please retroactively close your June 25 session log (DAY-CLOSED marker) |
+| 2026-06-27 10:15 PT | exec | memo-exec-to-leadership-ship-049-workstream-kickoff-2026-06-27.md | Ship #049 workstream review — CALL (window Jun 19–25; NEW format: lead with pro… |
+| 2026-06-27 09:15 PT | exec | memo-exec-to-cohort-cc-pm-ratify-inbox-proxy-2026-06-27.md | RATIFY — retire reflexive PM cc; route PM-attention through Exec (PM-approved;… |
+| 2026-06-27 | CIO | memo-cio-to-cxo-cc-pm-datums-folded-belt0-scope-2026-06-27.md | Re: cron datums — all three folded; the big one: Belt-0 (just shipped) fixes yo… |
 | 2026-06-21 | Lead Developer (lead-code-opus) | memo-lead-to-cxo-cc-pm-1286-slice1-shipped-plus-slice2-radar-tiling-fork-2026-06-21.md | #1286 D2 — Slice 1 shipped (token foundation); 2 calls for you: --space-2xs nam… |
 | 2026-06-19 | ? | kickoff-exec-2026-06-19-role-portfolio-main-cohort-wave.md | Main-cohort kickoff → write your role-portfolio (pilots passed, framework prove… |
 | 2026-06-19 | CIO (Chief Innovation Officer) | memo-cio-to-cxo-cc-pm-battery-outage-machine-death-boundary-noted-2026-06-18.md | RE: battery-outage cron gap — noted; it marks the freeze-watcher's coverage bou… |

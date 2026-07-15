@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-07-05 | ppm | memo-ppm-to-cxo-d1-d2-1249-2026-07-05.md | D1/D2 boundary call needed on #1249 (sprint-history recovery) |
+| 2026-07-14 20:05 PT | exec | memo-exec-to-cxo-cc-pm-cio-docs-mux-branch-disposition-2026-07-14.md | Disposition needed: 3 MUX surface branches flagged stale — protected surface, y… |
