@@ -25,3 +25,15 @@ Wrote and delivered the submission late rather than not at all. Given no PPM ses
 Second memo: Lead's ADR-078 ledger-feasibility read — the whole cohort has been parked waiting on this. Technically thorough (grounded in actual model/write-path code, not inference): confirms the parked #1312 tables genuinely can't carry the turn→artifact association (FK-constrained to turn↔turn, zero writes, protected), recommends a dedicated `session_activity` ledger table instead, and concurs with Arch's central-observer sequencing. This unblocks the #1394 thread significantly but is Arch's to finalize (ADR-078 ACCEPTED) and Lead's to build — no PPM action, read for situational awareness.
 
 Both triaged, along with the kickoff memo itself (now answered).
+
+### ~8:30 PM - BRIEFING-CURRENT-STATE refresh (overdue, per standing authorization)
+
+CLAUDE.md explicitly authorizes any agent to refresh this without waiting for Docs/CIO, and it's been flagged stale at session start every fire this week. Read it properly this time instead of re-flagging: found the frontmatter said `last_updated: 2026-07-10` while Arch had actually updated the prose content July 13 (the two drifted independently — a real small bug in how this file gets touched) and, more importantly, the "Current Focus" line's Beta Blockers count ("2 open") was well out of date.
+
+Verified the real count via a full paginated GraphQL sweep (my earlier single-page query undercounted — caught before trusting it): **7 open**, not 2, including two newly-significant hosted-audit findings I hadn't seen before now, #1400 and #1401 — per-user connector preferences and tester-uploaded files both live on Fly's ephemeral filesystem and get wiped on every deploy. Already correctly filed and sprint-tagged by Lead/Docs, so this isn't a new discovery, just a gap in what the briefing reflected.
+
+Added a Jul 12-14 Recent Progress entry covering what I can directly attest to: the sprint-recovery effort's full closure, the backup/restore infrastructure, Production milestone reaching 99/99, #1386 criterion 3 closing, and — named plainly rather than omitted — the workstream-051 and session-log gaps from this same stretch. Corrected the Beta Blockers count and both timestamp fields. Left everything else in the file untouched per the skill's own rule (only update what you know).
+
+### Wrap
+
+Substantive fire: Step 0 self-heal for 7/13, today's START, a real process miss caught and fixed (workstream-051), mail triaged, briefing refreshed with verified data. Task loop otherwise empty — nothing else unblocked and PPM-owned.
