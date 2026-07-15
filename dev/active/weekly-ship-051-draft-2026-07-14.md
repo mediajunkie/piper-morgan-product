@@ -18,6 +18,8 @@ The clearest example: a personalization store that could have leaked one tester'
 
 ## 🎯 Product & experience
 
+**The Beta Blockers sprint got built, then driven hard.** From a standing start, a full sprint-by-sprint triage — quality, health, security, and a legacy connector-migration sweep — landed 25 issues in a single scoped sprint: the actual gate between now and beta. A milestone ground-truth audit the same week cross-checked every open issue against that list rather than trusting sprint tags alone, and caught 16 that the tags would have missed. Execution then drove the sprint from 25 open to 4 by the end of the window. The roadmap was reforked twice to match — the beta gate is now the milestone clearing, not a calendar date, and an earlier target date came off the plan as unrealistic.
+
 **Batch-1 alpha invites are ready, end to end.** All 11 invite codes are mapped to testers (10 originally plus one added mid-window), the tokens-only file and the identity roster stay separate and gitignored, and the tester loop — invite, registration, first chat, a per-user key — was proven working start to finish. One code is held: the tester's email needs verification before it goes out.
 
 **A colleague, not a checklist.** Before the first beta batch ships, it gets tested the way you'd size up a new hire, not the way you'd run a test suite: does it engage substantively, does it get facts right, does it admit what it can't do instead of making something up, does it keep one tester's data away from another's. The experience-design role (CXO) owns the sign-off, and the gate is built and waiting on the word to run it.
@@ -40,7 +42,7 @@ The clearest example: a personalization store that could have leaked one tester'
 
 **The tool that kept crying wolf about stale documentation, fixed.** A status page kept getting flagged as out of date days after it had actually been updated, because the check read a file's last-touched time, which resets every time a workspace gets recreated. Switched to reading the actual edit history instead. Four separate copies of this exact mistake turned up once anyone thought to look past the first fix.
 
-**A guardrail for actions you can't take back, written down team-wide.** Three separate incidents in two weeks shared a shape: a broad, hard-to-reverse action reached for when a narrower, safer one was already working. The fix is now a standing instruction, split into the two distinct ways this actually goes wrong, so the lesson applies to the next unfamiliar situation instead of just the last one.
+**A guardrail for actions you can't take back, written down team-wide.** Three incidents in two weeks split into two distinct shapes: reaching for a broad, hard-to-reverse action when a narrower one was already working, and trusting an operation that looked like a small partial update when the underlying API call was secretly a full replace — the second shape is exactly what caused the sprint-field data loss below. The fix is now a standing instruction naming both shapes explicitly, so the lesson applies to the next unfamiliar situation instead of just the last one.
 
 ## 🌍 External relations & community
 
@@ -54,12 +56,15 @@ The clearest example: a personalization store that could have leaked one tester'
 
 ## 📊 Governance & operations
 
+**A full-board data-loss incident, and a full-board recovery.** Adding new options to a shared project's sprint field looked like a small, additive change. The underlying API call wasn't additive — it silently replaced every item's existing sprint assignment across the whole board, all 1,175 items, with no undo path. The role responsible owned the mistake immediately and spent the rest of the window on recovery: 433 high-confidence and 93 medium-confidence assignments reconstructed from commit history, calendar cross-reference, and direct project links, each one individually re-verified against the live board rather than just documented. A lower-confidence tier of 218 issues was still in flight for review as the window closed. The mutation's actual behavior — full replace, not additive, no ID-preserving path — is now a standing warning in the team's own operating instructions.
+
 **Metrics (Jul 3–9):**
 
 - **Issues closed:** ~24
 - **ADRs accepted:** 3 (personalization ownership, usage-cap enforcement, routing integrity)
 - **Point releases shipped:** 9 (v0.8.10.1 through v0.8.10.9)
-- **Beta-blocker sprint:** down to 2 remaining items, both mid-verification rather than un-started
+- **Beta Blockers sprint:** built from scratch to 25 issues (Jul 3–5), driven to 4 open by end of window
+- **Sprint-field records restored:** 526 of ~1,175 (high- and medium-confidence tiers), individually re-verified
 
 **A recurring small failure shape got named rather than fixed piecemeal a fourth time**: three separate instances of a duplicate or stray scheduled task surfaced this window, in three different guises. Each was caught and fixed individually — whether that's worth a structural pass before a fourth instance is a live question for the team.
 
@@ -78,6 +83,8 @@ Realistic multi-turn test scenarios for the beta-close gate are next up, ahead o
 **The BYOC marketplace narrative** has been blocked on direction for several weeks now — worth an explicit call on whether it's paused or deprioritized, rather than carried forward indefinitely.
 
 **The duplicate-scheduled-task pattern** (three instances this window) may be worth a structural fix rather than continuing to catch each instance as it appears.
+
+**The sprint-field recovery's lowest-confidence tier** (218 issues) was still open for review as the window closed — the high- and medium-confidence tiers were fully restored and re-verified within the window.
 
 ---
 
