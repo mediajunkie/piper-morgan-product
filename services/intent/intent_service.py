@@ -399,6 +399,53 @@ class IntentService:
                 error=str(e),
             )
 
+    async def _record_session_activity(
+        self,
+        session_id: str,
+        user_id: Optional[str],
+        result: "IntentProcessingResult",
+    ) -> None:
+        """ADR-078 OQ-3 central observer (#1394): when a handler result declares a
+        'created X' (``intent_data['created_activity']``), write ONE owner-scoped
+        row to the session_activity ledger. Creating handlers stay ledger-ignorant.
+
+        Best-effort — never blocks the response (mirrors _save_conversation_turn).
+        D1a: with no resolved principal we write NOTHING (an owner-less ledger row
+        is the cross-user-leak default the ledger must never create).
+        """
+        if not user_id:
+            return  # D1a — never write an owner-less activity row
+        created = (result.intent_data or {}).get("created_activity")
+        if not created:
+            return
+        try:
+            from services.database.repositories import SessionActivityRepository
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope() as session:
+                await SessionActivityRepository(session).record(
+                    owner_id=str(user_id),
+                    conversation_id=str(session_id),
+                    action_type=created["action_type"],
+                    target_ref=created["target_ref"],
+                    target_title=created.get("target_title"),
+                    # turn_id: nullable; precise DB-turn linkage is a B3-time refinement
+                    # (needs save_conversation_turn to return the persisted turn id).
+                    turn_id=None,
+                )
+            self.logger.info(
+                "session_activity_recorded",
+                session_id=session_id,
+                action_type=created.get("action_type"),
+                target_ref=created.get("target_ref"),
+            )
+        except Exception as e:
+            self.logger.warning(
+                "Failed to record session activity (non-blocking)",
+                session_id=session_id,
+                error=str(e),
+            )
+
     async def process_intent(
         self,
         message: str,
@@ -524,6 +571,15 @@ class IntentService:
                 user_id=effective_user_id,
                 provenance=turn_provenance_for_db,
                 context_state=context_state_for_db,
+            )
+
+            # ADR-078 OQ-3 (#1394): central observer — record any external creation
+            # (issue, doc) to the owner-scoped session_activity ledger. Best-effort;
+            # handlers declare their creation via intent_data['created_activity'].
+            await self._record_session_activity(
+                session_id=effective_session_id,
+                user_id=effective_user_id,
+                result=result,
             )
 
             # #922: Store response in the in-memory ConversationContext so the floor
@@ -6939,19 +6995,30 @@ class IntentService:
 
             # Issue #494: Include repository info in success message
             repo_short = repository.split("/")[-1] if "/" in repository else repository
+            _issue_number = issue.get("number")
             return IntentProcessingResult(
                 success=True,
-                message=f"Created issue #{issue.get('number')} in {repo_short}: {issue.get('title')}",
+                message=f"Created issue #{_issue_number} in {repo_short}: {issue.get('title')}",
                 intent_data={
                     "category": intent.category.value,
                     "action": intent.action,
                     "confidence": intent.confidence,
-                    "issue_number": issue.get("number"),
+                    "issue_number": _issue_number,
                     "issue_url": issue.get("html_url"),
                     "repository": repository,
                     "used_default_repo": not intent.context.get(
                         "repository"
                     ),  # Issue #494: Track if default was used
+                    # ADR-078 OQ-3 (#1394): the uniform "creation-result" shape the
+                    # central observer recognizes → one session_activity ledger row.
+                    # The handler stays ledger-ignorant; it just declares what it made.
+                    "created_activity": {
+                        "action_type": "issue_created",
+                        "target_ref": f"{repository}#{_issue_number}",
+                        "target_title": issue.get("title") or title,
+                    }
+                    if _issue_number is not None
+                    else None,
                 },
                 workflow_id=workflow_id,
                 requires_clarification=False,
