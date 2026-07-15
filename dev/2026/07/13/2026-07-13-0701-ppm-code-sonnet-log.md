@@ -27,3 +27,25 @@ Task loop: nothing else unblocked and PPM-owned. Quiet hold.
 ### 1:10 PM - Docs delivered the audit plan; small delivery gap noted
 
 No new PPM-inbox mail, but noticed (via commit log, not delivery) that Docs completed the docs-tree audit plan and sent it to PM — good, thorough work: separated low-risk stub-directory cleanup (execute now) from the one genuine PM-architectural call (docs/testing/ vs internal/testing/ dual-structure), phased with a review gate before any execution. The memo's `cc: ppm` never actually reached my inbox (only Docs' own sent/ mirror and PM's inbox got a copy) — read it via git instead of normal delivery. Sent Docs a light note: flagged the delivery gap, acknowledged the plan is solid with nothing to add from PPM's side. No further action — this is PM's to review/gate now.
+
+---
+
+## Day-arc summary (retroactive — see Step 0 self-heal note below)
+
+Quiet, healthy day: morning mail loop (3 memos, all closure/acknowledgment, no new work), a midday find-and-flag (Docs' audit plan landed but its `cc:ppm` never actually delivered — read via git, acked, small delivery-gap note sent), and two genuinely quiet afternoon fires with nothing to report. The cohort spent the day parked on Lead's ADR-078 feasibility read for #1394 — nothing in that thread needed PPM input today. Standing-items.md got a real refresh (had drifted from the carry-forward).
+
+## Memory & briefing surfaces referenced this session
+- **Referenced**: `ppm-carry-forward.md` + `ppm-standing-items.md` (read every fire, refreshed once); `sprint-recovery-decisions-log.md` (context, not touched — that effort stayed closed all day); feedback_addressing_hold_pattern_is_wrong_move_to_read_immediately (mail triaged same-fire, not held)
+- **Loaded but not referenced**: BRIEFING-CURRENT-STATE (still stale, now pushing 3+ weeks — flagged repeatedly without a fix; worth escalating rather than re-flagging a fourth time)
+- **Wanted but not found**: none of note
+
+## Sign-off
+
+**Step 0 self-heal note (written 2026-07-14 ~7:35 PM, during tomorrow's — today's, at time of writing — START):** this log never received a proper STOP. The session went stale sometime after the ~16:01 PT fire (last entry above); the two remaining scheduled fires (18:52, 21:52) never happened — not a quiet-hold choice, an actual gap. `SessionStart:resume` woke the session back up at 2026-07-14 ~19:29 PT, over a day later. Reconstructing this close from the log's own record (nothing was lost — every fire that ran left a trace above) rather than from memory. This is exactly the scenario Step 0 self-heal exists for: the day-arc summary above + this note substitute for the STOP that should have run naturally at 21:52 on 7/13.
+
+```
+$ git fetch origin main && git log --oneline <last-7/13-commit>..origin/main
+```
+All of 7/13's actual work (mail triage, standing-items refresh, the Docs-plan ack memo, this log itself) reached `origin/main` via the temp-index pattern before the session went stale — nothing stranded. Local worktree carries the same pre-existing, session-independent drift noted every prior wrap.
+
+<!-- DAY-CLOSED: 2026-07-13 -->
