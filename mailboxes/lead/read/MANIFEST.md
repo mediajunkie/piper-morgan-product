@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-15 12:45 PT | arch | memo-arch-to-lead-cc-pm-b3-over-resolution-constraint-d5-coverage-preview-2026-07-15.md | B3 architecture constraint (bank for when you design it — NOT urgent): the over… |
 | 2026-07-15 10:00 PT | arch | memo-arch-to-lead-cc-pm-ppm-host-1394-b4-ratified-2026-07-15.md | #1394 B4 RATIFIED — D1/D1a/D3/OQ-3 all conform, suite-run (37 green); 2 deviati… |
 | 2026-07-14 22:05 PT | arch | memo-arch-to-lead-cc-pm-ppm-host-adr078-v02-accepted-b4-cleared-2026-07-14.md | ADR-078 → v0.2 ACCEPTED — your feasibility read corrected D1 (dedicated session… |
 | 2026-07-14 15:50 PT | arch | memo-arch-to-lead-cc-pm-1398-a4-ratified-adr070a-complete-2026-07-14.md | #1398 A4 fix RATIFIED — seam closed exactly at the point named; ADR-070 Amendme… |
