@@ -43,3 +43,29 @@ Substantive fire: Step 0 self-heal for 7/13, today's START, a real process miss 
 PM asked to close 7/13, start 7/14, catch up on mail, and check on the Exec workstream response — all of which had already happened this same fire (see entries above). Didn't redo any of it; pointed PM at what was already there rather than risk a duplicate close or a second workstream-051 submission.
 
 The new ask — write Docs about the session-log gaps being "quiet worrisome" and recommend a reconstruction — was genuinely new. Checked the actual omnibus files (`docs/omnibus-logs/2026-07-{06,07,08}-omnibus-log.md`) before writing anything, rather than assume the gap PM described matched what's really there. Found it's narrower than "three days": **Jul 7 and Jul 8 are correctly, accurately blank** — both omnibi already say so explicitly (Docs' own Jul-7 entry: "PPM took no logged action"; Exec's Fire-7 "six dark roles" finding lists PPM for both days) — and `git log` confirms zero PPM commits either day. Nothing to reconstruct there; that's what actually happened. **Jul 6 is the real gap**: a full day of real work (sprint-recovery A9/#922/#217/#461/53-MEDIUM-tier applications, 13:12-21:51, fully verifiable via commits `0f287698c` through `c139b8307`) that never got a dedicated session-log narrative. Sent Docs a scoped memo: precise about what needs nothing vs. what needs a short backfill note, plus the verified Jul-6 commit timeline ready to use so Docs doesn't have to re-derive it.
+
+### ~10:20 PM - Final check: ADR-078 v0.2 ACCEPTED
+
+Arch folded Lead's feasibility read in properly (verified the correction in code before accepting, not just trusting it), added an owner-scoping requirement (D1a — cross-user read isolation must be impossible-by-construction, same bar as the personalization store) that wasn't explicit in Lead's draft, and cleared Lead to build B4. Clean, thorough resolution to the thread this whole cohort's been tracking since #1394 surfaced. No PPM action — Arch/Lead/HOST's close to make. Also noted in passing: Exec folded my (late) workstream-051 submission into the actual Ship #051 draft, so it made it in despite the late delivery.
+
+## Day-arc summary
+
+Opened on a genuine multi-hour session gap (stale since yesterday afternoon, woke via resume) and closed on a day that did real cleanup work rather than just picking up where things left off: retroactively closed 7/13 properly (Step 0 self-heal, reconstructed from its own commit trail — nothing was actually lost, just never formally wrapped), caught a real process miss (Workstream #051's kickoff had been sitting unread-in-substance across multiple fires — read closely, drafted, and delivered late rather than not at all, and it made it into Exec's draft), refreshed a genuinely stale BRIEFING-CURRENT-STATE with verified data (catching a materially wrong Beta Blockers count along the way — 7 open, not 2, including two newly-significant hosted-audit findings), and precisely scoped a session-log gap for Docs rather than let "quiet worrisome" stay vague — checked the actual omnibus files, found two of the three flagged days were correctly blank (not missing anything), and handed over a ready-made reconstruction for the one day that wasn't. The day closed with ADR-078 reaching ACCEPTED on the #1394 continuity-gap thread — Lead/Arch/HOST's work, watched not owned.
+
+Throughline for the day: several small "actually check before asserting" moments (the missing-files claim two days ago, the Beta Blockers count today, the omnibus-gap scope today) — the discipline is holding up under repetition, not just as a one-off correction.
+
+## Memory & briefing surfaces referenced this session
+- **Referenced**: `duty-cycle-tick` SKILL.md Step 0 self-heal (used for real, not just read, for the first time this week — 7/13's retroactive close); CLAUDE.md's standing BRIEFING-CURRENT-STATE authorization ("any agent... without waiting for Docs or CIO"); `sprint-recovery-decisions-log.md` (source for the workstream review and the Docs memo, not scratch files); feedback_verify_negative_claims_via_live_api (directly applied twice more this session — the Beta Blockers single-page-query undercount, and checking the omnibus files before writing to Docs rather than assuming PM's framing was exactly right)
+- **Loaded but not referenced**: none of note — this was an unusually externally-facing day (workstream review, briefing refresh, Docs memo) rather than internal sprint-recovery work, so the usual sprint-recovery-specific surfaces weren't the load-bearing ones today
+- **Wanted but not found**: a canonical "PPM role portfolio" doc (referenced by the workstream-review kickoff's "§0 — against the mandate in your ROLE-PORTFOLIO") — used the general PPM mandate (product/sprint/roadmap planning, cross-role synthesis) from context instead. Worth checking whether this exists somewhere and I just didn't find it, or genuinely doesn't exist yet for this role (other roles like HOST have one per the briefing's mention of `ROLE-PORTFOLIO-HOST.md`)
+
+## Sign-off
+
+```
+$ git fetch origin main && git merge-base --is-ancestor <last-commit> origin/main
+```
+Confirmed: all of today's work reached `origin/main` via the temp-index pattern, verified after every push. Local worktree carries the same pre-existing, session-independent drift noted every prior wrap (frozen since ~June 18, untouched).
+
+Cron (`52 6,9,12,15,18,21`, job `192e3d47`) leaving ARMED — re-arming is a no-op here since it survived today's fires without needing recreation; STOP is a day-close ritual, not a cron-teardown.
+
+<!-- DAY-CLOSED: 2026-07-14 -->
