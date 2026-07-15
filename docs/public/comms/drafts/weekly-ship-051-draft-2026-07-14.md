@@ -57,7 +57,6 @@ The clearest example: a personalization store that could have leaked one tester'
 [![](https://pipermorgan.ai/assets/blog-images/the-cohort-catches-the-cycle.webp)](https://pipermorgan.ai/blog/the-cohort-catches-the-cycle)
 *"I think we're getting the hang of this!"*
 
-
 ## 📊 Governance & operations
 
 **A full-board data-loss incident, and a full-board recovery.** Adding new options to a shared project's sprint field looked like a small, additive change. The underlying API call wasn't additive — it silently replaced every item's existing sprint assignment across the whole board, all 1,175 items, with no undo path. The role responsible owned the mistake immediately and spent the rest of the window on recovery: 433 high-confidence and 93 medium-confidence assignments reconstructed from commit history, calendar cross-reference, and direct project links, each one individually re-verified against the live board rather than just documented. A lower-confidence tier of 218 issues was still in flight for review as the window closed. The mutation's actual behavior — full replace, not additive, no ID-preserving path — is now a standing warning in the team's own operating instructions.
@@ -82,7 +81,7 @@ Realistic multi-turn test scenarios for the beta-close gate are next up, ahead o
 
 # 🚧 Blockers & asks
 
-**The Bring Your Own Chat (BYOC) marketplace narrative** has been blocked on direction for several weeks now. Piper Alpha is patiently waiting for me to give directon when I've been too busy to repsond. We will get to it soon after the hosted alpha launch.
+**The Bring Your Own Chat (BYOC) marketplace narrative** has been blocked on direction for several weeks now. Piper Alpha is patiently waiting for me to give direction when I've been too busy to respond. We will get to it soon after the hosted alpha launch.
 
 **The duplicate-scheduled-task pattern** (three instances this window) may be worth a structural fix rather than continuing to catch each instance as it appears.
 
