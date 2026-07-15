@@ -5660,6 +5660,64 @@ class IntentService:
                 error_type="CalendarWeekQueryError",
             )
 
+    async def _handle_session_activity_query(
+        self, intent: Intent, workflow_id: str, session_id: str
+    ) -> IntentProcessingResult:
+        """B4 (#1394, ADR-078 D3) — "what did we create this session?"
+
+        Reads the owner-scoped session_activity ledger (the authoritative record of
+        what THIS session created), NOT the floor's ephemeral window or a live-repo
+        query — the two surfaces that made B4 honestly find nothing. Owner-scoped by
+        construction (D1a): the reader keys on the resolved principal + this session.
+        """
+        _owner_id = _principal_from_intent(intent)
+        if not _owner_id:
+            return IntentProcessingResult(
+                success=True,
+                message=(
+                    "I can tell you what we've created this session once you're signed "
+                    "in — I don't have a user to look it up for right now."
+                ),
+                intent_data={
+                    "category": intent.category.value,
+                    "action": intent.action,
+                    "confidence": intent.confidence,
+                },
+                workflow_id=workflow_id,
+                requires_clarification=False,
+            )
+
+        from services.database.repositories import SessionActivityRepository
+
+        async with AsyncSessionFactory.session_scope() as session:
+            activities = await SessionActivityRepository(session).list_for_session(
+                owner_id=_owner_id, conversation_id=session_id
+            )
+
+        if not activities:
+            message = "We haven't created anything in this session yet."
+        else:
+            _label = {"issue_created": "issue", "doc_created": "doc"}
+            lines = []
+            for a in activities:  # newest first
+                kind = _label.get(a.action_type, a.action_type.replace("_", " "))
+                title = f" — {a.target_title}" if a.target_title else ""
+                lines.append(f"• {a.target_ref} ({kind}){title}")
+            message = "Here's what we created this session:\n" + "\n".join(lines)
+
+        return IntentProcessingResult(
+            success=True,
+            message=message,
+            intent_data={
+                "category": intent.category.value,
+                "action": intent.action,
+                "confidence": intent.confidence,
+                "activity_count": len(activities),
+            },
+            workflow_id=workflow_id,
+            requires_clarification=False,
+        )
+
     async def _handle_productivity_query(
         self, intent: Intent, workflow_id: str, session_id: str
     ) -> IntentProcessingResult:

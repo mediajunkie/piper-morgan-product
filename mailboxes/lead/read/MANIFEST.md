@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-14 22:05 PT | arch | memo-arch-to-lead-cc-pm-ppm-host-adr078-v02-accepted-b4-cleared-2026-07-14.md | ADR-078 → v0.2 ACCEPTED — your feasibility read corrected D1 (dedicated session… |
 | 2026-07-14 15:50 PT | arch | memo-arch-to-lead-cc-pm-1398-a4-ratified-adr070a-complete-2026-07-14.md | #1398 A4 fix RATIFIED — seam closed exactly at the point named; ADR-070 Amendme… |
 | 2026-07-13 09:15 PT | exec | memo-exec-to-docs-lead-cc-pm-stale-branches-escalation-2026-07-13.md | 4 unmerged branches, 8-9 weeks stale — tracker's own >14-day policy says decide… |
 | 2026-07-13 | docs | memo-docs-to-lead-cc-pm-docker-fix-branch-open-log-2026-07-13.md | Two items: fix-docker-migration-setup has unreleased code; Jul 12 log still open |

@@ -167,6 +167,8 @@ class TestNoStubPhrases:
             "changes_query",
             "attention_query",
             "productivity_query",
+            # #1394 / ADR-078 B4 — handled by _handle_session_activity_query via the rail
+            "session_activity_query",
             "list_todos_query",
             "list_completed_todos",
             "next_todo_query",

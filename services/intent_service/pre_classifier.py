@@ -514,6 +514,18 @@ class PreClassifier:
         r"\bmy productivity\b",
     ]
 
+    # Session-activity recall (#1394 / ADR-078 B4) — "what did we create this
+    # session". Distinct from GITHUB_QUERY's "what did we ship" (a repo-wide live
+    # query); this reads the owner-scoped session_activity ledger for THIS session.
+    SESSION_ACTIVITY_QUERY_PATTERNS = [
+        r"\bwhat did we create\b",
+        r"\bwhat have we created\b",
+        r"\bwhat did we make\b",
+        r"\bwhat did (?:we|i) create this session\b",
+        r"\bwhat did we do this session\b",
+        r"\bwhat (?:issues|items) did we (?:create|make|open)\b",
+    ]
+
     # Todo queries - Queries #56, #57
     TODO_QUERY_PATTERNS = [
         # List todos query - Query #56
@@ -1366,6 +1378,19 @@ class PreClassifier:
                 context={"original_message": message},
             )
 
+        # Check Session-activity recall (#1394 / ADR-078 B4) — "what did we create
+        # this session". Before Productivity; distinct from GITHUB's "what did we
+        # ship" (a repo-wide live query) — this reads the session_activity ledger.
+        if PreClassifier._matches_patterns(
+            clean_for_matching, PreClassifier.SESSION_ACTIVITY_QUERY_PATTERNS
+        ):
+            return Intent(
+                category=IntentCategory.QUERY,
+                action="session_activity_query",
+                confidence=1.0,
+                context={"original_message": message},
+            )
+
         # Check Productivity query (Query #51)
         if PreClassifier._matches_patterns(
             clean_for_matching, PreClassifier.PRODUCTIVITY_QUERY_PATTERNS
@@ -1608,6 +1633,12 @@ class PreClassifier:
             (PreClassifier.GITHUB_QUERY_PATTERNS, IntentCategory.QUERY, "github_query"),
             # Productivity patterns
             (PreClassifier.PRODUCTIVITY_QUERY_PATTERNS, IntentCategory.QUERY, "productivity_query"),
+            # Session-activity recall (#1394 / ADR-078 B4)
+            (
+                PreClassifier.SESSION_ACTIVITY_QUERY_PATTERNS,
+                IntentCategory.QUERY,
+                "session_activity_query",
+            ),
             # Todo patterns
             (PreClassifier.TODO_QUERY_PATTERNS, IntentCategory.QUERY, "list_todos_query"),
             # #1256: stakeholder-update BEFORE document (same precedence as the
