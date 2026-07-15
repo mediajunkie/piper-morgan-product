@@ -4,6 +4,16 @@
 
 ## Active threads
 
+### ⏰ DATED TRIGGER — Phase 6 cleanup on Fri 2026-07-17 (or sooner if apex propagation complete)
+- DNS CUT OVER 2026-07-15: pipermorgan.ai serves from Vercel (apex primary, verified 8/9 checks)
+- gh-pages deploy DELIBERATELY kept running ~48h so cached-DNS visitors get fresh content
+- Friday's work: remove peaceiris gh-pages step from deploy.yml; clean repository_dispatch
+  from update-blog-posts.yml; add "fallback deployment" notice to static-build admin pages
+  (PM hit dead login on static copy 7/15 — prevent recurrence); keep deploy.sh+STATIC_EXPORT
+  as emergency fallback; verify daily RSS workflow still triggers Vercel rebuild after
+- www straggler at cutover: Hover SERVFAIL on www CNAME (suspected trailing-dot parse issue;
+  PM fixing) — verify www → 308 → apex before closing the thread
+
 ### Vercel migration — VERIFIED END-TO-END IN PRODUCTION ✓, awaiting PM's DNS cutover
 - Plan artifact: https://claude.ai/code/artifact/a2ef2c23-9779-4f54-ae29-3d63f5689f88
 - 2026-07-14: PM regenerated hash → login SUCCESS → compose edit-save landed on product
