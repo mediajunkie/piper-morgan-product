@@ -2,6 +2,8 @@
 
 **Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live **here**, in the section immediately below (corrected 2026-07-12 — this line pointed at `duty-cycle-escalations-cio.md`, deprecated/folded into this file on 2026-06-17; a stale self-reference in my own canonical doc, caught while wiring the watchdog's stall-alert routing to land here).
 
+**Also check `dev/active/pm-ideas-inbox.md`** (added 2026-07-16, PM's request) — a low-friction drop point for links/articles/stray ideas PM wants reviewed. Check the "New" section at session start alongside this file; move entries to "Reviewed" as they get looked at or discussed.
+
 ## PM Attention (fold watchdog alerts + anything else needing PM's call here; Exec's `cohort-attention-rollup` reads this file directly per its own SKILL.md Step 1)
 
 - 🔴 **Action needed: reload the live watchdog launchd plist.** Still open as of 7/13 morning (no evidence PM has run it yet — Docs confirmed retiring `docs-duty-cycle` last night, so Belt-4 for Docs stays inactive until this happens). Commands (also in the plist's own header comment): `cp scripts/launchd/com.pipermorgan.duty-cycle-watchdog.plist ~/Library/LaunchAgents/ && launchctl unload ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist && launchctl load ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist`.
