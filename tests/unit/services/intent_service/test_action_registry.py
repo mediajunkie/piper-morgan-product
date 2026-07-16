@@ -169,6 +169,8 @@ class TestNoStubPhrases:
             "productivity_query",
             # #1394 / ADR-078 B4 — handled by _handle_session_activity_query via the rail
             "session_activity_query",
+            # #1411 — handled by _handle_update_issue via the rail (+ elif backstop)
+            "update_issue",
             "list_todos_query",
             "list_completed_todos",
             "next_todo_query",

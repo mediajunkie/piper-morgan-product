@@ -75,6 +75,11 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("QUERY", "close_issue_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "reopen_issue_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "comment_issue_query"): ActionDisposition.WORKFLOW,
+    # #1411: update_issue was elif-only (surface-4, registry/rail-invisible → mode-4).
+    # Registered here + on the rail so it's reachable deterministically + ratchet-covered.
+    # (Category mirrors the close/reopen/comment issue-mutation siblings; canonical is the
+    # bare 'update_issue' the action_mapper + handler actually use, not a _query form.)
+    ("QUERY", "update_issue"): ActionDisposition.WORKFLOW,
     ("QUERY", "list_issues_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "list_prs_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "review_issue_query"): ActionDisposition.WORKFLOW,
@@ -140,6 +145,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "close_issue_query"): "Close issue #42",
     ("QUERY", "reopen_issue_query"): "Reopen issue #42",
     ("QUERY", "comment_issue_query"): "Add a comment to issue #42",
+    ("QUERY", "update_issue"): "Change the title of issue #42 to 'Fix login bug'",
     ("QUERY", "list_issues_query"): "List open issues",
     ("QUERY", "list_prs_query"): "Show me open pull requests",
     ("QUERY", "review_issue_query"): "Show me issue #42",
@@ -285,6 +291,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "close_issue_query": Verb.CLOSE,
     "reopen_issue_query": Verb.REOPEN,
     "comment_issue_query": Verb.COMMENT,
+    "update_issue": Verb.UPDATE,
     "list_issues_query": Verb.LIST,
     "list_prs_query": Verb.LIST,
     "review_issue_query": Verb.GET,

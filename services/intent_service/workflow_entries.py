@@ -442,6 +442,16 @@ def register_default_workflows() -> None:
         requires_context=["intent", "intent_service"],
         action_triggered=True,
     )
+    # #1411: update_issue onto the rail (was elif-only surface-4, registry/rail-invisible
+    # → mode-4 reachability gap for every update request). Reuses the fully-implemented
+    # _handle_update_issue (intent, workflow_id, user_id) via the standard factory; the
+    # existing elif stays as an additive backstop (rail wins pre-floor).
+    update_issue_entry = WorkflowEntry(
+        entry_point=_make_query_dispatch_entry_point("_handle_update_issue", pass_user_id=True),
+        description="Update-issue via action dispatch (#1411)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
     reopen_issue_entry = WorkflowEntry(
         entry_point=run_reopen_issue_workflow,
         description="Reopen-issue query via action dispatch (#1124)",
@@ -519,6 +529,12 @@ def register_default_workflows() -> None:
         "comment_issue": comment_issue_entry,
         "add_comment": comment_issue_entry,
         "comment_issue_query": comment_issue_entry,
+        # #1411: update_issue + its action_mapper aliases (the raw names the classifier
+        # emits: update_github_issue/update_ticket/modify_issue → update_issue).
+        "update_issue": update_issue_entry,
+        "update_github_issue": update_issue_entry,
+        "update_ticket": update_issue_entry,
+        "modify_issue": update_issue_entry,
         # #1124 cohort 1: prioritization (strategy category).
         "prioritize": prioritization_entry,
         "set_priorities": prioritization_entry,
