@@ -1,7 +1,7 @@
 ---
-image: 'real-world.pn'
+image: 'real-world.png'
 alt: 'An explorer kneels just beyond the doorway of a tidy workshop, calmly gathering small hardware pieces shaken loose by the uneven ground, illustrating how a new environment reveals hidden assumptions.'
-caption: '""Hello, world!""'
+caption: '"Hello, world!"'
 ---
 
 # Into Production
@@ -34,7 +34,7 @@ I ran the full install on my own machine. The Claude Desktop plugin (a skunkwork
 
 # The first external tester
 
-Later that Sunday, the alpha plugin distribution package went out to an tester.
+Later that Sunday, the alpha plugin distribution package went out to a tester.
 
 She wasn't in the room when the system was built. She hadn't watched the audits run or the bugs get fixed or the seven Linux problems get diagnosed and cleared. She just received a package, installed it, and tried it out.
 
