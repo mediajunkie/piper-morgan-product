@@ -73,6 +73,43 @@ from shared.events import EventBus
 logger = structlog.get_logger()
 
 
+# --- B3: pre-classifier referent resolution (#1394 / ADR-078 D2) ---------------
+# Resolve a follow-up like "change the title" → the issue created earlier this
+# session, so it routes to update_issue instead of the document/Notion handler.
+# DETERMINISTIC (OQ-2, Arch-ruled) + CONSERVATIVE: the issue-field-word
+# requirement below IS the N2 over-resolution guard — "the roadmap needs work"
+# carries no field word, so it never resolves. Only a high-confidence referent
+# resolves; everything else passes through untouched.
+
+# The fields _handle_update_issue accepts — presence of one of these is what
+# makes a "the X"/"it" a resolvable ISSUE referent (not an arbitrary topic).
+_ISSUE_FIELD_WORDS = r"title|body|description|label|labels|assignee|assignees|state"
+# Verbs that modify an existing issue (create/close/reopen are their own handlers).
+_UPDATE_VERB = r"change|update|rename|edit|modify|set|add"
+# An explicit issue number already present → nothing to resolve; let normal routing run.
+_EXPLICIT_ISSUE_RE = re.compile(r"#\d+|\bissue\s+\d+\b", re.IGNORECASE)
+# "change the title", "update the label", "set the body"
+_FIELD_REFERENT_RE = re.compile(
+    rf"\b({_UPDATE_VERB})\b.*\bthe\s+({_ISSUE_FIELD_WORDS})\b", re.IGNORECASE
+)
+# "add a label … to it", "change … it/that" with a field word present
+_PRONOUN_REFERENT_RE = re.compile(
+    rf"\b({_UPDATE_VERB})\b.*\b({_ISSUE_FIELD_WORDS})\b.*\b(it|that)\b", re.IGNORECASE
+)
+
+
+def _detect_issue_referent(message: str) -> bool:
+    """True iff the message is an issue-update follow-up with an UNRESOLVED referent
+    (an issue-field edit with no explicit issue number). Deterministic + conservative:
+    requires an update verb AND an issue-field word — the field-word requirement is the
+    N2 guard (a fresh definite-article topic without a field word never matches)."""
+    if not message:
+        return False
+    if _EXPLICIT_ISSUE_RE.search(message):
+        return False  # explicit issue # present → nothing to resolve
+    return bool(_FIELD_REFERENT_RE.search(message) or _PRONOUN_REFERENT_RE.search(message))
+
+
 class IntentClassifier:
     def __init__(
         self,
@@ -144,6 +181,73 @@ class IntentClassifier:
             self._llm = container.get_service("llm")
         return self._llm
 
+    @staticmethod
+    async def _resolve_issue_referent(
+        message: str, user_id: Optional[str], session_id: Optional[str]
+    ) -> Optional[Intent]:
+        """B3 (#1394 / ADR-078 D2/OQ-3) — resolve an issue-update follow-up against the
+        session-activity ledger and EMIT the resolved ``update_issue`` intent directly.
+
+        Emit-directly (OQ-3, Arch-ruled): since detection is deterministic, we hand the
+        classifier a self-contained resolved intent rather than a rewritten string to
+        re-classify — the create_issue-duplicate hazard is then impossible by construction
+        (N3). D4 held: the LLM classifier is never consulted for the resolved path.
+
+        Guards:
+        - N1 (no-referent / empty ledger): returns None → caller falls through unchanged.
+        - N2 (fresh topic): _detect_issue_referent already declined (no issue-field word).
+        - D1a: reads the ledger owner-scoped; with no principal/session, returns None
+          (never an unscoped read).
+        Returns the emitted Intent, or None to pass through to normal classification.
+        """
+        if not user_id or not session_id:
+            return None  # D1a: no owner-scoped read possible → don't resolve
+        if not _detect_issue_referent(message):
+            return None  # N2 / not a follow-up referent
+        # Owner-scoped ledger read (B4's reader) — most recent creation this session.
+        from services.database.repositories import SessionActivityRepository
+        from services.database.session_factory import AsyncSessionFactory
+
+        try:
+            async with AsyncSessionFactory.session_scope() as session:
+                activities = await SessionActivityRepository(session).list_for_session(
+                    owner_id=str(user_id), conversation_id=str(session_id)
+                )
+        except Exception as e:
+            logger.warning("b3_ledger_read_failed", error=str(e))
+            return None  # degrade to pass-through, never block classification
+        # N1: nothing created this session → don't fabricate a target.
+        latest_issue = next(
+            (a for a in activities if a.action_type == "issue_created"), None
+        )
+        if latest_issue is None:
+            return None
+        # target_ref is "owner/repo#107" — split into the fields the handler reads.
+        ref = latest_issue.target_ref or ""
+        if "#" not in ref:
+            return None
+        repository, _, num = ref.rpartition("#")
+        if not repository or not num.isdigit():
+            return None
+        logger.info(
+            "b3_referent_resolved",
+            session_id=session_id,
+            resolved_ref=ref,
+            action="update_issue",
+        )
+        return Intent(
+            original_message=message,  # RAW preserved (#1332) — audit + slot-fill source
+            category=IntentCategory.QUERY,  # matches update_issue's registry category
+            action="update_issue",
+            confidence=1.0,
+            context={
+                "original_message": message,  # handler slot-fills the new title from this
+                "repository": repository,
+                "issue_number": int(num),
+                "b3_resolved": True,  # provenance: this referent was ledger-resolved
+            },
+        )
+
     async def classify(
         self,
         message: str,
@@ -214,6 +318,22 @@ class IntentClassifier:
                         logger.error(f"Preference detection hook failed for cached intent: {e}")
 
                 return intent_obj
+
+        # Stage 0: B3 referent resolution (#1394 / ADR-078 D2) — BEFORE pre_classify
+        # and the LLM. Resolves "change the title" → the issue created this session and
+        # emits update_issue directly (owner-scoped ledger read; async, which is why it
+        # can't live in the sync PreClassifier). Passes through untouched when there's no
+        # high-confidence referent (N1/N2). D4 held: the classifier never sees history.
+        _b3_session_id = context.get("session_id") if context else None
+        b3_intent = await self._resolve_issue_referent(message, user_id, _b3_session_id)
+        if b3_intent is not None:
+            logger.info(
+                "intent_classification",
+                source="B3_REFERENT_RESOLUTION",
+                action=b3_intent.action,
+                message_preview=message[:50],
+            )
+            return b3_intent
 
         # Stage 1: Pre-classification
         pre_intent = PreClassifier.pre_classify(message)
