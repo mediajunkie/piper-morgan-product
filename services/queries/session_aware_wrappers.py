@@ -30,12 +30,12 @@ class SessionAwareProjectQueryService:
             service = ProjectQueryService(repo)
             return await service.get_project_by_id(project_id)
 
-    async def get_default_project(self) -> Optional[Project]:
-        """Get the default project with automatic session management."""
+    async def get_default_project(self, owner_id: Optional[str]) -> Optional[Project]:
+        """Get the acting user's default project (#1421: owner-scoped, fail-closed)."""
         async with AsyncSessionFactory.session_scope() as session:
             repo = ProjectRepository(session)
             service = ProjectQueryService(repo)
-            return await service.get_default_project()
+            return await service.get_default_project(owner_id)
 
     async def find_project_by_name(self, name: str) -> Optional[Project]:
         """Find a project by name with automatic session management."""

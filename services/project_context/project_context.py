@@ -75,7 +75,9 @@ class ProjectContext:
             return session_project, True
 
         # 4. Default project
-        default_project = await self.project_repo.get_default_project()
+        # #1421: this class has no principal in scope (and no production callers
+        # today — census B item 31); pass None = fail-closed, never a global pick.
+        default_project = await self.project_repo.get_default_project(None)
         if default_project:
             self._session_last_used[session_id] = default_project.id
             return default_project, False  # No confirmation needed for default fallback

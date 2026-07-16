@@ -594,8 +594,13 @@ class QueryRouter:
         elif intent.action == "get_default_project":
             if self.test_mode:
                 return await self.degradation_handler.handle_database_failure(intent.action)
+            # #1421: owner-scoped; absent principal fails closed to None (never
+            # another tenant's default).
+            _owner_id = intent.context.get("user_id")
             return await self._execute_with_circuit_breaker(
-                self.project_queries.get_default_project, "project_queries", intent.action
+                lambda: self.project_queries.get_default_project(_owner_id),
+                "project_queries",
+                intent.action,
             )
         elif intent.action == "find_project":
             if self.test_mode:

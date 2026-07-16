@@ -22,9 +22,9 @@ class ProjectQueryService:
         """Get a specific project by ID"""
         return await self.repo.get_by_id(project_id)
 
-    async def get_default_project(self) -> Optional[Project]:
-        """Get the default project"""
-        return await self.repo.get_default_project()
+    async def get_default_project(self, owner_id: Optional[str]) -> Optional[Project]:
+        """Get the acting user's default project (#1421: owner-scoped, fail-closed)."""
+        return await self.repo.get_default_project(owner_id)
 
     async def find_project_by_name(self, name: str) -> Optional[Project]:
         """Find a project by name"""

@@ -15,7 +15,10 @@ class MockProjectRepository:
     async def get_by_id(self, project_id):
         return self.projects.get(project_id)
 
-    async def get_default_project(self):
+    async def get_default_project(self, owner_id=None):
+        # #1421: matches the real repo's owner-scoped signature. This mock tests
+        # ProjectContext's branching, not repo scoping, so it returns its
+        # configured default regardless of principal.
         return self.default_project
 
     async def list_active_projects(self):

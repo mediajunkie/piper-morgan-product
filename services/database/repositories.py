@@ -283,7 +283,18 @@ class ProjectRepository(BaseRepository):
             return db_project.to_domain()
         return None
 
-    async def get_default_project(self) -> Optional[domain.Project]:
+    async def get_default_project(self, owner_id: Optional[str]) -> Optional[domain.Project]:
+        """Return the OWNER's default project, or None.
+
+        #1421: owner_id is a required argument (fail-closed). The old zero-arg
+        form selected the single process-global is_default row — one user's
+        default became every user's project context (cross-tenant read). No
+        principal -> no default, never another tenant's; callers with no
+        principal must handle None honestly.
+        """
+        if not owner_id:
+            logger.warning("get_default_project called without owner_id — fail-closed None")
+            return None
         result = await self.session.execute(
             select(ProjectDB)
             .options(
@@ -292,9 +303,14 @@ class ProjectRepository(BaseRepository):
                     ProjectRepositoryLinkDB.repository
                 ),
             )
-            .where(ProjectDB.is_default == True, ProjectDB.is_archived == False)
+            .where(
+                ProjectDB.owner_id == owner_id,
+                ProjectDB.is_default == True,
+                ProjectDB.is_archived == False,
+            )
+            .order_by(ProjectDB.created_at)
         )
-        db_project = result.scalar_one_or_none()
+        db_project = result.scalars().first()
         return db_project.to_domain() if db_project else None
 
     async def list_active_projects(
