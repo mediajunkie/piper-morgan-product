@@ -20,7 +20,9 @@ Migration = open PM sessions on pipermorgan.ai instead of designinproduct.com.
 
 ## Agent checklist
 
-**Status as of 2026-07-06 (PM-confirmed)**: no Piper Morgan project agent has migrated yet. All Piper Morgan Code agents (including this CIO session) currently run on `designinproduct.com`, same as everyone else in the cohort. The one live pipermorgan.ai instance is **Coral (One Job project, running the Fable model)** — a different project's early adopter, not part of this checklist. Separately, Piper Open and Vergil currently run on `KindSys.us`, which closes end of July 2026 — a real, dated migration those two need before the account itself disappears (tracked here for awareness; not this checklist's roles).
+**Status as of 2026-07-16 (PM, in conversation)**: still no Piper Morgan project agent migrated. **This now has a real deadline: PM wants this done by end of month**, alongside the related-but-separate KindSys.us vacate (below) and standing up the designinproduct.com split for business/client/other-product agents. Three-part plan as PM framed it 7/16: (1) vacate KindSys.us, (2) move Piper Morgan agents to pipermorgan.ai (this checklist), (3) business/client/other-product agents to designinproduct.com (already this doc's documented end-state, see "Account assignments post-migration" below — no new decision needed there, just execution). Previously "ready whenever Exec wants to sequence it" with no date; **now genuinely due, worth Exec sequencing this rather than leaving it queued.**
+
+All Piper Morgan Code agents (including this CIO session) currently run on `designinproduct.com`, same as everyone else in the cohort. The one live pipermorgan.ai instance is **Coral (One Job project, running the Fable model)** — a different project's early adopter, not part of this checklist. Separately, Piper Open and Vergil currently run on `KindSys.us`, which closes end of July 2026 — a real, dated migration those two need before the account itself disappears (tracked here for awareness; not this checklist's roles — that's a different project's migration, cross-project coordination if useful).
 
 | Agent | Status | Notes |
 |-------|--------|-------|
