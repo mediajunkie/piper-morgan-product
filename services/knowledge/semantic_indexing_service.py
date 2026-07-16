@@ -225,8 +225,14 @@ class SemanticIndexingService:
         segment_size = self.embedding_dim // 5
         features = []
 
-        # Time-based features
-        now = datetime.now()
+        # Time-based features — match the node's tz-awareness: DB-loaded nodes
+        # carry tz-aware created_at, ad-hoc query nodes may be naive. (#1420:
+        # this code path was dead in production, so the naive/aware mismatch
+        # had never executed.)
+        if node.created_at is not None and node.created_at.tzinfo is not None:
+            now = datetime.now(node.created_at.tzinfo)
+        else:
+            now = datetime.now()
 
         # Age in days
         age_days = (now - node.created_at).days if node.created_at else 0
@@ -312,34 +318,63 @@ class SemanticIndexingService:
         top_k: int = 10,
         min_similarity: float = 0.5,
         node_types: Optional[List[NodeType]] = None,
+        *,
+        owner_id: Optional[str] = None,
+        session_id: Optional[str] = None,
+        threshold: Optional[float] = None,
     ) -> List[Tuple[KnowledgeNode, float]]:
         """
-        Find similar nodes using metadata-based embeddings
+        Find similar nodes using metadata-based embeddings — OWNER-SCOPED.
+
+        #1420: candidate retrieval is filtered to the acting principal and
+        FAILS CLOSED — no resolvable owner means no results, never a
+        cross-tenant scan (nodes carry user text in metadata). Both production
+        callers had passed ``session_id=``/``threshold=`` kwargs this signature
+        didn't accept; the TypeError was swallowed upstream, so the feature was
+        silently dead AND the unscoped body was a primed cross-user leak. The
+        kwargs are now real.
 
         Args:
             query_node: Node to search for similar nodes
             top_k: Number of results to return
             min_similarity: Minimum similarity threshold
             node_types: Optional filter by node types
+            owner_id: Acting principal; falls back to session_id then
+                query_node.session_id (the callers' existing conventions)
+            session_id: Legacy alias for owner_id (matches the repo layer)
+            threshold: Legacy alias for min_similarity
 
         Returns:
-            List of (node, similarity_score) tuples
+            List of (node, similarity_score) tuples — the owner's nodes only
         """
-        self.logger.info("Performing similarity search", query_node_id=query_node.id, top_k=top_k)
+        if threshold is not None:
+            min_similarity = threshold
+        owner = owner_id or session_id or query_node.session_id
+        if not owner:
+            self.logger.warning(
+                "similarity_search without a resolvable owner — fail-closed empty (#1420)",
+                query_node_id=query_node.id,
+            )
+            return []
+
+        self.logger.info(
+            "Performing similarity search", query_node_id=query_node.id, top_k=top_k, owner=owner
+        )
 
         # Generate embedding for query node
         query_embedding = np.array(await self.generate_embedding(query_node))
 
-        # Get candidate nodes
+        # Get candidate nodes — owner-scoped (repo param named session_id for
+        # backward compatibility; it filters KnowledgeNodeDB.owner_id)
         candidates = []
         if node_types:
             for node_type in node_types:
-                nodes = await self.repo.get_nodes_by_type(node_type, limit=1000)
+                nodes = await self.repo.get_nodes_by_type(node_type, session_id=owner, limit=1000)
                 candidates.extend(nodes)
         else:
             # Get all nodes (with reasonable limit)
             for node_type in NodeType:
-                nodes = await self.repo.get_nodes_by_type(node_type, limit=100)
+                nodes = await self.repo.get_nodes_by_type(node_type, session_id=owner, limit=100)
                 candidates.extend(nodes)
 
         # Calculate similarities
