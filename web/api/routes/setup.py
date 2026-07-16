@@ -1556,11 +1556,14 @@ async def get_calendar_status(request: Request):
             token = request.cookies.get("auth_token")
             if token:
                 jwt_service = JWTService()
-                claims = jwt_service.validate_token(token)
+                # #1434: validate_token is async — un-awaited, the truthy coroutine
+                # made claims.sub raise into the except below, so EVERY request
+                # silently fell back to the non-scoped key.
+                claims = await jwt_service.validate_token(token)
                 if claims:
                     user_id = claims.sub
         except Exception:
-            pass  # Fall back to non-scoped key if auth unavailable
+            pass  # silent-ok: anonymous setup flow legitimately has no token; scoped-vs-global selection is asserted by test_calendar_status_scoped_key_1434
 
         keychain = KeychainService()
         key_name = f"google_calendar_{user_id}" if user_id else "google_calendar"
