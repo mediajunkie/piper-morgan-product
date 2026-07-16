@@ -144,6 +144,13 @@ class User(Base):
     # Orientation tracking (Issue #549)
     orientation_seen = Column(Boolean, default=False, nullable=False)
 
+    # #1422: questionnaire/persona preferences. Read by PersonalityProfile
+    # .load_with_preferences, UserContextService, and the onboarding formality
+    # writer — all of which predate this column: #262's alpha_users->users merge
+    # dropped alpha_users.preferences without carrying it (old data
+    # unrecoverable; re-collected from users).
+    preferences = Column(postgresql.JSONB, default=dict, nullable=True)
+
     # Timestamps
     created_at = Column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False
