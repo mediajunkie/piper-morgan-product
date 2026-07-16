@@ -88,3 +88,10 @@ corpus:
     expected: REVIEW   # clarification_needed — mode-1 candidate, destination undecided
   - phrase: "give me a project status report"
     expected: REVIEW   # get_current_status vs get_project_status name-drift cluster (#1269 sibling)
+  # #1394 B3 / #1411 — explicit-form issue-update rows (Arch-finalized canonicals
+  # 2026-07-15). These verify #1411's reachability (explicit ref via the LLM classifier,
+  # no ledger needed) — NOT B3's resolution (that's B3 unit-tests with a seeded ledger).
+  - phrase: "change the title of issue owner/repo#107 to 'Foo'"
+    expected: action:update_issue   # #1411 registered this; MUST NOT be Notion/create_issue
+  - phrase: "add label bug to issue owner/repo#107"
+    expected: action:update_issue   # labels are an update_issue field
