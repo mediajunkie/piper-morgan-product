@@ -452,6 +452,17 @@ def register_default_workflows() -> None:
         requires_context=["intent", "intent_service"],
         action_triggered=True,
     )
+    # #1412: create_issue onto the rail (same mode-4 gap as #1411; the live primary
+    # write path). _handle_create_issue takes (intent, workflow_id, session_id, user_id),
+    # so BOTH pass_session_id + pass_user_id. Elif stays as an additive backstop.
+    create_issue_entry = WorkflowEntry(
+        entry_point=_make_query_dispatch_entry_point(
+            "_handle_create_issue", pass_session_id=True, pass_user_id=True
+        ),
+        description="Create-issue via action dispatch (#1412)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
     reopen_issue_entry = WorkflowEntry(
         entry_point=run_reopen_issue_workflow,
         description="Reopen-issue query via action dispatch (#1124)",
@@ -535,6 +546,13 @@ def register_default_workflows() -> None:
         "update_github_issue": update_issue_entry,
         "update_ticket": update_issue_entry,
         "modify_issue": update_issue_entry,
+        # #1412: create_issue + its 6 action_mapper aliases.
+        "create_issue": create_issue_entry,
+        "create_github_issue": create_issue_entry,
+        "create_item": create_issue_entry,
+        "create_ticket": create_issue_entry,
+        "make_github_issue": create_issue_entry,
+        "new_github_issue": create_issue_entry,
         # #1124 cohort 1: prioritization (strategy category).
         "prioritize": prioritization_entry,
         "set_priorities": prioritization_entry,

@@ -80,6 +80,9 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     # (Category mirrors the close/reopen/comment issue-mutation siblings; canonical is the
     # bare 'update_issue' the action_mapper + handler actually use, not a _query form.)
     ("QUERY", "update_issue"): ActionDisposition.WORKFLOW,
+    # #1412: create_issue — the live primary write path, same mode-4 gap as #1411
+    # (elif-only, registry/rail-invisible). Migrated onto the rail+registry too.
+    ("QUERY", "create_issue"): ActionDisposition.WORKFLOW,
     ("QUERY", "list_issues_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "list_prs_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "review_issue_query"): ActionDisposition.WORKFLOW,
@@ -146,6 +149,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "reopen_issue_query"): "Reopen issue #42",
     ("QUERY", "comment_issue_query"): "Add a comment to issue #42",
     ("QUERY", "update_issue"): "Change the title of issue #42 to 'Fix login bug'",
+    ("QUERY", "create_issue"): "Create an issue in owner/repo about the login bug",
     ("QUERY", "list_issues_query"): "List open issues",
     ("QUERY", "list_prs_query"): "Show me open pull requests",
     ("QUERY", "review_issue_query"): "Show me issue #42",
@@ -247,6 +251,7 @@ class Verb(Enum):
     MANAGE = "manage"  # portfolio / repo management
     SET = "set"  # set a per-user preference/setting (default repo, …) (#1327)
     # ---- Object mutations ----
+    CREATE = "create"  # create a new artifact (issue, …) (#1412)
     CLOSE = "close"
     REOPEN = "reopen"
     COMMENT = "comment"
@@ -292,6 +297,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "reopen_issue_query": Verb.REOPEN,
     "comment_issue_query": Verb.COMMENT,
     "update_issue": Verb.UPDATE,
+    "create_issue": Verb.CREATE,
     "list_issues_query": Verb.LIST,
     "list_prs_query": Verb.LIST,
     "review_issue_query": Verb.GET,
