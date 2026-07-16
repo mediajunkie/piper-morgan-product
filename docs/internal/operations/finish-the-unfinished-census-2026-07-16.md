@@ -1,7 +1,7 @@
 # Finish-the-Unfinished Census — Frozen Inventory (2026-07-16)
 
 **Sprint**: epic #1424 · plan `docs/internal/operations/finish-the-unfinished-sprint-2026-07-16.md`
-**Status**: Censuses A (silent-death), C (stubs/TODO), D (reachability) COMPLETE; B (signature drift / mypy) landing — appended on completion. Ceilings frozen + ratchets live on main (`scripts/ratchet_ceilings.json`, `tests/test_completion_ratchets.py`): silent_death_core=254 · unscoped_reads=64 · notimplementederror=9 · todo_markers=78.
+**Status**: **ALL FOUR CENSUSES COMPLETE — BACKLOG FROZEN 2026-07-16 ~15:20 PT.** Ceilings frozen + ratchets live on main (`scripts/ratchet_ceilings.json`, `tests/test_completion_ratchets.py`): silent_death_core=254 · unscoped_reads=64 · notimplementederror=9 · todo_markers=78. Proposed mypy per-code ceilings (Census B, pending gate build): call-arg=94 · arg-type=437 · attr-defined=308 · union-attr=221.
 **Rule reminder**: this list is the sprint scope, FROZEN. Anything discovered after this doc closes gets filed and tagged for the next census — not chased.
 
 ---
@@ -52,6 +52,8 @@
 | F23 | `home_state_service._generate_briefing_summary` commented out → Stage-3 home briefing never appears; workflow-offer session cap can never trip (`suggestions_count=0` TODO) | `home_state_service.py:343`; `intent_service.py:299` |
 | F24 | Registry-contract accounting holes: 5 pre-classifier actions absent from ACTION_REGISTRY (its "MUST" docstring is false); `validate_registry_coverage()` is circular; routing-stack doc rail-count stale (~86 → 102) | `action_registry.py`, `intent-routing-stack.md` |
 
+**Census B issues (2026-07-16 ~15:30)**: B1→#1434 · B3→#1435 · B-umbrella + mypy gate→#1436 · B6→#1422(comment, 3-services scope) · B1/B16→#1419(comment).
+
 **Issues filed off this table (2026-07-16 ~15:00)**: F1→#1415(comment) · F2→#1425 · F3=#1422 · F4=#1417(comment, mechanism) · F5/F6→#1426 · F7→#1427 · F8→#1428 · F9–F17→#1423(comment, clusters) · F18→#1429 · F19→#1430 · F20→#1431 · F21→disposition pending (PM/Arch, via #1433 ledger) · F22→#1432 · F24→folded into #1433 · extended ratchet→#1433.
 
 ### Cleared / by-design (do not touch; seeds allowlists)
@@ -68,7 +70,33 @@ Census A: 85 LEGIT + 123 NARROW (clusters in census record). Census C: 7 documen
 ## Census D — reachability (full record: task output 2026-07-16)
 Matrix: 46 registry pairs · 102 rail keys (~30 handlers) · 31 pre-classifier actions · classifier free-form. registry−(rail∪preclf∪floor)=∅ (#1283 holds; zero mode-2 gaps). Direction-1 gaps = F4, F5-adjacent upload, api-keys, lists/work-items, stakeholder-update fragility, reminder variants. Direction-2: #1333 set confirmed by-design; NEW = F22 half-landed prompt flip, Verb.COMPOSE unruled (cosmetic), F24 accounting holes. Direction-3 copy audit: 2 false denials + 1 misdirect + 1 systematic understatement; 5 decline strings verified accurate. **Extended-ratchet design** (CHAT_POINTERS product-surface ledger + decline-copy freshness ratchet) recorded in census D §6 — Phase 1.5 build, Arch-ratified alongside the lints.
 
-## Census B — signature drift (mypy) — PENDING, appended on completion
+## Census B — signature drift (mypy 2.3.0, one-shot) — COMPLETE
+
+**Run**: scratch venv (shared venv untouched) + typed deps (`sqlalchemy==2.0.23`, `pydantic==2.12.5`, `fastapi==0.115.14`) + plugins (`pydantic.mypy`, `sqlalchemy.ext.mypy.plugin`); `--ignore-missing-imports --check-untyped-defs`, 605 files. **1,862 raw errors → 1,060 in the 4 target codes (call-arg 94 · arg-type 437 · attr-defined 308 · union-attr 221) → 698 deduped → ~30 verified distinct defects/families** after discarding Optional-discipline noise (310), SQLAlchemy/typing artifacts, and runtime-tolerant smells (buckets in task record, condensed here). Both calibration instances flagged (#1420 call-arg ×3; #1422 attr-defined).
+
+**Why mypy was structurally blind until now (the census's meta-finding)**: (1) `session_scope()` at `services/database/session_factory.py:136/182/219` is mis-annotated `-> AsyncContextManager[AsyncSession]` — mypy infers the yield as `Never`, so **every `async with session_scope() as session:` body in the codebase was analyzed as unreachable** (all DB-block errors suppressed); (2) `declarative_base()` without the SQLAlchemy plugin makes every model an `Any` fallback (no attr checking). The authoritative run fixed the 3 annotations in a scratch copy + enabled the plugin. **Prerequisite one-commit fix before the gate lands**: those 3 annotation lines (pure annotation, zero runtime effect).
+
+### Tier 1 — LIVE path, verified by reading each call site (F25–F29 umbrella)
+
+| # | Location | What's wrong | Mask |
+|---|---|---|---|
+| B1 | `web/api/routes/setup.py:1561` | **Missing `await` on `jwt_service.validate_token()`** — coroutine is truthy, `.sub` raises → auth silently falls back to non-scoped key on every request through this path | `except Exception: pass` |
+| B2 | `web/api/dependencies.py:155` | DI yields `KnowledgeGraphService(session)`; `__init__` requires a `KnowledgeGraphRepository` — every KG route call explodes | 500 surface |
+| B3 | `services/database/models.py:2164,2759` | `ListDB/TodoDB.from_domain` pass `metadata=`; column is `list_metadata`. SQLAlchemy doesn't raise (`metadata` = class-level MetaData attr) — **list/todo metadata silently never persists** | Silent no-op — worst mask in census |
+| B4 | `web/api/routes/learning.py` ×12 | error-helper kwargs (`error_id=`, …) not in signatures — every error branch raises TypeError → 500 instead of clean 422/404 | 500 surface |
+| B5 | `web/api/routes/todos.py:316,324,366` | route param `status: str\|None` shadows the `starlette.status` module — every 404/400/500 branch raises AttributeError | 500 surface |
+| B6 | `personality_profile.py:229` **+ `user_context_service.py:241,245,247` + `intent_service.py:2453,2456`** | `user.preferences` — #1422 is **3 services wide**, not 1; A's F15 onboarding-persistence swallow likely masks this exact AttributeError | silent defaults |
+| B7 | `todo_knowledge_service.py:127`, `llm_classifier.py:240` | #1420 calibration (similarity_search kwargs) | swallowed TypeError |
+| B8 | `todo_management_service.py:147` | `create_todo_knowledge_node(saved_todo)` missing required `user_id` → **KG node creation fails on every todo creation** (F14's root) | explicit swallow |
+| B9 | `preference_handler.py:427` | `PatternType.PREFERENCE` doesn't exist (enum has `USER_PREFERENCE_PATTERN`) → preference-learning hook dies (F13's root) | `classifier.py:317` swallow |
+| B10–B20 | intent paths reading dicts-as-objects (`intent_service.py:11294-11305`) and AuditLog-rows-as-todos (`:5965-6015`); `todo.title` vs `text` (`canonical_handlers.py:2338,2632`); `github_domain_service.py:63,179` positional-shift vs router kwargs; KG routes `owner_id=`+str-vs-enum; `feedback.py:57` missing domain class; **config services missing now-required `user_id`** (`setup.py:1251,1372`, `integrations.py:521`, `production_client.py:110` — #1419-family migration drift); `UploadedFile` model drift in file queries; `AsyncSessionFactory.get_session` (doesn't exist) in conversation context; key-audit + cross-feature enum members missing | various swallows / 500s |
+
+**Tier 2 (flag/config-gated)**: Slack webhook `Intent(raw_input=, classification=)` TypeError (3 sites); structlog-kwargs on stdlib loggers (5 files, 13 sites — `query_router.py:164` is LIVE); Slack spatial adapter call missing required args (`USE_SPATIAL_SLACK` — **spatial is PROTECTED**, prioritize despite the gate); staging-health reads config fields that don't exist (router currently unmounted).
+**Tier 3 (COLD but real)**: `PersonalityProfileDB.to_domain()` missing 4 required fields; `notion_spatial.py` calls 12 never-defined methods (75%-complete class); 4 MCP adapters call `initialize()/close()` vs core's `connect()/disconnect()`; trust_integration logger kwargs; key_rotation/publisher/project_context/session_aware_wrappers/file_repository_old/notion_queries/multi_agent drift; graph multi-hop traversal reads attrs off ID-strings; 13 test files calling signatures that no longer exist (cannot pass — presumably never collected).
+**Systemic family (1 issue, not 48)**: UUID-vs-str identity drift across user_id/todo_id plumbing (#262 residue) — mostly runtime-tolerated, dict-lookup/equality sites can silently miss.
+
+### CI gate recommendation (B §4)
+Viable and worth it: pinned mypy 2.3.0 + the 3 typed deps + both plugins, 4-code filter, **per-code ratchet ceilings 94/437/308/221** (per-code so a fix in one code can't hide regressions in another), few minutes runtime. Prerequisite: the 3-line `session_factory.py` annotation fix — without it the gate is hollow (blind inside every DB block). Minimal no-plugin config (744) rejected: can't see the #1422 class.
 
 ---
 
