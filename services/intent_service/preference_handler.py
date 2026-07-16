@@ -424,7 +424,10 @@ class PreferenceDetectionHandler:
                     "LearnedPattern",
                     (),
                     {
-                        "pattern_type": PatternType.PREFERENCE,
+                        # #1436 B9: PatternType has no PREFERENCE member — this
+                        # AttributeError killed every preference confirmation
+                        # (swallowed by the classify hook's broad except).
+                        "pattern_type": PatternType.USER_PREFERENCE_PATTERN,
                         "pattern_data": pattern_data,
                         "confidence": 0.95,  # User confirmed
                         "pattern_id": confirmation.id,
