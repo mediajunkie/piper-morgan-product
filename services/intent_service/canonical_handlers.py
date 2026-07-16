@@ -1188,6 +1188,13 @@ class CanonicalHandlers:
                 details.append(f"  - #{number}: {title}")
                 if labels:
                     details.append(f"    Labels: {labels}")
+        elif priority_metadata.get("source_failed"):
+            # #1425/F2: source errored — be honest that we couldn't check, never
+            # assert emptiness (the false-claim this fix kills).
+            details.append(
+                "\n\n*I couldn't check your high-priority GitHub issues just now — "
+                "try again in a moment.*"
+            )
         elif priority_metadata.get("has_github"):
             details.append("\n\n*No high-priority (P0/P1) GitHub issues found.*")
         elif priority_metadata.get("degrade_reason"):
@@ -1604,12 +1611,16 @@ class CanonicalHandlers:
                 }
 
             except Exception as e:
-                logger.debug(f"Could not get priority issues: {e}")
-                return {"has_github": True, "high_priority_issues": []}
+                # #1425/F2: source FAILED — flag it so the renderer says "I couldn't
+                # check" (honest) instead of "no high-priority issues found" (a false
+                # claim about the user's work). Raised from DEBUG to WARNING: a
+                # swallowed error that changes what the user is told is not debug noise.
+                logger.warning(f"Could not get priority issues (source failed): {e}")
+                return {"has_github": True, "high_priority_issues": [], "source_failed": True}
 
         except Exception as e:
-            logger.debug(f"Priority metadata unavailable: {e}")
-            return {}
+            logger.warning(f"Priority metadata unavailable (source failed): {e}")
+            return {"source_failed": True}
 
     def _synthesize_focus_recommendation(
         self,
