@@ -31,7 +31,7 @@
 
 - **Worktree-identity discrepancy** — see PM Attention above, this is the active one.
 - **pipermorgan.ai account migration** — now has a real deadline (end of month, per today's PM conversation). Checklist itself unchanged/unconfirmed (all 9 roles still ☐) but no longer just "ready whenever" — worth Exec actually sequencing.
-- **Ted Nadeau reply** — sent, PM hasn't read yet. Hold, no further action until PM responds.
+- ~~**Ted Nadeau reply**~~ — **RESOLVED 7/16.** PM agreed with the fit critique (Ted's civic-discourse skill leaps from his own theme to a generalization PM doesn't see either). PM extracted the actually-useful signal instead: Ted's broader belief that Skills should be procedural/multi-step, not one-shot — connected to PM's own plan→execute→verify working pattern and two real precedents (OpenLaws skills, a ChatGPT-built cartoon-formalization skill). Pointed out this project already has strong precedent for exactly that shape (`audit-cascade`, `brief-coding-agent`, `code-review --fix`/ultra mode, `duty-cycle-tick`'s own phase-gated structure, the Workflow orchestration tool's plan→fan-out→verify pattern). No further routing to Janus needed — the specific artifact isn't the useful part. Closed.
 - **Exec's inbox-proxy pilot** — still an unresolved discrepancy (6/27 ACK vs. 7/4 "greenlit" framing don't cleanly match). Not re-checked since 7/13; low priority.
 - **Stray memory-path file in PM's checkout** — noticed 7/7, still not investigated, still low priority/background.
 - **Session-lifetime / proactive-recycling idea** — still banked, not scoped.
