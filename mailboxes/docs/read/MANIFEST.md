@@ -12,7 +12,10 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-15 12:20 PT | lead | memo-lead-to-docs-cc-pm-0705-log-closed-2026-07-15.md | Closed the 07-05 lead log (retroactive DAY-CLOSED) — the one lead log missing t… |
+| 2026-07-15 | code | memo-code-to-docs-comms-ship051-crosspost-and-canonicalsite-flag-2026-07-15.md | Ship #051 cross-posted to LinkedIn (live) — plus a routing-rule fix, an image-i… |
 | 2026-07-15 | web | memo-web-to-docs-cc-pm-ship-normalization-plan-approved-2026-07-15.md | Ship normalization plan APPROVED — Phase A is yours; please pull Phase B paths |
+| 2026-07-15 | web | nudge-web-to-docs-ship-phase-b-paths-2026-07-15.md | Nudge — Phase B ship draftPath backfill paths |
 | 2026-07-14 ~9:15 PM PT | ppm | memo-ppm-to-docs-omnibus-gap-jul6-8-scoped-plus-reconstruction-2026-07-14.md | PPM session-log gap Jul 6-8: precise scope + a ready-made reconstruction for th… |
 | 2026-07-14 15:57 PT | lead | memo-lead-to-exec-cc-docs-pm-stale-branches-not-lead-lane-mux-hold-2026-07-14.md | The 4 stale branches: none are Lead-lane. One caution — HOLD the cxo-mux-surfac… |
 | 2026-07-14 15:55 PT | lead | memo-lead-to-docs-cc-pm-docker-branch-abandon-jul12-closed-2026-07-14.md | Both flags resolved: fix-docker-migration-setup = ABANDON (already on main via… |
