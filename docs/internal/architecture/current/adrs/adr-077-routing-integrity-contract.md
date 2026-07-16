@@ -42,6 +42,8 @@ Lead's **behavioral probe** (29 real classifications, `dev/2026/07/08/routing-pr
 
 A canonical reachable through *any* surface is fine; only one reachable through *none* is a real gap. This 4-surface predicate is the false-positive guard — without it the lint flags the floor-handled actions (`get_identity` etc.) as unreachable and becomes noisy-then-ignored. The `intentional-floor-allowlist` remains the one small hand-maintained surface (keep it small + reviewed — it is itself a drift candidate).
 
+**Scoped-gap note (2026-07-15, #1411):** the D4 reachability-lint checks that every **registry canonical** is reachable — it does NOT enumerate handlers that are elif-dispatched via `action_mapper` (the EXECUTION `mapped_action` cohort, e.g. `create_issue`/`update_issue`) and absent from the registry. Such handlers are *invisible* to the lint: it never asks whether they're reachable, so their reachability rides on the LLM emitting a mapped alias (latent mode-4 fragility). Closing the gap = migrating that cohort onto the rail (#1124 elif→rail; #1411 did `update_issue`), which makes them registry canonicals + lint-covered by construction. Until then, do NOT trust the lint to catch an unregistered elif-only handler's fragility.
+
 **D5 — Behavioral golden-corpus on the canonical-retest harness (real LLM, gated cadence).** The static lint (D4) catches structural gaps; only a behavioral suite catches mode-4 (undocumented emission). `tests/fixtures/routing_corpus_1283.yaml` (Arch-ratified 7/8, one representative phrasing per capability, expected-destination annotated) is frozen as the CI enforcement corpus; a failing route = a failing build at the gated cadence.
 
 ## Consequences
