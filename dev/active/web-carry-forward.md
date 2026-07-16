@@ -4,19 +4,24 @@
 
 ## Active threads
 
-### ⏰ DATED TRIGGER — Phase 6 cleanup on Fri 2026-07-17
-- DNS CUTOVER COMPLETE 2026-07-15: pipermorgan.ai + www.pipermorgan.ai BOTH fully verified
-  end-to-end (apex primary 200, www→apex 307, admin path threads through both correctly).
-  3-bug chain resolved: Vercel redirect-target bug (pointed at protected .vercel.app),
-  Hover trailing-dot CNAME parse failure, Vercel www-cert edge-propagation lag (~20min).
-  GitHub Pages cert ruled out as a factor (still valid/untouched).
-- gh-pages deploy DELIBERATELY kept running since cutover so cached-DNS visitors get
-  fresh content during the propagation tail
-- Friday's work: remove peaceiris gh-pages step from deploy.yml; clean repository_dispatch
-  from update-blog-posts.yml; add "fallback deployment" notice to static-build admin pages
-  (PM hit dead login on static copy 7/15 pre-cutover — prevent recurrence); keep
-  deploy.sh+STATIC_EXPORT as emergency fallback; verify daily RSS workflow still triggers
-  Vercel rebuild after
+### Phase 6 (GitHub Pages deploy retirement) — SHIPPED 2026-07-16 ✓ (moved up from Fri)
+- Root cause of PM's "routine Vercel build failed" notifications found: deploy.yml
+  force-pushed static output to gh-pages every deploy; gh-pages has no package.json;
+  if Vercel auto-builds all branches, every push = guaranteed-fail preview build.
+- Fix: deleted deploy.yml entirely (Vercel's own GitHub integration already deploys
+  every main push independently); removed dead repository_dispatch step from
+  update-blog-posts.yml; added NEXT_PUBLIC_STATIC_EXPORT-gated fallback notice to
+  /admin/login + AdminGate (fixes the exact dead-login confusion PM hit 7/15).
+  deploy.sh + STATIC_EXPORT remain as manual DR escape hatch.
+- NOT done: GitHub API blocked full GH-Pages deactivation (422 "not allowed") —
+  custom-domain claim on pipermorgan.ai is harmless but not released; needs Settings
+  UI manually if PM wants it fully cleared.
+- Verified via compiled-bundle grep (not naive curl+grep, which false-negatived due
+  to a Suspense boundary): static build shows ONLY the notice, server build shows
+  ONLY the normal form. Both builds + lint + type-check clean.
+- FYI surfaced, NOT acted on: "Update Medium Blog Posts" workflow has been
+  disabled_manually since 2026-04-14 — 3 months old, unrelated to this week's work,
+  not touched. PM should decide if it should be re-enabled.
 
 ### Vercel migration — VERIFIED END-TO-END IN PRODUCTION ✓, awaiting PM's DNS cutover
 - Plan artifact: https://claude.ai/code/artifact/a2ef2c23-9779-4f54-ae29-3d63f5689f88
