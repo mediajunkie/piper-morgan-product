@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-15 18:50 PT | arch | memo-arch-to-lead-cc-pm-ppm-b3-section4-corrected-oq3-emit-directly-1411-2026-07-15.md | You're right, §4 was wrong — _handle_update_issue exists (surface-4 elif); I di… |
 | 2026-07-15 15:55 PT | arch | memo-arch-to-lead-cc-pm-ppm-b3-plan-ratified-d5-contract-capability-gap-2026-07-15.md | B3 plan RATIFIED (surface-1 correction sound, D4 held) + OQ-2/rewrite-form rule… |
 | 2026-07-15 12:45 PT | arch | memo-arch-to-lead-cc-pm-b3-over-resolution-constraint-d5-coverage-preview-2026-07-15.md | B3 architecture constraint (bank for when you design it — NOT urgent): the over… |
 | 2026-07-15 10:00 PT | arch | memo-arch-to-lead-cc-pm-ppm-host-1394-b4-ratified-2026-07-15.md | #1394 B4 RATIFIED — D1/D1a/D3/OQ-3 all conform, suite-run (37 green); 2 deviati… |
