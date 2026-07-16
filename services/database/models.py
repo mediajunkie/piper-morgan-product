@@ -2172,7 +2172,10 @@ class ListDB(Base):
             emoji=list_obj.emoji,
             is_archived=list_obj.is_archived,
             is_default=list_obj.is_default,
-            metadata=list_obj.metadata,
+            # Column is list_metadata; passing metadata= is silently ACCEPTED by the
+            # declarative constructor (it shadows the class-level MetaData) and never
+            # persisted (#1435).
+            list_metadata=list_obj.metadata,
             tags=list_obj.tags,
             project_ids=list_obj.project_ids,
             created_at=list_obj.created_at,
@@ -2780,7 +2783,8 @@ class TodoDB(ItemDB):
             estimated_minutes=todo.estimated_minutes,
             actual_minutes=todo.actual_minutes,
             completion_notes=todo.completion_notes,
-            metadata=todo.metadata,
+            # Column is list_metadata (see ListDB note) — metadata= silently drops (#1435).
+            list_metadata=todo.metadata,
             knowledge_node_id=todo.knowledge_node_id,
             related_todos=todo.related_todos,
             creation_intent=todo.creation_intent,
