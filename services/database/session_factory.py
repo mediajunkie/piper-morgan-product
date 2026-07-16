@@ -9,7 +9,7 @@ HTTP request handlers, causing "Future attached to a different loop" errors.
 
 import os
 from contextlib import asynccontextmanager
-from typing import AsyncContextManager, Optional, Tuple
+from typing import AsyncIterator, Optional, Tuple
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
@@ -133,7 +133,7 @@ class AsyncSessionFactory:
 
     @staticmethod
     @asynccontextmanager
-    async def session_scope() -> AsyncContextManager[AsyncSession]:
+    async def session_scope() -> AsyncIterator[AsyncSession]:
         """Context manager for automatic session lifecycle management.
 
         CONTRACT (#1193): COMMITS on clean exit; rolls back on exception. The
@@ -179,7 +179,7 @@ class AsyncSessionFactory:
 
     @staticmethod
     @asynccontextmanager
-    async def session_scope_fresh() -> AsyncContextManager[AsyncSession]:
+    async def session_scope_fresh() -> AsyncIterator[AsyncSession]:
         """Context manager that creates a fresh engine bound to current event loop.
 
         Use this for endpoints that may run in a different event loop than
@@ -216,7 +216,7 @@ class AsyncSessionFactory:
 
     @staticmethod
     @asynccontextmanager
-    async def transaction_scope() -> AsyncContextManager[AsyncSession]:
+    async def transaction_scope() -> AsyncIterator[AsyncSession]:
         """Context manager for explicit transaction management
 
         Yields:
