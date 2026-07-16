@@ -8,17 +8,17 @@ caption: ''
 
 *June 6–7, 2026*
 
-The production branch had been last updated on March 4. The main branch, where I push all the newest code, had moved 4,139 commits ahead of it in the time since. This included the M1 and M2 Minimum Valuable Product (MVP) sprints, most of M3, the migration wave, the duty-cycle launch. Everything that had happened in the previous three months was running in development and staging and shared test environments. Nothing had been cut for production since March.
+The production branch had been last updated on March 4. The main branch, where I push all the newest code, had moved 4,139 commits ahead of it in the time since. This included the M1 and M2 Minimum Valuable Product (MVP) sprints, most of M3, the migration wave and the duty-cycle launch. Everything that had happened in the previous three months was running in development and staging and shared test environments. Nothing had been cut for production since March.
 
-On Saturday morning, my product assistant agent (Piper Alpha, or PA) ran the production release. The new tag went onto the June 3 commit — the last verified release checkpoint, where the canonical retest had come back green and the M2 close had been confirmed. Production fast-forwarded from March 4 all the way to v0.8.7. The gap between "running in development" and "running in production" was now zero.
+On Saturday morning, my product assistant agent (Piper Alpha, or PA) ran the production release. The new tag went onto the June 3 commit — the last verified release checkpoint, where the retest of the "canonical queries" test suite had come back green and the M2 close had been confirmed. Production fast-forwarded from March 4 all the way to v0.8.7. The gap between "running in development" and "running in production" was now zero.
 
-Except it wasn't, because production meant a DigitalOcean droplet, and the droplet meant Linux, and Piper had never run on Linux.
+Except it wasn't, because my plan was to provide a hosted version of Piper Morgan for my alpha testers. This was always in the cards, but up to now testing Piper meant cloning my repo and running the code locally. Not for the faint of heart! The plan for hosting the alpha involved setting up a DigitalOcean "droplet," and the droplet required Linux, and, well... Piper had never up to now had to run on Linux.
 
 # Seven problems nobody knew about
 
-The backend had been developed and tested on Mac. Linux runs differently in specific, predictable ways — but you don't know which specific ways until you try. PA provisioned the droplet and started working through the deploy.
+The backend had been developed and tested on my Mac. Linux runs differently in specific, predictable ways — but you don't know which specific ways until you try. PA provisioned the droplet and started working through the deploy.
 
-Seven portability issues surfaced. Not one: seven. An orchestration container trying to copy in a script that had never actually been tracked in the repository. A Mac-specific package that didn't exist on Ubuntu. An `.env` file with permissions that Linux refused to read. A SQLite version too old for what the database layer needed. A container that couldn't write to its own data directory because of a permissions mismatch. A server binding to 127.0.0.1 that would never accept external connections on a droplet. A database migration tool pointing at entirely the wrong host.
+Seven portability issues surfaced, one at a time.. An orchestration container trying to copy in a script that had never actually been tracked in the repository. A Mac-specific package that didn't exist on Ubuntu. An `.env` file with permissions that Linux refused to read. A SQLite version too old for what the database layer needed. A container that couldn't write to its own data directory because of a permissions mismatch. A server binding to 127.0.0.1 that would never accept external connections on a droplet. A database migration tool pointing at entirely the wrong host.
 
 Each one was small. Each one was invisible until the moment Linux ran into it and stopped. The code had been carrying assumptions about its environment — assumptions that were accurate, in the environment where the code was written. The assumptions just weren't written down anywhere. The move to the new environment made them visible, one by one, because they stopped being true.
 
