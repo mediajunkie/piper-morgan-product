@@ -47,7 +47,14 @@
   SENT, not yet re-chased (DNS ate 7/15). Low urgency per plan.
 - Phase C (legacy #02–18, LinkedIn-era, JSON-only): deliberately deferred, PM-confirmed.
 
-### Phase 3 (Image Upload) — BLOCKED on PM (storage location, asked Jul 9)
+### Phase 3 (Image Upload) — SHIPPED 2026-07-16 ✓
+- PM chose product-repo storage (reuses existing GitHub API path); built + verified
+  same session (fs-mode + GitHub-API-mode both tested live, incl. a real committed
+  test upload cleaned up after). File picker in ComposeApp.tsx; /api/compose/upload
+  route; uploadBinaryFile() in github-drafts.ts. Guards: auth, ext allowlist, ~4MB
+  cap (Vercel's platform body-limit is ~4.5MB, can't be raised — fails loud not opaque).
+  Does NOT do webp conversion (needs cwebp/Pillow, absent in serverless) — that stays
+  in publish-post.js at actual publish time, unchanged.
 ### Role portfolio — HOST review pending
 ### Type-error chip (task_e8c4853a) — separate session; nothing on main yet
 
