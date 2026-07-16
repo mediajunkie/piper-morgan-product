@@ -1,68 +1,44 @@
 # CIO Carry-Forward — ephemeral session state
 
-**Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live **here**, in the section immediately below (corrected 2026-07-12 — this line pointed at `duty-cycle-escalations-cio.md`, deprecated/folded into this file on 2026-06-17; a stale self-reference in my own canonical doc, caught while wiring the watchdog's stall-alert routing to land here).
+**Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live **here**, in the section immediately below.
 
-**Also check `dev/active/pm-ideas-inbox.md`** (added 2026-07-16, PM's request) — a low-friction drop point for links/articles/stray ideas PM wants reviewed. Check the "New" section at session start alongside this file; move entries to "Reviewed" as they get looked at or discussed.
+**Also check `dev/active/pm-ideas-inbox.md`** (added 2026-07-16) — PM's low-friction links/ideas drop file. Standing cadence: pick at least one "New" item per PM conversation and discuss it together (see the file's own header + `feedback_ideas_backlog_digestion_cadence.md`).
+
+*(Rewritten 2026-07-16 ~11:30am — compressed from an 80-line day-by-day archive to current state only. Full detail for any prior day lives in that day's own dated session log, linked below; nothing was lost, just de-duplicated out of this ephemeral file.)*
 
 ## PM Attention (fold watchdog alerts + anything else needing PM's call here; Exec's `cohort-attention-rollup` reads this file directly per its own SKILL.md Step 1)
 
-- 🔴 **Action needed: reload the live watchdog launchd plist.** Still open as of 7/13 morning (no evidence PM has run it yet — Docs confirmed retiring `docs-duty-cycle` last night, so Belt-4 for Docs stays inactive until this happens). Commands (also in the plist's own header comment): `cp scripts/launchd/com.pipermorgan.duty-cycle-watchdog.plist ~/Library/LaunchAgents/ && launchctl unload ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist && launchctl load ~/Library/LaunchAgents/com.pipermorgan.duty-cycle-watchdog.plist`.
-- 🟡 **Drift/awareness: Lead stale, watchdog re-ping at 12:44pm (18h, dyn-threshold).** Same ongoing stall as this morning's entry, not new. No CIO action possible (no cross-session reach); needs a re-prod. Watchdog dedup's ~6h while still stale, so expect further re-pings until PM prods it.
+- 🟠 **Worktree-identity discrepancy, awaiting Exec's self-check.** Exec's memo claimed their worktree directory is `mystifying-lumiere-8bebd3` — but that's CIO's own current directory (verified via `ls .claude/worktrees/`, singular match, mtime matches CIO's own morning START). Sent Exec (cc Docs, Host, PM) asking them to run `pwd` + `git branch --show-current` in their live session to resolve whether this is a memo-description error or a genuine two-sessions-one-worktree collision. No CIO action possible beyond what's sent; watch for Exec's reply.
+- 🟢 **Watchdog plist reload — RESOLVED 7/16.** PM ran it; verified live (`WATCHDOG_AUTO_SPAWN_ROLES => docs` confirmed present via `launchctl print`). Belt-4 for Docs is genuinely active.
+- ⚪ **Lead stale-session pattern — explained, not a mystery.** PM confirmed directly 7/16: Lead is waiting on PM to rotate an LLM key. Not a bug, not actionable by CIO. The repeated watchdog stall alerts through 7/13-7/15 were the multi-day reauth-killed-cron gap (see below), now resolved for every role.
 
-## 🎆 7/12 Sun — DAY-CLOSED. Full account: `dev/2026/07/12/2026-07-12-1520-cio-code-log.md`
+## Today — 7/16 Thu (in progress). Full account: `dev/2026/07/16/2026-07-16-0753-cio-code-log.md`
 
-**Cadence**: LEAN `7 10,16,22`, cron re-armed as STOP's final action (no cadence change).
+**Multi-day gap (reauth killed session-scoped crons cohort-wide, 7/13 eve → 7/16 am)**: retroactively closed 7/13 (Step-0 self-heal, verified nothing stranded via `git merge-base --is-ancestor`), fresh START, cron re-armed (`749da163`). Sent Docs a verified (not just relayed) gap-findings memo — no evidence of lost work, real finding was 3 roles' own 7/13 logs lacking their close marker, cc'd Host/Exec directly. Exec independently confirmed the finding generalized (self-healed their own gap the same way) and raised a second, adjacent symptom (see PM Attention above).
 
-**Resolved today**: laptop-reboot reorientation (7/10 retroactively closed, cron restarted clean); Docs's `f33227b7` confirmed cleared; watchdog Belt-2 stall-alert routing fixed (was writing into PM's retired inbox — commit `4b6026be6`); `docs-duty-cycle` architecture question resolved with PM — retire (matches the shape PM rejected 6/14) + replace with a properly-gated Belt-4 extension (commit `87bcdaae9`, 17/17 tests). Docs executing their own retirement; PM needs the plist reload (see PM Attention above — unchanged, still open).
+**PM conversation**: migration checklist (`docs/migration/pipermorgan-ai-account-migration.md`) got its first real deadline (end of month, PM's 3-part plan — KindSys.us vacate / Piper Morgan → pipermorgan.ai / business-client agents → designinproduct.com). Ted Nadeau's research-skill email reviewed (honest take sent, routing question to Janus left open, PM hasn't read yet). `pm-ideas-inbox.md` built and populated (16 items); digestion cadence established (memory saved); first item (OKF) discussed — confirms the CLAUDE.md-refactor structure already in motion, recommended cheap-optionality frontmatter rather than a bigger adoption project.
 
-**CLAUDE.md refactor — CIO lane CLOSED 7/13 ~4:37pm.** HOST reviewed same-day, endorsed all 10 dispositions, one non-blocking flag (preserve a one-sentence consequence statement for the two trust-critical gotcha extractions — GH Projects v2 full-replace, GH auto-close negation) and one corroboration (log-maintenance-reminder hook confirmed still clock-based via HOST's own operating experience — both L237/L388 copies stale, Docs should read the hook directly). Docs cleared to start Pass 2. Standing-items #16 marked done for CIO's lane; HOST does Pass 3 after Docs lands the text changes. Nothing further owed here unless Docs or HOST loop back with a question.
+**Standing-items #3** (ideas/reading review, deferred since March) closed — the new ideas-inbox mechanism *is* the resolution.
 
-## Older: 7/10 Fri — DAY-CLOSED (retroactively, laptop reboot). Full account: `dev/2026/07/10/2026-07-10-1021-cio-code-log.md`
+## Recent days (compressed — full detail in each day's own log)
 
-**Cadence**: LEAN `7 10,16,22`, cron `8094d7db` (transitioned from `772e045e` at 6:15pm — test-driven, not a cadence change, see below).
-
-**Duplicate-cron pattern — fully root-caused, both halves fixed, methodology-35 promoted.** Two genuinely-independent instances, both diagnosed with PM 2026-07-10:
-1. **Same-mechanism (mine)**: `duty-cycle-tick`'s STOP re-arm said "re-CronCreate" without a delete-first step. Fixed all 4 places using that phrasing to require `CronList` → `CronDelete` → `CronCreate` → verify-exactly-one (commit `d2d1e9656`); **tested live** against a real cron (`772e045e` → `8094d7db`), not simulated.
-2. **Cross-mechanism (Docs's `f33227b7`)**: no technical fix possible — cron state doesn't cross sessions/mechanisms (confirmed empirically). Documented the discipline instead: `cron-lifecycle.md` § "orphaned-predecessor gap" — self-delete the old mechanism's job as an explicit step of the *same* migration, plus a detection-and-nudge backstop (`list_sessions`+`send_message`) for when that's missed (commit `a53449029`). Sent Docs a status check — haven't heard whether `f33227b7` itself is cleared.
-
-**`methodology-35` (Asymmetric Discipline) promoted Emerging → Proven** — both instances above meet its stated ≥2-instance criterion, each with a real shipped cleanup-half, not just a proposal. Corrected one imprecision from Friday's Ship #051 review: Arch's cron-prompt issue is a *different* bug (stale content, not duplicate count) that shouldn't have been grouped in with these two.
-
-**Shipped today**: root-caused + fixed the "briefing keeps reporting stale" loop PM asked about (via Lead) — the SessionStart hook's staleness checks used filesystem mtime, not git history, which is structurally unreliable across ephemeral worktrees. Fixed 4 instances of that bug in `.claude/hooks/session-start.sh` + a separate dead-glob bug that was making one check silently never fire + a resulting ~5s performance regression once the glob was fixed for real — all tested (syntax, output, timing, budget) before shipping. Commit `76f6b5dd4`. Full write-up sent to Lead+Exec (cc PM).
-
-**Ship #051 DELIVERED** (16:07 fire, 3 days ahead of the Mon Jul 13 EOD deadline) — read own session logs for the whole window directly, refreshed `ROLE-PORTFOLIO-CIO.md` as part of drafting (its Rule 5), filed 825-word §0-§6 review. Flagged one structural pattern to Exec/PM in §6: "duplicate cron" recurred 3 independent times this window (Docs, mine, Arch) — worth a structural fix, not just one-at-a-time catches. Commits `65ae1bdef` (mail) + `56ad88b76` (portfolio doc).
-
-**Still carried from yesterday**: PM's Ted Nadeau catch-up + saved-ideas review — still hasn't happened, still the most likely opener whenever PM returns to direct conversation.
-
-## 🎆 7/9 Thu — DAY-CLOSED. Full account: `dev/2026/07/09/2026-07-09-1032-cio-code-log.md`
-
-**Cadence**: LEAN `7 10,16,22`, cron `13b5541f` re-armed as STOP's final action (no cadence change — same lean expression).
-
-**Resolved today, nothing owed**: f33227b7 (found Docs's actual session via `list_sessions`, messaged it directly to self-clean — not yet confirmed whether it acted, but the ball is in its court, not mine); T3 Arch worktree straddle (Arch's own follow-up confirmed resolved, cleanup deferred to natural session-end); skill-candidates-review's two asks from Exec (audit slot confirmed + landed in `staggered-audit-calendar-2026.md`, report-writing-skill read given — HOST confirmed both by evening, thread fully closed); duplicate-cron root cause (understood, not a mystery).
-
-**Didn't happen today, carry forward as the likely opener tomorrow**: PM's stated top priority — Ted Nadeau catch-up + a backlog of saved ideas for discussion. PM went idle after the 16:07 status report; day closed on autonomous fires from there. Not dropped, just not yet reached — if PM opens tomorrow wanting to continue, this is where to pick up.
-
-**Banked, not actioned**: the `mcp__ccd_session_mgmt__*` cross-session-messaging capability PM asked me to note — saved to auto-memory (`project_cross_session_messaging_capability.md`), flagged as sitting outside the mailbox audit-trail discipline. PM said "make note," not "route this" — don't push this forward without a fresh PM ask.
-
-## Older days
-
-7/8 (Gap-C retroactive close) and 7/7 fully detailed in their own session logs (`dev/2026/07/08/...`, `dev/2026/07/07/...`) — nothing outstanding from either beyond what's captured above.
-
-**Shipped**: #1296 closed (mail-send.sh: unpassed-dirty-path detection + hardened warn-path naming, `270573eac`). #1368 closed (`sync-pm-local.sh` v2 — 3-tier classifier + PM-directed per-path-exclusion refinement + a real parens-quoting bug caught by the dry-run gate before it ever touched PM's live checkout, `927720955`). PM's local checkout went from 184 commits / 24+ hrs behind to 0, live-verified with PM's real WIP provably untouched.
-
-**Process note for future self**: when PM's opening message references a date/log that doesn't match what you have, verify before complying (checked "June 6th" → no bearing, actual referent was "close 7/6, which is already closed"). When a tool response looks like a system-generated non-answer rather than PM's actual voice (e.g. AskUserQuestion returning "another agent may have resolved that"), re-verify current state (issue comments, git log, own worktree) before either trusting it at face value or ignoring it — in this case nothing had actually changed, but the check was cheap and correct to do.
+- **7/13 Mon** — `dev/2026/07/13/2026-07-13-1037-cio-code-log.md`. CLAUDE.md refactor scoping sent + HOST-endorsed same day (CIO's architecture lane closed, Docs cleared for Pass 2). 3 GitHub issues re-verified (#1304 confirmed closed). Standing-items "Recently Resolved" trimmed (27 stale entries, methodology-35 self-instance). Retroactively closed 7/16 (see above).
+- **7/12 Sun** — `dev/2026/07/12/2026-07-12-1520-cio-code-log.md`. Laptop-reboot reorientation; watchdog Belt-2 routing fixed; `docs-duty-cycle` retired + replaced with gated Belt-4.
+- **7/10 Fri** — `dev/2026/07/10/2026-07-10-1021-cio-code-log.md`. Duplicate-cron pattern fully root-caused (both same-mechanism and cross-mechanism instances), methodology-35 promoted Emerging→Proven. SessionStart hook mtime-vs-git-history bug fixed. Ship #051 delivered 3 days early.
+- **7/9 Thu and earlier** — `dev/2026/07/09/2026-07-09-1032-cio-code-log.md` and prior. #1296 and #1368 closed (mail-send.sh + sync-pm-local.sh v2).
 
 ## Live threads needing a next action
 
-- **pipermorgan.ai account migration** — re-verified 7/13. Corrected framing: the "3-way plan" language in this entry didn't hold up against current sources — dropped, no current doc or Exec carry-forward substantiates it. Actual state: `docs/migration/pipermorgan-ai-account-migration.md` checklist unchanged since 7/6 (all 9 roles still ☐, CIO's own duty-cycle-continuity assessment confirms the infra is migration-safe already, "ready whenever Exec wants to sequence it"). Exec's own carry-forward independently flags it as **9+ days stale, first flagged 2026-07-03, re-flagged to PM this session, "worth a real decision, not another silent carry-forward."** PM's call, no deadline set — this session's cadence-hold reasoning (LEAN not full 6×/day) is still valid on the unconfirmed-checklist grounds, unrelated to Exec's own account specifically.
-- ~~**#1304 (CI required status check)**~~ — **CONFIRMED CLOSED 7/7** (verified fresh 7/13 via `gh issue view`), 5/5 AC, closed on the visible-only variant per CIO's own 7/6 recommendation + PM's explicit go. Off the watch list.
-- **Ted Nadeau email + saved articles** — PM flagged 6/27, again 7/6 10:15pm. Still not resurfaced. Aging; consider proactively surfacing if a fire has slack.
-- **Stray memory-path file in PM's checkout** — `.claude/projects/.../memory/feedback_pause_before_irrevocable_actions.md` sitting untracked inside PM's repo working tree rather than at the real memory path. Noticed 7/7 evening, not investigated — flagged as a background task, not chased inline.
-- **Session-lifetime / proactive-recycling idea** (from 7/6 late-night Insights-report dig) — still banked, not scoped. Revisit if a fire has slack.
+- **Worktree-identity discrepancy** — see PM Attention above, this is the active one.
+- **pipermorgan.ai account migration** — now has a real deadline (end of month, per today's PM conversation). Checklist itself unchanged/unconfirmed (all 9 roles still ☐) but no longer just "ready whenever" — worth Exec actually sequencing.
+- **Ted Nadeau reply** — sent, PM hasn't read yet. Hold, no further action until PM responds.
+- **Exec's inbox-proxy pilot** — still an unresolved discrepancy (6/27 ACK vs. 7/4 "greenlit" framing don't cleanly match). Not re-checked since 7/13; low priority.
+- **Stray memory-path file in PM's checkout** — noticed 7/7, still not investigated, still low priority/background.
+- **Session-lifetime / proactive-recycling idea** — still banked, not scoped.
 
 ## Still open, lower priority
 
-- **Dashboard welfare-criteria v0.3** — Criterion E resolved, full A–F implementation not started (standing-items #14, needs a dedicated build session).
-- **Exec's inbox-proxy pilot** — checked 7/13, partial signal only (not fully resolved). Arch's carry-forward shows "inbox-proxy discipline ACKed... 6/27 PM (retire reflexive cc-PM; route through Exec by intent)" — reads like it's already operating as adopted practice, not still on a distinct 2-week evaluation clock. But the 6/27 ACK date doesn't cleanly match the 7/4 "greenlit" memo filename I originally tracked this from — could be two related but different waves, could be the same thing referenced loosely. Not confident enough to rewrite this entry outright; flagging the discrepancy rather than resolving it. Exec would know definitively.
+- **Dashboard welfare-criteria v0.3** — Criterion E resolved, full A–F not started (standing-items #14, needs a dedicated build session).
 
 ## Live / in-flight (longer-running)
 
@@ -74,7 +50,7 @@
 
 - **Liveness model v2**: 3-category hedged classification; mode-3 upstream permissions diagnostic (CXO+Exec); resume-loop question (PM-gated).
 - **Cohort-coverage expansion** — awaiting Exec-coordinated owner-confirmed rows.
-- **Sprint cluster**: #973 / #1277 — re-verified 7/13 (exactly one week later, per this entry's own trigger), both still genuinely OPEN, no activity since 7/4 and 7/5 respectively. Re-verify again if this entry survives another week untouched.
+- **Sprint cluster**: #973 / #1277 — re-verified 7/13, both still genuinely OPEN. Re-verify again if this entry survives another week untouched.
 
 ## Registry
 
