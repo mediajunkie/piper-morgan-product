@@ -31,17 +31,49 @@
 
 *Populated below as findings land. Each: `file:line` · what's globalized · consequence · severity · fix.*
 
-### HIGH — affects a real tester's request / cross-user
+### HIGH — affects a real tester's request / cross-user (confirmed by 2 independent investigators)
 
-_(pending sweep synthesis)_
+**The LLM provider subsystem is single-tenant end-to-end.** Per-user KEY resolution (#1185) exists but is *Anthropic-only* and is bypassed entirely when global provider SELECTION ≠ anthropic. Sites:
 
-### MED — setup/config surfaces
+| # | `file:line` | What's globalized | Consequence |
+|---|---|---|---|
+| P1 | `services/llm/clients.py:304` | `get_api_key("default_llm_provider")` (no username) — **the request-path selection point** (twin of the exemplar; my manual look missed it) | Every user's provider chosen from one global slot; if it ≠ the user's provider, their bound per-request key is never reached |
+| P2 | `web/api/routes/setup.py:985,1005,1017` | **write-side root**: setup stores `default_llm_provider` / `authorized_llm_providers` / provider keys GLOBALLY (`# No username = global`) | Every user's setup is last-writer-wins for the whole instance — the exact mechanism of dinp's incident |
+| P3 | `services/llm/clients.py:86-129`, `:609` | singleton `LLMClient` builds anthropic/openai/gemini clients ONCE at import from global keys | Process-global clients serve all users |
+| P4 | `services/config/llm_config_service.py:333` (`get_default_provider`), `:178` (consent list), `:229` (provider key) | all read keychain with no `user_id`; service is user-unaware by construction | The systemic root — the config layer can't see a per-user key/choice |
+| P5 | `services/llm/clients.py:479,507` (openai), `:556-566` (gemini) | per-request key ContextVar consumed ONLY in `_anthropic_complete` (`:422`) | OpenAI/Gemini calls ALWAYS use the server's global key — BYOC is Anthropic-only |
+| P6 | `services/domain/llm_domain_service.py:111-156` | `complete()` neither accepts nor forwards `user_id` (the DDD "only way to reach LLM") | user identity is dropped before selection |
+| P7 | `services/intent_service/llm_classifier.py:340` + `conversational_floor.py:862` | `user_id` in scope, threaded to the per-user *system prompt* but NOT to `.complete()` selection | proves identity reaches the layer and is dropped for the LLM call |
 
-_(pending)_
+**Non-LLM HIGH:**
+- N1 · `config/notion_config.py:28` via `services/integrations/notion/notion_integration_router.py:66` (`NotionMCPAdapter()` no-config-service fallback, reachable in prod) → reads the GLOBAL Notion token; every Notion op on that adapter acts with one user's token. (Primary connect/status/resolve path IS user-scoped; this is the reachable legacy fallback.)
+- N2 · `services/knowledge_graph/ingestion.py:39` — radar/insights embeddings hard-wire the server OpenAI key → **live symptom: 19× `/api/v1/radar` errors "Please provide an OpenAI API key"** during PM's session (radar also 422s separately — validation bug, track apart).
 
-### LOW — dev/admin/local-only (acceptable-global)
+### MED — setup/config surfaces that globalize a per-user credential
+- `web/api/routes/setup.py:646` (`/check-keychain`) + `:691` (`/use-keychain`) — report/validate GLOBAL key state with no principal; a hosted user sees the server/other-tenant key state. (Both setup endpoints take no `user_id` at all — local-first surface not yet multi-tenant.)
+- `services/config/llm_config_service.py:144,147` — `_excluded_providers` + `_default_provider = getenv("PIPER_DEFAULT_PROVIDER","openai")` cached at construction, shared by all; `_fallback_chain` (`:154`), `get_provider_with_fallback` (`:349`) likewise global.
 
-_(pending)_
+### LOW — global *fallback* when `user_id` absent (guarded; blast radius = status/test reads)
+- `web/api/routes/integrations.py:480` (calendar), `:564` (slack_bot), `:616` (github_token) — legacy global fallback only on the `user_id`-falsy branch; authenticated branches correctly user-scoped. Concerning only if an unauthenticated request can reach them.
+
+### Examined & CLEARED (legitimately server/app-global — NOT bugs)
+`clients.py:94/105/118` server fallback keys (documented); `key_rotation_service` (admin/ops, per-user raises NotImplementedError); OAuth *app* client_id/secret (`github_oauth_handler`, `integration_config_service`, `slack config_service`) — app-level by definition; `slack_app_token` socket-mode (app-global). Good per-user patterns for reference: `user_api_key_service.py:327`, the notion/github/slack config_services' user-scoped reads, `google_calendar_adapter.py:403`.
+
+### HIGH — config-file singleton (`PIPER.user.md`) shadows per-user state (2nd investigator)
+
+**The systemic pattern here: the global `config/PIPER.user.md` layer sits ABOVE the per-user keychain/DB in precedence** — so PM's personal file silently *overrides* each tester's own settings. Same class as #1366 (default-repo), now on **credentials**. (`PIPER.user.md` is absent in this worktree → reads `{}` here; on the hosted box PM's file is populated, so these bite per the section PM filled.)
+
+| # | `file:line` | What's shadowed | Consequence |
+|---|---|---|---|
+| C1 | `services/integrations/notion/config_service.py:119→186,192,199` | Notion api_key + workspace_id: global file OR'd BEFORE the user-scoped `keychain.get_api_key("notion", username=user_id)` | if PM's file has a Notion key, **every user transacts against PM's Notion workspace**; a tester's own key is ignored |
+| C2 | `services/integrations/slack/config_service.py:129→219,228-237` | Slack bot_token + user_token: global file OR'd ahead of user keychain | every user's Slack ops (incl. `search.messages` — reads DMs) run as PM's tokens |
+| C3 | `web/personality_integration.py:50,59,106` via routes `web/api/routes/personality.py:44,79,142` | `PUT /api/v1/personality/profile/{user_id}` writes the ONE global file, ignoring `user_id` | **cross-tenant WRITE**: one user's persona save changes warmth/confidence for everyone incl. PM; the first-YAML-block rewrite can DESTROY PM's other `PIPER.user.md` sections |
+| C4 | `services/intent_service/canonical_handlers.py:243,2502,3773` | timezone from `piper_config_loader.load_standup_config()` (PM's global tz) though `user_id` in scope | every tester sees date/time/agenda in **PM's timezone** (the #1381/#1405 class, un-migrated here; fix pattern exists next door in `context_assembler.py:49-51`) |
+
+**MED (config-file):** `calendar/config_service.py:107,196` (`calendar_id` — global file base, bites if PM set non-"primary"); `services/user_context_service.py:107,137` ("generic" base is actually PM's file → user with no org inherits PM's `organization` + fallback portfolio); `context_assembler.py:54-58` (tz per-user first but seeded default lacks `timezone` → still degrades to PM's global tz).
+**LOW/OK:** `intent_service.py:6958` default_labels (default_repository IS per-user #1366 ✓); `pm_number_manager` (shared PM-001 convention ✓); `document_repository.py:59` (documented ADR-071 D7 single-owner seam ✓).
+
+*(Singleton-service / unscoped-repo vector: 4th investigator still running — appended on completion.)*
 
 ---
 
