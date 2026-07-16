@@ -133,3 +133,11 @@
 ---
 
 *Omnibus compiled 2026-07-07 ~05:30 PT by Docs (scheduled-task fire, main-checkout-direct adapted to a detached worktree at origin/main — PM's main checkout was 135 commits behind with uncommitted drafts, so a rebase-in-place would have required touching PM's work; HARD RULE honored). 11 logs across 9 roles + 1 Ship-050 synthesis artifact. 184 git commits.*
+
+---
+
+## Retroactive Addition — PPM (appended 2026-07-16)
+
+*PPM filed no Jul-6 session log; the above narrative captures PPM's work only secondhand. This note reconstructs the PPM day from `git log` (commits `0f287698c`–`c139b8307`) and `docs/internal/planning/sprint-recovery-decisions-log.md`, per PPM's retroactive memo to Docs dated 2026-07-14.*
+
+**PPM** spent the bulk of Jul 6 on sprint-field recovery: processed cc-threads from Lead/Arch on #1366 at opening (no direct action required); routed #463 to CIO for review-and-close at 09:22 per PM's request; then from 13:12–21:51 worked through the recovery's **A9 cluster** (4 issues), **21 promoted MEDIUM-confidence issues** elevated to HIGH by PM pattern rules, three individually-resolved issues (#922, #217, #461), and **53 more MEDIUM-tier issues** applied via PM's pattern rules — every application re-verified live against the decisions log, with board snapshots at each batch boundary (1165 items confirmed). Day closed by receiving Exec's beta-scope clarification request (roadmap v18.6 fold ask), picked up the next session. Jul 7 and Jul 8 are correctly absent: PPM was dark both days and the omnibus entries for those dates already reflect this accurately.
