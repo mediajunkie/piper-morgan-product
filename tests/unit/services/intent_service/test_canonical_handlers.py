@@ -2135,9 +2135,16 @@ class TestRetrospectiveQuery:
 
         # Assert - EMBEDDED format should be brief
         assert result["spatial_pattern"] == "EMBEDDED"
-        # Should match format: "Month Day: N tasks completed"
-        assert "tasks completed" in result["message"] or "No completed tasks" in result["message"]
-        assert len(result["message"]) < 100  # Brief format
+        # Should match format: "Month Day: N tasks completed" — or, when the todo
+        # source fails in this environment, the #1425 honest-degrade line (the
+        # old "No completed tasks" here was the affirmative-false claim; this
+        # test previously passed BECAUSE of that bug).
+        assert (
+            "tasks completed" in result["message"]
+            or "No completed tasks" in result["message"]
+            or "couldn't check" in result["message"].lower()
+        )
+        assert len(result["message"]) < 120  # Brief format
 
     @pytest.mark.asyncio
     async def test_handler_respects_spatial_pattern_granular(self, canonical_handlers):

@@ -1375,11 +1375,11 @@ class CanonicalHandlers:
 
             from services.database.session_factory import AsyncSessionFactory
             from services.domain.user_preference_manager import UserPreferenceManager
-            from services.repositories.user_trust_profile_repository import (
-                UserTrustProfileRepository,
-            )
             from services.intent_service.calendar_offer_policy import (
                 decide_calendar_offer,
+            )
+            from services.repositories.user_trust_profile_repository import (
+                UserTrustProfileRepository,
             )
             from services.shared_types import TrustStage
             from services.trust.trust_computation_service import (
@@ -1610,7 +1610,7 @@ class CanonicalHandlers:
                     "total_open_issues": len(open_issues),
                 }
 
-            except Exception as e:
+            except Exception as e:  # silent-ok: failure surfaces as honest "couldn't check" via source_failed (#1425)
                 # #1425/F2: source FAILED — flag it so the renderer says "I couldn't
                 # check" (honest) instead of "no high-priority issues found" (a false
                 # claim about the user's work). Raised from DEBUG to WARNING: a
@@ -1618,7 +1618,7 @@ class CanonicalHandlers:
                 logger.warning(f"Could not get priority issues (source failed): {e}")
                 return {"has_github": True, "high_priority_issues": [], "source_failed": True}
 
-        except Exception as e:
+        except Exception as e:  # silent-ok: failure surfaces as honest "couldn't check" via source_failed (#1425)
             logger.warning(f"Priority metadata unavailable (source failed): {e}")
             return {"source_failed": True}
 
@@ -2352,9 +2352,9 @@ What would you like to set up first?"""
                     }
                     for todo in todos
                 ]
-        except Exception as e:
-            logger.warning(f"Could not fetch todos for agenda: {e}")
-            return []
+        except Exception as e:  # silent-ok: None sentinel -> formatters render honest "couldn't check", never "no tasks" (#1425)
+            logger.warning(f"Could not fetch todos for agenda (source failed): {e}")
+            return None
 
     def _format_agenda_embedded(
         self, calendar_context: Optional[Dict], todos: List[Dict], priorities: List[str]
@@ -2372,8 +2372,10 @@ What would you like to set up first?"""
                 next_time = calendar_context["next_meeting"].get("start_time", "TBD")
                 parts.append(f"Next: {next_time}")
 
-        # Todo count
-        if todos:
+        # Todo count (None = lookup failed, never claim zero — #1425)
+        if todos is None:
+            parts.append("tasks unavailable")
+        elif todos:
             parts.append(f"{len(todos)} tasks")
 
         # Top priority
@@ -2400,8 +2402,10 @@ What would you like to set up first?"""
                 message += f"**Total Meetings**: {calendar_context['meeting_count']} today\n"
             message += "\n"
 
-        # Tasks section
-        if todos:
+        # Tasks section (None = lookup failed, never claim "no pending" — #1425)
+        if todos is None:
+            message += "**Tasks**: I couldn't check your tasks just now — the todo lookup failed. Try again shortly.\n"
+        elif todos:
             message += "**Tasks**:\n"
             for todo in todos[:5]:
                 priority_icon = {"high": "🔴", "medium": "🟡", "low": "🟢"}.get(
@@ -2452,9 +2456,14 @@ What would you like to set up first?"""
         else:
             message += "Calendar data not available.\n"
 
-        # Tasks section with priority grouping
+        # Tasks section with priority grouping (None = lookup failed — #1425)
         message += "\n## ✅ Tasks\n"
-        if todos:
+        if todos is None:
+            message += (
+                "I couldn't check your tasks just now — the todo lookup failed. "
+                "Try again shortly.\n"
+            )
+        elif todos:
             # Group by priority
             high = [t for t in todos if t["priority"] == "high"]
             medium = [t for t in todos if t["priority"] == "medium"]
@@ -2649,15 +2658,17 @@ What would you like to set up first?"""
                     }
                     for todo in db_todos
                 ]
-        except Exception as e:
-            logger.warning(f"Could not fetch completed todos for retrospective: {e}")
-            return []
+        except Exception as e:  # silent-ok: None sentinel -> formatters render honest "couldn't check", never "no completed tasks" (#1425)
+            logger.warning(f"Could not fetch completed todos for retrospective (source failed): {e}")
+            return None
 
     def _format_retrospective_embedded(
         self, completed_todos: List[Dict], target_date: datetime
     ) -> str:
         """Issue #501: Format minimal retrospective for EMBEDDED spatial pattern."""
         date_str = target_date.strftime("%B %d")
+        if completed_todos is None:  # #1425: lookup failed is not "none completed"
+            return f"{date_str}: I couldn't check completed tasks just now — the lookup failed. Try again shortly."
         if completed_todos:
             return f"{date_str}: {len(completed_todos)} tasks completed"
         return f"{date_str}: No completed tasks"
@@ -2668,6 +2679,8 @@ What would you like to set up first?"""
         """Issue #501: Format standard retrospective response."""
         date_str = target_date.strftime("%A, %B %d, %Y")
 
+        if completed_todos is None:  # #1425: lookup failed is not "none completed"
+            return f"**Yesterday's Accomplishments** ({date_str})\n\nI couldn't check completed tasks just now — the lookup failed. Try again shortly."
         if not completed_todos:
             return f"**Yesterday's Accomplishments** ({date_str})\n\nNo completed tasks found for yesterday. Keep up the momentum today!"
 
@@ -2690,6 +2703,8 @@ What would you like to set up first?"""
         """Issue #501: Format detailed retrospective for GRANULAR spatial pattern."""
         date_str = target_date.strftime("%A, %B %d, %Y")
 
+        if completed_todos is None:  # #1425: lookup failed is not "none completed"
+            return f"# Yesterday's Accomplishments\n**Date**: {date_str}\n\n📋 I couldn't check completed tasks just now — the lookup failed. Try again shortly."
         if not completed_todos:
             return f"# Yesterday's Accomplishments\n**Date**: {date_str}\n\n📋 No completed tasks found.\n\n*Consider reviewing your task list to ensure work is being tracked.*"
 
@@ -2764,13 +2779,13 @@ What would you like to set up first?"""
                 "confidence": 1.0,
                 "context": {
                     "target_date": yesterday.strftime("%Y-%m-%d"),
-                    "completed_count": len(completed_todos),
+                    "completed_count": len(completed_todos or []),
                 },
             },
             "spatial_pattern": spatial_pattern,
             "retrospective": {
                 "date": yesterday.strftime("%Y-%m-%d"),
-                "completed_tasks": len(completed_todos),
+                "completed_tasks": len(completed_todos or []),
             },
             "requires_clarification": False,
         }
@@ -2981,9 +2996,9 @@ What would you like to set up first?"""
                     )
                     todos = result.scalars().all()
                     open_todos_count = len(todos)
-        except Exception as e:
-            logger.warning(f"Could not fetch todos count: {e}")
-            open_todos_count = 0
+        except Exception as e:  # silent-ok: None sentinel -> formatters render honest "couldn't check", never "0 todos" (#1425)
+            logger.warning(f"Could not fetch todos count (source failed): {e}")
+            open_todos_count = None
 
         # Build report data
         report_data = {
@@ -3397,7 +3412,9 @@ What would you like to set up first?"""
             if at_risk > 0:
                 parts.append(f"{at_risk} at-risk")
 
-        if todos > 0:
+        if todos is None:  # #1425: count lookup failed, never claim zero
+            parts.append("todos unavailable")
+        elif todos > 0:
             parts.append(f"{todos} open todos")
 
         if not parts:
@@ -3423,8 +3440,12 @@ What would you like to set up first?"""
                 lines.append(f"  - 🛑 Stalled: {health['stalled']}")
         lines.append("")
 
-        # Todo summary
-        lines.append(f"**Open Todos**: {todos}")
+        # Todo summary (#1425: None = lookup failed)
+        lines.append(
+            "**Open Todos**: couldn't check just now"
+            if todos is None
+            else f"**Open Todos**: {todos}"
+        )
         lines.append("")
 
         return "\n".join(lines)
@@ -3440,7 +3461,11 @@ What would you like to set up first?"""
         # Overview section
         lines.append("### Overview\n")
         lines.append(f"**Total Projects**: {total}")
-        lines.append(f"**Open Todos**: {todos}")
+        lines.append(
+            "**Open Todos**: couldn't check just now"
+            if todos is None
+            else f"**Open Todos**: {todos}"
+        )
         lines.append("")
 
         # Project health breakdown

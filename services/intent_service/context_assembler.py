@@ -960,13 +960,20 @@ class ContextAssembler:
             handlers = TodoIntentHandlers()
             due_reminders = await handlers.get_due_reminders(UUID(user_id))
 
+            if due_reminders is None:
+                # #1425: the handler's lookup failed — a promised reminder may
+                # exist. Flag it instead of presenting "nothing due" (this pair
+                # was the double-swallow: handler [] + this {} = promise
+                # silently broken).
+                return {"source_failed": True}
             if due_reminders:
                 return {
                     "due_reminders": due_reminders,
                     "reminder_count": len(due_reminders),
                 }
-        except Exception as e:
-            logger.warning("context_assembler_reminder_error", error=str(e))
+        except Exception as e:  # silent-ok: failure surfaces via source_failed flag, not an empty context (#1425)
+            logger.warning("context_assembler_reminder_error (source failed)", error=str(e))
+            return {"source_failed": True}
 
         return {}
 

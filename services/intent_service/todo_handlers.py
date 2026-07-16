@@ -113,9 +113,9 @@ class TodoIntentHandlers:
                 ):
                     due.append(todo.text)
             return due
-        except Exception as e:
-            logger.warning("Failed to fetch due reminders", error=str(e))
-            return []
+        except Exception as e:  # silent-ok: None sentinel -> assembler flags source_failed instead of "no reminders due" (#1425)
+            logger.warning("Failed to fetch due reminders (source failed)", error=str(e))
+            return None
 
     async def handle_create_todo(self, intent: Intent, session_id: str, user_id: UUID) -> str:
         """
