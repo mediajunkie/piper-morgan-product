@@ -158,48 +158,50 @@ class LLMConfigService:
             f"excluded={self._excluded_providers}, default={self._default_provider}"
         )
 
-    def get_configured_providers(self) -> List[str]:
-        """Return list of providers with API keys configured AND authorized by user.
+    def get_configured_providers(self, user_id: Optional[str] = None) -> List[str]:
+        """Return providers with API keys configured AND authorized for the caller.
 
-        #946: When the user completes setup and chooses a provider, we store an
-        'authorized_llm_providers' list in the keychain. Only providers on that
-        list are returned — stale keys from previous installs are filtered out.
+        #946: setup stores an 'authorized_llm_providers' consent list. Only
+        providers on that list are returned — stale keys from previous installs
+        are filtered out.
 
-        Backwards compatibility: if no authorized list is stored (legacy install),
-        all providers with keys are returned (pre-#946 behavior).
+        #1415: the consent list resolves PER USER (the acting principal's list
+        first, then the server/global list, else legacy all-configured), and a
+        consent-read failure now FAILS CLOSED to the server-default provider
+        only — the old behavior failed OPEN to everything configured, silently
+        disabling the consent boundary (census F1).
         """
+        from services.llm.provider_selection import resolve_authorized_providers
+
         # Check which providers have keys available
         all_configured = [
             name for name in self._providers.keys() if self.get_api_key(name) is not None
         ]
 
-        # #946: Filter by user's authorized providers if the list exists
-        try:
-            authorized_raw = self._keychain_service.get_api_key("authorized_llm_providers")
-            if authorized_raw:
-                authorized_set = {p.strip().lower() for p in authorized_raw.split(",") if p.strip()}
-                filtered = [p for p in all_configured if p in authorized_set]
-                logger.debug(
-                    "provider_consent_filter",
-                    all_configured=all_configured,
-                    authorized=list(authorized_set),
-                    filtered=filtered,
-                )
-                return filtered
-        except Exception as e:
-            logger.warning(f"authorized_providers_check_failed: {e}")
+        filtered = resolve_authorized_providers(
+            user_id,
+            all_configured,
+            server_default=self._default_provider,
+            keychain=self._keychain_service,
+        )
+        if filtered != all_configured:
+            logger.debug(
+                "provider_consent_filter",
+                all_configured=all_configured,
+                filtered=filtered,
+                user_scoped=bool(user_id),
+            )
+        return filtered
 
-        # Legacy fallback: no authorized list → return all configured
-        return all_configured
-
-    def get_available_providers(self) -> List[str]:
+    def get_available_providers(self, user_id: Optional[str] = None) -> List[str]:
         """
         Return list of providers that are:
         1. Configured (have valid API keys)
-        2. Not excluded
-        3. Available in current environment
+        2. Authorized for the acting principal (#946/#1415 consent filter)
+        3. Not excluded
+        4. Available in current environment
         """
-        configured = self.get_configured_providers()
+        configured = self.get_configured_providers(user_id)
 
         # Filter out excluded providers
         available = [
@@ -308,43 +310,41 @@ class LLMConfigService:
             logger.error(f"Failed to migrate {provider} key: {e}")
             return False
 
-    def get_default_provider(self) -> str:
+    def get_default_provider(self, user_id: Optional[str] = None) -> str:
         """
-        Get the default provider to use.
+        Get the default provider to use for the acting principal.
 
-        Priority:
-        1. User's setup choice (stored in keychain as 'default_llm_provider')
-        2. PIPER_DEFAULT_PROVIDER env var
-        3. First available provider
+        Priority (#1415 — resolved statelessly per call, never cached):
+        1. The ACTING USER's setup choice (username-scoped keychain slot)
+        2. The server/global setup choice (legacy single-user slot)
+        3. PIPER_DEFAULT_PROVIDER env var
+        4. First available provider
 
-        Issue #946: The user's explicit setup choice takes priority over env vars
-        and stale keychain keys. The system should use the provider the user authorized.
+        Every step is validated against the caller's consent-filtered available
+        set, so one user's choice can never pin another user's provider, and a
+        stored choice pointing at an unavailable provider falls through instead
+        of locking the user out.
 
         Raises:
             ValueError: If no providers available
         """
-        available = self.get_available_providers()
+        from services.llm.provider_selection import resolve_default_provider
 
-        if not available:
-            raise ValueError("No LLM providers available. Check configuration.")
+        available = self.get_available_providers(user_id)
 
-        # Priority 1: User's explicit setup choice
-        try:
-            user_choice = self._keychain_service.get_api_key("default_llm_provider")
-            if user_choice and user_choice in available:
-                return user_choice
-        except Exception:
-            pass
-
-        # Priority 2: Env var default if available
-        if self._default_provider in available:
-            return self._default_provider
-
-        # Priority 3: First available
-        logger.warning(
-            f"Default provider {self._default_provider} not available, using {available[0]}"
+        choice = resolve_default_provider(
+            user_id,
+            available,
+            env_default=self._default_provider,
+            keychain=self._keychain_service,
         )
-        return available[0]
+        if choice is None:
+            raise ValueError("No LLM providers available. Check configuration.")
+        if choice != self._default_provider and self._default_provider not in available:
+            logger.warning(
+                f"Default provider {self._default_provider} not available, using {choice}"
+            )
+        return choice
 
     def get_provider_with_fallback(self, preferred: Optional[str] = None) -> str:
         """

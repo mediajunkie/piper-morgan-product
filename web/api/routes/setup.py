@@ -1001,23 +1001,36 @@ async def complete_setup(req: SetupCompleteRequest):
 
             if authorized_providers:
                 try:
+                    # #1415: selection state is PER-USER. The old global write
+                    # here is the exact mechanism of the 2026-07-16 incident —
+                    # one tester's setup pinned the provider (and consent list)
+                    # for the whole instance. Legacy global slots remain honored
+                    # read-side as the server-level fallback.
                     keychain.store_api_key(
                         "authorized_llm_providers",
                         ",".join(authorized_providers),
+                        username=req.user_id,
                     )
                     logger.info(
                         "authorized_llm_providers_stored",
                         providers=authorized_providers,
+                        user_scoped=True,
                     )
                 except Exception as e:
                     logger.warning("authorized_llm_providers_storage_failed", error=str(e))
 
             if req.default_llm_provider:
                 try:
-                    keychain.store_api_key("default_llm_provider", req.default_llm_provider)
+                    # #1415: per-user (see consent-list note above).
+                    keychain.store_api_key(
+                        "default_llm_provider",
+                        req.default_llm_provider,
+                        username=req.user_id,
+                    )
                     logger.info(
                         "default_llm_provider_stored",
                         provider=req.default_llm_provider,
+                        user_scoped=True,
                     )
                 except Exception as e:
                     logger.warning("default_llm_provider_storage_failed", error=str(e))

@@ -116,6 +116,7 @@ class LLMDomainService:
         response_format: Optional[Dict[str, Any]] = None,
         session: Optional[AsyncSession] = None,
         system: Optional[str] = None,
+        user_id: Optional[str] = None,
     ) -> str:
         """
         Generate LLM completion
@@ -130,6 +131,9 @@ class LLMDomainService:
             response_format: Optional response format specification
             session: Optional database session for usage logging (Issue #271)
             system: Optional system prompt (Issue #381)
+            user_id: Acting principal — threads to per-user provider
+                selection (#1415). Optional for legacy callers; without it,
+                selection resolves the server/global chain.
 
         Returns:
             Generated text response
@@ -153,6 +157,7 @@ class LLMDomainService:
                 context=context,
                 response_format=response_format,
                 system=system,
+                user_id=user_id,  # #1415: identity reaches provider selection
             )
 
             # #935 (May 9 2026): #271 cost-tracking call removed. The original

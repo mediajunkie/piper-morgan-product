@@ -185,6 +185,8 @@ class LLMClient:
             context=context,
             response_format=response_format,
             system=system,
+            # #1415: identity reaches provider SELECTION, not just the filter.
+            user_id=user_id,
         )
 
         # #1017 Phase 2.2: filter wrap. Skips entirely when no filter injected
@@ -243,6 +245,7 @@ class LLMClient:
             context=context,
             response_format=response_format,
             system=system,
+            user_id=user_id,  # #1415: retry uses the same per-user selection
         )
         second = await self._output_filter.filter(
             content=retry_response,
@@ -287,6 +290,7 @@ class LLMClient:
         context: Optional[Dict[str, Any]] = None,
         response_format: Optional[Dict[str, Any]] = None,
         system: Optional[str] = None,
+        user_id: Optional[str] = None,
     ) -> str:
         """Underlying provider-call path (extracted from complete() in #1017
         Phase 2.2 so that the output-filter wrap can call the raw path
@@ -296,17 +300,15 @@ class LLMClient:
         """
         task_config = MODEL_CONFIGS.get(task_type, MODEL_CONFIGS["reasoning"])
 
-        # Resolve primary provider: user's setup choice first (#946)
+        # Resolve primary provider for the ACTING PRINCIPAL (#1415). The old
+        # code read the GLOBAL default_llm_provider keychain slot right here —
+        # one user's setup pinned every user's provider, and a second user's
+        # per-user key (#1185) was un-selectable (2026-07-16 incident). The
+        # config service now resolves per-user choice -> server choice -> env
+        # default, consent-filtered (#946) and fail-closed (F1).
         try:
-            # Check user's explicit setup choice stored in keychain
-            from services.infrastructure.keychain_service import KeychainService
-
-            user_choice = KeychainService().get_api_key("default_llm_provider")
-            if user_choice:
-                primary_provider = LLMProvider(user_choice)
-            else:
-                default_provider_name = self._config_service.get_default_provider()
-                primary_provider = LLMProvider(default_provider_name)
+            default_provider_name = self._config_service.get_default_provider(user_id)
+            primary_provider = LLMProvider(default_provider_name)
         except (ValueError, Exception):
             # Fall back to whichever client is initialized
             if self.anthropic_client:
@@ -339,11 +341,21 @@ class LLMClient:
             )
 
             # Try each other configured provider in the fallback order (Apr 16: Gemini added)
+            # #1415: the fallback set respects the acting user's consent list —
+            # resilience never overrides #946 (a de-authorized provider must not
+            # process the user's message even when everything else is down).
+            try:
+                user_authorized = set(self._config_service.get_configured_providers(user_id))
+            except Exception as consent_err:  # silent-ok: consent unknown -> no cross-provider fallback (fail closed); the primary error below still surfaces honestly (#1415)
+                logger.warning(f"fallback_consent_check_failed: {consent_err}")
+                user_authorized = set()
             fallback_errors: list[str] = [f"{primary_provider.value}: {e}"]
             for fallback_provider in _FALLBACK_ORDER:
                 if fallback_provider == primary_provider:
                     continue
                 if not self._is_provider_configured(fallback_provider):
+                    continue
+                if fallback_provider.value not in user_authorized:
                     continue
 
                 fallback_config = {

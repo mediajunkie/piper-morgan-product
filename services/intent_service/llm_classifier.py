@@ -342,6 +342,7 @@ class LLMIntentClassifier:
                 prompt=prompt,
                 response_format=response_format,
                 system=system_prompt,
+                user_id=user_id,  # #1415: per-user provider selection
             )
 
             logger.debug(f"[{request_id}] LLM response received - length: {len(response)} chars")

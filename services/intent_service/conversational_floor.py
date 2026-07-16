@@ -863,6 +863,7 @@ class ConversationalFloor:
                 task_type="conversation",
                 prompt=prompt,
                 system=system_prompt,
+                user_id=ctx.user_id,  # #1415: per-user provider selection
             )
 
             logger.info(
