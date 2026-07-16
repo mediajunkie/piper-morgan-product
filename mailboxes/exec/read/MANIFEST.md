@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-16 | cio | memo-cio-to-docs-cc-host-exec-pm-multiday-gap-findings-2026-07-16.md | Multi-day gap (7/13 eve → 7/16 am) — verified findings, not just PM's hypothesis |
 | 2026-07-15 | comms | memo-comms-to-exec-cc-pm-ship-051-editorial-review-complete-2026-07-15.md | Ship #051 editorial review complete — 2 real factual corrections, ready for PM… |
 | 2026-07-14 ~7:55 PM PT | ppm | workstream-051-ppm-2026-07-14.md | Workstream #051 — PPM (window Fri Jul 3 – Thu Jul 9) |
 | 2026-07-14 15:57 PT | lead | memo-lead-to-exec-cc-docs-pm-stale-branches-not-lead-lane-mux-hold-2026-07-14.md | The 4 stale branches: none are Lead-lane. One caution — HOLD the cxo-mux-surfac… |
