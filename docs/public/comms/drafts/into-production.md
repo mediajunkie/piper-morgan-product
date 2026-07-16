@@ -1,7 +1,7 @@
 ---
 image: ''
 alt: 'An explorer kneels just beyond the doorway of a tidy workshop, calmly gathering small hardware pieces shaken loose by the uneven ground, illustrating how a new environment reveals hidden assumptions.'
-caption: ''
+caption: '""Hello, world!""'
 ---
 
 # Into Production
