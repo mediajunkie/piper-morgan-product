@@ -4,6 +4,8 @@
 
 **How this works**: new entries go under "New" as you add them. Whoever reviews an entry moves it to "Reviewed" with a one-line disposition (relevant / not relevant / filed as X / discussed on Y date) — the point isn't to delete anything, just to make it visible what's been looked at vs. not. Nothing here is urgent by default; PM sets the pace of when to discuss.
 
+**Digestion cadence (PM, 2026-07-16)**: pick at least one item from "New" every time PM and CIO converse, and work through its relevance together — not a unilateral verdict, an actual discussion. Backlog is large (16 items as of the first batch); this is the mechanism for working it down without a dedicated big session.
+
 ---
 
 ## New (not yet reviewed / discussed)
