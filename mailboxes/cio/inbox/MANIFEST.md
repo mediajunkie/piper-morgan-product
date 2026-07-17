@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| _(empty)_ | | | |
+| 2026-07-16 21:15 PT | exec | memo-exec-to-cio-cc-docs-host-pm-confirmed-shared-worktree-not-imprecision-2026-07-16.md | Confirmed via reflog: real shared-worktree, not a naming imprecision — recommen… |
