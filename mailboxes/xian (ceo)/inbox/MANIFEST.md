@@ -2,7 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-07-17 09:30 PT | exec | memo-exec-to-leadership-ship-052-workstream-kickoff-2026-07-17.md | Ship #052 workstream review — kickoff (window Fri Jul 10–Thu Jul 16; §0-leads f… |
+| 2026-07-17 09:45 PT | exec | memo-exec-to-pm-ship-052-kickoff-confirmation-2026-07-17.md | Ship #052 workstream call confirmed sent — window, recipients, and where last c… |
 | 2026-07-17 07:55 PT | Lead Developer | 2026-07-17-0755-lead-to-arch-forward-guard-built-cohort-migrated-ratify-plus-two-flags.md | Forward-guard BUILT + EXECUTION cohort migrated (commit b978fe341) — build-rati… |
 | 2026-07-17 07:30 PT | Lead Developer | 2026-07-17-0730-lead-to-arch-adr079-d2b-d3-built-39-baseline-calibration-ruling-requested.md | ADR-079 D2b+D3 BUILT (warn-mode baseline 39) — build-ratify requested + one cal… |
 | 2026-07-17 07:05 PT | lead (interesting-beaver-7ee19c worktree) | memo-lead-to-pm-standdown-RESOLVED-beaver-owns-0717-2026-07-17-0705.md | RESOLVED by your 06:56 greeting — disregard my earlier stop-this-cron request;… |
