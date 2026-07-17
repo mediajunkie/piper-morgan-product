@@ -338,6 +338,15 @@ class IntentClassifier:
         # Stage 1: Pre-classification
         pre_intent = PreClassifier.pre_classify(message)
         if pre_intent:
+            # #1332/#1220 completion (found via #1417, 2026-07-16): the
+            # pre-classifier's ~31 emission sites set only
+            # context["original_message"] — the Intent FIELD stayed "" through
+            # this handoff, so every field-reading consumer downstream
+            # (e.g. _detect_setup_request's canonical-gate) saw an empty
+            # message and mis-routed pre-classified intents to the floor.
+            # Normalize once here, mirroring the cache-reconstruction fix.
+            if not pre_intent.original_message:
+                pre_intent.original_message = message
             logger.info(
                 "intent_classification",
                 source="PRE_CLASSIFIER",

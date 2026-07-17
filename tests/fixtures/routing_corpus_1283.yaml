@@ -95,3 +95,15 @@ corpus:
     expected: action:update_issue   # #1411 registered this; MUST NOT be Notion/create_issue
   - phrase: "add label bug to issue owner/repo#107"
     expected: action:update_issue   # labels are an update_issue field
+  # #1417 integration-connect rows (Arch-ratified 2026-07-16: reuse the guidance
+  # lane; deterministic at surface 1). Positive rows route to the EXISTING
+  # canonical; the collision row protects the #862 repo-link lane; the
+  # regression row pins the older #487 setup phrasing.
+  - phrase: "can we connect my github?"
+    expected: action:get_contextual_guidance   # integration-setup guidance (NOT the unwired-write decline)
+  - phrase: "connect my slack"
+    expected: action:get_contextual_guidance
+  - phrase: "link mediajunkie/test-piper-morgan to the project"
+    expected: action:manage_repos   # collision guard: slug/repo stays the repo-link lane
+  - phrase: "help me set up github"
+    expected: action:get_contextual_guidance   # regression: pre-#1417 phrasing unchanged

@@ -724,6 +724,27 @@ class PreClassifier:
         r"\bset up.*portfolio\b",
     ]
 
+    # #1417 (Arch-ratified 2026-07-16): integration-connect = connect-verb ×
+    # integration-noun, routed deterministically to the EXISTING guidance lane
+    # (GUIDANCE/get_contextual_guidance -> _format_integration_setup_guidance).
+    # Before this, "can we connect my github?" was mode-4 category-luck: the LLM
+    # usually emitted EXECUTION + a free-form action -> the generic unwired-write
+    # decline — a false "still on the way" while the OAuth flow, settings page,
+    # and a purpose-built chat answer all exist. Noun set is one-line-extensible
+    # per integration (Arch ruling).
+    INTEGRATION_CONNECT_PATTERNS = [
+        r"\b(?:connect|set\s?up|link|hook\s+up|integrate|add|enable)\b.{0,40}?"
+        r"\b(?P<integration>github|slack|notion|(?:google\s+)?calendar)\b",
+    ]
+    # Collision guard (Arch ruling (a), the load-bearing one): an owner/name
+    # slug or the word repo(sitory) means the repo-link lane (#862 handles it
+    # earlier in the pass) — never integration setup. Same conservative
+    # over-resolution discipline as B3's N2 guard.
+    INTEGRATION_CONNECT_BLOCKERS = [
+        r"[\w.-]+/[\w.-]+",
+        r"\brepo(?:sitor(?:y|ies))?s?\b",
+    ]
+
     # Issue #673: TRUST patterns for trust explanation queries
     # Routes to ExplanationHandler from services.trust
     # Patterns derived from ExplanationDetector but simplified for pre-classification
@@ -1478,6 +1499,26 @@ class PreClassifier:
                 confidence=1.0,
                 context={"original_message": message},
             )
+
+        # #1417: integration-connect routes deterministically to the guidance
+        # lane (the capability exists — this makes it *reachable*). Checked with
+        # explicit collision blockers even though the #862 repo lane already ran
+        # above (belt + suspenders; both are unit-tested).
+        if not PreClassifier._matches_patterns(
+            clean_for_matching, PreClassifier.INTEGRATION_CONNECT_BLOCKERS
+        ):
+            for pattern in PreClassifier.INTEGRATION_CONNECT_PATTERNS:
+                m = re.search(pattern, clean_for_matching, re.IGNORECASE)
+                if m:
+                    return Intent(
+                        category=IntentCategory.GUIDANCE,
+                        action="get_contextual_guidance",
+                        confidence=1.0,
+                        context={
+                            "original_message": message,
+                            "setup_target": m.group("integration").strip(),
+                        },
+                    )
 
         # Issue #487: Check GUIDANCE before STATUS to catch "help setup my projects"
         # before "my projects" triggers STATUS. More specific patterns should match first.
