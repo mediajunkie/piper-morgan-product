@@ -90,6 +90,52 @@ class PreClassifier:
         r"\bfarewell\b",
     ]
 
+    # #1416: filler that may accompany a pure pleasantry without making the
+    # message substantive ("hi there!", "hey, how are you?"). Used by
+    # _is_pleasantry_only to decide whether the greeting/farewell/thanks
+    # short-circuits may claim the message at all.
+    _PLEASANTRY_FILLER_PATTERNS = [
+        r"\bhow\s+are\s+you(\s+doing)?\b",
+        r"\bhow'?s\s+it\s+going\b",
+        r"\bwhat'?s\s+up\b",
+        r"\bnice\s+to\s+meet\s+you\b",
+        r"\bgood\s+(morning|afternoon|evening|night|day)\b",
+        r"\bthanks?\s+(so\s+much|a\s+lot|again)\b",
+        r"\bthank\s+you(\s+(so\s+much|again))?\b",
+        # standalone intensifiers left behind once the pleasantry itself is
+        # stripped ("thank you | so much", "thanks | a lot")
+        r"\b(so|very)\s+much\b",
+        r"\ba\s+lot\b",
+        r"\b(there|everyone|all|piper|team|again|folks)\b",
+    ]
+
+    @staticmethod
+    def _is_pleasantry_only(clean_for_matching: str) -> bool:
+        """#1416: True iff the message is ONLY a greeting/farewell/thanks
+        pleasantry (plus filler) — the precondition for the canned
+        short-circuits below.
+
+        The bug (PM, Scenario A turn 1): "Hi, I just got access to this and am
+        excited to try it. How do I address you?" matched ``\\bhi\\b`` and the
+        greeting short-circuit swallowed the actual question. Same conservative
+        over-resolution discipline as B3-N2/#1417: a deterministic fast-path
+        may only claim what it fully understands; anything with substantive
+        residue falls through to full classification (where the floor greets
+        AND answers).
+        """
+        residue = clean_for_matching
+        for pattern_set in (
+            PreClassifier.GREETING_PATTERNS,
+            PreClassifier.FAREWELL_PATTERNS,
+            PreClassifier.THANKS_PATTERNS,
+            PreClassifier._PLEASANTRY_FILLER_PATTERNS,
+        ):
+            for pattern in pattern_set:
+                residue = re.sub(pattern, " ", residue, flags=re.IGNORECASE)
+        # Strip punctuation/whitespace; whatever words remain are substance.
+        residue_words = re.findall(r"[a-z0-9']+", residue, flags=re.IGNORECASE)
+        return len(residue_words) == 0
+
     # Thanks patterns - using regex with word boundaries for precision
     THANKS_PATTERNS = [
         r"\bthanks\b",
@@ -987,7 +1033,13 @@ class PreClassifier:
             clean_for_matching, PreClassifier.GREETING_PATTERNS
         )
         logger.info(f"PRE_CLASSIFIER DEBUG - Greeting match: {greeting_match}")
-        if greeting_match:
+        # #1416: the canned pleasantry short-circuits may only claim messages
+        # that are ONLY pleasantries. "Hi, … How do I address you?" used to
+        # match \bhi\b here and swallow the question; with substantive residue
+        # the message now falls through to full classification, where the floor
+        # greets AND answers.
+        pleasantry_only = PreClassifier._is_pleasantry_only(clean_for_matching)
+        if greeting_match and pleasantry_only:
             # Find which pattern matched for debugging
             for pattern in PreClassifier.GREETING_PATTERNS:
                 if re.search(pattern, clean_for_matching):
@@ -999,9 +1051,16 @@ class PreClassifier:
                 confidence=1.0,
                 context={"original_message": message},
             )
+        if greeting_match and not pleasantry_only:
+            logger.info(
+                "PRE_CLASSIFIER DEBUG - Greeting with substantive residue; "
+                "falling through to full classification (#1416)"
+            )
 
-        # Check for farewells
-        if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.FAREWELL_PATTERNS):
+        # Check for farewells (#1416: same pleasantry-only precondition)
+        if pleasantry_only and PreClassifier._matches_patterns(
+            clean_for_matching, PreClassifier.FAREWELL_PATTERNS
+        ):
             return Intent(
                 category=IntentCategory.CONVERSATION,
                 action="farewell",
@@ -1009,8 +1068,10 @@ class PreClassifier:
                 context={"original_message": message},
             )
 
-        # Check for thanks
-        if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.THANKS_PATTERNS):
+        # Check for thanks (#1416: same pleasantry-only precondition)
+        if pleasantry_only and PreClassifier._matches_patterns(
+            clean_for_matching, PreClassifier.THANKS_PATTERNS
+        ):
             return Intent(
                 category=IntentCategory.CONVERSATION,
                 action="thanks",

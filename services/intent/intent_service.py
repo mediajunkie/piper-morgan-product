@@ -11653,6 +11653,20 @@ Content to summarize:
         # CONVERSATION with action="greeting": has onboarding/calendar side effects
         # Greeting stays canonical until floor has calendar context integration
         if category == "CONVERSATION" and intent.action == "greeting":
+            # #1416: only PURE pleasantries take the canned/consciousness
+            # greeting. The pre-classifier already falls through for compound
+            # messages, but the LLM classifier often labels a greeting-opener
+            # ("Hi, … How do I address you?") as greeting too — this gate is
+            # the last line. Substantive residue → floor, which greets AND
+            # answers. Same message-level discrimination as TEMPORAL below.
+            from services.intent_service.pre_classifier import PreClassifier
+
+            msg = (
+                intent.original_message
+                or (intent.context.get("original_message", "") if intent.context else "")
+            ).lower()
+            if msg and not PreClassifier._is_pleasantry_only(msg):
+                return False  # compound greeting → floor
             return True
 
         # TEMPORAL: pure date/time queries stay canonical (deterministic, sub-ms).

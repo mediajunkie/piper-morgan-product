@@ -369,12 +369,9 @@ async def app_client():
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.xfail(
-    reason="#1416 (weak greeting) + #1417 (github false-decline) are OPEN. This is a "
-    "live regression harness: it xfails today and will xPASS the moment both land — "
-    "flip to strict=True (a hard gate) in that same fix commit.",
-    strict=False,
-)
+# #1416 + #1417 both landed 2026-07-16 — the xfail marker came off in the same
+# commit as the final fix, per the sprint plan: this is now a HARD GATE. A red
+# turn here is a regression in the fresh-tester onboarding flow.
 @pytest.mark.asyncio
 @pytest.mark.parametrize("scenario", ALL_SCENARIOS, ids=lambda s: s.name)
 async def test_multi_turn_scenario(app_client, scenario):
