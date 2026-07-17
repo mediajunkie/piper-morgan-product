@@ -149,8 +149,8 @@ class TodoManagementService:
             if self.knowledge_service:
                 try:
                     # #1436 B8: user_id was missing — the TypeError was swallowed
-                    # below (via print!, census F14), so the KG got a node for NO
-                    # todo ever created; downstream KG-todo features starved.
+                    # below (via print!, census F14), so the KG never received a
+                    # single node here; downstream KG-backed features starved.
                     await self.knowledge_service.create_todo_knowledge_node(
                         saved_todo, str(user_id)
                     )
