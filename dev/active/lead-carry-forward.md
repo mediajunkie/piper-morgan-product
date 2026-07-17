@@ -1,10 +1,10 @@
-# Lead Dev carry-forward — 2026-07-16 ~16:50 PT
+# Lead Dev carry-forward — 2026-07-16 DAY-CLOSE (~22:05 PT)
 
-## Sprint: Finish-the-Unfinished (epic #1424) — Phase 2 in progress
-- Plan: docs/internal/operations/finish-the-unfinished-sprint-2026-07-16.md · Census (FROZEN): docs/internal/operations/finish-the-unfinished-census-2026-07-16.md
-- **Closed so far**: #1435, #1434, #1422 (+migration k1422prefs), #1421, #1420, #1425 (all 5 handlers), #1436-B9, session_factory annotations. Ratchet ceilings: silent_death 247 · unscoped 64 · NIE 9 · TODO 78.
-- **Next unblocked (user-impact order)**: #1415 per-user provider selection (Arch: mirror PersonalizationService; fold F1 consent-fails-CLOSED) → quality-banked for a fresh context window. Then #1436 pack (B8 user_id arg, B5 status shadow, B4 error-helper kwargs incl. the pre-existing api-test, B2 KG DI), un-swallow clusters (F9-F17 via #1423), lint-1 v2 (derive owner tables + indirect-scoping calibration), silent-ok seeding of Census A's 85 LEGIT (gates lint-2 CI-flip), forward-guard registry migration (todo CRUD batch).
-- **Waiting on Arch**: #1417 vocabulary ruling (proposal sent 7a451e89c — integration-connect pre-classifier pattern → existing GUIDANCE lane); ADR "Owner-Scoping Integrity Contract" (they author); build-ratify pings owed as each guard lands.
-- **Waiting on PM**: shipping-cadence confirm → first beta batch = the 8 closed fixes + k1422prefs migration, cherry-picks to production branch. #1427 finish-or-unmount decision. F21 disposition (chat-invisible ledger vs wire).
-- **Provenance note**: site-1 of #1425 + its test file appeared in-worktree ~15:54 uncommitted, author unknown (list_sessions: no peer session here; most likely PM hand-editing). Adopted + credited in the close. If PM: converged design, no action. Watch for further hand-edits before overwriting anything.
-- Cron 985b0ef9 armed (17 6,9,12,15,18,21). Scenario driver: xfail #1416/#1417 pending those fixes (flip strict in same commits).
+## Sprint: Finish-the-Unfinished (epic #1424) — Phase 2 nearly drained; Phase 3 milestone HIT
+- **Driver STRICT-GREEN** (xfail retired 1d769c443): the fresh-tester onboarding flow is a hard gate now.
+- **Closed 2026-07-16**: #1414 #1415 #1416 #1417 #1420 #1421 #1422(+k1422prefs migration) #1425 #1434 #1435 · #1436 Tier-1 live set (B1-B5,B8,B9,B14) · #1426 points 1-3 · Stage-1 original_message systemic fix · session_factory mypy-unblinding. Ratchets: silent_death 244 · unscoped 59 · NIE 9 · TODO 78.
+- **NEXT (tomorrow's fresh session — explicitly quality-banked)**: **#1418 conversation picker** (frontend JS; use the browser pane + dev server; PM-reported). Then: lint-2 silent-ok seeding (Census A's 85 LEGIT → gates CI-flip), lint-1 v2 (derive owner tables + indirect calibration, ADR-079 now exists), mypy gate build (#1436 Part 2), forward-guard registry migration (todo CRUD batch), #1423 un-swallow clusters (F9-F17), #1436 tail (B10-B20 + UUID pass).
+- **Waiting on PM**: SHIPPING NOD for beta batch 1 (17 fixes + k1422prefs migration → cherry-picks to production branch); #1427 finish-or-unmount; F21 disposition.
+- **Waiting on Arch**: build-ratify pings owed as each guard lands (their ask); ADR-079 committed by Arch — read it before lint-1 v2.
+- Cron 985b0ef9 armed (17 6,9,12,15,18,21). Scenario driver: HARD GATE — treat any red turn as a regression.
+- Provenance note stands: PM hand-edits files in this worktree sometimes (#1425 site-1, its test file). Check git status/diff before assuming file state; adopt-don't-overwrite.
