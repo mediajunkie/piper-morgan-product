@@ -516,6 +516,7 @@ class TodoRepository(BaseRepository):
     async def get_user_role(self, todo_id: str, user_id: str) -> Optional[str]:
         """Get user's role for a todo"""
         # Get the todo
+        # global-ok: D6 fetch-then-check — owner/shared_with on instance; shared_with JSON not WHERE-able
         result = await self.session.execute(select(TodoDB).where(TodoDB.id == todo_id))
         db_todo = result.scalar_one_or_none()
 

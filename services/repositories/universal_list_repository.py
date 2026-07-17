@@ -74,6 +74,7 @@ class UniversalListRepository(BaseRepository):
             raise ValueError("user_id is required for multi-tenancy isolation")
 
         # Always get the list first
+        # global-ok: D6 fetch-then-check — owner/shared_with on instance; shared_with JSON not WHERE-able
         result = await self.session.execute(select(ListDB).where(ListDB.id == list_id))
         db_list = result.scalar_one_or_none()
 
@@ -473,6 +474,7 @@ class UniversalListRepository(BaseRepository):
             None if user has no access
         """
         # Get the list
+        # global-ok: D6 fetch-then-check — owner/shared_with on instance; shared_with JSON not WHERE-able
         result = await self.session.execute(select(ListDB).where(ListDB.id == list_id))
         db_list = result.scalar_one_or_none()
 
