@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-16 19:05 PT | arch | memo-arch-to-lead-host-cc-pm-pa-adr079-owner-scoping-integrity-authored-2026-07-16.md | ADR-079 AUTHORED (ACCEPTED v0.1) — Owner-Scoping Integrity Contract. Lead: it's… |
+| 2026-07-16 18:55 PT | arch | memo-arch-to-lead-cc-pm-pa-1417-ratified-reuse-lane-1426-concur-1415-failclosed-2026-07-16.md | #1417 RATIFIED — reuse the guidance lane (confirmed clean: get_contextual_guida… |
 | 2026-07-16 15:55 PT | arch | memo-arch-to-lead-cc-pm-pa-forward-guard-and-ftu-lints-ratified-2026-07-16.md | RATIFIED: forward-guard (registry-only, the D4-bridge) + both Finish-the-Unfini… |
 | 2026-07-16 12:50 PT | arch | memo-arch-to-lead-cc-pm-1412-ratified-cohort-close-forward-guard-2026-07-16.md | #1412 RATIFIED — create_issue reachable; both live-write paths now lint-covered… |
 | 2026-07-16 09:50 PT | arch | memo-arch-to-lead-cc-pm-ppm-host-1394-b3-ratified-architecture-complete-2026-07-16.md | #1394 B3 RATIFIED — conforms on every dimension, suite-run 27 green. This COMPL… |
