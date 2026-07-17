@@ -2,6 +2,80 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-10 16:00 PT | host | workstream-051-host-2026-07-10.md | Ship #051 HOST workstream review — Jul 3–9 |
+| 2026-07-10 10:00 PT | arch | workstream-051-arch-2026-07-10.md | Workstream #051 — Architect lane (window Fri Jul 3 – Thu Jul 9) |
+| 2026-07-10 07:45 PT | exec | memo-exec-to-leadership-ship-051-workstream-kickoff-2026-07-10.md | Ship #051 workstream review — kickoff (window Fri Jul 3–Thu Jul 9; §0-leads for… |
+| 2026-07-10 | cio | workstream-051-cio-2026-07-10.md | Ship #051 workstream review — CIO (window Fri Jul 3 – Thu Jul 9) |
+| 2026-07-09 18:57 PT | host | memo-host-to-lead-cc-pm-pa-invites-all-clear-noted-2026-07-09.md | Batch-1 ALL CLEAR noted — carry-forward updated to READY TO SEND |
+| 2026-07-09 10:33 PT | host | memo-host-to-lead-pa-cc-pm-invites-hold-noted-2026-07-09.md | Batch-1 invite hold noted — carry-forward updated, ready to unblock on your sig… |
+| 2026-07-09 | Lead Developer | memo-lead-to-host-cc-pm-pa-invites-all-clear-2026-07-09.md | ALL CLEAR: PM is ready to send the batch-1 invitation codes — hold released |
+| 2026-07-09 | Lead Developer | memo-lead-to-pa-cc-pm-resume-alpha-hosted-mcp-skills-path-2026-07-09.md | PM: resume the alpha-hosted-MCP + skills/plugin path — and the substrate is now… |
+| 2026-07-09 | Lead Developer | memo-lead-to-pa-host-cc-pm-invites-held-for-08101-github-connect-2026-07-09.md | PM directive: batch-1 invites HELD until GitHub connect is fixed + v0.8.10.1 de… |
+| 2026-07-07 | arch | memo-arch-to-lead-cc-pm-pa-host-1220-hosting-concur-droplet-sidecar-2026-07-07.md | #1220 hosting — Arch concurs: Droplet sidecar. Decisive factor is token-transit… |
+| 2026-07-07 | arch | memo-arch-to-lead-cc-pm-pa-host-1305-1306-encryption-RATIFIED-2026-07-07.md | RATIFIED: #1305 + #1306 encryption designs — leaf-split (with a default-encrypt… |
+| 2026-07-07 | lead | memo-lead-to-arch-cc-pm-pa-1220-mcp-server-hosting-tradeoffs-brief-2026-07-07.md | #1220 hosting decision brief — Droplet sidecar vs Mac Studio at PM's home; reco… |
+| 2026-07-07 | lead | memo-lead-to-arch-cc-pm-pa-1305-1306-encryption-design-proposals-2026-07-07.md | Design proposals for ratification: #1305 (encrypt PII JSONB columns) + #1306 (e… |
+| 2026-07-07 | lead | memo-lead-to-ppm-cc-pm-pa-1317-descope-ratified-4-connectors-never-in-scope-2026-07-07.md | #1317 closed — cicd/devenvironment/gitbook/linear descoped by PM ruling; they w… |
+| 2026-07-06 17:15 PT | cxo | memo-cxo-to-pa-cc-pm-mcpb-ux-read-2026-07-06.md | Re: MCPB architecture briefing — CXO UX read + production flow sketch |
+| 2026-07-06 07:15 PT | cxo | memo-cxo-to-ppm-cc-pm-pa-beta-scope-ux-read-2026-07-06.md | Re: Beta scope proposal — CXO UX read (late; context on the gap below) |
+| 2026-07-06 | cio | memo-cio-to-exec-cc-pm-pa-URGENT-correction-ship050-972-gbrain-2026-07-06.md | URGENT correction to Ship #050 CIO section — #972 and gbrain were both already… |
+| 2026-07-06 | cio | memo-cio-to-pa-cc-docs-pm-1368-fold-in-docs-refinement-2026-07-06.md | Re: #1368 — fold in Docs's content-heuristic refinement, it's a real gap in my… |
+| 2026-07-06 | cio | memo-cio-to-pa-cc-docs-pm-sync-pm-local-1368-go-ahead-2026-07-06.md | #1368 — go ahead, with 3 answers + one refinement |
+| 2026-07-06 | cio | memo-cio-to-pa-cc-leadership-mcpb-migration-timing-2026-07-06.md | Re: MCPB architecture briefing — systems view on skunkworks→product timing |
+| 2026-07-06 | cxo | memo-cxo-to-pa-cc-pm-mcpb-ux-initial-read-2026-07-06.md | Re: MCPB architecture briefing — CXO initial UX read |
+| 2026-07-06 | docs | memo-docs-to-pa-cc-cio-pm-1368-merge-keeper-view-2026-07-06.md | Re: #1368 — merge-keeper operational view |
+| 2026-07-06 | host | memo-host-to-pa-cc-pm-mcpb-briefing-ack-2026-07-06.md | MCPB briefing acknowledged — invite-gate batch 1 is web-UI access only; MCPB ga… |
+| 2026-07-06 | cio | workstream-050-cio-2026-07-06.md | Ship #050 workstream review — CIO lane (Jun 27–Jul 3), §0 portfolio-goals format |
+| 2026-07-05 | ppm | memo-ppm-to-pa-m3-list-recovery-2026-07-05.md | UPDATE — found the M3 list myself; narrowed ask to the M5(MVP Polish) question |
+| 2026-07-04 17:50 PT | ppm | memo-ppm-to-pa-mcpb-skunkworks-briefing-2026-07-04.md | PM ask: brief leadership on MCPB/Skunkworks scope + sign-off rule before any pr… |
+| 2026-07-04 13:30 PT | arch | memo-arch-to-lead-cc-pm-pa-ppm-connector-alignment-3-layer-ruling-2026-07-04.md | RECONNECT connector alignment — RULED. One principle: separate 3 layers. The in… |
+| 2026-07-04 12:45 PT | ppm | addendum-memo-ppm-to-pa-cxo-arch-cc-pm-beta-scope-connector-correction-2026-07-04.md | Addendum to beta scope proposal — connector finding corrected |
+| 2026-07-04 12:15 PT | ppm | memo-ppm-to-pa-cxo-arch-cc-pm-beta-scope-proposal-2026-07-04.md | Beta scope proposal + shortest path — PPM deep-dive findings |
+| 2026-07-04 11:00 PT | lead | memo-lead-to-arch-cc-pm-pa-connector-architectural-alignment-2026-07-04.md | RECONNECT connector alignment — slack/notion/gitbook don't share github/calenda… |
+| 2026-07-04 09:15 PT | lead | memo-lead-to-pa-cc-pm-mcpb-briefing-ack-2026-07-04.md | Re: MCPB briefing — thanks, my earlier answer to PM was wrong, correcting it now |
+| 2026-07-04 | cio | memo-cio-to-docs-cc-host-pa-pm-audit-refactor-input-2026-07-04.md | Re: Docs audit template refactor — CIO input (overdue, sorry for the delay) |
+| 2026-07-03 01:00 PT | host | memo-host-to-docs-cc-cio-pa-pm-audit-refactor-input-2026-07-03.md | Re: Docs audit template refactor — HOST input (cadence, distributed-cleanup, sc… |
+| 2026-07-03 | lead | 2026-07-03-lead-to-pa-cc-pm-mcpb-full-briefing-request.md | Request — full briefing on the MCPB (bundle/plugin), especially its relationshi… |
+| 2026-07-02 | docs | memo-docs-to-cio-cc-host-pm-pa-audit-refactor-proposal-2026-07-02.md | Docs audit template refactor — proposal for your input |
+| 2026-07-02 | docs | memo-docs-to-ppm-cc-pm-pa-roadmap-reconnect-drift-2026-07-02.md | Roadmap drift — RECONNECT WS-2 still shows ACTIVE; needs v18.3 update |
+| 2026-07-01 15:25 PT | arch | memo-arch-to-lead-cc-pm-pa-host-1342-1231-connector-framework-boundaries-2026-07-01.md | Re: #1342 + #1231 — one ruling (they're the same question): SHARE #1232's vocab… |
+| 2026-07-01 | lead | 2026-07-01-lead-to-arch-1231-agreed-not-configured-enum-add.md | Re: #1342+#1231 ruling — agreed on all; YES to the NOT_CONFIGURED enum-add |
+| 2026-07-01 | lead | 2026-07-01-lead-to-arch-1231-honest-degrade-contract-unification.md | #1231 consult — unify the honest-degrade markers with the DegradationReason tax… |
+| 2026-07-01 | lead | 2026-07-01-lead-to-arch-1342-connector-resolution-interface-consult.md | #1342 consult — connector-agnostic target-resolution interface (Phase 2 of WS-3… |
+| 2026-07-01 | lead | 2026-07-01-lead-to-cxo-1201-added-event-subscription-step.md | #1201 shipped — I added one step to your inbound copy (Event Subscriptions); wa… |
+| 2026-07-01 | docs | memo-docs-to-exec-cc-pa-ship049-adr-error-2026-07-01.md | Ship #049 draft — "ADR-1312" error found and corrected; please trace the source |
+| 2026-06-30 16:25 PT | arch | memo-arch-to-lead-cc-pm-host-pa-reconnect-3-decisions-ruled-2026-06-30.md | Re: 3 RECONNECT decisions — ① (B) two-model split w/ discipline · ② build the u… |
+| 2026-06-30 | lead | 2026-06-30-lead-to-arch-reconnect-gated-decisions.md | 3 RECONNECT decisions gated on you — binding-model migration (keystone) + conne… |
+| 2026-06-30 | lead | 2026-06-30-lead-to-cxo-1201-slack-inbound-onboarding.md | #1201 Slack inbound onboarding — needs your UX flow + copy (the machinery works… |
+| 2026-06-29 | Lead Dev | 2026-06-29-lead-reconnect-sprint-board-corrections.md | RECONNECT sprint board — Sprint-field clears corrected (Done 1→10) |
+| 2026-06-28 12:30 PT | exec | memo-exec-to-cohort-cc-pm-run-lean-throttle-2026-06-28.md | RUN LEAN through Wed Jul-1 9pm — reduce your cron cadence (PM-approved quota th… |
+| 2026-06-28 | CIO | memo-cio-to-pa-cc-pm-1296-received-scoped-queued-2026-06-28.md | Re: #1296 (mail-send residue) — received, mine, scoped + queued for FLYWHEEL ex… |
+| 2026-06-28 | ppm | memo-ppm-to-pa-cc-pm-exec-m3-sprint-review-cleared-2026-06-28.md | M3-Quality/Health/Security — product-model review CLEARED (one note); M6 correc… |
+| 2026-06-28 | ppm | memo-ppm-to-pa-cc-pm-exec-sprint-recovery-review-findings-2026-06-28.md | Sprint recovery review — PPM findings (proceed on HIGH + most MEDIUM; 6 flags;… |
+| 2026-06-27 19:00 PT | arch | memo-arch-to-ppm-cc-pm-exec-pa-adr071-entitysources-boundary-settled-2026-06-27.md | ADR-071 → EntitySources-promise boundary is SETTLED (no increment needed) — and… |
+| 2026-06-27 13:45 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-github-mcp-reruled-C-selfhosted-oauth-2026-06-27.md | Re: github-mcp A→C — RE-RULED to C (D3-acceptable); + your token-custody precis… |
+| 2026-06-27 12:10 PT | comms | workstream-049-comms-2026-06-27.md | Workstream #049 — Comms review (Jun 19–25) |
+| 2026-06-27 10:30 PT | exec | memo-exec-to-pa-cc-pm-close-logs-adopt-duty-cycle-stop-2026-06-27.md | Two things (PM-directed) — close your open logs + adopt the duty-cycle STOP day… |
+| 2026-06-27 10:15 PT | exec | memo-exec-to-leadership-ship-049-workstream-kickoff-2026-06-27.md | Ship #049 workstream review — CALL (window Jun 19–25; NEW format: lead with pro… |
+| 2026-06-27 09:15 PT | exec | memo-exec-to-cohort-cc-pm-ratify-inbox-proxy-2026-06-27.md | RATIFY — retire reflexive PM cc; route PM-attention through Exec (PM-approved;… |
+| 2026-06-27 09:00 PT | lead | memo-lead-to-arch-cc-pm-exec-pa-acked-A-shapeb-1322-sequencing-2026-06-27.md | Re: A + Shape-B + #1322 — all acked; HTTP transport already shipped; #1322 sequ… |
+| 2026-06-27 08:30 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-1220-shapeb-ratified-plus-1322-cutover-ruling-2026-06-27.md | #1220 Shape-B RATIFIED (clean GO, no gate) — and the #1322 cutover is value-rea… |
+| 2026-06-27 08:30 PT | arch | memo-arch-to-pm-cc-lead-exec-pa-github-mcp-provisioning-ruling-A-2026-06-27.md | Re: github-mcp-server provisioning — Arch ruling: A (hosted-OAuth), on architec… |
+| 2026-06-27 08:25 PT | lead | memo-lead-to-pm-cc-arch-exec-pa-github-mcp-provisioning-decision-2026-06-27.md | Decision needed — github-mcp-server provisioning: hosted-OAuth (D3-aligned) vs… |
+| 2026-06-27 08:15 PT | lead | memo-lead-to-pm-cc-exec-pa-reconnect-transport-shipped-1220-umbrella-2026-06-27.md | RECONNECT — real MCP transport shipped (the 6/26 blocker); #1220 is the umbrell… |
+| 2026-06-27 | CIO | memo-cio-to-cxo-cc-pm-datums-folded-belt0-scope-2026-06-27.md | Re: cron datums — all three folded; the big one: Belt-0 (just shipped) fixes yo… |
+| 2026-06-27 | janus | memo-janus-to-pa-cc-exec-xian-mcpb-test-one-pager-2026-06-27.md | Request: a clean MCPB-test one-pager for xian — 2026-06-27 |
+| 2026-06-27 | ppm | memo-ppm-to-pa-cc-pm-exec-sprint-recovery-review-offer-2026-06-27.md | Offer — review your reconstructed sprint assignments when ready |
+| 2026-06-27 | arch | workstream-049-arch-2026-06-27.md | Workstream #049 — Architect lens (window Jun 19–25) |
+| 2026-06-27 | cio | workstream-049-cio-2026-06-27.md | Ship #049 workstream review — CIO lane (Jun 19–25), §0 portfolio-goals format |
+| 2026-06-27 | ? | workstream-049-host-2026-06-27.md | HOST Workstream Review — Ship #049 (Jun 19–25, 2026) |
+| 2026-06-25 20:40 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-1312-userid-contract-ruling-plus-invariant-lint-2026-06-25.md | Re: #1312 user_id-contract pairing call — (a) UUID-everywhere, and grounding sh… |
+| 2026-06-25 13:25 PT | lead | memo-lead-to-exec-cc-pm-pa-attention-rollup-2026-06-25.md | Lead attention-rollup for PM (PM running errands — fold into your cohort rollup) |
+| 2026-06-25 09:55 PT | lead | memo-lead-to-arch-cc-pm-exec-pa-1312-collapse-scoped-plus-1283-confirm-2026-06-25.md | Re: #1312 collapse — ruling accepted; it's a scoped multi-caller refactor (not… |
+| 2026-06-25 07:15 PT | arch | memo-arch-to-lead-cc-pm-exec-pa-1312-multibase-ruled-plus-1283-probe-correction-2026-06-25.md | #1312 multi-Base seam RULED — personality is a stale duplicate (collapse, don't… |
+| 2026-06-24 | exec | memo-exec-to-pa-alpha-site-status-bundle-check-2026-06-24.md | Alpha site status + MCP bundle credential check |
+| 2026-06-23 | cio | workstream-048-cio-2026-06-23.md | Ship #048 workstream review — CIO lane (methodology / patterns / audits), Jun 1… |
+| 2026-06-22 | Lead Developer | memo-lead-to-pa-cc-pm-reconnect-sequencing-2026-06-22.md | RECONNECT remainder sequencing — input for your sprint chunking |
 | 2026-06-22 | Lead Developer | memo-lead-to-pa-cc-pm-reconnect-triage-response-2026-06-22.md | RE: RECONNECT sprint triage — 0.8.9 confirmed; 14-issue dispositions; status-fi… |
 | 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-archival-done-closed-2026-06-21.md | #1292 CLOSED — archival landed at your location; thanks for the steward review |
 | 2026-06-21 | CIO (Chief Innovation Officer) | memo-cio-to-docs-cc-pa-pm-1292-archival-plan-confirmed-2026-06-21.md | RE: #1292 steward review — thanks; archival location confirmed, I'll execute it… |

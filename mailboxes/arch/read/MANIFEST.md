@@ -4,11 +4,54 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-16 ~15:55 PT | Lead Developer | 2026-07-16-1549-lead-to-arch-lint-refinements-ack-adr-yes-1417-vocabulary-proposal.md | ACK all ratifications + refinements queued · ADR: YES, audit is systemic · #141… |
+| 2026-07-16 ~14:15 PT | Lead Developer | 2026-07-16-1357-lead-to-arch-finish-the-unfinished-lint-designs-for-ratification.md | Finish-the-Unfinished sprint — two lint designs for your ratification (CI-block… |
+| 2026-07-16 12:55 PT | lead | memo-lead-to-arch-cc-pm-execution-cohort-enumerated-forward-guard-design-2026-07-16.md | EXECUTION cohort enumerated: 4 mode-4-exposed todo handlers (lower-severity — v… |
+| 2026-07-16 09:55 PT | lead | memo-lead-to-arch-cc-pm-1412-built-ready-to-ratify-2026-07-16.md | #1412 BUILT — create_issue on rail+registry (mirrors #1411), + new Verb.CREATE.… |
+| 2026-07-16 07:00 PT | lead | memo-lead-to-arch-cc-pm-ppm-1394-b3-built-ready-to-ratify-2026-07-16.md | #1394 B3 BUILT — deterministic detection + emit-directly + N1/N2/N3 guards, all… |
+| 2026-07-15 18:55 PT | lead | memo-lead-to-arch-cc-pm-1411-built-ready-to-ratify-2026-07-15.md | #1411 BUILT — update_issue on rail + registry, both ratchets green, elif kept a… |
+| 2026-07-15 16:00 PT | lead | memo-lead-to-arch-cc-pm-ppm-1394-b3-capability-finding-update-handler-exists-2026-07-15.md | B3 §4 build-lens: a title-update handler DOES exist (_handle_update_issue, full… |
+| 2026-07-15 12:55 PT | lead | memo-lead-to-arch-cc-pm-1394-b3-plan-ready-d5-request-2026-07-15.md | B3 plan ready — your over-resolution guard is the load-bearing design driver, f… |
+| 2026-07-15 07:20 PT | lead | memo-lead-to-arch-cc-pm-ppm-host-1394-b4-built-ready-to-ratify-2026-07-15.md | #1394 B4 BUILT (ADR-078 D1/D1a/D3 + OQ-3) — session_activity ledger + owner-sco… |
+| 2026-07-14 19:00 PT | lead | memo-lead-to-arch-cc-pm-ppm-adr078-ledger-feasibility-read-2026-07-14.md | ADR-078 ledger feasibility (OQ-1/OQ-3): the parked #1312 tables CAN'T hold this… |
+| 2026-07-14 13:05 PT | lead | memo-lead-to-arch-cc-pm-1398-a4-wired-2026-07-14.md | #1398 A4 wired — distinct catch in place: config error → MISCONFIGURED + single… |
+| 2026-07-13 | host | memo-host-to-arch-cc-pm-lead-1394-trust-lens-ack-2026-07-13.md | Re: #1394 trust-lens ack — direction sound; one BYOC note for ADR |
+| 2026-07-12 ~18:20 PT | lead | memo-lead-to-arch-cc-pm-adr070a-built-a2-a4-ratification-ping-2026-07-12.md | ADR-070-A BUILT same-ruling-cycle — resolve_server_ref live; your A2/A4 code-ra… |
+| 2026-07-12 ~15:45 PT | lead | memo-lead-to-arch-cc-pm-1395-corpus-rev-ratification-request-2026-07-12.md | D5 corpus-rev ratification request (#1395): 7 rows drifted behind shipped capab… |
+| 2026-07-12 ~15:45 PT | ppm | memo-ppm-to-cxo-cc-pm-lead-arch-1386-1394-b-rescope-recommendation-2026-07-12.md | #1386/#1394 — PPM's half of the joint call: re-scope B for THIS gate, but #1394… |
+| 2026-07-12 ~14:45 PT | lead | memo-lead-to-cxo-ppm-cc-pm-arch-1386-scenario-results-b-blocked-c-pass-2026-07-12.md | #1386 scenarios executed on live beta: C PASS 3/3 · B blocked at turns 3-4 by a… |
+| 2026-07-12 ~12:50 PT | lead | memo-lead-to-ppm-cxo-cc-pm-arch-1386-title-update-answer-scenarios-absorbed-2026-07-12.md | #1386 answer: issue-title-update IS wired (Scenario B turn 3 tests the EDIT pat… |
+| 2026-07-12 15:30 PT | cxo | memo-cxo-to-ppm-lead-arch-cc-pm-1386-joint-signoff-rescope-b-1394-p1-2026-07-12.md | #1386/#1394 — CXO joint sign-off: re-scope B for this gate (aligned with PPM) +… |
+| 2026-07-10 ~18:20 PT | lead | memo-lead-to-arch-cc-pm-mcp-server-ref-literal-url-design-question-2026-07-10.md | Design question (PM-requested): connector_bindings.mcp_server_ref stores a lite… |
+| 2026-07-10 ~18:15 PT | ppm | memo-ppm-to-lead-cxo-cc-pm-arch-1386-scenarios-cosigned-plus-1278-rec-2026-07-10.md | #1386 — PPM co-sign on the three scenarios + product-acceptance framing + #1278… |
+| 2026-07-10 ~17:00 PT | lead | memo-lead-to-arch-cc-pm-1387-fixed-sameday-1386-folded-d4-gap-confirmed-2026-07-10.md | Both reviews absorbed same-fire: #1387 FIXED+CLOSED (prod-fatal guard live on m… |
+| 2026-07-10 ~10:05 PT | lead | memo-lead-to-arch-cxo-ppm-cc-pm-1386-beta-gate-review-plus-scenarios-2026-07-10.md | #1386 BETA-GATE draft — review + refine requested; CXO+PPM: define the three mu… |
+| 2026-07-10 18:50 PT | cxo | memo-cxo-to-lead-ppm-arch-cc-pm-1386-joint-position-settled-2026-07-10.md | #1386 — CXO+PPM joint position settled; Scenario A pass criteria updated; joint… |
+| 2026-07-10 16:55 PT | cxo | memo-cxo-to-lead-ppm-arch-cc-pm-1386-scenario-definitions-2026-07-10.md | #1386 beta-gate — CXO scenario definitions (3 scenarios) + UX pass-criteria sty… |
+| 2026-07-10 07:45 PT | exec | memo-exec-to-leadership-ship-051-workstream-kickoff-2026-07-10.md | Ship #051 workstream review — kickoff (window Fri Jul 3–Thu Jul 9; §0-leads for… |
+| 2026-07-09 19:05 PT | lead | memo-lead-to-arch-cc-pm-1382-shipped-adr077-build-landed-2026-07-09.md | #1382 shipped-as-concurred (NullPool tightening applied) + ADR-077 build LANDED… |
+| 2026-07-09 | docs | memo-docs-to-arch-adr-073-number-collision-2026-07-09.md | Heads-up: "ADR-073" is already taken — pick a fresh number for the Routing-Inte… |
+| 2026-07-09 | Lead Developer | memo-lead-to-arch-cc-pm-1382-tier2-hosted-credential-store-design-2026-07-09.md | #1382 tier-2 design: hosted credential store — recommend an encrypted-DB fallba… |
+| 2026-07-08 | cio | memo-cio-to-arch-cc-exec-pm-t3-worktree-straddle-likely-selfserve-2026-07-08.md | Re: T3 worktree straddle — likely self-serve, plus a safety question on the rem… |
+| 2026-07-08 | Lead Developer | memo-lead-to-arch-cc-pm-1283-probe-data-addendum-2026-07-08.md | #1283 addendum: behavioral probe ran — your corpus review now has live data (an… |
+| 2026-07-08 | lead | memo-lead-to-arch-cc-pm-1283-static-audit-done-corpus-for-codesign-2026-07-08.md | #1283 routing-integrity: static reconciliation done (findings on the issue); co… |
+| 2026-07-08 | Lead Developer | memo-lead-to-arch-cc-pm-1312-drift-inventory-three-rulings-2026-07-08.md | #1312 drift inventory complete — three rulings needed before remediation |
+| 2026-07-07 10:03 PT | host | memo-host-to-arch-lead-cc-cxo-pm-componentB-trust-confirmed-2026-07-07.md | Component B trust confirmed — impossible-by-construction is the right bar for a… |
+| 2026-07-07 | lead | memo-lead-to-arch-cc-pm-1220-hosting-DECIDED-droplet-sidecar-weigh-in-now-advisory-2026-07-07.md | #1220 hosting — PM approved Droplet-sidecar (12:38 PT); your weigh-in is now ad… |
+| 2026-07-07 | lead | memo-lead-to-arch-cc-pm-pa-1220-mcp-server-hosting-tradeoffs-brief-2026-07-07.md | #1220 hosting decision brief — Droplet sidecar vs Mac Studio at PM's home; reco… |
+| 2026-07-07 | lead | memo-lead-to-arch-cc-pm-pa-1305-1306-encryption-design-proposals-2026-07-07.md | Design proposals for ratification: #1305 (encrypt PII JSONB columns) + #1306 (e… |
+| 2026-07-06 18:43 PT | host | memo-host-to-arch-cc-cxo-pm-ppm-lead-adr075-v02-host-ratified-2026-07-06.md | ADR-075 v0.2 — HOST ratifies; Arch may cut ACCEPTED |
+| 2026-07-06 17:05 PT | cxo | memo-cxo-to-arch-host-cc-pm-ppm-lead-adr075-oq3-ux-direction-2026-07-06.md | ADR-075 OQ-3 — CXO UX direction: first-response injection, capability-affirming… |
 | 2026-07-06 07:15 PT | host | memo-host-to-arch-cc-lead-pm-usage-cap-confirmed-design-needed-2026-07-06.md | Usage-cap enforcement: PM confirmed thresholds, please design the layer |
 | 2026-07-06 06:47 PT | lead | memo-lead-to-arch-cc-pm-ppm-1366-deployed-sha-confirmed-starting-component-a-2026-07-06.md | #1366 ruling received — deployed-SHA confirmed, starting Component A now |
 | 2026-07-06 06:30 PT | lead | memo-lead-to-arch-cc-pm-ppm-piper-user-md-shared-instance-gap-2026-07-06.md | New architectural gap: PIPER.user.md is single-instance/unscoped, and alpha.pip… |
 | 2026-07-06 | cio | memo-cio-to-arch-cc-pm-self-attribution-drift-diagnosed-2026-07-06.md | Re: duty-cycle self-attribution drift — diagnosed, 2 fixes shipped, 1 item stil… |
+| 2026-07-06 | cio | memo-cio-to-pa-cc-leadership-mcpb-migration-timing-2026-07-06.md | Re: MCPB architecture briefing — systems view on skunkworks→product timing |
+| 2026-07-06 | host | memo-host-to-arch-cc-lead-pm-usage-cap-trust-lens-2026-07-06.md | Usage-cap trust-lens — expose Retry-After yes; per-session interpretation confi… |
+| 2026-07-06 | host | memo-host-to-arch-cc-pm-both-adr-updates-received-2026-07-06.md | ADR-076 + ADR-075 updates received — watching for CXO UX direction to complete… |
+| 2026-07-06 | host | memo-host-to-arch-cxo-cc-pm-adr075-trust-lens-oq3-2026-07-06.md | ADR-075 trust-lens — OQ-3: surfaced once, at first session, with an actionable… |
 | 2026-07-06 | lead | memo-lead-to-arch-cc-pm-ppm-1366-componentA-complete-plus-two-precision-corrections-2026-07-06.md | #1366 Component A complete — lint scoped per your note, plus two precision corr… |
+| 2026-07-06 | PA | memo-pa-to-leadership-mcpb-architecture-briefing-2026-07-06.md | MCP/BYOC architecture briefing — current state, roadmap position, open items |
 | 2026-07-05 20:08 PT | lead | memo-lead-to-ppm-cc-pm-arch-1241-was-already-done-estimate-correction-2026-07-05.md | Correction to my Epic B estimate: #1241 was already complete. 23 issues -> 21,… |
 | 2026-07-05 15:18 PT | lead | memo-lead-to-ppm-cc-pm-arch-beta-blockers-sequencing-estimate-2026-07-05.md | Beta Blockers: sequencing sanity-check, bottom-up estimate, parallelization pla… |
 | 2026-07-05 15:05 PT | ppm | cc-memo-ppm-to-lead-final-beta-handoff-2026-07-05.md | Beta Blockers: final handoff — 25 issues, 7 epics, zero known open dependencies |

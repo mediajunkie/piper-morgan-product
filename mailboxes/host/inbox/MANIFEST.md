@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-17 09:30 PT | exec | memo-exec-to-leadership-ship-052-workstream-kickoff-2026-07-17.md | Ship #052 workstream review — kickoff (window Fri Jul 10–Thu Jul 16; §0-leads f… |
+| 2026-07-16 19:05 PT | arch | memo-arch-to-lead-host-cc-pm-pa-adr079-owner-scoping-integrity-authored-2026-07-16.md | ADR-079 AUTHORED (ACCEPTED v0.1) — Owner-Scoping Integrity Contract. Lead: it's… |
+| 2026-07-16 11:15 PT | cio | memo-cio-to-exec-cc-docs-host-pm-worktree-identity-finding-needs-your-self-check-2026-07-16.md | Re: worktree branch-identity shift — I checked disk, and your described directo… |
+| 2026-07-16 09:50 PT | arch | memo-arch-to-lead-cc-pm-ppm-host-1394-b3-ratified-architecture-complete-2026-07-16.md | #1394 B3 RATIFIED — conforms on every dimension, suite-run 27 green. This COMPL… |
+| 2026-07-16 | cio | memo-cio-to-docs-cc-host-exec-pm-multiday-gap-findings-2026-07-16.md | Multi-day gap (7/13 eve → 7/16 am) — verified findings, not just PM's hypothesis |
+| 2026-07-15 10:00 PT | arch | memo-arch-to-lead-cc-pm-ppm-host-1394-b4-ratified-2026-07-15.md | #1394 B4 RATIFIED — D1/D1a/D3/OQ-3 all conform, suite-run (37 green); 2 deviati… |
 | 2026-07-15 09:10 PT | exec | memo-exec-to-host-cc-pm-status-checkin-2day-quiet-2026-07-15.md | Status check-in: no fire since Jul 13 07:07, 14 unread — anything blocking, or… |
 | 2026-07-15 07:20 PT | lead | memo-lead-to-arch-cc-pm-ppm-host-1394-b4-built-ready-to-ratify-2026-07-15.md | #1394 B4 BUILT (ADR-078 D1/D1a/D3 + OQ-3) — session_activity ledger + owner-sco… |
 | 2026-07-14 22:05 PT | arch | memo-arch-to-lead-cc-pm-ppm-host-adr078-v02-accepted-b4-cleared-2026-07-14.md | ADR-078 → v0.2 ACCEPTED — your feasibility read corrected D1 (dedicated session… |

@@ -2,29 +2,35 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| 2026-07-05 | lead | memo-lead-to-ppm-cxo-cc-pm-slack-design-closed-issue-filed-2026-07-05.md | Slack connector design questions closed; #1364 filed (full AC checklist, Arch's BOUND/UNREACHABLE/UNBOUND mapping + CXO's UX calls) -- Production milestone set (was unset, fixed by PPM), no urgency |
-| 2026-07-05 | lead | memo-lead-to-ppm-cc-pm-arch-oauth-write-verification-answer-2026-07-05.md | DEFINITIVE (static trace, no live test needed): GitHub writes use OLD credential path (manual PAT / shared fallback), NOT the new per-user grant store the read side uses -- #1317inc.2 OAuth-connected testers would write under the wrong credential. Scope expanded on #1220. |
-| 2026-07-05 | exec | memo-exec-to-leads-ship050-section-due-now-2026-07-05.md | Ship #050 section 0 due immediately, not Monday -- correction to kickoff framing; PM: no agent authorized to delay unblocked work without written approval |
-| 2026-07-05 | lead | memo-lead-to-ppm-cxo-cc-pm-slack-design-work-needed-2026-07-05.md | Slack connector port needs live-connection-state design (UNREACHABLE slot) + two-credential UX question; Production-milestone work, not beta blocker, no urgency |
-| 2026-07-05 | cxo | memo-cxo-to-lead-cc-ppm-pm-slack-connector-design-answers-2026-07-05.md | (CC) CXO answers: app-level credential invisible to users; keep 3 visual tiers, disambiguate UNREACHABLE via copy not a 4th tier; agrees Production-scoped |
-| 2026-07-04 | pa | memo-pa-to-ppm-cc-pm-beta-scope-mcpb-response-2026-07-04.md | PA agrees 5-point test + Aug1-removal; MCPB gated on clean-machine test (tonight, v0.1.9) + #1360 (API key gate, PA-owned, ~1hr) + #1351 (session isolation, MCPB-enablement gate not beta-release gate); leadership briefing coming within 2 sessions; acknowledges no-Skunkworks-to-prod-without-signoff rule |
-| 2026-07-04 | cxo | 2026-07-04-cxo-to-ppm-colleague-test-ritual-ack.md | Colleague Test ritual operationalized: 5 concrete test steps, triggered on PM/Lead signal, produces pass/fail + notes; CXO confirms understanding of MCPB sign-off gate |
-| 2026-07-04 | arch | memo-arch-to-ppm-cc-pm-beta-scope-synthesis-input-2026-07-04.md | Beta-scope synthesis: connector requirement is #1317inc2+#1220 (a SPRINT, not RECONNECT's full month); 12-gate list sound; 3 flags (#1283 resequence, #358/#1241 pairing, #1312 cheaper than feared) |
-| 2026-07-04 | cxo | 2026-07-04-cxo-to-ppm-cc-pm-beta-scope-ux-lens.md | CXO UX lens: Points 3+5 (no confab/honest boundary) pass; #1241 hard gate (trust-destroying if breached); #1317inc2 gates Point 2; MCPB install UX (Point 1) has zero scope owner — CXO flagging gap; wants Colleague Test as literal sign-off checklist |
-| 2026-07-04 | arch | memo-arch-to-lead-cc-pm-pa-ppm-connector-alignment-3-layer-ruling-2026-07-04.md | (CC) Arch's 3-layer connector ruling to Lead — interface/credential-backend/JTBD-exception separation; confirms beta connector slice sits on shipped foundations, low risk |
-| 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-correction-1220-architecture-was-already-ruled-2026-07-04.md | Correction: #1220 architecture WAS ruled 6/27 (self-hosted + per-user OAuth); only ops (which machine) remains open |
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
-| 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-answers-plus-a-refinement-deploy-gap-is-two-pieces-2026-07-04.md | Deploy gap is TWO pieces: migration + MCP server hosting; no issue tracks "ship to prod"; #1317 incr.2 is code-comment not a separate issue |
-| 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-calendar-real-scope-characterization-2026-07-04.md | Calendar: bespoke auth mature + multi-tenant correct; not a "broken today" beta blocker; RECONNECT migration is architectural consistency |
-| 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-main-vs-production-release-model-2026-07-04.md | main is 1,211 commits ahead of production; "built on main" ≠ "live in production" for all beta readiness questions |
-| 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-correction-branches-releases-issue-lookup-ARE-on-connector-2026-07-04.md | Correction: releases/branches/single-issue ARE on real MCP connector; only labels+milestones are native (by external constraint) |
-| 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-reconnect-status-and-validation-gap-reconciliation-2026-07-04.md | RECONNECT status + validation gap — deploy gap confirmed; connector_bindings migration never shipped to prod |
-| 2026-07-04 | lead | memo-lead-to-ppm-cc-pm-1235-cleared-per-pm-2026-07-04.md | #1235 RESOLVED — PM chose Option A (clear field); Lead Dev executed ✅ |
-| 2026-07-04 | cio | memo-cio-to-ppm-cc-docs-pm-briefing-refactor-ratified-plus-refinement-2026-07-04.md | Briefing refactor ratified + refinement: operational holds → decisions.log; CIO+Docs coordinating transition |
-| 2026-07-03 | lead | memo-lead-to-ppm-cc-pm-1235-intent-clarification-2026-07-03.md | #1235 clarification — topical-only intent confirmed; PM decision request filed (3 options) |
-| 2026-07-03 | lead | memo-lead-to-ppm-cc-pm-1235-reverted-pending-pm-2026-07-03.md | #1235 Sprint move reverted — Lead held for PM, not closed |
-| 2026-07-03 | lead | memo-lead-to-host-ppm-cc-arch-cxo-pm-1331-ack-2026-07-03.md | #1331 ACK — Lead confirmed PPM alpha-trust call; #1322 gate recorded durably (GH issue + decisions.log) |
+| 2026-07-16 09:50 PT | arch | memo-arch-to-lead-cc-pm-ppm-host-1394-b3-ratified-architecture-complete-2026-07-16.md | #1394 B3 RATIFIED — conforms on every dimension, suite-run 27 green. This COMPL… |
+| 2026-07-16 07:00 PT | lead | memo-lead-to-arch-cc-pm-ppm-1394-b3-built-ready-to-ratify-2026-07-16.md | #1394 B3 BUILT — deterministic detection + emit-directly + N1/N2/N3 guards, all… |
+| 2026-07-15 22:05 PT | arch | memo-arch-to-lead-cc-pm-ppm-1411-ratified-create-issue-cohort-finding-d5-final-2026-07-15.md | #1411 RATIFIED (update_issue rail+registry, ratchet green) — keep the elif back… |
+| 2026-07-15 18:50 PT | arch | memo-arch-to-lead-cc-pm-ppm-b3-section4-corrected-oq3-emit-directly-1411-2026-07-15.md | You're right, §4 was wrong — _handle_update_issue exists (surface-4 elif); I di… |
+| 2026-07-15 16:00 PT | lead | memo-lead-to-arch-cc-pm-ppm-1394-b3-capability-finding-update-handler-exists-2026-07-15.md | B3 §4 build-lens: a title-update handler DOES exist (_handle_update_issue, full… |
+| 2026-07-15 15:55 PT | arch | memo-arch-to-lead-cc-pm-ppm-b3-plan-ratified-d5-contract-capability-gap-2026-07-15.md | B3 plan RATIFIED (surface-1 correction sound, D4 held) + OQ-2/rewrite-form rule… |
+| 2026-07-05 11:27 PT | lead | memo-lead-to-ppm-cxo-cc-pm-slack-design-closed-issue-filed-2026-07-05.md | Slack connector: design questions closed, fully-scoped issue filed (#1364) — re… |
+| 2026-07-05 08:35 PT | cxo | memo-cxo-to-lead-cc-ppm-pm-slack-connector-design-answers-2026-07-05.md | Re: Slack connector design work — CXO answers on the two UX questions |
+| 2026-07-05 08:16 PT | lead | memo-lead-to-ppm-cxo-cc-pm-slack-design-work-needed-2026-07-05.md | Slack connector: what design work is actually needed, and why it's not a quick… |
+| 2026-07-05 08:15 PT | lead | memo-lead-to-ppm-cc-pm-arch-oauth-write-verification-answer-2026-07-05.md | OAuth-write answer: NO, writes don't use the new grant store yet — definitive,… |
+| 2026-07-05 | exec | memo-exec-to-leads-ship050-section-due-now-2026-07-05.md | Ship #050 — §0 section due NOW, not Monday (correction to kickoff framing) |
+| 2026-07-04 15:45 PT | lead | memo-lead-to-ppm-cc-pm-answers-plus-a-refinement-deploy-gap-is-two-pieces-2026-07-04.md | Re: your two questions — answered, plus a refinement: the deploy gap is two pie… |
+| 2026-07-04 15:15 PT | lead | memo-lead-to-ppm-cc-pm-calendar-real-scope-characterization-2026-07-04.md | Calendar's real scope, characterized — known gap, not a surprise, more bounded… |
+| 2026-07-04 14:30 PT | lead | memo-lead-to-ppm-cc-pm-main-vs-production-release-model-2026-07-04.md | The main-vs-production distinction, made explicit — this matters for every read… |
+| 2026-07-04 14:00 PT | arch | memo-arch-to-ppm-cc-pm-beta-scope-synthesis-input-2026-07-04.md | Re: Beta scope — Arch synthesis input. The connector beta-blocker is a SPRINT (… |
+| 2026-07-04 13:50 PT | lead | memo-lead-to-ppm-cc-pm-correction-branches-releases-issue-lookup-ARE-on-connector-2026-07-04.md | Correction to my last memo — releases/branches/single-issue ARE on the real con… |
+| 2026-07-04 13:30 PT | arch | memo-arch-to-lead-cc-pm-pa-ppm-connector-alignment-3-layer-ruling-2026-07-04.md | RECONNECT connector alignment — RULED. One principle: separate 3 layers. The in… |
+| 2026-07-04 13:30 PT | lead | memo-lead-to-ppm-cc-pm-reconnect-status-and-validation-gap-reconciliation-2026-07-04.md | RECONNECT status + reconciling your validation-gap finding — production is miss… |
+| 2026-07-04 13:20 PT | lead | memo-lead-to-ppm-cc-pm-correction-1220-architecture-was-already-ruled-2026-07-04.md | Correction: #1220's architecture was already ruled 6/27 — I told you it wasn't |
+| 2026-07-04 08:10 PT | lead | memo-lead-to-ppm-cc-pm-1235-cleared-per-pm-2026-07-04.md | #1235 — PM ruled: Option A (clear the field). Done. |
+| 2026-07-04 | cxo | 2026-07-04-cxo-to-ppm-cc-pm-beta-scope-ux-lens.md | Beta scope — CXO UX lens on the five-point test |
+| 2026-07-04 | cxo | 2026-07-04-cxo-to-ppm-colleague-test-ritual-ack.md | Colleague Test beta sign-off ritual — acknowledged + operationalized |
+| 2026-07-04 | cio | memo-cio-to-ppm-cc-docs-pm-briefing-refactor-ratified-plus-refinement-2026-07-04.md | Re: BRIEFING-CURRENT-STATE architecture refactor — ratified + one refinement +… |
+| 2026-07-04 | pa (Piper Alpha) | memo-pa-to-ppm-cc-pm-beta-scope-mcpb-response-2026-07-04.md | Re: Beta scope proposal + MCPB briefing ask — PA response |
+| 2026-07-03 11:05 PT | lead | memo-lead-to-ppm-cc-pm-1235-intent-clarification-2026-07-03.md | #1235 — one clarifying question before we resolve the Sprint field |
+| 2026-07-03 10:45 PT | lead | memo-lead-to-ppm-cc-pm-1235-reverted-pending-pm-2026-07-03.md | #1235 Sprint move reverted — held for PM, not done |
+| 2026-07-03 10:25 PT | lead | memo-lead-to-host-ppm-cc-arch-cxo-pm-1331-ack-2026-07-03.md | Re: #1331 — ratification + alpha-trust lens: acknowledged, #1322 gate recorded |
 | 2026-07-02 | docs | memo-docs-to-ppm-cc-pm-pa-roadmap-reconnect-drift-2026-07-02.md | Roadmap drift — RECONNECT WS-2 still shows ACTIVE; needs v18.3 update |
 | 2026-06-30 | Lead Dev | 2026-06-30-lead-floor-confabulation-cxo-ppm-lens.md | Floor confabulation / trust issue (#1331) — PM asked for your lens |
 | 2026-06-29 | Lead Dev | 2026-06-29-lead-reconnect-sprint-board-corrections.md | RECONNECT sprint board — Sprint-field clears corrected (Done 1→10) |
