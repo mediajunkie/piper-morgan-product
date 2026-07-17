@@ -14,7 +14,6 @@ from fastapi import APIRouter, Depends, HTTPException, status
 
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
-from services.domain import models as domain
 from web.api.dependencies import get_feedback_service
 
 router = APIRouter(prefix="/api/v1/feedback", tags=["feedback"])
@@ -53,31 +52,32 @@ async def submit_feedback(
                 detail="Feedback content is required",
             )
 
-        # Create feedback with ownership
-        feedback = domain.Feedback(
-            content=content,
-            feedback_type=feedback_type or "general",
-            user_id=current_user.sub,
-            owner_id=current_user.sub,
-        )
+        # #1436 B15: this route constructed a nonexistent domain.Feedback and
+        # called a nonexistent submit_feedback() — every submission 500'd. The
+        # real service API is capture_feedback(session_id, feedback_type,
+        # comment, ...) -> feedback_id (services/feedback/feedback_service.py).
+        from uuid import UUID as _UUID
 
-        created_feedback = await feedback_service.submit_feedback(feedback)
+        feedback_id = await feedback_service.capture_feedback(
+            session_id=f"api-{current_user.sub}",
+            feedback_type=feedback_type or "general",
+            comment=content,
+            user_id=_UUID(str(current_user.sub)),
+            source="api",
+        )
 
         logger.info(
             "feedback_submitted",
             user_id=current_user.sub,
-            feedback_id=created_feedback.id,
+            feedback_id=feedback_id,
             type=feedback_type,
         )
 
         return {
-            "id": created_feedback.id,
-            "content": created_feedback.content,
-            "type": created_feedback.feedback_type,
-            "user_id": created_feedback.user_id,
-            "created_at": (
-                created_feedback.created_at.isoformat() if created_feedback.created_at else None
-            ),
+            "id": feedback_id,
+            "content": content,
+            "type": feedback_type or "general",
+            "user_id": str(current_user.sub),
         }
 
     except HTTPException:
@@ -121,8 +121,13 @@ async def get_feedback(
     Issue #357: SEC-RBAC Phase 1.3 Endpoint Protection
     """
     try:
-        feedback_obj = await feedback_service.get_feedback_by_id(
-            feedback_id, owner_id=current_user.sub
+        # #1436 B15: was get_feedback_by_id() — doesn't exist; the real,
+        # owner-scoped read is get_feedback(feedback_id, user_id=...) and the
+        # domain field is `comment`, not `content`.
+        from uuid import UUID as _UUID
+
+        feedback_obj = await feedback_service.get_feedback(
+            feedback_id, user_id=_UUID(str(current_user.sub))
         )
 
         if not feedback_obj:
@@ -139,9 +144,9 @@ async def get_feedback(
 
         return {
             "id": feedback_obj.id,
-            "content": feedback_obj.content,
+            "content": feedback_obj.comment,
             "type": feedback_obj.feedback_type,
-            "user_id": feedback_obj.user_id,
+            "user_id": str(feedback_obj.user_id) if feedback_obj.user_id else None,
             "created_at": feedback_obj.created_at.isoformat() if feedback_obj.created_at else None,
         }
 
@@ -178,7 +183,14 @@ async def list_feedback(
     Issue #357: SEC-RBAC Phase 1.3 Endpoint Protection
     """
     try:
-        feedback_list = await feedback_service.get_feedback_by_user(current_user.sub)
+        # #1436 B15: was get_feedback_by_user() — doesn't exist; the real read
+        # is list_feedback(user_id=...) (WHERE-scoped to the owner) and the
+        # domain field is `comment`.
+        from uuid import UUID as _UUID
+
+        feedback_list = await feedback_service.list_feedback(
+            user_id=_UUID(str(current_user.sub))
+        )
 
         logger.info(
             "feedback_listed",
@@ -190,7 +202,7 @@ async def list_feedback(
             "feedback": [
                 {
                     "id": f.id,
-                    "content": f.content,
+                    "content": f.comment,
                     "type": f.feedback_type,
                     "created_at": f.created_at.isoformat() if f.created_at else None,
                 }
