@@ -333,6 +333,13 @@ class LLMIntentClassifier:
                 personalization_service,
             )
 
+            # Principal comes from the classify() stash (same idiom as the retry
+            # path at the bottom of this file) — _llm_classify has no user_id
+            # param, and the bare name NameError'd on every call, silently
+            # dropping the whole primary classification into the fallback ladder
+            # (caught by the smoke gate during the v0.8.11.0 cut).
+            user_id = getattr(self, "current_user_id", None)
+
             system_prompt = await personalization_service.resolve_system_prompt_standalone(
                 user_id
             )
