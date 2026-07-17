@@ -118,6 +118,16 @@ def _extract_degradation_message(error: Exception) -> str:
     Returns:
         User-friendly degradation message string
     """
+    # #1414: APIError wrappers (e.g. IntentClassificationFailedError) stringify
+    # to just "API Error [CODE]" — the real cause lives in
+    # details["original_error"]. Unwrap it BEFORE pattern-matching, or a dead
+    # key's quota error matches nothing and the user gets the generic
+    # "Something unexpected happened" (PM's Scenario-A incident) instead of the
+    # actionable #1404 key message.
+    wrapped_details = getattr(error, "details", None)
+    if isinstance(wrapped_details, dict) and wrapped_details.get("original_error"):
+        error = Exception(str(wrapped_details["original_error"]))
+
     error_str = str(error).lower()
 
     # Database/Connection errors
