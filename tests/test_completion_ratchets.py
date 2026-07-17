@@ -44,9 +44,9 @@ SHRINK_MSG = (
 )
 
 
-def _script_count(script: str) -> int:
+def _script_count(script: str, flag: str = "--count") -> int:
     out = subprocess.run(
-        [sys.executable, str(REPO_ROOT / "scripts" / script), "--count"],
+        [sys.executable, str(REPO_ROOT / "scripts" / script), flag],
         capture_output=True,
         text=True,
         cwd=REPO_ROOT,
@@ -101,6 +101,20 @@ def test_unscoped_reads_ratchet():
         "unscoped_reads",
         _script_count("check_unscoped_reads.py"),
         "pass the principal (username=/user_id=) or '# global-ok: <reason>'",
+    )
+
+
+@pytest.mark.smoke
+def test_unscoped_repo_reads_ratchet():
+    """ADR-079 D2b: owner-bearing repository reads without an owner predicate may
+    only decrease. The model set is DERIVED (D3) — a new owner-bearing table is
+    auto-covered, so genuinely-new unscoped reads raise this count and fail here.
+    Legit-indirect scoping (fetch-then-check, join/subquery) gets
+    '# global-ok: <how>' per the D4/D6 allowlist discipline (Arch calibrates)."""
+    _assert_ratchet(
+        "unscoped_repo_reads",
+        _script_count("check_unscoped_reads.py", flag="--count-repo"),
+        "add the owner predicate to the WHERE, or '# global-ok: <how it is scoped>'",
     )
 
 
