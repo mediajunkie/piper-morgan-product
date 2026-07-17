@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-17 09:30 PT | exec | memo-exec-to-leadership-ship-052-workstream-kickoff-2026-07-17.md | Ship #052 workstream review — kickoff (window Fri Jul 10–Thu Jul 16; §0-leads f… |
 | 2026-07-16 | web | memo-web-to-comms-cc-pm-calendar-sync-diagnosed-and-fixed-2026-07-16.md | Re: stale calendar sync — root cause found and fixed |
 | 2026-07-14 | code | memo-code-to-comms-editorial-calendar-csv-corruption-2026-07-14.md | /update-calendar corrupted a calendar row today — repaired, and a proposed fix… |
 | 2026-07-10 07:45 PT | exec | memo-exec-to-leadership-ship-051-workstream-kickoff-2026-07-10.md | Ship #051 workstream review — kickoff (window Fri Jul 3–Thu Jul 9; §0-leads for… |
