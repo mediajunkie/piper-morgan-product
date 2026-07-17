@@ -48,13 +48,13 @@ Rules: each fix **lowers its ratchet ceiling in the same commit** (the `MAX_DISP
 
 ### Phase 3 — Acceptance (the driver is the referee)
 Sprint exits when, on one clean run:
-- [ ] Scenario driver passes with xfails flipped to **strict**
-- [ ] Canonical suite green
-- [ ] Both lints green (CI-blocking, post-ratification)
-- [ ] Zero silent-death errors in a driver run's logs
-- [ ] Ratchet ceilings all ≤ census baselines, HIGHs at zero
+- [x] Scenario driver passes with xfails flipped to **strict** — *2026-07-17 12:50 PT: RESULT: PASS, 0 assertion failures, real LLM (turns 0/1/2 + both isolation probes green)*
+- [x] Canonical suite green — *smoke belt 565 passed / 1 skipped (same run-day)*
+- [x] Both lints green — *Arch-ratified 2026-07-17; growth-ratchet CI-gating is the ruled steady state (full-block self-flips at debt=0, per Arch's CI-flip guidance memo)*
+- [x] Zero silent-death errors in a driver run's logs — *0 matches for the swallow signatures; only loud honest failures (Slack no-token) present*
+- [x] Ratchet ceilings all ≤ census baselines, HIGHs at zero — *silent_death 254→244, unscoped_reads 64→59, repo_reads 39→36, NIE 9, TODO 78; every census HIGH fixed + closed*
 
-**This gate is identical to "ready for a second human tester."**
+**This gate is identical to "ready for a second human tester." — ✅ GATE MET 2026-07-17 ~12:50 PT** (v0.8.11.0 live on beta carries all of it except #1418, which is on `production` for the next increment). Remaining sprint-scope tail (MED/LOW clusters, #1436 Tier-1 remainder, #1433 ledger) is ratchet backlog by design — the sprint ends on the gate, not on exhaustion.
 
 ## Definition of done: ratchet, not zero
 HIGHs fixed; every remaining count **visible and monotonically shrinking**. 78 TODOs may survive the sprint; a silent 79th may not. The sprint ends on the acceptance gate, not on exhaustion.
