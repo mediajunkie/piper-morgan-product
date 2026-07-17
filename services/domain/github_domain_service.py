@@ -60,7 +60,9 @@ class GitHubDomainService:
     async def get_issue(self, repo_name: str, issue_number: int) -> Dict[str, Any]:
         """Get GitHub issue by repo and number for domain consumption"""
         try:
-            return await self._github_agent.get_issue(repo_name, issue_number)
+            # #1436 B13: router signature is (issue_number, *, owner, repo_name)
+            # — the old positional call put repo_name into issue_number.
+            return await self._github_agent.get_issue(issue_number, repo_name=repo_name)
         except GitHubAuthFailedError:
             logger.error("GitHub authentication failed", repo=repo_name, issue=issue_number)
             raise
@@ -176,8 +178,11 @@ class GitHubDomainService:
     ) -> Dict[str, Any]:
         """Update existing GitHub issue for domain consumption"""
         try:
+            # #1436 B13: router signature is (issue_number, title, body, state,
+            # labels, assignees, *, owner, repo_name) — the old call shifted
+            # every argument by one.
             return await self._github_agent.update_issue(
-                repo_name, issue_number, title, body, state, labels, assignees
+                issue_number, title, body, state, labels, assignees, repo_name=repo_name
             )
         except GitHubAuthFailedError:
             logger.error(
@@ -210,16 +215,16 @@ class GitHubDomainService:
     def get_connection_status(self) -> Dict[str, Any]:
         """Get GitHub connection status for domain monitoring"""
         try:
-            # Test connection by getting user info
-            user = self._github_agent.user
+            # #1436 B13: the router has no `.user`/`.client` (PyGithub-era attrs
+            # — every call here raised into the except and reported
+            # disconnected). Report what the router actually knows: whether it
+            # initialized. Deeper identity/rate-limit reporting needs a router
+            # status surface (none exists yet — honest None, not a guess).
+            initialized = bool(getattr(self._github_agent, "_initialized", False))
             return {
-                "connected": True,
-                "user": user.login if user else None,
-                "rate_limit_remaining": (
-                    self._github_agent.client.get_rate_limit().core.remaining
-                    if hasattr(self._github_agent, "client")
-                    else None
-                ),
+                "connected": initialized,
+                "user": None,
+                "rate_limit_remaining": None,
             }
         except Exception as e:
             logger.error("GitHub connection status check failed", error=str(e))

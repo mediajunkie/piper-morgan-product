@@ -2343,10 +2343,15 @@ What would you like to set up first?"""
                     limit=limit,
                 )
 
+                # #1436 (B12 family): domain.Todo carries `.text` (not `.title`)
+                # and a plain-str `.priority` — the old attribute reads raised
+                # AttributeError into the swallow below, so the agenda's Tasks
+                # section ALWAYS reported source-failed. Dict key stays "title"
+                # (the formatters' contract).
                 return [
                     {
-                        "title": todo.title,
-                        "priority": todo.priority.value if todo.priority else "medium",
+                        "title": todo.text,
+                        "priority": todo.priority or "medium",
                         "due_date": todo.due_date.isoformat() if todo.due_date else None,
                         "context": todo.context,
                     }
