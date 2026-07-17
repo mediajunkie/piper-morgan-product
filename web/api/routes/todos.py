@@ -10,7 +10,7 @@ Provides todo CRUD endpoints with ownership validation:
 from typing import List, Optional
 
 import structlog
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel
 
 from services.auth.auth_middleware import get_current_user
@@ -278,7 +278,11 @@ async def update_todo(
     todo_id: str,
     title: Optional[str] = None,
     description: Optional[str] = None,
-    status: Optional[str] = None,
+    # #1436 B5: renamed (public API preserved via alias) — a param literally
+    # named `status` shadowed the starlette `status` module, so every
+    # 404/400/500 branch in this function raised AttributeError instead of the
+    # intended HTTPException.
+    todo_status: Optional[str] = Query(None, alias="status"),
     priority: Optional[str] = None,
     current_user: JWTClaims = Depends(get_current_user),
     todo_repo=Depends(get_todo_repository),
@@ -292,7 +296,7 @@ async def update_todo(
         todo_id: Todo ID to update
         title: New todo title (optional)
         description: New todo description (optional)
-        status: New todo status (optional)
+        todo_status: New todo status (optional; query param name stays `status`)
         priority: New todo priority (optional)
         current_user: Current authenticated user
         todo_repo: Todo repository (injected)
@@ -329,8 +333,8 @@ async def update_todo(
         if description is not None:
             todo_obj.description = description
 
-        if status is not None:
-            todo_obj.status = status
+        if todo_status is not None:
+            todo_obj.status = todo_status
 
         if priority is not None:
             todo_obj.priority = priority
