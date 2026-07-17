@@ -25,9 +25,13 @@ from datetime import datetime, timezone
 from typing import TYPE_CHECKING, List, Optional
 from uuid import UUID, uuid4
 
+import structlog
+
 from services.database.session_factory import AsyncSessionFactory
 from services.domain.models import Todo
 from services.repositories.todo_repository import TodoRepository
+
+logger = structlog.get_logger()
 from services.todo_service import TodoService
 
 if TYPE_CHECKING:
@@ -144,11 +148,18 @@ class TodoManagementService:
             # Optional: Create knowledge node
             if self.knowledge_service:
                 try:
-                    await self.knowledge_service.create_todo_knowledge_node(saved_todo)
-                except Exception as e:
-                    # Knowledge graph failure shouldn't fail todo creation
-                    # Log error but continue
-                    print(f"Warning: Failed to create knowledge node: {e}")
+                    # #1436 B8: user_id was missing — the TypeError was swallowed
+                    # below (via print!, census F14), so the KG got a node for NO
+                    # todo ever created; downstream KG-todo features starved.
+                    await self.knowledge_service.create_todo_knowledge_node(
+                        saved_todo, str(user_id)
+                    )
+                except Exception as e:  # silent-ok: KG side-write is best-effort by design — todo creation itself succeeded and says so; failure is WARN-logged (#1436 B8)
+                    logger.warning(
+                        "todo_knowledge_node_creation_failed",
+                        todo_id=saved_todo.id,
+                        error=str(e),
+                    )
 
             # #984: Invalidate cached todo lists so the next floor query
             # reflects this new todo immediately.

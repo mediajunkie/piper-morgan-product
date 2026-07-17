@@ -1,6 +1,6 @@
 {
   "_comment": "Finish-the-Unfinished sprint (#1424) frozen ceilings, census 2026-07-16. Counts may only go DOWN; lower the ceiling in the same commit as the fix. See tests/test_completion_ratchets.py.",
-  "silent_death_core": 245,
+  "silent_death_core": 244,
   "unscoped_reads": 59,
   "notimplementederror": 9,
   "todo_markers": 78
