@@ -6752,10 +6752,16 @@ class IntentService:
             )
 
         # Reminders: "remind me"
+        # #1426 (census D3): the old copy — "I can't set reminders yet" — was a
+        # FALSE DENIAL: create_reminder shipped in #903 (pre-classifier +
+        # todo_handlers). This fallback fires only on phrasings the mapper
+        # missed, so ask for the re-phrase that routes instead of denying the
+        # capability exists.
         if "remind me" in msg_lower or "set a reminder" in msg_lower:
             return (
-                "I can't set reminders yet, but I can add a todo for that "
-                "so it shows up in your task list. Want me to do that?"
+                "I can set reminders — tell me what and when in one line "
+                '(for example: "remind me tomorrow at 3pm to review the PR") '
+                "and I'll set it up."
             )
 
         # Document creation: "create a doc", "create a document"
@@ -6809,11 +6815,14 @@ class IntentService:
         # by the pre-classifier and todo_handlers.
 
         # Upload file: "upload" + ("file" or "knowledge")
+        # #1426 (census D3): the old copy here — "I can't accept file uploads
+        # yet" — was a FALSE DENIAL: the Files page + upload API are fully
+        # shipped (web/api/routes/files.py, /files). Point at the real surface.
         if "upload" in msg_lower and any(kw in msg_lower for kw in ["file", "knowledge"]):
             return (
-                "I can't accept file uploads yet. If you paste the content here, "
-                "I can analyze it — or you can add files directly to Notion and "
-                "I'll be able to search them."
+                "You can upload files on the Files page (/files) — I can then "
+                "search and analyze them. Chat-side attachments aren't wired up "
+                "yet, but pasting content here works too."
             )
 
         # Generic fallback (Issue #489 original)

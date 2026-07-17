@@ -91,7 +91,9 @@ ERROR_FINGERPRINTS = [
 FALSE_DECLINE_FINGERPRINTS = [
     "still on the way",
     "can't do that from chat yet",
-    "make the change directly in the relevant tool",
+    # ("make the change directly in the relevant tool" removed 2026-07-16 —
+    # the #1426 copy fix retired that misdirecting sentence; the two phrases
+    # above still identify the generic decline until #1417's routing fix.)
 ]
 
 

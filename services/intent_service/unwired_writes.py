@@ -90,9 +90,14 @@ UNWIRED_WRITE_DECLINES: Dict[str, str] = {
 # Generic decline for any unwired write that lacks bespoke copy (defensive — the
 # handler should always find per-action copy above, but never confabulate even if
 # the set grows without copy being added).
+# #1426 (census D3): the old second sentence — "make the change directly in the
+# relevant tool (e.g. GitHub)" — MISDIRECTED for every non-GitHub-object request
+# (connect-integrations, api-keys, lists…), where the relevant surface is
+# Piper's own Settings/pages. Name both, presume neither.
 GENERIC_UNWIRED_WRITE_DECLINE = (
     "I can't do that from chat yet — that capability is still on the way. "
-    "For now you can make the change directly in the relevant tool (e.g. GitHub)."
+    "Depending on what you're after, it may already be available in Piper's own "
+    "pages (Settings, Files, Lists) or in the underlying tool (e.g. GitHub)."
 )
 
 

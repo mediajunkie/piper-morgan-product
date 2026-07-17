@@ -43,15 +43,19 @@ class TestContextualFallbacks:
             mapped_action="set_reminder",
             original_message="Remind me to review PRs tomorrow",
         )
-        assert "can't set reminders yet" in result
-        assert "todo" in result
+        # #1426: the old pin here asserted the FALSE DENIAL ("can't set
+        # reminders yet") — reminders shipped in #903; this fallback fires only
+        # on mapper-missed phrasings, so the honest copy coaches the re-phrase.
+        assert "I can set reminders" in result
+        assert "remind me tomorrow" in result
 
     def test_set_reminder_variant(self):
         result = self.service._get_contextual_fallback(
             mapped_action="set_reminder",
             original_message="Set a reminder to check deploys",
         )
-        assert "can't set reminders yet" in result
+        assert "I can set reminders" in result
+        assert "can't set reminders" not in result
 
     # --- Document creation ---
 
@@ -136,15 +140,17 @@ class TestContextualFallbacks:
             mapped_action="upload_file",
             original_message="Upload a file to the knowledge base",
         )
-        assert "can't accept file uploads yet" in result
-        assert "Notion" in result
+        # #1426: old pin asserted the FALSE DENIAL ("can't accept file uploads
+        # yet") — the Files page + upload API are shipped; copy points there.
+        assert "/files" in result
+        assert "can't accept file uploads" not in result
 
     def test_upload_knowledge_variant(self):
         result = self.service._get_contextual_fallback(
             mapped_action="upload_knowledge",
             original_message="Upload this file to the knowledge base",
         )
-        assert "can't accept file uploads yet" in result
+        assert "/files" in result
 
     # --- Generic fallback ---
 
