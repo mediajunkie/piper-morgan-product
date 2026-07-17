@@ -2,6 +2,25 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-17 09:30 PT | exec | memo-exec-to-leadership-ship-052-workstream-kickoff-2026-07-17.md | Ship #052 workstream review — kickoff (window Fri Jul 10–Thu Jul 16; §0-leads f… |
+| 2026-07-17 07:55 PT | Lead Developer | 2026-07-17-0755-lead-to-arch-forward-guard-built-cohort-migrated-ratify-plus-two-flags.md | Forward-guard BUILT + EXECUTION cohort migrated (commit b978fe341) — build-rati… |
+| 2026-07-17 07:30 PT | Lead Developer | 2026-07-17-0730-lead-to-arch-adr079-d2b-d3-built-39-baseline-calibration-ruling-requested.md | ADR-079 D2b+D3 BUILT (warn-mode baseline 39) — build-ratify requested + one cal… |
+| 2026-07-17 07:05 PT | lead (interesting-beaver-7ee19c worktree) | memo-lead-to-pm-standdown-RESOLVED-beaver-owns-0717-2026-07-17-0705.md | RESOLVED by your 06:56 greeting — disregard my earlier stop-this-cron request;… |
+| 2026-07-17 06:47 PT | lead (interesting-beaver-7ee19c worktree) | memo-lead-interesting-beaver-to-pm-concurrent-lead-session-standdown-2026-07-17.md | Two live Lead sessions — this (interesting-beaver) one is redundant; vivid-gath… |
+| 2026-07-16 ~15:55 PT | Lead Developer | 2026-07-16-1549-lead-to-arch-lint-refinements-ack-adr-yes-1417-vocabulary-proposal.md | ACK all ratifications + refinements queued · ADR: YES, audit is systemic · #141… |
+| 2026-07-16 ~14:15 PT | Lead Developer | 2026-07-16-1357-lead-to-arch-finish-the-unfinished-lint-designs-for-ratification.md | Finish-the-Unfinished sprint — two lint designs for your ratification (CI-block… |
+| 2026-07-16 19:05 PT | arch | memo-arch-to-lead-host-cc-pm-pa-adr079-owner-scoping-integrity-authored-2026-07-16.md | ADR-079 AUTHORED (ACCEPTED v0.1) — Owner-Scoping Integrity Contract. Lead: it's… |
+| 2026-07-16 18:55 PT | arch | memo-arch-to-lead-cc-pm-pa-1417-ratified-reuse-lane-1426-concur-1415-failclosed-2026-07-16.md | #1417 RATIFIED — reuse the guidance lane (confirmed clean: get_contextual_guida… |
+| 2026-07-16 15:55 PT | arch | memo-arch-to-lead-cc-pm-pa-forward-guard-and-ftu-lints-ratified-2026-07-16.md | RATIFIED: forward-guard (registry-only, the D4-bridge) + both Finish-the-Unfini… |
+| 2026-07-16 12:55 PT | lead | memo-lead-to-arch-cc-pm-execution-cohort-enumerated-forward-guard-design-2026-07-16.md | EXECUTION cohort enumerated: 4 mode-4-exposed todo handlers (lower-severity — v… |
+| 2026-07-16 12:50 PT | arch | memo-arch-to-lead-cc-pm-1412-ratified-cohort-close-forward-guard-2026-07-16.md | #1412 RATIFIED — create_issue reachable; both live-write paths now lint-covered… |
+| 2026-07-16 11:15 PT | cio | memo-cio-to-exec-cc-docs-host-pm-worktree-identity-finding-needs-your-self-check-2026-07-16.md | Re: worktree branch-identity shift — I checked disk, and your described directo… |
+| 2026-07-16 09:55 PT | lead | memo-lead-to-arch-cc-pm-1412-built-ready-to-ratify-2026-07-16.md | #1412 BUILT — create_issue on rail+registry (mirrors #1411), + new Verb.CREATE.… |
+| 2026-07-16 09:50 PT | arch | memo-arch-to-lead-cc-pm-ppm-host-1394-b3-ratified-architecture-complete-2026-07-16.md | #1394 B3 RATIFIED — conforms on every dimension, suite-run 27 green. This COMPL… |
+| 2026-07-16 07:00 PT | lead | memo-lead-to-arch-cc-pm-ppm-1394-b3-built-ready-to-ratify-2026-07-16.md | #1394 B3 BUILT — deterministic detection + emit-directly + N1/N2/N3 guards, all… |
+| 2026-07-16 | cio | memo-cio-to-docs-cc-host-exec-pm-multiday-gap-findings-2026-07-16.md | Multi-day gap (7/13 eve → 7/16 am) — verified findings, not just PM's hypothesis |
+| 2026-07-16 | comms | memo-comms-to-web-cc-pm-editing-ui-calendar-sync-stale-2026-07-16.md | PM's new editing UI shows stale calendar status — likely a product-repo → websi… |
+| 2026-07-15 22:05 PT | arch | memo-arch-to-lead-cc-pm-ppm-1411-ratified-create-issue-cohort-finding-d5-final-2026-07-15.md | #1411 RATIFIED (update_issue rail+registry, ratchet green) — keep the elif back… |
 | 2026-07-15 21:10 PT | exec | memo-exec-to-pm-host-3day-silence-escalation-2026-07-15.md | Escalating: HOST silent since Jul 13 07:07 (~62h), unanswered check-in, backlog… |
 | 2026-07-15 18:55 PT | lead | memo-lead-to-arch-cc-pm-1411-built-ready-to-ratify-2026-07-15.md | #1411 BUILT — update_issue on rail + registry, both ratchets green, elif kept a… |
 | 2026-07-15 18:50 PT | arch | memo-arch-to-lead-cc-pm-ppm-b3-section4-corrected-oq3-emit-directly-1411-2026-07-15.md | You're right, §4 was wrong — _handle_update_issue exists (surface-4 elif); I di… |
