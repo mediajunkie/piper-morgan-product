@@ -496,7 +496,7 @@ async def _test_integration(integration_id: str, user_id: Optional[str] = None) 
     """Perform active connection test for an integration"""
     try:
         if integration_id == "notion":
-            return await _test_notion()
+            return await _test_notion(user_id=user_id)
         elif integration_id == "slack":
             return await _test_slack(user_id=user_id)
         elif integration_id == "github":
@@ -510,15 +510,20 @@ async def _test_integration(integration_id: str, user_id: Optional[str] = None) 
         return {"success": False, "error": str(e), "error_type": "connection_failed"}
 
 
-async def _test_notion() -> Dict[str, Any]:
-    """Test Notion API connection using stored API key (Issue #562)"""
+async def _test_notion(user_id: Optional[str] = None) -> Dict[str, Any]:
+    """Test Notion API connection using stored API key (Issue #562).
+
+    #1436 B16: get_config requires a principal — the acting user's key when
+    present, the "system" marker otherwise (the router:157 convention), same
+    as the sibling _test_slack/_test_github helpers.
+    """
     try:
         import aiohttp
 
         from services.integrations.notion.config_service import NotionConfigService
 
         config_service = NotionConfigService()
-        config = config_service.get_config()
+        config = config_service.get_config(user_id or "system")
         api_key = config.api_key
 
         if not api_key:

@@ -1260,8 +1260,9 @@ async def start_slack_oauth(
         from services.integrations.slack.oauth_handler import SlackOAuthHandler
 
         # Issue #575: Verify credentials are configured BEFORE starting OAuth
+        # #1436 B16: get_config requires the principal — this route has it.
         config_service = SlackConfigService()
-        config = config_service.get_config()
+        config = config_service.get_config(str(current_user.sub))
 
         if not config.client_id or not config.client_secret:
             raise HTTPException(
@@ -1367,13 +1368,16 @@ async def handle_slack_oauth_callback(
 
 
 @router.get("/slack/status")
-async def get_slack_status():
+async def get_slack_status(request: Request):
     """
     Get Slack configuration status for setup wizard.
 
     Checks if Slack bot token exists and returns connection status.
 
     Issue #528: ALPHA-SETUP-SLACK
+    #1436 B16: get_config requires a principal — optional-auth via
+    request.state (the calendar-status pattern, #1434): the acting user's
+    scope when authenticated, the "system" marker otherwise.
 
     Returns:
         dict with configured status and optional workspace info
@@ -1381,8 +1385,9 @@ async def get_slack_status():
     try:
         from services.integrations.slack.config_service import SlackConfigService
 
+        user_id = getattr(request.state, "user_id", None)
         config_service = SlackConfigService()
-        slack_config = config_service.get_config()
+        slack_config = config_service.get_config(str(user_id) if user_id else "system")
 
         if slack_config.bot_token:
             return {

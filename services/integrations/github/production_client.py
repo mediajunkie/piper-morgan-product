@@ -106,8 +106,12 @@ class ProductionGitHubClient:
         config_service: Optional[GitHubConfigService] = None,
     ):
         # ADR-010: Use ConfigService for application layer configuration
+        # #1436 B16: get_client_configuration requires a principal; the bare
+        # constructor is the system-scoped default path ("system" marker per
+        # the config service's documented convention) — per-user callers pass
+        # `config` explicitly (#891 threading).
         self.config_service = config_service or GitHubConfigService()
-        self.config = config or self.config_service.get_client_configuration()
+        self.config = config or self.config_service.get_client_configuration("system")
 
         self._client: Optional[Github] = None
         self._authenticated_user = None
