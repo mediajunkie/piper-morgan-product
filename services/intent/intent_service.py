@@ -11294,24 +11294,28 @@ Content to summarize:
                 # Fetch recent issues
                 issues = await github_router.get_recent_issues(limit=100)
 
-                # Filter by search query if provided
+                # #1436 B10: the router returns DICTS (adapter shape: number/
+                # title/description/state/labels-as-strings) — this code read
+                # them as objects (.title/.body/.labels[].name), AttributeError'd
+                # on the first issue, and the except below returned [] — the
+                # learn-patterns path was silently dead (census 2026-07-16).
                 if search_query:
                     query_lower = search_query.lower()
                     issues = [
                         issue
                         for issue in issues
-                        if query_lower in (issue.title or "").lower()
-                        or query_lower in (issue.body or "").lower()
+                        if query_lower in (issue.get("title") or "").lower()
+                        or query_lower in (issue.get("description") or "").lower()
                     ]
 
-                # Convert to standard format
+                # Convert to standard format (output contract unchanged: "body")
                 return [
                     {
-                        "number": issue.number,
-                        "title": issue.title,
-                        "body": issue.body,
-                        "labels": [label.name for label in (issue.labels or [])],
-                        "state": issue.state,
+                        "number": issue.get("number"),
+                        "title": issue.get("title"),
+                        "body": issue.get("description", ""),
+                        "labels": list(issue.get("labels") or []),
+                        "state": issue.get("state"),
                     }
                     for issue in issues
                 ]
