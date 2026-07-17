@@ -1256,6 +1256,15 @@
       let activeConversationId = null;
       let sidebarCollapsed = false;
 
+      // #1418 — selection-integrity guards. Two failure modes killed the picker:
+      // (1) a late implicit/default switch (init auto-select racing a user click)
+      // stomped the explicit selection → "flashes the clicked chat, lands on most
+      // recent"; (2) two in-flight turn fetches resolving out of order rendered
+      // the loser last. The latch makes explicit selections final against
+      // defaults; the sequence token makes the LAST switch the only renderer.
+      let explicitSelectionMade = false;
+      let switchSeq = 0;
+
       // Toggle sidebar visibility
       function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
@@ -1600,12 +1609,22 @@
       }
 
       // Switch to a different conversation
-      async function switchConversation(conversationId) {
-        console.log('[DEBUG #574] switchConversation called:', conversationId, 'current:', activeConversationId);
+      async function switchConversation(conversationId, opts) {
+        // #1418: explicit = a user choice (click / URL param). Implicit = an
+        // init/default auto-select. A default may never override an explicit
+        // selection; among concurrent switches, only the latest renders.
+        const explicit = !opts || opts.explicit !== false;
+        console.log('[DEBUG #574] switchConversation called:', conversationId, 'current:', activeConversationId, 'explicit:', explicit);
+        if (!explicit && explicitSelectionMade) {
+          console.log('[DEBUG #1418] implicit switch ignored — explicit selection already made');
+          return;
+        }
+        if (explicit) explicitSelectionMade = true;
         if (conversationId === activeConversationId) {
           console.log('[DEBUG #574] Same conversation, returning early');
           return;
         }
+        const seq = ++switchSeq;
 
         setActiveConversation(conversationId);
 
@@ -1622,6 +1641,13 @@
 
           const turns = await response.json();
           console.log('[DEBUG #574] Turns received:', turns.length, turns);
+
+          // #1418: a newer switch superseded this one while we awaited — the
+          // stale response must not render (last-call-wins).
+          if (seq !== switchSeq) {
+            console.log('[DEBUG #1418] stale turns response discarded for:', conversationId);
+            return;
+          }
 
           // Clear current chat
           clearChat();
@@ -1741,10 +1767,14 @@
         // 1. URL parameter (explicit link)
         // 2. localStorage (refresh recovery)
         // 3. Most recent conversation (default for new sessions)
+        // #1418: only 1/2 are EXPLICIT choices; the most-recent fallback is an
+        // implicit default and must never override a selection the user makes
+        // (or made via the URL) — a racing duplicate init's default was landing
+        // AFTER the user's click and stomping it.
         const targetConversationId = conversationId || firstConversationId;
 
         if (targetConversationId) {
-          switchConversation(targetConversationId);
+          switchConversation(targetConversationId, { explicit: !!conversationId });
         }
       }
 
