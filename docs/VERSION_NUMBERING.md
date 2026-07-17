@@ -1,6 +1,6 @@
 # Piper Morgan Version Numbering Scheme
 
-**Current Version**: 0.8.9.2 (Alpha, released — security patch, closed #1344; `main` itself is at 0.8.9 pending its next cut; next: 0.9.0 beta at MVP)
+**Current Version**: 0.8.11.0 (Alpha, released 2026-07-17 — Finish-the-Unfinished sprint; `main` and `production` converged at the cut; next: 0.9.0 beta at MVP)
 **Last Updated**: July 3, 2026
 
 ---
