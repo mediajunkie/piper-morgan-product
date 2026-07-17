@@ -226,7 +226,7 @@ async def learn_pattern(pattern: PatternRequest) -> Dict[str, Any]:
         except ValueError:
             return validation_error(
                 message=f"Invalid pattern_type: {pattern.pattern_type}. Must be one of: query_pattern, response_pattern, workflow_pattern, integration_pattern, user_preference_pattern",
-                error_id="INVALID_PATTERN_TYPE",
+                details={"error_id": "INVALID_PATTERN_TYPE"},
             )
 
         pattern_id = await learning_loop.learn_pattern(
@@ -244,7 +244,7 @@ async def learn_pattern(pattern: PatternRequest) -> Dict[str, Any]:
         }
 
     except ValueError as e:
-        return validation_error(message=str(e), error_id="INVALID_PATTERN_DATA")
+        return validation_error(message=str(e), details={"error_id": "INVALID_PATTERN_DATA"})
     except Exception as e:
         return internal_error(
             message=f"Failed to learn pattern: {str(e)}",
@@ -277,7 +277,7 @@ async def apply_pattern(request: ApplyPatternRequest) -> Dict[str, Any]:
         if not success:
             return not_found_error(
                 message=f"Pattern not found or failed to apply: {request.pattern_id}",
-                error_id="PATTERN_NOT_FOUND",
+                details={"error_id": "PATTERN_NOT_FOUND"},
             )
 
         return {
@@ -288,7 +288,7 @@ async def apply_pattern(request: ApplyPatternRequest) -> Dict[str, Any]:
         }
 
     except ValueError as e:
-        return validation_error(message=str(e), error_id="INVALID_PATTERN_APPLICATION")
+        return validation_error(message=str(e), details={"error_id": "INVALID_PATTERN_APPLICATION"})
     except Exception as e:
         return internal_error(
             message=f"Failed to apply pattern: {str(e)}",
@@ -332,7 +332,7 @@ async def submit_feedback(feedback: FeedbackRequest) -> Dict[str, Any]:
         if not recorded:
             return not_found_error(
                 message=f"Pattern not found: {feedback.pattern_id}",
-                error_id="PATTERN_NOT_FOUND",
+                details={"error_id": "PATTERN_NOT_FOUND"},
             )
 
         return {
@@ -342,7 +342,7 @@ async def submit_feedback(feedback: FeedbackRequest) -> Dict[str, Any]:
         }
 
     except ValueError as e:
-        return validation_error(message=str(e), error_id="INVALID_FEEDBACK_DATA")
+        return validation_error(message=str(e), details={"error_id": "INVALID_FEEDBACK_DATA"})
     except Exception as e:
         return internal_error(
             message=f"Failed to record feedback: {str(e)}",
@@ -456,7 +456,7 @@ async def share_knowledge(request: KnowledgeSharingRequest) -> Dict[str, Any]:
     if cross_feature_service is None:
         return validation_error(
             message="Cross-feature knowledge service requires database integration (Phase 2)",
-            error_id="SERVICE_NOT_AVAILABLE",
+            details={"error_id": "SERVICE_NOT_AVAILABLE"},
         )
 
     try:
@@ -474,7 +474,7 @@ async def share_knowledge(request: KnowledgeSharingRequest) -> Dict[str, Any]:
         }
 
     except ValueError as e:
-        return validation_error(message=str(e), error_code="INVALID_KNOWLEDGE_DATA")
+        return validation_error(message=str(e), details={"error_id": "INVALID_KNOWLEDGE_DATA"})
     except Exception as e:
         return internal_error(
             message=f"Failed to share knowledge: {str(e)}",
@@ -1485,7 +1485,7 @@ async def provide_pattern_feedback(
             if not pattern:
                 return not_found_error(
                     message=f"Pattern {pattern_id} not found",
-                    error_id="PATTERN_NOT_FOUND",
+                    details={"error_id": "PATTERN_NOT_FOUND"},
                 )
 
             # Apply feedback based on action
@@ -1516,7 +1516,7 @@ async def provide_pattern_feedback(
             else:
                 return validation_error(
                     message=f"Invalid action: {action}. Must be 'accept', 'reject', or 'dismiss'",
-                    error_id="INVALID_FEEDBACK_ACTION",
+                    details={"error_id": "INVALID_FEEDBACK_ACTION"},
                 )
 
             await session.commit()
