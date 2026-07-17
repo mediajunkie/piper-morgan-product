@@ -1,41 +1,27 @@
-# Alpha Known Issues (v0.8.9)
+# Alpha Known Issues (v0.8.11.0)
 
-**Version**: 0.8.9
-**Last Updated**: June 22, 2026
+**Version**: 0.8.11.0
+**Last Updated**: July 17, 2026
 
 This document helps alpha testers avoid wasting time on things we already know about.
 
-v0.8.9 covers the full stack through D1/RECONNECT plus RECONNECT WS-1, the security layer (field encryption + auth hardening), and Design D2 (token system + mobile nav + Radar rename). The 252/252 canonical regression baseline (D1 gate) is unchanged. What's below are the rough edges that survived those gates.
+v0.8.11.0 is the "Finish the Unfinished" release: a systematic audit of half-done work across the whole codebase, fixes for every serious problem it found, and build-time enforcement so the same classes of bugs can't quietly return. The smoke gate was 565 tests green (1 skipped) at the release cut. What's below are the rough edges that remain.
 
 ---
 
-## Recent Improvements (Fixed in 0.8.9)
+## Recent Improvements (Fixed in 0.8.11)
 
 These are the changes alpha testers are most likely to notice. If something on this list still seems broken for you, please report it.
 
-### Connector config now persists across restarts
-
-GitHub repo config and integration preferences are now stored in the database. Restarts no longer lose your connector configuration. When GitHub isn't configured, Piper now surfaces an honest "not connected" state rather than guessing or failing silently.
-
-### Real standup pipeline
-
-The hollow `MorningStandupWorkflow` is retired. `StandupAssembler` is the live pipeline — it draws from connector data and Radar sources. Ask Piper for your standup in the chat interface.
-
-### User secrets encrypted at rest
-
-The `user_api_keys` table now stores secrets encrypted (AES-256-GCM, HKDF per-field key derivation). Any existing plaintext secrets are migrated on `alembic upgrade head`. BYOC keys are now routed per-request, completing the end-to-end BYOC flow.
-
-### Auth hardening
-
-`admin_compose` route removed. Auth exemption list is now lint-enforced — no new exemptions without an explicit rationale comment.
-
-### Documents → Radar rename
-
-The "Documents" nav label is renamed to "Radar" throughout — nav, page headers, breadcrumbs. Standup content and work items are first-class Radar data sources.
-
-### Mobile nav
-
-Mobile nav is implemented (hamburger → drawer pattern). The responsive shell adapts across viewport widths. The design token system is fully applied to the app shell.
+- **[#1422](https://github.com/mediajunkie/piper-morgan-product/issues/1422)** — Personality questionnaire answers persist and shape Piper's tone again. Answers from before 0.8.11 were unrecoverable; re-answer once.
+- **[#1415](https://github.com/mediajunkie/piper-morgan-product/issues/1415)** — LLM provider selection is per-user; one user's setup no longer pins the whole instance to their provider.
+- **[#1416](https://github.com/mediajunkie/piper-morgan-product/issues/1416)** — Greetings with a question attached get the question answered; only pure pleasantries get the short greeting.
+- **[#1417](https://github.com/mediajunkie/piper-morgan-product/issues/1417)** — "Connect my GitHub"-style requests get real setup guidance (Settings → Integrations) instead of a generic decline.
+- **[#1425](https://github.com/mediajunkie/piper-morgan-product/issues/1425)** — Status/agenda/priority answers distinguish "I couldn't check" from "genuinely empty" — no more false "no pending tasks."
+- **[#1426](https://github.com/mediajunkie/piper-morgan-product/issues/1426)** — False capability denials removed: Piper no longer claims it can't accept file uploads or set reminders.
+- **[#1414](https://github.com/mediajunkie/piper-morgan-product/issues/1414)** — LLM key and quota problems surface an honest message about the key instead of "Something unexpected happened."
+- **[#1420](https://github.com/mediajunkie/piper-morgan-product/issues/1420) / [#1421](https://github.com/mediajunkie/piper-morgan-product/issues/1421) / [#1434](https://github.com/mediajunkie/piper-morgan-product/issues/1434)** — Owner-scoping fixes: similarity search and default-project resolution are scoped to your account and deny rather than fall back to shared data; an auth check that silently fell back to a global key is fixed.
+- **[#1435](https://github.com/mediajunkie/piper-morgan-product/issues/1435)** — List/todo metadata persists; it was previously discarded silently on every save.
 
 ---
 
@@ -49,26 +35,25 @@ _None currently at P0._
 
 | Issue | Description | Workaround |
 |-------|-------------|------------|
+| [#1418](https://github.com/mediajunkie/piper-morgan-product/issues/1418) | Conversation picker sometimes loads the most recent chat regardless of which one you selected | Fix in progress; re-select or refresh |
 | [#1105](https://github.com/mediajunkie/piper-morgan-product/issues/1105) | Settings UI sometimes requires re-pasting API key even when saved correctly server-side | Restart the server after saving — keychain read works correctly on restart |
 | [#1164](https://github.com/mediajunkie/piper-morgan-product/issues/1164) | "Start private session" toggle in History slide-out is UI-only — no backend behavior | Cosmetic; don't rely on it |
 | [#1216](https://github.com/mediajunkie/piper-morgan-product/issues/1216) | "What have you learned about my workstyle?" claims a seed-vs-real distinction the system can't actually make | Report these — they're honesty gaps |
 | [#1256](https://github.com/mediajunkie/piper-morgan-product/issues/1256) | Stakeholder-update queries occasionally misclassify as update_document_query | Rephrase as "write a stakeholder update for..." if response feels off |
 
-### Security / multi-tenancy (being worked)
+### Security / multi-tenancy
 
 | Issue | Description | Status |
 |-------|-------------|--------|
-| [#1241](https://github.com/mediajunkie/piper-morgan-product/issues/1241) | Some content not fully anchored to user auth — multi-tenancy completeness audit | Architect-owned; being investigated. Use test data only. |
+| [#1241](https://github.com/mediajunkie/piper-morgan-product/issues/1241) | Some content not fully anchored to user auth — multi-tenancy completeness | 0.8.11's audit shipped owner-scoping fixes (#1420, #1421, #1434); broader completeness work continues. Use test data only. |
 
 ---
 
 ## Carryover (Being Worked)
 
-These are known architectural rough edges from prior sprints:
-
 | Issue | What You Might See | Status |
 |-------|-------------------|--------|
-| [#1110](https://github.com/mediajunkie/piper-morgan-product/issues/1110) | Slack latent bug — `_make_request` calls `get_config()` without `user_id` | RECONNECT-WS7 scope; in progress |
+| [#1110](https://github.com/mediajunkie/piper-morgan-product/issues/1110) | Slack latent bug — `_make_request` calls `get_config()` without `user_id` | In progress |
 | [#1258](https://github.com/mediajunkie/piper-morgan-product/issues/1258) | LAUNCH-ENV: inherited empty Anthropic env vars can shadow real key at server startup | Known; strip vars with `env -u ANTHROPIC_API_KEY ...` on launch |
 
 ---
@@ -77,8 +62,12 @@ These are known architectural rough edges from prior sprints:
 
 | Feature | Status | What Works | What Doesn't |
 |---------|--------|------------|--------------|
-| **BYOC credentials** | Mostly complete | Keys stored in keychain; server reads correctly; per-request routing live | Settings UI re-paste bug (#1105); macOS keychain only |
-| **Data encryption** | Partial | `user_api_keys` secrets encrypted at rest (0.8.9); passwords bcrypt-hashed | Content/PII at rest not yet encrypted; use test data only |
+| **Todos REST API** | Mocked | Chat todos are real and persist; Todos UI works | The `/api/v1/todos` REST endpoints still return mocked data ([#1427](https://github.com/mediajunkie/piper-morgan-product/issues/1427)) |
+| **Slack `/standup`** | Partial | Slack outbound, DMs, @-mentions | `/standup` command sections have known gaps ([#1429](https://github.com/mediajunkie/piper-morgan-product/issues/1429)) |
+| **Learning dashboard** | Partial | Learning routes return clean errors now (no more 500s) | Dashboard itself has known gaps ([#1430](https://github.com/mediajunkie/piper-morgan-product/issues/1430)) |
+| **Knowledge-graph similarity** | Filling | Accumulation re-enabled this release; new activity is indexed as it happens | Similarity features stay sparse until enough new activity accumulates |
+| **BYOC credentials** | Mostly complete | Keys stored per-user, encrypted at rest; per-request routing; per-user provider selection | Settings UI re-paste bug (#1105) |
+| **Data encryption** | Partial | API-key secrets encrypted at rest; passwords bcrypt-hashed | Content/PII at rest not yet encrypted; use test data only |
 | **GitHub OAuth** | Not started | PAT token auth works | OAuth connect flow planned for a future release |
 | **History privacy toggle** | UI stub only | Toggle renders correctly | No backend — doesn't do anything yet (#1164) |
 
@@ -86,43 +75,37 @@ These are known architectural rough edges from prior sprints:
 
 ## Needs Testing
 
-These features are complete in 0.8.9 but need real-world validation:
+These features shipped in 0.8.11 and need real-world validation:
 
 | Feature | What to Test | How to Access |
 |---------|--------------|---------------|
-| **Connector config persistence** | Configure a GitHub repo, restart the server — does it remember? | Settings → Integrations |
-| **Honest no-repo UX** | Skip or remove GitHub config — does Piper say "not connected" rather than guessing? | Remove repo config, ask about issues |
-| **StandupAssembler** | Ask "what's my standup?" in chat — do you get a real, assembled response? | Chat interface |
-| **Per-user LLM key routing** | Enter BYOC key, make requests — confirm your provider usage dashboard shows activity | Settings → API Keys, then provider dashboard |
-| **Mobile nav** | Open on a phone or narrow browser window — does hamburger → drawer work? | Narrow the browser window |
-| **Radar rename** | Is "Radar" the label everywhere — nav, page headers, breadcrumbs? | All navigation surfaces |
-| **Conscious Floor** | Ask Piper things it shouldn't know — does it say "I don't have enough context" or fabricate? | Just chat normally |
-| **BYOC key persistence** | Enter API keys in Settings, restart the server — do they persist? | Settings → Integrations |
+| **Questionnaire → tone** | Re-answer the questionnaire, then chat — does Piper's tone reflect your answers? | `python main.py preferences` or Settings |
+| **Per-user provider** | Set your own key and provider — does chat use your provider? | Settings → LLM Keys, then your provider's usage dashboard |
+| **Greeting + question** | "Hi! What can you help me with?" — does the question get answered? | Chat |
+| **Connect guidance** | "connect my github" / "can you connect my slack" — real guidance, not a decline? | Chat |
+| **Honest status claims** | Ask for status/agenda/standup — are todo/issue claims honest? "I couldn't check" is correct on failure | Chat |
+| **Honest key errors** | Break your API key, send a message — honest key message, not "Something unexpected happened"? | Settings → LLM Keys, then chat |
+| **Session recall** | Create an issue in chat, then ask "what did we create this session?" | Chat |
 
 ---
 
 ## What Works
 
-- **Conversational AI**: LLM-grounded floor for unmatched queries; antecedent resolution ("it" / "that"); honest refusal when context is missing
-- **Connector infrastructure**: DB-backed config, survives restarts; honest no-repo UX; `StandupAssembler` pipeline
-- **Security**: AES-256-GCM field encryption; encrypted `user_api_keys` secrets; per-user LLM key routing; auth-exempt lint enforcement
-- **Files**: Search, preview, bulk download, drag & drop upload, freeform tags
-- **Design**: Token system applied to app shell; responsive shell; mobile nav; Documents → Radar rename
-- **Integrations**: Slack (inbound via Socket Mode, outbound, DMs, @-mentions); GitHub (issue summarization, repo resolution, lifecycle); Notion (append_blocks, URL unfurling); Calendar
-- **BYOC & Settings**: API keys in macOS keychain via Settings UI; per-request key routing; Radar as default home
-- **Setup & Onboarding**: GUI setup wizard, system health checks, API key validation, user account creation
-- **Core Infrastructure**: Multi-user, JWT auth, bcrypt passwords; PostgreSQL, Redis, ChromaDB (Debian 12/bookworm); 252/252 canonical regression baseline
+- **Conversational AI**: LLM-grounded responses; greeting + question handled together; honest "I couldn't check" on source failures; honest key errors; session recall
+- **Todos & Lists**: chat todos real and persistent; metadata persists (#1435); owner-scoped
+- **Personalization**: questionnaire shapes tone (#1422); per-user provider selection (#1415); per-user keys encrypted at rest
+- **Files**: upload/download, in-browser preview, search, freeform tags, bulk download
+- **Integrations**: GitHub connector reads (issue summarization, repo resolution); Slack outbound, DMs, @-mentions; connect-setup guidance (#1417)
+- **Core Infrastructure**: multi-user with owner-scoped access; JWT auth, bcrypt passwords; PostgreSQL, Redis, ChromaDB; smoke gate 565 green at cut
 
 ---
 
-## Planned for Next Sprints
+## In Progress / Next
 
-| Sprint | Focus | Status |
-|--------|-------|--------|
-| RECONNECT (remaining WS) | Connector refactor continued — WS7 Slack latent bug, remaining WS | Active |
-| M4: Trust + Learning | Learning system, trust gradient, preference persistence | Backlog |
-| M5: Distribution + Polish | Registration flow, priority engine, polish | Backlog |
-| Beta (0.9.0) | Target: July 4, 2026 | — |
+- Conversation picker fix ([#1418](https://github.com/mediajunkie/piper-morgan-product/issues/1418))
+- Real `/api/v1/todos` REST surface ([#1427](https://github.com/mediajunkie/piper-morgan-product/issues/1427))
+- Slack `/standup` sections ([#1429](https://github.com/mediajunkie/piper-morgan-product/issues/1429)) and learning dashboard ([#1430](https://github.com/mediajunkie/piper-morgan-product/issues/1430))
+- Beta (0.9.0) is milestone-gated — it ships when the beta criteria are met, not on a calendar date
 
 ---
 
@@ -145,8 +128,8 @@ ERROR MESSAGE: [if any]
 
 - [ALPHA_QUICKSTART.md](ALPHA_QUICKSTART.md) — Quick setup
 - [ALPHA_TESTING_GUIDE.md](ALPHA_TESTING_GUIDE.md) — What to test and how
-- [Release Notes v0.8.9](releases/RELEASE-NOTES-v0.8.9.md) — Full 0.8.9 changelog
+- [Release Notes v0.8.11.0](releases/RELEASE-NOTES-v0.8.11.0.md) — Full 0.8.11.0 changelog
 
 ---
 
-_Last Updated: June 22, 2026_
+_Last Updated: July 17, 2026_

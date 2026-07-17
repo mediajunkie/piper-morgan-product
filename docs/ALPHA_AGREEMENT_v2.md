@@ -2,7 +2,7 @@
 
 **Effective Date: December 11, 2025**
 **Software: Piper Morgan AI PM Assistant**
-**Version: 0.8.9-alpha**
+**Version: 0.8.11.0-alpha**
 
 ## 1. Acceptance of Terms
 
@@ -12,7 +12,7 @@ By cloning, downloading, installing, or using this software, you acknowledge tha
 
 You acknowledge that:
 
-- This is pre-release, experimental software (version 0.8.9-alpha)
+- This is pre-release, experimental software (version 0.8.11.0-alpha)
 - It contains known and unknown bugs, errors, and incomplete features
 - It may crash, lose data, or behave unpredictably
 - Features may be added, removed, or changed without notice
@@ -148,6 +148,6 @@ GitHub: https://github.com/mediajunkie/piper-morgan-product
 
 ---
 
-_Last Updated: March 4, 2026_
+_Last Updated: July 17, 2026_
 _Version: 2.3_
-_Software Version: 0.8.9-alpha_
+_Software Version: 0.8.11.0-alpha_

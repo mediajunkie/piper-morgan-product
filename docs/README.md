@@ -4,7 +4,7 @@
 
 **An AI-powered product management assistant — and an experiment in human-AI collaboration.**
 
-Current version: **v0.8.9 alpha** · [pipermorgan.ai](https://pipermorgan.ai) · [GitHub](https://github.com/mediajunkie/piper-morgan-product)
+Current version: **v0.8.11.0 alpha** · [pipermorgan.ai](https://pipermorgan.ai) · [GitHub](https://github.com/mediajunkie/piper-morgan-product)
 
 ---
 
@@ -26,7 +26,7 @@ If you're part of the alpha:
 - **[Testing Guide](ALPHA_TESTING_GUIDE.md)** — what to test and how to give feedback
 - **[Known Issues](ALPHA_KNOWN_ISSUES.md)** — current limitations
 - **[Alpha Agreement](ALPHA_AGREEMENT_v2.md)** — terms and expectations
-- **[Release Notes v0.8.9](releases/RELEASE-NOTES-v0.8.9.md)** — what changed in the latest release
+- **[Release Notes v0.8.11.0](releases/RELEASE-NOTES-v0.8.11.0.md)** — what changed in the latest release
 
 Not in the alpha yet? You can follow along at [pipermorgan.ai](https://pipermorgan.ai) — we publish weekly ships, building narratives, and insights about what we're learning.
 

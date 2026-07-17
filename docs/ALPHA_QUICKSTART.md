@@ -1,6 +1,6 @@
 # Piper Morgan Alpha - Quick Start
 
-**Version**: 0.8.9
+**Version**: 0.8.11.0
 **Branch**: `production` (stable alpha releases)
 **For**: Experienced developers who want to dive in fast
 
@@ -29,29 +29,29 @@
 
 ---
 
-## What's New in 0.8.9
+## What's New in 0.8.11
 
-This release closes three fronts: connector infrastructure (RECONNECT WS-1), field-level security, and the Design D2 token system and mobile nav.
+This release is a systematic sweep through half-finished corners of the product: four parallel audits over the whole codebase, fixes for every serious problem they found, and build-time guards so the same classes of bugs can't quietly return. What you'll feel as a tester: **Piper stops lying** — about your data, about its capabilities, and about what went wrong.
 
-**Connector infrastructure (RECONNECT WS-1)** — Connector config now lives in the database, not a JSON file or in-memory store. Repo config and integration state survive restarts. When GitHub isn't connected, Piper says so honestly rather than guessing or failing silently.
+**Personality questionnaire works again** (#1422) — Your questionnaire answers now actually shape Piper's tone: warmth, confidence, level of detail. A database column lost in an earlier migration had been silently discarding them. Prior answers were unrecoverable, so re-answer the questionnaire once after updating.
 
-**Real standup pipeline** — The hollow standup workflow is retired. `StandupAssembler` is the real thing: it pulls from live connector data, Radar sources, and your context. Ask Piper for your standup in chat; the `/api/v1/standup/today` endpoint is the canonical path.
+**Your LLM provider choice is respected** (#1415) — Provider selection is now per-user. One user's setup can no longer pin the whole instance to their provider — your default provider and authorized list are yours alone.
 
-**Field encryption** — User secrets are now encrypted at rest using AES-256-GCM with HKDF per-field key derivation. Your API keys in the database are encrypted, not plaintext. This is the first-generation implementation of the security architecture.
+**Greetings answer your actual question** (#1416) — "Hi! How do I address you?" gets the question answered. Only pure pleasantries get the short greeting response.
 
-**Per-user LLM key routing** — Your BYOC API key (brought via Settings in D1) is now routed per-request. Each inference call uses your key when present, falling back to the server key. The BYOC credential flow is end-to-end complete.
+**"Connect my GitHub" gets real guidance** (#1417) — Asking to connect GitHub or another tool now points you at Settings → Integrations with real instructions, instead of a wrong generic decline.
 
-**Auth hardening** — The `admin_compose` route is removed. The auth exemption list is now lint-enforced: any new exemption requires an explicit rationale, or CI fails.
+**No more false "there is nothing" claims** (#1425) — Status, agenda, and priority answers now distinguish "I couldn't check" from "genuinely empty." If the todo lookup fails, Piper says "I couldn't check your todos just now" — never a false "no pending tasks."
 
-**Design D2 — token system + mobile nav** — The design token system is fully applied to the app shell. The responsive shell adapts across viewport widths. Mobile nav is implemented (hamburger → drawer), not just tolerated.
+**Honest error messages for API-key problems** (#1414) — When your LLM key is missing, invalid, or out of quota, Piper says so instead of "Something unexpected happened."
 
-**Documents → Radar** — The "Documents" nav label is renamed to "Radar" throughout. Standup content and work items are now first-class Radar data sources.
+**Session memory** (#1394) — Ask "what did we create this session?" and Piper recalls it from a real ledger of session activity. Follow-ups like "update the title" resolve to the issue you just created.
 
-**Dockerfile → bookworm** — The production Dockerfile upgrades to Debian 12 (bookworm) to satisfy chromadb's SQLite ≥3.35 requirement.
+**Also in this release** — Owner-scoping fixes so searches and defaults can't leak across users (#1420, #1421, #1434); list/todo metadata that actually persists instead of being silently discarded on save (#1435); and an end to false capability denials — Piper no longer claims it can't accept file uploads or set reminders when it can (#1426).
 
-**Database Migration Required**: Run `alembic upgrade head` after updating (includes secret-column encryption migration).
+**Database Migration Required**: Run `alembic upgrade head` after updating (two migrations: the session-activity ledger and the restored preferences column).
 
-See [Release Notes v0.8.9](releases/RELEASE-NOTES-v0.8.9.md) for full details.
+See [Release Notes v0.8.11.0](releases/RELEASE-NOTES-v0.8.11.0.md) for full details.
 
 ---
 
@@ -259,25 +259,23 @@ After logging in to http://localhost:8001:
 
 ---
 
-## Testing Focus for 0.8.9
+## Testing Focus for 0.8.11
 
 **What's Stable** (light testing recommended):
 - ✅ Setup wizard (GUI and CLI)
 - ✅ Login/authentication
-- ✅ Lists, Todos, Projects management
+- ✅ Lists, Todos, Projects management (chat todos are real; the REST `/api/v1/todos` endpoint is still mocked, #1427)
 - ✅ Files upload/download/preview/tagging
-- ✅ Integration Dashboard and OAuth connections
-- ✅ Slack outbound, DMs, @-mentions
-- ✅ Radar as default home workspace
-- ✅ Conscious Floor (honest no-context responses)
+- ✅ GitHub connector reads (issue summaries, repo resolution)
+- ✅ Per-user API keys, encrypted at rest
 
 **Where to Focus Testing** (these need your attention):
-- 🔍 **Connector config persistence**: Configure a GitHub repo, restart the server — does it remember the config?
-- 🔍 **Honest no-repo UX**: Remove or skip GitHub config — does Piper tell you it's not connected rather than guessing?
-- 🔍 **Standup via chat**: Ask "what's my standup?" in the chat interface — does `StandupAssembler` return a real response?
-- 🔍 **BYOC key routing**: Enter your API key in Settings, make a few requests — confirm your key is being used (check your provider's usage dashboard if unsure)
-- 🔍 **Mobile nav**: Open Piper on a phone or narrow browser window — does the hamburger → drawer nav work?
-- 🔍 **Radar rename**: Is "Radar" (not "Documents") the label throughout the nav and page headers?
+- 🔍 **Questionnaire → tone shift**: Re-answer the personality questionnaire, then chat — does Piper's tone actually reflect your answers?
+- 🔍 **Your own provider**: Set your own LLM key and provider in Settings → LLM Keys — does chat use your provider? (Check your provider's usage dashboard.)
+- 🔍 **Greeting + question**: Send "Hi!" plus a real question in one message — does the question get answered?
+- 🔍 **Connect guidance**: Try "connect my github" or "can you connect my slack" — do you get real setup guidance pointing at Settings → Integrations?
+- 🔍 **Honest status claims**: Ask for your status, agenda, or standup — are the claims about your todos and issues honest? "I couldn't check" is correct when a lookup fails; a false "nothing found" is a bug.
+- 🔍 **Session recall**: Create an issue in chat, then ask "what did we create this session?" — does Piper recall it?
 
 ---
 
@@ -443,60 +441,46 @@ After `python main.py` starts the server at http://localhost:8001:
 
 ---
 
-## What's Working in 0.8.9
+## What's Working in 0.8.11
 
-✅ **Conversational AI (M2 Conscious Floor)**:
-   - LLM-grounded floor for unmatched queries — Piper's voice, not templates
-   - Context assembly: blocked items, active sprint, recent activity, calendar
-   - Antecedent resolution ("it" and "that" resolve correctly across turns)
-   - Honest refusal when context is missing (no fabrication)
+✅ **Conversational AI**:
+   - LLM-grounded responses in Piper's voice, drawing on your work context
+   - Greeting + question handled together — your question gets answered (#1416)
+   - Honest answers when a data source fails — "I couldn't check" instead of a false "nothing found" (#1425)
+   - Honest error messages when your LLM key is missing, invalid, or out of quota (#1414)
+   - Session memory: "what did we create this session?" recalls what you actually did (#1394)
 
-✅ **Connector Infrastructure (RECONNECT WS-1)**:
-   - DB-backed connector config — survives restarts
-   - Honest no-repo UX when GitHub isn't connected
-   - `StandupAssembler` pipeline replacing the hollow workflow
+✅ **Todos & Lists (via chat and UI)**:
+   - Create and manage todos conversationally — chat todos are real and persist
+   - List/todo metadata persists correctly (#1435)
+   - Note: the REST `/api/v1/todos` endpoint is still mocked (#1427) — use chat or the UI pages
 
-✅ **Security (field encryption)**:
-   - AES-256-GCM field encryption with HKDF per-field key derivation
-   - `user_api_keys` secret column encrypted at rest
-   - Per-user LLM key routing (BYOC end-to-end complete)
-   - Auth-exempt-list lint enforcement
+✅ **Personalization**:
+   - Personality questionnaire shapes Piper's warmth, confidence, and depth (#1422)
+   - Per-user LLM provider selection — your default and authorized providers are yours (#1415)
+   - Per-user API keys, encrypted at rest (AES-256-GCM)
 
-✅ **Files (M3)**:
-   - Search by name and filter by type
-   - In-browser file preview
-   - Bulk download as zip (checkbox select)
-   - Drag & drop upload (multi-file)
-   - Freeform tags with search
-
-✅ **Design (D2)**:
-   - Token system fully applied to the app shell
-   - Responsive shell (adapts across viewport widths)
-   - Mobile nav (hamburger → drawer)
-   - Documents → Radar rename throughout
+✅ **Files**:
+   - Upload, download, and in-browser preview
+   - Search by name, filter by type, freeform tags
+   - Drag & drop multi-file upload, bulk download as zip
 
 ✅ **Integrations**:
-   - Slack: inbound via Socket Mode, outbound, DMs, @-mentions
-   - GitHub: issue summarization from live data, repo resolution, lifecycle
-   - Notion: real append_blocks, URL unfurling
-   - Calendar source aggregator
-
-✅ **BYOC & Settings**:
-   - API keys stored in macOS keychain via Settings UI
-   - Per-user LLM key routing per-request
-   - Radar as default home workspace
+   - GitHub connector reads: issue summarization from live data, repo resolution
+   - "Connect my GitHub"-style questions get real setup guidance (#1417)
+   - Slack outbound, DMs, @-mentions (the `/standup` command has known gaps, #1429)
 
 ✅ **Setup & Onboarding**:
    - GUI setup wizard with visual interface
    - System health checks
-   - API key validation (OpenAI, Anthropic, Gemini, Notion)
-   - User account creation and portfolio onboarding
+   - API key validation (OpenAI, Anthropic, Gemini)
+   - User account creation
 
 ✅ **Core Infrastructure**:
-   - Multi-user support, JWT auth, bcrypt passwords
-   - PostgreSQL via Docker (port 5433), Redis, ChromaDB (Debian 12/bookworm)
-   - Privacy filter and output filtering
-   - 252/252 canonical regression baseline (D1 gate; regression suite unchanged)
+   - Multi-user support with owner-scoped data access, tightened this release (#1420, #1421, #1434)
+   - JWT auth, bcrypt passwords
+   - PostgreSQL via Docker (port 5433), Redis, ChromaDB
+   - Smoke gate: 565 tests green at release cut
 
 See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for current limitations.
 
@@ -507,18 +491,18 @@ See [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) for current limitations.
 - **Full Guide**: [ALPHA_TESTING_GUIDE.md](ALPHA_TESTING_GUIDE.md) (comprehensive setup)
 - **Known Issues**: [ALPHA_KNOWN_ISSUES.md](ALPHA_KNOWN_ISSUES.md) (bugs and status)
 - **Legal**: [ALPHA_AGREEMENT_v2.md](ALPHA_AGREEMENT_v2.md) (terms and conditions)
-- **Version Info**: [VERSION_NUMBERING.md](VERSION_NUMBERING.md) (what 0.8.6 means)
+- **Version Info**: [VERSION_NUMBERING.md](VERSION_NUMBERING.md) (what 0.8.11.0 means)
 
 ---
 
 ## Remember
 
-This is **alpha software** (0.8.9). Expect bugs. Don't use for production. You're responsible for API costs. See `ALPHA_AGREEMENT_v2.md` for details.
+This is **alpha software** (0.8.11.0). Expect bugs. Don't use for production. You're responsible for API costs. See `ALPHA_AGREEMENT_v2.md` for details.
 
-**Testing Focus**: Does connector config persist across restarts? Does Piper say "not connected" honestly when GitHub isn't configured? Does the standup pipeline return real data? Is the Radar label consistent throughout?
+**Testing Focus**: Does the questionnaire actually change Piper's tone? Does chat use YOUR provider? Do greetings with a question attached get the question answered? Are status and agenda claims honest? Does session recall work?
 
 ---
 
 **Happy testing!** 🚀
 
-_Last Updated: June 22, 2026_
+_Last Updated: July 17, 2026_

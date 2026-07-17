@@ -1,7 +1,7 @@
 # Piper Morgan Alpha Testing Guide
 
-**Version**: 0.8.9
-**Last Updated**: June 22, 2026
+**Version**: 0.8.11.0
+**Last Updated**: July 17, 2026
 **For**: Alpha Testers
 
 ---
@@ -9,8 +9,8 @@
 ## Returning Tester? Start Here
 
 If you already have Piper set up and running, skip straight to what matters:
-- **[What's New in 0.8.9](#whats-new-in-089)** - Connector infra, field encryption, mobile nav, Radar rename
-- **[What to Test in 0.8.9](#what-to-test-in-089)** - Priority testing areas for this release
+- **[What's New in 0.8.11](#whats-new-in-0811)** - Personality questionnaire restored, per-user provider choice, honest answers and errors, session recall
+- **[What to Test in 0.8.11](#what-to-test-in-0811)** - Priority test walks for this release
 - **[Troubleshooting](#chapter-3-troubleshooting)** - If something isn't working
 
 ---
@@ -76,7 +76,7 @@ This guide has three main sections:
 
 **⚠️ ALPHA SOFTWARE WARNING ⚠️**
 
-This is pre-release alpha software (version 0.8.9). By proceeding, you acknowledge:
+This is pre-release alpha software (version 0.8.11.0). By proceeding, you acknowledge:
 
 1. **Expected Issues**: Bugs, crashes, and incomplete features are normal
 2. **Data Loss Risk**: Your data may be lost at any time without warning
@@ -91,21 +91,43 @@ See `ALPHA_AGREEMENT_v2.md` for complete legal terms.
 
 ---
 
-## What's New in 0.8.9
+## What's New in 0.8.11
 
-v0.8.9 closes three fronts: connector infrastructure (RECONNECT WS-1), field-level security, and Design D2 (token system + mobile nav + Radar rename).
+v0.8.11.0 is the "Finish the Unfinished" release: a systematic audit of half-done work across the whole codebase, fixes for every serious problem it found, and permanent build-time checks so the same classes of bugs can't quietly return. What you'll feel as a tester: **Piper stops lying** — about your data, about its capabilities, and about what went wrong.
 
-- **Connector config (RECONNECT WS-1)**: Connector configuration now lives in the database, not an ephemeral JSON file. Repo config and integration state survive restarts. When GitHub isn't configured, Piper says so honestly.
-- **Real standup pipeline**: The hollow `MorningStandupWorkflow` is retired; `StandupAssembler` is the live pipeline. Ask Piper for your standup in chat.
-- **Field encryption**: User secrets (API keys) are now encrypted at rest using AES-256-GCM with HKDF per-field key derivation.
-- **Per-user LLM key routing**: Your BYOC key is now routed per-request. The BYOC credential flow (from D1) is end-to-end complete.
-- **Auth hardening**: `admin_compose` route removed; auth-exempt-list lint-enforced.
-- **Design D2 — token system + mobile nav**: Design token system applied to the app shell; responsive shell; mobile nav (hamburger → drawer); Documents → Radar rename throughout.
-- **Dockerfile → bookworm**: Debian 12 base image for chromadb SQLite ≥3.35 support.
+(If your install reported a 0.8.10.x version at some point, those were small production-only hotfixes — 0.8.11.0 includes all of them.)
 
-**Database Migration Required**: Run `alembic upgrade head` (includes secret-column encryption migration).
+**Your data, correctly yours:**
 
-See [Release Notes v0.8.9](releases/RELEASE-NOTES-v0.8.9.md) for full details.
+- **Personality questionnaire works again** (#1422): questionnaire answers now actually shape Piper's tone — warmth, confidence, level of detail. A database column lost in an earlier migration had been silently discarding them. Prior answers were unrecoverable, so everyone re-answers once after updating.
+- **Your LLM provider choice is yours** (#1415): provider selection (default provider + authorized list) now resolves per user. One user's setup can no longer pin the whole instance to their provider.
+- **Owner-scoping fixes** (#1420, #1421, #1434): similarity search and default-project resolution are scoped to your account, and they fail closed — deny rather than fall back to shared data — when ownership can't be confirmed. An authentication check that silently fell back to a global key is also fixed.
+- **List/todo metadata persists** (#1435): a bug silently discarded list and todo metadata on every save.
+
+**Honest conversation:**
+
+- **Greetings don't swallow your question** (#1416): "Hi! How do I address you?" gets the question answered — only pure pleasantries get the short greeting response.
+- **"Connect my GitHub" gets real guidance** (#1417): connect/setup requests reach a real answer pointing at Settings → Integrations, instead of a wrong generic decline.
+- **No more false "there is nothing" claims** (#1425): status, agenda, retrospective, and priority answers distinguish "the lookup failed" from "genuinely empty" — you'll see "I couldn't check your todos just now" instead of a false "no pending tasks."
+- **No more false capability denials** (#1426): stale responses claiming Piper can't accept file uploads or set reminders (both have worked for a while) are gone.
+- **Classification failures tell the truth** (#1414): LLM key and quota problems surface an honest message about the key instead of "Something unexpected happened."
+- **Session memory recall** (#1394): "what did we create this session?" reads a real ledger of session activity, and follow-ups like "update the title" resolve to the issue you just created.
+
+**Under the hood:**
+
+- Route-level cleanups: several endpoints return clean validation errors (422/404) instead of crashing with 500s, and knowledge-graph writes now record which user acted (#1436).
+- Build-time ratchets now count known debt classes (unscoped data reads, silently-swallowed exceptions, stubs) and fail the build if any count grows — the audited problems can't quietly return.
+
+**Database Migration Required**: Run `alembic upgrade head` after updating (two migrations: the session-activity ledger and the restored preferences column).
+
+See [Release Notes v0.8.11.0](releases/RELEASE-NOTES-v0.8.11.0.md) for full details.
+
+<details>
+<summary><strong>Previous release (0.8.9 — connector infra / security / Design D2)</strong></summary>
+
+Connector config moved to the database (survives restarts), real standup pipeline, field encryption for user secrets (AES-256-GCM), per-user LLM key routing, auth hardening, design token system + mobile nav, Documents → Radar rename.
+
+</details>
 
 <details>
 <summary><strong>Previous release (0.8.8 — D1/RECONNECT)</strong></summary>
@@ -297,6 +319,8 @@ This 2-minute questionnaire configures:
 - **Learning Style**: examples, explanations, exploration
 - **Feedback Level**: minimal, moderate, detailed
 
+**Returning tester?** Re-answer the questionnaire once after updating to 0.8.11 — answers saved before this release were lost to a database bug (#1422), and your answers now genuinely shape Piper's tone.
+
 ### Step 6: Verify Installation
 
 ```bash
@@ -406,19 +430,63 @@ Click the button to go to the login page and start using Piper Morgan.
 
 This chapter covers what to test and how. If you're already set up, **start here**.
 
-## What to Test in 0.8.9
+## What to Test in 0.8.11
 
-Connector persistence, standup quality, and the security migration are the focus. **Does config survive restarts? Does Piper say "not connected" when it should? Does the standup pipeline return real data?**
+Personalization and honesty are the focus this release. **Does the questionnaire change Piper's tone? Does chat use YOUR provider? Are Piper's claims about your todos and issues honest?**
 
-### Priority Testing Areas
+Each walk below is a concrete sequence you can follow and report on.
 
-1. **Connector config persistence** - Configure a GitHub repo, restart the server — does it remember the config?
-2. **Honest no-repo UX** - Remove or skip GitHub config — does Piper tell you it's not connected rather than guessing or failing silently?
-3. **Standup via chat** - Ask "what's my standup?" in the chat — does `StandupAssembler` return a real, assembled response (not a generic template)?
-4. **BYOC key routing** - Enter your API key in Settings, make a few requests — confirm your key is being used (check your provider's usage dashboard)
-5. **Mobile nav** - Open Piper on a phone or narrow browser window — does the hamburger → drawer nav work correctly?
-6. **Radar rename** - Is "Radar" (not "Documents") the label throughout the nav, page headers, and breadcrumbs?
-7. **Existing features still working** - Conscious Floor, files experience, Slack inbound, BYOC key persistence
+### Test Walk 1: Questionnaire → tone shift (#1422)
+
+1. Re-answer the personality questionnaire: run `python main.py preferences` (or use the Settings page)
+2. Answer deliberately — for example, pick "concise" and "minimal feedback"
+3. Chat with Piper: ask a few ordinary questions
+4. Check: does the tone reflect your answers (shorter, more direct)?
+5. Change your answers to the opposite (for example, "detailed") and chat again — does the tone shift with them?
+
+**Note**: answers from before 0.8.11 were lost to a database bug (#1422) and can't be recovered — everyone re-answers once.
+
+### Test Walk 2: Your own LLM provider (#1415)
+
+1. Go to Settings → LLM Keys
+2. Enter your own API key and select your provider as the default
+3. Send a few chat messages
+4. Check your provider's usage dashboard — do the requests show up there?
+5. If you can test with a second user: have each account pick a different provider, and confirm each user's chats hit their own provider — not the other user's.
+
+### Test Walk 3: Greeting + question in one message (#1416)
+
+1. Send: "Hi! What can you help me with?"
+2. Check: does the reply answer the question, not just greet you back?
+3. Try variants: "Good morning — what's on my list today?", "Hey Piper, how do I address you?"
+4. A pure greeting ("Hi!") should still get a short, friendly response.
+
+### Test Walk 4: Connect-my-GitHub guidance (#1417)
+
+1. In chat, send: "connect my github"
+2. Check: do you get concrete guidance pointing at Settings → Integrations — not a generic "I can't do that"?
+3. Try variants: "can you connect my slack", "set up my github integration"
+
+### Test Walk 5: Honest status and agenda claims (#1425)
+
+1. Ask: "what's my status?", "what's on my agenda?", or "what's my standup?"
+2. Check every claim about your todos and issues against what you actually have
+3. "I couldn't check your todos just now" is correct behavior when a lookup fails
+4. A false "you have no pending tasks" when you DO have tasks is a bug — please report it
+
+### Test Walk 6: Honest LLM-key errors (#1414)
+
+1. Temporarily break your API key (remove it in Settings, or paste an invalid one)
+2. Send a chat message
+3. Check: does the error say something honest about the key or provider problem — not "Something unexpected happened"?
+4. Restore your key and confirm chat works again
+
+### Test Walk 7: Session recall (#1394)
+
+1. In chat, create something — for example, "create an issue about testing session recall"
+2. Ask: "what did we create this session?"
+3. Check: does Piper recall the issue you just created?
+4. Try a follow-up like "update the title to add a version number" — does it resolve to the item you just created?
 
 ### Basic Functionality Tests
 
@@ -810,7 +878,7 @@ SELECT * FROM users;
 
 ## Questions?
 
-Remember: This is alpha software (version 0.8.9). The GUI setup wizard handles most complexity, but you're still testing early-stage software. Expect bugs and incomplete features.
+Remember: This is alpha software (version 0.8.11.0). The GUI setup wizard handles most complexity, but you're still testing early-stage software. Expect bugs and incomplete features.
 
 If guided setup seems overwhelming, a hosted version is planned for later in 2026.
 
@@ -827,5 +895,5 @@ Thank you for being an early adopter and helping us improve! 🚀
 
 ---
 
-_Last updated: June 22, 2026_
-_Software version: 0.8.9_
+_Last updated: July 17, 2026_
+_Software version: 0.8.11.0_

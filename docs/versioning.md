@@ -1,8 +1,8 @@
 # Piper Morgan Versioning Strategy
 
-## Current Version: 0.8.9.2 (released, live on `production`/alpha)
+## Current Version: 0.8.11.0 (released 2026-07-17; `main` and `production` converged at the cut)
 
-`main`'s own `pyproject.toml`/`VERSION` are still `0.8.9` — unbumped, since both 0.8.9.1 and 0.8.9.2 were released as targeted hotfixes cherry-picked onto `production` (not merges-forward from `main`). `main` carries substantially more unreleased work (RECONNECT sprint) pending its own release cut, at which point `main`'s version will bump past 0.8.9.2.
+v0.8.11.0 was cut from `main` (pyproject/VERSION bumped there) and `production` fast-forwarded to the same commit — ending the v0.8.9.1→v0.8.10.14 era of production-only cherry-pick cuts (whose content had all been merged back to main). From here, releases cut from `main`; `production` tracks the released commit.
 
 ## Versioning Scheme
 
@@ -88,6 +88,8 @@ During alpha testing, versions follow this pattern:
 
 | Version | Date       | Milestone | Notes                                          |
 | ------- | ---------- | --------- | ---------------------------------------------- |
+| 0.8.11.0 | Jul 17, 2026 | Feature | Finish-the-Unfinished sprint — multi-tenancy correctness, honest conversation, completion ratchets (#1424/#1419); migrations j1394ledger + k1422prefs |
+| 0.8.10.x | Jul 8–16, 2026 | Dot train | production-only tester-loop cuts (.1–.14): Fly beta cutover, per-user LLM keys page, login regression fix |
 | 0.8.9.2 | Jul 2026   | Patch     | Security fix (#1344) — open-registration exposure closed, invite-token gate (hotfix on `production`) |
 | 0.8.9.1 | Jul 2026   | Patch     | Security fix (#1343) — anonymous LLM-key billing exposure closed (hotfix on `production`) |
 | 0.8.9   | Jun 2026   | RECONNECT | RECONNECT WS-1 + security + design D2 — connector infra, field encryption, token system |
