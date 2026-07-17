@@ -162,33 +162,24 @@ class TestPreClassifier:
 
         for pattern in non_conversational:
             intent = PreClassifier.pre_classify(pattern)
-            # Piper now recognizes nuanced thanks/greeting/farewell patterns
+            # #1416 (PM-reported, driver-verified): the pleasantry short-circuit
+            # claims pleasantry-ONLY messages. Anything carrying substance beyond
+            # the social formula ("hello, can you help me?", "thanks for the
+            # help", "bye, see you tomorrow") deliberately falls through (None)
+            # so the LLM answers the substance instead of a canned greeting
+            # swallowing it. Over-falling-through is the safe direction.
             if pattern in [
-                "hello world",
                 "hi there everyone",
                 "hello there how are you",
-                "hello and welcome",
-                "hello, can you help me?",
             ]:
                 assert intent is not None and intent.action == "greeting"
             elif pattern in [
-                "goodbye cruel world",
-                "goodbye and good luck",
-                "bye bye for now",
-                "bye, see you tomorrow",
-            ]:
-                assert intent is not None and intent.action == "farewell"
-            elif pattern in [
-                "thanks for the help",
-                "thank you for everything",
                 "thanks a lot",
                 "thank you very much",
-                "thanks, that was helpful",
-                "thank you, I appreciate it",
             ]:
                 assert intent is not None and intent.action == "thanks"
             else:
-                assert intent is None, f"Expected None for '{pattern}', got {intent}"
+                assert intent is None, f"Expected None for '{pattern}' (#1416 pleasantry-only rule), got {intent}"
 
     @pytest.mark.smoke
     def test_case_insensitivity(self):
@@ -250,11 +241,10 @@ class TestPreClassifier:
         ]
         for pattern in edge_cases:
             intent = PreClassifier.pre_classify(pattern)
-            # Test updated to match improved behavior: Pre-classifier now recognizes greetings
-            if pattern == "hello world":
-                assert intent is not None and intent.action == "greeting"
-            else:
-                assert intent is None, f"Expected None for '{pattern}', got {intent}"
+            # #1416 pleasantry-only rule: "hello world" carries a token beyond
+            # the pleasantry, so it falls through to the LLM like any other
+            # greeting+substance message — every edge case here expects None.
+            assert intent is None, f"Expected None for '{pattern}', got {intent}"
 
     @pytest.mark.smoke
     def test_partial_matches_should_fail(self):
@@ -262,8 +252,10 @@ class TestPreClassifier:
         partial_matches = ["hello world", "hi there how are you"]
         for pattern in partial_matches:
             intent = PreClassifier.pre_classify(pattern)
-            # Test updated to match improved behavior: Pre-classifier now recognizes greetings
-            if pattern in ["hello world", "hi there how are you"]:
+            # #1416 pleasantry-only rule: "hi there how are you" is a pure social
+            # formula (still short-circuits); "hello world" carries a non-formula
+            # token and falls through to the LLM.
+            if pattern == "hi there how are you":
                 assert intent is not None and intent.action == "greeting"
             else:
                 assert intent is None, f"Expected None for non-match '{pattern}', got {intent}"
