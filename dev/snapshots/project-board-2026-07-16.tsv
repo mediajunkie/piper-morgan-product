@@ -1253,3 +1253,6 @@ issue	state	milestone	sprint	title
 1437	OPEN	Production		Stale integration test: test_get_default_project_query pins a 422 the pipeline no longer returns (pre-existing)
 1438	OPEN	Production		Pre-existing: test_pattern_similarity_detection fails (pattern IDs both None) — learning-cycle store not creating patterns
 1439	OPEN	Production		Pre-existing: two llm_config_service tests read the machine's REAL keychain (fail on any host with a stored consent list)
+1440	OPEN	Production		EPIC: RECONNECT R2 — Production connector gate: GitHub · Google Calendar · Slack · Notion complete on the #1232 contract
+1441	OPEN	Production		RECONNECT R2: Google Calendar — full port to the #1232 Connector contract
+1442	OPEN	Production		RECONNECT R2: Notion — full port to the #1232 Connector contract
