@@ -2,7 +2,7 @@
 
 **Purpose**: persistent (across-days) Comms-side task list — items that aren't tied to a specific blog post or pubDate but need surfacing/advancing as cycle fires advance. Lives across days; not a per-day artifact. (Per-day work goes in the dated session log under `dev/2026/MM/DD/`.)
 
-**Last refreshed**: 2026-07-15 morning (Ship #051 + Beat 13 published; Beat 14 pre-reviewed)
+**Last refreshed**: 2026-07-16 evening (Beat 14 published; narrative-slate research done, awaiting PM steer)
 
 ---
 
@@ -14,7 +14,8 @@
 |---|---|---|---|
 | **Narrative arc steer (candidates A–E)** | ✅ ADVANCED 2026-07-04 — PM approved proceeding rather than a formal pick-one steer; all 5 drafted, researched against actual source logs (several turned out richer/different than the original one-line gloss), calendared Aug 16/22/23/29/30. | PM (voice-pass on all 5) | Drafts: `the-fabricating-standup.md`, `the-trust-gate-that-wasnt.md`, `read-the-mock-first.md`, `the-orphan-migration.md`, `two-of-me.md`. Each carries 1-3 genuine PM-input brackets (fact-check sign-offs, personal-anecdote beats). |
 | **Duty-cycle slate (Beats 10–13)** | ✅ ALL PUBLISHED. Beat 10 *The Airport Corrections* (Jul 2). Beat 11 *The Team Catches the Cycle* (Jul 7, 2-round fact-check). Beat 12 *The Package and the First Bite* (Jul 9). Beat 13 *The Migration Wave* **PUBLISHED 2026-07-14** — full fact-check (3 real corrections: Sunday-holdup misattribution, duty-cycle/worktree-migration conflation, two-unrelated-sevens de-conflation), PM voice-pass, cross-machine merge conflict on frontmatter/image walked through via chat, image gitignore gap discovered (#1403) + fixed. | CLOSED | |
-| **Building-narrative slate (Beats 14–16)** | Beat 14 *Into Production* (pubDate Jul 16) fully fact-checked 2026-07-14 (tag/checkpoint conflation fixed, 7-item Linux-portability list corrected) + pre-reviewed again 2026-07-15 ahead of PM's work session (1 typo from an admin-UI edit, MVP gloss added). Frontmatter/art still pending. Beats 15-16 drafted, mechanical sweep done 2026-07-04. | PM (voice-pass on 14; art + voice-pass on 15-16) | pubDates: 14=Jul16, 15=Jul21, 16=Jul23. |
+| **Building-narrative slate (Beats 14–16)** | Beat 14 *Into Production* **PUBLISHED 2026-07-16** — PM voice-passed via the new admin editing UI, Comms proofed (3 mechanical fixes) + resolved 2 substantive editorial questions (Beatrice's name removed for privacy+accuracy — she never actually tested the plugin, despite an earlier PA log saying otherwise; "Claude Desktop plugin" vs "extension" verified correct against PA's own Jun 7 log). Beats 15-16 drafted, mechanical sweep done 2026-07-04, still awaiting PM voice-pass. | PM (voice-pass on 15-16) | pubDates: 15=Jul21, 16=Jul23. |
+| **Narrative-front slate proposal (Jul 8-15 window)** | 🆕 PRESENTED 2026-07-16, awaiting PM steer. PM asked for a peek at whether the front (currently Jul 7, "Drained on Paper") should advance, now that Docs refreshed omnibus logs through Jul 15. Research + independent verification found a clean 3-beat slate: "The Write-Path Chase" (Jul 8-9, five-release debugging chase → first verified GitHub write), "Alpha Launches" (Jul 10-12, beta-readiness gate + all-11-testers-invited milestone), "The Architect's Own Trap" (Jul 12-15, ADR-078 arc capped by Arch owning a real review mistake). No overlap with already-drafted beats (checked). Not yet drafted — presented as candidates per the continuation discipline, PM's call on shape/order/whether to combine 1+2. | PM (steer) | See Jul 16 session log for full research + verification detail. |
 | **Insight batch drafted 6/4** (Mechanism Beats Vigilance, Architecture Wrote Its Own Case, Verify at User Path, Over-Checking Has Dividends, Confabulating a Peer's Unfinished Work) | Full mechanical sweep done 2026-07-04 — 3 of the 5 were missing frontmatter AND dateline entirely, not just empty; footer chain corrected end-to-end. | PM (voice-pass) | pubDates: Aug1/2/8/9/15. |
 | **Climbing Higher When the Platform Laps You** | ✅ PM voice-pass done 2026-07-04, mechanical close-pass done (PM's worktree branch hadn't picked up prior fixes — headings/footer/2 typos caught and fixed). PubDate was Jul 4 (today). | Docs (proofread + publish) | |
 | **The Practice That Got Retired** | ✅ PUBLISHED 2026-07-05 (hashId `56e79d586c0a`, live well ahead of 8am target) + fully syndicated (Medium + LinkedIn both live same day). | CLOSED | |
@@ -41,10 +42,11 @@
 
 ## Recently-closed (rolling history; trim to last ~14 days)
 
+- 2026-07-16 **Beat 14 "Into Production" PUBLISHED** — Beatrice's name removed (privacy+accuracy), plugin-vs-extension terminology verified correct against primary source.
+- 2026-07-16 **Website calendar-sync bug root-caused and fixed by Web** — build-time copy script silently failed on every real Vercel deploy since Jul 12; Web shipped a GitHub-API-fallback fix, verified live.
 - 2026-07-15 **Weekly Ship #051 PUBLISHED** — 2 real adjacent-number-contamination corrections, PM's own P.S., 2 typo-fix races resolved via clean auto-merge with a peer session.
 - 2026-07-15 **`update-calendar` skill v1.2 shipped** — root-caused a same-day self-inflicted row corruption (positional indexing bug), now mandates by-name field access + whole-file verification.
 - 2026-07-14 **Beat 13 "The Migration Wave" PUBLISHED** — full fact-check (3 corrections), cross-machine merge conflict walked through via chat, blog-image gitignore gap discovered (#1403).
-- 2026-07-12 **"The Server Crashed Mid-Draft" PUBLISHED** — clean PM voice-pass (no typos, edited from the correct synced baseline this time), frontmatter + art added same morning.
 - 2026-07-12 **Historical stale-draftPath cleanup CLOSED** — all 22 rows fixed during a quiet Sunday-morning fire.
 - 2026-07-11 **"When the Documentation Drifts" PUBLISHED** — 3 editorial rounds; caught a Pattern-073 categorization error before it shipped.
 - 2026-07-09 **`template-audit` upgraded to v1.1** — new check #11 catches the negation-reveal cliché ("it isn't X, it's Y") + "-fold," per PM feedback; caught real instances in 4 of 4 drafts reviewed that day, including PM's own Beat 12 voice-pass.
