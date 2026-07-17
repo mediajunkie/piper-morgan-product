@@ -40,3 +40,27 @@ Fast-moving hour on the #1394/#1411 thread. Arch owned the §4 error plainly (a 
 **Noted, not acted on**: a 4th recurring "duty-cycle stall — cio" watchdog alert fired this hour, and no CIO session log exists for today. This has now recurred across multiple fires without a visible resolution in what I can see. Exec is clearly monitoring role health generally (sent HOST a check-in this morning) but I have no direct visibility into whether CIO's been addressed specifically — could just be outside my cc line. Not escalating myself; this is Exec's operational-health lane and the cohort has dedicated watchdog+freeze-registry infrastructure for it. Noting in carry-forward as a watch item in case it's still unresolved next time I check.
 
 Mail loop: one new PPM-addressed memo this fire (Arch's §4-corrected), read and triaged. Task loop: checked `ppm-standing-items.md` — nothing newly unblocked; the pre-crisis entity-model lane remains correctly parked/unverified, everything else needs PM or another role's action first. Quiet hold on task loop.
+
+## Day-arc summary
+
+Opened cron-triggered at 7:01 AM (self-heal from 7/14 confirmed clean, no retroactive work needed). Three real fires through the day: 10:05 AM (watched #1394 B4 ship+ratify, DNS cutover — no PPM action), 4:01 PM (read two new B3-thread memos, caught #1411 freshly filed with zero board placement and flagged it rather than let it go invisible, confirmed the SessionStart hook's briefing-staleness claim was a local-disk-vs-origin false positive — same root cause as #1397, now showing up on a third surface), and 7:01 PM (watched Arch self-correct the §4 finding, OQ-3 ruled emit-directly, #1411 built+merged same-day, softened my own flag once the fix landed cleanly through the normal ratify-and-close flow; also noted a 4th recurring CIO duty-cycle-stall watchdog alert without chasing it, since it's Exec's operational-health lane).
+
+The session then went dark for approximately 22 hours — no fire landed at the scheduled 21:52 slot or any of the four July 16 daytime slots. `CronList` came back empty when PM's live check-in prompted a look, confirming the cron itself died at some point (Gap-C: a session-scoped cron doesn't survive whatever ended that session — compaction or a harness-level session kill, not distinguishable from here). Same class of gap as the July 12 reboot and the July 13→14 stale gap, just longer, and this time caught fully-dead rather than idle.
+
+**The real cost of the gap, named honestly**: while PPM was dark, PM worked directly with Lead to make several product/sprint decisions that would normally route through or at least loop in this role — ratifying the Finish-the-Unfinished sprint (epic #1424), defining the Production 1.0 connector gate (GitHub/GCal/Slack/Notion, recorded on milestone #9), and triaging #1413/#1437-#1439. Nothing here was done wrong — PM working directly with another role when PPM is unresponsive is exactly the right fallback — but it's a concrete illustration of what the gap costs: `roadmap.md` and `BRIEFING-CURRENT-STATE.md` both went stale relative to real decisions until this catch-up. Folded both forward same-session once caught (see 7/16 log).
+
+## Memory & briefing surfaces referenced this session
+- **Referenced**: `duty-cycle-tick` skill (Step 0 self-heal, Gap-C re-arm); the #1397 local-disk-vs-origin lesson (applied a third time, to the SessionStart hook); CLAUDE.md's BRIEFING-CURRENT-STATE standing-refresh authorization
+- **Loaded but not referenced**: `ppm-standing-items.md` (checked, nothing unblocked)
+- **Wanted but not found**: same ROLE-PORTFOLIO-PPM gap noted previously — still unresolved, still not urgent
+
+## Sign-off
+
+```
+$ git fetch origin main && git merge-base --is-ancestor <last-commit> origin/main
+```
+Confirmed: all of 7/15's work reached `origin/main` via the temp-index pattern. This retroactive close is itself being committed the same way, from a session woken by PM's live check-in on 7/16 rather than by the (dead) cron.
+
+Cron: re-armed 7/16 (job `61944f35`, same expression `52 6,9,12,15,18,21`) the moment the gap was discovered — the Gap-C self-heal, done before any other work this fire.
+
+<!-- DAY-CLOSED: 2026-07-15 -->
