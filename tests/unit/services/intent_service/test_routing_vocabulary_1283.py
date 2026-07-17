@@ -56,23 +56,39 @@ def _pre_classifier_surface() -> set:
     return kw | tup
 
 
+def _action_mapper_surface() -> set:
+    """The 4th dispatch surface (Arch-ratified 2026-07-16, the forward-guard
+    D4-bridge): LLM free-form -> ActionMapper canonical -> EXECUTION elif. Its
+    canonical value set is DERIVED from the mapper itself (never hand-listed) —
+    a mapped_action token is reachable by construction (the mapper canonicalizes
+    the LLM's variants onto it)."""
+    from services.intent_service.action_mapper import ActionMapper
+
+    return set(ActionMapper.ACTION_MAPPING.values())
+
+
 class TestRoutingVocabularyReachability:
     def test_every_registry_canonical_is_reachable(self):
         canon = {action for (_cat, action) in ACTION_REGISTRY}
-        reachable = _rail() | _pre_classifier_surface() | set(FLOOR_ALLOWLIST)
+        reachable = (
+            _rail() | _pre_classifier_surface() | _action_mapper_surface() | set(FLOOR_ALLOWLIST)
+        )
         gaps = canon - reachable
         assert not gaps, (
             f"Registry canonicals reachable through NO dispatch surface: {sorted(gaps)}. "
             "Register on the rail (workflow_entries.py), emit from pre_classifier with a "
-            "category pairing, or — if genuinely floor-internal-handled — add to "
-            "FLOOR_ALLOWLIST with a file:line justification. An unaccounted canonical is "
-            "the productivity_query hole the 2026-07-08 probe found live (mode 2)."
+            "category pairing, map it in ActionMapper (EXECUTION cohort), or — if genuinely "
+            "floor-internal-handled — add to FLOOR_ALLOWLIST with a file:line justification. "
+            "An unaccounted canonical is the productivity_query hole the 2026-07-08 probe "
+            "found live (mode 2)."
         )
 
     def test_floor_allowlist_carries_no_freeloaders(self):
-        # Ratchet: an allowlist entry that became rail- or pre_classifier-reachable
-        # must be removed in the same commit (the list only shrinks).
-        stale = set(FLOOR_ALLOWLIST) & (_rail() | _pre_classifier_surface())
+        # Ratchet: an allowlist entry that became otherwise-reachable must be
+        # removed in the same commit (the list only shrinks).
+        stale = set(FLOOR_ALLOWLIST) & (
+            _rail() | _pre_classifier_surface() | _action_mapper_surface()
+        )
         assert not stale, f"FLOOR_ALLOWLIST entries now otherwise reachable: {sorted(stale)}"
 
     def test_pre_classifier_derivation_is_alive(self):
@@ -137,6 +153,71 @@ class TestRoutingVocabularyReachability:
             "The corpus is the Arch-ratified contract (2026-07-08) — recalibrate "
             "against action_registry.py canonicals, don't invent names."
         )
+
+
+class TestForwardGuardExecutionCohort:
+    """Forward-guard (Arch-ratified 2026-07-16 §A, registry-only): every
+    mapped_action-dispatched token is a member of ACTION_REGISTRY — the
+    membership BRIDGE that puts the EXECUTION elif cohort under the
+    reachability lint above. Composition: this guard checks MEMBERSHIP;
+    reachability stays the D4 lint's job (its predicate derives the mapper
+    surface). Before this guard, mapped_action was a fourth vocabulary
+    invisible to every rail check (census D, sprint #1424)."""
+
+    INTENT_SERVICE = _ROOT / "services" / "intent" / "intent_service.py"
+
+    def _elif_dispatched_tokens(self) -> set:
+        """Derive the tokens _handle_execution_intent actually branches on:
+        ``mapped_action == "x"`` and ``mapped_action in ["x", "y"]``."""
+        src = self.INTENT_SERVICE.read_text()
+        eq = set(re.findall(r'mapped_action\s*==\s*"([a-z_]+)"', src))
+        for group in re.findall(r"mapped_action\s+in\s+\[([^\]]+)\]", src):
+            eq |= set(re.findall(r'"([a-z_]+)"', group))
+        return eq
+
+    def _mapper(self):
+        from services.intent_service.action_mapper import ActionMapper
+
+        return ActionMapper.ACTION_MAPPING
+
+    def test_every_elif_dispatched_token_is_registry_covered(self):
+        """A token the elif chain branches on must be a registry canonical, or a
+        mapper ALIAS whose canonical is registered (the chain defensively lists
+        aliases like create_ticket; the mapper canonicalizes them first)."""
+        canon = {action for (_cat, action) in ACTION_REGISTRY}
+        mapping = self._mapper()
+        dispatched = self._elif_dispatched_tokens()
+        assert dispatched, "elif-token derivation returned nothing — idiom changed, fix the regex"
+        uncovered = {
+            t for t in dispatched if t not in canon and mapping.get(t) not in canon
+        }
+        assert not uncovered, (
+            f"EXECUTION elif dispatches tokens outside ACTION_REGISTRY: {sorted(uncovered)}. "
+            "Register the canonical (category EXECUTION) + its Verb; the reachability "
+            "lint then covers it. A dispatch token with no registry entry re-opens the "
+            "fourth-vocabulary hole (census D / Arch 2026-07-16 §A)."
+        )
+
+    def test_every_mapper_canonical_is_registered(self):
+        """A NEW ActionMapper target must be registered in the same commit —
+        this is the guard's growth protection (shrink-only, currently zero gaps).
+        ``unknown_intent`` is the deliberate no-handler sentinel, excluded below
+        and pinned by the sentinel test."""
+        canon = {action for (_cat, action) in ACTION_REGISTRY}
+        gaps = (set(self._mapper().values()) - {"unknown_intent"}) - canon
+        assert not gaps, (
+            f"ActionMapper canonical values missing from ACTION_REGISTRY: {sorted(gaps)}. "
+            "Add the (EXECUTION, action) entry + ACTION_TO_VERB + example in the same commit."
+        )
+
+    def test_unknown_intent_stays_a_sentinel(self):
+        """unknown_intent must remain the deliberate fallthrough: mapped but
+        NEVER elif-dispatched and NEVER a registry canonical — its whole job is
+        to reach the honest-decline else-branch (#1333)."""
+        canon = {action for (_cat, action) in ACTION_REGISTRY}
+        assert "unknown_intent" in set(self._mapper().values())
+        assert "unknown_intent" not in canon
+        assert "unknown_intent" not in self._elif_dispatched_tokens()
 
 
 class TestNormalizationShim:

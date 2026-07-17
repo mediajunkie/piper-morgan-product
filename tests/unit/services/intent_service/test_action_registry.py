@@ -181,7 +181,17 @@ class TestNoStubPhrases:
             # RECONNECT #1327 build #2: conversational get-default-repo (read)
             "get_default_repo",
         }
-        known_handled_execution_actions = {"complete_todo"}
+        # Forward-guard cohort (Arch 2026-07-16 §A): all six have elif branches in
+        # _handle_execution_intent (verified :6512-6647) and are mechanically
+        # guarded by TestForwardGuardExecutionCohort (test_routing_vocabulary_1283).
+        known_handled_execution_actions = {
+            "complete_todo",
+            "create_todo",
+            "create_reminder",
+            "list_todos",
+            "next_todo",
+            "delete_todo",
+        }
 
         for cat, act in workflow_actions:
             if cat == "QUERY":

@@ -117,7 +117,17 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     # ---- QUERY: Feature Info (was stub → now floor) ----
     ("QUERY", "get_feature_info"): ActionDisposition.FLOOR,
     # ---- EXECUTION ----
+    # Forward-guard cohort (Arch-ratified 2026-07-16, registry-only D4-bridge):
+    # these are the ActionMapper->elif mapped_action tokens. Registry membership
+    # brings them under the #1283 reachability lint (which derives the mapper
+    # surface); the forward-guard test asserts no mapped_action token can exist
+    # OUTSIDE this registry again.
     ("EXECUTION", "complete_todo"): ActionDisposition.WORKFLOW,
+    ("EXECUTION", "create_todo"): ActionDisposition.WORKFLOW,
+    ("EXECUTION", "create_reminder"): ActionDisposition.WORKFLOW,
+    ("EXECUTION", "list_todos"): ActionDisposition.WORKFLOW,
+    ("EXECUTION", "next_todo"): ActionDisposition.WORKFLOW,
+    ("EXECUTION", "delete_todo"): ActionDisposition.WORKFLOW,
     # ---- ANALYSIS (was stub → now floor) ----
     ("ANALYSIS", "analyze_blockers"): ActionDisposition.FLOOR,
 }
@@ -170,6 +180,15 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "next_todo_query"): "What's my next todo?",
     ("QUERY", "get_feature_info"): "Tell me more about the GitHub integration",
     ("EXECUTION", "complete_todo"): "Mark my first todo as done",
+    ("EXECUTION", "create_todo"): "Add a todo to review the Q3 roadmap",
+    ("EXECUTION", "create_reminder"): "Remind me tomorrow at 9am to follow up with Sam",
+    # The four below are mapper-path phrasings (probe-verified pre_classify → None):
+    # this cohort is reached via LLM → ActionMapper, not the pre-classifier, so the
+    # examples deliberately DON'T pre-classify ("delete/get rid of … todo" phrasings
+    # trip portfolio/manage_portfolio — hence "scrap").
+    ("EXECUTION", "list_todos"): "Show me my open todos",
+    ("EXECUTION", "next_todo"): "Pull up whichever todo you think comes next",
+    ("EXECUTION", "delete_todo"): "Scrap the todo about renaming things",
     ("ANALYSIS", "analyze_blockers"): "What's blocking the milestone?",
 }
 
@@ -257,6 +276,7 @@ class Verb(Enum):
     COMMENT = "comment"
     UPDATE = "update"
     COMPLETE = "complete"
+    DELETE = "delete"  # forward-guard cohort (delete_todo) — Arch memo 2026-07-16 §A
     # ---- Cohort verbs awaiting Phase-5 migration ----
     # No legacy action maps to these yet; the #1124 cohort registers handlers
     # against these typed verbs instead of improvising collapsed names like
@@ -318,6 +338,11 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "next_todo_query": Verb.GET,
     "get_feature_info": Verb.GET,
     "complete_todo": Verb.COMPLETE,
+    "create_todo": Verb.CREATE,
+    "create_reminder": Verb.CREATE,
+    "list_todos": Verb.LIST,
+    "next_todo": Verb.GET,
+    "delete_todo": Verb.DELETE,
     "analyze_blockers": Verb.ANALYZE,
 }
 
