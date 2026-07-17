@@ -15,7 +15,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 
 from services.auth.auth_middleware import get_current_user
 from services.auth.jwt_service import JWTClaims
-from services.domain import models as domain
+from services.shared_types import EdgeType, NodeType
 from web.api.dependencies import get_knowledge_graph_service
 
 router = APIRouter(prefix="/api/v1/knowledge", tags=["knowledge-graph"])
@@ -64,16 +64,27 @@ async def create_node(
                 detail="Node type is required",
             )
 
-        # Create node with ownership
-        node = domain.KnowledgeNode(
+        # #1436 B14: coerce to the enum the service requires; the old code
+        # built a domain object with an owner_id field the dataclass doesn't
+        # have and passed it positionally into a kwargs API — TypeError -> 500.
+        try:
+            node_type_enum = NodeType(node_type.strip().upper())
+        except ValueError:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Invalid node_type: {node_type}. "
+                f"Must be one of: {', '.join(t.value for t in NodeType)}",
+            )
+
+        created_node = await kg_service.create_node(
             name=name,
-            node_type=node_type,
+            node_type=node_type_enum,
             description=description or "",
             properties=properties or {},
-            owner_id=current_user.sub,
+            # Owner rides session_id (the service/repo convention; the
+            # owner_id-column population gap is the tracked #1420 residual).
+            session_id=current_user.sub,
         )
-
-        created_node = await kg_service.create_node(node)
 
         logger.info(
             "knowledge_node_created",
@@ -85,7 +96,9 @@ async def create_node(
         return {
             "id": created_node.id,
             "name": created_node.name,
-            "node_type": created_node.node_type,
+            "node_type": created_node.node_type.value
+            if isinstance(created_node.node_type, NodeType)
+            else created_node.node_type,
             "description": created_node.description,
             "owner_id": current_user.sub,
             "created_at": created_node.created_at.isoformat() if created_node.created_at else None,
@@ -132,7 +145,8 @@ async def get_node(
     Issue #357: SEC-RBAC Phase 1.3 Endpoint Protection
     """
     try:
-        node = await kg_service.get_node_by_id(node_id, owner_id=current_user.sub)
+        # #1436 B14: get_node_by_id doesn't exist on the service — get_node does.
+        node = await kg_service.get_node(node_id, owner_id=current_user.sub)
 
         if not node:
             raise HTTPException(
@@ -212,8 +226,8 @@ async def create_edge(
             )
 
         # Verify both nodes are owned by current user
-        source = await kg_service.get_node_by_id(source_node_id, owner_id=current_user.sub)
-        target = await kg_service.get_node_by_id(target_node_id, owner_id=current_user.sub)
+        source = await kg_service.get_node(source_node_id, owner_id=current_user.sub)
+        target = await kg_service.get_node(target_node_id, owner_id=current_user.sub)
 
         if not source or not target:
             raise HTTPException(
@@ -221,16 +235,24 @@ async def create_edge(
                 detail="One or both nodes not found or not owned by user",
             )
 
-        # Create edge
-        edge = domain.KnowledgeEdge(
+        # #1436 B14: enum-coerce + the service's kwargs API (see create_node).
+        try:
+            edge_type_enum = EdgeType(edge_type.strip().upper())
+        except ValueError:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Invalid edge_type: {edge_type}. "
+                f"Must be one of: {', '.join(t.value for t in EdgeType)}",
+            )
+
+        created_edge = await kg_service.create_edge(
             source_node_id=source_node_id,
             target_node_id=target_node_id,
-            edge_type=edge_type,
+            edge_type=edge_type_enum,
             properties=properties or {},
+            session_id=current_user.sub,
             owner_id=current_user.sub,
         )
-
-        created_edge = await kg_service.create_edge(edge)
 
         logger.info(
             "knowledge_edge_created",
@@ -243,7 +265,9 @@ async def create_edge(
             "id": created_edge.id,
             "source_node_id": created_edge.source_node_id,
             "target_node_id": created_edge.target_node_id,
-            "edge_type": created_edge.edge_type,
+            "edge_type": created_edge.edge_type.value
+            if isinstance(created_edge.edge_type, EdgeType)
+            else created_edge.edge_type,
             "owner_id": current_user.sub,
             "created_at": created_edge.created_at.isoformat() if created_edge.created_at else None,
         }
@@ -292,10 +316,21 @@ async def query_graph(
     Issue #357: SEC-RBAC Phase 1.3 Endpoint Protection
     """
     try:
-        nodes = await kg_service.query_nodes(
-            owner_id=current_user.sub,
-            node_type=node_type,
+        # #1436 B14: query_nodes doesn't exist — search_nodes is the real API.
+        node_type_enum = None
+        if node_type:
+            try:
+                node_type_enum = NodeType(node_type.strip().upper())
+            except ValueError:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"Invalid node_type: {node_type}. "
+                    f"Must be one of: {', '.join(t.value for t in NodeType)}",
+                )
+        nodes = await kg_service.search_nodes(
+            node_type=node_type_enum,
             search_term=search_term,
+            owner_id=current_user.sub,
             limit=limit,
         )
 
@@ -311,7 +346,9 @@ async def query_graph(
                 {
                     "id": n.id,
                     "name": n.name,
-                    "node_type": n.node_type,
+                    "node_type": n.node_type.value
+                    if isinstance(n.node_type, NodeType)
+                    else n.node_type,
                     "description": n.description,
                     "created_at": n.created_at.isoformat() if n.created_at else None,
                 }

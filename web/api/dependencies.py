@@ -152,7 +152,12 @@ async def get_knowledge_graph_service() -> AsyncGenerator[KnowledgeGraphService,
     Issue #470: Added commit after yield to persist changes.
     """
     async with AsyncSessionFactory.session_scope_fresh() as session:
-        yield KnowledgeGraphService(session)
+        # #1436 B2: the service requires a KnowledgeGraphRepository — passing the
+        # raw session bound session-methods onto .repo and every route call
+        # exploded (mypy census; masked as route-level 500s).
+        from services.database.repositories import KnowledgeGraphRepository
+
+        yield KnowledgeGraphService(KnowledgeGraphRepository(session))
         # Commit changes after successful route execution
         await session.commit()
 
