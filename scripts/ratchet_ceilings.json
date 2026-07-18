@@ -4,5 +4,9 @@
   "unscoped_reads": 59,
   "notimplementederror": 9,
   "todo_markers": 78,
-  "unscoped_repo_reads": 36
+  "unscoped_repo_reads": 36,
+  "mypy_call_arg": 44,
+  "mypy_arg_type": 427,
+  "mypy_attr_defined": 288,
+  "mypy_union_attr": 214
 }

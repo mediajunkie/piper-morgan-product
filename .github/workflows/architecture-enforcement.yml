@@ -5,13 +5,21 @@ on:
     branches: [main]
     paths:
       - 'services/**/*.py'
+      - 'web/**/*.py'
       - 'tests/test_architecture_enforcement.py'
+      - 'mypy-gate.ini'
+      - 'scripts/check_mypy_gate.py'
+      - 'scripts/ratchet_ceilings.json'
       - '.github/workflows/architecture-enforcement.yml'
   pull_request:
     branches: [main]
     paths:
       - 'services/**/*.py'
+      - 'web/**/*.py'
       - 'tests/test_architecture_enforcement.py'
+      - 'mypy-gate.ini'
+      - 'scripts/check_mypy_gate.py'
+      - 'scripts/ratchet_ceilings.json'
       - '.github/workflows/architecture-enforcement.yml'
 
 concurrency:
@@ -182,3 +190,27 @@ jobs:
           echo
           echo "📖 Architecture Guide: docs/architecture/github-integration-router.md"
           echo "🐛 Issue Reference: GitHub #193 - CORE-GREAT-2B"
+
+  mypy-signature-drift-gate:
+    name: "mypy signature-drift gate (#1436, per-code ratchet)"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install gate toolchain (pinned — plugins are load-bearing)
+        run: |
+          python -m pip install --upgrade pip
+          pip install "mypy==2.3.0" "sqlalchemy==2.0.23" "pydantic==2.12.5" "fastapi==0.115.14"
+
+      - name: "mypy gate: per-code shrink-only ratchets (call-arg / arg-type / attr-defined / union-attr)"
+        run: |
+          echo "#1436 Part 2 (Arch-ratified 2026-07-17): new signature drift may not ship;"
+          echo "removed drift must lower its ceiling in the same commit."
+          python scripts/check_mypy_gate.py
