@@ -14,6 +14,7 @@
 4. Stale-test family: #1437/#1443/#1444 (consider a `stale-test` label).
 
 ## PM-attention (batched, non-blocking)
+- **Protected-surface disposition (ONE conversation, Arch brings recon)**: notion_spatial (75%-abandoned class) + the client→pool→adapters→spatial cold cascade — park-under-docs+delete vs keep-as-WIP. Arch's + my lean: park+delete; PM's call (meaning-representation surface).
 - #1418 beta increment: on production, image cached — one word deploys it.
 - #1424 epic: close as sprint-complete vs keep as ratchet-backlog tracker (has open children).
 - Alpha parity (droplet) scheduled "sprint end" — when PM wants it.
