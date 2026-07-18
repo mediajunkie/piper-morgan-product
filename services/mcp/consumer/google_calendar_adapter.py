@@ -33,6 +33,10 @@ except ImportError:
     Flow = None
     build = None
 
+from mcp.client.stdio import StdioServerParameters
+
+from services.connectors.binding_repository import ConnectorBindingRepository
+from services.database.session_factory import AsyncSessionFactory
 from services.integrations.calendar.config_service import CalendarConfigService
 from services.integrations.spatial_adapter import (
     BaseSpatialAdapter,
@@ -40,16 +44,11 @@ from services.integrations.spatial_adapter import (
     SpatialPosition,
 )
 
-from mcp.client.stdio import StdioServerParameters
-
-from services.connectors.binding_repository import ConnectorBindingRepository
-from services.database.session_factory import AsyncSessionFactory
-
 from .connector import (
     Binding,
-    ConnectRequired,
     ConnectorStatus,
     ConnectorStatusState,
+    ConnectRequired,
     ConnectResult,
     DegradationReason,
     DegradationResponse,
@@ -403,10 +402,10 @@ class GoogleCalendarMCPAdapter(BaseSpatialAdapter):
                 refresh_token = keychain.get_api_key(f"google_calendar_{self._user_id}")
 
             if not refresh_token:
+                # #1436: stdlib logger — kwargs raised TypeError when this ran
                 logger.info(
-                    "calendar_no_user_credential",
-                    user_id=self._user_id or "unknown",
-                    reason="no_user_scoped_keychain_entry",
+                    f"calendar_no_user_credential user={self._user_id or 'unknown'} "
+                    "reason=no_user_scoped_keychain_entry"
                 )
                 return False
 

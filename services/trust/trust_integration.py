@@ -107,10 +107,8 @@ class TrustIntegration:
 
             # 2. Handle escalation signals (Stage 3→4 progression)
             if signal_result.signal_type == SignalType.ESCALATION:
-                logger.info(
-                    "trust_escalation_signal_detected",
-                    user_id=str(user_id),
-                    patterns=signal_result.patterns_matched,
+                logger.info(  # #1436: stdlib logger — kwargs raised TypeError
+                    f"trust_escalation_signal_detected user={user_id} patterns={signal_result.patterns_matched}"
                 )
                 # Attempt to progress to TRUSTED stage
                 escalation_result = await self.trust_service.progress_to_trusted(
@@ -131,10 +129,8 @@ class TrustIntegration:
             # Per ADR-053 and PPM guidance: explicit complaint → Stage 2 floor
             complaint_detected = False
             if signal_result.signal_type == SignalType.COMPLAINT:
-                logger.info(
-                    "trust_complaint_signal_detected",
-                    user_id=str(user_id),
-                    patterns=signal_result.patterns_matched,
+                logger.info(  # #1436: stdlib logger — kwargs raised TypeError
+                    f"trust_complaint_signal_detected user={user_id} patterns={signal_result.patterns_matched}"
                 )
                 complaint_detected = True
                 # Immediate regression to BUILDING (not gradual via consecutive_negative)
@@ -154,10 +150,8 @@ class TrustIntegration:
             # 4. Handle soft regression signals - one stage drop (not to floor)
             # Per PPM guidance: "ask me first next time" is softer than complaint
             if signal_result.signal_type == SignalType.SOFT_REGRESSION:
-                logger.info(
-                    "trust_soft_regression_signal_detected",
-                    user_id=str(user_id),
-                    patterns=signal_result.patterns_matched,
+                logger.info(  # #1436: stdlib logger — kwargs raised TypeError
+                    f"trust_soft_regression_signal_detected user={user_id} patterns={signal_result.patterns_matched}"
                 )
                 profile = await self.trust_service.handle_soft_regression(
                     user_id=user_id,
@@ -189,11 +183,10 @@ class TrustIntegration:
                 context=f"Intent processing: {outcome_result.reasoning}",
             )
 
-            logger.info(
-                "trust_interaction_recorded",
-                user_id=str(user_id),
-                outcome=outcome_result.outcome.value,
-                trust_stage=profile.current_stage.value,
+            logger.info(  # #1436: stdlib logger — kwargs raised TypeError
+                f"trust_interaction_recorded user={user_id} "
+                f"outcome={outcome_result.outcome.value} "
+                f"trust_stage={profile.current_stage.value}"
             )
 
             return {

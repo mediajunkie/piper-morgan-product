@@ -119,7 +119,7 @@ class ServiceInitializer:
             errors = validate_registry()
             if errors:
                 for err in errors:
-                    logger.error("workflow_registry_validation_error", error=err)
+                    logger.error(f"workflow_registry_validation_error: {err}")  # #1436: stdlib logger
             else:
                 logger.info("WorkflowDispatcher validated successfully")
 

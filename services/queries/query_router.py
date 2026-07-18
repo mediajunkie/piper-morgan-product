@@ -161,12 +161,11 @@ class QueryRouter:
                         message, session_id
                     )
                     if resolved_references:
+                        # #1436: stdlib logger — kwargs raised TypeError live
                         logger.info(
-                            "References resolved in query",
-                            session_id=session_id,
-                            original=message,
-                            resolved=resolved_message,
-                            reference_count=len(resolved_references),
+                            f"References resolved in query session={session_id} "
+                            f"original={message!r} resolved={resolved_message!r} "
+                            f"reference_count={len(resolved_references)}"
                         )
                 except Exception as e:
                     logger.warning(f"Reference resolution failed, using original message: {e}")

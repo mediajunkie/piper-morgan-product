@@ -318,9 +318,7 @@ async def apply_default_default_if_unset(
             return
 
         await config_service.set_default_repo(user_id, chosen)
+        # #1436: stdlib logger — kwargs raised TypeError when this line ran
         logger.info(
-            "default_repo_auto_set",
-            user_id=str(user_id),
-            default_repo=chosen,
-            repo_count=len(repos),
+            f"default_repo_auto_set user={user_id} repo={chosen} repo_count={len(repos)}"
         )
