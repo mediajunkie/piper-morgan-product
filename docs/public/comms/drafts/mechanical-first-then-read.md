@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'telescope.png'
+alt: 'A mechanical wiper clears semicolon-shaped specks from a telescope lens while a human observer studies the distant landscape, freeing attention for meaning rather than pattern-checking.'
 caption: ''
 ---
 
