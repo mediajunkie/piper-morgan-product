@@ -182,21 +182,18 @@ class TestMCPErrorScenarios:
             # Should have called database search
             mock_session.execute.assert_called()
 
-        # Test with MCP enabled but failing
+        # Test with MCP enabled: the #1436 interim guard means the simulation
+        # stack is NEVER constructed — flag-on honestly degrades to filename
+        # search (the old contract asserted initialize() was called; that
+        # contract WAS the hazard: MCPResourceManager wraps the simulation-only
+        # client and would have blended fabricated results into real search).
         with patch.dict(os.environ, {"ENABLE_MCP_FILE_SEARCH": "true"}):
             with patch("services.mcp.resources.MCPResourceManager") as mock_manager_class:
-                # Mock MCP manager to fail
-                mock_manager = Mock()
-                mock_manager.initialize = AsyncMock(return_value=False)
-                mock_manager.enhanced_file_search = AsyncMock(return_value=[])
-                mock_manager.cleanup = AsyncMock()
-                mock_manager_class.return_value = mock_manager
-
                 results = await repo.search_files_with_content("session123", "test query")
-                assert isinstance(results, list), "Should return list even with MCP failure"
+                assert isinstance(results, list), "Should return list with MCP flag on"
 
-                # Should have attempted MCP initialization
-                mock_manager.initialize.assert_called_once_with(enabled=True)
+                # The simulation stack must NOT be constructed (#1436 guard)
+                mock_manager_class.assert_not_called()
 
     @pytest.mark.asyncio
     async def test_file_query_service_error_handling(self):
