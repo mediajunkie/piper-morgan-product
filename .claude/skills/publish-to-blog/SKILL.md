@@ -4,9 +4,9 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.19
+version: 0.20
 created: 2026-03-16
-updated: 2026-06-03
+updated: 2026-07-18
 ---
 
 # publish-to-blog
@@ -154,6 +154,18 @@ The skill MUST strip both frontmatter blocks and comment lines when converting t
 Comms draft template: `docs/internal/planning/comms/blog-post-template.md`
 
 ## Proofread Discipline (read these first — every time)
+
+### Pre-Step: Sync worktree to origin/main (mandatory — before any file reads)
+
+**PM commonly edits drafts via the GitHub Web UI or another session.** Those commits land on `origin/main` but not in your local worktree until you merge. Reading a stale local copy produces false audit failures (e.g., empty frontmatter that PM already filled in) with no error — the file just reads wrong.
+
+```bash
+git fetch origin main -q && git merge origin/main -q --no-edit
+```
+
+Run this before opening the draft, before reading the calendar row, before anything. Takes ~2 seconds and prevents the entire class of "stale draft" false alarms.
+
+**The 2026-07-18 incident**: PM added frontmatter and revised the draft via the Web UI; Comms caught and fixed an encoding error in the caption. Docs read the pre-edit local copy, reported three frontmatter FAIL findings, and had to be corrected by PM before proceeding. One merge would have caught it immediately.
 
 ### Step 0: Check the editorial calendar first
 
