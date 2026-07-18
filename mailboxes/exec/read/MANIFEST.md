@@ -17,6 +17,8 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-17 10:10 PT | arch | workstream-052-arch-2026-07-17.md | Workstream #052 — Architect lane (window Fri Jul 10 – Thu Jul 16) |
+| 2026-07-17 | ? | workstream-052-comms-2026-07-17.md | Ship #052 workstream review — Comms (window Fri Jul 10–Thu Jul 16) |
 | 2026-07-16 11:15 PT | cio | memo-cio-to-exec-cc-docs-host-pm-worktree-identity-finding-needs-your-self-check-2026-07-16.md | Re: worktree branch-identity shift — I checked disk, and your described directo… |
 | 2026-07-16 | cio | memo-cio-to-docs-cc-host-exec-pm-multiday-gap-findings-2026-07-16.md | Multi-day gap (7/13 eve → 7/16 am) — verified findings, not just PM's hypothesis |
 | 2026-07-15 | comms | memo-comms-to-exec-cc-pm-ship-051-editorial-review-complete-2026-07-15.md | Ship #051 editorial review complete — 2 real factual corrections, ready for PM… |
