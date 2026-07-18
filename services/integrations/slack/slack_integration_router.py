@@ -609,12 +609,20 @@ class SlackIntegrationRouter:
         else:
             raise RuntimeError("Spatial intelligence not available. Enable USE_SPATIAL_SLACK=true.")
 
-    async def create_spatial_object_from_slack(self, slack_object: Dict[str, Any]):
+    async def create_spatial_object_from_slack(
+        self, slack_timestamp: str, object_type: str, context: Dict[str, Any]
+    ):
         """
-        Create spatial object from Slack object (Slack-specific spatial method).
+        Create spatial object from Slack data (Slack-specific spatial method).
+
+        #1436: signature aligned to the adapter's real contract — the old
+        one-dict passthrough TypeError'd (interface drift; zero callers existed,
+        so this is glue repair, not a spatial-semantics change).
 
         Args:
-            slack_object: Slack object data
+            slack_timestamp: Slack message timestamp
+            object_type: Type of spatial object
+            context: Additional context for the object
 
         Returns:
             SpatialObject: Created spatial object
@@ -623,7 +631,9 @@ class SlackIntegrationRouter:
             RuntimeError: If spatial intelligence not available
         """
         if self.spatial_adapter:
-            return await self.spatial_adapter.create_spatial_object_from_slack(slack_object)
+            return await self.spatial_adapter.create_spatial_object_from_slack(
+                slack_timestamp, object_type, context
+            )
         else:
             raise RuntimeError("Spatial intelligence not available. Enable USE_SPATIAL_SLACK=true.")
 

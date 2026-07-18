@@ -1216,14 +1216,19 @@ class SlackWebhookRouter:
         try:
             from services.domain.models import Intent
             from services.intent_service.canonical_handlers import CanonicalHandlers
+            from services.shared_types import IntentCategory
 
             handlers = CanonicalHandlers()
 
             # Create a minimal intent for calendar query
+            # #1436: Intent's real shape is (category, action, ...) — the old
+            # raw_input/classification kwargs TypeError'd, so every /piper
+            # calendar hit the generic failure copy.
             intent = Intent(
-                raw_input="what's on my calendar today?",
-                classification="TEMPORAL",
+                category=IntentCategory.TEMPORAL,
+                action="get_current_time",
                 confidence=1.0,
+                original_message="what's on my calendar today?",
             )
 
             # Call the canonical handler
@@ -1255,14 +1260,17 @@ class SlackWebhookRouter:
         try:
             from services.domain.models import Intent
             from services.intent_service.canonical_handlers import CanonicalHandlers
+            from services.shared_types import IntentCategory
 
             handlers = CanonicalHandlers()
 
             # Create a minimal intent for status query
+            # #1436: real Intent shape (see calendar subcommand note).
             intent = Intent(
-                raw_input="what am I working on?",
-                classification="STATUS",
+                category=IntentCategory.STATUS,
+                action="get_project_status",
                 confidence=1.0,
+                original_message="what am I working on?",
             )
 
             # Call the canonical handler
@@ -1294,14 +1302,17 @@ class SlackWebhookRouter:
         try:
             from services.domain.models import Intent
             from services.intent_service.canonical_handlers import CanonicalHandlers
+            from services.shared_types import IntentCategory
 
             handlers = CanonicalHandlers()
 
             # Create a minimal intent for priority query
+            # #1436: real Intent shape (see calendar subcommand note).
             intent = Intent(
-                raw_input="what's my top priority?",
-                classification="PRIORITY",
+                category=IntentCategory.PRIORITY,
+                action="get_top_priority",
                 confidence=1.0,
+                original_message="what's my top priority?",
             )
 
             # Call the canonical handler
