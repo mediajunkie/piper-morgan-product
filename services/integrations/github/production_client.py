@@ -49,7 +49,7 @@ class RetryConfig:
     base_delay_seconds: float = 1.0
     max_delay_seconds: float = 60.0
     exponential_base: float = 2.0
-    rate_limit_retry: bool = True
+    rate_limit_retry_enabled: bool = True  # #1436: aligned with GitHubRetryConfig
 
 
 @dataclass
@@ -144,8 +144,9 @@ class ProductionGitHubClient:
             )
 
             # Verify authentication
-            self._authenticated_user = self._client.get_user()
-            logger.info(f"GitHub client initialized for user: {self._authenticated_user.login}")
+            authenticated_user = self._client.get_user()
+            self._authenticated_user = authenticated_user
+            logger.info(f"GitHub client initialized for user: {authenticated_user.login}")
 
         except BadCredentialsException as e:
             raise GitHubAuthFailedError(
@@ -189,7 +190,10 @@ class ProductionGitHubClient:
                 self._error_count += 1
                 logger.warning(f"GitHub rate limit exceeded (attempt {attempt + 1})")
 
-                if not self.config.retry_config.rate_limit_retry:
+                # #1436: field is rate_limit_retry_enabled — the old name raised
+                # AttributeError INSIDE the rate-limit handler, replacing the
+                # honest GitHubRateLimitError with an unexpected crash.
+                if not self.config.retry_config.rate_limit_retry_enabled:
                     raise GitHubRateLimitError(
                         retry_after=60, details={"reason": "Rate limit exceeded, retries disabled"}
                     ) from e
@@ -381,6 +385,12 @@ class ProductionGitHubClient:
         """List accessible repositories with pagination handling"""
 
         def _list_repos():
+            # #1436: honest guard — if init degraded, these are None and the
+            # old code crashed with AttributeError instead of the auth error.
+            if self._client is None or self._authenticated_user is None:
+                raise GitHubAuthFailedError(
+                    details={"reason": "GitHub client not initialized (no valid credentials)"}
+                )
             if organization:
                 org = self._client.get_organization(organization)
                 repos = org.get_repos()
