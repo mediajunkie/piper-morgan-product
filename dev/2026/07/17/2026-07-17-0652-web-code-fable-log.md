@@ -38,3 +38,30 @@ Unchanged since yesterday's close (no overnight automation commits).
 | Fire | Time | Action | Notes |
 |------|------|--------|-------|
 | 06:52 tick | 06:52 | START | Jul-16 close verified. Inbox zero. Website unchanged. All open threads externally gated (Docs/PM). Holding. |
+| 09:52/12:52/15:52/18:52 ticks | day | WORK (batched quiet holds) | Fully quiet day — zero mail, zero repo movement all day, all open threads (ship Phase B, 3 PM-gated cleanup items) stayed externally gated throughout. No PM contact today. |
+| 21:52 tick | 21:52 | STOP | Day-close. Inbox empty, worktree clean, nothing changed since START. Cron left armed. |
+
+---
+
+## Day-arc summary
+
+Quiet day by design, not by neglect — every open thread (Weekly Ship Phase B backfill,
+the three optional cleanup items) is correctly waiting on someone else's action (Docs's
+paths, PM's cleanup decisions), and none of them warranted a proactive nudge given
+yesterday's explicit note that PM would handle the Docs nudge directly. A calm day
+after Thursday's four-thread density is the expected shape, not a gap.
+
+## Memory-eval (3-bucket)
+
+- **Worth remembering**: nothing new — quiet day, no discoveries.
+- **Session-local**: no change to carry-forward state; still accurate as of 7/16 evening.
+- **Neither**: n/a.
+
+## Sign-off checklist
+
+- [x] Website worktree clean; HEAD == origin/main throughout the day
+- [x] Product repo: only the START log commit shipped 7/17; verified on origin
+- [x] Inbox empty at every fire
+- [x] Cron ARMED continuously (ef26183c)
+
+<!-- DAY-CLOSED: 2026-07-17 -->
