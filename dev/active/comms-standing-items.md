@@ -2,7 +2,7 @@
 
 **Purpose**: persistent (across-days) Comms-side task list — items that aren't tied to a specific blog post or pubDate but need surfacing/advancing as cycle fires advance. Lives across days; not a per-day artifact. (Per-day work goes in the dated session log under `dev/2026/MM/DD/`.)
 
-**Last refreshed**: 2026-07-16 evening (Beat 14 published; narrative-slate research done, awaiting PM steer)
+**Last refreshed**: 2026-07-17 evening (Ship #052 workstream review sent same-day as kickoff; canonicalSite + narrative-slate still awaiting PM)
 
 ---
 
@@ -31,6 +31,7 @@
 | **"The Server Crashed Mid-Draft"** | ✅ PUBLISHED 2026-07-12 — prelim-reviewed ahead of schedule Jul 11 (resolved a fact-check bracket, softened an unsupported "ninety minutes" claim traced to an unrelated story in the same source log, fixed 1 cliché); PM voice-passed clean (no typos this round, edited from the correct synced baseline); frontmatter + art added same morning. | CLOSED | |
 | **Weekly Ship #051 "Impossible by Construction"** | ✅ PUBLISHED 2026-07-15 — full fact-check found 2 real adjacent-number contaminations (Beta Blockers end-of-window count 4→2, write-path release count 9→5, both verified directly against Lead Dev's own day-close log rather than trusting the digest), BYOC gloss added, invite-timing precision fixed. Separately caught + fixed 2 typos from PM's own admin-UI edit (directon/repsond) — landed via a clean auto-merge after Docs independently fixed the same typos in parallel. P.S. drafted by me first (caught my own negation-reveal cliché slip — new memory instance), PM supplied their own better version, applied with minor mechanical polish. Also cleaned up 4 orphan/duplicate scratch drafts + 1 stray editor-generated jpg that got swept into an unrelated push (PM-approved). | CLOSED | |
 | **`update-calendar` skill corruption incident (2026-07-14)** | ✅ ROOT-CAUSED + FIXED — my own 2 same-day calendar edits used `row[-2]` positional indexing for the `notes` field, actually landing in `altText` (18-col schema); caught by a peer Code session, which repaired the structure and reported the full mechanism. I repaired the row's content, upgraded `update-calendar` to v1.2 (by-name field access mandated, whole-file semantic verification required), and saved a durable memory (`feedback_csv_edit_by_name_never_position.md`). Filed #1406 (separate, low-priority, pre-existing legacy backlog-schema drift found during the integrity scan — not conflated with the incident). | CLOSED | |
+| **Ship #052 workstream review** | ✅ SENT 2026-07-17, same-day as kickoff — window Jul10-16, full §0-6 including a full unsoftened account of the calendar-corruption incident above. `ROLE-PORTFOLIO-COMMS.md` §2 refreshed alongside it. | CLOSED | |
 
 ## Cross-cutting PM topics (verify still alive at next surface; ≥30 days stale flagged)
 
