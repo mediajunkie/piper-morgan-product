@@ -576,21 +576,6 @@ async def get_cross_feature_service(
     return CrossFeatureKnowledgeService(knowledge_service, pattern_service, learning_loop)
 
 
-async def share_query_pattern(
-    source_feature: str,
-    target_feature: str,
-    query_template: str,
-    parameters: Dict[str, Any],
-    confidence: float,
-    metadata: Optional[Dict[str, Any]] = None,
-) -> str:
-    """Convenience function to share a query pattern"""
-    # This would need to be called with proper service instances
-    # For now, return a placeholder
-    return (
-        f"shared_query_{source_feature}_{target_feature}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-    )
-
 
 if __name__ == "__main__":
     # Test the cross-feature knowledge service

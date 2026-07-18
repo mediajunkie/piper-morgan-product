@@ -8,9 +8,9 @@ import uuid
 from datetime import datetime, timezone
 
 from sqlalchemy import (
+    CHAR,
     JSON,
     Boolean,
-    CHAR,
     Column,
     DateTime,
     Enum,
@@ -2454,11 +2454,19 @@ class PersonalityProfileModel(Base, TimestampMixin):
             TechnicalPreference,
         )
 
+        # #1436 F6: the domain dataclass requires id/user_id/created_at/
+        # updated_at — omitting them TypeError'd on every call (cold today;
+        # latent crash the moment anyone reads a stored profile row).
         return PersonalityProfile(
+            id=str(self.id),
+            user_id=str(self.user_id),
             warmth_level=self.warmth_level,
             confidence_style=ConfidenceDisplayStyle(self.confidence_style),
             action_orientation=ActionLevel(self.action_orientation),
             technical_depth=TechnicalPreference(self.technical_depth),
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+            is_active=self.is_active,
         )
 
     @classmethod

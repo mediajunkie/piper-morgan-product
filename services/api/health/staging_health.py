@@ -147,10 +147,16 @@ class StagingHealthChecker:
     async def _check_redis_health(self) -> Dict[str, Any]:
         """Check Redis cache health"""
         try:
+            # #1436 F6: MCPConfiguration never had redis_* fields — this check
+            # crashed into its except and reported UNHEALTHY regardless of the
+            # actual Redis. Use the SAME source the live app uses
+            # (services/cache/redis_factory.py): REDIS_URL. A health check that
+            # probes a different URL than the app uses is a false signal.
+            import os
+
             import redis.asyncio as redis
 
-            config = get_config()
-            redis_url = f"redis://:{config.redis_password}@{config.redis_host}:{config.redis_port}"
+            redis_url = os.getenv("REDIS_URL", "redis://localhost:6379")
 
             start_time = time.time()
             redis_client = redis.from_url(redis_url)
@@ -192,8 +198,14 @@ class StagingHealthChecker:
     async def _check_chromadb_health(self) -> Dict[str, Any]:
         """Check ChromaDB vector database health"""
         try:
-            config = get_config()
-            chroma_url = f"http://{config.chroma_host}:{config.chroma_port}"
+            # #1436 F6: MCPConfiguration never had chroma_* fields (same crash
+            # shape as the Redis check). The deploy env provides CHROMA_HOST/
+            # CHROMA_PORT (fly.toml); default to the local dev ports.
+            import os
+
+            chroma_host = os.getenv("CHROMA_HOST", "localhost")
+            chroma_port = os.getenv("CHROMA_PORT", "8000")
+            chroma_url = f"http://{chroma_host}:{chroma_port}"
 
             start_time = time.time()
 

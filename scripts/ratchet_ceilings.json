@@ -1,7 +1,7 @@
 {
   "_comment": "Finish-the-Unfinished sprint (#1424) frozen ceilings, census 2026-07-16; unscoped_repo_reads added 2026-07-17 (ADR-079 D2b warn-mode baseline, pre-calibration). Counts may only go DOWN; lower the ceiling in the same commit as the fix. See tests/test_completion_ratchets.py.",
   "silent_death_core": 244,
-  "unscoped_reads": 59,
+  "unscoped_reads": 54,
   "notimplementederror": 9,
   "todo_markers": 78,
   "unscoped_repo_reads": 36,

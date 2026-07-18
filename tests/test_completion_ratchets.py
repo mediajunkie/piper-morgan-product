@@ -121,10 +121,18 @@ def test_unscoped_repo_reads_ratchet():
 @pytest.mark.smoke
 def test_notimplementederror_ratchet():
     """Census C: NotImplementedError raise sites in production code may only decrease."""
+    # Lines carrying '# nie-ok: <reason>' are reviewed LOUD stubs (e.g. the
+    # Arch-ruled security raise in token_blacklist, #1436 F4) — the ratchet
+    # hunts silent stubs, and converting a silent no-op into a loud raise is an
+    # improvement the raw count would misread as regression.
+    count = _grep_count(r"raise NotImplementedError") - _grep_count(
+        r"raise NotImplementedError\(.*# nie-ok:"
+    )
     _assert_ratchet(
         "notimplementederror",
-        _grep_count(r"raise NotImplementedError"),
-        "implement it, or route through a documented-legit abstract/guard shape",
+        count,
+        "implement it, annotate '# nie-ok: <reason>' for a reviewed loud stub, "
+        "or route through a documented-legit abstract/guard shape",
     )
 
 

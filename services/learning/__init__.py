@@ -13,7 +13,6 @@ from .cross_feature_knowledge import (
     KnowledgeSharingType,
     SharedKnowledge,
     get_cross_feature_service,
-    share_query_pattern,
 )
 from .query_learning_loop import (
     LearnedPattern,
@@ -46,5 +45,4 @@ __all__ = [
     "KnowledgeSharingType",
     "ConfidenceLevel",
     "get_cross_feature_service",
-    "share_query_pattern",
 ]

@@ -486,6 +486,9 @@ class UserAPIKeyService:
             logger.error(f"Validation failed for {user_id}/{provider}: {e}")
             return False
 
+    # NOTE (#1436 Tier-3 rider): the orphaned KeyRotationService was deleted;
+    # its documented intent — a future PER-USER bulk-rotation mode — lives on
+    # here as the natural home if that need materializes. This rotates ONE key.
     async def rotate_user_key(
         self,
         session: AsyncSession,

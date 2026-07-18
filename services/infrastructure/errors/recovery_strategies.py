@@ -16,28 +16,27 @@ class MCPRecoveryStrategies:
 
     @staticmethod
     async def fallback_to_filename_search(query: str, error: Exception) -> SearchResult:
-        """When content search fails, fallback to filename matching"""
+        """When content search fails, fall back to filename matching.
+
+        #1436 F4 (Arch: remove-the-lie): the placeholder FABRICATED a result
+        ("Matched file for query ..."). A dormant safety scaffold that honestly
+        returns nothing is fine; one that invents results is a landmine. Wire a
+        real filename search here when this strategy gets a caller.
+        """
         logging.warning(f"Fallback to filename search due to error: {error}")
-        # Placeholder: simulate filename search
-        results = [f"Matched file for query '{query}'"]
-        return SearchResult(results=results, degraded=True, reason="content_search_failed")
+        return SearchResult(results=[], degraded=True, reason="content_search_failed")
 
     @staticmethod
     async def circuit_breaker_recovery(service_name: str) -> bool:
-        """Attempt to recover from circuit breaker open state"""
-        logging.info(f"Attempting circuit breaker recovery for {service_name}")
-        # Placeholder: simulate lightweight operation
-        try:
-            # Simulate test operation
-            await asyncio.sleep(0.1)
-            # Simulate gradual load increase
-            for _ in range(3):
-                await asyncio.sleep(0.05)
-            # Assume recovery successful
-            return True
-        except Exception as e:
-            logging.error(f"Circuit breaker recovery failed: {e}")
-            return False
+        """Attempt to recover from circuit breaker open state.
+
+        #1436 F4 (Arch: remove-the-lie): the placeholder fake-slept and
+        returned True — a fabricated "recovered" signal. Until a real health
+        probe exists, honestly report NOT recovered; callers keep the breaker
+        open (the safe state).
+        """
+        logging.info(f"Circuit breaker recovery for {service_name}: no real probe wired — reporting not-recovered")
+        return False
 
     @staticmethod
     async def performance_degradation_response(current_latency: float) -> dict:

@@ -200,12 +200,19 @@ class TokenBlacklist:
         Returns:
             Number of tokens revoked
         """
-        logger.warning(
-            "revoke_user_tokens not yet implemented - needs token registry",
+        logger.error(
+            "revoke_user_tokens called but NOT implemented - needs token registry",
             user_id=user_id,
             reason=reason,
         )
-        return 0
+        # #1436 F4 (Arch: security no-ops must fail LOUD): the silent `return 0`
+        # was success-shaped — an incident responder calling this would believe
+        # tokens were revoked when nothing happened. Raise until the token
+        # registry exists.
+        raise NotImplementedError(  # nie-ok: Arch-ruled loud security stub (#1436 F4) — silent 0 was the defect
+            "revoke_user_tokens requires a per-user token registry (not yet built); "
+            "no tokens were revoked"
+        )
 
     async def _add_to_database(
         self,
