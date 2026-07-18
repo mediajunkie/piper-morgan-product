@@ -195,6 +195,19 @@ class FileRepository(BaseRepository):
             logger.debug("MCP content search disabled, returning filename matches only")
             return filename_matches[:limit]
 
+        # #1436 Tier-3 interim guard (Arch batch memo 2026-07-18, "the sleeper"):
+        # MCPResourceManager wraps the SIMULATION-only PiperMCPClient — with the
+        # flag on, content search would blend FABRICATED results into real file
+        # search. Until this path is wired to the real consumer client (or the
+        # family is deleted — Arch ruling pending), the flag-on path honestly
+        # degrades to filename search. Both pending rulings start with "stop
+        # serving simulated results," so this guard is safe under either.
+        logger.warning(
+            "mcp_content_search_unavailable: flag is on but the backing client is "
+            "simulation-only — returning filename matches (honest degrade, #1436)"
+        )
+        return filename_matches[:limit]
+
         # Import MCP components only if enabled to avoid import errors
         try:
             from services.mcp.resources import MCPResourceManager
@@ -263,6 +276,19 @@ class FileRepository(BaseRepository):
         if not mcp_enabled:
             logger.debug("MCP content search disabled, returning filename matches only")
             return filename_matches[:limit]
+
+        # #1436 Tier-3 interim guard (Arch batch memo 2026-07-18, "the sleeper"):
+        # MCPResourceManager wraps the SIMULATION-only PiperMCPClient — with the
+        # flag on, content search would blend FABRICATED results into real file
+        # search. Until this path is wired to the real consumer client (or the
+        # family is deleted — Arch ruling pending), the flag-on path honestly
+        # degrades to filename search. Both pending rulings start with "stop
+        # serving simulated results," so this guard is safe under either.
+        logger.warning(
+            "mcp_content_search_unavailable: flag is on but the backing client is "
+            "simulation-only — returning filename matches (honest degrade, #1436)"
+        )
+        return filename_matches[:limit]
 
         # Import MCP components only if enabled to avoid import errors
         try:
