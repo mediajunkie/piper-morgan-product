@@ -396,26 +396,6 @@ class TestConfigurationServiceMissing:
 class TestConfigurationIntegration:
     """Integration tests for configuration with existing services."""
 
-    def test_mcp_resource_manager_uses_configuration_service(self):
-        """Test that MCPResourceManager uses centralized configuration."""
-        # RED: This should fail until we integrate the services
-
-        if not CONFIG_SERVICE_AVAILABLE:
-            pytest.skip("Configuration service not available")
-
-        from services.mcp.resources import MCPResourceManager
-
-        # Should use configuration service instead of direct os.getenv
-        manager = MCPResourceManager()
-
-        # Should not directly check environment variables
-        # (This test will help ensure we migrate away from os.getenv)
-        import inspect
-
-        source = inspect.getsource(MCPResourceManager.__init__)
-        assert (
-            "os.getenv" not in source
-        ), "MCPResourceManager should use configuration service, not os.getenv"
 
     def test_file_repository_uses_configuration_service(self):
         """Test that FileRepository uses centralized configuration."""

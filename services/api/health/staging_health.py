@@ -18,7 +18,6 @@ from sqlalchemy import text
 
 from services.database.session_factory import AsyncSessionFactory
 from services.infrastructure.config.mcp_configuration import get_config
-from services.mcp.resources import MCPResourceManager
 
 logger = logging.getLogger(__name__)
 
@@ -240,74 +239,20 @@ class StagingHealthChecker:
             }
 
     async def _check_mcp_health(self) -> Dict[str, Any]:
-        """Check MCP integration health with PM-038 enhancements"""
-        try:
-            start_time = time.time()
+        """MCP integration health.
 
-            # Initialize MCP resource manager
-            manager = MCPResourceManager()
-            success = await manager.initialize(enabled=True)
-
-            if not success:
-                return {
-                    "status": HealthStatus.UNHEALTHY,
-                    "error": "MCP initialization failed",
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
-                }
-
-            # Test MCP operations
-            test_results = {}
-
-            # Test 1: List resources
-            resources = await manager.list_available_resources()
-            test_results["resource_count"] = len(resources)
-
-            # Test 2: Enhanced file search (PM-038 feature)
-            search_start = time.time()
-            search_results = await manager.enhanced_file_search("test health check")
-            search_time = (time.time() - search_start) * 1000
-            test_results["search_response_time_ms"] = round(search_time, 2)
-            test_results["search_results_count"] = len(search_results)
-
-            # Test 3: Connection stats (pool performance)
-            connection_stats = await manager.get_connection_stats()
-            test_results["connection_stats"] = connection_stats
-
-            # Test 4: Performance validation (should be under 500ms target)
-            performance_ok = search_time < 500
-            test_results["performance_target_met"] = performance_ok
-
-            await manager.cleanup()
-
-            total_time = (time.time() - start_time) * 1000
-
-            # Determine status based on performance and functionality
-            if performance_ok and test_results["resource_count"] > 0:
-                status = HealthStatus.HEALTHY
-            elif test_results["resource_count"] > 0:
-                status = HealthStatus.DEGRADED
-            else:
-                status = HealthStatus.UNHEALTHY
-
-            return {
-                "status": status,
-                "total_response_time_ms": round(total_time, 2),
-                "tests": test_results,
-                "pm038_features": {
-                    "connection_pooling": connection_stats.get("using_pool", False),
-                    "content_search": len(search_results) > 0,
-                    "performance_target": "< 500ms",
-                    "actual_performance": f"{search_time:.1f}ms",
-                },
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-            }
-
-        except Exception as e:
-            return {
-                "status": HealthStatus.UNHEALTHY,
-                "error": f"MCP health check failed: {str(e)}",
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-            }
+        #1436 Tier-3 (Arch-ruled 2026-07-18): the POC MCP stack this check
+        exercised (MCPResourceManager -> simulation client) is deleted. The
+        REAL connector path is services/mcp/consumer/* — a live health probe
+        for it is future work (Family-6 fix, with the MCPConfiguration field
+        repair). Until then this reports honestly rather than exercising a
+        simulation: not_applicable, never a fabricated "operational".
+        """
+        return {
+            "status": HealthStatus.DEGRADED,
+            "note": "POC MCP stack removed (#1436); consumer-path probe not yet wired",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
 
     async def _check_system_resources(self) -> Dict[str, Any]:
         """Check system resource utilization"""

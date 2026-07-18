@@ -16,7 +16,6 @@ import pytest
 
 from services.mcp.client import MCPCircuitBreaker, PiperMCPClient
 from services.mcp.exceptions import MCPConnectionError, MCPResourceNotFoundError, MCPTimeoutError
-from services.mcp.resources import MCPResourceManager
 from services.queries.file_queries import FileQueryService
 from services.repositories.file_repository import FileRepository
 
@@ -107,57 +106,6 @@ class TestMCPErrorScenarios:
         assert breaker.failure_count == 0
 
     @pytest.mark.asyncio
-    async def test_mcp_resource_manager_initialization_failure(self):
-        """Test MCP resource manager handling of initialization failures"""
-        # Test with invalid configuration
-        invalid_config = {"url": "invalid://server", "timeout": 0.1}
-
-        manager = MCPResourceManager(invalid_config)
-
-        # Initialization should fail gracefully
-        initialized = await manager.initialize(enabled=True)
-        assert initialized == False, "Initialization should fail with invalid config"
-
-        # Manager should report unavailable
-        available = await manager.is_available()
-        assert available == False, "Manager should be unavailable after failed initialization"
-
-        # Operations should return empty/None results
-        results = await manager.enhanced_file_search("test")
-        assert results == [], "Search should return empty results when unavailable"
-
-        content = await manager.get_file_content("test.txt")
-        assert content is None, "Get content should return None when unavailable"
-
-        resources = await manager.list_available_resources()
-        assert resources == [], "List resources should return empty when unavailable"
-
-        # Stats should reflect unavailable state
-        stats = await manager.get_connection_stats()
-        assert stats["available"] == False, "Stats should show unavailable"
-        assert stats["enabled"] == True, "Stats should show enabled but unavailable"
-
-    @pytest.mark.asyncio
-    async def test_mcp_resource_manager_disabled_state(self):
-        """Test MCP resource manager when disabled by feature flag"""
-        manager = MCPResourceManager()
-
-        # Test with disabled flag
-        initialized = await manager.initialize(enabled=False)
-        assert initialized == False, "Should not initialize when disabled"
-
-        # All operations should return empty/None results
-        available = await manager.is_available()
-        assert available == False, "Should be unavailable when disabled"
-
-        results = await manager.enhanced_file_search("test")
-        assert results == [], "Search should return empty when disabled"
-
-        stats = await manager.get_connection_stats()
-        assert stats["enabled"] == False, "Stats should show disabled"
-        assert stats["available"] == False, "Stats should show unavailable"
-
-    @pytest.mark.asyncio
     async def test_file_repository_mcp_fallback(self):
         """Test FileRepository graceful fallback when MCP fails"""
         # Create temporary database session (mock)
@@ -182,18 +130,12 @@ class TestMCPErrorScenarios:
             # Should have called database search
             mock_session.execute.assert_called()
 
-        # Test with MCP enabled: the #1436 interim guard means the simulation
-        # stack is NEVER constructed — flag-on honestly degrades to filename
-        # search (the old contract asserted initialize() was called; that
-        # contract WAS the hazard: MCPResourceManager wraps the simulation-only
-        # client and would have blended fabricated results into real search).
+        # Test with MCP enabled: the POC simulation stack is DELETED (#1436
+        # Tier-3, Arch-ruled) — flag-on has no path to fabricated results by
+        # construction and honestly degrades to filename search.
         with patch.dict(os.environ, {"ENABLE_MCP_FILE_SEARCH": "true"}):
-            with patch("services.mcp.resources.MCPResourceManager") as mock_manager_class:
-                results = await repo.search_files_with_content("session123", "test query")
-                assert isinstance(results, list), "Should return list with MCP flag on"
-
-                # The simulation stack must NOT be constructed (#1436 guard)
-                mock_manager_class.assert_not_called()
+            results = await repo.search_files_with_content("session123", "test query")
+            assert isinstance(results, list), "Should return list with MCP flag on"
 
     @pytest.mark.asyncio
     async def test_file_query_service_error_handling(self):
