@@ -1,40 +1,36 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # Mechanical First, Then Read
 
 *May 21, 2026*
 
-I was proofreading a post a few weeks ago. Read it through twice, actively checking for one known violation: no semicolons in this kind of published prose. Caught three, fixed them, felt good about it. Handed it off.
+I was proofreading a blog post for this series a few weeks ago. I read it through twice, actively checking for one of my rules when Claude is outlining for me: no semicolons in this kind of published prose. I caught three, fixed them, felt good about it. I handed it off to an agent to proof.
 
 Three more came back highlighted.
 
 I'd missed half of them by eye, even with the rule in mind, even having already caught the other half in the same pass. The semicolons were sitting there inside otherwise-readable sentences, and I'd glided right past them.
 
-That's not a writing problem. That's an attention-allocation problem.
+The point is not my dislike of a bit of punctuation that AI tends to overuse by human standards. It's the way attention works. *(Yes, I wrote an **it's not this, it's that**. "They got it from you, Dad!")*
 
-# The mistake
+# One easy mistake
 
-I'd been doing the read-for-meaning pass and assuming that pass would also catch the pattern-violations. The read-for-meaning pass catches meaning errors. It does not, reliably, catch pattern errors.
+The read-for-meaning pass catches meaning errors. It does not, reliably, catch pattern errors. When you read for meaning, your brain is doing the heavy work of building a model of what the text means: parsing each sentence, tracking how the argument develops, watching for places the logic skips a step. That work uses up most of your attention bandwidth. 
 
-The reason is structural. When you read for meaning, your brain is doing the heavy work of building a model of what the text means — parsing each sentence, tracking how the argument develops, watching for places the logic skips a step. That work uses up most of your attention bandwidth. The pattern-checking — *is there a semicolon here?* — is a small task that needs a separate kind of looking, and the meaning-reading brain is busy doing meaning-reading, not that looking.
+The pattern-checking — *is there a semicolon here?* — is a small task that needs a separate kind of looking, and the meaning-reading brain is busy doing meaning-reading, not that looking.
 
 So the semicolons sit there, in sentences that read smoothly, and the reading-for-meaning pass approves the sentences because they make sense. The rule was in my head. The character was on the page. The two never met during the pass.
 
-# The fix that emerged
+# Adjustments to my editorial flow
 
-Run mechanical checks first. Before the read-for-meaning pass.
+I decide to run mechanical checks first. Before the read-for-meaning pass. The semicolons can't hide from grep. The pattern-violations are character-level findings that don't require any understanding of what the text means. A regex doesn't care whether the sentence is beautiful or whether the argument lands. It just reports the character matches.
 
-Specifically: search the file for semicolons. Search for the AI-crutch word I've been trying to drop from public prose. Search for unverified superlatives. Verify the frontmatter structure is intact. Check the dateline format. Check that the footer teases the next post on the editorial calendar. All of this is about a minute of typing, before any reading happens.
+So the discipline has now become *grep first, read second.* The grep finds the violations that hide from the eye. The reading pass then has all of its attention available for what only attention can do — judging whether the argument lands, whether the voice is right, whether the structure builds toward the closer.
 
-The semicolons that hide from the meaning-pass don't hide from grep. The pattern-violations are character-level findings that don't require any understanding of what the text means. A regex doesn't care whether the sentence is beautiful or whether the argument lands. It just reports the character matches.
-
-So the discipline became: grep first, read second. The grep finds the violations that hide from the eye. The reading pass then has all of its attention available for what only attention can do — judging whether the argument lands, whether the voice is right, whether the structure builds toward the closer.
-
-# Why this works
+# Why this works better
 
 Pattern-recognition for known violations is automatable. Meaning-judgment isn't.
 
