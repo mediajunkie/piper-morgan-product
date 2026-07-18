@@ -1,7 +1,7 @@
 ---
 image: 'mechanical-first-then-read-telescope.png'
 alt: 'A mechanical wiper clears semicolon-shaped specks from a telescope lens while a human observer studies the distant landscape, freeing attention for meaning rather than pattern-checking.'
-caption: '""Clear as day!"'
+caption: '"Clear as day!"'
 ---
 
 # Mechanical First, Then Read
@@ -18,7 +18,7 @@ The point is not my dislike of a bit of punctuation that AI tends to overuse by 
 
 # One easy mistake
 
-The read-for-meaning pass catches meaning errors. It does not, reliably, catch pattern errors. When you read for meaning, your brain is doing the heavy work of building a model of what the text means: parsing each sentence, tracking how the argument develops, watching for places the logic skips a step. That work uses up most of your attention bandwidth. 
+The read-for-meaning pass catches meaning errors. It does not, reliably, catch pattern errors. When you read for meaning, your brain is doing the heavy work of building a model of what the text means: parsing each sentence, tracking how the argument develops, watching for places the logic skips a step. That work uses up most of your attention bandwidth.
 
 The pattern-checking — *is there a semicolon here?* — is a small task that needs a separate kind of looking, and the meaning-reading brain is busy doing meaning-reading, not that looking.
 
