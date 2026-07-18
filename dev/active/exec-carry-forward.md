@@ -1,36 +1,32 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-17 10:00 PT (morning WORK fire)
-**Session log today**: `dev/2026/07/17/2026-07-17-0902-exec-code-log.md` (in progress, not yet DAY-CLOSED)
+**Last updated**: 2026-07-17 21:20 PT (STOP, day-close)
+**Session log today**: `dev/2026/07/17/2026-07-17-0902-exec-code-log.md` (DAY-CLOSED)
 **Role**: Chief of Staff (Exec) | DinP account — migration to dedicated account still pending, PM's own call, no urgency signal
-**Cron**: `32 8,20 * * *` — armed, exactly one job confirmed this fire. Next fire ~20:32 Fri Jul 17.
-**Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45` — checked `pwd`/branch/`git log -1` before syncing this morning; matched exactly where I left it last night, no unexpected state. Shared-worktree risk with CIO's session is still live (unresolved as of this morning) — keep checking state first at every fire, don't assume continuity.
+**Cron**: `32 8,20 * * *` — re-armed this STOP (delete-then-create). Next fire ~08:32 Sat Jul 18.
+**Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45`
 
 ---
 
-## Ship #052 workstream-review kickoff — SENT (first live run of Tuesday's fix)
+## ⚠️ Shared-worktree thread — third data point added, still no reply from CIO/Docs/PM
 
-Window Fri Jul 10–Thu Jul 16, memos due Mon Jul 20 EOD, publish target Wed Jul 22. Sent to all 6 leads (HOST/CIO/Comms/CXO/PPM/Arch) + cc PA, plus a separate same-day confirmation to PM per methodology-25's new Step 4. Flagged in the kickoff memo itself: Arch/CIO have one unclosed day each inside the window (Jul 10, Jul 16 respectively — likely just not yet wrapped, not alarming); HOST and CXO have both been multi-day quiet (explained separately, see below and the CXO thread). **Next check-in point: Monday Jul 20 EOD — see who's actually filed.**
+Tonight found HEAD detached (fixed safely — checked out the existing branch pointing at the same commit, no repoint, no risk). Also found a third, unfamiliar branch name in this local repo (`claude/infallible-shaw-d5f913`) — not inspected, not touched. Relayed both to CIO as continuing evidence on the thread confirmed Jul 16. No reply yet from anyone as of tonight; not chasing.
 
-## HOST — resolved (cohort-wide reauth), still hasn't resurfaced as of this morning
+**At every fire going forward**: check `pwd` / `git branch --show-current` / `git status` / `git log -1` FIRST, before assuming continuity. If HEAD is detached or the branch is unfamiliar, don't panic — verify the commit is either already on `origin/main` or matches an existing branch before doing anything, same pattern as tonight.
 
-CIO's Tuesday diagnosis fully explains the Jul 13-16 silence (PM's reauth killed every session-scoped cron at once) and CIO already routed the self-heal instruction directly to HOST. As of this morning's check, HOST still hasn't produced a new session log — no new escalation needed (nothing has changed since last night, and re-escalating on the same evidence would be noise), but worth watching whether HOST resurfaces before Monday's workstream deadline.
+## Ship #052 workstream review — collection in progress
 
-## CXO — genuinely different/longer gap than HOST, check-in sent
+Window Fri Jul 10–Thu Jul 16, memos due **Mon Jul 20 EOD**, publish target Wed Jul 22. 2 of 6 already in (Arch, Comms), filed to `read/`. **Do not begin synthesis before all 6 land** — this is now a hard gate (draft-weekly-ship v1.6), not a preference.
 
-Last actual session log is Jul 12 (not Jul 13+ like HOST) — 5 days quiet as of this morning, and this predates the reauth window CIO scoped, so it may be a separate or earlier dormancy. Sent a broader status check-in (folding in the still-open MUX-branch ask from Jul 14, since CXO hasn't been active to see either). No reply yet as of this fire.
+## HOST / CXO — still quiet, no new evidence
 
-## Ship #051 — closed, no exec action
-
-PM approved, published Jul 15 (confirmed via editorial calendar — "distributed" status, live URLs). Nothing further.
+Neither resurfaced today. No re-escalation — nothing has changed since Friday morning's notes. Real checkpoint is Monday's workstream deadline: if either hasn't filed by then, that's new evidence worth acting on (missing memo, not just a quiet role).
 
 ## OPEN — light, carrying forward
 
-- **HOST / CXO** — watch for resurfacing before Monday's workstream deadline; don't re-escalate without new evidence.
 - **PA — quiet since Jul 10.** PM said they're in direct contact separately; don't chase unless that's changed.
-- **Account migration (pipermorgan.ai)** — PM's own call, no deadline, low-urgency carry (15+ days now).
+- **Account migration (pipermorgan.ai)** — PM's own call, no deadline, low-urgency carry (16+ days now).
 - **exec-open-items-tracker.md — full reconciliation still overdue.** Last full pass was 7/13. Still holding off on heavy tracker investment given the unresolved shared-worktree question.
-- **Shared-worktree finding** — no reply yet from CIO/Docs/PM as of this morning. Not chasing (it's under 24h since I escalated); check again at next fire.
 
 ## STANDING
 
@@ -38,4 +34,4 @@ PM approved, published Jul 15 (confirmed via editorial calendar — "distributed
 
 ---
 
-*— Exec, 7/17 10:00 PT.*
+*— Exec, 7/17 21:20 PT.*
