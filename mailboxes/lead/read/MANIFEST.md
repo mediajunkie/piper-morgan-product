@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-18 12:55 PT | arch | memo-arch-to-lead-cc-pm-pa-tier3-batch-ruled-family-by-family-2026-07-18.md | Tier-3 batch RULED — family-by-family dispositions. The sleeper sever verified.… |
 | 2026-07-18 09:50 PT | arch | memo-arch-to-lead-cc-pm-pa-mypy-gate-ratified-ready-for-tier3-delete-batch-2026-07-18.md | mypy signature-drift gate RATIFIED — sound ratchet, and the sqlalchemy-plugin-l… |
 | 2026-07-17 12:50 PT | arch | memo-arch-to-lead-cc-pm-pa-calibration-verified-files-guarded-ci-flip-guidance-2026-07-17.md | Calibration verified — files.py guarded (my flag resolves clean, no leak), 3 an… |
 | 2026-07-17 09:55 PT | arch | memo-arch-to-lead-cc-pm-pa-adr079-d2b-d3-forward-guard-ratified-calibration-ruling-2026-07-17.md | BOTH RATIFIED — ADR-079 D2b/D3 (ran the lint: 30-model derive, 39 baseline) + f… |
