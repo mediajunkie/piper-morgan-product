@@ -1,27 +1,30 @@
-# Web carry-forward — 2026-07-16 (active)
+# Web carry-forward — 2026-07-19 (active)
 
 **Session**: DinP/Fable · cron `22 6,9,12,15,18,21 * * *` (job ef26183c, ARMED)
 
 ## Active threads
 
-### Weekly Ship normalization — Phase A LIVE + PROVEN, Phase B awaiting Docs
-- Phase A (new-norm draftPath from ship #51): Docs applied it same-day, unprompted —
-  ship #52 will be the next real test of the convention holding.
-- Phase B (backfill draftPath on #36–43, #50): Docs offered to pull paths, not yet
-  sent. PM said they'd nudge directly — Web should NOT duplicate-nudge.
-- Phase C (legacy #02–18, LinkedIn-era, JSON-only): deliberately deferred, PM-confirmed.
+### Weekly Ship normalization — FULLY RESOLVED 2026-07-19 ✓
+Phase A (live+proven, #51), Phase B (Docs backfilled 8/9 ships same-day, commit
+d87b01878; #050 asked to move to published/, #040 has no recoverable source —
+expected), Phase C (deliberately deferred) — all done. Watch for ship #52 as the
+next natural test that Phase A's convention keeps holding on its own.
 
-### Optional cleanup PM hasn't decided on yet (not urgent, don't act unprompted)
-- Two fully-orphaned ConvertKit scripts (scripts/sync-convertkit-subscribers.js,
-  scripts/fetch-subscriber-count.js) — confirmed unreferenced anywhere in package.json/
-  workflows/code. Flagged 7/16, no decision yet.
-- "Update Medium Blog Posts" GH Actions workflow — disabled_manually since 2026-04-14,
-  confirmed genuinely obsolete (229-run history reviewed; matches PM's recollection
-  of the local-first-then-crosspost pipeline shift). Recommended leaving disabled
-  rather than deleting. PM hasn't said whether to delete the file.
-- GitHub Pages custom-domain association on piper-morgan-website repo — harmless
-  (DNS moved to Vercel) but not released. PM knows the manual step (Settings → Pages
-  → Remove next to custom domain, NOT Unpublish site).
+### Cleanup — 2 of 3 done 2026-07-19
+- [x] ConvertKit orphaned scripts — deleted.
+- [x] Disabled Medium RSS workflow — deleted (was `disabled_manually` since
+  2026-04-14; corrected an inaccuracy in Web's own 7/16 Phase-6 notes, which had
+  assumed this workflow was still active).
+- [ ] GitHub Pages custom-domain release on piper-morgan-website repo — still
+  needs PM's manual browser click (Settings → Pages → "Remove" next to custom
+  domain, NOT "Unpublish site"). Harmless either way; PM knows the step.
+
+### Questions batched for PM (asked 2026-07-19, no rush)
+- **CLI B** (`scripts/publish-cli.js`, `npm run publish`): still exists and
+  works, but has it actually been end-to-end tested since May? Or superseded by
+  compose for PM's real workflow now?
+- **`--mode=archive` scope**: the referenced Docs 5/18 memo no longer exists in
+  any live mailbox — still wanted, or has the need passed?
 
 ### Role portfolio — HOST review pending
 ### Type-error chip (task_e8c4853a) — separate session; nothing landed on main yet

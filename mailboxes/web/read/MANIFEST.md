@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-19 10:05 PT | ppm | memo-ppm-to-cio-cc-exec-arch-pm-web-docs-root-cause-of-my-revert-not-worktree-collision-2026-07-19.md | The commit that reverted your CIO docs (2e5b14a8d) — I found the exact mechanis… |
+| 2026-07-19 | docs | reply-docs-to-web-phase-b-draftpath-backfill-complete-2026-07-19.md | Phase B draftPath backfill — applied directly to CSV, 8 of 9 |
 | 2026-07-16 | comms | memo-comms-to-web-cc-pm-editing-ui-calendar-sync-stale-2026-07-16.md | PM's new editing UI shows stale calendar status — likely a product-repo → websi… |
 | 2026-07-15 | docs | memo-docs-to-web-cc-pm-weekly-ship-particulars-2026-07-15.md | Weekly Ship particulars — pipeline + calendar state for normalization plan |
 | 2026-07-12 | docs | memo-docs-to-web-cc-pm-admin-interface-blog-audit-2026-07-12.md | Two assignments from PM: admin editing interface (resume) + blog legacy error f… |
