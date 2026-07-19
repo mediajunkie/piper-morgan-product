@@ -35,6 +35,12 @@ COPY requirements.txt .
 # above enables it; the droplet + Fly builders both use buildx).
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --upgrade pip && \
+    # #1409: pre-seed the CPU-only torch wheel BEFORE the requirements install.
+    # `pip install torch` on Linux defaults to the CUDA build and drags ~4GB of
+    # nvidia_*_cu12 wheels no CPU-only host (droplet, Fly) ever uses. With
+    # torch already satisfied at the same version, the requirements resolve
+    # skips it entirely. Keep the version in lockstep with requirements.txt.
+    pip install torch==2.7.1 --index-url https://download.pytorch.org/whl/cpu && \
     pip install -r requirements.txt
 
 # Add Python version verification during build
