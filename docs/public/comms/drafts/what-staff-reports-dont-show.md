@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'team-map.png'
 alt: 'A chief and six cartographers scrutinize a detailed map while, behind them, workers finish a large bridge missing entirely from the map.'
 caption: '"Where''s that confounded bridge?"'
 ---
@@ -72,9 +72,11 @@ The maturity isn't being suspicious of the staff. It's understanding what staff 
 
 # What changed for me
 
-Exec rewrote the report they had initially drafted from staff-reports-only got rewritten. The second pass started from the omnibus logs instead, and the engineering arc came back in. The quality of the synthesis improved. More importantly, the act of reading the source set surfaced two other small patterns the staff hadn't yet named — patterns I could carry into the next week's reviews.
+Exec rewrote the report they had initially drafted from staff reports only. The second pass started from the omnibus logs instead, and the engineering arc came back in. The quality of the synthesis improved. More importantly, the act of reading the source set surfaced two other small patterns the staff hadn't yet named — patterns I could carry into the next week's reviews.
 
-(The other question in my mind was how had the Chief Architect role missed the engineering narrative in their own review? We've been tightening up the prompt memos that go out each week to kick off each workstream review.)
+I had a second question sitting underneath the first one. One of the six memos was supposed to be the engineering report. How had it missed the engineering arc too?
+
+It hadn't, not entirely. Our chief architect's memo did mention two of the week's engineering events — the ones that were architecturally distinctive. It never mentioned the rest: the routine issue closures, the backend work that shipped clean and didn't touch a design decision. The architect's report wasn't silent on engineering. It filtered on architectural significance, the same way every other role's report filtered on its own vantage. A report written by an engineering-minded role still isn't a complete ledger of what engineering shipped. It's that role's view of what mattered.
 
 Reading the source data made the difference between a synthesis that reflected what happened and a synthesis that reflected what the staff wanted to surface. Those two are usually close. Sometimes they aren't. The discipline is being able to tell which week you're in.
 
