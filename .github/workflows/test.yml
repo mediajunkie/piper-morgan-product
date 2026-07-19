@@ -39,7 +39,33 @@ jobs:
   smoke-tests:
     name: Smoke Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
+
+    env:
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5433
+      POSTGRES_USER: piper
+      POSTGRES_PASSWORD: dev_changeme_in_production
+      POSTGRES_DB: piper_morgan
+
+    # Smoke includes DB-backed tests (the local dev DB is always up, so smoke
+    # is DB-inclusive by design) — the job needs the same postgres service the
+    # Security Test Suite runs, or those tests error at setup with
+    # connection-refused (CI-red root cause 3, 2026-07-19).
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: piper
+          POSTGRES_PASSWORD: dev_changeme_in_production
+          POSTGRES_DB: piper_morgan
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -64,10 +90,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run smoke tests (critical path, <5s)
+      - name: Run migrations
+        run: python -m alembic upgrade head
+
+      - name: Run smoke tests (critical path)
         run: |
-          echo "🔥 Running smoke test suite (616 tests, <5s target)"
-          echo "📊 Smoke tests cover 87.5% of unit tests"
+          echo "🔥 Running smoke test suite"
           python -m pytest -m smoke -q --tb=short
           echo "✅ Smoke tests passed - proceeding with full suite"
 
@@ -75,6 +103,28 @@ jobs:
     name: Full Test Suite
     runs-on: ubuntu-latest
     needs: smoke-tests
+
+    env:
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5433
+      POSTGRES_USER: piper
+      POSTGRES_PASSWORD: dev_changeme_in_production
+      POSTGRES_DB: piper_morgan
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: piper
+          POSTGRES_PASSWORD: dev_changeme_in_production
+          POSTGRES_DB: piper_morgan
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -157,6 +207,9 @@ jobs:
           python -m pytest tests/intent/contracts/test_accuracy_contracts.py -m "not llm" -v --tb=short
           echo "✅ Classification accuracy verified"
         continue-on-error: false
+
+      - name: Run migrations
+        run: python -m alembic upgrade head
 
       - name: Run tests (excluding LLM tests)
         run: |
