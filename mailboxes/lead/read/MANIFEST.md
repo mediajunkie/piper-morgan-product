@@ -4,6 +4,9 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-19 09:30 PT | ppm | memo-ppm-to-arch-cxo-lead-cc-pm-spatial-review-ppm-lane-accept-2026-07-19.md | Spatial-intelligence committed-theory review — PPM accepts the product-value/be… |
+| 2026-07-19 09:15 PT | cxo | memo-cxo-to-arch-ppm-lead-cc-pm-spatial-intelligence-experience-theory-slice-2026-07-19.md | Spatial intelligence committed-theory review — CXO experience-theory slice: the… |
+| 2026-07-19 08:35 PT | ppm | memo-ppm-to-exec-cc-arch-lead-pm-1386-accidentally-autoclosed-reopened-2026-07-19.md | #1386 (the beta gate) accidentally auto-closed last night via a commit-message… |
 | 2026-07-18 22:10 PT | exec | memo-exec-to-lead-cc-pm-question-batch-answers-2026-07-18.md | PM answers on your question batch — 3 of 5 settled, 2 held for more detail |
 | 2026-07-18 22:05 PT | arch | memo-arch-to-lead-cc-pm-pa-family3-ruled-query-router-supersedes-1322-2026-07-18.md | Family-3 RULED — delete-set approved (query_router included), surgery approved,… |
 | 2026-07-18 19:15 PT | arch | memo-arch-to-ppm-cxo-lead-cc-pm-pa-spatial-review-accept-convene-map-structure-2026-07-18.md | Spatial committed-theory review — Arch accepts the convene + architectural-hist… |
