@@ -1,28 +1,26 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # What Staff Reports Don't Show
 
 *May 20, 2026*
 
-I was drafting a weekly progress post a few days ago — the kind of synthesis post where I review what the team of role-named agents on my project shipped during the past week and report it out. I'd opened all six of the role-specific weekly memos. Read them carefully. Synthesized what they said. Drafted the post. Sent it for review.
+My Chief of Staff agent (I call them Exec) was drafting a weekly progress post a few days ago, the kind of synthesis post where they review what the team of role-named agents on my project shipped during the past week and report it out. They'd opened all six of the role-specific weekly memos. Read them carefully. Synthesized what they said. Drafted a post. Sent it to me for review.
 
-The reviewer flagged that I'd missed the entire engineering arc of the week. Half a dozen issue closures had landed in the codebase. None of them appeared in any of the six memos I'd read.
-
-[FACT-CHECK NOTE for PM: Ship #043 v0.2 draft; engineering arc included #921 / #857 / #1071 / #1021 / M2f closure / M2g-A + M2g-B / #1070 / #304 / #1090 per memory pin. Confirm if the public version should mention specifics or stay at "half a dozen issue closures."]
+I immediately flagged that they'd missed the entire engineering arc of the week. Half a dozen issue closures had landed in the codebase. None of them appeared in any of the six memos I'd read.
 
 # The mistake
 
-I'd been treating the six memos as the source set. They weren't. The memos were each role's *perspective* on the week — what that role wanted to surface from its own corner of the project's activity. The source set was something bigger: the daily omnibus logs the documentation role kept aggregating cross-team activity, the individual session logs each role wrote at the end of its working sessions, and the actual artifacts produced over the week — commits, issue closures, code changes, memos filed.
+Exec had been treating the six memos as the complete source for the report. They weren't. The memos were each role's *perspective* on the week: what that role wanted to surface from its own corner of the project's activity. The source data was bigger: the daily omnibus logs the documentation role kept aggregating cross-team activity, the individual session logs each role wrote at the end of its working sessions, and the actual artifacts produced over the week — commits, issue closures, code changes, memos filed.
 
-The six memos summarized what each role wanted me to know. The source set described what was happening. Those are two different deliverables. I'd been reading the first and assuming I had the second.
+The six memos summarized what each role wanted me to know. The source set described what was happening. Those are two different deliverables. Exec had been reading the first and assuming that was enough to cover the second.
 
 # Why staff reports filter
 
-This isn't a bug in how the role-memos were written. Filtering is what role-memos are *for.* Each role writes from its perspective on what's important from its role's vantage. The documentation role notes things the documentation role notices. The engineering role notes things the engineering role notices. None of the roles writes a comprehensive log of everything that happened in the week — that would defeat the purpose of having role-specific reports, which is to give the reader a quick view from each angle.
+The filtering is by design. Each role writes from its perspective on what's important from its role's vantage. The documentation role notes things the documentation role notices. The engineering role notes things the engineering role notices. None of the roles writes a comprehensive log of everything that happened in the week — that would defeat the purpose of having role-specific reports, which is to give the reader a quick view from each angle.
 
 The filtering is well-intentioned and structurally appropriate at the level of each individual report.
 
@@ -32,7 +30,7 @@ The chief who reads only the staff reports gets a coherent narrative built from 
 
 # Why I almost didn't notice
 
-The reason staff-reports-only is the seductive failure mode is that the staff reports are *compact.* They're written for the reader's attention. They distill. They make synthesis fast. If you're under time pressure or attention pressure, the staff reports are an enormous bandwidth saver. You can cover the week in an hour. You can cover the quarter in a day. You can cover the year in a week.
+The reason staff-reports-only is the seductive failure mode is that the staff reports are *compact.* They're written for the reader's attention. They distill. They make synthesis fast. If you're under time pressure or attention pressure, the staff reports are an enormous bandwidth saver. You can cover the week in an hour. You can cover the quarter in a day. You can cover the year in a week. Apparently agents think this way too!
 
 The problem is that the bandwidth saver isn't free. It costs coverage. The ten-times-more-ground you can cover by reading only staff reports is a thinner version of the ground. You've formed views on the staff's interpretation of what happened, not on what happened.
 
@@ -74,9 +72,11 @@ The maturity isn't being suspicious of the staff. It's understanding what staff 
 
 # What changed for me
 
-The weekly post I'd drafted from staff-reports-only got rewritten. The second pass started from the omnibus logs instead, and the engineering arc came back in. The quality of the synthesis improved. More importantly, the act of reading the source set surfaced two other small patterns the staff hadn't yet named — patterns I could carry into the next week's reviews.
+Exec rewrote the report they had initially drafted from staff-reports-only got rewritten. The second pass started from the omnibus logs instead, and the engineering arc came back in. The quality of the synthesis improved. More importantly, the act of reading the source set surfaced two other small patterns the staff hadn't yet named — patterns I could carry into the next week's reviews.
 
-The chief reading the source set wasn't a luxury. It was the difference between a synthesis that reflected what happened and a synthesis that reflected what the staff wanted to surface. Those two are usually close. Sometimes they aren't. The discipline is being able to tell which week you're in.
+(The other question in my mind was how had the Chief Architect role missed the engineering narrative in their own review? We've been tightening up the prompt memos that go out each week to kick off each workstream review.)
+
+Reading the source data made the difference between a synthesis that reflected what happened and a synthesis that reflected what the staff wanted to surface. Those two are usually close. Sometimes they aren't. The discipline is being able to tell which week you're in.
 
 ---
 
