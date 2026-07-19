@@ -12,9 +12,9 @@
 
 Five items in `dev/active/lead-carry-forward.md`, all relayed to PM in chat. **Only one is genuinely blocking on my end**: item #3 (whether to route the #1386 gate coordination with CXO+PPM through me) — don't act on that without PM's go-ahead. The other four (storage pick, triage overrides, #1424 epic disposition, #1427 bucket fit) are Lead/PM's own thread, not mine to advance. **If PM answers item #3 at any point (even outside a fire), route the #1386 coordination ask to CXO+PPM immediately** rather than waiting for the next scheduled fire — this is exactly the "pending PM question blocks only that thread" pattern, not a reason to sit on everything.
 
-## PA — resolved, resurfaced on its own
+## PA — resolved, PM pinged directly (not a self-resurface)
 
-New session log Jul 18, cleanly closed the stale Jul 10 entry. No action needed.
+New session log Jul 18, cleanly closed the stale Jul 10 entry. PM confirmed this was a direct ping, not PA waking on its own — correcting an earlier misattribution. No action needed now.
 
 ## Ship #052 workstream review — still 2/6, deadline Monday Jul 20 EOD
 
