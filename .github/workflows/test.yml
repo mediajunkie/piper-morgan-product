@@ -47,6 +47,12 @@ jobs:
       POSTGRES_USER: piper
       POSTGRES_PASSWORD: dev_changeme_in_production
       POSTGRES_DB: piper_morgan
+      # #1382 house pattern (mirrors security-tests.yml): the runner's keyring is
+      # dead, so KeychainService routes to the encrypted-DB store, which
+      # fail-closes credential WRITES without a master key (correct — and it
+      # broke the smoke OAuth tests). TEST-ONLY key, deliberately committed:
+      # ephemeral CI database, no real credential ever stored.
+      ENCRYPTION_MASTER_KEY: "Y2ktdGVzdC1vbmx5LTEzODItbmV2ZXItcHJvZCEhMzI="
 
     # Smoke includes DB-backed tests (the local dev DB is always up, so smoke
     # is DB-inclusive by design) — the job needs the same postgres service the
@@ -110,6 +116,12 @@ jobs:
       POSTGRES_USER: piper
       POSTGRES_PASSWORD: dev_changeme_in_production
       POSTGRES_DB: piper_morgan
+      # #1382 house pattern (mirrors security-tests.yml): the runner's keyring is
+      # dead, so KeychainService routes to the encrypted-DB store, which
+      # fail-closes credential WRITES without a master key (correct — and it
+      # broke the smoke OAuth tests). TEST-ONLY key, deliberately committed:
+      # ephemeral CI database, no real credential ever stored.
+      ENCRYPTION_MASTER_KEY: "Y2ktdGVzdC1vbmx5LTEzODItbmV2ZXItcHJvZCEhMzI="
 
     services:
       postgres:
