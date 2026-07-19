@@ -14,13 +14,18 @@ import sys
 from datetime import datetime
 from typing import Dict, List
 
-# Check if we're in a venv, if not restart inside it
-in_venv = hasattr(sys, "real_prefix") or (
-    hasattr(sys, "base_prefix") and sys.base_prefix != sys.prefix
-)
+def _ensure_venv_when_run_directly() -> None:
+    """Re-exec inside ./venv when this script is RUN outside it (CLI affordance).
 
-if not in_venv:
-    # Not in venv - restart inside it
+    Must only run under __main__, never at import: os.execv would replace the
+    importing process (pytest collection) with the app, and sys.exit(1) kills
+    collection on machines with no ./venv (CI installs into the system env).
+    """
+    in_venv = hasattr(sys, "real_prefix") or (
+        hasattr(sys, "base_prefix") and sys.base_prefix != sys.prefix
+    )
+    if in_venv:
+        return
     venv_python = os.path.join(os.getcwd(), "venv", "bin", "python")
     if os.path.exists(venv_python):
         print("🔄 Activating virtual environment...")
@@ -29,6 +34,7 @@ if not in_venv:
         print("❌ Error: Virtual environment not found!")
         print("   Run setup wizard first: python3.12 main.py setup")
         sys.exit(1)
+
 
 from sqlalchemy import text
 
@@ -312,4 +318,5 @@ async def main():
 
 if __name__ == "__main__":
     # Allow running directly
+    _ensure_venv_when_run_directly()
     asyncio.run(main())

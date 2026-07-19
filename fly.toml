@@ -24,6 +24,8 @@ primary_region = "sjc"
   PYTHONPATH = "/app"
   ENABLE_ETHICS_ENFORCEMENT = "true"
   AUTH_ENABLED = "true"
+  # #1401: uploads on the mounted volume (see [mounts]) — survives deploys.
+  UPLOAD_DIR = "/data/uploads"
   # sibling Fly apps over private networking (6PN)
   GITHUB_MCP_SERVER_URL = "http://piper-morgan-gh-mcp.internal:8082/mcp"
   CHROMA_HOST = "piper-morgan-chroma.internal"
@@ -53,3 +55,10 @@ primary_region = "sjc"
 [[vm]]
   size = "shared-cpu-1x"
   memory = "1gb"
+
+# #1401: durable uploads. Single-machine app (volumes pin machine<->volume);
+# tester-uploaded docs live here and survive deploys. Created 2026-07-19:
+# `fly volumes create piper_data --region sjc --size 1 -a piper-morgan`.
+[mounts]
+  source = "piper_data"
+  destination = "/data"

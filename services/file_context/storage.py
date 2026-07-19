@@ -38,6 +38,18 @@ _MARKER_BYTES = MARKER.encode("ascii")
 _warned_no_key_files = False
 
 
+def get_upload_base() -> Path:
+    """Base directory for uploaded-file storage (#1401).
+
+    Reads ``UPLOAD_DIR`` at call time (not import time) so hosted deploys point
+    it at a mounted volume (Fly: ``/data/uploads``) while local dev keeps the
+    relative ``uploads/`` default. storage_path values persisted in the DB are
+    whatever this resolved to at write time — the read side uses the stored
+    path verbatim, so changing UPLOAD_DIR never re-homes existing rows.
+    """
+    return Path(os.getenv("UPLOAD_DIR", "uploads"))
+
+
 def write_file_to_storage(file_path: Union[str, Path], content: bytes) -> None:
     """THE uploaded-file byte-write seam (#1306): encrypt-then-write.
 
@@ -84,8 +96,8 @@ async def save_file_to_storage(
     """Save uploaded file (encrypted at rest per #1306) and return storage path."""
     try:
         # Create upload directory if it doesn't exist
-        upload_dir = Path("uploads")
-        upload_dir.mkdir(exist_ok=True)
+        upload_dir = get_upload_base()
+        upload_dir.mkdir(parents=True, exist_ok=True)
 
         # Generate unique filename to avoid collisions
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")

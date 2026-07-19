@@ -15,7 +15,7 @@ from typing import Optional
 
 import structlog
 from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile, status
-from fastapi.responses import FileResponse
+from fastapi.responses import Response
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -25,6 +25,7 @@ from services.database.connection import db
 from services.database.models import UploadedFileDB
 from services.database.session_factory import AsyncSessionFactory
 from services.file_context.storage import (  # #1306: the single byte seam
+    get_upload_base,
     read_file_from_storage,
     save_file_to_storage,
     write_file_to_storage,
@@ -127,7 +128,7 @@ async def upload_file(
             )
 
         # 6. Create user-isolated directory
-        upload_dir = Path("uploads") / current_user.sub
+        upload_dir = get_upload_base() / current_user.sub
         upload_dir.mkdir(parents=True, exist_ok=True)
 
         # 7. Generate unique file ID and safe filename
@@ -530,7 +531,7 @@ async def delete_file(
 async def download_file(
     file_id: str,
     request: Request,
-) -> FileResponse:
+) -> Response:
     """
     Download a file by ID with ownership validation (SEC-RBAC).
 
@@ -586,14 +587,22 @@ async def download_file(
             file_path = Path(file.storage_path)
             if not file_path.exists():
                 logger.error(
-                    "file_not_found_on_disk",
+                    "file_content_missing",
                     user_id=user_id,
                     file_id=file_id,
                     path=file.storage_path,
                 )
+                # #1401 honest-degrade: the DB row survived but the bytes are
+                # gone (uploads predating the durable volume were wiped by
+                # deploys). 410, not 404 — the file existed; its content is
+                # permanently lost. Re-upload is the only recovery.
                 raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="File not found on disk",
+                    status_code=status.HTTP_410_GONE,
+                    detail=(
+                        "This file's content is no longer available — it was "
+                        "uploaded before durable storage was added and did not "
+                        "survive a redeploy. Please upload it again."
+                    ),
                 )
 
             logger.info(
@@ -603,11 +612,16 @@ async def download_file(
                 filename=file.filename,
             )
 
-            # Return file as downloadable attachment
-            return FileResponse(
-                path=file_path,
-                filename=file.filename,
-                media_type=file.file_type,
+            # #1450: read through the #1306 decrypt seam — FileResponse(path)
+            # would stream raw disk bytes, which are PMENC1: ciphertext when
+            # at-rest encryption is on (it is, on beta).
+            raw = read_file_from_storage(file_path)
+            return Response(
+                content=raw,
+                media_type=file.file_type or "application/octet-stream",
+                headers={
+                    "Content-Disposition": f'attachment; filename="{file.filename}"'
+                },
             )
 
     except HTTPException:
