@@ -1,46 +1,42 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-18 21:15 PT (STOP, day-close)
-**Session log today**: `dev/2026/07/18/2026-07-18-0902-exec-code-log.md` (DAY-CLOSED)
+**Last updated**: 2026-07-18 22:30 PT (live PM conversation, post-STOP)
+**Session log today**: `dev/2026/07/18/2026-07-18-0902-exec-code-log.md` (DAY-CLOSED — this conversation's work rides in a fresh entry appended after close, per event-based logging)
 **Role**: Chief of Staff (Exec) | DinP account — migration to dedicated account still pending, PM's own call, no urgency signal
-**Cron**: `32 8,20 * * *` — re-armed this STOP (delete-then-create). Next fire ~08:32 Sun Jul 19.
+**Cron**: `32 8,20 * * *` — armed. Next fire ~08:32 Sun Jul 19.
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45`
 
 ---
 
-## ⚠️ Pending PM decision — Lead Dev's question batch (relayed ~17:44, no answer yet)
+## Lead Dev's question batch — 3 of 5 answered, relayed; #1386 coordination now active
 
-Five items in `dev/active/lead-carry-forward.md`, all relayed to PM in chat. **Only one is genuinely blocking on my end**: item #3 (whether to route the #1386 gate coordination with CXO+PPM through me) — don't act on that without PM's go-ahead. The other four (storage pick, triage overrides, #1424 epic disposition, #1427 bucket fit) are Lead/PM's own thread, not mine to advance. **If PM answers item #3 at any point (even outside a fire), route the #1386 coordination ask to CXO+PPM immediately** rather than waiting for the next scheduled fire — this is exactly the "pending PM question blocks only that thread" pattern, not a reason to sit on everything.
+PM answered post-STOP: (1) volume now for #1401 storage, (2) pull #1438 back to sprint ("learning is core to the vision"), (3) approved routing #1386 coordination through Exec. Relayed all three to Lead directly. For items 4 (#1424 close-vs-keep-open) and 5 (#1427/PROD-RECONNECT fit), PM wanted more specifics — pulled direct evidence from both issues (Phase-3 acceptance-gate detail for #1424; the roadmap's PROD-* bucket list for #1427) and gave PM a grounded briefing rather than guessing. Still awaiting PM's final call on those two.
 
-## PA — resolved, PM pinged directly (not a self-resurface)
+**Followed through on item 3 same night**: sent a coordination kickoff to CXO + PPM (cc Lead, PM) asking them to confirm #1394's disclosure-plan status and connect directly with Lead on the close-out specifics — didn't invent technical scope on Lead's behalf, just made the connection.
 
-New session log Jul 18, cleanly closed the stale Jul 10 entry. PM confirmed this was a direct ping, not PA waking on its own — correcting an earlier misattribution. No action needed now.
+## Ship #052 — still 2/6, PPM now explicitly named as the 4th silent role
 
-## Ship #052 workstream review — still 2/6, deadline Monday Jul 20 EOD
+PM is personally pinging HOST/CXO/CIO tomorrow morning. **PPM is the fourth missing role and wasn't in that list** — flagged this to PM directly in chat; worth confirming PPM gets a ping too, or that's a real gap in Monday's deadline coverage. Arch and Comms remain the only 2 in.
 
-Arch and Comms in. HOST, CIO, CXO, PPM still missing. **Do not begin synthesis before all 6 land** (hard gate, draft-weekly-ship v1.6). Monday is the real checkpoint — if any are still missing then, that's new evidence worth acting on.
+## HOST/CXO/CIO — PM handling directly now, not an exec-owned thread
 
-## HOST / CXO / CIO — still silent, watchdog independently flagged CIO
-
-CIO got a real automated stall alert (`STALE cio 47h`, 16:24 today) — a harder signal than my own "no reply." PM was told to consider a re-prod; not clear yet whether PM acted on it. HOST (5 days) and CXO (6 days, predates the reauth window) remain unchanged. Real checkpoint for all three: Monday's workstream deadline.
+PM plans direct pings tomorrow morning. PA's identical pattern (multi-day quiet) resolved same-day once PM pinged directly — good precedent. No exec action needed on this thread; check tomorrow whether any have resurfaced.
 
 ## Shared-worktree defect — still unresolved
 
-No reply from CIO/Docs/PM as of tonight (2+ days since full confirmation). Not chasing — needs their decision, not mine. Keep checking `pwd`/branch/`git log -1` at the start of every fire.
-
-## Bridge Log — new URL again this week
-
-Prior URL (`c277fcc9...`) died sometime this week too (second URL loss in a row). Current live URL: `https://claude.ai/code/artifact/68f209ae-94fc-484a-8e68-fbc53b3771f8`. Redeploy this one next time; if it's also dead, just publish fresh again — this seems to be a recurring hazard worth expecting, not chasing down.
+No reply from CIO/Docs/PM. Not chasing. Keep checking `pwd`/branch/`git log -1` at the start of every fire.
 
 ## OPEN — light, carrying forward
 
 - **Account migration (pipermorgan.ai)** — PM's own call, no deadline, low-urgency carry (16+ days now).
-- **Stale branches (MUX x3, xpoll-hook)** — no reply from CXO/CIO/Docs, not yet at a re-escalation point.
+- **Stale branches (MUX x3, xpoll-hook)** — no reply, not yet at a re-escalation point.
+- **#1424 / #1427** — awaiting PM's final calls (see above); not blocking anything else.
 
 ## STANDING
 
-- Full tracker reconciliation done 7/18 (see `exec-open-items-tracker.md`) — next full pass not due for a while given this one was thorough.
+- Bridge Log: current URL `https://claude.ai/code/artifact/68f209ae-94fc-484a-8e68-fbc53b3771f8` (prior one died this week too — second loss in a row, treat as a recurring hazard, not a one-off to chase).
+- Full tracker reconciliation done 7/18 — next full pass not due for a while.
 
 ---
 
-*— Exec, 7/18 21:15 PT.*
+*— Exec, 7/18 22:30 PT.*
