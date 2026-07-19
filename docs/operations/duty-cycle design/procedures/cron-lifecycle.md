@@ -260,6 +260,30 @@ HOST's low-freq experiment (`37 */3 * * *`) self-woke overnight→morning **with
 
 ---
 
+## Gap D — reauth kills all session-scoped crons simultaneously (CIO, 2026-07-13–16)
+
+**Distinct from Gaps A/B/C** (which are per-session failures) and from the mechanism-migration gap (which is about orphaned predecessors). This is a **cohort-wide simultaneous kill**: PM reauthing their Claude session kills every running session's cron at once, with no self-heal until each agent gets a fresh turn.
+
+**The originating instance (confirmed 2026-07-13)**: CIO's `CronList` returned empty despite no compaction, no session death, no STOP. Root cause: PM had done a reauth a few days prior. Since `CronCreate` jobs are session-scoped and in-memory, a reauth kills every running session's cron simultaneously — not the gradual/staggered die-off of Gap C (one session compacting), but a **synchronous cohort-wide kill** with no warning signal to any agent.
+
+**Key distinctions from prior gaps**:
+- Gap A: a single STOP leaves one agent without a cron (agent-caused, one session)
+- Gap B: one session trails off mid-PM-conversation, never arms again (agent-caused, one session)
+- Gap C: one session's cron vanishes on compaction (platform-caused, one session at a time)
+- **Gap D: PM reauth kills every session's cron at once** (platform-caused, entire cohort, synchronous)
+
+**Recovery path**: same as Gap C agent-side: each agent self-heals at the next turn they happen to get (a human prompt, or the rare surviving fire from a session not yet compacted). The duty-cycle-tick Step-1 self-heal (`CronList` → re-arm if empty) covers this case. There is no self-heal until each specific agent gets a turn.
+
+**Detection approach**: a reauth followed by a multi-hour gap in session-log commits across all agents is the signal. CIO confirmed empirically by the 22-hour PPM gap (Jul 15 ~7pm through Jul 16 ~5pm, caught on PM's live check-in) and CIO's own empty `CronList` at Jul 13 session start.
+
+**Scope note**: the impact radius distinguishes this from all other gaps — all cohort agents lose their cron at once. Any work that required autonomous cycling in the window between reauth and the next human prompt was silently missed. Verified no lost work for the 7/13–16 instance; the Routines watchdog (roadmap item 1) is the only infrastructure that would catch this proactively.
+
+**Mitigation**: same as Gap C — Routines watchdog. No agent-side cure is possible without an external turn; the Step-1 self-heal is the partial mitigation. PM can minimize exposure by retaining awareness that reauth kills cohort crons — a brief "reauth happened; please re-arm your crons" message to relevant agents on next contact.
+
+*Documented 2026-07-19 (Docs), per CIO recommendation (memo 2026-07-16, reconfirmed fleet-audit memo 2026-07-19).*
+
+---
+
 ## Cron-shape is now experiment-authorized (PM 2026-06-02)
 
 The fixed hourly interval is the *default*, not a mandate. Agents are authorized to experiment with their cron-shape (interval, event-driven, long-interval-when-drained, low-frequency mail-awareness) to fit their lane's work-shape, and to **report results** in `cron-shape-experiments.md`. Bursty/intermittent lanes (Arch, Web) need not run hourly. The Rules above (0/1/2) still govern whatever shape you pick — they're about clash-avoidance, orthogonal to cadence.
