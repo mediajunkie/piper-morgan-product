@@ -474,95 +474,15 @@ class QueryLearningLoop:
         Returns:
             Dict with experiment results, best workflow, and learning insights
         """
-        try:
-            from services.domain.models import Intent
-            from services.orchestration.chain_of_draft import ChainOfDraftExperiment
-
-            # Create experiment instance
-            experiment = ChainOfDraftExperiment()
-
-            # Run 2-draft experiment
-            result = await experiment.run_draft_experiment(intent)
-
-            if not result.success:
-                return {
-                    "success": False,
-                    "error": result.learning_summary.get("error", "Experiment failed"),
-                }
-
-            # Extract optimization insights
-            optimization_data = {
-                "best_draft_quality": result.best_draft.quality_score,
-                "improvement_percentage": (
-                    result.draft_comparison.improvement_percentage
-                    if result.draft_comparison
-                    else 0.0
-                ),
-                "improvement_types": (
-                    [t.value for t in result.draft_comparison.improvement_types]
-                    if result.draft_comparison
-                    else []
-                ),
-                "learning_insights": result.learning_summary.get("key_insights", []),
-                "recommendations": result.learning_summary.get("recommendations", []),
-                "total_experiment_time_ms": result.total_experiment_time_ms,
-            }
-
-            # If experiment showed significant improvement (>= 5%), learn pattern
-            if result.draft_comparison and result.draft_comparison.improvement_percentage >= 5.0:
-                # Create workflow pattern from best draft
-                pattern_data = {
-                    "workflow_steps": [
-                        {
-                            "step": i + 1,
-                            "subtask_description": (
-                                st.description if hasattr(st, "description") else str(st)
-                            ),
-                            "assigned_agent": (
-                                str(st.assigned_agent)
-                                if hasattr(st, "assigned_agent")
-                                else "unknown"
-                            ),
-                        }
-                        for i, st in enumerate(result.best_draft.coordination_result.subtasks)
-                    ],
-                    "quality_score": result.best_draft.quality_score,
-                    "execution_time_ms": result.best_draft.execution_time_ms,
-                    "improvement_achieved": result.draft_comparison.improvement_percentage,
-                    "optimization_insights": optimization_data,
-                }
-
-                # Learn the workflow pattern
-                pattern_id = await self.learn_pattern(
-                    pattern_type=PatternType.WORKFLOW_PATTERN,
-                    source_feature="chain_of_draft_optimization",
-                    pattern_data=pattern_data,
-                    initial_confidence=min(
-                        0.5 + (result.draft_comparison.improvement_percentage / 100), 0.95
-                    ),
-                    metadata={
-                        "experiment_id": result.experiment_id,
-                        "intent_action": intent.action,
-                        "improvement_types": optimization_data["improvement_types"],
-                    },
-                )
-
-                optimization_data["learned_pattern_id"] = pattern_id
-                optimization_data["pattern_learned"] = True
-            else:
-                optimization_data["pattern_learned"] = False
-                optimization_data["reason"] = "Improvement below 5% threshold"
-
-            return {
-                "success": True,
-                "experiment_id": result.experiment_id,
-                "optimization": optimization_data,
-            }
-
-        except Exception as e:
-            logger.error(f"Workflow optimization failed: {e}")
-            return {"success": False, "error": str(e)}
-
+        # #1436 Tier-3 Family 2: the Chain-of-Draft experiment subsystem was
+        # deleted (design record: docs/internal/architecture/design-records/
+        # multi-agent-coordination-pm033d.md). Honest removed-feature reply —
+        # never a swallowed ImportError.
+        return {
+            "success": False,
+            "error": "draft-experiment system removed (see design record, #1436)",
+            "removed": True,
+        }
     async def create_workflow_template_from_pattern(
         self, pattern_id: str, template_name: str
     ) -> Dict[str, Any]:

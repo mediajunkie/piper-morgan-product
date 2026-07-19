@@ -3,7 +3,7 @@
   "silent_death_core": 244,
   "unscoped_reads": 54,
   "notimplementederror": 8,
-  "todo_markers": 78,
+  "todo_markers": 77,
   "unscoped_repo_reads": 36,
   "mypy_call_arg": 44,
   "mypy_arg_type": 427,
