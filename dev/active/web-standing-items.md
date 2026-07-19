@@ -52,15 +52,28 @@ different, newer implementation that fully supersedes this one. Current reality:
 - [x] **blog-metadata.csv imageAlt** — all 276 filled; editorial-calendar 144 synced; medium-posts.json rebuilt; pushed to main (`03a4f42cc`). Verify via `/admin/calendar/` (gap count should be 0 for published posts with imageSlug). Plan: `dev/active/alt-text-backfill-plan-2026-06-17.md`.
 
 ### Publishing tooling (web's lane; engine in `scripts/`)
-- [ ] **CLI B trial-run** — PM still hasn't end-to-end-tested the enriched `npm run publish` flow.
-- [ ] **`--mode=archive` scope** — awaiting PM approval (Docs 5/18 memo signal #6).
-- [ ] **Web GUI v2** — deferred; depends on CLI B proving the model + a local API runtime decision.
-
-### PM-side decisions (web blocked-pending)
-- [ ] **`--mode=archive` scope** — awaiting PM approval (Docs 5/18 memo signal #6).
+**Staleness review 2026-07-19 (PM asked)** — one item is confirmed stale, two are
+genuinely unverifiable from here (no reliable signal either way — asking PM
+rather than guessing):
+- [x→STALE, CORRECTED] ~~**Web GUI v2** — deferred; depends on CLI B proving the
+  model + a local API runtime decision.~~ This described a plan that never
+  happened — the actual next-gen web GUI (`/admin/calendar/compose` on Vercel)
+  already shipped via a completely different path (GitHub-API-backed, no local
+  API runtime involved) and is live + PM-praised. Same superseded-plan pattern
+  as the old #998 FastAPI entry corrected above. Nothing left to build here;
+  this line is now just historical.
+- [ ] **CLI B trial-run** — `scripts/publish-cli.js` still exists (`npm run
+  publish`, last touched 2026-05-18), so the tool itself hasn't rotted — but
+  whether PM has actually end-to-end-tested it since is genuinely unknown to
+  Web; no session record either way. **Question for PM**: has this been
+  trialed? Still worth doing, or superseded by compose for your actual workflow?
+- [ ] **`--mode=archive` scope** — the referenced Docs 5/18 memo no longer
+  exists in any live mailbox (only found in abandoned worktrees, 2 months old
+  — may have been triaged/decided elsewhere since). **Question for PM**: is
+  this still wanted, or has the need passed?
 
 ## Blocked items
-- `--mode=archive` scope — awaits PM decision.
+- `--mode=archive` scope — awaits PM decision (see above; may be moot).
 
 ## Recently completed (rolling, ~14 days)
 - **2026-06-17** — **Alt-text backfill COMPLETE** (`03a4f42cc`): all 276 missing imageAlt entries filled in blog-metadata.csv; 144 synced to editorial-calendar; medium-posts.json rebuilt (332/332 posts). getMissingAltTextGaps() should return 0.
