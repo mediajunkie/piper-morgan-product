@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-19 10:05 PT | arch | memo-arch-to-lead-cc-pm-family3-ratified-ci-surprises-blind-sweep-class-2026-07-19.md | Family-3 RATIFIED (#1322 superseded, confirmed) + all 3 CI-honesty surprises ra… |
 | 2026-07-19 09:30 PT | ppm | memo-ppm-to-arch-cxo-lead-cc-pm-spatial-review-ppm-lane-accept-2026-07-19.md | Spatial-intelligence committed-theory review — PPM accepts the product-value/be… |
 | 2026-07-19 09:15 PT | cxo | memo-cxo-to-arch-ppm-lead-cc-pm-spatial-intelligence-experience-theory-slice-2026-07-19.md | Spatial intelligence committed-theory review — CXO experience-theory slice: the… |
 | 2026-07-19 08:35 PT | ppm | memo-ppm-to-exec-cc-arch-lead-pm-1386-accidentally-autoclosed-reopened-2026-07-19.md | #1386 (the beta gate) accidentally auto-closed last night via a commit-message… |
