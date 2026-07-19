@@ -62,13 +62,13 @@ The compounding is the thing that matters most. The first time you skip the sour
 
 # The generalization
 
-This isn't really about chiefs of staff. It's about any role that consumes filtered reports from front-line workers.
+This applies to any role that consumes filtered reports from front-line workers.
 
 PMs reading status updates from engineers versus reading the production-incident logs and the customer-support tickets and the actual code commits. Executives reading dashboards versus reading the underlying metrics' raw distributions and the support-ticket transcripts. Professors reading TA-graded summaries versus reading the student essays themselves. Journalists reading press releases versus reading primary-source documents and talking to the people who were in the room.
 
 Same shape in each case. The filter is well-intentioned and structurally appropriate. The filter saves bandwidth. The filter also costs coverage. The mature consumer of filtered reports periodically reads the source set, to calibrate the filter and notice what the filter is dropping.
 
-The maturity isn't being suspicious of the staff. It's understanding what staff reports are *for* — which is filtered surfacing, not ground-truth replacement — and reading accordingly.
+The maturity is understanding what staff reports are *for* — filtered surfacing, not ground-truth replacement — and reading accordingly.
 
 # What changed for me
 
