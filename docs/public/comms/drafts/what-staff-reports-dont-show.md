@@ -1,7 +1,7 @@
 ---
 image: ''
-alt: ''
-caption: ''
+alt: 'A chief and six cartographers scrutinize a detailed map while, behind them, workers finish a large bridge missing entirely from the map.'
+caption: '"Where''s that confounded bridge?"'
 ---
 
 # What Staff Reports Don't Show
