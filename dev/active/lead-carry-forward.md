@@ -1,30 +1,23 @@
-# Lead Dev — carry-forward (rewritten at STOP 2026-07-18)
+# Lead Dev — carry-forward (rewritten mid-day 2026-07-19)
 
-**Session-authority**: interesting-beaver-7ee19c owns the lead role (PM 7/17 06:56; the vivid-gathering-wreath concurrent-session episode is RESOLVED — its worktree may still show locked on disk, harmless). Cron d9471ac8 armed, `17 6,9,12,15,18,21`.
+## Today so far (Sunday, PM afk — coordinating via Exec)
+Family-3 EXECUTED (Arch's ruling; −5,348 lines; #1322 closed superseded; ceilings silent_death 234 / todo 74 / mypy 40-405-249-209 all locked). **CI chronic-red being drained**: keychain import-raise fixed (#1382 semantics: fail-closed at operations), mypy-gate blind-to-absence guard, 3 fossil jobs + 8 fossil scripts deleted (#1449 tracks real gates), venv-guard landmine defused. arch-enforcement GREEN. #1438 → sprint+MVP (PM-ratified via Exec). **#1401 built + #1450 (ciphertext downloads) found+fixed riding**; volume created; deploy IN FLIGHT.
 
-## State
-- **Finish-the-Unfinished sprint (#1424): PHASE-3 ACCEPTANCE GATE MET 7/17 ~12:50** (driver strict PASS, smoke 565, zero silent-death, ceilings 244/59/36/9/78, HIGHs zero). Gate == "ready for a second human tester."
-- **v0.8.11.0 LIVE on beta** (Fly v20, migrations at k1422prefs head). #1418 (picker fix) is on `production` AWAITING the next beta increment.
-- ADR-079 arc fully ratified + calibrated (Arch closed the loop; growth-ratchet = steady state).
+## Immediately open (this session)
+1. **Deploy verify** (#1401): upload → redeploy → download survives + is plaintext; then close #1401 + #1450 with evidence (close-issue-properly).
+2. **CI watch @c4dadf45c**: smoke should go green (first time in 40+ runs); Full Test Suite runs for the first time in weeks — capture its failure tail, file/triage (first known member: pre-existing preferences-questionnaire mock-drift failure; also #1451 settings-template nav).
+3. Report deploy + CI outcome to Exec (PM's coordination channel today).
 
-## Queue
-1. **Family-3 execution on Arch's ruling** (surgery proposal sent 7/18 19:55: query stack + graph_query_service + todo_management stub-drop; LLMIntentClassifier held for #1432).
-2. **#1400** prefs JSON→DB (unblocked, mine). **#1401 BLOCKED on storage pick** (question batch #1).
-3. #1393 leak probe; #1394 D5 probe; #1386 gate-run (pending PM/Exec routing answer).
-4. #1423 un-swallow clusters (ceiling 244) + UUID-vs-str pass + #1433 ledger.
-5. Spatial committed-theory review: Arch deep-reading; my code-reality lane DONE; deletions held.
-6. Done this era: mypy gate LIVE (44/427/288/214); Tier-3 Families 1/4/6+riders+2 executed; collection 11,774/0.
+## Queue after that
+- #1393 leak probe; #1394 D5 probe; #1409 (torch pin); #1410 (1 red test).
+- #1423 un-swallow clusters (ceiling 234) + UUID-vs-str pass + #1433 ledger.
+- Spatial review: my lane DONE; new datapoint sent to Arch (consumer_core's remaining importers = cold adapter layer). Arch synthesizing; CXO voted (b) keep-live+park-cold; PPM doing dedicated pass.
+- #1386 gate-run: Exec coordinating (CXO/PPM availability); reopened after autoclose (PPM caught).
 
-## PM-attention — QUESTION BATCH for rollup relay (2026-07-18 ~18:00; defaults stated, one-word answers fine)
-1. **#1401 uploads storage (the only BLOCKING pick)**: Fly volume vs object storage. My recommendation: **volume now** (one-line fly.toml, fixes data loss immediately for single-machine beta), object storage at Production scale. Say "volume" or "object" and I build same-day.
-2. **Triage overrides welcome** (applied 7/18, reversible per-item): to sprint — #1409 (CPU-torch pin, deploy velocity), #1410 (rides #1395), #1445 (canonical-suite fix = #1386 gate dependency). To Fast Follow — #1407 + the stale-test family (#1443/44/46/47/48). LEFT at Production (pre-existing triage): #1437, #1438 — flag: #1438 is the learning-loop-dead symptom; if learning matters for beta, pull it back to sprint.
-3. **#1386 gate run**: I propose coordinating the sprint close-out (canonical suite + the three CXO/PPM multi-turn scenarios + sign-off) — needs CXO+PPM participation; OK to route the ask via Exec?
-4. **#1424 epic**: close as sprint-complete vs keep as ratchet-backlog tracker (board reconcile is now done enough to decide).
-5. **#1427 PROD bucket**: PROD-RECONNECT fit your integrate-don't-build framing? (Milestone already Production; only the sprint bucket open.)
+## PM-attention (with PM via Exec relay)
+- #1424 close-vs-keep (Exec's framing passed to PM). #1427 PROD-RECONNECT confirm.
+- NEW none from today — decisions all rode ratified rulings.
 
-## PM-attention (standing, non-blocking)
-- **Spatial committed-theory REVIEW (PM-directed 7/18, kickoff memo sent)**: Arch+PPM+CXO + full history + beta/production-scoped decision + ADR updates. NOT a quick park/delete. All spatial deletions HELD. Lead supplies code-reality inventory + executes the outcome.
-- #1418 beta increment: on production, image cached — one word deploys it.
-- #1424 epic: close as sprint-complete vs keep as ratchet-backlog tracker (has open children).
-- Alpha parity (droplet) scheduled "sprint end" — when PM wants it.
-- ~~Alpha-tester email~~ — went out LAST WEEK (PM 7/18); carry-forward previously wrong on this.
+## Standing
+- Cron d9471ac8 armed (17 6,9,12,15,18,21). Worktree interesting-beaver.
+- Spatial deletions HELD. ENCRYPTION_MASTER_KEY never in repo/chat. Droplet ssh root@146.190.151.63 (NOT the `droplet` alias).
