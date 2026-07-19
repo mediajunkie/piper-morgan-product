@@ -1,6 +1,6 @@
 # PDR-006: Hosted MCP Endpoint + Plugin Distribution Model
 
-**Status**: Draft v0.1
+**Status**: Review — PM approved direction (2026-07-19); Arch / CXO / PPM review pending
 **Date**: 2026-07-19
 **Author**: PA (Piper Alpha) — on behalf of PM
 **Stakeholders**: PM, Arch, CXO, PPM, Lead Dev
@@ -170,3 +170,4 @@ Rejected for this phase: unnecessary for connectors + context serving, adds cost
 | Version | Date | Author | Notes |
 |---|---|---|---|
 | v0.1 | 2026-07-19 | PA | Initial draft — captures PM's Jul 18 direction; pending PM + Arch review before ratification |
+| v0.2 | 2026-07-19 | PA | PM approved direction; routing to Arch / CXO / PPM for review and comments |
