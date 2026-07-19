@@ -1,34 +1,196 @@
-"""
-Unit tests for Notion Workspace Preferences API
-Issue #572: Notion workspace preferences
+"""#1400: slack/calendar/notion prefs live in the DB connector_configs store.
 
-Tests the Notion database list and preferences endpoints in settings_integrations.py.
+Replaces the flat-file-era suite (data/notion_preferences.json et al.) — those
+files were hosted data loss (Fly's FS is ephemeral; every deploy wiped every
+user's prefs) and the helpers they pinned are deleted. Pref round-trips run
+the route functions against the REAL dev Postgres (B15/#1421 house pattern):
+
+- save -> get round-trip per connector (slack / calendar / notion)
+- owner isolation (user B never sees A's prefs — connector_configs is
+  owner-scoped by construction, ADR-070 D4)
+- the one-time legacy flat-file migration shim (droplet case)
+- merge semantics (a save never clobbers cohabiting blob keys)
+
+The Notion databases-endpoint tests (aiohttp-mocked, #572) are ported from the
+old suite with the prefs helper swapped to the DB one.
 """
 
+import json
+from datetime import datetime, timezone
+from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock, patch
+from uuid import uuid4
 
 import pytest
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
 
+import web.api.routes.settings_integrations as si
 from web.api.routes.settings_integrations import (
+    CalendarPreferencesRequest,
     NotionPreferencesRequest,
+    SlackPreferencesRequest,
+    _load_prefs_db,
+    _save_prefs_db,
+    get_calendar_preferences,
     get_notion_databases,
     get_notion_preferences,
+    get_slack_preferences,
+    save_calendar_preferences,
     save_notion_preferences,
+    save_slack_preferences,
 )
+
+_DB_URL = "postgresql+asyncpg://piper:dev_changeme_in_production@localhost:5433/piper_morgan"
+
+
+@pytest.fixture
+async def two_users():
+    """Two real user rows; yields (a_id, b_id); cleans users + connector_configs."""
+    engine = create_async_engine(_DB_URL, echo=False)
+    factory = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    a_id, b_id = str(uuid4()), str(uuid4())
+    now = datetime.now(timezone.utc)
+    async with factory() as s:
+        for uid in (a_id, b_id):
+            await s.execute(
+                text(
+                    "INSERT INTO users (id, username, email, is_active, is_verified, "
+                    "created_at, updated_at, role, is_alpha) "
+                    "VALUES (:id, :u, :e, true, true, :now, :now, 'user', true)"
+                ),
+                {
+                    "id": uid,
+                    "u": f"p1400_{uid[:8]}",
+                    "e": f"p1400_{uid[:8]}@test.example.com",
+                    "now": now,
+                },
+            )
+        await s.commit()
+    try:
+        yield a_id, b_id
+    finally:
+        async with factory() as s:
+            for uid in (a_id, b_id):
+                await s.execute(
+                    text("DELETE FROM connector_configs WHERE owner_id = CAST(:u AS uuid)"),
+                    {"u": uid},
+                )
+                await s.execute(text("DELETE FROM users WHERE id = :u"), {"u": uid})
+            await s.commit()
+        await engine.dispose()
+
+
+def _claims(uid: str):
+    return SimpleNamespace(sub=uid)
+
+
+class TestPrefsRoundTrips:
+    @pytest.mark.asyncio
+    async def test_slack_save_then_get(self, two_users):
+        a, _ = two_users
+        req = SlackPreferencesRequest(
+            notification_channel="#piper",
+            monitored_channels=["#eng", "#product"],
+            default_response_channel="#piper",
+        )
+        await save_slack_preferences(req, current_user=_claims(a))
+        resp = await get_slack_preferences(current_user=_claims(a))
+        assert resp.notification_channel == "#piper"
+        assert resp.monitored_channels == ["#eng", "#product"]
+        assert resp.default_response_channel == "#piper"
+
+    @pytest.mark.asyncio
+    async def test_calendar_save_then_get(self, two_users):
+        a, _ = two_users
+        req = CalendarPreferencesRequest(
+            selected_calendars=["primary", "team"], primary_calendar="primary"
+        )
+        await save_calendar_preferences(req, current_user=_claims(a))
+        resp = await get_calendar_preferences(current_user=_claims(a))
+        assert resp.selected_calendars == ["primary", "team"]
+        assert resp.primary_calendar == "primary"
+
+    @pytest.mark.asyncio
+    async def test_notion_save_then_get_and_overwrite(self, two_users):
+        a, _ = two_users
+        await save_notion_preferences(
+            NotionPreferencesRequest(selected_databases=["db1"], default_database="db1"),
+            current_user=_claims(a),
+        )
+        await save_notion_preferences(
+            NotionPreferencesRequest(selected_databases=["db2", "db3"], default_database="db2"),
+            current_user=_claims(a),
+        )
+        resp = await get_notion_preferences(current_user=_claims(a))
+        assert resp.selected_databases == ["db2", "db3"]
+        assert resp.default_database == "db2"
+
+    @pytest.mark.asyncio
+    async def test_owner_isolation(self, two_users):
+        a, b = two_users
+        await save_notion_preferences(
+            NotionPreferencesRequest(
+                selected_databases=["private-db"], default_database="private-db"
+            ),
+            current_user=_claims(a),
+        )
+        resp_b = await get_notion_preferences(current_user=_claims(b))
+        assert resp_b.selected_databases == []
+        assert resp_b.default_database is None
+
+    @pytest.mark.asyncio
+    async def test_unset_user_gets_empty(self, two_users):
+        _, b = two_users
+        resp = await get_slack_preferences(current_user=_claims(b))
+        assert resp.notification_channel is None
+        assert resp.monitored_channels == []
+
+
+class TestLegacyFileMigrationShim:
+    @pytest.mark.asyncio
+    async def test_legacy_file_entry_migrates_once(self, two_users, tmp_path, monkeypatch):
+        """A pre-#1400 droplet flat file's entry is read once, written to the
+        DB, and served from the DB thereafter (file deleted -> prefs survive)."""
+        a, _ = two_users
+        legacy = tmp_path / "slack_preferences.json"
+        legacy.write_text(json.dumps({a: {"notification_channel": "#legacy"}}))
+        monkeypatch.setitem(si._LEGACY_PREF_FILES, "slack", str(legacy))
+        first = await _load_prefs_db(a, "slack")
+        assert first == {"notification_channel": "#legacy"}
+        legacy.unlink()  # file gone (the deploy-wipe case) — DB now owns it
+        second = await _load_prefs_db(a, "slack")
+        assert second == {"notification_channel": "#legacy"}
+
+    @pytest.mark.asyncio
+    async def test_no_file_no_db_is_plain_empty(self, two_users):
+        _, b = two_users
+        assert await _load_prefs_db(b, "calendar") == {}
+
+
+class TestSaveMergesBlob:
+    @pytest.mark.asyncio
+    async def test_save_preserves_cohabiting_keys(self, two_users):
+        """Merge semantics (mirrors the github helper): a save must not clobber
+        other keys already in the same connector blob."""
+        a, _ = two_users
+        await _save_prefs_db(a, "slack", {"workspace_name": "piperhq"})
+        await _save_prefs_db(a, "slack", {"notification_channel": "#piper"})
+        blob = await _load_prefs_db(a, "slack")
+        assert blob["workspace_name"] == "piperhq"
+        assert blob["notification_channel"] == "#piper"
 
 
 class TestGetNotionDatabases:
-    """Tests for GET /api/v1/settings/integrations/notion/databases"""
+    """Ported from the flat-file-era suite (#572) — prefs helper swapped to DB."""
 
     @pytest.mark.asyncio
     async def test_returns_401_when_not_connected(self):
-        """Should return 401 when no API key configured"""
         mock_config = MagicMock()
         mock_config.api_key = None
-
         mock_config_service = MagicMock()
         mock_config_service.get_config.return_value = mock_config
-
         mock_user = MagicMock()
         mock_user.sub = "test-user-123"
 
@@ -40,23 +202,18 @@ class TestGetNotionDatabases:
 
             with pytest.raises(HTTPException) as exc_info:
                 await get_notion_databases(current_user=mock_user)
-
             assert exc_info.value.status_code == 401
             assert "not connected" in str(exc_info.value.detail).lower()
 
     @pytest.mark.asyncio
     async def test_returns_database_list_when_connected(self):
-        """Should return list of databases when connected"""
         mock_config = MagicMock()
         mock_config.api_key = "secret_test_key"
-
         mock_config_service = MagicMock()
         mock_config_service.get_config.return_value = mock_config
-
         mock_user = MagicMock()
         mock_user.sub = "test-user-123"
 
-        # Mock Notion API response
         mock_notion_response = {
             "results": [
                 {
@@ -71,18 +228,15 @@ class TestGetNotionDatabases:
                 },
             ]
         }
-
         mock_response = AsyncMock()
         mock_response.status = 200
         mock_response.json = AsyncMock(return_value=mock_notion_response)
-
         mock_session_instance = MagicMock()
         mock_session_instance.post = MagicMock(
             return_value=AsyncMock(
                 __aenter__=AsyncMock(return_value=mock_response), __aexit__=AsyncMock()
             )
         )
-
         mock_session = MagicMock()
         mock_session.__aenter__ = AsyncMock(return_value=mock_session_instance)
         mock_session.__aexit__ = AsyncMock()
@@ -94,12 +248,11 @@ class TestGetNotionDatabases:
             ),
             patch("aiohttp.ClientSession", return_value=mock_session),
             patch(
-                "web.api.routes.settings_integrations._load_notion_preferences",
-                return_value={},
+                "web.api.routes.settings_integrations._load_prefs_db",
+                new=AsyncMock(return_value={}),
             ),
         ):
             result = await get_notion_databases(current_user=mock_user)
-
             assert len(result.databases) == 2
             assert result.databases[0].id == "abc123"
             assert result.databases[0].name == "Work Tasks"
@@ -110,27 +263,22 @@ class TestGetNotionDatabases:
 
     @pytest.mark.asyncio
     async def test_returns_error_when_notion_api_fails(self):
-        """Should return error when Notion API returns error"""
         mock_config = MagicMock()
         mock_config.api_key = "secret_test_key"
-
         mock_config_service = MagicMock()
         mock_config_service.get_config.return_value = mock_config
-
         mock_user = MagicMock()
         mock_user.sub = "test-user-123"
 
         mock_response = AsyncMock()
         mock_response.status = 401
         mock_response.text = AsyncMock(return_value="Invalid API key")
-
         mock_session_instance = MagicMock()
         mock_session_instance.post = MagicMock(
             return_value=AsyncMock(
                 __aenter__=AsyncMock(return_value=mock_response), __aexit__=AsyncMock()
             )
         )
-
         mock_session = MagicMock()
         mock_session.__aenter__ = AsyncMock(return_value=mock_session_instance)
         mock_session.__aexit__ = AsyncMock()
@@ -146,258 +294,4 @@ class TestGetNotionDatabases:
 
             with pytest.raises(HTTPException) as exc_info:
                 await get_notion_databases(current_user=mock_user)
-
-            # Should return an error status (either 502 from our code or 500 from exception handling)
             assert exc_info.value.status_code >= 500
-
-
-class TestGetNotionPreferences:
-    """Tests for GET /api/v1/settings/integrations/notion/preferences"""
-
-    @pytest.mark.asyncio
-    async def test_returns_empty_preferences_when_not_saved(self):
-        """Should return empty preferences when user has no saved preferences"""
-        mock_user = MagicMock()
-        mock_user.sub = "test-user-123"
-
-        with patch(
-            "web.api.routes.settings_integrations._load_notion_preferences",
-            return_value={},
-        ):
-            result = await get_notion_preferences(current_user=mock_user)
-
-            assert result.selected_databases == []
-            assert result.default_database is None
-
-    @pytest.mark.asyncio
-    async def test_returns_saved_preferences(self):
-        """Should return saved preferences for the user"""
-        mock_user = MagicMock()
-        mock_user.sub = "test-user-123"
-
-        saved_prefs = {
-            "test-user-123": {
-                "selected_databases": ["abc123", "def456"],
-                "default_database": "abc123",
-            }
-        }
-
-        with patch(
-            "web.api.routes.settings_integrations._load_notion_preferences",
-            return_value=saved_prefs,
-        ):
-            result = await get_notion_preferences(current_user=mock_user)
-
-            assert result.selected_databases == ["abc123", "def456"]
-            assert result.default_database == "abc123"
-
-    @pytest.mark.asyncio
-    async def test_returns_empty_for_different_user(self):
-        """Should return empty for user without saved preferences"""
-        mock_user = MagicMock()
-        mock_user.sub = "different-user-456"
-
-        saved_prefs = {
-            "test-user-123": {
-                "selected_databases": ["abc123"],
-                "default_database": "abc123",
-            }
-        }
-
-        with patch(
-            "web.api.routes.settings_integrations._load_notion_preferences",
-            return_value=saved_prefs,
-        ):
-            result = await get_notion_preferences(current_user=mock_user)
-
-            assert result.selected_databases == []
-            assert result.default_database is None
-
-
-class TestSaveNotionPreferences:
-    """Tests for POST /api/v1/settings/integrations/notion/preferences"""
-
-    @pytest.mark.asyncio
-    async def test_saves_preferences_successfully(self):
-        """Should save preferences and return them"""
-        mock_user = MagicMock()
-        mock_user.sub = "test-user-123"
-
-        preferences = NotionPreferencesRequest(
-            selected_databases=["abc123", "def456"],
-            default_database="abc123",
-        )
-
-        saved_data = {}
-
-        def mock_save(prefs):
-            saved_data.update(prefs)
-
-        with (
-            patch(
-                "web.api.routes.settings_integrations._load_notion_preferences",
-                return_value={},
-            ),
-            patch(
-                "web.api.routes.settings_integrations._save_notion_preferences",
-                side_effect=mock_save,
-            ),
-        ):
-            result = await save_notion_preferences(preferences=preferences, current_user=mock_user)
-
-            assert result.selected_databases == ["abc123", "def456"]
-            assert result.default_database == "abc123"
-            assert "test-user-123" in saved_data
-            assert saved_data["test-user-123"]["selected_databases"] == [
-                "abc123",
-                "def456",
-            ]
-
-    @pytest.mark.asyncio
-    async def test_overwrites_existing_preferences(self):
-        """Should overwrite existing preferences for the user"""
-        mock_user = MagicMock()
-        mock_user.sub = "test-user-123"
-
-        existing_prefs = {
-            "test-user-123": {
-                "selected_databases": ["old-db"],
-                "default_database": "old-db",
-            }
-        }
-
-        new_preferences = NotionPreferencesRequest(
-            selected_databases=["new-db"],
-            default_database="new-db",
-        )
-
-        saved_data = {}
-
-        def mock_save(prefs):
-            saved_data.update(prefs)
-
-        with (
-            patch(
-                "web.api.routes.settings_integrations._load_notion_preferences",
-                return_value=existing_prefs,
-            ),
-            patch(
-                "web.api.routes.settings_integrations._save_notion_preferences",
-                side_effect=mock_save,
-            ),
-        ):
-            result = await save_notion_preferences(
-                preferences=new_preferences, current_user=mock_user
-            )
-
-            assert result.selected_databases == ["new-db"]
-            assert result.default_database == "new-db"
-            assert saved_data["test-user-123"]["selected_databases"] == ["new-db"]
-
-    @pytest.mark.asyncio
-    async def test_preserves_other_users_preferences(self):
-        """Should not affect other users' preferences"""
-        mock_user = MagicMock()
-        mock_user.sub = "test-user-123"
-
-        existing_prefs = {
-            "other-user-456": {
-                "selected_databases": ["other-db"],
-                "default_database": "other-db",
-            }
-        }
-
-        new_preferences = NotionPreferencesRequest(
-            selected_databases=["my-db"],
-            default_database="my-db",
-        )
-
-        saved_data = {}
-
-        def mock_save(prefs):
-            saved_data.update(prefs)
-
-        with (
-            patch(
-                "web.api.routes.settings_integrations._load_notion_preferences",
-                return_value=existing_prefs,
-            ),
-            patch(
-                "web.api.routes.settings_integrations._save_notion_preferences",
-                side_effect=mock_save,
-            ),
-        ):
-            await save_notion_preferences(preferences=new_preferences, current_user=mock_user)
-
-            # Other user's preferences should be preserved
-            assert "other-user-456" in saved_data
-            assert saved_data["other-user-456"]["selected_databases"] == ["other-db"]
-            # New user's preferences should be added
-            assert "test-user-123" in saved_data
-            assert saved_data["test-user-123"]["selected_databases"] == ["my-db"]
-
-
-class TestNotionPreferencesFileStorage:
-    """Tests for Notion preferences file-based storage helpers"""
-
-    def test_load_preferences_returns_empty_when_file_missing(self):
-        """Should return empty dict when preferences file doesn't exist"""
-        from web.api.routes.settings_integrations import _load_notion_preferences
-
-        with patch("os.path.exists", return_value=False):
-            result = _load_notion_preferences()
-            assert result == {}
-
-    def test_load_preferences_returns_data_when_file_exists(self):
-        """Should return parsed JSON when file exists"""
-        import json
-
-        from web.api.routes.settings_integrations import _load_notion_preferences
-
-        test_data = {
-            "user-123": {
-                "selected_databases": ["db1"],
-                "default_database": "db1",
-            }
-        }
-
-        with (
-            patch("os.path.exists", return_value=True),
-            patch(
-                "builtins.open",
-                MagicMock(
-                    return_value=MagicMock(
-                        __enter__=MagicMock(
-                            return_value=MagicMock(
-                                read=MagicMock(return_value=json.dumps(test_data))
-                            )
-                        ),
-                        __exit__=MagicMock(return_value=False),
-                    )
-                ),
-            ),
-            patch("json.load", return_value=test_data),
-        ):
-            result = _load_notion_preferences()
-            assert result == test_data
-
-    def test_save_preferences_creates_directory(self):
-        """Should create data directory if it doesn't exist"""
-        from web.api.routes.settings_integrations import _save_notion_preferences
-
-        mock_makedirs = MagicMock()
-        mock_open = MagicMock()
-        mock_file = MagicMock()
-        mock_open.return_value.__enter__ = MagicMock(return_value=mock_file)
-        mock_open.return_value.__exit__ = MagicMock(return_value=False)
-
-        with (
-            patch("os.makedirs", mock_makedirs),
-            patch("builtins.open", mock_open),
-            patch("json.dump"),
-        ):
-            _save_notion_preferences({"test": "data"})
-
-            # Should call makedirs with exist_ok=True
-            mock_makedirs.assert_called_once()
-            assert mock_makedirs.call_args[1]["exist_ok"] is True

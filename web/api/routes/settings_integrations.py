@@ -237,82 +237,71 @@ class GitHubPreferencesResponse(BaseModel):
     default_repository: Optional[str] = None
 
 
-# Simple file-based storage for Slack preferences (Issue #570)
-# This is a minimal implementation - could be moved to DB later
-SLACK_PREFERENCES_FILE = "data/slack_preferences.json"
+# #1400: slack/calendar/notion prefs live in the DB connector_configs store —
+# the same ADR-070 D4 rail github below already uses. The data/*.json flat
+# files were hosted data loss: Fly's filesystem is ephemeral (every deploy
+# wiped every user's prefs), invisible to pg_dump, and outside the owner-scoped
+# DB posture. _LEGACY_PREF_FILES feeds a one-time read-migrate-on-access shim
+# for pre-migration droplet files; on Fly the files never exist so it no-ops.
+_LEGACY_PREF_FILES = {
+    "slack": "data/slack_preferences.json",  # Issue #570
+    "calendar": "data/calendar_preferences.json",  # Issue #571
+    "notion": "data/notion_preferences.json",  # Issue #572
+}
 
 
-def _load_slack_preferences() -> dict:
-    """Load all Slack preferences from file."""
+def _read_legacy_pref_file(owner_sub: str, connector: str) -> dict:
+    """This user's entry from a pre-#1400 flat file, or {} (missing/unreadable)."""
+    path = _LEGACY_PREF_FILES.get(connector)
     try:
-        if os.path.exists(SLACK_PREFERENCES_FILE):
-            with open(SLACK_PREFERENCES_FILE, "r") as f:
-                return json.load(f)
+        if path and os.path.exists(path):
+            with open(path, "r") as f:
+                return json.load(f).get(owner_sub, {}) or {}
     except Exception as e:
-        logger.warning("slack_preferences_load_failed", error=str(e))
+        logger.warning("legacy_pref_file_read_failed", connector=connector, error=str(e))
     return {}
 
 
-def _save_slack_preferences(prefs: dict) -> None:
-    """Save all Slack preferences to file."""
+async def _load_prefs_db(owner_sub: str, connector: str) -> dict:
+    """The user's prefs for a connector from the DB store; {} on miss OR DB error
+    (best-effort read — the settings page should still render through a DB
+    hiccup). First access migrates any legacy flat-file entry into the DB."""
     try:
-        os.makedirs(os.path.dirname(SLACK_PREFERENCES_FILE), exist_ok=True)
-        with open(SLACK_PREFERENCES_FILE, "w") as f:
-            json.dump(prefs, f, indent=2)
+        from services.connectors.config_service import ConnectorConfigService
+        from services.database.session_factory import AsyncSessionFactory
+
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            svc = ConnectorConfigService(session)
+            prefs = await svc.get_config(owner_sub, connector)
+            if prefs:
+                return prefs
+            legacy = _read_legacy_pref_file(owner_sub, connector)
+            if legacy:
+                await svc.set_config(owner_sub, connector, legacy)
+                await session.commit()
+                logger.info(
+                    "legacy_pref_file_migrated", connector=connector, user_id=owner_sub
+                )
+            return legacy
     except Exception as e:
-        logger.error("slack_preferences_save_failed", error=str(e))
+        logger.warning("prefs_db_load_failed", connector=connector, error=str(e))
+        return {}
 
 
-# Simple file-based storage for Calendar preferences (Issue #571)
-# Same pattern as Slack - could be moved to DB later
-CALENDAR_PREFERENCES_FILE = "data/calendar_preferences.json"
+async def _save_prefs_db(owner_sub: str, connector: str, prefs: dict) -> None:
+    """MERGE the given keys into the user's connector config in the DB store.
+    RAISES on failure — the DB is the only store, so a silent write error would
+    be exactly the data loss #1400 exists to kill. Fresh-engine session
+    (event-loop-safe #442) + explicit commit."""
+    from services.connectors.config_service import ConnectorConfigService
+    from services.database.session_factory import AsyncSessionFactory
 
-
-def _load_calendar_preferences() -> dict:
-    """Load all calendar preferences from file."""
-    try:
-        if os.path.exists(CALENDAR_PREFERENCES_FILE):
-            with open(CALENDAR_PREFERENCES_FILE, "r") as f:
-                return json.load(f)
-    except Exception as e:
-        logger.warning("calendar_preferences_load_failed", error=str(e))
-    return {}
-
-
-def _save_calendar_preferences(prefs: dict) -> None:
-    """Save all calendar preferences to file."""
-    try:
-        os.makedirs(os.path.dirname(CALENDAR_PREFERENCES_FILE), exist_ok=True)
-        with open(CALENDAR_PREFERENCES_FILE, "w") as f:
-            json.dump(prefs, f, indent=2)
-    except Exception as e:
-        logger.error("calendar_preferences_save_failed", error=str(e))
-
-
-# Simple file-based storage for Notion preferences (Issue #572)
-# Same pattern as Slack and Calendar - could be moved to DB later
-NOTION_PREFERENCES_FILE = "data/notion_preferences.json"
-
-
-def _load_notion_preferences() -> dict:
-    """Load all Notion preferences from file."""
-    try:
-        if os.path.exists(NOTION_PREFERENCES_FILE):
-            with open(NOTION_PREFERENCES_FILE, "r") as f:
-                return json.load(f)
-    except Exception as e:
-        logger.warning("notion_preferences_load_failed", error=str(e))
-    return {}
-
-
-def _save_notion_preferences(prefs: dict) -> None:
-    """Save all Notion preferences to file."""
-    try:
-        os.makedirs(os.path.dirname(NOTION_PREFERENCES_FILE), exist_ok=True)
-        with open(NOTION_PREFERENCES_FILE, "w") as f:
-            json.dump(prefs, f, indent=2)
-    except Exception as e:
-        logger.error("notion_preferences_save_failed", error=str(e))
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        svc = ConnectorConfigService(session)
+        merged = await svc.get_config(owner_sub, connector)
+        merged.update(prefs)
+        await svc.set_config(owner_sub, connector, merged)
+        await session.commit()
 
 
 # WS-1 (#1226 / #1199): GitHub connector prefs live in the DB-backed connector_configs store
@@ -558,8 +547,7 @@ async def get_slack_preferences(current_user: JWTClaims = Depends(get_current_us
     Issue #570: Slack Channel Selection Settings
     """
     try:
-        all_prefs = _load_slack_preferences()
-        user_prefs = all_prefs.get(str(current_user.sub), {})
+        user_prefs = await _load_prefs_db(str(current_user.sub), "slack")
 
         logger.info("slack_preferences_loaded", user_id=str(current_user.sub))
 
@@ -589,17 +577,14 @@ async def save_slack_preferences(
     Issue #570: Slack Channel Selection Settings
     """
     try:
-        all_prefs = _load_slack_preferences()
-
-        # Store preferences for this user
+        # Store preferences for this user (DB store, #1400)
         user_prefs = {
             "notification_channel": preferences.notification_channel,
             "monitored_channels": preferences.monitored_channels,
             "default_response_channel": preferences.default_response_channel,
         }
 
-        all_prefs[str(current_user.sub)] = user_prefs
-        _save_slack_preferences(all_prefs)
+        await _save_prefs_db(str(current_user.sub), "slack", user_prefs)
 
         logger.info(
             "slack_preferences_saved",
@@ -1306,9 +1291,8 @@ async def get_calendar_list(current_user: JWTClaims = Depends(get_current_user))
 
                 data = await response.json()
 
-        # Load user's saved preferences
-        all_prefs = _load_calendar_preferences()
-        user_prefs = all_prefs.get(str(current_user.sub), {})
+        # Load user's saved preferences (DB store, #1400)
+        user_prefs = await _load_prefs_db(str(current_user.sub), "calendar")
         selected_calendars = user_prefs.get("selected_calendars", [])
 
         # Build calendar list with selection status
@@ -1352,8 +1336,7 @@ async def get_calendar_preferences(current_user: JWTClaims = Depends(get_current
     Issue #571: Calendar sync preferences
     """
     try:
-        all_prefs = _load_calendar_preferences()
-        user_prefs = all_prefs.get(str(current_user.sub), {})
+        user_prefs = await _load_prefs_db(str(current_user.sub), "calendar")
 
         logger.info("calendar_preferences_loaded", user_id=str(current_user.sub))
 
@@ -1382,16 +1365,13 @@ async def save_calendar_preferences(
     Issue #571: Calendar sync preferences
     """
     try:
-        all_prefs = _load_calendar_preferences()
-
-        # Store preferences for this user
+        # Store preferences for this user (DB store, #1400)
         user_prefs = {
             "selected_calendars": preferences.selected_calendars,
             "primary_calendar": preferences.primary_calendar,
         }
 
-        all_prefs[str(current_user.sub)] = user_prefs
-        _save_calendar_preferences(all_prefs)
+        await _save_prefs_db(str(current_user.sub), "calendar", user_prefs)
 
         logger.info(
             "calendar_preferences_saved",
@@ -1661,9 +1641,8 @@ async def get_notion_databases(current_user: JWTClaims = Depends(get_current_use
 
                 data = await response.json()
 
-        # Load user's saved preferences
-        all_prefs = _load_notion_preferences()
-        user_prefs = all_prefs.get(str(current_user.sub), {})
+        # Load user's saved preferences (DB store, #1400)
+        user_prefs = await _load_prefs_db(str(current_user.sub), "notion")
         selected_databases = user_prefs.get("selected_databases", [])
 
         # Build database list with selection status
@@ -1713,8 +1692,7 @@ async def get_notion_preferences(current_user: JWTClaims = Depends(get_current_u
     Issue #572: Notion workspace preferences
     """
     try:
-        all_prefs = _load_notion_preferences()
-        user_prefs = all_prefs.get(str(current_user.sub), {})
+        user_prefs = await _load_prefs_db(str(current_user.sub), "notion")
 
         logger.info("notion_preferences_loaded", user_id=str(current_user.sub))
 
@@ -1743,16 +1721,13 @@ async def save_notion_preferences(
     Issue #572: Notion workspace preferences
     """
     try:
-        all_prefs = _load_notion_preferences()
-
-        # Store preferences for this user
+        # Store preferences for this user (DB store, #1400)
         user_prefs = {
             "selected_databases": preferences.selected_databases,
             "default_database": preferences.default_database,
         }
 
-        all_prefs[str(current_user.sub)] = user_prefs
-        _save_notion_preferences(all_prefs)
+        await _save_prefs_db(str(current_user.sub), "notion", user_prefs)
 
         logger.info(
             "notion_preferences_saved",
