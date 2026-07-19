@@ -251,9 +251,11 @@ RouterInitializer.mount_router(
 RouterInitializer.mount_router(app, "web.api.routes.files", "router", "Files API")
 RouterInitializer.mount_router(app, "web.api.routes.artifacts", "router", "Artifacts API")
 RouterInitializer.mount_router(app, "web.api.routes.documents", "router", "Documents API")
-RouterInitializer.mount_router(
-    app, "services.api.todo_management", "todo_management_router", "Todos API"
-)
+# #1427 (PM-ratified 2026-07-18): the todos REST surface was mocked end-to-end
+# (fabricated responses, nothing persisted) — UNMOUNTED rather than shipped as
+# a lie. Chat todos (todo_handlers) + the Lists API below are the real, kept
+# surfaces; the module's request models stay imported by the chat path.
+# Finish-work moved to Production as integrate-don't-build (One Job paradigm).
 RouterInitializer.mount_router(app, "web.api.routes.lists", "router", "Lists API")
 RouterInitializer.mount_router(
     app, "web.api.routes.insights", "router", "Insights API"
