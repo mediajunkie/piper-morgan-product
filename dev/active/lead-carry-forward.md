@@ -1,4 +1,4 @@
-# Lead Dev — carry-forward (rewritten at STOP 2026-07-17)
+# Lead Dev — carry-forward (rewritten at STOP 2026-07-18)
 
 **Session-authority**: interesting-beaver-7ee19c owns the lead role (PM 7/17 06:56; the vivid-gathering-wreath concurrent-session episode is RESOLVED — its worktree may still show locked on disk, harmless). Cron d9471ac8 armed, `17 6,9,12,15,18,21`.
 
@@ -7,11 +7,13 @@
 - **v0.8.11.0 LIVE on beta** (Fly v20, migrations at k1422prefs head). #1418 (picker fix) is on `production` AWAITING the next beta increment.
 - ADR-079 arc fully ratified + calibrated (Arch closed the loop; growth-ratchet = steady state).
 
-## Queue (all unblocked)
-1. #1436 remainder: Slack Tier-2 (Intent ctor ×3 + spatial args — PROTECTED feature), staging-health (unmounted), systemic UUID-vs-str, Tier-3 cold-module batch (incl. ProductionGitHubClient fix-or-delete), mypy CI gate (per-code ceilings 94/437/308/221; prereq landed).
-2. #1423 un-swallow clusters (F9-F17 tail) — ratchet backlog, ceiling 244.
-3. #1433 CHAT_POINTERS ledger build.
-4. Stale-test family: #1437/#1443/#1444 (consider a `stale-test` label).
+## Queue
+1. **Family-3 execution on Arch's ruling** (surgery proposal sent 7/18 19:55: query stack + graph_query_service + todo_management stub-drop; LLMIntentClassifier held for #1432).
+2. **#1400** prefs JSON→DB (unblocked, mine). **#1401 BLOCKED on storage pick** (question batch #1).
+3. #1393 leak probe; #1394 D5 probe; #1386 gate-run (pending PM/Exec routing answer).
+4. #1423 un-swallow clusters (ceiling 244) + UUID-vs-str pass + #1433 ledger.
+5. Spatial committed-theory review: Arch deep-reading; my code-reality lane DONE; deletions held.
+6. Done this era: mypy gate LIVE (44/427/288/214); Tier-3 Families 1/4/6+riders+2 executed; collection 11,774/0.
 
 ## PM-attention — QUESTION BATCH for rollup relay (2026-07-18 ~18:00; defaults stated, one-word answers fine)
 1. **#1401 uploads storage (the only BLOCKING pick)**: Fly volume vs object storage. My recommendation: **volume now** (one-line fly.toml, fixes data loss immediately for single-machine beta), object storage at Production scale. Say "volume" or "object" and I build same-day.
