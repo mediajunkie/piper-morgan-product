@@ -40,14 +40,14 @@ title,theme,status,workDate,endWorkDate,pubDate,mediumURL,liPubDate,linkedinURL,
 |--------|---------------|-------|
 | title | Free text | Quote if contains commas |
 | theme | `building`, `insight`, `ship` | Content type |
-| status | `drafted`, `queued`, `published` | Lifecycle state |
+| status | `drafted`, `queued`, `published`, `distributed` | Lifecycle state — see below |
 | workDate | YYYY-MM-DD | When the piece was written |
 | endWorkDate | YYYY-MM-DD | End of work period (optional) |
 | pubDate | YYYY-MM-DD | Publication date |
 | mediumURL | Full URL | Medium publication link |
 | liPubDate | YYYY-MM-DD | LinkedIn publication date |
 | linkedinURL | Full URL | LinkedIn post link |
-| canonicalSite | `distributed` or empty | Set to `distributed` when on blog + syndicated |
+| canonicalSite | `distributed` or empty | Set to `distributed` when on blog + syndicated (pipeline dedup signal; independent of status) |
 | blogURL | Full URL | e.g., `https://pipermorgan.ai/blog/{slug}` |
 | blogPath | Path | e.g., `/blog/{slug}` |
 | cartoon | Slug | Image slug (no extension) |
@@ -89,9 +89,17 @@ with open(PATH, 'w', newline='', encoding='utf-8') as f:
 
 **Always read the current row first** to avoid clobbering existing data. Only change the fields PM specified — preserve everything else. When appending to a free-text field (like `notes`), append to `row[idx['notes']]` specifically — never assume its position relative to the end of the row.
 
+**Status lifecycle** (PM-ratified 2026-07-19):
+- `drafted` → piece is in draft
+- `queued` → scheduled but not yet published
+- `published` → live at pipermorgan.ai (blog-first)
+- `distributed` → live at pipermorgan.ai AND cross-posted to Medium/LinkedIn
+
+Note: `canonicalSite=distributed` is a separate pipeline signal (used for RSS dedup); it stays set independently of the status field.
+
 Common updates:
-- **Published with URLs**: Set status→published, add mediumURL, liPubDate, linkedinURL
 - **Blog-first publish**: Set status→published, blogURL, blogPath, canonicalSite→distributed
+- **Cross-posted to Medium/LinkedIn**: Set status→distributed, add mediumURL, liPubDate, linkedinURL
 - **New draft**: Set status→drafted, workDate, theme, draftPath
 - **Scheduled**: Set status→queued, pubDate
 
@@ -118,6 +126,8 @@ for i, r in enumerate(rows[1:], start=2):
         continue
     cs = r[idx['canonicalSite']]
     assert cs in ('', 'distributed'), f"row {i}: canonicalSite={cs!r}"
+    st = r[idx['status']]
+    assert st in ('drafted', 'queued', 'published', 'distributed', 'ready-for-docs', ''), f"row {i}: status={st!r}"
     bu = r[idx['blogURL']]
     assert not bu or bu.startswith('http'), f"row {i}: blogURL={bu!r}"
 ```
@@ -147,7 +157,8 @@ git commit -m "editorial calendar: [what changed]"
 | Ask PM to edit the CSV | Update it yourself from their verbal instructions |
 | Overwrite fields PM didn't mention | Read current row first, preserve existing data |
 | Forget to quote commas in titles | Use `"Title, With Comma"` (or let `csv.writer` handle it) |
-| Leave status as `queued` after publishing | Update to `published` |
+| Leave status as `queued` after blog publish | Update to `published` |
+| Leave status as `published` after cross-posting | Update to `distributed` |
 | Skip the blogURL for blog-first posts | Always set blogURL + blogPath + canonicalSite |
 | Edit a row with the Edit tool, or index it by number/`[-N]` | Use the `csv` module, address every field by header name |
 | Verify only the touched row's field count | Whole-file scan: field count + semantic anchors on every row |
@@ -174,3 +185,4 @@ git commit -m "editorial calendar: [what changed]"
 
 *v1.1 — Added Step 5: rebuild calendar view HTML after every CSV change (2026-06-29).*
 *v1.2 — Replaced Edit-tool/positional-index row surgery with `csv`-module-by-name access (Steps 2-3), and upgraded verification to a whole-file field-count + semantic-anchor scan (Step 4) (2026-07-14). Root-caused from a real incident: two same-day Comms edits used `row[-2]` for the `notes` field, which actually landed on `altText` (18-column schema, `notes` at index 15, `altText` at 16) — the drift stayed invisible under a single-row field-count check until a later edit collapsed the count, at which point a peer session caught and repaired it. See `docs/internal/planning/comms/editorial-calendar.csv` "The Migration Wave" row's own notes for the full incident trace.*
+*v1.3 — Added `distributed` status value (PM-ratified 2026-07-19): published = live on pipermorgan.ai; distributed = blog + cross-posted. Bulk-migrated 243 rows from status=published to status=distributed (all rows with canonicalSite=distributed). Added status semantic anchor to Step 4 verification. Updated lifecycle table and anti-patterns.*
