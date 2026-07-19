@@ -35,3 +35,31 @@ Unchanged since Thursday's last commit (Friday was fully quiet too).
 | Fire | Time | Action | Notes |
 |------|------|--------|-------|
 | 06:52 tick | 06:52 | START | Jul-17 close verified. Inbox zero. Website unchanged. All open threads externally gated. Weekend — no change to dispatch logic. Holding. |
+| 09:52 tick | 09:52 | WORK | Quiet hold. |
+| 12:52 tick | 12:52 | WORK | Website moved: routine automated publish ("Mechanical First, Then Read", insight, 7/18) — synced worktree, no Web action needed. Inbox still zero. |
+| 15:52/18:52 ticks | day | WORK (batched quiet holds) | No further mail or repo movement. |
+| 21:52 tick | 21:52 | STOP | Day-close. Inbox empty, worktree clean. Cron left armed. |
+
+---
+
+## Day-arc summary
+
+Second consecutive quiet weekend day. One routine automated blog publish landed
+mid-afternoon (no Web involvement needed — the pipeline worked as designed). All
+carried-forward threads (ship Phase B, the three PM-gated cleanup items) remained
+correctly externally gated throughout; nothing to chase, nothing to build.
+
+## Memory-eval (3-bucket)
+
+- **Worth remembering**: nothing new.
+- **Session-local**: no carry-forward changes — still accurate as of 7/16 evening.
+- **Neither**: n/a.
+
+## Sign-off checklist
+
+- [x] Website worktree clean; HEAD == origin/main (includes today's automated publish)
+- [x] Product repo: only the START log commit shipped 7/18; verified on origin
+- [x] Inbox empty at every fire
+- [x] Cron ARMED continuously (ef26183c)
+
+<!-- DAY-CLOSED: 2026-07-18 -->
