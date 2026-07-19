@@ -430,9 +430,9 @@ git push origin main
 **Always invoke the `/update-calendar` skill — never hand-edit `editorial-calendar.csv`.** The skill knows the 18-field column structure + CSV-escape rules (commas in altText, double-quotes in caption, etc.). Hand-editing has produced field-count drift + unescaped-comma bugs (May 17 incident). This rule applies to **all** calendar edits — publish-time (this step), syndication-URL follow-on (after Step 8), workDate corrections, status changes, anything.
 
 Invoke `/update-calendar` with:
-- status → `published`
+- status → `published` (blog-live; changes to `distributed` at Step 8 after cross-posting)
 - pubDate → today
-- canonicalSite → `distributed`
+- canonicalSite → `distributed` (pipeline dedup signal — set now even though status stays `published` until cross-post)
 - blogURL → `https://pipermorgan.ai/blog/{slug}/`
 - blogPath → `/blog/{slug}`
 - altText, caption from draft metadata
@@ -477,14 +477,14 @@ git push origin main
 
 PM does manually:
 1. **Medium**: Paste content, set canonical URL to `https://pipermorgan.ai/blog/{slug}/` (trailing slash!)
-2. PM provides Medium URL → Docs updates calendar via `/update-calendar`
+2. PM provides Medium URL → Docs updates calendar via `/update-calendar`: set mediumURL, liPubDate/linkedinURL if applicable, and **status → `distributed`** (signals blog + cross-posted; PM-ratified 2026-07-19)
 
 ### Step 9: Drafts Folder Cleanup (Final Step)
 
 **ONLY after** verifying:
 - ✅ Post is live at `https://pipermorgan.ai/blog/{slug}/`
 - ✅ Editorial calendar updated with at least one syndication URL (mediumURL or linkedinURL)
-- ✅ Calendar status is `published`
+- ✅ Calendar status is `published` (or `distributed` if already cross-posted)
 
 Then archive the draft and source image to keep `docs/public/comms/drafts/` lean:
 
