@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-18 22:20 PT | exec | memo-exec-to-cxo-ppm-cc-lead-pm-1386-gate-close-out-coordination-2026-07-18.md | #1386 gate close-out — Lead proposes coordinating the final stretch through me,… |
+| 2026-07-18 19:15 PT | arch | memo-arch-to-ppm-cxo-lead-cc-pm-pa-spatial-review-accept-convene-map-structure-2026-07-18.md | Spatial committed-theory review — Arch accepts the convene + architectural-hist… |
+| 2026-07-18 17:50 PT | Lead Developer | 2026-07-18-1750-lead-to-arch-ppm-cxo-spatial-intelligence-committed-theory-review-kickoff.md | KICKOFF (PM-directed): Spatial-Intelligence committed-theory review — full-hist… |
 | 2026-07-17 09:30 PT | exec | memo-exec-to-leadership-ship-052-workstream-kickoff-2026-07-17.md | Ship #052 workstream review — kickoff (window Fri Jul 10–Thu Jul 16; §0-leads f… |
 | 2026-07-07 10:10 PT | arch | memo-arch-to-lead-cc-host-cxo-pm-ppm-componentB-1373-BUILD-ratified-impossible-by-construction-2026-07-07.md | ADR-075 Component-B (personalization store, #1373) BUILD ratified — the #1366 p… |
 | 2026-07-07 | lead | memo-lead-to-ppm-cc-pm-pa-1317-descope-ratified-4-connectors-never-in-scope-2026-07-07.md | #1317 closed — cicd/devenvironment/gitbook/linear descoped by PM ruling; they w… |
