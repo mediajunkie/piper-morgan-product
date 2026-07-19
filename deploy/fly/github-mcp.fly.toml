@@ -1,0 +1,16 @@
+# github-mcp sidecar (#1278) — image pinned to the v1.5.0 tool contract the
+# adapter speaks (issue_write/issue_read + method routing; bump BOTH together
+# with services/mcp/consumer/github_adapter.py). PRIVATE-ONLY: no public IPs;
+# per-user tokens arrive per-request from the app (ADR-070) — no secrets here.
+app = "piper-morgan-gh-mcp"
+primary_region = "sjc"
+
+[build]
+  image = "ghcr.io/github/github-mcp-server:v1.5.0"
+
+[experimental]
+  cmd = ["http", "--listen-host", "0.0.0.0"]
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
