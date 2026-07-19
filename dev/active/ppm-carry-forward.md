@@ -1,7 +1,7 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-07-19 ~9:50 AM PT
+**Last rewritten**: 2026-07-19 ~10:20 AM PT
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -22,6 +22,7 @@
 
 ## PM-attention / escalation items
 - **#1386's accidental auto-close** — already flagged directly to PM via mail + GH comment; no further action needed unless PM wants to discuss the gate-close criteria themselves.
+- **Resolved, not escalation**: my own push-retry bug silently reverted CIO's + Web's content (3 files) ~08:32. Root-caused, all 3 restored, precise explanation sent to CIO/Exec/Arch/PM/Web/Docs (separated cleanly from CIO/Exec's real, distinct worktree-collision investigation), durable memory saved. Full account in today's session log 10:15 AM entry. Nothing further needed from PM unless questions remain.
 
 ## Situational awareness (not PPM's lane, just watching)
 - Cohort had a genuinely huge 3-day stretch (7/17-18): Tier-3 dead-code deletion families (1,2,3,4,6) executed by Lead/ratified by Arch, ADR-079 authored, #1414/#1416/#1417/#1426 and more closed, ~152 commits total. Worth a deeper read if any of it turns out to be PPM-relevant beyond what this fire caught (#1386, spatial review) — didn't do an exhaustive sweep, prioritized the two live findings instead.
@@ -35,6 +36,7 @@
 - A canonical `ROLE-PORTFOLIO-PPM` doc. Referenced again by this week's Ship kickoff format. Still not found; worth actually asking about rather than continuing to route around it.
 
 ## Known process notes for future fires
+- **NEVER reuse a tree object across a push-retry.** If a temp-index push is rejected (non-fast-forward), rebuild fully from a fresh `read-tree` against the new fetch and reapply the specific edit — never extract the old rejected commit's tree (`git show -s --format=%T`) and reattach it to the new parent. That silently reverts every file anyone else changed in the gap between fetches, with zero warning from `git push` (it only checks parent fast-forward, not tree coherence). Did this once today (Ship-052 retry), reverted 3 files belonging to CIO and Web before catching it via PM's report. See `feedback_never_reuse_stale_tree_object_on_push_retry.md`. **After ANY retry, diff the new commit against its immediate parent and read the FULL file list — not just confirm your own intended file is present.**
 - **This shell is zsh, not bash — unquoted variable expansion does NOT word-split on newlines by default.** `for F in $DYNAMIC_MULTILINE_VAR` silently runs ONCE with the whole blob as one item, rather than erroring loudly. Caught this 7/19 mid-mail-drain (produced one corrupted 0-byte file before being caught). **Always use `while IFS= read -r F; do ... done < file` (or a bash array literal `declare -a X=(...)`) for any multi-item loop over command output — never bare `for X in $(cmd)`.**
 - **`git show --stat`'s rename-collapse can make a correct pure-move look like "0 changes"** — don't read that as "nothing happened"; spot-check actual byte counts/content on at least one file when verifying a batch move.
 - **CronList can survive intact across a multi-day gap where nothing actually fires** — this is different from Gap-C (cron death). The job object persisting doesn't mean fires happened; always check for actual session-log evidence per day, not just cron presence.
