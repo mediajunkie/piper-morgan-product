@@ -1,42 +1,49 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-18 22:30 PT (live PM conversation, post-STOP)
-**Session log today**: `dev/2026/07/18/2026-07-18-0902-exec-code-log.md` (DAY-CLOSED — this conversation's work rides in a fresh entry appended after close, per event-based logging)
+**Last updated**: 2026-07-19 ~09:30 PT (live PM day — PM AFK, coordinating through Exec)
+**Session log today**: `dev/2026/07/19/2026-07-19-0832-exec-code-log.md` (in progress, not yet DAY-CLOSED)
 **Role**: Chief of Staff (Exec) | DinP account — migration to dedicated account still pending, PM's own call, no urgency signal
-**Cron**: `32 8,20 * * *` — armed. Next fire ~08:32 Sun Jul 19.
-**Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45`
+**Cron**: `32 8,20 * * *` — armed. Next fire ~20:32 Sun Jul 19.
+**Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45` — check `pwd`/branch/`git status` FIRST at every fire (Step 2a pairing check, CIO's new fix); known mismatch is expected and safe to proceed past per PM's standing "resume" instruction, but verify no *new* stray state each time.
 
 ---
 
-## Lead Dev's question batch — 3 of 5 answered, relayed; #1386 coordination now active
+## Today's operating mode: PM AFK, coordinating through Exec
 
-PM answered post-STOP: (1) volume now for #1401 storage, (2) pull #1438 back to sprint ("learning is core to the vision"), (3) approved routing #1386 coordination through Exec. Relayed all three to Lead directly. For items 4 (#1424 close-vs-keep-open) and 5 (#1427/PROD-RECONNECT fit), PM wanted more specifics — pulled direct evidence from both issues (Phase-3 acceptance-gate detail for #1424; the roadmap's PROD-* bucket list for #1427) and gave PM a grounded briefing rather than guessing. Still awaiting PM's final call on those two.
+PM is rousing all 11 standing agents and will be AFK most of the day. Agents advance what they can and batch questions for PM's attention, rolled up through Exec. Be ready to roll up to Janus (cross-project coordination) if PM needs help coordinating across projects today — nothing has come of this yet, just a standing readiness note.
 
-**Followed through on item 3 same night**: sent a coordination kickoff to CXO + PPM (cc Lead, PM) asking them to confirm #1394's disclosure-plan status and connect directly with Lead on the close-out specifics — didn't invent technical scope on Lead's behalf, just made the connection.
+## Ship #052 — DRAFTED, routed to PM, awaiting fact-check/voice-pass
 
-## Ship #052 — still 2/6, PPM now explicitly named as the 4th silent role
+All 6 workstream memos landed this morning (CIO/CXO/HOST/PPM joining Friday's Arch/Comms). Ran the full draft procedure — all 7 omnibus logs, all 6 memos, editorial calendar verified, issues-closed count verified via `gh` directly. Theme: **"The Mechanism, Not the Memory"** — continuing/deepening #051's "impossible by construction" one level up (class-wide mechanical enforcement, not just one instance), honestly naming the worktree-collision defect as the week's counter-example. Draft at `dev/active/weekly-ship-052-draft-2026-07-19.md`, pushed (`10e5b6a64`). Word count ~1790, flagged (comparable density to #051's approved ~1840). **Do not touch again until PM has read it** — same discipline as #051.
 
-PM is personally pinging HOST/CXO/CIO tomorrow morning. **PPM is the fourth missing role and wasn't in that list** — flagged this to PM directly in chat; worth confirming PPM gets a ping too, or that's a real gap in Monday's deadline coverage. Arch and Comms remain the only 2 in.
+Caught two real errors during drafting, both fixed before finalizing: (1) #1394 was wrongly described as "months-old" — verified via `gh issue view` it was actually filed Jul 12, within-window; (2) "first real trim" for the CLAUDE.md refactor was an unverified superlative given 98 prior edit commits — softened.
 
-## HOST/CXO/CIO — PM handling directly now, not an exec-owned thread
+## Worktree-collision thread — multiple new developments today, all relayed to PM live
 
-PM plans direct pings tomorrow morning. PA's identical pattern (multi-day quiet) resolved same-day once PM pinged directly — good precedent. No exec action needed on this thread; check tomorrow whether any have resurfaced.
+CIO ran a full fleet audit: confirmed isolated to one directory (21/22 correctly paired elsewhere) — not a cohort discipline problem. Shipped a real detection fix (`duty-cycle-tick` Step 2a: checks dir/branch pairing before every sync). **Still needs PM to end one of the colliding sessions** — the one thing no session can do to itself.
 
-## Shared-worktree defect — still unresolved
+A separate, initially-alarming finding (a PPM commit reverted 3 files including CIO's own log/portfolio doc) turned out on PPM's own investigation to be a **different, one-time, now-fixed bug** (a stale git-tree-reuse shortcut in PPM's push-retry logic) — not an escalation of the worktree-collision defect itself, despite CIO's first memo framing it that way. Both memos are in `read/` if this needs re-verifying.
 
-No reply from CIO/Docs/PM. Not chasing. Keep checking `pwd`/branch/`git log -1` at the start of every fire.
+## #1386 (beta gate) — accidentally auto-closed, reopened same morning
+
+A `closes #1386-P3` commit message triggered GitHub's literal keyword-closer on the parent issue. PPM caught it, verified live state, reopened with full documentation. CXO independently confirmed the same read. Real status: Scenario A still needs PM's own browser step; criteria 2/4/5/6 all still open. This is now outside Ship #052's window (discovered Jul 19, window closed Jul 16) — correctly excluded from the draft.
+
+## PA's hosted-MCP pivot — new strategic thread, needs PM's direct attention
+
+PM apparently confirmed MCPB dead Jul 18 (a conversation Exec wasn't part of) and pivoted PA toward a hosted-MCP + Claude-plugin + ChatGPT-integration architecture (PDR-006 drafted). Three PM-gated questions batched (close #1360/#1351 as superseded; does the colleague-model need server-side LLM reasoning; plugin-directory timing), plus concrete asks: verify Piper's Claude.ai account tier, start OpenAI identity verification now (no dependencies). Both memos in `read/`.
 
 ## OPEN — light, carrying forward
 
-- **Account migration (pipermorgan.ai)** — PM's own call, no deadline, low-urgency carry (16+ days now).
+- **Lead Dev's #1424/#1427 questions** — still awaiting PM's final calls from yesterday; not blocking anything else.
+- **CXO/PPM #1386 coordination kickoff** (sent last night) — no reply yet as of this morning.
+- **Account migration (pipermorgan.ai)** — PM's own call, no deadline, low-urgency carry (17+ days now).
 - **Stale branches (MUX x3, xpoll-hook)** — no reply, not yet at a re-escalation point.
-- **#1424 / #1427** — awaiting PM's final calls (see above); not blocking anything else.
 
 ## STANDING
 
-- Bridge Log: current URL `https://claude.ai/code/artifact/68f209ae-94fc-484a-8e68-fbc53b3771f8` (prior one died this week too — second loss in a row, treat as a recurring hazard, not a one-off to chase).
-- Full tracker reconciliation done 7/18 — next full pass not due for a while.
+- Bridge Log: current URL `https://claude.ai/code/artifact/68f209ae-94fc-484a-8e68-fbc53b3771f8`.
+- Full tracker reconciliation done 7/18 — not due again yet, though today's volume may warrant an earlier touch given how much has moved.
 
 ---
 
-*— Exec, 7/18 22:30 PT.*
+*— Exec, 7/19 ~09:30 PT.*
