@@ -15,6 +15,22 @@ sys.path.insert(0, str(project_root))
 
 from services.domain.models import Intent, IntentCategory
 from services.intent.intent_service import IntentService
+from services.intent_service.pre_classifier import MultiIntentResult
+
+
+
+def _wire_classifier(mock_classifier, intent):
+    """Wire BOTH classifier methods the live path can await (#595: process_intent
+    awaits classify_multiple; these mocks predated it and stubbed only classify,
+    leaving classify_multiple a plain MagicMock — un-awaitable)."""
+    mock_classifier.classify = AsyncMock(return_value=intent)
+    mock_classifier.classify_multiple = AsyncMock(
+        return_value=MultiIntentResult(
+            intents=[intent],
+            original_message=intent.original_message,
+            is_multi_intent=False,
+        )
+    )
 
 
 class TestCLIInterface:
@@ -58,7 +74,7 @@ class TestCLIInterface:
 
         # Mock classifier
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _wire_classifier(mock_classifier, intent)
 
             # Simulate CLI command processing
             result = await intent_service.process_intent(
@@ -82,7 +98,7 @@ class TestCLIInterface:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _wire_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent(
                 "What am I working on?", session_id="cli_test_session"
@@ -103,7 +119,7 @@ class TestCLIInterface:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _wire_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent(
                 "What's my top priority?", session_id="cli_test_session"
@@ -124,7 +140,7 @@ class TestCLIInterface:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _wire_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent(
                 "Who are you?", session_id="cli_test_session"
@@ -145,7 +161,7 @@ class TestCLIInterface:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _wire_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent(
                 "What should I focus on?", session_id="cli_test_session"
@@ -166,7 +182,7 @@ class TestCLIInterface:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _wire_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent(
                 "Create an issue about testing", session_id="cli_test_session"
@@ -187,7 +203,7 @@ class TestCLIInterface:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _wire_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent(
                 "Analyze recent commits", session_id="cli_test_session"
@@ -208,7 +224,7 @@ class TestCLIInterface:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _wire_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent(
                 "Summarize this document", session_id="cli_test_session"
@@ -229,7 +245,7 @@ class TestCLIInterface:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _wire_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent(
                 "Create a strategy for this project", session_id="cli_test_session"
@@ -250,7 +266,7 @@ class TestCLIInterface:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _wire_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent(
                 "Learn from this pattern", session_id="cli_test_session"
@@ -271,7 +287,7 @@ class TestCLIInterface:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _wire_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent(
                 "This is something weird", session_id="cli_test_session"
@@ -292,7 +308,7 @@ class TestCLIInterface:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _wire_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent(
                 "Show me my projects", session_id="cli_test_session"
@@ -313,7 +329,7 @@ class TestCLIInterface:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _wire_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent(
                 "Hello there", session_id="cli_test_session"
