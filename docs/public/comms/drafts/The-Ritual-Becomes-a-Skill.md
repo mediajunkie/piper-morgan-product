@@ -290,6 +290,6 @@ A ritual that helps us find the metaphor hiding underneath the prose.
 
 ---
 
-*Next on Building Piper Morgan: [TK]*
+*Next on Building Piper Morgan: "The Meta-Observation Pattern" — a week where three published pieces all described coordination while being part of coordination.*
 
 *What repeated collaboration have you developed with an AI that still exists mostly as habit and mutual adjustment? What examples would you use to teach it to a fresh instance — and what failures would reveal whether the ritual survived?*

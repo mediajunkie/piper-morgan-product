@@ -40,6 +40,6 @@ The distance from "alpha" to "beta" is whatever the person doing the work decide
 
 ---
 
-*Next on Building Piper Morgan: "From Abstraction to Worked Example" — why three worked examples plus a contrast made an architectural choice click in two minutes when a description wouldn't have.*
+*Next on Building Piper Morgan: "The Ritual Becomes a Skill" — a year-long cartoon-drafting collaboration, refined through trial and error into a repeatable ritual, gets extracted into a portable skill before the account that built it disappears.*
 
 *Where in your work is the distance between "working" and "good" determined by a benchmark — and where is it determined by a judgment? What does it feel like when those two land at the same time?*

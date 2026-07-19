@@ -84,6 +84,6 @@ Three examples. The contrast. The shape becomes the thing the reader can hold.
 
 ---
 
-*Next on Building Piper Morgan: "The Meta-Observation Pattern" — a week where three published pieces all described coordination while being part of coordination.*
+*Next on Building Piper Morgan: more from inside the build — the next piece as the calendar takes shape. [Comms: this is now the last drafted post in the queue as of Jul 18 (moved here from Jul 25 to make room for "The Ritual Becomes a Skill") — re-verify and fill this tease once the next beat is scheduled.]*
 
 *Where in your work has a worked example made an abstraction land that a description couldn't? When did the cost of writing it pay off — and when did the lack of one cost you understanding you needed?*
