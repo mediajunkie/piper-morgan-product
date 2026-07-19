@@ -60,6 +60,13 @@ def run_mypy() -> Counter:
     if proc.returncode not in (0, 1):  # 2 = usage/crash — surface it
         print(proc.stderr[-2000:], file=sys.stderr)
         raise SystemExit(f"mypy did not run cleanly (exit {proc.returncode})")
+    # mypy exits 1 only when it found errors, so exit 1 + EMPTY stdout means it
+    # never actually ran (e.g. `python -m mypy` with mypy not installed also
+    # exits 1, error on stderr). Without this guard that state parses as
+    # "zero errors" — a gate blind to its own absence.
+    if proc.returncode == 1 and not proc.stdout.strip():
+        print(proc.stderr[-2000:], file=sys.stderr)
+        raise SystemExit("mypy produced no output on exit 1 — it did not run; refusing to report 0")
     counts: Counter = Counter()
     for line in proc.stdout.splitlines():
         m = _LINE.search(line)

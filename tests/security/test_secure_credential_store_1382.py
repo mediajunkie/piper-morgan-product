@@ -51,11 +51,21 @@ class TestStoreSelection:
             svc = _fresh_service(PIPER_CREDENTIAL_STORE="")
         assert svc._db_store is not None
 
-    def test_dead_backend_without_encryptor_fails_closed(self, monkeypatch):
+    def test_dead_backend_without_encryptor_fails_closed_at_operations(self, monkeypatch):
+        """No secure store anywhere: construction SUCCEEDS in a degraded state
+        (module-level singletons import-construct KeychainService, so a
+        constructor raise detonates test collection on keyring-less machines —
+        the 2026-07 CI-red root cause). Fail-closed lives at the operations:
+        writes raise, reads are truthfully empty, deletes report not-found."""
         monkeypatch.delenv("ENCRYPTION_MASTER_KEY", raising=False)
         with patch("keyring.get_keyring", return_value=_DeadBackend()):
-            with pytest.raises(RuntimeError, match="secure credential store"):
-                _fresh_service(PIPER_CREDENTIAL_STORE="")
+            svc = _fresh_service(PIPER_CREDENTIAL_STORE="")
+        assert svc._db_store is None
+        assert svc._no_secure_store is not None
+        with pytest.raises(RuntimeError, match="no secure credential store"):
+            svc.store_api_key("anthropic", "sk-test-value")
+        assert svc.get_api_key("anthropic") is None
+        assert svc.delete_api_key("anthropic") is False
 
     def test_forced_keychain_keeps_legacy_behavior_even_when_dead(self):
         with patch("keyring.get_keyring", return_value=_DeadBackend()):

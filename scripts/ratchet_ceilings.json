@@ -5,8 +5,8 @@
   "notimplementederror": 8,
   "todo_markers": 74,
   "unscoped_repo_reads": 36,
-  "mypy_call_arg": 44,
-  "mypy_arg_type": 427,
-  "mypy_attr_defined": 288,
-  "mypy_union_attr": 214
+  "mypy_call_arg": 41,
+  "mypy_arg_type": 409,
+  "mypy_attr_defined": 257,
+  "mypy_union_attr": 210
 }

@@ -69,6 +69,12 @@ class KeychainService:
         # init "succeeds" there while every operation raises; found live on alpha
         # 2026-07-08). None = OS keychain in use (the local-dev/Mac path, unchanged).
         self._db_store = None
+        # #1382: when NO secure store exists (dead OS backend + no ENCRYPTION_MASTER_KEY),
+        # this holds the reason string. Construction must not raise — module-level
+        # singletons (services/llm/clients.py) construct this at import, so a raise
+        # here detonates test collection on any keyring-less machine. Fail-closed
+        # moves to the operations: writes raise, reads return None (truthfully empty).
+        self._no_secure_store: Optional[str] = None
         self._verify_keyring_backend()
 
     def _verify_keyring_backend(self) -> None:
@@ -114,16 +120,18 @@ class KeychainService:
                 )
                 return
             except Exception as e:
+                self._no_secure_store = (
+                    "No OS keyring backend AND the encrypted-DB fallback is "
+                    f"unavailable ({e}) — no secure credential store; refusing "
+                    "the operation (#1382)."
+                )
                 logger.error(
                     "keychain_no_secure_store",
                     os_backend=backend_name,
                     fallback_error=str(e),
+                    effect="credential writes will raise; reads return None",
                 )
-                raise RuntimeError(
-                    "No OS keyring backend AND the encrypted-DB fallback is "
-                    f"unavailable ({e}) — refusing to run without a secure "
-                    "credential store (#1382)."
-                )
+                return
 
         logger.info(
             "Keychain service initialized",
@@ -148,6 +156,8 @@ class KeychainService:
             raise ValueError("Provider name cannot be empty")
         if not api_key:
             raise ValueError("API key cannot be empty")
+        if self._no_secure_store:
+            raise RuntimeError(self._no_secure_store)
 
         try:
             if self._db_store is not None:
@@ -172,9 +182,12 @@ class KeychainService:
             username: Optional username for multi-user support (uses provider as default)
 
         Returns:
-            API key if found, None otherwise
+            API key if found, None otherwise (including when no secure store
+            exists — the degraded state is error-logged once at construction)
         """
         if not provider:
+            return None
+        if self._no_secure_store:
             return None
 
         try:
@@ -205,6 +218,8 @@ class KeychainService:
             True if deleted, False if not found or error
         """
         if not provider:
+            return False
+        if self._no_secure_store:
             return False
 
         try:
