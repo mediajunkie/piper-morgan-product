@@ -1,27 +1,20 @@
 ---
+image:
+alt:
+caption:
 ---
 
 # The Ritual Becomes a Skill
 
 *July 2026*
 
-For nearly a year, I have been illustrating posts in this series with
-cartoons.
+For nearly a year, I have been illustrating posts in this series with cartoons.
 
-The process started simply. I would paste in a draft, describe an image
-I had in mind, and ask ChatGPT to draw it. Sometimes the result worked.
-Sometimes it was beautiful but wrong. Sometimes it illustrated the
-subject without capturing the idea. Sometimes it became so visually
-elaborate that the reader had to study the image before understanding
-the joke.
+The process started simply. I would paste in a draft, describe an image I had in mind, and ask ChatGPT to draw it. Sometimes the result worked. Sometimes it was beautiful but wrong. Sometimes it illustrated the subject without capturing the idea. Sometimes it became so visually elaborate that the reader had to study the image before understanding the joke.
 
 Over time, the conversation changed.
 
-Instead of asking for an image immediately, I started asking what visual
-metaphor might express the post. The model would offer several
-possibilities. I would react to them, usually choosing one but changing
-some part of its logic. We would sharpen the metaphor, decide what the
-viewer should notice first, and only then write a rendering prompt.
+Instead of asking for an image immediately, I started asking what visual metaphor might express the post. The model would offer several possibilities. I would react to them, usually choosing one but changing some part of its logic. We would sharpen the metaphor, decide what the viewer should notice first, and only then write a rendering prompt.
 
 Finally, when the idea felt settled, I would say:
 
@@ -29,19 +22,274 @@ Finally, when the idea felt settled, I would say:
 
 That phrase became a gate.
 
-It prevented us from spending an image-generation attempt on an idea
-that was not ready. More importantly, it preserved the part of the
-process where the quality actually came from: the conversation before
-the drawing.
+It prevented us from spending an image-generation attempt on an idea that was not ready. More importantly, it preserved the part of the process where the quality actually came from: the conversation before the drawing.
 
-By the time I realized this had become a repeatable practice, I was
-preparing to lose access to the ChatGPT account where it had evolved.
+By the time I realized this had become a repeatable practice, I was preparing to lose access to the ChatGPT account where it had evolved.
 
 So I decided to try to extract the ritual.
 
-## \[Truncated in export\]
+# The problem with saving a collaboration
 
-This draft intentionally mirrors the full version developed in
-conversation. Continue with the complete manuscript from the chat
-transcript, refining it with your Communications Chief agent before
-publication.
+The tempting approach was to ask ChatGPT to summarize everything it knew about my preferences.
+
+I do have preferences. I usually want a wide editorial cartoon. I prefer hand-drawn lines, restrained color, gentle humor, and fewer labels. I have spent months pushing back against the image model's growing ability to produce polished, painterly scenes when what I want is closer to a newspaper cartoon.
+
+The series also developed a visual vocabulary. Human collaborators tend to look ordinary and capable. AI agents are often translucent geometric beings or slightly strange nonhuman helpers rather than humanoid robots. The emotional register is usually curious rather than alarmist. The machines are not taking over. Humans and intelligent systems are learning how to work together.
+
+All of that could be written down.
+
+But preferences were not the most important thing to preserve.
+
+The important thing was the sequence of decisions.
+
+A new account would not remember the bridges, trains, gardeners, watchdogs, workshops, courtrooms, airports, and mountains we had already used. It would not have the same accumulated feel for which kind of image I would choose.
+
+It might still be able to follow the ritual.
+
+# What the ritual was actually doing
+
+The first version sounded straightforward:
+
+Read the article. Identify the underlying tension. Propose several visual metaphors. Pick one. Write a prompt. Render the image. Write alt text.
+
+That was roughly correct, but too mechanical.
+
+The real process had more elbows in it.
+
+Sometimes I arrived with no idea and needed the metaphorical space opened up. Sometimes I already had the image and needed help stress-testing it. Sometimes the first metaphor family was right but the initial composition was wrong. Sometimes two possible images expressed different truths in the same essay, and the real choice was not between pictures but between editorial emphases.
+
+Was the article about the temptation to stop early, or the future cost of stopping early?
+
+Was documentation drift best shown as two tracks separating, or as a map no longer matching the rails?
+
+Was the post about a system failing, or about a successful system exposing its next bottleneck?
+
+The skill could not merely say, "Generate five ideas."
+
+It had to determine what creative move was needed next.
+
+# The examples became the evaluation set
+
+We tested the emerging skill on a post about documentation drifting away from code.
+
+The first pass found the conceptual center:
+
+Two representations of the same promised behavior are subjected to different forces, separate silently, and reveal the gap only when someone crosses from planning into execution.
+
+It proposed bridges, clocks, shadows, zippers, and railroads.
+
+We chose a railroad.
+
+Then we refined within that family. The first instinct was one train following a map that no longer matched the track, foregrounding prediction versus execution. But the simpler version was the truer one: two trains that begin together and slowly diverge, the divergence itself carrying the whole idea.
+
+We wrote the prompt.
+
+I said, "Render it."
+
+The image worked.
+
+Then we tried another post, about losing an uncommitted draft after a server crash.
+
+The metaphor was a tiny open window in an otherwise safe room. A gust of wind pulled a manuscript through it. The opening was small. The consequence was total.
+
+The first rendering failed.
+
+The room had a small window and an enormous open wall. Papers seemed to enter through one opening and leave through another. The physical logic was nonsense.
+
+This was useful.
+
+We had discovered an evaluation criterion that had been present in the collaboration but never stated:
+
+The image must obey its own cartoon physics.
+
+Tracks must lead somewhere. Bridges must connect. Paper must originate somewhere. A visual metaphor stops working when the viewer starts debugging the drawing.
+
+We revised the composition. One normal window, left slightly open. A thick manuscript on the desk. A single top sheet caught by a rogue gust and moving toward the opening. No extra wall. No ribbon of paper that might turn the manuscript into a scroll.
+
+The second rendering worked.
+
+That failure was not an interruption of the skill-building process.
+
+It was the skill-building process.
+
+# This is what an eval can look like
+
+"Evals" can sound like specialized infrastructure: benchmark suites, scoring systems, held-out datasets, automated graders.
+
+Those things exist, and they matter.
+
+But the underlying idea is simpler.
+
+You define what good performance looks like. You try the system on representative examples. You notice where it succeeds and where it fails. You revise the instructions or mechanism. Then you try again.
+
+Our examples were blog posts.
+
+Our outputs were cartoons.
+
+Our criteria emerged through use:
+
+Does the image reveal the article's underlying relationship rather than merely depict its topic? Can the central idea be understood at a glance? Is there one first thing to notice? Does the viewer's eye discover the idea in the intended order? Does the metaphor work without knowing the technical subject? Are the actors competent when the failure is really in coordination? Does the composition preserve the meaningful layers of agency? Is the image obeying its own physical logic? Has visual richness started competing with editorial clarity? Did we render too soon?
+
+This was an eval loop, even though nobody opened a spreadsheet.
+
+The evaluations were qualitative, conversational, and grounded in actual use. They were also cumulative. Each failure added a rule. Each successful image gave us a case study.
+
+# The pattern language underneath the cartoons
+
+As we reviewed older examples, the images began to sort themselves into recurring structures.
+
+Two trains leaving the same station and slowly separating expressed divergence.
+
+Four eager valets responding to one guest expressed convergence and collision: everyone locally correct, the system globally absurd.
+
+A single page blowing through a small open window expressed exposure.
+
+A human overseeing a lead agent overseeing a subagent expressed nested supervision.
+
+A court full of brilliant mechanical advisors waiting for one small ruler to decide expressed a bottleneck moving from execution to judgment.
+
+A quiet workbench holding its state while its owner rested outside expressed continuity through absence.
+
+A robot child being encouraged to finish a plate of wires and circuit boards expressed gated completion through a familiar social ritual.
+
+These were not simply a collection of favorite metaphors.
+
+They were becoming a visual grammar for invisible system dynamics.
+
+The cartoons spatialized relationships: what connects, what drifts, what collides, what waits, what remains exposed, what supervises what, what looks complete but is not, where the constraint has moved.
+
+This was the point where the work began to feel familiar to me in another way.
+
+It was information architecture.
+
+Not diagrams, exactly. More like editorial information architecture: abstract relationships made visible through physical places, social rituals, and objects behaving strangely.
+
+# The first two seconds
+
+One of the most useful rules emerged while comparing two railroad images.
+
+A good image does not merely contain the metaphor. It controls how the metaphor is discovered.
+
+In the stronger examples, the viewer's experience has a sequence.
+
+First: two trains leave a station together.
+
+Then: the tracks begin to bend apart.
+
+Then: one train approaches mountains while the other approaches an industrial city.
+
+Finally: the cargo reveals documentation on one track and machinery on the other.
+
+The idea unfolds over perhaps two seconds.
+
+That became part of the skill: What does the viewer see first? What relationship becomes apparent next? What delayed realization completes the joke or insight?
+
+This is different from adding detail.
+
+It is designing comprehension.
+
+# Economy versus capability
+
+The image model became dramatically more capable during the same year.
+
+That was not always an uncomplicated benefit.
+
+It became better at rendering light, materials, landscapes, machinery, architecture, and atmospheric depth. It could turn almost any prompt into a beautiful storybook scene.
+
+But the goal was not to maximize beauty.
+
+The goal was to communicate a visual idea before the reader began the article.
+
+A recent cartoon about a team's infrastructure becoming operational used a ship leaving the shipyard. Distinct agents worked at separate stations. Two inspected a painted false hatch rather than quietly pretending it was real. The ship was underway but not magically complete.
+
+The result was charming and conceptually strong.
+
+It was also close to the outer boundary of the intended style: detailed rigging, carefully modeled water, atmospheric landscape, many small mechanisms.
+
+The next revision to the skill emphasized visual economy:
+
+The viewer should grasp the central relationship before noticing craft, atmosphere, or secondary jokes.
+
+This will probably require maintenance. Baseline model behavior drifts. A phrase that once reliably produced a loose editorial cartoon may later produce something richer and more polished. Skills are not permanent spells. They are operating instructions for systems that continue to change.
+
+# What finally went into the skill
+
+The resulting Piper Morgan Cartoon Ritual does not tell ChatGPT to generate a picture immediately.
+
+It tells the model to infer the current stage of the collaboration.
+
+If there is no concept, find the editorial center and propose a small number of developed metaphor families.
+
+If I already have a concept, validate and sharpen it instead of restarting the brainstorm.
+
+If a family has been selected, refine inside it.
+
+If the concept is settled, write a composition-first prompt.
+
+Then stop.
+
+Wait for "render it."
+
+The skill also carries the pattern language, the style anchor, the cartoon-physics checks, the preference for technical ideas translated into ordinary experience, and a growing collection of case studies.
+
+It is opinionated because it is intended to preserve one particular collaboration.
+
+We then made a second version for other people.
+
+That version keeps the ritual but removes the Piper Morgan visual universe. It does not assume cartoons, translucent AI beings, a warm tone, or a 16:9 blog format. It asks what kind of publication, audience, medium, and visual language the image needs.
+
+The portable part is not my style.
+
+It is the method: find the invisible relationship, decide what truth to foreground, build a world in which that relationship becomes visible, design the viewer's first two seconds, render only when the idea is ready.
+
+# What the skill does not contain
+
+It does not contain the accumulated memory of a year-long conversation.
+
+It does not guarantee that a fresh ChatGPT account will make the same choices the old one would have made.
+
+It does not eliminate taste, judgment, surprise, or disagreement.
+
+That is probably good.
+
+A process artifact should not freeze a collaboration in place. It should preserve enough structure that a new collaboration can begin somewhere further along.
+
+The pattern language is a lens, not a cage.
+
+The human and the agent can still propose something strange, fresh, hybrid, or emergent when the story asks for it. In fact, that possibility is part of the instructions.
+
+The point is not to automate creativity.
+
+It is to protect the parts of the creative process that were producing better work.
+
+# The durable part
+
+This project began because I was preparing to lose an account.
+
+The obvious fear was losing memory: all the context, preferences, examples, and shared history that had built up over time.
+
+But the exercise clarified something I have encountered repeatedly while building Piper Morgan.
+
+Memory is not the only form of continuity.
+
+Practices can be named.
+
+Judgment can be partially externalized.
+
+Examples can become evaluations.
+
+Failures can become criteria.
+
+A tacit collaboration can become a durable artifact — not a perfect replacement for the relationship that produced it, but a starting point for the next one.
+
+That is what the skill preserves.
+
+Not a model that knows me.
+
+A ritual that helps us find the metaphor hiding underneath the prose.
+
+---
+
+*Next on Building Piper Morgan: [TK]*
+
+*What repeated collaboration have you developed with an AI that still exists mostly as habit and mutual adjustment? What examples would you use to teach it to a fresh instance — and what failures would reveal whether the ritual survived?*
