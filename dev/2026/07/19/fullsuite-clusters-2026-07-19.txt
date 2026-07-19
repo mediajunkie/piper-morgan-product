@@ -1,0 +1,29 @@
+# Full-suite enumeration — 2026-07-19 (run 2 of 2, post interface-mock fix)
+# 373 failed + 71 errors / 10,769 passed. Run-1 delta (413→373) ≈ the 39 fixed mocks → set is deterministic.
+# Env: CI-parity (no LLM keys, real Postgres 5433, -m 'not llm', no -x, importlib).
+# Top clusters:
+  22 tests/integration/services/test_db_user_history_repository.py
+  19 tests/integration/test_slack_config_loading.py
+  19 tests/integration/services/test_conversation_repository.py
+  18 tests/integration/test_cross_user_access.py
+  16 tests/integration/test_temporal_context_integration.py
+  13 tests/integration/test_capability_discovery.py
+  11 tests/methodology/coordination/test_no_bypass_validation.py
+  10 tests/methodology/integration/test_coordination_workflows.py
+  10 tests/intent/test_direct_interface.py
+  10 tests/integration/test_performance_indexes_532.py
+  10 tests/integration/test_learning_cycle_phase3_phase4.py
+  10 tests/e2e/test_canonical_conversations.py
+   9 tests/performance/test_standup_performance.py
+   9 tests/integration/test_todo_management_persistence.py
+   9 tests/integration/test_phase3_phase4_learning.py
+   9 tests/integration/test_document_processing.py
+   9 tests/infrastructure/mcp/test_connection_pool.py
+   9 tests/conversation/test_conversation_manager_integration.py
+   8 tests/test_security_framework.py
+   7 tests/performance/test_llm_classifier_benchmarks.py
+   7 tests/intent/test_execution_analysis_handlers.py
+   7 tests/intent/test_classification_accuracy.py
+   7 tests/integration/test_configuration_regression.py
+   6 tests/test_error_message_enhancement.py
+   6 tests/methodology/testing/test_real_scenarios.py
