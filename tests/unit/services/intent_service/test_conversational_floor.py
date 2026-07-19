@@ -310,6 +310,19 @@ class TestConversationalFloorSystemPrompt:
         # the prompt must name the deflection failure mode it has to avoid
         assert "what are you working on" in prompt
 
+    def test_addendum_forbids_scaffolding_echo_1393(self):
+        """#1393: a live beta reply opened with '[Available context]\\n(none)' —
+        the model echoing the scaffolding header the prompt tells it about,
+        on a turn where no context block was assembled. The prompt must
+        explicitly forbid reproducing the header and forbid writing a
+        placeholder when the block is absent. Behavioral verification is the
+        #1386 Scenario B re-run; this guard keeps the instruction from
+        silently reverting in CI."""
+        prompt = " ".join(FLOOR_SYSTEM_PROMPT_ADDENDUM.lower().split())
+        assert "never reproduce" in prompt
+        assert "[available context]" in prompt
+        assert "(none)" in prompt  # names the exact observed leak artifact
+
 
 class TestConversationalFloorForUnhandledExecution:
     """Floor should also handle unhandled EXECUTION actions (Path B)."""
