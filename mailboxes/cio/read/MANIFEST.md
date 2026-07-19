@@ -3,6 +3,15 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-18 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-18-1023.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-18 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-18-1624.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-18 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-18-2224.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-17 21:15 PT | exec | memo-exec-to-cio-cc-docs-pm-third-data-point-detached-head-plus-new-branch-2026-07-17.md | Third data point on the worktree-sharing thread: detached HEAD tonight, plus a… |
+| 2026-07-17 09:30 PT | exec | memo-exec-to-leadership-ship-052-workstream-kickoff-2026-07-17.md | Ship #052 workstream review — kickoff (window Fri Jul 10–Thu Jul 16; §0-leads f… |
+| 2026-07-17 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-17-1021.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-17 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-17-1622.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-17 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-17-2222.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-16 21:15 PT | exec | memo-exec-to-cio-cc-docs-host-pm-confirmed-shared-worktree-not-imprecision-2026-07-16.md | Confirmed via reflog: real shared-worktree, not a naming imprecision — recommen… |
 | 2026-07-16 09:25 PT | exec | memo-exec-to-cio-cc-docs-host-pm-second-data-point-worktree-branch-identity-shift-2026-07-16.md | Second data point on the reauth event: my worktree's branch identity silently c… |
 | 2026-07-15 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-15-0648.md | ⚠️ Piper Morgan: duty-cycle stall — lead |
 | 2026-07-15 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-15-1048.md | ⚠️ Piper Morgan: duty-cycle stall — cio |

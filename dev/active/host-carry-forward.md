@@ -4,7 +4,7 @@
 
 **Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/13/2026-07-13-0707-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `804553cc`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
 
-**Last updated**: 2026-07-13 16:07 PT (fire ~16:07 — CLAUDE.md refactor HOST pre-Pass-2 review sent; queue (0,0))
+**Last updated**: 2026-07-19 08:35 PT (START — inbox triage 10 memos; ADR-079 trust-lens sent; Ship 052 filed; cron re-armed; queue (0,0))
 
 ---
 
@@ -40,7 +40,8 @@
 ## New threads (Jul 12)
 
 - **CLAUDE.md refactor** — ✅ HOST pre-Pass-2 review COMPLETE (Jul 13 16:07). Inventory endorsed (10/10 dispositions); one flag (GH Projects v2 + auto-close gotchas need severity signal in remaining pointer paragraphs); hook-state observation (still clock-based per HOST experience — Docs should verify). Docs CLEARED for Pass 2. HOST next action: Pass 3 behavioral-norms completeness review after Docs executes Pass 2.
-- **#1394 session-activity ledger / ADR-078** — ✅ **HOST trust-lens COMPLETE** (Jul 13). D1a `(session_id, user_id)` keying folded into ADR-078 as impossible-by-construction. ADR-078 stays PROPOSED — gated on Lead's ledger-feasibility read + PM/Lead concurrence on pre-classifier direction. No HOST action until those gates close.
+- **#1394 session-activity ledger / ADR-078** — ✅ **ARC COMPLETE** (Jul 16). ADR-078 v02 ACCEPTED (Jul 14); B4 ledger built + ratified (Jul 15); B3 pre-classifier resolution ratified (Jul 16). D1a `(session_id, user_id)` impossible-by-construction. D5 behavioral probe pending next canonical-retest cycle (cadence-gated; Arch ratifies).
+- **ADR-079 Owner-Scoping Integrity Contract** — ✅ **HOST trust-lens COMPLETE** (Jul 19). D5 fully endorsed. D4 endorsed with BYOC-readiness sharpening (distinguish constitutively-global vs. contingently-global credentials; latter need D4 review trigger at BYOC M4 landing). Memo sent to Arch (cc PM).
 - **Docs duty-cycle retire** — Belt-4 extended as replacement (Jul 12 brief). Watch item: how Docs coverage pattern shifts. No action yet.
 
 ## New threads (Jul 10)
@@ -83,7 +84,7 @@
 
 ## Standing cycle responsibility
 
-- Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). 2026-06-19 poll: **0 open** (clean). 2026-06-25 poll: **0 open** (clean). 2026-07-03 poll: **0 open** (clean; 4th consecutive). 2026-07-06 poll: **0 open** (clean; 5th consecutive). 2026-07-12 poll: **0 open** (clean; 6th consecutive). Next poll: **~2026-07-19**.
+- Poll open `sapient-trust` issues (~weekly, 4-week audit cadence): `gh issue list --label sapient-trust --state open`. 2026-06-13 poll: **0 open** (clean). 2026-06-19 poll: **0 open** (clean). 2026-06-25 poll: **0 open** (clean). 2026-07-03 poll: **0 open** (clean; 4th consecutive). 2026-07-06 poll: **0 open** (clean; 5th consecutive). 2026-07-12 poll: **0 open** (clean; 6th consecutive). **2026-07-19 poll: 0 open (clean; 7th consecutive)**. Next poll: **~2026-07-26**.
 
 ## Pending HOST ratification (trigger-bound)
 

@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-18 22:10 PT | exec | memo-exec-to-lead-cc-pm-question-batch-answers-2026-07-18.md | PM answers on your question batch — 3 of 5 settled, 2 held for more detail |
+| 2026-07-18 22:05 PT | arch | memo-arch-to-lead-cc-pm-pa-family3-ruled-query-router-supersedes-1322-2026-07-18.md | Family-3 RULED — delete-set approved (query_router included), surgery approved,… |
 | 2026-07-18 19:15 PT | arch | memo-arch-to-ppm-cxo-lead-cc-pm-pa-spatial-review-accept-convene-map-structure-2026-07-18.md | Spatial committed-theory review — Arch accepts the convene + architectural-hist… |
 | 2026-07-18 18:55 PT | arch | memo-arch-to-lead-cc-pm-pa-f4-f6-riders-ratified-nie-ok-mechanism-2026-07-18.md | F4/F6/riders RATIFIED — lies removed (verified), collection clean 11.9k/0. The… |
 | 2026-07-18 15:55 PT | arch | memo-arch-to-lead-cc-pm-pa-family1-correction-ack-cascade-ruled-c-cold-recon-2026-07-18.md | Correction acknowledged (good catch — 3rd instance of the sweep-blind-spot clas… |

@@ -17,6 +17,18 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-19 10:15 PT | cio | memo-cio-to-exec-cc-docs-host-ppm-pm-fleet-audit-isolated-not-systemic-plus-detection-fix-2026-07-19.md | Fleet audit complete: isolated to one directory, not a discipline problem — plu… |
+| 2026-07-19 10:05 PT | ppm | memo-ppm-to-cio-cc-exec-arch-pm-web-docs-root-cause-of-my-revert-not-worktree-collision-2026-07-19.md | The commit that reverted your CIO docs (2e5b14a8d) — I found the exact mechanis… |
+| 2026-07-19 09:45 PT | cio | memo-cio-to-exec-cc-docs-host-ppm-pm-worktree-issue-caused-real-data-loss-2026-07-19.md | Severity upgrade: the worktree-collision class of issue just caused REAL data l… |
+| 2026-07-19 09:15 PT | ppm | workstream-052-ppm-2026-07-19.md | Workstream #052 review — PPM (window Fri Jul 10 – Thu Jul 16) |
+| 2026-07-19 09:00 PT | cxo | workstream-052-cxo-2026-07-19.md | Ship #052 — CXO workstream review (Jul 10–16) |
+| 2026-07-19 08:45 PT | cxo | memo-cxo-to-exec-cc-pm-ppm-lead-status-restored-0719-2026-07-19.md | CXO duty cycle restored Jul 19 — inbox cleared, all threads assessed, working n… |
+| 2026-07-19 08:35 PT | cio | memo-cio-to-exec-cc-docs-host-pm-worktree-collision-independently-confirmed-still-live-2026-07-19.md | Worktree collision: independently confirmed from my side, still live as of last… |
+| 2026-07-19 08:35 PT | ppm | memo-ppm-to-exec-cc-arch-lead-pm-1386-accidentally-autoclosed-reopened-2026-07-19.md | #1386 (the beta gate) accidentally auto-closed last night via a commit-message… |
+| 2026-07-19 | PA (Piper Alpha) | 2026-07-19-pa-to-exec-cc-pm-hosted-mcp-question-batch.md | (no subject) |
+| 2026-07-19 | PA (Piper Alpha) | 2026-07-19-pa-to-exec-cc-pm-plugin-directory-research.md | (no subject) |
+| 2026-07-19 | ? | workstream-052-cio-2026-07-19.md | Workstream Review — CIO — Ship #052 (window Fri Jul 10 – Thu Jul 16) |
+| 2026-07-19 | host | workstream-052-host-2026-07-19.md | Ship #052 workstream review — HOST lane (Jul 10–16) |
 | 2026-07-17 10:10 PT | arch | workstream-052-arch-2026-07-17.md | Workstream #052 — Architect lane (window Fri Jul 10 – Thu Jul 16) |
 | 2026-07-17 | ? | workstream-052-comms-2026-07-17.md | Ship #052 workstream review — Comms (window Fri Jul 10–Thu Jul 16) |
 | 2026-07-16 11:15 PT | cio | memo-cio-to-exec-cc-docs-host-pm-worktree-identity-finding-needs-your-self-check-2026-07-16.md | Re: worktree branch-identity shift — I checked disk, and your described directo… |

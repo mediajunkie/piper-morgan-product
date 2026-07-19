@@ -4,7 +4,7 @@
 
 **Owner**: Unicorn Web Designer (Web) — pipermorgan.ai (`piper-morgan-website` repo)
 **Created**: 2026-05-29 at v0.7 worktree-cycle adoption prep
-**Last refresh**: 2026-06-19 (DinP/Sonnet session — #998 sprint assignment; Comms requirements ask sent)
+**Last refresh**: 2026-07-19 (DinP/Fable session — corrected stale #998 framing; see below)
 
 **Operating notes (current):**
 - **Two-repo shape**: code work lands in `piper-morgan-website` (separate repo, commits on its own `main`, push triggers GitHub Pages deploy). Cycle artifacts (this file, logs, cycle-log, mail) live in `piper-morgan-product` and commit directly to its `main` (no worktree — see below).
@@ -16,13 +16,33 @@
 
 ## Active items
 
-### #998 COMPOSE-UI-V1 — Editorial compose web UI (product repo FastAPI)
-- [x] **Phase 1** (read-only scaffold) — **DONE** (prior work): `web/routers/admin_compose.py` + templates + CSS + `services/editorial/{calendar,draft}.py` all wired. Route: `GET /api/v1/admin/compose`.
-- [x] **Phase 2** (Edit + Autosave) — **DONE 2026-06-19**: POST `/save` route; `write_draft()` + YAML round-trip fix in `draft.py`; editable template; `compose.js` (autosave + placeholder scanner); CSS interactive states.
-- [ ] **Phase 3** (Image Upload) — next; file-input → `drafts/{slug}.{ext}`.
-- [ ] **Phase 4** (Mark Ready + Git Handoff) — needs `services/editorial/git_ops.py` + publish-ready memo to Docs inbox (confirmed by Comms 6/19).
-- **Note**: Exec's kickoff memo said "website repo" but issue lives in `piper-morgan-product` (FastAPI `web/`). Working in product repo.
-- **Gate Phase 3**: PM test stop after Phase 2 (PM-react gated until tested).
+### #998 COMPOSE-UI-V1 — SUPERSEDED. Live system is `/admin/calendar/compose` on Vercel (Next.js, website repo)
+**Correction (2026-07-19)**: this section described a FastAPI implementation
+(`web/routers/admin_compose.py`, product repo) that never reached product `main` —
+confirmed only present in stale abandoned worktrees. The line "Phase 3 Image Upload
+— next" was 4 weeks stale; image upload actually SHIPPED 2026-07-16, via an entirely
+different, newer implementation that fully supersedes this one. Current reality:
+
+- **Live system**: `piper-morgan-website` repo, `/admin/calendar/compose`, deployed
+  on Vercel (migrated off GitHub Pages the week of 2026-07-12). Password-gated
+  (JWT session), edits commit directly to `piper-morgan-product` via the GitHub
+  Contents API (`src/lib/github-drafts.ts`).
+- **Phase 1** (read-only calendar) — shipped 2026-06-06 (`fb105534b`, `/admin/calendar/`).
+- **Phase 2** (edit + autosave) — shipped as part of the Vercel migration work,
+  week of 2026-07-12 (`src/pages/api/compose.ts`, `ComposeApp.tsx`).
+- **Phase 3** (image upload) — shipped 2026-07-16. File picker → uploads land next
+  to the draft markdown in the product repo (same GitHub API path as saves).
+  Does NOT do webp conversion (needs cwebp/Pillow, unavailable in Vercel's
+  serverless environment) — that step still runs at actual publish time via
+  `publish-post.js`, unchanged.
+- **Phase 4** (mark-ready + git handoff) — NOT built. The current system already
+  auto-commits on every save, so "git handoff" as originally scoped may be partly
+  moot; worth a fresh look at what's actually still missing (a ready-for-publish
+  status flip? a memo-to-Docs trigger?) rather than resuming the old FastAPI plan.
+- PM gave unprompted positive feedback on this system 2026-07-18, specifically
+  because edits are agent-discoverable via git (see memory:
+  human-first-agent-aware-interfaces). PM is now thinking about expressing more
+  processes as admin UIs — worth surfacing ideas as they come up.
 
 ### Site-quality queues (PM-react gated)
 - [ ] **Obs-pass joint walkthrough** — PM confirmed visual spot-check clean (VA-2, VA-3 resolved by PM eyeball 6/17). Remaining ~20 obs items need PM +1/−1/defer. Hold for joint pass. Canonical: `dev/2026/05/24/site-observation-pass-2026-05-24.md`.
