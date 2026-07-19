@@ -13,7 +13,14 @@
 3. #1433 CHAT_POINTERS ledger build.
 4. Stale-test family: #1437/#1443/#1444 (consider a `stale-test` label).
 
-## PM-attention (batched, non-blocking)
+## PM-attention — QUESTION BATCH for rollup relay (2026-07-18 ~18:00; defaults stated, one-word answers fine)
+1. **#1401 uploads storage (the only BLOCKING pick)**: Fly volume vs object storage. My recommendation: **volume now** (one-line fly.toml, fixes data loss immediately for single-machine beta), object storage at Production scale. Say "volume" or "object" and I build same-day.
+2. **Triage overrides welcome** (applied 7/18, reversible per-item): to sprint — #1409 (CPU-torch pin, deploy velocity), #1410 (rides #1395), #1445 (canonical-suite fix = #1386 gate dependency). To Fast Follow — #1407 + the stale-test family (#1443/44/46/47/48). LEFT at Production (pre-existing triage): #1437, #1438 — flag: #1438 is the learning-loop-dead symptom; if learning matters for beta, pull it back to sprint.
+3. **#1386 gate run**: I propose coordinating the sprint close-out (canonical suite + the three CXO/PPM multi-turn scenarios + sign-off) — needs CXO+PPM participation; OK to route the ask via Exec?
+4. **#1424 epic**: close as sprint-complete vs keep as ratchet-backlog tracker (board reconcile is now done enough to decide).
+5. **#1427 PROD bucket**: PROD-RECONNECT fit your integrate-don't-build framing? (Milestone already Production; only the sprint bucket open.)
+
+## PM-attention (standing, non-blocking)
 - **Spatial committed-theory REVIEW (PM-directed 7/18, kickoff memo sent)**: Arch+PPM+CXO + full history + beta/production-scoped decision + ADR updates. NOT a quick park/delete. All spatial deletions HELD. Lead supplies code-reality inventory + executes the outcome.
 - #1418 beta increment: on production, image cached — one word deploys it.
 - #1424 epic: close as sprint-complete vs keep as ratchet-backlog tracker (has open children).
