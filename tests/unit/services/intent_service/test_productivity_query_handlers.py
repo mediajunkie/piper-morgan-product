@@ -267,7 +267,10 @@ class TestProductivityQueryHandler:
         intent = Intent(
             category=IntentCategory.QUERY,
             action="productivity",
-            context={"original_message": "my productivity"},
+            context={
+                "original_message": "my productivity",
+                "user_id": "694d8f4e-0000-0000-0000-000000000042",  # #1395 principal
+            },
         )
 
         mock_stats = {"total_created": 5, "completed": 0, "active": 5, "completion_rate": 0.0}
@@ -305,7 +308,10 @@ class TestProductivityQueryHandler:
         intent = Intent(
             category=IntentCategory.QUERY,
             action="productivity",
-            context={"original_message": "productivity"},
+            context={
+                "original_message": "productivity",
+                "user_id": "694d8f4e-0000-0000-0000-000000000042",  # #1395 principal
+            },
         )
 
         mock_stats = {"total_created": 8, "completed": 6, "active": 2, "completion_rate": 75.0}
@@ -344,7 +350,10 @@ class TestProductivityQueryHandler:
         intent = Intent(
             category=IntentCategory.QUERY,
             action="productivity",
-            context={"original_message": "how productive was I"},
+            context={
+                "original_message": "how productive was I",
+                "user_id": "694d8f4e-0000-0000-0000-000000000042",  # #1395 principal
+            },
         )
 
         mock_stats = {
@@ -386,7 +395,10 @@ class TestProductivityQueryHandler:
         intent = Intent(
             category=IntentCategory.QUERY,
             action="productivity",
-            context={"original_message": "productivity"},
+            context={
+                "original_message": "productivity",
+                "user_id": "694d8f4e-0000-0000-0000-000000000042",  # #1395 principal
+            },
         )
 
         with patch(
@@ -411,7 +423,10 @@ class TestProductivityQueryHandler:
         intent = Intent(
             category=IntentCategory.QUERY,
             action="productivity",
-            context={"original_message": "productivity"},
+            context={
+                "original_message": "productivity",
+                "user_id": "694d8f4e-0000-0000-0000-000000000042",  # #1395 principal
+            },
         )
 
         mock_todo_stats = {
