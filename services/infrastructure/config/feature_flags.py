@@ -49,8 +49,10 @@ class FeatureFlags:
         """
         Check if spatial GitHub integration should be used as primary.
 
-        Used by QueryRouter to determine whether to use GitHubSpatialIntelligence
-        (8-dimensional spatial analysis) or fall back to legacy GitHub integration.
+        Read by GitHubIntegrationRouter to determine whether to use
+        GitHubSpatialIntelligence (8-dimensional spatial analysis) or fall back
+        to legacy GitHub integration. (Originally also read by QueryRouter,
+        deleted 2026-07-19 — #1436 Family-3.)
 
         Environment Variable: USE_SPATIAL_GITHUB
         Default: True (spatial is the new default)

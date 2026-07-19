@@ -12,7 +12,6 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, Field
 
 from services.knowledge.knowledge_graph_service import KnowledgeGraphService
-from services.queries.query_router import QueryRouter
 
 # PM-081: Todo Management API Router
 todo_management_router = APIRouter(prefix="/api/v1/todos", tags=["Todo Management"])
@@ -192,12 +191,6 @@ async def get_universal_list_service():
 async def get_knowledge_graph_service():
     """Get knowledge graph service for PM-040 integration"""
     # TODO: Implement KnowledgeGraphService integration
-    return None
-
-
-async def get_query_router():
-    """Get query router for PM-034 integration"""
-    # TODO: Implement QueryRouter integration
     return None
 
 
@@ -775,7 +768,6 @@ async def get_related_todos(
     """
     try:
         # TODO: Implement PM-040 Knowledge Graph integration
-        # TODO: Use GraphQueryService to find related todos
         # TODO: Return related todos with relationship context
 
         # Mock response for now
@@ -794,7 +786,6 @@ async def search_todos(
     query: str = Query(..., description="Natural language search query"),
     page: int = Query(1, ge=1, description="Page number"),
     page_size: int = Query(20, ge=1, le=100, description="Number of todos per page"),
-    query_router=Depends(get_query_router),
     knowledge_graph=Depends(get_knowledge_graph_service),
 ):
     """
@@ -806,7 +797,6 @@ async def search_todos(
     """
     try:
         # TODO: Implement PM-034 Intent Classification integration
-        # TODO: Use QueryRouter to classify search intent
         # TODO: Use PM-040 Knowledge Graph for semantic search
         # TODO: Return relevant todos based on intent and context
 

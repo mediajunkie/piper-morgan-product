@@ -16,7 +16,6 @@ import pytest
 
 from services.mcp.client import MCPCircuitBreaker, PiperMCPClient
 from services.mcp.exceptions import MCPConnectionError, MCPResourceNotFoundError, MCPTimeoutError
-from services.queries.file_queries import FileQueryService
 from services.repositories.file_repository import FileRepository
 
 
@@ -136,33 +135,6 @@ class TestMCPErrorScenarios:
         with patch.dict(os.environ, {"ENABLE_MCP_FILE_SEARCH": "true"}):
             results = await repo.search_files_with_content("session123", "test query")
             assert isinstance(results, list), "Should return list with MCP flag on"
-
-    @pytest.mark.asyncio
-    async def test_file_query_service_error_handling(self):
-        """Test FileQueryService error handling and response format"""
-        # Create mock file repository
-        mock_repo = Mock()
-        mock_repo.search_files_with_content = AsyncMock()
-
-        service = FileQueryService(mock_repo)
-
-        # Test normal operation
-        mock_repo.search_files_with_content.return_value = []
-        result = await service.search_files("session123", "test query")
-
-        assert result["success"] == True, "Should succeed with empty results"
-        assert result["files"] == [], "Should return empty file list"
-        assert result["total_count"] == 0, "Should return zero count"
-        assert result["query"] == "test query", "Should return original query"
-
-        # Test repository exception
-        mock_repo.search_files_with_content.side_effect = Exception("Database error")
-        result = await service.search_files("session123", "test query")
-
-        assert result["success"] == False, "Should fail on repository exception"
-        assert "error" in result, "Should contain error message"
-        assert "Database error" in result["error"], "Should include original error"
-        assert result["query"] == "test query", "Should return original query"
 
     @pytest.mark.asyncio
     async def test_file_resolver_content_scoring_failure(self):

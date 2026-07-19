@@ -7,7 +7,8 @@ here (deterministic, fast) — the real stdio subprocess path is covered by the
 inc.2 integration test.
 
 Design: gameplan `dev/2026/06/27/1220-real-mcp-transport-gameplan.md` (Shape B —
-a NEW SDK-based client; the legacy sim stack in query_router stays untouched).
+a NEW SDK-based client, built alongside the then-extant legacy sim query_router
+stack; that stack was deleted 2026-07-19, #1436 Family-3).
 """
 
 import sys

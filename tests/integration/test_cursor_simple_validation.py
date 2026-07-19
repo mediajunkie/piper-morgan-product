@@ -14,61 +14,6 @@ import pytest
 class TestCursorSimpleValidation:
     """Simple validation of working components and system state."""
 
-    def test_query_response_formatter_performance(self):
-        """Test performance of query response formatter - a working component."""
-        from services.api.query_response_formatter import QueryResponseFormatter
-
-        # Test data
-        test_responses = [
-            ("Simple string response", "test_query"),
-            ({"message": "Dict response", "status": "success"}, "test_query"),
-            ([{"id": 1, "name": "Project 1"}, {"id": 2, "name": "Project 2"}], "list_projects"),
-            ({"error": "Error response", "details": "Something went wrong"}, "test_query"),
-        ]
-
-        performance_results = []
-
-        for i, (response, intent_action) in enumerate(test_responses):
-            start_time = time.time()
-
-            try:
-                formatted = QueryResponseFormatter.format_query_response(response, intent_action)
-                end_time = time.time()
-                processing_time = (end_time - start_time) * 1000  # Convert to milliseconds
-                performance_results.append(processing_time)
-
-                # Verify response is properly formatted
-                assert isinstance(formatted, str)
-                assert len(formatted) > 0
-
-            except Exception as e:
-                print(f"Error formatting response {i+1}: {e}")
-                continue
-
-        if performance_results:
-            avg_performance = sum(performance_results) / len(performance_results)
-            max_performance = max(performance_results)
-            min_performance = min(performance_results)
-
-            print(f"\nQuery Response Formatter Performance:")
-            print(f"  Average: {avg_performance:.3f}ms")
-            print(f"  Maximum: {max_performance:.3f}ms")
-            print(f"  Minimum: {min_performance:.3f}ms")
-            print(f"  Total tests: {len(performance_results)}")
-
-            # Performance validation
-            assert avg_performance < 1.0, f"Average performance {avg_performance:.3f}ms exceeds 1ms"
-            assert max_performance < 5.0, f"Maximum performance {max_performance:.3f}ms exceeds 5ms"
-
-            return {
-                "average": avg_performance,
-                "maximum": max_performance,
-                "minimum": min_performance,
-                "total_tests": len(performance_results),
-            }
-
-        return None
-
     def test_shared_types_accuracy(self):
         """Test accuracy of shared types and enums - core system components."""
         from services.shared_types import IntentCategory, TaskType, WorkflowType

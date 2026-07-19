@@ -19,7 +19,6 @@ from services.conversation.reference_resolver import ResolvedReference
 from services.database.models import ConversationDB, ConversationTurnDB
 from services.database.session_factory import AsyncSessionFactory
 from services.domain.models import ConversationTurn
-from services.queries.query_router import QueryRouter
 
 # #1208: a fixed, recognizable user_id so save_conversation_turn's parent
 # conversation row is actually created. ensure_conversation_exists (issue #840)
@@ -48,25 +47,6 @@ class TestConversationManagerIntegration:
         """ConversationManager with mocked Redis"""
         return ConversationManager(
             redis_client=mock_redis_client, context_window_size=10, cache_ttl=300
-        )
-
-    @pytest.fixture
-    def mock_query_services(self):
-        """Mock query services for QueryRouter"""
-        project_queries = AsyncMock()
-        conversation_queries = AsyncMock()
-        file_queries = AsyncMock()
-        return project_queries, conversation_queries, file_queries
-
-    @pytest.fixture
-    def query_router(self, mock_query_services):
-        """QueryRouter with mocked services"""
-        project_queries, conversation_queries, file_queries = mock_query_services
-        return QueryRouter(
-            project_query_service=project_queries,
-            conversation_query_service=conversation_queries,
-            file_query_service=file_queries,
-            test_mode=True,
         )
 
     @pytest_asyncio.fixture(autouse=True)
@@ -146,46 +126,6 @@ class TestConversationManagerIntegration:
         assert references[0].entity_type == "github_issue"
         assert references[0].confidence > 0.7
 
-    async def test_query_router_with_conversation_context(
-        self, query_router, conversation_manager, mock_query_services
-    ):
-        """Test QueryRouter integration with ConversationManager"""
-        project_queries, conversation_queries, file_queries = mock_query_services
-
-        # Mock project query service to return something
-        project_queries.query = AsyncMock(
-            return_value={
-                "result": "Here are the details for GitHub issue #85",
-                "entities": ["#85"],
-            }
-        )
-
-        conversation_id = "test_conv_003"
-
-        # Set up conversation context
-        await conversation_manager.save_conversation_turn(
-            conversation_id=conversation_id,
-            user_message="Create GitHub issue for login bug",
-            assistant_response="I created GitHub issue #85 for the login bug.",
-            entities=["#85"],
-            user_id=TEST_USER_ID,
-        )
-
-        # Test query routing with conversation context
-        result = await query_router.classify_and_route(
-            message="Show me details for that issue",
-            session_id=conversation_id,
-            conversation_manager=conversation_manager,
-        )
-
-        # Verify conversation context was added to result
-        assert "conversation_context" in result
-        assert (
-            result["conversation_context"]["original_message"] == "Show me details for that issue"
-        )
-        assert "GitHub issue #85" in result["conversation_context"]["resolved_message"]
-        assert len(result["conversation_context"]["resolved_references"]) > 0
-
     async def test_conversation_window_management(self, conversation_manager):
         """Test 10-turn context window is properly maintained (#1223: DB fallback
         now returns the most-recent N, not the oldest N)."""
@@ -233,70 +173,6 @@ class TestConversationManagerIntegration:
             await conversation_manager._get_from_cache(conversation_id)
 
         assert conversation_manager.redis_circuit_open
-
-    async def test_end_to_end_conversation_flow(
-        self, query_router, conversation_manager, mock_query_services
-    ):
-        """Test complete end-to-end conversation flow"""
-        project_queries, conversation_queries, file_queries = mock_query_services
-
-        # Mock responses for different query types
-        project_queries.query = AsyncMock(
-            return_value={"result": "GitHub issue #85 created successfully", "entities": ["#85"]}
-        )
-        file_queries.query = AsyncMock(
-            return_value={
-                "result": "Here are the details for GitHub issue #85: Login authentication failing...",
-                "entities": ["#85"],
-            }
-        )
-
-        conversation_id = "test_conv_e2e"
-
-        # Turn 1: Create issue
-        result1 = await query_router.classify_and_route(
-            message="Create GitHub issue for login bug",
-            session_id=conversation_id,
-            conversation_manager=conversation_manager,
-        )
-
-        # Save turn 1 to conversation
-        await conversation_manager.save_conversation_turn(
-            conversation_id=conversation_id,
-            user_message="Create GitHub issue for login bug",
-            assistant_response="I created GitHub issue #85 for the login bug.",
-            entities=["#85"],
-            user_id=TEST_USER_ID,
-        )
-
-        # Turn 2: Reference that issue
-        start_time = time.time()
-        result2 = await query_router.classify_and_route(
-            message="Show me that issue again",
-            session_id=conversation_id,
-            conversation_manager=conversation_manager,
-        )
-        end_time = time.time()
-
-        total_latency_ms = (end_time - start_time) * 1000
-
-        # Performance assertion: complete flow <150ms additional latency
-        assert (
-            total_latency_ms < 150
-        ), f"E2E flow took {total_latency_ms:.2f}ms, exceeds 150ms target"
-
-        # Verify conversation context is preserved and references resolved
-        assert "conversation_context" in result2
-        assert "GitHub issue #85" in result2["conversation_context"]["resolved_message"]
-
-        # Verify the reference was properly resolved
-        references = result2["conversation_context"]["resolved_references"]
-        assert len(references) > 0
-        assert references[0]["type"] == "github_issue"
-        # Entity-level resolution returns the stored entity token ("#85"); the
-        # human-readable "GitHub issue #85" expansion lives in resolved_message
-        # (asserted above), not in the per-reference resolved field.
-        assert references[0]["resolved"] == "#85"
 
     async def test_conversation_manager_stats(self, conversation_manager):
         """Test ConversationManager statistics and health monitoring"""
