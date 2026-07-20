@@ -78,13 +78,12 @@
       "Bash(npm:*)",
       "Bash(echo:*)",
       "Edit(src/**)",
-      "Write(docs/**)",
+      "Edit(docs/**)",
       "Bash(source :*)",
       "Bash(python:*)",
       "Bash(pip:*)",
       "Bash(pytest:*)",
       "Edit(**/*.py)",
-      "Write(**/*.py)",
       "mcp__serena__search_for_pattern",
       "mcp__serena__get_symbols_overview",
       "mcp__serena__find_symbol",
@@ -95,7 +94,6 @@
       "Bash(sudo:*)",
       "Read(.env*)",
       "Read(secrets/**)"
-    ],
-    "ask": ["Gh push"]
+    ]
   }
 }
