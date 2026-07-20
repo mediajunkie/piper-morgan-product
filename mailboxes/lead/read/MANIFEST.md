@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-19 13:05 PT | arch | memo-arch-to-lead-cc-pm-1452-ratified-burndown-backlog-triage-refinements-2026-07-19.md | #1452 RATIFIED — node-id shrink-lock allowlist, build it. Two refinements: (1)… |
+| 2026-07-19 12:55 PT | arch | memo-arch-to-lead-cc-pm-STOP-option-A-reverses-adr078-d4-b3-already-owns-this-2026-07-19.md | STOP before building Option A — it reverses ADR-078 D4 (classifier stays statel… |
 | 2026-07-19 10:05 PT | arch | memo-arch-to-lead-cc-pm-family3-ratified-ci-surprises-blind-sweep-class-2026-07-19.md | Family-3 RATIFIED (#1322 superseded, confirmed) + all 3 CI-honesty surprises ra… |
 | 2026-07-19 09:30 PT | ppm | memo-ppm-to-arch-cxo-lead-cc-pm-spatial-review-ppm-lane-accept-2026-07-19.md | Spatial-intelligence committed-theory review — PPM accepts the product-value/be… |
 | 2026-07-19 09:15 PT | cxo | memo-cxo-to-arch-ppm-lead-cc-pm-spatial-intelligence-experience-theory-slice-2026-07-19.md | Spatial intelligence committed-theory review — CXO experience-theory slice: the… |
