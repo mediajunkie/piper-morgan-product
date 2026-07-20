@@ -256,6 +256,7 @@ class IntentClassifier:
         spatial_context: Optional[Dict] = None,
         use_cache: bool = True,
         user_id: Optional[str] = None,
+        session_id: Optional[str] = None,
     ) -> Intent:
         """
         Classify user intent with optional caching.
@@ -274,6 +275,26 @@ class IntentClassifier:
         Returns:
             Intent object with classification results
         """
+        # Stage 0: B3 referent resolution (#1394 / ADR-078 D2) — BEFORE the cache,
+        # pre_classify, and the LLM. Resolves "change the title" → the issue created
+        # THIS session and emits update_issue directly (owner-scoped ledger read;
+        # async, which is why it can't live in the sync PreClassifier). Passes through
+        # untouched when there's no high-confidence referent (N1/N2). D4 held: the
+        # classifier never sees history — session_id is the ledger-scoping KEY, not
+        # history, and arrives as its own kwarg so it never touches the LLM prompt
+        # or the cache key. ABOVE the cache because referent messages are
+        # session-relative: serving "change the title" from a cross-session cache
+        # entry would bypass resolution by construction.
+        b3_intent = await self._resolve_issue_referent(message, user_id, session_id)
+        if b3_intent is not None:
+            logger.info(
+                "intent_classification",
+                source="B3_REFERENT_RESOLUTION",
+                action=b3_intent.action,
+                message_preview=message[:50],
+            )
+            return b3_intent
+
         # GREAT-4B Phase 3: Check cache for simple message-only queries
         # Only cache when no context/session/spatial_context (to keep cache simple)
         cache_eligible = use_cache and not context and not session and not spatial_context
@@ -318,22 +339,6 @@ class IntentClassifier:
                         logger.error(f"Preference detection hook failed for cached intent: {e}")
 
                 return intent_obj
-
-        # Stage 0: B3 referent resolution (#1394 / ADR-078 D2) — BEFORE pre_classify
-        # and the LLM. Resolves "change the title" → the issue created this session and
-        # emits update_issue directly (owner-scoped ledger read; async, which is why it
-        # can't live in the sync PreClassifier). Passes through untouched when there's no
-        # high-confidence referent (N1/N2). D4 held: the classifier never sees history.
-        _b3_session_id = context.get("session_id") if context else None
-        b3_intent = await self._resolve_issue_referent(message, user_id, _b3_session_id)
-        if b3_intent is not None:
-            logger.info(
-                "intent_classification",
-                source="B3_REFERENT_RESOLUTION",
-                action=b3_intent.action,
-                message_preview=message[:50],
-            )
-            return b3_intent
 
         # Stage 1: Pre-classification
         pre_intent = PreClassifier.pre_classify(message)
@@ -866,6 +871,7 @@ class IntentClassifier:
         session: Optional[Any] = None,
         spatial_context: Optional[Dict] = None,
         user_id: Optional[str] = None,
+        session_id: Optional[str] = None,
     ) -> MultiIntentResult:
         """
         Detect and classify multiple intents in a message (Issue #595).
@@ -886,6 +892,26 @@ class IntentClassifier:
         Returns:
             MultiIntentResult containing all detected intents
         """
+        # Stage 0 here TOO (#1394/B3): detect_multiple_intents pattern-matches
+        # update-verb messages (e.g. "change the title to X" → update_document_query)
+        # and returns BEFORE classify() — so B3 must be consulted first at THIS
+        # entry as well, or referent follow-ups misroute to document handlers
+        # (the live 2026-07-12 Scenario-B turn-3 mechanism). Cheap for
+        # non-referent messages: the detection regex fails fast, no ledger read.
+        b3_intent = await self._resolve_issue_referent(message, user_id, session_id)
+        if b3_intent is not None:
+            logger.info(
+                "intent_classification",
+                source="B3_REFERENT_RESOLUTION",
+                action=b3_intent.action,
+                message_preview=message[:50],
+            )
+            return MultiIntentResult(
+                intents=[b3_intent],
+                original_message=message,
+                is_multi_intent=False,
+            )
+
         # First, try rule-based multi-intent detection
         multi_result = PreClassifier.detect_multiple_intents(message)
 
@@ -907,6 +933,7 @@ class IntentClassifier:
                 session=session,
                 spatial_context=spatial_context,
                 user_id=user_id,
+                session_id=session_id,
             )
             return MultiIntentResult(
                 intents=[single_intent],

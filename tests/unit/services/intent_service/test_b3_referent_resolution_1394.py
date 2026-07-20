@@ -150,3 +150,75 @@ class TestGuards:
             "change the title to Foo", _USER, _CONV
         )
         assert intent is None  # _USER has no creation → no fabrication
+
+
+class TestLiveWiring:
+    """The 2026-07-19 live-scenario gap: B3 was built and green here, but the
+    chat path never delivered session_id to classify() — Stage-0 read a null
+    session, found nothing, and fell through on EVERY live turn. These tests
+    exercise the real call-path wiring so the gap can't silently reopen.
+    """
+
+    pytestmark = pytest.mark.asyncio
+
+    async def test_classify_threads_session_id_to_stage0(self, sm):
+        """classify(session_id=...) must reach the ledger read and emit the
+        resolved intent — no LLM, no cache, no context dict involved."""
+        await _seed_issue(sm, _USER, _CONV)
+        clf = IntentClassifier()
+        intent = await clf.classify(
+            "change the title to Foo", user_id=_USER, session_id=_CONV
+        )
+        assert intent.action == "update_issue"
+        assert intent.context["issue_number"] == 107
+
+    async def test_referent_never_served_from_cache(self, sm):
+        """Stage-0 runs ABOVE the cache: a referent-shaped message must resolve
+        against THIS session's ledger even when a (cross-session) cache entry
+        exists for the identical message text."""
+        await _seed_issue(sm, _USER, _CONV)
+        clf = IntentClassifier()
+        clf.cache.set(
+            "change the title to Foo",
+            {"category": "EXECUTION", "action": "update_document", "confidence": 0.99},
+        )
+        intent = await clf.classify(
+            "change the title to Foo", user_id=_USER, session_id=_CONV
+        )
+        assert intent.action == "update_issue"  # B3 won; the stale cache did not
+
+    async def test_classify_multiple_passes_session_id_through(self, sm):
+        await _seed_issue(sm, _USER, _CONV)
+        clf = IntentClassifier()
+        result = await clf.classify_multiple(
+            "change the title to Foo", user_id=_USER, session_id=_CONV
+        )
+        assert result.intents and result.intents[0].action == "update_issue"
+
+    async def test_process_intent_call_site_wires_session_id(self):
+        """The intent_service call site (the one that was missing it) must pass
+        session_id as its own kwarg — not inside context (context would inject
+        into the LLM prompt and disable the classifier cache)."""
+        from unittest.mock import AsyncMock, MagicMock
+
+        from services.intent.intent_service import IntentService
+        from services.intent_service.pre_classifier import MultiIntentResult
+
+        svc = IntentService()
+        mock_clf = MagicMock()
+        mock_clf.classify_multiple = AsyncMock(
+            return_value=MultiIntentResult(
+                intents=[], original_message="change the title to Foo", is_multi_intent=False
+            )
+        )
+        mock_clf.classify = AsyncMock(side_effect=RuntimeError("fallback reached"))
+        svc.intent_classifier = mock_clf
+        with contextlib.suppress(Exception):
+            await svc.process_intent(
+                "change the title to Foo", session_id="sess-wire-1", user_id=_USER
+            )
+        assert mock_clf.classify_multiple.await_count >= 1
+        kwargs = mock_clf.classify_multiple.await_args.kwargs
+        assert kwargs.get("session_id") == "sess-wire-1"
+        ctx = kwargs.get("context") or {}
+        assert "session_id" not in ctx  # the kwarg channel, never the prompt/cache channel

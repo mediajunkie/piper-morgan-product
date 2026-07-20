@@ -1106,8 +1106,12 @@ class IntentService:
                 if contextual_continuation_hint
                 else None
             )
+            # #1394/B3: session_id is the Stage-0 ledger-scoping key (ADR-078 D2) —
+            # its own kwarg, never in context (context injects into the LLM prompt
+            # and disables the classifier cache; session_id must do neither).
             multi_result = await self.intent_classifier.classify_multiple(
-                message, context=classification_context, user_id=user_id
+                message, context=classification_context, user_id=user_id,
+                session_id=session_id,
             )
 
             # Issue #764: Multi-substantive intent orchestration
@@ -1158,7 +1162,9 @@ class IntentService:
                     )
                     intent = multi_result.primary_intent
                     if intent is None:
-                        intent = await self.intent_classifier.classify(message, user_id=user_id)
+                        intent = await self.intent_classifier.classify(
+                        message, user_id=user_id, session_id=session_id
+                    )
 
             elif (
                 multi_result.is_multi_intent
@@ -1192,7 +1198,9 @@ class IntentService:
                 intent = multi_result.primary_intent
                 if intent is None:
                     # No intents detected - fall back to standard classification
-                    intent = await self.intent_classifier.classify(message, user_id=user_id)
+                    intent = await self.intent_classifier.classify(
+                        message, user_id=user_id, session_id=session_id
+                    )
 
             self.logger.info(f"Intent classified as: {intent.category} - {intent.action}")
 
