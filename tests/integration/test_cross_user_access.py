@@ -60,6 +60,9 @@ class TestCrossUserListAccess:
         user_b_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_a_id)
+            await create_test_user_in_session(session, user_b_id)
             list_repo = UniversalListRepository(session)
 
             # Create list as User B using domain model
@@ -77,6 +80,9 @@ class TestCrossUserListAccess:
         user_b_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_a_id)
+            await create_test_user_in_session(session, user_b_id)
             list_repo = UniversalListRepository(session)
 
             # Create list as User B using domain model
@@ -96,6 +102,9 @@ class TestCrossUserListAccess:
         user_b_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_a_id)
+            await create_test_user_in_session(session, user_b_id)
             list_repo = UniversalListRepository(session)
 
             # Create list as User B using domain model
@@ -112,6 +121,8 @@ class TestCrossUserListAccess:
         user_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_id)
             list_repo = UniversalListRepository(session)
 
             # Create list as owner using domain model
@@ -130,6 +141,8 @@ class TestCrossUserListAccess:
         user_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_id)
             list_repo = UniversalListRepository(session)
 
             # Create list using domain model
@@ -149,6 +162,8 @@ class TestCrossUserListAccess:
         user_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_id)
             list_repo = UniversalListRepository(session)
 
             # Create list using domain model
@@ -166,6 +181,9 @@ class TestCrossUserListAccess:
         admin_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_b_id)
+            await create_test_user_in_session(session, admin_id)
             list_repo = UniversalListRepository(session)
 
             # Create list as User B using domain model
@@ -189,6 +207,9 @@ class TestCrossUserListAccess:
         admin_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_b_id)
+            await create_test_user_in_session(session, admin_id)
             list_repo = UniversalListRepository(session)
 
             # Create list as User B using domain model
@@ -212,6 +233,9 @@ class TestCrossUserListAccess:
         admin_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_b_id)
+            await create_test_user_in_session(session, admin_id)
             list_repo = UniversalListRepository(session)
 
             # Create list as User B using domain model
@@ -238,6 +262,9 @@ class TestCrossUserTodoAccess:
         user_b_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_a_id)
+            await create_test_user_in_session(session, user_b_id)
             todo_repo = TodoRepository(session)
 
             # Create todo as User B using domain model
@@ -255,6 +282,9 @@ class TestCrossUserTodoAccess:
         user_b_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_a_id)
+            await create_test_user_in_session(session, user_b_id)
             todo_repo = TodoRepository(session)
 
             # Create todo as User B using domain model
@@ -274,6 +304,9 @@ class TestCrossUserTodoAccess:
         user_b_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_a_id)
+            await create_test_user_in_session(session, user_b_id)
             todo_repo = TodoRepository(session)
 
             # Create todo as User B using domain model
@@ -290,6 +323,8 @@ class TestCrossUserTodoAccess:
         user_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_id)
             todo_repo = TodoRepository(session)
 
             # Create todo using domain model
@@ -308,6 +343,8 @@ class TestCrossUserTodoAccess:
         user_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_id)
             todo_repo = TodoRepository(session)
 
             # Create todo using domain model
@@ -327,6 +364,8 @@ class TestCrossUserTodoAccess:
         user_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_id)
             todo_repo = TodoRepository(session)
 
             # Create todo using domain model
@@ -344,6 +383,9 @@ class TestCrossUserTodoAccess:
         admin_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_b_id)
+            await create_test_user_in_session(session, admin_id)
             todo_repo = TodoRepository(session)
 
             # Create todo as User B using domain model
@@ -367,6 +409,9 @@ class TestCrossUserTodoAccess:
         admin_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_b_id)
+            await create_test_user_in_session(session, admin_id)
             todo_repo = TodoRepository(session)
 
             # Create todo as User B using domain model
@@ -390,6 +435,9 @@ class TestCrossUserTodoAccess:
         admin_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_b_id)
+            await create_test_user_in_session(session, admin_id)
             todo_repo = TodoRepository(session)
 
             # Create todo as User B using domain model
@@ -416,6 +464,9 @@ class TestCrossUserFileAccess:
         user_b_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_a_id)
+            await create_test_user_in_session(session, user_b_id)
             # Create test users to satisfy FK constraints
             await create_test_user_in_session(session, user_a_id)
             await create_test_user_in_session(session, user_b_id)
@@ -440,6 +491,9 @@ class TestCrossUserFileAccess:
         user_b_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, user_a_id)
+            await create_test_user_in_session(session, user_b_id)
             # Create test users to satisfy FK constraints
             await create_test_user_in_session(session, user_a_id)
             await create_test_user_in_session(session, user_b_id)
@@ -463,6 +517,8 @@ class TestCrossUserFileAccess:
         owner_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, owner_id)
             # Create test user to satisfy FK constraints
             await create_test_user_in_session(session, owner_id)
 
@@ -487,6 +543,9 @@ class TestCrossUserFileAccess:
         admin_id = str(uuid4())
 
         async with async_transaction as session:
+            # #1312 FK: owner ids must exist in users (fixtures predate the FK)
+            await create_test_user_in_session(session, owner_id)
+            await create_test_user_in_session(session, admin_id)
             # Create test users to satisfy FK constraints
             await create_test_user_in_session(session, owner_id)
             await create_test_user_in_session(session, admin_id)
