@@ -92,3 +92,14 @@ class TestFullsuiteBacklogGate:
         )
         assert r.returncode != 0
         assert "format error" in (r.stdout + r.stderr)
+
+    def test_flaky_entries_tolerated_in_both_states(self, tmp_path):
+        """A flaky-tagged entry neither demands removal when passing nor counts
+        as new when failing — oscillation can't red the gate. Still debt: the
+        burn-down move for flaky is de-flaking, then retagging."""
+        backlog = "tests/a.py::test_timing\tflaky\n"
+        passing = _run(tmp_path, "1 failed, 9 passed in 2s\nFAILED tests/z.py::test_other\n",
+                       backlog + "tests/z.py::test_other\tfixture\n")
+        assert passing.returncode == 0, passing.stdout + passing.stderr
+        failing = _run(tmp_path, f"FAILED tests/a.py::test_timing\n{SUMMARY}\n", backlog)
+        assert failing.returncode == 0, failing.stdout + failing.stderr

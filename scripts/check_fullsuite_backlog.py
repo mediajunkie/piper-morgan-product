@@ -12,7 +12,7 @@ enforces shrink-lock in BOTH directions:
 The backlog is a BURN-DOWN list, not an exception set: every entry is debt, the
 list only shrinks, a stalled list is a regression, and the endpoint is an empty
 file that gets deleted (Arch refinement 1). Entries carry a triage tag
-(fixture | regression:#NNNN | triage) so a real product break can't hide among
+(fixture | triage | flaky | regression:#NNNN) so a real product break can't hide among
 test-infra rot (Arch refinement 2) — `regression`-tagged entries must reference
 a filed issue.
 
@@ -36,7 +36,7 @@ BACKLOG_FILE = REPO_ROOT / "scripts" / "known_failing_backlog.tsv"
 
 _SUMMARY = re.compile(r"^=*\s*(?:\d+ \w+, )*\d+ (?:passed|failed|error|errors|skipped|deselected|warnings?)")
 _RESULT_LINE = re.compile(r"^(FAILED|ERROR) (\S+)")
-_VALID_TAG = re.compile(r"^(fixture|triage|regression:#\d+)$")
+_VALID_TAG = re.compile(r"^(fixture|triage|flaky|regression:#\d+)$")
 
 
 def load_backlog() -> dict[str, str]:
@@ -101,7 +101,12 @@ def main() -> int:
         f for f in file_errors if not any(n.startswith(f + "::") for n in backlog)
     )
     now_passing = sorted(
-        n for n in backlog if n not in failed and not covered_by_file_error(n)
+        n
+        for n, tag in backlog.items()
+        if n not in failed and not covered_by_file_error(n) and tag != "flaky"
+        # flaky entries oscillate by nature: passing does not demand removal
+        # (and failing is already covered by being listed). Still debt — the
+        # burn-down for a flaky entry is DE-FLAKING it, then retagging.
     )
 
     problems = []
@@ -127,7 +132,8 @@ def main() -> int:
     print(
         f"backlog size: {len(backlog)} "
         f"(fixture={tags.get('fixture', 0)}, regression={tags.get('regression', 0)}, "
-        f"triage={tags.get('triage', 0)}) — target 0; a stalled list is a regression"
+        f"triage={tags.get('triage', 0)}, flaky={tags.get('flaky', 0)}) — "
+        "target 0; a stalled list is a regression"
     )
 
     if problems:
