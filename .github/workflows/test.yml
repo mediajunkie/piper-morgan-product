@@ -184,56 +184,23 @@ jobs:
           print('✅ Version consistency verified')
           "
 
-      - name: Run Intent Interface Tests
-        run: |
-          echo "🔍 Running Intent Interface Tests (GREAT-4E)"
-          python -m pytest tests/intent/test_web_interface.py tests/intent/test_slack_interface.py tests/intent/test_cli_interface.py -v --tb=short
-          echo "✅ Interface tests completed"
-
-      - name: Run Intent Contract Tests
-        run: |
-          echo "🔍 Running Intent Contract Tests (GREAT-4E)"
-          python -m pytest tests/intent/contracts/ -m "not llm" -v --tb=short
-          echo "✅ Contract tests completed"
-
-      - name: Verify Intent Bypass Prevention
-        run: |
-          echo "🔍 Running Intent Bypass Prevention Tests (Critical Security)"
-          python -m pytest tests/intent/test_no_web_bypasses.py tests/intent/test_no_cli_bypasses.py tests/intent/test_no_slack_bypasses.py -v --tb=short
-          echo "✅ Bypass prevention verified"
-
-      - name: Intent System Coverage Gate
-        run: |
-          echo "🔍 Verifying Intent Test Coverage..."
-          TEST_COUNT=$(find tests/intent/ -name "test_*.py" | wc -l | tr -d ' ')
-          echo "Found $TEST_COUNT intent test files"
-          if [ "$TEST_COUNT" -lt 20 ]; then
-            echo "❌ Error: Expected at least 20 intent test files, found $TEST_COUNT"
-            exit 1
-          fi
-          echo "✅ Intent coverage verified: $TEST_COUNT test files"
-
-      - name: Classification Accuracy Gate
-        run: |
-          echo "🔍 Running Classification Accuracy Tests..."
-          python -m pytest tests/intent/contracts/test_accuracy_contracts.py -m "not llm" -v --tb=short
-          echo "✅ Classification accuracy verified"
-        continue-on-error: false
-
       - name: Run migrations
         run: python -m alembic upgrade head
 
-      - name: Run tests (excluding LLM tests)
+      # #1452: ONE full sweep governed by the burn-down gate. The former named
+      # subset steps (interface/contract/bypass/accuracy) ran subsets of this
+      # same sweep under addopts' -x, so any backlog test in a subset turned the
+      # job red before the gate could judge — the gate must see the whole run.
+      - name: Full suite under the burn-down gate (#1452)
         run: |
-          # Skip LLM tests in CI (no API keys configured)
-          # LLM tests run locally when keys available
-          python -m pytest tests/ --tb=short -v -m "not llm"
-
-      - name: Test summary
-        run: |
-          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
-          echo "✅ All tests completed with Python 3.11" >> $GITHUB_STEP_SUMMARY
-          echo "Environment: Ubuntu Latest" >> $GITHUB_STEP_SUMMARY
+          set -o pipefail
+          python -m pytest tests/ -m "not llm" -q --tb=no \
+            -o addopts="--ignore=tests/archive --ignore=services/integrations --ignore=dev/ --import-mode=importlib" \
+            2>&1 | tee /tmp/fullsuite.out || true
+          python scripts/check_fullsuite_backlog.py /tmp/fullsuite.out | tee /tmp/gate.out
+          GATE=$?
+          grep "backlog size" /tmp/gate.out >> $GITHUB_STEP_SUMMARY || true
+          exit $GATE
 
 
   # Fossil jobs removed 2026-07-19 (#1436 CI-honesty pass): performance-regression-check,
