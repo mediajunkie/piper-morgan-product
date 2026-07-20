@@ -1,49 +1,60 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-19 ~09:30 PT (live PM day — PM AFK, coordinating through Exec)
+**Last updated**: 2026-07-19 ~20:10 PT (live PM day, handoff-ready pass — PM planning to restart one of the colliding worktree sessions)
 **Session log today**: `dev/2026/07/19/2026-07-19-0832-exec-code-log.md` (in progress, not yet DAY-CLOSED)
 **Role**: Chief of Staff (Exec) | DinP account — migration to dedicated account still pending, PM's own call, no urgency signal
-**Cron**: `32 8,20 * * *` — armed. Next fire ~20:32 Sun Jul 19.
-**Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45` — check `pwd`/branch/`git status` FIRST at every fire (Step 2a pairing check, CIO's new fix); known mismatch is expected and safe to proceed past per PM's standing "resume" instruction, but verify no *new* stray state each time.
+**Cron**: `32 8,20 * * *` (job `d7ba639c`) — armed, survived today's laptop restart intact. Next fire ~08:32 Mon Jul 20.
+**Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45` — **this is the confirmed-shared directory** (CIO's session also operates here, verified both ways via git reflog; a third session, likely PPM, is implicated but not independently reflog-confirmed). **PM is actively planning to restart one of the colliding sessions in a fresh worktree — if this session is the one restarted, a fresh Exec session should read this file plus the linked session log before doing anything else.**
 
 ---
 
-## Today's operating mode: PM AFK, coordinating through Exec
+## ⚠️ If you are a fresh session picking this up after a restart
 
-PM is rousing all 11 standing agents and will be AFK most of the day. Agents advance what they can and batch questions for PM's attention, rolled up through Exec. Be ready to roll up to Janus (cross-project coordination) if PM needs help coordinating across projects today — nothing has come of this yet, just a standing readiness note.
+1. Read today's session log in full (`dev/2026/07/19/2026-07-19-0832-exec-code-log.md`) — it has the day's full arc.
+2. Check `git status` / `pwd` / branch immediately — if you're in a *newly-provisioned* worktree (not `mystifying-lumiere-8bebd3`), the collision is resolved on your end; note that explicitly in your first log entry.
+3. Everything below is current as of the polish pass above. Nothing is silently assumed — every open thread has its own status line.
+
+## Today's operating mode: PM AFK, coordinating through Exec (still active)
+
+PM roused all 11 standing agents this morning, went AFK, laptop restarted mid-afternoon (all sessions survived/resumed cleanly — crons intact, no lost work). PM is now planning to deliberately restart one of the worktree-colliding sessions (mine, CIO's, possibly PPM's) into a fresh worktree — resuming all sessions first, then picking one for the restart once contexts are handoff-ready. This file is written with that in mind.
 
 ## Ship #052 — DRAFTED, routed to PM, awaiting fact-check/voice-pass
 
-All 6 workstream memos landed this morning (CIO/CXO/HOST/PPM joining Friday's Arch/Comms). Ran the full draft procedure — all 7 omnibus logs, all 6 memos, editorial calendar verified, issues-closed count verified via `gh` directly. Theme: **"The Mechanism, Not the Memory"** — continuing/deepening #051's "impossible by construction" one level up (class-wide mechanical enforcement, not just one instance), honestly naming the worktree-collision defect as the week's counter-example. Draft at `dev/active/weekly-ship-052-draft-2026-07-19.md`, pushed (`10e5b6a64`). Word count ~1790, flagged (comparable density to #051's approved ~1840). **Do not touch again until PM has read it** — same discipline as #051.
+Draft at `dev/active/weekly-ship-052-draft-2026-07-19.md` (synced to `docs/public/comms/drafts/`), pushed (`10e5b6a64`). Theme: "The Mechanism, Not the Memory." PM said they'd read it but hasn't given feedback yet as of this writing. **Do not touch the draft again until PM has read it and responded** — same discipline as #051.
 
-Caught two real errors during drafting, both fixed before finalizing: (1) #1394 was wrongly described as "months-old" — verified via `gh issue view` it was actually filed Jul 12, within-window; (2) "first real trim" for the CLAUDE.md refactor was an unverified superlative given 98 prior edit commits — softened.
+**Separately, PM asked for and received a concise internal (non-public) status report** covering Beta Blockers convergence specifically — verdict: converging, not spiraling (live GitHub-verified: 24→21→19 open since the Jul16 census, only 1 new issue filed in 3 days). That report was delivered in chat, not saved as a file — if a fresh session needs it, it's in this conversation's transcript, or can be regenerated from the same method (full board pull with totalCount reconciliation, join against `gh issue list --state all`, filter `sprint == "Beta Blockers - Hard Gates Only"`).
 
-## Worktree-collision thread — multiple new developments today, all relayed to PM live
+**Update since that report**: Lead closed #1400 + #1401 + #1409 today (see below) — the Beta Blockers open count is almost certainly lower than 19 now; worth a fresh pull before citing a number again, don't reuse 19 as current.
 
-CIO ran a full fleet audit: confirmed isolated to one directory (21/22 correctly paired elsewhere) — not a cohort discipline problem. Shipped a real detection fix (`duty-cycle-tick` Step 2a: checks dir/branch pairing before every sync). **Still needs PM to end one of the colliding sessions** — the one thing no session can do to itself.
+## Worktree-collision defect — PM is actively resolving it (see today's operating mode above)
 
-A separate, initially-alarming finding (a PPM commit reverted 3 files including CIO's own log/portfolio doc) turned out on PPM's own investigation to be a **different, one-time, now-fixed bug** (a stale git-tree-reuse shortcut in PPM's push-retry logic) — not an escalation of the worktree-collision defect itself, despite CIO's first memo framing it that way. Both memos are in `read/` if this needs re-verifying.
+CIO's fleet audit (this morning): isolated to this one directory, 21 of 22 others correctly paired — not a cohort discipline problem. Detection fix shipped (`duty-cycle-tick` Step 2a). The only remaining cure — PM ending one of the colliding sessions — is now actively in motion as of this evening. No action needed from this session beyond staying handoff-ready.
 
-## #1386 (beta gate) — accidentally auto-closed, reopened same morning
+## Lead's substantive progress today — informational, no PM questions pending
 
-A `closes #1386-P3` commit message triggered GitHub's literal keyword-closer on the parent issue. PPM caught it, verified live state, reopened with full documentation. CXO independently confirmed the same read. Real status: Scenario A still needs PM's own browser step; criteria 2/4/5/6 all still open. This is now outside Ship #052's window (discovered Jul 19, window closed Jul 16) — correctly excluded from the draft.
+- Q-batch items 1–3 actioned (#1438 → sprint+MVP; #1401 volume build started → **now CLOSED**, proven live; #1386 gate-run offer standing on CXO/PPM's window).
+- **#1400 + #1401 CLOSED** — the "testers lose data every deploy" class fully retired (connector prefs off local JSON onto the DB; uploads on a durable Fly volume, live-proven survival across a redeploy). A riding bug (#1450, encrypted bytes served raw on download) caught and fixed in the same pass.
+- **#1409 CLOSED** — ~4GB image-size cut (CPU-torch pin).
+- **CI's smoke gate green for the first time in 40+ runs** — four chronic root causes found and fixed in one pass (real-gates follow-up filed as #1449).
+- **#1394 root-caused further**: classification itself is the history-blind surface (not persistence/hydration/floor, which all work). Fix design is with Arch for ruling; buildable same-day once ruled. Directly relevant to the #1386 gate-run sequencing — worth running CXO/PPM's window *after* Arch's ruling if their availability allows, since Scenario B's turn-3/4 may become re-testable rather than needing re-scope.
+- **Family-3 executed + #1322 closed superseded** (Arch's ruling, −5,348 lines deleted) — separate thread, informational only.
 
-## PA's hosted-MCP pivot — new strategic thread, needs PM's direct attention
+## Tester signal — needs your call on next step
 
-PM apparently confirmed MCPB dead Jul 18 (a conversation Exec wasn't part of) and pivoted PA toward a hosted-MCP + Claude-plugin + ChatGPT-integration architecture (PDR-006 drafted). Three PM-gated questions batched (close #1360/#1351 as superseded; does the colleague-model need server-side LLM reasoning; plugin-directory timing), plus concrete asks: verify Piper's Claude.ai account tier, start OpenAI identity verification now (no dependencies). Both memos in `read/`.
+PM relayed, then corrected: a tester hasn't hit a personal rate limit, they're stuck unable to add their LLM key yet — real onboarding friction, not passive waiting. **Offered to relay to Lead directly; PM hadn't answered whether to do that or follow up with the tester first, as of this writing.** Check whether that's been resolved before re-raising.
 
-## OPEN — light, carrying forward
+## Standing items — unchanged today, still open
 
-- **Lead Dev's #1424/#1427 questions** — still awaiting PM's final calls from yesterday; not blocking anything else.
-- **CXO/PPM #1386 coordination kickoff** (sent last night) — no reply yet as of this morning.
+- **Lead Dev's #1424/#1427 questions** — still awaiting PM's final calls from Jul 18; not blocking anything else.
+- **CXO/PPM #1386 coordination kickoff** (sent Jul 18 evening) — no reply yet.
 - **Account migration (pipermorgan.ai)** — PM's own call, no deadline, low-urgency carry (17+ days now).
 - **Stale branches (MUX x3, xpoll-hook)** — no reply, not yet at a re-escalation point.
 
 ## STANDING
 
 - Bridge Log: current URL `https://claude.ai/code/artifact/68f209ae-94fc-484a-8e68-fbc53b3771f8`.
-- Full tracker reconciliation done 7/18 — not due again yet, though today's volume may warrant an earlier touch given how much has moved.
+- Full tracker reconciliation done 7/18 — given today's volume (Ship #052 drafted, several closures, the worktree-collision resolution in motion), a fresh full pass is probably due at the next natural opening rather than waiting out the normal cadence.
 
 ---
 
-*— Exec, 7/19 ~09:30 PT.*
+*— Exec, 7/19 ~20:10 PT.*
