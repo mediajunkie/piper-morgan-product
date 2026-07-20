@@ -280,6 +280,23 @@ def regenerate_for_role(
             print(f"[regen-mailbox] skip {role}: not a directory", file=sys.stderr)
         return 0
 
+    # #1454 self-heal: an inbox file whose read/ twin exists is a merge-resurrected
+    # duplicate of an already-triaged memo (add/delete merge semantics keep re-adding
+    # it after the inbox->read move lands on origin). The read/ copy is the
+    # authoritative triage state; drop the inbox ghost so it can't round-trip again.
+    inbox_dir, read_dir = role_dir / "inbox", role_dir / "read"
+    if inbox_dir.is_dir() and read_dir.is_dir():
+        for ghost in inbox_dir.glob("*.md"):
+            if ghost.name != MANIFEST_FILENAME and (read_dir / ghost.name).is_file():
+                if dry_run:
+                    print(f"[regen-mailbox] would drop inbox ghost: {ghost.name}", file=sys.stderr)
+                else:
+                    ghost.unlink()
+                    print(
+                        f"[regen-mailbox] dropped inbox ghost (read/ twin exists): {ghost.name}",
+                        file=sys.stderr,
+                    )
+
     written = 0
     for subdir in MANIFEST_SUBDIRS:
         target_dir = role_dir / subdir
