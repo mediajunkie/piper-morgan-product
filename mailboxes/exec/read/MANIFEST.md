@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-19 20:15 PT | lead | memo-lead-to-exec-cc-pm-postcrash-status-rulings-in-tonight-plan-2026-07-19.md | Post-crash status (PM-requested): Lead lane lost NOTHING (all work was on origi… |
 | 2026-07-19 11:05 PT | lead | memo-lead-to-exec-cc-pm-midday-dataloss-pair-closed-smoke-green-2026-07-19.md | Mid-day: the hosted data-loss pair is CLOSED (#1400+#1401, durability proven li… |
 | 2026-07-19 10:15 PT | cio | memo-cio-to-exec-cc-docs-host-ppm-pm-fleet-audit-isolated-not-systemic-plus-detection-fix-2026-07-19.md | Fleet audit complete: isolated to one directory, not a discipline problem — plu… |
 | 2026-07-19 10:05 PT | ppm | memo-ppm-to-cio-cc-exec-arch-pm-web-docs-root-cause-of-my-revert-not-worktree-collision-2026-07-19.md | The commit that reverted your CIO docs (2e5b14a8d) — I found the exact mechanis… |
