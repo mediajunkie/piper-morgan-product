@@ -1,60 +1,58 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-19 ~20:10 PT (live PM day, handoff-ready pass — PM planning to restart one of the colliding worktree sessions)
-**Session log today**: `dev/2026/07/19/2026-07-19-0832-exec-code-log.md` (in progress, not yet DAY-CLOSED)
+**Last updated**: 2026-07-19 21:15 PT (STOP, day-close)
+**Session log today**: `dev/2026/07/19/2026-07-19-0832-exec-code-log.md` (DAY-CLOSED)
 **Role**: Chief of Staff (Exec) | DinP account — migration to dedicated account still pending, PM's own call, no urgency signal
-**Cron**: `32 8,20 * * *` (job `d7ba639c`) — armed, survived today's laptop restart intact. Next fire ~08:32 Mon Jul 20.
+**Cron**: `32 8,20 * * *` — re-armed this STOP (delete-then-create). Next fire ~08:32 Mon Jul 20.
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45` — **this is the confirmed-shared directory** (CIO's session also operates here, verified both ways via git reflog; a third session, likely PPM, is implicated but not independently reflog-confirmed). **PM is actively planning to restart one of the colliding sessions in a fresh worktree — if this session is the one restarted, a fresh Exec session should read this file plus the linked session log before doing anything else.**
 
 ---
 
 ## ⚠️ If you are a fresh session picking this up after a restart
 
-1. Read today's session log in full (`dev/2026/07/19/2026-07-19-0832-exec-code-log.md`) — it has the day's full arc.
+1. Read today's session log in full (`dev/2026/07/19/2026-07-19-0832-exec-code-log.md`) — full day arc, DAY-CLOSED.
 2. Check `git status` / `pwd` / branch immediately — if you're in a *newly-provisioned* worktree (not `mystifying-lumiere-8bebd3`), the collision is resolved on your end; note that explicitly in your first log entry.
-3. Everything below is current as of the polish pass above. Nothing is silently assumed — every open thread has its own status line.
+3. Everything below is current as of this STOP.
 
-## Today's operating mode: PM AFK, coordinating through Exec (still active)
+## Today's operating mode: PM AFK, coordinating through Exec
 
-PM roused all 11 standing agents this morning, went AFK, laptop restarted mid-afternoon (all sessions survived/resumed cleanly — crons intact, no lost work). PM is now planning to deliberately restart one of the worktree-colliding sessions (mine, CIO's, possibly PPM's) into a fresh worktree — resuming all sessions first, then picking one for the restart once contexts are handoff-ready. This file is written with that in mind.
+PM roused all 11 standing agents this morning, went AFK, laptop restarted mid-afternoon (all sessions survived/resumed cleanly — crons intact, no lost work; as of ~20:06 only Lead's and this session had resumed, per Lead's own memo, so the restart was broader than just the collision). PM is planning to deliberately restart one of the worktree-colliding sessions into a fresh worktree once all sessions are resumed and handoff-ready.
 
 ## Ship #052 — DRAFTED, routed to PM, awaiting fact-check/voice-pass
 
-Draft at `dev/active/weekly-ship-052-draft-2026-07-19.md` (synced to `docs/public/comms/drafts/`), pushed (`10e5b6a64`). Theme: "The Mechanism, Not the Memory." PM said they'd read it but hasn't given feedback yet as of this writing. **Do not touch the draft again until PM has read it and responded** — same discipline as #051.
+Draft at `dev/active/weekly-ship-052-draft-2026-07-19.md` (synced to `docs/public/comms/drafts/`), pushed (`10e5b6a64`). Theme: "The Mechanism, Not the Memory." PM said they'd read it but hasn't given feedback yet. **Do not touch the draft again until PM has read it and responded.**
 
-**Separately, PM asked for and received a concise internal (non-public) status report** covering Beta Blockers convergence specifically — verdict: converging, not spiraling (live GitHub-verified: 24→21→19 open since the Jul16 census, only 1 new issue filed in 3 days). That report was delivered in chat, not saved as a file — if a fresh session needs it, it's in this conversation's transcript, or can be regenerated from the same method (full board pull with totalCount reconciliation, join against `gh issue list --state all`, filter `sprint == "Beta Blockers - Hard Gates Only"`).
+An internal (non-public) status report on Beta Blockers convergence was also delivered in chat (verdict: converging, not spiraling — GitHub-verified 24→21→19 since the Jul16 census). **That "19" is now stale** — Lead closed #1400/#1401/#1409 today; get a fresh pull before citing a number again. Method if regenerating: full board pull with totalCount reconciliation, join against `gh issue list --state all`, filter `sprint == "Beta Blockers - Hard Gates Only"`.
 
-**Update since that report**: Lead closed #1400 + #1401 + #1409 today (see below) — the Beta Blockers open count is almost certainly lower than 19 now; worth a fresh pull before citing a number again, don't reuse 19 as current.
+## Worktree-collision defect — PM actively resolving
 
-## Worktree-collision defect — PM is actively resolving it (see today's operating mode above)
+CIO's fleet audit: isolated to this one directory, 21 of 22 others correctly paired — not a cohort discipline problem. Detection fix shipped (`duty-cycle-tick` Step 2a). PM ending one of the colliding sessions is in motion; no action needed from this session beyond staying handoff-ready.
 
-CIO's fleet audit (this morning): isolated to this one directory, 21 of 22 others correctly paired — not a cohort discipline problem. Detection fix shipped (`duty-cycle-tick` Step 2a). The only remaining cure — PM ending one of the colliding sessions — is now actively in motion as of this evening. No action needed from this session beyond staying handoff-ready.
+## #1386 gate coordination — HOLD for Lead's re-probe (new tonight)
 
-## Lead's substantive progress today — informational, no PM questions pending
+Arch stopped Lead's original #1394 fix design (it would have reversed the ratified ADR-078 D4 stateless-classifier constraint) and redirected to a re-probe instead: the live #1394 failure was recorded Jul 12, *before* B3's referent-resolution existed (built Jul 15-16) — so the core case may already be fixed with no new code. Lead is re-probing tonight. **Don't convene the CXO/PPM gate-run window until that result lands** — running it now risks testing a stale failure mode. Check for Lead's follow-up at next fire.
 
-- Q-batch items 1–3 actioned (#1438 → sprint+MVP; #1401 volume build started → **now CLOSED**, proven live; #1386 gate-run offer standing on CXO/PPM's window).
-- **#1400 + #1401 CLOSED** — the "testers lose data every deploy" class fully retired (connector prefs off local JSON onto the DB; uploads on a durable Fly volume, live-proven survival across a redeploy). A riding bug (#1450, encrypted bytes served raw on download) caught and fixed in the same pass.
-- **#1409 CLOSED** — ~4GB image-size cut (CPU-torch pin).
-- **CI's smoke gate green for the first time in 40+ runs** — four chronic root causes found and fixed in one pass (real-gates follow-up filed as #1449).
-- **#1394 root-caused further**: classification itself is the history-blind surface (not persistence/hydration/floor, which all work). Fix design is with Arch for ruling; buildable same-day once ruled. Directly relevant to the #1386 gate-run sequencing — worth running CXO/PPM's window *after* Arch's ruling if their availability allows, since Scenario B's turn-3/4 may become re-testable rather than needing re-scope.
-- **Family-3 executed + #1322 closed superseded** (Arch's ruling, −5,348 lines deleted) — separate thread, informational only.
+## Lead's progress today — informational, no PM questions pending
 
-## Tester signal — resolved, no action
+- #1400 + #1401 CLOSED (the "testers lose data every deploy" class fully retired) + #1409 CLOSED (~4GB image cut). CI's smoke gate green for the first time in 40+ runs. #1438 → sprint+MVP actioned. Family-3 executed, #1322 closed superseded.
+- Standing two (#1424 disposition, #1427 PROD-RECONNECT confirm) — still with PM, unchanged.
 
-PM clarified: not an actionable friction report, just a remark confirming a tester is interested but hasn't started onboarding yet. No relay to Lead needed.
+## Settings cleanup — done
 
-## Standing items — unchanged today, still open
+Fixed 3 startup permission-rule warnings in `.claude/settings.json` (2 unambiguous `Write→Edit` fixes, 1 ambiguous ask-rule removed per PM's direction after asking rather than guessing). Pushed (`80562629a`). **PM still needs to sync their local main checkout** to pick this up (checked-in file, can't touch PM's checkout directly) — `scripts/sync-pm-local.sh` is the sanctioned way if PM wants me to trigger it.
 
-- **Lead Dev's #1424/#1427 questions** — still awaiting PM's final calls from Jul 18; not blocking anything else.
-- **CXO/PPM #1386 coordination kickoff** (sent Jul 18 evening) — no reply yet.
+## Standing items — unchanged, still open
+
+- **Lead Dev's #1424/#1427 questions** — still awaiting PM's final calls from Jul 18.
+- **CXO/PPM #1386 coordination kickoff** (sent Jul 18 evening) — no reply yet; now explicitly on hold anyway (see above).
 - **Account migration (pipermorgan.ai)** — PM's own call, no deadline, low-urgency carry (17+ days now).
 - **Stale branches (MUX x3, xpoll-hook)** — no reply, not yet at a re-escalation point.
 
 ## STANDING
 
 - Bridge Log: current URL `https://claude.ai/code/artifact/68f209ae-94fc-484a-8e68-fbc53b3771f8`.
-- Full tracker reconciliation done 7/18 — given today's volume (Ship #052 drafted, several closures, the worktree-collision resolution in motion), a fresh full pass is probably due at the next natural opening rather than waiting out the normal cadence.
+- Full tracker reconciliation done 7/18 — a fresh full pass is due at the next natural opening given today's volume.
 
 ---
 
-*— Exec, 7/19 ~20:10 PT.*
+*— Exec, 7/19 21:15 PT.*
