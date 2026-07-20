@@ -39,9 +39,9 @@ CIO's fleet audit (this morning): isolated to this one directory, 21 of 22 other
 - **#1394 root-caused further**: classification itself is the history-blind surface (not persistence/hydration/floor, which all work). Fix design is with Arch for ruling; buildable same-day once ruled. Directly relevant to the #1386 gate-run sequencing — worth running CXO/PPM's window *after* Arch's ruling if their availability allows, since Scenario B's turn-3/4 may become re-testable rather than needing re-scope.
 - **Family-3 executed + #1322 closed superseded** (Arch's ruling, −5,348 lines deleted) — separate thread, informational only.
 
-## Tester signal — needs your call on next step
+## Tester signal — resolved, no action
 
-PM relayed, then corrected: a tester hasn't hit a personal rate limit, they're stuck unable to add their LLM key yet — real onboarding friction, not passive waiting. **Offered to relay to Lead directly; PM hadn't answered whether to do that or follow up with the tester first, as of this writing.** Check whether that's been resolved before re-raising.
+PM clarified: not an actionable friction report, just a remark confirming a tester is interested but hasn't started onboarding yet. No relay to Lead needed.
 
 ## Standing items — unchanged today, still open
 
