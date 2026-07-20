@@ -24,17 +24,26 @@ from services.database.repositories import (
     ConversationRepository,
     DBUserHistoryRepository,
 )
-from services.database.session_factory import AsyncSessionFactory
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
+
 from services.domain import models as domain
 from services.memory.user_history import UserHistoryService
 from services.shared_types import ConversationLifecycleState
 
+_DB_URL = "postgresql+asyncpg://piper:dev_changeme_in_production@localhost:5433/piper_morgan"
+
 
 @pytest.fixture
 async def db_session():
-    """Real Postgres session, scoped to the test."""
-    async with AsyncSessionFactory.session_scope() as session:
+    """Real Postgres session on a fresh per-test engine (#1452 wave 2 — the
+    global factory's shared pool gets poisoned by loop-bound connections in
+    full sweeps; see test_conversation_repository's fixture note)."""
+    engine = create_async_engine(_DB_URL)
+    maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    async with maker() as session:
         yield session
+    await engine.dispose()
 
 
 @pytest.fixture

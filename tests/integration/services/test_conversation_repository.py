@@ -7,18 +7,27 @@ from datetime import datetime
 from uuid import uuid4
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
 
 from services.database.models import ConversationDB, ConversationTurnDB
 from services.database.repositories import ConversationRepository
-from services.database.session_factory import AsyncSessionFactory
 from services.domain import models as domain
+
+_DB_URL = "postgresql+asyncpg://piper:dev_changeme_in_production@localhost:5433/piper_morgan"
 
 
 @pytest.fixture
 async def db_session():
-    """Get a database session for testing."""
-    async with AsyncSessionFactory.session_scope() as session:
+    """Fresh per-test engine (#1452 wave 2). The global AsyncSessionFactory's
+    shared pool accumulates loop-bound connections abandoned by earlier tests
+    in a full sweep — asyncpg 'another operation is in progress' at setup —
+    so these fixtures never borrow from it (the B15 house pattern)."""
+    engine = create_async_engine(_DB_URL)
+    maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    async with maker() as session:
         yield session
+    await engine.dispose()
 
 
 @pytest.fixture
