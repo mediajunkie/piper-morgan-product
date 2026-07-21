@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'what-the-running-system-found-4289c3dc-14e8-4374-aef9-553f6c42ea3b.png'
+alt: 'A master clockmaker studies the subtle wear patterns inside a still-running grandfather clock, discovering how the mechanism has truly been working over time.'
+caption: '"p"'
 ---
 
 # What the Running System Found
