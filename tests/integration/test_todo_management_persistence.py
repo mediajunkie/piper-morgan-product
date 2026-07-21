@@ -15,6 +15,49 @@ from services.domain.models import Todo
 from services.todo.todo_management_service import TodoManagementService
 
 
+async def _seed_user(prefix: str = "todo") -> str:
+    """Seed a real users row (owner_id is a UUID FK, #484/#1312); returns the id."""
+    from datetime import datetime, timezone
+    from uuid import uuid4
+
+    from sqlalchemy import text as _text
+
+    from services.database.session_factory import AsyncSessionFactory
+
+    uid = str(uuid4())
+    now = datetime.now(timezone.utc)
+    async with AsyncSessionFactory.session_scope_fresh() as s:
+        await s.execute(
+            _text(
+                "INSERT INTO users (id, username, email, is_active, is_verified, "
+                "created_at, updated_at, role, is_alpha) "
+                "VALUES (:id, :u, :e, true, true, :now, :now, 'user', true)"
+            ),
+            {"id": uid, "u": f"{prefix}_{uid[:8]}", "e": f"{prefix}_{uid[:8]}@test.example.com", "now": now},
+        )
+        await s.commit()
+    return uid
+
+
+async def _delete_user(uid: str) -> None:
+    from sqlalchemy import text as _text
+
+    from services.database.session_factory import AsyncSessionFactory
+
+    async with AsyncSessionFactory.session_scope_fresh() as s:
+        await s.execute(_text("DELETE FROM users WHERE id = :u"), {"u": uid})
+        await s.commit()
+
+
+@pytest.fixture
+async def test_user_id():
+    """Real seeded user (UUID): owner_id is a UUID FK to users (#484/#1312) —
+    the old short string id predates the hardening."""
+    uid = await _seed_user()
+    yield uid
+    await _delete_user(uid)
+
+
 class TestTodoManagementPersistence:
     """
     Integration tests proving TodoManagementService persists todos to database.
@@ -31,11 +74,6 @@ class TestTodoManagementPersistence:
     def service(self):
         """Create TodoManagementService instance."""
         return TodoManagementService()
-
-    @pytest.fixture
-    def test_user_id(self):
-        """Test user ID."""
-        return "test-user-integration"
 
     async def test_create_persists_to_database(self, service, test_user_id):
         """
@@ -241,8 +279,8 @@ class TestTodoManagementPersistence:
         """
         Verify todos are isolated by user_id.
         """
-        user1 = "user-1"
-        user2 = "user-2"
+        user1 = await _seed_user("iso1")
+        user2 = await _seed_user("iso2")
 
         # Create todo for user1
         todo1 = await service.create_todo(user_id=user1, text="User 1 todo", priority="medium")
@@ -265,6 +303,8 @@ class TestTodoManagementPersistence:
         # Cleanup
         await service.delete_todo(todo_id=todo1.id, user_id=user1)
         await service.delete_todo(todo_id=todo2.id, user_id=user2)
+        await _delete_user(user1)
+        await _delete_user(user2)
 
     async def test_complete_lifecycle_with_persistence(self, service, test_user_id):
         """
@@ -341,7 +381,7 @@ class TestTodoManagementServiceIntegration:
         assert hasattr(service, "knowledge_service")
         # It's OK if it's None (optional dependency)
 
-    async def test_transaction_management(self, test_user_id="test-transaction-user"):
+    async def test_transaction_management(self, test_user_id):
         """
         Verify TodoManagementService manages database transactions properly.
 
