@@ -50,6 +50,38 @@ class TestConversationManagerIntegration:
         )
 
     @pytest_asyncio.fixture(autouse=True)
+    async def _fresh_factory(self, monkeypatch):
+        """#1452: bind this file's DB access to a fresh per-test engine. The
+        manager's internals use the global AsyncSessionFactory, whose shared
+        pool arrives poisoned (loop-bound abandoned connections) in full
+        sweeps — asyncpg 'another operation is in progress' at setup. Patching
+        the scope here immunizes the tests without touching the live path
+        (switching the manager itself to fresh engines is a latency tradeoff
+        for Arch, not a test fix)."""
+        import contextlib
+
+        from sqlalchemy.ext.asyncio import AsyncSession as _AS
+        from sqlalchemy.ext.asyncio import create_async_engine as _cae
+        from sqlalchemy.orm import sessionmaker as _sm
+
+        import services.database.session_factory as _sf
+
+        engine = _cae(
+            "postgresql+asyncpg://piper:dev_changeme_in_production@localhost:5433/piper_morgan"
+        )
+        maker = _sm(engine, class_=_AS, expire_on_commit=False)
+
+        @contextlib.asynccontextmanager
+        async def _scope():
+            async with maker() as s:
+                yield s
+                await s.commit()
+
+        monkeypatch.setattr(_sf.AsyncSessionFactory, "session_scope", staticmethod(_scope))
+        yield
+        await engine.dispose()
+
+    @pytest_asyncio.fixture(autouse=True)
     async def _cleanup_test_conversations(self):
         """#1208: remove every row created under TEST_USER_ID after each test so
         these real-DB integration tests don't accumulate orphan conversations in
