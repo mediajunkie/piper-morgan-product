@@ -102,7 +102,10 @@ class TestStandupReminderIntegration:
 
                 # Verify message content
                 message = call_args[1]["text"]
-                assert "Good morning" in message
+                # day-part-agnostic (#1452: 'Good morning' failed afternoon CI
+                # runs — the greeting varies by wall clock; the standup content
+                # is the stable contract)
+                assert "Time for your daily standup" in message
                 assert "Web:" in message
                 assert "CLI:" in message
                 assert "API:" in message
