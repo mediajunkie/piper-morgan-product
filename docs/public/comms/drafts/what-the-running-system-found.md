@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'what-the-running-system-found-4289c3dc-14e8-4374-aef9-553f6c42ea3b.png'
 alt: ''
 caption: ''
 ---
