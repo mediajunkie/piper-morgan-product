@@ -306,6 +306,11 @@ async def e2e_auth_headers(e2e_client):
 
 
 class TestCanonicalRouting:
+    # #1452: this tier drives the LIVE classifier (LLM calls) — the marker was
+    # missing, so keyless sweeps (CI + local enumeration) ran it and failed all
+    # of it; 227 of the burn-down backlog's entries were this one omission.
+    pytestmark = pytest.mark.llm
+
     """Verify each canonical query reaches the expected routing destination.
 
     Deterministic — asserts on routing metadata, not LLM content.
@@ -342,6 +347,11 @@ class TestCanonicalRouting:
 
 
 class TestCanonicalResponseStructure:
+    # #1452: this tier drives the LIVE classifier (LLM calls) — the marker was
+    # missing, so keyless sweeps (CI + local enumeration) ran it and failed all
+    # of it; 227 of the burn-down backlog's entries were this one omission.
+    pytestmark = pytest.mark.llm
+
     """Verify response structure is sound — non-empty, no errors, no dead ends.
 
     Deterministic — no LLM judge cost.
@@ -451,6 +461,11 @@ PASS: total >= 7, no dimension = 0. MARGINAL: total 5-6, no zeros. FAIL: total <
 
 @pytest.mark.skipif(not JUDGE_ENABLED, reason="CANONICAL_JUDGE_ENABLED not set")
 class TestCanonicalQuality:
+    # #1452: this tier drives the LIVE classifier (LLM calls) — the marker was
+    # missing, so keyless sweeps (CI + local enumeration) ran it and failed all
+    # of it; 227 of the burn-down backlog's entries were this one omission.
+    pytestmark = pytest.mark.llm
+
     """LLM-as-judge quality scoring. Requires CANONICAL_JUDGE_ENABLED=true.
 
     Cost: ~$0.01 per query at Sonnet pricing. ~$0.40 for full 61-query run.
@@ -592,6 +607,11 @@ _DOC_ANTECEDENT_PUNT = "i need to know which document"
 
 
 class TestCanonicalMultiTurn:
+    # #1452: this tier drives the LIVE classifier (LLM calls) — the marker was
+    # missing, so keyless sweeps (CI + local enumeration) ran it and failed all
+    # of it; 227 of the burn-down backlog's entries were this one omission.
+    pytestmark = pytest.mark.llm
+
     """#1213 P3: deterministic multi-turn antecedent guard (no LLM judge).
 
     Cheap every-PR regression check for #1122/#1207, complementing the gated
@@ -671,6 +691,11 @@ class TestCanonicalMultiTurn:
 
 
 class TestCanonicalGroundTruth:
+    # #1452: this tier drives the LIVE classifier (LLM calls) — the marker was
+    # missing, so keyless sweeps (CI + local enumeration) ran it and failed all
+    # of it; 227 of the burn-down backlog's entries were this one omission.
+    pytestmark = pytest.mark.llm
+
     """#1213 P1: seed known state, assert a data-bearing query reflects it.
 
     Catches stale/empty/fabricated-data wiring bugs that route + structure tiers
