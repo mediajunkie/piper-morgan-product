@@ -59,7 +59,7 @@ slack:
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 # Load config
                 service = SlackConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-slack-config")
 
                 # Verify values from PIPER.user.md
                 assert config.bot_token == "xoxb-test-from-file"
@@ -104,7 +104,7 @@ slack:
             with patch.object(Path, "exists", return_value=True):
                 with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                     service = SlackConfigService()
-                    config = service.get_config()
+                    config = service.get_config("test-user-slack-config")
 
                     # Verify env vars override user config
                     assert config.bot_token == "xoxb-env-override"
@@ -136,7 +136,7 @@ slack:
         with patch.object(Path, "exists", return_value=True):
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 service = SlackConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-slack-config")
 
                 # Verify defaults
                 assert config.bot_token == ""
@@ -153,7 +153,7 @@ slack:
         with patch.object(Path, "exists", return_value=False):
             # Should not raise exception
             service = SlackConfigService()
-            config = service.get_config()
+            config = service.get_config("test-user-slack-config")
 
             # Should use defaults
             assert config.bot_token == ""
@@ -180,7 +180,7 @@ slack:
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 # Should not raise exception
                 service = SlackConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-slack-config")
 
                 # Should use defaults
                 assert config.bot_token == ""
@@ -206,7 +206,7 @@ slack:
         with patch.object(Path, "exists", return_value=True):
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 service = SlackConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-slack-config")
 
                 # Verify authentication section properly parsed
                 assert config.bot_token == "xoxb-secret-test-token-123"
@@ -234,7 +234,7 @@ slack:
         with patch.object(Path, "exists", return_value=True):
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 service = SlackConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-slack-config")
 
                 # Should use defaults for authentication
                 assert config.bot_token == ""
@@ -266,7 +266,7 @@ slack:
         with patch.object(Path, "exists", return_value=True):
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 service = SlackConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-slack-config")
 
                 # Verify API config
                 assert config.api_base_url == "https://custom.slack.com/api"
@@ -295,7 +295,7 @@ slack:
         with patch.object(Path, "exists", return_value=True):
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 service = SlackConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-slack-config")
 
                 # Verify behavior config
                 assert config.default_channel == "engineering"
@@ -323,7 +323,7 @@ slack:
         with patch.object(Path, "exists", return_value=True):
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 service = SlackConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-slack-config")
 
                 # Verify feature flags
                 assert config.enable_webhooks is False
@@ -350,7 +350,7 @@ slack:
         with patch.object(Path, "exists", return_value=True):
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 service = SlackConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-slack-config")
 
                 # Verify OAuth config
                 assert config.client_id == "test-client-id-123"
@@ -387,7 +387,7 @@ slack:
             with patch.object(Path, "exists", return_value=True):
                 with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                     service = SlackConfigService()
-                    config = service.get_config()
+                    config = service.get_config("test-user-slack-config")
 
                     # Verify priority order:
                     # 1. bot_token from env var (highest)
@@ -428,7 +428,7 @@ slack:
         with patch.object(Path, "exists", return_value=True):
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 service = SlackConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-slack-config")
 
                 # Verify partial config loads
                 assert config.bot_token == "xoxb-partial-token"
@@ -446,7 +446,7 @@ slack:
         with patch.object(Path, "exists", return_value=True):
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 service = SlackConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-slack-config")
 
                 # Should use all defaults
                 assert config.bot_token == ""
@@ -469,7 +469,7 @@ Just some text here.
         with patch.object(Path, "exists", return_value=True):
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 service = SlackConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-slack-config")
 
                 # Should gracefully fall back to defaults
                 assert config.bot_token == ""
@@ -494,7 +494,7 @@ behavior:
         with patch.object(Path, "exists", return_value=True):
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 service = SlackConfigService()
-                config = service.get_config()
+                config = service.get_config("test-user-slack-config")
 
                 # Verify direct pattern works
                 assert config.bot_token == "xoxb-direct-pattern"
@@ -524,7 +524,7 @@ slack:
             with patch.object(Path, "exists", return_value=True):
                 with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                     service = SlackConfigService()
-                    config = service.get_config()
+                    config = service.get_config("test-user-slack-config")
 
                     # Verify env var overrides
                     assert config.requests_per_minute == 120
@@ -552,10 +552,10 @@ class TestSlackConfigServiceBasics:
         service = SlackConfigService()
 
         # First call loads config
-        config1 = service.get_config()
+        config1 = service.get_config("test-user-slack-config")
 
         # Second call should return same instance (cached)
-        config2 = service.get_config()
+        config2 = service.get_config("test-user-slack-config")
 
         assert config1 is config2
 
@@ -578,7 +578,7 @@ slack:
         with patch.object(Path, "exists", return_value=True):
             with patch.object(Path, "read_text", return_value=piper_config.read_text()):
                 service = SlackConfigService()
-                assert service.is_configured() is True
+                assert service.is_configured("test-user-slack-config") is True
 
         # Without bot token (should return False)
         empty_config = tmp_path / "PIPER.empty.md"
@@ -587,4 +587,4 @@ slack:
         with patch.object(Path, "exists", return_value=True):
             with patch.object(Path, "read_text", return_value=empty_config.read_text()):
                 service2 = SlackConfigService()
-                assert service2.is_configured() is False
+                assert service2.is_configured("test-user-slack-config") is False

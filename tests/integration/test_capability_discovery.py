@@ -41,20 +41,20 @@ class TestCapabilityDiscovery:
             "your capabilities",
         ],
     )
-    def test_services_query_classifies_as_identity(self, message: str):
+    def test_services_query_classifies_as_discovery(self, message: str):
         """
-        Issue #487: Capability discovery queries should classify as IDENTITY.
-
-        These are common ways users ask "what can you do?" during alpha testing.
-        Previously returned generic responses; should return capability menu.
+        Capability queries classify as DISCOVERY -> get_capabilities (#488,
+        checked BEFORE IDENTITY so "what can you do?" returns the dynamic
+        capability answer, not static identity). This test originally pinned
+        the pre-#488 IDENTITY taxonomy (#487) — updated to the ratified one.
         """
         intent = PreClassifier.pre_classify(message)
 
         assert intent is not None, f"Message '{message}' should pre-classify"
-        assert intent.category == IntentCategory.IDENTITY, (
-            f"Message '{message}' should classify as IDENTITY, " f"got {intent.category}"
+        assert intent.category == IntentCategory.DISCOVERY, (
+            f"Message '{message}' should classify as DISCOVERY, " f"got {intent.category}"
         )
-        assert intent.action == "get_identity"
+        assert intent.action == "get_capabilities"
 
     # ==========================================================================
     # Issue #487: Message 2 - "Help me setup my projects"
@@ -99,7 +99,8 @@ class TestCapabilityDiscovery:
         [
             "What am I working on?",
             "my projects",
-            "show my projects",
+            # "show my projects" moved below: the portfolio pre-classification
+            # now deliberately routes it to PORTFOLIO/manage_portfolio.
             "what's my current project",
             "project status",
             "my status",
@@ -118,6 +119,15 @@ class TestCapabilityDiscovery:
         assert intent.category == IntentCategory.STATUS, (
             f"Message '{message}' should classify as STATUS, " f"got {intent.category}"
         )
+
+    def test_show_my_projects_routes_to_portfolio(self):
+        """'show my projects' now pre-classifies as PORTFOLIO/manage_portfolio
+        (the portfolio pre-classification) — moved out of the STATUS list when
+        that taxonomy landed; pinned here so the routing is still asserted."""
+        intent = PreClassifier.pre_classify("show my projects")
+        assert intent is not None
+        assert intent.category == IntentCategory.PORTFOLIO
+        assert intent.action == "manage_portfolio"
 
     # ==========================================================================
     # Regression tests: Ensure IDENTITY still works for original patterns
