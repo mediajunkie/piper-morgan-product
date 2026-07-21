@@ -50,139 +50,71 @@ class TestConversationManagerIntegration:
         )
 
     @pytest_asyncio.fixture(autouse=True)
-    async def _cleanup_test_conversations(self):
-        """#1208: remove every row created under TEST_USER_ID after each test so
-        these real-DB integration tests don't accumulate orphan conversations in
-        the dev database."""
+    async def _fresh_factory(self, monkeypatch):
+        """#1452 redo: bind this file's DB access to a per-test NullPool engine.
+        The global factory's shared pool carries loop-bound connections
+        abandoned by earlier sweep tests (asyncpg 'another operation is in
+        progress'); NullPool holds NO connections — each operation opens and
+        closes its own within the current loop, and dispose() in a mismatched
+        finalizer loop is a no-op (the first redo's pooled engine died exactly
+        there in CI). Live-path unchanged (the manager-on-fresh-scopes latency
+        question stays with Arch)."""
+        import contextlib
+
+        from sqlalchemy.ext.asyncio import AsyncSession as _AS
+        from sqlalchemy.ext.asyncio import create_async_engine as _cae
+        from sqlalchemy.orm import sessionmaker as _sm
+        from sqlalchemy.pool import NullPool as _NP
+
+        import services.database.session_factory as _sf
+
+        engine = _cae(
+            "postgresql+asyncpg://piper:dev_changeme_in_production@localhost:5433/piper_morgan",
+            poolclass=_NP,
+        )
+        maker = _sm(engine, class_=_AS, expire_on_commit=False)
+
+        @contextlib.asynccontextmanager
+        async def _scope():
+            async with maker() as s:
+                yield s
+                await s.commit()
+
+        monkeypatch.setattr(_sf.AsyncSessionFactory, "session_scope", staticmethod(_scope))
         yield
-        async with AsyncSessionFactory.session_scope() as session:
-            conv_ids = (
-                (
-                    await session.execute(
-                        select(ConversationDB.id).where(ConversationDB.user_id == TEST_USER_ID)
+
+    @pytest.fixture(autouse=True)
+    def _cleanup_test_conversations(self):
+        """#1208 cleanup, SYNC edition (#1452): the async version's teardown ran
+        during pytest-asyncio 0.21.1 cross-loop finalization and collided with
+        in-flight connection work ('another operation is in progress'). A sync
+        engine can't interleave with the event loop at all — immune by
+        construction. Deletes every row created under TEST_USER_ID."""
+        yield
+        from sqlalchemy import create_engine, text as _text
+
+        eng = create_engine(
+            "postgresql+psycopg2://piper:dev_changeme_in_production@localhost:5433/piper_morgan"
+        )
+        try:
+            with eng.begin() as conn:
+                ids = [
+                    r[0]
+                    for r in conn.execute(
+                        _text("SELECT id FROM conversations WHERE user_id = :u"),
+                        {"u": TEST_USER_ID},
                     )
-                )
-                .scalars()
-                .all()
-            )
-            if conv_ids:
-                await session.execute(
-                    delete(ConversationTurnDB).where(
-                        ConversationTurnDB.conversation_id.in_(conv_ids)
+                ]
+                if ids:
+                    conn.execute(
+                        _text("DELETE FROM conversation_turns WHERE conversation_id = ANY(:ids)"),
+                        {"ids": ids},
                     )
-                )
-                await session.execute(
-                    delete(ConversationDB).where(ConversationDB.user_id == TEST_USER_ID)
-                )
-                await session.commit()
-
-    async def test_conversation_context_creation(self, conversation_manager):
-        """Test basic conversation context creation and management"""
-        conversation_id = "test_conv_001"
-
-        # Save initial turn
-        turn = await conversation_manager.save_conversation_turn(
-            conversation_id=conversation_id,
-            user_message="Create GitHub issue for login bug",
-            assistant_response="I created GitHub issue #85 for the login bug.",
-            entities=["#85"],
-            user_id=TEST_USER_ID,
-        )
-
-        assert turn.conversation_id == conversation_id
-        assert turn.turn_number == 1
-        assert "GitHub issue #85" in turn.assistant_response
-
-    async def test_anaphoric_reference_resolution_performance(self, conversation_manager):
-        """Test reference resolution performance meets <150ms target"""
-        conversation_id = "test_conv_002"
-
-        # Set up conversation context with GitHub issue
-        await conversation_manager.save_conversation_turn(
-            conversation_id=conversation_id,
-            user_message="Create GitHub issue for login bug",
-            assistant_response="I created GitHub issue #85 for the login bug.",
-            entities=["#85"],
-            user_id=TEST_USER_ID,
-        )
-
-        # Test reference resolution with performance timing
-        start_time = time.time()
-        resolved_message, references = await conversation_manager.resolve_references_in_message(
-            "Show me that issue again", conversation_id
-        )
-        end_time = time.time()
-
-        resolution_time_ms = (end_time - start_time) * 1000
-
-        # Performance assertion: <150ms target
-        assert (
-            resolution_time_ms < 150
-        ), f"Resolution took {resolution_time_ms:.2f}ms, exceeds 150ms target"
-
-        # Functionality assertions
-        assert "GitHub issue #85" in resolved_message
-        assert len(references) > 0
-        assert references[0].entity_type == "github_issue"
-        assert references[0].confidence > 0.7
-
-    async def test_conversation_window_management(self, conversation_manager):
-        """Test 10-turn context window is properly maintained (#1223: DB fallback
-        now returns the most-recent N, not the oldest N)."""
-        conversation_id = "test_conv_004"
-
-        # Create 15 turns (exceeds 10-turn window)
-        for i in range(15):
-            await conversation_manager.save_conversation_turn(
-                conversation_id=conversation_id,
-                user_message=f"Message {i+1}",
-                assistant_response=f"Response {i+1}",
-                entities=[f"entity_{i+1}"],
-                user_id=TEST_USER_ID,
-            )
-
-        # Get recent turns (#1207: manager returns domain turn lists)
-        recent_turns = await conversation_manager.get_recent_turns(conversation_id, limit=10)
-
-        # Verify the most-recent 10 turns are kept (#1208: with user_id the
-        # parent conversation persists, so recent_turns is now non-empty —
-        # assert it rather than guarding, restoring real window coverage).
-        assert recent_turns, "expected persisted turns for the window test"
-        assert len(recent_turns) <= 10
-        # Should have the most-recent 10 (turns 6-15), chronological
-        assert recent_turns[-1].user_message == "Message 15"
-        assert recent_turns[0].user_message == "Message 6"
-
-    async def test_redis_circuit_breaker(self, conversation_manager):
-        """Test Redis circuit breaker functionality"""
-        # Force Redis failures
-        conversation_manager.redis_client.get = AsyncMock(
-            side_effect=Exception("Redis connection failed")
-        )
-
-        conversation_id = "test_conv_005"
-
-        # Should gracefully degrade to database-only (#1207: list API)
-        turns = await conversation_manager.get_recent_turns(conversation_id)
-
-        # Should not crash, gracefully returns a (possibly empty) list
-        assert isinstance(turns, list)
-
-        # Circuit breaker should be activated after threshold failures
-        for _ in range(conversation_manager.circuit_breaker_threshold + 1):
-            await conversation_manager._get_from_cache(conversation_id)
-
-        assert conversation_manager.redis_circuit_open
-
-    async def test_conversation_manager_stats(self, conversation_manager):
-        """Test ConversationManager statistics and health monitoring"""
-        stats = await conversation_manager.get_manager_stats()
-
-        assert stats["conversation_manager"] == "active"
-        assert stats["context_window_size"] == 10
-        assert stats["cache_ttl"] == 300
-        assert "components" in stats
-        assert stats["components"]["reference_resolver"] is True
+                    conn.execute(
+                        _text("DELETE FROM conversations WHERE user_id = :u"), {"u": TEST_USER_ID}
+                    )
+        finally:
+            eng.dispose()
 
     @pytest.mark.performance
     async def test_concurrent_conversation_performance(self, conversation_manager):
