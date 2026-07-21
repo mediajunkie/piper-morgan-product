@@ -20,7 +20,7 @@ The migration happened in the afternoon. The new session picked up from the carr
 
 Saturday, a number that had been wrong for six weeks stopped being wrong.
 
-The canonical test suite had been running with an error in its own harness — a recursion that accumulated across the in-process boots the test runner used. The result was a suite that reported 49 passes and 194 errors, which looked like a lot of real failures. Most of them weren't. Most of them were the harness leak.
+The canonical test suite had been running with an error in its own harness — a recursion that accumulated across the in-process boots the test runner used. The result was a suite that reported 49 passes and 194 errors, which looked like a lot of real failures. Most of them were the harness leak.
 
 Lead Developer diagnosed it, wrote the boot-once fix, and ran the suite. The new result: 242 passes, 1 failure, 0 errors. The single failure was a real one, which was better than the alternative.
 
@@ -28,13 +28,13 @@ The gate on M3 — the current milestone — had been waiting for the canonical 
 
 # The declaration
 
-Late Saturday afternoon, PM was using Piper via Slack to review the remaining M3 issues. Not reviewing the issue tracker through a browser. Using the product, asking it questions about its own backlog, getting substantive answers back.
+Late Saturday afternoon, I was using Piper via Slack to review the remaining M3 issues. Not reviewing the issue tracker through a browser. Using the product, asking it questions about its own backlog, getting substantive answers back.
 
-"It is a toy still," PM wrote, "but it is very cool."
+"It is a toy still," I wrote, "but it is very cool."
 
 And then, later: *"alpha — almost beta — Piper Morgan is a good PM assistant."*
 
-That's not a technical assessment. It's not a test suite result or a benchmark score or a milestone gate. It's the judgment of someone who's been building the thing, using it for real work, and arrived at an evaluation of whether it actually does what it was built to do.
+It's the judgment of someone who's been building the thing, using it for real work, and arrived at an evaluation of whether it actually does what it was built to do — not a technical assessment, not a test suite result or a benchmark score or a milestone gate.
 
 The distance from "alpha" to "beta" is whatever the person doing the work decides. "Almost" is an honest answer. "A good PM assistant" is the part that matters.
 
