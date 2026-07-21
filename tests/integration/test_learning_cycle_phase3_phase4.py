@@ -18,6 +18,7 @@ from types import SimpleNamespace
 from uuid import UUID
 
 import pytest
+import pytest_asyncio
 from sqlalchemy import and_, delete, select
 
 from services.database.models import LearnedPattern, LearningSettings
@@ -34,6 +35,38 @@ TEST_USER_ID = UUID("3f4593ae-5bc9-468d-b08d-8c4c02a5b963")
 # these direct-call tests pass a stand-in carrying the test user_id (the route
 # reads only current_user.user_id).
 _TEST_CLAIMS = SimpleNamespace(user_id=TEST_USER_ID)
+
+
+@pytest_asyncio.fixture(autouse=True)
+async def _fresh_factory(monkeypatch):
+    """#1452 (the proven wave-6 recipe): route functions these tests call use
+    the global AsyncSessionFactory internally; in a full sweep its shared pool
+    arrives poisoned (loop-bound abandoned connections) and the routes error.
+    Patch the scope to a NullPool engine — no pooled connections to inherit,
+    no engine dispose needed at teardown."""
+    import contextlib
+
+    from sqlalchemy.ext.asyncio import AsyncSession as _AS
+    from sqlalchemy.ext.asyncio import create_async_engine as _cae
+    from sqlalchemy.orm import sessionmaker as _sm
+    from sqlalchemy.pool import NullPool as _NP
+
+    import services.database.session_factory as _sf
+
+    engine = _cae(
+        "postgresql+asyncpg://piper:dev_changeme_in_production@localhost:5433/piper_morgan",
+        poolclass=_NP,
+    )
+    maker = _sm(engine, class_=_AS, expire_on_commit=False)
+
+    @contextlib.asynccontextmanager
+    async def _scope():
+        async with maker() as s:
+            yield s
+            await s.commit()
+
+    monkeypatch.setattr(_sf.AsyncSessionFactory, "session_scope", staticmethod(_scope))
+    yield
 
 
 @pytest.fixture

@@ -202,6 +202,20 @@ jobs:
           grep "backlog size" /tmp/gate.out >> $GITHUB_STEP_SUMMARY || true
           exit $GATE
 
+      # #1452: free diagnostics — when the gate flags NEW failures, rerun just
+      # those nodes with tracebacks so the log carries the WHY (tb=no above
+      # keeps the main sweep readable; this step only fires on failure).
+      - name: Diagnose new failures with tracebacks
+        if: failure()
+        run: |
+          NODES=$(grep -E "^  \+ tests/" /tmp/gate.out | awk '{print $2}' | head -25 | tr '\n' ' ')
+          if [ -n "$NODES" ]; then
+            python -m pytest $NODES -q --tb=short \
+              -o addopts="--import-mode=importlib" || true
+          else
+            echo "no new-failure nodes to diagnose"
+          fi
+
 
   # Fossil jobs removed 2026-07-19 (#1436 CI-honesty pass): performance-regression-check,
   # performance-benchmarks (GREAT-5), tiered-coverage-enforcement. All three enforced
