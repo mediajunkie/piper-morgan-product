@@ -1,23 +1,16 @@
-# Lead Dev — carry-forward (rewritten mid-day 2026-07-19)
+# Lead Dev — carry-forward (rewritten at STOP 2026-07-20)
 
-## Today so far (Sunday, PM afk — coordinating via Exec)
-Family-3 EXECUTED (Arch's ruling; −5,348 lines; #1322 closed superseded; ceilings silent_death 234 / todo 74 / mypy 40-405-249-209 all locked). **CI chronic-red being drained**: keychain import-raise fixed (#1382 semantics: fail-closed at operations), mypy-gate blind-to-absence guard, 3 fossil jobs + 8 fossil scripts deleted (#1449 tracks real gates), venv-guard landmine defused. arch-enforcement GREEN. #1438 → sprint+MVP (PM-ratified via Exec). **#1401 built + #1450 (ciphertext downloads) found+fixed riding**; volume created; deploy IN FLIGHT.
+## Where things stand
+**CI is trustworthy**: Tests workflow GREEN (first in visible history, 2026-07-20); the #1452 burn-down gate governs the full suite (backlog 570, shrink-locked, tags fixture/triage/flaky/regression). **Data-loss pair closed** (#1400/#1401). **#1394 turn-3 fixed + deployed (v25)**; #1393 fix also live — one #1386 Scenario-B re-run verifies both. Beta at v25 (volume-durable uploads, CPU-torch image, B3 wired).
 
-## Immediately open (this session)
-1. **Deploy verify** (#1401): upload → redeploy → download survives + is plaintext; then close #1401 + #1450 with evidence (close-issue-properly).
-2. **CI watch @c4dadf45c**: smoke should go green (first time in 40+ runs); Full Test Suite runs for the first time in weeks — capture its failure tail, file/triage (first known member: pre-existing preferences-questionnaire mock-drift failure; also #1451 settings-template nav).
-3. Report deploy + CI outcome to Exec (PM's coordination channel today).
+## Queue (next fires)
+1. **Burn-down waves** (#1452): temporal_context re-pinning (16) → conversation_manager app-internal pool cure (9, session_scope_fresh-shaped app work) → pg15/pg16 search diagnosis (1) → triage glances (555, clusters first).
+2. **On Arch's #1432 ruling**: orphan-pair delete ({LLMIntentClassifier, llm_classifier_factory}) with the June singleton-history archaeology as evidence; note my Phase-4-lives-only-in-the-orphan finding may reshape the ruling.
+3. **On Exec's #1386 window**: gate-run support (canonical suite + 3 scenarios + sign-off; Scenario-B turn-1 verifies #1393, turn-3 verifies #1394).
+4. Standing sprint: #1419 epic, #1423 clusters (silent-death 234), #1433 (gated on Arch design ratification), UUID pass, #1438 (learning-loop symptom — in sprint per PM).
 
-## Queue after that
-- #1393 leak probe; #1394 D5 probe; #1409 (torch pin); #1410 (1 red test).
-- #1423 un-swallow clusters (ceiling 234) + UUID-vs-str pass + #1433 ledger.
-- Spatial review: my lane DONE; new datapoint sent to Arch (consumer_core's remaining importers = cold adapter layer). Arch synthesizing; CXO voted (b) keep-live+park-cold; PPM doing dedicated pass.
-- #1386 gate-run: Exec coordinating (CXO/PPM availability); reopened after autoclose (PPM caught).
-
-## PM-attention (with PM via Exec relay)
-- #1424 close-vs-keep (Exec's framing passed to PM). #1427 PROD-RECONNECT confirm.
-- NEW none from today — decisions all rode ratified rulings.
+## PM-attention (unchanged)
+#1424 close-vs-keep (my lean: close; ratchet work has homes #1423/#1452/#1419). #1427 PROD-RECONNECT confirm.
 
 ## Standing
-- Cron d9471ac8 armed (17 6,9,12,15,18,21). Worktree interesting-beaver.
-- Spatial deletions HELD. ENCRYPTION_MASTER_KEY never in repo/chat. Droplet ssh root@146.190.151.63 (NOT the `droplet` alias).
+Cron e1106eb5 armed (17 6,9,12,15,18,21; session-only — re-arm after any re-attach, Gap-C). Build work in worktrees (current: lead-1452-harness); main checkout = mail/logs only, NEVER destructive git, never silence push output. Spatial deletions HELD (review in progress; CXO voted keep-live+park-cold; PPM dedicated pass pending). ENCRYPTION_MASTER_KEY never in repo/chat. Droplet ssh root@146.190.151.63 (never the `droplet` alias).
