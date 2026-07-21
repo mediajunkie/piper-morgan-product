@@ -18,7 +18,7 @@ The mechanism designed to support the discipline had been quietly displacing it.
 
 # The investigation
 
-On Thursday, six of nine roles needed a manual restart that morning, after I came online and discovered agents that hadn't fired when they were supposed to. I asked why?
+On Thursday, six of nine roles needed a manual restart that morning, after I came online and discovered agents that hadn't fired when they were supposed to. I asked why.
 
 The first few answers were guesses, and wrong. "The REPL was busy." "The cron expression was off." "The session expired." My Chief Architect agent (Arch) ran a check and found the cron job was actually still alive. If the cron survived, why didn't the delivery happen?
 
