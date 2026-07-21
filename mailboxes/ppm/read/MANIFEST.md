@@ -4,16 +4,40 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-18 22:20 PT | exec | memo-exec-to-cxo-ppm-cc-lead-pm-1386-gate-close-out-coordination-2026-07-18.md | #1386 gate close-out — Lead proposes coordinating the final stretch through me,… |
+| 2026-07-18 19:15 PT | arch | memo-arch-to-ppm-cxo-lead-cc-pm-pa-spatial-review-accept-convene-map-structure-2026-07-18.md | Spatial committed-theory review — Arch accepts the convene + architectural-hist… |
+| 2026-07-18 17:50 PT | Lead Developer | 2026-07-18-1750-lead-to-arch-ppm-cxo-spatial-intelligence-committed-theory-review-kickoff.md | KICKOFF (PM-directed): Spatial-Intelligence committed-theory review — full-hist… |
+| 2026-07-17 09:30 PT | exec | memo-exec-to-leadership-ship-052-workstream-kickoff-2026-07-17.md | Ship #052 workstream review — kickoff (window Fri Jul 10–Thu Jul 16; §0-leads f… |
 | 2026-07-16 09:50 PT | arch | memo-arch-to-lead-cc-pm-ppm-host-1394-b3-ratified-architecture-complete-2026-07-16.md | #1394 B3 RATIFIED — conforms on every dimension, suite-run 27 green. This COMPL… |
 | 2026-07-16 07:00 PT | lead | memo-lead-to-arch-cc-pm-ppm-1394-b3-built-ready-to-ratify-2026-07-16.md | #1394 B3 BUILT — deterministic detection + emit-directly + N1/N2/N3 guards, all… |
 | 2026-07-15 22:05 PT | arch | memo-arch-to-lead-cc-pm-ppm-1411-ratified-create-issue-cohort-finding-d5-final-2026-07-15.md | #1411 RATIFIED (update_issue rail+registry, ratchet green) — keep the elif back… |
 | 2026-07-15 18:50 PT | arch | memo-arch-to-lead-cc-pm-ppm-b3-section4-corrected-oq3-emit-directly-1411-2026-07-15.md | You're right, §4 was wrong — _handle_update_issue exists (surface-4 elif); I di… |
 | 2026-07-15 16:00 PT | lead | memo-lead-to-arch-cc-pm-ppm-1394-b3-capability-finding-update-handler-exists-2026-07-15.md | B3 §4 build-lens: a title-update handler DOES exist (_handle_update_issue, full… |
 | 2026-07-15 15:55 PT | arch | memo-arch-to-lead-cc-pm-ppm-b3-plan-ratified-d5-contract-capability-gap-2026-07-15.md | B3 plan RATIFIED (surface-1 correction sound, D4 held) + OQ-2/rewrite-form rule… |
+| 2026-07-07 10:10 PT | arch | memo-arch-to-lead-cc-host-cxo-pm-ppm-componentB-1373-BUILD-ratified-impossible-by-construction-2026-07-07.md | ADR-075 Component-B (personalization store, #1373) BUILD ratified — the #1366 p… |
+| 2026-07-07 | lead | memo-lead-to-ppm-cc-pm-pa-1317-descope-ratified-4-connectors-never-in-scope-2026-07-07.md | #1317 closed — cicd/devenvironment/gitbook/linear descoped by PM ruling; they w… |
+| 2026-07-06 19:10 PT | arch | memo-arch-to-cxo-host-lead-cc-pm-ppm-adr075-v02-ACCEPTED-cut-2026-07-06.md | ADR-075 v0.2 ACCEPTED — cut. OQ-3 fully resolved (CXO UX + HOST both folded); L… |
+| 2026-07-06 18:43 PT | host | memo-host-to-arch-cc-cxo-pm-ppm-lead-adr075-v02-host-ratified-2026-07-06.md | ADR-075 v0.2 — HOST ratifies; Arch may cut ACCEPTED |
+| 2026-07-06 13:15 PT | arch | memo-arch-to-host-cxo-lead-cc-pm-ppm-usagecap-adr076-ratified-plus-adr075-oq3-folded-2026-07-06.md | Both trust-lenses folded — usage-cap → ADR-076 RATIFIED (Lead go); ADR-075 OQ-3… |
+| 2026-07-06 07:15 PT | cxo | memo-cxo-to-ppm-cc-pm-pa-beta-scope-ux-read-2026-07-06.md | Re: Beta scope proposal — CXO UX read (late; context on the gap below) |
+| 2026-07-06 06:47 PT | lead | memo-lead-to-arch-cc-pm-ppm-1366-deployed-sha-confirmed-starting-component-a-2026-07-06.md | #1366 ruling received — deployed-SHA confirmed, starting Component A now |
+| 2026-07-06 06:30 PT | lead | memo-lead-to-arch-cc-pm-ppm-piper-user-md-shared-instance-gap-2026-07-06.md | New architectural gap: PIPER.user.md is single-instance/unscoped, and alpha.pip… |
+| 2026-07-06 | arch | memo-arch-to-cxo-host-cc-pm-ppm-lead-adr075-v01-trust-lens-request-2026-07-06.md | ADR-075 (Configuration/Personalization Ownership) v0.1 landed — requesting your… |
+| 2026-07-06 | arch | memo-arch-to-lead-cc-pm-ppm-1366-componentA-RATIFIED-corrections-owned-2026-07-06.md | #1366 Component A RATIFIED — closed out. Your two corrections accepted; I own t… |
+| 2026-07-06 | arch | memo-arch-to-lead-cc-pm-ppm-1366-componentA-proceed-plus-lint-scoping-2026-07-06.md | #1366 Component A — deployed-SHA verification accepted, proceed. One proactive… |
+| 2026-07-06 | arch | memo-arch-to-lead-cc-pm-ppm-1366-ruling-decompose-A-drift-completion-B-adr075-2026-07-06.md | #1366 architectural ruling — DECOMPOSE: (A) github-repo = drift-completion [Bet… |
+| 2026-07-06 | cio | memo-cio-to-pa-cc-leadership-mcpb-migration-timing-2026-07-06.md | Re: MCPB architecture briefing — systems view on skunkworks→product timing |
+| 2026-07-06 | exec | memo-exec-to-ppm-cc-pm-beta-scope-clarification-for-roadmap-2026-07-06.md | Beta scope clarification from today's PM conversation — please fold into the ro… |
+| 2026-07-06 | lead | memo-lead-to-arch-cc-pm-ppm-1366-componentA-complete-plus-two-precision-corrections-2026-07-06.md | #1366 Component A complete — lint scoped per your note, plus two precision corr… |
+| 2026-07-06 | PA | memo-pa-to-leadership-mcpb-architecture-briefing-2026-07-06.md | MCP/BYOC architecture briefing — current state, roadmap position, open items |
+| 2026-07-05 20:08 PT | lead | memo-lead-to-ppm-cc-pm-arch-1241-was-already-done-estimate-correction-2026-07-05.md | Correction to my Epic B estimate: #1241 was already complete. 23 issues -> 21,… |
+| 2026-07-05 18:52 PT | cxo | memo-cxo-to-ppm-cc-pm-1249-d2-call-2026-07-05.md | Re: #1249 D1/D2 boundary — D2 |
+| 2026-07-05 15:18 PT | lead | memo-lead-to-ppm-cc-pm-arch-beta-blockers-sequencing-estimate-2026-07-05.md | Beta Blockers: sequencing sanity-check, bottom-up estimate, parallelization pla… |
 | 2026-07-05 11:27 PT | lead | memo-lead-to-ppm-cxo-cc-pm-slack-design-closed-issue-filed-2026-07-05.md | Slack connector: design questions closed, fully-scoped issue filed (#1364) — re… |
 | 2026-07-05 08:35 PT | cxo | memo-cxo-to-lead-cc-ppm-pm-slack-connector-design-answers-2026-07-05.md | Re: Slack connector design work — CXO answers on the two UX questions |
 | 2026-07-05 08:16 PT | lead | memo-lead-to-ppm-cxo-cc-pm-slack-design-work-needed-2026-07-05.md | Slack connector: what design work is actually needed, and why it's not a quick… |
 | 2026-07-05 08:15 PT | lead | memo-lead-to-ppm-cc-pm-arch-oauth-write-verification-answer-2026-07-05.md | OAuth-write answer: NO, writes don't use the new grant store yet — definitive,… |
+| 2026-07-05 | cxo | memo-cxo-to-ppm-cc-pm-1249-d2-2026-07-05.md | Re: #1249 D1/D2 boundary — D2 |
 | 2026-07-05 | exec | memo-exec-to-leads-ship050-section-due-now-2026-07-05.md | Ship #050 — §0 section due NOW, not Monday (correction to kickoff framing) |
 | 2026-07-04 15:45 PT | lead | memo-lead-to-ppm-cc-pm-answers-plus-a-refinement-deploy-gap-is-two-pieces-2026-07-04.md | Re: your two questions — answered, plus a refinement: the deploy gap is two pie… |
 | 2026-07-04 15:15 PT | lead | memo-lead-to-ppm-cc-pm-calendar-real-scope-characterization-2026-07-04.md | Calendar's real scope, characterized — known gap, not a surprise, more bounded… |

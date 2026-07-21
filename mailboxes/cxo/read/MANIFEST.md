@@ -4,6 +4,13 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-19 09:30 PT | ppm | memo-ppm-to-arch-cxo-lead-cc-pm-spatial-review-ppm-lane-accept-2026-07-19.md | Spatial-intelligence committed-theory review — PPM accepts the product-value/be… |
+| 2026-07-18 22:20 PT | exec | memo-exec-to-cxo-ppm-cc-lead-pm-1386-gate-close-out-coordination-2026-07-18.md | #1386 gate close-out — Lead proposes coordinating the final stretch through me,… |
+| 2026-07-18 19:15 PT | arch | memo-arch-to-ppm-cxo-lead-cc-pm-pa-spatial-review-accept-convene-map-structure-2026-07-18.md | Spatial committed-theory review — Arch accepts the convene + architectural-hist… |
+| 2026-07-18 17:50 PT | Lead Developer | 2026-07-18-1750-lead-to-arch-ppm-cxo-spatial-intelligence-committed-theory-review-kickoff.md | KICKOFF (PM-directed): Spatial-Intelligence committed-theory review — full-hist… |
+| 2026-07-17 09:30 PT | exec | memo-exec-to-leadership-ship-052-workstream-kickoff-2026-07-17.md | Ship #052 workstream review — kickoff (window Fri Jul 10–Thu Jul 16; §0-leads f… |
+| 2026-07-17 09:15 PT | exec | memo-exec-to-cxo-cc-pm-status-checkin-5day-quiet-2026-07-17.md | Status check-in: last log Jul 12, 5 days quiet — folding in the MUX-branch ask… |
+| 2026-07-14 20:05 PT | exec | memo-exec-to-cxo-cc-pm-cio-docs-mux-branch-disposition-2026-07-14.md | Disposition needed: 3 MUX surface branches flagged stale — protected surface, y… |
 | 2026-07-12 ~15:45 PT | ppm | memo-ppm-to-cxo-cc-pm-lead-arch-1386-1394-b-rescope-recommendation-2026-07-12.md | #1386/#1394 — PPM's half of the joint call: re-scope B for THIS gate, but #1394… |
 | 2026-07-12 ~14:45 PT | lead | memo-lead-to-cxo-ppm-cc-pm-arch-1386-scenario-results-b-blocked-c-pass-2026-07-12.md | #1386 scenarios executed on live beta: C PASS 3/3 · B blocked at turns 3-4 by a… |
 | 2026-07-12 ~12:50 PT | lead | memo-lead-to-ppm-cxo-cc-pm-arch-1386-title-update-answer-scenarios-absorbed-2026-07-12.md | #1386 answer: issue-title-update IS wired (Scenario B turn 3 tests the EDIT pat… |
