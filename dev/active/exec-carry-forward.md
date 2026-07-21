@@ -1,10 +1,18 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-20 21:20 PT (STOP, day-close)
-**Session log today**: `dev/2026/07/20/2026-07-20-0902-exec-code-log.md` (DAY-CLOSED)
+**Last updated**: 2026-07-21 ~09:30 PT (mid-day, fire in progress, not yet STOP)
+**Session log today**: `dev/2026/07/21/2026-07-21-0900-exec-code-log.md` (open)
 **Role**: Chief of Staff (Exec) | DinP account — migration to dedicated account still pending, PM's own call, no urgency signal
-**Cron**: `32 8,20 * * *` — re-armed this STOP (delete-then-create). Next fire ~08:32 Tue Jul 21.
-**Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45` — check `pwd`/branch/`git status` FIRST at every fire. Detached HEAD happened again tonight (second time) — same safe self-fix (checkout the branch pointing at the identical, already-pushed commit). Not escalating again unless the fix pattern stops working cleanly.
+**Cron**: `32 8,20 * * *`. Next fire ~20:32 Tue Jul 21.
+**Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45` — Step 2a pairing mismatch persists (unchanged since ~7/16). Check `pwd`/branch/`git status` FIRST at every fire.
+
+## NEW: broader cohort silence flagged to PM (7/21 AM)
+
+Found 9 of 10 non-Lead/non-Exec roles quiet since 7/19 (all of 7/20 silent) — beyond what the 4-role watchdog catches. Sent PM a direct memo asking for a broad re-prod/wake pass. **Awaiting PM response** — don't duplicate-escalate unless the pattern gets worse or PM asks for more detail.
+
+## NEW (low-priority, for Docs/PM discretion): mailbox ghost-cleanup discovered, not acted on
+
+While investigating a mail-send.sh residue flag this morning, found `scripts/regenerate-mailbox-manifests.py` has a designed behavior (line ~294, `ghost.unlink()`) that deletes any `inbox/` file with an identical-named `read/` twin. Running it against PM's `xian (ceo)` mailbox produces 219 such deletions (all old, 2026-05-08 through 05-25 dated mail, content fully preserved in `read/`) — matches the already-committed MANIFEST.md, which never listed these as inbox entries. **Did not commit this** — bulk-deleting 219 files from PM's mailbox on an autonomous fire is outside what I'll do unilaterally, even though content is safe and it matches designed script behavior. Restored working tree to match committed HEAD (clean, nothing uncommitted) rather than leave a confusing half-state. If someone wants this formal cleanup done, it's a one-time `git rm` of specific stale duplicate paths + commit via `mail-send.sh` — Docs' merge-keeper lane or a direct PM call, not urgent, zero data at risk either way.
 
 ---
 
