@@ -311,7 +311,9 @@ class LearningHandler:
         context: Optional[Dict[str, Any]] = None,
         min_confidence: float = 0.9,
         limit: int = 3,
-        session: Optional[AsyncSession] = None,
+        # #1438: REQUIRED — the old Optional=None default was a lying signature
+        # (the body dereferences it unconditionally; None = AttributeError).
+        session: AsyncSession = None,  # type: ignore[assignment]
     ) -> List[LearnedPattern]:
         """
         Get patterns eligible for proactive application (Phase 4).
@@ -393,7 +395,14 @@ class LearningHandler:
                 .where(
                     and_(
                         LearnedPattern.user_id == user_id,
-                        LearnedPattern.pattern_data.op("->")("action_type").cast(String)
+                        # #1438: MUST be ->> (returns text). The old `->` returned
+                        # JSONB, whose String cast renders the value WITH quotes
+                        # ('"execution"') — never equal to the plain string, so
+                        # similarity never matched and every capture created a new
+                        # pattern (the dead-upsert facet of the dead learning loop).
+                        # The action_type leaf is plaintext by design (EncryptedJSON
+                        # leaf-split whitelist) so server-side matching is supported.
+                        LearnedPattern.pattern_data.op("->>")("action_type")
                         == action_type,
                         LearnedPattern.enabled == True,  # noqa: E712
                     )
