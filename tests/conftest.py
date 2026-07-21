@@ -595,3 +595,67 @@ def transition_state():
     Issue #485: Created for state transition testing
     """
     return TransitionState()
+
+
+# ---------------------------------------------------------------------------
+# #1452 root cure for the poisoned-pool pathology: the app's global
+# AsyncSessionFactory keeps a shared engine whose pool accumulates loop-bound
+# connections across a full sweep; any later fixture/route/service borrowing
+# from it hits `asyncpg: another operation is in progress` (or cross-loop
+# futures). Three per-file cures showed the pattern (fresh-engine fixtures,
+# NullPool scope patches); this is the systemic version: every test sees a
+# session_scope backed by a NullPool engine — no pooled connections exist, so
+# nothing can carry a stale loop binding. Semantics mirror the real
+# session_scope contract EXACTLY (#1193: commit on clean exit, rollback on
+# exception, close always). session_scope_fresh is untouched (already
+# per-loop-fresh). Tests that monkeypatch session_scope themselves layer on
+# top harmlessly. LIVE code is unaffected — this is test-scope only.
+# ---------------------------------------------------------------------------
+from contextlib import asynccontextmanager as _1452_acm
+
+from sqlalchemy.pool import NullPool as _1452_NullPool
+
+
+def _1452_db_url() -> str:
+    user = os.getenv("POSTGRES_USER", "piper")
+    pw = os.getenv("POSTGRES_PASSWORD", "dev_changeme_in_production")
+    host = os.getenv("POSTGRES_HOST", "localhost")
+    port = os.getenv("POSTGRES_PORT", "5433")
+    db = os.getenv("POSTGRES_DB", "piper_morgan")
+    return f"postgresql+asyncpg://{user}:{pw}@{host}:{port}/{db}"
+
+
+@pytest.fixture(scope="session")
+def _1452_nullpool_engine():
+    engine = create_async_engine(_1452_db_url(), poolclass=_1452_NullPool)
+    yield engine
+
+
+@pytest_asyncio.fixture(autouse=True)
+async def _1452_session_scope_nullpool(_1452_nullpool_engine, monkeypatch):
+    from services.database.session_factory import AsyncSessionFactory as _ASF
+
+    maker = async_sessionmaker(
+        _1452_nullpool_engine, class_=AsyncSession, expire_on_commit=False
+    )
+
+    @_1452_acm
+    async def _scope():
+        session = maker()
+        try:
+            yield session
+            await session.commit()
+        except Exception:
+            try:
+                await session.rollback()
+            except Exception:
+                pass
+            raise
+        finally:
+            try:
+                await session.close()
+            except Exception:
+                pass
+
+    monkeypatch.setattr(_ASF, "session_scope", staticmethod(_scope))
+    yield

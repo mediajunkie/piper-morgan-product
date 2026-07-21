@@ -151,15 +151,21 @@ async def test_get_conversations_excludes_deleted(db_session, user_id):
 
 @pytest.mark.asyncio
 async def test_search_matches_title_preview_topics(db_session, user_id):
-    by_title = await _make_conversation(db_session, user_id, title="Roadmap discussion")
+    # #1452: a unique token per run — the generic "roadmap" collided with
+    # sweep residue in the shared dev DB (rows from other tests crowded the
+    # limit=10 window; this masqueraded as a pg-version difference in CI).
+    from uuid import uuid4 as _u4
+
+    token = f"roadmap-{_u4().hex[:8]}"
+    by_title = await _make_conversation(db_session, user_id, title=f"{token} discussion")
     by_preview = await _make_conversation(
-        db_session, user_id, title="Other", preview="thoughts on the roadmap"
+        db_session, user_id, title="Other", preview=f"thoughts on the {token}"
     )
-    by_topic = await _make_conversation(db_session, user_id, title="Third", topics=["roadmap"])
+    by_topic = await _make_conversation(db_session, user_id, title="Third", topics=[token])
     no_match = await _make_conversation(db_session, user_id, title="Unrelated")
 
     repo = DBUserHistoryRepository(db_session)
-    matches = await repo.search_conversations(user_id=user_id, query="roadmap", limit=10)
+    matches = await repo.search_conversations(user_id=user_id, query=token, limit=10)
     ids = {m.conversation_id for m in matches}
 
     assert by_title.id in ids

@@ -45,6 +45,15 @@ JWT_DECODE_OPTIONS = {
 }
 
 
+
+@pytest.fixture
+def test_client():
+    """Module-level client (#1452): TestProtocolPortability + TestFederationReadiness
+    use this fixture but never defined it (only two OTHER classes carry copies) —
+    their 8 tests have been erroring at setup."""
+    return TestClient(app)
+
+
 class TestSecurityAuthentication:
     """Core security validation for JWT authentication"""
 

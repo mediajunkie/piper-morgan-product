@@ -14,6 +14,33 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from services.database.models import ConversationTurnDB
 
 
+
+async def _seed_conversation(session, conv_id: str) -> None:
+    """conversation_turns FKs to conversations (#840-era hardening) — turns need
+    a real parent row (and the conversation a real user)."""
+    import uuid as _uuid
+    from datetime import datetime, timezone as _tz
+
+    from sqlalchemy import text as _text
+
+    uid = str(_uuid.uuid4())
+    now = datetime.now(_tz.utc)
+    await session.execute(
+        _text(
+            "INSERT INTO users (id, username, email, is_active, is_verified, "
+            "created_at, updated_at, role, is_alpha) "
+            "VALUES (:id, :u, :e, true, true, :now, :now, 'user', true)"
+        ),
+        {"id": uid, "u": f"px_{uid[:8]}", "e": f"px_{uid[:8]}@test.example.com", "now": now},
+    )
+    await session.execute(
+        _text(
+            "INSERT INTO conversations (id, user_id, session_id, title, context, is_active, created_at, updated_at) "
+            "VALUES (:c, :u, :s, 'perf-index test', '{}', true, :now, :now)"
+        ),
+        {"c": conv_id, "u": uid, "s": str(_uuid.uuid4()), "now": now},
+    )
+
 class TestConversationIntentIndexes:
     """Test performance improvements from conversation intent indexes"""
 
@@ -73,6 +100,7 @@ class TestIntentFilteringQueries:
         """
         # Create test data with different intents
         conv_id = str(uuid.uuid4())
+        await _seed_conversation(db_session, conv_id)
         intents = ["question", "statement", "request", "clarification"]
 
         for i, intent in enumerate(intents):
@@ -114,6 +142,7 @@ class TestIntentFilteringQueries:
         """
         # Create test data
         conv_id = str(uuid.uuid4())
+        await _seed_conversation(db_session, conv_id)
         turn = ConversationTurnDB(
             id=str(uuid.uuid4()),
             conversation_id=conv_id,
@@ -156,6 +185,7 @@ class TestIntentAnalyticsQueries:
         """
         # Create test data with multiple intents
         conv_id = str(uuid.uuid4())
+        await _seed_conversation(db_session, conv_id)
         intent_counts = {"question": 5, "statement": 3, "request": 2, "clarification": 1}
         turn_number = 0
 
@@ -181,14 +211,17 @@ class TestIntentAnalyticsQueries:
                 """
                 SELECT intent, COUNT(*) as count
                 FROM conversation_turns
+                WHERE conversation_id = :conv
                 GROUP BY intent
                 ORDER BY count DESC
             """
-            )
+            ),
+            {"conv": conv_id},
         )
         rows = result.fetchall()
 
-        # Should get all intent groups
+        # Scoped to THIS test's conversation (#1452: the shared dev DB carries
+        # other rows — a global GROUP BY asserted absolute counts and broke)
         assert len(rows) == 4, f"Expected 4 intent groups, got {len(rows)}"
         assert rows[0][0] == "question", "Most common intent should be 'question'"
         assert rows[0][1] == 5, "Should have 5 questions"
@@ -203,6 +236,7 @@ class TestIntentAnalyticsQueries:
         """
         # Create a conversation with intent trajectory
         conv_id = str(uuid.uuid4())
+        await _seed_conversation(db_session, conv_id)
         intent_trajectory = [
             "question",
             "clarification",
@@ -256,6 +290,7 @@ class TestIntentAnalyticsQueries:
         """
         # Create test conversation with multiple intents
         conv_id = str(uuid.uuid4())
+        await _seed_conversation(db_session, conv_id)
 
         # Create 5 questions
         for i in range(5):
@@ -319,6 +354,7 @@ class TestIntentIndexEdgeCases:
     async def test_null_intent_handling(self, db_session: AsyncSession):
         """Test that queries handle NULL intents correctly"""
         conv_id = str(uuid.uuid4())
+        await _seed_conversation(db_session, conv_id)
 
         # Create turn with NULL intent
         turn = ConversationTurnDB(
@@ -379,6 +415,7 @@ class TestIntentIndexEdgeCases:
     async def test_case_sensitive_intent_matching(self, db_session: AsyncSession):
         """Test that intent matching is case-sensitive"""
         conv_id = str(uuid.uuid4())
+        await _seed_conversation(db_session, conv_id)
 
         # Create turns with different case intents
         turn1 = ConversationTurnDB(
@@ -429,6 +466,7 @@ class TestIntentIndexPerformanceBaselines:
         Use case: Real-time intent-based filtering in analytics dashboards
         """
         conv_id = str(uuid.uuid4())
+        await _seed_conversation(db_session, conv_id)
 
         # Create test dataset (50 turns)
         for i in range(50):
@@ -473,6 +511,7 @@ class TestIntentIndexPerformanceBaselines:
         Use case: Intent distribution dashboards, analytics reports
         """
         conv_id = str(uuid.uuid4())
+        await _seed_conversation(db_session, conv_id)
 
         # Create test dataset (100 turns across 4 intents)
         for i in range(100):
@@ -520,6 +559,7 @@ class TestIntentIndexPerformanceBaselines:
         # Create multiple conversations
         for conv_num in range(3):
             conv_id = str(uuid.uuid4())
+            await _seed_conversation(db_session, conv_id)
             for turn_num in range(20):
                 intent = ["question", "statement", "request"][turn_num % 3]
                 turn = ConversationTurnDB(
@@ -536,6 +576,7 @@ class TestIntentIndexPerformanceBaselines:
 
         # Time composite query on one specific conversation
         test_conv_id = str(uuid.uuid4())
+        await _seed_conversation(db_session, test_conv_id)
         turn = ConversationTurnDB(
             id=str(uuid.uuid4()),
             conversation_id=test_conv_id,
