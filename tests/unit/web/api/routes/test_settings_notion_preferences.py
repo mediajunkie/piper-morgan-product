@@ -77,6 +77,10 @@ async def two_users():
                     text("DELETE FROM connector_configs WHERE owner_id = CAST(:u AS uuid)"),
                     {"u": uid},
                 )
+                await s.execute(
+                    text("DELETE FROM personalization_contexts WHERE owner_id = CAST(:u AS uuid)"),
+                    {"u": uid},
+                )
                 await s.execute(text("DELETE FROM users WHERE id = :u"), {"u": uid})
             await s.commit()
         await engine.dispose()

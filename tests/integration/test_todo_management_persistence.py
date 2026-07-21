@@ -45,6 +45,10 @@ async def _delete_user(uid: str) -> None:
     from services.database.session_factory import AsyncSessionFactory
 
     async with AsyncSessionFactory.session_scope_fresh() as s:
+        await s.execute(
+            _text("DELETE FROM personalization_contexts WHERE owner_id = CAST(:u AS uuid)"),
+            {"u": uid},
+        )
         await s.execute(_text("DELETE FROM users WHERE id = :u"), {"u": uid})
         await s.commit()
 
