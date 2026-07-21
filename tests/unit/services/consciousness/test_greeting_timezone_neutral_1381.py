@@ -40,5 +40,17 @@ class TestKnownTimezoneKeepsDayPart:
         assert _current_time_of_day("America/Los_Angeles") in _DAY_PARTS
 
     def test_greeting_with_timezone_uses_day_part(self):
-        opening = format_greeting_conscious(user_timezone="America/Los_Angeles").split("\n")[0]
-        assert opening.startswith("Good ")
+        """Freeze the day-part: the original wall-clock version assumed every
+        day-part template LEADS with "Good ..." — the evening family opens
+        differently ("I'm here and ready. Good evening!"), so the test failed
+        only during evening-hour runs (#1452 gate caught it as an oscillator)."""
+        from unittest.mock import patch
+
+        with patch(
+            "services.consciousness.conversation_consciousness._current_time_of_day",
+            return_value="morning",
+        ):
+            opening = format_greeting_conscious(
+                user_timezone="America/Los_Angeles"
+            ).split("\n")[0]
+        assert "Good morning" in opening
