@@ -134,7 +134,7 @@ let cur;
 }
 let selected = null;
 const cal = document.getElementById("cal"), detail = document.getElementById("detail"), monthLabel = document.getElementById("monthLabel");
-function statusOf(p){ const s=(p.status||"").toLowerCase(); return ["published","queued","drafted"].includes(s)?s:"drafted"; }
+function statusOf(p){ const s=(p.status||"").toLowerCase(); if(s==="distributed") return "published"; return ["published","queued","drafted"].includes(s)?s:"drafted"; }
 function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 function renderMonth(){
   monthLabel.textContent = MONTHS[cur.m] + " " + cur.y;
