@@ -117,9 +117,7 @@ xian + Piper Morgan Development Team
 
 This is Weekly Ship #052. Previous: [#051 "Impossible by Construction"](https://pipermorgan.ai/shipping-news/weekly-ship-051-impossible-by-construction).
 
-*P.S. [PLACEHOLDER — personal note or key takeaway. PM to add, or Exec/Comms can draft one on request.]*
-
-*P.P.S. Full session logs and technical details available in the [GitHub repository](https://github.com/mediajunkie/piper-morgan-product) and [documentation site](https://pmorgan.tech). Yes, you can copy it. That just makes our protocol stronger.*
+*P.S. Full session logs and technical details available in the [GitHub repository](https://github.com/mediajunkie/piper-morgan-product) and [documentation site](https://pmorgan.tech). Yes, you can copy it. That just makes our protocol stronger.*
 
 ---
 
