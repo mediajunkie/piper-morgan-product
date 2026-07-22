@@ -41,7 +41,7 @@ async def test_api_key_validation_no_database_writes(fresh_database, transition_
             session=fresh_database,
             user_id="validation-only",  # This would fail FK constraint if stored
             provider="openai",
-            api_key="sk-test-key-12345",
+            api_key="sk-tQ7xR2mV9pL4wN8bK3fJ6hD1gS5aZ0yE",
             validate=True,
             store=False,  # The key fix from Issue #485
         )
@@ -114,7 +114,7 @@ async def test_store_user_key_with_store_true_requires_existing_user(fresh_datab
                 session=fresh_database,
                 user_id=nonexistent_user_id,
                 provider="openai",
-                api_key="sk-test-key-12345",
+                api_key="sk-tQ7xR2mV9pL4wN8bK3fJ6hD1gS5aZ0yE",
                 validate=True,
                 store=True,  # Actually try to store - should fail FK
             )
@@ -158,7 +158,7 @@ async def test_store_user_key_succeeds_after_user_created(fresh_database, transi
             session=fresh_database,
             user_id=user_id,
             provider="openai",
-            api_key="sk-test-key-12345",
+            api_key="sk-tQ7xR2mV9pL4wN8bK3fJ6hD1gS5aZ0yE",
             validate=True,
             store=True,
         )

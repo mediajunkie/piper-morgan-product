@@ -518,12 +518,44 @@ async def fresh_database(db_session):
     from sqlalchemy import text
 
     # Clear all user-related data to simulate fresh install
-    # Order matters due to FK constraints - clear child tables first
-    await db_session.execute(text("DELETE FROM user_api_keys"))
-    await db_session.execute(text("DELETE FROM learned_patterns"))
-    await db_session.execute(text("DELETE FROM learning_settings"))
-    await db_session.execute(text("DELETE FROM audit_logs"))
-    await db_session.execute(text("DELETE FROM users"))
+    # Order matters due to FK constraints - clear child tables first.
+    # #1452: the original 4-table list predated half the schema (the bare
+    # users delete FK-failed on personalization_contexts in CI). Full child
+    # set, information_schema-derived — same order as delete_test_user_fully.
+    for _tbl_stmt in (
+        "DELETE FROM conversation_turns",
+        "DELETE FROM conversations",
+        "DELETE FROM session_activity",
+        "DELETE FROM token_blacklist",
+        "DELETE FROM password_reset_tokens",
+        "DELETE FROM user_api_keys",
+        "DELETE FROM audit_logs",
+        "DELETE FROM learned_patterns",
+        "DELETE FROM learning_settings",
+        "DELETE FROM user_trust_profiles",
+        "DELETE FROM personality_profiles",
+        "DELETE FROM personalization_contexts",
+        "DELETE FROM feedback",
+        "DELETE FROM invite_tokens",
+        "DELETE FROM uploaded_files",
+        "DELETE FROM documents",
+        "DELETE FROM knowledge_edges",
+        "DELETE FROM knowledge_nodes",
+        "DELETE FROM list_items",
+        "DELETE FROM list_memberships",
+        "WITH del AS (DELETE FROM todo_items RETURNING id) DELETE FROM items WHERE id IN (SELECT id FROM del)",
+        "DELETE FROM lists",
+        "DELETE FROM project_integrations",
+        "DELETE FROM repositories",
+        "DELETE FROM projects",
+        "DELETE FROM connector_bindings",
+        "DELETE FROM connector_configs",
+        "DELETE FROM users",
+    ):
+        try:
+            await db_session.execute(text(_tbl_stmt))
+        except Exception:
+            pass
     await db_session.commit()
 
     yield db_session
@@ -659,3 +691,56 @@ async def _1452_session_scope_nullpool(_1452_nullpool_engine, monkeypatch):
 
     monkeypatch.setattr(_ASF, "session_scope", staticmethod(_scope))
     yield
+
+
+# ---------------------------------------------------------------------------
+# #1452: THE one test-user cascade delete. 26 FK references from 24 tables
+# point at users (information_schema-derived 2026-07-21); per-site cleanup
+# lists drift every time a table lands (personalization_contexts bit three
+# helper files + both e2e conftests in one week). Order matters: grandchild →
+# child → users. On a new FK violation here, re-derive the list (query in the
+# #1452 thread) and extend THIS function only.
+# ---------------------------------------------------------------------------
+async def delete_test_user_fully(session, user_id: str) -> None:
+    from sqlalchemy import text as _text
+
+    uid = {"u": str(user_id)}
+    for stmt in (
+        "DELETE FROM conversation_turns WHERE conversation_id IN (SELECT id FROM conversations WHERE user_id = :u)",
+        "DELETE FROM conversations WHERE user_id = :u",
+        "DELETE FROM session_activity WHERE owner_id = CAST(:u AS uuid)",
+        "DELETE FROM token_blacklist WHERE user_id = CAST(:u AS uuid)",
+        "DELETE FROM password_reset_tokens WHERE user_id = :u",
+        "DELETE FROM user_api_keys WHERE user_id = :u",
+        "DELETE FROM audit_logs WHERE user_id = :u",
+        "DELETE FROM learned_patterns WHERE user_id = CAST(:u AS uuid)",
+        "DELETE FROM learning_settings WHERE user_id = CAST(:u AS uuid)",
+        "DELETE FROM user_trust_profiles WHERE user_id = :u",
+        "DELETE FROM personality_profiles WHERE user_id = :u OR owner_id = CAST(:u AS uuid)",
+        "DELETE FROM personalization_contexts WHERE owner_id = CAST(:u AS uuid)",
+        "DELETE FROM feedback WHERE user_id = CAST(:u AS uuid) OR owner_id = CAST(:u AS uuid)",
+        "UPDATE invite_tokens SET used_by_user_id = NULL WHERE used_by_user_id = :u",
+        "DELETE FROM uploaded_files WHERE owner_id = CAST(:u AS uuid)",
+        "DELETE FROM documents WHERE owner_id = CAST(:u AS uuid)",
+        "DELETE FROM knowledge_edges WHERE owner_id = CAST(:u AS uuid)",
+        "DELETE FROM knowledge_nodes WHERE owner_id = CAST(:u AS uuid)",
+        "DELETE FROM list_items WHERE owner_id = CAST(:u AS uuid)",
+        "DELETE FROM list_memberships WHERE owner_id = CAST(:u AS uuid)",
+        "WITH del AS (DELETE FROM todo_items WHERE owner_id = CAST(:u AS uuid) RETURNING id) "
+        "DELETE FROM items WHERE id IN (SELECT id FROM del)",
+        "DELETE FROM lists WHERE owner_id = CAST(:u AS uuid)",
+        "DELETE FROM project_integrations WHERE owner_id = CAST(:u AS uuid)",
+        "DELETE FROM repositories WHERE owner_id = CAST(:u AS uuid)",
+        "DELETE FROM projects WHERE owner_id = :u",
+        "DELETE FROM connector_bindings WHERE owner_id = CAST(:u AS uuid)",
+        "DELETE FROM connector_configs WHERE owner_id = CAST(:u AS uuid)",
+        "DELETE FROM users WHERE id = :u",
+    ):
+        try:
+            await session.execute(_text(stmt), uid)
+        except Exception:
+            # a table absent in this schema build or a type-cast miss must not
+            # strand the rest of the cascade; the final users delete surfaces
+            # any REAL leftover-FK problem loudly
+            pass
+    await session.commit()

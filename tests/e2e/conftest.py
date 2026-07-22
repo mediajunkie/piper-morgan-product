@@ -109,19 +109,9 @@ async def e2e_test_user(e2e_db_session):
         text("DELETE FROM lists WHERE owner_id = CAST(:uid AS uuid)"),
         {"uid": user_id},
     )
-    await e2e_db_session.execute(
-        text("DELETE FROM projects WHERE owner_id = :uid"),
-        {"uid": user_id},
-    )
-    await e2e_db_session.execute(
-        text("DELETE FROM conversations WHERE user_id = :uid"),
-        {"uid": user_id},
-    )
-    await e2e_db_session.execute(
-        text("DELETE FROM users WHERE id = :user_id"),
-        {"user_id": user_id},
-    )
-    await e2e_db_session.commit()
+    from tests.conftest import delete_test_user_fully
+
+    await delete_test_user_fully(e2e_db_session, user_id)
 
 
 @pytest.fixture
