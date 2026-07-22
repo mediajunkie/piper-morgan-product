@@ -26,6 +26,7 @@ tests/e2e/test_canonical_conversations.py::TestCanonicalGroundTruthMocked::test_
 tests/e2e/test_canonical_conversations.py::TestCanonicalGroundTruthMocked::test_week_calendar_empty_is_honest	triage
 tests/e2e/test_canonical_conversations.py::TestCanonicalGroundTruthMocked::test_week_calendar_reflects_known_events	triage
 tests/e2e/test_scenario_driver.py::test_multi_turn_scenario[fresh_tester_onboarding]	triage
+tests/e2e/test_task_lifecycle_e2e.py::TestTodoLifecycleE2E::test_create_todo_returns_confirmation	triage
 tests/features/test_issue_intelligence.py::TestIssueIntelligenceCanonicalQueryEngine::test_canonical_query_engine_initialization	triage
 tests/features/test_quick_integration.py::test_method_signatures	triage
 tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolCircuitBreaker::test_circuit_breaker_opens_on_failures	triage
