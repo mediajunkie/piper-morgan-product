@@ -59,7 +59,7 @@ Not everything got the mechanism treatment yet. Two sessions spent the back half
 - Jul 16: "[Into Production](https://pipermorgan.ai/blog/into-production/)" — building narrative
 
 [![A crew of geometric agents operates distinct stations aboard a newly launched ship, while two inspect a painted false hatch as the unfinished vessel gets underway.](https://pipermorgan.ai/assets/blog-images/the-migration-wave.webp)](https://pipermorgan.ai/blog/the-migration-wave)
-
+*"All aboard?"*
 **pipermorgan.ai's own domain finished moving to its new home**, replacing the placeholder hosting it had been running on. A three-bug chain along the way — a redirect pointed the wrong way, a pasted address a registrar's editor couldn't parse, a certificate still catching up — each masked the next, each run down and fixed in turn.
 
 **The editorial process kept catching its own mistakes before they published.** A fact-check turned up a source that had recorded what someone *believed* at the time, not what actually happened — a named person credited with testing a feature she'd never actually used. Caught before publish, corrected, and written down as its own category of error: a primary source can be simply wrong, not just incomplete.
