@@ -1,18 +1,30 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-21 ~09:30 PT (mid-day, fire in progress, not yet STOP)
-**Session log today**: `dev/2026/07/21/2026-07-21-0900-exec-code-log.md` (open)
+**Last updated**: 2026-07-21 21:35 PT (STOP, day-close)
+**Session log today**: `dev/2026/07/21/2026-07-21-0900-exec-code-log.md` (DAY-CLOSED)
 **Role**: Chief of Staff (Exec) | DinP account — migration to dedicated account still pending, PM's own call, no urgency signal
-**Cron**: `32 8,20 * * *`. Next fire ~20:32 Tue Jul 21.
+**Cron**: `32 8,20 * * *` — re-armed this STOP (delete-then-create, `f625880f` → `abe4b72a`). Next fire ~08:32 Wed Jul 22.
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45` — Step 2a pairing mismatch persists (unchanged since ~7/16). Check `pwd`/branch/`git status` FIRST at every fire.
 
-## NEW: broader cohort silence flagged to PM (7/21 AM)
+## NEW tonight: possible session migration coming — handoff memos requested cohort-wide
 
-Found 9 of 10 non-Lead/non-Exec roles quiet since 7/19 (all of 7/20 silent) — beyond what the 4-role watchdog catches. Sent PM a direct memo asking for a broad re-prod/wake pass. **Awaiting PM response** — don't duplicate-escalate unless the pattern gets worse or PM asks for more detail.
+PM (via Janus) is weighing moving agents to terminal sessions on Amber and/or fresh accounts after repeated Desktop crashes (possibly transcript exhaustion). No firm timeline, prep-only. Relayed the ask to all 10 other roles + PM cc. **Wrote my own exec handoff memo**: `dev/active/exec-handoff-2026-07-21.md` — if a fresh session ever picks up this role, that's the fastest orientation doc (points back here + today's session log for detail). Keep this memo current if anything major changes before a migration actually happens. **Likely explains this morning's broader-silence finding** — probably crash-driven, not a discipline gap.
 
-## NEW (low-priority, for Docs/PM discretion): mailbox ghost-cleanup discovered, not acted on
+## Broader cohort silence flagged to PM (7/21 AM) — still awaiting response
 
-While investigating a mail-send.sh residue flag this morning, found `scripts/regenerate-mailbox-manifests.py` has a designed behavior (line ~294, `ghost.unlink()`) that deletes any `inbox/` file with an identical-named `read/` twin. Running it against PM's `xian (ceo)` mailbox produces 219 such deletions (all old, 2026-05-08 through 05-25 dated mail, content fully preserved in `read/`) — matches the already-committed MANIFEST.md, which never listed these as inbox entries. **Did not commit this** — bulk-deleting 219 files from PM's mailbox on an autonomous fire is outside what I'll do unilaterally, even though content is safe and it matches designed script behavior. Restored working tree to match committed HEAD (clean, nothing uncommitted) rather than leave a confusing half-state. If someone wants this formal cleanup done, it's a one-time `git rm` of specific stale duplicate paths + commit via `mail-send.sh` — Docs' merge-keeper lane or a direct PM call, not urgent, zero data at risk either way.
+Found 9 of 10 non-Lead/non-Exec roles quiet all of 7/20. Sent PM a direct memo. No reply yet as of tonight's STOP. Don't duplicate-escalate — tonight's migration-prep news is plausibly the answer already.
+
+## Decisions.log correction filed tonight
+
+Comms caught a misleading "Routines watchdog funding decision" framing recurring in June logs (Arch, CIO); PM confirmed it wasn't a real cost/benefit deliberation. Corrective entry appended to `docs/internal/architecture/decisions/decisions.log` (2026-07-21 ~21:10 PT). Done, no follow-up needed.
+
+## Learning loop fixed (Lead, tonight) — headline for next Ship
+
+#1438 closed: the learning loop was structurally dead behind a one-character JSONB operator bug (`->` vs `->>`), fixed, proven live, beta v26. CI burn-down 634→323 in 48h. Worth flagging as a Ship #053 candidate headline when that window opens — PM explicitly cares about learning as core to the vision.
+
+## Mailbox ghost-cleanup — still not acted on, low-priority, for Docs/PM discretion
+
+`scripts/regenerate-mailbox-manifests.py` line ~294 (`ghost.unlink()`) intentionally deletes `inbox/` files that already have a `read/` twin — confirmed by design, not a bug. Running it against PM's mailbox produces 219 such deletions (all old May mail, content safe in `read/`). Declined to commit this bulk deletion myself. Working tree currently matches committed HEAD (restored, clean). If someone wants the formal cleanup done: one-time explicit-path `git rm` + `mail-send.sh` commit — Docs' merge-keeper lane or a direct PM call, not urgent.
 
 ---
 
@@ -43,4 +55,4 @@ No restart happened today as far as this session can tell (still same directory/
 
 ---
 
-*— Exec, 7/20 21:20 PT.*
+*— Exec, 7/21 21:35 PT.*
