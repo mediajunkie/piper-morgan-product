@@ -14,6 +14,33 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from services.database.models import AuditLog, ConversationDB, ConversationTurnDB, FeedbackDB, User
 
 
+
+async def _seed_conversation(session, conv_id: str) -> None:
+    """conversation_turns FKs to conversations — turns need a real parent
+    (and the conversation a real user). Mirrors the 532 file's helper."""
+    import uuid as _uuid
+    from datetime import datetime, timezone as _tz
+
+    from sqlalchemy import text as _text
+
+    uid = str(_uuid.uuid4())
+    now = datetime.now(_tz.utc)
+    await session.execute(
+        _text(
+            "INSERT INTO users (id, username, email, is_active, is_verified, "
+            "created_at, updated_at, role, is_alpha) "
+            "VALUES (:id, :u, :e, true, true, :now, :now, 'user', true)"
+        ),
+        {"id": uid, "u": f"p356_{uid[:8]}", "e": f"p356_{uid[:8]}@test.example.com", "now": now},
+    )
+    await session.execute(
+        _text(
+            "INSERT INTO conversations (id, user_id, session_id, title, context, is_active, created_at, updated_at) "
+            "VALUES (:c, :u, :s, 'perf-356 test', '{}', true, :now, :now)"
+        ),
+        {"c": conv_id, "u": uid, "s": str(_uuid.uuid4()), "now": now},
+    )
+
 class TestConversationIndexes:
     """Test performance improvements from conversation table indexes"""
 
@@ -58,47 +85,16 @@ class TestConversationIndexes:
             index_exists
         ), "Index idx_conversation_turns_conv_created not found on conversation_turns table"
 
-    @pytest.mark.asyncio
-    async def test_conversation_turns_entities_gin_index(self, db_session: AsyncSession):
-        """
-        Verify that idx_conversation_turns_entities GIN index exists
-        Query: WHERE entities @> ?
-        Use case: Entity-based conversation search
-        """
-        result = await db_session.execute(
-            text(
-                """
-                SELECT indexname FROM pg_indexes
-                WHERE tablename = 'conversation_turns'
-                AND indexname = 'idx_conversation_turns_entities'
-            """
-            )
-        )
-        index_exists = result.scalar() is not None
-        assert (
-            index_exists
-        ), "Index idx_conversation_turns_entities not found on conversation_turns table"
+    # test_conversation_turns_entities_gin_index PRUNED (#1452): the GIN index it pinned
+    # (idx_conversation_turns_entities) was DELIBERATELY dropped by the
+    # h1312recon schema-reconciliation migration — the test asserted schema
+    # removed by design.
 
-    @pytest.mark.asyncio
-    async def test_conversation_turns_references_gin_index(self, db_session: AsyncSession):
-        """
-        Verify that idx_conversation_turns_references GIN index exists
-        Query: WHERE references @> ?
-        Use case: Anaphoric reference tracking
-        """
-        result = await db_session.execute(
-            text(
-                """
-                SELECT indexname FROM pg_indexes
-                WHERE tablename = 'conversation_turns'
-                AND indexname = 'idx_conversation_turns_references'
-            """
-            )
-        )
-        index_exists = result.scalar() is not None
-        assert (
-            index_exists
-        ), "Index idx_conversation_turns_references not found on conversation_turns table"
+
+    # test_conversation_turns_references_gin_index PRUNED (#1452): the GIN index it pinned
+    # (idx_conversation_turns_references) was DELIBERATELY dropped by the
+    # h1312recon schema-reconciliation migration — the test asserted schema
+    # removed by design.
 
 
 class TestAuditLogIndexes:
@@ -167,6 +163,10 @@ class TestIndexExplainPlans:
         db_session.add(conv)
         await db_session.commit()
 
+        # #1452: pin "index exists and is usable", not the planner's
+        # size-dependent CHOICE — on near-empty tables (post-cleanup CI) a
+        # Seq Scan correctly wins and the raw assert oscillates.
+        await db_session.execute(text("SET enable_seqscan = off"))
         # Verify query plan
         result = await db_session.execute(
             text(
@@ -194,6 +194,7 @@ class TestIndexExplainPlans:
         """
         # Create test data
         conv_id = str(uuid.uuid4())
+        await _seed_conversation(db_session, conv_id)
         turn = ConversationTurnDB(
             id=str(uuid.uuid4()),
             conversation_id=conv_id,
@@ -205,6 +206,10 @@ class TestIndexExplainPlans:
         db_session.add(turn)
         await db_session.commit()
 
+        # #1452: pin "index exists and is usable", not the planner's
+        # size-dependent CHOICE — on near-empty tables (post-cleanup CI) a
+        # Seq Scan correctly wins and the raw assert oscillates.
+        await db_session.execute(text("SET enable_seqscan = off"))
         # Verify query plan
         result = await db_session.execute(
             text(
@@ -252,6 +257,7 @@ class TestIndexEdgeCases:
     async def test_conversation_turns_jsonb_containment(self, db_session: AsyncSession):
         """Test GIN index for JSONB array containment"""
         conv_id = str(uuid.uuid4())
+        await _seed_conversation(db_session, conv_id)
 
         # Create turn with entities
         turn = ConversationTurnDB(
@@ -310,11 +316,10 @@ class TestIndexMaintenance:
             text(
                 """
                 SELECT
-                    indexname,
-                    pg_size_pretty(pg_relation_size(indexrelid)) as size
-                FROM pg_indexes
-                WHERE tablename = 'conversations'
-                AND indexname = 'idx_conversations_user_created'
+                    c.relname AS indexname,
+                    pg_size_pretty(pg_relation_size(c.oid)) AS size
+                FROM pg_class c
+                WHERE c.relname = 'idx_conversations_user_created'
             """
             )
         )
@@ -388,6 +393,7 @@ class TestPerformanceBaselines:
         Target: <15ms for typical dataset
         """
         conv_id = str(uuid.uuid4())
+        await _seed_conversation(db_session, conv_id)
 
         # Create test turns
         for i in range(10):
