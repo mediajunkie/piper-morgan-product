@@ -58,7 +58,7 @@ Not everything got the mechanism treatment yet. Two sessions spent the back half
 - Jul 15: [Weekly Ship #051: Impossible by Construction](https://pipermorgan.ai/shipping-news/weekly-ship-051-impossible-by-construction) — shipping news
 - Jul 16: "[Into Production](https://pipermorgan.ai/blog/into-production/)" — building narrative
 
-[![https://pipermorgan.ai/assets/blog-images/the-migration-wave.webp]](https://pipermorgan.ai/blog/the-migration-wave)
+[![A crew of geometric agents operates distinct stations aboard a newly launched ship, while two inspect a painted false hatch as the unfinished vessel gets underway.](https://pipermorgan.ai/assets/blog-images/the-migration-wave.webp)](https://pipermorgan.ai/blog/the-migration-wave)
 
 **pipermorgan.ai's own domain finished moving to its new home**, replacing the placeholder hosting it had been running on. A three-bug chain along the way — a redirect pointed the wrong way, a pasted address a registrar's editor couldn't parse, a certificate still catching up — each masked the next, each run down and fixed in turn.
 
