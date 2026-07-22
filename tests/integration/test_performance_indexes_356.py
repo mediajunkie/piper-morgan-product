@@ -253,36 +253,12 @@ class TestIndexEdgeCases:
         rows = result.fetchall()
         assert len(rows) == 0
 
-    @pytest.mark.asyncio
-    async def test_conversation_turns_jsonb_containment(self, db_session: AsyncSession):
-        """Test GIN index for JSONB array containment"""
-        conv_id = str(uuid.uuid4())
-        await _seed_conversation(db_session, conv_id)
-
-        # Create turn with entities
-        turn = ConversationTurnDB(
-            id=str(uuid.uuid4()),
-            conversation_id=conv_id,
-            turn_number=1,
-            user_message="Talk to John",
-            assistant_response="John is a team member",
-            entities=["John", "team_member"],
-            created_at=datetime.now(timezone.utc),
-        )
-        db_session.add(turn)
-        await db_session.commit()
-
-        # Query with JSONB containment - should use GIN index
-        result = await db_session.execute(
-            text(
-                """
-                SELECT * FROM conversation_turns
-                WHERE entities @> '["John"]'::jsonb
-            """
-            )
-        )
-        rows = result.fetchall()
-        assert len(rows) >= 1
+    # test_conversation_turns_jsonb_containment PRUNED (#1452): entities is
+    # whole-value ENCRYPTED (#1305, PII) — server-side JSONB containment on it
+    # is impossible by design (which is why h1312recon dropped its GIN index).
+    # The test only passed in keyless dev mode (plaintext fallback); in keyed
+    # CI it truthfully returned 0. No live code queries entities containment
+    # (swept 2026-07-21).
 
 
 class TestIndexMaintenance:
