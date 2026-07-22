@@ -213,6 +213,7 @@ Verify before declaring done:
 
 - **Save location** (canonical drafting): `dev/active/weekly-ship-{NNN}-draft-{YYYY-MM-DD}.md` on the `claude/{worktree-slug}` branch per worktree-default discipline for substantive output
 - **Public-comms copy**: sync to `docs/public/comms/drafts/weekly-ship-{NNN}-draft-{YYYY-MM-DD}.md` on main so PM can read where they expect
+- **Add the editorial-calendar entry in the SAME commit as the draft** (Docs finding, 2026-07-21: Ship #052 sat drafted with no calendar row until PM noticed it missing from the admin view while looking for the next ship). Run the `update-calendar` skill (or its quick-add script) to add a row with `title` (full ship title incl. subtitle), `workDate`/`endWorkDate` (the Fri–Thu window), `pubDate` (target Tuesday), `status: drafted`, `draftPath`, `theme: ship`. Don't defer this to "after PM notices" — it's the same commit that creates the draft file, not a follow-up.
 - **Commit immediately after Write** per the May 17 memory
 - **Route to PM FIRST — PM gates the handoff to Comms.** PM reads, fact-checks, voice-passes, and *decides when* the draft is ready to enter Comms review (PM, 2026-07-08, after Exec routed a draft to Comms prematurely: *"It's not ready to go to comms yet. I decide that."*). Exec never self-initiates the Comms handoff. Flag word count to PM if outside target.
 - **Comms pre-publish review happens on PM's go** (PM clarification, same day: Exec generally drafts the Ship, but Comms reviews it before publish — a standing step). Comms's `template-audit` skill is their review-of-record; Exec's own Step-6 checklist pass does not substitute for it. Sequence is fixed: draft → PM → Comms → publish.
@@ -278,6 +279,10 @@ The Ship #043 v0.1 failure was not knowing the template existed — it was choos
 ---
 
 ## Version history
+
+### v1.7 (2026-07-22)
+
+**Step 7: add the editorial-calendar entry in the same commit as the draft.** Ship #052 was drafted 7/19 and sat in `docs/public/comms/drafts/` with no calendar row until PM noticed it missing from the admin view on 7/21 while looking for the next ship. Docs added the entry retroactively and flagged the gap (`memo-docs-to-exec-cc-pm-ship-calendar-update-step-2026-07-21.md`) rather than let it recur silently. Fixed at the source: Step 7 now names the calendar update as a required same-commit action, not a follow-up someone has to remember or notice missing.
 
 ### v1.6 (2026-07-14)
 
