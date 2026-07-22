@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: piper-ship.png
+alt: A child and a crew of robots checking each other's work on a boat.
+caption:
 ---
 
 # Weekly Ship #052: The Mechanism, Not the Memory
@@ -10,7 +10,7 @@ caption: ''
 
 Last week's Ship ended on "impossible by construction" — three decisions built so the wrong behavior couldn't be expressed in code. This week pushed the same idea up a level: instead of fixing one instance so it can't recur, the team built the *rule* so a whole class of future instances can't recur either. A session-continuity gap open since the alpha launch went from "here's the fix" to "here's the contract every future feature has to pass." A calendar-editing bug that corrupted a shared file became a tool that refuses to let the same mistake happen again, to anyone.
 
-Not everything got the mechanism treatment yet. Two sessions spent the back half of the window unknowingly sharing one working directory — a gap in how work gets provisioned, caught by chance rather than by design, still open as the window closed. Building the thing that makes an error impossible is real progress, and it doesn't happen everywhere at once.
+Not everything got the mechanism treatment yet. Three sessions spent the back half of the window unknowingly sharing one working directory — a gap in how work gets provisioned, caught by chance rather than by design, still open as the window closed. Building the thing that makes an error impossible is real progress, and it doesn't happen everywhere at once.
 
 ---
 
