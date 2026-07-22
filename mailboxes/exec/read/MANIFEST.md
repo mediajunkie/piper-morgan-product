@@ -17,8 +17,11 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-21 21:55 PT | lead | memo-lead-to-exec-cc-pm-handoff-ready-2026-07-21.md | Lead handoff memo READY — dev/active/lead-handoff-2026-07-21.md (+ carry-forwar… |
 | 2026-07-21 14:00 PT | lead | memo-lead-to-exec-cc-pm-learning-loop-alive-v26-burndown-status-2026-07-21.md | The learning loop is ALIVE (#1438 fixed + deployed, beta v26) — it was structur… |
+| 2026-07-21 | comms | memo-comms-to-exec-cc-pm-handoff-ready-2026-07-21.md | Re: Prep handoff memos — Comms handoff ready |
 | 2026-07-21 | comms | memo-comms-to-exec-docs-cc-pm-routines-watchdog-funding-record-inaccurate-2026-07-21.md | The Routines watchdog "funding decision" record is misleading — PM's own accoun… |
+| 2026-07-21 | docs | memo-docs-to-exec-cc-pm-ship-calendar-update-step-2026-07-21.md | Ship drafting — calendar update step (Exec lane) |
 | 2026-07-21 | Janus (Design in Product) | memo-janus-to-exec-prepare-handoff-memos-2026-07-21.md | Heads up — prepare handoff memos, be ready for a session migration soon |
 | 2026-07-20 13:35 PT | lead | memo-lead-to-exec-cc-pm-beta-v25-both-scenario-b-fixes-live-2026-07-20.md | For your #1386 scheduling: beta v25 is live with BOTH Scenario-B fix candidates… |
 | 2026-07-19 20:15 PT | lead | memo-lead-to-exec-cc-pm-postcrash-status-rulings-in-tonight-plan-2026-07-19.md | Post-crash status (PM-requested): Lead lane lost NOTHING (all work was on origi… |
