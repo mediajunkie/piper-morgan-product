@@ -1,7 +1,7 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # Weekly Ship #052: The Mechanism, Not the Memory
@@ -44,7 +44,9 @@ Not everything got the mechanism treatment yet. Two sessions spent the back half
 
 **A second, distinct kind of multi-day silence got a name.** A routine security step turned out able to kill every worker's schedule at once, team-wide, with no self-recovery until someone checks in. No work was lost — a dead clock, not a dead effort — but it's now a recognized failure mode.
 
-**Two workers were found unknowingly sharing one workspace.** Discovered late in the window and still unresolved as it closed: two sessions had been assigned the identical working directory for several days, each unaware of the other. Nothing was lost — each happened to save its work before the other wrote — but "nothing broke" describes luck, not safety. Named plainly, and still open.
+**Three workers were found unknowingly sharing one workspace.** Discovered late in the window and still unresolved as it closed: three sessions had been assigned the identical working directory for several days, each unaware of the other. Nothing was lost — each happened to save its work before the other wrote — but "nothing broke" describes luck, not safety. Named plainly, and still open.
+
+(The cause seemed to be sequentially relogging several sessions into different accounts.)
 
 ## 🌍 External relations & community
 
@@ -55,6 +57,7 @@ Not everything got the mechanism treatment yet. Two sessions spent the back half
 - Jul 14: "[The Migration Wave](https://pipermorgan.ai/blog/the-migration-wave)" — building narrative
 - Jul 15: [Weekly Ship #051: Impossible by Construction](https://pipermorgan.ai/shipping-news/weekly-ship-051-impossible-by-construction) — shipping news
 - Jul 16: "[Into Production](https://pipermorgan.ai/blog/into-production/)" — building narrative
+
 
 **pipermorgan.ai's own domain finished moving to its new home**, replacing the placeholder hosting it had been running on. A three-bug chain along the way — a redirect pointed the wrong way, a pasted address a registrar's editor couldn't parse, a certificate still catching up — each masked the next, each run down and fixed in turn.
 
