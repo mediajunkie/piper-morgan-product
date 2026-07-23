@@ -116,6 +116,11 @@ class TestIntentFilteringQueries:
             db_session.add(turn)
         await db_session.commit()
 
+        # #1452: with near-empty tables the planner CORRECTLY prefers a Seq
+        # Scan — the claim under test is "the index exists and is usable",
+        # so pin the planner (same cure as test_performance_indexes_356).
+        await db_session.execute(text("SET enable_seqscan = off"))
+
         # Verify query plan uses index
         result = await db_session.execute(
             text(
@@ -156,6 +161,7 @@ class TestIntentFilteringQueries:
         await db_session.commit()
 
         # Verify query plan uses composite index
+        await db_session.execute(text("SET enable_seqscan = off"))  # #1452: see above
         result = await db_session.execute(
             text(
                 f"""
