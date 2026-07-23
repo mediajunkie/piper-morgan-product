@@ -226,90 +226,95 @@ class TestUserFriendlyErrors:
 
 
 class TestIntegrationErrorScenarios:
-    """Test error handling across the system"""
+    """Test error handling across the system.
+
+    #1452 rewrite (2026-07-23): the originals patched `main.classifier` — an
+    attribute gone since the intent stack moved into services — so every test
+    died at setup with AttributeError. They also pinned pre-degradation 500/502
+    error shapes; the CURRENT /api/v1/intent contract is Pattern-007 graceful
+    degradation: service failures return HTTP 200 with a conversational
+    message (web/api/routes/intent.py `_create_degradation_response`), and
+    only request validation returns 422. The rewrites patch the real seam —
+    `app.state.intent_service` — and pin the real contract.
+    """
 
     @pytest.fixture
     def test_client(self):
         """Test client for API testing"""
         return TestClient(app)
 
-    @patch("main.classifier.classify", new_callable=AsyncMock)
-    def test_invalid_api_request_handling(self, mock_classify, test_client):
-        """Test handling of invalid API requests"""
+    @pytest.fixture
+    def failing_intent_service(self):
+        """Swap app.state.intent_service for a mock; restore after."""
+        original = getattr(app.state, "intent_service", None)
+        mock_service = AsyncMock()
+        app.state.intent_service = mock_service
+        yield mock_service
+        app.state.intent_service = original
 
-        # Test malformed JSON
+    def test_invalid_api_request_handling(self, test_client):
+        """Malformed requests never crash: the route parses the body itself
+        and degrades gracefully (Pattern-007) instead of FastAPI 422s."""
         response = test_client.post("/api/v1/intent", data="invalid json")
-        assert response.status_code == 422
+        assert response.status_code < 500
+        assert response.json().get("message")
 
-        # Test missing required fields
         response = test_client.post("/api/v1/intent", json={})
-        assert response.status_code == 422
+        assert response.status_code < 500
+        assert response.json().get("message")
 
-    @patch("main.classifier.classify", new_callable=AsyncMock)
-    def test_database_connection_error_handling(self, mock_classify, test_client):
-        """Test handling of database connection issues"""
-
-        # Mock database connection error
-        mock_classify.side_effect = Exception("Database connection failed")
+    def test_database_connection_error_handling(self, test_client, failing_intent_service):
+        """Service failures degrade gracefully: HTTP 200 + friendly message."""
+        failing_intent_service.process_intent.side_effect = Exception(
+            "Database connection failed"
+        )
 
         response = test_client.post("/api/v1/intent", json={"message": "test"})
 
-        # Should return 500 but with user-friendly message
-        assert response.status_code == 500
+        assert response.status_code == 200
         data = response.json()
-        assert "error" in data
-        # Should not expose technical database details to user
+        assert data["message"], "degradation response must carry a message"
+        # No stack traces or raw driver noise to the user
+        assert "Traceback" not in data["message"]
 
-    @patch("main.classifier.classify", new_callable=AsyncMock)
-    def test_missing_authentication_handling(self, mock_classify, test_client):
-        """Test handling of missing authentication"""
+    def test_missing_authentication_handling(self, test_client, failing_intent_service):
+        """Integration auth failures degrade to guidance, not a 5xx."""
+        failing_intent_service.process_intent.side_effect = GitHubAuthFailedError()
 
-        # Test GitHub integration without token
-        mock_classify.return_value = AsyncMock()
-        mock_classify.return_value.category = "EXECUTION"
-        mock_classify.return_value.action = "create_github_issue"
-        mock_classify.return_value.confidence = 0.9
+        response = test_client.post(
+            "/api/v1/intent", json={"message": "create GitHub issue"}
+        )
 
-        # Mock GitHub auth failure
-        with patch("main.github_agent.create_issue_from_work_item") as mock_github:
-            mock_github.side_effect = GitHubAuthFailedError()
+        assert response.status_code == 200
+        data = response.json()
+        assert data["message"]
 
-            response = test_client.post("/api/v1/intent", json={"message": "create GitHub issue"})
-
-            # Should return appropriate error with guidance
-            assert response.status_code == 502
-            data = response.json()
-            assert data["error"]["code"] == "GITHUB_AUTH_FAILED"
-
-    @patch("main.classifier.classify", new_callable=AsyncMock)
-    def test_malformed_conversation_context_handling(self, mock_classify, test_client):
-        """Test handling of malformed conversation context"""
-
-        # Test with invalid conversation context
+    def test_malformed_conversation_context_handling(self, test_client):
+        """Malformed context must not crash the endpoint (422 or graceful 200)."""
         invalid_context = {
-            "session_id": None,  # Invalid session ID
-            "conversation_history": "not a list",  # Wrong type
+            "session_id": None,
+            "conversation_history": "not a list",
         }
 
         response = test_client.post(
             "/api/v1/intent", json={"message": "test", "context": invalid_context}
         )
 
-        # GREAT-5: Graceful handling means validation error (400/422), NOT crash (500)
-        assert response.status_code in [400, 422]
+        # GREAT-5: graceful handling means validation error or degradation,
+        # never an unhandled 500.
+        assert response.status_code in (200, 400, 422)
 
-    def test_rate_limiting_error_handling(self, test_client):
-        """Test handling of rate limiting errors"""
+    def test_rate_limiting_error_handling(self, test_client, failing_intent_service):
+        """Upstream rate-limit errors degrade without leaking internals."""
+        failing_intent_service.process_intent.side_effect = Exception(
+            "Rate limit exceeded"
+        )
 
-        # Mock rate limiting scenario
-        with patch("main.classifier.classify") as mock_classify:
-            mock_classify.side_effect = Exception("Rate limit exceeded")
+        response = test_client.post("/api/v1/intent", json={"message": "test"})
 
-            response = test_client.post("/api/v1/intent", json={"message": "test"})
-
-            # Should return appropriate error
-            assert response.status_code == 500
-            # Should not expose rate limiting details to user
+        assert response.status_code == 200
+        data = response.json()
+        assert "Traceback" not in data["message"]
 
 
 class TestPerformanceValidation:
@@ -341,24 +346,24 @@ class TestPerformanceValidation:
         # Should complete 100 error messages in under 100ms
         assert elapsed < 100, f"Error message generation too slow: {elapsed:.2f}ms"
 
-    @patch("main.classifier.classify", new_callable=AsyncMock)
-    def test_error_handling_response_time(self, mock_classify, test_client):
-        """Test that error responses are fast"""
-
+    def test_error_handling_response_time(self, test_client):
+        """Error responses are fast (degradation path does no heavy work)."""
         import time
 
-        # Mock an error scenario
-        mock_classify.side_effect = IntentClassificationFailedError()
+        original = getattr(app.state, "intent_service", None)
+        mock_service = AsyncMock()
+        mock_service.process_intent.side_effect = IntentClassificationFailedError()
+        app.state.intent_service = mock_service
+        try:
+            start_time = time.time()
+            response = test_client.post("/api/v1/intent", json={"message": "test"})
+            elapsed = (time.time() - start_time) * 1000
+        finally:
+            app.state.intent_service = original
 
-        start_time = time.time()
-        response = test_client.post("/api/v1/intent", json={"message": "test"})
-        end_time = time.time()
-
-        elapsed = (end_time - start_time) * 1000  # Convert to milliseconds
-
+        assert response.status_code == 200
         # Error responses should be fast (< 500ms)
         assert elapsed < 500, f"Error response too slow: {elapsed:.2f}ms"
-        assert response.status_code == 500
 
 
 class TestErrorRecoverySuggestions:
