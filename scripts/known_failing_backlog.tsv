@@ -7,10 +7,6 @@
 #   triage       = not yet glanced — triaging it IS part of the burn-down
 #   flaky        = oscillates run-to-run (tolerated both states); burn-down = DE-FLAKE, then retag
 # Source: dev/2026/07/19/fullsuite-enumeration-2026-07-19.txt (CI-parity local run 2).
-tests/config/test_data_isolation.py::TestDataIsolation::test_config_service_generic_load	triage
-tests/config/test_data_isolation.py::TestDataIsolation::test_config_service_user_overlay	triage
-tests/config/test_data_isolation.py::TestDataIsolation::test_multi_user_isolation	triage
-tests/config/test_data_isolation.py::TestDataIsolation::test_xian_personal_data_in_database	triage
 tests/domain/test_file_reference_detection.py::TestFileReferenceDetection::test_classification_with_file_context	triage
 tests/domain/test_file_reference_detection.py::TestFileReferenceDetection::test_classification_without_file_context	triage
 tests/domain/test_file_reference_detection.py::TestFileReferenceDetection::test_file_reference_with_multiple_files	triage
