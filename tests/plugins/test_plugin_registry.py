@@ -272,7 +272,9 @@ class TestPluginConfig:
 
         # Should read from PIPER.user.md
         assert isinstance(enabled, list)
-        assert len(enabled) == 4
+        # #1452: superset semantics — the registry grows (demo joined the
+        # original four); pin the core set, not the count.
+        assert len(enabled) >= 4
         assert "slack" in enabled
         assert "github" in enabled
         assert "notion" in enabled
@@ -282,7 +284,7 @@ class TestPluginConfig:
         """Test load_enabled_plugins loads all configured plugins"""
         results = fresh_registry.load_enabled_plugins()
 
-        assert len(results) == 4
+        assert len(results) >= 4
         assert all(results.values())  # All should succeed
         assert fresh_registry.get_plugin_count() >= 4
 
@@ -294,4 +296,4 @@ class TestPluginConfig:
         for name, success in results.items():
             assert isinstance(name, str)
             assert isinstance(success, bool)
-            assert name in ["slack", "github", "notion", "calendar"]
+            assert name in ["slack", "github", "notion", "calendar", "demo"]
