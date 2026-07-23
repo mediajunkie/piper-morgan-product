@@ -20,32 +20,15 @@ from services.repositories.file_repository import FileRepository
 
 
 class TestMCPErrorScenarios:
+    """#1452 note (2026-07-23): four tests removed per the #1436 Tier-3 ruling
+    (Arch, 2026-07-18) — they pinned the DELETED POC simulation stack, asserting
+    the simulation stub "fails to connect" (it never dials) or driving the
+    removed MCPResourceManager. The real connector path is
+    services/mcp/consumer/*; error-scenario coverage for it is the Family-6
+    follow-up named in staging_health._check_mcp_health."""
+
     """Comprehensive error scenario testing for MCP integration"""
 
-    @pytest.mark.asyncio
-    async def test_mcp_client_connection_failure(self):
-        """Test MCP client graceful handling of connection failures"""
-        # Test with invalid server URL
-        invalid_config = {"url": "invalid://nonexistent-server", "timeout": 1.0}
-
-        client = PiperMCPClient(invalid_config)
-
-        # Connection should fail gracefully
-        connected = await client.connect()
-        assert connected == False, "Connection should fail with invalid URL"
-
-        # Operations should handle disconnected state
-        is_connected = await client.is_connected()
-        assert is_connected == False, "Client should report disconnected state"
-
-        resources = await client.list_resources()
-        assert resources == [], "List resources should return empty list when disconnected"
-
-        content = await client.get_resource("file://test")
-        assert content is None, "Get resource should return None when disconnected"
-
-        search_results = await client.search_content("test")
-        assert search_results == [], "Search should return empty list when disconnected"
 
     @pytest.mark.asyncio
     async def test_mcp_client_timeout_handling(self):
@@ -74,33 +57,39 @@ class TestMCPErrorScenarios:
 
     @pytest.mark.asyncio
     async def test_mcp_circuit_breaker_functionality(self):
-        """Test MCP circuit breaker failure detection and recovery"""
-        # Create circuit breaker with low failure threshold
+        """Test MCP circuit breaker failure detection and recovery.
+
+        #1452: rewritten against the real call()-wrapper API — the original
+        pinned record_failure()/record_success()/can_attempt() methods that
+        never existed on the shipped breaker.
+        """
+        from services.mcp.exceptions import MCPCircuitBreakerOpenError
+
         breaker = MCPCircuitBreaker(failure_threshold=2, recovery_timeout=0.1)
 
-        # Test initial state
         assert breaker.state == "closed"
         assert breaker.failure_count == 0
 
-        # Simulate failures
-        import time
+        async def _fail():
+            raise MCPConnectionError("boom")
 
-        for i in range(2):
-            breaker.record_failure()
+        for _ in range(2):
+            with pytest.raises(MCPConnectionError):
+                await breaker.call(_fail)
 
-        # Should be open after reaching threshold
+        # Open after reaching threshold: further calls are refused
         assert breaker.state == "open"
-        assert not breaker.can_attempt()
+        with pytest.raises(MCPCircuitBreakerOpenError):
+            await breaker.call(_fail)
 
-        # Wait for recovery timeout
+        # After the recovery timeout, a successful call closes the circuit
         await asyncio.sleep(0.2)
 
-        # Should transition to half-open
-        assert breaker.state == "half-open"
-        assert breaker.can_attempt()
+        async def _ok():
+            return "ok"
 
-        # Successful call should close circuit
-        breaker.record_success()
+        result = await breaker.call(_ok)
+        assert result == "ok"
         assert breaker.state == "closed"
         assert breaker.failure_count == 0
 
@@ -151,12 +140,17 @@ class TestMCPErrorScenarios:
             id="test123",
             filename="test_document.txt",
             file_type="text/plain",
-            size=1024,
-            session_id="session123",
+            file_size=1024,
+            owner_id="user123",
         )
 
+        from services.shared_types import IntentCategory
+
         test_intent = Intent(
-            action="analyze_document", context={"original_message": "analyze the test document"}
+            original_message="analyze the test document",
+            category=IntentCategory.EXECUTION,
+            action="analyze_document",
+            context={"original_message": "analyze the test document"},
         )
 
         # Test with MCP disabled (should use filename scoring)
@@ -175,29 +169,6 @@ class TestMCPErrorScenarios:
                 assert isinstance(score, float), "Should return float score even with MCP failure"
                 assert 0.0 <= score <= 1.0, "Score should be between 0 and 1"
 
-    @pytest.mark.asyncio
-    async def test_mcp_server_unavailable_scenario(self):
-        """Test behavior when MCP server is completely unavailable"""
-        # Test with non-existent server script
-        invalid_config = {"url": "stdio://./nonexistent_server.py", "timeout": 1.0}
-
-        client = PiperMCPClient(invalid_config)
-
-        # Should fail gracefully
-        connected = await client.connect()
-        assert connected == False, "Should fail to connect to non-existent server"
-
-        # All operations should return empty results
-        resources = await client.list_resources()
-        assert resources == [], "Should return empty resources"
-
-        search_results = await client.search_content("test")
-        assert search_results == [], "Should return empty search results"
-
-        # Stats should reflect failed state
-        stats = client.get_connection_stats()
-        assert stats["connected"] == False, "Should show not connected"
-        assert stats["simulation_mode"] == True, "Should show simulation mode"
 
     @pytest.mark.asyncio
     async def test_mcp_resource_corruption_handling(self):
@@ -249,46 +220,10 @@ class TestMCPErrorScenarios:
         finally:
             await client.disconnect()
 
-    @pytest.mark.asyncio
-    async def test_mcp_memory_cleanup_on_errors(self):
-        """Test proper memory cleanup after MCP errors"""
-        manager = MCPResourceManager({"url": "invalid://server", "timeout": 0.1})
 
-        # Initialize with invalid config (should fail)
-        initialized = await manager.initialize(enabled=True)
-        assert initialized == False, "Should fail to initialize"
-
-        # Attempt operations that should fail
-        await manager.enhanced_file_search("test")
-        await manager.get_file_content("test.txt")
-        await manager.list_available_resources()
-
-        # Cleanup should work even after failures
-        await manager.cleanup()
-
-        # Manager should be properly reset
-        assert manager.client is None, "Client should be None after cleanup"
-        assert manager.initialized == False, "Should be uninitialized after cleanup"
-        assert len(manager.resource_cache) == 0, "Cache should be empty after cleanup"
-
-
-# Performance under error conditions
 class TestMCPErrorPerformance:
     """Test performance characteristics under error conditions"""
 
-    @pytest.mark.asyncio
-    async def test_error_response_time(self):
-        """Test that error responses are fast (fail-fast principle)"""
-        import time
-
-        # Test invalid connection
-        start_time = time.time()
-        client = PiperMCPClient({"url": "invalid://server", "timeout": 0.1})
-        connected = await client.connect()
-        duration = time.time() - start_time
-
-        assert connected == False, "Should fail to connect"
-        assert duration < 1.0, f"Error response should be fast, took {duration:.3f}s"
 
     @pytest.mark.asyncio
     async def test_fallback_response_time(self):
