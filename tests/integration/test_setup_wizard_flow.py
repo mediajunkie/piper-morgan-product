@@ -88,18 +88,21 @@ class TestSetupWizardIntegrationFlow:
 
         # Act: Store an API key for this user
         test_api_key = "sk-test-api-key-12345"
+        # #1452: the table moved to the keychain-reference design — id is
+        # autoincrement, the key itself lives behind key_reference (keychain
+        # identifier) with encrypted_secret as the DB-store fallback.
         await integration_db.execute(
             text(
                 """
-                INSERT INTO user_api_keys (id, user_id, provider, encrypted_key, created_at, updated_at)
-                VALUES (:id, :user_id, :provider, :encrypted_key, :created_at, :updated_at)
+                INSERT INTO user_api_keys (user_id, provider, key_reference, encrypted_secret, created_at, updated_at)
+                VALUES (:user_id, :provider, :key_reference, :encrypted_secret, :created_at, :updated_at)
             """
             ),
             {
-                "id": str(uuid4()),
                 "user_id": test_user_id,
                 "provider": "openai",
-                "encrypted_key": test_api_key,  # Normally encrypted, but we test storage
+                "key_reference": f"openai_{test_user_id}",
+                "encrypted_secret": test_api_key,  # Normally encrypted, but we test storage
                 "created_at": datetime.now(timezone.utc),
                 "updated_at": datetime.now(timezone.utc),
             },
@@ -109,14 +112,14 @@ class TestSetupWizardIntegrationFlow:
         # Assert: API key was stored
         result = await integration_db.execute(
             text(
-                "SELECT provider, encrypted_key FROM user_api_keys WHERE user_id = :user_id AND provider = :provider"
+                "SELECT provider, encrypted_secret FROM user_api_keys WHERE user_id = :user_id AND provider = :provider"
             ),
             {"user_id": test_user_id, "provider": "openai"},
         )
         api_key_row = result.fetchone()
         assert api_key_row is not None
         assert api_key_row.provider == "openai"
-        assert api_key_row.encrypted_key == test_api_key
+        assert api_key_row.encrypted_secret == test_api_key
 
     @pytest.mark.asyncio
     async def test_setup_wizard_preflight_checks_phases(self):
@@ -210,14 +213,16 @@ class TestSetupWizardIntegrationFlow:
             patch.object(service, "retrieve_user_key", return_value=None),
             patch("scripts.setup_wizard._check_global_keychain_key", return_value=None),
             patch.object(service, "store_user_key") as mock_store,
-            patch("scripts.setup_wizard.AsyncSessionFactory") as mock_factory,
+            patch(
+                "services.database.session_factory.AsyncSessionFactory.session_scope_fresh"
+            ) as mock_scope,
             patch("builtins.print"),
         ):  # Suppress output
             # Mock session
             mock_session = AsyncMock()
             mock_session.commit = AsyncMock()
-            mock_factory.session_scope_fresh.return_value.__aenter__.return_value = mock_session
-            mock_factory.session_scope_fresh.return_value.__aexit__.return_value = None
+            mock_scope.return_value.__aenter__.return_value = mock_session
+            mock_scope.return_value.__aexit__.return_value = None
 
             result = await _collect_single_api_key(
                 user_id=user_id,

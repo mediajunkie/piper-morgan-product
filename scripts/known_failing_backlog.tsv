@@ -7,8 +7,6 @@
 #   triage       = not yet glanced — triaging it IS part of the burn-down
 #   flaky        = oscillates run-to-run (tolerated both states); burn-down = DE-FLAKE, then retag
 # Source: dev/2026/07/19/fullsuite-enumeration-2026-07-19.txt (CI-parity local run 2).
-tests/domain/test_llm_domain_service.py::TestLLMDomainService::test_complete_with_context	triage
-tests/domain/test_llm_domain_service.py::TestLLMDomainService::test_complete_with_task_type	triage
 tests/e2e/test_canonical_conversations.py::TestCanonicalGroundTruthMocked::test_milestones_empty_is_honest	triage
 tests/e2e/test_scenario_driver.py::test_multi_turn_scenario[fresh_tester_onboarding]	triage
 tests/e2e/test_task_lifecycle_e2e.py::TestTodoLifecycleE2E::test_create_todo_returns_confirmation	triage
@@ -50,8 +48,6 @@ tests/integration/test_publish_gaps.py::TestURLReturnGap::test_cli_displays_url_
 tests/integration/test_publish_gaps.py::TestURLReturnGap::test_publisher_returns_real_notion_url	triage
 tests/integration/test_sec_rbac_phase1_3_cross_user_access.py::TestCrossUserAccessBlocking::test_feedback_cross_user_access_blocked	triage
 tests/integration/test_sec_rbac_phase1_3_cross_user_access.py::TestCrossUserAccessBlocking::test_todo_cross_user_access_blocked	triage
-tests/integration/test_setup_wizard_flow.py::TestSetupWizardIntegrationFlow::test_api_keys_stored_after_user_creation	triage
-tests/integration/test_setup_wizard_flow.py::TestSetupWizardIntegrationFlow::test_collect_single_api_key_from_env_var	triage
 tests/integration/test_slack_spatial_adapter_integration.py::TestSlackSpatialAdapter::test_create_spatial_event_from_slack	triage
 tests/integration/test_slack_spatial_adapter_integration.py::TestSlackSpatialAdapter::test_map_slack_timestamp_to_position	triage
 tests/integration/test_slack_spatial_adapter_integration.py::TestSpatialAdapterRegistryIntegration::test_map_through_registry	triage
@@ -125,7 +121,6 @@ tests/unit/web/api/routes/test_radar.py::test_radar_empty_returns_one_example	tr
 tests/unit/web/api/routes/test_radar.py::test_radar_lifecycle_derived_from_recency	triage
 tests/unit/web/api/routes/test_radar.py::test_radar_populated_is_attention_first_and_observed	triage
 tests/unit/web/api/routes/test_radar.py::test_workitem_source_registered_in_feed	triage
-tests/unit/web/api/routes/test_setup_calendar.py::TestCalendarSetupStatus::test_status_uses_user_scoped_key	triage
 tests/validation/test_pm034_claims_validation.py::TestPM034ClaimsValidation::test_single_classification_latency_claim	flaky
 tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_analyze_nonexistent_file	flaky
 tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_compare_requires_minimum_files	flaky

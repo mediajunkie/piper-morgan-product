@@ -52,8 +52,14 @@ class TestLLMDomainService:
             result = await service.complete(task_type="test_task", prompt="test prompt")
 
             assert result == "test response"
+            # #1452: the pass-through gained system/user_id (per-user LLM rail)
             mock_llm_client.complete.assert_called_once_with(
-                task_type="test_task", prompt="test prompt", context=None, response_format=None
+                task_type="test_task",
+                prompt="test prompt",
+                context=None,
+                response_format=None,
+                system=None,
+                user_id=None,
             )
 
     async def test_complete_with_context(self, mock_config_service, mock_llm_client):
@@ -69,7 +75,12 @@ class TestLLMDomainService:
 
             assert result == "test response"
             mock_llm_client.complete.assert_called_once_with(
-                task_type="test_task", prompt="test prompt", context=context, response_format=None
+                task_type="test_task",
+                prompt="test prompt",
+                context=context,
+                response_format=None,
+                system=None,
+                user_id=None,
             )
 
     async def test_complete_before_initialization(self):

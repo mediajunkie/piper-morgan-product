@@ -315,7 +315,10 @@ class TestCalendarSetupStatus:
         mock_claims = MagicMock()
         mock_claims.sub = user_id
         mock_jwt_service = MagicMock()
-        mock_jwt_service.validate_token.return_value = mock_claims
+        # #1434: validate_token is async — a sync MagicMock return makes the
+        # route's await raise into its silent fallback (the exact bug #1434
+        # fixed in the route; the mock had the same rot).
+        mock_jwt_service.validate_token = AsyncMock(return_value=mock_claims)
         return mock_request, mock_jwt_service
 
     @pytest.mark.asyncio
