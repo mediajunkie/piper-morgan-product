@@ -76,9 +76,18 @@ class TestCheckChromadb:
     async def test_uses_chromadb_host_env_var_when_set(self):
         with patch("web.api.routes.setup.check_service_port", new_callable=AsyncMock) as mock_port:
             mock_port.return_value = True
-            with patch.dict(
-                "os.environ", {"CHROMADB_HOST": "my-chromadb", "CHROMADB_PORT": "9000"}
-            ):
+            # #1452: the route honors the Fly spelling CHROMA_HOST FIRST —
+            # .env sets it locally (via conftest load_dotenv), shadowing the
+            # CHROMADB_* patch. Control both spellings.
+            import os as _os
+
+            env_clean = {
+                k: v
+                for k, v in _os.environ.items()
+                if k not in ("CHROMA_HOST", "CHROMA_PORT")
+            }
+            env_clean.update({"CHROMADB_HOST": "my-chromadb", "CHROMADB_PORT": "9000"})
+            with patch.dict("os.environ", env_clean, clear=True):
                 from web.api.routes.setup import check_chromadb
 
                 await check_chromadb()
@@ -92,7 +101,8 @@ class TestCheckChromadb:
                 env_without = {
                     k: v
                     for k, v in __import__("os").environ.items()
-                    if k not in ("CHROMADB_HOST", "CHROMADB_PORT")
+                    if k
+                    not in ("CHROMADB_HOST", "CHROMADB_PORT", "CHROMA_HOST", "CHROMA_PORT")
                 }
                 with patch.dict("os.environ", env_without, clear=True):
                     from web.api.routes.setup import check_chromadb
@@ -108,7 +118,8 @@ class TestCheckChromadb:
                 env_without = {
                     k: v
                     for k, v in __import__("os").environ.items()
-                    if k not in ("CHROMADB_HOST", "CHROMADB_PORT")
+                    if k
+                    not in ("CHROMADB_HOST", "CHROMADB_PORT", "CHROMA_HOST", "CHROMA_PORT")
                 }
                 with patch.dict("os.environ", env_without, clear=True):
                     from web.api.routes.setup import check_chromadb
