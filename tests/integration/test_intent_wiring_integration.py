@@ -317,11 +317,11 @@ async def test_user_no_projects(integration_db_session):
 
     yield user_id, username, password
 
-    # Cleanup
-    await integration_db_session.execute(
-        text("DELETE FROM users WHERE id = :user_id"),
-        {"user_id": user_id},
-    )
+    # Cleanup — the app creates dependent rows (personalization_contexts etc.)
+    # for the user mid-test; a bare users DELETE hits FK violations (#1452).
+    from tests.conftest import delete_test_user_fully
+
+    await delete_test_user_fully(integration_db_session, user_id)
     await integration_db_session.commit()
 
 
