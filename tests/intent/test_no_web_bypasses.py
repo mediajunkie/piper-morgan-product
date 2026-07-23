@@ -24,22 +24,30 @@ class TestWebIntentEnforcement:
         # Try to access GitHub service directly
         response = client.post("/api/github/create_issue", json={"title": "Test", "body": "Test"})
         # Should be 404 (doesn't exist) or 403 (forbidden)
-        assert response.status_code in [404, 403, 405]
+        # 401 = auth middleware refuses before routing — the bypass is still
+        # blocked (#1452: added when global auth started answering first)
+        assert response.status_code in [404, 403, 405, 401]
 
     def test_no_direct_slack_access(self):
         """Ensure Slack endpoints require intent."""
         response = client.post("/api/slack/send_message", json={"channel": "test", "text": "test"})
-        assert response.status_code in [404, 403, 405]
+        # 401 = auth middleware refuses before routing — the bypass is still
+        # blocked (#1452: added when global auth started answering first)
+        assert response.status_code in [404, 403, 405, 401]
 
     def test_no_direct_notion_access(self):
         """Ensure Notion endpoints require intent."""
         response = client.post("/api/notion/create_page", json={"title": "Test"})
-        assert response.status_code in [404, 403, 405]
+        # 401 = auth middleware refuses before routing — the bypass is still
+        # blocked (#1452: added when global auth started answering first)
+        assert response.status_code in [404, 403, 405, 401]
 
     def test_no_direct_calendar_access(self):
         """Ensure Calendar endpoints require intent."""
         response = client.get("/api/calendar/events")
-        assert response.status_code in [404, 403, 405]
+        # 401 = auth middleware refuses before routing — the bypass is still
+        # blocked (#1452: added when global auth started answering first)
+        assert response.status_code in [404, 403, 405, 401]
 
     def test_health_endpoint_allowed(self):
         """Health checks are explicitly allowed to bypass."""

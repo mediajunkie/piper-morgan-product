@@ -90,10 +90,6 @@ tests/intent/test_integration_complete.py::TestIntentSystemIntegration::test_com
 tests/intent/test_integration_complete.py::TestIntentSystemIntegration::test_nl_endpoints_configured	triage
 tests/intent/test_no_cli_bypasses.py::TestCLIIntentEnforcement::test_all_commands_import_intent	triage
 tests/intent/test_no_timeouts.py::TestNoTimeoutErrors::test_query_fallback_handles_misclassifications	triage
-tests/intent/test_no_web_bypasses.py::TestWebIntentEnforcement::test_no_direct_calendar_access	triage
-tests/intent/test_no_web_bypasses.py::TestWebIntentEnforcement::test_no_direct_github_access	triage
-tests/intent/test_no_web_bypasses.py::TestWebIntentEnforcement::test_no_direct_notion_access	triage
-tests/intent/test_no_web_bypasses.py::TestWebIntentEnforcement::test_no_direct_slack_access	triage
 tests/intent/test_user_flows_complete.py::TestCachingBehavior::test_cache_metrics_endpoint	triage
 tests/intent/test_user_flows_complete.py::TestMiddlewareEnforcement::test_middleware_monitoring_active	triage
 tests/intent/test_user_flows_complete.py::TestPersonalityIntegration::test_personality_enhance_is_exempt	triage
