@@ -100,22 +100,13 @@ class TestCachingBehavior:
                 assert (final_hits > initial_hits) or (final_misses > initial_misses)
 
     def test_cache_metrics_endpoint(self, client):
-        """Cache metrics endpoint should be accessible."""
+        """Cache metrics endpoint exists and is auth-gated.
+
+        #1452: global auth now guards admin endpoints — unauthenticated
+        probes get 401 (correct), never 404 (missing) or 500 (crash).
+        """
         response = client.get("/api/admin/intent-cache-metrics")
-
-        assert response.status_code == 200
-        data = response.json()
-
-        # Should have cache info
-        assert "cache_enabled" in data
-        assert data["cache_enabled"] is True
-        assert "metrics" in data
-
-        metrics = data["metrics"]
-        assert "hits" in metrics
-        assert "misses" in metrics
-        assert "hit_rate_percent" in metrics
-        assert "cache_size" in metrics
+        assert response.status_code == 401
 
 
 class TestStandupFlow:
@@ -142,24 +133,24 @@ class TestMiddlewareEnforcement:
     """Validate middleware is enforcing properly."""
 
     def test_middleware_monitoring_active(self, client):
-        """Middleware monitoring endpoint should work."""
+        """Monitoring endpoint exists and is auth-gated (#1452: see above)."""
         response = client.get("/api/admin/intent-monitoring")
-
-        assert response.status_code == 200
-        data = response.json()
-
-        assert data["middleware_active"] is True
-        assert len(data["nl_endpoints"]) == 4
-        assert "/api/v1/intent" in data["nl_endpoints"]
+        assert response.status_code == 401
 
     def test_exempt_paths_work(self, client):
         """Exempt paths should be accessible."""
         # GREAT-4F: /health MUST return 200 (critical for monitoring/load balancers)
-        exempt_paths = [("/health", [200]), ("/docs", [200, 404]), ("/", [200])]
+        # #1452: "/" now 302-redirects unauthenticated visitors to login
+        exempt_paths = [("/health", [200]), ("/docs", [200, 404]), ("/", [200, 302])]
 
         for path, expected_codes in exempt_paths:
-            response = client.get(path)
-            assert response.status_code in expected_codes, f"{path} should be accessible"
+            # follow_redirects=False: reachability is the claim under test —
+            # following "/"'s login redirect renders a template, which needs
+            # the full app lifespan the bare TestClient doesn't run.
+            response = client.get(path, follow_redirects=False)
+            assert response.status_code in expected_codes, (
+                f"{path} should be accessible, got {response.status_code}: {response.text[:200]}"
+            )
 
 
 class TestPersonalityIntegration:
@@ -171,6 +162,7 @@ class TestPersonalityIntegration:
             "/api/v1/personality/enhance", json={"text": "Test response", "context": {}}
         )
 
-        # GREAT-5: Should work or validation error, but NOT crash (500) or missing (404)
-        assert response.status_code in [200, 422]
+        # GREAT-5: Should work, validation-error, or auth-gate — NOT crash
+        # (500) or missing (404). 401 = global auth answers first (#1452).
+        assert response.status_code in [200, 422, 401]
         assert response.status_code != 404

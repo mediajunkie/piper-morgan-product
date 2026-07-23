@@ -7,9 +7,6 @@
 #   triage       = not yet glanced — triaging it IS part of the burn-down
 #   flaky        = oscillates run-to-run (tolerated both states); burn-down = DE-FLAKE, then retag
 # Source: dev/2026/07/19/fullsuite-enumeration-2026-07-19.txt (CI-parity local run 2).
-tests/domain/test_file_reference_detection.py::TestFileReferenceDetection::test_classification_with_file_context	triage
-tests/domain/test_file_reference_detection.py::TestFileReferenceDetection::test_classification_without_file_context	triage
-tests/domain/test_file_reference_detection.py::TestFileReferenceDetection::test_file_reference_with_multiple_files	triage
 tests/domain/test_llm_domain_service.py::TestLLMDomainService::test_complete_with_context	triage
 tests/domain/test_llm_domain_service.py::TestLLMDomainService::test_complete_with_task_type	triage
 tests/e2e/test_canonical_conversations.py::TestCanonicalGroundTruthMocked::test_milestones_empty_is_honest	triage
@@ -71,14 +68,8 @@ tests/intent/test_bypass_prevention.py::TestBypassPrevention::test_middleware_is
 tests/intent/test_enforcement_integration.py::TestEnforcementIntegration::test_monitoring_endpoint_accessible	triage
 tests/intent/test_future_nl_endpoints.py::TestFutureEndpoints::test_all_nl_routes_in_middleware_config	triage
 tests/intent/test_handler_error_handling.py::test_status_query_empty_projects	triage
-tests/intent/test_integration_complete.py::TestIntentSystemIntegration::test_cache_operational	triage
-tests/intent/test_integration_complete.py::TestIntentSystemIntegration::test_complete_pipeline_exists	triage
-tests/intent/test_integration_complete.py::TestIntentSystemIntegration::test_nl_endpoints_configured	triage
 tests/intent/test_no_cli_bypasses.py::TestCLIIntentEnforcement::test_all_commands_import_intent	triage
 tests/intent/test_no_timeouts.py::TestNoTimeoutErrors::test_query_fallback_handles_misclassifications	triage
-tests/intent/test_user_flows_complete.py::TestCachingBehavior::test_cache_metrics_endpoint	triage
-tests/intent/test_user_flows_complete.py::TestMiddlewareEnforcement::test_middleware_monitoring_active	triage
-tests/intent/test_user_flows_complete.py::TestPersonalityIntegration::test_personality_enhance_is_exempt	triage
 tests/issues/test_pm058_fix_validation.py::test_async_transaction_fixture_syntax	triage
 tests/load/test_concurrent_load.py::test_concurrent_load	triage
 tests/load/test_error_recovery.py::test_error_recovery	triage

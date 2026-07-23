@@ -168,25 +168,33 @@ class UsageCapMiddleware(BaseHTTPMiddleware):
                 # filled the 10-slot gauge and starved real users. ip:*
                 # principals remain fully covered by mechanism 1's per-IP rate
                 # limit above.
-                if not principal.startswith("user:"):
-                    return await call_next(request)
-                now = time.time()
-                await redis.zremrangebyscore(
-                    CONCURRENCY_GAUGE_KEY, "-inf", now - CONCURRENT_SESSION_IDLE_SECONDS
-                )
-                is_active = await redis.zscore(CONCURRENCY_GAUGE_KEY, principal) is not None
-                if not is_active:
-                    current_count = await redis.zcard(CONCURRENCY_GAUGE_KEY)
-                    if current_count >= MAX_CONCURRENT_SESSIONS:
-                        logger.warning(
-                            "usage_cap_at_capacity",
-                            principal=principal,
-                            current_count=current_count,
-                        )
-                        return _at_capacity_response(current_count, MAX_CONCURRENT_SESSIONS)
-                # Register/refresh this principal's last-active timestamp —
-                # whether newly admitted or already an active member.
-                await redis.zadd(CONCURRENCY_GAUGE_KEY, {principal: now})
+                # #1452: the gauge block is guarded (not an early
+                # `return await call_next(...)` inside this try) so DOWNSTREAM
+                # handler exceptions can never be swallowed here and
+                # misreported as capacity 503s — that masking bug made a
+                # template-init error on "/" read as capacity_check_unavailable.
+                if principal.startswith("user:"):
+                    now = time.time()
+                    await redis.zremrangebyscore(
+                        CONCURRENCY_GAUGE_KEY, "-inf", now - CONCURRENT_SESSION_IDLE_SECONDS
+                    )
+                    is_active = (
+                        await redis.zscore(CONCURRENCY_GAUGE_KEY, principal) is not None
+                    )
+                    if not is_active:
+                        current_count = await redis.zcard(CONCURRENCY_GAUGE_KEY)
+                        if current_count >= MAX_CONCURRENT_SESSIONS:
+                            logger.warning(
+                                "usage_cap_at_capacity",
+                                principal=principal,
+                                current_count=current_count,
+                            )
+                            return _at_capacity_response(
+                                current_count, MAX_CONCURRENT_SESSIONS
+                            )
+                    # Register/refresh this principal's last-active timestamp —
+                    # whether newly admitted or already an active member.
+                    await redis.zadd(CONCURRENCY_GAUGE_KEY, {principal: now})
         except Exception as e:
             # D4: fail-closed. Anything that prevents verifying capacity
             # (connection refused, timeout, auth failure) denies rather than

@@ -58,6 +58,7 @@ class TestFileReferenceDetection:
                 message
             ), f"Incorrectly detected file reference in: {message}"
 
+    @pytest.mark.llm  # #1452: drives the LIVE classifier (category/action/confidence asserts)
     @pytest.mark.asyncio
     async def test_classification_with_file_context(self, session_manager, classifier):
         """Test that file context is included in classification"""
@@ -80,6 +81,7 @@ class TestFileReferenceDetection:
         assert intent.action == "analyze_data"
         assert intent.confidence > 0.7
 
+    @pytest.mark.llm  # #1452: drives the LIVE classifier (category/action/confidence asserts)
     @pytest.mark.asyncio
     async def test_classification_without_file_context(self, session_manager, classifier):
         """Test that classification works without file context"""
@@ -94,6 +96,7 @@ class TestFileReferenceDetection:
         assert intent.action == "list_projects"
         assert intent.confidence > 0.7
 
+    @pytest.mark.llm  # #1452: drives the LIVE classifier (category/action/confidence asserts)
     @pytest.mark.asyncio
     async def test_file_reference_with_multiple_files(self, session_manager, classifier):
         """Test file reference when multiple files are uploaded"""
