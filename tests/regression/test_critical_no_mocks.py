@@ -92,7 +92,6 @@ class TestCriticalEndpoints:
             ("/health", "GET"),
             ("/health/config", "GET"),
             ("/api/v1/intent", "POST"),
-            ("/api/standup", "GET"),  # GREAT-5: Fixed - standup is GET not POST
             ("/api/admin/intent-monitoring", "GET"),
             ("/api/admin/intent-cache-metrics", "GET"),
         ]
@@ -110,6 +109,27 @@ class TestCriticalEndpoints:
                 missing.append(f"{method} {endpoint}")
 
         assert len(missing) == 0, f"Missing required endpoints: {missing}"
+
+        # #1452: the standup surface (now /api/v1/standup, API-conventions)
+        # mounts in a LIFESPAN phase (web/startup.py APIRouterMountingPhase),
+        # so it is invisible on app.routes without booting the app. Assert
+        # the wiring chain instead: the router carries the canonical GET and
+        # the mounting phase is registered in the startup sequence.
+        from web.api.routes.standup import router as standup_router
+        from web.startup import APIRouterMountingPhase, StartupManager
+
+        standup_paths = {
+            (r.path, m) for r in standup_router.routes for m in getattr(r, "methods", [])
+        }
+        assert ("/api/v1/standup/today", "GET") in standup_paths
+
+        import inspect as _inspect
+
+        manager = StartupManager(app)
+        assert APIRouterMountingPhase in manager.phases
+        assert "web.api.routes.standup" in _inspect.getsource(
+            APIRouterMountingPhase.startup
+        )
 
     def test_intent_endpoint_returns_valid_response(self):
         """Intent endpoint must process requests and return valid responses."""

@@ -11,18 +11,12 @@ import pytest
 
 
 @pytest.mark.asyncio
-async def test_async_transaction_fixture_syntax():
-    """Test that the async_transaction fixture has valid syntax and basic functionality"""
-
-    # Import the fixture function
-    from conftest import async_transaction
-
-    # Get the fixture (which returns a context manager)
-    transaction_context = await async_transaction()
-
-    # Verify it's a context manager
-    assert hasattr(transaction_context, "__aenter__")
-    assert hasattr(transaction_context, "__aexit__")
+async def test_async_transaction_fixture_syntax(async_transaction):
+    """The async_transaction fixture resolves and yields a usable session
+    context. (#1452: pytest hard-errors on calling fixtures directly now —
+    request it as a parameter, which is also the only honest test of it.)"""
+    async with async_transaction as session:
+        assert session is not None
 
     print("✅ async_transaction fixture syntax validation passed")
 

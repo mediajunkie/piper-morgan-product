@@ -1,9 +1,14 @@
-"""Test config-based plugin disabling"""
+"""Manual check for config-based plugin disabling.
+
+#1452: this is a hand-run CLI utility (takes the plugin name as argv, prints,
+returns bool) that pytest collected because of its former test_ name — it then
+failed wanting the CLI arg as a fixture. Renamed so pytest skips it; run it
+directly: python tests/test_config_disabling.py <plugin>."""
 
 from services.plugins import get_plugin_registry, reset_plugin_registry
 
 
-def test_disable_plugin(disabled_plugin: str, expected_count: int = 3):
+def check_disable_plugin(disabled_plugin: str, expected_count: int = 3):
     """Test disabling a specific plugin via config"""
     reset_plugin_registry()
     registry = get_plugin_registry()
@@ -41,6 +46,6 @@ if __name__ == "__main__":
         sys.exit(1)
 
     disabled = sys.argv[1]
-    success = test_disable_plugin(disabled)
+    success = check_disable_plugin(disabled)
 
     sys.exit(0 if success else 1)
