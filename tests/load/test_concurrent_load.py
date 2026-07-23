@@ -1,3 +1,7 @@
+import pytest
+
+pytestmark = pytest.mark.llm  # #1452: live-pipeline load test — keyed llm lane
+
 """
 GREAT-4E Phase 4: Concurrent Load Test - REAL SYSTEM ONLY
 Benchmark 2/5: Test parallelism with NO MOCKING

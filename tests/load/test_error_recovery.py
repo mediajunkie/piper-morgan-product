@@ -1,3 +1,7 @@
+import pytest
+
+pytestmark = pytest.mark.llm  # #1452: live-pipeline load test — keyed llm lane
+
 """
 GREAT-4E Phase 4: Error Recovery Test - REAL SYSTEM ONLY
 Benchmark 5/5: Test error handling under load with NO MOCKING

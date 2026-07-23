@@ -1,3 +1,7 @@
+import pytest
+
+pytestmark = pytest.mark.llm  # #1452: live-pipeline load test — keyed llm lane
+
 """
 GREAT-4E Phase 4: Memory Stability Test - REAL SYSTEM ONLY
 Benchmark 4/5: Detect memory leaks with NO MOCKING

@@ -60,9 +60,6 @@ tests/intent/test_future_nl_endpoints.py::TestFutureEndpoints::test_all_nl_route
 tests/intent/test_handler_error_handling.py::test_status_query_empty_projects	triage
 tests/intent/test_no_cli_bypasses.py::TestCLIIntentEnforcement::test_all_commands_import_intent	triage
 tests/intent/test_no_timeouts.py::TestNoTimeoutErrors::test_query_fallback_handles_misclassifications	triage
-tests/load/test_concurrent_load.py::test_concurrent_load	triage
-tests/load/test_error_recovery.py::test_error_recovery	triage
-tests/load/test_memory_stability.py::test_memory_stability	triage
 tests/manual/test_learning_handler_phase1.py::test_outcome_recording	triage
 tests/methodology/coordination/test_enforcement_patterns_validation.py::TestEnforcementPatterns::test_enforcement_prompt_generation	triage
 tests/methodology/coordination/test_enforcement_patterns_validation.py::TestEnforcementPatterns::test_valid_task_passes_enforcement	triage
