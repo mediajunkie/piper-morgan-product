@@ -82,11 +82,22 @@ class TestSettingsProjectsTemplate:
         """Verify template file exists."""
         assert os.path.exists("templates/settings_projects.html")
 
-    def test_template_includes_navigation(self):
-        """Verify template includes navigation component."""
+    APP_SHELL = "templates/layouts/app_shell.html"
+
+    def _shell_chrome(self):
+        """#1452: this template migrated onto app_shell (#1171) — nav, toast,
+        and tokens are the SHELL's job now. Assert the two-hop contract:
+        the child extends app_shell, and app_shell carries the chrome."""
         with open("templates/settings_projects.html") as f:
-            content = f.read()
-        assert "components/navigation.html" in content
+            child = f.read()
+        assert 'extends "layouts/app_shell.html"' in child
+        with open(self.APP_SHELL) as f:
+            return f.read()
+
+    def test_template_includes_navigation(self):
+        """Navigation is delivered by the shell (nav_rail include)."""
+        shell = self._shell_chrome()
+        assert "components/nav_rail.html" in shell
 
     def test_template_includes_breadcrumbs(self):
         """Verify template includes breadcrumbs component."""
@@ -108,16 +119,14 @@ class TestSettingsProjectsTemplate:
         assert "/projects/" in content
 
     def test_template_includes_toast_js(self):
-        """Verify template loads toast.js."""
-        with open("templates/settings_projects.html") as f:
-            content = f.read()
-        assert "toast.js" in content
+        """toast.js is delivered by the shell."""
+        shell = self._shell_chrome()
+        assert "toast.js" in shell
 
     def test_template_uses_design_tokens(self):
-        """Verify template references tokens.css for design consistency."""
-        with open("templates/settings_projects.html") as f:
-            content = f.read()
-        assert "tokens.css" in content
+        """tokens.css is delivered by the shell."""
+        shell = self._shell_chrome()
+        assert "tokens.css" in shell
 
     def test_template_calls_projects_api(self):
         """Verify template calls the projects API endpoint."""

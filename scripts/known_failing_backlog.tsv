@@ -128,9 +128,6 @@ tests/unit/web/api/routes/test_radar.py::test_radar_empty_returns_one_example	tr
 tests/unit/web/api/routes/test_radar.py::test_radar_lifecycle_derived_from_recency	triage
 tests/unit/web/api/routes/test_radar.py::test_radar_populated_is_attention_first_and_observed	triage
 tests/unit/web/api/routes/test_radar.py::test_workitem_source_registered_in_feed	triage
-tests/unit/web/api/routes/test_settings_projects_ui.py::TestSettingsProjectsTemplate::test_template_includes_navigation	triage
-tests/unit/web/api/routes/test_settings_projects_ui.py::TestSettingsProjectsTemplate::test_template_includes_toast_js	triage
-tests/unit/web/api/routes/test_settings_projects_ui.py::TestSettingsProjectsTemplate::test_template_uses_design_tokens	triage
 tests/unit/web/api/routes/test_setup_calendar.py::TestCalendarSetupStatus::test_status_uses_user_scoped_key	triage
 tests/unit/web/api/routes/test_setup_slack.py::TestSlackSetupStatus::test_check_slack_configured_with_token	triage
 tests/unit/web/api/routes/test_setup_slack.py::TestSlackSetupStatus::test_check_slack_not_configured	triage
