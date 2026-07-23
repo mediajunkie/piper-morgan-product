@@ -4,6 +4,12 @@ from fastapi.testclient import TestClient
 
 from web.app import app
 
+# #1452 wave 21: these post natural language to /api/v1/intent and assert the
+# LIVE classification outcome (category/action) — keyed llm lane. NOTE for the
+# llm-lane burn-down: some pinned actions (count_projects) already diverge
+# from live behavior even keyed; revisit when the llm lane runs.
+pytestmark = pytest.mark.llm
+
 
 @pytest.fixture(scope="module")
 def setup_projects():

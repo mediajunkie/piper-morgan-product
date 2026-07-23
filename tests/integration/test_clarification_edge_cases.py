@@ -9,6 +9,11 @@ from services.intent_service import classifier
 from services.session.session_manager import SessionManager
 from services.shared_types import IntentCategory
 
+# #1452 wave 21: every test here drives the module-level classifier through
+# real classify() calls that reach llm.complete ("create a ticket" → asserts
+# on live classification) — keyed llm lane, not the keyless CI sweep.
+pytestmark = pytest.mark.llm
+
 # Note: We'll use direct component testing rather than FastAPI TestClient
 # since we need more control over session state and async operations
 
