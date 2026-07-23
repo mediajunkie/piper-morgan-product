@@ -1,11 +1,12 @@
-# Lead Dev carry-forward (rewritten 2026-07-23 ~08:25 PT)
+# Lead Dev carry-forward (rewritten 2026-07-23 ~08:55 PT)
 
 ## Session/env
 - Worktree: `.claude/worktrees/lead-1452-harness`; session cron e1106eb5 (`17 6,9,12,15,18,21 * * *`, session-only — re-arm after any re-attach, Gap-C).
 - Beta at v27; main==production lockstep (fe890b82e + pending push). No deploy owed — lazy-init fix only changes keyless behavior.
 
 ## #1452 burn-down — live state (Thursday 7/23 morning)
-- Backlog on disk: 219 (waves 15-17 delisted; edge-trio re-listed flaky). Arc: 634→219.
+- **CI GREEN at c0a10e40f (~08:35)** — first green under the gate; PM notified. Waves 19-25 pushed since (CI arbitration of that batch in flight at 2e7bff1f5).
+- Backlog on disk: 182. Arc: 634→182. Waves today: 15 execution_analysis fix; 16 llm-marks (classification_accuracy+direct_interface); 17 benchmarks DI fix; 18 standup async/refresh fixes (9 ride flaky — full-sweep-only oscillation); 19 configuration_regression mock-theatre cut to 1 real test; 20 error_message_enhancement rewritten to degradation contract; 21 llm-marks (clarification_edge_cases+api_query); 22 integrations_dashboard JWT claims; 23 mcp_error_scenarios per #1436 ruling (4 dead-premise cut, breaker+resolver fixed); 24-25 todo suites (real UUID owners + selectin_polymorphic product fix in item_service, latent).
 - CI at fe890b82e: RED with exactly 5 new failures, all with fixes in hand locally:
   - update_issue pair: #943 pre-flight ("GitHub isn't connected", success=True) fires in keyless CI before the missing-field validation — FIXED locally (is_available pinned True in both tests), 35/35.
   - doc edge trio: pass keyed-local + CI-isolation, fail CI-sweep — re-listed `flaky` (context-oscillation; the tag is shrink-lock-exempt both ways).
