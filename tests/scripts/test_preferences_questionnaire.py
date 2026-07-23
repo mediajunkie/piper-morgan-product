@@ -71,13 +71,13 @@ class TestStoreUserPreferences:
     @pytest.mark.asyncio
     async def test_store_preferences_success(self):
         """Test successful preference storage"""
-        user_id = "test-user-123"
+        user_id = "550e8400-e29b-41d4-a716-446655440099"
         preferences = {"communication_style": "balanced", "work_style": "flexible"}
 
         # Mock database operations
         mock_session = AsyncMock()
         mock_result = MagicMock()
-        mock_result.fetchone.return_value = ("test-user-123",)  # User exists
+        mock_result.fetchone.return_value = ("550e8400-e29b-41d4-a716-446655440099",)  # User exists
         mock_session.execute.return_value = mock_result
 
         with patch("scripts.preferences_questionnaire.AsyncSessionFactory") as mock_factory:
@@ -113,7 +113,7 @@ class TestStoreUserPreferences:
     @pytest.mark.asyncio
     async def test_store_preferences_database_error(self):
         """Test handling database errors"""
-        user_id = "test-user-123"
+        user_id = "550e8400-e29b-41d4-a716-446655440099"
         preferences = {"communication_style": "balanced"}
 
         with patch("scripts.preferences_questionnaire.AsyncSessionFactory") as mock_factory:
@@ -130,7 +130,7 @@ class TestGetCurrentUserId:
     @pytest.mark.asyncio
     async def test_get_current_user_id_success(self):
         """Test successful user ID retrieval"""
-        expected_user_id = "test-user-123"
+        expected_user_id = "550e8400-e29b-41d4-a716-446655440099"
 
         # Mock database operations
         mock_session = AsyncMock()
@@ -168,7 +168,7 @@ class TestGetExistingPreferences:
     @pytest.mark.asyncio
     async def test_get_existing_preferences_success(self):
         """Test successful preference retrieval"""
-        user_id = "test-user-123"
+        user_id = "550e8400-e29b-41d4-a716-446655440099"
         expected_prefs = {
             "communication_style": "balanced",
             "work_style": "flexible",
@@ -191,7 +191,7 @@ class TestGetExistingPreferences:
     @pytest.mark.asyncio
     async def test_get_existing_preferences_none(self):
         """Test handling when no preferences exist"""
-        user_id = "test-user-123"
+        user_id = "550e8400-e29b-41d4-a716-446655440099"
 
         # Mock database operations - no preferences
         mock_session = AsyncMock()
@@ -213,7 +213,7 @@ class TestRunPreferenceQuestionnaire:
     @pytest.mark.asyncio
     async def test_questionnaire_full_flow(self):
         """Test complete questionnaire flow with valid inputs"""
-        user_id = "test-user-123"
+        user_id = "550e8400-e29b-41d4-a716-446655440099"
 
         # Mock user inputs (1, 2, 3, 1, 2 for the 5 questions)
         mock_inputs = ["1", "2", "3", "1", "2"]
@@ -231,7 +231,7 @@ class TestRunPreferenceQuestionnaire:
     @pytest.mark.asyncio
     async def test_questionnaire_update_existing(self):
         """Test updating existing preferences"""
-        user_id = "test-user-123"
+        user_id = "550e8400-e29b-41d4-a716-446655440099"
         existing_prefs = {
             "communication_style": "detailed",
             "configured_at": "2025-10-23T15:00:00Z",
@@ -256,7 +256,7 @@ class TestRunPreferenceQuestionnaire:
     @pytest.mark.asyncio
     async def test_questionnaire_skip_update(self):
         """Test skipping update of existing preferences"""
-        user_id = "test-user-123"
+        user_id = "550e8400-e29b-41d4-a716-446655440099"
         existing_prefs = {
             "communication_style": "detailed",
             "configured_at": "2025-10-23T15:00:00Z",
@@ -280,7 +280,7 @@ class TestRunPreferenceQuestionnaire:
     @pytest.mark.asyncio
     async def test_questionnaire_storage_failure(self):
         """Test handling storage failure"""
-        user_id = "test-user-123"
+        user_id = "550e8400-e29b-41d4-a716-446655440099"
 
         # Mock user inputs
         mock_inputs = ["1", "2", "3", "1", "2"]
@@ -298,7 +298,7 @@ class TestRunPreferenceQuestionnaire:
     @pytest.mark.asyncio
     async def test_questionnaire_keyboard_interrupt(self):
         """Test handling keyboard interrupt (Ctrl+C)"""
-        user_id = "test-user-123"
+        user_id = "550e8400-e29b-41d4-a716-446655440099"
 
         with (
             patch("builtins.input", side_effect=KeyboardInterrupt),

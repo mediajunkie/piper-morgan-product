@@ -96,8 +96,7 @@ class TestCrossUserAccessBlocking:
 
         # Create todo for User B
         user_b_todo = TodoDB(
-            title="User B Todo",
-            description="Owned by B",
+            description="User B Todo",
             status="in_progress",
             priority="low",
             owner_id=user_b_id,
@@ -205,8 +204,12 @@ class TestCrossUserAccessBlocking:
         user_b_id = str(user_b_uuid)
 
         # Create feedback for User B
+        from uuid import uuid4 as _uuid4
+
         user_b_feedback = FeedbackDB(
-            content="Feedback from B",
+            id=str(_uuid4()),
+            session_id="rbac-test-session-b",
+            comment="Feedback from B",
             feedback_type="bug",
             user_id=user_b_id,
             owner_id=user_b_id,

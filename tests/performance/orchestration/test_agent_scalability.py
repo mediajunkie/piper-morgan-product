@@ -208,6 +208,10 @@ class TestAgentScalability:
         # Validate linear memory scaling
         memory_increases = [data["increase_mb"] for data in memory_usage.values()]
         for i in range(1, len(memory_increases)):
+            # #1452: a 0MB step (psutil granularity) is flat growth, not a
+            # divisor — the original ZeroDivisionError'd on quiet runs.
+            if memory_increases[i - 1] <= 0:
+                continue
             growth_factor = memory_increases[i] / memory_increases[i - 1]
             assert growth_factor <= 3.0, f"Exponential memory growth detected: {growth_factor}x"
 
