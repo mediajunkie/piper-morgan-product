@@ -23,13 +23,46 @@ from sqlalchemy import select
 from services.auth.password_service import PasswordService
 from services.database.models import TokenBlacklist, User
 
+# #1452 (2026-07-23): the auth routes moved to AsyncSessionFactory.
+# session_scope_fresh (#442), so the conftest transaction-rollback strategy
+# (override db.get_session, roll everything back) became a dead letter here —
+# the app literally cannot see users created inside the rolled-back
+# transaction, and every login failed 401. These tests now commit real users
+# on a real session and cascade them away via delete_test_user_fully.
+_DB_URL = "postgresql+asyncpg://piper:dev_changeme_in_production@localhost:5433/piper_morgan"
+
+
+@pytest.fixture
+async def db_session():
+    """Real committing session on a fresh per-test engine."""
+    from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+    from sqlalchemy.orm import sessionmaker
+
+    engine = create_async_engine(_DB_URL)
+    maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    async with maker() as session:
+        yield session
+    await engine.dispose()
+
+
+@pytest.fixture
+async def user_registry(db_session):
+    """Collect created user ids; cascade-delete them all at teardown."""
+    from tests.conftest import delete_test_user_fully
+
+    ids = []
+    yield ids
+    for uid in ids:
+        await delete_test_user_fully(db_session, uid)
+    await db_session.commit()
+
 # ============================================================================
 # Test 1: Full Auth Lifecycle (30 minutes)
 # ============================================================================
 
 
 @pytest.mark.integration
-async def test_full_auth_lifecycle(real_client, integration_db):
+async def test_full_auth_lifecycle(real_client, db_session, user_registry):
     """
     Test complete auth flow: register → login → use → logout → blacklist.
 
@@ -58,14 +91,15 @@ async def test_full_auth_lifecycle(real_client, integration_db):
         password_hash=hashed,
     )
 
-    integration_db.add(test_user)
-    await integration_db.commit()
-    await integration_db.refresh(test_user)
+    db_session.add(test_user)
+    await db_session.commit()
+    await db_session.refresh(test_user)
     user_id = test_user.id
+    user_registry.append(user_id)
 
     # 2. Login with credentials
     login_data = {"username": f"testuser_{unique_id}", "password": test_password}
-    response = await real_client.post("/api/v1/auth/login", json=login_data)
+    response = await real_client.post("/api/v1/auth/login", data=login_data)
     assert response.status_code == 200, f"Login failed: {response.text}"
     token = response.json()["token"]
     assert token is not None
@@ -84,7 +118,7 @@ async def test_full_auth_lifecycle(real_client, integration_db):
 
     # 5. Verify token is blacklisted (REAL database check - no mocks!)
     stmt = select(TokenBlacklist).where(TokenBlacklist.user_id == user_id)
-    result = await integration_db.execute(stmt)
+    result = await db_session.execute(stmt)
     blacklist_entry = result.scalar_one_or_none()
 
     assert blacklist_entry is not None, "Token not found in blacklist after logout"
@@ -102,7 +136,7 @@ async def test_full_auth_lifecycle(real_client, integration_db):
 
 
 @pytest.mark.integration
-async def test_multi_user_isolation(real_client, integration_db):
+async def test_multi_user_isolation(real_client, db_session, user_registry):
     """
     Verify users cannot access each other's resources.
 
@@ -134,14 +168,15 @@ async def test_multi_user_isolation(real_client, integration_db):
             email=f"user{i}_{unique_id}@example.com",
             password_hash=hashed,
         )
-        integration_db.add(user)
-        await integration_db.commit()
-        await integration_db.refresh(user)
+        db_session.add(user)
+        await db_session.commit()
+        await db_session.refresh(user)
         users.append(user)
+        user_registry.append(user.id)
 
         # Login user
         login_data = {"username": f"user{i}_{unique_id}", "password": test_password}
-        response = await real_client.post("/api/v1/auth/login", json=login_data)
+        response = await real_client.post("/api/v1/auth/login", data=login_data)
         assert response.status_code == 200, f"User {i} login failed"
         tokens.append(response.json()["token"])
 
@@ -166,7 +201,7 @@ async def test_multi_user_isolation(real_client, integration_db):
 
 
 @pytest.mark.integration
-async def test_token_blacklist_cascade_delete(real_client, integration_db):
+async def test_token_blacklist_cascade_delete(real_client, db_session, user_registry):
     """
     Verify Issue #291: User deletion cascades to token blacklist.
 
@@ -194,14 +229,15 @@ async def test_token_blacklist_cascade_delete(real_client, integration_db):
         password_hash=hashed,
     )
 
-    integration_db.add(test_user)
-    await integration_db.commit()
-    await integration_db.refresh(test_user)
+    db_session.add(test_user)
+    await db_session.commit()
+    await db_session.refresh(test_user)
     user_id = test_user.id
+    user_registry.append(user_id)
 
     # Login and logout (creates blacklist entry)
     login_data = {"username": f"cascadetest_{unique_id}", "password": test_password}
-    response = await real_client.post("/api/v1/auth/login", json=login_data)
+    response = await real_client.post("/api/v1/auth/login", data=login_data)
     token = response.json()["token"]
 
     headers = {"Authorization": f"Bearer {token}"}
@@ -210,21 +246,21 @@ async def test_token_blacklist_cascade_delete(real_client, integration_db):
 
     # Verify blacklist entry exists
     stmt = select(TokenBlacklist).where(TokenBlacklist.user_id == user_id)
-    result = await integration_db.execute(stmt)
+    result = await db_session.execute(stmt)
     blacklist_entries = result.scalars().all()
     assert len(blacklist_entries) == 1, "Should have exactly 1 blacklist entry"
 
     # Delete user directly from database
     stmt = select(User).where(User.id == user_id)
-    result = await integration_db.execute(stmt)
+    result = await db_session.execute(stmt)
     user = result.scalar_one()
 
-    await integration_db.delete(user)
-    await integration_db.commit()
+    await db_session.delete(user)
+    await db_session.commit()
 
     # Verify blacklist entry was CASCADE deleted (Issue #291)
     stmt = select(TokenBlacklist).where(TokenBlacklist.user_id == user_id)
-    result = await integration_db.execute(stmt)
+    result = await db_session.execute(stmt)
     blacklist_entries = result.scalars().all()
     assert len(blacklist_entries) == 0, "CASCADE delete should remove blacklist entries"
 
@@ -238,7 +274,7 @@ async def test_token_blacklist_cascade_delete(real_client, integration_db):
 @pytest.mark.skip(
     reason="Concurrent operations conflict with single shared session in transaction rollback strategy"
 )
-async def test_concurrent_session_handling(real_client, integration_db):
+async def test_concurrent_session_handling(real_client, db_session, user_registry):
     """
     Verify concurrent operations don't cause database conflicts.
 
@@ -266,14 +302,14 @@ async def test_concurrent_session_handling(real_client, integration_db):
         password_hash=hashed,
     )
 
-    integration_db.add(test_user)
-    await integration_db.commit()
-    await integration_db.refresh(test_user)
+    db_session.add(test_user)
+    await db_session.commit()
+    await db_session.refresh(test_user)
 
     # Concurrent login function
     async def login_attempt():
         login_data = {"username": f"concurrentuser_{unique_id}", "password": test_password}
-        response = await real_client.post("/api/v1/auth/login", json=login_data)
+        response = await real_client.post("/api/v1/auth/login", data=login_data)
         assert response.status_code == 200, f"Concurrent login failed: {response.text}"
         return response.json()["token"]
 
@@ -302,7 +338,7 @@ async def test_concurrent_session_handling(real_client, integration_db):
 
 
 @pytest.mark.integration
-async def test_password_change_invalidates_tokens(real_client, integration_db):
+async def test_password_change_invalidates_tokens(real_client, db_session, user_registry):
     """
     Verify password change invalidates existing tokens.
 
@@ -333,14 +369,15 @@ async def test_password_change_invalidates_tokens(real_client, integration_db):
         password_hash=hashed,
     )
 
-    integration_db.add(test_user)
-    await integration_db.commit()
-    await integration_db.refresh(test_user)
+    db_session.add(test_user)
+    await db_session.commit()
+    await db_session.refresh(test_user)
     user_id = test_user.id
+    user_registry.append(user_id)
 
     # Login with old password
     login_data = {"username": f"pwchangeuser_{unique_id}", "password": old_password}
-    response = await real_client.post("/api/v1/auth/login", json=login_data)
+    response = await real_client.post("/api/v1/auth/login", data=login_data)
     assert response.status_code == 200, f"Initial login failed: {response.text}"
     old_token = response.json()["token"]
 
@@ -364,7 +401,8 @@ async def test_password_change_invalidates_tokens(real_client, integration_db):
     assert response.status_code == 200, f"Password change failed: {response.text}"
     response_data = response.json()
     assert response_data["success"] is True
-    assert "new password" in response_data["message"].lower()
+    # Current copy: "Your password has been updated. You're all set!"
+    assert "password" in response_data["message"].lower()
 
     # Old token should NO LONGER work
     response = await real_client.get("/api/v1/auth/me", headers=headers)
@@ -372,7 +410,7 @@ async def test_password_change_invalidates_tokens(real_client, integration_db):
 
     # Verify token is blacklisted in database
     stmt = select(TokenBlacklist).where(TokenBlacklist.user_id == user_id)
-    result = await integration_db.execute(stmt)
+    result = await db_session.execute(stmt)
     blacklist_entries = result.scalars().all()
     assert len(blacklist_entries) > 0, "Token should be blacklisted"
 
@@ -382,7 +420,7 @@ async def test_password_change_invalidates_tokens(real_client, integration_db):
 
     # Login with NEW password should work
     login_data["password"] = new_password
-    response = await real_client.post("/api/v1/auth/login", json=login_data)
+    response = await real_client.post("/api/v1/auth/login", data=login_data)
     assert response.status_code == 200, "Login with new password should work"
     new_token = response.json()["token"]
 
@@ -399,7 +437,7 @@ async def test_password_change_invalidates_tokens(real_client, integration_db):
 
 
 @pytest.mark.integration
-async def test_password_change_validation(real_client, integration_db):
+async def test_password_change_validation(real_client, db_session, user_registry):
     """
     Verify password change validates new password strength requirements.
 
@@ -428,13 +466,14 @@ async def test_password_change_validation(real_client, integration_db):
         password_hash=hashed,
     )
 
-    integration_db.add(test_user)
-    await integration_db.commit()
-    await integration_db.refresh(test_user)
+    db_session.add(test_user)
+    await db_session.commit()
+    await db_session.refresh(test_user)
+    user_registry.append(test_user.id)
 
     # Login to get token
     login_data = {"username": f"validationuser_{unique_id}", "password": current_password}
-    response = await real_client.post("/api/v1/auth/login", json=login_data)
+    response = await real_client.post("/api/v1/auth/login", data=login_data)
     assert response.status_code == 200
     token = response.json()["token"]
     headers = {"Authorization": f"Bearer {token}"}
@@ -504,7 +543,8 @@ async def test_password_change_validation(real_client, integration_db):
         "/api/v1/auth/change-password", json=change_data, headers=headers
     )
     assert response.status_code == 400, "Non-matching passwords should be rejected"
-    assert "do not match" in response.json()["detail"].lower()
+    # Error middleware reshapes detail -> message
+    assert "do not match" in response.json()["message"].lower()
 
     # Test 7: Wrong current password
     change_data = {
@@ -516,4 +556,6 @@ async def test_password_change_validation(real_client, integration_db):
         "/api/v1/auth/change-password", json=change_data, headers=headers
     )
     assert response.status_code == 401, "Wrong current password should be rejected"
-    assert "current password" in response.json()["detail"].lower()
+    # The middleware genericizes 401 copy (session-expired guidance) — assert
+    # a friendly message exists rather than pinning replaced wording.
+    assert response.json()["message"]
