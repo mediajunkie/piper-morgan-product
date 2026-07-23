@@ -1,6 +1,8 @@
-# Lead Dev — carry-forward (rewritten at STOP 2026-07-21)
+# Lead Dev — carry-forward (updated at STOP 2026-07-22)
 
 **MIGRATION-READY: the full handoff is `dev/active/lead-handoff-2026-07-21.md`** (per Exec's 7/21 prep ask — identity/mechanics, world-state, gates, queue, constraints). This carry-forward stays the rolling summary; the handoff is the fresh-session cold-start.
+
+## 7/22 delta: SESSION FROZE ~15h (the crash pattern) — one partial fire only. document_processing mid-diagnosis (login-form fix + usage-cap headroom landed; 5× generic-error thread next — read the server-side logs it references). Arch rulings blocked on the escalated Arch stall (Exec's lane). **Migration to a fresh session recommended**; handoff doc current.
 
 ## Where things stand (EOD 7/21)
 CI green + gate-governed (backlog ~272; 13 waves in 3 days; 634→272 all CI-arbitrated). Beta v26 (learning-loop fix live — #1438 closed; B3 continuity live — #1394 fixed). Root infra landed: NullPool session_scope (poisoned-pool class dead), user-cascade helper, diagnose step, prefix-repro method.

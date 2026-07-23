@@ -103,7 +103,8 @@ async def auth_token(async_client: AsyncClient, test_user: dict) -> str:
     """
     response = await async_client.post(
         "/api/v1/auth/login",
-        json={"username": test_user["username"], "password": test_user["password"]},
+        # the login endpoint takes FORM fields, not JSON (contract drift caught 1452)
+        data={"username": test_user["username"], "password": test_user["password"]},
     )
     assert response.status_code == 200, f"Login failed: {response.text}"
 

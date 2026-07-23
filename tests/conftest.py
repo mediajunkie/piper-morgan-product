@@ -744,3 +744,27 @@ async def delete_test_user_fully(session, user_id: str) -> None:
             # any REAL leftover-FK problem loudly
             pass
     await session.commit()
+
+
+@pytest.fixture(autouse=True)
+def _1452_usage_cap_headroom(monkeypatch):
+    """#1452: the instance-wide concurrency cap (10) is an OPS guard, not
+    test-subject behavior — sweep residue in the shared dev Redis fills the
+    gauge and 503s unrelated endpoint tests. Patch the limits AND clear the
+    gauge key (the middleware may capture values before this runs; the key
+    clear is the order-proof leg). Dedicated usage-cap tests layer their own."""
+    try:
+        import web.middleware.usage_cap_middleware as _ucm
+
+        monkeypatch.setattr(_ucm, "MAX_CONCURRENT_SESSIONS", 1000)
+        monkeypatch.setattr(_ucm, "RATE_LIMIT_PER_MINUTE", 100000)
+    except Exception:
+        pass
+    try:
+        import redis as _redis
+
+        r = _redis.Redis(host="localhost", port=6379, socket_connect_timeout=1)
+        r.delete("usage_cap:active_sessions")
+        r.close()
+    except Exception:
+        pass
