@@ -15,6 +15,34 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
+def _fake_claims():
+    """#1452: the dashboard routes grew `current_user: JWTClaims =
+    Depends(get_current_user)` after these direct-call tests were written —
+    calling the functions bare leaked the Depends sentinel into
+    current_user.sub. Direct calls must supply claims explicitly."""
+    import time as _time
+
+    from services.auth.jwt_service import JWTClaims
+
+    now = int(_time.time())
+    from uuid import uuid4
+
+    uid = uuid4()
+    return JWTClaims(
+        iss="piper-morgan",
+        aud="piper-morgan-api",
+        sub=str(uid),
+        exp=now + 3600,
+        iat=now,
+        jti="test-jti",
+        user_id=uid,
+        user_email="dash-test@example.com",
+        username="dash-test",
+        scopes=["user"],
+        token_type="access",
+    )
+
+
 # Mark all tests in this module as integration tests
 pytestmark = pytest.mark.integration
 
@@ -32,7 +60,7 @@ class TestIntegrationsAPIWithMocks:
         """Health endpoint should return status for all 4 integrations"""
         from web.api.routes.integrations import get_integrations_health
 
-        response = await get_integrations_health()
+        response = await get_integrations_health(current_user=_fake_claims())
 
         assert response.total_count == 4
         integration_names = {i.name for i in response.integrations}
@@ -43,7 +71,7 @@ class TestIntegrationsAPIWithMocks:
         """Health response should contain expected fields"""
         from web.api.routes.integrations import get_integrations_health
 
-        response = await get_integrations_health()
+        response = await get_integrations_health(current_user=_fake_claims())
 
         # Required fields via Pydantic model
         assert response.overall_status is not None
@@ -65,7 +93,7 @@ class TestIntegrationsAPIWithMocks:
         from web.api.routes.integrations import check_integration_connection
 
         with pytest.raises(HTTPException) as exc_info:
-            await check_integration_connection("unknown_integration")
+            await check_integration_connection("unknown_integration", current_user=_fake_claims())
 
         assert exc_info.value.status_code == 404
         assert "Unknown integration" in str(exc_info.value.detail)
@@ -78,7 +106,7 @@ class TestIntegrationsAPIWithMocks:
         with patch("web.api.routes.integrations._test_notion", new_callable=AsyncMock) as mock:
             mock.return_value = {"success": True}
 
-            response = await check_integration_connection("notion")
+            response = await check_integration_connection("notion", current_user=_fake_claims())
 
             assert response.success is True
             assert response.integration == "notion"
@@ -97,7 +125,7 @@ class TestIntegrationsAPIWithMocks:
                 "error": "Invalid API key",
             }
 
-            response = await check_integration_connection("notion")
+            response = await check_integration_connection("notion", current_user=_fake_claims())
 
             assert response.success is False
             assert response.integration == "notion"
@@ -112,7 +140,7 @@ class TestIntegrationsAPIWithMocks:
         with patch("web.api.routes.integrations._test_integration", new_callable=AsyncMock) as mock:
             mock.return_value = {"success": True}
 
-            results = await check_all_connections()
+            results = await check_all_connections(current_user=_fake_claims())
 
             assert len(results) == 4
             integration_names = {r.integration for r in results}
@@ -146,7 +174,7 @@ class TestIntegrationHealthMonitorIntegration:
 
             monitor = _get_health_monitor()
 
-            await check_integration_connection("notion")
+            await check_integration_connection("notion", current_user=_fake_claims())
 
             # Verify health was recorded
             health = monitor.get_component_health("notion")
@@ -171,7 +199,7 @@ class TestIntegrationHealthMonitorIntegration:
             monitor.reset_component_health("notion")
             initial_error_count = monitor.get_component_health("notion").error_count
 
-            await check_integration_connection("notion")
+            await check_integration_connection("notion", current_user=_fake_claims())
 
             # Verify failure was recorded
             health = monitor.get_component_health("notion")
@@ -193,7 +221,7 @@ class TestIntegrationErrorHandling:
         with patch("web.api.routes.integrations._test_notion", new_callable=AsyncMock) as mock:
             mock.side_effect = Exception("Network timeout")
 
-            response = await check_integration_connection("notion")
+            response = await check_integration_connection("notion", current_user=_fake_claims())
 
             assert response.success is False
             assert "Network timeout" in response.message or "Network timeout" in str(response.error)
