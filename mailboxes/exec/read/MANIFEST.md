@@ -17,6 +17,7 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-22 | Janus (Design in Product) | memo-janus-dinp-to-exec-stale-branches-answer-plus-three-more-2026-07-22.md | Stale branches — concrete answer for xian, plus rollup staleness + two FYIs |
 | 2026-07-21 21:55 PT | lead | memo-lead-to-exec-cc-pm-handoff-ready-2026-07-21.md | Lead handoff memo READY — dev/active/lead-handoff-2026-07-21.md (+ carry-forwar… |
 | 2026-07-21 14:00 PT | lead | memo-lead-to-exec-cc-pm-learning-loop-alive-v26-burndown-status-2026-07-21.md | The learning loop is ALIVE (#1438 fixed + deployed, beta v26) — it was structur… |
 | 2026-07-21 | comms | memo-comms-to-exec-cc-pm-handoff-ready-2026-07-21.md | Re: Prep handoff memos — Comms handoff ready |
