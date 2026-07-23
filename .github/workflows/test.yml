@@ -205,6 +205,21 @@ jobs:
       - name: Run migrations
         run: python -m alembic upgrade head
 
+      # #1452 wave 14: the doc tests 404'd in CI with FastAPI's bare "Not Found"
+      # — the signature of an UNMOUNTED router (mount_router swallows import
+      # errors into captured logs). This probe imports the route module directly
+      # so a CI-only import failure surfaces as a real traceback, then asserts
+      # the routes are actually on the app.
+      - name: Probe documents router mount
+        run: |
+          python - <<'PY'
+          import web.api.routes.documents  # a broken transitive import tracebacks here
+          from web.app import app
+          doc_paths = [r.path for r in app.routes if "/api/v1/documents" in getattr(r, "path", "")]
+          assert doc_paths, "documents router NOT mounted despite clean import"
+          print(f"documents router mounted: {len(doc_paths)} routes")
+          PY
+
       # #1452: ONE full sweep governed by the burn-down gate. The former named
       # subset steps (interface/contract/bypass/accuracy) ran subsets of this
       # same sweep under addopts' -x, so any backlog test in a subset turned the
