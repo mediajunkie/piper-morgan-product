@@ -28,6 +28,38 @@ class TestTodoFullStack:
         """Create test list."""
         return uuid4()
 
+    @pytest.fixture(autouse=True)
+    async def todo_owner(self, request):
+        """#1452: todo_items.owner_id is a NOT NULL FK to users since
+        #484/#1312 — every create_todo needs a real user row. Create one per
+        test and cascade it away fully."""
+        import uuid as _uuid
+
+        from services.database.models import User
+        from services.database.session_factory import AsyncSessionFactory
+        from tests.conftest import delete_test_user_fully
+
+        uid = str(_uuid.uuid4())
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            session.add(
+                User(
+                    id=uid,
+                    username=f"todofs-{uid[:8]}",
+                    email=f"todofs-{uid[:8]}@example.com",
+                    password_hash="x",
+                    is_active=True,
+                    is_verified=True,
+                )
+            )
+            await session.commit()
+
+        request.instance.owner_id = uid
+        yield uid
+
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            await delete_test_user_fully(session, uid)
+            await session.commit()
+
     async def test_complete_todo_lifecycle(self, service, list_id):
         """Test complete todo lifecycle: create, update, complete, delete.
 
@@ -40,6 +72,7 @@ class TestTodoFullStack:
         """
         # 1. Create todo
         todo = await service.create_todo(
+            owner_id=self.owner_id,
             text="Integration test todo", list_id=list_id, priority="high"
         )
 
@@ -87,11 +120,11 @@ class TestTodoFullStack:
         - TodoService inherits ItemService operations
         """
         # Create multiple todos
-        todo1 = await service.create_todo(text="First todo", list_id=list_id, priority="high")
+        todo1 = await service.create_todo(owner_id=self.owner_id, text="First todo", list_id=list_id, priority="high")
 
-        todo2 = await service.create_todo(text="Second todo", list_id=list_id, priority="medium")
+        todo2 = await service.create_todo(owner_id=self.owner_id, text="Second todo", list_id=list_id, priority="medium")
 
-        todo3 = await service.create_todo(text="Third todo", list_id=list_id, priority="low")
+        todo3 = await service.create_todo(owner_id=self.owner_id, text="Third todo", list_id=list_id, priority="low")
 
         # Test reordering (generic operation)
         reordered = await service.reorder_items(
@@ -117,7 +150,7 @@ class TestTodoFullStack:
         - todo.title works (old way)
         - Both reference same value
         """
-        todo = await service.create_todo(text="Test backward compatibility", list_id=list_id)
+        todo = await service.create_todo(owner_id=self.owner_id, text="Test backward compatibility", list_id=list_id)
 
         # New way
         assert todo.text == "Test backward compatibility"
@@ -130,7 +163,7 @@ class TestTodoFullStack:
 
     async def test_priority_operations(self, service, list_id):
         """Test todo-specific priority operations."""
-        todo = await service.create_todo(text="Priority test", list_id=list_id, priority="low")
+        todo = await service.create_todo(owner_id=self.owner_id, text="Priority test", list_id=list_id, priority="low")
 
         # Change priority
         updated = await service.set_priority(UUID(todo.id), "urgent")
@@ -150,8 +183,8 @@ class TestTodoFullStack:
         - Both return same todos
         """
         # Create todos
-        todo1 = await service.create_todo(text="DB test 1", list_id=list_id)
-        todo2 = await service.create_todo(text="DB test 2", list_id=list_id)
+        todo1 = await service.create_todo(owner_id=self.owner_id, text="DB test 1", list_id=list_id)
+        todo2 = await service.create_todo(owner_id=self.owner_id, text="DB test 2", list_id=list_id)
 
         # Query via specific service
         todos_specific = await service.get_todos_in_list(list_id)
@@ -208,13 +241,15 @@ class TestServiceLayerArchitecture:
         assert issubclass(Todo, Item)
 
         # Create a todo
+        import uuid as _uuid
+
         todo = Todo(
             text="Test todo",
             position=0,
             priority="medium",
             status="pending",
             completed=False,
-            owner_id="test",
+            owner_id=str(_uuid.uuid4()),  # pure domain object — no DB row needed
         )
 
         # Should be instance of both

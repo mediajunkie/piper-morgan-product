@@ -158,6 +158,8 @@ class ItemService:
         Returns:
             Reordered items
         """
+        from sqlalchemy.orm import selectin_polymorphic
+
         async with AsyncSessionFactory.session_scope() as session:
             # Update positions
             for position, item_id in enumerate(item_ids):
@@ -171,9 +173,15 @@ class ItemService:
 
             await session.commit()
 
-            # Return reordered items
+            # Return reordered items. selectin_polymorphic eager-loads the
+            # joined-inheritance subclass tables — to_domain() on a TodoDB row
+            # otherwise lazy-loads todo_items synchronously, which the async
+            # session forbids (MissingGreenlet).
             result = await session.execute(
-                select(ItemDB).where(ItemDB.list_id == str(list_id)).order_by(ItemDB.position)
+                select(ItemDB)
+                .options(selectin_polymorphic(ItemDB, ItemDB.__mapper__.polymorphic_map.values()))
+                .where(ItemDB.list_id == str(list_id))
+                .order_by(ItemDB.position)
             )
             items_db = result.scalars().all()
 
@@ -214,8 +222,16 @@ class ItemService:
         Returns:
             List of items
         """
+        from sqlalchemy.orm import selectin_polymorphic
+
         async with AsyncSessionFactory.session_scope() as session:
-            query = select(ItemDB).where(ItemDB.list_id == str(list_id))
+            # Eager-load subclass tables (see reorder_items note — same
+            # MissingGreenlet hazard on to_domain()).
+            query = (
+                select(ItemDB)
+                .options(selectin_polymorphic(ItemDB, ItemDB.__mapper__.polymorphic_map.values()))
+                .where(ItemDB.list_id == str(list_id))
+            )
 
             if item_type:
                 query = query.where(ItemDB.item_type == item_type)

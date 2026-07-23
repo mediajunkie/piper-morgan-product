@@ -86,11 +86,6 @@ tests/integration/test_standup_multi_turn_1079.py::TestStandupConversationPersis
 tests/integration/test_standup_multi_turn_1079.py::TestStandupMultiTurnState::test_q149_detailed_path_reaches_standup_handler	triage
 tests/integration/test_standup_multi_turn_1079.py::TestStandupMultiTurnState::test_q150_no_path_acknowledges_cancellation	triage
 tests/integration/test_standup_multi_turn_1079.py::TestStandupMultiTurnState::test_q49_quick_path_reaches_standup_handler	triage
-tests/integration/test_todo_full_stack.py::TestTodoFullStack::test_backward_compatibility	triage
-tests/integration/test_todo_full_stack.py::TestTodoFullStack::test_complete_todo_lifecycle	triage
-tests/integration/test_todo_full_stack.py::TestTodoFullStack::test_database_polymorphic_queries	triage
-tests/integration/test_todo_full_stack.py::TestTodoFullStack::test_polymorphic_operations	triage
-tests/integration/test_todo_full_stack.py::TestTodoFullStack::test_priority_operations	triage
 tests/intent/test_bypass_prevention.py::TestBypassPrevention::test_middleware_is_registered	triage
 tests/intent/test_enforcement_integration.py::TestEnforcementIntegration::test_monitoring_endpoint_accessible	triage
 tests/intent/test_future_nl_endpoints.py::TestFutureEndpoints::test_all_nl_routes_in_middleware_config	triage
@@ -107,11 +102,6 @@ tests/intent/test_no_web_bypasses.py::TestWebIntentEnforcement::test_no_direct_s
 tests/intent/test_user_flows_complete.py::TestCachingBehavior::test_cache_metrics_endpoint	triage
 tests/intent/test_user_flows_complete.py::TestMiddlewareEnforcement::test_middleware_monitoring_active	triage
 tests/intent/test_user_flows_complete.py::TestPersonalityIntegration::test_personality_enhance_is_exempt	triage
-tests/intent_service/test_todo_handlers.py::TestTodoIntentHandlers::test_complete_todo_extracts_id	triage
-tests/intent_service/test_todo_handlers.py::TestTodoIntentHandlers::test_complete_todo_handles_missing_id	triage
-tests/intent_service/test_todo_handlers.py::TestTodoIntentHandlers::test_create_todo_extracts_priority	triage
-tests/intent_service/test_todo_handlers.py::TestTodoIntentHandlers::test_create_todo_extracts_text	triage
-tests/intent_service/test_todo_handlers.py::TestTodoIntentHandlers::test_delete_todo_extracts_id	triage
 tests/issues/test_pm058_fix_validation.py::test_async_transaction_fixture_syntax	triage
 tests/load/test_concurrent_load.py::test_concurrent_load	triage
 tests/load/test_error_recovery.py::test_error_recovery	triage

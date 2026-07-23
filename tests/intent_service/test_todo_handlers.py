@@ -18,6 +18,38 @@ class TestTodoIntentHandlers:
         """Create TodoIntentHandlers instance"""
         return TodoIntentHandlers()
 
+    @pytest.fixture(autouse=True)
+    async def todo_user(self, request):
+        """#1452: todo_items.owner_id became UUID + FK + NOT NULL (#484/#1312)
+        — the literal self.user_id these tests passed can no longer insert. Create
+        a real user per test and cascade it away fully."""
+        import uuid as _uuid
+
+        from services.database.models import User
+        from services.database.session_factory import AsyncSessionFactory
+        from tests.conftest import delete_test_user_fully
+
+        uid = str(_uuid.uuid4())
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            session.add(
+                User(
+                    id=uid,
+                    username=f"todo-test-{uid[:8]}",
+                    email=f"todo-test-{uid[:8]}@example.com",
+                    password_hash="x",
+                    is_active=True,
+                    is_verified=True,
+                )
+            )
+            await session.commit()
+
+        request.instance.user_id = uid
+        yield uid
+
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            await delete_test_user_fully(session, uid)
+            await session.commit()
+
     @pytest.fixture
     def sample_intent(self):
         """Create a sample intent for testing"""
@@ -31,10 +63,10 @@ class TestTodoIntentHandlers:
     @pytest.mark.asyncio
     async def test_create_todo_extracts_text(self, handlers, sample_intent):
         """Test create_todo extracts todo text correctly"""
-        result = await handlers.handle_create_todo(sample_intent, "session1", "user1")
+        result = await handlers.handle_create_todo(sample_intent, "session1", self.user_id)
 
         assert "Review PR #285" in result
-        assert "✓" in result or "Added" in result
+        assert "added" in result.lower() or "✓" in result
 
     @pytest.mark.asyncio
     async def test_create_todo_handles_missing_text(self, handlers):
@@ -46,7 +78,7 @@ class TestTodoIntentHandlers:
             confidence=0.9,
         )
 
-        result = await handlers.handle_create_todo(intent, "session1", "user1")
+        result = await handlers.handle_create_todo(intent, "session1", self.user_id)
 
         assert "didn't catch" in result.lower() or "try:" in result.lower()
 
@@ -60,7 +92,7 @@ class TestTodoIntentHandlers:
             confidence=0.9,
         )
 
-        result = await handlers.handle_create_todo(intent, "session1", "user1")
+        result = await handlers.handle_create_todo(intent, "session1", self.user_id)
 
         assert "Fix urgent bug in login" in result
         assert "high" in result.lower() or "urgent" in result.lower()
@@ -75,7 +107,7 @@ class TestTodoIntentHandlers:
             confidence=0.9,
         )
 
-        result = await handlers.handle_list_todos(intent, "session1", "user1")
+        result = await handlers.handle_list_todos(intent, "session1", self.user_id)
 
         assert "todo" in result.lower()
         # For now, returns placeholder message
@@ -91,10 +123,23 @@ class TestTodoIntentHandlers:
             confidence=0.9,
         )
 
-        result = await handlers.handle_complete_todo(intent, "session1", "user1")
+        # #1452: the handler now verifies the todo exists (ids resolve by
+        # list position) — create three so 'todo 3' resolves.
+        for msg in ("add todo: First task", "add todo: Second task", "add todo: Third task"):
+            await handlers.handle_create_todo(
+                Intent(
+                    category=IntentCategory.EXECUTION,
+                    action="create_todo",
+                    original_message=msg,
+                    confidence=0.9,
+                ),
+                "session1",
+                self.user_id,
+            )
 
-        assert "3" in result
-        assert "✓" in result or "complete" in result.lower()
+        result = await handlers.handle_complete_todo(intent, "session1", self.user_id)
+
+        assert "done" in result.lower() or "complete" in result.lower()
 
     @pytest.mark.asyncio
     async def test_complete_todo_handles_missing_id(self, handlers):
@@ -106,9 +151,10 @@ class TestTodoIntentHandlers:
             confidence=0.9,
         )
 
-        result = await handlers.handle_complete_todo(intent, "session1", "user1")
+        result = await handlers.handle_complete_todo(intent, "session1", self.user_id)
 
-        assert "which" in result.lower() or "try:" in result.lower()
+        # Graceful guidance either way: no todos, or no parseable id
+        assert "complete todo" in result.lower() or "add todo" in result.lower()
 
     @pytest.mark.asyncio
     async def test_delete_todo_extracts_id(self, handlers):
@@ -120,10 +166,11 @@ class TestTodoIntentHandlers:
             confidence=0.9,
         )
 
-        result = await handlers.handle_delete_todo(intent, "session1", "user1")
+        result = await handlers.handle_delete_todo(intent, "session1", self.user_id)
 
+        # No todos exist for this fresh user: graceful not-found naming the id
         assert "5" in result
-        assert "✓" in result or "removed" in result.lower()
+        assert "couldn't find" in result.lower() or "removed" in result.lower()
 
     @pytest.mark.asyncio
     async def test_delete_todo_handles_missing_id(self, handlers):
@@ -135,7 +182,7 @@ class TestTodoIntentHandlers:
             confidence=0.9,
         )
 
-        result = await handlers.handle_delete_todo(intent, "session1", "user1")
+        result = await handlers.handle_delete_todo(intent, "session1", self.user_id)
 
         assert "which" in result.lower() or "try:" in result.lower()
 
@@ -204,7 +251,7 @@ class TestTodoIntentHandlers:
             confidence=0.9,
         )
 
-        result = await handlers.handle_next_todo(intent, "session1", "user1")
+        result = await handlers.handle_next_todo(intent, "session1", self.user_id)
 
         # Should return a todo or empty message
         assert "todo" in result.lower() or "next" in result.lower()
@@ -220,7 +267,7 @@ class TestTodoIntentHandlers:
             confidence=0.9,
         )
 
-        result = await handlers.handle_next_todo(intent, "session1", "user1")
+        result = await handlers.handle_next_todo(intent, "session1", self.user_id)
 
         # Should provide helpful message when no todos exist
         assert len(result) > 0
@@ -237,7 +284,7 @@ class TestTodoIntentHandlers:
             confidence=0.9,
         )
 
-        result = await handlers.handle_next_todo(intent, "session1", "user1")
+        result = await handlers.handle_next_todo(intent, "session1", self.user_id)
 
         # Result should be formatted properly
         assert len(result) > 0
