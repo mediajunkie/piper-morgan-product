@@ -24,12 +24,11 @@ def _repo_with_flag_on():
 async def test_flag_on_degrades_to_filename_search_not_simulation():
     repo = _repo_with_flag_on()
     sentinel = [MagicMock(name="filename-match")]
+    # #1452: services.mcp.resources was DELETED (the #1436 POC removal) — the
+    # guard's subject no longer exists to patch. The contract survives it:
+    # flag-on returns filename matches only.
     with patch.object(FileRepository, "search_files_by_name", new=AsyncMock(return_value=sentinel)):
-        with patch(
-            "services.mcp.resources.MCPResourceManager",
-            side_effect=AssertionError("simulation stack must NOT be constructed"),
-        ):
-            out = await repo.search_files_with_content("owner-1", "roadmap", limit=10)
+        out = await repo.search_files_with_content("owner-1", "roadmap", limit=10)
     assert out == sentinel
 
 
@@ -39,11 +38,7 @@ async def test_all_sessions_variant_same_guard():
     with patch.object(
         FileRepository, "search_files_by_name_all_sessions", new=AsyncMock(return_value=sentinel)
     ):
-        with patch(
-            "services.mcp.resources.MCPResourceManager",
-            side_effect=AssertionError("simulation stack must NOT be constructed"),
-        ):
-            out = await repo.search_files_with_content_all_sessions(
-                "owner-1", "roadmap", limit=10
-            )
+        out = await repo.search_files_with_content_all_sessions(
+            "owner-1", "roadmap", limit=10
+        )
     assert out == sentinel

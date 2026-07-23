@@ -203,7 +203,11 @@ class TestSlackSetupStatus:
             mock_instance.get_config.return_value = mock_config
             MockConfig.return_value = mock_instance
 
-            response = await get_slack_status()
+            # #1452: the route reads the acting user from request.state
+            # (#1434 calendar-status pattern) — supply a minimal request.
+            _req = MagicMock()
+            _req.state.user_id = "test-user-slack-status"
+            response = await get_slack_status(_req)
 
         # Then: Status is configured
         assert response["configured"] is True
@@ -221,7 +225,11 @@ class TestSlackSetupStatus:
             mock_instance.get_config.return_value = mock_config
             MockConfig.return_value = mock_instance
 
-            response = await get_slack_status()
+            # #1452: the route reads the acting user from request.state
+            # (#1434 calendar-status pattern) — supply a minimal request.
+            _req = MagicMock()
+            _req.state.user_id = "test-user-slack-status"
+            response = await get_slack_status(_req)
 
         # Then: Status is not configured
         assert response["configured"] is False

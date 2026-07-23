@@ -117,8 +117,6 @@ tests/regression/test_critical_no_mocks.py::TestCriticalEndpoints::test_all_requ
 tests/scripts/test_preferences_questionnaire.py::TestGetExistingPreferences::test_get_existing_preferences_success	triage
 tests/scripts/test_preferences_questionnaire.py::TestStoreUserPreferences::test_store_preferences_success	triage
 tests/test_config_disabling.py::test_disable_plugin	triage
-tests/unit/services/database/test_file_search_simulation_guard_1436.py::test_all_sessions_variant_same_guard	triage
-tests/unit/services/database/test_file_search_simulation_guard_1436.py::test_flag_on_degrades_to_filename_search_not_simulation	triage
 tests/unit/services/intent_service/test_comment_issue_graceful_1159.py::TestCommentIssueGracefulRepoResolution::test_no_repo_resolved_returns_graceful_clarification	triage
 tests/unit/services/intent_service/test_github_query_handlers.py::TestCommentIssueResults::test_formats_comment_confirmation_correctly	triage
 tests/unit/services/place/test_place_service.py::TestGitHubPlace::test_github_place_has_name	triage
@@ -128,8 +126,6 @@ tests/unit/web/api/routes/test_radar.py::test_radar_lifecycle_derived_from_recen
 tests/unit/web/api/routes/test_radar.py::test_radar_populated_is_attention_first_and_observed	triage
 tests/unit/web/api/routes/test_radar.py::test_workitem_source_registered_in_feed	triage
 tests/unit/web/api/routes/test_setup_calendar.py::TestCalendarSetupStatus::test_status_uses_user_scoped_key	triage
-tests/unit/web/api/routes/test_setup_slack.py::TestSlackSetupStatus::test_check_slack_configured_with_token	triage
-tests/unit/web/api/routes/test_setup_slack.py::TestSlackSetupStatus::test_check_slack_not_configured	triage
 tests/validation/test_pm034_claims_validation.py::TestPM034ClaimsValidation::test_single_classification_latency_claim	flaky
 tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_analyze_nonexistent_file	flaky
 tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_compare_requires_minimum_files	flaky
