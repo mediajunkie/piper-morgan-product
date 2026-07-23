@@ -131,9 +131,6 @@ tests/unit/web/api/routes/test_setup_calendar.py::TestCalendarSetupStatus::test_
 tests/unit/web/api/routes/test_setup_slack.py::TestSlackSetupStatus::test_check_slack_configured_with_token	triage
 tests/unit/web/api/routes/test_setup_slack.py::TestSlackSetupStatus::test_check_slack_not_configured	triage
 tests/validation/test_pm034_claims_validation.py::TestPM034ClaimsValidation::test_single_classification_latency_claim	flaky
-tests/validation/test_pm056_schema_validator.py::TestSchemaValidator::test_extract_domain_fields	triage
-tests/validation/test_pm056_schema_validator.py::TestSchemaValidator::test_load_database_models	triage
-tests/validation/test_pm056_schema_validator.py::TestSchemaValidator::test_load_domain_models	triage
 tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_analyze_nonexistent_file	flaky
 tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_compare_requires_minimum_files	flaky
 tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_question_requires_auth	flaky

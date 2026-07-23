@@ -28,12 +28,16 @@ class TestSchemaValidator:
         # Mock a domain dataclass
         from dataclasses import dataclass
 
+        from typing import Optional
+
         @dataclass
         class TestDomainModel:
             id: str
             name: str
             description: str
-            optional_field: str = None
+            # #1452: the validator derives nullability from the TYPE — a bare
+            # `str = None` is a typing lie and correctly reads non-nullable.
+            optional_field: Optional[str] = None
 
         fields = validator.extract_domain_fields(TestDomainModel)
 
@@ -268,15 +272,18 @@ class TestSchemaValidator:
         assert "Test1 vs TestDB1" in report
         assert "Test2 vs TestDB2" in report
 
-    @patch("tools.check_domain_db_consistency.sys.modules")
-    def test_load_domain_models(self, mock_modules, validator):
-        """Test loading domain models"""
-        # Mock domain module
-        mock_domain_module = Mock()
-        mock_modules.__getitem__.return_value = mock_domain_module
+    def test_load_domain_models(self, validator):
+        """Test loading domain models.
 
-        # Mock domain classes
+        #1452: sys is a singleton — patching tools....sys.modules swaps the
+        REAL sys.modules process-wide, and any dataclass defined inside the
+        patch window resolves its annotations against the fake module
+        (AttributeError: KW_ONLY). Define classes first; patch only around
+        the loader call.
+        """
+        import types
         from dataclasses import dataclass
+        from unittest.mock import patch as _patch
 
         @dataclass
         class TestDomain1:
@@ -289,15 +296,20 @@ class TestSchemaValidator:
         class NotADataclass:
             pass
 
-        mock_domain_module.__dict__ = {
+        fake = types.ModuleType("fake_domain_models")
+        for _name, _obj in {
             "TestDomain1": TestDomain1,
             "TestDomain2": TestDomain2,
             "NotADataclass": NotADataclass,
             "FieldInfo": Mock(),  # Should be excluded
             "ModelComparison": Mock(),  # Should be excluded
-        }
+        }.items():
+            setattr(fake, _name, _obj)
 
-        validator.load_domain_models()
+        with _patch.dict(
+            "sys.modules", {"services.domain.models": fake}
+        ):
+            validator.load_domain_models()
 
         # Verify domain models loaded
         assert "TestDomain1" in validator.domain_models
@@ -306,14 +318,13 @@ class TestSchemaValidator:
         assert "FieldInfo" not in validator.domain_models
         assert "ModelComparison" not in validator.domain_models
 
-    @patch("tools.check_domain_db_consistency.sys.modules")
-    def test_load_database_models(self, mock_modules, validator):
-        """Test loading database models"""
-        # Mock database module
-        mock_db_module = Mock()
-        mock_modules.__getitem__.return_value = mock_db_module
 
-        # Mock SQLAlchemy models
+    def test_load_database_models(self, validator):
+        """Test loading database models (#1452: patch.dict on the real
+        sys.modules, classes defined outside the patch window — see above)."""
+        import types
+        from unittest.mock import patch as _patch
+
         from sqlalchemy import Column, String
         from sqlalchemy.ext.declarative import declarative_base
 
@@ -330,15 +341,20 @@ class TestSchemaValidator:
         class NotAModel:
             pass
 
-        mock_db_module.__dict__ = {
+        fake = types.ModuleType("fake_db_models")
+        for _name, _obj in {
             "TestDB1": TestDB1,
             "TestDB2": TestDB2,
             "NotAModel": NotAModel,
             "Base": Mock(),  # Should be excluded
             "TimestampMixin": Mock(),  # Should be excluded
-        }
+        }.items():
+            setattr(fake, _name, _obj)
 
-        validator.load_database_models()
+        with _patch.dict(
+            "sys.modules", {"services.database.models": fake}
+        ):
+            validator.load_database_models()
 
         # Verify database models loaded
         assert "TestDB1" in validator.database_models
