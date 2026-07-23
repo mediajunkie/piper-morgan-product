@@ -210,11 +210,17 @@ class TestConfigPatternCompliance:
             pytest.skip(f"Config service class not found for {integration}")
 
         try:
+            # #1452: get_config/get_client_configuration became owner-scoped
+            # (required user_id, ADR-071) — the compliance claim (dataclass
+            # shape + validate()) is user-agnostic, so any principal id works.
+            from uuid import uuid4 as _uuid4
+
+            probe_user = str(_uuid4())
             config_service = config_service_class()
 
             if integration == "github":
                 # GitHub has different interface - test get_client_configuration
-                config = config_service.get_client_configuration()
+                config = config_service.get_client_configuration(probe_user)
                 assert hasattr(config, "to_dict"), f"GitHub config should have to_dict() method"
                 assert callable(config.to_dict), f"to_dict should be callable"
                 # Test the method works
@@ -224,7 +230,7 @@ class TestConfigPatternCompliance:
                 ), f"to_dict() should return dict, got: {type(result)}"
             else:
                 # Standard pattern - test get_config and validate
-                config = config_service.get_config()
+                config = config_service.get_config(probe_user)
 
                 # Should have validate method
                 assert hasattr(
@@ -305,7 +311,9 @@ class TestIntegrationSpecificPatterns:
 
         assert hasattr(router, "config_service"), "Notion router should store config_service"
         assert router.config_service is config_service, "Notion router should use provided config"
-        assert config_service.is_configured() in [
+        from uuid import uuid4 as _uuid4
+
+        assert config_service.is_configured(str(_uuid4())) in [
             True,
             False,
         ], "Notion config should have is_configured()"
