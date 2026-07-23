@@ -206,6 +206,7 @@ async def second_uploaded_file_id(async_client: AsyncClient, auth_token: str) ->
 
 
 @pytest.mark.integration
+@pytest.mark.llm
 class TestDocumentProcessing:
     """Integration tests for document processing (Tests 19-24)"""
 

@@ -25,13 +25,16 @@ from services.file_context.storage import read_file_from_storage  # #1306: the s
 from services.database.connection import db
 from services.database.models import UploadedFileDB
 from services.database.session_factory import AsyncSessionFactory
-from services.knowledge_graph.document_service import DocumentService
+from services.knowledge_graph.document_service import get_document_service
 from services.llm.clients import llm_client
 
 logger = structlog.get_logger(__name__)
 
-# Initialize services
-_doc_service = DocumentService()
+# #1452: DocumentService construction reaches OpenAIEmbeddingFunction, which
+# RAISES without an API key — eager module-level init made this whole module
+# (and the Documents API router importing it) fail to import in keyless
+# environments. Use the service module's existing lazy getter at the
+# operation boundary instead.
 _doc_analyzer = DocumentAnalyzer(llm_client=llm_client)
 
 
@@ -328,7 +331,7 @@ async def handle_search_documents(query: str, user_id: str) -> Dict:
 
     # #1238: owner-scoped — pass the principal so another user's private docs
     # aren't surfaced (global PM-domain docs remain readable via the marker).
-    results = await _doc_service.find_decisions(topic=query, owner_id=user_id)
+    results = await get_document_service().find_decisions(topic=query, owner_id=user_id)
 
     return {
         "query": query,

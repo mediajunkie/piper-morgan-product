@@ -10,6 +10,11 @@ from tests.intent.base_validation_test import BaseValidationTest
 from tests.intent.coverage_tracker import coverage
 from tests.intent.test_constants import CATEGORY_EXAMPLES
 
+# #1452 wave 16: DIRECT-interface validation runs live process_intent with a
+# latency assert; categories that fall past the pre-classifier hit the real
+# LLM (that's the suite's point) — keyed llm lane, not the keyless CI sweep.
+pytestmark = pytest.mark.llm
+
 
 class TestDirectInterface(BaseValidationTest):
     """Test all 13 categories through DIRECT interface."""

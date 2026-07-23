@@ -12,6 +12,22 @@ sys.path.insert(0, str(project_root))
 
 from services.domain.models import Intent, IntentCategory
 from services.intent.intent_service import IntentService
+from services.intent_service.pre_classifier import MultiIntentResult
+
+
+def _stub_classifier(mock_classifier, intent):
+    """#1452 fixture-rot repair: process_intent now awaits classify_multiple
+    (the #595 multi-intent rail) before any classify fallback — a bare
+    MagicMock there raised "can't be used in 'await' expression". Stub both
+    surfaces with the same single intent."""
+    mock_classifier.classify = AsyncMock(return_value=intent)
+    mock_classifier.classify_multiple = AsyncMock(
+        return_value=MultiIntentResult(
+            intents=[intent],
+            original_message=intent.original_message,
+            is_multi_intent=False,
+        )
+    )
 
 
 class TestExecutionHandlers:
@@ -55,7 +71,7 @@ class TestExecutionHandlers:
 
         # Mock classifier to return this intent
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _stub_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent(
                 "create an issue about testing", session_id="test"
@@ -129,7 +145,7 @@ class TestExecutionHandlers:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _stub_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent("create an issue", session_id="test")
 
@@ -380,7 +396,7 @@ class TestExecutionHandlers:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _stub_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent("execute something", session_id="test")
 
@@ -423,7 +439,7 @@ class TestAnalysisHandlers:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _stub_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent("analyze the commits", session_id="test")
 
@@ -1056,7 +1072,7 @@ class TestAnalysisHandlers:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _stub_classifier(mock_classifier, intent)
 
             result = await intent_service.process_intent("analyze something", session_id="test")
 
@@ -1127,7 +1143,7 @@ class TestHandlerIntegration:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _stub_classifier(mock_classifier, intent)
 
             # Should not raise exception and should return result
             result = await intent_service.process_intent("create issue", session_id="test")
@@ -1147,7 +1163,7 @@ class TestHandlerIntegration:
         )
 
         with patch.object(intent_service, "intent_classifier") as mock_classifier:
-            mock_classifier.classify = AsyncMock(return_value=intent)
+            _stub_classifier(mock_classifier, intent)
 
             # Should not raise exception and should return result
             result = await intent_service.process_intent("analyze commits", session_id="test")

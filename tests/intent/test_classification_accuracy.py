@@ -13,6 +13,12 @@ import pytest
 from services.domain.models import IntentCategory
 from services.intent.intent_service import IntentService
 
+# #1452 wave 16: this suite drives the LIVE conftest intent_service through
+# hundreds of real classifier calls (95%-accuracy sweeps over 20+ variants per
+# category) — it belongs in the keyed llm lane, not the keyless CI sweep
+# (wave-7 precedent: the canonical-conversation live classes).
+pytestmark = pytest.mark.llm
+
 
 class TestCanonicalAccuracy:
     """Test canonical categories achieve 95% accuracy threshold"""

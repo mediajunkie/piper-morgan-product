@@ -747,12 +747,16 @@ async def delete_test_user_fully(session, user_id: str) -> None:
 
 
 @pytest.fixture(autouse=True)
-def _1452_usage_cap_headroom(monkeypatch):
+def _1452_usage_cap_headroom(request, monkeypatch):
     """#1452: the instance-wide concurrency cap (10) is an OPS guard, not
     test-subject behavior — sweep residue in the shared dev Redis fills the
     gauge and 503s unrelated endpoint tests. Patch the limits AND clear the
     gauge key (the middleware may capture values before this runs; the key
-    clear is the order-proof leg). Dedicated usage-cap tests layer their own."""
+    clear is the order-proof leg). EXEMPT the middleware's own test module —
+    there the caps ARE the test subject (patching RATE_LIMIT to 100000 made
+    'exceeding limit' unreachable and failed its 429 asserts)."""
+    if "test_usage_cap_middleware" in str(request.node.fspath):
+        return
     try:
         import web.middleware.usage_cap_middleware as _ucm
 
