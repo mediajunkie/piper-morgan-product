@@ -1,17 +1,24 @@
-# Lead Dev — carry-forward (updated at STOP 2026-07-22)
+# Lead Dev carry-forward (rewritten 2026-07-23 ~08:25 PT)
 
-**MIGRATION-READY: the full handoff is `dev/active/lead-handoff-2026-07-21.md`** (per Exec's 7/21 prep ask — identity/mechanics, world-state, gates, queue, constraints). This carry-forward stays the rolling summary; the handoff is the fresh-session cold-start.
+## Session/env
+- Worktree: `.claude/worktrees/lead-1452-harness`; session cron e1106eb5 (`17 6,9,12,15,18,21 * * *`, session-only — re-arm after any re-attach, Gap-C).
+- Beta at v27; main==production lockstep (fe890b82e + pending push). No deploy owed — lazy-init fix only changes keyless behavior.
 
-## 7/22 delta: SESSION FROZE ~15h (the crash pattern) — one partial fire only. document_processing mid-diagnosis (login-form fix + usage-cap headroom landed; 5× generic-error thread next — read the server-side logs it references). Arch rulings blocked on the escalated Arch stall (Exec's lane). **Migration to a fresh session recommended**; handoff doc current.
+## #1452 burn-down — live state (Thursday 7/23 morning)
+- Backlog on disk: 219 (waves 15-17 delisted; edge-trio re-listed flaky). Arc: 634→219.
+- CI at fe890b82e: RED with exactly 5 new failures, all with fixes in hand locally:
+  - update_issue pair: #943 pre-flight ("GitHub isn't connected", success=True) fires in keyless CI before the missing-field validation — FIXED locally (is_available pinned True in both tests), 35/35.
+  - doc edge trio: pass keyed-local + CI-isolation, fail CI-sweep — re-listed `flaky` (context-oscillation; the tag is shrink-lock-exempt both ways).
+- Probe step GREEN: "documents router mounted: 6 routes" — the lazy get_document_service() cure works; it also cured the 1185 pair (removed per CI shrink-lock).
+- Wave 17 (llm_classifier_benchmarks, 7): #322 DI rot fixed, validates in-sweep. Push-ready.
+- Wave 18 (standup_performance, 9): fixed standalone (async awaits + per-turn refresh mirroring process/adapters) — but FAILS in-sweep locally; prefix repro (integration+performance) in flight. If unfixable this fire: keep test fixes, re-list 9 (flaky), push.
+- Known local-only sweep noise (~12: llm_config providers-list, keychain migration, config_pattern github, config_isolation, setup chromadb pair, startup no_hanging, intent_filtering index oscillator, scenario_driver/task_lifecycle/db_user_history/publish_gaps local-passers) — env-shape artifacts; CI is arbiter. Do NOT delist local-passers without CI confirmation (learned this fire: local claimed 20, CI confirmed 6).
 
-## Where things stand (EOD 7/21)
-CI green + gate-governed (backlog ~272; 13 waves in 3 days; 634→272 all CI-arbitrated). Beta v26 (learning-loop fix live — #1438 closed; B3 continuity live — #1394 fixed). Root infra landed: NullPool session_scope (poisoned-pool class dead), user-cascade helper, diagnose step, prefix-repro method.
+## Queue after this
+- intent_wiring RecursionError trio: poison lives in dirs BEFORE tests/integration; teardown FK defect already fixed (delete_test_user_fully). Entries stay.
+- learning-pair de-flake session (shared TEST_USER_ID + settings interference); methodology/ (21) awaiting Arch; #1432 awaiting Arch; connection_pool (9) HELD spatial; ~200 triage glances.
 
-## Queue
-1. Burn-down waves per the handoff's list (e2e adds → intent_wiring → doc_processing → execution_analysis → standup_perf → glances).
-2. On Arch: methodology/ delete (21 entries ride) · #1432 orphan pair (Phase-4-in-the-orphan finding noted).
-3. On Exec: #1386 re-run support (verifies #1393 + #1394 turn-3 in one pass).
-4. PM standing: #1424 close-vs-keep (lean: close) · #1427 PROD-RECONNECT confirm.
-
-## Standing
-Cron e1106eb5 (session-only — RE-ARM on any fresh session: 17 6,9,12,15,18,21). Worktree lead-1452-harness for builds; main checkout mail/logs only, no destructive git, never silence push output. Spatial HELD. Key/droplet constraints per handoff.
+## On others
+- Arch (stalled, Exec escalated): methodology/ fix-or-delete; #1432 orphan-pair; ContextMatcher permissive-default note.
+- Exec: #1386 gate re-run window (beta v25+ carries both Scenario-B fixes).
+- PM: #1424 close-vs-keep (my lean: close); #1427 PROD-RECONNECT confirm; migration decision (handoff current at dev/active/lead-handoff-2026-07-21.md).

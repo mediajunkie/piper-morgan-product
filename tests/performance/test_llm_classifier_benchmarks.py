@@ -91,9 +91,16 @@ class TestLLMClassifierBenchmarks:
         mock_semantic = MagicMock()
         mock_semantic.similarity_search = AsyncMock(return_value=[])
 
+        # #1452: since #322 the classifier requires an injected llm_service —
+        # the lazy .llm container fallback raises ContainerNotInitializedError
+        # in tests. Every test here patches .complete on it anyway.
+        mock_llm = MagicMock()
+        mock_llm.complete = AsyncMock(return_value="{}")
+
         return await LLMClassifierFactory.create_for_testing(
             mock_knowledge_graph_service=mock_kg,
             mock_semantic_indexing_service=mock_semantic,
+            mock_llm_service=mock_llm,
             confidence_threshold=0.75,
         )
 
@@ -364,10 +371,15 @@ class TestRealWorldScenarios:
     @pytest.fixture
     async def production_classifier(self):
         """Create production-like classifier"""
-        return await LLMClassifierFactory.create(
+        # #1452: create() resolves services from the container, which is not
+        # initialized in the test process (#322 DI). The test patches the LLM
+        # anyway — build via the testing factory with an injected mock.
+        mock_llm = MagicMock()
+        mock_llm.complete = AsyncMock(return_value="{}")
+
+        return await LLMClassifierFactory.create_for_testing(
+            mock_llm_service=mock_llm,
             confidence_threshold=0.75,
-            enable_learning=True,
-            enable_knowledge_graph=True,
         )
 
     @pytest.mark.asyncio

@@ -172,9 +172,13 @@ class TestExecutionHandlers:
             # Missing issue_number
         )
 
-        result = await intent_service._handle_update_issue(
-            intent=intent, workflow_id="test-workflow-123"
-        )
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter.is_available",
+            AsyncMock(return_value=True),
+        ):
+            result = await intent_service._handle_update_issue(
+                intent=intent, workflow_id="test-workflow-123"
+            )
 
         # Should fail validation
         assert result.success is False
@@ -221,9 +225,13 @@ class TestExecutionHandlers:
             # Missing repository
         )
 
-        result = await intent_service._handle_update_issue(
-            intent=intent, workflow_id="test-workflow-123"
-        )
+        with patch(
+            "services.integrations.github.github_integration_router.GitHubIntegrationRouter.is_available",
+            AsyncMock(return_value=True),
+        ):
+            result = await intent_service._handle_update_issue(
+                intent=intent, workflow_id="test-workflow-123"
+            )
 
         # Should fail validation
         assert result.success is False

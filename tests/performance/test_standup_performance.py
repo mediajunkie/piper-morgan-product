@@ -148,9 +148,10 @@ def handler(manager: StandupConversationManager) -> StandupConversationHandler:
 
 
 @pytest.fixture
-def conversation(manager: StandupConversationManager) -> StandupConversation:
-    """Create a test conversation."""
-    return manager.create_conversation(
+async def conversation(manager: StandupConversationManager) -> StandupConversation:
+    """Create a test conversation. (#1452: create_conversation went async —
+    DB-backed persistence — after this suite was written.)"""
+    return await manager.create_conversation(
         user_id="perf-test-user",
         session_id="perf-test-session",
     )
@@ -196,7 +197,7 @@ class TestTurnResponseTimeBaseline:
     ):
         """Measure response times across multiple conversation turns."""
         # Create a fresh conversation for multi-turn test
-        conversation = manager.create_conversation(
+        conversation = await manager.create_conversation(
             user_id="multi-turn-user",
             session_id="multi-turn-session",
         )
@@ -210,6 +211,10 @@ class TestTurnResponseTimeBaseline:
         ]
 
         for i, message in enumerate(messages):
+            # #1452: refresh per turn — the live caller (process/adapters)
+            # re-fetches before every handle_turn; a stale object replays
+            # its old state branch and trips same-state transition guards.
+            conversation = await manager.get_conversation(conversation.id)
             start = time.perf_counter()
             response = await handler.handle_turn(
                 conversation=conversation,
@@ -242,7 +247,7 @@ class TestTurnResponseTimeBaseline:
         num_iterations = 20
 
         for i in range(num_iterations):
-            conversation = manager.create_conversation(
+            conversation = await manager.create_conversation(
                 user_id=f"target-user-{i}",
                 session_id=f"target-session-{i}",
             )
@@ -294,7 +299,7 @@ class TestMemoryUsageBaseline:
         initial_memory = tracemalloc.get_traced_memory()[0]
         metrics.record_memory(initial_memory)
 
-        conversation = manager.create_conversation(
+        conversation = await manager.create_conversation(
             user_id="memory-test-user",
             session_id="memory-test-session",
         )
@@ -326,7 +331,7 @@ class TestMemoryUsageBaseline:
         initial_memory = tracemalloc.get_traced_memory()[0]
         metrics.record_memory(initial_memory)
 
-        conversation = manager.create_conversation(
+        conversation = await manager.create_conversation(
             user_id="memory-multi-user",
             session_id="memory-multi-session",
         )
@@ -340,6 +345,7 @@ class TestMemoryUsageBaseline:
         ] + [f"refinement request {i}" for i in range(21)]
 
         for i, message in enumerate(messages):
+            conversation = await manager.get_conversation(conversation.id)
             await handler.handle_turn(
                 conversation=conversation,
                 user_message=message,
@@ -381,7 +387,7 @@ class TestStateTransitionPerformance:
         metrics: StandupPerformanceMetrics,
     ):
         """Measure state transition performance."""
-        conversation = manager.create_conversation(
+        conversation = await manager.create_conversation(
             user_id="state-test-user",
             session_id="state-test-session",
         )
@@ -396,7 +402,7 @@ class TestStateTransitionPerformance:
 
         for new_state in transitions:
             start = time.perf_counter()
-            result = manager.transition_state(conversation.id, new_state)
+            result = await manager.transition_state(conversation.id, new_state)
             elapsed_ms = (time.perf_counter() - start) * 1000
 
             metrics.record("state_transition", elapsed_ms)
@@ -464,7 +470,7 @@ class TestBaselineSummary:
 
         # 1. Response time baseline
         for i in range(10):
-            conversation = manager.create_conversation(
+            conversation = await manager.create_conversation(
                 user_id=f"baseline-{i}",
                 session_id=f"baseline-session-{i}",
             )
@@ -481,12 +487,13 @@ class TestBaselineSummary:
         initial = tracemalloc.get_traced_memory()[0]
         metrics.record_memory(initial)
 
-        conversation = manager.create_conversation(
+        conversation = await manager.create_conversation(
             user_id="baseline-multi",
             session_id="baseline-multi-session",
         )
 
         for i in range(20):
+            conversation = await manager.get_conversation(conversation.id)
             await handler.handle_turn(conversation, f"Turn {i}")
             current = tracemalloc.get_traced_memory()[0]
             metrics.record_memory(current)
@@ -552,13 +559,14 @@ class TestAlphaRealisticLoad:
                 standup_workflow=None,
             )
 
-            conversation = manager.create_conversation(
+            conversation = await manager.create_conversation(
                 user_id=user_id,
                 session_id=f"concurrent-session-{user_id}",
             )
 
             times = []
             for i in range(num_turns):
+                conversation = await manager.get_conversation(conversation.id)
                 start = time.perf_counter()
                 await handler.handle_turn(
                     conversation=conversation,
@@ -629,13 +637,14 @@ class TestAlphaRealisticLoad:
         )
 
         # Create single conversation
-        conversation = manager.create_conversation(
+        conversation = await manager.create_conversation(
             user_id="validation-user",
             session_id="validation-session",
         )
 
         times = []
         for i in range(10):
+            conversation = await manager.get_conversation(conversation.id)
             start = time.perf_counter()
             await handler.handle_turn(
                 conversation=conversation,
