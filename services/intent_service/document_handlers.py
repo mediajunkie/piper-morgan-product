@@ -11,6 +11,7 @@ Each handler:
 - Returns structured results for Tests 19-24
 """
 
+import io
 from pathlib import Path
 from typing import Dict, List, Optional
 from uuid import UUID
@@ -42,18 +43,19 @@ async def _get_uploaded_file(
 
     Args:
         file_id: File UUID
-        user_id: User UUID (for isolation via session_id)
+        user_id: User UUID (ownership isolation)
         session: Database session
 
     Returns:
         UploadedFileDB record or None
 
     Note:
-        UploadedFileDB uses session_id (not user_id) to track file ownership.
-        In this context, session_id is the user's UUID.
+        Ownership is owner_id (UUID FK to users) since the #1312 ownership
+        migration — the old session_id convention this file assumed is gone
+        (it silently 500'd the beta analyze route until #1452 surfaced it).
     """
     stmt = select(UploadedFileDB).where(
-        UploadedFileDB.id == file_id, UploadedFileDB.session_id == user_id
+        UploadedFileDB.id == file_id, UploadedFileDB.owner_id == user_id
     )
     result = await session.execute(stmt)
     return result.scalar_one_or_none()
@@ -367,10 +369,10 @@ async def handle_reference_in_conversation(
     # 1. If no file_id provided, try to find recently uploaded file
     if not file_id:
         async with AsyncSessionFactory.session_scope_fresh() as session:  # Issue #442 fix
-            # Get most recently uploaded file for user (session_id = user_id)
+            # Get most recently uploaded file for this owner
             stmt = (
                 select(UploadedFileDB)
-                .where(UploadedFileDB.session_id == user_id)
+                .where(UploadedFileDB.owner_id == user_id)
                 .order_by(UploadedFileDB.upload_time.desc())
                 .limit(1)
             )

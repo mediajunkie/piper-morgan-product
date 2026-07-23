@@ -445,6 +445,10 @@ class TestDocumentProcessingEdgeCases:
 
     async def test_question_requires_auth(self, async_client: AsyncClient, uploaded_file_id: str):
         """Verify authentication required"""
+        # the uploaded_file_id fixture logged in on THIS client — its auth
+        # cookie would ride into the "unauthenticated" request (#1452: the
+        # test asserted 401 but measured its own cookie's 200)
+        async_client.cookies.clear()
         response = await async_client.post(
             f"/api/v1/documents/{uploaded_file_id}/question",
             params={"question": "test"},
