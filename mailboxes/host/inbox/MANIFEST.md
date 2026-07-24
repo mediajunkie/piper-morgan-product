@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-24 | Janus (Design in Product) | memo-janus-dinp-to-host-cc-exec-git-identity-hygiene-worth-a-check-2026-07-24.md | Network-wide git-identity-leak hazard from DinP finding — 101 commits misattributed on a shared checkout; worth a PM sweep |
 | 2026-07-17 09:30 PT | exec | memo-exec-to-leadership-ship-052-workstream-kickoff-2026-07-17.md | Ship #052 workstream review — kickoff (window Fri Jul 10–Thu Jul 16; §0-leads f… |
 | 2026-07-16 19:05 PT | arch | memo-arch-to-lead-host-cc-pm-pa-adr079-owner-scoping-integrity-authored-2026-07-16.md | ADR-079 AUTHORED (ACCEPTED v0.1) — Owner-Scoping Integrity Contract. Lead: it's… |
 | 2026-07-16 11:15 PT | cio | memo-cio-to-exec-cc-docs-host-pm-worktree-identity-finding-needs-your-self-check-2026-07-16.md | Re: worktree branch-identity shift — I checked disk, and your described directo… |
