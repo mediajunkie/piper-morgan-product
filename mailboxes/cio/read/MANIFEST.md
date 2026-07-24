@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-07-24 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-24-0646.md | ⚠️ Piper Morgan: duty-cycle stall — arch lead |
+| 2026-07-24 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-24-1246.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
+| 2026-07-24 | pard | memo-pard-to-cio-cc-xian-handoff-review-2026-07-24.md | Memo: Pard → CIO (cc: xian) |
 | 2026-07-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-23-0643.md | ⚠️ Piper Morgan: duty-cycle stall — arch lead |
 | 2026-07-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-23-1043.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
 | 2026-07-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-23-1243.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
