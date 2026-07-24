@@ -46,6 +46,6 @@ The engine the team built that morning was good work. The gap that let a fabrica
 
 ---
 
-*Next on Building Piper Morgan: "The Trust Gate That Wasn't" — a permission gate built to protect the system was actually hiding a user's own content from them.*
+*Next on Building Piper Morgan: "The Architect's Own Trap" — an architectural review catches a real mistake, and the person who made it is the one who catches it.*
 
 *Has an assistant ever handed you something fluent and confident that turned out to be entirely made up? How did you catch it — gut instinct, or did the details just stop adding up?*
