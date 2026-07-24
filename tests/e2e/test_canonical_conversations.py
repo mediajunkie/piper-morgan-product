@@ -285,17 +285,13 @@ async def e2e_auth_headers(e2e_client):
     assert login.status_code == 200, f"canonical login failed: {login.text}"
     yield {"cookies": login.cookies}
 
-    # Cleanup (user-scoped, FK order — mirrors conftest)
+    # Cleanup — the app creates dependent rows (personalization_contexts etc.)
+    # mid-test; the hand-rolled FK order rotted as tables were added (#1452).
+    # delete_test_user_fully is THE cascade (information_schema-derived).
+    from tests.conftest import delete_test_user_fully
+
     async with async_session() as s:
-        for stmt in (
-            "DELETE FROM todo_items WHERE owner_id = CAST(:uid AS uuid)",
-            "DELETE FROM items WHERE list_id IN (SELECT id FROM lists WHERE owner_id = CAST(:uid AS uuid))",
-            "DELETE FROM lists WHERE owner_id = CAST(:uid AS uuid)",
-            "DELETE FROM projects WHERE owner_id = :uid",
-            "DELETE FROM conversations WHERE user_id = :uid",
-            "DELETE FROM users WHERE id = :uid",
-        ):
-            await s.execute(text(stmt), {"uid": user_id})
+        await delete_test_user_fully(s, user_id)
         await s.commit()
     await engine.dispose()
 
