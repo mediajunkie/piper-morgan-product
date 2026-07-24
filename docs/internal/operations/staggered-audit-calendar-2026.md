@@ -254,7 +254,7 @@ CoS to maintain simple tracking:
 |------------|----------------|----------|--------|
 | Pattern Sweep | Feb 3, 2026 | Mar 17, 2026 | ✅ Complete |
 | Methodology | Mar 15, 2026 | Trigger: next sprint gate | ✅ Complete (trigger-based per CIO policy) |
-| Documentation (weekly — quality/accuracy) | Jul 9, 2026 | Jul 30, 2026 | ✅ Complete (#1375; 3-fire audit Jul 7–9: briefing+omnibus+links fire 1, patterns+briefings+escalation fire 2, GitHub sync+README reviews+stale sweep+methodology cross-refs fire 3; ADR count corrected 70+→78; NAVIGATION.md count corrected 23→43; 10 stale arch docs flagged; methodology-audit-policy-updates-2026-03-16.md missing ref found in 11 files). Prior: Jul 2 (#1328). |
+| Documentation (weekly — quality/accuracy) | Jul 24, 2026 | Aug 14, 2026 | ✅ Complete (#1453; Jul 20 audit conducted Jul 24: briefing frontmatter fixed, STATUS BANNER final numbers folded, 0 broken links, omnibus Jul 19-23 complete, ADR index staleness found → #1455, pmorgan.tech domain inconsistency flagged for PM, 1 issue created). Prior: Jul 9 (#1375). |
 | Documentation (monthly — housekeeping/infra) | Jul 2, 2026 | Aug 3, 2026 | ✅ Complete (absorbed into #1341 quarterly sweep; scope split ratified 2026-07-04; first standalone monthly issue will auto-generate Aug 4, 2026). Prior quarterly sweeps: #1341 (Jul 2). |
 | Role Health | May 10, 2026 (Apr 16 + May 10 audits) | Jun 7, 2026 | ✅ Complete (#978) |
 | Skill-Candidates Review | *(none yet)* | Aug 4, 2026 (1st Tue) | Ratified 2026-07-08 (PM); slot confirmed 2026-07-09 (CIO/HOST). First review not yet held. |
