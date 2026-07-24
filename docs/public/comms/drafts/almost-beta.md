@@ -1,7 +1,7 @@
 ---
 image: ''
-alt: ''
-caption: ''
+alt: 'A proud, glowing AI sous-chef presents a clean cake tester while the head baker takes the first bite of an almost-finished cake.'
+caption: '"OK, let''s see!"'
 ---
 
 # Almost Beta
