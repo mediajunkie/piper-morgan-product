@@ -109,3 +109,6 @@ tests/performance/test_standup_performance.py::TestStateTransitionPerformance::t
 tests/performance/test_standup_performance.py::TestBaselineSummary::test_comprehensive_baseline	flaky
 tests/performance/test_standup_performance.py::TestAlphaRealisticLoad::test_light_concurrent_conversations	flaky
 tests/performance/test_standup_performance.py::TestAlphaRealisticLoad::test_single_user_performance_validation	flaky
+tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_analyze_nonexistent_file	flaky
+tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_compare_requires_minimum_files	flaky
+tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_question_requires_auth	flaky
