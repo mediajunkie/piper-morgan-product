@@ -33,24 +33,43 @@ class DocumentIngester:
     def __init__(self, chroma_path: str = "./data/chromadb"):
         self.chroma_path = chroma_path
         self.client = chromadb.PersistentClient(path=chroma_path)
+        # #1452: embedding function + collection are LAZY. Eager construction
+        # raised in keyless environments (OpenAIEmbeddingFunction requires a
+        # key at __init__), and DocumentIngester sits in the dependency graph
+        # of surfaces that never embed (radar's build_entity_sources ->
+        # DocumentService) — a keyless server 500'd its whole radar feed.
+        # Same operation-boundary principle as the document_handlers fix.
+        self._embedding_function = None
+        self._collection = None
 
-        # Get OpenAI API key from keychain (not environment variables)
-        keychain = KeychainService()
-        api_key = keychain.get_api_key("openai")
+    @property
+    def embedding_function(self):
+        if self._embedding_function is None:
+            # Get OpenAI API key from keychain (not environment variables)
+            keychain = KeychainService()
+            api_key = keychain.get_api_key("openai")
 
-        # Use OpenAI embeddings
-        self.embedding_function = embedding_functions.OpenAIEmbeddingFunction(
-            api_key=api_key, model_name="text-embedding-ada-002"
-        )
+            # Use OpenAI embeddings
+            self._embedding_function = embedding_functions.OpenAIEmbeddingFunction(
+                api_key=api_key, model_name="text-embedding-ada-002"
+            )
+        return self._embedding_function
 
-        # Create or get the PM knowledge collection
-        self.collection = self.client.get_or_create_collection(
-            name="pm_knowledge",
-            embedding_function=self.embedding_function,
-            metadata={"description": "Product Management knowledge base with relationships"},
-        )
-
-        logger.info(f"Knowledge collection initialized with {self.collection.count()} documents")
+    @property
+    def collection(self):
+        if self._collection is None:
+            # Create or get the PM knowledge collection
+            self._collection = self.client.get_or_create_collection(
+                name="pm_knowledge",
+                embedding_function=self.embedding_function,
+                metadata={
+                    "description": "Product Management knowledge base with relationships"
+                },
+            )
+            logger.info(
+                f"Knowledge collection initialized with {self._collection.count()} documents"
+            )
+        return self._collection
 
     @property
     def llm(self):

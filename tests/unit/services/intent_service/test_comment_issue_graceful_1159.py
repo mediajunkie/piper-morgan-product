@@ -32,6 +32,7 @@ def _comment_intent():
 
 
 class TestCommentIssueGracefulRepoResolution:
+    @pytest.mark.llm  # #1452: needs live LLM slot-extraction (CI: 'No LLM providers configured')
     @pytest.mark.asyncio
     async def test_no_repo_resolved_returns_graceful_clarification(self, intent_service):
         """RuntimeError('no repo could be resolved') → 'which repo?' clarification,

@@ -1000,6 +1000,7 @@ class TestCommentIssueRouting:
 class TestCommentIssueResults:
     """Test comment issue result formatting (Issue #519 Query #59)"""
 
+    @pytest.mark.llm  # #1452: needs live LLM slot-extraction (CI: 'No LLM providers configured')
     @pytest.mark.asyncio
     async def test_formats_comment_confirmation_correctly(self, intent_service):
         """Test comment confirmation is formatted properly"""

@@ -9,6 +9,11 @@ import time
 from pathlib import Path
 
 import pytest
+
+# #1452: these exercise the LIVE Notion publisher (CI evidence: 'NoneType'
+# object has no attribute 'pages' — no configured client keyless) — keyed
+# integration lane.
+pytestmark = pytest.mark.llm
 import requests
 from dotenv import load_dotenv
 
