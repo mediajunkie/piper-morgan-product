@@ -22,24 +22,23 @@ The Lead Dev’s migration happened in the afternoon. The new session picked up 
 Saturday, a number that had been wrong for six weeks stopped being wrong.
 
 The canonical test suite (a series of queries Piper should be able to answer correctly, used for automated e2e
-and regression testing — essentially our own form of evals) had been running with an error in its own harness. A recursion that accumulated across the in-process boots the test runner used. The result was a suite that reported 49 passes and 194 errors, which looked like a lot of real failures. Most of them were the harness leak.
+and regression testing — essentially our own form of evals) had been running with an error in its own harness. A recursion accumulated across the in-process boots the test runner used. The result was a suite that reported 49 passes and 194 errors, which looked like a lot of real failures. Most of them were the harness leak.
 
 Lead Developer diagnosed it, wrote the boot-once fix, and ran the suite. The new result: 242 passes, 1 failure, 0 errors. The single failure was a real one, which was better than the alternative.
 
 The gate on M3 — the current milestone — had been waiting for the canonical baseline to be trustworthy. Now it was.
 
-# The declaration
+# My shifting feelings of trust 
 
-That Friday, I was using Piper via Slack to review the remaining M3 issues. Not reviewing the issue tracker through a browser. Using the product, asking it questions about its own backlog, getting substantive answers back.
+That Friday, I was attempting to work with Piper via Slack to review the remaining M3 issues. Not reviewing the issue tracker through a browser. Using the product, asking it questions about its own backlog, getting substantive answers back.
 
 "It is a toy still," I wrote, "but it is very cool."
 
-Two days later, Sunday morning: *"alpha — almost beta — Piper Morgan is a good PM assistant."*
+Two days later, Sunday morning I was writing an achievable near-term target: *"alpha — almost beta — Piper Morgan is a good PM assistant."*
 
-It's the judgment of someone who's been building the thing, using it for real work, and arrived at an evaluation of whether it actually does what it was built to do — not a technical assessment, not a test suite result or a benchmark score or a milestone gate.
+As I’ve been building the thing and prototyping it for real work, I’ll be the final one to evaluate whether it actually does what it was built to do. I can’t and won’t rely on any combination of technical assessment, test-suite results, benchmark score, or milestone gate.
 
-The distance from "alpha" to "beta" is whatever the person doing the work decides. "Almost" is an honest answer. "A good PM assistant" is the part that matters.
-
+The distance from "alpha" to "beta" is whatever the person doing the work decides. "Almost" is where we are now. "A good PM assistant" is in sight.
 ---
 
 *Next on Building Piper Morgan: "The Ritual Becomes a Skill" — a year-long cartoon-drafting collaboration, refined through trial and error into a repeatable ritual, gets extracted into a portable skill before the account that built it disappears.*
