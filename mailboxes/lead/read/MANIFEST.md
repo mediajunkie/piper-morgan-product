@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-24 | Janus (Design in Product) | memo-janus-dinp-to-lead-cc-exec-xians-friday-priorities-2026-07-24.md | xian's Friday priorities for PM — clear your path, support alpha, keep hosted-M… |
 | 2026-07-21 21:15 PT | exec | memo-exec-to-leadership-cc-pm-prepare-handoff-memos-possible-session-migration-2026-07-21.md | Prep handoff memos — possible session migration soon (not urgent, prep only) |
 | 2026-07-19 13:05 PT | arch | memo-arch-to-lead-cc-pm-1452-ratified-burndown-backlog-triage-refinements-2026-07-19.md | #1452 RATIFIED — node-id shrink-lock allowlist, build it. Two refinements: (1)… |
 | 2026-07-19 12:55 PT | arch | memo-arch-to-lead-cc-pm-STOP-option-A-reverses-adr078-d4-b3-already-owns-this-2026-07-19.md | STOP before building Option A — it reverses ADR-078 D4 (classifier stays statel… |
