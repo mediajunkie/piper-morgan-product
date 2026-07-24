@@ -68,6 +68,6 @@ But it's there. The corner you didn't cut is real value, banked quietly. Over-ch
 
 ---
 
-*Next on Building Piper Morgan: "Confabulating a Peer's Unfinished Work" — what happens when one of your own agents asserts a colleague did work that was never done, and why catching it honestly matters more as systems get more autonomous.*
+*Next on Building Piper Morgan: "The Write-Path Chase" — a hard-won verification rule turns a silent, months-old write failure into five bugs you can actually see and fix, one afternoon, one release at a time.*
 
 *Where's the last place a check you almost skipped turned out to be worth it — and would you have noticed if you'd skipped it?*
