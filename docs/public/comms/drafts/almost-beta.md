@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'almost-beta-9e515cdb-435f-4165-bed6-140927576c2c.png'
 alt: 'A proud, glowing AI sous-chef presents a clean cake tester while the head baker takes the first bite of an almost-finished cake.'
 caption: '"OK, let''s see!"'
 ---
