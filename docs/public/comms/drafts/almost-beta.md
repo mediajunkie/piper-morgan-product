@@ -28,11 +28,11 @@ The gate on M3 — the current milestone — had been waiting for the canonical 
 
 # The declaration
 
-Late Saturday afternoon, I was using Piper via Slack to review the remaining M3 issues. Not reviewing the issue tracker through a browser. Using the product, asking it questions about its own backlog, getting substantive answers back.
+That Friday, I was using Piper via Slack to review the remaining M3 issues. Not reviewing the issue tracker through a browser. Using the product, asking it questions about its own backlog, getting substantive answers back.
 
 "It is a toy still," I wrote, "but it is very cool."
 
-And then, later: *"alpha — almost beta — Piper Morgan is a good PM assistant."*
+Two days later, Sunday morning: *"alpha — almost beta — Piper Morgan is a good PM assistant."*
 
 It's the judgment of someone who's been building the thing, using it for real work, and arrived at an evaluation of whether it actually does what it was built to do — not a technical assessment, not a test suite result or a benchmark score or a milestone gate.
 
