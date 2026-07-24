@@ -7,7 +7,6 @@
 #   triage       = not yet glanced — triaging it IS part of the burn-down
 #   flaky        = oscillates run-to-run (tolerated both states); burn-down = DE-FLAKE, then retag
 # Source: dev/2026/07/19/fullsuite-enumeration-2026-07-19.txt (CI-parity local run 2).
-tests/e2e/test_canonical_conversations.py::TestCanonicalGroundTruthMocked::test_milestones_empty_is_honest	triage
 tests/e2e/test_scenario_driver.py::test_multi_turn_scenario[fresh_tester_onboarding]	triage
 tests/e2e/test_task_lifecycle_e2e.py::TestTodoLifecycleE2E::test_create_todo_returns_confirmation	triage
 tests/features/test_issue_intelligence.py::TestIssueIntelligenceCanonicalQueryEngine::test_canonical_query_engine_initialization	triage
