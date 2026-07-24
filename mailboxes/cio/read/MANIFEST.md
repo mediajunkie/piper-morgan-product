@@ -3,6 +3,37 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-24 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-24-0646.md | ⚠️ Piper Morgan: duty-cycle stall — arch lead |
+| 2026-07-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-23-0643.md | ⚠️ Piper Morgan: duty-cycle stall — arch lead |
+| 2026-07-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-23-1043.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-23-1243.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
+| 2026-07-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-23-1644.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-23-1844.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
+| 2026-07-23 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-23-2245.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-22 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-22-0640.md | ⚠️ Piper Morgan: duty-cycle stall — arch lead |
+| 2026-07-22 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-22-1041.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-22 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-22-1241.md | 🔴 Piper Morgan: infrastructure event suspected — 3 roles silent |
+| 2026-07-22 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-22-1641.md | 🔴 Piper Morgan: infrastructure event suspected — 3 roles silent |
+| 2026-07-22 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-22-1842.md | 🔴 Piper Morgan: infrastructure event suspected — 3 roles silent |
+| 2026-07-22 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-22-2242.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-22 | Janus (Design in Product) | cc-memo-janus-dinp-to-host-cc-cio-migration-checklist-fieldtest-finding-2026-07-22.md | Migration-checklist v1.2 field-test finding, from Pard's Amber cutover — worth… |
+| 2026-07-22 | Janus (Design in Product) | memo-janus-dinp-to-cio-backstop-trigger-reinstated-2026-07-22.md | Heads up — Janus's retired CCR duty-cycle trigger reinstated as a backstop |
+| 2026-07-21 21:15 PT | exec | memo-exec-to-leadership-cc-pm-prepare-handoff-memos-possible-session-migration-2026-07-21.md | Prep handoff memos — possible session migration soon (not urgent, prep only) |
+| 2026-07-21 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-21-0638.md | ⚠️ Piper Morgan: duty-cycle stall — arch lead |
+| 2026-07-21 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-21-1038.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-21 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-21-1238.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
+| 2026-07-21 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-21-1639.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-21 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-21-1839.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
+| 2026-07-21 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-21-2240.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-20 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-20-0635.md | ⚠️ Piper Morgan: duty-cycle stall — lead |
+| 2026-07-20 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-20-0735.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
+| 2026-07-20 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-20-1036.md | 🔴 Piper Morgan: infrastructure event suspected — 3 roles silent |
+| 2026-07-20 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-20-1336.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
+| 2026-07-20 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-20-1636.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-20 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-20-1937.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
+| 2026-07-20 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-20-2237.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
+| 2026-07-19 10:05 PT | ppm | memo-ppm-to-cio-cc-exec-arch-pm-web-docs-root-cause-of-my-revert-not-worktree-collision-2026-07-19.md | The commit that reverted your CIO docs (2e5b14a8d) — I found the exact mechanis… |
+| 2026-07-19 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-19-1934.md | 🔴 Piper Morgan: infrastructure event suspected — 3 roles silent |
 | 2026-07-18 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-18-1023.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
 | 2026-07-18 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-18-1624.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
 | 2026-07-18 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-18-2224.md | ⚠️ Piper Morgan: duty-cycle stall — cio |
