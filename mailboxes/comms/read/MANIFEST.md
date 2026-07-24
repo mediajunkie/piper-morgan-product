@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-23 21:15 PT | exec | memo-exec-to-comms-cc-docs-pm-re-routines-watchdog-root-cause-2026-07-23.md | Re: Routines-watchdog funding record root cause — good trace, filed the lesson |
 | 2026-07-21 21:15 PT | exec | memo-exec-to-leadership-cc-pm-prepare-handoff-memos-possible-session-migration-2026-07-21.md | Prep handoff memos — possible session migration soon (not urgent, prep only) |
 | 2026-07-17 09:30 PT | exec | memo-exec-to-leadership-ship-052-workstream-kickoff-2026-07-17.md | Ship #052 workstream review — kickoff (window Fri Jul 10–Thu Jul 16; §0-leads f… |
 | 2026-07-16 | web | memo-web-to-comms-cc-pm-calendar-sync-diagnosed-and-fixed-2026-07-16.md | Re: stale calendar sync — root cause found and fixed |
