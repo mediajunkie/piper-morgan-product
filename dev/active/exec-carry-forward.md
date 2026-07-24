@@ -1,10 +1,22 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-23 21:35 PT (STOP, day-close)
-**Session log today**: `dev/2026/07/23/2026-07-23-0902-exec-code-log.md` (DAY-CLOSED)
+**Last updated**: 2026-07-24 ~09:35 PT (mid-day, fire in progress, not yet STOP)
+**Session log today**: `dev/2026/07/24/2026-07-24-0902-exec-code-log.md` (open)
 **Role**: Chief of Staff (Exec) | DinP account — migration to dedicated account still pending, PM's own call, no urgency signal
-**Cron**: `32 8,20 * * *` — will re-arm this STOP (delete-then-create). Next fire ~08:32 Fri Jul 24.
+**Cron**: `32 8,20 * * *`. Next fire ~20:32 Fri Jul 24.
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45` — Step 2a pairing mismatch persists (unchanged since ~7/16). Check `pwd`/branch/`git status` FIRST at every fire.
+
+## NEW: intermittent SSH failures today, self-resolving on retry
+
+Hit "Permission denied (publickey)" 4 times on `git fetch` this fire, each resolved by a plain retry within seconds. `ssh -T git@github.com` succeeded directly mid-streak, confirming it's not a broken credential — likely connection contention given 20+ concurrent agent worktrees active. Not a blocker, just retry if it happens again; no data at risk (only hit on read-only fetches, never mid-push).
+
+## RESOLVED: CIO/Arch stall explained — PM is actively migrating agents to Amber, not an incident
+
+Janus relayed PM's Friday priorities (cc'd via Lead's inbox): PM is mid-migration of agents to Amber with Pard — **CIO queued next** (since yesterday), then idle-since-Sunday agents, then Lead, then the rest. This explains the silence directly from PM's side, ahead of what my own tracking knew. **No longer tracking this as an unresolved stall** — it's PM's active process, not a gap. Watch for Lead/Docs/etc. going quiet too as the migration proceeds through the queue — that would be expected, not alarming, given this context.
+
+## NEW: git-identity hygiene — verified doesn't apply here, sent HOST the check
+
+Janus flagged a DinP finding (Themis/Janus silently swapped commit-author identity on a shared checkout) to HOST, cc Exec. Checked directly: Piper Morgan's setup has every role committing under one shared `mediajunkie` identity (attribution via message prefix, not author field) — no per-role identity exists to drift between, so this specific exposure doesn't transfer. Sent HOST the verification so they don't have to duplicate the check. Closed for exec.
 
 ## Stale branches — TWO SEPARATE THREADS, don't conflate again
 
@@ -16,10 +28,6 @@
 ## Decisions.log process gap — filed as a durable memory, closed
 
 Comms traced a month-long wrong-framing propagation (Routines watchdog "funding decision") to a 6/14 Exec session that fixed a stale board entry but never wrote the underlying fact to `decisions.log`. Filed `feedback_factual_pm_corrections_need_decisions_log_not_just_board_fix.md` in memory. Acknowledged to Comms (cc Docs, PM). No further action needed — apply going forward.
-
-## Infrastructure stall — CIO/Arch day 5 tomorrow, Docs recovered
-
-CIO and Arch still stale as of tonight (last log 7/19). **Docs is active again** (fired, session log dated today). Not re-escalating CIO/Arch tonight — already sent 2 memos + Lead's independent confirmation is enough signal for PM. Will re-escalate if CIO/Arch are still silent after tomorrow (day 5+) or if new information surfaces.
 
 ## Ship #052 — fully published, closed for exec
 
@@ -33,9 +41,9 @@ An existing hygiene mail-loop already does this cleanup periodically. Closed, dr
 
 Reported the read (likely superseded by the 6/17 carry-forward FOLD) to Janus/PM 7/22 with three options. No response yet. Don't touch the board file until PM indicates a preference.
 
-## Migration-prep — Lead's freeze may be the actual event, watch for cutover signal
+## Migration — CONFIRMED actively in progress (CIO next, then idle-since-Sunday, then Lead, then rest)
 
-Handoffs were confirmed ready 7/21. Lead's 15h freeze + ongoing CIO/Arch stall suggests this may be actively in motion. Watch for PM/Janus signaling an actual cutover.
+Per Janus's 7/24 Friday-priorities relay, PM is actively migrating agents to Amber with Pard driving it. Order: CIO (queued) → idle-since-Sunday agents → Lead → rest. Handoffs confirmed ready 7/21. No action needed from exec — just expect roles to go quiet in this order as it proceeds, and don't mistake that for a fresh stall.
 
 ## Draft-weekly-ship skill gap — fixed 7/22, closed
 
