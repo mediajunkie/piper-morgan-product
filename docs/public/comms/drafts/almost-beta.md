@@ -13,7 +13,7 @@ two more followed. Six roles in two days, a re-migration wave, the team shifting
 
 All migrations create friction. You take a session that has weeks of context and history, write a carry-forward document that tries to compress what matters, stand up a fresh session, and trust that the document is enough. The measure of whether it worked is whether the work continues without a visible seam.
 
-The Friday session for my Lead Developer agent was the one of largest single build day the role had recorded: eleven issues closed, the honesty audit shipped (a batch of code fixes targeting places where the system was making claims it couldn't back up), Slack inbound messages live for the first time since a refactor months ago, and the canonical test suite's expected failure count reaching zero for the first time since the suite existed.
+The Friday session for my Lead Developer agent was one of the largest single build days the role had recorded: eleven issues closed, the honesty audit shipped (a batch of code fixes targeting places where the system was making claims it couldn't back up), Slack inbound messages live for the first time since a refactor months ago, and the canonical test suite's expected failure count reaching zero for the first time since the suite existed.
 
 The Lead Dev’s migration happened in the afternoon. The new session picked up from the carry-forward and shipped four more issues before midnight.
 
@@ -28,7 +28,7 @@ Lead Developer diagnosed it, wrote the boot-once fix, and ran the suite. The new
 
 The gate on M3 — the current milestone — had been waiting for the canonical baseline to be trustworthy. Now it was.
 
-# My shifting feelings of trust 
+# My shifting feelings of trust
 
 That Friday, I was attempting to work with Piper via Slack to review the remaining M3 issues. Not reviewing the issue tracker through a browser. Using the product, asking it questions about its own backlog, getting substantive answers back.
 
@@ -39,6 +39,7 @@ Two days later, Sunday morning I was writing an achievable near-term target: *"a
 As I’ve been building the thing and prototyping it for real work, I’ll be the final one to evaluate whether it actually does what it was built to do. I can’t and won’t rely on any combination of technical assessment, test-suite results, benchmark score, or milestone gate.
 
 The distance from "alpha" to "beta" is whatever the person doing the work decides. "Almost" is where we are now. "A good PM assistant" is in sight.
+
 ---
 
 *Next on Building Piper Morgan: "The Ritual Becomes a Skill" — a year-long cartoon-drafting collaboration, refined through trial and error into a repeatable ritual, gets extracted into a portable skill before the account that built it disappears.*
