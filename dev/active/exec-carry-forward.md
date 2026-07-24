@@ -1,46 +1,49 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-23 ~09:20 PT (mid-day, fire in progress, not yet STOP)
-**Session log today**: `dev/2026/07/23/2026-07-23-0902-exec-code-log.md` (open)
+**Last updated**: 2026-07-23 21:35 PT (STOP, day-close)
+**Session log today**: `dev/2026/07/23/2026-07-23-0902-exec-code-log.md` (DAY-CLOSED)
 **Role**: Chief of Staff (Exec) | DinP account — migration to dedicated account still pending, PM's own call, no urgency signal
-**Cron**: `32 8,20 * * *`. Next fire ~20:32 Thu Jul 23.
+**Cron**: `32 8,20 * * *` — will re-arm this STOP (delete-then-create). Next fire ~08:32 Fri Jul 24.
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45` — Step 2a pairing mismatch persists (unchanged since ~7/16). Check `pwd`/branch/`git status` FIRST at every fire.
 
-## Infrastructure stall — day 4 for CIO/Arch, Docs now added, not re-escalating yet
+## Stale branches — TWO SEPARATE THREADS, don't conflate again
 
-CIO and Arch still stale (last log 7/19, day 4 continuous), two more watchdog re-pings overnight. Lead's own session froze 15h yesterday (06:52-21:47) — independent confirmation of the crash pattern, already relayed to PM directly by Lead. **Docs has also gone quiet** (last log 7/21, 2 days) — not one of the 4 auto-monitored roles, so this wouldn't otherwise surface; my stale-branches memo is sitting unread in Docs' inbox as a result. Already sent PM two substantive memos on this Tuesday night + Lead sent a third independently — **not sending a fourth tonight**, diminishing returns. Re-escalate only if Docs is still silent after another full day or the pattern worsens further.
+- **Item #1 (open)**: CXO's 3 MUX branches + CIO's `xpoll-brief-staleness-hook` — 5 branches, all still on origin, unowned, 9+ days silent. This is the one still needing a nudge — name the 5 branches explicitly if touching this again: `cxo-mux-step-3-cluster-review-2026-05-24`, `cxo-mux-surface-2-2026-05-19`, `cxo-mux-surface-4-2026-05-20`, `cxo-mux-surface-7-2026-05-18`, `xpoll-brief-staleness-hook`.
+- **Item #1b (resolved)**: the Janus/PM/Docs thread (`fix-docker-migration-setup` + 5 others) — Docs' original 7/21 deletion was correct, only `fix-docker-migration-setup` remains, PM's go/no-go whenever convenient. Sent Docs a retraction 7/23 for my own mixup; Janus reply updated and successfully sent (cross-repo push worked this time).
 
-## Stale branches — still undeleted, blocked on Docs being unresponsive
+**Lesson for future me**: last night's whole "correction" was me checking a different branch list than what Janus/PM were discussing and not noticing the mismatch. Ask for exact branch names before "correcting" a claim like this again.
 
-All 6 branches still on origin as of this morning (verified). Not a new finding — just confirms the block is Docs' silence, not disagreement or a dropped request.
+## Decisions.log process gap — filed as a durable memory, closed
 
-## Mailbox ghost-cleanup — RESOLVED, handled by existing automation (no longer a carry item)
+Comms traced a month-long wrong-framing propagation (Routines watchdog "funding decision") to a 6/14 Exec session that fixed a stale board entry but never wrote the underlying fact to `decisions.log`. Filed `feedback_factual_pm_corrections_need_decisions_log_not_just_board_fix.md` in memory. Acknowledged to Comms (cc Docs, PM). No further action needed — apply going forward.
 
-Found `40495fbc5` ("mail(hygiene): commit self-heal ghost drops, twin-verified 14/14") — an existing automated hygiene mail-loop already does exactly the inbox/read duplicate cleanup I'd declined to do manually in PM's mailbox. The 219 duplicates I found will very likely get swept by this same mechanism on its own schedule. **Closed** — no manual action needed, dropping from carry-forward.
+## Infrastructure stall — CIO/Arch day 5 tomorrow, Docs recovered
 
-## Ship #052 — fully published + distributed, closed for exec
+CIO and Arch still stale as of tonight (last log 7/19). **Docs is active again** (fired, session log dated today). Not re-escalating CIO/Arch tonight — already sent 2 memos + Lead's independent confirmation is enough signal for PM. Will re-escalate if CIO/Arch are still silent after tomorrow (day 5+) or if new information surfaces.
 
-Published 7/22 14:26 PT (PM direct), distributed to LinkedIn same day. P.S.-placeholder gap is Comms' own tracked non-blocking item (already flagged to PM directly by Comms) — not duplicating here.
+## Ship #052 — fully published, closed for exec
 
-## Attention-board staleness — still awaiting PM's preference (from 7/22)
+Published + distributed to LinkedIn 7/22. P.S.-placeholder gap is Comms' own tracked non-blocking item.
 
-Reported the read (likely superseded by the 6/17 carry-forward FOLD) to Janus/PM with three options. No response yet. Don't touch the board file until PM indicates a preference.
+## Mailbox ghost-cleanup — RESOLVED, handled by existing automation
 
-## Janus reply — still blocked from sending (real permission boundary, from 7/22)
+An existing hygiene mail-loop already does this cleanup periodically. Closed, dropped from carry-forward.
 
-Drafted at `~/Development/designinproduct/docs/mail/memo-exec-piper-to-janus-cc-pm-stale-branches-attention-board-2026-07-22.md`, ready to send but blocked by the auto-mode classifier (cross-repo write outside this session's worktree). Substantive content already reached PM via the Docs memo regardless.
+## Attention-board staleness — still awaiting PM's preference
 
-## Migration-prep — handoffs were ready; Lead's freeze may be the actual triggering event now
+Reported the read (likely superseded by the 6/17 carry-forward FOLD) to Janus/PM 7/22 with three options. No response yet. Don't touch the board file until PM indicates a preference.
 
-Comms and Lead confirmed handoffs in place (7/21). Lead's 15h freeze yesterday plus the ongoing CIO/Arch stall suggests the anticipated migration may now be actively in motion rather than still "prep only." Watch for PM/Janus signaling an actual cutover.
+## Migration-prep — Lead's freeze may be the actual event, watch for cutover signal
+
+Handoffs were confirmed ready 7/21. Lead's 15h freeze + ongoing CIO/Arch stall suggests this may be actively in motion. Watch for PM/Janus signaling an actual cutover.
 
 ## Draft-weekly-ship skill gap — fixed 7/22, closed
 
-Step 7 now requires the calendar-update in the same commit as the draft (v1.7). Watch it land correctly on Ship #053.
+Step 7 now requires the calendar-update in the same commit as the draft (v1.7).
 
 ## Learning loop fixed (Lead, 7/21) — Ship #053 headline candidate
 
-#1438 closed, learning loop live at beta v26. CI burn-down continuing strong per Lead's overnight waves (backlog into the 170s as of this morning). Flag for Ship #053 drafting.
+#1438 closed, learning loop live at beta v26. CI burn-down continuing strong (backlog into 170s as of 7/23 morning). Flag for Ship #053 drafting.
 
 ---
 
@@ -56,7 +59,7 @@ Same directory/branch mismatch persists. Proceeding cautiously each fire.
 
 - **Lead Dev's #1424/#1427 questions** — still awaiting PM's final calls from Jul 18.
 - **Beta Blockers count** — last verified count is stale; re-pull via `query-github-board` skill before citing a number again.
-- **Full tracker reconciliation** — done 7/20, getting stale (3+ days) — due for a fresh pass if a quiet fire comes up.
+- **Full tracker reconciliation** — done 7/20, now 3+ days stale — due for a fresh pass if a quiet fire comes up.
 
 ## STANDING
 
@@ -64,4 +67,4 @@ Same directory/branch mismatch persists. Proceeding cautiously each fire.
 
 ---
 
-*— Exec, 7/23 ~09:20 PT.*
+*— Exec, 7/23 21:35 PT.*
