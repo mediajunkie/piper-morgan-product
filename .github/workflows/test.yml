@@ -238,6 +238,19 @@ jobs:
       # #1452: free diagnostics — when the gate flags NEW failures, rerun just
       # those nodes with tracebacks so the log carries the WHY (tb=no above
       # keeps the main sweep readable; this step only fires on failure).
+      # #1452: NON-GATING diagnostics for the env-oscillator backlog band —
+      # entries that pass keyed-local but fail here. The gate tolerates them
+      # (they're listed), so the main sweep never shows their WHY (tb=no) and
+      # the failure-diagnose step below only covers NEW failures. This step
+      # reruns them with tracebacks every run so the oscillator chase has
+      # CI-side evidence. Always || true — informational only.
+      - name: Diagnose env-oscillator backlog entries (non-gating)
+        if: always()
+        run: |
+          NODES="tests/unit/web/api/routes/test_radar.py tests/integration/test_publish_gaps.py tests/unit/services/intent_service/test_github_query_handlers.py::TestCommentIssueResults::test_formats_comment_confirmation_correctly tests/unit/services/intent_service/test_comment_issue_graceful_1159.py tests/validation/test_pm034_claims_validation.py tests/unit/services/standup/test_standup_assembler_1269.py::TestBuildStandupAssembler::test_wires_live_radar_sources_and_calendar"
+          python -m pytest $NODES -q --tb=short \
+            -o addopts="--import-mode=importlib" || true
+
       - name: Diagnose new failures with tracebacks
         if: failure()
         run: |
