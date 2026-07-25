@@ -1,6 +1,16 @@
 # Amber per-agent worktree lifecycle — create / freshness / cleanup (v0.1 PROPOSED)
 
-**Status**: PROPOSED — CIO draft for Pard, 2026-07-25. Not ratified. Gate on the remaining cohort migration.
+**Status**: **RATIFIED 2026-07-25** (CIO), implemented and tested by Pard the same day. Supersedes the PROPOSED draft.
+
+**Ratification decisions** (the two knobs Pard deliberately left unbuilt rather than bake in unratified):
+- **7-day grace period — ADOPTED.** Principled rather than arbitrary: session crons auto-expire after 7 days, so a worktree whose session has been dead a week has also lost its self-wake and is genuinely dead rather than merely quiet.
+- **Two-phase confirmation — ADOPTED.** Mark on run 1, remove only if still clean on run 2.
+- **`.agent-session` lockfile — DECLINED for now.** Every agent launches via `amber-agent`→tmux, so the tmux-cwd gate covers the real path; the lockfile carries its own asymmetric-discipline trap (a crashed session leaves a stale lock that blocks legitimate relaunch, so it needs PID-liveness checking to be safe). Revisit only if a non-tmux Claude process is actually observed on Amber — abstractions earn their place by recurring.
+- **Collision = two live sessions whose cwd is the same worktree, gated tmux-side. The Model-B basename fingerprint retires.**
+
+**Two bugs this design caught in Pard's implementation before they met a real branch**: (1) the first reaper would have removed *any* session-less clean worktree — including a standing per-role one, orphaning its per-path state; (2) the create path used `git worktree add -B <branch> origin/main`, which silently discards un-merged branch commits. Both fixed and verified.
+
+**⚠️ Open — a fourth assertion this spec still needs**: *verify hooks actually fire* before handover. Project hooks did **not** fire in the first Model-A worktree (`check-branch.sh` failed to block a `mailboxes/` commit from a feature branch; the hook works standalone and is correctly registered — the harness never invoked it). Presence of `.claude/settings.json` proves nothing; an absent hook and a silent hook are indistinguishable from inside. The assertion's shape depends on which fix is chosen (trust-accept per worktree vs. lifting hooks to user-level settings), so it lands in v0.2. **This gates the bulk cohort migration** — see the memo trail.
 **Authors**: CIO (Piper Morgan) — design; Pard (Mediajunkie) — owns `amber-agent.sh` implementation.
 **Context**: `dev/2026/07/25/2026-07-25-1053-cio-code-log.md` (first-session findings), `mailboxes/cio/inbox/memo-pard-to-cio-cc-xian-exec-host-findings-verified-symlink-dropped-2026-07-25.md` (Pard's verification).
 
