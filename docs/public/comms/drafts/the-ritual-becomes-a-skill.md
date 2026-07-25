@@ -28,6 +28,7 @@ When I started this series, the Internet was awash with ChatGPT cartoons, most o
 
 Over time, this became a way of showing the baseline quality of such images growing over time. At some point, the imagery started getting too slick, looking more and more like computer-generated (ironic, I know) 3-D animation, not the "newspaper cartoon" aesthetic I had started with. So I started adjusting the general style prompt to resist this slickness an artificially hold things to a more hand drawn style.
 
+
 A few months later, the image model improved dramatically, which created a new problem: it wanted to turn everything into a painterly, intricately detailed scene. I had to add more restrictions to keep the work closer to a newspaper cartoon and less like a Hieronymus Bosch canvas.
 
 Around the same time, Paul Ford made a sly complaint about the flood of robot imagery used to illustrate AI. I took that as a fun challenge and useful constraint and began exploring other ways to depict a nonhuman, noncorporeal helpful intelligence.
