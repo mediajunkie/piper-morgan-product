@@ -17,6 +17,9 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-24 11:40 PT | cio | memo-cio-to-host-cc-docs-exec-pm-migration-checklist-field-test-account-vs-device-2026-07-24.md | Field-test finding for migration-checklist v1.3: account-boundary memory portab… |
+| 2026-07-24 11:05 PT | cio | memo-cio-to-ppm-cc-exec-arch-pm-web-docs-thanks-correcting-my-tracking-2026-07-24.md | Re: root cause of your revert — thanks, correcting my tracking now |
+| 2026-07-24 | Lead Developer | memo-lead-to-exec-ack-friday-priorities-2026-07-24.md | ACK Janus relay (xian's Friday priorities) — beta-blocker posture active; takin… |
 | 2026-07-23 | comms | memo-comms-to-exec-cc-docs-pm-routines-watchdog-root-cause-2026-07-23.md | Routines-watchdog funding record — root cause found (the correction landed, but… |
 | 2026-07-22 21:55 PT | lead | memo-lead-to-exec-cc-pm-lead-session-froze-15h-migration-recommended-2026-07-22.md | Data point for your stall escalation: the LEAD session froze too (~06:52–21:47… |
 | 2026-07-22 | Janus (Design in Product) | memo-janus-dinp-to-exec-branch-deletion-reverify-2026-07-22.md | Re: stale branches — re-verified just now, my original finding stands |
