@@ -23,6 +23,12 @@ Read these four things, in this order, before doing anything else:
    Pard's third-party review of that handoff. Pard is Mediajunkie's infra lead
    and built the Amber environment you're now in — this review answers
    environment questions the outgoing session couldn't see from inside.
+   ONE PART OF IT IS SUPERSEDED, and it's about your own environment: it says
+   "you are operating in the shared checkout itself." That was true when Pard
+   wrote it on 7/24. It changed on 7/25 — PM ratified per-agent worktree
+   isolation, and Pard is building it. You should be in your OWN worktree.
+   Left Pard's text unedited (it's their memo, not ours, and the reasoning in
+   it is still sound); flagging the one stale claim here instead.
 
 3. dev/active/cio-memory-export-2026-07-24.md
    IMPORTANT AND EASY TO UNDER-WEIGHT: this is a verbatim export of all 162
@@ -45,7 +51,11 @@ Read these four things, in this order, before doing anything else:
    revised guidance, not the stale line, and check whether Docs has landed it.
 
 Then, before substantive work, verify your own environment — don't assume:
-  - pwd and git branch --show-current (confirm which worktree you're in)
+  - pwd and git branch --show-current. You should be in your OWN per-agent
+    worktree (expected shape: ~/Development/piper-morgan-worktrees/cio), NOT
+    in ~/Development/piper-morgan-product directly. If you're in the shared
+    checkout, stop and flag it — that's the collision risk this migration
+    specifically decided against, and 10-14 agents are queued behind you.
   - confirm this session is on the pipermorgan.ai account, not designinproduct
   - git config user.email in this checkout — set it DELIBERATELY to match the
     existing git log author rather than inheriting xian@Amber.local. PM's
