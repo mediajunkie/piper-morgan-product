@@ -156,6 +156,18 @@ That is precisely the false-confidence shape this rule exists to catch — **occ
 
 **Do not work around a classifier denial** to force the probe through — that defeats the denial's intent and converts an honest inconclusive into a manufactured pass. Report inconclusive, leave the gate closed, and enforce manually until a clean seat is available. Do not proceed to the next agent on a fail *or* an inconclusive.
 
+### ★ PRECONDITION — the gate needs a clean seat, and "clean" means two things
+
+*(Named 2026-07-25 after Lead Dev's inconclusive run. I should have stated this when I wrote the rule.)*
+
+> **Run the gate only on a session that is BOTH (a) fresh — started after the hooks were wired, so it actually loaded them — AND (b) on a seat where `git commit` is not permission-gated.**
+
+Miss (a) and a non-block is meaningless (the session never loaded the hooks). Miss (b) and the probe can't reach the hook layer at all — the classifier intercepts first, and the only honest verdict is inconclusive.
+
+**Check (b) before spending the probe.** A trivial no-op commit answers it for free. If that prompts, the gate cannot run on that seat — say so cleanly rather than burning the probe and then having to explain an ambiguous result.
+
+**Corollary — any qualifying session is a valid gate seat, not just the designated migrant.** If agent #2's seat turns out to be permission-gated, that is a *seat* problem, not evidence the fix is broken, and any other fresh+ungated session can run it. Don't re-litigate the fix on a bad seat.
+
 Two properties worth stating because they're what make this rule work:
 
 - **It is a negative-signal check, and negative signals are the ones that rot undetected.** An absent hook and a silent hook are indistinguishable from inside a session; there is no error, no log line, nothing. That's why this has to be an *action* with an expected refusal, not an inspection.
