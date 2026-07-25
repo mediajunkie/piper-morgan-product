@@ -138,7 +138,24 @@ Our outputs were cartoons.
 
 Our criteria emerged through use:
 
-Does the image reveal the article's underlying relationship rather than merely depict its topic? Can the central idea be understood at a glance? Is there one first thing to notice? Does the viewer's eye discover the idea in the intended order? Does the metaphor work without knowing the technical subject? Are the actors competent when the failure is really in coordination? Does the composition preserve the meaningful layers of agency? Is the image obeying its own physical logic? Has visual richness started competing with editorial clarity? Did we render too soon?
+## Editorial truth
+
+* Does the image reveal the underlying relationship rather than merely depict the topic?
+* Does the metaphor work without knowing the technical subject?
+Are the actors competent when the problem is coordination?
+
+## Comprehension
+
+* Can the idea be understood at a glance?
+* Is there one first thing to notice?
+* Does the eye discover the idea in the intended order?
+
+## Composition
+
+* Does the image obey its own physical logic?
+* Are the meaningful layers of agency preserved?
+* Is richness competing with clarity?
+* Did we render too soon?
 
 This was an eval loop, even though nobody opened a spreadsheet.
 
