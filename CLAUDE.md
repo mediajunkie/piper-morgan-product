@@ -85,7 +85,18 @@ ls mailboxes/lead/inbox/
 git branch  # Should show claude/* branch, not main
 ```
 
-**Worktree model — Option B (ephemeral)**: substantive sessions run in the **ephemeral auto-worktree** Claude Desktop creates when launched with the worktree checkbox on. Push finished units to `origin/main`; mailbox writes go via `scripts/mail-send.sh` push-to-ref — never touch the main checkout's working tree. **Model A (dedicated `claude/{role}-cycle` worktrees) is DEPRECATED** — no current exceptions. Lead Dev confirmed empirically that the ephemeral worktree suffices for all roles including dev-server sessions (the worktree nests inside the main checkout, so `.env`/venv discovery still works). Canonical source: `dev/active/cohort-plan-of-record-2026-06-12.html`. See `docs/internal/operations/git-worktrees-model-a-setup.md` for Model-A details if needed.
+**Worktree model — depends on your host. On Amber (current), it is Model A.** *(Revised 2026-07-25, PM-approved. Previously this section said Model B was canonical and Model A "DEPRECATED — no current exceptions"; that was true only while the cohort ran on Claude Desktop.)*
+
+- **On Amber / `pipermorgan.ai` (where the cohort lives as of 2026-07-25): Model A — a stable, per-agent worktree at `~/Development/piper-morgan-worktrees/{role}` on branch `claude/{role}-cycle`.** Amber runs persistent tmux sessions with Claude Code launched directly in a checkout; there is no ephemeral auto-worktree, so Model B has nothing to stand on. **The path must be stable and reused across sessions** — Claude Code keys per-path state to the full filesystem path, so a fresh path each session silently orphans accumulated state. Never operate from the shared checkout `~/Development/piper-morgan-product`.
+- **On Claude Desktop: Model B — the ephemeral auto-worktree** Desktop creates when launched with the worktree checkbox on.
+
+**Why this changed**: the Model-B-only rule assumed Desktop's automatic per-session worktrees. That premise doesn't hold on an always-on host, and PM ratified Model A as *preferable* there on 2026-07-25. In both models: push finished units to `origin/main`; mailbox writes go via `scripts/mail-send.sh` push-to-ref — never touch the main checkout's working tree.
+
+⚠️ **Two Amber-specific gotchas, both found on the first migration** (`dev/2026/07/25/2026-07-25-1053-cio-code-log.md`):
+1. **A worktree cut from a pre-existing role branch inherits that branch's staleness silently.** The first one arrived **5,393 commits behind `origin/main`** — a six-week-old CLAUDE.md, briefings, and mailboxes, with no error. Provisioning now asserts 0-behind before handover; if you suspect otherwise, check `git rev-list --count HEAD..origin/main` yourself.
+2. **Project hooks may not fire in a Model-A worktree** — a sibling-path worktree is a new, untrusted project directory to Claude Code, and `check-branch.sh` (mailbox-discipline blocking), `log-maintenance-reminder`, and the PreCompact sign-off warning were all silently inactive. **An absent hook and a silent hook look identical.** Until this is resolved, treat mailbox discipline and log maintenance as *manually* enforced rather than assuming the hooks have your back.
+
+Historical context: Lead Dev's 6/12 determination that the ephemeral worktree sufficed for all roles including dev-server sessions was correct *for Desktop*, and `dev/active/cohort-plan-of-record-2026-06-12.html` records it. Model-A setup details: `docs/internal/operations/git-worktrees-model-a-setup.md`. Lifecycle (create / freshness / cleanup): `docs/internal/operations/amber-worktree-lifecycle-design-v0.1.md`.
 
 **If resuming after compaction and no log exists for today → CREATE IT FIRST.**
 Do not proceed with tasks until session log exists.
@@ -530,7 +541,7 @@ Full incident detail and procedures: `docs/internal/operations/github-and-toolin
 
 ### The five rules at a glance
 
-1. **Worktree per substantive session — Option B (ephemeral)** — run in the ephemeral auto-worktree Desktop creates per session; push finished units to `origin/main`. Dedicated `claude/{role}-cycle` worktrees (Model A) are **deprecated** (PM-approved exception only; **no current exceptions** — LD's 6/12 determination: ephemeral suffices even for the dev-server). Tiny mailbox-only or housekeeping passes can stay on `main`. Source of truth: `cohort-plan-of-record-2026-06-12.html`.
+1. **Worktree per substantive session — model depends on host** *(revised 2026-07-25, PM-approved)*. **On Amber: Model A** — your stable per-agent worktree at `~/Development/piper-morgan-worktrees/{role}` on `claude/{role}-cycle`, reused across every session (the path is load-bearing; see §"Worktree model" above). **On Claude Desktop: Model B** — the ephemeral auto-worktree Desktop creates per session. Either way, push finished units to `origin/main`. Tiny mailbox-only or housekeeping passes can stay on `main`. LD's 6/12 determination (ephemeral suffices even for the dev-server) remains correct for Desktop; it assumed a per-session auto-worktree that Amber doesn't provide.
 2. **Commit-before-close** — every session ends with a clean working tree on its branch + branch merged to `main` (or NOTICE memo explaining why holding). See "Sign-Off Discipline" section above.
 3. **Mailbox writes always commit to `main`** — never on feature branches. Mail is cross-agent infrastructure; trunk only. Hook-enforced (see below).
 4. **Branch/worktree registry** — agents record their branch + last-commit + status so other agents can see who's working where. Implementation in canonical doc.
@@ -572,6 +583,11 @@ The failure mode this prevents: agent A closes an issue with a comment "routing 
 
 ---
 
-## Git Worktrees — Model A (DEPRECATED)
+## Git Worktrees — Model A (CURRENT on Amber)
 
-Model A (dedicated `claude/{role}-cycle` worktrees) is deprecated. Option B ephemeral worktrees are canonical for all roles. For branch-collision context and setup instructions if you need a PM-approved exception: `docs/internal/operations/git-worktrees-model-a-setup.md`.
+*Revised 2026-07-25, PM-approved. This section previously read "Model A (DEPRECATED)"; that was correct only while the cohort ran on Claude Desktop.*
+
+**Model A — a dedicated, stable per-agent worktree — is the current model on Amber**, the always-on host the cohort migrated to on 2026-07-25. Model B (Desktop's ephemeral auto-worktree) remains correct on Desktop, which is what the deprecation assumed. Neither is deprecated; **pick by host**. See §"Worktree model" near the top of this file for the operative rules and the two Amber gotchas (silent stale-branch provisioning; project hooks possibly not firing).
+
+- Setup + branch-collision context: `docs/internal/operations/git-worktrees-model-a-setup.md`
+- Create / freshness / cleanup lifecycle (PROPOSED, CIO+Pard): `docs/internal/operations/amber-worktree-lifecycle-design-v0.1.md`
