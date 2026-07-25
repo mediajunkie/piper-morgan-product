@@ -32,6 +32,7 @@ Just a few months ago ChatGPT (I really wish there was a shorter nickname for th
 
 Over time I settled into a new rhythm, or made small adjustments to the style (for example when Paul Ford complained about all the robot images used to illustrate AI that led me to explore as a fun challenge other ways to show a nonhuman noncorporeal helpful intelligence), as things started working pretty consistently.
 
+
 A few months later, the image model improved dramatically, which created a new problem: it wanted to turn everything into a painterly, intricately detailed scene. I had to add more restrictions to keep the work closer to a newspaper cartoon.
 
 Around the same time, Paul Ford complained about the flood of robot imagery used to illustrate AI. I took that as a useful constraint and began exploring other ways to depict a nonhuman, noncorporeal helpful intelligence.
