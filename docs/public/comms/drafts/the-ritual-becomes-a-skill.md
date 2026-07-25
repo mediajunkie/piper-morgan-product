@@ -250,7 +250,7 @@ The skill also carries the pattern language, the style anchor, the cartoon-physi
 
 It is opinionated because it is intended to preserve one particular collaboration.
 
-I have also made a general-purpose version, Editorial Hero Illustration, for other writers and teams to use. It preserves the collaborative method but removes the Piper Morgan style assumptions. I’ll share the downloadable skill with this post and in the Piper Morgan resource library.
+I have also made a general-purpose version, [Editorial Hero Illustration](editorial-hero-illustration.zip), for other writers and teams to use. It preserves the collaborative method but removes the Piper Morgan style assumptions. I’ll share the downloadable skill with this post and in the Piper Morgan resource library.
 
 # What the skill does not contain
 
