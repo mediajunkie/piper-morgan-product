@@ -168,7 +168,6 @@ As we reviewed older examples, the images began to sort themselves into recurrin
 * Two trains leaving the same station and slowly separating expressed divergence.
 * Four eager valets responding to one guest expressed convergence and collision: everyone locally correct, the system globally absurd.
 * A single page blowing through a small open window expressed exposure.
-
 * A court full of brilliant mechanical advisors waiting for one small ruler to decide expressed a bottleneck moving from execution to judgment.
 * A quiet workbench holding its state while its owner rested outside expressed continuity through absence.
 * A robot child being encouraged to finish a plate of wires and circuit boards expressed gated completion through a familiar social ritual.
