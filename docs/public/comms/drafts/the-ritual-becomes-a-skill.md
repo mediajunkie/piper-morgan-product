@@ -220,11 +220,7 @@ But the goal was not to maximize beauty.
 
 The goal was to communicate a visual idea before the reader began the article.
 
-A recent cartoon about a team's infrastructure becoming operational used a ship leaving the shipyard. Distinct agents worked at separate stations. Two inspected a painted false hatch rather than quietly pretending it was real. The ship was underway but not magically complete.
-
-The result was charming and conceptually strong.
-
-It was also close to the outer boundary of the intended style: detailed rigging, carefully modeled water, atmospheric landscape, many small mechanisms.
+A recent cartoon about infrastructure becoming operational used a ship leaving the yard while parts of it were still being inspected and completed. The metaphor was right: the system was underway without being magically finished. The rendering was charming and conceptually strong, but it was also near the outer boundary of the intended style: detailed rigging, carefully modeled water, atmospheric landscape, many small mechanisms.
 
 The next revision to the skill emphasized visual economy:
 
