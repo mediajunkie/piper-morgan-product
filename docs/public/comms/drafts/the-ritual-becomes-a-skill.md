@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'the-ritual-becomes-a-skill-dance-floor.png'
+alt: 'A dance instructor welcomes a new glowing, network-like partner onto a floor marked with choreography as another luminous dancer exits through the doorway.'
 caption: ''
 ---
 
