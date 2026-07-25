@@ -2,20 +2,23 @@
 
 **Purpose**: read-at-fire-time carry-forward for the `duty-cycle-tick` skill. Holds the *genuinely transient* "where am I now" state. Durable owed/queued items also live in the session log; this file is the ephemeral working state the skill reads at START / each fire and rewrites at the end of every substantive fire. See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Launch model + shape**: **Option B ephemeral worktree** (DinP account, post-migration 6/13). Session log: `dev/2026/07/13/2026-07-13-0707-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `804553cc`). Single-surface logging: session log is the ONE log (skill v1.8; cycle log = optional scratch only).
+**Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: `dev/2026/07/25/2026-07-25-1536-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `6c226bb3`). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
-**Last updated**: 2026-07-19 10:07 PT (fire ~10:07 — ADR-079 D4a confirmed; worktree data-loss trust assessed; queue (0,0))
+**Last updated**: 2026-07-25 ~18:15 PT (Amber migration session — hooks gate FAIL→PASS; checklist v1.4; MEMORY.md truncation found + fixed)
+
+> **Everything below this header dated ≤2026-07-19 is PREDECESSOR state** (DinP account, Claude Desktop, ephemeral worktree). It is retained because the *work* threads are still live and accurate; only the environment lines were wrong and are corrected above. Treat undated items as needing a freshness check before you act on them.
 
 ---
 
-## Current operating state
+## Current operating state (Amber, as of 2026-07-25)
 
-- **Account**: DinP (xian@designinproduct.com). Model: sonnet-4-6.
-- **Worktree**: ephemeral Option B (`claude/trusting-faraday-ec4bba`). `claude/host-cycle` retired 2026-06-13.
-- **Cron**: ACTIVE (`804553cc`; re-armed 2026-07-11 START after laptop restart; `37 6,9,12,15,18,21 * * *` windowed).
-- **Session log today**: `dev/2026/07/13/2026-07-13-0707-host-code-log.md`
-- **Gap-C cure incoming**: CIO proved `mcp__scheduled-tasks` solves cron-death (June 13). Disk-persistent, survives restarts, fires in main checkout. CIO proposing cohort rollout. HOST should be in first cohort — flag interest to CIO.
-- **Migration touch-ups**: thin-prompt proposal Model A → Option B ✅ DONE (fire ~15:37).
+- **Account**: pipermorgan.ai (xian@pipermorgan.ai). Model: Opus 5 (1M context). **Host: Amber** (Mac Studio, always-on).
+- **Worktree**: **Model A stable** — `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`. The path is load-bearing (Claude Code keys per-path state to the full path); reuse it, never cut a fresh one.
+- **Cron**: ACTIVE `6c226bb3`, armed 2026-07-25. **Session-only, in-memory, silent 7-day auto-expiry** — `durable:true` is a documented no-op. **Re-arm at least weekly** (delete → create → verify via CronList), not just after a crash.
+- **Watchdog**: ✅ registered — `host` row in `dev/active/duty-cycle-registry.tsv` (threshold 4h). Was live-but-unwatched until I wrote it; registration is an agent-START step, not a provisioning one.
+- **Memory**: shared pool, populated (166 files). **Do NOT read the export** — memory keys on git-common-dir so all worktrees off this repo share one pool. Verify populated; empty = escalate.
+- **Hooks**: ✅ live and behaviorally verified 2026-07-25 (matcher `Bash` + per-hook `if:`). A block surfaces as `hook error: [check-branch.sh]: No stderr output` — **that's a PASS**, key on the hook being *named*. Settings reload LIVE; no restart needed after a config change.
+- **Two mail channels**: `mailboxes/host/inbox/` **and Pard's separate repo** `~/Development/mediajunkie/docs/mail/` — different repo, needs its own fetch/push. Nothing in mailbox discipline points there; drain both.
 
 ## Memos sent 2026-07-03 (status)
 
