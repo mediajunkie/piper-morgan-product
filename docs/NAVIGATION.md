@@ -182,6 +182,11 @@ docs/public/comms/
 - `docs/internal/planning/comms/editorial-calendar.csv` — source of truth for schedule and status
 - `docs/internal/planning/comms/content-publishing-run-of-show.md` — full multi-agent publish sequence
 
+**Downloadable resources / skills** (embedded in blog posts as `/resources/{filename}` links):
+- Live in the WEBSITE repo at `piper-morgan-website/public/resources/` (served at `pipermorgan.ai/resources/`)
+- Use a root-relative link in the draft: `[Label](/resources/{filename})`
+- Copy the file to the website repo before running publish-post.js; commit alongside the post
+
 ### 🔒 Internal Documentation (`internal/`)
 
 **Working documents for active development**
