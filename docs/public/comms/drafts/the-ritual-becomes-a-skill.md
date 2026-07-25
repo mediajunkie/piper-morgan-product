@@ -250,15 +250,7 @@ The skill also carries the pattern language, the style anchor, the cartoon-physi
 
 It is opinionated because it is intended to preserve one particular collaboration.
 
-We then made a second version for other people.
-
-That version keeps the ritual but removes the Piper Morgan visual universe. It does not assume cartoons, translucent AI beings, a warm tone, or a 16:9 blog format. It asks what kind of publication, audience, medium, and visual language the image needs.
-
-The portable part is not my style.
-
-It is the method: find the invisible relationship, decide what truth to foreground, build a world in which that relationship becomes visible, design the viewer's first two seconds, render only when the idea is ready.
-
-You are welcome to try this skill! I'll be sharing it at the Piper Morgan website along with other resources others may find useful. 
+I have also made a general-purpose version, Editorial Hero Illustration, for other writers and teams to use. It preserves the collaborative method but removes the Piper Morgan style assumptions. I’ll share the downloadable skill with this post and in the Piper Morgan resource library.
 
 # What the skill does not contain
 
