@@ -6,7 +6,7 @@ caption: '"You''ll get the hang of this in no time!"'
 
 # The Ritual Becomes a Skill
 
-*July 2026*
+*July 2025 to July 2026*
 
 For nearly a year, I have been illustrating posts in this series with cartoons.
 
@@ -26,7 +26,7 @@ It prevented us from spending an image-generation attempt on an idea that was no
 
 When I started this series, the Internet was awash with ChatGPT cartoons, most of them looking like the same generic style (or whatever current fad was ripping off an established style, like the Ghibli phase, etc.). I know that articles with illustrations get read more and I thought it would be funny to ask ChatGPT to make totally generic-looking cartoons for me.
 
-Over time, this became a way of showing the baseline quality of such images growing over time. At some point, the imagery started getting too slick, looking more and more like computer-generated (ironic, I know) 3-D animation, not the "newspaper cartoon" aesthetic I had started with. So I started adjusting the general style prompt to resist this slickness an artificially hold things to a more hand drawn style.
+Over time, this became a way of showing the baseline quality of such images growing over time. At some point, the imagery started getting too slick, looking more and more like computer-generated (ironic, I know) 3-D animation, not the "newspaper cartoon" aesthetic I had started with. So I started adjusting the general style prompt to resist this slickness and artificially hold things to a more hand drawn style.
 
 
 A few months later, the image model improved dramatically, which created a new problem: it wanted to turn everything into a painterly, intricately detailed scene. I had to add more restrictions to keep the work closer to a newspaper cartoon and less like a Hieronymus Bosch canvas.
@@ -47,9 +47,7 @@ The series also developed a visual vocabulary. Human collaborators tend to look 
 
 All of that could be written down.
 
-But preferences were not the most important thing to preserve.
-
-The important thing was the sequence of decisions.
+The sequence of decisions mattered most.
 
 A new account would not remember the bridges, trains, gardeners, watchdogs, workshops, courtrooms, airports, and mountains we had already used. It would not have the same accumulated feel for which kind of image I would choose.
 
@@ -247,7 +245,7 @@ The skill also carries the pattern language, the style anchor, the cartoon-physi
 
 It is opinionated because it is intended to preserve one particular collaboration.
 
-I have also made a general-purpose version, [Editorial Hero Illustration](editorial-hero-illustration.zip), for other writers and teams to use. It preserves the collaborative method but removes the Piper Morgan style assumptions. You are welcome to try it!
+I have also made a general-purpose version, [Editorial Hero Illustration](/resources/editorial-hero-illustration.zip), for other writers and teams to use. It preserves the collaborative method but removes the Piper Morgan style assumptions. You are welcome to try it!
 
 # What the skill doesn't capture
 
