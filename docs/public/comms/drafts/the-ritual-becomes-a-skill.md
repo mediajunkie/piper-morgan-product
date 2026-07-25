@@ -14,7 +14,7 @@ The process started simply. I would describe the topic and ask for help brainsto
 
 Sometimes I had a clear metaphor in mind already but more often I would ask ChatGPT to pitch me three or four ideas and then I'd pick one. 
 
-At first the one-shot cartoons were hit or miss. Sometimes great, sometimes full of visual nonsense: floating limbs, Escher-like physics. Back then it was really hard to improve the first draft. ChatGPT got anchored to its initial composition and would promise to iterate on it to fix it, then burn tokens producing exactly the same image or worse, and apologizing a lot.
+At first the one-shot cartoons were hit or miss. Sometimes great, sometimes full of visual nonsense: floating limbs, escher-like physics. Back then it was really hard to improve the first draft. ChatGPT got anchored to its initial composition and would promise to iterate on it to fix it, then burn token producing exactly the same image or worse, and apologizing a lot.
 
 We agreed on an approach where we'd discuss the idea first, align on an approach, and then the LLM would write a crisp thorough prompt for me to review. When I was satisfied I would write "OK, render it" and then hope for the best.
 
@@ -28,6 +28,11 @@ When I started this series, the Internet was awash with ChatGPT cartoons, most o
 
 Over time, this became a way of showing the baseline quality of such images growing over time. At some point, the imagery started getting too slick, looking more and more like computer-generated (ironic, I know) 3-D animation, not the "newspaper cartoon" aesthetic I had started with. So I started adjusting the general style prompt to resist this slickness an artificially hold things to a more hand drawn style.
 
+Just a few months ago ChatGPT (I really wish there was a shorter nickname for that service) announced a new image-generation service that is significantly better then before and this lead to another change in style that required more restrictions to make sure the images didn't become painterly and detailed like a Hieronymus Bosch canvas.
+
+Over time I settled into a new rhythm, or made small adjustments to the style (for example when Paul Ford complained about all the robot images used to illustrate AI that led me to explore as a fun challenge other ways to show a nonhuman noncorporeal helpful intelligence), as things started working pretty consistently.
+
+
 A few months later, the image model improved dramatically, which created a new problem: it wanted to turn everything into a painterly, intricately detailed scene. I had to add more restrictions to keep the work closer to a newspaper cartoon and less like a Hieronymous Bosch canvas.
 
 Around the same time, Paul Ford made a sly complaint about the flood of robot imagery used to illustrate AI. I took that as a fun challenge and useful constraint and began exploring other ways to depict a nonhuman, noncorporeal helpful intelligence.
@@ -40,7 +45,7 @@ So I decided to try to extract the ritual.
 
 The tempting approach was to ask ChatGPT to summarize everything it knew about my preferences.
 
-I do have preferences. I usually want a wide editorial cartoon. I prefer hand-drawn lines, restrained color, gentle humor, and fewer labels. As I mentioned, I have spent months pushing back against the image model's growing ability to produce polished, painterly scenes when what I want is closer to a newspaper cartoon.
+I do have preferences. I usually want a wide editorial cartoon. I prefer hand-drawn lines, restrained color, gentle humor, and fewer labels. As I mentioened, I have spent months pushing back against the image model's growing ability to produce polished, painterly scenes when what I want is closer to a newspaper cartoon.
 
 The series also developed a visual vocabulary. Human collaborators tend to look ordinary and capable. AI agents are often translucent geometric beings or slightly strange nonhuman helpers rather than humanoid robots. The emotional register is usually curious rather than alarmist. The machines are not taking over. Humans and intelligent systems are learning how to work together.
 
@@ -88,8 +93,7 @@ It proposed bridges, clocks, shadows, zippers, and railroads.
 
 We chose a railroad.
 
-Then we refined within that family. ChatGPT's first instinct was a train following a map that no longer matched the track, which foregrounded prediction versus execution.
-
+Then we refined within that family. ChatG's first instinct   was a train following a map that no longer matched the track, which foregrounded prediction versus execution. 
 We wrote the prompt.
 
 I said, "Render it."
@@ -138,7 +142,7 @@ Our criteria emerged through use:
 
 * Does the image reveal the underlying relationship rather than merely depict the topic?
 * Does the metaphor work without knowing the technical subject?
-* Are the actors competent when the problem is coordination?
+Are the actors competent when the problem is coordination?
 
 ## Comprehension
 
@@ -262,11 +266,7 @@ A process artifact should not freeze a collaboration in place. It should preserv
 
 The pattern language is a lens, not a cage.
 
-The human and the agent can still propose something strange, fresh, hybrid, or emergent when the story asks for it. In fact, that possibility is part of the instructions.
-
-The point is not to automate creativity.
-
-It is to protect the parts of the creative process that were producing better work.
+The human and the agent can still propose something strange, fresh, hybrid, or emergent when the story asks for it. In fact, that possibility is part of the instructions. This whole approach pushes against the one-shot mentality that takes you as the human being out of the creative process. Instead of being an automated push-button process, the skill interacts with, protecting and maintaining the parts of the creative process that produce better work.
 
 # The durable part
 
@@ -286,13 +286,9 @@ Examples can become evaluations.
 
 Failures can become criteria.
 
-A tacit collaboration can become a durable artifact — not a perfect replacement for the relationship that produced it, but a starting point for the next one.
+A tacit collaboration can become a durable artifact. It will never be a perfect replacement what it's replacing, but it turns out that this is probably not necessary anyhow, and what it does provide is a starting point for the next iteration.
 
-That is what the skill preserves.
-
-Not a model that knows me.
-
-A ritual that helps us find the metaphor hiding underneath the prose.
+That skill preserves a ritual that has helped me surface the metaphor lurking in the prose.
 
 ---
 
