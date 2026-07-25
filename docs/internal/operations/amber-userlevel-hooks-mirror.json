@@ -1,0 +1,53 @@
+{
+  "__NOTE__": "NON-EXECUTING reference mirror of the hooks section of ~/.claude-pm/settings.json (Amber pm-partition, pipermorgan.ai account). This file is loaded by NOTHING — it exists only so the user-level hook config stays tracked, diffable, and Docs-sweepable (a user-level hook that goes stale otherwise shows as nothing, the exact failure that finding #4 was). ATOMIC-UPDATE RULE (HOST ruling 2026-07-25): any agent that edits the LIVE ~/.claude-pm/settings.json must update THIS mirror in the SAME session. Wired live 2026-07-25 by Pard: finding #4 fix (project hooks did not activate in Model-A sibling worktrees) + finding #5 restore (PreCompact had been [] for ~10 weeks — suspend 2026-05-16, warn-only fix 2026-05-17, restore never scheduled).",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash(git commit*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Users/xian/Development/piper-morgan-product/.claude/hooks/check-branch.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash /Users/xian/Development/piper-morgan-product/.claude/hooks/pre-commit-broad-staging-warn.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash /Users/xian/Development/piper-morgan-product/.claude/hooks/pre-commit-reconcile-drafts.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Users/xian/Development/piper-morgan-product/.claude/hooks/log-maintenance-reminder.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash /Users/xian/Development/piper-morgan-product/.claude/hooks/context-usage-reminder.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash /Users/xian/Development/piper-morgan-product/.claude/hooks/issue-checkbox-lint.sh"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Users/xian/Development/piper-morgan-product/.claude/hooks/precompact-signoff-warning.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
