@@ -242,7 +242,7 @@ The portable part is not my style.
 
 It is the method: find the invisible relationship, decide what truth to foreground, build a world in which that relationship becomes visible, design the viewer's first two seconds, render only when the idea is ready.
 
-You are welcome to try this [skill](). 
+You are welcome to try this skill! I'll be sharing it at the Piper Morgan website along with other resources others may find useful. 
 
 # What the skill does not contain
 
