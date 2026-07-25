@@ -1,7 +1,7 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # The Ritual Becomes a Skill
@@ -10,18 +10,23 @@ caption:
 
 For nearly a year, I have been illustrating posts in this series with cartoons.
 
-The process started simply. I would paste in a draft, describe an image I had in mind, and ask ChatGPT to draw it. Sometimes the result worked. Sometimes it was beautiful but wrong. Sometimes it illustrated the subject without capturing the idea. Sometimes it became so visually elaborate that the reader had to study the image before understanding the joke.
+The process started simply. I would describe the topic and ask for help brainstorming a "vivid visual metaphor" to illustrate the post with a cartoon. I started pasting in the whole draft after a while. 
 
-Over time, the conversation changed.
+Sometimes I had a clear metaphor in mind already but more often I would ask ChatGPT to pitch me three or four ideas and then I'd pick one. 
 
-Instead of asking for an image immediately, I started asking what visual metaphor might express the post. The model would offer several possibilities. I would react to them, usually choosing one but changing some part of its logic. We would sharpen the metaphor, decide what the viewer should notice first, and only then write a rendering prompt.
+At first the one-shot cartoons were hit or miss. Sometimes great, sometimes full of visual nonsense: floating limbs, escher-like physics. Back then it was really hard to improve the first draft. ChatGPT got anchored to its initial composition and would promise to iterate on it to fix it, then burn token producing exactly the same image or worse, and apologizing a lot.
 
-Finally, when the idea felt settled, I would say:
-
-> Render it.
+We agreed on an approach where we'd discuss the idea first, align on an approach, and then the LLM would write a crisp thorough prompt for me to review. When I was satisfied I would write "OK, render it" and then hope for the best.
 
 That phrase became a gate.
 
+# It started as a gag
+
+When I started this series, the Internet was awash with ChatGPT cartoons, most of them looking like the same generic style (or whatever current fad was ripping off an established style, like the Ghibli phase, etc.). I know that articles with illustrations get read more and I thought it would be funny to ask ChatGPT to make totally generic-looking cartoons for me.
+
+Over time, this became a way of showing the baseline quality of such images growing over time. At some point, the imagery started getting too slick, looking more and more like computer-generated (ironic, I know) 3-D animation, not the "newspaper cartoon" aesthetic I had started with. So I started adjusting the general style prompt to resist this slickness an artificially hold things to a more hand drawn style.
+
+Just a few months ago
 It prevented us from spending an image-generation attempt on an idea that was not ready. More importantly, it preserved the part of the process where the quality actually came from: the conversation before the drawing.
 
 By the time I realized this had become a repeatable practice, I was preparing to lose access to the ChatGPT account where it had evolved.
