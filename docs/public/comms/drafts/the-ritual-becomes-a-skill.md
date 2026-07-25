@@ -20,16 +20,24 @@ We agreed on an approach where we'd discuss the idea first, align on an approach
 
 That phrase became a gate.
 
+It prevented us from spending an image-generation attempt on an idea that was not ready. More importantly, it preserved the part of the process where the quality actually came from: the conversation before the drawing.
+
 # It started as a gag
 
 When I started this series, the Internet was awash with ChatGPT cartoons, most of them looking like the same generic style (or whatever current fad was ripping off an established style, like the Ghibli phase, etc.). I know that articles with illustrations get read more and I thought it would be funny to ask ChatGPT to make totally generic-looking cartoons for me.
 
 Over time, this became a way of showing the baseline quality of such images growing over time. At some point, the imagery started getting too slick, looking more and more like computer-generated (ironic, I know) 3-D animation, not the "newspaper cartoon" aesthetic I had started with. So I started adjusting the general style prompt to resist this slickness an artificially hold things to a more hand drawn style.
 
-Just a few months ago
-It prevented us from spending an image-generation attempt on an idea that was not ready. More importantly, it preserved the part of the process where the quality actually came from: the conversation before the drawing.
+Just a few months ago ChatGPT (I really wish there was a shorter nickname for that service) announced a new image-generation service that is significantly better then before and this lead to another change in style that required more restrictions to make sure the images didn't become painterly and detailed like a Hieronymous Bosch canvas.
 
-By the time I realized this had become a repeatable practice, I was preparing to lose access to the ChatGPT account where it had evolved.
+Over time I settled into a new rhythm, or made small adjustments to the style (for example when Paul Ford complained about all the robot images used to illustrate AI that led me to explore as a fun challenge other ways to show a nonhuman noncorporeal helpful intelligence), as things started working pretty consistently.
+
+
+A few months later, the image model improved dramatically, which created a new problem: it wanted to turn everything into a painterly, intricately detailed scene. I had to add more restrictions to keep the work closer to a newspaper cartoon and less like a Hieronymous Bosch canvas.
+
+Around the same time, Paul Ford made a sly complaint about the flood of robot imagery used to illustrate AI. I took that as a fun challenge and useful constraint and began exploring other ways to depict a nonhuman, noncorporeal helpful intelligence.
+
+By the time I realized this had become a repeatable practice, I was preparing to lose access to the ChatGPT account where it had evolved and where I couldn't be quite sure how much it was basing its process on my current prompt and how much on its accumulated contextual knowledge about how I operate.
 
 So I decided to try to extract the ritual.
 
@@ -37,7 +45,7 @@ So I decided to try to extract the ritual.
 
 The tempting approach was to ask ChatGPT to summarize everything it knew about my preferences.
 
-I do have preferences. I usually want a wide editorial cartoon. I prefer hand-drawn lines, restrained color, gentle humor, and fewer labels. I have spent months pushing back against the image model's growing ability to produce polished, painterly scenes when what I want is closer to a newspaper cartoon.
+I do have preferences. I usually want a wide editorial cartoon. I prefer hand-drawn lines, restrained color, gentle humor, and fewer labels. As I mentioened, I have spent months pushing back against the image model's growing ability to produce polished, painterly scenes when what I want is closer to a newspaper cartoon.
 
 The series also developed a visual vocabulary. Human collaborators tend to look ordinary and capable. AI agents are often translucent geometric beings or slightly strange nonhuman helpers rather than humanoid robots. The emotional register is usually curious rather than alarmist. The machines are not taking over. Humans and intelligent systems are learning how to work together.
 
@@ -91,9 +99,9 @@ We wrote the prompt.
 
 I said, "Render it."
 
-The image worked.
+The image worked. It was different from the image I had generated and used that day but it was equally good or even possibly better and I would definitely have used it if I had made it first.
 
-Then we tried another post, about losing an uncommitted draft after a server crash.
+The next post I wrote, about losing an uncommitted draft after a server crash, I tested directly on it.
 
 The metaphor was a tiny open window in an otherwise safe room. A gust of wind pulled a manuscript through it. The opening was small. The consequence was total.
 
@@ -113,9 +121,7 @@ We revised the composition. One normal window, left slightly open. A thick manus
 
 The second rendering worked.
 
-That failure was not an interruption of the skill-building process.
-
-It was the skill-building process.
+That failure was part of the skill-building process. I noted in passing to ChatGPT that we were essentially doing a manual eval process.
 
 # This is what an eval can look like
 
@@ -143,19 +149,13 @@ The evaluations were qualitative, conversational, and grounded in actual use. Th
 
 As we reviewed older examples, the images began to sort themselves into recurring structures.
 
-Two trains leaving the same station and slowly separating expressed divergence.
-
-Four eager valets responding to one guest expressed convergence and collision: everyone locally correct, the system globally absurd.
-
-A single page blowing through a small open window expressed exposure.
-
-A human overseeing a lead agent overseeing a subagent expressed nested supervision.
-
-A court full of brilliant mechanical advisors waiting for one small ruler to decide expressed a bottleneck moving from execution to judgment.
-
-A quiet workbench holding its state while its owner rested outside expressed continuity through absence.
-
-A robot child being encouraged to finish a plate of wires and circuit boards expressed gated completion through a familiar social ritual.
+* Two trains leaving the same station and slowly separating expressed divergence.
+* Four eager valets responding to one guest expressed convergence and collision: everyone locally correct, the system globally absurd.
+* A single page blowing through a small open window expressed exposure.
+* A human overseeing a lead agent overseeing a subagent expressed nested supervision.
+* A court full of brilliant mechanical advisors waiting for one small ruler to decide expressed a bottleneck moving from execution to judgment.
+* A quiet workbench holding its state while its owner rested outside expressed continuity through absence.
+* A robot child being encouraged to finish a plate of wires and circuit boards expressed gated completion through a familiar social ritual.
 
 These were not simply a collection of favorite metaphors.
 
@@ -246,6 +246,8 @@ That version keeps the ritual but removes the Piper Morgan visual universe. It d
 The portable part is not my style.
 
 It is the method: find the invisible relationship, decide what truth to foreground, build a world in which that relationship becomes visible, design the viewer's first two seconds, render only when the idea is ready.
+
+You are welcome to try this skill! I'll be sharing it at the Piper Morgan website along with other resources others may find useful. 
 
 # What the skill does not contain
 
