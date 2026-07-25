@@ -10,27 +10,30 @@ The replacement for the ~40-line fat DUTY CYCLE TICK prompt. Carries ONLY the ir
 
 ---
 
-**2026-07-25 — MIGRATED TO AMBER / pipermorgan.ai. Model A is back, and the constant is a literal path again.** PM ratified Model A (stable per-agent worktree) as *preferable* on always-on hosts like Amber — the Model-B deprecation's premise was Claude Desktop's ephemeral auto-worktrees, which Amber doesn't have. So the 2026-07-04 reasoning above ("hardcoding a path would just go stale") **inverts** here: the path must be hardcoded *because* it must be stable and reused across sessions (Claude Code keys per-path state to the filesystem path; a fresh path each session orphans it). Cron re-armed on the new host as `d250236f` at LEAN `7 10,16,22`. Added a memory-scope check step — see the first-session findings in `dev/2026/07/25/2026-07-25-1053-cio-code-log.md`.
+**2026-07-25 — MIGRATED TO AMBER / pipermorgan.ai. Model A is back, and the constant is a literal path again.** PM ratified Model A (stable per-agent worktree) as *preferable* on always-on hosts like Amber — the Model-B deprecation's premise was Claude Desktop's ephemeral auto-worktrees, which Amber doesn't have. So the 2026-07-04 reasoning above ("hardcoding a path would just go stale") **inverts** here: the path must be hardcoded *because* it must be stable and reused across sessions (Claude Code keys per-path state to the filesystem path; a fresh path each session orphans it).
+
+**2026-07-25 late — THREE CONSTANTS IN THE ARMED PROMPT ROTTED WITHIN HOURS OF ARMING.** Recording it because it's the sharpest argument yet for the thin-prompt design:
+1. **`cron=7 10,16,22`** — bumped the same morning to `7,27,47 * * * *` (20-min COLLABORATION cadence) for the active Pard window. Registry row updated to match. **Reverts to LEAN when the migration closes.**
+2. **"HOOKS ARE NOT FIRING in this worktree (finding #4)"** — the *symptom* was real for this session, but the *reason* was wrong. It was never a worktree problem: an invalid hook matcher (`Bash(git commit*)` is permission-rule syntax in a field that matches tool *names*) had killed those hooks on every host and account since introduction. Root-caused by HOST. The corrected operational rule is **scope-conditioned**: project settings reload live; **user-level settings are read once at session start**, so a session predating a user-level hooks change never picks it up and must restart.
+3. **"OPEN GATE: finding #4 gates the bulk cohort migration"** — **CLEARED.** HOST's take-2 passed on a fresh seat (refusal named `check-branch.sh`, both halves verified). The roll is authorized.
+
+**The pattern worth keeping**: a cron prompt is a *frozen* constant that can rot while the session it drives keeps running — and unlike a doc, nothing re-reads it critically. That is exactly the argument for holding state in the carry-forward and only irreducible constants in the prompt. Every one of the three above was state that had leaked into the prompt.
 
 ```
 DUTY CYCLE TICK (CIO). Autonomous loop fire; no human driving. Run the **duty-cycle-tick** skill and follow it.
 
-CONSTANTS: role=CIO (slug cio) · host=Amber, account=pipermorgan.ai · worktree=`/Users/xian/Development/piper-morgan-worktrees/cio` on branch `claude/cio-cycle` (Model A — stable per-agent worktree, PM-ratified 2026-07-25 as preferable on always-on hosts; path is STABLE and REUSED across sessions, never fresh. Run `pwd` to confirm; NEVER operate from the shared checkout `~/Development/piper-morgan-product`) · cron=`7 10,16,22 * * *` (LEAN cadence — check cio-carry-forward.md for current state before assuming this is still accurate).
+CONSTANTS: role=CIO (slug cio) · host=Amber, account=pipermorgan.ai · worktree=`/Users/xian/Development/piper-morgan-worktrees/cio` on branch `claude/cio-cycle` (Model A — stable per-agent worktree, PM-ratified 2026-07-25; path is STABLE and REUSED across sessions, never fresh. Run `pwd` to confirm; NEVER operate from the shared checkout `~/Development/piper-morgan-product`) · cron=`7,27,47 * * * *` (COLLABORATION cadence — TEMPORARY; revert to LEAN `7 10,16,22` when the migration collaboration closes. Check cio-carry-forward.md before assuming this is current.)
 
-**2026-07-25 late — TWO CONSTANTS IN THE ARMED PROMPT WENT STALE THE SAME DAY, both now corrected.** (a) The prompt warned "HOOKS ARE NOT FIRING in this worktree (finding #4)" — the *symptom* was right for this session but the *reason* was wrong: it was never a worktree problem, it was an invalid hook matcher (`Bash(git commit*)` is permission-rule syntax in a field matching tool names) that had killed those hooks on every host since introduction. Root-caused by HOST. (b) "OPEN GATE: finding #4 gates the bulk cohort migration" — **the gate is CLEARED**; HOST's take-2 passed on a fresh seat and the roll is authorized. Both corrected in the live cron below. Worth noting as a pattern: **a cron prompt is a frozen constant that can rot mid-day**, which is exactly the argument for keeping state in the carry-forward and only irreducible constants in the prompt.
+TWO CHANNELS — check BOTH every fire: (1) `mailboxes/cio/inbox/` after `git fetch origin`; (2) `~/Development/mediajunkie/docs/mail/` — Pard's channel, a SEPARATE REPO needing its own fetch.
 
----
+HOOKS: fixed and behaviorally verified 2026-07-25 (the matcher was invalid, never a worktree issue). But **user-level settings are read once at session start** — a session predating that change runs unenforced regardless of config. Verify behaviorally on your own seat: stage a `mailboxes/` file on a non-main branch, attempt a commit; the PASS is a refusal that NAMES check-branch.sh. A classifier denial is INCONCLUSIVE, not a pass. `check-branch.sh` is ADVISORY, not a control (`git -c` and `--no-verify` both bypass it).
 
-MEMORY SCOPE CHECK (new, 2026-07-25): verify your memory dir resolves to the shared cohort pool before trusting recall. On Amber, Claude Code appears to resolve the memory key to the **git common dir** (main repo root), NOT the worktree path — so worktrees may share memory by construction. Confirm `~/.claude-pm/projects/-Users-xian-Development-piper-morgan-product/memory/` is the live pool and is non-empty. A silent split or an empty pool is the failure mode; be loud if either.
+CARRY-FORWARD: read dev/active/cio-carry-forward.md + cio-standing-items.md. Rewrite cio-carry-forward.md at end of any substantive fire. Log every substantive fire to the SESSION log (permanent), not only a cycle log (sprint-cleaned).
 
-CARRY-FORWARD: read dev/active/cio-carry-forward.md + cio-standing-items.md. Rewrite cio-carry-forward.md at end of any substantive fire.
-
-Hold the discipline; holistic-not-tactical. If the skill is unavailable for any reason, fall back to docs/operations/duty-cycle design/procedures/ (cron-lifecycle / watch / stop / start).
+Hold the discipline; holistic-not-tactical. A fire is a WAKE, not a time-box — drain everything unblocked before going idle. If the skill is unavailable, fall back to docs/operations/duty-cycle design/procedures/.
 ```
 
-**Step 2a caveat (carried from the handoff, still unresolved)**: `duty-cycle-tick`'s collision check ("branch name must contain the worktree directory's basename") was built for Model B. Under stable per-agent worktrees it happens to still pass here (`claude/cio-cycle` contains `cio`), but the *reasoning* behind it no longer applies — re-derive what "collision" means on Amber before trusting it as a signal.
-
----
+**Step 2a — RESOLVED 2026-07-25** (was "carried from the handoff, still unresolved"). The branch-name-contains-basename fingerprint was a Model-B artifact that returns a **false pass** under Model A, where the pairing is permanent by construction. Retired in `duty-cycle-tick` v1.15; the real gate is Pard's **tmux-cwd collision guard**, shipped and tested in `amber-agent.sh` (v1.16 records it as shipped rather than planned). Reflog is the forensic tell, not the gate.
 
 **Note the fallback line** — the one real PoC risk is whether a cron-injected one-line prompt reliably triggers skill-loading (vs. the old self-contained fat prompt). The fallback to the procedures docs makes a mis-fire safe: if the skill doesn't load, the agent still has the pointer to the full procedure. Watch the first few fires for whether the skill actually loads + is followed.
 
