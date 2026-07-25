@@ -93,7 +93,7 @@ It proposed bridges, clocks, shadows, zippers, and railroads.
 
 We chose a railroad.
 
-Then we refined within that family. The first instinct was one train following a map that no longer matched the track, foregrounding prediction versus execution. But the simpler version was the truer one: two trains that begin together and slowly diverge, the divergence itself carrying the whole idea.
+Then we refined within that family. ChatG's first instinct was one train following a map that no longer matched the track, foregrounding prediction versus execution. But the simpler version was the truer one: two trains that begin together and slowly diverge, the divergence itself carrying the whole idea.
 
 We wrote the prompt.
 
