@@ -40,7 +40,7 @@ So I decided to try to extract the ritual.
 
 The tempting approach was to ask ChatGPT to summarize everything it knew about my preferences.
 
-I do have preferences. I usually want a wide editorial cartoon. I prefer hand-drawn lines, restrained color, gentle humor, and fewer labels. As I mentioened,I have spent months pushing back against the image model's growing ability to produce polished, painterly scenes when what I want is closer to a newspaper cartoon.
+I do have preferences. I usually want a wide editorial cartoon. I prefer hand-drawn lines, restrained color, gentle humor, and fewer labels. As I mentioened, I have spent months pushing back against the image model's growing ability to produce polished, painterly scenes when what I want is closer to a newspaper cartoon.
 
 The series also developed a visual vocabulary. Human collaborators tend to look ordinary and capable. AI agents are often translucent geometric beings or slightly strange nonhuman helpers rather than humanoid robots. The emotional register is usually curious rather than alarmist. The machines are not taking over. Humans and intelligent systems are learning how to work together.
 
@@ -94,9 +94,9 @@ We wrote the prompt.
 
 I said, "Render it."
 
-The image worked.
+The image worked. It was different from the image I had generated and used that day but it was equally good or even possibly better and I would definitely have used it if I had made it first.
 
-Then we tried another post, about losing an uncommitted draft after a server crash.
+The next post I wrote, about losing an uncommitted draft after a server crash, I tested directly on it.
 
 The metaphor was a tiny open window in an otherwise safe room. A gust of wind pulled a manuscript through it. The opening was small. The consequence was total.
 
@@ -116,9 +116,7 @@ We revised the composition. One normal window, left slightly open. A thick manus
 
 The second rendering worked.
 
-That failure was not an interruption of the skill-building process.
-
-It was the skill-building process.
+That failure was part of the skill-building process. I noted in passing to ChatGPT that we were essentially doing a manual eval process.
 
 # This is what an eval can look like
 
@@ -146,18 +144,13 @@ The evaluations were qualitative, conversational, and grounded in actual use. Th
 
 As we reviewed older examples, the images began to sort themselves into recurring structures.
 
-Two trains leaving the same station and slowly separating expressed divergence.
-
-Four eager valets responding to one guest expressed convergence and collision: everyone locally correct, the system globally absurd.
-
-A single page blowing through a small open window expressed exposure.
-
-A human overseeing a lead agent overseeing a subagent expressed nested supervision.
-
-A court full of brilliant mechanical advisors waiting for one small ruler to decide expressed a bottleneck moving from execution to judgment.
-
-A quiet workbench holding its state while its owner rested outside expressed continuity through absence.
-
+* Two trains leaving the same station and slowly separating expressed divergence.
+* Four eager valets responding to one guest expressed convergence and collision: everyone locally correct, the system globally absurd.
+* A single page blowing through a small open window expressed exposure.
+* A human overseeing a lead agent overseeing a subagent expressed nested supervision.
+* A court full of brilliant mechanical advisors waiting for one small ruler to decide expressed a bottleneck moving from execution to judgment.
+* A quiet workbench holding its state while its owner rested outside expressed continuity through absence.
+* 
 A robot child being encouraged to finish a plate of wires and circuit boards expressed gated completion through a familiar social ritual.
 
 These were not simply a collection of favorite metaphors.
