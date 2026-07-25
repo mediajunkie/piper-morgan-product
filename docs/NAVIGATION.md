@@ -177,15 +177,13 @@ docs/public/comms/
 
 **`stashed-` prefix convention** (PM-ratified 2026-07-14): rename a draft to `stashed-{slug}.md` when it has no scheduled publish date and no active work. This signals "deferred, not abandoned" to any agent. When PM is ready to resume, rename back to `{slug}.md` and add to the editorial calendar. Do not delete stashed drafts without PM direction.
 
+**Downloadable resources** (2026-07-25):
+Post-embedded downloadable files (skill zips, templates, etc.) live in the **website repo** at `public/resources/`, served at `https://pipermorgan.ai/resources/<filename>`. Link from draft using root-relative path `/resources/<filename>`. First established: `editorial-hero-illustration.zip` (Editorial Hero Illustration skill, linked from "The Ritual Becomes a Skill").
+
 **Publishing tools:**
 - `scripts/publish-post.js` (always dry-run first)
 - `docs/internal/planning/comms/editorial-calendar.csv` — source of truth for schedule and status
 - `docs/internal/planning/comms/content-publishing-run-of-show.md` — full multi-agent publish sequence
-
-**Downloadable resources / skills** (embedded in blog posts as `/resources/{filename}` links):
-- Live in the WEBSITE repo at `piper-morgan-website/public/resources/` (served at `pipermorgan.ai/resources/`)
-- Use a root-relative link in the draft: `[Label](/resources/{filename})`
-- Copy the file to the website repo before running publish-post.js; commit alongside the post
 
 ### 🔒 Internal Documentation (`internal/`)
 
