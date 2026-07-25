@@ -28,13 +28,50 @@ from services.learning.context_matcher import ContextMatcher
 from services.learning.learning_handler import LearningHandler
 from services.shared_types import PatternType
 
-# Test user ID (the seeded patterns' owner)
-TEST_USER_ID = UUID("3f4593ae-5bc9-468d-b08d-8c4c02a5b963")
+# #1452 de-flake: TEST_USER_ID was a fixed literal (xian's live UUID, shared
+# with tests/manual/test_learning_handler_phase1.py and any app activity as
+# that user) — in full sweeps, foreign LearnedPattern/learning_settings rows
+# for the same user cross-contaminated similarity matching and settings
+# checks. Now UNIQUE PER TEST: the autouse fixture below rebinds these module
+# globals to a fresh user each test (test bodies read them at call time).
+TEST_USER_ID = UUID("00000000-0000-0000-0000-000000000000")  # rebound per test
 
 # #1252 (ADR-071 D4): the pattern routes now take the authenticated principal;
 # these direct-call tests pass a stand-in carrying the test user_id (the route
 # reads only current_user.user_id).
-_TEST_CLAIMS = SimpleNamespace(user_id=TEST_USER_ID)
+_TEST_CLAIMS = SimpleNamespace(user_id=TEST_USER_ID)  # rebound per test
+
+
+@pytest_asyncio.fixture(autouse=True)
+async def _unique_learning_user():
+    """Fresh user per test; learned_patterns FK-CASCADEs on user delete."""
+    import uuid as _uuid
+
+    global TEST_USER_ID, _TEST_CLAIMS
+    from services.database.models import User
+    from tests.conftest import delete_test_user_fully
+
+    TEST_USER_ID = _uuid.uuid4()
+    _TEST_CLAIMS = SimpleNamespace(user_id=TEST_USER_ID)
+    uid = str(TEST_USER_ID)
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        session.add(
+            User(
+                id=uid,
+                username=f"learn-{uid[:8]}",
+                email=f"learn-{uid[:8]}@example.com",
+                password_hash="x",
+                is_active=True,
+                is_verified=True,
+            )
+        )
+        await session.commit()
+
+    yield
+
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        await delete_test_user_fully(session, uid)
+        await session.commit()
 
 
 @pytest_asyncio.fixture(autouse=True)

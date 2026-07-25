@@ -1,4 +1,10 @@
 """
+Manual check for Learning Handler Phase 1 integration.
+
+#1452: hand-run CLI script (sequenced via __main__, hardcodes a live user
+UUID, prints). Its former test_ names made pytest collect it — one function
+even takes a parameter pytest read as a missing fixture. Renamed check_* so
+pytest skips it; run directly: python tests/manual/test_learning_handler_phase1.py
 Manual test for Learning Handler Phase 1 integration.
 
 Tests pattern capture, confidence updates, and database persistence.
@@ -25,7 +31,7 @@ from services.shared_types import IntentCategory
 TEST_USER_ID = UUID("3f4593ae-5bc9-468d-b08d-8c4c02a5b963")
 
 
-async def test_pattern_capture():
+async def check_pattern_capture():
     """Test pattern capture creates database entry."""
     print("\n" + "=" * 60)
     print("TEST 1: Pattern Capture")
@@ -72,7 +78,7 @@ async def test_pattern_capture():
             return None
 
 
-async def test_outcome_recording(pattern_id: UUID):
+async def check_outcome_recording(pattern_id: UUID):
     """Test outcome recording updates confidence."""
     print("\n" + "=" * 60)
     print("TEST 2: Outcome Recording")
@@ -130,7 +136,7 @@ async def test_outcome_recording(pattern_id: UUID):
             print(f"✗ Pattern not found after outcome recording!")
 
 
-async def test_similar_pattern_detection():
+async def check_similar_pattern_detection():
     """Test that similar patterns reuse existing pattern."""
     print("\n" + "=" * 60)
     print("TEST 3: Similar Pattern Detection")
@@ -180,7 +186,7 @@ async def test_similar_pattern_detection():
             print(f"⚠ Usage count not increased: {pattern.usage_count}")
 
 
-async def test_suggestions():
+async def check_suggestions():
     """Test getting high-confidence suggestions."""
     print("\n" + "=" * 60)
     print("TEST 4: Pattern Suggestions")
@@ -268,17 +274,17 @@ async def main():
 
     try:
         # Test 1: Pattern Capture
-        pattern_id = await test_pattern_capture()
+        pattern_id = await check_pattern_capture()
 
         # Test 2: Outcome Recording
         if pattern_id:
-            await test_outcome_recording(pattern_id)
+            await check_outcome_recording(pattern_id)
 
         # Test 3: Similar Pattern Detection
-        await test_similar_pattern_detection()
+        await check_similar_pattern_detection()
 
         # Test 4: Suggestions
-        await test_suggestions()
+        await check_suggestions()
 
         print("\n" + "=" * 60)
         print("ALL TESTS COMPLETE")
