@@ -161,7 +161,7 @@ This was an eval loop, even though nobody opened a spreadsheet.
 
 The evaluations were qualitative, conversational, and grounded in actual use. They were also cumulative. Each failure added a rule. Each successful image gave us a case study.
 
-# The pattern language underneath the cartoons
+# The pattern language underneath
 
 As we reviewed older examples, the images began to sort themselves into recurring structures.
 
@@ -250,9 +250,9 @@ The skill also carries the pattern language, the style anchor, the cartoon-physi
 
 It is opinionated because it is intended to preserve one particular collaboration.
 
-I have also made a general-purpose version, [Editorial Hero Illustration](editorial-hero-illustration.zip), for other writers and teams to use. It preserves the collaborative method but removes the Piper Morgan style assumptions. I’ll share the downloadable skill with this post and in the Piper Morgan resource library.
+I have also made a general-purpose version, [Editorial Hero Illustration](editorial-hero-illustration.zip), for other writers and teams to use. It preserves the collaborative method but removes the Piper Morgan style assumptions. You are welcome to try it!
 
-# What the skill does not contain
+# What the skill doesn't capture
 
 It does not contain the accumulated memory of a year-long conversation.
 
