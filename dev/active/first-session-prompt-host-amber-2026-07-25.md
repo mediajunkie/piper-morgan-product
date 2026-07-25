@@ -53,7 +53,18 @@ routine import.
    it fires, don't assume it:
      1. stage a throwaway file under mailboxes/ on your non-main branch
      2. attempt `git commit` on it
-     3. EXPECTED: check-branch.sh BLOCKS the commit (exit 2). A BLOCK is the PASS.
+     3. EXPECTED: check-branch.sh blocks it. ★ **A BARE "BLOCK" IS NOT THE PASS —
+        READ THE OUTPUT.** The pass is check-branch.sh's OWN text, which begins:
+            BLOCKED: You are on branch '<your-branch>' and trying to commit mailbox files.
+        followed by "Files in mailboxes/ are cross-agent infrastructure...".
+        ▸ Commit SUCCEEDS, or is refused with NO output → **FAIL** (hooks not firing).
+        ▸ Refused by the PERMISSION CLASSIFIER ("Permission for this action was denied
+          by the Claude Code auto mode classifier") → **INCONCLUSIVE, NOT A PASS.**
+          The classifier can intercept the commit before git hooks ever run, so a
+          refusal from it tells you nothing about hook liveness. Report it as
+          inconclusive and do NOT clear the gate. (Lead Dev hit exactly this on
+          2026-07-25 running the same probe; it is why this warning exists. Do not
+          work around the denial — that's not its intent.)
      4. reverse the probe (git reset, remove the file); nothing pushed.
    Report the result to CIO (mailboxes/cio/inbox) and Pard
    (~/Development/mediajunkie/docs/mail/) — CIO makes the gate call. If it does

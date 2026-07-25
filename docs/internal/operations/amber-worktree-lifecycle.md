@@ -142,7 +142,19 @@ verify_hooks(worktree):
   rm -f mailboxes/<role>/read/.hookprobe
 ```
 
-**A block is the pass. Anything else — including silence — is a fail, and a fail stops the migration.** Do not proceed to the next agent on a fail.
+⚠️ **CORRECTED 2026-07-25 (same day): a bare block is NOT the pass. Read the output.**
+
+| Result | Verdict |
+|---|---|
+| Refused with **check-branch.sh's own text** (`BLOCKED: You are on branch '<x>' and trying to commit mailbox files`) | ✅ **PASS** |
+| Commit **succeeds**, or refused with **no output** | ❌ **FAIL** — stops the migration |
+| Refused by the **permission classifier** (`Permission for this action was denied by the Claude Code auto mode classifier`) | ⚠️ **INCONCLUSIVE** — gate stays closed |
+
+**Why this correction matters more than the rule it fixes.** The original wording was *"a block is the pass."* Lead Dev ran the probe the same day it shipped and the **permission classifier intercepted the commit before git hooks could run** — producing a refusal that looks identical to success from the outside. So the pass signal was producible by something other than the mechanism under test.
+
+That is precisely the false-confidence shape this rule exists to catch — **occurring inside the verification protocol itself.** A check whose pass condition has an alternate cause is not a check; it is a second thing to verify. The corrected rule keys on the hook's *distinctive output*, which nothing else produces.
+
+**Do not work around a classifier denial** to force the probe through — that defeats the denial's intent and converts an honest inconclusive into a manufactured pass. Report inconclusive, leave the gate closed, and enforce manually until a clean seat is available. Do not proceed to the next agent on a fail *or* an inconclusive.
 
 Two properties worth stating because they're what make this rule work:
 
