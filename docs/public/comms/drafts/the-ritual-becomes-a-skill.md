@@ -150,8 +150,7 @@ As we reviewed older examples, the images began to sort themselves into recurrin
 * A human overseeing a lead agent overseeing a subagent expressed nested supervision.
 * A court full of brilliant mechanical advisors waiting for one small ruler to decide expressed a bottleneck moving from execution to judgment.
 * A quiet workbench holding its state while its owner rested outside expressed continuity through absence.
-* 
-A robot child being encouraged to finish a plate of wires and circuit boards expressed gated completion through a familiar social ritual.
+* A robot child being encouraged to finish a plate of wires and circuit boards expressed gated completion through a familiar social ritual.
 
 These were not simply a collection of favorite metaphors.
 
@@ -242,6 +241,8 @@ That version keeps the ritual but removes the Piper Morgan visual universe. It d
 The portable part is not my style.
 
 It is the method: find the invisible relationship, decide what truth to foreground, build a world in which that relationship becomes visible, design the viewer's first two seconds, render only when the idea is ready.
+
+You are welcome to try this [skill](). 
 
 # What the skill does not contain
 
