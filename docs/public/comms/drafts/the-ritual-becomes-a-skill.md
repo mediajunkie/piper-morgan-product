@@ -167,7 +167,7 @@ As we reviewed older examples, the images began to sort themselves into recurrin
 
 * Two trains leaving the same station and slowly separating expressed divergence.
 * Four eager valets responding to one guest expressed convergence and collision: everyone locally correct, the system globally absurd.
-* A single page blowing through a small open window expressed exposure.
+
 * A human overseeing a lead agent overseeing a subagent expressed nested supervision.
 * A court full of brilliant mechanical advisors waiting for one small ruler to decide expressed a bottleneck moving from execution to judgment.
 * A quiet workbench holding its state while its owner rested outside expressed continuity through absence.
