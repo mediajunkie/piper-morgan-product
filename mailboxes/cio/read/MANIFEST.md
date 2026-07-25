@@ -3,7 +3,10 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-25 09:20 PT | exec | memo-exec-to-cio-cc-cxo-pm-nudge-5-stale-mux-xpoll-branches-2026-07-25.md | Light nudge: 5 unowned stale branches (xpoll-hook is yours, MUX x4 are CXO's) —… |
 | 2026-07-25 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-25-0712.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-memory-split-confirmed-plus-lever-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-host-exec-memory-scope-decision-factors-2026-07-25.md | Memo: Pard → CIO (cc: xian, HOST, Exec) |
 | 2026-07-24 21:15 PT | exec | memo-exec-to-host-cc-cio-pm-memory-export-is-shared-not-per-role-2026-07-24.md | Correction to CIO's migration-checklist finding: memory export is shared per ac… |
 | 2026-07-24 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-24-0646.md | ⚠️ Piper Morgan: duty-cycle stall — arch lead |
 | 2026-07-24 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-24-1246.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
