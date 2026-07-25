@@ -25,9 +25,19 @@ Read these, in order, before doing anything else:
 
 Environment verification — verify, don't assume:
   - pwd + `git branch --show-current` — confirm you're in ~/Development/piper-morgan-worktrees/host on claude/host-cycle
+  - ★ **CHECK YOUR WORKTREE IS CURRENT** — `git fetch origin && git rev-list --count HEAD..origin/main`.
+    **Expected: 0.** CIO's worktree arrived **5,393 commits behind** origin/main (cut from a
+    six-week-old role branch) with NO error of any kind — a six-week-old CLAUDE.md, briefings and
+    mailboxes that all looked like working state. Pard has since added a currency-assert at
+    provisioning, so this SHOULD come back 0 — but you are the first agent it runs on, and an
+    upstream assert nobody verifies downstream is exactly the "mechanism believed to work,
+    never seen fire" shape that findings #4/#5/#6 were all instances of. Ten seconds. If it's
+    not 0, STOP and tell Pard + CIO before doing anything else.
   - confirm this session is on the pipermorgan.ai account, NOT designinproduct
-  - set git identity DELIBERATELY to match the existing git log author (shared-identity convention is intentional)
-  - re-arm your duty-cycle cron as an early action (fresh session — nothing to find)
+  - set git identity DELIBERATELY to match the existing git log author (shared-identity convention is
+    intentional). Note it may already be set — worktrees share .git/config with the main checkout.
+  - re-arm your duty-cycle cron as an early action (fresh session — nothing to find). Note the cron is
+    session-only and in-memory (`durable:true` is a documented no-op) with a silent 7-day auto-expiry.
 
 MEMORY — do NOT import the export (this corrects your handoff §5.2). Memory keys
 on the git-common-dir, so all worktrees off this repo SHARE ONE POOL by
@@ -49,6 +59,18 @@ routine import.
    (~/Development/mediajunkie/docs/mail/) — CIO makes the gate call. If it does
    NOT block, STOP and escalate: the fix didn't take, and the rest of the cohort
    does not roll until it does.
+
+   Three things that will save you time here:
+   - **Pard's channel is a DIFFERENT REPO.** `~/Development/mediajunkie` is not
+     this repo — `git -C ~/Development/mediajunkie fetch origin` separately or you
+     will not see his replies, and mailbox discipline doesn't point there.
+   - **`/hooks` is a human REPL command an agent cannot invoke.** If the gate
+     fails and you want the "are they even loaded" datapoint, you must ask PM to
+     type it. Don't burn time trying to call it yourself (CIO did).
+   - **PreCompact was restored in the same wiring** — it had been registered to an
+     empty array since 2026-05-16 (finding #5). So its sign-off warning should now
+     fire too; if you compact and see nothing, that's a second datapoint worth
+     reporting, not a non-event.
 
 Then: create today's session log, check mailboxes/host/inbox/, read
 dev/active/host-carry-forward.md (or your latest) for current state, run your
