@@ -93,13 +93,12 @@ It proposed bridges, clocks, shadows, zippers, and railroads.
 
 We chose a railroad.
 
-Then we refined within that family. ChatG's first instinct was one train following a map that no longer matched the track, foregrounding prediction versus execution. But the simpler version was the truer one: two trains that begin together and slowly diverge, the divergence itself carrying the whole idea.
-
+Then we refined within that family. ChatG's first instinct   was a train following a map that no longer matched the track, which foregrounded prediction versus execution. 
 We wrote the prompt.
 
 I said, "Render it."
 
-The image worked. It was different from the image I had generated and used that day but it was equally good or even possibly better and I would definitely have used it if I had made it first.
+The image worked. I then showed the conversation the actual cartoon I had made earlier that day in a separate chat, using my standard process. It was a slightly better variation on the "two trains" seed: two trains beginning together and slowly diverging, with the divergence itself carrying the idea. We agreed this was actually better and ChatGPT refined the skill description a bit to capture why.
 
 The next post I wrote, about losing an uncommitted draft after a server crash, I tested directly on it.
 
