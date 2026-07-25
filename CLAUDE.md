@@ -485,12 +485,15 @@ git log --oneline main..HEAD
 
 ### Reactive safety nets
 
-Two layers catch sign-off-discipline lapses:
+Two layers are *supposed* to catch sign-off-discipline lapses. **As of 2026-07-25, only one of them is actually running. Do not rely on the first.**
 
-1. **PreCompact hook** (`.claude/hooks/precompact-signoff-warning.sh`, shipped 2026-05-08, severity-tiered 2026-05-11). Fires *before* context compaction with HARD/SOFT/QUIET tiers. HARD warns when you have unpushed commits or commits ahead of main — work that other agents can't see, at risk on ephemeral sessions. SOFT reminds when you have substantive uncommitted changes on local disk — files persist through compaction but next session may not know they matter. QUIET passes silently when the only uncommitted changes are mechanical (MANIFEST regen, .DS_Store, runtime noise). All firings log to `dev/active/session-end-warnings.log` for the merge-keeper sweep.
-2. **Docs merge-keeper sweep at session start** for all `claude/*` branches with commits not on main. If a hook fires and the agent still skips, Docs catches it within 24 hours.
+1. 🔴 **PreCompact hook — CURRENTLY NOT WIRED. It has not fired since 2026-05-16.** (`.claude/hooks/precompact-signoff-warning.sh`, shipped 2026-05-08, severity-tiered 2026-05-11.) The script exists and is executable, but **`.claude/settings.json` has `"PreCompact": []`** — an empty array — so it is registered to nothing.
+   *The history, because it's instructive*: PM suspended it 2026-05-16 (`4adfd1444`) because its `exit 2` was **freezing** Lead Dev's session at the compaction limit — a correct, deliberate, temporary call, with the condition named in the commit message ("retained for later re-enable with revised exit semantics"). **The revised exit semantics landed the very next day** (`4dedba916`, exit 0 = warn-only, cannot wedge). The precondition was met on 2026-05-17; the restore step was never anyone's job, and it is still empty ten weeks later. Corroboration, not inference: **`dev/active/session-end-warnings.log` — the file this section said every firing writes to — has never existed.**
+   *When re-wired*, its intended behavior is: fires before compaction with HARD/SOFT/QUIET tiers — HARD when you have unpushed commits or commits ahead of main, SOFT when you have substantive uncommitted changes on disk, QUIET when the only changes are mechanical (MANIFEST regen, `.DS_Store`, runtime noise).
+   ⚠️ **Until it is re-wired: your sign-off discipline has no automated backstop at compaction.** Run the checklist manually. Restore is tracked with the Amber hooks work (finding #5); this line gets updated when a *behavioral* check confirms it fires — not when the config looks right.
+2. ✅ **Docs merge-keeper sweep at session start** for all `claude/*` branches with commits not on main — this one is real. With layer 1 dead, it is currently the *only* net, and it catches things within 24 hours rather than at the moment of risk.
 
-Both layers are **safety nets, not the primary discipline.** The goal is that the PreCompact hook quiet-passes (because you've already pushed) and the merge-keeper sweep finds nothing (because every agent ran the checklist on their own).
+Both layers are **safety nets, not the primary discipline** — and this section is itself the cautionary case for why that matters: a documented net asserted in the present tense stayed false for ten weeks because nothing verified it. **A safety net you haven't seen fire is a claim, not a mechanism.** If you notice another one here you can't confirm behaviorally, treat that as a finding rather than an assumption.
 
 ### Why this is unmistakable
 
