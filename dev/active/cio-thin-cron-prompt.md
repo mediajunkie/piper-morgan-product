@@ -10,15 +10,21 @@ The replacement for the ~40-line fat DUTY CYCLE TICK prompt. Carries ONLY the ir
 
 ---
 
+**2026-07-25 — MIGRATED TO AMBER / pipermorgan.ai. Model A is back, and the constant is a literal path again.** PM ratified Model A (stable per-agent worktree) as *preferable* on always-on hosts like Amber — the Model-B deprecation's premise was Claude Desktop's ephemeral auto-worktrees, which Amber doesn't have. So the 2026-07-04 reasoning above ("hardcoding a path would just go stale") **inverts** here: the path must be hardcoded *because* it must be stable and reused across sessions (Claude Code keys per-path state to the filesystem path; a fresh path each session orphans it). Cron re-armed on the new host as `d250236f` at LEAN `7 10,16,22`. Added a memory-scope check step — see the first-session findings in `dev/2026/07/25/2026-07-25-1053-cio-code-log.md`.
+
 ```
 DUTY CYCLE TICK (CIO). Autonomous loop fire; no human driving. Run the **duty-cycle-tick** skill and follow it.
 
-CONSTANTS: role=CIO (slug cio) · worktree=current session's ephemeral worktree (Model B — cwd anchors here at session start; run `pwd` to confirm; NEVER operate from the main checkout) · cron=`7 10,16,22 * * *` (LEAN cadence, resumed 2026-07-06 — check cio-carry-forward.md for current state before assuming this is still accurate).
+CONSTANTS: role=CIO (slug cio) · host=Amber, account=pipermorgan.ai · worktree=`/Users/xian/Development/piper-morgan-worktrees/cio` on branch `claude/cio-cycle` (Model A — stable per-agent worktree, PM-ratified 2026-07-25 as preferable on always-on hosts; path is STABLE and REUSED across sessions, never fresh. Run `pwd` to confirm; NEVER operate from the shared checkout `~/Development/piper-morgan-product`) · cron=`7 10,16,22 * * *` (LEAN cadence — check cio-carry-forward.md for current state before assuming this is still accurate).
+
+MEMORY SCOPE CHECK (new, 2026-07-25): verify your memory dir resolves to the shared cohort pool before trusting recall. On Amber, Claude Code appears to resolve the memory key to the **git common dir** (main repo root), NOT the worktree path — so worktrees may share memory by construction. Confirm `~/.claude-pm/projects/-Users-xian-Development-piper-morgan-product/memory/` is the live pool and is non-empty. A silent split or an empty pool is the failure mode; be loud if either.
 
 CARRY-FORWARD: read dev/active/cio-carry-forward.md + cio-standing-items.md. Rewrite cio-carry-forward.md at end of any substantive fire.
 
 Hold the discipline; holistic-not-tactical. If the skill is unavailable for any reason, fall back to docs/operations/duty-cycle design/procedures/ (cron-lifecycle / watch / stop / start).
 ```
+
+**Step 2a caveat (carried from the handoff, still unresolved)**: `duty-cycle-tick`'s collision check ("branch name must contain the worktree directory's basename") was built for Model B. Under stable per-agent worktrees it happens to still pass here (`claude/cio-cycle` contains `cio`), but the *reasoning* behind it no longer applies — re-derive what "collision" means on Amber before trusting it as a signal.
 
 ---
 
