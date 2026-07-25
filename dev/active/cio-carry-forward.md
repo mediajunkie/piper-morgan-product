@@ -37,11 +37,15 @@ Migration complete and verified · memory pool seeded 0→164 with the index reb
 
 ## Lower priority / queued
 
-- **Stray memory-path file in PM's checkout** (`feedback_pause_before_irrevocable_actions.md` at a non-memory path) — noticed 7/7, still uninvestigated. Cheap; may be moot now that the pool is seeded.
-- **Dashboard welfare-criteria v0.3** — Criterion E resolved, A–F not started; needs a dedicated build session.
-- **Belt-4 non-spawn during the July dormancy** — likely moot (Amber has no watchdog at all; see RemoteTrigger above).
-- **Sprint cluster #973 / #1277** — re-verified 7/13, both genuinely open. Re-verify if still untouched by ~7/27.
-- **Liveness model v2 / cohort-coverage expansion** — banked, unscoped.
+- **Dashboard welfare-criteria v0.3** — Criterion E resolved, A–F not started; needs a dedicated build session. *(Genuine quality-banking candidate, but per the skill that needs an explicit real trigger — a fresh session or compaction — not "deserves focus." Not started mid-migration-coordination on purpose.)*
+- **Belt-4 non-spawn during the July dormancy** — likely moot (Amber has no auto-respawn watchdog at all; the detect-and-alert belt does exist and fired correctly today — see finding #6).
+- **Liveness model v2 / cohort-coverage expansion** — banked, unscoped. Finding #6's registration-at-provisioning proposal is arguably the first concrete piece of the coverage half.
+
+## Recently closed *(one cycle, then delete)*
+
+- ✅ **Stray memory-path file** (aging since 7/7) — **resolved by migration**, verified 7/25. It was a local artifact on the old laptop; no such path exists on Amber, and the memory itself is present in the seeded pool. Three sessions carried it forward without spending 60 seconds to look.
+- ✅ **#973 / #1277** — re-verified live 7/25, both genuinely OPEN. Left a Model-A scope note on #1277, whose "ephemeral-worktree" premise shifted today.
+- 🟡 **Exec inbox-proxy pilot** (aging since June) — **asked** 7/25 with a four-option multiple choice; awaiting a one-line answer. Was carried by four sessions without anyone asking.
 
 ## Cron
 
