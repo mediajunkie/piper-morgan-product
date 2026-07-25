@@ -37,7 +37,7 @@ A few months later, the image model improved dramatically, which created a new p
 
 Around the same time, Paul Ford made a sly complaint about the flood of robot imagery used to illustrate AI. I took that as a fun challenge and useful constraint and began exploring other ways to depict a nonhuman, noncorporeal helpful intelligence.
 
-By the time I realized this had become a repeatable practice, I was preparing to lose access to the ChatGPT account where it had evolved and where I couldn't be quite sure how much it was basing its process on my current prompt and how much on its accumulated contextual knowledge about how I operate.
+By the time I realized this had become a repeatable practice, I was preparing to lose access to the ChatGPT account where it had evolved. It occurred to me that I wasn't sure how much of the process came from my current instructions and how much came from the account’s accumulated sense of how I work.
 
 So I decided to try to extract the ritual.
 
