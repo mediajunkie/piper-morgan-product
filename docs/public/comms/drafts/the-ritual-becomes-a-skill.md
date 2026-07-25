@@ -120,7 +120,7 @@ We revised the composition. One normal window, left slightly open. A thick manus
 
 The second rendering worked.
 
-That failure was part of the skill-building process. Somewhere in that revision, I remarked that we were effectively running a manual evaluation loop. .
+That failure was part of the skill-building process. Somewhere in that revision, I remarked that we were effectively running a manual evaluation loop.
 
 # This is what an eval can look like
 
