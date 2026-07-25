@@ -20,16 +20,19 @@ We agreed on an approach where we'd discuss the idea first, align on an approach
 
 That phrase became a gate.
 
+It prevented us from spending an image-generation attempt on an idea that was not ready. More importantly, it preserved the part of the process where the quality actually came from: the conversation before the drawing.
+
 # It started as a gag
 
 When I started this series, the Internet was awash with ChatGPT cartoons, most of them looking like the same generic style (or whatever current fad was ripping off an established style, like the Ghibli phase, etc.). I know that articles with illustrations get read more and I thought it would be funny to ask ChatGPT to make totally generic-looking cartoons for me.
 
 Over time, this became a way of showing the baseline quality of such images growing over time. At some point, the imagery started getting too slick, looking more and more like computer-generated (ironic, I know) 3-D animation, not the "newspaper cartoon" aesthetic I had started with. So I started adjusting the general style prompt to resist this slickness an artificially hold things to a more hand drawn style.
 
-Just a few months ago
-It prevented us from spending an image-generation attempt on an idea that was not ready. More importantly, it preserved the part of the process where the quality actually came from: the conversation before the drawing.
+Just a few months ago ChatGPT (I really wish there was a shorter nickname for that service) announced a new image-generation service that is significantly better then before and this lead to another change in style that required more restrictions to make sure the images didn't become painterly and detailed like a Hieronymous Bosch canvas.
 
-By the time I realized this had become a repeatable practice, I was preparing to lose access to the ChatGPT account where it had evolved.
+Over time I settled into a new rhythm, or made small adjustments to the style (for example when Paul Ford complained about all the robot images used to illustrate AI that led me to explore as a fun challenge other ways to show a nonhuman noncorporeal helpful intelligence), as things started working pretty consistently.
+
+By the time I realized this had become a repeatable practice, I was preparing to lose access to the ChatGPT account where it had evolved and where I couldn't be quite sure how much it was basing its process on my current prompt and how much on its accumulated contextual knowledge about how I operate.
 
 So I decided to try to extract the ritual.
 
@@ -37,7 +40,7 @@ So I decided to try to extract the ritual.
 
 The tempting approach was to ask ChatGPT to summarize everything it knew about my preferences.
 
-I do have preferences. I usually want a wide editorial cartoon. I prefer hand-drawn lines, restrained color, gentle humor, and fewer labels. I have spent months pushing back against the image model's growing ability to produce polished, painterly scenes when what I want is closer to a newspaper cartoon.
+I do have preferences. I usually want a wide editorial cartoon. I prefer hand-drawn lines, restrained color, gentle humor, and fewer labels. As I mentioened,I have spent months pushing back against the image model's growing ability to produce polished, painterly scenes when what I want is closer to a newspaper cartoon.
 
 The series also developed a visual vocabulary. Human collaborators tend to look ordinary and capable. AI agents are often translucent geometric beings or slightly strange nonhuman helpers rather than humanoid robots. The emotional register is usually curious rather than alarmist. The machines are not taking over. Humans and intelligent systems are learning how to work together.
 
