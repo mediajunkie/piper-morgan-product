@@ -17,6 +17,10 @@ DUTY CYCLE TICK (CIO). Autonomous loop fire; no human driving. Run the **duty-cy
 
 CONSTANTS: role=CIO (slug cio) · host=Amber, account=pipermorgan.ai · worktree=`/Users/xian/Development/piper-morgan-worktrees/cio` on branch `claude/cio-cycle` (Model A — stable per-agent worktree, PM-ratified 2026-07-25 as preferable on always-on hosts; path is STABLE and REUSED across sessions, never fresh. Run `pwd` to confirm; NEVER operate from the shared checkout `~/Development/piper-morgan-product`) · cron=`7 10,16,22 * * *` (LEAN cadence — check cio-carry-forward.md for current state before assuming this is still accurate).
 
+**2026-07-25 late — TWO CONSTANTS IN THE ARMED PROMPT WENT STALE THE SAME DAY, both now corrected.** (a) The prompt warned "HOOKS ARE NOT FIRING in this worktree (finding #4)" — the *symptom* was right for this session but the *reason* was wrong: it was never a worktree problem, it was an invalid hook matcher (`Bash(git commit*)` is permission-rule syntax in a field matching tool names) that had killed those hooks on every host since introduction. Root-caused by HOST. (b) "OPEN GATE: finding #4 gates the bulk cohort migration" — **the gate is CLEARED**; HOST's take-2 passed on a fresh seat and the roll is authorized. Both corrected in the live cron below. Worth noting as a pattern: **a cron prompt is a frozen constant that can rot mid-day**, which is exactly the argument for keeping state in the carry-forward and only irreducible constants in the prompt.
+
+---
+
 MEMORY SCOPE CHECK (new, 2026-07-25): verify your memory dir resolves to the shared cohort pool before trusting recall. On Amber, Claude Code appears to resolve the memory key to the **git common dir** (main repo root), NOT the worktree path — so worktrees may share memory by construction. Confirm `~/.claude-pm/projects/-Users-xian-Development-piper-morgan-product/memory/` is the live pool and is non-empty. A silent split or an empty pool is the failure mode; be loud if either.
 
 CARRY-FORWARD: read dev/active/cio-carry-forward.md + cio-standing-items.md. Rewrite cio-carry-forward.md at end of any substantive fire.
