@@ -24,7 +24,7 @@ In each case, the artifact was an instance of the thing it was describing. *The 
 
 # Why I think this happens
 
-Most projects have a separation between *the thing* and *the writing about the thing.* The thing is built by engineers; the writing is done by communications people; the writing describes the thing from outside.
+Most projects have a separation between *the thing* and *the writing about the thing.* The thing is built by engineers, the writing is done by communications people, the writing describes the thing from outside.
 
 This project doesn't quite have that separation. The communications role is itself an agent in the same multi-agent infrastructure that does the engineering. The post about how four agents coordinated was produced by the same coordination patterns it described. The post about cross-pollination went out through the cross-pollination system.
 
@@ -38,11 +38,11 @@ That's a feedback loop, not a paradox. But it's a feedback loop with consequence
 
 The first consequence is a kind of legibility. Projects whose documentation lives outside the system tend to drift — the docs say one thing, the system does another, and the gap is noticeable mostly to outsiders who came in expecting one and found the other. Projects whose documentation is part of the system have a different relationship: the description is also a constraint, because the next time someone reads the description they'll behave according to it, and the system's future operation gets shaped by its past self-descriptions.
 
-This cuts both ways. If the description is right, the system gets reinforced toward what works. If the description is wrong — even slightly wrong, in the way that polished output drifts away from canonical source — the wrong shape gets reinforced too. We've already had this happen with our Excellence Flywheel documentation. Eight different formulations across nine months, each successor cited from the previous one rather than the original. The drift wasn't a bug in any single document; it was the system reading its own descriptions and updating from them.
+This cuts both ways. If the description is right, the system gets reinforced toward what works. If the description is wrong — even slightly wrong, in the way that polished output drifts away from canonical source — the wrong shape gets reinforced too. We've already had this happen with our Excellence Flywheel documentation. Eight different formulations across nine months, each successor cited from the previous one rather than the original. The drift wasn't a bug in any single document, it was the system reading its own descriptions and updating from them.
 
-The second consequence is that the role of communication changes. When the writing-about-the-system is also a part of the system, communication isn't just reporting. It's intervention. Every blog post is a small change to the system's self-image. The post about manual mail delivery made the bottleneck legible; legibility changed how I thought about it; that change accelerated the migration decision; the migration is now ongoing. *The post helped cause the change it was reporting.*
+The second consequence is that the role of communication changes. When the writing-about-the-system is also a part of the system, communication isn't just reporting. It's intervention. Every blog post is a small change to the system's self-image. The post about manual mail delivery made the bottleneck legible, legibility changed how I thought about it, that change accelerated the migration decision, the migration is now ongoing. *The post helped cause the change it was reporting.*
 
-Most of the time this happens at low intensity. A piece lands, the team reads it, somebody nods, things continue. Occasionally a piece lands and you can feel something shift — the post becomes a load-bearing reference point for the next decision. We had this with *The Migration* in mid-April; we had it again with *Verify the Paraphrase* this week.
+Most of the time this happens at low intensity. A piece lands, the team reads it, somebody nods, things continue. Occasionally a piece lands and you can feel something shift — the post becomes a critical reference point for the next decision. We had this with *The Migration* in mid-April, we had it again with *Verify the Paraphrase* this week.
 
 # What this is not
 
@@ -56,7 +56,7 @@ The pattern isn't deep. But it is operational, and worth being honest about, bec
 
 # What I keep coming back to
 
-The system that watches itself isn't necessarily wiser than the system that doesn't. But it has a tighter feedback loop between what it does and what it knows about what it does. That tightness can amplify good practices and bad ones equally; the practice has to be good for the loop to help.
+The system that watches itself isn't necessarily wiser than the system that doesn't. But it has a tighter feedback loop between what it does and what it knows about what it does. That tightness can amplify good practices and bad ones equally, the practice has to be good for the loop to help.
 
 What we've been getting right, mostly, is being honest about the failures. *The Migration* documented service disruption. *Verify the Paraphrase* documented six agents making the same mistake. *The Omnibus That Found Its Own Drift* documented our own omnibus log being incomplete. The system has been describing its failures alongside its successes, and the failures have been the interventions that produced the most useful changes.
 
