@@ -57,15 +57,25 @@ Then create today's session log (create-session-log skill), check
 mailboxes/cio/inbox/, and read dev/active/cio-carry-forward.md for current
 state.
 
-Your first substantive work item, per the handoff: partner with Pard on the
-per-agent worktree model for Amber — specifically the teardown/reaper half —
-before the rest of the Piper Morgan cohort migrates. After that, you and Pard
-bring the remaining roles over.
+VERIFY ONE THING EARLY — your memory scope. PM decided 2026-07-25 that the
+cohort keeps ONE SHARED memory pool, achieved by symlinking each agent's
+worktree memory directory to a shared physical location (rather than letting
+per-agent worktree paths silently split it). So:
+  - confirm your memory directory actually resolves to the shared pool, not a
+    private one. A stale or broken symlink degrades SILENTLY into a split —
+    no error, discovered weeks later via a correction that never propagated.
+  - if it did NOT get wired that way, the agreed fallback was
+    split-with-seeded-copies. Find out which world you're in; don't assume.
+  - building a session-start check for exactly this is an early task of yours
+    (mechanism over vigilance) — CIO offered the Piper Morgan side, Pard owns
+    the provisioning side.
 
-One open question you're inheriting rather than being handed a decision on:
-whether per-agent worktrees should split the cohort's shared memory pool into
-per-agent stores. Raised 2026-07-25 with Pard/PM/Exec/HOST; check whether it
-resolved before assuming either behavior.
+Your first substantive work items, per the handoff:
+  1. Partner with Pard on the per-agent worktree model for Amber —
+     specifically the teardown/reaper half — before the rest of the cohort
+     migrates.
+  2. The memory-symlink verification check above.
+  3. Then you and Pard bring the remaining Piper Morgan roles over.
 
 Report back when oriented, with anything in the handoff that turned out wrong.
 ```
