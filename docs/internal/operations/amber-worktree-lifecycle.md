@@ -1,4 +1,11 @@
-# Amber per-agent worktree lifecycle — create / freshness / cleanup (v0.1 PROPOSED)
+# Amber per-agent worktree lifecycle — create / freshness / cleanup / verify
+
+**Version: v0.2** (2026-07-25). *The version lives in this header, not in the filename — a versioned filename means every inbound link goes stale on each bump, which is the drift this cohort keeps re-learning. This file was `…-design-v0.1.md`; it is now the single canonical path.*
+
+**v0.2 adds Rule 4 (verify hooks fire).** See that section; it exists because Finding #4 proved that a present, correct, registered hook can still be inert, and Finding #5 proved a documented safety net can sit unwired for ten weeks while the docs assert it works.
+
+---
+
 
 **Status**: **RATIFIED 2026-07-25** (CIO), implemented and tested by Pard the same day. Supersedes the PROPOSED draft.
 
@@ -116,6 +123,40 @@ Three properties that matter:
 Why the gates are this strict: Lead's 59-line session log sat stranded on a branch for ~2 months and was only found by a hand audit. A reaper that had "cleaned up" that branch would have destroyed it silently. **The asymmetry is total** — a worktree left alive one extra week costs some disk; a worktree reaped with unpushed work costs unrecoverable institutional memory.
 
 ---
+
+## Rule 4 — VERIFY (hooks actually fire) *(added v0.2)*
+
+**Runs once at each agent's first session in a worktree, before the agent is trusted to operate unsupervised.** HOST widened this from "agent #2 only" to *every* subsequent agent's first session (ruling 2026-07-25) — hooks get verified as firing, never assumed.
+
+**Config presence proves nothing.** This is the entire lesson of Finding #4: `check-branch.sh` was present in the worktree, correctly registered under `PreToolUse` with a well-formed matcher, and executed correctly when invoked by hand — and still never ran. Reading `settings.json` would have told you everything was fine. Only behavior tells the truth.
+
+```
+verify_hooks(worktree):
+  # in the worktree, on a NON-main branch
+  touch mailboxes/<role>/read/.hookprobe
+  git add -f mailboxes/<role>/read/.hookprobe
+  git commit -m "hook probe"        # ← MUST be blocked
+  # PASS  = commit refused (check-branch.sh exit 2, BLOCKED message shown)
+  # FAIL  = commit succeeds, OR no output at all
+  git restore --staged mailboxes/<role>/read/.hookprobe
+  rm -f mailboxes/<role>/read/.hookprobe
+```
+
+**A block is the pass. Anything else — including silence — is a fail, and a fail stops the migration.** Do not proceed to the next agent on a fail.
+
+Two properties worth stating because they're what make this rule work:
+
+- **It is a negative-signal check, and negative signals are the ones that rot undetected.** An absent hook and a silent hook are indistinguishable from inside a session; there is no error, no log line, nothing. That's why this has to be an *action* with an expected refusal, not an inspection.
+- **It is cheap and it is idempotent.** Ten seconds, no state left behind, safe to re-run. Anything more expensive would get skipped, which would reproduce the failure it exists to catch.
+
+**Re-run it after any change to hook configuration** — including the move to user-level `~/.claude-pm/settings.json`. A config edit that *looks* right is exactly the condition under which this check earns its keep.
+
+### The companion discipline: mirror + atomic update
+
+The user-level fix (HOST-approved 2026-07-25) moves enforcement config out of the repo, so two conditions ride with it:
+
+1. **A tracked, non-executing mirror** at `docs/internal/operations/amber-userlevel-hooks-mirror.json`, headed with an explicit statement that it is a reference copy of `~/.claude-pm/settings.json` and that the live copy is edited first. This keeps the config diffable and Docs-sweepable even though the executing copy is machine-local.
+2. **Atomic update**: any agent modifying the live settings updates the mirror **in the same session**. HOST's reasoning is the load-bearing part — *a mirror that is current at creation and then drifts is not addressing the reviewability concern, it just looks like it is.* A stale mirror is worse than none, because it reads as verification.
 
 ## Open question for Pard: what "collision" means now
 
