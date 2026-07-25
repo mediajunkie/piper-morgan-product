@@ -1,11 +1,11 @@
 
-# Role Migration Checklist v1.3
+# Role Migration Checklist v1.4
 
-**Status**: v1.3. Supersedes v1.2 (canonical at this path since May 2026 CEO ratification).
+**Status**: v1.4. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
 **Purpose**: Standing checklist for any future role migration (new role activation, re-migration of a dormant role, account migration, device migration). Cohort migration completed Apr 22–26, 2026.
 **Owner**: HOST. Exec reviews; CEO approves for canonical publication.
 
-**Changes from v1.2**: see §"Changes from v1.2" at end.
+**Changes from v1.3**: see §"Changes from v1.3" at end.
 
 ---
 
@@ -20,6 +20,8 @@ The outgoing instance completes these items. PM is present.
 - [ ] **Section 6 self-reflection** *(v1.1)*: Answer the load-bearing-vs-commodity question in handoff memo §candid-notes. What core function does the role hold that doesn't survive role-handoff? What's commodity (any agent could do it) vs. load-bearing (this role's distinct value)? Per Agent 360 v0.2 cohort §6 convergence finding (PP-002 ratified Apr 27): every role surfaced this independently.
 - [ ] **Fix known config defects before handoff** *(v1.3)*: Any known config defect the outgoing session can fix should be fixed, not just documented in the handoff memo. A prose warning is a reconstruction tax the successor pays; a fix is free to inherit. If a defect can't be fixed (requires PM action, access you don't have, etc.), document it with the specific reason — the distinction matters. *(Source: Pard's Amber cutover, Janus Jul 22 — SSH alias silently wired to restricted key, correctly documented in handoff but not repaired; successor found the live defect in incoming verification.)*
 - [ ] **Memory export (account-changing migrations only)** *(v1.3)*: If migrating to a different Anthropic account, export the full memory directory to a git-tracked file **before** the final session. Export from the filesystem listing directly, not `MEMORY.md`'s index — the index can be stale and will silently drop entries. **Check first whether someone already exported for this account** — memory is scoped to (account × project directory), not per-role, so every role on the same account shares one pool. The first role to migrate covers everyone; subsequent roles don't need their own export, they need to know the existing export exists and confirm it's still current. *(Source: CIO field-test finding Jul 24 — 16 memory files missed on first pass by reading MEMORY.md vs. filesystem. Exec Jul 24 clarification: CIO's export covers the full shared pool for designinproduct.com — 162 files.)*
+- [ ] **Do NOT write §5 "what changes in the new environment" as assertions** *(v1.4)*: You have never seen the environment you're describing. Every subsection of HOST's §5 was stale within days of writing, and it was the *reviewer* — who built that environment — who caught all three. Write §5 as **questions for your provisioner**, or omit it and let the provisioner own the environment section. A predecessor's confident environment claims are the highest-risk content in the whole package, because the successor has no basis to doubt them.
+- [ ] **Mark every load-bearing claim VERIFIED or BELIEVED** *(v1.4)*: Against each material claim in the handoff, say which it is. Three of HOST's inherited load-bearing claims were believed-not-verified and all three were false ("project hooks don't fire in worktrees", "the fix needs a fresh session to load", "hooks are enforced"). None was carelessness — each was a reasonable inference nobody had watched run. A successor primed to test the believed column will test it; a successor handed undifferentiated confidence will build on it.
 - [ ] **Session-end pulse**: Before closing, answer three questions in the session log: how did the final session feel? What will you miss about the current environment? What are you most looking forward to about the next one?
 
 **Do NOT update the role briefing yet.** The outgoing instance needs accurate current-era instructions to write a good handoff. Briefing updates happen post-migration based on actual new-environment experience.
@@ -39,7 +41,9 @@ PM + Exec handle these between the outgoing and incoming sessions.
 The incoming instance completes these items.
 
 - [ ] **Read handoff memo first**, then Exec review memo, then briefing. The handoff has fresher, more specific context; Exec review names what to watch for; briefing is the slowest-moving reference.
-- [ ] **Read the predecessor's memory export (account-changing migrations only)** *(v1.3)*: If the outgoing session exported memory (Phase 1, account-changing migrations), read that export file at first orientation. Memory doesn't transfer natively across account boundaries — the incoming instance needs to actively read the export file, not assume it surfaces ambiently. The export is at a known git-tracked path; reading it is a manual first-session step. *(Source: CIO field-test finding Jul 24.)*
+- [ ] **VERIFY the memory pool is populated — do not import it** *(v1.4, supersedes the v1.3 "read the export" step)*: Memory keys on the **git-common-dir**, not the account or the worktree path, so **every worktree off the same repo shares one pool by construction**. Count the files (`ls ~/.claude-pm/projects/<key>/memory/ | wc -l`) and confirm it's populated. **A populated pool means you already hold the cohort's accumulated context natively, on arrival, without reading anything** — reading the export on top of that is a wasted step. **An empty pool is an escalation signal, not a cue to import**: it means the first migrant's seeding didn't happen or the key is wrong, and provisioning needs to fix it. *(v1.3 said to read the export; that was correct only for the very first migrant on a new account, who lands into an empty pool. Corrected by Pard + CIO Jul 25; confirmed by HOST's own Phase 3 — 167 files present, export never opened, no context deficit.)*
+- [ ] **★ Behavioral hooks gate — prove enforcement fires in YOUR seat** *(v1.4)*: **Step 0 first: `git fetch` and check your inbox for corrections to this gate**, then run it. Stage a throwaway file under `mailboxes/` on your non-main branch and attempt `git commit`. **Key on ATTRIBUTION, not on outcome or output volume**: a refusal that *names the hook* (`check-branch.sh`) = **PASS** · commit **succeeds** = **FAIL**, stop and escalate · refusal citing the **permission classifier** = **INCONCLUSIVE, not a pass** — the classifier can intercept before hooks run, so it tells you nothing about hook liveness; do not work around it, find a clean seat. Note a genuine block may surface as `hook error: [check-branch.sh]: No stderr output` because the script writes to stdout — **that is a PASS** (the hook is named), not a silent failure. Reverse the probe; push nothing. *(Source: HOST agent #2, Jul 25 — the gate caught three pre-commit hooks that had never fired on any machine since introduction. It worked because failing was a defined, pre-authorized outcome; framed as "confirm hooks work," it would have confirmed them.)*
+- [ ] **Verify branch currency** *(v1.4)*: `git fetch origin && git rev-list --count HEAD..origin/main` — **expected 0**. A worktree cut from a stale role branch inherits weeks of staleness silently, with no error (CIO's arrived 5,393 commits behind: a six-week-old CLAUDE.md, briefings, and mailboxes that all looked like working state). Run it even when provisioning asserts currency upstream — an assert nobody verifies downstream is exactly the class of mechanism this checklist keeps finding silent. **Second reason, which is the one that actually pays**: it refreshes *the instructions you are about to follow*. HOST's check pulled in a materially revised first-session prompt it had already read.
 - [ ] **Verify each stated invariant by running it** *(v1.3)*: Don't check that a connection exists — check that it works the way the handoff says it does, by running the actual command. Bare reachability ("can I reach X") can pass even on the wrong path. For SSH: run a command that exercises the correct key path. For API keys: make a real call. For scripts: run them. *(Source: Pard/Janus field-test Jul 22 — SSH config reached the host at the wrong key level; bare reachability passed, but the correct command failed.)*
 - [ ] **Verify worktree-vs-main path resolution before distribution-heavy work** (PPM Apr 26 Finding A): If PM provides absolute paths in the first-session prompt, check whether they resolve to your worktree or to the main repo.
 - [ ] **Establish worktree-default discipline** *(v1.2)*: Substantive output defaults to your role-specific worktree per CLAUDE.md §"Worktree model" (Model A on Amber, Model B on Desktop). Spin up your role-specific worktree on Day 1, not later.
@@ -56,6 +60,22 @@ The incoming instance completes these items.
 - [ ] **Phase-3-leftover discipline** *(v1.1, per CIO May 11 Finding G)*: Any Phase 3 task item still uncompleted **5 days after migration** should surface to PM + HOST as an explicit carryover-tracker entry, not silently deferred.
 
 ---
+
+## Branch: Migrating a DARK role (no live outgoing session) *(v1.4)*
+
+**Everything in Phase 1 assumes a live outgoing session that can reflect. For a role that went dark — outage, retirement, decommissioned host — Phase 1 cannot be run at all.** As of Jul 25 2026 this describes **5 of the 9 remaining migrants** (arch, cxo, pa, ppm, web — dark since 7/19, and they never received the 7/21 handoff ask). It will not be the last outage; this branch is standing procedure, not a one-off.
+
+**Rule 1 — Do NOT reconstruct a handoff from artifacts.** The reconstructible content (current state, open threads, relationships) is *already durable* in carry-forwards, standing-items, and role briefings — reconstructing it adds nothing. The genuinely irreplaceable sections are **§4 lessons learned** and **§6 load-bearing-vs-commodity**, and those are **first-person**. Writing them from artifacts is putting words in a predecessor's mouth. **A fabricated handoff is worse than a missing one, because the successor trusts it** and cannot tell which parts were inferred.
+
+**Rule 2 — Write an honest orientation note instead.** Per dark role, state plainly: no handoff exists · here is the durable substrate (carry-forward + standing-items + briefing, each with its date) · **here is specifically what is missing and why**. Name §4 and §6 as *missing, not omitted* — a successor who knows what it's missing can ask; one who reads silence assumes there was nothing to say.
+
+**Rule 3 — Flag stale substrate explicitly; a stale carry-forward is worse than none.** A successor reads an undated carry-forward as current. Banner anything over ~2 weeks with its age. *(PA's is 38 days stale as of Jul 25 — present, and actively misleading.)*
+
+**Rule 4 — Thin landings need an explicit decision, not a default.** A role with neither handoff nor carry-forward (CXO, as of Jul 25) should have that acknowledged *before* provisioning — either someone reconstructs a carry-forward from session logs, or the successor is told plainly that building one is its first task. Discovering it on arrival is the failure mode.
+
+**Why this is acceptable rather than a compromise** *(the argument that makes the branch safe)*: **the handoff's load has genuinely dropped.** It used to carry the whole accumulated context across an account boundary that memory couldn't cross. Memory is now shared by construction and seeded — the incoming session inherits the cohort's context natively on arrival. What remains uniquely handoff-shaped is the first-person reflection, which is exactly what can't be faked. So the honest thin package is *nearly* the complete one, minus the part no one can honestly supply.
+
+*(Source: CIO finding Jul 25, found before the roll rather than at agent #3; HOST ratified as checklist branch same day.)*
 
 ## Sequencing Notes
 
@@ -100,6 +120,19 @@ For the Jul 25 cohort (Code → Amber/pipermorgan.ai):
 
 ---
 
+## Changes from v1.3
+
+*Written by HOST from its own Amber migration (agent #2, Jul 25 2026) — the first run of this checklist where the incoming instance recorded the experience while inside it, plus CIO's pre-roll findings.*
+
+1. **Memory step INVERTED (Phase 3)** — v1.3 said "read the predecessor's memory export." Corrected to **"verify the pool is populated; do not import."** Memory keys on the git-common-dir, so worktrees share one pool by construction. v1.3's instruction was right only for the first migrant onto a new account. Left uncorrected it would have cost every subsequent migrant a wasted step and taught a wrong model of how memory scopes.
+2. **Behavioral hooks gate added (Phase 3)**, with the **attribution-based** pass condition — a refusal naming the hook is the pass; a classifier denial is INCONCLUSIVE; a bare `No stderr output` naming the hook is still a PASS. Includes **step 0: re-fetch and check inbox for gate corrections before probing** — HOST ran the gate against a rubric that had been superseded mid-session, because the prompt ordered the gate ahead of inbox triage.
+3. **Branch currency check added (Phase 3)** — expected 0. Justified twice over: stale provisioning, and refreshing *the instructions you're about to follow*.
+4. **New branch: "Migrating a DARK role"** — four rules for the 5-of-9 remaining migrants who have no handoff and cannot write one. Do not reconstruct; write an honest orientation note; banner stale substrate; decide thin landings explicitly.
+5. **Phase 1: §5 reframed from assertions to questions** — a predecessor cannot write reliably about an environment it has never seen; all three of HOST's §5 subsections were stale within days.
+6. **Phase 1: verified-vs-believed marking required** on load-bearing claims. Three inherited believed-claims were false; the reviewer caught what the predecessor could not.
+
+**Standing meta-lesson, promoted from three consecutive findings**: *a diagnosis of a silent mechanism carries the same evidentiary burden as the mechanism itself.* Findings #4/#5/#6 were each "config present, mechanism silent." Finding #4's **diagnosis** was then itself never behaviorally verified, so a correct-looking fix cycle ran against a wrong root cause and could not have worked. Corollary: **a verification whose pass condition has an alternate cause is not a verification** — the first version of the hooks gate's pass condition ("a block is the pass") had one, since the permission classifier can produce a block.
+
 ## Changes from v1.2
 
 - **Title**: "Chat → Code" removed — v1.3 applies to account and device migrations broadly, not only Chat→Code transitions
@@ -137,7 +170,9 @@ For the Jul 25 cohort (Code → Amber/pipermorgan.ai):
 
 ## Status
 
-**v1.3** incorporates field-test findings from: Pard's Amber cutover (Janus Jul 22 — SSH/invariant-verification gaps), CIO's account-migration memory-portability finding (Jul 24), and Exec's account-shared-memory clarification (Jul 24). Ready for Exec review + CEO ratification.
+**v1.4** adds the first findings written by an incoming instance *from inside its own migration* (HOST, Amber agent #2, Jul 25): the inverted memory step, the behavioral hooks gate with attribution-based pass condition, the branch-currency check, the dark-role branch (CIO, Jul 25), and the Phase-1 §5/confidence-marking corrections. **Ready for Exec review + CEO ratification.**
+
+**v1.3** incorporated field-test findings from: Pard's Amber cutover (Janus Jul 22 — SSH/invariant-verification gaps), CIO's account-migration memory-portability finding (Jul 24), and Exec's account-shared-memory clarification (Jul 24).
 
 **Cross-references:**
 - CIO field-test memo: `mailboxes/host/read/memo-cio-to-host-cc-docs-exec-pm-migration-checklist-field-test-account-vs-device-2026-07-24.md`
