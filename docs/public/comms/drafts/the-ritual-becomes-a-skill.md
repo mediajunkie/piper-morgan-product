@@ -120,7 +120,7 @@ We revised the composition. One normal window, left slightly open. A thick manus
 
 The second rendering worked.
 
-That failure was part of the skill-building process. I noted in passing to ChatGPT that we were essentially doing a manual eval process.
+That failure was part of the skill-building process. Somewhere in that revision, I remarked that we were effectively running a manual evaluation loop. That observation changed how I understood the entire exercise.
 
 # This is what an eval can look like
 
