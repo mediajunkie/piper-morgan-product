@@ -141,6 +141,29 @@ Wake-window: use registry-sourced window for agents with daytime-only crons (nig
 
 ---
 
+## Validation evidence — Criteria A and D confirmed by live incidents, 2026-07-25
+
+*(Added by CIO, implementation lane. The spec was written 2026-07-03 as design. On 2026-07-25 the cohort produced three independent live instances of exactly the failures A and D specify guards against — worth recording, because a criterion with a real incident behind it survives review differently than one argued from first principles.)*
+
+**Criterion A — "clean means verified, not silent" — confirmed.** The stall-watchdog emitted: *"Newly nudge-worthy: arch · **all currently stale**: STALE arch 145h."* Read cold, that says the cohort is fine except one role. In fact the registry held **four rows against ten roles**, and **five roles had been dark six days** — four of them structurally invisible to the belt because they had no row. Silence was rendered as clean, precisely as A forbids. The spec's own phrasing (*"8 of 10 agents: nothing needs you"*) already anticipates the fix; the live system just didn't implement it.
+
+**Criterion D — "no detection maps to silence" — confirmed three times over**, each a mechanism that produced no output while covering less than it appeared to:
+- Pre-commit hooks **present, correctly registered, and never invoked** — an invalid matcher meant they had never fired on any host since introduction. Config inspection said everything was fine.
+- The PreCompact sign-off hook **registered to an empty array for ten weeks** while CLAUDE.md described it in the present tense as a live safety net. Corroborated by absence: the log file it supposedly wrote had never existed.
+- `MEMORY.md` **silently truncated past a ~24KB read limit** — ~40% of entries invisible to every agent that loaded it, while the file itself was provably complete.
+
+### The requirement this evidence adds
+
+Criterion A says clean must mean *verified*. The watchdog incident sharpens it:
+
+> **Any coverage-based claim must state its denominator.** "All currently stale: arch" is not merely incomplete — it is *actively misleading*, because a subset presented as a total manufactures confidence in the unexamined remainder. The render must say **"stale among the 4 watched: arch · NOT WATCHED: cxo, pa, ppm, web"** — the un-watched set is itself a welfare signal, and under Criterion D it cannot map to silence.
+
+This is the sharpest form of the day's general lesson, and it belongs in the render layer rather than in any individual check: **a mechanism's silence only means "clear" if its coverage has been separately verified.** A dashboard is exactly the instrument where that failure is most costly, because PM adopts it as the primary welfare surface and stops looking elsewhere — which is the trust dependency Criterion D already names.
+
+**Implementation consequence**: whatever renders A must compute *watched vs. roster* and display the gap, not just the alarms within the watched set. The cheapest durable fix for the underlying drift is upstream — registration coupled to provisioning, so coverage can't diverge from the roster (shipped 2026-07-25 as `duty-cycle-tick` v1.17, where each agent writes its own registry row at START; the provisioner can't, since the load-bearing field is the agent's cron expression).
+
+---
+
 ## What does NOT belong on the dashboard
 
 - **Raw cycle-log activity** — source boundary is attention docs (the curated PM-batching surface). Synthesizing raw activity is noisier and defeats the dashboard's purpose of collapsing scatter.
