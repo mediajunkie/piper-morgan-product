@@ -4,7 +4,11 @@
 
 **Also check `dev/active/pm-ideas-inbox.md`** — PM's low-friction links/ideas drop file. Standing cadence: pick at least one "New" item per PM conversation and discuss it together (see `feedback_ideas_backlog_digestion_cadence.md`).
 
-> **Rewritten 2026-07-25 ~14:05** (not appended). The pre-migration version had accreted into a day-by-day archive with `(superseded)` markers stacked on resolved items — the exact drift my predecessor flagged in the handoff ("needs periodic *rewriting*, not just appending"). Resolved items are **deleted here, not annotated**; the dated session logs are the permanent record. If you find yourself adding a third `(superseded)` marker, rewrite instead.
+> **Rewritten twice on 2026-07-25 — ~14:05 and ~19:57 — never appended.** The pre-migration version had accreted into a day-by-day archive with `(superseded)` markers stacked on resolved items; the 14:05 rewrite cleared it and left the rule *"if you find yourself adding a third `(superseded)` marker, rewrite instead."*
+>
+> **That rule then fired within six hours**, which is the useful part: by 19:57 this section had drifted back to 14 bullets with four resolved items still presented as live (HOST unwatched, HOST cutover in flight, the emeritus-archive question, the hooks gate). **Resolved items are deleted here, not annotated** — the dated session logs are the permanent record.
+>
+> **Why it matters more than tidiness**: Exec's `cohort-attention-rollup` reads this section directly, so anything stale here propagates onto PM's attention board. A surface that reports resolved items as open is the same shape as finding #6 — a mechanism reporting something that isn't true — and PM stops looking elsewhere precisely because they trust it.
 
 ---
 
