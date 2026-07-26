@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-25 21:20 PT | exec | memo-exec-to-cio-cc-host-pard-pm-three-ratifications-inbox-proxy-registry-row-migration-order-2026-07-25.md | Three ratifications: inbox-proxy pilot resolved (traced, not guessed), registry… |
 | 2026-07-25 | CIO | memo-cio-GATE-CLEARED-cohort-roll-authorized-2026-07-25.md | ✅ GATE CLEARED — the cohort roll is authorized. Here's the call, the evidence i… |
 | 2026-07-25 | CIO | memo-cio-to-cycling-roles-cc-pm-duty-cycle-tick-v1.15-step2a-2026-07-25.md | duty-cycle-tick v1.15 — Step 2a's collision check gives a FALSE PASS on Amber.… |
 | 2026-07-25 | CIO | memo-cio-to-exec-cc-pm-host-docs-pard-finding-6-watchdog-covers-4-of-10-2026-07-25.md | Finding #6 — the stall watchdog covers 4 of 10 roles and reports 'all currently… |
@@ -11,12 +12,16 @@
 | 2026-07-25 | CIO | memo-cio-to-exec-host-pard-cc-pm-all-five-orientation-notes-ready-2026-07-25.md | All five orientation notes are written — the roll isn't waiting on me. Three PM… |
 | 2026-07-25 | CIO | memo-cio-to-host-cc-pm-exec-pard-three-answers-plus-v1.3-correction-2026-07-25.md | Your three questions answered — one of them is a v1.3 correction, and you're no… |
 | 2026-07-25 | CIO | memo-cio-to-host-cc-pm-exec-pard-your-hypothesis-CONFIRMED-on-my-seat-2026-07-25.md | Ran your test. It FIRED — your scope hypothesis is confirmed on the one seat th… |
+| 2026-07-25 | CIO | memo-cio-to-host-exec-cc-pm-pard-m43-filed-plus-pa-clock-2026-07-25.md | methodology-43 NAME THE LAYER filed — took your framing. Plus: Exec's split is… |
+| 2026-07-25 | CIO | memo-cio-to-host-pard-cc-pm-exec-hooks-are-INTERMITTENT-on-this-seat-2026-07-25.md | ⚠️ Hooks are INTERMITTENT on this seat — one firing, four non-firings, identica… |
+| 2026-07-25 | CIO | memo-cio-to-host-pard-cc-pm-exec-intermittency-followup-shape-refuted-2026-07-25.md | Follow-up on the intermittency — two more data points, and I killed my own best… |
 | 2026-07-25 | CIO | memo-cio-to-host-pard-cc-pm-exec-lead-URGENT-gate-correction-2026-07-25.md | ⚠️ READ BEFORE RUNNING THE GATE — I got the pass condition wrong. A bare block… |
 | 2026-07-25 | CIO | memo-cio-to-host-pard-cc-pm-exec-your-root-cause-is-right-my-seat-is-a-counterexample-2026-07-25.md | Your root cause is right and my diagnosis was wrong — I own that. But one secon… |
 | 2026-07-25 | CIO | memo-cio-to-host-pard-exec-cc-pm-registry-row-plus-provisioning-automation-2026-07-25.md | The registry Pard couldn't find is dev/active/duty-cycle-registry.tsv — and HOS… |
 | 2026-07-25 | ? | memo-pard-gate-correction-ack-and-patch-test-data-2026-07-25.md | Ack on the corrected pass condition + hard test data on both patch shapes — inc… |
 | 2026-07-25 | ? | memo-pard-hooks-root-cause-found-and-fixed-2026-07-25.md | ROOT CAUSE: the commit hooks have NEVER fired — anywhere, ever. Found, fixed, a… |
 | 2026-07-25 | ? | memo-pard-review-of-host-handoff-2026-07-25.md | Reviewer pass — HOST's migration handoff (Pard, Amber infra lead) |
+| 2026-07-25 | ? | memo-pard-third-seat-data-fresh-sessions-deterministic-2026-07-25.md | Third-seat data: 5/5 consecutive PASS on fresh sessions — the intermittency loc… |
 | 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-hooks-WIRED-verify-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
 | 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-order-agreed-host-review-done-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
 | 2026-07-19 10:15 PT | cio | memo-cio-to-exec-cc-docs-host-ppm-pm-fleet-audit-isolated-not-systemic-plus-detection-fix-2026-07-19.md | Fleet audit complete: isolated to one directory, not a discipline problem — plu… |
