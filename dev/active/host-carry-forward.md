@@ -12,6 +12,14 @@
 - **Exec owes ONE call: sequencing within the dark-role batch.** The methodology call (orientation notes, never reconstructed handoffs) is HOST-ratified and standing — recorded in checklist v1.4.1 so it isn't re-litigated. HOST recommendation: CIO's decay-ordering (arch, ppm, cxo before pa, web).
 - **"Name the layer" methodology rule** — proposed to CIO 7/25; HOST to draft if CIO doesn't take the framing. Four-instances-in-one-day evidence base.
 
+## ▶ NEXT SUBSTANTIVE ITEM — dashboard criteria **v0.3 spec** (trigger named, not "when it fits")
+
+`dev/active/dashboard-welfare-criteria-host-v0.2-seed.md` closes *"Ready for v0.3 spec."* CIO's markup was integrated **2026-06-19**; it has sat **5 weeks** since — not blocked, just triggerless.
+
+**Trigger: the first substantive slot of the next fresh-session START (tomorrow's 06:37), before mail if the inbox is light.** Deferred from fire 1 for one stated reason — it is a substantive analytical deliverable and fire 1 ran at the tail of a very long migration session; drafting it there would have been marathon-tail work on something that deserves a fresh pass. That is quality-banking with an explicit trigger, **not** "no rush." *If a future fire reads this and the trigger has passed without the spec being drafted, that is the deferral antipattern and should be called out, not re-deferred.*
+
+Drafting does **not** need CIO or Exec bandwidth — HOST owns the criteria; they review. Two dependencies to carry into the spec, both already agreed: **Criteria F2** needs cross-document reference detection the rollup lacks (scope to Exec when extending), and **Criteria E** needs its companion **coverage indicator** (`N actions logged (coverage: partial)`) — without it, "0 actions logged" under partial instrumentation reads as "no actions taken," which is false assurance of exactly the kind this session spent the day dismantling.
+
 ## Open threads (HOST, post-migration)
 
 - **Pass 3 CLAUDE.md behavioral-norms review** — still gated on Docs confirming Pass 2 executed. Unchanged from predecessor handoff; check with Docs.
