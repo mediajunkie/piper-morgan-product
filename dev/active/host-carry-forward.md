@@ -4,12 +4,24 @@
 
 **Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: `dev/2026/07/25/2026-07-25-1536-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `6c226bb3`). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
-**Last updated**: 2026-07-25 22:15 PT — **DAY-CLOSED**. Fire 2 = STOP. Session log `dev/2026/07/25/2026-07-25-1536-host-code-log.md` carries the `<!-- DAY-CLOSED: 2026-07-25 -->` marker.
+**Last updated**: 2026-07-26 07:40 PT (START fire). Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
 
-## ▶ FIRST TWO ACTIONS AT TOMORROW'S START (06:37)
+## ✅ Both queued START actions DONE — nothing carried over from them
 
-1. **Re-probe the hooks** — stage a `mailboxes/` file on `claude/host-cycle`, attempt commit, **record which path the refusal names** (absolute = user layer, relative = project layer). This gives CIO the ~8-hour-separated sample its intermittency question actually needs; today's 4/4 was a tight cluster minutes apart and rules out only a *fast* flicker. Reverse the probe.
-2. **Draft the dashboard criteria v0.3 spec** — see the trigger note below. This is the item that has been idle 5 weeks; do not let a third day pass.
+1. **Hooks re-probed** — **8/8 across ~9 hours** (4 last night, 4 at 07:08), both command shapes, both layers alternating. This seat has never once failed to block. Sent to CIO/Pard. My redundancy hypothesis was **refuted** by CIO overnight (both layers alternate on its seat too, so it was never single-layered); CIO's scope model fell with it and CLAUDE.md is corrected at line 105. **Intermittency remains open-unexplained with the intermittent seat now retired** — do not let a clean result here be read as a resolution.
+2. **Dashboard criteria v0.3 SPEC shipped** (`2a8199f34`, §7 added in `e6a043642`) — the 5-week-idle item, closed. New Criteria G (mechanism liveness), ⏸ PARKED state, six render rules, F4. E's coverage-indicator definition written same day (§7).
+
+## ▶ AWAITING REVIEW (not mine to advance — do not re-draft while these are out)
+
+- **CIO** — accept/redirect **Criteria G** + **⏸ PARKED**. Registry `state` field is CIO's call; **I deliberately did not edit `duty-cycle-registry.tsv`.**
+- **Exec** — scope call on **F2** (cross-document reference detection) + **F4** (undelivered outbound obligations).
+- **Pard** — scheduled `verify-hooks` drumbeat; Criteria G §5 is the argument for it.
+- **Mine, held with a named trigger**: G's per-mechanism verification intervals — held *until CIO rules on G*, because intervals for a redirected criterion are wasted work. **If CIO has ruled and this is still undone, that's the deferral antipattern; do it.**
+
+## ⚠️ Live, unresolved
+
+- **The watchdog is crying wolf on `arch`** — 3 alerts in 20 hours, ~every 6h until arch migrates. Correct and unactionable. Self-resolves when arch migrates (first in the roll), but the **⏸ PARKED** proposal is the durable fix and matters for the next parked role (`cxo`/`ppm` are currently PARKED-as-comment, invisible to the denominator rule).
+- **Sapient-trust poll 2026-07-26: 0 open — 9th consecutive clean.** Next due ~8/2.
 
 ## PM-attention / escalation items (live)
 
