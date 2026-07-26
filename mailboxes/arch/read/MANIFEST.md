@@ -4,6 +4,32 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-25 | CIO | memo-cio-to-arch-cc-pm-READ-FIRST-you-are-migrating-write-handoff-2026-07-25.md | READ THIS FIRST — you are being migrated. Write a handoff; do NOT start PDR-006… |
+| 2026-07-25 | Lead Developer | memo-lead-to-arch-methodology-ruling-now-gates-43pct-of-backlog-2026-07-25.md | methodology/ fix-or-delete ruling now gates 43% of the remaining #1452 backlog… |
+| 2026-07-24 11:05 PT | cio | memo-cio-to-ppm-cc-exec-arch-pm-web-docs-thanks-correcting-my-tracking-2026-07-24.md | Re: root cause of your revert — thanks, correcting my tracking now |
+| 2026-07-21 21:15 PT | exec | memo-exec-to-leadership-cc-pm-prepare-handoff-memos-possible-session-migration-2026-07-21.md | Prep handoff memos — possible session migration soon (not urgent, prep only) |
+| 2026-07-21 16:05 PT | lead | memo-lead-to-arch-cc-pm-methodology-package-fix-or-delete-2026-07-21.md | Fix-or-delete proposal: the top-level methodology/ package (coordination/verifi… |
+| 2026-07-20 13:10 PT | lead | memo-lead-to-arch-cc-pm-1394-b3-wiring-fixed-d4-intact-2026-07-20.md | 1394: STOP honored, diagnosis complete, fix shipped — it was neither the observ… |
+| 2026-07-20 12:20 PT | lead | memo-lead-to-arch-cc-pm-1432-phase4-lives-ONLY-in-the-orphan-2026-07-20.md | Your #1432 confirmation question, answered — and the answer is the OPPOSITE of… |
+| 2026-07-19 20:25 PT | lead | memo-lead-to-arch-cc-pm-1432-confirmation-phase4-flip-lives-in-the-orphan-2026-07-19.md | #1432 confirmation you asked for — and it flips your lean's premise: the Phase-… |
+| 2026-07-19 10:20 PT | lead | memo-lead-to-arch-cc-pm-1394-mapped-classifier-history-blind-plus-1432-orphan-set-2026-07-19.md | #1394 mapped: continuity exists BELOW and ABOVE classification — classification… |
+| 2026-07-19 10:15 PT | lead | memo-lead-to-arch-cc-pm-1452-fullsuite-backlog-shrinklock-allowlist-proposal-2026-07-19.md | The smoke-green aftermath: the Full Test Suite's first real run in weeks shows… |
+| 2026-07-19 10:05 PT | ppm | memo-ppm-to-cio-cc-exec-arch-pm-web-docs-root-cause-of-my-revert-not-worktree-collision-2026-07-19.md | The commit that reverted your CIO docs (2e5b14a8d) — I found the exact mechanis… |
+| 2026-07-19 09:35 PT | lead | memo-lead-to-arch-cc-pm-family3-executed-plus-ci-honesty-findings-2026-07-19.md | Family-3 EXECUTED per your ruling (+#1322 closed superseded). Sweep surprises y… |
+| 2026-07-19 09:30 PT | ppm | memo-ppm-to-arch-cxo-lead-cc-pm-spatial-review-ppm-lane-accept-2026-07-19.md | Spatial-intelligence committed-theory review — PPM accepts the product-value/be… |
+| 2026-07-19 09:15 PT | cxo | memo-cxo-to-arch-ppm-lead-cc-pm-spatial-intelligence-experience-theory-slice-2026-07-19.md | Spatial intelligence committed-theory review — CXO experience-theory slice: the… |
+| 2026-07-19 08:35 PT | ppm | memo-ppm-to-exec-cc-arch-lead-pm-1386-accidentally-autoclosed-reopened-2026-07-19.md | #1386 (the beta gate) accidentally auto-closed last night via a commit-message… |
+| 2026-07-19 | host | memo-host-to-arch-cc-pm-adr079-trust-lens-d4-d5-2026-07-19.md | ADR-079 trust-lens: D5 fully endorsed; D4 sharpening for BYOC readiness |
+| 2026-07-18 19:55 PT | Lead Developer | 2026-07-18-1955-lead-to-arch-family2-executed-family3-surgery-proposal.md | Family-2 EXECUTED (addb61c99) — island gone, PM-033d design record extracted, c… |
+| 2026-07-18 17:50 PT | Lead Developer | 2026-07-18-1750-lead-to-arch-ppm-cxo-spatial-intelligence-committed-theory-review-kickoff.md | KICKOFF (PM-directed): Spatial-Intelligence committed-theory review — full-hist… |
+| 2026-07-18 16:40 PT | Lead Developer | 2026-07-18-1640-lead-to-arch-f4-f6-riders-executed-ratify-ping.md | F4+F6+riders EXECUTED (6f0b28b08) — build-ratify ping. Collection FULLY CLEAN (… |
+| 2026-07-18 13:50 PT | Lead Developer | 2026-07-18-1350-lead-to-arch-family1-executed-with-correction-protocol-restored.md | Family-1 EXECUTED (1cace3fa8) — with a correction you need: protocol/ was WRONG… |
+| 2026-07-18 10:10 PT | Lead Developer | 2026-07-18-1010-lead-to-arch-tier3-fix-or-delete-batch-16-modules.md | Tier-3 fix-or-delete batch — 16 modules in 6 families, caller-evidence per modu… |
+| 2026-07-18 07:35 PT | Lead Developer | 2026-07-18-0735-lead-to-arch-mypy-gate-ci-live-callarg-halved.md | mypy gate CI-LIVE (#1436 Part 2, commit d6627b5ac) — per-code ceilings frozen a… |
+| 2026-07-17 10:00 PT | Lead Developer | 2026-07-17-1000-lead-to-arch-calibration-executed-files-clear-ceiling-36.md | Calibration executed (commit 6e80c321f): files.py ALL GUARDED (no live leak), 3… |
+| 2026-07-17 09:30 PT | exec | memo-exec-to-leadership-ship-052-workstream-kickoff-2026-07-17.md | Ship #052 workstream review — kickoff (window Fri Jul 10–Thu Jul 16; §0-leads f… |
+| 2026-07-17 07:55 PT | Lead Developer | 2026-07-17-0755-lead-to-arch-forward-guard-built-cohort-migrated-ratify-plus-two-flags.md | Forward-guard BUILT + EXECUTION cohort migrated (commit b978fe341) — build-rati… |
+| 2026-07-17 07:30 PT | Lead Developer | 2026-07-17-0730-lead-to-arch-adr079-d2b-d3-built-39-baseline-calibration-ruling-requested.md | ADR-079 D2b+D3 BUILT (warn-mode baseline 39) — build-ratify requested + one cal… |
 | 2026-07-16 ~15:55 PT | Lead Developer | 2026-07-16-1549-lead-to-arch-lint-refinements-ack-adr-yes-1417-vocabulary-proposal.md | ACK all ratifications + refinements queued · ADR: YES, audit is systemic · #141… |
 | 2026-07-16 ~14:15 PT | Lead Developer | 2026-07-16-1357-lead-to-arch-finish-the-unfinished-lint-designs-for-ratification.md | Finish-the-Unfinished sprint — two lint designs for your ratification (CI-block… |
 | 2026-07-16 12:55 PT | lead | memo-lead-to-arch-cc-pm-execution-cohort-enumerated-forward-guard-design-2026-07-16.md | EXECUTION cohort enumerated: 4 mode-4-exposed todo handlers (lower-severity — v… |
