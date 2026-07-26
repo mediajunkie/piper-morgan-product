@@ -4,7 +4,7 @@
 
 **Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: **`dev/2026/07/26/2026-07-26-0707-host-code-log.md`** (07-26). **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID **`7c1d5637`**). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
-**Last updated**: 2026-07-26 10:25 PT (WORK fire). Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
+**Last updated**: 2026-07-26 13:20 PT (WORK fire). Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
 
 ## ✅ Both queued START actions DONE — nothing carried over from them
 
@@ -13,8 +13,10 @@
 
 ## ▶ CHECK AT TOMORROW'S START (07-27)
 
-- **Did the drumbeat's 19:05 scheduled beat fire?** `~/Development/mediajunkie/logs/verify-hooks-drumbeat.log` should have a line at ~19:05 on 07-26. **Until then the drumbeat's *schedule* is config-present-but-unobserved** — the 07:22 line was a manual run, so `7/7 lifetime` is 7 hand-triggered invocations. **No 19:05 line = a finding, not a non-event.**
-- **Re-probe hooks** if convenient — extends the longitudinal series (currently 8/8 across 9h on this seat).
+- **Did the drumbeat's 19:05 scheduled beat fire?** `~/Development/mediajunkie/logs/verify-hooks-drumbeat.log`. **Still unproven** — the 07:22 line was a manual run. **No 19:05 line = a finding, not a non-event.** *(The freeze-watchdog's equivalent check is DONE: its 12:46 scheduled fire landed, schedule proven.)*
+- **Watchdog heartbeat freshness** — `~/Development/mediajunkie/logs/freeze-watchdog-heartbeat.log`, bar **>7h** (6h interval + 1h grace). This becomes a `duty-cycle-tick` START step once CIO ships the skill half; until then check it by hand.
+- **Did Pard take the heartbeat denominator fix?** (`roles=8` → `watched=N parked=M`.) If the line still says `roles=`, the wrong denominator is still being written into the belt's own record.
+- **Re-probe hooks** if convenient — extends the longitudinal series (8/8 across 9h so far).
 
 ## ▶ AWAITING REVIEW (not mine to advance — do not re-draft while these are out)
 
@@ -22,11 +24,15 @@
 - ~~**Exec** — F4~~ ✅ **ACCEPTED into rollup scope** 07-26; Exec applying it manually meanwhile. ~~PARKED~~ ✅ **ratified on shape** (CIO owns mechanics).
 - **Exec — F2**: design pass **delivered** 07-26 (`dev/active/dashboard-F2-cross-pair-gap-design-pass-2026-07-26.md`, `24b4a81b8`). Now a scope call on **tier 1 only**. **Mine, unblocked:** hand-run the §5 validation set (4 known-answer cases incl. a false-positive control) before anyone writes code.
 - ~~**Pard** — verify-hooks drumbeat~~ ✅ **ARMED** 07-26 (system crontab `5 7,19`, log + escalation on non-PASS). Two refinements sent: **G6** staleness-assert (it's silent on *absence*), and the schedule being unproven until 19:05.
-- **Mine, held with a named trigger**: G's per-mechanism verification intervals — held *until CIO rules on G*, because intervals for a redirected criterion are wasted work. **If CIO has ruled and this is still undone, that's the deferral antipattern; do it.**
+- ~~**Mine, held**: G's verification intervals~~ ✅ **DONE 07-26** (spec §3a, `55c163861`) — CIO accepted G no-redirect, the named trigger arrived, and the work happened the same fire. **Second worked example that named triggers actually fire.**
+- **Mine, unblocked**: hand-run F2 §5 validation — **DONE 07-26**, and it overturned my own headline case (see log).
 
 ## ⚠️ Live, unresolved
 
-- **The watchdog is crying wolf on `arch`** — 3 alerts in 20 hours, ~every 6h until arch migrates. Correct and unactionable. Self-resolves when arch migrates (first in the roll), but the **⏸ PARKED** proposal is the durable fix and matters for the next parked role (`cxo`/`ppm` are currently PARKED-as-comment, invisible to the denominator rule).
+- ~~watchdog crying wolf on `arch`~~ ✅ **RESOLVED** — CIO shipped PARKED (`duty-cycle-freeze-check.sh` v0.5, col-8 `state`). arch/cxo/ppm parked; **alerts stopped** (3 in the prior 20h, none since 07:03). CIO's sharpening: cxo/ppm weren't a workaround for the missing state, they were **finding #6 already in production** for five weeks, looking like documentation.
+- **Two of three pre-commit hooks are STILL UNVERIFIED** — the drumbeat exercises `check-branch` only; `broad-staging-warn` and `reconcile-drafts` were dead alongside it and have never been proven alive. Asked Pard to extend the drumbeat.
+- **`mail-send.sh`'s residue-reconcile half has no check at all** — the push self-verifies, the reconcile doesn't.
+- **Heartbeat denominator wrong** (`roles=8` for 7 rows / 4 watched) — tested fix sent to Pard, not applied by me (his emit half).
 - **Sapient-trust poll 2026-07-26: 0 open — 9th consecutive clean.** Next due ~8/2.
 
 ## PM-attention / escalation items (live)
