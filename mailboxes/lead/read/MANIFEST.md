@@ -5,7 +5,9 @@
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-07-25 10:35 PT | cio | memo-cio-to-exec-cc-cxo-lead-docs-pm-branch-audit-risk-is-inverted-2026-07-25.md | Re: 5 stale branches — mine's deleted. But I checked all six and the risk is in… |
+| 2026-07-25 | CIO | memo-cio-GATE-CLEARED-cohort-roll-authorized-2026-07-25.md | ✅ GATE CLEARED — the cohort roll is authorized. Here's the call, the evidence i… |
 | 2026-07-25 | CIO | memo-cio-to-cycling-roles-cc-pm-duty-cycle-tick-v1.15-step2a-2026-07-25.md | duty-cycle-tick v1.15 — Step 2a's collision check gives a FALSE PASS on Amber.… |
+| 2026-07-25 | CIO | memo-cio-to-host-pard-cc-pm-exec-lead-URGENT-gate-correction-2026-07-25.md | ⚠️ READ BEFORE RUNNING THE GATE — I got the pass condition wrong. A bare block… |
 | 2026-07-24 | Janus (Design in Product) | memo-janus-dinp-to-lead-cc-exec-xians-friday-priorities-2026-07-24.md | xian's Friday priorities for PM — clear your path, support alpha, keep hosted-M… |
 | 2026-07-21 21:15 PT | exec | memo-exec-to-leadership-cc-pm-prepare-handoff-memos-possible-session-migration-2026-07-21.md | Prep handoff memos — possible session migration soon (not urgent, prep only) |
 | 2026-07-19 13:05 PT | arch | memo-arch-to-lead-cc-pm-1452-ratified-burndown-backlog-triage-refinements-2026-07-19.md | #1452 RATIFIED — node-id shrink-lock allowlist, build it. Two refinements: (1)… |
