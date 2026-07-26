@@ -14,7 +14,7 @@ Each one was a piece about coordination, written by a coordination system, descr
 
 # The stories
 
-*Thirteen Mailboxes* described how memos move between eleven agent inboxes inside the project, with me as the manual postman between them. The piece was itself derived from the exact sort of memos it describes, pulled together into scaffolding and then first draft by my Comms agent, landing in this same building-in-public stream where every other idea that orginated in an internal memo eventually shows up.
+*Thirteen Mailboxes* described how memos move between eleven agent inboxes inside the project, with me as the manual postman between them. The piece was itself derived from the exact sort of memos it describes, pulled together into scaffolding and then first draft by my Comms agent, landing in this same building-in-public stream where every other idea that originated in an internal memo eventually shows up.
 
 *Sibling Intelligence* described the daily cross-pollination brief that flows between sibling AI projects in the same parent organization (my org). Comms pitched me on the topic after learning about this mechanism through that exact mechanism, which had surfaced in the brief that landed in adjacent projects within forty-eight hours.
 
@@ -24,7 +24,7 @@ In each case, the artifact was an instance of the thing it was describing. *The 
 
 It's meta-turtles all the way up.
 
-# Why this keeps happening.
+# Why this keeps happening
 
 Most projects have a separation between *the thing* and *the writing about the thing.* The thing is built by engineers, the writing is done by communications people, the writing describes the thing from outside.
 
