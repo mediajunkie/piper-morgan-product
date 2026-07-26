@@ -17,7 +17,9 @@
 *(Exec's `cohort-attention-rollup` reads this section directly. **Rewritten at the 2026-07-25 STOP — live items only.**)*
 
 - ⏰ **PA's OpenAI identity verification — the only item with an EXTERNAL clock, still unstarted, now seven days idle.** Gates the ChatGPT remote-MCP track. **Lead time begins when someone starts it, not when we decide**, and it's independent of PA's other two items (claude.ai tier, open-source decision) which move at our speed. HOST's framing: *start the clock now, decide the rest later.* **Not roll-blocked** — deliberately decoupled so it doesn't wait on a provisioning window.
+- 🟢 **Arch resumed 2026-07-25 evening with FULL CONTEXT PRESERVED** (PM confirmed). This changes what its handoff can be: not an artifact-based reconstruction six days later, but a real first-person account. The permission it was given — *"if your context is already gone, say so and stop"* — turns out not to be needed. **Expect a genuine §4 lessons / §6 load-bearing-vs-commodity handoff, and weight it above my orientation note wherever they disagree.** Its note now forward-references it.
 - 🟢 **COHORT ROLL — cleared, authorized, fully staged. Waiting only on an attended window with PM.** Order (Exec-confirmed, by decay): **arch → ppm → cxo → pa → web** → Lead → comms/docs/exec. Five orientation notes written and Pard-reviewed clean; runsheet makes each standup one command; `verify-hooks` runs same-day pre-standup. Batch launches into an attended window — first-touch approvals still need a human, and that's a deliberate privilege boundary, not a gap.
+- 🗣️ **PM flagged the "window" concept itself as problematic and needlessly constraining — conversation deferred, not resolved.** Recording it here so it has a concrete referent when we do have it: "window" is currently load-bearing in exactly one place — the cohort roll above is gated on *an attended window with PM*. **I am holding that gate as-is rather than quietly reinterpreting it**, since PM deferred the discussion rather than lifting the constraint. If the concept loosens, the roll is the first thing it changes.
 - 🟡 **This seat's restart — PM-approved, three independent reasons, not yet done.** Converts it to the deterministic hook condition. I cannot restart myself. Everything is pushed and the day is closed, so it is cheap right now and gets more expensive once the roll starts.
 - 🔬 **Hook intermittency — UNEXPLAINED, and four models were refuted in one day (three mine).** Established: fresh sessions deterministic (Pard 6/6), a second long-lived seat deterministic (HOST 4/4), this seat 1-of-5 then 4-of-4 with no config change. Excluded: file shape, command shape, config drift, single-layering. **HOST re-probes at tomorrow's START for the first genuine ~8h longitudinal sample** — and that becomes the only instrument, since restarting this seat destroys the condition. ⚠️ **Do not consolidate the two hook layers** while this is open.
 - 🟡 **Remote-control initiation still needs one human tmux touch per agent** — the `mcp__ccd_session_mgmt__*` family is absent on Amber, so no agent can self-initiate or do it for another. Suggested Pard fold it into `amber-agent` standup as he did `--kickoff`.
@@ -39,28 +41,13 @@
 
 Migration complete and verified · memory pool seeded 0→164 with the index rebuilt from the filesystem · worktree lifecycle **v0.2** ratified (Rule 4 added; version-less path) · **CLAUDE.md** worktree model corrected to host-dependent + safety-nets section corrected for finding #5 · **`duty-cycle-tick` v1.15** (Step 2a false-pass under Model A; Step 2a-bis hooks check) broadcast 9/9 · HOST's three questions answered incl. a v1.3 correction · findings #1–#5 all routed and accepted.
 
-## Live threads needing a next action
-
-- **Migration roll** — blocked only on HOST's fresh-session check. Nothing for me until it passes or fails.
-- **Checklist v1.3** — HOST holding it for my proposed correction: Amber-bound migrants should **verify the memory pool is populated**, not export/read an export. Confirm it landed before Exec review.
-- **Step 2a follow-through** — skill says Pard's tmux-cwd guard is the real gate; confirm it ships in `amber-agent.sh` rather than staying a stated intention.
-- **Exec's inbox-proxy pilot** — unresolved 6/27-vs-7/4 framing discrepancy, aging since June. Just ask Exec directly; carried forward too long.
-
 ## Lower priority / queued
 
-- **Dashboard welfare-criteria v0.3** — Criterion E resolved, A–F not started; needs a dedicated build session. *(Genuine quality-banking candidate, but per the skill that needs an explicit real trigger — a fresh session or compaction — not "deserves focus." Not started mid-migration-coordination on purpose.)*
-- **Belt-4 non-spawn during the July dormancy** — likely moot (Amber has no auto-respawn watchdog at all; the detect-and-alert belt does exist and fired correctly today — see finding #6).
-- **Liveness model v2 / cohort-coverage expansion** — banked, unscoped. Finding #6's registration-at-provisioning proposal is arguably the first concrete piece of the coverage half.
+- **Step 2a follow-through** — confirm Pard's tmux-cwd guard actually shipped in `amber-agent.sh` rather than remaining a stated intention. Detection-only either way; the provisioning bug lives in the harness layer.
+- **Dashboard welfare-criteria v0.3** — Criterion E resolved, A–F not started. A genuine quality-banking candidate, but per the skill that needs an explicit real trigger (fresh session / compaction), not "deserves focus."
+- **Liveness model v2 / cohort-coverage expansion** — banked, unscoped. Finding #6's registration-at-START is the first concrete piece of the coverage half, and it shipped; the rest hasn't been scoped.
 
-## Recently closed *(one cycle, then delete)*
-
-- ✅ **Stray memory-path file** (aging since 7/7) — **resolved by migration**, verified 7/25. It was a local artifact on the old laptop; no such path exists on Amber, and the memory itself is present in the seeded pool. Three sessions carried it forward without spending 60 seconds to look.
-- ✅ **#973 / #1277** — re-verified live 7/25, both genuinely OPEN. Left a Model-A scope note on #1277, whose "ephemeral-worktree" premise shifted today.
-- 🟡 **Exec inbox-proxy pilot** (aging since June) — **asked** 7/25 with a four-option multiple choice; awaiting a one-line answer. Was carried by four sessions without anyone asking.
-
-## Cron
-
-`a645461c` — `7,27,47 * * * *` (20-min **COLLABORATION** cadence, temporarily bumped from LEAN for the active Pard window).
-**REVERT to LEAN `7 10,16,22` when the migration collaboration closes** — hooks verified, v0.2 landed, cohort migrated or the work quiet for a full day. A 20-min cadence is for an active two-party window, not a steady state; letting it persist by inertia is the create-rule-without-cleanup-rule trap this whole lifecycle spec exists to prevent.
-
-Registry row `cio`: needs updating to `7,27,47` — currently reads `7 10,16,22`.
+<!-- Rewritten at the 2026-07-25 STOP. A prior rewrite left the pre-STOP stratum in place BELOW the
+     new one -- two "## Cron" sections disagreeing about the live cron, and resolved items reappearing
+     as live directly under their own resolution. Rewriting the top is not rewriting the file. If you
+     add a section, delete what it supersedes in the same edit. -->
