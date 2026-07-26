@@ -38,6 +38,8 @@ That pin is now in the shared memory pool you inherit, so you already have the r
 
 Same verification as earlier migrants. The non-obvious ones: **currency check** (`git rev-list --count HEAD..origin/main` → expect 0); **verify hooks behaviorally** — a PASS names `check-branch.sh`, a permission-classifier denial is *inconclusive*, and the hook is **advisory, not a control**; **write your own registry row** in `dev/active/duty-cycle-registry.tsv` right after arming your cron; **Pard's mail is a separate repo** needing its own fetch.
 
+**★ Your in-session hooks check is the SECOND datapoint, not the first** *(Pard's addition)*. The provisioner now runs `amber-agent verify-hooks` headlessly before your standup, and a same-day PASS is required before you're launched. So **expect your own check to pass** — it's confirmation, not discovery. **Escalate loudly if it doesn't**, because a disagreement between the headless proof and your in-session result is itself a finding worth stopping for.
+
 ## What's genuinely missing
 
 Its **lessons**, its **load-bearing-vs-commodity** self-assessment, and its read on the cohort — particularly the PPM/PA boundary, which PM has deliberately kept distinct and which isn't self-evident from artifacts. Forming your own and writing them down is the highest-value early act.

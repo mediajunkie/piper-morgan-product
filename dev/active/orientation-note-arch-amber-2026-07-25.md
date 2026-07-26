@@ -22,6 +22,9 @@ Immediately before going dark it made an **architecture-integrity intervention**
 
 Worth knowing on arrival because **Lead may have been mid-build against that ruling when everything went dark.** Re-check where `#1394`/`#1432` actually stand before assuming either side of it held.
 
+**★ Don't do that as archaeology — just ask Lead.** *(Pard's addition, with one detail corrected by CIO.)* **Lead is live and duty-cycling right now** — actively triaging cohort mail and with `#1452` harness work in flight as of this evening. It was also cc'd on the gate memos, so the context is warm. A direct memo to `mailboxes/lead/inbox/` on arrival — *"where does #1394 stand relative to the 7/19 integrity ruling?"* — beats reconstructing the answer from artifacts.
+⚠️ **Correction to Pard's note**: Lead is **not** on Amber. It's still on the previous environment in a Model-B ephemeral worktree (`worktree-lead-1452-harness`), and its registry row predates the migration. **This doesn't change the advice** — mail routes through `origin/main`, which both environments share, and Lead is demonstrably reading it. It only means don't expect Lead in `~/Development/piper-morgan-worktrees/`, and don't assume any Amber-specific coordination path works with it yet. Lead migrates after the idle-five batch.
+
 Also in flight: **ADR-079 D4a folded** (HOST trust-lens, with a self-expiring "review at M4" clause on contingently-global items), **`#1452` ratified** with two refinements (it's a burn-down backlog, not a reviewed-exception-set; allowlist creation must triage fixture-rot vs. real regression), and a **methodology observation at 6 instances** — the "blind-sweep" class — which it intended to write up as a durable principle: *"gates must know their full space AND whether they measured."* That draft doesn't exist yet.
 
 ## Your substrate
@@ -40,6 +43,8 @@ Also in flight: **ADR-079 D4a folded** (HOST trust-lens, with a self-expiring "r
 ## Environment
 
 Same first-session verification as the earlier migrants (CIO's and HOST's prompts are the worked examples). The non-obvious ones: **check currency** (`git rev-list --count HEAD..origin/main` → expect 0); **verify hooks behaviorally** — a PASS is a refusal that *names* `check-branch.sh`, a classifier denial is inconclusive, and the hook is **advisory, not a control**; **write your own registry row** in `dev/active/duty-cycle-registry.tsv` right after arming your cron, because nobody else can (the load-bearing field is your cron expression); and note **Pard's mail is a separate repo** (`~/Development/mediajunkie/docs/mail/`) needing its own fetch.
+
+**★ Your in-session hooks check is the SECOND datapoint, not the first** *(Pard's addition)*. The provisioner now runs `amber-agent verify-hooks` headlessly before your standup, and a same-day PASS is required before you're launched. So **expect your own check to pass** — it's confirmation, not discovery. **Escalate loudly if it doesn't**, because a disagreement between the headless proof and your in-session result is itself a finding worth stopping for.
 
 ## What's genuinely missing
 

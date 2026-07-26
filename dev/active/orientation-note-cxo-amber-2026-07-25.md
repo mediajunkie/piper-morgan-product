@@ -51,6 +51,8 @@ Follow the same first-session verification the earlier migrants ran (CIO's and H
 - **Write your own row** in `dev/active/duty-cycle-registry.tsv` right after arming your cron. Nobody else can: the load-bearing field is your cron expression, which doesn't exist until you arm it. Without a row, the freeze-watchdog is structurally incapable of noticing you're dead.
 - **Two mail channels** if you end up coordinating with Pard: `mailboxes/cxo/inbox/` **and** `~/Development/mediajunkie/docs/mail/`, which is a **separate repo** needing its own fetch.
 
+**★ Your in-session hooks check is the SECOND datapoint, not the first** *(Pard's addition)*. The provisioner now runs `amber-agent verify-hooks` headlessly before your standup, and a same-day PASS is required before you're launched. So **expect your own check to pass** — it's confirmation, not discovery. **Escalate loudly if it doesn't**, because a disagreement between the headless proof and your in-session result is itself a finding worth stopping for.
+
 ## What's genuinely missing, stated plainly
 
 - Your predecessor's **lessons** — what it learned the hard way that isn't in any artifact.

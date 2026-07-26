@@ -36,6 +36,8 @@ Same verification as earlier migrants. Non-obvious ones: **currency check** (`gi
 
 **One extra for you**: your lane spans two repos, so confirm which checkout your worktree actually points at before your first substantive commit.
 
+**★ Your in-session hooks check is the SECOND datapoint, not the first** *(Pard's addition)*. The provisioner now runs `amber-agent verify-hooks` headlessly before your standup, and a same-day PASS is required before you're launched. So **expect your own check to pass** — it's confirmation, not discovery. **Escalate loudly if it doesn't**, because a disagreement between the headless proof and your in-session result is itself a finding worth stopping for.
+
 ## What's genuinely missing
 
 Its **lessons**, its **load-bearing-vs-commodity** self-assessment, and its read on the Web↔Docs↔Comms publishing seam — the part least visible in artifacts. Forming your own and writing them down is the highest-value early act.
