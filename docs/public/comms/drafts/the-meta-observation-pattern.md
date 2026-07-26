@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'the-meta-observation-pattern-path-map.png'
+alt: 'A person leads a small group of AI companions along a branching trail while they draw and follow a continuous map of their own journey.'
 caption: ''
 ---
 
