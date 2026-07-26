@@ -1,7 +1,7 @@
 # ADR-028: Three-Tier Verification Pyramid Architecture
 
 **Date**: September 2, 2025
-**Status**: Accepted
+**Status**: SUPERSEDED (2026-07-26 — Arch fix-or-delete ruling 2026-07-25, decisions.log ~23:35 PT; PM-flagged per the #1322-supersession precedent). The runtime `methodology/` package this ADR specified was deleted as a zero-importer dead island; the pyramid's ideas live on as the cohort's prose discipline (evidence-required, verify-first, completion-theater pattern family, the #1452 CI-arbitrated gate). Design lineage: `docs/internal/architecture/current/design-record-methodology-as-code-2025.md`.
 **Authors**: Lead Developer (Claude Sonnet 4), Code Agent
 **Reviewers**: Chief Architect, PM
 

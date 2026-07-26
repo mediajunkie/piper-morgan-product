@@ -3,7 +3,7 @@
 > **Related Documentation**:
 > - **Quick Reference**: [METHODOLOGY.md](../../../briefing/METHODOLOGY.md#multi-agent-coordination) - Operational overview
 > - **Pattern Reference**: [Pattern-061: Human-AI Collaboration Referee](../../architecture/current/patterns/pattern-061-human-ai-collaboration-referee.md) - Handoff protocols, validation gates, real project examples
-> - **Python Implementation**: [/methodology/coordination/](../../../methodology/coordination/) - Live code
+> - **Python Implementation**: DELETED 2026-07-26 (Arch fix-or-delete ruling 2026-07-25; ADR-028 superseded). The package was a zero-importer dead island; its design ideas live on in the cohort's prose discipline — see `docs/internal/architecture/current/design-record-methodology-as-code-2025.md`.
 
 ## Overview
 
