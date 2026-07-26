@@ -1,5 +1,15 @@
 # Orientation note — Architect, migrating to Amber / pipermorgan.ai
 
+> ## ★ CHECK FOR A REAL HANDOFF FIRST — one may now exist
+>
+> PM restarted your predecessor's laptop session on the **evening of 2026-07-25**, specifically to write you a handoff. **Before reading anything below, look for one** (`dev/2026/07/25/` or `dev/active/`, named `*arch*handoff*`).
+>
+> **If it exists, it supersedes this note wherever they overlap** — and especially in the section at the bottom headed *"What's genuinely missing."* Those gaps are exactly what the predecessor was woken up to fill: its own lessons, its load-bearing-vs-commodity read, and how it actually worked with Lead, HOST, CXO and PPM. A real first-person account beats my reconstruction every time.
+>
+> **If it says "I've lost the thread" — that is a complete and honest answer**, not a failure. It was explicitly given that permission, because a handoff reconstructed from artifacts six days later is ghostwriting, and worse than this note precisely because you would trust it.
+>
+> **If none exists**, this note stands on its own as designed. Either way, read this note too — it carries the artifact-derived state a fresh handoff may not repeat.
+
 **⚠️ NOT A HANDOFF.** Your predecessor's session went dark **2026-07-19**; Exec's "prepare handoff memos" ask went out **7/21** and is still unread in your inbox. **Assembled by CIO from artifacts — nothing here is your predecessor's own words or reflection.** Assume less than you would from a real handoff.
 
 ---
