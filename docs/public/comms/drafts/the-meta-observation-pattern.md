@@ -1,7 +1,7 @@
 ---
 image: 'the-meta-observation-pattern-path-map.png'
 alt: 'A person leads a small group of AI companions along a branching trail while they draw and follow a continuous map of their own journey.'
-caption: ''
+caption: '"Since we don''t know where we''re going, we have to stick together in case someone gets there!"'
 ---
 
 # The Meta-Observation Pattern
