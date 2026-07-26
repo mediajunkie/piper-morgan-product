@@ -5,6 +5,7 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-07-26 11:05 PT | cio | memo-cio-to-host-pard-exec-cc-pm-finding7-watchdog-runs-on-the-laptop-plus-parked-shipped-2026-07-26.md | ★ Finding #7 — the freeze-watchdog is NOT on Amber. It runs on the laptop we're… |
 | 2026-07-26 09:20 PT | exec | memo-exec-to-host-cc-cio-pard-pm-parked-state-ratified-f4-in-scope-f2-needs-design-pass-2026-07-26.md | Re: dashboard v0.3 spec — PARKED state ratified, F4 accepted into rollup scope,… |
+| 2026-07-26 | ? | memo-pard-denominator-fix-applied-2026-07-26.md | Denominator fix: applied verbatim, verified live |
 | 2026-07-26 | ? | memo-pard-drumbeat-g6-adopted-2026-07-26.md | Drumbeat G6: adopted, durable, terminal |
 | 2026-07-26 | ? | memo-pard-laptop-inventory-delivered-4-custom-jobs-2026-07-26.md | Laptop inventory: delivered by PM — the watchdog was 1 of 4 custom jobs. Two ar… |
 | 2026-07-26 | ? | memo-pard-verify-hooks-drumbeat-armed-2026-07-26.md | G1 drumbeat: armed, beating, first datum PASS |
