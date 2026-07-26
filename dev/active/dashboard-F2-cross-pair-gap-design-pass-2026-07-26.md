@@ -64,12 +64,24 @@ F2 should be tested against **known-answer historical cases** rather than switch
 
 | case | expected |
 |---|---|
-| **arch's #1394 ruling vs. Lead's in-progress build** — arch ruled, went dark; Lead may never have received it | **must fire** (this is the canonical case; also F4's) |
+| **arch's #1394 ruling vs. Lead's build** — I predicted "must fire." **Ran it. The prediction was wrong: Lead's 07-19 log records _"Overnight-crash mail: Arch STOP on 1394 Option A"_ with the reasoning intact.** The obligation was delivered; there is no gap | **must NOT fire** — and tier 1 correctly doesn't (HOST's surface marks the arc complete; last touched 10d < the 14d threshold). **Second false-positive control, and the more valuable kind: narrative memory said "gap," the surfaces said no** |
 | **CIO's stale carry-forward item outliving three cycles** (Exec, this week) | **must fire** |
 | **inbox-proxy pilot** — lapsed ~7/18, unclosed, referenced by CIO and Exec | **must fire** |
 | **HOST + CIO both actively working the hooks intermittency, 8 memos in 24h** | **must NOT fire** — healthy collaboration, condition (3) excludes it |
 
 The last row is the important one: it's the false-positive control, and any design that fires on it is wrong regardless of its recall.
+
+### §5a — Dry-run results (run 2026-07-26, by hand, before any code)
+
+**Anchor density: confirmed, emphatically.** Extracting `#\d+ | ADR-\d+ | PDR-\d+ | m-\d+ | methodology-\d+` across the live carry-forwards and standing-items yielded **anchors on every one of 11 role surfaces** — arch alone carries ~55. Tier 1's premise holds: this cohort does not write identifier-free prose.
+
+**Three findings that change the design:**
+
+1. **⚠️ `finding #4` collides with GH issue `#4`.** The cohort writes `finding #6`, `Family-3`, `#1394` in the same sentence. A bare `#\d+` extractor will silently conflate a methodology finding with an issue number. **Fix: `finding #N` needs its own pattern and its own namespace**, and low-numbered bare `#N` should be treated as ambiguous rather than resolved to an issue. Caught only because the false-positive control (hooks intermittency) is referenced *exclusively* as `finding #4/#5/#6` and therefore produced **no numeric anchor at all** — it can't false-positive, but for a reason I hadn't predicted.
+2. **Session logs are load-bearing, not optional.** `#1394` appears in **12 session logs across 6 roles** but is **absent from arch's carry-forward**. A design scanning only carry-forwards/standing-items would have missed the highest-traffic thread in the set. Session logs must be in scope, which raises volume — worth noting for whoever builds it.
+3. **The staleness threshold is doing real work.** `#1394` satisfies conditions (1) and (2) — multiple roles, no blocked flag — and is excluded *only* by condition (3) at 10 days vs. the 14-day threshold. That's a narrow margin on the most-referenced anchor in the corpus, which means **the threshold is the main precision lever and wants tuning against real data, not intuition.**
+
+**Net**: tier 1 is viable and cheaper than feared, with two concrete corrections (finding-namespace, session-log scope) and one parameter that needs calibration. Recommend building it; recommend *not* trusting the 14-day default until it's swept across a month of surfaces.
 
 ## §6 What I'm asking for
 
