@@ -19,7 +19,15 @@
 #   overnight WATCH fire below wake_start). The "should be cycling by now" gate for the closed→never-restarted
 #   catch. cio fires 03:07 (overnight WATCH, < wake_start 7) then 10:07 (START) → first_fire = 10:07.
 # active_since = when the role joined the watch list (bookkeeping only).
-# Columns (TAB-separated): role<TAB>cron_expr<TAB>threshold_h<TAB>wake_start<TAB>wake_end<TAB>first_fire<TAB>active_since
+# Columns (TAB-separated): role<TAB>cron_expr<TAB>threshold_h<TAB>wake_start<TAB>wake_end<TAB>first_fire<TAB>active_since[<TAB>state]
+#
+# state (col 8, OPTIONAL — absent/empty means `watched`, so every pre-2026-07-26 row is unchanged):
+#   watched            → normal liveness checking (the default).
+#   parked[: reason]   → deliberately dark. NO stall alerts, but STILL COUNTED: `DUTY_CYCLE_COVERAGE=1
+#                        scripts/duty-cycle-freeze-check.sh` lists it as PARKED. Use this instead of
+#                        commenting a row out — a commented row is skipped by the parser entirely and
+#                        the role becomes structurally invisible (finding #6). An agent that comes back
+#                        up overwrites its own row at START (duty-cycle-tick v1.17), clearing `parked`.
 role	cron_expr	threshold_h	wake_start	wake_end	first_fire	active_since
 # ── ROSTER NOTE (CIO 2026-07-25, Exec-endorsed). The RUN-LEAN THROTTLE block that stood here expired
 #    Wed Jul-1 and sat stale for three weeks; cleared. Current rows reflect actual live cadences.
@@ -34,8 +42,8 @@ role	cron_expr	threshold_h	wake_start	wake_end	first_fire	active_since
 cio	7 10,16,22	10	7	23	10:07	2026-06-16
 exec	32 8,20	13	8	21	08:32	2026-06-16
 # exec pre-throttle expr for reference: 32 6,9,12,15,18,21 (6×/day) — restore when migration hold lifts and cadence returns to normal; see 7/6 exec log for context
-arch	27 6,9,12,15,18,21	4	6	22	06:27	2026-06-17
+arch	27 6,9,12,15,18,21	4	6	22	06:27	2026-06-17	parked: awaiting Amber migration (alerted 3x in 20h while known-dark)
 lead	17 6,9,12,15,18,21	4	6	22	06:17	2026-07-06
 host	37 6,9,12,15,18,21	4	6	22	06:37	2026-07-25
-# cxo	47 6,9,12,15,18,21	6	6	22	06:47	2026-06-18   ← PAUSED: IDLE tier (cron suspended until Wed)
-# ppm	52 6,9,12,15,18,21	6	6	22	06:52	2026-06-18   ← PAUSED: IDLE tier (cron suspended until Wed)
+cxo	47 6,9,12,15,18,21	6	6	22	06:47	2026-06-18	parked: awaiting Amber migration
+ppm	52 6,9,12,15,18,21	6	6	22	06:52	2026-06-18	parked: awaiting Amber migration

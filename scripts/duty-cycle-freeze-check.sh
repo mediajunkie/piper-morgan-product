@@ -35,7 +35,17 @@
 # the implementer finds it. (HOST welfare-criteria v0.3; CIO freeze-registry lane.)
 set -uo pipefail
 
-REPO="${PIPER_REPO:-/Users/xian/Development/piper-morgan/piper-morgan-product}"
+# REPO resolution (v0.5, CIO 2026-07-26) — was a single hard-coded LAPTOP path. On Amber that path does
+# not exist, so the `[ -f "$REG" ] || exit 0` below fired and the check exited 0 printing NOTHING — i.e.
+# "registry missing" and "cohort all healthy" were byte-identical outputs. A hand-run on Amber returned a
+# silent false all-clear. Now: try known checkouts in order, and FAIL LOUDLY if none has the registry.
+REPO="${PIPER_REPO:-}"
+if [ -z "$REPO" ]; then
+  for cand in /Users/xian/Development/piper-morgan-product \
+              /Users/xian/Development/piper-morgan/piper-morgan-product; do
+    [ -f "$cand/dev/active/duty-cycle-registry.tsv" ] && { REPO="$cand"; break; }
+  done
+fi
 REG="${DUTY_CYCLE_REGISTRY:-$REPO/dev/active/duty-cycle-registry.tsv}"
 FIRST_FIRE_GRACE_MIN="${FIRST_FIRE_GRACE_MIN:-10}"   # minutes past first_fire before a missing log = missed START
 now=$(date +%s); hour=${FREEZE_CHECK_NOW_HOUR:-$(date +%-H)}; min=$(date +%-M); now_min=$(( hour * 60 + min ))
@@ -113,10 +123,33 @@ if [ -n "${DUTY_CYCLE_ROLES:-}" ]; then
 fi
 
 # ── REGISTRY mode (default) ──
-[ -f "$REG" ] || exit 0
-while IFS=$'\t' read -r role cron thr ws we ff since; do
+# FAIL LOUDLY, never silently (v0.5). An unreadable registry means this instrument measured NOTHING;
+# exiting 0 made that indistinguishable from "measured, all clear" — the same silent-partial-input class
+# as the MEMORY.md truncation. A monitor that cannot find its own input must SAY SO, not report calm.
+if [ ! -f "$REG" ]; then
+  echo "FREEZE-CHECK ERROR: registry not found at '${REG:-<unset>}' — this check measured NOTHING." >&2
+  echo "  Set PIPER_REPO to a checkout containing dev/active/duty-cycle-registry.tsv, or DUTY_CYCLE_REGISTRY to the file." >&2
+  exit 3
+fi
+while IFS=$'\t' read -r role cron thr ws we ff since state; do
   case "$role" in '#'*|''|role) continue ;; esac     # skip comments / blank / header
   [ -z "${ff:-}" ] && continue                        # malformed row (missing first_fire column) → skip
+  # ── PARKED (v0.5, CIO 2026-07-26, HOST-proposed) ───────────────────────────────────────────────
+  # Third state between "watched" and "no row". A deliberately-dark role (awaiting migration, paused
+  # tier) is NOT watched for liveness — but it stays in the file and in coverage output, so it cannot
+  # be silently forgotten. Before this, parking meant commenting the row out, which the `'#'*` case
+  # above skips entirely → the role became structurally invisible, which is finding #6 exactly.
+  # Rationale (HOST): a belt that cries wolf and a belt that is silent fail the SAME way — the cohort
+  # stops treating its output as information. A mechanism's silence only means "clear" if you've
+  # verified its coverage; its alarm only means "act" if you've distinguished expected-dark from failed.
+  # Column 8 = `parked` or `parked:<reason>`; empty/absent → `watched` (so all pre-v0.5 rows are
+  # unchanged in behavior). Coverage lines print ONLY under DUTY_CYCLE_COVERAGE=1, so the default
+  # STALE-only output the watchdog consumes is byte-identical to before.
+  case "${state:-watched}" in
+    parked|parked:*)
+      [ -n "${DUTY_CYCLE_COVERAGE:-}" ] && echo "PARKED $role (not watched — intentionally dark${state#parked}; since $since)"
+      continue ;;
+  esac
   (( hour < ws || hour >= we )) && continue           # outside this role's waking/alerting window
   cycling_now "$role" "$ff" || continue               # not-should-be-cycling now → skip
   if a=$(age_of "$role"); then
