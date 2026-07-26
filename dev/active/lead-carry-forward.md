@@ -17,3 +17,7 @@
 - On Arch (Exec escalated): methodology ruling now gates ~30% of remaining backlog; #1432 orphan pair; ContextMatcher note.
 - On Exec: #1386 gate re-run window (beta v25+ carries both Scenario-B fixes).
 - On PM: #1424 close-vs-keep (lean: close), #1427 PROD-RECONNECT confirm, migration decision (handoff at dev/active/lead-handoff-2026-07-21.md).
+
+## Note 2026-07-25 day-close
+- sync-pm-local no-op'd at day-close (PM checkout has local commits/WIP — designed behavior, PM's work wins; likely Saturday-evening drafting). Next successful sync catches up; re-check next START.
+- Backlog 94 (learning complex drained + validated 7/25). Methodology-math memo with Arch (38-of-94 lever). Cohort roll to Amber authorized; my migration queued after the 5 idle roles.
