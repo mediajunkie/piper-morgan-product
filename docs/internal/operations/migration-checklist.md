@@ -1,7 +1,7 @@
 
-# Role Migration Checklist v1.4.1
+# Role Migration Checklist v1.4.2
 
-**Status**: v1.4.1. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
+**Status**: v1.4.2. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
 **Purpose**: Standing checklist for any future role migration (new role activation, re-migration of a dormant role, account migration, device migration). Cohort migration completed Apr 22–26, 2026.
 **Owner**: HOST. Exec reviews; CEO approves for canonical publication.
 
@@ -73,8 +73,14 @@ The incoming instance completes these items.
 - **The trap this creates**: a **stale separate file alongside a current in-log section**. Both exist; only one is true. Read the log, treat the file as historical, and say so explicitly in the orientation note.
 - *(Jul 25 concrete: PA was first reported as "38 days stale, present-but-misleading" — its **file** is from 6/17, but its 7/19 log carries current in-line carry-forward, making PA among the **best**-documented of the five. CXO was reported as "thinnest — no handoff and no carry-forward"; CXO in fact wrote six named carry-forward items into its 7/19 log. Acting on the file-level audit would have mis-ranked the two roles most at risk.)*
 
-**Rule 4 — Check for the `<!-- DAY-CLOSED -->` marker; a mid-day death is a different landing than a clean stop.** A role whose last session log carries the marker **wrapped properly** — its last entry is a real close. A role **missing** it *died mid-day*, and **anything in flight at its last entry stayed in flight**: unpushed reasoning, half-finished rulings, work another role may still be building against. Tell the successor which one they are; it changes what they should distrust first.
-- *(Jul 25: arch, cxo, ppm died mid-day; pa and web closed cleanly. Arch's case is the sharp one — it made an architecture-integrity ruling stopping another role's in-progress build, then went dark, so the ruling's counterparty may never have received it.)*
+**Rule 4 — Check for the `<!-- DAY-CLOSED -->` marker. A mid-day death is not merely "unfinished work" — it means a COUNTERPARTY MAY NEVER HAVE RECEIVED SOMETHING.** A role whose last session log carries the marker **wrapped properly**. A role **missing** it *died mid-day*, and the risk has two distinct classes — the second is the one that gets missed:
+
+1. **Work left in flight** — unpushed reasoning, half-finished drafts. Contained: it costs the successor time, but the damage stays inside the role.
+2. **★ Undelivered outbound obligations** — a ruling, an approval, a blocker, a correction that the dead session *decided* but may never have *sent*. **This damage lands on someone else, who has no way to know it exists**, and it silently corrupts their work until discovered. A role can look tidy internally while having stranded a decision another role is actively building against.
+
+**So the successor's first sweep is outbound, not inbound**: read the final entries for anything the predecessor concluded, ruled, or promised to send, and **verify each one actually reached its recipient** (check the recipient's inbox, not just the sender's sent/). Then tell the counterparty either way — "this was decided and you may not have received it" is a cheap message; discovering it three weeks into a build is not.
+
+- *(Jul 25 live case: **arch** issued an architecture-integrity ruling stopping another role's in-progress build, then went dark — so Lead may have been building against a ruling it never received. arch, cxo and ppm died mid-day; pa and web closed cleanly. Sharpened per CIO, who named the class distinction: "a mid-day death doesn't just mean unfinished — it means the counterparty may never have received something.")*
 
 **Rule 5 — Thin landings need an explicit decision, not a default.** Where the substrate genuinely is thin after Rules 3–4, acknowledge it *before* provisioning — either someone reconstructs a carry-forward from the session logs, or the successor is told plainly that building one is its first task. Discovering it on arrival is the failure mode.
 
