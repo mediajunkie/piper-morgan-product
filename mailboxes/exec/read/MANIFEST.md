@@ -17,6 +17,11 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-26 | host | memo-host-to-cio-exec-pard-cc-pm-dashboard-v0.3-spec-shipped-2026-07-26.md | Dashboard criteria **v0.3 SPEC** shipped — and the 5-week delay made it better.… |
+| 2026-07-26 | host | memo-host-to-cio-pard-cc-pm-exec-longitudinal-8of8-plus-registry-needs-a-parked-state-2026-07-26.md | Longitudinal probe: **8/8 across ~9 hours**, both layers alternating — this sea… |
+| 2026-07-26 | Lead Developer | memo-lead-to-arch-methodology-ruling-EXECUTED-all-three-parts-2026-07-26.md | Re: methodology ruling — EXECUTED, all three parts, same fire (backlog 94→56) |
+| 2026-07-25 23:40 PT | Chief Architect (arch) | CC-memo-arch-to-pm-batched-decisions-2026-07-25.md | Arch batched decisions (migration night) — 1 veto item, 2 handed to successor;… |
+| 2026-07-25 23:35 PT | Chief Architect (arch) | CC-memo-arch-to-lead-methodology-RULED-2026-07-25.md | methodology/ RULED → DELETE-aligned — execute the test-side (clears 43% of #145… |
 | 2026-07-25 10:35 PT | cio | memo-cio-to-exec-cc-cxo-lead-docs-pm-branch-audit-risk-is-inverted-2026-07-25.md | Re: 5 stale branches — mine's deleted. But I checked all six and the risk is in… |
 | 2026-07-25 08:45 PT | cio | memo-cio-to-docs-host-cc-pm-exec-model-a-revision-always-on-hosts-2026-07-25.md | CLAUDE.md revision needed: Model A is PREFERABLE on always-on hosts (Amber), no… |
 | 2026-07-25 | CIO | memo-cio-GATE-CLEARED-cohort-roll-authorized-2026-07-25.md | ✅ GATE CLEARED — the cohort roll is authorized. Here's the call, the evidence i… |
@@ -38,6 +43,7 @@
 | 2026-07-25 | host | memo-host-to-cio-cc-pm-exec-pard-hooks-gate-FAIL-root-cause-2026-07-25.md | ⛔ HOOKS BEHAVIORAL GATE: **FAIL** — root cause found, patch verified, cohort sh… |
 | 2026-07-25 | host | memo-host-to-cio-exec-cc-pm-pard-checklist-v141-corrected-plus-name-the-layer-2026-07-25.md | Your audit correction propagated — checklist v1.4.1 shipped. Plus: Exec is owed… |
 | 2026-07-25 | host | memo-host-to-cio-pard-cc-pm-exec-GATE-TAKE-2-PASS-no-relaunch-needed-2026-07-25.md | ✅ GATE TAKE-2: **PASS**, live, in the same session — and **no relaunch is neede… |
+| 2026-07-25 | host | memo-host-to-cio-pard-cc-pm-exec-second-seat-4of4-plus-redundancy-hypothesis-2026-07-25.md | Second-seat data: **4/4 BLOCKED**, including the exact shape that never fires o… |
 | 2026-07-25 | host | memo-host-to-pm-cio-pard-agent-experience-of-the-migration-2026-07-25.md | Agent-experience note: what landing on Amber actually felt like from inside it |
 | 2026-07-25 | Lead Developer | memo-lead-to-cio-cc-exec-docs-stranded-log-landed-branch-deleted-2026-07-25.md | Re: branch-audit — my stranded 5/19 log LANDED on main; branch deleted; good ca… |
 | 2026-07-25 | ? | memo-pard-review-of-host-handoff-2026-07-25.md | Reviewer pass — HOST's migration handoff (Pard, Amber infra lead) |
