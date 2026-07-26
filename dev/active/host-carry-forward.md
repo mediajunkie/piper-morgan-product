@@ -4,7 +4,7 @@
 
 **Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: **`dev/2026/07/26/2026-07-26-0707-host-code-log.md`** (07-26). **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID **`7c1d5637`**). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
-**Last updated**: 2026-07-26 13:20 PT (WORK fire). Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
+**Last updated**: 2026-07-26 16:35 PT (WORK fire). Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
 
 ## ✅ Both queued START actions DONE — nothing carried over from them
 
@@ -15,7 +15,7 @@
 
 - **Did the drumbeat's 19:05 scheduled beat fire?** `~/Development/mediajunkie/logs/verify-hooks-drumbeat.log`. **Still unproven** — the 07:22 line was a manual run. **No 19:05 line = a finding, not a non-event.** *(The freeze-watchdog's equivalent check is DONE: its 12:46 scheduled fire landed, schedule proven.)*
 - **Watchdog heartbeat freshness** — `~/Development/mediajunkie/logs/freeze-watchdog-heartbeat.log`, bar **>7h** (6h interval + 1h grace). This becomes a `duty-cycle-tick` START step once CIO ships the skill half; until then check it by hand.
-- **Did Pard take the heartbeat denominator fix?** (`roles=8` → `watched=N parked=M`.) If the line still says `roles=`, the wrong denominator is still being written into the belt's own record.
+- ~~denominator fix~~ ✅ applied 13:22. **Confirm the 18:46 *unattended* beat carries the corrected line** — 13:22 was Pard's manual verification run, so the corrected form is not yet proven on the schedule.
 - **Re-probe hooks** if convenient — extends the longitudinal series (8/8 across 9h so far).
 
 ## ▶ AWAITING REVIEW (not mine to advance — do not re-draft while these are out)
@@ -30,9 +30,12 @@
 ## ⚠️ Live, unresolved
 
 - ~~watchdog crying wolf on `arch`~~ ✅ **RESOLVED** — CIO shipped PARKED (`duty-cycle-freeze-check.sh` v0.5, col-8 `state`). arch/cxo/ppm parked; **alerts stopped** (3 in the prior 20h, none since 07:03). CIO's sharpening: cxo/ppm weren't a workaround for the missing state, they were **finding #6 already in production** for five weeks, looking like documentation.
-- **Two of three pre-commit hooks are STILL UNVERIFIED** — the drumbeat exercises `check-branch` only; `broad-staging-warn` and `reconcile-drafts` were dead alongside it and have never been proven alive. Asked Pard to extend the drumbeat.
+- ~~two of three hooks unverified~~ ✅ **BOTH VERIFIED 07-26** — `broad-staging-warn` **alive** (first time ever); `reconcile-drafts` **alive-but-mute** (detects perfectly, exits 0, nothing surfaces) — reclassified *verified-and-defective*, a worse state than unverified.
+- ⚠️ **NO WARN-WITHOUT-BLOCKING TIER EXISTS** (spec §3a-bis). exit 0 = invisible; exit 2 = blocks. All three hooks were designed around a tier that isn't there. **Fix the assumption, not just the three hooks**, or the fourth repeats it.
+- ⚠️ **Lockout hazard, open**: at ≥20 staged files, ordinary non-commit Bash calls get blocked (I hit it). The `if:` predicate is leaky; **multi-line commands fired, single-line didn't** — but *not isolated* (all my multi-line cases began with `cd`). **One test separates them: single-line beginning with `cd`, 20+ files staged.** Handed to CIO/Pard.
+- **Fix asks outstanding**: `check-branch` message → stderr · `broad-staging-warn` delete the false "not blocked" sentence · `reconcile-drafts` needs pattern 1 or 2.
 - **`mail-send.sh`'s residue-reconcile half has no check at all** — the push self-verifies, the reconcile doesn't.
-- **Heartbeat denominator wrong** (`roles=8` for 7 rows / 4 watched) — tested fix sent to Pard, not applied by me (his emit half).
+- ~~heartbeat denominator wrong~~ ✅ **FIXED** — Pard applied the tested fix verbatim; live line now `watched=4 parked=3`. Next unattended beat 18:46.
 - **Sapient-trust poll 2026-07-26: 0 open — 9th consecutive clean.** Next due ~8/2.
 
 ## PM-attention / escalation items (live)
