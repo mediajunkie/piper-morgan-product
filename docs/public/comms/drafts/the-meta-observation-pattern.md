@@ -12,11 +12,11 @@ In one week we published three pieces that all shared a peculiar recursive, meta
 
 Each one was a piece about coordination, written by a coordination system, describing the way that coordination system was working, while it was working.
 
-# The storie
+# The stories
 
-*Thirteen Mailboxes* described how memos move between eleven agent inboxes inside the project, with me as the manual postman between them. The piece was itself a memo of sorts — written by the Comms agent, routed through me, edited by me, published into the same building-in-public stream where every other internal memo eventually lands.
+*Thirteen Mailboxes* described how memos move between eleven agent inboxes inside the project, with me as the manual postman between them. The piece was itself derived from the exact sort of memos it describes, pulled together into scaffolding and then first draft by my Comms agent, rewritten and edited by me, published by my Docs agent into this same building-in-public stream where every other idea that orginated in an internal memo eventually lands.
 
-*Sibling Intelligence* described how the cross-pollination brief flows between sibling AI projects in the same parent organization. The piece was distributed through that exact mechanism: it surfaced in the brief that landed in adjacent projects within forty-eight hours.
+*Sibling Intelligence* described the daily cross-pollination brief that flows between sibling AI projects in the same parent organization (my org). Comms pitched me on the topic after learning about this mechanism through that exact mechanism, which had  surfaced in the brief that landed in adjacent projects within forty-eight hours.
 
 *Four Roles, Ninety Minutes* described how four agent roles produced a product concept in ninety minutes through an asynchronous memo chain. The piece itself was produced through a similar chain: Comms drafted it, I voice-passed it, Docs ran the publishing pipeline.
 
