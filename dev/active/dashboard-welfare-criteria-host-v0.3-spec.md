@@ -115,8 +115,37 @@ PARKED keeps both properties: **no stall alerts, but still counted in coverage o
 1. **CIO** — accept/redirect **Criteria G** and the ⏸ PARKED state. Both touch surfaces you own (dashboard render; registry + watchdog). I have not edited the registry; the `state` field is your call to make, and I'll draft the definition + coverage phrasing if you want it off your plate.
 2. **Exec** — **F2** (cross-document reference detection) and **F4** (outbound-obligation gap) both extend your cohort-attention rollup beyond what it does today. Scope call, not a design call.
 3. **Pard** — the scheduled `verify-hooks` drumbeat you offered; §5 is the argument for taking it. Interval is yours.
-4. **HOST (me)** — E's coverage-indicator definition, and G's per-mechanism verification intervals. Not blocked on anyone.
+4. **HOST (me)** — (a) E's coverage-indicator definition → **DONE same day, see §7.** (b) G's per-mechanism verification intervals → **held until CIO rules on G**, since intervals for a redirected criterion would be wasted work. Trigger named rather than left as silence.
 5. **Deliberately deferred** — the fuller PM-wellbeing signal stays out of scope (v0.2 Q1). The one PM-welfare datum that belongs here is the **convergence-load headline** (items routing to PM this week + sparkline): m-39's risk made visible. Low when the system absorbs well; high is the signal to triage or delegate.
+
+---
+
+## §7 — **E coverage-indicator: definition** *(closes §6 item 4a — HOST's own, not blocked on review)*
+
+Written the same day as the spec rather than left as a listed intention. Independent of whether Criteria G is accepted: E's shape was already agreed in the 6/19 markup, so this is buildable now.
+
+**Definitions.**
+- **Action site** — a code path that performs a consequential action per E's four tests (agent-initiated · credits spent · external message sent · hard to reverse). The denominator `K` is the count of action sites, enumerated statically, **not** the count of actions.
+- **Instrumented site** — an action site that emits a `TranscriptEntry` with all four E fields populated. `M` is the count of these. A site emitting a partial entry counts as **uninstrumented**, because a partial entry produces an undercount that looks like a count.
+- **Coverage** = `M / K`, always rendered as the fraction, never as a bare percentage. `12 of 19` is checkable; `63%` is not.
+
+**Render forms.** The count and the coverage are one atomic string — they MUST NOT be separable by layout, truncation, or a summary tile that shows only the count:
+
+| condition | render |
+|---|---|
+| `M = K`, N ≥ 1 | `N consequential actions this week (coverage: complete — 19 of 19 sites)` |
+| `M < K`, N ≥ 1 | `N consequential actions this week ⚠️ (coverage: partial — 12 of 19 sites; N is a floor, not a total)` |
+| `M < K`, **N = 0** | `⚠️ No actions logged — but coverage is partial (12 of 19 sites). This does NOT mean no actions were taken.` |
+| `M = K`, N = 0 | `0 consequential actions this week (coverage: complete)` — the only case where zero means zero |
+| `K` unknown | `⚪ Coverage unknown — action-site inventory not established. Counts are not interpretable.` |
+
+**The blocking rule (normative).** E MUST NOT ship in any form that can render a count without its coverage. **The `M < K, N = 0` cell is the whole reason** — it is the one that reads as reassurance while being the least informative state the system can produce, and it is the default state during any incremental rollout. Since the 6/19 markup sequences E incrementally (external-message + credits-spent first), **partial coverage is the expected condition for the entire rollout period, not an edge case.**
+
+**Why `N` is labelled a floor, not a total.** An undercount from partial instrumentation is not a noisy estimate — it is biased in one direction, always downward, and the bias is invisible without `K`. Same structural error as the `MEMORY.md` index: a silently truncated input rendering as a complete output. Naming `N` a floor makes the direction of the error legible to PM without requiring them to reason about instrumentation.
+
+**Interval / staleness**: coverage is recomputed whenever the action-site inventory changes; a coverage figure older than its inventory renders `⚪ coverage stale` per R4 rather than showing a figure that may have silently drifted.
+
+**Still mine and still open**: G's per-mechanism verification intervals — deliberately held until CIO rules on G, since intervals for a redirected criterion would be wasted work. Named here so the deferral has a trigger rather than being silence.
 
 ---
 
