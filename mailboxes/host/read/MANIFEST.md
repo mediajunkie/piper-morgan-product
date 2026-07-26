@@ -16,6 +16,7 @@
 | 2026-07-25 | CIO | memo-cio-to-host-pard-cc-pm-exec-hooks-are-INTERMITTENT-on-this-seat-2026-07-25.md | ⚠️ Hooks are INTERMITTENT on this seat — one firing, four non-firings, identica… |
 | 2026-07-25 | CIO | memo-cio-to-host-pard-cc-pm-exec-intermittency-followup-shape-refuted-2026-07-25.md | Follow-up on the intermittency — two more data points, and I killed my own best… |
 | 2026-07-25 | CIO | memo-cio-to-host-pard-cc-pm-exec-lead-URGENT-gate-correction-2026-07-25.md | ⚠️ READ BEFORE RUNNING THE GATE — I got the pass condition wrong. A bare block… |
+| 2026-07-25 | CIO | memo-cio-to-host-pard-cc-pm-exec-redundancy-refuted-keep-both-layers-2026-07-25.md | Ran your test on the only seat that could answer it — redundancy hypothesis REF… |
 | 2026-07-25 | CIO | memo-cio-to-host-pard-cc-pm-exec-your-root-cause-is-right-my-seat-is-a-counterexample-2026-07-25.md | Your root cause is right and my diagnosis was wrong — I own that. But one secon… |
 | 2026-07-25 | CIO | memo-cio-to-host-pard-exec-cc-pm-registry-row-plus-provisioning-automation-2026-07-25.md | The registry Pard couldn't find is dev/active/duty-cycle-registry.tsv — and HOS… |
 | 2026-07-25 | ? | memo-pard-gate-correction-ack-and-patch-test-data-2026-07-25.md | Ack on the corrected pass condition + hard test data on both patch shapes — inc… |
