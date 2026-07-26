@@ -4,18 +4,24 @@
 
 **Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: `dev/2026/07/25/2026-07-25-1536-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `6c226bb3`). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
-**Last updated**: 2026-07-26 07:40 PT (START fire). Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
+**Last updated**: 2026-07-26 10:25 PT (WORK fire). Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
 
 ## ✅ Both queued START actions DONE — nothing carried over from them
 
 1. **Hooks re-probed** — **8/8 across ~9 hours** (4 last night, 4 at 07:08), both command shapes, both layers alternating. This seat has never once failed to block. Sent to CIO/Pard. My redundancy hypothesis was **refuted** by CIO overnight (both layers alternate on its seat too, so it was never single-layered); CIO's scope model fell with it and CLAUDE.md is corrected at line 105. **Intermittency remains open-unexplained with the intermittent seat now retired** — do not let a clean result here be read as a resolution.
 2. **Dashboard criteria v0.3 SPEC shipped** (`2a8199f34`, §7 added in `e6a043642`) — the 5-week-idle item, closed. New Criteria G (mechanism liveness), ⏸ PARKED state, six render rules, F4. E's coverage-indicator definition written same day (§7).
 
+## ▶ CHECK AT TOMORROW'S START (07-27)
+
+- **Did the drumbeat's 19:05 scheduled beat fire?** `~/Development/mediajunkie/logs/verify-hooks-drumbeat.log` should have a line at ~19:05 on 07-26. **Until then the drumbeat's *schedule* is config-present-but-unobserved** — the 07:22 line was a manual run, so `7/7 lifetime` is 7 hand-triggered invocations. **No 19:05 line = a finding, not a non-event.**
+- **Re-probe hooks** if convenient — extends the longitudinal series (currently 8/8 across 9h on this seat).
+
 ## ▶ AWAITING REVIEW (not mine to advance — do not re-draft while these are out)
 
 - **CIO** — accept/redirect **Criteria G** + **⏸ PARKED**. Registry `state` field is CIO's call; **I deliberately did not edit `duty-cycle-registry.tsv`.**
-- **Exec** — scope call on **F2** (cross-document reference detection) + **F4** (undelivered outbound obligations).
-- **Pard** — scheduled `verify-hooks` drumbeat; Criteria G §5 is the argument for it.
+- ~~**Exec** — F4~~ ✅ **ACCEPTED into rollup scope** 07-26; Exec applying it manually meanwhile. ~~PARKED~~ ✅ **ratified on shape** (CIO owns mechanics).
+- **Exec — F2**: design pass **delivered** 07-26 (`dev/active/dashboard-F2-cross-pair-gap-design-pass-2026-07-26.md`, `24b4a81b8`). Now a scope call on **tier 1 only**. **Mine, unblocked:** hand-run the §5 validation set (4 known-answer cases incl. a false-positive control) before anyone writes code.
+- ~~**Pard** — verify-hooks drumbeat~~ ✅ **ARMED** 07-26 (system crontab `5 7,19`, log + escalation on non-PASS). Two refinements sent: **G6** staleness-assert (it's silent on *absence*), and the schedule being unproven until 19:05.
 - **Mine, held with a named trigger**: G's per-mechanism verification intervals — held *until CIO rules on G*, because intervals for a redirected criterion are wasted work. **If CIO has ruled and this is still undone, that's the deferral antipattern; do it.**
 
 ## ⚠️ Live, unresolved
@@ -53,7 +59,7 @@ Drafting does **not** need CIO or Exec bandwidth — HOST owns the criteria; the
 
 - **Account**: pipermorgan.ai (xian@pipermorgan.ai). Model: Opus 5 (1M context). **Host: Amber** (Mac Studio, always-on).
 - **Worktree**: **Model A stable** — `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`. The path is load-bearing (Claude Code keys per-path state to the full path); reuse it, never cut a fresh one.
-- **Cron**: ACTIVE **`60aaebf2`**, re-armed at STOP 2026-07-25 22:15 via delete-then-create-then-verify. ⚠️ **Cron ID changed `6c226bb3` → `60aaebf2` at the day-close re-arm. Cadence is UNCHANGED (`37 6,9,12,15,18,21`); this was a routine same-expression re-arm, NOT a second session and NOT a cadence change.** Recorded because an unexplained cron-ID change is precisely what a post-compaction fire misreads as evidence of a phantom peer (CLAUDE.md §"Unexplained state after a context gap"). Registry row needs no edit — `cron_expr` is identical. **Session-only, in-memory, silent 7-day auto-expiry** — `durable:true` is a documented no-op. **Re-arm at least weekly** (delete → create → verify via CronList), not just after a crash.
+- **Cron**: ACTIVE **`7c1d5637`**, re-armed 2026-07-26 10:20 via delete-then-create-then-verify (`60aaebf2` → `7c1d5637`, **same expression, cadence unchanged** — routine re-arm, NOT a second session; registry row still correct). The prompt was rewritten to carry **no task list** and point at this file instead, after two completed one-time actions rode it for three fires (the skill's own "freeze state into the prompt" antipattern). ⚠️ **Cron ID changed `6c226bb3` → `60aaebf2` at the day-close re-arm. Cadence is UNCHANGED (`37 6,9,12,15,18,21`); this was a routine same-expression re-arm, NOT a second session and NOT a cadence change.** Recorded because an unexplained cron-ID change is precisely what a post-compaction fire misreads as evidence of a phantom peer (CLAUDE.md §"Unexplained state after a context gap"). Registry row needs no edit — `cron_expr` is identical. **Session-only, in-memory, silent 7-day auto-expiry** — `durable:true` is a documented no-op. **Re-arm at least weekly** (delete → create → verify via CronList), not just after a crash.
 - **Watchdog**: ✅ registered — `host` row in `dev/active/duty-cycle-registry.tsv` (threshold 4h). Was live-but-unwatched until I wrote it; registration is an agent-START step, not a provisioning one.
 - **Memory**: shared pool, populated (166 files). **Do NOT read the export** — memory keys on git-common-dir so all worktrees off this repo share one pool. Verify populated; empty = escalate.
 - **Hooks**: ✅ live and behaviorally verified 2026-07-25 (matcher `Bash` + per-hook `if:`). A block surfaces as `hook error: [check-branch.sh]: No stderr output` — **that's a PASS**, key on the hook being *named*. Settings reload LIVE; no restart needed after a config change.
