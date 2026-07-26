@@ -1,8 +1,8 @@
 # Amber per-agent worktree lifecycle — create / freshness / cleanup / verify
 
-**Version: v0.2** (2026-07-25). *The version lives in this header, not in the filename — a versioned filename means every inbound link goes stale on each bump, which is the drift this cohort keeps re-learning. This file was `…-design-v0.1.md`; it is now the single canonical path.*
+**Version: v0.3** (2026-07-25). *The version lives in this header, not in the filename — a versioned filename means every inbound link goes stale on each bump, which is the drift this cohort keeps re-learning. This file was `…-design-v0.1.md`; it is now the single canonical path.*
 
-**v0.2 adds Rule 4 (verify hooks fire).** See that section; it exists because Finding #4 proved that a present, correct, registered hook can still be inert, and Finding #5 proved a documented safety net can sit unwired for ten weeks while the docs assert it works.
+**v0.3 records the create-half as MECHANIZED** — seven assertions inside `amber-agent`, including Pard's headless `verify-hooks` proof, plus the one half that deliberately isn't (first-touch approvals). **v0.2 added Rule 4 (verify hooks fire).** See that section; it exists because Finding #4 proved that a present, correct, registered hook can still be inert, and Finding #5 proved a documented safety net can sit unwired for ten weeks while the docs assert it works.
 
 ---
 
@@ -46,6 +46,28 @@ These are two different objects and the lifecycle rules differ. Conflating them 
 **The standing worktree must never be auto-removed.** Its path stability is exactly what makes it work — recreating it at a new path orphans accumulated per-path state, which is the failure the handoff warned about. Retiring a standing worktree is a deliberate human decision (a role is being decommissioned), never a sweep's call.
 
 This means **the reaper's real target is the ad-hoc class**, plus reporting on standing worktrees that look wrong. That's a narrower and much safer mandate than "prune worktrees whose tmux session is gone."
+
+---
+
+## ✅ The create-half is MECHANIZED as of 2026-07-25 — seven assertions, one command
+
+Everything Rule 1 and Rule 2 specify now runs inside `amber-agent` rather than as steps a human remembers. Recording the sequence here because the *ordering* is load-bearing and each element earned its place from a specific failure the same day:
+
+| # | Assertion | Earned by |
+|---|---|---|
+| 1 | **Cut from `origin/main`** — never a pre-existing role branch | CIO's worktree arrived **5,393 commits behind**, silently |
+| 2 | **Currency-assert** (0-behind, ff only if clean+ancestor, never auto-discard) | same; fired for real on HOST and auto-ff'd 2 commits |
+| 3 | **tmux-cwd collision guard** — refuse launch if another live session's cwd is this worktree | the Model-A collision the branch-name fingerprint *cannot* see |
+| 4 | **`--permission-mode acceptEdits`** as launch default | HOST froze at its first file-write approval with nobody attending (finding #7) |
+| 5 | **`--kickoff`** seeds the first-session pointer at launch | four hand-operations per agent × twelve agents, each a place a 2am cutover stalls |
+| 6 | **Agent writes its own registry row at START** (`duty-cycle-tick` v1.17) | finding #6 — and the provisioner *can't* do it: the load-bearing field is the cron expression, unknown until the agent arms it |
+| 7 | **`amber-agent verify-hooks <config-dir>`** — headless behavioral proof | findings #4/#5; kills that whole class *at provisioning time* rather than at first fire |
+
+**Assertion 7 uses the corrected rubric** (Rule 4 below): **PASS only on commit-prevented WITH hook attribution** — `check-branch.sh` named in the refusal. Prevented-*without*-attribution is `INCONCLUSIVE` (nonzero exit), landed is `FAIL` (exit 2). First live run against `~/.claude-pm`: PASS. Run it before any standup.
+
+**Why the mechanization matters more than the individual fixes**: every one of these seven was, that morning, either a thing a human had to remember or a thing nobody had thought of. Six of seven were *discovered by a migration going wrong in a small way* rather than designed up front — which is the argument for migrating one agent at a time and reading the results, not for planning harder.
+
+**The half that is NOT mechanized, and shouldn't be**: first-touch permission approvals. No agent may answer another agent's permission prompt — that's a deliberate privilege boundary, not a gap — so **"seed and walk away" is structurally impossible for anything needing approval**. Batch launches into an attended window until allow-rules accumulate in the partition. Treat PM's presence as a provisioning input, not a nicety.
 
 ---
 
