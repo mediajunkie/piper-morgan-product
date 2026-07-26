@@ -1,18 +1,18 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # The Meta-Observation Pattern
 
 *April 18–21, 2026*
 
-In one week we published three pieces — *Thirteen Mailboxes* on Saturday, *Sibling Intelligence* on Sunday, *Four Roles, Ninety Minutes* on Tuesday — and only after the third one landed did I notice they were doing the same thing.
+In one week we published three pieces that all shared a peculiar recursive, meta quality: *Thirteen Mailboxes* on Saturday, *Sibling Intelligence* on Sunday, *Four Roles, Ninety Minutes* on Tuesday.
 
 Each one was a piece about coordination, written by a coordination system, describing the way that coordination system was working, while it was working.
 
-# The three
+# The storie
 
 *Thirteen Mailboxes* described how memos move between eleven agent inboxes inside the project, with me as the manual postman between them. The piece was itself a memo of sorts — written by the Comms agent, routed through me, edited by me, published into the same building-in-public stream where every other internal memo eventually lands.
 
