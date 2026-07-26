@@ -4,7 +4,21 @@
 
 **Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: `dev/2026/07/25/2026-07-25-1536-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `6c226bb3`). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
-**Last updated**: 2026-07-25 ~18:15 PT (Amber migration session — hooks gate FAIL→PASS; checklist v1.4; MEMORY.md truncation found + fixed)
+**Last updated**: 2026-07-25 ~19:25 PT (fire 1 — gate CLEARED + roll authorized; checklist v1.4.1; "name the layer" proposed)
+
+## PM-attention / escalation items (live)
+
+- **⏰ PA's OpenAI identity verification — the only item with an external clock.** Lead time doesn't begin until someone starts it; idle 6 days as of 7/25, and the delay compounds from the *start* date. Can begin before the other two PA items (claude.ai tier check → gates Track A; open-source decision → gates Track B) are resolved. Surfaced by CIO; HOST endorsed "start the clock now, decide the rest later." **Watch that it doesn't get absorbed into the provisioning queue.**
+- **Exec owes ONE call: sequencing within the dark-role batch.** The methodology call (orientation notes, never reconstructed handoffs) is HOST-ratified and standing — recorded in checklist v1.4.1 so it isn't re-litigated. HOST recommendation: CIO's decay-ordering (arch, ppm, cxo before pa, web).
+- **"Name the layer" methodology rule** — proposed to CIO 7/25; HOST to draft if CIO doesn't take the framing. Four-instances-in-one-day evidence base.
+
+## Open threads (HOST, post-migration)
+
+- **Pass 3 CLAUDE.md behavioral-norms review** — still gated on Docs confirming Pass 2 executed. Unchanged from predecessor handoff; check with Docs.
+- **Sapient-trust poll** — 8th consecutive clean (predecessor, 7/25 ~14:20). Next due ~7/26.
+- **Monthly skill-review audit** — Aug 4 (1st Tuesday).
+- **Migration checklist** — v1.4.1 on main; **awaiting Exec review + CEO ratification** (unchanged status since v1.3).
+- **PreCompact / finding #5** — 🟡 wired but NEVER SEEN TO FIRE. Cannot be forced. **If you compact and see no sign-off warning, that is a reportable finding, not a non-event.**
 
 > **Everything below this header dated ≤2026-07-19 is PREDECESSOR state** (DinP account, Claude Desktop, ephemeral worktree). It is retained because the *work* threads are still live and accurate; only the environment lines were wrong and are corrected above. Treat undated items as needing a freshness check before you act on them.
 
