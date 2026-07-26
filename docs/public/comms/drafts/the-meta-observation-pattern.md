@@ -8,21 +8,23 @@ caption: ''
 
 *April 18–21, 2026*
 
-In one week we published three pieces that all shared a peculiar recursive, meta quality: *Thirteen Mailboxes* on Saturday, *Sibling Intelligence* on Sunday, *Four Roles, Ninety Minutes* on Tuesday.
+In one week we published three pieces that all shared a peculiar recursive quality: *Thirteen Mailboxes* on Saturday, *Sibling Intelligence* on Sunday, *Four Roles, Ninety Minutes* on Tuesday.
 
 Each one was a piece about coordination, written by a coordination system, describing the way that coordination system was working, while it was working.
 
 # The stories
 
-*Thirteen Mailboxes* described how memos move between eleven agent inboxes inside the project, with me as the manual postman between them. The piece was itself derived from the exact sort of memos it describes, pulled together into scaffolding and then first draft by my Comms agent, rewritten and edited by me, published by my Docs agent into this same building-in-public stream where every other idea that orginated in an internal memo eventually lands.
+*Thirteen Mailboxes* described how memos move between eleven agent inboxes inside the project, with me as the manual postman between them. The piece was itself derived from the exact sort of memos it describes, pulled together into scaffolding and then first draft by my Comms agent, landing in this same building-in-public stream where every other idea that orginated in an internal memo eventually shows up.
 
-*Sibling Intelligence* described the daily cross-pollination brief that flows between sibling AI projects in the same parent organization (my org). Comms pitched me on the topic after learning about this mechanism through that exact mechanism, which had  surfaced in the brief that landed in adjacent projects within forty-eight hours.
+*Sibling Intelligence* described the daily cross-pollination brief that flows between sibling AI projects in the same parent organization (my org). Comms pitched me on the topic after learning about this mechanism through that exact mechanism, which had surfaced in the brief that landed in adjacent projects within forty-eight hours.
 
-*Four Roles, Ninety Minutes* described how four agent roles produced a product concept in ninety minutes through an asynchronous memo chain. The piece itself was produced through a similar chain: Comms drafted it, I voice-passed it, Docs ran the publishing pipeline.
+*Four Roles, Ninety Minutes* described how four agent roles produced a product concept in ninety minutes through an asynchronous memo chain. The piece itself was produced through a similar chain: Comms pitched it, scaffolded it, and drafted it, then I rewrote it and edited it through several passes, then my Docs agent proofread and fact-checked it before running the publishing pipeline to put it on my site, after which a Cowork agent cross-posted it to Medium.
 
 In each case, the artifact was an instance of the thing it was describing. *The system was using itself to write about itself.* And the writing then became part of the system's record of how it works.
 
-# Why I think this happens
+It's meta-turtles all the way up.
+
+# Why this keeps happening.
 
 Most projects have a separation between *the thing* and *the writing about the thing.* The thing is built by engineers, the writing is done by communications people, the writing describes the thing from outside.
 
@@ -30,13 +32,13 @@ This project doesn't quite have that separation. The communications role is itse
 
 The implication is that the documentation isn't standing outside the system describing it. The documentation is *part of* the system, and the system's behavior includes producing documentation of itself.
 
-There's a temptation to make this sound deeper than it is — to wave at Hofstadter, or strange loops, or self-reference paradoxes. I want to resist that. What's actually happening is more practical: when the people building the system are also the people writing about it, *and* the writing-about-it is produced by the same infrastructure as the building, the artifacts of description become artifacts of the system. The system then has access to its own descriptions, which can change how it operates. Which then produces new descriptions.
+There's a temptation to make this sound deeper than it is (me waving at Hofstadter, strange loops, and self-reference paradoxes) but I want to resist that. What's actually happening is more practical: when the ones building the system are also the ones writing about it, *and* the writing-about-it is produced by the same infrastructure as the building, the artifacts of description become artifacts of the system. The system then has access to its own descriptions, which can change how it operates. Which then produces new descriptions.
 
-That's a feedback loop, not a paradox. But it's a feedback loop with consequences.
+That's really just a feedback loop, one with consequences.
 
-# The consequences
+# Looping to what end?
 
-The first consequence is a kind of legibility. Projects whose documentation lives outside the system tend to drift — the docs say one thing, the system does another, and the gap is noticeable mostly to outsiders who came in expecting one and found the other. Projects whose documentation is part of the system have a different relationship: the description is also a constraint, because the next time someone reads the description they'll behave according to it, and the system's future operation gets shaped by its past self-descriptions.
+The first consequence is a kind of legibility. Projects whose documentation lives outside the system tend to drift: —the docs say one thing, the system does another, and the gap is noticeable mostly to outsiders who came in expecting one and found the other. Projects whose documentation is part of the system have a different relationship: the description is also a constraint, because the next time someone reads the description they'll behave according to it, and the system's future operation gets shaped by its past self-descriptions.
 
 This cuts both ways. If the description is right, the system gets reinforced toward what works. If the description is wrong — even slightly wrong, in the way that polished output drifts away from canonical source — the wrong shape gets reinforced too. We've already had this happen with our Excellence Flywheel documentation. Eight different formulations across nine months, each successor cited from the previous one rather than the original. The drift wasn't a bug in any single document, it was the system reading its own descriptions and updating from them.
 
