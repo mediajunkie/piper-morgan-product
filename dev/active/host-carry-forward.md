@@ -4,7 +4,12 @@
 
 **Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: `dev/2026/07/25/2026-07-25-1536-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `6c226bb3`). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
-**Last updated**: 2026-07-25 ~19:25 PT (fire 1 — gate CLEARED + roll authorized; checklist v1.4.1; "name the layer" proposed)
+**Last updated**: 2026-07-25 22:15 PT — **DAY-CLOSED**. Fire 2 = STOP. Session log `dev/2026/07/25/2026-07-25-1536-host-code-log.md` carries the `<!-- DAY-CLOSED: 2026-07-25 -->` marker.
+
+## ▶ FIRST TWO ACTIONS AT TOMORROW'S START (06:37)
+
+1. **Re-probe the hooks** — stage a `mailboxes/` file on `claude/host-cycle`, attempt commit, **record which path the refusal names** (absolute = user layer, relative = project layer). This gives CIO the ~8-hour-separated sample its intermittency question actually needs; today's 4/4 was a tight cluster minutes apart and rules out only a *fast* flicker. Reverse the probe.
+2. **Draft the dashboard criteria v0.3 spec** — see the trigger note below. This is the item that has been idle 5 weeks; do not let a third day pass.
 
 ## PM-attention / escalation items (live)
 
