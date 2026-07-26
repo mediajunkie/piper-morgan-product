@@ -65,4 +65,9 @@ fi
     echo "Script: scripts/reconcile-drafts-calendar.py"
 } >&2
 
-exit 2
+# exit 0 = warn-only (message reaches the agent, commit proceeds).
+# exit 2 would BLOCK the commit — which contradicted the warn-first message
+# above and made every drafts commit fail. Fixed 2026-07-26.
+# To promote this check to hard-block later, change this to `exit 2` AND
+# update the message above to say the commit is blocked.
+exit 0

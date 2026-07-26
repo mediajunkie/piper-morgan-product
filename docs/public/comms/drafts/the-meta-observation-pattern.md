@@ -30,7 +30,7 @@ Most projects have a separation between *the thing* and *the writing about the t
 
 This project doesn't quite have that separation. The communications role is itself an agent in the same multi-agent infrastructure that does the engineering. The post about how four agents coordinated was produced by the same coordination patterns it described. The post about cross-pollination went out through the cross-pollination system.
 
-The implication is that the documentation isn't standing outside the system describing it. The documentation is *part of* the system, and the system's behavior includes producing documentation of itself.
+The implication is that the documentation is *part of* the system, and the system's behavior includes producing documentation of itself.
 
 There's a temptation to make this sound deeper than it is (me waving at Hofstadter, strange loops, and self-reference paradoxes) but I want to resist that. What's actually happening is more practical: when the ones building the system are also the ones writing about it, *and* the writing-about-it is produced by the same infrastructure as the building, the artifacts of description become artifacts of the system. The system then has access to its own descriptions, which can change how it operates. Which then produces new descriptions.
 
@@ -40,9 +40,9 @@ That's really just a feedback loop, one with consequences.
 
 The first consequence is a kind of legibility. Projects whose documentation lives outside the system tend to drift: the docs say one thing, the system does another, and the gap is noticeable mostly to outsiders who came in expecting one and found the other. Projects whose documentation is part of the system have a different relationship: the description is also a constraint, because the next time someone reads the description they'll behave according to it, and the system's future operation gets shaped by its past self-descriptions.
 
-This cuts both ways. If the description is right, the system gets reinforced toward what works. If the description is wrong — even slightly wrong, in the way that polished output drifts away from canonical source — the wrong shape gets reinforced too. We've already had this happen with our Excellence Flywheel documentation. Eight different formulations across nine months, each successor cited from the previous one rather than the original. The drift wasn't a bug in any single document, it was the system reading its own descriptions and updating from them.
+This cuts both ways. If the description is right, the system gets reinforced toward what works. If the description is wrong — even slightly wrong, in the way that polished output drifts away from canonical source — the wrong shape gets reinforced too. We've already had this happen with our Excellence Flywheel documentation. Eight different formulations across nine months, each successor cited from the previous one rather than the original. The drift came from the system reading its own descriptions and updating from them, not from a bug in any single document.
 
-The second consequence is that the role of communication changes. When the writing-about-the-system is also a part of the system, communication isn't just reporting. It's intervention. Every blog post is a small change to the system's self-image. The post about manual mail delivery made the bottleneck legible, legibility changed how I thought about it, that change accelerated the migration decision, the migration is now ongoing. *The post helped cause the change it was reporting.*
+The second consequence is that the role of communication changes. When the writing-about-the-system is also a part of the system, communication becomes intervention. Every blog post is a small change to the system's self-image. The post about manual mail delivery made the bottleneck legible, legibility changed how I thought about it, that change accelerated the migration decision, the migration is now ongoing. *The post helped cause the change it was reporting.*
 
 Most of the time this happens at low intensity. A piece lands, the team reads it, somebody nods, things continue. Occasionally a piece lands and you can feel something shift — the post becomes a critical reference point for the next decision. We had this with *The Migration* in mid-April, we had it again with *Verify the Paraphrase* this week.
 
@@ -52,7 +52,7 @@ In reviewing this post Comms noted to me several more pieces we've published tha
 
 Also, I'm not arguing that I've discovered something profound about self-observation. The pattern I'm seeing is mostly a side-effect of the way this project happens to be structured — the writing role and the engineering roles share the same infrastructure, the publishing pipeline is part of the development pipeline, the communications agent reads and writes in the same filesystem the code lives in. Take any of those structural choices away and the pattern dissolves into something more ordinary.
 
-The pattern isn't deep. But it is operational, and worth being honest about, because it changes what we owe the artifacts. If the description is part of the system, then writing carelessly is a small kind of sabotage — the carelessness gets reinforced. And writing well is a small kind of investment — the next time the system reads itself, it reads a clearer version.
+The pattern is shallow but operational, and worth being honest about, because it changes what we owe the artifacts. If the description is part of the system, then writing carelessly is a small kind of sabotage — the carelessness gets reinforced. And writing well is a small kind of investment — the next time the system reads itself, it reads a clearer version.
 
 # Being aware of being aware of being
 
