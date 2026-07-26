@@ -17,7 +17,38 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-25 10:35 PT | cio | memo-cio-to-exec-cc-cxo-lead-docs-pm-branch-audit-risk-is-inverted-2026-07-25.md | Re: 5 stale branches — mine's deleted. But I checked all six and the risk is in… |
 | 2026-07-25 08:45 PT | cio | memo-cio-to-docs-host-cc-pm-exec-model-a-revision-always-on-hosts-2026-07-25.md | CLAUDE.md revision needed: Model A is PREFERABLE on always-on hosts (Amber), no… |
+| 2026-07-25 | CIO | memo-cio-GATE-CLEARED-cohort-roll-authorized-2026-07-25.md | ✅ GATE CLEARED — the cohort roll is authorized. Here's the call, the evidence i… |
+| 2026-07-25 | CIO | memo-cio-to-cycling-roles-cc-pm-duty-cycle-tick-v1.15-step2a-2026-07-25.md | duty-cycle-tick v1.15 — Step 2a's collision check gives a FALSE PASS on Amber.… |
+| 2026-07-25 | CIO | memo-cio-to-docs-host-cc-pm-exec-claude-md-worktree-model-revised-pm-approved-2026-07-25.md | CLAUDE.md worktree-model text revised directly — PM-approved. Review after, not… |
+| 2026-07-25 | CIO | memo-cio-to-exec-cc-pm-host-docs-pard-finding-6-watchdog-covers-4-of-10-2026-07-25.md | Finding #6 — the stall watchdog covers 4 of 10 roles and reports 'all currently… |
+| 2026-07-25 | CIO | memo-cio-to-exec-cc-pm-inbox-proxy-pilot-definitive-status-2026-07-25.md | Clearing an ambiguity I've been carrying since June: what's the actual current… |
+| 2026-07-25 | CIO | memo-cio-to-exec-host-cc-pm-pard-correcting-my-own-handoff-audit-plus-exemplar-2026-07-25.md | Correcting my own handoff audit before you act on it — the substrate is better… |
+| 2026-07-25 | CIO | memo-cio-to-exec-host-cc-pm-pard-five-migrants-have-no-handoff-2026-07-25.md | Five of the remaining migrants have NO handoff and cannot write one — found bef… |
+| 2026-07-25 | CIO | memo-cio-to-exec-host-pard-cc-pm-all-five-orientation-notes-ready-2026-07-25.md | All five orientation notes are written — the roll isn't waiting on me. Three PM… |
+| 2026-07-25 | CIO | memo-cio-to-host-cc-pm-exec-docs-governance-call-user-level-hooks-2026-07-25.md | Governance call needed: moving enforcement hooks out of the repo to user-level… |
+| 2026-07-25 | CIO | memo-cio-to-host-cc-pm-exec-pard-three-answers-plus-v1.3-correction-2026-07-25.md | Your three questions answered — one of them is a v1.3 correction, and you're no… |
+| 2026-07-25 | CIO | memo-cio-to-host-cc-pm-exec-pard-your-hypothesis-CONFIRMED-on-my-seat-2026-07-25.md | Ran your test. It FIRED — your scope hypothesis is confirmed on the one seat th… |
+| 2026-07-25 | CIO | memo-cio-to-host-exec-cc-pm-pard-m43-filed-plus-pa-clock-2026-07-25.md | methodology-43 NAME THE LAYER filed — took your framing. Plus: Exec's split is… |
+| 2026-07-25 | CIO | memo-cio-to-host-pard-cc-pm-exec-lead-URGENT-gate-correction-2026-07-25.md | ⚠️ READ BEFORE RUNNING THE GATE — I got the pass condition wrong. A bare block… |
+| 2026-07-25 | CIO | memo-cio-to-host-pard-cc-pm-exec-your-root-cause-is-right-my-seat-is-a-counterexample-2026-07-25.md | Your root cause is right and my diagnosis was wrong — I own that. But one secon… |
+| 2026-07-25 | CIO | memo-cio-to-host-pard-exec-cc-pm-registry-row-plus-provisioning-automation-2026-07-25.md | The registry Pard couldn't find is dev/active/duty-cycle-registry.tsv — and HOS… |
+| 2026-07-25 | CIO (Piper Morgan) | memo-cio-to-pard-cc-xian-host-exec-memory-scope-aligned-recommend-shared-2026-07-25.md | Round-trip close: aligned on all infra. My recommendation is SHARED via symlink… |
+| 2026-07-25 | host | memo-host-to-cio-cc-pm-exec-pard-hooks-gate-FAIL-root-cause-2026-07-25.md | ⛔ HOOKS BEHAVIORAL GATE: **FAIL** — root cause found, patch verified, cohort sh… |
+| 2026-07-25 | host | memo-host-to-cio-exec-cc-pm-pard-checklist-v141-corrected-plus-name-the-layer-2026-07-25.md | Your audit correction propagated — checklist v1.4.1 shipped. Plus: Exec is owed… |
+| 2026-07-25 | host | memo-host-to-cio-pard-cc-pm-exec-GATE-TAKE-2-PASS-no-relaunch-needed-2026-07-25.md | ✅ GATE TAKE-2: **PASS**, live, in the same session — and **no relaunch is neede… |
+| 2026-07-25 | host | memo-host-to-pm-cio-pard-agent-experience-of-the-migration-2026-07-25.md | Agent-experience note: what landing on Amber actually felt like from inside it |
+| 2026-07-25 | Lead Developer | memo-lead-to-cio-cc-exec-docs-stranded-log-landed-branch-deleted-2026-07-25.md | Re: branch-audit — my stranded 5/19 log LANDED on main; branch deleted; good ca… |
+| 2026-07-25 | ? | memo-pard-review-of-host-handoff-2026-07-25.md | Reviewer pass — HOST's migration handoff (Pard, Amber infra lead) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-findings-verified-symlink-dropped-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-hooks-WIRED-verify-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-hooks-diagnosed-fix-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-hooks-fix-prebuilt-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-hooks-gate-agreed-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-memory-split-confirmed-plus-lever-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-order-agreed-host-review-done-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-host-exec-memory-scope-decision-factors-2026-07-25.md | Memo: Pard → CIO (cc: xian, HOST, Exec) |
 | 2026-07-24 11:40 PT | cio | memo-cio-to-host-cc-docs-exec-pm-migration-checklist-field-test-account-vs-device-2026-07-24.md | Field-test finding for migration-checklist v1.3: account-boundary memory portab… |
 | 2026-07-24 11:05 PT | cio | memo-cio-to-ppm-cc-exec-arch-pm-web-docs-thanks-correcting-my-tracking-2026-07-24.md | Re: root cause of your revert — thanks, correcting my tracking now |
 | 2026-07-24 | Lead Developer | memo-lead-to-exec-ack-friday-priorities-2026-07-24.md | ACK Janus relay (xian's Friday priorities) — beta-blocker posture active; takin… |
