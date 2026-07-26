@@ -1,7 +1,7 @@
 
-# Role Migration Checklist v1.4
+# Role Migration Checklist v1.4.1
 
-**Status**: v1.4. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
+**Status**: v1.4.1. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
 **Purpose**: Standing checklist for any future role migration (new role activation, re-migration of a dormant role, account migration, device migration). Cohort migration completed Apr 22–26, 2026.
 **Owner**: HOST. Exec reviews; CEO approves for canonical publication.
 
@@ -69,13 +69,22 @@ The incoming instance completes these items.
 
 **Rule 2 — Write an honest orientation note instead.** Per dark role, state plainly: no handoff exists · here is the durable substrate (carry-forward + standing-items + briefing, each with its date) · **here is specifically what is missing and why**. Name §4 and §6 as *missing, not omitted* — a successor who knows what it's missing can ask; one who reads silence assumes there was nothing to say.
 
-**Rule 3 — Flag stale substrate explicitly; a stale carry-forward is worse than none.** A successor reads an undated carry-forward as current. Banner anything over ~2 weeks with its age. *(PA's is 38 days stale as of Jul 25 — present, and actively misleading.)*
+**Rule 3 — Audit for carry-forward STATE, not carry-forward FILES.** *(v1.4.1 — this rule exists because the first audit of these same five roles got two of five wrong by checking file existence.)* The duty-cycle skill makes the **session log** the canonical record, so a role's current state is legitimately often written *inside its last session log* (a `## Carry-forward` section) rather than in `dev/active/{role}-carry-forward.md`. **Checking which files exist tells you nothing about whether state exists.** Open the last session log and read it.
+- **The trap this creates**: a **stale separate file alongside a current in-log section**. Both exist; only one is true. Read the log, treat the file as historical, and say so explicitly in the orientation note.
+- *(Jul 25 concrete: PA was first reported as "38 days stale, present-but-misleading" — its **file** is from 6/17, but its 7/19 log carries current in-line carry-forward, making PA among the **best**-documented of the five. CXO was reported as "thinnest — no handoff and no carry-forward"; CXO in fact wrote six named carry-forward items into its 7/19 log. Acting on the file-level audit would have mis-ranked the two roles most at risk.)*
 
-**Rule 4 — Thin landings need an explicit decision, not a default.** A role with neither handoff nor carry-forward (CXO, as of Jul 25) should have that acknowledged *before* provisioning — either someone reconstructs a carry-forward from session logs, or the successor is told plainly that building one is its first task. Discovering it on arrival is the failure mode.
+**Rule 4 — Check for the `<!-- DAY-CLOSED -->` marker; a mid-day death is a different landing than a clean stop.** A role whose last session log carries the marker **wrapped properly** — its last entry is a real close. A role **missing** it *died mid-day*, and **anything in flight at its last entry stayed in flight**: unpushed reasoning, half-finished rulings, work another role may still be building against. Tell the successor which one they are; it changes what they should distrust first.
+- *(Jul 25: arch, cxo, ppm died mid-day; pa and web closed cleanly. Arch's case is the sharp one — it made an architecture-integrity ruling stopping another role's in-progress build, then went dark, so the ruling's counterparty may never have received it.)*
+
+**Rule 5 — Thin landings need an explicit decision, not a default.** Where the substrate genuinely is thin after Rules 3–4, acknowledge it *before* provisioning — either someone reconstructs a carry-forward from the session logs, or the successor is told plainly that building one is its first task. Discovering it on arrival is the failure mode.
+
+**Rule 6 — Reading the logs surfaces live work that no file-existence audit can.** Building the notes for these five turned up items nobody was holding: **three PM-gated distribution decisions idle six days, one with external lead time that does not start until someone starts it**; parked substantive reads; an open PM request that may never have happened; a 12-deep unread queue. **A fabricated handoff would have produced plausible prose and missed every one of them** — which is the strongest argument for Rule 1 and worth stating to anyone who thinks reconstruction is the kinder option. Surface what you find to PM/Exec as you go, not only in the note.
 
 **Why this is acceptable rather than a compromise** *(the argument that makes the branch safe)*: **the handoff's load has genuinely dropped.** It used to carry the whole accumulated context across an account boundary that memory couldn't cross. Memory is now shared by construction and seeded — the incoming session inherits the cohort's context natively on arrival. What remains uniquely handoff-shaped is the first-person reflection, which is exactly what can't be faked. So the honest thin package is *nearly* the complete one, minus the part no one can honestly supply.
 
-*(Source: CIO finding Jul 25, found before the roll rather than at agent #3; HOST ratified as checklist branch same day.)*
+**Status of this branch**: the *methodology* call — orientation notes, never reconstructed handoffs — is **HOST-ratified and standing**; it does not need a separate ruling. What remains open is **Exec's operational call on sequencing** within the dark-role batch. Flagged because the two were running together in the thread and Exec should not think the methodology is waiting on them.
+
+*(Source: CIO finding Jul 25, found before the roll rather than at agent #3; HOST ratified as checklist branch same day. **Rules 3, 4 and 6 added same-day (v1.4.1)** after CIO corrected its own audit — the original Rules 3–4 cited PA and CXO as the two thinnest landings, and both citations were artifacts of auditing files instead of state. The rules were right; the evidence under them was wrong, which is its own lesson about how fast a finding propagates into a canonical surface.)*
 
 ## Sequencing Notes
 
@@ -123,6 +132,8 @@ For the Jul 25 cohort (Code → Amber/pipermorgan.ai):
 ## Changes from v1.3
 
 *Written by HOST from its own Amber migration (agent #2, Jul 25 2026) — the first run of this checklist where the incoming instance recorded the experience while inside it, plus CIO's pre-roll findings.*
+
+**v1.4.1 (same day)** — the dark-role branch gained **Rules 3, 4 and 6** and renumbered the old Rule 4 to Rule 5, after CIO corrected its own audit of the five dark roles. My original Rules 3–4 named PA ("38 days stale, actively misleading") and CXO ("thinnest — no handoff *and* no carry-forward") as the two riskiest landings; **both were artifacts of auditing carry-forward FILES rather than carry-forward STATE**, which the duty-cycle skill puts inside the session log. PA and CXO both carry current in-log carry-forward; PA is among the best-documented of the five. New rules: **audit state, not files** (3), **check `<!-- DAY-CLOSED -->` — a mid-day death leaves work in flight** (4), and **reading logs surfaces live work no file audit can** (6). *The rules were right; the evidence under them was wrong — which is itself the lesson about how fast a finding propagates into a canonical surface.*
 
 1. **Memory step INVERTED (Phase 3)** — v1.3 said "read the predecessor's memory export." Corrected to **"verify the pool is populated; do not import."** Memory keys on the git-common-dir, so worktrees share one pool by construction. v1.3's instruction was right only for the first migrant onto a new account. Left uncorrected it would have cost every subsequent migrant a wasted step and taught a wrong model of how memory scopes.
 2. **Behavioral hooks gate added (Phase 3)**, with the **attribution-based** pass condition — a refusal naming the hook is the pass; a classifier denial is INCONCLUSIVE; a bare `No stderr output` naming the hook is still a PASS. Includes **step 0: re-fetch and check inbox for gate corrections before probing** — HOST ran the gate against a rubric that had been superseded mid-session, because the prompt ordered the gate ahead of inbox triage.
