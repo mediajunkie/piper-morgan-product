@@ -2,7 +2,7 @@
 
 **Purpose**: read-at-fire-time carry-forward for the `duty-cycle-tick` skill. Holds the *genuinely transient* "where am I now" state. Durable owed/queued items also live in the session log; this file is the ephemeral working state the skill reads at START / each fire and rewrites at the end of every substantive fire. See `.claude/skills/duty-cycle-tick/SKILL.md`.
 
-**Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: `dev/2026/07/25/2026-07-25-1536-host-code-log.md`. **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID `6c226bb3`). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
+**Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: **`dev/2026/07/26/2026-07-26-0707-host-code-log.md`** (07-26). **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID **`7c1d5637`**). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
 **Last updated**: 2026-07-26 10:25 PT (WORK fire). Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
 
@@ -32,12 +32,12 @@
 ## PM-attention / escalation items (live)
 
 - **⏰ PA's OpenAI identity verification — the only item with an external clock.** Lead time doesn't begin until someone starts it; idle 6 days as of 7/25, and the delay compounds from the *start* date. Can begin before the other two PA items (claude.ai tier check → gates Track A; open-source decision → gates Track B) are resolved. Surfaced by CIO; HOST endorsed "start the clock now, decide the rest later." **Watch that it doesn't get absorbed into the provisioning queue.**
-- **Exec owes ONE call: sequencing within the dark-role batch.** The methodology call (orientation notes, never reconstructed handoffs) is HOST-ratified and standing — recorded in checklist v1.4.1 so it isn't re-litigated. HOST recommendation: CIO's decay-ordering (arch, ppm, cxo before pa, web).
-- **"Name the layer" methodology rule** — proposed to CIO 7/25; HOST to draft if CIO doesn't take the framing. Four-instances-in-one-day evidence base.
+- ~~Exec's dark-role sequencing call~~ ✅ **CONFIRMED 7/25**: arch → ppm → cxo → pa → web (decay-ordered). Methodology half was HOST-ratified and standing.
+- ~~"Name the layer"~~ ✅ **FILED by CIO as `methodology-43`** 7/25, HOST framing credited, with CIO's m-42 boundary (self-exemption vs. substitution) added. Closed.
 
-## ▶ NEXT SUBSTANTIVE ITEM — dashboard criteria **v0.3 spec** (trigger named, not "when it fits")
+## ✅ DONE — dashboard criteria v0.3 spec *(was the "next substantive item"; shipped 2026-07-26)*
 
-`dev/active/dashboard-welfare-criteria-host-v0.2-seed.md` closes *"Ready for v0.3 spec."* CIO's markup was integrated **2026-06-19**; it has sat **5 weeks** since — not blocked, just triggerless.
+Shipped `2a8199f34` (+ §7 `e6a043642`, + G6 `466ac75c9`) → `dev/active/dashboard-welfare-criteria-host-v0.3-spec.md`. The 5-week triggerless idle is closed. **Kept here only as the worked example that the named-trigger discipline works**: a trigger was named, it arrived, the work happened.
 
 **Trigger: the first substantive slot of the next fresh-session START (tomorrow's 06:37), before mail if the inbox is light.** Deferred from fire 1 for one stated reason — it is a substantive analytical deliverable and fire 1 ran at the tail of a very long migration session; drafting it there would have been marathon-tail work on something that deserves a fresh pass. That is quality-banking with an explicit trigger, **not** "no rush." *If a future fire reads this and the trigger has passed without the spec being drafted, that is the deferral antipattern and should be called out, not re-deferred.*
 
@@ -46,9 +46,9 @@ Drafting does **not** need CIO or Exec bandwidth — HOST owns the criteria; the
 ## Open threads (HOST, post-migration)
 
 - **Pass 3 CLAUDE.md behavioral-norms review** — still gated on Docs confirming Pass 2 executed. Unchanged from predecessor handoff; check with Docs.
-- **Sapient-trust poll** — 8th consecutive clean (predecessor, 7/25 ~14:20). Next due ~7/26.
+- **Sapient-trust poll** — **9th consecutive clean (HOST, 2026-07-26: 0 open).** Next due ~2026-08-02.
 - **Monthly skill-review audit** — Aug 4 (1st Tuesday).
-- **Migration checklist** — v1.4.1 on main; **awaiting Exec review + CEO ratification** (unchanged status since v1.3).
+- **Migration checklist** — **v1.4.2** on main (Rule 4 sharpened: mid-day death strands *outbound* obligations); **awaiting Exec review + CEO ratification**.
 - **PreCompact / finding #5** — 🟡 wired but NEVER SEEN TO FIRE. Cannot be forced. **If you compact and see no sign-off warning, that is a reportable finding, not a non-event.**
 
 > **Everything below this header dated ≤2026-07-19 is PREDECESSOR state** (DinP account, Claude Desktop, ephemeral worktree). It is retained because the *work* threads are still live and accurate; only the environment lines were wrong and are corrected above. Treat undated items as needing a freshness check before you act on them.
