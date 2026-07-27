@@ -22,20 +22,35 @@ PM-attention items live **here**, in the section immediately below.
   verify — no company entity needed. **Lead time starts when someone starts it, not when we decide the
   rest.** *(Also carried on CIO's board, where it reads "eight days" — it is 7: memo sent 7/19,
   today is 7/26.)*
-- ⏰ **claude.ai account tier check — 5 minutes, unstarted, gates the Claude connector listing (Track A).**
-  Submission portal requires **Team or Enterprise**; individual/Pro cannot reach it. ⚠️ **The 7/25
-  migration to pipermorgan.ai means the 7/19 answer may no longer apply** — this needs a fresh look at
-  the account we're actually on, not a recollection.
+- ❓ **Claude submission path — the question CHANGED on 2026-07-26. It is no longer "check your tier."**
+  ~~Tier check gates Track A~~ — **withdrawn**. The 7/19 research's blanket "Team/Enterprise required,
+  Max blocked" claim is **unreliable**; its own author retracted it during handoff consultation, but the
+  retraction had lived only in a chat session and never reached a committed document. A **second path
+  exists at `platform.claude.com/plugins/submit`** (Console form, reported available to Max), and PM's
+  screenshot showed **"Piper morgan" already installed** with an **"Upload plugin"** option.
+  ⚠️ **Not resolved, deliberately**: that is a *Plugin* surface. Per the glossary, **Connector ≠ Plugin** —
+  so it bears on **Track B** and does not self-evidently clear **Track A**'s gate. **The ask for PM is now:
+  which surface is that "Upload plugin" option, and what is "Piper morgan" already listed as?** PM holds
+  the screenshot and the account. *(Do not re-collapse this into a tier check — that conflation is how
+  the original error propagated.)*
 - 🟡 **Open-source decision for the Claude plugin package (CLAUDE.md + hooks + skills) — PM's call, not
   yet made.** A public GitHub repo is a hard requirement for Track B (full plugin). **Not time-critical
   the way the two above are**: Track A gets a Claude listing without it. PA can write up the tradeoffs
   on request.
-- 🟡 **PDR-006 has sat in "Arch / CXO / PPM review pending" for 7 days; it gates the implementation
-  epic.** PM approved the direction 7/19. Arch acked the same day promising a dedicated read "next
-  fire" and flagged a real coupling — the colleague-model question is the *same concept* as the spatial
-  committed-theory review's "connectors as places with colleagues," so the two shouldn't be decided
-  in isolation. CXO has since named this its most substantive unowned work, queued behind the #1386
-  gate run. No review from any of the three yet. **No PM action needed unless it stays stuck.**
+- 🔴 **PDR-006 cannot ratify until Q2 is answered — and Q2 had been sitting in a "collect later" list.**
+  *(Upgraded from 🟡 on 7/26: the PDR's own author flagged during handoff that Q2 is a **blocker**, not a
+  footnote.)* Q2 = does building the colleague model require **server-side LLM inference**? If yes, the
+  **"no server LLM" premise the whole hosted-MCP phase rests on shifts.** Now marked as a ratification
+  blocker in the PDR's Status line, not just its Open Questions. Two caveats recorded there: the A/B
+  framing was pattern-matched from PDR-005 rather than derived (so "neither" is a legitimate answer), and
+  Arch flagged it as the *same concept* as the spatial review's "connectors as places with colleagues" —
+  the two shouldn't be decided in isolation. Review has sat 7 days; CXO names it their most substantive
+  unowned work, queued behind the #1386 gate run. **No PM action needed unless it stays stuck.**
+- 🟠 **#1351's carry-forward is an INCOMPLETE AUDIT, not a design note — and it reads passively today.**
+  The anonymous-caller state-isolation audit was started and abandoned before the issue was closed as
+  superseded. `ConversationDB` is verified safe; **Redis, in-process floor/context state, and
+  rate-limiting under anonymous-caller conditions were never traced.** Escalated to Arch to verify
+  **before the hosted MCP endpoint goes live**. *(No PM action — tracked so it can't quietly lapse again.)*
 
 ### Context PM may want when these come up
 

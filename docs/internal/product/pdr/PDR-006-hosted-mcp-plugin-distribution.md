@@ -1,6 +1,7 @@
 # PDR-006: Hosted MCP Endpoint + Plugin Distribution Model
 
-**Status**: Review — PM approved direction (2026-07-19); Arch / CXO / PPM review pending
+**Status**: Review — PM approved direction (2026-07-19); Arch / CXO / PPM review pending (7 days as of 2026-07-26)
+**⛔ Ratification blocker**: **Q2 (colleague model build vs. serve) must be resolved before this PDR can ratify** — a server-side-LLM answer invalidates the "no server LLM" premise the architecture below is built on. It is listed under Open Questions but is *not* a peer of Q1/Q3. See the flag there.
 **Date**: 2026-07-19
 **Author**: PA (Piper Alpha) — on behalf of PM
 **Stakeholders**: PM, Arch, CXO, PPM, Lead Dev
@@ -146,11 +147,18 @@ Rejected for this phase: unnecessary for connectors + context serving, adds cost
 
 ## Open Questions (PM-gated)
 
-1. **#1360 and #1351 closure**: These were MCPB-specific security issues. May PM explicitly confirm these can be closed as superseded by PDR-006?
+> ⚠️ **Q2 is a RATIFICATION BLOCKER, not an item to collect at leisure.** This list otherwise reads as
+> questions to answer later, and Q2 was drafted into it as a peer of Q1 and Q3. It is not one.
+> Flagged during the 2026-07-26 PA handoff by the PDR's own author — see
+> `dev/active/handoff-pa-predecessor-2026-07-26.md`.
 
-2. **Colleague model build vs. serve**: Does building/updating the colleague model require server-side LLM inference (pattern recognition over conversation signals), or is it a pure database write from client-observable signals pushed by the client LLM? If it requires server-side LLM, that's a constraint for the M3 roadmap even under the "no server LLM" assumption for M2.
+1. ✅ **RESOLVED 2026-07-19.** **#1360 and #1351 closure**: These were MCPB-specific security issues. May PM explicitly confirm these can be closed as superseded by PDR-006? — *PM confirmed; both closed as superseded. **Carry-forward on #1351 is an INCOMPLETE AUDIT, not a design note** — the anonymous-caller state-isolation audit was started and left unfinished. `ConversationDB` persistence is verified safe; **Redis, in-process floor/context state, and rate-limiting under anonymous-caller conditions were never traced.** Arch must verify the hosted MCP endpoint does not inherit this class of issue **before it goes live**.*
 
-3. **Plugin directory applications**: PM mentioned both Claude and GPT have directories to apply to. Is this a "begin drafting applications now" direction, or wait until the plugin package and beta are more stable?
+2. 🔴 **BLOCKS RATIFICATION. Colleague model build vs. serve**: Does building/updating the colleague model require server-side LLM inference (pattern recognition over conversation signals), or is it a pure database write from client-observable signals pushed by the client LLM? If it requires server-side LLM, that's a constraint for the M3 roadmap even under the "no server LLM" assumption for M2.
+   **Why it blocks rather than informs**: if the answer is server-side inference, **the "no server LLM" framing of this entire phase shifts** — this is a premise of the architecture above, not a detail hanging off it. Do not ratify PDR-006 with Q2 open.
+   ⚠️ **Two caveats on the question as posed.** (a) Its author flags that the A/B framing was **pattern-matched from PDR-005's ratified client/server split, not derived from what the colleague model actually requires** — so "neither" or "the split is more nuanced than a binary" are legitimate answers, and the binary may be constraining the inquiry. (b) Arch has flagged that "colleague model as MCP resource" is the **same concept** as the spatial committed-theory review's "connectors as places with colleagues," which is under active review — **the two should not be decided in isolation.**
+
+3. **Plugin directory applications**: PM mentioned both Claude and GPT have directories to apply to. Is this a "begin drafting applications now" direction, or wait until the plugin package and beta are more stable? — *PM directed: begin research now. Research delivered 7/19; ⚠️ **its Team/Enterprise gating claim is since withdrawn as unreliable** — see the correction banner on `mailboxes/pa/sent/2026-07-19-pa-to-exec-cc-pm-plugin-directory-research.md`.*
 
 ---
 
