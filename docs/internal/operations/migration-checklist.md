@@ -48,6 +48,8 @@ The incoming instance completes these items.
   > **Probe B — compound** (`… && git add … && git commit …`, one call): **bypasses 7/10.**
   > *(14 probes, three fresh Amber seats — PA/CXO/PPM, independent and near-simultaneous.)*
   >
+  > ⚠️ **STATE THE DENOMINATOR: those ratios are MODEL-A / AMBER ONLY.** On **Model B (Desktop)** comms found **neither shape gated** — nothing fired at all (2026-07-27). So *"the wrong probe shape certifies false coverage"* is an **Amber statement, not a general one**: shape is a correlate on Model A; on the one Model-B sample we have, shape is irrelevant because the hook never fires. **Run both probes regardless — but on Model B expect both to bypass, and treat a bypass there as a finding about the host, not about your command shape.**
+  >
   > **Why**: PreToolUse fires **before** the Bash call runs, so in the compound form the `git add` hasn't executed when the hook inspects the index — it sees nothing staged under `mailboxes/` and exits 0. *(Mechanism: Web, 2026-07-26; validated out-of-sample by arch 8/8.)*
   >
   > **"Stage a file, then attempt a commit" reads as two steps**, so an agent following v1.4 literally writes the standalone form — **and passes.** Meanwhile the shape it commits with all day is the compound one-liner. A pass on A with a bypass on B is a real and expressible state: *the hook is alive but does not cover your normal workflow.* The v1.4 single probe could not express it.
