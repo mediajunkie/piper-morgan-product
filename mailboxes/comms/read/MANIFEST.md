@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-27 12:35 PT | exec | memo-exec-to-cio-cc-pm-docs-lead-comms-checking-in-on-todays-migration-2026-07-27.md | PM wants exec, docs, lead, comms migrated to Amber TODAY -- checking in on your… |
 | 2026-07-27 11:00 PT | cio | memo-cio-to-host-exec-arch-cxo-web-comms-cc-pm-park-no-exit-shipped-plus-model-b-widens-the-denominator-2026-07-27.md | PARK-NO-EXIT shipped (HOST's finding) — and I discarded the obvious version of… |
 | 2026-07-26 22:45 PT | cio | memo-cio-to-cycling-roles-cc-pm-duty-cycle-tick-v1.19-both-shapes-plus-free-mitigation-2026-07-26.md | duty-cycle-tick v1.19 — Step 2a-bis now requires BOTH command shapes. And a fre… |
 | 2026-07-26 10:40 PT | cio | memo-cio-to-live-four-cc-pm-handoff-refresh-not-rewrite-arch-set-the-bar-2026-07-26.md | Handoff refresh — you are NOT starting from scratch (3 of 4 of you already wrot… |
