@@ -95,12 +95,23 @@ out.append(
 )
 out.append("")
 out.append(
-    "⚠️ **This file has a hard read limit (~24KB) and is SILENTLY TRUNCATED past it** — trailing "
-    "entries vanish for every agent that loads it, with no error and no sign anything is missing. "
-    "It had reached 41.4KB (~40% of entries invisible, including most of the `reference` bucket) "
-    "before HOST caught it 2026-07-25. **Keep every entry to ONE short line; put detail in the "
-    "topic file, never here.** Rebuild with `scripts/rebuild-memory-index.py`, which refuses to "
-    "write an oversized index rather than emitting one that degrades quietly."
+    "⚠️ **This file has TWO independent read limits and is SILENTLY TRUNCATED past either** — "
+    "trailing entries vanish for every agent that loads it, with no error and no sign anything is "
+    "missing. **(1) ~24KB of bytes** — it had reached 41.4KB (~40% of entries invisible, including "
+    "most of the `reference` bucket) before HOST caught it 2026-07-25. **(2) ~200 LINES** — a "
+    "separate ceiling that the byte count does NOT imply, found by PA 2026-07-26 at 194 lines while "
+    "the byte guard was reporting a comfortable green. `scripts/rebuild-memory-index.py` now refuses "
+    "to write past either, and warns from 90%."
+)
+out.append("")
+out.append(
+    "**The line limit cannot be fixed by shortening text.** One entry = one line, so with "
+    f"{len(files)} memories on disk the floor is {len(files)} lines before any header — the real "
+    "options are prune/merge, per-type index files with a router, or a denser entry format "
+    "(cheapest, and worst for recall, since the description is what makes an index useful). "
+    "**That is a governance decision about the whole cohort's shared pool, not a formatting "
+    "choice for whoever trips the limit.** ⚠️ **Memory files are NOT under version control — "
+    "deletion is irreversible. Export to a git-tracked file BEFORE pruning anything.**"
 )
 out.append("")
 out.append(
@@ -124,15 +135,43 @@ for t in TYPE_ORDER:
     out.append("")
 
 body = "\n".join(out)
-LIMIT = 24000
-if len(body) > LIMIT:
+
+# ── TWO independent limits. Guarding one and reporting green is the exact failure
+# this script was written to fix, one dimension over. (PA, 2026-07-26: the byte
+# guard passed at 20.4KB while the file sat at 194 lines against a ~200 ceiling.)
+LIMIT = 24000          # bytes — silent read truncation
+LINE_LIMIT = 200       # lines — separate read ceiling, NOT implied by the byte count
+WARN_AT = 0.90         # surface pressure before it becomes a refusal
+
+n_lines = body.count("\n") + 1
+# len(str) counts CHARACTERS. The limit is BYTES, and this file is full of multibyte
+# UTF-8 (⚠️ — × •). Measuring the wrong unit under-counted by ~800B (4%) and would have
+# permitted ~24,968 real bytes at a "24,000" limit — i.e. silent truncation, from the
+# guard built to prevent it. (HOST, 2026-07-26 — third dimension error in this instrument.)
+n_bytes = len(body.encode("utf-8"))
+breaches = []
+if n_bytes > LIMIT:
+    breaches.append(f"{n_bytes:,} bytes > {LIMIT:,}")
+if n_lines > LINE_LIMIT:
+    breaches.append(f"{n_lines:,} lines > {LINE_LIMIT:,}")
+if breaches:
     raise SystemExit(
-        f"REFUSING TO WRITE: index is {len(body):,} bytes, over the ~{LIMIT:,} silent-read-truncation "
-        f"limit. Past this, trailing entries vanish for every agent that loads the file, with no error. "
-        f"Shorten descriptions or drop a field — do NOT just write it."
+        "REFUSING TO WRITE: " + " AND ".join(breaches) + ".\n"
+        "Past either limit, trailing entries vanish for every agent that loads the file, with no error.\n"
+        "NOTE: one entry = one line, so the LINE limit cannot be fixed by shortening descriptions —\n"
+        "it needs a prune/merge or a format change. See MEMORY.md's own header for the options.\n"
+        "⚠️  Memory files are NOT under version control. EXPORT BEFORE YOU DELETE ANYTHING."
     )
+
 (MEMDIR / "MEMORY.md").write_text(body, encoding="utf-8")
-print(f"index rebuilt: {len(files)} entries, {len(body):,} bytes ({LIMIT-len(body):,} under the limit)")
+print(f"index rebuilt: {len(files)} entries, {n_bytes:,} bytes, {n_lines} lines "
+      f"({LIMIT-n_bytes:,}B / {LINE_LIMIT-n_lines} lines under the limits)")
+# Pressure warnings — a green write that is one entry from truncating is not a healthy signal.
+if n_bytes > LIMIT * WARN_AT:
+    print(f"⚠️  BYTES at {100*n_bytes/LIMIT:.0f}% of limit")
+if n_lines > LINE_LIMIT * WARN_AT:
+    print(f"⚠️  LINES at {100*n_lines/LINE_LIMIT:.0f}% of limit ({LINE_LIMIT-n_lines} left). "
+          f"One entry = one line: this needs prune/merge or a format change, not shorter text.")
 for t in TYPE_ORDER:
     if t in buckets:
         print(f"  {t:12s} {len(buckets[t])}")
