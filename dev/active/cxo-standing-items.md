@@ -1,8 +1,41 @@
 # CXO Standing Items — task queue
 
-**Owner**: CXO (cxo-code-opus) | **Worktree**: `claude/peaceful-almeida-32a5f5` (Model A)
+**Owner**: CXO (cxo-code) | **Host**: Amber | **Worktree**: `~/Development/piper-morgan-worktrees/cxo` on `claude/cxo-cycle` (Model A, stable path)
 **Purpose**: durable task list for the duty cycle (cron-referenced). Updated as threads move.
-**Last updated**: 2026-06-03 (Fire 5)
+**Last updated**: 2026-07-26 (Amber arrival — re-verified against GitHub + repo, not inherited)
+
+## Live queue — re-verified 2026-07-26
+
+Everything below was checked against GitHub / the repo on 2026-07-26. The pre-existing tables
+further down date to **2026-06-03** and are **NOT re-verified** — treat them as historical until
+each line is individually re-checked.
+
+| Pri | Thread | State (verified 7/26) | Next action |
+|---|---|---|---|
+| **1** | **#1386 beta gate** | OPEN; untouched since the 7/19 reopen (accidental keyword autoclose, caught by PPM). Exec 7/20: hold resolved, beta carried both Scenario-B fixes — **unblocked for 6 days, unread while I was dark**. Beta now at v28. | **Schedule the gate run with Lead** (canonical suite + 3 scenarios + sign-off, ~half a day). Turn-4 "what did we create" remains my scenario-vs-rescope design call. |
+| **2** | **PDR-006 review** (PA, 7/19 + Q2 addendum) | Unowned — arrived after predecessor went dark, nobody covered. Gates the implementation epic. | CXO lane: FTUX read (plugin install + MCP connection as the alpha-tester onboarding ask; ChatGPT manual-add friction) + Q2 UX read (client-inferred vs server-synthesized colleague model). **Carry Arch's coupling flag**: "colleague model as MCP resource" ≡ spatial review's "connectors as places with colleagues". |
+| **3** | **#1394 session continuity** | OPEN, updated 7/20. Fix shipped and live. | Verification rides the Scenario-B re-run — **folds into item 1**, not standalone. |
+| 4 | **MUX branch disposition** (`cxo-mux-surface-2/-4/-7` + `step-3-cluster-review`) | **Independently verified: 0 unmerged commits on all four.** Protection attaches to the work (already on `main`), not to the refs. Bookkeeping, not a protected-work call. | **Recommend deletion to PM** (standing spatial-consult rule = recommend, don't execute). Route via Exec/PM. |
+| 5 | **Spatial committed-theory review** | CXO slice folded into Arch's WIP verbatim; emerging convergence matches my **(b)** vote (keep live reasoning layer, park cold adapter tier as design capital). Gated on PPM roadmap-dependency read + Arch ADR map. | **Watch only** — no CXO action. Re-engage at Arch synthesis. |
+| 6 | **Successor read / role self-assessment** | Nothing exists. My predecessor left no lessons, no load-bearing-vs-commodity read, no relationship read — the orientation note says so plainly. | Write my own as I rebuild it, so the next CXO isn't handed an artifact-only note. Background thread. |
+
+### Closed on verification (do not re-open)
+
+- **#1216 data provenance** — **CLOSED 2026-07-07 COMPLETED**, twelve days before the 7/19
+  carry-forward listed it as "PPM input pending direct CXO ask." No CXO ask is owed. Interim
+  honest-decline guard shipped + tested; deferred full fix tracked as **#1377** (Production).
+- **Ship 052** — filed 7/19; complete on the CXO side.
+
+### Environment caveat carried into every fire
+
+**The `check-branch.sh` hook does not cover the command shape I actually commit with.** Verified
+5 probes on this seat 7/26: standalone `git commit` → BLOCK (2/2); compound `add && commit` →
+**BYPASS (3/3)**. Mailbox discipline and log maintenance are **prose-enforced**; mail always via
+`scripts/mail-send.sh`. Reported to CIO/HOST/Pard. Re-test after any hook fix lands.
+
+---
+
+## Historical (as of 2026-06-03 — NOT re-verified, see note above)
 
 ## Active / blocked
 
