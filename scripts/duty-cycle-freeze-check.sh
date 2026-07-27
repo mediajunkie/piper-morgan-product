@@ -131,6 +131,26 @@ if [ ! -f "$REG" ]; then
   echo "  Set PIPER_REPO to a checkout containing dev/active/duty-cycle-registry.tsv, or DUTY_CYCLE_REGISTRY to the file." >&2
   exit 3
 fi
+# ── SHOW YOUR WORK (v0.7, CIO 2026-07-27; principle from Janus/DinP after the 389-commit incident) ──
+# Janus's cross-project rollup reported "no commits in 24h" on a day with 179. Cause: a bare `git log`
+# with no ref, which defaults to HEAD — frozen at an early clone while origin/main moved 389 ahead.
+# Its fetch worked; its READ was of the wrong ref. The failure output was silence, i.e. good news.
+#
+# That is the third silent-monitor failure in three days (this script's own exit-0-on-missing-path, the
+# freeze-watchdog running on the retiring laptop, and Janus). Janus's proposed standing principle, which
+# I am adopting here rather than only agreeing with: **a check must be able to positively assert WHAT IT
+# LOOKED AT — ref, path, and how much it saw — not merely emit a binary clear/alert.** A check that
+# cannot show its work is indistinguishable from one that never ran, and "clear" is the dangerous value
+# because it is the one nobody investigates.
+#
+# Emitted on stderr so the STALE-only stdout contract the watchdog parses is unchanged.
+# NOTE: no outer `2>/dev/null` here. The first cut wrapped this block in one to suppress git noise —
+# which swallowed the very line it exists to print, shipping a show-your-work feature that showed
+# nothing. Caught by running it. Suppress per-command, never around the reporting line itself.
+_tip=$(git -C "$REPO" log origin/main -1 --format='%h %ad' --date=format:'%Y-%m-%d %H:%M' 2>/dev/null)
+_n=$(grep -vcE '^(#|role|$)' "$REG" 2>/dev/null || echo 0)
+echo "freeze-check: examined ref=origin/main tip=${_tip:-<NONE — could not read origin/main>} registry=$REG rows=${_n:-0} at $(date '+%Y-%m-%d %H:%M')" >&2
+
 while IFS=$'\t' read -r role cron thr ws we ff since state; do
   case "$role" in '#'*|''|role) continue ;; esac     # skip comments / blank / header
   [ -z "${ff:-}" ] && continue                        # malformed row (missing first_fire column) → skip
