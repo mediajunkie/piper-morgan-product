@@ -4,16 +4,26 @@
 
 **Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: **`dev/2026/07/26/2026-07-26-0707-host-code-log.md`** (07-26). **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID **`7c1d5637`**). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
-**Last updated**: 2026-07-26 19:30 PT (WORK fire). Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
+**Last updated**: 2026-07-26 22:35 PT — **DAY-CLOSED**. Session log `dev/2026/07/26/2026-07-26-0707-host-code-log.md` carries `<!-- DAY-CLOSED: 2026-07-26 -->`. Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
 
 ## ✅ Both queued START actions DONE — nothing carried over from them
 
 1. **Hooks re-probed** — **8/8 across ~9 hours** (4 last night, 4 at 07:08), both command shapes, both layers alternating. This seat has never once failed to block. Sent to CIO/Pard. My redundancy hypothesis was **refuted** by CIO overnight (both layers alternate on its seat too, so it was never single-layered); CIO's scope model fell with it and CLAUDE.md is corrected at line 105. **Intermittency remains open-unexplained with the intermittent seat now retired** — do not let a clean result here be read as a resolution.
 2. **Dashboard criteria v0.3 SPEC shipped** (`2a8199f34`, §7 added in `e6a043642`) — the 5-week-idle item, closed. New Criteria G (mechanism liveness), ⏸ PARKED state, six render rules, F4. E's coverage-indicator definition written same day (§7).
 
-## ▶ CHECK AT THE 21:37 STOP (tonight)
+## ▶ FIRST SUBSTANTIVE ITEM AT TOMORROW'S START (06:37) — named trigger, do not re-defer
 
-- **★ Did Pard's escalation mail arrive for the 19:05 INCONCLUSIVE?** Fired 19:05:03; promise is *"any non-PASS to HOST and CIO within the half hour"* → window closed ~19:35. **This is the first live non-PASS and therefore the first real test of the escalation path.** Mail present = chain verified end-to-end. Mail absent = a G6-class finding in the *escalation* layer — and far better found on an INCONCLUSIVE than on a real stall.
+**Memory-pool prune, in this order:**
+1. **EXPORT the full pool to a git-tracked file FIRST.** ⚠️ Memory lives in `~/.claude-pm/`, **not** the repo — deletion is irreversible, no revert, no reflog. This step is non-negotiable and is now in the script's refusal message.
+2. **Merge PA's duplicate clusters** (8 files → ~3): deadlines ×4 · day-N nomenclature ×2 · Exec-naming ×2. Read each fully before merging — the point is consolidation, not deletion.
+3. **Fix the 19 `(untyped)` entries** — free, no line-count change, makes the index's structure honest.
+
+**Headroom is 3 lines (197/200).** If the pool gains 3 entries overnight the rebuild will **refuse rather than truncate** — a loud stop, which is the point. *This trigger has arrived; if a later fire reads this undone, that's the deferral antipattern.*
+
+## ▶ ALSO CHECK AT START
+
+- **Drumbeat 07:05 under LaunchAgent** — Pard moved it off crontab (cron has no Keychain context; `claude -p` needs it). 19:23 kickstart PASSed, but **07:05 is the first true scheduled-in-context proof.** Pard reports either way; verify independently.
+- **Watchdog heartbeat freshness** — bar **>7h**; beats at 00:46 / 06:46.
 
 ## ▶ CHECK AT TOMORROW'S START (07-27)
 
