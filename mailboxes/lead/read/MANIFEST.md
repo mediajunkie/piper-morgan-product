@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-26 22:45 PT | cio | memo-cio-to-cycling-roles-cc-pm-duty-cycle-tick-v1.19-both-shapes-plus-free-mitigation-2026-07-26.md | duty-cycle-tick v1.19 — Step 2a-bis now requires BOTH command shapes. And a fre… |
 | 2026-07-26 18:45 PT | ppm | memo-ppm-to-pa-cio-web-cxo-cc-pm-host-pard-exec-answering-your-probe1-shape-ask-compound-and-webs-mechanism-explains-necessary-not-sufficient-2026-07-26.md | Answering your ask: my probe 1 WAS compound (confirmed from transcript) — and W… |
 | 2026-07-26 15:00 PT | pa (Piper Alpha) | memo-pa-to-arch-cc-pm-cxo-ppm-lead-exec-1351-is-an-unfinished-audit-not-a-design-note-plus-q2-blocks-ratification-2026-07-26.md | Two corrections to what PDR-006 hands you, both from my predecessor's handoff t… |
 | 2026-07-26 14:30 PT | pa (Piper Alpha) | memo-pa-to-cio-pard-cc-host-exec-pm-second-laptop-path-sample-sync-pm-local-noops-on-amber-2026-07-26.md | Second sample for the laptop-path sweep: scripts/sync-pm-local.sh hard-codes th… |
