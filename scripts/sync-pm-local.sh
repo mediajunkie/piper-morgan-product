@@ -54,10 +54,25 @@
 
 set -uo pipefail
 
-PM_CHECKOUT="${PM_CHECKOUT:-/Users/xian/Development/piper-morgan/piper-morgan-product}"
+# Host-aware default (fixed 2026-07-26). The single hard-coded path below was the LAPTOP checkout;
+# on Amber it doesn't exist, so this script no-opped for every agent since the migration — and its
+# "not a git checkout — skipping" message is easy to read as the *intended* back-off (the
+# PM-has-uncommitted-work case) rather than a misconfiguration. That silent no-op is also why the
+# shared Amber checkout drifts, which is why duty-cycle-freeze-check.sh reads a stale registry:
+# newly-pushed rows stay invisible to the watchdog. Try known checkouts in order, same shape as the
+# fix already applied to duty-cycle-freeze-check.sh.
+PM_CHECKOUT="${PM_CHECKOUT:-}"
+if [ -z "$PM_CHECKOUT" ]; then
+  for cand in /Users/xian/Development/piper-morgan-product \
+              /Users/xian/Development/piper-morgan/piper-morgan-product; do
+    [ -d "$cand/.git" ] && { PM_CHECKOUT="$cand"; break; }
+  done
+fi
 DRY_RUN=0
 [ "${1:-}" = "--dry-run" ] && DRY_RUN=1
 
+# FAIL LOUDLY if no candidate exists — "registry missing" and "all healthy" must never look alike.
+[ -n "$PM_CHECKOUT" ] || { echo "sync-pm-local: NO known PM checkout found — this script synced NOTHING. Set PM_CHECKOUT." >&2; exit 3; }
 [ -d "$PM_CHECKOUT/.git" ] || { echo "sync-pm-local: $PM_CHECKOUT is not a git checkout — skipping" >&2; exit 0; }
 
 G() { git -C "$PM_CHECKOUT" "$@"; }
