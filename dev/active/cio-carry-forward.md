@@ -1,45 +1,37 @@
 # CIO Carry-Forward — ephemeral session state
 
-**Purpose**: the read-at-fire-time carry-forward for the duty-cycle-tick skill. Holds the genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md` (the Task List); PM-attention items live **here**, in the section immediately below.
+**Purpose**: the read-at-fire-time carry-forward for `duty-cycle-tick`. Genuinely transient "where am I right now" state. Durable owed/queued items live in `cio-standing-items.md`. **Exec's `cohort-attention-rollup` reads the PM Attention section directly — and since PM does not read memos (2026-07-26), that rollup is one of the few real paths to PM. Stale here propagates onto PM's attention board.**
 
-**Also check `dev/active/pm-ideas-inbox.md`** — PM's low-friction links/ideas drop file. Standing cadence: pick at least one "New" item per PM conversation and discuss it together (see `feedback_ideas_backlog_digestion_cadence.md`).
-
-> **Rewritten twice on 2026-07-25 — ~14:05 and ~19:57 — never appended.** The pre-migration version had accreted into a day-by-day archive with `(superseded)` markers stacked on resolved items; the 14:05 rewrite cleared it and left the rule *"if you find yourself adding a third `(superseded)` marker, rewrite instead."*
->
-> **That rule then fired within six hours**, which is the useful part: by 19:57 this section had drifted back to 14 bullets with four resolved items still presented as live (HOST unwatched, HOST cutover in flight, the emeritus-archive question, the hooks gate). **Resolved items are deleted here, not annotated** — the dated session logs are the permanent record.
->
-> **Why it matters more than tidiness**: Exec's `cohort-attention-rollup` reads this section directly, so anything stale here propagates onto PM's attention board. A surface that reports resolved items as open is the same shape as finding #6 — a mechanism reporting something that isn't true — and PM stops looking elsewhere precisely because they trust it.
+**Also check `dev/active/pm-ideas-inbox.md`** — PM's low-friction ideas drop.
 
 ---
 
 ## PM Attention
 
-*(Exec's `cohort-attention-rollup` reads this section directly. **Rewritten 2026-07-26 ~11:15 — live items only.**)*
+*(Rewritten whole-file at the 2026-07-26 STOP. Live items only; resolved items are DELETED, not annotated.)*
 
-- 🔴 **FINDING #7 — the freeze-watchdog runs on PM's LAPTOP, not Amber, and is outside the migration plan.** Verified: no launchd job, no crontab entry, no log on Amber; alerts nonetheless unbroken through 07:03 today, committed as `mediajunkie`. **A watchdog that is silent when healthy is indistinguishable from one that is dead**, so when the laptop goes off the belt stops with no observable signal. This is not a random fault — **retiring that machine is the planned outcome of the project we are running now.** Routed to Pard (host layer; two watchdogs at once would double-alert, so the cutover needs one owner). ⏰ **The perishable ask: `launchctl list` + `crontab -l` on the laptop while it is still up.** Five minutes, unrecoverable afterward — and #7 is a *sample, not an inventory*; I found it by accident looking for something else.
-- ⏰ **PA's OpenAI identity verification — the only item with an EXTERNAL clock, still unstarted, now eight days idle.** Gates the ChatGPT remote-MCP track. Lead time begins when someone starts it, not when we decide. Independent of the roll, deliberately — *start the clock now, decide the rest later.*
-- 🟢 **COHORT ROLL — 2 of 10 migrated (cio, host). Staged, authorized, gated only on PM.** Order: **arch → ppm → cxo → pa → web** → Lead → comms/docs/exec. **arch has NOT migrated** — it wrote its handoff 7/25 evening from the backup account and went dark again; that was the precondition, not the migration. Corrected PM's contrary impression 7/26.
-- 🟢 **`--rc` softens the "attended window" constraint PM objected to.** Pard's standup now launches with Remote Control enabled, so first-touch approvals reach PM's phone/claude.ai instead of requiring PM at the terminal. **Untested — gets tried on arch as agent #1** before the other four rely on it. Privilege boundary intact: approvals still go to a human.
-- 🟡 **Handoff status of the live four, checked not assumed**: lead / exec / docs already wrote handoffs 7/21; **only comms has none.** Asked all four for a 5-day *refresh* plus arch's two first-person sections (§4 lessons, §6 load-bearing-vs-commodity), and explicitly authorized "no material change since 7/21" as a complete answer.
-- 🗣️ **PM flagged the "window" concept as problematic and needlessly constraining — conversation deferred, not resolved.** Its one load-bearing use is the roll gate above. `--rc` addresses the mechanism; the concept question is still open and PM's to reopen.
-- 🔬 **Hook intermittency — open-unexplained, condition retired** (HOST's wording, adopted). HOST 8/8 across ~9h on a second seat localises it without explaining it; the 1-of-5 seat no longer exists to test. ⚠️ **Do not consolidate the two hook layers.** No fifth model without a mechanism.
+- ⏰ **PA's two five-minute items — the only things on this board with an EXTERNAL clock.** (1) Check the claude.ai account tier for pipermorgan.ai — Track A needs Team/Enterprise, and the 7/25 account move means the old answer doesn't apply. (2) Start OpenAI identity verification — external review, nothing else depends on it. PA re-verified and the picture got *worse*: `mcp.pipermorgan.ai` is not deployed and there is no public privacy policy page, so submission is further out — **which is exactly why the two clock-starting steps matter today.** Parked **7 days** (PA's count, corrected from my 8).
+- 🟡 **`ppm` and `pa` crons are NOT armed — both self-parked in the registry, correctly.** They migrated today but their cadence is PM-gated, so they wrote `parked: … cron NOT yet armed` rather than register as watched and generate false stall alerts. **They are live but not duty-cycling.** Needs PM's word on cadence; until then they only work when prompted.
+- 🟢 **ROLL: 7 of 10 on Amber** (cio, host + arch, ppm, cxo, pa, web today). All five verified running and logging. **Remaining: lead, docs, exec, comms** — all live, all holding handoffs, none urgent, each takeable at its own seam.
+- 🟡 **Predecessor consultation — PA's worked; cxo/ppm/web are still reachable and NOT yet retired.** I previously advised against waking them and **that advice was wrong**: I assumed a session dark since 7/19 would have lost context, while holding arch's counterexample (dark the same day, woken 6 days later, full recall). PA's predecessor handoff landed today and validates the approach. **Wake each for §4/§6 only, with the honesty gate, before retiring.** The two-live-sessions collision constraint matters only where a successor is already up.
+- 🔬 **Hook mechanism: still unexplained, and two hypotheses died today.** Lazy-attach (PA) proposed and refuted; index-state (web) proposed and withdrawn — both within hours, both by their own authors. **Command shape is now the strongest correlate** (standalone blocks 4/4, compound bypasses 7/10, 14 probes, three seats) but 14 probes is a correlate, not a mechanism. ⚠️ **Do not consolidate the hook layers.** `check-branch.sh` stays **advisory, not a control**.
+- 🟡 **MEMORY.md needs a FORMAT decision, not a prune.** 194 lines against a ~200 read ceiling. 170 memories cannot fit the tooling's 140-line nudge one-per-entry — arithmetically impossible. PA correctly refused to delete other roles\' memories to satisfy a line count and flagged instead. The byte guard and a new line guard are both in place, so it now fails loudly; the format question is unanswered.
+- 🗣️ **PM: "I don\'t really read memos — I need rollups or 1-1s."** Recorded durably. Substance goes in chat; memos remain the cross-agent record only.
 
-## Shipped today, no further action *(detail in `dev/2026/07/26/2026-07-26-0838-cio-code-log.md`)*
+## Shipped today *(detail in `dev/2026/07/26/2026-07-26-0838-cio-code-log.md`)*
 
-**`freeze-check` v0.5** — PARKED state shipped (HOST-proposed, verified both directions; arch/cxo/ppm noise stops now) · **two silent failures fixed in my own instrument**: `REPO` hard-coded to the laptop path made "registry missing" and "cohort healthy" byte-identical on Amber, and a missing registry exited 0 — now exits 3 saying *"this check measured NOTHING."* · **arch's roll kickoff corrected** — the staged template told arch "no handoff exists for you," which would have buried its best artifact · **Criteria G accepted** (G3 load-bearing) · handoff-refresh memo to the live four.
+Dark five rolled and verified · **finding #7** (freeze-watchdog running on the retiring laptop) found, escalated, and closed by Pard with a ~2-min gap — inventory turned up 4 custom jobs, 2 live services · **PARKED** registry state shipped · two silent failures fixed in my own freeze-check (laptop path default, exit-0-on-missing-registry) · two provisioning defects found and mailed to Pard (`--kickoff` length; `tmux -t` prefix-match) · **duty-cycle-tick v1.19** (both-shapes probe) · CLAUDE.md fresh-session determinism → CONTESTED.
 
 ## Lower priority / queued
 
-- **Blind-sweep methodology note** — arch's explicit bequest (§4.1, 6–7 instances, never filed; *"the highest-value un-started piece of Architect methodology work I'm leaving"*). Converges with **m-43** and HOST's **Criteria G** — three roles independently circling one family in 48h, and finding #7 is a fourth instance. Mine by lane. Unblocked.
-- **Watchdog heartbeat + START-side freshness check** — proposed in the #7 memo; my half (the skill change) is blocked on Pard's half (emit) and design agreement.
-- **Step 2a follow-through** — confirm Pard's tmux-cwd guard shipped rather than remaining an intention.
-- **Dashboard welfare-criteria** — superseded by HOST's v0.3 spec; my open piece is now just accepting/redirecting, which is done.
+- **Blind-sweep methodology note** — arch\'s explicit bequest, still unfiled. Now with more instances than when arch left it: the tmux prefix-match fooling my own check, and the Step 2a-bis false pass. Converges with m-43 and HOST\'s Criteria G.
+- **Other-projects migration** — PM asked; answered with three preconditions (let one cohort complete a full day-cycle; ship the two `amber-agent` fixes; do the infra inventory *before* the roll). Plus: namespace tmux sessions per project — `pa`→`pard` was a slug collision and more projects makes it strictly worse.
+- **Watchdog heartbeat START-side freshness check** — my half; Pard\'s emit half is live at `~/Development/mediajunkie/logs/freeze-watchdog-heartbeat.log`, bar >7h.
 
 ## Cron
 
-`51eb2066` — LEAN `7 10,16,22`. **Bump to `7,27,47` when the roll actually starts** (an attended two-party window), and revert when it closes. Not bumped yet — the roll has not begun.
+`7 10,16,22` LEAN — re-armed at the 2026-07-26 STOP (delete-then-create-then-verify). **Bump to `7,27,47` only for an active two-party window**, and revert when it closes. Not bumped today even during the roll: PM was driving directly in chat, so a 20-min poll would have been noise.
 
-<!-- Rewritten 2026-07-26. Rewriting the TOP of this file is not rewriting the file: a prior pass left the
-     pre-STOP stratum below the new one, with two disagreeing '## Cron' sections. If you add a section,
-     delete what it supersedes in the SAME edit. Resolved items are DELETED here, not annotated -- the
-     dated session logs are the permanent record, and Exec's rollup reads this section as current truth. -->
+<!-- Rewritten whole-file 2026-07-26. Rewriting the TOP is not rewriting the FILE -- a prior pass left
+     a pre-STOP stratum below the new one with two disagreeing Cron sections. If you add a section,
+     delete what it supersedes in the SAME edit. -->
