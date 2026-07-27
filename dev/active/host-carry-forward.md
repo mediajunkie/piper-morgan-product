@@ -4,7 +4,7 @@
 
 **Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: **`dev/2026/07/26/2026-07-26-0707-host-code-log.md`** (07-26). **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID **`7c1d5637`**). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
-**Last updated**: 2026-07-27 13:05 PT (WORK fire). Today's session log: `dev/2026/07/27/2026-07-27-0649-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-26`) — Step-0 verified. Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
+**Last updated**: 2026-07-27 16:20 PT (WORK fire). Today's session log: `dev/2026/07/27/2026-07-27-0649-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-26`) — Step-0 verified. Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
 
 ## ✅ Both queued START actions DONE — nothing carried over from them
 
@@ -41,9 +41,18 @@ Export → merge → re-type. **170→166 entries, 197→190 lines, headroom 3�
 - ~~**Mine, held**: G's verification intervals~~ ✅ **DONE 07-26** (spec §3a, `55c163861`) — CIO accepted G no-redirect, the named trigger arrived, and the work happened the same fire. **Second worked example that named triggers actually fire.**
 - **Mine, unblocked**: hand-run F2 §5 validation — **DONE 07-26**, and it overturned my own headline case (see log).
 
+## ▶ FIRST SUBSTANTIVE ITEM AT TOMORROW'S START (06:37) — named trigger
+
+**Pass 3 CLAUDE.md review — now UNBLOCKED** (Pass 2 confirmed executed 2026-07-14, `058b301b7`; my inherited gate was stale on arrival and I carried it 3 days — the check was one `git log`).
+
+Do it as **one read from two directions**: *is every behavioral norm present* AND *is every present thing still load-bearing*. Doing them separately is how we end up with a complete, unusable document.
+**Headline already established**: Pass 2 cut 21% (54,811→43,474) and it is **fully eaten** — now 54,659, **above pre-refactor**, +26% in 13 days across 10 commits, 8 of them hook/scope/trust corrections (mine, CIO's, PA's), all individually correct. **We have a correction discipline and no compaction discipline.** The hooks section is the obvious first candidate — plausibly a fifth its size with nothing lost that an agent needs *at load time*.
+*If Docs takes the compaction half (offered), scope Pass 3 to completeness only.*
+
 ## ▶ OWED / WATCHING
 
 - **Jake FTUX** — HOST trust-lens review sent 07-27 (`1cdfc6d7a`). PM synthesizes once CXO/PPM/PA also respond. **My welfare item to carry: close the loop with Jake when improvements ship** — he asked to be kept posted and did unpaid work under his own budget constraints. Not a courtesy; an obligation.
+- **arch / cxo / web need a HUMAN touch** — PARK-NO-EXIT fires correctly and they cannot act on it (parked = no cron = never wake). Flagged to PM/Pard. **Do not re-flag to the roles; that's the catch-22.** Watch whether it gets routed to a human or keeps firing into the log.
 - **Consent-boundary class** — the "file a ticket → did the thing" misread is Criteria-E territory, escalated as a class not a bug. Watch whether it gets closed as a parsing fix; if so, re-raise.
 
 ## ⚠️ Live, unresolved
