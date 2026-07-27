@@ -1,41 +1,53 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-26 21:35 PT (STOP, day-close)
-**Session log today**: `dev/2026/07/26/2026-07-26-0902-exec-code-log.md` (DAY-CLOSED)
-**Role**: Chief of Staff (Exec) | DinP account — migration to dedicated account still pending, PM's own call, no urgency signal. Memory store on this account is SHARED across all roles (account × project-path scoped, not per-role) — CIO's export (`dev/active/cio-memory-export-2026-07-24.md`) already covers this account's full memory.
-**Cron**: `32 8,20 * * *` — will re-arm this STOP (delete-then-create). Next fire ~08:32 Mon Jul 27.
-**Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45` — Step 2a pairing mismatch persists (unchanged since ~7/16). Detached HEAD has recurred 3 times (Jul19/20/25), same safe self-fix each time.
-**Handoff doc refreshed today**: `dev/active/exec-handoff-2026-07-21.md` — substantive refresh (not a one-liner) with current Active Threads + new §4/§6 sections. Read this first if picking up cold.
+**Last updated**: 2026-07-27 ~09:35 PT (mid-day, fire in progress, not yet STOP)
+**Session log today**: `dev/2026/07/27/2026-07-27-0527-exec-code-log.md` (open)
+**Role**: Chief of Staff (Exec) | DinP account — migration to dedicated account still pending, PM's own call, no urgency signal. Memory store on this account is SHARED across all roles — HOST pruned it 7/27 (170→166 entries), export-first discipline used, rollback at `dev/active/memory-export-2026-07-27-pre-prune.md`.
+**Cron**: `32 8,20 * * *`. Next fire ~20:32 Mon Jul 27.
+**Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45` — Step 2a pairing mismatch persists (unchanged since ~7/16), still Model B (Desktop). Detached HEAD has recurred 3 times (Jul19/20/25).
+**Skill updated to v1.19**: worktree model is now host-dependent (Model A stable/Amber, Model B ephemeral/Desktop — I'm still Model B, most of the new Model-A-specific steps don't apply to me). New: START now owns writing your own watchdog-registry row on first fire in a worktree (not applicable today, not a first fire).
+
+## Verified Janus's "no commits" claim false (PM chat, 05:27 AM)
+
+PM relayed Janus's worry that no commits had landed in the last day and Lead might be idle. Checked directly: 179 commits in 24h, Lead had a full normal day (methodology/ deletion, handoff refresh, clean STOP), CIO/HOST both very active post-migration. Reported the corrected picture to PM with evidence. Don't know why Janus's read was wrong — didn't speculate, just gave PM the ground truth.
+
+## F4 committed to and applied for real (7/27) — clean result on arch's log
+
+HOST flagged that arch's 7/26 session ended without a `DAY-CLOSED` marker and asked someone to check for stranded outbound obligations. Ran the check myself (this is exactly the F4 responsibility I accepted 7/26): clean, nothing stranded — all 5 of arch's memos were mailed (committed independent of session fate), remaining queue items are arch's own unstarted work. Second clean data point after last week's #1394 false alarm. Reported to HOST/CIO/PM.
+
+## PARKED registry state has gone stale in the opposite direction (HOST finding, 7/27)
+
+arch and cxo are parked with reasons ("awaiting Amber migration") that are no longer true — both have already migrated. web migrated but has no registry row at all (finding #6's shape, recurring). HOST flagged this as CIO's surface to fix, not mine — proposed a normative rule (a PARKED reason must state its own checkable clearing condition). Not tracking as an exec action item, just awareness in case it resurfaces.
 
 ## Hooks-intermittency mystery RESOLVED (7/26) — index-state-at-hook-fire-time
 
-Root cause: `check-branch.sh` evaluates `git diff --cached` before a compound `git add && git commit` (one tool call) has actually staged anything, so compound commands can silently bypass while standalone stage-then-commit sequences can't. Confirmed independently by Web (found it), Arch (8/8 probes), CXO, PPM, PA. All rival hypotheses (lazy-attach, time/window, predicate-leak) refuted by their own proposers. Also found: this harness has no "warn without blocking" hook tier — several hooks were silently mis-designed assuming one exists. Remediation approach still undecided (HOST offered 3 options, deliberately didn't pick one — CIO/Lead territory). Checklist now v1.5, dashboard-spec now has §3a verification-mode taxonomy.
+Root cause confirmed by 5 independent agents: `check-branch.sh` evaluates the index before a compound `git add && git commit` has actually staged anything. Mitigation: stage and commit as separate calls. Remediation approach still undecided (CIO/Lead territory).
 
-## F4-exemplar corrected by HOST — my own scope decision unaffected
+## F4-exemplar corrected by HOST — my own scope decision unaffected (7/26, still relevant context)
 
-The arch/#1394 "stranded ruling" case I partly cited when accepting F4 turned out to be false (Lead actually received arch's ruling the same day — nothing was stranded). HOST corrected it honestly across all three places it had spread. My own F4 acceptance survives since it was grounded in cases I directly observed (CIO's carry-forward drift, my own memory-export near-miss), not that exemplar. No action needed, just don't cite the arch/#1394 case as an F4 example going forward.
+The arch/#1394 case I partly cited for F4 was false (nothing was actually stranded that time). My acceptance stands on other evidence. Don't cite arch/#1394 as an F4 example going forward.
 
-## Migration — HOST is agent #2 (active), order for the rest unchanged: arch → ppm → cxo → pa → web
+## Migration — order for the rest unchanged: arch → ppm → cxo → pa → web
 
-Various roles have briefly resurfaced this week for handoff/orientation work even while formally dark pending their own cutover — don't read a quiet log as a fresh stall without checking migration-queue context first.
+Multiple roles have briefly resurfaced for handoff work while formally dark pending their own cutover — don't read a quiet log as a fresh stall without checking migration-queue context.
 
 ## Stale branches — still awaiting reply (nudge sent 7/25)
 
-5 unowned MUX/xpoll branches, nudge sent to CIO cc CXO/PM. No reply yet — due another light touch if still silent by mid-week.
+5 unowned MUX/xpoll branches, nudge sent to CIO cc CXO/PM. No reply yet — due another light touch if still silent.
 
 ## Learning loop fixed (Lead, 7/21) — Ship #053 headline candidate
 
-#1438 closed, learning loop live at beta v28+. CI burn-down cleared the methodology/ dead-island too (94→56, 7/26). Flag for Ship #053 drafting.
+#1438 closed, learning loop live at beta v28+. CI burn-down cleared the methodology/ dead-island too. Flag for Ship #053 drafting.
 
-## PA distribution items (three, parked 7 days) — routed directly to PM, not exec's to relay
+## PA distribution items (three, parked) — routed directly to PM, not exec's to relay
 
-Claude Track A tier check, OpenAI identity verification (has external clock), Track B open-source decision — PA sent these straight to PM, cc exec/CIO, deliberately bypassing exec-relay. Just awareness; no action needed unless PM asks for a nudge.
+Claude Track A tier check, OpenAI identity verification (external clock), Track B open-source decision. No action needed unless PM asks for a nudge.
 
 ## Standing items — unchanged
 
 - **Lead Dev's #1424/#1427 questions** — still awaiting PM's final calls from Jul 18.
 - **Beta Blockers count** — last verified count is stale; re-pull via `query-github-board` skill before citing a number again.
-- **Full tracker reconciliation** (`exec-open-items-tracker.md`) — done 7/20, now 6+ days stale — due for a fresh pass if a quiet fire comes up.
+- **Full tracker reconciliation** (`exec-open-items-tracker.md`) — done 7/20, now 7 days stale — genuinely due for a fresh pass at the next quiet fire.
 
 ---
 
@@ -57,4 +69,4 @@ Same directory/branch mismatch persists. Proceeding cautiously each fire. Worth 
 
 ---
 
-*— Exec, 7/26 21:35 PT.*
+*— Exec, 7/27 ~09:35 PT.*
