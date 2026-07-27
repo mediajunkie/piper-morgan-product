@@ -4,7 +4,7 @@
 
 **Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: **`dev/2026/07/26/2026-07-26-0707-host-code-log.md`** (07-26). **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID **`7c1d5637`**). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
-**Last updated**: 2026-07-27 10:05 PT (WORK fire). Today's session log: `dev/2026/07/27/2026-07-27-0649-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-26`) — Step-0 verified. Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
+**Last updated**: 2026-07-27 13:05 PT (WORK fire). Today's session log: `dev/2026/07/27/2026-07-27-0649-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-26`) — Step-0 verified. Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
 
 ## ✅ Both queued START actions DONE — nothing carried over from them
 
@@ -20,7 +20,9 @@ Export → merge → re-type. **170→166 entries, 197→190 lines, headroom 3�
 ## ▶ ALSO CHECK AT START
 
 - ~~drumbeat 07:05 proof~~ ✅ **PASS 2026-07-27 07:05:18** — scheduled, in-context, unattended. **Both belts now proven at every layer that has actually been tested.**
-- ⚠️ **BUT: the watchdog heartbeat's verdict field can NEVER report an alert.** At 06:46 the belt detected + mailed a real stall (lead) and the heartbeat logged `all-quiet` 8 seconds later. The alerter writes DETECT to its own log, never stdout, so `${out:-all-quiet}` is a constant. Tested fix sent to Pard (his emit half). **Until fixed, do not read `all-quiet` in that log as evidence nothing fired** — read `dev/active/duty-cycle-watchdog.log` for `DETECT:` lines instead.
+- ~~heartbeat verdict field~~ ✅ **FIXED** — Pard applied my tested fix; `ALERTED: …` now appears (2 alerting runs recorded 07-27). Prior caveat retained below for context only.
+- ~~PARKED reason-lifecycle gap~~ ✅ **SHIPPED as PARK-NO-EXIT** (CIO) — a park reason must name a *falsifiable clearing condition*. Firing on arch + cxo, zero noise. CIO discarded the obvious version (flag parked-but-recently-committed) because it false-alarmed on pa/ppm, whose parks are correct-but-active.
+- **⚠️ WAS: the watchdog heartbeat's verdict field could never report an alert.** At 06:46 the belt detected + mailed a real stall (lead) and the heartbeat logged `all-quiet` 8 seconds later. The alerter writes DETECT to its own log, never stdout, so `${out:-all-quiet}` is a constant. Tested fix sent to Pard (his emit half). **Until fixed, do not read `all-quiet` in that log as evidence nothing fired** — read `dev/active/duty-cycle-watchdog.log` for `DETECT:` lines instead.
 - **Watchdog heartbeat freshness** — bar **>7h**; beats at 00:46 / 06:46.
 
 ## ▶ CHECK AT TOMORROW'S START (07-27)
@@ -38,6 +40,11 @@ Export → merge → re-type. **170→166 entries, 197→190 lines, headroom 3�
 - ~~**Pard** — verify-hooks drumbeat~~ ✅ **ARMED** 07-26 (system crontab `5 7,19`, log + escalation on non-PASS). Two refinements sent: **G6** staleness-assert (it's silent on *absence*), and the schedule being unproven until 19:05.
 - ~~**Mine, held**: G's verification intervals~~ ✅ **DONE 07-26** (spec §3a, `55c163861`) — CIO accepted G no-redirect, the named trigger arrived, and the work happened the same fire. **Second worked example that named triggers actually fire.**
 - **Mine, unblocked**: hand-run F2 §5 validation — **DONE 07-26**, and it overturned my own headline case (see log).
+
+## ▶ OWED / WATCHING
+
+- **Jake FTUX** — HOST trust-lens review sent 07-27 (`1cdfc6d7a`). PM synthesizes once CXO/PPM/PA also respond. **My welfare item to carry: close the loop with Jake when improvements ship** — he asked to be kept posted and did unpaid work under his own budget constraints. Not a courtesy; an obligation.
+- **Consent-boundary class** — the "file a ticket → did the thing" misread is Criteria-E territory, escalated as a class not a bug. Watch whether it gets closed as a parsing fix; if so, re-raise.
 
 ## ⚠️ Live, unresolved
 
