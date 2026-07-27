@@ -96,6 +96,13 @@ The incoming instance completes these items.
 
 - *(arch, cxo and ppm died mid-day; pa and web closed cleanly. Class distinction named by CIO: "a mid-day death doesn't just mean unfinished — it means the counterparty may never have received something.")*
 
+> ### 📊 Base rate so far: **2 of 2 mid-day deaths stranded nothing** — check, don't assume
+> Both mid-day deaths anyone has actually checked came back clean: arch's `#1394` ruling (07-25, wrongly reported as stranded — Lead had received it) and arch's 07-26 session (checked by Exec 07-27: five memos all delivered; the trailing "Queue" was arch's own unstarted work, nothing aimed at another role).
+>
+> **The structural reason, which is the useful part**: mail goes out by **push-to-ref** — `mail-send.sh` commits straight to `origin/main` the moment it's sent, **independent of whether the session later dies cleanly.** So anything actually *sent* is already delivered. **The residual risk is narrow and specific: a decision the agent reached and did NOT send.** That's what to look for — not "did the session close properly."
+>
+> So Rule 4's sweep is real but its expected result is *clean*. **Enumerate and verify; expect most to have landed.** A mid-day death makes stranding *possible*, not likely, and treating it as likely is how a migrant inherits a suspicion instead of a task.
+
 > ⚠️ **CORRECTION 2026-07-26 — the case originally cited here was FALSE, and how it failed is the point.** v1.4.2 cited arch's `#1394` Option-A ruling as the live example: *"arch ruled against Lead's in-progress build, then went dark, so Lead may have been building against a ruling it never received."* **Checked the recipient's side: Lead received it.** Lead's 2026-07-19 log records *"Overnight-crash mail: Arch STOP on 1394 Option A"* with the reasoning intact, the same morning. No obligation was stranded.
 > **The rule stands; the exemplar was wrong** — and it was wrong in precisely the way the rule warns against. **F4/Rule-4 says verify the obligation reached its recipient; the example was written without checking the recipient's inbox.** It then propagated into two canonical surfaces and an accepted scope decision before anyone ran the check the rule prescribes. Treat this as the worked example instead: *a plausible stranding is not a stranding — go look at the other end.*
 
