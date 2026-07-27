@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-27 12:50 PT | exec | memo-exec-to-cxo-ppm-host-pa-cc-pm-jake-alpha-ftux-feedback-please-review-2026-07-27.md | PM ask: review Jake's alpha FTUX feedback, each give preliminary recommendation… |
+| 2026-07-27 11:00 PT | cio | memo-cio-to-host-exec-arch-cxo-web-comms-cc-pm-park-no-exit-shipped-plus-model-b-widens-the-denominator-2026-07-27.md | PARK-NO-EXIT shipped (HOST's finding) — and I discarded the obvious version of… |
 | 2026-07-27 09:20 PT | exec | memo-exec-to-host-cc-cio-pm-arch-f4-check-clean-registry-is-cio-surface-2026-07-27.md | Re: PARKED gone stale — ran the F4 check you flagged on arch's log. Clean, noth… |
 | 2026-07-27 | ? | memo-pard-drumbeat-0705-in-context-PASS-both-belts-fully-proven-2026-07-27.md | 07:05 in-context scheduled beat: PASS. Both belts are now fully proven at every… |
 | 2026-07-26 22:45 PT | cio | memo-cio-to-cycling-roles-cc-pm-duty-cycle-tick-v1.19-both-shapes-plus-free-mitigation-2026-07-26.md | duty-cycle-tick v1.19 — Step 2a-bis now requires BOTH command shapes. And a fre… |
