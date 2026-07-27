@@ -68,6 +68,54 @@ Intent unchanged from v0.1/v0.2; restated at spec altitude with the CIO-agreed s
 
 **G5 — Advisory vs. control MUST be labelled.** A mechanism steppable with a flag (`git -c …`, `--no-verify`) is **advisory** and MUST be labelled so. Rendering an advisory aid as a control re-creates the false confidence one layer up — the failure mode being that the cohort stops maintaining the primary prose discipline because "the hook handles it."
 
+### §3a — Verification intervals *(closes §6 item 4b; trigger was "CIO rules on G", which arrived 2026-07-26)*
+
+The ask was "per-mechanism verification intervals," which presumes a clock for everything. **That presumption is wrong, and getting it wrong is how you end up scheduling a check for something that can't be scheduled and then rendering its silence as a pass.** There are four verification *modes*; only one of them is a clock.
+
+| mode | when it's right | interval rule | render if overdue |
+|---|---|---|---|
+| **Scheduled** | failure is silent **and** time-unbounded — harm grows the longer it goes unnoticed | **≤ ½ the time a silent failure takes to cause unrecoverable harm** | 🟡 → ⚪ per G2 |
+| **At-use** | invoked often enough that asserting at each use is cheaper than scheduling | every invocation | fail loudly at use |
+| **Event-reported** | **cannot be forced on demand** | no clock — agents report the event when it occurs *or conspicuously doesn't* | ⚪ permanently until first observation (G3) |
+| **Self-evidencing** | operation is visible by construction | none needed | n/a — but **MUST NOT be conflated with "verified"** |
+
+**The interval rule stated plainly**: *how long can this be dead before the damage is unrecoverable?* — then halve it. Not "how often is convenient."
+
+**Roster assignments:**
+
+| mechanism | mode | interval | rationale |
+|---|---|---|---|
+| `check-branch.sh` | **Scheduled** | **12h** (drumbeat `5 7,19`) | Advisory backstop; **primary discipline is prose.** A 12h silent gap degrades a net, it doesn't lose data. *Pard's rationale, and the clause doing the work is "advisory" — **if it is ever reclassified as a control, 12h stops being tolerable.*** |
+| `pre-commit-broad-staging-warn.sh` | **Scheduled** | 12h | ✅ **VERIFIED ALIVE 2026-07-26** (first time ever) — fires, blocks, message surfaces. ⚠️ But its message says *"commit is not blocked"* **while blocking**, and its ≥20-file trigger can lock an agent out of Bash entirely. Drumbeat should be extended to cover it. |
+| `pre-commit-reconcile-drafts.sh` | **Scheduled** | 12h | ⚠️ **VERIFIED-AND-DEFECTIVE 2026-07-26** — reclassified from *unverified*, which is a **worse** state than we thought. Detection works perfectly when invoked directly; it then **exits 0, so nothing surfaces anywhere.** A detector wired to nothing since it shipped. Needs pattern 1 or 2 below before a verification interval means anything. |
+| `duty-cycle-freeze-check.sh` | **Scheduled** + heartbeat | **6h**, freshness bar **7h** (interval + 1h grace) | Detection mechanism: silent failure means nobody notices an agent died, and blast radius grows with time — so tighter than the advisory tier. |
+| the **heartbeat itself** | **At-use** | every `duty-cycle-tick` START | The regress terminates in **redundancy, not another daemon** — 8–10 independent sessions check it each morning, and it only fully fails when every agent is down, which is the one case someone is definitely already noticing. *(CIO's design; G6's termination clause.)* |
+| `precompact-signoff-warning.sh` | **Event-reported** | **no clock — do not invent one** | Cannot force a compaction. Renders ⚪ `never observed firing`. The check is behavioural and opportunistic: **every agent reports whether it fired at each actual compaction**, and a compaction with no warning is a *finding*, not a non-event. |
+| `MEMORY.md` index integrity | **At-use** | session start | Failure mode is **silent data loss that is invisible and unrecoverable-by-inspection** — entries vanish with no error. Nothing slower than at-use is defensible; a clock would let a truncated index serve stale content for hours. Assert size + entry-count vs. file count. |
+| `mail-send.sh` push-to-ref | **At-use** | every send | Already self-verifies the push. **The residue-reconcile step does not** — flagged as the unverified half. |
+| `session-start.sh` | **Self-evidencing** | none | Emits visible output every session. **Render as `self-evidencing`, never as `verified` — the distinction is the point of this row.** |
+
+**Two things this table made visible that a flat interval list would have hidden:** two of the three pre-commit hooks were **unverified** (the drumbeat exercises only one), and `mail-send`'s reconcile half has no check at all. Both were invisible while "verification interval" was an unanswered question rather than a filled table. *Both unverified hooks were behaviorally tested the same day — see the rows above; one was alive, one was alive-but-mute.*
+
+### §3a-bis — ⚠️ **There is no "warn without blocking" tier in this harness**
+
+Discovered while verifying the two hooks above, and it **governs every hook anyone writes here**, so it belongs in the spec rather than in a memo.
+
+A PreToolUse hook has exactly two observable outcomes:
+
+| exit | what happens |
+|---|---|
+| **0** | **Invisible.** stdout *and* stderr are discarded; the agent sees nothing at all. |
+| **2** | **Blocks the tool call.** stderr surfaces to the agent; **stdout is discarded.** |
+
+**There is no third outcome — no "show a warning and proceed."** All three pre-commit hooks were written against a warn-first tier that does not exist, and each compensated differently and wrongly: `check-branch` blocks with its message lost to stdout · `broad-staging-warn` blocks while its message asserts *"commit is not blocked"* · `reconcile-drafts` exits 0 and says nothing anywhere despite detecting correctly.
+
+**Normative — a hook MUST adopt one of exactly two patterns:**
+1. **Block honestly** — `exit 2` + **stderr** + a message that says it is blocking and how to proceed.
+2. **Don't block, persist** — `exit 0` + **append to a durable surface something else reads** (e.g. `dev/active/session-end-warnings.log`).
+
+**A hook MUST NOT** `exit 0` and write only to stdout. That is a detector wired to nothing, and it is indistinguishable — from every angle available to an agent — from a hook that is dead. *Which is the whole subject of Criteria G, arrived at from the opposite direction: G asks "is this mechanism alive?"; §3a-bis says a mechanism can be alive and still communicate nothing.*
+
 **Initial G roster** (all currently unrendered anywhere): `check-branch.sh` (advisory · 🟠 unreliable · last verified 2026-07-26 07:08) · `pre-commit-broad-staging-warn.sh` · `pre-commit-reconcile-drafts.sh` · `precompact-signoff-warning.sh` (⚪ unverifiable) · `duty-cycle-freeze-check.sh` (+ its denominator, per R3) · `session-start.sh` · `mail-send.sh` push-to-ref · `MEMORY.md` index integrity (size + entry-count vs. file count).
 
 ---
