@@ -14,11 +14,15 @@ predecessor died mid-day 7/19; working from CIO's artifact-assembled orientation
 
 - **Cron NOT armed** (PM-gated). Registry row left parked with an explicit note — a row means
   *watched*, and `arch` shows the cost of a watched-but-dark row (alerted 3x in 20h).
-- **Hooks are NOT reliably firing.** Probe 1 of the session bypassed; probes 2–3 blocked.
-  PA reproduced the identical shape independently the same day → "lazy attach on first
-  matching call" is now n=2 and the only unrefuted model. **Assume no automated backstop for
-  mailbox discipline or log maintenance; enforce by hand.** Probe on arrival, twice, and
-  distrust the first result.
+- **Hooks: mechanism KNOWN as of 7/26 (Web).** Not intermittency — **index state at
+  hook-fire time**. `check-branch.sh` decides via `git diff --cached --name-only`, and
+  PreToolUse fires *before* the Bash call runs. So `git add <path> && git commit …` in ONE
+  call inspects an empty index → no block. **Until fixed: stage in one call, commit in the
+  next.** That's the only shape the hook can see. My own 13:30 "lazy attach, n=2" memo is
+  **WITHDRAWN** — my probe 3 was confounded by probe 2's blocked-but-still-staged file.
+  Lesson worth keeping: I changed index state between probes without noticing, and PA and I
+  converging on the same wrong answer via the same default *looked* like replication.
+  **Print `git diff --cached --name-only` before and after every probe step.**
 - **`gh` token lacks `read:project`** → cannot read the board, so no sprint recounts are
   possible until `gh auth refresh -s read:project` (PM's call).
 
