@@ -5,7 +5,7 @@
 **Purpose**: Standing checklist for any future role migration (new role activation, re-migration of a dormant role, account migration, device migration). Cohort migration completed Apr 22–26, 2026.
 **Owner**: HOST. Exec reviews; CEO approves for canonical publication.
 
-**Changes from v1.3**: see §"Changes from v1.3" at end.
+**Changes from v1.4.x**: see §"Changes from v1.4.x" at end (v1.5 = the hooks gate now requires BOTH command shapes).
 
 ---
 
