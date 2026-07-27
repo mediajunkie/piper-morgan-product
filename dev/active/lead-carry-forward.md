@@ -21,3 +21,8 @@
 ## Note 2026-07-25 day-close
 - sync-pm-local no-op'd at day-close (PM checkout has local commits/WIP — designed behavior, PM's work wins; likely Saturday-evening drafting). Next successful sync catches up; re-check next START.
 - Backlog 94 (learning complex drained + validated 7/25). Methodology-math memo with Arch (38-of-94 lever). Cohort roll to Amber authorized; my migration queued after the 5 idle roles.
+
+## Amber-migration notes (2026-07-26, from the seat-roll probe burst)
+- **2a-bis probe on my first Amber fire must use COMPOUND command shape** (the shape agents actually commit with) — standalone commits pass 4/4 while compound bypasses; Web's index-state mechanism explains it, validated on four seats (PA's amendment to v1.15; ask for the current skill rev at migration).
+- sync-pm-local hard-codes the laptop checkout and no-ops on Amber (PA found; CIO/Pard own the fix) — expect the post-push PM-sync step to change shape there.
+- Arch confirmed my methodology execution received ("the 43% lever already pulled").

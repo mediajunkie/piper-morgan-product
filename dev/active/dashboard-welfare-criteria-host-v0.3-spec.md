@@ -86,7 +86,7 @@ The ask was "per-mechanism verification intervals," which presumes a clock for e
 | mechanism | mode | interval | rationale |
 |---|---|---|---|
 | `check-branch.sh` | **Scheduled** | **12h** (drumbeat `5 7,19`) | Advisory backstop; **primary discipline is prose.** A 12h silent gap degrades a net, it doesn't lose data. *Pard's rationale, and the clause doing the work is "advisory" — **if it is ever reclassified as a control, 12h stops being tolerable.*** |
-| `pre-commit-broad-staging-warn.sh` | **Scheduled** | 12h | ✅ **VERIFIED ALIVE 2026-07-26** (first time ever) — fires, blocks, message surfaces. ⚠️ But its message says *"commit is not blocked"* **while blocking**, and its ≥20-file trigger can lock an agent out of Bash entirely. Drumbeat should be extended to cover it. |
+| `pre-commit-broad-staging-warn.sh` | **Scheduled** | 12h | ✅ **VERIFIED ALIVE 2026-07-26** (first time ever) — fires, blocks, message surfaces. ⚠️ Its message says *"commit is not blocked"* **while blocking** — that stands. ~~Lock-out hazard~~ **WITHDRAWN — see §3a-ter.** Drumbeat should be extended to cover it. |
 | `pre-commit-reconcile-drafts.sh` | **Scheduled** | 12h | ⚠️ **VERIFIED-AND-DEFECTIVE 2026-07-26** — reclassified from *unverified*, which is a **worse** state than we thought. Detection works perfectly when invoked directly; it then **exits 0, so nothing surfaces anywhere.** A detector wired to nothing since it shipped. Needs pattern 1 or 2 below before a verification interval means anything. |
 | `duty-cycle-freeze-check.sh` | **Scheduled** + heartbeat | **6h**, freshness bar **7h** (interval + 1h grace) | Detection mechanism: silent failure means nobody notices an agent died, and blast radius grows with time — so tighter than the advisory tier. |
 | the **heartbeat itself** | **At-use** | every `duty-cycle-tick` START | The regress terminates in **redundancy, not another daemon** — 8–10 independent sessions check it each morning, and it only fully fails when every agent is down, which is the one case someone is definitely already noticing. *(CIO's design; G6's termination clause.)* |
@@ -114,7 +114,31 @@ A PreToolUse hook has exactly two observable outcomes:
 1. **Block honestly** — `exit 2` + **stderr** + a message that says it is blocking and how to proceed.
 2. **Don't block, persist** — `exit 0` + **append to a durable surface something else reads** (e.g. `dev/active/session-end-warnings.log`).
 
+**One precision, from Pard's independent probe** *(2026-07-26)*: the JSON escape hatch — `exit 0` + `{"systemMessage": …}` on stdout — was tested on a headless seat and **the agent saw nothing** ("no warnings and no hook output," asked directly). So it is not a third option. **Layer named**: an *interactive* session might still render `systemMessage` to the **human**, which would be a user-facing warn tier but **not an agent-facing one**. The claim here is about what the agent can act on; that distinction should be preserved rather than collapsed if anyone revisits this.
+
 **A hook MUST NOT** `exit 0` and write only to stdout. That is a detector wired to nothing, and it is indistinguishable — from every angle available to an agent — from a hook that is dead. *Which is the whole subject of Criteria G, arrived at from the opposite direction: G asks "is this mechanism alive?"; §3a-bis says a mechanism can be alive and still communicate nothing.*
+
+### §3a-ter — ⚠️ **WITHDRAWN: my "predicate leak / Bash lock-out hazard"**
+
+On 2026-07-26 ~16:07 I reported that with ≥20 files staged, *ordinary non-commit Bash calls* were being blocked — that the `if: "Bash(git commit*)"` predicate was leaking, and that an agent could lose the Bash tool entirely. I framed it as an operational hazard affecting every agent.
+
+**It does not reproduce. I am withdrawing it.**
+
+Pard ran four headless probes (single/multi-line × cd-first/echo-first, no `git commit`): **none fired.** I then ran the marker-hook instrument Pard proposed — a no-threshold hook on the same `if:` predicate, which isolates *invocation* from the script's own ≥20-file logic — with 21 files staged:
+
+| probe | shape | marker |
+|---|---|---|
+| A | single-line, no git | not fired |
+| B | single-line `git diff` | not fired |
+| C | **multi-line, cd-first, no git** — the exact shape I reported | **not fired** |
+| D | multi-line containing the word "commit" in plain text | not fired |
+| **validation** | **genuine `git commit`** | ✅ **FIRED** |
+
+**The validation row is the one that makes the other four mean anything.** Four negatives from a dead instrument would have been worthless — the same trap as every mechanism in the appendix. The predicate is behaving correctly on my seat.
+
+**What remains honestly unexplained**: I was blocked twice at 16:07 on commands I believe contained no `git commit`, and one uncontrolled marker firing at 19:09:17 was never isolated to a specific call. So this isn't "I imagined it" — it's *observed once, unreproduced under control, cause unknown.* **Status: withdrawn as a hazard, retained as an unexplained single observation.** Nobody should act on it, and nobody should spend a seat chasing it without a new symptom.
+
+**Why the withdrawal is recorded rather than deleted**: I raised it as a hazard to every agent. A false hazard has a real cost — it is the alert-fatigue failure this very spec exists to prevent, and I'd be doing the thing I keep flagging in others' mechanisms. **The correction has to travel as far as the claim did.**
 
 **Initial G roster** (all currently unrendered anywhere): `check-branch.sh` (advisory · 🟠 unreliable · last verified 2026-07-26 07:08) · `pre-commit-broad-staging-warn.sh` · `pre-commit-reconcile-drafts.sh` · `precompact-signoff-warning.sh` (⚪ unverifiable) · `duty-cycle-freeze-check.sh` (+ its denominator, per R3) · `session-start.sh` · `mail-send.sh` push-to-ref · `MEMORY.md` index integrity (size + entry-count vs. file count).
 

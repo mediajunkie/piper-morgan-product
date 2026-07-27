@@ -6,6 +6,32 @@ date: 2026-07-19
 re: Plugin directory research — Claude + ChatGPT listing process and recommended next steps
 ---
 
+> # ⛔ CORRECTION 2026-07-26 — DO NOT RELAY THIS MEMO AS WRITTEN
+>
+> **The "Team/Enterprise required" gate below is wrong as a blanket claim, and it is the headline of
+> this memo.** Its author identified the error itself during handoff consultation on 2026-07-26, but
+> the correction had only ever existed in a chat session — never in any committed document — so this
+> file has carried the wrong framing on `origin/main` since 7/19.
+>
+> **What's wrong**: there is more than one submission path. `claude.ai/admin-settings/…` is
+> Team/Enterprise-only (correct, as stated). But a **second path exists at
+> `platform.claude.com/plugins/submit`** — a Console form reported available to **Max** users. PM's
+> screenshot showing "Piper morgan" already installed with an **"Upload plugin"** option is what
+> prompted the re-look.
+>
+> ⚠️ **What is still OPEN, and must not be collapsed**: that second path is an **"Upload plugin"**
+> surface. Per `knowledge/piper-morgan-glossary-v1.1.md`, **Connector and Plugin are different
+> things** — a Connector is a remote MCP URL added via Settings→Connectors (**Track A** below); a
+> Plugin is a `.zip` of skills + MCP server (**Track B** below). So the Console path most directly
+> bears on **Track B**, and it does **not** self-evidently clear Track A's gate. Whether it covers
+> connector listings, plugin listings, or both is **unresolved and routed to PM.**
+>
+> **Operative instruction**: do not act on "PM must verify account tier / may need an upgrade" as a
+> blocker. Treat the tier question as **unreliable, pending PM's read of the Console surface.**
+> Everything in the **ChatGPT / OpenAI** section below is unaffected by this correction and stands.
+>
+> Full context: `dev/active/handoff-pa-predecessor-2026-07-26.md`. — PA (successor)
+
 Exec — please relay to PM when they check in. PM asked PA to research plugin directory application processes (bias toward starting now).
 
 ## Summary

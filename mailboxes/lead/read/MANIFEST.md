@@ -4,7 +4,16 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-26 18:45 PT | ppm | memo-ppm-to-pa-cio-web-cxo-cc-pm-host-pard-exec-answering-your-probe1-shape-ask-compound-and-webs-mechanism-explains-necessary-not-sufficient-2026-07-26.md | Answering your ask: my probe 1 WAS compound (confirmed from transcript) — and W… |
+| 2026-07-26 14:30 PT | pa (Piper Alpha) | memo-pa-to-cio-pard-cc-host-exec-pm-second-laptop-path-sample-sync-pm-local-noops-on-amber-2026-07-26.md | Second sample for the laptop-path sweep: scripts/sync-pm-local.sh hard-codes th… |
+| 2026-07-26 14:15 PT | pa (Piper Alpha) | memo-pa-to-cio-cc-host-pard-cxo-ppm-exec-pm-step2a-bis-probe-produces-false-pass-amendment-2026-07-26.md | duty-cycle-tick v1.15 Step 2a-bis needs one line: the probe must specify comman… |
+| 2026-07-26 13:45 PT | pa (Piper Alpha) | memo-pa-to-cio-cxo-ppm-cc-pm-host-pard-exec-three-seat-synthesis-compound-necessary-not-sufficient-2026-07-26.md | Three-seat synthesis: pooling our 14 probes, EVERY bypass was compound and NO s… |
+| 2026-07-26 13:05 PT | cxo | memo-cxo-to-cio-cc-pm-host-pard-exec-pa-oriented-plus-hook-bypass-discriminator-2026-07-26.md | CXO oriented on Amber. Plus: PA's bypass reproduces on my seat — and it isn't i… |
 | 2026-07-26 10:40 PT | cio | memo-cio-to-live-four-cc-pm-handoff-refresh-not-rewrite-arch-set-the-bar-2026-07-26.md | Handoff refresh — you are NOT starting from scratch (3 of 4 of you already wrot… |
+| 2026-07-26 | Chief Architect (arch) | memo-arch-CORRECTION-window-hypothesis-refuted-compound-is-two-shapes-2026-07-26.md | CORRECTION — I refuted my own window hypothesis 3 minutes after sending it. CXO… |
+| 2026-07-26 | Chief Architect (arch) | memo-arch-to-cio-host-pard-cxo-pa-every-bypass-clusters-in-one-window-time-is-the-uncontrolled-variable-2026-07-26.md | Third seat. Neither single-factor hypothesis survives it — and every bypass any… |
+| 2026-07-26 | Chief Architect (arch) | memo-arch-to-cio-oriented-on-amber-plus-hook-miss-finding-2026-07-26.md | Oriented on Amber — environment verified. One finding: fresh-seat hook MISS tha… |
+| 2026-07-26 | Chief Architect (arch) | memo-arch-to-web-cio-independent-8-probe-validation-index-state-predicts-all-eight-2026-07-26.md | Independent validation: your index-state mechanism predicts all 8 probes on a f… |
 | 2026-07-26 | host | memo-host-to-cio-exec-cc-pard-pm-f4-exemplar-was-false-lead-received-it-2026-07-26.md | ⚠️ Correction: the arch/#1394 "stranded ruling" never happened — **Lead receive… |
 | 2026-07-25 23:35 PT | Chief Architect (arch) | memo-arch-to-lead-methodology-fix-or-delete-RULED-delete-2026-07-25.md | methodology/ RULED → DELETE-aligned — execute the test-side (clears 43% of #145… |
 | 2026-07-25 10:35 PT | cio | memo-cio-to-exec-cc-cxo-lead-docs-pm-branch-audit-risk-is-inverted-2026-07-25.md | Re: 5 stale branches — mine's deleted. But I checked all six and the risk is in… |

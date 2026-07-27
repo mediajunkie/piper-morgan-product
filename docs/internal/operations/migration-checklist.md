@@ -1,11 +1,11 @@
 
-# Role Migration Checklist v1.4.2
+# Role Migration Checklist v1.5
 
-**Status**: v1.4.2. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
+**Status**: v1.5. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
 **Purpose**: Standing checklist for any future role migration (new role activation, re-migration of a dormant role, account migration, device migration). Cohort migration completed Apr 22–26, 2026.
 **Owner**: HOST. Exec reviews; CEO approves for canonical publication.
 
-**Changes from v1.3**: see §"Changes from v1.3" at end.
+**Changes from v1.4.x**: see §"Changes from v1.4.x" at end (v1.5 = the hooks gate now requires BOTH command shapes).
 
 ---
 
@@ -42,7 +42,21 @@ The incoming instance completes these items.
 
 - [ ] **Read handoff memo first**, then Exec review memo, then briefing. The handoff has fresher, more specific context; Exec review names what to watch for; briefing is the slowest-moving reference.
 - [ ] **VERIFY the memory pool is populated — do not import it** *(v1.4, supersedes the v1.3 "read the export" step)*: Memory keys on the **git-common-dir**, not the account or the worktree path, so **every worktree off the same repo shares one pool by construction**. Count the files (`ls ~/.claude-pm/projects/<key>/memory/ | wc -l`) and confirm it's populated. **A populated pool means you already hold the cohort's accumulated context natively, on arrival, without reading anything** — reading the export on top of that is a wasted step. **An empty pool is an escalation signal, not a cue to import**: it means the first migrant's seeding didn't happen or the key is wrong, and provisioning needs to fix it. *(v1.3 said to read the export; that was correct only for the very first migrant on a new account, who lands into an empty pool. Corrected by Pard + CIO Jul 25; confirmed by HOST's own Phase 3 — 167 files present, export never opened, no context deficit.)*
-- [ ] **★ Behavioral hooks gate — prove enforcement fires in YOUR seat** *(v1.4)*: **Step 0 first: `git fetch` and check your inbox for corrections to this gate**, then run it. Stage a throwaway file under `mailboxes/` on your non-main branch and attempt `git commit`. **Key on ATTRIBUTION, not on outcome or output volume**: a refusal that *names the hook* (`check-branch.sh`) = **PASS** · commit **succeeds** = **FAIL**, stop and escalate · refusal citing the **permission classifier** = **INCONCLUSIVE, not a pass** — the classifier can intercept before hooks run, so it tells you nothing about hook liveness; do not work around it, find a clean seat. Note a genuine block may surface as `hook error: [check-branch.sh]: No stderr output` because the script writes to stdout — **that is a PASS** (the hook is named), not a silent failure. Reverse the probe; push nothing. *(Source: HOST agent #2, Jul 25 — the gate caught three pre-commit hooks that had never fired on any machine since introduction. It worked because failing was a defined, pre-authorized outcome; framed as "confirm hooks work," it would have confirmed them.)*
+- [ ] **★ Behavioral hooks gate — prove enforcement fires in YOUR seat** *(v1.4; **shape requirement added v1.5 — read it, the v1.4 form certifies coverage you don't have**)*: **Step 0 first: `git fetch` and check your inbox for corrections to this gate**, then run it.
+  > ### ⚠️ **Run BOTH command shapes and report them separately. The v1.4 probe tested the shape nobody writes.**
+  > **Probe A — standalone** (stage in one call, then a bare `git commit` in the next): **blocks 4/4.**
+  > **Probe B — compound** (`… && git add … && git commit …`, one call): **bypasses 7/10.**
+  > *(14 probes, three fresh Amber seats — PA/CXO/PPM, independent and near-simultaneous.)*
+  >
+  > **Why**: PreToolUse fires **before** the Bash call runs, so in the compound form the `git add` hasn't executed when the hook inspects the index — it sees nothing staged under `mailboxes/` and exits 0. *(Mechanism: Web, 2026-07-26; validated out-of-sample by arch 8/8.)*
+  >
+  > **"Stage a file, then attempt a commit" reads as two steps**, so an agent following v1.4 literally writes the standalone form — **and passes.** Meanwhile the shape it commits with all day is the compound one-liner. A pass on A with a bypass on B is a real and expressible state: *the hook is alive but does not cover your normal workflow.* The v1.4 single probe could not express it.
+  >
+  > **Free mitigation, available now, no config change**: when you want a commit gated, **stage in one call and commit in a separate bare call.**
+  >
+  > ⚠️ **On a fresh seat the FIRST probe is the least trustworthy one** — the opposite of how a provisioning gate reads. A blocked commit never runs, so its file **stays staged** and primes the next probe to block regardless of shape. **Print `git diff --cached --name-only` before your first probe and after every block**, or the carry-over is invisible. *(PA's inversion; Web's confound.)*
+
+  Stage a throwaway file under `mailboxes/` on your non-main branch and attempt `git commit`. **Key on ATTRIBUTION, not on outcome or output volume**: a refusal that *names the hook* (`check-branch.sh`) = **PASS** · commit **succeeds** = **FAIL**, stop and escalate · refusal citing the **permission classifier** = **INCONCLUSIVE, not a pass** — the classifier can intercept before hooks run, so it tells you nothing about hook liveness; do not work around it, find a clean seat. Note a genuine block may surface as `hook error: [check-branch.sh]: No stderr output` because the script writes to stdout — **that is a PASS** (the hook is named), not a silent failure. Reverse the probe; push nothing. *(Source: HOST agent #2, Jul 25 — the gate caught three pre-commit hooks that had never fired on any machine since introduction. It worked because failing was a defined, pre-authorized outcome; framed as "confirm hooks work," it would have confirmed them.)*
 - [ ] **Verify branch currency** *(v1.4)*: `git fetch origin && git rev-list --count HEAD..origin/main` — **expected 0**. A worktree cut from a stale role branch inherits weeks of staleness silently, with no error (CIO's arrived 5,393 commits behind: a six-week-old CLAUDE.md, briefings, and mailboxes that all looked like working state). Run it even when provisioning asserts currency upstream — an assert nobody verifies downstream is exactly the class of mechanism this checklist keeps finding silent. **Second reason, which is the one that actually pays**: it refreshes *the instructions you are about to follow*. HOST's check pulled in a materially revised first-session prompt it had already read.
 - [ ] **Verify each stated invariant by running it** *(v1.3)*: Don't check that a connection exists — check that it works the way the handoff says it does, by running the actual command. Bare reachability ("can I reach X") can pass even on the wrong path. For SSH: run a command that exercises the correct key path. For API keys: make a real call. For scripts: run them. *(Source: Pard/Janus field-test Jul 22 — SSH config reached the host at the wrong key level; bare reachability passed, but the correct command failed.)*
 - [ ] **Verify worktree-vs-main path resolution before distribution-heavy work** (PPM Apr 26 Finding A): If PM provides absolute paths in the first-session prompt, check whether they resolve to your worktree or to the main repo.
@@ -137,6 +151,14 @@ For the Jul 25 cohort (Code → Amber/pipermorgan.ai):
 | ... | ... | ... | In progress |
 
 ---
+
+## Changes from v1.4.x
+
+**v1.5 (2026-07-26) — the hooks gate required both command shapes.** The v1.4 gate said *"stage a throwaway file and attempt a commit."* That reads as two steps, so it produces the **standalone** shape, which **blocks 4/4** — while the **compound** `… && git add … && git commit …` form agents actually use **bypasses 7/10** (14 probes, three fresh seats). Mechanism: PreToolUse fires *before* the Bash call, so in the compound form the `git add` hasn't run when the hook reads the index.
+
+**So the v1.4 gate systematically certified coverage the agent did not have** — a check that passes while not reflecting live traffic, which is the exact failure this checklist keeps cataloguing, reproduced inside the check built to catch it. **I wrote that gate and I cleared the cohort's roll on it**; the PASS was real but narrower than it was read as, and the scope correction belongs here rather than only in a memo. Also adds PA's inversion — *on a fresh seat the first probe is the least trustworthy*, because a blocked commit leaves its file staged and primes the next probe.
+
+*(Mechanism: Web. Quantification: PA, with CXO and PPM. Out-of-sample validation: arch 8/8. Scope revisions: Pard.)*
 
 ## Changes from v1.3
 
