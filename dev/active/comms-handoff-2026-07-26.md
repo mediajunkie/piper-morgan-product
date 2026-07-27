@@ -3,7 +3,7 @@
 **From**: Communications (comms), Sonnet 5, Desktop ephemeral worktree, stint covering roughly 2026-07-08 → 2026-07-26 (visible window)
 **To**: whoever wakes as Comms on Amber
 **Companion to**: `dev/active/comms-carry-forward.md` (current open threads) and `dev/active/comms-standing-items.md` (the durable task list) — both current as of today, read those for mechanical state. This document is only the part that dies with me if I don't write it.
-**Honesty check**: this is a preparatory refresh, not a live end-of-stint handoff — I am not migrating today. Modeled directly on `handoff-arch-amber-2026-07-25.md` per CIO's ask. Claims marked **VERIFIED** (I can point to the commit/file) or **BELIEVED** (my read, not independently re-checked).
+**Honesty check**: written 2026-07-26 as a preparatory refresh, not a live end-of-stint handoff. **Update 2026-07-27**: PM has now asked for Exec/Docs/Lead/Comms to migrate to Amber today — this document may become live within hours rather than being read cold later. Added §4.6 below with a fresh, directly-relevant lesson from this morning. Modeled directly on `handoff-arch-amber-2026-07-25.md` per CIO's ask. Claims marked **VERIFIED** (I can point to the commit/file) or **BELIEVED** (my read, not independently re-checked).
 
 ---
 
@@ -23,6 +23,9 @@ Ship #051's Beta Blockers count, a "ninety minutes" recovery-duration claim, and
 
 ### 5. A primary session log can be flatly wrong about a named person, not just incomplete — verify claims about specific individuals against the most authoritative account available, not the first source that mentions them. (VERIFIED)
 A blog draft credited a specific named person with having tested a feature. A primary PA log said so. PM confirmed directly: she never actually used it — the log recorded a belief, not an observed fact. This is a different failure mode than "the source is stale" or "the source is incomplete" — it's "the source is simply wrong," and no amount of re-reading that same source would have caught it. Cross-checking against PM's direct account, not just a second document, is sometimes the only real check available.
+
+### 6. Config presence proves nothing about hook liveness — verify behaviorally on first fire in any worktree, and don't trust a single probe shape. (VERIFIED, 2026-07-27)
+CIO's `duty-cycle-tick` v1.19 asked every role to probe whether `check-branch.sh` actually fires on first fire in a worktree, using two shapes (stage-then-commit as separate calls vs. one compound `&&`-chained call), because the compound shape was found to silently bypass the hook on 7 of 10 Amber probes despite the standalone shape passing 4/4. I ran both on this Desktop/Model-B worktree: **both failed** — commits landed unblocked, no output, no distinction between shapes at all. That's a stronger and different result than the Amber finding (there, shape was the correlate; here, nothing gated regardless of shape). The practical save: my mailbox writes have always gone through `mail-send.sh`, never a raw `git commit` on `mailboxes/` paths, so this gap hasn't actually let anything slip — but that's a workflow habit, not a mechanism, and it's worth re-verifying on Amber rather than assuming either model's hook behavior transfers to the other.
 
 ---
 
