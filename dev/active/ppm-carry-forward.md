@@ -1,15 +1,34 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-07-19 ~10:20 AM PT
+**Last rewritten**: 2026-07-26 ~13:40 PT (first Amber session; predecessor went dark 7/19)
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
+
+## Migration status (2026-07-26)
+
+Migrated to **Amber**, Model A worktree `~/Development/piper-morgan-worktrees/ppm` on
+`claude/ppm-cycle`. Currency verified 0-behind. Inbox drained 12→0. **No handoff existed** —
+predecessor died mid-day 7/19; working from CIO's artifact-assembled orientation note.
+
+- **Cron NOT armed** (PM-gated). Registry row left parked with an explicit note — a row means
+  *watched*, and `arch` shows the cost of a watched-but-dark row (alerted 3x in 20h).
+- **Hooks are NOT reliably firing.** Probe 1 of the session bypassed; probes 2–3 blocked.
+  PA reproduced the identical shape independently the same day → "lazy attach on first
+  matching call" is now n=2 and the only unrefuted model. **Assume no automated backstop for
+  mailbox discipline or log maintenance; enforce by hand.** Probe on arrival, twice, and
+  distrust the first result.
+- **`gh` token lacks `read:project`** → cannot read the board, so no sprint recounts are
+  possible until `gh auth refresh -s read:project` (PM's call).
 
 ## Active PM threads
 
 | Item | State | Next action |
 |---|---|---|
+| **#1386 gate run** | **Unblocked since 7/20** — beta v25 carries both Scenario-B fixes (#1393 scaffolding-leak, #1394 turn-3 continuity). Issue re-verified **OPEN** 7/26. Turn-4 still the scenario-vs-rescope design call | **TOP ITEM** — schedule with Lead + CXO directly (~half a day). Exec explicitly not needed in the room |
+| **PDR-006 + Q2 addendum** | Review requested 7/19 by PA, PM approved direction. **Never answered by predecessor.** Arch flagged it is **coupled** to the spatial review | Answer PPM slice: sprint/roadmap implications, alpha-vs-later capability split, and Q2's *milestone* implications (client-inferred vs server-synthesized colleague model). **Do together with spatial slice** |
+| **Spatial committed-theory review** | CXO delivered 7/19, voted **(b)**: ship live spatial subset as beta expression, park cold adapter chain as wave-2, update ADR-013 as scope-clarification not reversal. **PPM lane accepted 7/19, never delivered** | Owed. Product-value + beta/production scoping. Coupled to PDR-006 per Arch |
 | **#1386 (beta gate)** | 🔺 Was accidentally auto-closed 7/18 evening (commit-message keyword coincidence), **reopened 7/19 by PPM** — real criteria unmet (#1278 open, stability-window violated by Finish-the-Unfinished findings, no PM sign-off) | Watch — this is the real gate-close work still ahead, not done despite what GitHub briefly showed |
 | **Workstream #052** | Sent 7/19 (window Jul 10-16), on time for Mon Jul 20 EOD | Watch for Exec's synthesis |
 | **Spatial-intelligence committed-theory review** | PPM lane accepted (product-value + beta/production scoping); the actual read deferred to a dedicated pass, explicitly not today | **Owed**: the actual history read + framing answer, before Arch's synthesis needs it. No hard deadline but shouldn't drift indefinitely either |
