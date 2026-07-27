@@ -145,8 +145,31 @@ while IFS=$'\t' read -r role cron thr ws we ff since state; do
   # Column 8 = `parked` or `parked:<reason>`; empty/absent → `watched` (so all pre-v0.5 rows are
   # unchanged in behavior). Coverage lines print ONLY under DUTY_CYCLE_COVERAGE=1, so the default
   # STALE-only output the watchdog consumes is byte-identical to before.
+  # ── PARK-NO-EXIT detection (v0.6, CIO 2026-07-27; HOST-found, second design) ───────────────────
+  # PARKED specified the STATE but not the REASON'S LIFECYCLE. A parked row whose reason has quietly
+  # stopped being true is indistinguishable from a correctly-parked one — nobody reading
+  # "parked: awaiting Amber migration" can tell it expired without independently checking whether the
+  # migration happened. A LIVE role then sits unwatched behind a sentence that expired. Found 3 days
+  # after PARKED shipped: arch and cxo were parked awaiting a migration they had ALREADY completed.
+  #
+  # FIRST ATTEMPT, DISCARDED — worth recording because it is the more obvious idea and it is wrong:
+  # "a dark role does not commit, so flag any parked role that committed recently." That fires on
+  # pa and ppm too, whose reasons are CORRECT — they are parked because their cron is un-armed, not
+  # because they are dark, so they commit whenever prompted. Recent activity is NECESSARY but NOT
+  # SUFFICIENT evidence that a park is stale, and shipping it would have re-created exactly the alert
+  # fatigue PARKED exists to prevent. Two of four flags would have been noise on day one.
+  #
+  # WHAT ACTUALLY WORKS is syntactic and needs no judgment: a park reason MUST name a falsifiable
+  # CLEARING CONDITION — the observable event that ends the park. pa/ppm already model it: "clear this
+  # note only when a cron job is actually armed". arch/cxo state a SITUATION ("awaiting Amber
+  # migration"), which can silently expire because nothing says what would end it. A situation rots;
+  # a condition can be checked. So flag the reasons that have no exit, not the roles that look busy.
   case "${state:-watched}" in
     parked|parked:*)
+      reason="${state#parked}"; reason="${reason#:}"
+      if ! printf '%s' "$reason" | grep -qiE 'clear (this|the|it)|until|when .* (is|are|has|have)|expires?'; then
+        echo "PARK-NO-EXIT $role — parked with no falsifiable clearing condition, so this row cannot go stale visibly. Reason on file: '${reason# }'"
+      fi
       [ -n "${DUTY_CYCLE_COVERAGE:-}" ] && echo "PARKED $role (not watched — intentionally dark${state#parked}; since $since)"
       continue ;;
   esac
