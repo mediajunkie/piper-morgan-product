@@ -67,9 +67,14 @@ with the build, not after it.
 - **Model**: Claude Opus 5 (1M context)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` (Model A, stable path) · branch `claude/pa-cycle`
 - **Session log**: `dev/2026/07/26/2026-07-26-1250-pa-code-log.md`
-- **Cron**: **NOT ARMED.** PM's instruction was orient-and-report; not arming unilaterally.
-  Registry row in `duty-cycle-registry.tsv` pending the cron expression (the load-bearing field —
-  nobody else can write this row). **Awaiting PM/CIO confirmation of PA's cadence on Amber.**
+- **Cron**: **NOT ARMED** (PM-gated). ✅ **Registry row now EXISTS** —
+  `pa 42 6,9,12,15,18,21 6 6 22 06:42 2026-07-26 parked:…`. PA previously had **no row at all** and was
+  structurally invisible to the freeze-watchdog (finding #6). Parked = counted in coverage, no stall
+  alerts. **Recommended cadence `42 6,9,12,15,18,21`** — restores PA's previously PM-ratified windowed
+  schedule; `:42` collides with nobody (lead :17, arch :27, host :37, cxo :47, ppm :52). **Clear the
+  parked note only when a cron is actually armed.**
+  ⚠️ **The row is not yet visible to the watchdog**: `duty-cycle-freeze-check.sh` reads the registry from
+  the **shared checkout's working tree**, which is 12 commits behind. See the sync-script chain below.
 - **Predecessor**: went dark 2026-07-19 after a clean close (DAY-CLOSED). **No handoff exists** —
   oriented from `dev/active/orientation-note-pa-amber-2026-07-25.md` (CIO, assembled from artifacts).
 
