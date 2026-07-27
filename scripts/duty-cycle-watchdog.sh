@@ -98,6 +98,23 @@ fi
 stale_roles=$(echo "$STALE" | sed -n 's/^STALE \([^ ]*\).*/\1/p')
 n_stale=$(printf '%s\n' "$stale_roles" | grep -c .)
 
+# ── PARK-NO-EXIT routing (2026-07-27, CIO; gap found by HOST within hours of the detector shipping) ──
+# freeze-check v0.6 emits `PARK-NO-EXIT <role>` for a parked row whose reason names no falsifiable
+# clearing condition. That line matched NO recipient pattern here, so the detector fired correctly for
+# 3.5 hours and notified nobody — a detector wired to a dead output is the same silence it exists to
+# break (m-44).
+#
+# Routing matters as much as delivery, and HOST's split is the load-bearing part: v1.17 says the AGENT
+# owns its registry row, which is right FOR A LIVE ROLE — only it knows its cron expression. But a
+# PARKED role has no armed cron, so it never wakes to read the ask. **The one party structurally
+# capable of acting is not the role.** So these route to CIO (registry owner) as `parkfix-<role>`,
+# never to the parked role itself. They ride the existing cooldown machinery so they dedup like any
+# other nudge, and they are deliberately kept OUT of n_stale so they can never trip the
+# infrastructure-event collapse — a stale park reason is a bookkeeping defect, not a cohort outage.
+park_roles=$(echo "$STALE" | sed -n 's/^PARK-NO-EXIT \([^ ]*\).*/\1/p')
+n_park=$(printf '%s\n' "$park_roles" | grep -c .)
+park_keys=$(printf '%s\n' $park_roles | sed -n 's/^\(..*\)$/parkfix-\1/p')
+
 # Belt 4 — SPAWN-FRESH — default OFF (WATCHDOG_AUTO_SPAWN_ROLES="").
 # On a single-role stall, invokes `claude -p` in a fresh detached worktree so the role does a full
 # duty-cycle fire without depending on the suspended/backgrounded app. NOT for infra-events (whole
@@ -179,7 +196,7 @@ fi
 
 # Nudge-worthy = newly stale OR cooldown elapsed. awk does the assoc (bash 3.2 has no associative arrays)
 # and rewrites the state to ONLY currently-stale roles (recovered roles drop out → re-stall nudges fresh).
-nudge_roles=$(printf '%s\n' "$stale_roles" | awk -v now="$now" -v cd="$COOLDOWN" -v sf="$STATE" '
+nudge_roles=$(printf '%s\n' $stale_roles $park_keys | awk -v now="$now" -v cd="$COOLDOWN" -v sf="$STATE" '
   BEGIN { while ((getline l < sf) > 0) { if (split(l,a,"\t")>=2) last[a[1]]=a[2] } close(sf) }
   { r=$1; if (r=="") next; prev=(r in last)?last[r]:0
     if (prev==0 || (now-prev)>=cd) { print r; cur[r]=now } else { cur[r]=prev } }
@@ -188,7 +205,7 @@ nudge_roles=$(printf '%s\n' "$stale_roles" | awk -v now="$now" -v cd="$COOLDOWN"
 [ -f "$STATE.tmp" ] && mv "$STATE.tmp" "$STATE"
 
 if [ -z "$nudge_roles" ]; then
-  echo "$ts (no nudge — all $n_stale stale role(s) within ${COOLDOWN}s cooldown)" >> "$LOG"
+  echo "$ts (no nudge — all $n_stale stale + $n_park park-no-exit item(s) within ${COOLDOWN}s cooldown)" >> "$LOG"
   exit 0
 fi
 nudge_list=$(printf '%s ' $nudge_roles | sed 's/ *$//')
