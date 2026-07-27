@@ -4,7 +4,7 @@
 
 **Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: **`dev/2026/07/26/2026-07-26-0707-host-code-log.md`** (07-26). **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID **`7c1d5637`**). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
-**Last updated**: 2026-07-27 07:35 PT (START fire). Today's session log: `dev/2026/07/27/2026-07-27-0649-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-26`) — Step-0 verified. Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
+**Last updated**: 2026-07-27 10:05 PT (WORK fire). Today's session log: `dev/2026/07/27/2026-07-27-0649-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-26`) — Step-0 verified. Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
 
 ## ✅ Both queued START actions DONE — nothing carried over from them
 
@@ -19,7 +19,8 @@ Export → merge → re-type. **170→166 entries, 197→190 lines, headroom 3�
 
 ## ▶ ALSO CHECK AT START
 
-- **⏳ STILL PENDING — drumbeat 07:05 under LaunchAgent.** Checked at 06:57: **not yet due.** (Nearly reported it missing twice; check the clock before the log.) 19:23 kickstart PASSed, but **07:05 is the first true scheduled-in-context proof.** Verify at the 09:37 fire.
+- ~~drumbeat 07:05 proof~~ ✅ **PASS 2026-07-27 07:05:18** — scheduled, in-context, unattended. **Both belts now proven at every layer that has actually been tested.**
+- ⚠️ **BUT: the watchdog heartbeat's verdict field can NEVER report an alert.** At 06:46 the belt detected + mailed a real stall (lead) and the heartbeat logged `all-quiet` 8 seconds later. The alerter writes DETECT to its own log, never stdout, so `${out:-all-quiet}` is a constant. Tested fix sent to Pard (his emit half). **Until fixed, do not read `all-quiet` in that log as evidence nothing fired** — read `dev/active/duty-cycle-watchdog.log` for `DETECT:` lines instead.
 - **Watchdog heartbeat freshness** — bar **>7h**; beats at 00:46 / 06:46.
 
 ## ▶ CHECK AT TOMORROW'S START (07-27)
