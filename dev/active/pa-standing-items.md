@@ -87,6 +87,7 @@ _Strategic threads PM flagged to revisit — not operational/owed items; no near
 
 | # | Item | Filed | Notes |
 |---|---|---|---|
+| 2 | **PM wants to discuss the architecture diagram** — PM-requested, awaiting a time | 2026-07-26 | PM 7/26: *"I've been meaning to discuss the architecture diagram you (earlier-PA) put together for me last week, when we have the time."* Built by predecessor PA 7/18–19; PM's reaction then: *"This is super helpful, I'm printing it out."* Artifact: `https://claude.ai/code/artifact/a146134e-2858-4c7c-a916-8f1b038fc8c6` — three client models (Claude Chat/Cowork/Code, ChatGPT, Web) → `mcp.pipermorgan.ai` → data layer, plus the plugin-side vs server-side skills split. ⚠️ **It predates three things that move it**: the tier resolution (Track A needs Team; Track B is the open route), Q2 as a PDR-006 ratification blocker, and Arch's colleague-model/spatial coupling. **Not stale — but it should be re-read against those before the conversation, and the diagram was built by a session that no longer exists.** PA to prep, not to pre-empt: PM asked to discuss, not for a revision. |
 | 1 | **Duty cycle on Model A — emeritus handoff to fresh session 5/31** | 2026-05-31 | Day 1-4 (5/28-5/31) ran in continuous emeritus session. Fresh session per `dev/active/pa-fresh-session-handoff-prompt-2026-05-31.md` takes over. Emeritus session paused, available for "from the future" POV checks. Cron unregistered at handoff. |
 
 ### Resolved (preserved for one cycle)

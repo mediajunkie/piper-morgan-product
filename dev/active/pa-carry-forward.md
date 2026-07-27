@@ -22,17 +22,23 @@ PM-attention items live **here**, in the section immediately below.
   verify — no company entity needed. **Lead time starts when someone starts it, not when we decide the
   rest.** *(Also carried on CIO's board, where it reads "eight days" — it is 7: memo sent 7/19,
   today is 7/26.)*
-- ❓ **Claude submission path — the question CHANGED on 2026-07-26. It is no longer "check your tier."**
-  ~~Tier check gates Track A~~ — **withdrawn**. The 7/19 research's blanket "Team/Enterprise required,
-  Max blocked" claim is **unreliable**; its own author retracted it during handoff consultation, but the
-  retraction had lived only in a chat session and never reached a committed document. A **second path
-  exists at `platform.claude.com/plugins/submit`** (Console form, reported available to Max), and PM's
-  screenshot showed **"Piper morgan" already installed** with an **"Upload plugin"** option.
-  ⚠️ **Not resolved, deliberately**: that is a *Plugin* surface. Per the glossary, **Connector ≠ Plugin** —
-  so it bears on **Track B** and does not self-evidently clear **Track A**'s gate. **The ask for PM is now:
-  which surface is that "Upload plugin" option, and what is "Piper morgan" already listed as?** PM holds
-  the screenshot and the account. *(Do not re-collapse this into a tier check — that conflation is how
-  the original error propagated.)*
+- ✅ **Claude submission tiers — RESOLVED 2026-07-26 against Anthropic's docs. Stop re-litigating this.**
+  Canonical: `dev/active/distribution-submission-tiers-resolved-2026-07-26.md`. Answered wrong twice in
+  eight days, in opposite directions; both prior claims superseded.
+  **Track A (connector directory) genuinely requires Team/Enterprise — no workaround.** It's a purchase
+  decision, not a lookup; **drop "verify the tier" as a task, the answer is known.** **Track B (plugin
+  directory) IS available on Max** via the Console path (`platform.claude.com/plugins/submit`) — because
+  a **Console org is a different account object from the chat plan**, not because Max ever cleared the
+  admin portal. The muddle came from *installing* a listed connector (works on Pro/Max) being mistaken
+  for *submitting* one.
+- 🔺 **REVERSAL — the open-source decision is now the LIVE gate, not deferrable.** *(PA advised deferring
+  it earlier on 7/26; that advice is withdrawn.)* Track B requires a **public GitHub repo**; closed-source
+  is not accepted. With Track A behind a paid Team upgrade, **Track B is the only Claude-side route open
+  today, and open-sourcing the CLAUDE.md + hooks + skills package is what unlocks it.**
+- ❓ **Two 30-second looks for PM** (not research): (1) **Does Piper Morgan have a Console organization,
+  and what's your role on it?** — almost certainly yes if the API's been used, but it is the single
+  credential Track B's Console path depends on. (2) **What is the "Piper morgan" entry in your
+  screenshot** — installed connector, personal plugin upload, or an actual directory listing?
 - 🟡 **Open-source decision for the Claude plugin package (CLAUDE.md + hooks + skills) — PM's call, not
   yet made.** A public GitHub repo is a hard requirement for Track B (full plugin). **Not time-critical
   the way the two above are**: Track A gets a Claude listing without it. PA can write up the tradeoffs
