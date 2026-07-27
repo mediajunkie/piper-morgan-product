@@ -4,12 +4,16 @@
 
 **Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: **`dev/2026/07/26/2026-07-26-0707-host-code-log.md`** (07-26). **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID **`7c1d5637`**). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
-**Last updated**: 2026-07-26 16:35 PT (WORK fire). Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
+**Last updated**: 2026-07-26 19:30 PT (WORK fire). Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
 
 ## ✅ Both queued START actions DONE — nothing carried over from them
 
 1. **Hooks re-probed** — **8/8 across ~9 hours** (4 last night, 4 at 07:08), both command shapes, both layers alternating. This seat has never once failed to block. Sent to CIO/Pard. My redundancy hypothesis was **refuted** by CIO overnight (both layers alternate on its seat too, so it was never single-layered); CIO's scope model fell with it and CLAUDE.md is corrected at line 105. **Intermittency remains open-unexplained with the intermittent seat now retired** — do not let a clean result here be read as a resolution.
 2. **Dashboard criteria v0.3 SPEC shipped** (`2a8199f34`, §7 added in `e6a043642`) — the 5-week-idle item, closed. New Criteria G (mechanism liveness), ⏸ PARKED state, six render rules, F4. E's coverage-indicator definition written same day (§7).
+
+## ▶ CHECK AT THE 21:37 STOP (tonight)
+
+- **★ Did Pard's escalation mail arrive for the 19:05 INCONCLUSIVE?** Fired 19:05:03; promise is *"any non-PASS to HOST and CIO within the half hour"* → window closed ~19:35. **This is the first live non-PASS and therefore the first real test of the escalation path.** Mail present = chain verified end-to-end. Mail absent = a G6-class finding in the *escalation* layer — and far better found on an INCONCLUSIVE than on a real stall.
 
 ## ▶ CHECK AT TOMORROW'S START (07-27)
 
@@ -32,7 +36,9 @@
 - ~~watchdog crying wolf on `arch`~~ ✅ **RESOLVED** — CIO shipped PARKED (`duty-cycle-freeze-check.sh` v0.5, col-8 `state`). arch/cxo/ppm parked; **alerts stopped** (3 in the prior 20h, none since 07:03). CIO's sharpening: cxo/ppm weren't a workaround for the missing state, they were **finding #6 already in production** for five weeks, looking like documentation.
 - ~~two of three hooks unverified~~ ✅ **BOTH VERIFIED 07-26** — `broad-staging-warn` **alive** (first time ever); `reconcile-drafts` **alive-but-mute** (detects perfectly, exits 0, nothing surfaces) — reclassified *verified-and-defective*, a worse state than unverified.
 - ⚠️ **NO WARN-WITHOUT-BLOCKING TIER EXISTS** (spec §3a-bis). exit 0 = invisible; exit 2 = blocks. All three hooks were designed around a tier that isn't there. **Fix the assumption, not just the three hooks**, or the fourth repeats it.
-- ⚠️ **Lockout hazard, open**: at ≥20 staged files, ordinary non-commit Bash calls get blocked (I hit it). The `if:` predicate is leaky; **multi-line commands fired, single-line didn't** — but *not isolated* (all my multi-line cases began with `cd`). **One test separates them: single-line beginning with `cd`, 20+ files staged.** Handed to CIO/Pard.
+- ~~Lockout hazard~~ ❌ **WITHDRAWN 07-26** — does not reproduce. Pard's 4 headless probes + my 4 controlled marker probes (instrument validated on a real commit) all negative. **Retained only as an unexplained single observation; do NOT act on it or chase it without a new symptom.**
+- ⚠️ **THE GATE I CLEARED WAS SHAPE-LIMITED.** Standalone shape blocks 4/4; **compound `… && git add … && git commit …` bypasses 7/10** (Web's mechanism: PreToolUse fires before the Bash call, so `git add` hasn't run when the hook reads the index). **My own paired probe: A blocked, B bypassed — 5th seat.** Honest state of this seat: *hook alive, normal workflow uncovered.* **Free mitigation, use it: stage in one call, commit bare in the next.** Checklist **v1.5** now requires both shapes.
+- **Remediation is OPEN and not mine to pick**: (1) parse the pending command string · (2) PostToolUse landed-mailbox-commit detector · (3) accept + mitigation. CIO/Lead territory. My lens only: **option 2 is the only one that fails safe.**
 - **Fix asks outstanding**: `check-branch` message → stderr · `broad-staging-warn` delete the false "not blocked" sentence · `reconcile-drafts` needs pattern 1 or 2.
 - **`mail-send.sh`'s residue-reconcile half has no check at all** — the push self-verifies, the reconcile doesn't.
 - ~~heartbeat denominator wrong~~ ✅ **FIXED** — Pard applied the tested fix verbatim; live line now `watched=4 parked=3`. Next unattended beat 18:46.
