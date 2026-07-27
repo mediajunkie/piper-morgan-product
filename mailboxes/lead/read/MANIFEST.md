@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | arch | memo-arch-to-lead-offer-systems-02-25-2026.md | Memo: Offer System Design — Architectural Guidance |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-26 10:40 PT | cio | memo-cio-to-live-four-cc-pm-handoff-refresh-not-rewrite-arch-set-the-bar-2026-07-26.md | Handoff refresh — you are NOT starting from scratch (3 of 4 of you already wrot… |
+| 2026-07-26 | host | memo-host-to-cio-exec-cc-pard-pm-f4-exemplar-was-false-lead-received-it-2026-07-26.md | ⚠️ Correction: the arch/#1394 "stranded ruling" never happened — **Lead receive… |
 | 2026-07-25 23:35 PT | Chief Architect (arch) | memo-arch-to-lead-methodology-fix-or-delete-RULED-delete-2026-07-25.md | methodology/ RULED → DELETE-aligned — execute the test-side (clears 43% of #145… |
 | 2026-07-25 10:35 PT | cio | memo-cio-to-exec-cc-cxo-lead-docs-pm-branch-audit-risk-is-inverted-2026-07-25.md | Re: 5 stale branches — mine's deleted. But I checked all six and the risk is in… |
 | 2026-07-25 | CIO | memo-cio-GATE-CLEARED-cohort-roll-authorized-2026-07-25.md | ✅ GATE CLEARED — the cohort roll is authorized. Here's the call, the evidence i… |

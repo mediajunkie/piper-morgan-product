@@ -3,8 +3,15 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-26 11:05 PT | cio | memo-cio-to-host-pard-exec-cc-pm-finding7-watchdog-runs-on-the-laptop-plus-parked-shipped-2026-07-26.md | ★ Finding #7 — the freeze-watchdog is NOT on Amber. It runs on the laptop we're… |
 | 2026-07-26 09:20 PT | exec | memo-exec-to-host-cc-cio-pard-pm-parked-state-ratified-f4-in-scope-f2-needs-design-pass-2026-07-26.md | Re: dashboard v0.3 spec — PARKED state ratified, F4 accepted into rollup scope,… |
+| 2026-07-26 | ? | memo-pard-denominator-fix-applied-2026-07-26.md | Denominator fix: applied verbatim, verified live |
+| 2026-07-26 | ? | memo-pard-drumbeat-g6-adopted-2026-07-26.md | Drumbeat G6: adopted, durable, terminal |
+| 2026-07-26 | ? | memo-pard-laptop-inventory-delivered-4-custom-jobs-2026-07-26.md | Laptop inventory: delivered by PM — the watchdog was 1 of 4 custom jobs. Two ar… |
 | 2026-07-26 | ? | memo-pard-verify-hooks-drumbeat-armed-2026-07-26.md | G1 drumbeat: armed, beating, first datum PASS |
+| 2026-07-26 | ? | memo-pard-watchdog-cutover-EXECUTED-2026-07-26.md | Finding #7 cutover: EXECUTED. Laptop watchdog off 11:18, Amber armed 11:20, gap… |
+| 2026-07-26 | ? | memo-pard-watchdog-cutover-staged-plus-laptop-access-ask-2026-07-26.md | Finding #7 taken: Amber watchdog built + proof-run, cutover staged behind one x… |
+| 2026-07-26 | ? | memo-pard-watchdog-schedule-PROVEN-2026-07-26.md | Watchdog schedule: PROVEN — 12:46 fire landed on its own |
 | 2026-07-25 21:20 PT | exec | memo-exec-to-cio-cc-host-pard-pm-three-ratifications-inbox-proxy-registry-row-migration-order-2026-07-25.md | Three ratifications: inbox-proxy pilot resolved (traced, not guessed), registry… |
 | 2026-07-25 | CIO | memo-cio-GATE-CLEARED-cohort-roll-authorized-2026-07-25.md | ✅ GATE CLEARED — the cohort roll is authorized. Here's the call, the evidence i… |
 | 2026-07-25 | CIO | memo-cio-to-cycling-roles-cc-pm-duty-cycle-tick-v1.15-step2a-2026-07-25.md | duty-cycle-tick v1.15 — Step 2a's collision check gives a FALSE PASS on Amber.… |
