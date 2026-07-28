@@ -8,15 +8,15 @@ caption: '"I haven''t shouted ''Look out!'' all week"'
 
 *June 15–19, 2026*
 
-Over a five day stretch the team made three architecture decisions and then closed a sprint. In between, the team fixes its own working process, finished a months-long visual redesign, caught a fabrication bug before I could act on the wrong answer, and survived a battery outage that killed every autonomous process running. Along the way, it started to feel like one team getting harder to fool, and less likely to fool itself.
+Over a five day stretch the team made three architecture decisions and then closed a sprint. In between, the team fixed its own working process, finished a months-long visual redesign, caught a fabrication bug before I could act on the wrong answer, and survived a battery outage that killed every autonomous process running. Along the way, it started to feel like one team getting harder to fool, and less likely to fool itself.
 
 # Three decisions and a catch
 
-On Monday the chief architect role (Arch) made a ruling on when if ever data should be allowed to "leak" between accounts. The answer allowed that certain product-management records are deliberately global by design, and that any exception to default rules needs an explicit marker, not an unspoken assumption. That ruling unblocked a new Architecture Decision Record (ADR), the team's format for writing down a significant technical decision and its reasoning: ADR-071, "User-Auth Anchoring Pattern for Content Stores," drafted the same morning and ratified by early afternoon. 
+On Monday the chief architect role (Arch) made a ruling on when, if ever, data should be allowed to "leak" between accounts. The answer allowed that certain product-management records are deliberately global by design, and that any exception to default rules needs an explicit marker, not an unspoken assumption. That ruling unblocked a new Architecture Decision Record (ADR), the team's format for writing down a significant technical decision and its reasoning: ADR-071, "User-Auth Anchoring Pattern for Content Stores," drafted the same morning and ratified by early afternoon.
 
 It joined two others from the same five-day window: ADR-070, on how the product connects to outside services, and an updated ADR-066, on keeping configuration state honest. Read together, all three make the same argument in different ways: a system shouldn't assert a fact about itself, a user, or a connection it hasn't actually verified.
 
-The reason we needed to examine this rule is that Piper Morgan evolved from a personal project, to a side project, to something built to accommodate any number of users and instances. Along the way, the user model was refactored more than once, but never thoroughly enough. 
+The reason we needed to examine this rule is that Piper Morgan evolved from a personal project, to a side project, to something built to accommodate any number of users and instances. Along the way, the user model was refactored more than once, but never thoroughly enough.
 
 Auditing which parts of the data layer already anchored records to the right owner, the lead developer role (Lead Dev) initially reported "about half the tables are unanchored" which turned out to be a scarier number than the truth. Before looping in Arch for review, Lead Dev re-checked its own claim, found the real problem was three inconsistent styles of anchoring in use rather than anchoring being missing (another type of problem entirely), and corrected itself before anyone else saw the overclaim. Arch's response, reading the correction, was blunt: "the discipline at its best." (As a human, though, I notice this tendency of agents to report on things that were wrong and then corrected, which can create noise and even confusion in later records, but that's a topic for another day). The point is, an agent catching its own mistake before it becomes someone else's problem to catch is exactly the kind of moment I want more of.
 
@@ -34,11 +34,11 @@ The day after that the team finally addressed a longstanding thorn in my side. P
 
 After months, different pages of the product had accumulated their own slightly-different visual chrome, navigation bars that looked almost, but not quite, the same from page to page. Finally, Lead Dev finished migrating the last of them onto one shared shell: twenty-two of twenty-two page templates, all pulling from the same navigation, the same footer, the same structural frame. It had been "in progress" long enough that finishing it felt like an event worth celebrating. Someday I may put together a timeline of how the interface evolved, with June 17 marked as the day I stopped cringing about it.
 
-The same day, another architecture design record (ADR-072), on how the product determines which internal skill or procedure to route a request to, went from idea to ratified reality over the course of a nine-hour stretch: authored, reviewed by two other roles for its trust implications, and formally accepted, all under real pressure from me to finish it rather than let it sit trapped in the limbo of "important but not urgent." 
+The same day, another architecture design record (ADR-072), on how the product determines which internal skill or procedure to route a request to, went from idea to ratified reality over the course of a nine-hour stretch: authored, reviewed by two other roles for its trust implications, and formally accepted, all under real pressure from me to finish it rather than let it sit trapped in the limbo of "important but not urgent."
 
 Arch had banked the plan to draft it, classifying it as unhurried background work, given there was no hard deadline provided. I gave it a deadline: do it now. Fortunately, the groundwork was already solid and Arch had done its homework reading, so demanding action just moved up writing-down from "eventually" to "today."
 
-The team made one other correction that day to how the product thinks about trust. A rule meant to govern when Piper should ask permission before acting on its own initiative had quietly drifted, in the actual code, into something that could also hide a user's *own* content from that same user, which was never the intent. Two of my agent roles, the head of sapient trust (HOST), and the chief experience office (CXO), traced this misinterpretation of the rule back to the source and fixed the discriminator: the gate designed to make Piper use discretion was corrected so that it no longer interfered with a person simply reaching for their own stuff. We fixed it that day.
+The team made one other correction that day to how the product thinks about trust. A rule meant to govern when Piper should ask permission before acting on its own initiative had quietly drifted, in the actual code, into something that could also hide a user's *own* content from that same user, which was never the intent. Two of my agent roles, the head of sapient trust (HOST) and the chief experience officer (CXO) traced this misinterpretation of the rule back to the source and fixed the discriminator: the gate designed to make Piper use discretion was corrected so that it no longer interfered with a person simply reaching for their own stuff. We fixed it that day.
 
 # Fixing a fib
 
@@ -50,7 +50,7 @@ The day after, Arch reviewed the proposed fix and endorsed it, adding two refine
 
 # Don't forget to plug it in
 
-And in the background of all of that, I left my laptop where most of the agent sessions were running unplugged long enough for the battery to die. This killed every scheduled process running across the whole team sometime Wednesday evening, and it stayed down into Thursday, taking every autonomous agent's check-in schedule with it. 
+And in the background of all of that, I left my laptop where most of the agent sessions were running unplugged long enough for the battery to die. This killed every scheduled process running across the whole team sometime Wednesday evening, and it stayed down into Thursday, taking every autonomous agent's check-in schedule with it.
 
 It was Friday before the outage was fully resolved. It takes a while to get all the plates spinning properly again! Once we were back in business, I had a chance to test whether five days of architecture work would actually hold up under a real day of use.
 
@@ -58,7 +58,7 @@ Each agent that came back online Friday morning did the same three things withou
 
 # Sprint to the finish line
 
-In a single afternoon walk-through with me, the team closed seven issues: the new visual layout and color-token enforcement, the no-fib standup, a cleanup of the product's Radar panel (a sort of activity feed), a fix for a broken settings toggle, the data-privacy anchoring work from Monday's ADR, and a formatting fix for messages sent through Slack. 
+In a single afternoon walk-through with me, the team closed seven issues: the new visual layout and color-token enforcement, the no-fib standup, a cleanup of the product's Radar panel (a sort of activity feed), a fix for a broken settings toggle, the data-privacy anchoring work from Monday's ADR, and a formatting fix for messages sent through Slack.
 
 As I reviewed the results to decide if they were acceptable I found myself typing things like "Your recommendation approved," "learning toggle test passed," "total win for beta," and other sighs of relief. Immediately after, an automated regression check ran 221 test conversations against the live system and came back clean. No regressions. The routing worked end to end, every time, at least as far as we can tell.
 
