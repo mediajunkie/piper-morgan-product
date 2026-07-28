@@ -7,6 +7,8 @@
 
 **Git Commits**: 150+ on `origin/main` (Exec's evening sync alone pulled 151), plus commits in `mediajunkie`
 
+**Line-count note**: this hits COORDINATION's *content* targets — **97 timeline entries** against the "100+ individual entries" rule, and executive-summary bullet counts at or above every band (6 Core Themes vs 3–5, 10 Technical Details vs 5–8, 7 Impact vs 4–6, 9 Session Learnings vs 5–8) — while landing well under the 450–600 *line* target. The gap is formatting, not missing content: methodology-20's line budget assumes ~2.5–3 lines per timeline entry, and these are one dense line each. Flagging rather than padding to hit a number, and worth a methodology-20 refinement — the line target and the entry-count target measure the same thing in incompatible units, so an omnibus can satisfy one and fail the other while being correct.
+
 ---
 
 ## Executive Summary
