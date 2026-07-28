@@ -109,9 +109,9 @@ expected_threshold() {
       if (nxt=="")  nxt  = h[1] + 24                          # after last fire today  → first fire tomorrow
       gap = nxt - prev; if (gap < 1) gap = 1
       # ⚠️ 2026-07-28 (CIO): was int(gap*3/2)+1. That is TIGHTER than the 2x-gap a single COMPLIANT
-      # quiet fire produces, so a role following the skill's no-churn rule tripped it by construction
+      # quiet fire produces, so a role following the no-churn rule in the skill tripped it by construction
       # (lead, 3x on 07-27, while alive and working). Widened to 2x+1 so one quiet fire is absorbed.
-      # ⚠️ THIS IS THE LIVE VALUE. The registry's threshold_h column is only a FALLBACK for crons that
+      # ⚠️ THIS IS THE LIVE VALUE. The threshold_h column in the registry is only a FALLBACK for crons that
       # do not parse — every current row parses, so editing that column changes NOTHING. It was edited
       # on 07-27 and announced as shipped; it was a no-op. Change the formula here, not the column.
       # ⚠️ Still does NOT fix low-frequency roles: exec fires 2x/day, so this yields 25h. Widening
