@@ -10,7 +10,7 @@
 - **Possible Amber migration, unresolved as of tonight**: PM asked (via Exec's check-in memo) for Exec/Docs/Lead Dev/Comms to migrate to Amber today. It did not happen by day's close — CIO hadn't yet responded with a sequencing plan as of this STOP. Handoff doc (`dev/active/comms-handoff-2026-07-26.md`) is current, refreshed this morning with a fresh §4.6 lesson. Readiness already confirmed to CIO (cc PM/Exec/Docs/Lead) — no need to re-send unless something material changes before the actual cutover.
 - **Genuinely open, awaiting PM's steer**: Beats 21-23 (Write-Path Chase, Alpha Launches, Architect's Own Trap) drafted + fact-checked + footer-chained — next step is PM's voice-pass + art.
 - **Genuinely open, awaiting PM's answer**: the watchdog-wording question on "What the Running System Found" (already published — non-blocking).
-- **Known but parked**: the YAML caption `''`-encoding bug (Web's to fix eventually, PM said not to worry about it now).
+- ~~Known but parked: the YAML caption `''`-encoding bug (Web's to fix eventually)~~ — **CLOSED 2026-07-28**: this was never Web's. Docs root-caused it as 3 chained defects in our own publish pipeline (publish-post.js, sync-csv-to-json.js, parseCsvRow), fixed all 8 affected posts, verified end-to-end. No Web memo needed.
 - **Standing structural gap**: building-narrative queue runs dry after Aug 18.
 - **BYOC marketplace narrative** — still stale, PM-gated.
 - **Registered**: `dev/active/duty-cycle-registry.tsv` now has a comms row (added 7/27, first time). If migrating to Amber, the successor should verify/rewrite this row rather than assume it transfers correctly.
