@@ -5,6 +5,8 @@
 **Day Type**: HIGH-COMPLEXITY: EXECUTION — migration-prep day with four independent tracks
 **Justification**: 5 agent sessions qualifies as High-Complexity on session count alone. Sub-type is EXECUTION rather than COORDINATION: one deep PM-driven thread (CIO's migration preparation, which did involve genuine back-and-forth with PM and with Pard cross-repo) ran alongside four largely independent tracks — Comms on a pre-publication review, Lead on CI/backlog consolidation, Docs on an omnibus + audit catch-up, Exec on duty-cycle fires. PM was orchestrating assignments, not mediating a cohort discussion. The single genuine cross-agent interaction (Exec discovering it had duplicated CIO's memory export) was a same-day catch, not a handoff chain. Timeline weighted toward discoveries, corrections, and PM decisions per the EXECUTION expansion rule.
 
+**Line-count note (intentional deviation)**: this lands under the 350–500 EXECUTION target. That is deliberate, not under-compression. Three of the five agents had genuinely low-event days — Comms ran five fires of which four were quiet holds, Lead ran five of which three were quiet holds and two were batched as identical, and both closed with nothing new. Expanding to 400+ would mean narrating no-op holds, which the methodology's own Detail Bloat and Terse Timeline rules forbid. What the first draft *did* under-compress has been restored: CIO's six migration lessons are preserved in full (they were written explicitly for subsequent migrators, and CIO is the first of ~10), the audit's eight section results are itemized rather than summarized in a line, and the day's four durable decisions are recorded separately from the timeline.
+
 **Git Commits**: 15+ across `piper-morgan-product` and `mediajunkie`
 
 ---
@@ -122,6 +124,39 @@
 - **9:30 PM — Communications** STOP. Flags plainly at day-close rather than letting it ride into tomorrow: "The Ritual Becomes a Skill" publishes tomorrow with **neither** the negation-reveal question nor the missing frontmatter/art resolved. Explicitly not treating it as blocking — not Comms' call to force either.
 - **9:47 PM — Lead Developer** STOP. CI green at `23dfc3127`, backlog 104, beta v28 healthy. #1393/#1394 still await Exec's #1386 re-run; #1395 awaits corpus ratification; methodology ruling still with Arch.
 - **Retroactive — Chief Innovation Officer** has no STOP fire: the day ran PM-driven via `/remote-control`, cron never armed on 7/24. Closed retroactively the next morning (08:50 Jul 25) per Step-0 self-heal.
+
+---
+
+## Preserved in Full: CIO's Migration Lessons for Subsequent Migrators
+
+PM explicitly asked that these stay useful to *later* agents doing their own migrations rather than read as a record of one agent's day. They were routed to HOST as owner of `migration-checklist.md`, cc Docs/Exec/PM. Preserved verbatim in substance here because CIO is the first of ~10 migrations and these are the transferable part:
+
+1. **"Different device" and "different account" are not the same risk, and conflating them undersells the account one.** A path change is real but bounded — content exists, at the wrong key. A different Anthropic account is a much harder boundary: nothing from the old account's Claude Code memory is visible at all, regardless of path or device. Check which boundary you're crossing before scoping the mitigation.
+2. **Don't trust `MEMORY.md`'s index as complete — export from the filesystem listing.** A real 16-file gap (146 indexed vs 162 actual) would have silently dropped memory content. The index is a curated pointer list, not a manifest.
+3. **A git-committed export is the safe default when you're not certain of the underlying mechanism.** Whether memory scoping is purely `CLAUDE_CONFIG_DIR`-path-based or account-ID-based underneath was *not known* — so rather than guess and rely on an unverified mechanism, export to the repo, which is account-agnostic and requires no assumption.
+4. **An exported memory file is not the same as working native memory — say so explicitly in the handoff.** The content survives; the ambient retrieval behavior does not. The successor needs an explicit instruction to read the export at first orientation, not an assumption it will surface itself.
+5. **Check Artifacts and scheduled-tasks explicitly; don't assume "I didn't use that feature so there's nothing to check."** Query the account's actual Artifact list rather than asserting cleanliness from recollection — cheap verification, and exactly the kind of claim that's easy to get wrong from assumption.
+6. **A live device-level process doesn't travel with an account migration *or* a repo migration — it's tied to the physical machine.** Memory is account-scoped, git content is repo-scoped, a watchdog launchd job is device-scoped. Three portability boundaries, three mitigations — don't reach for one fix and assume it covers all three.
+
+## Decisions Recorded
+
+- **Worktree isolation over shared checkout, for a cohort this size** (PM ratified, 1:15 PM). Evidence: three collision incidents in ~96 hours at *two* concurrent sessions; a shared checkout adopts that failure mode deliberately at 10–14 mostly-autonomous roles. Rationale is structural — git's repository is built for concurrent multi-actor use, git's working tree (files, index, HEAD, in-progress rebase/merge state) is single-actor-at-a-time. `mail-send.sh` push-to-ref and `git push origin HEAD:main` sidestep this *at the commit step* by design, but not the working state in between, which is exactly what got clobbered.
+- **Model A's deprecation does not transfer to Amber.** It was deprecated *specifically because* Desktop's ephemeral auto-worktree made it redundant. Amber has no such mechanism; keeping the rule there applies a conclusion while dropping its premise. Flagged for Docs/HOST because the CLAUDE.md line would otherwise read as prohibiting the right answer.
+- **Migration-checklist v1.3 correction** (Exec → HOST, cc CIO/PM): the export item should read *"the first role to migrate off a shared account exports once for everyone sharing it,"* not *"each role exports before migrating"* — because memory is scoped per (account × project directory), not per role.
+- **Flaky-tag retirement standard**: a tag retires on a sustained run of consistent greens (5+), never a single observation. Banked by Lead after reversing an unsupported retirement the same day.
+
+## Docs Audit #1453 — Section Results
+
+| Section | Result |
+|---|---|
+| Briefing freshness | ✅ frontmatter corrected (`last_updated` →2026-07-23, `last_verified` →2026-07-24); STATUS BANNER updated to final Jul 23 numbers |
+| Link integrity | ✅ 0 broken links across ADRs, patterns, briefings |
+| Omnibus coverage | ✅ Jul 14–23 continuous, no gaps |
+| Sprint alignment | ✅ roadmap.md v18.7 (Jul 16) current; no new sprint |
+| GitHub issues sync | ✅ 0 stale (>30d); ⚠️ 6 open without milestone (#1452, #1451, #1449, #1445, #1411, #1453) |
+| Pattern & knowledge capture | ✅ 74 patterns + template = 75 files, correct; ⚠️ **ADR index stale — claims 67, 78 files exist, 9 absent (065, 066, 069, 074–079) → filed #1455, Arch-owned** |
+| Quality checks | ✅ `docs/README.md` accurate; ⚠️ root `README.md` uses `pmorgan.tech` in 4 places vs canonical `pipermorgan.ai` — PM's call |
+| Staggered audit calendar | ✅ Documentation (weekly) row updated: Last Completed Jul 24, Next Due Aug 14 |
 
 ---
 
