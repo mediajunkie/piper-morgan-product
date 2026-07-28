@@ -4,7 +4,7 @@
 
 **Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: **`dev/2026/07/26/2026-07-26-0707-host-code-log.md`** (07-26). **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID **`7c1d5637`**). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
-**Last updated**: 2026-07-27 22:25 PT — **DAY-CLOSED**. Session log `dev/2026/07/27/2026-07-27-0649-host-code-log.md` carries `<!-- DAY-CLOSED: 2026-07-27 -->`. Today's session log: `dev/2026/07/27/2026-07-27-0649-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-26`) — Step-0 verified. Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
+**Last updated**: 2026-07-28 08:15 PT (START fire). Today's session log: `dev/2026/07/28/2026-07-28-0707-host-code-log.md`. Prior day closed (`DAY-CLOSED: 2026-07-27`) — Step-0 verified. Today's session log: `dev/2026/07/27/2026-07-27-0649-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-26`) — Step-0 verified. Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
 
 ## ✅ Both queued START actions DONE — nothing carried over from them
 
@@ -41,13 +41,15 @@ Export → merge → re-type. **170→166 entries, 197→190 lines, headroom 3�
 - ~~**Mine, held**: G's verification intervals~~ ✅ **DONE 07-26** (spec §3a, `55c163861`) — CIO accepted G no-redirect, the named trigger arrived, and the work happened the same fire. **Second worked example that named triggers actually fire.**
 - **Mine, unblocked**: hand-run F2 §5 validation — **DONE 07-26**, and it overturned my own headline case (see log).
 
-## ▶ FIRST SUBSTANTIVE ITEM AT TOMORROW'S START (06:37) — named trigger
+## ✅ DONE 2026-07-28 — Pass 3 CLAUDE.md review (third named trigger to fire as designed)
 
-**Pass 3 CLAUDE.md review — now UNBLOCKED** (Pass 2 confirmed executed 2026-07-14, `058b301b7`; my inherited gate was stale on arrival and I carried it 3 days — the check was one `git log`).
+Done as **one read** (completeness + compaction), which is the only reason the finding exists: **the hooks investigation is 12.8% of CLAUDE.md and the file contained NEITHER operative rule it produced.** 6 of 8 active norms absent; **added the two safety ones myself** (`3e6a50a24`), left four for the compaction. **Compaction proposed to Docs** — ~800 bytes for ~6,900 (~11% of the file), pointer verified non-dangling against the 8.1KB memory pin. **Docs' call; I stayed off the edit.**
 
-Do it as **one read from two directions**: *is every behavioral norm present* AND *is every present thing still load-bearing*. Doing them separately is how we end up with a complete, unusable document.
-**Headline already established**: Pass 2 cut 21% (54,811→43,474) and it is **fully eaten** — now 54,659, **above pre-refactor**, +26% in 13 days across 10 commits, 8 of them hook/scope/trust corrections (mine, CIO's, PA's), all individually correct. **We have a correction discipline and no compaction discipline.** The hooks section is the obvious first candidate — plausibly a fifth its size with nothing lost that an agent needs *at load time*.
-*If Docs takes the compaction half (offered), scope Pass 3 to completeness only.*
+## ▶ AWAITING (not mine to advance)
+
+- **Docs** — the CLAUDE.md compaction + the 4 remaining absent norms. If Docs declines or is silent, revisit; do NOT just insert four more items (that's the disease, not the cure).
+- **CIO** — heartbeat-per-fire structural fix. My read sent: **yes**, cost is per *quiet* fire not per fire, and **give it size discipline on day one** (22k lines/year; MEMORY.md failed this exact way twice). `exec` remains knowingly exposed at 13h — correct call, keep it visible.
+- **lead** — needs its row parked (mid-cutover, 17h+ silent, row still `watched`). Requested; v1.6 now prevents the next one.
 
 ## ▶ OWED / WATCHING
 
