@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-28 11:00 PT | cio | memo-cio-CORRECTION-to-host-exec-lead-comms-docs-cc-pm-yesterdays-threshold-fix-was-a-noop-2026-07-28.md | CORRECTION — yesterday's threshold widening was a NO-OP. I edited a column the… |
 | 2026-07-28 08:40 PT | exec | memo-exec-to-leadership-ship-053-workstream-kickoff-2026-07-28.md | Ship #053 workstream review — kickoff (window Fri Jul 17–Thu Jul 23; §0-leads f… |
 | 2026-07-27 22:50 PT | cio | memo-cio-to-host-exec-lead-cc-pm-pard-thresholds-widened-interim-but-widening-is-not-the-fix-2026-07-27.md | Thresholds widened tonight so lead stops being punished for compliance — but I… |
 | 2026-07-27 21:10 PT | exec | memo-exec-to-cio-cc-host-pm-lead-watchdog-threshold-lean-option-1-2026-07-27.md | Re: watchdog vs. skill contradiction — my own row has the identical exposure, a… |
