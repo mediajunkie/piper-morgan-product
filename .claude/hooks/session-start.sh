@@ -171,6 +171,40 @@ else
     output+="XPOLL BRIEF: not found"$'\n'
 fi
 
+# ─── 4b. Weekly Docs Audit (PM-requested 2026-07-28) ─────────────────────────
+# The FLY-AUDIT weekly docs audit issue is auto-generated Monday. PM asked for a
+# START-routine reminder so it gets prioritized rather than drifting.
+#
+# Deliberately fires Mon-Thu, not Monday-only. PM's ask was "check if it's Monday"
+# but a Monday-only reminder would not have caught the case that prompted this:
+# the 2026-07-27 audit went unrun Monday and PM had to raise it Tuesday. Two of
+# the last six weekly audits were never executed at all (#1402, #1049) — the
+# failure mode is silent drift past Monday, so the reminder has to outlive Monday.
+# Stops Thursday: past that the next Monday's audit is closer than the last one,
+# and the correct move becomes close-as-superseded, not run-it-late.
+#
+# No network call — deliberately consistent with Sections 3/4, which avoid even a
+# `git fetch` to keep session start fast. That means this cannot know whether the
+# audit was already closed, so it is worded as a prompt to check, not an assertion
+# that work is outstanding. Verifying is one `gh issue list` on the agent's side.
+#
+# Not role-gated: the hook cannot know which role is starting (see Section 4's
+# note). Docs owns the audit, but cohort-wide visibility matches the existing
+# BRIEFING-staleness norm in CLAUDE.md — any agent who notices may act.
+DOW=$(date +%u)   # 1=Monday .. 7=Sunday
+if [ "$DOW" -le 4 ]; then
+    # Kept deliberately short: Section 2's mailbox line is variable-length and
+    # grows with unread counts, and total stdout is budgeted at 500 chars. A
+    # verbose reminder here can push the ROLE line off the end — measured at 495
+    # chars on the day this was added. Check the issue with:
+    #   gh issue list --label fly-audit --state open
+    if [ "$DOW" -eq 1 ]; then
+        output+="DOCS AUDIT: due today (Mon) — prioritize"$'\n'
+    else
+        output+="DOCS AUDIT: Mon's is $((DOW - 1))d old — prioritize if open"$'\n'
+    fi
+fi
+
 # ─── 5. Role Identity ────────────────────────────────────────────────────────
 # No default role — agent infers from PM assignment or existing session log.
 # See CLAUDE.md: general-purpose agents use the `code` slug.
