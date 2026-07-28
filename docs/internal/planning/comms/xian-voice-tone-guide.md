@@ -97,6 +97,18 @@ The plain-language goal is *introduce* jargon well, not *strip* it. Two failure 
 
 Functional role-descriptions are fine and characteristic (*"the experience-design role (CXO)"*) — that's a deliberate gloss, not a literal-expansion claim. The lint treats those as advisory, and hard-fails only on literal artifact mis-expansion. Run `python3 scripts/check-acronyms.py <draft>` at draft + edit time.
 
+**Canonical role-gloss form (ratified 2026-07-28, settling drift Docs flagged across published drafts)**: lowercase, functional or official title, suffixed **"role"** (never "officer," "agent," or bare), parenthetical short-form on first mention, bare acronym thereafter:
+
+- *"the chief architect role (Arch)"*, then *"Arch"*
+- *"the chief innovation role (CIO)"*, then *"CIO"*
+- *"the lead developer role (Lead Dev)"*, then *"Lead Dev"*
+- *"the chief experience role (CXO)"*, then *"CXO"*
+- *"the head of sapient trust role (HOST)"*, then *"HOST"*
+- *"the chief of staff role (Exec)"*, then *"Exec"*
+- *"the principal product manager role (PPM)"*, then *"PPM"*
+
+Why "role" over "officer": it's already this guide's own established example (the CXO gloss above), it generalizes cleanly across every title (some, like Lead Dev, aren't "officer" titles at all — "role" fits all of them uniformly where "officer" only fits some), and "The Trust Architecture Hardens" (Jul 28) used it consistently throughout without needing to special-case any role. Forward-only — no back-fixing published posts.
+
 ### Use of Examples
 - Personal work experiences (Yahoo, 7 Cups, CloudOn, 18F)
 - Specific product scenarios
