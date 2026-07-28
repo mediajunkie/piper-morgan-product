@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'the-trust-architecture-hardens-city-wall.png'
 alt: ''
 caption: ''
 ---
