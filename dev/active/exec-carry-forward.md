@@ -1,40 +1,36 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-27 21:35 PT (STOP, day-close)
-**Session log today**: `dev/2026/07/27/2026-07-27-0527-exec-code-log.md` (DAY-CLOSED)
-**Role**: Chief of Staff (Exec) | DinP account — migration to dedicated account still pending, PM's own call, no urgency signal. Memory store on this account is SHARED across all roles — HOST pruned it 7/27 (170→166 entries), rollback at `dev/active/memory-export-2026-07-27-pre-prune.md`.
-**Cron**: `32 8,20 * * *` — will re-arm this STOP (delete-then-create). Next fire ~08:32 Tue Jul 28.
+**Last updated**: 2026-07-28 ~09:20 PT (mid-day, fire in progress, not yet STOP)
+**Session log today**: `dev/2026/07/28/2026-07-28-0810-exec-code-log.md` (open)
+**Role**: Chief of Staff (Exec) | DinP account — migration to dedicated account still pending, PM's own call, no urgency signal. Memory store on this account is SHARED across all roles — HOST pruned it 7/27 (170→166 entries). MEMORY.md changed again externally 7/28 (routine maintenance elsewhere in the shared pool, not investigated, not reverted).
+**Cron**: `32 8,20 * * *`. Next fire ~20:32 Tue Jul 28.
 **Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45` — Step 2a pairing mismatch persists (unchanged since ~7/16), still Model B (Desktop).
-**Important self-correction (7/27)**: told PM I'd "work the mail loop in the background" — false, I only act when invoked (chat or scheduled fire). Don't repeat that framing. If PM wants something checked between fires, they need to ask directly or wait for the next scheduled tick.
 
-## Jake alpha FTUX feedback — distributed, awaiting synthesis (1 of 4 reviews in)
+## Ship #053 workstream review — ACTIVE, kickoff sent 7/28, this is the priority thread
 
-PM shared first alpha tester Jake Krajewski's FTUX feedback (saved verbatim: `dev/active/alpha-feedback-jake-krajewski-2026-07-25.md`). Distributed to CXO/PPM/HOST/PA for preliminary recommendations, cc PM. **HOST has replied** (strong review — reframed the "file a ticket" bug as a consent-boundary incident tied to dashboard Criterion E, flagged Jake's repeated "anxiety" language, noted PM's "college intern/apprentice" framing never reached the product itself). **Still waiting on CXO, PPM, PA.** Once all four are in, synthesize and bring back to PM per their explicit ask — don't synthesize on a partial set.
+**Real gap found and corrected today**: the Jul 17–23 window's workstream review never started — no Friday kickoff went out on 7/24, no memos, no draft. My own miss (fully absorbed in the migration-stall investigation that day), PM explicitly not blaming anyone given the outage week, but directed to run the FULL normal process late rather than skip or shortcut it.
 
-## Today's migration (exec/docs/lead/comms) — checked in with CIO, no sequencing confirmed yet
+**Sent today**: kickoff memo to all 6 leadership roles + PA (cc PM), window Jul 17–23 explicitly bounded (no post-7/24 contamination), session-log-gap map given per role, collection gate unchanged (no draft until all 6 in). **Target: all 6 memos in today (7/28) EOD → synthesize tomorrow morning → discuss with PM → draft Ship #053 → PM reviews → publish Wed 7/29.**
 
-Sent CIO a check-in (cc PM/Docs/Lead/Comms) with my read that I should go last (mid-thread on live coordination — the Jake distribution is exactly that kind of thread). **Lead and Comms have both separately declared full readiness for any slot**, including first — no reply from CIO yet on actual sequencing/timing. Not blocking — kept working other threads in parallel as I told CIO I would.
+**PM's ordering for CXO/PPM/PA responses**: PM pinging CXO and PPM directly (not yet migrated) — don't duplicate. PA is already on pipermorgan.ai — PM will ask PA directly once over there, for both this AND the Jake-feedback review below. Expect PA's responses via PM, not the mailbox, near-term.
 
-## Gave real input on a genuine watchdog design tradeoff (7/27 evening)
+**After Ship #053 publishes**: PM wants Ship #054's kickoff to go out Friday as normal (window Jul 24–30, unaffected by this week's lateness) — don't let the late cycle shift the regular cadence. Then a separate discussion about making the duty cycle day-of-week-aware (Friday=kickoff day, Saturday=write-report-once-fully-collected, etc.) — flag this to PM once Ship #053 is out the door, don't forget it.
 
-HOST found the freeze-watchdog's stall threshold assumes agents commit every fire, while the duty-cycle-tick skill explicitly tells agents not to on quiet holds — Lead got alerted 3× today for correctly following the skill. Checked my own registry row: identical exposure (1h margin), just hasn't tripped because every fire this week happened to produce a commit. Voiced a lean toward widening thresholds (~2×) over mandating a heartbeat every fire, since the latter undoes the no-churn discipline the skill exists to enforce. **CIO owns the actual decision** — not tracking further unless asked.
+## Jake alpha FTUX feedback — still 1 of 4 (HOST only)
 
-## HOST also flagged (informational, not exec's lane)
+CXO, PPM, PA outstanding — same three roles as above, same PM-direct-ask plan. Don't synthesize until all 4 in, per PM's explicit ask.
 
-- **PARK-NO-EXIT routing gap**: the detector correctly flags arch/cxo/web's stale registry rows, but the fix instruction is undeliverable to parked/unwatched roles that can't wake up to read it. CIO/PM/Pard's to resolve.
-- **CLAUDE.md bloat**: regained 26% of what a July 14 refactor cut, in 13 days, through individually-correct edits with no compaction counterpart. Docs/CIO's lane, HOST doing a full Pass 3 review tomorrow at their 06:37 START.
+## Today's migration (exec/docs/lead/comms) — still no CIO reply on sequencing
 
-## F4 applied for real, clean result (7/27 morning)
+Checked in 7/27 evening (cc PM/Docs/Lead/Comms), my read was I should go last. Lead and Comms both declared readiness for any slot. No CIO reply yet as of this morning — not chasing, this is now secondary to the Ship #053 push today.
 
-Checked arch's 7/26 log (ended without `DAY-CLOSED`) for stranded outbound obligations per HOST's ask — found none, second clean data point after last week's #1394 false alarm.
+## Gave real input on a watchdog design tradeoff (7/27) — CIO's call, not tracking further
 
-## Hooks-intermittency mystery RESOLVED (7/26) — index-state-at-hook-fire-time
+Leaned toward widening thresholds over mandating a heartbeat every fire. No further action from me unless asked.
 
-Root cause confirmed by 5 independent agents. Mitigation: stage and commit as separate calls. Remediation approach still undecided (CIO/Lead territory).
+## HOST flagged (informational, not exec's lane)
 
-## Migration — order for the rest (arch/ppm/cxo/pa/web batch) unchanged: arch → ppm → cxo → pa → web
-
-Separate from today's exec/docs/lead/comms batch above.
+PARK-NO-EXIT routing gap (CIO/PM/Pard's), CLAUDE.md bloat / Pass 3 review (Docs/CIO's, HOST doing the review).
 
 ## Stale branches — still awaiting reply (nudge sent 7/25)
 
@@ -42,13 +38,13 @@ Separate from today's exec/docs/lead/comms batch above.
 
 ## Learning loop fixed (Lead, 7/21) — Ship #053 headline candidate
 
-#1438 closed, learning loop live at beta v28+. Flag for Ship #053 drafting.
+#1438 closed, learning loop live at beta v28+. Now genuinely relevant — Ship #053 is actively being drafted this week.
 
-## Standing items — unchanged
+## Standing items — unchanged, tracker reconciliation now genuinely overdue
 
 - **Lead Dev's #1424/#1427 questions** — still awaiting PM's final calls from Jul 18.
 - **Beta Blockers count** — last verified count is stale; re-pull via `query-github-board` skill before citing a number again.
-- **Full tracker reconciliation** (`exec-open-items-tracker.md`) — done 7/20, now 7+ days stale — genuinely due for a fresh pass at the next quiet fire.
+- **Full tracker reconciliation** (`exec-open-items-tracker.md`) — done 7/20, now 8 days stale. Deferring past today given the Ship #053 push takes priority — do it once the Ship is out the door.
 
 ---
 
@@ -62,7 +58,7 @@ Reported 7/22 (likely superseded by the 6/17 carry-forward FOLD). No response ye
 
 ## Worktree-collision — still unresolved, still safe
 
-Same directory/branch mismatch persists. Proceeding cautiously each fire. Watch whether today's migration wave eventually reaches exec.
+Same directory/branch mismatch persists. Proceeding cautiously each fire.
 
 ## STANDING
 
@@ -70,4 +66,4 @@ Same directory/branch mismatch persists. Proceeding cautiously each fire. Watch 
 
 ---
 
-*— Exec, 7/27 21:35 PT.*
+*— Exec, 7/28 ~09:20 PT.*
