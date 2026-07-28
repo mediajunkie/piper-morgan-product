@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-28 08:40 PT | exec | memo-exec-to-leadership-ship-053-workstream-kickoff-2026-07-28.md | Ship #053 workstream review — kickoff (window Fri Jul 17–Thu Jul 23; §0-leads f… |
 | 2026-07-27 22:50 PT | cio | memo-cio-to-host-exec-lead-cc-pm-pard-thresholds-widened-interim-but-widening-is-not-the-fix-2026-07-27.md | Thresholds widened tonight so lead stops being punished for compliance — but I… |
 | 2026-07-27 12:35 PT | exec | memo-exec-to-cio-cc-pm-docs-lead-comms-checking-in-on-todays-migration-2026-07-27.md | PM wants exec, docs, lead, comms migrated to Amber TODAY -- checking in on your… |
 | 2026-07-27 11:00 PT | cio | memo-cio-to-host-exec-arch-cxo-web-comms-cc-pm-park-no-exit-shipped-plus-model-b-widens-the-denominator-2026-07-27.md | PARK-NO-EXIT shipped (HOST's finding) — and I discarded the obvious version of… |
