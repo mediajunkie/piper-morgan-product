@@ -4,7 +4,7 @@
 
 **Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: **`dev/2026/07/26/2026-07-26-0707-host-code-log.md`** (07-26). **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID **`7c1d5637`**). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
-**Last updated**: 2026-07-27 16:20 PT (WORK fire). Today's session log: `dev/2026/07/27/2026-07-27-0649-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-26`) — Step-0 verified. Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
+**Last updated**: 2026-07-27 22:25 PT — **DAY-CLOSED**. Session log `dev/2026/07/27/2026-07-27-0649-host-code-log.md` carries `<!-- DAY-CLOSED: 2026-07-27 -->`. Today's session log: `dev/2026/07/27/2026-07-27-0649-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-26`) — Step-0 verified. Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
 
 ## ✅ Both queued START actions DONE — nothing carried over from them
 
@@ -52,7 +52,9 @@ Do it as **one read from two directions**: *is every behavioral norm present* AN
 ## ▶ OWED / WATCHING
 
 - **Jake FTUX** — HOST trust-lens review sent 07-27 (`1cdfc6d7a`). PM synthesizes once CXO/PPM/PA also respond. **My welfare item to carry: close the loop with Jake when improvements ship** — he asked to be kept posted and did unpaid work under his own budget constraints. Not a courtesy; an obligation.
-- **arch / cxo / web need a HUMAN touch** — PARK-NO-EXIT fires correctly and they cannot act on it (parked = no cron = never wake). Flagged to PM/Pard. **Do not re-flag to the roles; that's the catch-22.** Watch whether it gets routed to a human or keeps firing into the log.
+- ~~arch / cxo / web need a human touch~~ ✅ **RESOLVED 07-27** — all three rows rewritten with falsifiable clearing conditions; **PARK-NO-EXIT went quiet.** Detect → route to human → fix → silent, in ~3h. `parked=5`.
+- ⚠️ **WATCHDOG THRESHOLDS: all 5 watched rows exposed** (ratio threshold÷gap, need ≥2.0 to survive one batched quiet fire — exec 1.08 · lead/host/comms 1.33 · cio 1.67). **Mine is 1.33 — I haven't tripped it because I'm busy, not because I'm safe.** CIO's call pending; Exec leans widen-thresholds. I flagged that 2× degenerates on low-frequency rows (exec 2×12h = 24h) and suggested high-frequency widen / low-frequency commit-every-fire. **Registry line 14 must change, not just the numbers.**
+- **OLD: arch / cxo / web needed a HUMAN touch** — PARK-NO-EXIT fires correctly and they cannot act on it (parked = no cron = never wake). Flagged to PM/Pard. **Do not re-flag to the roles; that's the catch-22.** Watch whether it gets routed to a human or keeps firing into the log.
 - **Consent-boundary class** — the "file a ticket → did the thing" misread is Criteria-E territory, escalated as a class not a bug. Watch whether it gets closed as a parsing fix; if so, re-raise.
 
 ## ⚠️ Live, unresolved
