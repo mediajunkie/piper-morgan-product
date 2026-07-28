@@ -1,6 +1,6 @@
 ---
 image: 'the-trust-architecture-hardens-city-wall.png'
-alt: ''
+alt: 'A newly completed medieval city wall encircles a peaceful town as relaxed watchmen patrol above and a mason carries away his tools, illustrating how careful design can replace constant vigilance.'
 caption: ''
 ---
 
