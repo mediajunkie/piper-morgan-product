@@ -62,7 +62,12 @@ age_of() {
   local role="$1" ct ct2 newest
   ct=$(git -C "$REPO" log origin/main -1 --format=%ct -F --grep="($role)" --since="9 days ago" 2>/dev/null)
   ct2=$(git -C "$REPO" log origin/main -1 --format=%ct --since="9 days ago" -- ":(glob)dev/**/*-${role}-code-*log.md" 2>/dev/null)
-  newest=$(printf '%s\n%s\n' "$ct" "$ct2" | grep -E '^[0-9]+$' | sort -nr | head -1)
+  # v0.8 (2026-07-28): the HEARTBEAT surface. Work output is a valid liveness signal but not a
+  # COMPLETE one -- a compliant quiet fire produces none, which is what made the belt alert on
+  # compliance. A heartbeat line means "I woke up" and nothing more, which is exactly the claim
+  # a liveness check needs. See scripts/duty-cycle-heartbeat.sh.
+  ct3=$(git -C "$REPO" log origin/main -1 --format=%ct --since="9 days ago" -- "dev/heartbeats/*/${role}.tsv" 2>/dev/null)
+  newest=$(printf '%s\n%s\n%s\n' "$ct" "$ct2" "$ct3" | grep -E '^[0-9]+$' | sort -nr | head -1)
   [ -z "$newest" ] && return 1
   echo $(( (now - newest) / 3600 ))
 }
@@ -129,6 +134,24 @@ if [ -n "${DUTY_CYCLE_ROLES:-}" ]; then
     if a=$(age_of "$role"); then (( a >= thr )) && echo "STALE $role ${a}h (threshold ${thr}h, test mode)"; fi
   done
   exit 0
+fi
+
+# ── HEARTBEAT-WRITER liveness, G6 (v0.8, 2026-07-28; HOST refinement c) ────────────────────────
+# The heartbeat makes quiet fires visible -- but it introduces a new way to be silently wrong: if the
+# WRITER breaks (script moved, push failing, path renamed), the files simply stop appearing, which is
+# indistinguishable from a cohort that happens to be quiet. That is m-44 rebuilt inside the fix for
+# m-44, so it gets designed in rather than retrofitted.
+#
+# The discriminator is cheap: heartbeats are per-role, so "one role missing" and "NOBODY wrote today"
+# are different observations. The second cannot plausibly mean ten roles independently went quiet.
+if [ "$hour" -ge 12 ]; then
+  # wc -l, not `grep -c . || echo 0`: grep -c prints 0 AND exits 1 on no-match, so the fallback
+  # fired too and produced the two-line string "0\n0", which `[` then rejected as non-integer.
+  hb_today=$(git -C "$REPO" ls-tree --name-only origin/main "dev/heartbeats/$today_dash/" 2>/dev/null | wc -l | tr -d " ")
+  hb_prev=$(git -C "$REPO" log origin/main --since="9 days ago" --format=%H -1 -- "dev/heartbeats/" 2>/dev/null)
+  if [ "$hb_today" -eq 0 ] && [ -n "$hb_prev" ]; then
+    echo "HEARTBEAT-WRITER-SILENT — zero heartbeats for $today_dash past midday, but the surface has been written before. A broken writer looks exactly like a quiet cohort; do NOT read today's quiet as healthy until this is explained."
+  fi
 fi
 
 # ── REGISTRY mode (default) ──
