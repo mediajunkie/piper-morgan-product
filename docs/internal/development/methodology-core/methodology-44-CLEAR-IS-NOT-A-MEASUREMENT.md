@@ -1,6 +1,6 @@
 # "Clear" Is Not a Measurement — An Instrument Must Assert What It Looked At
 
-**Status**: Emerging → strong. **Nine instances in 72 hours across four roles and two projects**, independently named by each before anyone connected them. Proven awaits evidence that the cure reduces recurrence.
+**Status**: Emerging → strong. **Eleven instances in 96 hours across four roles and two projects**, independently named by each before anyone connected them. *Proven* still awaits evidence that the cure reduces recurrence **in the wild** — as of 2026-07-28 the cure is installed and dead-path-verified on the belt (instance 11), which is necessary but not sufficient for that claim.
 **Filed**: 2026-07-27 by CIO
 **Origin**: **Arch's bequest.** Its migration handoff (`dev/active/handoff-arch-amber-2026-07-25.md`, §4.1) named the "blind-sweep class" from six instances and flagged writing it up as *"the highest-value un-started piece of Architect methodology work I'm leaving."* Written up here at the altitude the evidence now supports, with three more roles' independent corroboration: HOST's Criteria G, Janus's (Design in Product) show-your-work principle, and CIO's own instruments failing the same way twice.
 **Related**: methodology-43 (Name the Layer — the agent-side twin; boundary below), methodology-36 (mechanisms over vigilance), methodology-42 (reflexive verification)
@@ -26,7 +26,7 @@ Nobody audits good news. That is why these survive for weeks — the freeze-watc
 
 They compound. m-43 is why the wrong check gets run; m-44 is why nobody notices. **Arch's blind-sweep is the bridge**: an instrument covering part of its space (m-44) whose partial result is reported as total (m-43).
 
-## The evidence — 9 instances, 4 roles, 2 projects, 72 hours
+## The evidence — 11 instances, 4 roles, 2 projects, 96 hours
 
 **Arch's original six** (§4.1, 2026-06-30→07-25): a rail-membership grep that missed the elif dispatch surface · the mypy sqlalchemy-plugin gap · an absolute-path import sweep blind to live relative imports · the inverse — an over-broad regex that *invented* edges · deleted-baseline fossils · and the purest case, **mypy blind to its own absence**, where the gate could not distinguish *measured, clean* from *did not measure*.
 
@@ -42,6 +42,23 @@ They compound. m-43 is why the wrong check gets run; m-44 is why nobody notices.
 - Implementing the *cure* for instance 7 — a line asserting what the check examined — the first cut wrapped it in `2>/dev/null` to suppress git noise, **swallowing the very line it exists to print**. A show-your-work feature that showed nothing. Caught only by running it.
 
 That second one is the strongest evidence in this document. **The class recurs inside deliberate, informed attempts to fix it, by an author who had written the principle down days earlier.** Which is precisely why the cure cannot be attentiveness.
+
+### Two more, 2026-07-28 — and #11 supersedes everything above as the canonical case *(added by HOST, who found both)*
+
+10. **A parameter that looks authoritative while the mechanism computes its own** (CIO). Thresholds were widened by editing the registry's `threshold_h` column and announced as shipped. But `expected_threshold()` derives its value from the cron expression and consults the column **only when the cron fails to parse** — every row parses, so **the edit changed nothing on any of ten rows**. Worse than inert: the live formula was *tighter* than the problem required, so the defect it was meant to fix ran unmitigated overnight while reported as handled. **Nothing in the system compares the parameter to the mechanism.** *(HOST then repeated the claim as fact in its own log, having read the column — the same error one seat over, within the hour.)*
+
+11. **★ The correction for #10 killed the detector outright, and the belt reported `all-quiet` for ~2.5 hours.** The fix added explanatory comments *inside* a single-quoted `awk` program; two contained apostrophes, each terminating the string early, so bash parsed awk as shell. `freeze-check` then exited **rc=2 with zero stdout** — and the failure chain is silent at every link: the alerter's empty-input guard exits early → the wrapper's `${out:-all-quiet}` fallback logs **`all-quiet`** → **and the denominators still print correctly**, because `watched`/`parked` are computed separately from the registry. **A dead detector and a healthy quiet cohort emitted byte-identical heartbeat lines.**
+
+**Why #11 is the canonical instance of this entry**, above all nine before it:
+
+- The claim of this document is *"a check's all-clear is emitted identically whether it measured or never ran."* Here the check **literally could not run**, and emitted a normal-looking all-clear — not by analogy, exactly.
+- It occurred **inside the correction for #10**, filed by the author of this entry, **one day after filing it.**
+- It was found only because someone **verified the correction at the mechanism instead of reading the announcement** — the same move that found #10. Nothing else would have surfaced it; the next scheduled beat would have printed `all-quiet` again.
+- And the surrounding evidence was *actively reassuring*: correct denominators, `rc=0`, a plausible verdict. **This class does not merely fail to alarm — it can furnish positive-looking evidence of health.**
+
+**The cure's first field test — and this is what the status line was waiting for.** The corollary *"an instrument must assert what it looked at"* was applied to the belt itself within 15 minutes: the wrapper now runs the detector directly and records **`det_rc` and `det_bytes`**, because the alerter's own `rc` cannot carry the signal (it exits 0 over a dead inner detector — exactly how this hid). Verified **both directions**: live `det_rc=0 det_bytes=186`, and a simulated dead path yielding `⛔ DETECTOR-DEAD … belt NOT measuring; escalate`, now grepped by a standing sweep.
+
+**Stated precisely, per this entry's own discipline**: the cure is **installed and dead-path-verified**, *not yet* proven by catching a live recurrence in the wild. That distinction is the whole point of the document and it would be self-undermining to blur it here.
 
 ## Why "be more careful" fails here
 
