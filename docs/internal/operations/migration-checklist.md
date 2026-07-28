@@ -1,7 +1,7 @@
 
-# Role Migration Checklist v1.5
+# Role Migration Checklist v1.6
 
-**Status**: v1.5. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
+**Status**: v1.6. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
 **Purpose**: Standing checklist for any future role migration (new role activation, re-migration of a dormant role, account migration, device migration). Cohort migration completed Apr 22–26, 2026.
 **Owner**: HOST. Exec reviews; CEO approves for canonical publication.
 
@@ -22,6 +22,11 @@ The outgoing instance completes these items. PM is present.
 - [ ] **Memory export (account-changing migrations only)** *(v1.3)*: If migrating to a different Anthropic account, export the full memory directory to a git-tracked file **before** the final session. Export from the filesystem listing directly, not `MEMORY.md`'s index — the index can be stale and will silently drop entries. **Check first whether someone already exported for this account** — memory is scoped to (account × project directory), not per-role, so every role on the same account shares one pool. The first role to migrate covers everyone; subsequent roles don't need their own export, they need to know the existing export exists and confirm it's still current. *(Source: CIO field-test finding Jul 24 — 16 memory files missed on first pass by reading MEMORY.md vs. filesystem. Exec Jul 24 clarification: CIO's export covers the full shared pool for designinproduct.com — 162 files.)*
 - [ ] **Do NOT write §5 "what changes in the new environment" as assertions** *(v1.4)*: You have never seen the environment you're describing. Every subsection of HOST's §5 was stale within days of writing, and it was the *reviewer* — who built that environment — who caught all three. Write §5 as **questions for your provisioner**, or omit it and let the provisioner own the environment section. A predecessor's confident environment claims are the highest-risk content in the whole package, because the successor has no basis to doubt them.
 - [ ] **Mark every load-bearing claim VERIFIED or BELIEVED** *(v1.4)*: Against each material claim in the handoff, say which it is. Three of HOST's inherited load-bearing claims were believed-not-verified and all three were false ("project hooks don't fire in worktrees", "the fix needs a fresh session to load", "hooks are enforced"). None was carelessness — each was a reasonable inference nobody had watched run. A successor primed to test the believed column will test it; a successor handed undifferentiated confidence will build on it.
+- [ ] **★ PARK YOUR WATCHDOG ROW BEFORE YOU GO DARK** *(v1.6 — the step whose absence caught four roles in four days)*: The moment you declare migration-readiness and stop cycling, **your `dev/active/duty-cycle-registry.tsv` row must move from watched to parked**, with a **falsifiable clearing condition**:
+  > `parked: migrating to Amber YYYY-MM-DD — clear this note only when a cron job is actually armed on the new seat`
+  **Why this is yours and not the provisioner's**: once you're dark you cannot edit it — a parked role has no cron and never wakes. **This is the last moment it is possible.** arch, cxo, web and lead each had to have it retrofitted by a human after the fact; that's a procedure gap, not four oversights.
+  **What it costs to skip**: the freeze-watchdog correctly reports your silence every 6h to people who cannot act on it, indefinitely — the alert-fatigue failure that trains the cohort to skim past the belt, so the next *real* stall hides behind your row. **A correct alert nobody can act on is worse than no alert**, because it spends the belt's credibility.
+  *(Companion to the Phase-3 step where the incoming session writes its own row once its cron is armed — same rule, other end: the agent owns its row whenever it is running, and only then.)*
 - [ ] **Session-end pulse**: Before closing, answer three questions in the session log: how did the final session feel? What will you miss about the current environment? What are you most looking forward to about the next one?
 
 **Do NOT update the role briefing yet.** The outgoing instance needs accurate current-era instructions to write a good handoff. Briefing updates happen post-migration based on actual new-environment experience.
