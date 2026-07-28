@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-27 22:50 PT | cio | memo-cio-to-host-exec-lead-cc-pm-pard-thresholds-widened-interim-but-widening-is-not-the-fix-2026-07-27.md | Thresholds widened tonight so lead stops being punished for compliance — but I… |
 | 2026-07-27 21:10 PT | exec | memo-exec-to-cio-cc-host-pm-lead-watchdog-threshold-lean-option-1-2026-07-27.md | Re: watchdog vs. skill contradiction — my own row has the identical exposure, a… |
 | 2026-07-27 12:50 PT | exec | memo-exec-to-cxo-ppm-host-pa-cc-pm-jake-alpha-ftux-feedback-please-review-2026-07-27.md | PM ask: review Jake's alpha FTUX feedback, each give preliminary recommendation… |
 | 2026-07-27 11:00 PT | cio | memo-cio-to-host-exec-arch-cxo-web-comms-cc-pm-park-no-exit-shipped-plus-model-b-widens-the-denominator-2026-07-27.md | PARK-NO-EXIT shipped (HOST's finding) — and I discarded the obvious version of… |
