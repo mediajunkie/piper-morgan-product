@@ -1,5 +1,5 @@
 
-# Role Migration Checklist v1.6
+# Role Migration Checklist v1.7
 
 **Status**: v1.6. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
 **Purpose**: Standing checklist for any future role migration (new role activation, re-migration of a dormant role, account migration, device migration). Cohort migration completed Apr 22–26, 2026.
@@ -85,6 +85,24 @@ The incoming instance completes these items.
 ## Branch: Migrating a DARK role (no live outgoing session) *(v1.4)*
 
 **Everything in Phase 1 assumes a live outgoing session that can reflect. For a role that went dark — outage, retirement, decommissioned host — Phase 1 cannot be run at all.** As of Jul 25 2026 this describes **5 of the 9 remaining migrants** (arch, cxo, pa, ppm, web — dark since 7/19, and they never received the 7/21 handoff ask). It will not be the last outage; this branch is standing procedure, not a one-off.
+
+**★ Rule 0 — VERIFY the role is actually unreachable before entering this branch. This is a GATE, not a judgment call.** *(v1.7, CIO 2026-07-28, from its own failure.)*
+
+**"Dark" is a claim about a session's reachability, and it must be tested, not inferred from silence.** This branch opens with *"for a role that went dark, Phase 1 cannot be run at all"* — and on 2026-07-25 that premise was **false for every one of the five roles it was written about.** Their chats were still open on PM's laptop. Nobody had tried.
+
+The evidence, which arrived within hours and was not acted on: **arch** was woken 7/25 evening after six days dark and answered *"Honesty check — is my context gone? **No. I have the thread.**"* It then wrote a genuine first-person §4/§6 — the best artifact of the entire migration. **PA** was woken 7/27, *after* it had already migrated, and did the same. **Two for two.** Meanwhile ppm, cxo and web migrated with orientation notes only, because this branch had been entered without its entry condition ever being checked.
+
+**So before writing an orientation note, ASK PM: is this predecessor's session still reachable?**
+
+- **Reachable → this branch does not apply.** Run Phase 1. Ask for **§4 and §6 only** (the rest is durable and reconstructible), with the honesty gate below.
+- **Genuinely unreachable → proceed to Rule 1.** Orientation notes remain correct and ratified for that case.
+- **Already migrated but the predecessor is still reachable → still ask.** §4 lessons and §6 load-bearing do not expire; PA proves the retroactive path works and the successor folds it in fine.
+
+**The honesty gate, which is what makes a woken predecessor's answer trustworthy** — include it verbatim: *"First, answer honestly: is your context actually intact, or would you be reconstructing from artifacts? If it is gone, say so plainly and stop. That is a complete and useful answer, not a failure."* Arch answered that question directly, which is why its handoff could be believed. **A predecessor that says "it's gone" has given you a complete answer** and Rule 1 then applies.
+
+⚠️ **If the successor is already live, the wake prompt MUST forbid role work** — no cron arming, no carry-forward or standing-items or registry edits, no inbox triage, no session log, no tasks. A predecessor woken normally will do all of those and collide with its own successor; the cron and carry-forward would do real damage.
+
+**Why this is Rule 0 and not an appendix**: the branch's other rules are sound and were followed faithfully. The failure was never in executing them — it was **entering the branch on an unverified premise**, and then not revisiting it when the premise was falsified in public the same day. A standing procedure with an untested entry condition will be applied correctly and still produce the wrong outcome, every time, which is the m-44 shape applied to process rather than to instruments.
 
 **Rule 1 — Do NOT reconstruct a handoff from artifacts.** The reconstructible content (current state, open threads, relationships) is *already durable* in carry-forwards, standing-items, and role briefings — reconstructing it adds nothing. The genuinely irreplaceable sections are **§4 lessons learned** and **§6 load-bearing-vs-commodity**, and those are **first-person**. Writing them from artifacts is putting words in a predecessor's mouth. **A fabricated handoff is worse than a missing one, because the successor trusts it** and cannot tell which parts were inferred.
 
