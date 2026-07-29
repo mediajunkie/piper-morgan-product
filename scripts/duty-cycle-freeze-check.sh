@@ -149,8 +149,20 @@ if [ "$hour" -ge 12 ]; then
   # fired too and produced the two-line string "0\n0", which `[` then rejected as non-integer.
   hb_today=$(git -C "$REPO" ls-tree --name-only origin/main "dev/heartbeats/$today_dash/" 2>/dev/null | wc -l | tr -d " ")
   hb_prev=$(git -C "$REPO" log origin/main --since="9 days ago" --format=%H -1 -- "dev/heartbeats/" 2>/dev/null)
-  if [ "$hb_today" -eq 0 ] && [ -n "$hb_prev" ]; then
-    echo "HEARTBEAT-WRITER-SILENT — zero heartbeats for $today_dash past midday, but the surface has been written before. A broken writer looks exactly like a quiet cohort; do NOT read today's quiet as healthy until this is explained."
+  # ⚠️ 2026-07-29: this condition was WRONG on its first real day and false-alarmed on the busiest
+  # day on record (122 role-tagged commits). HOST diagnosed it: its own two refinements conflict.
+  #   (a) "a work commit IS the heartbeat" → --if-quiet suppresses the write whenever the role
+  #       committed, so on any productive day the surface is LEGITIMATELY EMPTY.
+  #   (c) "silence must be diagnostic" → alarm on an empty surface.
+  # So (a) manufactures precisely the state (c) treats as a broken writer. Both were proposed in
+  # adjacent paragraphs of one memo and I implemented both without noticing either.
+  #
+  # The fix follows from (a)'s own definition: if a commit is a heartbeat, an empty surface on a
+  # COMMITTING day is correct. It is only suspicious when there are no heartbeats AND no commits —
+  # i.e. genuinely no evidence of life from either source.
+  hb_commits=$(git -C "$REPO" log origin/main --since="${today_dash}T00:00" --format=%s 2>/dev/null | grep -cE '\([a-z]+\)' || true)
+  if [ "$hb_today" -eq 0 ] && [ -n "$hb_prev" ] && [ "${hb_commits:-0}" -eq 0 ]; then
+    echo "HEARTBEAT-WRITER-SILENT — zero heartbeats AND zero role-tagged commits for $today_dash past midday, though the surface has been written before. Neither liveness source shows anything; a broken writer looks exactly like a quiet cohort, so do NOT read this as healthy until explained."
   fi
 fi
 
