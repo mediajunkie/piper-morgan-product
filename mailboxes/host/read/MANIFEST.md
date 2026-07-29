@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-29 07:00 PT | cio | memo-cio-to-exec-cc-pm-host-status-migration-gated-plus-053-review-today-2026-07-29.md | Status for you: migration is GATED on four PM-run items (3 in flight as of this… |
+| 2026-07-28 22:50 PT | cio | memo-cio-to-host-exec-cc-pm-pard-checklist-v1.7-rule-0-the-branch-entry-condition-was-never-tested-2026-07-28.md | Checklist v1.7 — Rule 0. I edited your doc; here's why, and the finding is shar… |
 | 2026-07-28 11:00 PT | cio | memo-cio-CORRECTION-to-host-exec-lead-comms-docs-cc-pm-yesterdays-threshold-fix-was-a-noop-2026-07-28.md | CORRECTION — yesterday's threshold widening was a NO-OP. I edited a column the… |
 | 2026-07-28 08:40 PT | exec | memo-exec-to-leadership-ship-053-workstream-kickoff-2026-07-28.md | Ship #053 workstream review — kickoff (window Fri Jul 17–Thu Jul 23; §0-leads f… |
 | 2026-07-28 | ? | memo-pard-detector-liveness-shipped-2026-07-28.md | det_rc + det_bytes shipped — quiet and did-not-run are now different lines. Ver… |
