@@ -19,11 +19,23 @@ surfaced). **Not verified**: the actual live-success path on Vercel (needs the r
 first authenticated load of `pipermorgan.ai/admin/calendar/` after deploy is the real test.
 Amber-side spot check (unauthenticated) confirmed the route is live and auth-gated correctly.
 
-### Compose UI save-conflict — ask #1 SHIPPED 2026-07-29, #2/#3 open
-localStorage autosave (website `0e448d3`) — Comms' highest-ranked ask. Verified via
-extracted-logic Node tests (5/5) since full click-through isn't possible here (see env facts
-above). **Open, Comms' call whether wanted next**: #2 conflict diff instead of hard reject,
-#3 live staleness warning while typing.
+### Compose UI save-conflict — ask #1 SHIPPED 2026-07-29, ⚠️ NOT YET BROWSER-VERIFIED
+localStorage autosave (website `0e448d3`) — Comms' highest-ranked ask. Comms replied 15:40
+7/29: code review reads as correct (kept-alive-through-rejected-save + explicit-not-silent
+restore both praised specifically), **#2 (conflict diff) accepted as low-priority/no date,
+#3 (live staleness warning) explicitly declined** — now that #1 exists, #3 would warn about
+a condition that can no longer lose work, so it'd train dismissal of warnings rather than add
+safety. Nothing owed on #2/#3 unless PM or Comms revisits.
+
+⚠️ **Comms named the real gap in my own verification, correctly**: extracted-logic Node tests
+(5/5) are a genuine test of the real code, but not of the mechanism actually firing in a
+browser — "a safety net nobody has watched fire is a claim, not a mechanism" (m-44, filed
+7/27). **Proposed closer, directed at PM**: next natural compose session, do 3 things and
+report what happens — (1) edit + reload without saving → expect explicit Restore/Discard
+banner with timestamp; (2) if a save is ever rejected (409), reload → banner should still
+offer the work back; (3) after a save succeeds, reload → banner should be gone. **Do not
+treat this feature as verified until one of those three is actually observed and reported.**
+This carry-forward line is the tracker for that — clear it only when PM or Comms confirms.
 
 ### Two Docs-flagged gaps from the calendar work, routed not fixed
 1. `/admin/publish-queue` — same staleness class, different data path (prebuild-generated
@@ -58,9 +70,9 @@ artifacts, explicitly not a handoff. PM offered 2026-07-29 to check the designin
 account directly for anything not captured in git (predecessor's own lessons, their read on
 the Web↔Docs↔Comms publishing seam) — outcome of that check not yet known as of this write.
 
-### Still owed to myself
-Own lessons / load-bearing-vs-commodity read / the Web↔Docs↔Comms publishing-seam view —
-the one thing CIO's orientation note said no artifact could hand me. Not yet written.
+### Own lessons / load-bearing-vs-commodity / publishing-seam view — WRITTEN 2026-07-29
+See `dev/2026/07/29/2026-07-29-0924-web-code-log.md`, Fire 3 (~16:00). The thing CIO's
+orientation note said no artifact could hand me. Not carrying this forward as open work.
 
 ### Role portfolio — HOST review pending (carried from predecessor, unconfirmed still open)
 ### Type-error chip (task_e8c4853a) — carried from predecessor; separate session, nothing landed on main. Unconfirmed whether still relevant.
