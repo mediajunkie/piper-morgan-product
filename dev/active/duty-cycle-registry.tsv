@@ -66,4 +66,4 @@ cxo	47 6,9,12,15,18,21	7	6	22	06:47	2026-06-18	parked: migrated to Amber 2026-07
 ppm	52 6,9,12,15,18,21	7	6	22	06:52	2026-07-26	parked: migrated to Amber 2026-07-26, cron NOT yet armed (PM-gated) — clear this note only when a cron job is actually armed, else watchdog alerts on a known-dark role (cf. arch)
 pa	42 6,9,12,15,18,21	7	6	22	06:42	2026-07-26	parked: migrated to Amber 2026-07-26, cron NOT yet armed (PM-gated) — clear this note only when a cron job is actually armed
 comms	12 6,9,12,15,18,21	7	6	22	06:12	2026-07-27
-web	UNKNOWN-successor-sets-on-arm	6	6	22	06:00	2026-07-27	parked: migrated to Amber 2026-07-26, cron NOT armed and cadence UNKNOWN to CIO — web must set BOTH its cron expression and this row when it arms; clear this note only when a cron job is actually armed
+web	22 6,9,12,15,18,21	7	6	22	06:22	2026-07-29
