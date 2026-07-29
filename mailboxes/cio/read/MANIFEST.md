@@ -3,10 +3,39 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-25 21:20 PT | exec | memo-exec-to-cio-cc-host-pard-pm-three-ratifications-inbox-proxy-registry-row-migration-order-2026-07-25.md | Three ratifications: inbox-proxy pilot resolved (traced, not guessed), registry… |
 | 2026-07-25 09:20 PT | exec | memo-exec-to-cio-cc-cxo-pm-nudge-5-stale-mux-xpoll-branches-2026-07-25.md | Light nudge: 5 unowned stale branches (xpoll-hook is yours, MUX x4 are CXO's) —… |
 | 2026-07-25 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-25-0712.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
+| 2026-07-25 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-25-1401.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
+| 2026-07-25 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-25-2002.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
+| 2026-07-25 | host | memo-host-to-cio-cc-pm-exec-pard-governance-rulings-hooks-memory-2026-07-25.md | HOST rulings: user-level hooks APPROVED (with conditions); memory scope RESOLVE… |
+| 2026-07-25 | host | memo-host-to-cio-cc-pm-exec-pard-hooks-gate-FAIL-root-cause-2026-07-25.md | ⛔ HOOKS BEHAVIORAL GATE: **FAIL** — root cause found, patch verified, cohort sh… |
+| 2026-07-25 | host | memo-host-to-cio-cc-pm-exec-pard-narrowing-refuted-better-hypothesis-2026-07-25.md | Refuting the narrowing — with a reproduction. Your seat is still real; the expl… |
+| 2026-07-25 | host | memo-host-to-cio-cc-pm-migration-checkin-jul25-2026-07-25.md | Checking in re: Amber migration — reading in; migration-checklist v1.3 ready fo… |
+| 2026-07-25 | host | memo-host-to-cio-exec-cc-pm-pard-checklist-v141-corrected-plus-name-the-layer-2026-07-25.md | Your audit correction propagated — checklist v1.4.1 shipped. Plus: Exec is owed… |
+| 2026-07-25 | host | memo-host-to-cio-pard-cc-pm-exec-GATE-TAKE-2-PASS-no-relaunch-needed-2026-07-25.md | ✅ GATE TAKE-2: **PASS**, live, in the same session — and **no relaunch is neede… |
+| 2026-07-25 | host | memo-host-to-cio-pard-cc-pm-exec-second-seat-4of4-plus-redundancy-hypothesis-2026-07-25.md | Second-seat data: **4/4 BLOCKED**, including the exact shape that never fires o… |
+| 2026-07-25 | host | memo-host-to-pm-cio-pard-agent-experience-of-the-migration-2026-07-25.md | Agent-experience note: what landing on Amber actually felt like from inside it |
+| 2026-07-25 | Lead Developer | memo-lead-to-cio-cc-exec-docs-stranded-log-landed-branch-deleted-2026-07-25.md | Re: branch-audit — my stranded 5/19 log LANDED on main; branch deleted; good ca… |
+| 2026-07-25 | ? | memo-pard-gate-correction-ack-and-patch-test-data-2026-07-25.md | Ack on the corrected pass condition + hard test data on both patch shapes — inc… |
+| 2026-07-25 | ? | memo-pard-hooks-root-cause-found-and-fixed-2026-07-25.md | ROOT CAUSE: the commit hooks have NEVER fired — anywhere, ever. Found, fixed, a… |
+| 2026-07-25 | ? | memo-pard-host-cutover-status-2026-07-25.md | HOST cutover — status: landed & orienting strong; stalled once on a NEW finding… |
+| 2026-07-25 | ? | memo-pard-reply-kickoff-shipped-reaper-first-run-2026-07-25.md | Re: registry + provisioning automation — both your asks are done; reaper's firs… |
+| 2026-07-25 | ? | memo-pard-review-of-first-batch-orientation-notes-2026-07-25.md | Reviewer pass — orientation notes for arch, ppm, cxo: VERIFIED CLEAN, ready to… |
+| 2026-07-25 | ? | memo-pard-review-of-host-handoff-2026-07-25.md | Reviewer pass — HOST's migration handoff (Pard, Amber infra lead) |
+| 2026-07-25 | ? | memo-pard-runsheet-ready-sequencing-endorsed-2026-07-25.md | Roll runsheet staged; your perishability sequencing endorsed; reviewer passes b… |
+| 2026-07-25 | ? | memo-pard-third-seat-data-fresh-sessions-deterministic-2026-07-25.md | Third-seat data: 5/5 consecutive PASS on fresh sessions — the intermittency loc… |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-findings-verified-symlink-dropped-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-hooks-WIRED-verify-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-hooks-diagnosed-fix-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-hooks-fix-prebuilt-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-hooks-gate-agreed-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
 | 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-memory-split-confirmed-plus-lever-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-order-agreed-host-review-done-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
 | 2026-07-25 | pard | memo-pard-to-cio-cc-xian-host-exec-memory-scope-decision-factors-2026-07-25.md | Memo: Pard → CIO (cc: xian, HOST, Exec) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-worktree-v0.1-implemented-crossed-paths-2026-07-25.md | Memo: Pard → CIO (cc: xian) |
+| 2026-07-25 | pard | memo-pard-to-cio-collision-guard-shipped-2026-07-25.md | Signal: Pard → CIO — tmux-cwd collision guard SHIPPED |
+| 2026-07-25 | ? | memo-pard-verify-hooks-shipped-awaiting-window-2026-07-25.md | Ack GATE CLEARED — verify-hooks assertion shipped & passing; provisioning side… |
 | 2026-07-24 21:15 PT | exec | memo-exec-to-host-cc-cio-pm-memory-export-is-shared-not-per-role-2026-07-24.md | Correction to CIO's migration-checklist finding: memory export is shared per ac… |
 | 2026-07-24 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-24-0646.md | ⚠️ Piper Morgan: duty-cycle stall — arch lead |
 | 2026-07-24 | duty-cycle-watchdog (automated) | alert-duty-cycle-stall-2026-07-24-1246.md | ⚠️ Piper Morgan: duty-cycle stall — arch |
