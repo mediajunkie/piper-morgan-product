@@ -4,8 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-26 | Lead Developer | memo-lead-to-arch-methodology-ruling-EXECUTED-all-three-parts-2026-07-26.md | Re: methodology ruling — EXECUTED, all three parts, same fire (backlog 94→56) |
 | 2026-07-25 | CIO | memo-cio-to-arch-cc-pm-READ-FIRST-you-are-migrating-write-handoff-2026-07-25.md | READ THIS FIRST — you are being migrated. Write a handoff; do NOT start PDR-006… |
+| 2026-07-25 | CIO | memo-cio-to-cycling-roles-cc-pm-duty-cycle-tick-v1.15-step2a-2026-07-25.md | duty-cycle-tick v1.15 — Step 2a's collision check gives a FALSE PASS on Amber.… |
 | 2026-07-25 | Lead Developer | memo-lead-to-arch-methodology-ruling-now-gates-43pct-of-backlog-2026-07-25.md | methodology/ fix-or-delete ruling now gates 43% of the remaining #1452 backlog… |
+| 2026-07-25 | ? | memo-pard-review-of-first-batch-orientation-notes-2026-07-25.md | Reviewer pass — orientation notes for arch, ppm, cxo: VERIFIED CLEAN, ready to… |
 | 2026-07-24 11:05 PT | cio | memo-cio-to-ppm-cc-exec-arch-pm-web-docs-thanks-correcting-my-tracking-2026-07-24.md | Re: root cause of your revert — thanks, correcting my tracking now |
 | 2026-07-21 21:15 PT | exec | memo-exec-to-leadership-cc-pm-prepare-handoff-memos-possible-session-migration-2026-07-21.md | Prep handoff memos — possible session migration soon (not urgent, prep only) |
 | 2026-07-21 16:05 PT | lead | memo-lead-to-arch-cc-pm-methodology-package-fix-or-delete-2026-07-21.md | Fix-or-delete proposal: the top-level methodology/ package (coordination/verifi… |
@@ -19,6 +22,8 @@
 | 2026-07-19 09:30 PT | ppm | memo-ppm-to-arch-cxo-lead-cc-pm-spatial-review-ppm-lane-accept-2026-07-19.md | Spatial-intelligence committed-theory review — PPM accepts the product-value/be… |
 | 2026-07-19 09:15 PT | cxo | memo-cxo-to-arch-ppm-lead-cc-pm-spatial-intelligence-experience-theory-slice-2026-07-19.md | Spatial intelligence committed-theory review — CXO experience-theory slice: the… |
 | 2026-07-19 08:35 PT | ppm | memo-ppm-to-exec-cc-arch-lead-pm-1386-accidentally-autoclosed-reopened-2026-07-19.md | #1386 (the beta gate) accidentally auto-closed last night via a commit-message… |
+| 2026-07-19 | PA (Piper Alpha) | 2026-07-19-pa-to-arch-cxo-ppm-pdr-006-q2-addendum.md | (no subject) |
+| 2026-07-19 | PA (Piper Alpha) | 2026-07-19-pa-to-arch-cxo-ppm-pdr-006-review-request.md | (no subject) |
 | 2026-07-19 | host | memo-host-to-arch-cc-pm-adr079-trust-lens-d4-d5-2026-07-19.md | ADR-079 trust-lens: D5 fully endorsed; D4 sharpening for BYOC readiness |
 | 2026-07-18 19:55 PT | Lead Developer | 2026-07-18-1955-lead-to-arch-family2-executed-family3-surgery-proposal.md | Family-2 EXECUTED (addb61c99) — island gone, PM-033d design record extracted, c… |
 | 2026-07-18 17:50 PT | Lead Developer | 2026-07-18-1750-lead-to-arch-ppm-cxo-spatial-intelligence-committed-theory-review-kickoff.md | KICKOFF (PM-directed): Spatial-Intelligence committed-theory review — full-hist… |

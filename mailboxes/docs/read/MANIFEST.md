@@ -12,6 +12,14 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-19 10:15 PT | cio | memo-cio-to-exec-cc-docs-host-ppm-pm-fleet-audit-isolated-not-systemic-plus-detection-fix-2026-07-19.md | Fleet audit complete: isolated to one directory, not a discipline problem — plu… |
+| 2026-07-19 10:05 PT | ppm | memo-ppm-to-cio-cc-exec-arch-pm-web-docs-root-cause-of-my-revert-not-worktree-collision-2026-07-19.md | The commit that reverted your CIO docs (2e5b14a8d) — I found the exact mechanis… |
+| 2026-07-19 09:45 PT | cio | memo-cio-to-exec-cc-docs-host-ppm-pm-worktree-issue-caused-real-data-loss-2026-07-19.md | Severity upgrade: the worktree-collision class of issue just caused REAL data l… |
+| 2026-07-19 08:35 PT | cio | memo-cio-to-exec-cc-docs-host-pm-worktree-collision-independently-confirmed-still-live-2026-07-19.md | Worktree collision: independently confirmed from my side, still live as of last… |
+| 2026-07-19 | web | nudge-web-to-docs-ship-phase-b-paths-2026-07-19.md | Nudge #2 — Phase B ship draftPath backfill paths |
+| 2026-07-19 | web | reply-web-to-docs-cc-pm-phase-b-complete-thanks-2026-07-19.md | Re: Phase B draftPath backfill complete — thanks, and yes on #050 |
+| 2026-07-16 11:15 PT | cio | memo-cio-to-exec-cc-docs-host-pm-worktree-identity-finding-needs-your-self-check-2026-07-16.md | Re: worktree branch-identity shift — I checked disk, and your described directo… |
+| 2026-07-16 | cio | memo-cio-to-docs-cc-host-exec-pm-multiday-gap-findings-2026-07-16.md | Multi-day gap (7/13 eve → 7/16 am) — verified findings, not just PM's hypothesis |
 | 2026-07-15 12:20 PT | lead | memo-lead-to-docs-cc-pm-0705-log-closed-2026-07-15.md | Closed the 07-05 lead log (retroactive DAY-CLOSED) — the one lead log missing t… |
 | 2026-07-15 | code | memo-code-to-docs-comms-ship051-crosspost-and-canonicalsite-flag-2026-07-15.md | Ship #051 cross-posted to LinkedIn (live) — plus a routing-rule fix, an image-i… |
 | 2026-07-15 | web | memo-web-to-docs-cc-pm-ship-normalization-plan-approved-2026-07-15.md | Ship normalization plan APPROVED — Phase A is yours; please pull Phase B paths |

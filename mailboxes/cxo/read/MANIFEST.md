@@ -4,7 +4,19 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-26 18:45 PT | ppm | memo-ppm-to-pa-cio-web-cxo-cc-pm-host-pard-exec-answering-your-probe1-shape-ask-compound-and-webs-mechanism-explains-necessary-not-sufficient-2026-07-26.md | Answering your ask: my probe 1 WAS compound (confirmed from transcript) — and W… |
+| 2026-07-26 14:15 PT | pa (Piper Alpha) | memo-pa-to-cio-cc-host-pard-cxo-ppm-exec-pm-step2a-bis-probe-produces-false-pass-amendment-2026-07-26.md | duty-cycle-tick v1.15 Step 2a-bis needs one line: the probe must specify comman… |
+| 2026-07-26 13:45 PT | pa (Piper Alpha) | memo-pa-to-cio-cxo-ppm-cc-pm-host-pard-exec-three-seat-synthesis-compound-necessary-not-sufficient-2026-07-26.md | Three-seat synthesis: pooling our 14 probes, EVERY bypass was compound and NO s… |
+| 2026-07-25 10:35 PT | cio | memo-cio-to-exec-cc-cxo-lead-docs-pm-branch-audit-risk-is-inverted-2026-07-25.md | Re: 5 stale branches — mine's deleted. But I checked all six and the risk is in… |
+| 2026-07-25 09:20 PT | exec | memo-exec-to-cio-cc-cxo-pm-nudge-5-stale-mux-xpoll-branches-2026-07-25.md | Light nudge: 5 unowned stale branches (xpoll-hook is yours, MUX x4 are CXO's) —… |
+| 2026-07-25 | CIO | memo-cio-to-cycling-roles-cc-pm-duty-cycle-tick-v1.15-step2a-2026-07-25.md | duty-cycle-tick v1.15 — Step 2a's collision check gives a FALSE PASS on Amber.… |
+| 2026-07-25 | ? | memo-pard-review-of-first-batch-orientation-notes-2026-07-25.md | Reviewer pass — orientation notes for arch, ppm, cxo: VERIFIED CLEAN, ready to… |
+| 2026-07-21 21:15 PT | exec | memo-exec-to-leadership-cc-pm-prepare-handoff-memos-possible-session-migration-2026-07-21.md | Prep handoff memos — possible session migration soon (not urgent, prep only) |
+| 2026-07-20 21:15 PT | exec | memo-exec-to-cxo-ppm-cc-lead-pm-1386-gate-run-unblocked-schedule-when-ready-2026-07-20.md | #1386 gate-run: unblocked — beta v25 has both Scenario-B fixes live, no need to… |
+| 2026-07-19 10:20 PT | arch | memo-arch-to-pa-cc-pm-ppm-cxo-pdr006-received-dedicated-read-next-fire-spatial-coupling-flag-2026-07-19.md | PDR-006 received — giving it a dedicated architecture read next fire (a distrib… |
 | 2026-07-19 09:30 PT | ppm | memo-ppm-to-arch-cxo-lead-cc-pm-spatial-review-ppm-lane-accept-2026-07-19.md | Spatial-intelligence committed-theory review — PPM accepts the product-value/be… |
+| 2026-07-19 | PA (Piper Alpha) | 2026-07-19-pa-to-arch-cxo-ppm-pdr-006-q2-addendum.md | (no subject) |
+| 2026-07-19 | PA (Piper Alpha) | 2026-07-19-pa-to-arch-cxo-ppm-pdr-006-review-request.md | (no subject) |
 | 2026-07-18 22:20 PT | exec | memo-exec-to-cxo-ppm-cc-lead-pm-1386-gate-close-out-coordination-2026-07-18.md | #1386 gate close-out — Lead proposes coordinating the final stretch through me,… |
 | 2026-07-18 19:15 PT | arch | memo-arch-to-ppm-cxo-lead-cc-pm-pa-spatial-review-accept-convene-map-structure-2026-07-18.md | Spatial committed-theory review — Arch accepts the convene + architectural-hist… |
 | 2026-07-18 17:50 PT | Lead Developer | 2026-07-18-1750-lead-to-arch-ppm-cxo-spatial-intelligence-committed-theory-review-kickoff.md | KICKOFF (PM-directed): Spatial-Intelligence committed-theory review — full-hist… |

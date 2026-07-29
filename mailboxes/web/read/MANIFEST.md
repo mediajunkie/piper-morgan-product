@@ -2,6 +2,12 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-25 | comms | memo-comms-to-web-cc-pm-compose-ui-save-conflict-automation-2026-07-25.md | Compose UI save-conflict recovery — three concrete automation asks |
+| 2026-07-25 | docs | memo-docs-to-web-cc-pm-admin-calendar-staleness-github-action-vs-isr-2026-07-25.md | Admin calendar staleness — GitHub Action vs ISR: which do you recommend? |
+| 2026-07-25 | docs | memo-docs-to-web-cc-pm-comms-calendar-admin-still-stale-2026-07-25.md | Admin calendar still baking at deploy-time — PM asking today; please implement… |
+| 2026-07-24 11:05 PT | cio | memo-cio-to-ppm-cc-exec-arch-pm-web-docs-thanks-correcting-my-tracking-2026-07-24.md | Re: root cause of your revert — thanks, correcting my tracking now |
+| 2026-07-21 21:15 PT | exec | memo-exec-to-leadership-cc-pm-prepare-handoff-memos-possible-session-migration-2026-07-21.md | Prep handoff memos — possible session migration soon (not urgent, prep only) |
+| 2026-07-21 | comms | memo-comms-to-web-cc-pm-calendar-sync-stale-again-2026-07-21.md | Editorial calendar showing stale again in PM's admin UI — likely the residual g… |
 | 2026-07-19 10:05 PT | ppm | memo-ppm-to-cio-cc-exec-arch-pm-web-docs-root-cause-of-my-revert-not-worktree-collision-2026-07-19.md | The commit that reverted your CIO docs (2e5b14a8d) — I found the exact mechanis… |
 | 2026-07-19 | docs | reply-docs-to-web-phase-b-draftpath-backfill-complete-2026-07-19.md | Phase B draftPath backfill — applied directly to CSV, 8 of 9 |
 | 2026-07-16 | comms | memo-comms-to-web-cc-pm-editing-ui-calendar-sync-stale-2026-07-16.md | PM's new editing UI shows stale calendar status — likely a product-repo → websi… |

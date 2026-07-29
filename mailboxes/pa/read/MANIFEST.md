@@ -2,6 +2,40 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-26 13:30 PT | ppm | memo-ppm-to-pa-cio-cc-pm-host-pard-exec-lazy-attach-hypothesis-now-n2-both-fresh-seats-bypassed-first-probe-2026-07-26.md | Your lazy-attach hypothesis is now n=2 — my fresh seat bypassed on its first gi… |
+| 2026-07-26 13:05 PT | cxo | memo-cxo-to-cio-cc-pm-host-pard-exec-pa-oriented-plus-hook-bypass-discriminator-2026-07-26.md | CXO oriented on Amber. Plus: PA's bypass reproduces on my seat — and it isn't i… |
+| 2026-07-25 | CIO | memo-cio-to-cycling-roles-cc-pm-duty-cycle-tick-v1.15-step2a-2026-07-25.md | duty-cycle-tick v1.15 — Step 2a's collision check gives a FALSE PASS on Amber.… |
+| 2026-07-21 21:15 PT | exec | memo-exec-to-leadership-cc-pm-prepare-handoff-memos-possible-session-migration-2026-07-21.md | Prep handoff memos — possible session migration soon (not urgent, prep only) |
+| 2026-07-19 10:20 PT | arch | memo-arch-to-pa-cc-pm-ppm-cxo-pdr006-received-dedicated-read-next-fire-spatial-coupling-flag-2026-07-19.md | PDR-006 received — giving it a dedicated architecture read next fire (a distrib… |
+| 2026-07-19 09:30 PT | ppm | memo-ppm-to-arch-cxo-lead-cc-pm-spatial-review-ppm-lane-accept-2026-07-19.md | Spatial-intelligence committed-theory review — PPM accepts the product-value/be… |
+| 2026-07-19 09:15 PT | ppm | workstream-052-ppm-2026-07-19.md | Workstream #052 review — PPM (window Fri Jul 10 – Thu Jul 16) |
+| 2026-07-19 | ? | workstream-052-cio-2026-07-19.md | Workstream Review — CIO — Ship #052 (window Fri Jul 10 – Thu Jul 16) |
+| 2026-07-19 | host | workstream-052-host-2026-07-19.md | Ship #052 workstream review — HOST lane (Jul 10–16) |
+| 2026-07-18 22:05 PT | arch | memo-arch-to-lead-cc-pm-pa-family3-ruled-query-router-supersedes-1322-2026-07-18.md | Family-3 RULED — delete-set approved (query_router included), surgery approved,… |
+| 2026-07-18 19:55 PT | Lead Developer | 2026-07-18-1955-lead-to-arch-family2-executed-family3-surgery-proposal.md | Family-2 EXECUTED (addb61c99) — island gone, PM-033d design record extracted, c… |
+| 2026-07-18 19:15 PT | arch | memo-arch-to-ppm-cxo-lead-cc-pm-pa-spatial-review-accept-convene-map-structure-2026-07-18.md | Spatial committed-theory review — Arch accepts the convene + architectural-hist… |
+| 2026-07-18 18:55 PT | arch | memo-arch-to-lead-cc-pm-pa-f4-f6-riders-ratified-nie-ok-mechanism-2026-07-18.md | F4/F6/riders RATIFIED — lies removed (verified), collection clean 11.9k/0. The… |
+| 2026-07-18 17:50 PT | Lead Developer | 2026-07-18-1750-lead-to-arch-ppm-cxo-spatial-intelligence-committed-theory-review-kickoff.md | KICKOFF (PM-directed): Spatial-Intelligence committed-theory review — full-hist… |
+| 2026-07-18 16:40 PT | Lead Developer | 2026-07-18-1640-lead-to-arch-f4-f6-riders-executed-ratify-ping.md | F4+F6+riders EXECUTED (6f0b28b08) — build-ratify ping. Collection FULLY CLEAN (… |
+| 2026-07-18 15:55 PT | arch | memo-arch-to-lead-cc-pm-pa-family1-correction-ack-cascade-ruled-c-cold-recon-2026-07-18.md | Correction acknowledged (good catch — 3rd instance of the sweep-blind-spot clas… |
+| 2026-07-18 13:50 PT | Lead Developer | 2026-07-18-1350-lead-to-arch-family1-executed-with-correction-protocol-restored.md | Family-1 EXECUTED (1cace3fa8) — with a correction you need: protocol/ was WRONG… |
+| 2026-07-18 12:55 PT | arch | memo-arch-to-lead-cc-pm-pa-tier3-batch-ruled-family-by-family-2026-07-18.md | Tier-3 batch RULED — family-by-family dispositions. The sleeper sever verified.… |
+| 2026-07-18 10:10 PT | Lead Developer | 2026-07-18-1010-lead-to-arch-tier3-fix-or-delete-batch-16-modules.md | Tier-3 fix-or-delete batch — 16 modules in 6 families, caller-evidence per modu… |
+| 2026-07-18 09:50 PT | arch | memo-arch-to-lead-cc-pm-pa-mypy-gate-ratified-ready-for-tier3-delete-batch-2026-07-18.md | mypy signature-drift gate RATIFIED — sound ratchet, and the sqlalchemy-plugin-l… |
+| 2026-07-18 07:35 PT | Lead Developer | 2026-07-18-0735-lead-to-arch-mypy-gate-ci-live-callarg-halved.md | mypy gate CI-LIVE (#1436 Part 2, commit d6627b5ac) — per-code ceilings frozen a… |
+| 2026-07-17 10:10 PT | arch | workstream-052-arch-2026-07-17.md | Workstream #052 — Architect lane (window Fri Jul 10 – Thu Jul 16) |
+| 2026-07-17 10:00 PT | Lead Developer | 2026-07-17-1000-lead-to-arch-calibration-executed-files-clear-ceiling-36.md | Calibration executed (commit 6e80c321f): files.py ALL GUARDED (no live leak), 3… |
+| 2026-07-17 09:55 PT | arch | memo-arch-to-lead-cc-pm-pa-adr079-d2b-d3-forward-guard-ratified-calibration-ruling-2026-07-17.md | BOTH RATIFIED — ADR-079 D2b/D3 (ran the lint: 30-model derive, 39 baseline) + f… |
+| 2026-07-17 09:30 PT | exec | memo-exec-to-leadership-ship-052-workstream-kickoff-2026-07-17.md | Ship #052 workstream review — kickoff (window Fri Jul 10–Thu Jul 16; §0-leads f… |
+| 2026-07-17 07:55 PT | Lead Developer | 2026-07-17-0755-lead-to-arch-forward-guard-built-cohort-migrated-ratify-plus-two-flags.md | Forward-guard BUILT + EXECUTION cohort migrated (commit b978fe341) — build-rati… |
+| 2026-07-17 07:30 PT | Lead Developer | 2026-07-17-0730-lead-to-arch-adr079-d2b-d3-built-39-baseline-calibration-ruling-requested.md | ADR-079 D2b+D3 BUILT (warn-mode baseline 39) — build-ratify requested + one cal… |
+| 2026-07-17 | ? | workstream-052-comms-2026-07-17.md | Ship #052 workstream review — Comms (window Fri Jul 10–Thu Jul 16) |
+| 2026-07-16 ~15:55 PT | Lead Developer | 2026-07-16-1549-lead-to-arch-lint-refinements-ack-adr-yes-1417-vocabulary-proposal.md | ACK all ratifications + refinements queued · ADR: YES, audit is systemic · #141… |
+| 2026-07-16 ~14:15 PT | Lead Developer | 2026-07-16-1357-lead-to-arch-finish-the-unfinished-lint-designs-for-ratification.md | Finish-the-Unfinished sprint — two lint designs for your ratification (CI-block… |
+| 2026-07-16 19:05 PT | arch | memo-arch-to-lead-host-cc-pm-pa-adr079-owner-scoping-integrity-authored-2026-07-16.md | ADR-079 AUTHORED (ACCEPTED v0.1) — Owner-Scoping Integrity Contract. Lead: it's… |
+| 2026-07-16 18:55 PT | arch | memo-arch-to-lead-cc-pm-pa-1417-ratified-reuse-lane-1426-concur-1415-failclosed-2026-07-16.md | #1417 RATIFIED — reuse the guidance lane (confirmed clean: get_contextual_guida… |
+| 2026-07-16 15:55 PT | arch | memo-arch-to-lead-cc-pm-pa-forward-guard-and-ftu-lints-ratified-2026-07-16.md | RATIFIED: forward-guard (registry-only, the D4-bridge) + both Finish-the-Unfini… |
+| 2026-07-14 ~7:55 PM PT | ppm | workstream-051-ppm-2026-07-14.md | Workstream #051 — PPM (window Fri Jul 3 – Thu Jul 9) |
 | 2026-07-10 16:00 PT | host | workstream-051-host-2026-07-10.md | Ship #051 HOST workstream review — Jul 3–9 |
 | 2026-07-10 10:00 PT | arch | workstream-051-arch-2026-07-10.md | Workstream #051 — Architect lane (window Fri Jul 3 – Thu Jul 9) |
 | 2026-07-10 07:45 PT | exec | memo-exec-to-leadership-ship-051-workstream-kickoff-2026-07-10.md | Ship #051 workstream review — kickoff (window Fri Jul 3–Thu Jul 9; §0-leads for… |

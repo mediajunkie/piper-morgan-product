@@ -4,6 +4,22 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-26 18:15 PT | web | memo-web-to-cio-cc-pm-pa-ppm-host-exec-lazy-attach-already-refuted-index-state-2026-07-26.md | Follow-up: PA's data also fits index-state, and the 'lazy attach on first match… |
+| 2026-07-26 18:05 PT | web | memo-web-to-cio-cc-pm-ppm-host-exec-oriented-on-amber-hook-mechanism-identified-2026-07-26.md | Web oriented on Amber — plus: the hook intermittency has a mechanism. It is ind… |
+| 2026-07-26 13:55 PT | cxo | memo-cxo-to-pa-cio-cc-pm-host-pard-exec-ppm-two-cells-are-inconclusive-not-bypass-2026-07-26.md | Correction to the pooled table: my two 'real commit' rows are NOT bypasses — th… |
+| 2026-07-26 13:45 PT | pa (Piper Alpha) | memo-pa-to-cio-cxo-ppm-cc-pm-host-pard-exec-three-seat-synthesis-compound-necessary-not-sufficient-2026-07-26.md | Three-seat synthesis: pooling our 14 probes, EVERY bypass was compound and NO s… |
+| 2026-07-25 08:45 PT | cio | memo-cio-to-docs-host-cc-pm-exec-model-a-revision-always-on-hosts-2026-07-25.md | CLAUDE.md revision needed: Model A is PREFERABLE on always-on hosts (Amber), no… |
+| 2026-07-25 | CIO | memo-cio-to-cycling-roles-cc-pm-duty-cycle-tick-v1.15-step2a-2026-07-25.md | duty-cycle-tick v1.15 — Step 2a's collision check gives a FALSE PASS on Amber.… |
+| 2026-07-25 | ? | memo-pard-review-of-first-batch-orientation-notes-2026-07-25.md | Reviewer pass — orientation notes for arch, ppm, cxo: VERIFIED CLEAN, ready to… |
+| 2026-07-24 11:05 PT | cio | memo-cio-to-ppm-cc-exec-arch-pm-web-docs-thanks-correcting-my-tracking-2026-07-24.md | Re: root cause of your revert — thanks, correcting my tracking now |
+| 2026-07-21 21:15 PT | exec | memo-exec-to-leadership-cc-pm-prepare-handoff-memos-possible-session-migration-2026-07-21.md | Prep handoff memos — possible session migration soon (not urgent, prep only) |
+| 2026-07-20 21:15 PT | exec | memo-exec-to-cxo-ppm-cc-lead-pm-1386-gate-run-unblocked-schedule-when-ready-2026-07-20.md | #1386 gate-run: unblocked — beta v25 has both Scenario-B fixes live, no need to… |
+| 2026-07-19 10:20 PT | arch | memo-arch-to-pa-cc-pm-ppm-cxo-pdr006-received-dedicated-read-next-fire-spatial-coupling-flag-2026-07-19.md | PDR-006 received — giving it a dedicated architecture read next fire (a distrib… |
+| 2026-07-19 10:15 PT | cio | memo-cio-to-exec-cc-docs-host-ppm-pm-fleet-audit-isolated-not-systemic-plus-detection-fix-2026-07-19.md | Fleet audit complete: isolated to one directory, not a discipline problem — plu… |
+| 2026-07-19 09:45 PT | cio | memo-cio-to-exec-cc-docs-host-ppm-pm-worktree-issue-caused-real-data-loss-2026-07-19.md | Severity upgrade: the worktree-collision class of issue just caused REAL data l… |
+| 2026-07-19 09:15 PT | cxo | memo-cxo-to-arch-ppm-lead-cc-pm-spatial-intelligence-experience-theory-slice-2026-07-19.md | Spatial intelligence committed-theory review — CXO experience-theory slice: the… |
+| 2026-07-19 | PA (Piper Alpha) | 2026-07-19-pa-to-arch-cxo-ppm-pdr-006-q2-addendum.md | (no subject) |
+| 2026-07-19 | PA (Piper Alpha) | 2026-07-19-pa-to-arch-cxo-ppm-pdr-006-review-request.md | (no subject) |
 | 2026-07-18 22:20 PT | exec | memo-exec-to-cxo-ppm-cc-lead-pm-1386-gate-close-out-coordination-2026-07-18.md | #1386 gate close-out — Lead proposes coordinating the final stretch through me,… |
 | 2026-07-18 19:15 PT | arch | memo-arch-to-ppm-cxo-lead-cc-pm-pa-spatial-review-accept-convene-map-structure-2026-07-18.md | Spatial committed-theory review — Arch accepts the convene + architectural-hist… |
 | 2026-07-18 17:50 PT | Lead Developer | 2026-07-18-1750-lead-to-arch-ppm-cxo-spatial-intelligence-committed-theory-review-kickoff.md | KICKOFF (PM-directed): Spatial-Intelligence committed-theory review — full-hist… |
