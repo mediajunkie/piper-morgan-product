@@ -1,52 +1,41 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-28 21:30 PT (STOP, day-close)
-**Session log today**: `dev/2026/07/28/2026-07-28-0810-exec-code-log.md` (DAY-CLOSED)
-**Role**: Chief of Staff (Exec) | DinP account — migration to dedicated account still pending, PM's own call, no urgency signal. Memory store on this account is SHARED across all roles.
-**Cron**: `32 8,20 * * *` — will re-arm this STOP (delete-then-create). Next fire ~08:32 Wed Jul 29.
-**Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45` — Step 2a pairing mismatch persists (unchanged since ~7/16), still Model B (Desktop).
-**New (v1.21) skill step**: emit `scripts/duty-cycle-heartbeat.sh exec {START|WATCH|WORK|STOP} --if-quiet` before finishing every fire — self-suppresses if the fire already committed. Don't skip on a truly quiet fire (that's the one case it exists for).
+**Last updated**: 2026-07-29 ~12:30 PT — final close-out session before Amber migration.
+**Session log today**: `dev/2026/07/29/2026-07-29-0705-exec-code-log.md`
+**Role**: Chief of Staff (Exec) | DinP account, Model B (Desktop) worktree — **this is the last session on this account/model.** A fresh successor is about to be provisioned on Amber (Model A, stable per-agent worktree) once CIO acts on the readiness signal sent this session.
+**Handoff of record**: `dev/active/exec-handoff-2026-07-21.md` (refreshed 2026-07-29, final pre-migration state) — read that FIRST if you're the incoming successor, this file second.
+**Worktree**: `.claude/worktrees/mystifying-lumiere-8bebd3` on branch `claude/infallible-newton-f0ec45` — Model-B pairing defect, moot on Amber (see handoff Active Threads #7).
 
-## Ship #053 workstream review — 3 of 6 in (HOST, Comms, PPM). CIO, CXO, Arch outstanding.
+## Ship #053 — done, off Exec's plate
 
-PM has pinged CXO and PPM directly (PPM's memo landed after). CIO and Arch have NOT been pinged by PM yet as of tonight — worth mentioning if PM asks for a status check tomorrow morning, since those two are the actual remaining gap now that PPM is in. **Target unchanged: synthesize once all 6 in → discuss with PM → draft Ship #053 → PM reviews → publish Wed 7/29.** Tomorrow morning is the natural checkpoint — if not all 6 are in by then, surface that to PM rather than wait passively.
+Drafted, audited, delivered to PM. PM added the final hero-image markdown and is routing it Comms → Docs → publish. Nothing left for Exec unless Comms/Docs surface an issue during review. New standing rule (hero image sourced from a non-LinkedIn narrative post) is codified in the template/process-guide/skill — see handoff #2.
 
-**After Ship #053 publishes**: Ship #054's kickoff goes out Friday as normal (window Jul 24–30). Then a separate discussion PM wants about making the duty cycle day-of-week-aware — don't forget to raise it once #053 is out.
+## Ship #054 — successor's first real task
 
-## Jake alpha FTUX feedback — still 1 of 4 (HOST only)
+Kickoff due Friday Jul 31 (window Jul 24–30). Standard process: request 6 workstream memos, wait for all 6, synthesize, draft, PM review, Comms review, publish.
 
-CXO, PPM, PA outstanding. PA's responses (both this and the workstream memo) expected via PM directly once they're on the pipermorgan.ai side. Don't synthesize until all 4 in.
+**PM has an open ask not yet actioned**: a discussion about making the duty cycle day-of-week-aware (Friday kickoff, Saturday synthesis-once-all-6-in, etc.). Raise it once Ship #054's cycle is under way — don't let a second Ship cycle pass without circling back.
 
-**New context for the eventual synthesis**: HOST sent PM (cc PA/CXO/exec) a memo arguing "no tester distress signals" has been silently treated as a health signal — Jake's feedback only exists because PM personally nudged twice; the other ~10 testers' silence tells us nothing. Not exec's to act on (PII-gated, PM's call on tester outreach), but worth folding into the eventual Jake-feedback synthesis discussion since it reframes what "no other testers have complained" would mean.
+## Jake alpha FTUX feedback — still 1 of 4 (HOST only), unresolved
 
-## A real live incident, found and fixed entirely by others before I saw it (7/28)
+CXO, PPM, PA outstanding as of 7/28. PA's responses expected via PM directly. Don't synthesize until all 4 in.
 
-The freeze-watchdog was completely dead from 10:39am (two stray apostrophes broke an awk script in that morning's own threshold-fix commit) while its heartbeat kept reporting `all-quiet` with correct-looking denominators. HOST found it, diagnosed it precisely, fixed it, and verified it live on `origin/main` — all before this evening's fire. No action needed, just context: this is the same "silence reads as health" pattern from the tester-welfare memo above, applied to the mechanism side.
+## PM's main-checkout git crisis — resolved, no follow-up
 
-## Today's migration (exec/docs/lead/comms) — still no CIO reply on sequencing
+See handoff #3 for full detail. Local `main` and `origin/main` verified at the identical SHA post-resolution. Nothing stranded.
 
-Checked in 7/27, my read was I should go last. Lead and Comms both ready. Now secondary to the Ship #053 push.
+## Migration status — Exec is last, ready to close
 
-## Standing items — unchanged, tracker reconciliation still deferred
+PM confirmed 7/29 that every other role has migrated to Amber. I held my own cutover specifically until Ship #053 was off my plate (PM agreed with that call on 7/29 morning). That condition is now met. CIO's standing ask: "close out cleanly and tell me — then I provision your successor." Sending that readiness signal this session, after this refresh + a clean sign-off checklist.
 
-- **Lead Dev's #1424/#1427 questions** — still awaiting PM's final calls from Jul 18.
+## Standing items — carried forward unchanged
+
+- **Lead Dev's #1424/#1427 questions** — still awaiting PM's final calls, open since Jul 18.
 - **Beta Blockers count** — stale; re-pull via `query-github-board` skill before citing a number.
-- **Full tracker reconciliation** (`exec-open-items-tracker.md`) — done 7/20, now 8+ days stale. Do it once Ship #053 is out the door.
+- **Full tracker reconciliation** (`exec-open-items-tracker.md`) — last done 7/20, now 9 days stale. Successor's call whether it's still worth maintaining post-migration.
 - **Stale branches** (5 unowned MUX/xpoll) — nudge sent 7/25, no reply yet.
-
----
-
-## #1386 gate — UNBLOCKED, handed off to Lead/CXO/PPM
-
-Beta v28+, both Scenario-B fixes live. Scheduling the gate run is CXO/PPM/Lead's call, not exec's.
-
-## Attention-board staleness — still awaiting PM's preference
-
-Reported 7/22 (likely superseded by the 6/17 carry-forward FOLD). No response yet.
-
-## Worktree-collision — still unresolved, still safe
-
-Same directory/branch mismatch persists. Proceeding cautiously each fire.
+- **#1386 gate** — UNBLOCKED (beta v28+), scheduling is CXO/PPM/Lead's call, not Exec's.
+- **Attention-board staleness** — reported 7/22, likely superseded by the 6/17 carry-forward FOLD, no PM response needed.
 
 ## STANDING
 
@@ -54,4 +43,4 @@ Same directory/branch mismatch persists. Proceeding cautiously each fire.
 
 ---
 
-*— Exec, 7/28 21:30 PT.*
+*— Exec, 2026-07-29 ~12:30 PT, close-out session.*
