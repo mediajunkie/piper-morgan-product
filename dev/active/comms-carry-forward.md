@@ -1,21 +1,23 @@
-# Comms carry-forward — 2026-07-27, STOP fire (21:42 PT)
+# Comms carry-forward — 2026-07-28, STOP fire (21:33 PT)
 
-**Cron**: `25ce4b32` · `12 6,9,12,15,18,21 * * *` (about to re-arm via delete-then-create)
-**Session log**: `dev/2026/07/27/2026-07-27-0625-comms-code-log.md`
+**Cron**: `13eadfd6` · `12 6,9,12,15,18,21 * * *` (about to re-arm via delete-then-create)
+**Session log**: `dev/2026/07/28/2026-07-28-0619-comms-code-log.md`
 
 ---
 
 ## Current state
 
-- **Possible Amber migration, unresolved as of tonight**: PM asked (via Exec's check-in memo) for Exec/Docs/Lead Dev/Comms to migrate to Amber today. It did not happen by day's close — CIO hadn't yet responded with a sequencing plan as of this STOP. Handoff doc (`dev/active/comms-handoff-2026-07-26.md`) is current, refreshed this morning with a fresh §4.6 lesson. Readiness already confirmed to CIO (cc PM/Exec/Docs/Lead) — no need to re-send unless something material changes before the actual cutover.
+- **Possible Amber migration, still unresolved**: PM asked Jul 27 for Comms (+ Exec/Docs/Lead) to migrate — still hasn't happened as of tonight. Handoff doc (`dev/active/comms-handoff-2026-07-26.md`) current, readiness confirmed to CIO. No new action needed unless something material changes.
 - **Genuinely open, awaiting PM's steer**: Beats 21-23 (Write-Path Chase, Alpha Launches, Architect's Own Trap) drafted + fact-checked + footer-chained — next step is PM's voice-pass + art.
 - **Genuinely open, awaiting PM's answer**: the watchdog-wording question on "What the Running System Found" (already published — non-blocking).
-- ~~Known but parked: the YAML caption `''`-encoding bug (Web's to fix eventually)~~ — **CLOSED 2026-07-28**: this was never Web's. Docs root-caused it as 3 chained defects in our own publish pipeline (publish-post.js, sync-csv-to-json.js, parseCsvRow), fixed all 8 affected posts, verified end-to-end. No Web memo needed.
+- **CLOSED today**: the YAML caption `''`-encoding bug — was never Web's, Docs root-caused and fixed it in our own publish pipeline. Don't resurrect this with Web.
+- **NEW, ratified today**: canonical role-gloss house style — lowercase "the [title] role (ACRONYM)," written into `xian-voice-tone-guide.md`. Apply on future drafts; forward-only, no back-fixing published posts.
+- **Filed today**: Ship #053 workstream review (window Jul17-23) — headline was the narrative-slate steer clearing after a week open. No action pending.
 - **Standing structural gap**: building-narrative queue runs dry after Aug 18.
-- **BYOC marketplace narrative** — still stale, PM-gated.
-- **Registered**: `dev/active/duty-cycle-registry.tsv` now has a comms row (added 7/27, first time). If migrating to Amber, the successor should verify/rewrite this row rather than assume it transfers correctly.
+- **BYOC marketplace narrative** — still stale, now ~6 weeks, PM-gated.
+- **Process note**: bundle calendar-status commits and session-log entries in the same push going forward (Docs's suggestion, adopted) — avoids a window where the two disagree, which happened today.
 
 ## State flags
 
-- Session: STOPping, day fully accounted for (registry registration, hook-liveness probe both-FAIL finding reported to CIO, handoff doc refreshed twice, migration readiness confirmed, 4 quiet-hold fires).
+- Session: STOPping, day fully accounted for (Trust Architecture Hardens review + logging-gap correction, Ship #053 review filed, role-gloss convention ratified, caption-bug closed, threshold correction absorbed, 3 quiet-hold fires).
 - Queue at STOP: 2 genuinely open PM-gated editorial items (non-blocking) + 1 unresolved infrastructure question (migration timing, not mine to drive).
