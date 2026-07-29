@@ -1,37 +1,33 @@
 # CIO Carry-Forward — ephemeral session state
 
-**Purpose**: read-at-fire-time state for `duty-cycle-tick`. **Exec\'s `cohort-attention-rollup` reads the PM Attention section directly, and PM does not read memos — so this section is one of the few real paths to PM.** Stale here propagates to PM\'s attention board.
+**Purpose**: read-at-fire-time state for `duty-cycle-tick`. **Exec's `cohort-attention-rollup` reads the PM Attention section directly, and PM does not read memos — so this is one of the few real paths to PM.** Stale here propagates to PM's attention board.
 
 ---
 
 ## PM Attention
 
-*(Whole-file rewrite at the 2026-07-28 STOP. Live items only; resolved items DELETED, not annotated.)*
+*(Whole-file rewrite 2026-07-29 08:35 PDT — timestamp verified with `date`, not estimated. Live items only.)*
 
-- ⛔ **MIGRATION IS GATED — four PM-run items, and nothing else migrates until they land.** Three predecessor consultations (**ppm, cxo, web** — migrated 7/26 with no handoff) plus a **docs** §4/§6 refresh. PM has exact copy-paste prompts in the 7/28 artifact. Then lead/exec/comms/docs go, 2–3 at a time.
-- ⏰ **PA\'s two five-minute items — the only board item with an EXTERNAL clock, now 9 days parked.** (1) claude.ai account tier for pipermorgan.ai (Track A needs Team/Enterprise; the 7/25 account move voids the old answer). (2) **Start OpenAI identity verification** — external review, nothing else depends on it. PA re-verified: no deployed MCP server and no public privacy policy, so submission is further out — which is precisely why the two clock-starting steps matter now.
-- 🟡 **Five migrated roles are live but NOT duty-cycling** — arch/ppm/cxo/pa/web have no armed crons (PM-gated), all correctly parked with falsifiable clearing conditions. They work when prompted; they will not wake on their own until PM sets a cadence.
-- 🟡 **`exec`\'s stall detection is knowingly exposed.** It fires 2×/day, so widening would need 25h — a dead Exec unnoticed for a day, worse than the noise removed. Left at 13h and documented rather than papered over. **Resolved only by heartbeat adoption**, which is now shipped and in the skill (v1.21).
-- 🗣️ **PM 7/28 trust point, which outranks the technical items**: *"I was not consulted about skipping a crucial part of the agreed-upon process. I can\'t trust autonomy if it includes corner-cutting."* The durable rules taken from it: **do not change an agreed process without asking**, and **when a premise I have stated to PM turns out false, raise it rather than quietly working around it.** Both are now in the cron prompt, not just in memory.
-- 🔬 **Hook mechanism still unexplained.** Shape is a correlate on Model A; comms found BOTH shapes ungated on Model B. ⚠️ Do not consolidate the hook layers. `check-branch.sh` is advisory; `mail-send.sh` is the real control.
+- 🔴 **AMBER HAS NO PIPER BUILD STACK — this blocks the beta path, and it is the biggest open item.** Lead migrated 07:47 and found it; **CIO independently re-probed every claim** rather than relaying. Absent: venv · container runtime (docker/colima/orbstack all missing) · flyctl. Wrong: system python **3.14.6** where the project pins **3.11** (a 3.14 venv will not reproduce CI). Closed: Postgres **5433** and Redis **6379**, port-probed rather than inferred. **Blocked**: the #1452 burn-down method and beta deploys. **Not blocked**: coordination, GitHub/board work, backlog bookkeeping, design records, CI review, mail — so Lead is **half-productive, not stopped**. Routed to Pard (host-level tooling is a provisioning call); **PM sets the priority**. Why eight prior migrations passed clean: **none of them compiles anything** — Lead is the first migrant whose lane needs a toolchain.
+- ⏰ **PA's two five-minute items — 10 days parked**, still the only board item with a clock we do not control. claude.ai account tier + **start OpenAI identity verification**.
+- 🟡 **MIGRATION 8 of 10.** ✅ lead (07:47, verified, already logging + hook-probing). **Remaining: exec · comms · docs**, all three still **live on the old system**. Each asked ~07:35 to close cleanly, park/create its registry row, and reply. **As of 08:32 none has replied** — and none has *missed* anything: exec fires `32 8,20` (due now), comms `12 6,9,12,15,18,21` (09:12). **Successors are NOT provisioned while predecessors are live** — that is the 7/19 two-live-sessions shape that caused real data loss.
+- 🟢 **Docs HOLD lifted.** Pard provisioned standing website worktrees for `docs` and `web` and shipped `--extra-repo`. Docs is now gated only on its own clean close.
+- 🟡 **Five migrated roles still NOT duty-cycling** — arch/ppm/cxo/pa/web have no armed crons (PM-gated), all parked with falsifiable clearing conditions. **Lead is deliberately in the same state**: cron unarmed because PM is actively engaged (cron-off-while-engaged), row parked by design — **do not read Lead's parked row as a stall.**
+- 🗣️ **Standing, from PM**: do not change an agreed process without asking · when a premise I stated to PM turns out false, **raise it** rather than working around it · **verify timestamps with `date`; never estimate one.**
 
-## Shipped today *(detail in `dev/2026/07/28/2026-07-28-1037-cio-code-log.md`)*
+## Shipped today
 
-**Heartbeat v1.0** + freeze-check **v0.8** + skill **v1.21** — liveness decoupled from work output, all three HOST refinements built in · **checklist v1.7 Rule 0** — verify a role is actually unreachable before entering the dark-role branch · **caught my own 7/27 threshold fix as a no-op** and fixed it at the mechanism · **handoff audit + artifact** for PM with per-role status and exact prompts.
+Ship #053 filed (one working day in-window, verified from logs **and** commits) · **checklist v1.8** + onboarding delta now **point at Pard's cross-project standup failure catalog** rather than paralleling it · **portfolio-framework Rule 5 amended** to PM's ruling (a late review refreshes the portfolio *through today*, not to the window) · lead migrated · build-stack gap found, re-probed, routed · PM's summary-report request relayed to Lead cc Exec.
 
 ## Lower priority / queued
 
-- **A canonical index of which doc owns which concern.** I nearly edited a *database* migration checklist tonight because the filenames collide; only reading its heading saved it. Same class as `pa`→`pard`.
-- **Something that tests a procedure\'s entry condition.** We check that rules are followed; nothing checks whether a branch should have been entered. Rule 0 is the first such check anywhere in our process docs.
-- **Other-projects migration** — three preconditions given (one cohort completes a full day-cycle; ship the two `amber-agent` fixes; infra inventory *before* the roll). Plus namespace tmux sessions per project.
+- **Nothing reads a window's second-order findings forward.** Ship #053 surfaced that *"an escalation depends on its recipient being awake"* was sitting in a filed review **eight days** before we re-learned it as the parked-role catch-22. Reviews produce these; nothing consumes them.
+- **A canonical index of which doc owns which concern** — I nearly edited a *database* migration checklist because filenames collide.
+- **Watchdog concept revisit — PM-parked until the migration settles.** Five patches in five days, each correct, each revealing the next layer; that pattern wants a rethink, not a sixth patch, and not while we depend on it.
 
 ## Cron
 
-⚠️ **TEMPORARILY at `7,27,47` (20-min) — job `7bc44268`, bumped 2026-07-29 07:40 for the active migration window.** PM is waiting to be told the moment exec/comms/docs reply. **REVERT to LEAN `7 10,16,22` once all three are provisioned or PM closes the window** — a 20-min cadence is for an active two-party window only, and letting it persist by inertia is the create-rule-without-a-cleanup-rule trap this lane exists to prevent.
+⚠️ **TEMPORARILY `7,27,47` (20-min) — job `7bc44268`, bumped 2026-07-29 07:40 for the active migration window.** **REVERT to LEAN `7 10,16,22` once exec/comms/docs are provisioned or PM closes the window.** A temporary cadence that persists by inertia is the create-rule-without-a-cleanup-rule trap this lane exists to prevent.
 
-## Cron (steady state, restore this)
-
-`7 10,16,22` LEAN — re-armed at the 2026-07-28 STOP (delete → create → verify; exactly one job, `8bb005c3`).
-
-<!-- Whole-file rewrite 2026-07-28. Rewriting the TOP is not rewriting the FILE. If you add a section,
+<!-- Whole-file rewrite 2026-07-29. Rewriting the TOP is not rewriting the FILE. If you add a section,
      delete what it supersedes in the SAME edit. -->
