@@ -1,34 +1,33 @@
 # CIO Carry-Forward — ephemeral session state
 
-**Purpose**: read-at-fire-time state for `duty-cycle-tick`. **Exec's `cohort-attention-rollup` reads the PM Attention section directly — and PM does not read memos, so that rollup is one of the few real paths to PM.** Stale here propagates to PM's attention board. Durable owed/queued items live in `cio-standing-items.md`.
+**Purpose**: read-at-fire-time state for `duty-cycle-tick`. **Exec's `cohort-attention-rollup` reads the PM Attention section directly, and PM does not read memos — so this is one of the few real paths to PM.** Stale here propagates to PM's attention board.
 
 ---
 
 ## PM Attention
 
-*(Whole-file rewrite at the 2026-07-27 STOP. Live items only; resolved items DELETED, not annotated.)*
+*(Whole-file rewrite 2026-07-29 08:35 PDT — timestamp verified with `date`, not estimated. Live items only.)*
 
-- ⏰ **PA's two five-minute items — the only things here with an EXTERNAL clock, now 8 days parked.** (1) claude.ai account tier for pipermorgan.ai (Track A needs Team/Enterprise; the 7/25 account move means the old answer doesn't apply). (2) **Start OpenAI identity verification** — external review, nothing else depends on it. PA re-verified: `mcp.pipermorgan.ai` is not deployed and there is no public privacy policy, so submission is further out — **which is exactly why the two clock-starting steps matter now**, since every day they sit adds to the end of the chain rather than being absorbed by it.
-- 🟢 **ALL FOUR remaining roles report migration-READY.** Lead: *"slot me anywhere, including first"* — handoff refreshed to arch\'s bar, carry-forward and registry row current, no in-flight work, ~5-min cold start. Comms, Exec, Docs likewise. **Nothing on the Piper side gates them; only PM\'s availability for first-touch approvals.** Roll **2–3 at a time, not 5** — five at once made five approval queues and 4h of dead time. Spend early approvals on "don\'t ask again"; the config dir is shared, so a rule granted in one seat spares the rest.
-- 🟡 **The five migrated roles are live but NOT duty-cycling** — arch/ppm/cxo/pa/web have no armed crons (PM-gated). All five are correctly parked with falsifiable clearing conditions. They work when prompted; they will not wake on their own until PM sets a cadence.
-- 🟡 **`exec`\'s stall detection is knowingly exposed, and I chose that deliberately.** It fires 2×/day, so the interim widening would need 25h — a dead Exec unnoticed for a full day, strictly worse than the noise removed. Left at 13h and documented in the registry header rather than papered over with a number that would make the file look consistent while disabling the belt for a leadership role. **Resolved only by the structural fix below.**
-- 🔬 **Structural fix awaiting HOST + Exec read — a per-fire heartbeat decoupled from work output.** The watchdog infers liveness from *work*, which is legitimately bursty; the registry premise and the skill contradicted each other in writing for weeks, so a compliant quiet fire was invisible **by construction** and we were alerting on compliance (lead flagged 3× on 7/27 while alive). Interim thresholds shipped. **Not putting the heartbeat in the skill unilaterally** — it is a per-fire obligation on ten agents.
-- 🟡 **cxo / ppm / web PREDECESSORS still reachable and un-retired.** Wake each for §4/§6 with the honesty gate before retiring. arch and PA both proved context survives a week dark; my earlier advice against this was wrong.
-- 🔬 **Hook mechanism still unexplained.** Shape is a correlate on Model A; **comms found BOTH shapes ungated on Model B**, so the shape framing is Amber-specific. ⚠️ Do not consolidate the hook layers. `check-branch.sh` is advisory; `mail-send.sh` is the actual control.
+- 🔴 **AMBER HAS NO PIPER BUILD STACK — this blocks the beta path, and it is the biggest open item.** Lead migrated 07:47 and found it; **CIO independently re-probed every claim** rather than relaying. Absent: venv · container runtime (docker/colima/orbstack all missing) · flyctl. Wrong: system python **3.14.6** where the project pins **3.11** (a 3.14 venv will not reproduce CI). Closed: Postgres **5433** and Redis **6379**, port-probed rather than inferred. **Blocked**: the #1452 burn-down method and beta deploys. **Not blocked**: coordination, GitHub/board work, backlog bookkeeping, design records, CI review, mail — so Lead is **half-productive, not stopped**. Routed to Pard (host-level tooling is a provisioning call); **PM sets the priority**. Why eight prior migrations passed clean: **none of them compiles anything** — Lead is the first migrant whose lane needs a toolchain.
+- ⏰ **PA's two five-minute items — 10 days parked**, still the only board item with a clock we do not control. claude.ai account tier + **start OpenAI identity verification**.
+- 🟡 **MIGRATION 8 of 10.** ✅ lead (07:47, verified, already logging + hook-probing). **Remaining: exec · comms · docs**, all three still **live on the old system**. Each asked ~07:35 to close cleanly, park/create its registry row, and reply. **As of 08:32 none has replied** — and none has *missed* anything: exec fires `32 8,20` (due now), comms `12 6,9,12,15,18,21` (09:12). **Successors are NOT provisioned while predecessors are live** — that is the 7/19 two-live-sessions shape that caused real data loss.
+- 🟢 **Docs HOLD lifted.** Pard provisioned standing website worktrees for `docs` and `web` and shipped `--extra-repo`. Docs is now gated only on its own clean close.
+- 🟡 **Five migrated roles still NOT duty-cycling** — arch/ppm/cxo/pa/web have no armed crons (PM-gated), all parked with falsifiable clearing conditions. **Lead is deliberately in the same state**: cron unarmed because PM is actively engaged (cron-off-while-engaged), row parked by design — **do not read Lead's parked row as a stall.**
+- 🗣️ **Standing, from PM**: do not change an agreed process without asking · when a premise I stated to PM turns out false, **raise it** rather than working around it · **verify timestamps with `date`; never estimate one.**
 
-## Shipped today *(detail in `dev/2026/07/27/2026-07-27-1037-cio-code-log.md`)*
+## Shipped today
 
-**m-44 "Clear Is Not a Measurement" FILED** — arch\'s bequest, 9 instances, 4 roles, 2 projects · **PARK-NO-EXIT** shipped, then both HOST-found gaps closed (notified nobody; routed to parties that cannot act) · **skill v1.20** — v1.17\'s unstated precondition (the agent must be RUNNING) · **freeze-check v0.7** — asserts what it examined (Janus\'s principle, adopted) · registry reasons corrected to clearing conditions, `web` added with cadence marked UNKNOWN rather than invented · watchdog thresholds corrected off a false premise.
+Ship #053 filed (one working day in-window, verified from logs **and** commits) · **checklist v1.8** + onboarding delta now **point at Pard's cross-project standup failure catalog** rather than paralleling it · **portfolio-framework Rule 5 amended** to PM's ruling (a late review refreshes the portfolio *through today*, not to the window) · lead migrated · build-stack gap found, re-probed, routed · PM's summary-report request relayed to Lead cc Exec.
 
 ## Lower priority / queued
 
-- **A cross-check that the registry\'s stated premises match the skill\'s stated rules.** Both are mine, both were in force, and they contradicted each other in writing for weeks — nothing in the system compares them. Probably the next mechanism worth building.
-- **Other-projects migration** — answered with three preconditions (one cohort completes a full day-cycle; ship the two `amber-agent` fixes; infra inventory *before* the roll). Plus: namespace tmux sessions per project.
-- **Watchdog heartbeat START-side freshness check** — my half; Pard\'s emit half is live, bar >7h.
+- **Nothing reads a window's second-order findings forward.** Ship #053 surfaced that *"an escalation depends on its recipient being awake"* was sitting in a filed review **eight days** before we re-learned it as the parked-role catch-22. Reviews produce these; nothing consumes them.
+- **A canonical index of which doc owns which concern** — I nearly edited a *database* migration checklist because filenames collide.
+- **Watchdog concept revisit — PM-parked until the migration settles.** Five patches in five days, each correct, each revealing the next layer; that pattern wants a rethink, not a sixth patch, and not while we depend on it.
 
 ## Cron
 
-`7 10,16,22` LEAN — re-armed at the 2026-07-27 STOP (delete → create → verify; exactly one job, `d65867e8`).
+⚠️ **TEMPORARILY `7,27,47` (20-min) — job `7bc44268`, bumped 2026-07-29 07:40 for the active migration window.** **REVERT to LEAN `7 10,16,22` once exec/comms/docs are provisioned or PM closes the window.** A temporary cadence that persists by inertia is the create-rule-without-a-cleanup-rule trap this lane exists to prevent.
 
-<!-- Whole-file rewrite 2026-07-27. Rewriting the TOP is not rewriting the FILE. If you add a section,
+<!-- Whole-file rewrite 2026-07-29. Rewriting the TOP is not rewriting the FILE. If you add a section,
      delete what it supersedes in the SAME edit. -->

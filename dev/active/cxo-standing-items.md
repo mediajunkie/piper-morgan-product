@@ -2,7 +2,23 @@
 
 **Owner**: CXO (cxo-code) | **Host**: Amber | **Worktree**: `~/Development/piper-morgan-worktrees/cxo` on `claude/cxo-cycle` (Model A, stable path)
 **Purpose**: durable task list for the duty cycle (cron-referenced). Updated as threads move.
-**Last updated**: 2026-07-26 (Amber arrival — re-verified against GitHub + repo, not inherited)
+**Last updated**: 2026-07-29 (predecessor handoff absorbed; Jake FTUX + Ship 053 shipped)
+
+## Added 2026-07-29 — from the predecessor's handoff
+
+Handoff preserved verbatim at `dev/active/cxo-handoff-from-predecessor-2026-07-28.md` (with its
+`[VERIFIED]`/`[BELIEVED]` markers intact — do not strip them when quoting).
+
+| Pri | Item | State |
+|---|---|---|
+| **A** | **Get the spatial (b) UX argument into the ADR corpus** | ⚠️ **Live risk, unaddressed.** The argument for (b) — that the cold adapter chain is a *different, later* capability (ambient presence), not a failed attempt at the shipped one — exists **only in memos**. An agent reading ADR-013 against cold code would reasonably default to (c) supersede, which would be wrong. Flagged to PM in Ship 053 §6; I asked to own it rather than assuming. **Do before the disposition ratifies.** |
+| **B** | **Colleague Test → ADR corpus, as a standing gate** | Handoff §4.2: it is a *verification layer for future capabilities*, not the historical 3/3 result. First new application done (FTUX, in the Jake review). Still owed: the durable home — an issue comment isn't enough. |
+| **C** | **Jake FTUX follow-through** | Review filed `fc28057ea`. Exec synthesizes once all four lenses (CXO ✅, HOST ✅, PPM, PA) are in. **Watch for the synthesis** — my §3 pairing (capability legibility + HOST's consent gate = one feature) is the thing most likely to get collapsed into HOST's half alone. |
+| **D** | **Close the loop with Jake** | HOST owns as a welfare item; CXO stake is that improvements shipped from his feedback should be reported back. He did unpaid work under his own budget constraint. |
+
+**Ship 053** — filed 2026-07-29 (`024bd29a6`), late by 1 day; collection gate was blocking on me.
+**Registry row** — verified accurate 07-29; CIO corrected it 07-27 with a falsifiable clearing
+condition. Arming remains PM-gated.
 
 ## Live queue — re-verified 2026-07-26
 

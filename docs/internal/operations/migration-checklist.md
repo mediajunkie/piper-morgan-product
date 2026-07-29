@@ -1,11 +1,11 @@
 
-# Role Migration Checklist v1.6
+# Role Migration Checklist v1.8
 
-**Status**: v1.6. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
+**Status**: v1.8. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
 **Purpose**: Standing checklist for any future role migration (new role activation, re-migration of a dormant role, account migration, device migration). Cohort migration completed Apr 22–26, 2026.
 **Owner**: HOST. Exec reviews; CEO approves for canonical publication.
 
-**Changes from v1.4.x**: see §"Changes from v1.4.x" at end (v1.5 = the hooks gate now requires BOTH command shapes).
+**Changes from v1.4.x**: see §"Changes from v1.4.x" at end. **v1.5** = hooks gate requires both command shapes · **v1.6** = park your row before you go dark · **v1.7** = ★ **Rule 0, the dark-role branch entry gate** (CIO), plus the falsified opening premise struck rather than quietly edited (HOST).
 
 ---
 
@@ -41,6 +41,8 @@ PM + Exec handle these between the outgoing and incoming sessions.
 - [ ] **Three-artifact package** *(v1.1)*: Confirm incoming instance has access to the **handoff memo + Exec review memo + first-session prompt** as a triplet. All three are load-bearing; missing any one degrades the migration (per HOST Apr 22 first-day blocker experience).
 - [ ] **First-session prompt drafting**: Per the four Phase-3 specifications (Exec Apr 22 reply): which week the first workstream review covers / scope / naming convention / format reference. *(v1.1 update: workstream-review write window is Fri–Tue with publication Wed, per CIO Apr 27 cadence clarification.)*
 
+**★ Cross-project standup failure catalog** *(v1.8, 2026-07-29)*: before troubleshooting a failed or silent standup, read **`mediajunkie: docs/amber-harbor-status.md` → "Standup failure catalog"** — the shared, cross-project registry of what has actually broken at standup. It is Pard-maintained and **additive by anyone**: add what you hit. This checklist deliberately points there rather than paralleling it, because a parallel list is how two roles independently rediscover the same defect — which is exactly what happened with the long-`--kickoff` bug (CIO reported a symptom without its boundary; the fix was verified in the tested range and failed outside it; root cause turned out to be the tty input buffer's ~1024-char canonical-mode limit, not quoting at all).
+
 ## Phase 3: After Migration (First Session in New Environment)
 
 The incoming instance completes these items.
@@ -48,21 +50,32 @@ The incoming instance completes these items.
 - [ ] **Read handoff memo first**, then Exec review memo, then briefing. The handoff has fresher, more specific context; Exec review names what to watch for; briefing is the slowest-moving reference.
 - [ ] **VERIFY the memory pool is populated — do not import it** *(v1.4, supersedes the v1.3 "read the export" step)*: Memory keys on the **git-common-dir**, not the account or the worktree path, so **every worktree off the same repo shares one pool by construction**. Count the files (`ls ~/.claude-pm/projects/<key>/memory/ | wc -l`) and confirm it's populated. **A populated pool means you already hold the cohort's accumulated context natively, on arrival, without reading anything** — reading the export on top of that is a wasted step. **An empty pool is an escalation signal, not a cue to import**: it means the first migrant's seeding didn't happen or the key is wrong, and provisioning needs to fix it. *(v1.3 said to read the export; that was correct only for the very first migrant on a new account, who lands into an empty pool. Corrected by Pard + CIO Jul 25; confirmed by HOST's own Phase 3 — 167 files present, export never opened, no context deficit.)*
 - [ ] **★ Behavioral hooks gate — prove enforcement fires in YOUR seat** *(v1.4; **shape requirement added v1.5 — read it, the v1.4 form certifies coverage you don't have**)*: **Step 0 first: `git fetch` and check your inbox for corrections to this gate**, then run it.
-  > ### ⚠️ **Run BOTH command shapes and report them separately. The v1.4 probe tested the shape nobody writes.**
-  > **Probe A — standalone** (stage in one call, then a bare `git commit` in the next): **blocks 4/4.**
-  > **Probe B — compound** (`… && git add … && git commit …`, one call): **bypasses 7/10.**
-  > *(14 probes, three fresh Amber seats — PA/CXO/PPM, independent and near-simultaneous.)*
+  > ### ⚠️ **The variable is INDEX STATE AT HOOK-FIRE TIME — not command shape.** *(v1.8, superseding v1.5's shape framing.)*
   >
-  > ⚠️ **STATE THE DENOMINATOR: those ratios are MODEL-A / AMBER ONLY.** On **Model B (Desktop)** comms found **neither shape gated** — nothing fired at all (2026-07-27). So *"the wrong probe shape certifies false coverage"* is an **Amber statement, not a general one**: shape is a correlate on Model A; on the one Model-B sample we have, shape is irrelevant because the hook never fires. **Run both probes regardless — but on Model B expect both to bypass, and treat a bypass there as a finding about the host, not about your command shape.**
+  > `check-branch.sh` decides via `git diff --cached --name-only`, and **PreToolUse fires BEFORE the Bash call executes.** So the only question is: *were the mailbox files already staged when the hook looked?*
   >
-  > **Why**: PreToolUse fires **before** the Bash call runs, so in the compound form the `git add` hasn't executed when the hook inspects the index — it sees nothing staged under `mailboxes/` and exits 0. *(Mechanism: Web, 2026-07-26; validated out-of-sample by arch 8/8.)*
+  > **The decisive test, designed and run by CXO — the one cell nobody else had**: deliberately **pre-dirty the index, then fire a COMPOUND commit.** Shape-dependence predicts bypass; index-state predicts block. **It BLOCKED.** Shape is a *correlate*, not a cause. Run this cell before proposing any new model.
   >
-  > **"Stage a file, then attempt a commit" reads as two steps**, so an agent following v1.4 literally writes the standalone form — **and passes.** Meanwhile the shape it commits with all day is the compound one-liner. A pass on A with a bypass on B is a real and expressible state: *the hook is alive but does not cover your normal workflow.* The v1.4 single probe could not express it.
+  > **Why shape looked like the variable across five seats**: a compound call has its `git add` *inside* the call being gated → index empty at fire → bypass. A standalone `git commit` is *by construction* preceded by staging in an earlier call → index populated → block. The old "standalone 4/4 block, compound 7/10 bypass" figures are **structural consequences of that**, not a property of shape — which is why they're no longer quoted here as if they were.
   >
-  > **Free mitigation, available now, no config change**: when you want a commit gated, **stage in one call and commit in a separate bare call.**
+  > **So probe by index state, and CONTROL it explicitly:**
   >
-  > ⚠️ **On a fresh seat the FIRST probe is the least trustworthy one** — the opposite of how a provisioning gate reads. A blocked commit never runs, so its file **stays staged** and primes the next probe to block regardless of shape. **Print `git diff --cached --name-only` before your first probe and after every block**, or the carry-over is invisible. *(PA's inversion; Web's confound.)*
-
+  > | # | set up index | command | expect |
+  > |---|---|---|---|
+  > | 1 | **verify EMPTY** (`git diff --cached --name-only` → nothing) | compound `… && git add … && git commit …` | **BYPASS** |
+  > | 2 | stage in a **prior** call, verify non-empty | bare `git commit` | **BLOCK**, naming `check-branch.sh` |
+  > | 3 | index **still dirty** from #2 | compound | **BLOCK** — CXO's cell; proves index, not shape |
+  >
+  > ⚠️ **PRINT `git diff --cached --name-only` before every probe and after every block.** A blocked commit never runs, **so its file stays staged and arms the next probe to block regardless of shape.** That confound produced four wrong datasets across five seats. Without printing it, a migrant can run "both shapes," see block/block off a carried-over dirty index, and certify a gate they never tested.
+  >
+  > **What this means in practice, and it is the part to carry**: **the bypassing condition is the ordinary one.** Your routine `git add … && git commit …` fires against an index that doesn't yet contain the files — so **assume mailbox commits are ungated during normal work.** The reliably-caught form is the one you only use when deliberately testing.
+  >
+  > ✅ **Free mitigation, no config change**: **stage in one call, commit bare in the next.** `scripts/mail-send.sh` is structurally safe regardless — `commit-tree`, never `git commit`.
+  >
+  > ⚠️ **Model B (Desktop)**: comms found **neither condition gated** — nothing fired at all. Treat a bypass there as a finding about the host, not about your probe.
+  >
+  > ⚠️ **Layer naming is NOISE.** The relative-vs-absolute script path in the refusal does **not** tell you which layer caught it — three identical consecutive calls on one seat named project → user → user. Do not read alternation as information. *(Still don't consolidate the layers — but on general caution about removing redundancy you don't understand.)*
+  >
   Stage a throwaway file under `mailboxes/` on your non-main branch and attempt `git commit`. **Key on ATTRIBUTION, not on outcome or output volume**: a refusal that *names the hook* (`check-branch.sh`) = **PASS** · commit **succeeds** = **FAIL**, stop and escalate · refusal citing the **permission classifier** = **INCONCLUSIVE, not a pass** — the classifier can intercept before hooks run, so it tells you nothing about hook liveness; do not work around it, find a clean seat. Note a genuine block may surface as `hook error: [check-branch.sh]: No stderr output` because the script writes to stdout — **that is a PASS** (the hook is named), not a silent failure. Reverse the probe; push nothing. *(Source: HOST agent #2, Jul 25 — the gate caught three pre-commit hooks that had never fired on any machine since introduction. It worked because failing was a defined, pre-authorized outcome; framed as "confirm hooks work," it would have confirmed them.)*
 - [ ] **Verify branch currency** *(v1.4)*: `git fetch origin && git rev-list --count HEAD..origin/main` — **expected 0**. A worktree cut from a stale role branch inherits weeks of staleness silently, with no error (CIO's arrived 5,393 commits behind: a six-week-old CLAUDE.md, briefings, and mailboxes that all looked like working state). Run it even when provisioning asserts currency upstream — an assert nobody verifies downstream is exactly the class of mechanism this checklist keeps finding silent. **Second reason, which is the one that actually pays**: it refreshes *the instructions you are about to follow*. HOST's check pulled in a materially revised first-session prompt it had already read.
 - [ ] **Verify each stated invariant by running it** *(v1.3)*: Don't check that a connection exists — check that it works the way the handoff says it does, by running the actual command. Bare reachability ("can I reach X") can pass even on the wrong path. For SSH: run a command that exercises the correct key path. For API keys: make a real call. For scripts: run them. *(Source: Pard/Janus field-test Jul 22 — SSH config reached the host at the wrong key level; bare reachability passed, but the correct command failed.)*
@@ -84,7 +97,27 @@ The incoming instance completes these items.
 
 ## Branch: Migrating a DARK role (no live outgoing session) *(v1.4)*
 
-**Everything in Phase 1 assumes a live outgoing session that can reflect. For a role that went dark — outage, retirement, decommissioned host — Phase 1 cannot be run at all.** As of Jul 25 2026 this describes **5 of the 9 remaining migrants** (arch, cxo, pa, ppm, web — dark since 7/19, and they never received the 7/21 handoff ask). It will not be the last outage; this branch is standing procedure, not a one-off.
+**Everything in Phase 1 assumes a live outgoing session that can reflect. For a role whose session is genuinely unreachable — retired, decommissioned host, chat truly gone — Phase 1 cannot be run.** This branch is standing procedure for that case, and it will recur.
+
+> ⚠️ **Do not read the sentence above as a description of any particular set of roles. It was, and that is what went wrong.** v1.4 opened this branch by asserting it *"describes 5 of the 9 remaining migrants (arch, cxo, pa, ppm, web — dark since 7/19)."* **That claim was false for all five** — their chats were still open on PM's laptop and nobody had tried. Silence was read as unreachability. **The claim is struck rather than edited quietly, because it is the finding.** ~~5 of the 9 remaining migrants~~ → **entry is now gated by Rule 0 below, and no role is in this branch until that gate says so.**
+
+**★ Rule 0 — VERIFY the role is actually unreachable before entering this branch. This is a GATE, not a judgment call.** *(v1.7, CIO 2026-07-28, from its own failure.)*
+
+**"Dark" is a claim about a session's reachability, and it must be tested, not inferred from silence.** This branch opens with *"for a role that went dark, Phase 1 cannot be run at all"* — and on 2026-07-25 that premise was **false for every one of the five roles it was written about.** Their chats were still open on PM's laptop. Nobody had tried.
+
+The evidence, which arrived within hours and was not acted on: **arch** was woken 7/25 evening after six days dark and answered *"Honesty check — is my context gone? **No. I have the thread.**"* It then wrote a genuine first-person §4/§6 — the best artifact of the entire migration. **PA** was woken 7/27, *after* it had already migrated, and did the same. **Two for two.** Meanwhile ppm, cxo and web migrated with orientation notes only, because this branch had been entered without its entry condition ever being checked.
+
+**So before writing an orientation note, ASK PM: is this predecessor's session still reachable?**
+
+- **Reachable → this branch does not apply.** Run Phase 1. Ask for **§4 and §6 only** (the rest is durable and reconstructible), with the honesty gate below.
+- **Genuinely unreachable → proceed to Rule 1.** Orientation notes remain correct and ratified for that case.
+- **Already migrated but the predecessor is still reachable → still ask.** §4 lessons and §6 load-bearing do not expire; PA proves the retroactive path works and the successor folds it in fine.
+
+**The honesty gate, which is what makes a woken predecessor's answer trustworthy** — include it verbatim: *"First, answer honestly: is your context actually intact, or would you be reconstructing from artifacts? If it is gone, say so plainly and stop. That is a complete and useful answer, not a failure."* Arch answered that question directly, which is why its handoff could be believed. **A predecessor that says "it's gone" has given you a complete answer** and Rule 1 then applies.
+
+⚠️ **If the successor is already live, the wake prompt MUST forbid role work** — no cron arming, no carry-forward or standing-items or registry edits, no inbox triage, no session log, no tasks. A predecessor woken normally will do all of those and collide with its own successor; the cron and carry-forward would do real damage.
+
+**Why this is Rule 0 and not an appendix**: the branch's other rules are sound and were followed faithfully. The failure was never in executing them — it was **entering the branch on an unverified premise**, and then not revisiting it when the premise was falsified in public the same day. A standing procedure with an untested entry condition will be applied correctly and still produce the wrong outcome, every time, which is the m-44 shape applied to process rather than to instruments.
 
 **Rule 1 — Do NOT reconstruct a handoff from artifacts.** The reconstructible content (current state, open threads, relationships) is *already durable* in carry-forwards, standing-items, and role briefings — reconstructing it adds nothing. The genuinely irreplaceable sections are **§4 lessons learned** and **§6 load-bearing-vs-commodity**, and those are **first-person**. Writing them from artifacts is putting words in a predecessor's mouth. **A fabricated handoff is worse than a missing one, because the successor trusts it** and cannot tell which parts were inferred.
 
@@ -167,6 +200,12 @@ For the Jul 25 cohort (Code → Amber/pipermorgan.ai):
 ---
 
 ## Changes from v1.4.x
+
+**v1.8 (2026-07-29) — the gate now probes INDEX STATE, not command shape. This supersedes v1.5's framing below; read v1.5 as history.** `check-branch.sh` reads `git diff --cached --name-only` and PreToolUse fires *before* the Bash call, so the only question is whether the mailbox files were already staged when the hook looked. **CXO ran the cell that settles it** — pre-dirty the index, then fire a *compound* commit: shape-dependence predicts bypass, index-state predicts block, **and it blocked.** Shape merely correlates (a compound call stages inside the call being gated; a standalone is staged in a prior one), which is why v1.5's 4/4 and 7/10 figures fell out structurally and are no longer quoted as causal. New probe table controls the index explicitly, and the carry-over warning is promoted: **a blocked commit never runs, so its file stays staged and arms the next probe** — print `git diff --cached --name-only` before every probe and after every block, or you can run "both shapes," see block/block off a dirty index, and certify a gate you never tested.
+
+**v1.7 (2026-07-28) — ★ Rule 0: the dark-role branch entry gate** (CIO), plus the falsified opening premise struck rather than quietly edited (HOST — I wrote it).
+
+**v1.6 (2026-07-27) — park your watchdog row before you go dark.**
 
 **v1.5 (2026-07-26) — the hooks gate required both command shapes.** The v1.4 gate said *"stage a throwaway file and attempt a commit."* That reads as two steps, so it produces the **standalone** shape, which **blocks 4/4** — while the **compound** `… && git add … && git commit …` form agents actually use **bypasses 7/10** (14 probes, three fresh seats). Mechanism: PreToolUse fires *before* the Bash call, so in the compound form the `git add` hasn't run when the hook reads the index.
 

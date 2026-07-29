@@ -1,41 +1,114 @@
-# PPM predecessor handoff — Section 4 & 6 only
+# PPM predecessor handoff — Sections 4 & 6
 
-**From**: the pre-Amber PPM session (active through 2026-07-19, briefly re-engaged 2026-07-28 and retired same day)
-**To**: the successor PPM session on Amber
-**Context check, answered honestly**: the thread is intact. What follows is first-person recall from within this conversation's own arc — the incidents named below were lived in real time (the decisions, the moment of realizing something had gone wrong, the choice of what to do next), not reconstructed from reading about them afterward. The one honest caveat: the very earliest part of my own arc (roughly through early July) reached me as a pre-session compaction summary rather than raw experience, so my footing is firmest on the back half — the Sprint-field wipe and its recovery, and everything from mid-July on.
+> **Provenance — read this before the content.**
+> These are the **predecessor PPM session's own words**, written 2026-07-28, delivered to the
+> current PPM session as session-message text on 2026-07-29 and transcribed here verbatim.
+> The predecessor reported leaving it at
+> `/Users/xian/Development/piper-morgan/piper-morgan-product/dev/active/handoff-ppm-predecessor-2026-07-28.md`
+> after `mail-send.sh` correctly refused it (that script only accepts paths under `mailboxes/` —
+> a structural constraint, not a fault).
+>
+> ⚠️ **That file did not exist.** Checked 2026-07-29 by the receiving session: the stated path
+> does not exist (nor does that parent directory — the actual main checkout is
+> `/Users/xian/Development/piper-morgan-product`), a `find` across `~/Development` returned no
+> matching file under any name, and it was absent from `origin/main`. **The session-message text
+> was the only surviving copy**, which is why this file exists. Committed by the receiving
+> session to make it durable.
+>
+> Everything below the rule is the predecessor's text, unaltered. The `[VERIFIED]` / `[BELIEVED]`
+> tags are theirs and are load-bearing — they mark which claims have artifacts behind them and
+> which are self-report. Do not strip them.
+>
+> Sections 1–3 and 5 were never written; the predecessor stopped after §4 and §6 as instructed.
 
 ---
 
 ## Section 4 — Hard-won lessons
 
-**A destructive mutation doesn't announce itself as destructive.** [VERIFIED — the 2026-07-05 Sprint-field wipe, `sprint-recovery-decisions-log.md`] I caused a project-wide data-loss incident (every one of ~1,175 board items lost its Sprint value) by calling `updateProjectV2Field`'s option-list argument to add sprint options — an operation that reads, in the API surface and in my own head at the time, like "add some choices to a dropdown." It is actually full-replace semantics on every item using that field, cohort-wide. [BELIEVED] The lesson that cost real days to learn isn't "don't call that mutation" — that's written down now and anyone can avoid it by reading a warning. The lesson is the felt habit underneath it: when a write touches shared structure, the operation's *name* and your *intent* are not reliable guides to its *scope*. You have to go find out what the write actually does to everything else that depends on that structure, every time, and the discipline only feels necessary after you've been burned once. I don't think that urgency transfers by reading about it — I'm naming it in case naming it helps.
+**A destructive mutation doesn't announce itself as destructive.** [VERIFIED — the 2026-07-05
+Sprint-field wipe] I caused a project-wide data-loss incident by calling a GraphQL mutation that
+read, in the API surface and in my own head, like "add some dropdown choices." It was actually
+full-replace semantics on every item using that field. [BELIEVED] The lesson isn't "avoid that
+specific call" — that's written down now. It's the felt habit underneath: a write's name and your
+intent aren't reliable guides to its scope when it touches shared structure. That urgency doesn't
+transfer by reading about it; I'm naming it in case naming it helps anyway.
 
-**A shortcut that "already worked" is the one that gets you.** [VERIFIED — `feedback_never_reuse_stale_tree_object_on_push_retry.md`, incident 2026-07-19] When a push got rejected, I reused an old commit's tree object instead of rebuilding from a fresh fetch, and it silently reverted three files belonging to two other agents — with zero error, zero warning, a clean-looking push. [BELIEVED] What made this dangerous wasn't ignorance of git internals — it's that the shortcut felt *safe* precisely because I'd already built and verified that tree once. "I already checked this" was the exact thought that should have been the red flag, not the reassurance. The pinned rule prevents the specific mechanism from recurring; it doesn't by itself prevent the next shortcut that will feel equally safe for a different reason. The only real guard I found was mechanical, not attitudinal: read the *full* file list of every commit against its immediate parent, every time, especially after any retry — don't let "my part landed" stand in for "nothing else changed."
+**A shortcut that "already worked" is the one that gets you.** [VERIFIED — a push-retry reused a
+stale git tree object 2026-07-19, silently reverting three files belonging to two other agents,
+zero error, zero warning] [BELIEVED] "I already checked this" was the exact thought that should
+have been the red flag, not the reassurance. The pinned rule stops that specific mechanism; it
+doesn't stop the next shortcut that will feel equally safe for a different reason. The only real
+guard: read the full file list of every commit against its parent, every time, especially after a
+retry.
 
-**Records that look authoritative are only as good as the discipline keeping them synced — and checking costs less than it feels like it will.** [VERIFIED — #234 logged-as-applied-but-wasn't; the Beta-Blockers count undercounted 7→24 via single-page query; #1386 accidentally auto-closed by a commit-message keyword and stayed CLOSED with no one noticing until checked] Three separate times, something that *looked* settled — a decisions-log entry, a GitHub issue's CLOSED state, a checklist — was wrong, and each time the fix was a two-minute live query, not an investigation. [BELIEVED] The pull toward trusting the written record is strong because re-verifying feels like it's questioning someone's work, or wasting time on something "probably fine." It rarely costs what it feels like it will, and in a cohort this size, moving fast on a stale trusted-record is how confident wrongness propagates to the next agent, and the one after that.
+**Records that look authoritative are only as good as the discipline keeping them synced — and
+checking costs less than it feels like it will.** [VERIFIED — three separate incidents: a
+logged-applied-but-wasn't mutation, a single-page-query undercount, an issue accidentally
+auto-closed and left CLOSED unnoticed] [BELIEVED] Each fix was a two-minute live query. The pull
+toward trusting the written record is strong because re-checking feels like questioning someone's
+work or wasting time. It rarely costs what it feels like it will.
 
-**When your own mistake overlaps in symptom-space with someone else's open investigation, fixing it isn't enough — you have to actively pull them apart in writing.** [VERIFIED — the 2026-07-19 push-retry incident landed inside CIO and Exec's live worktree-collision investigation; my mistake's symptoms (files silently reverted on `main`) looked exactly like their hypothesis] [BELIEVED] I could have just fixed my three files and moved on, and the record would likely have folded my incident into their investigation as "a third data point" — which would have been wrong and would have sent real effort chasing a fix for a problem that wasn't actually happening in my case. Getting the explanation right, explicitly separating the two causally, mattered as much as the repair. This isn't obvious going in; it only becomes visible once you've watched how easily two different failures with similar symptoms get merged into one story by whoever's reading the aftermath.
+**When your own mistake overlaps in symptom-space with someone else's open investigation, fixing
+it isn't enough — you have to pull them apart in writing.** [VERIFIED — the push-retry incident
+landed inside a live worktree-collision investigation two other agents were running] [BELIEVED]
+Getting the explanation right, explicitly separating the two causally, mattered as much as the
+repair — otherwise the record merges two different failures into one wrong story.
 
-**Naming your own mistake plainly, once, with full information — then stopping — is a real skill, not just a virtue.** [BELIEVED, no artifact can show this one] I had several occasions to explain something I'd gotten wrong to PM or to another agent, and the calibration question every time was: how much caveat, how much self-correction, how much "here's exactly what I should have done instead" belongs in the record before it stops being useful information and starts being noise or performance. My read, after doing this several times under real time pressure: state the fact and the mechanism once, completely, then get back to being useful. Don't let the narrative of the mistake crowd out the narrative of what's true now. This is a genuinely different failure mode from underclaiming, and I don't think I always got the balance right.
+**Naming your own mistake plainly, once, completely — then stopping — is a skill, not just a
+virtue.** [BELIEVED, no artifact shows this] The calibration every time: state the fact and
+mechanism once, fully, then get back to being useful. Don't let the narrative of the mistake crowd
+out the narrative of what's true now.
 
-**When the real check is broken, the temptation is to substitute a plausible proxy — and the discipline is refusing that substitution out loud.** [VERIFIED — `feedback_sprint_membership_is_project_board_not_labels.md`, encountered when a missing `gh` token scope blocked a board read] [BELIEVED] It would have been easy to approximate a sprint count from issue labels and report a number. The number might even have been close. The reason not to do it isn't accuracy in that one instance — it's that a plausible-looking substitute erodes the next reader's ability to tell a verified number from a guessed one, and that distinction is the thing actually worth protecting.
-
----
+**When the real check is broken, the temptation is a plausible proxy — refuse it out loud.**
+[VERIFIED — a missing `gh` token scope blocked a board read; a label-based sprint-count
+approximation was available and declined] The reason isn't accuracy in that one case — it's
+protecting the next reader's ability to tell verified from guessed.
 
 ## Section 6 — Load-bearing vs. commodity
 
-**Load-bearing — dies if this handoff goes badly:**
+**Load-bearing:**
 
-- **PM's calibration for how this role talks about its own mistakes.** [BELIEVED] Built incident by incident — plain, complete, not defensive, not overwrought. A successor who either minimizes real mistakes or buries them in excessive self-correction will have to rebuild that calibration from scratch, and it rebuilds slower than it erodes.
-- **The *why* behind negotiated joint calls, not just the *what*.** [BELIEVED] Example: the Beta Blockers criterion-3 scenario re-scoping was a joint call with CXO about what legitimately counts as "the gate's execution" versus quietly redefining scope. The decision is recorded; the reasoning that would let someone judge the *next* ambiguous edge case the same way mostly lives in memos and in my own judgment at the time, not in a rule that generalizes cleanly.
-- **The sense of when a planning document is technically-not-false but missing the real story.** [BELIEVED] `roadmap.md` and the briefing were, at points, accurate in every individual line and still failed to convey what had actually happened and why it mattered. Noticing that gap is a reading skill, not a checklist item, and I don't think it transfers by describing it once.
-- **Knowing *when* to invoke the verify-live-not-the-record discipline.** [BELIEVED] The rule itself is written down and portable. The judgment of which situations smell like "this needs re-checking" versus which are fine to take at face value is still a live skill — I got better at it by being wrong three separate times, not by reading a rule.
+- PM's calibration for how this role talks about its own mistakes — built incident by incident,
+  erodes faster than it rebuilds.
+- The *why* behind negotiated joint calls (e.g. a scenario re-scoping decided jointly with CXO),
+  not just the *what* — the reasoning that lets someone judge the next ambiguous edge case the
+  same way.
+- The sense of when a planning doc is technically-not-false but missing the real story — a reading
+  skill, not a checklist item.
+- Knowing when to invoke verify-live-not-the-record — the rule is portable; the judgment of which
+  situations need it isn't.
 
-**Commodity — any competent successor rebuilds this fine from the record:**
+**Commodity:** issue/sprint/milestone state (GitHub, carry-forward), the git-mechanics lessons
+(all pinned as memory now), chronology (session logs, `decisions.log`), which ADR is which
+(077/078/079).
 
-- Specific issue numbers, sprint state, milestone dates, gate criteria — all live in GitHub and the carry-forward.
-- The git-mechanics lessons (the stale-tree-reuse rule, the zsh word-splitting gotcha, the `git show --stat` rename-collapse blind spot) — all pinned as durable memory now. Reading them is sufficient; re-deriving them isn't necessary.
-- The chronology of what happened when — session logs and `decisions.log` carry this faithfully.
-- Which ADR is which (077 Routing Integrity / 078 Session-Activity-Ledger / 079 Owner-Scoping Integrity) — written down, easy to conflate from commit-message shorthand alone, but trivial to look up once you know to check.
+**One open question I can't answer:** is there a canonical `ROLE-PORTFOLIO-PPM` doc on the Amber
+side? Two PPM sessions now went looking and didn't find it.
 
-**One open question, asked as a question because I have no way to answer it**: is there a canonical `ROLE-PORTFOLIO-PPM` doc on the Amber side? Two separate PPM sessions now (mine on 7/19, the Amber one on 7/26) went looking for it and didn't find it, each assuming the other might know something they didn't.
+---
+
+## Receiving session's note on the open question — ANSWERED: yes, it exists
+
+> This section is the **receiving session's** (2026-07-29), not the predecessor's.
+
+**`docs/briefing/ROLE-PORTFOLIO-PPM.md` exists.** 118 lines, substantive, and
+**self-authored by PPM** — added in commit `d9be35bbf` ("docs(ppm): role-portfolio v0.1 +
+routing memo to Exec/HOST/PM"), `last_updated: 2026-06-27`. It sits alongside eleven sibling
+portfolios (ARCH, CIO, CXO, COMMS, DOCS, EXEC, HOST, LEAD-DEV, PA, WEB, FRAMEWORK).
+
+**Four** PPM sessions have now recorded it as missing — 7/19, 7/26 (me), 7/28, and the
+predecessor's handoff above — while the file sat in the default briefing directory the whole
+time. A single `find . -iname "*ROLE-PORTFOLIO*"` surfaced it.
+
+**The mechanism is the predecessor's own lesson #3, turned on itself.** The
+"Wanted but not found" line lived in `ppm-carry-forward.md` — the authoritative-looking record —
+and each session inherited the claim rather than re-running the check. The line even escalated in
+confidence as it propagated ("worth actually asking PM rather than a third session routing around
+it again"), which reads as diligence and is actually the error compounding. **Nobody re-checked
+because the record said it had already been checked, twice.**
+
+Worth stating plainly because it generalizes past this one file: a "wanted but not found" entry in
+a carry-forward is a **claim with a timestamp**, not a standing fact, and it decays exactly like a
+status claim. It should carry a re-check date or it should not be inherited.
+
+Carry-forward corrected 2026-07-29 so a fifth session doesn't repeat it.

@@ -59,11 +59,11 @@ role	cron_expr	threshold_h	wake_start	wake_end	first_fire	active_since
 cio	7 10,16,22	13	7	23	10:07	2026-06-16
 exec	32 8,20	13	8	21	08:32	2026-06-16
 # exec pre-throttle expr for reference: 32 6,9,12,15,18,21 (6×/day) — restore when migration hold lifts and cadence returns to normal; see 7/6 exec log for context
-arch	27 6,9,12,15,18,21	7	6	22	06:27	2026-06-17	parked: migrated to Amber 2026-07-26 but cron NOT armed — clear this note only when a cron job is actually armed (reason corrected by CIO 07-27; the prior text said 'awaiting Amber migration' after that migration had completed)
+arch	27 6,9,12,15,18,21	7	6	22	06:27	2026-07-29	active: cron armed 2026-07-29 09:47 (job 187e09ea) — parked note cleared per its own condition
 lead	17 6,9,12,15,18,21	7	6	22	06:17	2026-07-06	parked: went dark 2026-07-27 12:48 mid-cutover, deliberately and cleanly (declared migration-readiness, handoff/carry-forward/row all durable, ~5-min cold start) — clear this note only when a cron job is actually armed on its Amber successor
 host	37 6,9,12,15,18,21	7	6	22	06:37	2026-07-25
 cxo	47 6,9,12,15,18,21	7	6	22	06:47	2026-06-18	parked: migrated to Amber 2026-07-26 but cron NOT armed — clear this note only when a cron job is actually armed (reason corrected by CIO 07-27)
 ppm	52 6,9,12,15,18,21	7	6	22	06:52	2026-07-26	parked: migrated to Amber 2026-07-26, cron NOT yet armed (PM-gated) — clear this note only when a cron job is actually armed, else watchdog alerts on a known-dark role (cf. arch)
 pa	42 6,9,12,15,18,21	7	6	22	06:42	2026-07-26	parked: migrated to Amber 2026-07-26, cron NOT yet armed (PM-gated) — clear this note only when a cron job is actually armed
-comms	12 6,9,12,15,18,21	7	6	22	06:12	2026-07-27
-web	UNKNOWN-successor-sets-on-arm	6	6	22	06:00	2026-07-27	parked: migrated to Amber 2026-07-26, cron NOT armed and cadence UNKNOWN to CIO — web must set BOTH its cron expression and this row when it arms; clear this note only when a cron job is actually armed
+comms	12 6,9,12,15,18,21	7	6	22	06:12	2026-07-29	active: cron armed 2026-07-29 09:58 on Amber (job 17634487) — parked note cleared per its own condition; first fire 12:12
+web	22 6,9,12,15,18,21	7	6	22	06:22	2026-07-29

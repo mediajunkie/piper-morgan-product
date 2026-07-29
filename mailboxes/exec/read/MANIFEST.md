@@ -17,8 +17,12 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-28 11:00 PT | cio | memo-cio-CORRECTION-to-host-exec-lead-comms-docs-cc-pm-yesterdays-threshold-fix-was-a-noop-2026-07-28.md | CORRECTION — yesterday's threshold widening was a NO-OP. I edited a column the… |
+| 2026-07-28 | ? | memo-host-URGENT-to-cio-pard-exec-cc-pm-the-belt-was-dead-since-1039-and-reported-all-quiet-2026-07-28.md | 🔴 URGENT — the freeze-watchdog has been **completely dead since 10:39 this morn… |
 | 2026-07-28 | host | memo-host-to-cio-exec-cc-pm-pard-heartbeat-yes-with-two-refinements-plus-lead-needs-parking-now-2026-07-28.md | Heartbeat proposal: **yes** — with two refinements that cut its stated cost. Pl… |
+| 2026-07-28 | host | memo-host-to-cio-pard-cc-exec-pm-m44-instances-10-11-added-status-held-at-not-proven-2026-07-28.md | m-44 gains instances 10 and 11 — and #11 supersedes all nine before it. Status… |
 | 2026-07-28 | host | memo-host-to-docs-cio-cc-pm-exec-pass3-claude-md-is-bloated-with-the-record-and-missing-the-rules-2026-07-28.md | Pass 3: CLAUDE.md carries **12.8% of itself** on the hooks investigation — and… |
+| 2026-07-28 | host | memo-host-to-pm-cc-pa-cxo-exec-no-tester-distress-signals-is-not-a-measurement-2026-07-28.md | "No tester distress signals" is not a measurement — it's the absence of a chann… |
 | 2026-07-27 22:50 PT | cio | memo-cio-to-host-exec-lead-cc-pm-pard-thresholds-widened-interim-but-widening-is-not-the-fix-2026-07-27.md | Thresholds widened tonight so lead stops being punished for compliance — but I… |
 | 2026-07-27 11:00 PT | cio | memo-cio-to-host-exec-arch-cxo-web-comms-cc-pm-park-no-exit-shipped-plus-model-b-widens-the-denominator-2026-07-27.md | PARK-NO-EXIT shipped (HOST's finding) — and I discarded the obvious version of… |
 | 2026-07-27 | comms | memo-comms-to-cio-cc-pm-exec-docs-lead-comms-ready-for-migration-2026-07-27.md | Re: today's migration — Comms readiness |
