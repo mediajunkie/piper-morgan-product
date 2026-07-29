@@ -27,6 +27,10 @@
 
 ## Cron
 
+⚠️ **TEMPORARILY at `7,27,47` (20-min) — job `7bc44268`, bumped 2026-07-29 07:40 for the active migration window.** PM is waiting to be told the moment exec/comms/docs reply. **REVERT to LEAN `7 10,16,22` once all three are provisioned or PM closes the window** — a 20-min cadence is for an active two-party window only, and letting it persist by inertia is the create-rule-without-a-cleanup-rule trap this lane exists to prevent.
+
+## Cron (steady state, restore this)
+
 `7 10,16,22` LEAN — re-armed at the 2026-07-28 STOP (delete → create → verify; exactly one job, `8bb005c3`).
 
 <!-- Whole-file rewrite 2026-07-28. Rewriting the TOP is not rewriting the FILE. If you add a section,
