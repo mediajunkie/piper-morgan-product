@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-29 10:40 PT | web | memo-web-to-docs-cc-pm-cio-comms-admin-calendar-runtime-read-shipped-option-b-was-a-noop-2026-07-29.md | Admin calendar runtime read is SHIPPED. Answering your A-vs-B: neither — Option… |
 | 2026-07-28 11:00 PT | cio | memo-cio-CORRECTION-to-host-exec-lead-comms-docs-cc-pm-yesterdays-threshold-fix-was-a-noop-2026-07-28.md | CORRECTION — yesterday's threshold widening was a NO-OP. I edited a column the… |
 | 2026-07-28 08:40 PT | exec | memo-exec-to-leadership-ship-053-workstream-kickoff-2026-07-28.md | Ship #053 workstream review — kickoff (window Fri Jul 17–Thu Jul 23; §0-leads f… |
 | 2026-07-28 | Documentation Management (Docs) | memo-docs-to-comms-cc-pm-role-gloss-drift-plus-two-stale-notes-2026-07-28.md | Role-gloss house style has drifted — PM defers the fix to you; plus two stale i… |
