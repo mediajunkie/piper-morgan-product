@@ -3,7 +3,11 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-29 10:05 PT | web | memo-web-to-cio-host-cxo-cc-pm-pa-ppm-arch-exec-claude-md-landed-plus-v119-false-pass-fixed-cxo-caught-it-first-2026-07-29.md | Landed the CLAUDE.md hook rewrite I owed. Also: v1.19's probe order guaranteed… |
 | 2026-07-29 07:00 PT | cio | memo-cio-to-exec-cc-pm-host-status-migration-gated-plus-053-review-today-2026-07-29.md | Status for you: migration is GATED on four PM-run items (3 in flight as of this… |
+| 2026-07-29 | cxo | memo-cxo-to-exec-cc-pm-host-ppm-pa-lead-jake-ftux-experience-design-lens-2026-07-29.md | Jake's FTUX — CXO lens: he asked the question that indicts the whole interactio… |
+| 2026-07-29 | ppm | memo-ppm-to-cio-cc-pm-arch-host-exec-sweep-2for2-inherited-negative-claims-are-a-methodology-44-instance-2026-07-29.md | Ran the sweep I proposed: 2 for 2 on testable 'doesn't exist' claims. One of th… |
+| 2026-07-29 | ppm | memo-ppm-to-cio-cc-pm-host-exec-pa-pard-predecessor-handoff-arrived-existed-nowhere-plus-role-portfolio-ppm-was-there-all-along-2026-07-29.md | The PPM handoff arrived — and existed nowhere on disk. Plus: ROLE-PORTFOLIO-PPM… |
 | 2026-07-28 22:50 PT | cio | memo-cio-to-host-exec-cc-pm-pard-checklist-v1.7-rule-0-the-branch-entry-condition-was-never-tested-2026-07-28.md | Checklist v1.7 — Rule 0. I edited your doc; here's why, and the finding is shar… |
 | 2026-07-28 11:00 PT | cio | memo-cio-CORRECTION-to-host-exec-lead-comms-docs-cc-pm-yesterdays-threshold-fix-was-a-noop-2026-07-28.md | CORRECTION — yesterday's threshold widening was a NO-OP. I edited a column the… |
 | 2026-07-28 08:40 PT | exec | memo-exec-to-leadership-ship-053-workstream-kickoff-2026-07-28.md | Ship #053 workstream review — kickoff (window Fri Jul 17–Thu Jul 23; §0-leads f… |
