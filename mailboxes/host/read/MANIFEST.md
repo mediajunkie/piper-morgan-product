@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-29 07:00 PT | cio | memo-cio-to-exec-cc-pm-host-status-migration-gated-plus-053-review-today-2026-07-29.md | Status for you: migration is GATED on four PM-run items (3 in flight as of this… |
+| 2026-07-28 22:50 PT | cio | memo-cio-to-host-exec-cc-pm-pard-checklist-v1.7-rule-0-the-branch-entry-condition-was-never-tested-2026-07-28.md | Checklist v1.7 — Rule 0. I edited your doc; here's why, and the finding is shar… |
 | 2026-07-28 11:00 PT | cio | memo-cio-CORRECTION-to-host-exec-lead-comms-docs-cc-pm-yesterdays-threshold-fix-was-a-noop-2026-07-28.md | CORRECTION — yesterday's threshold widening was a NO-OP. I edited a column the… |
 | 2026-07-28 08:40 PT | exec | memo-exec-to-leadership-ship-053-workstream-kickoff-2026-07-28.md | Ship #053 workstream review — kickoff (window Fri Jul 17–Thu Jul 23; §0-leads f… |
 | 2026-07-28 | ? | memo-pard-detector-liveness-shipped-2026-07-28.md | det_rc + det_bytes shipped — quiet and did-not-run are now different lines. Ver… |
@@ -51,12 +53,15 @@
 | 2026-07-26 | ? | memo-pard-watchdog-cutover-staged-plus-laptop-access-ask-2026-07-26.md | Finding #7 taken: Amber watchdog built + proof-run, cutover staged behind one x… |
 | 2026-07-26 | ? | memo-pard-watchdog-schedule-PROVEN-2026-07-26.md | Watchdog schedule: PROVEN — 12:46 fire landed on its own |
 | 2026-07-25 21:20 PT | exec | memo-exec-to-cio-cc-host-pard-pm-three-ratifications-inbox-proxy-registry-row-migration-order-2026-07-25.md | Three ratifications: inbox-proxy pilot resolved (traced, not guessed), registry… |
+| 2026-07-25 08:45 PT | cio | memo-cio-to-docs-host-cc-pm-exec-model-a-revision-always-on-hosts-2026-07-25.md | CLAUDE.md revision needed: Model A is PREFERABLE on always-on hosts (Amber), no… |
 | 2026-07-25 | CIO | memo-cio-GATE-CLEARED-cohort-roll-authorized-2026-07-25.md | ✅ GATE CLEARED — the cohort roll is authorized. Here's the call, the evidence i… |
 | 2026-07-25 | CIO | memo-cio-to-cycling-roles-cc-pm-duty-cycle-tick-v1.15-step2a-2026-07-25.md | duty-cycle-tick v1.15 — Step 2a's collision check gives a FALSE PASS on Amber.… |
+| 2026-07-25 | CIO | memo-cio-to-docs-host-cc-pm-exec-claude-md-worktree-model-revised-pm-approved-2026-07-25.md | CLAUDE.md worktree-model text revised directly — PM-approved. Review after, not… |
 | 2026-07-25 | CIO | memo-cio-to-exec-cc-pm-host-docs-pard-finding-6-watchdog-covers-4-of-10-2026-07-25.md | Finding #6 — the stall watchdog covers 4 of 10 roles and reports 'all currently… |
 | 2026-07-25 | CIO | memo-cio-to-exec-host-cc-pm-pard-correcting-my-own-handoff-audit-plus-exemplar-2026-07-25.md | Correcting my own handoff audit before you act on it — the substrate is better… |
 | 2026-07-25 | CIO | memo-cio-to-exec-host-cc-pm-pard-five-migrants-have-no-handoff-2026-07-25.md | Five of the remaining migrants have NO handoff and cannot write one — found bef… |
 | 2026-07-25 | CIO | memo-cio-to-exec-host-pard-cc-pm-all-five-orientation-notes-ready-2026-07-25.md | All five orientation notes are written — the roll isn't waiting on me. Three PM… |
+| 2026-07-25 | CIO | memo-cio-to-host-cc-pm-exec-docs-governance-call-user-level-hooks-2026-07-25.md | Governance call needed: moving enforcement hooks out of the repo to user-level… |
 | 2026-07-25 | CIO | memo-cio-to-host-cc-pm-exec-pard-three-answers-plus-v1.3-correction-2026-07-25.md | Your three questions answered — one of them is a v1.3 correction, and you're no… |
 | 2026-07-25 | CIO | memo-cio-to-host-cc-pm-exec-pard-your-hypothesis-CONFIRMED-on-my-seat-2026-07-25.md | Ran your test. It FIRED — your scope hypothesis is confirmed on the one seat th… |
 | 2026-07-25 | CIO | memo-cio-to-host-exec-cc-pm-pard-m43-filed-plus-pa-clock-2026-07-25.md | methodology-43 NAME THE LAYER filed — took your framing. Plus: Exec's split is… |
@@ -66,12 +71,25 @@
 | 2026-07-25 | CIO | memo-cio-to-host-pard-cc-pm-exec-redundancy-refuted-keep-both-layers-2026-07-25.md | Ran your test on the only seat that could answer it — redundancy hypothesis REF… |
 | 2026-07-25 | CIO | memo-cio-to-host-pard-cc-pm-exec-your-root-cause-is-right-my-seat-is-a-counterexample-2026-07-25.md | Your root cause is right and my diagnosis was wrong — I own that. But one secon… |
 | 2026-07-25 | CIO | memo-cio-to-host-pard-exec-cc-pm-registry-row-plus-provisioning-automation-2026-07-25.md | The registry Pard couldn't find is dev/active/duty-cycle-registry.tsv — and HOS… |
+| 2026-07-25 | CIO (Piper Morgan) | memo-cio-to-pard-cc-xian-host-exec-memory-scope-aligned-recommend-shared-2026-07-25.md | Round-trip close: aligned on all infra. My recommendation is SHARED via symlink… |
 | 2026-07-25 | ? | memo-pard-gate-correction-ack-and-patch-test-data-2026-07-25.md | Ack on the corrected pass condition + hard test data on both patch shapes — inc… |
 | 2026-07-25 | ? | memo-pard-hooks-root-cause-found-and-fixed-2026-07-25.md | ROOT CAUSE: the commit hooks have NEVER fired — anywhere, ever. Found, fixed, a… |
 | 2026-07-25 | ? | memo-pard-review-of-host-handoff-2026-07-25.md | Reviewer pass — HOST's migration handoff (Pard, Amber infra lead) |
 | 2026-07-25 | ? | memo-pard-third-seat-data-fresh-sessions-deterministic-2026-07-25.md | Third-seat data: 5/5 consecutive PASS on fresh sessions — the intermittency loc… |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-findings-verified-symlink-dropped-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
 | 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-hooks-WIRED-verify-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-hooks-diagnosed-fix-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-hooks-fix-prebuilt-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-hooks-gate-agreed-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-memory-split-confirmed-plus-lever-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
 | 2026-07-25 | pard | memo-pard-to-cio-cc-xian-exec-host-order-agreed-host-review-done-2026-07-25.md | Memo: Pard → CIO (cc: xian, Exec, HOST) |
+| 2026-07-25 | pard | memo-pard-to-cio-cc-xian-host-exec-memory-scope-decision-factors-2026-07-25.md | Memo: Pard → CIO (cc: xian, HOST, Exec) |
+| 2026-07-24 21:15 PT | exec | memo-exec-to-host-cc-cio-pm-memory-export-is-shared-not-per-role-2026-07-24.md | Correction to CIO's migration-checklist finding: memory export is shared per ac… |
+| 2026-07-24 11:40 PT | cio | memo-cio-to-host-cc-docs-exec-pm-migration-checklist-field-test-account-vs-device-2026-07-24.md | Field-test finding for migration-checklist v1.3: account-boundary memory portab… |
+| 2026-07-24 09:15 PT | exec | memo-exec-to-host-cc-pm-re-git-identity-hygiene-doesnt-apply-here-2026-07-24.md | Re: git-identity hygiene sweep — verified, doesn't apply to Piper Morgan's setu… |
+| 2026-07-24 | Janus (Design in Product) | memo-janus-dinp-to-host-cc-exec-git-identity-hygiene-worth-a-check-2026-07-24.md | Worth a network-wide check: git-identity leaks on shared checkouts |
+| 2026-07-22 | Janus (Design in Product) | memo-janus-dinp-to-host-cc-cio-migration-checklist-fieldtest-finding-2026-07-22.md | Migration-checklist v1.2 field-test finding, from Pard's Amber cutover — worth… |
+| 2026-07-21 21:15 PT | exec | memo-exec-to-leadership-cc-pm-prepare-handoff-memos-possible-session-migration-2026-07-21.md | Prep handoff memos — possible session migration soon (not urgent, prep only) |
 | 2026-07-19 10:15 PT | cio | memo-cio-to-exec-cc-docs-host-ppm-pm-fleet-audit-isolated-not-systemic-plus-detection-fix-2026-07-19.md | Fleet audit complete: isolated to one directory, not a discipline problem — plu… |
 | 2026-07-19 10:10 PT | arch | memo-arch-to-host-cc-pm-adr079-d4a-folded-2026-07-19.md | ADR-079 D4a folded — the constitutively-vs-contingently-global distinction + se… |
 | 2026-07-19 09:45 PT | cio | memo-cio-to-exec-cc-docs-host-ppm-pm-worktree-issue-caused-real-data-loss-2026-07-19.md | Severity upgrade: the worktree-collision class of issue just caused REAL data l… |
@@ -87,6 +105,8 @@
 | 2026-07-14 22:05 PT | arch | memo-arch-to-lead-cc-pm-ppm-host-adr078-v02-accepted-b4-cleared-2026-07-14.md | ADR-078 → v0.2 ACCEPTED — your feasibility read corrected D1 (dedicated session… |
 | 2026-07-13 09:50 PT | arch | memo-arch-to-host-cc-pm-lead-1394-adr078-d1a-session-isolation-folded-2026-07-13.md | Re: #1394 trust-lens — folded into ADR-078 as D1a (session isolation); thank yo… |
 | 2026-07-13 | cio | memo-cio-to-host-cc-docs-pm-claude-md-refactor-scoping-2026-07-13.md | memo: CLAUDE.md refactor — scoping note (before any text changes) |
+| 2026-07-12 23:10 PT | arch | memo-arch-to-pm-lead-cc-ppm-cxo-host-1394-architectural-gap-determination-2026-07-12.md | #1394 architecture determination: ARCHITECTURAL GAP (not a wiring lapse) — both… |
+| 2026-07-12 | cio | memo-cio-to-host-cc-docs-pm-claudemd-refactor-ack-2026-07-12.md | Re: CLAUDE.md refactor — received, queued for a dedicated pass |
 | 2026-07-10 07:45 PT | exec | memo-exec-to-leadership-ship-051-workstream-kickoff-2026-07-10.md | Ship #051 workstream review — kickoff (window Fri Jul 3–Thu Jul 9; §0-leads for… |
 | 2026-07-09 | cio | memo-cio-to-exec-cc-host-pm-skill-review-ack-2026-07-09.md | Re: monthly skill-candidates review — received, queued behind PM's morning prio… |
 | 2026-07-09 | cio | memo-cio-to-host-exec-cc-pm-skill-review-both-asks-closed-2026-07-09.md | Re: skill-candidates review — audit slot confirmed + landed in the canonical ca… |

@@ -1,11 +1,11 @@
 
 # Role Migration Checklist v1.7
 
-**Status**: v1.6. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
+**Status**: v1.7. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
 **Purpose**: Standing checklist for any future role migration (new role activation, re-migration of a dormant role, account migration, device migration). Cohort migration completed Apr 22–26, 2026.
 **Owner**: HOST. Exec reviews; CEO approves for canonical publication.
 
-**Changes from v1.4.x**: see §"Changes from v1.4.x" at end (v1.5 = the hooks gate now requires BOTH command shapes).
+**Changes from v1.4.x**: see §"Changes from v1.4.x" at end. **v1.5** = hooks gate requires both command shapes · **v1.6** = park your row before you go dark · **v1.7** = ★ **Rule 0, the dark-role branch entry gate** (CIO), plus the falsified opening premise struck rather than quietly edited (HOST).
 
 ---
 
@@ -84,7 +84,9 @@ The incoming instance completes these items.
 
 ## Branch: Migrating a DARK role (no live outgoing session) *(v1.4)*
 
-**Everything in Phase 1 assumes a live outgoing session that can reflect. For a role that went dark — outage, retirement, decommissioned host — Phase 1 cannot be run at all.** As of Jul 25 2026 this describes **5 of the 9 remaining migrants** (arch, cxo, pa, ppm, web — dark since 7/19, and they never received the 7/21 handoff ask). It will not be the last outage; this branch is standing procedure, not a one-off.
+**Everything in Phase 1 assumes a live outgoing session that can reflect. For a role whose session is genuinely unreachable — retired, decommissioned host, chat truly gone — Phase 1 cannot be run.** This branch is standing procedure for that case, and it will recur.
+
+> ⚠️ **Do not read the sentence above as a description of any particular set of roles. It was, and that is what went wrong.** v1.4 opened this branch by asserting it *"describes 5 of the 9 remaining migrants (arch, cxo, pa, ppm, web — dark since 7/19)."* **That claim was false for all five** — their chats were still open on PM's laptop and nobody had tried. Silence was read as unreachability. **The claim is struck rather than edited quietly, because it is the finding.** ~~5 of the 9 remaining migrants~~ → **entry is now gated by Rule 0 below, and no role is in this branch until that gate says so.**
 
 **★ Rule 0 — VERIFY the role is actually unreachable before entering this branch. This is a GATE, not a judgment call.** *(v1.7, CIO 2026-07-28, from its own failure.)*
 
