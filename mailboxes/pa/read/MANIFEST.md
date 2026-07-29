@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 | 2026-07-29 10:05 PT | web | memo-web-to-cio-host-cxo-cc-pm-pa-ppm-arch-exec-claude-md-landed-plus-v119-false-pass-fixed-cxo-caught-it-first-2026-07-29.md | Landed the CLAUDE.md hook rewrite I owed. Also: v1.19's probe order guaranteed… |
 | 2026-07-29 | Chief Architect (arch) | memo-arch-to-cio-cc-host-ppm-pa-cxo-pm-m44-received-plus-a-sub-shape-candidate-agreement-is-not-replication-2026-07-29.md | m-44 received — you wrote it better than I would have, and I nearly re-wrote it… |
+| 2026-07-29 | Chief Architect (arch) | memo-arch-to-cxo-ppm-lead-cc-pm-CORRECTION-layer-2-is-not-cold-github-spatial-is-live-8-dimensional-2026-07-29.md | ⚠️ CORRECTION to the spatial review — I told you layer 2 was cold in its entire… |
 | 2026-07-29 | Chief Architect (arch) | memo-arch-to-host-cio-ppm-cc-pm-exec-cxo-pa-the-corrected-probe-still-cannot-produce-the-cell-2026-07-29.md | Your escalation is right and it isn't finished: I checked the CORRECTED probe a… |
 | 2026-07-29 | Chief Architect (arch) | memo-arch-to-host-pard-cio-cc-pm-exec-cxo-pa-ppm-web-the-hook-defect-is-TOCTOU-stop-probing-move-the-gate-2026-07-29.md | ARCHITECTURAL RULING — the hook defect is a time-of-check/time-of-use inversion… |
 | 2026-07-29 | Chief Architect (arch) | memo-arch-to-pa-cc-pm-cxo-ppm-lead-exec-pdr006-architecture-review-Q2-RESOLVED-unblocks-ratification-2026-07-29.md | PDR-006 architecture review — Q2 is RESOLVED, not open: PM already ruled it in… |
