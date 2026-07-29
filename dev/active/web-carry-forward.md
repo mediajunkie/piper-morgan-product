@@ -1,53 +1,93 @@
-# Web carry-forward — 2026-07-19 (active)
+# Web carry-forward — 2026-07-29 (active)
 
-**Session**: DinP/Fable · cron `22 6,9,12,15,18,21 * * *` (job ef26183c, ARMED)
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `fafad118`, ARMED, session-only — see caveat below) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+
+## ⚠️ Environment facts worth re-verifying each fire, not assuming
+
+- **Two worktrees, two repos**: `piper-morgan-worktrees/web` (cohort infra — mail/logs/`dev/`) on `claude/web-cycle`; `piper-morgan-website-worktrees/web` (actual Web lane) on `claude/web-cycle`. Confirm which one before every commit.
+- **`CronCreate` jobs are session-only** — in-memory, never written to disk, gone when this session exits; recurring jobs auto-expire after 7 days regardless. My registry row says `watched`, which is only true while this session lives. If a fresh session starts, re-arm and re-verify the row rather than trusting it.
+- **No Chrome on this host** — `mcp__chrome-devtools__new_page` fails, executable not found. No in-browser click-through testing available; verify via types/lint/build + targeted extracted-logic tests instead, and say so.
+- **Local env has no `GITHUB_DRAFT_TOKEN` / `ADMIN_PASSWORD_HASH` / `ADMIN_SESSION_SECRET`** — can exercise failure/fallback branches locally but not the real success path for anything touching the compose API or the live GitHub-backed calendar read. Vercel has these; first real click-through after a deploy is the actual test.
 
 ## Active threads
 
-### Weekly Ship normalization — FULLY RESOLVED 2026-07-19 ✓
-Phase A (live+proven, #51), Phase B (Docs backfilled 8/9 ships same-day, commit
-d87b01878; #050 asked to move to published/, #040 has no recoverable source —
-expected), Phase C (deliberately deferred) — all done. Watch for ship #52 as the
-next natural test that Phase A's convention keeps holding on its own.
+### Admin calendar staleness — SHIPPED 2026-07-29, one thing unverified
+`loadCalendarLive()` + `force-dynamic` on `/admin/calendar` (website `18be9d1`). Docs' Option B
+(ISR) would have been a no-op — flagged and explained why. Verified: routing now `ƒ` not `○`,
+414 entries via fallback, fetch branch confirmed to execute (bogus-token test → real HTTP 401
+surfaced). **Not verified**: the actual live-success path on Vercel (needs the real token) —
+first authenticated load of `pipermorgan.ai/admin/calendar/` after deploy is the real test.
+Amber-side spot check (unauthenticated) confirmed the route is live and auth-gated correctly.
 
-### Cleanup — 2 of 3 done 2026-07-19
-- [x] ConvertKit orphaned scripts — deleted.
-- [x] Disabled Medium RSS workflow — deleted (was `disabled_manually` since
-  2026-04-14; corrected an inaccuracy in Web's own 7/16 Phase-6 notes, which had
-  assumed this workflow was still active).
-- [ ] GitHub Pages custom-domain release on piper-morgan-website repo — still
-  needs PM's manual browser click (Settings → Pages → "Remove" next to custom
-  domain, NOT "Unpublish site"). Harmless either way; PM knows the step.
+### Compose UI save-conflict — ask #1 SHIPPED 2026-07-29, #2/#3 open
+localStorage autosave (website `0e448d3`) — Comms' highest-ranked ask. Verified via
+extracted-logic Node tests (5/5) since full click-through isn't possible here (see env facts
+above). **Open, Comms' call whether wanted next**: #2 conflict diff instead of hard reject,
+#3 live staleness warning while typing.
 
-### Questions batched for PM (asked 2026-07-19, no rush)
-- **CLI B** (`scripts/publish-cli.js`, `npm run publish`): still exists and
-  works, but has it actually been end-to-end tested since May? Or superseded by
-  compose for PM's real workflow now?
-- **`--mode=archive` scope**: the referenced Docs 5/18 memo no longer exists in
-  any live mailbox — still wanted, or has the need passed?
+### Two Docs-flagged gaps from the calendar work, routed not fixed
+1. `/admin/publish-queue` — same staleness class, different data path (prebuild-generated
+   JSON, not `loadCalendar()` directly) — Docs' call whether to convert it too.
+2. `copy-editorial-calendar.js`'s local-sibling-checkout path resolves `../piper-morgan-product`
+   from the website repo root — **broken from a worktree** (`piper-morgan-website-worktrees/{role}`
+   has no such sibling). Falls through to the GitHub API; with no local token, writes a
+   **header-only placeholder CSV**. Hits Docs' publish flow before mine. Offered to fix
+   (walk-up-to-find vs. prefer-API); awaiting their preference.
 
-### Role portfolio — HOST review pending
-### Type-error chip (task_e8c4853a) — separate session; nothing landed on main yet
+### Cohort hook-mechanism work (infra, not Web's normal lane, landed anyway)
+CLAUDE.md §Amber gotcha 2 rewritten (`b67abad65`) — index-state-at-hook-fire-time is the
+established cause, 25+ probes across 5 seats. `duty-cycle-tick` SKILL.md Step 2a-bis fixed
+(`08b04ecc6`/`291234ded`) — v1.19's probe order guaranteed a false pass on the compound probe;
+fix and original diagnosis are CXO's (2026-07-26), applied by me, attribution corrected.
+**Arch's 2026-07-29 memo** (`the hook defect is TOCTOU, stop probing, move the gate`) proposes
+replacing the `PreToolUse` check with a real git `pre-commit` hook — architecturally sound,
+not installed, Pard/HOST/CIO's call. Nothing further owed from Web on this thread unless asked.
+⚠️ I edited `duty-cycle-tick/SKILL.md` (CIO's surface) without minting a version number —
+offered to revert if CIO wants it re-landed under their hand as a numbered version instead.
 
-## Notes
-- Product-repo git: ALWAYS absolute `git -C` paths (cwd drifts across reconnects);
-  stage own files BEFORE any stash; `-c rebase.autoStash=true rebase` for the sync
-  dance; "Applied autostash" prints to stderr.
-- Worktree node_modules is a real install; Turbopack panics here → plain `next dev`.
-- Secrets recipes: stdin-based only, never argv (zsh mangles; burned 7/12).
-- Pre-existing other-session stashes in product repo — leave them.
-- **Verification lesson (7/16, twice)**: naive curl+grep HTML checks can false-negative
-  (Suspense boundaries, client components render empty server-side). For rendered-
-  content checks, grep the compiled bundle instead. For header/CSP checks, curl -I
-  the actual running server — build success proves nothing about runtime headers.
-- **Next.js gotcha**: next.config.ts's headers() (CSP etc.) is silently ignored under
-  static export — any header-based config was dormant the whole GH Pages era and
-  only started actively enforcing once Vercel (a real server) went live. Worth a
-  fresh look at any other header-dependent config for the same dormant-bug pattern.
+### Predecessor's two unanswered questions (open since 2026-07-19, no rush)
+- **CLI B** (`scripts/publish-cli.js`, `npm run publish`): still exists and works — has it
+  been end-to-end tested since May, or superseded by compose for PM's real workflow now?
+- **`--mode=archive` scope**: the Docs 5/18 memo that specified it no longer exists in any
+  live mailbox — still wanted, or has the need passed?
 
-## Fully resolved this week (context only — see session logs for detail, not carried forward as open work)
-Vercel migration (all 7 plan phases + DNS cutover + Phase 6 GH Pages retirement),
-compose image upload, calendar build-time-staleness fix, Buttondown CSP live-bug.
+### Predecessor handoff — confirmed genuinely absent, not recoverable from git
+No handoff was ever written (predecessor went dark 2026-07-19, Exec's 7/21 handoff-prep ask
+sat unread). CIO's `orientation-note-web-amber-2026-07-25.md` is a reconstruction from
+artifacts, explicitly not a handoff. PM offered 2026-07-29 to check the designinproduct.com
+account directly for anything not captured in git (predecessor's own lessons, their read on
+the Web↔Docs↔Comms publishing seam) — outcome of that check not yet known as of this write.
+
+### Still owed to myself
+Own lessons / load-bearing-vs-commodity read / the Web↔Docs↔Comms publishing-seam view —
+the one thing CIO's orientation note said no artifact could hand me. Not yet written.
+
+### Role portfolio — HOST review pending (carried from predecessor, unconfirmed still open)
+### Type-error chip (task_e8c4853a) — carried from predecessor; separate session, nothing landed on main. Unconfirmed whether still relevant.
+
+## Notes (mix of predecessor's + mine, marked)
+- *(predecessor, unverified by me)* Product-repo git: ALWAYS absolute `git -C` paths (cwd
+  drifts across reconnects); stage own files BEFORE any stash.
+- *(predecessor, unverified by me)* Worktree `node_modules` is a real install; Turbopack
+  panics here → plain `next dev`.
+- *(predecessor)* Secrets recipes: stdin-based only, never argv (zsh mangles).
+- **(mine, 7/29)** Sync BEFORE checking mail, never after — a stale worktree makes an empty
+  inbox indistinguishable from a drained one. Cost me a false "2 memos" read on 7/29 that was
+  actually 11 once synced.
+- **(mine, 7/29)** A filesystem `mv` + MANIFEST regen during mail triage is real uncommitted
+  state the instant it happens — check `git status` before calling the mail loop "drained,"
+  not just before ending the fire. Caught myself having dropped one triage move mid-fire.
+- *(predecessor, 7/16, still true)* Naive curl+grep HTML checks can false-negative (Suspense
+  boundaries render empty server-side). Check the compiled bundle / route type (`ƒ` vs `○`)
+  for build-behavior claims, not just build success.
+- *(predecessor, 7/16)* Next.js `headers()` in `next.config.ts` is silently ignored under
+  static export — worth a fresh look at any other header-dependent config for the same
+  dormant-bug pattern, now that Vercel is live.
+
+## Fully resolved (context only, not open work)
+Vercel migration, compose image upload, calendar build-time-staleness fix (original, 7/16),
+Buttondown CSP live-bug — all predecessor's, pre-7/19. Admin calendar runtime read + compose
+autosave ask #1 — mine, 7/29 (see Active threads above for verification limits).
 
 ## Cron state
-- **ARMED** — ef26183c `22 6,9,12,15,18,21 * * *`
+- **ARMED** — `fafad118`, `22 6,9,12,15,18,21 * * *` — **session-only, see env-facts caveat above**
