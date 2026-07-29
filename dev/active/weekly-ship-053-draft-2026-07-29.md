@@ -1,6 +1,6 @@
 ---
-image:
-alt:
+image: piper-ship.png
+alt: "A child and a crew of robots checking each other's work on a boat."
 caption:
 ---
 
@@ -30,13 +30,13 @@ The clearest instance: the chief architect role (Arch) stopped a locally-reasona
 
 **The data-ownership rule the team had been enforcing by hand became a rule the code enforces itself.** Every place that reads one user's data now has to prove it's scoped to the right owner, automatically, with the list of what counts as "owned data" derived straight from the codebase — so a new feature can't quietly forget to be added to it.
 
-**Sixteen modules across six categories of dead or dishonest code were ruled on and mostly removed in one sitting.** More than half of it wasn't unused code — it was code that *lied when reached*, simulated results standing in for real ones. One live file-search path had been quietly blending fake results into real ones behind a feature flag. Gone now, replaced with an honest failure.
+**Sixteen modules across six categories of dead or dishonest code were ruled on and mostly removed in one sitting.** More than half of it was the dishonest kind: code that *lied when reached*, simulated results standing in for real ones. One live file-search path had been quietly blending fake results into real ones behind a feature flag. Gone now, replaced with an honest failure.
 
 **A real, hard-to-find bug quietly reverted already-committed work — found and fixed inside the same session it happened.** A retry on a rejected push reused a stale snapshot of the codebase and silently discarded a colleague's just-landed changes. Caught within the hour, root-caused, restored, and turned into a durable rule the whole team now follows on every retry.
 
 **A related but separate infrastructure gap — three sessions unknowingly sharing one working directory, flagged as open last week — got audited in full.** Twenty-two working directories checked one by one. Twenty-one were fine, one wasn't, and a same-day fix now catches the failure mode automatically going forward.
 
-**A forty-run losing streak on the automated test pipeline ended, and then kept winning.** Four root causes, found and fixed in one sustained pass, took the pipeline from chronically red to green — and from there to a sustained streak of clean runs. The known-broken-test backlog it's burning down went from 634 to 105 in the days that followed, every removal verified by the pipeline itself, not assumed. Real production bugs surfaced along the way, including a document-processing failure and an error-handling bug that made unrelated failures masquerade as a usage-limit message.
+**The automated test pipeline broke a forty-run losing streak, and then kept winning.** Four root causes, found and fixed in one sustained pass, took the pipeline from chronically red to green — and from there to a sustained streak of clean runs. The known-broken-test backlog it's burning down went from 634 to 105 in the days that followed, every removal verified by the pipeline itself, not assumed. Real production bugs surfaced along the way, including a document-processing failure and an error-handling bug that made unrelated failures masquerade as a usage-limit message.
 
 ## 🔬 Methodology & process innovation
 
@@ -57,7 +57,7 @@ The clearest instance: the chief architect role (Arch) stopped a locally-reasona
 - Jul 23: "[Almost Beta](https://pipermorgan.ai/blog/almost-beta/)" — building
 
 [![A proud, glowing AI sous-chef presents a clean cake tester while the head baker takes the first bite of an almost-finished cake.](https://pipermorgan.ai/assets/blog-images/almost-beta.webp)](https://pipermorgan.ai/blog/almost-beta/)
-*"OK, let''s see"*
+*"OK, let's see!"*
 
 
 **The editorial process recovered from the same outage everyone else did, cleanly and with nothing lost.** A retroactive close, a re-verify against the live calendar rather than trusting what had been carried forward, and publication kept moving through the disruption instead of stalling behind it. One drafting slip that had made it into a published piece got checked against its three sibling drafts from the same batch before anyone else found it, and fixed proactively in the one place it had also landed.
@@ -78,7 +78,7 @@ The clearest instance: the chief architect role (Arch) stopped a locally-reasona
 
 # 🎯 Coming up next week
 
-The CI burn-down's remaining, mostly-parked backlog (spatial-held tests awaiting a product-scoping call, a batch of flaky-test triage) continues alongside the team's move to more durable infrastructure — several roles are migrating to a persistent host this week, which should make outages like this one's less likely to take out the whole leadership bench at once.
+The CI burn-down's remaining, mostly-parked backlog (spatial-held tests awaiting a product-scoping call, a batch of flaky-test triage) continues alongside the team's move to more durable infrastructure — several roles are migrating to a persistent host this week, which should make outages like this one less likely to take out the whole leadership bench at once.
 
 ---
 
