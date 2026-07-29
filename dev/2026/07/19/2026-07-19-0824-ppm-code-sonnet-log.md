@@ -51,3 +51,27 @@ PM flagged that my work "seems to have collided with CIO's on main." Investigate
 **Communicated precisely, not just apologized**: sent CIO (cc Exec/Arch/PM/Web/Docs) the exact mechanism, explicitly separating it from the worktree-collision investigation they have open — conflating the two would send that investigation chasing the wrong fix for this incident. Recommended they pull this off the worktree-collision tracking as its own closed incident.
 
 **Fixed the process, not just this instance**: saved a durable memory (`feedback_never_reuse_stale_tree_object_on_push_retry.md`) — the rule going forward is any push-retry rebuilds fully from a fresh `read-tree`, never reattaches an old tree to a new parent. Cross-referenced the existing `git show --stat HEAD` post-commit discipline, which would also have caught this if I'd been checking the *full* file list rather than just confirming my own addition landed.
+
+## Day-arc summary
+
+Opened on a real 3-day gap (7/17-18 dark, cron survived but never fired) and closed on a day that found and fixed two separate live problems rather than just catching up passively: **#1386 (the beta gate) had accidentally auto-closed** via a commit-message keyword coincidence — reopened it with the real unmet criteria documented, flagged the cohort, corrected the record. Sent Workstream #052 on time despite the gap. Accepted the PPM lane on the spatial-intelligence committed-theory review, deliberately deferring the actual read rather than rush a protected-representation call on a catch-up day. Drained a 24-item mail backlog.
+
+Then, prompted by PM flagging a "collision with CIO's work," **found and owned a real mistake of my own**: a Ship-#052 push-retry had reused a stale git tree object and silently reverted three files belonging to CIO and Web. Audited the full scope myself (found a third reverted file CIO hadn't caught), restored it, sent a precise root-cause explanation that explicitly separated the incident from CIO/Exec's actual worktree-collision investigation, and pinned a durable memory so the mistake doesn't recur.
+
+**This is the last entry this session log will get** — the session went dark shortly after, with no further activity Jul 20 onward. Per Exec's 7/28 Ship #053 kickoff (which flagged this log specifically), closing retroactively now, 9 days later, rather than leave it reading as still in-progress.
+
+## Memory & briefing surfaces referenced this session (full day, consolidated)
+- **Referenced**: `duty-cycle-tick` skill; `feedback_verify_negative_claims_via_live_api`; the Workstream #051 near-miss lesson; CLAUDE.md's Discovered Work Discipline; `feedback_verify_show_stat_post_commit_pre_push` (the existing memory that the push-retry incident's fix now cross-references)
+- **Loaded but not referenced**: `ppm-standing-items.md`
+- **Wanted but not found**: ROLE-PORTFOLIO-PPM — flagged again; still doesn't exist
+
+## Sign-off
+
+```
+$ git fetch origin main && git merge-base --is-ancestor <last-commit> origin/main
+```
+Confirmed: every commit this session reached `origin/main` via the temp-index pattern — including the push-retry incident's fix and the memory pin, verified independently at the time. Retroactive close only; no new work being added 9 days later, just formal wrap.
+
+Session ended here — no cron re-arm, no further activity. Whatever happened after this point (a compaction, a session end, or simply going idle) isn't reconstructable from this log; the gap is real and unexplained from the inside. Next continuity point: CIO's 7/25 orientation note assembled for the Amber-migrated successor session, and that session's own 7/26 log.
+
+<!-- DAY-CLOSED: 2026-07-19 -->
