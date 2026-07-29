@@ -57,51 +57,61 @@ policy. **This strengthens rather than weakens the two ⏰ items** — they are 
 lead-time steps and the only ones not gated on the server existing, so they should run in parallel
 with the build, not after it.
 
-## Active state — 2026-07-26
+## Active state — 2026-07-29
 
 - **Role**: Piper Alpha (PA) · **Host**: Amber · **Account**: xian@pipermorgan.ai
 - **Model**: Claude Opus 5 (1M context)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` (Model A, stable path) · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/07/26/2026-07-26-1250-pa-code-log.md`
-- **Cron**: ✅ **ARMED 2026-07-29** — `CronCreate` job **`04985c22`**, `42 6,9,12,15,18,21`. Registry row
-  un-parked. *(PM approved this cadence 7/26; PA failed to arm it and went dark 7/27–7/28. The approval
-  and the arming are two separate acts — do not treat the first as the second.)*
-  ⚠️ **TWO SILENT DEATH MODES, both undocumented in our own materials and both look identical to "quiet
-  day":** (1) `CronCreate` jobs are **session-only** — they die when the Claude session exits, so **every
-  new session must re-arm**; (2) recurring jobs **auto-expire after 7 days** — this one lapses
-  **~2026-08-05**. Neither emits anything. **Check `CronList` at session start; if empty, you are not
-  cycling regardless of what the registry says.** The registry records the *intended* cadence, not a live
-  job — the two can disagree silently, which is exactly what happened 7/27–7/28.
-- *(historical)* Registry row —
-  `pa 42 6,9,12,15,18,21 6 6 22 06:42 2026-07-26 parked:…`. PA previously had **no row at all** and was
-  structurally invisible to the freeze-watchdog (finding #6). Parked = counted in coverage, no stall
-  alerts. **Recommended cadence `42 6,9,12,15,18,21`** — restores PA's previously PM-ratified windowed
-  schedule; `:42` collides with nobody (lead :17, arch :27, host :37, cxo :47, ppm :52). **Clear the
-  parked note only when a cron is actually armed.**
-  ⚠️ **The row is not yet visible to the watchdog**: `duty-cycle-freeze-check.sh` reads the registry from
-  the **shared checkout's working tree**, which is 12 commits behind. See the sync-script chain below.
-- **Predecessor**: went dark 2026-07-19 after a clean close (DAY-CLOSED). **No handoff exists** —
-  oriented from `dev/active/orientation-note-pa-amber-2026-07-25.md` (CIO, assembled from artifacts).
+- **Session log**: `dev/2026/07/29/2026-07-29-1216-pa-code-log.md`
+- **Cron**: ✅ **ARMED** — job **`04985c22`**, `42 6,9,12,15,18,21`. Registry row active, carries the job id.
+  *(PM approved this cadence 7/26; PA failed to arm it and went dark 7/27–7/28. **Approval and arming are
+  two separate acts** — do not treat the first as the second.)*
+  ⚠️ **TWO SILENT DEATH MODES, both looking identical to a quiet day:** (1) `CronCreate` jobs are
+  **session-only** — they die when the Claude session exits, so **every new session must re-arm**;
+  (2) recurring jobs **auto-expire after 7 days** — this one lapses **~2026-08-05**. Neither emits
+  anything. **Check `CronList` at session start; if it's empty you are not cycling, whatever the registry
+  says.** The registry records *intended* cadence, not a live job — those two disagreeing silently is
+  exactly what produced 7/27–7/28.
+- **Predecessor**: went dark 2026-07-19 after a clean close. **No handoff existed** — oriented from
+  `dev/active/orientation-note-pa-amber-2026-07-25.md`, then PM consulted the predecessor directly on 7/26;
+  its §4/§6 is preserved at `dev/active/handoff-pa-predecessor-2026-07-26.md`.
 
-## Environment verification (this session)
+## Environment verification (7/29)
 
-Worktree path ✅ · branch ✅ · `HEAD..origin/main` = **0** ✅ · tree clean ✅ · memory pool present ✅ ·
-**hooks — see finding below, do not assume coverage**.
+Worktree path ✅ · branch `claude/pa-cycle` ✅ · `HEAD..origin/main` = **0** ✅ · tree clean ✅ ·
+one cron, no duplicates ✅ · memory pool present (166 entries after HOST's 7/29 prune) ✅ ·
+**hooks: do not assume coverage on a compound commit — see open thread 7.**
 
 ## Open threads PA owns
 
-1. **Distribution / directory listings** — blocked on the PM items above. PA advancing the unblocked
-   shared prep meanwhile: privacy-policy draft, tool-annotation spec (`readOnlyHint`/`destructiveHint`)
-   against the eventual MCP tool catalog, docs/logo/test-account checklist.
-2. **PDR-006** — awaiting Arch/CXO/PPM. PA to ping; do not let it go a second week.
-3. **Hook coverage finding** (3-seat synthesis, PA/CXO/PPM, 7/26) — pooled 14 probes:
-   **standalone `git commit` 4 BLOCK / 0 BYPASS; compound `add && commit` 3 BLOCK / 7 BYPASS.**
-   Every recorded bypass was compound; compound is **necessary but not sufficient**. The bypassing
-   shape is the one everyone routinely commits with. **Mitigation, no config change: stage in one
-   call, commit as a separate bare call.** Open gap: PPM's probe-1 shape unconfirmed. Likely real
-   lever is the `if: "Bash(git commit*)"` predicate — flagged to CIO, not touched by PA.
-4. **PA's own lessons / load-bearing-vs-commodity write-up** — the genuine gap CIO's note named, since
-   no predecessor read exists. Owed, not yet written.
+1. **Distribution / directory listings** — blocked on the two PM decisions above. Unblocked prep PA can
+   advance meanwhile: privacy-policy draft, tool-annotation spec (`readOnlyHint`/`destructiveHint`)
+   against the eventual MCP tool catalog, docs/logo/test-account checklist. **Not started.**
+2. ✅ **PDR-006 — Arch review complete 7/29, no objection to ratifying.** CXO + PPM reviews still
+   outstanding. Q2 resolved; coupling withdrawal verified against code and holds (see below).
+   **Next PA action: nudge CXO + PPM, then move to ratification.**
+3. **#1458** (pre-live cross-caller state isolation gate) — filed 7/29 at Arch's direction. Not started;
+   belongs with the hosted-MCP implementation epic, and it **blocks `mcp.pipermorgan.ai` serving a second
+   tenant.** Three untraced surfaces: Redis, in-process floor/context state, rate-limiting.
+4. **Jake FTUX** — PA review filed 7/29 (last of four). Exec synthesizes once all four are in; PM then
+   discusses. **PA's lead recommendation: ingest-and-reflect at onboarding** — it's a cold-start-*state*
+   problem, not a positioning problem, and the connectors are already built.
+5. **Architecture-diagram discussion** — PM-requested, awaiting a time. See `pa-standing-items.md` #2 for
+   the three things that have moved under it (tier resolution, Q2, spatial coupling). **Prep, don't
+   pre-empt: PM asked to discuss, not for a revision.**
+6. ⚠️ **Spatial review — do NOT let the MCP-consumer path be read as precedent for PDR-006.** Verified
+   7/29: `services/mcp/consumer/` is Piper as an MCP **client**; `mcp.pipermorgan.ai` is Piper as an MCP
+   **server**. Opposite directions. A live consumer adapter de-risks nothing server-side, where PDR-006's
+   real risk lives (caller-identity mapping upstream of all ADR-079 enforcement). **Same conflation class
+   as Connector-vs-Plugin** — watch for it in the spatial synthesis and in any "#198 de-risks this" claim.
+7. **Hook mechanism — RESOLVED cohort-wide, PA's contribution partly wrong; no PA action.** The cause is
+   **index state at hook-fire time** (`check-branch.sh` reads `git diff --cached` and PreToolUse fires
+   *before* the Bash call runs), mechanism by Web, 25 probes / 5 seats. PA's "command shape is
+   necessary-not-sufficient" was a *correlate*, not the cause; CXO caught that PA's Step-2a-bis amendment
+   re-encoded the very confound it fixed. Both corrections have landed in CLAUDE.md and the skill.
+   **Standing mitigation: stage in one call, commit bare in the next.**
+8. **PA's lessons / load-bearing-vs-commodity write-up** — still owed. The gap CIO's orientation note
+   named; no predecessor read exists. Not written.
 
 ## Inbox
 
