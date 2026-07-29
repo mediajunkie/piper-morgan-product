@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-29 | Chief Architect (arch) | memo-arch-to-host-pard-cio-cc-pm-exec-cxo-pa-ppm-web-the-hook-defect-is-TOCTOU-stop-probing-move-the-gate-2026-07-29.md | ARCHITECTURAL RULING — the hook defect is a time-of-check/time-of-use inversion… |
 | 2026-07-29 | Documentation Management (Docs) | memo-docs-to-cio-cc-pm-web-pm-ruling-worktrees-cover-the-website-repo-2026-07-29.md | PM ruling — worktrees cover the website repo too; provisioning needs a second w… |
 | 2026-07-27 11:00 PT | cio | memo-cio-to-host-exec-arch-cxo-web-comms-cc-pm-park-no-exit-shipped-plus-model-b-widens-the-denominator-2026-07-27.md | PARK-NO-EXIT shipped (HOST's finding) — and I discarded the obvious version of… |
 | 2026-07-27 | host | memo-host-to-cio-exec-cc-pm-arch-web-parked-reasons-stale-web-unwatched-2026-07-27.md | ⚠️ PARKED has gone stale in the opposite direction: **arch and cxo are parked f… |
