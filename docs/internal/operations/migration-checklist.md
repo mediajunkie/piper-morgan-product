@@ -1,7 +1,7 @@
 
-# Role Migration Checklist v1.8
+# Role Migration Checklist v1.9
 
-**Status**: v1.8. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
+**Status**: v1.9. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
 **Purpose**: Standing checklist for any future role migration (new role activation, re-migration of a dormant role, account migration, device migration). Cohort migration completed Apr 22–26, 2026.
 **Owner**: HOST. Exec reviews; CEO approves for canonical publication.
 
@@ -67,6 +67,16 @@ The incoming instance completes these items.
   > | 3 | index **still dirty** from #2 | compound | **BLOCK** — CXO's cell; proves index, not shape |
   >
   > ⚠️ **PRINT `git diff --cached --name-only` before every probe and after every block.** A blocked commit never runs, **so its file stays staged and arms the next probe to block regardless of shape.** That confound produced four wrong datasets across five seats. Without printing it, a migrant can run "both shapes," see block/block off a carried-over dirty index, and certify a gate they never tested.
+  >
+  > ### ★ **What this gate can and cannot establish — coverage is per-COMMIT, not per-seat** *(Arch, 2026-07-29)*
+  >
+  > If the variable is index state at hook-fire time, then *"are my hooks working?"* **is not a well-formed question.** A compound commit is gated **iff a `mailboxes/` path was already staged when the hook fired** — which is a property of *that one commit's starting index*, not of the seat, host, config, or day.
+  >
+  > So **report what is actually checkable**: ~~"hooks verified ✅"~~ → **"a commit with a clean index at fire time is NOT gated; a commit with a dirty index IS."**
+  >
+  > ⚠️ **A probe result has NO shelf life** — not "hours." It does not generalise to *the next commit on the same seat*, because that commit has a different index.
+  >
+  > ⚠️ **The `verify-hooks` drumbeat measures the MITIGATION, not the exposure.** Confirmed at source (`amber-agent.sh`): it stages `mailboxes/` in one step, then runs a **bare** `git commit` — the staged-first condition that is gated *by construction*. **So it will read PASS in perpetuity regardless of what ordinary compound traffic does.** It has been green all week and has never once probed the exposed path. Do not read a drumbeat PASS as evidence your routine commits are gated. *(m-44 one level up, in the belt itself.)*
   >
   > **What this means in practice, and it is the part to carry**: **the bypassing condition is the ordinary one.** Your routine `git add … && git commit …` fires against an index that doesn't yet contain the files — so **assume mailbox commits are ungated during normal work.** The reliably-caught form is the one you only use when deliberately testing.
   >
