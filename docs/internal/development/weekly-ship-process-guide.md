@@ -111,6 +111,7 @@ Draft the Ship using `knowledge/weekly-ship-template-v4.1.md`. Key requirements:
 - **5 workstreams** in order, with emoji prefixes (Product, Engineering, Methodology, External, Governance)
 - **Sentence case** on all headings
 - **No tables anywhere** — LinkedIn/Medium don't render markdown tables. Metrics in Governance go as a bullet list (`**Issues closed:** 25`); the former metrics-table exception is retired (PM, 2026-07-08, Ship #050). Don't force uninteresting metrics to fill the list.
+- **Hero image in External relations & community, REQUIRED** — always follow the published-pieces list with one illustration from one of the window's two Tuesday/Thursday narrative posts (the ones that publish to Medium only, not directly to LinkedIn — see `publishing-cadence.md`'s slot map). Pull alt text and caption verbatim from that post's own frontmatter, and link the image to the post on pipermorgan.ai. (PM, Ship #053 review, 2026-07-29.) This is a joint check: CoS sources and places it when drafting; Comms verifies the image/alt/caption match the source post's actual frontmatter during pre-publish review, the same way template-audit verifies frontmatter on a standalone post.
 - **Learning pattern** with all 5 components (Discovery, Example, Why it matters, Application, Related patterns)
 - **Previous Ship link** in footer (title must be verified)
 - **Phase tag** at bottom matching current project phase

@@ -2,7 +2,7 @@
 name: draft-weekly-ship
 description: Draft the Piper Morgan Weekly Ship newsletter from collected workstream memos. Use when PM says "draft the Ship", "draft Ship #NNN", "synthesize the workstream memos", or when all 6 workstream-NNN memos have landed in `mailboxes/exec/inbox/` and a theme has been picked. Loads the canonical artifacts before drafting so memory-of-past-Ships doesn't substitute for structure.
 scope: exec
-version: 1.6
+version: 1.8
 created: 2026-05-19
 ---
 
@@ -145,6 +145,19 @@ with open('docs/internal/planning/comms/editorial-calendar.csv') as f:
 
 **Anti-pattern explicit**: do NOT pattern-match to a prior Ship's External-section shape (Sat insight / Sun insight / Tue narrative / Thu narrative) and fill the bullets with plausible-sounding invented titles. The cadence varies week to week. Use the CSV.
 
+### Step 4c: REQUIRED — Select the hero image for the External section
+
+**Always follow the published-pieces list with one hero image**, sourced from one of the window's **Tuesday/Thursday narrative posts specifically** — the category that publishes to Medium only, not directly to LinkedIn (`publishing-cadence.md`'s slot map). Not any illustration from the window; not an insight post's image (those already go to LinkedIn on their own). If the window has two narrative posts, either is fine — pick the one with the stronger illustration or the one most relevant to the Ship's theme. If it has one, use that one. If it has zero, say so explicitly in the draft rather than omitting the element silently or substituting an insight-post image.
+
+Pull the image URL, alt text, and caption **verbatim from that post's own YAML frontmatter** (`docs/public/comms/drafts/published/{slug}.md`) — same discipline as everywhere else in this skill: no paraphrasing, no inventing. Link the image to the post on pipermorgan.ai. Format:
+
+```
+![alt text](image URL)
+*"caption, quotation marks preserved"*
+```
+
+(PM, Ship #053 review, 2026-07-29 — codified as a standing requirement in `weekly-ship-template-v4.2.md` and the process guide. Supersedes v1.5's softer "can be followed by" wording below.)
+
 ### Step 5: Draft using the template structure
 
 Required sections in this order (per template v4.1):
@@ -157,7 +170,7 @@ Required sections in this order (per template v4.1):
    - `## 🎯 Product & experience`
    - `## ⚙️ Engineering & architecture`
    - `## 🔬 Methodology & process innovation`
-   - `## 🌍 External relations & community`
+   - `## 🌍 External relations & community` (publication list, then the REQUIRED hero image per Step 4c)
    - `## 📊 Governance & operations` (includes metrics as a **bullet list**, never a table — PM 2026-07-08)
 6. **`# 🎯 Coming up next week`** — brief paragraph
 7. **`# 🚧 Blockers & asks`** — brief paragraph
@@ -205,6 +218,7 @@ Verify before declaring done:
 - [ ] Section heading names are noun phrases, not verb phrases
 - [ ] Word count check: 800–1,200 target; flag overage to PM with rationale
 - [ ] **External section sanity check** — every title is character-for-character from the CSV; every date matches the CSV's `pubDate`; every URL pasted from the CSV (no invented slugs); every description is grounded in the post's actual content (not inferred from title); any held/queued posts named separately
+- [ ] **Hero image present, from the right source** — one image follows the publication list, pulled from one of the window's Tue/Thu narrative posts (Medium-only, not LinkedIn-syndicated) specifically, not any insight post's image; alt text and caption verbatim from that post's frontmatter; linked to pipermorgan.ai (Step 4c)
 - [ ] **Day-of-week sanity check** — every dated reference (e.g., "Tuesday May 13") matches the actual calendar; verify with `python3 -c "from datetime import date; print(date(YYYY,MM,DD).strftime('%A'))"` if uncertain
 - [ ] **Role-attribution sanity check** — every "the X-role did Y" claim is traceable to a specific memo or omnibus entry (no invented attributions; no swapping who did what)
 - [ ] **Time-since-codification claims** — any "the methodology was N days/weeks old when..." claim verified against the codification commit date (`git log -- docs/internal/development/methodology-core/methodology-NN-*` if applicable)
@@ -279,6 +293,10 @@ The Ship #043 v0.1 failure was not knowing the template existed — it was choos
 ---
 
 ## Version history
+
+### v1.8 (2026-07-29)
+
+**New Step 4c: hero image in External relations & community is now REQUIRED, not optional, and its source is constrained.** During Ship #053 review, PM asked that the published-pieces list always be followed by a hero image — specifically from one of the window's two Tuesday/Thursday narrative posts (Medium-only, not directly syndicated to LinkedIn per `publishing-cadence.md`), with alt text and caption pulled verbatim from that post's frontmatter and linked to pipermorgan.ai. Supersedes v1.5's softer, optional phrasing ("the External section's publication list can be followed by one of the window's cartoon illustrations") with a hard requirement plus an explicit sourcing rule (narrative posts only, not any window illustration, not an insight post's image — insight posts already reach LinkedIn on their own). Codified in parallel in `weekly-ship-template-v4.2.md` (bumped from 4.1) and `weekly-ship-process-guide.md` Step 6, with the process guide framing it as a joint CoS-sources / Comms-verifies check, mirroring how `template-audit` verifies frontmatter on a standalone post. Added to the audit checklist.
 
 ### v1.7 (2026-07-22)
 

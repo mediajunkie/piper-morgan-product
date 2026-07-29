@@ -45,6 +45,15 @@
 - Alpha tester communications
 - External meetings or collaborations
 
+**Hero image (REQUIRED, follows the publication list)**: one illustration pulled from one of the week's two Tuesday/Thursday narrative posts — the ones that publish to Medium only, not directly to LinkedIn (per `publishing-cadence.md`'s slot map). Format:
+
+```
+![Alt text from the post's frontmatter](image URL)
+*"Caption text from the post's frontmatter, quotation marks preserved"*
+```
+
+Link the image to its source post on pipermorgan.ai. Pull alt text and caption verbatim from the post's own YAML frontmatter — do not paraphrase. If the window has fewer than two narrative posts, use whichever one exists; if it has zero, note the gap rather than omitting the element silently.
+
 ### ðŸ“Š Governance & operations
 
 **Metrics ([date range])**:
@@ -175,7 +184,7 @@ The "Shipped this week" section MUST use these 5 workstream categories in this o
 1. **ðŸŽ¯ Product & experience** - Features, UX improvements, user-facing changes, mobile updates
 2. **âš™ï¸ Engineering & architecture** - Releases, bug fixes, technical infrastructure, ADRs, performance
 3. **ðŸ”¬ Methodology & process innovation** - Patterns formalized, process improvements, methodology evolution
-4. **ðŸŒ External relations & community** - Publications, alpha tester comms, external meetings, content pipeline
+4. **ðŸŒ External relations & community** - Publications, alpha tester comms, external meetings, content pipeline, hero image from a non-LinkedIn narrative post
 5. **ðŸ“Š Governance & operations** - Metrics table, leadership coordination, role health, operational notes
 
 **Why this matters**: Consistent structure enables week-over-week comparison and ensures no workstream gets accidentally dropped. If a workstream has no activity, include it with a brief "No significant changes" note rather than omitting it.
@@ -187,6 +196,7 @@ Before publishing, verify:
 - [ ] Workstreams use correct emoji prefixes
 - [ ] Sentence case on all headings (not Title Case)
 - [ ] Metrics table included in Governance & operations
+- [ ] Hero image present in External relations, sourced from one of the two Tue/Thu narrative posts (Medium-only, not LinkedIn), with alt text + caption pulled verbatim from that post's frontmatter and linked to pipermorgan.ai
 - [ ] Previous Ship linked in footer
 - [ ] Phase tag at bottom matches current project phase
 - [ ] Learning pattern has all 5 components (Discovery, Example, Why it matters, Application, Related)
@@ -309,8 +319,11 @@ This is Weekly Ship #[NUMBER]. Previous: [#[NUMBER-1] "[TITLE]"](URL).
 
 ---
 
-**Template version**: 4.1
-**Last updated**: February 25, 2026
+**Template version**: 4.2
+**Last updated**: July 29, 2026
+**Key changes from v4.1**:
+- External relations & community now REQUIRES a hero image after the publication list, sourced from one of the week's two Tue/Thu narrative posts (Medium-only, not directly to LinkedIn per the publishing-cadence slot map), with alt text + caption pulled verbatim from that post's frontmatter and linked to pipermorgan.ai. Added to the audit checklist. (PM, Ship #053 review, 2026-07-29.)
+
 **Key changes from v4.0**:
 - Fixed GitHub repository URL (piper-morgan-ai → piper-morgan-product)
 - Removed "Hey team," greeting (PM does not use this)
