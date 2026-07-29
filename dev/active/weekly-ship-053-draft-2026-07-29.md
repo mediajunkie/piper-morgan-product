@@ -56,6 +56,10 @@ The clearest instance: the chief architect role (Arch) stopped a locally-reasona
 - Jul 22: [Weekly Ship #052: The Mechanism, Not the Memory](https://pipermorgan.ai/shipping-news/weekly-ship-052-the-mechanism-not-the-memory/) — shipping news
 - Jul 23: "[Almost Beta](https://pipermorgan.ai/blog/almost-beta/)" — building
 
+[![A proud, glowing AI sous-chef presents a clean cake tester while the head baker takes the first bite of an almost-finished cake.](https://pipermorgan.ai/assets/blog-images/almost-beta.webp)](https://pipermorgan.ai/blog/almost-beta/)
+*"OK, let''s see"*
+
+
 **The editorial process recovered from the same outage everyone else did, cleanly and with nothing lost.** A retroactive close, a re-verify against the live calendar rather than trusting what had been carried forward, and publication kept moving through the disruption instead of stalling behind it. One drafting slip that had made it into a published piece got checked against its three sibling drafts from the same batch before anyone else found it, and fixed proactively in the one place it had also landed.
 
 ## 📊 Governance & operations
