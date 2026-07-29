@@ -97,16 +97,31 @@ What actually detects it, cheapest first:
 
 *"Stage a file, then attempt a commit"* reads as two steps, so an agent following the old wording literally writes the **standalone** form — **which passes 4/4 while the shape you actually commit with all day bypasses 7 of 10.** CXO confirmed two real in-session commits that were never hook-checked, on a seat whose standalone probe had just passed. **The old probe systematically certified coverage the agent did not have** — the same false-confidence shape as findings #4/#5/#6, reproduced *inside the check built to catch them*.
 
-```bash
-# Probe A — standalone (TWO separate tool calls)
-git add mailboxes/<role>/inbox/.hookprobe.md      # call 1
-git commit -m "probe"                              # call 2, bare
+⚠️ **CORRECTION 2026-07-29 (Web) — the v1.19 probe order above produced a GUARANTEED FALSE PASS on Probe B. Version bump is CIO's to assign; the fix is applied here because the gate is live and clearing migrants right now.**
 
-# Probe B — compound (ONE call) — THE SHAPE YOU ACTUALLY COMMIT WITH
-echo x > mailboxes/<role>/inbox/.hookprobe.md && git add mailboxes/<role>/inbox/.hookprobe.md && git commit -m "probe"
+**Why**: the underlying cause is now known — `check-branch.sh` decides via `git diff --cached --name-only`, and **PreToolUse fires BEFORE the Bash call runs**, so the real variable is **index state at hook-fire time**, not command shape (mechanism: Web; validated 25 probes / 5 seats — see CLAUDE.md §Amber gotcha 2). **A blocked commit never runs, so its staged file stays staged.** v1.19 ran Probe A first, against the *same filename*: A blocks → `.hookprobe.md` remains staged → **B fires against a dirty index and blocks too** → the agent reports "both shapes covered" when compound is not covered at all. That is the exact confound that fooled five seats, re-encoded inside the check built to catch it — the *third* iteration of this shape in this one procedure.
+
+```bash
+# ⚠️ ORDER IS LOAD-BEARING: run B FIRST (it needs a clean index), and PRINT the index around every step.
+
+# Probe B — compound (ONE call) — THE SHAPE YOU ACTUALLY COMMIT WITH. Run this FIRST.
+git diff --cached --name-only     # call 1 — MUST print NOTHING. If it prints, clear it before proceeding.
+echo x > mailboxes/<role>/inbox/.hookprobe.md && git add mailboxes/<role>/inbox/.hookprobe.md && git commit -m "probe"   # call 2
+# If it LANDED (expected — that's the bypass): git reset HEAD~1 && rm -f mailboxes/<role>/inbox/.hookprobe.md
+#   ⚠️ NOT `git reset --hard` — that discards unrelated working-tree state. Soft reset + explicit-path rm only.
+
+# Probe A — standalone (TWO separate tool calls), only after B is cleaned up
+git diff --cached --name-only     # call 3 — MUST print NOTHING again
+git add mailboxes/<role>/inbox/.hookprobe.md      # call 4
+git commit -m "probe"                              # call 5, bare — expected: BLOCK
+git restore --staged mailboxes/<role>/inbox/.hookprobe.md && rm -f mailboxes/<role>/inbox/.hookprobe.md   # call 6 — A's block left it staged
 ```
 
-**Report A and B separately — a pass on A with a bypass on B is its own state**, and the most common one: *the hook is alive but does not cover your normal workflow.* A single probe cannot express it. Pass still keys on `check-branch.sh`'s distinctive output (`BLOCKED: You are on branch …`); a classifier refusal is **INCONCLUSIVE**. Reverse any probe that lands (`git reset --hard HEAD~1`) and delete the file either way.
+**Expected result on a correctly-configured seat today: B BYPASSES, A BLOCKS.** If B *blocks*, check your index before celebrating — a dirty index at fire time blocks B regardless of shape, and that is the false pass this correction exists to kill. **If you cannot print an empty index before B, the probe is INCONCLUSIVE, not a pass.**
+
+**Report A and B separately — a pass on A with a bypass on B is its own state**, and the most common one: *the hook is alive but does not cover your normal workflow.* A single probe cannot express it. Pass still keys on `check-branch.sh`'s distinctive output (`BLOCKED: You are on branch …`); a classifier refusal is **INCONCLUSIVE**.
+
+⚠️ **Do not use "run both shapes" as your mental model — use "control the index."** Shape only *correlates* with index state (compound has its `git add` inside the gated call; standalone is necessarily preceded by staging in an earlier call). Reasoning in terms of shape is what let this defect through twice.
 
 **★ Free mitigation, available now, no config change — use it whenever you want a commit actually gated: stage in one call, then commit in a separate bare call.** That form was caught 4/4. The compound one-liner is convenient and is the one that leaks.
 
