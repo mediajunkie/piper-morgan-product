@@ -15,48 +15,38 @@ PM-attention items live **here**, in the section immediately below.
 
 ## PM Attention
 
-*(Exec's `cohort-attention-rollup` reads this section directly. Live items only.)*
+*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-07-29.)*
 
-- ⏰ **OpenAI identity verification — the only PA item with an EXTERNAL clock. Unstarted, 7 days idle.**
-  Gates the ChatGPT remote-MCP listing; it is that track's *only* dependency. Individual accounts can
-  verify — no company entity needed. **Lead time starts when someone starts it, not when we decide the
-  rest.** *(Also carried on CIO's board, where it reads "eight days" — it is 7: memo sent 7/19,
-  today is 7/26.)*
-- ✅ **Claude submission tiers — RESOLVED 2026-07-26 against Anthropic's docs. Stop re-litigating this.**
-  Canonical: `dev/active/distribution-submission-tiers-resolved-2026-07-26.md`. Answered wrong twice in
-  eight days, in opposite directions; both prior claims superseded.
-  **Track A (connector directory) genuinely requires Team/Enterprise — no workaround.** It's a purchase
-  decision, not a lookup; **drop "verify the tier" as a task, the answer is known.** **Track B (plugin
-  directory) IS available on Max** via the Console path (`platform.claude.com/plugins/submit`) — because
-  a **Console org is a different account object from the chat plan**, not because Max ever cleared the
-  admin portal. The muddle came from *installing* a listed connector (works on Pro/Max) being mistaken
-  for *submitting* one.
-- 🔺 **REVERSAL — the open-source decision is now the LIVE gate, not deferrable.** *(PA advised deferring
-  it earlier on 7/26; that advice is withdrawn.)* Track B requires a **public GitHub repo**; closed-source
-  is not accepted. With Track A behind a paid Team upgrade, **Track B is the only Claude-side route open
-  today, and open-sourcing the CLAUDE.md + hooks + skills package is what unlocks it.**
-- ❓ **Two 30-second looks for PM** (not research): (1) **Does Piper Morgan have a Console organization,
-  and what's your role on it?** — almost certainly yes if the API's been used, but it is the single
-  credential Track B's Console path depends on. (2) **What is the "Piper morgan" entry in your
-  screenshot** — installed connector, personal plugin upload, or an actual directory listing?
-- 🟡 **Open-source decision for the Claude plugin package (CLAUDE.md + hooks + skills) — PM's call, not
-  yet made.** A public GitHub repo is a hard requirement for Track B (full plugin). **Not time-critical
-  the way the two above are**: Track A gets a Claude listing without it. PA can write up the tradeoffs
-  on request.
-- 🔴 **PDR-006 cannot ratify until Q2 is answered — and Q2 had been sitting in a "collect later" list.**
-  *(Upgraded from 🟡 on 7/26: the PDR's own author flagged during handoff that Q2 is a **blocker**, not a
-  footnote.)* Q2 = does building the colleague model require **server-side LLM inference**? If yes, the
-  **"no server LLM" premise the whole hosted-MCP phase rests on shifts.** Now marked as a ratification
-  blocker in the PDR's Status line, not just its Open Questions. Two caveats recorded there: the A/B
-  framing was pattern-matched from PDR-005 rather than derived (so "neither" is a legitimate answer), and
-  Arch flagged it as the *same concept* as the spatial review's "connectors as places with colleagues" —
-  the two shouldn't be decided in isolation. Review has sat 7 days; CXO names it their most substantive
-  unowned work, queued behind the #1386 gate run. **No PM action needed unless it stays stuck.**
-- 🟠 **#1351's carry-forward is an INCOMPLETE AUDIT, not a design note — and it reads passively today.**
-  The anonymous-caller state-isolation audit was started and abandoned before the issue was closed as
-  superseded. `ConversationDB` is verified safe; **Redis, in-process floor/context state, and
-  rate-limiting under anonymous-caller conditions were never traced.** Escalated to Arch to verify
-  **before the hosted MCP endpoint goes live**. *(No PM action — tracked so it can't quietly lapse again.)*
+**Two decisions, both PM's, both now genuinely blocking. Everything else on this thread has resolved.**
+
+- 🔴 **DECISION 1 — upgrade pipermorgan.ai to Team/Enterprise, or hold Track A?** ✅ *Tier question is
+  CLOSED*: xian checked the account — it is **Pro (Max 20x)** (Janus, 7/28). Team/Enterprise is required
+  to reach the connector submission portal, so **Track A (connector listing) is blocked on the plan, not
+  pending a lookup.** This is now a purchase decision, not a research task.
+- 🔴 **DECISION 2 — open-source the plugin package (CLAUDE.md + hooks + skills)?** Track B requires a
+  **public GitHub repo**; closed-source is not accepted. **With Track A behind a paid upgrade, Track B is
+  the only Claude-side route open today** — so this is the live gate, not the deferrable one.
+  *(PA advised deferring this on 7/26 morning; withdrawn same day.)*
+- ⏰ **ACTION, not a decision — OpenAI identity verification. Still unstarted; 10 days.** The only item
+  with an **external clock**, and unaffected by both decisions above. Exact path (Janus, 7/28):
+  **platform.openai.com → Settings → Organization → General → "Verify Organization"** — government ID,
+  a few minutes, no spending threshold, no company entity. Unblocks the ChatGPT remote-MCP listing.
+- ❓ **One 30-second look, if convenient**: what is the **"Piper morgan" entry** in your earlier
+  screenshot — an installed connector, a personal plugin upload, or an actual listing? Determines whether
+  anything is already live. *(The Console-org half of this question is largely moot: Track B's Console
+  path needs a Console org role, which the API usage implies.)*
+
+### Resolved since 7/26 — no PM action
+
+- ✅ **PDR-006 ratification UNBLOCKED (Arch, 7/29).** Q2 was never open: **PM ruled it 2026-01-08** —
+  rule-based Option A, shipped; LLM evolution is **#558**, OPEN, Production/1.0, due 2026-10-30. Arch
+  verified against running code. Arch's own spatial-coupling flag **withdrawn as a gate** (re-trigger
+  recorded if #558 is pulled forward). **Arch has no objection to ratifying**; CXO + PPM reviews still out.
+- ✅ **Claude submission tiers resolved** against Anthropic's docs (`dev/active/distribution-submission-tiers-resolved-2026-07-26.md`).
+- ✅ **#1351's unfinished audit is now a tracked pre-live gate — [#1458](https://github.com/mediajunkie/piper-morgan-product/issues/1458)**, filed at Arch's direction with the three untraced surfaces (Redis, in-process floor/context state, rate-limiting) as ACs, plus the identity-boundary mechanism.
+- ➡️ **New, PM's and genuinely open — but must NOT gate anything** (Arch, 7/29): *at what point does the
+  gap between a 4-dimension rule-based preference model and a real "colleague model" start costing us
+  users?* Product-quality question. **Alpha feedback should decide when #558 gets pulled forward.**
 
 ### Context PM may want when these come up
 
@@ -73,7 +63,16 @@ with the build, not after it.
 - **Model**: Claude Opus 5 (1M context)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` (Model A, stable path) · branch `claude/pa-cycle`
 - **Session log**: `dev/2026/07/26/2026-07-26-1250-pa-code-log.md`
-- **Cron**: **NOT ARMED** (PM-gated). ✅ **Registry row now EXISTS** —
+- **Cron**: ✅ **ARMED 2026-07-29** — `CronCreate` job **`04985c22`**, `42 6,9,12,15,18,21`. Registry row
+  un-parked. *(PM approved this cadence 7/26; PA failed to arm it and went dark 7/27–7/28. The approval
+  and the arming are two separate acts — do not treat the first as the second.)*
+  ⚠️ **TWO SILENT DEATH MODES, both undocumented in our own materials and both look identical to "quiet
+  day":** (1) `CronCreate` jobs are **session-only** — they die when the Claude session exits, so **every
+  new session must re-arm**; (2) recurring jobs **auto-expire after 7 days** — this one lapses
+  **~2026-08-05**. Neither emits anything. **Check `CronList` at session start; if empty, you are not
+  cycling regardless of what the registry says.** The registry records the *intended* cadence, not a live
+  job — the two can disagree silently, which is exactly what happened 7/27–7/28.
+- *(historical)* Registry row —
   `pa 42 6,9,12,15,18,21 6 6 22 06:42 2026-07-26 parked:…`. PA previously had **no row at all** and was
   structurally invisible to the freeze-watchdog (finding #6). Parked = counted in coverage, no stall
   alerts. **Recommended cadence `42 6,9,12,15,18,21`** — restores PA's previously PM-ratified windowed
