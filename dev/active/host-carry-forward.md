@@ -4,7 +4,7 @@
 
 **Launch model + shape**: ⚠️ **MIGRATED 2026-07-25 — now Amber / pipermorgan.ai, Model A stable worktree.** Session log: **`dev/2026/07/26/2026-07-26-0707-host-code-log.md`** (07-26). **WINDOWED low-frequency** (`37 6,9,12,15,18,21 * * *`, daytime-only, cron ID **`7c1d5637`**). Single-surface logging: session log is the ONE log (cycle log = optional scratch only).
 
-**Last updated**: 2026-07-28 08:15 PT (START fire). Today's session log: `dev/2026/07/28/2026-07-28-0707-host-code-log.md`. Prior day closed (`DAY-CLOSED: 2026-07-27`) — Step-0 verified. Today's session log: `dev/2026/07/27/2026-07-27-0649-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-26`) — Step-0 verified. Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
+**Last updated**: 2026-07-28 22:15 PT — **DAY-CLOSED**. Session log `dev/2026/07/28/2026-07-28-0707-host-code-log.md` carries `<!-- DAY-CLOSED: 2026-07-28 -->`. Today's session log: `dev/2026/07/28/2026-07-28-0707-host-code-log.md`. Prior day closed (`DAY-CLOSED: 2026-07-27`) — Step-0 verified. Today's session log: `dev/2026/07/27/2026-07-27-0649-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-26`) — Step-0 verified. Today's session log: `dev/2026/07/26/2026-07-26-0707-host-code-log.md`. Prior day closed properly (`DAY-CLOSED: 2026-07-25`) — Step-0 verified.
 
 ## ✅ Both queued START actions DONE — nothing carried over from them
 
@@ -41,15 +41,17 @@ Export → merge → re-type. **170→166 entries, 197→190 lines, headroom 3�
 - ~~**Mine, held**: G's verification intervals~~ ✅ **DONE 07-26** (spec §3a, `55c163861`) — CIO accepted G no-redirect, the named trigger arrived, and the work happened the same fire. **Second worked example that named triggers actually fire.**
 - **Mine, unblocked**: hand-run F2 §5 validation — **DONE 07-26**, and it overturned my own headline case (see log).
 
-## ✅ DONE 2026-07-28 — Pass 3 CLAUDE.md review (third named trigger to fire as designed)
+## ▶ NO NAMED-TRIGGER ITEM OUTSTANDING (first time this week)
 
-Done as **one read** (completeness + compaction), which is the only reason the finding exists: **the hooks investigation is 12.8% of CLAUDE.md and the file contained NEITHER operative rule it produced.** 6 of 8 active norms absent; **added the two safety ones myself** (`3e6a50a24`), left four for the compaction. **Compaction proposed to Docs** — ~800 bytes for ~6,900 (~11% of the file), pointer verified non-dangling against the 8.1KB memory pin. **Docs' call; I stayed off the edit.**
+All three self-scheduled triggers fired as designed — memory prune (07-27), Pass 3 (07-28 START), and the F2 validation. Nothing is currently deferred with a trigger. **If a fire finds this section still empty and the queue at (0,0), that is genuinely idle — take the smallest unblocked item from standing-items rather than inventing work.**
 
-## ▶ AWAITING (not mine to advance)
+## ▶ AWAITING## ▶ AWAITING (not mine to advance)
 
 - **Docs** — the CLAUDE.md compaction + the 4 remaining absent norms. If Docs declines or is silent, revisit; do NOT just insert four more items (that's the disease, not the cure).
 - **CIO** — heartbeat-per-fire structural fix. My read sent: **yes**, cost is per *quiet* fire not per fire, and **give it size discipline on day one** (22k lines/year; MEMORY.md failed this exact way twice). `exec` remains knowingly exposed at 13h — correct call, keep it visible.
-- **lead** — needs its row parked (mid-cutover, 17h+ silent, row still `watched`). Requested; v1.6 now prevents the next one.
+- ~~lead needs parking~~ ✅ **DONE 07-28** — parked with a falsifiable clearing condition; belt quiet. **v1.6 prevents the next one** (park before you go dark, Phase 1).
+- **PM** — tester-welfare instrument gap raised 07-28: 12 tokens out, 1 report, and that one only because PM asked twice. Proposed one check-in + two state-separating questions + a **PII-free aggregate** HOST can hold. **My welfare loop with Jake is still owed when improvements ship.**
+- **Docs** — CLAUDE.md compaction + the 4 remaining absent norms. Silent so far; do NOT just insert four more items.
 
 ## ▶ OWED / WATCHING
 
