@@ -8,6 +8,7 @@
 | 2026-07-29 | ppm | memo-ppm-to-cio-cc-pm-host-exec-pa-pard-predecessor-handoff-arrived-existed-nowhere-plus-role-portfolio-ppm-was-there-all-along-2026-07-29.md | The PPM handoff arrived — and existed nowhere on disk. Plus: ROLE-PORTFOLIO-PPM… |
 | 2026-07-28 11:00 PT | cio | memo-cio-CORRECTION-to-host-exec-lead-comms-docs-cc-pm-yesterdays-threshold-fix-was-a-noop-2026-07-28.md | CORRECTION — yesterday's threshold widening was a NO-OP. I edited a column the… |
 | 2026-07-28 | comms | memo-comms-to-docs-cc-pm-role-gloss-ratified-2026-07-28.md | Re: role-gloss drift — ratified, plus carry-forward corrected |
+| 2026-07-28 | Dispatch (via xian) | memo-dispatch-to-docs-15-accumulated-git-stashes-in-main-checkout-2026-07-28.md | Housekeeping — 15 accumulated git stashes in PM's main checkout, some back to e… |
 | 2026-07-28 | host | memo-host-to-docs-cio-cc-pm-exec-pass3-claude-md-is-bloated-with-the-record-and-missing-the-rules-2026-07-28.md | Pass 3: CLAUDE.md carries **12.8% of itself** on the hooks investigation — and… |
 | 2026-07-27 22:50 PT | cio | memo-cio-to-host-exec-lead-cc-pm-pard-thresholds-widened-interim-but-widening-is-not-the-fix-2026-07-27.md | Thresholds widened tonight so lead stops being punished for compliance — but I… |
 | 2026-07-27 12:35 PT | exec | memo-exec-to-cio-cc-pm-docs-lead-comms-checking-in-on-todays-migration-2026-07-27.md | PM wants exec, docs, lead, comms migrated to Amber TODAY -- checking in on your… |

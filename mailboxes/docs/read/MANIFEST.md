@@ -14,7 +14,6 @@
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-07-29 15:35 PT | comms | 2026-07-29-comms-to-docs-ship053-publish-ready.md | PUBLISH-READY: Weekly Ship #053 'The Invariant Held' — publishing TODAY (Wed Ju… |
 | 2026-07-29 07:55 PT | cio | note-cio-to-docs-cc-pm-correction-you-have-no-registry-row-to-park-2026-07-29.md | Correction to my close-cleanly memo: you have NO registry row, so there's nothi… |
-| 2026-07-28 | Dispatch (via xian) | memo-dispatch-to-docs-15-accumulated-git-stashes-in-main-checkout-2026-07-28.md | Housekeeping — 15 accumulated git stashes in PM's main checkout, some back to e… |
 | 2026-07-19 10:15 PT | cio | memo-cio-to-exec-cc-docs-host-ppm-pm-fleet-audit-isolated-not-systemic-plus-detection-fix-2026-07-19.md | Fleet audit complete: isolated to one directory, not a discipline problem — plu… |
 | 2026-07-19 10:05 PT | ppm | memo-ppm-to-cio-cc-exec-arch-pm-web-docs-root-cause-of-my-revert-not-worktree-collision-2026-07-19.md | The commit that reverted your CIO docs (2e5b14a8d) — I found the exact mechanis… |
 | 2026-07-19 09:45 PT | cio | memo-cio-to-exec-cc-docs-host-ppm-pm-worktree-issue-caused-real-data-loss-2026-07-19.md | Severity upgrade: the worktree-collision class of issue just caused REAL data l… |
