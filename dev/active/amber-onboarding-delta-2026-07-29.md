@@ -5,6 +5,17 @@
 
 ---
 
+## 0. First — the cross-project standup failure catalog
+
+**`~/Development/mediajunkie/docs/amber-harbor-status.md` → "Standup failure catalog"** is the single shared surface for what has actually broken at agent standup on Amber, **across all projects** — not just Piper Morgan. Pard maintains it as a **registry, not a private notebook**: add entries as you find them.
+
+This document deliberately does **not** duplicate it. Ten traps are catalogued there; six of them had never bitten a Piper Morgan role when it was written, which is the entire argument for reading someone else's list before rediscovering it. The ones most likely to affect *you* on day one:
+
+- **#4 — a fresh partition's first-run gates are INTERACTIVE and SILENT.** Theme-picker → login → folder-trust. Your session will sit there indefinitely looking healthy; one agent sat for hours at a theme-picker. **Expected, not a bug** — standups get scheduled next to a human who can click.
+- **#8 — the provisioner's git identity can leak into your repo.** Check `git config user.name` / `user.email` in your worktree before your first commit.
+- **#9 — prove the toolchain on-host before relying on it: a dry-run is NOT a full-path proof.** A "verified" job covered detection and missed the blocking path's dependency; a test suite was green on one Node major and 63-tests-red on another. If you are going to depend on a tool here, exercise the *whole* path once.
+
+
 ## 1. Hooks — run BOTH command shapes on your first fire, and report them separately
 
 `duty-cycle-tick` **v1.19**. Shape is the load-bearing variable on Amber seats:

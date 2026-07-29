@@ -1,5 +1,5 @@
 
-# Role Migration Checklist v1.7
+# Role Migration Checklist v1.8
 
 **Status**: v1.7. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
 **Purpose**: Standing checklist for any future role migration (new role activation, re-migration of a dormant role, account migration, device migration). Cohort migration completed Apr 22–26, 2026.
@@ -40,6 +40,8 @@ PM + Exec handle these between the outgoing and incoming sessions.
 - [ ] **Exec review of handoff** *(v1.1: clarified as quality gate)*: Exec reads handoff against tracker + cohort awareness; flags gaps to PM before incoming instance picks it up. This is the captain-last leverage point — Exec sees what the outgoing instance can't see from inside.
 - [ ] **Three-artifact package** *(v1.1)*: Confirm incoming instance has access to the **handoff memo + Exec review memo + first-session prompt** as a triplet. All three are load-bearing; missing any one degrades the migration (per HOST Apr 22 first-day blocker experience).
 - [ ] **First-session prompt drafting**: Per the four Phase-3 specifications (Exec Apr 22 reply): which week the first workstream review covers / scope / naming convention / format reference. *(v1.1 update: workstream-review write window is Fri–Tue with publication Wed, per CIO Apr 27 cadence clarification.)*
+
+**★ Cross-project standup failure catalog** *(v1.8, 2026-07-29)*: before troubleshooting a failed or silent standup, read **`mediajunkie: docs/amber-harbor-status.md` → "Standup failure catalog"** — the shared, cross-project registry of what has actually broken at standup. It is Pard-maintained and **additive by anyone**: add what you hit. This checklist deliberately points there rather than paralleling it, because a parallel list is how two roles independently rediscover the same defect — which is exactly what happened with the long-`--kickoff` bug (CIO reported a symptom without its boundary; the fix was verified in the tested range and failed outside it; root cause turned out to be the tty input buffer's ~1024-char canonical-mode limit, not quoting at all).
 
 ## Phase 3: After Migration (First Session in New Environment)
 
