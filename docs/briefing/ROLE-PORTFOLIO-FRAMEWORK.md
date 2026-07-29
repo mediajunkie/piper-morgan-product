@@ -32,6 +32,17 @@ A portfolio is healthy to the degree it answers **"what am I here to advance?"**
 
 **Rule 5 — Built-in currency, or it rots.** The portfolio is the *medium-pace* layer — it changes per sprint/quarter, not per session. The 360 flagged briefing-currency as the cohort's single most persistent gap (briefings went content-stale while their commit-dates looked fresh). A `ROLE-PORTFOLIO-{ROLE}.md` sibling doc will rot exactly the same way **unless currency is structural**: the weekly review *is* the portfolio's refresh moment — you can't write the weekly update without touching the portfolio, so the review mechanism keeps the doc current by construction (m-36: mechanism, not vigilance). That self-refreshing property is the *reason* to split it out from the briefing rather than the risk of doing so.
 
+
+### ⚠️ Amendment (PM, 2026-07-29) — a late review must NOT refresh the portfolio backwards
+
+Rule 5 makes the workstream review the portfolio-refresh moment. That is right on the normal Friday clock and **wrong when a review lands late**: refreshing a *current-state* document to the *reporting window's* snapshot drags it backwards past everything that happened in between. Ship #053 was filed 2026-07-29 for the Jul 17–23 window — applying Rule 5 mechanically would have reverted nine days of change.
+
+**PM's ruling, which is better than the workaround CIO proposed** (CIO suggested skipping the refresh until the next on-time review; that leaves the portfolio stale for another cycle):
+
+> *Refresh the portfolio even if belatedly — but refresh it **through the current date**, not limited to the reporting window, as a **separate task** triggered by the same occasion.*
+
+So the two things are **decoupled**: the **review** is bounded by its window and must not import later events; the **refresh** is bounded by *today* and must not be truncated to the window. One occasion, two scopes. A late review therefore produces a *current* portfolio, not a backdated one, and neither document lies about what it covers.
+
 ## The five failure modes (and which rule guards each)
 
 1. **Assigned-not-owned** → constraint-via-list (Rule 1 guards)
