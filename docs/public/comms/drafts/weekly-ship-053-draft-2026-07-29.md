@@ -18,7 +18,7 @@ The clearest instance: the chief architect role (Arch) stopped a locally-reasona
 
 ## 🎯 Product & experience
 
-**The Finish-the-Unfinished sprint's formal completion gate was met.** The scenario driver (the harness that runs real conversation turns against a live model) runs clean, the full smoke suite passes, every high-severity item from the sprint's own census is closed, and the growth ratchets that guard code quality sit at or below their ceilings. Verdict: ready for a second human tester.
+**The Finish-the-Unfinished sprint's formal completion gate was met.** The end-to-end scenario harness runs clean, the full smoke suite passes, every high-severity item from the sprint's own census is closed, and the growth ratchets that guard code quality sit at or below their ceilings. Verdict: ready for a second human tester.
 
 **The beta gate kept doing exactly the job it exists for — catching real problems before a tester could.** A same-day bug pair (a rendering glitch, a parsing cutoff) got caught and fixed within the hour. A harder gap — Piper couldn't yet resolve "actually, change the title" without being told which issue — got named honestly instead of shipped quietly, and had a real fix within days. The gate itself came within about eleven hours of staying silently, incorrectly closed, after a routine commit message accidentally triggered GitHub's auto-close keyword matching. Caught, reopened, documented.
 
