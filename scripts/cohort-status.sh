@@ -75,7 +75,13 @@ for r in $ROSTER; do
   closed="—"
   # READ the marker for TODAY specifically -- counting bare "DAY-CLOSED" matched yesterday's references.
   [ -n "$logf" ] && { grep -q "DAY-CLOSED: $TODAY_DASH" "dev/$TODAY/$logf" 2>/dev/null && closed="yes" || closed="no"; }
-  reg=$(grep -vE '^#|^role' dev/active/duty-cycle-registry.tsv 2>/dev/null | awk -F'\t' -v r="$r" '$1==r{print ($8==""?"watched":"parked")}')
+  # Mirror freeze-check's ACTUAL rule: only a state beginning `parked` suppresses watching.
+  # v1.0 treated ANY non-empty state column as parked, so `arch` and `comms` -- which armed their
+  # crons and cleared their notes by writing "active: cron armed <job>" -- were reported PARKED while
+  # the belt correctly watched them. A disagreement between two of my own instruments, found within
+  # three hours, by reading the registry beside the tool instead of trusting the tool. Same class the
+  # tool exists to catch; it made the error visible, it did not prevent it.
+  reg=$(grep -vE '^#|^role' dev/active/duty-cycle-registry.tsv 2>/dev/null | awk -F'\t' -v r="$r" '$1==r{ if ($8=="") print "watched"; else if ($8 ~ /^parked/) print "parked"; else print "watched*" }')
   reg="${reg:-NO-ROW}"
   n=$(ls -1 "mailboxes/$r/inbox" 2>/dev/null | grep -v MANIFEST | wc -l | tr -d ' ')
   m=$(grep -E '^\|.*\.md' "mailboxes/$r/inbox/MANIFEST.md" 2>/dev/null | wc -l | tr -d ' ')
