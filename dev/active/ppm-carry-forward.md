@@ -1,77 +1,60 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-07-26 ~13:40 PT (first Amber session; predecessor went dark 7/19)
+**Last rewritten**: 2026-07-28 ~18:05 PT
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
 
-## Migration status (2026-07-26)
+## Environment note (2026-07-28) — read this first if you're a future PPM session
 
-Migrated to **Amber**, Model A worktree `~/Development/piper-morgan-worktrees/ppm` on
-`claude/ppm-cycle`. Currency verified 0-behind. Inbox drained 12→0. **No handoff existed** —
-predecessor died mid-day 7/19; working from CIO's artifact-assembled orientation note.
+This session is running from the **old, pre-Amber-migration worktree** (`piper-morgan-product/.claude/worktrees/pensive-kepler-02a0f6`, 4,600+ commits behind on local disk — irrelevant since all work goes through `origin/main` directly via the temp-index pattern, never the local checkout). It is **not** the Amber/Model-A session (`~/Development/piper-morgan-worktrees/ppm`, branch `claude/ppm-cycle`) that ran 2026-07-26 and did real reorientation work (see that day's log + the orientation note it worked from, `dev/active/orientation-note-ppm-amber-2026-07-25.md`).
 
-- **Cron NOT armed** (PM-gated). Registry row left parked with an explicit note — a row means
-  *watched*, and `arch` shows the cost of a watched-but-dark row (alerted 3x in 20h).
-- **Hooks: mechanism KNOWN as of 7/26 (Web).** Not intermittency — **index state at
-  hook-fire time**. `check-branch.sh` decides via `git diff --cached --name-only`, and
-  PreToolUse fires *before* the Bash call runs. So `git add <path> && git commit …` in ONE
-  call inspects an empty index → no block. **Until fixed: stage in one call, commit in the
-  next.** That's the only shape the hook can see. My own 13:30 "lazy attach, n=2" memo is
-  **WITHDRAWN** — my probe 3 was confounded by probe 2's blocked-but-still-staged file.
-  Lesson worth keeping: I changed index state between probes without noticing, and PA and I
-  converging on the same wrong answer via the same default *looked* like replication.
-  **Print `git diff --cached --name-only` before and after every probe step.**
-- **`gh` token lacks `read:project`** → cannot read the board, so no sprint recounts are
-  possible until `gh auth refresh -s read:project` (PM's call).
+**PPM has now gone dark twice**: 7/20-25 (predecessor session, healed by the Amber migration + CIO's orientation note), and again 7/27-28 (the Amber session itself, healed by this resume). Both gaps left the carry-forward as the actual continuity thread — it worked both times. No `claude/ppm-cycle` branch exists on `origin` right now (Model-A branches apparently don't persist as long-lived refs after merge, or this one never got pushed as a branch — but all the Amber session's actual commits verified present on `origin/main`, so no work is at risk).
+
+Flagged to PM (this session, 7/28) rather than silently worked around: unclear whether future PPM sessions should be expected on Amber, on this old environment, or either — PM hasn't said to stand down, so proceeding, but this is worth PM's explicit call if it keeps recurring.
 
 ## Active PM threads
 
 | Item | State | Next action |
 |---|---|---|
-| **#1386 gate run** | **Unblocked since 7/20** — beta v25 carries both Scenario-B fixes (#1393 scaffolding-leak, #1394 turn-3 continuity). Issue re-verified **OPEN** 7/26. Turn-4 still the scenario-vs-rescope design call | **TOP ITEM** — schedule with Lead + CXO directly (~half a day). Exec explicitly not needed in the room |
-| **PDR-006 + Q2 addendum** | Review requested 7/19 by PA, PM approved direction. **Never answered by predecessor.** Arch flagged it is **coupled** to the spatial review | Answer PPM slice: sprint/roadmap implications, alpha-vs-later capability split, and Q2's *milestone* implications (client-inferred vs server-synthesized colleague model). **Do together with spatial slice** |
-| **Spatial committed-theory review** | CXO delivered 7/19, voted **(b)**: ship live spatial subset as beta expression, park cold adapter chain as wave-2, update ADR-013 as scope-clarification not reversal. **PPM lane accepted 7/19, never delivered** | Owed. Product-value + beta/production scoping. Coupled to PDR-006 per Arch |
-| **#1386 (beta gate)** | 🔺 Was accidentally auto-closed 7/18 evening (commit-message keyword coincidence), **reopened 7/19 by PPM** — real criteria unmet (#1278 open, stability-window violated by Finish-the-Unfinished findings, no PM sign-off) | Watch — this is the real gate-close work still ahead, not done despite what GitHub briefly showed |
-| **Workstream #052** | Sent 7/19 (window Jul 10-16), on time for Mon Jul 20 EOD | Watch for Exec's synthesis |
-| **Spatial-intelligence committed-theory review** | PPM lane accepted (product-value + beta/production scoping); the actual read deferred to a dedicated pass, explicitly not today | **Owed**: the actual history read + framing answer, before Arch's synthesis needs it. No hard deadline but shouldn't drift indefinitely either |
-| **#1394 / ADR-078** | ✅ Architecture COMPLETE (unchanged since 7/16) | Watch only — D5 probe still pending |
-| **Beta Blockers sprint** | Was 21 open at 7/16 close; not recounted this fire (the #1386 finding took priority) | Recount next substantive fire |
-| **Finish-the-Unfinished (#1424) / ADR-079** | Progressing per 7/16-18 commits; not deeply reviewed this fire | Check status next fire |
-| **Production 1.0 GATE / RECONNECT R2** | Defined 7/16, unchanged | Watch connector-completion progress |
-| **roadmap.md / BRIEFING-CURRENT-STATE.md** | Both current as of 7/19 (light #1386 correction added) | Keep current |
-| **Docs-tree audit** | Plan delivered 7/13, PM-gated | Watch for PM's review/approval |
+| **Ship #053** | ✅ Sent 2026-07-28 (window Jul 17-23), on time despite same-day kickoff | None |
+| **Jul 19 log** | ✅ Retroactively closed 2026-07-28 (had no DAY-CLOSED marker, flagged by Exec's kickoff) | None |
+| **#1386 gate run** | Unblocked since 7/20 (beta v25 carries both Scenario-B fixes per 7/26 log). **TOP ITEM per the Amber session's own priority call** | Schedule with Lead + CXO directly (~half a day) |
+| **Jake Krajewski alpha FTUX feedback** | PM's direct ask (via Exec 7/27) — CXO/PPM/HOST/PA each give preliminary recommendations from their own lens, Exec synthesizes once all 4 in. Source: `dev/active/alpha-feedback-jake-krajewski-2026-07-25.md`. No fixed deadline, "should-do-soon" | **Owed** — not yet read/answered this session |
+| **PDR-006 + Q2 addendum** | Requested 7/19 by PA, still unanswered. Arch says coupled to spatial review | Answer together with spatial slice |
+| **Spatial committed-theory review** | CXO voted (b) 7/19: ship live subset, park cold adapter chain, update ADR-013 as scope-clarification. **PPM lane accepted twice now** (7/19 predecessor, implicitly still owed) — still not delivered | Owed. Do with PDR-006 |
+| **Hooks investigation (check-branch.sh reliability)** | Extensive multi-agent investigation Jul 26 (mechanism found: index-state-at-hook-fire-time, not intermittency) + a scope-correction Jul 26 evening (checklist v1.5: standalone-shape gate had certified coverage the cohort doesn't have on compound-shape commits). Informational for PPM — my own commits use `commit-tree` directly, not `git commit`, so this hook likely doesn't gate them either way; not yet confirmed which side of that my mailbox writes land on | Watch; not urgent, not my thread to drive |
+| **#1394 / ADR-078** | ✅ Architecture COMPLETE (unchanged since 7/16, reconfirmed OPEN-pending-D5-probe by 7/26 session) | Watch only |
+| **Beta Blockers sprint recount** | Not possible — `gh` token lacks `read:project` scope (found by 7/26 session). Last real count: 21 open at 7/16 close | Needs `gh auth refresh -s read:project` — PM's call |
+| **roadmap.md / BRIEFING-CURRENT-STATE.md** | Current as of 7/19 only — 9+ days stale now given everything since | Needs a real refresh once the above items settle, not urgent today |
+| **Docs-tree audit** | Plan delivered 7/13, still PM-gated as of last check | Watch |
 
 ## PM-attention / escalation items
-- **#1386's accidental auto-close** — already flagged directly to PM via mail + GH comment; no further action needed unless PM wants to discuss the gate-close criteria themselves.
-- **Resolved, not escalation**: my own push-retry bug silently reverted CIO's + Web's content (3 files) ~08:32. Root-caused, all 3 restored, precise explanation sent to CIO/Exec/Arch/PM/Web/Docs (separated cleanly from CIO/Exec's real, distinct worktree-collision investigation), durable memory saved. Full account in today's session log 10:15 AM entry. Nothing further needed from PM unless questions remain.
+- **Environment question** (see note above) — not blocking, but worth PM's call if a future session hits the same ambiguity.
 
-## Situational awareness (not PPM's lane, just watching)
-- Cohort had a genuinely huge 3-day stretch (7/17-18): Tier-3 dead-code deletion families (1,2,3,4,6) executed by Lead/ratified by Arch, ADR-079 authored, #1414/#1416/#1417/#1426 and more closed, ~152 commits total. Worth a deeper read if any of it turns out to be PPM-relevant beyond what this fire caught (#1386, spatial review) — didn't do an exhaustive sweep, prioritized the two live findings instead.
-- A 3rd worktree-sharing data point surfaced (Exec, 7/17) — ongoing infrastructure investigation, not PPM's lane.
+## Mail status (2026-07-28)
+11 items were in the inbox at session start. Read: Ship #053 kickoff (actioned), Jake FTUX ask (logged as owed, not yet actioned), HOST's checklist-v1.5 scope-correction (informational, read). **Not yet read in full**: the remaining ~8 items, mostly hook-investigation cross-traffic (Arch/CXO/PA/HOST exchanges where PPM is cc'd, not primary) plus PA's #1351/Q2 memo (likely relevant to the PDR-006 thread — worth reading before answering PDR-006) and CIO's duty-cycle-tick v1.19 broadcast (procedural, worth knowing before next fire). None triaged to `read/` yet — do that once actually read, not before.
 
 ## Parked (no current trigger)
-- Pre-7/5-crisis entity-model lane — unverified since 6/18, see `ppm-standing-items.md`.
+- Pre-7/5-crisis entity-model lane — unverified since 6/18.
 - Ship #048 kickoff memo — status unknown, unverified.
 
-## Wanted but not found (worth a future check)
-- A canonical `ROLE-PORTFOLIO-PPM` doc. Referenced again by this week's Ship kickoff format. Still not found; worth actually asking about rather than continuing to route around it.
+## Wanted but not found
+- A canonical `ROLE-PORTFOLIO-PPM` doc. Flagged by two prior PPM sessions now (7/19, 7/26). Worth actually asking PM rather than a third session routing around it again.
 
 ## Known process notes for future fires
-- **NEVER reuse a tree object across a push-retry.** If a temp-index push is rejected (non-fast-forward), rebuild fully from a fresh `read-tree` against the new fetch and reapply the specific edit — never extract the old rejected commit's tree (`git show -s --format=%T`) and reattach it to the new parent. That silently reverts every file anyone else changed in the gap between fetches, with zero warning from `git push` (it only checks parent fast-forward, not tree coherence). Did this once today (Ship-052 retry), reverted 3 files belonging to CIO and Web before catching it via PM's report. See `feedback_never_reuse_stale_tree_object_on_push_retry.md`. **After ANY retry, diff the new commit against its immediate parent and read the FULL file list — not just confirm your own intended file is present.**
-- **This shell is zsh, not bash — unquoted variable expansion does NOT word-split on newlines by default.** `for F in $DYNAMIC_MULTILINE_VAR` silently runs ONCE with the whole blob as one item, rather than erroring loudly. Caught this 7/19 mid-mail-drain (produced one corrupted 0-byte file before being caught). **Always use `while IFS= read -r F; do ... done < file` (or a bash array literal `declare -a X=(...)`) for any multi-item loop over command output — never bare `for X in $(cmd)`.**
-- **`git show --stat`'s rename-collapse can make a correct pure-move look like "0 changes"** — don't read that as "nothing happened"; spot-check actual byte counts/content on at least one file when verifying a batch move.
-- **CronList can survive intact across a multi-day gap where nothing actually fires** — this is different from Gap-C (cron death). The job object persisting doesn't mean fires happened; always check for actual session-log evidence per day, not just cron presence.
-- **Check mail BEFORE the general commit-log catch-up on a multi-day-gap fire** — the #1386 finding came from reading a memo first; a pure commit-log sweep might have taken much longer to surface the same thing.
-- **`closes #NNNN-<suffix>` in any commit or mail-commit message auto-closes issue NNNN via GitHub's keyword parser**, regardless of the suffix. Watch for this pattern in own commits and others'.
-- **ADR-077 / ADR-078 / ADR-079 are three different ADRs** (Routing Integrity / Session-Activity-Ledger / Owner-Scoping Integrity).
-- **When PPM goes dark, PM routes decisions directly to Lead** — correct fallback, costs planning-doc currency. Check for this on every resume-from-gap fire.
+- **NEVER reuse a tree object across a push-retry** — rebuild fully from a fresh `read-tree`. See `feedback_never_reuse_stale_tree_object_on_push_retry.md`.
+- **This shell is zsh — unquoted multi-line variables don't word-split in `for X in $VAR`.** Use `while IFS= read -r`.
+- **`git show --stat`'s rename-collapse can hide a pure move as "0 changes"** — spot-check byte counts.
+- **A dark PPM session leaves no explanation of its own gap** — twice now (7/20-25, 7/27-28), the carry-forward + mail were the only continuity, never a clean STOP. Don't assume a gap means nothing happened elsewhere — 985 commits landed cohort-wide during the first gap alone.
+- **Check Ship kickoff memos for exact window boundaries** — Exec's #053 kickoff explicitly warned against folding post-window material in; read the window dates literally.
+- **ADR-077 / ADR-078 / ADR-079 are three different ADRs.**
 - **"cc-pm" in mailbox filenames means `xian (ceo)`, not `ppm`.**
 
 ## Cron
 
-Current job: `61944f35`, `52 6,9,12,15,18,21`, confirmed present and correctly configured. Next fire ~12:52 PT today.
+**Not armed.** Registry row (`dev/active/duty-cycle-registry.tsv`) shows `parked: migrated to Amber 2026-07-26, cron NOT yet armed (PM-gated)` — still accurate as of this session; not arming without PM's explicit go, consistent with the 7/26 session's own call (arming while PM is actively engaged also cuts against the cron-off-when-engaged norm).
 
 ---
 
