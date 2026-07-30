@@ -15,47 +15,44 @@ PM-attention items live **here**, in the section immediately below.
 
 ## PM Attention
 
-*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-07-29.)*
+*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-07-29 PM.)*
 
-**Two decisions, both PM's, both now genuinely blocking. Everything else on this thread has resolved.**
+**Both distribution "decisions" are CLOSED. Neither was ever really open. One PM action remains.**
 
-- 🔴 **DECISION 1 — upgrade pipermorgan.ai to Team/Enterprise, or hold Track A?** ✅ *Tier question is
-  CLOSED*: xian checked the account — it is **Pro (Max 20x)** (Janus, 7/28). Team/Enterprise is required
-  to reach the connector submission portal, so **Track A (connector listing) is blocked on the plan, not
-  pending a lookup.** This is now a purchase decision, not a research task.
-- 🔴 **DECISION 2 — open-source the plugin package (CLAUDE.md + hooks + skills)?** Track B requires a
-  **public GitHub repo**; closed-source is not accepted. **With Track A behind a paid upgrade, Track B is
-  the only Claude-side route open today** — so this is the live gate, not the deferrable one.
-  *(PA advised deferring this on 7/26 morning; withdrawn same day.)*
-- ⏰ **ACTION, not a decision — OpenAI identity verification. Still unstarted; 10 days.** The only item
-  with an **external clock**, and unaffected by both decisions above. Exact path (Janus, 7/28):
-  **platform.openai.com → Settings → Organization → General → "Verify Organization"** — government ID,
-  a few minutes, no spending threshold, no company entity. Unblocks the ChatGPT remote-MCP listing.
-- ❓ **One 30-second look, if convenient**: what is the **"Piper morgan" entry** in your earlier
-  screenshot — an installed connector, a personal plugin upload, or an actual listing? Determines whether
-  anything is already live. *(The Console-org half of this question is largely moot: Track B's Console
-  path needs a Console org role, which the API usage implies.)*
+- ⏰ **THE ONLY OPEN PM ITEM — OpenAI identity verification. PM committed to doing it Thu 7/30.**
+  Path: **platform.openai.com → Settings → Organization → General → "Verify Organization"** — government
+  ID, a few minutes, no spending threshold, no company entity. Only item with an **external clock**;
+  gates the ChatGPT remote-MCP listing and nothing else gates it.
+- ✅ **CLOSED — "open-source the plugin package?" was never an open decision. THE REPO IS ALREADY PUBLIC.**
+  Verified 7/29 (`gh repo view` → `visibility: PUBLIC`). **PM had answered this multiple times**; it kept
+  regenerating out of stale docs, including PA's own 7/26 memo which called it "the live gate." It was
+  never a gate. ⚠️ **If you see this listed as a pending decision anywhere, it is stale — delete it.**
+- ✅ **CLOSED — Team upgrade: DROPPED (PA recommendation, PM concurring math).** Chat now installs
+  plugins on all paid plans, and plugins bundle skills + connectors + MCP — so Track A's unique audience
+  collapsed. Team's only purpose was the connector portal: 5-seat minimum, ~$1,200/yr Standard,
+  **~$6,000/yr Premium** (Claude Code is Premium-only, which is the number that matters here).
+  **Reopen only on real install data showing connector-directory discovery converts better.**
 
-### Resolved since 7/26 — no PM action
-
-- ✅ **PDR-006 ratification UNBLOCKED (Arch, 7/29).** Q2 was never open: **PM ruled it 2026-01-08** —
-  rule-based Option A, shipped; LLM evolution is **#558**, OPEN, Production/1.0, due 2026-10-30. Arch
-  verified against running code. Arch's own spatial-coupling flag **withdrawn as a gate** (re-trigger
-  recorded if #558 is pulled forward). **Arch has no objection to ratifying**; CXO + PPM reviews still out.
-- ✅ **Claude submission tiers resolved** against Anthropic's docs (`dev/active/distribution-submission-tiers-resolved-2026-07-26.md`).
-- ✅ **#1351's unfinished audit is now a tracked pre-live gate — [#1458](https://github.com/mediajunkie/piper-morgan-product/issues/1458)**, filed at Arch's direction with the three untraced surfaces (Redis, in-process floor/context state, rate-limiting) as ACs, plus the identity-boundary mechanism.
-- ➡️ **New, PM's and genuinely open — but must NOT gate anything** (Arch, 7/29): *at what point does the
-  gap between a 4-dimension rule-based preference model and a real "colleague model" start costing us
-  users?* Product-quality question. **Alpha feedback should decide when #558 gets pulled forward.**
+**No PM decisions pending. The distribution track is now build work** — plan and phased sequencing in
+`dev/active/distribution-submission-tiers-resolved-2026-07-26.md`. PA is working Phase 0 (privacy policy,
+docs page, tool-annotation spec, ChatGPT test cases, `claude plugin validate` dry-run), none of which is
+blocked on anything.
 
 ### Context PM may want when these come up
 
-Submission is **further out than the 7/19 research memo implied**, and PA verified this rather than
-restating it: **`mcp.pipermorgan.ai` is not deployed** (it exists only in PDR-006 and planning docs),
-and **no public privacy policy page exists**. Both directories require a stable endpoint and a privacy
-policy. **This strengthens rather than weakens the two ⏰ items** — they are the only long-external-
-lead-time steps and the only ones not gated on the server existing, so they should run in parallel
-with the build, not after it.
+**Submission is gated on build, not decisions.** Verified rather than restated: **`mcp.pipermorgan.ai`
+is not deployed** (exists only in PDR-006 and planning docs) and **no public privacy policy page exists**
+— a missing privacy policy is an *immediate rejection* on both directories. So the earliest realistic
+submission is weeks out regardless, and **OpenAI verification is the one thing whose clock runs
+independently of all of it** — which is why it stays the single ⏰ item.
+
+⚠️ **Standing caution for this whole thread, earned three times over.** The tier answer was wrong twice
+in opposite directions; the open-source "decision" was carried as open for ten days after PM had
+answered it repeatedly; Q2 blocked PDR-006 for ten days after PM had ruled on it in January. **Every one
+was a claim inherited from a document and never checked against the source** — `gh repo view`,
+`gh issue view`, the actual code. All three were 30-second checks. **Before restating anything on this
+thread, verify it.** *(And per PM 7/29: the platform story here changes fast — a correct answer from four
+days ago is not a current answer.)*
 
 ## Active state — as of 2026-07-29 STOP (next wake 06:42 Thu 7/30)
 
