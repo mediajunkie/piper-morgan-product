@@ -58,11 +58,11 @@ This is one reason why I've done 99% of the alpha testing so far. It would be to
 
 I got it fixed same morning. There really is no substitute for testing your own stuff as a normal user, at least when you are in the target user group, I should say. This sequence is the of "build, deploy, break in a way only real use surfaces, fix, and keep going" is what an actual production system looks like while it's proving itself.
 
-A day will come when I'll proudly hand someone my phone, maybe in a bar, and show Piper Morgan doing something a screen or in an interaction and say "I built that!" but not this day. 
+A day will come when I'll proudly hand someone my phone, maybe in a bar, and show Piper Morgan doing something a screen or in an interaction and say "I built that!" but it is not this day. 
 
 # Someone outside the room
 
-The alpha plugin we'd sent out weeks earlier to a small handful of testers had been mostly quiet. On June 26, one of those testers — an engineer named Jake — was actively using it, and giving pointed feedback about the install experience. My product-assistant agent turned that feedback around fast: two version bumps in one day, each one closing a gap Jake had actually hit.
+The alpha plugin we'd sent out weeks earlier to a small handful of testers had been mostly quiet. As ofn June 26, one of those testers — an engineer named Jake — was actively using it, and giving pointed feedback about the install experience. My product-assistant agent turned that feedback around fast: two version bumps in one day, each one closing a gap Jake had actually hit.
 
 [FACT-CHECK NOTE for PM: the source logs on June 26 describe Jake as "first external tester actively using" the alpha, and I initially read that as a first-contact moment. But cross-referencing your own distribution history shows the alpha plugin actually went out to five testers (including Jake) back on June 9 — so June 26 reads more like an existing tester coming alive and driving a fast feedback loop, not a brand-new first use. I rewrote this section to reflect that, but please confirm Jake's actual timeline and whether "first" belongs anywhere in this beat — I don't want to overclaim a milestone that happened weeks earlier and just wasn't visible to the team until now.]
 
