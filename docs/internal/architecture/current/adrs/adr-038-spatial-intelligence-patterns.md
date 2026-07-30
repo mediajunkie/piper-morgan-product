@@ -1,7 +1,7 @@
 # ADR-038: Spatial Intelligence Architecture Patterns
 
 **Date**: September 30, 2025 (Updated: October 1, 2025)
-**Status**: Accepted
+**Status**: Accepted · **AMENDED 2026-07-30 (Amendment A, Arch)** — decision stands; verification claims corrected. Read Amendment A at the foot of this file before citing any operational claim.
 **Context**: CORE-GREAT-2C Verification Work (GitHub Issue #194), CORE-GREAT-2D Discovery (GitHub Issue #195)
 **Supersedes**: None
 **Superseded by**: None
@@ -565,3 +565,68 @@ All spatial intelligence patterns remain valid architectural choices, now enhanc
 ---
 
 _This ADR documents the discovery and validation of two production spatial patterns during GREAT-2C verification work (September 30, 2025)._
+
+---
+
+# Amendment A — 2026-07-30 (Arch)
+
+**Status of the amendment**: ACCEPTED as a correction to this ADR's *verification claims*. **The decision is NOT reversed.**
+**Authored by**: Chief Architect · **Sources**: `../spatial-intelligence-layer-map-and-costed-options.md` (the measured map), `../spatial-intelligence-experience-thesis.md` (CXO, the experience argument).
+**Supersedes**: the two ⚠️ notices at the head of this file, which were placeholders pending this amendment. Their substance is folded in here.
+
+## A1 — The decision stands. The three-pattern pluralism is VALIDATED, not aspirational.
+
+ADR-038 replaced ADR-013's maximalism (*"ALL external tool integrations MUST use the unified MCP + Spatial Intelligence pattern"*) with domain-appropriate pluralism. **That call was right and the evidence has strengthened, not weakened.** Every connector a user can actually connect today has a live spatial path, and they arrive by *different* patterns — which is precisely what this ADR predicted:
+
+| Advertised connector | Live spatial path | Pattern |
+|---|---|---|
+| Slack | `integrations/slack/spatial_adapter` (3 importers) | Granular Adapter |
+| Notion | `mcp/consumer/notion_adapter` → `notion_integration_router` | (see A2 — **not** the pattern this ADR cited) |
+| Calendar | `mcp/consumer/google_calendar_adapter` → `calendar_integration_router` | Delegated MCP |
+| GitHub | `integrations/spatial/github_spatial` + `mcp/consumer/github_adapter` | full 8-dimensional, live |
+
+**No part of this ADR's decision requires amendment.** What requires amendment is how it *evidenced* the decision.
+
+## A2 — ⚠️ The verification claims are CORRECTED. One of three citations went stale.
+
+The **Verification Results** section (and the "Production-proven / Proven operational" lines at §§112, 134, 144, 204) asserted per-connector operational status. Measured 2026-07-30:
+
+| ADR-038 claim | Current state | Verdict |
+|---|---|---|
+| *"Slack spatial: 11 files, 100% operational"* | `slack/spatial_adapter` live — 3 importers | ✅ **holds** |
+| *"Calendar spatial: 2 files, 100% operational, MCP protocol integration"* | `google_calendar_adapter` live via `calendar_integration_router` | ✅ **holds** |
+| *"Notion spatial: 1 file, 100% operational, 8-dimensional analysis working"* | **`intelligence/spatial/notion_spatial` has ZERO importers and ~12 undefined methods (~75% abandoned)** | ❌ **CONTRADICTED** |
+
+**But Notion's spatial capability is live** — via `mcp/consumer/notion_adapter`, which produces `SpatialContext`/`SpatialPosition`. **Notion users are not missing place-modeling.** What is dead is the *specific file this ADR cited as proof*.
+
+**Do not cite §§106–112, 134, 144 or 204 as current fact.** They were true when written; one is now false, and all four are frozen snapshots of a moving system.
+
+## A3 — ★ The methodological error, named so it doesn't recur
+
+**ADR-038 was right about the pattern and wrong about which connector proved it.**
+
+The `notion_spatial` citation didn't go stale because the pattern failed. It went stale because **CORE-MCP-MIGRATION #198 moved the implementation** — replacing per-connector direct-API spatial modules with MCP consumer adapters **built on the same spatial contract** (`BaseSpatialAdapter` / `SpatialContext`, `services/integrations/spatial_adapter.py`) — while this ADR kept pointing at the superseded predecessor.
+
+**The error class: citing an IMPLEMENTATION as evidence for a PATTERN that outlives it.** An implementation is a point-in-time fact with a short half-life; a pattern is a decision. Binding the second to the first means a successful migration makes the ADR *look* falsified — and that is exactly what happened here. An agent reading §107 against the cold `notion_spatial` file would conclude the pattern failed. **It succeeded so thoroughly that the code it was demonstrated on became redundant.**
+
+**Forward rule for this corpus**: an ADR may cite implementations as *illustration*, never as *proof of continuing validity*. Where an ADR needs to make a live/cold claim, it must point at a command that re-derives it rather than freezing a table. (This amendment follows that rule — see A4.)
+
+## A4 — Where the facts live now
+
+**This amendment deliberately does not restate the live/cold inventory.** It lives in `../spatial-intelligence-layer-map-and-costed-options.md`, and every claim there is re-derivable:
+
+```
+python3 scripts/reachability-map.py services/integrations/spatial services/intelligence/spatial services/mcp/consumer
+```
+
+**If any table in this corpus disagrees with that command, the command is right.** (CXO's formulation, 2026-07-30: *"prose can't be re-run; the tool can"* — adopted here as a corpus convention, not just a note.)
+
+⚠️ **A string match on a module name is not an import edge.** Both CXO and I independently mistook `config_service.py:222`'s feature-flag string `"notion_spatial_mapping"` for a `notion_spatial` importer, within a day of each other. Use the tool.
+
+## A5 — What is still open (this amendment closes none of it)
+
+The committed-theory review has **not** concluded. Open: PPM's roadmap-dependency slice; Lead's cost estimate for an L4 (ambient-presence) monitoring loop; and **PM's call on the 10-module cold island**, which should be described as *"superseded implementation strategy, retained as prior art"* rather than dead code — it holds the only worked examples of place-modeling for four connectors.
+
+**Spatial deletions remain HELD.** Spatial intelligence is protected representation under PM's standing rule, and nothing here authorizes removal.
+
+---
