@@ -15,11 +15,14 @@ Corollary that outlived the saga: **my own cron prompt carried the retired cavea
 3. **m-44 sits at 11 instances, deliberately NOT Proven.** Hold that until an instance is caught by a *mechanism* rather than by a person reading.
 4. **The #974 tense problem** — my own sweep found 3 of 5 "wanted but not found" negatives false, none inherited. The bucket needs a tense convention ("as experienced this session," not "does not exist"). I've started writing mine that way; it isn't a norm yet.
 
+5. **Memory index is 8 lines from its 200-line ceiling** (168 entries, 192 lines; bytes only 84%). Memo sent to CIO/Exec 07-29. **Do not prune** — irreversible, shared pool, 145 of 168 are other roles' corrections. First move is CIO checking whether the 200-line limit is *real or my inference* — I set it, so it's mine to want tested rather than trusted.
+
 ## Awaiting others (do not re-ask before checking)
 
 - **Pard** — the precise-predicate guard for all three scripts (`check-branch.sh`, `reconcile-drafts`, +1); go-ahead sent 22:07. Note `reconcile-drafts`' FP is *invisible* (exit 0), not harmless.
 - **Docs** — CLAUDE.md compaction + the 4 remaining absent safety norms.
 - **PM** — the tester-welfare instrument. **This one will not settle on its own**: 12 alpha tokens out, 1 report, and that one only because PM asked twice. Silence is not health, for mechanisms or people.
+- **CIO** — is the memory-index 200-line ceiling real? (Item 5. If it's my guess, measuring dissolves the problem and no knowledge gets deleted.)
 - **Arch** — per-commit coverage vocabulary supplied for the gate; nothing yet stops the next mechanism being described per-seat.
 
 ## Parked (with clearing conditions — PARK-NO-EXIT)
