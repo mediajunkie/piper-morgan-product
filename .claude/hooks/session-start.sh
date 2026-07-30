@@ -48,10 +48,45 @@ if [ -d "$LOG_DIR" ]; then
     # #1153-adjacent fix (2026-07-03): this glob was missed in the 6/29 naming-convention
     # pass — it still required "-opus-log.md" so this signal silently stopped firing for
     # any new-format log. Section 6 got the fix; this one didn't.
-    LOGS_TODAY=$(find "$LOG_DIR" -maxdepth 1 -name "*-log.md" -type f 2>/dev/null \
-        -exec basename {} \; 2>/dev/null | tr '\n' ',' | sed 's/,$//;s/,/, /g')
-    if [ -n "$LOGS_TODAY" ]; then
-        output+="SESSION LOGS TODAY: $LOGS_TODAY — resume yours if listed."$'\n'
+    #
+    # ⚠️ BUDGET FIX 2026-07-30 (Docs): this line used to emit FULL FILENAMES for every
+    # role, which at a full cohort was 380 of the 480-char budget — 80% — spent on
+    # information the agent does not need (nine of the ten names are other roles').
+    # Everything after the mailbox line was therefore being silently truncated away:
+    # XPOLL BRIEF, DOCS AUDIT, ROLE, per-role briefing freshness, and the MEM-975
+    # delta signal. The docs-audit reminder added 2026-07-28 was measured at 495/500
+    # on the day it shipped and was crowded out within days — it worked for about one
+    # day and then stopped, silently.
+    #
+    # Emitting role SLUGS instead costs ~96 chars and frees ~284. The agent needs to
+    # know whether ITS OWN log exists and roughly who else is up; it does not need
+    # nine filenames it will never open. Same failure family as the rest of this
+    # week: a mechanism that runs, produces correct output, and delivers nothing.
+    #
+    # Slug guard is deliberately identical to section 6's (#1153): require the exact
+    # YYYY-MM-DD-HHMM- prefix before the positional strip, so a non-conforming name
+    # is skipped rather than mangled into a bogus slug.
+    SLUGS_TODAY=""
+    LOG_COUNT=0
+    for _log in "$LOG_DIR"/*-log.md; do
+        [ -f "$_log" ] || continue
+        _base=$(basename "$_log")
+        case "$_base" in
+            [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]-*-log.md) ;;
+            *) continue ;;
+        esac
+        _s=${_base#????-??-??-????-}
+        _s=${_s%-opus-log.md}
+        _s=${_s%-sonnet-log.md}
+        _s=${_s%-haiku-log.md}
+        _s=${_s%-log.md}
+        _s=${_s%-code}
+        case " $SLUGS_TODAY " in *" $_s "*) continue;; esac
+        SLUGS_TODAY="$SLUGS_TODAY $_s"
+        LOG_COUNT=$((LOG_COUNT + 1))
+    done
+    if [ "$LOG_COUNT" -gt 0 ]; then
+        output+="SESSION LOGS TODAY ($LOG_COUNT):${SLUGS_TODAY} — resume yours if listed."$'\n'
     fi
 fi
 
@@ -223,6 +258,9 @@ output+="ROLE: check PM assignment or today's session log (no default)"$'\n'
 #   Old (pre-2026-06-29): YYYY-MM-DD-HHMM-{role}-code-opus-log.md (or -sonnet-)
 if [ -d "$LOG_DIR" ]; then
     SEEN_SLUGS=""
+    BRIEF_CHECKED=0
+    BRIEF_STALE=0
+    BRIEF_OLDEST=0
     for log in "$LOG_DIR"/*-log.md; do
         [ -f "$log" ] || continue
         # Extract slug from either old or new format.
@@ -270,10 +308,26 @@ if [ -d "$LOG_DIR" ]; then
         B_EPOCH=$(git -C "$PROJECT_ROOT" log -1 --format=%ct -- "$briefing_path" 2>/dev/null)
         [ -n "$B_EPOCH" ] || continue
         B_AGE=$(( ($(date +%s) - B_EPOCH) / 86400 ))
+        BRIEF_CHECKED=$((BRIEF_CHECKED + 1))
         if [ "$B_AGE" -gt 14 ]; then
-            output+="ROLE BRIEFING ($slug): STALE ($B_AGE days) — $briefing_name"$'\n'
+            BRIEF_STALE=$((BRIEF_STALE + 1))
+            [ "$B_AGE" -gt "$BRIEF_OLDEST" ] && BRIEF_OLDEST=$B_AGE
         fi
     done
+    # ⚠️ AGGREGATED 2026-07-30 (Docs). This emitted ONE LINE PER ROLE (~70 chars each).
+    # At a full cohort that is ~700 chars against a 480-char budget — it alone blew the
+    # budget and truncated everything after it, including its own tail. Reporting the
+    # RATIO instead costs one line and is strictly more informative, per Arch's point
+    # from the check-staleness finding the same day: "report the denominator, not just
+    # the list — '33 of 36' is what made this land; a list of filenames reads as a
+    # chore queue, the ratio reads as a systemic finding."
+    #
+    # It is also the honest shape here: when every role's briefing is stale, ten
+    # identical STALE lines invite each agent to read it as their own lapse. The ratio
+    # shows it is systemic. (All 10 were stale at 41 days when this was written.)
+    if [ "$BRIEF_STALE" -gt 0 ]; then
+        output+="ROLE BRIEFINGS: $BRIEF_STALE of $BRIEF_CHECKED stale (oldest ${BRIEF_OLDEST}d, >14d threshold)"$'\n'
+    fi
 fi
 
 # ─── 7. Delta-since-last-session signal (MEM-975) ────────────────────────────
@@ -288,6 +342,8 @@ fi
 # Safety: script wrapped in || true; output captured via $(...); failures
 # don't block session start.
 DELTA_SCRIPT="$PROJECT_ROOT/scripts/generate-delta.py"
+DELTA_ROLES=""
+DELTA_COUNT=0
 if [ -x "$DELTA_SCRIPT" ] && [ -n "${SEEN_SLUGS// /}" ]; then
     for slug in $SEEN_SLUGS; do
         # Skip slugs we don't expect to track deltas for
@@ -295,18 +351,67 @@ if [ -x "$DELTA_SCRIPT" ] && [ -n "${SEEN_SLUGS// /}" ]; then
             code|eta|llm) continue ;;
         esac
         # Invoke script; capture signal line; tolerate failures silently.
+        # The per-role delta FILE is the point — generating it is the useful side
+        # effect and still happens for every role. Only the SIGNAL is aggregated.
         delta_signal=$("$DELTA_SCRIPT" --role "$slug" 2>/dev/null || true)
         if [ -n "$delta_signal" ]; then
-            output+="$delta_signal"$'\n'
+            DELTA_ROLES="$DELTA_ROLES $slug"
+            DELTA_COUNT=$((DELTA_COUNT + 1))
         fi
     done
+    # ⚠️ AGGREGATED 2026-07-30 (Docs). This emitted ONE 130-CHAR SIGNAL PER ROLE —
+    # ~1,300 chars at a full cohort, against a 490-char budget. One section was 2.6x
+    # the entire budget, and nine of every ten lines were another role's delta, which
+    # the reading agent will never open. It was the single largest consumer here and
+    # the reason the tail of this hook had been undeliverable.
+    #
+    # Aggregating costs ~80 chars and loses nothing an agent needs: the delta FILES
+    # are still generated per role (that is the valuable side effect), and the naming
+    # pattern tells you how to find yours. Third instance of the same shape in this
+    # one hook today — per-role detail emitted to a surface that cannot know which
+    # role is reading it. Aggregate, and let the reader select.
+    if [ "$DELTA_COUNT" -gt 0 ]; then
+        output+="📋 Deltas ready for $DELTA_COUNT role(s):${DELTA_ROLES} — see dev/active/delta-{role}-$(date +%Y-%m-%d).md"$'\n'
+    fi
 fi
 
 # ─── Output ───────────────────────────────────────────────────────────────────
 if [ -n "$output" ]; then
-    # Truncate to stay under 500 chars
+    # ⚠️ TRUNCATION MADE DIAGNOSTIC 2026-07-30 (Docs). This used to cut at a raw byte
+    # offset — `${output:0:480}... (truncated)` — which severs a line mid-word and gives
+    # no indication of HOW MUCH was lost. That is how the docs-audit reminder (added
+    # 2026-07-28, measured at 495/500 the day it shipped) stopped being delivered within
+    # days without anyone noticing: the hook kept running, kept producing it, and the
+    # budget quietly ate it. A mechanism that runs, produces correct output, and delivers
+    # nothing — this week's recurring shape.
+    #
+    # Now: cut on LINE boundaries and SAY WHAT WAS DROPPED. The point is not to save
+    # bytes, it is that a suppressed line must be visibly suppressed. Silence that
+    # reports itself is recoverable; silence that looks like completion is not.
+    #
+    # Ordering matters and is deliberate: the most actionable lines are emitted first
+    # (log continuity, mail, then the periodic reminders), so if anything is dropped it
+    # is the tail rather than the lede.
+    # Reserve exactly enough for the notice, so kept-lines + notice lands UNDER the
+    # budget rather than over it. (First cut of this kept 430 chars and then appended
+    # a ~110-char notice — 540 total against a 490 budget, i.e. a budget fix that
+    # broke the budget. Measured, not assumed.)
+    _notice_reserve=80
     if [ ${#output} -gt 490 ]; then
-        output="${output:0:480}... (truncated)"
+        _kept=""
+        _dropped=0
+        while IFS= read -r _line; do
+            [ -z "$_line" ] && continue
+            if [ "$_dropped" -eq 0 ] && [ $(( ${#_kept} + ${#_line} + 1 )) -le $(( 490 - _notice_reserve )) ]; then
+                _kept+="$_line"$'\n'
+            else
+                _dropped=$((_dropped + 1))
+            fi
+        done <<< "$output"
+        if [ "$_dropped" -gt 0 ]; then
+            _kept+="⚠️ $_dropped line(s) cut (hook budget) — run .claude/hooks/session-start.sh"$'\n'
+        fi
+        output="$_kept"
     fi
     echo "$output"
 fi
