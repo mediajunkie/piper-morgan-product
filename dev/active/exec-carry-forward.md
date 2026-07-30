@@ -1,6 +1,24 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-29 ~21:40 PT — day-close of the first Amber successor session.
+**Last updated**: 2026-07-30 ~09:55 PT — after the 08:32 fire (rollup delivered).
+
+## Fire-state delta (2026-07-30 morning — read with the sections below)
+
+- **Rollup DELIVERED** (`dev/active/exec-cohort-attention-rollup-2026-07-30.html`, sent to PM 09:45):
+  3 blockers / 6 decisions / live-verified. Refresh incrementally on next PM contact — don't re-render
+  identical.
+- **Jake synthesis still gated at 3/4** — PPM parked (PM-gated); now board blocker #1. CXO prepped a
+  Jake discussion structure for PM (`e7d1cd7dd`) as the interim.
+- **NEW owed by me: HOST migration-checklist v2.0 review** (→ then CEO ratification) — substantive read,
+  target next quiet fire, before Ship #054 drafting starts Saturday.
+- **CIO park-check proposal endorsed** (memo sent 09:50, cc HOST/PM) — HOST's read is the remaining input.
+- **Memory-index governance**: with CIO/HOST/PM (board decision item). Exec holds no action; do NOT
+  prune or let a hook prompt push a prune — index is derived, source is irreversible.
+- Inbox at 0 as of 09:50; mail loop clean.
+
+---
+
+*(Previous day-close content below — still-valid queue and environment notes.)*
 **Session log today**: `dev/2026/07/29/2026-07-29-1220-exec-code-log.md` (successor; predecessor's Desktop close-out is `…-0705-…`, complete without a DAY-CLOSED marker per PM)
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree `~/Development/piper-morgan-worktrees/exec`, branch `claude/exec-cycle`
 **Cron**: `32 8,20 * * *` — re-armed at STOP (see registry row; job id in session log). ⚠️ Session-only, auto-expires ~Aug 5 — re-arm needs a live session by then.
