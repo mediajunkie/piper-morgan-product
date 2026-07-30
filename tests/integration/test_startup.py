@@ -5,6 +5,7 @@ Verifies that main.py starts without hanging and serves basic endpoints
 
 import asyncio
 import subprocess
+import sys
 import time
 from pathlib import Path
 
@@ -18,8 +19,11 @@ class TestStartupIntegration:
     def test_main_py_startup_no_hanging(self):
         """Test that python main.py starts without hanging"""
         # Start the application in a subprocess
+        # sys.executable, not bare "python": hosts without a `python` shim on
+        # PATH (e.g. Amber, homebrew python3 only) FileNotFoundError otherwise;
+        # sys.executable is also the interpreter actually running the tests.
         process = subprocess.Popen(
-            ["python", "main.py"],
+            [sys.executable, "main.py"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
