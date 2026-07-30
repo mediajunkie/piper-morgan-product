@@ -1,33 +1,34 @@
 # CIO Carry-Forward — ephemeral session state
 
-**Purpose**: read-at-fire-time state for `duty-cycle-tick`. **Exec's `cohort-attention-rollup` reads the PM Attention section directly, and PM does not read memos — so this is one of the few real paths to PM.** Stale here propagates to PM's attention board.
+**Purpose**: read-at-fire-time state for `duty-cycle-tick`. **Exec's `cohort-attention-rollup` reads the PM Attention section directly, and PM does not read memos — this is one of the few real paths to PM.**
 
 ---
 
 ## PM Attention
 
-*(Whole-file rewrite 2026-07-29 08:35 PDT — timestamp verified with `date`, not estimated. Live items only.)*
+*(Whole-file rewrite at the 2026-07-29 STOP. Timestamp verified with `date`. Live items only.)*
 
-- 🔴 **AMBER HAS NO PIPER BUILD STACK — this blocks the beta path, and it is the biggest open item.** Lead migrated 07:47 and found it; **CIO independently re-probed every claim** rather than relaying. Absent: venv · container runtime (docker/colima/orbstack all missing) · flyctl. Wrong: system python **3.14.6** where the project pins **3.11** (a 3.14 venv will not reproduce CI). Closed: Postgres **5433** and Redis **6379**, port-probed rather than inferred. **Blocked**: the #1452 burn-down method and beta deploys. **Not blocked**: coordination, GitHub/board work, backlog bookkeeping, design records, CI review, mail — so Lead is **half-productive, not stopped**. Routed to Pard (host-level tooling is a provisioning call); **PM sets the priority**. Why eight prior migrations passed clean: **none of them compiles anything** — Lead is the first migrant whose lane needs a toolchain.
-- ⏰ **PA's two five-minute items — 10 days parked**, still the only board item with a clock we do not control. claude.ai account tier + **start OpenAI identity verification**.
-- 🟡 **MIGRATION 8 of 10.** ✅ lead (07:47, verified, already logging + hook-probing). **Remaining: exec · comms · docs**, all three still **live on the old system**. Each asked ~07:35 to close cleanly, park/create its registry row, and reply. **As of 08:32 none has replied** — and none has *missed* anything: exec fires `32 8,20` (due now), comms `12 6,9,12,15,18,21` (09:12). **Successors are NOT provisioned while predecessors are live** — that is the 7/19 two-live-sessions shape that caused real data loss.
-- 🟢 **Docs HOLD lifted.** Pard provisioned standing website worktrees for `docs` and `web` and shipped `--extra-repo`. Docs is now gated only on its own clean close.
-- 🟡 **Five migrated roles still NOT duty-cycling** — arch/ppm/cxo/pa/web have no armed crons (PM-gated), all parked with falsifiable clearing conditions. **Lead is deliberately in the same state**: cron unarmed because PM is actively engaged (cron-off-while-engaged), row parked by design — **do not read Lead's parked row as a stall.**
-- 🗣️ **Standing, from PM**: do not change an agreed process without asking · when a premise I stated to PM turns out false, **raise it** rather than working around it · **verify timestamps with `date`; never estimate one.**
+- ⏰ **PA's two five-minute items — 10+ days, the only board item with a clock we do not control.** claude.ai account tier + **start OpenAI identity verification**. PA is back and cycling as of 7/29, so the blocker is now purely PM-side.
+- 🔴 **Lead cannot build, test, or deploy — the beta path is blocked on host tooling.** Amber has **no venv, no container runtime, no flyctl**, system python 3.14.6 against a 3.11 pin, and Postgres 5433 / Redis 6379 closed. `docker-compose.yml` declares **four** services, so native brew installs are not viable — a container runtime is required, not preferred. Spec is with Lead; **`colima start` is PM's call** because it runs a background VM on a host with eleven live sessions. **Lead is half-productive, not stopped** (coordination, board work, backlog bookkeeping, CI review all fine). Lead correctly refuses to substitute reading CI logs for the local sweep.
+- 🔴 **The toolchain gap is cohort-wide, not Lead-specific.** Docs found **`node_modules` absent across the entire website repo including the shared checkout** — nobody on Amber has ever had working website dependencies — and it spans **both languages**, silently disabling a check inside `template-audit`. Routed to Pard.
+- 🟢 **MIGRATION COMPLETE: 11 of 11 on Amber, 11/11 registry rows, 5 of 11 closing cleanly on day one.** All five predecessor handoffs landed (arch, pa, ppm, cxo, web). No role is structurally invisible to the freeze-watchdog for the first time.
+- 🟡 **Still not duty-cycling: `lead` and `ppm`.** Everyone else armed and cleared their own rows.
+- 🗣️ **PM wants the innovation agenda reviewed now the migration has landed.** That is the next substantive thread.
+- ⏳ **Awaiting Exec/HOST pushback** on moving the registry-park check into provisioning pre-flight. Five instances with a failed checklist intervention behind it; deliberately not shipped before they respond, because I told HOST the same morning I would not build on two data points.
 
 ## Shipped today
 
-Ship #053 filed (one working day in-window, verified from logs **and** commits) · **checklist v1.8** + onboarding delta now **point at Pard's cross-project standup failure catalog** rather than paralleling it · **portfolio-framework Rule 5 amended** to PM's ruling (a late review refreshes the portfolio *through today*, not to the window) · lead migrated · build-stack gap found, re-probed, routed · PM's summary-report request relayed to Lead cc Exec.
+**m-45 filed** (Agreement Is Not Replication — Arch's four-seat evidence) · **m-20 contradiction resolved** (two size rules unsatisfiable for five consecutive omnibus logs) · **`cohort-status.sh` built** (denominators + source disagreement + provenance) · **probe apparatus RETIRED at v1.22** — hooks were a time-of-check/time-of-use inversion, fixed in one file by Pard · G6 heartbeat false-alarm fixed · exec/docs/comms provisioned · **inbox 92 → 0** · arch orientation note's false negative claim corrected.
 
 ## Lower priority / queued
 
-- **Nothing reads a window's second-order findings forward.** Ship #053 surfaced that *"an escalation depends on its recipient being awake"* was sitting in a filed review **eight days** before we re-learned it as the parked-role catch-22. Reviews produce these; nothing consumes them.
-- **A canonical index of which doc owns which concern** — I nearly edited a *database* migration checklist because filenames collide.
-- **Watchdog concept revisit — PM-parked until the migration settles.** Five patches in five days, each correct, each revealing the next layer; that pattern wants a rethink, not a sixth patch, and not while we depend on it.
+- **Nothing expires a negative claim.** Three of us held *"the blind-sweep note is unfiled"* two days after I filed it; the pinned rule has existed since 7/12 and nothing applies it. Best mechanism candidate on the list.
+- **No composition test for multi-part changes** — I passed 3/3 on individual refinements and shipped a conflict between two of them.
+- **Nothing consumes a review's second-order findings** — Ship #053 carried a lesson eight days before we re-learned it expensively.
+- **Watchdog concept revisit** — PM-parked until things settle. Six patches in six days, each correct, each revealing the next layer.
 
 ## Cron
 
-⚠️ **TEMPORARILY `7,27,47` (20-min) — job `7bc44268`, bumped 2026-07-29 07:40 for the active migration window.** **REVERT to LEAN `7 10,16,22` once exec/comms/docs are provisioned or PM closes the window.** A temporary cadence that persists by inertia is the create-rule-without-a-cleanup-rule trap this lane exists to prevent.
+`7 10,16,22` LEAN — re-armed at the 2026-07-29 STOP (delete → create → verify; one job, `7b089a43`).
 
-<!-- Whole-file rewrite 2026-07-29. Rewriting the TOP is not rewriting the FILE. If you add a section,
-     delete what it supersedes in the SAME edit. -->
+<!-- Whole-file rewrite 2026-07-29. Rewriting the TOP is not rewriting the FILE. -->
