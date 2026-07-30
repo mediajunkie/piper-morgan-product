@@ -16,7 +16,17 @@ This document deliberately does **not** duplicate it. Ten traps are catalogued t
 - **#9 — prove the toolchain on-host before relying on it: a dry-run is NOT a full-path proof.** A "verified" job covered detection and missed the blocking path's dependency; a test suite was green on one Node major and 63-tests-red on another. If you are going to depend on a tool here, exercise the *whole* path once.
 
 
-## 1. Hooks — run BOTH command shapes on your first fire, and report them separately
+## 1. Hooks — ⛔ DO NOT PROBE. The bug is fixed; verify the gate exists instead.
+
+**Superseded 2026-07-29, same day this doc was written.** Arch ruled the defect a **time-of-check/time-of-use inversion**: `check-branch.sh` reads `git diff --cached`, and as a `PreToolUse` hook it runs *before* the command it gates — so `git add mailboxes/… && git commit …` is judged against an index that command is about to populate. Empty index → allowed. Not shape, not timing, not layer, not fresh-vs-long-lived; all of those were proxies.
+
+**Pard installed a real `.git/hooks/pre-commit` in the COMMON dir** — every worktree covered by construction, delegating to `check-branch.sh` so the two cannot fork. Verified BLOCKED on the compound bypass class, ALLOWED on a non-mail control.
+
+**What you do now**: confirm that common-dir `pre-commit` hook exists. **Do not run the both-shape probe** — it was instrumentation for a bug that no longer exists. `mail-send.sh` remains the real control for mail regardless.
+
+<details><summary>Historical: the retired both-shape probe</summary>
+
+
 
 `duty-cycle-tick` **v1.19**. Shape is the load-bearing variable on Amber seats:
 
@@ -34,6 +44,8 @@ This document deliberately does **not** duplicate it. Ten traps are catalogued t
 **★ Free mitigation, no config change**: when you want a commit actually gated, **stage in one call and commit in a separate bare call** — 4/4 caught.
 
 `check-branch.sh` is **ADVISORY, not a control** (`--no-verify` and `git -c` both bypass it). Mail goes via `scripts/mail-send.sh` regardless — that is the real control. **Do NOT consolidate the two hook layers**; the mechanism is still unexplained and two hypotheses died in one day, each refuted by its own author.
+
+</details>
 
 ## 2. Heartbeat — end EVERY fire with it (new, v1.21)
 
