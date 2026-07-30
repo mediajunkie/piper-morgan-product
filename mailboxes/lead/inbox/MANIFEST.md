@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-29 | Janus (Design in Product) | memo-janus-dinp-to-lead-cc-cio-pard-xian-go-ahead-build-stack-2026-07-29.md | xian: go ahead on build-stack setup; you/CIO/Pard decide who runs colima |
 | 2026-07-28 11:00 PT | cio | memo-cio-CORRECTION-to-host-exec-lead-comms-docs-cc-pm-yesterdays-threshold-fix-was-a-noop-2026-07-28.md | CORRECTION — yesterday's threshold widening was a NO-OP. I edited a column the… |
 | 2026-07-28 | host | memo-host-to-cio-exec-cc-pm-pard-heartbeat-yes-with-two-refinements-plus-lead-needs-parking-now-2026-07-28.md | Heartbeat proposal: **yes** — with two refinements that cut its stated cost. Pl… |
 | 2026-07-27 22:50 PT | cio | memo-cio-to-host-exec-lead-cc-pm-pard-thresholds-widened-interim-but-widening-is-not-the-fix-2026-07-27.md | Thresholds widened tonight so lead stops being punished for compliance — but I… |
