@@ -87,9 +87,13 @@ one cron, no duplicates ✅ · memory pool present (166 entries after HOST's 7/2
 1. **Distribution / directory listings** — blocked on the two PM decisions above. Unblocked prep PA can
    advance meanwhile: privacy-policy draft, tool-annotation spec (`readOnlyHint`/`destructiveHint`)
    against the eventual MCP tool catalog, docs/logo/test-account checklist. **Not started.**
-2. ✅ **PDR-006 — Arch review complete 7/29, no objection to ratifying.** CXO + PPM reviews still
-   outstanding. Q2 resolved; coupling withdrawal verified against code and holds (see below).
-   **Next PA action: nudge CXO + PPM, then move to ratification.**
+2. **PDR-006 — Arch signed off 7/29; CXO + PPM are the LAST two reviews. Nudged 18:42, ball is theirs.**
+   Q2 resolved; coupling withdrawal verified at the code and accepted by Arch. Sent both the 10-day delta
+   so neither reviews a stale doc, plus an explicit *"say so and I'll route around it"* escape.
+   ⚠️ **The nudge leads with a disambiguation — preserve it if you follow up**: Arch told CXO/PPM to
+   **HOLD the spatial re-vote** the same afternoon. That hold does **not** cover PDR-006, and the two are
+   separable only because the coupling flag is withdrawn *and verified*. If "Arch said hold" generalizes
+   past its scope, PDR-006 sits for nothing. **Next PA action: wait; chase only if it goes quiet.**
 3. **#1458** (pre-live cross-caller state isolation gate) — filed 7/29 at Arch's direction. Not started;
    belongs with the hosted-MCP implementation epic, and it **blocks `mcp.pipermorgan.ai` serving a second
    tenant.** Three untraced surfaces: Redis, in-process floor/context state, rate-limiting.
@@ -99,11 +103,17 @@ one cron, no duplicates ✅ · memory pool present (166 entries after HOST's 7/2
 5. **Architecture-diagram discussion** — PM-requested, awaiting a time. See `pa-standing-items.md` #2 for
    the three things that have moved under it (tier resolution, Q2, spatial coupling). **Prep, don't
    pre-empt: PM asked to discuss, not for a revision.**
-6. ⚠️ **Spatial review — do NOT let the MCP-consumer path be read as precedent for PDR-006.** Verified
-   7/29: `services/mcp/consumer/` is Piper as an MCP **client**; `mcp.pipermorgan.ai` is Piper as an MCP
-   **server**. Opposite directions. A live consumer adapter de-risks nothing server-side, where PDR-006's
-   real risk lives (caller-identity mapping upstream of all ADR-079 enforcement). **Same conflation class
-   as Connector-vs-Plugin** — watch for it in the spatial synthesis and in any "#198 de-risks this" claim.
+6. ⚠️ **Spatial review — Arch's premise INVERTED 7/29 (third characterization in ten hours); CXO/PPM
+   re-vote is ON HOLD pending one finished layer map.** Current model is **three** layers: (1) spatial
+   reasoning — live; (2) the spatial **abstraction** (`services/integrations/spatial_adapter.py`) — live
+   and **adopted by every MCP consumer adapter**; (3) per-connector direct-API implementations — mostly
+   cold **because a migration succeeded**. So the cold `*_spatial` modules are *superseded predecessors*,
+   not abandoned ambition, and the review's question has the polarity backwards. Likely outcome is
+   "dispose of migration residue," not a committed-theory verdict. **No PA action — Arch owns the
+   artifact.** Two things of PA's that Arch adopted and that must survive into it: **`github_spatial` is
+   live-by-construction, secondary-by-dispatch**, and **`services/mcp/consumer/` is Piper as MCP *client*
+   while `mcp.pipermorgan.ai` is Piper as MCP *server*** — nobody may cite #198 as de-risking PDR-006.
+
 7. **Hook mechanism — RESOLVED cohort-wide, PA's contribution partly wrong; no PA action.** The cause is
    **index state at hook-fire time** (`check-branch.sh` reads `git diff --cached` and PreToolUse fires
    *before* the Bash call runs), mechanism by Web, 25 probes / 5 seats. PA's "command shape is
