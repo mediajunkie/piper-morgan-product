@@ -39,26 +39,40 @@ Run each check in order. Mark ✓ PASS or ✗ FAIL with a specific note on failu
 
 ### 1. YAML frontmatter — all three fields present and non-empty
 
+⚠️ **This check used `import yaml` until 2026-07-29 and was silently unrunnable on Amber for every role, in every location** — no `pyyaml`, and **no venv anywhere on the host** including the shared checkout (found by Comms on Ship #053, independently verified one level deeper by Docs). It emitted a `ModuleNotFoundError` traceback into a column of twelve passes, which is exactly what a pass looks like to a skimming reader. **It is the frontmatter check — the class that produced the caption `''` bug — so the hole sat in the one check whose absence had already cost us a real defect.** m-44 inside the audit tool itself.
+
+**The version below has no third-party dependency and cannot lose one.** It only needs three keys, so it parses the block directly. It also prints an explicit verdict token per key rather than relying on the reader to interpret silence.
+
 ```bash
-python3 -c "
-import re, yaml
-with open('<draft>') as f:
-    text = f.read()
+python3 - "<draft>" <<'PY'
+import re, sys
+path = sys.argv[1]
+text = open(path, encoding='utf-8').read()
 m = re.match(r'^---\n(.*?)\n---\n', text, re.DOTALL)
 if not m:
-    print('FAIL: no frontmatter')
-else:
-    parsed = yaml.safe_load(m.group(1))
-    for k in ['image', 'alt', 'caption']:
-        v = parsed.get(k)
-        if not v:
-            print(f'FAIL: {k} is empty or missing')
-        else:
-            print(f'OK: {k} = {repr(v)[:60]}')
-"
+    print('FAIL: no frontmatter block'); sys.exit(0)
+body = m.group(1)
+fields = {}
+for line in body.split('\n'):
+    if re.match(r'^\s', line) or ':' not in line:
+        continue                                   # skip continuations / non-kv lines
+    k, _, v = line.partition(':')
+    fields[k.strip()] = v.strip()
+for k in ('image', 'alt', 'caption'):
+    if k not in fields:
+        print(f'FAIL: {k} key MISSING')
+    elif not fields[k] or fields[k] in ("''", '""'):
+        print(f'FAIL: {k} present but EMPTY')
+    else:
+        print(f'OK: {k} = {fields[k][:60]}')
+PY
 ```
 
-**Caption format check**: if caption starts with `'"`, it's a spoken-line format. Verify any apostrophe inside is doubled: `'"It''s fine."'` not `'"It's fine."'` (the latter breaks YAML).
+⚠️ **`caption` is legitimately empty on Weekly Ships** — verified across #047–#052, and #044/#050 use the literal `N/A`. So a `FAIL: caption present but EMPTY` on a `theme=ship` draft is **expected and not a blocker**; treat it as N/A-by-convention and say so in the report. On narratives and insights it is a real FAIL.
+
+**If this check ever cannot run** — a `Traceback`, a missing interpreter, anything other than three verdict lines — **report it as `⚠ CANNOT RUN`, not as PASS, and verify the frontmatter by reading it.** A check that did not execute has measured nothing, and its silence is indistinguishable from a clean result (methodology-44). The same rule applies to check #13 below.
+
+**Caption format check**: if caption starts with `'"`, it's a spoken-line format. Verify any apostrophe inside is doubled: `'"It''s fine."'` not `'"It's fine."'` (the latter breaks YAML). ⚠️ **The `''` doubling is correct ONLY inside single-quoted YAML.** Copying that form into markdown **body** text renders the doubled apostrophe literally — a real instance shipped in the Ship #053 draft as `*"OK, let''s see"*`. If a caption also appears in the body, it takes ordinary prose punctuation.
 
 ### 2. Title is H1
 
@@ -183,7 +197,7 @@ TEMPLATE AUDIT — <slug> — <date>
 
 Check                        Result
 ─────────────────────────────────────
-1. YAML frontmatter          ✓ PASS
+1. YAML frontmatter          ✓ PASS        ← use ⚠ CANNOT RUN if it didn't execute; never PASS
 2. Title H1                  ✓ PASS
 3. Dateline                  ✓ PASS
 4. Section headings          ✓ PASS
@@ -214,3 +228,8 @@ On PASS: send the publish-ready memo to Docs inbox per the handoff protocol (Jun
 - `docs/internal/planning/comms/xian-voice-tone-guide.md` — the voice standard
 - `docs/internal/planning/comms/content-publishing-run-of-show.md` — step 3 of 7
 - `docs/internal/planning/comms/editorial-calendar.csv` — footer tease source of truth
+- `docs/internal/development/methodology-core/methodology-44-CLEAR-IS-NOT-A-MEASUREMENT.md` — why a check that cannot run must never report as PASS
+
+---
+
+*v1.2 — 2026-07-29. **Check #1 rewritten to have no third-party dependency**, after it was found silently unrunnable on Amber for every role in every location (no `pyyaml`, and no venv anywhere on the host including the shared checkout). It had been emitting a `ModuleNotFoundError` traceback into a column of twelve passes — the frontmatter check, i.e. the one class that had already produced a real shipped defect (the caption `''` bug). Found by Comms while auditing Weekly Ship #053; independently verified one level deeper by Docs, who established the venv is absent host-wide rather than worktree-local. The replacement parses the block directly (three keys don't need a YAML engine) and was behaviorally tested across four shapes before shipping: filled, empty-quoted `''`, YAML-escaped `''` apostrophe inside a caption, and no-frontmatter — all correct, no traceback. Also added: the explicit `⚠ CANNOT RUN` verdict token (a non-executing check must never occupy the PASS column, per m-44), the Ship-caption N/A-by-convention note, and the warning that `''` doubling is correct in YAML but renders literally in markdown body text.*
