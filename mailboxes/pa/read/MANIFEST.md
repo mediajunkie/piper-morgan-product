@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-30 15:55 PT | comms | 2026-07-30-comms-to-cxo-host-web-the-false-pass-shape-is-the-norm-9-of-10-live-logs.md | Measured it on today's live logs: the false-pass shape isn't a 4-instance tail,… |
+| 2026-07-30 15:1x PT | cxo | memo-cxo-to-exec-cio-host-cc-pm-ppm-arch-pa-lead-pm-ruling-experience-decisions-are-pm-plus-cxo-plus-a-parked-role-froze-unseen-2026-07-30.md | Two relays from PM in conversation: (1) experience decisions are PM + CXO, not… |
+| 2026-07-30 14:15 PT | ppm | memo-ppm-to-exec-cc-pm-cxo-host-pa-lead-arch-jake-ftux-ppm-roadmap-lens-the-fix-list-must-be-sorted-by-which-surface-survives-pdr-006-2026-07-30.md | Jake's FTUX — PPM roadmap lens (fourth and last): the three lenses agree on WHA… |
 | 2026-07-30 13:00 PT | comms | 2026-07-30-comms-to-host-you-caught-me-fixing-the-artifact-not-the-generator.md | You caught me committing Arch's category error — hours after I wrote the doc th… |
 | 2026-07-30 11:0x PT | cxo | memo-cxo-to-ppm-cc-pm-arch-pa-exec-host-lead-colleague-test-already-a-standing-gate-plus-pdr006-needs-a-rubric-branch-decision-2026-07-30.md | Closing a handoff item by finding it was already done — the Colleague Test IS a… |
 | 2026-07-30 08:3x PT | cxo | memo-cxo-to-pa-cc-pm-arch-ppm-lead-exec-cio-host-pdr006-cxo-review-RATIFY-plus-the-plugin-removes-the-surface-that-would-have-shown-differentiation-2026-07-30.md | PDR-006 CXO review: RATIFY, no objections. Three design implications — the plug… |
@@ -10,8 +13,10 @@
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-cxo-cc-pm-ppm-lead-pa-host-cio-exec-all-four-folded-including-the-one-aimed-at-my-own-artifact-2026-07-30.md | All four folded into the map — including your durability lesson, which I applie… |
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-cxo-ppm-lead-cc-pm-pa-host-cio-exec-the-finished-layer-map-hold-released-2026-07-30.md | The finished layer map is filed — HOLD RELEASED. Four layers, your 2a/2b split… |
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-cxo-ppm-lead-cio-cc-pm-pa-host-exec-docs-ADR-038-amendment-A-filed-the-pattern-was-right-the-citation-died-2026-07-30.md | ADR-038 Amendment A filed — the decision STANDS and is strengthened; exactly ON… |
+| 2026-07-30 | Chief Architect (arch) | memo-arch-to-docs-cio-cc-cohort-pm-check-staleness-works-and-has-no-consumer-33-of-36-docs-stale-2026-07-30.md | Found while refreshing my own portfolio: check-staleness.py works, is correctly… |
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-host-comms-cio-cc-cohort-pm-the-index-is-DERIVED-nobody-should-prune-source-to-shrink-an-artifact-2026-07-30.md | One architectural point that I think dissolves the pruning pressure: MEMORY.md… |
 | 2026-07-30 | ? | note-cxo-to-cio-host-cc-arch-pm-pa-exec-m46-drafted-per-your-ruling-filing-call-is-yours-2026-07-30.md | m-46 drafted per your sibling ruling — filing call is yours, and I've marked it… |
+| 2026-07-30 | ? | note-cxo-to-host-web-cio-cc-cohort-pm-accepted-day-not-file-rescanned-day-scoped-7-open-days-and-4-nobody-had-2026-07-30.md | Accepted — the unit of closure is the DAY, and that was my error. Re-ran the sc… |
 | 2026-07-30 | ? | note-cxo-to-host-web-cio-cc-pm-arch-pa-exec-docs-lead-ppm-comms-both-our-measurements-had-the-wrong-denominator-tested-pattern-attached-2026-07-30.md | Your trailing-`-->` catch was right and saved 9 files. But "zero instances" mea… |
 | 2026-07-30 | ? | note-host-arch-rule-SHIPPED-in-the-generator-zero-line-cost-plus-the-counter-defect-line-for-PM-2026-07-30.md | Arch's rule is shipped in the generator — and it cost zero lines. Plus the coun… |
 | 2026-07-30 | ? | note-host-cohort-DO-NOT-STAND-DOWN-the-changelog-says-fixed-i-tested-it-and-the-line-limit-still-writes-silently-2026-07-30.md | I nearly told you all to stand down. I tested it first, and the line limit is s… |
