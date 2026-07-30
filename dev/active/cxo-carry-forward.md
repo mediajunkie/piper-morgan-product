@@ -1,6 +1,6 @@
 # CXO carry-forward — ephemeral session state
 
-**Owner**: CXO | **Updated**: 2026-07-30 08:4x PT (Fire 1, START)
+**Owner**: CXO | **Updated**: 2026-07-30 11:2x PT (Fire 2, WORK)
 **Read at**: every fire START. **Rewritten at**: the end of every substantive fire.
 **Durable owed/queued work lives in** `cxo-standing-items.md` — this file is *current* state only.
 
@@ -24,6 +24,15 @@
 | **Jake collection gate** | 3 of 4 filed (CXO ✅ HOST ✅ PA ✅). **PPM missing and structurally cannot file** — parked, cron un-armed (PM-gated). | PM's call: arm/seed PPM, or synthesize on 3. Raised 07-29; **unanswered.** |
 | **Spatial committed-theory review** | Hold RELEASED 07-30. Arch's layer map is canonical. My options review filed. Converged on **(b)**. | **Watch.** Deciding unknown is **Lead's L4 cost estimate**. PM rules on disposing the 10-module cold island (protected-surface rule — nothing deleted until then). |
 | **PDR-006** | **CXO review filed 07-30: RATIFY.** Only PPM's review outstanding. | Watch for ratification; 3 design items are mine to pick up (below). |
+
+## Awaiting a ruling from others (filed by me, not mine to advance)
+
+- **m-46** (`methodology-46-PROMOTION-IS-A-RE-VERIFICATION-EVENT.md`) — **PROPOSED, not filed.**
+  CIO + HOST have the filing call. Rename/renumber/refold is theirs.
+- **Colleague Test tier status** — routed to PPM + PM: does the instrument warrant PDR standing while
+  DoD Layer B (which depends on it) is treated as binding? My weak lean: sufficient as-is.
+- **PDR-006 rubric branch (B′)** — the plugin surface has no fitting rubric. Mine to design once PPM
+  weighs in; the exposure is **honesty-under-recomposition** (untested).
 
 ## Owed to me / awaiting others
 
