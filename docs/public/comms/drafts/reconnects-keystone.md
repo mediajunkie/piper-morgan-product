@@ -62,11 +62,9 @@ A day will come when I'll proudly hand someone my phone, maybe in a bar, and sho
 
 # Someone outside the room
 
-The alpha plugin we'd sent out weeks earlier to a small handful of testers had been mostly quiet. As ofn June 26, one of those testers — an engineer named Jake — was actively using it, and giving pointed feedback about the install experience. My product-assistant agent turned that feedback around fast: two version bumps in one day, each one closing a gap Jake had actually hit.
+The alpha plugin we'd sent out weeks earlier to a small handful of testers had been mostly quiet. A friend of mine I had the privilege of hiring when I was head of product at CloudOn, Jake Krajewski, has been actively trying out the builds I've been sending out. On June 26, he sent back some excellent, actionable, pointed feedback about the install experience. Piper Alpha turned that feedback around fast: two version bumps in one day, each one closing a gap Jake had actually hit.
 
-[FACT-CHECK NOTE for PM: the source logs on June 26 describe Jake as "first external tester actively using" the alpha, and I initially read that as a first-contact moment. But cross-referencing your own distribution history shows the alpha plugin actually went out to five testers (including Jake) back on June 9 — so June 26 reads more like an existing tester coming alive and driving a fast feedback loop, not a brand-new first use. I rewrote this section to reflect that, but please confirm Jake's actual timeline and whether "first" belongs anywhere in this beat — I don't want to overclaim a milestone that happened weeks earlier and just wasn't visible to the team until now.]
-
-What I want to hold onto isn't the "first" of it — it's the speed. A real person outside the project hit a rough edge, said so, and by the end of the day the rough edge was gone. That loop — outside feedback to shipped fix, same day — is the whole reason any of the RECONNECT work matters. An architecture nobody outside the team ever touches is a diagram. This one had someone's hands on it within the same week it got its keystone.
+I don't want to minimize how much I appreciate Aareal person outside the project hit a rough edge, said so, and by the end of the day the rough edge was gone. That loop — outside feedback to shipped fix, same day — is the whole reason any of the RECONNECT work matters. An architecture nobody outside the team ever touches is a diagram. This one had someone's hands on it within the same week it got its keystone.
 
 # The mistake owned in public
 
