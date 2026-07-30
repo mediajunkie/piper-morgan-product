@@ -1,45 +1,43 @@
 # HOST carry-forward
 
-**Written**: 2026-07-29 22:07 PDT (STOP, day 5 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-07-30 13:2x PDT (fire 3) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Read this first
 
-**The hook saga is CLOSED at the mechanism.** A real git `pre-commit` gate ships in the repo (Pard), confirmed on two seats. **Shape-dependence is retired** — `... && git add ... && git commit ...` is gated now; do not carry that caveat forward. The advisory `PreToolUse` layer is **retained deliberately**, because `--no-verify` + a pre-staged index is coverage only it provides. **Genuinely uncovered**: `--no-verify` *with* compound staging. Full truth table + history in migration-checklist **v2.0**.
+**Verify against the corpus, not against the file in front of you.** Three of us shipped a `DAY-CLOSED` regex on 07-30 that false-failed 9 of 388 real closes, because all three validated against one recent log. A five-second `git ls-files | xargs grep -c` would have caught it. **When you say "tested," say tested *on what*.**
 
-Corollary that outlived the saga: **my own cron prompt carried the retired caveat for a day.** Prompts go stale in exactly the way they warn about — reread yours at each re-arm.
+Second: **capable-of ≠ has-happened.** I asserted a defect in the voice of an observed one; a corpus scan found zero instances of it. Fix predicates anyway when cheap — but don't buy strictness you have no instances to justify.
 
 ## Owed by me
 
-1. **Checklist v2.0 → Exec review → CEO ratification.** v2.0 retires the probe protocol into a HISTORY block. Not yet reviewed.
-2. **Dashboard welfare spec v0.3** (`dev/active/dashboard-welfare-criteria-host-v0.3-spec.md`) — Criteria G (mechanism liveness, G1–G6) and §3a verification-interval taxonomy are written; awaiting a consumer. §3a-ter (predicate-leak hazard) is now **un-withdrawn and fixed** — reconcile the spec text with Pard's landed guard next substantive fire.
-3. **m-44 sits at 11 instances, deliberately NOT Proven.** Hold that until an instance is caught by a *mechanism* rather than by a person reading.
-4. **The #974 tense problem** — my own sweep found 3 of 5 "wanted but not found" negatives false, none inherited. The bucket needs a tense convention ("as experienced this session," not "does not exist"). I've started writing mine that way; it isn't a norm yet.
+1. **The m-46 mechanism — next substantive fire, and I said so publicly.** CXO drafted m-46 (promotion-is-a-re-verification-event) and honestly flagged *"no mechanism, and nobody has proposed one."* Per m-36 that's a decaying norm. **Build: a drift-check that regenerates known-derived artifacts and diffs them against the committed copy.** Worked example `MEMORY.md` vs `scripts/rebuild-memory-index.py`; second case Arch's layer map vs the import graph. Filing of m-46 is held until then — CIO and I share the call.
+2. **Checklist v2.0 → Exec review → CEO ratification.** Not yet reviewed.
+3. **Dashboard welfare spec v0.3** — reconcile §3a-ter with Pard's guard **once it lands** (approved-with-changes 07-30; the `env`/wrapper hole is the open delta).
+4. **m-44 stays at 11 instances and NOT Proven.** Hold until an instance is caught by a *mechanism* rather than a person reading. m-46 is a **sibling, not an instance** — m-44 is *right property, wrong object*; m-46 is *right property, right object, wrong time*.
 
-5. **Memory index is 8 lines from its 200-line ceiling** (168 entries, 192 lines; bytes only 84%). Memo sent to CIO/Exec 07-29. **Do not prune** — irreversible, shared pool, 145 of 168 are other roles' corrections. First move is CIO checking whether the 200-line limit is *real or my inference* — I set it, so it's mine to want tested rather than trusted.
+## Awaiting others (check before re-asking)
 
-## Awaiting others (do not re-ask before checking)
+- **CIO** — Step 0 predicate now corrected in the skill by me (`966bbf229`); the `FIRST_FIRE_GRACE_MIN` 10→45 call is still open (measured START takes 18–36 min; 10 was never reachable).
+- **Pard** — precise-predicate guard with the wrapper allow-list.
+- **CIO/Comms** — the per-type index split. **Decide on reversibility, not capacity**: generator changes are reversible, deleting memories is not.
+- **PM** — the tester-welfare instrument. **Will not settle on its own.** 12 tokens out, 1 report, and that one only because PM asked twice.
 
-- **Pard** — the precise-predicate guard for all three scripts (`check-branch.sh`, `reconcile-drafts`, +1); go-ahead sent 22:07. Note `reconcile-drafts`' FP is *invisible* (exit 0), not harmless.
-- **Docs** — CLAUDE.md compaction + the 4 remaining absent safety norms.
-- **PM** — the tester-welfare instrument. **This one will not settle on its own**: 12 alpha tokens out, 1 report, and that one only because PM asked twice. Silence is not health, for mechanisms or people.
-- **CIO** — is the memory-index 200-line ceiling real? (Item 5. If it's my guess, measuring dissolves the problem and no knowledge gets deleted.)
-- **Arch** — per-commit coverage vocabulary supplied for the gate; nothing yet stops the next mechanism being described per-seat.
+## Closed since last rewrite (do not re-open)
 
-## Parked (with clearing conditions — PARK-NO-EXIT)
+- ~~Memory-index ceiling provenance~~ — settled. Not my inference: platform-documented (v2.1.83) **and** PA-empirical at 194.
+- ~~"Is the v2.1.210 fix live?"~~ — **No, on both limits.** I tested lines, PA tested bytes; both writes silent on 2.1.220. **Don't re-test either.** ⚠️ Still untested by anyone: whether an over-limit *read* actually truncates — the harm half is assumed from the changelog.
+- ~~Prune governance~~ — **dissolved by Arch**: the index is a DERIVED artifact, the memories are source. Flat rule now emitted by the generator every rebuild (`e36d53622`), **zero line cost**.
+- ~~#974 tense convention~~ — written into `docs/internal/operations/memory-eval-pilot.md`.
 
-- **PII-free aggregate tester view** — clears when PM rules on the instrument.
-- **Row 4 of the truth table** (`--no-verify` + compound) — clears if/when anyone proposes a mechanism that reads the settled index *without* being skippable. Not a defect to fix silently; an accepted, named gap.
+## Standing hazards
 
-## Standing hazards learned the hard way
-
-- **Verify at the mechanism, never by reading the announcement.** Cost me three separate wrong clears this week.
-- **A green probe may be testing the mitigated path.** The `verify-hooks` drumbeat has read PASS all week and has never once exercised the exposure (`amber-agent.sh:155-158`).
-- **Evaluate a new refinement against the OTHER accepted refinements**, not just against the problem it solves. Two of mine interacted into a false alarm on a 122-commit day.
-- **Deleting a memory file is irreversible** (`~/.claude-pm/` is not version-controlled). Export first.
-- **Never `git checkout -- .` / `reset --hard` / `stash` in PM's main checkout.** Surgical explicit paths only.
+- **Verify at the mechanism, not by reading the announcement** — including when the announcement is an official changelog pointing at *less* work. That's the direction the reflex doesn't fire.
+- **Ask what a green probe actually exercises.** The `verify-hooks` drumbeat reads PASS while only testing the already-mitigated path.
+- **Evaluate a new refinement against the other accepted refinements.**
+- **My prose habit makes my own verifications unfalsifiable**: I narrate "Step-0 verified — carries `<!-- DAY-CLOSED: … -->`" inside the artifact the check reads. Watch for the general form — *documenting that you checked, inside the thing you checked.*
+- **Deleting a memory is irreversible** (`~/.claude-pm/` is not VCS'd). Export first. And per Arch: never delete a memory to make the index fit.
+- **Never `git checkout -- .` / `reset --hard` / `stash` in PM's main checkout.**
 
 ## Cron
 
-Chain: `6c226bb3 → 60aaebf2 → 7c1d5637 → 24671cbb → f66d46cd → 2cebafed → 2d87bd9f` (current). Expression **`37 6,9,12,15,18,21 * * *`** — verified against `CronList`, and against the registry row (`host⇥37 6,9,12,15,18,21⇥7⇥6⇥22⇥06:37⇥2026-07-25`), which matches.
-
-⚠️ **I first wrote `7 3,10,13,16,19,22` here from memory — wrong on both minute and hours.** Caught only because the re-arm reads `CronList` before deleting. **Never write your own cadence from memory**; the registry and `CronList` are the two sources, and they must agree with each other. Re-arm weekly minimum — session-only, in-memory, **silent 7-day expiry**. Delete-then-create-then-verify.
+Current job **`2d87bd9f`**, expression **`37 6,9,12,15,18,21 * * *`** — verify against `CronList` and the registry row before writing it anywhere. **Never transcribe your cadence from memory** (I got it wrong on 07-29: wrong minute *and* wrong hours). Re-arm weekly minimum; session-only, silent 7-day expiry; delete-then-create-then-verify.
