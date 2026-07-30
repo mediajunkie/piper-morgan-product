@@ -1,6 +1,6 @@
 ---
 image: 'reconnects-keystone-keystone-arch.png'
-alt: ''
+alt: 'A mason quietly watches as people begin walking beneath a newly completed stone arch, illustrating how the true test of a keystone is the ordinary weight it quietly carries.'
 caption: '"It''s holding!"'
 ---
 
