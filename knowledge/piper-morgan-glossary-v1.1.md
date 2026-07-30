@@ -286,6 +286,11 @@ UX track focused on consciousness model. Three layers: Vision (conceptual), Inte
 ### Morning Standup
 The ONLY feature where original embodied consciousness vision survived. Our "North Star" reference implementation.
 
+### Scenario Driver (often just "the driver")
+The **end-to-end acceptance harness** — `tests/e2e/test_scenario_driver.py` — that runs Scenario A/B/C conversation turns against a **real LLM** and asserts on user-visible behavior. Distinct from the **smoke suite**, which is fast in-process unit/integration coverage; a Ship or gate that names both is naming two different instruments, not repeating itself. "Driver strict-green" / "driver-green acceptance" means 0 assertion failures on that run, and it was the formal Phase-3 completion criterion of the Finish-the-Unfinished sprint (`decisions.log:225`; `finish-the-unfinished-sprint-2026-07-16.md` Phase 3, *"Acceptance (the driver is the referee)"*, principle 5: *"acceptance is user-visible behavior, not internal beauty"*).
+
+⚠️ **In public prose, never write the bare capitalized "Driver."** It reads as an unglossed proper noun with no referent — it shipped that way into a Weekly Ship #053 draft and cost two roles time tracing it. Use the parenthetical-gloss-on-first-use house style: *"the scenario driver (the harness that runs real conversation turns against a live model)"*, or drop the term for a plain description.
+
 ---
 
 ## Trust Gradient
