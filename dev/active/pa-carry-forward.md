@@ -57,30 +57,30 @@ policy. **This strengthens rather than weakens the two ⏰ items** — they are 
 lead-time steps and the only ones not gated on the server existing, so they should run in parallel
 with the build, not after it.
 
-## Active state — 2026-07-29
+## Active state — as of 2026-07-29 STOP (next wake 06:42 Thu 7/30)
 
 - **Role**: Piper Alpha (PA) · **Host**: Amber · **Account**: xian@pipermorgan.ai
 - **Model**: Claude Opus 5 (1M context)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` (Model A, stable path) · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/07/29/2026-07-29-1216-pa-code-log.md`
-- **Cron**: ✅ **ARMED** — job **`04985c22`**, `42 6,9,12,15,18,21`. Registry row active, carries the job id.
-  *(PM approved this cadence 7/26; PA failed to arm it and went dark 7/27–7/28. **Approval and arming are
-  two separate acts** — do not treat the first as the second.)*
-  ⚠️ **TWO SILENT DEATH MODES, both looking identical to a quiet day:** (1) `CronCreate` jobs are
-  **session-only** — they die when the Claude session exits, so **every new session must re-arm**;
-  (2) recurring jobs **auto-expire after 7 days** — this one lapses **~2026-08-05**. Neither emits
-  anything. **Check `CronList` at session start; if it's empty you are not cycling, whatever the registry
-  says.** The registry records *intended* cadence, not a live job — those two disagreeing silently is
-  exactly what produced 7/27–7/28.
-- **Predecessor**: went dark 2026-07-19 after a clean close. **No handoff existed** — oriented from
-  `dev/active/orientation-note-pa-amber-2026-07-25.md`, then PM consulted the predecessor directly on 7/26;
-  its §4/§6 is preserved at `dev/active/handoff-pa-predecessor-2026-07-26.md`.
+- **Last session log**: `dev/2026/07/29/2026-07-29-1216-pa-code-log.md` — **DAY-CLOSED 2026-07-29**
+- **Cron**: ARMED at STOP via delete-then-create, `42 6,9,12,15,18,21`. **Job id is in the registry row —
+  read it there, not here** (it changes at every re-arm; a job id frozen in prose is the thing that rots).
+
+  🔴 **FIRST ACTION ON ANY NEW SESSION: run `CronList`.** If it is empty **you are not cycling**, whatever
+  the registry says. `CronCreate` jobs are **session-only** (die when the Claude session exits) and
+  **auto-expire after 7 days** (this generation lapses **~2026-08-05**). Neither death emits anything;
+  both look exactly like a quiet day. **The registry records *intended* cadence, not a live job** — those
+  two disagreeing silently is precisely what produced the 7/27–7/28 dark period. *Approval to run a
+  cadence and arming it are two separate acts; PA conflated them once already.*
+- **Inbox**: 0 at close.
 
 ## Environment verification (7/29)
 
-Worktree path ✅ · branch `claude/pa-cycle` ✅ · `HEAD..origin/main` = **0** ✅ · tree clean ✅ ·
-one cron, no duplicates ✅ · memory pool present (166 entries after HOST's 7/29 prune) ✅ ·
-**hooks: do not assume coverage on a compound commit — see open thread 7.**
+Worktree ✅ · branch ✅ · `HEAD..origin/main` = 0 ✅ · tree clean ✅ · one cron, no duplicates ✅ ·
+memory pool 166 entries (HOST pruned 7/29) ✅ · **hooks: assume a compound `git add … && git commit …` is
+UNGATED for mailbox paths** — cause is index-state-at-hook-fire-time, resolved cohort-wide.
+**Mitigation: stage in one call, commit bare in the next.** `mail-send.sh` is structurally safe (uses
+`commit-tree`).
 
 ## Open threads PA owns
 
