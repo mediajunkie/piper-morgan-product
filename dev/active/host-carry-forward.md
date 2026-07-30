@@ -37,4 +37,6 @@ Corollary that outlived the saga: **my own cron prompt carried the retired cavea
 
 ## Cron
 
-Chain: `6c226bb3 → 60aaebf2 → 7c1d5637 → 24671cbb → f66d46cd → 2cebafed → (re-armed at STOP, see log)`. Expression `7 3,10,13,16,19,22 * * *`. Re-arm weekly minimum — session-only, in-memory, **silent 7-day expiry**. Delete-then-create-then-verify. Registry row in `dev/active/duty-cycle-registry.tsv` must match what you actually armed.
+Chain: `6c226bb3 → 60aaebf2 → 7c1d5637 → 24671cbb → f66d46cd → 2cebafed → 2d87bd9f` (current). Expression **`37 6,9,12,15,18,21 * * *`** — verified against `CronList`, and against the registry row (`host⇥37 6,9,12,15,18,21⇥7⇥6⇥22⇥06:37⇥2026-07-25`), which matches.
+
+⚠️ **I first wrote `7 3,10,13,16,19,22` here from memory — wrong on both minute and hours.** Caught only because the re-arm reads `CronList` before deleting. **Never write your own cadence from memory**; the registry and `CronList` are the two sources, and they must agree with each other. Re-arm weekly minimum — session-only, in-memory, **silent 7-day expiry**. Delete-then-create-then-verify.
