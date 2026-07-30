@@ -1,18 +1,24 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-07-28 ~18:05 PT
+**Last rewritten**: 2026-07-30 ~17:40 PT (Fire 1, Amber, cron live)
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
 
-## Environment note (2026-07-28) — read this first if you're a future PPM session
+## Environment note — CURRENT as of 2026-07-30
 
-This session is running from the **old, pre-Amber-migration worktree** (`piper-morgan-product/.claude/worktrees/pensive-kepler-02a0f6`, 4,600+ commits behind on local disk — irrelevant since all work goes through `origin/main` directly via the temp-index pattern, never the local checkout). It is **not** the Amber/Model-A session (`~/Development/piper-morgan-worktrees/ppm`, branch `claude/ppm-cycle`) that ran 2026-07-26 and did real reorientation work (see that day's log + the orientation note it worked from, `dev/active/orientation-note-ppm-amber-2026-07-25.md`).
+**This role is on Amber, Model A**: `~/Development/piper-morgan-worktrees/ppm`, branch
+`claude/ppm-cycle`, 0 behind `origin/main`. **Cron is ARMED and firing.**
 
-**PPM has now gone dark twice**: 7/20-25 (predecessor session, healed by the Amber migration + CIO's orientation note), and again 7/27-28 (the Amber session itself, healed by this resume). Both gaps left the carry-forward as the actual continuity thread — it worked both times. No `claude/ppm-cycle` branch exists on `origin` right now (Model-A branches apparently don't persist as long-lived refs after merge, or this one never got pushed as a branch — but all the Amber session's actual commits verified present on `origin/main`, so no work is at risk).
+*(Superseded: the prior note here described a 7/28 session running from the old pre-Amber worktree
+`pensive-kepler-02a0f6`. That was accurate then and is not now. Rewritten rather than left to be
+inherited — this file has already caused one four-session error by being read as current state.)*
 
-Flagged to PM (this session, 7/28) rather than silently worked around: unclear whether future PPM sessions should be expected on Amber, on this old environment, or either — PM hasn't said to stand down, so proceeding, but this is worth PM's explicit call if it keeps recurring.
+**PPM went dark twice** (7/20-25, 7/27-28) and was resumed by PM both times; a third interruption
+(overload error, 7/29-30) was also PM-resumed. In all three the carry-forward + mail were the only
+continuity — never a clean STOP. **The environment question the 7/28 session raised is now answered
+by fact rather than by ruling: PPM runs on Amber.**
 
 ## Active PM threads
 
@@ -21,10 +27,10 @@ Flagged to PM (this session, 7/28) rather than silently worked around: unclear w
 | **Ship #053** | ✅ Sent 2026-07-28 (window Jul 17-23), on time despite same-day kickoff | None |
 | **Jul 19 log** | ✅ Retroactively closed 2026-07-28 (had no DAY-CLOSED marker, flagged by Exec's kickoff) | None |
 | **#1386 gate run** | Unblocked since 7/20 (beta v25 carries both Scenario-B fixes per 7/26 log). **TOP ITEM per the Amber session's own priority call** | Schedule with Lead + CXO directly (~half a day) |
-| **Jake Krajewski alpha FTUX feedback** | PM's direct ask (via Exec 7/27) — CXO/PPM/HOST/PA each give preliminary recommendations from their own lens, Exec synthesizes once all 4 in. Source: `dev/active/alpha-feedback-jake-krajewski-2026-07-25.md`. No fixed deadline, "should-do-soon" | **Owed** — not yet read/answered this session |
-| **PDR-006 + Q2 addendum** | Requested 7/19 by PA, still unanswered. Arch says coupled to spatial review | Answer together with spatial slice |
-| **Spatial committed-theory review** | CXO voted (b) 7/19: ship live subset, park cold adapter chain, update ADR-013 as scope-clarification. **PPM lane accepted twice now** (7/19 predecessor, implicitly still owed) — still not delivered | Owed. Do with PDR-006 |
-| **Hooks investigation (check-branch.sh reliability)** | Extensive multi-agent investigation Jul 26 (mechanism found: index-state-at-hook-fire-time, not intermittency) + a scope-correction Jul 26 evening (checklist v1.5: standalone-shape gate had certified coverage the cohort doesn't have on compound-shape commits). Informational for PPM — my own commits use `commit-tree` directly, not `git commit`, so this hook likely doesn't gate them either way; not yet confirmed which side of that my mailbox writes land on | Watch; not urgent, not my thread to drive |
+| **Jake Krajewski alpha FTUX** | ✅ **PPM roadmap lens sent 7/30** — 4th of 4, unblocked Exec's synthesis. Bucket-sort by which surface survives PDR-006; #1386 cannot fail for what Jake reported | Await Exec synthesis → **I file the issues same day** |
+| **PDR-006 + Q2** | ✅ **PPM review RATIFY sent 7/30** — was the last outstanding (Arch ✅, CXO ✅). Ratification unblocked | Watch for ratification; I owe the implementation epic (PDR says "issue TBD") once it lands |
+| **Spatial committed-theory** | ✅ **PPM slice delivered 7/30** — concur (b). L3-beyond-GitHub NOT promised (roadmap classes connectors "indoor plumbing (commodity)"); **L4 IS promised — #1174 OPEN/Production + differentiator 4 of 4, zero implementation** | 3 options to PM; on PM's pick I make the roadmap qualifier + #1174 re-scope |
+| **Hooks** | ✅ **SETTLED.** Defect was TOCTOU (PreToolUse fires before the gated command, so a compound `add && commit` is judged against an empty index). Pard installed a real `.git/hooks/pre-commit` in the **common dir** — covers all worktrees by construction. **Do NOT probe** (v1.22 retired the probe apparatus); verify the hook file exists | Closed for PPM |
 | **#1394 / ADR-078** | ✅ Architecture COMPLETE (unchanged since 7/16, reconfirmed OPEN-pending-D5-probe by 7/26 session) | Watch only |
 | **Beta Blockers sprint recount** | Not possible — `gh` token lacks `read:project` scope (found by 7/26 session). Last real count: 21 open at 7/16 close | Needs `gh auth refresh -s read:project` — PM's call |
 | **roadmap.md / BRIEFING-CURRENT-STATE.md** | Current as of 7/19 only — 9+ days stale now given everything since | Needs a real refresh once the above items settle, not urgent today |
@@ -33,8 +39,8 @@ Flagged to PM (this session, 7/28) rather than silently worked around: unclear w
 ## PM-attention / escalation items
 - **Environment question** (see note above) — not blocking, but worth PM's call if a future session hits the same ambiguity.
 
-## Mail status (2026-07-28)
-11 items were in the inbox at session start. Read: Ship #053 kickoff (actioned), Jake FTUX ask (logged as owed, not yet actioned), HOST's checklist-v1.5 scope-correction (informational, read). **Not yet read in full**: the remaining ~8 items, mostly hook-investigation cross-traffic (Arch/CXO/PA/HOST exchanges where PPM is cc'd, not primary) plus PA's #1351/Q2 memo (likely relevant to the PDR-006 thread — worth reading before answering PDR-006) and CIO's duty-cycle-tick v1.19 broadcast (procedural, worth knowing before next fire). None triaged to `read/` yet — do that once actually read, not before.
+## Mail status (2026-07-30)
+**Inbox ZERO.** 50 memos triaged to `read/` at Fire 1, MANIFESTs regenerated. Deep-read: everything addressed *to* PPM + everything gating owed work. Triaged-not-deep-read: hook/m-44 cross-traffic where PPM is cc'd (now settled in CLAUDE.md).
 
 ## Parked (no current trigger)
 - Pre-7/5-crisis entity-model lane — unverified since 6/18.
@@ -61,7 +67,9 @@ Flagged to PM (this session, 7/28) rather than silently worked around: unclear w
 
 ## Cron
 
-**Not armed.** Registry row (`dev/active/duty-cycle-registry.tsv`) shows `parked: migrated to Amber 2026-07-26, cron NOT yet armed (PM-gated)` — still accurate as of this session; not arming without PM's explicit go, consistent with the 7/26 session's own call (arming while PM is actively engaged also cuts against the cron-off-when-engaged norm).
+**ARMED** — job `85981d52` (rearmed each fire), `52 6,9,12,15,18,21`, six fires/day.
+⚠️ **Session-only + auto-expires after 7 days** — it is NOT a durable daemon. If this session ends
+the cycle stops silently while the registry row still claims watched coverage. Flagged to PM 7/30.
 
 ---
 
