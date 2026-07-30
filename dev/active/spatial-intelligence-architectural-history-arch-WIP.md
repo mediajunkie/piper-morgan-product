@@ -12,6 +12,40 @@
 >
 > A sweep lying in both directions inside one investigation, in the lane whose own §4 names that class. Recorded rather than quietly fixed.
 
+## ⚠️⚠️ SECOND CORRECTION, 2026-07-29 ~19:00 — the model is THREE layers, and the review's premise is inverted. **This supersedes both my 7/19 and my earlier-today characterization.**
+
+Triggered by PA's refinements (github_spatial is the *fallback* behind an MCP-first router, #198, `USE_MCP_GITHUB` default true). Chasing that surfaced what neither of us had in the model: **a shared spatial-adapter ABSTRACTION that the entire connector layer is written against.**
+
+| Layer | What | State |
+|---|---|---|
+| **1 — spatial REASONING** | `place_detector`, `spatial_intent_classifier`, `workspace_detection`, `context_assembler`, `spatial_context` | ✅ **LIVE** (unchanged, verified twice) |
+| **2 — the spatial ABSTRACTION** | `services/integrations/spatial_adapter.py` — `SpatialPosition`, `SpatialContext`, `SpatialAdapter` (Protocol), `BaseSpatialAdapter` (ABC) | ✅ **LIVE and BROADLY ADOPTED — this is the actual "connectors as places" contract** |
+| **3 — per-connector direct-API spatial IMPLEMENTATIONS** | `integrations/spatial/*`, `intelligence/spatial/*` | ◐ **mostly cold — and cold because a migration SUCCEEDED** |
+
+**Layer 2's adopters — every MCP consumer adapter in the codebase**: `github_adapter`, `google_calendar_adapter`, `slack_adapter`, `notion_adapter`, `gitbook_adapter`, `linear_adapter`, `cicd_adapter`, `devenvironment_adapter` — plus `integrations/slack/spatial_adapter.py` (live: imported by `simple_response_handler`, `response_handler`, `slack_integration_router`) and `notion_integration_router.py:18`.
+
+**Live reach of the MCP consumer family**: `github_adapter` ← `github_integration_router` **and `intent/intent_service.py` directly**; `google_calendar_adapter` ← `calendar_integration_router`; `notion_adapter` ← `integrations/mcp/notion_adapter.py`; `slack_adapter` ← none (cold).
+
+### ★ The reframe — this is the finding that matters
+
+**The per-connector `*_spatial` modules are not abandoned ambition. They are superseded predecessors of a migration that worked.** `github_integration_router` says it outright — *"CORE-MCP-MIGRATION #198: Try MCP adapter first, fall back to spatial"*, docstring: `GitHubMCPSpatialAdapter … - DEFAULT` / `GitHubSpatialIntelligence (direct API + spatial) - FALLBACK`. The MCP consumer family **replaced** the direct-API spatial implementations while **keeping the spatial abstraction**.
+
+So the review's framing question — *"was the connectors-as-places theory overkill, invested in but never committed?"* — **has the polarity backwards. The theory wasn't abandoned; its abstraction is the substrate every connector integration in this codebase is written against.** What died was one *implementation strategy* for it (direct-API per-connector), killed by a better one (MCP consumer adapters over the same spatial contract).
+
+**Consequences for the options — a third re-pricing:**
+- **(c) supersede-the-theory is simply wrong.** You cannot supersede the abstraction; it's load-bearing across the whole connector layer.
+- **(b) keep-live/park-cold resolves cleanly**: layers 1 and 2 stay (both broadly live, not in question). Layer 3's cold modules become **Tier-3-style migration residue** — eligible for the ordinary fix-or-delete treatment, subject to PM's protected-surface rule, *not* a strategic bet needing a committed-theory verdict.
+- **(a) commit-and-finish mostly already happened** — via MCP, per connector, not via the direct-API modules ADR-038 cited.
+- **`github_spatial` specifically is live-by-CONSTRUCTION, secondary-by-DISPATCH**: instantiated unconditionally (outside the `if self.use_mcp:` guard, `RuntimeError` if it fails with no MCP adapter), but its methods only dispatch when MCP is unavailable. Both halves are true; neither alone is accurate.
+
+**ADR-038 revisited a third time**: its three-pattern pluralism looks **validated**, not aspirational — but realized through the MCP consumer family rather than the per-connector modules it named as proof. Its error was citing the *implementations* as evidence for a *pattern* that outlived them. `SpatialAdapterRegistry` (in the live base) has no importers — a small dead class inside a live module, worth a note not a headline.
+
+### On this being my third characterization in one day
+
+7/19: layer 2 wholly cold. Today ~15:50: one live, five cold. Now: three layers, premise inverted. **Each move was driven by evidence and each is checkable — but three revisions in ten hours is itself a signal, and the right response is not a fourth memo.** I've asked CXO and PPM to **hold** their re-votes until I deliver the complete layer map rather than re-voting against each increment. Reacting to my increments is worse for them than waiting for one finished artifact.
+
+---
+
 ## The arc (the "invested but never fully committed" evidence)
 - **ADR-013 (Aug 12 2025) — MAXIMALIST commitment.** "ALL external tool integrations MUST use the unified MCP + Spatial Intelligence pattern. No Direct API Integrations. Spatial intelligence as core competitive differentiator." Paired with `spatial-intelligence-competitive-advantage.md`: "unassailable competitive moat," "8-dimensional spatial-intelligence architectural signature."
 - **ADR-038 (Sep 30 / Oct 1 2025) — SOFTENED to pluralism.** Supersedes ADR-013's spatial-pattern policy. THREE patterns (Granular Adapter [Slack] / Embedded Intelligence [Notion] / Delegated MCP [Calendar]), "domain-appropriate, not universal." Claimed then: "Notion spatial 100% operational; all patterns production-proven."
