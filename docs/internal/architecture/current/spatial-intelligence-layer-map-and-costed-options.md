@@ -13,6 +13,14 @@ This map is built **from the filesystem and the import graph**, via `scripts/rea
 
 That is a deliberate correction to how I produced the three previous versions. **I characterized this subsystem three times in ten hours and was wrong twice**, each time because I enumerated modules from a filename pattern I recalled and then verified only those — `github_spatial.py` sat in the exact directory I was describing and went unchecked through two passes. The failure was never carelessness; it was treating *"I verified the modules I enumerated"* as *"I verified the layer."* (m-43 / m-44.)
 
+> ⚠️ **This document is a SNAPSHOT of measurable facts, and snapshots go stale.** Every live/cold claim below is re-derivable in one command:
+> ```
+> python3 scripts/reachability-map.py services/integrations/spatial services/intelligence/spatial services/mcp/consumer
+> ```
+> **If this table and the tool disagree, the tool is right.** (CXO's 2026-07-30 lesson, applied to my own artifact: *"the real cure isn't more care — it's not duplicating measurable facts into a prose document at all. Prose can't be re-run; the tool can."* CXO's thesis doc was corrected twice in two days for exactly this; this doc is the same shape and gets the same warning rather than the assumption that mine is different.)
+>
+> ⚠️ **A string match on a module name is NOT an import edge.** Both CXO and I independently hit the same false positive within a day — `config_service.py:222`'s feature-flag string `"notion_spatial_mapping"` read as a `notion_spatial` importer. The next person will grep before reaching for the tool; this is the trap.
+
 **Instrument's own scope, stated because a report that can't show its work is indistinguishable from one that never ran:** 566 non-test `.py` files scanned. Static import-following from `main.py` + `web/app.py` reaches only **74 of 566 modules (13%)**, because this app registers routers **by string** (`web/app.py`: `register(app, "web.api.routes.places", …)`) and static traversal cannot cross that. **Therefore: importer counts are the live signal here; absence of a static path means UNKNOWN, never "dead."** Every claim below rests on importer edges, not on the reachability column.
 
 ---
@@ -73,12 +81,22 @@ So: the theory was not abandoned — **its abstraction is the substrate every co
 
 ### (a) Commit-and-finish — replicate L3 depth to the five cold connectors
 - **Cost: replication, not invention** — a working reference implementation exists. Materially cheaper than the review was originally told. But it is **two tiers per connector** (MCP consumer adapter + direct-API spatial fallback), or one tier if the fallback tier is first ruled obsolete — which the #198 migration suggests it already is.
-- **Value: near zero today.** ⚠️ **It buys deeper place-modeling for tools nobody is currently asking Piper about, and produces no L4.** CXO's argument, and I concur: *even cheap, it is the wrong next spend — it deepens a substrate before anything consumes it.*
+- **Value: ZERO for the current product — and this is now MEASURED, not judged.** CXO tried to refute its own "nobody is asking about these tools" claim and instead closed its one hole. **Every connector a user can actually connect already has live spatial depth:**
+
+| Advertised alpha connector | Live spatial path | |
+|---|---|---|
+| **GitHub** | `integrations/spatial/github_spatial` + `mcp/consumer/github_adapter` | ✅ live |
+| **Notion** | `mcp/consumer/notion_adapter` (produces `SpatialContext`), live via `notion_integration_router.py:59` | ✅ live |
+| **Calendar** | `mcp/consumer/google_calendar_adapter` + `calendar_integration_router` | ✅ live |
+| **Slack** | `integrations/slack/spatial_adapter` (the ADR-038 Granular pattern) | ✅ live |
+
+  **The cold island's connectors are CI/CD, dev-environment, GitBook and Linear — none of them in PM's invite email.** Notion was the case that could have refuted this (it's advertised *and* has a cold `notion_spatial`); it doesn't, because what's cold for Notion is the *superseded direct-API predecessor*. So *"tools nobody is asking Piper about"* is now literal rather than rhetorical, and **(a) buys zero user-visible value regardless of how cheap replication proves to be.** Re-checkable the same way the importer edges are.
 
 ### (b) Keep L1+L2+live-L3, dispose of the cold island ⭐ *my recommendation, converging with CXO*
 - Layers 1 and 2 are not in question — they are load-bearing and live.
 - The 10-module cold island becomes **Tier-3-style migration residue**, eligible for the ordinary fix-or-delete treatment **subject to PM's protected-surface rule** — *not* a strategic bet requiring a committed-theory verdict.
 - **Cost: small and mechanical.** **Value: removes 10 modules that read as live capability and aren't.**
+- ⚠️ **Describe it as "superseded implementation strategy, retained as prior art" — NOT "dead code, removed."** (CXO's caveat, and it's right.) The cold island holds the only worked examples of per-connector place-modeling for four connectors — what someone already thought about what a "place" means in a CI pipeline or a docs tree. If L3 is ever built for Linear or GitBook, that's **design capital**, free to preserve since it lives in git history regardless. **The framing matters so a future reader knows to go look rather than re-derive** — and getting it wrong would be ADR-038's own error (citing implementations as evidence for a pattern) run in reverse.
 - **This is the option that shrinks the decision.** It is closer to "dispose of migration residue" than to "rule on a committed theory."
 
 ### (c) Supersede the spatial theory — ✗ reject
@@ -86,6 +104,10 @@ So: the theory was not abandoned — **its abstraction is the substrate every co
 
 ### The alternative sequencing nobody had proposed — CXO's, and it deserves PM's attention
 **If we want the ambient-presence experience, build L4 on the connector that already has L3 depth (GitHub) — not L3 on five more connectors.** CXO names its own flip condition honestly: if a monitoring loop over `github_spatial` is a small build, "park and wait" becomes "build L4 on GitHub now and let demonstrated demand decide replication." **Costing that loop is Lead's, and it is the single most decision-relevant unknown left.**
+
+> ⚠️ **CXO's own caveat on its own proposal, raised 2026-07-30 and load-bearing for how PM reads Lead's number.** **GitHub is the right technical pilot for L4 and possibly the wrong experiential one.** Ambient presence on GitHub means *"there's been activity in your repo"* — which is **exactly what GitHub notifications already do well**. So piloting our most distinctive unbuilt capability there risks demonstrating it where the user's existing tooling is strongest, and reading as a worse GitHub notification rather than as presence. The connectors where it would be *felt as new* are those with weaker native signal — **Notion** (no good "what changed in the space I was in" surface) and **Calendar** (where salience judgment *is* the value).
+>
+> **So Lead's estimate prices PROVING THE MECHANISM, not shipping the capability.** A small number must not be read as *"so ship it on GitHub and we're done"*, and **if a GitHub pilot underwhelms, that is weak evidence about L4 and strong evidence about GitHub.** The experience question gets answered on the second connector.
 
 ---
 
