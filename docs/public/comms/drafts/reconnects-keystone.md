@@ -62,27 +62,25 @@ A day will come when I'll proudly hand someone my phone, maybe in a bar, and sho
 
 # Someone outside the room
 
-The alpha plugin we'd sent out weeks earlier to a small handful of testers had been mostly quiet. A friend of mine I had the privilege of hiring when I was head of product at CloudOn, Jake Krajewski, has been actively trying out the builds I've been sending out. On June 26, he sent back some excellent, actionable, pointed feedback about the install experience. Piper Alpha turned that feedback around fast: two version bumps in one day, each one closing a gap Jake had actually hit.
+The alpha plugin we'd sent out weeks earlier to a small handful of testers had been mostly quiet. A friend of mine I had the privilege of hiring when I was head of product at CloudOn, Jake Krajewski, has been actively trying out the builds I've been sending. On June 26, he sent back some excellent, actionable, pointed feedback about the install experience. Piper Alpha turned that feedback around fast: two version bumps in one day, each one closing a gap Jake had actually hit.
 
-I don't want to minimize how much I appreciate Aareal person outside the project hit a rough edge, said so, and by the end of the day the rough edge was gone. That loop — outside feedback to shipped fix, same day — is the whole reason any of the RECONNECT work matters. An architecture nobody outside the team ever touches is a diagram. This one had someone's hands on it within the same week it got its keystone.
+I don't want to minimize how much I appreciate the value of a real person looking at my work. It's easy to mistake all the agentic input for more than what it is, mostly self-referential. Jake hit a rough edge or two, said so, and by the end of the day those rough edges were gone. 
 
-# The mistake owned in public
+# Hidden in plain site
 
-The moment that actually tells you whether a team's discipline is real, though, isn't the clean run. It's what happens when someone gets it wrong.
+The real test of any team dynamic is how it responds when something goes wrong.
 
-Days earlier, my Chief Architect agent had ruled that an old, simulated way of talking to outside services was still "live" — reachable, in use, something you couldn't just delete. That ruling shaped how carefully the team treated it. Then my Lead Developer agent, while tracing through the actual code paths rather than trusting the earlier read, found the opposite: the simulated path was never actually called by anything real. It had been built, instantiated even, but nothing in the running system ever reached it. Dead code, dressed as live.
+Days earlier, Arch had ruled that an old, simulated way of talking to outside services must not be deleted because it was still "live" (reachable, in use). This made the rest of the agent team tiptoe around it. Then Lead Dev traced through the actual code paths and found the opposite: those simulated path was never actually called by anything real. It had been built, instantiated even, but nothing in the running system ever reached it. Dead code, dressed as live. 
 
-The Architect agent didn't defend the earlier ruling. It re-checked, confirmed Lead was right, and wrote down — in the durable decision record where these things get logged for good — exactly what went wrong: it had confused "the code exists and gets constructed" with "the code actually runs." Those are not the same thing, and mistaking one for the other is a specific, nameable failure the team has a name for. Naming your own instance of it, on the record, the same day someone else catches it, is the discipline working exactly as intended. Nobody quietly fixed the ruling and moved on. Somebody wrote down that the ruling had been wrong and why.
+(It doesn't make me feel great to find out something I was probably blogging about as a cool new feature last year was (a) simulated, and (b) never even wired up!)
 
-That's a small moment in a nine-day stretch full of bigger-looking ones. I think it's the one that matters most, because it's not about whether the architecture holds — it's about whether the team correcting itself holds, in public, without needing me to catch it first.
+Arch re-checked, confirmed Lead was right, and wrote down — in the durable decision record where these things get logged for good — exactly what went wrong: it had confused "the code exists and gets constructed" with "the code actually runs." (Boy, do these agents love to narrate their failures, enough so that it's worth checking any files they maintain for you for extraneous blah blah.) 
 
-# Where it stands
+# Still RECONNECT-or-ing
 
-By the end of that week, the connector work had gone from a decision to a running thing: GitHub and Calendar both talked to Piper through the new contract, real data flowing through a real protocol, verified live against my own accounts rather than trusted from a test suite. The old simulated path — the one that had briefly, mistakenly, been called load-bearing — was being deleted, piece by piece, now that everyone agreed it was safe to remove.
+By the end of that week, GitHub and Google Calendar could both both reach Piper through the new contract, real data flowing through a real protocol, verified live against my own accounts rather than trusted from a test suite. The old simulated path — the one that had briefly, mistakenly, been called load-bearing — was being deleted, piece by piece, now that the agents realized it was safe to remove.
 
-I want to be precise about what I'm claiming here, because it would be easy to overreach. The substrate proved itself real this week — tested by an actual security bug, an actual deploy, an actual outside user, an actual internal mistake caught and corrected. That's not nothing. Structurally, the pieces that needed to exist now exist, and they've taken a week of real weight without buckling. What I'm not claiming is that it's finished, or that "held up for a week" means "will hold up forever." Those are different questions, and I've learned not to answer the second one until I've actually asked it.
-
-For now: the keystone is in. The building around it is standing. We tested it more ways than I expected to need, in nine days, without setting out to test it at all — that's just what happened when we tried to use the thing while building it.
+It ain't finished but for now the keystone is in place. The building around it is standing. We tested it more ways than I expected to need, over those nine days, just by trying to use the thing while building it.
 
 ---
 
