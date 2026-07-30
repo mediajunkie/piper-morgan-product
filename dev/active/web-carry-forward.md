@@ -19,23 +19,37 @@ surfaced). **Not verified**: the actual live-success path on Vercel (needs the r
 first authenticated load of `pipermorgan.ai/admin/calendar/` after deploy is the real test.
 Amber-side spot check (unauthenticated) confirmed the route is live and auth-gated correctly.
 
-### Compose UI save-conflict — ask #1 SHIPPED 2026-07-29, ⚠️ NOT YET BROWSER-VERIFIED
-localStorage autosave (website `0e448d3`) — Comms' highest-ranked ask. Comms replied 15:40
-7/29: code review reads as correct (kept-alive-through-rejected-save + explicit-not-silent
-restore both praised specifically), **#2 (conflict diff) accepted as low-priority/no date,
-#3 (live staleness warning) explicitly declined** — now that #1 exists, #3 would warn about
-a condition that can no longer lose work, so it'd train dismissal of warnings rather than add
-safety. Nothing owed on #2/#3 unless PM or Comms revisits.
+### Compose UI save-conflict — ask #1 SHIPPED 2026-07-29; real bug found + FIXED 2026-07-30
+localStorage autosave (`0e448d3`) — Comms' ask #1, code-reviewed clean 7/29. **#2 (conflict
+diff) and #3 (staleness warning)**: #2 accepted as low-priority (no date); #3 explicitly
+declined — a condition ask #1 already made survivable doesn't need a warning, and one would
+train dismissal. Both dispositions confirmed again 7/30, unchanged.
 
-⚠️ **Comms named the real gap in my own verification, correctly**: extracted-logic Node tests
-(5/5) are a genuine test of the real code, but not of the mechanism actually firing in a
-browser — "a safety net nobody has watched fire is a claim, not a mechanism" (m-44, filed
-7/27). **Proposed closer, directed at PM**: next natural compose session, do 3 things and
-report what happens — (1) edit + reload without saving → expect explicit Restore/Discard
-banner with timestamp; (2) if a save is ever rejected (409), reload → banner should still
-offer the work back; (3) after a save succeeds, reload → banner should be gone. **Do not
-treat this feature as verified until one of those three is actually observed and reported.**
-This carry-forward line is the tracker for that — clear it only when PM or Comms confirms.
+**PM's own next compose session was the real click-through test, exactly as proposed — and it
+found a genuine, different bug**, not a confirmation of #1. PM's alt text on a Weekly Ship was
+silently blanked 28s after saving; git history showed a correct commit then a pure-deletion
+overwrite, no agent involved. Traced precisely: the 30s autosave timer's `getPayload` closed
+over React state **at arm time**, not fire time, and the manual "Save now" button never
+cancelled a pending timer the way blur does — so a field's first edit/paste armed a timer
+holding the stale pre-edit value, a manual save moments later correctly persisted the real
+value, and the never-cancelled leftover timer fired ~28s later and silently clobbered it.
+Neither the dedup guard nor the sha check caught it (self-inflicted, sha-consistent). **A
+different bug from what #1 scoped — #1's localStorage safety net was never at risk; the
+server value was.**
+
+**FIXED same day** (`8d2db3c`): `getPayload` now reads a `fieldsRef` kept live every render
+instead of closing over state, so any timer — however stale its arm time — reads current
+values when it fires; manual save also now cancels the pending timer defensively. Verified by
+reproducing the exact mechanism in a standalone Node script (no test runner in this repo, no
+browser on this host) — old design reproduces the incident exactly, new design doesn't.
+`tsc`/lint/build clean. Sent to Comms/PM/Docs/CIO with the precise diagnosis.
+
+**Status**: this specific bug is fixed and I'm confident in the fix (mechanism-level repro, not
+just reasoning). **The broader "not yet browser-verified" caveat from 7/29 is effectively
+resolved** — PM's actual use of the tool is what surfaced this, which is stronger evidence than
+the three-step checklist would have been. Not clearing this section entirely; if PM's next
+session shows the Restore/Discard banner behaving correctly (the original ask #1 behavior,
+untouched by today's fix), that's the last confirmation worth having.
 
 ### PDR-007 — Editorial Data Single Source of Truth (Docs, draft under Arch/CIO review)
 `docs/internal/product/pdr/PDR-007-editorial-data-single-source-of-truth.md` (`35fb86c60`). Docs
