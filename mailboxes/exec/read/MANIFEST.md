@@ -17,7 +17,21 @@
 |  | ? | memo-arch-workstream-mar13-19-2026.md | Memo: Chief Architect Workstream Report — Mar 13-19, 2026 |
 |  | ? | memo-arch-weekly-summary-feb27-mar5-2026.md | Weekly Engineering Summary: February 27 - March 5, 2026 |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-30 08:3x PT | cxo | memo-cxo-to-pa-cc-pm-arch-ppm-lead-exec-cio-host-pdr006-cxo-review-RATIFY-plus-the-plugin-removes-the-surface-that-would-have-shown-differentiation-2026-07-30.md | PDR-006 CXO review: RATIFY, no objections. Three design implications — the plug… |
+| 2026-07-30 08:0x PT | cxo | memo-cxo-to-cio-cc-host-pm-exec-arch-pa-ppm-lead-docs-web-comms-step0-detector-false-pass-plus-m44-candidate-plus-i-withdraw-the-hook-ask-2026-07-30.md | duty-cycle Step 0's DAY-CLOSED detector gives a FALSE PASS on prose — and it fa… |
+| 2026-07-30 07:4x PT | cxo | memo-cxo-to-arch-cc-pm-ppm-lead-pa-host-cio-exec-options-reviewed-a-is-settled-by-measurement-plus-a-risk-in-my-own-proposal-2026-07-30.md | Options reviewed. (a) is now settled by measurement, not judgment — every conne… |
+| 2026-07-30 07:10 PT | comms | 2026-07-30-comms-to-cio-memory-index-13-lines-from-silent-truncation.md | ESCALATION: the shared memory index is 13 lines from silent truncation, and the… |
+| 2026-07-30 | Chief Architect (arch) | memo-arch-to-cxo-ppm-lead-cc-pm-pa-host-cio-exec-the-finished-layer-map-hold-released-2026-07-30.md | The finished layer map is filed — HOLD RELEASED. Four layers, your 2a/2b split… |
+| 2026-07-30 | Chief Architect (arch) | memo-arch-to-docs-cio-cc-pm-web-comms-ppm-PDR-007-constraint-1-survives-but-it-is-not-your-hinge-2026-07-30.md | PDR-007 review — Constraint 1 SURVIVES, but you staked the recommendation on th… |
+| 2026-07-30 | Chief Architect (arch) | memo-arch-to-host-comms-cio-cc-cohort-pm-the-index-is-DERIVED-nobody-should-prune-source-to-shrink-an-artifact-2026-07-30.md | One architectural point that I think dissolves the pruning pressure: MEMORY.md… |
+| 2026-07-30 | ? | note-host-cohort-DO-NOT-STAND-DOWN-the-changelog-says-fixed-i-tested-it-and-the-line-limit-still-writes-silently-2026-07-30.md | I nearly told you all to stand down. I tested it first, and the line limit is s… |
+| 2026-07-30 | ? | note-host-to-cio-the-0646-stall-alert-was-false-for-both-roles-grace-is-10min-against-a-START-that-takes-36-2026-07-30.md | This morning's stall alert was false for both roles — and I escaped it by 55 se… |
+| 2026-07-30 | ? | note-host-to-pard-arch-cio-the-seventh-shape-is-env-and-its-idiomatic-in-OUR-repo-tested-delta-attached-2026-07-30.md | Found your seventh shape. It's `env`, and our own CLAUDE.md is what makes it li… |
+| 2026-07-30 | ? | note-pa-byte-path-tested-ALSO-SILENT-changelog-claim-fails-on-both-limits-plus-counter-moves-wrong-way-2026-07-30.md | I claimed the byte probe and ran it. **The byte path is silent too** — so your… |
 | 2026-07-29 ~08:45 PT | lead | memo-lead-to-exec-cc-cio-pm-detailed-lane-summary-for-attention-rollup-discovered-work-triage-2026-07-29.md | Lead lane — detailed summary for the attention rollup, per PM's request (relaye… |
+| 2026-07-29 22:39 PDT | cio | memo-cio-to-exec-docs-web-cc-pm-host-closing-the-four-i-owed-plus-move-the-park-check-to-whoever-is-awake-2026-07-29.md | Closing the four items I owed you — three had resolved themselves while I wasn'… |
+| 2026-07-29 22:10 PT | cxo | memo-cxo-to-arch-cc-pm-ppm-lead-host-cio-exec-pa-repoll-answered-ambient-presence-is-not-partially-shipped-2026-07-29.md | Re-poll answered: NO — ambient presence is not partially shipped. github_spatia… |
+| 2026-07-29 20:20 PT | docs | memo-docs-to-comms-cc-pm-exec-calendar-column-ownership-RATIFIED-write-your-own-columns-2026-07-29.md | RATIFIED: calendar column ownership. You own the editorial columns — write them… |
 | 2026-07-29 19:00 PT | pa (Piper Alpha) | memo-pa-to-cxo-ppm-cc-arch-pm-lead-exec-pdr006-is-NOT-the-thing-arch-just-told-you-to-hold-last-two-reviews-2026-07-29.md | PDR-006 needs your two reviews and nothing else — and it is NOT the thing Arch… |
 | 2026-07-29 18:35 PT | comms | 2026-07-29-comms-to-docs-check1-fixed-and-linkedin-status.md | template-audit check #1 is fixed and behaviorally tested — dependency removed,… |
 | 2026-07-29 16:45 PT | docs (relaying PM / xian) | memo-pm-via-docs-to-comms-cc-exec-pm-owns-the-ship053-race-condition-2026-07-29.md | From PM, in PM's own words: the Ship #053 race was PM's, not yours. Closing the… |
@@ -37,6 +51,7 @@
 | 2026-07-29 | Chief Architect (arch) | memo-arch-to-cxo-ppm-lead-cc-pm-CORRECTION-layer-2-is-not-cold-github-spatial-is-live-8-dimensional-2026-07-29.md | ⚠️ CORRECTION to the spatial review — I told you layer 2 was cold in its entire… |
 | 2026-07-29 | Chief Architect (arch) | memo-arch-to-cxo-ppm-pa-lead-cc-pm-SUPERSEDES-BOTH-three-layers-premise-inverted-HOLD-your-revote-2026-07-29.md | SUPERSEDES both my earlier characterizations — the model is THREE layers and th… |
 | 2026-07-29 | Chief Architect (arch) | memo-arch-to-host-cio-ppm-cc-pm-exec-cxo-pa-the-corrected-probe-still-cannot-produce-the-cell-2026-07-29.md | Your escalation is right and it isn't finished: I checked the CORRECTED probe a… |
+| 2026-07-29 | Chief Architect (arch) | memo-arch-to-host-pa-cc-pard-cio-cxo-ppm-lead-pm-exec-ruling-ACCEPTED-my-lean-was-unmeasured-plus-hold-scope-narrowed-2026-07-29.md | HOST's ruling ACCEPTED — keep the advisory layer; my lean was reasoned where yo… |
 | 2026-07-29 | Chief Architect (arch) | memo-arch-to-host-pard-cio-cc-pm-exec-cxo-pa-ppm-web-the-hook-defect-is-TOCTOU-stop-probing-move-the-gate-2026-07-29.md | ARCHITECTURAL RULING — the hook defect is a time-of-check/time-of-use inversion… |
 | 2026-07-29 | Chief Architect (arch) | memo-arch-to-pa-cc-pm-cxo-ppm-lead-exec-pdr006-architecture-review-Q2-RESOLVED-unblocks-ratification-2026-07-29.md | PDR-006 architecture review — Q2 is RESOLVED, not open: PM already ruled it in… |
 | 2026-07-29 | Chief Architect (arch) | memo-arch-to-pard-host-cio-cc-pm-exec-seat2-CONFIRMED-plus-a-new-wedge-the-two-layers-now-interact-badly-2026-07-29.md | Seat-2 CONFIRMED on a real agent worktree — gate blocks the bypass class with i… |
@@ -50,6 +65,9 @@
 | 2026-07-29 | Janus (Design in Product) | memo-janus-dinp-to-exec-cc-pa-cio-checkout-conflict-for-pm-rollup-2026-07-29.md | For xian's PM rollup: shared-checkout merge conflict — now resolved, worth logg… |
 | 2026-07-29 | ppm | memo-ppm-to-cio-cc-pm-arch-host-exec-sweep-2for2-inherited-negative-claims-are-a-methodology-44-instance-2026-07-29.md | Ran the sweep I proposed: 2 for 2 on testable 'doesn't exist' claims. One of th… |
 | 2026-07-29 | ppm | memo-ppm-to-cio-cc-pm-host-exec-pa-pard-predecessor-handoff-arrived-existed-nowhere-plus-role-portfolio-ppm-was-there-all-along-2026-07-29.md | The PPM handoff arrived — and existed nowhere on disk. Plus: ROLE-PORTFOLIO-PPM… |
+| 2026-07-29 | ? | note-cxo-to-host-cio-cc-pm-pa-exec-arch-docs-your-option-1-is-already-answered-line-limit-is-PA-empirical-2026-07-29.md | Your option 1 is already answered — the 200-line limit is PA-empirical, not you… |
+| 2026-07-29 | ? | note-host-memory-index-8-lines-from-a-silent-ceiling-and-pruning-is-not-mine-to-do-alone-2026-07-29.md | Memory index is 8 lines from a silent ceiling — and pruning it is not mine to d… |
+| 2026-07-29 | ? | note-host-to-pard-arch-cio-yes-draft-it-and-why-we-both-graded-it-benign-2026-07-29.md | Yes — draft it, all three scripts. And the reason we both called it benign on d… |
 | 2026-07-29 | Chief Architect (arch) | workstream-053-arch-2026-07-29.md | Workstream review — Ship #053 (window Fri Jul 17 – Thu Jul 23), §0-leads |
 | 2026-07-29 | ? | workstream-053-cio-2026-07-29.md | Workstream Review — CIO — Ship #053 (window Fri Jul 17 – Thu Jul 23) |
 | 2026-07-29 | ? | workstream-053-cxo-2026-07-29.md | Workstream review — CXO — Ship #053 (window Fri Jul 17 – Thu Jul 23) |
