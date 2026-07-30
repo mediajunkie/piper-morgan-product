@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-07-29 19:45 PDT (Fire 2)
+**Updated**: 2026-07-29 21:25 PDT (Fire 2, extended)
 **Session log**: `dev/2026/07/29/2026-07-29-0948-docs-code-log.md`
 **Prior update**: 2026-07-12 — **17 days stale, pre-Amber.** Rewritten wholesale; still-live items from
 that version are preserved below and marked, resolved ones noted so they aren't re-derived.
@@ -23,9 +23,9 @@ commit bare in the next. `mail-send.sh` is safe regardless (`commit-tree`).
   1. **Routing is genuinely ambiguous and has a documented failure mode.** `mailboxes/DIRECTORY.md` explicitly says *do not* create `mailboxes/{agent}/` for cross-project agents **including Dispatch**, and cites CIO's 2026-07-04 mistake — *"a dead letter, not a delayed delivery."* A Dispatch agent *on this project* is either (a) Piper-Morgan-local → it needs `mailboxes/dispatch/` **and** DIRECTORY.md amended in the same change, or (b) still cross-project → stays at `~/Development/dispatch/mail/` and nothing changes. **Guessing wrong produces silent dead letters.**
   2. **`publish-to-blog` Step 8 says "PM does manually"** and Step 9 gates archival on a confirmed syndication URL. If Dispatch owns syndication, Step 8 changes owner and Step 9's gate becomes a *mail-driven* dependency with real latency — worth encoding rather than leaving as folklore.
   3. **Keep ONE writer on the editorial calendar (recommend: Docs).** Dispatch should *report* the URL; Docs writes it via `/update-calendar`. A second writer on an 18-column CSV is precisely the column-shift risk that `update-calendar` v1.2 and my predecessor's Ship #050 repair both document — field count stays valid while content drifts one column right.
-- **⏳ Puppeteer cache clear** — PM authorization needed, it's outside the repo: `rm -rf ~/.cache/puppeteer/chrome-headless-shell/mac_arm-139.0.7258.154` (check the sibling `chrome/` dir too). Not blocking — `npm ci --ignore-scripts` works.
-- **⏳ Pre-Amber machine disposition** — decides whether Dispatch's 15 stashes are hygiene or a deadline. Raised to Dispatch + PM. **The stashes are NOT on Amber** (verified: 0 in main checkout + all 11 worktrees, no `refs/stash`, no stash reflog).
-- **⏳ CIO scoping note for the CLAUDE.md refactor** — *carried from the 7/12 version, still the blocker.* See owed item 1.
+- ✅/⚠️ **Puppeteer cache CLEARED (PM-authorized) — and it DISPROVED the diagnosis.** A clean cache reproduces the identical failure: ~100MB downloads, then `ABOUT` + `LICENSE` and no binary, rc=1. Not stale cache, not disk space (259GB free). **The extraction is reproducibly broken on this host; cause unknown** (untested: Node 26 vs `@puppeteer/browsers`, macOS quarantine, archive format). Pard's lane. **`npm ci --ignore-scripts` is therefore the correct standing procedure, not a workaround.** Nothing in publish or `next build` is blocked; anything driving a real headless browser would be.
+- ✅ **Stash cleanup: NO DEADLINE.** PM ruled the pre-Amber machine stays up indefinitely. Stashes exist only there (verified 0 anywhere on Amber), so only something with access to that host can act. Standing offer to Dispatch: export all 15 to patches somewhere tracked and I'll review per-stash from here.
+- ❌ **CIO scoping note: NOT a blocker, and never arrived.** HOST's Pass 3 says explicitly *"Docs, this is your call and I've stayed off it"*; the refactor was PM-greenlit 7/12. **Proceed without it** — this is mine to execute, not to wait on.
 - **⏳ CIO/Pard on provisioning** — 2 memos sent (Node gap; Python-too addendum). Nothing blocks on a reply.
 
 ## Owed by me — unblocked, priority order
@@ -39,7 +39,9 @@ commit bare in the next. `mail-send.sh` is safe regardless (`commit-tree`).
 7. **18 calendar↔website metadata disagreements**, incl. ~46 live-site captions missing quotation marks (calendar right, site wrong).
 8. **97 docs >30d asserting current-state language**; `docs/internal/planning/current/` is itself now a misleading directory name.
 9. **Weekly-audit orphan rate** — 2 of last 6 unexecuted; mitigated by the Mon–Thu SessionStart hook, cadence still worth review.
-10. **docs/ tree audit + cleanup plan** — *carried from 7/12*, PM's direct request via PPM. Starting data: stale roadmap/README.md, `CORE/` an archival candidate. Write the audit + plan before any large-scale moves.
+10. **PDR-007 follow-through** — drafted + routed to Arch/CIO (`35fb86c60`). If the direction ratifies, **I write the companion ADR** (format + migration). Deliberately recommended a **2-4 week wait** first so the validator gets observed in production before anyone commits to a migration.
+11. **Reconcile the '~46 captions' measurement** — PDR-007 open question 4. The 7/28 audit's figure and my 2 don't agree, and until the methods are reconciled neither should be quoted.
+12. **docs/ tree audit + cleanup plan** — *carried from 7/12*, PM's direct request via PPM. Starting data: stale roadmap/README.md, `CORE/` an archival candidate. Write the audit + plan before any large-scale moves.
 
 ## Resolved since the 7/12 version — do NOT re-open
 
