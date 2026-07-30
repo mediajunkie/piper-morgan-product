@@ -44,13 +44,21 @@ Got lucky on the timing with that one.
 
 By Monday the team had moved from "we decided on an architecture" to "the architecture is running in production," and that's a bigger jump than it sounds.
 
-While Lead Dev has been grinding away toward that elusive beta-release goal, on the side I've been running a skunkworks project with my prototype product assistant role on (Piper Alpha) to develop the "bring your own chat" architecture. It's going well. A side effect of this is that we finally stood up a remote endpoint so that cut a release — 2,456 tests passing — and my Lead Developer agent pushed it to the live server the same day. It should have been routine. It wasn't quite. The deploy tripped over a genuinely sneaky bug: the encryption key that protects sensitive data was sitting correctly in the server's configuration file, but the specific way the deploy script loaded environment variables meant the running application never actually saw it. The first attempt to prove encryption was working failed. The fix — naming the variable explicitly instead of trusting it to load automatically — took an hour to find and rewired the deploy process for good.
+While Lead Dev has been grinding away toward that elusive beta-release goal, on the side I've been running a skunkworks project with my prototype product assistant role on (Piper Alpha) to develop the "bring your own chat" architecture. It's going well. A side effect of this is that we finally stood up a hosted endpoint so that running Piper Morgan doesn't require cloning the repository to a local device and installing it there.
 
-Two days after that, I checked the onboarding flow myself, from my phone, the way an actual new user would. It failed at the very first step — a system check reporting "services not running" when they were, in fact, running fine. The check itself was broken, hardcoded to look for services at addresses that only exist on a development machine, not the real server. I hadn't gone looking for a bug. I'd just tried to use the thing, and the thing told me it was broken when it wasn't — which is its own particular kind of alarming, because "broken at hello" is exactly what a real alpha tester would have hit first, before the flaw had a chance to matter to anyone but me.
+This now means that not only can we test pointing an MCP server at a Piper Morgan backend but also that our alpha and soon-to-be beta testers can now test Piper Morgan much more easily via the web.
 
-Fixed same morning. But the sequence is the point: build, deploy, break in a way only real use surfaces, fix, and keep going. That's not a triumphant arc. It's what an actual production system looks like while it's proving itself — not a straight line, a series of things going wrong in exactly the ways you can only discover by running the thing for real.
+We cut a release — 2,456 tests passing — and my Lead Developer agent pushed it to the live server the same day. It should have been routine but... it wasn't. The deploy tripped over a sneaky bug: the encryption key that protects sensitive data was hidden from the running application. It took an hour to figure out we had to name the variable explicitly instead of trusting it to load automatically.
 
-[CONSIDER: is there a personal beat here worth adding about doing that phone check yourself — what it's like to be your own first bug report?]
+Two days after that, I checked the onboarding flow myself, from my phone, the roughest possible test an actual new user would of course immediately try. It failed at the very first step:  a system health check reporting "services not running" when they were, in fact, running fine. 
+
+Sort of like one of those "check your 'check engine light'" recursive things was the cause this time: The health check itself was broken, hardcoded to look for services at addresses that only exist on a development machine, not the real server. (Sad trombone. Rookie error!)
+
+This is one reason why I've done 99% of the alpha testing so far. It would be too embarrassing to ask other humans to deal with my obvious errors.
+
+I got it fixed same morning. There really is no substitute for testing your own stuff as a normal user, at least when you are in the target user group, I should say. This sequence is the of "build, deploy, break in a way only real use surfaces, fix, and keep going" is what an actual production system looks like while it's proving itself.
+
+A day will come when I'll proudly hand someone my phone, maybe in a bar, and show Piper Morgan doing something a screen or in an interaction and say "I built that!" but not this day. 
 
 # Someone outside the room
 
