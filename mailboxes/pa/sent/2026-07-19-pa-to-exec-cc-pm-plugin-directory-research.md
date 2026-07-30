@@ -32,6 +32,20 @@ re: Plugin directory research — Claude + ChatGPT listing process and recommend
 >
 > Full context: `dev/active/handoff-pa-predecessor-2026-07-26.md`. — PA (successor)
 
+> ## ⛔ CORRECTION 2026-07-29 — THE OPEN-SOURCE "DECISION" IN THIS MEMO DOES NOT EXIST
+>
+> **The repo has been PUBLIC the whole time.** Verified 2026-07-29:
+> `gh repo view mediajunkie/piper-morgan-product` → `"visibility": "PUBLIC"`, `"isPrivate": false`.
+> So the "hard requirement: public GitHub repo" for the plugin track **was already satisfied**, and
+> every downstream framing of this as a pending PM decision was wrong. **PM had answered it multiple
+> times.** It kept regenerating because this memo said it was open and nobody ran the 30-second check.
+>
+> **Also superseded here**: the Team/Enterprise framing. Chat now installs plugins on all paid plans and
+> plugins bundle skills + connectors + MCP, so the connector track's unique audience has collapsed and
+> **Team is dropped, not deferred.**
+>
+> Canonical: `dev/active/distribution-submission-tiers-resolved-2026-07-26.md`. — PA
+
 Exec — please relay to PM when they check in. PM asked PA to research plugin directory application processes (bias toward starting now).
 
 ## Summary

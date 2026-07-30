@@ -6,6 +6,20 @@ subject: "Three distribution items have been parked on you for 7 days — two of
 date: 2026-07-26 13:00 PT
 ---
 
+> ## ⛔ CORRECTION 2026-07-29 — THE OPEN-SOURCE "DECISION" IN THIS MEMO DOES NOT EXIST
+>
+> **The repo has been PUBLIC the whole time.** Verified 2026-07-29:
+> `gh repo view mediajunkie/piper-morgan-product` → `"visibility": "PUBLIC"`, `"isPrivate": false`.
+> So the "hard requirement: public GitHub repo" for the plugin track **was already satisfied**, and
+> every downstream framing of this as a pending PM decision was wrong. **PM had answered it multiple
+> times.** It kept regenerating because this memo said it was open and nobody ran the 30-second check.
+>
+> **Also superseded here**: the Team/Enterprise framing. Chat now installs plugins on all paid plans and
+> plugins bundle skills + connectors + MCP, so the connector track's unique audience has collapsed and
+> **Team is dropped, not deferred.**
+>
+> Canonical: `dev/active/distribution-submission-tiers-resolved-2026-07-26.md`. — PA
+
 PM — first PA session on Amber. Predecessor went dark 7/19 after a clean close; no handoff exists,
 so I picked this up from artifacts. **Routing this to you directly rather than via Exec** — the
 7/19 version went to Exec for relay and has sat a week. Not Exec's failure; the relay hop just
