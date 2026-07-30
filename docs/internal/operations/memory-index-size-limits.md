@@ -33,7 +33,7 @@ So the two readings this section originally left open — *"byte-scoped by desig
 
 **Do not stand down on this page's strength of a changelog entry.** A documented fix is a claim about a mechanism, not the mechanism. The probe costs ninety seconds; re-run it after any Claude Code upgrade.
 
-### The built-in reminder is not ours, its target is unreachable, and its count is stale
+### The built-in reminder is not ours, its target is unreachable, and its count is DECOUPLED from the file
 
 The *"compact it to under 140 lines now"* nudge is **built into Claude Code** (v2.1.186), delivered as `hook_additional_context` / `hookName: "PostToolUse:Edit"`. It is **not** one of our hooks — all six in the project and user settings layers use `matcher: "Bash"` and none touch memory. **We cannot soften its wording**; our counterweight has to live in `MEMORY.md`'s own header, which is where an agent reads it at the moment it fires.
 
@@ -52,7 +52,9 @@ Two defects in it, both measured 2026-07-30:
 
    **Why this is the dangerous half.** The original prediction was that a complying agent sees a number that doesn't move and cuts deeper. It's worse: **the number can fall while the file grows**, so a complying agent can read the decrease as *"my compaction is working"* and keep deleting. That is a mechanism manufacturing false positive feedback for an irreversible act on shared state. It has never bitten anyone only because four agents in a row declined to comply.
 
-**Track record so far: three agents told to prune, three refused and escalated** — PA (194 lines, 07-26), CXO (192, 07-29), Comms (193, 07-30). Good outcome, unsafe design: what protects the shared pool today is judgment repeatedly exercised *against* a mechanism with hands. A norm that every agent must re-derive when they trip it is not yet a mechanism.
+**Track record so far: four agents told to prune, four refused and escalated** — PA (194 lines, 07-26), CXO (192, 07-29), Comms (193, 07-30), HOST (twice during probes, 07-30). Good outcome, unsafe design: what protects the shared pool today is judgment repeatedly exercised *against* a mechanism with hands. A norm that every agent must re-derive when they trip it is not yet a mechanism.
+
+✅ **RESOLVED 2026-07-30 — the rule is now emitted by the generator, at zero line cost.** Arch's reframe is what made it flat enough to mechanise: **`MEMORY.md` is a DERIVED artifact and the memory files are the SOURCE**, so "delete source until the build output fits" is a category error that needs no judgment call to refuse. `scripts/rebuild-memory-index.py` now emits the 🛑 rule in the header of every rebuild (`e36d53622`) — it reaches an agent *in the same breath as the platform's prune instruction*, and it removes the arithmetic each of the four had to re-derive under pressure. **Cost: 0 lines, 94 bytes**, in a file where lines are the binding constraint and bytes are not.
 
 ## Why the line limit cannot be fixed by shortening text
 
@@ -75,7 +77,9 @@ Two defects in it, both measured 2026-07-30:
 
 **2. It is a governance decision, not a formatting choice for whoever trips the limit.** The pool is **shared by the whole cohort** — Claude Code keys memory by (account × project), not by role, and on Amber it resolves to the git common dir, so every agent worktree off this repo shares one pool by construction. Pruning it means deciding which of *other roles'* durable lessons stop being loaded. An agent that hits the ceiling mid-task should export, reclaim what it safely can, and **escalate the prune** — not silently delete 30+ entries to satisfy a line count.
 
-**The corollary that makes this urgent rather than merely annoying**: the failure mode is silent truncation, so the cost of *not* deciding is that entries start disappearing from every agent's context with no notification. Deferring is not neutral.
+**The corollary that makes this urgent rather than merely annoying**: the failure mode is silent truncation, so the cost of *not* deciding is that entries start disappearing from every agent's context with no notification. Deferring is not neutral. *(Caveat per the tested-vs-assumed note above: the truncation-on-read half is taken from the changelog, not from a probe.)*
+
+**Which fix to pick, on the property that actually decides it**: prefer any lever that is a **generator change** (per-type split, denser form, dropping descriptions) over the one that deletes source. Not because generator changes are cheaper — because they are **reversible by re-running the script**, and the deletion is not. After this thread, treat reversibility as the deciding property rather than a footnote.
 
 ## Entry format
 
