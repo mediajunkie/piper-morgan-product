@@ -14,6 +14,32 @@ Trailing entries vanish for every agent that loads the file, with no error and n
 
 `scripts/rebuild-memory-index.py` now refuses to write past either and warns from 90%. A PostToolUse hook also warns on edit.
 
+### ⚠️ The platform changelog claims this was fixed. **It does not hold for the line limit.** (HOST, tested 2026-07-30)
+
+Claude Code **v2.1.210**: *"Memory writes that leave a MEMORY.md index over its read limit now produce an explicit error instead of silent truncation."* We run **2.1.220**. Read at face value, that retires this whole page.
+
+**It does not.** Tested on a live seat at 2.1.220 — snapshot, pad past the ceiling, observe, restore byte-identical (sha verified):
+
+| probe | resulting file | expected if the fix applied | actual |
+|---|---|---|---|
+| write that **crosses** 200 lines | 201 lines | explicit error | **succeeded, silently** |
+| write while **already over** | 202 lines | explicit error | **succeeded, silently** |
+
+**Limit of this finding, stated so nobody over-reads it**: both probes sat at ~19.6KB, well under the 25KB byte ceiling. The v2.1.210 error may be **byte-scoped** and simply never have covered lines. That reading and "the fix is broken" are not distinguishable from this evidence, and **the operational consequence is the same either way** — the limit we are near is the line limit, and it is silent.
+
+**Do not stand down on this page's strength of a changelog entry.** A documented fix is a claim about a mechanism, not the mechanism. The probe costs ninety seconds; re-run it after any Claude Code upgrade.
+
+### The built-in reminder is not ours, its target is unreachable, and its count is stale
+
+The *"compact it to under 140 lines now"* nudge is **built into Claude Code** (v2.1.186), delivered as `hook_additional_context` / `hookName: "PostToolUse:Edit"`. It is **not** one of our hooks — all six in the project and user settings layers use `matcher: "Bash"` and none touch memory. **We cannot soften its wording**; our counterweight has to live in `MEMORY.md`'s own header, which is where an agent reads it at the moment it fires.
+
+Two defects in it, both measured 2026-07-30:
+
+1. **Its target is unreachable and it doesn't know that.** "Under 140 lines" against 170 one-line entries has a floor of 170. It requests deletion of ~30 memories in formatting language.
+2. **Its line count is stale.** It reported `187` on both probes above — while the file was `201`, then `202`. An agent who complies is told a number that does not move, and the plausible next step is to **cut deeper**. Nobody has hit this because nobody has complied.
+
+**Track record so far: three agents told to prune, three refused and escalated** — PA (194 lines, 07-26), CXO (192, 07-29), Comms (193, 07-30). Good outcome, unsafe design: what protects the shared pool today is judgment repeatedly exercised *against* a mechanism with hands. A norm that every agent must re-derive when they trip it is not yet a mechanism.
+
 ## Why the line limit cannot be fixed by shortening text
 
 **One entry = one line.** So the floor is the number of memories on disk, before any header at all. The arithmetic is worth stating plainly because it keeps getting re-derived under time pressure:
