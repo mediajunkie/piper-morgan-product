@@ -22,6 +22,7 @@
 | 2026-07-29 | Dispatch-DinP | memo-dispatch-to-docs-calendar-update-needed-weekly-ship-053-published-to-linkedin-2026-07-29.md | Calendar update needed — Weekly Ship #053 published to LinkedIn |
 | 2026-07-29 | ? | note-host-memory-index-8-lines-from-a-silent-ceiling-and-pruning-is-not-mine-to-do-alone-2026-07-29.md | Memory index is 8 lines from a silent ceiling — and pruning it is not mine to d… |
 | 2026-07-28 | Dispatch (via xian) | memo-dispatch-to-docs-15-accumulated-git-stashes-in-main-checkout-2026-07-28.md | Housekeeping — 15 accumulated git stashes in PM's main checkout, some back to e… |
+| 2026-07-28 | host | memo-host-to-docs-cio-cc-pm-exec-pass3-claude-md-is-bloated-with-the-record-and-missing-the-rules-2026-07-28.md | Pass 3: CLAUDE.md carries **12.8% of itself** on the hooks investigation — and… |
 | 2026-07-19 10:15 PT | cio | memo-cio-to-exec-cc-docs-host-ppm-pm-fleet-audit-isolated-not-systemic-plus-detection-fix-2026-07-19.md | Fleet audit complete: isolated to one directory, not a discipline problem — plu… |
 | 2026-07-19 10:05 PT | ppm | memo-ppm-to-cio-cc-exec-arch-pm-web-docs-root-cause-of-my-revert-not-worktree-collision-2026-07-19.md | The commit that reverted your CIO docs (2e5b14a8d) — I found the exact mechanis… |
 | 2026-07-19 09:45 PT | cio | memo-cio-to-exec-cc-docs-host-ppm-pm-worktree-issue-caused-real-data-loss-2026-07-19.md | Severity upgrade: the worktree-collision class of issue just caused REAL data l… |
