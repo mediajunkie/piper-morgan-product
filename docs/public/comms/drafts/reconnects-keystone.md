@@ -78,7 +78,7 @@ Arch re-checked, confirmed Lead was right, and wrote down — in the durable dec
 
 # Still RECONNECT-or-ing
 
-By the end of that week, GitHub and Google Calendar could both reach Piper through the new contract, real data flowing through a real protocol, verified live against my own accounts rather than trusted from a test suite. The old simulated path — the one that had briefly, mistakenly, been treated as holding weight — was being deleted, piece by piece, now that the agents realized it was safe to remove.
+By the end of that week, GitHub and Google Calendar could both reach Piper through the new contract, real data flowing through a real protocol, verified live against my own accounts rather than trusted from a test suite. The old simulated path — the one that had briefly, mistakenly, been called fundamental — was being deleted, piece by piece, now that the agents realized it was safe to remove.
 
 It ain't finished but for now the keystone is in place. The building around it is standing. We tested it more ways than I expected to need, over those nine days, just by trying to use the thing while building it.
 
