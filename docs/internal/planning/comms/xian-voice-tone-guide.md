@@ -109,6 +109,23 @@ Functional role-descriptions are fine and characteristic (*"the experience-desig
 
 Why "role" over "officer": it's already this guide's own established example (the CXO gloss above), it generalizes cleanly across every title (some, like Lead Dev, aren't "officer" titles at all — "role" fits all of them uniformly where "officer" only fits some), and "The Trust Architecture Hardens" (Jul 28) used it consistently throughout without needing to special-case any role. Forward-only — no back-fixing published posts.
 
+#### ⚠️ RESOLVED 2026-07-30 — the rule above is REGISTER-SCOPED, not universal
+
+The 07-28 ratification above and the durable memory `feedback_agent_naming_convention_in_public_prose` (PM-confirmed **2026-06-23**) were **direct opposites**, and both were live. The memory mandates *"my [full role name] agent (ACRONYM)"* and explicitly rejects the "role" form as *"an abstraction that lost track of who was actually who — PM named this the 'earlier form of euphemism.'"* The 07-28 rule mandates the "role" form and bans **"agent."** Comms surfaced the collision on 07-30 while reviewing "RECONNECT's Keystone," which used the June form in three places; **PM's call: decide it and write it down.**
+
+**The resolution: they were each right about a different register, and the conflict came from applying one rule to two voices.**
+
+| Register | Form | Why |
+|---|---|---|
+| **Building narratives + insights** (first person, PM's own story) | **"my [full role name] agent (ACRONYM)"** → then the acronym | The June memory's objection holds here: in a story about *my* team, the possessive is clearer and warmer, and the abstract form genuinely does lose track of who is who. |
+| **Weekly Ship** (third-person, institutional) | **"the [title] role (ACRONYM)"** → then the acronym | The July ratification holds here: the Ship has its **own deliberate third-person convention**, confirmed against #049 and re-confirmed on #052. "my … agent" would clash with a voice that never says "I." |
+
+Neither form is wrong; each is wrong **in the other's register**. This also matches how the cohort already thinks (see the three-registers rule) and needs no special-casing.
+
+⚠️ **`check-acronyms.py` cannot see register**, so it will keep emitting `[ROLE-GLOSS?]` advisories against first-person narratives using the (correct) "agent" form. **Those are false positives on narratives and insights.** Verify against this table, not the linter.
+
+*(The memory has been updated to point here rather than assert the June rule unscoped — a stale memory that contradicts the guide steers every agent that loads it, which is how three spots in one draft ended up mid-conflict.)*
+
 ### Use of Examples
 - Personal work experiences (Yahoo, 7 Cups, CloudOn, 18F)
 - Specific product scenarios

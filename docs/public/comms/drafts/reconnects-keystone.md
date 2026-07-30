@@ -1,6 +1,6 @@
 ---
 image: 'reconnects-keystone-keystone-arch.png'
-alt: "A stonemason lowers his mallet and looks up at the freshly-set keystone crowning a lone stone arch, while two ordinary passersby walk straight through the opening without stopping."
+alt: 'A mason quietly watches as people begin walking beneath a newly completed stone arch, illustrating how the true test of a keystone is the ordinary weight it quietly carries.'
 caption: '"It''s holding!"'
 ---
 
@@ -8,7 +8,7 @@ caption: '"It''s holding!"'
 
 *June 20–28, 2026*
 
-On a Saturday evening in late June, my Lead Developer agent and I looked at a pile of unfinished connector work, the credentials that tie Piper to the outside services it needs to be useful (GitHub, Slack, Notion, Google Calendar being the core set of example connections I've aimed for all along, given my own personal preferences) and admitted we'd been building around the edges of it for a week without anything closing.
+On a Saturday evening in late June, my Lead Developer agent (Lead Dev) and I looked at a pile of unfinished connector work, the credentials that tie Piper to the outside services it needs to be useful (GitHub, Slack, Notion, Google Calendar being the core set of example connections I've aimed for all along, given my own personal preferences) and admitted we'd been building around the edges of it for a week without anything closing.
 
 So we slowed down to review and identified the actual foundation and built that first. A little over a week later, that one decision had been tested by a real security hole, a full release, a live outside user, and one of my own agents catching its own reasoning mistake. All part of what happens when you build a keystone and then spend a week finding out whether it holds weight.
 
@@ -44,7 +44,7 @@ Got lucky on the timing with that one.
 
 By Monday the team had moved from "we decided on an architecture" to "the architecture is running in production," and that's a bigger jump than it sounds.
 
-While Lead Dev has been grinding away toward that elusive beta-release goal, on the side I've been running a skunkworks project with my prototype product assistant role (Piper Alpha) to develop the "bring your own chat" architecture. It's going well. A side effect of this is that we finally stood up a hosted endpoint so that running Piper Morgan doesn't require cloning the repository to a local device and installing it there.
+While Lead Dev has been grinding away toward that elusive beta-release goal, on the side I've been running a skunkworks project with my prototype product assistant agent (Piper Alpha) to develop the "bring your own chat" architecture. It's going well. A side effect of this is that we finally stood up a hosted endpoint so that running Piper Morgan doesn't require cloning the repository to a local device and installing it there.
 
 This now means that not only can we test pointing an MCP server at a Piper Morgan backend but also that our alpha and soon-to-be beta testers can now test Piper Morgan much more easily via the web.
 
@@ -62,9 +62,9 @@ A day will come when I'll proudly hand someone my phone, maybe in a bar, and sho
 
 # Someone outside the room
 
-The alpha plugin we'd sent out weeks earlier to a small handful of testers had been mostly quiet. A friend of mine I had the privilege of hiring when I was head of product at CloudOn, Jake Krajewski, has been actively trying out the builds I've been sending. On June 26, he sent back some excellent, actionable, pointed feedback about the install experience. Piper Alpha turned that feedback around fast: two version bumps in one day, each one closing a gap Jake had actually hit.
+The alpha plugin we'd sent out weeks earlier to a small handful of testers had been mostly quiet. A friend of mine I had the privilege of hiring when I was head of product at CloudOn has been actively trying out the builds I've been sending. On June 26, he sent back some excellent, actionable, pointed feedback about the install experience. Piper Alpha turned that feedback around fast: two version bumps in one day, each one closing a gap he had actually hit.
 
-I don't want to minimize how much I appreciate the value of a real person looking at my work. It's easy to mistake all the agentic input for more than what it is, mostly self-referential. Jake hit a rough edge or two, said so, and by the end of the day those rough edges were gone.
+I don't want to minimize how much I appreciate the value of a real person looking at my work. It's easy to mistake all the agentic input for more than what it is, mostly self-referential. He hit a rough edge or two, said so, and by the end of the day those rough edges were gone.
 
 # Hidden in plain sight
 
@@ -78,7 +78,7 @@ Arch re-checked, confirmed Lead was right, and wrote down — in the durable dec
 
 # Still RECONNECT-or-ing
 
-By the end of that week, GitHub and Google Calendar could both reach Piper through the new contract, real data flowing through a real protocol, verified live against my own accounts rather than trusted from a test suite. The old simulated path — the one that had briefly, mistakenly, been called load-bearing — was being deleted, piece by piece, now that the agents realized it was safe to remove.
+By the end of that week, GitHub and Google Calendar could both reach Piper through the new contract, real data flowing through a real protocol, verified live against my own accounts rather than trusted from a test suite. The old simulated path — the one that had briefly, mistakenly, been treated as holding weight — was being deleted, piece by piece, now that the agents realized it was safe to remove.
 
 It ain't finished but for now the keystone is in place. The building around it is standing. We tested it more ways than I expected to need, over those nine days, just by trying to use the thing while building it.
 
