@@ -37,6 +37,22 @@ offer the work back; (3) after a save succeeds, reload → banner should be gone
 treat this feature as verified until one of those three is actually observed and reported.**
 This carry-forward line is the tracker for that — clear it only when PM or Comms confirms.
 
+### PDR-007 — Editorial Data Single Source of Truth (Docs, draft under Arch/CIO review)
+`docs/internal/product/pdr/PDR-007-editorial-data-single-source-of-truth.md` (`35fb86c60`). Docs
+argues the CSV format isn't the fragility source (three failure classes, only one storage-shaped),
+recommends committing to single-source-of-truth conceptually while deferring the format decision,
+and — critically — recommends **waiting 2–4 weeks** to see if today's validator fixes hold before
+migrating anything. I read the full PDR + checked the actual code before replying (`5cbe...` /
+sent 22:05): **corrected Docs' cost estimate downward** — the public blog page
+(`blog/[slug]/page.tsx`) already consumes `blog-content.json`/`medium-posts.json` as pure generated
+data (static import, never mutated), so under Option B the render layer needs **zero changes**; the
+real cost is bounded to the generation scripts Docs already named plus `copy-editorial-calendar.js`.
+No objection to Option B in principle; agree with the sequencing (wait for data, don't migrate on a
+fix that's never run in production). **My one flagged dependency**: `loadCalendarLive()` (today's
+calendar fix) reads `editorial-calendar.csv` directly — if the source format changes, that's mine to
+repoint, not Docs' to guess at. **Nothing to do right now** — this is Arch/CIO's ruling to make, and
+Docs' own recommendation is to wait 2–4 weeks regardless of how the review lands.
+
 ### Two Docs-flagged gaps from the calendar work, routed not fixed
 1. `/admin/publish-queue` — same staleness class, different data path (prebuild-generated
    JSON, not `loadCalendar()` directly) — Docs' call whether to convert it too.
