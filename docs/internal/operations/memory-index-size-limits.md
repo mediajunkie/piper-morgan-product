@@ -25,7 +25,11 @@ Claude Code **v2.1.210**: *"Memory writes that leave a MEMORY.md index over its 
 | write that **crosses** 200 lines | 201 lines | explicit error | **succeeded, silently** |
 | write while **already over** | 202 lines | explicit error | **succeeded, silently** |
 
-**Limit of this finding, stated so nobody over-reads it**: both probes sat at ~19.6KB, well under the 25KB byte ceiling. The v2.1.210 error may be **byte-scoped** and simply never have covered lines. That reading and "the fix is broken" are not distinguishable from this evidence, and **the operational consequence is the same either way** — the limit we are near is the line limit, and it is silent.
+**The byte path was then tested too, and is also silent** (PA, same day). PA pre-padded to 24,895 B *without* a tool-write, then made one `Edit` crossing to **37,393 B / 208 lines** — past both 25,000 and 25,600. **Write succeeded, no error.** Restored byte-identical.
+
+So the two readings this section originally left open — *"byte-scoped by design"* vs *"the fix doesn't hold"* — **collapse to the second. The v2.1.210 claim does not hold on this platform, on either limit.** Nobody needs to re-run either probe.
+
+> ⚠️ **What is still NOT tested, and is load-bearing for the harm model.** Both probes tested that an over-limit **write** does not error. **Neither tested that an over-limit read actually truncates.** No one has verified that an agent loading the oversized file received clipped content. That half rests on the v2.1.83 changelog entry — *in a thread where the changelog has now been wrong twice.* It does not change the recommendation (the fix is a generator change either way), but the asymmetry should be visible: the *write* half is tested to exhaustion and the *harm* half is assumed. **Anyone with a cheap way to test the read path should take it, and say so first.**
 
 **Do not stand down on this page's strength of a changelog entry.** A documented fix is a claim about a mechanism, not the mechanism. The probe costs ninety seconds; re-run it after any Claude Code upgrade.
 
@@ -36,7 +40,17 @@ The *"compact it to under 140 lines now"* nudge is **built into Claude Code** (v
 Two defects in it, both measured 2026-07-30:
 
 1. **Its target is unreachable and it doesn't know that.** "Under 140 lines" against 170 one-line entries has a floor of 170. It requests deletion of ~30 memories in formatting language.
-2. **Its line count is stale.** It reported `187` on both probes above — while the file was `201`, then `202`. An agent who complies is told a number that does not move, and the plausible next step is to **cut deeper**. Nobody has hit this because nobody has complied.
+2. **Its line count is not merely stale — it is decoupled.** Measured across three probes:
+
+   | | reported | actual |
+   |---|---|---|
+   | HOST probe 1 | 187 | 201 |
+   | HOST probe 2 | 187 | 202 |
+   | PA probe | **186** | **208** |
+
+   **As the file grew 187 → 208, the reported figure went 187 → 186 — it went DOWN**, to a value the file never held. A lagging counter would have reported a previous *actual* value. Nobody has named a mechanism and nobody should guess at one.
+
+   **Why this is the dangerous half.** The original prediction was that a complying agent sees a number that doesn't move and cuts deeper. It's worse: **the number can fall while the file grows**, so a complying agent can read the decrease as *"my compaction is working"* and keep deleting. That is a mechanism manufacturing false positive feedback for an irreversible act on shared state. It has never bitten anyone only because four agents in a row declined to comply.
 
 **Track record so far: three agents told to prune, three refused and escalated** — PA (194 lines, 07-26), CXO (192, 07-29), Comms (193, 07-30). Good outcome, unsafe design: what protects the shared pool today is judgment repeatedly exercised *against* a mechanism with hands. A norm that every agent must re-derive when they trip it is not yet a mechanism.
 
