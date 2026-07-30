@@ -74,21 +74,30 @@ age_of() {
 
 # should this role be checked right now? args: role, first_fire(HH:MM). 0 = check, 1 = skip.
 cycling_now() {
-  local role="$1" ff="$2" path ff_h ff_m ff_min
-  path=$(git -C "$REPO" ls-tree -r --name-only origin/main -- "dev/$today/" 2>/dev/null \
-         | grep -E "${role}-code-.*log\.md$" | head -1)   # any model (opus/sonnet/…), not opus-only
-  if [ -z "$path" ]; then
+  local role="$1" ff="$2" ff_h ff_m ff_min paths p
+  # ALL of today's logs for this role, not just one — a multi-log day (session death/restart,
+  # migration handoff) has more than one file, and the close can live in any of them. Picking
+  # only the first (this used `head -1` until 2026-07-30) checks the wrong file on exactly the
+  # disrupted days most likely to be genuinely unclosed: closure is a property of the DAY, not a
+  # single file (HOST 2026-07-30, caught after their own ad-hoc analysis tool made the identical
+  # first-file assumption and misreported their own migration day as open).
+  paths=$(git -C "$REPO" ls-tree -r --name-only origin/main -- "dev/$today/" 2>/dev/null \
+         | grep -E "${role}-code-.*log\.md$")   # any model (opus/sonnet/…), not opus-only
+  if [ -z "$paths" ]; then
     # No today-log. Distinguish "legitimately pre-START" from "missed START → frozen" (Exec 2026-06-17 fix,
     # closes the closed→never-restarted blind spot — the overnight-dormancy Gap-C). Gate on first_fire+grace.
     ff_h=${ff%%:*}; ff_m=${ff##*:}
     (( now_min < 10#$ff_h * 60 + 10#$ff_m + FIRST_FIRE_GRACE_MIN )) && return 1   # before first START → skip
     return 0                                                                        # past first START, no log → CHECK
   fi
-  # Has a today-log. Skip only if it carries the CANONICAL close sentinel for TODAY — not a prose mention of
-  # "DAY-CLOSED" (e.g. a continuity link to yesterday). A loose match here is a false-NEGATIVE; keep it strict.
-  # Accepts both real close forms found in the corpus (CXO/HOST/Web, 2026-07-30): the
-  # `<!-- DAY-CLOSED: ... -->` comment and the `## DAY-CLOSED ...` heading some roles use.
-  git -C "$REPO" show "origin/main:$path" 2>/dev/null | grep -qE "^(<!--[[:space:]]*)?#{0,4}[[:space:]]*DAY-CLOSED:?[[:space:]]+$today_dash" && return 1
+  # Has at least one today-log. Skip if ANY of them carries the CANONICAL close sentinel for TODAY
+  # — not a prose mention of "DAY-CLOSED" (e.g. a continuity link to yesterday). A loose match here
+  # is a false-NEGATIVE; keep it strict. Accepts both real close forms found in the corpus
+  # (CXO/HOST/Web, 2026-07-30): the `<!-- DAY-CLOSED: ... -->` comment and the `## DAY-CLOSED ...`
+  # heading some roles use.
+  while IFS= read -r p; do
+    git -C "$REPO" show "origin/main:$p" 2>/dev/null | grep -qE "^(<!--[[:space:]]*)?#{0,4}[[:space:]]*DAY-CLOSED:?[[:space:]]+$today_dash" && return 1
+  done <<< "$paths"
   return 0
 }
 

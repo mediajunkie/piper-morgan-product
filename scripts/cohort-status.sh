@@ -70,11 +70,19 @@ for r in $ROSTER; do
   sess=$(tmux list-panes -t "=$r" -F '#{pane_current_command}' 2>/dev/null | head -1); sess="${sess:-—}"
   case "$sess" in 2.*) sess="live";; zsh|bash|sh) sess="⚠️SHELL";; *) sess="—";; esac
   last=$(git log origin/main -1 --format='%ad' --date=format:'%m-%d %H:%M' --grep="($r)" 2>/dev/null); last="${last:-never}"
-  logf=$(ls "dev/$TODAY/" 2>/dev/null | grep -- "-$r-code" | head -1)
-  logt=$([ -n "$logf" ] && echo yes || echo "—")
+  logfiles=$(ls "dev/$TODAY/" 2>/dev/null | grep -- "-$r-code")
+  logt=$([ -n "$logfiles" ] && echo yes || echo "—")
   closed="—"
   # READ the marker for TODAY specifically -- counting bare "DAY-CLOSED" matched yesterday's references.
-  [ -n "$logf" ] && { grep -qE "^(<!--[[:space:]]*)?#{0,4}[[:space:]]*DAY-CLOSED:?[[:space:]]+$TODAY_DASH" "dev/$TODAY/$logf" 2>/dev/null && closed="yes" || closed="no"; }
+  # Check ALL of today's logs for this role, not just the first (this used `head -1` until
+  # 2026-07-30): closure is a property of the DAY, not a single file -- a multi-log day (restart,
+  # migration handoff) can carry the close in any of them (HOST 2026-07-30).
+  if [ -n "$logfiles" ]; then
+    closed="no"
+    while IFS= read -r lf; do
+      grep -qE "^(<!--[[:space:]]*)?#{0,4}[[:space:]]*DAY-CLOSED:?[[:space:]]+$TODAY_DASH" "dev/$TODAY/$lf" 2>/dev/null && closed="yes"
+    done <<< "$logfiles"
+  fi
   # Mirror freeze-check's ACTUAL rule: only a state beginning `parked` suppresses watching.
   # v1.0 treated ANY non-empty state column as parked, so `arch` and `comms` -- which armed their
   # crons and cleared their notes by writing "active: cron armed <job>" -- were reported PARKED while
@@ -95,4 +103,11 @@ echo
 echo "denominators — every count above is out of $N_ROSTER roster roles, NOT out of tmux sessions."
 echo "  live sessions: $(for r in $ROSTER; do tmux has-session -t "=$r" 2>/dev/null && echo x; done | grep -c .) / $N_ROSTER"
 echo "  registry rows: $(printf '%s\n' "$src_registry" | grep -c .) / $N_ROSTER   (a role with NO-ROW is invisible to the freeze-watchdog)"
-echo "  closed today:  $(for r in $ROSTER; do f=$(ls "dev/$TODAY/" 2>/dev/null | grep -- "-$r-code" | head -1); [ -n "$f" ] && grep -qE "^(<!--[[:space:]]*)?#{0,4}[[:space:]]*DAY-CLOSED:?[[:space:]]+$TODAY_DASH" "dev/$TODAY/$f" 2>/dev/null && echo x; done | grep -c .) / $N_ROSTER"
+echo "  closed today:  $(for r in $ROSTER; do
+  fs=$(ls "dev/$TODAY/" 2>/dev/null | grep -- "-$r-code")
+  [ -z "$fs" ] && continue
+  # Any of the day files for this role can carry the close -- see the per-role loop above.
+  while IFS= read -r f; do
+    grep -qE "^(<!--[[:space:]]*)?#{0,4}[[:space:]]*DAY-CLOSED:?[[:space:]]+$TODAY_DASH" "dev/$TODAY/$f" 2>/dev/null && { echo x; break; }
+  done <<< "$fs"
+done | grep -c .) / $N_ROSTER"
