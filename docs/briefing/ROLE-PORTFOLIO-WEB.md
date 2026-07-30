@@ -1,13 +1,14 @@
 ---
 type: role-portfolio
 role: Web (Unicorn Web Designer)
-status: v0.1 — main-cohort wave
-self-authored-by: Web (DinP/Sonnet, claude-sonnet-4-6)
-last_updated: 2026-06-19
-refreshed: 2026-06-19
+status: v0.2 — Amber/pipermorgan.ai wave
+self-authored-by: Web (Amber/pipermorgan.ai, Opus 5)
+last_updated: 2026-07-30
+refreshed: 2026-07-30
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
-briefing_sibling: "(none yet — Web-specific BRIEFING-ESSENTIAL not yet written; gap flagged)"
+briefing_sibling: "(still none — BRIEFING-ESSENTIAL-WEB.md not yet written; gap still open, see §5)"
 refresh_discipline: "section 2 reviewed at each duty-cycle START — opening a session requires reading the carry-forward queue, which is the same act as touching these priorities; the session-open is the refresh moment (Rule 5)"
+staleness_note: "found stale at 41d (Arch, 2026-07-30, cohort-wide finding: check-staleness.py works and is invoked by nothing — all 10 role portfolios were stale). Refreshing my own content per Arch's own example rather than waiting for a consumer mechanism to exist; that mechanism is a Docs/CIO design call, not mine."
 ---
 
 # Web Role Portfolio
@@ -30,22 +31,34 @@ The one-line: *the role whose job is to make sure the public sees Piper Morgan's
 
 ---
 
-## 2. Current goals & priorities — June 2026
+## 2. Current goals & priorities — July 30 2026
 <!-- Rule 2: medium-pace. Rule 4: direction + status + forward indicator. Rule 5: REFRESHED AT EACH SESSION START. -->
 
-| Priority | What I'm advancing | Status (June 19) | How we'll know it's moving |
+**Continuity note**: the June 2026 table below is my predecessor's (DinP/Sonnet account, pre-Amber
+migration). No handoff existed when I picked this role up 2026-07-29; PM later recovered the
+predecessor's actual §4/§6 reflection from the old account (`dev/active/handoff-web-predecessor-2026-07-29.md`),
+but the June priority table itself was reconstructed from session logs, not restated by them. Replacing
+it wholesale rather than reconciling row-by-row, since the underlying work (Vercel migration, #998's
+FastAPI phase) was itself superseded mid-June by an entirely different implementation path (the
+Next.js/Vercel compose system) — carrying the old rows forward would misrepresent current reality, not
+just date it.
+
+| Priority | What I'm advancing | Status (July 30) | How we'll know it's moving |
 |---|---|---|---|
-| **#998 COMPOSE-UI-V1** | Editorial compose UI (Comms' editorial pass tool) | Phase 2 (Edit + Autosave) shipped 2026-06-19; Phase 3 (Image Upload) queued | PM tests Phase 2; Phases 3+4 close; Comms can complete an editorial pass without hand-editing files |
-| **Website quality** | pipermorgan.ai reads as one polished, consistent product | ~20 obs-pass items pending PM +1/−1/defer; site walkthrough paused at `/methodology` | PM joint pass drains the obs queue; zero open VA-class items |
-| **CLI B trial-run** | PM end-to-end-validates the enriched `npm run publish` flow | PM hasn't tested yet (PM-react gated) | PM completes one real post through `npm run publish` and reports friction |
-| **`--mode=archive` scope** | Auto-archival for published posts in the editorial calendar | Awaiting PM approval on scope | PM approves scope; I scope + build it |
+| **Admin calendar staleness** | Runtime (not build-time) read of the editorial CSV for `/admin/calendar` | **Shipped** 2026-07-29 (`18be9d1`) — three PM-visible staleness reports in ~10 days led to it; verified via fallback/error paths locally, live-success path unverified (no token in this environment) | PM's next authenticated load shows a green "Live" badge, not the amber fallback banner |
+| **Compose UI save-conflict, ask #1** | localStorage autosave safety net (Comms' highest-ranked ask) | **Shipped** 2026-07-29 (`0e448d3`); found + fixed a real data-loss bug in the underlying autosave timer 2026-07-30 (`8d2db3c`) after PM hit it live — closure-vs-ref staleness, unrelated to ask #1 itself | PM's ordinary use of the tool (already the real test, per Comms) continues clean |
+| **Compose UI save-conflict, asks #2/#3** | Conflict-diff UX (#2); live staleness warning (#3) | #2 accepted as low-priority, no date; #3 explicitly declined (would warn on a condition ask #1 already made survivable) | Comms or PM revisits; nothing scheduled |
+| **PDR-007 (Editorial Data Single Source of Truth)** | Reviewed Docs' proposal; corrected implementation-cost estimate downward (render layer needs zero changes under Option B) | Effectively settled 2026-07-30 — Arch's review concurred, Docs pre-registered a measurement-window threshold and shipped it as a runnable script | Window closes 2026-08-27; Option B proceeds or doesn't based on measured drift, not on this table |
+| **Two-repo worktree provisioning** | Getting a proper Model-A worktree for `piper-morgan-website`, not just the product repo | Resolved 2026-07-29 (PM ruling: worktrees extend to the website repo) — two known gaps remain: `copy-editorial-calendar.js`'s sibling-checkout path breaks from a worktree (routed to Docs, awaiting their preference); no `node_modules` at provisioning time (worked around, not fixed upstream) | Docs picks a fix direction; provisioning script updated to run `npm ci --ignore-scripts` at worktree standup |
+| **CLI B / `--mode=archive`** | Predecessor's two batched PM questions from 2026-07-19 | Still open, no rush — carried forward, not re-asked yet | PM answers when convenient |
 
 ---
 
 ## 3. Standing responsibilities — slow-pace
 <!-- Rule 2: named (half the work), but UNDER purpose — how I sustain the public face, not the face itself. -->
 
-- **GitHub Pages deployment health** — monitor build/deploy pipeline; respond to build failures before they affect the public site.
+- ~~**GitHub Pages deployment health**~~ — **retired.** GH Pages was fully decommissioned during the Vercel migration (all 7 plan phases + DNS cutover, completed by 2026-07-19, per predecessor's carry-forward). The live deploy target is Vercel; this responsibility no longer has a referent.
+- **Vercel deploy health** — monitor build/deploy pipeline on Vercel; respond to build failures before they affect the public site.
 - **Blog integration** — the Medium RSS fetch (`scripts/fetch-blog-posts.js`); scheduled rebuild triggers; `src/data/medium-posts.json` freshness.
 - **Publishing tooling** — `publish-post.js`, the CLI (Option D enriched flow), any converter bugs Docs surfaces; keep the pipeline non-breaking.
 - **Newsletter/CTA infrastructure** — Buttondown integration; `/newsletter` → `/blog` redirect; form submission health.
@@ -74,7 +87,13 @@ The one-line: *the role whose job is to make sure the public sees Piper Morgan's
 - **Unilateral**: pipeline-integrity hold (below) — if a change would silently break the pipeline, I name it even if Docs hasn't caught it yet.
 
 ### Web ↔ Lead Dev — product-repo web surfaces
-**Co-own**: web-facing surfaces in the product repo (FastAPI templates, admin compose UI, any UI in `piper-morgan-product/web/`).
+**Co-own**: web-facing surfaces in the product repo (`piper-morgan-product/web/`).
+
+⚠️ **Correction**: this line originally named "FastAPI templates, admin compose UI" as the live
+surface here — that implementation never reached product-repo `main` and was fully superseded by
+the Vercel/Next.js compose system (which lives in `piper-morgan-website`, not this seam) by
+2026-07-16, per predecessor's own 7/19 correction. The admin compose UI is **not** part of this
+seam; it's Web's own primary-repo work, covered under §1/§3, not a co-ownership item with Lead Dev.
 
 - **Freely**: Lead Dev routes front-end/UI work in the product repo to me when they're focused on Python/backend (as PM did for #998 today).
 - **Sign-off (Lead's)**: changes to the FastAPI app structure, routing registration, or dependency graph that would affect Lead's build path.
@@ -111,6 +130,15 @@ The one-line: *the role whose job is to make sure the public sees Piper Morgan's
 **Full portfolio (slow refresh)**: reviewed each time PM initiates a sprint planning or role-scope conversation, or when a new priority displaces an old one (e.g., when #998 COMPOSE-UI-V1 closes, that row retires and the next PM-directed sprint item takes its place).
 
 **Staleness signal**: `last_updated` more than 2 weeks old with no changes to section 2 → the session-open discipline has degraded. Flag at the next START.
+
+⚠️ **This mechanism has no consumer** (Arch, 2026-07-30, cohort-wide finding): `check-staleness.py`
+correctly flags stale docs by design, exits 0 either way (deliberate, per #972's warn-not-block
+choice), and is invoked by nothing — no CI, hook, or skill reads its output. All 10 role portfolios
+were stale when this was found, this one included, at 41 days. The detector isn't broken; nobody
+built the part that reads it. **Not fixing that here** — it's a Docs/CIO design call (a session-start
+surface, a weekly digest, or a workstream-review line), not a per-role fix. What I did instead:
+refreshed this file's actual content, per Arch's own example, rather than wait for a consumer
+mechanism that doesn't exist yet.
 
 **Gap noted**: `BRIEFING-ESSENTIAL-WEB.md` (stable identity / how-to-operate) does not yet exist. The sibling doc that Rule 5 splits from the portfolio hasn't been authored. This is an open item — the portfolio-wave kickoff is a natural trigger to write it, but it's separate from the portfolio itself and isn't blocking HOST review.
 
