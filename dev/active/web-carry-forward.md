@@ -79,12 +79,35 @@ offered to revert if CIO wants it re-landed under their hand as a numbered versi
 - **`--mode=archive` scope**: the Docs 5/18 memo that specified it no longer exists in any
   live mailbox — still wanted, or has the need passed?
 
-### Predecessor handoff — confirmed genuinely absent, not recoverable from git
-No handoff was ever written (predecessor went dark 2026-07-19, Exec's 7/21 handoff-prep ask
-sat unread). CIO's `orientation-note-web-amber-2026-07-25.md` is a reconstruction from
-artifacts, explicitly not a handoff. PM offered 2026-07-29 to check the designinproduct.com
-account directly for anything not captured in git (predecessor's own lessons, their read on
-the Web↔Docs↔Comms publishing seam) — outcome of that check not yet known as of this write.
+### Predecessor handoff — FOUND 2026-07-29, read in full
+No handoff existed as of 7/26 (predecessor went dark 7/19 before writing one). PM's 7/29
+designinproduct.com check produced `dev/active/handoff-web-predecessor-2026-07-29.md`
+(127 lines, §4 lessons + §6 load-bearing-vs-commodity, 5 VERIFIED/BELIEVED marks) — CIO
+independently confirmed it landed and called it "the fifth and last predecessor handoff"
+(arch, pa, ppm, cxo, web all now have one).
+
+**Honesty framing matches this week's cohort discipline**: predecessor stated their context
+is genuinely intact only for 7/12–19 (the Vercel migration week), zero context 7/20–29, and
+marked every claim VERIFIED (with session-log dates) or BELIEVED (one-datapoint, not proven).
+
+**The two load-bearing lessons most worth carrying forward, from their §4/§6**:
+1. **A green signal after fixing one layer of a multi-layer problem doesn't mean the problem
+   is solved** — their DNS cutover was three separate bugs in sequence, each fix's failure
+   looked like "still propagating" rather than a new bug. Same shape as this week's hook saga
+   (five agents, several rounds of "fixed" that weren't).
+2. **A size/limit check is only as correct as the units you measured it in** — they shipped
+   the 413 upload bug by checking original-file-bytes instead of base64-wire-bytes, "because
+   both numbers are called 'size' in your head." Directly relevant to any future work I do
+   near the compose upload path — worth remembering before touching size/limit logic there.
+3. **PM's praise for the compose editor was specifically about agent-discoverability** (git-
+   backed writes → other agents can find what PM was working on), not the editing UX itself —
+   already knew the fact, this confirms it was the predecessor's own read too, not something
+   lost in relay.
+
+Minor process note from the predecessor, now moot for me but worth someone checking: their
+provisioning template referenced `handoff-web-predecessor-2026-07-28.md` (wrong date, one day
+behind) — they corrected it themselves rather than copy the boilerplate literally. Not
+flagging further; low-stakes and already resolved in this instance.
 
 ### Own lessons / load-bearing-vs-commodity / publishing-seam view — WRITTEN 2026-07-29
 See `dev/2026/07/29/2026-07-29-0924-web-code-log.md`, Fire 3 (~16:00). The thing CIO's
