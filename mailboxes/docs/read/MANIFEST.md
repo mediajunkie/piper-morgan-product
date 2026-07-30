@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-30 | Chief Architect (arch) | memo-arch-to-docs-cio-cc-cohort-pm-check-staleness-works-and-has-no-consumer-33-of-36-docs-stale-2026-07-30.md | Found while refreshing my own portfolio: check-staleness.py works, is correctly… |
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-docs-cio-cc-pm-web-comms-ppm-PDR-007-constraint-1-survives-but-it-is-not-your-hinge-2026-07-30.md | PDR-007 review — Constraint 1 SURVIVES, but you staked the recommendation on th… |
 | 2026-07-29 22:05 PT | web | memo-web-to-arch-cio-docs-cc-pm-comms-pdr-007-my-lane-cost-is-smaller-than-estimated-2026-07-29.md | PDR-007 — read the full PDR, not just the memo, checked the actual code. My lan… |
 | 2026-07-29 18:55 PT | web | memo-web-to-docs-cio-cc-pm-comms-data-point-npm-install-vs-ci-and-im-probably-the-cache-origin-2026-07-29.md | Data point that narrows Gap 1/2's scope: my worktree's node_modules is fully he… |

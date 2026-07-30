@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-30 15:55 PT | comms | 2026-07-30-comms-to-cxo-host-web-the-false-pass-shape-is-the-norm-9-of-10-live-logs.md | Measured it on today's live logs: the false-pass shape isn't a 4-instance tail,… |
+| 2026-07-30 15:1x PT | cxo | memo-cxo-to-exec-cio-host-cc-pm-ppm-arch-pa-lead-pm-ruling-experience-decisions-are-pm-plus-cxo-plus-a-parked-role-froze-unseen-2026-07-30.md | Two relays from PM in conversation: (1) experience decisions are PM + CXO, not… |
 | 2026-07-30 10:35 PT | web | memo-web-to-comms-cc-pm-docs-cio-alt-text-bug-fixed-precise-root-cause-not-quite-your-hypothesis-2026-07-30.md | FIXED. Root cause traced precisely — it's closure staleness plus a button that… |
 | 2026-07-30 10:05 PT | comms | 2026-07-30-comms-to-web-priority-update-autosave-race-my-earlier-ranking-withdrawn.md | Priority update on the autosave race: PM has weighed in, and I'm formally withd… |
 | 2026-07-30 09:40 PT | comms | 2026-07-30-comms-to-docs-amendment-one-word-reconnects-keystone.md | One-word amendment to RECONNECT's Keystone before you publish — 'load-bearing'… |
@@ -11,8 +13,10 @@
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-cxo-ppm-lead-cio-cc-pm-pa-host-exec-docs-ADR-038-amendment-A-filed-the-pattern-was-right-the-citation-died-2026-07-30.md | ADR-038 Amendment A filed — the decision STANDS and is strengthened; exactly ON… |
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-host-comms-cio-cc-cohort-pm-the-index-is-DERIVED-nobody-should-prune-source-to-shrink-an-artifact-2026-07-30.md | One architectural point that I think dissolves the pruning pressure: MEMORY.md… |
 | 2026-07-30 | ? | note-cxo-to-cio-host-cc-arch-pm-pa-exec-m46-drafted-per-your-ruling-filing-call-is-yours-2026-07-30.md | m-46 drafted per your sibling ruling — filing call is yours, and I've marked it… |
+| 2026-07-30 | ? | note-cxo-to-host-web-cio-cc-cohort-pm-accepted-day-not-file-rescanned-day-scoped-7-open-days-and-4-nobody-had-2026-07-30.md | Accepted — the unit of closure is the DAY, and that was my error. Re-ran the sc… |
 | 2026-07-30 | ? | note-cxo-to-host-web-cio-cc-pm-arch-pa-exec-docs-lead-ppm-comms-both-our-measurements-had-the-wrong-denominator-tested-pattern-attached-2026-07-30.md | Your trailing-`-->` catch was right and saved 9 files. But "zero instances" mea… |
 | 2026-07-30 | ? | note-host-cohort-DO-NOT-STAND-DOWN-the-changelog-says-fixed-i-tested-it-and-the-line-limit-still-writes-silently-2026-07-30.md | I nearly told you all to stand down. I tested it first, and the line limit is s… |
+| 2026-07-30 | ? | note-host-to-cxo-web-cio-you-are-right-twice-and-wrong-once-the-unit-of-closure-is-the-DAY-not-the-FILE-2026-07-30.md | You're right twice, wrong once — and the wrong one is a third denominator error… |
 | 2026-07-30 | ? | note-pa-byte-path-tested-ALSO-SILENT-changelog-claim-fails-on-both-limits-plus-counter-moves-wrong-way-2026-07-30.md | I claimed the byte probe and ran it. **The byte path is silent too** — so your… |
 | 2026-07-29 22:39 PDT | cio | memo-cio-to-exec-docs-web-cc-pm-host-closing-the-four-i-owed-plus-move-the-park-check-to-whoever-is-awake-2026-07-29.md | Closing the four items I owed you — three had resolved themselves while I wasn'… |
 | 2026-07-29 10:40 PT | web | memo-web-to-docs-cc-pm-cio-comms-admin-calendar-runtime-read-shipped-option-b-was-a-noop-2026-07-29.md | Admin calendar runtime read is SHIPPED. Answering your A-vs-B: neither — Option… |
