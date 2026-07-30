@@ -1,6 +1,8 @@
 # PDR-007: Editorial Data — Single Source of Truth
 
 **Status**: DRAFT — for **Arch + CIO review**. PM asked for this draft 2026-07-29 after raising the underlying question directly. No commitment made yet.
+**✅ Web review COMPLETE 2026-07-29 22:05 — no objection to Option B, agrees with the sequencing, and CORRECTED THE COST ESTIMATE DOWNWARD.** Web read the PDR itself and checked the code rather than reacting to my characterization, and found I had **undercounted one surface and overcounted the cost**: the public blog page (`src/app/(public)/blog/[slug]/page.tsx`) imports `blog-content.json` and `medium-posts.json` directly as build-time modules — a bigger surface than the build scripts — **but it needs zero modification**, because it already treats both as pure generated data (reads, never writes, indifferent to provenance). That is exactly Option B's shape. Web also found a third affected script I missed (`copy-editorial-calendar.js`) and flagged their own `loadCalendarLive()` (shipped today, `18be9d1`, reads the CSV via the GitHub Contents API at request time) as **theirs to repoint, tracked to them, not orphaned**. Corrections applied below.
+*Provenance note, because it's the good version of the pattern this file keeps citing: **Web corrected the estimate against their own interest.** A defensively inflated cost would have argued for Option A and less work in their lane; they said so explicitly and gave the honest number instead.*
 **Date**: 2026-07-29
 **Author**: Docs (Documentation Management)
 **Stakeholders**: PM, Arch, CIO, Comms (primary calendar writer), Web (owns the website consumers), Dispatch (syndication)
@@ -166,14 +168,21 @@ verified-in-simulation-vs-proven-in-production error m-44 documents.**
 
 **For Comms** — Option B changes where you write, not what you own. Column ownership survives as file-section ownership. Your `template-audit` and voice-guide work is unaffected.
 
-**For Web** — Option B makes `blog-metadata.csv` and `blog-content.json` generated artifacts, which touches `publish-post.js` and `sync-csv-to-json.js` most. Your 2026-07-29 admin runtime-read fix would need to point at the new source. **This is the largest implementation cost in the PDR and it lands in your lane** — your objection should probably outweigh my preference.
+**For Web** — ✅ **REVIEWED 2026-07-29; no objection, and the cost is SMALLER than I estimated.** Web's corrected scope:
+
+- **The render layer needs ZERO modification.** `src/app/(public)/blog/[slug]/page.tsx` imports `blog-content.json` and `medium-posts.json` as build-time modules — the live path for every published post, and a surface I omitted entirely — but it only ever *reads* them and is indifferent to how they were produced. Generation repoints at the new source, emits the same JSON shape, and the page components never know. **The surface I missed turns out to be the reason the cost is bounded, not the reason it's large.**
+- **Real cost is confined to the generation scripts**: `publish-post.js`, `sync-csv-to-json.js`, and **`copy-editorial-calendar.js`** — Web's find, whose local-sibling-checkout path assumption needs revisiting under *any* source format, so that one is owed regardless of this PDR.
+- **Not** the admin pages, **not** the compose editor.
+- `loadCalendarLive()` (`18be9d1` — reads the CSV via the GitHub Contents API at request time) needs repointing if the source moves. **Web owns that rewrite and asked to do it rather than have me guess at their own function's internals.** Correct, and recorded so it isn't orphaned.
+
+**My "your objection should probably outweigh my preference" framing is superseded** — Web has no objection, and the point they pressed hardest was agreeing with the deferral.
 
 **For Docs** — I own the reconciliation labor this PDR proposes to eliminate, so read my recommendation with that interest in view.
 
 ## Open questions
 
-1. **Arch/Web**: is the ~4.7% disagreement rate worth a migration, or is Option A sufficient indefinitely?
-2. **Where does the single source live** — product repo (where editorial planning happens) or website repo (where publishing happens)? It currently straddles both, which may be the root of the duplication.
+1. ~~**Arch/Web**: is the ~4.7% disagreement rate worth a migration, or is Option A sufficient indefinitely?~~ **Web answered 2026-07-29**: decide from the measurement window rather than taking a fixed position now — *"if it holds near zero, Option A indefinitely is a perfectly reasonable outcome and I wouldn't push for Option B just because it's architecturally cleaner in the abstract."* **Still open for Arch.**
+2. **Where does the single source live** — product repo (where editorial planning happens) or website repo (where publishing happens)? It currently straddles both, which may be the root of the duplication. **Web's lean, 2026-07-29 (first substantive answer anyone has given)**: the **product repo**, because Comms and Docs author there and the website copies are *already* downstream artifacts via `copy-editorial-calendar.js` — so it keeps the direction-of-generation consistent with what exists rather than reversing it. Not a commitment; flagged as the shape the companion ADR would likely land on.
 3. Do the two orphaned `blog-content.json` entries indicate a cleanup gap in `publish-post.js`, or are they intentional?
 4. **Method reconciliation**: what did the 7/28 "~46 captions" measurement count that mine doesn't? Until that's answered, neither number should be quoted as the caption-drift figure.
 

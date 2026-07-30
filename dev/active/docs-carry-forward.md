@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-07-29 21:25 PDT (Fire 2, extended)
+**Updated**: 2026-07-29 22:35 PDT (Fire 3, STOP — DAY-CLOSED 2026-07-29)
 **Session log**: `dev/2026/07/29/2026-07-29-0948-docs-code-log.md`
 **Prior update**: 2026-07-12 — **17 days stale, pre-Amber.** Rewritten wholesale; still-live items from
 that version are preserved below and marked, resolved ones noted so they aren't re-derived.
@@ -39,7 +39,7 @@ commit bare in the next. `mail-send.sh` is safe regardless (`commit-tree`).
 7. **18 calendar↔website metadata disagreements**, incl. ~46 live-site captions missing quotation marks (calendar right, site wrong).
 8. **97 docs >30d asserting current-state language**; `docs/internal/planning/current/` is itself now a misleading directory name.
 9. **Weekly-audit orphan rate** — 2 of last 6 unexecuted; mitigated by the Mon–Thu SessionStart hook, cadence still worth review.
-10. **PDR-007 follow-through** — drafted + routed to Arch/CIO (`35fb86c60`). If the direction ratifies, **I write the companion ADR** (format + migration). Deliberately recommended a **2-4 week wait** first so the validator gets observed in production before anyone commits to a migration.
+10. **PDR-007 follow-through** — drafted + routed (`35fb86c60`). ✅ **Web reviewed same night: NO OBJECTION, and corrected my cost estimate DOWNWARD** — the render layer needs zero change (it already treats the JSON as generated data), real cost is 3 generation scripts incl. `copy-editorial-calendar.js`, and Web claimed their own `loadCalendarLive()` repoint. Web also answered Q1 (decide from the measurement window) and Q2 (product repo, first substantive answer). **Still awaiting Arch + CIO.** If it ratifies, I write the companion ADR. The 2-4 week wait stands — Web pressed that point hardest too.
 11. **Reconcile the '~46 captions' measurement** — PDR-007 open question 4. The 7/28 audit's figure and my 2 don't agree, and until the methods are reconciled neither should be quoted.
 12. **docs/ tree audit + cleanup plan** — *carried from 7/12*, PM's direct request via PPM. Starting data: stale roadmap/README.md, `CORE/` an archival candidate. Write the audit + plan before any large-scale moves.
 
@@ -68,3 +68,20 @@ consumed. Work through on quiet fires.
 caption, `<em><em>`/trailing slashes, the "index doesn't list #053", and "`mailboxes/` has been deleted"
 (self-inflicted: **Bash cwd persists between calls**). Each would have been a wrong report to PM or a bad
 edit to a live artifact. Doubting your own finding is as load-bearing as finding it.
+
+## Watch items (not owed to me, but adjacent)
+
+- ⚠️ **`MEMORY.md` is 8 lines from a silent 200-line ceiling** (168 entries / 192 lines, HOST measured 2026-07-29 22:3x). Truncation is silent — trailing entries vanish for every agent with no error. Addressed to **CIO** (owns the mechanism) and **Exec** (would coordinate a per-role prune); Docs cc'd. **Not my ask** — but if the resolution is per-type index files with a router, that is documentation architecture and I'd expect to be involved. **Do not add memories casually until this resolves**; I deliberately deferred 3 candidate entries tonight for this reason.
+- **Puppeteer extraction cause** — Pard's lane. Three hypotheses dead (stale cache, disk space, Web-poisoned-cache); untested: Node 26 vs `@puppeteer/browsers`, macOS quarantine, archive format.
+- **methodology-20's two HIGH-COMPLEXITY compression rules are mutually unsatisfiable** — CIO owns. Raised twice now (predecessor's unit mismatch + my contradiction).
+
+## The one thing I most want to carry into tomorrow
+
+**Verify per assertion, not per session.** Both errors that reached PM today came from trusting a
+verification I'd done earlier rather than redoing it — a 45-commit-stale worktree read, and timestamps
+extrapolated from a single `date` call. Meanwhile **4 false alarms were caught by checking before
+reporting**. Same root, opposite outcomes, and the cheap habit is the difference.
+
+**Wanted but not found (day's biggest gap)**: a way to detect my own working tree is stale *before* I
+read a file from it. Every git check I have reports branch state; nothing warns that the file I'm about
+to read is N commits behind.
