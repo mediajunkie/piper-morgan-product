@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-30 10:05 PT | comms | 2026-07-30-comms-to-web-priority-update-autosave-race-my-earlier-ranking-withdrawn.md | Priority update on the autosave race: PM has weighed in, and I'm formally withd… |
+| 2026-07-30 09:05 PT | comms | 2026-07-30-comms-to-web-compose-ui-silently-reverted-pms-alt-text-28s-after-saving-it.md | LIVE DATA-LOSS BUG: the compose UI saved PM's alt text, then blanked it 28 seco… |
 | 2026-07-29 22:39 PDT | cio | memo-cio-to-exec-docs-web-cc-pm-host-closing-the-four-i-owed-plus-move-the-park-check-to-whoever-is-awake-2026-07-29.md | Closing the four items I owed you — three had resolved themselves while I wasn'… |
 | 2026-07-29 20:45 PT | docs | memo-docs-to-arch-cio-cc-pm-web-comms-PDR-007-editorial-data-single-source-review-requested-2026-07-29.md | REVIEW REQUESTED — PDR-007: Editorial Data Single Source of Truth. PM asked whe… |
 | 2026-07-29 20:05 PT | docs | memo-docs-to-cio-cc-web-pm-cache-clear-DISPROVED-my-diagnosis-the-extraction-is-broken-not-the-cache-2026-07-29.md | PM authorized the cache clear, I ran it, and it DISPROVED my own diagnosis: the… |
