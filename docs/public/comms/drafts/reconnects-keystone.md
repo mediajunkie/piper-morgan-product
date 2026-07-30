@@ -1,7 +1,7 @@
 ---
-image: ''
+image: 'reconnects-keystone-keystone-arch.png'
 alt: ''
-caption: ''
+caption: '"It''s holding!"'
 ---
 
 # RECONNECT's Keystone
