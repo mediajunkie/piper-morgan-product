@@ -18,11 +18,11 @@ The sprint I'd been calling RECONNECT was supposed to be the rebuild of how Pipe
 
 The earliest designs for Piper Morgan presumed an OAuth-type setup of connected services. But over time I've come to understand the Model Context Protocol (MCP) better, and realized that people are more likely to use a product like Piper inside their existing chat or agentic tool than as a standalone app or website. So this is more or less the third attempt to refactor connectors, after the initial ad hockery and the more serious OAuth plans.
 
-But by the third day of trying to pull off this new plan, my Lead Dev agent had made two separate wrong turns: mislabeling which existing GitHub issue was actually the starting point, and misreading a related ticket's title as "the quick win" when it wasn't. Neither mistake shipped anything wrong — the agent caught both before writing code, the same investigate-before-extending discipline that's saved us before — but it meant three days of circling instead of building.
+But by the third day of trying to pull off this new plan, Lead Dev had made two separate wrong turns: mislabeling which existing GitHub issue was actually the starting point, and misreading a related ticket's title as "the quick win" when it wasn't. Neither mistake shipped anything wrong — the agent caught both before writing code, the same investigate-before-extending discipline that's saved us before — but it meant three days of circling instead of building.
 
 These sorts of delays get extended when my attention is unavailable at a crucial decision point. All illusions of autonomy grind to a halt then.
 
-So that Saturday evening, we stopped circling and figured out the actual first step we had been missing: build the keystone of a plan captured in an architecture decision record but never built: a `Connector` protocol, a single contract that every service integration would have to satisfy.
+So that Saturday evening, we stopped circling and figured out the actual first step we had been missing: build the keystone of a plan captured in an architecture decision record but never built — a `Connector` protocol, a single contract that every service integration would have to satisfy.
 
 First build the universal plug.
 
@@ -46,9 +46,9 @@ By Monday the team had moved from "we decided on an architecture" to "the archit
 
 While Lead Dev has been grinding away toward that elusive beta-release goal, on the side I've been running a skunkworks project with my prototype product assistant agent (Piper Alpha) to develop the "bring your own chat" architecture. It's going well. A side effect of this is that we finally stood up a hosted endpoint so that running Piper Morgan doesn't require cloning the repository to a local device and installing it there.
 
-This now means that not only can we test pointing an MCP server at a Piper Morgan backend but also that our alpha and soon-to-be beta testers can now test Piper Morgan much more easily via the web.
+This means not only that we can test pointing an MCP server at a Piper Morgan backend, but also that our alpha and soon-to-be beta testers can now test Piper Morgan much more easily via the web.
 
-We cut a release — 2,456 tests passing — and my Lead Developer agent pushed it to the live server the same day. It should have been routine but... it wasn't. The deploy tripped over a sneaky bug: the encryption key that protects sensitive data was hidden from the running application. It took an hour to figure out we had to name the variable explicitly instead of trusting it to load automatically.
+We cut a release — 2,456 tests passing — and Lead Dev pushed it to the live server the same day. It should have been routine but... it wasn't. The deploy tripped over a sneaky bug: the encryption key that protects sensitive data was hidden from the running application. It took an hour to figure out we had to name the variable explicitly instead of trusting it to load automatically.
 
 Two days after that, I checked the onboarding flow myself, from my phone, the roughest possible test an actual new user would of course immediately try. It failed at the very first step: a system health check reporting "services not running" when they were, in fact, running fine.
 
