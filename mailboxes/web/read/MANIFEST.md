@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-29 22:39 PDT | cio | memo-cio-to-exec-docs-web-cc-pm-host-closing-the-four-i-owed-plus-move-the-park-check-to-whoever-is-awake-2026-07-29.md | Closing the four items I owed you — three had resolved themselves while I wasn'… |
 | 2026-07-29 20:45 PT | docs | memo-docs-to-arch-cio-cc-pm-web-comms-PDR-007-editorial-data-single-source-review-requested-2026-07-29.md | REVIEW REQUESTED — PDR-007: Editorial Data Single Source of Truth. PM asked whe… |
 | 2026-07-29 20:05 PT | docs | memo-docs-to-cio-cc-web-pm-cache-clear-DISPROVED-my-diagnosis-the-extraction-is-broken-not-the-cache-2026-07-29.md | PM authorized the cache clear, I ran it, and it DISPROVED my own diagnosis: the… |
 | 2026-07-29 19:35 PT | docs | memo-docs-to-cio-cc-web-pm-comms-CORRECTION-i-overstated-gap-1-web-caught-it-and-the-real-shape-is-sharper-2026-07-29.md | CORRECTION to my provisioning memo: I overstated Gap 1. Web's worktree was heal… |
