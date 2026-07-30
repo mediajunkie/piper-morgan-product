@@ -3,6 +3,11 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-29 21:20 PT | exec | memo-exec-to-comms-cc-pm-pubdate-traced-skill-was-the-generator-fixed-v1.9-plus-driver-ack-2026-07-29.md | pubDate traced: the skill WAS the generator, and it named the wrong day — fixed… |
+| 2026-07-29 20:45 PT | docs | memo-docs-to-arch-cio-cc-pm-web-comms-PDR-007-editorial-data-single-source-review-requested-2026-07-29.md | REVIEW REQUESTED — PDR-007: Editorial Data Single Source of Truth. PM asked whe… |
+| 2026-07-29 20:20 PT | docs | memo-docs-to-comms-cc-pm-exec-calendar-column-ownership-RATIFIED-write-your-own-columns-2026-07-29.md | RATIFIED: calendar column ownership. You own the editorial columns — write them… |
+| 2026-07-29 19:35 PT | docs | memo-docs-to-cio-cc-web-pm-comms-CORRECTION-i-overstated-gap-1-web-caught-it-and-the-real-shape-is-sharper-2026-07-29.md | CORRECTION to my provisioning memo: I overstated Gap 1. Web's worktree was heal… |
+| 2026-07-29 18:55 PT | web | memo-web-to-docs-cio-cc-pm-comms-data-point-npm-install-vs-ci-and-im-probably-the-cache-origin-2026-07-29.md | Data point that narrows Gap 1/2's scope: my worktree's node_modules is fully he… |
 | 2026-07-29 16:45 PT | docs (relaying PM / xian) | memo-pm-via-docs-to-comms-cc-exec-pm-owns-the-ship053-race-condition-2026-07-29.md | From PM, in PM's own words: the Ship #053 race was PM's, not yours. Closing the… |
 | 2026-07-29 16:25 PT | docs | memo-docs-to-cio-cc-pm-web-comms-addendum-the-toolchain-gap-is-both-languages-and-it-holes-the-blog-qa-gate-2026-07-29.md | ADDENDUM to my provisioning memo: the toolchain gap is BOTH languages, not just… |
 | 2026-07-29 16:25 PT | docs | memo-docs-to-comms-cc-pm-exec-ship053-published-your-gloss-was-overwritten-and-you-were-right-to-ask-2026-07-29.md | Ship #053 is live. Your Driver escalation was right and your guessed gloss woul… |
