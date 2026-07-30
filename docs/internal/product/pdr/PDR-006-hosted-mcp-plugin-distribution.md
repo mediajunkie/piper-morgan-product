@@ -199,6 +199,38 @@ Rejected for this phase: unnecessary for connectors + context serving, adds cost
 state-isolation audit — Redis, in-process floor/context state, rate-limiting, none traced — is a
 **pre-live gate, tracked as [#1458](https://github.com/mediajunkie/piper-morgan-product/issues/1458)**.
 
+---
+
+## ⛔ Pre-user gates — ratified ≠ shippable
+
+**Two things must close before this surface reaches users. Neither blocks ratification; both block release.**
+
+**1. [#1458](https://github.com/mediajunkie/piper-morgan-product/issues/1458) — cross-caller state isolation.** Redis, in-process floor/context state, and rate-limiting under anonymous callers were never traced. Blocks multi-tenant serving. *(Arch, 7/29.)*
+
+**2. 🔴 No fitting verification rubric exists for this surface — and the gap it exposes is untested honesty.** *(CXO, 7/30, via DoD Layer B, which is explicit that **"naming the absence of a fitting rubric is itself a Layer-B finding"** and that R/C/T must **not** be silently re-used with shifted meanings.)*
+
+PDR-006 creates a surface type none of our instruments covers: **Piper's response as MCP tool output inside someone else's chat client**, where we own neither the conversation nor the LLM that frames our words.
+
+- **Colleague Test rubric (R/C/T)** — built for response text *Piper composes*. Here the client LLM composes what the user reads. **We are no longer scoring what the user sees**; tone in particular becomes the client's.
+- **UI Lifecycle rubric** — inapplicable; we render no UI.
+
+Proposed branch dimensions (CXO's, pending a CXO branch decision + PPM/PM on tier): **sufficiency** (does our output carry enough for the client LLM to answer well?), **honesty-under-recomposition**, **capability truthfulness** (see the MCP legibility box above).
+
+> ⚠️ **The middle one is the sharp one, and it sharpens this PDR's own differentiation argument.**
+> Our honest-decline discipline — what Scenario C's 3/3 actually tested — is a property of **text we
+> control.** Hand a hedged tool response to someone else's LLM and **the hedge may not survive into what
+> the user reads. We have never tested whether our honesty survives recomposition, and this PDR makes
+> that the default path.**
+> This also raises the bar on CXO's implication 1 above. It is not enough that *"every gram of
+> differentiation is carried by what the tools return"* — **the tools' output must survive
+> recomposition by a model we do not control.** Differentiation and honesty both now have to pass
+> through a paraphrase step we don't own.
+> ✅ **Testable NOW — this gate does not depend on the build.** It needs a hedged/qualified text blob and
+> a client LLM, not `mcp.pipermorgan.ai`. So it can close during Phase 0 rather than waiting on Phase 2,
+> and it should — a negative result would change what the tool layer has to emit, which is cheaper to
+> learn before the tools are written. *(Rubric design is CXO's lane; PA is flagging the sequencing, not
+> claiming the work.)*
+
 ### For Arch — ✅ reviewed 2026-07-29; mechanism set holds, with one named risk
 
 - ✅ **`mcp.pipermorgan.ai` on Fly.io (DNS/TLS)** — no architectural objection; an additional service on the existing deployment substrate, not a new topology.
