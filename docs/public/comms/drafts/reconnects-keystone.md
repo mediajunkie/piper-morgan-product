@@ -1,14 +1,14 @@
 ---
-image:
-alt:
-caption:
+image: ''
+alt: ''
+caption: ''
 ---
 
 # RECONNECT's Keystone
 
 *June 20–28, 2026*
 
-On a Saturday evening in late June, my Lead Developer agent and I looked at a pile of connector work — GitHub, Google Calendar, the credentials that tie Piper to the outside services it needs to be useful — and admitted we'd been building around the edges of it for a week without anything closing. So we did the thing you do when a project keeps almost-starting: we picked the actual foundation and built that first. Nine days later, that one decision had been tested by a real security hole, a full release, a live outside user, and one of my own agents catching its own reasoning mistake in public. None of that was staged. It's just what happens when you build a keystone and then spend a week finding out whether it holds weight.
+On a Saturday evening in late June, my Lead Developer agent and I looked at a pile of unfinished onnector work — GitHub, Google Calendar, the credentials that tie Piper to the outside services it needs to be useful — and admitted we'd been building around the edges of it for a week without anything closing. So we did the thing you do when a project keeps almost-starting: we picked the actual foundation and built that first. Nine days later, that one decision had been tested by a real security hole, a full release, a live outside user, and one of my own agents catching its own reasoning mistake in public. None of that was staged. It's just what happens when you build a keystone and then spend a week finding out whether it holds weight.
 
 # The keystone, chosen out loud
 
