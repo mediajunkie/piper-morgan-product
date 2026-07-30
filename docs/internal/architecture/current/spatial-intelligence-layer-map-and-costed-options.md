@@ -123,6 +123,23 @@ Minor: `SpatialAdapterRegistry` (defined in the live L2 base) has **no importers
 
 ---
 
+## ADR-affected map — complete, and the blast radius is smaller than expected
+
+*Built by grepping the corpus, not by recalling which ADRs are "the spatial ones" — the same method correction as the layer map itself. That found a third spatial ADR nobody in this review had cited.*
+
+| ADR | Spatial mentions | Disposition |
+|---|---|---|
+| **ADR-038** — Spatial Intelligence Patterns | 83 | ✅ **AMENDED** (Amendment A, 2026-07-30). Decision stands; verification claims corrected; error class named. |
+| **ADR-013** — MCP + Spatial Integration Pattern | 48 | **No action beyond a scope-clarification note.** Already carries *"superseded by ADR-038 for spatial intelligence patterns."* Its core claim — spatial as differentiator — is **borne out** by live L1+L2. **No reversal.** |
+| **ADR-017** — Spatial-MCP Refactoring (*Implemented*, Aug 2025) | 45 | ⭐ **UNAFFECTED AND VINDICATED — and nobody in this review had cited it.** This is the ADR that merged MCP federation with spatial intelligence into one system, i.e. **the decision that produced L2's shared contract.** The MCP consumer family building on `BaseSpatialAdapter` is ADR-017 working exactly as designed. It names **no specific modules**, so it carries no stale citations — which is *why* it aged well and is the cleanest illustration of Amendment A's forward rule. |
+| ADR-034, ADR-021, ADR-055, ADR-018, ADR-010, ADR-045, ADR-052, ADR-000 | 3–10 each | **No disposition.** Peripheral mentions; none carries a live/cold claim. |
+
+**★ Measured, not assumed — the blast radius is contained**: grepping the entire ADR corpus for specific cold-module citations (`notion_spatial`, `gitbook_spatial`, `linear_spatial`, `cicd_spatial`, `devenvironment_spatial`) and for `"100% operational"` / `"production-proven"` returns **ADR-038 and nothing else.** So **exactly one ADR in the corpus had the failure mode Amendment A describes**, and it is now amended. No sweep of the rest is owed.
+
+**The pattern worth noticing across the three spatial ADRs**: ADR-013 (maximalist policy) and ADR-017 (the unification) both aged well and neither names a module. ADR-038 — the one that tried hardest to be empirical, with per-connector file counts and operational percentages — is the only one that went stale. **The ADR that showed the most work is the one that rotted**, because what it showed was perishable. That is Amendment A's rule stated as an observation rather than a prescription, and it's the argument for pointing at a re-runnable command instead of a table.
+
+---
+
 ## What is still open
 
 1. **PPM's roadmap-dependency slice** — sharpened: *does any 1.0 commitment assume L3 depth beyond GitHub, or L4 at all?*
