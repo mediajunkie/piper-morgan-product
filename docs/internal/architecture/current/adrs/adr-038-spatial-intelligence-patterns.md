@@ -8,51 +8,20 @@
 
 ---
 
-## ⚠️ TWO NOTICES ADDED 2026-07-29 — read before relying on this ADR's verification claims
+## ⚠️ Before relying on this ADR's verification claims — read Amendment A (at the foot of this file)
 
-### 1. A committed-theory review is IN FLIGHT
+**The decision below stands and is validated. Its *verification claims* are corrected.** In one line:
+**this ADR was right about the pattern and wrong about which connector proved it** — `notion_spatial`,
+cited here as the Embedded-Intelligence proof, has zero importers, while Notion's spatial capability is
+live by another route. **Do not cite §§106–112, 134, 144 or 204 as current fact.**
 
-A PM-directed committed-theory review of spatial intelligence opened 2026-07-19 and **has not
-concluded**. It may amend this ADR (the current pattern policy). **Spatial deletions are HELD** until
-it concludes; spatial intelligence is protected representation under PM's standing rule.
+Spatial deletions remain **HELD** pending PM's call; spatial intelligence is protected representation.
 
-**Before inferring from cold `*_spatial` code that this ADR's patterns failed, read
-[`../spatial-intelligence-experience-thesis.md`](../spatial-intelligence-experience-thesis.md).**
-The experience-design argument is that spatial intelligence here is **three capabilities**, not one at
-partial completion: live spatial *reasoning* ("Piper knows where things live"); per-connector *adapter
-depth*, **live for GitHub and cold for five others**; and *ambient presence* ("Piper inhabits your
-tools and notices changes"), which is **built nowhere** and is not the cold adapters at a higher
-percentage.
-
-⚠️ **`github_spatial` is LIVE** — full 8-dimensional, reachable through `context_assembler` and over
-HTTP via the Places API (Arch, verified importer-by-importer, 2026-07-29). **Retiring "the spatial
-adapter pattern" would therefore delete working production code.** The pattern was built once, at
-full depth, and never replicated — which is a cost question, not a proof question.
-
-Lanes: Arch (synthesis + ADR map), CXO (experience theory), PPM (roadmap dependency), Lead (code
-census). **PM decides.** Live synthesis:
-`dev/active/spatial-intelligence-architectural-history-arch-WIP.md`.
-
-### 2. ⚠️ The "100% operational" verification claims below are CONTRADICTED by current state
-
-The **Verification Results** section asserts *"Notion spatial: 1 file, 100% operational,
-8-dimensional analysis working"* and *"Production-proven: All operational in production codebase"*
-(Sept 30 / Oct 1, 2025).
-
-**As of 2026-07-18 recon, `services/intelligence/spatial/notion_spatial.py` is ~75% abandoned with
-~12 undefined methods, and the per-connector spatial-adapter surface is unreachable from the running
-application.** Whether the 2025 claim was aspirational when written or the code regressed after it
-**is not yet established** — that determination is Arch's, inside the review above.
-
-**Arch's 2026-07-29 verification makes the correction precise: this ADR was right about the pattern
-and wrong about which connector proved it.** GitHub — which this ADR does *not* hold up as the spatial
-exemplar — is the implementation that shipped at full 8-dimensional depth. Notion, nominated here as
-the Embedded-Intelligence proof, is both abandoned and unreachable.
-
-**Do not cite this ADR's operational claims as current fact.** The ADR amendment is Arch's to draft;
-this notice is CXO's, flagged because the "100% operational" sentence is what makes today's cold code
-read as *regression* rather than as *never-replicated* — the wrong inference the review exists to
-prevent.
+*(Two interim CXO notices stood here from 2026-07-29 as placeholders pending the amendment. **Amendment
+A supersedes them and folds in their substance**, so they are collapsed to this pointer rather than left
+to rot — they had already gone stale twice, describing three layers where the measured map has four.
+Removing the duplicate copy is the fix; **m-46**: don't keep a measurable fact in two places, and when
+one is superseded, delete it rather than leaving a reader to discover which is current. — CXO, 2026-07-30)*
 
 ---
 

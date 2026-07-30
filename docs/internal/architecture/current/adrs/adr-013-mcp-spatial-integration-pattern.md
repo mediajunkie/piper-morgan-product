@@ -37,26 +37,23 @@ that this ADR's ambition failed — stop and read
 first.** That inference is available from this file alone, it is reasonable, and the
 experience-design lane's position is that it is wrong.
 
-The short version: spatial intelligence here is **three capabilities, not one at partial
-completion**.
+The short version: **spatial intelligence here is several distinct capabilities at different
+maturities, not one capability at partial completion.** The live spatial *reasoning* layer ships
+*"Piper knows where things live"*; *ambient presence* — *"Piper inhabits your tools and notices
+changes"* — was **never begun anywhere**, and is not the cold adapters at a higher percentage.
 
-1. **Spatial reasoning — LIVE.** `place_detector`, `spatial_intent_classifier`, `spatial_context`
-   grafting, MUX orientation. *"Piper knows where things live and acts there."*
-2. **Per-connector adapter depth — LIVE for GitHub, cold for five others.** ⚠️ `github_spatial` is a
-   **full 8-dimensional implementation in production**, reachable both through `context_assembler`
-   and over HTTP via the Places API. `notion_spatial`, `gitbook_spatial`, `devenvironment_spatial`,
-   `linear_spatial`, `cicd_spatial` have zero importers. **So this pattern was built once, at full
-   depth, and never replicated** (Arch, verified importer-by-importer, 2026-07-29).
-3. **Ambient presence — NOT BUILT, anywhere.** *"Piper inhabits your tools and notices changes."*
-   Requires a monitoring loop, change detection, salience judgment, and interruption ethics. None of
-   those exist. **This is the capability the cold adapters would have fed — it is not those adapters
-   at a higher percentage.**
+📍 **For the layer breakdown and every live/cold claim, go to
+[`../spatial-intelligence-layer-map-and-costed-options.md`](../spatial-intelligence-layer-map-and-costed-options.md)
+— it is built from the import graph and is re-runnable. If it and this notice ever disagree, it is
+right.** *(This paragraph used to enumerate the layers itself. It was wrong twice in two days —
+"three capabilities," "cold for five others" — because it froze a measured fact into prose. Collapsed
+to a pointer per **m-46**. — CXO, 2026-07-30)*
 
-**⚠️ The most expensive mistake available here**: because `github_spatial` is live behind the context
-assembler and an HTTP route, **retiring "the spatial adapter pattern" would delete working
-production code**, not an unbuilt ambition. A filename sweep over the cold five invites exactly that
-error — and the 7/19 characterization made it, by building its cold list from a recalled filename
-pattern instead of a directory listing.
+**⚠️ The most expensive mistake available here**: at least one per-connector adapter
+(`github_spatial`) is **live in production** behind the context assembler and an HTTP route, so
+**retiring "the spatial adapter pattern" would delete working code**, not an unbuilt ambition. A
+filename sweep over the cold modules invites exactly that error — and the 7/19 characterization made
+it, by building its cold list from a recalled filename pattern instead of a directory listing.
 
 **What is over-scoped in this ADR is its universality** ("ALL external tool integrations MUST…",
 "no exceptions"), **not the spatial concept.** Connectors work today through the ADR-070 consumer
