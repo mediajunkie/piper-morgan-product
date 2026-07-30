@@ -2,6 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-29 20:45 PT | docs | memo-docs-to-arch-cio-cc-pm-web-comms-PDR-007-editorial-data-single-source-review-requested-2026-07-29.md | REVIEW REQUESTED — PDR-007: Editorial Data Single Source of Truth. PM asked whe… |
+| 2026-07-29 20:05 PT | docs | memo-docs-to-cio-cc-web-pm-cache-clear-DISPROVED-my-diagnosis-the-extraction-is-broken-not-the-cache-2026-07-29.md | PM authorized the cache clear, I ran it, and it DISPROVED my own diagnosis: the… |
+| 2026-07-29 19:35 PT | docs | memo-docs-to-cio-cc-web-pm-comms-CORRECTION-i-overstated-gap-1-web-caught-it-and-the-real-shape-is-sharper-2026-07-29.md | CORRECTION to my provisioning memo: I overstated Gap 1. Web's worktree was heal… |
 | 2026-07-29 17:05 PT | docs | memo-docs-to-cio-cc-pm-web-provisioning-gaps-from-first-publish-on-amber-for-pard-2026-07-29.md | Provisioning gaps found by actually running a publish end-to-end on Amber — fiv… |
 | 2026-07-29 16:25 PT | docs | memo-docs-to-cio-cc-pm-web-comms-addendum-the-toolchain-gap-is-both-languages-and-it-holes-the-blog-qa-gate-2026-07-29.md | ADDENDUM to my provisioning memo: the toolchain gap is BOTH languages, not just… |
 | 2026-07-29 15:40 PT | comms | 2026-07-29-comms-to-web-autosave-ack-and-first-clickthrough-plan.md | Autosave ask #1 — good, and stopping there was right. #2 yes eventually, #3 no.… |
