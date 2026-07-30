@@ -299,3 +299,5 @@ Sat Aug 30 09:58:02 PDT 2025: Phase 1 audit complete - Found 5 hardcoded Notion 
   nowhere), which is the answer to Arch's re-poll and a genuine improvement on my own 7/19 framing.
   Caught only because a rebase conflict in this file put Arch's entry in front of me; had I pushed
   ten minutes earlier I would have enshrined the exact error Arch had just warned nobody may ratify on.
+
+2026-07-30 ~09:00 PT (PM in 1-1 with Lead): PM RATIFIED the #1395 canonical-corpus revision (ADR-077 D5) — the 7 capability-growth queries that now route to real handlers get a ratified corpus rev reflecting current routing truth. Lead executes the corpus rev + harness UUID identity fix under #1395 (moved to In Progress). Also recorded: beta target moved to 2026-08-08 (PM, Time Lord prerogative); scope growth requires PM approval. #1457/#1458 moved to Production milestone — #1458 may ship during beta but does not block private-beta start. Multi-tenancy beta scope descoped per PM: "no cross-user leakage on beta surfaces" (full #1419 epic is post-beta).
