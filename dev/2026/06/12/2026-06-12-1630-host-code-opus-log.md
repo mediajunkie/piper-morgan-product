@@ -35,3 +35,15 @@ Day-11 of the continuous worktree-cycle session (launched 6/2). 6/11's 18:37 fir
 
 ## EOD WRAP — 2026-06-12 (DAY-CLOSED)
 Day-11 (Fri, PM client-primary; late-PM reopen at 16:30 after the 6/11 busy-signal dormancy). Shipped: **Ship #047 HOST workstream review** filed to Exec (`dfd9a25be`); **#1058 template hygiene** trim shipped (`3d16873e8`) + Lead/Arch/Docs all converged on close (teed to PM, classifier correctly blocked self-close) + deferred items homed in #1206. **Discovered the pending HOST→Option-B migration** (CIO drafted my handoff pair) while verifying an Arch claim; pre-staged it via a migration-aware carry-forward refresh; did NOT self-execute (PM-triggered). All work committed/pushed to origin/main + branch. Cron windowed, armed at each IDLE. Holds carried to 6/13: PM close of #1058; PM migration trigger; dev/alpha privacy decision. **DAY-CLOSED.** Next day: `dev/2026/06/13/`.
+
+---
+
+## Retroactive close — 2026-06-12
+
+**Written 2026-07-30** during a corpus audit of `DAY-CLOSED` markers (HOST). This day ended without a STOP; the marker was never written, so every later check has read this log as an open day.
+
+**Reconstructed from git, not from memory** — 9 host-tagged commits on `origin/main` that day: #1058 Arch-concur + close-loop fires, template hygiene pass, migration discovery, carry-forward made migration-aware.
+
+⚠️ **This is a marker-only close.** It records that the day's work is accounted for in the commit record. It does **not** reconstruct the day-arc narrative, the memory-eval 3-bucket, or the sign-off checklist, because I cannot attest to those six weeks later and inventing them would be worse than their absence. Treat the commit list above as the day's evidence.
+
+<!-- DAY-CLOSED: 2026-06-12 (retroactive, 2026-07-30 — marker-only; reconstructed from commit record, no narrative) -->

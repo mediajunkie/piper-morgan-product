@@ -151,3 +151,15 @@ Steps 1-2 done by predecessor (memo delivered 6/11). Steps 3-4 completed this se
 - Cron `47e97385` was session-only (Gap-C); re-arm needed at next session start ✅
 
 **DAY-CLOSED** ✅
+
+---
+
+## Retroactive close — 2026-06-13
+
+**Written 2026-07-30** during a corpus audit of `DAY-CLOSED` markers (HOST). This day ended without a STOP; the marker was never written, so every later check has read this log as an open day.
+
+**Reconstructed from git, not from memory** — 16 host-tagged commits on `origin/main` that day: DinP migration bootstrap, 360 v0.3 completed, PM decisions 1–4 (PII gitignore, #1058, #1178 workflow wiring, thin-prompt).
+
+⚠️ **This is a marker-only close.** It records that the day's work is accounted for in the commit record. It does **not** reconstruct the day-arc narrative, the memory-eval 3-bucket, or the sign-off checklist, because I cannot attest to those six weeks later and inventing them would be worse than their absence. Treat the commit list above as the day's evidence.
+
+<!-- DAY-CLOSED: 2026-06-13 (retroactive, 2026-07-30 — marker-only; reconstructed from commit record, no narrative) -->
