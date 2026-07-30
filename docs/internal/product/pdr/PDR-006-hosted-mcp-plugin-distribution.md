@@ -1,6 +1,6 @@
 # PDR-006: Hosted MCP Endpoint + Plugin Distribution Model
 
-**Status**: Review — PM approved direction (2026-07-19); **Arch review COMPLETE 2026-07-29, no objection to ratifying.** CXO / PPM review still outstanding.
+**Status**: Review — PM approved direction (2026-07-19); **Arch ✅ (7/29) and CXO ✅ (7/30) both reviewed: RATIFY, no objections. PPM is the only review outstanding.**
 **✅ Ratification UNBLOCKED (2026-07-29).** ~~Q2 blocks ratification~~ — **Q2 is RESOLVED, and was never actually open.** PM ruled it **2026-01-08**: *"Start with rule-based (Option A), evolve to LLM later (#558)"* (`services/standup/preference_extractor.py:8`). Option A is **shipped**; the LLM evolution is **#558, OPEN, milestone Production (1.0), due 2026-10-30** — i.e. scheduled *after* this phase. **The "no server LLM" premise holds, on running code and precedent rather than assumption.** Arch verified empirically: zero LLM references across `services/mux/` (incl. the 584-line `composting_pipeline.py`) and across all four preference/personality modules.
 *Provenance note, because it's the lesson: PA elevated Q2 to a blocker on sound reasoning but did **not** check it against the running system — the PDR said "open," so PA treated it as open. Arch went and looked. **Verify-first applies to a document's own claims about itself.** Cost: ten days of blocked status on an already-decided question.*
 **Date**: 2026-07-19
@@ -80,6 +80,34 @@ Different BYOC users have different levels of technical comfort. The plugin pack
 
 The following captures what lives in the plugin package vs. what stays on the server — important for implementation planning.
 
+> ⚠️ **READ THIS FIRST — the conflation most likely to recur in this document's vicinity.**
+> *(Promoted here from a Q2 footnote at CXO's request, 2026-07-30 — "the clearest thing in the document,
+> and it reads as an aside where it sits.")*
+> **`services/mcp/consumer/` is Piper as an MCP *CLIENT*, calling out to external MCP servers.
+> `mcp.pipermorgan.ai` is Piper as an MCP *SERVER*, being called in by Claude and ChatGPT. Opposite
+> directions.** A live consumer family (CORE-MCP-MIGRATION #198, `USE_MCP_GITHUB` default true)
+> **de-risks nothing on the server side**, which is where this PDR's actual risk lives — see the
+> caller-identity block under "For Arch." **Nobody may cite #198 as evidence this phase is precedented.**
+
+> 🔴 **Capability legibility is bounded by the MCP protocol — verified against the spec, 2026-07-30.**
+> CXO asked (explicitly "genuinely asking, not asserting") whether the hosted server can learn the
+> caller's actual installed skill/tool set, so Piper can say *"I can do X here; Y needs the &lt;name&gt;
+> skill added."* **Answer: no, not at skill granularity.**
+> Per the [MCP lifecycle spec](https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle),
+> `initialize` gives the server exactly three things: `protocolVersion`; `capabilities` — **protocol
+> features only** (`roots`, `sampling`, `elicitation`, `experimental`); and `clientInfo`
+> (`name`, `title`, `version`). **There is no field carrying the host's installed skills or plugins.**
+> Skills are a host-side concept; MCP has no notion of them.
+> ✅ **What IS available, and it's a usable partial mitigation**: `clientInfo.name` tells the server
+> **which surface it's on** — ChatGPT vs Claude vs Claude Code. So Piper can calibrate capability claims
+> **per surface**, which is coarser than per-user inventory but is not nothing, and it supports CXO's
+> honesty pattern at surface granularity. `experimental` could in principle carry a custom field, but
+> nothing standard exists and **we must not design against it.**
+> **Consequence for the ChatGPT lane**: because ChatGPT users assemble a partial, self-selected skill
+> set and the server cannot see it, Piper **will** at times offer or attempt something not installed, or
+> fail to offer something that is. Design for graceful degradation and surface-level honesty rather than
+> per-user precision. Recorded here rather than discovered at integration.
+
 ### In the plugin package (ships to user's device/chat)
 
 | Component | Format | Purpose |
@@ -119,8 +147,57 @@ Rejected for this phase: unnecessary for connectors + context serving, adds cost
 
 ## Implications
 
-### For CXO
+### For CXO — ✅ reviewed 2026-07-30: **RATIFY, no objections.** Three design implications, all CXO-owned work
 - Plugin package UX needs design: what does a user's first experience of the Piper plugin look like? Onboarding flow for connecting MCP + adding skills. ChatGPT manual-add flow is notably more friction than Claude's (each skill added separately).
+
+> 🔴 **1. This model REMOVES the surface where we would have demonstrated differentiation — and that silently invalidates the fix all three Jake FTUX lenses converged on.**
+> Jake's verdict was *"just an LLM with extra UI."* CXO, HOST and PA independently converged on the same
+> answer: **the first run must reflect the user's own data back at them** — a cold-start-*state* problem,
+> not a positioning problem. *An empty list is a form; a populated queue is a colleague.*
+> **Under this PDR there is no first screen.** The user is inside Claude or ChatGPT; we own neither the
+> surface, the conversation, nor the moment of arrival.
+> ✅ *The good news, and it's substantial*: most of Jake's UI complaints are **deleted outright** — the
+> avatar-pill nav, the undersized panel, the verbose search placeholder, the non-growing composer, the
+> three-list taxonomy confusion. None of them exist in a plugin.
+> ⚠️ *But the load-bearing complaint gets harder*: **"is this just an LLM with extra UI?" becomes
+> literally true by design** — it *is* their LLM plus our tools. **Every gram of differentiation now has
+> to be carried by what the tools return.** There is no UI left to carry any of it.
+> ➡️ **So the cold-start fix is re-expressed, not dropped**: the **first tool call after connection must
+> return something specific and true about the user's actual work** — not a capability list, not a
+> greeting. If Piper's first utterance in their chat is generic, we have reproduced Jake's exact
+> experience in a surface with *fewer* affordances to recover with. CXO is biasing the plugin's
+> `CLAUDE.md` toward a connector-grounded observation rather than a menu.
+
+> **2. ChatGPT's per-skill add is a capability-legibility gap, not just friction.** The user assembles a
+> partial, self-selected capability set and Piper cannot see which parts they installed — structurally
+> reproducing the class that bit Jake incidentally (he asked Piper to *file a ticket*; Piper *did the
+> feature* — the capability wasn't legible before it fired). **HOST's consent gate does not cover this**,
+> because it isn't consent to an action; it's a mismatch between the capability set Piper believes it has
+> and the one actually present. **Protocol answer and the available mitigation: see the boxed note in
+> Capability Split** — the server gets `clientInfo.name` (surface) but never the installed skill set.
+
+> **3. On the Q2 successor question — Jake gives no signal, and the absence is itself the finding.**
+> He never reached the colleague model; he bounced at FTUX. **"Our first alpha tester didn't complain
+> about the colleague model" reads as reassurance and isn't. The 4-dimension model didn't cost us Jake —
+> the FTUX did.**
+> **And the better read argues AGAINST pulling #558 forward on this evidence**: `preference_detection.py`
+> measures **style** axes (warmth, confidence, action-orientation, technical depth) — *how Piper talks to
+> you*. Jake's complaint was *"it wasn't pulling productivity out of me… asking me to choose the problem
+> I already have"* — **he didn't want Piper to match his tone, he wanted Piper to know his context.**
+> So the gap he hit is **not that the preference model is shallow; it's that it measures the wrong axis
+> for the complaint we received.** Pulling #558 forward would buy a better-calibrated *voice* in a
+> session where he never got far enough to notice the voice.
+> ➡️ **The trigger to watch is NOT "users say Piper's tone is off" — it's "users say Piper doesn't know
+> what I'm working on,"** which is a *different subsystem*: connector-derived work context, which this
+> PDR already places server-side. Pull #558 on complaints of the second kind and we spend a
+> Production-milestone issue without moving the number.
+> ⚠️ **Naming problem with a product cost**: *"colleague model"* sets an expectation a 4-dimension style
+> model cannot meet. **Cheaper to fix the phrase than the model — don't use it user-facing until it
+> means what it says.**
+
+⚠️ **Ratification does NOT clear Q1's carry-forward** (CXO's flag): the unfinished anonymous-caller
+state-isolation audit — Redis, in-process floor/context state, rate-limiting, none traced — is a
+**pre-live gate, tracked as [#1458](https://github.com/mediajunkie/piper-morgan-product/issues/1458)**.
 
 ### For Arch — ✅ reviewed 2026-07-29; mechanism set holds, with one named risk
 
