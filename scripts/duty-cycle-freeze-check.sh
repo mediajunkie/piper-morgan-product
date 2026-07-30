@@ -86,7 +86,9 @@ cycling_now() {
   fi
   # Has a today-log. Skip only if it carries the CANONICAL close sentinel for TODAY — not a prose mention of
   # "DAY-CLOSED" (e.g. a continuity link to yesterday). A loose match here is a false-NEGATIVE; keep it strict.
-  git -C "$REPO" show "origin/main:$path" 2>/dev/null | grep -qE "^<!-- DAY-CLOSED: $today_dash" && return 1
+  # Accepts both real close forms found in the corpus (CXO/HOST/Web, 2026-07-30): the
+  # `<!-- DAY-CLOSED: ... -->` comment and the `## DAY-CLOSED ...` heading some roles use.
+  git -C "$REPO" show "origin/main:$path" 2>/dev/null | grep -qE "^(<!--[[:space:]]*)?#{0,4}[[:space:]]*DAY-CLOSED:?[[:space:]]+$today_dash" && return 1
   return 0
 }
 
