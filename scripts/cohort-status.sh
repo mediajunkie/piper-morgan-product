@@ -74,7 +74,7 @@ for r in $ROSTER; do
   logt=$([ -n "$logf" ] && echo yes || echo "—")
   closed="—"
   # READ the marker for TODAY specifically -- counting bare "DAY-CLOSED" matched yesterday's references.
-  [ -n "$logf" ] && { grep -q "DAY-CLOSED: $TODAY_DASH" "dev/$TODAY/$logf" 2>/dev/null && closed="yes" || closed="no"; }
+  [ -n "$logf" ] && { grep -qE "^<!-- DAY-CLOSED: $TODAY_DASH" "dev/$TODAY/$logf" 2>/dev/null && closed="yes" || closed="no"; }
   # Mirror freeze-check's ACTUAL rule: only a state beginning `parked` suppresses watching.
   # v1.0 treated ANY non-empty state column as parked, so `arch` and `comms` -- which armed their
   # crons and cleared their notes by writing "active: cron armed <job>" -- were reported PARKED while
@@ -95,4 +95,4 @@ echo
 echo "denominators — every count above is out of $N_ROSTER roster roles, NOT out of tmux sessions."
 echo "  live sessions: $(for r in $ROSTER; do tmux has-session -t "=$r" 2>/dev/null && echo x; done | grep -c .) / $N_ROSTER"
 echo "  registry rows: $(printf '%s\n' "$src_registry" | grep -c .) / $N_ROSTER   (a role with NO-ROW is invisible to the freeze-watchdog)"
-echo "  closed today:  $(for r in $ROSTER; do f=$(ls "dev/$TODAY/" 2>/dev/null | grep -- "-$r-code" | head -1); [ -n "$f" ] && grep -q "DAY-CLOSED: $TODAY_DASH" "dev/$TODAY/$f" 2>/dev/null && echo x; done | grep -c .) / $N_ROSTER"
+echo "  closed today:  $(for r in $ROSTER; do f=$(ls "dev/$TODAY/" 2>/dev/null | grep -- "-$r-code" | head -1); [ -n "$f" ] && grep -qE "^<!-- DAY-CLOSED: $TODAY_DASH" "dev/$TODAY/$f" 2>/dev/null && echo x; done | grep -c .) / $N_ROSTER"
