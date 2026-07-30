@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-07-29 16:10 PDT (Fire 1, first duty-cycle fire on Amber)
+**Updated**: 2026-07-29 19:45 PDT (Fire 2)
 **Session log**: `dev/2026/07/29/2026-07-29-0948-docs-code-log.md`
 **Prior update**: 2026-07-12 — **17 days stale, pre-Amber.** Rewritten wholesale; still-live items from
 that version are preserved below and marked, resolved ones noted so they aren't re-derived.
@@ -17,7 +17,7 @@ commit bare in the next. `mail-send.sh` is safe regardless (`commit-tree`).
 
 ## Awaiting PM / others — check, don't re-derive
 
-- **⏳ LinkedIn URL for Weekly Ship #053 — now coming from DISPATCH, not PM** (PM 2026-07-29 ~16:45: *"I just got Dispatch working on the LinkedIn cross post"*). Watch `~/Development/dispatch/mail/` as well as my inbox — as of 16:50 nothing has landed and the calendar's `linkedinURL`/`liPubDate` are still empty. On arrival: `/update-calendar` → `status=distributed` + `liPubDate` + `linkedinURL`, then `publish-to-blog` **Step 9 archival** (draft → `published/`; Ship reuses `piper-ship.webp`, no image to archive). **The only thing gating archival.**
+- ✅ **Weekly Ship #053 CLOSED OUT** (Fire 2). LinkedIn URL supplied by Dispatch-DinP; `status=distributed`, `liPubDate`/`linkedinURL` set, `mediumURL` left empty by design (ship = LinkedIn-only). Draft archived to `published/` per Step 9. Nothing outstanding.
 
 - **🔭 ANTICIPATED (PM 2026-07-29, "may want to" — NOT yet a directive, do not build ahead):** the cross-posting skill is nearly done, and PM may hand syndication to **a new Dispatch agent working on the Piper Morgan project**. Three things in my lane change if that lands; all three are cheap to settle *before* the handover and expensive after:
   1. **Routing is genuinely ambiguous and has a documented failure mode.** `mailboxes/DIRECTORY.md` explicitly says *do not* create `mailboxes/{agent}/` for cross-project agents **including Dispatch**, and cites CIO's 2026-07-04 mistake — *"a dead letter, not a delayed delivery."* A Dispatch agent *on this project* is either (a) Piper-Morgan-local → it needs `mailboxes/dispatch/` **and** DIRECTORY.md amended in the same change, or (b) still cross-project → stays at `~/Development/dispatch/mail/` and nothing changes. **Guessing wrong produces silent dead letters.**
@@ -31,11 +31,11 @@ commit bare in the next. `mail-send.sh` is safe regardless (`commit-tree`).
 ## Owed by me — unblocked, priority order
 
 1. **CLAUDE.md load-time/record separation — PM-GREENLIT ALREADY, and HOST has now done the measurement.** *This is the largest thing I hold.* The 7/12 carry-forward records it as PM-greenlit (HOST proposed, CIO acknowledged), **Docs executes**, blocked on a CIO scoping note. HOST's 7/28 Pass 3 supplies the analysis: hooks investigation = **6,923 bytes / 12.8% of CLAUDE.md**, proposal is ~800 bytes replacing ~6,900 (**~11% of the file recovered from one item**), pointer verified non-dangling, and HOST deliberately stayed off the edit because it's Docs' call. **4 of 8 absent norms still unadded** — HOST added the 2 safety-relevant ones and left the rest rather than make it 4 more insertions. Next move: check whether the CIO scoping note ever arrived, or whether HOST's Pass 3 supersedes the need for one.
-2. **A `draftPath`-resolves check for the editorial calendar** — from Comms' Fire-1 finding. #052's `draftPath` doesn't resolve either; the Jul 12 pass fixed 22 instances and not the cause.
-3. **Per-column semantic assertion for the calendar** — predecessor's unbuilt §4.4 item. **Same root as #2**: the calendar asserts facts about the filesystem and about column shape that nothing verifies. Build as one thing.
+2. ✅ **DONE (Fire 2)** — `draftPath`-resolves check shipped in the validator, **and all 7 stale paths repaired** (3 Ships + 4 narrative posts). 0 unresolvable of 97 rows carrying a path. Cause was Step-9 archival moving files without updating rows.
+3. ✅ **DONE (Fire 2)** — per-column shape checks shipped in `scripts/validate-editorial-calendar.py` (enums, date formats incl. chatDate's M/D/YYYY wart, URL/path prefixes, the Ship #050 repo-path-in-prose signature). Errors block, drift warns. Behaviorally tested both directions in an isolated tree. Predecessor's §4.4 item, closed.
 4. **Fold "`diff` the two draft copies" into `publish-to-blog` as an explicit step** — adopted as practice Fire 1; it caught a silent image drop only because Comms did it. Shouldn't depend on luck.
 5. **methodology-20 — two refinements now**: (a) predecessor's line-vs-entry-count unit mismatch, flagged across 5 omnibus logs; (b) mine — the two HIGH-COMPLEXITY compression rules are **mutually unsatisfiable** (preserve-70-80% ⇒ 1.25–1.43×; ratio check demands >3×). Both raised to CIO as owner.
-6. **`template-audit` check #1 should report `CANNOT RUN`, not traceback** — my ranked-first durable suggestion to CIO. Same shape as `HEARTBEAT-WRITER-SILENT` / `det_rc`. Would need CIO or me to own the edit.
+6. ✅ **DONE by COMMS (not me)** — `template-audit` v1.2 removed the `import yaml` dependency and added an explicit `⚠ CANNOT RUN` verdict token, tested across four frontmatter shapes. My suggestion, their lane, their fix, two hours. The *provisioning* half is still open (no venv on this host; CLAUDE.md Quick Reference still says `venv/bin/python main.py`).
 7. **18 calendar↔website metadata disagreements**, incl. ~46 live-site captions missing quotation marks (calendar right, site wrong).
 8. **97 docs >30d asserting current-state language**; `docs/internal/planning/current/` is itself now a misleading directory name.
 9. **Weekly-audit orphan rate** — 2 of last 6 unexecuted; mitigated by the Mon–Thu SessionStart hook, cadence still worth review.
