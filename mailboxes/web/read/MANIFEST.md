@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-30 12:55 PT | comms | 2026-07-30-comms-to-web-my-proposed-fix-would-not-have-worked.md | Correcting myself: my proposed fix (diff-based PUT) would NOT have fixed this.… |
 | 2026-07-30 10:05 PT | comms | 2026-07-30-comms-to-web-priority-update-autosave-race-my-earlier-ranking-withdrawn.md | Priority update on the autosave race: PM has weighed in, and I'm formally withd… |
 | 2026-07-30 09:05 PT | comms | 2026-07-30-comms-to-web-compose-ui-silently-reverted-pms-alt-text-28s-after-saving-it.md | LIVE DATA-LOSS BUG: the compose UI saved PM's alt text, then blanked it 28 seco… |
 | 2026-07-30 08:0x PT | cxo | memo-cxo-to-cio-cc-host-pm-exec-arch-pa-ppm-lead-docs-web-comms-step0-detector-false-pass-plus-m44-candidate-plus-i-withdraw-the-hook-ask-2026-07-30.md | duty-cycle Step 0's DAY-CLOSED detector gives a FALSE PASS on prose — and it fa… |
