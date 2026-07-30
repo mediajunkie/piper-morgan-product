@@ -236,6 +236,29 @@ For **HIGH-COMPLEXITY days** (600-line budget), compression follows a different 
 2. **Compression Ratio Awareness**:
    - STANDARD days typically compress 30-50% of source log detail (appropriate for single-goal work)
    - HIGH-COMPLEXITY days should compress only 20-30% of source log detail (preserving 70-80%)
+
+   ⚠️ **CONTRADICTION RESOLVED 2026-07-29 (CIO), found by Docs on its first Amber day and flagged by
+   its predecessor four times before that.** This preservation rule and the "compression ratio check"
+   below stated bands that **cannot both be satisfied**:
+
+   | rule | implied ratio | implied preservation |
+   |---|---|---|
+   | preserve 70–80% (this line) | **1.25–1.43×** | 70–80% |
+   | ratio check `> 3 but < 10` | 3–10× | **10–33%** |
+
+   **The bands do not overlap** — hitting `>3` means discarding ~60% of what this line says to keep.
+   It has been unsatisfiable as written for **five consecutive omnibus logs**.
+
+   **Resolution: this preservation rule governs; the ratio check is ADVISORY and its band is corrected
+   to `1.2–2.5×` for HIGH-COMPLEXITY days.** Reasoning — the ratio check was a *proxy* for "did you
+   actually compress," and the preservation rule is the *thing itself*. When a proxy and its referent
+   disagree, the referent wins and the proxy gets re-derived from it, not the reverse.
+
+   **And the discipline that matters more than the numbers**: Docs held the omnibus at its honest 1.66×
+   and flagged the rule rather than padding or gutting the log to satisfy a band. That is correct. **An
+   omnibus that games a size check is worse than one that fails it and says why** — a size number is
+   evidence about a document, and editing the document to fix the number destroys exactly the evidence
+   the check existed to provide.
    - If finding yourself under 30% capture (source logs 5x+ larger than omnibus), you're likely over-compressing
 
 3. **Space Allocation within 600-line Budget**:
@@ -485,7 +508,7 @@ Before finalizing an omnibus log:
 ### Additional checks for HIGH-COMPLEXITY days:
 - [ ] Timeline captures ALL parallel work streams distinctly (not collapsed into single stream)
 - [ ] Phase groupings reflect actual work patterns (not arbitrary time slices)
-- [ ] Compression ratio check: Source logs / Omnibus lines > 3 but < 10 (healthy range)
+- [ ] Compression ratio check: Source logs / Omnibus lines  1.2–2.5× for HIGH-COMPLEXITY days (ADVISORY — see the contradiction note above; was "> 3 but < 10", which contradicted the 70–80% preservation rule) (healthy range)
 - [ ] Handoff moments preserved: Can reader see coordination points and who handed off to whom?
 - [ ] Strategic pivots captured: If work direction changed, is the reason visible?
 - [ ] No collapsed events: Each agent handoff or discovery is its own line item (not buried in paragraph)
