@@ -38,7 +38,36 @@ counter-argument is not recoverable from any document in this corpus. Hence this
 > different capabilities, not two completeness levels of one. Cold `*_spatial` code is evidence of
 > an **unreplicated** capability and an **unstarted** one — not of a **failed** one.
 
-## Three things, not two — corrected 2026-07-29
+## ⚠️ SUPERSEDED FOR CODE FACTS — read the layer map first (2026-07-30)
+
+**`spatial-intelligence-layer-map-and-costed-options.md` (Arch, 2026-07-30) is canonical for what is
+live and what is cold.** It was built from the **import graph** (`scripts/reachability-map.py`), not
+from name lists, and it corrects this document twice over:
+
+- **Four layers, not three.** My split missed **L2 — the spatial ABSTRACTION**
+  (`services/integrations/spatial_adapter.py`: `SpatialPosition`, `SpatialContext`, the
+  `SpatialAdapter` Protocol, `BaseSpatialAdapter`). L2 is live and is *the actual
+  "connectors-as-places" contract every connector is written against.* Missing it is why I framed the
+  question as bigger than it is.
+- **The cold island is 10 modules, not 5** — five `*_spatial` wrappers with zero importers, four
+  `*_adapter` modules imported only by those cold wrappers, plus `mcp/consumer/slack_adapter`.
+- **My L3/L4 split (below) survives and is folded into the map as L3 and L4.** That part is why the
+  picture resolves, and it is the contribution this document exists to preserve.
+
+**I am deliberately NOT restating the layer table here.** Two copies of the same code facts is how
+they drift, and this document has now been stale-on-arrival twice. **For live/cold state, go to the
+map.** What follows is the part that is genuinely mine: the *experience* argument, the who-initiates
+discriminator, and the falsifiability conditions.
+
+> **Second correction in two days, on the surface I created to be durable.** Written 07-29 against a
+> characterization Arch retired the same afternoon; corrected; then superseded again on 07-30 by the
+> import-graph map. Recorded rather than silently edited, because it is the sharpest available case
+> for the rule it taught me: **promoting a claim into the durable corpus raises the verification bar,
+> it does not lower it.** The corpus is what future agents trust, and it is read long after the
+> correcting memo has scrolled away. The cure is not more care — it is **not duplicating measurable
+> facts into a prose document at all.** Hence the deferral above.
+
+## The layer distinction — three things, not two (2026-07-29; now L3/L4 in the map)
 
 ⚠️ **This section was rewritten the day it was written.** My original framing (filed 2026-07-19) said
 spatial intelligence was **two** tiers: a live reasoning layer and a wholly-cold adapter tier which I
@@ -133,8 +162,25 @@ from memory.** A second near-miss the same day: a grep hit on the feature-flag *
 
 ## The CXO position
 
-**Option (b), on the corrected boundary: keep Tier 1 *and* `github_spatial`; park the five cold
-adapters as design capital. Scope-clarify ADR-013 and ADR-038. Do NOT supersede the theory.**
+**Option (b): keep L1 + L2 + live L3; dispose of the 10-module cold island subject to PM's
+protected-surface rule. Scope-clarify ADR-013, amend ADR-038. Do NOT supersede the theory.**
+
+> **The measured finding that settles option (a), added 2026-07-30 — verified, not asserted.**
+> **Every connector a user can actually connect already has live spatial depth.** Checked
+> module-by-module against importers: GitHub (`github_spatial` + `github_adapter`), **Notion (the MCP
+> consumer `notion_adapter` — it produces `SpatialContext`, so Notion users are *not* missing
+> place-modeling)**, Calendar (`google_calendar_adapter` + `calendar_integration_router`), Slack
+> (`integrations/slack/spatial_adapter`).
+>
+> The cold island's connectors are **CI/CD, dev-environment, GitBook, and Linear** — none of which is
+> among the four PM advertised in the alpha invite. *(Linear appears in the `IntegrationType` enum but
+> has no live spatial path.)*
+>
+> So **"it deepens a substrate for tools nobody is asking Piper about" is now literal rather than
+> rhetorical** — and the one hole in my own argument is closed. I had flagged Notion as the case that
+> could refute me, since it *is* an advertised connector: if its live path were CRUD-only, L3 depth
+> for Notion would have real user-facing value today. It isn't — the MCP adapter carries spatial
+> context. **What is cold for Notion is the superseded direct-API predecessor, not the capability.**
 
 **The vote is unchanged by Arch's correction; the boundary and the reasoning both sharpen.** Arch's
 finding gives (b) a concrete line it previously lacked — *keep the reasoning layer plus the one live
