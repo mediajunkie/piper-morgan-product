@@ -1,6 +1,8 @@
 # PDR-007: Editorial Data — Single Source of Truth
 
-**Status**: DRAFT — for **Arch + CIO review**. PM asked for this draft 2026-07-29 after raising the underlying question directly. No commitment made yet.
+**Status**: DRAFT — **Arch ✅ and Web ✅ reviewed, no objection from either. Awaiting CIO** (one boundary question, §Implications). PM asked for this draft 2026-07-29 after raising the underlying question directly.
+**✅ Arch review COMPLETE 2026-07-30 — no objection to ratifying the commitment.** Constraint 1 survives *with two corrections*, Option C stays rejected, Option B is the right implementation to evaluate, and the sequencing deferral is endorsed **"even harder"** — conditional on a threshold. Arch's central correction, applied throughout: **I staked the recommendation on Constraint 1, the most contestable claim in the document, when Option C was already dead on the class analysis** (it fixes only Class 1, and Class 1 was mitigated 07-29). A reader who disagreed about git ergonomics would have believed they'd reopened C. They hadn't.
+⚠️ **And the catch that mattered most: my measurement window had NO SUCCESS CRITERION, so it could not fail.** Arch: *"a decision procedure with no falsification condition is m-44's shape applied to a decision instead of an instrument."* A PDR citing m-44 twice should not contain one. **Threshold now pre-registered** (see Recommendation) before the window runs, rather than chosen after seeing the result.
 **✅ Web review COMPLETE 2026-07-29 22:05 — no objection to Option B, agrees with the sequencing, and CORRECTED THE COST ESTIMATE DOWNWARD.** Web read the PDR itself and checked the code rather than reacting to my characterization, and found I had **undercounted one surface and overcounted the cost**: the public blog page (`src/app/(public)/blog/[slug]/page.tsx`) imports `blog-content.json` and `medium-posts.json` directly as build-time modules — a bigger surface than the build scripts — **but it needs zero modification**, because it already treats both as pure generated data (reads, never writes, indifferent to provenance). That is exactly Option B's shape. Web also found a third affected script I missed (`copy-editorial-calendar.js`) and flagged their own `loadCalendarLive()` (shipped today, `18be9d1`, reads the CSV via the GitHub Contents API at request time) as **theirs to repoint, tracked to them, not orphaned**. Corrections applied below.
 *Provenance note, because it's the good version of the pattern this file keeps citing: **Web corrected the estimate against their own interest.** A defensively inflated cost would have argued for Option A and less work in their lane; they said so explicitly and gave the honest number instead.*
 **Date**: 2026-07-29
@@ -26,7 +28,10 @@ from it rather than maintained alongside it.** Do *not* commit to a storage form
 
 Three constraints proposed as binding on any implementation:
 
-1. **Git-diffable and mergeable.** The editorial data takes ~3 commits/day from multiple agents and is reviewed as diffs, rebased, and recovered from history. Any format that turns a merge conflict from annoying into unresolvable is disqualified.
+1. **The SOURCE OF TRUTH must preserve the git audit trail and localize conflict.** *(Both halves corrected 2026-07-30 per Arch.)*
+   - **Scope**: this binds the source of truth **only** — not derived artifacts. Constraint 3 makes those generated, and a generated binary index would be perfectly acceptable. As originally written ("any implementation") this forbade optimizations there is no reason to forbid.
+   - **The binding property is provenance, not diffability.** *"We lose diff"* is arguable and invites *"just use a diff tool."* The real claim: **this cohort's primary audit mechanism for "who changed this claim, when, and why" is the commit log.** This PDR reconstructs the 7/14 and 7/28 incidents from commit history; Arch recovered a probe's timing from `reflog`. A binary blob does not degrade that audit trail — **it removes it.**
+   - **"Mergeable" was the wrong property; the right one is conflict LOCALIZATION.** A single CSV *is* mergeable and contends constantly anyway, because all 418 rows live in one file. Arch verified the traffic independently: **170 commits / 60 days, and 38 of 48 active days had more than one commit — 79%.** Multi-writer days are the norm. So Option B's real win isn't better merging: **two agents editing different posts never touch the same file, so conflicts become impossible rather than resolvable.** That is a structural argument, not an ergonomic preference.
 2. **Addressable by name, never by position.** Both documented corruptions came from positional access. A format where position is not a concept eliminates the class structurally.
 3. **Derived surfaces are generated, never hand-edited.** The reconciliation cost is the actual problem; a second source of truth reintroduces it regardless of format.
 
@@ -82,6 +87,19 @@ the row.
 
 **This is referential integrity against an external filesystem. No storage engine validates it** — not
 SQLite, not Postgres. `CHECK` constraints cannot stat a file. Only a check can, and one now exists.
+
+**⭐ But there is a move upstream of the check** *(Arch, 2026-07-30 — and it is a better illustration of
+this PDR's own thesis than anything I originally wrote).* **`draftPath` is a stored assertion about
+another system, and that is the defect itself.** Storing a fact about the filesystem means storing
+something that can silently stop being true — which is exactly what happened 22 times by 7/12 and 7
+more by 7/29. Two structural cures:
+
+- **Derive it.** If drafts are discoverable by slug convention, `draftPath` becomes a lookup rather than a column and **the class stops existing.** Same move as ADR-072's frontmatter-derive and #1106's MANIFEST-derive — we have the pattern twice already.
+- **If it must be stored, stamp it.** Carry `draftPath_verified_at` alongside, so a stale value is *visibly* stale rather than confidently wrong. (HOST's self-expiring-clause pattern from ADR-079 D4a; PPM's `last_verified` from #972 — also already convention.)
+
+The validator stays as a catch-layer, but **it detects a class that a derive removes.** For the
+companion ADR. And it sharpens the PDR's thesis: **the reconciliation problem and the staleness problem
+have the same cure — stop maintaining what you can generate.**
 
 ### Class 3 — cross-surface disagreement. THE class a single source of truth would eliminate.
 
@@ -147,12 +165,56 @@ consolidation, and the storage engine is incidental.
 **Adopt the single-source-of-truth commitment now; evaluate Option B as the implementation; do not
 adopt Option C.**
 
-And a sequencing recommendation I'd hold even against my own preference for B: **let Option A run for
-2–4 weeks first.** The validator and Step 4b shipped today and have never been observed in production.
-If drift findings drop to near zero, the migration may not be worth its cost — and if they don't, we'll
-have measured evidence for which class is actually still leaking rather than three-week-old anecdotes.
-**Committing to a migration before the cheap fix has been observed would be the same
-verified-in-simulation-vs-proven-in-production error m-44 documents.**
+### Why Option C is rejected — the class analysis, not the git argument
+
+*Restructured 2026-07-30 per Arch: I had staked this on Constraint 1, which is the most contestable
+claim in the document, and that let a reader who disagrees about git ergonomics believe they had
+reopened C. They haven't.*
+
+**Option C fixes Class 1 and only Class 1 — and Class 1 was mitigated on 2026-07-29.** The validator
+ships per-column shape checks, behaviorally tested both directions. So C's entire remaining value is
+*"structurally prevent a class we now detect,"* a marginal gain over a shipped mitigation, against a
+real cost in consumer rewrites. **C loses on value before the git question is asked at all.** The
+provenance argument below is supporting, not load-bearing.
+
+### The sequencing deferral — with a PRE-REGISTERED success criterion
+
+Hold Option A for **2–4 weeks** before committing to any migration. The validator and Step 4b shipped
+2026-07-29 and have never been observed in production; committing on a fix verified only in an isolated
+tree is the error m-44 documents.
+
+⚠️ **As originally written this window could not fail** — no threshold was stated, so any result would
+have been read to fit whatever the reader already believed. Arch caught it: *"a decision procedure with
+no falsification condition is m-44's shape applied to a decision instead of an instrument."* A PDR that
+cites m-44 twice should not contain one. **Criterion registered now, before the window runs:**
+
+> **Window**: 2026-07-30 → 2026-08-27 (4 weeks). **Baseline** (measured 2026-07-29): Class-1 escapes 0 · Class-2 stale `draftPath` **0** (after 7 repairs) · Class-3 field-level disagreements **17 across 365 matched rows**, 0 in the dangerous direction.
+>
+> **Option A is sufficient — PDR-007 closes as adopted-without-migration — if ALL THREE hold at window end:**
+> 1. **Class 1: zero** column-shift instances reaching `origin/main` undetected.
+> 2. **Class 2: zero** unresolvable `draftPath` values.
+> 3. **Class 3: ≤ 17** field-level disagreements on the matched set (i.e. **no growth** over baseline).
+>
+> **Otherwise Option B proceeds.**
+
+Thresholds 1 and 2 are zero deliberately: both classes now have a known cause and a shipped
+countermeasure, so any recurrence means the countermeasure isn't holding rather than that the bar is
+too strict. Threshold 3 is no-growth rather than a reduction, because Option A's job is to stop drift
+being *generated* — healing the existing 17 is a separate backfill, and folding it in would let a
+backfill I could run in an afternoon disguise a mechanism that is still leaking.
+
+**The measurement is shipped, not described.** A threshold nobody can reproduce measuring is the same
+defect one layer down, so:
+
+```bash
+python3 scripts/measure-editorial-drift.py            # Classes 2 + 3 vs the criterion
+python3 scripts/validate-editorial-calendar.py        # Class 1 (exit status)
+```
+
+`measure-editorial-drift.py` was written 2026-07-30 for exactly this window and **verified to reproduce
+the 07-29 baseline** (365 matched rows, 0 stale paths, 17 disagreements). It carries the thresholds as
+constants, reports rather than gates, and states in its own output that the decision is made once at
+window end. Deliberately non-gating: it measures, PDR-007 decides.
 
 ## Alternatives rejected
 
@@ -162,9 +224,10 @@ verified-in-simulation-vs-proven-in-production error m-44 documents.**
 
 ## Implications
 
-**For Arch** — Constraint 1 (git-diffable/mergeable) is the load-bearing claim and the one I'd most want challenged. If you think binary-in-git is acceptable here, Option C reopens.
+**For Arch** — ✅ **REVIEWED 2026-07-30. No objection to ratifying the commitment; Constraint 1 survives with the two corrections now applied; Option C stays rejected; Option B is the right implementation to evaluate; sequencing deferral endorsed "even harder," conditional on the pre-registered threshold now added.** Arch's central correction: **I staked the recommendation on Constraint 1, the most contestable claim in the document, when Option C was already dead on the class analysis.** Applied throughout — the rejection now leads with "C fixes only Class 1, and Class 1 is mitigated," and the git argument is explicitly supporting.
 
-**For CIO** — This is the third artifact this week whose failure mode was *"a check reported clean without measuring what it claimed"* (m-44). Class 2 is a pure instance: the calendar asserted 7 files existed and nothing checked. Worth a boundary note on whether m-44 extends to data-asserting-facts-about-other-systems, or whether that is a distinct class.
+**For CIO** — This is the third artifact this week whose failure mode was *"a check reported clean without measuring what it claimed"* (m-44). Class 2 is a pure instance: the calendar asserted 7 files existed and nothing checked. Worth a boundary ruling on whether m-44 extends to data-asserting-facts-about-other-systems, or whether that is a distinct class.
+**Arch's read, offered as input rather than a ruling (2026-07-30)**: Class 2 *is* m-44's shape **with the data as the instrument** — a `draftPath` asserting a file exists is a claim that was never measured, and it reads identically whether true or three weeks stale. Five states, one output. The rule extends without strain: *an instrument must assert what it looked at* → **a stored field asserting an external fact must carry when it was last verified, or be derived rather than stored.** Arch would fold it in as a sub-shape rather than mint a new entry. **You own the catalog; that call is yours.**
 
 **For Comms** — Option B changes where you write, not what you own. Column ownership survives as file-section ownership. Your `template-audit` and voice-guide work is unaffected.
 
@@ -181,8 +244,8 @@ verified-in-simulation-vs-proven-in-production error m-44 documents.**
 
 ## Open questions
 
-1. ~~**Arch/Web**: is the ~4.7% disagreement rate worth a migration, or is Option A sufficient indefinitely?~~ **Web answered 2026-07-29**: decide from the measurement window rather than taking a fixed position now — *"if it holds near zero, Option A indefinitely is a perfectly reasonable outcome and I wouldn't push for Option B just because it's architecturally cleaner in the abstract."* **Still open for Arch.**
-2. **Where does the single source live** — product repo (where editorial planning happens) or website repo (where publishing happens)? It currently straddles both, which may be the root of the duplication. **Web's lean, 2026-07-29 (first substantive answer anyone has given)**: the **product repo**, because Comms and Docs author there and the website copies are *already* downstream artifacts via `copy-editorial-calendar.js` — so it keeps the direction-of-generation consistent with what exists rather than reversing it. Not a commitment; flagged as the shape the companion ADR would likely land on.
+1. ~~**Arch/Web**: is the ~4.7% disagreement rate worth a migration, or is Option A sufficient indefinitely?~~ **ANSWERED — both.** *Web (07-29)*: decide from the measurement window, not a fixed position now. *Arch (07-30), reframing the question rather than answering the rate*: **don't answer it as a rate.** 17 disagreements with **0 in the dangerous direction** is not a quality crisis, it is a **labor cost, borne almost entirely by Docs.** So the real question is *"is hand-reconciliation the cheapest available mechanism?"* — plainly not, but the alternative spends Web's time. **That tradeoff is precisely what the window exists to price, which is why the window needs its now-registered threshold.** ✅ Closed.
+2. ~~**Where does the single source live** — product repo or website repo?~~ **ANSWERED — Web and Arch concur independently: the PRODUCT REPO.** *Web (07-29)*: Comms and Docs author there, and the website copies are already downstream via `copy-editorial-calendar.js`. *Arch (07-30), with the structural reason*: putting the source in the website repo would **invert an existing dependency to no benefit, and inverted dependencies are how you get two sources again.** Same shape as ADR-070's server-owned-state family — one owner, everything downstream derived. ✅ Closed; carry into the companion ADR.
 3. Do the two orphaned `blog-content.json` entries indicate a cleanup gap in `publish-post.js`, or are they intentional?
 4. **Method reconciliation**: what did the 7/28 "~46 captions" measurement count that mine doesn't? Until that's answered, neither number should be quoted as the caption-drift figure.
 
