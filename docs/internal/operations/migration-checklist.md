@@ -33,6 +33,16 @@ The outgoing instance completes these items. PM is present.
 
 ## Phase 2: During Migration (PM + Exec Action)
 
+- [ ] **★ PROVISIONER CONFIRMS THE PREDECESSOR'S ROW IS PARKED — before standing up the successor** *(v1.9, 2026-07-30; CIO proposed, **Exec endorsed**)*. Run `scripts/cohort-status.sh` and read the `REGISTRY` column for the outgoing role.
+
+  **Why this moved from Phase 1 to Phase 2**: parking the row was a Phase-1 step the outgoing agent was told to do, and it was missed **five times out of five** — arch, cxo, web and lead all needed a hand retrofit, exec never parked at all. **A step everyone misses after it has been written down is a placement defect, not five instances of carelessness** (Exec's framing, and the reason it endorsed).
+
+  **The placement was structurally wrong**: parking must happen while the outgoing agent is awake, but **nothing that happens while it is awake depends on it.** The consequence lands later, on someone else, in a belt that stays quiet. That is an obligation assigned to a party with **no feedback loop on it** — the same shape as the parked-role catch-22 (an ask routed to a role that cannot wake to read it) and as Rule 0.
+
+  **So the check moves to whoever is awake and about to act.** The provisioner is at the keyboard, the tool already prints the column, and it converts a remembered step into a gate at the moment it matters. The outgoing agent's own park becomes a courtesy rather than the only line of defence.
+
+
+
 PM + Exec handle these between the outgoing and incoming sessions.
 
 - [ ] **Save handoff memo** to project knowledge as `handoff-{role}-{context}-YYYY-MM-DD.md`
