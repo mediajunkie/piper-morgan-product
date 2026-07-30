@@ -1,7 +1,7 @@
 
-# Role Migration Checklist v1.9
+# Role Migration Checklist v2.0
 
-**Status**: v1.9. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
+**Status**: v2.0. Supersedes v1.3 (canonical at this path since May 2026 CEO ratification).
 **Purpose**: Standing checklist for any future role migration (new role activation, re-migration of a dormant role, account migration, device migration). Cohort migration completed Apr 22–26, 2026.
 **Owner**: HOST. Exec reviews; CEO approves for canonical publication.
 
@@ -50,6 +50,37 @@ The incoming instance completes these items.
 - [ ] **Read handoff memo first**, then Exec review memo, then briefing. The handoff has fresher, more specific context; Exec review names what to watch for; briefing is the slowest-moving reference.
 - [ ] **VERIFY the memory pool is populated — do not import it** *(v1.4, supersedes the v1.3 "read the export" step)*: Memory keys on the **git-common-dir**, not the account or the worktree path, so **every worktree off the same repo shares one pool by construction**. Count the files (`ls ~/.claude-pm/projects/<key>/memory/ | wc -l`) and confirm it's populated. **A populated pool means you already hold the cohort's accumulated context natively, on arrival, without reading anything** — reading the export on top of that is a wasted step. **An empty pool is an escalation signal, not a cue to import**: it means the first migrant's seeding didn't happen or the key is wrong, and provisioning needs to fix it. *(v1.3 said to read the export; that was correct only for the very first migrant on a new account, who lands into an empty pool. Corrected by Pard + CIO Jul 25; confirmed by HOST's own Phase 3 — 167 files present, export never opened, no context deficit.)*
 - [ ] **★ Behavioral hooks gate — prove enforcement fires in YOUR seat** *(v1.4; **shape requirement added v1.5 — read it, the v1.4 form certifies coverage you don't have**)*: **Step 0 first: `git fetch` and check your inbox for corrections to this gate**, then run it.
+  > ### ✅ **RESOLVED 2026-07-29 — a real `pre-commit` gate now covers the bypass class. Everything below is HISTORY.** *(Pard installed; Arch confirmed on seat 2, a live Model-A agent worktree on `claude/arch-cycle`.)*
+  >
+  > **The guarantee, in per-commit terms** *(Arch's wording, adopted verbatim so we don't rebuild a seat-level claim on a commit-level mechanism)*:
+  > > **Any commit that would place a `mailboxes/` path into a commit on a non-`main` branch is refused, regardless of how the staging was expressed** — same call or a prior call, compound or standalone. The guarantee attaches to *the commit's staged content at the moment git finalises it*, which is the only moment that content is knowable. It makes **no** claim about a seat, session, host, or shape.
+  >
+  > **What this retires**: the two-shape probe, index-state control, and the *stage-in-one-call-commit-bare-in-the-next* mitigation are all **no longer required** — the gate reads a settled index, so shape is irrelevant by construction. Arch needed no index control and got `check-branch.sh`'s **verbatim message** (git surfaces `pre-commit` stdout directly), so the mute-block defect is gone too.
+  >
+  > **Your Phase-3 probe is now one call**: stage a throwaway `mailboxes/` file and commit it **compound**, on your non-main branch. **BLOCK naming `check-branch.sh` = PASS.** A control non-mail commit on the same branch must still be **allowed**.
+  >
+  > ⚠️ **CLEANUP — use these EXACT commands, and put nothing else in the call** *(Arch hit this cleaning up its own probe)*:
+  > ```bash
+  > git restore --staged mailboxes/<role>/inbox/ZZZ-probe.md
+  > rm -f mailboxes/<role>/inbox/ZZZ-probe.md
+  > ```
+  > **Why it must be literal**: a gate-blocked commit **still leaves the file staged** (`git add` already ran). The surviving advisory `PreToolUse` layer has a **leaky predicate** — it matches a call containing `git commit` *anywhere*, not just as the first token — so if you batch cleanup with anything containing `git commit`, it fires, sees the still-staged probe file, and **blocks your whole cleanup call with no explanation.** A reasonable person batches those and gets stuck.
+  >
+  > ⚠️ **RESIDUAL HOLE, measured 2026-07-29 — `--no-verify` + compound bypasses BOTH layers.** Full truth table, probed on this seat:
+  >
+  > | staging | flag | advisory PreToolUse | `pre-commit` gate | result |
+  > |---|---|---|---|---|
+  > | prior call | normal | blocks | blocks | ✅ covered twice |
+  > | same call (compound) | normal | exits 0 (index empty at fire) | **blocks** | ✅ covered by the gate |
+  > | prior call | `--no-verify` | **blocks** | skipped | ✅ **advisory ONLY** |
+  > | same call (compound) | `--no-verify` | exits 0 | skipped | ❌ **UNCOVERED** |
+  >
+  > **This is why the advisory layer is NOT retired** — row 3 is coverage the `pre-commit` gate structurally cannot provide, since `--no-verify` is defined to skip git hooks and `PreToolUse` fires at the harness layer regardless. The layers are **not redundant; they cover different rows.** Row 4 remains uncovered by any mechanism: **`mail-send.sh` (`commit-tree`, lands on `main`) is the sanctioned path and is safe by construction — prose discipline is what covers row 4.**
+  >
+  > ---
+  >
+  > <details><summary><strong>HISTORY — the index-state probe protocol (v1.8–v1.9), superseded by the gate above. Kept because the reasoning is the finding.</strong></summary>
+  >
   > ### ⚠️ **The variable is INDEX STATE AT HOOK-FIRE TIME — not command shape.** *(v1.8, superseding v1.5's shape framing.)*
   >
   > `check-branch.sh` decides via `git diff --cached --name-only`, and **PreToolUse fires BEFORE the Bash call executes.** So the only question is: *were the mailbox files already staged when the hook looked?*
@@ -86,6 +117,8 @@ The incoming instance completes these items.
   >
   > ⚠️ **Layer naming is NOISE.** The relative-vs-absolute script path in the refusal does **not** tell you which layer caught it — three identical consecutive calls on one seat named project → user → user. Do not read alternation as information. *(Still don't consolidate the layers — but on general caution about removing redundancy you don't understand.)*
   >
+  > </details>
+
   Stage a throwaway file under `mailboxes/` on your non-main branch and attempt `git commit`. **Key on ATTRIBUTION, not on outcome or output volume**: a refusal that *names the hook* (`check-branch.sh`) = **PASS** · commit **succeeds** = **FAIL**, stop and escalate · refusal citing the **permission classifier** = **INCONCLUSIVE, not a pass** — the classifier can intercept before hooks run, so it tells you nothing about hook liveness; do not work around it, find a clean seat. Note a genuine block may surface as `hook error: [check-branch.sh]: No stderr output` because the script writes to stdout — **that is a PASS** (the hook is named), not a silent failure. Reverse the probe; push nothing. *(Source: HOST agent #2, Jul 25 — the gate caught three pre-commit hooks that had never fired on any machine since introduction. It worked because failing was a defined, pre-authorized outcome; framed as "confirm hooks work," it would have confirmed them.)*
 - [ ] **Verify branch currency** *(v1.4)*: `git fetch origin && git rev-list --count HEAD..origin/main` — **expected 0**. A worktree cut from a stale role branch inherits weeks of staleness silently, with no error (CIO's arrived 5,393 commits behind: a six-week-old CLAUDE.md, briefings, and mailboxes that all looked like working state). Run it even when provisioning asserts currency upstream — an assert nobody verifies downstream is exactly the class of mechanism this checklist keeps finding silent. **Second reason, which is the one that actually pays**: it refreshes *the instructions you are about to follow*. HOST's check pulled in a materially revised first-session prompt it had already read.
 - [ ] **Verify each stated invariant by running it** *(v1.3)*: Don't check that a connection exists — check that it works the way the handoff says it does, by running the actual command. Bare reachability ("can I reach X") can pass even on the wrong path. For SSH: run a command that exercises the correct key path. For API keys: make a real call. For scripts: run them. *(Source: Pard/Janus field-test Jul 22 — SSH config reached the host at the wrong key level; bare reachability passed, but the correct command failed.)*
@@ -210,6 +243,8 @@ For the Jul 25 cohort (Code → Amber/pipermorgan.ai):
 ---
 
 ## Changes from v1.4.x
+
+**v2.0 (2026-07-29) — ✅ RESOLVED at the mechanism: a real `pre-commit` gate replaces all of the probe archaeology below.** Pard installed it (delegating to `check-branch.sh` rather than copying, so the gate cannot fork from its advisory twin); Arch confirmed on **seat 2, a live Model-A agent worktree** — compound mail commit BLOCKED with the **verbatim** message, control allowed, **no index control needed**. Because a `pre-commit` hook reads a *settled* index, **shape is irrelevant by construction**: the two-shape probe, index-state control and the stage-separately mitigation all retire, and the mute-block defect evaporates (git surfaces `pre-commit` stdout directly). Guarantee restated in per-commit terms (Arch's wording). **Two things added that are cheap and non-obvious**: the *literal* cleanup commands, because a gate-blocked commit leaves the file staged and the surviving advisory layer's leaky predicate then blocks any batched cleanup containing `git commit` anywhere — Arch hit exactly that; and a measured **truth table** showing `--no-verify` + compound bypasses **both** layers, which is also **why the advisory layer is NOT retired** (it is the sole coverage for `--no-verify` with a pre-staged index — the layers are not redundant, they cover different rows).
 
 **v1.8 (2026-07-29) — the gate now probes INDEX STATE, not command shape. This supersedes v1.5's framing below; read v1.5 as history.** `check-branch.sh` reads `git diff --cached --name-only` and PreToolUse fires *before* the Bash call, so the only question is whether the mailbox files were already staged when the hook looked. **CXO ran the cell that settles it** — pre-dirty the index, then fire a *compound* commit: shape-dependence predicts bypass, index-state predicts block, **and it blocked.** Shape merely correlates (a compound call stages inside the call being gated; a standalone is staged in a prior one), which is why v1.5's 4/4 and 7/10 figures fell out structurally and are no longer quoted as causal. New probe table controls the index explicitly, and the carry-over warning is promoted: **a blocked commit never runs, so its file stays staged and arms the next probe** — print `git diff --cached --name-only` before every probe and after every block, or you can run "both shapes," see block/block off a dirty index, and certify a gate you never tested.
 
