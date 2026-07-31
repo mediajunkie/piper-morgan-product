@@ -53,6 +53,15 @@
             "command": "bash .claude/hooks/issue-checkbox-lint.sh"
           }
         ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/memory-index-overlimit-warn.sh"
+          }
+        ]
       }
     ],
     "PreCompact": []
