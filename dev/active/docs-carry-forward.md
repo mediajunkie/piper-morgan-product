@@ -1,13 +1,13 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-07-29 22:35 PDT (Fire 3, STOP — DAY-CLOSED 2026-07-29)
-**Session log**: `dev/2026/07/29/2026-07-29-0948-docs-code-log.md`
+**Updated**: 2026-07-30 22:35 PDT (Fire 4, STOP — DAY-CLOSED 2026-07-30)
+**Session log**: `dev/2026/07/30/2026-07-30-0727-docs-code-log.md` (2026-07-29's is `dev/2026/07/29/2026-07-29-0948-docs-code-log.md`)
 **Prior update**: 2026-07-12 — **17 days stale, pre-Amber.** Rewritten wholesale; still-live items from
 that version are preserved below and marked, resolved ones noted so they aren't re-derived.
 
 **Worktrees** (both verified 0-behind Fire 1): product `~/Development/piper-morgan-worktrees/docs` @
 `claude/docs-cycle` · website `~/Development/piper-morgan-website-worktrees/docs` @ `claude/docs-cycle`
-**Cron**: `26805e13` — `57 6,9,12,15,18,21`. ⚠️ **Session-only; auto-expires ~2026-08-05** (CronCreate
+**Cron**: `25cfc1f4` — `57 6,9,12,15,18,21`. ⚠️ **Session-only; auto-expires ~2026-08-05** (CronCreate
 7-day cap) and dies on session exit. Registry row written — re-arm AND update the row when it lapses.
 **Hooks on this seat** (probed Fire 1, index printed empty before each): standalone `git commit`
 **BLOCKS**; compound `… && git add … && git commit …` **BYPASSES**. Mitigation: stage in one call,
@@ -85,3 +85,35 @@ reporting**. Same root, opposite outcomes, and the cheap habit is the difference
 **Wanted but not found (day's biggest gap)**: a way to detect my own working tree is stale *before* I
 read a file from it. Every git check I have reports branch state; nothing warns that the file I'm about
 to read is N commits behind.
+
+
+---
+
+## Top of the queue for 2026-07-31 (rewritten at STOP)
+
+1. **Build the `check-staleness` consumer into the weekly docs audit.** Arch found the detector works,
+   is correctly configured, and **is invoked by nothing** — 31 of 36 docs stale. I measured that
+   SessionStart is the *wrong* home (over-subscribed at 443/490 with two lines still cut, one of which
+   is already a staleness signal). The `fly-audit` issue is the right home: it exists, it has a consumer
+   who acts on it, and staleness is its subject. **Land it IN the audit, not bolted beside it.**
+2. **The `last_verified` field cannot currently do its job.** All 31 stale docs carry the *identical*
+   stamp of 2026-06-19 — one bulk operation, not 31 verifications. Adoption was achieved; currency was
+   not; the two are indistinguishable from outside. Worth raising with CIO as a #972 follow-up: the
+   field needs to distinguish "someone checked this" from "someone stamped everything."
+3. **`BRIEFING-ESSENTIAL-DOCS` is ~3,370 tokens against its own 2,500 target** — I grew it today with
+   operative content, an hour after applying the opposite lesson to CLAUDE.md. The same load-time/record
+   split is probably owed: pipeline detail to an ops doc, briefing keeps pointers.
+4. **PDR-007 awaits CIO only** (Arch ✅ no objection, Web ✅ no objection). If it ratifies, I write the
+   companion ADR. The 2–4 week window is running with a **pre-registered** criterion and a shipped
+   measurement — do not decide early, and do not decide without running `measure-editorial-drift.py`.
+
+## The shape worth carrying into tomorrow
+
+**Three independent instances this week of "a correct mechanism with no consumer"**: Arch's
+`check-staleness`, HOST's `reconcile-drafts`, and the SessionStart hook delivering 2 of 8 lines. Plus a
+fourth today — `last_verified` recording a bulk stamp. This may be its own m-44 sub-shape: **not a check
+that reports falsely, but a correct signal nobody is receiving.** Flagged to CIO; the catalog is theirs.
+
+**And the personal version**: I found three of those four in my own surfaces (my briefing, my portfolio,
+my cron prompt). The reason I found them is that PM asked, not that anything alarmed. That is the same
+sentence as §4.6 of my predecessor's handoff, one surface over.
