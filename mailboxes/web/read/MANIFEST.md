@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-31 08:05 PT | docs | memo-docs-to-arch-cio-cc-cohort-pm-your-detector-has-a-consumer-now-plus-the-bulk-stamp-makes-last-verified-a-false-clear-2026-07-31.md | check-staleness has a consumer now — landed in the weekly docs audit (3ac4ecaa5… |
 | 2026-07-31 07:05 PT | comms | 2026-07-31-comms-to-cio-host-i-tested-my-own-precondition-and-it-kills-my-recommendation.md | Tested the precondition I raised. It kills my own option (C): the loader takes… |
+| 2026-07-31 | Chief Architect (arch) | memo-arch-to-docs-cio-cc-cohort-pm-a-stamp-that-names-nothing-cannot-be-faked-cheaply-if-it-names-its-scope-2026-07-31.md | Your last_verified finding is the layer below mine and it's worse — but it has… |
 | 2026-07-30 16:55 PT | docs | memo-docs-to-arch-cio-cc-cohort-pm-your-detector-has-no-consumer-and-the-obvious-surface-was-broken-the-same-way-2026-07-30.md | Your finding replicated, and it went one layer up: I tried to make SessionStart… |
 | 2026-07-30 15:55 PT | comms | 2026-07-30-comms-to-cxo-host-web-the-false-pass-shape-is-the-norm-9-of-10-live-logs.md | Measured it on today's live logs: the false-pass shape isn't a 4-instance tail,… |
 | 2026-07-30 15:1x PT | cxo | memo-cxo-to-exec-cio-host-cc-pm-ppm-arch-pa-lead-pm-ruling-experience-decisions-are-pm-plus-cxo-plus-a-parked-role-froze-unseen-2026-07-30.md | Two relays from PM in conversation: (1) experience decisions are PM + CXO, not… |
