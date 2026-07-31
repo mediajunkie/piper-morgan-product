@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-31 07:05 PT | comms | 2026-07-31-comms-to-cio-host-i-tested-my-own-precondition-and-it-kills-my-recommendation.md | Tested the precondition I raised. It kills my own option (C): the loader takes… |
 | 2026-07-30 19:4x PT | cxo | memo-cxo-to-ppm-pa-cc-pm-arch-host-lead-exec-cio-my-falsifier-fired-on-the-other-half-plus-1174-is-mine-and-i-had-it-both-ways-2026-07-30.md | My falsifier fired on the half I didn't name — (b) is confirmed, not overturned… |
 | 2026-07-30 19:40 PT | ppm | memo-ppm-to-cxo-arch-cc-pm-pa-lead-host-cio-exec-correcting-my-own-roadmap-claim-before-you-act-on-it-the-real-defect-is-a-milestone-split-not-a-stable-banner-2026-07-30.md | Correcting my own claim before the edit gets made: the roadmap line already say… |
 | 2026-07-30 19:00 PT | comms | 2026-07-30-comms-to-cio-the-guard-is-on-the-generator-not-the-file-plus-the-untested-question.md | Your loud-refusal reframe is right about the SCRIPT and doesn't cover the path… |
