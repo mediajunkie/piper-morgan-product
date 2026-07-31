@@ -10,20 +10,43 @@ Green-lit 2026-07-30 by **CXO** (Probe A verdict) and **PPM** (Probe B verdict).
 | **Probe A** — honesty under recomposition | ✅ **written and runnable** (`probe_a_recomposition.py`) · ⛔ **not yet run — blocked on credential access** |
 | **Probe B** — tool-naming vs selection accuracy | ⬜ not yet written |
 
-## ⛔ The blocker, precisely
+## ⛔ The blocker — PM authorized the run (7/31) and it STILL cannot run. That is the finding.
 
-The script resolves no API key, because **there is no `.env`** — not in the shared checkout, not in any
-worktree. The Anthropic key lives in the **macOS Keychain** via `services/infrastructure/keychain_service.py`
-(the service appends `_api_key` to account names).
+**PA is authorized to spend the credential. The credential is not where the code looks.**
 
-⚠️ **This also means CLAUDE.md's "restart the server" gotcha is stale in one detail**: it says an
-inherited empty `ANTHROPIC_API_KEY` "shadows the real key in `.env`", and prescribes `env -u ANTHROPIC_*`.
-**The `env -u` advice is still right**, but there is no `.env` for it to unshadow — the real key comes
-from Keychain. Worth a correction where that gotcha lives.
+Verified, in the app's own resolution order (`services/config/llm_config_service.py:213` →
+keychain first, then env):
 
-**PA has not reached into the Keychain.** Pulling PM's credential to fund an experiment PM didn't
-specifically authorize is a different act from the app using it in normal operation, and the cost —
-though small — is PM's. Asked rather than assumed.
+| Step | Result |
+|---|---|
+| Any dotenv file (shared checkout, any worktree) | ❌ **none exists** |
+| keyring backend | ✅ live — `keyring.backends.macOS`, **not** the fail backend |
+| Keychain `piper-morgan` / `anthropic_api_key` | ❌ **absent** (account format confirmed at `keychain_service._get_key_name`) |
+| Keychain `piper-morgan` / `openai_api_key` | ❌ absent |
+| env `ANTHROPIC_API_KEY` | ❌ empty by design in a Claude Code shell |
+
+Username-scoped variants (`{username}_anthropic_api_key`) are possible but **PA did not guess at one** —
+guessing credentials is explicitly out of bounds.
+
+### ⚠️ The implication beyond this probe
+
+**By the code's own resolution order there is no Anthropic key available on this machine right now.**
+The `_db_store` fallback (#1382) activates only when there's *no* real keyring backend, and the macOS
+backend is live — so the app would take the same empty path.
+
+If that's right, **the server's LLM calls would currently fail**, presenting exactly as CLAUDE.md's
+documented symptom: *"All configured LLM providers failed… APIConnectionError."* CLAUDE.md attributes
+that to an inherited empty env var shadowing a real key in a dotenv file — but **there is no dotenv file,
+and the keychain entry is absent too**, so the documented cause and the documented cure both describe a
+setup that no longer exists.
+
+**PA is flagging, not asserting the server is broken** — it may be run with a real env var exported, or
+the key may live under a username-scoped account. **That question is PM's to answer; it is not guessable.**
+
+### The minimal unblock
+
+Any one of: the username the key is scoped under · a one-run `ANTHROPIC_API_KEY` in the environment ·
+or storing it via `KeychainService.store_api_key("anthropic", …)`, which is the path the app expects.
 
 ## To run once unblocked
 
