@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-DOCS
 valid_from: "2026-03-19"
-last_updated: "2026-03-19"
-last_verified: "2026-06-19"
+last_updated: "2026-07-30"
+last_verified: "2026-07-30"
 ---
 
 # BRIEFING-ESSENTIAL-DOCS
@@ -31,7 +31,7 @@ last_verified: "2026-06-19"
 
 ## Critical vs. Commodity Work in This Role
 
-Per Apr 22–26 leadership migration §6 reflections (Proto-Pattern PP-002). Docs did not migrate (always on Code), so this distinction is observed from operating pattern rather than self-reflection — open to refinement.
+Per Apr 22–26 leadership migration §6 reflections (Proto-Pattern PP-002). ⚠️ **Corrected 2026-07-30**: this previously read *"Docs did not migrate (always on Code)"* — **Docs migrated to Amber on 2026-07-29** and the predecessor wrote a proper §4/§6 handoff (`dev/active/docs-handoff-2026-07-28.md`). Read that handoff; it is first-person, marks every claim VERIFIED or BELIEVED, and its §4.1 (*read the artifact, not testimony about it*) and §4.6 (*the omnibus is this role's most fragile deliverable, because nothing alarms on it*) are the two that cost the most.
 
 - **Load-bearing**: **omnibus synthesis** across multiple agents (multi-role coordination threading, pattern detection across timeline, recognizing when a day's work crosses a methodology threshold); **canonical-verification discipline** (Step 7 — never paraphrase canonical content from omnibus summaries; open the canonical doc); **methodology custodianship and evolution** (Excellence Flywheel v2 reformulation, NAVIGATION.md path splits, migration checklist refinement across seven migrations, briefing structural evolution per role-correction memos); **merge-keeper protocol** (Apr 27 onward — branch-state janitorship for cross-agent durability).
 - **Commodity**: mailbox shuttling and per-memo distribution mechanics (write file, copy to N inboxes, update manifests, commit-and-push); editorial calendar bookkeeping (row updates, status changes, syndication URL population); session-log archival between sessions; routine NAVIGATION.md updates.
@@ -58,11 +58,16 @@ The discipline: protect time for omnibus synthesis + canonical verification + me
 - See `docs/internal/development/memo-format-guide.md` for full spec
 - Mailboxes are committed to git — mail is the cross-agent signaling layer (mailbox writes go to `main` only, never on feature branches)
 
-**Blog Metadata Pipeline** (cross-repo, `piper-morgan-website`):
-- Source of truth: `data/blog-metadata.csv` (slug, hashId, imageSlug, category, pubDate)
-- Build: `node scripts/fetch-blog-posts.js` → generates `src/data/medium-posts.json` + `src/data/blog-content.json`
-- RSS provides content; CSV provides metadata (imageSlug, category)
-- After CSV edits, run fetch script, verify JSON output, commit and push to website repo
+**Blog Metadata Pipeline** (cross-repo, `piper-morgan-website`) — *substantially rewritten 2026-07-30; the previous version described only the fetch script and predated `publish-post.js`*:
+
+- **⚠️ YOUR LANE SPANS TWO REPOS.** You have a *second* worktree at `~/Development/piper-morgan-website-worktrees/docs` on `claude/docs-cycle`. Work there, push to its `origin/main`. Confirm both worktrees are 0-behind before your first publish — the shared website checkout runs behind and publishing from it was retired 2026-07-29.
+- **Publishing is one command, not a manual pipeline**: `node ../../piper-morgan-website-worktrees/docs/scripts/publish-post.js` — it parses the draft, generates the hashId, converts to HTML, preps the image, appends the CSV row, writes `blog-content.json`, and runs sync + fetch. It stops before commit so you review the diff. Follow the `publish-to-blog` skill; its **Step 0 is "check the editorial calendar first"** and inverting that order is itself the bug.
+- **`--work-date` is mandatory.** Omitted, it silently writes *today* into the CSV's `workDate` column — a false value in a source-of-truth file, invisible in both the dry-run and the rendered post.
+- **Dry-run first, but know its limit**: it skips sync+fetch, so it cannot catch a missing toolchain. On Amber, `cwebp` and Pillow are both absent and `sips` cannot emit webp; image prep falls through to `sharp` (added 2026-07-30).
+- **Editorial calendar is MULTI-WRITER with ownership by column** (PM-ratified 2026-07-29, `update-calendar` v1.4). Docs owns `blogURL`/`blogPath`/`canonicalSite`/`mediumURL`/`liPubDate`/`linkedinURL`; Comms owns the editorial columns; `status` is shared *sequentially*. **Write your own columns; don't route others' through your inbox.**
+- **Run `scripts/validate-editorial-calendar.py` after every calendar edit.** It catches column shift — a value in the wrong column while the field count stays a valid 18, which no count-based check can see and which has bitten twice.
+- **If you move a draft file, update `draftPath` in the same pass.** Archival-without-row-update created all 7 stale paths repaired 2026-07-29.
+- Ships syndicate to LinkedIn; building narratives and insights to Medium. Step 9 archival is gated on a confirmed syndication URL.
 
 **dev/active/ Triage**:
 - Archive stale files to `dev/YYYY/MM/DD/` date folders
@@ -75,10 +80,10 @@ The discipline: protect time for omnibus synthesis + canonical verification + me
 
 Per CLAUDE.md "Sign-Off Discipline" — the agent's responsibility is sign-off correctness; two reactive safety nets back-stop discipline lapses:
 
-1. **PreCompact hook** (`.claude/hooks/precompact-signoff-warning.sh`, Lead Dev ship 2026-05-08, severity-tiered 2026-05-11) — fires *before* context compaction with HARD/SOFT/QUIET tiers. Logs all firings to `dev/active/session-end-warnings.log` for the merge-keeper sweep.
-2. **Docs merge-keeper sweep at session start** — this discipline. Catches anything the PreCompact hook didn't surface or the agent skipped.
+1. 🟡 **PreCompact hook** (`.claude/hooks/precompact-signoff-warning.sh`) — **DO NOT RELY ON THIS. Corrected 2026-07-30.** This section previously described it in the present tense as firing before compaction and *"logging all firings to `dev/active/session-end-warnings.log` for the merge-keeper sweep."* **That log file does not exist and never has** — verified against the full git history, not just the working tree. The hook was suspended 2026-05-16 (its `exit 2` was freezing sessions), re-wired at user level 2026-07-25 with warn-only semantics, and **has still never been observed to fire**, because you cannot force a compaction on demand. **If you compact and see no sign-off warning, that is a finding worth reporting, not a non-event.**
+2. ✅ **Docs merge-keeper sweep at session start** — this discipline. **Treat it as the only net you can count on.**
 
-The **session-end-warnings.log is gitignored** by design (ephemeral, per-machine); the merge-keeper sweep only sees PM's primary-machine log. Cross-machine archival is a v2 question, not v1.
+**The lesson this section is now itself the case study for**: a safety net you haven't seen fire is a claim, not a mechanism. This briefing asserted a working backstop for ten weeks on the strength of its config existing. Do not repeat that here — if you find another net described in the present tense that you cannot confirm behaviorally, correct the text rather than trusting it.
 
 **At every session start**, before doing other work:
 
@@ -114,7 +119,9 @@ done
 ```bash
 # 1. Create session log
 mkdir -p dev/$(date +%Y/%m/%d)
-# Create: dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-docs-code-opus-log.md
+# Create: dev/YYYY/MM/DD/YYYY-MM-DD-HHMM-docs-code-log.md
+#   (NOT -opus-/-sonnet-: model goes in the log HEADER, not the filename, since 2026-06-29.
+#    Historical logs keep their old names — leave those as-is.)
 
 # 2. Run the merge-keeper sweep (see "Merge-Keeper Sweep" section above)
 # This is now MANDATORY before other work, not optional
