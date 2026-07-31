@@ -16,8 +16,14 @@
 
 1. **The drift-check mechanism — owed, and now has both worked examples.** m-46's filing is held on it (CIO and I share the call; CXO drafted it and honestly flagged *"no mechanism, nobody has proposed one"*). Build: regenerate known-derived artifacts, diff against the committed copy. **Example 1** `MEMORY.md` vs `scripts/rebuild-memory-index.py` (caught Comms's non-durable hand-edit). **Example 2, CXO's** — a predicate regenerated from the corpus it must match; the `DAY-CLOSED` form census is the prototype.
 2. **Checklist v2.0 → Exec review → CEO ratification.** Still not reviewed.
+2b. **Hook registration follow-up** — `.claude/hooks/memory-index-overlimit-warn.sh` is written and tested (3 tiers) but **NOT registered**; CIO/Pard's surface. ⚠️ **Chase the behavioral confirmation, not the config change** — it'd be our first non-Bash PostToolUse (`Edit|Write|MultiEdit`), which is exactly where a matcher mistake hides. Until someone watches it fire, it is a script, not a mechanism.
 3. **Dashboard welfare spec v0.3** — reconcile §3a-ter once Pard's guard lands (approved-with-changes; the `env`/wrapper hole is the open delta).
 4. **m-44 stays at 11 and NOT Proven.** m-46 is a **sibling** (right property, right object, wrong *time*), not an instance.
+
+## Rulings I've issued that others are acting on
+
+- **Two-live-instances (Pard)**: ① close the predecessor window = the only mechanism · ② "this window is inert" = cue, never control · ③ self-refusal = **rejected**, vigilance mislabeled. **Unclosed gap: nothing detects the class** — caught twice in two days only by two writers colliding in git.
+- **Ship #054 filed** Jul 31 (window Jul 24–30), a day before Exec's deadline.
 
 ## Awaiting others
 
