@@ -15,22 +15,27 @@ PM-attention items live **here**, in the section immediately below.
 
 ## PM Attention
 
-*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-07-30 PM.)*
+*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-07-31 PM.)*
 
-- 🔴 **PDR-006 IS READY FOR YOUR RATIFICATION. All three reviews in, all RATIFY, no objections** —
-  Arch 7/29, CXO 7/30, PPM 7/30. A PDR is PM-ratified; the reviewers are done and the decision is yours.
-  **Nothing is blocked on the signature** — PA is working Phase 0 either way.
-  *Worth 30 seconds before signing*: the reviews found a **defect in the document's own success
-  criteria** — all three originals were *setup* criteria and none could fail for "installed fine,
-  answered correctly, demonstrated nothing," which is Jake's session exactly. **Same defect class as
-  #1386's beta gate**, from the other direction. One binary criterion added (cold account + one
-  connector → user's own data in the first exchange, unprompted); it's the only one that fails today.
-  ⚠️ **Ratified ≠ shippable**: #1458 (cross-caller isolation) and the recomposition rubric gap both
-  remain open as pre-user gates.
-- ⏰ **OpenAI identity verification — still the only PM ACTION outstanding, and still unstarted.**
-  PM committed to Thu 7/30; not done as of this writing. **platform.openai.com → Settings →
-  Organization → General → "Verify Organization"** — government ID, a few minutes. The only item with
-  an **external clock**; gates the ChatGPT lane and nothing else gates it.
+- ⛔ **DO NOT RUN THE OPENAI VERIFICATION UNTIL THE ORG IS CHOSEN — an ID verifies ONE organization per
+  90 DAYS.** *(Verified 7/31 against OpenAI's help centre; PA had been pushing this item for 12 days as
+  "a 5-minute unblock with no dependencies" and **it has one**.)* PM said 7/31 they expect to verify
+  **today**, while **mid-migration** of their ChatGPT base to the design-and-product account. **Wrong
+  pick ⇒ the right org is blocked until ~29 October.** kindsys closed 7/30 — never verify there.
+  **The question: which OpenAI org will own the Piper Morgan ChatGPT listing?** Candidates:
+  design-and-product (where PM's ChatGPT base is moving) vs pipermorgan.ai (where the Claude side and
+  the whole cohort live). ⚠️ **Those are diverging** — worth 10 minutes now rather than a quarter later.
+  Everything about the *process* is unchanged; only the *ordering*.
+- 🔴 **Provision the Amber LLM keys — still absent as of 13:11 today.** One step, unblocks **four lanes**
+  (#1386 criterion 2, PA's Probe A, #1445, #1395). Must go via `KeychainService` semantics, **not** the
+  `security` CLI. Exact one-liner given in chat 7/31 (`keyring.set_password('piper-morgan',
+  'anthropic_api_key', …)` with `getpass`, so the key never hits screen or shell history).
+  ⚠️ The #1382 encrypted-DB fallback does **not** cover this — it only activates without a real keyring
+  backend, and Amber's macOS backend is live.
+- ✅ **PDR-006 RATIFIED — PM, 2026-07-31**, *"And yes I do ratify PDR 006."* Recorded by Arch in the
+  corpus + `decisions.log`; the three Architect conditions are written **into** the PDR so the
+  implementation epic inherits them. **No PA action; no PM action.** ⚠️ **Ratified ≠ shippable** —
+  #1458 and the recomposition rubric branch are both open pre-user gates.
 
 ### Closed since 7/29 — no PM action
 
