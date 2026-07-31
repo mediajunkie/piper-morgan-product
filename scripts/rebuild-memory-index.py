@@ -74,7 +74,13 @@ def parse(path: Path):
     return desc, (mtype or "(untyped)")
 
 
-files = sorted(p for p in MEMDIR.glob("*.md") if p.name != "MEMORY.md")
+# Exclude EVERY MEMORY*.md, not just MEMORY.md itself. Any index-shaped sibling —
+# a per-type router file (MEMORY-feedback.md), a load-probe, a hand-kept variant — is an
+# INDEX, not a memory, and indexing it would list a build output as if it were source.
+# Latent until 2026-07-31: the per-type-router option under discussion that week would
+# have had every router file silently indexed as a memory entry, each consuming one line
+# of the very budget the split existed to relieve. Caught before it shipped, not after.
+files = sorted(p for p in MEMDIR.glob("*.md") if not p.name.startswith("MEMORY"))
 buckets = {}
 for p in files:
     desc, mtype = parse(p)
