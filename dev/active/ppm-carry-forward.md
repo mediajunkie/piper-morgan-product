@@ -1,7 +1,7 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-07-30 ~17:40 PT (Fire 1, Amber, cron live)
+**Last rewritten**: 2026-07-30 ~19:45 PT (Fire 2, Amber, cron live)
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -28,8 +28,8 @@ by fact rather than by ruling: PPM runs on Amber.**
 | **Jul 19 log** | ✅ Retroactively closed 2026-07-28 (had no DAY-CLOSED marker, flagged by Exec's kickoff) | None |
 | **#1386 gate run** | Unblocked since 7/20 (beta v25 carries both Scenario-B fixes per 7/26 log). **TOP ITEM per the Amber session's own priority call** | Schedule with Lead + CXO directly (~half a day) |
 | **Jake Krajewski alpha FTUX** | ✅ **PPM roadmap lens sent 7/30** — 4th of 4, unblocked Exec's synthesis. Bucket-sort by which surface survives PDR-006; #1386 cannot fail for what Jake reported | Await Exec synthesis → **I file the issues same day** |
-| **PDR-006 + Q2** | ✅ **PPM review RATIFY sent 7/30** — was the last outstanding (Arch ✅, CXO ✅). Ratification unblocked | Watch for ratification; I owe the implementation epic (PDR says "issue TBD") once it lands |
-| **Spatial committed-theory** | ✅ **PPM slice delivered 7/30** — concur (b). L3-beyond-GitHub NOT promised (roadmap classes connectors "indoor plumbing (commodity)"); **L4 IS promised — #1174 OPEN/Production + differentiator 4 of 4, zero implementation** | 3 options to PM; on PM's pick I make the roadmap qualifier + #1174 re-scope |
+| **PDR-006 + Q2** | ✅ **RATIFY sent 7/30 — all three reviews in; PA sent it to PM for ratification**. CXO drafting the PDR-004 amendment (Layer-B decision ratification, my reframe accepted); rubric branch OPEN, PA running Probe A on Claude + GPT | Watch for PM ratification → **then I draft the implementation epic** (PDR still says "issue TBD") |
+| **Spatial committed-theory** | ✅ **PPM slice delivered 7/30; Arch + CXO both concur (b)**. L3-beyond-GitHub NOT promised (connectors = "indoor plumbing (commodity)") → cold island disposes with no roadmap consequence. **L4 finding CORRECTED at Fire 2**: the roadmap line already says "(M4 territory)" — honest labeling, my Stable-banner claim was overstated and withdrawn. **Real defect = milestone split: roadmap says M4, #1174 says Production, and M4 has not run.** CXO owns #1174, took option (i), doing discovery with HOST | **Blocked on CXO's milestone call**; I make the roadmap-side change once they pick. Do NOT make the `stable`→`intended` edit — it would make the roadmap less accurate |
 | **Hooks** | ✅ **SETTLED.** Defect was TOCTOU (PreToolUse fires before the gated command, so a compound `add && commit` is judged against an empty index). Pard installed a real `.git/hooks/pre-commit` in the **common dir** — covers all worktrees by construction. **Do NOT probe** (v1.22 retired the probe apparatus); verify the hook file exists | Closed for PPM |
 | **#1394 / ADR-078** | ✅ Architecture COMPLETE (unchanged since 7/16, reconfirmed OPEN-pending-D5-probe by 7/26 session) | Watch only |
 | **Beta Blockers sprint recount** | Not possible — `gh` token lacks `read:project` scope (found by 7/26 session). Last real count: 21 open at 7/16 close | Needs `gh auth refresh -s read:project` — PM's call |
