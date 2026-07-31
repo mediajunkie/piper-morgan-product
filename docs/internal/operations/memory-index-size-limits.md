@@ -79,6 +79,18 @@ Two defects in it, both measured 2026-07-30:
 
 **The corollary that makes this urgent rather than merely annoying**: the failure mode is silent truncation, so the cost of *not* deciding is that entries start disappearing from every agent's context with no notification. Deferring is not neutral. *(Caveat per the tested-vs-assumed note above: the truncation-on-read half is taken from the changelog, not from a probe.)*
 
+### Open but deliberately UNRUN: does the loader follow a pointer to per-type index files? (2026-07-31)
+
+**Strong evidence it does not.** Comms measured it: the memory directory holds 174 `.md` files and **exactly one — `MEMORY.md` — is in an agent's context.** The other 173 sit unloaded, reachable only by opening a slug by hand. `rebuild-memory-index.py` writes exactly one path. So the auto-loaded surface is *one named file*, not a directory or a glob — and that isn't an inference about what the loader would do, it's the observed steady state with 173 counterexamples in it.
+
+**Consequence: the per-type-router option is not a ceiling raise.** It moves most entries off the auto-loaded surface onto a manually-opened one, so its capacity gain comes from the same place as "drop the descriptions" — plus an indirection, plus a vigilance dependency for everything outside the router file. Comms raised it, tested it, and **withdrew it against their own recommendation.**
+
+⚠️ **The decisive test exists and is deliberately NOT run.** Nothing rules out the loader special-casing a `MEMORY-*.md` glob; proving it needs a session that starts *after* a probe file is placed. **No live decision depends on the answer**, so running it would settle a question nobody is asking while touching the shared pool. If a future structural proposal revives it, the method is:
+
+> place `MEMORY-loadprobe.md` containing a distinctive sentinel → have the **next role to start a fresh session** report whether the sentinel is in their context → delete the probe.
+
+**This became safe to run only on 2026-07-31.** Until then `rebuild-memory-index.py` globbed `*.md` excluding only `MEMORY.md`, so any `MEMORY-*` sibling — a probe, or a real router file — would have been **indexed as a memory**, each consuming one line of the very budget a split exists to relieve. Fixed in `471db5c74`; the generator now excludes every `MEMORY*`.
+
 **Which fix to pick, on the property that actually decides it**: prefer any lever that is a **generator change** (per-type split, denser form, dropping descriptions) over the one that deletes source. Not because generator changes are cheaper — because they are **reversible by re-running the script**, and the deletion is not. After this thread, treat reversibility as the deciding property rather than a footnote.
 
 ## Entry format
