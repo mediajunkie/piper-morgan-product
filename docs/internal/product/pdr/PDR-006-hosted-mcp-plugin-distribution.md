@@ -1,7 +1,20 @@
 # PDR-006: Hosted MCP Endpoint + Plugin Distribution Model
 
-**Status**: ✅ **ALL REVIEWS COMPLETE — Arch ✅ (7/29), CXO ✅ (7/30), PPM ✅ (7/30). All three: RATIFY, no objections.**
-**➡️ AWAITING PM RATIFICATION** — a PDR is a product decision record and PM-ratified; the reviewers' job is done, the ratification is PM's to make. PM approved the *direction* 2026-07-19.
+**Status**: ✅ **RATIFIED — PM, 2026-07-31.**
+
+> **PM, verbatim, in conversation with Exec, 2026-07-31 ~11:00 PT: *"And yes I do ratify PDR 006."***
+
+**Evidence trail** (per the in-conversation-relay norm — PM decisions made in chat are recorded durably, not left there): relayed by Exec to Arch + PA, `memo-exec-RELAY-to-arch-pa-...-PDR-006-RATIFIED-by-pm-in-conversation-2026-07-31.md`; formal record made by Arch per Exec's ask. Reviews that gated it: **Arch ✅ 7/29** (Q2 resolved against running code), **CXO ✅ 7/30**, **PPM ✅ 7/30** — all three RATIFY, no objections. PM approved the *direction* 2026-07-19; this ratifies the decision.
+### ⚠️ What ratification makes LIVE — the Architect conditions from the 7/29 review
+
+Ratifying the decision does **not** discharge the architectural conditions attached to it. These now bind the implementation epic rather than the document, and are recorded here so the builder inherits them without re-reading a memo:
+
+1. 🔴 **The MCP caller-identity boundary must be FAIL-CLOSED.** This is the one real architectural risk in the mechanism set. **Every MCP call must resolve to an `owner_id` before touching server state — no identity, no read, never defaulting to a system or anonymous owner.** The reason it is load-bearing: **all existing ADR-079 owner-scoping enforcement sits DOWNSTREAM of this mapping.** If a tool handler can reach a repository with a caller-chosen identity, the derived `check_unscoped_reads` lint cannot save us — the read *looks* correctly owner-scoped while the **owner** is the forged thing. A multi-tenant server is a strictly harder problem than the anonymous-caller one #1351 was scoped to.
+2. **Derive the tool catalog from the registry**; do not hand-maintain it. Precedents: ADR-072's frontmatter-derive, #1106's MANIFEST-derive, ADR-070 Amendment A's single `resolve_server_ref()` authority. A hand-kept catalog is a stale-list defect waiting to happen and we have three cures on the shelf.
+3. **Colleague-model access splits resources-for-reads / tools-for-writes.** MCP resources are app-controlled context (serving stored profile, colleague model, composted insights is exactly that); a mutating `update_*` is model-controlled and belongs as a tool. Option A's "client infers, server writes via an MCP tool call" is already the right write shape; the *read* side should be a resource so serving context does not require the model to decide to call something.
+
+⚠️ **And a conflation guard adopted from PA (7/30), recorded because the wrong inference is available and tempting**: `services/mcp/consumer/` is Piper as an MCP **client**; `mcp.pipermorgan.ai` is Piper as an MCP **server**. Opposite directions. **A live consumer family precedents NOTHING about the server side** — nobody should cite CORE-MCP-MIGRATION #198 as de-risking this PDR, because the server-side risk is condition 1 above.
+
 ⚠️ **Ratified ≠ shippable** — two pre-user gates remain open (see that section): [#1458](https://github.com/mediajunkie/piper-morgan-product/issues/1458) cross-caller state isolation, and the recomposition rubric branch.
 **✅ Ratification UNBLOCKED (2026-07-29).** ~~Q2 blocks ratification~~ — **Q2 is RESOLVED, and was never actually open.** PM ruled it **2026-01-08**: *"Start with rule-based (Option A), evolve to LLM later (#558)"* (`services/standup/preference_extractor.py:8`). Option A is **shipped**; the LLM evolution is **#558, OPEN, milestone Production (1.0), due 2026-10-30** — i.e. scheduled *after* this phase. **The "no server LLM" premise holds, on running code and precedent rather than assumption.** Arch verified empirically: zero LLM references across `services/mux/` (incl. the 584-line `composting_pipeline.py`) and across all four preference/personality modules.
 *Provenance note, because it's the lesson: PA elevated Q2 to a blocker on sound reasoning but did **not** check it against the running system — the PDR said "open," so PA treated it as open. Arch went and looked. **Verify-first applies to a document's own claims about itself.** Cost: ten days of blocked status on an already-decided question.*
