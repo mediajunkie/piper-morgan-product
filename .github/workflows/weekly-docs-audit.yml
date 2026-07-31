@@ -135,6 +135,28 @@ jobs:
               - [ ] Verify no stranded session logs outside \`dev/\` directory structure (spot-check \`dev/active/\`)
               - [ ] Note: Infrastructure verification, dev/active cleanup, and metrics are in the **Monthly Housekeeping Audit** (FLY-AUDIT Monthly — separate issue, first Monday of month)
 
+              ### 🕰️ Doc Currency Check (added 2026-07-31)
+
+              **Why this is here**: \`scripts/check-staleness.py\` has existed and worked correctly for weeks, is correctly configured, and **was invoked by nothing** — Arch found this 2026-07-30 while refreshing a portfolio that had been stale 40 days under its own weekly-refresh rule. The detector was never broken. **It had no consumer.** This section is the consumer.
+
+              - [ ] Run the detector and record the **ratio**, not the list:
+              \`\`\`bash
+              python3 scripts/check-staleness.py | tail -3
+              \`\`\`
+
+              - [ ] **Report as "N of M"**, never as a list of filenames. A list reads as a chore queue; the ratio reads as a systemic finding. (Arch's framing, and it is what made the original discovery land: *"33 of 36"* rather than 33 paths.)
+
+              - [ ] ⚠️ **Check whether \`last_verified\` values are CLUSTERED on a single date.** If most stale docs share one identical stamp, that is a **bulk stamp, not N verifications** — the field is recording one past operation rather than currency, and *adoption* has been mistaken for *currency*. Measured 2026-07-30: **all 31 stale docs carried the identical \`last_verified\` of 2026-06-19.**
+              \`\`\`bash
+              grep -rh "^last_verified:" docs/briefing/*.md docs/agent-protocols/*.md 2>/dev/null | sort | uniq -c | sort -rn | head -5
+              \`\`\`
+
+              - [ ] **Only stamp \`last_verified\` on a doc you actually verified.** Bumping the date without re-reading the claims is what produced the cluster above, and it converts a staleness detector into a false-clear generator.
+
+              - [ ] If any **essential briefing** or **role portfolio** is stale, note it — those are the docs new agents orient from, and a systemic failure there presents to each role as an individual lapse. **All ten portfolios and every \`BRIEFING-ESSENTIAL-*\` were stale simultaneously on 2026-07-30**, which is how we know the weekly-refresh rule had never operated for any role.
+
+              **Target**: the ratio is *reported* every week (the number itself is a cohort-wide matter, not the auditor's to fix alone). Docs-owned surfaces — \`BRIEFING-ESSENTIAL-DOCS.md\`, \`ROLE-PORTFOLIO-DOCS.md\` — should be current; others' get flagged to their owners, not silently refreshed.
+
               ### 🎯 Sprint & Roadmap Alignment
 
               - [ ] **Verify roadmap.md location** (common error):
