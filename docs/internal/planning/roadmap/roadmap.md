@@ -65,7 +65,7 @@ Four differentiators that, together, make Piper a colleague rather than a chatbo
 1. **Context Methodology** — Five-layer model operationalized as practiced discipline
 2. **Conscious Floor** — LLM responses embodying grammar, Five Pillars, anti-flattening + Investment-pillar extension (#950 v0.1 May)
 3. **Artifact Persistence** — Conversation outputs that outlive the conversation, with composting lifecycle (M3 territory)
-4. **Trust-Graduated Experience** — Earned proactivity through demonstrated value (M4 territory)
+4. **Trust-Graduated Experience** — Earned proactivity through demonstrated value (was M4 territory; **M4 TRIAGE CLOSED Jul 5, 2026** — the sprint was swept, its proactive-presence issue **#1174 moved to the Production milestone**, and the capability has **no implementation today**. See §M4 below.)
 
 **Indoor plumbing (commodity)**: GitHub/Slack/Calendar/Notion via MCP plugins, file storage via SQLite + PostgreSQL audit_log persistence, auth via standard OAuth, LLM provider management via three-way fallback chain.
 

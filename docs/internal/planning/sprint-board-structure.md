@@ -74,10 +74,22 @@ All sprints created after GREAT (the Great Refactor milestone):
 
 ### Remaining sprints in the current milestone
 
-1. M4 - Trust + Learning (next planned MVP sprint)
-2. RECONNECT - Connector Refactor (discovered work + architectural decision - lead dev scoping this sprint at the time of writing this doc)
-3. D1 - Beta design quality (design bar for MVP release)
-4. M5 - Distribution + Polish (final planned MVP sprint, last chance to polish bugs, issues, or tests & time to figure out the distribution plan
+> ⚠️ **SUPERSEDED 2026-07-04/05 — this list describes the pre-sweep plan. Do not reason from it.**
+> The full open backlog was triaged sprint-by-sprint (M3-Quality, M3-Health, M3-Security, **M4**,
+> **M5**, RECONNECT). Every open issue was dispositioned as either a **Beta Blocker** or **moved to
+> the Production milestone**, to be addressed during beta.
+> **Beta Blockers is the final pre-beta sprint**, and the **MVP milestone IS the beta gate** — beta
+> ships when every issue on that list closes, not on a calendar date.
+> ✅ **Canonical: [`beta-blockers.md`](beta-blockers.md)** · roadmap §M4/§M5 carry the per-sprint
+> triage records.
+> *(Corrected by PPM 2026-07-30, after this list's staleness caused a real error: it was read as
+> live sprint structure and nearly produced a milestone change moving an issue into a swept sprint.)*
+
+1. ~~M4 - Trust + Learning~~ — **✅ TRIAGE CLOSED Jul 5, 2026.** 16 open issues reviewed; 15 moved to Production, remainder dispositioned. See roadmap §M4.
+2. ~~RECONNECT - Connector Refactor~~ — buildable scope **DRAINED Jul 1, 2026**; full ADR-070 migration is Production-milestone work.
+3. ~~D1 - Beta design quality~~ — **CLOSED Jun 19-20, 2026** (#1297 sign-off, 32/32 done).
+4. ~~M5 - Distribution + Polish~~ — **✅ SWEPT Jul 4-5, 2026** in the same triage pass.
+5. **Beta Blockers** — ⬅ **the live pre-beta sprint.** Hard gates only, no theme. Canonical list + epics: [`beta-blockers.md`](beta-blockers.md).
 
 ### Recurring sprints
 
