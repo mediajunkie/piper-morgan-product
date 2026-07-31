@@ -124,6 +124,16 @@ provisioning template referenced `handoff-web-predecessor-2026-07-28.md` (wrong 
 behind) — they corrected it themselves rather than copy the boilerplate literally. Not
 flagging further; low-stakes and already resolved in this instance.
 
+**CLOSED 2026-07-30**: PM asked me to confirm access to a second recovered artifact —
+`https://claude.ai/code/artifact/f316aa3b-c7ae-407d-91b7-a881c0896419` — the predecessor's
+original Vercel-migration plan (published 2026-07-12), also reconstructed after becoming
+inaccessible in the account migration, carrying the same honest reconstruction-note framing
+as the handoff doc above. Verified fetchable via `WebFetch` (works directly on
+`claude.ai/code/artifact/{uuid}` URLs — noted as a capability for future reference). PM
+confirmed this closes the loop: **the predecessor's session on faoilean (the old laptop, pre-
+Amber, designinproduct.com account) can now be safely retired** — nothing of substance was at
+risk of being lost. This fully resolves the predecessor-continuity thread opened 2026-07-26.
+
 ### Own lessons / load-bearing-vs-commodity / publishing-seam view — WRITTEN 2026-07-29
 See `dev/2026/07/29/2026-07-29-0924-web-code-log.md`, Fire 3 (~16:00). The thing CIO's
 orientation note said no artifact could hand me. Not carrying this forward as open work.
