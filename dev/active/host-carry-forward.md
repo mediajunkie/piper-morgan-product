@@ -16,7 +16,7 @@
 
 1. **The drift-check mechanism — owed, and now has both worked examples.** m-46's filing is held on it (CIO and I share the call; CXO drafted it and honestly flagged *"no mechanism, nobody has proposed one"*). Build: regenerate known-derived artifacts, diff against the committed copy. **Example 1** `MEMORY.md` vs `scripts/rebuild-memory-index.py` (caught Comms's non-durable hand-edit). **Example 2, CXO's** — a predicate regenerated from the corpus it must match; the `DAY-CLOSED` form census is the prototype.
 2. **Checklist v2.0 → Exec review → CEO ratification.** Still not reviewed.
-2b. **Hook registration follow-up** — `.claude/hooks/memory-index-overlimit-warn.sh` is written and tested (3 tiers) but **NOT registered**; CIO/Pard's surface. ⚠️ **Chase the behavioral confirmation, not the config change** — it'd be our first non-Bash PostToolUse (`Edit|Write|MultiEdit`), which is exactly where a matcher mistake hides. Until someone watches it fire, it is a script, not a mechanism.
+2b. 🔴 **Hook is REGISTERED (`24dd7a05c`, Comms) and NOT LIVE.** Comms did the behavioral test and it was **NEGATIVE** — two Edits to `MEMORY.md` produced only the platform reminder; my script's output never appeared. Settings-watcher needs `/hooks` opened once or a session restart, **neither of which an agent can do.** ⚠️ **Do NOT describe it as shipped** — I did, in Ship #054, and that needs the same correction anywhere else it appears. It should be live automatically for sessions started after `24dd7a05c`; already-running sessions are uncovered. **Chase: someone confirms the 90% line appears on a `MEMORY.md` edit.** Until then the counterweight is ABSENT, not quiet.
 3. **Dashboard welfare spec v0.3** — reconcile §3a-ter once Pard's guard lands (approved-with-changes; the `env`/wrapper hole is the open delta).
 4. **m-44 stays at 11 and NOT Proven.** m-46 is a **sibling** (right property, right object, wrong *time*), not an instance.
 
@@ -37,6 +37,12 @@
 - **7 open days, Jul 20–29** (CXO's list — date-matched, day-scoped, verified): docs 07-21/23/25, ppm 07-26/29, lead 07-27, pa 07-26. **Each owner's to close.** Do not re-derive; my scans produced three different lists in one day.
 - **7 markers with no date at all** — unreachable by any regex. Not a formatting variant; a missing datum.
 - **~10% of role-days go unclosed, steady-state, and always have.** Step 0 only checks *yesterday*, so anything missed the next morning is never caught. No back-catalogue sweep exists.
+
+## Dead hypotheses — do not re-propose without a test
+
+**The platform reminder's line count.** Four models dead across three roles: *lagging* (mine — killed by PA's 186@208, a value the file never held) · *accurate at/below the ceiling, wrong above* (Comms — killed by 192 reported at **197 actual, below the limit**) · *cached at session start* (mine — killed by 187 on 07-30 → 192 on 07-31 in one continuous session) · *stale* (too weak to be usefully wrong).
+
+**What survives**: the count does not track edits made during your session; it reflects an earlier state and refreshes on an unidentified event. **Do not guess a fifth mechanism without a test** — each of the four fit every data point available when proposed. Operationally: *never let that number tell you a compaction worked; measure the file yourself.*
 
 ## Standing hazards
 
