@@ -32,7 +32,13 @@ verified_scope: "migration status vs actual (was false); PreCompact-hook claim c
 
 ## Critical vs. Commodity Work in This Role
 
-Per Apr 22–26 leadership migration §6 reflections (Proto-Pattern PP-002). ⚠️ **Corrected 2026-07-30**: this previously read *"Docs did not migrate (always on Code)"* — **Docs migrated to Amber on 2026-07-29** and the predecessor wrote a proper §4/§6 handoff (`dev/active/docs-handoff-2026-07-28.md`). Read that handoff; it is first-person, marks every claim VERIFIED or BELIEVED, and its §4.1 (*read the artifact, not testimony about it*) and §4.6 (*the omnibus is this role's most fragile deliverable, because nothing alarms on it*) are the two that cost the most.
+Per Apr 22–26 leadership migration §6 reflections (Proto-Pattern PP-002). *(Corrected 2026-07-30: this
+claimed Docs had never migrated. It has — to Amber, 2026-07-29.)*
+
+**📖 Read `dev/active/docs-handoff-2026-07-28.md` first.** It's first-person, marks every claim VERIFIED
+or BELIEVED, and its two costliest lessons are the ones to carry: **§4.1** *read the artifact, not
+testimony about it* — and follow a skill's step order literally, because inverting it **is** the bug;
+**§4.6** *the omnibus is this role's most fragile deliverable, because nothing alarms on it.*
 
 - **Load-bearing**: **omnibus synthesis** across multiple agents (multi-role coordination threading, pattern detection across timeline, recognizing when a day's work crosses a methodology threshold); **canonical-verification discipline** (Step 7 — never paraphrase canonical content from omnibus summaries; open the canonical doc); **methodology custodianship and evolution** (Excellence Flywheel v2 reformulation, NAVIGATION.md path splits, migration checklist refinement across seven migrations, briefing structural evolution per role-correction memos); **merge-keeper protocol** (Apr 27 onward — branch-state janitorship for cross-agent durability).
 - **Commodity**: mailbox shuttling and per-memo distribution mechanics (write file, copy to N inboxes, update manifests, commit-and-push); editorial calendar bookkeeping (row updates, status changes, syndication URL population); session-log archival between sessions; routine NAVIGATION.md updates.
@@ -59,16 +65,23 @@ The discipline: protect time for omnibus synthesis + canonical verification + me
 - See `docs/internal/development/memo-format-guide.md` for full spec
 - Mailboxes are committed to git — mail is the cross-agent signaling layer (mailbox writes go to `main` only, never on feature branches)
 
-**Blog Metadata Pipeline** (cross-repo, `piper-morgan-website`) — *substantially rewritten 2026-07-30; the previous version described only the fetch script and predated `publish-post.js`*:
+**Blog Metadata Pipeline** (cross-repo, `piper-morgan-website`):
 
-- **⚠️ YOUR LANE SPANS TWO REPOS.** You have a *second* worktree at `~/Development/piper-morgan-website-worktrees/docs` on `claude/docs-cycle`. Work there, push to its `origin/main`. Confirm both worktrees are 0-behind before your first publish — the shared website checkout runs behind and publishing from it was retired 2026-07-29.
-- **Publishing is one command, not a manual pipeline**: `node ../../piper-morgan-website-worktrees/docs/scripts/publish-post.js` — it parses the draft, generates the hashId, converts to HTML, preps the image, appends the CSV row, writes `blog-content.json`, and runs sync + fetch. It stops before commit so you review the diff. Follow the `publish-to-blog` skill; its **Step 0 is "check the editorial calendar first"** and inverting that order is itself the bug.
-- **`--work-date` is mandatory.** Omitted, it silently writes *today* into the CSV's `workDate` column — a false value in a source-of-truth file, invisible in both the dry-run and the rendered post.
-- **Dry-run first, but know its limit**: it skips sync+fetch, so it cannot catch a missing toolchain. On Amber, `cwebp` and Pillow are both absent and `sips` cannot emit webp; image prep falls through to `sharp` (added 2026-07-30).
-- **Editorial calendar is MULTI-WRITER with ownership by column** (PM-ratified 2026-07-29, `update-calendar` v1.4). Docs owns `blogURL`/`blogPath`/`canonicalSite`/`mediumURL`/`liPubDate`/`linkedinURL`; Comms owns the editorial columns; `status` is shared *sequentially*. **Write your own columns; don't route others' through your inbox.**
-- **Run `scripts/validate-editorial-calendar.py` after every calendar edit.** It catches column shift — a value in the wrong column while the field count stays a valid 18, which no count-based check can see and which has bitten twice.
-- **If you move a draft file, update `draftPath` in the same pass.** Archival-without-row-update created all 7 stale paths repaired 2026-07-29.
-- Ships syndicate to LinkedIn; building narratives and insights to Medium. Step 9 archival is gated on a confirmed syndication URL.
+⚠️ **YOUR LANE SPANS TWO REPOS — this is the part that appears in no other briefing and will blindside
+you otherwise.** You have a *second* worktree at `~/Development/piper-morgan-website-worktrees/docs` on
+`claude/docs-cycle`. Work there, push to its `origin/main`, and confirm **both** worktrees are 0-behind
+before your first publish. Publishing from the shared website checkout was retired 2026-07-29.
+
+**The procedure lives in the skills, not here** — `publish-to-blog` (Step 0 is *check the calendar
+first*, and inverting that order is itself the bug; `--work-date` is mandatory; dry-run before every
+publish) and `update-calendar` v1.4 (column ownership, the validator, and update `draftPath` in the same
+pass when you move a draft). **Read them at publish time rather than trusting a summary here** — a
+summary in a briefing is exactly the surface that goes stale without anyone noticing.
+
+**The one thing the skills can't tell you, because it's environmental**: on Amber, `cwebp` and Pillow
+are both absent and `sips` cannot emit webp, so image prep falls through to `sharp` (added 2026-07-30).
+The dry-run **skips sync+fetch**, so it structurally cannot catch a missing toolchain — a clean dry-run
+is not a proven path.
 
 **dev/active/ Triage**:
 - Archive stale files to `dev/YYYY/MM/DD/` date folders
@@ -79,41 +92,34 @@ The discipline: protect time for omnibus synthesis + canonical verification + me
 
 ## Merge-Keeper Sweep (Standing Discipline, established 2026-04-28)
 
-Per CLAUDE.md "Sign-Off Discipline" — the agent's responsibility is sign-off correctness; two reactive safety nets back-stop discipline lapses:
-
-1. 🟡 **PreCompact hook** (`.claude/hooks/precompact-signoff-warning.sh`) — **DO NOT RELY ON THIS. Corrected 2026-07-30.** This section previously described it in the present tense as firing before compaction and *"logging all firings to `dev/active/session-end-warnings.log` for the merge-keeper sweep."* **That log file does not exist and never has** — verified against the full git history, not just the working tree. The hook was suspended 2026-05-16 (its `exit 2` was freezing sessions), re-wired at user level 2026-07-25 with warn-only semantics, and **has still never been observed to fire**, because you cannot force a compaction on demand. **If you compact and see no sign-off warning, that is a finding worth reporting, not a non-event.**
-2. ✅ **Docs merge-keeper sweep at session start** — this discipline. **Treat it as the only net you can count on.**
-
-**The lesson this section is now itself the case study for**: a safety net you haven't seen fire is a claim, not a mechanism. This briefing asserted a working backstop for ten weeks on the strength of its config existing. Do not repeat that here — if you find another net described in the present tense that you cannot confirm behaviorally, correct the text rather than trusting it.
-
-**At every session start**, before doing other work:
+**This is now AUTOMATED. Run the script; do not hand-walk the branch loop** — the manual procedure that
+used to live here was superseded by `scripts/merge-keeper-sweep.py` and was occupying 24% of this
+briefing describing by hand what the script does.
 
 ```bash
-git fetch origin
-git for-each-ref --format='%(refname:short)' 'refs/remotes/origin/claude/*' | while read branch; do
-  count=$(git log --oneline main..$branch 2>/dev/null | wc -l | tr -d ' ')
-  if [ "$count" != "0" ] && [ "$count" != "" ]; then
-    echo "$branch: $count commits ahead"
-    git log --oneline main..$branch | head -5
-  fi
-done
+python3 scripts/merge-keeper-sweep.py          # DRY-RUN IS THE DEFAULT — safe
+python3 scripts/merge-keeper-sweep.py --apply  # actually merges the clean ones
 ```
 
-**For each branch with unmerged commits**:
+**Verified working 2026-07-31**: evaluated the live branch set and correctly escalated
+`claude/fix-docker-migration-setup`. Writes `dev/active/merge-keeper-YYYY-MM-DD.md`.
 
-1. **Identify owner** from commit author + recent session log (open the session log file in the branch's `dev/` to confirm).
-2. **Check session-log status**:
-   - **Wrapped** (last log entry has "Session End", "signed off", "wrap-up", or equivalent) → merge candidate. Use `git merge --no-ff origin/<branch> -m "merge: <branch> — <one-line summary from session log>"`. If conflicts, use `-X theirs` and resolve rename/rename via "keep both destinations" heuristic (Apr 26–28 protocol).
-   - **Active** (no closing entry, recent commits) → ping owner via mailbox memo: "Your branch has N commits not on main; please merge or send a NOTICE memo explaining why holding."
-   - **Unowned/stale** (no recent activity, no obvious owner) → flag to PM for one-at-a-time review (do not delete unilaterally).
-3. **Skip explicitly-held branches** (e.g., Lead Dev's `claude/992-ethics-activate` during active build phase — owner has filed a NOTICE memo explaining the hold).
+**What it decides for you**: auto-merges branches that are *wrapped* (last commit older than
+`--age-hours`, default 24) **and** *clean* (no conflicts, no blobs >1MB, no `.env`/`.DS_Store`).
+**It always escalates rather than guessing** — anything younger than the threshold, anything with
+conflicts, anything with suspicious files in the diff.
 
-**Cadence**:
-- **At every Docs session start** (before any other work) — primary discipline
-- **Ad-hoc** when PM signals concern or any agent surfaces a stranding incident
-- **Pre-publish / pre-Ship-publication** — quick sweep before publishing the Ship to ensure no relevant content is trapped
+**What is still YOUR judgment, and why the script can't do it**:
 
-**Logging**: record the sweep in your session log — branches found ahead, dispositions applied, owners contacted. Even an empty sweep gets logged ("merge-keeper sweep clean, all branches at parity") so the discipline is visible.
+- **Identify the owner** of an escalated branch from its commits + that role's session log, then act: *wrapped* → merge; *active* → mailbox memo asking them to merge or send a NOTICE; *unowned/stale* → flag to PM one at a time, **never delete unilaterally**.
+- **Skip explicitly-held branches** — a branch whose owner filed a NOTICE memo explaining the hold is not stranded, it's parked. ⚠️ **`claude/fix-docker-migration-setup` is currently held pending PM authorization to delete — do not delete without it** (carried from the 2026-07-21 handoff).
+- **Log the sweep in your session log even when it's clean** (*"merge-keeper sweep clean, all branches at parity"*), so the discipline is visible rather than inferred from silence.
+
+**Cadence**: every Docs session start, before other work · ad-hoc when PM or any agent surfaces a
+stranding incident · before publishing a Ship.
+
+⚠️ **On the two "safety nets" this section used to claim**: see the PreCompact note above — one of them
+never worked. **The sweep is the net you can count on.**
 
 ## Session Start Protocol
 
