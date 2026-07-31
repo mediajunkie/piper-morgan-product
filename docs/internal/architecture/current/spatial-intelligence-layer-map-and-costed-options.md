@@ -140,10 +140,35 @@ Minor: `SpatialAdapterRegistry` (defined in the live L2 base) has **no importers
 
 ---
 
+## ⚠️ PPM's roadmap slice — delivered 2026-07-30, and it splits in two directions
+
+**Half 1 — L3 depth beyond GitHub is NOT promised.** `roadmap.md:70`, directly under the Differentiator Stack, classes connectors as **"Indoor plumbing (commodity)"**: *"GitHub/Slack/Calendar/Notion via MCP plugins…"* So 1.0 commits to connector **function**, never connector **spatial depth**. **The 10-module cold island can be disposed of with no roadmap consequence — no commitment loses its referent.**
+
+That is independent product-side confirmation of the architectural finding, reached by a different route: my evidence was that replicating L3 produces no L4 and changes nothing a user feels; PPM's is that **we never promised it.** Agreement from two directions rather than one restated.
+
+**Half 2 — L4 IS promised, and it is worse than a stray line item.** Verified live by PPM:
+
+- **[#1174](https://github.com/mediajunkie/piper-morgan-product/issues/1174)** — *"BEING-GOOD-PROACTIVE-PRESENCE: discovery thread — proactive relevance / notifications (when + how Piper nudges)"* — **state OPEN, milestone Production.** That is a 1.0 commitment and it is precisely L4.
+- **`roadmap.md:68`**, inside **The Differentiator Stack (Vision V2.3 — *Stable*)**, the section that opens *"Four differentiators that, together, make Piper a colleague rather than a chatbot wrapper"*: **4. Trust-Graduated Experience — *earned proactivity* through demonstrated value.**
+
+**So L4 is not backlog. It is one of the four things the roadmap says make us not a chatbot wrapper — and it is the one with nothing beneath it.** Differentiators 1–3 (context methodology, conscious floor, artifact persistence) are built or building. #4 is a promise against **zero implementation**: no monitoring loop, no change detection, no salience judgment, no interruption-ethics surface.
+
+> ⚠️ **PPM's connection, and it is not a coincidence.** Our first alpha tester's verdict was *"just kind of packaging a regular LLM… with a different UI"* — **the exact claim the Differentiator Stack exists to refute.** He never met #4 because there is no #4 to meet. Neither PPM nor I claim L4 would have changed that session (cold-start would have, and it's far cheaper). The narrower and worse point: **the stack has four legs, one is empty, and the first outsider to lean on it said so in the stack's own words.**
+
+**Architect's position on the three options PPM puts to PM** — this is a roadmap-honesty call and PPM owns putting it, but the architecture bears on it:
+
+- **(i) re-scope #1174 to what it is (discovery) — I concur, and there's an architectural reason.** ⭐ **Discovery for L4 does not require L4.** The interruption-ethics question — *when is an unrequested nudge welcome?* — is answerable on paper, is HOST's lane regardless, and its answer is **an input to the build rather than an output of it.** Doing it now is not building on sand; it's the one part of L4 that is genuinely cheap and genuinely ordered-first.
+- **(iii) funding L4** is defensible **only** on CXO's alternative sequencing — build L4 on the connector that already has L3 depth, not L3 on five more — and gated on Lead's monitoring-loop estimate **read with CXO's caveat**: that estimate prices *proving the mechanism*, and GitHub is the connector where ambient presence is *least* differentiating.
+- **Either way the roadmap text needs a qualifier**: differentiator #4 should read **intended** rather than **stable** while it has no implementation. The "Vision V2.3 — Stable" banner currently covers a leg that does not exist, and **that is the same error class as ADR-038 Amendment A A3** — a durable document evidencing itself with something whose state it hasn't checked. PPM takes the edit once PM picks.
+
+**Both open inputs to this review are now in.** What remains is Lead's L4 cost estimate (which gates (iii) only) and **PM's decision.**
+
+---
+
 ## What is still open
 
-1. **PPM's roadmap-dependency slice** — sharpened: *does any 1.0 commitment assume L3 depth beyond GitHub, or L4 at all?*
-2. **Lead's cost estimate for an L4 monitoring loop over `github_spatial`** — the decision-relevant unknown.
+1. ~~**PPM's roadmap-dependency slice**~~ — ✅ **DELIVERED 2026-07-30, see above.** L3-beyond-GitHub not promised (disposal is roadmap-free); **L4 promised as differentiator 4 of 4 against zero implementation.**
+2. **Lead's cost estimate for an L4 monitoring loop over `github_spatial`** — now gates option (iii) only, not the disposal.
 3. **The ADR-038 amendment draft** — mine, next.
 4. **PM's protected-surface call** on disposing of the 10-module cold island. Nothing is deleted, and nothing should be, until PM rules.
 
