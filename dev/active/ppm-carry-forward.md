@@ -1,7 +1,7 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-07-30 ~19:45 PT (Fire 2, Amber, cron live)
+**Last rewritten**: 2026-07-30 ~20:10 PT (post-Fire-2 correction, Amber, cron live)
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -20,6 +20,28 @@ inherited — this file has already caused one four-session error by being read 
 continuity — never a clean STOP. **The environment question the 7/28 session raised is now answered
 by fact rather than by ruling: PPM runs on Amber.**
 
+## ⚠️ SPRINT STRUCTURE — READ BEFORE ANY MILESTONE/SPRINT REASONING
+
+**M4 and M5 DO NOT EXIST as sprints.** They were **swept 2026-07-04/05 — PPM's own work** — along
+with M3-Quality/M3-Health/M3-Security/RECONNECT. Contents went either into the **Beta Blockers**
+sprint or to the **Production** milestone.
+
+- **Beta Blockers = the final pre-beta sprint.** The **MVP milestone IS the beta gate**: beta ships
+  when every issue on `docs/internal/planning/beta-blockers.md` closes — not on a date.
+- **Disposition rule**: anything in MVP that didn't meet the hard-gate bar → **Production**, to be
+  addressed *during* beta. So **an issue sitting in Production is the rule working, not a defect.**
+
+🔴 **Two "canonical" docs are STALE on this and will mislead you:**
+- `docs/internal/planning/sprint-board-structure.md` — still lists M4/M5 as "next planned MVP sprint"
+- `docs/internal/planning/roadmap/roadmap.md:68` — differentiator #4 still reads "(M4 territory)"
+
+✅ **The accurate source is `docs/internal/planning/beta-blockers.md`** (see its lines 12 + 20).
+
+**Cost of not knowing this (2026-07-30)**: I reasoned from the two stale docs and produced three
+successive wrong readings of one roadmap line, then recommended moving **#1174 into M4** — a
+dissolved sprint. PM caught it. **I had run the sweep myself and it was in no artifact I carried.**
+Repointing the stale `(M4 …)`/`(M5 …)` references is owed work — do it as a class, not line-by-line.
+
 ## Active PM threads
 
 | Item | State | Next action |
@@ -29,7 +51,7 @@ by fact rather than by ruling: PPM runs on Amber.**
 | **#1386 gate run** | Unblocked since 7/20 (beta v25 carries both Scenario-B fixes per 7/26 log). **TOP ITEM per the Amber session's own priority call** | Schedule with Lead + CXO directly (~half a day) |
 | **Jake Krajewski alpha FTUX** | ✅ **PPM roadmap lens sent 7/30** — 4th of 4, unblocked Exec's synthesis. Bucket-sort by which surface survives PDR-006; #1386 cannot fail for what Jake reported | Await Exec synthesis → **I file the issues same day** |
 | **PDR-006 + Q2** | ✅ **RATIFY sent 7/30 — all three reviews in; PA sent it to PM for ratification**. CXO drafting the PDR-004 amendment (Layer-B decision ratification, my reframe accepted); rubric branch OPEN, PA running Probe A on Claude + GPT | Watch for PM ratification → **then I draft the implementation epic** (PDR still says "issue TBD") |
-| **Spatial committed-theory** | ✅ **PPM slice delivered 7/30; Arch + CXO both concur (b)**. L3-beyond-GitHub NOT promised (connectors = "indoor plumbing (commodity)") → cold island disposes with no roadmap consequence. **L4 finding CORRECTED at Fire 2**: the roadmap line already says "(M4 territory)" — honest labeling, my Stable-banner claim was overstated and withdrawn. **Real defect = milestone split: roadmap says M4, #1174 says Production, and M4 has not run.** CXO owns #1174, took option (i), doing discovery with HOST | **Blocked on CXO's milestone call**; I make the roadmap-side change once they pick. Do NOT make the `stable`→`intended` edit — it would make the roadmap less accurate |
+| **Spatial committed-theory** | ✅ Slice delivered 7/30; Arch + CXO concur **(b)**. L3-beyond-GitHub NOT promised → cold island disposes freely. **L4 substance stands**: #1174 OPEN/Production, zero implementation, and "earned proactivity" is differentiator 4 of 4. ⛔ **My "milestone split" finding was WITHDRAWN** — M4 was swept; #1174 in Production is CORRECT by rule. CXO owns #1174, taking option (i) — which needs **no milestone change at all** | Owed by me: repoint stale `(M4/M5)` refs in roadmap.md + sprint-board-structure.md **as a class** |
 | **Hooks** | ✅ **SETTLED.** Defect was TOCTOU (PreToolUse fires before the gated command, so a compound `add && commit` is judged against an empty index). Pard installed a real `.git/hooks/pre-commit` in the **common dir** — covers all worktrees by construction. **Do NOT probe** (v1.22 retired the probe apparatus); verify the hook file exists | Closed for PPM |
 | **#1394 / ADR-078** | ✅ Architecture COMPLETE (unchanged since 7/16, reconfirmed OPEN-pending-D5-probe by 7/26 session) | Watch only |
 | **Beta Blockers sprint recount** | Not possible — `gh` token lacks `read:project` scope (found by 7/26 session). Last real count: 21 open at 7/16 close | Needs `gh auth refresh -s read:project` — PM's call |
