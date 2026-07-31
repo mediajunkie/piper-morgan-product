@@ -87,8 +87,20 @@ to route, and by the human scanning the catalog.
 
 Design implication, consistent with PPM's catalog work and my addition to it: **the name and the
 description have different readers.** The model selects on both; the human reads the description. So a
-**noun-shaped name with a situation-shaped description** serves both without forcing the trade PPM
-correctly flagged as untested.
+**noun-shaped name with a situation-shaped description** gets the opinionation into the catalog
+without paying the routing risk PPM flagged.
+
+⚠️ **This narrows the open test; it does not dissolve it** *(PPM's correction, 2026-07-31 — adopted)*.
+Because the model selects on **both** name and description, a situation-shaped description can still
+route worse than a terse technical one even with the noun name fixed. What the split changes is the
+**variable under test**:
+
+- ❌ was: noun-shaped name **vs.** situation-shaped name *(two variables)*
+- ✅ now: **situation-shaped description vs. terse description, noun name held constant** *(one)*
+
+Cheaper and better controlled — **but still a test, and it stays on the Phase-0 rig.** Recorded
+explicitly because *"the split dissolves the trade-off"* is an available and tempting reading of this
+section, and it is not what the section supports.
 
 **A first-contact tool that is never invoked has failed silently** — and that failure is invisible from
 our side, which makes it exactly the class we've spent this week learning to distrust.
@@ -110,20 +122,46 @@ our output. *"I haven't looked outside that repo"* may not survive into what the
 
 **Do not implement Property 4 in prose before Probe A returns.**
 
-## 7. Acceptance — maps to the proposed gate criterion
+## 7. Acceptance — ⚠️ the GATE and the SPEC are deliberately different lists
 
-From a **cold account with one connector authorized**, in a real Claude session:
+*Restructured 2026-07-31 after PPM caught that my original single list would have made the gate
+uncloseable. Keeping them as one list inherits §6's unresolved Probe-A dependency into the gate — so
+we'd have traded **a gate that cannot fail** (PPM's earlier finding on #1386) for **a gate that cannot
+pass**, and neither tells you anything about the product.*
+
+All items assume a **cold account with one connector authorized**, in a real client session.
+
+### 7a. Gate criterion — closeable today, against a running build
 
 1. The first Piper tool invocation returns content naming **at least one real entity from the user's
    own data**.
 2. The user-visible reply contains **no request for scope** before that reading.
 3. The reply carries **an offer or an opinion**, not only a status.
-4. The reply states **what was not examined** — *pending §6; format determined by Probe A*.
-5. The same run repeated on **ChatGPT** produces a reply meeting 1–3. *(Divergence between clients is
-   itself a finding for the ChatGPT lane, per PA.)*
+
+**Binary, and every one is checkable now.** This is the wording proposed as canonical (see §7c).
+
+### 7b. Spec conformance — required for *done*, beyond the gate
+
+4. The reply states **what was not examined.** ⛔ **Required for done; BLOCKED on Probe A** — the
+   format is undetermined until §6 resolves, and it must not be implemented in prose before then.
+5. The same run on **ChatGPT** produces a reply meeting 1–3. *(Divergence between clients is itself a
+   finding for the ChatGPT lane, per PA.)*
+
+**Passing 7a is not conformance.** A build can clear the gate and still owe items 4 and 5.
+
+### 7c. ⚠️ One wording, not three
+
+This criterion is currently articulated in **three** places — #1386's proposal, #1462's acceptance
+criteria, and here. PPM flagged at filing that it *"should be worded once, not twice"*; it is now
+three, which is how they drift.
+
+**Proposed: §7a becomes the canonical text; #1462 and #1386 point at it rather than restating it.**
+**PM's to confirm** — the gate wording is PM's, not mine. (m-46: two copies of a fact is a drift
+generator; three is a guarantee.)
 
 **Deliberately not asserted**: any latency target. A first-contact read hits a live connector and I
-have no measurement — Lead's to set, and I would rather leave it open than invent a number.
+have no measurement — **Lead's to set.** Recorded as a decision rather than an omission, because an
+un-asserted number reads as an oversight later.
 
 ## 8. Open questions
 
