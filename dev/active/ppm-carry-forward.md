@@ -1,7 +1,7 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-07-30 ~20:10 PT (post-Fire-2 correction, Amber, cron live)
+**Last rewritten**: 2026-07-30 STOP (~22:30 PT) — day closed, cron re-armed for Friday
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -42,14 +42,36 @@ successive wrong readings of one roadmap line, then recommended moving **#1174 i
 dissolved sprint. PM caught it. **I had run the sweep myself and it was in no artifact I carried.**
 Repointing the stale `(M4 …)`/`(M5 …)` references is owed work — do it as a class, not line-by-line.
 
+## 🔴 FIRST THING FRIDAY (07-31) — do this at your ~06:52 fire, before anything else
+
+**#1386 Scenario-B re-run sign-off.** Exec LOCKED the window (memo 7/30 21:15, PM's expedite
+directive):
+
+- **Lead drives** from their ~06:17 fire: their venv acceptance test (~11,111-collection check)
+  first, then canonical suite + Scenario-B re-run. If their acceptance fails, the window moves and
+  Exec reports the slip — don't wait silently.
+- **CXO (~06:47) and PPM (~06:52) VERIFY OUTCOMES, we do not drive.** Review Lead's Scenario-B
+  outputs at our morning fires.
+- ⚠️ **Post the sign-off (or objection) ON #1386 ITSELF — an issue comment, NOT mail.** The gate's
+  evidence belongs on the issue. Same shape as the criterion-3 joint sign-off CXO and I did on 7/12.
+- **Sign-offs due by noon.**
+- ⚠️ **SCOPE — do not overstate the result.** This window closes **criterion 2** (canonical suite) +
+  the Scenario-B re-run that verifies #1393 and #1394. **It does NOT close the gate.** Criteria 1
+  (#1278 scope call), 4, 5, 6 (PM go/no-go) are out of scope and remain PM's. **The gate's
+  denominator is six criteria; this is one.** Do not let "re-run done" read as "gate passed."
+
+**Second thing**: Exec's Jake synthesis is their first Friday item; they'll flag me the moment it
+lands → **I convert it to GitHub issues the same day** (my standing offer). Per PM's ruling relayed
+by CXO: it's collection-and-framing for a PM+CXO decision, not a committee verdict.
+
 ## Active PM threads
 
 | Item | State | Next action |
 |---|---|---|
 | **Ship #053** | ✅ Sent 2026-07-28 (window Jul 17-23), on time despite same-day kickoff | None |
 | **Jul 19 log** | ✅ Retroactively closed 2026-07-28 (had no DAY-CLOSED marker, flagged by Exec's kickoff) | None |
-| **#1386 gate run** | Unblocked since 7/20 (beta v25 carries both Scenario-B fixes per 7/26 log). **TOP ITEM per the Amber session's own priority call** | Schedule with Lead + CXO directly (~half a day) |
-| **Jake Krajewski alpha FTUX** | ✅ **PPM roadmap lens sent 7/30** — 4th of 4, unblocked Exec's synthesis. Bucket-sort by which surface survives PDR-006; #1386 cannot fail for what Jake reported | Await Exec synthesis → **I file the issues same day** |
+| **#1386 gate run** | 🔴 **WINDOW LOCKED FRI 07-31** — Lead drives from ~06:17; CXO + PPM verify + sign off **on the issue** by noon. Closes criterion 2 + Scenario-B only, NOT the gate | See the FIRST THING FRIDAY block above |
+| **Jake Krajewski alpha FTUX** | ✅ PPM lens sent 7/30 (4 of 4 in). **Exec synthesizes Friday first thing** | On Exec's signal → I file the issues same day, against the A/B/C bucket structure |
 | **PDR-006 + Q2** | ✅ **RATIFY sent 7/30 — all three reviews in; PA sent it to PM for ratification**. CXO drafting the PDR-004 amendment (Layer-B decision ratification, my reframe accepted); rubric branch OPEN, PA running Probe A on Claude + GPT | Watch for PM ratification → **then I draft the implementation epic** (PDR still says "issue TBD") |
 | **Spatial committed-theory** | ✅ Slice delivered 7/30; Arch + CXO concur **(b)**. L3-beyond-GitHub NOT promised → cold island disposes freely. **L4 substance stands**: #1174 OPEN/Production, zero implementation, and "earned proactivity" is differentiator 4 of 4. ⛔ **My "milestone split" finding was WITHDRAWN** — M4 was swept; #1174 in Production is CORRECT by rule. CXO owns #1174, taking option (i) — which needs **no milestone change at all** | Owed by me: repoint stale `(M4/M5)` refs in roadmap.md + sprint-board-structure.md **as a class** |
 | **Hooks** | ✅ **SETTLED.** Defect was TOCTOU (PreToolUse fires before the gated command, so a compound `add && commit` is judged against an empty index). Pard installed a real `.git/hooks/pre-commit` in the **common dir** — covers all worktrees by construction. **Do NOT probe** (v1.22 retired the probe apparatus); verify the hook file exists | Closed for PPM |
