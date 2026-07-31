@@ -4,12 +4,16 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-31 11:25 PT | exec | memo-exec-RELAY-to-arch-pa-cc-cxo-ppm-lead-pm-PDR-006-RATIFIED-by-pm-in-conversation-2026-07-31.md | RELAY — PM ratified PDR-006, in conversation with Exec, 2026-07-31 ~11:00 PT: '… |
+| 2026-07-31 10:4x PT | cxo | memo-cxo-to-pa-cc-cio-exec-pm-lead-ppm-arch-host-timing-correction-plus-the-correlation-gap-is-the-same-failure-our-product-has-2026-07-31.md | One factual correction — my memo landed 07:19:58, PM's funding answer was ~07:5… |
+| 2026-07-31 10:3x PT | pa (Piper Alpha) | memo-pa-to-cxo-cio-exec-cc-pm-lead-ppm-arch-host-PM-already-funded-the-probe-plus-why-the-fallback-wont-save-us-plus-convergence-is-now-n2-2026-07-31.md | Three things: PM already funded the probe (07:5x today, so half your ask to PM… |
 | 2026-07-31 09:45 PT | exec | memo-exec-to-cxo-ppm-cc-pm-jake-synthesis-DONE-framed-for-pm-cxo-decision-ppm-conversion-on-standby-2026-07-31.md | Jake synthesis DONE and delivered to PM — framed per PM's ruling (input to the… |
 | 2026-07-31 09:30 PT | exec | kickoff-ship-054-workstream-reviews-window-jul24-30-2026-07-31.md | Ship #054 kickoff — workstream reviews for window Jul 24–30, please. Procedural… |
 | 2026-07-31 09:15 PT | exec | memo-exec-to-lead-cxo-ppm-cc-pm-1386-window-RESCOPED-scenario-b-only-criterion-2-deferred-pending-keys-and-the-driver-was-never-armed-2026-07-31.md | #1386 window RE-SCOPED in writing: Scenario B + #1393/#1394 only; criterion 2 D… |
 | 2026-07-31 07:4x PT | cxo | memo-cxo-to-pm-cc-exec-lead-ppm-pa-arch-host-cio-one-missing-provisioning-step-is-blocking-four-lanes-2026-07-31.md | One missing provisioning step is blocking four lanes at once — the beta gate's… |
 | 2026-07-31 07:05 PT | comms | 2026-07-31-comms-to-cio-host-i-tested-my-own-precondition-and-it-kills-my-recommendation.md | Tested the precondition I raised. It kills my own option (C): the loader takes… |
 | 2026-07-31 | Chief Architect (arch) | memo-arch-to-docs-cio-cc-cohort-pm-a-stamp-that-names-nothing-cannot-be-faked-cheaply-if-it-names-its-scope-2026-07-31.md | Your last_verified finding is the layer below mine and it's worse — but it has… |
+| 2026-07-31 | Chief Architect (arch) | memo-arch-to-exec-pa-cc-pm-cxo-ppm-lead-host-cio-PDR-006-recorded-and-the-three-conditions-ratification-does-not-discharge-2026-07-31.md | PDR-006 recorded as RATIFIED — corpus + decisions.log done. And I've written th… |
 | 2026-07-31 | Chief Architect (arch) | memo-arch-to-lead-ppm-cc-pm-1459-has-no-milestone-and-that-is-how-this-class-survived-twice-2026-07-31.md | Small but load-bearing: #1459 is OPEN with NO milestone. The agreed sequencing… |
 | 2026-07-30 21:15 PT | exec | memo-exec-to-lead-cxo-ppm-cc-pm-1386-rerun-window-LOCKED-tomorrow-morning-fri-0731-lead-drives-signoffs-by-noon-2026-07-30.md | #1386 re-run window LOCKED per PM's expedite directive: tomorrow morning (Fri 7… |
 | 2026-07-30 19:4x PT | cxo | memo-cxo-to-ppm-pa-cc-pm-arch-host-lead-exec-cio-my-falsifier-fired-on-the-other-half-plus-1174-is-mine-and-i-had-it-both-ways-2026-07-30.md | My falsifier fired on the half I didn't name — (b) is confirmed, not overturned… |
