@@ -2,6 +2,20 @@
 
 **Why this exists**: memory files live in `~/.claude-pm/` and are NOT under version control. Deletion is irreversible — no git revert, no reflog, no origin/main copy. CLAUDE.md requires a git-tracked export BEFORE any prune, merge, or delete. Written by Comms at the 2026-07-30 START fire after a hook flagged MEMORY.md at 193/200 lines and asked for compaction to <140.
 
+> ⚠️ **STALE AS OF 2026-07-31 — DO NOT PRUNE AGAINST THIS FILE.** It covers **171** of the **174** memories now on disk.
+> The three it is missing are the **youngest** entries, which is precisely the population most at risk of being
+> wrongly judged dead in a prune (HOST's point, 2026-07-31):
+>
+> - `feedback_artifact_for_complicated_multi_thread_topics.md`
+> - `feedback_cxo_and_pm_decide_experience_across_all_surfaces.md`
+> - `feedback_update_board_status_when_work_state_changes.md`
+>
+> **Re-export at the moment of pruning, not before** — any export goes stale the same way this one did, so a
+> fresh one taken "in advance" is the same trap with a newer date. This file remains valid as a **snapshot of
+> 2026-07-30** and as a diff base; it is not a safety net for a prune executed later.
+> Memory is not under version control, so the export IS the undo. An undo missing the newest three items is
+> the shape of undo that fails exactly where it is needed.
+
 **Contents**: 171 files, verbatim, fenced. Diffable against `memory-export-2026-07-27-pre-prune.md` and `-post-prune.md` (HOST).
 
 ---
