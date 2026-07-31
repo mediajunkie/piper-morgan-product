@@ -96,7 +96,7 @@ cycling_now() {
   # (CXO/HOST/Web, 2026-07-30): the `<!-- DAY-CLOSED: ... -->` comment and the `## DAY-CLOSED ...`
   # heading some roles use.
   while IFS= read -r p; do
-    git -C "$REPO" show "origin/main:$p" 2>/dev/null | grep -qE "^(<!--[[:space:]]*)?#{0,4}[[:space:]]*DAY-CLOSED:?[[:space:]]+$today_dash" && return 1
+    git -C "$REPO" show "origin/main:$p" 2>/dev/null | grep -qE "^(<!--[[:space:]]*)?#{0,4}[[:space:]]*DAY-CLOSED[[:space:]]*[:—]?[[:space:]]+$today_dash" && return 1
   done <<< "$paths"
   return 0
 }

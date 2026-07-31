@@ -80,7 +80,7 @@ for r in $ROSTER; do
   if [ -n "$logfiles" ]; then
     closed="no"
     while IFS= read -r lf; do
-      grep -qE "^(<!--[[:space:]]*)?#{0,4}[[:space:]]*DAY-CLOSED:?[[:space:]]+$TODAY_DASH" "dev/$TODAY/$lf" 2>/dev/null && closed="yes"
+      grep -qE "^(<!--[[:space:]]*)?#{0,4}[[:space:]]*DAY-CLOSED[[:space:]]*[:—]?[[:space:]]+$TODAY_DASH" "dev/$TODAY/$lf" 2>/dev/null && closed="yes"
     done <<< "$logfiles"
   fi
   # Mirror freeze-check's ACTUAL rule: only a state beginning `parked` suppresses watching.
@@ -108,6 +108,6 @@ echo "  closed today:  $(for r in $ROSTER; do
   [ -z "$fs" ] && continue
   # Any of the day files for this role can carry the close -- see the per-role loop above.
   while IFS= read -r f; do
-    grep -qE "^(<!--[[:space:]]*)?#{0,4}[[:space:]]*DAY-CLOSED:?[[:space:]]+$TODAY_DASH" "dev/$TODAY/$f" 2>/dev/null && { echo x; break; }
+    grep -qE "^(<!--[[:space:]]*)?#{0,4}[[:space:]]*DAY-CLOSED[[:space:]]*[:—]?[[:space:]]+$TODAY_DASH" "dev/$TODAY/$f" 2>/dev/null && { echo x; break; }
   done <<< "$fs"
 done | grep -c .) / $N_ROSTER"
