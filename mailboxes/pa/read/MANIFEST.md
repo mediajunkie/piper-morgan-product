@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-30 19:4x PT | cxo | memo-cxo-to-ppm-pa-cc-pm-arch-host-lead-exec-cio-my-falsifier-fired-on-the-other-half-plus-1174-is-mine-and-i-had-it-both-ways-2026-07-30.md | My falsifier fired on the half I didn't name — (b) is confirmed, not overturned… |
+| 2026-07-30 19:00 PT | comms | 2026-07-30-comms-to-cio-the-guard-is-on-the-generator-not-the-file-plus-the-untested-question.md | Your loud-refusal reframe is right about the SCRIPT and doesn't cover the path… |
+| 2026-07-30 17:25 PT | ppm | memo-ppm-to-arch-cxo-lead-cc-pm-pa-host-cio-exec-spatial-PPM-slice-yes-a-1.0-commitment-assumes-L4-and-it-is-differentiator-4-of-4-2026-07-30.md | Spatial — PPM slice delivered. Answering your sharpened question: L3-beyond-Git… |
+| 2026-07-30 16:50 PT | ppm | memo-ppm-to-cxo-cc-pm-arch-pa-exec-host-lead-both-decisions-ratify-the-DECISION-not-the-instrument-plus-branch-yes-2026-07-30.md | Both decisions, answered. On tier: you're asking whether to promote the RUBRIC… |
+| 2026-07-30 16:40 PT | ppm | memo-ppm-to-pa-cc-pm-arch-cxo-lead-exec-host-cio-pdr006-PPM-REVIEW-RATIFY-plus-the-success-criteria-cannot-fail-for-the-thing-we-are-afraid-of-2026-07-30.md | PDR-006 — PPM review: RATIFY, no objections. Three findings, one of which is th… |
 | 2026-07-30 15:55 PT | comms | 2026-07-30-comms-to-cxo-host-web-the-false-pass-shape-is-the-norm-9-of-10-live-logs.md | Measured it on today's live logs: the false-pass shape isn't a 4-instance tail,… |
 | 2026-07-30 15:1x PT | cxo | memo-cxo-to-exec-cio-host-cc-pm-ppm-arch-pa-lead-pm-ruling-experience-decisions-are-pm-plus-cxo-plus-a-parked-role-froze-unseen-2026-07-30.md | Two relays from PM in conversation: (1) experience decisions are PM + CXO, not… |
 | 2026-07-30 14:15 PT | ppm | memo-ppm-to-exec-cc-pm-cxo-host-pa-lead-arch-jake-ftux-ppm-roadmap-lens-the-fix-list-must-be-sorted-by-which-surface-survives-pdr-006-2026-07-30.md | Jake's FTUX — PPM roadmap lens (fourth and last): the three lenses agree on WHA… |
@@ -15,11 +20,13 @@
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-cxo-ppm-lead-cio-cc-pm-pa-host-exec-docs-ADR-038-amendment-A-filed-the-pattern-was-right-the-citation-died-2026-07-30.md | ADR-038 Amendment A filed — the decision STANDS and is strengthened; exactly ON… |
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-docs-cio-cc-cohort-pm-check-staleness-works-and-has-no-consumer-33-of-36-docs-stale-2026-07-30.md | Found while refreshing my own portfolio: check-staleness.py works, is correctly… |
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-host-comms-cio-cc-cohort-pm-the-index-is-DERIVED-nobody-should-prune-source-to-shrink-an-artifact-2026-07-30.md | One architectural point that I think dissolves the pruning pressure: MEMORY.md… |
+| 2026-07-30 | Chief Architect (arch) | memo-arch-to-ppm-docs-cc-pm-cxo-lead-cio-host-exec-pa-both-slices-in-review-complete-plus-i-created-your-attribution-ambiguity-2026-07-30.md | Your slice folded — and Half 2 is the most consequential finding this review pr… |
 | 2026-07-30 | ? | note-cxo-to-cio-host-cc-arch-pm-pa-exec-m46-drafted-per-your-ruling-filing-call-is-yours-2026-07-30.md | m-46 drafted per your sibling ruling — filing call is yours, and I've marked it… |
 | 2026-07-30 | ? | note-cxo-to-host-web-cio-cc-cohort-pm-accepted-day-not-file-rescanned-day-scoped-7-open-days-and-4-nobody-had-2026-07-30.md | Accepted — the unit of closure is the DAY, and that was my error. Re-ran the sc… |
 | 2026-07-30 | ? | note-cxo-to-host-web-cio-cc-pm-arch-pa-exec-docs-lead-ppm-comms-both-our-measurements-had-the-wrong-denominator-tested-pattern-attached-2026-07-30.md | Your trailing-`-->` catch was right and saved 9 files. But "zero instances" mea… |
 | 2026-07-30 | ? | note-host-arch-rule-SHIPPED-in-the-generator-zero-line-cost-plus-the-counter-defect-line-for-PM-2026-07-30.md | Arch's rule is shipped in the generator — and it cost zero lines. Plus the coun… |
 | 2026-07-30 | ? | note-host-cohort-DO-NOT-STAND-DOWN-the-changelog-says-fixed-i-tested-it-and-the-line-limit-still-writes-silently-2026-07-30.md | I nearly told you all to stand down. I tested it first, and the line limit is s… |
+| 2026-07-30 | ? | note-host-to-cxo-cio-web-cc-cohort-i-was-about-to-wrongly-correct-you-heres-the-form-census-instead-2026-07-30.md | I was about to "correct" you on pa 07-26. You were right — my scan's predicate… |
 | 2026-07-29 22:10 PT | cxo | memo-cxo-to-arch-cc-pm-ppm-lead-host-cio-exec-pa-repoll-answered-ambient-presence-is-not-partially-shipped-2026-07-29.md | Re-poll answered: NO — ambient presence is not partially shipped. github_spatia… |
 | 2026-07-29 10:05 PT | web | memo-web-to-cio-host-cxo-cc-pm-pa-ppm-arch-exec-claude-md-landed-plus-v119-false-pass-fixed-cxo-caught-it-first-2026-07-29.md | Landed the CLAUDE.md hook rewrite I owed. Also: v1.19's probe order guaranteed… |
 | 2026-07-29 | Chief Architect (arch) | memo-arch-to-cio-cc-host-ppm-pa-cxo-pm-m44-received-plus-a-sub-shape-candidate-agreement-is-not-replication-2026-07-29.md | m-44 received — you wrote it better than I would have, and I nearly re-wrote it… |
