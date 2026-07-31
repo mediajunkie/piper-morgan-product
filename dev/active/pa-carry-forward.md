@@ -56,26 +56,33 @@ was a claim inherited from a document and never checked against the source** —
 thread, verify it.** *(And per PM 7/29: the platform story here changes fast — a correct answer from four
 days ago is not a current answer.)*
 
-## Active state — 2026-07-30 (evening; next fire 21:42 = STOP)
+## Active state — 2026-07-30 STOP (next wake 06:42 Fri 7/31)
 
 - **Role**: Piper Alpha (PA) · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` (Model A) · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/07/30/2026-07-30-0712-pa-code-log.md`
-- **Cron**: ARMED. **Job id lives in the registry row — read it there, not here** (it changes at every
-  re-arm; a job id frozen in prose is the thing that rots).
+- **Last session log**: `dev/2026/07/30/2026-07-30-0712-pa-code-log.md` — **DAY-CLOSED 2026-07-30**
+- **Cron**: ARMED at STOP via delete-then-create. **Job id is in the registry row — read it there.**
 
-  🔴 **FIRST ACTION ON ANY NEW SESSION: run `CronList`.** If it is empty **you are not cycling**, whatever
-  the registry says. `CronCreate` jobs are **session-only** (die when the session exits) and
-  **auto-expire after 7 days** — this generation lapses **~2026-08-05**. Neither death emits anything;
-  both look exactly like a quiet day. **The registry records *intended* cadence, not a live job.**
-  *Approval to run a cadence and arming it are two separate acts — PA conflated them once and lost 7/27–28.*
+  🔴 **FIRST ACTION ON ANY NEW SESSION: run `CronList`.** Empty = **you are not cycling**, whatever the
+  registry says. Jobs are **session-only** and **auto-expire after 7 days** — this generation lapses
+  **~2026-08-06**. Both deaths are silent and look exactly like a quiet day. **The registry records
+  intended cadence, not a live job.** *Approval to run a cadence and arming it are two separate acts.*
+- **Inbox**: 0 at close.
 
-## Environment verification (7/30)
+## ▶️ First substantive item tomorrow (deferred with a named trigger, not drifting)
 
-Worktree ✅ · branch ✅ · `HEAD..origin/main` = 0 ✅ · tree clean ✅ · one cron ✅ · inbox 0 ✅ ·
-**hooks: assume a compound `git add … && git commit …` is UNGATED for mailbox paths** (cause is
-index-state-at-hook-fire-time, resolved cohort-wide). **Mitigation: stage in one call, commit bare in the
-next.** `mail-send.sh` is structurally safe (`commit-tree`).
+**Run the two client-LLM probes.** Both green-lit by their verdict-owners — CXO on A, PPM on B. Spec:
+`dev/active/phase0-client-llm-probe-spec-2026-07-30.md`. Deferred from 7/30 STOP *because a designed
+experiment started inside a day-close fire ends half-run, and a partial experiment invites its fragment
+being read as a result.* Trigger named: **06:42 START.**
+⚠️ Design constraints, carried from this week's own failures: **keep tool schemas identical across B's
+arms** (vary only names/descriptions — otherwise the arms differ in more than the variable, the confound
+that cost five seats and a week); **run A against both Claude and GPT** (a divergence is itself a
+ChatGPT-lane finding).
+
+**Second**: file the cron-mechanism gap to CIO. **Owed since 7/29 and dropped once already** — no durable
+cohort record exists of *which* cron mechanism we use (session-scoped `CronCreate`) or its two silent
+death modes. It has now appeared in two consecutive memory-evals. Don't re-promise it a third time.
 
 ## Open threads PA owns
 
