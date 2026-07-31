@@ -30,6 +30,24 @@
 # Proposed to the cohort 2026-07-27; until it lands, treat a single STALE line on a 2x/day role as
 # weak evidence and confirm before acting.
 #
+# ⚠️ WHAT THE CRON ACTUALLY IS — undocumented until 2026-07-31 (PA determined it by elimination).
+# The duty cycle runs on the harness's **session-scoped `CronCreate`** tool. NOT the user crontab
+# (that holds only Pard's freeze-watchdog), NOT launchd (no agent jobs there). This matters because
+# `CronCreate` has TWO SILENT DEATH MODES:
+#   1. SESSION-ONLY — the job dies when the Claude session exits. Every new session must re-arm.
+#   2. 7-DAY AUTO-EXPIRY — announced once at creation and nowhere else.
+# **Neither death emits anything. Both look exactly like a quiet day.**
+#
+# ⚠️ AND THE CONSEQUENCE FOR THIS FILE: `cron_expr` below records INTENDED CADENCE, NOT A LIVE JOB.
+# A row can read `watched` with a plausible expression while no job exists at all — the registry
+# cannot tell the difference, and neither can the freeze-watchdog that reads it. That is m-44 in the
+# registry itself: the column looks identical whether the cron is armed, expired, or never created.
+#
+# **Only the owning agent can check** — `CronList` is session-scoped, so no other role and no script
+# can verify your job is alive. Therefore: **state your JOB ID and its expiry date in your state
+# column when you arm**, and re-verify at every START. Several rows already do this (arch, comms,
+# docs); it is the only thing that makes an armed claim falsifiable by a reader.
+#
 # threshold_h = a bit more than the role's LARGEST in-window inter-fire gap (so a healthy role never trips).
 # wake_start/wake_end = waking/alerting window (local hour, [start,end)); we don't alert PM outside it.
 # first_fire = the role's first START-fire of the day, HH:MM (the first cron fire at/after wake_start — NOT an
