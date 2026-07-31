@@ -1,20 +1,24 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-30 ~09:55 PT — after the 08:32 fire (rollup delivered).
+**Last updated**: 2026-07-30 ~21:30 PT — day-close (STOP).
 
-## Fire-state delta (2026-07-30 morning — read with the sections below)
+## Friday 7/31 queue — IN ORDER (all unblocked)
 
-- **Rollup DELIVERED** (`dev/active/exec-cohort-attention-rollup-2026-07-30.html`, sent to PM 09:45):
-  3 blockers / 6 decisions / live-verified. Refresh incrementally on next PM contact — don't re-render
-  identical.
-- **Jake synthesis still gated at 3/4** — PPM parked (PM-gated); now board blocker #1. CXO prepped a
-  Jake discussion structure for PM (`e7d1cd7dd`) as the interim.
-- **NEW owed by me: HOST migration-checklist v2.0 review** (→ then CEO ratification) — substantive read,
-  target next quiet fire, before Ship #054 drafting starts Saturday.
-- **CIO park-check proposal endorsed** (memo sent 09:50, cc HOST/PM) — HOST's read is the remaining input.
-- **Memory-index governance**: with CIO/HOST/PM (board decision item). Exec holds no action; do NOT
-  prune or let a hook prompt push a prune — index is derived, source is irreversible.
-- Inbox at 0 as of 09:50; mail loop clean.
+1. **Jake FTUX synthesis — 4 of 4 IN** (HOST 7/27 trust · CXO 7/29 experience · PA 7/29 in-house-experiment · PPM 7/30 roadmap, all in `mailboxes/exec/read/`). **Framing per PM's ruling (CXO relay 7/30): collection-and-framing INPUT to a PM + CXO experience decision — not a committee verdict.** Known structure: PA's cold-start reframe is the agreed root (4/4); CXO consent-gate + capability-legibility ship together; CXO§6/PA#1 converge on demonstrate-don't-describe; **PPM's surface filter is the sort key** (bucket A dies with PDR-006 / B relocates to tool catalog / C is-the-beta); PPM's gate finding (m-44 at product level — the gate can't fail for what Jake reported) + their 3 recs (don't expand #1386; add a first-contact demonstration criterion; HOST's consent gate is a genuine blocker). PPM's tool-catalog-naming risk flag (situation-names may route worse for the host LLM — test both before committing) goes in as an open question, not a settled call. **Flag PPM the moment it's done** — they convert to GitHub issues same day.
+2. **Ship #054 kickoff** — window Jul 24–30, pubDate **Wed Aug 5** (v1.9 rule). Request all 6 workstream memos; hard gate stays 6/6.
+3. **08:32 fire: verify #1386 re-run state ON THE ISSUE, report to PM.** Window locked tonight (`c3033e577`, PM expedite directive, beta target **Aug 8**): Lead drives canonical suite + Scenario-B from ~06:17 (venv acceptance first, fail-fast to me), CXO ~06:47 / PPM ~06:52 sign off on the issue. Scope: closes criterion 2 + #1393/#1394 only — NOT the gate (criteria 1/4/5/6 remain; #1278 scope call is PM's, on the board). Fallback: window moves + slip reported, never silent drift.
+4. **HOST checklist v2.0 → Exec review** (then CEO ratification) — when 1–3 clear.
+
+## Board state (rollup delivered 7/30 09:45)
+
+`dev/active/exec-cohort-attention-rollup-2026-07-30.html` — 3 blockers / 6 decisions. **Two blockers cleared same day**: PPM un-parked (Jake 4/4, PDR-006 complete, spatial slice shipped) + build stack READY (`2eaa4b594`). Remaining blocker: PA's ⏰ OpenAI verification (PM committed Thu — unverified whether done). Decisions queue unchanged, led by **memory-index governance** (CIO 7/30: hard floor in ~6 days; generator guard shipped; ruling is PM's). Next render: incremental refresh on PM contact — reflect the two cleared blockers + PDR-006 now sitting at PM ratification (PA's memo, all three reviews in).
+
+## Standing (delta from 7/29 sections below)
+
+- **CIO park-check proposal**: Exec endorsed 7/30 AM (one caveat: gate covers provisioned successions only); HOST's read outstanding.
+- **PM ruling to make durable if PM confirms wording**: "experience decisions are PM + CXO; other lenses are input" — currently lives only in CXO's relay + my log; decisions.log candidate.
+- Lead's #1424 (+#1427 one-line confirm), #1278, tester-welfare instrument, Comms' 5-item gated queue: all on the board, unchanged tonight.
+- Cron expiry hazard ~Aug 5 (session-only) — cohort-wide, CIO/Pard hold the durable-scheduler question.
 
 ---
 
