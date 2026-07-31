@@ -17,15 +17,19 @@ PM-attention items live **here**, in the section immediately below.
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-07-31 PM.)*
 
-- ⛔ **DO NOT RUN THE OPENAI VERIFICATION UNTIL THE ORG IS CHOSEN — an ID verifies ONE organization per
-  90 DAYS.** *(Verified 7/31 against OpenAI's help centre; PA had been pushing this item for 12 days as
-  "a 5-minute unblock with no dependencies" and **it has one**.)* PM said 7/31 they expect to verify
-  **today**, while **mid-migration** of their ChatGPT base to the design-and-product account. **Wrong
-  pick ⇒ the right org is blocked until ~29 October.** kindsys closed 7/30 — never verify there.
-  **The question: which OpenAI org will own the Piper Morgan ChatGPT listing?** Candidates:
-  design-and-product (where PM's ChatGPT base is moving) vs pipermorgan.ai (where the Claude side and
-  the whole cohort live). ⚠️ **Those are diverging** — worth 10 minutes now rather than a quarter later.
-  Everything about the *process* is unchanged; only the *ordering*.
+- ✅ **OpenAI verification — RESOLVED 7/31. DO NOTHING. It was the wrong verification entirely.**
+  ~~"The only item with an external clock"~~ — **withdrawn.** There are **two** OpenAI verifications:
+  **API org verification** (advanced model access; one org per ID per 90 days) — **not on the ratified
+  path, not required for a directory listing either**; and **verified developer/business identity**,
+  which is what submission actually requires and is *explicitly distinct*. PA pushed the former for
+  twelve days. **Arch asked whether it was required at all; PPM confirmed against the ratified text.**
+  PDR-006 §Decision item 3 is *BYOC user adds the MCP URL manually* — **the user is OpenAI's customer;
+  no org of ours is in that path.** Full answer in **PDR-006 Open Question 3**, not a memo.
+  🔴 **New prerequisite recorded there**: MCP connector submission needs **domain-ownership verification
+  for `mcp.pipermorgan.ai`** — which doesn't exist yet. Phase-2 dependency.
+  ⚠️ **Deliberately unresolved**: whether the developer/identity flow has its own rate limit. Do not
+  transfer the 90-day rule without evidence.
+
 - 🔴 **Provision the Amber LLM keys — still absent as of 13:11 today.** One step, unblocks **four lanes**
   (#1386 criterion 2, PA's Probe A, #1445, #1395). Must go via `KeychainService` semantics, **not** the
   `security` CLI. Exact one-liner given in chat 7/31 (`keyring.set_password('piper-morgan',

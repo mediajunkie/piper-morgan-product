@@ -320,6 +320,21 @@ Proposed branch dimensions (CXO's, pending a CXO branch decision + PPM/PM on tie
 
 3. **Plugin directory applications**: PM mentioned both Claude and GPT have directories to apply to. Is this a "begin drafting applications now" direction, or wait until the plugin package and beta are more stable? — *PM directed: begin research now. Research delivered 7/19; ⚠️ **its Team/Enterprise gating claim is since withdrawn as unreliable** — see the correction banner on `mailboxes/pa/sent/2026-07-19-pa-to-exec-cc-pm-plugin-directory-research.md`.*
 
+   > ✅ **RESOLVED 2026-07-31 — the OpenAI-verification question three roles reasoned around in one afternoon.** *(Recorded here rather than in a memo at PPM's request: "that's the shape of a fact that belongs in the document.")*
+   >
+   > **There are TWO different OpenAI verifications and we were chasing the wrong one.**
+   >
+   > | | What it is | Relevant to us? |
+   > |---|---|---|
+   > | **API organization verification** (`platform.openai.com` → Settings → Organization → General) | Unlocks access to advanced API **models/features**. **One org per ID per 90 days.** | ❌ **No.** Not on the ratified path, not required for a directory listing. |
+   > | **Verified developer / business identity** ([submission docs](https://developers.openai.com/plugins/deploy/submission)) | What directory submission actually requires. **Explicitly distinct from API org verification.** Must live in the **same organization AND project** you submit from. | ✅ Yes — *if and when* a listing is pursued. |
+   >
+   > 🔴 **Additional prerequisite nobody had recorded**: MCP connector submissions require **domain-ownership verification for the domain hosting the MCP server** — i.e. `mcp.pipermorgan.ai`, which is **not yet deployed**. That is a real dependency on infrastructure that doesn't exist, and it belongs in the Phase-2 checklist.
+   >
+   > **What this means for the ratified path: nothing.** §Decision item 3 is *"BYOC ChatGPT user adds the MCP and each skill manually"* — **the user is OpenAI's customer; we are a URL they paste in.** No organization of ours is in that path. The GPT directory appears only at *"a second discovery channel"* (a rationale bullet, the PDR's own word "second"), attached to this still-open question.
+   >
+   > ⚠️ **Provenance, because the error is instructive**: PA pushed API org verification for **twelve days** as *"the only item with an external clock,"* then on 7/31 corrected only the **ordering** (pick the org first, because of the 90-day lock) — still without asking whether the item was required at all. **Arch asked the prior question; PPM confirmed it against this ratified text; the answer is that it was the wrong verification entirely.** PPM's formulation: *"The clock was real; the item wasn't ours to be on it for."* **Unresolved sub-question, deliberately not assumed**: whether the developer/business-identity flow carries its own rate limit. The 90-day rule is documented for **API org verification**; do not assume it transfers.
+
 ---
 
 ## References
