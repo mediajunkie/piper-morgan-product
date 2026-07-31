@@ -26,6 +26,7 @@ Run after adding or removing memories.
 """
 
 import re
+import sys
 from pathlib import Path
 
 MEMDIR = Path(
@@ -174,6 +175,36 @@ if breaches:
         "it needs a prune/merge or a format change. See MEMORY.md's own header for the options.\n"
         "⚠️  Memory files are NOT under version control. EXPORT BEFORE YOU DELETE ANYTHING."
     )
+
+# ── --check: render and COMPARE, never write. ───────────────────────────────────
+# Why this mode has to exist before any drift-check can use this script: a plain
+# rebuild REPAIRS the drift it would have detected. Run it to find out whether the
+# artifact matches its generator and you have already destroyed the evidence, and
+# the answer is always "it matches now." A detector that fixes what it measures
+# cannot report. (Concretely: this is how Comms's hand-compacted header was found on
+# 2026-07-30 — by accident, mid-rebuild, one turn before the fix erased the symptom.)
+if "--check" in sys.argv:
+    target = MEMDIR / "MEMORY.md"
+    current = target.read_text(encoding="utf-8") if target.exists() else ""
+    if current == body:
+        print(f"✓ MEMORY.md matches its generator ({len(files)} entries, {n_bytes:,}B, {n_lines} lines)")
+        raise SystemExit(0)
+    cur_lines, new_lines = current.split("\n"), body.split("\n")
+    print("⚠️  DRIFT: MEMORY.md does NOT match what rebuild-memory-index.py would emit.")
+    print(f"   on disk: {len(cur_lines)} lines / {len(current.encode('utf-8')):,}B")
+    print(f"   generator would emit: {n_lines} lines / {n_bytes:,}B")
+    print("   The artifact is a BUILD OUTPUT. If someone hand-edited it, that edit is")
+    print("   NOT durable — the next rebuild silently reverts it. Either fold the change")
+    print("   into the generator, or re-run this script without --check to discard it.")
+    for i, (a, b) in enumerate(zip(cur_lines, new_lines)):
+        if a != b:
+            print(f"   first difference at line {i+1}:")
+            print(f"     on disk   : {a[:110]}")
+            print(f"     generator : {b[:110]}")
+            break
+    else:
+        print(f"   (identical prefix; length differs by {len(new_lines)-len(cur_lines)} lines)")
+    raise SystemExit(1)
 
 (MEMDIR / "MEMORY.md").write_text(body, encoding="utf-8")
 print(f"index rebuilt: {len(files)} entries, {n_bytes:,} bytes, {n_lines} lines "
