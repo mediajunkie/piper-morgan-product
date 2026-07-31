@@ -91,7 +91,7 @@ to read is N commits behind.
 
 ## Top of the queue for 2026-07-31 (rewritten at STOP)
 
-1. **Build the `check-staleness` consumer into the weekly docs audit.** Arch found the detector works,
+1. ✅ **DONE 2026-07-31 (`3ac4ecaa5`) — `check-staleness` has a consumer.** A 🕰️ Doc Currency Check section landed IN the weekly docs audit. Reports the ratio not the list (Arch's framing); checks for `last_verified` clustering; says only to stamp what you actually verified. YAML + both embedded commands verified before shipping. **First real run is Monday.** ⚠️ **Surfaced a worse finding: 23 docs share ONE identical `last_verified` stamp** — a bulk operation, not 23 verifications, so the field meant to detect staleness is itself a false clear. Routed to CIO as a #972 follow-up. ~~Original item:~~ Arch found the detector works,
    is correctly configured, and **is invoked by nothing** — 31 of 36 docs stale. I measured that
    SessionStart is the *wrong* home (over-subscribed at 443/490 with two lines still cut, one of which
    is already a staleness signal). The `fly-audit` issue is the right home: it exists, it has a consumer

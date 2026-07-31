@@ -103,11 +103,27 @@ echo
 echo "denominators — every count above is out of $N_ROSTER roster roles, NOT out of tmux sessions."
 echo "  live sessions: $(for r in $ROSTER; do tmux has-session -t "=$r" 2>/dev/null && echo x; done | grep -c .) / $N_ROSTER"
 echo "  registry rows: $(printf '%s\n' "$src_registry" | grep -c .) / $N_ROSTER   (a role with NO-ROW is invisible to the freeze-watchdog)"
-echo "  closed today:  $(for r in $ROSTER; do
+# ⚠️ 2026-07-30 (CIO), re-applied 07-31 on top of HOST's census-verified predicate.
+# The summary printed `closed today: 0/11` while the host row said CLOSED=yes, and emitted its line
+# twice. Every part of the predicate matched in isolation; the mechanical fault was nesting a
+# multi-line for/while/here-string inside a `$( )` inside a quoted echo.
+#
+# The mechanical fault is not the interesting one. The summary RE-IMPLEMENTED a predicate the row
+# loop already computes, so the two could disagree at all — and they did, on one screen. A tool whose
+# header contradicts its own table is precisely the failure it exists to catch. Note that HOST's
+# predicate fixes (bold, em-dash, hyphen separators) had to be applied in BOTH copies; that is the
+# duplication tax, and the next fix would have paid it again.
+#
+# Now the summary ACCUMULATES using the row loop's own predicate. Divergence is structurally
+# impossible rather than merely corrected.
+closed_n=0
+for r in $ROSTER; do
   fs=$(ls "dev/$TODAY/" 2>/dev/null | grep -- "-$r-code")
-  [ -z "$fs" ] && continue
-  # Any of the day files for this role can carry the close -- see the per-role loop above.
+  [ -n "$fs" ] || continue
   while IFS= read -r f; do
-    grep -qE "^(<!--[[:space:]]*)?#{0,4}[[:space:]]*\**[[:space:]]*DAY-CLOSED\**[[:space:]]*[:—-]?[[:space:]]+$TODAY_DASH" "dev/$TODAY/$f" 2>/dev/null && { echo x; break; }
+    if grep -qE "^(<!--[[:space:]]*)?#{0,4}[[:space:]]*\**[[:space:]]*DAY-CLOSED\**[[:space:]]*[:—-]?[[:space:]]+$TODAY_DASH" "dev/$TODAY/$f" 2>/dev/null ; then
+      closed_n=$(( closed_n + 1 )); break
+    fi
   done <<< "$fs"
-done | grep -c .) / $N_ROSTER"
+done
+echo "  closed today:  $closed_n / $N_ROSTER"
