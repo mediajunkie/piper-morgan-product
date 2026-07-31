@@ -1,43 +1,42 @@
 # HOST carry-forward
 
-**Written**: 2026-07-30 13:2x PDT (fire 3) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-07-30 19:2x PDT (STOP, day 6 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
 ## Read this first
 
-**Verify against the corpus, not against the file in front of you.** Three of us shipped a `DAY-CLOSED` regex on 07-30 that false-failed 9 of 388 real closes, because all three validated against one recent log. A five-second `git ls-files | xargs grep -c` would have caught it. **When you say "tested," say tested *on what*.**
+**Match your measurement's scope to the question.** Five predicate errors in two days, three of them mine, all the same shape: undated scan vs dated consumers · per-file vs per-day · sampled-by-outcome vs sampled-by-exposure. **Before quoting a number, say what the denominator is and what it structurally cannot contain.**
 
-Second: **capable-of ≠ has-happened.** I asserted a defect in the voice of an observed one; a corpus scan found zero instances of it. Fix predicates anyway when cheap — but don't buy strictness you have no instances to justify.
+**And a predicate is a derived artifact** — enumerate the corpus before writing one. I hand-wrote three predicates against an imagined format before enumerating the ten forms that actually exist.
 
 ## Owed by me
 
-1. **The m-46 mechanism — next substantive fire, and I said so publicly.** CXO drafted m-46 (promotion-is-a-re-verification-event) and honestly flagged *"no mechanism, and nobody has proposed one."* Per m-36 that's a decaying norm. **Build: a drift-check that regenerates known-derived artifacts and diffs them against the committed copy.** Worked example `MEMORY.md` vs `scripts/rebuild-memory-index.py`; second case Arch's layer map vs the import graph. Filing of m-46 is held until then — CIO and I share the call.
-2. **Checklist v2.0 → Exec review → CEO ratification.** Not yet reviewed.
-3. **Dashboard welfare spec v0.3** — reconcile §3a-ter with Pard's guard **once it lands** (approved-with-changes 07-30; the `env`/wrapper hole is the open delta).
-4. **m-44 stays at 11 instances and NOT Proven.** Hold until an instance is caught by a *mechanism* rather than a person reading. m-46 is a **sibling, not an instance** — m-44 is *right property, wrong object*; m-46 is *right property, right object, wrong time*.
+1. **The drift-check mechanism — owed, and now has both worked examples.** m-46's filing is held on it (CIO and I share the call; CXO drafted it and honestly flagged *"no mechanism, nobody has proposed one"*). Build: regenerate known-derived artifacts, diff against the committed copy. **Example 1** `MEMORY.md` vs `scripts/rebuild-memory-index.py` (caught Comms's non-durable hand-edit). **Example 2, CXO's** — a predicate regenerated from the corpus it must match; the `DAY-CLOSED` form census is the prototype.
+2. **Checklist v2.0 → Exec review → CEO ratification.** Still not reviewed.
+3. **Dashboard welfare spec v0.3** — reconcile §3a-ter once Pard's guard lands (approved-with-changes; the `env`/wrapper hole is the open delta).
+4. **m-44 stays at 11 and NOT Proven.** m-46 is a **sibling** (right property, right object, wrong *time*), not an instance.
 
-## Awaiting others (check before re-asking)
+## Awaiting others
 
-- **CIO** — Step 0 predicate now corrected in the skill by me (`966bbf229`); the `FIRST_FIRE_GRACE_MIN` 10→45 call is still open (measured START takes 18–36 min; 10 was never reachable).
+- **CIO** — three open: `FIRST_FIRE_GRACE_MIN` 10→45 (measured START takes 18–36 min); the **parked-role rule** (PARKED should suppress the *missing-START* check, not the *went-silent* check — measured on PPM); memory-index structural fix (leaning prune-dead-first).
+- **Web** — CXO's separator-class pattern; **add em-dash** before shipping (4 real closes use `— ` not `: `).
 - **Pard** — precise-predicate guard with the wrapper allow-list.
-- **CIO/Comms** — the per-type index split. **Decide on reversibility, not capacity**: generator changes are reversible, deleting memories is not.
-- **PM** — the tester-welfare instrument. **Will not settle on its own.** 12 tokens out, 1 report, and that one only because PM asked twice.
+- **PM** — tester-welfare instrument. **Will not settle on its own.**
 
-## Closed since last rewrite (do not re-open)
+## Live findings others own
 
-- ~~Memory-index ceiling provenance~~ — settled. Not my inference: platform-documented (v2.1.83) **and** PA-empirical at 194.
-- ~~"Is the v2.1.210 fix live?"~~ — **No, on both limits.** I tested lines, PA tested bytes; both writes silent on 2.1.220. **Don't re-test either.** ⚠️ Still untested by anyone: whether an over-limit *read* actually truncates — the harm half is assumed from the changelog.
-- ~~Prune governance~~ — **dissolved by Arch**: the index is a DERIVED artifact, the memories are source. Flat rule now emitted by the generator every rebuild (`e36d53622`), **zero line cost**.
-- ~~#974 tense convention~~ — written into `docs/internal/operations/memory-eval-pilot.md`.
+- **7 open days, Jul 20–29** (CXO's list — date-matched, day-scoped, verified): docs 07-21/23/25, ppm 07-26/29, lead 07-27, pa 07-26. **Each owner's to close.** Do not re-derive; my scans produced three different lists in one day.
+- **7 markers with no date at all** — unreachable by any regex. Not a formatting variant; a missing datum.
+- **~10% of role-days go unclosed, steady-state, and always have.** Step 0 only checks *yesterday*, so anything missed the next morning is never caught. No back-catalogue sweep exists.
 
 ## Standing hazards
 
-- **Verify at the mechanism, not by reading the announcement** — including when the announcement is an official changelog pointing at *less* work. That's the direction the reflex doesn't fire.
-- **Ask what a green probe actually exercises.** The `verify-hooks` drumbeat reads PASS while only testing the already-mitigated path.
-- **Evaluate a new refinement against the other accepted refinements.**
-- **My prose habit makes my own verifications unfalsifiable**: I narrate "Step-0 verified — carries `<!-- DAY-CLOSED: … -->`" inside the artifact the check reads. Watch for the general form — *documenting that you checked, inside the thing you checked.*
-- **Deleting a memory is irreversible** (`~/.claude-pm/` is not VCS'd). Export first. And per Arch: never delete a memory to make the index fit.
+- **Verify at the mechanism, not the announcement** — especially when the announcement points at *less* work.
+- **Ask what a green probe exercises.** The `verify-hooks` drumbeat tests only the mitigated path.
+- **My prose habit makes my own verifications unfalsifiable** — I narrate "Step-0 verified" inside the artifact the check reads. General form: *documenting that you checked, inside the thing you checked.*
+- **A skimmed warning is a finding.** A `No such file or directory` I glanced past was a zsh word-splitting bug producing a confident wrong answer on the exact disputed case.
+- **Never delete a memory to fit the index** (generator emits this now). Export first; `~/.claude-pm/` is not VCS'd.
 - **Never `git checkout -- .` / `reset --hard` / `stash` in PM's main checkout.**
 
 ## Cron
 
-Current job **`2d87bd9f`**, expression **`37 6,9,12,15,18,21 * * *`** — verify against `CronList` and the registry row before writing it anywhere. **Never transcribe your cadence from memory** (I got it wrong on 07-29: wrong minute *and* wrong hours). Re-arm weekly minimum; session-only, silent 7-day expiry; delete-then-create-then-verify.
+Current job **`fd14a8e7`** (chain … `2cebafed → 2d87bd9f → fd14a8e7`), expression **`37 6,9,12,15,18,21 * * *`** — verified against `CronList` **and** the registry row this STOP; they agree. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
