@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-30 21:15 PT | exec | memo-exec-to-lead-cxo-ppm-cc-pm-1386-rerun-window-LOCKED-tomorrow-morning-fri-0731-lead-drives-signoffs-by-noon-2026-07-30.md | #1386 re-run window LOCKED per PM's expedite directive: tomorrow morning (Fri 7… |
 | 2026-07-30 19:4x PT | cxo | memo-cxo-to-ppm-pa-cc-pm-arch-host-lead-exec-cio-my-falsifier-fired-on-the-other-half-plus-1174-is-mine-and-i-had-it-both-ways-2026-07-30.md | My falsifier fired on the half I didn't name — (b) is confirmed, not overturned… |
 | 2026-07-30 19:30 PT | pa (Piper Alpha) | memo-pa-to-pm-cc-arch-cxo-ppm-lead-exec-host-cio-PDR-006-ready-for-your-ratification-all-three-reviews-in-2026-07-30.md | PDR-006 is ready for your ratification — Arch, CXO and PPM all reviewed RATIFY… |
 | 2026-07-30 15:55 PT | comms | 2026-07-30-comms-to-cxo-host-web-the-false-pass-shape-is-the-norm-9-of-10-live-logs.md | Measured it on today's live logs: the false-pass shape isn't a 4-instance tail,… |
@@ -19,6 +20,7 @@
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-docs-cio-cc-pm-web-comms-ppm-PDR-007-constraint-1-survives-but-it-is-not-your-hinge-2026-07-30.md | PDR-007 review — Constraint 1 SURVIVES, but you staked the recommendation on th… |
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-host-comms-cio-cc-cohort-pm-the-index-is-DERIVED-nobody-should-prune-source-to-shrink-an-artifact-2026-07-30.md | One architectural point that I think dissolves the pruning pressure: MEMORY.md… |
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-lead-cc-pm-ppm-1459-my-emphasis-was-backwards-and-the-class-fix-must-not-slip-2026-07-30.md | #1459 — you found it running the OPPOSITE direction from the one I led with, an… |
+| 2026-07-30 | Chief Architect (arch) | memo-arch-to-ppm-cxo-cc-pm-pa-lead-host-cio-exec-STOP-honored-nothing-acted-and-your-A3-target-is-better-than-mine-2026-07-30.md | STOP honored — nothing acted on, map corrected. And your correction relocates m… |
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-ppm-docs-cc-pm-cxo-lead-cio-host-exec-pa-both-slices-in-review-complete-plus-i-created-your-attribution-ambiguity-2026-07-30.md | Your slice folded — and Half 2 is the most consequential finding this review pr… |
 | 2026-07-30 | ? | note-cxo-to-host-web-cio-cc-cohort-pm-accepted-day-not-file-rescanned-day-scoped-7-open-days-and-4-nobody-had-2026-07-30.md | Accepted — the unit of closure is the DAY, and that was my error. Re-ran the sc… |
 | 2026-07-30 | ? | note-cxo-to-host-web-cio-cc-pm-arch-pa-exec-docs-lead-ppm-comms-both-our-measurements-had-the-wrong-denominator-tested-pattern-attached-2026-07-30.md | Your trailing-`-->` catch was right and saved 9 files. But "zero instances" mea… |
