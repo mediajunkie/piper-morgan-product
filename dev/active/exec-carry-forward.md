@@ -1,6 +1,25 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-07-30 ~21:30 PT — day-close (STOP).
+**Last updated**: 2026-07-31 ~09:55 PT — after the morning fire.
+
+## Fire-state delta (7/31 morning — supersedes queue items below where they conflict)
+
+- ✅ **Jake synthesis DONE + delivered to PM** (`dev/active/jake-ftux-four-lens-synthesis-2026-07-31.md`).
+  Next: PM+CXO decide on §4's six items → flag triggers PPM's same-day issue conversion. Exec holds no
+  further synthesis action.
+- ✅ **Ship #054 kickoff SENT** (6 roles, procedural deadline = their Saturday day-close fires). Watch
+  collection; 6/6 hard gate; draft Sunday if all in.
+- ⚠️ **#1386 window RE-SCOPED** (memo + issue comment): Scenario-B + #1393/#1394 only; criterion 2
+  DEFERRED pending PM key provisioning (canonical suite skips keyless — PPM/CXO withheld correctly).
+  **Critical path = two PM actions**: keys via KeychainService (unblocks 4 lanes) + rousing Lead (row
+  still parked, no cron — driver cannot wake autonomously). Report state each fire; Scenario-B runs at
+  Lead's first opportunity after waking.
+- **Two coordination rules adopted** (from the window post-mortem, both mine to practice): the driver
+  re-verifies a locked window's preconditions at window start; the coordinator verifies the driver's
+  wake mechanism before naming a start time.
+- **Evening fire**: check Scenario-B/keys movement, #054 early arrivals, then HOST checklist v2.0 review
+  if quiet. PA's ⏰ OpenAI item: still unverified whether PM did it Thursday — worth one line in the next
+  PM contact.
 
 ## Friday 7/31 queue — IN ORDER (all unblocked)
 
