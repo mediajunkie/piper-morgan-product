@@ -15,28 +15,30 @@ PM-attention items live **here**, in the section immediately below.
 
 ## PM Attention
 
-*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-07-29 PM.)*
+*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-07-30 PM.)*
 
-**Both distribution "decisions" are CLOSED. Neither was ever really open. One PM action remains.**
+- 🔴 **PDR-006 IS READY FOR YOUR RATIFICATION. All three reviews in, all RATIFY, no objections** —
+  Arch 7/29, CXO 7/30, PPM 7/30. A PDR is PM-ratified; the reviewers are done and the decision is yours.
+  **Nothing is blocked on the signature** — PA is working Phase 0 either way.
+  *Worth 30 seconds before signing*: the reviews found a **defect in the document's own success
+  criteria** — all three originals were *setup* criteria and none could fail for "installed fine,
+  answered correctly, demonstrated nothing," which is Jake's session exactly. **Same defect class as
+  #1386's beta gate**, from the other direction. One binary criterion added (cold account + one
+  connector → user's own data in the first exchange, unprompted); it's the only one that fails today.
+  ⚠️ **Ratified ≠ shippable**: #1458 (cross-caller isolation) and the recomposition rubric gap both
+  remain open as pre-user gates.
+- ⏰ **OpenAI identity verification — still the only PM ACTION outstanding, and still unstarted.**
+  PM committed to Thu 7/30; not done as of this writing. **platform.openai.com → Settings →
+  Organization → General → "Verify Organization"** — government ID, a few minutes. The only item with
+  an **external clock**; gates the ChatGPT lane and nothing else gates it.
 
-- ⏰ **THE ONLY OPEN PM ITEM — OpenAI identity verification. PM committed to doing it Thu 7/30.**
-  Path: **platform.openai.com → Settings → Organization → General → "Verify Organization"** — government
-  ID, a few minutes, no spending threshold, no company entity. Only item with an **external clock**;
-  gates the ChatGPT remote-MCP listing and nothing else gates it.
-- ✅ **CLOSED — "open-source the plugin package?" was never an open decision. THE REPO IS ALREADY PUBLIC.**
-  Verified 7/29 (`gh repo view` → `visibility: PUBLIC`). **PM had answered this multiple times**; it kept
-  regenerating out of stale docs, including PA's own 7/26 memo which called it "the live gate." It was
-  never a gate. ⚠️ **If you see this listed as a pending decision anywhere, it is stale — delete it.**
-- ✅ **CLOSED — Team upgrade: DROPPED (PA recommendation, PM concurring math).** Chat now installs
-  plugins on all paid plans, and plugins bundle skills + connectors + MCP — so Track A's unique audience
-  collapsed. Team's only purpose was the connector portal: 5-seat minimum, ~$1,200/yr Standard,
-  **~$6,000/yr Premium** (Claude Code is Premium-only, which is the number that matters here).
-  **Reopen only on real install data showing connector-directory discovery converts better.**
+### Closed since 7/29 — no PM action
 
-**No PM decisions pending. The distribution track is now build work** — plan and phased sequencing in
-`dev/active/distribution-submission-tiers-resolved-2026-07-26.md`. PA is working Phase 0 (privacy policy,
-docs page, tool-annotation spec, ChatGPT test cases, `claude plugin validate` dry-run), none of which is
-blocked on anything.
+- ✅ **Team upgrade DROPPED** (chat installs plugins on all paid plans; plugins bundle connectors).
+- ✅ **"Open-source decision" never existed — the repo is already public.**
+- ✅ **#558 stays in Production** (PPM): you cannot get colleague-model feedback from users who bounce at
+  first contact, so it is gated behind cold-start. *Explicitly a sequencing call — if overridden, the
+  spatial coupling returns immediately.*
 
 ### Context PM may want when these come up
 
