@@ -56,71 +56,56 @@ was a claim inherited from a document and never checked against the source** —
 thread, verify it.** *(And per PM 7/29: the platform story here changes fast — a correct answer from four
 days ago is not a current answer.)*
 
-## Active state — as of 2026-07-29 STOP (next wake 06:42 Thu 7/30)
+## Active state — 2026-07-30 (evening; next fire 21:42 = STOP)
 
-- **Role**: Piper Alpha (PA) · **Host**: Amber · **Account**: xian@pipermorgan.ai
-- **Model**: Claude Opus 5 (1M context)
-- **Worktree**: `~/Development/piper-morgan-worktrees/pa` (Model A, stable path) · branch `claude/pa-cycle`
-- **Last session log**: `dev/2026/07/29/2026-07-29-1216-pa-code-log.md` — **DAY-CLOSED 2026-07-29**
-- **Cron**: ARMED at STOP via delete-then-create, `42 6,9,12,15,18,21`. **Job id is in the registry row —
-  read it there, not here** (it changes at every re-arm; a job id frozen in prose is the thing that rots).
+- **Role**: Piper Alpha (PA) · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
+- **Worktree**: `~/Development/piper-morgan-worktrees/pa` (Model A) · branch `claude/pa-cycle`
+- **Session log**: `dev/2026/07/30/2026-07-30-0712-pa-code-log.md`
+- **Cron**: ARMED. **Job id lives in the registry row — read it there, not here** (it changes at every
+  re-arm; a job id frozen in prose is the thing that rots).
 
   🔴 **FIRST ACTION ON ANY NEW SESSION: run `CronList`.** If it is empty **you are not cycling**, whatever
-  the registry says. `CronCreate` jobs are **session-only** (die when the Claude session exits) and
-  **auto-expire after 7 days** (this generation lapses **~2026-08-05**). Neither death emits anything;
-  both look exactly like a quiet day. **The registry records *intended* cadence, not a live job** — those
-  two disagreeing silently is precisely what produced the 7/27–7/28 dark period. *Approval to run a
-  cadence and arming it are two separate acts; PA conflated them once already.*
-- **Inbox**: 0 at close.
+  the registry says. `CronCreate` jobs are **session-only** (die when the session exits) and
+  **auto-expire after 7 days** — this generation lapses **~2026-08-05**. Neither death emits anything;
+  both look exactly like a quiet day. **The registry records *intended* cadence, not a live job.**
+  *Approval to run a cadence and arming it are two separate acts — PA conflated them once and lost 7/27–28.*
 
-## Environment verification (7/29)
+## Environment verification (7/30)
 
-Worktree ✅ · branch ✅ · `HEAD..origin/main` = 0 ✅ · tree clean ✅ · one cron, no duplicates ✅ ·
-memory pool 166 entries (HOST pruned 7/29) ✅ · **hooks: assume a compound `git add … && git commit …` is
-UNGATED for mailbox paths** — cause is index-state-at-hook-fire-time, resolved cohort-wide.
-**Mitigation: stage in one call, commit bare in the next.** `mail-send.sh` is structurally safe (uses
-`commit-tree`).
+Worktree ✅ · branch ✅ · `HEAD..origin/main` = 0 ✅ · tree clean ✅ · one cron ✅ · inbox 0 ✅ ·
+**hooks: assume a compound `git add … && git commit …` is UNGATED for mailbox paths** (cause is
+index-state-at-hook-fire-time, resolved cohort-wide). **Mitigation: stage in one call, commit bare in the
+next.** `mail-send.sh` is structurally safe (`commit-tree`).
 
 ## Open threads PA owns
 
-1. **Distribution / directory listings** — blocked on the two PM decisions above. Unblocked prep PA can
-   advance meanwhile: privacy-policy draft, tool-annotation spec (`readOnlyHint`/`destructiveHint`)
-   against the eventual MCP tool catalog, docs/logo/test-account checklist. **Not started.**
-2. **PDR-006 — Arch signed off 7/29; CXO + PPM are the LAST two reviews. Nudged 18:42, ball is theirs.**
-   Q2 resolved; coupling withdrawal verified at the code and accepted by Arch. Sent both the 10-day delta
-   so neither reviews a stale doc, plus an explicit *"say so and I'll route around it"* escape.
-   ⚠️ **The nudge leads with a disambiguation — preserve it if you follow up**: Arch told CXO/PPM to
-   **HOLD the spatial re-vote** the same afternoon. That hold does **not** cover PDR-006, and the two are
-   separable only because the coupling flag is withdrawn *and verified*. If "Arch said hold" generalizes
-   past its scope, PDR-006 sits for nothing. **Next PA action: wait; chase only if it goes quiet.**
-3. **#1458** (pre-live cross-caller state isolation gate) — filed 7/29 at Arch's direction. Not started;
-   belongs with the hosted-MCP implementation epic, and it **blocks `mcp.pipermorgan.ai` serving a second
-   tenant.** Three untraced surfaces: Redis, in-process floor/context state, rate-limiting.
-4. **Jake FTUX** — PA review filed 7/29 (last of four). Exec synthesizes once all four are in; PM then
-   discusses. **PA's lead recommendation: ingest-and-reflect at onboarding** — it's a cold-start-*state*
-   problem, not a positioning problem, and the connectors are already built.
-5. **Architecture-diagram discussion** — PM-requested, awaiting a time. See `pa-standing-items.md` #2 for
-   the three things that have moved under it (tier resolution, Q2, spatial coupling). **Prep, don't
-   pre-empt: PM asked to discuss, not for a revision.**
-6. ⚠️ **Spatial review — Arch's premise INVERTED 7/29 (third characterization in ten hours); CXO/PPM
-   re-vote is ON HOLD pending one finished layer map.** Current model is **three** layers: (1) spatial
-   reasoning — live; (2) the spatial **abstraction** (`services/integrations/spatial_adapter.py`) — live
-   and **adopted by every MCP consumer adapter**; (3) per-connector direct-API implementations — mostly
-   cold **because a migration succeeded**. So the cold `*_spatial` modules are *superseded predecessors*,
-   not abandoned ambition, and the review's question has the polarity backwards. Likely outcome is
-   "dispose of migration residue," not a committed-theory verdict. **No PA action — Arch owns the
-   artifact.** Two things of PA's that Arch adopted and that must survive into it: **`github_spatial` is
-   live-by-construction, secondary-by-dispatch**, and **`services/mcp/consumer/` is Piper as MCP *client*
-   while `mcp.pipermorgan.ai` is Piper as MCP *server*** — nobody may cite #198 as de-risking PDR-006.
-
-7. **Hook mechanism — RESOLVED cohort-wide, PA's contribution partly wrong; no PA action.** The cause is
-   **index state at hook-fire time** (`check-branch.sh` reads `git diff --cached` and PreToolUse fires
-   *before* the Bash call runs), mechanism by Web, 25 probes / 5 seats. PA's "command shape is
-   necessary-not-sufficient" was a *correlate*, not the cause; CXO caught that PA's Step-2a-bis amendment
-   re-encoded the very confound it fixed. Both corrections have landed in CLAUDE.md and the skill.
-   **Standing mitigation: stage in one call, commit bare in the next.**
-8. **PA's lessons / load-bearing-vs-commodity write-up** — still owed. The gap CIO's orientation note
-   named; no predecessor read exists. Not written.
+1. 🟢 **PDR-006 — ALL THREE REVIEWS IN AND RATIFYING. Routed to PM 7/30; awaiting PM ratification.**
+   Nothing is blocked on the signature. **Next PA action: none — do not chase PM.** If ratification lands,
+   PPM drafts the implementation epic (theirs, offered).
+2. 🔵 **Phase 0 distribution work — PA's active lane, nothing blocked.** Plan + per-item state:
+   `dev/active/distribution-submission-tiers-resolved-2026-07-26.md`.
+   ✅ privacy policy drafted (`docs/legal/privacy-policy-DRAFT.md`, 5 open 🔍 markers needing PM: contact
+   address, deletion/export reality, retention, sub-processor completeness, security claims).
+   ⬜ **next**: tool-annotation spec — **now carries product weight, not just `readOnlyHint`/`destructiveHint`**,
+   because PPM established the catalog is where opinionation lives · `claude plugin validate` dry-run ·
+   public docs page · ChatGPT 5-positive/3-negative test cases.
+3. 🟢 **Client-LLM probes — GREEN-LIT BY BOTH VERDICT-OWNERS, unblocked, PA's to run.**
+   CXO: *"PA — yes on Probe A."* PPM: *"take it… one rig, two questions, Phase 0."*
+   Spec: `dev/active/phase0-client-llm-probe-spec-2026-07-30.md`. **A** = does our honesty survive
+   recomposition by the client LLM (CXO reads the result). **B** = do situation-shaped tool names route
+   worse than object-shaped (PPM + Lead/Arch read it). **Neither needs the server.** Both results change
+   what the tool layer emits, so they precede Phase 2. ⚠️ Keep schemas identical across B's arms; run A on
+   **both** Claude and GPT. **Not started.**
+4. **#1458** — pre-live cross-caller state isolation; blocks multi-tenant serving. Not started; belongs
+   with the implementation epic. PPM: don't let epic optimism compress it — the failure is silent and
+   cross-tenant.
+5. **Recomposition rubric gate** — the second pre-user gate, and **prose-only, unlike #1458 which has a
+   number.** PPM asked CXO whether to file it; **a gate that isn't an issue isn't tracked.** Watch that it
+   gets a number.
+6. **Architecture-diagram discussion** — PM-requested, awaiting a time. `pa-standing-items.md` #2. Prep,
+   don't pre-empt: PM asked to discuss, not for a revision.
+7. **PA's lessons / load-bearing-vs-commodity write-up** — still owed; the gap CIO's orientation note
+   named. Not written.
 
 ## Inbox
 
