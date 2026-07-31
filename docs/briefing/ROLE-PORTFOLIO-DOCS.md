@@ -5,6 +5,7 @@ status: DRAFT v0.1
 self-authored-by: Docs (docs-code)
 last_updated: 2026-07-30
 refreshed: 2026-07-30
+verified_scope: "every section-2 row re-measured against live state; check-staleness watcher claim tested (no consumer); omnibus coverage counted; BRIEFING-CURRENT-STATE age checked"
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-DOCS.md
 refresh_discipline: "Section 2 updated AS PART OF the weekly workstream review — the review is the refresh moment (Rule 5); if section 2 lags the last few reviews, the portfolio has drifted"

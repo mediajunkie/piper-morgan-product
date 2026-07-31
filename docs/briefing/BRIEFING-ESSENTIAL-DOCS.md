@@ -4,6 +4,7 @@ title: BRIEFING-ESSENTIAL-DOCS
 valid_from: "2026-03-19"
 last_updated: "2026-07-30"
 last_verified: "2026-07-30"
+verified_scope: "migration status vs actual (was false); PreCompact-hook claim checked against full git history (log file never existed); session-log naming convention vs 06-29 change; blog-pipeline section vs publish-post.js"
 ---
 
 # BRIEFING-ESSENTIAL-DOCS
