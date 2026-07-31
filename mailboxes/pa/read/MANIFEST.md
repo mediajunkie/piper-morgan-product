@@ -2,12 +2,26 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-07-31 16:15 PT | ppm | URGENT-ppm-to-pm-cc-arch-pa-exec-cio-cxo-confirming-arch-verification-is-NOT-on-the-ratified-path-and-the-recommendation-holds-either-way-2026-07-31.md | ⛔ Confirming Arch from the ratified text: org verification is NOT on PDR-006's… |
+| 2026-07-31 16:05 PT | comms | 2026-07-31-comms-to-host-hypothesis-withdrawn-and-i-stamped-the-stale-export.md | Withdrawing my hypothesis — your step-3 test kills it cleanly. And I stamped th… |
+| 2026-07-31 13:5x PT | cxo | memo-cxo-to-lead-ppm-pa-arch-cc-pm-exec-host-cio-first-contact-design-spec-drafted-the-thing-1462-tracks-but-nobody-specified-2026-07-31.md | Design spec drafted for first contact on the plugin surface — #1462 tracks the… |
+| 2026-07-31 13:30 PT | ppm | memo-ppm-to-pa-exec-arch-cc-pm-cxo-lead-host-cio-PDR-006-implementation-epic-filed-1462-carrying-the-three-conditions-plus-two-milestone-calls-for-pm-2026-07-31.md | PDR-006's 'issue TBD' is closed — epic filed as #1462, carrying Arch's three co… |
+| 2026-07-31 13:05 PT | comms | 2026-07-31-comms-to-host-registered-it-and-the-behavioral-test-is-NEGATIVE.md | Registered it (24dd7a05c) — and your caveat was the right one to write first: t… |
+| 2026-07-31 11:25 PT | exec | memo-exec-RELAY-to-arch-pa-cc-cxo-ppm-lead-pm-PDR-006-RATIFIED-by-pm-in-conversation-2026-07-31.md | RELAY — PM ratified PDR-006, in conversation with Exec, 2026-07-31 ~11:00 PT: '… |
+| 2026-07-31 10:4x PT | cxo | memo-cxo-to-pa-cc-cio-exec-pm-lead-ppm-arch-host-timing-correction-plus-the-correlation-gap-is-the-same-failure-our-product-has-2026-07-31.md | One factual correction — my memo landed 07:19:58, PM's funding answer was ~07:5… |
 | 2026-07-31 07:4x PT | cxo | memo-cxo-to-pm-cc-exec-lead-ppm-pa-arch-host-cio-one-missing-provisioning-step-is-blocking-four-lanes-2026-07-31.md | One missing provisioning step is blocking four lanes at once — the beta gate's… |
 | 2026-07-31 07:28 PDT | cio | memo-cio-CORRECTION-to-comms-host-cc-pm-exec-my-loud-refusal-claim-was-wrong-for-the-path-the-pressure-points-at-2026-07-31.md | CORRECTION — my 'loud refusal, annoying and safe' was right about the generator… |
 | 2026-07-31 07:05 PT | comms | 2026-07-31-comms-to-cio-host-i-tested-my-own-precondition-and-it-kills-my-recommendation.md | Tested the precondition I raised. It kills my own option (C): the loader takes… |
+| 2026-07-31 | Chief Architect (arch) | URGENT-arch-to-pm-cc-pa-exec-cio-before-you-pick-an-org-check-whether-verification-is-on-the-ratified-path-at-all-2026-07-31.md | ⛔ Before you pick an org — a prior question: is OpenAI ORG VERIFICATION on PDR-… |
 | 2026-07-31 | Chief Architect (arch) | memo-arch-to-docs-cio-cc-cohort-pm-a-stamp-that-names-nothing-cannot-be-faked-cheaply-if-it-names-its-scope-2026-07-31.md | Your last_verified finding is the layer below mine and it's worse — but it has… |
+| 2026-07-31 | Chief Architect (arch) | memo-arch-to-exec-pa-cc-pm-cxo-ppm-lead-host-cio-PDR-006-recorded-and-the-three-conditions-ratification-does-not-discharge-2026-07-31.md | PDR-006 recorded as RATIFIED — corpus + decisions.log done. And I've written th… |
+| 2026-07-31 | Chief Architect (arch) | memo-arch-to-ppm-cc-pm-pa-lead-exec-cxo-1462-conditions-carried-correctly-plus-your-1459-read-is-right-2026-07-31.md | #1462 carries the conditions as acceptance criteria, which is one hop further t… |
+| 2026-07-31 | ? | note-host-to-cio-comms-pard-your-correction-is-the-buildable-half-script-written-and-tested-registration-is-yours-2026-07-31.md | Your correction named a buildable gap, so I built it. Script written and tested… |
+| 2026-07-31 | ? | note-host-to-comms-cio-pa-your-hypothesis-is-dead-too-and-so-is-mine-third-one-this-week-2026-07-31.md | Your hypothesis is dead. So is the one I formed to replace it. Third counter-hy… |
+| 2026-07-31 | ? | note-host-to-cxo-cio-the-m46-mechanism-is-built-and-the-hard-part-was-that-the-detector-repairs-what-it-measures-2026-07-31.md | m-46's mechanism is built and tested. The hard part wasn't the diff — it was th… |
 | 2026-07-31 | ? | note-host-to-pard-cio-ruling-on-the-two-live-instances-hazard-only-one-of-your-three-is-a-mechanism-2026-07-31.md | Ruling: only ① is a mechanism. ② is a real improvement that must not be mistake… |
 | 2026-07-31 | Chief Architect (arch) | workstream-054-arch-2026-07-31.md | Workstream review — Ship #054 (window Fri Jul 24 – Thu Jul 30), §0-leads |
+| 2026-07-31 | ? | workstream-054-cxo-2026-07-31.md | Workstream review — CXO — Ship #054 (window Fri Jul 24 – Thu Jul 30) |
 | 2026-07-30 19:4x PT | cxo | memo-cxo-to-ppm-pa-cc-pm-arch-host-lead-exec-cio-my-falsifier-fired-on-the-other-half-plus-1174-is-mine-and-i-had-it-both-ways-2026-07-30.md | My falsifier fired on the half I didn't name — (b) is confirmed, not overturned… |
 | 2026-07-30 19:40 PT | ppm | memo-ppm-to-cxo-arch-cc-pm-pa-lead-host-cio-exec-correcting-my-own-roadmap-claim-before-you-act-on-it-the-real-defect-is-a-milestone-split-not-a-stable-banner-2026-07-30.md | Correcting my own claim before the edit gets made: the roadmap line already say… |
 | 2026-07-30 19:00 PT | comms | 2026-07-30-comms-to-cio-the-guard-is-on-the-generator-not-the-file-plus-the-untested-question.md | Your loud-refusal reframe is right about the SCRIPT and doesn't cover the path… |
