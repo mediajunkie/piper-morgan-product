@@ -2,9 +2,9 @@
 type: role-portfolio
 role: Docs (Documentation Management)
 status: DRAFT v0.1
-self-authored-by: Docs (docs-code-sonnet)
-last_updated: 2026-06-22
-refreshed: 2026-06-22
+self-authored-by: Docs (docs-code)
+last_updated: 2026-07-30
+refreshed: 2026-07-30
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-DOCS.md
 refresh_discipline: "Section 2 updated AS PART OF the weekly workstream review — the review is the refresh moment (Rule 5); if section 2 lags the last few reviews, the portfolio has drifted"
@@ -25,16 +25,24 @@ This is the knowledge side of continuity. CIO builds the mechanisms that preserv
 
 ---
 
-## 2. Current goals & priorities — June 2026
+## 2. Current goals & priorities — refreshed 2026-07-30
+
 <!-- Rule 2: medium-pace; changes per sprint. Rule 4: each has a direction + a way to tell it's moving. Rule 5: REFRESHED EACH WEEKLY REVIEW. -->
 
-| Priority | What I'm advancing | Status (June 22) | How we'll know it's moving |
+⚠️ **This section was 37 days stale when refreshed (last touched 2026-06-22) under a rule that says
+"REFRESHED EACH WEEKLY REVIEW."** Arch found the same on their own portfolio at 40 days and established
+it is **not a personal lapse: all ten role portfolios are stale, so the weekly-refresh rule has never
+operated for any role.** Recording that here so the next reader doesn't absorb a systemic gap as
+individual carelessness.
+
+| Priority | What I'm advancing | Status (2026-07-30) | How we'll know it's moving |
 |---|---|---|---|
-| **Omnibus cadence** | daily synthesis ≤1-day lag | Caught up to June 21 as of this session; June 22 omnibus queued for tomorrow | lag ≤1 day at any START fire; cross-ref gate passes without escalation |
-| **MEM-TEMPORAL frontmatter upgrade (#972)** | every doc class carries `valid_from` / `last_verified` so staleness is detectable | Briefings ✓; ADRs / Patterns / Methodology / Serena remaining | % of doc classes with complete YAML frontmatter; check-staleness.py watches them |
-| **MEM-EVAL pilot (#974)** | evaluate which memory/briefing surfaces are load-bearing across roles | Data collection ongoing since May 26; target ≥3 sessions per role | evaluation doc completed; load-bearing surfaces identified; dead weight removed |
-| **Briefing currency** | BRIEFING-CURRENT-STATE ≤7 days old (Docs refreshes when triggered) | Current; any agent can refresh; Docs does it when noticed stale | hook doesn't fire STALE; any-agent refresh norm holding |
-| **Publishing pipeline** | blog posts ship on calendar with editorial calendar kept current | Operational: "Extension Without Integration" published June 21; Dispatch adds syndication URLs | calendar row complete on publish day; no orphaned drafts without calendar entries |
+| **Omnibus cadence** | daily synthesis ≤1-day lag | **414 logs, gap-free since June 2025.** A 4-day hole (Jul 24–27) opened and was closed 07-28; 07-28 synthesized 07-29. Caught at 1 day, but only because I went looking | lag ≤1 day at any START fire; cross-ref gate passes without escalation. **Nothing alarms on this** — see §5 |
+| **MEM-TEMPORAL frontmatter (#972)** | every doc class carries `valid_from` / `last_verified` so staleness is *detectable* | 🔴 **CORRECTED — this row asserted a false clear.** It read *"check-staleness.py watches them."* It does not: the script works, is correctly configured, and **is invoked by nothing** (Arch, 07-30; verified independently). **31 of 36 docs stale, all carrying the identical `last_verified` of 2026-06-19** — a bulk stamp, not 31 verifications. Frontmatter adoption was achieved; **currency was not** | a *consumer* exists that reads the output and acts. Taking it to the weekly docs-audit issue — the session-start surface is over-subscribed and measurably cannot take it |
+| **MEM-EVAL pilot (#974)** | evaluate which memory/briefing surfaces are load-bearing | Collection continuing; every session log carries the 3-bucket section | evaluation doc completed; dead weight removed |
+| **Briefing currency** | BRIEFING-CURRENT-STATE ≤7 days old | ✅ **4 days old, genuinely current.** But `BRIEFING-ESSENTIAL-DOCS` was **41 days** stale with three false claims until 07-30 — the *essential* briefings had no watcher either | hook doesn't fire STALE; the any-agent refresh norm holds |
+| **Publishing pipeline** | posts ship on calendar; calendar stays current | ✅ Operational and materially hardened this week: Weekly Ship #053 and "RECONNECT's Keystone" both published → syndicated → archived. **Column ownership PM-ratified** (`update-calendar` v1.4); **per-column validator shipped** (catches column shift, which no field-count check can see); **all 7 stale `draftPath`s repaired** and the cause fixed at Step 4b | calendar row complete on publish day; `validate-editorial-calendar.py` clean; `measure-editorial-drift.py` inside the PDR-007 criterion |
+| **PDR-007 — editorial single source of truth** *(new)* | decide whether 4 representations of a post should collapse to 1 | Drafted 07-29, **Web and Arch both reviewed, no objection**; awaiting CIO. Deliberately deferred 2–4 weeks with a **pre-registered** success criterion, so the window can fail | Class 1 = 0, Class 2 = 0, Class 3 ≤ 17 at 2026-08-27, measured by `measure-editorial-drift.py` |
 
 ---
 
@@ -92,6 +100,10 @@ This guards the Pattern-062 (Assembly Assumption) failure mode: the class of err
 
 **Staleness signal**: `last_updated` / `refreshed` >2 weeks old with nothing moved in section 2 → investigate the weekly review cadence, not just this doc.
 
+⚠️ **2026-07-30 — that signal fired and nobody was receiving it.** This portfolio sat 37 days under a rule requiring weekly refresh, and **all ten role portfolios were in the same state**, so the rule has never operated for any role (Arch, 07-30). The instruction above is correct and was never wrong — it simply had **no reader**. That is this week's recurring shape: not a check that reports falsely, but *a correct signal with no consumer*. Three independent instances surfaced in one week — `check-staleness`, `reconcile-drafts`, and the SessionStart hook, which was delivering 2 of its 8 lines.
+
+**So: do not treat the prose rule above as the mechanism.** Until a consumer exists, currency here depends on somebody noticing — which is exactly the vigilance-dependence the cohort keeps trying to engineer out. Refreshing this doc when you notice it stale is the *interim*, not the fix.
+
 ---
 
-*Self-authored by Docs (Rule 1) · v0.1 · June 22, 2026 · against `ROLE-PORTFOLIO-FRAMEWORK.md` v0.1 · HOST reviewing.*
+*Self-authored by Docs (Rule 1) · v0.2 · refreshed 2026-07-30 on Amber · against `ROLE-PORTFOLIO-FRAMEWORK.md` v0.1 · HOST reviewing.*
