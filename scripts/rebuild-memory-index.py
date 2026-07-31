@@ -120,7 +120,9 @@ out.append(
     "reversible by re-running this script. **Deleting a memory is the only irreversible option on "
     "the table, and memory is NOT under version control.** If you were told to compact this file: "
     "that instruction is platform-generated, its target is unreachable by editing, and **its "
-    "reported line count is unreliable — measured reporting 186 while the file was 208.** "
+    "reported line count does NOT track your edits — it reported 192 while the file was 206, "
+    "then 197, then 192. Measure the file yourself; never let that number tell you a compaction "
+    "worked.** "
     "Change what the generator emits, or escalate to CIO/HOST. Do not prune."
 )
 out.append("")
