@@ -101,7 +101,7 @@ Cadence unchanged.
 2. **Monday is the first real run of the Doc Currency Check** I added to the weekly audit. If it reads
    wrong, that's mine. Two things to watch: does the ratio land legibly, and does the `last_verified`
    cluster check surface the 23-doc stamp.
-3. **`docs/` tree audit + cleanup plan** — PM's direct request via PPM, carried since 07-12 and now the
+3. 🟡 **AUDIT WRITTEN 2026-08-01 (`0fa44f55c`) — `docs/internal/operations/docs-tree-audit-2026-08-01.md`. Nothing moved.** 16 zero-inbound-reference candidates named; `planning/current/` is 100% stale at 314d and needs a **rename** (the name is the defect). **Next step is NOT mine alone**: every action is gated on per-file owner confirmation, and Arch owns the architecture corpus. Route to Arch when they have capacity. ~~Original:~~ `docs/` tree audit + cleanup plan — PM's direct request via PPM, carried since 07-12 and now the
    oldest untouched item I hold. Starting data: stale roadmap/README.md, `CORE/` an archival candidate.
    **Write the audit and plan before any large-scale moves.**
 4. **97 docs >30d asserting current-state language**, and `docs/internal/planning/current/` is itself a
