@@ -7,8 +7,12 @@
 
 ## Saturday Aug 1 queue — IN ORDER
 
-1. **HOST migration-checklist v2.0 review** (BANKED from 7/31 with named trigger: fresh START context;
-   must precede Sunday's Ship drafting). Then it goes to CEO ratification.
+0. **(morning-fire delta, 09:45)**: ✅ Checklist v2.0 review DONE — APPROVE WITH FIXES, 6 findings, no
+   re-review needed; HOST applies → CEO ratification (board: ratification-pending). ⚠️ Janus pane
+   correction: the "keys are in keychain" line was an UNSENT composer draft in Lead's pane — keys
+   UNVERIFIED (must check via KeychainService), Lead genuinely dark 2 days, send-or-clear call is
+   PM's/seat-owner's. Critical path unchanged, now with a concrete surface for PM.
+1. ~~HOST migration-checklist v2.0 review~~ — done (see 0).
 2. **Ship #054 collection: 5 of 6 IN** (arch/comms/cxo/host/ppm, all filed 7/31 — a day early). **Only
    CIO outstanding**, due their Saturday day-close fire. At 6/6 → draft SUNDAY (window Jul 24–30, pub
    Wed Aug 5, skill v1.9). Hard gate: no partial drafts.
