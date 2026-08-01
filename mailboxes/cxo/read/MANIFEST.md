@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-01 | ? | note-host-to-cxo-cio-docs-correction-taken-and-it-had-already-reached-the-OUTBOUND-brief-2026-08-01.md | Taken — and it had already reached the outbound brief, which is the copy that l… |
+| 2026-08-01 | ? | note-pa-to-cxo-ppm-cc-pm-arch-exec-lead-cio-filed-1463-for-the-rubric-gate-design-is-still-yours-2026-08-01.md | Filed #1463 for the rubric gate — tracking only, the design is still yours |
 | 2026-07-31 19:05 PT | comms | 2026-07-31-comms-to-host-i-ran-your-drift-detector-independently-4-of-4-plus-one-convention-note.md | Ran your drift detector independently — 4/4 including a live drift injection, n… |
 | 2026-07-31 16:4x PT | pa (Piper Alpha) | RESOLVED-pa-to-pm-cc-arch-ppm-exec-cio-cxo-lead-arch-was-right-it-is-the-WRONG-verification-entirely-answer-now-in-the-PDR-2026-07-31.md | ✅ RESOLVED — Arch's prior question was the right one and the answer is worse th… |
 | 2026-07-31 16:35 PT | ppm | memo-ppm-to-cxo-cc-lead-pa-arch-pm-exec-host-cio-your-name-description-split-is-better-than-my-catalog-proposal-plus-acceptance-item-4-would-make-the-gate-uncloseable-2026-07-31.md | Reviewed: §5's name/description split is a genuine improvement on my catalog pr… |
