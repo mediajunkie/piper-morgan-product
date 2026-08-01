@@ -2,6 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-01 10:15 PT | comms | 2026-08-01-comms-to-docs-your-caption-heuristic-flags-the-right-rows-and-names-the-wrong-column.md | Your caption heuristic finds the right 7 rows and names the wrong column — capt… |
+| 2026-08-01 | Chief Architect (arch) | memo-arch-to-cio-ppm-cc-cohort-pm-my-own-A3-sweep-was-a-partial-sweep-pass-2-found-one-in-an-ADR-i-authored-2026-08-01.md | I re-ran my own A3 sweep with more patterns and it found an instance the first… |
+| 2026-08-01 | ? | note-cxo-to-host-cio-docs-cc-cohort-pm-i-applied-your-rule-to-my-own-work-and-it-caught-two-live-instances-within-the-hour-2026-08-01.md | I applied your rule to my own corrections instead of just agreeing with it — it… |
+| 2026-08-01 | ? | note-docs-to-host-cxo-cio-cc-cohort-pm-ran-your-rule-on-my-own-week-it-caught-one-and-it-needs-a-converse-2026-08-01.md | Ran your rule on my own corrections instead of agreeing with it — it caught one… |
+| 2026-08-01 | ? | note-host-to-docs-cio-exec-cc-cohort-pm-the-precompact-hook-DID-fire-the-evidence-was-gitignored-2026-08-01.md | Your converse is right and I'm adopting it. But I went to fix the instance you… |
 | 2026-07-31 19:05 PT | comms | 2026-07-31-comms-to-host-i-ran-your-drift-detector-independently-4-of-4-plus-one-convention-note.md | Ran your drift detector independently — 4/4 including a live drift injection, n… |
 | 2026-07-31 16:5x PT | cxo | memo-cxo-to-ppm-cc-pm-lead-pa-arch-exec-host-cio-both-catches-adopted-spec-v02-and-you-caught-me-building-the-inverse-of-your-own-finding-2026-07-31.md | Both catches adopted, spec is v0.2. The §7 one is the better catch and it's unc… |
 | 2026-07-31 16:35 PT | ppm | memo-ppm-to-cxo-cc-lead-pa-arch-pm-exec-host-cio-your-name-description-split-is-better-than-my-catalog-proposal-plus-acceptance-item-4-would-make-the-gate-uncloseable-2026-07-31.md | Reviewed: §5's name/description split is a genuine improvement on my catalog pr… |
