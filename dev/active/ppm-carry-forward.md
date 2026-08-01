@@ -1,7 +1,7 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-07-30 STOP (~22:30 PT) — day closed, cron re-armed for Friday
+**Last rewritten**: 2026-07-31 STOP (~22:30 PT) — day closed, cron re-armed for Saturday
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -42,27 +42,30 @@ successive wrong readings of one roadmap line, then recommended moving **#1174 i
 dissolved sprint. PM caught it. **I had run the sweep myself and it was in no artifact I carried.**
 Repointing the stale `(M4 …)`/`(M5 …)` references is owed work — do it as a class, not line-by-line.
 
-## 🔴 FIRST THING FRIDAY (07-31) — do this at your ~06:52 fire, before anything else
+## 🔴 FIRST THING SATURDAY (08-01) — in this order
 
-**#1386 Scenario-B re-run sign-off.** Exec LOCKED the window (memo 7/30 21:15, PM's expedite
-directive):
+**1. #1386 — still NOT signable, and the reason is unchanged.** Exec re-scoped the window in
+writing (7/31): **Scenario B + #1393/#1394 only; criterion 2 DEFERRED pending PM key provisioning.**
+- ⛔ **Do not sign criterion 2 until a KEYED run exists.** The canonical suite **skips** keyless and
+  a skipped suite reports green (Lead's own probe: Amber keychain has no openai/anthropic/github
+  entries). Signing that would be an m-44 false-clear on our own beta gate.
+- **Both unblocks are PM's**: key provisioning (via `KeychainService`, **not** the `security` CLI —
+  it appends `_api_key`, so CLI-stored creds are invisible to the server) and **rousing Lead**
+  (Lead's row is `parked`, no cron armed — Lead cannot wake autonomously).
+- When Lead runs Scenario B: **review outputs, sign on the ISSUE (not mail), scoped to what was
+  actually measured.**
 
-- **Lead drives** from their ~06:17 fire: their venv acceptance test (~11,111-collection check)
-  first, then canonical suite + Scenario-B re-run. If their acceptance fails, the window moves and
-  Exec reports the slip — don't wait silently.
-- **CXO (~06:47) and PPM (~06:52) VERIFY OUTCOMES, we do not drive.** Review Lead's Scenario-B
-  outputs at our morning fires.
-- ⚠️ **Post the sign-off (or objection) ON #1386 ITSELF — an issue comment, NOT mail.** The gate's
-  evidence belongs on the issue. Same shape as the criterion-3 joint sign-off CXO and I did on 7/12.
-- **Sign-offs due by noon.**
-- ⚠️ **SCOPE — do not overstate the result.** This window closes **criterion 2** (canonical suite) +
-  the Scenario-B re-run that verifies #1393 and #1394. **It does NOT close the gate.** Criteria 1
-  (#1278 scope call), 4, 5, 6 (PM go/no-go) are out of scope and remain PM's. **The gate's
-  denominator is six criteria; this is one.** Do not let "re-run done" read as "gate passed."
+**2. Ship #054 is FILED** (7/31, ahead of the Sat Aug-1 deadline). Nothing owed unless Exec asks.
 
-**Second thing**: Exec's Jake synthesis is their first Friday item; they'll flag me the moment it
-lands → **I convert it to GitHub issues the same day** (my standing offer). Per PM's ruling relayed
-by CXO: it's collection-and-framing for a PM+CXO decision, not a committee verdict.
+**3. Jake conversion — on Exec's signal.** Synthesis delivered to PM 7/31
+(`dev/active/jake-ftux-four-lens-synthesis-2026-07-31.md`), six yes/no items for a **PM+CXO**
+decision. **Conversion triggers on the decision landing on §4**, not on the synthesis. Same-day when
+it does.
+
+**4. Still awaiting PM (asked across 5 fires, do NOT set unilaterally — release fields are PM-gated)**:
+- **#1462** milestone (my read: Production) · **#1459** milestone (my read: Production; #1460 the
+  instance fix is already MVP)
+- **`gh auth refresh -s project`** — without it #1462 sits off the board; Lead blocked on the same.
 
 ## Active PM threads
 
