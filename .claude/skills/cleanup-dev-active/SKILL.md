@@ -103,7 +103,7 @@ This guard is the durability-net layer of the four-layer displacement defense (s
 - `agent-360-questionnaire-v0_2.md` — HOST iteration target
 - `publish-package/` — active publishing artifacts
 - `non-doc-files/` — PM workspace dir
-- `session-end-warnings.log` — gitignored ephemeral
+- ~~`session-end-warnings.log` — gitignored ephemeral~~ ⚠️ **this file has NEVER existed** (verified against full git history 2026-07-30). The PreCompact hook that would write it was suspended 2026-05-16 and re-wired 07-25 but has never been observed to fire. Kept in the preserve-list as a harmless no-op; do not treat its absence as a cleanup error.
 - Recent PM-dropped research files (<3 days old)
 
 **Forensic archives (Destination 4)**: typical archive shapes:
