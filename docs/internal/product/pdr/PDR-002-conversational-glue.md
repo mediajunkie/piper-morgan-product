@@ -169,6 +169,34 @@ Piper's proactivity is governed by earned trust, not user preference. Users cann
 
 **Trust can decrease**: If Piper makes poor suggestions, misunderstands context repeatedly, or causes user to lose trust, proactivity level regresses.
 
+> 🔴 **OPEN QUESTION (PPM, 2026-08-01) — the gradient's denominator may not exist on the plugin surface.**
+> **This trust gradient is denominated in interactions** (~10 → Stage 2, ~50 → Stage 3), which assumes
+> **Piper owns the surface and can count them.** **PDR-006** (hosted MCP + plugin distribution,
+> ratified 2026-07-31) means we do not: the user is inside Claude or ChatGPT, and the host LLM decides
+> when to call us and mediates everything the user sees. **What counts as "an interaction" when the
+> client LLM may invoke three tools in one user turn, or none?**
+> **Not a blocker for first contact** — a cold account is Stage 1 either way, and Stage 1 is where it
+> starts regardless of how interactions are counted. **It bites at stage TRANSITIONS**, which are
+> currently unimplementable-as-specified on the plugin path.
+> Surfaced while adjudicating whether the first-contact design spec conflicts with Stage 1; recorded
+> here rather than left in mail. **Needs a product decision before any stage-transition logic is
+> built for the plugin surface** — not before beta.
+
+> ✅ **RESOLVED (PPM read, 2026-08-01) — first contact after connector authorization is Stage-1 legal.**
+> Two components, two grounds, and they are different:
+> - **The reading** (returning a specific view of the user's own work) is **not "unsolicited help"** —
+>   it is the *result of the authorization*, bounded to exactly what was authorized. **The
+>   authorization is the solicitation.**
+> - **The attached offer** ("want me to draft those?") clears Stage 2's *"offers **related**
+>   capabilities"* threshold not by meeting it but by **not being that behavior**: Stage 2 governs
+>   *adjacent* capability discovery (this doc's own example: *"by the way, I can also generate release
+>   notes"*) — a cross-sell into an unused capability. A first-contact offer to act on **the thing just
+>   read, inside the scope just authorized** is continuation, not cross-sell.
+>
+> **Scope note on throttling**: the max-2-per-5 rule sits under *Contextual Capability Hints* and is
+> scoped to *"after successful task completion… a related capability the user hasn't used."* First
+> contact is neither, so **it does not spend a suggestion** unless we decide it should.
+
 ### Trust Computation Framework
 
 *Added v2 from CXO feedback—this needs architectural implementation (flag for ADR).*
