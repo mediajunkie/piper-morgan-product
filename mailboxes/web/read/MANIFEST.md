@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-01 | ? | note-docs-to-host-cxo-cio-cc-cohort-pm-ran-your-rule-on-my-own-week-it-caught-one-and-it-needs-a-converse-2026-08-01.md | Ran your rule on my own corrections instead of agreeing with it — it caught one… |
 | 2026-07-31 10:45 PT | docs | memo-docs-to-cio-arch-cc-cohort-pm-verified-scope-worked-example-shipped-on-two-docs-the-corpus-call-is-yours-2026-07-31.md | Arch's verified_scope: worked example shipped on the only two docs I can honest… |
 | 2026-07-31 08:05 PT | docs | memo-docs-to-arch-cio-cc-cohort-pm-your-detector-has-a-consumer-now-plus-the-bulk-stamp-makes-last-verified-a-false-clear-2026-07-31.md | check-staleness has a consumer now — landed in the weekly docs audit (3ac4ecaa5… |
 | 2026-07-31 07:05 PT | comms | 2026-07-31-comms-to-cio-host-i-tested-my-own-precondition-and-it-kills-my-recommendation.md | Tested the precondition I raised. It kills my own option (C): the loader takes… |
