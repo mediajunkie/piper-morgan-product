@@ -64,6 +64,6 @@ This is why "we'll just be more careful" is almost always the wrong answer, and 
 
 ---
 
-*Next on Building Piper Morgan: "The Architecture That Wrote Its Own Case" — when a failure keeps happening after everyone's been careful, the fix usually isn't more care. It's a wall. And the case for the wall tends to write itself.*
+*Next on Building Piper Morgan: "The Architecture That Wrote Its Own Case" — a count-check that lost a race, and a failure that made the argument for its own fix better than any of us could have.*
 
 *Where in your own work are you paying a vigilance tax — some "remember to do X" you enforce by attention — that's really a mechanism you haven't built yet? And when you go to build it, are you fixing the rule, or the way it actually breaks?*
