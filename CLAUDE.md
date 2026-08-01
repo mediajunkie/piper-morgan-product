@@ -511,15 +511,31 @@ Run this exact sequence and paste the output into your session log's wrap sectio
 git status
 # Expected: working tree clean, OR explicit listing of intentional carry-overs in your session log
 
-# 2. Verify your branch is fully pushed to origin
-git log --oneline @{u}..HEAD
-# Expected: empty (no commits ahead of origin)
-# If output has lines: git push origin <your-branch>
-
-# 3. Verify your work is reachable from origin/main
-git fetch origin
-git log --oneline main..HEAD
-# Expected: empty (your branch is merged or you ARE on main)
+# 2 + 3. Verify your work is on origin/main  (these were two steps; they collapse
+#        under push-to-main, and BOTH old forms misreported — see the note below)
+git fetch origin main
+git log --oneline origin/main..HEAD
+# Expected: empty (everything you did is reachable from origin/main)
+# ⚠️ WHY THIS CHANGED (HOST, 2026-08-01 — both old commands measured the wrong ref):
+#   OLD step 2: `git log --oneline @{u}..HEAD`  — `@{u}` is whatever the worktree was
+#     provisioned to track. Measured across all 11 agent worktrees: 8 track `origin/main`
+#     (correct); cio + host tracked `origin/claude/{role}-cycle`, a ref this workflow
+#     NEVER pushes to. host read 6741 against origin/main..HEAD = 0. It is provisioning
+#     drift, not a Model-A property (PA's fleet census corrected HOST's first diagnosis),
+#     and it FAILS SILENTLY until the branch diverges — cio sat at 0 for weeks and went
+#     to 61 within hours of the census.
+#   OLD step 3: `git log --oneline main..HEAD` — its own comment said "reachable from
+#     origin/main" while the command used LOCAL `main`, which lags in a worktree.
+#     Misreporting on 3 of 11 seats at the moment it was found (host 8, arch 8, web 4).
+#   Both produced output where the checklist said "Expected: empty" — i.e. a MANDATORY
+#   step that cries wolf every session. That trains the discipline away, which is worse
+#   than the wrong number.
+#   ⚠️ And why it went undetected: HOST ran `origin/main..HEAD` in all 7 of its sign-offs
+#   and never the specified command — NON-COMPLIANCE MASKED THE DEFECT. The people it was
+#   wrong for were not running it. If a step is broken, the ones who'd notice are the ones
+#   following it verbatim; if they've quietly substituted something better, nobody reports.
+#   Fix both halves: normalize the upstream (`git branch -u origin/main`) AND use an
+#   explicit ref here, so this is correct regardless of how a seat was provisioned.
 # If output has lines, you have THREE options:
 #   (a) merge your branch to main now (preferred for completed work):
 #       git checkout main && git pull origin main && git merge <your-branch> --no-ff && git push origin main
