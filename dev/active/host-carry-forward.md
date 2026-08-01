@@ -55,6 +55,11 @@
 - **Never delete a memory to fit the index** (generator emits this now). Export first; `~/.claude-pm/` is not VCS'd.
 - **Never `git checkout -- .` / `reset --hard` / `stash` in PM's main checkout.**
 
+## Rulings issued 2026-07-31
+
+- **PPM's gate-falsifiability → its own line, not a sub-shape of m-44.** Discriminator: **m-44 fires downstream of the measurement (report is false); PPM's fires upstream (report is true and empty).** Two cases I'd been carrying as m-44 are PPM's — the `verify-hooks` drumbeat and my own v1.5 probe design. Recorded in m-44's boundary section as a family of three.
+- **m-46 advanced to EMERGING by CXO** with two non-authors having run the detector. My hold discharged; limb 1 still unmechanized and the file says so.
+
 ## Cron
 
-Current job **`fd14a8e7`** (chain … `2cebafed → 2d87bd9f → fd14a8e7`), expression **`37 6,9,12,15,18,21 * * *`** — verified against `CronList` **and** the registry row this STOP; they agree. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`eacc158c`** (chain … `2cebafed → 2d87bd9f → fd14a8e7`), expression **`37 6,9,12,15,18,21 * * *`** — verified against `CronList` **and** the registry row this STOP; they agree. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
