@@ -65,33 +65,34 @@ was a claim inherited from a document and never checked against the source** —
 thread, verify it.** *(And per PM 7/29: the platform story here changes fast — a correct answer from four
 days ago is not a current answer.)*
 
-## Active state — 2026-07-30 STOP (next wake 06:42 Fri 7/31)
+## Active state — 2026-07-31 STOP (next wake 06:42 Sat 8/1)
 
 - **Role**: Piper Alpha (PA) · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` (Model A) · branch `claude/pa-cycle`
-- **Last session log**: `dev/2026/07/30/2026-07-30-0712-pa-code-log.md` — **DAY-CLOSED 2026-07-30**
+- **Last session log**: `dev/2026/07/31/2026-07-31-0711-pa-code-log.md` — **DAY-CLOSED 2026-07-31**
+- **Handoff/lessons doc**: `dev/active/handoff-pa-2026-07-31.md` — **keep current, don't rewrite at departure**
 - **Cron**: ARMED at STOP via delete-then-create. **Job id is in the registry row — read it there.**
 
-  🔴 **FIRST ACTION ON ANY NEW SESSION: run `CronList`.** Empty = **you are not cycling**, whatever the
+  🔴 **FIRST ACTION ON ANY NEW SESSION: `CronList`.** Empty = **you are not cycling**, whatever the
   registry says. Jobs are **session-only** and **auto-expire after 7 days** — this generation lapses
-  **~2026-08-06**. Both deaths are silent and look exactly like a quiet day. **The registry records
-  intended cadence, not a live job.** *Approval to run a cadence and arming it are two separate acts.*
+  **~2026-08-07**. Both deaths silent, both look like a quiet day. *Approval to run a cadence and arming
+  it are two separate acts.*
 - **Inbox**: 0 at close.
+- ⚠️ **Weekend note**: per `feedback_weekends_are_piper_morgan_prime_time`, Sat/Sun are PM-active. Beta
+  target is **Aug 8** — one week out.
 
-## ▶️ First substantive item tomorrow (deferred with a named trigger, not drifting)
+## ▶️ First items tomorrow
 
-**Run the two client-LLM probes.** Both green-lit by their verdict-owners — CXO on A, PPM on B. Spec:
-`dev/active/phase0-client-llm-probe-spec-2026-07-30.md`. Deferred from 7/30 STOP *because a designed
-experiment started inside a day-close fire ends half-run, and a partial experiment invites its fragment
-being read as a result.* Trigger named: **06:42 START.**
-⚠️ Design constraints, carried from this week's own failures: **keep tool schemas identical across B's
-arms** (vary only names/descriptions — otherwise the arms differ in more than the variable, the confound
-that cost five seats and a week); **run A against both Claude and GPT** (a divergence is itself a
-ChatGPT-lane finding).
-
-**Second**: file the cron-mechanism gap to CIO. **Owed since 7/29 and dropped once already** — no durable
-cohort record exists of *which* cron mechanism we use (session-scoped `CronCreate`) or its two silent
-death modes. It has now appeared in two consecutive memory-evals. Don't re-promise it a third time.
+1. **`CronList`**, then check the keys — `keyring.get_password('piper-morgan','anthropic_api_key')`.
+   **If present, run Probe A immediately**: it is green-lit by CXO (A) and PPM (B), the harness is
+   committed and runnable at `dev/active/probes/`, and PM authorized the spend 7/31. ⚠️ Keep tool schemas
+   identical across B's arms; run A against **both** Claude and GPT.
+2. **If keys are still absent**, do not re-escalate — it is in PM Attention, CXO has withheld sign-off on
+   #1386 with reasoning posted, and repeating it adds noise rather than pressure. Pick unblocked work and
+   say plainly in the fire report that four lanes remain blocked on one step.
+3. **Do NOT build ChatGPT submission test cases or a directory-listing checklist.** The listing is not
+   beta-blocking, OQ3 is open, and it now additionally depends on `mcp.pipermorgan.ai` existing. That is
+   bucket-A spend on an undecided channel.
 
 ## Open threads PA owns
 
