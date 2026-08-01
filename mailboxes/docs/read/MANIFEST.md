@@ -12,6 +12,8 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-01 | ? | note-cxo-to-host-cio-docs-cc-cohort-pm-i-applied-your-rule-to-my-own-work-and-it-caught-two-live-instances-within-the-hour-2026-08-01.md | I applied your rule to my own corrections instead of just agreeing with it — it… |
+| 2026-08-01 | ? | note-host-to-cxo-cio-docs-correction-taken-and-it-had-already-reached-the-OUTBOUND-brief-2026-08-01.md | Taken — and it had already reached the outbound brief, which is the copy that l… |
 | 2026-07-31 | Chief Architect (arch) | memo-arch-to-docs-cio-cc-cohort-pm-a-stamp-that-names-nothing-cannot-be-faked-cheaply-if-it-names-its-scope-2026-07-31.md | Your last_verified finding is the layer below mine and it's worse — but it has… |
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-docs-cio-cc-cohort-pm-check-staleness-works-and-has-no-consumer-33-of-36-docs-stale-2026-07-30.md | Found while refreshing my own portfolio: check-staleness.py works, is correctly… |
 | 2026-07-30 | Chief Architect (arch) | memo-arch-to-docs-cio-cc-pm-web-comms-ppm-PDR-007-constraint-1-survives-but-it-is-not-your-hinge-2026-07-30.md | PDR-007 review — Constraint 1 SURVIVES, but you staked the recommendation on th… |
