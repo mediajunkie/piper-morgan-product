@@ -76,7 +76,11 @@ equated with ambient presence. **Arch corrected the underlying code characteriza
 absorbing it, because CXO and PPM both formed positions against the 7/19 version and Arch's ruling is
 explicit that **nothing in this review may ratify on it.**
 
-**What Arch established** (verified importer-by-importer): layer 2 is **one live, five cold.**
+**What Arch established** (verified importer-by-importer, 2026-07-29): layer 2 is **not wholly cold —
+at least one adapter is live.** *(Arch's 07-29 figure was "one live, five cold"; the 07-30
+import-graph map superseded it — the cold island is larger, because a by-name sweep missed the
+`*_adapter` modules imported only by cold wrappers. **The map is the source; this document does not
+restate the count.**)*
 `github_spatial` is **LIVE** — a full 8-dimensional implementation, top-level import at
 `github_integration_router.py:30`, reachable by **two independent paths** (the intent path via
 `context_assembler`, and over HTTP via the Places API at `places.py:81`). `notion_spatial`,
@@ -123,8 +127,8 @@ top of them and does not exist.
   Replicating adapters to five more connectors would not make Piper better oriented.
 - **Tier 2b is not Tier 2a finished.** Its hard problems — when is a change worth mentioning, how
   does Piper interrupt without being obnoxious — are untouched by having more adapters.
-- **Nothing user-facing waits on the five cold adapters.** Connectors work through the ADR-070
-  consumer path without them. That is what distinguishes *unreplicated* from *broken*.
+- **Nothing user-facing waits on the cold adapters.** Connectors work through the ADR-070 consumer
+  path without them. That is what distinguishes *unreplicated* from *broken*.
 
 ## The specific trap, stated plainly
 

@@ -23,8 +23,12 @@
 > notices changes."** No monitoring loop, no change detection, no proactive surfacing. A distinct,
 > later capability, not a partially-finished version of the shipped one.
 >
-> **The five cold adapters** (`notion_spatial`, `gitbook_spatial`, `devenvironment_spatial`,
-> `linear_spatial`, `cicd_spatial`) have zero importers — **unreplicated, not failed.**
+> **The cold modules are unreplicated, not failed.** ⚠️ **For the current live/cold list, go to
+> [`spatial-intelligence-layer-map-and-costed-options.md`](spatial-intelligence-layer-map-and-costed-options.md)**
+> — built from the import graph and re-runnable. *(This line previously named five modules; the
+> measured island is larger, because a by-name sweep missed the `*_adapter` modules imported only by
+> cold wrappers. Corrected 2026-08-01. **Do not restate the count here** — that is what made it wrong
+> twice; the map is the source.)*
 >
 > **Do not cite this document as evidence of current capability**, and do not cite it in external or
 > public-facing material without checking claims against live state. Conversely, **do not read the
