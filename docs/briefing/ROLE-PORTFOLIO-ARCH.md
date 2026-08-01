@@ -69,7 +69,7 @@ The cross-cutting lever is **derive-don't-maintain / make-drift-impossible-by-co
 - **Unilateral (mine)**: the architecture-integrity call; *their* trust-concern naming stays theirs.
 
 ### Architect ↔ PPM — the roadmap-altitude seam
-**Co-own**: which architectural work lands when (ADR timing vs. roadmap; M4/M5/RECONNECT placement).
+**Co-own**: which architectural work lands when (ADR timing vs. roadmap; milestone/sprint placement). *(Was "M4/M5/RECONNECT placement" — **M4 and M5 were swept 2026-07-04/05**; naming dissolved sprints as live seam guidance is the stale-pointer class. Corrected 2026-08-01 on PPM's per-owner ask; the seam itself is unchanged.)*
 - **Freely**: PPM sequences at roadmap altitude; I scope the architectural work. **Sign-off**: an ADR that changes a product gate. PM Time-Lords absolute priority; I don't set sprint order.
 
 ### Architect ↔ CIO — the methodology/enforcement seam
