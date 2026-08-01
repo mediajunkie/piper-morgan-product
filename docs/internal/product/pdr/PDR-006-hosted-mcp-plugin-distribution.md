@@ -249,6 +249,11 @@ Proposed branch dimensions (CXO's, pending a CXO branch decision + PPM/PM on tie
 ### For Arch — ✅ reviewed 2026-07-29; mechanism set holds, with one named risk
 
 - ✅ **`mcp.pipermorgan.ai` on Fly.io (DNS/TLS)** — no architectural objection; an additional service on the existing deployment substrate, not a new topology.
+  > 🔴 **SEQUENCING CONSTRAINT added 2026-07-31, and it belongs here rather than only in Open Question 3.** MCP connector directory submission requires **domain-ownership verification of the domain hosting the MCP server** (PA, from OpenAI's submission docs). **You cannot verify ownership of a domain that does not resolve.**
+  >
+  > **Therefore this DNS/TLS/Fly work is UPSTREAM of any directory-listing timeline** — a listing cannot be pursued, fast-tracked, or run in parallel ahead of it. Anyone planning listing work should treat the subdomain's deployment as a hard predecessor, not a concurrent track.
+  >
+  > *(Recorded in the **For Arch** section deliberately: the prerequisite was correctly captured in OQ3, but whoever does the DNS/TLS work reads this section, and a dependency that only exists in a different section of the same document is a dependency waiting to be discovered late — the same argument that put the three conditions above into the PDR rather than leaving them in a review memo.)*
 - ✅ **Auth model — OAuth preferred, API key fallback** — consistent with **ADR-070 D3** (the MCP server owns OAuth and tokens). Ratified shape; nothing to re-litigate.
 - ✅ **MCP tool catalog** — no objection in principle. **Request: derive the catalog from the registry rather than hand-maintaining a list.** Same move as ADR-072's frontmatter-derive and #1106's MANIFEST-derive; a hand-kept catalog is a stale-list defect waiting to happen, and there are three precedents for the cure.
 - ✅ **Colleague model / composted learning via MCP resources vs. tools** — clean split is **resources for reads, tools for writes.** MCP resources are app-controlled context (serving stored profile / colleague model / composted insights is exactly that); tools are model-controlled actions (an `update_*` that mutates server state). The Option-A phrasing "client infers, server writes via an MCP tool call" is already right; make the **read** side a *resource* so serving context doesn't require the model to decide to call something.
