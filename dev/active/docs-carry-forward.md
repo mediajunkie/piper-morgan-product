@@ -1,7 +1,7 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-07-30 22:35 PDT (Fire 4, STOP — DAY-CLOSED 2026-07-30)
-**Session log**: `dev/2026/07/30/2026-07-30-0727-docs-code-log.md` (2026-07-29's is `dev/2026/07/29/2026-07-29-0948-docs-code-log.md`)
+**Updated**: 2026-07-31 22:35 PDT (Fire 6, STOP — DAY-CLOSED 2026-07-31)
+**Session log**: `dev/2026/07/31/2026-07-31-0727-docs-code-log.md` (2026-07-29's is `dev/2026/07/29/2026-07-29-0948-docs-code-log.md`)
 **Prior update**: 2026-07-12 — **17 days stale, pre-Amber.** Rewritten wholesale; still-live items from
 that version are preserved below and marked, resolved ones noted so they aren't re-derived.
 
@@ -89,23 +89,26 @@ to read is N commits behind.
 
 ---
 
-## Top of the queue for 2026-07-31 (rewritten at STOP)
+## Top of the queue for 2026-08-01 (rewritten at STOP)
 
-1. ✅ **DONE 2026-07-31 (`3ac4ecaa5`) — `check-staleness` has a consumer.** A 🕰️ Doc Currency Check section landed IN the weekly docs audit. Reports the ratio not the list (Arch's framing); checks for `last_verified` clustering; says only to stamp what you actually verified. YAML + both embedded commands verified before shipping. **First real run is Monday.** ⚠️ **Surfaced a worse finding: 23 docs share ONE identical `last_verified` stamp** — a bulk operation, not 23 verifications, so the field meant to detect staleness is itself a false clear. Routed to CIO as a #972 follow-up. ~~Original item:~~ Arch found the detector works,
-   is correctly configured, and **is invoked by nothing** — 31 of 36 docs stale. I measured that
-   SessionStart is the *wrong* home (over-subscribed at 443/490 with two lines still cut, one of which
-   is already a staleness signal). The `fly-audit` issue is the right home: it exists, it has a consumer
-   who acts on it, and staleness is its subject. **Land it IN the audit, not bolted beside it.**
-2. **The `last_verified` field cannot currently do its job.** All 31 stale docs carry the *identical*
-   stamp of 2026-06-19 — one bulk operation, not 31 verifications. Adoption was achieved; currency was
-   not; the two are indistinguishable from outside. Worth raising with CIO as a #972 follow-up: the
-   field needs to distinguish "someone checked this" from "someone stamped everything."
-3. 🟡 **PARTLY DONE 2026-07-31 (`079f5b613`) — 3,426 → 2,862 tokens (−16%)**, by replacing a superseded manual merge-keeper procedure with the verified script and compressing pipeline detail to skill pointers. **Still 14% over**; remaining weight is genuinely load-time. Whether 2,500 is right now the lane spans two repos is an open question for whoever owns the budget — deliberately not raised to fit the content. ~~Original:~~ `BRIEFING-ESSENTIAL-DOCS` is ~3,370 tokens against its own 2,500 target — I grew it today with
-   operative content, an hour after applying the opposite lesson to CLAUDE.md. The same load-time/record
-   split is probably owed: pipeline detail to an ops doc, briefing keeps pointers.
-4. **PDR-007 awaits CIO only** (Arch ✅ no objection, Web ✅ no objection). If it ratifies, I write the
-   companion ADR. The 2–4 week window is running with a **pre-registered** criterion and a shipped
-   measurement — do not decide early, and do not decide without running `measure-editorial-drift.py`.
+⚠️ **Tomorrow is Saturday — prime time, not downtime** (`feedback_weekends_are_piper_morgan_prime_time`).
+Cadence unchanged.
+
+1. **PDR-007 awaits CIO ONLY.** Arch ✅ and Web ✅ both reviewed with no objection. If CIO ratifies, I
+   write the companion ADR. **Do not decide the storage question early** — the 2–4 week window has a
+   pre-registered criterion and a shipped measurement (`measure-editorial-drift.py`); run it before any
+   call. Baseline verified 2026-07-31: Class 2 = 0, Class 3 = 17, matched rows 366.
+2. **Monday is the first real run of the Doc Currency Check** I added to the weekly audit. If it reads
+   wrong, that's mine. Two things to watch: does the ratio land legibly, and does the `last_verified`
+   cluster check surface the 23-doc stamp.
+3. **`docs/` tree audit + cleanup plan** — PM's direct request via PPM, carried since 07-12 and now the
+   oldest untouched item I hold. Starting data: stale roadmap/README.md, `CORE/` an archival candidate.
+   **Write the audit and plan before any large-scale moves.**
+4. **97 docs >30d asserting current-state language**, and `docs/internal/planning/current/` is itself a
+   misleading directory name (oldest items 310d).
+5. **methodology-20's two HIGH-COMPLEXITY compression rules are mutually unsatisfiable** — raised to CIO
+   twice now (predecessor's unit mismatch + my contradiction). Not mine to resolve; worth re-raising if
+   it stays open.
 
 ## The shape worth carrying into tomorrow
 
