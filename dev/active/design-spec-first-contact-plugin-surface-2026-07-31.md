@@ -173,18 +173,34 @@ un-asserted number reads as an oversight later.
 briefing lists "revisiting proactivity, context, or suggestion rules without new evidence" as a named
 anti-pattern. **First contact is proactive behavior**, so they bind here.*
 
-- **Proactivity is trust-graduated (Stage 1→4), not a toggle.** Stage 1 (New) = *respond only*;
-  Stage 4 (Trusted) = *anticipate needs*.
-  ⚠️ **This is the sharpest open tension in the spec and I'm flagging it rather than resolving it
-  quietly**: a cold account is **Stage 1 by definition**, and this spec asks Piper to volunteer a
-  reading of the user's work **unprompted** at exactly that moment. Two readings, and they differ:
-  (a) first contact is a *response* to the connector-authorization act, so it's Stage-1 legal; or
-  (b) it is genuine proactivity and the trust gradient says don't.
-  **My position is (a)** — the user just authorized a connector, which *is* the prompt, and the
-  response is bounded to what they authorized. **But this needs PM's read rather than my assertion**,
-  because it sits on a settled decision. Raised explicitly per the "surface it with rationale" clause.
-- **Suggestion throttling**: max 2 suggestions per 5 interactions; stop after 2 ignored in a session;
-  never interrupt flow. **First contact spends one of those**, and the offer in §3 is a suggestion.
+- **Proactivity is trust-graduated (Stage 1→4), not a toggle.** Stage 1 (New) = *"responds to queries;
+  no unsolicited help."*
+  **Resolved 2026-08-01 — PPM read PDR-002 from the source and position (a) holds, but the spec's two
+  components pass on DIFFERENT grounds, and I had only argued one:**
+  - **(i) The reading** — returning what's inside the connector the user just authorized. **Not
+    "help": it's the outcome of the authorization, bounded to exactly what was authorized. The
+    authorization IS the solicitation.** Stage-1 legal. *(This was my argument.)*
+  - **(ii) The offer** (*"want me to draft those?"*) — **needs a different argument, which I hadn't
+    made.** Stage 2 (~10 interactions) covers *"offers **related** capabilities after task
+    completion"* — and PDR-002's own example is a **cross-sell** into an unused capability (*"by the
+    way, I can also generate release notes"*). **My offer isn't adjacent; it's an offer to act on the
+    very thing just read, inside the scope just authorized. Continuation, not cross-sell**, so the
+    Stage-2 threshold doesn't bind it.
+  ⚠️ **Keep both grounds.** If someone later reads *"the reading is solicited"* as covering the offer
+  too, they'll be defending it with the weaker argument.
+- **Suggestion throttling** — ⚠️ **probably does NOT apply to first contact** (PPM, from source). The
+  max-2-per-5 sits under **"Contextual Capability Hints"**, scoped to *"after successful task
+  completion, surface one related capability **the user hasn't used**."* First contact is **neither** —
+  no task completed, no unused capability surfaced. **So it likely doesn't spend a suggestion**, which
+  also means it doesn't quietly eat the budget for genuine capability hints later in the session.
+  *(I had charged myself this cost; I owed it to nobody. Recorded as a reading, not a ruling —
+  whether we **want** first contact exempt is a design call, and it's mine and PM's.)*
+- 🔴 **Dependency this spec does not resolve and must not be read as resolving** (PPM): **PDR-002's
+  gradient is denominated in interactions** (~10 → Stage 2, ~50 → Stage 3), which assumes **Piper owns
+  the surface and can count them.** Under PDR-006 we don't. *What is "an interaction" when the host
+  LLM may call three tools in one user turn, or none?* **First contact is Stage 1 either way — a cold
+  account starts there however you count — so this doesn't block the spec.** It blocks *stage
+  transitions* on the plugin path. Filed by PPM as an open question against PDR-002.
 - **Context persistence is three-layer** (24h conversational · user-accessible history · composted
   learning). First contact should not re-introduce itself to a returning user — **open question 3 is
   the same question**, and this is the settled model it must answer against.
