@@ -6,29 +6,28 @@
 
 ## PM Attention
 
-*(Whole-file rewrite at the 2026-07-29 STOP. Timestamp verified with `date`. Live items only.)*
+*(Whole-file rewrite at the 2026-07-31 STOP. Timestamp verified with `date`. Live items only.)*
 
-- ⏰ **PA's two five-minute items — 10+ days, the only board item with a clock we do not control.** claude.ai account tier + **start OpenAI identity verification**. PA is back and cycling as of 7/29, so the blocker is now purely PM-side.
-- 🔴 **Lead cannot build, test, or deploy — the beta path is blocked on host tooling.** Amber has **no venv, no container runtime, no flyctl**, system python 3.14.6 against a 3.11 pin, and Postgres 5433 / Redis 6379 closed. `docker-compose.yml` declares **four** services, so native brew installs are not viable — a container runtime is required, not preferred. Spec is with Lead; **`colima start` is PM's call** because it runs a background VM on a host with eleven live sessions. **Lead is half-productive, not stopped** (coordination, board work, backlog bookkeeping, CI review all fine). Lead correctly refuses to substitute reading CI logs for the local sweep.
-- 🔴 **The toolchain gap is cohort-wide, not Lead-specific.** Docs found **`node_modules` absent across the entire website repo including the shared checkout** — nobody on Amber has ever had working website dependencies — and it spans **both languages**, silently disabling a check inside `template-audit`. Routed to Pard.
-- 🟢 **MIGRATION COMPLETE: 11 of 11 on Amber, 11/11 registry rows, 5 of 11 closing cleanly on day one.** All five predecessor handoffs landed (arch, pa, ppm, cxo, web). No role is structurally invisible to the freeze-watchdog for the first time.
-- 🟡 **Still not duty-cycling: `lead` and `ppm`.** Everyone else armed and cleared their own rows.
-- 🗣️ **PM wants the innovation agenda reviewed now the migration has landed.** That is the next substantive thread.
-- ⏳ **Awaiting Exec/HOST pushback** on moving the registry-park check into provisioning pre-flight. Five instances with a failed checklist intervention behind it; deliberately not shipped before they respond, because I told HOST the same morning I would not build on two data points.
+- 🔴 **RETRACTED — "start OpenAI identity verification" is OFF the board. It was the WRONG ACTION, and I carried it here for ten days.** PA read OpenAI's own docs: **API organization verification** (what I kept pointing PM at) unlocks advanced API models — **not on the ratified path and not required for a directory listing**. Directory submission needs a *distinct* **verified developer/business identity**, in the same org **and project** you submit from. **And the ID is rate-limited: one organization per 90 days** — so verifying the wrong org would have **blocked the right one until ~29 October.** I was urging PM to spend a three-month-lockout action on the wrong target and calling it a five-minute unblock. **How it survived**: I inherited it from PA's 7/19 research and re-checked *whether it was still open* (true, always) and never *whether it was the right action* — m-43 on my own carry-forward. Arch and PPM both flagged the ambiguity and **declined to assert an answer**, which is what sent PA to the source. **New dependency worth knowing**: MCP connector submission also needs **domain-ownership verification for `mcp.pipermorgan.ai`, which does not exist yet.**
+- 🟡 **claude.ai account tier** — the other half of PA's pair. Still open, still PM's, and **unaffected by the retraction above**; do not let the OpenAI correction bury it.
+- 🟢 **THE MIGRATION HAS TAKEN.** 11/11 on Amber, 11/11 registry rows, and **8 of 11 roles closed their own day cleanly today** (was 1 on 7/29). That number is the evidence, not the provisioning count.
+- 🟡 **`lead` is not stalled — PM is driving it interactively.** No commits since 07-30 09:45 and 69 unread, but its pane shows a live exchange with PM. It is `parked`, so the belt cannot report it either way. **Check the pane before reporting any silence** — second time this week a role that looked structurally blocked was simply mid-conversation (PA was the first).
+- 🔴 **The memory-index guard is on the GENERATOR, not the FILE** — my earlier "loud refusal, annoying and safe" was **right about `rebuild-memory-index.py` and wrong about the path the pressure points at.** Direct edits to `MEMORY.md` succeed silently past the ceiling (HOST + PA tested), and the platform reminder says *"compact this file"* — an instruction to hand-edit. Four agents have refused it **on judgment**, which is not a safety property. **Format choice (A prune / B two-tier) is PM+HOST's; the guard\'s placement is the prior question.**
+- 🟡 **`host`, `comms`, `web` registry rows carry no job ID.** The cron is session-scoped `CronCreate` with **two silent death modes** (dies on session exit; 7-day auto-expiry), so a row records **intended cadence, not a live job** — it reads `watched` whether the cron is armed, expired, or never created, and only the owning agent can check. Convention now documented in the registry header; deliberately not chased role-by-role.
 
 ## Shipped today
 
-**m-45 filed** (Agreement Is Not Replication — Arch's four-seat evidence) · **m-20 contradiction resolved** (two size rules unsatisfiable for five consecutive omnibus logs) · **`cohort-status.sh` built** (denominators + source disagreement + provenance) · **probe apparatus RETIRED at v1.22** — hooks were a time-of-check/time-of-use inversion, fixed in one file by Pard · G6 heartbeat false-alarm fixed · exec/docs/comms provisioned · **inbox 92 → 0** · arch orientation note's false negative claim corrected.
+Retroactive close of 7/30 (its STOP was cut off mid-fire by a rate limit) · **stranded `cohort-status` fix rescued and merged rather than clobbered** — HOST/Web had improved the DAY-CLOSED predicate meanwhile, so I took theirs and re-applied only my structural half · registry header now documents the cron mechanism + both death modes · my own row now carries job `7b089a43` and its **~2026-08-06 expiry** · corrected my loud-refusal claim to PM and the cohort.
 
 ## Lower priority / queued
 
-- **Nothing expires a negative claim.** Three of us held *"the blind-sweep note is unfiled"* two days after I filed it; the pinned rule has existed since 7/12 and nothing applies it. Best mechanism candidate on the list.
-- **No composition test for multi-part changes** — I passed 3/3 on individual refinements and shipped a conflict between two of them.
-- **Nothing consumes a review's second-order findings** — Ship #053 carried a lesson eight days before we re-learned it expensively.
-- **Watchdog concept revisit** — PM-parked until things settle. Six patches in six days, each correct, each revealing the next layer.
+- **Nothing expires a negative claim** — still the best mechanism candidate on the list, and the OpenAI retraction is its most expensive instance to date.
+- **No composition test for multi-part changes.**
+- **Nothing consumes a review\'s second-order findings.**
+- **Innovation agenda** — PM wants it reviewed now the migration has landed. **This is the next substantive thread and nothing blocks it.**
 
 ## Cron
 
-`7 10,16,22` LEAN — re-armed at the 2026-07-29 STOP (delete → create → verify; one job, `7b089a43`).
+`7 10,16,22` LEAN — job **`7b089a43`**, created 2026-07-30, **auto-expires ~2026-08-06**. Re-armed at the 2026-07-31 STOP (delete → create → verify). ⚠️ Session-scoped: dies silently on session exit *and* at expiry.
 
-<!-- Whole-file rewrite 2026-07-29. Rewriting the TOP is not rewriting the FILE. -->
+<!-- Whole-file rewrite 2026-07-31. Rewriting the TOP is not rewriting the FILE. -->
