@@ -157,6 +157,29 @@ def check_row(line_no: int, row: list[str], idx: dict) -> tuple[list[str], list[
     if val("draftPath") and not os.path.exists(val("draftPath")):
         warnings.append(f"{tag}: draftPath does not resolve — {val('draftPath')}")
 
+    # --- SOFT: a bare MEDIA FILENAME sitting in a prose column.
+    # Found 2026-07-31 while reconciling PDR-007's caption question: 16 rows carry
+    # values like `robot-critique.webp` in `caption`, where caption text belongs.
+    #
+    # WARNING, not an error, and the reason is the point: I could NOT establish the
+    # cause. The obvious hypothesis is a one-column shift from `cartoon`, but the
+    # values do NOT match that row's `cartoon` (e.g. caption=robot-archaeologists.webp
+    # while cartoon=robot-massage-chair), so a shift is not demonstrated. It may be a
+    # historical convention where caption held an image name. Flagging an anomaly I
+    # can see while declining to assert a cause I have not proven — a confident wrong
+    # correction to a shared file is worse than the drift it claims to fix.
+    #
+    # Distinct from the repo-path check above, which is an ERROR because the Ship #050
+    # incident established that signature. This one has no established provenance yet.
+    MEDIA = re.compile(r"^[\w.-]+\.(webp|png|jpe?g|gif|svg)$", re.I)
+    for col in ("caption", "altText", "notes"):
+        v = val(col)
+        if v and MEDIA.match(v):
+            warnings.append(
+                f"{tag}: {col} is a bare MEDIA FILENAME ({v!r}), not prose — "
+                f"anomalous; cause NOT established (does not match this row's `cartoon`)"
+            )
+
     # --- SOFT: altText length. WARNING ONLY — long alt text is legitimate. ---
     if len(val("altText")) > ALT_TEXT_WARN_CHARS:
         warnings.append(

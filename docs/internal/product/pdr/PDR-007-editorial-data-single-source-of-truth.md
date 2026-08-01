@@ -247,7 +247,21 @@ window end. Deliberately non-gating: it measures, PDR-007 decides.
 1. ~~**Arch/Web**: is the ~4.7% disagreement rate worth a migration, or is Option A sufficient indefinitely?~~ **ANSWERED — both.** *Web (07-29)*: decide from the measurement window, not a fixed position now. *Arch (07-30), reframing the question rather than answering the rate*: **don't answer it as a rate.** 17 disagreements with **0 in the dangerous direction** is not a quality crisis, it is a **labor cost, borne almost entirely by Docs.** So the real question is *"is hand-reconciliation the cheapest available mechanism?"* — plainly not, but the alternative spends Web's time. **That tradeoff is precisely what the window exists to price, which is why the window needs its now-registered threshold.** ✅ Closed.
 2. ~~**Where does the single source live** — product repo or website repo?~~ **ANSWERED — Web and Arch concur independently: the PRODUCT REPO.** *Web (07-29)*: Comms and Docs author there, and the website copies are already downstream via `copy-editorial-calendar.js`. *Arch (07-30), with the structural reason*: putting the source in the website repo would **invert an existing dependency to no benefit, and inverted dependencies are how you get two sources again.** Same shape as ADR-070's server-owned-state family — one owner, everything downstream derived. ✅ Closed; carry into the companion ADR.
 3. Do the two orphaned `blog-content.json` entries indicate a cleanup gap in `publish-post.js`, or are they intentional?
-4. **Method reconciliation**: what did the 7/28 "~46 captions" measurement count that mine doesn't? Until that's answered, neither number should be quoted as the caption-drift figure.
+4. ~~**Method reconciliation**: what did the 7/28 "~46 captions" measurement count that mine doesn't?~~ **ANSWERED 2026-07-31 — and it overturns the framing, not just the number.**
+
+   Both figures were correct; they measured different things:
+
+   | basis | what it counts | result |
+   |---|---|---|
+   | **A** (mine, 07-30) | calendar caption quoted **and** site's not — a *disagreement* | **2** |
+   | **B** (the "~46") | **all** site captions lacking an opening quote — *absolute* | **45** of 89 non-empty |
+   | **C** (the decisive one, nobody had run it) | **all _calendar_ captions** lacking an opening quote | **45** of 92 non-empty |
+
+   🔴 **Basis C is the finding.** The 7/28 note recorded this as *"~46 live-site captions missing quotation marks — the calendar is right and the live site is wrong."* **The calendar is not right: it carries the same 45, and 43 of them are the identical slugs.** The two surfaces *agree*.
+
+   **So this was never Class-3 drift and does not belong in the disagreement count.** It is a **house-style question** — whether every caption must be quoted — on which *neither* surface conforms. It was miscategorised as a sync defect for three days, and the miscategorisation would have inflated the migration case in this PDR's favour.
+
+   **Consequence for the Class-3 baseline: unchanged at 17.** The pre-registered criterion stands as written; had I folded the 45 in, the baseline would have been wrong by a factor of three and the window would have measured the wrong thing.
 
 ---
 
