@@ -23,7 +23,7 @@ PPM's two-question check before adopting any acceptance criterion:
 
 CXO's structural fix (now in spec v0.2): split the list into *gate* (items closeable today) and *conformance* (required for done, blocked until dependency resolves), with an explicit note that clearing the gate is not the same as conformance. This is a mechanism, not a discipline — it makes the conflation structurally impossible.
 
-HOST's family-of-three framing for completeness: m-44 (instrument emits a false clear — never measured), this (instrument runs correctly and reports truthfully — the answer was always going to be the same), and CXO's obstacle (instrument repairs what it measures and reports true — evidence destroyed). All three produce unactionable greens; the cures don't transfer, so merging any two of them loses the fix.
+HOST's family-of-three framing for completeness: m-44 (instrument emits a false clear — never measured), this (instrument runs correctly and reports truthfully — the answer was always going to be the same), and the repairing detector (instrument repairs what it measures and reports true — evidence destroyed; HOST's finding, filed in m-46 by CXO — promotion is not authorship). All three produce unactionable greens; the cures don't transfer, so merging any two of them loses the fix.
 
 **Suggested action:** Before finalizing any acceptance criteria, run PPM's two-question check on every line. For blocked items, quarantine them into a separate conformance section that carries the dependency label — don't mix them with closeable gate items.
 
