@@ -27,23 +27,23 @@ I run my agents on something I call the duty cycle (a scheduled autonomous work-
 * **Rule one:** pause the cron when the agent is doing substantive work. 
 * **Rule two:** pause the cron when I (the human) am actively in conversation with the agent.
 
-Those are two versions of the same rule: *Pause when busy.* Two flavors of busy, busy-working, busy-talking-to-the-human — but structurally identical. If you were promoting them to mechanisms, you'd reach for the same fix for both. Symmetric rules, symmetric treatment. Obvious.
+These are two versions of the same rule: *Pause when busy.* Two flavors of busy, busy-working, busy-talking-to-the-human, but structurally identical. If you were promoting them to mechanisms, you'd be tempted to apply he same fix for both. Symmetric rules, symmetric treatment. Obvious, right?
 
-It's wrong. The two rules need *opposite* hardening, and the reason is the only thing that actually matters when you're deciding how to harden a rule — not how it reads, but *when and how it breaks*.
+Wrong! 
+
+The two rules need *opposite* hardening, because what actually matters when you're deciding how to harden a rule is *when and how it breaks*.
 
 # Why rule one needs a hard pause
 
-Our architect (one of the agents) caught the failure mode for rule one directly. The cron is supposed to fire only when the agent is idle — and the runtime that fires it does try to respect that. But "idle" turns out to be a treacherous word. During a multi-step task, an agent is briefly idle *between every tool call.* Read a file — idle for a beat — write a file — idle for a beat. The cron's idea of "wait until idle" sees those beats as fair game, and a fire slips into the gap between two steps of work the agent is already doing. Now there are two work-loops running in the same session, overlapping, clobbering each other.
+Our chief architect agent (Arch) identified the failure mode for rule one. The cron is supposed to fire only when the agent is idle — and the runtime that fires it does try to respect that. But "idle" turns out to be a treacherous word. During a multi-step task, an agent is briefly idle *between every tool call.* Read a file — idle for a beat — write a file — idle for a beat. The cron's idea of "wait until idle" sees those beats as fair game, and a fire slips into the gap between two steps of work the agent is already doing. Now there are two work-loops running in the same session, overlapping, clobbering each other.
 
-The architect's evidence was almost too on-the-nose. The agent ran a command to *list* the active crons — the first step toward pausing one — and the next fire arrived in the idle window *between listing the cron and deleting it.* The vigilance was happening. The pause was in progress. And the failure landed in the gap inside the act of being careful.
+Arch's evidence was perfectly "meta". The agent ran a command to *list* the active crons — the first step toward pausing one — and the next fire arrived in the idle window *between listing the cron and deleting it.* The vigilance was happening. The pause was in progress. And the failure landed in that gap, right inside the act of being careful.
 
-That's the tell. When the failure is that fast — when it lives in the sub-second gaps between an agent's own actions — no amount of *remember to be careful* reaches it, because the carefulness itself has gaps. The fix has to be a hard, positive mechanism: delete the cron as the literal *first* action, before anything else, before even looking around. Make the pause unconditional and front-loaded so there's no window for the fire to sneak into. Rule one tightens.
+A failure that can spring up that fast, when it can happen in the sub-second gaps between an agent's own actions, is going to defeat any amount of "remember to be careful" reminders, because the carefulness itself has gaps. The fix has to be a hard, positive mechanism: delete the active cron literally *first thing*, before anything else, before even looking around. Make the pause unconditional and front-loaded so there's no window for the fire to sneak into. Rule one tightens.
 
 # Why rule two can relax
 
-Now rule two — pause when the human is in conversation. Same shape, *pause when busy.* So you'd tighten it the same way.
-
-Don't. Rule two's failure is slow, not fast. When I'm talking to an agent, my messages are spaced out — seconds, often minutes apart. The runtime's "wait until idle" rule, the one that betrayed us at the tool-call scale, actually *works* at the human-conversation scale, because the gaps between my messages are long enough that the suppression holds. The structure already covers the common case. So rule two can lean on the mechanism that's already there and *relax* the explicit pause — exactly the opposite of what we did for rule one.
+On the other hand, rule two's failure is slow, not fast. When I'm talking to an agent, my messages are spaced out — seconds, often minutes apart. The runtime's "wait until idle" rule, the one that betrayed us at the tool-call scale, actually *works* at the human-conversation scale, because the gaps between my messages are long enough that the suppression holds. The structure already covers the common case. So rule two can lean on the mechanism that's already there and *relax* the explicit pause — exactly the opposite of what we did for rule one.
 
 (There's a wrinkle, and it's a good illustration of the same principle one level down. When a question is left hanging — the agent asked me something and is waiting on the answer — the runtime misreads "waiting" as "idle" and fires anyway. So even rule two needs a positive pause in *that* specific sub-case. The fix tracks the failure timing, not the rule's wording. Always.)
 
