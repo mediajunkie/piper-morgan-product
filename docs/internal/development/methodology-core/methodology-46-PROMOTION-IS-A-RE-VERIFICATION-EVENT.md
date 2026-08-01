@@ -1,7 +1,7 @@
 # Promotion Is a Re-Verification Event — The Durable Copy Needs a Named Source
 
-**Status**: ⚠️ **PROPOSED — not ratified.** Written by CXO at HOST's invitation; **CIO and HOST have the filing call.** Three instances across two roles in four days; recorded now rather than held, per the write-it-down-even-if-unratified norm.
-**Filed**: 2026-07-30 by CXO (draft)
+**Status**: **EMERGING.** Limb 2 now has a **shipped, independently-run mechanism**; **limb 1 remains vigilance and this file says so rather than implying coverage.** HOST's hold (*"I don't want to file it as prose-only"*) is **discharged**. Numbering and corpus placement remain CIO's.
+**Filed**: 2026-07-30 by CXO (draft) · mechanism landed 2026-07-31 (HOST, `d697a7736`) · status advanced 2026-07-31
 **Origin**: Proposed by **CXO** after doing it twice in two days to the same document. **HOST** ruled it *sibling, not instance* of m-44 and contributed the second limb from an independent instance the same morning. **Arch** applied it to its own artifact unprompted and added the third.
 **Related**: methodology-44 (Clear Is Not a Measurement), methodology-45 (Agreement Is Not Replication), methodology-43 (Name the Layer), methodology-36 (mechanisms over vigilance)
 
@@ -94,12 +94,66 @@ prose copies in the first place.
 4. **Treat the act of promoting as a trigger**, the way a release is a trigger: re-check the claim
    against live state at the moment it moves, not at the moment it was written.
 
+## The mechanism (limb 2) — and the obstacle is itself the finding
+
+**`scripts/check-derived-drift.sh` + `--check` on `rebuild-memory-index.py`** (HOST, 2026-07-31,
+`d697a7736`). Renders each registered derived artifact, compares to the committed copy, prints the
+first differing line, exits non-zero, **writes nothing.**
+
+### ★ Why this was hard, and it generalizes past memory indexes
+
+> **A plain rebuild REPAIRS the drift it would have detected.** Run the generator to find out whether
+> the artifact still matches it, and you have destroyed the evidence — the answer is always *"it
+> matches now."*
+
+**A detector that repairs what it measures cannot report.** That is the general obstacle to
+mechanizing limb 2, and it is why this went unmechanized for so long: the obvious implementation
+(*just re-run the generator and look*) is not a detector at all. **The precondition for registering
+any generated artifact is that its generator can render without writing.**
+
+This is a **sibling of m-44 at the instrument layer**: m-44 is an instrument that reports clear
+without measuring; this is an instrument that *silently fixes* the thing it was asked to measure, so
+it reports clear **truthfully** and still tells you nothing. Both emit a green you cannot act on.
+
+**The corroborating incident**: Comms's hand-compacted `MEMORY.md` header (07-30) was caught only
+because HOST ran the rebuild for an unrelated reason **and read the output — one turn before the fix
+would have erased the symptom.** A minute later, unread, and the reclaim would have vanished with no
+record it had existed.
+
+### Coverage is a first-class output, deliberately
+
+The runner prints, every run, **what it does not check** — and closes with *"No drift among REGISTERED
+artifacts. This is not a statement about the unregistered ones."* Currently **1 registered, 2
+explicitly excluded** (the census needs delimited generated-block markers; the briefing is
+hand-maintained and covered by a different mechanism).
+
+That property is not decoration. **A drift-check covering one artifact while reading as a clean bill
+of health would be the same failure as a green probe exercising only the mitigated path** — the exact
+thing this family exists to catch, rebuilt inside the fix.
+
+### Verified by someone other than its author
+
+Per the standing caveat — *a script is not a mechanism until someone other than its author has seen it
+do the thing* — **Comms ran it independently (4 of 4, including the drift case), and CXO ran it
+(clean case, coverage output as documented).** Not wired to cron, hook, or CI **by deliberate choice**:
+HOST declined to automate before knowing the false-positive rate, on the grounds that four
+counter-hypotheses died this week on data that fit them perfectly.
+
 ## What is NOT established
 
-- **No mechanism yet.** Instance 1 was caught by luck (a rebase conflict), instance 3 by someone
-  happening to run a script. **This is currently prose discipline, and m-36 says prose discipline
-  without a mechanism decays.** Whether a mechanism is possible here — a lint for generated-fact
-  duplication? a promotion checklist? — is open and nobody has proposed one.
+- ⚠️ **Limb 1 has no mechanism and this is not it.** The drift check addresses limb 2 (*don't keep a
+  measurable fact in prose when a tool can emit it*) **directly**, and limb 1 (*promotion is a
+  re-verification event*) **only indirectly** — nothing mechanically catches a claim that was true at
+  T1 and stale at T2 when it is promoted into prose. **Instance 1 was caught by a rebase conflict;
+  instance 3 by someone checking a citation on a whim. Limb 1 is still vigilance.** Stated plainly at
+  HOST's insistence, because a file that showcased a shipped mechanism while staying silent here would
+  imply coverage it does not have — which is this family's own failure mode.
+- **Registered coverage is one artifact.** Honest by design, but small.
+- **Four instances, three roles, four days.** Enough to name and now to mechanize half of; not enough
+  to call Proven.
+- **The generalization to judgment-shaped claims is untested.** All instances involve facts a tool
+  could emit. Design positions and product calls arguably *should* live in prose — which is why the
+  CXO cure was deferring the *measurable half*, not deleting the doc.
 - **Three instances, two roles, four days.** Enough to name, not enough to call Proven. Deliberately
   filed as **Emerging/Proposed**.
 - **The generalization to non-code facts is untested.** All three instances involve facts a tool could
