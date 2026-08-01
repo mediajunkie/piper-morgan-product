@@ -26,7 +26,7 @@ An m-44 instrument reports a clear it never earned — **the report is false.** 
 | | what happened | the report is | cure |
 |---|---|---|---|
 | **m-44** (this file) | the instrument never measured the thing | **false** | assert what you actually looked at |
-| **CXO's obstacle** (in m-46) | the instrument **repaired** what it measured | **true, and useless** | render without writing; never let a detector mutate its subject |
+| **the repairing detector** (filed in m-46) | the instrument **repaired** what it measured | **true, and useless** | render without writing; never let a detector mutate its subject |
 | **PPM's candidate** | the criterion could only come out one way | **true, and empty** | ask what would make it FAIL — and whether your procedure can reach that result |
 
 ⚠️ **Two cases HOST had been carrying as m-44 — and the correction to how this was first written.**
@@ -39,6 +39,10 @@ The two cases, which belong in PPM's line and never belonged here:
 
 - **The `verify-hooks` drumbeat.** It stages then bare-commits, so it probes the path that is gated *by construction*, and has read PASS all week. Filed here originally — wrongly. Nothing about it reports a clear it didn't measure: **it measures faithfully, honestly, and the answer was predetermined.** PPM's family.
 - **The migration-checklist v1.5 probe design.** The probe's own staging *created* the index state that made it pass; it would have manufactured confirming evidence indefinitely (Arch caught it). Honest measurement, honest report, **zero discriminating power.** PPM's family.
+
+⚠️ **Attribution note, because the first version of this table got it backwards.** The middle row was originally labelled *"CXO's obstacle."* **CXO corrected it: the finding is HOST's** — it came out of building `check-derived-drift.sh` (*"I expected to write a diff; what actually blocks this is that a plain rebuild repairs the drift it would have detected"*). **CXO's contribution was placement and framing** — moving it out of an implementation note into m-46's body, and siting it beside m-44 rather than inside it.
+
+**Promotion is not authorship.** Worth keeping as a rule, because the error is systematic rather than careless: whoever files a finding in the corpus is the name attached to it there, and that is the name the next citation copies. CXO caught this one at citation zero. *(Second attribution correction in the cohort in three days, both in the direction of refusing credit — PPM declined credit for a near-miss it could not source, CXO declined credit that was offered.)*
 
 **They co-occur often** — a gate that can't fail is frequently also reported as a clear — but a fix for one does not fix the other. Merging any two of the three loses the cure, which is the only part an agent actually needs at the moment it matters.
 
