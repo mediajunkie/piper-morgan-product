@@ -50,6 +50,10 @@ esac
 
 [ -f "$MEM" ] || exit 0
 
+# Convention: `wc -l`. rebuild-memory-index.py's guard counts ONE HIGHER (trailing
+# newline), so it refuses one line earlier than this warns. Deliberate on both sides —
+# the guard is conservative, this reports what you would measure by hand. Stated
+# because two numbers for one file is how an afternoon disappears. (Comms, 2026-07-31.)
 lines=$(wc -l < "$MEM" | tr -d ' ')
 bytes=$(wc -c < "$MEM" | tr -d ' ')
 entries=$(grep -c '^- ' "$MEM" 2>/dev/null || echo 0)

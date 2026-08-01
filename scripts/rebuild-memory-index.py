@@ -156,7 +156,15 @@ LIMIT = 24000          # bytes — silent read truncation
 LINE_LIMIT = 200       # lines — separate read ceiling, NOT implied by the byte count
 WARN_AT = 0.90         # surface pressure before it becomes a refusal
 
+# LINE-COUNT CONVENTION — stated because two numbers for one file is how an
+# afternoon disappears, and this whole thread is already about a count that lies.
+# `body` ends with a trailing newline, so `count("\n") + 1` yields ONE MORE than
+# `wc -l` (193 vs 192). That is deliberate and kept: the guard then refuses at
+# `wc -l` 200 rather than 201, i.e. one line EARLY. Conservative is correct for a
+# guard against SILENT truncation. Every number this script prints is labelled with
+# its convention so nobody has to rediscover the discrepancy. (Comms, 2026-07-31.)
 n_lines = body.count("\n") + 1
+n_lines_wc = len(body.splitlines())          # what `wc -l` reports
 # len(str) counts CHARACTERS. The limit is BYTES, and this file is full of multibyte
 # UTF-8 (⚠️ — × •). Measuring the wrong unit under-counted by ~800B (4%) and would have
 # permitted ~24,968 real bytes at a "24,000" limit — i.e. silent truncation, from the
@@ -187,12 +195,13 @@ if "--check" in sys.argv:
     target = MEMDIR / "MEMORY.md"
     current = target.read_text(encoding="utf-8") if target.exists() else ""
     if current == body:
-        print(f"✓ MEMORY.md matches its generator ({len(files)} entries, {n_bytes:,}B, {n_lines} lines)")
+        print(f"✓ MEMORY.md matches its generator ({len(files)} entries, {n_bytes:,}B, "
+              f"{n_lines} lines [guard convention; `wc -l` reports {n_lines_wc}])")
         raise SystemExit(0)
     cur_lines, new_lines = current.split("\n"), body.split("\n")
     print("⚠️  DRIFT: MEMORY.md does NOT match what rebuild-memory-index.py would emit.")
     print(f"   on disk: {len(cur_lines)} lines / {len(current.encode('utf-8')):,}B")
-    print(f"   generator would emit: {n_lines} lines / {n_bytes:,}B")
+    print(f"   generator would emit: {n_lines} lines [guard convention; `wc -l` {n_lines_wc}] / {n_bytes:,}B")
     print("   The artifact is a BUILD OUTPUT. If someone hand-edited it, that edit is")
     print("   NOT durable — the next rebuild silently reverts it. Either fold the change")
     print("   into the generator, or re-run this script without --check to discard it.")
@@ -208,6 +217,7 @@ if "--check" in sys.argv:
 
 (MEMDIR / "MEMORY.md").write_text(body, encoding="utf-8")
 print(f"index rebuilt: {len(files)} entries, {n_bytes:,} bytes, {n_lines} lines "
+      f"[guard convention; `wc -l` reports {n_lines_wc}] "
       f"({LIMIT-n_bytes:,}B / {LINE_LIMIT-n_lines} lines under the limits)")
 # Pressure warnings — a green write that is one entry from truncating is not a healthy signal.
 if n_bytes > LIMIT * WARN_AT:
