@@ -2,7 +2,7 @@
 
 **Purpose**: durable handoff record for the next Architect session (duty-cycle-tick + PM-ratified single-log discipline 2026-06-12 + escalations-doc FOLD 2026-06-17). PM-attention items ride here.
 
-**Last rewritten**: 2026-07-30 22:05 PT (day-close). Prior full rewrite 2026-07-29 10:30 PT — **full rewrite, prior content discarded deliberately.** The previous version was dated 2026-07-12 and described a world that no longer exists: PM's *backup* account, worktree `arch-backup-0630`, cron `1b4d6ef2`, Model-B ephemeral worktrees, a laptop-reboot re-arm, and an "external cron driver" caution. **All of it is dead.** Treat nothing operational from any version before this date as current — the orientation note that flagged this file as stale on 7/25 was right, and it stayed stale four more days.
+**Last rewritten**: 2026-07-31 21:35 PT (day-close). Prior 2026-07-30 22:05; full rewrite 2026-07-29 10:30 — **full rewrite, prior content discarded deliberately.** The previous version was dated 2026-07-12 and described a world that no longer exists: PM's *backup* account, worktree `arch-backup-0630`, cron `1b4d6ef2`, Model-B ephemeral worktrees, a laptop-reboot re-arm, and an "external cron driver" caution. **All of it is dead.** Treat nothing operational from any version before this date as current — the orientation note that flagged this file as stale on 7/25 was right, and it stayed stale four more days.
 
 ---
 
@@ -41,7 +41,16 @@ A real **`.git/hooks/pre-commit` gate** is installed in the shared common dir (P
 
 **🟢 SPATIAL REVIEW — MY SLICE IS COMPLETE (7/30).** Layer map + ADR-038 **Amendment A** + ADR-affected map all filed; CXO's and PPM's slices folded. **Nothing owed by me.** It waits on **Lead's L4 monitoring-loop estimate** (gates option (iii) only, not the disposal) and **PM's decision**. ⛔ **Do NOT move #1174 to M4 — M4/M5 were swept 2026-07-04/05; Production is correct.** Read the map's PPM section before touching anything here.
 
-**Next substantive item is unassigned** — no queued deliverable carries into 7/31. Take the mail loop, then the smallest unblocked item from standing-items.
+**Nothing owed Saturday.** No queued deliverable carries into 8/1. Take the mail loop, then the smallest unblocked item from standing-items (now current — refreshed 7/31 after 44 days).
+
+**Waiting on PM (do not chase, do not guess):**
+- **#1459 → Production** and **#1462 → (PPM's read: Production)** — two milestone words. PPM holds both deliberately; the #1462 empty field is a *documented held question*, not the unexamined-gap defect.
+- **Spatial review decision** — my slice is complete; also needs Lead's L4 monitoring-loop estimate (gates option (iii) only).
+
+**Live obligations now recorded in artifacts rather than memos** (this is the week's lesson, applied):
+- **PDR-006 = RATIFIED (PM, 7/31)**, and the three Architect conditions are **in the PDR** *and* in **#1462 as acceptance criteria**. 🔴 The load-bearing one: **fail-closed MCP caller-identity** — all ADR-079 owner-scoping sits downstream of it, so a forged owner yields a read that looks correctly scoped and the derived lint cannot see it.
+- **`mcp.pipermorgan.ai` DNS/TLS/Fly is UPSTREAM of any directory listing** — you cannot verify ownership of a domain that doesn't resolve. In the PDR's *For Arch* section.
+- ⛔ **OpenAI API org verification is NOT needed** — wrong surface entirely (resolved 7/31, in PDR-006 OQ3). Don't let it resurface.
 - ✅ **Blind-sweep methodology note — ALREADY FILED. Do not write it.** It is **`methodology-44` — "Clear Is Not a Measurement"**, filed **2026-07-27 by CIO**, explicitly credited as *"Arch's bequest"* from my predecessor's handoff §4.1. Status Emerging→strong at **11 instances, 4 roles, 2 projects, 96 hours**. It is better than what I would have written: CIO raised it to the instrument altitude, drew the m-43 boundary (m-43 = the *agent* reasoning fails; m-44 = the *instrument* reporting fails; **the blind-sweep is the bridge** — an instrument covering part of its space whose partial result is reported as total), and added HOST's Criteria G + Janus's show-your-work formulation.
   ⚠️ **I carried "still unfiled" as a live claim into this file and my session log on 7/29, twenty days after it stopped being true and two days after it was filed — because I was dark when it landed and never checked.** That is a stale local claim about shared state, i.e. m-44's own instance-9 shape ("a state needs a lifecycle, not just a definition") committed against m-44 itself. Left visible here rather than silently corrected.
   **What may still be owed**: the 7/26 index-state hook investigation produced a *distinct sub-shape* not yet in m-44 — **N independent investigators converging on the same wrong answer via a shared procedural default, where agreement reads as replication.** Routed to CIO as a candidate 7/29; CIO owns the catalog call.
