@@ -157,28 +157,45 @@ def check_row(line_no: int, row: list[str], idx: dict) -> tuple[list[str], list[
     if val("draftPath") and not os.path.exists(val("draftPath")):
         warnings.append(f"{tag}: draftPath does not resolve — {val('draftPath')}")
 
-    # --- SOFT: a bare MEDIA FILENAME sitting in a prose column.
-    # Found 2026-07-31 while reconciling PDR-007's caption question: 16 rows carry
-    # values like `robot-critique.webp` in `caption`, where caption text belongs.
+    # --- SOFT: caption/cartoon naming DIFFERENT images.
+    # Rewritten 2026-08-01 on Comms' finding. My first version flagged
+    # "caption holds a media filename" as anomalous on its own — which found the
+    # right rows and NAMED THE WRONG COLUMN.
     #
-    # WARNING, not an error, and the reason is the point: I could NOT establish the
-    # cause. The obvious hypothesis is a one-column shift from `cartoon`, but the
-    # values do NOT match that row's `cartoon` (e.g. caption=robot-archaeologists.webp
-    # while cartoon=robot-massage-chair), so a shift is not demonstrated. It may be a
-    # historical convention where caption held an image name. Flagging an anomaly I
-    # can see while declining to assert a cause I have not proven — a confident wrong
-    # correction to a shared file is worse than the drift it claims to fix.
+    # Comms owns `caption`, took the "cause NOT established" as an invitation, and
+    # established it against 7 live published pages:
+    #   - 9 of 16 are COSMETIC: caption is just cartoon + ".webp". Nothing to decide.
+    #   - 7 of 16 are REAL: caption and cartoon name DIFFERENT images — and the page
+    #     renders the one named in CAPTION, 7 of 7. `cartoon` is the stale column.
     #
-    # Distinct from the repo-path check above, which is an ERROR because the Ship #050
-    # incident established that signature. This one has no established provenance yet.
+    # ⚠️ The old wording invited someone to CLEAR the caption to "clean up" — which on
+    # those 7 rows would delete the only surviving record of the real image and leave
+    # the wrong one standing. A warning that points at the accurate column is worse
+    # than no warning: it manufactures a confident, quiet, near-irreversible loss.
+    #
+    # So the informative test is the DISAGREEMENT, not the format.
     MEDIA = re.compile(r"^[\w.-]+\.(webp|png|jpe?g|gif|svg)$", re.I)
-    for col in ("caption", "altText", "notes"):
-        v = val(col)
-        if v and MEDIA.match(v):
+    cap = val("caption")
+    cartoon = val("cartoon")
+    if cap and MEDIA.match(cap):
+        stem = cap.rsplit(".", 1)[0]
+        if not cartoon:
+            # Reconciled 2026-08-01: Comms counted 7 "real" rows, my first cut found 5.
+            # Both were right — theirs included 2 rows where `cartoon` is EMPTY, which my
+            # version skipped by requiring it non-empty. Those 2 are the MOST dangerous:
+            # caption is the SOLE surviving record of the image, so a "cleanup" there is
+            # unrecoverable from the calendar alone. Skipping them was the worse gap.
             warnings.append(
-                f"{tag}: {col} is a bare MEDIA FILENAME ({v!r}), not prose — "
-                f"anomalous; cause NOT established (does not match this row's `cartoon`)"
+                f"{tag}: caption ({cap!r}) names an image and cartoon is EMPTY — "
+                f"caption is the ONLY record of this post's image. DO NOT clear it."
             )
+        elif stem != cartoon:
+            warnings.append(
+                f"{tag}: caption ({cap!r}) and cartoon ({cartoon!r}) name DIFFERENT images. "
+                f"The live page is the tiebreaker — Comms verified 2026-08-01 that the page "
+                f"renders CAPTION, 7/7. DO NOT clear caption; cartoon is the stale column."
+            )
+        # stem == cartoon -> cosmetic duplication (9 rows). Nothing to decide; silent.
 
     # --- SOFT: altText length. WARNING ONLY — long alt text is legitimate. ---
     if len(val("altText")) > ALT_TEXT_WARN_CHARS:

@@ -4,7 +4,7 @@ title: BRIEFING-ESSENTIAL-DOCS
 valid_from: "2026-03-19"
 last_updated: "2026-07-30"
 last_verified: "2026-07-30"
-verified_scope: "migration status vs actual (was false); PreCompact-hook claim checked against full git history (log file never existed); session-log naming convention vs 06-29 change; blog-pipeline section vs publish-post.js"
+verified_scope: "migration status vs actual (was false); session-log naming convention vs 06-29 change; blog-pipeline section vs publish-post.js. ⚠️ CORRECTED 2026-08-01: this scope line previously claimed the PreCompact log file never existed. That check used git history against a GITIGNORED path and was structurally incapable of finding it — the hook DID fire (HOST seat, 2026-07-29 22:10 PDT)."
 ---
 
 # BRIEFING-ESSENTIAL-DOCS
@@ -118,8 +118,20 @@ conflicts, anything with suspicious files in the diff.
 **Cadence**: every Docs session start, before other work · ad-hoc when PM or any agent surfaces a
 stranding incident · before publishing a Ship.
 
-⚠️ **On the two "safety nets" this section used to claim**: see the PreCompact note above — one of them
-never worked. **The sweep is the net you can count on.**
+### ✅ The PreCompact hook — it DOES fire (corrected 2026-08-01)
+
+**`.claude/hooks/precompact-signoff-warning.sh` works.** Evidence: `dev/active/session-end-warnings.log`
+on HOST's seat carries a real firing — `event=PreCompact tier=HARD ... unpushed=6217`, 2026-07-29 22:10.
+
+⚠️ **How I got this wrong on 07-30, because the shape will catch you too**: I checked
+`git log --all -- dev/active/session-end-warnings.log`, got nothing, and concluded the file *"has never
+existed."* **The path is gitignored** (`.gitignore:136`) — so that query returns empty whether the file
+exists on every seat or none. **The instrument could not see the thing it was asked about, and its
+silence read exactly like proof of absence.**
+
+**Two operative consequences:**
+- **The log is per-seat and gitignored.** Absent in your worktree means *you* haven't had a firing — not that the mechanism is dead. Check your own seat with `ls`, never with `git log`.
+- **You now have two working nets**, not one: this hook *and* the merge-keeper sweep.
 
 ## Session Start Protocol
 
