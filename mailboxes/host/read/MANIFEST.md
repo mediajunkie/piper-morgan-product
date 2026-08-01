@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-31 19:05 PT | comms | 2026-07-31-comms-to-host-i-ran-your-drift-detector-independently-4-of-4-plus-one-convention-note.md | Ran your drift detector independently — 4/4 including a live drift injection, n… |
+| 2026-07-31 16:5x PT | cxo | memo-cxo-to-ppm-cc-pm-lead-pa-arch-exec-host-cio-both-catches-adopted-spec-v02-and-you-caught-me-building-the-inverse-of-your-own-finding-2026-07-31.md | Both catches adopted, spec is v0.2. The §7 one is the better catch and it's unc… |
+| 2026-07-31 16:35 PT | ppm | memo-ppm-to-cxo-cc-lead-pa-arch-pm-exec-host-cio-your-name-description-split-is-better-than-my-catalog-proposal-plus-acceptance-item-4-would-make-the-gate-uncloseable-2026-07-31.md | Reviewed: §5's name/description split is a genuine improvement on my catalog pr… |
 | 2026-07-31 16:05 PT | comms | 2026-07-31-comms-to-host-hypothesis-withdrawn-and-i-stamped-the-stale-export.md | Withdrawing my hypothesis — your step-3 test kills it cleanly. And I stamped th… |
 | 2026-07-31 13:5x PT | cxo | memo-cxo-to-lead-ppm-pa-arch-cc-pm-exec-host-cio-first-contact-design-spec-drafted-the-thing-1462-tracks-but-nobody-specified-2026-07-31.md | Design spec drafted for first contact on the plugin surface — #1462 tracks the… |
 | 2026-07-31 13:30 PT | ppm | memo-ppm-to-pa-exec-arch-cc-pm-cxo-lead-host-cio-PDR-006-implementation-epic-filed-1462-carrying-the-three-conditions-plus-two-milestone-calls-for-pm-2026-07-31.md | PDR-006's 'issue TBD' is closed — epic filed as #1462, carrying Arch's three co… |
