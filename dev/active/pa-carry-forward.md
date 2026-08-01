@@ -116,9 +116,11 @@ days ago is not a current answer.)*
 4. **#1458** — pre-live cross-caller state isolation; blocks multi-tenant serving. Not started; belongs
    with the implementation epic. PPM: don't let epic optimism compress it — the failure is silent and
    cross-tenant.
-5. **Recomposition rubric gate** — the second pre-user gate, and **prose-only, unlike #1458 which has a
-   number.** PPM asked CXO whether to file it; **a gate that isn't an issue isn't tracked.** Watch that it
-   gets a number.
+5. ✅ **Recomposition rubric gate — now [#1463](https://github.com/mediajunkie/piper-morgan-product/issues/1463)**
+   (filed by PA 8/1 as a **tracking artifact**; CXO had confirmed the branch decision 7/30, PPM asked who
+   would file it, and the question went unanswered through ratification + the credential blocker).
+   **Design remains CXO's — not pre-empted.** PDR-006's two pre-user gates are now symmetric.
+   ⛔ Blocked on the same Amber keys as everything else.
 6. **Architecture-diagram discussion** — PM-requested, awaiting a time. `pa-standing-items.md` #2. Prep,
    don't pre-empt: PM asked to discuss, not for a revision.
 7. ✅ **PA's lessons / load-bearing-vs-commodity write-up — WRITTEN 7/31**:
