@@ -48,6 +48,43 @@ Slate work is tracked **in the editorial calendar at creation** (every beat gets
 
 ---
 
+### 1.5 A beat is a STORY, not a digest of its window (PM, 2026-08-01)
+
+> *"One thing I want to resist is feeling like we have to narrate every single thing that happens in a five- or seven-day period… We certainly can have an A plot and a B plot… but sometimes you really have to pick and choose what the actual story is."* — PM
+
+**The wider spans are working and should continue.** PM's read: *"the story does an inch a day or so at a time, but often takes leaps of a week or five days. I think that's a good trend."* The leaps are the win. **What must not come with them is the obligation to account for everything inside the leap.**
+
+**Structure to use**: an **A plot** — the actual story, the thing the beat is about — and optionally a **B plot**, plus room for something funny or strange. **Not** a section per workstream. A beat that touches every thread of its window is a digest wearing a story's clothes, and it reads like one.
+
+The selection question at draft time is *"what is the story here?"* — not *"what happened here?"* Material that doesn't serve the A or B plot is **cut, not compressed**. It is not lost: it stays available to the insight track (time-decoupled, §1.1), or to a later beat, or to the Weekly Ship, which is the surface that legitimately *is* comprehensive.
+
+#### ⚠️ The measured version, because the causal story is not the obvious one
+
+Length is rising, and by more than "creeping" (measured 2026-08-01 across 57 published narratives + insights):
+
+| month | n | mean words | max | over 1,300 | over 1,600 |
+|---|---|---|---|---|---|
+| 2026-03 | 4 | 797 | 1,085 | 0 | 0 |
+| 2026-04 | 14 | 1,038 | 1,459 | 2 | 0 |
+| 2026-05 | 4 | 1,106 | 1,345 | 1 | 0 |
+| 2026-06 | 18 | 1,265 | 1,796 | 9 | 2 |
+| **2026-07** | **17** | **1,399** | **2,526** | **9** | **6** |
+
+Mean is up **75%** in five months, and **July's average (1,399) is itself above the 1,300 target ceiling** — so it is no longer a matter of outliers.
+
+**But span is NOT the cause.** Correlation between covered span and word count across 21 published building narratives is **+0.10** — effectively none. The extremes make it plainly:
+
+- *The Team Catches the Cycle* — **2 days**, **2,093 words**
+- *RECONNECT's Keystone* — **9 days**, **1,680 words**
+
+**So the tradeoff people assume — cover more time, accept more words — does not exist in our data.** Length growth is a **drafting habit**, not a structural consequence of wider windows. That is the encouraging version: **keep the leaps AND cut the length**, because they were never actually coupled. A long beat is long because everything got in, not because the window was wide.
+
+*(Caveat, stated so nobody over-reads it: n=21 and a weak correlation is soft evidence for no-relationship. The 2-day/2,093-word case is the decisive one on its own.)*
+
+**Practical test at draft time**: if you can't name the A plot in one sentence, the beat isn't a beat yet — it's a window with material in it. And if a section exists mainly because something happened, that's the cut.
+
+---
+
 ## 2. How we write it (mechanics — owned elsewhere, pointed to here)
 
 This doc deliberately does **not** duplicate mechanics (that's how docs go stale). The canonical mechanics files:
