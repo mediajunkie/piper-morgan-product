@@ -514,8 +514,14 @@ git status
 # 2 + 3. Verify your work is on origin/main  (these were two steps; they collapse
 #        under push-to-main, and BOTH old forms misreported — see the note below)
 git fetch origin main
+git rev-parse --verify -q origin/main >/dev/null \
+  || echo "STOP: origin/main does not resolve — the check below DID NOT RUN; empty is not clean"
 git log --oneline origin/main..HEAD
 # Expected: empty (everything you did is reachable from origin/main)
+#   The rev-parse line is not ceremony. Without it, on a worktree where the ref
+#   doesn't resolve, `git log … 2>/dev/null` prints NOTHING and exits 128 — it
+#   reads exactly like a clean pass while having measured nothing. That is m-44
+#   inside the sign-off checklist itself: assert what you actually looked at.
 # ⚠️ WHY THIS CHANGED (HOST, 2026-08-01 — both old commands measured the wrong ref):
 #   OLD step 2: `git log --oneline @{u}..HEAD`  — `@{u}` is whatever the worktree was
 #     provisioned to track. Measured across all 11 agent worktrees: 8 track `origin/main`
@@ -536,6 +542,17 @@ git log --oneline origin/main..HEAD
 #   following it verbatim; if they've quietly substituted something better, nobody reports.
 #   Fix both halves: normalize the upstream (`git branch -u origin/main`) AND use an
 #   explicit ref here, so this is correct regardless of how a seat was provisioned.
+#   THIRD failure mode, added same day (PA, found on a non-Piper worktree with NO
+#   upstream at all): a step can report clean because the command DIED. HOST's first
+#   fix had this too — `origin/main..HEAD` on a repo without that ref exits 128 with
+#   empty stdout, and the `2>/dev/null` we all reflexively add makes it silent. Hence
+#   the rev-parse guard above. Three distinct ways one checklist line lied: wrong ref
+#   (step 2), stale ref (step 3), unresolved ref (this). All three printed something
+#   an agent would read as fine.
+#   FLEET SCOPE, corrected twice: HOST measured one repo, PA said "every worktree on
+#   Amber" and had globbed one of FIVE roots, Web caught that. Full run: 18 worktrees,
+#   5 roots. Local `main` lags 10–15 in the website and designinproduct worktrees.
+#   Both censuses stopped at the repo their author works in.
 # If output has lines, you have THREE options:
 #   (a) merge your branch to main now (preferred for completed work):
 #       git checkout main && git pull origin main && git merge <your-branch> --no-ff && git push origin main
