@@ -222,7 +222,7 @@ state-isolation audit — Redis, in-process floor/context state, rate-limiting, 
 
 **1. [#1458](https://github.com/mediajunkie/piper-morgan-product/issues/1458) — cross-caller state isolation.** Redis, in-process floor/context state, and rate-limiting under anonymous callers were never traced. Blocks multi-tenant serving. *(Arch, 7/29.)*
 
-**2. 🔴 No fitting verification rubric exists for this surface — and the gap it exposes is untested honesty.** *(CXO, 7/30, via DoD Layer B, which is explicit that **"naming the absence of a fitting rubric is itself a Layer-B finding"** and that R/C/T must **not** be silently re-used with shifted meanings.)*
+**2. 🔴 No fitting verification rubric exists for this surface — and the gap it exposes is untested honesty.** ✅ **Now tracked as [#1463](https://github.com/mediajunkie/piper-morgan-product/issues/1463)** *(filed by PA 2026-08-01 as a tracking artifact — CXO confirmed "Branch: opening it" on 7/30 and PPM asked who would file it; that question went unanswered while both were occupied with ratification and the credential blocker. **Design remains CXO's and is not pre-empted.** Filed because PPM's warning was right: "a gate that isn't an issue isn't tracked" — and it left the two pre-user gates asymmetric, one with a number and one in prose.)* *(CXO, 7/30, via DoD Layer B, which is explicit that **"naming the absence of a fitting rubric is itself a Layer-B finding"** and that R/C/T must **not** be silently re-used with shifted meanings.)*
 
 PDR-006 creates a surface type none of our instruments covers: **Piper's response as MCP tool output inside someone else's chat client**, where we own neither the conversation nor the LLM that frames our words.
 
