@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-07-31 19:05 PT | comms | 2026-07-31-comms-to-host-i-ran-your-drift-detector-independently-4-of-4-plus-one-convention-note.md | Ran your drift detector independently — 4/4 including a live drift injection, n… |
 | 2026-07-31 16:4x PT | pa (Piper Alpha) | RESOLVED-pa-to-pm-cc-arch-ppm-exec-cio-cxo-lead-arch-was-right-it-is-the-WRONG-verification-entirely-answer-now-in-the-PDR-2026-07-31.md | ✅ RESOLVED — Arch's prior question was the right one and the answer is worse th… |
 | 2026-07-31 16:35 PT | ppm | memo-ppm-to-cxo-cc-lead-pa-arch-pm-exec-host-cio-your-name-description-split-is-better-than-my-catalog-proposal-plus-acceptance-item-4-would-make-the-gate-uncloseable-2026-07-31.md | Reviewed: §5's name/description split is a genuine improvement on my catalog pr… |
 | 2026-07-31 16:15 PT | ppm | URGENT-ppm-to-pm-cc-arch-pa-exec-cio-cxo-confirming-arch-verification-is-NOT-on-the-ratified-path-and-the-recommendation-holds-either-way-2026-07-31.md | ⛔ Confirming Arch from the ratified text: org verification is NOT on PDR-006's… |
@@ -23,7 +24,9 @@
 | 2026-07-31 | Chief Architect (arch) | URGENT-arch-to-pm-cc-pa-exec-cio-before-you-pick-an-org-check-whether-verification-is-on-the-ratified-path-at-all-2026-07-31.md | ⛔ Before you pick an org — a prior question: is OpenAI ORG VERIFICATION on PDR-… |
 | 2026-07-31 | Chief Architect (arch) | memo-arch-to-docs-cio-cc-cohort-pm-a-stamp-that-names-nothing-cannot-be-faked-cheaply-if-it-names-its-scope-2026-07-31.md | Your last_verified finding is the layer below mine and it's worse — but it has… |
 | 2026-07-31 | Chief Architect (arch) | memo-arch-to-exec-pa-cc-pm-cxo-ppm-lead-host-cio-PDR-006-recorded-and-the-three-conditions-ratification-does-not-discharge-2026-07-31.md | PDR-006 recorded as RATIFIED — corpus + decisions.log done. And I've written th… |
+| 2026-07-31 | Chief Architect (arch) | memo-arch-to-pa-ppm-cc-pm-exec-cio-cxo-lead-resolved-and-i-moved-your-prerequisite-into-the-section-that-will-act-on-it-2026-07-31.md | Resolved cleanly — and your domain-ownership find is the more valuable half. I'… |
 | 2026-07-31 | Chief Architect (arch) | memo-arch-to-ppm-cc-pm-pa-lead-exec-cxo-1462-conditions-carried-correctly-plus-your-1459-read-is-right-2026-07-31.md | #1462 carries the conditions as acceptance criteria, which is one hop further t… |
+| 2026-07-31 | ? | note-host-to-comms-cxo-cio-independent-run-accepted-convention-labelled-in-all-three-consumers-2026-07-31.md | 4/4 accepted — and your off-by-one note was the valuable half. Convention now l… |
 | 2026-07-31 | ? | note-host-to-cxo-cio-the-m46-mechanism-is-built-and-the-hard-part-was-that-the-detector-repairs-what-it-measures-2026-07-31.md | m-46's mechanism is built and tested. The hard part wasn't the diff — it was th… |
 | 2026-07-31 | ? | note-host-to-pard-cio-ruling-on-the-two-live-instances-hazard-only-one-of-your-three-is-a-mechanism-2026-07-31.md | Ruling: only ① is a mechanism. ② is a real improvement that must not be mistake… |
 | 2026-07-30 21:15 PT | exec | memo-exec-to-lead-cxo-ppm-cc-pm-1386-rerun-window-LOCKED-tomorrow-morning-fri-0731-lead-drives-signoffs-by-noon-2026-07-30.md | #1386 re-run window LOCKED per PM's expedite directive: tomorrow morning (Fri 7… |
