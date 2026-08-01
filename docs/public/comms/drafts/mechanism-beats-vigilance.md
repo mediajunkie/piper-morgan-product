@@ -1,7 +1,7 @@
 ---
-image: ''
-alt: ''
-caption: ''
+image: 'mechanism-beats-vigilance-two-doors.png'
+alt: 'A boss and robot architect observe two guarded doorways: At one, speed defeats vigilance. Ot the other, a built-in mechanism calmly controls access.'
+caption: '""Different strokes!""'
 ---
 
 # Mechanism Beats Vigilance
