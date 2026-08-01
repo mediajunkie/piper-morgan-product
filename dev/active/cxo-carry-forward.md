@@ -1,78 +1,70 @@
 # CXO carry-forward — ephemeral session state
 
-**Owner**: CXO | **Updated**: 2026-07-30 22:2x PT (STOP)
+**Owner**: CXO | **Updated**: 2026-07-31 22:4x PT (STOP)
 **Read at**: every fire START. **Rewritten at**: the end of every substantive fire.
 **Durable owed/queued work lives in** `cxo-standing-items.md` — this file is *current* state only.
 
 ---
 
-## ⏰ FIRST THING TOMORROW (Fri 07-31, 06:47 fire) — a locked, time-boxed commitment
+## ⏸ Blocked on PM — one action clears four lanes
 
-**#1386 Scenario-B re-run sign-off.** Exec locked the window (`21:15` memo, 07-30):
+**Amber key provisioning** (via `KeychainService`, **not** the `security` CLI — the service appends
+`_api_key` and CLI-stored credentials are invisible to the app). Unresolved all of 07-31.
 
-- **Lead drives** the canonical suite + Scenario-B re-run from its ~06:17 fire.
-- **I review Lead's Scenario-B outputs at my 06:47 fire and post sign-off — or objection —
-  ON THE ISSUE (#1386), not in mail.** Exec: *"the gate's evidence belongs on the issue."*
-- PPM does the same at 06:52. Same shape as the criterion-3 joint sign-off we did before.
-- **Exec reports to PM at 08:32.** Sign-offs are wanted **by noon**.
-- **I verify outcomes; I do not drive execution.**
+| Blocked | Consequence |
+|---|---|
+| **Probe A** (PA built it; PM funded it) | **My rubric-branch verdict.** Design spec §6 stays unresolved and acceptance item 4 stays un-implementable. |
+| **#1386 criterion 2** | Withheld my sign-off; a keyless canonical suite *skips* and reports green. Exec deferred it in writing. |
+| **#1445** · **#1395 Phase 0** | Lead's. |
 
-**Scope discipline — do not overstate the result.** This window closes **criterion 2 + the
-Scenario-B re-run** (verifying #1393 scaffolding-leak and #1394 turn-3 continuity, both In Review).
-It does **not** close the gate — six criteria, this is one. Criteria 1/4/5/6 are PM's.
-**Turn-4 ("what did we create") is still my scenario-vs-rescope design call** and is not resolved by
-these fixes.
+**Second PM action, separate**: rouse Lead / authorize Lead's cron. **Lead's registry row is still
+parked and no cron was ever armed** — the #1386 Scenario-B driver could never have started. Exec's
+own finding.
 
-**Fallback**: if Lead's venv acceptance test fails Friday morning, the window moves and Exec reports
-the slip. Don't let it drift silently.
-
-## Second — #1174 re-scope (deliberately NOT done tonight)
-
-PPM confirmed **option (i) is mine to execute** and that **Production is the correct milestone —
-nothing to undo.** My commitment is a **title/body clarification only**: re-scope #1174 to the
-discovery thread its title already claims, and state in the issue that **the delivery capability is
-not scheduled.**
-
-⚠️ **Deliberately deferred from the 22:17 STOP**, not forgotten. Three roles got burned reasoning
-about board state today (PPM corrected itself twice; M4/M5 turned out to have been swept 07-04/05).
-Touching a board item at 22:17 on the day of those corrections is the wrong hour for it. Also **PM is
-picking this thread up with me directly**, so it's worth a word first.
+**Scenario B may be entirely unaffected** (deployed beta v28, its own credentials). If Lead runs it,
+**review and sign on the issue at the next fire** — independent of criterion 2.
 
 ## Live threads
 
 | Thread | State | Next |
 |---|---|---|
-| **Jake FTUX** | **All 4 lenses in.** Artifact rebuilt with positions + surface-survival sort. **PPM feedback COMPLETE and consolidated** (its final memo supersedes its three earlier passes). Exec synthesizes tomorrow morning. | **PM is working through it with me.** Hold; don't generate more input. |
-| **Spatial (b)** | **Settled three ways** — Arch + CXO + PPM concur. L3-beyond-GitHub **not promised** (`roadmap.md:70`, connectors = commodity), so the 10-module cold island disposes with no commitment losing its referent. | PM's protected-surface call on disposal. Nothing deleted until then. |
-| **L4 / #1174** | Substantive finding survives all of PPM's milestone errors: OPEN in Production, zero implementation, **differentiator 4 of 4** in the stack Jake echoed. **Do not fund pre-beta** (concurred). | Re-scope (above), then **the discovery is mine** — with HOST on welfare/trust, me on what an unwelcome nudge feels like. |
-| **PDR-004 Amendment A** | **PROPOSED, drafted, pushed.** Ratifies that the *gate* binds, not the instrument. | PPM + PM ratify. Not mine to self-ratify. |
-| **Rubric branch (plugin surface)** | **OPENED.** Dimensions unsettled by design. | PA runs **Probe A** (honesty-under-recomposition, both Claude and GPT, identical payloads varying only hedge form). **I take the verdict.** |
-| **PDR-006** | **All three reviews in; PA says ready for PM's ratification.** | PM's call. My 3 design items are mine once ratified. |
+| **Jake FTUX** | 4 lenses in; Exec synthesis done and framed for the **PM + CXO** decision; artifact carries my positions. | **PM is working through it with me.** Hold — don't generate more input. |
+| **First-contact design spec** | `dev/active/design-spec-first-contact-plugin-surface-2026-07-31.md` — **v0.2**. PPM reviewed inside 3h; gate/spec split adopted (7a vs 7b). | Awaiting **Lead** (buildability + the latency number I left blank), **PA** (Probe-A coupling), **Arch** (structured-confidence as a format constraint before Phase 2). |
+| **PDR-006 / #1462** | **RATIFIED** 07-31. My 3 design implications are live work; rubric branch is a pre-user gate. | Spec review responses; then item (ii) capability legibility and (iii) the "colleague model" naming. |
+| **#1174 / L4 re-scope** | ⚠️ **Still owed by me** — deferred from 07-30 STOP and not done 07-31. Title/body clarification only; **Production is the correct milestone, nothing to undo.** | Do it early, when the board is quiet. Then the discovery — mine, with HOST on welfare/trust. |
+| **PDR-004 Amendment A** · **m-46** | Both filed. m-46 now **EMERGING** (limb 2 mechanized; limb 1 still vigilance). | PPM + PM ratify the amendment; CIO owns m-46 numbering. |
+| **Ship #054** | **Filed 07-31**, a day inside the deadline. | Nothing. |
 
-## Position stated in advance, so it can't be retrofitted
+## ⚠️ Owed and carried four days — do this before the next substantive design call
 
-**Probe A**: if hedges survive recomposition, the branch scores our text and R/C/T mostly ports.
-**If they don't, the finding is not rubric-shaped** — it's an **output-format constraint** (structured
-confidence the client can't paraphrase away, not hedged prose it can). That's a constraint on tools
-nobody has written, which is why it runs in Phase 0.
+**`docs/briefing/BRIEFING-ESSENTIAL-CXO.md` has not been opened since arriving on Amber**, along with
+`ROLE-PORTFOLIO-CXO.md` §3–5. Named in three consecutive session logs. Also: **the D2 design-system
+portfolio (#1286/#1290/#1284/#1269) has not moved for two Ship windows** — flagged to PM in Ship #054
+§6 as a decision to make rather than a drift to continue.
+
+## Position stated in advance so it can't be retrofitted
+
+**Probe A**: hedges survive → the branch scores our text, R/C/T mostly ports. **Hedges don't survive →
+the finding is NOT rubric-shaped**; it's an **output-format constraint** (structured confidence the
+client can't paraphrase away). That's a constraint on tools nobody has written — which is why it's
+Phase 0, and why spec item 4 must not be implemented in prose first.
 
 ## Environment notes for this seat
 
 - **Sync before reading mail.** 07-29: 271 behind, inbox read *empty*, two real asks invisible.
+- **Check the clock before dispatching STOP** — compute the next fire; STOP only if its *date* differs.
+  On 07-31 I nearly day-closed three hours early off the cadence alone.
 - **`cd` persists across Bash calls** — twice produced false-empty reads. Absolute paths.
-- **Hooks**: Pard's real `pre-commit` is installed in the **common** dir, delegating to
-  `check-branch.sh` — covers every worktree by construction. **v1.22 retired the probe: verify the
-  hook exists, do NOT probe.**
-- **Closure is a property of the DAY, not the FILE** (HOST, 07-30). A role with two logs in one day
-  shows a markerless file forever. Never scan per-file.
-- **macOS bash is 3.2** — no associative arrays (`declare -A` fails). Use temp files for grouping.
+- **Hooks**: real `pre-commit` in the common dir; **verify existence, don't probe** (v1.22).
+- **Closure is a property of the DAY, not the FILE.**
+- **macOS bash 3.2** — no `declare -A`; use temp files.
+- **`bash scripts/check-derived-drift.sh`** — read-only, cheap; run when touching a generated artifact.
 
 ## Cron
 
-- **Job `6415bf73`** — `47 6,9,12,15,18,21`. Re-armed at STOP 07-30 by delete-then-create
-  (prior `2e808691` → `6415bf73`). **Cadence unchanged**; the prompt was updated to drop a stale hook
-  rationale and to point at this file first.
-  *(Recording the id transition deliberately: a changed cron id is a documented cause of phantom-peer
-  misreads. If a later fire sees an unfamiliar id, this line is the explanation.)*
-- ⚠️ **Session-only AND auto-expires ~2026-08-06.** Both deaths are silent. **Run `CronList` at every
+- **Job `49d605be`** — `47 6,9,12,15,18,21`. Re-armed at STOP 07-31 by delete-then-create
+  (`6415bf73` → `49d605be`). **Cadence unchanged**; prompt gained the check-the-clock reminder.
+  *(Recording the id transition deliberately — a changed cron id is a documented cause of
+  phantom-peer misreads.)*
+- ⚠️ **Session-only AND auto-expires ~2026-08-07.** Both deaths silent. **Run `CronList` at every
   START** — this file records intent, not a live job.

@@ -100,7 +100,13 @@ prose copies in the first place.
 `d697a7736`). Renders each registered derived artifact, compares to the committed copy, prints the
 first differing line, exits non-zero, **writes nothing.**
 
-### ★ Why this was hard, and it generalizes past memory indexes
+### ★ Why this was hard, and it generalizes past memory indexes — **HOST's finding**
+
+*Attribution, stated explicitly because the ambiguity already propagated once: **HOST discovered this
+by hitting it** while building the drift check. **CXO promoted it** from HOST's mechanism note into
+this methodology body and framed it as a sibling of m-44 at the instrument layer. **Promotion is not
+authorship.** A three-route table circulated 2026-07-31 labelling this "CXO's obstacle" — corrected
+same day; the fault was this file not crediting it clearly enough on first write.*
 
 > **A plain rebuild REPAIRS the drift it would have detected.** Run the generator to find out whether
 > the artifact still matches it, and you have destroyed the evidence — the answer is always *"it
