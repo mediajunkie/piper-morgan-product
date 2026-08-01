@@ -1,32 +1,33 @@
 ---
-image: 
-alt: 
-caption: 
+image: ''
+alt: ''
+caption: ''
 ---
 
 # Mechanism Beats Vigilance
 
 *May 28, 2026*
 
-Here's a thing I keep relearning, and I suspect I'm not alone. When you find yourself reminding people — or yourself — to *remember to do X*, you've already lost. Not yet, maybe. But you've signed up for a slow leak. The reminder works most of the time, which is exactly what makes it dangerous. It fails in the one gap where you happened not to be paying attention, and the gap is the whole problem.
+Here's something I keep having to relearn, and I suspect I'm not alone: When you find yourself reminding anyone, even yourself.  to *remember to do X*, you've already lost. Not yet, maybe. But you've signed up for a slow leak. The reminder works most of the time, which is exactly what makes it dangerous. It fails in the one gap where you happened not to be paying attention, and the gap is the whole problem.
 
-We hit a clean version of this last week, in the part of our project that's least glamorous and most instructive — the plumbing that keeps a team of AI agents (we call them by their roles: the developer, the architect, the chief of staff) from stepping on each other's work. The lesson that fell out of it is bigger than the plumbing. So let me start with the principle and use the plumbing to show it.
+I ran into a new version of this last week, in the part of my project that's least glamorous and most instructive — the plumbing that keeps a team of AI agents (we call them by their roles: the lead developer, the chief architect, the chief of staff) from stepping on each other's work. The lesson that fell out of it is bigger than the plumbing. So let me start with the principle and use the plumbing to show it.
 
 # The principle
 
 A vigilance-discipline is any rule that takes the form *remember to do X*. Pause before you do the risky thing. Check the branch before you commit. Read the whole document before you act on the fragment. These are good rules. They're also a tax, and the tax is paid in attention, and attention is the one resource that reliably runs out at the wrong moment.
 
-The durable fix is almost never *more attention*. It's a mechanism — a change to the structure that makes the failure impossible, or at least makes it impossible to *miss*. You don't remember to lock the door. The door locks itself when it shuts. That's the move. Promote the vigilance-discipline into a mechanism, and the gap where you weren't paying attention stops being a gap.
+The durable fix is almost never a matter of piling on *more attention*. What you actually ned is some sort of mechanism, a concrete change to the structure of how you work that makes the failure impossible, or at least makes it impossible to *miss*. You don't remember to lock the door. The door locks itself when it shuts. That's the move. Promote the vigilance-discipline into a mechanism, and the gap where you weren't paying attention stops being a gap.
 
 So far, so much fortune-cookie. The interesting part is the corollary, and it's sharper than it looks.
 
-# Two rules that read alike and break opposite
+# Two different types of rules
 
-We run our agents on something we call the duty cycle (our hourly autonomous work-loop). The mechanism behind it is a cron (a scheduled trigger that wakes an agent up to check for work). And we'd learned, painfully, that the cron needs to *pause* in two situations — otherwise it fires into the middle of something and causes a collision.
+I run my agents on something I call the duty cycle (a scheduled autonomous work-loop). The mechanism behind it is a cron (a scheduled trigger that wakes an agent up to check for work). And we'd learned, painfully, that the cron needs to *pause* in two situations, otherwise it fires into the middle of something and causes a collision.
 
-Rule one: pause the cron when the agent is doing substantive work. Rule two: pause the cron when I (the human) am actively in conversation with the agent.
+* **Rule one:** pause the cron when the agent is doing substantive work. 
+* **Rule two:** pause the cron when I (the human) am actively in conversation with the agent.
 
-Read those two sentences again. They are the same sentence. *Pause when busy.* Two flavors of busy — busy-working, busy-talking-to-the-human — but structurally identical. If you were promoting them to mechanisms, you'd reach for the same fix for both. Symmetric rules, symmetric treatment. Obvious.
+Those are two versions of the same rule: *Pause when busy.* Two flavors of busy, busy-working, busy-talking-to-the-human — but structurally identical. If you were promoting them to mechanisms, you'd reach for the same fix for both. Symmetric rules, symmetric treatment. Obvious.
 
 It's wrong. The two rules need *opposite* hardening, and the reason is the only thing that actually matters when you're deciding how to harden a rule — not how it reads, but *when and how it breaks*.
 
