@@ -16,7 +16,7 @@
 
 1. ✅ **DONE 2026-07-31 (`d697a7736`) — `scripts/check-derived-drift.sh` + `--check` on the generator.** Tested against a reconstruction of the real incident; coverage printed as a first-class output. **Next increment (mine)**: delimited BEGIN/END GENERATED markers in the census doc so it can be registered. **Not wired to anything** — run by hand, deliberately, until its false-positive rate is known. ⚠️ **Someone other than me must run it before it counts as coverage.**
    ~~Original ask:~~ m-46's filing is held on it (CIO and I share the call; CXO drafted it and honestly flagged *"no mechanism, nobody has proposed one"*). Build: regenerate known-derived artifacts, diff against the committed copy. **Example 1** `MEMORY.md` vs `scripts/rebuild-memory-index.py` (caught Comms's non-durable hand-edit). **Example 2, CXO's** — a predicate regenerated from the corpus it must match; the `DAY-CLOSED` form census is the prototype.
-2. **Checklist v2.0 → Exec review → CEO ratification.** Still not reviewed.
+2. ✅ **Checklist v2.0 — Exec APPROVE WITH FIXES 2026-08-01, all six applied (`6150c5e55`). NOW AWAITING CEO RATIFICATION** — that's PM's, not mine. Don't re-open it; if PM asks, the six were: stale Status block, duplicate probe instruction, stale portability row, the memory-path question (resolved as **config-root-dependent** — both roots real), the park gate's unnamed non-coverage, and a stranded intro line.
 2b. 🔴 **Hook is REGISTERED (`24dd7a05c`, Comms) and NOT LIVE.** Comms did the behavioral test and it was **NEGATIVE** — two Edits to `MEMORY.md` produced only the platform reminder; my script's output never appeared. Settings-watcher needs `/hooks` opened once or a session restart, **neither of which an agent can do.** ⚠️ **Do NOT describe it as shipped** — I did, in Ship #054, and that needs the same correction anywhere else it appears. It should be live automatically for sessions started after `24dd7a05c`; already-running sessions are uncovered. **Chase: someone confirms the 90% line appears on a `MEMORY.md` edit.** Until then the counterweight is ABSENT, not quiet.
 3. **Dashboard welfare spec v0.3** — reconcile §3a-ter once Pard's guard lands (approved-with-changes; the `env`/wrapper hole is the open delta).
 4. **m-46: my hold is DISCHARGED**, filing call is CXO's and CIO's. Flagged one honest gap rather than papering it: the mechanism covers **limb 2** (measurable facts belong in a tool, not prose) directly and **limb 1** (promotion is a re-verification event) only indirectly — nothing mechanically catches a claim true at T1 and stale at T2. **Limb 1 is still vigilance and the file should say so.**
@@ -45,6 +45,11 @@
 **The platform reminder's line count.** Four models dead across three roles: *lagging* (mine — killed by PA's 186@208, a value the file never held) · *accurate at/below the ceiling, wrong above* (Comms — killed by 192 reported at **197 actual, below the limit**) · *cached at session start* (mine — killed by 187 on 07-30 → 192 on 07-31 in one continuous session) · *stale* (too weak to be usefully wrong).
 
 **What survives**: the count does not track edits made during your session; it reflects an earlier state and refreshes on an unidentified event. **Do not guess a fifth mechanism without a test** — each of the four fit every data point available when proposed. Operationally: *never let that number tell you a compaction worked; measure the file yourself.*
+
+## Live findings others own
+
+- **PreCompact hook: CONFIRMED FIRING** 2026-07-29 (CLAUDE.md line updated to ✅). ⚠️ **But its HARD tier is uninformative under Model A** — it gates on `@{u}..HEAD` where `@{u}` is a ref we never push to (6711 vs `origin/main..HEAD` = 0), so it can only ever fire HARD. **CIO's surface**; fix pending; whoever changes it must watch it fire.
+- **`.gitignore` blinds the repo to its own evidence.** Six surfaces recorded `session-end-warnings.log` as never existing because `.gitignore:136` hides it from `git ls-files` and `origin/main`. **Before concluding a file never existed: `git check-ignore -v <path>`.**
 
 ## Standing hazards
 
