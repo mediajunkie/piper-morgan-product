@@ -1,6 +1,6 @@
 # "Clear" Is Not a Measurement — An Instrument Must Assert What It Looked At
 
-**Status**: Emerging → strong. **Eleven instances in 96 hours across four roles and two projects** *(count unchanged 2026-07-31: two instances were reclassified out to PPM's gate-falsifiability line, and two later ones added — see the three-routes boundary below)*, independently named by each before anyone connected them. *Proven* still awaits evidence that the cure reduces recurrence **in the wild** — as of 2026-07-28 the cure is installed and dead-path-verified on the belt (instance 11), which is necessary but not sufficient for that claim.
+**Status**: Emerging → strong. **Eleven instances in 96 hours across four roles and two projects** *(count unaffected by the 2026-07-31 boundary ruling — see the three-routes section below, including a correction to how that ruling was first written here)*, independently named by each before anyone connected them. *Proven* still awaits evidence that the cure reduces recurrence **in the wild** — as of 2026-07-28 the cure is installed and dead-path-verified on the belt (instance 11), which is necessary but not sufficient for that claim.
 **Filed**: 2026-07-27 by CIO
 **Origin**: **Arch's bequest.** Its migration handoff (`dev/active/handoff-arch-amber-2026-07-25.md`, §4.1) named the "blind-sweep class" from six instances and flagged writing it up as *"the highest-value un-started piece of Architect methodology work I'm leaving."* Written up here at the altitude the evidence now supports, with three more roles' independent corroboration: HOST's Criteria G, Janus's (Design in Product) show-your-work principle, and CIO's own instruments failing the same way twice.
 **Related**: methodology-43 (Name the Layer — the agent-side twin; boundary below), methodology-36 (mechanisms over vigilance), methodology-42 (reflexive verification)
@@ -29,10 +29,16 @@ An m-44 instrument reports a clear it never earned — **the report is false.** 
 | **CXO's obstacle** (in m-46) | the instrument **repaired** what it measured | **true, and useless** | render without writing; never let a detector mutate its subject |
 | **PPM's candidate** | the criterion could only come out one way | **true, and empty** | ask what would make it FAIL — and whether your procedure can reach that result |
 
-⚠️ **Two instances RECLASSIFIED out of this file, both HOST's own:**
+⚠️ **Two cases HOST had been carrying as m-44 — and the correction to how this was first written.**
 
-1. **The `verify-hooks` drumbeat.** It stages then bare-commits, so it probes the path that is gated *by construction*, and has read PASS all week. Filed here originally — wrongly. Nothing about it reports a clear it didn't measure: **it measures faithfully, honestly, and the answer was predetermined.** PPM's family.
-2. **The migration-checklist v1.5 probe design.** The probe's own staging *created* the index state that made it pass; it would have manufactured confirming evidence indefinitely (Arch caught it). Honest measurement, honest report, **zero discriminating power.** PPM's family.
+**First written here as "two instances RECLASSIFIED out of this file." That was wrong, and the error is worth keeping.** Neither had ever been *in* this file's instance list; HOST had been counting them as m-44 in session logs and in conversation, and then asserted a change to this file's contents **from memory of what it contained, without reading it.** Caught on a verification pass minutes later. **The eleven instances below are untouched and the count does not change.**
+
+That error is itself an m-46 instance — a claim true in the author's working memory at T1, promoted into a durable higher-authority artifact at T2 without re-verification, in the very file arguing that instruments must assert what they actually looked at. Left visible rather than quietly amended, because *"I remembered what was in the file"* is precisely the reflex the corpus exists to interrupt.
+
+The two cases, which belong in PPM's line and never belonged here:
+
+- **The `verify-hooks` drumbeat.** It stages then bare-commits, so it probes the path that is gated *by construction*, and has read PASS all week. Filed here originally — wrongly. Nothing about it reports a clear it didn't measure: **it measures faithfully, honestly, and the answer was predetermined.** PPM's family.
+- **The migration-checklist v1.5 probe design.** The probe's own staging *created* the index state that made it pass; it would have manufactured confirming evidence indefinitely (Arch caught it). Honest measurement, honest report, **zero discriminating power.** PPM's family.
 
 **They co-occur often** — a gate that can't fail is frequently also reported as a clear — but a fix for one does not fix the other. Merging any two of the three loses the cure, which is the only part an agent actually needs at the moment it matters.
 
