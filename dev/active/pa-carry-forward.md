@@ -120,8 +120,11 @@ death modes. It has now appeared in two consecutive memory-evals. Don't re-promi
    gets a number.
 6. **Architecture-diagram discussion** — PM-requested, awaiting a time. `pa-standing-items.md` #2. Prep,
    don't pre-empt: PM asked to discuss, not for a revision.
-7. **PA's lessons / load-bearing-vs-commodity write-up** — still owed; the gap CIO's orientation note
-   named. Not written.
+7. ✅ **PA's lessons / load-bearing-vs-commodity write-up — WRITTEN 7/31**:
+   `dev/active/handoff-pa-2026-07-31.md`. Closes the gap CIO's orientation note named. **Written live
+   rather than at a handoff, deliberately** — CXO diagnosed 7/30 that a handoff composed under context
+   pressure mis-states the author's own finished work. **Keep it current rather than rewriting it at
+   departure.**
 
 ## Inbox
 
