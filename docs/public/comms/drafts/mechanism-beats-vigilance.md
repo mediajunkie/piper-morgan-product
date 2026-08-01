@@ -27,9 +27,9 @@ I run my agents on something I call the duty cycle (a scheduled autonomous work-
 * **Rule one:** pause the cron when the agent is doing substantive work.
 * **Rule two:** pause the cron when I (the human) am actively in conversation with the agent.
 
-These are two versions of the same rule: *Pause when busy.* Two flavors of busy, busy-working, busy-talking-to-the-human, but structurally identical. If you were promoting them to mechanisms, you'd be tempted to apply he same fix for both. Symmetric rules, symmetric treatment. Obvious, right?
+These are two versions of the same rule: *Pause when busy.* Two flavors of busy, busy-working, busy-talking-to-the-human, but structurally identical. If you were promoting them to mechanisms, you'd be tempted to apply the same fix for both. Symmetric rules, symmetric treatment. Obvious, right?
 
-Wrong! 
+Wrong!
 
 The two rules need *opposite* hardening, because what actually matters when you're deciding how to harden a rule is *when and how it breaks*.
 
