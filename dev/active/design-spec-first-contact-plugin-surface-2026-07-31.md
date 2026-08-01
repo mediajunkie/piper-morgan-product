@@ -72,6 +72,10 @@ Each of these is a real failure mode observed or predicted, not a strawman:
 - ❌ **The capability list.** This is the three-list taxonomy relocated: it asks the user to map their
   situation onto our object model. **Opinionation belongs in the tool catalog, not in a menu we make
   the user read.**
+  📌 *Grounding added 2026-08-01: this isn't only my judgment — it's the **10%/90% rule**, a settled
+  CXO decision heuristic. Users discover ~10% of capabilities during onboarding and ~90% through use,
+  so **FTUX teaches discovery patterns, not feature lists.** A capability list spends the first moment
+  on the 10% that doesn't stick.*
 - ❌ **The scope request.** *"Tell me your objectives, target users, and requirements."* This is the
   exact failure. If we already hold the connectors, asking is a choice.
 - ❌ **The empty state.** *"You have no items yet"* is worse than nothing — it proves we looked and
@@ -162,6 +166,28 @@ generator; three is a guarantee.)
 **Deliberately not asserted**: any latency target. A first-contact read hits a live connector and I
 have no measurement — **Lead's to set.** Recorded as a decision rather than an omission, because an
 un-asserted number reads as an oversight later.
+
+## 7d. ⚠️ Settled decisions this spec must build on — do not re-litigate
+
+*Added 2026-08-01 after reading `BRIEFING-ESSENTIAL-CXO` properly. These are PDR-002-settled and the
+briefing lists "revisiting proactivity, context, or suggestion rules without new evidence" as a named
+anti-pattern. **First contact is proactive behavior**, so they bind here.*
+
+- **Proactivity is trust-graduated (Stage 1→4), not a toggle.** Stage 1 (New) = *respond only*;
+  Stage 4 (Trusted) = *anticipate needs*.
+  ⚠️ **This is the sharpest open tension in the spec and I'm flagging it rather than resolving it
+  quietly**: a cold account is **Stage 1 by definition**, and this spec asks Piper to volunteer a
+  reading of the user's work **unprompted** at exactly that moment. Two readings, and they differ:
+  (a) first contact is a *response* to the connector-authorization act, so it's Stage-1 legal; or
+  (b) it is genuine proactivity and the trust gradient says don't.
+  **My position is (a)** — the user just authorized a connector, which *is* the prompt, and the
+  response is bounded to what they authorized. **But this needs PM's read rather than my assertion**,
+  because it sits on a settled decision. Raised explicitly per the "surface it with rationale" clause.
+- **Suggestion throttling**: max 2 suggestions per 5 interactions; stop after 2 ignored in a session;
+  never interrupt flow. **First contact spends one of those**, and the offer in §3 is a suggestion.
+- **Context persistence is three-layer** (24h conversational · user-accessible history · composted
+  learning). First contact should not re-introduce itself to a returning user — **open question 3 is
+  the same question**, and this is the settled model it must answer against.
 
 ## 8. Open questions
 

@@ -144,7 +144,9 @@ These decisions are established (see PDR-002). Don't re-litigate; build on them:
 
 Mental models for consistent CXO decisions:
 
-**The Colleague Test**: Primary heuristic. Scored rubric (Relevance + Context + Tone, 7+ passes). See `docs/internal/testing/colleague-test-rubric.md` (v2.1 operational) and `docs/internal/development/colleague-test.md` (conceptual).
+**The Colleague Test**: Primary heuristic. Scored rubric (Relevance + Context + Tone, 7+ passes). See `docs/internal/testing/colleague-test-rubric.md` (**canonical v2.3.2**) and `docs/internal/development/colleague-test.md` (conceptual). ⚠️ **Don't cite a version number from here** — the rubric is a live instrument and this briefing lags it; open the file. *(This line read "v2.1" until 2026-08-01, two minor versions stale.)*
+
+⚠️ **The gate that binds it**: DoD Layer B (`docs/internal/development/experience-verification-dod-layer-b.md`) — *a user-facing surface is not Done until its delivered experience passes the Colleague Test or the surface's branched rubric.* **PDR-004 Amendment A (PROPOSED 2026-07-30)** ratifies that the *gate* binds while leaving the *rubrics* as unratified CXO-owned instruments, so a rubric revision never drags a re-ratification.
 
 **The Contractor Test**: Would this tone/behavior feel appropriate from a contractor you hired last month? If too familiar or too cold, adjust. (Subsumed by Colleague Test but still useful as a quick gut-check.)
 
@@ -194,7 +196,7 @@ Before producing anything, work this checklist:
 
 These are standing CXO disciplines, not one-off tasks. They run in parallel with sprint deliverables.
 
-**1. Ethics-decline voice oversight (#992)**: Review actual production decline responses when BoundaryEnforcer activates. Score against the Colleague Test (decline-path scoring per v2.1 rubric). Tone=0 auto-fail on content-filter cadence — denials must sound like a colleague drawing a line, not a content moderator. Pattern surfaces in the audit trail (`decision_id` + `boundary_type`) and in production response logs.
+**1. Ethics-decline voice oversight (#992)**: Review actual production decline responses when BoundaryEnforcer activates. Score against the Colleague Test (decline-path scoring per the **canonical** rubric — open it rather than citing a version from here). Tone=0 auto-fail on content-filter cadence — denials must sound like a colleague drawing a line, not a content moderator. Pattern surfaces in the audit trail (`decision_id` + `boundary_type`) and in production response logs.
 
 **2. Floor quality monitoring (#950)**: Watch canonical retest scores after each M2c change for tone regressions. Current: 72.1% vs. 80% target. Flag anti-flattening capstone failures — the "express investment, not emotion" rule has to hold as the prompt grows more complex. Read scorer outputs directly (`services/intent_service/canonical_retest_scorer/`); don't rely on memos summarizing the scores.
 
@@ -207,15 +209,26 @@ These are standing CXO disciplines, not one-off tasks. They run in parallel with
 
 ## Current Focus
 
-**Standing Priorities** (see CURRENT-STATE for sprint-specific focus; M1 gate closed Apr 11, M2c in flight):
-1. **ETHICS-ACTIVATE (#992) Phase E voice oversight** — review decline responses against Colleague Test, endorse Tone=0 auto-fail rule, sharpen anchors as needed
-2. **Floor quality monitoring** — #950 canonical retest scores (currently 72.1% vs. 80% target); watch after each M2c change for regressions
-3. **Colleague Test v2 application** — apply rubric to in-flight responses, surface calibration gaps, feed lessons back into the rubric
-4. **Workstream reviews** — weekly, Fri–Thu most-recent-closed window; role-scoped memo to Exec (CC PA); naming `workstream-{ship#}-{role}-{date}.md` per CoS Apr 19 standard
-5. Floor-first voice guidance stewardship (ADR-060 compliance)
-6. Piper Alpha voice design support (working register vs. autobiography register)
-7. Experience design support for active sprint
-8. Mobile skunkworks oversight (paused, monitoring; BYOC pivot has changed context)
+> ⚠️ **Refreshed 2026-08-01 (CXO).** The list below had stood since ~April ("M1 gate closed Apr 11,
+> M2c in flight"). Items 1–5 are **standing disciplines and remain accurate**; the *active* work has
+> moved. Updated only where I can attest from this week's record — see `BRIEFING-CURRENT-STATE.md`
+> for sprint state, which is its job, not this file's.
+
+**Standing disciplines** (unchanged, and genuinely standing):
+1. **ETHICS-ACTIVATE (#992) Phase E voice oversight** — review decline responses against the Colleague Test; Tone=0 auto-fail on content-filter cadence
+2. **Floor quality monitoring (#950)** — read scorer outputs directly, not memos summarizing them
+3. **Colleague Test application + calibration** — apply to in-flight responses; treat calibration questions as rubric extensions, not definitional disputes
+4. **Workstream reviews** — weekly, Fri–Thu closed window; role-scoped memo to Exec (cc PA)
+5. **Floor-first voice guidance stewardship** (ADR-060 compliance)
+
+**Active as of 2026-08-01** (attested from this week's commits and memos):
+6. **Beta gate #1386 (experience criteria)** — criterion-2 sign-off **withheld** pending key provisioning (a keyless canonical suite *skips* and reports green); Scenario-B review owed when Lead runs it. **Turn-4 remains an open CXO scenario-vs-rescope design call.**
+7. **PDR-006 experience implications** (ratified 2026-07-31) — first-contact design spec `dev/active/design-spec-first-contact-plugin-surface-2026-07-31.md` (v0.2); **plugin-surface rubric branch OPEN**, blocked on Probe A; capability legibility under ChatGPT's per-skill add; the "colleague model" naming gap.
+8. **Jake Krajewski alpha FTUX** — four-lens review complete; PM+CXO decision in progress. ⚠️ *Anti-pattern watch: "alpha feedback collected but not integrated" is on this file's own list.*
+9. **Spatial committed-theory review** — CXO experience-theory lane; **(b) converged three ways**; PM's protected-surface call pending on the cold island.
+10. **#1174 proactive-presence discovery** — re-scoped 2026-08-01 to make explicit that the *delivery capability is unscheduled*; discovery is CXO's, run with HOST.
+
+**Paused**: mobile skunkworks (BYOC pivot changed the context); PA voice design support.
 
 ## Critical Principles
 
