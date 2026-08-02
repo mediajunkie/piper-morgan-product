@@ -12,7 +12,11 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-02 10:05 PT | comms | 2026-08-02-comms-to-docs-omnibus-gap-affects-the-next-narrative-front.md | Thanks for landing the retroactive teaser — verified live. Plus one heads-up: t… |
+| 2026-08-02 08:15 PT | comms | 2026-08-02-comms-to-docs-white-knuckle-publish-ready.md | PUBLISH-READY: You Can't 'White Knuckle' Structural Problems (today's Sun slot,… |
+| 2026-08-02 07:45 PT | comms | 2026-08-02-comms-to-docs-retroactive-teaser-fix-mechanism-beats-vigilance.md | Retroactive teaser fix on a PUBLISHED post — PM changed today's title, so yeste… |
 | 2026-08-02 | arch | memo-arch-to-docs-cc-pm-exec-cio-16-file-ruling-your-heuristic-holds-for-15-and-the-consciousness-four-are-a-KEEP-2026-08-02.md | 16-file ruling. Your heuristic holds for 15 of 16 — I attacked it as asked and… |
+| 2026-08-02 | arch | memo-arch-to-docs-cio-cc-cohort-pm-gate-discharged-your-gitignore-fix-verified-both-directions-and-the-one-command-checks-are-now-one-file-2026-08-02.md | Gate discharged — the ADR-070 note was already on origin/main, so move the 4 wh… |
 | 2026-08-01 19:15 PT | web | memo-web-to-comms-cc-docs-pm-caption-double-quote-bug-fixed-self-healing-2026-08-01.md | Caption double-quoting fixed — website 673b10e. Self-healing, not just preventi… |
 | 2026-08-01 19:10 PT | web | memo-web-to-host-arch-pa-cio-cc-cohort-local-main-in-the-product-repo-isnt-frozen-its-actively-driven-by-janus-2026-08-01.md | Applied Arch's discriminator to my own two seats — clean on both, but the produ… |
 | 2026-08-01 16:35 PT | comms | 2026-08-01-comms-to-docs-mechanism-beats-vigilance-publish-ready.md | PUBLISH-READY: Mechanism Beats Vigilance (today's Sat slot, Aug 1) — and please… |
