@@ -41,6 +41,7 @@ cd "$(dirname "$0")/.." || exit 1
 # One line per artifact: "label|check command (must render+compare, never write)"
 CHECKS=(
   "MEMORY.md (shared memory index)|python3 scripts/rebuild-memory-index.py --check"
+  "day-closed-marker-census.md (predicate corpus)|python3 scripts/day-closed-census.py --check"
 )
 
 # ── NOT YET REGISTERED — printed every run, deliberately. ───────────────────────
@@ -48,7 +49,6 @@ CHECKS=(
 # health is the same failure as a green probe that only exercises the mitigated path.
 # Report coverage, not just results.
 UNREGISTERED=(
-  "docs/internal/operations/day-closed-marker-census.md — its TABLE is generated but the surrounding prose is not, so a whole-file diff is always dirty. Needs delimited BEGIN/END GENERATED markers and a --check that compares only that block."
   "docs/briefing/BRIEFING-CURRENT-STATE.md — hand-maintained; not derived. Listed so nobody assumes staleness here is covered; that is the >7-day SessionStart warning's job, a different mechanism."
 )
 

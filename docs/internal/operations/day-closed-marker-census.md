@@ -24,21 +24,29 @@ Each fix was correct about the thing it saw and blind to the next form along. **
 
 ## The census
 
-| form | separator | date | n | example |
-|---|---|---|---:|---|
-| `html-comment` | colon | dated | 386 | `<!-- DAY-CLOSED: 2026-06-09 -->` |
-| `md-heading` | em-dash | dated | 10 | `### DAY-CLOSED — 2026-06-10 23:59 PT (deferred marker, written 6/11 06` |
-| `bold` | em-dash | dated | 2 | `**DAY-CLOSED** — June 13 (Saturday) closed June 14 15:03 PDT on PM-res` |
-| `bold` | none | **UNDATED** | 2 | `**DAY-CLOSED** ✅` |
-| `other` | none | **UNDATED** | 2 | `6/24 DAY-CLOSED ✓. Carried the overnight watch directed by PM (team re` |
-| `html-comment` | none | **UNDATED** | 2 | `<!-- DAY-CLOSED -->` |
-| `other` | em-dash | dated | 1 | `*DAY-CLOSED — 2026-06-28. PPM suspended (run-lean IDLE tier). Resume: ` |
-| `md-heading` | none | **UNDATED** | 1 | `### DAY-CLOSED sweep: Jul 3–9 (just-closed Fri–Thu window)` |
-| `md-heading` | none | dated | 1 | `## DAY-CLOSED 2026-07-29 (closed retroactively at 2026-07-30 08:43)` |
-| `other` | colon | dated | 1 | ``<!-- DAY-CLOSED: 2026-07-29 -->`. No missed-close self-heal needed. *` |
+<!-- BEGIN GENERATED: census-table -->
 
-**Total markers: 408.** Canonical (`html-comment`+`colon`+`dated`): 386 = 94%.
-**Undated (unreachable by any dated predicate): 7.**
+| position | form | separator | date | n | example |
+|---|---|---|---|---:|---|
+| col0 | `html-comment` | colon | dated | 413 | `<!-- DAY-CLOSED: 2026-06-09 -->` |
+| col0 | `md-heading` | em-dash | dated | 10 | `### DAY-CLOSED — 2026-06-10 23:59 PT (deferred marker, written 6/11 06` |
+| **indented/quoted** | `other` | none | **UNDATED** | 4 | `- `DAY-CLOSED` predicate corrected twice more today (`f63f85371`/`072b` |
+| **indented/quoted** | `other` | colon | dated | 4 | ``DAY-CLOSED: 2026-07-30` stands. Cron `fd14a8e7` remains armed; **no r` |
+| **indented/quoted** | `bold` | em-dash | dated | 2 | `**DAY-CLOSED** — June 13 (Saturday) closed June 14 15:03 PDT on PM-res` |
+| **indented/quoted** | `bold` | none | **UNDATED** | 2 | `**DAY-CLOSED** ✅` |
+| col0 | `html-comment` | none | **UNDATED** | 2 | `<!-- DAY-CLOSED -->` |
+| col0 | `other` | none | **UNDATED** | 1 | `6/24 DAY-CLOSED ✓. Carried the overnight watch directed by PM (team re` |
+| **indented/quoted** | `other` | em-dash | dated | 1 | `*DAY-CLOSED — 2026-06-28. PPM suspended (run-lean IDLE tier). Resume: ` |
+| col0 | `md-heading` | none | **UNDATED** | 1 | `### DAY-CLOSED sweep: Jul 3–9 (just-closed Fri–Thu window)` |
+| col0 | `md-heading` | none | dated | 1 | `## DAY-CLOSED 2026-07-29 (closed retroactively at 2026-07-30 08:43)` |
+
+**441 lines matched. 428 are real markers (column 0); 13 are narrations of one** (indented, quoted, or mid-sentence) — the population a bare `grep DAY-CLOSED` wrongly counts, and the reason every working predicate anchors on `^`.
+
+**Canonical marker** (`col0` + `html-comment` + `colon` + `dated`): **413** = 96% of real markers.
+
+⚠️ **Undated real markers — unreachable by ANY dated predicate: 4.** Not a formatting variant; a missing datum. No regex rescues these; their owners must add the date.
+
+<!-- END GENERATED: census-table -->
 
 ## How to read it
 
@@ -69,27 +77,13 @@ Until that exists, the predicate has to match what the corpus contains rather th
 ## Regenerating
 
 ```bash
-python3 - <<'PY'
-import re,collections,subprocess
-files=subprocess.run(['git','ls-files','dev/2026'],capture_output=True,text=True).stdout.split('\n')
-rp=re.compile(r'^(\d{4}-\d{2}-\d{2})(?:-\d{4})?-([a-z]+)-code')
-any_dc=re.compile(r'^.{0,4}(<!--\s*)?#{0,4}\s*\**\s*DAY-CLOSED',re.M)
-forms=collections.Counter(); ex={}
-for p in files:
-    if not p.endswith('log.md'): continue
-    m=rp.match(p.rsplit('/',1)[-1])
-    if not m or m.group(1)<'2026-06-09': continue
-    t=open(p,errors='ignore').read()
-    for ln in t.split('\n'):
-        if not any_dc.match(ln): continue
-        s=ln.strip()
-        pre='html-comment' if s.startswith('<!--') else 'md-heading' if s.startswith('#') else 'bold' if s.startswith('**') else 'other'
-        sep='colon' if re.match(r'^\S*\s*#*\s*\**\s*DAY-CLOSED\s*:',s) else ('em-dash' if '—' in s[:30] else 'none')
-        dated='dated' if re.search(r'\d{4}-\d{2}-\d{2}',s) else 'UNDATED'
-        k=(pre,sep,dated); forms[k]+=1; ex.setdefault(k,s[:70])
-for k,n in forms.most_common(): print(k,n,'|',ex[k])
-PY
+python3 scripts/day-closed-census.py            # print the block
+python3 scripts/day-closed-census.py --check    # compare against this doc; writes nothing
 ```
+
+**The generator used to be inlined in this section.** That meant the doc carried a copy of its own generator — the exact drift this file is about, one level up — so a change to either could silently diverge from the other. Extracted to `scripts/day-closed-census.py` on 2026-08-02; there is now one source.
+
+`--check` is registered in `scripts/check-derived-drift.sh`, so this table is verified alongside `MEMORY.md` rather than on someone remembering to look. **It renders and compares; it never writes** — a detector that repairs what it measures cannot report.
 
 ## Related
 
