@@ -62,7 +62,7 @@ async def test_exact_caller_kwargs_are_accepted():
         node_types=[NodeType.CONCEPT],
         session_id="user-a",
     )
-    # llm_classifier.py:240 shape
+    # shape from the deleted PM-034 llm_classifier (git history, #1432)
     out2 = await svc.similarity_search(
         query_node=_query_node("user-a"),
         top_k=5,

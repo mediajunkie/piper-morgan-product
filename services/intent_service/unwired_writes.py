@@ -46,10 +46,10 @@ from typing import Dict
 # this is a not-yet-built capability, not a failure.
 #
 # The verbs/objects below are the create-write family the classifier recognizes
-# (llm_classifier.py:537 lists create_milestone explicitly; the create_* siblings
+# (the deleted PM-034 llm_classifier (git history, #1432) listed create_milestone explicitly; the create_* siblings
 # are the same class of GitHub-object creation, all handler-less — confirmed: no
 # `_handle_create_*` method exists and none are in ActionMapper). `update_status`
-# is the one non-create entry: it is recognized (llm_classifier.py:537) and has no
+# is the one non-create entry: it was recognized there and has no
 # handler, so it would confabulate too; covered defensively with a generic decline.
 UNWIRED_WRITE_DECLINES: Dict[str, str] = {
     "create_milestone": (

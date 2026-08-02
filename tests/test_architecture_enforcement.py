@@ -811,8 +811,8 @@ class TestPersonalizationScopingEnforcement:
         Fix: repoint onto `personalization_service.resolve_system_prompt(user_id,
         session)` (or `resolve_system_prompt_standalone(user_id)` if no session is
         already in scope) — see services/intent_service/conversational_floor.py,
-        services/intent_service/classifier.py, services/intent_service/
-        llm_classifier.py for the #1366/ADR-075 Component B reference fix.
+        services/intent_service/classifier.py for the #1366/ADR-075 Component B
+        reference fix (llm_classifier.py deleted 2026-08-02, #1432).
         """
         service_files = glob.glob("services/**/*.py", recursive=True) + glob.glob(
             "web/**/*.py", recursive=True

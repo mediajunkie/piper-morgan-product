@@ -168,7 +168,6 @@ def scenario_5_deprecation_warnings_in_services():
     # relevant since the file no longer exists.
     files_with_warnings = [
         "services/intent_service/classifier.py",
-        "services/intent_service/llm_classifier.py",
         "services/knowledge_graph/ingestion.py",
         "services/orchestration/engine.py",
     ]

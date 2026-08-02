@@ -1,3 +1,11 @@
+> ⚠️ **STATUS UPDATE 2026-08-02 (#1432 executed)**: the file this plan's flip
+> landed in (`llm_classifier.py`) has been **deleted** — it was the orphaned
+> PM-034 stack, never on the live chat path (archaeology on #1432). The flip's
+> reference implementation is recoverable at commit **`fba6452f0`**; the
+> `verb_sourcetype_to_legacy_action` shim survives in `action_registry.py` as
+> the re-landing target. **Phase 4's remaining work = re-land the prompt flip
+> in the LIVE `classifier.py`**, per Arch condition (ii) (owner: Lead).
+
 # Phase 4 — Classifier-Prompt Canonicalization: Flywheel Planning (#1124)
 
 **Status**: PLANNING ✅ COMPLETE · **Q1+Q2 RATIFIED by Arch 2026-06-07** (`memo-arch-to-lead-...-phase4-plan-ratified-q1q2-2026-06-07.md`) → **BUILD UNBLOCKED**. Phase -1 ✅, decisions ✅, audit-cascade ✅ verified, shim spec ✅, Phase-0 build-prep ✅. Gated phase — build proceeds behind the canonical-retest gate (needs a live `/api/v1/intent` + LLM run, same auth-limit as #1155 UAT). Build order: (1) shim `verb_sourcetype_to_legacy_action()` + tests [solo-safe] ✅ SHIPPED `3c65c7017`; (2) prompt big-bang behind canonical-retest ✅ **SHIPPED `1d70dfd19` (2026-06-08, PM-present)** — 61-query routing diff IDENTICAL before/after (48 pass, 1 pre-existing Q25/M2-Beta fail, 12 env-dependent errors, all constant); 114 unit tests green; (3) migrate consumers off legacy aliases — **IN PROGRESS** (elif→action-dispatch-rail, one cohort each): `update_document` ✅, `changes_query` ✅, **CLOSE/REOPEN/COMMENT cohort ✅**, **GitHub read-query cohort (shipped / stale_prs / review_issue / list_issues / list_prs / list_milestones / list_releases / list_labels / list_branches) ✅ via a parameterized entry-point factory** (both 2026-06-08, gate IDENTICAL). Remaining elif-chain families queue next: search_documents (Notion), calendar (meeting_time / recurring / week), productivity, attention, standup, projects, todos (→execution) — integration-dependent, gate-verify where the corpus covers. Code-grounded refinement: **`lens_inference` + `file_resolver` do NOT verb-migrate** (verbs over-collapse the lens granularity / lose `split("_")` keywords — see table) — they stay action-keyed / shim-served permanently; (4) retire shim for the migrated cohorts → enables Phase 4.x enforce-floor.
