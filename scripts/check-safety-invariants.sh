@@ -44,7 +44,7 @@ echo "── safety invariants ────────────────�
 
 # ── 1. rebase.autoStash must NOT be true anywhere that applies to PM's checkout ──
 echo
-echo "▸ rebase.autoStash is not enabled (protects PM's uncommitted prose)"
+echo "▸ [HOST-SCOPED] rebase.autoStash is not enabled (protects PM's uncommitted prose)"
 as_local=$(git -C "$MAIN_CHECKOUT" config --local --get rebase.autoStash 2>/dev/null || true)
 as_global=$(git config --global --get rebase.autoStash 2>/dev/null || true)
 as_eff=$(git -C "$MAIN_CHECKOUT" config --get rebase.autoStash 2>/dev/null || true)
@@ -60,7 +60,7 @@ fi
 
 # ── 2. PM's main checkout is actually on main ───────────────────────────────────
 echo
-echo "▸ PM's main checkout is on branch 'main'"
+echo "▸ [HOST-SCOPED] PM's main checkout is on branch 'main'"
 if [ -d "$MAIN_CHECKOUT/.git" ] || [ -f "$MAIN_CHECKOUT/.git" ]; then
   br=$(git -C "$MAIN_CHECKOUT" branch --show-current 2>/dev/null)
   if [ "$br" = "main" ]; then
@@ -80,7 +80,7 @@ fi
 # (2026-08-01): `@{u}..HEAD` read 6741 against origin/main..HEAD = 0, and a step
 # that cries wolf every session is a step people learn to skip.
 echo
-echo "▸ Every agent worktree tracks origin/main"
+echo "▸ [REPO-SCOPED: ${WORKTREE_ROOT}] Every agent worktree tracks origin/main"
 bad=0; seen=0
 for d in "$WORKTREE_ROOT"/*/; do
   r=$(basename "$d")
@@ -99,9 +99,16 @@ done
 # ── coverage ────────────────────────────────────────────────────────────────────
 echo
 echo "── coverage ─────────────────────────────────────────────────────────────────"
-echo "asserted: 3 invariants.  NOT asserted (known gaps):"
-note "✗ Other repo roots on this host (website, designinproduct, openlaws) — same idiom,"
-note "  different owners. PA's 2026-08-01 census found local 'main' lagging 10–15 there."
+echo "asserted: 3 invariants — 2 HOST-scoped, 1 REPO-scoped."
+note "⚠️ The two HOST-scoped invariants read IDENTICALLY whatever PM_WORKTREE_ROOT points at —"
+note "  they are facts about this machine and PM's checkout, not about the repo you passed."
+note "  Only the third line tells you anything repo-specific. (Web, 2026-08-02, who spotted that"
+note "  the output could otherwise be read as having checked all three FOR another repo.)"
+echo "NOT asserted (known gaps):"
+note "✓ piper-morgan-website — CLOSED 2026-08-02 by Web (its owner): both worktrees track"
+note "  origin/main. Verified by running this checker, not assumed."
+note "✗ designinproduct, openlaws — same idiom, different owners, nobody with access has run it."
+note "  PA's 2026-08-01 census found local 'main' lagging 10–15 in the dinp worktrees."
 note "✗ Whether the six-hourly rebase-pull process itself is intended — evidence only;"
 note "  Pard/CIO's to name. This script asserts the property that makes it safe, not the cause."
 note "✗ Anything about the CONTENT of PM's uncommitted work. This checks that git would"
