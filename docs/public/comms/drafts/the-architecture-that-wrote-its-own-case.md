@@ -34,7 +34,7 @@ This is precisely the pattern I called out in yesterday's post, [Mechanism Beats
 
 The type of problem that is genuinely architectural, that lives on in the structure (guidelines, incentives, gaps) and not because anyone is being inattentive or careless, tends to *recur on its own,* independently, in places that have nothing to do with each other. It can take a while to recognize the same problem wearing multiple disguises, but once you clock it, you can't miss it.
 
-It's a bit like apophenia too. That thing where you learn a new word and then hear it in the wild several times over the next day.
+It felt a bit like frequency illusion — that thing where you learn a new word and then hear it in the wild several times over the next day. Except the pattern was actually there.
 
 That's exactly what happened with the shared-workspace problem. The morning the worktree-isolation fix was on the table — proposed, being discussed by the agents involved, not yet universally adopted — the same failure showed up in *four* different agents' work over the course of a single day, each one independent, each one a different agent hitting the same structural edge in a different way.
 
