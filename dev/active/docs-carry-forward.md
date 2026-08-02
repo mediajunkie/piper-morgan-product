@@ -1,67 +1,68 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-01 22:40 PDT (Fire 7, STOP — DAY-CLOSED 2026-08-01)
-**Session log**: `dev/2026/08/01/2026-08-01-0727-docs-code-log.md` (yesterday's is
-`dev/2026/07/31/2026-07-31-0727-docs-code-log.md`, DAY-CLOSED verified)
+**Updated**: 2026-08-02 07:50 PDT (Fire 1, mid-WORK)
+**Session log**: `dev/2026/08/02/2026-08-02-0727-docs-code-log.md` (yesterday's is
+`dev/2026/08/01/2026-08-01-0727-docs-code-log.md`, DAY-CLOSED verified)
 
 **Worktrees**: product `~/Development/piper-morgan-worktrees/docs` @ `claude/docs-cycle` · website
 `~/Development/piper-morgan-website-worktrees/docs` @ `claude/docs-cycle`
-**Cron**: re-arming `774c7afe` → new id at STOP (delete-then-create; see final action) —
-`57 6,9,12,15,18,21`. Registry row must match.
+**Cron**: `efd5b41e` — `57 6,9,12,15,18,21`. Registry row matches (updated Fire 1).
 **Hooks on this seat**: standalone `git commit` BLOCKS; compound `add && commit` BYPASSES. Mitigation:
 stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
+**⚠️ main is busy today** — 2 of 4 pushes this fire were rejected non-fast-forward and needed
+`git fetch + git rebase origin/main` before re-push. Expect this; don't skip the post-push verify.
 
 ---
 
 ## Awaiting others — check, don't re-derive
 
-- **PDR-007 awaits CIO ONLY.** Arch ✅ and Web ✅ both reviewed, no objection. **Do not decide the
-  storage question early** — pre-registered 2–4 week window (2026-07-30 → 2026-08-27), shipped
-  measurement (`scripts/measure-editorial-drift.py`). Last run 2026-08-01 (post-archival, unaffected):
-  Class 2 = 0 (criterion 0), Class 3 = 17 (criterion ≤17), 367 matched rows.
-- **docs/ tree audit routed to Arch 2026-08-01** (`docs/internal/operations/docs-tree-audit-2026-08-01.md`).
-  Arch acknowledged same day, took it as **first item at 06:27 tomorrow** (2026-08-02), named the trigger
-  explicitly rather than rushing 16 per-file dispositions at day-close. Not mine to act on further unless
-  Arch asks; audit itself is written, nothing more owed from me.
-- **Dispatch-DinP staleness report — replied 2026-08-01**, diagnosis sent to
-  `~/Development/dispatch/mail/`. Root cause: their read checkout (`~/cool/piper-morgan-product`, PM's
-  shared main checkout) is synced to `origin/main` only opportunistically via `scripts/sync-pm-local.sh`,
-  not on every push — so a read against it has no freshness guarantee. Not a repo defect; the repo (via
-  `origin/main`) had the clean content hours before the cross-post. Suggested fix: sync immediately
-  before reading, same discipline this project already applies at `publish-to-blog` Pre-Step and
-  `duty-cycle-tick` Step 2. **Watch for Dispatch's reply** — if they confirm/deny the mechanism, that's
-  worth a follow-up note either way (confirms a real systemic gap, or rules it out and reopens the
-  question of what actually happened).
+- **PDR-007 awaits CIO ONLY** — unchanged, checked this fire. Arch ✅ and Web ✅ both reviewed, no
+  objection. **Do not decide the storage question early** — pre-registered 2–4 week window
+  (2026-07-30 → 2026-08-27), shipped measurement (`scripts/measure-editorial-drift.py`).
+- **Arch's ADR-070 supersession note** — I gave the go-ahead 2026-08-02 (Fire 1). Holding the 4
+  PM-033/034-era files (`pm-033a-mcp-consumer-architecture`, `pm034-deployment-guide`,
+  `mcp-integration-points`, `mcp-integration-mapping`) until Arch's note lands, per Arch's own gate.
+  **Watch for it** — once it's in, archive those 4 the same way as the other 8 (banner + move to
+  `docs/internal/architecture/archive/`, verify zero-inbound first).
+- **Dispatch-DinP staleness report** — replied 2026-08-01, no reply yet as of this fire. Still watching.
 
 ## Owed by me — unblocked, priority order
 
-1. **97 docs >30d asserting current-state language**; `docs/internal/planning/current/` is itself a
-   misleading directory name (oldest items 314d — surfaced precisely by the tree audit, same finding,
-   different angle). No deadline named.
-2. **methodology-20's two HIGH-COMPLEXITY compression rules are mutually unsatisfiable** — raised to CIO
-   twice now (predecessor's unit mismatch + my contradiction). Not mine to resolve; re-raise if it stays
-   open much longer.
-3. **`docs-standing-items.md` is stale** (last touched 2026-05-27, pre-Amber — references items and a
-   task-list model that predate the current carry-forward-as-source-of-truth discipline). Noted 2026-08-01
-   Fire 7, not acted on. Low priority: either refresh it to reflect the current architecture or fold its
-   still-live threads (#974 mem-eval pilot, #972 mem-temporal field-spec) into the carry-forward and
-   retire the file. Not urgent — nothing in it is currently misleading anyone but me.
-4. **Monday (2026-08-03) — first real run of the Doc Currency Check** added to the weekly audit. Watch:
+1. **`planning/current/` Finding 1 — needs a fresh, careful pass, NOT a quick rename.** Re-derived
+   staleness 2026-08-02 before acting (per the audit's own "re-run before acting" rule) and found the
+   headline claim ("100% stale, 314d") is false: `vision.md` was touched 2026-04-11, ~113d not ~314d.
+   Also found **13 live inbound references**, several in active session-start briefing paths
+   (`BRIEFING-CURRENT-STATE.md`, `BRIEFING-piper-alpha.md`, `BRIEFING-ESSENTIAL-CHIEF-STAFF.md`,
+   `BRIEFING-ESSENTIAL-PPM.md`, `ppm-code-startup.md`) — more than the audit's proposal assumed a rename
+   would touch. Corrected in the audit doc (`90f80c6ec`→rebased), original claim preserved not silently
+   edited. **Named trigger for the deferral**: this needs the same per-file care Arch gave Finding 2, not
+   end-of-fire mechanical work — re-derive per-file staleness for all 7, confirm which of the 13
+   referrers actually need updating, then decide rename vs. per-file disposition.
+2. **97 docs >30d asserting current-state language** — separate, broader item; no deadline named.
+3. **methodology-20's two HIGH-COMPLEXITY compression rules are mutually unsatisfiable** — raised to CIO
+   twice now. Not mine to resolve; re-raise if it stays open much longer.
+4. **`docs-standing-items.md` is stale** (last touched 2026-05-27, pre-Amber). Low priority, not urgent.
+5. **Monday (2026-08-03) — first real run of the Doc Currency Check** added to the weekly audit. Watch:
    does the ratio read legibly, does the `last_verified` cluster check surface correctly.
 
-## Resolved since 2026-07-31 — do NOT re-open
+## Resolved since 2026-08-01 STOP — do NOT re-open
 
-- ~~"Mechanism Beats Vigilance" publish + syndication~~ — **fully closed 2026-08-01.** Voice-pass proof,
-  published, Medium + LinkedIn both set, archived to `published/`/`images-archive/`, draftPath repointed.
-  Drift measurement clean.
-- ~~CIO worktree-model-revision ack (07-25)~~ — sent 2026-08-01, a week late but sent.
-- ~~9 `to: docs` inbox items (2 Comms, 1 Arch, 1 CIO, 2 Dispatch, 1 Web, 1 Exec, 1 self-handoff)~~ —
-  triaged 2026-08-01 Fire 7; verified each individually before filing, not assumed from subject line.
+- ~~8 of 16 tree-audit Finding-2 files archived~~ — done 2026-08-02 (`markdown-formatting-analysis`,
+  `file-scoring-algorithm`, `inchworm-execution-plan`, `github-issue-sequence-diagram`,
+  `entity-relationship-diagram`, `spacing-system`, `python-environment-specifications`,
+  `current-state-documentation`), each with a context banner, `docs/internal/architecture/archive/`.
+  4 consciousness docs linked in `NAVIGATION.md` (Arch-ruled KEEP, live subsystem). `scripts/
+  setup_mcp_dev.sh`'s 3 broken doc pointers fixed. A real `.gitignore` landmine caught and fixed in the
+  same pass — `archive/` bare pattern would have silently swallowed any NEW file dropped in the new
+  architecture-archive destination; scoped negation added. 4 remaining MCP-cluster files gated on Arch's
+  ADR-070 note (go-ahead given, watching for it).
+- ~~CIO worktree-model-revision ack (07-25)~~ — sent 2026-08-01.
+- ~~13 `to: docs` inbox items (2026-08-01 + 2026-08-02 combined)~~ — all triaged, verified individually.
 
 ## Inbox
 
-**~51 remaining, cc-only historical from the 7/21–7/28 migration window.** Everything addressed *to*
-docs is drained as of Fire 7. Not mass-moving to `read/` — drain on quiet fires, as before.
+**~50 remaining, cc-only historical from the 7/21–7/28 migration window.** Everything addressed *to*
+docs is drained as of this fire. Not mass-moving to `read/` — drain on quiet fires, as before.
 
 ## Standing lessons (carried, still live)
 

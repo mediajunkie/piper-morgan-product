@@ -20,7 +20,7 @@ Here's a small, sharp example that made this click for me:
 
 I run a lot of agents in my setup, each working in the same shared repository. For a while they all committed their code changes to the same trunk, what we call shared main (the single line of history everyone writes to). When two engineers (human or bot) commit at nearly the same moment, their work can get entangled, especially if they are using wildcards to grab everything vs. diligently committing just their own changes. When this happens, one agent's files land under another's commit message. Nothing gets lost, exactly, but the history scrambles and somebody has to untangle it.
 
-The agents had developed a ritual: Before committing, count your files. *I'm about to commit exactly one file — my own log.* Verify the count, then commit. 
+The agents had developed a ritual: Before committing, count your files. *I'm about to commit exactly one file — my own log.* Verify the count, then commit.
 
 So on this morning an agent changed one file, ran a commit, and ended up checking in *eight* files, not one, because a second agent had staged seven files of its own into the shared workspace in the sliver of time *between the count and the commit.* This little ritual only catches errors after the fact and still lacks the discipline of only working directly on one's own changes.
 
@@ -28,13 +28,13 @@ The real fix isn't a tighter ritual. There is no tight-enough ritual. It's not e
 
 That's an architectural fix, not a discipline fix. And the count-check is what proved it had to be, by failing in the one way that more discipline couldn't have prevented.
 
-This is precisely the pattern I called out in yesterday's post, Mechanism beats vigilance.
+This is precisely the pattern I called out in yesterday's post, [Mechanism Beats Vigilance](https://pipermorgan.ai/blog/mechanism-beats-vigilance/).
 
 # When the evidence writes itself
 
 The type of problem that is genuinely architectural, that lives on in the structure (guidelines, incentives, gaps) and not because anyone is being inattentive or careless, tends to *recur on its own,* independently, in places that have nothing to do with each other. It can take a while to recognize the same problem wearing multiple disguises, but once you clock it, you can't miss it.
 
-It's a bit like apophenia too. That thing where you learn a new work and then hear it in the wilde several times over the next day. 
+It's a bit like apophenia too. That thing where you learn a new word and then hear it in the wild several times over the next day.
 
 That's exactly what happened with the shared-workspace problem. The morning the worktree-isolation fix was on the table — proposed, being discussed by the agents involved, not yet universally adopted — the same failure showed up in *four* different agents' work over the course of a single day, each one independent, each one a different agent hitting the same structural edge in a different way.
 
