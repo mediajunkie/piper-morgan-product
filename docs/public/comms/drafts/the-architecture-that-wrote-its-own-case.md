@@ -1,6 +1,6 @@
 ---
 image: ''
-alt: ''
+alt: 'A restaurant manager watches as five careful chefs struggle to keep separate dishes organized on one crowded serving counter, while individual pickup shelves wait unused behind them.'
 caption: ''
 ---
 
