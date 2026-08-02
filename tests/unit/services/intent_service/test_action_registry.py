@@ -180,6 +180,10 @@ class TestNoStubPhrases:
             "set_default_repo",
             # RECONNECT #1327 build #2: conversational get-default-repo (read)
             "get_default_repo",
+            # #1433/F24 — rail-handled since #1044 (_handle_local_git_status_query
+            # via workflow_entries), registered in the same commit as the
+            # CHAT_POINTERS ratchet.
+            "local_git_status_query",
         }
         # Forward-guard cohort (Arch 2026-07-16 §A): all six have elif branches in
         # _handle_execution_intent (verified :6512-6647) and are mechanically
