@@ -88,6 +88,7 @@ class ActionMapper:
         # Todo Reminders (Issue #903)
         "create_reminder": "create_reminder",
         "set_reminder": "create_reminder",
+        "add_reminder": "create_reminder",  # #1426: census-observed LLM emission (was mapper-missed)
         # Todo Completion
         "complete_todo": "complete_todo",
         "finish_todo": "complete_todo",

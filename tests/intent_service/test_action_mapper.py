@@ -70,6 +70,17 @@ class TestActionMapper:
         result = ActionMapper.map_action("remove_todo")
         assert result == "delete_todo"
 
+    def test_add_reminder_mapping(self):
+        """Test add_reminder maps to create_reminder (#1426).
+
+        Census D3 (2026-07-16): the LLM classifier emits `add_reminder` for
+        some reminder phrasings; unmapped, it fell through to the contextual
+        fallback instead of the shipped #903 create_reminder handler. Same
+        alias idiom as add_todo -> create_todo.
+        """
+        result = ActionMapper.map_action("add_reminder")
+        assert result == "create_reminder"
+
     # ===== FALLBACK BEHAVIOR =====
 
     def test_unmapped_action_fallback(self):
