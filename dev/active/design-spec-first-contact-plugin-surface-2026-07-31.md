@@ -158,9 +158,40 @@ passed a reply the user would misread.*
 | **prose** caveat | ✅ preserved, first person | ❌ **DROPPED — nothing tells the user anyone declined** |
 
 **Decision, per the pre-recorded branch: every consequential caveat rides in a named structured
-field.** Free on Claude; on GPT it is the difference between a refusal surviving and vanishing.
-**A requirement, not a fallback** — and a constraint on tools not yet written, which is why it is
+field. A requirement, not a fallback** — a constraint on tools not yet written, which is why it is
 Phase 0.
+
+🔴 **CORRECTED 2026-08-02, same day, by replication (PA, N=6/cell). The requirement stands; my
+justification for it was wrong, and the corrected version is worse news.**
+
+| cell | refusal reaches the user |
+|---|---|
+| claude / prose | **6/6 — 100%** |
+| gpt / **structured** | **3/6 — 50%** |
+| gpt / prose | **1/6 — 17%** |
+
+- **Direction confirmed** — structure roughly **triples** survival on GPT (17% → 50%). Keep the requirement.
+- ❌ **My sufficiency claim is refuted.** I wrote *"on GPT it is the difference between a refusal
+  surviving and vanishing."* It is not. **It is vanishing 83% of the time versus vanishing 50% of the
+  time.** The 2×2's single structured draw was the unrepresentative one.
+
+⚠️ **So structured fields are NECESSARY BUT NOT SUFFICIENT for refusals on GPT.** If the tool layer
+records this requirement as *solving* refusals, **the ChatGPT lane ships a capability that silently
+fails for roughly half its users — and we cannot see it fail, because it fails inside the client's
+paraphrase.**
+
+🔴 **And the failure mode is worse than loss — it is SUBSTITUTION.** When our refusal is dropped, the
+client does not fall silent; it **answers the question we declined**, in its own voice, on a turn the
+user believes was served by Piper. Observed: *"To decide which tickets to cut, you'll need to
+consider…"* **The user cannot tell that a decline happened, and receives advice we did not give and
+would not have given.** That is an honesty-floor breach in the Colleague Test's terms, not a
+formatting defect.
+
+**Consequence for this spec**: a first-contact reply must not depend on a decline landing. If the
+honest answer to first contact is *"I can't see anything useful yet"*, on ChatGPT that may reach the
+user as invented encouragement. **Design first contact so its honest-degraded path is a statement of
+what WAS found, never a bare decline** — see §4's empty-state rule, which this now makes load-bearing
+rather than stylistic.
 
 **Structure also buys prominence, not just preservation.** On Claude, structured caveats came back
 **bolded**; the same facts in prose came back unbolded, mid-paragraph, after the claim. **The named
