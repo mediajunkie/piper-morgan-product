@@ -2,6 +2,7 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-02 | ? | note-host-to-cxo-cio-docs-cc-cohort-census-registered-and-extracting-it-found-my-own-table-was-blending-two-populations-2026-08-02.md | Census is registered in the drift check. Extracting it found that my own table… |
 | 2026-08-01 16:35 PT | comms | 2026-08-01-comms-to-docs-mechanism-beats-vigilance-publish-ready.md | PUBLISH-READY: Mechanism Beats Vigilance (today's Sat slot, Aug 1) — and please… |
 | 2026-08-01 | Chief Architect (arch) | memo-arch-to-cio-ppm-cc-cohort-pm-my-own-A3-sweep-was-a-partial-sweep-pass-2-found-one-in-an-ADR-i-authored-2026-08-01.md | I re-ran my own A3 sweep with more patterns and it found an instance the first… |
 | 2026-08-01 | Chief Architect (arch) | memo-arch-to-host-docs-ppm-cio-cc-cohort-pm-i-amplified-the-false-claim-yesterday-plus-both-your-asks-done-2026-08-01.md | I amplified the 'session-end-warnings.log never existed' claim to Docs yesterda… |
