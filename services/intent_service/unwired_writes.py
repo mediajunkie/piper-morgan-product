@@ -22,7 +22,7 @@ registration as the drift surface Arch flagged.)
 
 SCOPE DISCIPLINE — honest-decline FLOOR only, NO real writes. The decline names the
 capability, says it's not available *yet*, and points to the GitHub alternative.
-Real connector-backed writes are #1322 Q3 (a separate later effort). When a real
+Real connector-backed writes are #1440 (RECONNECT R2; was #1322 Q3 — closed) (a separate later effort). When a real
 handler ships for one of these actions (wired into `_handle_execution_intent` /
 ActionMapper), it stops reaching the else-branch and behaves honestly on its own —
 remove its curated copy here in that same change.
