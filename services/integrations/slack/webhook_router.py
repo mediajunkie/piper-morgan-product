@@ -17,8 +17,9 @@ import json
 import logging
 import os
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
+from uuid import UUID
 
 from fastapi import APIRouter, HTTPException, Request, status
 from fastapi.responses import JSONResponse
@@ -1400,6 +1401,12 @@ class SlackWebhookRouter:
         2. High-priority todos for today
         3. Current blockers
 
+        Issue #1429: Yesterday/Today are wired to the real todo services,
+        scoped to the acting user's principal. When the Slack caller can't
+        be resolved to a todo principal (no slack→user mapping exists yet),
+        the sections say so honestly instead of the affirmative-false
+        "No completed items recorded" (we didn't look — say so).
+
         Args:
             user_id: Slack user ID
             channel_id: Slack channel ID
@@ -1410,23 +1417,43 @@ class SlackWebhookRouter:
         try:
             standup_parts = []
 
-            # 1. What I did yesterday (completed items)
-            yesterday_items = await self._get_completed_since_yesterday()
-            if yesterday_items:
-                standup_parts.append("*Yesterday:*")
-                for item in yesterday_items[:3]:
-                    standup_parts.append(f"• {item}")
-            else:
-                standup_parts.append("*Yesterday:*\n• No completed items recorded")
+            principal = self._resolve_todo_principal(user_id)
 
-            # 2. What I'm doing today (high-priority todos)
-            today_items = await self._get_today_priorities()
-            standup_parts.append("\n*Today:*")
-            if today_items:
-                for item in today_items[:3]:
-                    standup_parts.append(f"• {item}")
+            if principal is None:
+                # #1429 honesty: no principal → we did NOT query anything.
+                not_linked = (
+                    "This Slack account isn't linked to a Piper user yet, "
+                    "so I can't look up your todos"
+                )
+                standup_parts.append(f"*Yesterday:*\n• {not_linked}")
+                standup_parts.append(f"\n*Today:*\n• {not_linked}")
             else:
-                standup_parts.append("• No high-priority items scheduled")
+                # 1. What I did yesterday (completed items)
+                yesterday_items = await self._get_completed_since_yesterday(principal)
+                standup_parts.append("*Yesterday:*")
+                if yesterday_items is None:
+                    # Lookup failed ≠ nothing completed (#1425 shape)
+                    standup_parts.append(
+                        "• I couldn't check completed items just now — try again shortly"
+                    )
+                elif yesterday_items:
+                    for item in yesterday_items[:3]:
+                        standup_parts.append(f"• {item}")
+                else:
+                    standup_parts.append("• No completed items recorded")
+
+                # 2. What I'm doing today (high-priority todos)
+                today_items = await self._get_today_priorities(principal)
+                standup_parts.append("\n*Today:*")
+                if today_items is None:
+                    standup_parts.append(
+                        "• I couldn't check today's priorities just now — try again shortly"
+                    )
+                elif today_items:
+                    for item in today_items[:3]:
+                        standup_parts.append(f"• {item}")
+                else:
+                    standup_parts.append("• No high-priority items scheduled")
 
             # 3. Blockers
             blockers = await self._get_blockers()
@@ -1449,26 +1476,87 @@ class SlackWebhookRouter:
                 "text": "Unable to generate standup. Please try again.",
             }
 
-    async def _get_completed_since_yesterday(self) -> list:
+    @staticmethod
+    def _resolve_todo_principal(user_id: Optional[str]) -> Optional[UUID]:
         """
-        Get items completed since yesterday.
+        Resolve the Slack caller to a todo-service principal.
+
+        Issue #1429: the todo services key ownership by user UUID
+        (``TodoDB.owner_id`` is a UUID FK to ``users.id``). There is no
+        slack→user mapping table in the codebase yet, so the only shape
+        that resolves today is a user_id that already IS a Piper user UUID.
+        A raw Slack workspace ID ("U…") resolves to None and the standup
+        sections say so honestly rather than pretending we looked.
+        """
+        if not user_id:
+            return None
+        try:
+            return UUID(user_id)
+        except (ValueError, AttributeError, TypeError):
+            return None
+
+    async def _get_completed_since_yesterday(self, principal: UUID) -> Optional[list]:
+        """
+        Get the user's todos completed since the start of yesterday (UTC).
 
         Issue #520: Helper for /standup command.
-        Uses TodoManagementService or audit log when available.
-        Returns placeholder for now - will integrate with real service.
+        Issue #1429: wired to TodoManagementService (was a placeholder []).
+        Returns None when the lookup fails — the caller renders honest
+        "couldn't check" copy, never "No completed items recorded" (#1425).
         """
-        # TODO: Integrate with TodoManagementService when user context available
-        return []
+        try:
+            from services.todo.todo_management_service import TodoManagementService
 
-    async def _get_today_priorities(self) -> list:
+            todos = await TodoManagementService().list_todos(
+                user_id=principal, include_completed=True
+            )
+            now = datetime.now(timezone.utc)
+            cutoff = (now - timedelta(days=1)).replace(
+                hour=0, minute=0, second=0, microsecond=0
+            )
+            completed = []
+            for todo in todos:
+                if not getattr(todo, "completed", False):
+                    continue
+                completed_at = getattr(todo, "completed_at", None)
+                if completed_at is None:
+                    continue
+                if completed_at.tzinfo is None:
+                    completed_at = completed_at.replace(tzinfo=timezone.utc)
+                if completed_at >= cutoff:
+                    completed.append((completed_at, todo.text))
+            completed.sort(key=lambda pair: pair[0], reverse=True)
+            return [text for _, text in completed]
+        except Exception as e:
+            logger.warning(f"/standup completed-items lookup failed: {e}")
+            return None
+
+    async def _get_today_priorities(self, principal: UUID) -> Optional[list]:
         """
-        Get high-priority items for today.
+        Get the user's pending high-priority todos (urgent first, then high).
 
         Issue #520: Helper for /standup command.
-        Uses TodoManagementService when available.
+        Issue #1429: wired to TodoManagementService (was a placeholder []).
+        Returns None when the lookup fails — the caller renders honest
+        "couldn't check" copy, never "No high-priority items scheduled".
         """
-        # TODO: Integrate with TodoManagementService when user context available
-        return []
+        try:
+            from services.todo.todo_management_service import TodoManagementService
+
+            todos = await TodoManagementService().list_todos(
+                user_id=principal, include_completed=False
+            )
+
+            def _priority(todo) -> str:
+                p = getattr(todo, "priority", "") or ""
+                return (p.value if hasattr(p, "value") else str(p)).lower()
+
+            urgent = [t.text for t in todos if _priority(t) == "urgent"]
+            high = [t.text for t in todos if _priority(t) == "high"]
+            return urgent + high
+        except Exception as e:
+            logger.warning(f"/standup today-priorities lookup failed: {e}")
+            return None
 
     async def _get_blockers(self) -> list:
         """
