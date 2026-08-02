@@ -109,6 +109,21 @@ archive/
 *.png
 *.docx
 
+# docs/public/comms/drafts/ is where ALL blog art lands — PM's source illustrations and
+# published-post images. The broad `*.png` rule above silently swallows new art dropped
+# there, and `.png` is precisely the format PM's illustrations use (the site publishes
+# .webp; the sources are .png). Verified behaviorally 2026-08-02: `git add` of a new .png
+# in that path is REFUSED. It has worked so far only because the admin UI writes via the
+# GitHub Contents API, which bypasses local gitignore entirely — so the gap was invisible
+# from the one path that actually gets used.
+# NB the older rules above (docs/comms/blog/*.png|jpg|jpeg) point at a directory that no
+# longer exists; they are the reason this looked covered. Left in place rather than
+# deleted, but they protect nothing.
+# Negates only this path; the broad *.png rule elsewhere is unaffected. Mirrors the
+# docs/internal/architecture/archive/ negation above (2026-08-01/-02).
+!docs/public/comms/drafts/*.png
+!docs/public/comms/drafts/**/*.png
+
 # Coordination queue - keep structure but ignore local work files
 coordination/claimed/*.tmp
 coordination/blocked/*.tmp
