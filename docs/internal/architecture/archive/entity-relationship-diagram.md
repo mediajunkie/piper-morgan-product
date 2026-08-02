@@ -1,3 +1,12 @@
+> **ARCHIVED 2026-08-02** — moved from `docs/internal/architecture/current/` per the docs/ tree
+> audit (`docs/internal/operations/docs-tree-audit-2026-08-01.md`, Finding 2) and Arch's per-file
+> ruling. Zero inbound references confirmed across `docs/ services/ web/ scripts/ tests/ .claude/
+> mailboxes/ CLAUDE.md` — a terminal artifact, finished when written, not a living document that went
+> stale. Kept for the record, not current. Never delete; if this needs reviving, un-archive it rather
+> than rewriting it fresh.
+
+---
+
 # Entity Relationship Diagram
 
 **Last Updated**: January 22, 2026
