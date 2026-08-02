@@ -792,6 +792,11 @@ class OrchestrationEngine:
 
 #### Current Implementation Architecture
 
+> ⚠️ **STALE SECTION (noted 2026-08-02)**: `QueryRouter` and `LLMIntentClassifier`
+> below were **deleted** (#1436 Family-3 on 2026-07-19 and #1432 on 2026-08-02).
+> This excerpt is retained as historical description only; a fuller architecture.md
+> sweep is tracked as discovered work.
+
 The QueryRouter uses a comprehensive initialization pattern with multiple service integrations:
 
 ```python

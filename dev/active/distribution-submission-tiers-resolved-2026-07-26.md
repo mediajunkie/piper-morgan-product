@@ -1,76 +1,91 @@
-# Claude directory submission — which tier is actually required (RESOLVED 2026-07-26)
+# Claude + ChatGPT distribution — decision RESOLVED, plan below
 
-**Status**: Resolved against Anthropic's official documentation, 2026-07-26. **Supersedes both prior
-claims** — the 7/19 research memo *and* the in-chat retraction of it.
-**Why this file exists**: this question has been answered wrong twice in eight days, in opposite
-directions, and neither answer lived anywhere durable. This is the canonical home.
+**Status**: ✅ **Decisions closed 2026-07-29.** Supersedes every earlier version of this file and the
+7/19 research memo. **There are no open distribution decisions.** What remains is build work.
+**Why this file keeps getting rewritten**: the tier question was answered wrong twice in opposite
+directions, and the open-source question was treated as open for ten days *after PM had answered it
+repeatedly*. Both failures were the same: **a claim inherited from the 7/19 memo and never checked.**
 
-## The short answer
+---
 
-**PM's recent research is correct for connectors. The retraction was correct for plugins. Both were
-over-generalized to the other track, and that's the whole confusion.**
+## The two facts that closed everything
 
-| Track | Submit via | Requirement | Max plan enough? |
+1. ✅ **The repo is ALREADY PUBLIC.** Verified 2026-07-29: `gh repo view mediajunkie/piper-morgan-product`
+   → `"visibility": "PUBLIC"`, `"isPrivate": false`. **Track B's only hard gate was satisfied the whole
+   time.** PM had answered this question multiple times; it kept regenerating out of stale docs.
+   **There is no open-source decision. There never was one to make.**
+2. ✅ **Plugins now work in chat, on all paid plans, and bundle connectors.**
+   [Anthropic help](https://support.claude.com/en/articles/13837440-use-plugins-in-claude): *"You can
+   install and use plugins in chat on the web, the Chat tab in Claude Desktop, and Claude Cowork.
+   Plugins are available to all paid plans (Pro, Max, Team, Enterprise)"* — and each plugin *"bundles
+   skills, connectors, and sub-agents into a single package."*
+
+## ⛔ Track A (connector directory) — DROPPED, not deferred
+
+**Recommendation: don't buy Team.** It was the only reason to.
+
+| | Track A — connector directory | Track B — plugin directory |
+|---|---|---|
+| Cost | **Team required**: 5-seat min, ~$1,200/yr Standard, **~$6,000/yr Premium** (Code is Premium-only) | **$0** |
+| Submit via | `claude.ai/admin-settings/…` (blocked on Pro/Max) | `platform.claude.com/plugins/submit` (Console org) |
+| Reaches | chat users, one-click install | **chat (web + Desktop) + Cowork + Claude Code**, all paid plans |
+| Carries | an MCP URL | **skills + connectors + sub-agents + MCP** |
+
+**Track A's unique audience has collapsed.** It used to be "chat users who won't install a plugin."
+Chat installs plugins now. What's left is a *discovery-surface* argument — someone browsing the
+connector directory who'd never browse the plugin directory — which is real but weak against
+$1,200–6,000/yr and testable later with actual data.
+
+**Reopen only if**: real install numbers show connector-directory discovery converts materially better,
+or Anthropic changes the plugin/chat story again. *(It changes fast — PM, 7/29. This file has a short
+shelf life by nature; re-verify before acting on it.)*
+
+⚠️ **One real capability gap, not a reason to buy Team but a reason not to over-promise**: claude.ai web
+has **no hooks, no terminal, no local file access.** So a plugin on web chat delivers **skills +
+connectors + MCP but NOT hooks.** The plugin-vs-server capability split in PDR-006 should say which
+surface each capability actually lands on — "it's in the plugin" is not the same as "it runs everywhere
+the plugin installs."
+
+## ➡️ What we're actually doing
+
+**Two targets, both unblocked by any decision, both gated only on build work:**
+**Claude plugin directory** (Console path) and **ChatGPT remote MCP**.
+
+### Requirements — union of both, current state
+
+| # | Requirement | State | Owner |
 |---|---|---|---|
-| **A — Connector directory** (remote MCP server) | `claude.ai/admin-settings/directory/submissions/new` | **Team or Enterprise org.** "Admin settings aren't available on individual plans." | ❌ **No** |
-| **B — Plugin directory**, claude.ai path | `claude.ai/settings/plugins/submit` | Team/Enterprise + Directory-management access | ❌ **No** |
-| **B — Plugin directory, CONSOLE path** | `platform.claude.com/plugins/submit` | **Developer, Admin, or Owner role on a *Console* organization** | ✅ **Yes** |
-| **B — Plugin directory**, form path | `clau.de/plugin-directory-submission` | Public GitHub repo | ✅ Yes |
+| 1 | `mcp.pipermorgan.ai` deployed + stable on Fly | ❌ **not deployed** — exists only in PDR-006/planning | Lead/Arch |
+| 2 | Tool annotations: `title` + `readOnlyHint`/`destructiveHint` (+ `openWorldHint` for OpenAI) on **every** tool | ❌ not started | PA spec → Lead |
+| 3 | OAuth 2.0 | ❓ status unverified | Arch (ADR-070 D3) |
+| 4 | **Public privacy policy (HTTPS)** — *missing/incomplete = immediate rejection* | ❌ none exists | PA draft |
+| 5 | Public documentation URL | ❌ none | PA draft |
+| 6 | Logo / icon | ❓ unverified | PM |
+| 7 | Test account, **no MFA**, pre-populated | ❌ not started | PA + Lead |
+| 8 | `claude plugin validate` passing | ❌ not run | PA |
+| 9 | Plugin package assembled (CLAUDE.md + hooks + skills + MCP URL) | ❌ not started | PA |
+| 10 | ChatGPT only: 5 positive + 3 negative test cases, terms URL | ❌ not started | PA |
+| 11 | **#1458** — cross-caller state isolation, **blocks multi-tenant serving** | ❌ open | Arch/Lead |
+| 12 | OpenAI identity verification | ⏰ **PM, tomorrow 7/30** | PM |
 
-**The load-bearing distinction**: a **Console organization** (the developer/API platform,
-`platform.claude.com` / `console.anthropic.com`) is **not** a claude.ai chat subscription tier. It is a
-separate account object with its own roles. That's why the Console path sidesteps the Team requirement —
-**not** because Max was ever sufficient for the admin portal. It never was.
+### Sequencing
 
-## Where each prior claim went wrong
+- **Phase 0 — no dependencies, PA starts now**: (4) privacy policy, (5) docs page, (2) annotation spec
+  against the eventual catalog, (10) test cases, (8) `claude plugin validate` dry-run on the repo as-is.
+- **Phase 1 — PM**: (12) OpenAI verification *(tomorrow)*, (6) confirm logo, confirm Console org role.
+- **Phase 2 — server**: (1) deploy, (3) OAuth, then (2) annotations land on the real catalog, (7) test account.
+- **Phase 3 — gate**: (11) #1458 before any multi-tenant serving.
+- **Phase 4 — submit**: plugin directory first (cheaper, repo already public); ChatGPT once the endpoint
+  has been stable for a few weeks — OpenAI rejects unstable endpoints.
 
-- **7/19 research memo — "Team/Enterprise required, Max blocked, full stop."** ✅ **Right about Track A.**
-  ❌ Wrong to state it as a blanket gate on *directory submission*, because it missed the Console plugin
-  path entirely.
-- **The in-chat retraction — "two paths exist, Max users can submit."** ✅ **Right that the Console path
-  exists and clears the Team requirement.** ❌ Wrong to generalize it to submission overall: it applies
-  to **plugins only**, and the gating credential is a **Console org role**, not the Max plan.
-- **The likely seed of the whole muddle**: a *listed* connector installs one-click for **Pro, Max, Team,
-  and Enterprise** users. **Installing is not submitting.** PM's screenshot showing "Piper morgan"
-  already present with an "Upload plugin" option is consistent with install/personal-upload UI, which
-  works on Max — and is a different thing from a directory submission.
-
-## What this changes operationally
-
-1. ❌ **Track A (connector listing) is genuinely blocked on Max.** There is no workaround in the docs.
-   It's a purchase decision — Team — not a lookup. **Stop treating "verify the tier" as a 5-minute task;
-   the answer is known.**
-2. ✅ **Track B (plugin listing) is available today on Max**, via the Console path or the `clau.de` form.
-3. 🔺 **Therefore the open-source decision is now the live gate, not a deferrable one.** Track B requires
-   a **public GitHub repo** — closed-source plugins are not accepted. **This reverses PA's earlier advice
-   to defer it.** With Track A behind a paid upgrade, Track B is the only Claude-side route currently
-   open, and open-sourcing is what unlocks it.
-4. ➡️ **ChatGPT / OpenAI is untouched by any of this.** Still the only item with an external clock, still
-   unstarted.
-
-## Requirements that apply regardless of track
-
-Tool annotations (`title` + `readOnlyHint`/`destructiveHint` on every tool) · OAuth 2.0 for
-authenticated services · **public HTTPS privacy policy — missing or incomplete is an immediate
-rejection** · documentation URL · test-account credentials without MFA, on a populated account ·
-support contact · icon. URL slug is permanent once published. Run `claude plugin validate` before a
-plugin submission.
-
-## Open, needs PM's eyes (30 seconds, not research)
-
-- **Does Piper Morgan already have a Console organization, and what's your role on it?** Almost
-  certainly yes if the API has ever been used — but "almost certainly" is not verified, and it is the
-  single credential Track B's Console path depends on.
-- **What exactly is the "Piper morgan" entry in your screenshot** — an installed connector, a personal
-  plugin upload, or a directory listing? Determines whether anything is already live.
+**Nothing in Phase 0 is blocked on anything.** That's where PA works next.
 
 ## Sources
 
-- [Submitting to the Connectors Directory — Claude docs](https://claude.com/docs/connectors/building/submission) *(authoritative for the Track A Team/Enterprise requirement)*
-- [Submitting your plugin — Claude docs](https://claude.com/docs/plugins/submit)
-- [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official)
-- [anthropics/claude-plugins-community](https://github.com/anthropics/claude-plugins-community)
-- [Anthropic Software Directory Policy](https://support.claude.com/en/articles/13145358-anthropic-software-directory-policy)
+- [Use plugins in Claude — help center](https://support.claude.com/en/articles/13837440-use-plugins-in-claude)
+- [Submitting your plugin — docs](https://claude.com/docs/plugins/submit)
+- [Submitting to the Connectors Directory — docs](https://claude.com/docs/connectors/building/submission) *(Team/Enterprise requirement)*
+- [Plans & pricing](https://claude.com/pricing) *(5-seat minimum)*
 
-*PA, 2026-07-26. Route corrections here — and commit them, per
-`feedback_a_correction_not_committed_has_not_happened`.*
+*PA, rewritten 2026-07-29. **Before acting on anything here, re-verify** — this area changed twice in
+four days, and every error in this file's history came from trusting it instead of the source.*

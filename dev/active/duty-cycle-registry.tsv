@@ -30,6 +30,24 @@
 # Proposed to the cohort 2026-07-27; until it lands, treat a single STALE line on a 2x/day role as
 # weak evidence and confirm before acting.
 #
+# ⚠️ WHAT THE CRON ACTUALLY IS — undocumented until 2026-07-31 (PA determined it by elimination).
+# The duty cycle runs on the harness's **session-scoped `CronCreate`** tool. NOT the user crontab
+# (that holds only Pard's freeze-watchdog), NOT launchd (no agent jobs there). This matters because
+# `CronCreate` has TWO SILENT DEATH MODES:
+#   1. SESSION-ONLY — the job dies when the Claude session exits. Every new session must re-arm.
+#   2. 7-DAY AUTO-EXPIRY — announced once at creation and nowhere else.
+# **Neither death emits anything. Both look exactly like a quiet day.**
+#
+# ⚠️ AND THE CONSEQUENCE FOR THIS FILE: `cron_expr` below records INTENDED CADENCE, NOT A LIVE JOB.
+# A row can read `watched` with a plausible expression while no job exists at all — the registry
+# cannot tell the difference, and neither can the freeze-watchdog that reads it. That is m-44 in the
+# registry itself: the column looks identical whether the cron is armed, expired, or never created.
+#
+# **Only the owning agent can check** — `CronList` is session-scoped, so no other role and no script
+# can verify your job is alive. Therefore: **state your JOB ID and its expiry date in your state
+# column when you arm**, and re-verify at every START. Several rows already do this (arch, comms,
+# docs); it is the only thing that makes an armed claim falsifiable by a reader.
+#
 # threshold_h = a bit more than the role's LARGEST in-window inter-fire gap (so a healthy role never trips).
 # wake_start/wake_end = waking/alerting window (local hour, [start,end)); we don't alert PM outside it.
 # first_fire = the role's first START-fire of the day, HH:MM (the first cron fire at/after wake_start — NOT an
@@ -56,15 +74,15 @@ role	cron_expr	threshold_h	wake_start	wake_end	first_fire	active_since
 #    expression and that isn't knowable until the agent arms it. Do NOT add rows for dormant roles by
 #    hand: that converts silence into repeating alerts about deliberately-parked agents and trains
 #    everyone to ignore the belt. Any coverage claim from this file must state its denominator.
-cio	7 10,16,22	13	7	23	10:07	2026-06-16
+cio	7 10,16,22	13	7	23	10:07	2026-06-16	active: cron armed — job 44e16ee9, re-armed 2026-07-31 STOP, **AUTO-EXPIRES ~2026-08-07** (CronCreate 7-day cap). Session-scoped: dies silently on session exit AND at expiry, and neither emits anything. Re-verify with CronList at every START and update this field when the job id changes.
 exec	32 8,20	13	8	21	08:32	2026-06-16	active: cron armed 2026-07-29 12:24 on Amber (job f401fd4d), same cadence — row was never parked at predecessor's close (missed step, benign: successor live same day); next fire 20:32
 # exec pre-throttle expr for reference: 32 6,9,12,15,18,21 (6×/day) — restore when migration hold lifts and cadence returns to normal; see 7/6 exec log for context
-arch	27 6,9,12,15,18,21	7	6	22	06:27	2026-07-29	active: cron armed 2026-07-29 09:47 (job 187e09ea) — parked note cleared per its own condition
-lead	17 6,9,12,15,18,21	7	6	22	06:17	2026-07-06	parked: went dark 2026-07-27 12:48 mid-cutover, deliberately and cleanly (declared migration-readiness, handoff/carry-forward/row all durable, ~5-min cold start) — clear this note only when a cron job is actually armed on its Amber successor
+arch	27 6,9,12,15,18,21	7	6	22	06:27	2026-07-29	active: job 5199621e (re-armed at 8/01 STOP; prior c01d490a) — cadence unchanged
+lead	17 6,9,12,15,18,21	7	6	22	06:17	2026-07-06	active: cron re-armed at 8/1 STOP via delete-then-create (job e10fc0cf, same cadence; prior 60fa16bd deleted) — **AUTO-EXPIRES ~2026-08-08**, session-scoped, CronList-verify at every START
 host	37 6,9,12,15,18,21	7	6	22	06:37	2026-07-25
-cxo	47 6,9,12,15,18,21	7	6	22	06:47	2026-06-18	parked: migrated to Amber 2026-07-26 but cron NOT armed — clear this note only when a cron job is actually armed (reason corrected by CIO 07-27)
-ppm	52 6,9,12,15,18,21	7	6	22	06:52	2026-07-26	parked: migrated to Amber 2026-07-26, cron NOT yet armed (PM-gated) — clear this note only when a cron job is actually armed, else watchdog alerts on a known-dark role (cf. arch)
-pa	42 6,9,12,15,18,21	7	6	22	06:42	2026-07-26	active: cron armed 2026-07-29 12:40 on Amber (job 04985c22), cadence PM-approved 07-26 — parked note cleared per its own condition. NB PA was dark 07-27/28 because the cadence was approved but never armed; approval ≠ arming. Job auto-expires ~08-05 (CronCreate 7-day limit) and dies on session exit — re-arm and update this row.
-comms	12 6,9,12,15,18,21	7	6	22	06:12	2026-07-29	active: cron armed 2026-07-29 09:58 on Amber (job 17634487) — parked note cleared per its own condition; first fire 12:12
+cxo	47 6,9,12,15,18,21	7	6	22	06:47	2026-07-29	active: STOPped cleanly 2026-08-01 22:5x, DAY-CLOSED written. Cron re-armed at STOP by delete-then-create, SAME expression: job 49d605be -> d76fe3a6. Recording the id transition because a changed cron id is a documented cause of phantom-peer misreads. Next fire 06:47. Session-only + auto-expires ~2026-08-08; both deaths silent - run CronList at START; this row records intent, not a live job.
+ppm	52 6,9,12,15,18,21	7	6	22	06:52	2026-07-30	active: STOPped cleanly 2026-08-01 22:2x, DAY-CLOSED written. Cron re-armed at STOP by delete-then-create, SAME expression: ba7df41f -> c8f5f8a6. Session-only AND ~7d auto-expiry, both silent (this generation ~2026-08-08). Run CronList at START — this row records intent, not a live job. Next fire 06:52 Sunday.
+pa	42 6,9,12,15,18,21	7	6	22	06:42	2026-07-26	active: re-armed at STOP 2026-08-01 22:4x via delete-then-create (b4327133 -> job e8505c92), cadence unchanged and PM-approved 07-26. Session-only AND auto-expires ~7d (this generation ~2026-08-08); both deaths silent. Run CronList at session start - this row records intent, not a live job.
+comms	12 6,9,12,15,18,21	7	6	22	06:12	2026-07-29	active: STOPped cleanly 2026-08-01 21:12, DAY-CLOSED written. Cron re-armed at STOP by delete-then-create, SAME expression: 6f33f9f9 -> e5d9ca9a. Recording the id transition because a changed cron id is a documented cause of phantom-peer misreads. Session-only AND ~7d auto-expiry, both silent: this generation expires ~2026-08-08. NB upstream repointed to origin/main 08-01 (was origin/claude/comms-cycle, dead since 05-31) so @{u}..HEAD is meaningful on this seat now. Next fire 06:12.
 web	22 6,9,12,15,18,21	7	6	22	06:22	2026-07-29
-docs	57 6,9,12,15,18,21	7	6	22	06:57	2026-07-29	active: cron armed 2026-07-29 15:30 on Amber (job 26805e13), :57 slot chosen as the free minute (PM-approved this session). Row CREATED at successor START per v1.17 -- docs had NO row before today, which is absent rather than parked: the belt could not report it stale, only silently miss it. Job auto-expires ~2026-08-05 (CronCreate 7-day limit) and dies on session exit -- re-arm and update this row.
+docs	57 6,9,12,15,18,21	7	6	22	06:57	2026-07-29	active: cron armed 2026-07-29 15:30 on Amber (job 26805e13; re-armed at STOP 07-29 22:40 -> a37a1eb5; prompt de-drifted to pointer-only 07-30 19:05 -> 25cfc1f4; re-armed at STOP 07-30 22:40 -> 816ab0a5; STOP 07-31 22:40 -> 774c7afe (prompt gained a third standing lesson: open the authoritative surface); STOP 08-01 22:40 -> efd5b41e (prompt gained a fourth standing lesson: verify a commit/send landed via git status, not intent)). Same expression throughout, cadence never changed, :57 slot chosen as the free minute (PM-approved this session). Row CREATED at successor START per v1.17 -- docs had NO row before today, which is absent rather than parked: the belt could not report it stale, only silently miss it. Job auto-expires per the 7-day CronCreate limit from its last re-arm and dies on session exit -- re-arm and update this row.

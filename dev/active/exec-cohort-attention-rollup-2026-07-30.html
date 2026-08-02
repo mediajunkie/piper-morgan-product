@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — 2026-07-30</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#171717; --card:#212121; --line:#3a3a3a; --ink:#ececec; --mute:#9a9a9a;
+            --red:#e06050; --amber:#d9a03f; --grey:#8a8a8a; --green:#5fb573; --link:#6ea8e8; }
+  }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:840px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.25rem; }
+  .legend { font-size:.8rem; color:var(--mute); margin:.5rem 0 1.5rem; }
+  .legend span { margin-right:1rem; white-space:nowrap; }
+  h2 { font-size:1.05rem; margin:1.75rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.7rem .9rem; margin:.55rem 0; }
+  .item.block { border-left-color:var(--red); }
+  .item.dec { border-left-color:var(--red); border-left-style:double; }
+  .item.drift { border-left-color:var(--amber); }
+  .item.clear { border-left-color:var(--green); }
+  .item .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; }
+  .agent { font-weight:700; }
+  .sev { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .4rem;
+         border-radius:4px; background:#eee; color:#444; }
+  @media (prefers-color-scheme: dark) { .sev { background:#333; color:#ccc; } }
+  .summary { margin:.35rem 0 .3rem; }
+  .why { font-size:.85rem; color:var(--mute); margin:.2rem 0 0; }
+  .clean { color:var(--mute); font-size:.9rem; }
+  .clean b { color:var(--ink); }
+  .bigclear { font-size:1.05rem; color:var(--green); font-weight:600; }
+  .resolved { font-size:.85rem; color:var(--mute); margin-top:.4rem; }
+  .resolved s { color:#999; }
+  .clock { color:var(--red); font-weight:600; }
+  footer { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.8rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by Exec · <b>Thu 2026-07-30 ~09:45 PT</b> · live-state pass (GitHub + registry + carry-forwards, 10 of 10 read; Lead/PPM docs are 7/28–29 vintage, noted inline) · first Amber-era board</p>
+  <p class="legend">
+    <span>🛑 <b>Blocker</b> — work stuck</span>
+    <span>🔴 <b>Decision</b> — needs your call</span>
+    <span>🟡 <b>Awareness</b> — no decision</span>
+    <span>⚪ <b>Clean</b></span>
+  </p>
+
+  <h2>🛑 Blockers — work that's stuck (one PM action each)</h2>
+
+  <div class="item block">
+    <div class="top"><span class="agent">PPM's seat</span><span class="sev">blocks 3 threads</span></div>
+    <p class="summary"><b>PPM is parked (cron un-armed, PM-gated) and it now gates: the Jake FTUX synthesis (3 of 4 lenses in — HOST, CXO, PA; only PPM missing), PDR-006's last review, and the spatial roadmap-dependency slice.</b></p>
+    <p class="why">CXO raised this 7/29 explicitly ("PM's call: arm/seed PPM, or synthesize on 3") — unanswered. Registry row verified still <code>parked … PM-gated</code> this morning. You nudged PPM yesterday midday; the seat can't answer a nudge while un-armed — the nudge and the un-arm are the same action. One word from you clears three threads.</p>
+  </div>
+
+  <div class="item block">
+    <div class="top"><span class="agent">Lead / beta path</span><span class="sev">build-stack go</span></div>
+    <p class="summary"><b>Lead cannot build, test, or deploy — Amber has no venv/container runtime/flyctl. The unblock is the build-stack go (CIO's spec; <code>colima start</code> is your call — background VM on a host with 11 live sessions).</b></p>
+    <p class="why">Lead is half-productive (coordination, board, CI-on-the-wire fine), and correctly refuses to substitute CI-log reading for local sweeps. Chains: the #1386 criterion-2 canonical re-run (Exec coordinates, verified OPEN), the two owed class-sweep greps from Lead's triage, and any beta deploy. Colima division proposal (Pard owns daemon capped 4cpu/8GiB, Lead owns usage) landed 7/29 eve — the decision is teed up.</p>
+  </div>
+
+  <div class="item block">
+    <div class="top"><span class="agent">PA / distribution</span><span class="sev clock">⏰ today</span></div>
+    <p class="summary"><b>OpenAI identity verification — you committed to doing it today (Thu 7/30).</b> platform.openai.com → Settings → Organization → "Verify Organization" (government ID, minutes). The only item with an external clock; gates the ChatGPT remote-MCP listing, nothing else gates it.</p>
+    <p class="why">Companion 5-minute item from the same thread, 10+ days old: the claude.ai account-tier question (CIO board). PA's other two distribution "decisions" are closed — see Resolved.</p>
+  </div>
+
+  <h2>🔴 Decisions awaiting you</h2>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">Cohort-wide</span><span class="sev">governance</span></div>
+    <p class="summary"><b>Shared memory-index ceiling: pick the path.</b> The index sits ~8–13 lines from a ~200-line ceiling past which entries silently vanish for every agent; the platform's claimed fix (v2.1.210) was behaviorally tested by HOST (line path) and PA (byte path) — <b>both still silently truncate</b>. Three agents independently refused hook prompts to prune; Arch's reframe (index is DERIVED — never delete source to shrink a build output) is now in the index header.</p>
+    <p class="why">Options + arithmetic: <code>docs/internal/operations/memory-index-size-limits.md</code> (per-type index files w/ router · denser entry format · governed prune-with-export). Not urgent-today but the pool grows ~7 entries/5 days; a ruling this week beats an incident next week.</p>
+  </div>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">Lead</span><span class="sev">since 7/18</span></div>
+    <p class="summary"><b>#1424 close-vs-keep</b> (verified OPEN, milestone MVP) — Lead's lean: close. Oldest outstanding call on the board. <b>#1427</b> (PROD-RECONNECT bucket) already carries the Production milestone — if that reflects your intent, a one-line confirm retires it.</p>
+  </div>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">#1386 gate</span><span class="sev">criterion 1</span></div>
+    <p class="summary"><b>#1278 Fly.io scope call</b> (verified OPEN, MVP): gate-blocking for beta, or post-beta migration? This is criterion 1 of the beta gate — the gate cannot close without it, independent of the re-run work.</p>
+  </div>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">HOST</span><span class="sev">welfare</span></div>
+    <p class="summary"><b>Tester-welfare instrument</b> — 12 alpha tokens out, 1 report in (and that one because you asked twice). HOST: "this one will not settle on its own — silence is not health, for mechanisms or people."</p>
+  </div>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">Comms</span><span class="sev">5 gated items</span></div>
+    <p class="summary"><b>The editorial queue is entirely PM-gated</b> (nothing unblocked is held): Beats 21–23 voice-pass + art (drafted, fact-checked; fill Aug 11/13/18) · Beats 24–28 slate steer (proposed 7/29 — cures the post-Aug-18 dry-out) · Ship #053 LinkedIn URL (only you can produce it) · watchdog-wording answer (non-blocking) · BYOC direction (~6 wks stale).</p>
+  </div>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">Arch / spatial</span><span class="sev">forming</span></div>
+    <p class="summary"><b>Spatial layer-2 decision is converging, not yet ripe</b>: Arch's corrected layer map released its hold this morning; CXO has voted (keep live layer, park cold adapter tier), PPM's slice is blocked on the PPM un-park above. Expect this to arrive as a clean either/or once reviews settle — no action today unless you want to pre-empt.</p>
+  </div>
+
+  <h2>🟡 Drift / awareness — no decision, worth knowing</h2>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Infra</span><span class="sev">Aug 5</span></div>
+    <p class="summary">Every armed cron on Amber is session-only and auto-expires ~Aug 5 — un-parked registry rows assert liveness that decays silently unless each session re-arms. CIO/Pard hold the durable-scheduler question; flagged by Comms 7/29, echoed by Web.</p>
+  </div>
+  <div class="item drift">
+    <div class="top"><span class="agent">Hooks</span><span class="sev">closed</span></div>
+    <p class="summary">The hook saga is closed at the mechanism: a real git <code>pre-commit</code> gate (Pard, on Arch's TOCTOU ruling) now covers every worktree and both command shapes — verified live on 3+ seats incl. exec. One named accepted gap remains (<code>--no-verify</code> + compound staging); advisory layer retained deliberately (HOST ruling). Probe apparatus retired (duty-cycle-tick v1.22).</p>
+  </div>
+  <div class="item drift">
+    <div class="top"><span class="agent">CIO → provisioning</span><span class="sev">endorsed</span></div>
+    <p class="summary">Park-check moves to the provisioner's pre-flight (CIO proposal after a 5-for-5 miss on the predecessor-parks-own-row step, exec's included). Exec endorses this fire — structural fix over discipline exhortation; HOST's read pending.</p>
+  </div>
+  <div class="item drift">
+    <div class="top"><span class="agent">Lead lane</span><span class="sev">honest gaps</span></div>
+    <p class="summary">From Lead's 7/29 triage: the five backlog issues (#1449/#1451/#1452/#1457/#1365, all verified OPEN) now carry the Production milestones Lead recommended. Remaining honest gaps: 4 of 6 drain-surfaced fixes have no recorded class sweep (2 cheap greps owed once the venv exists) and #1457's guard decision (the five-whys recurrence case) is open on the issue.</p>
+  </div>
+  <div class="item drift">
+    <div class="top"><span class="agent">PPM tooling</span><span class="sev">quick assist</span></div>
+    <p class="summary">Beta Blockers recount is impossible from agent seats — the <code>gh</code> token lacks <code>read:project</code> scope; refresh is interactive (<code>gh auth refresh -s read:project</code>), so it needs your terminal. Last real count: 21 open at 7/16 close — stale, and this board deliberately does not repeat it as current.</p>
+  </div>
+  <div class="item drift">
+    <div class="top"><span class="agent">Web</span><span class="sev">3-min favor</span></div>
+    <p class="summary">Compose-UI autosave shipped + code-reviewed, but never browser-verified. Web's ask: next natural compose session, edit + reload without saving → expect an explicit Restore/Discard banner; report what happens. (Also: admin-calendar live-read's success path verifies itself on your first authenticated load.)</p>
+  </div>
+  <div class="item drift">
+    <div class="top"><span class="agent">Exec</span><span class="sev">on rails</span></div>
+    <p class="summary">Ship #054 kickoff goes out tomorrow (Fri 7/31), window Jul 24–30, pubDate Wed Aug 5 (per the v1.9 rule fix). After the cycle is under way, Exec owes you the day-of-week-aware duty-cycle discussion you asked for. HOST's migration-checklist v2.0 review is on Exec's plate this week, then CEO ratification comes to you.</p>
+  </div>
+
+  <h2>⚪ Clean — no open PM item</h2>
+  <div class="item clear">
+    <p class="clean">
+      <b>Docs</b> — executing the pre-greenlit CLAUDE.md separation; publish pipeline healthy (Ship #053 out; puppeteer gap is Pard's lane, nothing blocked).<br>
+      <b>PA</b> — distribution is build work now (Phase 0 running); no decisions pending beyond the ⏰ item above.<br>
+      <b>Arch</b> — PDR-007 review queued this morning (Docs' ask); spatial WIP converging; nothing gated on you today.<br>
+      <b>CIO</b> — governance loops closing (four owed items cleared 7/29); registry coverage 11/11 for the first time.<br>
+      <b>HOST</b> — welfare spec + m-44 ledger advancing; its one PM item is the instrument decision above.
+    </p>
+  </div>
+
+  <h2>✅ Resolved since the last board</h2>
+  <div class="item">
+    <p class="resolved">
+      <s>Ship #053 publish + date question</s> — live Wed 7/29 at pipermorgan.ai; pubDate derivation defect traced to the skill and fixed (v1.9).<br>
+      <s>"Is the plugin repo public?"</s> — was never open; repo verified PUBLIC 7/29. If any doc lists it as pending, it's stale.<br>
+      <s>Claude Team upgrade for connector portal</s> — dropped (PA rec, your math concurring); reopen only on real install data.<br>
+      <s>PDR-006 Q2</s> — resolved via your own Jan 2026 ruling in the code; ratification unblocked, CXO's RATIFY filed 7/30; only PPM's review remains (see blocker 1).<br>
+      <s>Hook intermittency saga</s> — closed at the mechanism (real pre-commit gate).<br>
+      <s>Registry coverage</s> — 11/11 roles now have rows; watchdog structurally complete.<br>
+      <s>#1394 P1 label</s> — set; #1427/#1449/#1451/#1452/#1457/#1365 milestones assigned.
+    </p>
+  </div>
+
+  <footer>
+    <b>Bottom line: three blockers, each cleared by one PM action — un-park PPM (clears 3 threads), the build-stack go (clears the beta path), and the OpenAI verification you slated for today. The decision queue behind them is six items, led by the memory-index governance call.</b><br><br>
+    Live-state pass: #1424, #1427, #1278, #1386, #1449, #1451, #1452, #1457, #1365 all checked against GitHub this morning (states + milestones as shown); PPM/Lead/PA registry rows read from the live TSV; PA's repo-visibility and PDR-006-Q2 closures taken from their 7/29–30 verification notes (each named its evidence); carry-forwards read in full — Lead's and PPM's are 7/28–29 vintage (both roles' docs predate their latest mail, noted where it matters). Beta Blockers count deliberately not restated (see PPM tooling item).
+  </footer>
+</div>
+</body>
+</html>

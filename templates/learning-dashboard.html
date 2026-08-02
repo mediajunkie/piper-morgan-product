@@ -631,7 +631,8 @@
     <script>
         // Configuration
         const API_BASE = '/api/v1/learning';
-        const USER_ID = 'current_user'; // TODO: Make configurable
+        // #1430: no client-side user identity — every endpoint derives the
+        // principal from the authenticated session (credentials: 'include').
 
         let privacySettingsChanged = false;
 
@@ -889,7 +890,7 @@
          */
         async function exportData() {
             try {
-                const response = await fetch(`${API_BASE}/controls/export?user_id=${USER_ID}&format=json`, {
+                const response = await fetch(`${API_BASE}/controls/export?format=json`, {
                     credentials: 'include'
                 });
                 const data = await response.json();
@@ -899,7 +900,7 @@
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `piper-learning-data-${USER_ID}-${Date.now()}.json`;
+                a.download = `piper-learning-data-${Date.now()}.json`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -923,7 +924,7 @@
                 onConfirm: async () => {
                     try {
                         const response = await fetch(
-                            `${API_BASE}/controls/data/clear?user_id=${USER_ID}&data_type=${dataType}`,
+                            `${API_BASE}/controls/data/clear?data_type=${dataType}`,
                             { method: 'DELETE', credentials: 'include' }
                         );
 

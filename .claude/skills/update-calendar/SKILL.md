@@ -5,9 +5,9 @@ description: Update the editorial calendar CSV when PM reports a publication,
   "add Y to the calendar", "update the URL for Z", or provides syndication URLs
   after a publish.
 scope: role-specific
-version: 1.2
+version: 1.4
 created: 2026-03-29
-updated: 2026-07-14
+updated: 2026-07-29
 ---
 
 # update-calendar
@@ -28,6 +28,43 @@ Use this skill when:
 
 `docs/internal/planning/comms/editorial-calendar.csv`
 
+## Column ownership — who writes what (PM-RATIFIED 2026-07-29)
+
+**This calendar is multi-writer by design. There is no single owner, and proposals to make one have
+been considered and rejected.**
+
+| Owner | Columns |
+|---|---|
+| **Comms** (editorial authorship) | `title` · `theme` · `workDate` · `endWorkDate` · `pubDate` · `cartoon` · `chatDate` · `draftPath` · `notes` · `altText` · `caption` |
+| **Docs** (publish / syndication transaction) | `blogURL` · `blogPath` · `canonicalSite` · `mediumURL` · `liPubDate` · `linkedinURL` |
+| **Shared, SEQUENTIALLY** | `status` — Comms owns it through `drafted` → `ready-for-docs`; **Docs owns it from `published` → `distributed`** |
+
+**Write your own columns yourself, through this skill.** Do not route routine updates through another
+agent's inbox. **Send a memo only to cross the boundary** — to ask for a change to a column you don't
+own, or to propose a structural change such as adding a column.
+
+⚠️ **`status` is the one column to be most careful with.** It is the lifecycle field the publish
+pipeline routes on, so a wrong value there misroutes work rather than merely being inaccurate. If you
+are not sure whether a transition is yours, ask before writing it.
+
+### Why this is ownership-by-column and not ownership-by-agent
+
+Docs proposed sole-Docs-ownership on 2026-07-29 and **PM rejected it, correctly.** The empirical case
+against it: the calendar took **170 commits in 60 days, 57 tagged `(comms)` against 4 tagged `(docs)`** —
+Comms is the incumbent primary writer, and a single-writer rule would have made one agent's inbox a
+bottleneck on work others already do correctly. It would also have added a second failure mode: the memo
+that sits unread. That is not hypothetical — on the same day, Docs published a post ten minutes after
+Comms had already delivered the answer to its one open blocker, in an unopened memo.
+
+**And plurality of writers was never the cause of the corruption anyway.** Both documented incidents
+came from **positional access**, which one writer can do just as destructively:
+
+- **2026-07-14** — `row[-2]` used for `notes` (index 15) landed on `altText` (index 16).
+- **2026-07-28** — Weekly Ship #050: `notes` held a duplicate draftPath, `altText` held 1,000+ chars of prose, `caption` held the real alt text. **Field count stayed 18 throughout**, so every count-based check passed.
+
+The mechanism that prevents this is **by-name access through this skill plus the validator** (Step 4),
+not a restriction on who may write. Address every field by header name; never by position.
+
 ## CSV Schema (18 columns)
 
 ```
@@ -40,7 +77,7 @@ title,theme,status,workDate,endWorkDate,pubDate,mediumURL,liPubDate,linkedinURL,
 |--------|---------------|-------|
 | title | Free text | Quote if contains commas |
 | theme | `building`, `insight`, `ship` | Content type |
-| status | `drafted`, `queued`, `published`, `distributed` | Lifecycle state — see below |
+| status | `drafted`, `queued`, `ready-for-docs`, `published`, `distributed` | Lifecycle state — see below. **Shared column: Comms writes through `ready-for-docs`, Docs from `published` on.** |
 | workDate | YYYY-MM-DD | When the piece was written |
 | endWorkDate | YYYY-MM-DD | End of work period (optional) |
 | pubDate | YYYY-MM-DD | Publication date |
@@ -134,6 +171,48 @@ for i, r in enumerate(rows[1:], start=2):
 
 Treat any assertion failure as a stop-and-investigate signal, not something to paper over — a semantic anchor tripping means content is very likely sitting in the wrong column.
 
+**⭐ The inline snippet above is now the FALLBACK. The canonical check is the script** (extended
+2026-07-29 to cover per-column shape + reference integrity — it supersedes the hand-rolled asserts):
+
+```bash
+python3 scripts/validate-editorial-calendar.py            # errors fail, warnings print
+python3 scripts/validate-editorial-calendar.py --strict   # warnings also fail
+```
+
+It adds what the inline version cannot see: **per-column shape** (enums, `YYYY-MM-DD` vs `chatDate`'s
+`M/D/YYYY`, URL/path prefixes, and the Ship #050 repo-path-in-prose signature) and **reference
+integrity** (`draftPath` actually resolves on disk).
+
+**Errors block; warnings never do — and that split is deliberate.** A heuristic that hard-fails causes
+*false corrections*, which are worse than the drift they claim to fix. Two live examples, both from the
+validator's own first run: it flagged 8 historical Ships carrying the pre-`ship` value
+`theme='shipping news'`, and a `notes` field holding a `claude.ai` URL that happens to end in `.md`.
+**Both were fixed in the checker, not in the data.** If this script reports a warning on a historical
+row, the default assumption is that the row is fine and the heuristic is coarse.
+
+### ⚠️ Step 4b: If you MOVED a draft file, update `draftPath` in the same pass
+
+**This is the single most common way this calendar goes stale.** Archiving a draft to
+`docs/public/comms/drafts/published/` without updating its row leaves the row pointing at a path that no
+longer exists — silently, since nothing used to check.
+
+- **7 stale paths were found and repaired on 2026-07-29** (3 Weekly Ships + 4 narrative posts). Every one had this cause.
+- A **2026-07-12 pass fixed 22 instances and did not fix the cause**, which is why it recurred within three weeks.
+- `publish-to-blog` **Step 9** is where the move happens; the row update belongs in the same commit.
+
+Verify with the validator (it now reports non-resolving paths) or directly:
+
+```bash
+python3 -c "
+import csv, os
+bad = [(r['title'][:44], r['draftPath']) for r in csv.DictReader(open('docs/internal/planning/comms/editorial-calendar.csv'))
+       if (r.get('draftPath') or '').strip() and not os.path.exists(r['draftPath'])]
+print(f'{len(bad)} unresolvable draftPaths'); [print('  ', t, p) for t, p in bad]
+"
+```
+
+Expected: `0 unresolvable draftPaths`.
+
 ### Step 5: Rebuild the calendar view
 
 ```bash
@@ -185,4 +264,6 @@ git commit -m "editorial calendar: [what changed]"
 
 *v1.1 — Added Step 5: rebuild calendar view HTML after every CSV change (2026-06-29).*
 *v1.2 — Replaced Edit-tool/positional-index row surgery with `csv`-module-by-name access (Steps 2-3), and upgraded verification to a whole-file field-count + semantic-anchor scan (Step 4) (2026-07-14). Root-caused from a real incident: two same-day Comms edits used `row[-2]` for the `notes` field, which actually landed on `altText` (18-column schema, `notes` at index 15, `altText` at 16) — the drift stayed invisible under a single-row field-count check until a later edit collapsed the count, at which point a peer session caught and repaired it. See `docs/internal/planning/comms/editorial-calendar.csv` "The Migration Wave" row's own notes for the full incident trace.*
+*v1.4 — **Column ownership PM-RATIFIED (2026-07-29).** Added the ownership table (Comms = editorial columns; Docs = publish/syndication columns; `status` shared sequentially) plus the reasoning for why it is ownership-by-column rather than by-agent. Docs proposed sole-Docs-ownership and PM rejected it: 170 commits in 60 days, 57 tagged `(comms)` vs 4 `(docs)`, so a single writer would bottleneck the incumbent primary writer — and both documented corruptions came from POSITIONAL ACCESS, which one writer can do just as destructively. Also: Step 4 now names `scripts/validate-editorial-calendar.py` as the canonical check (extended same day with per-column shape + `draftPath`-resolves checks; errors block, warnings never do, because a hard-failing heuristic causes false corrections). New Step 4b: if you moved a draft file, update `draftPath` in the same pass — 7 stale paths repaired 2026-07-29, all from archival moving files without updating rows, after a 7/12 pass fixed 22 instances without fixing the cause.*
+
 *v1.3 — Added `distributed` status value (PM-ratified 2026-07-19): published = live on pipermorgan.ai; distributed = blog + cross-posted. Bulk-migrated 243 rows from status=published to status=distributed (all rows with canonicalSite=distributed). Added status semantic anchor to Step 4 verification. Updated lifecycle table and anti-patterns.*

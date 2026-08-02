@@ -47,7 +47,6 @@ echo "Comparing critical files that showed mismatches:"
 echo ""
 
 compare_file "CLAUDE.md"
-compare_file "services/intent_service/llm_classifier.py"
 
 echo "🎯 RECOMMENDATION:"
 echo "1. Review the diff output above"

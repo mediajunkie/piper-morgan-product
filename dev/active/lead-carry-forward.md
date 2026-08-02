@@ -1,28 +1,25 @@
-# Lead Dev carry-forward (rewritten 2026-07-23 ~11:10 PT)
+# Lead Dev carry-forward (rewritten 2026-08-01 ~18:55 PT, Amber seat)
 
 ## Session/env
-- Worktree: `.claude/worktrees/lead-1452-harness`; session cron e1106eb5 (`17 6,9,12,15,18,21 * * *`, session-only — re-arm after any re-attach, Gap-C).
-- **Beta at v28** (health 200) — masking fix + loop-aware Redis pool + lazy doc-init + polymorphic eager-load. main==production lockstep at 91e878a95; PM local synced.
+- Worktree: `~/Development/piper-morgan-worktrees/lead` (Model A) on `claude/lead-cycle`; cron job **60fa16bd** (`17 6,9,12,15,18,21`, session-scoped, expires ~8/8, CronList-verify each START).
+- Seat FULLY OPERATIONAL: venv 3.11.15 (collection 10,770 clean), compose infra 4/4 (pg 5433/redis/chroma/ghmcp), LLM keys in keychain (PM-provisioned 8/1), gh has project scope, flyctl authed. Full sweep = 6:20. Real pre-commit hook in common dir (v1.22: verify-exists, never probe).
+- **Tests workflow GREEN** (8/1 01:08Z run = census wave-1 + 1461a + harness fix, all CI-arbitrated). Backlog 57 entries; 3 keyed-only-passing entries stay LISTED (fresh_tester_onboarding, todo-lifecycle e2e, db_user_history — fail keyless CI; never delist on local evidence).
 
-## #1452 — state after the Thursday-morning marathon
-- **CI GREEN and holding** (3 consecutive green batches; first green ~08:35, PM notified). Progress comment on #1452 records the milestone + composition.
-- Backlog: **119** (arc 634→119; today 264→119, waves 15-42). All removals CI-arbitrated. **The accessible triage tail is DRAINED** — everything remaining is parked/gated: ~40 methodology (Arch), 16 spatial-held, 12 learning complex (dedicated session; incl. manual/test_learning_handler_phase1 with the hardcoded shared TEST_USER_ID), 16 flaky, ~12 env-oscillators, 3 load tests (need a quiet box), ~20 misc gated.
-- Remaining composition: ~40 methodology (Arch fix-or-delete, LARGEST cluster), 9 connection_pool (HELD spatial), 7 spatial-adapter integration (parked, held cascade — complete_integration_flow + slack_spatial), 9 learning-cycle (dedicated de-flake session), ~13 flaky context-oscillators, ~8 env-oscillators (radar/publish_gaps — do NOT delist without CI confirmation), ~45 small glances.
-- Discipline notes that earned their keep today: CI-confirms-shrink-lock (local claimed 20, CI said 6); waves validate in-sweep (wave 18 caught); push-pausing so CI runs can complete; flaky tag = context-oscillators, shrink-lock-exempt both ways.
+## Recent closures (evidence on issues): #1445 (8/1), #1461 (8/1), #1424 (PM 7/30). Census wave-1 SHIPPED + In Review: #1429/#1430/#1431 (evidence comments posted; PM verification pending).
 
-## Queue next
-- Learning-complex de-flake (dedicated session; quality-banked to a fresh session deliberately — 12 entries: cycle pair, phase3/4 perf, manual phase1 script; root causes: shared TEST_USER_ID + settings interference).
-- Load tests (3) on a quiet box.
-- Full-sweep-poison chase for the standup-flaky 9 (earlier-dirs source; the config-rewriting teardown removal may already have helped — retest in a dedicated sweep).
-- On Arch (Exec escalated): methodology ruling now gates ~30% of remaining backlog; #1432 orphan pair; ContextMatcher note.
-- On Exec: #1386 gate re-run window (beta v25+ carries both Scenario-B fixes).
-- On PM: #1424 close-vs-keep (lean: close), #1427 PROD-RECONNECT confirm, migration decision (handoff at dev/active/lead-handoff-2026-07-21.md).
+## Awaiting others
+- ~~Arch ×2~~ BOTH LANDED 8/1 evening: #1432 formal GO received (delete tomorrow via delete-module-safely, scope incl. PM-034 workflow) · #1395 rev RATIFIED + committed `570fdf1dd`; Phase-3 routing 61/61 DONE; #1467 filed (Q22, floor streak 2 of N=3).
+- **PM sprint calls**: #1464 (portfolio archive/restore crashes — LIVE via chat, MVP rec) · #1465 (learning success-path NameError inverts signal, MVP rec) · #1466 (Slack→Piper principal mapping absent, MVP rec). All from census wave-1 discovered-work.
+- **Exec**: #1386 window re-scope now that criterion-2 is unblocked (keys in; baseline 55/61 done).
 
-## Note 2026-07-25 day-close
-- sync-pm-local no-op'd at day-close (PM checkout has local commits/WIP — designed behavior, PM's work wins; likely Saturday-evening drafting). Next successful sync catches up; re-check next START.
-- Backlog 94 (learning complex drained + validated 7/25). Methodology-math memo with Arch (38-of-94 lever). Cohort roll to Amber authorized; my migration queued after the 5 idle roles.
+## Queue next (in order — TOMORROW'S FRESH SESSION, both quality-banked 8/1 22:00 with this explicit trigger)
+1. **Judge-parity check** (#1395 quality half): reconstruct Run 15's judge config (model + PASS/MARGINAL counting — #1386 comments/logs), run parity or declare new baseline; tonight's 7/22-under-STRICT is non-comparable, NOT a quality answer. Then close #1395.
+2. **#1432 delete** (GO in hand): delete-module-safely — pair + 3 test files + conftest ref + pm034 workflow; Phase-4 re-land as tracked step; backlog entries riding these tests come off in same commit.
+3. #1460 instance fix (original_message backfill at detect_multiple + 6 reader sites to idiom B + 2 wrong-key Slack sites; runtime verification of setup flow in AC).
+4. Census wave 2: #1426 + #1428 (want #1433 ledger design first — read census D §6).
+5. #1464/#1465 fixes if PM adds to sprint (both small; 1465 is trivial import + regression test).
 
-## Amber-migration notes (2026-07-26, from the seat-roll probe burst)
-- **2a-bis probe on my first Amber fire must use COMPOUND command shape** (the shape agents actually commit with) — standalone commits pass 4/4 while compound bypasses; Web's index-state mechanism explains it, validated on four seats (PA's amendment to v1.15; ask for the current skill rev at migration).
-- sync-pm-local hard-codes the laptop checkout and no-ops on Amber (PA found; CIO/Pard own the fix) — expect the post-push PM-sync step to change shape there.
-- Arch confirmed my methodology execution received ("the 43% lever already pulled").
+## Standing notes
+- Beta target **Aug 8** (PM 7/30); scope growth needs PM approval. Multi-tenancy beta scope = #1430 (done) + #1458 traces + ratchet green (#1419 comment). #1458/#1457 → Production milestone.
+- Board-status discipline ACTIVE (PM 7/30): In Progress at take-up, In Review at shipped-pending-verification, Done at close — same-work-block, per-item mutations only.
+- decisions.log entries current through 8/1 (1461a). Design record amended per Arch second read (8/1).

@@ -19,6 +19,25 @@ Each session log gets a `## Memory & briefing surfaces referenced this session` 
 - **Loaded but not referenced** — surfaces in context that didn't shape work this session. No notes needed.
 - **Wanted but not found** — short description of memory/briefing content the agent expected to find but couldn't. Gap signal.
 
+### ⚠️ "Wanted but not found" is a report about YOUR SESSION, not a claim about the repo (HOST, 2026-07-29)
+
+**Write it in the experiential tense — "I looked for X and didn't find it" — never the existential — "X does not exist."** The bucket asks what you *wanted and couldn't locate*. That is a fact about your search. Whether the thing exists is a different claim, needs different evidence, and is the one that goes wrong.
+
+**Why this rule exists**: HOST swept its own entries and found **3 of 5 negatives were false** — the surface existed, and in one case had been shipped **5.5 hours earlier by CIO** while HOST was recording it as missing. None were inherited from another agent; all three were self-generated in the ordinary course of writing the wrap.
+
+The failure is structural, not sloppy. At wrap you are reconstructing the session from memory, under context pressure, and "I never came across X" compresses to "X isn't there" without feeling like an inference. The two are then indistinguishable on the page — and the existential reading is what a later reader acts on, because a gap report is *supposed* to drive someone to build the missing thing.
+
+**How to apply:**
+
+| write this | not this |
+|---|---|
+| "Looked for a PII-free aggregate tester view; didn't find one." | "There is no PII-free aggregate tester view." |
+| "Wanted a per-commit vocabulary for coverage claims — as experienced this session, nothing supplied one." | "Nothing in the repo supplies a per-commit coverage vocabulary." |
+
+If you *do* want to assert the existential — reasonable, it's more actionable — **verify it first and say you did**: "checked `docs/internal/operations/` and `gh issue list`; no such surface as of 2026-07-30." An unverified negative in a gap report is a work order pointed at nothing.
+
+Same family as the never-guess-a-lookupable-fact rule and `feedback_verify_negative_claims_via_live_api`. Applies to any bucket asserting absence, not only this one.
+
 ## Pilot scope
 
 - **Duration**: collection runs across ≥3 sessions per role before evaluation.

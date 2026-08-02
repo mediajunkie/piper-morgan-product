@@ -35,6 +35,18 @@ The outgoing instance completes these items. PM is present.
 
 PM + Exec handle these between the outgoing and incoming sessions.
 
+- [ ] **★ PROVISIONER CONFIRMS THE PREDECESSOR'S ROW IS PARKED — before standing up the successor** *(v1.9, 2026-07-30; CIO proposed, **Exec endorsed**)*. Run `scripts/cohort-status.sh` and read the `REGISTRY` column for the outgoing role.
+
+  **Why this moved from Phase 1 to Phase 2**: parking the row was a Phase-1 step the outgoing agent was told to do, and it was missed **five times out of five** — arch, cxo, web and lead all needed a hand retrofit, exec never parked at all. **A step everyone misses after it has been written down is a placement defect, not five instances of carelessness** (Exec's framing, and the reason it endorsed).
+
+  **The placement was structurally wrong**: parking must happen while the outgoing agent is awake, but **nothing that happens while it is awake depends on it.** The consequence lands later, on someone else, in a belt that stays quiet. That is an obligation assigned to a party with **no feedback loop on it** — the same shape as the parked-role catch-22 (an ask routed to a role that cannot wake to read it) and as Rule 0.
+
+  **So the check moves to whoever is awake and about to act.** The provisioner is at the keyboard, the tool already prints the column, and it converts a remembered step into a gate at the moment it matters. The outgoing agent's own park becomes a courtesy rather than the only line of defence.
+
+  ⚠️ **What this gate does NOT cover** *(Exec's endorsement caveat, added 2026-08-01)*: it fires on **provisioned successions only**. A row also goes stale outside a succession — a mid-day cadence change, or a session death with no successor — and those cases still rely on the agent-side norm plus the watchdog's grace window. **Stated in per-commit terms rather than per-seat**: this gate makes a row correct at the moment a succession is provisioned, and says nothing about it at any other moment. A gate described more broadly than its coverage is the class three of this document's own findings came from.
+
+
+
 - [ ] **Save handoff memo** to project knowledge as `handoff-{role}-{context}-YYYY-MM-DD.md`
 - [ ] **Save 360 response** to project knowledge
 - [ ] **Exec review of handoff** *(v1.1: clarified as quality gate)*: Exec reads handoff against tracker + cohort awareness; flags gaps to PM before incoming instance picks it up. This is the captain-last leverage point — Exec sees what the outgoing instance can't see from inside.
@@ -58,6 +70,15 @@ The incoming instance completes these items.
   > **What this retires**: the two-shape probe, index-state control, and the *stage-in-one-call-commit-bare-in-the-next* mitigation are all **no longer required** — the gate reads a settled index, so shape is irrelevant by construction. Arch needed no index control and got `check-branch.sh`'s **verbatim message** (git surfaces `pre-commit` stdout directly), so the mute-block defect is gone too.
   >
   > **Your Phase-3 probe is now one call**: stage a throwaway `mailboxes/` file and commit it **compound**, on your non-main branch. **BLOCK naming `check-branch.sh` = PASS.** A control non-mail commit on the same branch must still be **allowed**.
+  >
+  > **Key on ATTRIBUTION, not on outcome or output volume** — three distinct results, and only one is a pass:
+  > - refusal that **names the hook** (`check-branch.sh`) → ✅ **PASS**
+  > - commit **succeeds** → ❌ **FAIL** — stop and escalate
+  > - refusal citing the **permission classifier** → ⚠️ **INCONCLUSIVE, not a pass.** The classifier can intercept before hooks run, so it tells you nothing about hook liveness. **Do not work around it** — find a clean seat.
+  >
+  > A genuine block may surface as `hook error: [check-branch.sh]: No stderr output`, because the script writes its guidance to stdout. **That is a PASS** — the hook is named. Reverse the probe; push nothing.
+  >
+  > *(Source: HOST agent #2, Jul 25 — this gate caught three pre-commit hooks that had never fired on any machine since introduction. It worked because **failing was a defined, pre-authorized outcome**; framed as "confirm the hooks work," it would have confirmed them.)*
   >
   > ⚠️ **CLEANUP — use these EXACT commands, and put nothing else in the call** *(Arch hit this cleaning up its own probe)*:
   > ```bash
@@ -119,7 +140,7 @@ The incoming instance completes these items.
   >
   > </details>
 
-  Stage a throwaway file under `mailboxes/` on your non-main branch and attempt `git commit`. **Key on ATTRIBUTION, not on outcome or output volume**: a refusal that *names the hook* (`check-branch.sh`) = **PASS** · commit **succeeds** = **FAIL**, stop and escalate · refusal citing the **permission classifier** = **INCONCLUSIVE, not a pass** — the classifier can intercept before hooks run, so it tells you nothing about hook liveness; do not work around it, find a clean seat. Note a genuine block may surface as `hook error: [check-branch.sh]: No stderr output` because the script writes to stdout — **that is a PASS** (the hook is named), not a silent failure. Reverse the probe; push nothing. *(Source: HOST agent #2, Jul 25 — the gate caught three pre-commit hooks that had never fired on any machine since introduction. It worked because failing was a defined, pre-authorized outcome; framed as "confirm hooks work," it would have confirmed them.)*
+  *(The probe itself, with its attribution rules, lives in the ✅RESOLVED block above — this paragraph previously repeated it in the superseded two-step form. Duplicate removed 2026-08-01 per Exec finding 2: a migrant reading to the end followed the stale copy. **One instruction, one place** — which is v1.5's own lesson, recurring structurally rather than as a content error.)*
 - [ ] **Verify branch currency** *(v1.4)*: `git fetch origin && git rev-list --count HEAD..origin/main` — **expected 0**. A worktree cut from a stale role branch inherits weeks of staleness silently, with no error (CIO's arrived 5,393 commits behind: a six-week-old CLAUDE.md, briefings, and mailboxes that all looked like working state). Run it even when provisioning asserts currency upstream — an assert nobody verifies downstream is exactly the class of mechanism this checklist keeps finding silent. **Second reason, which is the one that actually pays**: it refreshes *the instructions you are about to follow*. HOST's check pulled in a materially revised first-session prompt it had already read.
 - [ ] **Verify each stated invariant by running it** *(v1.3)*: Don't check that a connection exists — check that it works the way the handoff says it does, by running the actual command. Bare reachability ("can I reach X") can pass even on the wrong path. For SSH: run a command that exercises the correct key path. For API keys: make a real call. For scripts: run them. *(Source: Pard/Janus field-test Jul 22 — SSH config reached the host at the wrong key level; bare reachability passed, but the correct command failed.)*
 - [ ] **Verify worktree-vs-main path resolution before distribution-heavy work** (PPM Apr 26 Finding A): If PM provides absolute paths in the first-session prompt, check whether they resolve to your worktree or to the main repo.
@@ -207,7 +228,9 @@ The evidence, which arrived within hours and was not acted on: **arch** was woke
 
 | Boundary | What's scoped here | Fix |
 |---|---|---|
-| **Account** | Claude Code memory (`~/.claude/projects/<key>/memory/`) | Export from filesystem listing; read export at first orientation in new account. One export per account — all roles on the account share a pool. |
+| **Account** | Claude Code memory (`~/.claude-pm/projects/<key>/memory/` on the cohort's seats — see note) | **Verify the pool is populated; do NOT import it.** Memory keys on the git-common-dir, so every worktree off the repo shares one pool by construction. Export/read applies **only to the first migrant on a new account**, who lands into an empty pool. An empty pool otherwise is an escalation signal. *(This row said "read export at first orientation" through v2.0 — the v1.4 correction to Phase 3 was never propagated here, so the summary table taught the superseded model to anyone who skimmed. Caught by Exec, 2026-08-01.)* |
+
+> **On the memory path — verified on Amber 2026-08-01, not asserted.** **Both roots exist and neither is wrong**: `~/.claude-pm/projects/` is the config root the Piper Morgan cohort runs under (it holds this repo's pool); `~/.claude/` is Claude Code's default root and holds the *other* projects' pools (globe, designinproduct, cova, mediajunkie, openlaws — each with its own `MEMORY.md`). So the directory is **config-root-dependent, not host-dependent**: use `~/.claude-pm/` for this cohort, `~/.claude/` for a default-config seat. Confirm with `find ~/.claude ~/.claude-pm -name MEMORY.md -path '*memory*'` rather than assuming either.
 | **Device** | Native daemons (launchd, watchdog, `mcp__scheduled-tasks` entries) | Re-arm any persistent services from scratch on new device; don't assume they carried over. |
 | **Repo** | Skills, scripts, docs, session logs | Already portable via git — no special handling needed. |
 
@@ -310,7 +333,11 @@ For the Jul 25 cohort (Code → Amber/pipermorgan.ai):
 
 ## Status
 
-**v1.4** adds the first findings written by an incoming instance *from inside its own migration* (HOST, Amber agent #2, Jul 25): the inverted memory step, the behavioral hooks gate with attribution-based pass condition, the branch-currency check, the dark-role branch (CIO, Jul 25), and the Phase-1 §5/confidence-marking corrections. **Ready for Exec review + CEO ratification.**
+**v2.0 — Exec-reviewed 2026-08-01: APPROVE WITH FIXES; all six applied. Ready for CEO ratification.**
+
+Ratification covers: the four-phase flow, Rule 0 (dark-role branch entry gate), the Phase-2 provisioner park-check gate and its **named non-coverage**, the Phase-3 behavioural hooks gate with attribution-based pass conditions, the verify-don't-import memory step, and the v2.0 mechanism resolution (real `pre-commit` gate; advisory `PreToolUse` layer retained on the measured truth table, with its one uncovered cell named).
+
+⚠️ **This block was itself five versions stale** — it read *"v1.4 … ready for Exec review"* while the header said v2.0 and the changelog documented v1.5–v2.0. **Exec's finding 1**, and an instance of the `present-tense-note-goes-stale` class this document catalogues, sitting in the document's own status field. Three of Exec's six findings were failure classes this checklist teaches, reproduced inside it. Kept visible rather than silently corrected: **a doc that teaches a failure class is not exempt from it, and the status field is the least-read and most-cited part of any canonical doc.**
 
 **v1.3** incorporated field-test findings from: Pard's Amber cutover (Janus Jul 22 — SSH/invariant-verification gaps), CIO's account-migration memory-portability finding (Jul 24), and Exec's account-shared-memory clarification (Jul 24).
 

@@ -385,7 +385,8 @@ async def initialized_container():
     Initialize ServiceContainer with LLM service for tests that need container setup.
 
     This fixture provides a minimal container initialization for tests that directly
-    instantiate IntentClassifier or LLMIntentClassifier without going through IntentService.
+    instantiate IntentClassifier without going through IntentService. (LLMIntentClassifier
+    was deleted 2026-08-02, #1432 — orphaned PM-034 stack.)
 
     Created to fix piper-morgan-8oz and piper-morgan-ss0 (container initialization bugs).
 

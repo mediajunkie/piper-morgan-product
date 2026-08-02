@@ -2,8 +2,41 @@
 
 **Document Version**: 1.0
 **Date**: August 12, 2025
-**Status**: Active Strategic Differentiator
-**Related**: ADR-013 MCP+Spatial Integration Pattern
+**Status**: ⚠️ **ASPIRATIONAL AS WRITTEN — see notice below.** Originally "Active Strategic Differentiator."
+**Related**: ADR-013 MCP+Spatial Integration Pattern, [Spatial Intelligence — the Experience Thesis](spatial-intelligence-experience-thesis.md) (2026-07-29)
+
+> ## ⚠️ Read this before quoting anything below (added 2026-07-29, CXO)
+>
+> **This document describes an intended end-state from August 2025, not uniformly shipped
+> capability.** Its register is deliberately promotional ("revolutionary", "unassailable competitive
+> moat", "first-mover"), and it was written alongside ADR-013's maximalist mandate. **The
+> per-connector 8-dimensional adapter chain it assumes across all tools exists for ONE connector.**
+>
+> **What IS real and shipping**:
+> - the spatial *reasoning* tier — `place_detector`, `spatial_intent_classifier`, `spatial_context`
+>   grafting, MUX orientation. In user terms: **"Piper knows where things live and acts there."**
+> - **`github_spatial` — a full 8-dimensional adapter, in production**, reachable through
+>   `context_assembler` and over HTTP via the Places API. So the 8-dimensional claim below is **not
+>   vapor** — it is real for GitHub and unreplicated elsewhere (Arch, verified 2026-07-29).
+>
+> **What is NOT built, anywhere**: the ambient-presence capability — **"Piper inhabits your tools and
+> notices changes."** No monitoring loop, no change detection, no proactive surfacing. A distinct,
+> later capability, not a partially-finished version of the shipped one.
+>
+> **The cold modules are unreplicated, not failed.** ⚠️ **For the current live/cold list, go to
+> [`spatial-intelligence-layer-map-and-costed-options.md`](spatial-intelligence-layer-map-and-costed-options.md)**
+> — built from the import graph and re-runnable. *(This line previously named five modules; the
+> measured island is larger, because a by-name sweep missed the `*_adapter` modules imported only by
+> cold wrappers. Corrected 2026-08-01. **Do not restate the count here** — that is what made it wrong
+> twice; the map is the source.)*
+>
+> **Do not cite this document as evidence of current capability**, and do not cite it in external or
+> public-facing material without checking claims against live state. Conversely, **do not read the
+> unbuilt half as a failed attempt** — see
+> [the experience thesis](spatial-intelligence-experience-thesis.md) for why that inference is wrong.
+>
+> A PM-directed committed-theory review of spatial intelligence is **in flight** and has not
+> concluded; spatial deletions are HELD and this is protected representation.
 
 ## Executive Summary
 

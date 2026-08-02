@@ -26,6 +26,7 @@ Run after adding or removing memories.
 """
 
 import re
+import sys
 from pathlib import Path
 
 MEMDIR = Path(
@@ -74,7 +75,13 @@ def parse(path: Path):
     return desc, (mtype or "(untyped)")
 
 
-files = sorted(p for p in MEMDIR.glob("*.md") if p.name != "MEMORY.md")
+# Exclude EVERY MEMORY*.md, not just MEMORY.md itself. Any index-shaped sibling —
+# a per-type router file (MEMORY-feedback.md), a load-probe, a hand-kept variant — is an
+# INDEX, not a memory, and indexing it would list a build output as if it were source.
+# Latent until 2026-07-31: the per-type-router option under discussion that week would
+# have had every router file silently indexed as a memory entry, each consuming one line
+# of the very budget the split existed to relieve. Caught before it shipped, not after.
+files = sorted(p for p in MEMDIR.glob("*.md") if not p.name.startswith("MEMORY"))
 buckets = {}
 for p in files:
     desc, mtype = parse(p)
@@ -83,44 +90,50 @@ for p in files:
 out = []
 out.append("# Memory index — Piper Morgan cohort (pipermorgan.ai / Amber)")
 out.append("")
+# --- Header ------------------------------------------------------------------
+# COMPACT BY DESIGN. The long-form explanation lives in
+# docs/internal/operations/memory-index-size-limits.md. Rationale (Comms, 2026-07-30):
+# the header explaining the line limit was itself eating ~10% of the line budget.
+#
+# ⚠️ Comms compacted MEMORY.md *by hand* on 2026-07-30 and reclaimed 6 lines. That edit
+# was NOT durable — this generator still emitted the long form, so the next regen would
+# have silently reverted it. Folded into the generator here (HOST, 2026-07-30) so the
+# win survives. This file is the source of the header; MEMORY.md is a build output.
+# Same category error Arch named, running the other way: fixing the artifact, not the
+# generator. Harmless in that direction — just impermanent.
+#
+# The two sentences below are LOAD-BEARING, not decoration. The platform emits a
+# PostToolUse:Edit reminder telling whoever crosses the threshold to "compact it to
+# under 140 lines now" — an unreachable target that can only be met by deleting ~30
+# memories. We cannot soften that reminder (it is built into Claude Code, not one of
+# our hooks — HOST verified 2026-07-30). This header is the ONLY counterweight that
+# reaches an agent in the same breath as the pressure. Do not trim it for headroom.
 out.append(
-    f"**{len(files)} memories on disk.** Generated from the actual directory listing, "
-    "never from a prior index."
+    f"**{len(files)} memories on disk.** One line per entry; `<slug>` IS the filename — "
+    "open `<slug>.md` here. Generated from the actual directory listing, never from a prior index."
 )
 out.append("")
 out.append(
-    "**Each entry is `<slug> — hook`. The slug IS the filename** — open `<slug>.md` in this "
-    "directory. Markdown links are deliberately omitted: duplicating every slug in link text "
-    "*and* target consumed ~15.7KB of a ~17KB budget, i.e. the entire space for descriptions."
+    "🛑 **NEVER DELETE A MEMORY TO MAKE THIS FILE FIT.** This index is a **generated artifact**; "
+    "the memory files are the **source**. Pruning source to shrink a build output is a category "
+    "error — no judgment call required to refuse it. Every legitimate lever (per-type index files "
+    "with a router, a denser entry form, dropping descriptions) is a **generator change**, fully "
+    "reversible by re-running this script. **Deleting a memory is the only irreversible option on "
+    "the table, and memory is NOT under version control.** If you were told to compact this file: "
+    "that instruction is platform-generated, its target is unreachable by editing, and **its "
+    "reported line count does NOT track your edits — it reported 192 while the file was 206, "
+    "then 197, then 192. Measure the file yourself; never let that number tell you a compaction "
+    "worked.** "
+    "Change what the generator emits, or escalate to CIO/HOST. Do not prune."
 )
 out.append("")
 out.append(
-    "⚠️ **This file has TWO independent read limits and is SILENTLY TRUNCATED past either** — "
-    "trailing entries vanish for every agent that loads it, with no error and no sign anything is "
-    "missing. **(1) ~24KB of bytes** — it had reached 41.4KB (~40% of entries invisible, including "
-    "most of the `reference` bucket) before HOST caught it 2026-07-25. **(2) ~200 LINES** — a "
-    "separate ceiling that the byte count does NOT imply, found by PA 2026-07-26 at 194 lines while "
-    "the byte guard was reporting a comfortable green. `scripts/rebuild-memory-index.py` now refuses "
-    "to write past either, and warns from 90%."
-)
-out.append("")
-out.append(
-    "**The line limit cannot be fixed by shortening text.** One entry = one line, so with "
-    f"{len(files)} memories on disk the floor is {len(files)} lines before any header — the real "
-    "options are prune/merge, per-type index files with a router, or a denser entry format "
-    "(cheapest, and worst for recall, since the description is what makes an index useful). "
-    "**That is a governance decision about the whole cohort's shared pool, not a formatting "
-    "choice for whoever trips the limit.** ⚠️ **Memory files are NOT under version control — "
-    "deletion is irreversible. Export to a git-tracked file BEFORE pruning anything.**"
-)
-out.append("")
-out.append(
-    "**Provenance**: seeded 2026-07-25 from `dev/active/cio-memory-export-2026-07-24.md`, "
-    "the verbatim export of the designinproduct.com pool. Memory is scoped per "
-    "(account × project), so none of it transferred automatically at the account switch. "
-    "This is the whole cohort's shared pool, not one role's — Claude Code keys memory by "
-    "account and project, not by role, and on Amber it resolves to the git common dir, so "
-    "every agent worktree off this repo shares it by construction."
+    f"⚠️ **SILENTLY TRUNCATED past ~24KB OR ~200 lines** (independent limits; trailing entries "
+    "vanish for every agent, no error — **both paths tested silent on Claude Code 2.1.220 despite "
+    "the v2.1.210 changelog claiming writes now error**). **At "
+    f"{len(files)} entries the line floor is {len(files)}, so any target below that is unreachable "
+    "by editing.** Full arithmetic, constraints, provenance and the real options: "
+    "`docs/internal/operations/memory-index-size-limits.md`."
 )
 out.append("")
 
@@ -143,7 +156,15 @@ LIMIT = 24000          # bytes — silent read truncation
 LINE_LIMIT = 200       # lines — separate read ceiling, NOT implied by the byte count
 WARN_AT = 0.90         # surface pressure before it becomes a refusal
 
+# LINE-COUNT CONVENTION — stated because two numbers for one file is how an
+# afternoon disappears, and this whole thread is already about a count that lies.
+# `body` ends with a trailing newline, so `count("\n") + 1` yields ONE MORE than
+# `wc -l` (193 vs 192). That is deliberate and kept: the guard then refuses at
+# `wc -l` 200 rather than 201, i.e. one line EARLY. Conservative is correct for a
+# guard against SILENT truncation. Every number this script prints is labelled with
+# its convention so nobody has to rediscover the discrepancy. (Comms, 2026-07-31.)
 n_lines = body.count("\n") + 1
+n_lines_wc = len(body.splitlines())          # what `wc -l` reports
 # len(str) counts CHARACTERS. The limit is BYTES, and this file is full of multibyte
 # UTF-8 (⚠️ — × •). Measuring the wrong unit under-counted by ~800B (4%) and would have
 # permitted ~24,968 real bytes at a "24,000" limit — i.e. silent truncation, from the
@@ -163,8 +184,40 @@ if breaches:
         "⚠️  Memory files are NOT under version control. EXPORT BEFORE YOU DELETE ANYTHING."
     )
 
+# ── --check: render and COMPARE, never write. ───────────────────────────────────
+# Why this mode has to exist before any drift-check can use this script: a plain
+# rebuild REPAIRS the drift it would have detected. Run it to find out whether the
+# artifact matches its generator and you have already destroyed the evidence, and
+# the answer is always "it matches now." A detector that fixes what it measures
+# cannot report. (Concretely: this is how Comms's hand-compacted header was found on
+# 2026-07-30 — by accident, mid-rebuild, one turn before the fix erased the symptom.)
+if "--check" in sys.argv:
+    target = MEMDIR / "MEMORY.md"
+    current = target.read_text(encoding="utf-8") if target.exists() else ""
+    if current == body:
+        print(f"✓ MEMORY.md matches its generator ({len(files)} entries, {n_bytes:,}B, "
+              f"{n_lines} lines [guard convention; `wc -l` reports {n_lines_wc}])")
+        raise SystemExit(0)
+    cur_lines, new_lines = current.split("\n"), body.split("\n")
+    print("⚠️  DRIFT: MEMORY.md does NOT match what rebuild-memory-index.py would emit.")
+    print(f"   on disk: {len(cur_lines)} lines / {len(current.encode('utf-8')):,}B")
+    print(f"   generator would emit: {n_lines} lines [guard convention; `wc -l` {n_lines_wc}] / {n_bytes:,}B")
+    print("   The artifact is a BUILD OUTPUT. If someone hand-edited it, that edit is")
+    print("   NOT durable — the next rebuild silently reverts it. Either fold the change")
+    print("   into the generator, or re-run this script without --check to discard it.")
+    for i, (a, b) in enumerate(zip(cur_lines, new_lines)):
+        if a != b:
+            print(f"   first difference at line {i+1}:")
+            print(f"     on disk   : {a[:110]}")
+            print(f"     generator : {b[:110]}")
+            break
+    else:
+        print(f"   (identical prefix; length differs by {len(new_lines)-len(cur_lines)} lines)")
+    raise SystemExit(1)
+
 (MEMDIR / "MEMORY.md").write_text(body, encoding="utf-8")
 print(f"index rebuilt: {len(files)} entries, {n_bytes:,} bytes, {n_lines} lines "
+      f"[guard convention; `wc -l` reports {n_lines_wc}] "
       f"({LIMIT-n_bytes:,}B / {LINE_LIMIT-n_lines} lines under the limits)")
 # Pressure warnings — a green write that is one entry from truncating is not a healthy signal.
 if n_bytes > LIMIT * WARN_AT:

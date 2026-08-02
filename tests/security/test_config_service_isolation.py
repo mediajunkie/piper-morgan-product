@@ -218,9 +218,22 @@ class TestCrossUserTokenIsolation:
             assert config_a.bot_token == ""
             assert config_a.bot_token != "user_b_secret_token"
 
-    def test_user_a_cannot_access_user_b_github_token(self):
-        """User A's query must not return User B's GitHub token."""
+    def test_user_a_cannot_access_user_b_github_token(self, monkeypatch):
+        """User A's query must not return User B's token NOR the system env floor.
+
+        #1461 (PM decision (a), 2026-08-01): the env token is system-only — a real
+        user without their own PAT gets None, never the shared credential. The
+        sentinel injected below makes this assertion MEANINGFUL in keyless CI:
+        before it, keyless CI passed this test vacuously (no env token existed to
+        leak), while every keyed seat failed it (m-44 false-clear shape).
+        """
         from services.integrations.github.config_service import GitHubConfigService
+
+        # The floor credential that must NOT reach a real user (all four
+        # env vars get_authentication_token consults; one suffices, set all
+        # to defeat any precedence reshuffle).
+        for var in ("GITHUB_TOKEN", "GITHUB_API_TOKEN", "GH_TOKEN"):
+            monkeypatch.setenv(var, "system-floor-sentinel-must-not-leak")
 
         with patch(
             "services.infrastructure.keychain_service.KeychainService"
@@ -241,6 +254,23 @@ class TestCrossUserTokenIsolation:
             # User A queries - should NOT get User B's token
             token_a = config_service.get_authentication_token(user_id="user_a")
 
-            # User A should get no token
+            # User A should get no token — not user_b's, and not the env floor
             assert token_a is None
             assert token_a != "user_b_github_secret"
+
+    def test_system_identity_still_receives_env_floor(self, monkeypatch):
+        """The other half of #1461 decision (a): 'system' (no real user) keeps the
+        env credential — the floor narrowed to system-only, it didn't vanish."""
+        from services.integrations.github.config_service import GitHubConfigService
+
+        monkeypatch.setenv("GITHUB_TOKEN", "system-floor-sentinel")
+
+        with patch(
+            "services.infrastructure.keychain_service.KeychainService"
+        ) as mock_keychain_class:
+            mock_keychain = Mock()
+            mock_keychain_class.return_value = mock_keychain
+            mock_keychain.get_api_key.return_value = None
+
+            token = GitHubConfigService().get_authentication_token(user_id="system")
+            assert token == "system-floor-sentinel"

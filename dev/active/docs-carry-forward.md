@@ -1,68 +1,97 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-07-29 19:45 PDT (Fire 2)
-**Session log**: `dev/2026/07/29/2026-07-29-0948-docs-code-log.md`
-**Prior update**: 2026-07-12 — **17 days stale, pre-Amber.** Rewritten wholesale; still-live items from
-that version are preserved below and marked, resolved ones noted so they aren't re-derived.
+**Updated**: 2026-08-01 22:40 PDT (Fire 7, STOP — DAY-CLOSED 2026-08-01)
+**Session log**: `dev/2026/08/01/2026-08-01-0727-docs-code-log.md` (yesterday's is
+`dev/2026/07/31/2026-07-31-0727-docs-code-log.md`, DAY-CLOSED verified)
 
-**Worktrees** (both verified 0-behind Fire 1): product `~/Development/piper-morgan-worktrees/docs` @
-`claude/docs-cycle` · website `~/Development/piper-morgan-website-worktrees/docs` @ `claude/docs-cycle`
-**Cron**: `26805e13` — `57 6,9,12,15,18,21`. ⚠️ **Session-only; auto-expires ~2026-08-05** (CronCreate
-7-day cap) and dies on session exit. Registry row written — re-arm AND update the row when it lapses.
-**Hooks on this seat** (probed Fire 1, index printed empty before each): standalone `git commit`
-**BLOCKS**; compound `… && git add … && git commit …` **BYPASSES**. Mitigation: stage in one call,
-commit bare in the next. `mail-send.sh` is safe regardless (`commit-tree`).
+**Worktrees**: product `~/Development/piper-morgan-worktrees/docs` @ `claude/docs-cycle` · website
+`~/Development/piper-morgan-website-worktrees/docs` @ `claude/docs-cycle`
+**Cron**: re-arming `774c7afe` → new id at STOP (delete-then-create; see final action) —
+`57 6,9,12,15,18,21`. Registry row must match.
+**Hooks on this seat**: standalone `git commit` BLOCKS; compound `add && commit` BYPASSES. Mitigation:
+stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 
 ---
 
-## Awaiting PM / others — check, don't re-derive
+## Awaiting others — check, don't re-derive
 
-- ✅ **Weekly Ship #053 CLOSED OUT** (Fire 2). LinkedIn URL supplied by Dispatch-DinP; `status=distributed`, `liPubDate`/`linkedinURL` set, `mediumURL` left empty by design (ship = LinkedIn-only). Draft archived to `published/` per Step 9. Nothing outstanding.
-
-- **🔭 ANTICIPATED (PM 2026-07-29, "may want to" — NOT yet a directive, do not build ahead):** the cross-posting skill is nearly done, and PM may hand syndication to **a new Dispatch agent working on the Piper Morgan project**. Three things in my lane change if that lands; all three are cheap to settle *before* the handover and expensive after:
-  1. **Routing is genuinely ambiguous and has a documented failure mode.** `mailboxes/DIRECTORY.md` explicitly says *do not* create `mailboxes/{agent}/` for cross-project agents **including Dispatch**, and cites CIO's 2026-07-04 mistake — *"a dead letter, not a delayed delivery."* A Dispatch agent *on this project* is either (a) Piper-Morgan-local → it needs `mailboxes/dispatch/` **and** DIRECTORY.md amended in the same change, or (b) still cross-project → stays at `~/Development/dispatch/mail/` and nothing changes. **Guessing wrong produces silent dead letters.**
-  2. **`publish-to-blog` Step 8 says "PM does manually"** and Step 9 gates archival on a confirmed syndication URL. If Dispatch owns syndication, Step 8 changes owner and Step 9's gate becomes a *mail-driven* dependency with real latency — worth encoding rather than leaving as folklore.
-  3. **Keep ONE writer on the editorial calendar (recommend: Docs).** Dispatch should *report* the URL; Docs writes it via `/update-calendar`. A second writer on an 18-column CSV is precisely the column-shift risk that `update-calendar` v1.2 and my predecessor's Ship #050 repair both document — field count stays valid while content drifts one column right.
-- **⏳ Puppeteer cache clear** — PM authorization needed, it's outside the repo: `rm -rf ~/.cache/puppeteer/chrome-headless-shell/mac_arm-139.0.7258.154` (check the sibling `chrome/` dir too). Not blocking — `npm ci --ignore-scripts` works.
-- **⏳ Pre-Amber machine disposition** — decides whether Dispatch's 15 stashes are hygiene or a deadline. Raised to Dispatch + PM. **The stashes are NOT on Amber** (verified: 0 in main checkout + all 11 worktrees, no `refs/stash`, no stash reflog).
-- **⏳ CIO scoping note for the CLAUDE.md refactor** — *carried from the 7/12 version, still the blocker.* See owed item 1.
-- **⏳ CIO/Pard on provisioning** — 2 memos sent (Node gap; Python-too addendum). Nothing blocks on a reply.
+- **PDR-007 awaits CIO ONLY.** Arch ✅ and Web ✅ both reviewed, no objection. **Do not decide the
+  storage question early** — pre-registered 2–4 week window (2026-07-30 → 2026-08-27), shipped
+  measurement (`scripts/measure-editorial-drift.py`). Last run 2026-08-01 (post-archival, unaffected):
+  Class 2 = 0 (criterion 0), Class 3 = 17 (criterion ≤17), 367 matched rows.
+- **docs/ tree audit routed to Arch 2026-08-01** (`docs/internal/operations/docs-tree-audit-2026-08-01.md`).
+  Arch acknowledged same day, took it as **first item at 06:27 tomorrow** (2026-08-02), named the trigger
+  explicitly rather than rushing 16 per-file dispositions at day-close. Not mine to act on further unless
+  Arch asks; audit itself is written, nothing more owed from me.
+- **Dispatch-DinP staleness report — replied 2026-08-01**, diagnosis sent to
+  `~/Development/dispatch/mail/`. Root cause: their read checkout (`~/cool/piper-morgan-product`, PM's
+  shared main checkout) is synced to `origin/main` only opportunistically via `scripts/sync-pm-local.sh`,
+  not on every push — so a read against it has no freshness guarantee. Not a repo defect; the repo (via
+  `origin/main`) had the clean content hours before the cross-post. Suggested fix: sync immediately
+  before reading, same discipline this project already applies at `publish-to-blog` Pre-Step and
+  `duty-cycle-tick` Step 2. **Watch for Dispatch's reply** — if they confirm/deny the mechanism, that's
+  worth a follow-up note either way (confirms a real systemic gap, or rules it out and reopens the
+  question of what actually happened).
 
 ## Owed by me — unblocked, priority order
 
-1. **CLAUDE.md load-time/record separation — PM-GREENLIT ALREADY, and HOST has now done the measurement.** *This is the largest thing I hold.* The 7/12 carry-forward records it as PM-greenlit (HOST proposed, CIO acknowledged), **Docs executes**, blocked on a CIO scoping note. HOST's 7/28 Pass 3 supplies the analysis: hooks investigation = **6,923 bytes / 12.8% of CLAUDE.md**, proposal is ~800 bytes replacing ~6,900 (**~11% of the file recovered from one item**), pointer verified non-dangling, and HOST deliberately stayed off the edit because it's Docs' call. **4 of 8 absent norms still unadded** — HOST added the 2 safety-relevant ones and left the rest rather than make it 4 more insertions. Next move: check whether the CIO scoping note ever arrived, or whether HOST's Pass 3 supersedes the need for one.
-2. ✅ **DONE (Fire 2)** — `draftPath`-resolves check shipped in the validator, **and all 7 stale paths repaired** (3 Ships + 4 narrative posts). 0 unresolvable of 97 rows carrying a path. Cause was Step-9 archival moving files without updating rows.
-3. ✅ **DONE (Fire 2)** — per-column shape checks shipped in `scripts/validate-editorial-calendar.py` (enums, date formats incl. chatDate's M/D/YYYY wart, URL/path prefixes, the Ship #050 repo-path-in-prose signature). Errors block, drift warns. Behaviorally tested both directions in an isolated tree. Predecessor's §4.4 item, closed.
-4. **Fold "`diff` the two draft copies" into `publish-to-blog` as an explicit step** — adopted as practice Fire 1; it caught a silent image drop only because Comms did it. Shouldn't depend on luck.
-5. **methodology-20 — two refinements now**: (a) predecessor's line-vs-entry-count unit mismatch, flagged across 5 omnibus logs; (b) mine — the two HIGH-COMPLEXITY compression rules are **mutually unsatisfiable** (preserve-70-80% ⇒ 1.25–1.43×; ratio check demands >3×). Both raised to CIO as owner.
-6. ✅ **DONE by COMMS (not me)** — `template-audit` v1.2 removed the `import yaml` dependency and added an explicit `⚠ CANNOT RUN` verdict token, tested across four frontmatter shapes. My suggestion, their lane, their fix, two hours. The *provisioning* half is still open (no venv on this host; CLAUDE.md Quick Reference still says `venv/bin/python main.py`).
-7. **18 calendar↔website metadata disagreements**, incl. ~46 live-site captions missing quotation marks (calendar right, site wrong).
-8. **97 docs >30d asserting current-state language**; `docs/internal/planning/current/` is itself now a misleading directory name.
-9. **Weekly-audit orphan rate** — 2 of last 6 unexecuted; mitigated by the Mon–Thu SessionStart hook, cadence still worth review.
-10. **docs/ tree audit + cleanup plan** — *carried from 7/12*, PM's direct request via PPM. Starting data: stale roadmap/README.md, `CORE/` an archival candidate. Write the audit + plan before any large-scale moves.
+1. **97 docs >30d asserting current-state language**; `docs/internal/planning/current/` is itself a
+   misleading directory name (oldest items 314d — surfaced precisely by the tree audit, same finding,
+   different angle). No deadline named.
+2. **methodology-20's two HIGH-COMPLEXITY compression rules are mutually unsatisfiable** — raised to CIO
+   twice now (predecessor's unit mismatch + my contradiction). Not mine to resolve; re-raise if it stays
+   open much longer.
+3. **`docs-standing-items.md` is stale** (last touched 2026-05-27, pre-Amber — references items and a
+   task-list model that predate the current carry-forward-as-source-of-truth discipline). Noted 2026-08-01
+   Fire 7, not acted on. Low priority: either refresh it to reflect the current architecture or fold its
+   still-live threads (#974 mem-eval pilot, #972 mem-temporal field-spec) into the carry-forward and
+   retire the file. Not urgent — nothing in it is currently misleading anyone but me.
+4. **Monday (2026-08-03) — first real run of the Doc Currency Check** added to the weekly audit. Watch:
+   does the ratio read legibly, does the `last_verified` cluster check surface correctly.
 
-## Resolved since the 7/12 version — do NOT re-open
+## Resolved since 2026-07-31 — do NOT re-open
 
-- ~~Ship #050 calendar validator error (19 fields on that row)~~ — **FIXED 7/28** by my predecessor (`fcfc95039`); it was a three-field column shift, not a count problem. Validator now clean at 418 rows / 18 fields.
-- ~~`the-server-crashed-mid-draft.md` archival~~ — that draft is in `published/`.
-- ~~Jul 9/10/11 log-closure and omnibus chain~~ — omnibus is gap-free through 2026-07-28 (414 logs).
-- ~~`docs-duty-cycle` scheduled task / Belt-4 spawn-fresh~~ — superseded by the Amber cron model (`26805e13`) + the freeze-watchdog registry.
+- ~~"Mechanism Beats Vigilance" publish + syndication~~ — **fully closed 2026-08-01.** Voice-pass proof,
+  published, Medium + LinkedIn both set, archived to `published/`/`images-archive/`, draftPath repointed.
+  Drift measurement clean.
+- ~~CIO worktree-model-revision ack (07-25)~~ — sent 2026-08-01, a week late but sent.
+- ~~9 `to: docs` inbox items (2 Comms, 1 Arch, 1 CIO, 2 Dispatch, 1 Web, 1 Exec, 1 self-handoff)~~ —
+  triaged 2026-08-01 Fire 7; verified each individually before filing, not assumed from subject line.
 
 ## Inbox
 
-**29 remaining, all cc-only historical from the 7/21–7/28 migration window.** Everything addressed *to*
-docs is drained. **Not** mass-moving unread mail to `read/` — that would misrepresent what's been
-consumed. Work through on quiet fires.
+**~51 remaining, cc-only historical from the 7/21–7/28 migration window.** Everything addressed *to*
+docs is drained as of Fire 7. Not mass-moving to `read/` — drain on quiet fires, as before.
 
-## Standing lessons earned 2026-07-29 — all three one shape
+## Standing lessons (carried, still live)
 
-**Verify per assertion, not per session.** One verification never licenses an extrapolation:
+**Verify per assertion, not per session.** Two more instances 2026-08-01, both self-inflicted process
+slips rather than factual errors, both caught the same way — reading `git status` after acting rather
+than trusting a command matched intent: (1) a bad pathspec silently aborted a `git add`, landing a commit
+with 0 real diff while the message claimed the calendar update; (2) a `mail-send.sh` call included the
+new (moved-to) paths for 9 triaged memos but not the old (moved-from) inbox paths, leaving them showing
+as uncommitted after a "successful" send. **The fix in both cases was the same habit**: don't read a
+commit or send as done until `git status --short` confirms it.
 
-1. **Stale worktree** — reported the Ship's state from a tree **45 commits behind**, and told PM there was no draft. `feedback_read_the_artifact_not_testimony_about_it` has an unstated precondition — *the artifact must be current* — which a behind checkout satisfies in letter and breaks in fact. **Sync immediately before reading**, not once at session start.
-2. **Guessed timestamps** — ran `date` at 15:26, then extrapolated across several work units; 3 memos went out up to ~55 min ahead of real time.
-3. **Acted before reading mail** — Comms had already answered the Driver blocker and the memo sat unopened for 10 minutes while I published. **Drain mail before the task loop**, which is exactly what WORK PARTS already prescribes.
+**Cross-agent staleness diagnosis discipline (new, 2026-08-01)**: when another agent reports "the repo is
+stale," don't take the framing at face value — walk the actual commit history against the timeline they
+describe before agreeing there's a repo-side defect. This time the repo was fine; the read path wasn't.
+Worth remembering the inverse is just as possible — a future report like this could be a genuine repo
+defect, and the discipline is "check," not "assume it's always the reader's checkout."
 
-**The counterweight, worth as much**: **4 false alarms caught by checking before reporting** — empty
-caption, `<em><em>`/trailing slashes, the "index doesn't list #053", and "`mailboxes/` has been deleted"
-(self-inflicted: **Bash cwd persists between calls**). Each would have been a wrong report to PM or a bad
-edit to a live artifact. Doubting your own finding is as load-bearing as finding it.
+## Watch items (not owed to me, but adjacent)
+
+- **Puppeteer extraction cause** — Pard's lane, still open. Three hypotheses dead.
+- **methodology-20's mutually unsatisfiable compression rules** — CIO owns, raised twice.
+- **`sync-pm-local.sh`'s opportunistic cadence** — surfaced today as the likely root cause of Dispatch's
+  staleness report. Not proposing a change to it (its deliberate design tradeoff is documented and
+  sound for PM's own workflow) — flagging only that any other consumer reading that same checkout
+  inherits the same freshness gap, and won't know it unless told, as Dispatch now has been.
+
+## The one thing I most want to carry into tomorrow
+
+**A correct diagnosis beats a fast apology.** Dispatch's report could have been answered with "sorry,
+we'll fix the sync" — instead, five minutes of `git log` on the actual file turned a vague "something's
+stale somewhere" into an exact commit, an exact timestamp, and a specific likely mechanism. That's the
+same discipline as "open the authoritative surface" one layer up: don't just open my own authoritative
+surface, open the one the *claim* is about before agreeing with it.

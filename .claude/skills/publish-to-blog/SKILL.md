@@ -4,9 +4,9 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.20
+version: 0.21
 created: 2026-03-16
-updated: 2026-07-18
+updated: 2026-07-31
 ---
 
 # publish-to-blog
@@ -100,6 +100,34 @@ If the draft path or image path doesn't resolve, **stop and check with PM before
 - **Wrong filename in frontmatter**: PM filled in something like `image: 'ai-garden.jpg'` but the file is actually `ai-garden.png`. Surface the mismatch.
 
 Dry-run alone does NOT catch this — the script reports "*[dry-run] would prep image: /path/to/X*" without verifying the path exists. The pre-flight `ls` is what guarantees the file is in place.
+
+### Pre-flight 2: DIFF THE TWO DRAFT COPIES (mandatory, v0.21 — 2026-07-31)
+
+A draft frequently exists in **two places**: `dev/active/{slug}.md` (working copy, where PM and Comms
+often edit) and `docs/public/comms/drafts/{slug}.md` (**the copy `draftPath` points at, and the one you
+publish from**). They diverge silently.
+
+```bash
+SLUG={slug}
+if [ -f "dev/active/$SLUG.md" ] && [ -f "docs/public/comms/drafts/$SLUG.md" ]; then
+  diff "dev/active/$SLUG.md" "docs/public/comms/drafts/$SLUG.md" \
+    && echo "✓ copies identical" \
+    || echo "⛔ DIVERGED — reconcile BEFORE publishing; the drafts/ copy is what ships"
+fi
+```
+
+**Why this is mandatory rather than advisory**: on 2026-07-30, commit `e91cb5466` added the Almost Beta
+image block to the `dev/active/` copy **only**. The `drafts/` copy — the one `draftPath` resolves to and
+the one `publish-post.js` reads — never received it. **A publish would have silently dropped the image
+and reported success.** Comms caught it by diffing; nothing in the pipeline would have.
+
+⚠️ **This is chronic, not a one-off.** Weekly Ship #052's `draftPath` also pointed at a file that wasn't
+where the row said, and a 2026-07-12 pass repaired 22 stale paths without fixing the cause. Treat two
+copies as *expected* and reconcile every time.
+
+**If they differ**: the `docs/public/comms/drafts/` copy is what publishes, so it must be the superset.
+Do **not** assume the newer mtime is the better one — read the diff. The 07-30 case was an *addition*
+present only in the copy that does **not** ship.
 
 Future CLI enhancement candidate (flagged to web in the May 17 feature-corpus memo): a `--check` mode that runs all pre-mutation validation (image exists, frontmatter populated, slug not already used) without doing anything else.
 
@@ -559,6 +587,10 @@ After publishing:
 - [ ] Any superseded drafts moved to `drafts/superseded/`
 
 ---
+
+*Changelog gap, noted 2026-07-31: frontmatter read `version: 0.20` while the notes below stop at v0.16 — versions 0.17-0.20 were bumped without entries. Not backfilled here; I don't know what they changed and inventing it would be worse than the gap.*
+
+*v0.21 — **Two-copy diff made mandatory (Pre-flight 2).** A draft commonly exists in both `dev/active/{slug}.md` and `docs/public/comms/drafts/{slug}.md`, and only the second one publishes. They diverge silently. On 2026-07-30 commit `e91cb5466` added the Almost Beta image block to the `dev/active/` copy ONLY; a publish would have dropped the image and reported success. Comms caught it by diffing — nothing in the pipeline would have. Chronic rather than one-off: Ship #052's `draftPath` also pointed at a file that wasn't there, and a 2026-07-12 pass repaired 22 stale paths without fixing the cause. Snippet behaviorally tested across four cases (identical / diverged / single copy / neither), including the real 07-30 shape where the addition sits in the copy that does NOT ship. Explicit guidance not to prefer the newer mtime — read the diff.*
 
 *v0.16 — **CSV validator extension.** Step 6 verification updated to invoke `scripts/validate-editorial-calendar.py` as the canonical post-write check. The standalone validator parses the whole file via Python csv module, reports field-count drift + header mismatch with exit code 1, prints a clean-pass summary on exit 0. Inline single-row snippet preserved as alternative for targeted checks. Rationale: May 17 hand-edit incident introduced unescaped comma in altText (field count drifted to 19; should be 18); a wrapped standalone validator is easier to invoke + harder to skip than the inline `python3 -c` form. Future: pre-commit hook integration is a candidate enhancement (script is hook-ready — exit codes + stderr surface).*
 

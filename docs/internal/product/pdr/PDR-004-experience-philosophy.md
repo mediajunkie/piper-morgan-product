@@ -128,6 +128,78 @@ Together: Piper is a colleague who respects your autonomy (1, 2), maintains shar
 
 ---
 
+## ⚠️ Amendment A (PROPOSED, 2026-07-30, CXO) — the experience gate binds
+
+**Status: PROPOSED. Not ratified. PPM and PM hold the ratification call.**
+
+### What this amends
+
+PDR-004 places voice design *"downstream of these principles"* and explicitly out of its own scope
+(see "What This PDR Does Not Cover", above). That was correct — but it left a gap that only became
+visible when the machinery downstream grew teeth:
+
+**DoD Layer B** (`docs/internal/development/experience-verification-dod-layer-b.md`) states that
+*"a user-facing surface is not Done until its delivered experience passes the Colleague Test (or the
+surface's branched verification rubric) and conforms to the experience intent specified in its MUX
+doc."* That gate is **treated as binding** and is used to block Done.
+
+**Nothing ratified says it binds.** Someone disputing a Layer-B failure has nothing in the decision
+corpus to appeal to. The instruments are documented and versioned; the *authority* is not recorded.
+
+### The decision
+
+> **A user-facing surface is not Done until its delivered experience passes the Colleague Test, or
+> the branched verification rubric appropriate to that surface, and conforms to the experience intent
+> its MUX doc specifies.**
+>
+> **The rubrics are CXO-owned, versioned instruments.** This decision binds **the gate**, not any
+> particular version of any instrument. Rubrics may be revised, re-tuned, and branched without
+> re-ratification; what is ratified is that a rubric failure can block Done.
+
+### Why the instrument stays out of the corpus
+
+Diagnosed by PPM (2026-07-30), and it corrects the question CXO originally asked — which was whether
+to promote the *rubric* to ratified status:
+
+**Under m-38 the corpus records decisions, not instruments.** A rubric is a measuring device; it gets
+versioned, amended, and re-tuned, which is exactly what it must stay free to do. Putting a live
+instrument in the ratified corpus is a category error with a practical cost: **every rubric revision
+would drag a re-ratification behind it, and revision would stop.** The Colleague Test rubric is at
+v2.3.2 with a further branch opening for the PDR-006 plugin surface — precisely the case that would
+have raised the tier question a second time.
+
+**So: ratify the decision; leave the instrument where it lives.**
+
+### Scope — what this covers, deliberately including surfaces we don't render
+
+Per PM's 2026-07-30 ruling that experience decisions are PM + CXO **"across all the surfaces"**, the
+gate applies to every user-facing surface, including ones where Piper does not control the final
+rendering:
+
+| Surface | Instrument |
+|---|---|
+| Chat / floor responses, declines, error paths | Colleague Test rubric (R/C/T) |
+| UI-rendering surfaces (lifecycle, staleness, status) | UI Lifecycle Verification Rubric |
+| **Hosted-MCP / plugin tool responses (PDR-006)** | **Branch open, not yet specified — see below** |
+| New surface type with no fitting rubric | Branch a new instrument per Branch-or-Anchor; **naming the absence is itself a Layer-B finding** |
+
+⚠️ **Open, and named rather than assumed**: under PDR-006 the client LLM composes what the user
+actually reads from our tool output, so R/C/T no longer scores what the user sees. A rubric branch is
+**opened** (CXO, 2026-07-30) and its dimensions are not yet settled. The load-bearing unknown is
+**honesty-under-recomposition** — our honest-decline discipline is a property of text we control, and
+whether a hedge survives another model paraphrasing it has never been tested. A Phase-0 probe (PA)
+runs before the branch is specified, because a negative result moves the fix out of the rubric
+entirely and into the tool output format.
+
+### Provenance
+
+Raised by CXO as *"does the Colleague Test warrant PDR status?"*; reframed by PPM — **the unratified
+thing is the decision, not the instrument** — which is the form recorded here. Originating context:
+the Jake Krajewski alpha FTUX review, where the Colleague Test was applied to a new surface (the FTUX)
+and the question of its standing surfaced.
+
+---
+
 ## Review History
 
 | Date | Event |
@@ -138,6 +210,7 @@ Together: Piper is a colleague who respects your autonomy (1, 2), maintains shar
 | 2026-03-16 | All four principles referenced in floor inversion synthesis as binding direction |
 | 2026-03-19 | ADR-060 formalized floor-first routing as architectural expression of Principle 4 |
 | 2026-03-22 | PDR-004 created, consolidating all four principles into single product decision record |
+| 2026-07-30 | **Amendment A PROPOSED (CXO)** — ratifies that the experience gate (DoD Layer B) binds, while keeping the rubrics as unratified CXO-owned instruments. Awaiting PPM + PM. |
 
 ---
 

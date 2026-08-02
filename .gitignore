@@ -97,6 +97,14 @@ docs/comms/blog/*.png
 docs/comms/blog/*.jpg
 docs/comms/blog/*.jpeg
 archive/
+
+# docs/internal/architecture/archive/ is a DELIBERATE, git-tracked destination (docs/ tree audit,
+# 2026-08-01/-02) for archive-with-pointer dispositions on architecture docs — it must stay tracked
+# even though the broad `archive/` rule above would otherwise silently swallow new files dropped
+# there. The broad rule elsewhere (e.g. tests/archive/) is unaffected; this negates only this path.
+!docs/internal/architecture/archive/
+!docs/internal/architecture/archive/**
+
 *.dmg
 *.png
 *.docx

@@ -91,3 +91,51 @@ The instances arrived faster than the fixes. The freeze-watchdog was **alerting 
 ## Footer-chain note
 
 The current chain ends at *The Architect's Own Trap* (Aug 18). Adding this slate means wiring Aug 18 → Beat 24 and chaining forward through Sep 3. Front-advances-don't-backfill: no published post gets re-pointed.
+
+---
+
+# REVISION — 2026-08-01, applying PM's A-plot discipline (§1.5)
+
+PM, 2026-08-01: *"resist the idea that everything has to make it in… sometimes you really have to pick and choose what the actual story is."* Re-read my own proposal against that, and **one beat fails badly, one is soft, three hold.** The honest finding is that I wrote a digest and called it a slate in at least one place.
+
+## The test applied, beat by beat
+
+**Beat 24 — Jul 16–18. HOLDS.**
+**A plot, one sentence**: they set out to delete dead code and found that more than half of it wasn't dead — it was faking success when called.
+**B plot**: the pre-flight check that caught a classifier error which would have silently degraded every classification.
+**Cut**: the ADR-079 owner-scoping contract, the census numbers (254 handlers / 39 reads / 9 stubs / 78 todos), the sprint's gate mechanics. All real, none serves the A plot. → *insight track or Ship*.
+
+**Beat 25 — Jul 19. ⚠️ FAILS. This is the digest.**
+I described it as *"a Sunday carrying a restoration, a data-loss scare, and the end of a forty-run losing streak"* — **that's three A plots in a trenchcoat**, and the title I gave it (*"The Sunday That Held Everything"*) is the comprehensiveness impulse announcing itself.
+**Re-cut — A plot**: a push-retry shortcut silently reverted a colleague's already-landed work; a *different* role noticed; the author root-caused and restored it; a durable rule came out of it — all inside one session. That's tension, discovery, resolution, and it's about the team catching itself.
+**B plot**: the cohort coming back from a multi-day cron death, which is the *setting* for the above rather than a story of its own.
+**Cut and moved**: the 40-run CI streak — it isn't a B plot here, it's **Beat 26's A plot** and was double-counted. Ship #052's coordination → the Ship itself.
+**Retitle needed**: something naming the actual story, not the day's fullness.
+
+**Beat 26 — Jul 20–23. HOLDS, and gets stronger.**
+**A plot**: one role, largely alone, took a chronically-red pipeline from 40-plus consecutive failures to green — and the drain kept coughing up real production bugs as a byproduct. *(Now cleanly its own, with the streak no longer split across two beats.)*
+**B plot**: the fifteen-hour session freeze that made the migration concrete.
+**Cut**: the per-wave backlog numbers beyond the arc, the six product fixes enumerated. Name two, drop four.
+
+**Beat 27 — Jul 24–25. SOFT — needs a sharper A plot.**
+As proposed it was *"relocating a ten-role team and discovering safety nets had never fired"* — two stories again, and the migration half is procedural.
+**Re-cut — A plot**: the rule that came out of it — *a safety net you haven't seen fire is a claim, not a mechanism* — and the fact that it was **applied to itself twice within the same day**, by the people who wrote it.
+**B plot**: PM's path-vs-account reframe, which changed the mitigation.
+**Cut**: the three portability boundaries, worktree-isolation ratification, the provisioning specifics. → *Ship*.
+
+**Beat 28 — Jul 26–28. HOLDS. Strongest of the five.**
+**A plot**: the pattern got a name, and then kept turning up **inside the fixes written to cure it**.
+**B plot**: every rival hypothesis being refuted by the agent who proposed it.
+**Cut**: the watchdog-alerting-on-compliance case and the wrong-git-ref case — pick **one** as the worked example, not both.
+
+## What the discipline changes
+
+**Still five beats, not four.** I tested merging 24+25 and 27+28 and both merges make the problem worse — they'd produce exactly the everything-fits-together artifact PM is warning against. **The fix isn't fewer beats, it's less inside each one.**
+
+**One double-count found**: the 40-run CI streak was doing work in both Beat 25 and Beat 26. That's the specific mechanism by which a slate inflates — material that serves two beats gets written into both, and neither cut it because it was genuinely relevant to each.
+
+**Expected effect on length**: the cuts above are roughly a third of the material I'd have drafted. Given the measured data (§1.5) — that span does *not* predict length — cutting here should land these near the 1,000–1,300 target rather than the 1,400–2,000 the last few months have produced, **without touching the span**.
+
+## Still PM's call
+
+Unchanged from the original proposal: **five or four**, the titles, and the spine. The revision above changes *what goes in each beat*, not the sequence or the dates (Aug 20 / 25 / 27 / Sep 1 / 3). **Beat 25 needs a new title** either way — its current one is the symptom.

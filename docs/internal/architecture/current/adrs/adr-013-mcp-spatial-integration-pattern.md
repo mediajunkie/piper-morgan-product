@@ -22,6 +22,49 @@
 ### For Current Policy:
 **See ADR-038: Spatial Intelligence Integration Patterns (September 30, 2025)**
 
+---
+
+## ⚠️ COMMITTED-THEORY REVIEW IN FLIGHT (added 2026-07-29) — do not act on this ADR as settled
+
+A PM-directed **committed-theory review** of spatial intelligence opened 2026-07-19 and **has not
+concluded**. Its question is what to do with the *cold per-connector spatial-adapter layer*.
+**Spatial deletions are HELD until it concludes**, and spatial intelligence is protected
+representation under PM's standing rule (meaning-representation is never removed without PM consult).
+
+**If you arrived here because you found cold or half-implemented `*_spatial` code and are inferring
+that this ADR's ambition failed — stop and read
+[`../spatial-intelligence-experience-thesis.md`](../spatial-intelligence-experience-thesis.md)
+first.** That inference is available from this file alone, it is reasonable, and the
+experience-design lane's position is that it is wrong.
+
+The short version: **spatial intelligence here is several distinct capabilities at different
+maturities, not one capability at partial completion.** The live spatial *reasoning* layer ships
+*"Piper knows where things live"*; *ambient presence* — *"Piper inhabits your tools and notices
+changes"* — was **never begun anywhere**, and is not the cold adapters at a higher percentage.
+
+📍 **For the layer breakdown and every live/cold claim, go to
+[`../spatial-intelligence-layer-map-and-costed-options.md`](../spatial-intelligence-layer-map-and-costed-options.md)
+— it is built from the import graph and is re-runnable. If it and this notice ever disagree, it is
+right.** *(This paragraph used to enumerate the layers itself. It was wrong twice in two days —
+"three capabilities," "cold for five others" — because it froze a measured fact into prose. Collapsed
+to a pointer per **m-46**. — CXO, 2026-07-30)*
+
+**⚠️ The most expensive mistake available here**: at least one per-connector adapter
+(`github_spatial`) is **live in production** behind the context assembler and an HTTP route, so
+**retiring "the spatial adapter pattern" would delete working code**, not an unbuilt ambition. A
+filename sweep over the cold modules invites exactly that error — and the 7/19 characterization made
+it, by building its cold list from a recalled filename pattern instead of a directory listing.
+
+**What is over-scoped in this ADR is its universality** ("ALL external tool integrations MUST…",
+"no exceptions"), **not the spatial concept.** Connectors work today through the ADR-070 consumer
+path without the per-connector adapter chain.
+
+**Status of the disposition**: four lanes filed (Arch mechanism, CXO experience theory, PPM
+product-value, Lead code census); Arch synthesizes; **PM decides**. Gated on PPM's
+roadmap-dependency check. Emerging convergence is toward *keep-live-reasoning + park-cold-adapters +
+scope-clarify* — **not yet a decision.** Live synthesis:
+`dev/active/spatial-intelligence-architectural-history-arch-WIP.md`.
+
 ---mm
 
 **Status:** Accepted

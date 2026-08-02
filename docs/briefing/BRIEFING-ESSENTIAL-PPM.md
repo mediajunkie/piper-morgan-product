@@ -2,8 +2,8 @@
 type: briefing
 title: BRIEFING-ESSENTIAL-PPM
 valid_from: "2026-01-09"
-last_updated: "2026-04-27"
-last_verified: "2026-06-19"
+last_updated: 2026-08-01
+last_verified: 2026-08-01
 ---
 
 # BRIEFING-ESSENTIAL-PPM
@@ -169,11 +169,20 @@ The discipline is *not* "more PDRs" — it's "fewer, more decisive PDRs that com
 - ✅ MUX implementation (Jan 2026)
 - ✅ M0 Conversational Glue (Mar 2026)
 - ✅ M1 Foundation (closed Apr 11, 2026)
-- 🎯 M2 Activation (M2a/b/c done; M2c-tail + #992 Phase E in flight; M2d next)
-- ⏳ M3 Artifact Persistence
-- ⏳ M4 Trust + Learning
-- ⏳ Beta readiness
-- ⏳ MVP release
+- ✅ M2 Activation (**CLOSED 2026-06-03**)
+- ✅ M3 Artifact Persistence (**CLOSED**)
+- ✅ RECONNECT — Connector Refactor (buildable scope **DRAINED 2026-07-01**; full ADR-070 migration is Production-milestone work, per PM's 7/16 gate ruling)
+- ✅ D1 — Beta design quality (**CLOSED 2026-06-19/20**, #1297 sign-off, 32/32)
+- 🎯 **Beta Blockers — the live pre-beta sprint.** Canonical list: `docs/internal/planning/beta-blockers.md`. **The MVP milestone IS the beta gate** — beta ships when that list closes. **Beta target Aug 8** (PM, 2026-07-30).
+- ⏳ MVP / beta release (0.9.0) → ⏳ Production (1.0)
+
+> ⚠️ **M4 and M5 no longer exist as sprints.** They were swept 2026-07-04/05 along with
+> M3-Quality/Health/Security and RECONNECT; every open issue was dispositioned as either a **Beta
+> Blocker** or **moved to the Production milestone**, to be addressed *during* beta. **An issue
+> sitting in Production is that rule working, not a defect.** If you see `(M4 territory)` or "M4/M5"
+> as live guidance anywhere, it is a stale pointer — check `beta-blockers.md`, which is canonical.
+> *(Corrected 2026-08-01 by PPM. This arc block had shown M2 as in-flight three months after it
+> closed.)*
 
 **Key Product Questions**:
 - What's the "glue" experience that makes Piper feel like a colleague?

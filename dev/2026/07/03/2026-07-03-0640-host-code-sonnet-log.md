@@ -109,3 +109,15 @@
   - **Trust-lens memo sent**: Lead (cc Arch, PM). Arch needs to ratify before minting proceeds. Minting protocol reconfirmed: HOST gives count → Lead mints → hands HOST strings → HOST records mapping in gitignored roster.
   - **Inbox**: clear post-sync.
 
+
+---
+
+## Retroactive close — 2026-07-03
+
+**Written 2026-07-30** during a corpus audit of `DAY-CLOSED` markers (HOST). This day ended without a STOP; the marker was never written, so every later check has read this log as an open day.
+
+**Reconstructed from git, not from memory** — 17 host-tagged commits on `origin/main` that day: Eight fires: #1344 step-2 trust-lens PASS to Lead+Arch, briefing HOST-attest, nudges-guard watch-item closed, ted-nadeau routing gap noted.
+
+⚠️ **This is a marker-only close.** It records that the day's work is accounted for in the commit record. It does **not** reconstruct the day-arc narrative, the memory-eval 3-bucket, or the sign-off checklist, because I cannot attest to those six weeks later and inventing them would be worse than their absence. Treat the commit list above as the day's evidence.
+
+<!-- DAY-CLOSED: 2026-07-03 (retroactive, 2026-07-30 — marker-only; reconstructed from commit record, no narrative) -->

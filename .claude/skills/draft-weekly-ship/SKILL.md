@@ -2,7 +2,7 @@
 name: draft-weekly-ship
 description: Draft the Piper Morgan Weekly Ship newsletter from collected workstream memos. Use when PM says "draft the Ship", "draft Ship #NNN", "synthesize the workstream memos", or when all 6 workstream-NNN memos have landed in `mailboxes/exec/inbox/` and a theme has been picked. Loads the canonical artifacts before drafting so memory-of-past-Ships doesn't substitute for structure.
 scope: exec
-version: 1.8
+version: 1.9
 created: 2026-05-19
 ---
 
@@ -227,7 +227,7 @@ Verify before declaring done:
 
 - **Save location** (canonical drafting): `dev/active/weekly-ship-{NNN}-draft-{YYYY-MM-DD}.md` on the `claude/{worktree-slug}` branch per worktree-default discipline for substantive output
 - **Public-comms copy**: sync to `docs/public/comms/drafts/weekly-ship-{NNN}-draft-{YYYY-MM-DD}.md` on main so PM can read where they expect
-- **Add the editorial-calendar entry in the SAME commit as the draft** (Docs finding, 2026-07-21: Ship #052 sat drafted with no calendar row until PM noticed it missing from the admin view while looking for the next ship). Run the `update-calendar` skill (or its quick-add script) to add a row with `title` (full ship title incl. subtitle), `workDate`/`endWorkDate` (the Fri–Thu window), `pubDate` (target Tuesday), `status: drafted`, `draftPath`, `theme: ship`. Don't defer this to "after PM notices" — it's the same commit that creates the draft file, not a follow-up.
+- **Add the editorial-calendar entry in the SAME commit as the draft** (Docs finding, 2026-07-21: Ship #052 sat drafted with no calendar row until PM noticed it missing from the admin view while looking for the next ship). Run the `update-calendar` skill (or its quick-add script) to add a row with `title` (full ship title incl. subtitle), `workDate`/`endWorkDate` (the Fri–Thu window), `pubDate` (**the Wednesday following the window's Thursday end** — Ships #046–#053 are 8-for-8 Wednesday, verified from the calendar 2026-07-29; NEVER "target Tuesday" (this line's old text, wrong) and NEVER "day after drafting" (the #053 birth error: drafted late on a Wednesday, row born saying Thursday)), `status: drafted`, `draftPath`, `theme: ship`. Don't defer this to "after PM notices" — it's the same commit that creates the draft file, not a follow-up.
 - **Commit immediately after Write** per the May 17 memory
 - **Route to PM FIRST — PM gates the handoff to Comms.** PM reads, fact-checks, voice-passes, and *decides when* the draft is ready to enter Comms review (PM, 2026-07-08, after Exec routed a draft to Comms prematurely: *"It's not ready to go to comms yet. I decide that."*). Exec never self-initiates the Comms handoff. Flag word count to PM if outside target.
 - **Comms pre-publish review happens on PM's go** (PM clarification, same day: Exec generally drafts the Ship, but Comms reviews it before publish — a standing step). Comms's `template-audit` skill is their review-of-record; Exec's own Step-6 checklist pass does not substitute for it. Sequence is fixed: draft → PM → Comms → publish.
@@ -294,6 +294,10 @@ The Ship #043 v0.1 failure was not knowing the template existed — it was choos
 
 ## Version history
 
+### v1.9 (2026-07-29)
+
+Fixed the `pubDate` derivation in the calendar-row step (Step: same-commit calendar entry). It said "target Tuesday"; the actual cadence is Wednesday, 8-for-8 across #046–#053 (verified against the calendar CSV, not memory). Trigger: Ship #053's row was born at 10:38 carrying `2026-07-30` (Thursday) — a day-after-drafting slip on a late-drafted Ship — flagged by Comms, corrected same day per PM's "due today." Comms' trace showed the window fields were right and only pubDate was wrong at birth, pointing at the derivation rule; this text was the only derivation rule in the pipeline, and it named the wrong day. #054's target: Wednesday 2026-08-05. Also fixed the stale "Skill version: 1.6" footer.
+
 ### v1.8 (2026-07-29)
 
 **New Step 4c: hero image in External relations & community is now REQUIRED, not optional, and its source is constrained.** During Ship #053 review, PM asked that the published-pieces list always be followed by a hero image — specifically from one of the window's two Tuesday/Thursday narrative posts (Medium-only, not directly syndicated to LinkedIn per `publishing-cadence.md`), with alt text and caption pulled verbatim from that post's frontmatter and linked to pipermorgan.ai. Supersedes v1.5's softer, optional phrasing ("the External section's publication list can be followed by one of the window's cartoon illustrations") with a hard requirement plus an explicit sourcing rule (narrative posts only, not any window illustration, not an insight post's image — insight posts already reach LinkedIn on their own). Codified in parallel in `weekly-ship-template-v4.2.md` (bumped from 4.1) and `weekly-ship-process-guide.md` Step 6, with the process guide framing it as a joint CoS-sources / Comms-verifies check, mirroring how `template-audit` verifies frontmatter on a standalone post. Added to the audit checklist.
@@ -336,7 +340,7 @@ Initial skill. Lists canonical artifacts to load before drafting. Names voice-di
 
 ---
 
-*Skill version: 1.6*
+*Skill version: 1.9*
 *Created: 2026-05-19 (v1.0)*
 *Updated: 2026-05-20 (v1.1 — External-section verification step; v1.2 — omnibus is required full read, not spot-check); 2026-07-08 (v1.3 — Comms pre-publish review is a named mandatory step; v1.4 — PM gates the Comms handoff + evidence-tier discipline; v1.5 — metrics as bullet list, never a table); 2026-07-14 (v1.6 — Step 2b hard gate: all 6 memos required, no partial drafts under deadline pressure)*
 *Scope: Exec (drafts); PM (gates); Comms (reviews)*

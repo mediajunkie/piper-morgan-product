@@ -162,8 +162,17 @@ class GitHubConfigService:
             except Exception:
                 token = None  # keychain unavailable → fall through to env
 
-        # Env-var fallback (the floor: dev / shared / system credential).
-        if not token:
+        # Env-var fallback — SYSTEM-ONLY since #1461 (PM decision (a), 2026-08-01):
+        # the env token is a system/dev credential, never a floor for real users.
+        # A real user without their own connected PAT gets None (GitHub features
+        # decline until they connect) rather than silently acting as the shared
+        # system identity. Production already behaved this way (Fly sets no
+        # GITHUB_TOKEN — only the per-user OAuth app credentials); this codifies
+        # it so keyed dev seats match production instead of leaking the ambient
+        # credential across user boundaries (#734's isolation contract).
+        # (#1192's precedence rule is untouched: a connected user's own token
+        # already won above; this narrows only WHO receives the env fallback.)
+        if not token and not is_real_user:
             for env_var in (
                 "GITHUB_TOKEN",
                 f"GITHUB_TOKEN_{self._environment.value.upper()}",

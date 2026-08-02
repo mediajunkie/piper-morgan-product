@@ -15,113 +15,111 @@ PM-attention items live **here**, in the section immediately below.
 
 ## PM Attention
 
-*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-07-29.)*
+*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-01 STOP.)*
 
-**Two decisions, both PM's, both now genuinely blocking. Everything else on this thread has resolved.**
+**Nothing is blocked on PM tonight.** Beta is **Aug 8**.
 
-- 🔴 **DECISION 1 — upgrade pipermorgan.ai to Team/Enterprise, or hold Track A?** ✅ *Tier question is
-  CLOSED*: xian checked the account — it is **Pro (Max 20x)** (Janus, 7/28). Team/Enterprise is required
-  to reach the connector submission portal, so **Track A (connector listing) is blocked on the plan, not
-  pending a lookup.** This is now a purchase decision, not a research task.
-- 🔴 **DECISION 2 — open-source the plugin package (CLAUDE.md + hooks + skills)?** Track B requires a
-  **public GitHub repo**; closed-source is not accepted. **With Track A behind a paid upgrade, Track B is
-  the only Claude-side route open today** — so this is the live gate, not the deferrable one.
-  *(PA advised deferring this on 7/26 morning; withdrawn same day.)*
-- ⏰ **ACTION, not a decision — OpenAI identity verification. Still unstarted; 10 days.** The only item
-  with an **external clock**, and unaffected by both decisions above. Exact path (Janus, 7/28):
-  **platform.openai.com → Settings → Organization → General → "Verify Organization"** — government ID,
-  a few minutes, no spending threshold, no company entity. Unblocks the ChatGPT remote-MCP listing.
-- ❓ **One 30-second look, if convenient**: what is the **"Piper morgan" entry** in your earlier
-  screenshot — an installed connector, a personal plugin upload, or an actual listing? Determines whether
-  anything is already live. *(The Console-org half of this question is largely moot: Track B's Console
-  path needs a Console org role, which the API usage implies.)*
+- 🟡 **One optional convenience, not a blocker: click "Always Allow"** if a macOS keychain dialog is
+  sitting on your screen. PA's 19:12 probe queued one or two before diagnosing the cause and stopping.
+  **Already worked around** — Lead identified the authorized interpreter
+  (`~/Development/piper-morgan-worktrees/lead/venv/bin/python`, which PM stored the keys through), and
+  PA ran the probe from it successfully. So this is tidiness, not need.
+- ✅ **Keys provisioned 17:27 8/1 — confirmed, and the four blocked lanes are unblocked.**
+- ✅ **PDR-006 RATIFIED** 7/31; two pre-user gates tracked as **#1458** and **#1463**.
+- ✅ **Architecture diagram redrawn** at PM's request — https://claude.ai/code/artifact/92ce8bc9-23d4-4590-b121-dacc0ab72e17
+  (source in git at `dev/active/pdr-006-architecture-2026-08-01.html`, because the July one vanished
+  with an account). **PM still owes a time to discuss it** — no urgency named.
 
-### Resolved since 7/26 — no PM action
+### 🔴 The operational finding PM should know, even though it needs nothing tonight
 
-- ✅ **PDR-006 ratification UNBLOCKED (Arch, 7/29).** Q2 was never open: **PM ruled it 2026-01-08** —
-  rule-based Option A, shipped; LLM evolution is **#558**, OPEN, Production/1.0, due 2026-10-30. Arch
-  verified against running code. Arch's own spatial-coupling flag **withdrawn as a gate** (re-trigger
-  recorded if #558 is pulled forward). **Arch has no objection to ratifying**; CXO + PPM reviews still out.
-- ✅ **Claude submission tiers resolved** against Anthropic's docs (`dev/active/distribution-submission-tiers-resolved-2026-07-26.md`).
-- ✅ **#1351's unfinished audit is now a tracked pre-live gate — [#1458](https://github.com/mediajunkie/piper-morgan-product/issues/1458)**, filed at Arch's direction with the three untraced surfaces (Redis, in-process floor/context state, rate-limiting) as ACs, plus the identity-boundary mechanism.
-- ➡️ **New, PM's and genuinely open — but must NOT gate anything** (Arch, 7/29): *at what point does the
-  gap between a 4-dimension rule-based preference model and a real "colleague model" start costing us
-  users?* Product-quality question. **Alpha feedback should decide when #558 gets pulled forward.**
+**On an unattended agent seat, an unauthorized keychain read HANGS rather than ERRORS.** Worse than
+"absent": absent was loud and got fixed in two days; a hang burns a fire silently and looks like a slow
+task. ⚠️ **A Python `SIGALRM` cannot interrupt it** — the block is inside the macOS Security framework,
+so any guard must be a **subprocess with a hard kill**, not an in-process alarm. HOST has routed a
+bounded-timeout suggestion to CIO. **Server is NOT exposed** on the Anthropic path (HOST static trace:
+it reads env, not keychain); **BYOC/user-key features are.**
+
+### Closed since 7/29 — no PM action
+
+- ✅ **Team upgrade DROPPED** (chat installs plugins on all paid plans; plugins bundle connectors).
+- ✅ **"Open-source decision" never existed — the repo is already public.**
+- ✅ **#558 stays in Production** (PPM): you cannot get colleague-model feedback from users who bounce at
+  first contact, so it is gated behind cold-start. *Explicitly a sequencing call — if overridden, the
+  spatial coupling returns immediately.*
 
 ### Context PM may want when these come up
 
-Submission is **further out than the 7/19 research memo implied**, and PA verified this rather than
-restating it: **`mcp.pipermorgan.ai` is not deployed** (it exists only in PDR-006 and planning docs),
-and **no public privacy policy page exists**. Both directories require a stable endpoint and a privacy
-policy. **This strengthens rather than weakens the two ⏰ items** — they are the only long-external-
-lead-time steps and the only ones not gated on the server existing, so they should run in parallel
-with the build, not after it.
+**Submission is gated on build, not decisions.** Verified rather than restated: **`mcp.pipermorgan.ai`
+is not deployed** (exists only in PDR-006 and planning docs) and **no public privacy policy page exists**
+— a missing privacy policy is an *immediate rejection* on both directories. So the earliest realistic
+submission is weeks out regardless, and **OpenAI verification is the one thing whose clock runs
+independently of all of it** — which is why it stays the single ⏰ item.
 
-## Active state — 2026-07-29
+⚠️ **Standing caution for this whole thread, earned three times over.** The tier answer was wrong twice
+in opposite directions; the open-source "decision" was carried as open for ten days after PM had
+answered it repeatedly; Q2 blocked PDR-006 for ten days after PM had ruled on it in January. **Every one
+was a claim inherited from a document and never checked against the source** — `gh repo view`,
+`gh issue view`, the actual code. All three were 30-second checks. **Before restating anything on this
+thread, verify it.** *(And per PM 7/29: the platform story here changes fast — a correct answer from four
+days ago is not a current answer.)*
 
-- **Role**: Piper Alpha (PA) · **Host**: Amber · **Account**: xian@pipermorgan.ai
-- **Model**: Claude Opus 5 (1M context)
-- **Worktree**: `~/Development/piper-morgan-worktrees/pa` (Model A, stable path) · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/07/29/2026-07-29-1216-pa-code-log.md`
-- **Cron**: ✅ **ARMED** — job **`04985c22`**, `42 6,9,12,15,18,21`. Registry row active, carries the job id.
-  *(PM approved this cadence 7/26; PA failed to arm it and went dark 7/27–7/28. **Approval and arming are
-  two separate acts** — do not treat the first as the second.)*
-  ⚠️ **TWO SILENT DEATH MODES, both looking identical to a quiet day:** (1) `CronCreate` jobs are
-  **session-only** — they die when the Claude session exits, so **every new session must re-arm**;
-  (2) recurring jobs **auto-expire after 7 days** — this one lapses **~2026-08-05**. Neither emits
-  anything. **Check `CronList` at session start; if it's empty you are not cycling, whatever the registry
-  says.** The registry records *intended* cadence, not a live job — those two disagreeing silently is
-  exactly what produced 7/27–7/28.
-- **Predecessor**: went dark 2026-07-19 after a clean close. **No handoff existed** — oriented from
-  `dev/active/orientation-note-pa-amber-2026-07-25.md`, then PM consulted the predecessor directly on 7/26;
-  its §4/§6 is preserved at `dev/active/handoff-pa-predecessor-2026-07-26.md`.
+## Active state — 2026-08-01 STOP (next wake 06:42 Sun 8/2)
 
-## Environment verification (7/29)
+- **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
+- **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
+- **Last session log**: `dev/2026/08/01/2026-08-01-0712-pa-code-log.md` — **DAY-CLOSED 2026-08-01**
+- **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure
+- **Cron**: ARMED at STOP, delete-then-create. **Job id in the registry row.** 🔴 **First action any new
+  session: `CronList`.** Empty = not cycling. Jobs are session-only and expire ~7d (this one ~2026-08-08).
+- **Inbox**: 0 at close.
 
-Worktree path ✅ · branch `claude/pa-cycle` ✅ · `HEAD..origin/main` = **0** ✅ · tree clean ✅ ·
-one cron, no duplicates ✅ · memory pool present (166 entries after HOST's 7/29 prune) ✅ ·
-**hooks: do not assume coverage on a compound commit — see open thread 7.**
+⚠️ **KEYCHAIN — read this before any probe.** Use the **authorized interpreter**
+`/Users/xian/Development/piper-morgan-worktrees/lead/venv/bin/python` (PM stored the items through it).
+**Any other binary HANGS on a GUI dialog rather than failing**, and `SIGALRM` will not save you.
+
+## ▶️ First items tomorrow
+
+1. **Probe A arm 2 — the prose-hedge arm.** Arm 1 (5/5 survived) tested caveats in *named structured
+   fields*, which is the mitigation, not the risk. **Same five cases with hedges in narrative prose, no
+   named field.** That is the arm that answers CXO's question.
+2. **Probe A GPT arm.** PDR-006 ships to both; a Claude/GPT divergence is itself a ChatGPT-lane finding.
+   `openai_api_key` is provisioned. Arm 1 is half an experiment until this runs.
+3. **Probe B** (tool-naming vs selection accuracy) — PPM's verdict. Keep schemas identical across arms.
 
 ## Open threads PA owns
 
-1. **Distribution / directory listings** — blocked on the two PM decisions above. Unblocked prep PA can
-   advance meanwhile: privacy-policy draft, tool-annotation spec (`readOnlyHint`/`destructiveHint`)
-   against the eventual MCP tool catalog, docs/logo/test-account checklist. **Not started.**
-2. **PDR-006 — Arch signed off 7/29; CXO + PPM are the LAST two reviews. Nudged 18:42, ball is theirs.**
-   Q2 resolved; coupling withdrawal verified at the code and accepted by Arch. Sent both the 10-day delta
-   so neither reviews a stale doc, plus an explicit *"say so and I'll route around it"* escape.
-   ⚠️ **The nudge leads with a disambiguation — preserve it if you follow up**: Arch told CXO/PPM to
-   **HOLD the spatial re-vote** the same afternoon. That hold does **not** cover PDR-006, and the two are
-   separable only because the coupling flag is withdrawn *and verified*. If "Arch said hold" generalizes
-   past its scope, PDR-006 sits for nothing. **Next PA action: wait; chase only if it goes quiet.**
-3. **#1458** (pre-live cross-caller state isolation gate) — filed 7/29 at Arch's direction. Not started;
-   belongs with the hosted-MCP implementation epic, and it **blocks `mcp.pipermorgan.ai` serving a second
-   tenant.** Three untraced surfaces: Redis, in-process floor/context state, rate-limiting.
-4. **Jake FTUX** — PA review filed 7/29 (last of four). Exec synthesizes once all four are in; PM then
-   discusses. **PA's lead recommendation: ingest-and-reflect at onboarding** — it's a cold-start-*state*
-   problem, not a positioning problem, and the connectors are already built.
-5. **Architecture-diagram discussion** — PM-requested, awaiting a time. See `pa-standing-items.md` #2 for
-   the three things that have moved under it (tier resolution, Q2, spatial coupling). **Prep, don't
-   pre-empt: PM asked to discuss, not for a revision.**
-6. ⚠️ **Spatial review — Arch's premise INVERTED 7/29 (third characterization in ten hours); CXO/PPM
-   re-vote is ON HOLD pending one finished layer map.** Current model is **three** layers: (1) spatial
-   reasoning — live; (2) the spatial **abstraction** (`services/integrations/spatial_adapter.py`) — live
-   and **adopted by every MCP consumer adapter**; (3) per-connector direct-API implementations — mostly
-   cold **because a migration succeeded**. So the cold `*_spatial` modules are *superseded predecessors*,
-   not abandoned ambition, and the review's question has the polarity backwards. Likely outcome is
-   "dispose of migration residue," not a committed-theory verdict. **No PA action — Arch owns the
-   artifact.** Two things of PA's that Arch adopted and that must survive into it: **`github_spatial` is
-   live-by-construction, secondary-by-dispatch**, and **`services/mcp/consumer/` is Piper as MCP *client*
-   while `mcp.pipermorgan.ai` is Piper as MCP *server*** — nobody may cite #198 as de-risking PDR-006.
-
-7. **Hook mechanism — RESOLVED cohort-wide, PA's contribution partly wrong; no PA action.** The cause is
-   **index state at hook-fire time** (`check-branch.sh` reads `git diff --cached` and PreToolUse fires
-   *before* the Bash call runs), mechanism by Web, 25 probes / 5 seats. PA's "command shape is
-   necessary-not-sufficient" was a *correlate*, not the cause; CXO caught that PA's Step-2a-bis amendment
-   re-encoded the very confound it fixed. Both corrections have landed in CLAUDE.md and the skill.
-   **Standing mitigation: stage in one call, commit bare in the next.**
-8. **PA's lessons / load-bearing-vs-commodity write-up** — still owed. The gap CIO's orientation note
-   named; no predecessor read exists. Not written.
+1. 🟢 **PDR-006 — ALL THREE REVIEWS IN AND RATIFYING. Routed to PM 7/30; awaiting PM ratification.**
+   Nothing is blocked on the signature. **Next PA action: none — do not chase PM.** If ratification lands,
+   PPM drafts the implementation epic (theirs, offered).
+2. 🔵 **Phase 0 distribution work — PA's active lane, nothing blocked.** Plan + per-item state:
+   `dev/active/distribution-submission-tiers-resolved-2026-07-26.md`.
+   ✅ privacy policy drafted (`docs/legal/privacy-policy-DRAFT.md`, 5 open 🔍 markers needing PM: contact
+   address, deletion/export reality, retention, sub-processor completeness, security claims).
+   ⬜ **next**: tool-annotation spec — **now carries product weight, not just `readOnlyHint`/`destructiveHint`**,
+   because PPM established the catalog is where opinionation lives · `claude plugin validate` dry-run ·
+   public docs page · ChatGPT 5-positive/3-negative test cases.
+3. 🟢 **Client-LLM probes — GREEN-LIT BY BOTH VERDICT-OWNERS, unblocked, PA's to run.**
+   CXO: *"PA — yes on Probe A."* PPM: *"take it… one rig, two questions, Phase 0."*
+   Spec: `dev/active/phase0-client-llm-probe-spec-2026-07-30.md`. **A** = does our honesty survive
+   recomposition by the client LLM (CXO reads the result). **B** = do situation-shaped tool names route
+   worse than object-shaped (PPM + Lead/Arch read it). **Neither needs the server.** Both results change
+   what the tool layer emits, so they precede Phase 2. ⚠️ Keep schemas identical across B's arms; run A on
+   **both** Claude and GPT. **Not started.**
+4. **#1458** — pre-live cross-caller state isolation; blocks multi-tenant serving. Not started; belongs
+   with the implementation epic. PPM: don't let epic optimism compress it — the failure is silent and
+   cross-tenant.
+5. ✅ **Recomposition rubric gate — now [#1463](https://github.com/mediajunkie/piper-morgan-product/issues/1463)**
+   (filed by PA 8/1 as a **tracking artifact**; CXO had confirmed the branch decision 7/30, PPM asked who
+   would file it, and the question went unanswered through ratification + the credential blocker).
+   **Design remains CXO's — not pre-empted.** PDR-006's two pre-user gates are now symmetric.
+   ⛔ Blocked on the same Amber keys as everything else.
+6. **Architecture-diagram discussion** — PM-requested, awaiting a time. `pa-standing-items.md` #2. Prep,
+   don't pre-empt: PM asked to discuss, not for a revision.
+7. ✅ **PA's lessons / load-bearing-vs-commodity write-up — WRITTEN 7/31**:
+   `dev/active/handoff-pa-2026-07-31.md`. Closes the gap CIO's orientation note named. **Written live
+   rather than at a handoff, deliberately** — CXO diagnosed 7/30 that a handoff composed under context
+   pressure mis-states the author's own finished work. **Keep it current rather than rewriting it at
+   departure.**
 
 ## Inbox
 

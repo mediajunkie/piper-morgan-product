@@ -103,7 +103,7 @@ This guard is the durability-net layer of the four-layer displacement defense (s
 - `agent-360-questionnaire-v0_2.md` — HOST iteration target
 - `publish-package/` — active publishing artifacts
 - `non-doc-files/` — PM workspace dir
-- `session-end-warnings.log` — gitignored ephemeral
+- `session-end-warnings.log` — **gitignored, per-seat, and REAL. Preserve it.** ⚠️ *Corrected 2026-08-01: on 07-30 I annotated this as "has NEVER existed," from a `git log` query against a **gitignored** path — a check that returns empty regardless. The hook fires; HOST's seat holds a logged `tier=HARD` firing from 2026-07-29.* Absent in your worktree means no firing **on your seat**, not a dead mechanism.
 - Recent PM-dropped research files (<3 days old)
 
 **Forensic archives (Destination 4)**: typical archive shapes:

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — 2026-07-31</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#171717; --card:#212121; --line:#3a3a3a; --ink:#ececec; --mute:#9a9a9a;
+            --red:#e06050; --amber:#d9a03f; --grey:#8a8a8a; --green:#5fb573; --link:#6ea8e8; }
+  }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:840px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.25rem; }
+  .legend { font-size:.8rem; color:var(--mute); margin:.5rem 0 1.5rem; }
+  .legend span { margin-right:1rem; white-space:nowrap; }
+  h2 { font-size:1.05rem; margin:1.75rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.7rem .9rem; margin:.55rem 0; }
+  .item.block { border-left-color:var(--red); }
+  .item.dec { border-left-color:var(--red); border-left-style:double; }
+  .item.drift { border-left-color:var(--amber); }
+  .item.clear { border-left-color:var(--green); }
+  .item .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; }
+  .agent { font-weight:700; }
+  .sev { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .4rem;
+         border-radius:4px; background:#eee; color:#444; }
+  @media (prefers-color-scheme: dark) { .sev { background:#333; color:#ccc; } }
+  .summary { margin:.35rem 0 .3rem; }
+  .why { font-size:.85rem; color:var(--mute); margin:.2rem 0 0; }
+  .clean { color:var(--mute); font-size:.9rem; }
+  .clean b { color:var(--ink); }
+  .resolved { font-size:.85rem; color:var(--mute); margin-top:.4rem; }
+  .resolved s { color:#999; }
+  .clock { color:var(--red); font-weight:600; }
+  footer { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.8rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by Exec · <b>Fri 2026-07-31 ~11:40 PT</b> · incremental refresh of the 7/30 board, live-state pass · <b>beta target: Aug 8 (PM, 7/30)</b></p>
+  <p class="legend">
+    <span>🛑 <b>Blocker</b> — work stuck</span>
+    <span>🔴 <b>Decision</b> — needs your call</span>
+    <span>🟡 <b>Awareness</b> — no decision</span>
+    <span>⚪ <b>Clean</b></span>
+  </p>
+
+  <h2>🛑 Blockers — work that's stuck (each cleared by one PM action)</h2>
+
+  <div class="item block">
+    <div class="top"><span class="agent">Beta gate + 3 more lanes</span><span class="sev">keys</span></div>
+    <p class="summary"><b>API key provisioning on Amber</b> — via KeychainService (not the <code>security</code> CLI). One action unblocks four lanes: #1386 criterion 2 (the canonical suite — it <i>skips</i> keyless and reports green; PPM + CXO independently withheld sign-off, correctly), PA's PDR-006 Probe A, #1445, and #1395 Phase 0.</p>
+    <p class="why">Both sign-off parties committed to same-day sign-off on a keyed run. This is the beta path's critical path item #1.</p>
+  </div>
+
+  <div class="item block">
+    <div class="top"><span class="agent">Lead</span><span class="sev">no wake</span></div>
+    <p class="summary"><b>Lead cannot wake autonomously</b> — registry row still parked, cron never armed post-migration; Lead works only when you engage. This is why this morning's #1386 window never started. Engage directly or authorize the cron arm.</p>
+    <p class="why">When Lead wakes: answer PPM's scope question (does Scenario B touch the local keychain?), then run Scenario B against deployed v28 → verifies #1393 + #1394. Window re-scoped in writing on the issue; no deadline pressure retained.</p>
+  </div>
+
+  <div class="item block">
+    <div class="top"><span class="agent">PA / distribution</span><span class="sev clock">⏰ your today-item</span></div>
+    <p class="summary"><b>OpenAI identity verification</b> — you said this morning: not started, probably today. Held on the board until done; still the only item with an external clock. (Your ChatGPT base-of-operations move to the design-and-product account is relayed to PA — their directory plans get checked against the new account.)</p>
+  </div>
+
+  <h2>🔴 Decisions awaiting you</h2>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">You + CXO</span><span class="sev">your named focus</span></div>
+    <p class="summary"><b>The Jake FTUX / value-proposition decision</b> — the conversation you named as most salient. The four-lens synthesis (delivered this morning) has the six explicit calls in §4; CXO's discussion-structure prep composes with it. The pivot-aware sort (a third of the fix list dies with PDR-006 — which you just ratified) makes this timely: deciding §4 defines what "make the value visible at any time" gets built against. PPM converts to issues same-day once you two decide.</p>
+  </div>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">Cohort-wide</span><span class="sev">days, not weeks</span></div>
+    <p class="summary"><b>Memory-index governance</b> — hard floor arrives in ~days at current growth (CIO 7/30); the platform's claimed truncation fix is behaviorally disproven on both limits. Guard is in place; the restructure-vs-denser-format ruling is yours. Options: <code>docs/internal/operations/memory-index-size-limits.md</code>.</p>
+  </div>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">Lead / gate</span><span class="sev">standing</span></div>
+    <p class="summary"><b>#1424</b> close-vs-keep (open since 7/18, Lead lean: close) · <b>#1427</b> one-line confirm (milestone already Production) · <b>#1278</b> Fly.io scope call (beta-gate criterion 1 — the gate cannot close without it) · <b>tester-welfare instrument</b> (HOST; 12 tokens out, 1 report).</p>
+  </div>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">Comms</span><span class="sev">5 gated</span></div>
+    <p class="summary">Beats 21–23 voice-pass + art · Beats 24–28 slate steer (cures the post-Aug-18 dry-out) · Ship #053 LinkedIn URL · watchdog wording · BYOC direction. Unchanged; nothing unblocked is held.</p>
+  </div>
+
+  <h2>🟡 Drift / awareness — no decision, worth knowing</h2>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Infra</span><span class="sev">Aug 5</span></div>
+    <p class="summary">Session-only crons expire ~Aug 5 cohort-wide — autonomous wakes decay silently without re-arm; durable-scheduler question with CIO/Pard. Two new silent-death modes documented by PA this morning.</p>
+  </div>
+  <div class="item drift">
+    <div class="top"><span class="agent">Ship #054</span><span class="sev">on rails</span></div>
+    <p class="summary">Kickoff out this morning to all six roles; memos due at their Saturday day-close fires; draft Sunday; publish Wed Aug 5. The pubDate derivation defect that misdated #053 is fixed at the rule (skill v1.9).</p>
+  </div>
+  <div class="item drift">
+    <div class="top"><span class="agent">Coordination</span><span class="sev">post-mortem</span></div>
+    <p class="summary">Two durable rules from this morning's window post-mortem: a locked window's preconditions get re-verified at start by the driver (they went stale in 23 minutes this time), and the coordinator verifies the driver's wake mechanism before naming a start time. Both were caught before they cost anything — the withholding discipline worked.</p>
+  </div>
+  <div class="item drift">
+    <div class="top"><span class="agent">Janus</span><span class="sev">done</span></div>
+    <p class="summary">Key-issues summary delivered to Janus's mail directory this morning per your linchpin ask (verified on their origin/main); refreshed on material change, not on a clock.</p>
+  </div>
+
+  <h2>⚪ Clean — no open PM item</h2>
+  <div class="item clear">
+    <p class="clean">
+      <b>Arch</b> — recording the PDR-006 ratification; spatial layer-map shipped; PDR-007 review in progress.<br>
+      <b>HOST</b> — census + m-44 ledger advancing; its PM item is the welfare instrument above.<br>
+      <b>Docs</b> — staleness detector now has a consumer; publish pipeline healthy.<br>
+      <b>Web / CIO / PPM / PA / Comms</b> — active, nothing gated on you beyond items above.
+    </p>
+  </div>
+
+  <h2>✅ Resolved since the 7/30 board</h2>
+  <div class="item">
+    <p class="resolved">
+      <s>PDR-006 ratification</s> — <b>RATIFIED by you this morning</b>; relay sent, Arch recording formally.<br>
+      <s>PPM parked / Jake collection gate</s> — un-parked 7/30; all four lenses in; <b>synthesis delivered to you this morning</b>.<br>
+      <s>Build-stack go</s> — landed 7/30 (colima capped + persistent)… and immediately surfaced the keys blocker above; that's the net honest state.<br>
+      <s>Ship #053 loop</s> — published, race owned, date-rule fixed at source.<br>
+      <s>#1386 window as originally scoped</s> — superseded by the written re-scope; the QC that stopped it was the system working.
+    </p>
+  </div>
+
+  <footer>
+    <b>Bottom line: the beta path (Aug 8) runs through two of your actions — keys and waking Lead; your named focus (the FTUX/value-prop conversation with CXO) has its full substrate delivered and waiting; PDR-006 is ratified and in the record.</b><br><br>
+    Live-state pass this morning: #1386 (comments + scope), #1424/#1427/#1278/#1449/#1451/#1452/#1457/#1365 (GitHub states), registry TSV rows (Lead still parked, PPM active), Janus delivery verified on their origin/main, PDR-006 status from the ratification you gave in conversation ~11:00 PT. Commit-activity answer to your usage question is in chat (76 commits 06:00–11:22; HOST most active at 14; measured at the commit layer, a proxy).
+  </footer>
+</div>
+</body>
+</html>

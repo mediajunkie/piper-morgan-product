@@ -3,8 +3,8 @@ type: role-portfolio
 role: PPM (Principal Product Manager)
 status: v0.1 — main-cohort wave
 self-authored-by: PPM
-last_updated: 2026-06-27
-refreshed: 2026-06-27
+last_updated: 2026-08-01
+refreshed: 2026-08-01
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-PPM.md
 refresh_discipline: "section 2 updated as part of each weekly workstream review — can't write the Ship/workstream without restating priorities + status, so the review keeps this current by construction (Rule 5)"
@@ -28,17 +28,24 @@ The why: PM can't synthesize every cross-role lens in real time. PPM exists so t
 
 ---
 
-## 2. Current goals & priorities — June 2026 (D1 + M4 sprint)
+## 2. Current goals & priorities — August 2026 (Beta Blockers sprint; beta target Aug 8)
 <!-- Rule 2: medium-pace; changes per sprint. Rule 4: each has direction + current status + how we'll know it's moving. Rule 5: refreshed at each weekly workstream review. -->
 
-| Priority | What I'm advancing | Status (June 19) | How we'll know it's moving |
+> **Sprint context**: **Beta Blockers is the live pre-beta sprint** and the **MVP milestone IS the
+> beta gate** — beta ships when `beta-blockers.md` closes, not on a date. **M4/M5 no longer exist**
+> (swept 2026-07-04/05 into Beta Blockers or Production). The prior version of this section was
+> dated *June 19* and headed *"D1 + M4 sprint"* — six weeks stale against this doc's own Rule-5
+> refresh discipline. Refreshed 2026-08-01.
+
+| Priority | What I'm advancing | Status (Aug 1) | How we'll know it's moving |
 |---|---|---|---|
-| **Entity-model lane (#1237)** | 4-type Radar EntitySources built against the spec | BLOCKED: ADR-071 (Arch) → Lead build | ADR-071 filed and settled; Lead has a clear build target |
-| **Roadmap v18.1/v19 fold** | Roadmap reflects post-RECONNECT sprint arc | BLOCKED: PM input needed | PM gives directional input; PPM folds v18.1 |
-| **#683 DoD close** | Interface-verification DoD fully closeable | BLOCKED: Lead Dev recipe pending | Recipe lands; #683 closes with full AC evidence |
-| **#1269 standup skill** | PM milestone placement | BLOCKED: PM milestone call (post-#1237 callable) | PM makes the call; Lead has a clear lane |
-| **Ship #049 PPM lens** | PPM workstream review for Jun 19–25 | COMPLETE ✅ | Filed Jun 27 |
-| **Role portfolio** | Self-authored identity layer | COMPLETE ✅ (v0.1, HOST wave 8/8) | Refreshed by this review (Rule 5) |
+| **#1386 beta gate** | The shape-level gate for beta: does "done" mean the right thing was built | **Window re-scoped 7/31** — Scenario B only; **criterion 2 deferred** (canonical suite skips keyless → would report green without measuring). **Two PM-side unblocks**: key provisioning, rousing Lead | A *keyed* canonical run exists; CXO + PPM sign off on the issue scoped to what was measured |
+| **PDR-006 → epic #1462** | The hosted-MCP + plugin distribution pivot, from ratified decision to tracked build | **RATIFIED 7/31; epic filed** with Arch's three conditions in the body. **Milestone unset — PM-gated** | PM sets the milestone; Phase 0 (recomposition probe + tool-naming A/B) starts build-independently |
+| **First-contact criterion** | The one new beta criterion that can actually fail for what our alpha tester reported | Proposed on #1386 + #1462; **CXO's spec v0.2 specifies the experience** (7a gate / 7b conformance split, adopted from my catch) | One canonical wording (CXO's §7a), pointed at from both artifacts — PM's call |
+| **Jake FTUX conversion** | Four-lens review → tracked work | Synthesis with PM for a **PM+CXO decision** (six yes/no items). **Conversion triggers on the decision, not the synthesis** | Decision lands on §4 → I file the issues same day against the decided bucket structure |
+| **Spatial disposition** | Product-value + beta/production scoping of the committed theory | ✅ **Converged on (b)** with Arch + CXO, independently. L4/#1174 found **promised at 1.0 with zero implementation**; CXO owns the re-scope | ADR-013 updated as scope-clarification; #1174 re-scoped to discovery |
+| **Roadmap / briefing currency** | Keep the planning surfaces honest | Briefing refreshed 8/1 (was 6 days stale, **zero mentions of PDR-006**); `sprint-board-structure.md` + `roadmap.md:68` corrected 7/30 | ⚠️ **My M4/M5 sweep was partial** — Arch found a third instance in ADR-070. Real denominator still being established |
+| **Board visibility** | Sprint/milestone state readable at all | 🔴 **BLOCKED** — `gh` lacks `read:project`. No board reads, no Sprint/Status writes. Beta Blockers uncountable since 7/16 | `gh auth refresh -s project` — one command, unblocks PPM and Lead |
 
 ---
 

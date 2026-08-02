@@ -204,7 +204,12 @@ The GitHub prefs-file band-aid (#1226-trigger M3 work-around) **is not the WS-1 
 
 ### Non-consequences
 
-- **This ADR does NOT decide the milestone/sprint placement** — that's PPM's call (Phase 0 question 2). M4 or M5 fits; PM has flexibility.
+- **This ADR does NOT decide the milestone/sprint placement** — that's PPM's call (Phase 0 question 2). ~~M4 or M5 fits; PM has flexibility.~~
+  > ⚠️ **STALE POINTER, corrected 2026-08-01 (Arch).** **M4 and M5 were SWEPT 2026-07-04/05** (`docs/internal/planning/beta-blockers.md`); everything that missed the beta hard-gate bar moved to **Production**. So the sprint options named above — here and at lines 18 and 179 — **point at sprints that no longer exist.** The deferral itself still stands (placement is PPM's), but **do not read "M4 or M5" as live guidance**; re-derive placement from the current sprint set.
+  >
+  > ✅ **PLACEMENT ANSWERED 2026-08-01 (PPM), and it needed no new decision — PM had already ruled it.** `decisions.log` **2026-07-16 ~18:05 PT** (Lead, PM-stated in conversation): *"**PRODUCTION (1.0) GATE**: four core connectors — GitHub, Google Calendar, Slack, Notion — must be fully refactored/completed (besides the LLM) to close the Production milestone. **Beta explicitly authorized to START without them; completion happens DURING beta.**"* ADR-070 **is** the MCP-consumer connector architecture for those four, so **the full migration is Production-milestone work and beta starts without it** — consistent with `beta-blockers.md` and roadmap v18.4. **The ADR's deferral-to-PPM is therefore discharged by a ruling that predates the question**; the answer replaces the deferral rather than restating it.
+  >
+  > *Found by a second-pass sweep of the ADR corpus for the **ADR-038 Amendment A §A3** class — a durable document carrying a fact with a shorter lifetime than the document. My first sweep (7/30) checked only cold-module citations and "100% operational" phrasing and reported the blast radius as exactly one ADR; **that was a partial sweep of its own space**, which is the class it was checking for. Sprint names are perishable referents and belong in the same category as implementation citations.*
 - **This ADR does NOT specify the per-connector MCP server choice** — `github-mcp-server` (Anthropic's), community alternatives, or building Piper's own are choices for Lead Dev at implementation time. The ADR specifies the architectural shape; the specific server is a downstream decision.
 - **This ADR does NOT mandate immediate native retirement** — D7's m-40 collapse step is *when MCP-consumer reaches parity*, not a hard deadline. Native lingers as long as MCP-consumer needs validation.
 - **This ADR does NOT decide multi-tenancy timing** — Phase 0 question 3 (Lead's input doc). ADR-058's multi-tenancy invariants apply when multi-tenant lands; ADR-070 doesn't gate that timing.
@@ -239,7 +244,22 @@ The GitHub prefs-file band-aid (#1226-trigger M3 work-around) **is not the WS-1 
 
 ---
 
-## Amendment A (2026-07-10) — `mcp_server_ref` stores a logical key, not a topology (resolve at read-time)
+### Supersession note — the PM-033/034 MCP-era documents (recorded 2026-08-02, Arch)
+
+**This ADR supersedes the PM-033/034-era MCP architecture documents** for the MCP-*consumer* connector concern:
+
+- `pm-033a-mcp-consumer-architecture.md`
+- `pm034-deployment-guide.md`
+- `mcp-integration-points.md`
+- `mcp-integration-mapping.md`
+
+**Why this note exists rather than being left as an obvious inference**: ruling on those files' disposition during Docs' 2026-08-01 architecture-tree audit, I reached for *"superseded by ADR-070"* — then checked, and found **this ADR mentioned PM-033/034 exactly zero times.** The supersession was my inference, not a recorded fact, and asserting an inference as a fact inside a durable record is precisely **ADR-038 Amendment A §A3**. So it's recorded here, in the superseding document, where a future reader of *either* side can find it.
+
+⚠️ **`scripts/setup_mcp_dev.sh:200` prints a path to `pm-033a-mcp-consumer-architecture.md` for users** — and that path (`docs/architecture/…`) has **already** not resolved for some time; the file lives under `docs/internal/architecture/current/`. **A user running setup is pointed at nothing today.** The correct target is this ADR, not the archived original: someone setting up wants current architecture, not history. Flagged to Docs 2026-08-02; ownership of that script is not mine.
+
+---
+
+# Amendment A (2026-07-10) — `mcp_server_ref` stores a logical key, not a topology (resolve at read-time)
 
 **Trigger**: the #1278 Fly cutover silently invalidated PM's GitHub binding — `connector_bindings.mcp_server_ref` stored the literal compose hostname (`http://github-mcp:8082/mcp`), pg_dump/restore carried it verbatim onto Fly where that host doesn't exist, and the binding degraded to UNREACHABLE while reporting BOUND. The failure looked like a server outage, not a config problem. PM asked for a ruling before the #1232 port train mints more literal refs.
 

@@ -25,6 +25,7 @@ NOT for: insight pieces (time-decoupled — different logic), Weekly Ships (Exec
 
 - The building narrative is **LINEAR and CONTINUOUS**: it has a *front* (the latest work-day a beat covers), not a coverage-map with holes. You **advance the front; you never backfill gaps.**
 - Narratives are **chronological beats**; **insights are time-decoupled.** Mining a date range for insights does **NOT** advance the narrative front. Count beats, not insights.
+- **A beat is a STORY, not a digest of its window** (§1.5, PM 2026-08-01). Wider spans are working and should continue — but they carry **no obligation to account for everything inside the leap.** Use an **A plot** (and optionally a B plot, plus something funny or strange); **not** a section per workstream. At assessment time the question is *"what is the story here?"*, never *"what happened here?"* If you can't name the A plot in one sentence, it isn't a beat yet. ⚠️ Measured: length is up 75% in five months and July's *mean* now exceeds the target ceiling — but **span does not predict length** (r = +0.10, n=21; a 2-day beat ran 2,093 words, a 9-day beat 1,680). So keeping the leaps and cutting the length are **not** in tension.
 - When the next beat **hasn't taken shape** (work since the front hasn't resolved into a story, or it's unclear how to continue), **you wait.** Waiting is a correct, expected state — not a miss (Time Lord doctrine).
 
 ## The discipline (run this)

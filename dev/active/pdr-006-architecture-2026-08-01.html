@@ -1,0 +1,226 @@
+<title>PDR-006 — Hosted MCP Architecture</title>
+<style>
+  :root {
+    --paper:#fbfaf8; --ink:#1b1f24; --rule:#d7d3cc; --muted:#6f6a63;
+    --accent:#2f6f6a; --accent-soft:#e3ecea; --risk:#a8432c; --risk-soft:#f6e7e2;
+    --card:#ffffff; --shade:#f3f1ed;
+    --sans: ui-sans-serif,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+    --serif: Georgia,"Iowan Old Style","Times New Roman",serif;
+    --mono: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#15181b; --ink:#e8e5e0; --rule:#343a3f; --muted:#9a958d;
+      --accent:#6fb5ad; --accent-soft:#1d2a29; --risk:#d98a72; --risk-soft:#2a1d19;
+      --card:#1c2023; --shade:#1a1e21; }
+  }
+  :root[data-theme="dark"] { --paper:#15181b; --ink:#e8e5e0; --rule:#343a3f; --muted:#9a958d;
+    --accent:#6fb5ad; --accent-soft:#1d2a29; --risk:#d98a72; --risk-soft:#2a1d19;
+    --card:#1c2023; --shade:#1a1e21; }
+  :root[data-theme="light"] { --paper:#fbfaf8; --ink:#1b1f24; --rule:#d7d3cc; --muted:#6f6a63;
+    --accent:#2f6f6a; --accent-soft:#e3ecea; --risk:#a8432c; --risk-soft:#f6e7e2;
+    --card:#ffffff; --shade:#f3f1ed; }
+
+  body { background:var(--paper); color:var(--ink); font-family:var(--serif);
+    line-height:1.6; margin:0; padding:3rem 1.25rem 5rem; }
+  .wrap { max-width:60rem; margin:0 auto; display:flex; flex-direction:column; gap:2.75rem; }
+  .prose { max-width:36rem; }
+  h1,h2,h3,.eyebrow { font-family:var(--sans); text-wrap:balance; }
+  h1 { font-size:2.1rem; line-height:1.15; letter-spacing:-.02em; margin:0 0 .4rem; font-weight:640; }
+  h2 { font-size:1.15rem; letter-spacing:-.01em; margin:0 0 .9rem; font-weight:640;
+    padding-bottom:.5rem; border-bottom:1px solid var(--rule); }
+  h3 { font-size:.94rem; margin:0 0 .35rem; font-weight:640; }
+  .eyebrow { font-size:.7rem; text-transform:uppercase; letter-spacing:.14em;
+    color:var(--muted); font-weight:600; }
+  .lede { font-size:1.04rem; color:var(--muted); margin:.2rem 0 0; }
+  code, .mono { font-family:var(--mono); font-size:.85em; }
+  section { display:flex; flex-direction:column; gap:1rem; }
+
+  /* ---- diagram ---- */
+  .diagram { display:flex; flex-direction:column; gap:0; }
+  .tier-label { font-family:var(--sans); font-size:.7rem; text-transform:uppercase;
+    letter-spacing:.14em; color:var(--muted); font-weight:600; margin-bottom:.6rem; }
+  .clients { display:grid; grid-template-columns:repeat(auto-fit,minmax(11rem,1fr)); gap:.75rem; }
+  .node { background:var(--card); border:1px solid var(--rule); padding:.85rem .95rem;
+    display:flex; flex-direction:column; gap:.3rem; }
+  .node .name { font-family:var(--sans); font-weight:640; font-size:.9rem; }
+  .node .detail { font-size:.8rem; color:var(--muted); line-height:1.45; }
+  .caps { display:flex; flex-wrap:wrap; gap:.3rem; margin-top:.2rem; }
+  .cap { font-family:var(--sans); font-size:.63rem; letter-spacing:.04em; padding:.12rem .4rem;
+    border:1px solid var(--rule); color:var(--muted); text-transform:uppercase; }
+  .cap.on { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+  .cap.off { border-style:dashed; text-decoration:line-through; }
+
+  .flow { display:flex; align-items:center; justify-content:center; gap:.6rem;
+    color:var(--muted); font-family:var(--sans); font-size:.72rem; letter-spacing:.06em;
+    text-transform:uppercase; padding:.7rem 0; }
+  .flow::before, .flow::after { content:""; flex:1; height:1px; background:var(--rule); }
+
+  .boundary { border:1px solid var(--risk); background:var(--risk-soft);
+    padding:.9rem 1rem; display:flex; flex-direction:column; gap:.3rem; }
+  .boundary .name { font-family:var(--sans); font-weight:700; font-size:.86rem;
+    color:var(--risk); letter-spacing:.02em; }
+  .boundary .detail { font-size:.83rem; color:var(--ink); }
+
+  .server { background:var(--card); border:1px solid var(--accent); border-top-width:3px; padding:1.1rem; }
+  .server-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(9rem,1fr)); gap:.6rem; margin-top:.7rem; }
+  .chip { border:1px solid var(--rule); padding:.5rem .6rem; font-size:.8rem; background:var(--shade); }
+  .chip b { font-family:var(--sans); font-size:.78rem; display:block; }
+
+  .data { display:grid; grid-template-columns:repeat(auto-fit,minmax(8rem,1fr)); gap:.6rem; }
+
+  /* ---- tables ---- */
+  .scroll { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:.86rem; }
+  th,td { text-align:left; padding:.5rem .6rem; border-bottom:1px solid var(--rule); vertical-align:top; }
+  th { font-family:var(--sans); font-size:.7rem; text-transform:uppercase; letter-spacing:.1em;
+    color:var(--muted); font-weight:600; }
+  td.num { font-variant-numeric:tabular-nums; }
+
+  .note { border-left:2px solid var(--accent); padding:.15rem 0 .15rem .9rem; color:var(--muted); font-size:.9rem; }
+  .note.risk { border-left-color:var(--risk); }
+  .gates { display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:.75rem; }
+  .gate { border:1px solid var(--rule); border-left:3px solid var(--risk); padding:.8rem .9rem; background:var(--card); }
+  footer { color:var(--muted); font-size:.8rem; border-top:1px solid var(--rule); padding-top:1rem; }
+  a { color:var(--accent); }
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">PDR-006 · Ratified 2026-07-31</p>
+  <h1>Hosted MCP endpoint &amp; plugin distribution</h1>
+  <p class="lede">Piper's server holds tools, connectors and persisted context. The client's model does
+  the reasoning — and composes what the user actually reads.</p>
+</header>
+
+<section>
+  <h2>The architecture</h2>
+
+  <div class="diagram">
+    <p class="tier-label">Client surfaces — the user's own subscription, not ours</p>
+    <div class="clients">
+      <div class="node">
+        <span class="name">Claude — Chat &amp; web</span>
+        <span class="detail">Plugin installs on all paid plans.</span>
+        <span class="caps"><i class="cap on">skills</i><i class="cap on">connectors</i><i class="cap on">mcp</i><i class="cap off">hooks</i></span>
+      </div>
+      <div class="node">
+        <span class="name">Claude — Cowork &amp; Code</span>
+        <span class="detail">Full plugin package, hooks included.</span>
+        <span class="caps"><i class="cap on">skills</i><i class="cap on">connectors</i><i class="cap on">mcp</i><i class="cap on">hooks</i></span>
+      </div>
+      <div class="node">
+        <span class="name">ChatGPT</span>
+        <span class="detail">User pastes the MCP URL and adds skills manually. We are a URL they point at.</span>
+        <span class="caps"><i class="cap on">mcp</i><i class="cap">skills (manual)</i></span>
+      </div>
+    </div>
+
+    <div class="flow">tool call ↓ &nbsp;·&nbsp; ↑ tool result, recomposed by their model</div>
+
+    <div class="boundary">
+      <span class="name">Caller-identity boundary — fail closed</span>
+      <span class="detail">Every call resolves to an <code>owner_id</code> <em>before</em> touching server
+      state. No identity, no read. Never default to a system or anonymous owner.
+      <strong>All ADR-079 owner-scoping sits downstream of this line</strong> — a handler reached with a
+      caller-chosen identity produces a read that looks correctly scoped while the owner is the forged
+      thing, and the derived lint cannot see it.</span>
+    </div>
+
+    <div class="server">
+      <p class="tier-label" style="margin:0">mcp.pipermorgan.ai — a pure tool server, no server-side LLM</p>
+      <div class="server-grid">
+        <div class="chip"><b>Tool catalog</b>derived from the registry, not hand-kept</div>
+        <div class="chip"><b>Resources</b>reads: profile, preferences, composted insight</div>
+        <div class="chip"><b>Tools</b>writes: mutating <code>update_*</code> calls</div>
+        <div class="chip"><b>Connectors</b>GitHub · Notion · Slack · Calendar</div>
+      </div>
+    </div>
+
+    <div class="flow">owner-scoped access</div>
+
+    <div class="data">
+      <div class="chip"><b>PostgreSQL</b>conversations, MUX state</div>
+      <div class="chip"><b>Redis</b>cache &amp; session</div>
+      <div class="chip"><b>Vector store</b>retrieval</div>
+      <div class="chip"><b>Keychain</b>OAuth tokens</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>What changed since the July diagram</h2>
+  <div class="prose">
+    <p>Four things moved underneath the version drawn on 18 July, which is why this is a redraw rather
+    than a re-share.</p>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Then</th><th>Now</th></tr></thead>
+      <tbody>
+        <tr><td>A <strong>Web client</strong> sat alongside Claude and ChatGPT.</td>
+            <td>Largely deleted by the pivot. Under this model there is <strong>no first screen we own</strong>.</td></tr>
+        <tr><td>Capability split was <strong>plugin vs. server</strong>.</td>
+            <td>Split needs a <strong>surface</strong> column. "It's in the plugin" is not "it runs everywhere the plugin installs" — web chat has no hooks.</td></tr>
+        <tr><td>No identity layer drawn.</td>
+            <td><strong>Caller identity is a boundary the whole diagram crosses</strong>, and it sits upstream of every existing scoping guarantee.</td></tr>
+        <tr><td>Arrows pointed one way: client calls, server answers.</td>
+            <td>The return arrow matters. <strong>Their model composes what the user reads</strong> — our output is an input to someone else's writer.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>The consequence worth sitting with</h2>
+  <div class="prose">
+    <p>Our first alpha tester's verdict was <em>"just an LLM with extra UI."</em> Under this model that
+    becomes <strong>literally true by design</strong> — it <em>is</em> their model, plus our tools.</p>
+    <p>Most of his interface complaints disappear, because there is no interface. But the load-bearing
+    one gets harder: every gram of differentiation now rides on <strong>what the tools return</strong>,
+    and on whether that survives being paraphrased by a model we don't control.</p>
+    <p class="note risk">We have never tested whether our honesty survives recomposition. A hedge we
+    write is a property of text we control; handed to another model, it may not reach the user. This
+    PDR makes that path the default.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Ratified ≠ shippable</h2>
+  <div class="gates">
+    <div class="gate">
+      <h3>#1458 — cross-caller state isolation</h3>
+      <p style="margin:.2rem 0 0;font-size:.86rem;color:var(--muted)">Redis, in-process floor/context
+      state, and rate-limiting were never traced. The question moved from "can an anonymous caller see
+      state" to <strong>"can caller A see caller B's"</strong> — strictly harder. Blocks multi-tenant serving.</p>
+    </div>
+    <div class="gate">
+      <h3>#1463 — verification rubric branch</h3>
+      <p style="margin:.2rem 0 0;font-size:.86rem;color:var(--muted)">No existing rubric fits a surface
+      where the client's model writes the user-visible reply. Scoring what we compose no longer scores
+      what the user sees. Blocks the plugin surface reaching users.</p>
+    </div>
+  </div>
+  <p class="note">Also open: <code>mcp.pipermorgan.ai</code> is not deployed, and no public privacy
+  policy exists — a missing one is an immediate rejection at either directory. A directory listing
+  additionally needs domain-ownership verification, which cannot precede the domain existing.</p>
+</section>
+
+<section>
+  <h2>One distinction that keeps getting collapsed</h2>
+  <div class="prose">
+    <p><code>services/mcp/consumer/</code> is Piper as an MCP <strong>client</strong>, calling out to
+    other people's servers. <code>mcp.pipermorgan.ai</code> is Piper as an MCP <strong>server</strong>,
+    being called in. Opposite directions.</p>
+    <p>A live consumer family — CORE-MCP-MIGRATION #198 — precedents <em>nothing</em> about the server
+    side, which is where the identity risk above actually lives.</p>
+  </div>
+</section>
+
+<footer>
+  Drawn 1 August 2026 for PDR-006, ratified 31 July. Reviews: Architect, CXO, PPM — all ratify.
+  Source kept in-repo at <span class="mono">dev/active/pdr-006-architecture-2026-08-01.html</span>;
+  the July artifact became unreachable at the account switch, so this one lives in git first.
+</footer>
+
+</div>

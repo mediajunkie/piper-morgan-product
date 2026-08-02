@@ -148,10 +148,9 @@ class PortfolioService:
         Returns:
             List of archived projects
         """
-        # Get all projects and filter to archived
-        # Note: Could optimize with a dedicated repository method
-        all_projects = await self._get_all_user_projects(user_id)
-        return [p for p in all_projects if p.is_archived]
+        # #1431: dedicated repository method — the previous implementation
+        # filtered an active-only source, so this always returned [].
+        return await self.project_repository.list_archived_projects(owner_id=user_id)
 
     async def find_project_by_name(
         self,
@@ -408,28 +407,11 @@ class PortfolioService:
             message=f"I've permanently deleted {project_name}.",
         )
 
-    # =========================================================================
-    # Helper Methods
-    # =========================================================================
-
-    async def _get_all_user_projects(
-        self,
-        user_id: str,
-    ) -> List[Project]:
-        """
-        Get all projects for a user (active and archived).
-
-        Internal helper - use list_active_projects or list_archived_projects
-        for public API.
-        """
-        # This is a workaround - ideally we'd have a repository method
-        # that doesn't filter by is_archived
-        active = await self.project_repository.list_active_projects(owner_id=user_id)
-
-        # For now, we'll need to query archived separately
-        # This could be optimized with a dedicated repository method
-        # TODO: Add list_all_projects to ProjectRepository
-        return active
+    # NOTE (#1431): the former _get_all_user_projects helper lived here. It
+    # claimed to return "active and archived" but only ever returned active
+    # (the repo query filters is_archived == False), which made the archived
+    # list mathematically empty. Removed when list_archived_projects gained a
+    # dedicated repository method; zero other callers existed.
 
 
 # =============================================================================

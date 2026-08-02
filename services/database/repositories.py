@@ -349,6 +349,33 @@ class ProjectRepository(BaseRepository):
         result = await self.session.execute(select(func.count(ProjectDB.id)).where(and_(*filters)))
         return result.scalar() or 0
 
+    async def list_archived_projects(
+        self,
+        owner_id: Optional[str] = None,
+        is_admin: bool = False,
+    ) -> List[domain.Project]:
+        """List archived projects - optionally filter by owner (admin bypass in SEC-RBAC Phase 3).
+
+        #1431: dedicated archived-only query. The service-level archived list
+        previously filtered an active-only source, so it was always empty.
+        """
+        filters = [ProjectDB.is_archived == True]
+        if owner_id and not is_admin:  # Only check ownership if not admin
+            filters.append(ProjectDB.owner_id == owner_id)
+
+        result = await self.session.execute(
+            select(ProjectDB)
+            .options(
+                selectinload(ProjectDB.integrations),
+                selectinload(ProjectDB.repository_links).selectinload(
+                    ProjectRepositoryLinkDB.repository
+                ),
+            )
+            .where(and_(*filters))
+            .order_by(ProjectDB.name)
+        )
+        return [db_project.to_domain() for db_project in result.scalars().all()]
+
     async def find_by_name(
         self,
         name: str,

@@ -65,7 +65,17 @@ Four differentiators that, together, make Piper a colleague rather than a chatbo
 1. **Context Methodology** — Five-layer model operationalized as practiced discipline
 2. **Conscious Floor** — LLM responses embodying grammar, Five Pillars, anti-flattening + Investment-pillar extension (#950 v0.1 May)
 3. **Artifact Persistence** — Conversation outputs that outlive the conversation, with composting lifecycle (M3 territory)
-4. **Trust-Graduated Experience** — Earned proactivity through demonstrated value (M4 territory)
+4. **Trust-Graduated Experience** — Earned proactivity through demonstrated value (was M4 territory; **M4 TRIAGE CLOSED Jul 5, 2026** — the sprint was swept, its proactive-presence issue **#1174 moved to the Production milestone**, and the capability has **no implementation today**. See §M4 below.)
+   > 🔴 **This differentiator needs a product decision before it can be built at all** *(PPM, 2026-08-01)*. Three facts that were tracked separately and are one problem:
+   > 1. It is **differentiator 4 of 4** in a stack whose own framing is *"four differentiators that, together, make Piper a colleague rather than a chatbot wrapper."*
+   > 2. It has **zero implementation** — no monitoring loop, no change detection, no salience judgment, no interruption-ethics surface (Arch, from the import graph).
+   > 3. Its **specified mechanism is PDR-002's trust gradient, denominated in interactions** (~10 → Stage 2, ~50 → Stage 3) — which assumes **Piper owns the surface and can count them.**
+   >
+   > **Under PDR-006 (ratified 2026-07-31) we do not own the surface.** The user is inside Claude or ChatGPT; the host LLM decides when to call us and may invoke several tools in one user turn, or none. **So the denominator PDR-002 specifies does not exist on the primary distribution surface.**
+   >
+   > ⚠️ **Stated precisely, because the overclaim is tempting**: this is *not* "trust graduation is impossible." Alternative denominators are available — tool invocations, sessions, elapsed days. **But choosing one is a product decision nobody has made**, and until it is made, differentiator #4 is unbuildable *as specified*, not merely unbuilt. **The prior question is: what does "earned" mean when you cannot count the thing trust was denominated in?**
+   >
+   > **Not a beta blocker** — first contact is Stage 1 however you count, and a cold account starts there. It bites at **stage transitions**. Carried in **#1174**'s discovery scope (CXO owns); recorded against **PDR-002**'s trust-gradient table as an open question. **Material to PM's pending choice among the three #1174 options** — it raises the cost of "fund L4" specifically, since the mechanism would need respecifying first.
 
 **Indoor plumbing (commodity)**: GitHub/Slack/Calendar/Notion via MCP plugins, file storage via SQLite + PostgreSQL audit_log persistence, auth via standard OAuth, LLM provider management via three-way fallback chain.
 

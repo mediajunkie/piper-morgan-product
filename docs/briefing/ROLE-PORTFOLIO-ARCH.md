@@ -3,8 +3,8 @@ type: role-portfolio
 role: Architect (Chief Architect)
 status: v0.1 — main-cohort wave (after the CIO + Lead-Dev pilots passed), against the role-portfolio trust framework v0.1
 self-authored-by: Architect
-last_updated: 2026-06-20
-refreshed: 2026-06-20
+last_updated: 2026-07-30
+refreshed: 2026-07-30
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-ARCHITECT.md
 refresh_discipline: "updated AS PART OF the weekly workstream review — the review is the refresh moment (Rule 5); if section 2 lags the last few reviews, the portfolio has drifted"
@@ -25,16 +25,24 @@ The one-line: *the role whose job is to keep the system composable as it scales 
 
 The cross-cutting lever is **derive-don't-maintain / make-drift-impossible-by-construction** (m-41): the best contract is one that *can't* drift, not one everyone has to remember to honor. (It's been the recurring architectural move — ADR-072's frontmatter-derive, #1283's registration-derive, #1106's MANIFEST-derive — and it has a live product dimension, see the question-box.)
 
-## 2. Current goals & priorities — June 2026
+## 2. Current goals & priorities — July 2026
+
 <!-- Rule 2: medium-pace; changes per sprint. Rule 4: each has a direction + a forward indicator. Rule 5: REFRESHED EACH WEEKLY REVIEW. -->
 
-| Priority | What I'm advancing | Status (Jun 20) | How we'll know it's moving |
+**Refreshed 2026-07-30** after 40 days stale — see the note at the end of §5, which is a finding rather than an apology.
+
+| Priority | What I'm advancing | Status (Jul 30) | How we'll know it's moving |
 |---|---|---|---|
-| **#1283 routing-integrity contract → ADR-073** | turn the action↔handler *fabrication class* (#1269) into a prevention contract, not a point fix | scoped + resolver-ratified; Lead building after the D1 tail | clean probe → ADR-073 authored → static reachability lint + behavioral corpus in CI → the #1269 class can't recur silently |
-| **RECONNECT connector substrate (ADR-070 → #1232)** | the MCP-consumer Connector contract the whole connector refactor builds on | ADR-070 shipped; #1232 = first RECONNECT action; corrected Phase-0 = ADR-070 + #1185 + #1229 | RECONNECT activates → I author/ratify the concrete `Connector` protocol → the WS gameplans decompose against it (not a re-derivation) |
-| **ADR-072 Skill-Routing → Wave P** | skill-routing defense-in-depth + the derived skills registry | v0.2 ratified (D1–D5, trust-lens folded); Lead builds #1245 | Wave P plugin skills route correctly; the *derived* registry replaces the hand-kept (stale) SKILLS.md |
-| **Server-owned-state ADR family (ADR-066/070/071)** | config / connector / content stay coherent under one model | family complete (3 ADRs); now maintenance + amendment as the cohort builds on it | cohort builds on the family without re-deriving; amendments fold cleanly; no fourth-surface drift |
-| **Name derive-don't-maintain as a cohort pattern** | codify the recurring make-drift-impossible principle (+ its product dimension) | recurs across ADR-072/#1283/#1106; question-box to PM on the product call | CIO catalogs it; it's applied where drift recurs; PM rules on the product direction (June 21 brief) |
+| **Spatial committed-theory review → decision brief** | PM-directed (7/18); I convene + own architectural history and ADR disposition | **Map filed** (`spatial-intelligence-layer-map-and-costed-options.md`), ADR-038 **Amendment A filed**, ADR-affected map complete | PM decides on the 10-module cold island; open inputs = PPM's roadmap slice + Lead's L4 monitoring-loop estimate |
+| **`Intent.original_message` single authority + ratchet (#1459)** | kill a class that has now survived **two** instance fixes (#1332, #1417) | live bug traced by Lead (setup/onboarding silently floor-routes); instance fix proposed for beta, class fix Production | the **ratchet** lands, counting raw reads of *every* key carrying the value — not just the accessor |
+| **PDR-006 hosted-MCP + plugin distribution** | the distribution architecture for alpha/beta | **Reviewed; Q2 resolved** (PM had decided it 2026-01-08); no objection to ratifying | CXO + PPM reviews land → ratifies → **the caller-identity boundary is built fail-closed**, since all ADR-079 owner-scoping sits downstream of it |
+| **Enforcement-mechanism layer (ADR-077 / ADR-079 lints + ratchets)** | contracts that hold by construction, not by memory | ADR-079 D2b/D3 + forward-guard ratified; **debt migration 36→0 in flight (Lead)** | ceiling reaches 0 → the growth-ratchet flips to a full CI block by itself |
+| **Make-drift-impossible as practice, not slogan** | the cross-cutting lever (m-41) | now includes **tooling**: `scripts/reachability-map.py` (2026-07-29) makes "is this layer live?" a command instead of a recollection | the next layer question is answered by re-running a command; **no ADR evidences a pattern with a perishable implementation fact** (ADR-038 Amendment A's forward rule) |
+
+**Retired from this table since June** — recorded rather than silently dropped:
+- **#1283 routing-integrity → "ADR-073"** — landed as **ADR-077**, not a new ADR-073 slot (my 7/9 ruling). Build conformance-checked D1–D5; #1283 closed.
+- **RECONNECT / ADR-070 → #1232** — ADR-070 shipped and has since taken **Amendment A** (env-resolved `mcp_server_ref` indirection, 7/10).
+- **ADR-072 Skill-Routing → Wave P** — ratified v0.2; ⚠️ **I have not verified Wave P / #1245 build status this week and am not asserting it.**
 
 ## 3. Standing responsibilities (slow-pace — sustaining coherence)
 <!-- Rule 2: named (half the work), but UNDER purpose — how I sustain coherence, not the thing itself. -->
@@ -61,7 +69,7 @@ The cross-cutting lever is **derive-don't-maintain / make-drift-impossible-by-co
 - **Unilateral (mine)**: the architecture-integrity call; *their* trust-concern naming stays theirs.
 
 ### Architect ↔ PPM — the roadmap-altitude seam
-**Co-own**: which architectural work lands when (ADR timing vs. roadmap; M4/M5/RECONNECT placement).
+**Co-own**: which architectural work lands when (ADR timing vs. roadmap; milestone/sprint placement). *(Was "M4/M5/RECONNECT placement" — **M4 and M5 were swept 2026-07-04/05**; naming dissolved sprints as live seam guidance is the stale-pointer class. Corrected 2026-08-01 on PPM's per-owner ask; the seam itself is unchanged.)*
 - **Freely**: PPM sequences at roadmap altitude; I scope the architectural work. **Sign-off**: an ADR that changes a product gate. PM Time-Lords absolute priority; I don't set sprint order.
 
 ### Architect ↔ CIO — the methodology/enforcement seam
@@ -78,7 +86,13 @@ The cross-cutting lever is **derive-don't-maintain / make-drift-impossible-by-co
 
 - **Section 2 (fast refresh)**: updated at every weekly workstream review — you can't write the Architect weekly narrative without touching which ADRs shipped/scoped/ratified, which contracts are in flight, which closed. If section 2 lags the last few reviews, the review cadence is itself stale.
 - **Full portfolio (slow refresh)**: sections 1/3/4 reviewed when role scope drifts — e.g. when RECONNECT completes, #1232 retires from priorities; when a new ADR family opens, it enters section 2.
-- **Staleness signal**: `last_updated` / `refreshed` >2 weeks old with nothing moved in section 2 → investigate the weekly-review cadence, not just this doc. (Dogfooding #972: this doc carries `last_updated` + `refreshed`; `check-staleness.py` watches it.)
+- **Staleness signal**: `last_updated` / `refreshed` >2 weeks old with nothing moved in section 2 → investigate the weekly-review cadence, not just this doc.
+
+⚠️ **CORRECTION 2026-07-30 — the sentence above used to end "`check-staleness.py` watches it," and that was a false clear.** The script exists, the frontmatter is correct, and **nothing invokes it** — not CI, not a hook, not a skill. I found this by going to verify the mechanism before refreshing the content, after this doc sat **40 days** stale under a rule saying "refreshed each weekly review."
+
+Running it by hand: **33 of 36 operating docs need attention; 3 are OK; all ten `ROLE-PORTFOLIO-*` docs are stale**, so this was never a personal lapse — the weekly-refresh rule has never operated for any role. And the script **exits 0 by design** (`warn, not block`, per #972), so even wired into CI it would pass silently.
+
+**The mechanism isn't missing, and it isn't broken. It has no consumer.** A detector whose output goes nowhere is indistinguishable from one that never ran (m-44). Routed to Docs/CIO; recorded here rather than quietly fixed, because the false-clear sentence is the more useful artifact than the refresh it was hiding.
 
 ---
 

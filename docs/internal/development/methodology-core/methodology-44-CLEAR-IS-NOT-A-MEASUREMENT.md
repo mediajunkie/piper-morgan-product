@@ -1,6 +1,6 @@
 # "Clear" Is Not a Measurement — An Instrument Must Assert What It Looked At
 
-**Status**: Emerging → strong. **Eleven instances in 96 hours across four roles and two projects**, independently named by each before anyone connected them. *Proven* still awaits evidence that the cure reduces recurrence **in the wild** — as of 2026-07-28 the cure is installed and dead-path-verified on the belt (instance 11), which is necessary but not sufficient for that claim.
+**Status**: Emerging → strong. **Eleven instances in 96 hours across four roles and two projects** *(count unaffected by the 2026-07-31 boundary ruling — see the three-routes section below, including a correction to how that ruling was first written here)*, independently named by each before anyone connected them. *Proven* still awaits evidence that the cure reduces recurrence **in the wild** — as of 2026-07-28 the cure is installed and dead-path-verified on the belt (instance 11), which is necessary but not sufficient for that claim.
 **Filed**: 2026-07-27 by CIO
 **Origin**: **Arch's bequest.** Its migration handoff (`dev/active/handoff-arch-amber-2026-07-25.md`, §4.1) named the "blind-sweep class" from six instances and flagged writing it up as *"the highest-value un-started piece of Architect methodology work I'm leaving."* Written up here at the altitude the evidence now supports, with three more roles' independent corroboration: HOST's Criteria G, Janus's (Design in Product) show-your-work principle, and CIO's own instruments failing the same way twice.
 **Related**: methodology-43 (Name the Layer — the agent-side twin; boundary below), methodology-36 (mechanisms over vigilance), methodology-42 (reflexive verification)
@@ -14,6 +14,37 @@ Five states, one output. And the overloaded value is the *dangerous* one, becaus
 > **An error gets investigated. A false clear gets trusted.**
 
 Nobody audits good news. That is why these survive for weeks — the freeze-watchdog's PreCompact registration sat pointed at an empty array for ten weeks; three pre-commit hooks were dead since introduction on every host and account.
+
+## Boundary — three routes to an unactionable green, and only one is m-44
+
+*(Added 2026-07-31 by HOST after PPM asked for the boundary call on their "a gate must be able to both pass and fail" candidate. Ruling: **its own line, not a sub-shape.** Recorded here because the ruling moves instances **off** this file's count, and a boundary that only ever sorts new cases isn't earning its place.)*
+
+**The discriminator: m-44 fires DOWNSTREAM of the measurement. PPM's fires UPSTREAM of it.**
+
+An m-44 instrument reports a clear it never earned — **the report is false.** A gate that cannot fail runs correctly and reports **truthfully**; it just could never have said anything else. The outcome was fixed before the instrument ran. That's why the cures don't transfer, which is the test that decides it: *"assert what you looked at"* does nothing for a criterion that looked at exactly what it claimed and was always going to pass.
+
+| | what happened | the report is | cure |
+|---|---|---|---|
+| **m-44** (this file) | the instrument never measured the thing | **false** | assert what you actually looked at |
+| **the repairing detector** (filed in m-46) | the instrument **repaired** what it measured | **true, and useless** | render without writing; never let a detector mutate its subject |
+| **PPM's candidate** | the criterion could only come out one way | **true, and empty** | ask what would make it FAIL — and whether your procedure can reach that result |
+
+⚠️ **Two cases HOST had been carrying as m-44 — and the correction to how this was first written.**
+
+**First written here as "two instances RECLASSIFIED out of this file." That was wrong, and the error is worth keeping.** Neither had ever been *in* this file's instance list; HOST had been counting them as m-44 in session logs and in conversation, and then asserted a change to this file's contents **from memory of what it contained, without reading it.** Caught on a verification pass minutes later. **The eleven instances below are untouched and the count does not change.**
+
+That error is itself an m-46 instance — a claim true in the author's working memory at T1, promoted into a durable higher-authority artifact at T2 without re-verification, in the very file arguing that instruments must assert what they actually looked at. Left visible rather than quietly amended, because *"I remembered what was in the file"* is precisely the reflex the corpus exists to interrupt.
+
+The two cases, which belong in PPM's line and never belonged here:
+
+- **The `verify-hooks` drumbeat.** It stages then bare-commits, so it probes the path that is gated *by construction*, and has read PASS all week. Filed here originally — wrongly. Nothing about it reports a clear it didn't measure: **it measures faithfully, honestly, and the answer was predetermined.** PPM's family.
+- **The migration-checklist v1.5 probe design.** The probe's own staging *created* the index state that made it pass; it would have manufactured confirming evidence indefinitely (Arch caught it). Honest measurement, honest report, **zero discriminating power.** PPM's family.
+
+⚠️ **Attribution note, because the first version of this table got it backwards.** The middle row was originally labelled *"CXO's obstacle."* **CXO corrected it: the finding is HOST's** — it came out of building `check-derived-drift.sh` (*"I expected to write a diff; what actually blocks this is that a plain rebuild repairs the drift it would have detected"*). **CXO's contribution was placement and framing** — moving it out of an implementation note into m-46's body, and siting it beside m-44 rather than inside it.
+
+**Promotion is not authorship.** Worth keeping as a rule, because the error is systematic rather than careless: whoever files a finding in the corpus is the name attached to it there, and that is the name the next citation copies. CXO caught this one at citation zero. *(Second attribution correction in the cohort in three days, both in the direction of refusing credit — PPM declined credit for a near-miss it could not source, CXO declined credit that was offered.)*
+
+**They co-occur often** — a gate that can't fail is frequently also reported as a clear — but a fix for one does not fix the other. Merging any two of the three loses the cure, which is the only part an agent actually needs at the moment it matters.
 
 ## Boundary — this is the instrument-side twin of m-43
 

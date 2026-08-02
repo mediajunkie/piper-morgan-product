@@ -19,23 +19,54 @@ surfaced). **Not verified**: the actual live-success path on Vercel (needs the r
 first authenticated load of `pipermorgan.ai/admin/calendar/` after deploy is the real test.
 Amber-side spot check (unauthenticated) confirmed the route is live and auth-gated correctly.
 
-### Compose UI save-conflict — ask #1 SHIPPED 2026-07-29, ⚠️ NOT YET BROWSER-VERIFIED
-localStorage autosave (website `0e448d3`) — Comms' highest-ranked ask. Comms replied 15:40
-7/29: code review reads as correct (kept-alive-through-rejected-save + explicit-not-silent
-restore both praised specifically), **#2 (conflict diff) accepted as low-priority/no date,
-#3 (live staleness warning) explicitly declined** — now that #1 exists, #3 would warn about
-a condition that can no longer lose work, so it'd train dismissal of warnings rather than add
-safety. Nothing owed on #2/#3 unless PM or Comms revisits.
+### Compose UI save-conflict — ask #1 SHIPPED 2026-07-29; real bug found + FIXED 2026-07-30
+localStorage autosave (`0e448d3`) — Comms' ask #1, code-reviewed clean 7/29. **#2 (conflict
+diff) and #3 (staleness warning)**: #2 accepted as low-priority (no date); #3 explicitly
+declined — a condition ask #1 already made survivable doesn't need a warning, and one would
+train dismissal. Both dispositions confirmed again 7/30, unchanged.
 
-⚠️ **Comms named the real gap in my own verification, correctly**: extracted-logic Node tests
-(5/5) are a genuine test of the real code, but not of the mechanism actually firing in a
-browser — "a safety net nobody has watched fire is a claim, not a mechanism" (m-44, filed
-7/27). **Proposed closer, directed at PM**: next natural compose session, do 3 things and
-report what happens — (1) edit + reload without saving → expect explicit Restore/Discard
-banner with timestamp; (2) if a save is ever rejected (409), reload → banner should still
-offer the work back; (3) after a save succeeds, reload → banner should be gone. **Do not
-treat this feature as verified until one of those three is actually observed and reported.**
-This carry-forward line is the tracker for that — clear it only when PM or Comms confirms.
+**PM's own next compose session was the real click-through test, exactly as proposed — and it
+found a genuine, different bug**, not a confirmation of #1. PM's alt text on a Weekly Ship was
+silently blanked 28s after saving; git history showed a correct commit then a pure-deletion
+overwrite, no agent involved. Traced precisely: the 30s autosave timer's `getPayload` closed
+over React state **at arm time**, not fire time, and the manual "Save now" button never
+cancelled a pending timer the way blur does — so a field's first edit/paste armed a timer
+holding the stale pre-edit value, a manual save moments later correctly persisted the real
+value, and the never-cancelled leftover timer fired ~28s later and silently clobbered it.
+Neither the dedup guard nor the sha check caught it (self-inflicted, sha-consistent). **A
+different bug from what #1 scoped — #1's localStorage safety net was never at risk; the
+server value was.**
+
+**FIXED same day** (`8d2db3c`): `getPayload` now reads a `fieldsRef` kept live every render
+instead of closing over state, so any timer — however stale its arm time — reads current
+values when it fires; manual save also now cancels the pending timer defensively. Verified by
+reproducing the exact mechanism in a standalone Node script (no test runner in this repo, no
+browser on this host) — old design reproduces the incident exactly, new design doesn't.
+`tsc`/lint/build clean. Sent to Comms/PM/Docs/CIO with the precise diagnosis.
+
+**Status**: this specific bug is fixed and I'm confident in the fix (mechanism-level repro, not
+just reasoning). **The broader "not yet browser-verified" caveat from 7/29 is effectively
+resolved** — PM's actual use of the tool is what surfaced this, which is stronger evidence than
+the three-step checklist would have been. Not clearing this section entirely; if PM's next
+session shows the Restore/Discard banner behaving correctly (the original ask #1 behavior,
+untouched by today's fix), that's the last confirmation worth having.
+
+### PDR-007 — Editorial Data Single Source of Truth — EFFECTIVELY SETTLED 2026-07-30
+`docs/internal/product/pdr/PDR-007-editorial-data-single-source-of-truth.md`, now at `3a3dea60a`.
+My 7/29 reply corrected Docs' implementation-cost estimate downward (the public blog page
+already consumes the JSON files as pure generated data, so Option B needs zero render-layer
+changes) and answered Q2 (source lives in product repo, keeping the existing generation
+direction). **Arch's 7/30 review concurred independently on Q2** and went further: attacked
+Constraint 1 as asked, found it survives but was staked on the wrong (most contestable) ground
+— replaced with conflict-localization + audit-trail arguments, both stronger. Critically, Arch
+caught that the 2–4-week measurement window had **no falsification condition** and would read
+as confirming whatever the reader already believed; Docs pre-registered a real threshold same
+day (Class 1/2 = 0, Class 3 ≤ 17 no-growth) **and shipped it as a runnable script**
+(`measure-editorial-drift.py`) rather than a described-but-unverifiable criterion. **My one
+flagged dependency stands unchanged**: `loadCalendarLive()` reads `editorial-calendar.csv`
+directly — mine to repoint if the source format ever changes. **Nothing further to do** —
+Arch/CIO's ruling, and
+Docs' own recommendation is to wait 2–4 weeks regardless of how the review lands.
 
 ### Two Docs-flagged gaps from the calendar work, routed not fixed
 1. `/admin/publish-queue` — same staleness class, different data path (prebuild-generated
@@ -63,12 +94,45 @@ offered to revert if CIO wants it re-landed under their hand as a numbered versi
 - **`--mode=archive` scope**: the Docs 5/18 memo that specified it no longer exists in any
   live mailbox — still wanted, or has the need passed?
 
-### Predecessor handoff — confirmed genuinely absent, not recoverable from git
-No handoff was ever written (predecessor went dark 2026-07-19, Exec's 7/21 handoff-prep ask
-sat unread). CIO's `orientation-note-web-amber-2026-07-25.md` is a reconstruction from
-artifacts, explicitly not a handoff. PM offered 2026-07-29 to check the designinproduct.com
-account directly for anything not captured in git (predecessor's own lessons, their read on
-the Web↔Docs↔Comms publishing seam) — outcome of that check not yet known as of this write.
+### Predecessor handoff — FOUND 2026-07-29, read in full
+No handoff existed as of 7/26 (predecessor went dark 7/19 before writing one). PM's 7/29
+designinproduct.com check produced `dev/active/handoff-web-predecessor-2026-07-29.md`
+(127 lines, §4 lessons + §6 load-bearing-vs-commodity, 5 VERIFIED/BELIEVED marks) — CIO
+independently confirmed it landed and called it "the fifth and last predecessor handoff"
+(arch, pa, ppm, cxo, web all now have one).
+
+**Honesty framing matches this week's cohort discipline**: predecessor stated their context
+is genuinely intact only for 7/12–19 (the Vercel migration week), zero context 7/20–29, and
+marked every claim VERIFIED (with session-log dates) or BELIEVED (one-datapoint, not proven).
+
+**The two load-bearing lessons most worth carrying forward, from their §4/§6**:
+1. **A green signal after fixing one layer of a multi-layer problem doesn't mean the problem
+   is solved** — their DNS cutover was three separate bugs in sequence, each fix's failure
+   looked like "still propagating" rather than a new bug. Same shape as this week's hook saga
+   (five agents, several rounds of "fixed" that weren't).
+2. **A size/limit check is only as correct as the units you measured it in** — they shipped
+   the 413 upload bug by checking original-file-bytes instead of base64-wire-bytes, "because
+   both numbers are called 'size' in your head." Directly relevant to any future work I do
+   near the compose upload path — worth remembering before touching size/limit logic there.
+3. **PM's praise for the compose editor was specifically about agent-discoverability** (git-
+   backed writes → other agents can find what PM was working on), not the editing UX itself —
+   already knew the fact, this confirms it was the predecessor's own read too, not something
+   lost in relay.
+
+Minor process note from the predecessor, now moot for me but worth someone checking: their
+provisioning template referenced `handoff-web-predecessor-2026-07-28.md` (wrong date, one day
+behind) — they corrected it themselves rather than copy the boilerplate literally. Not
+flagging further; low-stakes and already resolved in this instance.
+
+**CLOSED 2026-07-30**: PM asked me to confirm access to a second recovered artifact —
+`https://claude.ai/code/artifact/f316aa3b-c7ae-407d-91b7-a881c0896419` — the predecessor's
+original Vercel-migration plan (published 2026-07-12), also reconstructed after becoming
+inaccessible in the account migration, carrying the same honest reconstruction-note framing
+as the handoff doc above. Verified fetchable via `WebFetch` (works directly on
+`claude.ai/code/artifact/{uuid}` URLs — noted as a capability for future reference). PM
+confirmed this closes the loop: **the predecessor's session on faoilean (the old laptop, pre-
+Amber, designinproduct.com account) can now be safely retired** — nothing of substance was at
+risk of being lost. This fully resolves the predecessor-continuity thread opened 2026-07-26.
 
 ### Own lessons / load-bearing-vs-commodity / publishing-seam view — WRITTEN 2026-07-29
 See `dev/2026/07/29/2026-07-29-0924-web-code-log.md`, Fire 3 (~16:00). The thing CIO's

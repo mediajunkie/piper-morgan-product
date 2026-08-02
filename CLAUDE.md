@@ -94,34 +94,17 @@ git branch  # Should show claude/* branch, not main
 
 ⚠️ **Two Amber-specific gotchas, both found on the first migration** (`dev/2026/07/25/2026-07-25-1053-cio-code-log.md`):
 1. **A worktree cut from a pre-existing role branch inherits that branch's staleness silently.** The first one arrived **5,393 commits behind `origin/main`** — a six-week-old CLAUDE.md, briefings, and mailboxes, with no error. Provisioning now asserts 0-behind before handover; if you suspect otherwise, check `git rev-list --count HEAD..origin/main` yourself.
-2. 🟡 **The pre-commit hooks were dead everywhere — an invalid matcher, not a worktree problem. Matcher FIXED 2026-07-25 — but the gate is still ABSENT for the command shape agents actually use; see the RESOLVED block below.** *(This item previously read "project hooks do not fire in a Model-A worktree," then "FIXED and behaviorally verified." The first diagnosis was wrong; the second was true of a shape nobody writes. Both ways of being wrong are the lesson.)*
-   **What was actually broken**: `.claude/settings.json` declared `"matcher": "Bash(git commit*)"` for the three PreToolUse hooks. **Hook matchers match TOOL NAMES** (regex against `"Bash"`); `Bash(git commit*)` is *permission-rule* syntax and as a regex can never match `Bash`. So `check-branch.sh`, `pre-commit-broad-staging-warn.sh`, and `pre-commit-reconcile-drafts.sh` were registered to a pattern nothing satisfies. **They had never fired via the harness on any host or account since introduction** — Desktop included, main checkout included. Mailbox discipline was prose-enforced the whole time, and held.
-   **Scope was never worktrees**: project hooks *do* fire in a Model-A sibling-path worktree — `SessionStart` fires from project settings with a relative path, verified 2026-07-25. Nor was trust ever the cause.
-   **The fix**: `matcher: "Bash"` + the documented per-hook `if: "Bash(git commit*)"` field, live at user level (`~/.claude-pm/settings.json`) and in the tracked project mirror (`66d32f6cf`). **Verified behaviorally in a live session**: mail staged on a non-main branch → commit BLOCKED by `check-branch.sh`; non-mail commit on the same branch → allowed.
-   **One property worth carrying, and one claim that did not survive the day**: (b) ✅ a genuine block may surface as `hook error: [check-branch.sh]: No stderr output`, because the script writes its guidance to stdout — **that is the hook working**; key on whether the refusal *names the hook*. (a) ⚠️ *"hook settings reload live, so a config fix takes effect on the next tool call with no restart"* — **asserted 2026-07-25 and since refuted; see immediately below. Do not act on it.**
-   ✅ **RESOLVED 2026-07-26 — the "intermittency" was never intermittent. It is INDEX STATE AT HOOK-FIRE TIME.** *(Mechanism: Web. Independently validated on four further seats: Arch 8/8, CXO 6/6, PA 4/4, PPM 3/3 — **25 probes, five seats, no free parameters**. PPM, PA, Arch and CXO each withdrew a competing hypothesis after checking their own transcripts.)*
-
-   ✅ **The decisive test, if this is ever doubted again — one probe settles it** (designed and run by CXO, the one cell no other seat had): **deliberately pre-dirty the index, then fire a COMPOUND commit.** The two models predict opposite outcomes — shape says bypass, index-state says block. **It BLOCKED.** Every other compound probe across five seats had fired against a clean or accidentally-dirty index, which is why shape survived as long as it did. Run this cell before proposing any new model.
-
-   **The cause, in one line**: `check-branch.sh:28` decides via `git diff --cached --name-only`, and **PreToolUse fires BEFORE the Bash call executes.** So in the universal idiom `git add <path> && git commit -m …`, the `git add` **has not run yet** when the hook inspects the index. The hook reads an index that does not contain the files being committed, finds nothing under `mailboxes/`, and exits 0.
-
-   **Why "command shape" looked like the variable for a day, across five seats**: shape correlates almost perfectly with index state under natural probing. A compound call has its `git add` *inside* the call being gated → index empty at fire → bypass. A standalone `git commit` is *by construction* preceded by staging in an earlier call → index populated → block. That's the whole of the observed "standalone 4 BLOCK / 0 BYPASS, compound 3 BLOCK / 7 BYPASS" — **structural, not statistical**, and it makes the old "necessary but not sufficient" reading fall out as a consequence rather than a rule.
-
-   ⚠️ **The confound that fooled all five seats — and will fool you: A BLOCKED COMMIT NEVER RUNS, SO ITS FILE STAYS STAGED.** Every block silently arms the *next* probe to block regardless of shape. That is why PPM's probe 3, PA's probe 4, and Arch's probes C and D all blocked while looking like clean controlled repeats. **Clear the index between probes, and PRINT it** — `git diff --cached --name-only` before your first probe and after every block. That one line is the entire difference between the datasets that got this right and the four that didn't.
-
-   ⚠️ **Layer naming is NOISE, not a diagnostic.** This file previously said *"relative = project layer, absolute = user layer — the only cheap way to see which layer caught it."* On Web's seat, three **identical consecutive calls** named project → user → user. Both layers appear to fire; only one is surfaced in the error. Reading the named path as "which layer is live" is what generated the phantom user/project "alternation" in CIO's 22:39 result and PPM's probes 2→3. **Still do not consolidate the two layers** — that advice stands, but on general caution about removing redundancy you don't understand, *not* on alternation being informative.
-
-   **The consequence that matters, and it is worse than flakiness**: the shape that bypasses is the routine one; the shape reliably caught is the standalone form you only use when deliberately testing. **So the hook reads as alive whenever probed and is largely absent during ordinary work** (CXO confirmed two real in-session commits were never hook-checked). The 2026-07-25 verification was a *staged-first* probe: it was correct, it passed, and it certified a shape nobody writes. **Assume your `git add … && git commit …` is ungated for mailbox paths.**
-
-   ✅ **Mitigation, available today, no config change**: **stage in one call, commit bare in the next.** 4/4 caught across three seats, and the mechanism explains *why* it works rather than just that it does. `scripts/mail-send.sh` is structurally safe regardless — it uses `commit-tree`, never `git commit`, and lands mail on `main` directly.
-
-   ⚠️ **Property (a) — "hook settings reload live" — remains UNRESOLVED, but its refutation is now suspect.** Three models were proposed and refuted on 2026-07-25 (*live reload is universal* / *edits vs mid-session keys* / *project re-reads per invocation, user once at session start*), plus *a single-layer seat explains it* (refuted: both layers are live). **Conjecture worth one cheap test**: the evidence that refuted "live reload is universal" was CIO's seat having the corrected matcher on disk at 16:33 and not blocking at 16:35 or 16:37 — **two non-blocking probes, which is exactly what an empty index predicts with no reload failure at all.** Nobody has re-run those with the index printed. Until someone does, treat live-reload as unknown rather than refuted.
-   ❌ **Retired hypotheses — do not re-run these.** *Command shape* (proxy for index state, withdrawn by PA, PPM and Arch). *Lazy attach on first matching call* — refuted: Web's probe 4 was the **fourth** commit-shaped call of its session, after two confirmed blocks, with the index verified empty, and it **bypassed**. *Simple vs complex compound / pipes* (Arch, withdrawn — C and D blocked from a dirty index, not pipeline structure). *Fresh sessions are deterministic* — refuted, but note a fresh seat's first probe is usually its cleanest index, which is why fresh seats bypassed.
-   **The standing rules this earned** — three, each paid for:
-   1. **Verify behaviorally, never by config presence** — an absent hook and a silent hook look identical.
-   2. **A diagnosis of a silent mechanism carries the same evidentiary burden as the mechanism itself.** The worktree diagnosis was plausible, widely believed, written into this file, and never tested.
-   3. ⚠️ **The probe's shape must match the shape you actually use.** A behavioral test of a shape nobody writes is closer to a config check than to a verification — that is precisely how a correct 7/25 PASS certified an absent net.
-   **And the second-order lesson, which five seats paid for in one day** *(PPM named it, Arch corroborated from the seat with the most information)*: **when N investigators agree, ask what procedure they share before treating agreement as evidence.** PA and PPM produced matching tables independently and read it as replication; CXO's 5/5 and Arch's 3/3 felt like strong cross-seat confirmation. All four had inherited the same probe-then-reprobe-without-clearing default, so they were one confound run four times. **Independent agents converging on the same wrong answer via a shared unexamined default is indistinguishable from replication** — shared method is a shared blind spot, and consensus is the form it takes when it surfaces. Arch's note is worth keeping verbatim: they read every other seat's memo *before* writing their correction, had more information than anyone, and still landed on shape.
+2. ✅ **The pre-commit hooks were dead everywhere — an invalid matcher, not a worktree problem. Matcher fixed and verified 2026-07-25; mechanism fully explained 2026-07-26.** Full record, evidence, and four refuted hypotheses: **`docs/internal/operations/amber-hooks-investigation-2026-07.md`** (companion memory pin `project_amber_worktree_hooks_not_firing` is a *partial* record — it predates the five-seat validation).
+   **The operative rules — this is all you need at load time:**
+   - ⚠️ **Hooks are ADVISORY, not a control.** Bypassable with `git -c` or `--no-verify`. The prose discipline is primary; do not treat mailbox discipline as solved because a hook exists.
+   - **The mechanism, in one line**: `check-branch.sh` decides via `git diff --cached --name-only`, and **PreToolUse fires BEFORE the Bash call runs.** So the variable is **index state at hook-fire time**, never command shape.
+   - ⚠️ **The consequence, and it is the important one**: in the universal idiom `git add <path> && git commit -m …`, the `git add` has **not run yet** when the hook reads the index — so it finds nothing staged and exits 0. **Assume your compound commit is UNGATED for mailbox paths.** The shape that is reliably caught is the standalone form you only use when deliberately testing.
+   - ★ **Free mitigation, no config change: stage in one call, then commit bare in the next.** Caught 4/4.
+   - ✅ **`scripts/mail-send.sh` is structurally safe regardless** — it uses `commit-tree`, never `git commit`, and lands mail on `main` directly.
+   - **If you probe it**: print `git diff --cached --name-only` before the first probe and after every block, and run the **compound** probe first against a verified-empty index. **A blocked commit never runs, so its file stays staged and silently arms the next probe** — that one confound produced four wrong datasets across five seats.
+   - ⚠️ **Property (a), "hook settings reload live," is UNRESOLVED.** Verify on your own seat; don't rely on any model of it. Layer naming in the error is **noise, not a diagnostic**. Do not consolidate the two hook layers.
+   **Three standing rules this earned**, each paid for: (1) **verify behaviorally, never by config presence** — an absent hook and a silent hook look identical; (2) **a diagnosis of a silent mechanism carries the same evidentiary burden as the mechanism itself**; (3) **the probe's shape must match the shape you actually use** — a behavioral test of a shape nobody writes is closer to a config check than a verification.
+   **And the second-order lesson**: when N investigators agree, ask what procedure they share before treating agreement as evidence. Five seats converged on the same wrong answer because they inherited the same unexamined probe default. **Independent agents converging via a shared default is indistinguishable from replication.**
 
 Historical context: Lead Dev's 6/12 determination that the ephemeral worktree sufficed for all roles including dev-server sessions was correct *for Desktop*, and `dev/active/cohort-plan-of-record-2026-06-12.html` records it. Model-A setup details: `docs/internal/operations/git-worktrees-model-a-setup.md`. Lifecycle (create / freshness / cleanup): `docs/internal/operations/amber-worktree-lifecycle.md`.
 
@@ -169,7 +152,10 @@ alembic upgrade head
 ```
 
 > ⚠️ **Restarting the server from a Claude Code shell? Strip the inherited `ANTHROPIC_*` env vars.**
-> A Claude Code Bash shell exports `ANTHROPIC_API_KEY=` (**empty**), plus `ANTHROPIC_BASE_URL` / `ANTHROPIC_AUTH_TOKEN` / `ANTHROPIC_CUSTOM_HEADERS`, for Claude Code's own use. If you launch `main.py` directly from that shell, the server **inherits the empty key, which shadows the real key in `.env`** (python-dotenv won't override an already-set var) → every LLM call fails with `APIConnectionError`: *"All configured LLM providers failed. Details: anthropic: Connection error."* This masquerades as a rate limit or transient outage but is neither — a rate limit is HTTP 429; this is a connection failure with no usable credential. The tell: a plain `curl`/`httpx` GET to `api.anthropic.com` succeeds (no auth needed → HTTP 405) while the server's authenticated POST fails. **Always restart the server (and any script that calls the Anthropic SDK directly — e.g. the canonical-retest harness's in-process judge) with those vars stripped:**
+> ⚠️ **CORRECTED 2026-07-31 (PA) — the prescription below is still right; its stated mechanism was stale, and on Amber there is a SECOND, unrelated cause of the identical symptom.** This paragraph used to say the empty key "shadows the real key in `.env`." **There is no `.env` — not in the shared checkout, not in any worktree.** Keys resolve via `services/config/llm_config_service.py:213`: **Keychain first** (`piper-morgan` / `{provider}_api_key`, per `keychain_service._get_key_name`), **then** the env var. So the empty env var can still shadow — but what it shadows is the *env fallback*, not a dotenv file.
+> 🔴 **And on the Amber seat, the Keychain entries are simply ABSENT** — no `anthropic`, `openai`, or `github_token` (Lead, probed via `KeychainService`, 07-30; PA independently confirmed 07-31 that **every** path in the resolution order is empty). The `_db_store` fallback (#1382) will **not** cover this: it activates only when there is no real keyring backend, and Amber's `keyring.backends.macOS` is live. **So on Amber this symptom currently has an unprovisioned-credential cause, not an env-shadowing one — and stripping the vars will not fix it.** Provisioning must go through `KeychainService`, **not** the `security` CLI (the service appends `_api_key`; CLI-stored entries are invisible to the app). One missing step was found blocking four lanes at once on 07-31 (#1386 criterion 2, PA's Probe A, #1445, #1395).
+>
+> A Claude Code Bash shell exports `ANTHROPIC_API_KEY=` (**empty**), plus `ANTHROPIC_BASE_URL` / `ANTHROPIC_AUTH_TOKEN` / `ANTHROPIC_CUSTOM_HEADERS`, for Claude Code's own use. If you launch `main.py` directly from that shell, the server **inherits the empty key, which shadows whatever the env fallback would have supplied** (python-dotenv won't override an already-set var) → every LLM call fails with `APIConnectionError`: *"All configured LLM providers failed. Details: anthropic: Connection error."* This masquerades as a rate limit or transient outage but is neither — a rate limit is HTTP 429; this is a connection failure with no usable credential. The tell: a plain `curl`/`httpx` GET to `api.anthropic.com` succeeds (no auth needed → HTTP 405) while the server's authenticated POST fails. **Always restart the server (and any script that calls the Anthropic SDK directly — e.g. the canonical-retest harness's in-process judge) with those vars stripped:**
 > ```bash
 > env -u ANTHROPIC_API_KEY -u ANTHROPIC_BASE_URL -u ANTHROPIC_AUTH_TOKEN -u ANTHROPIC_CUSTOM_HEADERS \
 >   POSTGRES_PORT=5433 nohup venv/bin/python main.py > /tmp/piper-server.log 2>&1 &
@@ -309,6 +295,29 @@ Before creating or extending anything, investigate the existing situation fully.
 - **The cost of skipping**: acting on a fragment produces confident wrong work; passing a fragment along propagates the ambiguity (see "no flattened commands without referents").
 
 The discipline is identical across all of these: understand what exists before you extend it.
+
+### Name the layer, and state the denominator (m-43 · m-44 companions)
+
+Two rules that keep producing incidents when absent. Both are about a report that is *technically true*
+and still misleads.
+
+- **Name the layer** (methodology-43). A verification can pass cleanly and prove nothing, because it measured a different layer than the one that can fail. Say which layer you checked: a `curl` returning 200 is not a render test, a config file's presence is not a live hook, and a green unit test is not a user path. When you report a check, report *what it looked at*.
+- **State the denominator** on any aggregate. "All clear" and "4 of 10 roles clear" are different claims, and the first is what the second becomes when the denominator goes unstated. This is how the freeze-watchdog reported the cohort healthy while five roles had been dark six days — it was watching four of ten and phrased its subset as a total. **Any coverage claim must name what it covered.**
+
+Both are the same family as **methodology-44** (`"Clear" Is Not a Measurement`): an all-clear is emitted
+identically whether the check measured and found nothing, measured the wrong object, measured part of
+its space, or never ran at all. An error gets investigated; a false clear gets trusted.
+
+### Deferring unblocked work requires a NAMED TRIGGER
+
+You may defer genuinely deep, render-sensitive work to a fresh pass — that is quality-banking and it is
+legitimate. What makes it legitimate is **naming a concrete trigger out loud**: *a fresh session* or *a
+context compaction* (real capacity limits).
+
+⚠️ **"No rush," "not urgent," and "I'll get to it" are not triggers.** They are the deferral antipattern
+wearing a quality costume. Two valid states only: **do it now**, or **"deferring to a fresh
+session/compaction because [the explicit reason]"** — said explicitly and owned. And don't tell another
+agent "no rush" either; it plants an imaginary trigger in them.
 
 ---
 
@@ -475,6 +484,24 @@ This discipline covers what the mailbox hook doesn't: session logs in `dev/`, co
 
 **After pushing, sync PM's local checkout**: run `scripts/sync-pm-local.sh` (no args). Fast-forwards PM's local main (`--ff-only`); silently no-ops if PM has uncommitted changes — PM's in-progress work always wins. Run at natural idle points, not after every commit. Autonomous sessions are allowlisted in `.claude/settings.json` — if it's still being denied or no-oping unexpectedly, flag it rather than routing around it.
 
+### ⚠️ Going dark deliberately? PARK YOUR WATCHDOG ROW FIRST (migration-checklist v1.6)
+
+If you are about to go dark on purpose — migrating, standing down, handing off — **park your row in
+`dev/active/duty-cycle-registry.tsv` before you go**, with a **falsifiable clearing condition** (e.g.
+*"clear this note only when a cron job is actually armed"*).
+
+**It must happen first, because once you are dark you cannot edit it** — a parked role has no cron and
+never wakes. That is the catch-22, and Phase 1 is the only point at which it can be closed.
+
+**Why it matters more than it sounds**: the freeze-watchdog will otherwise report a genuine silence
+nobody should act on. Four roles needed this retrofitted by hand after the fact. **A correct alert
+nobody can act on is worse than no alert, because it spends the belt's credibility** — and a belt people
+have learned to skim is the one that misses the real stall on the next line down.
+
+Conversely, **no row at all is worse than a parked one**: absent means the watchdog is structurally
+incapable of noticing you are dead, and it will report the cohort clear while you are gone. Write the
+row at START (you are the only one who knows your cron expression), park it when you go dark.
+
 ### Mandatory sign-off checklist (BEFORE ending any session)
 
 Run this exact sequence and paste the output into your session log's wrap section:
@@ -484,15 +511,48 @@ Run this exact sequence and paste the output into your session log's wrap sectio
 git status
 # Expected: working tree clean, OR explicit listing of intentional carry-overs in your session log
 
-# 2. Verify your branch is fully pushed to origin
-git log --oneline @{u}..HEAD
-# Expected: empty (no commits ahead of origin)
-# If output has lines: git push origin <your-branch>
-
-# 3. Verify your work is reachable from origin/main
-git fetch origin
-git log --oneline main..HEAD
-# Expected: empty (your branch is merged or you ARE on main)
+# 2 + 3. Verify your work is on origin/main  (these were two steps; they collapse
+#        under push-to-main, and BOTH old forms misreported — see the note below)
+git fetch origin main
+git rev-parse --verify -q origin/main >/dev/null \
+  || echo "STOP: origin/main does not resolve — the check below DID NOT RUN; empty is not clean"
+git log --oneline origin/main..HEAD
+# Expected: empty (everything you did is reachable from origin/main)
+#   The rev-parse line is not ceremony. Without it, on a worktree where the ref
+#   doesn't resolve, `git log … 2>/dev/null` prints NOTHING and exits 128 — it
+#   reads exactly like a clean pass while having measured nothing. That is m-44
+#   inside the sign-off checklist itself: assert what you actually looked at.
+# ⚠️ WHY THIS CHANGED (HOST, 2026-08-01 — both old commands measured the wrong ref):
+#   OLD step 2: `git log --oneline @{u}..HEAD`  — `@{u}` is whatever the worktree was
+#     provisioned to track. Measured across all 11 agent worktrees: 8 track `origin/main`
+#     (correct); cio + host tracked `origin/claude/{role}-cycle`, a ref this workflow
+#     NEVER pushes to. host read 6741 against origin/main..HEAD = 0. It is provisioning
+#     drift, not a Model-A property (PA's fleet census corrected HOST's first diagnosis),
+#     and it FAILS SILENTLY until the branch diverges — cio sat at 0 for weeks and went
+#     to 61 within hours of the census.
+#   OLD step 3: `git log --oneline main..HEAD` — its own comment said "reachable from
+#     origin/main" while the command used LOCAL `main`, which lags in a worktree.
+#     Misreporting on 3 of 11 seats at the moment it was found (host 8, arch 8, web 4).
+#   Both produced output where the checklist said "Expected: empty" — i.e. a MANDATORY
+#   step that cries wolf every session. That trains the discipline away, which is worse
+#   than the wrong number.
+#   ⚠️ And why it went undetected: HOST ran `origin/main..HEAD` in all 7 of its sign-offs
+#   and never the specified command — NON-COMPLIANCE MASKED THE DEFECT. The people it was
+#   wrong for were not running it. If a step is broken, the ones who'd notice are the ones
+#   following it verbatim; if they've quietly substituted something better, nobody reports.
+#   Fix both halves: normalize the upstream (`git branch -u origin/main`) AND use an
+#   explicit ref here, so this is correct regardless of how a seat was provisioned.
+#   THIRD failure mode, added same day (PA, found on a non-Piper worktree with NO
+#   upstream at all): a step can report clean because the command DIED. HOST's first
+#   fix had this too — `origin/main..HEAD` on a repo without that ref exits 128 with
+#   empty stdout, and the `2>/dev/null` we all reflexively add makes it silent. Hence
+#   the rev-parse guard above. Three distinct ways one checklist line lied: wrong ref
+#   (step 2), stale ref (step 3), unresolved ref (this). All three printed something
+#   an agent would read as fine.
+#   FLEET SCOPE, corrected twice: HOST measured one repo, PA said "every worktree on
+#   Amber" and had globbed one of FIVE roots, Web caught that. Full run: 18 worktrees,
+#   5 roots. Local `main` lags 10–15 in the website and designinproduct worktrees.
+#   Both censuses stopped at the repo their author works in.
 # If output has lines, you have THREE options:
 #   (a) merge your branch to main now (preferred for completed work):
 #       git checkout main && git pull origin main && git merge <your-branch> --no-ff && git push origin main
@@ -514,10 +574,13 @@ git log --oneline main..HEAD
 
 Two layers are *supposed* to catch sign-off-discipline lapses. **As of 2026-07-25: one is verified, one is re-wired but unproven. Do not lean on the first until someone has watched it fire.**
 
-1. 🟡 **PreCompact hook — RE-WIRED 2026-07-25, but NOT YET SEEN TO FIRE. Treat as unproven.** (`.claude/hooks/precompact-signoff-warning.sh`, shipped 2026-05-08, severity-tiered 2026-05-11.) The registration is now present at user level (`~/.claude-pm/settings.json`) after ten weeks pointed at an empty array. **What has NOT happened is a behavioral confirmation** — nobody has watched it fire, because you cannot force a compaction on demand. Per this section's own rule, that makes it a claim, not yet a mechanism, and this line stays yellow until someone reports seeing it fire at an actual compaction. **If you compact and see no sign-off warning, that is a finding worth reporting, not a non-event.**
-   *The history, because it's instructive*: PM suspended it 2026-05-16 (`4adfd1444`) because its `exit 2` was **freezing** Lead Dev's session at the compaction limit — a correct, deliberate, temporary call, with the condition named in the commit message ("retained for later re-enable with revised exit semantics"). **The revised exit semantics landed the very next day** (`4dedba916`, exit 0 = warn-only, cannot wedge). The precondition was met on 2026-05-17; the restore step was never anyone's job, and it is still empty ten weeks later. Corroboration, not inference: **`dev/active/session-end-warnings.log` — the file this section said every firing writes to — has never existed.**
-   *When re-wired*, its intended behavior is: fires before compaction with HARD/SOFT/QUIET tiers — HARD when you have unpushed commits or commits ahead of main, SOFT when you have substantive uncommitted changes on disk, QUIET when the only changes are mechanical (MANIFEST regen, `.DS_Store`, runtime noise).
-   ⚠️ **Until it is re-wired: your sign-off discipline has no automated backstop at compaction.** Run the checklist manually. Restore is tracked with the Amber hooks work (finding #5); this line gets updated when a *behavioral* check confirms it fires — not when the config looks right.
+1. ✅ **PreCompact hook — CONFIRMED FIRING 2026-07-29. This line was 🟡 unproven for weeks; it is now discharged by evidence.**
+   **The evidence** (`dev/active/session-end-warnings.log`, HOST's seat):
+   `[2026-07-30T05:10:07Z] event=PreCompact tier=HARD branch=claude/host-cycle uncommitted=0 substantive=0 unpushed=6217 ahead_of_main=0`
+   ⚠️ **Why nobody found it for weeks, and the lesson that outlasts the finding**: `.gitignore:136` excludes that log. It is therefore invisible to `git ls-files`, absent from `origin/main`, and unfindable by grepping the repo — it exists only on the local disk of the seat where it fired. **Six surfaces recorded the file as "never existed," every one a correct inference from a corpus that structurally could not contain the answer.** *(Before concluding a file has never existed, run `git check-ignore -v <path>`.)*
+   ⚠️ **Its HARD tier is uninformative on a Model-A push-to-main seat.** The firing above says HARD while `uncommitted=0`, `substantive=0`, `ahead_of_main=0` — everything clean. `precompact-signoff-warning.sh:54` gates HARD on `git log '@{u}..HEAD'`, and `@{u}` is `origin/claude/{role}-cycle`, **a ref this workflow never pushes to** (we push `HEAD:main`). Measured 2026-08-01: `@{u}..HEAD` = 6711, `origin/main..HEAD` = 0. **So on THAT SEAT the hook can only ever fire HARD.** ⚠️ **CORRECTED 2026-08-01 (PA, fleet census): this is NOT a Model-A property — it is provisioning drift, and it is the minority case.** Measured across all 11 agent worktrees: **8 have `upstream = origin/main`** (arch, cxo, docs, exec, lead, pa, ppm, web) where `@{u}..HEAD` is **0 and correct**; **3 have `upstream = origin/claude/{role}-cycle`** (cio, comms, host) — comms 8699, host 6717, **cio 0**. `origin/main..HEAD` is **0 on all twelve**. cio is the instructive one: role-branch upstream *and* currently 0, so this **fails silently until the branch diverges from the ref it tracks.** 🔴 **And it hits more than the hook: §Sign-Off step 2 is `git log --oneline @{u}..HEAD` with "Expected: empty" — on comms and host that step reports thousands every session, which trains people to skip a step in the mandatory checklist.** **Preferred fix: normalize the three upstreams (`git branch -u origin/main`), not just patch the hook** — patching fixes the hook; normalizing fixes the hook *and* the checklist *and* anything else reasoning about `@{u}`. For a workflow whose every push is `HEAD:main`, `origin/main` is arguably the correct upstream and the three are the outliers. The right number is already computed at line 61 (`AHEAD_OF_MAIN_COUNT`, against `origin/main`). Fix pending with CIO — and per this file's own rule, whoever changes it should *watch it fire*, not read the config.
+   *(Superseded text, kept because the reasoning was right and only the conclusion was wrong: "RE-WIRED 2026-07-25, but NOT YET SEEN TO FIRE. Treat as unproven.")*
+
 2. ✅ **Docs merge-keeper sweep at session start** for all `claude/*` branches with commits not on main — this one is real. While layer 1 remains unproven, treat this as the only net you can count on; it catches things within 24 hours rather than at the moment of risk.
 
 Both layers are **safety nets, not the primary discipline** — and this section is itself the cautionary case for why that matters: a documented net asserted in the present tense stayed false for ten weeks because nothing verified it. **A safety net you haven't seen fire is a claim, not a mechanism.** If you notice another one here you can't confirm behaviorally, treat that as a finding rather than an assumption.
