@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — 2026-08-02</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#171717; --card:#212121; --line:#3a3a3a; --ink:#ececec; --mute:#9a9a9a;
+            --red:#e06050; --amber:#d9a03f; --grey:#8a8a8a; --green:#5fb573; --link:#6ea8e8; }
+  }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:840px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.25rem; }
+  .legend { font-size:.8rem; color:var(--mute); margin:.5rem 0 1.5rem; }
+  .legend span { margin-right:1rem; white-space:nowrap; }
+  h2 { font-size:1.05rem; margin:1.75rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.7rem .9rem; margin:.55rem 0; }
+  .item.block { border-left-color:var(--red); }
+  .item.dec { border-left-color:var(--red); border-left-style:double; }
+  .item.drift { border-left-color:var(--amber); }
+  .item.clear { border-left-color:var(--green); }
+  .item .top { display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; }
+  .agent { font-weight:700; }
+  .sev { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .4rem;
+         border-radius:4px; background:#eee; color:#444; }
+  @media (prefers-color-scheme: dark) { .sev { background:#333; color:#ccc; } }
+  .summary { margin:.35rem 0 .3rem; }
+  .why { font-size:.85rem; color:var(--mute); margin:.2rem 0 0; }
+  .clean { color:var(--mute); font-size:.9rem; }
+  .clean b { color:var(--ink); }
+  .bigclear { font-size:1.05rem; color:var(--green); font-weight:600; }
+  .resolved { font-size:.85rem; color:var(--mute); margin-top:.4rem; }
+  .resolved s { color:#999; }
+  footer { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.8rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by Exec · <b>Sun 2026-08-02 ~08:25 PT</b> · live-state pass this morning · <b>beta target: Aug 8</b> — and for the first time, nothing on the beta path is blocked on you</p>
+  <p class="legend">
+    <span>🛑 <b>Blocker</b> — work stuck</span>
+    <span>🔴 <b>Decision</b> — needs your call</span>
+    <span>🟡 <b>Awareness</b> — no decision</span>
+    <span>⚪ <b>Clean</b></span>
+  </p>
+
+  <h2>🛑 Blockers — work that's stuck</h2>
+
+  <div class="item block">
+    <div class="top"><span class="agent">Ship #054</span><span class="sev">not on you</span></div>
+    <p class="summary"><b>The draft is gated on CIO's workstream memo — last of six, now past its Saturday deadline.</b> Fail-loud nudge sent this morning (their first fire ~10:07 keeps everything on rhythm). The other five landed a day early; publication target Wed Aug 5 still holds with slack.</p>
+    <p class="why">No PM action needed unless CIO reports a genuine block — then the schedule question comes to you.</p>
+  </div>
+
+  <div class="item block">
+    <div class="top"><span class="agent">Your screen, possibly</span><span class="sev">one click</span></div>
+    <p class="summary"><b>PA's keychain finding</b>: reads from a not-yet-authorized binary hang indefinitely on a macOS authorization dialog — there may be approval dialogs waiting on your screen. One click each clears them; HOST later confirmed the server's own Anthropic path doesn't touch the keychain, so this gates diagnostics, not the running product.</p>
+  </div>
+
+  <h2>🔴 Decisions awaiting you</h2>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">You + CXO</span><span class="sev">your named focus</span></div>
+    <p class="summary"><b>The Jake FTUX / value-proposition decision</b> — synthesis §4's six calls, delivered Friday, still the standing item. It gained force overnight: PPM's C=1 finding on the quality gate ("the bar our thresholds pass on cannot see what Jake reported" — #1468, filed Production) is the measurement-side echo of the first-contact-criterion recommendation already in §4. CXO's first-contact design spec (v0.2) is waiting on the same decision. PPM converts to issues same-day after.</p>
+  </div>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">Checklist v2.0</span><span class="sev">ratify</span></div>
+    <p class="summary"><b>Migration-checklist v2.0 → your CEO ratification.</b> Exec review done (six findings), HOST applied all six same-day. The canonical migration surface; one read + one word.</p>
+  </div>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">Gate + board</span><span class="sev">standing</span></div>
+    <p class="summary"><b>#1278</b> Fly.io scope call (beta-gate criterion 1 — the one remaining structural gate input that is yours) · <b>#1427</b> one-line confirm (milestone already Production) · <b>#1462</b> milestone (PPM rec: Production) · <b>tester-welfare instrument</b> (HOST) · <b>memory-index governance</b> (guard live; ruling still open).</p>
+  </div>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">Comms</span><span class="sev">5 gated</span></div>
+    <p class="summary">Beats 21–23 voice-pass + art · Beats 24–28 slate steer · Ship #053 LinkedIn URL · watchdog wording · BYOC direction. Plus today's post ("You Can't 'White Knuckle' Structural Problems") went publish-ready overnight with one terminology item held for you.</p>
+  </div>
+
+  <h2>🟡 Drift / awareness — no decision, worth knowing</h2>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">#1386 / beta gate</span><span class="sev">closing in</span></div>
+    <p class="summary"><b>Criterion 2 is one line from fully signed.</b> Routing: 61/61 = 100% post-rev (Arch ratified the 6-row corpus rev; every category clears its threshold — nothing for an aggregate to hide). Quality: PPM SIGNED at LENIENT 20/22 = 90.9%, basis argued on the issue; the one discharge line is Lead's per-category split of the two misses. The withhold→verify→sign arc took 48 hours and caught a real denominator error in each direction — the gate discipline paid for itself.</p>
+    <p class="why">Remaining to gate-close after criterion 2: #1278 (yours, above), criteria 4/5, and your go/no-go (criterion 6). Scenario-B re-run (verifies #1393/#1394) still owed — Lead's driving offer stands.</p>
+  </div>
+  <div class="item drift">
+    <div class="top"><span class="agent">Token forensics</span><span class="sev">in progress</span></div>
+    <p class="summary">Your assignment (via Janus) is banked for today after the Ship draft — consumption by agent/fire across the two exhausted 5-hour windows, substance assessment, efficiency recommendations. Measurement layer stated up front: commits + session logs + mail traffic (no per-session token telemetry exists).</p>
+  </div>
+  <div class="item drift">
+    <div class="top"><span class="agent">Infra</span><span class="sev">Aug 5–8</span></div>
+    <p class="summary">Session-cron expiry horizon reaches the first re-armed seats ~Aug 5 (Lead's ~Aug 8). Every active role re-arms at STOP so the horizon keeps rolling — but a session death still kills its cron silently. Durable-scheduler question remains with CIO/Pard.</p>
+  </div>
+  <div class="item drift">
+    <div class="top"><span class="agent">New issues</span><span class="sev">tracked</span></div>
+    <p class="summary"><b>#1467</b> (Q22 no-regression follow-up, unmilestoned) · <b>#1468</b> (quality-bar-cannot-see-Jake's-failure — Production). Both born from the criterion-2 verification pass; both properly filed rather than absorbed.</p>
+  </div>
+
+  <h2>⚪ Clean — no open PM item</h2>
+  <div class="item clear">
+    <p class="clean">
+      <b>Lead</b> — up, cycling, and productive: #1445 + #1461 closed, keyed baseline, corpus-rev run, census queue moving.<br>
+      <b>PPM</b> — signature discipline exemplary this weekend; #1459 milestone landed.<br>
+      <b>Arch</b> — corpus rev ratified; 16-file ruling delivered; spatial + PDR-007 threads healthy.<br>
+      <b>HOST / Docs / Web / PA / CXO</b> — active; each's open items are in the buckets above.
+    </p>
+  </div>
+
+  <h2>✅ Resolved since the 7/31 board</h2>
+  <div class="item">
+    <p class="resolved">
+      <s>API key provisioning</s> — done (you, Sat 17:27); four lanes unblocked; #1445 closed same evening.<br>
+      <s>Rouse Lead</s> — up and cycling autonomously since Sat ~18:00; registry active.<br>
+      <s>#1424</s> — CLOSED (the board's oldest decision, open since 7/18).<br>
+      <s>#1459 milestone</s> — Production, set.<br>
+      <s>OpenAI ⏰ item</s> — resolved off (wrong verification; recorded in PDR-006 OQ3).<br>
+      <s>Checklist v2.0 fixes</s> — all six applied same-day (ratification now yours, above).<br>
+      <s>Tests red</s> — cured by #1461(a); CI green on the wire.
+    </p>
+  </div>
+
+  <footer>
+    <b>Bottom line: nothing on the beta path is blocked on you for the first time — the two remaining PM touches are ordinary decisions (#1278 scope, criterion-6 go/no-go when the gate gets there), and today's cohort work (Ship draft pending CIO, criterion-2 close-out, forensics) runs without you.</b><br><br>
+    Live-state pass ~08:15–08:25 PT: #1386/#1424/#1427/#1278/#1462/#1467/#1468 checked against GitHub (states + milestones as shown; #1424 confirmed CLOSED); #1386's latest comment read (PPM's quality signature, 07:40 today); registry TSV read (CIO active, cron 44e16ee9; Lead active, 88e16745); CIO's missing #054 memo verified against both inbox and read (5 of 6 present); overnight commit log reviewed 21:30 Sat → 08:15 Sun.
+  </footer>
+</div>
+</body>
+</html>
