@@ -1,5 +1,6 @@
 """Tests for KeychainService"""
 
+import os
 from unittest.mock import Mock, patch
 
 import keyring
@@ -81,8 +82,15 @@ class TestKeychainService:
         # Store one key in keychain
         service.store_api_key("openai", "test-key")
 
-        # Mock environment variable for another
-        with patch.dict("os.environ", {"ANTHROPIC_API_KEY": "env-key"}):
+        # Control the WHOLE env surface this test asserts on, not just one var —
+        # on keyed seats conftest loads real OPENAI/GEMINI keys into the env from
+        # the keychain (first bit 2026-08-01 when the Amber keychain was
+        # provisioned). The assertions below are about THIS test's env, so the
+        # test must clear the vars it asserts absent, not assume a keyless seat.
+        env = {k: v for k, v in os.environ.items()
+               if k not in ("OPENAI_API_KEY", "GEMINI_API_KEY")}
+        env["ANTHROPIC_API_KEY"] = "env-key"
+        with patch.dict("os.environ", env, clear=True):
             status = service.check_migration_status(["openai", "anthropic", "gemini"])
 
         assert status["openai"].exists_in_keychain is True
