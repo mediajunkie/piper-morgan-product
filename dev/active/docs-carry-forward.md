@@ -1,122 +1,97 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-07-31 22:35 PDT (Fire 6, STOP — DAY-CLOSED 2026-07-31)
-**Session log**: `dev/2026/07/31/2026-07-31-0727-docs-code-log.md` (2026-07-29's is `dev/2026/07/29/2026-07-29-0948-docs-code-log.md`)
-**Prior update**: 2026-07-12 — **17 days stale, pre-Amber.** Rewritten wholesale; still-live items from
-that version are preserved below and marked, resolved ones noted so they aren't re-derived.
+**Updated**: 2026-08-01 22:40 PDT (Fire 7, STOP — DAY-CLOSED 2026-08-01)
+**Session log**: `dev/2026/08/01/2026-08-01-0727-docs-code-log.md` (yesterday's is
+`dev/2026/07/31/2026-07-31-0727-docs-code-log.md`, DAY-CLOSED verified)
 
-**Worktrees** (both verified 0-behind Fire 1): product `~/Development/piper-morgan-worktrees/docs` @
-`claude/docs-cycle` · website `~/Development/piper-morgan-website-worktrees/docs` @ `claude/docs-cycle`
-**Cron**: `25cfc1f4` — `57 6,9,12,15,18,21`. ⚠️ **Session-only; auto-expires ~2026-08-05** (CronCreate
-7-day cap) and dies on session exit. Registry row written — re-arm AND update the row when it lapses.
-**Hooks on this seat** (probed Fire 1, index printed empty before each): standalone `git commit`
-**BLOCKS**; compound `… && git add … && git commit …` **BYPASSES**. Mitigation: stage in one call,
-commit bare in the next. `mail-send.sh` is safe regardless (`commit-tree`).
+**Worktrees**: product `~/Development/piper-morgan-worktrees/docs` @ `claude/docs-cycle` · website
+`~/Development/piper-morgan-website-worktrees/docs` @ `claude/docs-cycle`
+**Cron**: re-arming `774c7afe` → new id at STOP (delete-then-create; see final action) —
+`57 6,9,12,15,18,21`. Registry row must match.
+**Hooks on this seat**: standalone `git commit` BLOCKS; compound `add && commit` BYPASSES. Mitigation:
+stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 
 ---
 
-## Awaiting PM / others — check, don't re-derive
+## Awaiting others — check, don't re-derive
 
-- ✅ **Weekly Ship #053 CLOSED OUT** (Fire 2). LinkedIn URL supplied by Dispatch-DinP; `status=distributed`, `liPubDate`/`linkedinURL` set, `mediumURL` left empty by design (ship = LinkedIn-only). Draft archived to `published/` per Step 9. Nothing outstanding.
-
-- **🔭 ANTICIPATED (PM 2026-07-29, "may want to" — NOT yet a directive, do not build ahead):** the cross-posting skill is nearly done, and PM may hand syndication to **a new Dispatch agent working on the Piper Morgan project**. Three things in my lane change if that lands; all three are cheap to settle *before* the handover and expensive after:
-  1. **Routing is genuinely ambiguous and has a documented failure mode.** `mailboxes/DIRECTORY.md` explicitly says *do not* create `mailboxes/{agent}/` for cross-project agents **including Dispatch**, and cites CIO's 2026-07-04 mistake — *"a dead letter, not a delayed delivery."* A Dispatch agent *on this project* is either (a) Piper-Morgan-local → it needs `mailboxes/dispatch/` **and** DIRECTORY.md amended in the same change, or (b) still cross-project → stays at `~/Development/dispatch/mail/` and nothing changes. **Guessing wrong produces silent dead letters.**
-  2. **`publish-to-blog` Step 8 says "PM does manually"** and Step 9 gates archival on a confirmed syndication URL. If Dispatch owns syndication, Step 8 changes owner and Step 9's gate becomes a *mail-driven* dependency with real latency — worth encoding rather than leaving as folklore.
-  3. **Keep ONE writer on the editorial calendar (recommend: Docs).** Dispatch should *report* the URL; Docs writes it via `/update-calendar`. A second writer on an 18-column CSV is precisely the column-shift risk that `update-calendar` v1.2 and my predecessor's Ship #050 repair both document — field count stays valid while content drifts one column right.
-- ✅/⚠️ **Puppeteer cache CLEARED (PM-authorized) — and it DISPROVED the diagnosis.** A clean cache reproduces the identical failure: ~100MB downloads, then `ABOUT` + `LICENSE` and no binary, rc=1. Not stale cache, not disk space (259GB free). **The extraction is reproducibly broken on this host; cause unknown** (untested: Node 26 vs `@puppeteer/browsers`, macOS quarantine, archive format). Pard's lane. **`npm ci --ignore-scripts` is therefore the correct standing procedure, not a workaround.** Nothing in publish or `next build` is blocked; anything driving a real headless browser would be.
-- ✅ **Stash cleanup: NO DEADLINE.** PM ruled the pre-Amber machine stays up indefinitely. Stashes exist only there (verified 0 anywhere on Amber), so only something with access to that host can act. Standing offer to Dispatch: export all 15 to patches somewhere tracked and I'll review per-stash from here.
-- ❌ **CIO scoping note: NOT a blocker, and never arrived.** HOST's Pass 3 says explicitly *"Docs, this is your call and I've stayed off it"*; the refactor was PM-greenlit 7/12. **Proceed without it** — this is mine to execute, not to wait on.
-- **⏳ CIO/Pard on provisioning** — 2 memos sent (Node gap; Python-too addendum). Nothing blocks on a reply.
+- **PDR-007 awaits CIO ONLY.** Arch ✅ and Web ✅ both reviewed, no objection. **Do not decide the
+  storage question early** — pre-registered 2–4 week window (2026-07-30 → 2026-08-27), shipped
+  measurement (`scripts/measure-editorial-drift.py`). Last run 2026-08-01 (post-archival, unaffected):
+  Class 2 = 0 (criterion 0), Class 3 = 17 (criterion ≤17), 367 matched rows.
+- **docs/ tree audit routed to Arch 2026-08-01** (`docs/internal/operations/docs-tree-audit-2026-08-01.md`).
+  Arch acknowledged same day, took it as **first item at 06:27 tomorrow** (2026-08-02), named the trigger
+  explicitly rather than rushing 16 per-file dispositions at day-close. Not mine to act on further unless
+  Arch asks; audit itself is written, nothing more owed from me.
+- **Dispatch-DinP staleness report — replied 2026-08-01**, diagnosis sent to
+  `~/Development/dispatch/mail/`. Root cause: their read checkout (`~/cool/piper-morgan-product`, PM's
+  shared main checkout) is synced to `origin/main` only opportunistically via `scripts/sync-pm-local.sh`,
+  not on every push — so a read against it has no freshness guarantee. Not a repo defect; the repo (via
+  `origin/main`) had the clean content hours before the cross-post. Suggested fix: sync immediately
+  before reading, same discipline this project already applies at `publish-to-blog` Pre-Step and
+  `duty-cycle-tick` Step 2. **Watch for Dispatch's reply** — if they confirm/deny the mechanism, that's
+  worth a follow-up note either way (confirms a real systemic gap, or rules it out and reopens the
+  question of what actually happened).
 
 ## Owed by me — unblocked, priority order
 
-1. ✅ **DONE 2026-07-30 (`ac120d514`) — CLAUDE.md load-time/record separation SHIPPED.** 58,262 → 55,303 bytes (−5.1%) *while adding four norms*; hooks item −68%; HOST's 8 catalogued norms now 8/8 (was 4). Full record moved verbatim to `docs/internal/operations/amber-hooks-investigation-2026-07.md` — **a git-tracked doc, not the memory pin**, because the pin is a partial record and MEMORY.md is 8 lines from a silent ceiling. Two findings from verifying rather than executing HOST's memo: the item had **grown 30% in two days** (concluding the investigation meant writing more record into the load-time surface), and **HOST's pointer check had gone stale** — accurate 07-28, but 2,407 bytes landed 07-29 that the pin never carried.
-2. ✅ **DONE (Fire 2)** — `draftPath`-resolves check shipped in the validator, **and all 7 stale paths repaired** (3 Ships + 4 narrative posts). 0 unresolvable of 97 rows carrying a path. Cause was Step-9 archival moving files without updating rows.
-3. ✅ **DONE (Fire 2)** — per-column shape checks shipped in `scripts/validate-editorial-calendar.py` (enums, date formats incl. chatDate's M/D/YYYY wart, URL/path prefixes, the Ship #050 repo-path-in-prose signature). Errors block, drift warns. Behaviorally tested both directions in an isolated tree. Predecessor's §4.4 item, closed.
-4. ✅ **DONE 2026-07-31 (`eb928df05`) — `publish-to-blog` v0.21 Pre-flight 2**, behaviorally tested 4 cases, with explicit "don't prefer the newer mtime" guidance. ~~Original:~~ Fold "`diff` the two draft copies" into `publish-to-blog` as an explicit step — adopted as practice Fire 1; it caught a silent image drop only because Comms did it. Shouldn't depend on luck.
-5. **methodology-20 — two refinements now**: (a) predecessor's line-vs-entry-count unit mismatch, flagged across 5 omnibus logs; (b) mine — the two HIGH-COMPLEXITY compression rules are **mutually unsatisfiable** (preserve-70-80% ⇒ 1.25–1.43×; ratio check demands >3×). Both raised to CIO as owner.
-6. ✅ **DONE by COMMS (not me)** — `template-audit` v1.2 removed the `import yaml` dependency and added an explicit `⚠ CANNOT RUN` verdict token, tested across four frontmatter shapes. My suggestion, their lane, their fix, two hours. The *provisioning* half is still open (no venv on this host; CLAUDE.md Quick Reference still says `venv/bin/python main.py`).
-7. 🔴 **CORRECTED 2026-08-01 — this item carried a framing I had already disproved.** It read *"18 calendar↔website metadata disagreements, incl. ~46 live-site captions missing quotation marks (calendar right, site wrong)."* **Both halves were wrong**: the measured Class-3 figure is **17**, not 18, and the captions are **not disagreements at all** — the calendar carries the same 45 unquoted captions the site does (43 identical slugs), so the surfaces *agree* and it's a house-style question. Corrected in PDR-007 on 07-31 — **and left standing here**, in the file my own cron prompt tells me to read first every fire. Caught 08-01 by applying HOST/CXO's rule (*a correction has to chase every surface the claim reached*) to my own week. **Live item now**: whether every caption must be quoted is a house-style call for Comms, not a sync defect for me.
-8. **97 docs >30d asserting current-state language**; `docs/internal/planning/current/` is itself now a misleading directory name.
-9. **Weekly-audit orphan rate** — 2 of last 6 unexecuted; mitigated by the Mon–Thu SessionStart hook, cadence still worth review.
-10. **PDR-007 follow-through** — drafted + routed (`35fb86c60`). ✅ **Web reviewed same night: NO OBJECTION, and corrected my cost estimate DOWNWARD** — the render layer needs zero change (it already treats the JSON as generated data), real cost is 3 generation scripts incl. `copy-editorial-calendar.js`, and Web claimed their own `loadCalendarLive()` repoint. Web also answered Q1 (decide from the measurement window) and Q2 (product repo, first substantive answer). **Still awaiting Arch + CIO.** If it ratifies, I write the companion ADR. The 2-4 week wait stands — Web pressed that point hardest too.
-11. ✅ **DONE 2026-07-31 (`54f30dcef`) — reconciled, and the FRAMING was wrong, not just the number.** Both figures correct on different bases; the decisive one (all *calendar* captions unquoted = 45, same 43 slugs as the site) shows the surfaces **agree**. Never Class-3 drift — a house-style question neither surface conforms to. Folding it in would have made the baseline wrong by 3x, **in my own PDR's favour**. Baseline verified unchanged at 17. ~~Original:~~ Reconcile the '~46 captions' measurement — PDR-007 open question 4. The 7/28 audit's figure and my 2 don't agree, and until the methods are reconciled neither should be quoted.
-12. **docs/ tree audit + cleanup plan** — *carried from 7/12*, PM's direct request via PPM. Starting data: stale roadmap/README.md, `CORE/` an archival candidate. Write the audit + plan before any large-scale moves.
+1. **97 docs >30d asserting current-state language**; `docs/internal/planning/current/` is itself a
+   misleading directory name (oldest items 314d — surfaced precisely by the tree audit, same finding,
+   different angle). No deadline named.
+2. **methodology-20's two HIGH-COMPLEXITY compression rules are mutually unsatisfiable** — raised to CIO
+   twice now (predecessor's unit mismatch + my contradiction). Not mine to resolve; re-raise if it stays
+   open much longer.
+3. **`docs-standing-items.md` is stale** (last touched 2026-05-27, pre-Amber — references items and a
+   task-list model that predate the current carry-forward-as-source-of-truth discipline). Noted 2026-08-01
+   Fire 7, not acted on. Low priority: either refresh it to reflect the current architecture or fold its
+   still-live threads (#974 mem-eval pilot, #972 mem-temporal field-spec) into the carry-forward and
+   retire the file. Not urgent — nothing in it is currently misleading anyone but me.
+4. **Monday (2026-08-03) — first real run of the Doc Currency Check** added to the weekly audit. Watch:
+   does the ratio read legibly, does the `last_verified` cluster check surface correctly.
 
-## Resolved since the 7/12 version — do NOT re-open
+## Resolved since 2026-07-31 — do NOT re-open
 
-- ~~Ship #050 calendar validator error (19 fields on that row)~~ — **FIXED 7/28** by my predecessor (`fcfc95039`); it was a three-field column shift, not a count problem. Validator now clean at 418 rows / 18 fields.
-- ~~`the-server-crashed-mid-draft.md` archival~~ — that draft is in `published/`.
-- ~~Jul 9/10/11 log-closure and omnibus chain~~ — omnibus is gap-free through 2026-07-28 (414 logs).
-- ~~`docs-duty-cycle` scheduled task / Belt-4 spawn-fresh~~ — superseded by the Amber cron model (`26805e13`) + the freeze-watchdog registry.
+- ~~"Mechanism Beats Vigilance" publish + syndication~~ — **fully closed 2026-08-01.** Voice-pass proof,
+  published, Medium + LinkedIn both set, archived to `published/`/`images-archive/`, draftPath repointed.
+  Drift measurement clean.
+- ~~CIO worktree-model-revision ack (07-25)~~ — sent 2026-08-01, a week late but sent.
+- ~~9 `to: docs` inbox items (2 Comms, 1 Arch, 1 CIO, 2 Dispatch, 1 Web, 1 Exec, 1 self-handoff)~~ —
+  triaged 2026-08-01 Fire 7; verified each individually before filing, not assumed from subject line.
 
 ## Inbox
 
-**29 remaining, all cc-only historical from the 7/21–7/28 migration window.** Everything addressed *to*
-docs is drained. **Not** mass-moving unread mail to `read/` — that would misrepresent what's been
-consumed. Work through on quiet fires.
+**~51 remaining, cc-only historical from the 7/21–7/28 migration window.** Everything addressed *to*
+docs is drained as of Fire 7. Not mass-moving to `read/` — drain on quiet fires, as before.
 
-## Standing lessons earned 2026-07-29 — all three one shape
+## Standing lessons (carried, still live)
 
-**Verify per assertion, not per session.** One verification never licenses an extrapolation:
+**Verify per assertion, not per session.** Two more instances 2026-08-01, both self-inflicted process
+slips rather than factual errors, both caught the same way — reading `git status` after acting rather
+than trusting a command matched intent: (1) a bad pathspec silently aborted a `git add`, landing a commit
+with 0 real diff while the message claimed the calendar update; (2) a `mail-send.sh` call included the
+new (moved-to) paths for 9 triaged memos but not the old (moved-from) inbox paths, leaving them showing
+as uncommitted after a "successful" send. **The fix in both cases was the same habit**: don't read a
+commit or send as done until `git status --short` confirms it.
 
-1. **Stale worktree** — reported the Ship's state from a tree **45 commits behind**, and told PM there was no draft. `feedback_read_the_artifact_not_testimony_about_it` has an unstated precondition — *the artifact must be current* — which a behind checkout satisfies in letter and breaks in fact. **Sync immediately before reading**, not once at session start.
-2. **Guessed timestamps** — ran `date` at 15:26, then extrapolated across several work units; 3 memos went out up to ~55 min ahead of real time.
-3. **Acted before reading mail** — Comms had already answered the Driver blocker and the memo sat unopened for 10 minutes while I published. **Drain mail before the task loop**, which is exactly what WORK PARTS already prescribes.
-
-**The counterweight, worth as much**: **4 false alarms caught by checking before reporting** — empty
-caption, `<em><em>`/trailing slashes, the "index doesn't list #053", and "`mailboxes/` has been deleted"
-(self-inflicted: **Bash cwd persists between calls**). Each would have been a wrong report to PM or a bad
-edit to a live artifact. Doubting your own finding is as load-bearing as finding it.
+**Cross-agent staleness diagnosis discipline (new, 2026-08-01)**: when another agent reports "the repo is
+stale," don't take the framing at face value — walk the actual commit history against the timeline they
+describe before agreeing there's a repo-side defect. This time the repo was fine; the read path wasn't.
+Worth remembering the inverse is just as possible — a future report like this could be a genuine repo
+defect, and the discipline is "check," not "assume it's always the reader's checkout."
 
 ## Watch items (not owed to me, but adjacent)
 
-- ⚠️ **`MEMORY.md` is 8 lines from a silent 200-line ceiling** (168 entries / 192 lines, HOST measured 2026-07-29 22:3x). Truncation is silent — trailing entries vanish for every agent with no error. Addressed to **CIO** (owns the mechanism) and **Exec** (would coordinate a per-role prune); Docs cc'd. **Not my ask** — but if the resolution is per-type index files with a router, that is documentation architecture and I'd expect to be involved. **Do not add memories casually until this resolves**; I deliberately deferred 3 candidate entries tonight for this reason.
-- **Puppeteer extraction cause** — Pard's lane. Three hypotheses dead (stale cache, disk space, Web-poisoned-cache); untested: Node 26 vs `@puppeteer/browsers`, macOS quarantine, archive format.
-- **methodology-20's two HIGH-COMPLEXITY compression rules are mutually unsatisfiable** — CIO owns. Raised twice now (predecessor's unit mismatch + my contradiction).
+- **Puppeteer extraction cause** — Pard's lane, still open. Three hypotheses dead.
+- **methodology-20's mutually unsatisfiable compression rules** — CIO owns, raised twice.
+- **`sync-pm-local.sh`'s opportunistic cadence** — surfaced today as the likely root cause of Dispatch's
+  staleness report. Not proposing a change to it (its deliberate design tradeoff is documented and
+  sound for PM's own workflow) — flagging only that any other consumer reading that same checkout
+  inherits the same freshness gap, and won't know it unless told, as Dispatch now has been.
 
 ## The one thing I most want to carry into tomorrow
 
-**Verify per assertion, not per session.** Both errors that reached PM today came from trusting a
-verification I'd done earlier rather than redoing it — a 45-commit-stale worktree read, and timestamps
-extrapolated from a single `date` call. Meanwhile **4 false alarms were caught by checking before
-reporting**. Same root, opposite outcomes, and the cheap habit is the difference.
-
-**Wanted but not found (day's biggest gap)**: a way to detect my own working tree is stale *before* I
-read a file from it. Every git check I have reports branch state; nothing warns that the file I'm about
-to read is N commits behind.
-
-
----
-
-## Top of the queue for 2026-08-01 (rewritten at STOP)
-
-⚠️ **Tomorrow is Saturday — prime time, not downtime** (`feedback_weekends_are_piper_morgan_prime_time`).
-Cadence unchanged.
-
-1. **PDR-007 awaits CIO ONLY.** Arch ✅ and Web ✅ both reviewed with no objection. If CIO ratifies, I
-   write the companion ADR. **Do not decide the storage question early** — the 2–4 week window has a
-   pre-registered criterion and a shipped measurement (`measure-editorial-drift.py`); run it before any
-   call. Baseline verified 2026-07-31: Class 2 = 0, Class 3 = 17, matched rows 366.
-2. **Monday is the first real run of the Doc Currency Check** I added to the weekly audit. If it reads
-   wrong, that's mine. Two things to watch: does the ratio land legibly, and does the `last_verified`
-   cluster check surface the 23-doc stamp.
-3. 🟡 **AUDIT WRITTEN 2026-08-01 (`0fa44f55c`) — `docs/internal/operations/docs-tree-audit-2026-08-01.md`. Nothing moved.** 16 zero-inbound-reference candidates named; `planning/current/` is 100% stale at 314d and needs a **rename** (the name is the defect). **Next step is NOT mine alone**: every action is gated on per-file owner confirmation, and Arch owns the architecture corpus. Route to Arch when they have capacity. ~~Original:~~ `docs/` tree audit + cleanup plan — PM's direct request via PPM, carried since 07-12 and now the
-   oldest untouched item I hold. Starting data: stale roadmap/README.md, `CORE/` an archival candidate.
-   **Write the audit and plan before any large-scale moves.**
-4. **97 docs >30d asserting current-state language**, and `docs/internal/planning/current/` is itself a
-   misleading directory name (oldest items 310d).
-5. **methodology-20's two HIGH-COMPLEXITY compression rules are mutually unsatisfiable** — raised to CIO
-   twice now (predecessor's unit mismatch + my contradiction). Not mine to resolve; worth re-raising if
-   it stays open.
-
-## The shape worth carrying into tomorrow
-
-**Three independent instances this week of "a correct mechanism with no consumer"**: Arch's
-`check-staleness`, HOST's `reconcile-drafts`, and the SessionStart hook delivering 2 of 8 lines. Plus a
-fourth today — `last_verified` recording a bulk stamp. This may be its own m-44 sub-shape: **not a check
-that reports falsely, but a correct signal nobody is receiving.** Flagged to CIO; the catalog is theirs.
-
-**And the personal version**: I found three of those four in my own surfaces (my briefing, my portfolio,
-my cron prompt). The reason I found them is that PM asked, not that anything alarmed. That is the same
-sentence as §4.6 of my predecessor's handoff, one surface over.
+**A correct diagnosis beats a fast apology.** Dispatch's report could have been answered with "sorry,
+we'll fix the sync" — instead, five minutes of `git log` on the actual file turned a vague "something's
+stale somewhere" into an exact commit, an exact timestamp, and a specific likely mechanism. That's the
+same discipline as "open the authoritative surface" one layer up: don't just open my own authoritative
+surface, open the one the *claim* is about before agreeing with it.
