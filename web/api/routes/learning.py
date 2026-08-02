@@ -1214,6 +1214,11 @@ async def execute_pattern(
     Returns:
         Execution result from ActionRegistry
     """
+    # #1465: function-local per file idiom; without this the success path's
+    # datetime.now() NameError'd into the failure branch, recording every
+    # successful execution as a failure (failure_count += 1, confidence *= 0.9).
+    from datetime import datetime, timezone
+
     try:
         pattern_uuid = UUID(pattern_id)
     except ValueError:
