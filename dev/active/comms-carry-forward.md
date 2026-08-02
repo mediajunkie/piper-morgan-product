@@ -1,40 +1,48 @@
-# Comms carry-forward — 2026-07-31 STOP (21:12) → for the Aug 1 START
+# Comms carry-forward — 2026-08-01 STOP (21:12) → for the Aug 2 START
 
 **Host**: Amber.local · **Model A** `~/Development/piper-morgan-worktrees/comms` · `claude/comms-cycle`
-**Session log**: `dev/2026/07/31/2026-07-31-0642-comms-code-log.md` — `DAY-CLOSED: 2026-07-31` ✓
+**Session log**: `dev/2026/08/01/2026-08-01-0642-comms-code-log.md` — `DAY-CLOSED: 2026-08-01` ✓
 **Cron**: re-armed at STOP by delete-then-create (id transition in the registry row)
 
 ---
 
-## Open for PM — 5 items, one dated
+## ⚠️ FIRST THING TOMORROW — Sunday Aug 2 has a post AND a live problem
 
-1. ⚠️ **Beats 24-28 slate steer — STILL the only item with a real deadline.** `dev/active/comms-narrative-slate-proposal-2026-07-29.md`. Needs: **5 beats or 4** (recommend 5, Beat 26 whole), titles, spine sanity-check. **The building-narrative queue runs dry after Aug 18**; this slate fills Aug 20 / 25 / 27 + Sep 1 / 3. Proposed Jul 29, unmoved for two days — not urgent yet, but it is the one thing that becomes urgent on its own.
-2. **Beats 21-23 voice-pass + art** — drafted, fact-checked, footer-chained; Aug 11 / 13 / 18.
-3. 🔧 **`/hooks` open or a session restart** — HOST's memory-index counterweight is **written, registered, and NOT live**. Verified negative behaviorally (twice). In every already-running session the counterweight is **absent, not quiet**. The argument for bothering: the hook `wc`s at fire time, so it and the unreliable built-in number **do not share a failure mode** — the built-in reminder cannot be the counterweight, because it is both the thing being counterweighted and the thing that can't be trusted about its own subject.
-4. **Compose-UI restore-banner observation** — the wipe path is fixed (Web `8d2db3c`); the *restore* path is still unobserved. Three things to check once: banner on unsaved reload / survives a 409 / **gone** after a successful save.
-5. **Watchdog wording** on "What the Running System Found" — published, non-blocking, long-standing.
+**"The Architecture That Wrote Its Own Case" publishes Sun Aug 2** and is in the same state today's post was in at 06:42: **never voice-passed** (last touch Jul 9), **no art**, and it carries an **open `[PM VOICE-PASS: ...]` bracket**. Check the calendar at START — do not assume Sunday is quiet. Today proved that check load-bearing.
 
-## Open for the cohort (not mine)
+⚠️ **And the redundancy I escalated Aug 1 is now LIVE, unresolved.** Aug 1 and Aug 2 were drafted from the **same source day** (both dated May 28), open with the same thesis, and **the Aug 2 post contains a section literally titled "Mechanism beats vigilance"** — which is the title of the post that published yesterday. Published back-to-back, it reads as a repeat. **PM's call: merge, reorder, differentiate, or accept.** If it publishes as-is, that section title at minimum wants changing.
 
-- **Memory index format** — 192 lines (`wc`) / 173 entries / **8 headroom**. **(C) per-type router is ELIMINATED on evidence** (I tested it: only `MEMORY.md` auto-loads; HOST added the generator would have indexed the routers). So it's CIO's **(A) two-tier** vs **(B) prune**, with CIO leaning B-then-A. ⚠️ **Memory is not version-controlled — the export IS the undo.** My 07-30 export is stamped STALE in-file and names the 3 youngest entries it's missing; **re-export at the moment of pruning, not before.**
-- **The built-in reminder's count cannot be trusted** — four hypotheses dead across three roles. Operative rule: *never let that number tell you a compaction worked; measure the file yourself.*
+## Open for PM — 5 items
+
+1. ⚠️ **Beats 24-28 slate steer** — the only item with a date behind it (queue dry after Aug 18). **Now REVISED against §1.5** (`dev/active/comms-narrative-slate-proposal-2026-07-29.md`, revision appended Aug 1): Beat 25 re-cut (was three A plots in one), CI streak double-count removed, Beat 27 sharpened. Needs: **5 or 4**, titles (**Beat 25 needs a new one regardless**), spine.
+2. **Beats 21-23 voice-pass + art** — Aug 11 / 13 / 18.
+3. 🔧 **`/hooks` open or a session restart** — HOST's memory counterweight is written, registered, **not live**. It `wc`s at fire time so it does not share a failure mode with the unreliable built-in counter.
+4. **Compose-UI restore-banner observation** — wipe path fixed; restore path still unobserved.
+5. **Watchdog wording** on "What the Running System Found" — long-standing, non-blocking.
 
 ## Editorial state
 
-- ✅ Ship #053 distributed · ✅ "RECONNECT's Keystone" published Jul 30 (verified at the published layer) · ✅ **Ship #054 workstream review filed Jul 31**, a day ahead of the Saturday deadline.
-- **Ratified Jul 30, in the voice guide**: role-gloss is **register-scoped** — first-person narratives/insights *"my [role] agent (ACRONYM)"*; third-person Weekly Ship *"the [title] role (ACRONYM)"*. ⚠️ **Apply BOTH halves** — parenthetical on first mention **and bare acronym thereafter**; Docs caught three long-form later mentions I left on Keystone. `check-acronyms.py` can't see register and will false-positive on correct first-person usage.
-- **BYOC marketplace narrative** — ~6 weeks stale, PM-gated.
+- ✅ **"Mechanism Beats Vigilance" PUBLISHED Aug 1** — verified live, all ten fixes present. Ten fixes, **three of them re-applications** after a silent revert.
+- ✅ **Ship #054 workstream review filed Jul 31**, a day early.
+- **Ratified Aug 1 — §1.5 of `building-narrative-method.md`**: *a beat is a STORY, not a digest of its window.* A plot, optional B plot, something odd — **not** a section per workstream. **Measured**: length +75% in five months, July mean above ceiling, **but span does NOT predict length (r=+0.10)** — so leaps and cuts are not in tension.
+- **Ratified Jul 30**: role-gloss is **register-scoped**. Apply **both halves** — parenthetical on first mention AND bare acronym after.
 
-## Habits earned this week (apply, don't just recall)
+## Live process hazards (not fixed, know about them)
 
-- **Build the distinguishing cell, not more confirming evidence.** Four hypotheses died this week, each fitting every data point available when proposed. Accumulating agreement feels like progress and isn't.
-- **Report the negative with the same weight as the win.** Three today could have been written as completions: the hook, option (C), my counter hypothesis.
-- **mail-send: build the recipient list and the path list from ONE loop.** Three distinct failure modes in two days, including zsh 1-indexed arrays.
-- **An empty field may be a deletion, not an absence** — `git log` before filling it.
-- **Before "fixing" any generated thing, find what emits it.** Measuring right after your own edit proves the edit happened, not that it holds.
+- **Two write paths collide.** PM's browser can revert agent commits by saving from a stale page — happened Aug 1, cost three fixes. **Distinct from the autosave-closure bug Web fixed** (`8d2db3c`). ⚠️ **My Jul-29 judgement that this was too rare to build against is WITHDRAWN — twice in three days.** Practically: **after PM edits, re-read before assuming your fix survived**, and `git pull` immediately before proofing.
+- ✅ **Caption double-quoting FIXED self-healing** by Web (`673b10e`) — strip now loops, wrap is idempotent, corrupted values repair on next save.
+- **16 calendar rows have a media filename in `caption`.** On **7 of them caption is AUTHORITATIVE and `cartoon` is stale** (verified: caption renders 7/7 live, cartoon 0/7). ⚠️ **Do NOT "clean up" that column** — it holds the only correct record. Reported to Docs.
+
+## Habits earned (apply, don't just recall)
+
+- **Check the artifact, not the record about it.** Five separate times on Aug 1 this was the thing that mattered: live page over status flag (×2), `git log` over `status`, rendered image over calendar column, my own commit over my memory of having fixed it.
+- **A false alarm gets trained around.** I explained away a broken sign-off check for four days because I knew what the number meant. **The tell is a standing explanation for a standing anomaly.**
+- **Build the distinguishing cell**, not more confirming evidence.
+- **mail-send: build recipient list and path list from ONE loop.**
 
 ## State flags
 
-- Session STOPped cleanly; day fully accounted for. Inbox **zero** (13 memos triaged).
-- Queue at close: **(0 unblocked, 5 PM-gated)**. Nothing unblocked is being held.
-- First fire tomorrow **06:12**. Saturday — Ship #054 reviews are due at other roles' day-close; mine is already in.
+- STOPped cleanly, day fully accounted for. Inbox **zero** (16 memos triaged).
+- Queue at close: **(0 unblocked, 5 PM-gated)**. Nothing unblocked held.
+- **Upstream repointed to `origin/main` today** — sign-off check 2 is meaningful now (was measuring a ref dead since May 31).
+- First fire tomorrow **06:12**. Next front after the slate: **50 logs across Jul 29–Aug 1, no omnibus past Jul 28.**
