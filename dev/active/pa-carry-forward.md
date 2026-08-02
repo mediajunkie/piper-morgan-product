@@ -15,41 +15,29 @@ PM-attention items live **here**, in the section immediately below.
 
 ## PM Attention
 
-*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-07-31 PM.)*
+*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-01 STOP.)*
 
-- ✅ **OpenAI verification — RESOLVED 7/31. DO NOTHING. It was the wrong verification entirely.**
-  ~~"The only item with an external clock"~~ — **withdrawn.** There are **two** OpenAI verifications:
-  **API org verification** (advanced model access; one org per ID per 90 days) — **not on the ratified
-  path, not required for a directory listing either**; and **verified developer/business identity**,
-  which is what submission actually requires and is *explicitly distinct*. PA pushed the former for
-  twelve days. **Arch asked whether it was required at all; PPM confirmed against the ratified text.**
-  PDR-006 §Decision item 3 is *BYOC user adds the MCP URL manually* — **the user is OpenAI's customer;
-  no org of ours is in that path.** Full answer in **PDR-006 Open Question 3**, not a memo.
-  🔴 **New prerequisite recorded there**: MCP connector submission needs **domain-ownership verification
-  for `mcp.pipermorgan.ai`** — which doesn't exist yet. Phase-2 dependency.
-  ⚠️ **Deliberately unresolved**: whether the developer/identity flow has its own rate limit. Do not
-  transfer the 90-day rule without evidence.
+**Nothing is blocked on PM tonight.** Beta is **Aug 8**.
 
-- ⚠️ **KEYS ARE PROVISIONED (17:27 PDT 8/1, confirmed by keychain query) — but an unauthorized read
-  HANGS INSTEAD OF FAILING.** `piper-morgan/anthropic_api_key` and `openai_api_key` both exist. PA's
-  probe-venv Python blocked >2 min, twice, **unresponsive to SIGALRM** → the block is inside the macOS
-  Security framework, i.e. a **GUI authorization dialog** nobody is answering. Keychain items are ACL'd
-  to the binary that wrote them; every other binary asks.
-  🔴 **The operational finding, which outlasts this incident: on an unattended agent seat an
-  unauthorized keychain read HANGS, not errors.** Two days of "absent" were loud and got fixed in
-  hours; a hang burns a fire silently and looks like a slow task. **Any agent reading the keychain
-  needs this in view.**
-  ⚠️ **UNANSWERED and more important than PA's probe: does the SERVER's Python hit the same dialog?**
-  If so the first LLM call after a restart hangs rather than fails — with beta on **Aug 8**. PA cannot
-  test it (no venv in either Piper checkout; homebrew `python3` lacks `keyring`). **One restart answers
-  it.** Asked, not asserted.
-  **PA has stopped probing** — each attempt may queue another dialog at PM's seat. Unblocks on: PM
-  clicking "Always Allow", or naming the binary they used so PA runs from the authorized one.
+- 🟡 **One optional convenience, not a blocker: click "Always Allow"** if a macOS keychain dialog is
+  sitting on your screen. PA's 19:12 probe queued one or two before diagnosing the cause and stopping.
+  **Already worked around** — Lead identified the authorized interpreter
+  (`~/Development/piper-morgan-worktrees/lead/venv/bin/python`, which PM stored the keys through), and
+  PA ran the probe from it successfully. So this is tidiness, not need.
+- ✅ **Keys provisioned 17:27 8/1 — confirmed, and the four blocked lanes are unblocked.**
+- ✅ **PDR-006 RATIFIED** 7/31; two pre-user gates tracked as **#1458** and **#1463**.
+- ✅ **Architecture diagram redrawn** at PM's request — https://claude.ai/code/artifact/92ce8bc9-23d4-4590-b121-dacc0ab72e17
+  (source in git at `dev/active/pdr-006-architecture-2026-08-01.html`, because the July one vanished
+  with an account). **PM still owes a time to discuss it** — no urgency named.
 
-- ✅ **PDR-006 RATIFIED — PM, 2026-07-31**, *"And yes I do ratify PDR 006."* Recorded by Arch in the
-  corpus + `decisions.log`; the three Architect conditions are written **into** the PDR so the
-  implementation epic inherits them. **No PA action; no PM action.** ⚠️ **Ratified ≠ shippable** —
-  #1458 and the recomposition rubric branch are both open pre-user gates.
+### 🔴 The operational finding PM should know, even though it needs nothing tonight
+
+**On an unattended agent seat, an unauthorized keychain read HANGS rather than ERRORS.** Worse than
+"absent": absent was loud and got fixed in two days; a hang burns a fire silently and looks like a slow
+task. ⚠️ **A Python `SIGALRM` cannot interrupt it** — the block is inside the macOS Security framework,
+so any guard must be a **subprocess with a hard kill**, not an in-process alarm. HOST has routed a
+bounded-timeout suggestion to CIO. **Server is NOT exposed** on the Anthropic path (HOST static trace:
+it reads env, not keychain); **BYOC/user-key features are.**
 
 ### Closed since 7/29 — no PM action
 
@@ -75,34 +63,28 @@ was a claim inherited from a document and never checked against the source** —
 thread, verify it.** *(And per PM 7/29: the platform story here changes fast — a correct answer from four
 days ago is not a current answer.)*
 
-## Active state — 2026-07-31 STOP (next wake 06:42 Sat 8/1)
+## Active state — 2026-08-01 STOP (next wake 06:42 Sun 8/2)
 
-- **Role**: Piper Alpha (PA) · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
-- **Worktree**: `~/Development/piper-morgan-worktrees/pa` (Model A) · branch `claude/pa-cycle`
-- **Last session log**: `dev/2026/07/31/2026-07-31-0711-pa-code-log.md` — **DAY-CLOSED 2026-07-31**
-- **Handoff/lessons doc**: `dev/active/handoff-pa-2026-07-31.md` — **keep current, don't rewrite at departure**
-- **Cron**: ARMED at STOP via delete-then-create. **Job id is in the registry row — read it there.**
-
-  🔴 **FIRST ACTION ON ANY NEW SESSION: `CronList`.** Empty = **you are not cycling**, whatever the
-  registry says. Jobs are **session-only** and **auto-expire after 7 days** — this generation lapses
-  **~2026-08-07**. Both deaths silent, both look like a quiet day. *Approval to run a cadence and arming
-  it are two separate acts.*
+- **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
+- **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
+- **Last session log**: `dev/2026/08/01/2026-08-01-0712-pa-code-log.md` — **DAY-CLOSED 2026-08-01**
+- **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure
+- **Cron**: ARMED at STOP, delete-then-create. **Job id in the registry row.** 🔴 **First action any new
+  session: `CronList`.** Empty = not cycling. Jobs are session-only and expire ~7d (this one ~2026-08-08).
 - **Inbox**: 0 at close.
-- ⚠️ **Weekend note**: per `feedback_weekends_are_piper_morgan_prime_time`, Sat/Sun are PM-active. Beta
-  target is **Aug 8** — one week out.
+
+⚠️ **KEYCHAIN — read this before any probe.** Use the **authorized interpreter**
+`/Users/xian/Development/piper-morgan-worktrees/lead/venv/bin/python` (PM stored the items through it).
+**Any other binary HANGS on a GUI dialog rather than failing**, and `SIGALRM` will not save you.
 
 ## ▶️ First items tomorrow
 
-1. **`CronList`**, then check the keys — `keyring.get_password('piper-morgan','anthropic_api_key')`.
-   **If present, run Probe A immediately**: it is green-lit by CXO (A) and PPM (B), the harness is
-   committed and runnable at `dev/active/probes/`, and PM authorized the spend 7/31. ⚠️ Keep tool schemas
-   identical across B's arms; run A against **both** Claude and GPT.
-2. **If keys are still absent**, do not re-escalate — it is in PM Attention, CXO has withheld sign-off on
-   #1386 with reasoning posted, and repeating it adds noise rather than pressure. Pick unblocked work and
-   say plainly in the fire report that four lanes remain blocked on one step.
-3. **Do NOT build ChatGPT submission test cases or a directory-listing checklist.** The listing is not
-   beta-blocking, OQ3 is open, and it now additionally depends on `mcp.pipermorgan.ai` existing. That is
-   bucket-A spend on an undecided channel.
+1. **Probe A arm 2 — the prose-hedge arm.** Arm 1 (5/5 survived) tested caveats in *named structured
+   fields*, which is the mitigation, not the risk. **Same five cases with hedges in narrative prose, no
+   named field.** That is the arm that answers CXO's question.
+2. **Probe A GPT arm.** PDR-006 ships to both; a Claude/GPT divergence is itself a ChatGPT-lane finding.
+   `openai_api_key` is provisioned. Arm 1 is half an experiment until this runs.
+3. **Probe B** (tool-naming vs selection accuracy) — PPM's verdict. Keep schemas identical across arms.
 
 ## Open threads PA owns
 
