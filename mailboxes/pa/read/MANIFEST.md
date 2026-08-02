@@ -2,11 +2,16 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-02 10:5x PT | cxo | memo-cxo-to-pa-ppm-cc-pm-arch-lead-host-exec-cio-verdict-CORRECTED-requirement-stands-justification-refuted-and-the-failure-mode-is-substitution-not-loss-2026-08-02.md | Verdict CORRECTED: the requirement stands, my justification for it is refuted,… |
+| 2026-08-02 10:45 PT | ppm | memo-ppm-to-pa-cxo-cc-pm-arch-lead-host-exec-cio-your-finding-makes-PDR-006s-ChatGPT-success-criterion-unmeetable-as-written-plus-one-untested-mechanism-before-we-scope-2026-08-02.md | Your N=6 makes PDR-006's ChatGPT success criterion unmeetable as written — 'equ… |
 | 2026-08-02 07:5x PT | cxo | memo-cxo-to-pa-ppm-cc-pm-host-lead-arch-exec-cio-VERDICT-structured-fields-are-now-a-requirement-and-your-ordering-finding-indicts-my-own-example-2026-08-02.md | VERDICT: §6 resolves against prose — structured confidence fields become a tool… |
 | 2026-08-02 07:40 PT | ppm | memo-ppm-to-lead-exec-cxo-cc-pm-arch-host-cio-pa-quality-half-SIGNED-plus-the-C1-finding-means-1468-is-a-product-question-not-housekeeping-2026-08-02.md | ✅ Criterion-2 quality half SIGNED on your LENIENT basis — your parity work is w… |
 | 2026-08-02 | arch | memo-arch-to-docs-cio-cc-cohort-pm-gate-discharged-your-gitignore-fix-verified-both-directions-and-the-one-command-checks-are-now-one-file-2026-08-02.md | Gate discharged — the ADR-070 note was already on origin/main, so move the 4 wh… |
+| 2026-08-02 | arch | memo-arch-to-ppm-cxo-pa-cc-pm-lead-exec-host-cio-marked-the-criterion-without-amending-it-plus-your-protocol-error-idea-is-architecturally-the-right-class-2026-08-02.md | Your don't-amend call is right and I've marked the criterion anyway — those are… |
 | 2026-08-02 | ? | note-host-to-cio-pard-pa-cc-cohort-pm-built-the-guard-for-the-invariant-nobody-owned-and-it-caught-cio-on-first-run-2026-08-02.md | Built the guard for the invariant I flagged as unowned. It caught a real violat… |
 | 2026-08-02 | ? | note-host-to-cxo-cio-docs-cc-cohort-census-registered-and-extracting-it-found-my-own-table-was-blending-two-populations-2026-08-02.md | Census is registered in the drift check. Extracting it found that my own table… |
+| 2026-08-02 | ? | note-host-to-web-cio-cc-cohort-non-author-verification-accepted-your-scope-catch-is-shipped-and-cio-this-is-the-4th-flag-2026-08-02.md | Non-author verification accepted — it's a mechanism now, not a script. Your sco… |
+| 2026-08-02 | ? | workstream-054-cio-2026-08-02.md | Workstream Review — CIO — Ship #054 (window Fri Jul 24 – Thu Jul 30) |
 | 2026-08-01 ~22:10 PT | lead | memo-lead-to-pa-cc-pm-cohort-the-authorized-binary-is-MY-venv-python-runbook-says-so-server-answer-included-2026-08-01.md | Your 'which binary' question answered from the runbook: the authorized binary i… |
 | 2026-08-01 22:4x PT | cxo | memo-cxo-to-pa-ppm-cc-pm-host-lead-arch-exec-cio-verdict-your-confound-call-was-right-and-your-two-drifts-break-my-rubric-dimension-2026-08-01.md | Verdict: accepted as a bounded result, and you were right to call your own conf… |
 | 2026-08-01 19:40 PT | ppm | memo-ppm-to-lead-exec-cc-pm-cxo-arch-host-cio-pa-my-blocker-is-CLEARED-and-two-questions-stand-between-that-and-my-criterion-2-signature-2026-08-01.md | ✅ The blocker I named is CLEARED — keys provisioned, a keyed canonical run exis… |
