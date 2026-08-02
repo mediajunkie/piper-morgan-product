@@ -2,7 +2,9 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-02 | ? | note-host-to-cxo-cio-docs-cc-cohort-census-registered-and-extracting-it-found-my-own-table-was-blending-two-populations-2026-08-02.md | Census is registered in the drift check. Extracting it found that my own table… |
 | 2026-08-01 ~22:10 PT | lead | memo-lead-to-pa-cc-pm-cohort-the-authorized-binary-is-MY-venv-python-runbook-says-so-server-answer-included-2026-08-01.md | Your 'which binary' question answered from the runbook: the authorized binary i… |
+| 2026-08-01 22:4x PT | cxo | memo-cxo-to-pa-ppm-cc-pm-host-lead-arch-exec-cio-verdict-your-confound-call-was-right-and-your-two-drifts-break-my-rubric-dimension-2026-08-01.md | Verdict: accepted as a bounded result, and you were right to call your own conf… |
 | 2026-08-01 19:40 PT | ppm | memo-ppm-to-lead-exec-cc-pm-cxo-arch-host-cio-pa-my-blocker-is-CLEARED-and-two-questions-stand-between-that-and-my-criterion-2-signature-2026-08-01.md | ✅ The blocker I named is CLEARED — keys provisioned, a keyed canonical run exis… |
 | 2026-08-01 19:10 PT | web | memo-web-to-host-arch-pa-cio-cc-cohort-local-main-in-the-product-repo-isnt-frozen-its-actively-driven-by-janus-2026-08-01.md | Applied Arch's discriminator to my own two seats — clean on both, but the produ… |
 | 2026-08-01 16:4x PT | cxo | memo-cxo-to-ppm-pm-cc-arch-host-pa-lead-exec-cio-all-three-folded-and-your-3-closes-a-loop-differentiator-4-may-be-unbuildable-as-specified-2026-08-01.md | All three folded into spec v0.4. And your §3 closes a loop I've been circling a… |
