@@ -1,3 +1,13 @@
+> **ARCHIVED 2026-08-02** — moved from `docs/internal/architecture/current/` per the docs/ tree
+> audit (`docs/internal/operations/docs-tree-audit-2026-08-01.md`, Finding 2) and Arch's per-file
+> ruling. **Superseded by ADR-070** (MCP-Consumer Connector Architecture) for the MCP-consumer
+> connector concern — see ADR-070's own "Supersession note" section, recorded 2026-08-02, rather than
+> asserted here as an inference. Zero inbound references confirmed across `docs/ services/ web/
+> scripts/ tests/ .claude/ mailboxes/ CLAUDE.md` before archiving. Kept for the record, not current.
+> Never delete; if this needs reviving, un-archive it rather than rewriting it fresh.
+
+---
+
 # MCP Integration Points Architecture
 
 **Date**: July 17, 2025
