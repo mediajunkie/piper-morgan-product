@@ -191,7 +191,11 @@ async def send_canonical_query(client, query_text, query_num, auth=None):
             # a stable per-query session_id would bleed context across the 4 tiers
             # that each re-ask the same Q. A unique id reproduces the old
             # fresh-app-per-test isolation (each canonical query is single-turn).
-            "session_id": f"canonical-e2e-q{query_num}-{uuid4().hex[:8]}",
+            # #1395: a REAL UUID, not "canonical-e2e-qN-<hex>" — the old 26-char
+            # slug flowed into owner_id::UUID queries downstream (productivity
+            # handler) and manufactured an asyncpg DataError that poisoned Q51's
+            # quality row. Query-number traceability lives in the assert messages.
+            "session_id": str(uuid4()),
         }
     }
     if auth:
