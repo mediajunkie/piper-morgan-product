@@ -51,6 +51,13 @@
 - **PreCompact hook: CONFIRMED FIRING** 2026-07-29 (CLAUDE.md line updated to ✅). ⚠️ **But its HARD tier is uninformative under Model A** — it gates on `@{u}..HEAD` where `@{u}` is a ref we never push to (6711 vs `origin/main..HEAD` = 0), so it can only ever fire HARD. **CIO's surface**; fix pending; whoever changes it must watch it fire.
 - **`.gitignore` blinds the repo to its own evidence.** Six surfaces recorded `session-end-warnings.log` as never existing because `.gitignore:136` hides it from `git ls-files` and `origin/main`. **Before concluding a file never existed: `git check-ignore -v <path>`.**
 
+## Open, owned by others (do not re-derive)
+
+- **Unattended keychain reads HANG, not error** (PA, 08-01). `SIGALRM` cannot interrupt — block is inside macOS Security. Needs **subprocess-with-hard-kill**. CIO's surface. Server's *Anthropic* path is clear (reads `.env`); **BYOC path is exposed.**
+- **`rebase.autoStash` unset is what keeps the shared-checkout pulls safe — nothing guards it.** A future `git config --global rebase.autoStash true` silently converts a refusal into a stash of PM's uncommitted prose. CIO/Pard.
+- **CLAUDE.md's documented restart command (`venv/bin/python main.py`) can't work** — no venv in either checkout.
+- **cio's worktree is the last role-branch upstream** (61 and climbing). `git branch -u origin/main`.
+
 ## Standing hazards
 
 - **Verify at the mechanism, not the announcement** — especially when the announcement points at *less* work.
@@ -67,4 +74,4 @@
 
 ## Cron
 
-Current job **`eacc158c`** (chain … `2cebafed → 2d87bd9f → fd14a8e7`), expression **`37 6,9,12,15,18,21 * * *`** — verified against `CronList` **and** the registry row this STOP; they agree. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`b09877c2`** (chain … `2cebafed → 2d87bd9f → fd14a8e7`), expression **`37 6,9,12,15,18,21 * * *`** — verified against `CronList` **and** the registry row this STOP; they agree. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
