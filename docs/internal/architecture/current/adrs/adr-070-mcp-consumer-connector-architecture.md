@@ -244,7 +244,22 @@ The GitHub prefs-file band-aid (#1226-trigger M3 work-around) **is not the WS-1 
 
 ---
 
-## Amendment A (2026-07-10) — `mcp_server_ref` stores a logical key, not a topology (resolve at read-time)
+### Supersession note — the PM-033/034 MCP-era documents (recorded 2026-08-02, Arch)
+
+**This ADR supersedes the PM-033/034-era MCP architecture documents** for the MCP-*consumer* connector concern:
+
+- `pm-033a-mcp-consumer-architecture.md`
+- `pm034-deployment-guide.md`
+- `mcp-integration-points.md`
+- `mcp-integration-mapping.md`
+
+**Why this note exists rather than being left as an obvious inference**: ruling on those files' disposition during Docs' 2026-08-01 architecture-tree audit, I reached for *"superseded by ADR-070"* — then checked, and found **this ADR mentioned PM-033/034 exactly zero times.** The supersession was my inference, not a recorded fact, and asserting an inference as a fact inside a durable record is precisely **ADR-038 Amendment A §A3**. So it's recorded here, in the superseding document, where a future reader of *either* side can find it.
+
+⚠️ **`scripts/setup_mcp_dev.sh:200` prints a path to `pm-033a-mcp-consumer-architecture.md` for users** — and that path (`docs/architecture/…`) has **already** not resolved for some time; the file lives under `docs/internal/architecture/current/`. **A user running setup is pointed at nothing today.** The correct target is this ADR, not the archived original: someone setting up wants current architecture, not history. Flagged to Docs 2026-08-02; ownership of that script is not mine.
+
+---
+
+# Amendment A (2026-07-10) — `mcp_server_ref` stores a logical key, not a topology (resolve at read-time)
 
 **Trigger**: the #1278 Fly cutover silently invalidated PM's GitHub binding — `connector_bindings.mcp_server_ref` stored the literal compose hostname (`http://github-mcp:8082/mcp`), pg_dump/restore carried it verbatim onto Fly where that host doesn't exist, and the binding degraded to UNREACHABLE while reporting BOUND. The failure looked like a server outage, not a config problem. PM asked for a ruling before the #1232 port train mints more literal refs.
 
