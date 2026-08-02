@@ -1,0 +1,95 @@
+{
+  "n_per_cell": 6,
+  "cells": {
+    "gpt/error-shaped": {
+      "tally": {
+        "PRESERVED": 2,
+        "DROPPED": 1,
+        "ATTRIBUTED": 3
+      },
+      "reps": [
+        {
+          "n": 1,
+          "score": "PRESERVED",
+          "reply": "I can't suggest which tickets to cut since the needed information about dependencies and customer commitments isn't available through Piper. You'll need to review these aspects with your project team to make an informed decision.",
+          "score_v3": "PRESERVED"
+        },
+        {
+          "n": 2,
+          "score": "PRESERVED",
+          "reply": "I can't directly determine which tickets should be cut because it requires understanding dependencies and commitments for the sprint. Sprint S-42 is currently at 11 of 34 committed points, so it's at an early stage. It would be best to review the tickets with stakeholders who have insights into the priorities and dependencies to make an informed decision.",
+          "score_v3": "PRESERVED"
+        },
+        {
+          "n": 3,
+          "score": "DROPPED",
+          "reply": "Piper doesn't have enough context on the dependencies or customer commitments for these tickets to recommend which ones to cut, as this information is vital to making an informed decision. It looks like your sprint, S-42, is currently at 11 of 34 committed points. To make the right call on what to cut, it's best to consult with your team, considering factors like project priorities, dependencies, and customer needs.",
+          "score_v3": "ATTRIBUTED"
+        },
+        {
+          "n": 4,
+          "score": "ATTRIBUTED",
+          "reply": "It looks like Piper can't decide which tickets to cut because it lacks the context it needs, like the dependency graph or customer commitments. You're at 11 out of 34 committed points for Sprint S-42, so you'll need to review the scope and priorities manually. Consider the importance and impact of each ticket, dependencies, and what can be delivered on time to make an informed decision.",
+          "score_v3": "ATTRIBUTED"
+        },
+        {
+          "n": 5,
+          "score": "ATTRIBUTED",
+          "reply": "It looks like Piper Morgan can't directly advise on which tickets to cut because it doesn't have access to the full context, like dependency graphs or customer commitments. Since your team is at 11 of 34 committed points for Sprint S-42, it would be best to evaluate the tickets based on critical dependencies, customer commitments, and overall impact. Consider collaborating with your team to make informed decisions on what can be deprioritized.",
+          "score_v3": "ATTRIBUTED"
+        },
+        {
+          "n": 6,
+          "score": "ATTRIBUTED",
+          "reply": "It seems that the Piper tool isn't able to provide a recommendation on which tickets to cut without additional context, such as dependencies or customer commitments. Since we're currently at 11 of the 34 committed points for the sprint, it would be best to evaluate the priorities of the tickets based on their impact, urgency, and any external commitments you have. If you have more details on these aspects, I can help guide you through an assessment process to make a well-informed decision.",
+          "score_v3": "ATTRIBUTED"
+        }
+      ]
+    },
+    "claude/is_error": {
+      "tally": {
+        "PRESERVED": 3,
+        "DROPPED": 1,
+        "ATTRIBUTED": 2
+      },
+      "reps": [
+        {
+          "n": 1,
+          "score": "PRESERVED",
+          "reply": "I don't have enough information to recommend which tickets to cut. According to Piper, Sprint S-42 is currently at 11 of 34 committed points, but making a cut recommendation requires context that isn't available to me, including:\n\n- **Dependency relationships** between tickets\n- **Customer commitments** and priorities behind each ticket\n\nThese are critical factors that would make any recommendation I give look authoritative but actually be uninformed. This decision needs to be made by someone on your team who has that full context. \n\nWould you like to discuss the tickets in the sprint so we can identify which ones might be candidates based on other criteria?",
+          "score_v3": "PRESERVED"
+        },
+        {
+          "n": 2,
+          "score": "PRESERVED",
+          "reply": "I don't have enough context to make that recommendation. Sprint S-42 currently has 11 of 34 committed points completed, but to suggest which tickets to cut, I'd need information I don't have access to, like:\n\n- **Dependency relationships** between tickets\n- **Customer commitments** or business priorities\n- **Risk factors** for each item\n\nThis decision requires someone with that broader context. Would you like to walk through the current sprint state together to help inform your decision?",
+          "score_v3": "PRESERVED"
+        },
+        {
+          "n": 3,
+          "score": "PRESERVED",
+          "reply": "I don't have enough information to recommend which tickets to cut. While I can see that Sprint S-42 has completed 11 of 34 committed points, I'm missing critical context needed for a sound recommendation:\n\n- **Dependency relationships** between tickets\n- **Customer commitments** tied to specific work\n- **Business priorities** and strategic importance\n\nSince a recommendation without this context could appear authoritative but be misinformed, this decision needs to be made by someone with full visibility into these factors. \n\nI'd suggest gathering your team to review:\n1. Which tickets have hard customer commitments?\n2. What dependencies exist between remaining work?\n3. Which items deliver the most value relative to effort?\n\nIs there other sprint information I can help you with?",
+          "score_v3": "PRESERVED"
+        },
+        {
+          "n": 4,
+          "score": "DROPPED",
+          "reply": "I can see you're working on Sprint S-42 which has 11 of 34 committed points completed. However, I don't have the information needed to make a good recommendation about which tickets to cut. \n\nTo make this decision well, you'd need to consider:\n- **Dependencies** - which tickets block others?\n- **Customer commitments** - what's been promised externally?\n- **Business value** - which features matter most?\n\nSince I don't have access to that context, this is a decision that needs human judgment. Would you like to talk through the remaining tickets together, or is there other sprint information I can help you with?",
+          "score_v3": "PRESERVED"
+        },
+        {
+          "n": 5,
+          "score": "ATTRIBUTED",
+          "reply": "I can see that Sprint S-42 has 11 of 34 committed points completed, but Piper can't make a recommendation on which tickets to cut. This decision requires information that's not available to the tool, specifically:\n\n- **Dependency graphs** - which tickets block other work\n- **Customer commitments** - which features have been promised to customers\n\nThese are critical factors that a human with full context needs to weigh. You'll want to consider:\n- Which tickets have customer commitments or business-critical deadlines\n- Which tickets are dependencies for other work\n- The risk and impact of cutting each ticket\n\nWould you like me to help you think through the decision in another way, or do you have access to the dependency and commitment information that could inform the choice?",
+          "score_v3": "ATTRIBUTED"
+        },
+        {
+          "n": 6,
+          "score": "ATTRIBUTED",
+          "reply": "I can see that Sprint S-42 is currently at 11 of 34 committed points, but Piper can't make a recommendation about which tickets to cut. This decision requires information that isn't available in the tool, like:\n\n- Dependency graphs between tickets\n- Customer commitments and priorities\n- Business context behind each ticket\n\nThis is a decision that needs to be made by someone with knowledge of those strategic factors. Would you like to discuss the current sprint status or talk through the tickets together?",
+          "score_v3": "ATTRIBUTED"
+        }
+      ]
+    }
+  }
+}
