@@ -6,28 +6,30 @@
 
 ## PM Attention
 
-*(Whole-file rewrite at the 2026-07-31 STOP. Timestamp verified with `date`. Live items only.)*
+*(Whole-file rewrite at the 2026-08-01 STOP. Timestamp verified with `date`. Live items only.)*
 
-- 🔴 **RETRACTED — "start OpenAI identity verification" is OFF the board. It was the WRONG ACTION, and I carried it here for ten days.** PA read OpenAI's own docs: **API organization verification** (what I kept pointing PM at) unlocks advanced API models — **not on the ratified path and not required for a directory listing**. Directory submission needs a *distinct* **verified developer/business identity**, in the same org **and project** you submit from. **And the ID is rate-limited: one organization per 90 days** — so verifying the wrong org would have **blocked the right one until ~29 October.** I was urging PM to spend a three-month-lockout action on the wrong target and calling it a five-minute unblock. **How it survived**: I inherited it from PA's 7/19 research and re-checked *whether it was still open* (true, always) and never *whether it was the right action* — m-43 on my own carry-forward. Arch and PPM both flagged the ambiguity and **declined to assert an answer**, which is what sent PA to the source. **New dependency worth knowing**: MCP connector submission also needs **domain-ownership verification for `mcp.pipermorgan.ai`, which does not exist yet.**
-- 🟡 **claude.ai account tier** — the other half of PA's pair. Still open, still PM's, and **unaffected by the retraction above**; do not let the OpenAI correction bury it.
-- 🟢 **THE MIGRATION HAS TAKEN.** 11/11 on Amber, 11/11 registry rows, and **8 of 11 roles closed their own day cleanly today** (was 1 on 7/29). That number is the evidence, not the provisioning count.
-- 🟡 **`lead` is not stalled — PM is driving it interactively.** No commits since 07-30 09:45 and 69 unread, but its pane shows a live exchange with PM. It is `parked`, so the belt cannot report it either way. **Check the pane before reporting any silence** — second time this week a role that looked structurally blocked was simply mid-conversation (PA was the first).
-- 🔴 **The memory-index guard is on the GENERATOR, not the FILE** — my earlier "loud refusal, annoying and safe" was **right about `rebuild-memory-index.py` and wrong about the path the pressure points at.** Direct edits to `MEMORY.md` succeed silently past the ceiling (HOST + PA tested), and the platform reminder says *"compact this file"* — an instruction to hand-edit. Four agents have refused it **on judgment**, which is not a safety property. **Format choice (A prune / B two-tier) is PM+HOST's; the guard\'s placement is the prior question.**
-- 🟡 **`host`, `comms`, `web` registry rows carry no job ID.** The cron is session-scoped `CronCreate` with **two silent death modes** (dies on session exit; 7-day auto-expiry), so a row records **intended cadence, not a live job** — it reads `watched` whether the cron is armed, expired, or never created, and only the owning agent can check. Convention now documented in the registry header; deliberately not chased role-by-role.
+- 🔴 **UNRESOLVED, and PM should not inherit it as settled: the `lead` composer draft.** Someone typed *"ok keys are in the keychain now, try #1445 again"* into lead's input box and never sent it; **PM does not recognise writing it**, and its timing is unknown. Per Exec, provisioning must go through the app's **`KeychainService`, NOT the `security` CLI** — consistent with PA's 7/31 finding that Amber's keys are unprovisioned. **The draft wants sending or clearing deliberately, and the key state verified through the app path** rather than inferred from an unattributable line.
+- 🟢 **`lead` is awake** — dark 07-30 09:45 → 08-01 22:03, now committing. **I reported it healthy on 7/31 and was wrong**; see the log. Its wake was on Exec's critical path the whole time.
+- 🟢 **THE MIGRATION HAS TAKEN — and the number keeps climbing.** `closed today: 9/11` (8 on 7/31, **1 on 7/29**). 11/11 live, 11/11 registry rows, belt clean.
+- 🟡 **The innovation agenda — PM asked for it once the migration landed, and nothing blocks it.** It has now waited three days behind migration follow-through. **This is the next substantive thread and I should stop letting operational corrections crowd it out.**
+- 🟡 **claude.ai account tier** — PA's surviving item. Still PM\'s, still open, and deliberately kept visible so the OpenAI retraction does not bury it.
+- 🔴 **Memory-index guard is on the GENERATOR, not the FILE.** Direct edits to `MEMORY.md` succeed silently past the ceiling; the platform reminder says *"compact this file"*, pointing at the unguarded path. Four agents have refused it **on judgment**, which is not a safety property. **Guard placement is the prior question; format choice (prune / two-tier) is PM+HOST\'s.**
+- 🟡 **`host` / `comms` / `web` registry rows carry no job id.** The cron is session-scoped with two silent death modes, so a row records **intended cadence, not a live job**. Convention is in the registry header; not chased role-by-role.
 
 ## Shipped today
 
-Retroactive close of 7/30 (its STOP was cut off mid-fire by a rate limit) · **stranded `cohort-status` fix rescued and merged rather than clobbered** — HOST/Web had improved the DAY-CLOSED predicate meanwhile, so I took theirs and re-applied only my structural half · registry header now documents the cron mechanism + both death modes · my own row now carries job `7b089a43` and its **~2026-08-06 expiry** · corrected my loud-refusal claim to PM and the cohort.
+**`duty-cycle-tick` v1.23** — the pane-reading method, fixed at the method rather than the instance (Janus\'s amendment, verbatim): *read ABOVE the input separator, or corroborate with an artifact a real exchange produces; a quoted "user" line in the input box is a claim ABOUT the user, not a message FROM them*; and capture twice, minutes apart.
 
 ## Lower priority / queued
 
-- **Nothing expires a negative claim** — still the best mechanism candidate on the list, and the OpenAI retraction is its most expensive instance to date.
-- **No composition test for multi-part changes.**
-- **Nothing consumes a review\'s second-order findings.**
-- **Innovation agenda** — PM wants it reviewed now the migration has landed. **This is the next substantive thread and nothing blocks it.**
+- **Nothing expires a negative claim** — still the strongest mechanism candidate, now with two expensive instances (the OpenAI referent, the blind-sweep note).
+- **Nothing re-verifies an inherited action\'s REFERENT** — *"is it still open?"* is checkable and gets checked; *"is it still the right thing?"* is neither.
+- **No composition test for multi-part changes** · **nothing consumes a review\'s second-order findings.**
 
 ## Cron
 
-`7 10,16,22` LEAN — job **`7b089a43`**, created 2026-07-30, **auto-expires ~2026-08-06**. Re-armed at the 2026-07-31 STOP (delete → create → verify). ⚠️ Session-scoped: dies silently on session exit *and* at expiry.
+`7 10,16,22` LEAN — job **`44e16ee9`**, **auto-expires ~2026-08-07**. Verified alive at today\'s first fire and the registry row matched — the job-id convention working on its first real check. ⚠️ Session-scoped: dies silently on session exit *and* at expiry.
 
-<!-- Whole-file rewrite 2026-07-31. Rewriting the TOP is not rewriting the FILE. -->
+⚠️ **Two fires lost this week to classifier outages** (7/30 STOP, 8/1 START). Both left the day unlogged or unclosed until the next fire caught it. **An outage-blocked fire is indistinguishable from a skipped one in the record** unless the next fire says so.
+
+<!-- Whole-file rewrite 2026-08-01. Rewriting the TOP is not rewriting the FILE. -->
