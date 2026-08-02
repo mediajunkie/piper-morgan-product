@@ -79,6 +79,15 @@ CANONICAL_QUERIES = [
     ),  # routes as query
     # Predictive (5)
     (21, "What should I focus on today?", "Predictive", "floor", None),
+    # #1395 rev NOTE — Q22 HELD at floor, deliberately excluded from the 6-row rev:
+    # it OSCILLATED across runs with no intervening routing change (canonical in
+    # Run 15 2026-07-12; floor in the 2026-08-01 baseline). An oscillator must not
+    # enter the contract on a single observation (the one-green-observation error).
+    # STABILITY CRITERION before any future flip (Arch-ratified 2026-08-01): THREE
+    # consecutive full-corpus runs, same destination, no intervening routing-code
+    # change. If Q22 oscillates AGAIN after meeting that bar, do NOT keep
+    # re-testing — mark it a known non-deterministic row; that is a finding about
+    # the classifier, not a row awaiting resolution.
     (22, "What patterns do you see?", "Predictive", "floor", "M2 Beta"),
     (23, "What risks should I be aware of?", "Predictive", "floor", "M2 Beta"),
     (24, "What opportunities should I pursue?", "Predictive", "floor", "M2 Beta"),
@@ -102,7 +111,7 @@ CANONICAL_QUERIES = [
     (34, "How much time am I spending in meetings?", "Scheduling", "canonical", None),
     (35, "Review my recurring meetings", "Scheduling", "canonical", None),
     # Documents (4)
-    (36, "Create a doc from this conversation", "Documents", "floor", "M2"),
+    (36, "Create a doc from this conversation", "Documents", "action", "1395-rev"),
     (37, "Compare these two documents", "Documents", "floor", "M2"),
     (38, "Synthesize these sources into a summary", "Documents", "floor", "M2"),
     (
@@ -116,19 +125,19 @@ CANONICAL_QUERIES = [
     (41, "What did we ship this week?", "GitHub Ops", "canonical", None),
     (42, "Show me stale PRs", "GitHub Ops", "canonical", None),
     (43, "What's blocking the milestone?", "GitHub Ops", "floor", None),
-    (44, "Create issues from this meeting's action items", "GitHub Ops", "floor", None),
-    (45, "Close completed issues", "GitHub Ops", "floor", None),
+    (44, "Create issues from this meeting's action items", "GitHub Ops", "action", "1395-rev"),
+    (45, "Close completed issues", "GitHub Ops", "action", "1395-rev"),
     (58, "Update issue #123", "GitHub Ops", "action", None),
     (59, "Comment on issue #456", "GitHub Ops", "canonical", None),
     (60, "Review issue #789", "GitHub Ops", "canonical", None),
     # Slack (5)
     (46, "Any mentions I missed?", "Slack", "floor", "M2"),
     (47, "Summarize #general from yesterday", "Slack", "floor", "M2"),
-    (48, "Post this update to the team channel", "Slack", "floor", "M2"),
+    (48, "Post this update to the team channel", "Slack", "action", "1395-rev"),
     (49, "/standup", "Slack", "action", None),
     (50, "/piper help", "Slack", "floor", None),
     # Productivity (3)
-    (51, "What's my productivity this week?", "Productivity", "floor", None),
+    (51, "What's my productivity this week?", "Productivity", "canonical", "1395-rev"),
     (52, "Are we on track for the milestone?", "Productivity", "floor", None),
     (53, "What did the team accomplish this sprint?", "Productivity", "floor", None),
     # Todo Management (4)
@@ -140,7 +149,7 @@ CANONICAL_QUERIES = [
     (61, "What's my week look like?", "Calendar Ext", "canonical", None),
     (62, "Check my calendar for conflicts", "Calendar Ext", "canonical", None),
     # Knowledge (1)
-    (63, "Upload a file to the knowledge base", "Knowledge", "floor", "M2"),
+    (63, "Upload a file to the knowledge base", "Knowledge", "action", "1395-rev"),
 ]
 
 # Error fingerprints that indicate broken responses.
