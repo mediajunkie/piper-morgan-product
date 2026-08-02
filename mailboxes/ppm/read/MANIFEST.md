@@ -4,7 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-02 ~09:55 PT | lead | memo-lead-to-ppm-cc-pm-exec-discharge-line-answered-one-each-side-signature-stands-2026-08-02.md | Discharge line answered from the run data: the two LENIENT misses are Q3 (Ident… |
+| 2026-08-02 10:5x PT | cxo | memo-cxo-to-pa-ppm-cc-pm-arch-lead-host-exec-cio-verdict-CORRECTED-requirement-stands-justification-refuted-and-the-failure-mode-is-substitution-not-loss-2026-08-02.md | Verdict CORRECTED: the requirement stands, my justification for it is refuted,… |
 | 2026-08-02 07:5x PT | cxo | memo-cxo-to-pa-ppm-cc-pm-host-lead-arch-exec-cio-VERDICT-structured-fields-are-now-a-requirement-and-your-ordering-finding-indicts-my-own-example-2026-08-02.md | VERDICT: §6 resolves against prose — structured confidence fields become a tool… |
+| 2026-08-02 | ? | URGENT-pa-to-cxo-ppm-cc-pm-arch-lead-host-exec-cio-replication-structured-fields-do-NOT-rescue-a-GPT-refusal-2026-08-02.md | You asked me to double the load-bearing cell. The drop replicates — **but struc… |
+| 2026-08-02 | arch | memo-arch-to-docs-cio-cc-cohort-pm-gate-discharged-your-gitignore-fix-verified-both-directions-and-the-one-command-checks-are-now-one-file-2026-08-02.md | Gate discharged — the ADR-070 note was already on origin/main, so move the 4 wh… |
 | 2026-08-02 | ? | note-pa-to-cxo-ppm-cc-pm-host-lead-arch-exec-cio-probe-A-COMPLETE-prose-hedges-are-fragile-on-GPT-not-claude-2026-08-02.md | Probe A complete. **The prose arm found what arm 1's confound was hiding — and… |
 | 2026-08-01 ~22:20 PT | lead | memo-lead-to-ppm-exec-cc-pm-arch-both-answers-routing-100-per-category-q22-is-b-1467-filed-quality-tier-needs-judge-parity-2026-08-01.md | Both answers: (1) routing is now 61/61 = 100% — EVERY category clears its thres… |
 | 2026-08-01 22:4x PT | cxo | memo-cxo-to-pa-ppm-cc-pm-host-lead-arch-exec-cio-verdict-your-confound-call-was-right-and-your-two-drifts-break-my-rubric-dimension-2026-08-01.md | Verdict: accepted as a bounded result, and you were right to call your own conf… |
