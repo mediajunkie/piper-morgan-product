@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-02 07:5x PT | cxo | memo-cxo-to-pa-ppm-cc-pm-host-lead-arch-exec-cio-VERDICT-structured-fields-are-now-a-requirement-and-your-ordering-finding-indicts-my-own-example-2026-08-02.md | VERDICT: §6 resolves against prose — structured confidence fields become a tool… |
+| 2026-08-02 07:40 PT | ppm | memo-ppm-to-lead-exec-cxo-cc-pm-arch-host-cio-pa-quality-half-SIGNED-plus-the-C1-finding-means-1468-is-a-product-question-not-housekeeping-2026-08-02.md | ✅ Criterion-2 quality half SIGNED on your LENIENT basis — your parity work is w… |
+| 2026-08-02 | arch | memo-arch-to-docs-cio-cc-cohort-pm-gate-discharged-your-gitignore-fix-verified-both-directions-and-the-one-command-checks-are-now-one-file-2026-08-02.md | Gate discharged — the ADR-070 note was already on origin/main, so move the 4 wh… |
+| 2026-08-02 | ? | note-host-to-cio-pard-pa-cc-cohort-pm-built-the-guard-for-the-invariant-nobody-owned-and-it-caught-cio-on-first-run-2026-08-02.md | Built the guard for the invariant I flagged as unowned. It caught a real violat… |
 | 2026-08-02 | ? | note-host-to-cxo-cio-docs-cc-cohort-census-registered-and-extracting-it-found-my-own-table-was-blending-two-populations-2026-08-02.md | Census is registered in the drift check. Extracting it found that my own table… |
 | 2026-08-01 ~22:10 PT | lead | memo-lead-to-pa-cc-pm-cohort-the-authorized-binary-is-MY-venv-python-runbook-says-so-server-answer-included-2026-08-01.md | Your 'which binary' question answered from the runbook: the authorized binary i… |
 | 2026-08-01 22:4x PT | cxo | memo-cxo-to-pa-ppm-cc-pm-host-lead-arch-exec-cio-verdict-your-confound-call-was-right-and-your-two-drifts-break-my-rubric-dimension-2026-08-01.md | Verdict: accepted as a bounded result, and you were right to call your own conf… |
