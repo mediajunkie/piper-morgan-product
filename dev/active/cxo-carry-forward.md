@@ -1,28 +1,44 @@
 # CXO carry-forward — ephemeral session state
 
-**Owner**: CXO | **Updated**: 2026-07-31 22:4x PT (STOP)
+**Owner**: CXO | **Updated**: 2026-08-01 22:5x PT (STOP)
 **Read at**: every fire START. **Rewritten at**: the end of every substantive fire.
 **Durable owed/queued work lives in** `cxo-standing-items.md` — this file is *current* state only.
 
 ---
 
-## ⏸ Blocked on PM — one action clears four lanes
+## ⚠️ Keys PROVISIONED — but reads HANG instead of failing (PA, 08-01 URGENT)
 
-**Amber key provisioning** (via `KeychainService`, **not** the `security` CLI — the service appends
-`_api_key` and CLI-stored credentials are invisible to the app). Unresolved all of 07-31.
+The four-lane block is **cleared and replaced by a different failure**: PA reports keys are provisioned
+but reads **hang** rather than error. **Read PA's URGENT memo first thing** — a hang is worse than a
+clean failure for anything on a timeout.
 
-| Blocked | Consequence |
-|---|---|
-| **Probe A** (PA built it; PM funded it) | **My rubric-branch verdict.** Design spec §6 stays unresolved and acceptance item 4 stays un-implementable. |
-| **#1386 criterion 2** | Withheld my sign-off; a keyless canonical suite *skips* and reports green. Exec deferred it in writing. |
-| **#1445** · **#1395 Phase 0** | Lead's. |
+**What this unblocks / changes**:
+- **Probe A** — first arm RUN. See below; verdict given, prose arm still owed.
+- **#1386 criterion 2** — PPM reports its blocker cleared with **two questions** standing between that
+  and its signature. **My withholding stands until a keyed run exists**; I committed to same-day
+  sign-off on one. Check PPM's two questions before signing.
+- **#1445 / #1395 Phase 0** — Lead's.
 
-**Second PM action, separate**: rouse Lead / authorize Lead's cron. **Lead's registry row is still
-parked and no cron was ever armed** — the #1386 Scenario-B driver could never have started. Exec's
-own finding.
+**Second PM action, still open**: rouse Lead / authorize Lead's cron. Lead's registry row remains
+parked; the #1386 Scenario-B driver still cannot self-start.
 
-**Scenario B may be entirely unaffected** (deployed beta v28, its own credentials). If Lead runs it,
-**review and sign on the issue at the next fire** — independent of criterion 2.
+## ★ Probe A — first arm run, verdict given, and it changed the rubric
+
+**Result recorded as**: *structured caveats survived 5/5 on Claude.* **NOT** *"our honesty survives
+recomposition"* — PA called their own confound: every caveat sat in a **named structured field**, which
+is the mitigation §6 proposes *if* prose proves fragile. **The mitigation is validated; the risk is
+untested.**
+
+**Still owed**: the **prose arm** (same five cases, caveats in narrative, no named field) — the arm that
+answers the question — plus **both GPT arms**. **Spec §6 unresolved; acceptance item 4 still blocked.**
+
+**The rubric branch is now FOUR dimensions, not three** (design change driven by measurement):
+**sufficiency · preservation · prominence · fidelity.** Two drifts a survival-only rubric would have
+passed cleanly:
+- **assertion before caveat** — everything survived, but the claim came first and a skimmer keeps only
+  that ⇒ *preservation* and *prominence* are different properties;
+- **the client ADDED content** — invented a plausible gloss absent from the payload ⇒ **fidelity**;
+  an invented detail **inherits our credibility** and the user can't tell which half came from the tool.
 
 ## Live threads
 
@@ -62,9 +78,9 @@ Phase 0, and why spec item 4 must not be implemented in prose first.
 
 ## Cron
 
-- **Job `49d605be`** — `47 6,9,12,15,18,21`. Re-armed at STOP 07-31 by delete-then-create
-  (`6415bf73` → `49d605be`). **Cadence unchanged**; prompt gained the check-the-clock reminder.
+- **Job `d76fe3a6`** — `47 6,9,12,15,18,21`. Re-armed at STOP 08-01 by delete-then-create
+  (`49d605be` → `d76fe3a6`). **Cadence unchanged**; prompt gained the check-the-clock reminder.
   *(Recording the id transition deliberately — a changed cron id is a documented cause of
   phantom-peer misreads.)*
-- ⚠️ **Session-only AND auto-expires ~2026-08-07.** Both deaths silent. **Run `CronList` at every
+- ⚠️ **Session-only AND auto-expires ~2026-08-08.** Both deaths silent. **Run `CronList` at every
   START** — this file records intent, not a live job.

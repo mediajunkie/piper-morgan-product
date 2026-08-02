@@ -116,7 +116,33 @@ our output. *"I haven't looked outside that repo"* may not survive into what the
 
 **Probe A** (PA, Phase 0) tests exactly this and is **currently blocked on Amber key provisioning**.
 
-**The design branches on its result, and I am recording the branch now so it isn't retrofitted:**
+**Probe A status (2026-08-01)**: first arm run — **structured caveats survived 5/5 on Claude.** ⚠️
+**That tested the *mitigation*, not the risk** (PA's own confound call: every caveat sat in a named
+structured field, which is the fix §6 proposes *if* prose proves fragile). **So the fallback is
+validated in advance and the question is still open.** The arm that answers it — same five cases,
+caveats in narrative prose, no named field — **is not yet run**, nor is the GPT arm. **Item 4 stays
+blocked.**
+
+**★ The branch's dimensions changed on the strength of what the first arm incidentally showed** — two
+drifts a survival-only rubric would have passed cleanly:
+
+- **Assertion before caveat.** *"has 3 open blockers, which suggests it may not be fully on track"* —
+  claim first, qualifier after. Everything *survived*; a skimmer takes the claim and leaves the hedge.
+  **Survival and prominence are different properties, and only one is what the user ends up
+  believing.** ⇒ the dimension splits into **preservation** (is it still there?) and **prominence**
+  (does it reach the reader before the claim it qualifies?).
+- **The client ADDED content.** *"(likely PRs, issues, or tasks assigned to you)"* — invented,
+  plausible, absent from the payload. **None of the original three dimensions catches this**, because
+  all three ask what happened to *our* content. ⇒ new dimension **fidelity**: *does the reply contain
+  claims Piper did not make?* Arguably the most dangerous, because **an invented detail inherits our
+  credibility** and the user cannot tell which half came from the tool.
+
+**Branch is now four dimensions**: sufficiency · **preservation** · **prominence** · **fidelity**
+(capability-truthfulness folds under fidelity — "claims Piper can do what it can't" is a special case
+of "claims Piper didn't make"). *Design change driven by measurement; the original three would have
+passed a reply the user would misread.*
+
+**The design branches on the prose arm's result, recorded now so it isn't retrofitted:**
 
 - **If hedges survive** → boundaries can live in prose; the rubric scores our text.
 - **If hedges do not survive** → **the fix is not in the rubric or in better prose.** It is an
