@@ -22,7 +22,7 @@ front of them); earlier surfaces win:
 | 0 | **B3 referent resolution** (Stage 0) | `services/intent_service/classifier.py` (`_resolve_issue_referent`), consulted at the TOP of **both** `classify_multiple` and `classify` — before `detect_multiple_intents`, before the classification cache, before surface 1 | Deterministic (regex detect + owner-scoped `session_activity` ledger read) | ADR-078 D2/OQ-3 (#1394): "change the title" / "add a label to it" after creating an issue THIS session resolves to the ledgered issue and emits `update_issue` directly. **Needs `session_id` as its own kwarg** (2026-07-20 fix: the chat path passes `session_id=` explicitly; it must NEVER ride in `context` — context injects into the LLM prompt and disables the classifier cache). Sits above the cache because referent messages are session-relative (a cross-session cache hit would bypass resolution); sits above `detect_multiple_intents` because that pre-classifier pattern-matches update-verb messages (e.g. "change the title to X" → `update_document_query`) and would otherwise return before B3 runs — the live Scenario-B turn-3 misroute mechanism. N-guards: no referent / fresh topic / explicit `#N` → falls through untouched; D4 intact (the LLM classifier never sees history). |
 | 1 | **Pre-classifier** | `services/intent_service/pre_classifier.py` | Deterministic (regex/pattern) | Intercepts known shapes BEFORE any LLM call — identity ("who am I?" → `get_identity`), insights (`pull_insights`), stakeholder updates (`write_stakeholder_update`), portfolio (`manage_portfolio`), status (`get_project_status`), standup, etc. Cheap, deterministic, and the reason "the LLM classified X wrong" is often unobservable in production: the LLM never saw the phrase. |
 | 2 | **LLM classifier** | `services/intent_service/classifier.py` (`IntentClassifier.classify`) + `llm_classifier.py` | LLM | Emits an `Intent` (category + action + confidence). Its ACTION VOCABULARY is prompt-suggested, not enforced — it can and does emit paraphrase variants (probe evidence: `list_stale_prs`, `analyze_productivity`). |
-| 3 | **Action rail** | `services/intent_service/workflow_entries.py` (`register_default_workflows`) → `workflow_dispatcher.get_action_workflows()`; consumed in `services/intent/intent_service.py::process_intent` | Deterministic dict lookup | If `intent.action` is a registered key (canonical or alias), dispatch pre-floor to that handler. ~86 keys ≈ 25 handlers + aliases. The alias lists are **mode-4 defense** against variant emissions — necessary, provably insufficient alone (4 stale-PR aliases still missed a live 5th variant). |
+| 3 | **Action rail** | `services/intent_service/workflow_entries.py` (`register_default_workflows`) → `workflow_dispatcher.get_action_workflows()`; consumed in `services/intent/intent_service.py::process_intent` | Deterministic dict lookup | If `intent.action` is a registered key (canonical or alias), dispatch pre-floor to that handler. 102 keys ≈ 30 handlers + aliases (census D count, 2026-07-16; corrected here 2026-08-02 by #1433 — the old "~86" sat stale for weeks, F24). The alias lists are **mode-4 defense** against variant emissions — necessary, provably insufficient alone (4 stale-PR aliases still missed a live 5th variant). |
 | 4 | **Category handlers + floor-internal action checks** | category routing in `intent_service.py`; `conversational_floor.py`, `context_assembler.py` | Mixed | Anything not action-railed routes by `intent.category` (TEMPORAL/STATUS/PRIORITY/IDENTITY/…). Several of these check `intent.action` BY NAME internally (e.g. `pull_insights` in `conversational_floor.py`, MEMORY handling in `context_assembler.py`) — this is the **fourth vocabulary**: real dispatch that no rail listing shows. Bottom: the unhandled-LLM floor (improvised response) — the place #1283 exists to keep phrases OUT of. |
 
 ## The vocabularies (where action names live)
@@ -30,7 +30,7 @@ front of them); earlier surfaces win:
 1. **Prompt vocabulary** — action names the classifier prompt suggests (`services/prompts.py`, ~17).
 2. **`ACTION_REGISTRY`** — `services/intent_service/action_registry.py`, the documented
    canonical (category, action) pairs (~43). SSOT-in-waiting (#1283 AC-4, Arch).
-3. **Rail keys** — `workflow_entries.py` registrations (~86 incl. aliases).
+3. **Rail keys** — `workflow_entries.py` registrations (102 incl. aliases, 2026-08-02).
 4. **Floor/pre-classifier names** — action strings matched inside surface-1 and surface-4
    code. Not statically enumerable; the accounting lives in
    `tests/unit/services/intent_service/test_routing_vocabulary_1283.py::KNOWN_OFF_RAIL`.
@@ -40,6 +40,18 @@ rail-registered or explicitly ledgered as off-rail-but-surface-handled; the ledg
 shrinks; corpus expectations must name known actions. The LLM half (behavioral corpus,
 `tests/fixtures/routing_corpus_1283.yaml` + `scripts/routing_probe_1283.py`) runs
 out-of-CI on cost grounds, gated on Arch ratification.
+
+**Product-inward enforcement (#1433, 2026-08-02)**: the registry-outward lint's missing
+half is the CHAT_POINTERS reachability ratchet —
+`tests/test_architecture_enforcement.py::TestChatPointersReachabilityRatchet`. It derives
+the product-surface set (ui.py page routes + connectable integrations + decline-copy
+capabilities) at collection time, requires a ledger row per surface (a POINTER utterance
+that resolves DETERMINISTICALLY through this stack's surfaces 1/3/4 with the resolution
+path asserted, or a structured-citation CHAT_INVISIBLE under a shrink-only ceiling in
+`scripts/ratchet_ceilings.json`), and enforces decline-copy freshness
+(`UNWIRED_WRITE_DECLINES` + `_get_contextual_fallback` denials must stay disjoint from
+the reachable-action set). It also supersedes `validate_registry_coverage()`'s circular
+example-driven check as the census F24 accounting fix.
 
 ## Failure modes (the #1283 taxonomy, probe-confirmed)
 

@@ -53,6 +53,11 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("TEMPORAL", "get_current_time"): ActionDisposition.CANONICAL,
     # ---- STATUS ----
     ("STATUS", "get_project_status"): ActionDisposition.CANONICAL,
+    # #1433/F24: emitted by the single-intent COMPLETION_HISTORY path (#1117)
+    # since 2026-06 but never registered — the registry's "MUST" docstring was
+    # false for it. STATUS is floor-routed for completion history (#925/#1117:
+    # the floor answers history honestly), hence FLOOR.
+    ("STATUS", "check_completion_status"): ActionDisposition.FLOOR,
     # ---- PRIORITY ----
     ("PRIORITY", "get_top_priority"): ActionDisposition.CANONICAL,
     # ---- GUIDANCE ----
@@ -106,6 +111,11 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     # ---- QUERY: Contextual ----
     ("QUERY", "changes_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "attention_query"): ActionDisposition.WORKFLOW,
+    # ---- QUERY: Local git (#1044) ----
+    # #1433/F24: emitted by the pre-classifier + rail-registered
+    # (workflow_entries: local_git_status_query/local_git_status →
+    # _handle_local_git_status_query) since #1044, but never registered here.
+    ("QUERY", "local_git_status_query"): ActionDisposition.WORKFLOW,
     # ---- QUERY: Productivity ----
     ("QUERY", "productivity_query"): ActionDisposition.WORKFLOW,
     # ---- QUERY: Session activity (#1394 / ADR-078 B4) ----
@@ -145,6 +155,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("MEMORY", "pull_insights"): "What have you learned about my work style?",
     ("TEMPORAL", "get_current_time"): "What time is it?",
     ("STATUS", "get_project_status"): "What's the project status?",
+    ("STATUS", "check_completion_status"): "When did I complete the login fix?",
     ("PRIORITY", "get_top_priority"): "What should I work on first?",
     ("GUIDANCE", "get_contextual_guidance"): "How should I approach this sprint?",
     ("PORTFOLIO", "manage_portfolio"): "List my projects",
@@ -173,6 +184,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "write_stakeholder_update"): "Write a short update for the CEO on where we are with alpha testing",
     ("QUERY", "changes_query"): "What changed since yesterday?",
     ("QUERY", "attention_query"): "What needs my attention?",
+    ("QUERY", "local_git_status_query"): "What branch are we on?",
     ("QUERY", "productivity_query"): "How productive was I this week?",
     ("QUERY", "session_activity_query"): "What did we create this session?",
     ("QUERY", "list_todos_query"): "Show me my todos",
@@ -303,6 +315,8 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "pull_insights": Verb.GET,
     "get_current_time": Verb.GET,
     "get_project_status": Verb.GET,
+    "check_completion_status": Verb.GET,  # #1433/F24
+    "local_git_status_query": Verb.GET,  # #1433/F24
     "get_top_priority": Verb.GET,
     "get_contextual_guidance": Verb.GET,
     "manage_portfolio": Verb.MANAGE,

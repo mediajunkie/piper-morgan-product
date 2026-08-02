@@ -900,6 +900,646 @@ class TestUploadedFileByteSeamEnforcement:
         )
 
 
+# ============================================================================
+# #1433 — CHAT_POINTERS product-surface reachability ratchet
+# (Arch-ratified design 2026-08-02:
+#  docs/internal/architecture/current/chat-pointers-reachability-ratchet-design-1433.md)
+#
+# The #1283/ADR-077 lint checks registry-OUTWARD (every registry canonical is
+# dispatchable). NOTHING checked product-INWARD — which is how integrations-
+# connect ×4, file-upload, api-keys, lists and work-items could all be
+# chat-unreachable (or falsely denied, #1426) without any test noticing
+# (census D, 2026-07-16). This ratchet closes that half:
+#
+#   1. The must-be-covered surface set is DERIVED at collection time (pages
+#      from ui.py, connectable integrations from settings_integrations.py,
+#      capabilities named in decline copy). A new surface with no ledger row
+#      FAILS the build — membership by existing (ADR-072/ADR-079 precedent).
+#   2. Every POINTER utterance must resolve DETERMINISTICALLY — the harness
+#      runs the real pre-classifier + rail/registry/action-mapper resolution
+#      with NO LLM call and NO network, and asserts BOTH the destination AND
+#      the RESOLUTION PATH (Arch's required addition: "routed deterministically"
+#      and "routed somehow" must never produce identical output — the m-44
+#      guard applied to the check itself). Keyless in gating CI by construction.
+#      Immune to the #1395/Q22 oscillation class: borderline LLM classification
+#      is sampled; static pre-classifier + action-mapping resolution is
+#      deterministic by construction (which is what the no-LLM constraint buys).
+#   3. CHAT_INVISIBLE entries carry a STRUCTURED citation (issue=N or
+#      ref="ADR-/PDR-..."), enforced below — free-text reason = fail. The set
+#      may only SHRINK (count ceiling in scripts/ratchet_ceilings.json).
+#   4. Decline-copy freshness (#1426 structural half): UNWIRED_WRITE_DECLINES
+#      keys and _get_contextual_fallback's denial rows must stay disjoint from
+#      the reachable-action set — shipping a capability forces its stale
+#      denial out of the build in the same commit.
+# ============================================================================
+
+
+class POINTER:
+    """A canonical chat utterance that must route DETERMINISTICALLY to the
+    surface's capability. `expects` is the (category, action) destination,
+    lowercase category (IntentCategory.value)."""
+
+    __slots__ = ("utterance", "expects")
+
+    def __init__(self, utterance: str, expects: tuple):
+        self.utterance = utterance
+        self.expects = expects
+
+
+class CHAT_INVISIBLE:
+    """A surface deliberately or currently not reachable from chat.
+
+    STRUCTURED citation required (Arch refinement 2, the ADR-079 `# global-ok:`
+    shape): exactly one of
+      - issue=N       — the tracked issue (the reachability gap's tracker, or
+                        the surface-defining issue for by-design entries)
+      - ref="ADR-NNN" — a ratified ADR/PDR that makes the surface web-only
+      - untracked=True — BASELINE-ONLY escape hatch: the census found the gap
+                        but no tracker exists yet. Valid ONLY for surfaces in
+                        UNTRACKED_BASELINE below (frozen 2026-08-02, shrinks
+                        only). A NEW chat-invisible surface must cite a real
+                        issue or ADR — never add to the baseline.
+    `note` is optional human context; it is NOT a citation and never
+    satisfies the requirement (free-text reason = fail).
+    """
+
+    __slots__ = ("issue", "ref", "untracked", "note")
+
+    def __init__(self, issue=None, ref=None, untracked=False, note=""):
+        self.issue = issue
+        self.ref = ref
+        self.untracked = untracked
+        self.note = note
+
+
+# Surfaces the 2026-08-02 baseline found chat-invisible with NO tracked issue
+# and no covering ADR/PDR (reported to Lead/PM in the #1433 build report).
+# FROZEN: only remove entries (when a tracker is filed, swap the row to
+# issue=N and delete the entry here). NEVER add.
+UNTRACKED_BASELINE = frozenset(
+    {
+        "page:/personality-preferences",
+        "page:/learning",
+        "page:/settings",
+        "page:/account",
+        "page:/settings/llm-keys",
+        "page:/lists",
+        "page:/work-items",
+        "page:/settings/privacy",
+        "page:/settings/advanced",
+        "capability:create_document",
+        "capability:batch_create_issues",
+    }
+)
+
+
+# ---------------------------------------------------------------------------
+# THE LEDGER — every derived product surface gets exactly one row.
+# POINTER utterances below are all VERIFIED against the live pre-classifier
+# (2026-08-02); if one stops resolving, the harness fails loudly with the
+# recorded resolution path.
+# ---------------------------------------------------------------------------
+CHAT_POINTERS = {
+    # ---- pages (web/api/routes/ui.py GET page routes, derived) ----
+    # Home hosts the inline chat itself (#1266 F2) — chat cannot "point to"
+    # its own host surface.
+    "page:/": CHAT_INVISIBLE(issue=1266, note="home hosts the inline chat"),
+    "page:/login": CHAT_INVISIBLE(issue=393, note="pre-auth by definition"),
+    "page:/reset-password": CHAT_INVISIBLE(issue=1261, note="pre-auth by definition"),
+    "page:/setup": CHAT_INVISIBLE(issue=390, note="pre-auth setup wizard"),
+    "page:/standup": POINTER("give me my standup", expects=("status", "get_project_status")),
+    "page:/personality-preferences": CHAT_INVISIBLE(untracked=True),
+    "page:/learning": CHAT_INVISIBLE(untracked=True, note="dashboard-only today"),
+    "page:/settings": CHAT_INVISIBLE(untracked=True, note="settings nav index"),
+    "page:/account": CHAT_INVISIBLE(untracked=True, note="Coming Soon page"),
+    "page:/transparency": CHAT_INVISIBLE(
+        ref="ADR-063", note="user-facing audit-envelope READ surface (web-only)"
+    ),
+    "page:/files": CHAT_INVISIBLE(
+        issue=1426,
+        note="upload lives on /files; chat-side attachments unwired (census F5)",
+    ),
+    "page:/documents": CHAT_INVISIBLE(issue=1270, note="redirects to /files"),
+    "page:/insights": POINTER(
+        "what have you learned about my work style?", expects=("memory", "pull_insights")
+    ),
+    "page:/settings/integrations": POINTER(
+        "connect my github", expects=("guidance", "get_contextual_guidance")
+    ),
+    "page:/settings/llm-keys": CHAT_INVISIBLE(
+        untracked=True, note="api-keys census gap; page shipped in #1380"
+    ),
+    "page:/settings/integrations/notion": POINTER(
+        "connect my notion", expects=("guidance", "get_contextual_guidance")
+    ),
+    "page:/settings/integrations/github": POINTER(
+        "connect my github", expects=("guidance", "get_contextual_guidance")
+    ),
+    "page:/settings/integrations/slack": POINTER(
+        "connect my slack", expects=("guidance", "get_contextual_guidance")
+    ),
+    "page:/settings/integrations/calendar": POINTER(
+        "link my google calendar", expects=("guidance", "get_contextual_guidance")
+    ),
+    "page:/settings/projects": POINTER(
+        "add a repo to my portfolio", expects=("portfolio", "manage_repos")
+    ),
+    "page:/lists": CHAT_INVISIBLE(untracked=True, note="census direction-1 gap"),
+    "page:/todos": POINTER("show me my todos", expects=("query", "list_todos_query")),
+    "page:/projects": POINTER("list my projects", expects=("portfolio", "manage_portfolio")),
+    "page:/projects/{project_id}": CHAT_INVISIBLE(
+        issue=711, note="detail deep-link surface; list reachable via /projects pointer"
+    ),
+    "page:/work-items": CHAT_INVISIBLE(untracked=True, note="census direction-1 gap"),
+    "page:/settings/privacy": CHAT_INVISIBLE(untracked=True, note="Coming Soon page"),
+    "page:/settings/advanced": CHAT_INVISIBLE(untracked=True, note="Coming Soon page"),
+    # ---- connectable integrations (settings_integrations.py, derived) ----
+    "integration:github": POINTER(
+        "connect my github", expects=("guidance", "get_contextual_guidance")
+    ),
+    "integration:slack": POINTER(
+        "connect my slack", expects=("guidance", "get_contextual_guidance")
+    ),
+    "integration:calendar": POINTER(
+        "link my google calendar", expects=("guidance", "get_contextual_guidance")
+    ),
+    "integration:notion": POINTER(
+        "connect my notion", expects=("guidance", "get_contextual_guidance")
+    ),
+    # ---- capabilities named in decline copy (derived; unreachable BY
+    #      DEFINITION — if one ships, its decline copy must be removed, which
+    #      removes the surface from the derived set AND this row in the same
+    #      commit, lowering the chat_invisible ceiling) ----
+    # Real connector-backed chat writes ride the RECONNECT R2 epic (#1440;
+    # #1322 Q3 is listed cross-cutting there).
+    "capability:create_milestone": CHAT_INVISIBLE(issue=1440),
+    "capability:create_release": CHAT_INVISIBLE(issue=1440),
+    "capability:create_label": CHAT_INVISIBLE(issue=1440),
+    "capability:create_branch": CHAT_INVISIBLE(issue=1440),
+    "capability:create_pull_request": CHAT_INVISIBLE(issue=1440),
+    "capability:update_status": CHAT_INVISIBLE(issue=1440),
+    "capability:create_calendar_event": CHAT_INVISIBLE(
+        issue=1440, note="calendar connector port rides the R2 epic"
+    ),
+    "capability:post_to_slack": CHAT_INVISIBLE(
+        issue=1364, note="Slack #1232-contract port (rides #1440)"
+    ),
+    "capability:create_document": CHAT_INVISIBLE(untracked=True),
+    "capability:batch_create_issues": CHAT_INVISIBLE(untracked=True),
+}
+
+
+# _get_contextual_fallback denial rows — the curated bridge between the
+# denial STRINGS in services/intent/intent_service.py and the capability
+# ACTION tokens whose shipping would make each denial stale. Two-directionally
+# enforced below: a NEW "I can't ..." denial in the function without a row
+# here fails; a row whose snippet no longer appears in the source fails
+# (capability shipped → remove the row + its ledger surface in the same
+# commit).
+CONTEXTUAL_FALLBACK_DENIALS = {
+    "capability:create_calendar_event": {
+        "snippet": "can't create calendar events",
+        "actions": {"create_calendar_event", "schedule_meeting", "create_meeting", "book_meeting"},
+    },
+    "capability:create_document": {
+        "snippet": "can't create documents",
+        "actions": {"create_document", "create_doc", "make_document"},
+    },
+    "capability:batch_create_issues": {
+        "snippet": "can't batch-create issues",
+        "actions": {"batch_create_issues", "create_issues_from_meeting", "batch_create"},
+    },
+    "capability:post_to_slack": {
+        "snippet": "can't post to Slack channels",
+        "actions": {"post_to_slack", "send_slack_message", "post_to_channel"},
+    },
+}
+
+
+@pytest.mark.smoke
+class TestChatPointersReachabilityRatchet:
+    """#1433 — the product-inward reachability ratchet (see block comment above)."""
+
+    _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    _UI_PY = os.path.join(_ROOT, "web", "api", "routes", "ui.py")
+    _SETTINGS_INTEGRATIONS_PY = os.path.join(
+        _ROOT, "web", "api", "routes", "settings_integrations.py"
+    )
+    _INTENT_SERVICE_PY = os.path.join(_ROOT, "services", "intent", "intent_service.py")
+    _CEILINGS_JSON = os.path.join(_ROOT, "scripts", "ratchet_ceilings.json")
+
+    # ---- derived enumeration (membership by existing) ----
+
+    def _page_paths(self) -> set:
+        """Every ui.py page route path, from the @router.get decorators (AST —
+        idiom-change makes this fail LOUDLY, the safe direction). API routes
+        (/api/...) are not pages and are excluded."""
+        import ast
+
+        with open(self._UI_PY, encoding="utf-8") as fh:
+            tree = ast.parse(fh.read())
+        paths = set()
+        for node in ast.walk(tree):
+            if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                continue
+            for dec in node.decorator_list:
+                if (
+                    isinstance(dec, ast.Call)
+                    and isinstance(dec.func, ast.Attribute)
+                    and dec.func.attr == "get"
+                    and isinstance(dec.func.value, ast.Name)
+                    and dec.func.value.id == "router"
+                    and dec.args
+                    and isinstance(dec.args[0], ast.Constant)
+                    and isinstance(dec.args[0].value, str)
+                    and not dec.args[0].value.startswith("/api/")
+                ):
+                    paths.add(dec.args[0].value)
+        return paths
+
+    def _connectable_integrations(self) -> set:
+        """The connectable-integration set, derived from settings_integrations'
+        route surface: a provider is connectable iff it has a /{name}/connect
+        (OAuth) or /{name}/save (API-key) route."""
+        with open(self._SETTINGS_INTEGRATIONS_PY, encoding="utf-8") as fh:
+            src = fh.read()
+        connect = set(re.findall(r'@router\.get\("/([a-z_]+)/connect"\)', src))
+        save = set(re.findall(r'@router\.post\("/([a-z_]+)/save"\)', src))
+        return connect | save
+
+    def _fallback_denial_fragments(self) -> list:
+        """Every STRING CONSTANT inside _get_contextual_fallback that denies a
+        capability (contains \"can't\"). AST-derived so comments (which quote
+        the #1426 pre-fix denials as history) never count; affirmative
+        redirects (\"I can set reminders\", \"You can upload files\")
+        deliberately don't match."""
+        import ast
+
+        with open(self._INTENT_SERVICE_PY, encoding="utf-8") as fh:
+            tree = ast.parse(fh.read())
+        for node in ast.walk(tree):
+            if isinstance(node, ast.FunctionDef) and node.name == "_get_contextual_fallback":
+                return [
+                    const.value
+                    for const in ast.walk(node)
+                    if isinstance(const, ast.Constant)
+                    and isinstance(const.value, str)
+                    and "can't" in const.value
+                ]
+        raise AssertionError(
+            "_get_contextual_fallback not found in intent_service.py — the "
+            "extraction idiom changed; fix _fallback_denial_fragments()."
+        )
+
+    def _derived_surfaces(self) -> set:
+        from services.intent_service.unwired_writes import UNWIRED_WRITE_DECLINES
+
+        surfaces = {f"page:{p}" for p in self._page_paths()}
+        surfaces |= {f"integration:{i}" for i in self._connectable_integrations()}
+        surfaces |= {f"capability:{a}" for a in UNWIRED_WRITE_DECLINES}
+        surfaces |= set(CONTEXTUAL_FALLBACK_DENIALS)
+        return surfaces
+
+    # ---- static resolution harness (NO LLM, NO network) ----
+
+    def _rail(self) -> set:
+        from services.intent_service.workflow_dispatcher import get_action_workflows
+        from services.intent_service.workflow_entries import register_default_workflows
+
+        register_default_workflows()
+        return set(get_action_workflows().keys())
+
+    def _elif_tokens(self) -> set:
+        """The EXECUTION elif-dispatched tokens (same derivation as
+        TestForwardGuardExecutionCohort in test_routing_vocabulary_1283)."""
+        with open(self._INTENT_SERVICE_PY, encoding="utf-8") as fh:
+            src = fh.read()
+        eq = set(re.findall(r'mapped_action\s*==\s*"([a-z_]+)"', src))
+        for group in re.findall(r"mapped_action\s+in\s+\[([^\]]+)\]", src):
+            eq |= set(re.findall(r'"([a-z_]+)"', group))
+        return eq
+
+    # The deterministic resolver set (Arch's required addition). Stage 1 is
+    # ALWAYS the pre-classifier (a POINTER whose utterance needs the LLM
+    # classifier fails at authoring time); stage 2 is the deterministic
+    # dispatch surface for the emitted action:
+    #   rail-key            — process_intent's action rail (dict lookup)
+    #   registry-CANONICAL  — CanonicalHandlers fast path
+    #   registry-FLOOR      — deliberate floor routing with context assembly
+    #   action-mapper-elif  — the EXECUTION cohort (ActionMapper dict + elif;
+    #                         the forward-guard D4-bridge, Arch 2026-07-16 §A)
+    DETERMINISTIC_RESOLVERS = frozenset(
+        {
+            "pre-classifier→rail-key",
+            "pre-classifier→registry-CANONICAL",
+            "pre-classifier→registry-FLOOR",
+            "pre-classifier→action-mapper-elif",
+        }
+    )
+
+    def _static_resolve(self, utterance: str) -> tuple:
+        """Resolve `utterance` through the static routing surfaces only.
+
+        Returns (destination, resolver) where destination is the
+        (category, action) the deterministic chain emits (None if the
+        utterance would need the LLM classifier) and resolver names the
+        resolution path — recorded so a failure message shows WHICH surface
+        resolved (or failed to resolve) the pointer.
+        """
+        from services.intent_service.action_registry import (
+            ACTION_REGISTRY,
+            ActionDisposition,
+        )
+        from services.intent_service.pre_classifier import PreClassifier
+
+        intent = PreClassifier.pre_classify(utterance)
+        if intent is None:
+            return None, "LLM-classifier-required (pre-classifier returned None)"
+
+        category = intent.category.value
+        action = intent.action
+        destination = (category, action)
+
+        if action in self._rail():
+            return destination, "pre-classifier→rail-key"
+
+        disposition = ACTION_REGISTRY.get((category.upper(), action))
+        if disposition is ActionDisposition.CANONICAL:
+            return destination, "pre-classifier→registry-CANONICAL"
+        if disposition is ActionDisposition.FLOOR:
+            return destination, "pre-classifier→registry-FLOOR"
+
+        if category == "execution":
+            from services.intent_service.action_mapper import ActionMapper
+
+            if ActionMapper.map_action(action) in self._elif_tokens():
+                return destination, "pre-classifier→action-mapper-elif"
+
+        return destination, (
+            f"UNDISPATCHED (pre-classifier emitted {destination} but it is not "
+            f"a rail key, its registry disposition is {disposition}, and it is "
+            f"not action-mapper-elif dispatched)"
+        )
+
+    def _reachable_actions(self) -> set:
+        """The reachable-action denominator for decline-copy freshness.
+
+        Per the ratified design §3 (Arch refinement 3, denominator named):
+        this reachable set covers POINTER-resolved + registry-wired paths
+        (registry actions, rail keys, pre-classifier emissions, the EXECUTION
+        elif tokens and the ActionMapper variants that canonicalize onto them)
+        and does NOT cover capabilities reachable by paths outside both
+        (believed empty today) — carried as this comment so "complete for the
+        space it searched" stays visible.
+        """
+        from services.intent_service.action_mapper import ActionMapper
+        from services.intent_service.action_registry import ACTION_REGISTRY
+
+        rail = self._rail()
+        elif_tokens = self._elif_tokens()
+
+        with open(
+            os.path.join(self._ROOT, "services", "intent_service", "pre_classifier.py"),
+            encoding="utf-8",
+        ) as fh:
+            pre_src = fh.read()
+        pre_surface = set(re.findall(r'action="([a-z_]+)"', pre_src)) | set(
+            re.findall(r'IntentCategory\.\w+,\s*"([a-z_]+)"', pre_src)
+        )
+
+        pointer_resolved = set()
+        for row in CHAT_POINTERS.values():
+            if isinstance(row, POINTER):
+                destination, _resolver = self._static_resolve(row.utterance)
+                if destination:
+                    pointer_resolved.add(destination[1])
+
+        dispatched = elif_tokens | rail
+        mapper_variants = {
+            k for k, v in ActionMapper.ACTION_MAPPING.items() if v in dispatched
+        }
+        return (
+            pointer_resolved
+            | {action for (_cat, action) in ACTION_REGISTRY}
+            | rail
+            | pre_surface
+            | elif_tokens
+            | mapper_variants
+        )
+
+    # ---- the tests ----
+
+    def test_every_derived_surface_has_a_ledger_row(self):
+        """Membership by existing: a new page route, connectable integration,
+        or decline-copy capability joins the contract by existing — the build
+        fails until it gets a ledger row (POINTER or justified CHAT_INVISIBLE).
+        Both directions: a ledger row whose surface no longer exists is stale
+        and must be removed (the CHAT_INVISIBLE set only shrinks)."""
+        derived = self._derived_surfaces()
+        ledgered = set(CHAT_POINTERS)
+        missing = derived - ledgered
+        stale = ledgered - derived
+        assert not missing, (
+            f"Product surfaces with NO CHAT_POINTERS ledger row: {sorted(missing)}. "
+            f"Add a POINTER (a canonical utterance that resolves deterministically) "
+            f"or a justified CHAT_INVISIBLE(issue=N | ref='ADR-...') row in "
+            f"tests/test_architecture_enforcement.py (#1433)."
+        )
+        assert not stale, (
+            f"CHAT_POINTERS rows for surfaces that no longer exist: {sorted(stale)}. "
+            f"Remove the row (and if CHAT_INVISIBLE, lower the chat_invisible "
+            f"ceiling in scripts/ratchet_ceilings.json in this same commit)."
+        )
+
+    def test_chat_invisible_citations_are_structured(self):
+        """Free-text reason = fail (Arch refinement 2). Every CHAT_INVISIBLE
+        names a tracked issue (issue=N) or a ratified ADR/PDR (ref='ADR-NNN'),
+        or sits in the frozen 2026-08-02 UNTRACKED_BASELINE."""
+        bad = []
+        for surface, row in CHAT_POINTERS.items():
+            if not isinstance(row, CHAT_INVISIBLE):
+                continue
+            citations = [
+                row.issue is not None,
+                row.ref is not None,
+                bool(row.untracked),
+            ]
+            if sum(citations) != 1:
+                bad.append(f"{surface}: exactly ONE of issue=/ref=/untracked= required")
+                continue
+            if row.issue is not None and not isinstance(row.issue, int):
+                bad.append(f"{surface}: issue= must be an int issue number, got {row.issue!r}")
+            if row.ref is not None and not re.fullmatch(r"(ADR|PDR)-\d+", str(row.ref)):
+                bad.append(f"{surface}: ref= must look like 'ADR-063'/'PDR-006', got {row.ref!r}")
+            if row.untracked and surface not in UNTRACKED_BASELINE:
+                bad.append(
+                    f"{surface}: untracked=True is baseline-only — file a tracking "
+                    f"issue and cite it (never grow UNTRACKED_BASELINE)"
+                )
+        assert not bad, "CHAT_INVISIBLE citation violations:\n  " + "\n  ".join(bad)
+
+    def test_untracked_baseline_stays_tight(self):
+        """A baseline entry whose row now cites a real issue/ref (or is now a
+        POINTER, or is gone) is stale — remove it; the baseline only shrinks."""
+        still_untracked = {
+            surface
+            for surface, row in CHAT_POINTERS.items()
+            if isinstance(row, CHAT_INVISIBLE) and row.untracked
+        }
+        stale = UNTRACKED_BASELINE - still_untracked
+        assert not stale, (
+            f"UNTRACKED_BASELINE entries no longer untracked: {sorted(stale)}. "
+            f"Remove them from the baseline (it only shrinks)."
+        )
+
+    def test_every_pointer_resolves_deterministically(self):
+        """The Arch-required resolver-path assertion: each POINTER's utterance
+        must reach its expected destination through the deterministic set —
+        never via LLM luck. The failure message records which surface resolved
+        (or failed to resolve) each pointer."""
+        failures = []
+        for surface, row in CHAT_POINTERS.items():
+            if not isinstance(row, POINTER):
+                continue
+            destination, resolver = self._static_resolve(row.utterance)
+            expected = (row.expects[0].lower(), row.expects[1])
+            if destination != expected:
+                failures.append(
+                    f"{surface}: {row.utterance!r} resolved to {destination} "
+                    f"via [{resolver}], expected {expected}"
+                )
+            elif resolver not in self.DETERMINISTIC_RESOLVERS:
+                failures.append(
+                    f"{surface}: {row.utterance!r} reached {destination} but via "
+                    f"[{resolver}], which is NOT in the deterministic set "
+                    f"{sorted(self.DETERMINISTIC_RESOLVERS)} — a POINTER that "
+                    f"only works via the LLM classifier fails at authoring time"
+                )
+        assert not failures, (
+            "POINTER resolution failures (#1433):\n  " + "\n  ".join(failures)
+        )
+
+    def test_chat_invisible_ceiling(self):
+        """Shrink-lock: the CHAT_INVISIBLE count is frozen in
+        scripts/ratchet_ceilings.json ('chat_invisible') and may only go DOWN —
+        both directions, per the #1424 ratchet discipline (a count below the
+        ceiling must lower the ceiling in the same commit)."""
+        import json
+
+        with open(self._CEILINGS_JSON, encoding="utf-8") as fh:
+            ceiling = json.load(fh)["chat_invisible"]
+        count = sum(1 for row in CHAT_POINTERS.values() if isinstance(row, CHAT_INVISIBLE))
+        assert count <= ceiling, (
+            f"chat_invisible: count {count} exceeds frozen ceiling {ceiling} (#1433). "
+            f"A new chat-invisible surface may not ship silently — give it a POINTER, "
+            f"or (for a deliberate web-only surface) cite the ruling AND raise the "
+            f"question with Arch; the ledger's CHAT_INVISIBLE set only shrinks."
+        )
+        assert count == ceiling, (
+            f"chat_invisible: count {count} is BELOW ceiling {ceiling} — a surface "
+            f"became reachable. Lower the ceiling to {count} in "
+            f"scripts/ratchet_ceilings.json in this same commit to lock it in."
+        )
+
+    def test_unwired_write_declines_stay_fresh(self):
+        """#1426 structural half: UNWIRED_WRITE_DECLINES keys ∩ reachable
+        actions == ∅. Shipping a capability (rail entry, mapper mapping, elif
+        branch, registry entry, or a POINTER that resolves to it) forces its
+        stale denial copy out of the build in the same commit.
+
+        Denominator (design §3, Arch refinement 3): `reachable` covers
+        POINTER-resolved + registry-wired paths and does NOT cover
+        capabilities reachable by paths outside both (believed empty today) —
+        stated here so "complete for the space it searched" stays visible."""
+        from services.intent_service.unwired_writes import UNWIRED_WRITE_DECLINES
+
+        stale = set(UNWIRED_WRITE_DECLINES) & self._reachable_actions()
+        assert not stale, (
+            f"UNWIRED_WRITE_DECLINES lists actions that are now REACHABLE: "
+            f"{sorted(stale)}. The capability shipped — remove its decline copy "
+            f"from services/intent_service/unwired_writes.py (and its "
+            f"capability: ledger row + the chat_invisible ceiling) in this same "
+            f"commit, or Piper denies a capability it has (#1426's false-denial "
+            f"class)."
+        )
+
+    def test_contextual_fallback_denials_stay_fresh(self):
+        """The _get_contextual_fallback keyword→copy table gets the same
+        treatment (string-match on its denial keys, per the ratified design):
+
+        (a) every "I can't ..." denial string in the function must map to a
+            CONTEXTUAL_FALLBACK_DENIALS row (a NEW denial without a row fails);
+        (b) every row's snippet must still appear in the function (capability
+            shipped → denial removed → remove the row + ledger surface);
+        (c) no row's capability-action tokens may be reachable."""
+        fragments = self._fallback_denial_fragments()
+        snippets = {
+            surface: row["snippet"] for surface, row in CONTEXTUAL_FALLBACK_DENIALS.items()
+        }
+
+        uncovered = [
+            frag
+            for frag in fragments
+            if not any(snip in frag for snip in snippets.values())
+        ]
+        assert not uncovered, (
+            f"NEW capability denial(s) in _get_contextual_fallback with no "
+            f"CONTEXTUAL_FALLBACK_DENIALS row: {uncovered}. Add a row (snippet + "
+            f"capability-action tokens) and a capability: ledger surface in this "
+            f"same commit — an unledgered denial is exactly how #1426's false "
+            f"denials went unnoticed."
+        )
+
+        denial_text = "\n".join(fragments)
+        vanished = [
+            f"{surface} (snippet {snip!r})"
+            for surface, snip in snippets.items()
+            if snip not in denial_text
+        ]
+        assert not vanished, (
+            f"CONTEXTUAL_FALLBACK_DENIALS rows whose denial no longer exists in "
+            f"_get_contextual_fallback: {vanished}. The capability shipped (or the "
+            f"copy moved) — remove the row and its capability: ledger surface, and "
+            f"lower the chat_invisible ceiling, in this same commit."
+        )
+
+        reachable = self._reachable_actions()
+        stale = [
+            f"{surface}: {sorted(set(row['actions']) & reachable)}"
+            for surface, row in CONTEXTUAL_FALLBACK_DENIALS.items()
+            if set(row["actions"]) & reachable
+        ]
+        assert not stale, (
+            f"_get_contextual_fallback still DENIES capabilities that are now "
+            f"reachable: {stale}. Remove/replace the stale denial copy in "
+            f"intent_service.py (point at the real capability instead) in this "
+            f"same commit (#1426)."
+        )
+
+    def test_derivations_are_alive(self):
+        """Canaries for the extractors (the #1283 idiom): if an idiom changes,
+        the derivation must fail LOUDLY here, never silently shrink coverage."""
+        pages = self._page_paths()
+        assert len(pages) >= 20, (
+            f"ui.py page-route derivation returned only {len(pages)} paths — "
+            f"the decorator idiom likely changed; fix _page_paths()."
+        )
+        integrations = self._connectable_integrations()
+        assert integrations >= {"github", "slack", "calendar", "notion"}, (
+            f"connectable-integration derivation returned {sorted(integrations)} — "
+            f"the /connect|/save route idiom likely changed; fix "
+            f"_connectable_integrations()."
+        )
+        assert len(self._fallback_denial_fragments()) >= 4, (
+            "_get_contextual_fallback denial derivation collapsed — the string "
+            "idiom likely changed; fix _fallback_denial_fragments()."
+        )
+        assert len(self._elif_tokens()) >= 5, (
+            "EXECUTION elif-token derivation collapsed — idiom changed; fix "
+            "_elif_tokens()."
+        )
+
+
 class TestSingleDeclarativeBase:
     """#1312 (Arch invariant, ruled 2026-06-25 + re-confirmed 2026-07-08): ONE
     declarative Base per physical database. A second declarative_base() creates a
