@@ -2,4 +2,4 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
-| _(empty)_ | | | |
+| 2026-07-29 | ? | note-pard-predicate-fix-design-2026-07-29.md | (no subject) |
