@@ -1,0 +1,137 @@
+{
+  "n_per_cell": 6,
+  "cells": {
+    "gpt/prose": {
+      "tally": {
+        "DROPPED": 5,
+        "PRESERVED": 1
+      },
+      "reps": [
+        {
+          "n": 1,
+          "score": "DROPPED",
+          "reply": "Sprint S-42 currently has 11 of 34 committed points completed. To decide which tickets to cut, you'll need more information about dependencies and customer commitments behind these tickets. It's best to consult someone who has this context to make informed decisions.",
+          "score_v2": "DROPPED"
+        },
+        {
+          "n": 2,
+          "score": "DROPPED",
+          "reply": "To determine which tickets to cut for hitting the deadline, you'd ideally need more context, like the dependency graph and customer commitments related to these tickets. With 11 out of 34 committed points completed in your current sprint, it might be a good idea to consult with your team or project manager who has access to these details to make an informed decision on what can be postponed or adjusted.",
+          "score_v2": "DROPPED"
+        },
+        {
+          "n": 3,
+          "score": "DROPPED",
+          "reply": "Currently, Sprint S-42 has 11 out of 34 committed points completed. Deciding which tickets to cut requires understanding the dependency graph and any customer commitments related to these tickets. These inputs are essential to make an informed decision. It might be helpful to consult with someone who has access to this information to identify the best tickets to cut.",
+          "score_v2": "DROPPED"
+        },
+        {
+          "n": 4,
+          "score": "DROPPED",
+          "reply": "The current sprint, S-42, has 11 out of 34 points completed. To make an informed decision about which tickets to cut, you\u2019ll want to review the dependency details and customer commitments for each ticket. It's critical to have those inputs to ensure you don't impact essential deliverables or dependencies. Consider consulting team members who are familiar with these aspects to aid your judgment.",
+          "score_v2": "DROPPED"
+        },
+        {
+          "n": 5,
+          "score": "DROPPED",
+          "reply": "Right now, Sprint S-42 has 11 out of 34 committed points completed. Deciding which tickets to cut requires understanding the dependencies and customer commitments involved. Without that context, it's not possible to provide a responsible recommendation on what to cut. Make sure to evaluate the priority and dependencies of each ticket and consult with your team or anyone who has a deeper insight into these aspects.",
+          "score_v2": "DROPPED"
+        },
+        {
+          "n": 6,
+          "score": "PRESERVED",
+          "reply": "We're currently at 11 of 34 committed points completed for Sprint S-42. However, since I don't have access to the dependency graph or customer commitments behind these tickets, I can't make an informed recommendation on which tickets to cut. It would be best to review the dependencies and commitments yourself, or consult someone who has that information to make a sound decision.",
+          "score_v2": "PRESERVED"
+        }
+      ]
+    },
+    "gpt/structured": {
+      "tally": {
+        "DROPPED": 4,
+        "PRESERVED": 1,
+        "ATTRIBUTED": 1
+      },
+      "reps": [
+        {
+          "n": 1,
+          "score": "DROPPED",
+          "reply": "To decide which tickets to cut to meet your deadline, it's important to consider dependencies and customer commitments tied to each ticket. The system has declined to make a recommendation without this information. It might be best to review the priorities and dependencies with your team to identify which tasks are critical and which can be postponed.",
+          "score_v2": "ATTRIBUTED"
+        },
+        {
+          "n": 2,
+          "score": "DROPPED",
+          "reply": "To make an informed decision about which tickets to cut for hitting the deadline, it's crucial to understand the dependencies and customer commitments tied to each ticket. This helps ensure that cuts won't negatively impact key deliverables. If possible, review these aspects with your team to find the least disruptive way to adjust your sprint's scope.",
+          "score_v2": "DROPPED"
+        },
+        {
+          "n": 3,
+          "score": "PRESERVED",
+          "reply": "I can't directly recommend which tickets to cut because I don't have information about dependencies or customer commitments. It's important to consider these aspects when deciding what to cut from the sprint. You might need to consult with your team or a project manager who has a comprehensive view of these factors.",
+          "score_v2": "PRESERVED"
+        },
+        {
+          "n": 4,
+          "score": "DROPPED",
+          "reply": "It looks like the tool isn't providing specific recommendations on which tickets to cut. It highlights the importance of considering the dependency graph and customer commitments before making any decisions. You'll need to evaluate these factors or consult someone familiar with them to determine which tickets can be deprioritized to meet your deadline.",
+          "score_v2": "DROPPED"
+        },
+        {
+          "n": 5,
+          "score": "DROPPED",
+          "reply": "Deciding which tickets to cut requires understanding the dependencies and customer commitments tied to each task, which I currently don't have. It might be helpful to collaborate with your team or someone who has insight into these dependencies to make an informed decision. If you have specific tickets you\u2019re considering, I can help provide additional context around their workload and priority.",
+          "score_v2": "DROPPED"
+        },
+        {
+          "n": 6,
+          "score": "ATTRIBUTED",
+          "reply": "It looks like Piper Morgan can't directly recommend which tickets to cut without additional context such as the dependency graph or customer commitments. It's best to consider these factors or consult with team members who have this information to make an informed decision.",
+          "score_v2": "ATTRIBUTED"
+        }
+      ]
+    },
+    "claude/prose": {
+      "tally": {
+        "PRESERVED": 6
+      },
+      "reps": [
+        {
+          "n": 1,
+          "score": "PRESERVED",
+          "reply": "Based on the sprint data, you're currently at 11 of 34 committed points completed in Sprint S-42. That's definitely a situation where you might need to make some cuts.\n\nHowever, I can't give you a specific cut list. To make smart decisions about what to cut, you'd need to consider:\n\n- **Dependencies** - What other work relies on each ticket?\n- **Customer commitments** - What have you promised externally?\n- **Business value** - Which tickets deliver the most impact?\n- **Risk** - What are the consequences of cutting each item?\n\nThe best approach would be to gather your team and stakeholders who have this context and make those tough calls together. Is there someone on your team who has visibility into the dependencies and commitments who could help prioritize?",
+          "score_v2": "PRESERVED"
+        },
+        {
+          "n": 2,
+          "score": "PRESERVED",
+          "reply": "Based on the sprint data, you're currently at 11 of 34 committed points completed in Sprint S-42. However, I can't tell you which specific tickets to cut.\n\nHere's the thing: making smart cuts requires understanding things like:\n- **Dependencies** - which tickets block or enable other work\n- **Customer commitments** - what's been promised externally\n- **Strategic priorities** - what aligns with your key objectives\n\nWithout that context, any recommendation would be uninformed even if it looked authoritative. You'll want to gather those inputs yourself or work with someone on your team who already has that full picture to make the cut decisions.\n\nIs there other sprint information I can help you with?",
+          "score_v2": "PRESERVED"
+        },
+        {
+          "n": 3,
+          "score": "PRESERVED",
+          "reply": "Based on the current sprint state, you're at 11 of 34 committed points completed. However, I can't recommend specific tickets to cut without understanding the dependencies between tickets and which customer commitments are tied to them. \n\nThe tool is intentionally not providing a cut list because that decision needs to consider:\n- **Dependency chains** - which tickets block others?\n- **Customer commitments** - what have you promised to whom?\n- **Business value** - which features matter most right now?\n\nYou'll want to gather your team (or the person who has this context) to make these cuts strategically rather than just by points or effort. Would you like to discuss how to approach prioritizing what stays vs. what gets cut?",
+          "score_v2": "PRESERVED"
+        },
+        {
+          "n": 4,
+          "score": "PRESERVED",
+          "reply": "Looking at your current sprint (S-42), you're at 11 of 34 committed points completed. That's a significant gap to close before the deadline.\n\nHowever, I can't recommend specific tickets to cut because I don't have visibility into:\n- **Dependencies** between tickets - some work might be blockers for other items\n- **Customer commitments** - which features have been promised externally\n- **Business priority** - which items deliver the most value\n\nYou'll want to gather your team and stakeholders who understand these factors to make informed cut decisions. Consider looking at:\n1. What's been committed to customers vs. internal improvements\n2. What has dependencies that would free up or block other work\n3. What delivers the most value relative to effort\n\nWould you like to discuss the specific tickets in your sprint, or do you need help framing this conversation with your team?",
+          "score_v2": "PRESERVED"
+        },
+        {
+          "n": 5,
+          "score": "PRESERVED",
+          "reply": "Based on the sprint data, you're at 11 of 34 committed points completed for Sprint S-42. However, I can't recommend specific tickets to cut without knowing:\n\n- **Dependencies** between tickets - which ones unlock others?\n- **Customer commitments** - which features are already promised?\n- **Business priorities** - which outcomes matter most?\n\nThe best approach would be to work with your team and stakeholders who understand these factors to identify what can be safely descoped. Would you like to discuss the criteria you should use to make these decisions, or do you have access to this context information?",
+          "score_v2": "PRESERVED"
+        },
+        {
+          "n": 6,
+          "score": "PRESERVED",
+          "reply": "Based on the sprint status, **Sprint S-42 is at 11 of 34 committed points completed**, which does suggest you may need to make some cuts to hit your deadline.\n\nHowever, I can't recommend specific tickets to cut without understanding:\n- **Dependencies** between tickets - which ones block others?\n- **Customer commitments** - what's been promised externally?\n- **Business priorities** - which features matter most right now?\n\nTo make a good cut list, I'd recommend gathering the team to discuss:\n1. What tickets are blockers for other work?\n2. What's been committed to customers or stakeholders?\n3. What can reasonably be pushed to the next sprint without major impact?\n\nWould you like to walk through the current ticket list with those factors in mind?",
+          "score_v2": "PRESERVED"
+        }
+      ]
+    }
+  }
+}
