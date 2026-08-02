@@ -53,15 +53,21 @@ a human. Everything below is written for that.
 | **Specific** | Derived from *their* data. Names a real repo, issue, event, page. | A templated sentence is indistinguishable from a chatbot; a specific one cannot be faked by a general LLM without our connectors. **This is the differentiator, expressed.** |
 | **Verifiable** | The user can confirm it at a glance without leaving the chat. | Trust in the opening minutes is set by *visible* competence. A claim they can't check reads as plausible-sounding, which is worse than silence. |
 | **Actionable** | Carries an offer or an opinion — not a report. | "You have 12 open issues" is a status line. *"Three of them have no acceptance criteria — want me to draft them?"* is a colleague. |
-| **Bounded** | States what it did **not** look at. | A colleague who read one repo says so. This is the Colleague Test's honesty floor, and it is the property most at risk under recomposition (§6). |
+| **Bounded** | **Names its scope INSIDE the primary claim — never as a trailing caveat.** | A colleague who read one repo says so. ⚠️ **Revised 2026-08-02 on Probe A evidence**: ordering is not ours — every provider led with the claim — so *"if a caveat must land first, it can't be a caveat; it has to be the payload's primary content"* (PA). A trailing boundary statement is the exact construction that **vanished** on GPT+prose. |
 
 ### Shape, illustratively — not literal copy
 
-> *"I looked at `mediajunkie/piper-morgan-product` — the only repo you've connected. There are 12 open
-> issues; **3 have no acceptance criteria** (#1441, #1447, #1455). Want me to draft them? I haven't
-> looked at anything outside that repo yet."*
+> *"I looked at `mediajunkie/piper-morgan-product` — **the only repo you've connected**. There are 12
+> open issues; **3 have no acceptance criteria** (#1441, #1447, #1455). Want me to draft them?"*
 
-Specific · verifiable in one click · an offer · states its own boundary.
+Specific · verifiable in one click · an offer · **scope named inside the first clause.**
+
+⚠️ **This example previously ended** *"…I haven't looked at anything outside that repo yet."* **Deleted
+2026-08-02** — that trailing sentence is precisely the construction Probe A found vanishing on
+GPT+prose, and it was **redundant with the scope already carried in the opening clause**, which
+survives because it cannot be separated from the assertion without destroying the sentence.
+**The shorter version is the more robust one.** *(I would have shipped the redundant one and counted
+the trailing caveat as satisfying the boundedness property.)*
 
 ## 4. What must NOT happen on first contact
 
@@ -142,7 +148,44 @@ drifts a survival-only rubric would have passed cleanly:
 of "claims Piper didn't make"). *Design change driven by measurement; the original three would have
 passed a reply the user would misread.*
 
-**The design branches on the prose arm's result, recorded now so it isn't retrofitted:**
+## ✅ §6 RESOLVED 2026-08-02 — it resolved AGAINST prose
+
+**Probe A complete (2×2: arm × provider). The branch fired.**
+
+| honest refusal | Claude | GPT-4o |
+|---|---|---|
+| **structured** caveat | ✅ preserved, first person | ⚠️ preserved, attributed to the tool, softened |
+| **prose** caveat | ✅ preserved, first person | ❌ **DROPPED — nothing tells the user anyone declined** |
+
+**Decision, per the pre-recorded branch: every consequential caveat rides in a named structured
+field.** Free on Claude; on GPT it is the difference between a refusal surviving and vanishing.
+**A requirement, not a fallback** — and a constraint on tools not yet written, which is why it is
+Phase 0.
+
+**Structure also buys prominence, not just preservation.** On Claude, structured caveats came back
+**bolded**; the same facts in prose came back unbolded, mid-paragraph, after the claim. **The named
+field is a salience signal the client reproduces as emphasis** — so the preservation/prominence split
+was right and the two move independently.
+
+**Fidelity: drifts in every cell — no output format prevents it.** But both inventions were
+**aggregation errors across types** (GPT summed 7 GitHub *items* + 4 calendar *events* into *"11
+tasks"*). ⇒ **emit typed, separately-labelled counts; never hand over anything that reads as a partial
+total.** We can't stop invention; we can stop *inviting* it. The residue is scored as a **risk, not a
+gate** — fidelity is detectable but not preventable, a different remedy class from the other three.
+
+**Provider attribution** (*"The Piper tool highlights that…"*) is **acceptable and arguably preferable**
+— the user is reading the client's paraphrase, so first-person-through-an-interpreter is a small
+fiction. It does not cost the colleague register. **But it isn't ours to control, so content must work
+either way.**
+
+⚠️ **Limit**: n=5 per cell, one run, one model per provider. Controlled 2×2, **not statistics.** The
+refusal drop is categorical rather than marginal, so the decision doesn't wait on a second run — but
+**GPT+prose is the cell carrying the verdict on one observation**, and that's the one to double.
+
+*Original branch text retained below for the record.*
+
+**The design branched on the prose arm's result, recorded before it existed so it couldn't be
+retrofitted:**
 
 - **If hedges survive** → boundaries can live in prose; the rubric scores our text.
 - **If hedges do not survive** → **the fix is not in the rubric or in better prose.** It is an
