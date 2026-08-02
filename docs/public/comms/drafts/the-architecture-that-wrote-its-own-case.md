@@ -4,7 +4,7 @@ alt: ''
 caption: ''
 ---
 
-# The Architecture That Wrote Its Own Case
+# You Can't "White Knuckle" Structural Problems
 
 *May 28, 2026*
 
