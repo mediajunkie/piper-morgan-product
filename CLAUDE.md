@@ -166,7 +166,7 @@ alembic upgrade head
 - Entry point: `main.py` (not web/app.py)
 - Domain models: `services/domain/models.py`
 - Enums: `services/shared_types.py`
-- Config: `config/PIPER.user.md`
+- Config: `config/PIPER.md` (tracked, generic — what the code loads; see `user_context_service.py`). `config/PIPER.user.md` is an OPTIONAL personal overlay (ADR-075 D4; template at `.example`, gitignored, legitimately absent).
 
 **Ports**: Server 8001, PostgreSQL 5433, Redis 6379, ChromaDB 8000
 
