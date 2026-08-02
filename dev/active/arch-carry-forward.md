@@ -2,7 +2,7 @@
 
 **Purpose**: durable handoff record for the next Architect session (duty-cycle-tick + PM-ratified single-log discipline 2026-06-12 + escalations-doc FOLD 2026-06-17). PM-attention items ride here.
 
-**Last rewritten**: 2026-07-31 21:35 PT (day-close). Prior 2026-07-30 22:05; full rewrite 2026-07-29 10:30 — **full rewrite, prior content discarded deliberately.** The previous version was dated 2026-07-12 and described a world that no longer exists: PM's *backup* account, worktree `arch-backup-0630`, cron `1b4d6ef2`, Model-B ephemeral worktrees, a laptop-reboot re-arm, and an "external cron driver" caution. **All of it is dead.** Treat nothing operational from any version before this date as current — the orientation note that flagged this file as stale on 7/25 was right, and it stayed stale four more days.
+**Last rewritten**: 2026-08-01 22:00 PT (day-close). Prior 2026-07-31 21:35; full rewrite 2026-07-29 10:30 — **full rewrite, prior content discarded deliberately.** The previous version was dated 2026-07-12 and described a world that no longer exists: PM's *backup* account, worktree `arch-backup-0630`, cron `1b4d6ef2`, Model-B ephemeral worktrees, a laptop-reboot re-arm, and an "external cron driver" caution. **All of it is dead.** Treat nothing operational from any version before this date as current — the orientation note that flagged this file as stale on 7/25 was right, and it stayed stale four more days.
 
 ---
 
@@ -41,7 +41,13 @@ A real **`.git/hooks/pre-commit` gate** is installed in the shared common dir (P
 
 **🟢 SPATIAL REVIEW — MY SLICE IS COMPLETE (7/30).** Layer map + ADR-038 **Amendment A** + ADR-affected map all filed; CXO's and PPM's slices folded. **Nothing owed by me.** It waits on **Lead's L4 monitoring-loop estimate** (gates option (iii) only, not the disposal) and **PM's decision**. ⛔ **Do NOT move #1174 to M4 — M4/M5 were swept 2026-07-04/05; Production is correct.** Read the map's PPM section before touching anything here.
 
-**Nothing owed Saturday.** No queued deliverable carries into 8/1. Take the mail loop, then the smallest unblocked item from standing-items (now current — refreshed 7/31 after 44 days).
+**🔴 SUNDAY'S FIRST ITEM (06:27, ahead of the mail loop): Docs' 16-file architecture-tree disposition.** Routed to me 8/1 ~21:00; deferred with a named trigger (sixteen per-file judgments at 22:00 produces fast answers, not right ones). Per file: *superseded vs. merely old* (supersession needs a pointer to what replaced it) · *does anything cite it* (`reachability-map.py` for code, grep for prose) · *does it carry a perishable referent* (sprint name, implementation citation, file count — per ADR-038 A3 and the ADR-070 finding). Docs was offered a single-blocker exception overnight.
+
+**Also live:** Lead executing **#1432 delete** (formal GO given 8/1, both conditions discharged) and the **#1395 corpus rev** (ratified; I asked Lead to *name N* in the Q22 stability criterion). Neither needs me until Lead reports.
+
+⚠️ **Local `main` in the product repo is SHARED MUTABLE STATE, not per-seat.** Confirmed on two seats 8/1: external `pull`s and a direct `commit: mail(janus->…)` move it; my own `main..HEAD` went **21 → 3 in four hours**. **Infer nothing from its size or trend** — only the identity `main..HEAD == main..origin/main` is meaningful (equal ⇒ pure lag, nothing stranded).
+
+**Prior state (still true):** No queued deliverable carries into 8/1. Take the mail loop, then the smallest unblocked item from standing-items (now current — refreshed 7/31 after 44 days).
 
 **Waiting on PM (do not chase, do not guess):**
 - **#1459 → Production** and **#1462 → (PPM's read: Production)** — two milestone words. PPM holds both deliberately; the #1462 empty field is a *documented held question*, not the unexamined-gap defect.
