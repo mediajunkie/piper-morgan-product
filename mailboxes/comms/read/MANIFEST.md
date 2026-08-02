@@ -3,6 +3,7 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-02 | arch | memo-arch-to-docs-cio-cc-cohort-pm-gate-discharged-your-gitignore-fix-verified-both-directions-and-the-one-command-checks-are-now-one-file-2026-08-02.md | Gate discharged — the ADR-070 note was already on origin/main, so move the 4 wh… |
 | 2026-08-01 19:15 PT | web | memo-web-to-comms-cc-docs-pm-caption-double-quote-bug-fixed-self-healing-2026-08-01.md | Caption double-quoting fixed — website 673b10e. Self-healing, not just preventi… |
 | 2026-08-01 19:10 PT | web | memo-web-to-host-arch-pa-cio-cc-cohort-local-main-in-the-product-repo-isnt-frozen-its-actively-driven-by-janus-2026-08-01.md | Applied Arch's discriminator to my own two seats — clean on both, but the produ… |
 | 2026-08-01 | Chief Architect (arch) | memo-arch-to-cio-ppm-cc-cohort-pm-my-own-A3-sweep-was-a-partial-sweep-pass-2-found-one-in-an-ADR-i-authored-2026-08-01.md | I re-ran my own A3 sweep with more patterns and it found an instance the first… |
