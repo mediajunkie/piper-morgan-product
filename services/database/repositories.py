@@ -148,9 +148,21 @@ class BaseRepository:
         result = await self.session.execute(select(self.model).limit(limit))
         return result.scalars().all()
 
+    async def _get_db_row(self, id: str) -> Optional[Any]:
+        """Fetch the mapped ORM row by primary key (identity-map aware).
+
+        #1464: mutations MUST operate on the ORM entity, never on
+        ``self.get_by_id(id)`` — subclasses (ProjectRepository,
+        RepositoryRepository, ...) override ``get_by_id`` to return DOMAIN
+        objects, and ``setattr``/``refresh``/``delete`` on a domain dataclass
+        raises UnmappedInstanceError. Same ``session.get`` idiom as
+        ArtifactRepository.delete/update_title.
+        """
+        return await self.session.get(self.model, id)
+
     async def update(self, id: str, **kwargs) -> Optional[Any]:
-        """Update an entity"""
-        entity = await self.get_by_id(id)
+        """Update an entity. Returns the ORM row (not a domain object)."""
+        entity = await self._get_db_row(id)
         if not entity:
             return None
 
@@ -161,12 +173,17 @@ class BaseRepository:
         return entity
 
     async def delete(self, id: str) -> bool:
-        """Delete an entity"""
-        entity = await self.get_by_id(id)
+        """Delete an entity.
+
+        #1464: also fixes the un-awaited ``session.delete`` — a coroutine in
+        SQLAlchemy 2.x, so this method previously returned True WITHOUT
+        deleting anything, for every subclass.
+        """
+        entity = await self._get_db_row(id)
         if not entity:
             return False
 
-        self.session.delete(entity)
+        await self.session.delete(entity)
         await self.session.flush()
         return True
 

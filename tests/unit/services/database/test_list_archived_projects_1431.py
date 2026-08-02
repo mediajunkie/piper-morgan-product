@@ -109,11 +109,12 @@ async def test_repo_archived_list_is_owner_scoped(two_tenants_with_archives):
 class _FakeProjectRepository:
     """Stateful in-memory stand-in exposing the repo surface the service uses.
 
-    Why not the real repo for the archive->list flow: BaseRepository.update is
-    broken against ProjectRepository (get_by_id returns a domain object, update
-    then session.refresh()es it -> UnmappedInstanceError). Pre-existing latent
-    bug, discovered while testing #1431 and tracked separately; the DB-backed
-    tests above cover the new query, this covers the service flow.
+    The blocker that originally forced this fake is FIXED: #1464 made
+    BaseRepository.update/delete fetch the ORM row (they used to refresh the
+    domain object ProjectRepository.get_by_id returns -> UnmappedInstanceError).
+    The service flow now runs against the REAL repository in
+    test_project_archive_restore_1464.py; this fake is kept only as a fast
+    no-DB sanity check of the same flow.
     """
 
     def __init__(self, projects):
