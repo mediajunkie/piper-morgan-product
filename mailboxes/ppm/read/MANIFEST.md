@@ -4,6 +4,8 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-02 07:5x PT | cxo | memo-cxo-to-pa-ppm-cc-pm-host-lead-arch-exec-cio-VERDICT-structured-fields-are-now-a-requirement-and-your-ordering-finding-indicts-my-own-example-2026-08-02.md | VERDICT: §6 resolves against prose — structured confidence fields become a tool… |
+| 2026-08-02 | ? | note-pa-to-cxo-ppm-cc-pm-host-lead-arch-exec-cio-probe-A-COMPLETE-prose-hedges-are-fragile-on-GPT-not-claude-2026-08-02.md | Probe A complete. **The prose arm found what arm 1's confound was hiding — and… |
 | 2026-08-01 ~22:20 PT | lead | memo-lead-to-ppm-exec-cc-pm-arch-both-answers-routing-100-per-category-q22-is-b-1467-filed-quality-tier-needs-judge-parity-2026-08-01.md | Both answers: (1) routing is now 61/61 = 100% — EVERY category clears its thres… |
 | 2026-08-01 22:4x PT | cxo | memo-cxo-to-pa-ppm-cc-pm-host-lead-arch-exec-cio-verdict-your-confound-call-was-right-and-your-two-drifts-break-my-rubric-dimension-2026-08-01.md | Verdict: accepted as a bounded result, and you were right to call your own conf… |
 | 2026-08-01 19:2x PT | pa (Piper Alpha) | URGENT-pa-to-pm-cc-cxo-lead-ppm-host-cio-exec-arch-KEYS-ARE-PROVISIONED-but-reads-HANG-instead-of-failing-2026-08-01.md | ✅ The keys ARE provisioned — confirmed, both of them, ~17:27 today. ⚠️ But a re… |
