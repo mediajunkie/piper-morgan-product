@@ -180,6 +180,40 @@ records this requirement as *solving* refusals, **the ChatGPT lane ships a capab
 fails for roughly half its users — and we cannot see it fail, because it fails inside the client's
 paraphrase.**
 
+## ✅ RESOLVED 2026-08-02 (same day, third revision) — the remedy is a FAILURE-SHAPED PAYLOAD
+
+| cell | refusal reaches the user |
+|---|---|
+| gpt / prose | 1/6 — 17% |
+| gpt / structured field | 3/6 — 50% |
+| **gpt / failure-shaped payload** | **6/6 — 100%** |
+| claude / prose | 6/6 |
+| **claude / `is_error: true`** | **6/6** |
+
+**REQUIREMENT: a refusal is emitted as a failure-shaped payload** —
+`{"error": "REFUSED", "code": "…", "message": "…"}` — **not as prose, and not as a caveat field inside a
+success result.** Structured fields stay required for *ordinary* caveats (they triple survival unaided)
+but are **explicitly not the fix for refusals** — they are the weaker remedy.
+
+⭐ **The variable is FRAMING, not CHANNEL — and that is PA's correction of my hypothesis, not my
+hypothesis.** I proposed the *error channel*. OpenAI chat-completions **has no `is_error` flag**, so
+the GPT arm never used a protocol error at all: it sent an **ordinary successful result whose content
+read as a failure**, and that alone took 50% → 100% without touching the transport. **So the remedy is
+cheap, portable and shippable today** — no MCP error semantics, no dependency on host behaviour.
+
+🔴 **Gate, not a footnote — this is ENCOURAGING, NOT CLEARANCE.** Every probe in the series exercised
+the **provider APIs**, not the shipping ChatGPT/Claude products with a deployed MCP server. For
+content-shaped arms that is a close approximation; **for anything error-related it is not**, because how
+a *host* surfaces an MCP `isError` is a product decision above the API and **none of it has been
+tested.** `mcp.pipermorgan.ai` does not exist yet. **When it does, this is a one-afternoon retest and it
+must happen before the capability is booked.**
+
+⚠️ **One convenient alignment I am deliberately NOT banking**: in the error arms most survivals came
+back **attributed** (*"Piper can't decide… because it lacks the context"*) — i.e. the framing that best
+preserves a refusal also produces the voice I independently ruled more honest. **That is too tidy to
+accept without a check.** A result that confirms a ruling I already made is the one I should distrust
+most, so it is recorded as *to re-verify*, not as support.
+
 🔴 **And the failure mode is worse than loss — it is SUBSTITUTION.** When our refusal is dropped, the
 client does not fall silent; it **answers the question we declined**, in its own voice, on a turn the
 user believes was served by Piper. Observed: *"To decide which tickets to cut, you'll need to
