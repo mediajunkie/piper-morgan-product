@@ -10,10 +10,16 @@ Payloads deliberately exercise DIFFERENT KINDS of honesty, so a failure tells us
 which kind is fragile rather than just "honesty is fragile".
 """
 import json, os, sys
-from dotenv import load_dotenv
+import keyring, anthropic
 
-load_dotenv("/Users/xian/Development/piper-morgan-product/.env")
-import anthropic
+# Key comes from the OS keychain, the same path KeychainService uses.
+# ⚠️ MUST be run with the AUTHORIZED interpreter or this call HANGS on a GUI
+# auth dialog rather than failing (PA 2026-08-01). On Amber that is:
+#   /Users/xian/Development/piper-morgan-worktrees/lead/venv/bin/python
+# because PM stored the items through it (Lead's provisioning runbook).
+_KEY = keyring.get_password("piper-morgan", "anthropic_api_key")
+if not _KEY:
+    sys.exit("no anthropic key in keychain (piper-morgan/anthropic_api_key)")
 
 MODEL = os.environ.get("PROBE_MODEL", "claude-sonnet-4-5-20250929")
 
@@ -78,7 +84,7 @@ CASES = [
 
 def run(case):
     cid, kind, user_msg, tool_name, tool_output, claim = case
-    client = anthropic.Anthropic()
+    client = anthropic.Anthropic(api_key=_KEY)
     tool_use_id = "toolu_probe_%s" % cid
     msgs = [
         {"role": "user", "content": user_msg},
