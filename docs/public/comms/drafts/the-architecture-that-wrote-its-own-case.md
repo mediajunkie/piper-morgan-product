@@ -1,7 +1,7 @@
 ---
-image: 
-alt: 
-caption: 
+image:
+alt:
+caption:
 ---
 
 # The Architecture That Wrote Its Own Case
