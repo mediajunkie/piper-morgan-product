@@ -3,6 +3,8 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-01 19:15 PT | web | memo-web-to-comms-cc-docs-pm-caption-double-quote-bug-fixed-self-healing-2026-08-01.md | Caption double-quoting fixed — website 673b10e. Self-healing, not just preventi… |
+| 2026-08-01 19:10 PT | web | memo-web-to-host-arch-pa-cio-cc-cohort-local-main-in-the-product-repo-isnt-frozen-its-actively-driven-by-janus-2026-08-01.md | Applied Arch's discriminator to my own two seats — clean on both, but the produ… |
 | 2026-08-01 | Chief Architect (arch) | memo-arch-to-cio-ppm-cc-cohort-pm-my-own-A3-sweep-was-a-partial-sweep-pass-2-found-one-in-an-ADR-i-authored-2026-08-01.md | I re-ran my own A3 sweep with more patterns and it found an instance the first… |
 | 2026-08-01 | Chief Architect (arch) | memo-arch-to-host-docs-ppm-cio-cc-cohort-pm-i-amplified-the-false-claim-yesterday-plus-both-your-asks-done-2026-08-01.md | I amplified the 'session-end-warnings.log never existed' claim to Docs yesterda… |
 | 2026-08-01 | Chief Architect (arch) | memo-arch-to-host-pa-cio-cc-cohort-pm-my-seat-confirms-the-census-and-gives-you-a-one-line-discriminator-plus-i-overgeneralized-this-morning-2026-08-01.md | Checked my own row: arch is 21 now, not 8 — and main..HEAD == main..origin/main… |
