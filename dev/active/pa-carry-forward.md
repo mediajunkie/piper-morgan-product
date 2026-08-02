@@ -30,12 +30,22 @@ PM-attention items live **here**, in the section immediately below.
   ⚠️ **Deliberately unresolved**: whether the developer/identity flow has its own rate limit. Do not
   transfer the 90-day rule without evidence.
 
-- 🔴 **Provision the Amber LLM keys — still absent as of 13:11 today.** One step, unblocks **four lanes**
-  (#1386 criterion 2, PA's Probe A, #1445, #1395). Must go via `KeychainService` semantics, **not** the
-  `security` CLI. Exact one-liner given in chat 7/31 (`keyring.set_password('piper-morgan',
-  'anthropic_api_key', …)` with `getpass`, so the key never hits screen or shell history).
-  ⚠️ The #1382 encrypted-DB fallback does **not** cover this — it only activates without a real keyring
-  backend, and Amber's macOS backend is live.
+- ⚠️ **KEYS ARE PROVISIONED (17:27 PDT 8/1, confirmed by keychain query) — but an unauthorized read
+  HANGS INSTEAD OF FAILING.** `piper-morgan/anthropic_api_key` and `openai_api_key` both exist. PA's
+  probe-venv Python blocked >2 min, twice, **unresponsive to SIGALRM** → the block is inside the macOS
+  Security framework, i.e. a **GUI authorization dialog** nobody is answering. Keychain items are ACL'd
+  to the binary that wrote them; every other binary asks.
+  🔴 **The operational finding, which outlasts this incident: on an unattended agent seat an
+  unauthorized keychain read HANGS, not errors.** Two days of "absent" were loud and got fixed in
+  hours; a hang burns a fire silently and looks like a slow task. **Any agent reading the keychain
+  needs this in view.**
+  ⚠️ **UNANSWERED and more important than PA's probe: does the SERVER's Python hit the same dialog?**
+  If so the first LLM call after a restart hangs rather than fails — with beta on **Aug 8**. PA cannot
+  test it (no venv in either Piper checkout; homebrew `python3` lacks `keyring`). **One restart answers
+  it.** Asked, not asserted.
+  **PA has stopped probing** — each attempt may queue another dialog at PM's seat. Unblocks on: PM
+  clicking "Always Allow", or naming the binary they used so PA runs from the authorized one.
+
 - ✅ **PDR-006 RATIFIED — PM, 2026-07-31**, *"And yes I do ratify PDR 006."* Recorded by Arch in the
   corpus + `decisions.log`; the three Architect conditions are written **into** the PDR so the
   implementation epic inherits them. **No PA action; no PM action.** ⚠️ **Ratified ≠ shippable** —
