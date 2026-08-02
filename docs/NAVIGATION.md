@@ -84,6 +84,14 @@ The MUX track establishes Piper's unified object model: **"Entities experience M
 - **[Grammar Compliance Audit](internal/architecture/current/grammar-compliance-audit.md)** - 16 features assessed for compliance
 - **[Feature Object Model Map](internal/architecture/current/feature-object-model-map.md)** - Feature-to-grammar mappings with canonical queries
 
+**Consciousness Operational Reference** (describes the live subsystem wired into `cli_consciousness`,
+`auth_consciousness`, `conversation_consciousness`, `context`, `error_consciousness` — reachable from
+`main`; had zero inbound links until this pass, per the docs/ tree audit, 2026-08-02):
+- **[Consciousness Rubric](internal/architecture/current/consciousness-rubric.md)** - Scoring rubric for feature consciousness (ADR-056)
+- **[Consciousness Review Checklist](internal/architecture/current/consciousness-review-checklist.md)** - Use before closing any CONSCIOUSNESS-TRANSFORM ticket
+- **[Consciousness Monitoring](internal/architecture/current/consciousness-monitoring.md)** - Ongoing quality assurance approach
+- **[Consciousness Anti-Patterns](internal/architecture/current/consciousness-anti-patterns.md)** - Guidelines and anti-patterns (ADR-056)
+
 **Patterns** (in `patterns/`):
 - **[Grammar Application Patterns](internal/architecture/current/patterns/grammar-application-patterns.md)** - Index of 5 MUX patterns
 - pattern-050: Context/Dataclass Pair
