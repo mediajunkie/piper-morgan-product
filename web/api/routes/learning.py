@@ -1301,6 +1301,148 @@ async def execute_pattern(
         )
 
 
+# Dashboard Data Controls (Export / Clear)
+
+# #1430 (F19): the Sprint A5 /controls/* handlers above are deprecated and
+# unregistered (decorators commented in the #300 supersession) — but the live
+# dashboard's Export and Clear buttons still pointed at them with a
+# client-supplied user_id (the phantom 'current_user'), so both buttons 404'd.
+# These production replacements derive the principal from the authenticated
+# session (current_user.user_id = users.id), same as every pattern/settings
+# route; a client-supplied user_id is not declared and therefore ignored.
+
+
+@router.get("/controls/export")
+async def export_learning_data(
+    format: str = Query("json", description="Export format: json"),
+    current_user: JWTClaims = Depends(get_current_user),
+) -> Dict[str, Any]:
+    """
+    Export the authenticated user's learning data (settings + patterns).
+
+    Returns:
+        JSON payload with the user's learning settings and learned patterns
+    """
+    from datetime import datetime, timezone
+
+    if format != "json":
+        return validation_error(
+            message=f"Unsupported format: {format}",
+            details={"format": format, "supported": ["json"]},
+        )
+
+    try:
+        async with AsyncSessionFactory.session_scope() as session:
+            settings_result = await session.execute(
+                select(LearningSettings).where(LearningSettings.user_id == current_user.user_id)
+            )
+            settings = settings_result.scalar_one_or_none()
+
+            patterns_result = await session.execute(
+                select(LearnedPattern)
+                .where(LearnedPattern.user_id == current_user.user_id)
+                .order_by(LearnedPattern.created_at.desc())
+            )
+            patterns = patterns_result.scalars().all()
+
+            return {
+                "user_id": str(current_user.user_id),
+                "export_timestamp": datetime.now(timezone.utc).isoformat(),
+                "settings": (
+                    {
+                        "learning_enabled": settings.learning_enabled,
+                        "suggestion_threshold": settings.suggestion_threshold,
+                        "automation_threshold": settings.automation_threshold,
+                        "auto_apply_enabled": settings.auto_apply_enabled,
+                        "notification_enabled": settings.notification_enabled,
+                    }
+                    if settings
+                    else {"learning_enabled": True, "configured": False}
+                ),
+                "patterns": [
+                    {
+                        "id": str(pattern.id),
+                        "pattern_type": pattern.pattern_type.value,
+                        "pattern_data": pattern.pattern_data,
+                        "confidence": pattern.confidence,
+                        "usage_count": pattern.usage_count,
+                        "success_count": pattern.success_count,
+                        "failure_count": pattern.failure_count,
+                        "enabled": pattern.enabled,
+                        "created_at": pattern.created_at.isoformat(),
+                    }
+                    for pattern in patterns
+                ],
+                "pattern_count": len(patterns),
+            }
+    except Exception as e:
+        return internal_error(
+            message=f"Failed to export data: {str(e)}",
+            error_id="EXPORT_ERROR",
+        )
+
+
+@router.delete("/controls/data/clear")
+async def clear_learning_data(
+    data_type: str = Query(
+        "all", description="Type of data to clear: all, patterns, settings"
+    ),
+    current_user: JWTClaims = Depends(get_current_user),
+) -> Dict[str, Any]:
+    """
+    Clear the authenticated user's learned data.
+
+    Args:
+        data_type: all (patterns + settings), patterns, or settings
+
+    Returns:
+        Confirmation with per-type counts of what was cleared
+    """
+    from datetime import datetime, timezone
+
+    from sqlalchemy import delete as sql_delete
+
+    valid_types = {"all", "patterns", "settings"}
+    if data_type not in valid_types:
+        return validation_error(
+            message=f"Invalid data_type: {data_type}",
+            details={"data_type": data_type, "valid_types": sorted(valid_types)},
+        )
+
+    try:
+        results: Dict[str, Any] = {}
+        async with AsyncSessionFactory.session_scope() as session:
+            if data_type in ("all", "patterns"):
+                deleted = await session.execute(
+                    sql_delete(LearnedPattern).where(
+                        LearnedPattern.user_id == current_user.user_id
+                    )
+                )
+                results["patterns_cleared"] = deleted.rowcount
+
+            if data_type in ("all", "settings"):
+                deleted = await session.execute(
+                    sql_delete(LearningSettings).where(
+                        LearningSettings.user_id == current_user.user_id
+                    )
+                )
+                results["settings_cleared"] = deleted.rowcount
+
+            await session.commit()
+
+        return {
+            "status": "success",
+            "user_id": str(current_user.user_id),
+            "data_type": data_type,
+            "results": results,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+    except Exception as e:
+        return internal_error(
+            message=f"Failed to clear data: {str(e)}", error_id="CLEAR_DATA_ERROR"
+        )
+
+
 # Learning Settings Endpoints
 
 

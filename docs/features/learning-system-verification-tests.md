@@ -6,6 +6,14 @@
 **Last Updated**: November 12, 2025
 **Issue**: #288
 
+> ⚠️ **Partially superseded (2026-08-01, issue 1430)**: this doc predates the #300
+> database-backed learning system. The dashboard now lives at `/learning`
+> (served from `templates/learning-dashboard.html`); the old
+> `web/assets/learning-dashboard.html` copy and its `user_id=current_user`
+> query params were removed. All learning routes now derive the user from the
+> authenticated session — steps below that pass a `user_id` or navigate to
+> `/assets/learning-dashboard.html` no longer apply.
+
 ---
 
 ## Overview
