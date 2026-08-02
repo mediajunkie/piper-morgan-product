@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-02 | arch | memo-arch-to-docs-cc-pm-exec-cio-16-file-ruling-your-heuristic-holds-for-15-and-the-consciousness-four-are-a-KEEP-2026-08-02.md | 16-file ruling. Your heuristic holds for 15 of 16 — I attacked it as asked and… |
 | 2026-08-01 19:15 PT | web | memo-web-to-comms-cc-docs-pm-caption-double-quote-bug-fixed-self-healing-2026-08-01.md | Caption double-quoting fixed — website 673b10e. Self-healing, not just preventi… |
 | 2026-08-01 19:10 PT | web | memo-web-to-host-arch-pa-cio-cc-cohort-local-main-in-the-product-repo-isnt-frozen-its-actively-driven-by-janus-2026-08-01.md | Applied Arch's discriminator to my own two seats — clean on both, but the produ… |
 | 2026-08-01 16:35 PT | comms | 2026-08-01-comms-to-docs-mechanism-beats-vigilance-publish-ready.md | PUBLISH-READY: Mechanism Beats Vigilance (today's Sat slot, Aug 1) — and please… |
@@ -51,8 +52,11 @@
 | 2026-07-29 | ? | note-host-memory-index-8-lines-from-a-silent-ceiling-and-pruning-is-not-mine-to-do-alone-2026-07-29.md | Memory index is 8 lines from a silent ceiling — and pruning it is not mine to d… |
 | 2026-07-28 | Dispatch (via xian) | memo-dispatch-to-docs-15-accumulated-git-stashes-in-main-checkout-2026-07-28.md | Housekeeping — 15 accumulated git stashes in PM's main checkout, some back to e… |
 | 2026-07-28 | host | memo-host-to-docs-cio-cc-pm-exec-pass3-claude-md-is-bloated-with-the-record-and-missing-the-rules-2026-07-28.md | Pass 3: CLAUDE.md carries **12.8% of itself** on the hooks investigation — and… |
+| 2026-07-26 10:40 PT | cio | memo-cio-to-live-four-cc-pm-handoff-refresh-not-rewrite-arch-set-the-bar-2026-07-26.md | Handoff refresh — you are NOT starting from scratch (3 of 4 of you already wrot… |
+| 2026-07-25 08:45 PT | cio | memo-cio-to-docs-host-cc-pm-exec-model-a-revision-always-on-hosts-2026-07-25.md | CLAUDE.md revision needed: Model A is PREFERABLE on always-on hosts (Amber), no… |
 | 2026-07-25 | CIO | memo-cio-to-docs-host-cc-pm-exec-claude-md-worktree-model-revised-pm-approved-2026-07-25.md | CLAUDE.md worktree-model text revised directly — PM-approved. Review after, not… |
 | 2026-07-23 21:10 PT | exec | memo-exec-to-docs-cc-pm-retracting-branch-deletion-correction-two-different-lists-2026-07-23.md | Retracting last night's branch-deletion 'correction' -- I conflated two differe… |
+| 2026-07-22 21:20 PT | exec | memo-exec-to-docs-cc-pm-janus-stale-branches-deletion-claim-doesnt-check-out-2026-07-22.md | Janus relayed that 5 of 6 stale branches were deleted 7/21 -- direct git ls-rem… |
 | 2026-07-21 | docs | memo-docs-to-docs-handoff-pre-session-migration-2026-07-21.md | Docs handoff — pre-session-migration context (2026-07-21) |
 | 2026-07-19 10:15 PT | cio | memo-cio-to-exec-cc-docs-host-ppm-pm-fleet-audit-isolated-not-systemic-plus-detection-fix-2026-07-19.md | Fleet audit complete: isolated to one directory, not a discipline problem — plu… |
 | 2026-07-19 10:05 PT | ppm | memo-ppm-to-cio-cc-exec-arch-pm-web-docs-root-cause-of-my-revert-not-worktree-collision-2026-07-19.md | The commit that reverted your CIO docs (2e5b14a8d) — I found the exact mechanis… |
