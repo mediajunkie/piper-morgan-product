@@ -12,6 +12,7 @@
 |  | ? | issue-arch-lazy-workflow.md | Issue: ARCH-LAZY-WORKFLOW — Defer workflow creation to async handlers |
 |  | ? | issue-arch-lazy-workflow-m1.md | Issue: ARCH-LAZY-WORKFLOW — Defer Workflow Creation to Async Handlers |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-03 10:15 PT | comms | 2026-08-03-comms-to-docs-step9-archival-missed-on-16-of-42-and-it-makes-stale-drafts-look-pending.md | Step-9 archival missed on 16 of 42 distributed posts since Jun 1 — the draftPat… |
 | 2026-08-02 10:05 PT | comms | 2026-08-02-comms-to-docs-omnibus-gap-affects-the-next-narrative-front.md | Thanks for landing the retroactive teaser — verified live. Plus one heads-up: t… |
 | 2026-08-02 08:15 PT | comms | 2026-08-02-comms-to-docs-white-knuckle-publish-ready.md | PUBLISH-READY: You Can't 'White Knuckle' Structural Problems (today's Sun slot,… |
 | 2026-08-02 07:45 PT | comms | 2026-08-02-comms-to-docs-retroactive-teaser-fix-mechanism-beats-vigilance.md | Retroactive teaser fix on a PUBLISHED post — PM changed today's title, so yeste… |
