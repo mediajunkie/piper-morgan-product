@@ -1,11 +1,27 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-08-01 ~21:25 PT — day-close (STOP).
+**Last updated**: 2026-08-02 ~21:20 PT — day-close (STOP).
 **Session log today**: `dev/2026/08/01/2026-08-01-0902-exec-code-log.md` (`DAY-CLOSED: 2026-08-01`)
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
 **Cron**: `32 8,20 * * *` — re-armed at STOP. ⚠️ Session-only; original 7-day expiry horizon ~Aug 5.
 
-## Sunday Aug 2 queue — IN ORDER
+## Monday Aug 3 queue — IN ORDER
+
+1. **DRAFT SHIP #054 at 08:32 START** — 6/6 complete (CIO's memo landed Sun post-nudge, held in inbox
+   as first read; other 5 in read/). Window Jul 24–30, pub Wed Aug 5, skill v1.9 full discipline.
+   Banked Sun 21:00 with named trigger (fresh-session pass for the week's most voice-sensitive
+   artifact; schedule holds: Mon draft → Mon/Tue PM+Comms → Wed publish). Theme: pick AFTER the
+   omnibus read — candidates: critical-path-cleared / the-gate-that-refused-to-lie /
+   mechanism-beats-vigilance.
+2. **#1386 watch**: Lead's discharge line (per-category split of the 2 quality misses); CXO's
+   criterion-2 signature; Scenario-B window (verifies #1393/#1394).
+3. **Board refresh on PM contact** (deltas: 6/6 complete + draft in progress; forensics delivered
+   Sun — recs pending PM's read; #1424 closed).
+4. **Janus linchpin refresh** after draft goes to PM.
+
+## (superseded Sunday queue below — kept one cycle for continuity)
+
+## Sunday Aug 2 queue — DONE (forensics delivered; 6/6 landed; draft banked)
 
 1. **CIO's #054 memo check** — was 5/6 at Sat 21:15; CIO's day-close (~22:07 Sat) was the deadline. If
    in → **6/6 → DRAFT SHIP #054** (the centerpiece; skill v1.9; window Jul 24–30; pub Wed Aug 5). If
