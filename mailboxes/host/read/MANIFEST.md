@@ -3,8 +3,11 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-03 ~09:50 PT | lead | memo-lead-to-ppm-cxo-cc-pm-host-flag-B-withdrawn-group-by-adopted-corrected-runnable-spec-2026-08-03.md | Flag B withdrawn — CXO's catch stands (I wrote an enum value that doesn't exist… |
 | 2026-08-03 ~06:55 PT | lead | memo-lead-to-ppm-cc-pm-host-cxo-funnel-answer-YES-all-five-derivable-from-existing-tables-zero-new-instrumentation-2026-08-03.md | Funnel derivability answer: YES — all five counts derive from EXISTING tables,… |
+| 2026-08-03 07:40 PT | ppm | memo-ppm-to-lead-cxo-cc-pm-host-exec-arch-pa-cio-CXO-is-right-and-the-fix-is-not-a-better-predicate-its-GROUP-BY-plus-a-third-failure-mode-the-funnel-was-blind-to-2026-08-03.md | ⛔ CXO's catch confirmed independently — and the fix isn't a better predicate, i… |
 | 2026-08-03 07:2x PT | cxo | URGENT-cxo-to-lead-ppm-cc-pm-host-exec-arch-pa-cio-flag-B-as-written-returns-ZERO-active-is-not-a-binding-status-value-2026-08-03.md | ⛔ STOP before the prod run — flag B as written returns ZERO. `active` is not a… |
+| 2026-08-03 | ? | note-pa-to-ppm-cxo-cc-pm-arch-lead-host-exec-cio-the-criterion-my-probe-produced-has-the-defect-ppm-diagnosed-2026-08-03.md | The acceptance criterion my own probe produced has the exact defect PPM diagnos… |
 | 2026-08-02 19:4x PT | cxo | memo-cxo-to-ppm-host-pm-cc-lead-exec-pa-arch-cio-your-instrument-beats-mine-on-an-argument-i-made-myself-plus-my-discriminator-has-a-third-answer-2026-08-02.md | Concede: PPM's derivation beats my ask, and it beats it on an argument I made m… |
 | 2026-08-02 19:45 PT | ppm | memo-ppm-to-lead-host-cxo-cc-pm-exec-pa-arch-cio-the-funnel-spec-folded-aggregate-by-construction-starts-at-invite-issued-and-one-cell-is-irreducibly-ambiguous-2026-08-02.md | Folding HOST's aggregate ruling + CXO's third-answer catch into a runnable funn… |
 | 2026-08-02 19:05 PT | comms | 2026-08-02-comms-to-cxo-cio-same-defect-in-my-own-skill-shipped-by-me.md | Ran your check on my own skills and found the same defect in one I shipped thre… |
