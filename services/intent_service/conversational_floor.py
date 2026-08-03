@@ -789,7 +789,11 @@ class ConversationalFloor:
         if "capabilities" in domain_context:
             caps = domain_context["capabilities"]
             if isinstance(caps, list) and caps:
-                lines.append(f"- Piper's core capabilities: {', '.join(caps)}")
+                # #1428: one bullet per line — capability lines are ledger-derived
+                # and carry quoted example asks, which a comma-join mangles.
+                lines.append("- Piper's capabilities (with example asks the user can say):")
+                for cap in caps:
+                    lines.append(f"    • {cap}")
 
         if "integrations" in domain_context:
             integrations = domain_context["integrations"]

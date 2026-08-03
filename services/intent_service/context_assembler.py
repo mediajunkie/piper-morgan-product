@@ -208,7 +208,7 @@ class ContextAssembler:
         "conversation_history_summary": {"source": "ConversationContext"},
         "persistent_memory": {"source": "UserHistoryService"},
         # Identity / capabilities
-        "capabilities": {"source": "WorkflowDispatcher+PluginRegistry"},
+        "capabilities": {"source": "ChatPointersLedger"},  # #1428
         "integrations": {"source": "PluginRegistry"},
         # Trust
         "trust_profile": {"source": "UserTrustProfileRepository"},
@@ -354,9 +354,16 @@ class ContextAssembler:
         """
         Gather Piper's capabilities and plugin status for identity-adjacent questions.
 
-        #923: Capabilities are derived from the workflow dispatcher registry
-        and plugin registry — not hardcoded. This ensures the LLM's awareness
-        of what Piper can do stays in sync with runtime truth.
+        #1428: Capabilities derive from the CHAT_POINTERS product-surface
+        ledger (services/intent_service/chat_pointers.py) — the same source
+        the #1433 reachability ratchet gates. Every POINTER row is a VERIFIED
+        chat-reachable capability with a user-register example utterance; a
+        new capability joins this answer by getting a ledger row. This
+        replaces the #923 rail-descriptions-only build, which systematically
+        understated capabilities (canonical/elif/floor/web-flow capabilities
+        were invisible) and leaked internal markers like "(#1124)" into the
+        floor prompt (census 2026-07-16, F8). CHAT_INVISIBLE surfaces are
+        never claimed.
 
         #950 iteration (Apr 16): Adds user-anchoring data so Identity responses
         can reference specifics about *this user* rather than sounding generic.
@@ -367,22 +374,11 @@ class ContextAssembler:
         """
         context: Dict[str, Any] = {}
 
-        # #923: Build capabilities from dispatcher registry + conversational strengths
-        capabilities = [
-            "conversational PM guidance",
-            "strategic thinking and prioritization frameworks",
-        ]
-        try:
-            from services.intent_service.workflow_dispatcher import get_registered_workflows
+        # #1428: ledger-derived, user-register capability lines (pure function,
+        # no registry/plugin dependency — deterministic and marker-free).
+        from services.intent_service.chat_pointers import capability_answer_lines
 
-            registered = get_registered_workflows()
-            for wf_type, entry in registered.items():
-                desc = entry.description or wf_type.replace("_", " ")
-                capabilities.append(desc)
-        except Exception as e:
-            logger.warning("context_assembler_registry_error", error=str(e))
-
-        context["capabilities"] = capabilities
+        context["capabilities"] = capability_answer_lines()
 
         # Integrations from plugin registry (dynamic, reflects runtime state)
         try:
