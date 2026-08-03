@@ -603,15 +603,40 @@ class SlackResponseHandler:
                 return None
 
             slack_user_id = slack_context.get("user_id")
+            slack_team_id = slack_context.get("workspace_id")
             slack_session_id = (
                 slack_context.get("thread_ts") or slack_context.get("channel_id") or "slack-default"
             )
+
+            # #1466 (Arch condition 3): NEVER pass a raw Slack id where a Piper
+            # UUID is expected — that was the live crash here (UUID(user_id)
+            # raising in the intent_service todo rail). Resolve the Slack
+            # caller to a Piper principal via the slack_identities mapping;
+            # an unlinked caller gets an HONEST DECLINE for owner-scoped
+            # intents (with the CXO deep link), never a default/system owner.
+            piper_user_id = await self._resolve_piper_principal(slack_user_id, slack_team_id)
+
+            if piper_user_id is None and self._intent_requires_principal(intent):
+                from services.auth.slack_link_service import build_link_deep_url
+                from services.integrations.slack.link_copy import unlinked_decline
+
+                self.logger.info(
+                    f"Unlinked Slack caller {slack_user_id} declined for "
+                    f"owner-scoped intent {intent.action} (honest decline, #1466)"
+                )
+                return {
+                    "type": "query_response",
+                    "content": unlinked_decline(
+                        build_link_deep_url(slack_user_id, slack_team_id)
+                    ),
+                    "intent": intent,
+                }
 
             try:
                 result = await self.intent_service.process_intent(
                     message=message,
                     session_id=slack_session_id,
-                    user_id=slack_user_id,
+                    user_id=piper_user_id,
                 )
             except Exception as exc:
                 self.logger.error(
@@ -640,6 +665,56 @@ class SlackResponseHandler:
         except Exception as e:
             self.logger.error(f"Error processing intent through orchestration: {e}")
             return None
+
+    async def _resolve_piper_principal(
+        self, slack_user_id: Optional[str], slack_team_id: Optional[str]
+    ) -> Optional[str]:
+        """#1466: resolve the Slack caller to a Piper user-id STRING, or None.
+
+        A user_id that already is a Piper UUID passes through (web-originating
+        contexts). A raw Slack id resolves via the slack_identities mapping,
+        keyed by the full (slack_user_id, slack_team_id) pair. Every miss —
+        no team, no mapping, lookup error — fails CLOSED to None; never a
+        default owner (Arch condition 3 / ADR-070 identity boundary).
+        """
+        if not slack_user_id:
+            return None
+        try:
+            return str(UUID(slack_user_id))
+        except (ValueError, AttributeError, TypeError):
+            pass
+        if not slack_team_id:
+            return None
+        try:
+            from services.auth.slack_link_service import resolve_slack_principal
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope_fresh() as session:
+                owner_id = await resolve_slack_principal(session, slack_user_id, slack_team_id)
+            return str(owner_id) if owner_id else None
+        except Exception as e:
+            self.logger.warning(
+                f"Slack principal resolution failed (fail-closed to None): {e}"
+            )
+            return None
+
+    @staticmethod
+    def _intent_requires_principal(intent: Intent) -> bool:
+        """#1466: the owner-scoped action family — the intents whose dispatch
+        reads/writes a specific user's state (the intent_service todo rail).
+        These get the honest unlinked decline; everything else dispatches with
+        no principal rather than being blanket-refused."""
+        from services.intent_service.action_mapper import ActionMapper
+
+        owner_scoped_actions = {
+            "create_todo",
+            "create_reminder",
+            "list_todos",
+            "next_todo",
+            "complete_todo",
+            "delete_todo",
+        }
+        return ActionMapper.map_action(intent.action) in owner_scoped_actions
 
     async def _send_slack_response(
         self, workflow_result: Dict[str, Any], slack_context: Dict[str, Any]

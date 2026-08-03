@@ -184,6 +184,25 @@ def _principal_from_intent(intent) -> Optional[str]:
     return context.get("user_id")
 
 
+def _coerce_todo_principal(user_id: Optional[str]) -> Optional[UUID]:
+    """#1466: safe UUID coercion for the todo/reminder rail.
+
+    A non-UUID user_id (historically a raw Slack ``U…`` id reaching this rail
+    through the Slack response handler) previously RAISED at ``UUID(user_id)``
+    — a stack trace where an honest decline belonged. The Slack path now
+    resolves principals before dispatch (response_handler, #1466), so this is
+    defense in depth: an unmappable id degrades to None, which every call
+    site already answers with the honest AuthenticationRequired copy.
+    Never a default owner (fail-closed, ADR-070 identity boundary).
+    """
+    if not user_id:
+        return None
+    try:
+        return UUID(user_id)
+    except (ValueError, AttributeError, TypeError):
+        return None
+
+
 class IntentService:
     """
     Service for processing user intents.
@@ -6526,7 +6545,7 @@ class IntentService:
         # Issue #285: Todo operations routing
         # Issue #744: Convert user_id string to UUID for multi-tenancy support
         elif mapped_action == "create_todo":
-            todo_user_id = UUID(user_id) if user_id else None
+            todo_user_id = _coerce_todo_principal(user_id)  # #1466: never raises on Slack ids
             if not todo_user_id:
                 return IntentProcessingResult(
                     success=False,
@@ -6553,7 +6572,7 @@ class IntentService:
 
         # Issue #903: Reminder creation
         elif mapped_action == "create_reminder":
-            todo_user_id = UUID(user_id) if user_id else None
+            todo_user_id = _coerce_todo_principal(user_id)  # #1466: never raises on Slack ids
             if not todo_user_id:
                 return IntentProcessingResult(
                     success=False,
@@ -6580,7 +6599,7 @@ class IntentService:
             )
 
         elif mapped_action == "list_todos":
-            todo_user_id = UUID(user_id) if user_id else None
+            todo_user_id = _coerce_todo_principal(user_id)  # #1466: never raises on Slack ids
             if not todo_user_id:
                 return IntentProcessingResult(
                     success=False,
@@ -6605,7 +6624,7 @@ class IntentService:
             )
 
         elif mapped_action == "next_todo":
-            todo_user_id = UUID(user_id) if user_id else None
+            todo_user_id = _coerce_todo_principal(user_id)  # #1466: never raises on Slack ids
             if not todo_user_id:
                 return IntentProcessingResult(
                     success=False,
@@ -6629,7 +6648,7 @@ class IntentService:
             )
 
         elif mapped_action == "complete_todo":
-            todo_user_id = UUID(user_id) if user_id else None
+            todo_user_id = _coerce_todo_principal(user_id)  # #1466: never raises on Slack ids
             if not todo_user_id:
                 return IntentProcessingResult(
                     success=False,
@@ -6653,7 +6672,7 @@ class IntentService:
             )
 
         elif mapped_action == "delete_todo":
-            todo_user_id = UUID(user_id) if user_id else None
+            todo_user_id = _coerce_todo_principal(user_id)  # #1466: never raises on Slack ids
             if not todo_user_id:
                 return IntentProcessingResult(
                     success=False,

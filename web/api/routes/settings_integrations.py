@@ -777,6 +777,126 @@ async def get_slack_app_credentials_status(
 
 
 # ============================================================================
+# Slack account linking (#1466 — mint-in-Piper half of the handshake)
+# ============================================================================
+
+
+class SlackLinkCodeResponse(BaseModel):
+    code: str
+    expires_at: str  # ISO-8601
+    ttl_minutes: int
+
+
+class SlackLinkEntry(BaseModel):
+    slack_user_id: str
+    slack_team_id: str
+    linked_at: Optional[str] = None
+    # CXO §3b settings-side status line, pre-formatted server-side so the
+    # copy lives in link_copy constants, never in the template.
+    display: str
+
+
+class SlackLinkStatusResponse(BaseModel):
+    links: List[SlackLinkEntry]
+
+
+class SlackUnlinkRequest(BaseModel):
+    slack_user_id: str
+    slack_team_id: str
+
+
+class SlackUnlinkResponse(BaseModel):
+    unlinked: bool
+    message: str
+
+
+@router.post("/slack/link/code", response_model=SlackLinkCodeResponse)
+async def mint_slack_link_code(current_user: JWTClaims = Depends(get_current_user)):
+    """Mint a short-lived single-use 6-digit link code bound to the
+    AUTHENTICATED user (#1466: the authenticated side initiates; Slack never
+    holds a Piper credential). Redeemed in Slack via ``/link <code>``."""
+    from services.auth.slack_link_service import CODE_TTL_MINUTES, mint_link_code
+    from services.database.session_factory import AsyncSessionFactory
+
+    try:
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            code, expires_at = await mint_link_code(session, current_user.user_id)
+            await session.commit()  # session_scope_fresh does not auto-commit
+        return SlackLinkCodeResponse(
+            code=code, expires_at=expires_at.isoformat(), ttl_minutes=CODE_TTL_MINUTES
+        )
+    except Exception as e:
+        logger.error("slack_link_code_mint_error", error=str(e), exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to mint a link code",
+        )
+
+
+@router.get("/slack/link/status", response_model=SlackLinkStatusResponse)
+async def get_slack_link_status(current_user: JWTClaims = Depends(get_current_user)):
+    """The acting user's linked Slack identities (owner-scoped, ADR-079)."""
+    from services.auth.slack_link_service import list_links_for_owner
+    from services.database.session_factory import AsyncSessionFactory
+    from services.integrations.slack import link_copy
+
+    try:
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            links = await list_links_for_owner(session, current_user.user_id)
+        return SlackLinkStatusResponse(
+            links=[
+                SlackLinkEntry(
+                    slack_user_id=link.slack_user_id,
+                    slack_team_id=link.slack_team_id,
+                    linked_at=link.linked_at.isoformat() if link.linked_at else None,
+                    display=link_copy.LINKED_CONFIRMATION_SETTINGS.format(
+                        slack_handle=f"@{link.slack_user_id}",
+                        workspace=link.slack_team_id,
+                    ),
+                )
+                for link in links
+            ]
+        )
+    except Exception as e:
+        logger.error("slack_link_status_error", error=str(e), exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to load Slack link status",
+        )
+
+
+@router.post("/slack/link/unlink", response_model=SlackUnlinkResponse)
+async def unlink_slack_account(
+    req: SlackUnlinkRequest, current_user: JWTClaims = Depends(get_current_user)
+):
+    """Unlink one of the acting user's Slack identities (owner-scoped — the
+    Arch-condition-2 unlink-first path; a user can never unlink someone
+    else's identity)."""
+    from services.auth.slack_link_service import unlink_slack_identity
+    from services.database.session_factory import AsyncSessionFactory
+    from services.integrations.slack import link_copy
+
+    try:
+        async with AsyncSessionFactory.session_scope_fresh() as session:
+            unlinked = await unlink_slack_identity(
+                session, current_user.user_id, req.slack_user_id, req.slack_team_id
+            )
+            await session.commit()
+        message = (
+            link_copy.UNLINK_CONFIRMATION.format(workspace=req.slack_team_id)
+            if unlinked
+            else "No matching linked Slack account found for your user."
+        )
+        return SlackUnlinkResponse(unlinked=unlinked, message=message)
+    except Exception as e:
+        logger.error("slack_unlink_error", error=str(e), exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to unlink Slack account",
+        )
+
+
+# ============================================================================
 # Google Calendar App Credentials Management (Issue #577)
 # ============================================================================
 

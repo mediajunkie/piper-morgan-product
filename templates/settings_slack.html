@@ -615,6 +615,34 @@
         </div>
       </div>
 
+      <!-- Link your Slack account (#1466) — mint-in-Piper half of the handshake.
+           The anchor id (#link-slack) is the deep-link target the Slack-side
+           decline carries (CXO §2): arriving with slack_user_id/slack_team_id
+           query params renders "Link this Slack account" with the code
+           pre-minted. -->
+      <div class="app-config-card" id="link-slack">
+        <h3 id="link-slack-title">🔗 Link your Slack account</h3>
+        <p class="description" id="link-slack-description">
+          Link your Slack identity to your Piper account so <code>/standup</code> and
+          your todos work in Slack as you. Mint a code here, then send it to the
+          Piper bot in Slack with <code>/link</code> — the code works once and
+          expires after about ten minutes.
+        </p>
+
+        <div id="link-slack-code-panel" style="display: none;">
+          <p>In Slack, send: <code>/link <span id="link-slack-code" style="font-weight: bold; letter-spacing: 0.15em;"></span></code></p>
+          <p class="help-text" id="link-slack-expiry"></p>
+        </div>
+
+        <div class="config-button-group">
+          <button class="btn btn-primary" id="mint-link-code-btn" onclick="mintSlackLinkCode()">
+            Mint link code
+          </button>
+        </div>
+
+        <div id="linked-accounts-list"></div>
+      </div>
+
       <!-- Channel Settings Card (Issue #570) - Only shown when connected -->
       <div class="channel-settings-card" id="channel-settings-card" style="display: none;">
         <h3>📢 Channel Settings</h3>
@@ -679,7 +707,101 @@
         loadAppCredentialsStatus();  // Issue #576: Check credentials first
         loadSlackStatus();
         loadInboundStatus();  // #1201: inbound (Socket Mode) status
+        initSlackLink();  // #1466: account linking (incl. deep-link pre-mint mode)
       });
+
+      // #1466: Slack account linking — mint / status / unlink.
+      // Deep-link mode (CXO §2): the Slack-side decline links here carrying
+      // slack_user_id/slack_team_id as opaque query params; when present, the
+      // section retitles to "Link this Slack account" and pre-mints the code
+      // so the user only confirms and returns to Slack.
+      async function initSlackLink() {
+        const params = new URLSearchParams(window.location.search);
+        const slackUser = params.get('slack_user_id');
+        const slackTeam = params.get('slack_team_id');
+        if (slackUser && slackTeam) {
+          const title = document.getElementById('link-slack-title');
+          if (title) title.textContent = '🔗 Link this Slack account';
+          const desc = document.getElementById('link-slack-description');
+          if (desc) desc.textContent =
+            'Confirm the link below, then send the code to the Piper bot in Slack ' +
+            'with /link — it works once and expires after about ten minutes.';
+          await mintSlackLinkCode();  // pre-minted (CXO §2)
+          const card = document.getElementById('link-slack');
+          if (card) card.scrollIntoView();
+        }
+        loadSlackLinkStatus();
+      }
+
+      async function mintSlackLinkCode() {
+        try {
+          const resp = await fetch('/api/v1/settings/integrations/slack/link/code', {
+            method: 'POST',
+            credentials: 'include'
+          });
+          if (!resp.ok) throw new Error('mint failed: ' + resp.status);
+          const data = await resp.json();
+          document.getElementById('link-slack-code').textContent = data.code;
+          document.getElementById('link-slack-expiry').textContent =
+            'Expires in about ' + data.ttl_minutes + ' minutes. Minting again replaces this code.';
+          document.getElementById('link-slack-code-panel').style.display = 'block';
+          const btn = document.getElementById('mint-link-code-btn');
+          if (btn) btn.textContent = 'Mint a fresh code';
+        } catch (e) {
+          if (typeof showToast === 'function') {
+            showToast("Couldn't mint a link code just now — try again shortly.", 'error');
+          }
+        }
+      }
+
+      async function loadSlackLinkStatus() {
+        try {
+          const resp = await fetch('/api/v1/settings/integrations/slack/link/status', {
+            credentials: 'include'
+          });
+          if (!resp.ok) return;
+          const data = await resp.json();
+          const list = document.getElementById('linked-accounts-list');
+          if (!list) return;
+          list.innerHTML = '';
+          (data.links || []).forEach(function(link) {
+            const row = document.createElement('div');
+            row.className = 'linked-account-row';
+            const label = document.createElement('span');
+            label.textContent = link.display;  // server-formatted (link_copy)
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-secondary';
+            btn.textContent = 'Unlink';
+            btn.onclick = function() { unlinkSlack(link.slack_user_id, link.slack_team_id); };
+            row.appendChild(label);
+            row.appendChild(btn);
+            list.appendChild(row);
+          });
+        } catch (e) {
+          // Status list is non-critical; leave the section usable.
+        }
+      }
+
+      async function unlinkSlack(slackUserId, slackTeamId) {
+        try {
+          const resp = await fetch('/api/v1/settings/integrations/slack/link/unlink', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ slack_user_id: slackUserId, slack_team_id: slackTeamId })
+          });
+          if (!resp.ok) throw new Error('unlink failed: ' + resp.status);
+          const data = await resp.json();
+          if (typeof showToast === 'function') {
+            showToast(data.message, data.unlinked ? 'success' : 'error');
+          }
+          loadSlackLinkStatus();
+        } catch (e) {
+          if (typeof showToast === 'function') {
+            showToast("Couldn't unlink just now — try again shortly.", 'error');
+          }
+        }
+      }
 
       // #1201: inbound (Slack replies / Socket Mode) status + app-token save
       function renderInboundStatus(state) {

@@ -23,6 +23,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, HTTPException, Request, status
 from fastapi.responses import JSONResponse
+from sqlalchemy import select
 
 from services.api.errors import SlackAuthFailedError
 from services.infrastructure.task_manager import task_manager
@@ -1140,6 +1141,9 @@ class SlackWebhookRouter:
             text = command_data.get("text", "").strip().lower()
             channel_id = command_data.get("channel_id")
             user_id = command_data.get("user_id")
+            # #1466: slash payloads carry team_id; principal resolution is keyed
+            # by the (slack_user_id, slack_team_id) pair.
+            team_id = command_data.get("team_id")
 
             logger.info(f"Slash command {command} from user {user_id} in channel {channel_id}")
 
@@ -1147,7 +1151,10 @@ class SlackWebhookRouter:
             if command == "/piper":
                 return await self._handle_piper_command(text, user_id, channel_id)
             elif command == "/standup":
-                return await self._handle_standup_command(user_id, channel_id)
+                return await self._handle_standup_command(user_id, channel_id, team_id=team_id)
+            elif command == "/link":
+                # #1466: redeem-in-Slack half of the linking handshake
+                return await self._handle_link_command(text, user_id, team_id)
             else:
                 return {
                     "response_type": "ephemeral",
@@ -1390,7 +1397,9 @@ class SlackWebhookRouter:
             "text": help_text,
         }
 
-    async def _handle_standup_command(self, user_id: str, channel_id: str) -> Dict[str, Any]:
+    async def _handle_standup_command(
+        self, user_id: str, channel_id: str, team_id: Optional[str] = None
+    ) -> Dict[str, Any]:
         """
         Handle /standup command.
 
@@ -1403,13 +1412,18 @@ class SlackWebhookRouter:
 
         Issue #1429: Yesterday/Today are wired to the real todo services,
         scoped to the acting user's principal. When the Slack caller can't
-        be resolved to a todo principal (no slack→user mapping exists yet),
-        the sections say so honestly instead of the affirmative-false
-        "No completed items recorded" (we didn't look — say so).
+        be resolved to a todo principal, the sections say so honestly instead
+        of the affirmative-false "No completed items recorded" (we didn't
+        look — say so).
+
+        Issue #1466: resolution now consumes the slack_identities mapping
+        (keyed by slack_user_id + team_id), and the unlinked copy carries the
+        CXO §2 one-click deep link instead of prose alone.
 
         Args:
             user_id: Slack user ID
             channel_id: Slack channel ID
+            team_id: Slack workspace/team ID (required for mapping resolution)
 
         Returns:
             In-channel response with standup format
@@ -1417,7 +1431,7 @@ class SlackWebhookRouter:
         try:
             standup_parts = []
 
-            principal = self._resolve_todo_principal(user_id)
+            principal = await self._resolve_todo_principal(user_id, team_id)
 
             if principal is None:
                 # #1429 honesty: no principal → we did NOT query anything.
@@ -1427,6 +1441,18 @@ class SlackWebhookRouter:
                 )
                 standup_parts.append(f"*Yesterday:*\n• {not_linked}")
                 standup_parts.append(f"\n*Today:*\n• {not_linked}")
+                # #1466 (CXO §2/§3a): carry the link AS a link — a one-click
+                # path to the settings link section with the caller's Slack
+                # context as opaque params, so the code arrives pre-minted.
+                from services.auth.slack_link_service import build_link_deep_url
+                from services.integrations.slack import link_copy
+
+                standup_parts.append(
+                    "\n"
+                    + link_copy.UNLINKED_DECLINE_LINK_LINE.format(
+                        link_url=build_link_deep_url(user_id, team_id)
+                    )
+                )
             else:
                 # 1. What I did yesterday (completed items)
                 yesterday_items = await self._get_completed_since_yesterday(principal)
@@ -1477,23 +1503,121 @@ class SlackWebhookRouter:
             }
 
     @staticmethod
-    def _resolve_todo_principal(user_id: Optional[str]) -> Optional[UUID]:
+    async def _resolve_todo_principal(
+        user_id: Optional[str], team_id: Optional[str] = None
+    ) -> Optional[UUID]:
         """
         Resolve the Slack caller to a todo-service principal.
 
         Issue #1429: the todo services key ownership by user UUID
-        (``TodoDB.owner_id`` is a UUID FK to ``users.id``). There is no
-        slack→user mapping table in the codebase yet, so the only shape
-        that resolves today is a user_id that already IS a Piper user UUID.
-        A raw Slack workspace ID ("U…") resolves to None and the standup
-        sections say so honestly rather than pretending we looked.
+        (``TodoDB.owner_id`` is a UUID FK to ``users.id``).
+
+        Issue #1466: a raw Slack id now resolves through the slack_identities
+        mapping, keyed by the FULL (slack_user_id, slack_team_id) pair. All
+        misses fail CLOSED to None (honest not-linked copy) — never a default
+        or cross-workspace owner:
+        - no team_id → no mapping lookup (a bare U… id is ambiguous across
+          workspaces);
+        - no mapping row → None;
+        - mapping lookup error → None.
+        A user_id that already IS a Piper user UUID resolves directly
+        (pre-#1466 behavior, still used by web-originating callers and tests).
         """
         if not user_id:
             return None
         try:
             return UUID(user_id)
         except (ValueError, AttributeError, TypeError):
+            pass
+        if not team_id:
             return None
+        try:
+            from services.auth.slack_link_service import resolve_slack_principal
+            from services.database.session_factory import AsyncSessionFactory
+
+            async with AsyncSessionFactory.session_scope_fresh() as session:
+                return await resolve_slack_principal(session, user_id, team_id)
+        except Exception as e:
+            logger.warning(f"slack principal resolution failed (fail-closed to None): {e}")
+            return None
+
+    async def _handle_link_command(
+        self, text: str, user_id: Optional[str], team_id: Optional[str]
+    ) -> Dict[str, Any]:
+        """
+        Handle /link <code> — the redeem-in-Slack half of the #1466 linking
+        handshake (code minted by the authenticated user in Piper settings;
+        Slack never holds a Piper credential).
+
+        All copy comes from link_copy (CXO-owned constants, never inline):
+        - linked        → CXO §3b Slack-side confirmation (names the next action)
+        - invalid_code  → honest miss + deep link to mint a fresh one
+        - already_linked→ Arch condition 2 fail-closed copy (unlink-first path)
+        - rate_limited  → Arch condition 1 fail-closed copy
+        """
+        from services.auth.slack_link_service import (
+            ALREADY_LINKED,
+            LINKED,
+            RATE_LIMITED,
+            build_link_deep_url,
+            redeem_link_code,
+        )
+        from services.database.session_factory import AsyncSessionFactory
+        from services.integrations.slack import link_copy
+
+        link_url = build_link_deep_url(user_id, team_id)
+        code = (text or "").strip()
+        if not code:
+            return {
+                "response_type": "ephemeral",
+                "text": link_copy.LINK_USAGE_PROMPT.format(link_url=link_url),
+            }
+        if not user_id or not team_id:
+            # Cannot bind an identity we can't see — fail closed, honestly.
+            return {
+                "response_type": "ephemeral",
+                "text": link_copy.INVALID_CODE_DECLINE.format(link_url=link_url),
+            }
+
+        try:
+            async with AsyncSessionFactory.session_scope_fresh() as session:
+                outcome = await redeem_link_code(session, code, user_id, team_id)
+                piper_account = None
+                if outcome.status == LINKED:
+                    from services.database.models import User
+
+                    piper_account = (
+                        await session.execute(
+                            select(User.username).where(User.id == outcome.owner_id)
+                        )
+                    ).scalar_one_or_none()
+                # session_scope_fresh does NOT commit on clean exit; the
+                # attempt-ledger row must persist on EVERY outcome (Arch
+                # condition 1) and the mapping on LINKED.
+                await session.commit()
+        except Exception as e:
+            logger.error(f"/link redemption failed: {e}")
+            return {
+                "response_type": "ephemeral",
+                "text": link_copy.INVALID_CODE_DECLINE.format(link_url=link_url),
+            }
+
+        if outcome.status == LINKED:
+            return {
+                "response_type": "ephemeral",
+                "text": link_copy.LINKED_CONFIRMATION_SLACK.format(
+                    slack_handle=f"<@{user_id}>",
+                    piper_account=f"`{piper_account}`" if piper_account else "your account",
+                ),
+            }
+        if outcome.status == ALREADY_LINKED:
+            return {"response_type": "ephemeral", "text": link_copy.ALREADY_LINKED_DECLINE}
+        if outcome.status == RATE_LIMITED:
+            return {"response_type": "ephemeral", "text": link_copy.RATE_LIMITED_DECLINE}
+        return {
+            "response_type": "ephemeral",
+            "text": link_copy.INVALID_CODE_DECLINE.format(link_url=link_url),
+        }
 
     async def _get_completed_since_yesterday(self, principal: UUID) -> Optional[list]:
         """
