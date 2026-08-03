@@ -58,6 +58,11 @@
 - **CLAUDE.md's documented restart command (`venv/bin/python main.py`) can't work** — no venv in either checkout.
 - **cio's worktree is the last role-branch upstream** (61 and climbing). `git branch -u origin/main`.
 
+## Live, mine, and cheap to re-run
+
+- `scripts/check-derived-drift.sh` — MEMORY.md + census. **Gates on the census FORM SET, not counts** (counts move daily; gating on them was cry-wolf).
+- `scripts/check-safety-invariants.sh` — autoStash / PM-checkout-branch (both HOST-scoped) + worktree upstreams (REPO-scoped). **Non-author verified by Web 08-02.** Still flags cio.
+
 ## Standing hazards
 
 - **Verify at the mechanism, not the announcement** — especially when the announcement points at *less* work.
@@ -74,4 +79,4 @@
 
 ## Cron
 
-Current job **`b09877c2`** (chain … `2cebafed → 2d87bd9f → fd14a8e7`), expression **`37 6,9,12,15,18,21 * * *`** — verified against `CronList` **and** the registry row this STOP; they agree. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`be9d593a`** (chain … `2cebafed → 2d87bd9f → fd14a8e7`), expression **`37 6,9,12,15,18,21 * * *`** — verified against `CronList` **and** the registry row this STOP; they agree. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
