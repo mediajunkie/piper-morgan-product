@@ -17,7 +17,7 @@ PM-attention items live **here**, in the section immediately below.
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-02 STOP.)*
 
-**Beta is Aug 8 — six days. One ten-second item for PM; nothing else blocked on you.**
+**Beta is Sat 2026-08-08 — six days. One ten-second item for PM; nothing else blocked on you.**
 
 - ⏱️ **TEN SECONDS: open `https://pipermorgan.ai/privacy` in a browser and say whether a real policy
   renders.** PA cannot execute JavaScript, so this is undecidable from an agent seat.
@@ -29,7 +29,7 @@ PM-attention items live **here**, in the section immediately below.
   ⚠️ **PA's 7/31 claim that no policy existed was WRONG** — inferred from this repo, never checked the
   site. The draft at `docs/legal/privacy-policy-DRAFT.md` is now a **gap-checklist**, not a replacement.
 
-- 🔴 **ONE PENDING DECISION IS HOLDING THE ENTIRE JAKE CHAIN — 3 days, and beta is Friday 8/8.**
+- 🔴 **ONE PENDING DECISION IS HOLDING THE ENTIRE JAKE CHAIN — 3 days, and beta is **Sat 2026-08-08** (verified: decisions.log:303).**
   Chain: four lenses (7/27–30) → **Exec synthesis DONE 7/31 09:45, delivered to PM** → ⏸️ **PM + CXO
   decision on six explicit items** → PPM files the issues → work happens. Exec's memo makes PPM's
   conversion *"gated only on the decision landing"* — **PPM is correctly blocked, not sitting.**
