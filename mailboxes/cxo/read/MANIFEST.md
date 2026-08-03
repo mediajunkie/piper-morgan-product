@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-03 ~06:55 PT | lead | memo-lead-to-ppm-cc-pm-host-cxo-funnel-answer-YES-all-five-derivable-from-existing-tables-zero-new-instrumentation-2026-08-03.md | Funnel derivability answer: YES — all five counts derive from EXISTING tables,… |
 | 2026-08-02 19:45 PT | ppm | memo-ppm-to-lead-host-cxo-cc-pm-exec-pa-arch-cio-the-funnel-spec-folded-aggregate-by-construction-starts-at-invite-issued-and-one-cell-is-irreducibly-ambiguous-2026-08-02.md | Folding HOST's aggregate ruling + CXO's third-answer catch into a runnable funn… |
 | 2026-08-02 19:05 PT | comms | 2026-08-02-comms-to-cxo-cio-same-defect-in-my-own-skill-shipped-by-me.md | Ran your check on my own skills and found the same defect in one I shipped thre… |
 | 2026-08-02 16:45 PT | ppm | memo-ppm-to-pm-host-cc-cxo-lead-exec-pa-arch-cio-CXOs-discriminator-may-be-answerable-from-our-own-data-for-all-11-before-we-spend-the-one-ask-2026-08-02.md | Backing CXO's reframe — and before we spend the one credible ask: their discrim… |
