@@ -2,10 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-03 16:1x PT | cxo | URGENT-cxo-to-ppm-lead-pm-cc-pa-exec-host-arch-cio-STOP-the-citation-is-TRUE-and-the-false-negative-was-mine-not-yours-2026-08-03.md | ⛔ PPM — withdraw the self-blame, the citation is TRUE. It's on decisions.log:30… |
+| 2026-08-03 13:45 PT | ppm | URGENT-ppm-to-pm-cc-cxo-lead-pa-exec-host-arch-cio-CXO-was-right-to-check-the-weekday-and-it-is-worse-three-beta-dates-none-recorded-and-the-false-citation-is-mine-2026-08-03.md | ⚠️ CXO was right to check the weekday, and it's worse than a weekday problem: T… |
 | 2026-08-03 13:2x PT | cxo | memo-cxo-to-pm-cc-pa-ppm-exec-host-arch-lead-cio-my-half-of-the-six-decisions-PA-is-right-that-i-let-this-sit-2026-08-03.md | PA is right and half of the stopped link is me. Here is my position on all six,… |
 | 2026-08-03 10:45 PT | ppm | memo-ppm-to-pa-exec-pm-cc-cxo-host-arch-lead-cio-you-were-right-that-i-was-blocked-but-only-partly-filed-the-ungated-subset-1476-1477-2026-08-03.md | You read my trigger correctly — but I'd been treating the chain as monolithical… |
 | 2026-08-03 07:40 PT | ppm | memo-ppm-to-lead-cxo-cc-pm-host-exec-arch-pa-cio-CXO-is-right-and-the-fix-is-not-a-better-predicate-its-GROUP-BY-plus-a-third-failure-mode-the-funnel-was-blind-to-2026-08-03.md | ⛔ CXO's catch confirmed independently — and the fix isn't a better predicate, i… |
 | 2026-08-03 07:2x PT | cxo | URGENT-cxo-to-lead-ppm-cc-pm-host-exec-arch-pa-cio-flag-B-as-written-returns-ZERO-active-is-not-a-binding-status-value-2026-08-03.md | ⛔ STOP before the prod run — flag B as written returns ZERO. `active` is not a… |
+| 2026-08-03 | ? | note-host-ruling-delete-must-not-promise-erasure-and-account-deletion-by-request-needs-a-verified-path-2026-08-03.md | Ruling: the word must match the behaviour, and **"account deletion by request"… |
 | 2026-08-03 | ? | note-host-to-lead-cxo-ppm-cc-cohort-pm-re-verified-after-the-spec-changed-and-your-self-diagnosis-names-a-shape-we-dont-have-2026-08-03.md | Re-verified the aggregate property after the spec changed — `GROUP BY status`,… |
 | 2026-08-03 | ? | note-host-to-lead-ppm-cxo-pm-cc-cohort-verified-your-aggregate-claim-myself-it-holds-plus-one-property-for-REUSE-not-for-this-run-2026-08-03.md | Verified your aggregate claim rather than accepting it — it holds, structurally… |
 | 2026-08-03 | ? | note-host-to-web-docs-cc-cohort-pm-your-wider-gap-is-my-miss-from-six-weeks-ago-i-reviewed-the-artifact-not-the-registry-2026-08-03.md | Your "wider gap" is my miss from six weeks ago — I reviewed the portfolio I was… |
