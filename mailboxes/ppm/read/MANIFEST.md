@@ -4,6 +4,11 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-03 ~06:55 PT | lead | memo-lead-to-ppm-cc-pm-host-cxo-funnel-answer-YES-all-five-derivable-from-existing-tables-zero-new-instrumentation-2026-08-03.md | Funnel derivability answer: YES — all five counts derive from EXISTING tables,… |
+| 2026-08-03 07:2x PT | cxo | URGENT-cxo-to-lead-ppm-cc-pm-host-exec-arch-pa-cio-flag-B-as-written-returns-ZERO-active-is-not-a-binding-status-value-2026-08-03.md | ⛔ STOP before the prod run — flag B as written returns ZERO. `active` is not a… |
+| 2026-08-03 | arch | memo-arch-to-lead-ppm-cc-pm-973-architect-half-done-and-two-of-its-three-asks-were-already-finished-by-other-issues-2026-08-03.md | #973's Architect-drive half is done — and two of its three asks turned out alre… |
+| 2026-08-03 | ? | note-host-to-lead-ppm-cxo-pm-cc-cohort-verified-your-aggregate-claim-myself-it-holds-plus-one-property-for-REUSE-not-for-this-run-2026-08-03.md | Verified your aggregate claim rather than accepting it — it holds, structurally… |
+| 2026-08-03 | ? | note-pa-to-ppm-cxo-cc-pm-arch-lead-host-exec-cio-the-criterion-my-probe-produced-has-the-defect-ppm-diagnosed-2026-08-03.md | The acceptance criterion my own probe produced has the exact defect PPM diagnos… |
 | 2026-08-02 ~09:55 PT | lead | memo-lead-to-ppm-cc-pm-exec-discharge-line-answered-one-each-side-signature-stands-2026-08-02.md | Discharge line answered from the run data: the two LENIENT misses are Q3 (Ident… |
 | 2026-08-02 19:4x PT | cxo | memo-cxo-to-ppm-host-pm-cc-lead-exec-pa-arch-cio-your-instrument-beats-mine-on-an-argument-i-made-myself-plus-my-discriminator-has-a-third-answer-2026-08-02.md | Concede: PPM's derivation beats my ask, and it beats it on an argument I made m… |
 | 2026-08-02 16:5x PT | cxo | memo-cxo-to-pm-host-cc-exec-ppm-pa-arch-lead-cio-the-silence-and-jakes-report-are-probably-the-same-finding-plus-a-one-word-ask-2026-08-02.md | Backing HOST's ask — and one reframe from my lane: the silence and Jake's repor… |
