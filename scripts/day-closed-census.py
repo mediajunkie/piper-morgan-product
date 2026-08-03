@@ -133,12 +133,40 @@ if BEGIN not in doc or END not in doc:
           "the check DID NOT RUN. Empty output is not 'clean'.")
     raise SystemExit(1)
 current = doc[doc.index(BEGIN): doc.index(END) + len(END)]
-if current.strip() == block.strip():
-    print(f"✓ census table matches the corpus ({sum(forms.values())} markers, "
-          f"{len(forms)} distinct forms)")
+
+# ── WHAT THIS GATES ON, AND WHY IT ISN'T EXACT MATCH ───────────────────────────
+# First real firing (2026-08-02, one day after shipping) was 413 -> 418 canonical:
+# five more days had closed. The FORM SET was identical. Gating on exact match means
+# this fires EVERY day on normal corpus growth, carrying no information — which is
+# the cry-wolf failure that had just been diagnosed in CLAUDE.md's sign-off checklist,
+# rebuilt inside the mechanism meant to catch that class.
+#
+# So: gate on the SET OF FORMS — a new marker shape appearing (or one vanishing) is
+# the real signal, because that is what a predicate must handle. Counts churn with
+# ordinary activity and are reported, never gated.
+def form_rows(text):
+    return {
+        "|".join(c.strip() for c in ln.split("|")[1:5])
+        for ln in text.split("\n")
+        if ln.startswith("|") and "---" not in ln
+    }
+
+doc_forms, corpus_forms = form_rows(current), form_rows(block)
+if doc_forms == corpus_forms:
+    stale = current.strip() != block.strip()
+    print(f"✓ all {len(corpus_forms) - 1} marker forms accounted for "
+          f"({sum(forms.values())} lines matched)")
+    if stale:
+        print("  ℹ counts in the doc are a snapshot and have moved since — expected with "
+              "ordinary log activity, NOT drift. Refresh at leisure: python3 scripts/day-closed-census.py")
     raise SystemExit(0)
 
-print("⚠️  DRIFT: the census table in the doc no longer matches the corpus.")
+print("⚠️  DRIFT: the SET OF MARKER FORMS has changed — a predicate built on the old set "
+      "may not handle the corpus.")
+for f in sorted(corpus_forms - doc_forms):
+    print(f"   + NEW form in the corpus, not in the doc: {f}")
+for f in sorted(doc_forms - corpus_forms):
+    print(f"   - form in the doc, no longer in the corpus: {f}")
 cur_lines, new_lines = current.split("\n"), block.split("\n")
 for i, (a, b) in enumerate(zip(cur_lines, new_lines)):
     if a != b:

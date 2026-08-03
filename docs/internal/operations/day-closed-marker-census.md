@@ -28,7 +28,7 @@ Each fix was correct about the thing it saw and blind to the next form along. **
 
 | position | form | separator | date | n | example |
 |---|---|---|---|---:|---|
-| col0 | `html-comment` | colon | dated | 413 | `<!-- DAY-CLOSED: 2026-06-09 -->` |
+| col0 | `html-comment` | colon | dated | 418 | `<!-- DAY-CLOSED: 2026-06-09 -->` |
 | col0 | `md-heading` | em-dash | dated | 10 | `### DAY-CLOSED — 2026-06-10 23:59 PT (deferred marker, written 6/11 06` |
 | **indented/quoted** | `other` | none | **UNDATED** | 4 | `- `DAY-CLOSED` predicate corrected twice more today (`f63f85371`/`072b` |
 | **indented/quoted** | `other` | colon | dated | 4 | ``DAY-CLOSED: 2026-07-30` stands. Cron `fd14a8e7` remains armed; **no r` |
@@ -40,9 +40,9 @@ Each fix was correct about the thing it saw and blind to the next form along. **
 | col0 | `md-heading` | none | **UNDATED** | 1 | `### DAY-CLOSED sweep: Jul 3–9 (just-closed Fri–Thu window)` |
 | col0 | `md-heading` | none | dated | 1 | `## DAY-CLOSED 2026-07-29 (closed retroactively at 2026-07-30 08:43)` |
 
-**441 lines matched. 428 are real markers (column 0); 13 are narrations of one** (indented, quoted, or mid-sentence) — the population a bare `grep DAY-CLOSED` wrongly counts, and the reason every working predicate anchors on `^`.
+**446 lines matched. 433 are real markers (column 0); 13 are narrations of one** (indented, quoted, or mid-sentence) — the population a bare `grep DAY-CLOSED` wrongly counts, and the reason every working predicate anchors on `^`.
 
-**Canonical marker** (`col0` + `html-comment` + `colon` + `dated`): **413** = 96% of real markers.
+**Canonical marker** (`col0` + `html-comment` + `colon` + `dated`): **418** = 96% of real markers.
 
 ⚠️ **Undated real markers — unreachable by ANY dated predicate: 4.** Not a formatting variant; a missing datum. No regex rescues these; their owners must add the date.
 
