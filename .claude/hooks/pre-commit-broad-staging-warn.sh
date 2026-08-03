@@ -13,7 +13,28 @@
 #   - Staged set touches multiple distinct dev/active/*-{role}-* session logs
 #     where files don't share a role slug — cross-agent log capture signal
 #
-# Exit 2 = warn (stderr surfaces to agent; commit not blocked)
+# ⚠️ CORRECTED 2026-08-03. This block used to read "Exit 2 = warn (stderr surfaces to agent;
+# commit not blocked)". THAT IS FALSE FOR THIS HOOK. **This is a PreToolUse hook, and in
+# PreToolUse `exit 2` BLOCKS** — stderr reaches the model and the tool call does not run.
+#
+# How the error got here, because it is instructive: the rationale below cites
+# `precompact-signoff-warning.sh` as the convention being matched — but that hook is a
+# **PreCompact** hook, where the exit codes mean something different. **The exit code was
+# borrowed across an event boundary on which its meaning inverts.** (That hook has since
+# moved to exit 0 anyway, so the cited convention no longer exists even at its source.)
+#
+# Found by Docs on 2026-08-03 during a 23-file archival sweep — it was blocked and had to
+# split into 4 batches. Verified and diagnosed by Comms rather than relayed.
+#
+# ⚠️ BEHAVIOUR AND INTENT STILL DISAGREE. The intent, stated three times in this file, is
+# "warn, do not block" ("Block would be too high-friction"). The behaviour blocks. This fix
+# corrects only the FALSE STATEMENTS, so the hook no longer asserts the opposite of what it
+# does. **Whether the exit code should change to 0 is NOT fixed here** — that turns on
+# whether stderr still reaches the agent on exit 0 in PreToolUse, which I have not tested.
+# Shipping an untested behaviour change to a cohort-wide gate is the failure mode this
+# codebase has spent a fortnight cataloguing. Raised to PM/HOST for a behavioural decision.
+#
+# Exit 2 = BLOCKS the commit (PreToolUse semantics), stderr surfaces to the agent
 # Exit 0 = pass
 #
 # Rationale: B (worktree-per-agent for main) is the structural fix PM ratified
@@ -96,9 +117,10 @@ fi
     echo "  3. Re-stage only your own files with explicit paths"
     echo "  4. Verify with: git diff --cached --name-only | head -20"
     echo ""
-    echo "If the staged set is intentional (e.g., legitimate large multi-mailbox"
-    echo "distribution), proceed. The warning is informational; commit is not"
-    echo "blocked. Use --no-verify to skip future warnings on this commit."
+    echo "⚠️ THIS COMMIT WAS BLOCKED. (Until 2026-08-03 this message claimed the opposite —"
+    echo "if you have seen that text, the commit did not run.) If the staged set is"
+    echo "intentional (e.g. a legitimate large multi-mailbox distribution), re-run with"
+    echo "--no-verify, or split it into smaller explicit-path commits."
     echo ""
     echo "Root-cause fix (PM ratified May 15): worktree-per-agent for substantive"
     echo "work. See CLAUDE.md §Branch / Worktree / Mailbox Discipline."
@@ -113,6 +135,8 @@ if [ -d "dev/active" ]; then
     } >> "$WARN_LOG" 2>/dev/null || true
 fi
 
-# Exit 2 = warning, commit proceeds (matches precompact-signoff-warning.sh
-# convention). Block (exit 1) would be too high-friction for false positives.
+# ⚠️ Exit 2 in PreToolUse BLOCKS. The comment here used to claim "commit proceeds" and cited
+# precompact-signoff-warning.sh — a PreCompact hook, different event, different semantics, and
+# since changed to exit 0 itself. Left as exit 2 deliberately pending a behavioural test of
+# whether exit 0 still surfaces stderr in PreToolUse; see the header note.
 exit 2
