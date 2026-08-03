@@ -15,76 +15,47 @@ PM-attention items live **here**, in the section immediately below.
 
 ## PM Attention
 
-*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-01 STOP.)*
+*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-02 STOP.)*
 
-**Nothing is blocked on PM tonight.** Beta is **Aug 8**.
+**Beta is Aug 8 — six days. One ten-second item for PM; nothing else blocked on you.**
 
-- 🟡 **One optional convenience, not a blocker: click "Always Allow"** if a macOS keychain dialog is
-  sitting on your screen. PA's 19:12 probe queued one or two before diagnosing the cause and stopping.
-  **Already worked around** — Lead identified the authorized interpreter
-  (`~/Development/piper-morgan-worktrees/lead/venv/bin/python`, which PM stored the keys through), and
-  PA ran the probe from it successfully. So this is tidiness, not need.
-- ✅ **Keys provisioned 17:27 8/1 — confirmed, and the four blocked lanes are unblocked.**
-- ✅ **PDR-006 RATIFIED** 7/31; two pre-user gates tracked as **#1458** and **#1463**.
-- ✅ **Architecture diagram redrawn** at PM's request — https://claude.ai/code/artifact/92ce8bc9-23d4-4590-b121-dacc0ab72e17
-  (source in git at `dev/active/pdr-006-architecture-2026-08-01.html`, because the July one vanished
-  with an account). **PM still owes a time to discuss it** — no urgency named.
+- ⏱️ **TEN SECONDS: open `https://pipermorgan.ai/privacy` in a browser and say whether a real policy
+  renders.** PA cannot execute JavaScript, so this is undecidable from an agent seat.
+  ✅ Established: URL returns **200**, correct title. ✅ Established: **server-rendered visible text is 29
+  characters** — the title alone; no policy text without JS. ❓ Unknown: whether it renders client-side.
+  🔴 **Why it matters**: Anthropic rejects *"missing or incomplete"* privacy policies outright and review
+  may fetch without JS, so **a policy needing JavaScript can read as absent to the thing that decides.**
+  Also alpha users are already connecting GitHub/Slack/Notion accounts to a hosted service.
+  ⚠️ **PA's 7/31 claim that no policy existed was WRONG** — inferred from this repo, never checked the
+  site. The draft at `docs/legal/privacy-policy-DRAFT.md` is now a **gap-checklist**, not a replacement.
 
-### 🔴 The operational finding PM should know, even though it needs nothing tonight
+### Closed / no PM action
 
-**On an unattended agent seat, an unauthorized keychain read HANGS rather than ERRORS.** Worse than
-"absent": absent was loud and got fixed in two days; a hang burns a fire silently and looks like a slow
-task. ⚠️ **A Python `SIGALRM` cannot interrupt it** — the block is inside the macOS Security framework,
-so any guard must be a **subprocess with a hard kill**, not an in-process alarm. HOST has routed a
-bounded-timeout suggestion to CIO. **Server is NOT exposed** on the Anthropic path (HOST static trace:
-it reads env, not keychain); **BYOC/user-key features are.**
+- ✅ **PDR-006 RATIFIED** 7/31; epic **#1462**; pre-user gates **#1458** and **#1463** both tracked.
+- ✅ **Probe A series COMPLETE and stood down** (Arch: *"don't rebuild the rig — it answers itself for
+  free at the deployed-host retest"*). Headline: **GPT drops an explicit refusal**; structured fields
+  triple survival but are **not sufficient**; a **failure-shaped payload** reaches 100% on both providers.
+  ⚠️ **API-layer only — retest against a deployed host before booking the capability.**
+- ✅ Architecture diagram redrawn (PM-requested); **PM still owes a time to discuss it**, no urgency named.
 
-### Closed since 7/29 — no PM action
-
-- ✅ **Team upgrade DROPPED** (chat installs plugins on all paid plans; plugins bundle connectors).
-- ✅ **"Open-source decision" never existed — the repo is already public.**
-- ✅ **#558 stays in Production** (PPM): you cannot get colleague-model feedback from users who bounce at
-  first contact, so it is gated behind cold-start. *Explicitly a sequencing call — if overridden, the
-  spatial coupling returns immediately.*
-
-### Context PM may want when these come up
-
-**Submission is gated on build, not decisions.** Verified rather than restated: **`mcp.pipermorgan.ai`
-is not deployed** (exists only in PDR-006 and planning docs) and **no public privacy policy page exists**
-— a missing privacy policy is an *immediate rejection* on both directories. So the earliest realistic
-submission is weeks out regardless, and **OpenAI verification is the one thing whose clock runs
-independently of all of it** — which is why it stays the single ⏰ item.
-
-⚠️ **Standing caution for this whole thread, earned three times over.** The tier answer was wrong twice
-in opposite directions; the open-source "decision" was carried as open for ten days after PM had
-answered it repeatedly; Q2 blocked PDR-006 for ten days after PM had ruled on it in January. **Every one
-was a claim inherited from a document and never checked against the source** — `gh repo view`,
-`gh issue view`, the actual code. All three were 30-second checks. **Before restating anything on this
-thread, verify it.** *(And per PM 7/29: the platform story here changes fast — a correct answer from four
-days ago is not a current answer.)*
-
-## Active state — 2026-08-01 STOP (next wake 06:42 Sun 8/2)
+## Active state — 2026-08-02 STOP (next wake 06:42 Mon 8/3)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Last session log**: `dev/2026/08/01/2026-08-01-0712-pa-code-log.md` — **DAY-CLOSED 2026-08-01**
+- **Last session log**: `dev/2026/08/02/2026-08-02-0712-pa-code-log.md` — **DAY-CLOSED 2026-08-02**
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure
 - **Cron**: ARMED at STOP, delete-then-create. **Job id in the registry row.** 🔴 **First action any new
-  session: `CronList`.** Empty = not cycling. Jobs are session-only and expire ~7d (this one ~2026-08-08).
+  session: `CronList`.** Empty = not cycling. Session-only, expires ~2026-08-09.
 - **Inbox**: 0 at close.
 
-⚠️ **KEYCHAIN — read this before any probe.** Use the **authorized interpreter**
-`/Users/xian/Development/piper-morgan-worktrees/lead/venv/bin/python` (PM stored the items through it).
-**Any other binary HANGS on a GUI dialog rather than failing**, and `SIGALRM` will not save you.
+⚠️ **KEYCHAIN**: use the authorized interpreter
+`/Users/xian/Development/piper-morgan-worktrees/lead/venv/bin/python` — any other binary **HANGS** on a
+GUI dialog rather than failing, and `SIGALRM` will not save you.
 
-## ▶️ First items tomorrow
-
-1. **Probe A arm 2 — the prose-hedge arm.** Arm 1 (5/5 survived) tested caveats in *named structured
-   fields*, which is the mitigation, not the risk. **Same five cases with hedges in narrative prose, no
-   named field.** That is the arm that answers CXO's question.
-2. **Probe A GPT arm.** PDR-006 ships to both; a Claude/GPT divergence is itself a ChatGPT-lane finding.
-   `openai_api_key` is provisioned. Arm 1 is half an experiment until this runs.
-3. **Probe B** (tool-naming vs selection accuracy) — PPM's verdict. Keep schemas identical across arms.
+⚠️ **PROBE SCORING — do not trust the regex.** It was wrong **4 times across 5 arms**; the tally never
+once caught itself. **Hand-read replies at n=6; it is cheaper than a regex you could trust.** And per
+Arch: any taxonomy needs a **catch-all "other, hand-review"** category, because one with no slot for
+*"did the right thing in an unanticipated way"* scores novel-correct behaviour as failure.
 
 ## Open threads PA owns
 
