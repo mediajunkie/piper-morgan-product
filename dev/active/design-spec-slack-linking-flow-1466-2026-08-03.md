@@ -41,8 +41,37 @@ to Slack → DM the bot. **Six steps, three context switches, and the first one 
   opaque params) so that after login, the settings page can render *"Link this Slack account"* with the
   code already minted, instead of a generic panel the user must navigate.
 
-**That collapses six steps to: click → log in → confirm → return.** Everything Piper needs is already
-in the inbound event; nothing new is stored pre-link.
+🔴 **CORRECTED 2026-08-03 — my original phrasing here was a security defect. Arch's ruling:**
+
+> **The param may PREFILL. It may never BIND.**
+
+**What I got wrong**: I wrote *"click → log in → **confirm** → return"*, which removes the Slack-side
+step. **That step is the second proof.** Lead's handshake proves control of *both* accounts — the code
+is minted while logged into Piper (proves the Piper account), and redeemed by DMing the bot **from
+Slack** (proves the Slack account). **Dropping the redeem step replaces a proof with a URL parameter,
+and a URL is a thing anyone can construct** → unsolicited binding: an attacker crafts a link carrying
+*their own* `slack_user_id`, a Piper user logs in and confirms, and the attacker's Slack identity is
+bound to the victim's account.
+
+**I asked the right question and tested the wrong properties.** My two tests — *"not credentials"* and
+*"nothing written pre-auth"* — both **pass**, and neither is the property that matters. The property
+is **what does each step prove?**
+
+**Corrected flow, which keeps the entire step-reduction:**
+1. Decline carries the deep link with the Slack ids as params. **Unchanged.**
+2. Post-login, settings recognises them and **pre-mints the code**. **Unchanged — this is the whole
+   saving.**
+3. **The user still returns to Slack and sends `/link <code>`.** ✅ **The binding is written to
+   whoever redeems; the param is never an input to the row.** If the redeemer doesn't match the hint,
+   **bind to the redeemer and ignore the hint** — it was only ever a UX accelerator.
+
+**Six steps → click, log in, return-and-paste.** The two expensive steps (find the app, hunt for the
+settings section) are still gone. **The step retained is the one carrying the security property, and
+it's the cheapest of the six** — the user is already in Slack when they read the decline.
+
+*(Lead verified the **shipped** code already enforces this: `mint_link_code()` takes no Slack params,
+and `redeem_link_code()` is the only writer of `slack_identities`, called only from the `/link`
+handler. **The defect existed in my description, not in the build.**)*
 
 ## 3. Copy
 
@@ -68,6 +97,30 @@ in the inbound event; nothing new is stored pre-link.
 - ❌ *"You are not authorized"* — true and reads as a permissions failure, which it isn't.
 - ❌ *"Please link your account to continue."* — instruction without a path; that's §2's defect in one sentence.
 - ❌ *"Sorry! I can't do that yet."* — apology cadence, and *"yet"* implies a roadmap rather than a two-step action.
+
+### 3a-bis. ⚠️ The settings prefill — do NOT show the opaque identifier
+
+**Arch's point, routed to me by Lead, and it's a copy rule with teeth:**
+
+> *"`slack_user_id` is an **opaque identifier** (`U01234…`). A user asked to approve "Link this Slack
+> account: U01234…" **cannot tell whether it's theirs.** An opaque identifier in a confirmation dialog
+> defeats the confirmation — it converts an approval into a rubber stamp."*
+
+Since the param now prefills rather than binds, showing it is **cosmetic but actively harmful**: it
+implies an identity confirmation the flow does not perform, and trains the user that approving an
+unreadable string is normal.
+
+**Rule: don't display the opaque id at all.** It carries no information the user can act on. **Show
+the code and state the rule that actually determines the outcome:**
+
+> *Here's your link code: **483920**
+> Go back to Slack and send `/link 483920` to Piper.
+> **Whichever Slack account sends it is the one that gets linked** — so send it from the account you
+> want connected.*
+
+**That last line is the honest version of what the old confirmation was pretending to do.** It tells
+the user what determines the result, which is both true and more reassuring than an identifier they
+cannot verify. **Rejected**: *"Link this Slack account: U01234…"* — an approval nobody can evaluate.
 
 ### 3b. Confirmation — both sides, and they say different things
 
