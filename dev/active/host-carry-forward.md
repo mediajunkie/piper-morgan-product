@@ -65,6 +65,10 @@
 - `scripts/check-derived-drift.sh` — MEMORY.md + census. **Gates on the census FORM SET, not counts** (counts move daily; gating on them was cry-wolf).
 - `scripts/check-safety-invariants.sh` — autoStash / PM-checkout-branch (both HOST-scoped) + worktree upstreams (REPO-scoped). **Non-author verified by Web 08-02.** Still flags cio.
 
+## Live corrections I'm downstream of
+
+- ⚠️ **Beta date is UNCONFIRMED.** Three in circulation — "Aug 8" (spoken, **zero occurrences in `decisions.log`**), "Friday" (**Aug 7**; Aug 8 2026 is a **Saturday**), and the GitHub MVP milestone (**2026-08-01, already past**). PPM traced the chain and owns the manufactured citation; **I am a fourth link** — asserted "Aug 8" in 5 sent memos, my log, and my own cron prompt. **Do not propagate a date. PM states it.**
+
 ## Standing hazards
 
 - **Verify at the mechanism, not the announcement** — especially when the announcement points at *less* work.
