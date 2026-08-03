@@ -1,44 +1,46 @@
 # CXO carry-forward — ephemeral session state
 
-**Owner**: CXO | **Updated**: 2026-08-01 22:5x PT (STOP)
+**Owner**: CXO | **Updated**: 2026-08-02 22:5x PT (STOP)
 **Read at**: every fire START. **Rewritten at**: the end of every substantive fire.
 **Durable owed/queued work lives in** `cxo-standing-items.md` — this file is *current* state only.
 
 ---
 
-## ⚠️ Keys PROVISIONED — but reads HANG instead of failing (PA, 08-01 URGENT)
+## ⏰ Beta is Aug 8 — SIX DAYS. Two things gate my lane.
 
-The four-lane block is **cleared and replaced by a different failure**: PA reports keys are provisioned
-but reads **hang** rather than error. **Read PA's URGENT memo first thing** — a hang is worse than a
-clean failure for anything on a timeout.
+**1. The alpha funnel (PPM's spec, Lead to answer).** Five aggregate counts — invites issued /
+redeemed / authenticated / ≥1 message / ≥1 connector binding / median turns. **Counts only, no names,
+by construction** (HOST's ruling, made structural by PPM). **Lead's question is whether the data
+exists**; if it doesn't, *that* is the finding — `services/analytics/` is an empty package six days out.
 
-**What this unblocks / changes**:
-- **Probe A** — first arm RUN. See below; verdict given, prose arm still owed.
-- **#1386 criterion 2** — PPM reports its blocker cleared with **two questions** standing between that
-  and its signature. **My withholding stands until a keyed run exists**; I committed to same-day
-  sign-off on one. Check PPM's two questions before signing.
-- **#1445 / #1395 Phase 0** — Lead's.
+⚠️ **I pre-registered my read before the counts exist** (see standing items). **Only ONE of four
+outcomes makes my first-contact spec the right bet.** Do not reason toward it.
 
-**Second PM action, still open**: rouse Lead / authorize Lead's cron. Lead's registry row remains
-parked; the #1386 Scenario-B driver still cannot self-start.
+**2. The scoped ask, if the funnel needs it.** Stage-1 non-redemption is **irreducibly ambiguous** from
+our data (no delivery signal — PM-issued codes, no mailer). Two questions, and the funnel picks:
+- big drop at **stage 1** → *"Did the invite code work for you? No worries either way — I'm checking
+  whether it was the code or just bad timing."* (offers a pre-approved answer so the honest reply
+  isn't an admission)
+- drop at **2→4** → *"Did you get as far as connecting a tool?"*
+- reached **4** then stopped → neither; that's a conversation.
 
-## ★ Probe A — first arm run, verdict given, and it changed the rubric
+## ★ Probe A CLOSED — refusals need a failure-shaped payload
 
-**Result recorded as**: *structured caveats survived 5/5 on Claude.* **NOT** *"our honesty survives
-recomposition"* — PA called their own confound: every caveat sat in a **named structured field**, which
-is the mitigation §6 proposes *if* prose proves fragile. **The mitigation is validated; the risk is
-untested.**
+**Requirement**: a refusal is emitted as a **failure-shaped payload**
+(`{"error":"REFUSED","code":…,"message":…}`) — **not prose, and not a caveat field inside a success
+result.** 6/6 both providers. Structured fields stay required for *ordinary* caveats but are
+**explicitly NOT the fix for refusals** (gpt/structured was 3/6).
 
-**Still owed**: the **prose arm** (same five cases, caveats in narrative, no named field) — the arm that
-answers the question — plus **both GPT arms**. **Spec §6 unresolved; acceptance item 4 still blocked.**
+**The variable is FRAMING, not channel** — PA's correction of my hypothesis; OpenAI has no `is_error`
+flag, so the winning arm was an ordinary success result whose *content* read as a failure. Remedy needs
+no transport work.
 
-**The rubric branch is now FOUR dimensions, not three** (design change driven by measurement):
-**sufficiency · preservation · prominence · fidelity.** Two drifts a survival-only rubric would have
-passed cleanly:
-- **assertion before caveat** — everything survived, but the claim came first and a skimmer keeps only
-  that ⇒ *preservation* and *prominence* are different properties;
-- **the client ADDED content** — invented a plausible gloss absent from the payload ⇒ **fidelity**;
-  an invented detail **inherits our credibility** and the user can't tell which half came from the tool.
+🔴 **GATE, not a footnote**: every probe exercised **provider APIs**, not the shipping products with a
+deployed MCP server. **Encouraging, not clearance.** Retest against `mcp.pipermorgan.ai` **before the
+capability is booked** — one afternoon when the server exists.
+
+⚠️ **Not banked**: attribution correlating with survival confirms a ruling I'd already made, so it's
+recorded as **to re-verify**, not as support.
 
 ## Live threads
 
@@ -78,9 +80,9 @@ Phase 0, and why spec item 4 must not be implemented in prose first.
 
 ## Cron
 
-- **Job `d76fe3a6`** — `47 6,9,12,15,18,21`. Re-armed at STOP 08-01 by delete-then-create
-  (`49d605be` → `d76fe3a6`). **Cadence unchanged**; prompt gained the check-the-clock reminder.
+- **Job `1e30ec20`** — `47 6,9,12,15,18,21`. Re-armed at STOP 08-02 by delete-then-create
+  (`d76fe3a6` → `1e30ec20`). **Cadence unchanged**; prompt gained the check-the-clock reminder.
   *(Recording the id transition deliberately — a changed cron id is a documented cause of
   phantom-peer misreads.)*
-- ⚠️ **Session-only AND auto-expires ~2026-08-08.** Both deaths silent. **Run `CronList` at every
+- ⚠️ **Session-only AND auto-expires ~2026-08-09.** Both deaths silent. **Run `CronList` at every
   START** — this file records intent, not a live job.
