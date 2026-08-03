@@ -1,107 +1,97 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-02 22:35 PDT (Fire 6, STOP — DAY-CLOSED 2026-08-02)
-**Session log**: `dev/2026/08/02/2026-08-02-0727-docs-code-log.md` (yesterday's is
-`dev/2026/08/01/2026-08-01-0727-docs-code-log.md`, DAY-CLOSED verified)
+**Updated**: 2026-08-03 10:45 PDT (Fire 2, mid-WORK)
+**Session log**: `dev/2026/08/03/2026-08-03-0711-docs-code-log.md` (yesterday's is
+`dev/2026/08/02/2026-08-02-0727-docs-code-log.md`, DAY-CLOSED verified)
 
 **Worktrees**: product `~/Development/piper-morgan-worktrees/docs` @ `claude/docs-cycle` · website
 `~/Development/piper-morgan-website-worktrees/docs` @ `claude/docs-cycle`
-**Cron**: re-arming `efd5b41e` → new id at STOP (delete-then-create; see final action) —
-`57 6,9,12,15,18,21`. Registry row must match.
+**Cron**: `284908d1` — `57 6,9,12,15,18,21`. Registry row matches.
 **Hooks on this seat**: standalone `git commit` BLOCKS; compound `add && commit` BYPASSES. Mitigation:
 stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
-**Note for tomorrow**: main was busy for several stretches today (Fires 1–2 especially) — expect
-non-fast-forward rejections on push; `git fetch + rebase + re-push`, verify after every time.
+**⚠️ NEW today**: `pre-commit-broad-staging-warn.sh` (a Claude-Code PreToolUse hook, distinct from git's
+own hooks) blocks the Bash tool call outright on a ≥20-file staged commit, despite its own header
+documenting `exit 2 = warn, commit not blocked`. `--no-verify` has **no effect** — it's not a git hook.
+**Mitigation: split any large multi-file commit into batches under 20 files.** `git mv` renames
+re-detect correctly across separate batches as long as old-path and new-path land in the same commit.
 
 ---
 
 ## Awaiting others — check, don't re-derive
 
-- **PDR-007 awaits CIO ONLY** — unchanged all day (checked at every fire). Arch ✅ and Web ✅ both
-  reviewed, no objection. **Do not decide the storage question early** — pre-registered 2–4 week window
+- **PDR-007 awaits CIO ONLY** — unchanged, checked again this fire. Arch ✅ and Web ✅ both reviewed,
+  no objection. **Do not decide the storage question early** — pre-registered 2–4 week window
   (2026-07-30 → 2026-08-27), shipped measurement (`scripts/measure-editorial-drift.py`).
-- **Dispatch-DinP staleness report** — replied 2026-08-01, no reply yet as of Fire 6. Still watching.
+- **Dispatch-DinP staleness report** — replied 2026-08-01, no reply yet. Still watching.
+- **Lead Dev's weekly-docs-audit CI findings** — sent 2026-08-03 (cc CIO): the "Update Essential
+  Briefings" job's `sed` target (`Position**:` line) doesn't exist in any of the 11
+  `BRIEFING-ESSENTIAL-*.md` files, so it fails every single week, not intermittently. Also flagged
+  today's scheduled trigger not firing (had to `workflow_dispatch` manually). Not mine to fix — watch
+  for Lead's disposition (dead-code removal vs. restoring the convention).
 
 ## Owed by me — unblocked, priority order
 
 1. **`planning/current/` Finding 1 — needs a fresh, careful pass, NOT a quick rename.** Headline claim
    ("100% stale, 314d") is false — `vision.md` is ~113d, not ~314d — and there are 13 live inbound
-   references, several in active session-start briefing paths (`BRIEFING-CURRENT-STATE.md`,
-   `BRIEFING-piper-alpha.md`, `BRIEFING-ESSENTIAL-CHIEF-STAFF.md`, `BRIEFING-ESSENTIAL-PPM.md`,
-   `ppm-code-startup.md`). Corrected in the audit doc, original claim preserved not silently edited.
-   **Named trigger for the deferral**: needs the same per-file care Arch gave Finding 2 — re-derive
-   per-file staleness for all 7, confirm which of the 13 referrers actually need updating, then decide
-   rename vs. per-file disposition. Sat untouched through 3 quiet fires today — still correctly deferred
-   (the trigger is a fresh session/compaction, not "an idle fire came along").
-2. **Omnibus gap: Jul 29 – Aug 2, now 6 days** (grew by one today; original Jul 28 gap flagged by Comms
-   2026-08-02 10:05). Not a request, a dependency — Comms's `continue-narrative` discipline reads
-   digests, not raw logs. **Comms says explicitly: no urgency, not before Aug 18.** Sizable job (~5 days
-   × ~13 agents/day, growing) — own focused pass per `create-omnibus` skill, not squeezed into a fire.
+   references, several in active session-start briefing paths. Corrected in the audit doc, original
+   claim preserved not silently edited. **Named trigger for the deferral**: needs the same per-file care
+   Arch gave Finding 2 — re-derive per-file staleness for all 7, confirm which of the 13 referrers need
+   updating, then decide rename vs. per-file disposition. Trigger is a fresh session/compaction, not "an
+   idle fire came along" — still hasn't arrived.
+2. **Omnibus gap: Jul 29 – Aug 3, now 6 days.** Not a request, a dependency — Comms's `continue-narrative`
+   discipline reads digests, not raw logs. **Comms says explicitly: no urgency, not before Aug 18.**
+   Sizable job (~5-6 days × ~13 agents/day) — own focused pass per `create-omnibus` skill.
 3. **97 docs >30d asserting current-state language** — separate, broader item; no deadline named.
 4. **methodology-20's two HIGH-COMPLEXITY compression rules are mutually unsatisfiable** — raised to CIO
    twice now. Not mine to resolve; re-raise if it stays open much longer.
 5. **`docs-standing-items.md` is stale** (last touched 2026-05-27, pre-Amber). Low priority, not urgent.
-6. **Monday (2026-08-03) — first real run of the Doc Currency Check** added to the weekly audit. Watch:
-   does the ratio read legibly, does the `last_verified` cluster check surface correctly.
 
-## Resolved 2026-08-01/02 — do NOT re-open
+## Resolved 2026-08-03 — do NOT re-open
 
-- ~~docs/ tree audit Finding 2, all 16 files~~ — **fully closed.** 13 archived, 4 KEEP+linked, one
-  broken script pointer fixed, one real `.gitignore` landmine caught and Arch-verified. See yesterday's
-  and today's session logs for the full trace if it's ever needed again.
-- ~~"You Can't 'White Knuckle' Structural Problems" — published + syndicated~~ — **fully closed.**
-  Published, teaser-retitle cascade fixed on yesterday's live post, syndicated to LinkedIn (2 URLs, a
-  first-of-its-kind shape — Pulse in `linkedinURL`, native `ugcPost` recorded in notes). No Medium URL
-  given; not chased.
-- ~~CIO worktree-model-revision ack (07-25)~~ — sent 2026-08-01.
-- ~~All `to: docs` inbox items through Fire 6~~ — none arrived after Fire 2; nothing outstanding.
+- ~~Comms's Step-9-archival-gap finding (16 of 42 distributed posts unmoved)~~ — **fully closed.**
+  Reconciled the count (Comms: 16 `distributed`-only; mine: 19 incl. `published`), archived all 19 (23
+  files incl. 4 images), shipped Comms's suggested validator check (`status implies /published/ path`),
+  which immediately found **4 more** pre-Jun-1 rows outside Comms's stated scope — archived those too.
+  **23 files total across 4 batched commits** (split to work around the broad-staging hook — see header
+  note). Calendar clean, drift measurement unaffected (Class 2 = 0 throughout).
+- ~~Monday's first real Doc Currency Check run~~ — **confirmed reads correctly** in generated issue
+  #1475 (ratio-not-list instruction, `last_verified` clustering check both present as written). Had to
+  trigger manually since the schedule didn't fire — see "Awaiting others" above for the CI findings that
+  surfaced along the way.
 
 ## Inbox
 
-**53 remaining at STOP, all cc-only historical from the 7/21–7/28 migration window.** Everything
-addressed *to* docs has been drained all day. Not mass-moving to `read/` — drain on quiet fires.
+**53 remaining, cc-only historical from the 7/21–7/28 migration window.** Everything addressed *to*
+docs is drained as of this fire. Not mass-moving to `read/` — drain on quiet fires.
 
 ## Standing lessons (carried, still live)
 
 **Verify per assertion, not per session; verify a commit/send landed via `git status` after, not
-intent.** Zero new instances today — every file-move commit used the lesson-learned staging pattern
-(archive-path-only, never a stale pre-move pathspec) and landed clean first try, twice.
+intent.** Held up again today — reconciled Comms's count rather than trusting either number blind, and
+caught the broad-staging hook's block by checking `git log -1` after two failed commit attempts rather
+than assuming "no error text visible" meant success.
 
-**Cross-agent verification is now bidirectional.** Both Comms and Arch independently re-checked pieces
-of today's work behaviorally before trusting a status report from me — the same discipline I apply
-outward, now visibly running in both directions across the cohort.
-
-**Genuine quiet holds are not a failure of the discipline.** Three of six fires today (3, 4, 5) had
-nothing both unblocked and small enough to act on — everything owed was either deferred with a real
-trigger, gated on another role, or too large for a single fire. Batched them per the skill's own
-guidance rather than manufacturing busywork or writing near-duplicate log entries. Worth remembering
-this is the correct shape on a light day, not something to second-guess.
+**A hook's own documentation can be wrong about its own behavior.** `pre-commit-broad-staging-warn.sh`'s
+header says its warning doesn't block; empirically, on this harness, it did — twice, with `--no-verify`
+having zero effect since it's a different hook layer than git's. Same shape as the mailbox-hook
+findings from two weeks ago (CLAUDE.md's Amber gotcha #2): don't trust a hook's documented behavior over
+what actually happens when you run it.
 
 ## Watch items (not owed to me, but adjacent)
 
-- **Puppeteer extraction cause** — Pard's lane, still open. Three hypotheses dead.
+- **Puppeteer extraction cause** — Pard's lane, still open.
 - **methodology-20's mutually unsatisfiable compression rules** — CIO owns, raised twice.
-- **`sync-pm-local.sh`'s opportunistic cadence** — flagged to Dispatch 2026-08-01 as the likely root
-  cause of their staleness report. Not proposing a change — flagging only that any consumer reading
-  that checkout inherits the same freshness gap.
-- **`docs/internal/operations/one-command-checks.md`** (Arch, 2026-08-02) — a live catalog of "check
-  this before a confident wrong claim" commands, each earned by a real error. Worth reading before the
-  next audit-shaped task; two independent `.gitignore` landmine catches today are exactly its shape.
+- **`docs/internal/operations/one-command-checks.md`** (Arch, 2026-08-02) — worth reading before the
+  next audit-shaped task.
+- **`pre-commit-broad-staging-warn.sh` blocking despite advisory design** — flagged nowhere yet beyond
+  this file and today's session log. Worth a memo to whoever owns `.claude/hooks/` if it recurs for
+  another agent — not urgent since the workaround (split batches) is cheap and now documented here.
 
-## Top of the queue for 2026-08-03
+## The one thing I most want to carry into the next fire
 
-⚠️ Monday — first real run of the Doc Currency Check in the weekly docs audit. Watch how it reads.
-
-1. Nothing PM-facing or time-boxed is queued. Owed items above are all either deferred-with-trigger,
-   gated on others, or explicitly non-urgent.
-2. If a genuinely idle stretch of fires recurs, the omnibus gap (item 2 above) is the best-justified use
-   of that time — Comms named a real reason it matters and the window before it's needed (Aug 18) is
-   still comfortable.
-
-## The one thing I most want to carry into tomorrow
-
-**A day can be legitimately front-loaded.** Today's substantive work — the full tree-audit closeout, the
-PM-engaged publish cascade — landed in the first two fires; the last three were correctly quiet because
-the work was actually done, not because vigilance lapsed. The tell that it was real rather than a missed
-signal: every quiet fire re-checked the same two gated items and found them genuinely unchanged, not
-just skipped the check.
+**Going to verify one thing can surface a second, unrelated finding — check both before reporting
+either.** I went to confirm the Doc Currency Check's first run; the schedule hadn't fired, so I
+dispatched manually, and while confirming the run succeeded I found a completely separate job
+(Essential Briefings update) has been silently broken for at least 2 weeks. Neither finding would have
+surfaced from a narrower "did my own check work" question. Worth deliberately looking one layer wider
+than the specific thing being verified, especially in CI/infra investigations.
