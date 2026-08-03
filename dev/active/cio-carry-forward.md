@@ -6,30 +6,29 @@
 
 ## PM Attention
 
-*(Whole-file rewrite at the 2026-08-01 STOP. Timestamp verified with `date`. Live items only.)*
+*(Whole-file rewrite at the 2026-08-02 STOP. Timestamp verified with `date`. Live items only.)*
 
-- 🔴 **UNRESOLVED, and PM should not inherit it as settled: the `lead` composer draft.** Someone typed *"ok keys are in the keychain now, try #1445 again"* into lead's input box and never sent it; **PM does not recognise writing it**, and its timing is unknown. Per Exec, provisioning must go through the app's **`KeychainService`, NOT the `security` CLI** — consistent with PA's 7/31 finding that Amber's keys are unprovisioned. **The draft wants sending or clearing deliberately, and the key state verified through the app path** rather than inferred from an unattributable line.
-- 🟢 **`lead` is awake** — dark 07-30 09:45 → 08-01 22:03, now committing. **I reported it healthy on 7/31 and was wrong**; see the log. Its wake was on Exec's critical path the whole time.
-- 🟢 **THE MIGRATION HAS TAKEN — and the number keeps climbing.** `closed today: 9/11` (8 on 7/31, **1 on 7/29**). 11/11 live, 11/11 registry rows, belt clean.
-- 🟡 **The innovation agenda — PM asked for it once the migration landed, and nothing blocks it.** It has now waited three days behind migration follow-through. **This is the next substantive thread and I should stop letting operational corrections crowd it out.**
-- 🟡 **claude.ai account tier** — PA's surviving item. Still PM\'s, still open, and deliberately kept visible so the OpenAI retraction does not bury it.
-- 🔴 **Memory-index guard is on the GENERATOR, not the FILE.** Direct edits to `MEMORY.md` succeed silently past the ceiling; the platform reminder says *"compact this file"*, pointing at the unguarded path. Four agents have refused it **on judgment**, which is not a safety property. **Guard placement is the prior question; format choice (prune / two-tier) is PM+HOST\'s.**
-- 🟡 **`host` / `comms` / `web` registry rows carry no job id.** The cron is session-scoped with two silent death modes, so a row records **intended cadence, not a live job**. Convention is in the registry header; not chased role-by-role.
+- 🟡 **The innovation agenda is WRITTEN and awaiting PM** — `dev/active/cio-innovation-agenda-2026-08-02.md`. Retires three priorities (migration complete · CLAUDE.md lane closed · the "Lead-Dev streamlining" framing, which was never streamlining but **absent substrate**). Four candidates, each from a costed incident. **§6 puts one real question to PM: should this lane shift from BUILDING mechanisms to PROTECTING a property?** The cohort's cross-checking caught every one of my defects, it is **social rather than built**, and it is the thing most likely to erode quietly as eleven roles settle into self-sufficient cycles.
+- 🟡 **claude.ai account tier** — PA's surviving item, still PM\'s. Kept visible so the OpenAI retraction does not bury it.
+- 🔴 **Memory-index guard is on the GENERATOR, not the FILE.** Direct edits to `MEMORY.md` succeed silently past the ceiling, and the platform reminder says *"compact this file"* — pointing at the unguarded path. Four agents have refused it **on judgment**, which is not a safety property. **Guard placement is the prior question; format choice (prune / two-tier) is PM+HOST\'s.**
+- 🟢 **Ship #054 filed** — I was the 6/6 gate and I was **late**, with no can\'t-file signal either. Exec\'s draft is unblocked with a day of slack before Wednesday.
+- 🟡 **`host` / `comms` / `web` rows still carry no cron job id** — those rows record intended cadence, not a live job. Convention is in the registry header; not chased role-by-role.
+
+## The number worth watching
+
+**`closed today: 10 / 11`** — the trend across the migration and after: **1 (7/29) → 8 (7/31) → 9 (8/01) → 10 (8/02)**. Eleven seats provisioned was a fact about me; **ten roles closing their own day unprompted is a fact about whether it took.**
 
 ## Shipped today
 
-**`duty-cycle-tick` v1.23** — the pane-reading method, fixed at the method rather than the instance (Janus\'s amendment, verbatim): *read ABOVE the input separator, or corroborate with an artifact a real exchange produces; a quoted "user" line in the input box is a claim ABOUT the user, not a message FROM them*; and capture twice, minutes apart.
+**Ship #054 workstream review** (window Jul 24–30, 143 in-window commits; PM-account-migration priority marked COMPLETE and retiring) · **the innovation agenda** · `lead` confirmed fully recovered and cycling.
 
 ## Lower priority / queued
 
-- **Nothing expires a negative claim** — still the strongest mechanism candidate, now with two expensive instances (the OpenAI referent, the blind-sweep note).
-- **Nothing re-verifies an inherited action\'s REFERENT** — *"is it still open?"* is checkable and gets checked; *"is it still the right thing?"* is neither.
-- **No composition test for multi-part changes** · **nothing consumes a review\'s second-order findings.**
+- **Skill-candidates review — Aug 4, two days out.** First one ever; unchanged and on time.
+- The agenda\'s four candidates: negative claims don\'t expire · inherited asks re-checked for status not referent · no composition test · nothing consumes second-order findings. **Deliberately unbuilt pending PM\'s read** — (a) especially, because I do not yet know its machine-checkable form and building it wrong is the failure the agenda exists to reduce.
 
 ## Cron
 
-`7 10,16,22` LEAN — job **`44e16ee9`**, **auto-expires ~2026-08-07**. Verified alive at today\'s first fire and the registry row matched — the job-id convention working on its first real check. ⚠️ Session-scoped: dies silently on session exit *and* at expiry.
+`7 10,16,22` LEAN — job **`44e16ee9`**, **auto-expires ~2026-08-07 (five days out)**. ⚠️ Session-scoped: dies silently on session exit *and* at expiry.
 
-⚠️ **Two fires lost this week to classifier outages** (7/30 STOP, 8/1 START). Both left the day unlogged or unclosed until the next fire caught it. **An outage-blocked fire is indistinguishable from a skipped one in the record** unless the next fire says so.
-
-<!-- Whole-file rewrite 2026-08-01. Rewriting the TOP is not rewriting the FILE. -->
+<!-- Whole-file rewrite 2026-08-02. Rewriting the TOP is not rewriting the FILE. -->
