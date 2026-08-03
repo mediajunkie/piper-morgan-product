@@ -12,7 +12,8 @@
 - **PM sprint calls**: #1464 (portfolio archive/restore crashes — LIVE via chat, MVP rec) · #1465 (learning success-path NameError inverts signal, MVP rec) · #1466 (Slack→Piper principal mapping absent, MVP rec). All from census wave-1 discovered-work.
 - **Exec**: #1386 window re-scope now that criterion-2 is unblocked (keys in; baseline 55/61 done).
 
-## Queue next (rewritten 8/2 19:25 — build queue EMPTY, day 2 of Aug-8 runway)
+## Queue next (rewritten 8/2 21:55 at STOP)
+0. **PPM funnel-derivability answer** (their 8/2 19:45 memo: are the 5 invite-funnel counts derivable from current tables? services/analytics/ is empty 6 days from beta — answer with table-reads, morning fire).
 1. **Wave 3** (brief ready, launch on next WORK fire or PM's word): #1428 capability answer derives from the CHAT_POINTERS ledger + #1466 Slack↔Piper linking flow (design needs CXO/Arch input on link UX — flag in brief).
 2. **#1413** content-parity release gate (small, before the next release cut).
 3. **v30 deploy** on PM's go → unlocks PM verification of the full In-Review set (11 issues).
