@@ -1,7 +1,7 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-01 STOP (~22:40 PT) — day closed, cron re-armed for Sunday
+**Last rewritten**: 2026-08-02 STOP (~22:40 PT) — day closed, cron re-armed for Monday
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -42,29 +42,37 @@ successive wrong readings of one roadmap line, then recommended moving **#1174 i
 dissolved sprint. PM caught it. **I had run the sweep myself and it was in no artifact I carried.**
 Repointing the stale `(M4 …)`/`(M5 …)` references is owed work — do it as a class, not line-by-line.
 
-## 🔴 FIRST THING SUNDAY (08-02)
+## 🔴 FIRST THING MONDAY (08-03)
 
-**1. #1386 criterion 2 — QUALITY HALF still owed my signature.** Routing half **SIGNED 8/1**
-(61/61, every category 100%, per-category regime cleared — [issue comment](https://github.com/mediajunkie/piper-morgan-product/issues/1386#issuecomment-5155623078)).
-- ⏳ **Quality half withheld on measurement parity, not on quality.** Tonight's judge tier ran
-  7 PASS / 15 MARGINAL of 22 under `claude-sonnet-4-6` + STRICT/PASS-only counting; Run 15 used a
-  different judge (harness docstring says Gemini) and a different counting rule (23/25, MARGINAL
-  separate). **Non-comparable.**
-- **Lead runs the parity check in tomorrow's fresh session** — same judge config as Run 15, or
-  Run 15's config documented and a new baseline declared. **Sign the quality half same-fire once a
-  parity-checked number exists, whatever it says.**
-- ⚠️ **Do not let routing-100% read as criterion 2 closing.** The regime's thresholds are stated in
-  **Quality PASS**; routing is necessary, not sufficient. **Criterion 2 is partially satisfied.**
+**1. ✅ #1386 criterion 2 is FULLY SIGNED — both tiers, no open conditions.** Routing 61/61 all
+categories; quality LENIENT 20/22 = 90.9% (no regression); residual discharged (misses one per side:
+Q3 Identity, Q50 Slack). **Do not re-open it.** Criteria 1/4/5/6 remain PM's and out of scope.
 
-**2. Jake conversion — still on Exec's signal** (PM+CXO decision on synthesis §4). Same-day when it lands.
+**2. The funnel query is with Lead.** Five counts, **aggregate only — counts not names** (HOST's
+ruling; query emits counts so no named intermediate exists). **Starts at invite ISSUED**, not
+account created, or the third case is invisible. ⚠️ **Stage-1 non-redemption is irreducibly
+ambiguous** (never-received vs never-acted; no-mailer model = no delivery signal) — that's the cell
+CXO's revised ask covers. **Read-offs agreed in advance**: drop at 1 = upstream · drop 2→4 = Jake
+generalizes, cold-start is the right bet · reached 4 then stopped = the worse case our fix misses.
 
-**3. Awaiting PM — down to ONE from two**: **#1462 milestone** (my read: Production). #1459 was set
-to Production 8/1 ✅. Also still open: **`gh auth refresh -s project`** — six days, blocks board
-reads for PPM and Sprint/Status writes for Lead.
+**3. #1468 is mine + CXO + Lead, and it's a PRODUCT question**: the C=1 cluster means **the bar our
+thresholds pass on (LENIENT) cannot see what Jake reported; the bar that can (STRICT) has no
+ratified threshold.** Deciding which bar the thresholds mean is a commitment about beta quality.
+Taking the PPM half.
 
-**4. Watch, not drive**: #1467 (Q22 oscillator, Production, Arch-ratified N=3 stability criterion) ·
-PA's Probe A (first arm 5/5 survived; PA says they tested the wrong thing — CXO has the verdict) ·
-the keychain ACL issue (reads from non-authorizing binaries hang; Lead's seat is authorized).
+**4. Jake conversion — still on Exec's signal** (PM+CXO decision on synthesis §4). Same-day.
+
+**5. Ship #054 publishes Wed Aug 5** — my workstream review was filed 7/31; Exec synthesizes. Watch
+for a fact-check ask Mon/Tue.
+
+**6. Awaiting PM — ONE item plus two asks**: **#1462 milestone** (my read: Production) ·
+**`gh auth refresh -s project`** (7 days; blocks board reads for PPM, Sprint/Status writes for
+Lead) · **minimal funnel as beta scope** (5 counts, not a platform — `services/analytics/` is an
+empty package and beta is Aug 8).
+
+**7. Watch, not drive**: PDR-006's ChatGPT criterion is **marked, not amended** (Arch) — it moves to
+*true* if the **deployed-host retest** confirms failure-shaped payloads at 6/6 outside the provider
+APIs. #1462 carries the AC.
 
 ## Active PM threads
 
