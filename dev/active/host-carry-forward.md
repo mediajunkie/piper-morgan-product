@@ -4,6 +4,8 @@
 
 ## Read this first
 
+⚠️ **RE-VERIFY THIS FILE'S CLAIMS, DON'T RESTATE THEM.** Web's rule (2026-08-03): *"an item marked 'unconfirmed' is a claim to re-verify, not a status to keep restating."* Applied it here the day it arrived and immediately found a claim I'd corrected in CLAUDE.md two days earlier and never propagated back. **A carry-forward is where claims go to be preserved unexamined** — it's read every fire and audited never.
+
 **Match your measurement's scope to the question.** Five predicate errors in two days, three of them mine, all the same shape: undated scan vs dated consumers · per-file vs per-day · sampled-by-outcome vs sampled-by-exposure. **Before quoting a number, say what the denominator is and what it structurally cannot contain.**
 
 **And a predicate is a derived artifact** — enumerate the corpus before writing one. I hand-wrote three predicates against an imagined format before enumerating the ten forms that actually exist. **Census now lives at `docs/internal/operations/day-closed-marker-census.md`** — regenerate it before trusting it; it carries its own script.
@@ -48,7 +50,7 @@
 
 ## Live findings others own
 
-- **PreCompact hook: CONFIRMED FIRING** 2026-07-29 (CLAUDE.md line updated to ✅). ⚠️ **But its HARD tier is uninformative under Model A** — it gates on `@{u}..HEAD` where `@{u}` is a ref we never push to (6711 vs `origin/main..HEAD` = 0), so it can only ever fire HARD. **CIO's surface**; fix pending; whoever changes it must watch it fire.
+- **PreCompact hook: CONFIRMED FIRING** 2026-07-29 (CLAUDE.md ✅). ⚠️ **Its HARD tier is uninformative on seats whose upstream isn't `origin/main`** — it gates on `@{u}..HEAD`. ⚠️ **CORRECTED 2026-08-01 by PA's fleet census: this is NOT a Model-A property**, it is provisioning drift and it was the MINORITY case (9 of 11 seats were fine). *This line said "under Model A" until 2026-08-03 — I corrected it in CLAUDE.md two days ago and not here, which is my own "a correction must chase every surface" rule failing on my own file. Caught by applying Web's re-verify discipline to this document.* CIO's surface; whoever changes it must watch it fire.
 - **`.gitignore` blinds the repo to its own evidence.** Six surfaces recorded `session-end-warnings.log` as never existing because `.gitignore:136` hides it from `git ls-files` and `origin/main`. **Before concluding a file never existed: `git check-ignore -v <path>`.**
 
 ## Open, owned by others (do not re-derive)
