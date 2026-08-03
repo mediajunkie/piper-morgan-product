@@ -218,6 +218,8 @@ For QUERY category:
 Return a JSON object with:
 {{
     "category": "identity|temporal|status|priority|guidance|execution|analysis|synthesis|strategy|learning|query|conversation|unknown",
+    "verb": "one canonical verb from the list below, or null if none fits",
+    "source_type": "what the verb acts on when applicable (github_issue, commit_range, text), else null",
     "action": "specific_action_name",
     "confidence": 0.0-1.0,
     "reasoning": "brief explanation of classification",
@@ -225,6 +227,9 @@ Return a JSON object with:
     "ambiguity_notes": ["missing: specific detail", "unclear: what aspect"],
     "knowledge_used": []
 }}
+
+Verb (pick the single closest canonical verb, or null): {verb_vocab}
+action: a specific action name (used when no verb fits well).
 
 Examples:
 

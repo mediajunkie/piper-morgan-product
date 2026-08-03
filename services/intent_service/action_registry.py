@@ -434,11 +434,10 @@ _VERB_SOURCE_TO_ACTION: dict[tuple["Verb", Optional[str]], str] = {
 }
 
 
-# #1432 (2026-08-02): this shim's only consumer (the orphaned PM-034
-# llm_classifier, deleted — reference impl at fba6452f0) is gone. KEPT
-# deliberately as the #1124 Phase-4 re-landing target: when the verb-emitting
-# prompt flip is re-landed in the LIVE classifier (classifier.py), this is the
-# canonicalization it wires through. Do not delete without the Phase-4 owner.
+# #1124 Phase 4 RE-LANDED 2026-08-02 (#1432 condition ii discharged): the live
+# consumer is now services/intent_service/classifier.py::_classify_with_reasoning
+# (prompt emits verb+source_type; this shim canonicalizes at the parse boundary).
+# Historical reference impl (deleted PM-034 classifier): fba6452f0.
 def verb_sourcetype_to_legacy_action(
     verb: "Verb", source_type: Optional[str] = None
 ) -> Optional[str]:

@@ -979,11 +979,18 @@ class IntentClassifier:
             spatial_context_info = f"\nSpatial Context: {json.dumps(spatial_context, indent=2)}"
 
         # Build prompt with context
+        # #1124 Phase 4 (re-landed 2026-08-02, #1432 — reference impl fba6452f0):
+        # the prompt asks for a canonical verb (closed vocabulary, derived from the
+        # Verb enum so a new verb joins the prompt by existing) + a source_type
+        # slot alongside the free-form action.
+        from services.intent_service.action_registry import Verb
+
         prompt = INTENT_CLASSIFICATION_PROMPT.format(
             user_message=message,
             context_info=context_info,
             file_context=file_context,
             spatial_context=spatial_context_info,
+            verb_vocab=", ".join(v.value for v in Verb),
         )
 
         try:
@@ -1020,11 +1027,43 @@ class IntentClassifier:
             else:
                 raise ValueError("No valid JSON object found in response")
 
+            # #1124 Phase 4 (re-landed 2026-08-02, #1432): the prompt now emits a
+            # canonical verb (+ source_type). When the verb maps via the transition
+            # shim, canonicalize action to the legacy string consumers already
+            # branch on; otherwise keep the free-form action (zero-regression
+            # fallback). source_type rides into intent.context.
+            from services.intent_service.action_registry import (
+                verb_sourcetype_to_legacy_action,
+            )
+            from services.intent_service.action_registry import Verb as _Verb
+
+            action = parsed["action"]
+            source_type = parsed.get("source_type")
+            if isinstance(source_type, str):
+                source_type = source_type.strip()
+                if source_type.lower() in ("", "null", "none", "n/a"):
+                    source_type = None
+            else:
+                source_type = None
+
+            verb_str = parsed.get("verb")
+            if verb_str:
+                try:
+                    verb = _Verb(str(verb_str).strip().lower())
+                except ValueError:
+                    verb = None
+                if verb is not None:
+                    legacy_action = verb_sourcetype_to_legacy_action(verb, source_type)
+                    if legacy_action:
+                        action = legacy_action
+
             # Build context with spatial information
             intent_context = {
                 "original_message": message,
                 "knowledge_used": parsed.get("knowledge_used", []),
             }
+            if source_type:
+                intent_context["source_type"] = source_type
 
             # Add spatial context if available
             if spatial_context:
@@ -1043,7 +1082,7 @@ class IntentClassifier:
                 # reader of intent.original_message got "" (the floor's "came
                 # through empty", slot-fills, regex fallbacks). Found live 2026-07-09.
                 category=IntentCategory(parsed["category"].lower()),
-                action=parsed["action"],
+                action=action,  # #1124 Phase 4: shim-canonicalized when the verb mapped
                 confidence=parsed["confidence"],
                 context=intent_context,
             )
