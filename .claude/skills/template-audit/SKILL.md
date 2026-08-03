@@ -2,7 +2,7 @@
 name: template-audit
 description: Run a mechanical template audit on a finished blog draft before sending the publish-ready signal to Docs. Use after PM's voice pass is complete. Produces a pass/fail report with specific flags. Blocks the publish-ready signal on any FAIL.
 scope: comms
-version: 1.3
+version: 1.4
 created: 2026-06-19
 updated: 2026-08-03
 ---
@@ -117,7 +117,26 @@ Any match = FAIL. All brackets must be filled or removed before publish.
 grep -n "Next on Building Piper Morgan" <draft>
 ```
 
-Must be present. The title in the tease must match the **next scheduled post** from the calendar (checked in pre-flight step 3) — not assumed, not the next narrative beat if an insight comes first.
+Must be present **on narratives and insights**. The title in the tease must match the **next scheduled post** from the calendar (checked in pre-flight step 3) — not assumed, not the next narrative beat if an insight comes first.
+
+⚠️ **Weekly Ships sit OUTSIDE the tease chain — two rules, both measured 2026-08-03, and getting this wrong causes ACTIVE DAMAGE rather than a miss:**
+
+- **A Ship carries no footer tease at all.** `theme=ship` → check #6 is **N/A, not FAIL**. Measured: **6 of the 6 most recent Ships (#048–#053) have none.**
+- **Narratives and insights tease past a Ship to the next non-Ship post.** Measured: **7 of 8** recent cases where a Ship fell next in the calendar. So when the calendar's literal next row is a Ship, the correct tease target is the row *after* it.
+
+**Why this warning exists**: the sentence above used to end at "next scheduled post," full stop. Read literally against the calendar it would have had me "correct" *The List That Lies* (Aug 4) to tease Ship #054 (Aug 5) — **breaking a chain that was already right**, the day before it published. Unlike check #5's blindness, a wrongly-*directive* check doesn't just miss things; it manufactures the defect it claims to prevent. **A gate that is confidently wrong is worse than a gate that is silent.**
+
+**Determine the target this way, not from the raw next row:**
+
+```bash
+python3 -c "
+import csv
+rows=sorted([r for r in csv.DictReader(open('docs/internal/planning/comms/editorial-calendar.csv')) if r['pubDate']],key=lambda r:r['pubDate'])
+me='<this post title>'
+i=next(n for n,r in enumerate(rows) if r['title']==me)
+nxt=next((r for r in rows[i+1:] if r['theme']!='ship'), None)
+print('tease target:', nxt['title'] if nxt else 'NONE — last in queue')"
+```
 
 ### 7. Reader question — present
 
@@ -237,3 +256,5 @@ On PASS: send the publish-ready memo to Docs inbox per the handoff protocol (Jun
 *v1.2 — 2026-07-29. **Check #1 rewritten to have no third-party dependency**, after it was found silently unrunnable on Amber for every role in every location (no `pyyaml`, and no venv anywhere on the host including the shared checkout). It had been emitting a `ModuleNotFoundError` traceback into a column of twelve passes — the frontmatter check, i.e. the one class that had already produced a real shipped defect (the caption `''` bug). Found by Comms while auditing Weekly Ship #053; independently verified one level deeper by Docs, who established the venv is absent host-wide rather than worktree-local. The replacement parses the block directly (three keys don't need a YAML engine) and was behaviorally tested across four shapes before shipping: filled, empty-quoted `''`, YAML-escaped `''` apostrophe inside a caption, and no-frontmatter — all correct, no traceback. Also added: the explicit `⚠ CANNOT RUN` verdict token (a non-executing check must never occupy the PASS column, per m-44), the Ship-caption N/A-by-convention note, and the warning that `''` doubling is correct in YAML but renders literally in markdown body text.*
 
 *v1.3 — 2026-08-03. **Check #5 widened to `\[PM\b`.** The placeholder gate could not see `[PM: …]` or `[PM VOICE-PASS: …]`, the two bracket forms these drafts actually use — so the check that blocks a publish-ready signal on unresolved PM questions was scoring 0 on drafts that had them. Found during a pre-pass when an ad-hoc grep disagreed with the skill's own pattern. Zero false positives across the drafts directory. Frontmatter version and footer bumped together, which is the defect v1.2 shipped with.*
+
+*v1.4 — 2026-08-03. **Check #6 corrected: Weekly Ships sit outside the footer-tease chain.** The check said the tease must match "the next scheduled post" with no exception for Ships. Measured against actual practice: **6 of 6 recent Ships carry no tease**, and **7 of 8** narratives/insights whose next calendar row was a Ship teased *past* it to the following non-Ship post. Read literally, the old wording would have had me "fix" *The List That Lies* to tease Ship #054 — **corrupting a correct chain the day before it published.** Distinct from the v1.3 defect and worse in kind: check #5 was *blind* (it missed things), check #6 was *wrongly directive* (it would have manufactured the defect it claims to prevent). Added a calendar-derived query for the tease target so the rule isn't re-derived by eye. Second gate defect found in this skill in one day — both surfaced by running the gate against real queue state rather than reading it.*
