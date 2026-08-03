@@ -1820,6 +1820,13 @@ class PreClassifier:
                     category=category,
                     action=final_action,
                     confidence=1.0,
+                    # #1460: populate BOTH surfaces at construction. This path
+                    # returns before the classify()-entry backfill
+                    # (classifier.py), so attribute-only readers (e.g. the
+                    # temporal detectors, _detect_setup_request) saw "" and
+                    # their gates could never fire — the #1417 mis-route
+                    # resurfaced on the dominant chat path.
+                    original_message=message,
                     context={"original_message": message, "multi_intent_detection": True},
                 )
                 intents.append(intent)

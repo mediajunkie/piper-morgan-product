@@ -1975,10 +1975,18 @@ class CanonicalHandlers:
         - "configure my projects"
         - "set up integrations"
         """
-        if not intent or not intent.original_message:
+        if not intent:
+            return None
+        # #1460 idiom B: attribute first, dict fallback — dict-only writers
+        # (unbackfilled paths like the pre-fix detect_multiple route) must
+        # still gate correctly. This detector guards the #814 setup flow.
+        original_message = intent.original_message or (intent.context or {}).get(
+            "original_message", ""
+        )
+        if not original_message:
             return None
 
-        raw_input = intent.original_message.lower()
+        raw_input = original_message.lower()
 
         # Setup patterns with their topics
         setup_patterns = [
@@ -2294,10 +2302,16 @@ What would you like to set up first?"""
         - "What do I have today?"
         - "Show me today's agenda"
         """
-        if not intent or not intent.original_message:
+        if not intent:
+            return False
+        # #1460 idiom B: attribute first, dict fallback (see _detect_setup_request).
+        original_message = intent.original_message or (intent.context or {}).get(
+            "original_message", ""
+        )
+        if not original_message:
             return False
 
-        raw_input = intent.original_message.lower()
+        raw_input = original_message.lower()
 
         # Agenda/schedule keywords combined with today reference
         agenda_patterns = [
@@ -2593,10 +2607,16 @@ What would you like to set up first?"""
         - "What got done yesterday?"
         - "Yesterday's accomplishments"
         """
-        if not intent or not intent.original_message:
+        if not intent:
+            return False
+        # #1460 idiom B: attribute first, dict fallback (see _detect_setup_request).
+        original_message = intent.original_message or (intent.context or {}).get(
+            "original_message", ""
+        )
+        if not original_message:
             return False
 
-        raw_input = intent.original_message.lower()
+        raw_input = original_message.lower()
 
         # Retrospective patterns
         retrospective_patterns = [
@@ -2802,10 +2822,16 @@ What would you like to set up first?"""
         """
         import re
 
-        if not intent or not intent.original_message:
+        if not intent:
+            return None
+        # #1460 idiom B: attribute first, dict fallback (see _detect_setup_request).
+        original_message = intent.original_message or (intent.context or {}).get(
+            "original_message", ""
+        )
+        if not original_message:
             return None
 
-        query = intent.original_message.lower()
+        query = original_message.lower()
 
         # Patterns for last activity queries
         patterns = [
@@ -3509,10 +3535,18 @@ What would you like to set up first?"""
         """
         import re
 
-        if not intent or not intent.original_message:
+        if not intent:
+            return False
+        # #1460 idiom B: attribute first, dict fallback (see _detect_setup_request).
+        # 6th site per the #1460 audit — not currently live-broken (its only
+        # callers set the attribute) but one wiring change from live.
+        original_message = intent.original_message or (intent.context or {}).get(
+            "original_message", ""
+        )
+        if not original_message:
             return False
 
-        query = intent.original_message.lower()
+        query = original_message.lower()
 
         # Patterns for priority recommendation
         patterns = [
@@ -3537,10 +3571,16 @@ What would you like to set up first?"""
         """
         import re
 
-        if not intent or not intent.original_message:
+        if not intent:
+            return None
+        # #1460 idiom B: attribute first, dict fallback (see _detect_setup_request).
+        original_message = intent.original_message or (intent.context or {}).get(
+            "original_message", ""
+        )
+        if not original_message:
             return None
 
-        query = intent.original_message.lower()
+        query = original_message.lower()
 
         # Patterns for duration queries
         patterns = [
