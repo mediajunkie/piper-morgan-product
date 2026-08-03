@@ -4,7 +4,7 @@ on:
   schedule:
     # Runs every Monday at 9:00 AM Pacific (PDT: UTC-7, PST: UTC-8)
     # Using 4:00 PM UTC which is 9:00 AM PDT (summer) / 8:00 AM PST (winter)
-    - cron: "0 16 * * 1"
+    - cron: "7 16 * * 1"  # off the top-of-hour (GH Actions congestion; Docs 2026-08-03 no-fire finding)
   workflow_dispatch: # Allows manual trigger for testing
 
 permissions:
@@ -348,52 +348,3 @@ jobs:
             console.log('✅ Weekly documentation audit workflow completed successfully');
             console.log('Check GitHub issues for the FLY-AUDIT Weekly Docs Audit checklist');
             console.log('PRIORITY: refresh docs/briefing/BRIEFING-CURRENT-STATE.md if stale');
-
-  update-essential-briefings:
-    runs-on: ubuntu-latest
-    name: Update Essential Briefings
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Update Essential Briefings
-        run: |
-          # Extract current position from roadmap or current state
-          if [ -f "docs/internal/planning/roadmap/roadmap.md" ]; then
-            POSITION=$(grep -i "current position\|position:" docs/internal/planning/roadmap/roadmap.md | head -1 | cut -d: -f2 | xargs)
-          elif [ -f "docs/briefing/BRIEFING-CURRENT-STATE.md" ]; then
-            POSITION=$(grep -i "position:" docs/briefing/BRIEFING-CURRENT-STATE.md | head -1 | cut -d: -f2 | xargs)
-          else
-            POSITION="4.4.3"  # Default fallback (update when position advances)
-          fi
-
-          echo "Updating essential briefings with position: $POSITION"
-
-          # Update all essential briefings with current position
-          # Briefings migrated from knowledge/ to docs/briefing/ (Apr 2026)
-          for file in docs/briefing/BRIEFING-ESSENTIAL-*.md; do
-            if [ -f "$file" ]; then
-              # Update the position line in each briefing
-              sed -i "s/Position\*\*: [0-9.]*/Position**: $POSITION/" "$file"
-              echo "Updated $file with position $POSITION"
-            fi
-          done
-
-      - name: Commit changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-
-          if [[ `git status --porcelain` ]]; then
-            git add docs/briefing/BRIEFING-ESSENTIAL-*.md
-            git commit -m "chore: Update essential briefings position
-
-            🤖 Generated with [Claude Code](https://claude.ai/code)"
-            git push
-            echo "✅ Essential briefings updated and committed"
-          else
-            echo "ℹ️ No changes needed in essential briefings"
-          fi
