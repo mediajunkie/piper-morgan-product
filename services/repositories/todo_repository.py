@@ -74,10 +74,16 @@ class TodoRepository(BaseRepository):
         """Get todos for owner with comprehensive filtering"""
         query = select(TodoDB).where(TodoDB.owner_id == owner_id)
 
+        # #1460 discovered-work: TodoDB.status/priority are String columns
+        # ("Changed from Enum to String") — comparing the raw Enum raises
+        # asyncpg DataError ("expected str, got TodoStatus"). Every working
+        # comparison in this file uses .value (see get_todo_stats); these two
+        # were latent because the only status-passing caller (the agenda
+        # aggregation path) was unreachable until #1460 revived its gate.
         if status:
-            query = query.where(TodoDB.status == status)
+            query = query.where(TodoDB.status == status.value)
         if priority:
-            query = query.where(TodoDB.priority == priority)
+            query = query.where(TodoDB.priority == priority.value)
         if context:
             query = query.where(TodoDB.context == context)
         if project_id:

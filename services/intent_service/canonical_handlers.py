@@ -2583,7 +2583,10 @@ What would you like to set up first?"""
                 "context": {
                     "timezone": timezone_short,
                     "has_calendar": bool(calendar_context),
-                    "todo_count": len(todos),
+                    # #1425 sentinel: todos is None when the lookup FAILED —
+                    # never claim a count (len(None) crashed the whole agenda
+                    # response once #1460 made this path reachable).
+                    "todo_count": len(todos) if todos is not None else None,
                     "has_priorities": bool(priorities),
                 },
             },
