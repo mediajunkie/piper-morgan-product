@@ -6,7 +6,7 @@ self-authored-by: Web (Amber/pipermorgan.ai, Opus 5)
 last_updated: 2026-07-30
 refreshed: 2026-07-30
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
-briefing_sibling: "(still none — BRIEFING-ESSENTIAL-WEB.md not yet written; gap still open, see §5)"
+briefing_sibling: "docs/briefing/BRIEFING-ESSENTIAL-WEB.md — written 2026-08-03, closing the gap HOST flagged 2026-06-20"
 refresh_discipline: "section 2 reviewed at each duty-cycle START — opening a session requires reading the carry-forward queue, which is the same act as touching these priorities; the session-open is the refresh moment (Rule 5)"
 staleness_note: "found stale at 41d (Arch, 2026-07-30, cohort-wide finding: check-staleness.py works and is invoked by nothing — all 10 role portfolios were stale). Refreshing my own content per Arch's own example rather than waiting for a consumer mechanism to exist; that mechanism is a Docs/CIO design call, not mine."
 ---
@@ -140,7 +140,7 @@ surface, a weekly digest, or a workstream-review line), not a per-role fix. What
 refreshed this file's actual content, per Arch's own example, rather than wait for a consumer
 mechanism that doesn't exist yet.
 
-**Gap noted**: `BRIEFING-ESSENTIAL-WEB.md` (stable identity / how-to-operate) does not yet exist. The sibling doc that Rule 5 splits from the portfolio hasn't been authored. This is an open item — the portfolio-wave kickoff is a natural trigger to write it, but it's separate from the portfolio itself and isn't blocking HOST review.
+**Gap closed 2026-08-03**: `BRIEFING-ESSENTIAL-WEB.md` written — the sibling doc Rule 5 splits from this portfolio now exists, also added to CLAUDE.md's "Your Role" table and `ROSTER.md` (both of which were missing this role entirely, a wider gap than just the missing briefing file).
 
 ---
 

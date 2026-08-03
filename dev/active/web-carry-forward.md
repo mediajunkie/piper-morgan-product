@@ -138,8 +138,19 @@ risk of being lost. This fully resolves the predecessor-continuity thread opened
 See `dev/2026/07/29/2026-07-29-0924-web-code-log.md`, Fire 3 (~16:00). The thing CIO's
 orientation note said no artifact could hand me. Not carrying this forward as open work.
 
-### Role portfolio — HOST review pending (carried from predecessor, unconfirmed still open)
-### Type-error chip (task_e8c4853a) — carried from predecessor; separate session, nothing landed on main. Unconfirmed whether still relevant.
+### Role portfolio + briefing gap — CLOSED 2026-08-03
+Both items below had sat as "unconfirmed still open" for weeks without being re-verified.
+Checked both directly rather than continuing to carry them unverified:
+- **"HOST review pending"** — stale. HOST reviewed and passed the Web portfolio 2026-06-20
+  (`mailboxes/host/sent/memo-host-to-exec-cc-pm-wave-4-pa-web-both-pass-7-of-8-cleared-2026-06-20.md`).
+  The only thing HOST's review actually left open was the missing `BRIEFING-ESSENTIAL-WEB.md` —
+  written today, closing it. Also found and fixed a wider gap while there: this role was entirely
+  absent from CLAUDE.md's "Your Role" table and from `docs/briefing/ROSTER.md`, not just missing
+  its briefing file — added to both (ROSTER tier-placement flagged for Docs, not decided
+  unilaterally).
+- **Type-error chip (`task_e8c4853a`)** — `TaskGet` returns "Task not found" (session-scoped,
+  predecessor's session is long gone); zero mentions anywhere since 2026-07-14. Dropping as dead
+  rather than continuing to carry an item nobody can act on.
 
 ## Notes (mix of predecessor's + mine, marked)
 - *(predecessor, unverified by me)* Product-repo git: ALWAYS absolute `git -C` paths (cwd

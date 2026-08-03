@@ -60,6 +60,15 @@ Roles deployed for specific work shapes rather than continuous standing presence
 |---|---|---|---|---|
 | **Coding Agent** (subagent) | `prog-code` | `BRIEFING-ESSENTIAL-AGENT.md` | Active (deployed by Lead Dev / others as needed) | Subagent role for precise technical tasks; systematic verification + evidence |
 | **Exploratory Testing Agent** (ETA) | `test` | `BRIEFING-ESSENTIAL-ETA.md` | Dormant (last session March 2026) | Agent-perspective testing of Piper Morgan's systems; friction + capability-gap surfacing |
+| **Web** (Unicorn Web Designer) | `web` | `BRIEFING-ESSENTIAL-WEB.md` | Active (standing duty-cycle, cron `22 6,9,12,15,18,21 * * *`, since ~2026-06) | pipermorgan.ai public site + publishing pipeline; a two-repo role (product-repo infra worktree + `piper-morgan-website` worktree) |
+
+⚠️ **Added by Web, 2026-08-03** — this role and its briefing (`BRIEFING-ESSENTIAL-WEB.md`) were both
+entirely absent from this doc and from CLAUDE.md's "Your Role" table, despite being active since
+~2026-06 with its own standing cron, worktrees, and mailbox — closing that existence gap rather
+than continuing to carry it unverified. **Tier placement left as a flag, not a decision**: Web runs
+a continuous standing cron (6x/day) rather than being "deployed for specific work shapes," which
+reads more like Tier 2 than Tier 3 — but retiering is Docs' call as roster owner, not mine to make
+unilaterally on a doc I don't own. Placed in Tier 3 for now as the least-contested slot.
 
 ---
 
