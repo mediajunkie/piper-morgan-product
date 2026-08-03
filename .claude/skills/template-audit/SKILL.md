@@ -2,9 +2,9 @@
 name: template-audit
 description: Run a mechanical template audit on a finished blog draft before sending the publish-ready signal to Docs. Use after PM's voice pass is complete. Produces a pass/fail report with specific flags. Blocks the publish-ready signal on any FAIL.
 scope: comms
-version: 1.1
+version: 1.2
 created: 2026-06-19
-updated: 2026-07-09
+updated: 2026-07-29
 ---
 
 # template-audit
