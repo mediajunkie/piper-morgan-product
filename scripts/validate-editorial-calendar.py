@@ -157,6 +157,20 @@ def check_row(line_no: int, row: list[str], idx: dict) -> tuple[list[str], list[
     if val("draftPath") and not os.path.exists(val("draftPath")):
         warnings.append(f"{tag}: draftPath does not resolve — {val('draftPath')}")
 
+    # --- REFERENCE: draftPath is archived once a post has gone live. Comms' 2026-08-03
+    # finding — the check above only asks "does this path resolve," which a stale
+    # pre-archival draft in drafts/ answers YES to, correctly, since the file is right
+    # there. It just hasn't been moved to drafts/published/ yet even though the post
+    # already published. 19 rows were caught this way (16 distributed + 3 published,
+    # Jun 1 - Jul 28), each one a Step-9-archival miss that made a resolved question
+    # look like it was still open in PM's queue. WARNING, not error: this is a Step-9
+    # housekeeping signal, not a data-integrity one — nothing is broken while it's true. ---
+    if val("status") in ("published", "distributed") and val("draftPath") and "/published/" not in val("draftPath") and "/superseded/" not in val("draftPath"):
+        warnings.append(
+            f"{tag}: status={val('status')!r} but draftPath doesn't point into drafts/published/ "
+            f"— {val('draftPath')} (Step 9 archival likely missed)"
+        )
+
     # --- SOFT: caption/cartoon naming DIFFERENT images.
     # Rewritten 2026-08-01 on Comms' finding. My first version flagged
     # "caption holds a media filename" as anomalous on its own — which found the
