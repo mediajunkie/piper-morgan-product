@@ -2,7 +2,7 @@
 
 **Purpose**: durable handoff record for the next Architect session (duty-cycle-tick + PM-ratified single-log discipline 2026-06-12 + escalations-doc FOLD 2026-06-17). PM-attention items ride here.
 
-**Last rewritten**: 2026-08-01 22:00 PT (day-close). Prior 2026-07-31 21:35; full rewrite 2026-07-29 10:30 — **full rewrite, prior content discarded deliberately.** The previous version was dated 2026-07-12 and described a world that no longer exists: PM's *backup* account, worktree `arch-backup-0630`, cron `1b4d6ef2`, Model-B ephemeral worktrees, a laptop-reboot re-arm, and an "external cron driver" caution. **All of it is dead.** Treat nothing operational from any version before this date as current — the orientation note that flagged this file as stale on 7/25 was right, and it stayed stale four more days.
+**Last rewritten**: 2026-08-02 22:00 PT (day-close). Prior 2026-08-01 22:00; full rewrite 2026-07-29 10:30 — **full rewrite, prior content discarded deliberately.** The previous version was dated 2026-07-12 and described a world that no longer exists: PM's *backup* account, worktree `arch-backup-0630`, cron `1b4d6ef2`, Model-B ephemeral worktrees, a laptop-reboot re-arm, and an "external cron driver" caution. **All of it is dead.** Treat nothing operational from any version before this date as current — the orientation note that flagged this file as stale on 7/25 was right, and it stayed stale four more days.
 
 ---
 
@@ -41,7 +41,14 @@ A real **`.git/hooks/pre-commit` gate** is installed in the shared common dir (P
 
 **🟢 SPATIAL REVIEW — MY SLICE IS COMPLETE (7/30).** Layer map + ADR-038 **Amendment A** + ADR-affected map all filed; CXO's and PPM's slices folded. **Nothing owed by me.** It waits on **Lead's L4 monitoring-loop estimate** (gates option (iii) only, not the disposal) and **PM's decision**. ⛔ **Do NOT move #1174 to M4 — M4/M5 were swept 2026-07-04/05; Production is correct.** Read the map's PPM section before touching anything here.
 
-**🔴 SUNDAY'S FIRST ITEM (06:27, ahead of the mail loop): Docs' 16-file architecture-tree disposition.** Routed to me 8/1 ~21:00; deferred with a named trigger (sixteen per-file judgments at 22:00 produces fast answers, not right ones). Per file: *superseded vs. merely old* (supersession needs a pointer to what replaced it) · *does anything cite it* (`reachability-map.py` for code, grep for prose) · *does it carry a perishable referent* (sprint name, implementation citation, file count — per ADR-038 A3 and the ADR-070 finding). Docs was offered a single-blocker exception overnight.
+✅ **DONE 8/02 — Docs' 16-file disposition ruled** (4 KEEP / 12 archive; Docs executed 12, holding 4 until my ADR-070 supersession note landed — it had, verified). Attacking the heuristic first changed two dispositions. Prior text: **Sunday's first item was Docs' 16-file architecture-tree disposition.** Routed to me 8/1 ~21:00; deferred with a named trigger (sixteen per-file judgments at 22:00 produces fast answers, not right ones). Per file: *superseded vs. merely old* (supersession needs a pointer to what replaced it) · *does anything cite it* (`reachability-map.py` for code, grep for prose) · *does it carry a perishable referent* (sprint name, implementation citation, file count — per ADR-038 A3 and the ADR-070 finding). Docs was offered a single-blocker exception overnight.
+
+**Nothing owed Monday.** No queued deliverable carries into 8/03. Mail loop, then smallest unblocked item from standing-items.
+
+**Waiting on others (do not chase):**
+- **#1433** — RATIFIED 8/02 with **one required addition: assert the resolution PATH, not just the destination** (the determinism requirement was documented, not enforced — m-44 inside the new check). Lead lands it; three non-blocking refinements offered.
+- **PDR-006 ChatGPT criterion** — ⚠️ **marked, not amended.** Framing-as-failure-shaped-payload is 6/6 at the API layer, but **neither remedy is cleared until the deployed-host retest** (gated by CXO, blocked on `mcp.pipermorgan.ai` existing). PPM holds the wording proposal.
+- **PM**: two milestone words (#1459 → Production, #1462 → PPM's read is Production).
 
 **Also live:** Lead executing **#1432 delete** (formal GO given 8/1, both conditions discharged) and the **#1395 corpus rev** (ratified; I asked Lead to *name N* in the Q22 stability criterion). Neither needs me until Lead reports.
 
