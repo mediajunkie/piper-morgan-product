@@ -98,12 +98,27 @@ deletes the stored credential. *(Verified in `services/connectors/disconnect.py`
 
 **Disconnecting a service** stops all further access to it and revokes the credential as described above.
 
-🔍 **Data deletion and export.** *Before publishing, state plainly what a user can actually do today:*
-- *Is there a working account-deletion path that removes conversation history and derived state?*
-- *Is there a data-export path?*
-- *If either does not exist, say so and give a contact address for manual requests, rather than implying
-  a self-service capability that isn't built. This is the single most likely place for this document to
-  over-promise.*
+✅ **Data deletion and export — ANSWERED FROM THE CODE 2026-08-03. These were never PM questions and I
+should not have deferred them.**
+
+⚠️ **"Delete" in this product means SOFT delete, and a policy must not say otherwise.**
+
+| capability | reality | source |
+|---|---|---|
+| **Account deletion** | ❌ **Does not exist.** No account-level deletion path anywhere. | searched `services/`, `web/api/routes/` |
+| **Conversation deletion** | ⚠️ **SOFT** — a lifecycle transition, `ACTIVE/ARCHIVED → DELETED (terminal, no return)`. The record is marked, not removed. | `web/api/routes/conversations.py:716` |
+| **Insight deletion** | ⚠️ **SOFT** — sets `is_deleted=True`; the row remains. Reset-all is `soft_delete_all`. | `repositories.py:2328,2350` |
+| **Connector credentials** | ✅ **HARD, and better than most** — provider-side OAuth revocation *plus* keychain deletion. | `services/connectors/disconnect.py` |
+| **Data export** | ⚠️ **Exists but narrow** — `GET /controls/export` returns **learning settings + learned patterns only.** Not conversations, not profile, not connector data. | `web/api/routes/learning.py:1320` |
+
+🔴 **The load-bearing consequence**: a sentence like *"you can delete your data"* would be a
+**misrepresentation** — the honest phrasing is that deletion **marks records as deleted and stops them
+being served**, that **credentials are genuinely destroyed and revoked**, and that **account deletion is
+by request** (with the contact address below) **because no self-service path exists.**
+
+That is exactly the *"converts a gap into a misrepresentation"* risk this draft warns about — and I would
+have shipped it as a question to PM rather than an answer, which would have put the burden of a code
+audit on the person least placed to do it.
 
 🔍 **Retention.** *No retention policy was found in the code. Either state the real practice ("retained
 until you delete your account") or define one. Do not state a period we don't enforce.*
@@ -119,9 +134,10 @@ We aim to protect your data but cannot offer production-grade guarantees at this
 Access to user data is scoped per user. Credentials are stored in the OS keychain. Transport is over
 HTTPS.
 
-🔍 *Do not add stronger security claims (encryption at rest, audit logging, penetration testing, SOC 2)
-without a specific verified basis. Unsupported security claims are the highest-risk sentences in a
-privacy policy.*
+✅ **Verified, keep as written.** Credentials are in the OS keychain (`keychain_service.py`); access is
+owner-scoped (ADR-079); transport is HTTPS. **Do not add encryption-at-rest, audit-logging, penetration
+testing or SOC 2** — none has a verified basis, and unsupported security claims are the highest-risk
+sentences in a privacy policy.
 
 ## Children
 
