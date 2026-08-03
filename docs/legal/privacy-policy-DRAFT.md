@@ -1,5 +1,28 @@
 # Privacy Policy — Piper Morgan
 
+> ⛔ **CORRECTED 2026-08-02 — READ THIS BEFORE USING THIS DRAFT.**
+> **A privacy policy URL already exists and is live: `https://pipermorgan.ai/privacy` returns HTTP 200.**
+> My 7/31 statement that *"no public privacy policy page exists"* was **wrong**. I inferred it from the
+> absence of a policy doc in this repo and never checked the live site — a `curl` would have settled it.
+> **That is the fifth instance this fortnight of asserting a fact I could have checked in seconds**, and
+> the most wasteful, because I drafted a whole document on top of it.
+>
+> ⚠️ **But do not swing the other way either — here is exactly what is and isn't established:**
+> - ✅ `/privacy` returns **200**, title *"Privacy Policy - Piper Morgan"*.
+> - ✅ **Server-rendered visible text is 29 characters.** Strip scripts and tags and the page contains its
+>   title and nothing else. My first pass counted *"data" ×23 / "collect" ×11* — **those matches were in
+>   the JavaScript bundle, not policy prose.** I nearly reported that as "it's substantive."
+> - ❓ **Unknown**: whether it renders a real policy client-side in a browser. I cannot execute JS.
+>
+> 🔴 **Why the JS point is the actionable part, not pedantry**: Anthropic's rule is that *"missing or
+> incomplete privacy policies result in immediate rejection,"* and directory review — human or
+> automated — may fetch without JS. **A policy that requires JavaScript to appear can read as absent to
+> the thing that matters.** Ten seconds in a browser settles it; I can't.
+>
+> **So this document's status changes**: not a replacement for a missing policy, but a **gap-checklist to
+> audit the live one against.** The five 🔍 markers below are the questions to ask of whatever is
+> actually published.
+
 > ⚠️ **DRAFT — NOT FOR PUBLICATION AS-IS. PM review required.**
 > **Why it exists**: both the Claude plugin directory and OpenAI's MCP submission require a public
 > HTTPS privacy policy, and *"missing or incomplete privacy policies result in immediate rejection"*
