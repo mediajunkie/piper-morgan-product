@@ -29,6 +29,19 @@ PM-attention items live **here**, in the section immediately below.
   ⚠️ **PA's 7/31 claim that no policy existed was WRONG** — inferred from this repo, never checked the
   site. The draft at `docs/legal/privacy-policy-DRAFT.md` is now a **gap-checklist**, not a replacement.
 
+- 🔴 **ONE PENDING DECISION IS HOLDING THE ENTIRE JAKE CHAIN — 3 days, and beta is Friday 8/8.**
+  Chain: four lenses (7/27–30) → **Exec synthesis DONE 7/31 09:45, delivered to PM** → ⏸️ **PM + CXO
+  decision on six explicit items** → PPM files the issues → work happens. Exec's memo makes PPM's
+  conversion *"gated only on the decision landing"* — **PPM is correctly blocked, not sitting.**
+  ✅ *Established*: **no durable record of that decision exists** — zero Jake mentions in
+  `decisions.log`, no outcome in the synthesis doc, no memo. ❓ *Not established*: whether it happened.
+  **Two possibilities, different fixes**: not made → it's the single link keeping Jake's fix list out of
+  GitHub before beta; made but not relayed → PPM is blocked on a decision that already exists, which is
+  worse. **Ten seconds to say which.**
+- ❓ **Has Jake been replied to?** PPM and HOST both called it an obligation; PPM's self-interested half:
+  he's our only tester and the fastest route to n>1. **Jake is reached by email — outside every surface
+  PA can see**, so absence from mailboxes is not evidence. Purely a PM question.
+
 ### Closed / no PM action
 
 - ✅ **PDR-006 RATIFIED** 7/31; epic **#1462**; pre-user gates **#1458** and **#1463** both tracked.
