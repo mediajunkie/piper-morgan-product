@@ -2,9 +2,9 @@
 name: template-audit
 description: Run a mechanical template audit on a finished blog draft before sending the publish-ready signal to Docs. Use after PM's voice pass is complete. Produces a pass/fail report with specific flags. Blocks the publish-ready signal on any FAIL.
 scope: comms
-version: 1.2
+version: 1.3
 created: 2026-06-19
-updated: 2026-07-29
+updated: 2026-08-03
 ---
 
 # template-audit
@@ -72,6 +72,8 @@ PY
 
 **If this check ever cannot run** — a `Traceback`, a missing interpreter, anything other than three verdict lines — **report it as `⚠ CANNOT RUN`, not as PASS, and verify the frontmatter by reading it.** A check that did not execute has measured nothing, and its silence is indistinguishable from a clean result (methodology-44). The same rule applies to check #13 below.
 
+⚠️ **`\[PM\b` was added 2026-08-03 and it is the load-bearing half.** The prior pattern missed the two bracket forms actually in use — **`[PM: …]`** and **`[PM VOICE-PASS: …]`** — which are the conventions these drafts really carry, present in **5 drafts** at the time of the fix. Measured: the old pattern scored **0** against a draft with a live open bracket, so **this check — the one that BLOCKS the publish-ready signal on placeholders — was passing drafts with unresolved PM questions in them.** It was caught only because an ad-hoc grep during a pre-pass used a different pattern than the skill's own and disagreed with it. Verified: `\[PM\b` catches every real instance across the drafts directory with **zero false positives** — every match is a genuine editorial bracket. Note the skill's own check #13 already referenced `[PM: ...]` brackets, so the form was documented here while this check could not see it.
+
 **Caption format check**: if caption starts with `'"`, it's a spoken-line format. Verify any apostrophe inside is doubled: `'"It''s fine."'` not `'"It's fine."'` (the latter breaks YAML). ⚠️ **The `''` doubling is correct ONLY inside single-quoted YAML.** Copying that form into markdown **body** text renders the doubled apostrophe literally — a real instance shipped in the Ship #053 draft as `*"OK, let''s see"*`. If a caption also appears in the body, it takes ordinary prose punctuation.
 
 ### 2. Title is H1
@@ -104,7 +106,7 @@ Top-level sections must be `#`. `##` is allowed only for genuine subsections wit
 ### 5. No placeholder brackets
 
 ```bash
-grep -n "\[CHRISTIAN\|PLACEHOLDER\|CONSIDER\]\|ADD PERSONAL\|FACT-CHECK\|SOURCE NEEDED\|TBD\]\|\[alt text" <draft>
+grep -nE "\[PM\b|\[CHRISTIAN|PLACEHOLDER|CONSIDER\]|ADD PERSONAL|FACT-CHECK|SOURCE NEEDED|TBD\]|\[alt text" <draft>
 ```
 
 Any match = FAIL. All brackets must be filled or removed before publish.
@@ -233,3 +235,5 @@ On PASS: send the publish-ready memo to Docs inbox per the handoff protocol (Jun
 ---
 
 *v1.2 — 2026-07-29. **Check #1 rewritten to have no third-party dependency**, after it was found silently unrunnable on Amber for every role in every location (no `pyyaml`, and no venv anywhere on the host including the shared checkout). It had been emitting a `ModuleNotFoundError` traceback into a column of twelve passes — the frontmatter check, i.e. the one class that had already produced a real shipped defect (the caption `''` bug). Found by Comms while auditing Weekly Ship #053; independently verified one level deeper by Docs, who established the venv is absent host-wide rather than worktree-local. The replacement parses the block directly (three keys don't need a YAML engine) and was behaviorally tested across four shapes before shipping: filled, empty-quoted `''`, YAML-escaped `''` apostrophe inside a caption, and no-frontmatter — all correct, no traceback. Also added: the explicit `⚠ CANNOT RUN` verdict token (a non-executing check must never occupy the PASS column, per m-44), the Ship-caption N/A-by-convention note, and the warning that `''` doubling is correct in YAML but renders literally in markdown body text.*
+
+*v1.3 — 2026-08-03. **Check #5 widened to `\[PM\b`.** The placeholder gate could not see `[PM: …]` or `[PM VOICE-PASS: …]`, the two bracket forms these drafts actually use — so the check that blocks a publish-ready signal on unresolved PM questions was scoring 0 on drafts that had them. Found during a pre-pass when an ad-hoc grep disagreed with the skill's own pattern. Zero false positives across the drafts directory. Frontmatter version and footer bumped together, which is the defect v1.2 shipped with.*
