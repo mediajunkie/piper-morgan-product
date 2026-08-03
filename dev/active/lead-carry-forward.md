@@ -12,12 +12,14 @@
 - **PM sprint calls**: #1464 (portfolio archive/restore crashes — LIVE via chat, MVP rec) · #1465 (learning success-path NameError inverts signal, MVP rec) · #1466 (Slack→Piper principal mapping absent, MVP rec). All from census wave-1 discovered-work.
 - **Exec**: #1386 window re-scope now that criterion-2 is unblocked (keys in; baseline 55/61 done).
 
-## Queue next (in order — TOMORROW'S FRESH SESSION, both quality-banked 8/1 22:00 with this explicit trigger)
-1. **Judge-parity check** (#1395 quality half): reconstruct Run 15's judge config (model + PASS/MARGINAL counting — #1386 comments/logs), run parity or declare new baseline; tonight's 7/22-under-STRICT is non-comparable, NOT a quality answer. Then close #1395.
-2. **#1432 delete** (GO in hand): delete-module-safely — pair + 3 test files + conftest ref + pm034 workflow; Phase-4 re-land as tracked step; backlog entries riding these tests come off in same commit.
-3. #1460 instance fix (original_message backfill at detect_multiple + 6 reader sites to idiom B + 2 wrong-key Slack sites; runtime verification of setup flow in AC).
-4. Census wave 2: #1426 + #1428 (want #1433 ledger design first — read census D §6).
-5. #1464/#1465 fixes if PM adds to sprint (both small; 1465 is trivial import + regression test).
+## Queue next (rewritten 8/2 19:25 — build queue EMPTY, day 2 of Aug-8 runway)
+1. **Wave 3** (brief ready, launch on next WORK fire or PM's word): #1428 capability answer derives from the CHAT_POINTERS ledger + #1466 Slack↔Piper linking flow (design needs CXO/Arch input on link UX — flag in brief).
+2. **#1413** content-parity release gate (small, before the next release cut).
+3. **v30 deploy** on PM's go → unlocks PM verification of the full In-Review set (11 issues).
+4. PM triage batch: #1472 (4 sibling raw-enum sites) / #1473 (orchestrator QUERY gap) / #1471 (calendar collision) milestones+sprint; 11 untracked CHAT_INVISIBLE surfaces need trackers or by-design rulings.
+5. On PM verifications: close the In-Review set with their evidence; #1467 needs one more clean full-corpus run post-flip (streak 2 of 3).
+
+## In Review awaiting PM (11): 1393 1394 1429 1430 1431 1464 1465 1426 1433 1460 1432
 
 ## Standing notes
 - Beta target **Aug 8** (PM 7/30); scope growth needs PM approval. Multi-tenancy beta scope = #1430 (done) + #1458 traces + ratchet green (#1419 comment). #1458/#1457 → Production milestone.
