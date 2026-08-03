@@ -108,6 +108,11 @@ stated ~14-day window and had been sitting here for six weeks regardless. Full d
 anything dropped is in git history and the dated session logs; this section points forward,
 not back, per the file's own "pointers not duplicated content" principle.
 
+- **2026-08-03** — `BRIEFING-ESSENTIAL-WEB.md` written (`7c54afee5`), closing a gap HOST flagged
+  2026-06-20; surfaced this role was also entirely absent from CLAUDE.md's role table and
+  `ROSTER.md` — added to both, tier-placement flagged for Docs. Two stale carry-forward items
+  re-verified and retired in the same pass (HOST's portfolio pass was already 6 weeks old; a
+  predecessor task ID confirmed dead via `TaskGet`).
 - **2026-07-30** — `DAY-CLOSED` cohort predicate corrected twice more, converging on a full
   corpus census rather than any one agent's sample (`f63f85371`/`072b3658e` day-not-file,
   `08193f61a` em-dash separator, `129a04ba6` adopting HOST's census-verified pattern
