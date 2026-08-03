@@ -841,6 +841,94 @@ class PasswordResetToken(Base):
     used_at = Column(DateTime(timezone=True), nullable=True)
 
 
+class SlackIdentity(Base):
+    """#1466 — durable Slack-account↔Piper-account link.
+
+    One row = one Slack identity (user within a workspace) bound to one Piper
+    user. The UNIQUE(slack_user_id, slack_team_id) constraint means a Slack
+    identity can never resolve to two owners — the direction that matters for
+    the ADR-070 identity boundary. A second link attempt for an already-linked
+    identity hits the constraint and MUST be caught and answered fail-closed
+    (Arch condition 2, 2026-08-03): never a silent no-op, never an owner
+    overwrite (account-takeover shape). Unlink is an explicit owner-scoped
+    DELETE from settings.
+
+    ADR-079: owner-bearing (owner_id) — all repository reads owner-scoped,
+    except the principal-resolution read which is keyed by the Slack identity
+    pair and returns owner_id (it IS the owner resolution; see
+    services/auth/slack_link_service.resolve_slack_principal).
+    """
+
+    __tablename__ = "slack_identities"
+
+    id = Column(CrossDialectUUID(), primary_key=True, default=uuid.uuid4)
+    owner_id = Column(CrossDialectUUID(), ForeignKey("users.id"), nullable=False, index=True)
+    slack_user_id = Column(String(32), nullable=False)
+    slack_team_id = Column(String(32), nullable=False)
+    linked_at = Column(
+        DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc)
+    )
+
+    __table_args__ = (
+        UniqueConstraint("slack_user_id", "slack_team_id", name="uq_slack_identities_user_team"),
+    )
+
+
+class SlackLinkCode(Base):
+    """#1466 — short-lived 6-digit codes for the mint-in-Piper/redeem-in-Slack
+    Slack-linking handshake.
+
+    Third member of the single-use-token family (InviteToken,
+    PasswordResetToken): natural-key PK, NULL used_at = unused/valid, and the
+    same load-bearing atomicity rule — consumption is a SINGLE conditional
+    UPDATE (`WHERE code = ? AND used_at IS NULL AND expires_at > now`), never
+    check-then-write (TOCTOU double-spend; see invite_token_service.py).
+
+    Deliberately NOT a `kind` column on invite_tokens: that table is
+    identity-blind by documented trust-zone contract (validates TOKENS only,
+    never identities), while a link code is the opposite — BOUND to the minting
+    user (consumption returns user_id; the redeemer never chooses the target
+    account) and short-TTL (~10 min). Those are exactly PasswordResetToken's
+    two deliberate differences, so this follows that sibling.
+
+    A 6-digit code is ~20 bits, redeemed over an unauthenticated channel —
+    Arch condition 1 (2026-08-03): redemption REQUIRES bounded attempts per
+    slack_user_id AND per slack_team_id (SlackLinkAttempt), fail-closed.
+    """
+
+    __tablename__ = "slack_link_codes"
+
+    code = Column(String(12), primary_key=True)
+    user_id = Column(CrossDialectUUID(), ForeignKey("users.id"), nullable=False, index=True)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    expires_at = Column(DateTime(timezone=True), nullable=False)
+    # NULL = unused/valid. Set atomically by the conditional UPDATE at redemption.
+    used_at = Column(DateTime(timezone=True), nullable=True)
+
+
+class SlackLinkAttempt(Base):
+    """#1466 Arch condition 1 — redemption-attempt ledger for the 6-digit
+    link-code handshake. Every redemption attempt (valid or not) writes a row;
+    the redeemer is declined once the per-slack-user or per-team count within
+    the window exceeds its bound (fail-closed: a ledger error also declines).
+    Rows are opportunistically purged past the window at mint/redeem time.
+    """
+
+    __tablename__ = "slack_link_attempts"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    slack_user_id = Column(String(32), nullable=False)
+    slack_team_id = Column(String(32), nullable=False)
+    attempted_at = Column(
+        DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc)
+    )
+
+    __table_args__ = (
+        Index("idx_slack_link_attempts_user_time", "slack_user_id", "attempted_at"),
+        Index("idx_slack_link_attempts_team_time", "slack_team_id", "attempted_at"),
+    )
+
+
 class Product(Base):
     """Product being managed"""
 
