@@ -15,6 +15,7 @@ the setup UX for all of this is #1201.
 
 from __future__ import annotations
 
+import os
 import asyncio
 import re
 from typing import Any, Optional
@@ -174,7 +175,12 @@ async def build_runner(intent_service: Any) -> Optional[SlackSocketModeRunner]:
     Honest absence: missing app token / bot token / bound user → None (the
     server runs without inbound; status surfacing is #1201's lane).
     """
-    import os
+    # #1484 (Arch ruling 2026-08-04): fail-closed deployment gate. "Unconfigured"
+    # is an absence, not a boundary — this makes it one. Default OFF; beta cannot
+    # start the #1481 shared-principal path even if a tester enters a token.
+    if os.getenv("PIPER_SLACK_INBOUND_ENABLED", "").lower() not in ("1", "true", "yes"):
+        logger.info("slack_socket_mode_skipped", reason="inbound disabled by deployment policy")
+        return None
 
     from services.infrastructure.keychain_service import KeychainService
 

@@ -683,6 +683,14 @@ async def save_slack_app_token(
     from services.infrastructure.keychain_service import KeychainService
     from services.integrations.slack.socket_mode_runner import restart_socket_runner
 
+    # #1484 + CXO refusal contract: gate BEFORE the keychain write so
+    # "wasn't saved" is TRUE (the #1482 string-6 lesson). A refusal must be
+    # shaped like a failure, never a 200 wearing a yellow badge.
+    if os.getenv("PIPER_SLACK_INBOUND_ENABLED", "").lower() not in ("1", "true", "yes"):
+        raise HTTPException(
+            status_code=409,
+            detail="Slack replies are turned off in this release — your token wasn't saved.",
+        )
     token = (body.app_token or "").strip()
     # Slack app-level tokens are `xapp-…`; reject anything else with a clear message.
     if not token.startswith("xapp-"):
@@ -727,6 +735,13 @@ async def get_slack_inbound_status(
     - token present + runner absent/not-connected → 'connecting' (yellow)
     """
     from services.infrastructure.keychain_service import KeychainService
+
+    # #1484/CXO: when the deployment gate is closed, report the ONE state that
+    # asks the user to do nothing — there is nothing they can do, and saying so
+    # is the entire content. Checked before token presence: a stored token must
+    # not upgrade the state to 'connecting' (the retry-forever lie).
+    if os.getenv("PIPER_SLACK_INBOUND_ENABLED", "").lower() not in ("1", "true", "yes"):
+        return SlackInboundStatusResponse(connected=False, state="unavailable")
 
     has_token = bool(
         os.getenv("SLACK_APP_TOKEN") or KeychainService().get_api_key("slack_app_token")
