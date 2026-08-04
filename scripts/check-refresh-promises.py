@@ -43,13 +43,37 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 ISO = re.compile(r"(20\d{2})-(\d{2})-(\d{2})")
 
-# One line per opted-in document. Kept here rather than discovered by scanning every
-# file in the repo: an explicit list is auditable, and a document that quietly stops
-# matching a scan pattern would drop out of coverage without anyone noticing — which
-# is this script's own failure mode.
-WATCHED = [
-    "docs/briefing/ROLE-PORTFOLIO-CXO.md",
+# ── DISCOVERY ───────────────────────────────────────────────────────────────────
+# ⚠️ THIS WAS A HARDCODED LIST UNTIL 2026-08-04, AND THAT WAS THE DEFECT.
+#
+# The docstring advertised opt-in via a frontmatter key; enrollment actually required
+# membership in a list only the author edited. HOST followed the documented instruction,
+# added refresh_trigger_glob to their portfolio, re-ran, and got "checked: 1 document.
+# NOT checked: 0.  ✓ Every CHECKED promise held." — their opted-in document invisible,
+# exit 0.
+#
+# ⭐ And the coverage line — the honest-reporting feature, the whole point — reported
+# NOT checked: 0 while a document that had opted in went unchecked, because ITS
+# DENOMINATOR WAS THE WATCH LIST. A coverage report whose denominator is its own
+# registration can never report the thing it exists to report. That is the denominator
+# lesson (m-43's companion) occurring inside the coverage report built to honor it.
+#
+# So discovery now scans, and the denominator is the population of PROMISES, not of
+# registrations: a document that declares a refresh discipline in prose but no checkable
+# trigger is REPORTED AS UNVERIFIABLE rather than being silently outside the count.
+# "Declared but unwatched" is now impossible to reach silently.
+SCAN_GLOBS = [
+    "docs/briefing/*.md",
 ]
+
+# Documents outside the scanned directories. This is a supplement to discovery now,
+# never the gate.
+EXTRA = []
+
+# Frontmatter keys that constitute a PROSE refresh promise — a document carrying one of
+# these is claiming to stay current, and belongs in the denominator whether or not it
+# has made that claim checkable.
+PROMISE_KEYS = ("refresh_discipline", "refresh_trigger_glob", "staleness_note")
 
 
 def frontmatter(path):
@@ -70,18 +94,34 @@ def frontmatter(path):
 def main():
     fail = 0
     checked = 0
+    unverifiable = []
     skipped = []
+
+    candidates = []
+    for g in SCAN_GLOBS:
+        candidates.extend(sorted(glob.glob(str(ROOT / g))))
+    candidates.extend(str(ROOT / e) for e in EXTRA)
+    seen = set()
+
     print("── refresh-promise check ────────────────────────────────────────────────────")
-    for rel in WATCHED:
-        path = ROOT / rel
-        if not path.exists():
-            skipped.append(f"{rel} — file not found")
+    for c in candidates:
+        path = Path(c)
+        rel = str(path.relative_to(ROOT))
+        if rel in seen or not path.exists():
             continue
+        seen.add(rel)
+
         fm = frontmatter(path)
+        if not any(k in fm for k in PROMISE_KEYS):
+            continue  # makes no refresh promise; not in the denominator
+
         pattern = fm.get("refresh_trigger_glob")
         updated = fm.get("last_updated", "")
         if not pattern:
-            skipped.append(f"{rel} — no refresh_trigger_glob declared; promise is prose only")
+            unverifiable.append(
+                f"{rel} — declares a refresh promise in prose, no refresh_trigger_glob; "
+                f"nothing can check it (last_updated {updated or 'absent'})"
+            )
             continue
         if not ISO.match(updated):
             skipped.append(f"{rel} — last_updated is not an ISO date: {updated!r}")
@@ -112,13 +152,23 @@ def main():
 
     print()
     print("── coverage ─────────────────────────────────────────────────────────────────")
-    print(f"checked: {checked} document(s).  NOT checked: {len(skipped)}.")
-    for s in skipped:
-        print(f"  ✗ {s}")
+    total = checked + len(unverifiable) + len(skipped)
+    print(f"documents making a refresh promise: {total}")
+    print(f"  verifiable and checked: {checked}")
+    print(f"  UNVERIFIABLE (promise in prose, nothing to check it against): {len(unverifiable)}")
+    for u in unverifiable:
+        print(f"    ✗ {u}")
+    if skipped:
+        print(f"  malformed: {len(skipped)}")
+        for s_ in skipped:
+            print(f"    ✗ {s_}")
+    if unverifiable:
+        print()
+        print("  ⚠️  An unverifiable promise prints here rather than passing silently. It is not")
+        print("      a failure — it is a claim to stay current that nothing can contradict.")
     if not fail:
         print()
-        print("✓ Every CHECKED promise held. That is not a statement about the skipped ones,")
-        print("  and a document with no refresh_trigger_glob has a promise nothing can verify.")
+        print("✓ Every VERIFIABLE promise held. That is not a statement about the unverifiable ones.")
     return fail
 
 
