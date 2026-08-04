@@ -7,7 +7,8 @@ last_updated: 2026-08-04
 refreshed: 2026-08-04 (section 2 + §5 mechanism correction; sections 1/3/4 re-read and left as accurate)
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-CXO.md
-refresh_discipline: "refreshed as part of weekly workstream review — sections 2 and 4 touched every review; section 1 and 3 on role-scope drift"
+refresh_discipline: "sections 2 and 4 on each workstream review; sections 1 and 3 on role-scope drift — NOW CHECKED, see refresh_trigger_glob and §5"
+refresh_trigger_glob: "mailboxes/cxo/sent/workstream-*-cxo-*.md"
 ---
 
 # CXO Role Portfolio
@@ -105,9 +106,14 @@ The calibration: the Colleague Test fires on things that feel like surveillance,
 > 🔴 **§5's own mechanism has failed four consecutive times, and §5 is where I found out. Corrected 2026-08-04.**
 >
 > The frontmatter promises *"refreshed as part of weekly workstream review — sections 2 and 4 touched
-> every review."* **`last_updated` was 2026-06-19. Four reviews shipped after it — 051 (07-10), 052
-> (07-19), 053 (07-29), 054 (07-31) — and the portfolio was touched by none of them.** Six and a half
-> weeks.
+> every review."* **`last_updated` was 2026-06-19. SIX reviews shipped after it — 048 (06-20), 049
+> (06-27), 051 (07-10), 052 (07-19), 053 (07-29), 054 (07-31) — and the portfolio was touched by none of
+> them.** Six and a half weeks.
+>
+> ⭐ **I first wrote "four" here, by hand, and the mechanism found six.** I'd looked at July and stopped.
+> That is a small error and it is the entire argument in miniature: **the hand-check that was supposed to
+> replace the mechanism under-reported the mechanism's own failure by 50%, in the one place I was paying
+> full attention to it.**
 >
 > **Why it failed is the useful part**: the claim below *"the weekly workstream review IS the refresh
 > moment"* **is not a mechanism — it is an assertion that two activities are the same activity.** They
@@ -119,11 +125,20 @@ The calibration: the Colleague Test fires on things that feel like surveillance,
 > means *"investigate the review cadence."* **The cadence was healthy — four reviews on time.** The
 > broken thing was the link, not the rhythm, so the diagnostic points at the one part that was working.
 
-**Section 2 (fast refresh)**: the weekly workstream review is *intended* as the refresh moment — writing the CXO weekly narrative requires noting what closed, what's in-flight, and what's next, which is the section 2 content. **⚠️ Stated honestly: this is a discipline I must remember, not a construction that forces itself.** It has not held. **Proposed mechanical version** (offered to whoever owns `check-derived-drift.sh`, since it's the same compare-two-things-that-should-agree shape): *warn when `last_updated` predates the newest `mailboxes/cxo/sent/workstream-*-cxo-*.md`.* Cheap, and it fails loudly where the sentence above failed silently.
+**Section 2 (fast refresh)**: the weekly workstream review is *intended* as the refresh moment — writing the CXO weekly narrative requires noting what closed, what's in-flight, and what's next, which is the section 2 content. **⚠️ Stated honestly: this is a discipline I must remember, not a construction that forces itself.** It has not held. ✅ **MECHANIZED 2026-08-04 — `scripts/check-refresh-promises.py`.** The document now declares
+`refresh_trigger_glob: "mailboxes/cxo/sent/workstream-*-cxo-*.md"` in its frontmatter, and the checker
+fails (exit 1) when `last_updated` predates the newest matching trigger. Read-only; dates come from
+filenames, never mtime (checkout and rebase destroy mtime, so mtime would report noise).
+
+**Verified by negative control, not by passing**: against the real historical state (`last_updated:
+2026-06-19`) it exits 1 and names all six lapsed triggers; against today it exits 0. A green on a document
+I had just refreshed would have proved nothing — that's a gate that cannot fail, which is the defect I
+withheld a beta sign-off over. **The promise is now checkable by something other than the person who made
+it**, which is the only property the prose version was missing.
 
 **Full portfolio (slow refresh)**: sections 1, 3, and 4 reviewed each PM-triggered 360 cycle or when role scope shifts materially (e.g., when beta closes and D2 begins, section 2 rotates entirely; sections 1 and 3 stay stable unless the collegial-experience mandate is refined by experience).
 
-**Staleness signal**: `last_updated` more than 2 weeks behind the most recent workstream review → investigate the review cadence, not just this doc. (Same discipline as CIO pilot.)
+**Staleness signal** — ⚠️ **superseded, and it was pointing at the wrong thing.** It read: *`last_updated` more than 2 weeks behind the most recent workstream review → investigate the review cadence.* **The cadence was never the problem** — six reviews shipped on schedule. The broken thing was the link between the review and this file, so the diagnostic sent the reader to the one part that was working. `check-refresh-promises.py` measures the link directly.
 
 ---
 
