@@ -81,9 +81,13 @@ needs one element to be strong is a pressure to overclaim in that element.*
 
 ## Why the set works as a set, not six edits
 
-**The contrast is load-bearing.** *"This one really is gone"* only carries information **because the
-other five are honest.** Today all six sound alike — five falsely grave, one silent — so **no delete
-in the product tells the user anything about its own reversibility.**
+**The contrast is load-bearing.** *"Can't be recovered here"* only carries information **because the
+other five are honest.** Before the set, all six sounded alike — five falsely grave, one silent — so
+**no delete in the product told the user anything about its own reversibility.**
+
+*(This paragraph quoted "this one really is gone" until 2026-08-04 — the wording string 6 no longer
+uses. Chased within the document, since a spec that argues for a phrase it no longer contains is the
+same drift at smaller scale.)*
 
 Fix five and skip the sixth and you've removed the falsehood but not restored the signal. **Ship them
 together.**
@@ -100,7 +104,9 @@ together.**
 - **Account deletion by request** — HOST's (c); needs a verified runbook before any policy sentence
   ships. Not copy, and not mine.
 - **The privacy policy's erasure language** — PA/HOST's narrower phrasing; separate surface.
-- **"We keep a copy for a while"** ⚠️ — *"a while"* is deliberately vague **because I don't know the
-  retention period, and neither does the copy.** If a real retention window exists, say it
-  (*"for 30 days"*) — that is strictly better. **If none exists, "a while" is the honest word and the
-  retention gap is itself a finding for someone.**
+- **"We keep a copy for a while"** — ✅ **ANSWERED 2026-08-04 (Lead): no retention or purge policy
+  exists.** No scheduled purge anywhere; soft-deleted rows are kept **indefinitely**. So *"a while"* is
+  **honest but unbounded**, and it stays as written — **copy cannot fix the absence of a policy, only
+  stop lying about it.** ⚠️ **The absence is a real finding** and routes to HOST's account-deletion
+  runbook item (their (c)), not to copy: *"we keep it"* with no horizon is an unbounded claim of a
+  different kind.
