@@ -1,11 +1,26 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-08-02 ~21:20 PT — day-close (STOP).
+**Last updated**: 2026-08-03 ~21:20 PT — day-close (STOP).
 **Session log today**: `dev/2026/08/01/2026-08-01-0902-exec-code-log.md` (`DAY-CLOSED: 2026-08-01`)
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
 **Cron**: `32 8,20 * * *` — re-armed at STOP. ⚠️ Session-only; original 7-day expiry horizon ~Aug 5.
 
-## Monday Aug 3 queue — IN ORDER
+## Tuesday Aug 4 queue — IN ORDER
+
+1. **PM contact, two asks first**: (a) **Jake six-item decision = confirm-or-adjust on CXO's filed
+   positions** (memo 8/3 13:2x) — unblocks PPM conversion, beta-relevant; (b) **beta date needs one
+   durable sentence** (three dates circulating: "Aug 8" unrecorded / Fri Aug 7 / stale milestone
+   Aug 1) + milestone update. Then Ship #054 pass status (drafted, delivered 8/3 morning; publish Wed).
+2. **Skill-candidates review with PM (Aug 4, first ever)** — CIO prep in read/ (signal feed #1 never
+   read before; 4 themes; most-requested already built). Exec maintains the doc; PM disposes.
+3. **On PM's Ship go → Comms handoff** (PM gates it, never self-initiate).
+4. **#1386 watch**: Lead's discharge line, CXO criterion-2 signature, Scenario-B run.
+5. **Board refresh on PM contact** — new items: Jake confirm-or-adjust ready; beta-date sentence;
+   delete-is-soft-delete trust thread (HOST rulings — likely beta-relevant); skill-candidates review.
+
+## (superseded Monday queue below)
+
+## Monday Aug 3 queue — DONE (Ship drafted+delivered; forensics done Sunday)
 
 1. **DRAFT SHIP #054 at 08:32 START** — 6/6 complete (CIO's memo landed Sun post-nudge, held in inbox
    as first read; other 5 in read/). Window Jul 24–30, pub Wed Aug 5, skill v1.9 full discipline.
