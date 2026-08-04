@@ -4,9 +4,9 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.21
+version: 0.22
 created: 2026-03-16
-updated: 2026-07-31
+updated: 2026-08-04
 ---
 
 # publish-to-blog
@@ -510,7 +510,16 @@ PM does manually:
 ### Step 9: Drafts Folder Cleanup (Final Step)
 
 **ONLY after** verifying:
-- ✅ Post is live at `https://pipermorgan.ai/blog/{slug}/`
+- ✅ Post is live at `https://pipermorgan.ai/blog/{slug}/` — **verify by content, never by status code.**
+  `pipermorgan.ai` returns HTTP 200 for every `/blog/<slug>/`, including slugs that have never existed
+  (soft 404 — the server answers 200 and serves a shell page). A `curl` status check or a naive
+  absence-check ("grep for the leaked bracket, count 0") passes identically for a live post and a slug
+  nobody has ever typed — Comms found this 2026-08-04 after their own all-clear on *The Airport
+  Corrections* turned out to have been unfalsifiable by the method used, right only by luck of pointing
+  at a real page. **Fetch the live URL and grep for a distinctive phrase from the post's own body** —
+  assert presence first, then check for whatever you're hoping is absent. Post pages are
+  server-rendered (the prose is in the raw response), so this works; the blog *index* is client-rendered
+  and returns a shell, a different problem.
 - ✅ Editorial calendar updated with at least one syndication URL (mediumURL or linkedinURL)
 - ✅ Calendar status is `published` (or `distributed` if already cross-posted)
 
@@ -576,7 +585,8 @@ slug,hashId,title,chatDate,imageSlug,imageAlt,imageCaption,workDate,pubDate,cate
 ## Quality Checklist
 
 After publishing:
-- [ ] Blog post accessible at `https://pipermorgan.ai/blog/{slug}/`
+- [ ] Blog post accessible at `https://pipermorgan.ai/blog/{slug}/` — **content check, not status code**
+  (see Step 9's gate above; a status check passes unconditionally on this site's soft-404 behavior)
 - [ ] Featured image loads correctly
 - [ ] Blog index shows post with thumbnail
 - [ ] Editorial calendar updated (this repo) with syndication URL(s)
@@ -589,6 +599,17 @@ After publishing:
 ---
 
 *Changelog gap, noted 2026-07-31: frontmatter read `version: 0.20` while the notes below stop at v0.16 — versions 0.17-0.20 were bumped without entries. Not backfilled here; I don't know what they changed and inventing it would be worse than the gap.*
+
+*v0.22 — **Live-verification method specified: content check, not status code.** Step 9's gate and the
+Quality Checklist both said "post is live" / "accessible" with no method named — silently satisfiable by
+a `curl` status check, which on `pipermorgan.ai` cannot fail: the site returns HTTP 200 for every
+`/blog/<slug>/`, including slugs nobody has ever typed (soft 404, server answers 200 with a shell page).
+Comms found this 2026-08-04 from inside their own Monday all-clear on *The Airport Corrections* — a
+grep-for-0-occurrences absence-check that would have returned the identical clean result against an
+unpublished or nonexistent slug, right only by luck of pointing at a real page. Fix: assert presence
+first (grep a distinctive phrase from the post's own body against the live URL), then check for whatever
+you hope is absent. Post pages are server-rendered so this works; the blog index is client-rendered and
+returns a shell — a separate, unrelated limitation, not fixed here.*
 
 *v0.21 — **Two-copy diff made mandatory (Pre-flight 2).** A draft commonly exists in both `dev/active/{slug}.md` and `docs/public/comms/drafts/{slug}.md`, and only the second one publishes. They diverge silently. On 2026-07-30 commit `e91cb5466` added the Almost Beta image block to the `dev/active/` copy ONLY; a publish would have dropped the image and reported success. Comms caught it by diffing — nothing in the pipeline would have. Chronic rather than one-off: Ship #052's `draftPath` also pointed at a file that wasn't there, and a 2026-07-12 pass repaired 22 stale paths without fixing the cause. Snippet behaviorally tested across four cases (identical / diverged / single copy / neither), including the real 07-30 shape where the addition sits in the copy that does NOT ship. Explicit guidance not to prefer the newer mtime — read the diff.*
 
