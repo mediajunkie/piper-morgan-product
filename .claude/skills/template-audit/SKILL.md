@@ -2,9 +2,9 @@
 name: template-audit
 description: Run a mechanical template audit on a finished blog draft before sending the publish-ready signal to Docs. Use after PM's voice pass is complete. Produces a pass/fail report with specific flags. Blocks the publish-ready signal on any FAIL.
 scope: comms
-version: 1.4
+version: 1.5
 created: 2026-06-19
-updated: 2026-08-03
+updated: 2026-08-04
 ---
 
 # template-audit
@@ -33,9 +33,24 @@ grep -i "$(basename <draft> .md)" docs/internal/planning/comms/editorial-calenda
 # Find the next pubDate entry after this post's pubDate
 ```
 
+## ⚠️ FIRST: check the theme. Four checks are calibrated for narratives and are WRONG on Weekly Ships.
+
+**Look up `theme` on the calendar row before running anything.** Measured 2026-08-04 against the **6 most recent published Ships** — posts that shipped clean and are live on the site:
+
+| check | Ships that would FAIL | why it's wrong for a Ship |
+|---|---|---|
+| **#1** caption non-empty | **6 of 6** | Ships carry no caption by convention (#044/#050 use the literal `N/A`) |
+| **#6** footer tease present | **6 of 6** | Ships sit outside the tease chain entirely — see check #6 |
+| **#12** word count ≤1,600 | **4 of 6** | Ship norm is **~1,630 words** (measured #049–#053: 1279 / 1384 / 1906 / 1827 / 1764). The 800–1,300 target is a *narrative and insight* range |
+| **#14** no `#NNN` in prose | **6 of 6** | `#053`, `#054` are **Ship numbers**, not issue numbers, and they are conventional in Ship prose + the previous/next links |
+
+**So a full audit against a Ship produces roughly four false FAILs every single time.** On `theme=ship`, mark these **N/A — by convention**, never FAIL. Every other check applies to Ships unchanged.
+
+⚠️ **Why this is worth a table rather than four footnotes**: a mandatory gate that cries wolf on four of fourteen checks trains its own operator to discard failures by eye — and the discarding habit does not stay confined to the four that deserve it. That is the same dynamic CLAUDE.md documents for the sign-off checklist, where a step that reported thousands of unpushed commits every session got quietly substituted away by the people following it most carefully. **A check that is wrong in a knowable, repeating way is a check people learn to skim.**
+
 ## The Checklist
 
-Run each check in order. Mark ✓ PASS or ✗ FAIL with a specific note on failures.
+Run each check in order. Mark ✓ PASS or ✗ FAIL with a specific note on failures. **On a Ship, apply the calibration table above first.**
 
 ### 1. YAML frontmatter — all three fields present and non-empty
 
@@ -258,3 +273,5 @@ On PASS: send the publish-ready memo to Docs inbox per the handoff protocol (Jun
 *v1.3 — 2026-08-03. **Check #5 widened to `\[PM\b`.** The placeholder gate could not see `[PM: …]` or `[PM VOICE-PASS: …]`, the two bracket forms these drafts actually use — so the check that blocks a publish-ready signal on unresolved PM questions was scoring 0 on drafts that had them. Found during a pre-pass when an ad-hoc grep disagreed with the skill's own pattern. Zero false positives across the drafts directory. Frontmatter version and footer bumped together, which is the defect v1.2 shipped with.*
 
 *v1.4 — 2026-08-03. **Check #6 corrected: Weekly Ships sit outside the footer-tease chain.** The check said the tease must match "the next scheduled post" with no exception for Ships. Measured against actual practice: **6 of 6 recent Ships carry no tease**, and **7 of 8** narratives/insights whose next calendar row was a Ship teased *past* it to the following non-Ship post. Read literally, the old wording would have had me "fix" *The List That Lies* to tease Ship #054 — **corrupting a correct chain the day before it published.** Distinct from the v1.3 defect and worse in kind: check #5 was *blind* (it missed things), check #6 was *wrongly directive* (it would have manufactured the defect it claims to prevent). Added a calendar-derived query for the tease target so the rule isn't re-derived by eye. Second gate defect found in this skill in one day — both surfaced by running the gate against real queue state rather than reading it.*
+
+*v1.5 — 2026-08-04. **Added the Ship-calibration table at the top of the checklist.** Four checks — #1 caption, #6 tease, #12 word count, #14 `#NNN` refs — are calibrated for narratives and produce **false FAILs on Weekly Ships**: measured against the 6 most recent published Ships, they'd fail **6/6, 6/6, 4/6, 6/6** respectively, on posts that shipped clean and are live. Ship word norm measured at **~1,630** (#049–#053), against the narrative target of 800–1,300. Two of the four (#1, #6) already had scattered N/A notes; #12 and #14 had none. **Consolidated into one theme-keyed table rather than a fourth footnote**, because the real hazard isn't any single false FAIL — it's that a gate crying wolf on four of fourteen checks teaches its operator to discard failures by eye, and that habit doesn't stay confined to the four that earned it. Same dynamic CLAUDE.md records for the sign-off checklist. Found while pre-passing Ship #054.*
