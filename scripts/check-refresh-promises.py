@@ -208,6 +208,14 @@ def main():
         print("  ⚠️  The undeclared ones are the finding. Each claims to stay current and nothing")
         print("      can contradict it — including the author. A recent last_updated tells you the")
         print("      author is diligent and tells you nothing about the promise.")
+    print()
+    if fail:
+        print("✗ Exit 1: at least one VERIFIABLE promise has lapsed.")
+    else:
+        print(f"✓ Exit 0 means: none of the {checked} VERIFIABLE promise(s) has lapsed.")
+    print(f"  It does NOT mean the other {total - checked} are current. The exit code's")
+    print("  denominator is the checked set, and it can only ever be. Read the coverage")
+    print("  block above before treating a green as a statement about the cohort.")
     return fail
 
 
