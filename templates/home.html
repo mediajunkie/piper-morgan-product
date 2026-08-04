@@ -1549,7 +1549,7 @@
         // #1170: Dialog.confirm, not native confirm
         if (!(await Dialog.confirm({
           title: 'Delete this conversation?',
-          message: 'This cannot be undone.',
+          message: 'It'll stop appearing in your workspace. We keep a copy for a while — ask if you need it back.',
         }))) {
           return;
         }

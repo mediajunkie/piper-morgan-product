@@ -141,10 +141,13 @@ class TestInsightCardActions:
         delete = template.find(attrs={"data-action": "delete"})
         assert delete is not None
 
-    def test_delete_permanent(self, insight_html):
-        """Delete should be permanent (D2)."""
-        # D2: "This deletion is permanent—I can't undo it."
-        assert "cannot be undone" in insight_html.lower() or "can't undo" in insight_html.lower()
+    def test_delete_copy_is_honest_about_soft_delete(self, insight_html):
+        """#1482 (2026-08-04, supersedes the D2-era permanence pin): insight delete
+        is a SOFT delete — the copy must say so honestly, never claim permanence.
+        (The old assertion pinned 'cannot be undone', which was FALSE for this
+        surface; PA's map + CXO's spec on #1482 carry the sourcing.)"""
+        assert "cannot be undone" not in insight_html.lower()
+        assert "for a while" in insight_html.lower()
 
 
 class TestInsightCardCorrectionFlow:

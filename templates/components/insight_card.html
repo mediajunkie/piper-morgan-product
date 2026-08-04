@@ -605,7 +605,7 @@
       const text = insight.expression || insight.text || 'this insight';
       if (await Dialog.confirm({
         title: 'Remove this insight?',
-        message: `This will permanently remove "${text}". This cannot be undone.`,
+        message: `This will stop being used. We keep it for a while — ask if you need it back.`,
       })) {
         // D2: "Got it, that's gone"
         if (window.showToast) {

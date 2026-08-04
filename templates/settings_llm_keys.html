@@ -158,7 +158,7 @@
     const btn = ev.target.closest("button[data-del]");
     if (!btn) return;
     const provider = btn.getAttribute("data-del");
-    if (!window.confirm("Remove your " + provider + " key?")) return;
+    if (!window.confirm("Delete your " + provider + " key? This one really is gone — we destroy our copy immediately. The key itself stays valid at " + provider + " until you revoke it there.")) return;
     btn.disabled = true;
     try {
       const res = await fetch("/api/v1/keys/" + encodeURIComponent(provider), {

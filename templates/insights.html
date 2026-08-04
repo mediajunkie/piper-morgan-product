@@ -436,7 +436,7 @@
       // D2: "This deletion is permanent—I can't undo it." (#1170: Dialog, not native confirm)
       if (await Dialog.confirm({
         title: 'Remove this insight?',
-        message: `This will permanently remove "${insight.expression || insight.text}". This cannot be undone.`,
+        message: `This insight will stop being used. We keep it for a while — ask if you need it back.`,
       })) {
         // Remove from list
         currentInsights = currentInsights.filter(i => i.id !== insight.id);
@@ -475,7 +475,7 @@
         label:
           `This permanently deletes ALL ${currentInsights.length} insights — ` +
           'learned preferences, pattern observations, and communication-style learnings. ' +
-          'This cannot be undone. Type RESET to confirm:',
+          'Piper will stop using everything it\'s learned about you so far. We keep it for a while — ask if you want it back. Type RESET to confirm:',
         placeholder: 'RESET',
         validate: (v) => (v === 'RESET' ? true : 'Type RESET (all caps) to confirm.'),
       });
