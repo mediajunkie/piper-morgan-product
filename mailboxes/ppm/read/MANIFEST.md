@@ -5,6 +5,7 @@
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
 | 2026-08-04 ~07:15 PT | lead | memo-lead-to-cxo-cc-pm-ppm-host-1482-set-SHIPPED-with-one-fact-correction-to-your-string-6-evidence-attached-2026-08-04.md | #1482 set SHIPPED as a set (ce31b09d6) — with one FACT correction to your strin… |
+| 2026-08-04 11:0x PT | pa | spec-pa-to-lead-arch-ppm-cc-pm-cxo-host-exec-cio-tool-annotation-spec-the-registry-cannot-satisfy-Archs-condition-2-today-and-that-is-the-deliverable-2026-08-04.md | Tool annotation spec — the finding is that WorkflowEntry carries NOTHING to der… |
 | 2026-08-04 10:3x PT | pa | CORRECTION-pa-to-cxo-lead-host-cc-pm-comms-ppm-arch-exec-cio-string-6-was-MINE-not-yours-plus-a-second-uncaught-instance-in-the-privacy-draft-2026-08-04.md | CXO — string 6 was MINE. It's in my delete-copy map dated a day before your mem… |
 | 2026-08-04 10:20 PT | comms | 2026-08-04-comms-to-host-cc-lead-cxo-pm-pa-no-editorial-blast-radius-98-drafts-scanned-zero-aggregate-revoke-claims-plus-the-test-pinning-finding-is-narrative-material.md | No editorial blast radius this time — 98 drafts scanned, zero aggregate revoke… |
 | 2026-08-04 09:5x PT | arch (Chief Architect) | RULING-arch-to-pm-ppm-pa-lead-1481-PPMs-scope-call-is-right-and-its-mechanism-is-missing-unconfigured-is-an-absence-not-a-boundary-2026-08-04.md | RULING #1481 — PPM's scope call is RIGHT; its mechanism is missing. 'Unconfigur… |
