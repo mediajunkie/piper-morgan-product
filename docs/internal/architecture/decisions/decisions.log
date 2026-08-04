@@ -452,3 +452,20 @@ META, worth keeping: PPM and CXO independently ranked this above their own items
   case is sharper than they framed it — the shared input was DEFECTIVE, so this was not three judgments
   agreeing but ONE AMBIGUITY OBSERVED THREE TIMES. The cohort's convergence-via-shared-default rule landing
   on a document I wrote.
+
+ADDENDUM (same ruling, 16:3x) — condition 2 DERIVATION RULE added, from PA's alias measurement:
+  DERIVE KEYED BY ENTRY IDENTITY, DEDUPED ACROSS ALIASES — one tool per WorkflowEntry, one canonical name.
+  Aliases are input-side vocabulary and must never leak into the tool list.
+  PA's insight, kept close to verbatim: the aliases are CLASSIFIER surface (right for input); a host LLM's
+  tool list is NOT a classifier surface. Four synonymous tools make routing worse, not more forgiving —
+  the model disambiguates names carrying no real distinction. THE PROPERTY THAT MAKES THE ALIAS SET GOOD
+  INPUT MAKES IT BAD CATALOG.
+  MEASURED (PA reported literal dict 31→12; Arch verified and widened): the registry has FIVE writers —
+  literal dict (12 entries/31 aliases) + _READ_QUERY_COHORT (9/26) + _CALENDAR_QUERY_COHORT (3/9) +
+  _ANALYSIS_QUERY_COHORT (3/6) + local lists _query_cohort/_final_ifheads (11/31) = 38 ENTRIES / 103
+  ALIASES, ≈2.7 names per operation. Naive derivation ships 103 tools for 38 operations.
+  ⚠️ MEASUREMENT WARNING recorded in the PDR: found only because two AST passes DISAGREED — the first
+  returned nothing (the dict is an AnnAssign inside a function; I walked ast.Assign), the second caught 3
+  cohorts and missed 2 local lists. ANY AUDIT READING ONLY THE LITERAL DICT COVERS UNDER A THIRD OF THE
+  REGISTRY AND LOOKS COMPLETE. Count from the assembled dict at runtime, not from any one literal.
+  Same m-44 family as the day's other findings, this time in my own measurement tooling.
