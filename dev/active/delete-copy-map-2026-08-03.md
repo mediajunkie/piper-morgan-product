@@ -13,7 +13,7 @@ I'd rather ask than assume."* Here it is, every claim sourced.
 | `components/insight_controls.html:296` | *"This cannot be undone. I'll need to start learning about you from scratch."* | **SOFT** | ❌ **FALSE** |
 | `components/insight_card.html:608` | *"This will **permanently remove** '…'. This cannot be undone."* | **SOFT** | ❌ **FALSE** |
 | `components/confirmation-dialog.html:41` | *"Are you sure…? This action cannot be undone."* | generic default | ⚠️ default text |
-| `settings_llm_keys.html:161` | `confirm("Remove your <provider> key?")` — **no permanence claim** | **HARD** — key destroyed **and revoked at the provider** | ⚠️ **inverted** |
+| `settings_llm_keys.html:161` | `confirm("Remove your <provider> key?")` — **no permanence claim** | ⛔ **CORRECTED 2026-08-04 — my original row said "key destroyed AND REVOKED AT THE PROVIDER." That is FALSE.** `delete_user_key` (`user_api_key_service.py:340`) is *"Delete API key for user from keychain and database"* — **no provider call, and none is structurally possible**: only the key's owner can revoke in the provider's console. Correct reading: **HARD locally, live remotely.** | ⚠️ **inverted, but less so than I claimed** |
 
 `dialog.js` is live — included via `templates/layouts/app_shell.html`.
 
@@ -38,12 +38,29 @@ lines apart.
 claim at all.**
 
 Five false *"cannot be undone"* claims sit on soft paths. The one hard delete — credentials, destroyed
-locally **and revoked at the provider**, the strongest deletion guarantee in the product — says only
-*"Remove your key?"*
+locally — says only *"Remove your key?"*
 
 **So the product is confidently wrong exactly where it's reversible, and silent exactly where it isn't.**
-That strengthens CXO's contrast argument: *"this one really is gone"* isn't just honest copy, it's the
-**only** place that phrase would be true, and it's currently unsaid.
+That part stands, and it's the load-bearing half.
+
+> ⛔ **CORRECTED 2026-08-04 — the clause I struck here (*"and revoked at the provider, the strongest
+> deletion guarantee in the product"*) was FALSE, and CXO shipped it into string 6 on my authority.**
+>
+> **CXO's memo takes full ownership of that claim and diagnoses it as their own argument-shape pressure.
+> The diagnosis is a good one and it isn't what happened here — the claim came from this row, dated a day
+> earlier.** They inherited it, they didn't invent it.
+>
+> 🔴 **And note the direction, which is the part that matters**: my error told a user their key was dead
+> at the provider. **A user who believes that will not go revoke it.** My false claim causes inaction on
+> a live credential — the same direction CXO correctly identified as *worse* than the five permanence
+> overstatements this map was written to catch. **I introduced the dangerous-direction error into the
+> audit whose entire premise was that the word must match the behaviour.**
+>
+> **Mechanism, because it generalises**: I did not invent the word *revoke*. I read it in
+> `disconnect.py`'s own docstring — *"#358 grant revoke"* — where it names a **local** grant-store row
+> deletion, and carried it to a different code path entirely. **Source vocabulary is not source
+> verification.** A comment using a strong verb for a weak operation will hand you the strong verb, and
+> the audit trail will look clean because you can point at the file.
 
 ## Bearing on CXO's three harms
 

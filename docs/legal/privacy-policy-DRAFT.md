@@ -90,9 +90,37 @@ publishing — an incomplete sub-processor list is a compliance exposure, not ju
 OAuth tokens and API keys for connected services are stored in the operating-system keychain, not in
 plaintext application storage.
 
-**When you disconnect a service, Piper Morgan revokes access at the provider, not merely locally.** For
-GitHub, Slack, and Google Calendar, disconnection performs a provider-side OAuth revocation *and*
-deletes the stored credential. *(Verified in `services/connectors/disconnect.py`.)*
+⛔ **CORRECTED 2026-08-04 — the previous wording was FALSE for GitHub and must not be published.**
+It read: *"When you disconnect a service, Piper Morgan revokes access at the provider, not merely
+locally. For GitHub, Slack, and Google Calendar, disconnection performs a provider-side OAuth
+revocation."* **Verified per-connector rather than in aggregate:**
+
+| connector | provider-side revoke? | what actually happens |
+|---|---|---|
+| **Slack** | ✅ **yes** | `SlackOAuthHandler.revoke_workspace_access(user_id)` before the local clear |
+| **Google Calendar** | ✅ **yes** | `GoogleCalendarOAuthHandler().revoke_token(refresh_token)` (the #542 fix) |
+| **GitHub** | ❌ **NO** | keychain PAT + env + config-cache deleted, binding → `UNBOUND`, and `ConnectorGrantStore().delete(session, …)` — **a local DB row, not a GitHub API call** |
+
+🔴 **Why this one is the dangerous direction**: a user told their GitHub access was revoked
+provider-side **will not go revoke it**, and a live token keeps working. Overstating *permanence* on a
+soft delete costs a user an unnecessary worry; overstating *revocation* costs them an active credential
+they think is dead. **A privacy policy must not make the second error.**
+
+**Honest replacement text** — do not restore the aggregate sentence:
+
+> When you disconnect Slack or Google Calendar, Piper Morgan revokes the authorization at the provider
+> and deletes the stored credential. When you disconnect GitHub, we delete the stored credential and
+> end the connection on our side; **the authorization may remain listed in your GitHub settings until
+> you remove it there.**
+
+*(Last clause adopted from HOST's amended string — Comms is right that it's the best-written of the
+three, and it's the only one carrying a user action.)*
+
+⚠️ **Same defect, separate artifact, already corrected**: `dev/active/delete-copy-map-2026-08-03.md`
+claimed LLM **API keys** are "revoked at the provider." Also false — `delete_user_key` is keychain + DB
+only, and no provider revocation is structurally possible. **Two instances, two code paths, one root
+cause: I read the word `revoke` in a docstring where it named a local operation and carried it
+outward.**
 
 ## Your control over your data
 
