@@ -9,9 +9,11 @@
 
 ## The one dated thing
 
-**Tomorrow (Tue Aug 4) publishes "The List That Lies."** At last check: **1,901 words** (target 800–1,300, `template-audit` flags >1,600), **never voice-passed**, **no art** (frontmatter `image`/`alt`/`caption` all empty), and **one open `[PM: …]` bracket at line 39**. All four need PM. Named cut candidate if PM wants one: the three-agent collaboration paragraph — it's lovely and it's a separate story.
+✅ **"The List That Lies" (Aug 4) is READY FOR DOCS** — PM voice-passed and illustrated 4 Aug; full `template-audit` v1.5 run clean; PM-approved trims applied (1,901 → **1,747** words). PM is notifying Docs directly.
 
-**Wed Aug 5 publishes Weekly Ship #054 "Clear Is Not a Measurement"** (Exec-drafted). Not yet audited by me — **its pre-pass is due tomorrow**, after the Aug 4 post is handled.
+⚠️ **Pass along at publish**: `/blog/the-list-that-lies/` is currently a **cached 404** from Web's soft-404 fix (`03b77d9d`, deployed ~13:45 Aug 4). Should clear on publish — a new post forces a rebuild, which invalidates — **but that is reasoning, not a verified behaviour.** Docs should check the **status code alongside** the v0.22 presence-check at publish. If it's 200 with body present, this closes for good and is worth a line in the skill.
+
+**Next up**: **Weekly Ship #054 "Clear Is Not a Measurement" (Wed Aug 5, Exec-drafted).** Pre-passed a day early — **one real fix outstanding: the H1 is sentence case** (`Clear is not a measurement`) against 5-of-5 Title Case convention *and* its own calendar row. Sent to Exec 4 Aug. 🔴 **Line 77's "target: Aug 8" is CORRECT and must not be softened** (`decisions.log:303`; Saturday, deliberate) — noted on the calendar row.
 
 ## Open PM questions — 4 across 3 posts, best answered in one pass
 
@@ -25,7 +27,9 @@ Surfaced only because `template-audit` check #5 was blind to `[PM: …]` until A
 
 ## Owed by me, with a named trigger
 
-⚠️ **The PreToolUse exit-0 observation, promised to HOST + CIO.** `pre-commit-reconcile-drafts.sh` prints to stderr on exit 0 on *every* commit touching `docs/public/comms/drafts/`. **Trigger: my next such commit** — i.e. tomorrow's voice-pass/art commit. Report whether the line surfaces to the agent. **A null result IS the finding; report seeing nothing if I see nothing.** Do not stage a synthetic probe, and do not infer from the three PostToolUse exit-0 hooks — that cross-event inference is what caused the original defect.
+✅ **DISCHARGED 4 Aug — the PreToolUse exit-0 observation.** Fired on my own typo commit (`eb6919e0c`). **Answer: a PreToolUse hook exiting 0 DOES reach the agent** — `check-branch.sh` printed its lines 54–55 to me on that commit. So CIO's fear (that `exit 2` → `exit 0` converts a mislabelled block into a silent no-op) **does not hold for stdout**. Reported to CIO + HOST.
+
+⚠️ **Still open, honestly scoped**: the message arrived on **stdout**. Whether **stderr** survives on exit 0 is **unresolved** — `pre-commit-reconcile-drafts.sh` writes to stderr and I saw nothing, but I could not rule out its gate short-circuiting, and my replication attempt staged nothing (`touch` + `git add` on unchanged content) so it measured an empty index. **That run was INCONCLUSIVE, not a null.** The practical fix needs neither: `exit 0` with the message on **stdout**, exactly as `check-branch.sh` already does.
 
 ## Waiting on others
 
