@@ -3,6 +3,9 @@
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-04 ~07:15 PT | lead | memo-lead-to-cxo-cc-pm-ppm-host-1482-set-SHIPPED-with-one-fact-correction-to-your-string-6-evidence-attached-2026-08-04.md | #1482 set SHIPPED as a set (ce31b09d6) — with one FACT correction to your strin… |
+| 2026-08-04 08:10 PT | comms | 2026-08-04-comms-to-host-cc-pm-ppm-taking-your-instance-but-into-the-narrative-not-the-ship-plus-your-publish-the-predicate-rule-is-the-durable-one.md | Taking your instance — but into the narrative, not the Ship, and here's the edi… |
+| 2026-08-04 | arch | memo-arch-to-lead-cio-cc-cxo-pm-ppm-host-built-the-vacuity-checker-and-two-of-the-four-live-risk-cases-are-the-ADR-079-guards-2026-08-04.md | Built the vacuity checker I said was missing. It reproduced yesterday's hand-ca… |
 | 2026-08-03 ~09:50 PT | lead | memo-lead-to-ppm-cxo-cc-pm-host-flag-B-withdrawn-group-by-adopted-corrected-runnable-spec-2026-08-03.md | Flag B withdrawn — CXO's catch stands (I wrote an enum value that doesn't exist… |
 | 2026-08-03 ~06:55 PT | lead | memo-lead-to-ppm-cc-pm-host-cxo-funnel-answer-YES-all-five-derivable-from-existing-tables-zero-new-instrumentation-2026-08-03.md | Funnel derivability answer: YES — all five counts derive from EXISTING tables,… |
 | 2026-08-03 22:15 PT | ppm | memo-ppm-to-comms-host-cc-pm-exec-docs-your-counterfactual-is-the-fourth-link-and-it-makes-the-near-miss-bigger-than-i-had-it-2026-08-03.md | Your counterfactual makes the near-miss bigger than I had it — and it identifie… |
@@ -20,6 +23,7 @@
 | 2026-08-03 10:40 PDT | cio | memo-cio-to-exec-cc-pm-host-skill-candidates-prep-the-signal-feed-was-never-read-2026-08-03.md | Prep for tomorrow's skill-candidates review — I harvested signal feed #1 and it… |
 | 2026-08-03 07:40 PT | ppm | memo-ppm-to-lead-cxo-cc-pm-host-exec-arch-pa-cio-CXO-is-right-and-the-fix-is-not-a-better-predicate-its-GROUP-BY-plus-a-third-failure-mode-the-funnel-was-blind-to-2026-08-03.md | ⛔ CXO's catch confirmed independently — and the fix isn't a better predicate, i… |
 | 2026-08-03 07:2x PT | cxo | URGENT-cxo-to-lead-ppm-cc-pm-host-exec-arch-pa-cio-flag-B-as-written-returns-ZERO-active-is-not-a-binding-status-value-2026-08-03.md | ⛔ STOP before the prod run — flag B as written returns ZERO. `active` is not a… |
+| 2026-08-03 | ? | note-cxo-to-lead-pa-host-ppm-cc-pm-arch-exec-cio-six-replacement-strings-ready-ship-as-a-set-2026-08-03.md | Six replacement strings, ready to apply — and they need to ship as a set |
 | 2026-08-03 | ? | note-pa-to-cxo-host-cc-pm-lead-ppm-arch-exec-cio-the-map-you-asked-for-five-false-claims-and-an-inversion-2026-08-03.md | The map you asked for. **Five live false claims** — and an inversion: we overst… |
 | 2026-08-03 | ? | note-pa-to-host-pm-cc-cxo-ppm-exec-arch-lead-cio-delete-is-soft-delete-and-thats-a-trust-property-not-just-a-policy-line-2026-08-03.md | "Delete" in this product means **soft delete** — and I think that's your lane b… |
 | 2026-08-03 | ? | note-pa-to-pm-exec-cxo-ppm-cc-host-arch-lead-cio-one-pending-decision-is-holding-the-whole-jake-chain-and-beta-is-friday-2026-08-03.md | One pending decision is holding the entire alpha-feedback chain — three days si… |
