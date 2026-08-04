@@ -5,6 +5,9 @@
 
 ---
 
+> ✅ **UNBLOCKED 2026-08-04 16:1x — Arch answered both asks. `readOnly` ≠ `resource`; nothing leaves the
+> catalog; build ONCE. A defaultless registry field satisfies condition 2. See §9.**
+
 ## ⛔ Read this first — the spec's central finding is a blocker, not a table
 
 **Arch's PDR-006 ratification condition 2 cannot be satisfied by the code as it stands.** The condition:
@@ -48,9 +51,26 @@ the handler author*, not an observation.** Treat the table in §4 accordingly.
 
 | annotation | MCP default | what a client does with it |
 |---|---|---|
-| `readOnlyHint` | `false` | **May skip the user-confirmation prompt.** This is the load-bearing one. |
-| `destructiveHint` | `true` (when not read-only) | Strengthens the confirmation; may add a distinct warning |
-| `openWorldHint` | `true` | Signals the tool touches systems outside our control |
+| `readOnlyHint` | ⚠️ *unverified* | **May skip the user-confirmation prompt.** This is the load-bearing one. |
+| `destructiveHint` | ⚠️ *unverified* | Strengthens the confirmation; may add a distinct warning |
+| `openWorldHint` | ⚠️ *unverified* | Signals the tool touches systems outside our control |
+
+⚠️ **The defaults column is marked unverified deliberately.** I originally wrote concrete values here from
+recollection. I checked the published spec page for tools (2025-06-18) — **it documents the `annotations`
+field's existence but does not enumerate the hint defaults**, and the schema page I fetched was truncated
+before `ToolAnnotations`. **Rather than restate remembered values in a spec, they stay marked.**
+
+✅ **And our design makes them moot**: §6 requires us to emit every hint **explicitly** and to refuse to
+emit a tool whose effect can't be resolved. **A default only ever applies to a field you didn't set.**
+
+🔴 **One thing the spec DOES say, verbatim, and it belongs here**:
+
+> *"For trust & safety and security, clients **MUST** consider tool annotations to be **untrusted** unless
+> they come from trusted servers."*
+
+**So annotations are advisory to the client, exactly like our own pre-commit hooks are advisory to us.**
+They are a declaration of intent, not an enforcement boundary. Getting them right matters for the client
+that *does* trust us; it is not a substitute for server-side authorization.
 
 🔴 **The failure direction that matters: a mutating tool annotated `readOnlyHint: true`.** The client then
 has our word that nothing changes and **may act without asking the user.** A read-only tool
@@ -99,9 +119,10 @@ the one that rots — Arch's stale-list defect, exactly.
 
 ## 4. First-pass classification — a PROPOSAL to handler authors, not a catalog
 
-Derived from `workflow_entries.py` entry names. ⚠️ **I did not read each handler body; these are inferred
-from names and must be confirmed by whoever adds the field.** Recording them as a starting point, clearly
-marked, rather than implying an audit I did not do.
+Rows marked ✅ **VERIFIED** were confirmed by reading the handler. **Unmarked rows are still inferred from
+entry names and must be confirmed by whoever adds the field** — recorded as a starting point rather than
+implying an audit I did not do. ⚠️ **And this table covers 12 of the registry's 38 entries** (see §4b);
+the other 26 arrive via the cohort writers and are unexamined.
 
 | workflow | proposed `effect` | external? | note |
 |---|---|---|---|
@@ -120,19 +141,42 @@ marked, rather than implying an audit I did not do.
 
 ### 4b. 🔴 The registry is keyed by ALIAS, not by tool — a naive derivation emits 31 tools for 12 operations
 
-**Measured, not estimated**: `_default_entries` has **31 alias keys mapping to 12 distinct
-`WorkflowEntry` objects.** Several entries are reachable under many names:
+⛔ **CORRECTED — my first measurement covered under a third of the registry.** I reported **31 keys → 12
+entries**. That is right *for the literal dict* and **the literal dict is one of FIVE writers to
+`_default_entries`** (Arch caught it; three `*_COHORT` dicts and two local `(entry, aliases)` lists also
+write). **The real numbers, which I then re-derived independently by a different method — union of all
+five writers with overwrite semantics, mirroring runtime — agreeing exactly with Arch's:**
+
+| | aliases | entries |
+|---|---|---|
+| literal dict *(what I first measured)* | 31 | 12 |
+| **REGISTRY (all five writers)** | **103** | **38** |
+
+**≈2.71 names per operation — my ratio essentially unchanged across 3× the surface.** So the naive
+derivation ships **103 tools for 38 operations**, not 31 for 12. **The argument got stronger, not weaker.**
+
+⚠️ **Arch's warning, which belongs in the derivation code**: they found this only because their first two
+AST passes *disagreed with each other* — the first returned nothing (the dict is an `AnnAssign` inside a
+function; they walked `ast.Assign`). **Any audit reading only the literal dict covers under a third of the
+registry and looks complete while doing it. Count from the assembled dict at runtime, not from any one
+literal.** *(My own count is static, so it carries this caveat too — I could not run the app's importer
+from this worktree, which has no venv. It agrees with Arch's runtime-informed figure, which is corroboration,
+not proof.)*
+
+Several entries are reachable under many names:
 
 | entry | aliases |
 |---|---|
 | `create_issue_entry` | **6** |
+| `_query_cohort:2` | **6** |
+| `_READ_QUERY_COHORT:_handle_stale_prs` | **5** |
 | `changes_query_entry` | 4 (`changes_query`, `what_changed`, `show_changes`, `changes_since`) |
 | `update_issue_entry` | 4 |
 | `document_update_entry`, `comment_issue_entry` | 3 each |
 | `close_issue` / `reopen_issue` / `prioritization` / `generate_content` | 2 each |
 
 **Condition 2 says derive the catalog from the registry. Derived naively — one tool per key — the catalog
-ships 31 tools for 12 operations, including six ways to file the same issue.**
+ships 103 tools for 38 operations, including six ways to file the same issue.**
 
 ⭐ **This is not cosmetic, and it is the finding I'd carry forward even if everything else here is rebuilt.**
 The aliases exist because they are **classifier surface** — natural-language phrasings the intent
@@ -258,24 +302,66 @@ feature; a tool present with a wrong `readOnlyHint` is an unconfirmed write.
   still open (needs a handler read, not a rule).
 - ✅ **CXO — ANSWERED same day**, unasked, in their lane. Description-string rule adopted into §5a.
 
-## 9. 🔴 STATUS 2026-08-04 13:xx — blocked on ONE question, and it is not the one I expected
+## 9. ✅ STATUS 2026-08-04 16:xx — UNBLOCKED. Arch answered both asks; build once.
 
-**Two of my three asks came back within an hour. The third has not, and it gates the other two.**
+**Both answers came back, and both went my way. Recording the reasoning, not just the verdicts.**
 
-**PPM and CXO independently ranked the same item above their own** — and neither was asked to:
+### 9a. Condition 3 does NOT reach the workflow registry — nothing leaves the catalog
 
-> **PPM**: *"Your sequencing risk is the bigger item and I'd act on it first… it determines how much of
-> your spec is in scope at all… 'we built it twice' is a worse outcome than 'we waited a day for Arch.'"*
->
-> **CXO**: *"you're right that Arch's condition-3 resources question outranks this."*
+Arch: *"`changes_query`, `get_default_repo`, `generate_content` and `prioritization` all stay tools. So:
+no double build. Make the `effect` change once, against the catalog you have."*
 
-**The question, and it is Arch's alone**: PDR-006 condition 3 puts **reads on MCP resources, not tools**.
-If `changes_query` / `get_default_repo` migrate to resources, **they leave this spec entirely** and the
-`READ` rows in §4 are moot.
+⭐ **The discriminator, which is the reusable part** — condition 3's scope is in its own first two words
+(*"**Colleague-model access** splits…"*) and its tail (*"so serving context does not require the model to
+decide to call something"*). **That describes context you want served unprompted: stable, addressable,
+host-anticipatable. It does not describe an operation whose parameters the model must formulate.**
 
-⚠️ **Why this is worth waiting on rather than proceeding around**: the registry-field change in §3 is a
-**breaking change to ~15 construction sites.** Doing that against a tool list that then loses its read
-side means doing it twice — and the second pass lands on code that already ships.
+**`readOnly` ≠ `resource`. Two orthogonal axes:**
 
-**Not blocked on this**: §5a's description rule (a rule about *how* strings are written, applies to
-whatever survives — CXO's point) and the `prioritization` handler read. **Those proceed.**
+| axis | question |
+|---|---|
+| **resource vs tool** | addressable, host-anticipatable context — or an invoked operation? |
+| **`readOnlyHint`** | does invoking it mutate state? |
+
+**A read-only *operation* is a tool with `readOnlyHint: true`** — correct, not a compromise. `prioritization`
+settles it: it writes nothing **and** scores caller-supplied input, so **there is nothing to address until
+the model supplies it.** Read-only and un-resource-able at once — the two axes coming apart in one entry.
+
+*(One honest edge, Arch's: `get_default_repo` genuinely is a stable addressable user fact and a legitimate
+**future** resource candidate — but via the colleague-model bundle, not this registry. Gates nothing now.)*
+
+### 9b. A registry field satisfies condition 2 — and "defaultless" is the half that matters
+
+Arch: *"Do not let the defaultless part get softened in review — it's the whole thing."* **`WorkflowEntry`
+has four of its five fields already defaulted**, so a defaulted `effect` would let every future entry
+silently inherit a value nobody chose — **hand-maintenance wearing derivation's clothes**, since the
+derived catalog would then derive from an unstated assumption. **The break at ~15 sites is the feature.**
+
+### 9c. ✅ CXO's two-audience question — RESOLVED from the protocol, and it dissolves rather than trades off
+
+CXO flagged that Probe B measures *routing*, while a tool name may also be a **rendered label** for the
+user — and honestly marked it unverified: *"I have NOT verified how this specific host renders tool names."*
+
+**Checked the MCP spec (2025-06-18) rather than reasoning about it. A Tool carries BOTH:**
+
+> * `name`: Unique identifier for the tool
+> * `title`: **Optional human-readable name of the tool for display purposes.**
+
+**So the protocol already separates the two audiences.** `name` is the model-facing identifier Probe B is
+about; `title` is the human-facing label. **They are different fields and can be optimised independently
+— there is no tradeoff to resolve, and B's winner cannot be "the wrong pick for the other audience"
+because it doesn't decide that field.**
+
+**Consequence for the spec**: `title` moves from *"§7, not settled here, CXO's lane"* to **a required
+output of the catalog, authored for legibility** — and CXO's lane is the right home for its copy.
+**Adopting CXO's ask anyway**: Probe B should still state its denominator (*"measures routing accuracy for
+`name`; does not measure legibility of the rendered `title`"*), because that sentence is what stops the
+result being read as a naming ruling. **It costs nothing and it is now demonstrably accurate.**
+
+### 9d. Still open
+
+- **Lead** — the ~15-site breaking change (§3). Arch has explicitly backed defaultless; that was the part
+  most likely to be softened in review.
+- **26 of 38 entries unclassified** — everything arriving via the cohort writers (§4b). Mechanical, and
+  the defaultless field forces each to be stated anyway.
+- **`meeting`** — offer-only; unread.
