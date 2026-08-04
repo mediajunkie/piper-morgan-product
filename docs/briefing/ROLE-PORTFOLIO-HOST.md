@@ -3,8 +3,8 @@ type: role-portfolio
 role: HOST (Head of Sapient Trust)
 status: PILOT v0.1 — the worked example for the role-portfolio trust framework
 self-authored-by: HOST
-last_updated: 2026-06-27
-refreshed: 2026-06-27
+last_updated: 2026-08-04
+refreshed: 2026-08-04
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-HOST.md
 refresh_discipline: "this doc is updated AS PART OF the weekly workstream review — the review is the refresh moment (Rule 5); if section 2 lags the last few reviews, the portfolio has drifted. ⚠️ THAT WAS NEVER A MECHANISM — it asserted that writing a review and editing this file are the same act. They are not. NOW CHECKED: see refresh_trigger_glob (CXO's check-refresh-promises.py, 2026-08-04)."
@@ -24,25 +24,25 @@ refresh_trigger_glob: "mailboxes/exec/*/workstream-*-host-*.md"
 
 The one-line: *the role whose job is to notice whether the cohort's trust is accruing or leaking — and to keep the relationships between sapients healthy as the org scales.*
 
-## 2. Current goals & priorities — June 2026
+## 2. Current goals & priorities — August 2026
 <!-- Rule 2: medium-pace layer; changes per sprint/quarter. Rule 4: each item has a direction + a way to tell if we're moving toward it (steering-able, not check-off). -->
 <!-- Rule 5: THIS SECTION IS REFRESHED AT EACH WEEKLY REVIEW. If status lines are >2 weeks old with nothing moved, the weekly review is itself stale. -->
 
-| Priority | What I'm advancing | Status (June 15) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (Aug 4) | How we'll know it's moving |
 |---|---|---|---|
-| **BYOC welfare infrastructure** | The structural safety net before BYOC users bring third-party agents | Scale-0 GREEN; v0.1 filed to PA; Ted Nadeau (first external tester) onboarding issue unresolved — watching for resolution to update model | v0.2 after Phase-2a experiment results; ADR-068 scoped at M4 |
-| **Role-portfolio framework rollout** | Give every lead a self-authored steering instrument | **COMPLETE — 8/8 wave done 2026-06-24** (all leadership roles; cross-wave observations to Exec); portfolios are living instruments owned by each role | Portfolios stay current via each role's weekly review refresh mechanism |
-| **People-entity trust map** (inputs to #1217 + #1236) | People surface in Radar is inspectable, editable, consent-tiered for BYOC | HOST inputs delivered to CXO+PPM (6/14); incorporated in RadarEntity contract; upstream sweep (PPM+CXO+PM) ongoing | PA drafts rule-language; PPM adds source-provenance field; Arch notes it in ADR-068 consent section |
-| **gbrain synthesis** (HOST + CIO co-sign to PM) | Turn gbrain research into adopted methodology decisions | **COMPLETE** — co-signed memo delivered to PM (2026-06-16) | No further HOST action |
-| **Lead Dev streamlining** (HOST/CIO joint) | Automate mechanical friction; protect coordination | Tiered recommendation co-signed (6/15) and presented to PM; waiting on Tier-1 PM/CIO close | Tier-1 quick wins shipped; Lead Dev self-reports reduced overhead |
+| **Mechanism-over-vigilance, made real** | Convert trust norms the cohort re-proves by hand into things that fail loudly | **3 shipped + non-author-verified**: `check-derived-drift.sh` (2 artifacts), `check-safety-invariants.sh` (3 invariants, caught a live seat on first run), `day-closed-census.py`. **1 blocked**: MEMORY.md over-limit hook is registered and **NOT LIVE** — needs a `/hooks` open no agent can perform | Each has been run by a non-author. Next: does any fire on something nobody already knew? |
+| **Alpha-tester welfare** | Find out why 10 of 11 testers are silent, without spending the one credible ask | **Reframed by CXO** — the silence is the *predicted consequence* of Jake's finding, not a separate mystery. **PPM's funnel derives it instead**, aggregate-by-construction; **HOST ruling: counts, not names.** Waiting on PM's go for Lead's 5-min prod read | The funnel returns a stage distribution. Onboarding-failure vs value-after-connection changes what beta centres on |
+| **Pre-beta trust surface** | Beta (2026-08-08) doesn't ship claims we can't keep | **#1482 shipped** — "cannot be undone" retracted where delete is soft; verified 0 of 34 live call sites hit the false default. **Ruling amended twice** (CXO on the facts, then my own connector over-generalisation). **#1481 descope + re-enable gate adopted** | No user-facing claim outlives its mechanism. Open: account-deletion-by-request has no verified path |
+| **Role-portfolio framework** | Every lead holds a self-authored steering instrument that stays current | **8/8 rolled out. And the refresh promise was never a mechanism** — this document lapsed across 4 workstream reviews (049→054) while asserting it refreshed at each. **Now checked** by CXO's `check-refresh-promises.py`; 9 portfolios declare a promise, **2 verifiable, 7 unverifiable** | The lapsed count goes to 0 and the unverifiable count shrinks. Mine was the worst instance of the thing I built |
+| **The audit nobody owns** | Open MVP issues checked against PM's verbatim beta conditions | **Arch ran 22 issues against ONE condition** (cross-user leakage) in under an hour — 2 findings. **The other conditions remain unaudited and unowned** | Someone owns the remaining conditions, or we say plainly that we shipped without checking |
 
 ## 3. Standing responsibilities (slow-pace — monitoring / sustaining / cadence)
 <!-- Rule 2: named explicitly (half the real work), but UNDER purpose — these are how I sustain the trust infrastructure, not the infrastructure itself. -->
 
-- **Role Health Check** — own + run the 4-weekly cohort audit; poll open `sapient-trust` issues (~weekly). Last audit: 2026-06-13 (0 open).
+- **Role Health Check** — own + run the 4-weekly cohort audit; poll open `sapient-trust` issues (~weekly). Last audit: 2026-06-13 (0 open). ⚠️ **Overdue** — 4-weekly cadence, 7+ weeks elapsed. Named rather than silently carried.
 - **Agent 360 cadence** — periodic cohort questionnaire → diff-against-baseline synthesis. v0.3 complete 2026-06-13.
-- **Weekly workstream review** — the HOST/sapient-trust lens for the Weekly Ship cycle; this review IS the section 2 refresh.
-- **BRIEFING-ESSENTIAL-HOST currency** — biweekly minimum; on-session refresh when triggered. Last updated: 2026-06-14.
+- **Weekly workstream review** — the HOST/sapient-trust lens for the Weekly Ship cycle. ⚠️ **It is NOT the section-2 refresh** — that claim was an assertion that two separate acts were one act, and it was false for 4 consecutive reviews. Refreshing this file is its own step, now verified by `scripts/check-refresh-promises.py`.
+- **BRIEFING-ESSENTIAL-HOST currency** — biweekly minimum; on-session refresh when triggered. Last updated: 2026-06-14. ⚠️ **Also overdue** on its own stated biweekly minimum — same class, unmechanized.
 - **Welfare watch** — agent-network + human-network health; expectation-violation watches; alpha-tester human network (Beatrice on alpha.pipermorgan.ai; PA primary; HOST structural backstop).
 - **Cohort-norm stewardship** — name + help codify trust-relevant norms (mail-vs-GH signaling, session-log discipline, fire-as-wake model) when implicit norms surface as bilateral gaps.
 
