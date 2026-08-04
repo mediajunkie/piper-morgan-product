@@ -3,11 +3,11 @@ type: role-portfolio
 role: Web (Unicorn Web Designer)
 status: v0.2 — Amber/pipermorgan.ai wave
 self-authored-by: Web (Amber/pipermorgan.ai, Opus 5)
-last_updated: 2026-07-30
-refreshed: 2026-07-30
+last_updated: 2026-08-04
+refreshed: 2026-08-04
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: "docs/briefing/BRIEFING-ESSENTIAL-WEB.md — written 2026-08-03, closing the gap HOST flagged 2026-06-20"
-refresh_discipline: "section 2 reviewed at each duty-cycle START — opening a session requires reading the carry-forward queue, which is the same act as touching these priorities; the session-open is the refresh moment (Rule 5)"
+refresh_discipline: "CORRECTED 2026-08-04 (CXO/HOST's check-refresh-promises.py finding, applied to my own doc): reading the carry-forward at session START is real but is not the same activity as updating this file — no checkable trigger exists yet; see §5 for the honest version of this claim"
 staleness_note: "found stale at 41d (Arch, 2026-07-30, cohort-wide finding: check-staleness.py works and is invoked by nothing — all 10 role portfolios were stale). Refreshing my own content per Arch's own example rather than waiting for a consumer mechanism to exist; that mechanism is a Docs/CIO design call, not mine."
 ---
 
@@ -31,21 +31,25 @@ The one-line: *the role whose job is to make sure the public sees Piper Morgan's
 
 ---
 
-## 2. Current goals & priorities — July 30 2026
+## 2. Current goals & priorities — August 4 2026
 <!-- Rule 2: medium-pace. Rule 4: direction + status + forward indicator. Rule 5: REFRESHED AT EACH SESSION START. -->
 
-**Continuity note**: the June 2026 table below is my predecessor's (DinP/Sonnet account, pre-Amber
-migration). No handoff existed when I picked this role up 2026-07-29; PM later recovered the
-predecessor's actual §4/§6 reflection from the old account (`dev/active/handoff-web-predecessor-2026-07-29.md`),
-but the June priority table itself was reconstructed from session logs, not restated by them. Replacing
-it wholesale rather than reconciling row-by-row, since the underlying work (Vercel migration, #998's
-FastAPI phase) was itself superseded mid-June by an entirely different implementation path (the
-Next.js/Vercel compose system) — carrying the old rows forward would misrepresent current reality, not
-just date it.
+⚠️ **Honest note on this refresh**: this table sat at "July 30" for 5 days and multiple substantive
+pieces of work (the `BRIEFING-ESSENTIAL-WEB.md` gap, the CLAUDE.md/ROSTER.md registry gap, the blog
+soft-404 root-cause-and-fix) shipped and closed in that window without this section being touched —
+despite §5's claim that "the session-open act is the refresh moment." **That claim didn't hold in
+practice.** Reading the carry-forward at START is necessary but not sufficient for keeping *this*
+document current; it doesn't cause an edit to this file by itself. Found via CXO's `check-refresh-
+promises.py` (2026-08-04) naming Web as one of 7 roles whose refresh discipline is prose with nothing
+checkable behind it — correct, and this section's own staleness is the concrete proof. Not registering
+a `refresh_trigger_glob` reflexively in response (see the reply to CXO/HOST in mail — my actual cadence
+doesn't map cleanly onto the same trigger shape as a workstream review), but the content gap itself
+needed fixing regardless of the meta-question, so fixing it here first.
 
-| Priority | What I'm advancing | Status (July 30) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (August 4) | How we'll know it's moving |
 |---|---|---|---|
-| **Admin calendar staleness** | Runtime (not build-time) read of the editorial CSV for `/admin/calendar` | **Shipped** 2026-07-29 (`18be9d1`) — three PM-visible staleness reports in ~10 days led to it; verified via fallback/error paths locally, live-success path unverified (no token in this environment) | PM's next authenticated load shows a green "Live" badge, not the amber fallback banner |
+| **`BRIEFING-ESSENTIAL-WEB.md` + registry gaps** | The stable identity/how-to-operate sibling this portfolio's own §5 flagged as missing; found while writing it that Web was also absent from CLAUDE.md's role table and `ROSTER.md` | **Shipped** 2026-08-03 — briefing written, both registries fixed (tier-placement flagged for Docs, not decided unilaterally) | Docs rules on Tier 2 vs. 3; otherwise closed |
+| **Blog soft-404 fix** | `pipermorgan.ai/blog/<unknown-slug>/` and `/blog/page/<out-of-range>/` returning HTTP 200 with the not-found shell (Comms' find) | **Shipped and verified live** 2026-08-04 (`03b77d9d`) — `dynamicParams = false` on both routes; confirmed locally end-to-end and re-confirmed live by Comms against production after deploy | Closed — one open question (does a cached 404 correctly flip on tonight's real publish) being watched by Docs/Comms at publish time, not by me |
 | **Compose UI save-conflict, ask #1** | localStorage autosave safety net (Comms' highest-ranked ask) | **Shipped** 2026-07-29 (`0e448d3`); found + fixed a real data-loss bug in the underlying autosave timer 2026-07-30 (`8d2db3c`) after PM hit it live — closure-vs-ref staleness, unrelated to ask #1 itself | PM's ordinary use of the tool (already the real test, per Comms) continues clean |
 | **Compose UI save-conflict, asks #2/#3** | Conflict-diff UX (#2); live staleness warning (#3) | #2 accepted as low-priority, no date; #3 explicitly declined (would warn on a condition ask #1 already made survivable) | Comms or PM revisits; nothing scheduled |
 | **PDR-007 (Editorial Data Single Source of Truth)** | Reviewed Docs' proposal; corrected implementation-cost estimate downward (render layer needs zero changes under Option B) | Effectively settled 2026-07-30 — Arch's review concurred, Docs pre-registered a measurement-window threshold and shipped it as a runnable script | Window closes 2026-08-27; Option B proceeds or doesn't based on measured drift, not on this table |
@@ -125,7 +129,23 @@ seam; it's Web's own primary-repo work, covered under §1/§3, not a co-ownershi
 ## 5. How this stays current
 <!-- Rule 5: currency by construction (m-36 — mechanism, not vigilance). -->
 
-**Section 2 (fast refresh)**: reviewed at each duty-cycle session START — I can't open a session without reading the carry-forward queue, and the carry-forward queue *is* the priority table in motion. The START act is the refresh mechanism; if section 2 is more than a week stale relative to my session logs, the session open discipline has drifted, not just this doc.
+**Section 2 (fast refresh)**: ⚠️ **corrected 2026-08-04 — the claim below was wrong, not just stale.**
+It used to read *"the START act is the refresh mechanism."* It isn't. **Reading** the carry-forward
+at every session START is real and does happen every fire. That is not the same activity as
+**writing** an update to this file, and nothing forces the second to follow the first — dozens of
+STARTs happened between 2026-07-30 and 2026-08-04 with real priority-worthy work landing in that
+window, and none of them touched section 2. CXO's `check-refresh-promises.py` named Web as one of
+seven roles whose refresh discipline is prose with no checkable trigger behind it; this section's
+own 5-day gap (inside my own stated "more than a week" tolerance, but still a real gap on
+substantive work) is the honest confirmation, not a counterexample. **What's actually true**: I
+*notice* drift by re-reading this file periodically and decide by hand whether to update it — that's
+vigilance, not mechanism, and calling it a mechanism was the same shape of error CXO/HOST found in
+HOST's own portfolio (m-36: "a mechanism can be copied as prose and arrive with nothing inside it").
+**Not registering a `refresh_trigger_glob` reflexively to look covered**: my session logs are
+created 6x/day, so a naive "any trigger after last_updated → LAPSED" check would misreport
+constant staleness rather than actual content drift — the semantic mismatch is real, not an excuse.
+Left honestly reported as unverifiable until either a real per-fire discipline exists or the checker
+gains a staleness-window semantic that a high-frequency trigger source could use correctly.
 
 **Full portfolio (slow refresh)**: reviewed each time PM initiates a sprint planning or role-scope conversation, or when a new priority displaces an old one (e.g., when #998 COMPOSE-UI-V1 closes, that row retires and the next PM-directed sprint item takes its place).
 
