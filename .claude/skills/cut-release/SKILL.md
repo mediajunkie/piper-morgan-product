@@ -22,6 +22,13 @@ If any of these are unclear, ask PM before starting. A release cut on the wrong 
 
 ## Phase 1 — Pre-flight (do not skip)
 
+**⭐ #1413 CONTENT-PARITY GATE (added 2026-08-04)**: run `scripts/check-release-parity.sh`
+FIRST. A "full-parity" claim is a statement about a *moment* (the 7/16 incident: the claim
+aged 48 minutes and silently dropped a live login fix → two-day latent login regression).
+The script refuses on any unexplained content gap between the release ref and origin/main;
+intentional exclusions go in `release-exclusions.txt` AND the release notes verbatim —
+empty diff or explained lines, never silent gaps.
+
 ```bash
 # 1. Confirm cut commit
 git log --oneline {PREV_TAG}..HEAD | head -20
@@ -166,6 +173,16 @@ git push origin v{NEW_VERSION}
 ---
 
 ## Phase 5 — Production branch
+
+**⭐ #1413 DEPLOY-SOURCE RULE (added 2026-08-04)**: an env must never be NEWER than its
+release lineage — that masking is what made the 7/16 gap invisible (a worktree deploy
+carried a fix `production` lacked; the next `production` deploy silently regressed it).
+Two compliant modes, pick per context and say which:
+- **Release window**: hosted deploys come from `production` only.
+- **Lockstep mode** (the ratified beta-cadence norm — main==production): deploys from
+  main are fine **IFF `production` is fast-forwarded in the same session**
+  (`git push origin HEAD:production`) so lineage can never silently diverge. The parity
+  script doubles as the check: run it after any lockstep deploy; it must say PARITY OK.
 
 ```bash
 # Fast-forward production to this release
