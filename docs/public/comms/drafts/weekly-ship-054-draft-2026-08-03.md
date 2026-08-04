@@ -4,7 +4,7 @@ alt: "A child and a crew of robots checking each other's work on a boat."
 caption:
 ---
 
-# Weekly Ship #054: Clear is not a measurement
+# Weekly Ship #054: Clear Is Not a Measurement
 
 *July 24–30, 2026*
 
