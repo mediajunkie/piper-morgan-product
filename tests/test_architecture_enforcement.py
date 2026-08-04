@@ -748,6 +748,11 @@ class TestGitHubDefaultRepoScopingEnforcement:
 
         violations = []
 
+        # Vacuity guard (Arch checker 2026-08-04): this scan DERIVES its input;
+        # an empty derivation must fail loudly, never pass as "no violations".
+        assert len(service_files) >= 100, (
+            f"unscoped-read scan found only {len(service_files)} files — detection broken"
+        )
         for file_path in service_files:
             if "__pycache__" in file_path:
                 continue
@@ -820,6 +825,11 @@ class TestPersonalizationScopingEnforcement:
 
         violations = []
 
+        # Vacuity guard (Arch checker 2026-08-04): this scan DERIVES its input;
+        # an empty derivation must fail loudly, never pass as "no violations".
+        assert len(service_files) >= 100, (
+            f"unscoped-read scan found only {len(service_files)} files — detection broken"
+        )
         for file_path in service_files:
             if "__pycache__" in file_path:
                 continue
@@ -1315,7 +1325,13 @@ class TestChatPointersReachabilityRatchet:
         stated here so "complete for the space it searched" stays visible."""
         from services.intent_service.unwired_writes import UNWIRED_WRITE_DECLINES
 
-        stale = set(UNWIRED_WRITE_DECLINES) & self._reachable_actions()
+        reachable = self._reachable_actions()
+        # Vacuity guard (Arch checker 2026-08-04): the reachable set is DERIVED;
+        # empty means the derivation broke, not "nothing is reachable".
+        assert len(reachable) >= 20, (
+            f"reachable-actions derivation returned only {len(reachable)} — detection broken"
+        )
+        stale = set(UNWIRED_WRITE_DECLINES) & reachable
         assert not stale, (
             f"UNWIRED_WRITE_DECLINES lists actions that are now REACHABLE: "
             f"{sorted(stale)}. The capability shipped — remove its decline copy "
@@ -1414,10 +1430,12 @@ class TestSingleDeclarativeBase:
 
     def test_only_connection_py_creates_a_base(self):
         offenders = []
+        files_scanned = 0
         for root, _dirs, files in os.walk("services"):
             if "__pycache__" in root:
                 continue
             for f in files:
+                files_scanned += 1
                 if not f.endswith(".py"):
                     continue
                 path = os.path.join(root, f)
@@ -1427,6 +1445,9 @@ class TestSingleDeclarativeBase:
                 src = open(path, encoding="utf-8", errors="ignore").read()
                 if re.search(r"^\s*Base\s*=\s*declarative_base\(\)", src, re.M):
                     offenders.append(rel)
+        assert files_scanned >= 100, (
+            f"Base-scan walked only {files_scanned} files — detection broken (vacuity guard)"
+        )
         assert not offenders, (
             f"Second declarative Base created in: {offenders} — one Base per DB "
             "(Arch invariant, #1312). Register models on "
