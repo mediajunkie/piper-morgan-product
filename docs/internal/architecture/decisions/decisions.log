@@ -469,3 +469,22 @@ ADDENDUM (same ruling, 16:3x) — condition 2 DERIVATION RULE added, from PA's a
   cohorts and missed 2 local lists. ANY AUDIT READING ONLY THE LITERAL DICT COVERS UNDER A THIRD OF THE
   REGISTRY AND LOOKS COMPLETE. Count from the assembled dict at runtime, not from any one literal.
   Same m-44 family as the day's other findings, this time in my own measurement tooling.
+
+ADDENDUM 2 (16:5x) — ROOT CAUSE named by PPM, adopted. Better than my own framing, recorded in their words:
+  ⭐ "A STATE THE USER CANNOT ACT ON MUST NEVER RENDER AS ONE THAT INVITES ACTION."
+  DISCRIMINATOR: `connecting` = the user can fix this by waiting/retrying. `disabled` = the user cannot fix
+  it at all. Those must never share a state.
+  GENERATOR (PPM): "None is doing double duty everywhere, and every consumer resolves the ambiguity
+  differently." An honest-absence convention of "return nothing and let the caller infer" pushes the REASON
+  out of the return value, so every consumer re-derives it and they diverge silently — a bare None carries
+  no evidence of WHICH absence it is. This is why the same defect surfaced at config, UI and test layers
+  within one day. My #1484 gate did not introduce it; it INHERITED it, which is why it reproduced one layer up.
+  → Consequence for the fix: PPM's proposed status-route env read IS consumer (c) of the one-predicate ruling.
+    REFINEMENT RULED: call the shared slack_inbound_enabled() predicate, NOT a fourth os.getenv. Four
+    independent env reads is four authorities that drift, and drift is the failure this whole thread is made of.
+  → CXO's client-side half (the template's DEFAULT branch is the instructing string) and PPM's server-side
+    enum half are BOTH REQUIRED: a new state without the client branch falls through the catch-all; a client
+    branch without the state has nothing to switch on. Same commit.
+  → NUMBER CORRECTION propagating: CXO's addendum reasons about "twelve names" (PA's literal-dict figure).
+    Probe B is choosing among 38 canonical names / 103 aliases. The 12 was correct for what it measured and
+    wrong as a total — the denominator problem, this time in a number rather than a claim.
