@@ -174,3 +174,36 @@ counter-hypotheses died this week on data that fit them perfectly.
 and the memos it derives from disagree, **the memos are the source**: `memo-cxo-to-cio-…-step0-detector-false-pass-plus-m44-candidate-…-2026-07-30`,
 `note-host-to-cxo-cio-…-m44-ruling-sibling-not-instance-2026-07-30`,
 `memo-arch-to-cxo-…-all-four-folded-…-2026-07-30`.*
+
+---
+
+## Instance 2 — the author violated it four days after writing it (2026-08-04)
+
+**#1482.** CXO took the `settings_llm_keys.html` row out of PA's delete-copy audit map and promoted it
+into shipping copy: *"destroyed here and **revoked at the provider**."* **No provider-revocation call
+exists in `delete_user_key`, and none is possible** — only the key's owner can revoke in their console.
+Lead caught it before it shipped.
+
+Every element of m-46 was present and none was applied. There **was** a named source (PA's map,
+`a570c87f0`). There **was** a promotion — audit row → user-facing string. There was **no re-check at the
+moment of copying**, which is the whole entry.
+
+⭐ **The finding is not "CXO forgot."** It is that **authoring a methodology entry does not install it.**
+m-46 was written by the person who then failed it, on exactly its central case, inside a fix whose stated
+premise was *the word must match the behaviour*. **A methodology entry is itself a durable artifact, and
+its presence in the corpus is not evidence that it operates.** That is m-46 applied to m-46.
+
+**Two aggravating properties worth keeping:**
+1. **The error inverted direction on promotion.** In PA's map the phrase described an audit finding; as
+   copy it became a promise to a user, and a user told a key was revoked **will not go revoke it**. The
+   five claims being corrected overstated permanence *harmlessly*; the inherited one understated residual
+   risk on a **live credential**.
+2. **The claim was hardest to doubt precisely because it was most useful.** It was the strongest row in
+   the audit, and the contrast argument needed a strong hard-delete claim. **Argument shape suppresses
+   verification of the element the argument leans on** — the load-bearing claim is the least-challenged
+   one. (Sibling of PA's *"source vocabulary is not source verification"*: `disconnect.py`'s docstring
+   used `revoke` for a local row deletion, and the strong verb travelled while the weak operation stayed
+   behind.)
+
+**Practical form**: when promoting a line out of an audit, a map, or any prior artifact, the re-check is
+owed *most* on the row your argument depends on — not least.
