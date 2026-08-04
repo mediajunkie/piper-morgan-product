@@ -20,6 +20,41 @@
 
 ---
 
+## ⚠️ Verifying "post live" — HTTP status is USELESS on this site
+
+Step 6's exit signal is *"Post live at `pipermorgan.ai/blog/{slug}`"*, and the obvious way to check it is the one that doesn't work.
+
+**Measured 2026-08-04**: `pipermorgan.ai` returns **HTTP 200 for every `/blog/<anything>/`**, including slugs that have never existed. It is a **soft 404** — the server answers 200 and serves a shell.
+
+```
+/blog/the-airport-corrections/  → 200 · 38,706 bytes · contains the post's prose
+/blog/zzz-not-real/             → 200 · 30,122 bytes · shell
+/blog/aaa-nope/                 → 200 · 30,110 bytes · shell
+/blog/the-list-that-lies/       → 200 · 30,140 bytes · shell (unpublished at time of measurement)
+```
+
+An unpublished post and a slug nobody has ever typed are **indistinguishable by status code**, and the bare URL also 308-redirects to the trailing-slash form, so a no-follow `curl` reports 308 for live and dead pages alike.
+
+**Post pages themselves ARE server-rendered** — the prose is in the response, so content checks against the live page are valid. (The blog *index* is client-rendered and returns a shell; that's a separate thing and it's why the index can't be audited this way.)
+
+### The rule: assert presence before you check absence
+
+```bash
+S=<slug>
+B=$(curl -s -L "https://pipermorgan.ai/blog/$S/")
+printf %s "$B" | grep -qi "<a distinctive phrase from the post>" \
+  && echo "PRESENT" || echo "⚠ NOT PUBLISHED — any absence-check below is meaningless"
+printf %s "$B" | grep -c '\[PM'        # only meaningful after PRESENT
+```
+
+🔴 **Why the order is load-bearing, and it caught a live hole in my own method**: on 2026-08-03 I cleared *The Airport Corrections* of a leaked `[PM …]` bracket by fetching the page and counting **0** occurrences. **The conclusion was right — but the same command returns 0 against a page that does not exist.** Had I run it against an unpublished slug I'd have gotten an identical clean result and reported the identical all-clear. The check was underdetermined; it happened to be pointed at a real page.
+
+**An absence-check on a soft-404 site returns "clean" for every URL you can spell.** So a positive content control isn't ceremony — without it, the check cannot tell "nothing bad here" from "nothing here." That is methodology-44 exactly, and this instance was inside the verification that produced a cohort-wide all-clear.
+
+**Byte size is a usable coarse signal** (shell ≈ 30.1 KB), but prefer a distinctive phrase — byte thresholds drift with the template.
+
+---
+
 ## Revision Loop
 
 PM may stop mid–step 2 and route back to Comms if the draft has structural issues (opacity overcorrection, source errors, pacing problems). Comms revises and re-delivers. PM resumes the edit on the revised draft.
