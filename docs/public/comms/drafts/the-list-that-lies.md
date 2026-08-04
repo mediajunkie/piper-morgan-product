@@ -1,7 +1,7 @@
 ---
 image: ''
-alt: ''
-caption: ''
+alt: 'A translucent dolphinoid AI gatekeeper confidently consults a ledger beside an observant human, as the supposedly secured gate stands wide open behind them'
+caption: '"Nothing can go wrong!"'
 ---
 
 # The List That Lies
