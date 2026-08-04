@@ -48,13 +48,13 @@ I'll be honest about the severity, because it's easy to make this sound worse th
 
 In my case, two things were exposed: First, for that period, anyone could have registered an account. Second, and separately, anonymous callers could quietly run up a bill on my own key through one endpoint that hadn't been closed.
 
-I asked if there was no guard. Arch told me there was a guard but explained how it failed on incorrect or stale justifications. The agent made a comparison that was strange to me: its idea of risk covered writing to the system but not the separate case of "spending money on it." Perhaps this is a long-tail effect of my "zero dollar stack" vision?
+I asked if there was no guard. Arch told me there was a guard but explained how it failed on incorrect or stale justifications. Its idea of risk covered writing to the system but not the separate case of "spending money on it." Perhaps this is a long-tail effect of my "zero dollar stack" vision?
 
 So we escalated the rigor a notch, like you do. The invite control that shipped to the small list of alpha testers is a real cryptographic gate: single-use tokens that can't be guessed or spent twice, because the code that consumes a token does it in one atomic database operation, and the team wrote a test that fires two real registrations at the same token at once and proves exactly one wins. Not a mocked test, but two actual concurrent sign-ups against a real database.
 
 Arch drew a new standing rule from this: Any route claiming it protects itself has to carry a test that enforces the claim.
 
-It shipped the day it was ratified, after running back and forth for most of a day among three of my agents, my head of sapient trust agent (HOST), whose ultimate goal is to make sure that the humans and agents can work together in a healthy way, plus Arch and Lead Dev. Every pass caught something the last one had missed, in both directions: Arch flagged that the token-burn had to be atomic or two people could race for one invite, and Lead Dev found a better way to do it than Arch first sketched, closing a gap the original left open. HOST checked both. Agents are good at letting go of their first drafts without a lot of defensiveness (almost too ready to adopt the party line sometimes, even!).
+It shipped the day it was ratified, after running back and forth for most of a day among Arch, Lead Dev, and my head of sapient trust agent (HOST). Every pass caught something the last one had missed, in both directions: Lead Dev found a better way to do it than Arch first sketched, closing a gap the original left open, and HOST checked both. Agents are good at letting go of their first drafts without a lot of defensiveness (almost too ready to adopt the party line sometimes, even!).
 
 So in the end we built pretty much the real "invite control" my June 25 decision had made a requirement before pulling down the extra login step. We closed the barn door before any horses actually escaped.
 
