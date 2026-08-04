@@ -75,6 +75,31 @@ EXTRA = []
 # has made that claim checkable.
 PROMISE_KEYS = ("refresh_discipline", "refresh_trigger_glob", "staleness_note")
 
+# ⚠️ ADDED 2026-08-04, SECOND NON-AUTHOR RUN — this script created a perverse incentive.
+#
+# Web read the UNVERIFIABLE list, checked their own portfolio, found its claim ("the START
+# act is the refresh mechanism") was FALSE, and did the right thing: refreshed the content,
+# then rewrote the claim to say what is actually true — "I notice drift by re-reading and
+# decide by hand." Vigilance, declared honestly.
+#
+# And this script would have gone on listing them next to six roles making claims that are
+# still false, because it could not tell an honest declaration from an unexamined one. The
+# only way off the list was to register a glob — and Web explained precisely why theirs
+# would be a BAD one: session logs fire 6x/day, so "any trigger after last_updated →
+# LAPSED" would report constant lapse, conflating "no new session yet" with "content is
+# stale." A false signal, not a correct one.
+#
+# ⭐ So the incentive ran: make a false claim checkable with a mismatched proxy, or stay on
+# a list that reads as delinquency. BOTH WORSE THAN THE TRUTH. A report that cannot
+# distinguish an honest limit from an unexamined claim punishes the person who examined it.
+#
+# `refresh_verifiability: by-hand` is the declaration. It is NOT an exemption and it does
+# not make the document pass — it moves it to a bucket that says "this promise is kept by a
+# person, by hand, and the author has said so." Some promises are genuinely unmechanizable,
+# and inventing an artifact whose only purpose is to be checked defeats the point (Web's
+# words, and they are right).
+VERIFIABILITY_KEY = "refresh_verifiability"
+
 
 def frontmatter(path):
     text = path.read_text(encoding="utf-8")
@@ -95,6 +120,7 @@ def main():
     fail = 0
     checked = 0
     unverifiable = []
+    by_hand = []
     skipped = []
 
     candidates = []
@@ -117,11 +143,17 @@ def main():
 
         pattern = fm.get("refresh_trigger_glob")
         updated = fm.get("last_updated", "")
+        declared = fm.get(VERIFIABILITY_KEY, "").strip().lower()
+
         if not pattern:
-            unverifiable.append(
-                f"{rel} — declares a refresh promise in prose, no refresh_trigger_glob; "
-                f"nothing can check it (last_updated {updated or 'absent'})"
-            )
+            if declared == "by-hand":
+                by_hand.append(f"{rel} — kept by hand, declared (last_updated {updated or 'absent'})")
+            else:
+                unverifiable.append(
+                    f"{rel} — declares a refresh promise in prose, no refresh_trigger_glob and no "
+                    f"{VERIFIABILITY_KEY} declaration; nothing can check it and nobody has said so "
+                    f"(last_updated {updated or 'absent'})"
+                )
             continue
         if not ISO.match(updated):
             skipped.append(f"{rel} — last_updated is not an ISO date: {updated!r}")
@@ -152,23 +184,38 @@ def main():
 
     print()
     print("── coverage ─────────────────────────────────────────────────────────────────")
-    total = checked + len(unverifiable) + len(skipped)
+    total = checked + len(unverifiable) + len(by_hand) + len(skipped)
     print(f"documents making a refresh promise: {total}")
     print(f"  verifiable and checked: {checked}")
-    print(f"  UNVERIFIABLE (promise in prose, nothing to check it against): {len(unverifiable)}")
+    print(f"  kept by hand, DECLARED: {len(by_hand)}")
+    for b in by_hand:
+        print(f"    · {b}")
+    print(f"  UNVERIFIABLE and undeclared: {len(unverifiable)}")
     for u in unverifiable:
         print(f"    ✗ {u}")
     if skipped:
         print(f"  malformed: {len(skipped)}")
         for s_ in skipped:
             print(f"    ✗ {s_}")
+    if by_hand:
+        print()
+        print("  · 'kept by hand' is NOT a failure and NOT an exemption. It records that a person")
+        print("    keeps this promise and has said so. Declaring it honestly is strictly better")
+        print("    than registering a trigger whose cadence doesn't match the claim, which would")
+        print("    produce a confident wrong signal instead of an honest silence.")
     if unverifiable:
         print()
-        print("  ⚠️  An unverifiable promise prints here rather than passing silently. It is not")
-        print("      a failure — it is a claim to stay current that nothing can contradict.")
-    if not fail:
-        print()
-        print("✓ Every VERIFIABLE promise held. That is not a statement about the unverifiable ones.")
+        print("  ⚠️  The undeclared ones are the finding. Each claims to stay current and nothing")
+        print("      can contradict it — including the author. A recent last_updated tells you the")
+        print("      author is diligent and tells you nothing about the promise.")
+    print()
+    if fail:
+        print("✗ Exit 1: at least one VERIFIABLE promise has lapsed.")
+    else:
+        print(f"✓ Exit 0 means: none of the {checked} VERIFIABLE promise(s) has lapsed.")
+    print(f"  It does NOT mean the other {total - checked} are current. The exit code's")
+    print("  denominator is the checked set, and it can only ever be. Read the coverage")
+    print("  block above before treating a green as a statement about the cohort.")
     return fail
 
 

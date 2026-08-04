@@ -66,19 +66,23 @@ proves you read it, not that you read what it does.
 
 ## Open threads PA owns
 
-1. ⛔ **Tool-annotation spec — WRITTEN, and BLOCKED on one Arch question.**
-   `dev/active/tool-annotation-spec-2026-08-04.md`.
-   ✅ PPM ruled `close_issue` = `WRITE` (**DESTRUCTIVE = destroys information unrecoverable through the
-   product** — the discriminator, adopted). ✅ CXO gave the description-string rule (**the irreversible
-   part of a reversible operation goes in the same sentence as the reversibility claim**).
-   🔴 **Blocked**: PDR-006 **condition 3** puts reads on MCP **resources**, not tools. If it reaches the
-   workflow registry, every `READ` row leaves the spec. **§3 is a breaking change to ~15 construction
-   sites — building against a list that then loses its read side means building it twice.** PPM and CXO
-   each ranked this above their own item, unprompted. **Do not proceed to implementation before Arch
-   answers.** Description rule + handler reads proceed regardless.
-   🔴 **Second finding, sent as an addendum**: the registry is keyed by **alias** — **31 keys → 12 entries**
-   (`create_issue` has 6). **Naive derivation ships six ways to file the same issue.** Aliases are
-   classifier surface; a host LLM's tool list is not. **Catalog must dedupe by entry identity.**
+1. 🟢 **Tool-annotation spec — UNBLOCKED, complete enough to hand to Lead.**
+   `dev/active/tool-annotation-spec-2026-08-04.md`. **Next actor is Lead, not PA.**
+   ✅ **Arch ruled**: condition 3 does **NOT** reach the workflow registry — **nothing leaves the catalog,
+   build ONCE**. `readOnly` ≠ `resource` (orthogonal axes: *addressable context vs invoked operation* is
+   not *does it mutate*). ✅ A defaultless registry field satisfies condition 2, and Arch flagged
+   **"don't let defaultless get softened in review — it's the whole thing"** (4 of 5 `WorkflowEntry`
+   fields are already defaulted).
+   ✅ PPM: `close_issue` = `WRITE` — **DESTRUCTIVE = destroys information unrecoverable through the product**.
+   ✅ CXO: **the irreversible part of a reversible operation goes in the same sentence as the reversibility
+   claim** (a recomposing client LLM drops trailing caveats, and keeps the *reassuring* one).
+   ✅ **Registry alias count CORRECTED**: not 31→12 (that's the literal dict, **one of five writers**) but
+   **103 aliases → 38 entries**, 2.71 names/op — re-derived independently, matches Arch exactly.
+   **Catalog must dedupe by entry identity; aliases are classifier surface and must not leak outward.**
+   ✅ All **26 cohort handlers screened → all READ** (3 ambiguous hand-checked). ⚠️ **A screen, not an
+   audit**; `_handle_learn_pattern` is the one to re-check first.
+   ⬜ **Open for Lead**: the ~15-site breaking change. ⬜ Unscreened: `meeting` (offer-only),
+   `run_todo_query_workflow` (separate module).
    ⬜ Other Phase 0 items untouched: `claude plugin validate` dry-run · public docs page · ChatGPT
    5-positive/3-negative test cases.
 2. 🟡 **Probe B — now UPSTREAM of the catalog, and PM-gated on API spend.**
@@ -88,6 +92,13 @@ proves you read it, not that you read what it does.
    decides which of the 12 canonical tool names we pick**, so it precedes the catalog rather than sitting
    beside it.
    ⛔ **PM's "yes you may" was scoped to Probe A. B is new API spend — do not extend it silently; ask.**
+   ✅ **CXO's two-audience worry is RESOLVED and does not constrain B**: MCP Tool carries **`name`**
+   (*"Unique identifier"*) **and `title`** (*"human-readable… for display purposes"*) as **separate
+   fields** — verified against the 2025-06-18 spec. B decides `name`; `title` is legibility (CXO's copy).
+   **Still state B's denominator** in the probe: *measures routing for `name`, not legibility of `title`*.
+   ⭐ **Arch's suggestion worth weighing**: the 103 aliases are a **naturally-occurring sample across both
+   name shapes** — B may be answerable partly *from the registry* rather than only in front of it, which
+   would cut the API spend.
    ⚠️ **Keep schemas identical across arms.** ⚠️ **Rescore by hand, not by tally** — the Probe A scorer was
    wrong 4× across 5 arms and every error was caught by hand-reading, never by the tally.
 3. **#1458** — pre-live cross-caller state isolation; blocks multi-tenant serving. Not started; belongs

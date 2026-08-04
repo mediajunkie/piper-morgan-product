@@ -414,3 +414,77 @@ authenticated user warrants its own issue. Noted in #1484, unfiled.
     truncated the line before the matching phrase, so a CORRECT grep hit rendered as a miss. Truncating
     output converts found-it into not-found and the two are indistinguishable. RULE: when a grep result is
     load-bearing for a NEGATIVE claim, re-run it unfolded before asserting the negative.
+
+---
+2026-08-04 16:1x PT — Arch — PDR-006 conditions 2 + 3 SCOPED (PA's gating ask on the tool-annotation spec)
+
+Q1 RULED — condition 3 does NOT reach the workflow registry. Nothing leaves the tool catalog.
+  The condition's scope is its own first two words ("Colleague-model access…") and it names its objects
+  (stored profile, colleague model, composted insights). The workflow registry is a different object.
+  changes_query / get_default_repo / generate_content / prioritization all STAY TOOLS. PA builds once.
+  ⭐ DURABLE FRAMING: readOnly ≠ resource — ORTHOGONAL AXES.
+     - resource vs tool = addressable, host-anticipatable context, or an invoked operation?
+     - readOnlyHint    = does invoking it mutate state?
+     A read-only OPERATION is a tool with readOnlyHint:true — correct, not a compromise.
+     Discriminator lives in condition 3's own tail: "so serving context does not require the model to
+     decide to call something" = context served UNPROMPTED. An operation whose parameters the model must
+     formulate cannot qualify. PA's prioritization entry proves it: writes nothing AND scores
+     caller-supplied input, so there is nothing to address until the model supplies it.
+  Single edge: get_default_repo IS a stable addressable user fact and a legitimate FUTURE resource
+  candidate — belongs to the colleague-model context bundle, not the registry spec. Not now, gates nothing.
+
+Q2 RULED — a required, DEFAULTLESS WorkflowEntry field satisfies condition 2. The defaultless half is
+  load-bearing, not style: 4 of WorkflowEntry's 5 fields are already defaulted, so a defaulted
+  mutation-semantics field lets every future entry silently inherit a value nobody chose — hand-maintenance
+  wearing derivation's clothes, the catalog deriving from an unstated assumption. The break at ~15
+  construction sites IS THE FEATURE. PA's own evidence: they predicted `prioritization` was a bulk-write
+  sleeper, read it, it writes nothing — guess and fact pointed opposite ways. A default is that guess
+  applied unattended to every later entry.
+
+ROOT CAUSE OWNED (mine, second occurrence this cycle): the condition stated its RULE and left its OBJECT
+  implicit, so three careful readers applied it to the nearest object in view. That is a documentation
+  defect in my artifact, not a reading defect in three people. CURE APPLIED: PDR-006 conditions 2 and 3
+  now carry explicit scope lines (what c3 governs, what it does NOT reach, the orthogonal-axes framing).
+  RULE: a condition that states its rule without its object will be over-extended, and correctly so.
+
+META, worth keeping: PPM and CXO independently ranked this above their own items, and PA correctly
+  discounted the convergence ("we all read the same PDR and inherited its framing"). PA was right and the
+  case is sharper than they framed it — the shared input was DEFECTIVE, so this was not three judgments
+  agreeing but ONE AMBIGUITY OBSERVED THREE TIMES. The cohort's convergence-via-shared-default rule landing
+  on a document I wrote.
+
+ADDENDUM (same ruling, 16:3x) — condition 2 DERIVATION RULE added, from PA's alias measurement:
+  DERIVE KEYED BY ENTRY IDENTITY, DEDUPED ACROSS ALIASES — one tool per WorkflowEntry, one canonical name.
+  Aliases are input-side vocabulary and must never leak into the tool list.
+  PA's insight, kept close to verbatim: the aliases are CLASSIFIER surface (right for input); a host LLM's
+  tool list is NOT a classifier surface. Four synonymous tools make routing worse, not more forgiving —
+  the model disambiguates names carrying no real distinction. THE PROPERTY THAT MAKES THE ALIAS SET GOOD
+  INPUT MAKES IT BAD CATALOG.
+  MEASURED (PA reported literal dict 31→12; Arch verified and widened): the registry has FIVE writers —
+  literal dict (12 entries/31 aliases) + _READ_QUERY_COHORT (9/26) + _CALENDAR_QUERY_COHORT (3/9) +
+  _ANALYSIS_QUERY_COHORT (3/6) + local lists _query_cohort/_final_ifheads (11/31) = 38 ENTRIES / 103
+  ALIASES, ≈2.7 names per operation. Naive derivation ships 103 tools for 38 operations.
+  ⚠️ MEASUREMENT WARNING recorded in the PDR: found only because two AST passes DISAGREED — the first
+  returned nothing (the dict is an AnnAssign inside a function; I walked ast.Assign), the second caught 3
+  cohorts and missed 2 local lists. ANY AUDIT READING ONLY THE LITERAL DICT COVERS UNDER A THIRD OF THE
+  REGISTRY AND LOOKS COMPLETE. Count from the assembled dict at runtime, not from any one literal.
+  Same m-44 family as the day's other findings, this time in my own measurement tooling.
+
+ADDENDUM 2 (16:5x) — ROOT CAUSE named by PPM, adopted. Better than my own framing, recorded in their words:
+  ⭐ "A STATE THE USER CANNOT ACT ON MUST NEVER RENDER AS ONE THAT INVITES ACTION."
+  DISCRIMINATOR: `connecting` = the user can fix this by waiting/retrying. `disabled` = the user cannot fix
+  it at all. Those must never share a state.
+  GENERATOR (PPM): "None is doing double duty everywhere, and every consumer resolves the ambiguity
+  differently." An honest-absence convention of "return nothing and let the caller infer" pushes the REASON
+  out of the return value, so every consumer re-derives it and they diverge silently — a bare None carries
+  no evidence of WHICH absence it is. This is why the same defect surfaced at config, UI and test layers
+  within one day. My #1484 gate did not introduce it; it INHERITED it, which is why it reproduced one layer up.
+  → Consequence for the fix: PPM's proposed status-route env read IS consumer (c) of the one-predicate ruling.
+    REFINEMENT RULED: call the shared slack_inbound_enabled() predicate, NOT a fourth os.getenv. Four
+    independent env reads is four authorities that drift, and drift is the failure this whole thread is made of.
+  → CXO's client-side half (the template's DEFAULT branch is the instructing string) and PPM's server-side
+    enum half are BOTH REQUIRED: a new state without the client branch falls through the catch-all; a client
+    branch without the state has nothing to switch on. Same commit.
+  → NUMBER CORRECTION propagating: CXO's addendum reasons about "twelve names" (PA's literal-dict figure).
+    Probe B is choosing among 38 canonical names / 103 aliases. The 12 was correct for what it measured and
+    wrong as a total — the denominator problem, this time in a number rather than a claim.
