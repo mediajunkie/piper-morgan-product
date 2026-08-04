@@ -2,9 +2,17 @@ name: Monthly Housekeeping Audit
 
 on:
   schedule:
-    # Runs first Monday of each month at 9:00 AM Pacific
-    # (0 16 1-7 * 1 = UTC 16:00 on day 1-7 when it's Monday)
-    - cron: "0 16 1-7 * 1"
+    # Runs every Monday at 9:00 AM Pacific; the job itself skips non-first Mondays
+    # (see the runtime day-of-month<=7 guard below).
+    #
+    # WHY NOT "0 16 1-7 * 1" (the form this replaced, 2026-08-04): POSIX/GitHub Actions
+    # cron ORs day-of-month and day-of-week whenever BOTH are restricted (neither is "*").
+    # "1-7 * 1" therefore means "day 1-7 OF ANY WEEKDAY, OR any Monday" -- it fired every
+    # single day 1-7 regardless of weekday, not just the first Monday. Confirmed firing
+    # 2026-08-02 (Sun), 08-03 (Mon), 08-04 (Tue) -- three days running, all failing on an
+    # unrelated syntax error (also fixed this pass) that masked the scheduling bug from
+    # ever being noticed via a successfully-created issue.
+    - cron: "0 16 * * 1"
   workflow_dispatch: # Allows manual trigger
 
 permissions:
@@ -29,6 +37,15 @@ jobs:
             const now = new Date();
             const yearMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
             const title = `FLY-AUDIT: Monthly Housekeeping - ${yearMonth}`;
+
+            // Cron fires every Monday (see the `on.schedule` comment for why day-of-month
+            // can't be restricted in the cron expression itself). Only the FIRST Monday of
+            // the month should actually create an issue; skip scheduled runs on later
+            // Mondays. Manual workflow_dispatch always proceeds, for testing/backfill.
+            if (context.eventName === 'schedule' && now.getDate() > 7) {
+              console.log(`Not the first Monday of the month (day ${now.getDate()}); skipping.`);
+              return 'skip-not-first-monday';
+            }
 
             const issues = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
@@ -76,32 +93,32 @@ jobs:
 
               Skills, hooks, and mailbox delivery are living procedures. Monthly correctness sweep:
 
-              - [ ] **Skills audit** (`ls .claude/skills/ | wc -l`): Count skills; for each, verify the referenced files still exist at stated paths.
-                ```bash
+              - [ ] **Skills audit** (\`ls .claude/skills/ | wc -l\`): Count skills; for each, verify the referenced files still exist at stated paths.
+                \`\`\`bash
                 # Spot-check: does each skill reference real paths?
                 for skill in .claude/skills/*/; do
                   echo "=== $(basename $skill) ==="; grep -h "^\`\`\`bash" -A 1 "$skill"*.md 2>/dev/null | head -5
                 done
-                ```
-              - [ ] **Hooks audit** (`ls .claude/hooks/`): Verify each hook file exists AND is executable. A hook that doesn't fire is broken.
-                ```bash
+                \`\`\`
+              - [ ] **Hooks audit** (\`ls .claude/hooks/\`): Verify each hook file exists AND is executable. A hook that doesn't fire is broken.
+                \`\`\`bash
                 for hook in .claude/hooks/*.sh; do
                   [ -x "$hook" ] && echo "OK: $hook" || echo "NOT EXECUTABLE: $hook"
                 done
-                ```
-              - [ ] **Mailbox delivery check**: Verify `mailboxes/DIRECTORY.md` — each slug maps to a real directory under `mailboxes/`. Stale slugs cause silent mis-routing.
-                ```bash
+                \`\`\`
+              - [ ] **Mailbox delivery check**: Verify \`mailboxes/DIRECTORY.md\` — each slug maps to a real directory under \`mailboxes/\`. Stale slugs cause silent mis-routing.
+                \`\`\`bash
                 grep -oP '^- \*\*[^*]+\*\*.*\`mailboxes/[^/\`]+' mailboxes/DIRECTORY.md | \
                   while read line; do
                     dir=$(echo "$line" | grep -oP 'mailboxes/[^\`]+')
                     [ -d "$dir" ] && echo "OK: $dir" || echo "MISSING: $dir"
                   done
-                ```
-              - [ ] **DIRECTORY.md ↔ ROSTER.md freshness**: Verify canonical slugs in `mailboxes/DIRECTORY.md` match current role slugs in `docs/briefing/ROSTER.md`. A slug change in ROSTER.md not echoed in DIRECTORY.md = silent mis-routing.
-                ```bash
-                echo "ROSTER slugs:"; grep -oP '`[a-z-]+`' docs/briefing/ROSTER.md | sort -u
-                echo "DIRECTORY slugs:"; grep -oP '`[a-z-]+`' mailboxes/DIRECTORY.md | sort -u
-                ```
+                \`\`\`
+              - [ ] **DIRECTORY.md ↔ ROSTER.md freshness**: Verify canonical slugs in \`mailboxes/DIRECTORY.md\` match current role slugs in \`docs/briefing/ROSTER.md\`. A slug change in ROSTER.md not echoed in DIRECTORY.md = silent mis-routing.
+                \`\`\`bash
+                echo "ROSTER slugs:"; grep -oP '\`[a-z-]+\`' docs/briefing/ROSTER.md | sort -u
+                echo "DIRECTORY slugs:"; grep -oP '\`[a-z-]+\`' mailboxes/DIRECTORY.md | sort -u
+                \`\`\`
               - [ ] Document any gaps found; file issues for broken hooks or mis-mapped slugs.
 
               ---
@@ -128,26 +145,26 @@ jobs:
 
               ### 📁 dev/active/ Cleanup
 
-              Monthly housekeeping for the working directory. Use the `cleanup-dev-active` skill.
+              Monthly housekeeping for the working directory. Use the \`cleanup-dev-active\` skill.
 
               - [ ] Count files: \`ls dev/active/ | wc -l\` (target: <15)
               - [ ] Run cleanup-dev-active skill (omnibus-coverage guard first — don't archive cycle logs without their omnibus)
               - [ ] Archive completed forensic artifacts to dated dirs
-              - [ ] Move forward-looking drafts to `docs/public/comms/drafts/` if stranded here
+              - [ ] Move forward-looking drafts to \`docs/public/comms/drafts/\` if stranded here
               - [ ] Log deleted/archived paths in this issue (audit trail)
               - [ ] After cleanup: \`ls dev/active/ | wc -l\` (verify reduction)
 
               **Bounded cleanup reminder (per HOST welfare spec — pending full spec from HOST)**:
               - Archive: forensic-only artifacts (gameplans, audit findings, sent-memo drafts, completed workstream memos) after omnibus covers their date
-              - Keep: continuously-updated trackers (`*-standing-items.md`, `*-carry-forward.md`, active workspace dirs)
+              - Keep: continuously-updated trackers (\`*-standing-items.md\`, \`*-carry-forward.md\`, active workspace dirs)
               - Never delete: session logs, carry-forwards, anything that might be the only copy of work
 
               ---
 
               ### 📁 Session Log Archive Check
 
-              - [ ] Verify all session logs older than 7 days are in `dev/YYYY/MM/DD/` (not stranded in `dev/active/`)
-              - [ ] Verify omnibus coverage: every day with 2+ role sessions has an omnibus in `docs/omnibus-logs/`
+              - [ ] Verify all session logs older than 7 days are in \`dev/YYYY/MM/DD/\` (not stranded in \`dev/active/\`)
+              - [ ] Verify omnibus coverage: every day with 2+ role sessions has an omnibus in \`docs/omnibus-logs/\`
                 \`\`\`bash
                 ls docs/omnibus-logs/ | tail -20
                 \`\`\`
