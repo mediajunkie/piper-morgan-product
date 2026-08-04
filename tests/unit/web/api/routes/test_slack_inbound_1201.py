@@ -22,6 +22,15 @@ pytestmark = pytest.mark.asyncio
 _USER = MagicMock(sub="owner-1")
 
 
+
+@pytest.fixture(autouse=True)
+def _inbound_enabled(monkeypatch):
+    """#1484 (2026-08-04): these tests exercise the ENABLED pathway — the
+    deployment gate (default OFF) now fronts it; the gate's own contract is
+    pinned in test_inbound_deployment_gate_1484.py."""
+    monkeypatch.setenv("PIPER_SLACK_INBOUND_ENABLED", "true")
+
+
 def _request(runner=None):
     return SimpleNamespace(app=SimpleNamespace(state=SimpleNamespace(slack_socket_runner=runner)))
 
@@ -78,7 +87,7 @@ async def test_status_not_enabled_without_token():
     keychain = MagicMock()
     keychain.get_api_key.return_value = None
     with (
-        patch.dict("os.environ", {}, clear=True),
+        patch.dict("os.environ", {"PIPER_SLACK_INBOUND_ENABLED": "true"}, clear=True),  # 1484 gate open; these test the enabled pathway
         patch("services.infrastructure.keychain_service.KeychainService", return_value=keychain),
     ):
         resp = await get_slack_inbound_status(_request(), current_user=_USER)
@@ -90,7 +99,7 @@ async def test_status_listening_when_token_and_runner_connected():
     keychain = MagicMock()
     keychain.get_api_key.return_value = "xapp-1-ABC"
     with (
-        patch.dict("os.environ", {}, clear=True),
+        patch.dict("os.environ", {"PIPER_SLACK_INBOUND_ENABLED": "true"}, clear=True),  # 1484 gate open; these test the enabled pathway
         patch("services.infrastructure.keychain_service.KeychainService", return_value=keychain),
     ):
         resp = await get_slack_inbound_status(
@@ -104,7 +113,7 @@ async def test_status_connecting_when_token_but_runner_absent_or_down():
     keychain = MagicMock()
     keychain.get_api_key.return_value = "xapp-1-ABC"
     with (
-        patch.dict("os.environ", {}, clear=True),
+        patch.dict("os.environ", {"PIPER_SLACK_INBOUND_ENABLED": "true"}, clear=True),  # 1484 gate open; these test the enabled pathway
         patch("services.infrastructure.keychain_service.KeychainService", return_value=keychain),
     ):
         # runner absent

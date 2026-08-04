@@ -814,6 +814,10 @@
         } else if (state === 'connecting') {
           icon.textContent = '🟡';
           text.textContent = "Piper has your token but couldn't open a Slack connection. Try saving the token again.";
+        } else if (state === 'unavailable') {
+          // #1484/CXO: the one state that asks the user to do NOTHING.
+          icon.textContent = '⚪';
+          text.textContent = "Slack replies aren't part of this release. There's nothing to set up here yet — this page will change when they arrive.";
         } else {
           icon.textContent = '⚪';
           text.textContent = 'Slack replies not enabled — follow the steps above to enable inbound messages.';
