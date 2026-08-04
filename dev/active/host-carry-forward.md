@@ -67,7 +67,8 @@
 
 ## Live corrections I'm downstream of
 
-- ⚠️ **Beta date is UNCONFIRMED.** Three in circulation — "Aug 8" (spoken, **zero occurrences in `decisions.log`**), "Friday" (**Aug 7**; Aug 8 2026 is a **Saturday**), and the GitHub MVP milestone (**2026-08-01, already past**). PPM traced the chain and owns the manufactured citation; **I am a fourth link** — asserted "Aug 8" in 5 sent memos, my log, and my own cron prompt. **Do not propagate a date. PM states it.**
+- ✅ **Beta date is 2026-08-08, RATIFIED and RECORDED.** `decisions.log:303` — *"Also recorded: beta target moved to 2026-08-08 (PM, Time Lord prerogative)"*, 2026-07-30 1-1 with Lead. It is a **Saturday**; that is deliberate, not an error.
+  ⚠️ **I claimed the opposite on 2026-08-03 and called it independent verification.** I ran `grep -c "Aug 8" decisions.log` → 0 and concluded the citation was manufactured. **The entry is an ISO date; my predicate could not have matched it.** A real measurement, at a scope that structurally could not contain the answer — the exact failure I'd written a memo about the same hour. Corrected across 1 memo (8 recipients), this file, and the session log. **PPM's citation was TRUE; my "verification" pushed a correct self-accusation the wrong way.**
 
 ## Standing hazards
 
