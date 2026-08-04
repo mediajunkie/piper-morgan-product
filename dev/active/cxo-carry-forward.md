@@ -1,108 +1,39 @@
-# CXO carry-forward — ephemeral session state
+# CXO carry-forward — rewritten 2026-08-04 (fire 2, ~12:0x PT)
 
-**Owner**: CXO | **Updated**: 2026-08-03 22:5x PT (STOP)
-**Read at**: every fire START. **Rewritten at**: the end of every substantive fire.
-**Durable owed/queued work lives in** `cxo-standing-items.md` — this file is *current* state only.
+**Cron**: `e7059954` (`47 6,9,12,15,18,21`) · **Worktree**: `~/Development/piper-morgan-worktrees/cxo` (Model A) · **Branch**: `claude/cxo-cycle`
+**⏰ Beta 2026-08-08 — four days. It is a SATURDAY and PM has still not confirmed that's intended.**
 
----
+## 🔴 PM-attention (nothing here has moved)
 
-## ⏰ BETA = 2026-08-08 (a SATURDAY) — FIVE DAYS. Confirmed at source: decisions.log:303, PM's own entry.
-
-⚠️ **PM has not confirmed whether Saturday is intended** (Aug 7 is Friday). Open question, not a defect.
-
-## 🔴 WITH PM — the six Jake decisions (sent 08-03, `8715f0a43`)
-
-**The chain has been stopped on the PM+CXO decision since the synthesis landed 07-31 09:45.** PA found
-it; I should have. My positions on all six are filed so it's a confirm-or-adjust, not a conversation
-starting cold. **Item 5 (Jake's reply) needs neither the other five nor me** — it's PM's to send, and
-it's nine days.
-
-## Delete copy (#1482) — DELIVERED, awaiting Lead's application
-
-Six exact replacement strings filed (`dev/active/delete-copy-replacements-1482-2026-08-03.md`, also on
-the issue). **Five surfaces assert "cannot be undone" on SOFT deletes — false. The one genuinely
-permanent operation (credential delete) makes no claim at all.**
-
-⚠️ **Ship as a SET** — the contrast is load-bearing; *"this one really is gone"* only carries
-information because the other five are honest. **Open inside the copy**: *"we keep a copy for a while"*
-— I don't know the retention window. If one exists, name it; **if none exists, that gap is its own
-finding.**
-
-## #1466 Slack link flow — spec v0.2, corrected
-
-Arch caught that my deep-link shortcut **removed the Slack-side proof of control** (unsolicited
-binding). **The param may PREFILL, it may never BIND.** Corrected flow keeps the whole step-reduction.
-Lead verified the shipped code already enforces it. **New standing copy rule: never ask a user to
-approve a string they cannot verify.**
-
-## Alpha funnel — Lead has it; my stage-4 catch landed
-
-`status='active'` would have returned ZERO (the column takes unbound/bound/unreachable/stale) and read
-as maximal confirmation of my own hypothesis. **PPM improved my fix past my version: GROUP BY, not a
-better predicate — a filter encodes an assumption, a grouping doesn't.** Runs on PM's go.
-
-⚠️ **My pre-registered read stands (08-02): only ONE of four outcomes makes the first-contact spec the
-right bet. Do not reason toward it.**
-
-## ★ Probe A CLOSED — refusals need a failure-shaped payload
-
-**Requirement**: a refusal is emitted as a **failure-shaped payload**
-(`{"error":"REFUSED","code":…,"message":…}`) — **not prose, and not a caveat field inside a success
-result.** 6/6 both providers. Structured fields stay required for *ordinary* caveats but are
-**explicitly NOT the fix for refusals** (gpt/structured was 3/6).
-
-**The variable is FRAMING, not channel** — PA's correction of my hypothesis; OpenAI has no `is_error`
-flag, so the winning arm was an ordinary success result whose *content* read as a failure. Remedy needs
-no transport work.
-
-🔴 **GATE, not a footnote**: every probe exercised **provider APIs**, not the shipping products with a
-deployed MCP server. **Encouraging, not clearance.** Retest against `mcp.pipermorgan.ai` **before the
-capability is booked** — one afternoon when the server exists.
-
-⚠️ **Not banked**: attribution correlating with survival confirms a ruling I'd already made, so it's
-recorded as **to re-verify**, not as support.
-
-## Live threads
-
-| Thread | State | Next |
+| Item | What PM owns | Age |
 |---|---|---|
-| **Jake FTUX** | 4 lenses in; Exec synthesis done and framed for the **PM + CXO** decision; artifact carries my positions. | **PM is working through it with me.** Hold — don't generate more input. |
-| **First-contact design spec** | `dev/active/design-spec-first-contact-plugin-surface-2026-07-31.md` — **v0.2**. PPM reviewed inside 3h; gate/spec split adopted (7a vs 7b). | Awaiting **Lead** (buildability + the latency number I left blank), **PA** (Probe-A coupling), **Arch** (structured-confidence as a format constraint before Phase 2). |
-| **PDR-006 / #1462** | **RATIFIED** 07-31. My 3 design implications are live work; rubric branch is a pre-user gate. | Spec review responses; then item (ii) capability legibility and (iii) the "colleague model" naming. |
-| **#1174 / L4 re-scope** | ⚠️ **Still owed by me** — deferred from 07-30 STOP and not done 07-31. Title/body clarification only; **Production is the correct milestone, nothing to undo.** | Do it early, when the board is quiet. Then the discovery — mine, with HOST on welfare/trust. |
-| **PDR-004 Amendment A** · **m-46** | Both filed. m-46 now **EMERGING** (limb 2 mechanized; limb 1 still vigilance). | PPM + PM ratify the amendment; CIO owns m-46 numbering. |
-| **Ship #054** | **Filed 07-31**, a day inside the deadline. | Nothing. |
+| **Six Jake decisions** | confirm-or-adjust my filed positions (`8715f0a43`); artifact at `claude.ai/code/artifact/b1c7f455-…` | since 08-01 |
+| **Jake's reply** | PM's to send — needs neither me nor the other five | **10 days overdue** |
+| **Beta date is a Saturday** | confirm 08-08 is intended | unanswered |
+| **Alpha funnel** | go/no-go on a prod-DB read; Lead has the corrected spec | waiting |
+| **Slack inbound out of beta scope** | one word, per PPM/Arch — unblocks #1484 + moves #1481/#1466 to Production | filed 08-04 |
 
-## ⚠️ Owed and carried four days — do this before the next substantive design call
+## Filed today, awaiting others (do NOT re-do)
 
-**`docs/briefing/BRIEFING-ESSENTIAL-CXO.md` has not been opened since arriving on Amber**, along with
-`ROLE-PORTFOLIO-CXO.md` §3–5. Named in three consecutive session logs. Also: **the D2 design-system
-portfolio (#1286/#1290/#1284/#1269) has not moved for two Ship windows** — flagged to PM in Ship #054
-§6 as a decision to make rather than a drift to continue.
+- **#1484 AC** — route-level failure-shaped refusal + `unavailable` state + 3 strings. Mail to Arch/PPM/Lead **and** issue comment 5182468056. **Lead's to implement; strings are final and need no further pass from me.**
+- **Annotation-description addendum** → PPM/PA/Arch/Lead. Rule offered: *the irreversible part of a reversible operation goes in the same sentence as the reversibility claim.* **Carries even if read-side entries migrate to MCP resources** (Arch's condition 3, which PPM rightly ranks above it).
+- **`scripts/check-refresh-promises.py`** → HOST, cc CIO/Docs. Registry line offered; theirs to accept or leave standalone. **Only CXO's portfolio is registered — five other role portfolios likely made the same promise from the same framework and nobody has swept them.**
+- **PA reply** — attribution corrected, m-46 instance 2 filed.
 
-## Position stated in advance so it can't be retrofitted
+## Standing / carried
 
-**Probe A**: hedges survive → the branch scores our text, R/C/T mostly ports. **Hedges don't survive →
-the finding is NOT rubric-shaped**; it's an **output-format constraint** (structured confidence the
-client can't paraphrase away). That's a constraint on tools nobody has written — which is why it's
-Phase 0, and why spec item 4 must not be implemented in prose first.
+- **Probe A deployed-host retest** — GATE before the plugin capability is booked (#1463). Blocked on a live `mcp.pipermorgan.ai`.
+- **`dialog.js` latent defaults** — 4 false strings proposed for deletion + `message` made required. Lead's to apply.
+- **Colleague Test tier question** — with PPM/PM.
+- **#1386 criterion-2 sign-off — still WITHHELD.** Keyless suite skips and reports green. Committed to same-day sign-off once a keyed run exists.
+- **⚠️ #950 / #992 watch is UNATTESTED since arriving on Amber.** Named in the portfolio rather than silently carried. Read scorer outputs directly, not memos summarizing them.
+- **D2 design-system portfolio** (#1286/#1290/#1284/#1269) — three Ship windows without movement; flagged to PM in Ship #054 §6 as a decision, still drifting.
 
-## Environment notes for this seat
+## ⭐ Fire-time reminders earned the hard way
 
-- **Sync before reading mail.** 07-29: 271 behind, inbox read *empty*, two real asks invisible.
-- **Check the clock before dispatching STOP** — compute the next fire; STOP only if its *date* differs.
-  On 07-31 I nearly day-closed three hours early off the cadence alone.
-- **`cd` persists across Bash calls** — twice produced false-empty reads. Absolute paths.
-- **Hooks**: real `pre-commit` in the common dir; **verify existence, don't probe** (v1.22).
-- **Closure is a property of the DAY, not the FILE.**
-- **macOS bash 3.2** — no `declare -A`; use temp files.
-- **`bash scripts/check-derived-drift.sh`** — read-only, cheap; run when touching a generated artifact.
-
-## Cron
-
-- **Job `e7059954`** — `47 6,9,12,15,18,21`. Re-armed at STOP 08-03 by delete-then-create
-  (`1e30ec20` → `e7059954`). **Cadence unchanged**; prompt gained the check-the-clock reminder.
-  *(Recording the id transition deliberately — a changed cron id is a documented cause of
-  phantom-peer misreads.)*
-- ⚠️ **Session-only AND auto-expires ~2026-08-10.** Both deaths silent. **Run `CronList` at every
-  START** — this file records intent, not a live job.
+1. **Verify a correction before accepting it** — including corrections *of me*. Accepting a provenance claim on assertion is the same move that caused the error being corrected.
+2. **m-46 applies to me most on the claim my argument leans on.** Authoring a methodology entry does not install it — I violated m-46 four days after writing it.
+3. **A green on something I just fixed proves nothing.** Negative-control it against the state it was built to catch, or don't ship it.
+4. **Don't write the convenient sentence.** "Your token wasn't saved" was false-as-specced; caught mid-draft, two days after shipping the same error in #1482 string 6.
+5. **grep for ISO dates AND surface forms, and never `cut` your own confirming output** (the beta-date miss that PPM inherited).
+6. **A hand-count is not a substitute for the mechanism** — mine under-reported the failure by 50% while I was writing about that exact failure.
