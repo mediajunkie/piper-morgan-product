@@ -181,6 +181,18 @@ Event-based: the log entry rides with each **work-unit commit** — NOT a per-fi
 
 **Why one place** (PM-ratified 2026-06-12, supersedes the v1.5 dual-surface design): the displacement trap (the fire loop wrote only the cycle log → the durable session log silently stubbed → work vanished when `dev/active/` was sprint-cleaned) is cured at the source by logging to ONE durable surface, rather than guarding against drift by writing to two. One place can't drift from itself. *(Composes with — does not replace — START's session-log creation and STOP's session-log wrap.)*
 
+### Step 5b — Emit your heartbeat (MANDATORY, and it was invisible before v1.24)
+
+```
+scripts/duty-cycle-heartbeat.sh {role} {START|WATCH|WORK|STOP} --if-quiet
+```
+
+⚠️ **This was a bolded aside inside Step 4 from v1.21 until 2026-08-04, and NOBODY RAN IT — including its author.** The heartbeat surface holds exactly one day of data (7/28, the day it was built) and nothing since. An instruction that is not a numbered step reads as commentary; agents execute Steps 1–7. **Promoted to its own step for that reason alone.**
+
+**`START` writes unconditionally** (v1.24) — `--if-quiet` is ignored for it. Refinement (a) suppresses writes whenever the role has committed, which on a busy cohort is every fire, so the surface is legitimately empty on a healthy day. That made the writer-liveness check unable to tell *"nobody ran it"* from *"everyone was busy"* — and it went unrun for seven days while the daily 06:46 false alarm it prevents fired five times.
+
+**Why this closes that alarm**: the belt reads `origin/main`. A role that starts at 06:27 but does not push until 07:01 is invisible at the 06:46 sweep — correctly reported as no-heartbeat, wrongly read as stalled. A START heartbeat pushed immediately makes the role visible the moment it wakes.
+
 ### Step 6 — Commit + push (verify it lands)
 - **Non-mail** (logs, docs, design): commit on your ephemeral worktree branch → `git push origin HEAD:main` (NEVER `git checkout main` in this worktree). On non-fast-forward: `git fetch origin && git rebase origin/main`, then re-push.
 - **Mailbox writes**: via **push-to-ref** — `scripts/mail-send.sh "mail({role}): subject" <explicit mailbox paths>` from your OWN worktree (#1259, swapped live 2026-06-19). It builds the commit on `origin/main` (`commit-tree` via a throwaway index) and pushes straight to `main` — no `cd` to the main checkout, no stash, no branch-switch; the old main-worktree bridge dance is **retired**. `check-branch.sh` stays as the backstop for any interactive mail `git commit` (`commit-tree` doesn't trip it).

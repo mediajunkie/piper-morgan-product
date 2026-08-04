@@ -171,8 +171,13 @@ if [ "$hour" -ge 12 ]; then
   # The fix follows from (a)'s own definition: if a commit is a heartbeat, an empty surface on a
   # COMMITTING day is correct. It is only suspicious when there are no heartbeats AND no commits —
   # i.e. genuinely no evidence of life from either source.
-  hb_commits=$(git -C "$REPO" log origin/main --since="${today_dash}T00:00" --format=%s 2>/dev/null | grep -cE '\([a-z]+\)' || true)
-  if [ "$hb_today" -eq 0 ] && [ -n "$hb_prev" ] && [ "${hb_commits:-0}" -eq 0 ]; then
+  # ⚠️ 2026-08-04: the "and zero commits" term (my 7/29 fix for HOST's false alarm) made this check
+  # PERMANENTLY SILENT — an active cohort always has commits, so it could never fire. The writer was
+  # then unrun for 7 days and nothing said so. I traded a false positive for a blind spot and did not
+  # notice the trade; that is a composition failure, not a tuning error.
+  # Fixed at the source instead: START now writes unconditionally, so an empty surface past midday is
+  # once again diagnostic on its own and needs no commit-count term.
+  if [ "$hb_today" -eq 0 ] && [ -n "$hb_prev" ]; then
     echo "HEARTBEAT-WRITER-SILENT — zero heartbeats AND zero role-tagged commits for $today_dash past midday, though the surface has been written before. Neither liveness source shows anything; a broken writer looks exactly like a quiet cohort, so do NOT read this as healthy until explained."
   fi
 fi

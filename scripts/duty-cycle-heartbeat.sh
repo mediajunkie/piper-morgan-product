@@ -53,6 +53,20 @@ TS="$(date '+%Y-%m-%d %H:%M:%S %Z')"
 
 # --if-quiet: skip when the fire already produced a role-tagged commit today. That commit IS the
 # heartbeat (refinement a), so writing another would be pure churn.
+# ⚠️ 2026-08-04: START ALWAYS WRITES, --if-quiet or not.
+# Refinement (a) suppresses the write whenever the role committed, which on a busy cohort is every
+# fire — so the surface is legitimately empty on a healthy day. That made the G6 writer-liveness
+# check unable to distinguish "nobody ran the writer" from "everyone was busy", and after the 7/29
+# correction (also require zero commits) G6 became PERMANENTLY SILENT on any active day.
+# Consequence, observed: the writer has been unrun since 2026-07-28 by every role including me, and
+# nothing could say so. Exactly the m-44 shape, inside the m-44 fix.
+# One unconditional line per role per START (11 lines/day) restores the discriminator at trivial
+# cost: an empty surface past midday now means the writer is dead, not that the day was productive.
+if [ "$FIRE" = "START" ] && [ "$MODE" = "--if-quiet" ]; then
+  echo "heartbeat: START always writes (surface must stay diagnostic) — ignoring --if-quiet"
+  MODE=""
+fi
+
 if [ "$MODE" = "--if-quiet" ]; then
   git fetch origin main -q 2>/dev/null || true
   # NO `git log ... | grep -q` here, and the reason is a real bug this replaced:
