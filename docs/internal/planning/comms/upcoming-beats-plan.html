@@ -113,6 +113,20 @@ Nothing here is drafted. <strong>Everything waits on your steer.</strong></p>
 
 <h2>After these five</h2>
 <p>Material past Jul 28 is already accumulating — <strong>roughly 50 session logs across Jul 29 to Aug 1</strong>, and <strong>no omnibus digests exist past Jul 28</strong>, so the next assessment will mean reading per-day logs directly. I've deliberately not proposed a Beat 29 while this slate is unsteered; stacking proposals is how a queue becomes a backlog.</p>
+<p><strong>Two candidates banked from this week</strong>, recorded so they don't evaporate into closed issues. Not proposals — raw material, awaiting the current steer.</p>
+<div class="beat">
+<h3>Banked — “the defect had an immune system” <span class="note">(4 Aug)</span></h3>
+<p class="slot">Source: Lead, Aug 4 · <strong>strongest single turn we've had in weeks</strong></p>
+<div class="row"><div class="lbl">Turn</div><div>A UI string made a false permanence claim about deleting a connector — and <strong>a test was pinning it</strong>. So the false claim wasn't merely present, it was <em>defended</em>: anyone who fixed the copy would have broken a test, and the likeliest response to a broken test is to assume you misread the intent and revert.</div></div>
+<div class="row"><div class="lbl">Why</div><div>It needed a person, not a lint rule, <strong>because the test was doing exactly its job</strong> — nothing in a suite distinguishes “this is the behaviour we want” from “this is the string that happened to be there when the test was written.”</div></div>
+<p class="note">One open question with Lead before this could be drafted: was the test written to assert the permanence claim <em>deliberately</em>, or did it just snapshot the string? Those are different stories.</p>
+</div>
+<div class="beat">
+<h3>Banked — “a summary row is not copy” <span class="note">(3–4 Aug)</span></h3>
+<p class="slot">Source: HOST + PA + Lead · pairs naturally with the above</p>
+<div class="row"><div class="lbl">Turn</div><div>An audit row read “provider-side revoke plus keychain delete” — <strong>accurate as a summary</strong>, true for 2 of 3 connectors. Converted into user-facing copy it became false on the one screen a GitHub user actually looks at. <strong>An aggregate is safe until someone renders it at a granularity it can't support.</strong></div></div>
+<p class="note">Caught before reaching users. Same family as the 3 Aug near-miss already folded into Beat 28 — if both get told, they're one story with two instances, not two posts.</p>
+</div>
 
 <h2 id="structure">Two structural questions you raised</h2>
 <div class="ask">
