@@ -3,8 +3,8 @@ type: role-portfolio
 role: Comms (Communications Director)
 status: v0.1 — main-cohort wave
 self-authored-by: Comms
-last_updated: 2026-07-17
-refreshed: 2026-07-17
+last_updated: 2026-08-04
+refreshed: 2026-08-04
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-COMMS.md
 refresh_discipline: "updated AS PART OF the weekly workstream review — the review is the refresh moment (Rule 5); if section 2 lags the last few reviews, the portfolio has drifted"
@@ -25,15 +25,16 @@ The one-line: *the role that turns what we're building into a durable, coherent 
 
 ---
 
-## 2. Current goals & priorities — June 2026
+## 2. Current goals & priorities — August 2026
 <!-- Rule 2: medium-pace; changes per sprint. Rule 4: each has direction + status + "how we'll know it's moving." Rule 5: REFRESHED EACH WEEKLY REVIEW. -->
 
-| Priority | What I'm advancing | Status (Jul 17) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (Aug 4) | How we'll know it's moving |
 |---|---|---|---|
-| **Building narrative cadence** | Keep the Tue/Thu narrative + Sat/Sun insight schedule flowing | Beat 13 (Jul 14) + Beat 14 (Jul 16) published, both on schedule; a 3-beat narrative-slate proposal for the Jul 8-15 window researched + independently verified, awaiting PM's steer | Posts land on schedule; no slot goes empty because publish-ready signal was late |
-| **Editorial mechanism upgrades** | Turn recurring one-off catches into permanent checks, not vigilance | `update-calendar` v1.1→v1.2 (Jul 15): by-name field access mandatory, whole-file verification required, after a same-day self-inflicted row corruption incident | Fewer repeat catches of the same issue across sessions; skill version bumps track real gaps closed |
-| **Weekly Ship pipeline** | Fact-check + review before syndication | Ship #051 published Jul 15 after catching 2 real "adjacent-story number contamination" errors pre-publish, verified against primary Lead Dev logs | Ships go out clean; claims independently verified against primary logs, not just the omnibus |
-| **BYOC narrative** | BYOC marketplace narrative angle | Still blocked — surfaced to PM 6/17, no direction memo yet as of 7/17 (~4 weeks stale) | Task force convenes; narrative angle drafted within same session |
+| **Building narrative cadence** | Keep the Tue/Thu narrative + Sat/Sun insight schedule flowing | Beats 14-16 + 21-23 drafted; Beats 21-23 calendared Aug 11/13/18. ⚠️ **The narrative queue runs dry after Aug 18** — a 5-beat slate (24-28) is researched, scoped by the A-plot discipline, and sitting in `upcoming-beats-plan.html` **awaiting PM's steer**. This is the only item I hold with a real date behind it. | Posts land on schedule; no slot goes empty because a publish-ready signal was late |
+| **Editorial mechanism upgrades** | Turn recurring one-off catches into permanent checks, not vigilance | `template-audit` v1.1→**v1.5** in six days, every bump paid for by a real miss: #5 was blind to `[PM: …]` (the gate passed drafts with unresolved PM questions); #6 would have corrupted a correct footer chain the day before publish; and a Ship-calibration table after measuring **4 checks that false-FAIL on 6/6, 6/6, 4/6, 6/6 of published Ships**. | Version bumps track real gaps closed, not churn; a check that's wrong in a repeating way gets fixed rather than skimmed past |
+| **Weekly Ship pipeline** | Fact-check + review before syndication | #053 published Jul 29 (caught a post-signal amendment by checking the rendered page, not the status flag). #054 pre-passed a day early Aug 4 — one real fix, plus a protected date line that a retracted leadership memo would have had me strike. | Ships go out clean; claims verified against primary logs, not the omnibus |
+| **Verification discipline** *(new — Aug)* | Make my own checks falsifiable, not just my subjects' | Seven instrument-measures-the-wrong-thing findings in a week, **three of them mine**: a validator I reported on without running, a footer check that was wrongly directive, and an absence-check on a soft-404 site that returned "clean" for every URL spellable. Two rules adopted from HOST: **search a fact's renderings**, and **state the predicate, not just the finding**. | Findings I report survive someone re-running them; scope travels with every claim so others can extend rather than inherit it |
+| **BYOC narrative** | BYOC marketplace narrative angle | ⚠️ Still blocked — surfaced to PM 6/17, **no direction memo as of 8/4 (~7 weeks stale)**. Escalated in status here rather than left as a quiet row. | Task force convenes; narrative angle drafted in the same session |
 
 ---
 
