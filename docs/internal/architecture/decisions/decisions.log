@@ -361,3 +361,56 @@ ADR-070's identity boundary, every caller resolves to its own owner_id before to
 
 SEPARATE FINDING (not a beta blocker; gate sits upstream): a global credential writable by any
 authenticated user warrants its own issue. Noted in #1484, unfiled.
+
+---
+2026-08-04 13:0x PT — Arch — #1484 AC AMENDED (CXO surface finding) + MVP milestone audited against the leakage condition
+
+(1) GATE PLACEMENT RULED — ONE predicate, THREE consumers, not three env reads (m-41):
+    slack_inbound_enabled() consulted by (a) build_runner = SECURITY FLOOR, fail-closed, covers
+    construction paths not yet written; (b) the save route BEFORE store_api_key = REFUSAL CONTRACT (this
+    ordering is what makes CXO's "your token wasn't saved" true); (c) the status route = honest state.
+    ⚠️ The route gate is the VISIBLE fix and could land alone. That is the wrong half. If only one ships
+    it must be build_runner. The route gate protects one known entry point; build_runner protects the
+    unenumerated ones.
+
+(2) CXO'S FINDING VERIFIED AT SOURCE (all 4 claims hold): store_api_key precedes restart_socket_runner;
+    save route returns 200 with state="connecting"; status docstring re-renders it every poll; the string
+    is "Piper has your token but couldn't open a Slack connection. Try saving the token again."
+    → DURABLE SHAPE, adopting CXO's framing: A FAIL-CLOSED GATE INHERITS THE COPY OF THE FAILURE MODE IT
+      IMITATES. Returning None was an accurate signal; the gate makes None polysemous and the old copy
+      rides along. Invisible when reviewing the gate itself.
+
+(3) TRAP ADDED BY ARCH (denominator check): exactly ONE rendering surface (renderInboundStatus,
+    settings_slack.html), THREE branches — and the third is a CATCH-ALL else, not `if not_enabled`. A new
+    server-side `unavailable` state with no client branch falls through to the not_enabled copy, and a
+    status-route test PASSES while the UI is wrong. Client branch + server state must land same commit.
+
+(4) PA↔CXO RECONCILED (they look contradictory, they are not): PA correct that #1484 AS ORIGINALLY SPECCED
+    (build_runner only) leaves the unscoped global-credential write intact; CXO's route gate blocks it
+    WHILE THE FLAG IS UNSET. #1485 stands regardless — the write returns the instant the flag is set, and
+    it was found incidentally so the class is not exhausted.
+
+(5) HOST'S §5 ADOPTED: a descope needs a NAMED RE-ENABLE GATE written where the person about to configure
+    it will read it — decisions.log is not that place. The predicate's docstring names #1481 as the
+    re-enable condition. Slack inbound stays unconfigured until sender→principal mapping exists.
+    HOST §1 strengthens the scope ruling: the Slack sender's identity is never read at all (no
+    event.get("user")), so option (a) is "introduce a variable that does not exist", not "add a check".
+
+(6) MVP MILESTONE AUDITED against "no cross-user leakage on beta surfaces" (HOST's §3 escalation — nobody
+    had, and no artifact would). ⚠️ DENOMINATOR: 22 issues against ONE condition (leakage), not all beta
+    conditions. Rest still unowned. Findings:
+    - #1430 IS ALREADY DONE, still OPEN in MVP. Only issue besides #1481/#1466 self-identifying as
+      #1419-class. All 11 live learning routes use Depends(get_current_user); hardcoded 'current_user'
+      gone; guard test test_learning_dashboard_template_1430.py passes 5/5 and is non-vacuous. Reads
+      unfixed only because its citation points at a moved file (web/assets/ → templates/).
+      ⚠️ NEAR-MISS RECORDED: six handlers in that file look like unauthenticated user_id routes on privacy
+      settings and data export. Their @router decorators are COMMENTED OUT — dead code, not routes.
+      Invisible to a signature-level grep.
+    - #1419 ITSELF sits in the MVP milestone while PM's ruling is "full #1419 epic is post-beta". Board
+      contradicts the decision. Board-field change → PM confirmation required; flagged, not set.
+
+(7) METHOD CORRECTION (mine): I nearly reported that the verbatim beta condition was absent from
+    decisions.log and that five surfaces miscited it. IT IS AT decisions.log:303. My own `| cut -c1-200`
+    truncated the line before the matching phrase, so a CORRECT grep hit rendered as a miss. Truncating
+    output converts found-it into not-found and the two are indistinguishable. RULE: when a grep result is
+    load-bearing for a NEGATIVE claim, re-run it unfolded before asserting the negative.
