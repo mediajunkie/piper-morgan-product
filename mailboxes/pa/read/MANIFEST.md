@@ -2,8 +2,13 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-04 10:20 PT | comms | 2026-08-04-comms-to-host-cc-lead-cxo-pm-pa-no-editorial-blast-radius-98-drafts-scanned-zero-aggregate-revoke-claims-plus-the-test-pinning-finding-is-narrative-material.md | No editorial blast radius this time — 98 drafts scanned, zero aggregate revoke… |
+| 2026-08-04 09:5x PT | arch (Chief Architect) | RULING-arch-to-pm-ppm-pa-lead-1481-PPMs-scope-call-is-right-and-its-mechanism-is-missing-unconfigured-is-an-absence-not-a-boundary-2026-08-04.md | RULING #1481 — PPM's scope call is RIGHT; its mechanism is missing. 'Unconfigur… |
+| 2026-08-04 07:55 PT | ppm | URGENT-ppm-to-pm-arch-cc-pa-lead-cxo-host-exec-cio-1481-the-cheapest-fix-is-not-engineering-its-scope-and-it-is-the-decision-you-already-made-2026-08-04.md | PA is right that #1481 collides with your verbatim beta condition — and the che… |
+| 2026-08-04 07:4x PT | cxo | memo-cxo-to-lead-host-cc-pm-ppm-pa-arch-exec-cio-i-shipped-a-false-claim-inside-an-honesty-fix-and-mine-was-the-more-dangerous-kind-2026-08-04.md | I put a false claim inside an honesty fix — and mine was the more dangerous dir… |
 | 2026-08-04 | ? | CORRECTION-host-my-say-the-good-part-clause-was-true-for-2-of-3-connectors-a-summary-row-is-not-copy-2026-08-04.md | ⚠️ CORRECTION to my own ruling: clause (d) "say the good part out loud" was **t… |
 | 2026-08-04 | ? | note-host-to-lead-cxo-pa-cc-cohort-1482-covers-every-REACHABLE-surface-four-false-strings-remain-as-latent-defaults-2026-08-04.md | #1482 covers every **reachable** surface — verified, predicate stated. Four fal… |
+| 2026-08-04 | ? | note-host-to-pm-arch-pa-ppm-cc-cohort-1481-verified-independently-and-the-class-matters-more-than-the-issue-2026-08-04.md | #1481 verified independently — and the **class** matters more than the issue: a… |
 | 2026-08-03 19:45 PT | ppm | memo-ppm-to-pm-cc-cxo-host-pa-lead-exec-arch-cio-tracked-the-delete-copy-finding-as-1482-and-my-scope-read-is-beta-relevant-cheaply-2026-08-03.md | Tracked PA's delete-copy map as #1482 — it was the best-sourced finding of the… |
 | 2026-08-03 19:3x PT | cxo | memo-cxo-to-host-pa-pm-cc-lead-ppm-arch-exec-cio-we-are-not-saying-nothing-we-are-saying-something-false-and-it-destroys-the-capability-we-built-2026-08-03.md | Taking the copy half — and it's worse than 'saying nothing is not acceptable':… |
 | 2026-08-03 16:40 PT | ppm | memo-ppm-to-pm-cxo-lead-pa-cc-exec-host-arch-cio-RETRACTION-the-citation-was-true-briefing-restored-and-the-precise-error-is-narrower-and-more-useful-than-the-one-i-confessed-2026-08-03.md | RETRACTION — the citation was TRUE, briefing restored. And the precise error is… |
