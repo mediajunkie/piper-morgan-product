@@ -1,28 +1,48 @@
 # CXO carry-forward — ephemeral session state
 
-**Owner**: CXO | **Updated**: 2026-08-02 22:5x PT (STOP)
+**Owner**: CXO | **Updated**: 2026-08-03 22:5x PT (STOP)
 **Read at**: every fire START. **Rewritten at**: the end of every substantive fire.
 **Durable owed/queued work lives in** `cxo-standing-items.md` — this file is *current* state only.
 
 ---
 
-## ⏰ Beta is Aug 8 — SIX DAYS. Two things gate my lane.
+## ⏰ BETA = 2026-08-08 (a SATURDAY) — FIVE DAYS. Confirmed at source: decisions.log:303, PM's own entry.
 
-**1. The alpha funnel (PPM's spec, Lead to answer).** Five aggregate counts — invites issued /
-redeemed / authenticated / ≥1 message / ≥1 connector binding / median turns. **Counts only, no names,
-by construction** (HOST's ruling, made structural by PPM). **Lead's question is whether the data
-exists**; if it doesn't, *that* is the finding — `services/analytics/` is an empty package six days out.
+⚠️ **PM has not confirmed whether Saturday is intended** (Aug 7 is Friday). Open question, not a defect.
 
-⚠️ **I pre-registered my read before the counts exist** (see standing items). **Only ONE of four
-outcomes makes my first-contact spec the right bet.** Do not reason toward it.
+## 🔴 WITH PM — the six Jake decisions (sent 08-03, `8715f0a43`)
 
-**2. The scoped ask, if the funnel needs it.** Stage-1 non-redemption is **irreducibly ambiguous** from
-our data (no delivery signal — PM-issued codes, no mailer). Two questions, and the funnel picks:
-- big drop at **stage 1** → *"Did the invite code work for you? No worries either way — I'm checking
-  whether it was the code or just bad timing."* (offers a pre-approved answer so the honest reply
-  isn't an admission)
-- drop at **2→4** → *"Did you get as far as connecting a tool?"*
-- reached **4** then stopped → neither; that's a conversation.
+**The chain has been stopped on the PM+CXO decision since the synthesis landed 07-31 09:45.** PA found
+it; I should have. My positions on all six are filed so it's a confirm-or-adjust, not a conversation
+starting cold. **Item 5 (Jake's reply) needs neither the other five nor me** — it's PM's to send, and
+it's nine days.
+
+## Delete copy (#1482) — DELIVERED, awaiting Lead's application
+
+Six exact replacement strings filed (`dev/active/delete-copy-replacements-1482-2026-08-03.md`, also on
+the issue). **Five surfaces assert "cannot be undone" on SOFT deletes — false. The one genuinely
+permanent operation (credential delete) makes no claim at all.**
+
+⚠️ **Ship as a SET** — the contrast is load-bearing; *"this one really is gone"* only carries
+information because the other five are honest. **Open inside the copy**: *"we keep a copy for a while"*
+— I don't know the retention window. If one exists, name it; **if none exists, that gap is its own
+finding.**
+
+## #1466 Slack link flow — spec v0.2, corrected
+
+Arch caught that my deep-link shortcut **removed the Slack-side proof of control** (unsolicited
+binding). **The param may PREFILL, it may never BIND.** Corrected flow keeps the whole step-reduction.
+Lead verified the shipped code already enforces it. **New standing copy rule: never ask a user to
+approve a string they cannot verify.**
+
+## Alpha funnel — Lead has it; my stage-4 catch landed
+
+`status='active'` would have returned ZERO (the column takes unbound/bound/unreachable/stale) and read
+as maximal confirmation of my own hypothesis. **PPM improved my fix past my version: GROUP BY, not a
+better predicate — a filter encodes an assumption, a grouping doesn't.** Runs on PM's go.
+
+⚠️ **My pre-registered read stands (08-02): only ONE of four outcomes makes the first-contact spec the
+right bet. Do not reason toward it.**
 
 ## ★ Probe A CLOSED — refusals need a failure-shaped payload
 
@@ -80,9 +100,9 @@ Phase 0, and why spec item 4 must not be implemented in prose first.
 
 ## Cron
 
-- **Job `1e30ec20`** — `47 6,9,12,15,18,21`. Re-armed at STOP 08-02 by delete-then-create
-  (`d76fe3a6` → `1e30ec20`). **Cadence unchanged**; prompt gained the check-the-clock reminder.
+- **Job `e7059954`** — `47 6,9,12,15,18,21`. Re-armed at STOP 08-03 by delete-then-create
+  (`1e30ec20` → `e7059954`). **Cadence unchanged**; prompt gained the check-the-clock reminder.
   *(Recording the id transition deliberately — a changed cron id is a documented cause of
   phantom-peer misreads.)*
-- ⚠️ **Session-only AND auto-expires ~2026-08-09.** Both deaths silent. **Run `CronList` at every
+- ⚠️ **Session-only AND auto-expires ~2026-08-10.** Both deaths silent. **Run `CronList` at every
   START** — this file records intent, not a live job.
