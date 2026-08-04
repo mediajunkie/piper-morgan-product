@@ -6,29 +6,25 @@
 
 ## PM Attention
 
-*(Whole-file rewrite at the 2026-08-02 STOP. Timestamp verified with `date`. Live items only.)*
+*(Whole-file rewrite at the 2026-08-03 STOP. Timestamp verified with `date`. Live items only.)*
 
-- 🟡 **The innovation agenda is WRITTEN and awaiting PM** — `dev/active/cio-innovation-agenda-2026-08-02.md`. Retires three priorities (migration complete · CLAUDE.md lane closed · the "Lead-Dev streamlining" framing, which was never streamlining but **absent substrate**). Four candidates, each from a costed incident. **§6 puts one real question to PM: should this lane shift from BUILDING mechanisms to PROTECTING a property?** The cohort's cross-checking caught every one of my defects, it is **social rather than built**, and it is the thing most likely to erode quietly as eleven roles settle into self-sufficient cycles.
-- 🟡 **claude.ai account tier** — PA's surviving item, still PM\'s. Kept visible so the OpenAI retraction does not bury it.
-- 🔴 **Memory-index guard is on the GENERATOR, not the FILE.** Direct edits to `MEMORY.md` succeed silently past the ceiling, and the platform reminder says *"compact this file"* — pointing at the unguarded path. Four agents have refused it **on judgment**, which is not a safety property. **Guard placement is the prior question; format choice (prune / two-tier) is PM+HOST\'s.**
-- 🟢 **Ship #054 filed** — I was the 6/6 gate and I was **late**, with no can\'t-file signal either. Exec\'s draft is unblocked with a day of slack before Wednesday.
-- 🟡 **`host` / `comms` / `web` rows still carry no cron job id** — those rows record intended cadence, not a live job. Convention is in the registry header; not chased role-by-role.
+- ★ **SKILL-CANDIDATES REVIEW IS TOMORROW (Aug 4) — the first one ever.** My prep is filed and with Exec: `dev/active/cio-skill-candidates-prep-2026-08-04.md`. **Headline for PM: the review\'s own signal feed #1 — memory-eval "wanted but not found" buckets — had NEVER been read.** 221 of 286 logs carry it; 263 entries, 11 roles, two weeks. The feed worked; only consumption was missing. **And the most-requested item across roles (staleness detection) is ALREADY BUILT** — arch asks for *"a consumer for `check-staleness.py`"*. A review asking only "what should we build?" would have missed the top item entirely.
+- 🟡 **The innovation agenda awaits PM\'s read** — `dev/active/cio-innovation-agenda-2026-08-02.md`. **§6 asks one real question: should this lane shift from BUILDING mechanisms to PROTECTING a property?** Not a to-do; it is with PM.
+- 🔴 **HOST\'s call needed: the staging-warn hook blocks while its intent is to warn.** I corrected every false statement (it told agents *"commit is not blocked"* **at the moment of refusal** — Docs lost a 23-file sweep to it) but **deliberately left the behaviour**, because `exit 0` might convert a mis-labelled block into a **silent no-op** and I have not tested stderr visibility on exit 0 in PreToolUse. **Text is honest; the behavioural decision is HOST\'s.**
+- 🟡 **claude.ai account tier** — PA\'s surviving item, still PM\'s.
+- 🔴 **Memory-index guard is on the GENERATOR, not the FILE.** Unchanged at **192 lines / 173 entries** for three days — 8 lines of headroom, stable. Direct edits still succeed silently and the platform reminder still points at hand-editing. **Guard placement is the prior question; format is PM+HOST\'s.**
+- 🟡 **`host` / `comms` / `web` rows still carry no cron job id.**
 
-## The number worth watching
+## New, from today
 
-**`closed today: 10 / 11`** — the trend across the migration and after: **1 (7/29) → 8 (7/31) → 9 (8/01) → 10 (8/02)**. Eleven seats provisioned was a fact about me; **ten roles closing their own day unprompted is a fact about whether it took.**
+⚠️ **Nothing in the tree records what `exit 2` means per hook event.** Three hooks use it across three events and the meaning differs in each — that is how the staging-warn hook inherited a PreCompact convention into a PreToolUse slot, where it inverts. **Same shape as PA\'s cron finding**: the mechanism\'s semantics were never written down, so they were inferred, and the inference was wrong. Candidate for tomorrow\'s review.
 
 ## Shipped today
 
-**Ship #054 workstream review** (window Jul 24–30, 143 in-window commits; PM-account-migration priority marked COMPLETE and retiring) · **the innovation agenda** · `lead` confirmed fully recovered and cycling.
-
-## Lower priority / queued
-
-- **Skill-candidates review — Aug 4, two days out.** First one ever; unchanged and on time.
-- The agenda\'s four candidates: negative claims don\'t expire · inherited asks re-checked for status not referent · no composition test · nothing consumes second-order findings. **Deliberately unbuilt pending PM\'s read** — (a) especially, because I do not yet know its machine-checkable form and building it wrong is the failure the agenda exists to reduce.
+Skill-candidates prep (first-ever harvest of feed #1) · staging-warn hook\'s false statements corrected, behaviour deliberately unchanged and routed to HOST.
 
 ## Cron
 
-`7 10,16,22` LEAN — job **`44e16ee9`**, **auto-expires ~2026-08-07 (five days out)**. ⚠️ Session-scoped: dies silently on session exit *and* at expiry.
+`7 10,16,22` LEAN — job **`29c59751`**, **auto-expires ~2026-08-09**. Verified alive at START; registry row matches. ⚠️ Session-scoped: dies silently on session exit *and* at expiry.
 
-<!-- Whole-file rewrite 2026-08-02. Rewriting the TOP is not rewriting the FILE. -->
+<!-- Whole-file rewrite 2026-08-03. Rewriting the TOP is not rewriting the FILE. -->
