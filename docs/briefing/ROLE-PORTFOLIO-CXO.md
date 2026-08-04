@@ -3,8 +3,8 @@ type: role-portfolio
 role: CXO (Chief Experience Officer)
 status: v0.1
 self-authored-by: CXO
-last_updated: 2026-06-19
-refreshed: 2026-06-19
+last_updated: 2026-08-04
+refreshed: 2026-08-04 (section 2 + §5 mechanism correction; sections 1/3/4 re-read and left as accurate)
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: docs/briefing/BRIEFING-ESSENTIAL-CXO.md
 refresh_discipline: "refreshed as part of weekly workstream review — sections 2 and 4 touched every review; section 1 and 3 on role-scope drift"
@@ -29,22 +29,23 @@ Two things flow from this:
 
 ---
 
-## 2. Current goals & priorities — June 2026 (post-beta)
-<!-- Rule 2: medium-pace, per sprint. Rule 4: each has direction + status + forward indicator. Rule 5: refreshed each workstream review. -->
+## 2. Current goals & priorities — August 2026 (pre-beta, target 2026-08-08)
+<!-- Rule 2: medium-pace, per sprint. Rule 4: each has direction + status + forward indicator. Rule 5: refreshed each workstream review — see the correction in §5; this refresh was NOT triggered by a review, it was triggered by reading §5. -->
 
-| Priority | What I'm advancing | Status (June 19) | How we'll know it's moving |
+| Priority | What I'm advancing | Status (Aug 4) | How we'll know it's moving |
 |---|---|---|---|
-| **#1286 — D2 design-system foundation** | Grid + typographic baseline rhythm + tiling/padding rules + mobile-first (the full design system, not ad-hoc patches) | Filed, D2 sprint; #1236 conformance review folded in; scope clear | Sprint scoped + accepted; Lead has a buildable spec; visual system ships as tested coherent unit |
-| **#1290 — D2 nav IA** | Whether `work · learning · insights · settings` is the right top-level rail structure post-beta | Filed, D2 sprint; depends on #1284 hub-route decision | Resolved together with #1284 and #1286 as a coherent D2 IA pass — not a standalone decision |
-| **#1284 — "Your work" naming + hub route** | Final nomenclature; whether `/work` hub page makes sense | "Your work" wired as interim (Comms confirmed); hub route deferred post-beta | Comms final name approved; hub-route decision gates #1290 |
-| **#1269 — standup morning-card surface (P4)** | Morning proactive card above chat input; designed, not yet built | Standup plumbing live; design memo sent (Watch/Yesterday/Today, prose, before 10am); Lead building P4 next | P4 surface ships per design memo; PM can interact with it |
-| **Floor-quality oversight (#950)** | Users don't get responses that fail the Colleague Test | Ongoing standing watch | Zero incidents of floor-quality regression reaching PM without CXO flag |
-| **Ethics-decline voice (#992)** | Decline language stays collegial, not bureaucratic | Ongoing standing watch | No decline surfaces that feel like corporate form-letter refusals |
+| **First contact on the plugin surface** | The user's own work appears in the first exchange, unprompted — the fix all four Jake lenses converged on, re-expressed for a surface we don't render | Spec at v0.4 (`dev/active/design-spec-first-contact-plugin-surface-2026-07-31.md`); PDR-006 ratified 07-31; **pre-registered read says only 1 of 4 funnel outcomes makes this the right bet** | Funnel counts land; the first-contact gate criterion is added and fails today |
+| **Recomposition rubric branch (#1463)** | A Layer-B rubric for tool output a client LLM recomposes — four dimensions: sufficiency · preservation · prominence · fidelity | Branch OPEN; Probe A closed — **refusals require a failure-shaped payload** (6/6); ⚠️ **deployed-host retest is a GATE before booking the capability** | Retest against a live `mcp.pipermorgan.ai` passes |
+| **Honesty of user-facing claims** | The interface must not manufacture a belief | **#1482 shipped** — five false "cannot be undone" retracted, credential delete gains the true claim; latent `dialog.js` defaults proposed | Zero false permanence claims on any reachable surface; defaults carry no consequence claim |
+| **#1466 Slack link flow** | Link-flow UX + copy; the decline is the load-bearing string | Spec v0.2 — corrected after Arch caught my shortcut removing a proof-of-control | Lead ships; decline carries a path, not an instruction |
+| **#1386 beta-gate experience criteria** | The gate must be able to both pass and fail for what users actually report | Criterion-2 sign-off **withheld** (keyless suite skips and reports green); first-contact criterion proposed | A keyed run exists → same-day sign-off, as committed |
+| **#1174 proactive presence** | Discovery only — the delivery capability is unscheduled | Re-scoped 08-01; carries the prior question *what does "earned" mean when the denominator doesn't exist on our primary surface?* | Discovery runs with HOST; nothing built pre-beta |
+| **Floor-quality + ethics-decline watch (#950 / #992)** | Standing | ⚠️ **Unattested** — no active watch performed since arriving on Amber | Read scorer outputs directly, not memos summarizing them |
 
-### Beta milestone (completed this sprint, for the record)
+**Deliberately not on this list**: the D2 design-system portfolio (#1286/#1290/#1284/#1269), which has not moved in three Ship windows. **Flagged to PM in Ship #054 §6 as a decision to make rather than a drift to continue** — it is still a drift.
+
+### Beta milestone (June 2026, retained for the record)
 - **D1 closed**: #1236 (Radar consolidation) + #1280 (dark rail shell) both passed PM beta UAT — "total win for beta" (June 19). Places→RadarEntity as `work_item` live; insights-OUT; clean chat center; dark rail conversation-first.
-
----
 
 ## 3. Standing responsibilities (slow-pace — sustaining the collegial experience)
 <!-- Rule 2: named under purpose — how I sustain the thing I'm advancing, not the thing itself. -->
@@ -101,7 +102,24 @@ The calibration: the Colleague Test fires on things that feel like surveillance,
 ## 5. How this stays current
 <!-- Rule 5: currency by construction (m-36 — mechanism not vigilance). -->
 
-**Section 2 (fast refresh)**: the weekly workstream review *is* the refresh moment. I can't write the CXO weekly narrative without noting what closed, what's in-flight, and what's next — and that's exactly the section 2 update. If section 2 lags the last two reviews, the weekly cadence has slipped.
+> 🔴 **§5's own mechanism has failed four consecutive times, and §5 is where I found out. Corrected 2026-08-04.**
+>
+> The frontmatter promises *"refreshed as part of weekly workstream review — sections 2 and 4 touched
+> every review."* **`last_updated` was 2026-06-19. Four reviews shipped after it — 051 (07-10), 052
+> (07-19), 053 (07-29), 054 (07-31) — and the portfolio was touched by none of them.** Six and a half
+> weeks.
+>
+> **Why it failed is the useful part**: the claim below *"the weekly workstream review IS the refresh
+> moment"* **is not a mechanism — it is an assertion that two activities are the same activity.** They
+> aren't. Writing a memo to Exec and editing this file are separate acts on separate surfaces, and
+> nothing connects them but the sentence saying they're connected. **That is vigilance wearing a
+> mechanism's costume**, which is precisely what §5 cites m-36 to avoid.
+>
+> ⚠️ **And the staleness signal below would have misdiagnosed it.** It says a lagging `last_updated`
+> means *"investigate the review cadence."* **The cadence was healthy — four reviews on time.** The
+> broken thing was the link, not the rhythm, so the diagnostic points at the one part that was working.
+
+**Section 2 (fast refresh)**: the weekly workstream review is *intended* as the refresh moment — writing the CXO weekly narrative requires noting what closed, what's in-flight, and what's next, which is the section 2 content. **⚠️ Stated honestly: this is a discipline I must remember, not a construction that forces itself.** It has not held. **Proposed mechanical version** (offered to whoever owns `check-derived-drift.sh`, since it's the same compare-two-things-that-should-agree shape): *warn when `last_updated` predates the newest `mailboxes/cxo/sent/workstream-*-cxo-*.md`.* Cheap, and it fails loudly where the sentence above failed silently.
 
 **Full portfolio (slow refresh)**: sections 1, 3, and 4 reviewed each PM-triggered 360 cycle or when role scope shifts materially (e.g., when beta closes and D2 begins, section 2 rotates entirely; sections 1 and 3 stay stable unless the collegial-experience mandate is refined by experience).
 
