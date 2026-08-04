@@ -106,6 +106,8 @@ ADR-079 debt migration (unscoped-reads ceiling 36→0) · `check-silent-death` b
 
 ## For PM (no reply needed unless you disagree)
 
+- ⛔ **ONE WORD OWED, and it gates beta scope: is Slack inbound a beta surface?** (2026-08-04, raised by PA, scope-framed by PPM.) **My ruling assumes NO**, and everything downstream follows from it — #1481 + #1466 move to Production with #1419, and #1484 lands a 4-line fail-closed gate so the surface is scoped out by a *control* rather than by leaving it unconfigured. **If you say YES, #1484 flips to default-on and a principal-mapping layer is back on a four-day clock** — I'd advise against, but the scope condition is yours to amend, and PA was right that amending it should be *stated* rather than inherited.
+  - The architecture half is already decided and doesn't need you: **"unconfigured" is an absence, not a boundary** — any authenticated user can start that path at runtime via a global credential, no deploy (`POST /settings/integrations/slack/app-token` → `restart_socket_runner`). PPM's zero-cost instinct was right; it just needed four lines to become enforceable.
 - **Cron armed 7/29** on your "resume your duty cycle," at the registered 6×/day cadence. If that's wrong for Amber, say so and I'll re-arm.
 - **PDR-006 is ratifiable** on architecture. Its ⛔ blocker rested on a question you had already answered in January.
 - **One real risk named in PDR-006**: the hosted MCP endpoint introduces a caller-identity surface that **all** existing owner-scoping enforcement sits downstream of. Fail closed there (no identity → no read), or ADR-079's guarantees don't reach the hosted path.
