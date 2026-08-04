@@ -169,6 +169,14 @@ class SlackSocketModeRunner:
             pass
 
 
+def slack_inbound_enabled() -> bool:
+    """#1484 single authority (Arch AC amendment 2026-08-04): ONE predicate,
+    three consumers — build_runner (security floor), the save route BEFORE the
+    keychain write (refusal contract), the status route (honest state). Three
+    separate getenv calls were three authorities that could drift."""
+    return os.getenv("PIPER_SLACK_INBOUND_ENABLED", "").lower() in ("1", "true", "yes")
+
+
 async def build_runner(intent_service: Any) -> Optional[SlackSocketModeRunner]:
     """Construct the runner if (and only if) inbound is fully configured.
 
@@ -178,7 +186,7 @@ async def build_runner(intent_service: Any) -> Optional[SlackSocketModeRunner]:
     # #1484 (Arch ruling 2026-08-04): fail-closed deployment gate. "Unconfigured"
     # is an absence, not a boundary — this makes it one. Default OFF; beta cannot
     # start the #1481 shared-principal path even if a tester enters a token.
-    if os.getenv("PIPER_SLACK_INBOUND_ENABLED", "").lower() not in ("1", "true", "yes"):
+    if not slack_inbound_enabled():
         logger.info("slack_socket_mode_skipped", reason="inbound disabled by deployment policy")
         return None
 
