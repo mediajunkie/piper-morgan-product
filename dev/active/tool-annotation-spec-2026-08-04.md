@@ -358,10 +358,39 @@ output of the catalog, authored for legibility** — and CXO's lane is the right
 `name`; does not measure legibility of the rendered `title`"*), because that sentence is what stops the
 result being read as a naming ruling. **It costs nothing and it is now demonstrably accurate.**
 
-### 9d. Still open
+### 9d. ✅ The other 26 entries — screened, all READ
+
+Extracted all 26 cohort handlers and screened each body for persistence calls
+(`create_/update_/add_/delete_/close_/post_/save/commit/store_/set_/persist`). **Three came back
+ambiguous and were hand-checked:**
+
+| handler | verdict |
+|---|---|
+| `_handle_analyze_data` | **READ** — the `commit` hit was *git commits as data*; calls `get_recent_activity`, returns insights |
+| `_handle_local_git_status_query` | **READ** — same false positive |
+| `_handle_learn_pattern` | **READ** — ⚠️ checked *because its name implies persistence*. It fetches historical data and **returns** learned patterns (*"Returns: IntentProcessingResult with learned patterns"*); no store call in the body |
+
+**So all 26 are `READ`.** The `*_QUERY_COHORT` naming turns out to be accurate — which I note only
+*after* checking, since the whole point of §4a is that the name is not the evidence.
+
+⚠️ **This is a SCREEN, not an audit — state it that way wherever it gets reused.** A regex over handler
+bodies finds persistence it recognises; it cannot see a write behind a helper it doesn't match, and I read
+~55-line windows, not whole bodies. **`_handle_learn_pattern` is the one I'd re-check first**: a
+name-based suspicion surviving a 55-line window is weak disproof, and "learn" that never stores is
+slightly surprising. ✅ **The defaultless field makes this safe** — every one of the 26 is forced to state
+its own effect at the construction site, by an author who knows. **My screen is a starting point for that
+author, not a substitute for them.**
+
+⛔ **And the screen's own predicate failed once, silently.** My first extraction returned **15 handlers,
+confidently**, because `ast.unparse` emits **single** quotes and my pattern required double.
+**I caught it only because I had an expected count of 26 to compare against.** Same family as the
+`grep "Aug 8"` / `web/templates` misses this week — and worse than a null result, because **a partial
+match looks like success.** *Anything that enumerates should be checked against an independently-derived
+total.*
+
+### 9e. Still open
 
 - **Lead** — the ~15-site breaking change (§3). Arch has explicitly backed defaultless; that was the part
   most likely to be softened in review.
-- **26 of 38 entries unclassified** — everything arriving via the cohort writers (§4b). Mechanical, and
-  the defaultless field forces each to be stated anyway.
-- **`meeting`** — offer-only; unread.
+- **`meeting`** — offer-only (`action_triggered=False`); unread. And `run_todo_query_workflow` is not in
+  `intent_service.py` — separate module, unscreened.
