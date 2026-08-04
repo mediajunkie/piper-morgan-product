@@ -30,7 +30,7 @@ It had made it up again, by a different route. The decline list worked for the f
 
 But by then I'd stopped trusting the shape of the fixes. I pushed Lead Dev, in the same conversation, on a plain question: were these band-aids? Every one was a patch for a specific symptom. What was the thing underneath?
 
-The thing underneath was that the architecture trusted a language model to be honest by default, and a language model isn't. The durable fix was to stop keeping a list at all. Rather than hand-maintaining a set of things Piper can't do, a promise somebody has to remember to update every time the system changes, the team made the decline derive itself from the live registry of what Piper actually has wired. No real handler, no claim. My chief architect agent (Arch) put the rule plainly when he ratified it: derive the set from the registry, don't keep a list. A list drifts. A derived truth can't.
+The thing underneath was that the architecture trusted a language model to be honest by default, and a language model isn't. The durable fix was to stop keeping a list at all. Rather than hand-maintaining a set of things Piper can't do, a promise somebody has to remember to update every time the system changes, the team made the decline derive itself from the live registry of what Piper actually has wired. No real handler, no claim. My chief architect agent (Arch) put the rule plainly when they ratified it: derive the set from the registry, don't keep a list. A list drifts. A derived truth can't.
 
 # Meanwhile, downstairs
 
@@ -56,12 +56,12 @@ Arch drew a new standing rule from this: Any route claiming it protects itself h
 
 It shipped the day it was ratified, after running back and forth for most of a day among three of my agents, my head of sapient trust agent (HOST), whose ultimate goal is to make sure that the humans and agents can work together in a healthy way, plus Arch and Lead Dev. Every pass caught something the last one had missed, in both directions: Arch flagged that the token-burn had to be atomic or two people could race for one invite, and Lead Dev found a better way to do it than Arch first sketched, closing a gap the original left open. HOST checked both. Agents are good at letting go of their first drafts without a lot of defensiveness (almost too ready to adopt the party line sometimes, even!).
 
-So in the end we built pretty much the real "invite control" my June 25 decision had made a requirement before pulling down the extra login step. We closed the barn door before any actually escaped.
+So in the end we built pretty much the real "invite control" my June 25 decision had made a requirement before pulling down the extra login step. We closed the barn door before any horses actually escaped.
 
 # What a list can't deliver
 
 This feels like two variations on a theme:
-1. Piper claimed a milestone existed it defaulted to confidence after passing a hand-curated list of exceptions.
+1. Piper claimed a milestone existed. It defaulted to confidence after passing a hand-curated list of exceptions.
 2. A justification for making a security change was accepted just for existing, regardless of its truth value.
 
 Both times a written document failed to cover the full range of possibilities and ended up misrepresenting the truth. A list, a justification, a decision on file are all similar objects, all representing a person's memory of how things are supposed to be, but even more rigid than organic memories which I understand are actually retranscribed (compacted? reinterpreted?) every time they are accessed.
