@@ -113,10 +113,42 @@ marked, rather than implying an audit I did not do.
 | `update_issue` | `WRITE` | ✅ | **writes to GitHub** |
 | `reopen_issue` | `WRITE` | ✅ | state change, reversible |
 | `close_issue` | ❓ **`WRITE` or `DESTRUCTIVE`** | ✅ | **the one genuinely contested call — see §5** |
-| `document_update` | `WRITE` | ❓ | `run_update_document_workflow` (slot-filling); target determines external |
+| `document_update` | ✅ **`WRITE`** | ✅ **`True`** | **VERIFIED** — `run_update_document_workflow` → `_handle_update_document_notion`. **Writes to Notion.** |
 | `generate_content` | ✅ **`READ`** | ✅ | **VERIFIED** — status-report / readme-section / issue-template *generation*; `_generate_status_report` reads the default repo and returns content. **Produces, does not persist.** |
 | `prioritization` | ✅ **`READ`** | ✅ **`False`** | **VERIFIED — and my "sleeper" flag was WRONG.** See §4a. |
 | `meeting` | ❓ | ❓ | offer-only (`action_triggered=False`) |
+
+### 4b. 🔴 The registry is keyed by ALIAS, not by tool — a naive derivation emits 31 tools for 12 operations
+
+**Measured, not estimated**: `_default_entries` has **31 alias keys mapping to 12 distinct
+`WorkflowEntry` objects.** Several entries are reachable under many names:
+
+| entry | aliases |
+|---|---|
+| `create_issue_entry` | **6** |
+| `changes_query_entry` | 4 (`changes_query`, `what_changed`, `show_changes`, `changes_since`) |
+| `update_issue_entry` | 4 |
+| `document_update_entry`, `comment_issue_entry` | 3 each |
+| `close_issue` / `reopen_issue` / `prioritization` / `generate_content` | 2 each |
+
+**Condition 2 says derive the catalog from the registry. Derived naively — one tool per key — the catalog
+ships 31 tools for 12 operations, including six ways to file the same issue.**
+
+⭐ **This is not cosmetic, and it is the finding I'd carry forward even if everything else here is rebuilt.**
+The aliases exist because they are **classifier surface** — natural-language phrasings the intent
+classifier maps to one handler. **A host LLM's tool list is not a classifier surface.** Handing Claude or
+GPT four differently-named tools that do the same thing makes routing *worse*, not more forgiving: the
+model must now disambiguate between synonyms that carry no real distinction.
+
+**Derivation rule: the catalog MUST be keyed by entry identity, deduped across aliases** — one tool per
+`WorkflowEntry` object, with a single canonical name. **Aliases are input-side vocabulary and must not
+leak into the tool list.**
+
+⚠️ **And this is exactly Probe B's question arriving early**, from a direction I didn't expect. Probe B
+asks whether *situation-shaped* tool names route worse than *object-shaped* ones. The alias set is a
+natural experiment sitting in the codebase: `what_changed` / `show_changes` / `changes_since` are
+situation-shaped; `changes_query` is object-shaped. **Whichever way B lands, the answer decides which of
+the 12 canonical names we pick** — so B is now upstream of the catalog, not merely adjacent to it.
 
 ### 4a. ⚠️ The one row I checked by hand refuted the guess I made from its name
 
