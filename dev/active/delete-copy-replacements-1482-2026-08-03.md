@@ -52,13 +52,32 @@
 ### 6. ⭐ `templates/settings_llm_keys.html:161` — delete API key *(HARD — the inversion)*
 
 ❌ `confirm("Remove your <provider> key?")` — **no claim at all**
-✅ **`'Delete your <provider> key? This one really is gone — we destroy it here and revoke it at the provider. You'll need to paste a new key to reconnect.'`**
 
-> **This is the only surface in the product where "really is gone" is TRUE, and it's the one place we
-> don't say it.** Adding it is not extra ceremony — it's the strongest guarantee we ship, currently
-> invisible.
+🔴 **MY FIRST VERSION WAS FALSE — corrected before shipping by Lead (2026-08-04).** I wrote *"we
+destroy it here and **revoke it at the provider**."* `delete_user_key` removes the keychain entry and
+the DB row; **no provider-revocation call exists, and none is possible** — only the key's owner can
+revoke in their console.
 
----
+⚠️ **And it was false in the more dangerous direction than the five it accompanied.** Those overstate
+permanence harmlessly. **Mine understated residual risk**: a user told we revoked it **will not go
+revoke it**, and walks away believing a live credential is dead. **A false claim causing inaction on an
+active key**, introduced inside a fix premised on *the word must match the behaviour*.
+
+✅ **Shipped (Lead), then voice-polished (CXO):**
+
+> **Delete your `<provider>` key?**
+> **Our copy is destroyed immediately and can't be recovered.** The key stays valid at `<provider>`
+> until you revoke it there.
+
+**Fact boundary (pinned by test): no provider-side revocation may ever be claimed; the residual step
+must survive.**
+
+⭐ **Note what the correction did to the contrast** — it made it *accurate*. Soft: *"we keep a copy —
+ask if you need it back."* Hard: *"can't be recovered here."* **That is the true axis.** My *"really is
+gone"* was reaching for a totality we don't deliver, and **the contrast argument itself was the
+pressure that produced the overclaim**: I had argued string 6's strength was load-bearing for the set,
+which made me write the strongest version rather than the verified one. *A rhetorical structure that
+needs one element to be strong is a pressure to overclaim in that element.*
 
 ## Why the set works as a set, not six edits
 
