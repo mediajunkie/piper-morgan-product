@@ -2,7 +2,7 @@
 
 **Purpose**: durable handoff record for the next Architect session (duty-cycle-tick + PM-ratified single-log discipline 2026-06-12 + escalations-doc FOLD 2026-06-17). PM-attention items ride here.
 
-**Last rewritten**: 2026-08-02 22:00 PT (day-close). Prior 2026-08-01 22:00; full rewrite 2026-07-29 10:30 — **full rewrite, prior content discarded deliberately.** The previous version was dated 2026-07-12 and described a world that no longer exists: PM's *backup* account, worktree `arch-backup-0630`, cron `1b4d6ef2`, Model-B ephemeral worktrees, a laptop-reboot re-arm, and an "external cron driver" caution. **All of it is dead.** Treat nothing operational from any version before this date as current — the orientation note that flagged this file as stale on 7/25 was right, and it stayed stale four more days.
+**Last rewritten**: 2026-08-03 22:00 PT (day-close). Prior 2026-08-02 22:00; full rewrite 2026-07-29 10:30 — **full rewrite, prior content discarded deliberately.** The previous version was dated 2026-07-12 and described a world that no longer exists: PM's *backup* account, worktree `arch-backup-0630`, cron `1b4d6ef2`, Model-B ephemeral worktrees, a laptop-reboot re-arm, and an "external cron driver" caution. **All of it is dead.** Treat nothing operational from any version before this date as current — the orientation note that flagged this file as stale on 7/25 was right, and it stayed stale four more days.
 
 ---
 
@@ -43,7 +43,11 @@ A real **`.git/hooks/pre-commit` gate** is installed in the shared common dir (P
 
 ✅ **DONE 8/02 — Docs' 16-file disposition ruled** (4 KEEP / 12 archive; Docs executed 12, holding 4 until my ADR-070 supersession note landed — it had, verified). Attacking the heuristic first changed two dispositions. Prior text: **Sunday's first item was Docs' 16-file architecture-tree disposition.** Routed to me 8/1 ~21:00; deferred with a named trigger (sixteen per-file judgments at 22:00 produces fast answers, not right ones). Per file: *superseded vs. merely old* (supersession needs a pointer to what replaced it) · *does anything cite it* (`reachability-map.py` for code, grep for prose) · *does it carry a perishable referent* (sprint name, implementation citation, file count — per ADR-038 A3 and the ADR-070 finding). Docs was offered a single-blocker exception overnight.
 
-**Nothing owed Monday.** No queued deliverable carries into 8/03. Mail loop, then smallest unblocked item from standing-items.
+**Nothing owed Tuesday.** No queued deliverable carries into 8/04. Mail loop, then smallest unblocked item from standing-items.
+
+**Shipped 8/03**: **#973** Architect-drive half (audit filed; two of its three asks were already done by other issues — the residue looked identical to an untouched issue). **#1466** ratified → ruled → independently verified → guard reviewed, across four fires.
+
+**⛔ #1466 invariant, if anyone reopens it**: **the param may PREFILL, it may never BIND.** A deep-link `slack_user_id` is attacker-controllable; binding must come from redemption on the Slack side, which is the only step proving control of that account. **An opaque identifier in a confirmation dialog defeats the confirmation** — the user cannot tell whether `U0123…` is theirs. Verified in the shipped code (one creator, one owner-scoped deleter, redeem called only from `slack/webhook_router.py:1584`) and machine-held by `tests/test_slack_identity_binding_guard.py`.
 
 **Waiting on others (do not chase):**
 - **#1433** — RATIFIED 8/02 with **one required addition: assert the resolution PATH, not just the destination** (the determinism requirement was documented, not enforced — m-44 inside the new check). Lead lands it; three non-blocking refinements offered.
