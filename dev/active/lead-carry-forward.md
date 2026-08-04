@@ -12,16 +12,14 @@
 - **PM sprint calls**: #1464 (portfolio archive/restore crashes — LIVE via chat, MVP rec) · #1465 (learning success-path NameError inverts signal, MVP rec) · #1466 (Slack→Piper principal mapping absent, MVP rec). All from census wave-1 discovered-work.
 - **Exec**: #1386 window re-scope now that criterion-2 is unblocked (keys in; baseline 55/61 done).
 
-## Queue next (rewritten 8/2 21:55 at STOP)
-0. **PPM funnel-derivability answer** (their 8/2 19:45 memo: are the 5 invite-funnel counts derivable from current tables? services/analytics/ is empty 6 days from beta — answer with table-reads, morning fire).
-1. **Wave 3** (brief ready, launch on next WORK fire or PM's word): #1428 capability answer derives from the CHAT_POINTERS ledger + #1466 Slack↔Piper linking flow (design needs CXO/Arch input on link UX — flag in brief).
-2. **#1413** content-parity release gate (small, before the next release cut).
-3. **v30 deploy** on PM's go → unlocks PM verification of the full In-Review set (11 issues).
-4. PM triage batch: #1472 (4 sibling raw-enum sites) / #1473 (orchestrator QUERY gap) / #1471 (calendar collision) milestones+sprint; 11 untracked CHAT_INVISIBLE surfaces need trackers or by-design rulings.
-5. On PM verifications: close the In-Review set with their evidence; #1467 needs one more clean full-corpus run post-flip (streak 2 of 3).
+## Queue next (rewritten 8/3 STOP — build queue EMPTY, 4 days to Aug-8)
+0. **PM's word batch** (everything user-blocking funnels here): Saturday-8/8-vs-Friday-8/7 (one word; milestone due-date aligns) · v30 deploy go (13 In-Review verifications ride it; /link slash-command one-time Slack-app step documented on #1466) · prod funnel read go (corrected GROUP-BY spec) · triage batch (#1471-#1474, #1479-#1482, 11 untracked surfaces).
+1. #1413 content-parity gate (pairs naturally with the v30 cut).
+2. On Arch's #1481 ruling: socket-path per-sender identity (mechanical with #1466's blocks).
+3. #1467 needs one more clean full-corpus run post-flip (streak 2 of N=3) — ride the next canonical run.
+4. Watch: killed-sweep pattern with Pard (3 timestamps); weekly-docs-audit fires Monday 9:07 (nudged cron's first test).
 
-## In Review awaiting PM (11): 1393 1394 1429 1430 1431 1464 1465 1426 1433 1460 1432
-
+## In Review awaiting PM (13): 1393 1394 1426 1428 1429 1430 1431 1432 1433 1460 1464 1465 1466
 ## Standing notes
 - Beta target **Aug 8** (PM 7/30); scope growth needs PM approval. Multi-tenancy beta scope = #1430 (done) + #1458 traces + ratchet green (#1419 comment). #1458/#1457 → Production milestone.
 - Board-status discipline ACTIVE (PM 7/30): In Progress at take-up, In Review at shipped-pending-verification, Done at close — same-work-block, per-item mutations only.
