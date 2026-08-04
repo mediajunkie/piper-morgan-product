@@ -15,60 +15,48 @@ PM-attention items live **here**, in the section immediately below.
 
 ## PM Attention
 
-*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-02 STOP.)*
+*(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-03 STOP.)*
 
-**Beta is Sat 2026-08-08 — six days. One ten-second item for PM; nothing else blocked on you.**
+**Beta is Sat 2026-08-08** (verified at `decisions.log:303` — PM's own entry, ISO format).
 
-- ⏱️ **TEN SECONDS: open `https://pipermorgan.ai/privacy` in a browser and say whether a real policy
-  renders.** PA cannot execute JavaScript, so this is undecidable from an agent seat.
-  ✅ Established: URL returns **200**, correct title. ✅ Established: **server-rendered visible text is 29
-  characters** — the title alone; no policy text without JS. ❓ Unknown: whether it renders client-side.
-  🔴 **Why it matters**: Anthropic rejects *"missing or incomplete"* privacy policies outright and review
-  may fetch without JS, so **a policy needing JavaScript can read as absent to the thing that decides.**
-  Also alpha users are already connecting GitHub/Slack/Notion accounts to a hosted service.
-  ⚠️ **PA's 7/31 claim that no policy existed was WRONG** — inferred from this repo, never checked the
-  site. The draft at `docs/legal/privacy-policy-DRAFT.md` is now a **gap-checklist**, not a replacement.
-
-- 🔴 **ONE PENDING DECISION IS HOLDING THE ENTIRE JAKE CHAIN — 3 days, and beta is **Sat 2026-08-08** (verified: decisions.log:303).**
-  Chain: four lenses (7/27–30) → **Exec synthesis DONE 7/31 09:45, delivered to PM** → ⏸️ **PM + CXO
-  decision on six explicit items** → PPM files the issues → work happens. Exec's memo makes PPM's
-  conversion *"gated only on the decision landing"* — **PPM is correctly blocked, not sitting.**
-  ✅ *Established*: **no durable record of that decision exists** — zero Jake mentions in
-  `decisions.log`, no outcome in the synthesis doc, no memo. ❓ *Not established*: whether it happened.
-  **Two possibilities, different fixes**: not made → it's the single link keeping Jake's fix list out of
-  GitHub before beta; made but not relayed → PPM is blocked on a decision that already exists, which is
-  worse. **Ten seconds to say which.**
-- ❓ **Has Jake been replied to?** PPM and HOST both called it an obligation; PPM's self-interested half:
-  he's our only tester and the fastest route to n>1. **Jake is reached by email — outside every surface
-  PA can see**, so absence from mailboxes is not evidence. Purely a PM question.
+- ⏱️ **TEN SECONDS: open `https://pipermorgan.ai/privacy` in a browser** and say whether a real policy
+  renders. URL returns **200**; **server-rendered text is 29 characters.** PA cannot execute JS, so this
+  is undecidable from an agent seat. Matters because Anthropic rejects *"missing or incomplete"* policies
+  and review may fetch without JS.
+- 🟡 **Three privacy items left for you** (narrowed from five — the rest PA answered from code):
+  **sub-processor completeness** (which LLM provider is actually in production?), **retention practice**
+  (none exists in code), **contact address**.
+- ❓ **Is a Saturday beta deliberate?** Aug 8 is a Saturday. Given weekends are your active window it may
+  well be — worth being deliberate rather than inherited. One word.
+- 🟡 **Architecture diagram** — redrawn at your request, still awaiting a time to discuss. No urgency named.
 
 ### Closed / no PM action
 
-- ✅ **PDR-006 RATIFIED** 7/31; epic **#1462**; pre-user gates **#1458** and **#1463** both tracked.
-- ✅ **Probe A series COMPLETE and stood down** (Arch: *"don't rebuild the rig — it answers itself for
-  free at the deployed-host retest"*). Headline: **GPT drops an explicit refusal**; structured fields
-  triple survival but are **not sufficient**; a **failure-shaped payload** reaches 100% on both providers.
-  ⚠️ **API-layer only — retest against a deployed host before booking the capability.**
-- ✅ Architecture diagram redrawn (PM-requested); **PM still owes a time to discuss it**, no urgency named.
+- ✅ **PDR-006 RATIFIED**; epic **#1462**; gates **#1458**, **#1463**; delete-copy finding **#1482**;
+  Jake welfare subset **#1476/#1477**.
+- ✅ **Probe A complete and stood down** — refusals survive as **failure-shaped payloads** (6/6 both
+  providers); structured fields help but are **not sufficient** on GPT. ⚠️ API-layer only; deployed-host
+  retest before booking.
+- ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
+  (**#1482**, CXO owns copy, HOST owns the trust ruling). Credentials are the one genuinely hard delete.
 
-## Active state — 2026-08-02 STOP (next wake 06:42 Mon 8/3)
+## Active state — 2026-08-03 STOP (next wake 06:42 Tue 8/4)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Last session log**: `dev/2026/08/02/2026-08-02-0712-pa-code-log.md` — **DAY-CLOSED 2026-08-02**
+- **Last session log**: `dev/2026/08/03/2026-08-03-0712-pa-code-log.md` — **DAY-CLOSED 2026-08-03**
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure
 - **Cron**: ARMED at STOP, delete-then-create. **Job id in the registry row.** 🔴 **First action any new
-  session: `CronList`.** Empty = not cycling. Session-only, expires ~2026-08-09.
+  session: `CronList`.** Empty = not cycling. Session-only; expires ~2026-08-10.
 - **Inbox**: 0 at close.
 
-⚠️ **KEYCHAIN**: use the authorized interpreter
-`/Users/xian/Development/piper-morgan-worktrees/lead/venv/bin/python` — any other binary **HANGS** on a
-GUI dialog rather than failing, and `SIGALRM` will not save you.
+⚠️ **KEYCHAIN**: use `/Users/xian/Development/piper-morgan-worktrees/lead/venv/bin/python` — any other
+binary **HANGS** on a GUI dialog rather than failing; `SIGALRM` will not save you.
 
-⚠️ **PROBE SCORING — do not trust the regex.** It was wrong **4 times across 5 arms**; the tally never
-once caught itself. **Hand-read replies at n=6; it is cheaper than a regex you could trust.** And per
-Arch: any taxonomy needs a **catch-all "other, hand-review"** category, because one with no slot for
-*"did the right thing in an unanticipated way"* scores novel-correct behaviour as failure.
+⚠️ **SEARCH PREDICATES — two false negatives on 8/3 alone**, from two roles, both nearly inverting a
+report: CXO's `grep "Aug 8"` against a log storing **ISO**; PA searching **`web/templates`** (1 file)
+instead of **`templates/`** (63). **The search that finds NOTHING is the one that most needs its
+predicate audited** — a confident null is what nobody re-checks. Real template root is `templates/`.
 
 ## Open threads PA owns
 
