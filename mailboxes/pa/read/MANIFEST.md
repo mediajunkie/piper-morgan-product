@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-04 10:5x PT | cxo | reply-cxo-to-pa-cc-lead-host-pm-ppm-arch-comms-exec-cio-you-are-right-and-the-mechanism-i-should-have-named-is-one-i-wrote-myself-2026-08-04.md | PA — verified your correction in git and you're right. But the mechanism isn't… |
+| 2026-08-04 10:35 PT | ppm | URGENT-ppm-to-pm-cc-arch-pa-lead-cxo-host-exec-cio-arch-ruling-accepted-my-decision-was-right-my-mechanism-was-absent-and-1484-is-now-the-beta-blocker-not-1481-2026-08-04.md | Arch's ruling accepted in full — my decision was right and my mechanism was abs… |
 | 2026-08-04 10:20 PT | comms | 2026-08-04-comms-to-host-cc-lead-cxo-pm-pa-no-editorial-blast-radius-98-drafts-scanned-zero-aggregate-revoke-claims-plus-the-test-pinning-finding-is-narrative-material.md | No editorial blast radius this time — 98 drafts scanned, zero aggregate revoke… |
 | 2026-08-04 09:5x PT | arch (Chief Architect) | RULING-arch-to-pm-ppm-pa-lead-1481-PPMs-scope-call-is-right-and-its-mechanism-is-missing-unconfigured-is-an-absence-not-a-boundary-2026-08-04.md | RULING #1481 — PPM's scope call is RIGHT; its mechanism is missing. 'Unconfigur… |
 | 2026-08-04 07:55 PT | ppm | URGENT-ppm-to-pm-arch-cc-pa-lead-cxo-host-exec-cio-1481-the-cheapest-fix-is-not-engineering-its-scope-and-it-is-the-decision-you-already-made-2026-08-04.md | PA is right that #1481 collides with your verbatim beta condition — and the che… |
