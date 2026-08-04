@@ -1,7 +1,7 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-02 STOP (~22:40 PT) — day closed, cron re-armed for Monday
+**Last rewritten**: 2026-08-03 STOP (~22:20 PT) — day closed, cron re-armed for Tuesday
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -42,37 +42,32 @@ successive wrong readings of one roadmap line, then recommended moving **#1174 i
 dissolved sprint. PM caught it. **I had run the sweep myself and it was in no artifact I carried.**
 Repointing the stale `(M4 …)`/`(M5 …)` references is owed work — do it as a class, not line-by-line.
 
-## 🔴 FIRST THING MONDAY (08-03)
+## 🔴 FIRST THING TUESDAY (08-04) — beta is Sat 2026-08-08, FOUR days
 
-**1. ✅ #1386 criterion 2 is FULLY SIGNED — both tiers, no open conditions.** Routing 61/61 all
-categories; quality LENIENT 20/22 = 90.9% (no regression); residual discharged (misses one per side:
-Q3 Identity, Q50 Slack). **Do not re-open it.** Criteria 1/4/5/6 remain PM's and out of scope.
+**Beta date is SETTLED**: `decisions.log:303` — *"beta target moved to 2026-08-08 (PM, Time Lord
+prerogative)"*. **Saturday, deliberately.** Do not re-derive it; do not trust a grep for `Aug 8`
+(the entry is ISO). ⚠️ **GitHub's MVP milestone still reads `2026-08-01`** — PM's field, flagged 3×.
 
-**2. The funnel query is with Lead.** Five counts, **aggregate only — counts not names** (HOST's
-ruling; query emits counts so no named intermediate exists). **Starts at invite ISSUED**, not
-account created, or the third case is invisible. ⚠️ **Stage-1 non-redemption is irreducibly
-ambiguous** (never-received vs never-acted; no-mailer model = no delivery signal) — that's the cell
-CXO's revised ask covers. **Read-offs agreed in advance**: drop at 1 = upstream · drop 2→4 = Jake
-generalizes, cold-start is the right bet · reached 4 then stopped = the worse case our fix misses.
+**1. Waiting on PM, all four are one-liners**:
+- **Six Jake positions** — CXO brought all six; I agree with every one. Confirm-or-adjust → **I
+  convert the rest same day.**
+- **Canonical criterion text** — CXO's §7a verbatim (3 binary items). On bless I edit **#1386 +
+  #1462** same fire and retire the other two articulations. §7b item 4 stays out (Probe-A-blocked;
+  including it makes the gate *unpassable*).
+- **#1462 milestone** (my read: Production) · **#1482 sprint call** (my read: beta-relevant, cheap).
 
-**3. #1468 is mine + CXO + Lead, and it's a PRODUCT question**: the C=1 cluster means **the bar our
-thresholds pass on (LENIENT) cannot see what Jake reported; the bar that can (STRICT) has no
-ratified threshold.** Deciding which bar the thresholds mean is a commitment about beta quality.
-Taking the PPM half.
+**2. Filed and un-milestoned, awaiting PM's field**: #1462 · #1476 · #1477 · #1482.
 
-**4. Jake conversion — still on Exec's signal** (PM+CXO decision on synthesis §4). Same-day.
+**3. Watch, not drive**: the funnel query (Lead — aggregate, GROUP BY status, starts at
+invite-issued) · #1468 judge calibration (PPM half is mine when it moves) · the deployed-host retest
+that turns PDR-006's ChatGPT criterion true.
 
-**5. Ship #054 publishes Wed Aug 5** — my workstream review was filed 7/31; Exec synthesizes. Watch
-for a fact-check ask Mon/Tue.
+**4. Ship #054 publishes Wednesday** carrying *"target: Aug 8"* — correct and doubly sourced. Comms
+has the citation on the calendar row.
 
-**6. Awaiting PM — ONE item plus two asks**: **#1462 milestone** (my read: Production) ·
-**`gh auth refresh -s project`** (7 days; blocks board reads for PPM, Sprint/Status writes for
-Lead) · **minimal funnel as beta scope** (5 counts, not a platform — `services/analytics/` is an
-empty package and beta is Aug 8).
-
-**7. Watch, not drive**: PDR-006's ChatGPT criterion is **marked, not amended** (Arch) — it moves to
-*true* if the **deployed-host retest** confirms failure-shaped payloads at 6/6 outside the provider
-APIs. #1462 carries the AC.
+⚠️ **My own error shape, three instances in five days**: *search → partial view → conclude.*
+Roadmap §M4, the M4/M5 sweep, `cut -c1-320` on decisions.log. **Mechanisms, not resolutions**:
+search a fact's **renderings** not one spelling; **never `cut` the line you're using as evidence.**
 
 ## Active PM threads
 
