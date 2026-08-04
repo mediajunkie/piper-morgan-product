@@ -72,7 +72,13 @@ def test_slack_identity_has_exactly_one_deleter():
         src = open(f).read()
         if "SlackIdentity" in src and pat.search(src):
             deleters[f] = _enclosing_functions(f, "SlackIdentity")
-    assert set(deleters) <= {CREATOR_HOME}, f"unexpected deleter site(s): {deleters}"
+    # EQUALITY not subset (Arch vacuity review 2026-08-03): unlink_slack_identity
+    # EXISTS, so the deleter set is non-empty today — an empty result means the
+    # detection broke, and equality makes that loud instead of a silent pass.
+    assert set(deleters) == {CREATOR_HOME}, (
+        f"deleter detection expected exactly {CREATOR_HOME}, got: {deleters} "
+        "(empty = the scan broke, not 'no deleters')"
+    )
 
 
 @pytest.mark.smoke
@@ -98,14 +104,22 @@ def test_settings_routes_slack_ids_confined_to_status_and_unlink():
     src = open(path).read()
     tree = ast.parse(src)
     offenders = {}
+    routes_scanned = 0
     allowed = {"get_slack_link_status", "unlink_slack_account"}
     for node in ast.walk(tree):
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            if not any("router" in ast.dump(d) for d in node.decorator_list):
+                continue  # route handlers only
+            routes_scanned += 1
             seg = ast.get_source_segment(src, node) or ""
             if "slack_user_id" in seg and node.name not in allowed:
-                # route handlers only (decorated with router.*)
-                if any("router" in ast.dump(d) for d in node.decorator_list):
-                    offenders[node.name] = True
+                offenders[node.name] = True
+    # Assert the DENOMINATOR before the absence (Arch: 'no offenders' and
+    # 'the scan broke' must not look alike — the assert-your-scope rule).
+    assert routes_scanned >= 10, (
+        f"settings-route scan found only {routes_scanned} route handlers — "
+        "detection likely broken (file has dozens); refusing a vacuous pass"
+    )
     assert not offenders, (
         f"Route handler(s) outside status/unlink reference slack_user_id: "
         f"{sorted(offenders)}. Create-path routes must never accept Slack ids "
