@@ -113,23 +113,79 @@ marked, rather than implying an audit I did not do.
 | `update_issue` | `WRITE` | ✅ | **writes to GitHub** |
 | `reopen_issue` | `WRITE` | ✅ | state change, reversible |
 | `close_issue` | ❓ **`WRITE` or `DESTRUCTIVE`** | ✅ | **the one genuinely contested call — see §5** |
-| `document_update` | `WRITE` | ❓ | depends on target |
-| `generate_content` | `WRITE` | ❓ | confirm whether it persists |
-| `prioritization` | ❓ | ❓ | confirm whether it writes board state |
+| `document_update` | `WRITE` | ❓ | `run_update_document_workflow` (slot-filling); target determines external |
+| `generate_content` | ✅ **`READ`** | ✅ | **VERIFIED** — status-report / readme-section / issue-template *generation*; `_generate_status_report` reads the default repo and returns content. **Produces, does not persist.** |
+| `prioritization` | ✅ **`READ`** | ✅ **`False`** | **VERIFIED — and my "sleeper" flag was WRONG.** See §4a. |
 | `meeting` | ❓ | ❓ | offer-only (`action_triggered=False`) |
 
-## 5. The contested call, surfaced rather than decided
+### 4a. ⚠️ The one row I checked by hand refuted the guess I made from its name
 
-**Is `close_issue` destructive?** It is reversible (`reopen_issue` exists, right there in the registry),
-which argues `WRITE`. But `destructiveHint` in MCP means *"may perform destructive updates"* from the
-**user's** point of view, and closing someone's issue is a visible, notifying, socially-consequential act.
+I flagged `prioritization` as *"the sleeper — if it writes board state it can move many items at once."*
+**I read it. It writes nothing.** `_handle_prioritization` (`intent_service.py:10479`) is pure
+computation: validate → extract items **from `intent.context`** → score (Impact/Urgency/Effort, RICE, or
+Eisenhower) → rank → format → return. **No repository call, no persistence, no external write.** It does
+not even read stored state — it scores what the caller supplied.
 
-**PPM owns this** — they established that the catalog is where opinionation lives, and this is exactly
-that: a product judgment about how much friction a client should put in front of the act, wearing the
-costume of a boolean. **Not deciding it here.**
+**Worth recording rather than quietly fixing the row**, because it is this spec's own caveat coming true
+on its most confident line: the name `prioritization` suggested a bulk board mutation, and I gave it the
+scariest reading available. **The guess and the fact pointed opposite ways.**
 
-⚠️ **`prioritization` may be the sleeper.** If it writes board state it can move many items at once — and
-a bulk write that a client auto-approves because nobody set the field is the concrete form of the §2 risk.
+🔴 **And note the direction — it is the *reassuring* one, which is why it deserves flagging.** My error
+would have over-restricted a harmless tool: needless confirmation prompts, not an unconfirmed write. That
+is the cheap direction, **and it is the direction a cautious reviewer's errors will always take.** The
+expensive direction is the row nobody found frightening. **Every remaining ❓ and every unread handler in
+this table is a candidate for the error that runs the other way** — so the §6 enforcement (no default,
+refuse to emit) is not belt-and-braces, it is the actual control.
+
+## 5. ✅ RESOLVED — `close_issue` is `WRITE` (PPM ruling, 2026-08-04)
+
+I surfaced this rather than picking one. **PPM ruled, and supplied a discriminator that decides the next
+twenty cases rather than just this one:**
+
+> **DESTRUCTIVE = the operation destroys information that cannot be recovered through the product.**
+
+By that test `close_issue` is plainly `WRITE`: the issue, body, comments and timeline all survive, and
+`reopen_issue` restores the state completely. **A `delete_*` is destructive; a state transition with an
+inverse is not.** Adopted — and it resolves the ❓ rows in §4 by rule rather than case-by-case.
+
+**Why the social concern does NOT go in `destructiveHint`** (PPM, and the argument is the load-bearing
+part): closing notifies watchers, and so does `comment`, `add_label`, `assign` — **conflate the two and
+every social write becomes DESTRUCTIVE, the flag stops discriminating, and a host LLM reading it learns
+nothing. An annotation that marks everything is the same defect as one that marks nothing.**
+
+**Two distinct properties, two homes:**
+
+| property | question | home |
+|---|---|---|
+| **Destructiveness** | recoverable through the product? | `destructiveHint` |
+| **Consequence** | visible to *other people*, outside the user's control? | **HOST's consent gate** (already a release blocker) |
+
+The consequence is real — *"you closed my issue"* already happened and no `reopen_issue` unfires the
+notification. It belongs in the **tool description** and the consent gate, not in a boolean that means
+something else.
+
+### 5a. ⭐ How the description must be written (CXO addendum, adopted as a catalog-wide rule)
+
+My proposed string — *"closes the issue — visible to watchers; reversible with reopen"* — **puts its
+safety clause in the position a recomposing client LLM drops.** A tool description is not rendered; it is
+**input to a model that paraphrases before the user sees anything** (this is #1463's finding).
+
+🔴 **And the asymmetry is the dangerous part**: *"reversible with reopen"* is reassuring, so a summarizer
+keeping one trailing clause likely keeps **that** one — **preserving the reassurance and dropping the
+exposure.** Same direction as every other error in this cycle.
+
+**Adopted string:**
+
+> *"Closes an issue in the user's tracker, notifying everyone watching it. `reopen_issue` restores the
+> issue state — it does not unsend the notification."*
+
+**The general rule, applied catalog-wide:** *the irreversible part of a reversible operation goes in the
+same sentence as the reversibility claim*, and the scope goes **inside the primary claim, never as a
+trailing caveat** — a summarizer cannot drop the notification without dropping the verb.
+
+⚠️ **`prioritization` remains the sleeper.** If it writes board state it can move many items at once — a
+bulk write auto-approved because nobody set the field is the concrete form of the §2 risk. **Still needs
+a handler read; not resolved by PPM's rule.**
 
 ## 6. Enforcement — one test, and it must fail for the right reason
 
@@ -166,4 +222,28 @@ feature; a tool present with a wrong `readOnlyHint` is an unconfirmed write.
 - **Arch** — does a registry field satisfy condition 2's *"derive, don't hand-maintain"*? I read it as
   yes, since the fact then lives in the registry and the catalog is computed. **Confirm rather than let me
   assume it** — I've inherited one condition wrongly already this cycle.
-- **PPM** — `close_issue`, and the `prioritization` sleeper.
+- ✅ **PPM — ANSWERED same day.** `close_issue` = `WRITE`; discriminator adopted into §5. `prioritization`
+  still open (needs a handler read, not a rule).
+- ✅ **CXO — ANSWERED same day**, unasked, in their lane. Description-string rule adopted into §5a.
+
+## 9. 🔴 STATUS 2026-08-04 13:xx — blocked on ONE question, and it is not the one I expected
+
+**Two of my three asks came back within an hour. The third has not, and it gates the other two.**
+
+**PPM and CXO independently ranked the same item above their own** — and neither was asked to:
+
+> **PPM**: *"Your sequencing risk is the bigger item and I'd act on it first… it determines how much of
+> your spec is in scope at all… 'we built it twice' is a worse outcome than 'we waited a day for Arch.'"*
+>
+> **CXO**: *"you're right that Arch's condition-3 resources question outranks this."*
+
+**The question, and it is Arch's alone**: PDR-006 condition 3 puts **reads on MCP resources, not tools**.
+If `changes_query` / `get_default_repo` migrate to resources, **they leave this spec entirely** and the
+`READ` rows in §4 are moot.
+
+⚠️ **Why this is worth waiting on rather than proceeding around**: the registry-field change in §3 is a
+**breaking change to ~15 construction sites.** Doing that against a tool list that then loses its read
+side means doing it twice — and the second pass lands on code that already ships.
+
+**Not blocked on this**: §5a's description rule (a rule about *how* strings are written, applies to
+whatever survives — CXO's point) and the `prioritization` handler read. **Those proceed.**
