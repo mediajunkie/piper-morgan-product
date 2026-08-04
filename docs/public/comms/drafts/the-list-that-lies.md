@@ -1,5 +1,5 @@
 ---
-image: ''
+image: 'the-list-that-lies-ai-gatekeeper.png'
 alt: 'A translucent dolphinoid AI gatekeeper confidently consults a ledger beside an observant human, as the supposedly secured gate stands wide open behind them'
 caption: '"Nothing can go wrong!"'
 ---
