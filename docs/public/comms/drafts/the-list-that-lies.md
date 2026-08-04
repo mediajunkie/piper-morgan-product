@@ -46,7 +46,7 @@ Nevertheless, the June 29 edit took it down. There was still no way to control i
 
 I'll be honest about the severity, because it's easy to make this sound worse than it was. The risk was real but moderate. Every alpha tester brings their own language-model key, so there was no key to steal, and we found no sign anyone had walked through the open door. There's also security through obscurity, not to be underestimated but at the same time a lot more shallow with malicious actors probing everything.
 
-In my case, two things were exposed: First, for that period, anyone could have registered an account. Second, and separately, anonymous callers could quietly run up a bill on my own key through one endpoint that hadn't been closed. 
+In my case, two things were exposed: First, for that period, anyone could have registered an account. Second, and separately, anonymous callers could quietly run up a bill on my own key through one endpoint that hadn't been closed.
 
 I asked if there was no guard. Arch told me there was a guard but explained how it failed on incorrect or stale justifications. The agent made a comparison that was strange to me: its idea of risk covered writing to the system but not the separate case of "spending money on it." Perhaps this is a long-tail effect of my "zero dollar stack" vision?
 
@@ -54,17 +54,17 @@ So we escalated the rigor a notch, like you do. The invite control that shipped 
 
 Arch drew a new standing rule from this: Any route claiming it protects itself has to carry a test that enforces the claim.
 
-It shipped the day it was ratified, after running back and forth for most of a day among three of my agents, my head of sapient trust agent (HOST), whose ultimate goal is to make sure that the humans and agents can work together in a healthy way, plus Arch and Lead Dev. Every pass caught something the last one had missed, in both directions: Archt flagged that the token-burn had to be atomic or two people could race for one invite, and LD found a better way to do it than Arch first sketched, closing a gap the original left open. HOST checked both. Agents are good at letting go of their first drafts without a lot of defensiveness (almost too ready to adopt the party line sometimes, even!).
+It shipped the day it was ratified, after running back and forth for most of a day among three of my agents, my head of sapient trust agent (HOST), whose ultimate goal is to make sure that the humans and agents can work together in a healthy way, plus Arch and Lead Dev. Every pass caught something the last one had missed, in both directions: Arch flagged that the token-burn had to be atomic or two people could race for one invite, and Lead Dev found a better way to do it than Arch first sketched, closing a gap the original left open. HOST checked both. Agents are good at letting go of their first drafts without a lot of defensiveness (almost too ready to adopt the party line sometimes, even!).
 
-So in the end we built pretty much the real "invite control" my June 25 decision had made a requirement before pulling down the extra login step. We closed the barn door before any actually escaped. 
+So in the end we built pretty much the real "invite control" my June 25 decision had made a requirement before pulling down the extra login step. We closed the barn door before any actually escaped.
 
 # What a list can't deliver
 
 This feels like two variations on a theme:
-1. Piper claimed a milestone existed it defaulted to confidence after passing a hand-curated list of exceptions. 
+1. Piper claimed a milestone existed it defaulted to confidence after passing a hand-curated list of exceptions.
 2. A justification for making a security change was accepted just for existing, regardless of its truth value.
 
-Both times a written document failed to cover the full range of possibilities and ended up misrepresenting the truth. A list, a justification, a decision on file are all similar objects, all representing a person's memory of how things are supposed to be, but even more rigid than organic memories which I understand are actually retranscribed (compacted? reinterpreted?) every time they are accessed. 
+Both times a written document failed to cover the full range of possibilities and ended up misrepresenting the truth. A list, a justification, a decision on file are all similar objects, all representing a person's memory of how things are supposed to be, but even more rigid than organic memories which I understand are actually retranscribed (compacted? reinterpreted?) every time they are accessed.
 
 Hey, but at least we're learning to escalate. The first time the pattern appeared, we reached for a list, and the list broke by morning. The second time, we derived the truth instead of listing it, and it held. The third time, where being wrong cost more, we derived the truth and then wrote a test whose only job is to try to make the derived truth lie, and shipped nothing until it couldn't. Same lesson, three rungs, each trusting a person's vigilance a little less and a mechanism a little more.
 
