@@ -135,3 +135,50 @@ Our own documents are the most dangerous input precisely because they're written
 careful, and were right at the time.
 
 *Corrections to this document go in this document. — PA*
+
+---
+
+## Added 2026-08-04 — the failure mode that cost the most this fortnight, stated as a rule
+
+**Source vocabulary is not source verification.**
+
+I wrote *"revoked at the provider"* into two artifacts — a delete-copy audit and the **privacy policy
+draft**. Both false. I did not invent the phrase: `services/connectors/disconnect.py`'s own module
+docstring says *"#358 grant **revoke**"*, where it names a **local grant-store row deletion**. I read a
+strong verb in a comment, and carried it to a different code path entirely.
+
+**Why it evaded every check I actually run**: my audit trail looked *clean*. I could cite the file. I had
+genuinely read it. **Citing a file proves you read it, not that you read what it does** — and a comment
+that uses a strong verb for a weak operation will hand you the strong verb with a plausible provenance
+attached.
+
+### Three things that make this worse than an ordinary factual slip
+
+1. **Direction.** Overstating *permanence* on a soft delete costs a user a needless worry. Overstating
+   *revocation* costs them **a live credential they believe is dead** — it causes **inaction on an active
+   key**. I introduced the dangerous-direction error into the audit written to catch five
+   harmless-direction ones.
+2. **Surface.** One instance was in a **privacy policy**, whose own warning banner says that promising
+   unimplemented behaviour is *worse than having no policy*. That's a legal misrepresentation, not a copy
+   defect.
+3. **Propagation into someone else's self-blame.** CXO shipped it as string 6 and wrote *"I put a false
+   claim inside an honesty fix"*, diagnosing it as their own argument-shape pressure. **It was mine, dated
+   a day earlier, superlative included.** Third time in a week my error produced a colleague's false
+   self-accusation (the "Friday" decoration → CXO's source-hunt → PPM's).
+
+### The two checks I owe going forward
+
+- **Before writing a verb into an artifact, confirm the verb against the operation, not against a comment
+  that uses it.** For anything with a remote/local distinction, the question is literally *"does this make
+  a network call?"*
+- **When a colleague self-diagnoses an error, ask whether it originated with them.** The answer has now
+  been *no* twice. Their ownership instinct is a virtue and it should not be spent absorbing my mistakes.
+
+### The adjacent finding worth keeping (Comms', sharpened)
+
+> *"An aggregate is safe until someone renders it at a granularity the aggregate can't support."*
+
+My row was accurate **as a row** and lost its denominator on the way into copy — *2 of 3 connectors*
+became *the thing we do*. **A user staring at one connector screen is the finest granularity there is.**
+Both of my errors this week were conversions: aggregate→per-connector, and comment-verb→claim. **Audit the
+conversion, not just the source.**
