@@ -414,3 +414,41 @@ authenticated user warrants its own issue. Noted in #1484, unfiled.
     truncated the line before the matching phrase, so a CORRECT grep hit rendered as a miss. Truncating
     output converts found-it into not-found and the two are indistinguishable. RULE: when a grep result is
     load-bearing for a NEGATIVE claim, re-run it unfolded before asserting the negative.
+
+---
+2026-08-04 16:1x PT — Arch — PDR-006 conditions 2 + 3 SCOPED (PA's gating ask on the tool-annotation spec)
+
+Q1 RULED — condition 3 does NOT reach the workflow registry. Nothing leaves the tool catalog.
+  The condition's scope is its own first two words ("Colleague-model access…") and it names its objects
+  (stored profile, colleague model, composted insights). The workflow registry is a different object.
+  changes_query / get_default_repo / generate_content / prioritization all STAY TOOLS. PA builds once.
+  ⭐ DURABLE FRAMING: readOnly ≠ resource — ORTHOGONAL AXES.
+     - resource vs tool = addressable, host-anticipatable context, or an invoked operation?
+     - readOnlyHint    = does invoking it mutate state?
+     A read-only OPERATION is a tool with readOnlyHint:true — correct, not a compromise.
+     Discriminator lives in condition 3's own tail: "so serving context does not require the model to
+     decide to call something" = context served UNPROMPTED. An operation whose parameters the model must
+     formulate cannot qualify. PA's prioritization entry proves it: writes nothing AND scores
+     caller-supplied input, so there is nothing to address until the model supplies it.
+  Single edge: get_default_repo IS a stable addressable user fact and a legitimate FUTURE resource
+  candidate — belongs to the colleague-model context bundle, not the registry spec. Not now, gates nothing.
+
+Q2 RULED — a required, DEFAULTLESS WorkflowEntry field satisfies condition 2. The defaultless half is
+  load-bearing, not style: 4 of WorkflowEntry's 5 fields are already defaulted, so a defaulted
+  mutation-semantics field lets every future entry silently inherit a value nobody chose — hand-maintenance
+  wearing derivation's clothes, the catalog deriving from an unstated assumption. The break at ~15
+  construction sites IS THE FEATURE. PA's own evidence: they predicted `prioritization` was a bulk-write
+  sleeper, read it, it writes nothing — guess and fact pointed opposite ways. A default is that guess
+  applied unattended to every later entry.
+
+ROOT CAUSE OWNED (mine, second occurrence this cycle): the condition stated its RULE and left its OBJECT
+  implicit, so three careful readers applied it to the nearest object in view. That is a documentation
+  defect in my artifact, not a reading defect in three people. CURE APPLIED: PDR-006 conditions 2 and 3
+  now carry explicit scope lines (what c3 governs, what it does NOT reach, the orthogonal-axes framing).
+  RULE: a condition that states its rule without its object will be over-extended, and correctly so.
+
+META, worth keeping: PPM and CXO independently ranked this above their own items, and PA correctly
+  discounted the convergence ("we all read the same PDR and inherited its framing"). PA was right and the
+  case is sharper than they framed it — the shared input was DEFECTIVE, so this was not three judgments
+  agreeing but ONE AMBIGUITY OBSERVED THREE TIMES. The cohort's convergence-via-shared-default rule landing
+  on a document I wrote.
