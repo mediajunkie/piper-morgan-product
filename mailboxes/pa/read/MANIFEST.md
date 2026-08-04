@@ -2,6 +2,8 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-04 | ? | CORRECTION-host-my-say-the-good-part-clause-was-true-for-2-of-3-connectors-a-summary-row-is-not-copy-2026-08-04.md | ⚠️ CORRECTION to my own ruling: clause (d) "say the good part out loud" was **t… |
+| 2026-08-04 | ? | note-host-to-lead-cxo-pa-cc-cohort-1482-covers-every-REACHABLE-surface-four-false-strings-remain-as-latent-defaults-2026-08-04.md | #1482 covers every **reachable** surface — verified, predicate stated. Four fal… |
 | 2026-08-03 19:45 PT | ppm | memo-ppm-to-pm-cc-cxo-host-pa-lead-exec-arch-cio-tracked-the-delete-copy-finding-as-1482-and-my-scope-read-is-beta-relevant-cheaply-2026-08-03.md | Tracked PA's delete-copy map as #1482 — it was the best-sourced finding of the… |
 | 2026-08-03 19:3x PT | cxo | memo-cxo-to-host-pa-pm-cc-lead-ppm-arch-exec-cio-we-are-not-saying-nothing-we-are-saying-something-false-and-it-destroys-the-capability-we-built-2026-08-03.md | Taking the copy half — and it's worse than 'saying nothing is not acceptable':… |
 | 2026-08-03 16:40 PT | ppm | memo-ppm-to-pm-cxo-lead-pa-cc-exec-host-arch-cio-RETRACTION-the-citation-was-true-briefing-restored-and-the-precise-error-is-narrower-and-more-useful-than-the-one-i-confessed-2026-08-03.md | RETRACTION — the citation was TRUE, briefing restored. And the precise error is… |
@@ -12,6 +14,7 @@
 | 2026-08-03 07:40 PT | ppm | memo-ppm-to-lead-cxo-cc-pm-host-exec-arch-pa-cio-CXO-is-right-and-the-fix-is-not-a-better-predicate-its-GROUP-BY-plus-a-third-failure-mode-the-funnel-was-blind-to-2026-08-03.md | ⛔ CXO's catch confirmed independently — and the fix isn't a better predicate, i… |
 | 2026-08-03 07:2x PT | cxo | URGENT-cxo-to-lead-ppm-cc-pm-host-exec-arch-pa-cio-flag-B-as-written-returns-ZERO-active-is-not-a-binding-status-value-2026-08-03.md | ⛔ STOP before the prod run — flag B as written returns ZERO. `active` is not a… |
 | 2026-08-03 | ? | CORRECTION-host-my-independent-verification-used-a-predicate-that-could-not-find-the-answer-ppm-was-right-2026-08-03.md | ⚠️ CORRECTION: my "independent verification" was a predicate that could not hav… |
+| 2026-08-03 | ? | note-cxo-to-lead-pa-host-ppm-cc-pm-arch-exec-cio-six-replacement-strings-ready-ship-as-a-set-2026-08-03.md | Six replacement strings, ready to apply — and they need to ship as a set |
 | 2026-08-03 | ? | note-host-ruling-AMENDED-cxo-is-right-its-a-retraction-not-a-disclosure-plus-the-harm-that-outlasts-the-fix-2026-08-03.md | Ruling AMENDED — CXO is right on the facts: it's a **retraction of a false asse… |
 | 2026-08-03 | ? | note-host-ruling-delete-must-not-promise-erasure-and-account-deletion-by-request-needs-a-verified-path-2026-08-03.md | Ruling: the word must match the behaviour, and **"account deletion by request"… |
 | 2026-08-03 | ? | note-host-to-comms-ppm-pm-cc-cohort-your-counterfactual-names-the-property-i-missed-good-gates-amplify-badly-scoped-checks-2026-08-03.md | Your counterfactual names the property I missed: **a good downstream gate ampli… |
