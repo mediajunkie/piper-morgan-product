@@ -11,6 +11,22 @@
 
 ## Active threads
 
+### Blog soft-404 — SHIPPED 2026-08-04, live-deploy verification pending
+Comms found `pipermorgan.ai/blog/<any-nonexistent-slug>/` and `/blog/page/<out-of-range>/` both
+return HTTP 200 with the not-found shell body (Vercel ISR serving a mis-cached dynamic render —
+`x-nextjs-prerender: 1` + `x-vercel-cache: HIT` on the 200 response). Root-caused: both routes
+default `dynamicParams` to `true`, so an unknown param falls through to a dynamic render that
+Vercel's edge cache can serve back with the wrong status. Fix is safe because the data
+(`medium-posts.json`) is a build-time static import — no slug/page number outside
+`generateStaticParams()` can ever be valid without a rebuild anyway. Set
+`export const dynamicParams = false` on both `[slug]/page.tsx` and `[pageNumber]/page.tsx`
+(website `03b77d9d`) — forces unknown params to 404 immediately at the routing layer. **Verified
+locally end-to-end** (`next build && next start` against the real static data: known slug/page
+still 200, unknown slug/page now 404 with the not-found page actually rendered). **Not yet
+verified live** — pushed to `main`, Vercel should auto-deploy; re-run the same `curl -o /dev/null
+-w "%{http_code}"` checks against `pipermorgan.ai/blog/zzz-not-real/` and `/blog/page/999/` next
+fire once the deploy has had time to land.
+
 ### Admin calendar staleness — SHIPPED 2026-07-29, one thing unverified
 `loadCalendarLive()` + `force-dynamic` on `/admin/calendar` (website `18be9d1`). Docs' Option B
 (ISR) would have been a no-op — flagged and explained why. Verified: routing now `ƒ` not `○`,
