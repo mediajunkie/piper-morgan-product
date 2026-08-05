@@ -4,9 +4,9 @@ description: Publish a finished blog post from this repo to the pipermorgan.ai w
   repo. Use when PM says "publish this post", "push to the blog", or when a draft
   is marked ready in the editorial calendar. Bridges piper-morgan → piper-morgan-website.
 scope: role-specific
-version: 0.22
+version: 0.23
 created: 2026-03-16
-updated: 2026-08-04
+updated: 2026-08-05
 ---
 
 # publish-to-blog
@@ -599,6 +599,17 @@ After publishing:
 ---
 
 *Changelog gap, noted 2026-07-31: frontmatter read `version: 0.20` while the notes below stop at v0.16 — versions 0.17-0.20 were bumped without entries. Not backfilled here; I don't know what they changed and inventing it would be worse than the gap.*
+
+*v0.23 — **Confirmed: a publish resolves a pre-existing cached 404 on its own URL.** Web's soft-404 fix
+(`03b77d9d`, 2026-08-04) corrected unknown-slug behavior to a real 404 — but that 404 is itself cached
+(`x-vercel-cache: HIT`), so a slug that 404'd *before* it was published stays a cached 404 until
+something invalidates it. Comms flagged this as an open question the day the fix shipped: does
+publishing a post invalidate the cache on its own URL, or does the pre-publish 404 persist and require
+manual invalidation? Confirmed on "The List That Lies" (published 2026-08-04) and re-verified
+2026-08-05: the v0.22 content-check passed clean at publish time and the URL still returns 200 with
+correct content a day later. **A publish is a rebuild, and the rebuild invalidates the stale 404** — no
+manual cache-bust step needed. Nothing to change in the procedure; this closes the open question Comms
+named rather than adding a new step.*
 
 *v0.22 — **Live-verification method specified: content check, not status code.** Step 9's gate and the
 Quality Checklist both said "post is live" / "accessible" with no method named — silently satisfiable by
