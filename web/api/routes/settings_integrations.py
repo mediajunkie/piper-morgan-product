@@ -743,7 +743,7 @@ async def get_slack_inbound_status(
     # not upgrade the state to 'connecting' (the retry-forever lie).
     from services.integrations.slack.socket_mode_runner import slack_inbound_enabled
     if not slack_inbound_enabled():
-        return SlackInboundStatusResponse(connected=False, state="unavailable")
+        return SlackInboundStatusResponse(connected=False, state="disabled")
 
     has_token = bool(
         os.getenv("SLACK_APP_TOKEN") or KeychainService().get_api_key("slack_app_token")
