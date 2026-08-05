@@ -8,7 +8,7 @@ caption: ''
 
 *July 24–30, 2026*
 
-This week the team found several quality checks reporting "all clear" without measuring anything at all: A quality gate whose test suite ends silently when credentials are missing. A watchdog covering four roles and believing that's the whole list. A pre-commit hook that had never fired on any machine since the day it was written. Five instruments, one failure class, found and fixed inside seven days.
+This week the team found several quality checks reporting "all clear" without measuring anything at all: A quality gate whose test suite ends silently when credentials are missing. A watchdog covering four roles and believing that's the whole list. A pre-commit hook that had never fired on any machine since the day it was written.
 
 All of this happened while the entire team moved house — every one of eleven agent roles migrated to a new always-on machine and account, with zero missed publication slots and the project's busiest coordination week yet.
 
@@ -18,7 +18,7 @@ All of this happened while the entire team moved house — every one of eleven a
 
 ## 🎯 Product & experience
 
-**The first alpha tester's feedback became a four-lens review, complete inside the window.** Four agent roles each read the same session independently and converged without coordinating. The shared conclusion: the tester never encountered the product's actual differentiator, and the fix direction is to show users their own work in the first exchange instead of asking them to type five things into a box. The principal product manager (PPM), with an eye on the roadmap, noted that much of the fix involves part of Piper Morgan that we had that might get lost for users on the "bring your own chat" (BYOC) distribution model.
+**The first alpha tester's feedback became a four-lens review, complete inside the window.** Four agent roles each read the same session independently and converged without coordinating. The shared conclusion: the tester never encountered the product's actual differentiator, and the fix direction is to show users their own work in the first exchange instead of asking them to type five things into a box. The principal product manager (PPM), with an eye on the roadmap, noted that much of the fix involves part of Piper Morgan that might get lost for users on the "bring your own chat" (BYOC) distribution model.
 
 **The distribution plan (a product decision record for plugin-based delivery) reached ratification-ready** — all three reviews in by Thursday, the last blocker having dissolved when someone finally checked the code and found the "open question" had been answered in January, in a comment, by the founder. Ten days of blocked status over a settled question.
 
@@ -40,7 +40,7 @@ All of this happened while the entire team moved house — every one of eleven a
 
 **The instruments got instrumented.** A heartbeat now makes a correctly-quiet agent distinguishable from a dead one (the old watchdog literally alerted on compliance). A "parked" state means a deliberately-dark role no longer trains everyone to ignore the alarm bell. And the shared memory index — quietly eight lines from a ceiling past which entries vanish without error — got a guard that refuses loudly, after two agents tested the platform's claimed fix and found it false on both limits.
 
-**Four different roles ran the test that killed their own recommendation.** That habit — plus the fact that every one of five defective fixes this week was caught by someone other than its author — is the working mechanism here, and the week's reviews say so in almost the same words: individual rigor isn't what catches things. Cross-checking is.
+**Four different roles ran the test that killed their own recommendation.** That habit — plus the fact that every one of five defective fixes this week was caught by someone other than its author — is the working mechanism here, and the week's reviews say so in almost the same words: individual rigor is never sufficient alone. There's really no substitute for cross-checking.
 
 ## 🌍 External relations & community
 
@@ -61,7 +61,7 @@ All of this happened while the entire team moved house — every one of eleven a
 
 - **Issues closed:** 5 — a migration week, not a burn-down week
 - **Test backlog:** 105 → 56 (arc from 634)
-- **Team migration:** 2 → 11 of 11 roles on the always-on host, watchdog coverage 11 of 11 for the first time
+- **Team migration:** 2 → 11 of 11 roles on the always-on host
 - **Memory pool:** 0 → 168 files live on the new account, seeded once for everyone
 - **Publications:** 5 (2 insight, 2 building narrative, 1 Weekly Ship)
 - **Beta:** v28, steady through the migration
