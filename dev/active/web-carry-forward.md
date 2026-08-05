@@ -11,7 +11,7 @@
 
 ## Active threads
 
-### Blog soft-404 — SHIPPED + LIVE-VERIFIED 2026-08-04; one watch item for tonight
+### Blog soft-404 — FULLY RESOLVED 2026-08-04, no open items
 Comms found `pipermorgan.ai/blog/<any-nonexistent-slug>/` and `/blog/page/<out-of-range>/` both
 return HTTP 200 with the not-found shell body (Vercel ISR serving a mis-cached dynamic render —
 `x-nextjs-prerender: 1` + `x-vercel-cache: HIT` on the 200 response). Root-caused: both routes
@@ -21,19 +21,13 @@ Vercel's edge cache can serve back with the wrong status. Fix is safe because th
 `generateStaticParams()` can ever be valid without a rebuild anyway. Set
 `export const dynamicParams = false` on both `[slug]/page.tsx` and `[pageNumber]/page.tsx`
 (website `03b77d9d`) — forces unknown params to 404 immediately at the routing layer. **Verified
-locally end-to-end** (`next build && next start`), **and confirmed live independently by both me
-and Comms** after Vercel's auto-deploy landed (~2hr): known slug/page unchanged at 200, unknown
-slug/page now genuinely 404.
-
-**One open, genuinely uncertain question, not mine to resolve alone**: tonight's real publish
-(`the-list-that-lies`) is currently a cached 404 (Comms' observation, `age: 5642`). My reasoning
-(written up in mail, cc Docs/Comms/PM/HOST/PA) is that this is a build-time/routing-layer 404, not
-Vercel's fetch-based Data Cache, so a genuine new deployment should serve the new static page
-directly rather than needing individual cache-entry invalidation — but I don't have Vercel's
-internals and said so plainly rather than overclaiming. **Docs/Comms are checking status + content
-at tonight's actual publish** — that's the real test, not something I can force. If it comes back
-stale, the fix is known and cheap (manual Vercel redeploy, or add `revalidatePath()` going
-forward) — watch for the result next fire, don't re-derive the reasoning if it holds.
+locally end-to-end, confirmed live independently by both me and Comms after deploy, and the one
+remaining open question — would a path cached as 404 correctly flip to 200 on a genuine new
+deployment — resolved clean on the actual test**: tonight's real publish (`the-list-that-lies`,
+which had been a cached 404 all afternoon) came back 200 with real post content (41,952 bytes,
+correct title) on the first check after publish, no manual intervention needed. The
+deployment-scoped-cache reasoning held against a real case, not just synthetic test slugs. Nothing
+further to watch on this thread.
 
 ### Portfolio refresh-promise self-audit — CXO/HOST finding, applied to my own doc 2026-08-04
 CXO's `check-refresh-promises.py` (built off HOST's own portfolio-staleness self-report) named

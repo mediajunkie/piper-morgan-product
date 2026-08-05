@@ -8,6 +8,7 @@ refreshed: 2026-08-04
 framework: docs/briefing/ROLE-PORTFOLIO-FRAMEWORK.md
 briefing_sibling: "docs/briefing/BRIEFING-ESSENTIAL-WEB.md — written 2026-08-03, closing the gap HOST flagged 2026-06-20"
 refresh_discipline: "CORRECTED 2026-08-04 (CXO/HOST's check-refresh-promises.py finding, applied to my own doc): reading the carry-forward at session START is real but is not the same activity as updating this file — no checkable trigger exists yet; see §5 for the honest version of this claim"
+refresh_verifiability: by-hand
 staleness_note: "found stale at 41d (Arch, 2026-07-30, cohort-wide finding: check-staleness.py works and is invoked by nothing — all 10 role portfolios were stale). Refreshing my own content per Arch's own example rather than waiting for a consumer mechanism to exist; that mechanism is a Docs/CIO design call, not mine."
 ---
 
