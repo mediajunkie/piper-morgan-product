@@ -13,6 +13,34 @@ stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
 Split large multi-file commits into batches under 20 files.
 
+## ⚠️ Day-of-week duty triggers (added 2026-08-04, PM-directed) — CHECK EVERY START
+
+**Why this section exists**: the Monday 2026-08-03 weekly doc audit (#1475) sat untouched until PM
+asked me to check on it Tuesday. Nothing in the duty cycle knew it was Monday. Same day, found the
+*monthly* housekeeping audit had been silently broken (two real bugs, fixed 08-04) since it was
+written — nobody had been checking whether it fired at all, because nothing prompted the check.
+
+**Read this list at every START, not just Mondays** (a START after a multi-day gap needs to catch up
+on any Monday it missed):
+
+- **Every Monday**: Weekly Docs Audit fires via `weekly-docs-audit.yml` (~9am PT). Check
+  `gh run list --workflow=weekly-docs-audit.yml --limit 2` fired and succeeded; if not, `gh workflow
+  run weekly-docs-audit.yml` and work the checklist issue yourself. Don't assume it ran — verify.
+- **First Monday of each month**: Monthly Housekeeping Audit fires via
+  `monthly-housekeeping-audit.yml`. Same check. **Both workflows have independently had real,
+  previously-undiscovered bugs found only by actually checking whether they fired** — treat "has this
+  ever actually worked" as an open question each time, not settled by the file existing.
+- **Not mine, but worth knowing exists**: Skill-Candidates Review (1st Tuesday, PM+Exec owned) and
+  Role Health Check (4-weekly, HOST owned) — see `docs/internal/operations/
+  staggered-audit-calendar-2026.md` for the full cadence table if a date ever looks Docs-adjacent.
+
+**Proposed but not yet shipped**: a generic "Day-of-Week Duty Check" step in the shared
+`duty-cycle-tick` skill (Step 3, right after reading carry-forward) that tells every role to check
+its own carry-forward for day-triggered tasks — keeping the mechanism generic in the shared skill
+while each role's specific triggers live in files, per the skill's existing philosophy. Routed to CIO
+2026-08-04 since it touches a skill every role depends on; this section is the interim fix for Docs
+specifically until/unless that lands.
+
 ---
 
 ## Awaiting others — check, don't re-derive
