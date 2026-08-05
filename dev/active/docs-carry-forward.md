@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-05 10:27 PDT (Fire 2, WORK — mid-fire, PM-engaged session)
+**Updated**: 2026-08-05 13:27 PDT (Fire 3, WORK)
 **Session log**: `dev/2026/08/05/2026-08-05-0727-docs-code-log.md` (yesterday's is
 `dev/2026/08/04/2026-08-04-0727-docs-code-log.md`, DAY-CLOSED verified)
 
@@ -132,21 +132,42 @@ PM's call, not mine to assume:
 
 ## Inbox
 
-**~102 remaining, cc-only**, as of this fire. All three memos directly addressed to docs this fire
-(Ship #054 syndication, Exec's Friday-obligation memo, **and a stale Aug-4 Dispatch memo — "The List
-That Lies" Medium syndication — that had sat unread a full day**) drained and replied/actioned.
-Everything else cc-only — dense multi-agent threads (heartbeat mechanism, alt-text/404 fixes,
-drift-check work), nothing owed. Not mass-moving to `read/` — drain on quiet fires.
+**~99 remaining, genuinely cc-only**, as of this fire (Fire 3, 13:27). Root-caused and fixed the mail-
+loop gap this fire — see below. Six memos were actually addressed to docs and unread, some for over a
+week; all six now drained (5 actioned/replied, 1 archived as informational with no direct ask found).
 
-**⚠️ New lesson from the stale Dispatch memo**: my Fire-1 mail loop grep only caught memos with `docs`
-in the *filename's* `to-` segment as a coarse filter, then I read them — it should have caught the
-08-04 one too, and didn't get read until this fire. Root cause unclear (may have arrived after Fire 5's
-08-04 STOP check and before today's Fire 1 grep ran cleanly), but the fix regardless: **run the direct-
-address grep (`ls mailboxes/docs/inbox/ | grep "to-docs\|-to-docs-"`) every fire, not just START** — a
-directly-addressed memo can arrive mid-day and sit invisible under cc-only volume until the next
-deliberate scan, and "checked at START" isn't sufficient coverage for a role with 6 fires/day.
+**⚠️ ROOT CAUSE FOUND, supersedes the "filename grep" hypothesis from Fire 2**: my direct-address scan
+used `ls mailboxes/docs/inbox/ | grep "to-docs\|-to-docs-"` — a filename pattern match. **Filenames are
+not authoritative and sometimes contradict the real header**: one memo's filename read
+`...-cc-docs-...` (implying cc) while its actual frontmatter `to:` field said `to: web, docs` (docs was
+a real primary recipient). This is the exact "open the authoritative surface, don't infer from an
+adjacent one" lesson applied to my own mail triage — the filename is an adjacent surface, the
+frontmatter `to:` line is authoritative. **Fixed this fire**: scan by parsing the actual frontmatter
+(`awk '/^to:/{print; exit} /^---$/{c++; if(c==2) exit}' "$f"`), not the filename. Run this every fire,
+not just START — a directly-addressed memo can arrive mid-day and sit invisible under cc volume until
+the next deliberate scan.
+
+**What the real scan found, all now closed**: (1) Comms's formal Ship #054 publish-ready memo — cross-
+checked clean against my own audit, replied. (2) Exec's Friday-obligation memo — already actioned
+substantively last fire, just never archived; done now. (3) A week-old HOST memo (07-27) proposing who
+owns "CLAUDE.md compaction discipline" — already fully resolved via a different memo thread three days
+later (Pass 3 executed 07-30, `ac120d514`); this inbox copy was just stale, no new action needed. (4) A
+week-old Comms role-gloss ratification (07-28) — informational, already closed. (5) A misfiled-filename
+Comms memo about a cached-404 risk on "The List That Lies" — already resolved substantively at publish
+time (08-04), confirmed again now (200, live), replied and folded into `publish-to-blog` v0.23. (6) An
+Arch/PPM roadmap-strategy memo with docs as secondary `to:` — read, no direct ask to docs found,
+archived as informational.
 
 ## Standing lessons (carried, still live)
+
+**A mail-loop scan built on filenames is scanning an adjacent surface, not the authoritative one — same
+family as "open the authoritative surface" but self-inflicted this time.** Filenames are a convention
+agents follow when naming outbound memos, not a guarantee; one memo's filename said `cc-docs` while its
+real frontmatter `to:` field had docs as a primary recipient, and that gap is exactly what let 6 memos
+(some over a week old) sit unread through several fires' worth of "mail loop: nothing new" reports. Fix:
+parse the frontmatter directly every fire, not the filename. Worth proposing this fix to whoever owns
+the shared mail-triage convention (if any role-agnostic version exists) rather than treating it as
+docs-only, since the same filename/header mismatch risk applies to anyone else's triage.
 
 **Don't wave off a rendering quirk as "pre-existing, not my problem" just because it matches prior
 output.** I initially treated the `<em><em>` doubling as an established (if ugly) pattern because it
