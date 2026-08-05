@@ -45,3 +45,24 @@ async def test_save_route_refuses_409_BEFORE_keychain_write(monkeypatch):
         assert exc.value.status_code == 409
         assert "wasn't saved" in exc.value.detail
     assert not stored, "the keychain write must NEVER precede the gate — 'wasn't saved' must be TRUE"
+
+
+@pytest.mark.asyncio
+async def test_save_route_writes_when_flag_set__positive_control(monkeypatch):
+    """Arch's optional control (2026-08-05): proves the mock RECORDS writes when
+    they occur — so `assert not stored` in the refusal test is a belt whose
+    silence means something, not a mock that was never wired."""
+    monkeypatch.setenv("PIPER_SLACK_INBOUND_ENABLED", "true")
+    import web.api.routes.settings_integrations as si
+    stored = []
+    with patch("services.infrastructure.keychain_service.KeychainService") as KC:
+        KC.return_value.store_api_key = lambda *a, **k: stored.append(a)
+        # get_api_key must return None (a bare Mock is TRUTHY → build_runner
+        # would try a real socket connect with a Mock token and hang)
+        KC.return_value.get_api_key.return_value = None
+        body = si.SlackAppTokenRequest(app_token="xapp-positive-control")
+        try:
+            await si.save_slack_app_token(body=body, request=AsyncMock(), current_user=AsyncMock())
+        except Exception:
+            pass  # downstream restart plumbing may fail under mocks; the WRITE is the claim
+    assert stored, "flag-set save must reach store_api_key — else the refusal test's belt is vacuous"
