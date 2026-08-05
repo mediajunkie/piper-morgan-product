@@ -1,11 +1,26 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-08-03 ~21:20 PT — day-close (STOP).
+**Last updated**: 2026-08-04 ~21:40 PT — day-close (STOP).
 **Session log today**: `dev/2026/08/01/2026-08-01-0902-exec-code-log.md` (`DAY-CLOSED: 2026-08-01`)
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
 **Cron**: `32 8,20 * * *` — re-armed at STOP. ⚠️ Session-only; original 7-day expiry horizon ~Aug 5.
 
-## Tuesday Aug 4 queue — IN ORDER
+## Wednesday Aug 5 queue — IN ORDER (PUBLISH DAY)
+
+1. **Ship #054 publish day**: PM pass → PM's go → Comms review (template-audit is their
+   review-of-record) → Docs publish. Both copies current (H1 Title Case applied); internal report
+   delivered 8/4 night. If PM passes mid-morning, same-day publish is proven (#053).
+2. **STANDING ORDER (new, PM via Janus 8/4): two-artifact pattern for every Ship — internal report
+   BEFORE public draft.** #055: report first. Candidate process-guide addition.
+3. **PM-gated queue at contact**: Jake confirm-or-adjust (CXO positions filed) · **#1484** (now the
+   beta blocker, superseding #1481 — PPM/Arch aligned; scope-not-engineering) · skill-candidates review
+   (CIO prep, slipped from 8/4) · tester-welfare · memory-index format · #1278 · #1462 milestone.
+4. **#1386**: criterion-2 discharge line (Lead) + CXO signature + Scenario-B run. Beta Sat Aug 8.
+5. **Heartbeat**: START writes unconditionally now (step-5b amendment).
+
+## (superseded Tuesday queue below)
+
+## Tuesday Aug 4 queue — DONE
 
 1. **PM contact, two asks first**: (a) **Jake six-item decision = confirm-or-adjust on CXO's filed
    positions** (memo 8/3 13:2x) — unblocks PPM conversion, beta-relevant; (b) **beta date needs one
