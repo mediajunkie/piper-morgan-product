@@ -88,6 +88,10 @@ CANONICAL_QUERIES = [
     # change. If Q22 oscillates AGAIN after meeting that bar, do NOT keep
     # re-testing — mark it a known non-deterministic row; that is a finding about
     # the classifier, not a row awaiting resolution.
+    # ✅ CRITERION MET 2026-08-05 (#1467 closed): floor ×3 consecutive on an
+    # unchanged routing stack (8/2 22:00, 8/5 06:50, 8/5 12:50) — the floor
+    # expectation is CONFIRMED. The Run-15 canonical observation stands as a
+    # one-off; a future flip re-enters through this same criterion.
     (22, "What patterns do you see?", "Predictive", "floor", "M2 Beta"),
     (23, "What risks should I be aware of?", "Predictive", "floor", "M2 Beta"),
     (24, "What opportunities should I pursue?", "Predictive", "floor", "M2 Beta"),
