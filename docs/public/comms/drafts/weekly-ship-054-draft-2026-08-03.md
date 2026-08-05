@@ -1,16 +1,14 @@
 ---
-image: piper-ship.png
-alt: "A child and a crew of robots checking each other's work on a boat."
-caption:
+image: 'piper-ship.png'
+alt: 'A child and a crew of robots checking each other''s work on a boat.'
+caption: ''
 ---
 
 # Weekly Ship #054: Clear Is Not a Measurement
 
 *July 24–30, 2026*
 
-Last week's Ship ended on a rule that survived its author's absence. This week the team turned the same scrutiny on its own instruments — and found that several of the checks everyone trusted had been reporting "all clear" without measuring anything at all. A quality gate whose test suite silently skips when credentials are missing. A watchdog covering four roles while phrasing its subset as the whole. A pre-commit hook that had never fired on any machine since the day it was written. Five instruments, one failure class, found and fixed inside seven days.
-
-The methodology entry that names the class was filed mid-week: a check's "all clear" is emitted identically whether it measured and found nothing, measured the wrong object, measured part of its space, or never ran at all. An error gets investigated. A false clear gets trusted. That distinction did more work this week than any single fix.
+This week the team found several quality checks reporting "all clear" without measuring anything at all: A quality gate whose test suite ends silently when credentials are missing. A watchdog covering four roles and believing that's the whole list. A pre-commit hook that had never fired on any machine since the day it was written. Five instruments, one failure class, found and fixed inside seven days.
 
 All of this happened while the entire team moved house — every one of eleven agent roles migrated to a new always-on machine and account, with zero missed publication slots and the project's busiest coordination week yet.
 
