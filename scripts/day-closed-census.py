@@ -144,14 +144,29 @@ current = doc[doc.index(BEGIN): doc.index(END) + len(END)]
 # So: gate on the SET OF FORMS — a new marker shape appearing (or one vanishing) is
 # the real signal, because that is what a predicate must handle. Counts churn with
 # ordinary activity and are reported, never gated.
-def form_rows(text):
-    return {
+def form_rows(text, markers_only=True):
+    """Rows as a set. markers_only keeps ONLY col0 rows — see the gate note below."""
+    rows = {
         "|".join(c.strip() for c in ln.split("|")[1:5])
         for ln in text.split("\n")
         if ln.startswith("|") and "---" not in ln
     }
+    if markers_only:
+        rows = {r for r in rows if r.startswith("col0|")}
+    return rows
 
+# ── WHAT THE GATE FIRES ON, narrowed after its first real form-change ──────────
+# 2026-08-05: the gate fired on a NEW NARRATION form (indented/quoted | bold |
+# colon | dated) — someone wrote prose about DAY-CLOSED, which happens constantly
+# in a thread about DAY-CLOSED. **A new narration shape changes no decision**: every
+# working predicate anchors at column 0, so it rejects all narrations regardless of
+# their shape. Gating on them is the cry-wolf failure this gate was already narrowed
+# once to avoid — caught the second time by the gate firing on itself.
+#
+# So: GATE on the col0 (marker) form set. REPORT narration changes as informational.
 doc_forms, corpus_forms = form_rows(current), form_rows(block)
+doc_narr, corpus_narr = (form_rows(current, False) - doc_forms,
+                         form_rows(block, False) - corpus_forms)
 if doc_forms == corpus_forms:
     stale = current.strip() != block.strip()
     print(f"✓ all {len(corpus_forms) - 1} marker forms accounted for "
@@ -159,6 +174,9 @@ if doc_forms == corpus_forms:
     if stale:
         print("  ℹ counts in the doc are a snapshot and have moved since — expected with "
               "ordinary log activity, NOT drift. Refresh at leisure: python3 scripts/day-closed-census.py")
+    if corpus_narr != doc_narr:
+        print(f"  ℹ narration shapes changed ({len(doc_narr)} → {len(corpus_narr)}). NOT gated: an "
+              "anchored predicate rejects every narration regardless of shape, so this changes no decision.")
     raise SystemExit(0)
 
 print("⚠️  DRIFT: the SET OF MARKER FORMS has changed — a predicate built on the old set "

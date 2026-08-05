@@ -28,21 +28,22 @@ Each fix was correct about the thing it saw and blind to the next form along. **
 
 | position | form | separator | date | n | example |
 |---|---|---|---|---:|---|
-| col0 | `html-comment` | colon | dated | 418 | `<!-- DAY-CLOSED: 2026-06-09 -->` |
+| col0 | `html-comment` | colon | dated | 443 | `<!-- DAY-CLOSED: 2026-06-09 -->` |
 | col0 | `md-heading` | em-dash | dated | 10 | `### DAY-CLOSED — 2026-06-10 23:59 PT (deferred marker, written 6/11 06` |
-| **indented/quoted** | `other` | none | **UNDATED** | 4 | `- `DAY-CLOSED` predicate corrected twice more today (`f63f85371`/`072b` |
+| **indented/quoted** | `other` | none | **UNDATED** | 5 | `- `DAY-CLOSED` predicate corrected twice more today (`f63f85371`/`072b` |
 | **indented/quoted** | `other` | colon | dated | 4 | ``DAY-CLOSED: 2026-07-30` stands. Cron `fd14a8e7` remains armed; **no r` |
+| col0 | `md-heading` | none | dated | 3 | `## DAY-CLOSED 2026-07-29 (closed retroactively at 2026-07-30 08:43)` |
 | **indented/quoted** | `bold` | em-dash | dated | 2 | `**DAY-CLOSED** — June 13 (Saturday) closed June 14 15:03 PDT on PM-res` |
 | **indented/quoted** | `bold` | none | **UNDATED** | 2 | `**DAY-CLOSED** ✅` |
 | col0 | `html-comment` | none | **UNDATED** | 2 | `<!-- DAY-CLOSED -->` |
 | col0 | `other` | none | **UNDATED** | 1 | `6/24 DAY-CLOSED ✓. Carried the overnight watch directed by PM (team re` |
 | **indented/quoted** | `other` | em-dash | dated | 1 | `*DAY-CLOSED — 2026-06-28. PPM suspended (run-lean IDLE tier). Resume: ` |
 | col0 | `md-heading` | none | **UNDATED** | 1 | `### DAY-CLOSED sweep: Jul 3–9 (just-closed Fri–Thu window)` |
-| col0 | `md-heading` | none | dated | 1 | `## DAY-CLOSED 2026-07-29 (closed retroactively at 2026-07-30 08:43)` |
+| **indented/quoted** | `bold` | colon | dated | 1 | `**DAY-CLOSED: 2026-08-04** — run at 07:1x on 08-05 as a **missed close` |
 
-**446 lines matched. 433 are real markers (column 0); 13 are narrations of one** (indented, quoted, or mid-sentence) — the population a bare `grep DAY-CLOSED` wrongly counts, and the reason every working predicate anchors on `^`.
+**475 lines matched. 460 are real markers (column 0); 15 are narrations of one** (indented, quoted, or mid-sentence) — the population a bare `grep DAY-CLOSED` wrongly counts, and the reason every working predicate anchors on `^`.
 
-**Canonical marker** (`col0` + `html-comment` + `colon` + `dated`): **418** = 96% of real markers.
+**Canonical marker** (`col0` + `html-comment` + `colon` + `dated`): **443** = 96% of real markers.
 
 ⚠️ **Undated real markers — unreachable by ANY dated predicate: 4.** Not a formatting variant; a missing datum. No regex rescues these; their owners must add the date.
 
