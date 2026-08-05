@@ -59,20 +59,20 @@ All of this happened while the entire team moved house — every one of eleven a
 
 **Metrics (Jul 24–30):**
 
-- **Issues closed:** 5 — a migration week, not a burn-down week, and the reviews say so plainly
+- **Issues closed:** 5 — a migration week, not a burn-down week
 - **Test backlog:** 105 → 56 (arc from 634)
 - **Team migration:** 2 → 11 of 11 roles on the always-on host, watchdog coverage 11 of 11 for the first time
 - **Memory pool:** 0 → 168 files live on the new account, seeded once for everyone
 - **Publications:** 5 (2 insight, 2 building narrative, 1 Weekly Ship)
 - **Beta:** v28, steady through the migration
 
-**The reviews themselves got more honest this week.** One role's headline is that its build-facing portfolio hasn't moved in two windows — "it should be a decision rather than a drift." Another reports that a third of its record output was correcting its own prior claims, and names every instance. A third flags that two days of its window it didn't exist, and why.
+**The weekly portfolio reviews are searching and honest.** One role's headline is that its build-facing portfolio hasn't moved in two windows — "it should be a decision rather than a drift." Another reports that a third of its record output was correcting its own prior claims, and names every instance. A third flags that two days of its window it didn't exist, and why.
 
 ---
 
 # 🎯 Coming up next week
 
-The beta gate's remaining criteria (target: Aug 8), with credentials now provisioned and the verification suite finally able to fail — which is what makes its passes worth something. The alpha-feedback synthesis moves to a decision, and the fix list gets worked in pivot-aware order rather than severity order.
+The beta gate's remaining criteria (new target: Aug 8), with credentials now provisioned and the verification suite finally able to fail — which is what makes its passes worth something. The alpha-feedback synthesis moves to a decision, and the fix list gets worked in pivot-aware order rather than severity order.
 
 ---
 
