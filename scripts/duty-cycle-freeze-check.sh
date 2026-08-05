@@ -53,10 +53,25 @@ REG="${DUTY_CYCLE_REGISTRY:-$REPO/dev/active/duty-cycle-registry.tsv}"
 # the belt reads origin/main, so what it needs is when an ARTIFACT BECOMES VISIBLE — and a role
 # that wakes at 06:27 works for half an hour before its first push.
 #
-# First day of real heartbeat data (10 roles, 2026-08-05) gives the actual wake-to-visible lag:
-#   web 6 · cxo 30 · exec 30 · docs 32 · comms 33 · lead 36 · arch 40      ← on-time cluster
-#   host 203 · pa 210 · ppm 211                                            ← genuinely late cluster
-# 45 min clears the whole on-time cluster with 5 min of margin and still flags the late one.
+# First day of real heartbeat data (11 roles, 2026-08-05), FIRST heartbeat row per role, measured
+# against each role's OWN first_fire (schedules differ — cio fires 10,16,22; exec 8,20):
+#   web 6 · host 24 · exec 30 · cxo 30 · pa 30 · comms 30 · docs 32 · cio 33 · lead 36 · arch 40
+#   ppm 211                                                                ← the only late role
+# 45 min clears every on-time role with 5 min of margin over the max (arch 40) and still flags ppm.
+#
+# ⚠️ 2026-08-05 (PA): the table above REPLACES an earlier one that read
+#   "host 203 · pa 210 · ppm 211 ← genuinely late cluster".
+# CIO retracted that in mail the same morning ("a measurement artifact, I read the wrong line of your
+# files") but the retraction never reached this file — so the shipped justification kept asserting that
+# two on-time roles were late. host is +24 and pa is +30. The artifact came from reading a LATER row for
+# roles that emitted more than once (host had 3 rows that day, pa 3, comms 2); ppm was correct only by
+# luck, being the one role with a single row, so there was no later row to misread.
+#   → Read the FIRST row per role, and compute against that role's own first_fire.
+# The CONSTANT and its reasoning both survive unchanged — only the membership was wrong.
+#
+# ⚠️ The 5-minute margin rests on ONE morning of data (Arch's caution, same day), and two different
+# latencies get conflated easily here: wake→first-visible-artifact (what this grace needs) is NOT
+# cron→wake (scheduler dispatch). Widen only against measured data, and re-measure before trusting 5 min.
 # The cost is stated honestly: a genuine morning stall is now detected ~35 min later. That is the
 # right trade when the alternative has produced six consecutive false alarms and zero true ones.
 FIRST_FIRE_GRACE_MIN="${FIRST_FIRE_GRACE_MIN:-45}"   # minutes past first_fire before a missing log = missed START
