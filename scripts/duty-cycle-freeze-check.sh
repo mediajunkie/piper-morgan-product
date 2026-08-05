@@ -178,7 +178,13 @@ if [ "$hour" -ge 12 ]; then
   # Fixed at the source instead: START now writes unconditionally, so an empty surface past midday is
   # once again diagnostic on its own and needs no commit-count term.
   if [ "$hb_today" -eq 0 ] && [ -n "$hb_prev" ]; then
-    echo "HEARTBEAT-WRITER-SILENT — zero heartbeats AND zero role-tagged commits for $today_dash past midday, though the surface has been written before. Neither liveness source shows anything; a broken writer looks exactly like a quiet cohort, so do NOT read this as healthy until explained."
+    # ⚠️ 2026-08-04 (PA): message corrected to match the condition above. It previously read
+    # "zero heartbeats AND zero role-tagged commits… Neither liveness source shows anything" —
+    # but the commit term was removed from the condition on this same day, so the message asserted
+    # a measurement the check no longer performs. An alarm must not claim more evidence than it
+    # gathered: an operator reading the old text would believe both sources were checked and empty,
+    # when only the heartbeat surface was read. State the denominator in the alarm itself.
+    echo "HEARTBEAT-WRITER-SILENT — zero heartbeats for $today_dash past midday, though the surface has been written before. NOTE: this check reads ONLY dev/heartbeats/ — it does NOT look at commits, so role-tagged commits may well exist. What it shows is that the WRITER is silent, not that the cohort is. A broken writer looks exactly like a cohort that skipped the step, so do NOT read this as healthy until explained."
   fi
 fi
 
