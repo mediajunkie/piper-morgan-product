@@ -1,12 +1,13 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-04 19:40 PDT (Fire 4, mid-WORK)
+**Updated**: 2026-08-04 22:40 PDT (Fire 5, STOP — DAY-CLOSED 2026-08-04)
 **Session log**: `dev/2026/08/04/2026-08-04-0727-docs-code-log.md` (yesterday's is
 `dev/2026/08/03/2026-08-03-0711-docs-code-log.md`, DAY-CLOSED verified)
 
 **Worktrees**: product `~/Development/piper-morgan-worktrees/docs` @ `claude/docs-cycle` · website
 `~/Development/piper-morgan-website-worktrees/docs` @ `claude/docs-cycle`
-**Cron**: `82ddcd08` — `57 6,9,12,15,18,21`. Registry row matches.
+**Cron**: re-arming `82ddcd08` → new id at STOP (delete-then-create; see final action) —
+`57 6,9,12,15,18,21`. Registry row must match.
 **Hooks on this seat**: standalone `git commit` BLOCKS; compound `add && commit` BYPASSES. Mitigation:
 stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
@@ -94,8 +95,10 @@ No reply yet; this section is the interim fix for Docs specifically until/unless
 
 ## Inbox
 
-**82 remaining, cc-only historical from the 7/21–7/28 migration window.** Everything addressed *to*
-docs is drained as of this fire. Not mass-moving to `read/` — drain on quiet fires.
+**87 remaining at STOP, cc-only.** Most of today's volume is a dense, active multi-agent thread
+(CIO/HOST/CXO/Arch/PA/Comms/PPM investigating a "Step 5b heartbeat" mechanism) — cc'd throughout, not
+addressed to docs, nothing owed. Everything addressed *to* docs is drained as of this fire. Not
+mass-moving to `read/` — drain on quiet fires.
 
 ## Standing lessons (carried, still live)
 

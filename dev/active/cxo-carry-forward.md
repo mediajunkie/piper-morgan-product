@@ -1,7 +1,7 @@
-# CXO carry-forward — rewritten 2026-08-04 (fire 5, ~20:3x PT)
+# CXO carry-forward — rewritten 2026-08-04 at STOP (~22:5x PT). Day closed; next fire 06:47 on 08-05.
 
-**Cron**: `e7059954` (`47 6,9,12,15,18,21`) · **Worktree**: `~/Development/piper-morgan-worktrees/cxo` (Model A) · **Branch**: `claude/cxo-cycle`
-**⏰ Beta 2026-08-08 — four days. ✅ RE-DERIVED 08-04: `date -j` confirms SATURDAY; `decisions.log:303` confirms the target. The source says nothing about Saturday intent, so "PM has not confirmed" stands.**
+**Cron**: `a4a3bb84` (`47 6,9,12,15,18,21`) — rotated at STOP from `e7059954`; session-only, auto-expires ~2026-08-11, both deaths silent → **CronList at START** · **Worktree**: `~/Development/piper-morgan-worktrees/cxo` (Model A) · **Branch**: `claude/cxo-cycle`
+**⏰ Beta 2026-08-08 — THREE days as of 08-05. ✅ RE-DERIVED 08-04: `date -j` confirms SATURDAY; `decisions.log:303` confirms the target. The source says nothing about Saturday intent, so "PM has not confirmed" stands.**
 
 ## 🔴 PM-attention (nothing here has moved)
 
@@ -30,6 +30,9 @@
 - ✅ **Verified at source, nobody else had**: `duty-cycle-heartbeat.sh:65` — **START DOES write unconditionally.** Arch and PA both tested WORK only.
 - 🔴 **My finding**: the 06:46 sweep checks **4 of 11** (arch/lead/comms/web) and **emits no denominator** — the pre-START skip is silent. So absence from that output means *checked-and-fine* or *never-checked*, indistinguishably. Asked CIO for one unconditional `checked N of M` line.
 - 🔴 **Tomorrow's test can't read either way**: 7 roles can't appear in the 06:46 output at all; the other 4 are defeated by Comms' end-of-fire placement. **If someone reads a quieter alarm as vindication, that's a false attribution** — say so.
+- ⭐ **NEW at STOP — the START heartbeat suppresses its own successors.** Commit subject is `hb(cxo): …`, and `--if-quiet` greps 6h of subjects for `(cxo)`. So the START row satisfies the quiet predicate for the rest of the morning. **Harmless for a busy role; bites exactly the quiet compliant one the mechanism was built for** — one row all day, stale at ~13:47 against a 7h midday threshold. **Traced from source, NOT observed** — a falsifiable prediction for the 08-05 surface, needing a role with zero commits after START.
+- ⛔ **The sweep's `rows=11` line**: PA confirmed my finding and found it worse — it prints the *registry* size while never stating the examined count. **An input denominator that reads as the examined one.** ⛔ **I deliberately did NOT fix it tonight** (PA had already edited the file once; two agents on the watched instrument the evening before is a bad trade, and it does not rescue the test anyway). **Mine to take, not urgent, one line near `:218`.**
+- ✅ **Comms brought the replacement instrument**: read `dev/heartbeats/2026-08-05/` directly, not the alarm. Sidesteps the coverage gap entirely. **Their prediction: surface fills, timestamps mostly land after 06:46.**
 - ⭐ **A hypothesis of mine dissolved**: I nearly published that cxo/ppm/docs are structurally stale forever (8h59m gap vs 7h threshold). `cycling_now()` skips us before `first_fire+10`. **The gate works.** One function call from a confident false alarm about a false alarm.
 - **Step 5b as specified writes nothing on a working fire** (3 seats, same command — m-45: one procedure confirmed thrice, not three confirmations). Surface: `cio.tsv` + `pa.tsv`, two of eleven.
 

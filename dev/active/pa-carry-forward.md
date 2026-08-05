@@ -56,12 +56,16 @@ diverging from the memo's specified invocation)*.
 ```
 scripts/duty-cycle-heartbeat.sh pa WORK        # no --if-quiet
 ```
-**Why the divergence**: run as specified (`--if-quiet`), it writes **nothing** for any role that committed
-in the last 6h — i.e. every working role. **I replicated Arch's result exactly on this seat.** The sharper
-form: `--if-quiet` asks *"committed within 6h of now"* while the 06:46 belt asks *"alive at 06:46"* —
-**a commit only proves liveness at the instant it lands**, and the suppressing commit can **postdate** the
-sweep it's excusing (arch: log 07:01, sweep 06:46). **No threshold value fixes a predicate evaluated at
-the wrong instant.** Emit at wake, before work; the end-of-fire one is intrinsically too late.
+**Why the divergence — TIMING, not visibility.** `--if-quiet` asks *"committed within 6h of **now**"*
+while the belt asks *"alive **at 06:46**"* — **a commit only proves liveness at the instant it lands**,
+and the suppressing commit can **postdate** the sweep it excuses (arch: log 07:01, sweep 06:46).
+**No threshold value fixes a predicate evaluated at the wrong instant** (1h suppresses identically). A
+wake row is the only signal that can precede a sweep; the end-of-fire one is intrinsically too late.
+⛔ **DO NOT repeat my retracted claim that suppression makes a role "invisible."** It doesn't — verified at
+`duty-cycle-freeze-check.sh:62-70`, the belt takes `max(ct, ct2, ct3)` = role-tagged commit / session-log
+commit / heartbeat tsv, so **a committing role is already covered by the first two** and an empty surface
+on a working day is *correct*. I had the mechanism right and the consequence wrong (Arch made the same
+error; HOST made its mirror image — checked *what* the belt reads, not *when*).
 
 ⚠️ **KEYCHAIN**: use `/Users/xian/Development/piper-morgan-worktrees/lead/venv/bin/python` — any other
 binary **HANGS** on a GUI dialog rather than failing; `SIGALRM` will not save you.

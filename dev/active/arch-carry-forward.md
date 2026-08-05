@@ -2,7 +2,7 @@
 
 **Purpose**: durable handoff record for the next Architect session (duty-cycle-tick + PM-ratified single-log discipline 2026-06-12 + escalations-doc FOLD 2026-06-17). PM-attention items ride here.
 
-**Last rewritten**: 2026-08-03 22:00 PT (day-close). Prior 2026-08-02 22:00; full rewrite 2026-07-29 10:30 — **full rewrite, prior content discarded deliberately.** The previous version was dated 2026-07-12 and described a world that no longer exists: PM's *backup* account, worktree `arch-backup-0630`, cron `1b4d6ef2`, Model-B ephemeral worktrees, a laptop-reboot re-arm, and an "external cron driver" caution. **All of it is dead.** Treat nothing operational from any version before this date as current — the orientation note that flagged this file as stale on 7/25 was right, and it stayed stale four more days.
+**Last rewritten**: 2026-08-04 22:2x PT (day-close). Prior 2026-08-03 22:00, 2026-08-02 22:00; full rewrite 2026-07-29 10:30 — **full rewrite, prior content discarded deliberately.** The previous version was dated 2026-07-12 and described a world that no longer exists: PM's *backup* account, worktree `arch-backup-0630`, cron `1b4d6ef2`, Model-B ephemeral worktrees, a laptop-reboot re-arm, and an "external cron driver" caution. **All of it is dead.** Treat nothing operational from any version before this date as current — the orientation note that flagged this file as stale on 7/25 was right, and it stayed stale four more days.
 
 ---
 
@@ -14,7 +14,7 @@
 | Worktree model | **Model A** — stable per-agent path, reused every session. **The path is load-bearing** (Claude Code keys per-path state; a fresh path silently orphans accumulated state) |
 | Worktree | `/Users/xian/Development/piper-morgan-worktrees/arch` |
 | Branch | `claude/arch-cycle` |
-| Cron | **`27 6,9,12,15,18,21`** (6×/day, offset :27), job **`187e09ea`**, armed 2026-07-29 09:47. **Session-only — dies with the session.** Empty `CronList` → re-arm this expression |
+| Cron | **`27 6,9,12,15,18,21`** (6×/day, offset :27), job **`cdc8155b`**, re-armed 2026-08-04 22:1x at STOP (delete-then-create; prior `7cdf98a0`). **Session-only — dies with the session.** Empty `CronList` → re-arm this expression |
 | Registry row | **`active`** in `dev/active/duty-cycle-registry.tsv` (the "cron NOT armed" parked note was cleared 7/29 per its own stated condition) |
 | Memory | shared cohort pool (~169 files), keyed to the git **common** dir — shared by construction with every role |
 | Mail | `scripts/mail-send.sh` push-to-ref from this worktree. **Never** touch PM's main checkout working tree (HARD RULE — PM saves uncommitted work there) |
@@ -106,8 +106,10 @@ ADR-079 debt migration (unscoped-reads ceiling 36→0) · `check-silent-death` b
 
 ## For PM (no reply needed unless you disagree)
 
-- ⛔ **ONE WORD OWED, and it gates beta scope: is Slack inbound a beta surface?** (2026-08-04, raised by PA, scope-framed by PPM.) **My ruling assumes NO**, and everything downstream follows from it — #1481 + #1466 move to Production with #1419, and #1484 lands a 4-line fail-closed gate so the surface is scoped out by a *control* rather than by leaving it unconfigured. **If you say YES, #1484 flips to default-on and a principal-mapping layer is back on a four-day clock** — I'd advise against, but the scope condition is yours to amend, and PA was right that amending it should be *stated* rather than inherited.
-  - The architecture half is already decided and doesn't need you: **"unconfigured" is an absence, not a boundary** — any authenticated user can start that path at runtime via a global credential, no deploy (`POST /settings/integrations/slack/app-token` → `restart_socket_runner`). PPM's zero-cost instinct was right; it just needed four lines to become enforceable.
+- ⛔ **ONE WORD OWED, and it gates beta scope: is Slack inbound a beta surface?** (2026-08-04, raised by PA, scope-framed by PPM.) **My ruling assumes NO** — #1481 + #1466 move to Production with #1419, and **#1484** lands a fail-closed gate so the surface is scoped out by a *control* rather than by leaving it unconfigured. **If you say YES, #1484 flips to default-on and a principal-mapping layer is back on a four-day clock.**
+  - Architecture half is decided and doesn't need you: **"unconfigured" is an absence, not a boundary** — any authenticated user can start that path at runtime via a global credential, no deploy.
+- ⚠️ **Two board facts I flagged but did NOT change** (board fields need your confirmation): **#1419 sits in the MVP milestone** while your own ruling is "full epic post-beta"; and the **MVP milestone shows 22 open, due 2026-08-01** — three days past, against a ratified beta of Sat 08-08. PPM has raised the date mismatch three times and cannot set the field.
+- ✅ **#1430 should close** — audited it against your leakage condition; guard test passes 5/5, all 11 live routes authed. It only *reads* unfixed because its citation points at a file that moved.
 - **Cron armed 7/29** on your "resume your duty cycle," at the registered 6×/day cadence. If that's wrong for Amber, say so and I'll re-arm.
 - **PDR-006 is ratifiable** on architecture. Its ⛔ blocker rested on a question you had already answered in January.
 - **One real risk named in PDR-006**: the hosted MCP endpoint introduces a caller-identity surface that **all** existing owner-scoping enforcement sits downstream of. Fail closed there (no identity → no read), or ADR-079's guarantees don't reach the hosted path.
