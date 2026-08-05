@@ -47,7 +47,19 @@ if [ -z "$REPO" ]; then
   done
 fi
 REG="${DUTY_CYCLE_REGISTRY:-$REPO/dev/active/duty-cycle-registry.tsv}"
-FIRST_FIRE_GRACE_MIN="${FIRST_FIRE_GRACE_MIN:-10}"   # minutes past first_fire before a missing log = missed START
+# ⚠️ 2026-08-05: raised 10 → 45, from MEASURED data rather than judgement.
+# The 06:46 sweep raised a false alarm SIX mornings running (7/31–8/05), twice as "infrastructure
+# event suspected", and nobody ever acted on one. Cause: `first_fire` is when the CRON FIRES, but
+# the belt reads origin/main, so what it needs is when an ARTIFACT BECOMES VISIBLE — and a role
+# that wakes at 06:27 works for half an hour before its first push.
+#
+# First day of real heartbeat data (10 roles, 2026-08-05) gives the actual wake-to-visible lag:
+#   web 6 · cxo 30 · exec 30 · docs 32 · comms 33 · lead 36 · arch 40      ← on-time cluster
+#   host 203 · pa 210 · ppm 211                                            ← genuinely late cluster
+# 45 min clears the whole on-time cluster with 5 min of margin and still flags the late one.
+# The cost is stated honestly: a genuine morning stall is now detected ~35 min later. That is the
+# right trade when the alternative has produced six consecutive false alarms and zero true ones.
+FIRST_FIRE_GRACE_MIN="${FIRST_FIRE_GRACE_MIN:-45}"   # minutes past first_fire before a missing log = missed START
 now=$(date +%s); hour=${FREEZE_CHECK_NOW_HOUR:-$(date +%-H)}; min=$(date +%-M); now_min=$(( hour * 60 + min ))
 today=$(date +%Y/%m/%d); today_dash=$(date +%Y-%m-%d)
 git -C "$REPO" fetch origin main -q 2>/dev/null || true
