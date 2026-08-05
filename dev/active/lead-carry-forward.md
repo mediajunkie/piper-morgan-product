@@ -12,14 +12,13 @@
 - **PM sprint calls**: #1464 (portfolio archive/restore crashes — LIVE via chat, MVP rec) · #1465 (learning success-path NameError inverts signal, MVP rec) · #1466 (Slack→Piper principal mapping absent, MVP rec). All from census wave-1 discovered-work.
 - **Exec**: #1386 window re-scope now that criterion-2 is unblocked (keys in; baseline 55/61 done).
 
-## Queue next (rewritten 8/3 STOP — build queue EMPTY, 4 days to Aug-8)
-0. **PM's word batch** (everything user-blocking funnels here): Saturday-8/8-vs-Friday-8/7 (one word; milestone due-date aligns) · v30 deploy go (13 In-Review verifications ride it; /link slash-command one-time Slack-app step documented on #1466) · prod funnel read go (corrected GROUP-BY spec) · triage batch (#1471-#1474, #1479-#1482, 11 untracked surfaces).
-1. #1413 content-parity gate (pairs naturally with the v30 cut).
-2. On Arch's #1481 ruling: socket-path per-sender identity (mechanical with #1466's blocks).
-3. #1467 needs one more clean full-corpus run post-flip (streak 2 of N=3) — ride the next canonical run.
-4. Watch: killed-sweep pattern with Pard (3 timestamps); weekly-docs-audit fires Monday 9:07 (nudged cron's first test).
+## Queue next (rewritten 8/4 STOP — BUILD QUEUE COMPLETE, 3-4 days to target)
+0. **PM word-batch = the entire critical path**: beta weekday (Sat 8/8 vs Fri 8/7; milestone due-date aligns on the word) · v30 deploy go (16 In-Review verifications ride it; /link Slack-app one-time step on #1466; do NOT set PIPER_SLACK_INBOUND_ENABLED on beta — that's #1484's mechanism) · verification round (per-issue walkthroughs on the issues) · triage batch (#1471/1472/1473/1474/1479/1480/1485 + 11 untracked surfaces) · #1481 scope nod (mechanism shipped; 1481+1466-mapping-part → Production with 1419 per Arch's scope note).
+1. On PM verifications: close In-Review set with their evidence.
+2. #1467: one more clean full-corpus run post-flip (streak 2 of 3) — ride the next canonical run.
+3. Watch: killed-sweep pattern (4 datapoints with Pard) · step-5b heartbeat defect (CIO's, quiet-fire visibility hole reopen cohort-wide) · weekly-docs-audit Monday 9:07 first test.
 
-## In Review awaiting PM (13): 1393 1394 1426 1428 1429 1430 1431 1432 1433 1460 1464 1465 1466
+## In Review awaiting PM (16): 1393 1394 1413 1426 1428 1429 1430 1431 1432 1433 1460 1464 1465 1466 1482 1484
 ## Standing notes
 - Beta target **Aug 8** (PM 7/30); scope growth needs PM approval. Multi-tenancy beta scope = #1430 (done) + #1458 traces + ratchet green (#1419 comment). #1458/#1457 → Production milestone.
 - Board-status discipline ACTIVE (PM 7/30): In Progress at take-up, In Review at shipped-pending-verification, Done at close — same-work-block, per-item mutations only.
