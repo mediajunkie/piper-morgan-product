@@ -1,7 +1,7 @@
-# CXO carry-forward — rewritten 2026-08-04 (fire 3, ~14:4x PT)
+# CXO carry-forward — rewritten 2026-08-04 (fire 5, ~20:3x PT)
 
 **Cron**: `e7059954` (`47 6,9,12,15,18,21`) · **Worktree**: `~/Development/piper-morgan-worktrees/cxo` (Model A) · **Branch**: `claude/cxo-cycle`
-**⏰ Beta 2026-08-08 — four days. It is a SATURDAY and PM has still not confirmed that's intended.**
+**⏰ Beta 2026-08-08 — four days. ✅ RE-DERIVED 08-04: `date -j` confirms SATURDAY; `decisions.log:303` confirms the target. The source says nothing about Saturday intent, so "PM has not confirmed" stands.**
 
 ## 🔴 PM-attention (nothing here has moved)
 
@@ -25,6 +25,14 @@
 - **`scripts/check-refresh-promises.py`** — ⚠️ **HOST ran it as a non-author and it was BROKEN**: advertised opt-in didn't enroll, and the coverage line said `NOT checked: 0` while an opted-in doc went unchecked (its denominator was the watch list). **FIXED + pushed.** Now: 9 documents make a refresh promise, **2 verifiable**, **7 UNVERIFIABLE** (Arch, CIO, Comms, Docs, PA, PPM, Web). HOST's is LAPSED across 4 reviews and **HOST is deliberately leaving it failing** until they choose to fix it — do not "helpfully" refresh it. **I did not register the seven** — a glob is each role's claim to make. Still only scans `docs/briefing/*.md`.
 - **PA reply** — attribution corrected, m-46 instance 2 filed.
 
+## Live thread — Step 5b heartbeat (CIO), tomorrow 06:46 is the stated test
+
+- ✅ **Verified at source, nobody else had**: `duty-cycle-heartbeat.sh:65` — **START DOES write unconditionally.** Arch and PA both tested WORK only.
+- 🔴 **My finding**: the 06:46 sweep checks **4 of 11** (arch/lead/comms/web) and **emits no denominator** — the pre-START skip is silent. So absence from that output means *checked-and-fine* or *never-checked*, indistinguishably. Asked CIO for one unconditional `checked N of M` line.
+- 🔴 **Tomorrow's test can't read either way**: 7 roles can't appear in the 06:46 output at all; the other 4 are defeated by Comms' end-of-fire placement. **If someone reads a quieter alarm as vindication, that's a false attribution** — say so.
+- ⭐ **A hypothesis of mine dissolved**: I nearly published that cxo/ppm/docs are structurally stale forever (8h59m gap vs 7h threshold). `cycling_now()` skips us before `first_fire+10`. **The gate works.** One function call from a confident false alarm about a false alarm.
+- **Step 5b as specified writes nothing on a working fire** (3 seats, same command — m-45: one procedure confirmed thrice, not three confirmations). Surface: `cio.tsv` + `pa.tsv`, two of eleven.
+
 ## Standing / carried
 
 - **Probe A deployed-host retest** — GATE before the plugin capability is booked (#1463). Blocked on a live `mcp.pipermorgan.ai`.
@@ -43,4 +51,5 @@
 5. **grep for ISO dates AND surface forms, and never `cut` your own confirming output** (the beta-date miss that PPM inherited).
 6. **A coverage report whose denominator is its own registration cannot report what it exists to report.** I shipped that defect inside the script written to honor the lesson, 3h after m-46 instance 2.
 7. **My simplifications remove what's one layer down** — 3rd instance this cycle (the biased ask; the Slack deep-link; the #1484 build order). *I optimize for the layer I can see; what I drop is always beneath it.*
-8. **A hand-count is not a substitute for the mechanism** — mine under-reported the failure by 50% while I was writing about that exact failure.
+8. 🔴 **zsh does NOT word-split unquoted `$VAR`** — 14 mail paths arrived as one argument and `mail-send` refused; **my own `grep` filter hid the refusal.** Use arrays; and *never filter a command's output to the lines you expect* — that hides the one saying it didn't run.
+9. **A hand-count is not a substitute for the mechanism** — mine under-reported the failure by 50% while I was writing about that exact failure.
