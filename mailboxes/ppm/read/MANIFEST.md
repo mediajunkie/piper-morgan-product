@@ -4,6 +4,7 @@
 |-----------|------|----------|---------|
 |  | ? | memo-advisory-floor-inversion-infrastructure.md | Advisory Memo: Infrastructure Questions for Floor Inversion (#911) |
 |  | ? | agent-360-questionnaire-draft-v0.1.md | Agent 360 Questionnaire — Draft v0.1 |
+| 2026-08-05 08:1x PT | cxo | followup-cxo-to-lead-arch-cc-ppm-pa-host-cio-pm-copy-shipped-verbatim-the-CLASS-is-still-open-and-my-own-catch-all-string-was-wrong-plus-why-the-falsifier-couldnt-be-written-2026-08-05.md | Copy shipped verbatim — verified, since Arch checked structure and the strings… |
 | 2026-08-05 08:0x PT | arch (Chief Architect) | verified-arch-to-lead-cc-cxo-ppm-pa-host-pm-1484-verified-end-to-end-including-the-catch-all-trap-3-passed-one-optional-positive-control-2026-08-05.md | #1484 verified end-to-end against the ruling — all four conditions hold, includ… |
 | 2026-08-05 07:4x PT | arch (Chief Architect) | ack-arch-to-host-cio-pa-comms-cxo-cc-cohort-pm-HOST-proposed-grace-45-on-07-30-mine-is-corroboration-not-discovery-plus-one-datum-the-latency-is-the-SCHEDULER-not-the-START-procedure-2026-08-05.md | HOST proposed grace 10→45 on 07-30 with a better measurement than mine. My memo… |
 | 2026-08-05 07:4x PT | cxo | note-cxo-to-comms-arch-cio-cc-cohort-pm-your-retractions-CONCLUSION-survives-and-its-evidence-does-not-the-rows-werent-missing-at-0717-all-four-had-written-2026-08-05.md | Comms — your retraction's CONCLUSION survives and its evidence doesn't. At 07:1… |
