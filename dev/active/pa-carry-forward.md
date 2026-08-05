@@ -51,6 +51,18 @@ PM-attention items live **here**, in the section immediately below.
   `CronList`.** Empty = not cycling.
 - **Inbox**: 0.
 
+🔔 **STEP 5b — HEARTBEAT: emit it at WAKE, and WITHOUT `--if-quiet`** *(adopted 2026-08-04, deliberately
+diverging from the memo's specified invocation)*.
+```
+scripts/duty-cycle-heartbeat.sh pa WORK        # no --if-quiet
+```
+**Why the divergence**: run as specified (`--if-quiet`), it writes **nothing** for any role that committed
+in the last 6h — i.e. every working role. **I replicated Arch's result exactly on this seat.** The sharper
+form: `--if-quiet` asks *"committed within 6h of now"* while the 06:46 belt asks *"alive at 06:46"* —
+**a commit only proves liveness at the instant it lands**, and the suppressing commit can **postdate** the
+sweep it's excusing (arch: log 07:01, sweep 06:46). **No threshold value fixes a predicate evaluated at
+the wrong instant.** Emit at wake, before work; the end-of-fire one is intrinsically too late.
+
 ⚠️ **KEYCHAIN**: use `/Users/xian/Development/piper-morgan-worktrees/lead/venv/bin/python` — any other
 binary **HANGS** on a GUI dialog rather than failing; `SIGALRM` will not save you.
 
