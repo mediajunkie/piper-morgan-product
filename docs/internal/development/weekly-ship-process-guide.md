@@ -31,7 +31,26 @@ Example: Ship #035 covers Friday Mar 13 – Thursday Mar 19, synthesized Mar 21,
 
 ---
 
-## The process (7 steps)
+## ★ The canonical cycle — PM's ten-step spec (2026-08-04, supersedes the 7-step section below where they differ)
+
+*PM stated this end-to-end on 2026-08-04 (relayed via Janus 8/5, memo on origin/main), explicitly as the standard going forward — "introduced and reinforced" now that role portfolios exist. Trigger: Ship #054 went straight from the 6/6 memo gate to the public draft, skipping the internal report. The reports emphasize **progress toward goals, milestones reached or not, commitments fulfilled or not** — not just activity.*
+
+1. **Every Thursday**: all agents close out their logs cleanly.
+2. **Early Friday**: Docs ensures the Fri–Thu omnibus logs are complete.
+3. **Early Friday**: Exec sends kickoff memos to the six workstream leads — review omnibus + own logs + commits, report on the week **with emphasis on progress vs. goals and current-milestone status**.
+4. **Same day**: all six do the homework and file their reports.
+5. **Exec reads all six** + underlying sources and synthesizes the **internal report for PM as an artifact** — dashboard element on top (progress / challenges / at-a-glance), pertinent per-workstream detail below, and **anything needing a leadership, strategic, or planning decision**.
+6. **Exec notifies Janus** the report is ready.
+7. **PM's next check-in** (direct or via Janus): the report is discussed, decisions get made. *Availability-gated — ASAP after 1–6, not on a fixed clock.*
+8. **Exec drafts the Ship** — after the step-7 discussion (or PM's async replies via Janus).
+9. **PM reviews the Ship** at his own pace, Friday → Wednesday morning.
+10. **Publish Wednesday.**
+
+**Steps 1–6 run every Friday, unconditionally.** The hard gates elsewhere in this guide (6/6 memos before synthesis; PM gates the Comms handoff) are unchanged and compose with this cycle. The 7-step section below remains for its per-step mechanics (date audit, memo format); where sequencing differs, the ten steps above govern.
+
+---
+
+## The process (7 steps — per-step mechanics; sequencing superseded above)
 
 ### Step 1: PM requests workstream memos
 

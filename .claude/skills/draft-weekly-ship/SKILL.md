@@ -2,7 +2,7 @@
 name: draft-weekly-ship
 description: Draft the Piper Morgan Weekly Ship newsletter from collected workstream memos. Use when PM says "draft the Ship", "draft Ship #NNN", "synthesize the workstream memos", or when all 6 workstream-NNN memos have landed in `mailboxes/exec/inbox/` and a theme has been picked. Loads the canonical artifacts before drafting so memory-of-past-Ships doesn't substitute for structure.
 scope: exec
-version: 1.9
+version: 1.10
 created: 2026-05-19
 ---
 
@@ -71,6 +71,10 @@ Open all 4 in order. Read the process guide first (it tells you what the deliver
 - **Fewer than 6** → STOP. Do not draft, even partially, even as a "placeholder to be filled in." Notify PM directly (chat + a mail note if PM is not in the current conversation) naming exactly which role(s) are missing and how close the pubDate deadline is. Wait for PM's call: extend, PM nudges directly, or (PM's explicit decision only) proceed on a named partial set.
 
 **Why this is a hard gate, not a judgment call**: Ship #051 (2026-07-14) was drafted in full with PPM's memo missing, reasoning that the pubDate was the next day and a nudge had already gone out. PM overrode this directly: *"we cannot write the ship without all the workstream reviews."* PM is the Ship's first audience, not just its final reviewer, and is specifically most interested in the portfolio-goals lens that PPM's §0 carries — a draft missing it is missing the part PM most wants to read, not a minor gap to route around under time pressure. See `feedback_ship_needs_all_workstream_reviews_no_partial_draft.md`. The Friday early-warning check in methodology-25 (workstream-review-cadence) exists to catch a missing memo early in the week, before it becomes a Tuesday-deadline crisis — this gate is the backstop for when that early warning didn't prevent the gap anyway.
+
+### Step 2c: HARD GATE — the internal report precedes the draft (PM's ten-step cycle, 2026-08-04)
+
+**Before drafting begins, the INTERNAL REPORT for PM must exist and Janus must be notified** (steps 5-6 of PM's ten-step weekly-reporting cycle — see the process guide's canonical-cycle section). The report is an artifact: dashboard element on top (progress / challenges / at-a-glance), per-workstream detail, and anything needing a leadership/strategic/planning decision. The Ship draft follows the PM discussion of that report (step 7), or PM's async replies via Janus. **Ship #054 skipped this** — went straight from the 6/6 gate to the public draft — and PM named the full cycle as the standard the next day. Emphasis in both report and kickoff memos: **progress toward goals and milestone status, not just activity.**
 
 ### Step 3: Read ALL omnibus logs in the window — REQUIRED, FULL READ
 
@@ -294,6 +298,10 @@ The Ship #043 v0.1 failure was not knowing the template existed — it was choos
 
 ## Version history
 
+### v1.10 (2026-08-05)
+
+**New Step 2c: internal report precedes the draft — hard gate.** PM's ten-step weekly-reporting cycle (stated 2026-08-04, relayed via Janus, codified in the process guide's canonical-cycle section): kickoff memos emphasize progress-vs-goals; Exec synthesizes the internal report as an artifact + notifies Janus BEFORE drafting; the Ship draft follows the PM discussion. Trigger: #054 went 6/6-gate straight to public draft; the internal report was produced only after PM asked where it was.
+
 ### v1.9 (2026-07-29)
 
 Fixed the `pubDate` derivation in the calendar-row step (Step: same-commit calendar entry). It said "target Tuesday"; the actual cadence is Wednesday, 8-for-8 across #046–#053 (verified against the calendar CSV, not memory). Trigger: Ship #053's row was born at 10:38 carrying `2026-07-30` (Thursday) — a day-after-drafting slip on a late-drafted Ship — flagged by Comms, corrected same day per PM's "due today." Comms' trace showed the window fields were right and only pubDate was wrong at birth, pointing at the derivation rule; this text was the only derivation rule in the pipeline, and it named the wrong day. #054's target: Wednesday 2026-08-05. Also fixed the stale "Skill version: 1.6" footer.
@@ -340,7 +348,7 @@ Initial skill. Lists canonical artifacts to load before drafting. Names voice-di
 
 ---
 
-*Skill version: 1.9*
+*Skill version: 1.10*
 *Created: 2026-05-19 (v1.0)*
 *Updated: 2026-05-20 (v1.1 — External-section verification step; v1.2 — omnibus is required full read, not spot-check); 2026-07-08 (v1.3 — Comms pre-publish review is a named mandatory step; v1.4 — PM gates the Comms handoff + evidence-tier discipline; v1.5 — metrics as bullet list, never a table); 2026-07-14 (v1.6 — Step 2b hard gate: all 6 memos required, no partial drafts under deadline pressure)*
 *Scope: Exec (drafts); PM (gates); Comms (reviews)*
