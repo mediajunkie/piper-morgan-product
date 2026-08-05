@@ -136,7 +136,7 @@ should not have deferred them.**
 | **Account deletion** | ❌ **Does not exist.** No account-level deletion path anywhere. | searched `services/`, `web/api/routes/` |
 | **Conversation deletion** | ⚠️ **SOFT** — a lifecycle transition, `ACTIVE/ARCHIVED → DELETED (terminal, no return)`. The record is marked, not removed. | `web/api/routes/conversations.py:716` |
 | **Insight deletion** | ⚠️ **SOFT** — sets `is_deleted=True`; the row remains. Reset-all is `soft_delete_all`. | `repositories.py:2328,2350` |
-| **Connector credentials** | ✅ **HARD, and better than most** — provider-side OAuth revocation *plus* keychain deletion. | `services/connectors/disconnect.py` |
+| **Connector credentials** | ⚠️ **HARD locally; provider-side revoke for 2 of 3.** Keychain deletion always. Provider-side OAuth revoke: **Slack ✅** (`revoke_workspace_access`), **Calendar ✅** (`revoke_token`), **GitHub ❌** — local grant row only (`ConnectorGrantStore().delete`), no GitHub API call. ⛔ **This row previously read "provider-side OAuth revocation plus keychain deletion" with no per-connector split. That is FALSE for GitHub** — corrected here 2026-08-05, having been corrected in the prose at the top of this section on 08-04 **while this row kept asserting it.** | `services/connectors/disconnect.py` |
 | **Data export** | ⚠️ **Exists but narrow** — `GET /controls/export` returns **learning settings + learned patterns only.** Not conversations, not profile, not connector data. | `web/api/routes/learning.py:1320` |
 
 🔴 **The load-bearing consequence**: a sentence like *"you can delete your data"* would be a
