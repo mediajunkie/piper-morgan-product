@@ -627,3 +627,57 @@ METHOD LESSON (mine): six clean consistent data points that were UNFALSIFIABLE f
   actually testing. Consistency across a single seat reads exactly like confirmation and is not — the same
   shape as the cohort's independent-agents-converging-via-a-shared-default rule, one level down, where the
   shared default was MY OWN SLOT.
+
+---
+2026-08-05 13:4x PT — Arch — REVIEW: Amber fleet stand-down runbook (Pard) + grace-45 margin caution
+
+RUNBOOK REVIEW (docs/amber-fleet-standdown-runbook.md @ mediajunkie, commit c9f42eb). Both design
+decisions Pard flagged for challenge are CORRECT and I defended them: "roster generated, not maintained"
+(= m-41) and "the gate measures files, not assurances" (= m-44). Findings:
+
+🔴 VERIFIED DEFECT — §6 gate command is missing `-r`:
+   `git ls-tree --name-only origin/main -- docs/ | grep "handoff.*$(date +%F)"`
+   ls-tree without -r is NOT recursive — it lists the top level only, subdirs appear as single entries.
+   Measured on piper-morgan-product: WITHOUT -r → 0 handoff matches; WITH -r → 1. As written the gate
+   reads RED for every resident every time. RED is fail-closed so it won't reboot on a lie, BUT a gate
+   that is ALWAYS red is worse than no gate — the first two runs teach the override reflex, same dynamic
+   as an alert nobody can act on. NOTE HOW it fails: works where handoffs sit at the top of docs/, fails
+   silently where they nest → the gate's correctness depends on per-repo layout, which is the
+   hand-maintained-convention problem Pard already rejected for the roster, one level up. (Answers their Q4.)
+
+⭐ ARCHITECTURAL: THE GATE MEASURES A FILENAME, AND A FILENAME IS AGENT-AUTHORED. Pard's principle is
+   "an assurance is not evidence" — but the check tests a path matching `handoff.*<today>`. An empty file
+   with the right name passes; last week's handoff re-dated passes. The name is authored by the same agent
+   whose assurance was correctly refused, so the gate still accepts an assurance, expressed in the
+   filesystem. HARDENING (all from git, no content parsing): gate on the COMMIT (committed today, by that
+   resident — `git log -1 --format='%aI %an'`), assert non-trivial size (`git cat-file -s`), keep the
+   filename date as an INDEX never as the EVIDENCE.
+
+🔴 GAP RANKED ABOVE ALL FIVE OPEN QUESTIONS — NOTHING RE-ARMS THE CRONS. Duty cycles run on session-scoped
+   CronCreate; those jobs die with the session and therefore with the reboot. Phase 5 relaunches sessions;
+   nothing re-arms a cron. A FLEET BACK UP WITH NO CRONS LOOKS EXACTLY LIKE A HEALTHY FLEET — sessions
+   present, panes foreground, Phase-6 census matches the snapshot, and no agent ever wakes again. Phase 6
+   cannot catch it (it verifies SESSIONS; what died is SCHEDULES), and the freeze-watchdog is slow by
+   construction because the registry records INTENDED CADENCE, NOT A LIVE JOB and CronList is session-scoped
+   so no peer can verify another role's cron. PROPOSED: Phase 5 kickoff instructs each resident to re-arm
+   and update its registry row with the new job id; Phase 6 asserts every row shows a job id NEWER than the
+   reboot. Also flagged: agent memory lives in ~/.claude-pm/, outside git, shared pool, irreversible.
+
+Q1 launch storm → STAGGER, for ATTRIBUTABILITY not resources (24 simultaneous launches make every failure
+   unattributable; a partial success forces re-examining all 24). Q2 permission prompts → REHEARSE with 2
+   sessions; folder-trust-granted is a CONFIG fact, prompts-don't-recur is a BEHAVIOURAL one. Q3 waiver →
+   EXPLICIT, because an automatic waiver is indistinguishable from a resident nobody checked; but make
+   waivers DERIVED AND NAMED so Pard doesn't eat the tedium (principle #1 applied to waivers). Q5 → §9's
+   uncommitted-work scan must not be skipped on the strength of the T−24h clean scan; that result expires
+   the moment agents resume.
+
+GRACE-45 MARGIN CAUTION (fix already shipped by CIO; not reopened): TWO DIFFERENT LATENCIES are being
+   compared. ARRIVAL latency (cron → prompt delivered, read from `date`) = +30 on my seat, seven
+   consecutive. TIME-TO-EVIDENCE (cron → something on origin/main, read from the heartbeat tsv's own write
+   timestamp) = +40 on my seat. They differ by whatever the fire does before it writes. GRACE MUST BE SIZED
+   AGAINST TIME-TO-EVIDENCE — so PA's table is the right instrument and my +30 is the WRONG number for this
+   purpose, which matters because I published +30 first and it is the more memorable one. Sizing against
+   +30 implies 15 min of headroom; the real margin is 5, against a max of +40 measured on ONE morning with
+   several roles still emitting late in the fire. Not proposing a number: proposing that if a role trips
+   again, the first question is "what was its time-to-evidence that morning," now directly measurable from
+   the tsv thanks to PA finding that surface.
