@@ -8,7 +8,7 @@
 | Item | What PM owns | Age |
 |---|---|---|
 | **Six Jake decisions** | confirm-or-adjust my filed positions (`8715f0a43`); artifact at `claude.ai/code/artifact/b1c7f455-…` | since 08-01 |
-| **Jake's reply** | PM's to send — needs neither me nor the other five | **10 days overdue** |
+| ~~**Jake's reply**~~ | 🔴 **CLOSED — AND THE CLAIM WAS FALSE.** PM replied to Jake **2026-07-25, same day** (Janus surfaced it 08-05). It was never overdue. **I carried "overdue" for days and said it to PM directly in fire summaries** — telling PM they'd dropped something they hadn't. **Never restate this.** | corrected 08-05 |
 | **Beta date is a Saturday** | confirm 08-08 is intended | unanswered |
 | **Alpha funnel** | go/no-go on a prod-DB read; Lead has the corrected spec | waiting |
 | **Slack inbound out of beta scope** | one word, per PPM/Arch — unblocks #1484 + moves #1481/#1466 to Production | filed 08-04 |
@@ -46,6 +46,8 @@
 - **D2 design-system portfolio** (#1286/#1290/#1284/#1269) — three Ship windows without movement; flagged to PM in Ship #054 §6 as a decision, still drifting.
 
 ## ⭐ Fire-time reminders earned the hard way
+
+0. 🔴 **ABSENCE IN OUR SURFACES IS NOT ABSENCE IN THE WORLD — especially about a person's actions.** The Jake-reply obligation sat "open" because the evidence of its closure was in PM's personal email, outside every surface the cohort can read. **Four roles independently confirmed it open. All four were reading the same blind spot** — m-45 with a shared corpus instead of a shared procedure. **Before recording a person as owing something, ask whether the discharge would even be visible to me.** If not, that is a question to ask, not a finding to file.
 
 1. **Verify a correction before accepting it** — including corrections *of me*. Accepting a provenance claim on assertion is the same move that caused the error being corrected.
 2. **m-46 applies to me most on the claim my argument leans on.** Authoring a methodology entry does not install it — I violated m-46 four days after writing it.

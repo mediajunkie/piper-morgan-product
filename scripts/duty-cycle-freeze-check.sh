@@ -47,7 +47,19 @@ if [ -z "$REPO" ]; then
   done
 fi
 REG="${DUTY_CYCLE_REGISTRY:-$REPO/dev/active/duty-cycle-registry.tsv}"
-FIRST_FIRE_GRACE_MIN="${FIRST_FIRE_GRACE_MIN:-10}"   # minutes past first_fire before a missing log = missed START
+# ⚠️ 2026-08-05: raised 10 → 45, from MEASURED data rather than judgement.
+# The 06:46 sweep raised a false alarm SIX mornings running (7/31–8/05), twice as "infrastructure
+# event suspected", and nobody ever acted on one. Cause: `first_fire` is when the CRON FIRES, but
+# the belt reads origin/main, so what it needs is when an ARTIFACT BECOMES VISIBLE — and a role
+# that wakes at 06:27 works for half an hour before its first push.
+#
+# First day of real heartbeat data (10 roles, 2026-08-05) gives the actual wake-to-visible lag:
+#   web 6 · cxo 30 · exec 30 · docs 32 · comms 33 · lead 36 · arch 40      ← on-time cluster
+#   host 203 · pa 210 · ppm 211                                            ← genuinely late cluster
+# 45 min clears the whole on-time cluster with 5 min of margin and still flags the late one.
+# The cost is stated honestly: a genuine morning stall is now detected ~35 min later. That is the
+# right trade when the alternative has produced six consecutive false alarms and zero true ones.
+FIRST_FIRE_GRACE_MIN="${FIRST_FIRE_GRACE_MIN:-45}"   # minutes past first_fire before a missing log = missed START
 now=$(date +%s); hour=${FREEZE_CHECK_NOW_HOUR:-$(date +%-H)}; min=$(date +%-M); now_min=$(( hour * 60 + min ))
 today=$(date +%Y/%m/%d); today_dash=$(date +%Y-%m-%d)
 git -C "$REPO" fetch origin main -q 2>/dev/null || true
@@ -119,8 +131,17 @@ expected_threshold() {
       for (i=1;i<=n;i++) h[i] = h[i] + 0; nh = nh + 0         # numeric coercion (else awk string-compares "10"<"5")
       for (i=1;i<=n;i++) for (j=i+1;j<=n;j++) if (h[j]<h[i]) { t=h[i]; h[i]=h[j]; h[j]=t }
       prev=""; nxt=""
-      for (i=1;i<=n;i++) if (h[i] <= nh) prev=h[i]            # latest fire-hour at/before now
-      for (i=1;i<=n;i++) if (h[i] >  nh) { nxt=h[i]; break }   # earliest fire-hour after now
+      # 2026-08-05 (PA root-cause; CIO implementing). NOTE: no apostrophes in this block -- it sits
+      # inside a single-quoted awk program and one apostrophe silently ends the string.
+      # WAS `<= nh` / `> nh`, which counts the current fire-hour as ALREADY LANDED the moment the
+      # clock reaches it. It has not: measured landing latency is +6 to +40 min (PA ground-truth
+      # table, read from the heartbeat tsv own write timestamps, not from when anyone looked).
+      # At 06:46 that gave prev=6, nxt=9, gap=3h, threshold 7h -- against a real ~9h overnight
+      # silence. EVERY role on `6,9,12,15,18,21` crossed it EVERY morning, by construction: six
+      # consecutive false alarms. Strict `<` / `>=` treats the current fire-hour as NOT yet landed,
+      # so the overnight window computes as the 9h gap it actually is (threshold 19h).
+      for (i=1;i<=n;i++) if (h[i] <  nh) prev=h[i]           # latest fire-hour STRICTLY before now
+      for (i=1;i<=n;i++) if (h[i] >= nh) { nxt=h[i]; break } # current-or-next fire (may not have landed)
       if (prev=="") prev = h[n] - 24                          # before first fire today → last fire yesterday
       if (nxt=="")  nxt  = h[1] + 24                          # after last fire today  → first fire tomorrow
       gap = nxt - prev; if (gap < 1) gap = 1

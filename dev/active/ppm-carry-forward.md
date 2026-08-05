@@ -42,6 +42,18 @@ successive wrong readings of one roadmap line, then recommended moving **#1174 i
 dissolved sprint. PM caught it. **I had run the sweep myself and it was in no artifact I carried.**
 Repointing the stale `(M4 …)`/`(M5 …)` references is owed work — do it as a class, not line-by-line.
 
+## ⚠️ HEARTBEAT — WAKE EMISSION, EVERY FIRE, AT THE START (adopted 2026-08-05)
+
+**Run `scripts/duty-cycle-heartbeat.sh ppm <FIRE> ` at the START of every fire, before any commit.**
+NOT as Step 5b at the end. **On 2026-08-05 I skipped Step 5b entirely on a busy fire** — nine other
+roles emitted, ppm didn't — and PA's pre-registered falsifier fired on my seat as a result.
+**Step 5b sits where a fire that found real work drops procedure**, which is exactly when the
+liveness claim is most often made and least examined.
+
+⚠️ **Do NOT repeat my claim that "~30 fires produced zero heartbeats" as evidence about the
+mechanism.** On fires where I ran it, `--if-quiet` suppressed as documented; on at least one I never
+ran it. Those two populations are not separable retroactively. **The clean claim is narrow.**
+
 ## 🔴 FIRST THING WEDNESDAY (08-05) — beta Sat 2026-08-08, FOUR days
 
 **1. Ship #054 publishes TODAY.** Carries *"target: Aug 8"* — correct, doubly sourced
