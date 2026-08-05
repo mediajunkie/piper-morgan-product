@@ -9,11 +9,11 @@
 
 ## The one dated thing
 
-✅ **"The List That Lies" (Aug 4) is READY FOR DOCS** — PM voice-passed and illustrated 4 Aug; full `template-audit` v1.5 run clean; PM-approved trims applied (1,901 → **1,747** words). PM is notifying Docs directly.
+✅ **"The List That Lies" PUBLISHED 4 Aug** — live, 200 with body present, 1,747 words, calendar `published` + blogURL set. The cached-404 risk I flagged **resolved correctly on publish** (verified: post 200, unknown slug still 404) — Web's rebuild-invalidates reasoning held.
 
-⚠️ **Pass along at publish**: `/blog/the-list-that-lies/` is currently a **cached 404** from Web's soft-404 fix (`03b77d9d`, deployed ~13:45 Aug 4). Should clear on publish — a new post forces a rebuild, which invalidates — **but that is reasoning, not a verified behaviour.** Docs should check the **status code alongside** the v0.22 presence-check at publish. If it's 200 with body present, this closes for good and is worth a line in the skill.
+**Next: Weekly Ship #054 "Clear Is Not a Measurement" (Wed Aug 5, Exec-drafted).** ✅ H1 sentence-case fix **already applied by Exec** (`ship(054)` commit, 09:03 Aug 4). 🔴 **Line 77's "target: Aug 8" is CORRECT — do not soften** (`decisions.log:303`; Saturday, deliberate). Post-voice-pass `template-audit` still owed once PM passes it.
 
-**Next up**: **Weekly Ship #054 "Clear Is Not a Measurement" (Wed Aug 5, Exec-drafted).** Pre-passed a day early — **one real fix outstanding: the H1 is sentence case** (`Clear is not a measurement`) against 5-of-5 Title Case convention *and* its own calendar row. Sent to Exec 4 Aug. 🔴 **Line 77's "target: Aug 8" is CORRECT and must not be softened** (`decisions.log:303`; Saturday, deliberate) — noted on the calendar row.
+⚠️ **Tomorrow morning, cheap and worth doing FIRST**: read `dev/heartbeats/2026-08-05/` — see "Owed by me" below. It has a stated prediction attached, so it can be wrong.
 
 ## Open PM questions — 4 across 3 posts, best answered in one pass
 
@@ -27,9 +27,15 @@ Surfaced only because `template-audit` check #5 was blind to `[PM: …]` until A
 
 ## Owed by me, with a named trigger
 
-✅ **DISCHARGED 4 Aug — the PreToolUse exit-0 observation.** Fired on my own typo commit (`eb6919e0c`). **Answer: a PreToolUse hook exiting 0 DOES reach the agent** — `check-branch.sh` printed its lines 54–55 to me on that commit. So CIO's fear (that `exit 2` → `exit 0` converts a mislabelled block into a silent no-op) **does not hold for stdout**. Reported to CIO + HOST.
+✅ **DISCHARGED 4 Aug — the PreToolUse exit-0 observation.** A PreToolUse hook exiting 0 **does** reach the agent (`check-branch.sh` printed to me on commit `eb6919e0c`). CIO's silent-no-op fear doesn't hold for **stdout**. ⚠️ **stderr remains unresolved** — my replication staged nothing and measured an empty index; that run was **inconclusive, not a null**. The practical fix needs neither: `exit 0` with the message on stdout.
 
-⚠️ **Still open, honestly scoped**: the message arrived on **stdout**. Whether **stderr** survives on exit 0 is **unresolved** — `pre-commit-reconcile-drafts.sh` writes to stderr and I saw nothing, but I could not rule out its gate short-circuiting, and my replication attempt staged nothing (`touch` + `git add` on unchanged content) so it measured an empty index. **That run was INCONCLUSIVE, not a null.** The practical fix needs neither: `exit 0` with the message on **stdout**, exactly as `check-branch.sh` already does.
+🆕 **OWED tomorrow morning — the heartbeat surface check.** I proposed it to CIO as the test that replaces tomorrow's uninformative 06:46 alarm, so I should run it:
+```
+ls dev/heartbeats/2026-08-05/
+for f in dev/heartbeats/2026-08-05/*.tsv; do head -1 "$f"; done
+```
+**My stated prediction** (so it can be falsified): the surface **fills** — several role files, each with a START row — **and most START timestamps land after 06:46**. That would close "nobody runs it" + "it declines to write" and confirm "it runs too late" with a number.
+⚠️ **Weakest link, flagged**: I inferred "the surface will fill" by **reading** that START bypasses `--if-quiet` at `duty-cycle-heartbeat.sh:65`. **I have not watched a START write** — mine today ran before CIO's change. If the surface is still `cio.tsv` only, the promotion didn't take either.
 
 ## Waiting on others
 
