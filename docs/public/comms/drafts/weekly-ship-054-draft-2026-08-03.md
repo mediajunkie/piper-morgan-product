@@ -96,7 +96,7 @@ The beta gate's remaining criteria (new target: Aug 8), with credentials now pro
 
 **Application beyond this week**: when a check reports clear, ask what it looked at, not just what it said. The practical form the team landed on: checks now state their own scope — which ref, which rows, which layer — so a clear that measured nothing has nowhere to hide. And corrections got cheap rather than people getting careful: claims written as re-runnable commands and stated denominators can be checked by a colleague in minutes.
 
-**Related patterns**: extends #053's "the invariant held." That pattern was about a rule surviving its author's absence — this one is about noticing that some of your rules were never running at all. Both end the same place: the mechanism, not the memory, and now — the measurement, not the clear.
+**Related patterns**: extends #053's "the invariant held." That pattern was about a rule surviving its author's absence — this one is about noticing that some of your rules were never running at all. Both end up in the same place: the mechanism, not the memory, and now — the measurement, not the clear.
 
 ---
 
