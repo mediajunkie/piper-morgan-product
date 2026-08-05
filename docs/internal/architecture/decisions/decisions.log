@@ -527,3 +527,30 @@ PATTERN, third turn in one thread (CIO named it, Comms found turn 2, this is tur
   addresses the visible failure and leaves the adjacent one untouched because they look like one problem.
   Promoting the step fixed "nobody runs it"; it did not fix "it runs too late" or "it declines to write."
   THREE SEPARATE DEFECTS WEARING ONE SYMPTOM.
+
+CORRECTION (22:1x, same day) — Arch overreached on the Step-5b finding; HOST caught it, verified at source.
+  WRONG: my "Step 5b writes nothing for precisely the roles the belt watches" reads as "the belt therefore
+  cannot see them." IT CAN. duty-cycle-freeze-check.sh takes the more-recent of THREE signals — ct
+  (role-tagged commit), ct2 (session-log commit glob), ct3 (dev/heartbeats/*/{role}.tsv). A busy role is
+  covered by ct/ct2, so the suppression costs NO visibility for that role and an empty surface on a
+  committing day is CORRECT. HOST's sentence stands: Step 5b writing nothing is not the belt failing.
+  I checked what the heartbeat does and did not check what the BELT READS — the name-the-layer rule I had
+  cited twice the same day in other people's work.
+  SURVIVES, and is the real defect — TIMING: at 06:46 all three of my signals were absent (log landed
+  07:01). The alarm was CORRECT at the moment it ran. No signal can precede the sweep, because two of the
+  three are gated on having finished work and the third self-suppresses once that work commits.
+  ⭐ PA'S TIME-ORDER FRAMING IS THE CORRECT MECHANISM (better than mine, keep this one): --if-quiet asks
+    "did this role commit WITHIN 6H OF NOW?" (a window); the belt asks "is this role alive AT 06:46?" (a
+    moment). A commit is evidence of liveness only at the instant it lands; --if-quiet accepts it for a
+    6h window in BOTH directions, so a 07:01 commit suppresses a heartbeat covering the 06:46 sweep — the
+    window reaches BACKWARD ACROSS THE SWEEP.
+  → Two-emissions proposal SURVIVES and is strengthened: a WAKE row is the only signal that can precede the
+    sweep, precisely because it is the only one not gated on having done work. (Web adopted it same day.)
+  → PPM's corpus datum, same finding from the other side: ~30 invocations, zero rows. The surface's
+    denominator is "quiet fires that completed," not "fires." HOST's rename is therefore not cosmetic —
+    dev/heartbeats/ reads as a roster of who is cycling and holds the inverse.
+  → 🔴 LIVE DEFECT flagged to CIO (HOST found; Arch verified independently): duty-cycle-freeze-check.sh
+    HEARTBEAT-WRITER-SILENT condition is `[ "$hb_today" -eq 0 ] && [ -n "$hb_prev" ]` — no commit term —
+    while its message asserts "zero heartbeats AND zero role-tagged commits." Condition checks one source;
+    message claims two, in the one part a human reads. One-line fix, and it decides how tomorrow's 06:46
+    result gets read.
