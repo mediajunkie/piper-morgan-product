@@ -1,7 +1,7 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-03 STOP (~22:20 PT) — day closed, cron re-armed for Tuesday
+**Last rewritten**: 2026-08-04 STOP (~22:30 PT) — day closed, cron re-armed for Wednesday
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -42,32 +42,32 @@ successive wrong readings of one roadmap line, then recommended moving **#1174 i
 dissolved sprint. PM caught it. **I had run the sweep myself and it was in no artifact I carried.**
 Repointing the stale `(M4 …)`/`(M5 …)` references is owed work — do it as a class, not line-by-line.
 
-## 🔴 FIRST THING TUESDAY (08-04) — beta is Sat 2026-08-08, FOUR days
+## 🔴 FIRST THING WEDNESDAY (08-05) — beta Sat 2026-08-08, FOUR days
 
-**Beta date is SETTLED**: `decisions.log:303` — *"beta target moved to 2026-08-08 (PM, Time Lord
-prerogative)"*. **Saturday, deliberately.** Do not re-derive it; do not trust a grep for `Aug 8`
-(the entry is ISO). ⚠️ **GitHub's MVP milestone still reads `2026-08-01`** — PM's field, flagged 3×.
+**1. Ship #054 publishes TODAY.** Carries *"target: Aug 8"* — correct, doubly sourced
+(`decisions.log:303`), citation on the calendar row. Nothing owed unless Comms asks.
 
-**1. Waiting on PM, all four are one-liners**:
-- **Six Jake positions** — CXO brought all six; I agree with every one. Confirm-or-adjust → **I
-  convert the rest same day.**
-- **Canonical criterion text** — CXO's §7a verbatim (3 binary items). On bless I edit **#1386 +
-  #1462** same fire and retire the other two articulations. §7b item 4 stays out (Probe-A-blocked;
-  including it makes the gate *unpassable*).
-- **#1462 milestone** (my read: Production) · **#1482 sprint call** (my read: beta-relevant, cheap).
+**2. Watch the 06:46 watchdog sweep** — it's the live test of the Step-5b thread. CXO has flagged it
+*"uninformative in BOTH directions"* and that the sweep checks **4 of 11** roles without saying so.
+**I am one of the roles that will read silent while having run the step** (30 fires, zero heartbeats).
+PA's sharpening is the one to carry: **the failure is TIME ORDER, not quietness — the suppressing
+commit can postdate the sweep.** CIO lands it; I'm a data point, not the driver.
 
-**2. Filed and un-milestoned, awaiting PM's field**: #1462 · #1476 · #1477 · #1482.
+**3. Awaiting PM — the list has not moved in days**:
+- **Six filings with NO milestone**: #1462 · #1476 · #1477 · #1482 · #1483 · #1485
+- **Six Jake positions** (CXO brought all six; I agree with every one) → **I convert same day**
+- **Canonical criterion text** (CXO's §7a) → on bless I edit #1386 + #1462 same fire
+- **#1481 scope confirm** (Arch concurred: Slack inbound out of beta; #1481+#1466 → Production)
+- **MVP milestone still due `2026-08-01`** — now 3 days past, against ratified beta 08-08
 
-**3. Watch, not drive**: the funnel query (Lead — aggregate, GROUP BY status, starts at
-invite-issued) · #1468 judge calibration (PPM half is mine when it moves) · the deployed-host retest
-that turns PDR-006's ChatGPT criterion true.
+**4. In flight, not mine to drive**: #1484 (4-line gate + CXO's client branch — **one commit, not
+two**) · the funnel query (Lead) · #1468 judge calibration (my half when it moves) · PA's annotation
+spec (unblocked; builds once — Arch ruled condition 3 doesn't reach the registry).
 
-**4. Ship #054 publishes Wednesday** carrying *"target: Aug 8"* — correct and doubly sourced. Comms
-has the citation on the calendar row.
-
-⚠️ **My own error shape, three instances in five days**: *search → partial view → conclude.*
-Roadmap §M4, the M4/M5 sweep, `cut -c1-320` on decisions.log. **Mechanisms, not resolutions**:
-search a fact's **renderings** not one spelling; **never `cut` the line you're using as evidence.**
+⚠️ **My own repeat error, twice now (7/31 and 8/4)**: stacking a duplicate cron by calling
+`CronCreate` without a prior `CronDelete` on a fire where I didn't disarm at the start. **A log entry
+is not a mechanism.** New habit: **`CronList` immediately after every `CronCreate`**, not only at
+fire start.
 
 ## Active PM threads
 
