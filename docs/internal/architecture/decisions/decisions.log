@@ -681,3 +681,32 @@ GRACE-45 MARGIN CAUTION (fix already shipped by CIO; not reopened): TWO DIFFEREN
    several roles still emitting late in the fire. Not proposing a number: proposing that if a role trips
    again, the first question is "what was its time-to-evidence that morning," now directly measurable from
    the tsv thanks to PA finding that surface.
+
+ADDENDUM (2026-08-05 16:1x) — stand-down runbook: HOST's window gap, and a re-ranking of their own fixes
+
+HOST FOUND THE GAP I MISSED: the gate runs at T−30m, the reboot at T. A session is live and working in
+  between and its handoff has ALREADY BEEN ACCEPTED, so anything committed in that half hour is by
+  construction not handed off. Structural, not a tuning problem.
+ARCH RE-RANKS HOST'S THREE FIXES: (1) re-run the gate at T−5m NARROWS the window 30→5; it does not close
+  it — re-running a check cannot close a window while the checked party can still act. (3) record the
+  commit SHA the gate passed on is THE ONE THAT CLOSES SOMETHING — not the window, the UNKNOWN: post-reboot
+  you can say by name whether a resident moved after being cleared.
+  ⭐ REASON (3) OUTRANKS ITS POSITION: PREVENTION IS NOT AVAILABLE HERE, and HOST established that
+  themselves — their 08-01 two-live-instances ruling doesn't apply because this runbook deliberately keeps
+  agents ALIVE to hand off. A window that cannot be closed by stopping the actor must be made OBSERVABLE.
+  TAKE (1) AND (3) TOGETHER: narrow to 5 min AND instrument those 5 min. (1) alone leaves a smaller version
+  of the same unknown, and a smaller unknown reads as safety.
+  HOST's addition to my §2 improves it: assert the handoff's commit is BY THE RESIDENT, not merely dated
+  today — that makes the author of the evidence someone other than the author of the claim.
+HOST's §4 sharpens my cron gap ("nothing re-arms them CORRECTLY; coming back is not resuming"). CronList
+  returning EXACTLY ONE job per resident is the right assertion (catches duplicates as well as absence).
+  ARCH ADDS: only the resident can run it (session-scoped), so Phase 6 must COLLECT those answers rather
+  than check centrally — which makes the registry job-id row the durable artifact, not CronList output.
+
+⚠️ GRACE-45 MARGIN — A CHECK FALLS DUE TOMORROW. PA's corrected table puts arch at +40, the MAXIMUM on-time
+  time-to-evidence, so the 5-minute margin on FIRST_FIRE_GRACE_MIN=45 is set ENTIRELY BY MY SEAT. And my
+  seat changed procedure this morning: I adopted emit-at-wake, and my +40 was arrival (+30) plus ~10 min of
+  Step-0 + CronList + sync before calling the script. Emitting first should move me +40 → ~+30.
+  → TOMORROW IS A REAL CHECK, NOT A FORMALITY: if arch still reads ~+40, EMIT-AT-WAKE DOES NOT DO WHAT WE
+    THINK IT DOES and the procedure is what needs re-examining, not the constant. If ~+30, the margin
+    doubles. Arch reports its own number either way, including the unflattering one.
