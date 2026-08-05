@@ -37,7 +37,7 @@
 <body><div class="wrap">
 
 <h1>Upcoming Beats — planning review</h1>
-<p class="sub">Building narrative · prepared by Comms · last updated 4 Aug 2026<br>
+<p class="sub">Building narrative · prepared by Comms · last updated 5 Aug 2026<br>
 Nothing here is drafted. <strong>Everything waits on your steer.</strong></p>
 
 <h2>What I need from you</h2>
@@ -108,8 +108,44 @@ Nothing here is drafted. <strong>Everything waits on your steer.</strong></p>
 <p class="note"><strong>New material worth folding in, if you want it.</strong> On 3 Aug this beat's A plot happened again, to us, one working day before the Ship that names the pattern: a leadership check reported a ratified date “absent” from the decision log — a true statement about a search that could never have matched the entry's format. My audit pass would then have <em>correctly</em> struck a true date from a post going out under your name, citing that verification as the reason. Nobody careless at any step. HOST offered it as an instance for the Ship itself; <span class="ok">my read is that it belongs here instead</span> — the Ship is a third-person weekly work report, this is a story with a turn, and a Ship that becomes about itself is the comprehensiveness impulse wearing a different hat. <strong>Your call, and it's the closest-to-home instance the beat could possibly have.</strong></p>
 </div>
 
-<h2>One caution on all five</h2>
-<p>Every claim above is sourced from the <strong>omnibus digests</strong>, not yet from primary per-role logs. That's precisely the layer where adjacent-number contamination has bitten this series three times — real numbers attached to the wrong event. <strong>Each beat gets a primary-source pass at draft time</strong>, and I expect that pass to move some details.</p>
+<h2 id="verified">✅ Primary-source pass — DONE 5 Aug, before the steer rather than at draft time</h2>
+<p>The caution that used to sit here said every claim came from the <strong>omnibus digests</strong>, and that each beat would get a primary-source pass <em>at draft time</em>. <strong>I ran it early instead</strong>, because you were about to steer a slate whose premises could still move. It moved one.</p>
+<p class="note">Scope, so you can price it: I checked the <strong>load-bearing A-plot claim of each beat</strong> against per-role session logs in <code>dev/2026/07/16–28/</code> — not every detail in every beat. The slate&rsquo;s window is also <strong>entirely outside</strong> the six compressed omnibus days (Jul 29–Aug 3), so that caveat doesn&rsquo;t touch it.</p>
+<div class="tablewrap"><table>
+<tr><th>Beat</th><th>Verdict against primary logs</th></tr>
+<tr><td><strong>24</strong></td><td>🔴 <strong>"more than half" NOT SUPPORTED</strong> — see below. Theme is solid, the proportion isn&rsquo;t.</td></tr>
+<tr><td><strong>25</strong></td><td>✅ Confirmed, and <strong>richer than I had it</strong> — see below.</td></tr>
+<tr><td><strong>26</strong></td><td>✅ Confirmed — <em>&ldquo;TESTS WORKFLOW FULLY GREEN @ 972b4287b — first in the repo&rsquo;s visible history (zero green in the 40+ runs before this arc)&rdquo;</em>, Lead, <strong>Jul 20</strong>.</td></tr>
+<tr><td><strong>27</strong></td><td>✅ Confirmed — CIO&rsquo;s Jul 25 log: <em>&ldquo;the PreCompact safety net has been dead for ten weeks&rdquo;</em>, and a whole day spent <em>&ldquo;cataloguing mechanisms that report success while covering less than they appear to.&rdquo;</em></td></tr>
+<tr><td><strong>28</strong></td><td>✅ Confirmed — m-44 filed Jul 27 as <em>&ldquo;arch&rsquo;s bequest, fulfilled&rdquo;</em>; and the recursion is right there: <em>&ldquo;the detector notified nobody.&rdquo;</em></td></tr>
+</table></div>
+
+<div class="beat flag">
+<h3>Beat 24 — 🔴 the A plot needs restating</h3>
+<p class="slot">The claim: <em>&ldquo;more than half of it wasn&rsquo;t dead — it was faking success when called.&rdquo;</em></p>
+<p><strong>I could not find that proportion in the primary logs.</strong> Searched Jul 16–18 for <code>more than half</code> · <code>over half</code> · <code>faking success</code> · <code>dead code</code> · <code>not dead</code> · <code>no-op</code> · <code>stub</code> · <code>census</code> · <code>Tier-3</code>. What the logs actually record:</p>
+<ul>
+<li><strong>#1423 silent-death</strong>: 1,233 broad excepts, <strong>244 core-path</strong>. Census A classified <strong>274 handlers, 66 to unswallow</strong> — that&rsquo;s <strong>24%</strong>, not a majority.</li>
+<li><strong>Tier-3 fix-or-delete</strong>: <strong>16 modules, 6 families</strong>, of which <strong>one</strong> was mis-classified.</li>
+<li>Jul 18 is characterised in two separate logs as <strong>&ldquo;fabrication-removal day&rdquo;</strong>; the F4 family is literally named <strong>&ldquo;remove-the-lie.&rdquo;</strong></li>
+</ul>
+<p>⭐ <strong>The real story is better than the one I wrote, and it&rsquo;s the same theme as Weekly Ship #054</strong> — code that reports success it never achieved. <strong>And it has a turn I&rsquo;d missed</strong>: executing the delete batch, Lead found <code>protocol/</code> had been classified dead but <em>live consumer_core imports it</em> — and said so mid-execution rather than shipping the batch as ruled. <strong>An agent catching its own batch while running it.</strong></p>
+<p class="note">Suggested A plot, for your steer: <em>they set out to remove code that lies about what it did — and the removal pass turned up something classified dead that was quietly still load-bearing.</em></p>
+</div>
+
+<div class="beat">
+<h3>Beat 25 — confirmed, and the chain is better than my version</h3>
+<p>I had <em>&ldquo;silently reverted a colleague&rsquo;s already-landed work. A different role noticed.&rdquo;</em> The primary log (PPM, Jul 19, 10:15) is more interesting on both counts:</p>
+<ul>
+<li>It reverted <strong>two</strong> colleagues&rsquo; work — <strong>CIO&rsquo;s and Web&rsquo;s</strong>.</li>
+<li>The chain is <strong>CIO partially finds it → you flag the collision → PPM audits past what was reported and owns it.</strong> Their own words: <em>&ldquo;diffed the stale base against the correct one directly, didn&rsquo;t rely on CIO&rsquo;s partial finding.&rdquo;</em></li>
+</ul>
+<p class="note">⚠️ <strong>You are in this beat</strong>, which my omnibus-sourced version had dropped entirely. Worth deciding deliberately rather than discovering at draft time — it changes whether this is a story about agents catching each other or about the human still being in the loop.</p>
+</div>
+
+<h2>What the pass cost, and one thing it nearly cost</h2>
+<p>⚠️ <strong>The omnibus almost sent me the wrong way on Beat 26.</strong> Its Jul 20 entry reads <em>&ldquo;40+ consecutive red runs <strong>ended Sunday</strong>&rdquo;</em> — Sunday being Jul 19, one day <em>before</em> Beat 26&rsquo;s window opens. I had drafted the finding that Beat 26&rsquo;s headline event sat outside its own beat. <strong>The primary log puts it on Monday Jul 20, inside the window.</strong> The beat was right and the digest&rsquo;s phrasing was what would have made me rework it.</p>
+<p class="note">That is the fourth time this week the omnibus&rarr;primary gap has mattered, and the first where it would have caused me to <em>break</em> something correct rather than miss something wrong. It is also the argument for doing this pass before the steer: at draft time I&rsquo;d have found it too, but only after you&rsquo;d already decided the slate on a premise that had moved.</p>
 
 <h2>After these five</h2>
 <p>Material past Jul 28 is accumulating fast. <span class="ok">The omnibus gap is CLOSED as of 4 Aug</span> — Docs landed all six days, Jul 29 through Aug 3, so the next assessment no longer means reading ~50 per-day session logs by hand. I've still deliberately not proposed a Beat 29 while this slate is unsteered; stacking proposals is how a queue becomes a backlog.</p>

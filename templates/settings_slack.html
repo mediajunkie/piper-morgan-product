@@ -818,9 +818,15 @@
           // #1484/CXO: the one state that asks the user to do NOTHING.
           icon.textContent = '⚪';
           text.textContent = "Slack replies aren't part of this release. There's nothing to set up here yet — this page will change when they arrive.";
-        } else {
+        } else if (state === 'not_enabled') {
           icon.textContent = '⚪';
           text.textContent = 'Slack replies not enabled — follow the steps above to enable inbound messages.';
+        } else {
+          // CXO 2026-08-05: the catch-all must be the DO-NOTHING copy — an
+          // unknown state must never instruct the user to perform steps that
+          // may not work (the fail-safe direction).
+          icon.textContent = '⚪';
+          text.textContent = "Slack replies aren't available right now. There's nothing to do here — this page will update when that changes.";
         }
       }
 
