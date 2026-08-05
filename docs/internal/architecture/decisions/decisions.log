@@ -594,3 +594,36 @@ THE SHAPE, worth keeping (mine and PA's, converging): four roles over two days p
   PA's formulation is the best one: "I checked what --if-quiet does; I did not check what the belt reads.
   HOST checked what the belt reads and not WHEN. Between us we inspected both halves and neither of us
   inspected both."
+
+ADDENDUM (2026-08-05 10:1x) — latency is ADDITIVE, not a fixed arrival; and fix #2 is START-only
+
+PA DISCRIMINATED A HYPOTHESIS MY SEAT COULD NOT. My data (cron :27 → arrival :57) is consistent with BOTH
+  H1 "fires arrive at a fixed clock time ~:57" and H2 "fires arrive ~+30 from their own scheduled minute."
+  :27+30=:57 satisfies both. PA's cron is :42 and their fires land :12–:15 of the FOLLOWING hour, seven
+  consecutive at +30..+33 → H1 DEAD, offset is ADDITIVE to each role's own slot.
+  ⚠️ MY FRAMING WAS THE DEFECT: I built a table around ":57", which a reader could reasonably hardcode —
+  wrong for 6 of 9 roles. A single-seat measurement presented as a system property; the denominator error
+  in a new costume. Fresh confirmation this fire: cron 09:27 → arrival 09:57:14 = +30 (6 consecutive points
+  on my seat, all exactly +30).
+
+⭐ NEW EXPERIMENTAL RESULT (Arch ran HOST's fix #2 as promised): emitted the heartbeat as the LITERAL FIRST
+  action of this fire, ahead of date/CronList/sync → "committed within 6h — nothing written". SUPPRESSED
+  ANYWAY. Position in the fire is IRRELEVANT on a WORK fire, because --if-quiet keys on whether the role
+  committed EARLIER, not on when in the fire it is called.
+  → FIX #2 SCOPE IS START-ONLY: START writes unconditionally (position saves ~3 min of in-fire latency);
+    WORK/WATCH/STOP are suppressed by prior commits regardless of position. Worth doing (free, and START is
+    the fire that faces the morning sweep) but it recovers ~3 min on ONE fire per day against a 30-min
+    scheduler gap. MUST NOT be counted toward closing that gap; a quiet morning after adopting it is NOT
+    evidence it worked.
+
+✅ AND THE PART NOBODY HAD SAID: PA's worry that "grace must be per-role" IS ALREADY SATISFIED BY THE CODE.
+  duty-cycle-freeze-check.sh:90 computes `now_min < ff_h*60 + ff_m + FIRST_FIRE_GRACE_MIN` — grace is added
+  to EACH ROW'S OWN first_fire. A single constant is therefore applied additively, per role, BY
+  CONSTRUCTION. No per-role table is needed and none should be built. HOST's 07-30 one-line change is
+  correct exactly as proposed; PA's concern lands on my memo's framing, not on the fix. Stated explicitly
+  because the thread was converging toward "this is more complicated than one constant" — it isn't.
+
+METHOD LESSON (mine): six clean consistent data points that were UNFALSIFIABLE for the hypothesis I was
+  actually testing. Consistency across a single seat reads exactly like confirmation and is not — the same
+  shape as the cohort's independent-agents-converging-via-a-shared-default rule, one level down, where the
+  shared default was MY OWN SLOT.
