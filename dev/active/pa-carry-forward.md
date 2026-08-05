@@ -41,11 +41,11 @@ PM-attention items live **here**, in the section immediately below.
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 
-## Active state — 2026-08-04 fire 4 (13:12)
+## Active state — 2026-08-05 START (07:12)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/08/04/2026-08-04-0712-pa-code-log.md`
+- **Session log**: `dev/2026/08/05/2026-08-05-0712-pa-code-log.md` (8/04 DAY-CLOSED, run late as a missed close)
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure
 - **Cron**: `42 6,9,12,15,18,21`. Session-only; expires ~2026-08-10. 🔴 **First action any new session:
   `CronList`.** Empty = not cycling.
@@ -66,6 +66,17 @@ wake row is the only signal that can precede a sweep; the end-of-fire one is int
 commit / heartbeat tsv, so **a committing role is already covered by the first two** and an empty surface
 on a working day is *correct*. I had the mechanism right and the consequence wrong (Arch made the same
 error; HOST made its mirror image — checked *what* the belt reads, not *when*).
+
+⛔ **NEVER `grep -c "DAY-CLOSED"` TO DECIDE CLOSE STATE** *(bit me 2026-08-05)*. My 8/04 log returned **2**
+and was **not closed** — one match was a continuity reference to the prior day, the other was **my own
+prose about the freeze-check's DAY-CLOSED skip.** ⭐ **Writing ABOUT the marker creates a false marker**,
+and the roles most likely to write that prose are the ones working on the watchdog. Use the anchored
+pattern from `duty-cycle-freeze-check.sh:99`. **A count is not a marker.**
+
+⏱️ **YOUR FIRES ARRIVE ~+30 TO +33 MIN AFTER THE CRON MINUTE** — cron `:42` → actual `:12`–`:15` of the
+**next** hour. Measured across 7 consecutive fires from **commit timestamps**. ⛔ **Never label a fire by
+its scheduled minute** — Arch and I both did, and both had to correct it. **Commits are the evidence; the
+label is a guess.**
 
 ⚠️ **KEYCHAIN**: use `/Users/xian/Development/piper-morgan-worktrees/lead/venv/bin/python` — any other
 binary **HANGS** on a GUI dialog rather than failing; `SIGALRM` will not save you.
