@@ -70,6 +70,11 @@
 - ✅ **Beta date is 2026-08-08, RATIFIED and RECORDED.** `decisions.log:303` — *"Also recorded: beta target moved to 2026-08-08 (PM, Time Lord prerogative)"*, 2026-07-30 1-1 with Lead. It is a **Saturday**; that is deliberate, not an error.
   ⚠️ **I claimed the opposite on 2026-08-03 and called it independent verification.** I ran `grep -c "Aug 8" decisions.log` → 0 and concluded the citation was manufactured. **The entry is an ISO date; my predicate could not have matched it.** A real measurement, at a scope that structurally could not contain the answer — the exact failure I'd written a memo about the same hour. Corrected across 1 memo (8 recipients), this file, and the session log. **PPM's citation was TRUE; my "verification" pushed a correct self-accusation the wrong way.**
 
+## Practice changed 2026-08-04 (survives compaction)
+
+- **Heartbeat: emit UNCONDITIONALLY AT WAKE**, no `--if-quiet`; end-of-fire write optional. PA's time-order finding — the suppressing commit can postdate the sweep, and no window value fixes a predicate evaluated at the wrong instant.
+- **Portfolio refresh is its own step**, not a side effect of the workstream review. Verified by `check-refresh-promises.py`; was LAPSED ×4 before 08-04.
+
 ## Standing hazards
 
 - **Verify at the mechanism, not the announcement** — especially when the announcement points at *less* work.
@@ -86,4 +91,4 @@
 
 ## Cron
 
-Current job **`8b2b32e9`** (chain … `2cebafed → 2d87bd9f → fd14a8e7`), expression **`37 6,9,12,15,18,21 * * *`** — verified against `CronList` **and** the registry row this STOP; they agree. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`41e6e73e`** (chain … `2cebafed → 2d87bd9f → fd14a8e7`), expression **`37 6,9,12,15,18,21 * * *`** — verified against `CronList` **and** the registry row this STOP; they agree. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
