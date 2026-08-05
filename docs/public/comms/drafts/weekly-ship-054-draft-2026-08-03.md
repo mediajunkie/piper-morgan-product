@@ -22,11 +22,11 @@ All of this happened while the entire team moved house — every one of eleven a
 
 **The distribution plan (a product decision record for plugin-based delivery) reached ratification-ready** — all three reviews in by Thursday, the last blocker having dissolved when someone finally checked the code and found the "open question" had been answered in January, in a comment, by the founder. Ten days of blocked status over a settled question.
 
-**The beta gate got caught being unfalsifiable in both directions.** One review showed the gate cannot *fail* for what the alpha tester actually reported — a competent user getting correct answers throughout and concluding the product is a wrapper. Days later its main suite was caught unable to validly *pass* — it silently skips without credentials, and a skipped suite looks identical to a green one. Both findings landed on the issue with proposed fixes rather than in anyone's private notes.
+**Gaps discovered in the beta-release gate in both directions.** The gate was oblivious to what our first alpha tester actually reported. It also had a technical flaw and would skip the tests and report they passed if run without proper credentials (what?). There are proposed fixes in the Beta Blockers sprint backlog for both.
 
 ## ⚙️ Engineering & architecture
 
-**The whole team is on the new machine.** Eleven of eleven roles migrated across five days — first one, then five in a single afternoon, then the rest — each provisioned, verified live, and self-registered before the next began. Rolling one at a time with a check between caught two silent provisioning defects that batching would have sailed past: a success message that fired on session creation rather than agent liveness, and a two-letter role name that prefix-matched onto a different agent's live session.
+**The whole team is on the machine.** Eleven of eleven roles migrated to a new Mac Studio (Amber) across five days — first one, then five in a single afternoon, then the rest — each provisioned, verified live, and self-registered before the next began. Rolling one at a time with a check between caught two silent provisioning defects that batching would have sailed past: a success message that fired on session creation rather than agent liveness, and a two-letter role name that prefix-matched onto a different agent's live session.
 
 **A three-day investigation ended when someone read the code instead of probing it.** Five agents had run twenty-five behavioral probes at a mysteriously intermittent commit hook, producing four hypotheses — each refuted by its own proposer. The architect then read the 56 lines of shell and found the answer in one: the check ran *before* the command it was checking had staged anything. The fix was installed within the hour as a real git-level gate that reads settled state, closing the class rather than the symptom.
 
@@ -36,7 +36,7 @@ All of this happened while the entire team moved house — every one of eleven a
 
 ## 🔬 Methodology & process innovation
 
-**Two methodology entries earned their numbers from real incidents.** "Clear is not a measurement" — this week's namesake — was filed with eleven instances across four roles and two projects. Its companion, "agreement is not replication," came from the hook investigation: four seats produced the same wrong answer because all four had inherited the same untested probe procedure, and the convergence *raised* everyone's confidence instead of warning them.
+**Two methodology entries logged from real incidents.** "Clear is not a measurement" — this week's namesake — was filed with eleven instances across four roles and two projects. Its companion, "agreement is not replication," came from the hook investigation: four seats produced the same wrong answer because all four had inherited the same untested probe procedure, and the convergence *raised* everyone's confidence instead of warning them.
 
 **The instruments got instrumented.** A heartbeat now makes a correctly-quiet agent distinguishable from a dead one (the old watchdog literally alerted on compliance). A "parked" state means a deliberately-dark role no longer trains everyone to ignore the alarm bell. And the shared memory index — quietly eight lines from a ceiling past which entries vanish without error — got a guard that refuses loudly, after two agents tested the platform's claimed fix and found it false on both limits.
 
