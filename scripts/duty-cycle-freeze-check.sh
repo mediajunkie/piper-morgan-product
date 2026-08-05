@@ -131,8 +131,17 @@ expected_threshold() {
       for (i=1;i<=n;i++) h[i] = h[i] + 0; nh = nh + 0         # numeric coercion (else awk string-compares "10"<"5")
       for (i=1;i<=n;i++) for (j=i+1;j<=n;j++) if (h[j]<h[i]) { t=h[i]; h[i]=h[j]; h[j]=t }
       prev=""; nxt=""
-      for (i=1;i<=n;i++) if (h[i] <= nh) prev=h[i]            # latest fire-hour at/before now
-      for (i=1;i<=n;i++) if (h[i] >  nh) { nxt=h[i]; break }   # earliest fire-hour after now
+      # 2026-08-05 (PA root-cause; CIO implementing). NOTE: no apostrophes in this block -- it sits
+      # inside a single-quoted awk program and one apostrophe silently ends the string.
+      # WAS `<= nh` / `> nh`, which counts the current fire-hour as ALREADY LANDED the moment the
+      # clock reaches it. It has not: measured landing latency is +6 to +40 min (PA ground-truth
+      # table, read from the heartbeat tsv own write timestamps, not from when anyone looked).
+      # At 06:46 that gave prev=6, nxt=9, gap=3h, threshold 7h -- against a real ~9h overnight
+      # silence. EVERY role on `6,9,12,15,18,21` crossed it EVERY morning, by construction: six
+      # consecutive false alarms. Strict `<` / `>=` treats the current fire-hour as NOT yet landed,
+      # so the overnight window computes as the 9h gap it actually is (threshold 19h).
+      for (i=1;i<=n;i++) if (h[i] <  nh) prev=h[i]           # latest fire-hour STRICTLY before now
+      for (i=1;i<=n;i++) if (h[i] >= nh) { nxt=h[i]; break } # current-or-next fire (may not have landed)
       if (prev=="") prev = h[n] - 24                          # before first fire today → last fire yesterday
       if (nxt=="")  nxt  = h[1] + 24                          # after last fire today  → first fire tomorrow
       gap = nxt - prev; if (gap < 1) gap = 1
