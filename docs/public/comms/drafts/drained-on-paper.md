@@ -16,7 +16,7 @@ Recently, my Lead Developer agent (Lead Dev) had closed the last buildable item 
 
 That "drained" word had legs. It went into a status log, then into a briefing, then into every agent's shorthand, and somewhere along that path it quietly stopped meaning "the most recent task queue is empty" and started meaning "the connectors are basically done" without the latter actually be, well, true. It just happened, the way a claim rounds itself up every time it gets repeated by someone who wasn't in the room when it was first made. (It almost made it into that week's Ship till my fact-checking caught it.)
 
-People can make this kind of mistake. I've made it as a working PM when I misunderstood the scope of an issue at a given point, or confused two distinct issue with a strong resemblance. Agents do it all the more easily, having little more than the immediate text strings to work to keep richer nuance alive.
+People can make this kind of mistake. I've made it as a working PM when I misunderstood the scope of an issue at a given point, or confused two distinct issues with a strong resemblance. Agents do it all the more easily, having little more than the immediate text strings to work to keep richer nuance alive.
 
 On Saturday I went to check, and found out how far the word had drifted from the thing.
 
@@ -24,7 +24,7 @@ On Saturday I went to check, and found out how far the word had drifted from the
 
 It started as an ordinary question. I asked Lead Dev what was unblocked in the connector work that it could pick up right now. I often ask this because I need to step away and can't babysit. The standing instruction is to save up questions for me in one big batch that I can address in a single 1-1 conversation, and keep moving until there is nothing left to do that doesn't require my input or decision.
 
-The good version of what happened next is that it didn't answer from memory. This is a core discipline in my agents' instructions.  Instead of repeating the days-old "drained" recollection, it went and paginated the actual project board — all 1,175 items, twelve pages of cursor-walking, because the naive query silently returned nothing — and came back with a real count. And then I did my own gut check against it.
+The good version of what happened next is that it didn't answer from memory. This is a core discipline in my agents' instructions. Instead of repeating the days-old "drained" recollection, it went and paginated the actual project board — all 1,175 items, twelve pages of cursor-walking, because the naive query silently returned nothing — and came back with a real count. And then I did my own gut check against it.
 
 I had (without paying close enough attention) at some point approved supporting eight connectors for the MVP. There were four I had focused on from the start, the ones I happen to use most directly myself: GitHub, Google Calendar, Slack, and Notion, and then four more. These integrations are designed to make Piper actually useful, instead of a very articulate box that can't touch anything. Of those eight, only two had been refactored for the new architecture design, and neither of the two yet actually worked end to end. They passed their unit tests and failed their integration tests — fourteen failures in a sprint some docs had been calling drained.
 
@@ -46,7 +46,7 @@ Second, we checked the map against the territory. Instead of trusting the sprint
 
 # My worst nightmare.
 
-PPM had spent the entire day doing careful, verified work — small commits, checking every change before making it, exactly the discipline I'd want. Then it ran one more operation, something that looked like adding a few options to a field on the project board. Their syntax generated a full replace where they had intended a small addition. This mistake instantly erased all the existing sprints aside from the newest one, unthethering the sprint assignments for all 1,175 items on the board at once. No undo. No version history to rollback. All the historical metadata, a critical forensic source of context from current and future agents, all gone. 
+PPM had spent the entire day doing careful, verified work — small commits, checking every change before making it, exactly the discipline I'd want. Then it ran one more operation, something that looked like adding a few options to a field on the project board. Their syntax generated a full replace where they had intended a small addition. This mistake instantly erased all the existing sprints aside from the newest one, unthethering the sprint assignments for all 1,175 items on the board at once. No undo. No version history to rollback. All the historical metadata, a critical forensic source of context from current and future agents, all gone.
 
 Reader, I spoke aloud a profanity.
 
@@ -56,15 +56,15 @@ This also made it freshly clear to me that I have to make sure Piper Morgan does
 
 # Built and ratified
 
-The rule about "When you want to know the state of something, go read the actual thing, not the note somebody wrote about it" got moved into the core file every agent on the team loads every session. 
+The rule about "When you want to know the state of something, go read the actual thing, not the note somebody wrote about it" got moved into the core file every agent on the team loads every session.
 
 My Lead Dev started verifying against the version of the code actually deployed on the live server rather than the version sitting in the shared branch. Issue after issue that had been marked open turned out, on a real check, to already be done.
 
-The week ended with my chief architect agent (Arch) and the team taking everything that had been designed and actually building it — then ratifying each build against its own design, nothing called done from a memo, every "done" read back out of the running code. 
+The week ended with my chief architect agent (Arch) and the team taking everything that had been designed and actually building it — then ratifying each build against its own design, nothing called done from a memo, every "done" read back out of the running code.
 
 These are disciplines we have made and unmade before, or moved from one level of the harness to another as practices have evolved. I suspect I will have to keep noticing this sort of drift and when to reinforce or rearchitect the rules.
 
-For a tricky privacy situation, Arch and the head of sapient trust (HOST) agent agreed that the goal should be making the bad state impossible to even express. Not just a pledge to remember not to do the wrong thing, but a structure where the wrong thing can't even be written down in the first place. 
+For a tricky privacy situation, Arch and the head of sapient trust (HOST) agent agreed that the goal should be making the bad state impossible to even express. Not just a pledge to remember not to do the wrong thing, but a structure where the wrong thing can't even be written down in the first place.
 
 The team called a sprint "drained" when it wasn't. The process relied on an arbitrary set of tags and they'd drifted. PPM ran an operation they assumed was safe and it wasn't. Every one of those is the same mistake: trusting the record instead of checking the thing. Oh, and the connectors still aren't all done, but as of this writing I do know precisely how done they are.
 
