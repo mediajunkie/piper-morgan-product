@@ -12,11 +12,11 @@ Ever since I started putting my agents on what I call a duty cycle, in which the
 
 Drained just means the queue is empty, there's nothing left in it to pick up, but it's only true if you're looking at the right list of items. If you grab a stale list or a subset and find them all done you may declare the queue "drained" when it's actually not.
 
-Recently, my Lead Developer agent (Lead Dev) had closed the last buildable item on its list derived from the backlog of the RECONNECT sprint, and there genuinely wasn't a next thing sitting in the queue waiting to be built. "Buildable scope drained" was accurate within the narrow scope of issues it was currently aware of and tracking, but had not been tested against any canonical, fresh information source.
+Recently, my Lead Developer agent (Lead Dev) had closed the last buildable item on its list derived from the backlog of the connector sprint, and there genuinely wasn't a next thing sitting in the queue waiting to be built. "Buildable scope drained" was accurate within the narrow scope of issues it was currently aware of and tracking, but had not been tested against any canonical, fresh information source.
 
 That "drained" word had legs. It went into a status log, then into a briefing, then into every agent's shorthand, and somewhere along that path it quietly stopped meaning "the most recent task queue is empty" and started meaning "the connectors are basically done" without the latter actually be, well, true. It just happened, the way a claim rounds itself up every time it gets repeated by someone who wasn't in the room when it was first made. (It almost made it into that week's Ship till my fact-checking caught it.)
 
-People can make this kind of mistake. I've made it as a working PM when I misunderstood the scope of an issue at a given point, or confused two distinct issues with a strong resemblance. Agents do it all the more easily, having little more than the immediate text strings to work to keep richer nuance alive.
+People can make this kind of mistake. I've made it as a working product manager when I misunderstood the scope of an issue at a given point, or confused two distinct issues with a strong resemblance. Agents do it all the more easily, having little more than the immediate text strings to work to keep richer nuance alive.
 
 On Saturday I went to check, and found out how far the word had drifted from the thing.
 
@@ -33,8 +33,6 @@ There were two issues here entangled, one easier to deal with than the other. Th
 The harder part was that the core four connectors were still less than half done. I told the agent team, in my frustration, "we can never close this sprint until we get those connectors done, and we've only done two of them, and neither of those two are working yet." Then I asked Lead Dev if I had lost sight of the forest for the trees here. This prompted a deeper dive and yet more disappointment. The two partially finished ones were not even built on the newer architecture..
 
 Sadly, I have seen this before. A team without enough direction drifting horizontally onto a non-converging path. It always stings and it always requires standing down and resetting, and sharper focus.
-
-I told the team: No more breadth, no more touching all connectors a little. Instead, we take one connector taken all the way to genuinely, boringly done — working, tested, cleaned up, usable at signup — before we let ourselves start the next one. GitHub first. Then Calendar. Then the rest, one at a time, each finished before the next began.
 
 # A source of truth
 
@@ -57,8 +55,6 @@ This also made it freshly clear to me that I have to make sure Piper Morgan does
 # Built and ratified
 
 The rule about "When you want to know the state of something, go read the actual thing, not the note somebody wrote about it" got moved into the core file every agent on the team loads every session.
-
-My Lead Dev started verifying against the version of the code actually deployed on the live server rather than the version sitting in the shared branch. Issue after issue that had been marked open turned out, on a real check, to already be done.
 
 The week ended with my chief architect agent (Arch) and the team taking everything that had been designed and actually building it — then ratifying each build against its own design, nothing called done from a memo, every "done" read back out of the running code.
 

@@ -14,9 +14,13 @@
 3. **claude.ai account tier** — PA's surviving item.
 4. **Memory-index guard is on the GENERATOR, not the file** — steady ~192/173, ~8 lines headroom.
 
+## ⏸ AWAITING PM/EXEC — a yes/no, with a stated cost
+
+**Short-period cron experiment.** The observed dispatch lateness (~+30 min) is **twice** `CronCreate`'s documented ceiling, and **no existing seat can discriminate**: every registry period ≥2.5h saturates the 10% jitter term at the 15-min cap, so it is the same constant on all eleven. The only test is a cron with period **under** 2.5h. **Cost: ~3 extra fires on my seat**, run as a clearly-labelled second job beside the duty cron, deleted after 3 readings. **Not starting without a yes.**
+
 ## Live threads
 
-- **Dispatch latency** (pa/arch/host/comms). Cohort measures +30m13–22s from *first commit*. **My `UserPromptSubmit` probe measures ARRIVAL directly: +30m00.0s for a 22:07 cron.** Prediction sent: their 13–22s is **agent startup**, not dispatch variance. ⚠️ **n=1 on my seat — not a constant.** Asked for a *different* instrument on other seats, not copies of mine (m-45).
+- **Dispatch latency** (pa/arch/host/comms). ❌ **My prediction is REFUTED** — HOST's fire-opens (+23m33s ×3) exclude a universal +30m00s, and my own n=2 (+30m00.0s, +29m21s) spreads 39s, wider than the 9s I was explaining. **The instrument survives; the story does not.** ⭐ **The live finding is the saturation boundary** (see the PM ask above) — more seats and more days add zero discriminating power.
 - **Wrapper-written heartbeat** — the probe proves `UserPromptSubmit` fires live, loads without a session restart, and sees the full prompt. **NOT proposed to the cohort**: `.claude/settings.json` is tracked and shared, so editing it is a unilateral process change. Untested: whether *writing to the repo* from a hook on every prompt is safe. Probe is seat-local in gitignored `.claude/settings.local.json`.
 - **Pard's duty-cycle drift review** (called by PM). **Answered 08-05**: not a category error — `duty-cycle-watchdog.sh:72` calls spawn-fresh *"the path"* for the off-machine cure. Default-off was **maturity, not safety** (three days old; *"Mac Mini is the durable fix"* — **Amber is that machine**). Real boundary: **spawn-fresh as RECOVERY is designed; as STEADY STATE it is not.** Belt 4's TTL'd lockfile is the designed fix for the collision they hit. **Awaiting their reply.**
 - **Janus** — cross-project durability. Their read: the gap isn't durability, it's **cross-referencing between durable records that already exist**. Explicitly not urgent. **Mine to pick up** (cross-pollination is this lane).
