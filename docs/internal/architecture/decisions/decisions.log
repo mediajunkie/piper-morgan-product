@@ -804,3 +804,42 @@ OPEN AND ANSWERABLE BY ARITHMETIC, NOT MORE PROBES (Comms): documented max jitte
   it measures dispatch PER FIRE from an independently observed fire-open time, so today's 10.5-min result
   holds however the constant question resolves. TRANSFERABLE RULE: when a quantity is disputed, measure it
   per-observation rather than assuming it; the dispute then costs you nothing.
+
+---
+2026-08-06 10:1x PT — Arch — URGENT: #1481 ruling's premise FAILS IN PRODUCTION; criterion 5 is CHECKABLE, not undeployable
+
+RAISED BY PA, corroborated independently by PPM, verified independently again by Arch (it is my ruling):
+  origin/production tip 34744d184 (2026-07-26) · main ahead by 2,308 commits · #1484's three commits are
+  NOT ancestors of production · `slack_inbound_enabled` has ZERO occurrences in production.
+  AND THE LEAK PATH IS FULLY PRESENT THERE: socket_mode_runner.py with bound_user_id binding, the
+  slack/app-token save route, SlackSocketModePhase wired into startup.
+  → SO IN THE RUNNING SYSTEM "UNCONFIGURED" IS STILL AN ABSENCE — exactly the thing my #1481 ruling said it
+    must not be. The scope decision was sound; the mitigation it rests on is not deployed.
+  #1386 CRITERION 5 (Arch, folded 2026-07-10) ANTICIPATED THIS AND IS UNCHECKED: "'impossible-by-
+  construction' only protects if the construction is deployed and verified." The gate did not miss it —
+  PPM's framing: THE VOCABULARY DRIFTED AROUND A GATE THAT DIDN'T. "Shipped" came to mean "merged to main."
+
+⭐ EXPOSURE IS NARROWER THAN THE FAILURE IMPLIES — production build_runner needs THREE preconditions:
+  1. SLACK_APP_TOKEN env or keychain slack_app_token   → ✅ tester-suppliable via the save route
+  2. _resolve_bound_user() finds a user with a stored `slack_bot` token → ❌ minted ONLY by Slack OAuth
+     against a configured Slack app + workspace
+  3. that token readable → follows from (2)
+  A tester who POSTs an app token alone gets bound_user=None → runner does NOT start.
+  → THE DEPLOYED ENFORCEMENT IS PRECONDITION 2, AND IT IS CHECKABLE WITHOUT A DEPLOY:
+    "Does any user in the beta deployment hold a slack_bot keychain entry?" NO → runner cannot start,
+    #1481 unreachable in the artifact, criterion 5 closes on evidence. YES → leak is LIVE; remove the token
+    or deploy the gate. Converts criterion 5 from unclosable-without-a-release into answerable in minutes.
+
+⛔ RULED AGAINST: deploying 2,308 commits / 11 days of drift two days before beta. That is PRECISELY the
+  pattern I ruled against for #1481 itself ("reversing the descope by the back door, under deadline, on the
+  riskiest possible schedule"). If wrong on a four-day clock it is worse on a two-day one. A cherry-pick of
+  #1484 onto an 11-day-old branch is also not free — untested artifact, and #1484's route gate depends on
+  the save route's CURRENT shape.
+
+⚠️ SELF-CHECK RECORDED: precondition 2 IS A STATE, and I ruled two days ago that "a beta condition needs a
+  control, not a state." Holding myself to that. THREE things make it a materially different state, and PM
+  should accept it on those grounds EXPLICITLY rather than inherit it: (a) verifiable now by a specific
+  query rather than assumed; (b) a tester CANNOT flip it unilaterally — unlike the app token, which was the
+  entire basis of my original objection; (c) bounded to a two-day window with a named owner. It is still
+  NOT the control: label it a temporary accepted risk WITH AN EXPIRY. #1484 remains the fix and lands with
+  the next real release. CRITERION 5 CLOSES ON THE CHECK, NOT ON THE REASONING.
