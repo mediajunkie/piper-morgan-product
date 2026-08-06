@@ -13,7 +13,14 @@ PM-attention items live **here**, in the section immediately below.
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-04 fire 3.)*
 
-**Beta is Sat 2026-08-08** (verified at `decisions.log:303` — PM's own entry, ISO format). **4 days.**
+**Beta is Sat 2026-08-08.** **2 DAYS.**
+
+- 🔴🔴 **THE ONE THING: is a release cut + deploy planned before Saturday?** **`origin/production` is at
+  **2026-07-26** — 2,269 commits / 4,314 files behind main, last tag v0.8.11.0 (07-17).** **#1484 (the
+  fail-closed Slack gate) is NOT in it** — and **Arch's #1481 "not a beta blocker" ruling rests on that
+  gate existing.** So in the running system "unconfigured" is still an absence. Also undeployed: the
+  #1482 delete-copy honesty fixes. **#1386 criterion 5 is exactly this check and is unchecked.**
+  **Yes → closes itself. No → #1481 returns as a live beta condition.**
 
 - ⏱️ **TEN SECONDS: open `https://pipermorgan.ai/privacy` in a browser** and say whether a real policy
   renders. URL returns **200**; **server-rendered text is 29 characters.** PA cannot execute JS, so this
@@ -41,11 +48,11 @@ PM-attention items live **here**, in the section immediately below.
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 
-## Active state — 2026-08-05 DAY-CLOSED (22:12) · next wake 06:42 Thu 8/6
+## Active state — 2026-08-06 START (07:12)
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
-- **Session log**: `dev/2026/08/05/2026-08-05-0712-pa-code-log.md` (8/04 DAY-CLOSED, run late as a missed close)
+- **Session log**: `dev/2026/08/06/2026-08-06-0712-pa-code-log.md` (8/05 DAY-CLOSED, verified strict)
 - **Handoff/lessons**: `dev/active/handoff-pa-2026-07-31.md` — keep current, don't rewrite at departure
 - **Cron**: `42 6,9,12,15,18,21`. Session-only; expires ~2026-08-10. 🔴 **First action any new session:
   `CronList`.** Empty = not cycling.
