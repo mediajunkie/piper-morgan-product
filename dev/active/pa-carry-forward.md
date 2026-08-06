@@ -51,7 +51,10 @@ PM-attention items live **here**, in the section immediately below.
   `CronList`.** Empty = not cycling.
 - **Inbox**: 0.
 
-🔔 **STEP 5b — HEARTBEAT: emit it at WAKE, and WITHOUT `--if-quiet`** *(adopted 2026-08-04, deliberately
+🔔 **STEP 5b — HEARTBEAT: emit it IMMEDIATELY AFTER `date`, BEFORE the git fetch/merge, and WITHOUT
+`--if-quiet`** *(ordering fixed 2026-08-05: my heartbeat had five commands incl. fetch+merge in front of
+it, so my timestamp was **wake + git-op time**, inflating my dispatch number and its spread. Satisfied
+HOST's "date first" ask while defeating its purpose.)* *(adopted 2026-08-04, deliberately
 diverging from the memo's specified invocation)*.
 ```
 scripts/duty-cycle-heartbeat.sh pa WORK        # no --if-quiet
@@ -110,6 +113,13 @@ proves you read it, not that you read what it does.
    audit**; `_handle_learn_pattern` is the one to re-check first.
    ⬜ **Open for Lead**: the ~15-site breaking change. ⬜ Unscreened: `meeting` (offer-only),
    `run_todo_query_workflow` (separate module).
+   ✅ **Plugin manifest DRAFTED** (`dev/active/plugin-manifest-draft-2026-08-05.md`) from the fetched
+   reference. **The item is far smaller than scoped**: manifest is *optional*, **`name` is the only
+   required field**, unrecognized fields are warnings. 🔴 **But it exposed a PDR-006 gap: the reference
+   documents plugin MCP servers ONLY as local `command`s — no url/http/sse form found.** If remote isn't
+   declarable, **we owe a stdio shim to `mcp.pipermorgan.ai` that the PDR doesn't scope.** Arch/Lead to
+   check the MCP-server + marketplaces pages. ⛔ Draft is NOT at `.claude-plugin/plugin.json` — that path
+   would make this repo a plugin for every agent.
    ⬜ Other Phase 0 items: **`claude plugin validate` dry-run is MIS-SCOPED** — verified 8/05: `claude` is
    not on PATH or at common install paths, **and no plugin manifest exists** (`coordination/manifest.json`
    is the async-prompt-queue tracker, unrelated). **The real item is "author a plugin manifest, THEN
