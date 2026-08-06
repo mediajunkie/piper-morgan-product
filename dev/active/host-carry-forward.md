@@ -81,6 +81,8 @@
 
 ⚠️ **Do not build anything on my dispatch numbers.** "Per-seat constant" was falsified by my own next fire (5× +23m3x, then +30m22s) and inverted by three seats within the hour (arch/pa/host-outlier all ~+30m1x). Arch's per-fire decomposition needs none of it.
 
+**BETA: 2026-08-09** (PM 08-06, `decisions.log:847`, supersedes the 08-08 target at line 303).
+
 ## Standing hazards
 
 - **Verify at the mechanism, not the announcement** — especially when the announcement points at *less* work.
