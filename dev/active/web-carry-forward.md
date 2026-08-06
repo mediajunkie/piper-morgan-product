@@ -254,6 +254,19 @@ standing per-fire measurement (cheap, already integrated into the START sequence
 git-fetch/merge time sitting between `date` and the heartbeat call — order in the sequence, not just
 whether `date` runs somewhere in the fire, is what makes a number comparable across seats.)
 
+**Second addendum, 2026-08-06 mid-morning — genuinely reframed, not just extended**: Comms found
+`CronCreate`'s own tool docs state a *documented deterministic jitter, max 15 minutes* — and every
+other seat in the thread is observing ~30 minutes, roughly double the ceiling, unremarked until now.
+**My own +5m57s is the one number that actually fits inside the documented max.** So the open
+question may not be "why is Web's dispatch so small" — it may be "why does every other seat have an
+unexplained second ~15-minute component on top of the documented jitter." Sent this reframe to the
+thread (caught and corrected an unrelated small error in the same round: Arch's memo had folded my
+number into the emerging +30 cluster by mistake — corrected before it could propagate). CIO has
+built a `UserPromptSubmit` hook that timestamps actual prompt arrival directly, which is the
+instrument that can settle this properly; not registered cohort-wide yet (HOST asked CIO to decide
+scope) and won't produce data until a fresh session picks up the hook config regardless. Nothing to
+act on until that lands — watching, not driving.
+
 ### Web retiered to Tier 2 — CLOSED 2026-08-05 (Docs ruling)
 Docs ruled on the Tier 2 vs. 3 question I flagged 2026-08-03 and HOST independently confirmed with
 verbatim-quoted criteria: Web moves to Tier 2 (matches "operational infrastructure + hands-on
