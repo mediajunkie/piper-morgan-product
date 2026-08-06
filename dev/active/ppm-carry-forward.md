@@ -1,7 +1,7 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-04 STOP (~22:30 PT) — day closed, cron re-armed for Wednesday
+**Last rewritten**: 2026-08-05 STOP (~22:30 PT) — day closed, cron re-armed for Thursday
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -54,32 +54,32 @@ liveness claim is most often made and least examined.
 mechanism.** On fires where I ran it, `--if-quiet` suppressed as documented; on at least one I never
 ran it. Those two populations are not separable retroactively. **The clean claim is narrow.**
 
-## 🔴 FIRST THING WEDNESDAY (08-05) — beta Sat 2026-08-08, FOUR days
+## 🔴 FIRST THING THURSDAY (08-06) — beta Sat 2026-08-08, TWO days
 
-**1. Ship #054 publishes TODAY.** Carries *"target: Aug 8"* — correct, doubly sourced
-(`decisions.log:303`), citation on the calendar row. Nothing owed unless Comms asks.
+**1. Radar/Surface-1 is SETTLED — do not re-derive it.** Radar's rendering is **Surface 1** (history
+sidebar, #1236). PDR-005 specifies a **cross-client variant** of it at `:122`, `:245`, `:288`, `:328`;
+**PDR-005:135 + roadmap.md:127 both mark it "unblocked NOW", ~4-6 days.** ⚠️ Caveat that stays:
+PDR-005:84 puts **Surfaces 1/3 on "weaker forms"** of the criteria (2/4/6/7 meet them clearly) — so
+Surface 1 is 1.0-required **on weaker grounds**. Scheduled, not unassailable.
+⛔ **My earlier answers "the web page goes" and "undecided" are both WRONG.** Superseded.
 
-**2. Watch the 06:46 watchdog sweep** — it's the live test of the Step-5b thread. CXO has flagged it
-*"uninformative in BOTH directions"* and that the sweep checks **4 of 11** roles without saying so.
-**I am one of the roles that will read silent while having run the step** (30 fires, zero heartbeats).
-PA's sharpening is the one to carry: **the failure is TIME ORDER, not quietness — the suppressing
-commit can postdate the sweep.** CIO lands it; I'm a data point, not the driver.
+**2. Awaiting PM — unchanged for days**: six filings with **no milestone** (#1462 · #1476 · #1477 ·
+#1482 · #1483 · #1485) · the **six Jake items** (PM answered 1, 2→"(b)", 5; needs plain English on 3
+and 6 — 3 sent, 6 is PA's) · **canonical criterion text** · **#1481 scope confirm** · **MVP milestone
+still 2026-08-01**.
 
-**3. Awaiting PM — the list has not moved in days**:
-- **Six filings with NO milestone**: #1462 · #1476 · #1477 · #1482 · #1483 · #1485
-- **Six Jake positions** (CXO brought all six; I agree with every one) → **I convert same day**
-- **Canonical criterion text** (CXO's §7a) → on bless I edit #1386 + #1462 same fire
-- **#1481 scope confirm** (Arch concurred: Slack inbound out of beta; #1481+#1466 → Production)
-- **MVP milestone still due `2026-08-01`** — now 3 days past, against ratified beta 08-08
+**3. Watch, don't drive**: #1484 (gate + CXO client branch, one commit) · the funnel query (Lead) ·
+#1468 judge calibration · PA's annotation spec (unblocked; `headersHelper` is condition 1's carrier).
 
-**4. In flight, not mine to drive**: #1484 (4-line gate + CXO's client branch — **one commit, not
-two**) · the funnel query (Lead) · #1468 judge calibration (my half when it moves) · PA's annotation
-spec (unblocked; builds once — Arch ruled condition 3 doesn't reach the registry).
+⚠️ **Standing instruction from PM, keep applying it**: *"I do not want to approve something I will
+later regret because I felt rushed by a made-up deadline. I am a Time Lord after all."* **No
+manufactured urgency in anything sent to him.**
 
-⚠️ **My own repeat error, twice now (7/31 and 8/4)**: stacking a duplicate cron by calling
-`CronCreate` without a prior `CronDelete` on a fire where I didn't disarm at the start. **A log entry
-is not a mechanism.** New habit: **`CronList` immediately after every `CronCreate`**, not only at
-fire start.
+⚠️ **My own lesson from 08-05, worth not repeating**: I gave PM three successive answers to one
+question and only the third was right. **What fixed it was CXO finding a FACT neither of us had (the
+surface number), not better reasoning over the same material.** On a question about something PM has
+defended repeatedly — **find the number before answering at all**, and **check whether a peer has
+already answered before sending.**
 
 ## Active PM threads
 

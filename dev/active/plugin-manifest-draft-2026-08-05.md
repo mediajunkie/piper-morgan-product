@@ -27,35 +27,30 @@ corrects that further:
 **So the blocking work is far smaller than "author a manifest" implied.** What matters for a *directory
 submission* is the metadata a reviewer reads, not schema compliance — compliance is nearly free.
 
-## 🔴 The gap this exposed, and it's a PDR-006 question
+## ✅ RESOLVED 2026-08-05 — the gap was MINE, not the platform's
 
-**PDR-006 distributes a plugin that connects to a hosted MCP endpoint at `mcp.pipermorgan.ai`.** The
-reference documents plugin MCP servers in exactly one shape:
+**Plugins DO support remote MCP.** The reference documents **four** transports, not one:
 
-```json
-{ "mcpServers": { "plugin-database": {
-    "command": "${CLAUDE_PLUGIN_ROOT}/servers/db-server",
-    "args": [...], "env": {...} } } }
-```
-
-**Command-based. A local process.** I searched the page for a remote form — `url`, `type: http`, `sse`,
-`streamable` — and **found none** (the one `"url"` hit is the author field).
-
-⚠️ **Stated as the limit it is: absence from THIS page is not proof the capability doesn't exist.** Remote
-MCP may be documented elsewhere, or supported without being in this reference. **I have not established
-that it isn't.** What I have established is that **the shape PDR-006 needs is not on the page that
-specifies plugin MCP configuration** — which is enough to make it a question worth answering before
-Phase 2 rather than during it.
-
-**Two possibilities, and they cost very differently:**
-
-| | consequence |
+| transport | fields |
 |---|---|
-| **(a)** remote MCP is declarable directly | manifest gains a few lines; nothing else changes |
-| **(b)** plugins only host **local** MCP servers | **the plugin must ship a stdio shim that proxies to `mcp.pipermorgan.ai`** — a real component, with its own auth, error handling and update path, that PDR-006 does not currently describe |
+| `stdio` | `command`, `args`, `env` |
+| **`http`, `sse`, `ws`** | **`url`, `headers`, `headersHelper`** |
 
-**(b) is not a detail.** It puts a piece of software we'd have to write and maintain between the user and
-the endpoint, and it's the kind of thing that gets discovered during implementation.
+**So `mcp.pipermorgan.ai` is a supported shape and PDR-006's premise holds. No stdio shim is owed.**
+(Arch fetched and confirmed; the taxonomy lives in the placeholder-substitution table, not the
+`mcpServers` config section, whose two examples really are both `command`-based.)
+
+⭐ **Better than a negated risk**: **`headersHelper` is the documented mechanism for supplying *dynamic*
+auth headers per request** (vs static `headers`) — which is a **carrier for Arch's condition 1**, the
+fail-closed per-call `owner_id` resolution. That requirement now has a named transport instead of needing
+one invented.
+
+⛔ **How I got it wrong, recorded because the mechanism is reusable**: the answer was at **line 691 of the
+page dump I already had.** My search was `grep -i '…\|sse\|…' | head -8`. **`-i sse` matches
+"pa·sse·d" and "proce·sse·s"** — ordinary prose — producing **exactly 8 noise hits that filled the
+`head -8`**. Line 691 sat below the cut. **A pattern that is too LOOSE, paired with a truncating `head`,
+EVICTS the true positive.** Opposite cause from the too-narrow predicates we've been cataloguing, same
+false negative. **Never `head` a search you intend to draw a NEGATIVE conclusion from.**
 
 ## Draft manifest — verified fields only
 
@@ -77,8 +72,9 @@ the endpoint, and it's the kind of thing that gets discovered during implementat
 }
 ```
 
-**Every field above appears in the reference's Complete Schema.** No `mcpServers` block — see the gap
-above; **I'm not inventing the remote shape.**
+**Every field above appears in the reference's Complete Schema.** The `mcpServers` block is now
+**authorable** — `http` transport with `url` + `headersHelper` — but is deliberately still absent here
+until `mcp.pipermorgan.ai` exists and its auth shape is decided (Phase 2, Arch's condition 1).
 
 ### Open, and not mine to decide
 
@@ -94,8 +90,7 @@ above; **I'm not inventing the remote shape.**
 
 ## Next, in order
 
-1. **Answer the remote-MCP question** (Arch/Lead) — it gates whether a shim exists. Cheapest first step is
-   checking the MCP-server docs and `plugin-marketplaces` page rather than this one.
+1. ✅ **Remote-MCP question answered** — supported; no shim owed; `headersHelper` carries condition 1.
 2. **PM: license.**
 3. Only then is `claude plugin validate` meaningful — and note **it can't run from my seat**: `claude` is
    not on PATH or at the common install paths here.
