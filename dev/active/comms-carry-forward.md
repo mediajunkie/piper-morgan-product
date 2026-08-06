@@ -4,16 +4,20 @@
 
 ## Cron
 
-- Job `e37fa867` · `12 6,9,12,15,18,21 * * *` · verified live at every fire on Aug 3. **Auto-expires ~2026-08-09** — re-arm before then.
-- Registry row in `dev/active/duty-cycle-registry.tsv` matches.
+- ⚠️ **ROTATED at the 2026-08-05 STOP.** New job **`c635f4d1`**, same expression `12 6,9,12,15,18,21 * * *`, fresh 7-day clock — **expires ~2026-08-12**. Old `e37fa867` deleted. Registry row updated.
+- **Done CREATE-THEN-DELETE, inverting the skill's documented delete-then-create.** A failed *create* leaves you silently dark until a human notices; a failed *delete* leaves duplicates that Step 1 detects and heals on the next fire. **Prefer the failure mode that announces itself.**
 
 ## The one dated thing
 
-✅ **"The List That Lies" PUBLISHED 4 Aug** — live, 200 with body present, 1,747 words, calendar `published` + blogURL set. The cached-404 risk I flagged **resolved correctly on publish** (verified: post 200, unknown slug still 404) — Web's rebuild-invalidates reasoning held.
+⚠️ **"Drained on Paper" publishes TOMORROW (Thu Aug 6) and PM has not touched it** — last commit Jul 9, agent-only. Needs **four** things, all PM's:
+1. **Voice pass** (never done)
+2. **Art** — `image`/`alt`/`caption` all empty
+3. **Two open `[PM:]` questions** — line 17 (name Ship #049 explicitly, or keep "our own status"?) and line 49 (the dishes/baby analogy — keep, cut, or reword?)
+4. **1,656 words** vs the 1,300 target
 
-**Next: Weekly Ship #054 "Clear Is Not a Measurement" (Wed Aug 5, Exec-drafted).** ✅ H1 sentence-case fix **already applied by Exec** (`ship(054)` commit, 09:03 Aug 4). 🔴 **Line 77's "target: Aug 8" is CORRECT — do not soften** (`decisions.log:303`; Saturday, deliberate). Post-voice-pass `template-audit` still owed once PM passes it.
+✅ **Pre-pass already done (Aug 5), so tomorrow is fast**: mechanically clean — H1, dateline, 0 semicolons, 0 cohort/load-bearing, 0 tics, 0 gendered pronouns, footer correctly teases *"Verify at the User Path"* (Aug 8). The one `#NNN` hit is **inside a PM bracket** = false positive, vanishes when resolved.
 
-⚠️ **Tomorrow morning, cheap and worth doing FIRST**: read `dev/heartbeats/2026-08-05/` — see "Owed by me" below. It has a stated prediction attached, so it can be wrong.
+**Two cuts named** (~115 words, both removing *repetition* not content): line 31's sequencing paragraph, and line 59's deployed-code aside (a 4th instance of record-vs-reality after three are made). **Deliberately NOT proposing** the privacy-fix passage in the last section — it's the concrete instance that earns the closing line.
 
 ## Open PM questions — 4 across 3 posts, best answered in one pass
 
