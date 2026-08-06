@@ -847,3 +847,45 @@ RAISED BY PA, corroborated independently by PPM, verified independently again by
 2026-08-06 ~12:29 PT [comms, PM-stated in-conversation] **MVP MILESTONE DATE → 2026-08-09.** PM is moving the GitHub MVP milestone date officially to Aug 9 (PM executes the board change; Comms logging + notifying Exec per PM request). Supersedes the `2026-08-01` due date PPM flagged twice as contradicting the ratified target, and supersedes **2026-08-08** as the working target. PM's own words on the 08-08 entry at line 303: *"August 8th was actually just a misremembering, honestly. It's that slippery… I really meant August 9th, because I try to pick dates that are meaningful to myself."* ⚠️ **Line 303 is NOT amended** — it accurately records what was decided on 07-30, and PM confirmed *"that was accurate to say August 8th. That was the new target at the time."* This is a new dated entry, not a rewrite. PM also asked the team be calmed on date pressure: the date has been *"somewhat arbitrary,"* PM names their own availability rather than team throughput as the recent constraint, and does not want *"any artificial sense of panic or stress"* — while still wanting targets, and being explicit that a soft date is not permission to ship unverified. Weekly Ship #054 (published 08-05) carries *"new target: Aug 8"*; PM confirmed **no retroactive edit and no correction notice** — if the date moves, a future Ship saying so is the honest form.
 
 2026-08-06 ~12:32 PT [comms, PM-stated in-conversation] **#1481 / SLACK SOCKET-MODE PATH: HOLD THE FEATURE UNTIL IT IS SAFE — not alpha, not beta, not release.** PM ruling, given after reading what #1481 actually exposes (socket-mode DM/mention binds EVERY Slack sender to the connector owner's principal, so any workspace member DMing the bot reads/writes the owner's todos AS the owner): *"my gut feeling is we don't include this feature in an alpha, beta, or release until it is safe. ok to hold it back till then, but also it should be a high priority to build the feature correctly and safely. connector work should be front-loaded in the Production milestone."* THREE PARTS: (1) **the feature is held** from every shipping surface until safe — a stronger and simpler position than gating it off; (2) **building it correctly is high priority**, not deferred-because-held; (3) **connector work is FRONT-LOADED in the Production milestone**, a sequencing instruction for the roadmap. ⚠️ **Interaction with Arch's #1481 ruling**: Arch ruled #1481 not-a-beta-blocker *on the basis of* #1484's fail-closed gate. PM's hold reaches the same outcome **without depending on #1484 being deployed** — which is the crux PA raised (production is at 07-26, 2,304 commits behind; #1484 shipped to main 08-04 and is NOT in production). **So #1484's deployment status is no longer load-bearing for #1481 specifically. It may still be load-bearing elsewhere — that is PA's and Arch's read, not mine.** Context for the distinction PM acted on: decisions.log:229 (07-16) authorizes beta to START without finished connectors, but that is a statement about COMPLETENESS; #1481 is a defect in SAFETY, and nothing in the 07-16 decision authorizes shipping identity confusion.
+
+---
+2026-08-06 13:3x PT — Arch — ⛔ WITHDRAWN (my stop-deploy used the BRANCH number) + PM's #1481 hold + what criterion 5 still needs
+
+PM RULING (relayed by Comms, logged separately): #1481's feature is HELD from alpha, beta AND release until
+  safe; building it correctly is HIGH PRIORITY (held ≠ deferred); connector work front-loaded in Production.
+  → This reaches my #1481 outcome WITHOUT depending on #1484's deployment, retiring the crux PA raised.
+  PM acted on a distinction worth keeping: decisions.log:229 authorizes beta to START without finished
+  connectors — but that is a statement about COMPLETENESS, and #1481 is a defect in SAFETY.
+
+⛔ WITHDRAWN — MY OWN RULING, ARGUED OFF THE WRONG NUMBER. I wrote "do not deploy 2,308 commits two days
+  before beta — precisely the pattern I ruled against for #1481." That figure measured `production`-BRANCH
+  lineage, which is BENIGN BY MODE (lockstep branching; Lead's #1413 gate reports it deliberately).
+  TRUE DEPLOY RISK OBJECT (Lead measured; PA + PPM converged): 17 PRODUCT COMMITS, 14 of them this sprint's
+  own In-Review fixes, every one CI-arbitrated with issue-level evidence.
+  APPLYING MY FRAMEWORK TO THE TRUE NUMBER REVERSES IT: my ⛔ invoked "deferred work rushed under deadline";
+  17 reviewed commits of the sprint's own arbitrated fixes are the OPPOSITE — completed work reaching users.
+  It also silently priced out the #1482 honesty strings and the #1466 feature PM wants beta testers to
+  exercise, a cost I never named. WITHDRAWN, NOT SOFTENED.
+  Lead handed it over scrupulously: "I'm supplying the measurement, not contesting the framework."
+
+⚠️ PATTERN — THIRD INSTANCE THIS WEEK, IDENTICAL SHAPE, ALL MINE:
+  Mon: `| cut -c1-200` truncated a CORRECT grep hit → concluded a citation was absent, nearly corrected four
+       colleagues who were right.
+  Wed: `:57` was MY SLOT's arrival time → published as a property of the scheduler.
+  Thu: `origin/production` BRANCH lineage → called it "the artifact users meet."
+  Every one: I CHECKED A REAL THING, CORRECTLY, AND IT WASN'T THE THING MY CLAIM WAS ABOUT. That is m-43,
+  which I cited at three colleagues this week while committing it three times.
+  ⭐ RULE ADOPTED FOR MY OWN USE: NAME THE OBJECT IN THE SENTENCE, NOT JUST THE PROPERTY. Not "2,308 commits
+  behind" but "2,308 commits behind ON THE BRANCH NAMED production, which may or may not be what is running."
+  Writing the object down would have caught all three.
+
+CRITERION 5 — WHAT STILL STANDS AFTER PM'S HOLD: PM's ruling supplies the DECISION; it does not by itself
+  make the feature unreachable. A hold is real when something holds it — today either #1484's gate (not
+  deployed) or precondition 2 (unverified). With the feature held nobody configures Slack, so precondition 2
+  almost certainly holds — but "almost certainly" is the phrase this criterion was written against.
+  WHAT CHANGED: the check is no longer RISK-ACCEPTANCE needing PM sign-off; it is VERIFICATION THAT A RULED
+  HOLD IS ACTUALLY HELD. Cheaper, uncontroversial, still worth doing.
+  Lead specified the exact command, verified the storage path first (#1382 → encrypted-DB store on Fly, OS
+  keyring dead there), and STOPPED AT THEIR PERMISSION BOUNDARY rather than working around the classifier —
+  correct, and I'd rather have the boundary respected than the answer. Needs ~30s from anyone with prod shell:
+  slack_bot_user_tokens=0 → hold is real, criterion 5 closes on evidence; nonzero → hold needs a mechanism now.
