@@ -1,30 +1,33 @@
 ---
-image: 
-alt: 
-caption: 
+image: ''
+alt: ''
+caption: ''
 ---
 
 # Drained on Paper
 
 *July 4–7, 2026*
 
-A week earlier, we'd marked the connector sprint drained.
+Ever since I started putting my agents on what I call a duty cycle, in which they periodically wake up, check for new messages, do any unblocked work, and repeat until there are no new unready messages and no work they can do without input from me. The agents refer to an empty inbox or a completed task is as "drained" and suddenly that word is cropping up everywhere in their output.
 
-That's the internal word for it — the queue is empty, there's nothing left in it to pick up. And it was even true, in the narrow, technical way these words are usually true. My Lead Developer agent (Lead Dev) had closed the last buildable item, and there genuinely wasn't a next thing sitting in the queue waiting to be built. "Buildable scope drained." Accurate. Defensible. I'd have signed off on it myself, and more or less did.
+Drained just means the queue is empty, there's nothing left in it to pick up, but it's only true if you're looking at the right list of items. If you grab a stale list or a subset and find them all done you may declare the queue "drained" when it's actually not.
 
-But "drained" is a word that travels further than its evidence. It went into a status log, then into a briefing, then into everyone's shorthand, and somewhere along that path it quietly stopped meaning "the queue is empty" and started meaning "the connectors are basically done." Nobody decided that. It just happened, the way a claim rounds itself up every time it gets repeated by someone who wasn't in the room when it was first made.
+Recently, my Lead Developer agent (Lead Dev) had closed the last buildable item on its list derived from the backlog of the RECONNECT sprint, and there genuinely wasn't a next thing sitting in the queue waiting to be built. "Buildable scope drained" was accurate within the narrow scope of issues it was currently aware of and tracking, but had not been tested against any canonical, fresh information source.
 
-[PM: the "drained" declaration lives in Lead Dev's July 1 day-close log and propagated through the omnibus and the briefing — Ship #049 itself said "active build, moving fast," not "drained." I've written it as "our own status," not "the Ship," to stay accurate. Flag if you'd rather name the Ship explicitly.]
+That "drained" word had legs. It went into a status log, then into a briefing, then into every agent's shorthand, and somewhere along that path it quietly stopped meaning "the most recent task queue is empty" and started meaning "the connectors are basically done" without the latter actually be, well, true. It just happened, the way a claim rounds itself up every time it gets repeated by someone who wasn't in the room when it was first made. (It almost made it into that week's Ship till my fact-checking caught it.)
+
+People can make this kind of mistake. I've made it as a working PM when I misunderstood the scope of an issue at a given point, or confused two distinct issue with a strong resemblance. Agents do it all the more easily, having little more than the immediate text strings to work to keep richer nuance alive.
 
 On Saturday I went to check, and found out how far the word had drifted from the thing.
 
 # The gut check
 
-It started as an ordinary question. I asked Lead Dev what was unblocked in the connector work that it could pick up right now.
+It started as an ordinary question. I asked Lead Dev what was unblocked in the connector work that it could pick up right now. I often ask this because I need to step away and can't babysit. The standing instruction is to save up questions for me in one big batch that I can address in a single 1-1 conversation, and keep moving until there is nothing left to do that doesn't require my input or decision.
 
-The good version of what happened next is that it didn't answer from memory. Instead of repeating the days-old "drained" recollection, it went and paginated the actual project board — all 1,175 items, twelve pages of cursor-walking, because the naive query silently returned nothing — and came back with a real count. And then I did my own gut check against it, and the gut check is the whole story.
+The good version of what happened next is that it didn't answer from memory. This is a core discipline in my agents' instructions.  Instead of repeating the days-old "drained" recollection, it went and paginated the actual project board — all 1,175 items, twelve pages of cursor-walking, because the naive query silently returned nothing — and came back with a real count. And then I did my own gut check against it.
 
-Eight connectors were the point of this sprint. GitHub, Google Calendar, Slack, Notion, and four more — the integrations that make Piper actually useful, instead of a very articulate box that can't touch anything. Of those eight, exactly two had been built onto the new shared design. And neither of the two actually worked end to end. They passed their unit tests and failed their integration tests — fourteen failures, sitting there the whole time under a sprint we'd been calling drained.
+
+I had (without paying close enough attention) at some point approved supporting eight connectors for the MVP. There were four I had focused on from the start, the ones I happen to use most directly myself: GitHub, Google Calendar, Slack, and Notion, and then four more. These integrations are designed to make Piper actually useful, instead of a very articulate box that can't touch anything. Of those eight, only two had been refactored for the new architecture design, and neither of the two yet actually worked end to end. They passed their unit tests and failed their integration tests — fourteen failures in a sprint some docs had been calling drained.
 
 I said it plainly, and I'll quote myself because I want the bluntness on the record: "we can never close this sprint until we get those eight connectors done, and we've only done two of them, and neither of those two are working yet." Then I asked Lead Dev the honest version of the question — am I losing the forest for the trees here? It wasn't. If anything it named a sharper version, that a real chunk of the "connector" effort that cycle had gone into a lane that wasn't even on the same architecture as the two finished ones, work that hadn't compounded toward the goal at all.
 
