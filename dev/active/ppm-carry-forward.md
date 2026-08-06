@@ -1,7 +1,8 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-05 STOP (~22:30 PT) — day closed, cron re-armed for Thursday
+**Last rewritten**: 2026-08-06 Fire 2 (~10:30 PT) — after correcting a two-orders-of-magnitude
+error I had told PM I'd verified independently
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -31,9 +32,15 @@ sprint or to the **Production** milestone.
 - **Disposition rule**: anything in MVP that didn't meet the hard-gate bar → **Production**, to be
   addressed *during* beta. So **an issue sitting in Production is the rule working, not a defect.**
 
-🔴 **Two "canonical" docs are STALE on this and will mislead you:**
-- `docs/internal/planning/sprint-board-structure.md` — still lists M4/M5 as "next planned MVP sprint"
-- `docs/internal/planning/roadmap/roadmap.md:68` — differentiator #4 still reads "(M4 territory)"
+✅ **BOTH DOCS ARE NOW FIXED — verified 2026-08-06, and this line used to say they weren't.**
+- `sprint-board-structure.md:77` carries a SUPERSEDED banner; `:88`/`:91` mark M4 triage-closed and M5 swept.
+- `roadmap.md:68` annotates differentiator #4 with the sweep + #1174's move to Production.
+
+⚠️ **Note what just happened, because it is the whole lesson in one line.** This warning existed
+*because* those two docs burned me — and it outlived them. **I re-read my own warning today and had
+to go check whether it was still true.** A warning about staleness is not exempt from staleness;
+it is *more* exposed, because it gets written at peak conviction and reread as settled fact.
+**Owed and still open**: the remaining `(M4 …)`/`(M5 …)` refs elsewhere, as a class.
 
 ✅ **The accurate source is `docs/internal/planning/beta-blockers.md`** (see its lines 12 + 20).
 
@@ -54,7 +61,42 @@ liveness claim is most often made and least examined.
 mechanism.** On fires where I ran it, `--if-quiet` suppressed as documented; on at least one I never
 ran it. Those two populations are not separable retroactively. **The clean claim is narrow.**
 
-## 🔴 FIRST THING THURSDAY (08-06) — beta Sat 2026-08-08, TWO days
+## ⚠️ BRANCH ≠ DEPLOYED ARTIFACT — and "I verified it independently" needs a DIFFERENT METHOD
+
+**2026-08-06, my error, caught by Lead and PA and not by me.** I sent PM an URGENT saying
+*"commits on main not in production → **2,282**"* and wrote *"verified the deployment claim
+independently before building on it."*
+
+**`origin/production` is the production BRANCH; the deployed ARTIFACT is a Fly release.** Branch
+staleness is benign-by-mode; the 2,282 delta is overwhelmingly mailbox/log/doc traffic from ten
+agents. **Measured against the artifact (Fly v29, 2026-08-02, `main@b619794af`): 984 commits total,
+of which 15 touch `services/` or `web/`.** ~15 product commits, ~4 days. **Two orders of magnitude.**
+
+**⭐ The transferable part is the verification, not the number.** I ran the SAME comparison PA ran,
+so **agreement was guaranteed and my check could not have caught the error.** A second measurement
+that shares the first's method is **not** independent verification — it is replication wearing the
+word "independent." *This is the class I wrote up on 07-26 and then committed eleven days later.*
+
+**And it skewed a decision I put to PM**: I framed "deploy main before beta" as high-risk *because*
+2,282. ~15 product commits over four days is an **ordinary release**. **A wrong magnitude doesn't
+just misinform — it can invert which option looks safe.**
+
+**Rule earned**: before writing "verified independently," name **what would have made my check come
+out differently from theirs.** If the answer is "nothing," it's a repeat, and say *that* instead.
+
+## 🔴 CURRENT — beta target **Sunday 2026-08-09** (was "Sat 08-08" here; wrong on BOTH counts)
+
+**PM 08-06, via Comms**: *"August 8th was actually just a misremembering… I really meant August
+9th."* Also: the target is *"somewhat arbitrary,"* PM named **their own availability** (not team
+pace) as the recent constraint, and asked for **no artificial panic**. ⚠️ **Not a loosening of the
+bar** — a soft date is *more* reason not to ship unverified, since the reason to hurry shrank.
+✅ **MVP milestone due date now reads 2026-08-09** — the field I flagged twice. Resolved; dropped.
+
+**#1386 criterion 5 is OPEN and CHECKABLE (not blocked).** Arch verified in production:
+`slack_inbound_enabled` → **0 occurrences**, all three #1484 commits non-ancestors, **leak path
+fully present** — so #1484's gate is genuinely absent from the deployed artifact. **But** the leak
+requires a `slack_bot` token **a tester cannot mint**, so the criterion is checkable this morning.
+**My criterion-2 signature stands** — it was measured against `main`; the layer question was right.
 
 **1. Radar/Surface-1 is SETTLED — do not re-derive it.** Radar's rendering is **Surface 1** (history
 sidebar, #1236). PDR-005 specifies a **cross-client variant** of it at `:122`, `:245`, `:288`, `:328`;
@@ -128,9 +170,24 @@ already answered before sending.**
 
 ## Cron
 
-**ARMED** — job `85981d52` (rearmed each fire), `52 6,9,12,15,18,21`, six fires/day.
-⚠️ **Session-only + auto-expires after 7 days** — it is NOT a durable daemon. If this session ends
-the cycle stops silently while the registry row still claims watched coverage. Flagged to PM 7/30.
+**ARMED** — job `25af26ae`, `52 6,9,12,15,18,21`, six fires/day. **CronList-verified: exactly one.**
+
+🔴 **GAP-C OBSERVED ON THIS SEAT, 2026-08-06 — with a tight before/after, which prior reports lacked.**
+Job `c079437c` was CronList-verified present at the 08-05 22:22 STOP and fired normally today
+(07:52 START, 09:52 WORK). **A context compaction occurred. `CronList` at 10:27 returned
+"No scheduled jobs."** I ran no `CronDelete`; the job was created 08-05 so the 7-day expiry is not
+in play. **The cycle would have gone silent with the registry still claiming coverage** — and the
+only reason it didn't is that the compaction happened to leave me a turn in which to look.
+
+⚠️ **State that narrowly**: what I observed is *cron present → compaction → cron absent*, not the
+internals. I don't have the mechanism, and after this morning I am not going to assert one I haven't
+measured. It is consistent with the skill's Gap-C note (session-scoped crons die silently;
+`durable:true` is a no-op — PA 2026-06-07) and adds a same-session before/after to it.
+
+⚠️ **Session-only + 7-day auto-expiry, both silent.** This is NOT a durable daemon. **The self-heal
+only works if the session gets a turn at all** — a fully-dead cron has no trigger, so a seat that
+compacts while idle stays dark until a human prompts it. The cure is external (Routines watchdog),
+not anything I can do from here. Flagged to PM 7/30; reported to CIO 8/6 with this evidence.
 
 ---
 
