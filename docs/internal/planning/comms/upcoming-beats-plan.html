@@ -67,7 +67,7 @@ Nothing here is drafted. <strong>Everything waits on your steer.</strong></p>
 <div class="beat">
 <h3>Beat 24 — “More Than Half of It Was Lying”</h3>
 <p class="slot">Jul 16–18 · proposed slot Thu <strong>Aug 20</strong></p>
-<div class="row"><div class="lbl">A plot</div><div>They set out to delete dead code and found that more than half of it wasn't dead — it was faking success when called.</div></div>
+<div class="row"><div class="lbl">A plot</div><div><s>They set out to delete dead code and found that more than half of it wasn't dead — it was faking success when called.</s><br><span class="warn">🔴 REFUTED 5 Aug by the primary-source pass — <a href="#verified">see below</a>.</span> The proportion is not in the logs (actual: <strong>274 handlers classified, 66 to unswallow = 24%</strong>). <strong>Suggested replacement:</strong> <em>they set out to remove code that lies about what it did — and the removal pass turned up something classified dead that was quietly still load-bearing.</em></div></div>
 <div class="row"><div class="lbl">B plot</div><div>A pre-flight check catches a classifier error that would have silently degraded every classification.</div></div>
 <div class="row"><div class="lbl">Cut</div><div class="cut">The owner-scoping contract, the census numbers, the sprint gate mechanics. All real, none serves the A plot.</div></div>
 </div>
@@ -75,7 +75,7 @@ Nothing here is drafted. <strong>Everything waits on your steer.</strong></p>
 <div class="beat flag">
 <h3>Beat 25 — <span class="warn">needs a new title</span></h3>
 <p class="slot">Jul 19 · proposed slot Tue <strong>Aug 25</strong></p>
-<div class="row"><div class="lbl">A plot</div><div>A push-retry shortcut silently reverted a colleague's already-landed work. A <em>different</em> role noticed. The author root-caused and restored it, and a durable rule came out — all inside one session.</div></div>
+<div class="row"><div class="lbl">A plot</div><div>A push-retry shortcut silently reverted <strong>two</strong> colleagues' already-landed work — <strong>CIO's and Web's</strong>. The author root-caused, audited past what had been reported, restored it, and a durable rule came out — all inside one session.<br><span class="warn">⚠️ Corrected 5 Aug from primary logs</span> — my earlier version said <em>one</em> colleague and <em>&ldquo;a different role noticed.&rdquo;</em> The real chain is <strong>CIO partially finds it → PM flags the collision → PPM audits and owns it.</strong> <a href="#verified">Detail below</a>. <strong>PM is in this beat</strong>, which the omnibus-sourced version had dropped.</div></div>
 <div class="row"><div class="lbl">B plot</div><div>The team coming back from a multi-day outage — the <em>setting</em> for the above, not a story of its own.</div></div>
 <div class="row"><div class="lbl">Cut</div><div class="cut">The CI streak (it's Beat 26's A plot and was double-counted), the Ship #052 coordination.</div></div>
 <p class="note">My first pass called this “The Sunday That Held Everything” and described three things at once. That title <em>is</em> the comprehensiveness impulse announcing itself — it's the clearest example of the habit you flagged.</p>

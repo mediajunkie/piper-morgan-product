@@ -71,7 +71,7 @@ error; HOST made its mirror image — checked *what* the belt reads, not *when*)
 and was **not closed** — one match was a continuity reference to the prior day, the other was **my own
 prose about the freeze-check's DAY-CLOSED skip.** ⭐ **Writing ABOUT the marker creates a false marker**,
 and the roles most likely to write that prose are the ones working on the watchdog. Use the anchored
-pattern from `duty-cycle-freeze-check.sh:99`. **A count is not a marker.** ⚠️ **Hit TWICE on 2026-08-05, two unrelated files** — the second time my own *correction note* quoting old text made `grep -c` report the retracted claim as still live. **Writing ABOUT a marker creates a match for it. Verify with line context, never a count.**
+pattern from `duty-cycle-freeze-check.sh:99`. **A count is not a marker.** ⛔ **GENERAL FORM (3 instances on 08-05): any audit for a retracted claim MATCHES ITS OWN CORRECTIONS** — the better a correction states what it corrects, the more certainly it defeats the search for what it corrected. **Line context, never a count.** ⚠️ **Hit TWICE on 2026-08-05, two unrelated files** — the second time my own *correction note* quoting old text made `grep -c` report the retracted claim as still live. **Writing ABOUT a marker creates a match for it. Verify with line context, never a count.**
 
 ⏱️ **YOUR FIRES ARRIVE ~+30 TO +33 MIN AFTER THE CRON MINUTE** — cron `:42` → actual `:12`–`:15` of the
 **next** hour. Measured across 7 consecutive fires from **commit timestamps**. ⛔ **Never label a fire by
@@ -110,8 +110,10 @@ proves you read it, not that you read what it does.
    audit**; `_handle_learn_pattern` is the one to re-check first.
    ⬜ **Open for Lead**: the ~15-site breaking change. ⬜ Unscreened: `meeting` (offer-only),
    `run_todo_query_workflow` (separate module).
-   ⬜ Other Phase 0 items untouched: `claude plugin validate` dry-run · public docs page · ChatGPT
-   5-positive/3-negative test cases.
+   ⬜ Other Phase 0 items: **`claude plugin validate` dry-run is MIS-SCOPED** — verified 8/05: `claude` is
+   not on PATH or at common install paths, **and no plugin manifest exists** (`coordination/manifest.json`
+   is the async-prompt-queue tracker, unrelated). **The real item is "author a plugin manifest, THEN
+   validate"** — a build task, not a command. · public docs page · ChatGPT 5-positive/3-negative test cases.
 2. 🟡 **Probe B — now UPSTREAM of the catalog, and PM-gated on API spend.**
    Spec: `dev/active/phase0-client-llm-probe-spec-2026-07-30.md`. **Do situation-shaped tool names route
    worse than object-shaped?** ⭐ **The alias set is that experiment sitting in the codebase** —
