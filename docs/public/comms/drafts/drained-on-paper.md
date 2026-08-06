@@ -30,9 +30,11 @@ I had (without paying close enough attention) at some point approved supporting 
 
 There were two issues here entangled, one easier to deal with than the other. The easy one is embarrassing. Some agent had added four more random connectors to the list that made no sense to me, and yet somehow I had waved them through. I corrected the record and those four phantom connectors were quietly dropped from the plan.
 
-The harder part was that the core four connectors were still less than half done. I told the agent team, in my frustration, "we can never close this sprint until we get those connectors done, and we've only done two of them, and neither of those two are working yet." Then I asked Lead Dev if I had lost sight of the forest for the trees here? This prompted a deeper dive and yet more disapointment. A real chunk of the recent "connector" effort that cycle had been spent tightening up the previous agone into a lane that wasn't even on the same architecture as the two finished ones, work that hadn't compounded toward the goal at all.
+The harder part was that the core four connectors were still less than half done. I told the agent team, in my frustration, "we can never close this sprint until we get those connectors done, and we've only done two of them, and neither of those two are working yet." Then I asked Lead Dev if I had lost sight of the forest for the trees here. This prompted a deeper dive and yet more disappointment. The two partially finished ones were not even built on the newer architecture..
 
-So we changed the shape of the work. No more breadth, no more touching all eight a little. One connector taken all the way to genuinely, boringly done — working, tested, cleaned up, usable at signup — before we let ourselves start the next one. GitHub first. Then Calendar. Then the rest, one at a time, each finished before the next began.
+Sadly, I have seen this before. A team without enough direction drifting horizontally onto a non-converging path. It always stings and it always requires standing down and resetting, and sharper focus.
+
+I told the team: No more breadth, no more touching all connectors a little. Instead, we take one connector taken all the way to genuinely, boringly done — working, tested, cleaned up, usable at signup — before we let ourselves start the next one. GitHub first. Then Calendar. Then the rest, one at a time, each finished before the next began.
 
 # A source of truth
 
