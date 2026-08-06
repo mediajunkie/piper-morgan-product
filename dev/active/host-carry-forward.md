@@ -75,6 +75,12 @@
 - **Heartbeat: emit UNCONDITIONALLY AT WAKE**, no `--if-quiet`; end-of-fire write optional. PA's time-order finding — the suppressing commit can postdate the sweep, and no window value fixes a predicate evaluated at the wrong instant.
 - **Portfolio refresh is its own step**, not a side effect of the workstream review. Verified by `check-refresh-promises.py`; was LAPSED ×4 before 08-04.
 
+## Fire-open discipline (measured, 08-05)
+
+**`date` then heartbeat, before sync and before the checkers.** 6 fires: procedure ≈ 5–7s that way; 24 MINUTES when the heartbeat came after sync. **Capture checker exit codes before any pipe** — `cmd | head` reports head's status.
+
+⚠️ **Do not build anything on my dispatch numbers.** "Per-seat constant" was falsified by my own next fire (5× +23m3x, then +30m22s) and inverted by three seats within the hour (arch/pa/host-outlier all ~+30m1x). Arch's per-fire decomposition needs none of it.
+
 ## Standing hazards
 
 - **Verify at the mechanism, not the announcement** — especially when the announcement points at *less* work.
@@ -91,4 +97,4 @@
 
 ## Cron
 
-Current job **`41e6e73e`** (chain … `2cebafed → 2d87bd9f → fd14a8e7`), expression **`37 6,9,12,15,18,21 * * *`** — verified against `CronList` **and** the registry row this STOP; they agree. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
+Current job **`996843af`** (chain … `2cebafed → 2d87bd9f → fd14a8e7`), expression **`37 6,9,12,15,18,21 * * *`** — verified against `CronList` **and** the registry row this STOP; they agree. Re-arm weekly minimum; silent 7-day expiry; delete-then-create-then-verify. **Never write your cadence from memory.**
