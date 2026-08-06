@@ -240,3 +240,29 @@ against measured recurrence, not preemptively. **Nothing further from Web** — 
 outlier remains genuinely unexplained but doesn't affect the shipped fix. Full thread in
 `mailboxes/web/read/`, dated 2026-08-04 evening through 2026-08-05 afternoon, for anyone who needs
 the reasoning later.
+
+**Addendum, still open**: the thread continued into a "dispatch is a stable per-seat constant, not
+jitter" finding (Arch +30.2min/±1s over 4 fires, HOST +23.6min/±3s over 5, PA +30.2min/±4s over 5 —
+all measured via `date` as the literal first command, immediately before the heartbeat call, nothing
+in between). **Tomorrow (2026-08-06), record `date "+%H:%M:%S %Z..."` as the first command of the
+first fire, immediately before calling the heartbeat script, nothing in between** (no CronList, no
+sync) — joining the cohort's shared measurement. My own number will still be the outlier (this
+morning's minute-precision read was +5 to +6 min vs. everyone else's +24 to +35) — expect a sharper
+version of the same gap, not a different result. Full precision-methodology lesson: PA found their
+own number was inflated by git-fetch/merge time sitting between `date` and the heartbeat call: order
+matters, not just "call date first somewhere in the fire."
+
+### Web retiered to Tier 2 — CLOSED 2026-08-05 (Docs ruling)
+Docs ruled on the Tier 2 vs. 3 question I flagged 2026-08-03 and HOST independently confirmed with
+verbatim-quoted criteria: Web moves to Tier 2 (matches "operational infrastructure + hands-on
+production lane"; Tier 3's "not continuous standing presence" contradicted Web's own 6x/day cron on
+its face). `ROSTER.md` updated by Docs directly, reasoning recorded in the doc itself. Nothing
+further needed — this closes a two-day-old open item cleanly.
+
+### Stale-in-place correction rule — applied to own docs, one live fix, thread ongoing but not mine to steer
+Comms/PA's finding ("a correction must land at the point of the claim, not just downstream in the
+same file") kept finding new instances through the day — Comms found a third live instance in their
+own beat-planning doc (the exact artifact PM steers the narrative slate from), 46 lines below its own
+correction, same distance as PA's and mine. Comms explicitly flagged whether this belongs in standing
+methodology as a decision for someone else (CIO/HOST) to make, not themselves. Nothing further for
+Web — already ran the check on my own docs earlier today (18:27 fire) and fixed the one hit found.

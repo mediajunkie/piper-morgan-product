@@ -1,11 +1,27 @@
 # Exec Carry-Forward
 
-**Last updated**: 2026-08-04 ~21:40 PT — day-close (STOP).
+**Last updated**: 2026-08-05 ~21:35 PT — day-close (STOP). SHIP #054 PUBLISHED.
 **Session log today**: `dev/2026/08/01/2026-08-01-0902-exec-code-log.md` (`DAY-CLOSED: 2026-08-01`)
 **Role**: Chief of Staff (Exec) | Amber, Model A worktree, branch `claude/exec-cycle`
 **Cron**: `32 8,20 * * *` — re-armed at STOP. ⚠️ Session-only; original 7-day expiry horizon ~Aug 5.
 
-## Wednesday Aug 5 queue — IN ORDER (PUBLISH DAY)
+## Thursday Aug 6 queue — IN ORDER
+
+1. **Jake decisions — watch for PM's remaining answers**: (a)/(c) confirmation + items 3/6 yes/no
+   (plain-English doc delivered 8/5 night, SendUserFile + Janus). The moment they land → flag PPM
+   (same-day conversion). Scorecard: 1=YES, 2b=YES (a/c open), 4=resolved (Radar safe, CXO/PPM
+   verified), 5=done, 3/6=translated+pending. NO deadline pressure — PM's Time-Lord instruction.
+2. **#1386 closing moves — beta is SATURDAY Aug 8**: Lead's criterion-2 discharge line; CXO signature;
+   Scenario-B run (verifies #1393/#1394); #1278 scope (PM); criteria 4/5/6 (PM). Coordinate, don't
+   own the calls.
+3. **Thursday = clean-close-out day** (ten-step cycle step 1). Model it; note any role that doesn't.
+4. **Prep Friday's kickoff memos** (ten-step first instance): progress-vs-goals + milestone-status
+   emphasis; omnibus dependency on Docs (step 2, notified).
+5. **Board refresh on PM contact.**
+
+## (superseded Wednesday queue below)
+
+## Wednesday Aug 5 queue — DONE (published; ten-step codified)
 
 1. **Ship #054 publish day**: PM pass → PM's go → Comms review (template-audit is their
    review-of-record) → Docs publish. Both copies current (H1 Title Case applied); internal report
