@@ -2,8 +2,8 @@
 type: briefing
 title: ROSTER.md — Piper Morgan Role Roster
 valid_from: "2026-05-22"
-last_updated: "2026-05-22"
-last_verified: "2026-06-19"
+last_updated: "2026-08-05"
+last_verified: "2026-08-05"
 ---
 
 # ROSTER.md — Piper Morgan Role Roster
@@ -40,15 +40,27 @@ Standing leadership roles. Each owns a strategic lane + a methodology workstream
 
 ---
 
-## Tier 2 — Staff (3 roles)
+## Tier 2 — Staff (4 roles)
 
-Standing staff roles. Each owns operational infrastructure + a hands-on production lane. All three on Claude Code.
+Standing staff roles. Each owns operational infrastructure + a hands-on production lane. All four on Claude Code.
 
 | Role | Slug | Briefing | One-line lane |
 |---|---|---|---|
 | **Lead Developer** (Lead Dev) | `lead` | `BRIEFING-ESSENTIAL-LEAD-DEV.md` | Multi-agent dev coordination; cathedral-quality completion; evidence-chain enforcement |
 | **Piper Alpha** (PA) | `pa` | `BRIEFING-piper-alpha.md` | PM assistant; skunkworks PoC coordination; PM-bandwidth-extension lane |
 | **Documentation Management** (Docs) | `docs` | `BRIEFING-ESSENTIAL-DOCS.md` | Omnibus logs; mailbox system; blog metadata pipeline; merge-keeper sweep |
+| **Web** (Unicorn Web Designer) | `web` | `BRIEFING-ESSENTIAL-WEB.md` | pipermorgan.ai public site + publishing pipeline; a two-repo role (product-repo infra worktree + `piper-morgan-website` worktree) |
+
+**Web retiered from Tier 3 → Tier 2, 2026-08-05 (Docs ruling).** Web flagged this 2026-08-03 as a
+question rather than deciding it unilaterally; HOST independently reached the same read 2026-08-03 and
+quoted both tier definitions verbatim rather than paraphrasing. By this doc's own stated criteria:
+Tier 2 requires "operational infrastructure + a hands-on production lane" (Web owns the publishing
+pipeline + the site — matches); Tier 3 is for roles "deployed for specific work shapes rather than
+continuous standing presence" (Web runs a continuous 6×/day cron since ~2026-06 — contradicted by the
+tier's own definition). Tier 3 fit the role once as "the least-contested slot" while its status was
+unverified; it stopped fitting the moment the role's actual operating pattern was confirmed. Both
+people closest to the evidence read it the same way and neither overrode the other's lane to act on it
+— exactly the discipline this doc depends on to stay authoritative.
 
 ---
 
@@ -60,15 +72,6 @@ Roles deployed for specific work shapes rather than continuous standing presence
 |---|---|---|---|---|
 | **Coding Agent** (subagent) | `prog-code` | `BRIEFING-ESSENTIAL-AGENT.md` | Active (deployed by Lead Dev / others as needed) | Subagent role for precise technical tasks; systematic verification + evidence |
 | **Exploratory Testing Agent** (ETA) | `test` | `BRIEFING-ESSENTIAL-ETA.md` | Dormant (last session March 2026) | Agent-perspective testing of Piper Morgan's systems; friction + capability-gap surfacing |
-| **Web** (Unicorn Web Designer) | `web` | `BRIEFING-ESSENTIAL-WEB.md` | Active (standing duty-cycle, cron `22 6,9,12,15,18,21 * * *`, since ~2026-06) | pipermorgan.ai public site + publishing pipeline; a two-repo role (product-repo infra worktree + `piper-morgan-website` worktree) |
-
-⚠️ **Added by Web, 2026-08-03** — this role and its briefing (`BRIEFING-ESSENTIAL-WEB.md`) were both
-entirely absent from this doc and from CLAUDE.md's "Your Role" table, despite being active since
-~2026-06 with its own standing cron, worktrees, and mailbox — closing that existence gap rather
-than continuing to carry it unverified. **Tier placement left as a flag, not a decision**: Web runs
-a continuous standing cron (6x/day) rather than being "deployed for specific work shapes," which
-reads more like Tier 2 than Tier 3 — but retiering is Docs' call as roster owner, not mine to make
-unilaterally on a doc I don't own. Placed in Tier 3 for now as the least-contested slot.
 
 ---
 
