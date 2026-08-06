@@ -34,8 +34,6 @@ The harder part was that the core four connectors were still less than half done
 
 Sadly, I have seen this before. A team without enough direction drifting horizontally onto a non-converging path. It always stings and it always requires standing down and resetting, and sharper focus.
 
-I told the team: No more breadth, no more touching all connectors a little. Instead, we take one connector taken all the way to genuinely, boringly done — working, tested, cleaned up, usable at signup — before we let ourselves start the next one. GitHub first. Then Calendar. Then the rest, one at a time, each finished before the next began.
-
 # A source of truth
 
 The deeper problem was that I'd trusted a status instead of the thing the status was describing. So the next day, with my principal product manager agent (PPM), we went after that directly.
@@ -57,8 +55,6 @@ This also made it freshly clear to me that I have to make sure Piper Morgan does
 # Built and ratified
 
 The rule about "When you want to know the state of something, go read the actual thing, not the note somebody wrote about it" got moved into the core file every agent on the team loads every session.
-
-My Lead Dev started verifying against the version of the code actually deployed on the live server rather than the version sitting in the shared branch. Issue after issue that had been marked open turned out, on a real check, to already be done.
 
 The week ended with my chief architect agent (Arch) and the team taking everything that had been designed and actually building it — then ratifying each build against its own design, nothing called done from a memo, every "done" read back out of the running code.
 
