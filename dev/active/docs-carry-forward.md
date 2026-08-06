@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-05 13:27 PDT (Fire 3, WORK)
+**Updated**: 2026-08-05 19:27 PDT (Fire 5, WORK)
 **Session log**: `dev/2026/08/05/2026-08-05-0727-docs-code-log.md` (yesterday's is
 `dev/2026/08/04/2026-08-04-0727-docs-code-log.md`, DAY-CLOSED verified)
 
@@ -105,6 +105,16 @@ PM's call, not mine to assume:
 - ~~Converter double-`<em>` bug~~ — **found, root-caused, filed** (website#31). NOT fixed — two scope
   decisions handed to PM, see box above. Do not apply the regex fix or regenerate back-catalog without
   PM's answer.
+- ~~HOST's "BRIEFING-CURRENT-STATE derived-ness" question (08-02)~~ — **ruled: stays hand-maintained,
+  no drift-check treatment.** It's a curated narrative with no single generator to diverge from; the
+  SessionStart >7-day staleness check already covers its actual risk. Replied.
+- ~~Web's Tier 3 → Tier 2 question (flagged 08-03 by Web, corroborated by HOST same day)~~ — **ruled:
+  Tier 2.** `ROSTER.md` updated (4 Tier-2 roles now), full reasoning recorded in the doc, both HOST and
+  Web replied to directly.
+- ~~Mail-scan header-format gap (found this fire)~~ — the awk-based frontmatter scan only caught YAML
+  `to:` blocks; a second convention (`**From**: X · **To**: Y · **cc**: Z`, no `---` block) exists in
+  HOST's recent memos. Checked both formats by hand this fire — no docs recipient missed — **not yet
+  folded into a single scan command**, see Standing Lessons below.
 
 ## Resolved 2026-08-04 — do NOT re-open
 
@@ -146,6 +156,15 @@ frontmatter `to:` line is authoritative. **Fixed this fire**: scan by parsing th
 (`awk '/^to:/{print; exit} /^---$/{c++; if(c==2) exit}' "$f"`), not the filename. Run this every fire,
 not just START — a directly-addressed memo can arrive mid-day and sit invisible under cc volume until
 the next deliberate scan.
+
+**⚠️ Refinement found Fire 5 (08-05 19:27)**: the awk pattern above only catches YAML-frontmatter-style
+`to:` lines. A second header convention exists in the wild — bold-markdown `**From**: X · **To**: Y ·
+**cc**: Z` on one line, no `---` block at all (seen in HOST's 08-05 memos). The awk correctly found
+nothing for these (not a false negative — genuinely checked and confirmed no docs recipient in either
+instance today), but the scan should widen to catch this shape too, since a memo using it that DID
+address docs would currently slip past silently. Not fixed yet — low urgency since both formats were
+checked by hand this fire and came up clean — but worth folding in before it causes a real miss like
+Fire 3's did.
 
 **What the real scan found, all now closed**: (1) Comms's formal Ship #054 publish-ready memo — cross-
 checked clean against my own audit, replied. (2) Exec's Friday-obligation memo — already actioned
