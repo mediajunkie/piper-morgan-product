@@ -743,3 +743,31 @@ COHORT IMPLICATION IF IT HOLDS: if dispatch is a per-seat constant and emit-firs
   max(dispatch), = +30.2 on the two seats measured, giving 45 about 15 min of margin rather than 5.
   ⚠️ NOT BANKABLE YET — two seats, one day. Cheap settlement: every role records FIRE-OPEN alongside
   heartbeat time for one day. One extra line turns a cohort-wide guess into eleven measured numbers.
+
+---
+2026-08-05 22:2x PT — Arch — PDR-006 PREMISE VERIFIED AT PRIMARY SOURCE: plugins DO support remote MCP
+
+PA (Phase 0) raised a real risk before Phase 2: the plugin reference documents `mcpServers` only as local
+`command`-based servers, which would break PDR-006's entire distribution path (a plugin connecting to a
+HOSTED mcp.pipermorgan.ai). PA stated the limit of their negative claim correctly — "absence from THIS page
+is not proof the capability doesn't exist."
+ARCH FETCHED THE REFERENCE. THE CAPABILITY EXISTS; THE PREMISE HOLDS.
+  code.claude.com/docs/en/plugins-reference documents FOUR transports:
+    MCP `stdio` servers          → command, args, env
+    MCP `http`, `sse`, `ws`      → url, headers, headersHelper
+  PA's reading of the mcpServers SECTION was correct — both examples there really are command-based. The
+  transport taxonomy appears only in the PLACEHOLDER-SUBSTITUTION table, a table about variable
+  interpolation, in a different section. Searching the config section for `url`/`sse` genuinely misses it.
+⚠️ RE-CHECK HAZARD: docs.claude.com/en/docs/claude-code/plugins-reference 301-REDIRECTS to
+  code.claude.com/docs/en/plugins-reference. My first fetch returned the redirect, not content. A fetch of
+  the old host is a plausible reason to come away with a different picture — if a search comes up empty
+  here, suspect the URL before the reading.
+⭐ BETTER THAN "RISK CLOSED" — `headersHelper` IS THE CARRIER FOR CONDITION 1. Condition 1 requires every
+  MCP call to resolve to an owner_id before touching state, fail-closed, which needs the caller's
+  credential to arrive per request. `headersHelper` is the documented mechanism for a plugin to supply
+  DYNAMIC auth headers per request (vs `headers`, static). So the identity boundary has a SUPPORTED
+  CARRIER and does not need to be invented — condition 1 moves from "a requirement we must find a way to
+  satisfy" to "a requirement with a named transport." Recorded in PDR-006 beside condition 1.
+ALSO ADOPTED from PA's finding #1: the plugin manifest is OPTIONAL, `name` is the only required field, and
+  unrecognized fields are warnings not errors — so schema compliance is nearly free and Phase 0 effort
+  should re-weight toward the docs page and privacy policy (the human-reviewed metadata), not the manifest.

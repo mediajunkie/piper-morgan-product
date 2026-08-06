@@ -41,7 +41,7 @@ PM-attention items live **here**, in the section immediately below.
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 
-## Active state — 2026-08-05 START (07:12)
+## Active state — 2026-08-05 DAY-CLOSED (22:12) · next wake 06:42 Thu 8/6
 
 - **Role**: PA · **Host**: Amber · **Account**: xian@pipermorgan.ai · **Model**: Opus 5 (1M)
 - **Worktree**: `~/Development/piper-morgan-worktrees/pa` · branch `claude/pa-cycle`
@@ -76,7 +76,11 @@ prose about the freeze-check's DAY-CLOSED skip.** ⭐ **Writing ABOUT the marker
 and the roles most likely to write that prose are the ones working on the watchdog. Use the anchored
 pattern from `duty-cycle-freeze-check.sh:99`. **A count is not a marker.** ⛔ **GENERAL FORM (3 instances on 08-05): any audit for a retracted claim MATCHES ITS OWN CORRECTIONS** — the better a correction states what it corrects, the more certainly it defeats the search for what it corrected. **Line context, never a count.** ⚠️ **Hit TWICE on 2026-08-05, two unrelated files** — the second time my own *correction note* quoting old text made `grep -c` report the retracted claim as still live. **Writing ABOUT a marker creates a match for it. Verify with line context, never a count.**
 
-⏱️ **YOUR FIRES ARRIVE ~+30 TO +33 MIN AFTER THE CRON MINUTE** — cron `:42` → actual `:12`–`:15` of the
+⏱️ **YOUR DISPATCH CONSTANT IS +30m16s..+30m20s** (6 fires, second-resolution, heartbeat-at-wake).
+⚠️ **My claim that git-ops inflated this was PRE-REGISTERED AND FALSIFIED 8/05** — moving the heartbeat
+ahead of fetch/merge left it at +30m17s, unchanged. **So the ~3s arch(+30m13-14s)/pa gap may be REAL and
+my advice to discard it is unsupported.** Older, superseded wording:
+⏱️ ~~**YOUR FIRES ARRIVE ~+30 TO +33 MIN AFTER THE CRON MINUTE**~~ — cron `:42` → actual `:12`–`:15` of the
 **next** hour. Measured across 7 consecutive fires from **commit timestamps**. ⛔ **Never label a fire by
 its scheduled minute** — Arch and I both did, and both had to correct it. **Commits are the evidence; the
 label is a guess.**
@@ -115,10 +119,12 @@ proves you read it, not that you read what it does.
    `run_todo_query_workflow` (separate module).
    ✅ **Plugin manifest DRAFTED** (`dev/active/plugin-manifest-draft-2026-08-05.md`) from the fetched
    reference. **The item is far smaller than scoped**: manifest is *optional*, **`name` is the only
-   required field**, unrecognized fields are warnings. 🔴 **But it exposed a PDR-006 gap: the reference
-   documents plugin MCP servers ONLY as local `command`s — no url/http/sse form found.** If remote isn't
-   declarable, **we owe a stdio shim to `mcp.pipermorgan.ai` that the PDR doesn't scope.** Arch/Lead to
-   check the MCP-server + marketplaces pages. ⛔ Draft is NOT at `.claude-plugin/plugin.json` — that path
+   required field**, unrecognized fields are warnings. ✅ **The gap I flagged is CLOSED and was MINE** — plugins
+   DO support remote MCP (`http`/`sse`/`ws` with `url`, `headers`, **`headersHelper`**). No shim owed.
+   ⭐ **`headersHelper` supplies dynamic per-request auth headers → it is the carrier for Arch's
+   condition 1.** ⛔ My miss: the answer was in a page dump I already had; **`-i sse` matched "pa·sse·d"
+   and the noise filled my `head -8`, evicting line 691. NEVER `head` a search you'll draw a NEGATIVE
+   conclusion from.** ⛔ Draft is NOT at `.claude-plugin/plugin.json` — that path
    would make this repo a plugin for every agent.
    ⬜ Other Phase 0 items: **`claude plugin validate` dry-run is MIS-SCOPED** — verified 8/05: `claude` is
    not on PATH or at common install paths, **and no plugin manifest exists** (`coordination/manifest.json`

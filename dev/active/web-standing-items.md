@@ -108,6 +108,14 @@ stated ~14-day window and had been sitting here for six weeks regardless. Full d
 anything dropped is in git history and the dated session logs; this section points forward,
 not back, per the file's own "pointers not duplicated content" principle.
 
+- **2026-08-05** — Blog soft-404 root-caused and fixed (website `03b77d9d`): `dynamicParams = false`
+  on `/blog/[slug]` and `/blog/page/[pageNumber]`, both routes previously falling through to a
+  Vercel ISR-cached dynamic render that served a stale 200 for nonexistent slugs/page numbers.
+  Verified locally end-to-end, then live twice — once after the routine deploy, once definitively
+  when the day's real publish (a slug that had sat as a cached 404 all afternoon) came back clean on
+  the first check. Web retiered Tier 3 → Tier 2 in `ROSTER.md` (Docs ruling, closing a question I'd
+  flagged 8/3). Fixed a stale-in-place claim in `BRIEFING-ESSENTIAL-WEB.md` (found via Comms/PA's
+  same-day "correction must land at the point of the claim" finding, applied to my own docs).
 - **2026-08-03** — `BRIEFING-ESSENTIAL-WEB.md` written (`7c54afee5`), closing a gap HOST flagged
   2026-06-20; surfaced this role was also entirely absent from CLAUDE.md's role table and
   `ROSTER.md` — added to both, tier-placement flagged for Docs. Two stale carry-forward items
