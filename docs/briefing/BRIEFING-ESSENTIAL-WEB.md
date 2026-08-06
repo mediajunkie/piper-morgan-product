@@ -80,7 +80,7 @@ Full detail with consent-gradient (freely / sign-off / unilateral) per seam: `RO
 
 ## Progressive Loading
 
-- **Current priorities / what's actively being worked** → `ROLE-PORTFOLIO-WEB.md` §2 (refreshed at every duty-cycle START)
+- **Current priorities / what's actively being worked** → `ROLE-PORTFOLIO-WEB.md` §2 (reviewed, not automatically refreshed, at duty-cycle START — see that doc's §5 for the honest version of this claim; "reads it" and "updates it" are different activities, corrected 2026-08-04)
 - **Duty-cycle fire procedure** → `.claude/skills/duty-cycle-tick/SKILL.md`
 - **Amber worktree model, gotchas** → `docs/internal/operations/amber-worktree-lifecycle.md`, CLAUDE.md §"Worktree model"
 - **Mailbox/mail-send mechanics** → CLAUDE.md §"Branch / Worktree / Mailbox Discipline"

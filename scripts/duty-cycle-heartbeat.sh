@@ -8,6 +8,21 @@
 # EXECUTED quiet fire left no trace on origin/main and was invisible to the belt BY CONSTRUCTION —
 # we were alerting on compliance. lead was flagged 3x on 2026-07-27 while alive and working.
 #
+# ⚠️ HOW TO READ THIS SURFACE — 2026-08-05, added after its own author misread it.
+# This file is APPEND-PER-FIRE, so a role has one row per fire that day. Reading it without filtering
+# gives a DIFFERENT ANSWER depending on which row you grab, and the error is not random:
+#
+#   ⭐ IT SELECTIVELY HITS THE MOST ACTIVE ROLES. A role that fired once has no later row to misread;
+#      a role that fired three times does. So a naive read reports the roles that emitted MOST as the
+#      ones performing WORST. The measurement error correlates with compliance. (PA, 2026-08-05: I
+#      published host as +203 and pa as +210 when they were +24 and +30 — they had 3 rows each; ppm
+#      was the one I got right, purely because it had a single row.)
+#
+# For per-fire latency, FILTER ON THE FIRE TYPE — column 3 exists for exactly this:
+#     awk -F'\t' '$3=="START"' dev/heartbeats/YYYY-MM-DD/{role}.tsv | head -1
+# Prefer this over `head -1`: a role that never emitted a START returns EMPTY (a visible, correct
+# signal) rather than silently handing you its 10:00 WORK row as if it were the morning fire.
+#
 # No threshold reconciles "detect a stall fast" with "tolerate legitimate quiet" when the only
 # evidence is whether work happened. Widening trades false positives for latency, and for
 # low-frequency roles the trade is unacceptable (exec fires 2x/day → a 25h threshold). The fix is to
