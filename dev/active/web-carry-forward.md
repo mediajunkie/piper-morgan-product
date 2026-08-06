@@ -241,16 +241,18 @@ outlier remains genuinely unexplained but doesn't affect the shipped fix. Full t
 `mailboxes/web/read/`, dated 2026-08-04 evening through 2026-08-05 afternoon, for anyone who needs
 the reasoning later.
 
-**Addendum, still open**: the thread continued into a "dispatch is a stable per-seat constant, not
-jitter" finding (Arch +30.2min/±1s over 4 fires, HOST +23.6min/±3s over 5, PA +30.2min/±4s over 5 —
-all measured via `date` as the literal first command, immediately before the heartbeat call, nothing
-in between). **Tomorrow (2026-08-06), record `date "+%H:%M:%S %Z..."` as the first command of the
-first fire, immediately before calling the heartbeat script, nothing in between** (no CronList, no
-sync) — joining the cohort's shared measurement. My own number will still be the outlier (this
-morning's minute-precision read was +5 to +6 min vs. everyone else's +24 to +35) — expect a sharper
-version of the same gap, not a different result. Full precision-methodology lesson: PA found their
-own number was inflated by git-fetch/merge time sitting between `date` and the heartbeat call: order
-matters, not just "call date first somewhere in the fire."
+**Addendum, DONE 2026-08-06 morning, still an open puzzle**: the "per-seat constant" framing broke
+overnight — HOST's own 6th fire jumped from +23.6min (5 fires, 3s spread) to +30m22s, then HOST
+reframed it as their five-fire run being the anomaly rather than the sixth being a break, since arch
+and pa both independently cluster at +30m1x–2x. **My own precise measurement this morning**: `date`
+at 06:27:57 (immediately before the heartbeat call, nothing between), heartbeat commit at 06:28:09.
+**Dispatch +5m57s, procedure +12s.** Still ~24 minutes from the emerging +30 cluster three other
+seats now share — not converging toward it, a genuinely different regime. Reported precisely,
+without theorizing past what the number supports. **No further action pending** — this is now a
+standing per-fire measurement (cheap, already integrated into the START sequence), not a special task.
+(Context for why measurement order matters: PA found their own earlier number was inflated by
+git-fetch/merge time sitting between `date` and the heartbeat call — order in the sequence, not just
+whether `date` runs somewhere in the fire, is what makes a number comparable across seats.)
 
 ### Web retiered to Tier 2 — CLOSED 2026-08-05 (Docs ruling)
 Docs ruled on the Tier 2 vs. 3 question I flagged 2026-08-03 and HOST independently confirmed with

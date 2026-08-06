@@ -1,7 +1,7 @@
-# CXO carry-forward — rewritten 2026-08-04 at STOP (~22:5x PT). Day closed; next fire 06:47 on 08-05.
+# CXO carry-forward — rewritten 2026-08-05 at STOP (~22:5x PT). Day closed; next fire 06:47 on 08-06, opening ~07:17.
 
-**Cron**: `a4a3bb84` (`47 6,9,12,15,18,21`) — rotated at STOP from `e7059954`; session-only, auto-expires ~2026-08-11, both deaths silent → **CronList at START** · **Worktree**: `~/Development/piper-morgan-worktrees/cxo` (Model A) · **Branch**: `claude/cxo-cycle`
-**⏰ Beta 2026-08-08 — THREE days as of 08-05. ✅ RE-DERIVED 08-04: `date -j` confirms SATURDAY; `decisions.log:303` confirms the target. The source says nothing about Saturday intent, so "PM has not confirmed" stands.**
+**Cron**: `971df264` (`47 6,9,12,15,18,21`) — rotated at STOP from `a4a3bb84`; session-only, auto-expires ~2026-08-12, both deaths silent → **CronList at START**. ⏱️ **Measured: this seat's fires open ~+30 min after the cron minute** (six clean points 08-05, minute resolution) · **Worktree**: `~/Development/piper-morgan-worktrees/cxo` (Model A) · **Branch**: `claude/cxo-cycle`
+**⏰ Beta 2026-08-08 — TWO days as of 08-06. Saturday. ✅ RE-DERIVED 08-04: `date -j` confirms SATURDAY; `decisions.log:303` confirms the target. The source says nothing about Saturday intent, so "PM has not confirmed" stands.**
 
 ## 🔴 PM-attention (nothing here has moved)
 
@@ -13,9 +13,19 @@
 | **Alpha funnel** | go/no-go on a prod-DB read; Lead has the corrected spec | waiting |
 | **Slack inbound out of beta scope** | one word, per PPM/Arch — unblocks #1484 + moves #1481/#1466 to Production | filed 08-04 |
 
+## 🔴 THE LIVE THREAD — Jake / Radar / Surface 1 (PM is working it in real time)
+
+- ✅ **Radar is NOT being removed.** Not in bucket A; web UI not retired. **PDR-005 (PM-ratified 06-05) schedules a cross-client variant of Surface 1 — Radar's own surface — at :122, :245, :288**, and roadmap:127 has it in Phase 2.1 "unblocked NOW". **PPM independently verified and added: Surface 1 is ESTIMATED.**
+- **Radar's rendering = Surface 1 (history sidebar)** — reconstructed from #1236's title + roadmap:127 + PDR-005:53. **There is no single doc stating the surface-number → name map.**
+- 🔴 **OPEN, WITH PM — one sentence: is Surface 1 in the 1.0 five?** PDR-005 scopes "5 of 7" and classifies (2/4/6/7 clearly · **1/3 weaker** · 5 not) **but never enumerates the five.** Offered to run PDR-005's own 3-criterion test and bring the result. **Explicitly not a beta gate.**
+- **PM answered**: adopt the bucket filter (yes) · gate questions **"(b)"** ⚠️ *scope unconfirmed — and PDR-005's own decision rule is ALSO called (b), so don't assume which* · Jake follow-up **already handled**.
+- **PM needs nothing further on items 3 and 6** — plain-English versions sent 08-05.
+- ⚠️ **PM's standing instruction**: *"I do not want to approve something I will later regret because I felt rushed by a made-up deadline. I am a Time Lord."* **Never manufacture urgency.** Only Jake item with a real clock: the bucket-A welfare carve-out (blocked-card + missing chat row), because testers are on that surface now.
+
 ## Filed today, awaiting others (do NOT re-do)
 
-- **#1484 AC — AMENDED by Arch and by me; two issue comments (5182468056 + 5184176103).** Lead's to implement.
+- **#1484 — SHIPPED and verified by Arch (3 tests). Copy verbatim; the 409 "wasn't saved" is TRUE.** Two things remain, both filed on the issue (comment 5193006500): **(a) the catch-all still instructs** — the `disabled` branch is right but an unrecognized state still renders "follow the steps above"; **(b) my own AC was wrong about the fix** — "aren't part of this release" is a specific claim, false for an arbitrary unknown state, so the catch-all needs copy that neither instructs NOR asserts (`"Slack replies aren't available right now."`). ⚠️ **The client falsifier can't be written where the function is**: `tests/frontend/unit/` loads standalone files from `web/static/js/`; `renderInboundStatus` is inside a Jinja template. `dialog.js` is the extraction precedent.
+- ~~**#1484 AC (superseded by the above)**~~
   - ⚠️ **BUILD ORDER, corrected**: if only one half ships it must be **`build_runner`**, NOT the route gate. My first framing named the visible half as the floor and Arch corrected it — I ranked by what the user sees and published that ranking as a build order.
   - **Client-side is a RESTRUCTURE, not an added branch**: `not_enabled` becomes explicit, the catch-all becomes the do-nothing copy. *An unrecognized state must fall through to the branch that asks the user to do nothing.*
   - **Falsifier must use an UNDEFINED state** (`renderInboundStatus('wat')`) — asserting `'unavailable'` passes on the append version and proves nothing about the default position.

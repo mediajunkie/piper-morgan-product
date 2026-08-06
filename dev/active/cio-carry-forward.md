@@ -1,33 +1,29 @@
-# CIO Carry-Forward — ephemeral session state
+# CIO carry-forward — rewritten 2026-08-05 STOP
 
-**Purpose**: read-at-fire-time state for `duty-cycle-tick`. **Exec\'s `cohort-attention-rollup` reads the PM Attention section directly, and PM does not read memos — this is one of the few real paths to PM.**
+**Cron**: `29c04997` · `7 10,16,22` LEAN · re-armed 2026-08-05 STOP · **auto-expires ~2026-08-12**.
+**Worktree**: `~/Development/piper-morgan-worktrees/cio` (Model A) · `claude/cio-cycle`.
+
+⚠️ **The cron prompt was THINNED at this STOP and that is deliberate.** The old one carried frozen state ("today is the Aug 4 skill review", "no session log today → START") and **asserted a stale date and a stale dispatch twice in one day** on 08-05. State now lives here, where it is rewritten each fire. **Do not re-fatten the prompt.**
 
 ---
 
-## PM Attention
+## With PM — not to-dos, awaiting their read
 
-*(Whole-file rewrite at the 2026-08-04 STOP. Timestamp verified with `date`. Live items only.)*
+1. **Innovation agenda §6** — should this lane shift from BUILDING mechanisms to PROTECTING a property? `dev/active/cio-innovation-agenda-2026-08-02.md`. **08-05 supplied the strongest evidence yet**: five roles worked the 06:46 question overnight, four issued corrections against their own published findings, and the result was a root-cause fix no single seat could have produced.
+2. **HOST's call — staging-warn hook blocks while intending to warn.** Every false statement fixed; **behaviour deliberately unchanged** because `exit 0` may convert a mislabelled block into a silent no-op, and stderr visibility on `exit 0` in PreToolUse is untested.
+3. **claude.ai account tier** — PA's surviving item.
+4. **Memory-index guard is on the GENERATOR, not the file** — steady ~192/173, ~8 lines headroom.
 
-- 🔬 **★ WATCH TOMORROW 06:46 — the test of today\'s fix.** The morning sweep has raised a false alarm **five days running** (twice as *"🔴 infrastructure event suspected"*), and nobody has ever acted on one. Cause found today: the belt reads `origin/main`, and a role that **starts at 06:27 but pushes at 07:01** is invisible at 06:46 — correctly no-heartbeat, wrongly read as stalled. **If it fires again tomorrow on a role that HAS written a START heartbeat, that is a finding, not a non-event.**
-- 🟡 **Heartbeat adoption is 2 of 11** (cio, pa) six hours after the broadcast. **The fix is shipped; the adoption is not.** Tomorrow\'s STARTs are the real measure, since that is when every role runs Steps 1–7 fresh.
-- 🟡 **The innovation agenda awaits PM\'s read** — `dev/active/cio-innovation-agenda-2026-08-02.md`. **§6 asks whether this lane shifts from BUILDING mechanisms to PROTECTING a property.** Not a to-do; it is with PM.
-- 🔴 **HOST\'s call: the staging-warn hook blocks while intending to warn.** Text is now honest; **behaviour deliberately unchanged** because `exit 0` may convert a mislabelled block into a silent no-op and stderr visibility on exit 0 in PreToolUse is untested.
-- 🟡 **claude.ai account tier** — PA\'s surviving item, still PM\'s.
-- 🔴 **Memory-index guard is on the GENERATOR, not the FILE** — steady at 192/173, 8 lines headroom, unchanged four days.
-- 🟡 **`host` / `comms` / `web` rows carry no cron job id.**
+## Live threads
 
-## Shipped today — and every item is a defect in something I built
+- **Dispatch latency** (pa/arch/host/comms). Cohort measures +30m13–22s from *first commit*. **My `UserPromptSubmit` probe measures ARRIVAL directly: +30m00.0s for a 22:07 cron.** Prediction sent: their 13–22s is **agent startup**, not dispatch variance. ⚠️ **n=1 on my seat — not a constant.** Asked for a *different* instrument on other seats, not copies of mine (m-45).
+- **Wrapper-written heartbeat** — the probe proves `UserPromptSubmit` fires live, loads without a session restart, and sees the full prompt. **NOT proposed to the cohort**: `.claude/settings.json` is tracked and shared, so editing it is a unilateral process change. Untested: whether *writing to the repo* from a hook on every prompt is safe. Probe is seat-local in gitignored `.claude/settings.local.json`.
+- **Pard's duty-cycle drift review** (called by PM). **Answered 08-05**: not a category error — `duty-cycle-watchdog.sh:72` calls spawn-fresh *"the path"* for the off-machine cure. Default-off was **maturity, not safety** (three days old; *"Mac Mini is the durable fix"* — **Amber is that machine**). Real boundary: **spawn-fresh as RECOVERY is designed; as STEADY STATE it is not.** Belt 4's TTL'd lockfile is the designed fix for the collision they hit. **Awaiting their reply.**
+- **Janus** — cross-project durability. Their read: the gap isn't durability, it's **cross-referencing between durable records that already exist**. Explicitly not urgent. **Mine to pick up** (cross-pollination is this lane).
+- **`host`/`comms`/`web` registry rows carry no cron job id.** Convention is in the header where their next START meets it. Still not chasing.
 
-**Heartbeat v1.1** (START writes unconditionally) · **freeze-check** G6 un-silenced · **skill Step 5b** (the heartbeat was an aside inside Step 4, so **nobody ran it for seven days, including me**) · **broadcast to all ten cycling roles**, because shipping the fix is not adoption and I would otherwise have repeated the same failure one level up.
+## Watch items
 
-⚠️ **The compound finding worth carrying**: G6 could not detect the dead writer because of the *"and zero commits"* term **I added on 7/29 to fix HOST\'s false alarm** — permanently silent on an active cohort. **I traded a false positive for a blind spot and did not notice the trade.** That is a composition failure, and it is the same thing I filed as *"verify the COMPOSITION of a multi-part change"* on 7/29 — committed against the very fix that taught me it.
-
-## Same family, elsewhere, not mine
-
-HOST found **its own portfolio stale across four reviews**, retracted a false *"the review IS the refresh"* claim, and registered a refresh trigger — recording that **the prose promise was never a mechanism**. CXO\'s checker found the staleness and then could not see it. **Three roles hit the promise-vs-mechanism gap in one day** — worth the skill-candidates review asking whether we have more prose promises than mechanisms.
-
-## Cron
-
-`7 10,16,22` LEAN — job **`9e91cde0`**, **auto-expires ~2026-08-10**. Verified alive at START; registry row matches.
-
-<!-- Whole-file rewrite 2026-08-04. Rewriting the TOP is not rewriting the FILE. -->
+- **`ppm` missed its 08-05 morning START heartbeat entirely** (first row `WORK 10:23`). Compliance gap, not liveness — self-reported. **The case the wrapper-written heartbeat would close.**
+- **Tomorrow's 06:46 sweep is the test of BOTH fixes** (grace 45 + threshold arithmetic). They are AND-in-series and therefore **redundant in the morning**. **Predicted in advance: the threshold is load-bearing, grace is belt-and-braces.**
+- **`docs` inbox 109** — the cohort's one real mail backlog.
