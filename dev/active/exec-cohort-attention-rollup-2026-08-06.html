@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — 2026-08-06</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#171717; --card:#212121; --line:#3a3a3a; --ink:#ececec; --mute:#9a9a9a;
+            --red:#e06050; --amber:#d9a03f; --grey:#8a8a8a; --green:#5fb573; --link:#6ea8e8; }
+  }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:840px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.25rem; }
+  h2 { font-size:1.05rem; margin:1.75rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.7rem .9rem; margin:.55rem 0; }
+  .item.hero { border-left-color:var(--red); border-width:1px 1px 1px 6px; }
+  .item.dec { border-left-color:var(--red); border-left-style:double; }
+  .item.drift { border-left-color:var(--amber); }
+  .item.clear { border-left-color:var(--green); }
+  .agent { font-weight:700; }
+  .sev { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .4rem;
+         border-radius:4px; background:#eee; color:#444; }
+  @media (prefers-color-scheme: dark) { .sev { background:#333; color:#ccc; } }
+  .summary { margin:.35rem 0 .3rem; }
+  .why { font-size:.85rem; color:var(--mute); margin:.2rem 0 0; }
+  .steps { margin:.4rem 0 .2rem; padding-left:1.2rem; }
+  .steps li { margin:.25rem 0; }
+  .clean { color:var(--mute); font-size:.9rem; }
+  .clean b { color:var(--ink); }
+  .resolved { font-size:.85rem; color:var(--mute); margin-top:.4rem; }
+  .resolved s { color:#999; }
+  footer { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.8rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by Exec · <b>Thu 2026-08-06 ~09:15 PT</b> · live-state pass · beta target Sat Aug 8 (recorded)</p>
+
+  <h2>⭐ The one thing: beta's remaining critical path is ~90 minutes of your time</h2>
+
+  <div class="item hero">
+    <div class="agent">The sprint is build-complete (since Tuesday). Sixteen items sit In Review with per-issue walkthroughs. Nothing is blocked on any agent. Lead's four steps, verbatim shape:</div>
+    <ol class="steps">
+      <li><b>Beta weekday word</b> (10 seconds): Saturday 8/8 stands, or Friday 8/7. The stale milestone date (8/1) aligns on your word.</li>
+      <li><b>v30 deploy</b> (5 minutes): <code>git pull && fly deploy</code> from the main checkout — carries all 16 fixes to beta, and cures the finding below. One caution: do NOT set <code>PIPER_SLACK_INBOUND_ENABLED</code> (that's #1484's protection working).</li>
+      <li><b>Verification round</b> (~60 minutes): walkthroughs are on each issue; the Slack-linking one includes the one-time <code>/link</code> registration.</li>
+      <li><b>Triage batch</b> (~15 minutes): milestone confirms on the discovered-work set + 11 untracked chat surfaces.</li>
+    </ol>
+    <p class="why">Timing honestly, no manufactured urgency: lands today → Friday/Saturday beta is comfortable. Lands tomorrow → tight but holds. Saturday morning → verification squeezes against the start itself, the scenario worth avoiding for a first-impressions event.</p>
+  </div>
+
+  <div class="item drift">
+    <div class="top"><span class="agent">Why step 2 matters more than it looks</span><span class="sev">caught by the gate</span></div>
+    <p class="summary"><b>The deployed beta artifact has been frozen at Jul 26 — ~2,280 commits behind main.</b> Everything "shipped" in the last twelve days (including the honesty fixes and #1482) is real on main and absent from production; three known-false claims are currently live on the deployed artifact. The gate discipline caught this exactly as designed: PPM publicly named the layer on their own criterion-2 signature ("covers main, not the artifact"), and criterion 5 — the deployed-artifact check — was already the open line item. Your 5-minute deploy cures all of it at once.</p>
+  </div>
+
+  <h2>🔴 Decisions awaiting you (beyond the 90-minute batch)</h2>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">Jake set</span><span class="sev">4 of 6 closed</span></div>
+    <p class="summary">Remaining: your word on <b>(a)</b> close-the-gate-on-existing-terms and <b>(c)</b> consent-gate-as-release-blocker (your "(b)" is recorded; silence on a/c deliberately not assumed) — plus yes/no on the two translated items (<b>tool-catalog naming</b> with the routing test, <b>meta-intent</b> which-layer-first instruction). The plain-English doc from last night has all four. PPM converts the full set same-day once these land. Radar: resolved in your favor, verified twice.</p>
+  </div>
+
+  <div class="item dec">
+    <div class="top"><span class="agent">Standing</span><span class="sev">unchanged</span></div>
+    <p class="summary"><b>Checklist v2.0 ratification</b> (one word) · <b>#1462 milestone</b> (rec: Production) · <b>tester-welfare instrument</b> (HOST) · <b>memory-index format</b> (guard live) · <b>skill-candidates review</b> (CIO prep ready — has now slipped three times; a named slot beats it floating).</p>
+  </div>
+
+  <h2>🟡 Awareness — no decision</h2>
+
+  <div class="item drift">
+    <p class="summary"><b>Tomorrow is the first full ten-step Friday</b>: Docs owes the omnibus early, my kickoff memos carry the progress-vs-goals emphasis, six reports same-day, internal report as artifact → Janus → your discussion → then the #055 draft. The cycle you specified runs end-to-end for the first time.</p>
+  </div>
+  <div class="item drift">
+    <p class="summary"><b>The dispatch-latency investigation self-corrected beautifully</b>: HOST falsified their own "per-seat constant" on the very next fire, Arch's pre-registered test HIT (emit-at-wake removed 10.5 minutes of phantom latency), and the scheduler's documented jitter closed the case. Fire timestamps now mean what they say. No action; it's the m-44 culture working on its own instruments again.</p>
+  </div>
+  <div class="item drift">
+    <p class="summary"><b>PDR-006's remote-MCP gap closed</b> (Arch: http/sse/ws supported; headersHelper carries condition 1) — PA's Phase-0 manifest work proceeds unblocked.</p>
+  </div>
+
+  <h2>✅ Resolved since the 8/2 board</h2>
+  <div class="item">
+    <p class="resolved">
+      <s>Ship #054</s> — published Wednesday on cadence ("Clear Is Not a Measurement").<br>
+      <s>Ten-step weekly cycle</s> — specified by you, codified same-day (process guide + skill v1.10 + Docs notified).<br>
+      <s>Jake items 1, 2b, 4, 5</s> — yes · yes · Radar-safe-verified · already-done-7/25.<br>
+      <s>Beta-date ambiguity</s> — durably recorded (Sat Aug 8).<br>
+      <s>#1484 scope</s> — Arch ruling accepted; its protection is live (the deploy caution above).<br>
+      <s>OpenAI verification, keys, Lead wake, criterion-2 signatures</s> — all landed across the week.
+    </p>
+  </div>
+
+  <footer>
+    <b>Bottom line: one 90-minute sitting from you — word, deploy, verify, triage — takes the beta from build-complete to launched-and-verified. Everything else on this board can wait until after.</b><br><br>
+    Live-state pass ~09:10: #1386 comments (PPM's layer-naming, 8/6), Lead's runway flag (8/6 06:55, build-complete claim consistent with their carry-forward + 16 In-Review verified), deploy-staleness cross-confirmed by three roles (PA count, CXO production-claims check, PPM criterion-5 mapping), registry + heartbeat surfaces current.
+  </footer>
+</div>
+</body>
+</html>
