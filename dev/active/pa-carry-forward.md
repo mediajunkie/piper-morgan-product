@@ -15,12 +15,16 @@ PM-attention items live **here**, in the section immediately below.
 
 **Beta is Sat 2026-08-08.** **2 DAYS.**
 
-- 🔴🔴 **THE ONE THING: is a release cut + deploy planned before Saturday?** **`origin/production` is at
-  **2026-07-26** — 2,269 commits / 4,314 files behind main, last tag v0.8.11.0 (07-17).** **#1484 (the
-  fail-closed Slack gate) is NOT in it** — and **Arch's #1481 "not a beta blocker" ruling rests on that
+- 🔴🔴 **THE ONE THING: is a release cut + deploy planned before Saturday?** **Deployed artifact = Fly **v29** (08-02, `main@b619794af`) — **17 product
+  commits / ~4 days behind.** ⛔ *My first memo said "2,269 commits / since 07-26" — that was the production
+  BRANCH, benign-by-mode; corrected by Lead. Don't carry it.* **#1484 (the fail-closed Slack gate) is NOT
+  in the deployed artifact** (Arch verified: `slack_inbound_enabled` = 0 occurrences, leak path present) — and **Arch's #1481 "not a beta blocker" ruling rests on that
   gate existing.** So in the running system "unconfigured" is still an absence. Also undeployed: the
   #1482 delete-copy honesty fixes. **#1386 criterion 5 is exactly this check and is unchecked.**
-  **Yes → closes itself. No → #1481 returns as a live beta condition.**
+  **Cure = the v30 deploy (PM word-batch item 2); Lead has the two-liner and can run it plus the #1413
+  parity check in minutes given the allow-rule.** ⚠️ **Urgency is real but bounded** — Arch: only 1 of 3
+  preconditions is tester-suppliable; the `slack_bot` token needs Slack OAuth against a configured
+  workspace, **which a tester cannot mint.**
 
 - ⏱️ **TEN SECONDS: open `https://pipermorgan.ai/privacy` in a browser** and say whether a real policy
   renders. URL returns **200**; **server-rendered text is 29 characters.** PA cannot execute JS, so this
