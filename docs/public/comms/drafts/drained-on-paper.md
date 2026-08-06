@@ -1,7 +1,7 @@
 ---
 image: ''
 alt: ''
-caption: ''
+caption: '"All caught up!"'
 ---
 
 # Drained on Paper
