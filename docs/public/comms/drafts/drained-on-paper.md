@@ -1,6 +1,6 @@
 ---
-image: ''
-alt: ''
+image: 'drained-on-paper-ai-counter.png'
+alt: 'In a restaurant kitchen, a glowing, translucent AI assistant Piper signals that the empty order rail is clear while a human manager points in alarm to a fallen printer spewing a huge backlog of tickets across the floor.'
 caption: '"All caught up!"'
 ---
 
