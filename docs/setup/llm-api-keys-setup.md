@@ -60,6 +60,8 @@ python scripts/migrate_keys_to_keychain.py
 
 #### Method B: Environment Variables (Advanced)
 
+> ⚠️ **Never use Method B on Amber (or any shared multi-session host).** Claude Code reads `ANTHROPIC_API_KEY` from the environment, so a shell-profile or `launchctl setenv` export silently redirects **every resident session's** billing off the Max subscription onto metered API — no error, no signal until the Console bill. On Amber use Method A (KeychainService) only. *(Pard, 2026-08-05; verified clean at time of writing — prevention, not remediation.)*
+
 ```bash
 # Add to your shell profile (~/.zshrc or ~/.bashrc)
 export OPENAI_API_KEY="sk-..."
