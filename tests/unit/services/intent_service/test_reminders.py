@@ -132,6 +132,53 @@ class TestParseReminderTime:
         assert dt.hour == 9
 
 
+class TestReminderTimeLabelNoDoubledTokens:
+    """Issue #1490: confirmation copy printed 'tomorrow at at 3pm' (doubled 'at').
+
+    The label f-strings prepended 'at ' to a match fragment that already
+    contained 'at'. Pin the exact labels and assert no doubled tokens.
+    """
+
+    def test_tomorrow_at_label_no_double_at(self):
+        dt, label = parse_reminder_time("remind me tomorrow at 3pm to review the PR")
+        assert dt is not None
+        assert label == "tomorrow at 3pm"
+
+    def test_tomorrow_at_label_without_at_keyword(self):
+        """'tomorrow 3pm' (no 'at' in message) still labels as 'tomorrow at 3pm'."""
+        dt, label = parse_reminder_time("remind me tomorrow 3pm to review the PR")
+        assert dt is not None
+        assert label == "tomorrow at 3pm"
+
+    def test_at_time_label_no_double_at(self):
+        dt, label = parse_reminder_time("remind me at 5pm to send the update")
+        assert dt is not None
+        assert label == "at 5pm"
+
+    def test_today_at_time_label_no_double_at(self):
+        dt, label = parse_reminder_time("remind me today at 4pm to file the report")
+        assert dt is not None
+        assert label == "at 4pm"
+
+    @pytest.mark.parametrize(
+        "message",
+        [
+            "remind me tomorrow at 3pm to review the PR",
+            "remind me to review PRs tomorrow at 3pm",
+            "remind me at 5pm to send the update",
+            "remind me today at 4pm to file the report",
+            "remind me tomorrow morning",
+            "remind me in 2 hours",
+        ],
+    )
+    def test_no_doubled_tokens_in_any_label(self, message):
+        """No label may contain the same word twice in a row (e.g. 'at at')."""
+        _, label = parse_reminder_time(message)
+        assert not re.search(
+            r"\b(\w+)\s+\1\b", label
+        ), f"Doubled token in label: {label!r}"
+
+
 # ---------------------------------------------------------------------------
 # Text extraction tests
 # ---------------------------------------------------------------------------
@@ -178,6 +225,98 @@ class TestReminderTextExtraction:
     def test_no_match(self):
         text = self.handlers._extract_reminder_text("show my todos")
         assert text is None
+
+
+class TestReminderTextExtractionTimeFirst1490:
+    """Issue #1490: 'remind me tomorrow at 3pm to review the PR' lost the WHAT slot.
+
+    Slot extraction must handle [time-first, task-after-'to'] ordering, the
+    already-working [task-first, time-after] ordering, and punctuation variants
+    of both. PM's verbatim failing phrasing is the first case.
+    """
+
+    def setup_method(self):
+        from services.intent_service.todo_handlers import TodoIntentHandlers
+
+        self.handlers = TodoIntentHandlers()
+
+    @pytest.mark.parametrize(
+        "message,expected",
+        [
+            # PM's verbatim failing phrasing (8/7 walkthrough)
+            ("remind me tomorrow at 3pm to review the PR", "review the pr"),
+            # The bot's own suggested-adjacent phrasing that worked
+            ("remind me to review PRs tomorrow at 3pm", "review prs"),
+            # Punctuation variants of both orderings
+            ("Remind me tomorrow at 3pm to review the PR.", "review the pr"),
+            ("remind me to review PRs tomorrow at 3pm.", "review prs"),
+        ],
+    )
+    def test_both_orderings_and_punctuation_variants(self, message, expected):
+        text = self.handlers._extract_reminder_text(message)
+        assert text == expected
+
+    @pytest.mark.parametrize(
+        "message,expected",
+        [
+            # Other time expressions in time-first position
+            ("remind me in 2 hours to check the deploy", "check the deploy"),
+            ("remind me tomorrow to stretch", "stretch"),
+            ("remind me tonight to lock the door", "lock the door"),
+            ("remind me next Monday to send the invoice", "send the invoice"),
+            # 'set/create a reminder' command variants, time-first
+            ("set a reminder tomorrow at 9am to submit the timesheet", "submit the timesheet"),
+            ("create a reminder for tomorrow to water the plants", "water the plants"),
+        ],
+    )
+    def test_time_first_across_command_variants(self, message, expected):
+        text = self.handlers._extract_reminder_text(message)
+        assert text == expected
+
+    def test_time_first_still_none_when_no_task(self):
+        """Time-only messages still return None (help copy path)."""
+        assert self.handlers._extract_reminder_text("remind me tomorrow at 3pm") is None
+
+    @pytest.mark.asyncio
+    async def test_handler_saves_time_first_phrasing_no_doubled_at(self):
+        """PM's failing phrasing end-to-end: saves the reminder, confirmation
+        copy names the task and contains no doubled 'at'."""
+        from unittest.mock import AsyncMock, patch
+        from uuid import uuid4
+
+        from services.domain.models import Intent, Todo
+        from services.intent_service.todo_handlers import TodoIntentHandlers
+        from services.shared_types import IntentCategory
+
+        handlers = TodoIntentHandlers()
+        intent = Intent(
+            category=IntentCategory.EXECUTION,
+            action="create_reminder",
+            context={"original_message": "remind me tomorrow at 3pm to review the PR"},
+        )
+        mock_todo = Todo(
+            id=str(uuid4()),
+            text="review the pr",
+            priority="medium",
+            status="pending",
+            completed=False,
+        )
+        with patch.object(
+            handlers.todo_service,
+            "create_todo",
+            new_callable=AsyncMock,
+            return_value=mock_todo,
+        ) as mock_create:
+            result = await handlers.handle_create_reminder(intent, "session-1", uuid4())
+
+        assert mock_create.called
+        assert mock_create.call_args.kwargs.get("text") == "review the pr"
+        assert mock_create.call_args.kwargs.get("reminder_date") is not None
+        assert "didn't catch" not in result.lower()
+        assert "review the pr" in result.lower()
+        assert not re.search(r"\b(\w+)\s+\1\b", result.lower()), (
+            f"Doubled token in confirmation copy: {result!r}"
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -289,3 +428,131 @@ class TestReminderContextSurfacing:
             context = await assembler.gather_context("CONVERSATION", user_id=str(uuid4()))
 
             assert "due_reminders" not in context
+
+
+# ---------------------------------------------------------------------------
+# Issue #1491: naive-vs-aware datetime guard in get_due_reminders
+# ---------------------------------------------------------------------------
+
+
+class TestDueReminderTZGuard1491:
+    """Issue #1491: due-reminder fetch crashed on naive-vs-aware comparison.
+
+    Live on v30 (2026-08-07T15:32:10Z): `datetime.now()` (naive) compared
+    against `reminder_date` rows that come back tz-aware from Postgres
+    timestamptz -> TypeError -> warning-swallow -> None sentinel -> saved
+    reminders NEVER surface. Guard shape mirrors the #1429 standup fix:
+    both sides normalized to aware-UTC at the comparison boundary.
+    """
+
+    def _handler_with_todos(self, todos):
+        from services.intent_service.todo_handlers import TodoIntentHandlers
+
+        handler = TodoIntentHandlers()
+        handler.todo_service = MagicMock()
+        handler.todo_service.list_todos = AsyncMock(return_value=todos)
+        return handler
+
+    @staticmethod
+    def _todo(text, reminder_date, completed=False):
+        from services.domain.models import Todo
+
+        return Todo(text=text, reminder_date=reminder_date, completed=completed)
+
+    @pytest.mark.asyncio
+    async def test_naive_and_aware_rows_both_fetch_without_crash(self):
+        """Regression (#1491): one AWARE row + one NAIVE row -> both fetch,
+        no TypeError, due-ness computed correctly for each."""
+        from datetime import timezone
+
+        aware_past = datetime.now(timezone.utc) - timedelta(hours=1)
+        naive_past = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(hours=2)
+
+        handler = self._handler_with_todos(
+            [
+                self._todo("aware reminder", aware_past),
+                self._todo("naive reminder", naive_past),
+            ]
+        )
+
+        due = await handler.get_due_reminders(uuid4())
+
+        # Pre-fix: TypeError swallowed -> None sentinel. Post-fix: both due.
+        assert due is not None, "fetch must not crash into the None sentinel"
+        assert "aware reminder" in due
+        assert "naive reminder" in due
+
+    @pytest.mark.asyncio
+    async def test_due_ness_correct_future_rows_not_due(self):
+        """Future reminders (aware AND naive-UTC) are not due; past ones are."""
+        from datetime import timezone
+
+        now_utc = datetime.now(timezone.utc)
+        handler = self._handler_with_todos(
+            [
+                self._todo("due aware", now_utc - timedelta(minutes=5)),
+                self._todo("future aware", now_utc + timedelta(hours=3)),
+                self._todo("future naive", now_utc.replace(tzinfo=None) + timedelta(hours=3)),
+                self._todo("no reminder", None),
+                self._todo("completed", now_utc - timedelta(hours=1), completed=True),
+            ]
+        )
+
+        due = await handler.get_due_reminders(uuid4())
+
+        assert due == ["due aware"]
+
+    @pytest.mark.asyncio
+    async def test_due_reminder_surfaces_end_to_end_with_aware_row(self):
+        """#1491 AC: the 'I'll surface this next time you check in' promise
+        works end-to-end at the handler level — a REAL TodoIntentHandlers
+        (real comparison code, only the DB-backed service mocked) feeds the
+        context assembler, and an aware-stored due reminder surfaces."""
+        from datetime import timezone
+
+        from services.intent_service.context_assembler import ContextAssembler
+
+        aware_past = datetime.now(timezone.utc) - timedelta(minutes=10)
+        naive_past = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(minutes=20)
+        todos = [
+            self._todo("submit the report", aware_past),
+            self._todo("call the vendor", naive_past),
+        ]
+
+        mock_service = MagicMock()
+        mock_service.list_todos = AsyncMock(return_value=todos)
+
+        assembler = ContextAssembler()
+        with patch(
+            "services.intent_service.todo_handlers.TodoManagementService",
+            return_value=mock_service,
+        ):
+            context = await assembler.gather_context("CONVERSATION", user_id=str(uuid4()))
+
+        assert context.get("source_failed") is not True
+        assert "due_reminders" in context, (
+            "due reminder must surface in conversation context (the #903 promise)"
+        )
+        assert "submit the report" in context["due_reminders"]
+        assert "call the vendor" in context["due_reminders"]
+        assert context["reminder_count"] == 2
+
+    @pytest.mark.asyncio
+    async def test_fetch_failure_warning_includes_count_context(self):
+        """#1491 AC: the swallow stays (None sentinel, #1425) but the warning
+        must carry reminder-count context — not a bare error string."""
+        from services.intent_service.todo_handlers import TodoIntentHandlers
+
+        handler = TodoIntentHandlers()
+        handler.todo_service = MagicMock()
+        handler.todo_service.list_todos = AsyncMock(side_effect=RuntimeError("db down"))
+
+        with patch("services.intent_service.todo_handlers.logger") as mock_logger:
+            result = await handler.get_due_reminders(uuid4())
+
+        assert result is None  # sentinel preserved (#1425)
+        assert mock_logger.warning.called
+        _, kwargs = mock_logger.warning.call_args
+        assert "error" in kwargs
+        assert "todo_count" in kwargs, "warning must carry count context (#1491)"
+        assert "reminders_considered" in kwargs, "warning must carry count context (#1491)"

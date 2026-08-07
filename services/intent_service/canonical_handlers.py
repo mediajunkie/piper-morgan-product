@@ -3935,6 +3935,7 @@ What would you like to set up first?"""
             DELETE_PATTERNS,
             RESTORE_PATTERNS,
             PortfolioService,
+            clean_project_name,
         )
 
         try:
@@ -3942,27 +3943,10 @@ What would you like to set up first?"""
             original_message = intent.context.get("original_message", "")
             message_lower = original_message.lower().strip()
 
-            # Helper to strip common trailing words from project names
-            # Fixes issue where "delete X please" captures "X please"
-            def clean_project_name(name: str) -> str:
-                if not name:
-                    return name
-                trailing_words = [
-                    "please",
-                    "now",
-                    "thanks",
-                    "thank you",
-                    "asap",
-                    "for me",
-                    "right now",
-                    "immediately",
-                    "today",
-                ]
-                cleaned = name.strip()
-                for word in trailing_words:
-                    if cleaned.lower().endswith(f" {word}"):
-                        cleaned = cleaned[: -(len(word) + 1)].strip()
-                return cleaned
+            # Name normalization (trailing politeness/punctuation, quotes,
+            # 'called X', adjective-position) is shared: see
+            # clean_project_name in services.onboarding.portfolio_service
+            # (hoisted from a nested helper here — Issue #1492).
 
             # Determine operation type by matching against patterns
             # (This doesn't require DB access)

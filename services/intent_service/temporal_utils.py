@@ -127,7 +127,12 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
             hour += 12
         tomorrow = now + timedelta(days=1)
         dt = tomorrow.replace(hour=hour, minute=minute, second=0, microsecond=0)
-        return (dt, f"tomorrow at {tomorrow_at.group(0).split('tomorrow')[1].strip()}")
+        # Issue #1490: the matched fragment may already contain "at" ("tomorrow
+        # at 3pm"), so strip it before the f-string re-adds it — otherwise the
+        # confirmation copy reads "tomorrow at at 3pm".
+        time_part = tomorrow_at.group(0).split("tomorrow", 1)[1].strip()
+        time_part = re.sub(r"^at\s+", "", time_part)
+        return (dt, f"tomorrow at {time_part}")
 
     # --- "tomorrow morning/afternoon/evening" ---
     if "tomorrow" in message_lower:
@@ -162,7 +167,10 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
         # If the time is already past, push to tomorrow
         if dt <= now:
             dt += timedelta(days=1)
-        return (dt, f"at {at_time.group(0).strip()}")
+        # Issue #1490: group(0) already contains "at" (and possibly "today"),
+        # so strip both before the f-string re-adds "at " — avoids "at at 5pm".
+        time_part = re.sub(r"^(?:today\s+)?at\s+", "", at_time.group(0).strip())
+        return (dt, f"at {time_part}")
 
     # --- "this afternoon/evening/tonight" ---
     if "this afternoon" in message_lower:
