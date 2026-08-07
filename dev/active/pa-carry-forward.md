@@ -116,6 +116,8 @@ hands you the strong verb, and the audit trail looks clean because you can cite 
 proves you read it, not that you read what it does.
 
 ## Open threads PA owns
+✅ **Ship-055 — FILED 08-07** (`mailboxes/exec/inbox/workstream-055-pa-2026-08-07.md`), same fire, after Exec corrected the deadline framing (write now, not by Saturday — a deadline gives license to delay).
+
 
 1. 🟢 **Tool-annotation spec — UNBLOCKED, complete enough to hand to Lead.**
    `dev/active/tool-annotation-spec-2026-08-04.md`. **Next actor is Lead, not PA.**

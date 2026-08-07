@@ -3,18 +3,13 @@
 **Cron**: `53ca1c08` (`47 6,9,12,15,18,21`) — rotated at STOP from `971df264`; session-only, auto-expires ~2026-08-13, both deaths silent → **CronList at START**. ⚠️ **Fires QUEUE rather than drop** — on 08-06 four ticks delivered at once at 22:17 after ~11h silence. **Stacked ticks = ONE wake.** A quiet stretch on this seat is not a stall. ⏱️ **Measured: this seat's fires open ~+30 min after the cron minute** (six clean points 08-05, minute resolution) · **Worktree**: `~/Development/piper-morgan-worktrees/cxo` (Model A) · **Branch**: `claude/cxo-cycle`
 🔴 **DATE CHANGED 2026-08-06 — PM: Aug 8 was "a misremembering"; they meant **Aug 9, a SUNDAY**.** *"Somewhat arbitrary… I don't want to create any artificial sense of panic or stress… we could change the date if we need to."* ⚠️ **`decisions.log:303` still records 08-08 and is CORRECT for the Jul-30 decision — do NOT edit it**; a correction is a new dated entry (Exec/PPM's). **A soft date is not permission to ship an unverified artifact — it means the reason to hurry got smaller.**
 
-## 🔴 DEPLOYMENT — the live item (no code change needed)
+## ✅ DEPLOYMENT — CLOSED 2026-08-07
 
-- **The deployed artifact is Fly v29, 2026-08-02, `main@b619794af`** — NOT `origin/production` (a stale branch, benign by mode). ⚠️ **Five roles measured the branch by mistake on 08-06; Comms named why: "my check shared your method so it was not independent."** **Measure the artifact.**
-- 🔴 **#1482 is merged, not deployed. THREE false permanence claims render to users** (`home.html` ×1, `insights.html` ×2); the honest replacement appears **0** times; **the credential-delete inversion the fix existed to correct is intact.**
-- **Two of the six mapped surfaces (`insight_controls.html`, `insight_card.html`) are ABSENT from the artifact** — a third of that copy work is for surfaces nobody can reach. *"Six surfaces fixed" was never the right coverage claim.*
-- ✅ **Cure = the v30 deploy** (Lead, word-batch item 1). **Awaiting PM's word.**
-- ⭐ **DO NOT RE-DERIVE THE ARTIFACT FROM GIT. `fly` is authenticated on Amber — ask the platform:**
-  - `fly status -a piper-morgan` → **what is actually serving** (machine id, VERSION, state, health). **This is the user-facing answer.**
-  - `fly releases -a piper-morgan` → version history (*was a v30 ever cut?*). Different question.
-  - **Checked 08-07 07:5x: VERSION 29, last updated 2026-08-02, 1/1 health passing. NO v30. The deploy has NOT happened** — Lead's *"deploy now unopposed"* is accurate and is **not** the same claim as deployed.
-  - ⚠️ **`check-release-parity.sh` reads `origin/production`, which is why five roles landed on the branch.** The tooling encodes the inference; the fix belongs at the script. **Flagged, not claimed** — outside my lane.
-- **PM RULING 08-06: #1481 Slack socket path HELD until safe — not alpha, not beta, not release.** So #1484's gate stands and the Slack surface is held; my #1466 spec is parked behind that.
+- **v30 deployed 08-07 08:04 PDT. Verified by reading the templates off the running machine**, not by version number or ancestry: `home_false=0`, `insights_false=0`, honest replacement present, credential true-claim present, `slack_inbound_enabled` gate present. **#1482 and #1484 are both live.**
+- ⭐ **THE INSTRUMENT, in order of strength**: `git merge-base` (inference — five roles got it wrong 08-06) → `fly status -a piper-morgan` (what version serves) → **`fly ssh console -a piper-morgan -C "sh -c 'grep -c … /app/…'"` (what the running system CONTAINS — no inference step).** Use the third to close anything.
+- ⚠️ **`check-release-parity.sh` still reads `origin/production`** — the tooling encodes the inference. Flagged to the cohort, **not claimed** (outside my lane).
+- ⚠️ **Two of six mapped delete-copy surfaces are still absent from the artifact** — never say "six surfaces fixed".
+- **PM RULING 08-06: #1481 Slack socket path HELD until safe — not alpha, not beta, not release.** #1466 spec parked behind it.
 
 ## 🔴 PM-attention (nothing here has moved)
 

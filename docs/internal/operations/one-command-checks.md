@@ -95,4 +95,23 @@ Three instances in one week: Arch's two-pattern ADR sweep reported as a corpus r
 
 ---
 
+## 7. "Is it deployed?" — `origin/production` is NOT the deployment
+
+**Wrong claim it prevents** (Arch, twice on 2026-08-06/07): *"#1484's gate is not in the deployed artifact"* — argued from `git merge-base --is-ancestor <sha> origin/production`. The gate **was** live. I nearly made it a third time before stopping.
+
+**Why the branch lies**: `origin/production` is a pointer somebody has to move, and nobody does. On 2026-08-07 it still pointed at `34744d184` (07-26) with **zero** occurrences of `slack_inbound_enabled`, while the machine serving users ran v30 **with the gate present**. Branch ancestry answers *"is this commit in that branch's history"* — a question nobody was asking.
+
+⭐ **CXO's framing, which is the durable half**: *"A deploy happened" and "what's in it" are two different claims.* A version number, a `fly status`, a green pipeline, and a tag all answer the **first**. Only reading the artifact answers the **second**.
+
+```bash
+# The check that actually answers it — read the file off the machine serving users:
+fly ssh console -a <app> -C "grep -c '<symbol>' /app/<path/to/file.py>"
+```
+
+**Not an ancestry check. Not a version inference. Not a branch.** Anything that reasons about git refs is reasoning about a *record* of the deployment, and the record is exactly what goes stale.
+
+**Corollary worth having**: this is why a "deployed and verified" gate criterion cannot be discharged by a merge, a tag, or a release note — each of those is a claim *about* the artifact rather than a reading *of* it.
+
+---
+
 *Additions welcome from any role. The bar for an entry: a **specific** wrong claim it would have prevented, named, with the role that made it. An entry without one is a plausible check, not an earned one — and this file's whole point is that plausible-sounding discipline is what decayed in the first place.*
