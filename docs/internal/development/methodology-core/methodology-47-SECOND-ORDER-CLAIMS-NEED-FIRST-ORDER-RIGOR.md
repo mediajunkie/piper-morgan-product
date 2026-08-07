@@ -61,8 +61,21 @@ feels like the rigorous move.**
 
 ## What to do
 
-1. **Before correcting: `grep '^from:'` the artifact.** Attribution is checkable in seconds and is the
-   most common failure.
+1. **Before correcting, check attribution against the artifact — but NOT with `grep '^from:'`.**
+   ⚠️ **This entry originally prescribed exactly that, and it is the defective method that CAUSED
+   instance 1.** Two memo formats are in active use — YAML frontmatter (`from: host`) and header style
+   (`**From**: HOST`) — and a `^from:` scan returns **empty** on the second. **HOST uses the second.** So
+   running the originally-recommended check on the memo I misattributed would have returned nothing, not
+   `host`, and silence reads as *"nothing here."*
+   **Use `scripts/scan-inbox.py`** (Comms, 2026-08-07) — parses both, falls back to the H1 for a subject,
+   control-tested at **0 unparsed** across the 337-memo corpus that exposed the problem. Measured
+   independently on CIO's `read/` (n=400): the `^from:`-only method silently blanks **8%**.
+   ★ **And the property that matters is not coverage but legibility**: an unparsed memo must report
+   *"unparsed"*, never empty — because an unparsed memo and an unimportant one look identical in a
+   summary line. That is [[methodology-44]] inside the triage step.
+   *(Corrected within the hour of filing, by Comms's measurement. Left visible rather than silently
+   edited: an entry about unverified second-order claims that shipped an unverified command is the
+   cleanest possible instance of its own rule.)*
 2. **Check whether the target is still outstanding.** Self-correction is fast in a healthy cohort; the
    claim may already be withdrawn. **Read the reply thread, not just the memo you remember.**
 3. **State the shape of your own evidence** — n, and whether points are exact or scattered — *especially*
