@@ -91,30 +91,48 @@ class TodoIntentHandlers:
         """Initialize with TodoManagementService."""
         self.todo_service = TodoManagementService()
 
-    async def get_due_reminders(self, user_id: UUID) -> List[str]:
+    async def get_due_reminders(self, user_id: UUID) -> Optional[List[str]]:
         """
         Issue #903: Get reminders that are due now or overdue.
 
         Returns a list of reminder text strings for surfacing at greeting time.
         Queries todos where reminder_date <= now and status != completed.
-        """
-        from datetime import datetime
 
+        Issue #1491: both sides of the due-ness comparison are normalized to
+        aware-UTC (the #1429 standup guard shape). reminder_date comes back
+        tz-aware from Postgres timestamptz but tz-naive from backends that
+        drop tzinfo (e.g. SQLite in tests); the old naive `datetime.now()`
+        against an aware row raised TypeError, which the swallow below turned
+        into the None sentinel — so saved reminders never surfaced (live on
+        v30, 2026-08-07). Naive rows are assumed UTC per ensure_utc().
+        """
+        from datetime import datetime, timezone
+
+        from services.utils.datetime_utils import ensure_utc
+
+        todo_count: Optional[int] = None
+        reminders_considered = 0
         try:
             todos = await self.todo_service.list_todos(user_id=user_id, include_completed=False)
-            now = datetime.now()
+            todo_count = len(todos)
+            now = datetime.now(timezone.utc)
             due = []
             for todo in todos:
-                if (
-                    hasattr(todo, "reminder_date")
-                    and todo.reminder_date
-                    and todo.reminder_date <= now
-                    and not todo.completed
-                ):
+                reminder_date = getattr(todo, "reminder_date", None)
+                if reminder_date is None or todo.completed:
+                    continue
+                reminders_considered += 1
+                # #1491/#1429 guard: coerce the row aware-UTC before comparing.
+                if ensure_utc(reminder_date) <= now:
                     due.append(todo.text)
             return due
         except Exception as e:  # silent-ok: None sentinel -> assembler flags source_failed instead of "no reminders due" (#1425)
-            logger.warning("Failed to fetch due reminders (source failed)", error=str(e))
+            logger.warning(
+                "Failed to fetch due reminders (source failed)",
+                error=str(e),
+                todo_count=todo_count,
+                reminders_considered=reminders_considered,
+            )
             return None
 
     async def handle_create_todo(self, intent: Intent, session_id: str, user_id: UUID) -> str:
