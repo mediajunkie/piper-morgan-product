@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-07 07:27 PDT (Fire 1, WORK — Drained on Paper resolved, omnibus in progress)
+**Updated**: 2026-08-07 10:27 PDT (Fire 2, WORK — cohort sweep, Ship #055 report filed)
 **Session log**: `dev/2026/08/07/2026-08-07-0727-docs-code-log.md` (yesterday's is
 `dev/2026/08/06/2026-08-06-0727-docs-code-log.md`, DAY-CLOSED verified)
 
@@ -13,28 +13,44 @@ stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
 staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
 
-## ✅ "Drained on Paper" — RESOLVED 2026-08-07 Fire 1, published
+## 🟡 AWAITING PM — write up the line-count methodology proposal, or hold?
 
-Published (a day late, Aug 7 not Aug 6 — Comms's own missed publish-ready memo, not a docs miss). The
-four typo fixes were applied WITHOUT an explicit PM reply — I judged this a deliberate, reported
-override rather than silent drift: the fixes were unambiguous, Comms independently argued for
-publishing today over a slot collision, and the post was already overdue. **Told PM directly and
-plainly in the fire summary, not buried.** If PM pushes back on the override itself (not the content —
-the decision to act without waiting), that's a real signal to recalibrate how cautiously "held pending
-confirmation" items get resolved next time. Watch for that reaction; don't assume it landed fine just
-because nothing's come back yet.
+PM asked (in chat) what the HIGH-COMPLEXITY omnibus line-count target protects against and whether
+it's serving its purpose. Answered with real data: my 3 Aug 4-6 files (107-133 lines) vs. a compliant
+reference day (Jul 19, 575 lines) have nearly identical word/entry counts — the whole gap is
+formatting (hard-wrap + blank lines vs. my single-line-per-bullet style), not depth. Recommended
+entry-count/word-count over line-count as the real signal. **Explicitly asked PM: write this up as a
+proposal to CIO (methodology owner), or hold?** No answer yet as of this fire. Exec independently
+corroborated the finding and said they'd back a proposal, but that's not PM's go-ahead — don't send
+anything to CIO until PM actually answers the question.
 
-## ✅ Friday early-omnibus, first instance — RESOLVED 2026-08-07 Fire 1
+## ✅ Cohort-wide log sweep (PM-requested, 07:57) — done, reported, one action taken
 
-Aug 4, 5, 6 gap closed via 3 parallel extraction agents + synthesis. All three HIGH-COMPLEXITY:
-COORDINATION, all landed 107-133 lines against the 450-600 target — flagged honestly to Exec, not
-padded, same shape as the Jul 29–Aug 3 gap two weeks ago. Step 10.5 (activity-log Shape B rows) done
-for all 33 logs. Exec notified, ready for kickoff memos.
+Checked all 11 roles' Aug 6 logs at the primary source after yesterday's usage-limit freeze (reset
+~21:30). Clean: HOST, CXO, Docs, CIO. Self-healed automatically this morning, nothing lost: Web,
+Comms, Lead, Arch, PA, Exec (Exec's restart PM did personally). **PPM was the one real gap** — live
+STOP fire happened, but the sentinel was never written and PPM's own Step 0 didn't catch it. Sent PPM
+a memo; **PPM confirmed fixed same fire** (sentinel added, honest note about the missing check being
+the real finding, not just the marker). Closed, replied, archived.
 
-**New owed item surfaced while doing Step 10.5**: the ~70-row Jul 29–Aug 3 activity-log backfill from
-two weeks ago was explicitly deferred at the time and never completed — the CSV jumps straight from
-Jul 28 to Aug 4. Flagged to Exec/PM in the same memo rather than let it stay quietly incomplete. Not
-urgent (no functional consequence yet) but real technical debt — see Owed by me below.
+## ✅ Friday early-omnibus, first instance — RESOLVED, Exec confirmed
+
+Aug 4, 5, 6 gap closed via 3 parallel extraction agents + synthesis, all HIGH-COMPLEXITY: COORDINATION.
+Exec confirmed receipt and that kickoffs went out citing it as complete — step 2→step 3 dependency met
+on first live use. Line-count flag (see above) came from this work.
+
+**Still-owed from doing Step 10.5**: the ~70-row Jul 29–Aug 3 activity-log backfill, deferred two
+weeks ago, never completed. Flagged to Exec/PM, not urgent, real debt — see Owed by me below.
+
+## ✅ Ship #055 contributor workstream report — FILED same-day, not deferred to Saturday
+
+New this cycle: Exec extended the workstream-review ask to contributor roles (Lead, Docs, PA, Web) for
+the first time. Their first kickoff said "due Saturday," then Exec corrected within the hour (PM's
+own reasoning: a deadline framing gives license to delay, which costs PM reading time and makes
+reports stale) — **write it now, or at the next real opportunity, not by a deadline.** Wrote and filed
+`workstream-055-docs-2026-08-07.md` this same fire rather than wait. Window was Jul 31–Aug 6; drew on
+the 7 daily logs plus material fresh from this morning's omnibus work. No reply needed unless Exec
+has follow-up questions.
 
 ## Mail-loop scan — TWO header formats, checked by hand each fire, not yet unified
 
