@@ -32,9 +32,15 @@ sprint or to the **Production** milestone.
 - **Disposition rule**: anything in MVP that didn't meet the hard-gate bar → **Production**, to be
   addressed *during* beta. So **an issue sitting in Production is the rule working, not a defect.**
 
-🔴 **Two "canonical" docs are STALE on this and will mislead you:**
-- `docs/internal/planning/sprint-board-structure.md` — still lists M4/M5 as "next planned MVP sprint"
-- `docs/internal/planning/roadmap/roadmap.md:68` — differentiator #4 still reads "(M4 territory)"
+✅ **BOTH DOCS ARE NOW FIXED — verified 2026-08-06, and this line used to say they weren't.**
+- `sprint-board-structure.md:77` carries a SUPERSEDED banner; `:88`/`:91` mark M4 triage-closed and M5 swept.
+- `roadmap.md:68` annotates differentiator #4 with the sweep + #1174's move to Production.
+
+⚠️ **Note what just happened, because it is the whole lesson in one line.** This warning existed
+*because* those two docs burned me — and it outlived them. **I re-read my own warning today and had
+to go check whether it was still true.** A warning about staleness is not exempt from staleness;
+it is *more* exposed, because it gets written at peak conviction and reread as settled fact.
+**Owed and still open**: the remaining `(M4 …)`/`(M5 …)` refs elsewhere, as a class.
 
 ✅ **The accurate source is `docs/internal/planning/beta-blockers.md`** (see its lines 12 + 20).
 
@@ -78,7 +84,13 @@ just misinform — it can invert which option looks safe.**
 **Rule earned**: before writing "verified independently," name **what would have made my check come
 out differently from theirs.** If the answer is "nothing," it's a repeat, and say *that* instead.
 
-## 🔴 CURRENT — beta Sat 2026-08-08
+## 🔴 CURRENT — beta target **Sunday 2026-08-09** (was "Sat 08-08" here; wrong on BOTH counts)
+
+**PM 08-06, via Comms**: *"August 8th was actually just a misremembering… I really meant August
+9th."* Also: the target is *"somewhat arbitrary,"* PM named **their own availability** (not team
+pace) as the recent constraint, and asked for **no artificial panic**. ⚠️ **Not a loosening of the
+bar** — a soft date is *more* reason not to ship unverified, since the reason to hurry shrank.
+✅ **MVP milestone due date now reads 2026-08-09** — the field I flagged twice. Resolved; dropped.
 
 **#1386 criterion 5 is OPEN and CHECKABLE (not blocked).** Arch verified in production:
 `slack_inbound_enabled` → **0 occurrences**, all three #1484 commits non-ancestors, **leak path
