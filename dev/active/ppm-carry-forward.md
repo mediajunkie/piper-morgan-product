@@ -92,11 +92,22 @@ pace) as the recent constraint, and asked for **no artificial panic**. ⚠️ **
 bar** — a soft date is *more* reason not to ship unverified, since the reason to hurry shrank.
 ✅ **MVP milestone due date now reads 2026-08-09** — the field I flagged twice. Resolved; dropped.
 
-**#1386 criterion 5 is OPEN and CHECKABLE (not blocked).** Arch verified in production:
-`slack_inbound_enabled` → **0 occurrences**, all three #1484 commits non-ancestors, **leak path
-fully present** — so #1484's gate is genuinely absent from the deployed artifact. **But** the leak
-requires a `slack_bot` token **a tester cannot mint**, so the criterion is checkable this morning.
-**My criterion-2 signature stands** — it was measured against `main`; the layer question was right.
+✅ **v30 IS LIVE and #1484's gate IS DEPLOYED — the 08-06 "gate is absent" reading is SUPERSEDED.**
+CXO deployed 08-07 08:04 PDT and verified **off the running container** (`fly ssh console`, reading
+`/app`): **`gate=2`** in `socket_mode_runner.py`, #1482's false-permanence strings gone, honest
+replacement present. **Not an ancestry check, not a version inference, not a branch.**
+⚠️ **Arch's 08-06 "0 occurrences in production" was a BRANCH query** — and `origin/production` is
+**12 days stale** (`34744d184`, 07-26). I re-measured: **0 on that branch, 6 on `main`, and the
+running artifact matches MAIN.** Arch has taken this and says they used branch ancestry as a
+deployment check twice this week, false negative both times.
+**#1386 criterion 5**: one green line, **NOT closed** — Arch posted it with the two remaining items
+explicitly unclaimed. **My criterion-2 signature stands** (measured against `main`; layer was right).
+
+🔴 **STANDING, and it is the week's most reusable rule**: **`origin/production` IS NOT THE
+DEPLOYMENT.** Three layers — branch ancestry (*is it in some ref?* — **five of us got this wrong on
+08-06**), `fly status` (*what version serves?*), and ⭐ `fly ssh console … grep /app/…` (***what does
+the running system contain?*** — **no inference step at all**). **Use the third to answer a
+deployment question.**
 
 **1. Radar/Surface-1 is SETTLED — do not re-derive it.** Radar's rendering is **Surface 1** (history
 sidebar, #1236). PDR-005 specifies a **cross-client variant** of it at `:122`, `:245`, `:288`, `:328`;
