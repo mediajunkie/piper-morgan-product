@@ -12,11 +12,29 @@
 |------|-----|------|-----------------|
 | 1 | **Comms** | Drafts from session logs / omnibus. Applies four-category opacity sweep, voice discipline, length targets. | Draft at `docs/public/comms/drafts/{slug}.md` |
 | 2 | **PM** | Voice pass + edit/rewrite. | Revised draft; or **route back to Comms** if structural issues surface (see Revision Loop below) |
-| 3 | **Comms** | Template + voice audit against `blog-post-template.md` and `xian-voice-tone-guide.md`. Fills footer teaser. | Publish-ready memo to Docs inbox (June 18 handoff protocol) |
+| 3 | **Comms** | Template + voice audit against `blog-post-template.md` and `xian-voice-tone-guide.md`. Fills footer teaser. | Publish-ready memo to Docs inbox (June 18 handoff protocol) — ⚠️ **ALWAYS SEND IT, even when PM says they will tell Docs** (see below) |
 | 4 | **PM** | Creates image (ChatGPT cartoon for narratives/insights). Fills frontmatter: `image:`, `alt:`, `caption:`. | Frontmatter populated in the draft |
 | 5 | **Docs** | Final proof: template checklist + voice guide + ready-for-publication check. Confirms image frontmatter complete. | Verbal or memo go-ahead to PM; or routes back to Comms with specific flags |
 | 6 | **Docs** | Runs `publish-to-blog` skill. Updates `editorial-calendar.csv` with blog URL + pubDate. | Post live at `pipermorgan.ai/blog/{slug}` |
 | 7 | **Dispatch** | Syndicates to Medium (canonical link back to blog). Cross-posts to LinkedIn. Updates `editorial-calendar.csv` with Medium + LinkedIn URLs. | Calendar row complete; `canonicalSite: distributed` |
+
+---
+
+## ⚠️ Step 3's memo is NOT optional when PM offers to notify Docs — this cost a slot
+
+**2026-08-06: "Drained on Paper" was cleared by mid-day, was never published, and the slot was lost.** Cause, established from the mailbox rather than guessed:
+
+> **Nine prior publishes each have a `*-publish-ready.md` memo from Comms in `mailboxes/docs/`. This one had none.** Docs had no signal and was not at fault — they were demonstrably alive that evening.
+
+PM had said, in conversation: *"Will let Docs know the blog post is ready for their review."* **A courteous offer, and Comms let the documented handoff ride on it.**
+
+### The rule
+
+> **PM offering to mention something does not transfer ownership of a step this document assigns to Comms.** Send the memo anyway. If PM also tells Docs, the cost is one redundant memo; if they don't, the cost is a missed publication.
+
+**The asymmetry is the whole argument** — a duplicate signal is free, an absent one is invisible until the slot has passed. **The memo is the mechanism. A verbal handoff is vigilance**, and vigilance fails in exactly the gap where nobody was watching.
+
+⚠️ **Generalised, because this is not only about PM**: a step assigned here is discharged by *performing it*, not by having reason to believe it will happen. **"Someone else said they'd handle it" is not a completion state.** The only completion state is the artifact existing where the recipient reads.
 
 ---
 

@@ -108,7 +108,12 @@ class ProvenanceSource(str, Enum):
 | `SEED` | *(not in ArtifactSourceType)* | Setup concept only; entity-model-layer only |
 | `INFERRED` | *(not in ArtifactSourceType)* | Entity-model provenance; not an artifact creation path |
 
-**On `InsightDB` (M4 work, #1216):**
+**On `InsightDB` (~~M4 work~~, #1216):**
+
+> ✅ **#1216 CLOSED COMPLETED 2026-07-07, milestone MVP** *(annotated by PPM 2026-08-06)*. **The M4
+> routing below is superseded — M4 was swept 2026-07-04/05 and no longer exists as a sprint.** The
+> spec body is left as written: it was accurate on 2026-06-15 and the design it describes is what
+> shipped. **Only the sprint pointer went stale, and a pointer is what misroutes people.**
 - Add `source: ProvenanceSource` field (not nullable; default `SEED` for existing rows)
 - Add `is_seed: bool` derived property (`source == SEED`)
 - Seed scripts mark entries as `source=SEED`; live extraction marks `source=SESSION_EXTRACTED`
@@ -139,7 +144,7 @@ From PDR-002 Appendix §2.3 (unchanged; reproduced here for M4 implementation re
 
 | Work item | Owner | Dependencies |
 |---|---|---|
-| `InsightDB` provenance field migration (#1216) | Lead Dev | This spec; M4 sprint entry |
+| ~~`InsightDB` provenance field migration (#1216)~~ ✅ **DONE** — closed COMPLETED 2026-07-07 (MVP) | Lead Dev | ~~M4 sprint entry~~ (M4 swept 07-04/05) |
 | People entity data model (personhood-type + relationship edges) | Lead Dev | This spec; #1217 rule language (PA) |
 | Wire Conversations as one entity-facet in Radar search | Lead Dev | Radar slot-swap (#1090) |
 | Entities-surfacing mockup | CXO | CXO committed June 13 |

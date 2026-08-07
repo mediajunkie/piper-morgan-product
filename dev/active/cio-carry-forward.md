@@ -1,6 +1,6 @@
 # CIO carry-forward — rewritten 2026-08-05 STOP
 
-**Cron**: `29c04997` · `7 10,16,22` LEAN · re-armed 2026-08-05 STOP · **auto-expires ~2026-08-12**.
+**Cron**: `b4bc6a24` · `7 10,16,22` LEAN · re-armed 2026-08-06 STOP · **auto-expires ~2026-08-13**.
 **Worktree**: `~/Development/piper-morgan-worktrees/cio` (Model A) · `claude/cio-cycle`.
 
 ⚠️ **The cron prompt was THINNED at this STOP and that is deliberate.** The old one carried frozen state ("today is the Aug 4 skill review", "no session log today → START") and **asserted a stale date and a stale dispatch twice in one day** on 08-05. State now lives here, where it is rewritten each fire. **Do not re-fatten the prompt.**
@@ -27,6 +27,9 @@
 - **`host`/`comms`/`web` registry rows carry no cron job id.** Convention is in the header where their next START meets it. Still not chasing.
 
 ## Watch items
+
+- ⭐ **Heartbeat under-emitted 8 of 11** (rows today: arch/comms/cxo/docs/exec/lead/cio = 1; web 2, pa 3, host 4, ppm 5). Correct for roles that commit; **`cxo` had neither commits nor heartbeats 07:17→22:20** and the belt flagged it rightly at 18:46. **The belt is still inferring liveness from commits — the thing the heartbeat was built to stop.** Strongest case yet for the wrapper-written form; still not proposed unilaterally.
+- ⚠️ **`closed today` was 2/11 at 22:45**, four roles last committed 12:31–13:00. Belt flagged only cxo/docs at 18:46 and both committed after. **Check at tomorrow's START.**
 
 - **`ppm` missed its 08-05 morning START heartbeat entirely** (first row `WORK 10:23`). Compliance gap, not liveness — self-reported. **The case the wrapper-written heartbeat would close.**
 - **Tomorrow's 06:46 sweep is the test of BOTH fixes** (grace 45 + threshold arithmetic). They are AND-in-series and therefore **redundant in the morning**. **Predicted in advance: the threshold is load-bearing, grace is belt-and-braces.**
