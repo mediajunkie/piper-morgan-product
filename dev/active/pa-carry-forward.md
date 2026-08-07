@@ -116,10 +116,7 @@ hands you the strong verb, and the audit trail looks clean because you can cite 
 proves you read it, not that you read what it does.
 
 ## Open threads PA owns
-0. 🆕 **Ship-055 — contributor workstream report, DUE Sat 8/8 day-close.** First time contributor roles
-   asked. File to `mailboxes/exec/inbox/workstream-055-pa-{date}.md`. Window Jul 31–Aug 6 — covers the
-   #1481/#1484 beta-safety finding, the annotation spec, the arrival-latency contributions, and the two
-   corrected-headline instances. Draft close to the deadline, not now (the window is already logged).
+✅ **Ship-055 — FILED 08-07** (`mailboxes/exec/inbox/workstream-055-pa-2026-08-07.md`), same fire, after Exec corrected the deadline framing (write now, not by Saturday — a deadline gives license to delay).
 
 
 1. 🟢 **Tool-annotation spec — UNBLOCKED, complete enough to hand to Lead.**
