@@ -64,21 +64,27 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const today = new Date();
-            const fourWeeksAgo = new Date(today);
-            fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28);
-
+            // ⚠️ 2026-08-07 (CIO): the previous form used a 28-DAY LOOKBACK against a 28-DAY CADENCE,
+            // so the prior cycle's issue landed EXACTLY on the boundary and whether it suppressed the
+            // next one was decided by minutes of scheduler jitter. MEASURED: the 2026-07-06 run decided
+            // "is check week: true", then matched #1178 (created 06-08T18:29:51Z) against a cutoff of
+            // 06-08T18:15:31Z -- 14.3 minutes on the suppress side -- and SKIPPED issue creation. The
+            // run still reported SUCCESS. One full cycle vanished silently; #1178 had been closed since
+            // 06-10, so there was nothing outstanding and the reminder was suppressed for no reason.
+            //
+            // The intent is "don't stack a second reminder while one is still outstanding." That is
+            // exactly `state: open`, with NO date window -- which has no boundary condition at all.
+            // An OPEN check suppresses (correctly, it IS the reminder); a CLOSED one never does.
             const issues = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              state: 'all',
-              labels: 'process,sapient-trust'
+              state: 'open',
+              labels: 'process,sapient-trust',
+              per_page: 100
             });
 
-            // Check if there's already a role health check issue for this period
             const existingIssue = issues.data.find(issue =>
-              issue.title.includes('ROLE-HEALTH-CHECK') &&
-              new Date(issue.created_at) > fourWeeksAgo
+              issue.title.includes('ROLE-HEALTH-CHECK')
             );
 
             if (existingIssue) {
