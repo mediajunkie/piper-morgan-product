@@ -1,6 +1,12 @@
 # HOST carry-forward
 
-**Written**: 2026-07-30 19:2x PDT (STOP, day 6 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-07 16:2x PDT (fire, day 14 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+⚠️ **The "Written" date sat at 07-30 for a week while this file was edited daily** — an instance of the exact stale-header shape this file itself catalogues below. Fixing it here doesn't fix the pattern; treat every section's date as suspect, not just this line.
+
+## Closed by PM ruling, 2026-08-07 — do not re-raise
+
+- ✅ **Tester welfare — DISPOSED, not deferred.** PM, verbatim: *"1 tester with feedback as pivotal as Jake's justifies 11 quiet busy ones. That is an 8% return from the field and high value signal. Not worth sweating."* **My framing wasn't wrong (silence needed a decision); the denominator was (I read it as a welfare risk, PM reads it as a field-response rate, where 8% unsolicited qualitative feedback is good).** No instrument needed. If it resurfaces, it's on new evidence — an *active* tester having a bad time — not on quiet ones. **Stop carrying this in the standing prompt.**
+- ✅ **Migration checklist v2.0 — CEO-RATIFIED.** PM, verbatim: *"I ratify Migration checklist v2.0."* Status section stamped. Nothing further owed here.
 
 ## Read this first
 
