@@ -24,14 +24,17 @@ the decision to act without waiting), that's a real signal to recalibrate how ca
 confirmation" items get resolved next time. Watch for that reaction; don't assume it landed fine just
 because nothing's come back yet.
 
-## 🔴 TOP PRIORITY, IN PROGRESS — Friday early-omnibus, first instance (Aug 4–6 gap)
+## ✅ Friday early-omnibus, first instance — RESOLVED 2026-08-07 Fire 1
 
-Dispatched 3 parallel background extraction agents (one per day: Aug 4, 5, 6) via `create-omnibus`.
-Synthesis not yet done — this is genuinely in-progress, not blocked, not deferred. **If a later fire
-picks this up before synthesis completes**: check whether the 3 background agents finished (their
-output files are named in this fire's tool-call history, not reproducible from memory — if unsure,
-just re-dispatch fresh extraction rather than guess at partial results). Deadline is EARLY today per
-the standing obligation — Exec's kickoff memos go out this morning assuming the omnibus is ready.
+Aug 4, 5, 6 gap closed via 3 parallel extraction agents + synthesis. All three HIGH-COMPLEXITY:
+COORDINATION, all landed 107-133 lines against the 450-600 target — flagged honestly to Exec, not
+padded, same shape as the Jul 29–Aug 3 gap two weeks ago. Step 10.5 (activity-log Shape B rows) done
+for all 33 logs. Exec notified, ready for kickoff memos.
+
+**New owed item surfaced while doing Step 10.5**: the ~70-row Jul 29–Aug 3 activity-log backfill from
+two weeks ago was explicitly deferred at the time and never completed — the CSV jumps straight from
+Jul 28 to Aug 4. Flagged to Exec/PM in the same memo rather than let it stay quietly incomplete. Not
+urgent (no functional consequence yet) but real technical debt — see Owed by me below.
 
 ## Mail-loop scan — TWO header formats, checked by hand each fire, not yet unified
 
@@ -78,14 +81,17 @@ Don't let the blocked post eat the whole morning at the expense of this — they
 - **#1475 / #1486** — both OPEN, unchanged, not urgent.
 - **Next Monday's weekly-docs-audit fire (Aug 10)** — watch whether the nudged cron fires.
 
-## Owed by me — unblocked, priority order (after the two 🔴 items above)
+## Owed by me — unblocked, priority order
 
-1. **`planning/current/` Finding 1** — fresh careful pass needed, not a rename. Named trigger (fresh
+1. **Jul 29–Aug 3 activity-log backfill, ~70 rows** — deferred 2 weeks ago, surfaced again today while
+   doing Aug 4-6's rows. No functional consequence yet but it's real debt; do it before it's 3 gaps
+   instead of 1.
+2. **`planning/current/` Finding 1** — fresh careful pass needed, not a rename. Named trigger (fresh
    session/compaction) still hasn't arrived — eight days running now.
-2. **97 docs >30d asserting current-state language** — no deadline.
-3. **#1486's actual checklist** — not urgent.
-4. **methodology-20's compression rules mutually unsatisfiable** — CIO owns.
-5. **`docs-standing-items.md` stale** — low priority.
+3. **97 docs >30d asserting current-state language** — no deadline.
+4. **#1486's actual checklist** — not urgent.
+5. **methodology-20's compression rules mutually unsatisfiable** — CIO owns.
+6. **`docs-standing-items.md` stale** — low priority.
 
 ## Resolved today (2026-08-06) — do NOT re-open
 
