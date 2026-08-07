@@ -1,6 +1,6 @@
-# Web carry-forward — 2026-07-29 (active)
+# Web carry-forward — 2026-07-29 (active), cron ID last updated 2026-08-07
 
-**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `fafad118`, ARMED, session-only — see caveat below) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
+**Session**: Amber / pipermorgan.ai, Opus 5 · cron `22 6,9,12,15,18,21 * * *` (job `104cb687`, ARMED, session-only, re-armed 2026-08-04 — see caveat below) · registry row `dev/active/duty-cycle-registry.tsv` line `web`
 
 ## ⚠️ Environment facts worth re-verifying each fire, not assuming
 
@@ -10,6 +10,19 @@
 - **Local env has no `GITHUB_DRAFT_TOKEN` / `ADMIN_PASSWORD_HASH` / `ADMIN_SESSION_SECRET`** — can exercise failure/fallback branches locally but not the real success path for anything touching the compose API or the live GitHub-backed calendar read. Vercel has these; first real click-through after a deploy is the actual test.
 
 ## Active threads
+
+### Ship #055 contributor workstream report — FILED 2026-08-07
+First-time ask (PM's idea, explicitly an experiment): contributor roles (lead, docs, pa, web) now
+also file a lighter workstream report — progress/setbacks/blockers, no milestone-attestation
+apparatus. Window Jul 31–Aug 6. Exec's kickoff said "due Saturday day-close"; corrected within the
+hour to "write it now" (PM: a deadline framing gives license to defer, and every hour filed earlier
+is an hour of PM reading time returned). Filed same-fire rather than waiting:
+`mailboxes/exec/inbox/workstream-055-web-2026-08-07.md`. Covered: soft-404 fix (full writeup),
+BRIEFING-ESSENTIAL-WEB.md gap closure + registry fix, cron-dispatch thread participation; named
+three genuine blockers (no-browser-on-this-host obs-pass backlog, two Docs-owned decisions stalled
+2+ weeks, predecessor's 3-week-unanswered CLI B/archive-mode question); flagged the 8/6 machine-sleep
+gap as an environment fact per Exec's own ask to say so plainly if it cost a fire. Nothing further
+pending unless Exec or PM follows up.
 
 ### Blog soft-404 — FULLY RESOLVED 2026-08-04, no open items
 Comms found `pipermorgan.ai/blog/<any-nonexistent-slug>/` and `/blog/page/<out-of-range>/` both
