@@ -2,9 +2,9 @@
 name: template-audit
 description: Run a mechanical template audit on a finished blog draft before sending the publish-ready signal to Docs. Use after PM's voice pass is complete. Produces a pass/fail report with specific flags. Blocks the publish-ready signal on any FAIL.
 scope: comms
-version: 1.5
+version: 1.6
 created: 2026-06-19
-updated: 2026-08-04
+updated: 2026-08-07
 ---
 
 # template-audit
@@ -224,6 +224,25 @@ grep -n "#[0-9]\{3,\}\|[a-f0-9]\{7,40\}" <draft>
 
 Issue numbers (#824, #888) and commit hashes in narrative prose = FAIL unless they're inside a technical-detail section or coordinate reference (e.g., a metrics table). Replace with role-functional descriptions in running prose.
 
+### 15. Typographic residue — doubled punctuation, orphaned markers, stray double spaces
+
+```bash
+grep -nE '(^|[^.])\.\.($|[^.])|[,;:!?]{2,}|,\.|\.,|[a-z][0-9]\)|  +[A-Za-z]' <draft>
+```
+
+Any match = FAIL. Catches the class of defect that survives a voice pass because it is invisible while reading for sense: **`architecture..`** (double period), **`skill1)`** (an orphaned footnote marker glued to a word), doubled commas, and a double space before a word.
+
+⚠️ **The three-dot ellipsis is deliberately excluded** — `So you just... draft it` is a real stylistic device and appears in the corpus. A check that flags it would be noise, and noise is how a gate gets skimmed.
+
+**Verified against three controls before shipping** (the discipline this skill keeps re-learning):
+- **known-positive** — the pre-fix *Drained on Paper*: finds both real defects ✓
+- **known-negative** — the published version: 0 ✓
+- **false-positive sweep** — all 17 active drafts: **0** ✓
+
+⚠️ **Scope, stated so nobody over-trusts it**: this catches the **mechanically greppable** half of proofreading only. Docs' step-5 proof caught four defects in *Drained on Paper*; **two were this class and two were not** — `unthethering` (a misspelling) and `mistakes`→`mistake` (number agreement). **Those need a reader, and step 5 is where they belong.** This check does not make Comms the proofreader.
+
+★ **The narrower lesson, which cost the other one**: in that same audit I *did* catch a double space and *did* fix `two distinct issue`→`issues` — then never swept for either class. **A second number-agreement error was sitting four paragraphs away.** Fixing an instance is not fixing the class; when a defect type appears once, grep the whole document for it before moving on.
+
 ## Output Format
 
 Report results as a compact table, then a verdict:
@@ -275,3 +294,5 @@ On PASS: send the publish-ready memo to Docs inbox per the handoff protocol (Jun
 *v1.4 — 2026-08-03. **Check #6 corrected: Weekly Ships sit outside the footer-tease chain.** The check said the tease must match "the next scheduled post" with no exception for Ships. Measured against actual practice: **6 of 6 recent Ships carry no tease**, and **7 of 8** narratives/insights whose next calendar row was a Ship teased *past* it to the following non-Ship post. Read literally, the old wording would have had me "fix" *The List That Lies* to tease Ship #054 — **corrupting a correct chain the day before it published.** Distinct from the v1.3 defect and worse in kind: check #5 was *blind* (it missed things), check #6 was *wrongly directive* (it would have manufactured the defect it claims to prevent). Added a calendar-derived query for the tease target so the rule isn't re-derived by eye. Second gate defect found in this skill in one day — both surfaced by running the gate against real queue state rather than reading it.*
 
 *v1.5 — 2026-08-04. **Added the Ship-calibration table at the top of the checklist.** Four checks — #1 caption, #6 tease, #12 word count, #14 `#NNN` refs — are calibrated for narratives and produce **false FAILs on Weekly Ships**: measured against the 6 most recent published Ships, they'd fail **6/6, 6/6, 4/6, 6/6** respectively, on posts that shipped clean and are live. Ship word norm measured at **~1,630** (#049–#053), against the narrative target of 800–1,300. Two of the four (#1, #6) already had scattered N/A notes; #12 and #14 had none. **Consolidated into one theme-keyed table rather than a fourth footnote**, because the real hazard isn't any single false FAIL — it's that a gate crying wolf on four of fourteen checks teaches its operator to discard failures by eye, and that habit doesn't stay confined to the four that earned it. Same dynamic CLAUDE.md records for the sign-off checklist. Found while pre-passing Ship #054.*
+
+*v1.6 — 2026-08-07. **Added check #15, typographic residue.** Docs' step-5 proof caught **four** defects in *Drained on Paper* after my audit passed it: `architecture..`, `skill1)`, `unthethering`, `mistakes`→`mistake`. **Two of the four were mechanically greppable and this gate should have caught them** — same family as the double space it did catch. The other two need a reader and correctly belong to step 5. Pattern verified against a known-positive (pre-fix file: finds both), a known-negative (published file: 0) and a false-positive sweep (17 active drafts: 0), with the 3-dot ellipsis deliberately excluded after it produced the only false hit. **The sharper lesson is recorded in the check itself**: the same audit caught one number-agreement error and never swept for the class, leaving a second one four paragraphs away.*

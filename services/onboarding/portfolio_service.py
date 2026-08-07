@@ -13,6 +13,7 @@ Design Decision: Archive is the default removal action.
 Permanent delete requires explicit confirmation.
 """
 
+import re
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
@@ -454,3 +455,72 @@ ARCHIVE_INSTEAD_PATTERNS = [
     r"\bjust\s+archive\b",
     r"\bkeep\s+it\s+recoverable\b",
 ]
+
+
+# Trailing politeness/filler words to strip from captured project names.
+# Fixes "delete X please" capturing "X please".
+_TRAILING_WORDS = [
+    "please",
+    "now",
+    "thanks",
+    "thank you",
+    "asap",
+    "for me",
+    "right now",
+    "immediately",
+    "today",
+]
+
+# Matching quote pairs to unwrap from captured names (straight + curly).
+_QUOTE_PAIRS = [
+    ('"', '"'),
+    ("'", "'"),
+    ("“", "”"),  # “ ”
+    ("‘", "’"),  # ‘ ’
+]
+
+
+def clean_project_name(name: Optional[str]) -> Optional[str]:
+    """
+    Normalize a project name captured by the ARCHIVE/DELETE/RESTORE patterns.
+
+    Hoisted from the nested helper in canonical_handlers._handle_portfolio_query
+    so it is testable and shared (Issue #1492: 'Archive my Test project,
+    please.' / 'called "Test"' / '"Test"' all failed; only the bare form
+    worked). Handles, iteratively until stable:
+
+    - trailing sentence punctuation ("Test." → "Test")
+    - trailing politeness/filler words ("Test please" → "Test")
+    - a leading 'called'/'named' ("called Test" → "Test")
+    - wrapping quotes, straight or curly ('"Test"' → "Test")
+
+    and finally the adjective-position noun ("Test project" → "Test", from
+    "Archive my Test project" where the pattern can't consume "project").
+    """
+    if not name:
+        return name
+    cleaned = name.strip()
+    prev = None
+    while cleaned and cleaned != prev:
+        prev = cleaned
+        # Trailing sentence punctuation ("test project, please." → "... please")
+        cleaned = cleaned.rstrip(".,!?;:").strip()
+        # Politeness/filler tails ("X please" → "X")
+        for word in _TRAILING_WORDS:
+            if cleaned.lower().endswith(f" {word}"):
+                cleaned = cleaned[: -(len(word) + 1)].strip()
+        # Leading 'called'/'named' ("called \"Test\"" → "\"Test\"")
+        cleaned = re.sub(r"^(?:called|named)\s+", "", cleaned, flags=re.IGNORECASE)
+        # Unwrap matching quotes ("\"Test\"" → "Test")
+        for open_q, close_q in _QUOTE_PAIRS:
+            if len(cleaned) >= 2 and cleaned.startswith(open_q) and cleaned.endswith(close_q):
+                cleaned = cleaned[1:-1].strip()
+                break
+    # Adjective position: "Archive my Test project" captures "test project"
+    # (the pattern's optional "project " prefix can't consume a trailing
+    # noun). Strip it, but never down to an empty name ("archive my project"
+    # legitimately captures just "project").
+    stripped = re.sub(r"\s+projects?$", "", cleaned, flags=re.IGNORECASE)
+    if stripped:
+        cleaned = stripped
+    return cleaned

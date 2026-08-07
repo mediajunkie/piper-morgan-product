@@ -91,30 +91,48 @@ class TodoIntentHandlers:
         """Initialize with TodoManagementService."""
         self.todo_service = TodoManagementService()
 
-    async def get_due_reminders(self, user_id: UUID) -> List[str]:
+    async def get_due_reminders(self, user_id: UUID) -> Optional[List[str]]:
         """
         Issue #903: Get reminders that are due now or overdue.
 
         Returns a list of reminder text strings for surfacing at greeting time.
         Queries todos where reminder_date <= now and status != completed.
-        """
-        from datetime import datetime
 
+        Issue #1491: both sides of the due-ness comparison are normalized to
+        aware-UTC (the #1429 standup guard shape). reminder_date comes back
+        tz-aware from Postgres timestamptz but tz-naive from backends that
+        drop tzinfo (e.g. SQLite in tests); the old naive `datetime.now()`
+        against an aware row raised TypeError, which the swallow below turned
+        into the None sentinel — so saved reminders never surfaced (live on
+        v30, 2026-08-07). Naive rows are assumed UTC per ensure_utc().
+        """
+        from datetime import datetime, timezone
+
+        from services.utils.datetime_utils import ensure_utc
+
+        todo_count: Optional[int] = None
+        reminders_considered = 0
         try:
             todos = await self.todo_service.list_todos(user_id=user_id, include_completed=False)
-            now = datetime.now()
+            todo_count = len(todos)
+            now = datetime.now(timezone.utc)
             due = []
             for todo in todos:
-                if (
-                    hasattr(todo, "reminder_date")
-                    and todo.reminder_date
-                    and todo.reminder_date <= now
-                    and not todo.completed
-                ):
+                reminder_date = getattr(todo, "reminder_date", None)
+                if reminder_date is None or todo.completed:
+                    continue
+                reminders_considered += 1
+                # #1491/#1429 guard: coerce the row aware-UTC before comparing.
+                if ensure_utc(reminder_date) <= now:
                     due.append(todo.text)
             return due
         except Exception as e:  # silent-ok: None sentinel -> assembler flags source_failed instead of "no reminders due" (#1425)
-            logger.warning("Failed to fetch due reminders (source failed)", error=str(e))
+            logger.warning(
+                "Failed to fetch due reminders (source failed)",
+                error=str(e),
+                todo_count=todo_count,
+                reminders_considered=reminders_considered,
+            )
             return None
 
     async def handle_create_todo(self, intent: Intent, session_id: str, user_id: UUID) -> str:
@@ -227,16 +245,43 @@ class TodoIntentHandlers:
                 "You can try again, or use 'add todo: [your task]' as a fallback."
             )
 
+    # Issue #1490: time expressions a reminder message may carry, shared by the
+    # time-first patterns (skip them to find the task) and the trailing strip
+    # (remove them from the saved todo text). Mirrors what parse_reminder_time
+    # in temporal_utils can actually parse.
+    _TIME_EXPR = (
+        r"(?:tomorrow(?:\s+(?:morning|afternoon|evening))?|tonight|"
+        r"this\s+(?:morning|afternoon|evening)|"
+        r"next\s+week|"
+        r"(?:next|on)\s+(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)|"
+        r"in\s+\d+\s+(?:minutes?|mins?|hours?|hrs?|days?)|"
+        r"(?:today\s+)?at\s+\d{1,2}(?::\d{2})?\s*(?:am|pm)?)"
+    )
+
     def _extract_reminder_text(self, message: str) -> Optional[str]:
         """
         Issue #903: Extract the actionable text from a reminder request.
 
         Strips command phrases like "remind me to", "set a reminder to", etc.
+
+        Issue #1490: also handles [time-first, task-after-'to'] ordering
+        ("remind me tomorrow at 3pm to review the PR"), trailing punctuation,
+        and compound trailing time expressions ("tomorrow at 3pm").
         """
         import re
 
-        # Order matters — try most specific patterns first
+        time_expr = self._TIME_EXPR
+
+        # Order matters — try most specific patterns first.
+        # Time-first variants (Issue #1490) precede the generic forms: the
+        # generic forms can't match them ('to|about' must directly follow the
+        # command phrase), and the time-first forms can't match task-first
+        # messages (a time expression must directly follow the command phrase),
+        # so neither shadows the other.
         patterns = [
+            rf"(?:please\s+)?remind\s+me\s+(?:{time_expr}\s+)+(?:to|about)\s+(.+)",
+            rf"(?:please\s+)?set\s+(?:a\s+)?reminder\s+(?:for\s+)?(?:{time_expr}\s+)+(?:to|about)\s+(.+)",
+            rf"(?:please\s+)?create\s+(?:a\s+)?reminder\s+(?:for\s+)?(?:{time_expr}\s+)+(?:to|about)\s+(.+)",
             r"(?:please\s+)?remind\s+me\s+(?:to|about)\s+(.+)",
             r"(?:please\s+)?set\s+(?:a\s+)?reminder\s+(?:to|for|about)\s+(.+)",
             r"(?:please\s+)?create\s+(?:a\s+)?reminder\s+(?:to|for|about)\s+(.+)",
@@ -249,16 +294,20 @@ class TodoIntentHandlers:
             match = re.search(pattern, message_lower)
             if match:
                 text = match.group(1).strip()
-                # Strip trailing time expressions so the todo text is clean
-                text = re.sub(
-                    r"\s+(?:tomorrow|tonight|this afternoon|this evening|"
-                    r"next week|next (?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)|"
-                    r"in \d+ (?:minutes?|mins?|hours?|hrs?|days?)|"
-                    r"at \d{1,2}(?::\d{2})?\s*(?:am|pm)?)\s*$",
-                    "",
-                    text,
-                    flags=re.IGNORECASE,
-                ).strip()
+                # Strip trailing punctuation and time expressions so the todo
+                # text is clean. Loop until stable: "review PRs tomorrow at
+                # 3pm." sheds ".", then "at 3pm", then "tomorrow" (#1490).
+                while text:
+                    stripped = text.rstrip(".,!?;: ").strip()
+                    stripped = re.sub(
+                        rf"\s+{time_expr}\s*$",
+                        "",
+                        stripped,
+                        flags=re.IGNORECASE,
+                    ).strip()
+                    if stripped == text:
+                        break
+                    text = stripped
                 if text:
                     return text
 

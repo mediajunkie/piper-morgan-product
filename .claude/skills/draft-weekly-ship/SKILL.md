@@ -2,7 +2,7 @@
 name: draft-weekly-ship
 description: Draft the Piper Morgan Weekly Ship newsletter from collected workstream memos. Use when PM says "draft the Ship", "draft Ship #NNN", "synthesize the workstream memos", or when all 6 workstream-NNN memos have landed in `mailboxes/exec/inbox/` and a theme has been picked. Loads the canonical artifacts before drafting so memory-of-past-Ships doesn't substitute for structure.
 scope: exec
-version: 1.10
+version: 1.11
 created: 2026-05-19
 ---
 
@@ -51,6 +51,22 @@ Invoke this skill when:
 ---
 
 ## Procedure
+
+### Step 0: Write the kickoff memo — REQUIRED FRAMING (do not paraphrase from memory)
+
+**The kickoff's deadline framing is a mechanism, not a style choice.** PM has corrected the same failure three times (Ship #045 Jun 1, #046 Jun 5, #055 Aug 7). Every instance had the same shape: a stated backstop date read by recipients as the target, work deferred to it, reports arriving later and staler, PM's reading window compressed. **Use this wording. Do not compose it fresh.**
+
+✅ **Required — copy this into every kickoff:**
+
+> **Write your report as soon as possible — meaning immediately, or, if that would derail genuinely focused work, at your next opportunity.** No later than {DATE}, but treat that as the point where I nudge you, not as when it's due.
+>
+> **Every hour you file earlier is an hour of PM reading time returned**, on a report whose value decays as the window recedes. **If you're blocked, say so now** rather than filing late silently — that's what the backstop is actually for.
+
+❌ **Banned phrasings** (each has produced the failure): "due at your Saturday day-close" · "target EOD {day}" · "by {date}" · "at your cadence" · "firm-preference / absolute-latest" · any framing where the date appears before the write-now instruction.
+
+**The boundary**: this is not manufactured urgency (see `feedback_time_lord_doctrine_no_false_urgency` — PM's own pacing is never compressed, and no deadline is invented). The date is real and unchanged; what's corrected is that **the ask leads with "now" and the date appears second, named as a nudge-threshold.**
+
+**Why it's in the skill and not just in memory**: it *was* only in memory (`feedback_kickoff_deadlines_must_be_framed_procedurally`, which even specified "the skill needs this section"), and it failed again on 2026-08-07 in a session that held the pin. A rule that depends on a future session reaching for the right memory at the right moment is vigilance. This section is the mechanism.
 
 ### Step 1: Load the canonical artifacts
 
@@ -298,6 +314,10 @@ The Ship #043 v0.1 failure was not knowing the template existed — it was choos
 
 ## Version history
 
+### v1.11 (2026-08-07)
+
+**New Step 0: required kickoff-memo framing, with copy-this wording and a banned-phrasings list.** Third instance of the same PM correction (#045, #046, #055): a stated backstop date reads as the target and licenses deferral, which compresses PM's reading window on staler reports. The rule had existed in memory since June — *including a note that it belonged in this skill* — and failed anyway in a session that held the pin. Mechanism now lives here. Also carries the contributor-role kickoff (Lead/Docs/PA/Web, added at PM's direction 2026-08-07: progress/setbacks/blockers in their own portfolios, without the leadership milestone apparatus).
+
 ### v1.10 (2026-08-05)
 
 **New Step 2c: internal report precedes the draft — hard gate.** PM's ten-step weekly-reporting cycle (stated 2026-08-04, relayed via Janus, codified in the process guide's canonical-cycle section): kickoff memos emphasize progress-vs-goals; Exec synthesizes the internal report as an artifact + notifies Janus BEFORE drafting; the Ship draft follows the PM discussion. Trigger: #054 went 6/6-gate straight to public draft; the internal report was produced only after PM asked where it was.
@@ -348,7 +368,7 @@ Initial skill. Lists canonical artifacts to load before drafting. Names voice-di
 
 ---
 
-*Skill version: 1.10*
+*Skill version: 1.11*
 *Created: 2026-05-19 (v1.0)*
 *Updated: 2026-05-20 (v1.1 — External-section verification step; v1.2 — omnibus is required full read, not spot-check); 2026-07-08 (v1.3 — Comms pre-publish review is a named mandatory step; v1.4 — PM gates the Comms handoff + evidence-tier discipline; v1.5 — metrics as bullet list, never a table); 2026-07-14 (v1.6 — Step 2b hard gate: all 6 memos required, no partial drafts under deadline pressure)*
 *Scope: Exec (drafts); PM (gates); Comms (reviews)*

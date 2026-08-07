@@ -51,6 +51,7 @@ from services.onboarding.portfolio_service import (
     PortfolioActionResult,
     PortfolioResult,
     PortfolioService,
+    clean_project_name,
 )
 
 __all__ = [
@@ -87,4 +88,5 @@ __all__ = [
     "PortfolioActionResult",
     "PortfolioResult",
     "PortfolioService",
+    "clean_project_name",
 ]
