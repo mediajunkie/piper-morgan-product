@@ -1056,3 +1056,50 @@ PPM'S 8-of-11 STANDS (now 9 of 11 with Web's correction) — MY REFRAMING WAS WR
   PHENOMENON? Freeze ~13:40; one-row surface established ~06:57 — not a candidate explanation at all.
   A newly-acquired mechanism is exactly when over-application is most tempting: it is fresh, it explained
   something real an hour ago, and it feels like the answer to the next thing too.
+
+---
+2026-08-07 17:1x PT — Arch — RELEASE-TRAIN SKETCH filed for PM + SLASH-COMMAND NORMALIZATION ruled
+
+RELEASE-TRAIN DEFINITION SKETCH (PM-approved assignment via Exec; PM verbatim: "Yes Arch should sketch
+  something out for my review"). Filed 🟡 SKETCH (not in force) at
+  docs/internal/architecture/current/release-train-definition-sketch-2026-08-07.md; becomes an ADR on
+  ratification and supersedes/amends ADR-007's environment section.
+  DIAGNOSIS (Exec's two-axis finding, adopted, plus a third question of mine): THREE DIFFERENT QUESTIONS
+  SHARE ONE WORD — (1) where does it RUN (PIPER_ENVIRONMENT, machine fact, code branches on it);
+  (2) who is it FOR (alpha/beta/GA, product fact, no code reads it); (3) what is ACTUALLY RUNNING (read the
+  artifact — not a name at all). Exec's sentence, unimprovable: "the build runs in PRODUCTION MODE, serving
+  the ALPHA AUDIENCE, gated by the BETA MILESTONE."
+  FOUR RULES: (1) one word, one axis — "X is in production" is ill-formed unless X is a PROCESS;
+  (2) the artifact is never named, it is READ; (3) RETIRE `staging` as a name (ADR-007 defines it as a local
+  docker-compose stack; the slot doesn't exist in our topology — PM's own "(?)" was the right instinct;
+  retiring the word does not foreclose building the thing later); (4) every name answers artifact /
+  promotion / authorizer / promises.
+  ⭐ RULE 4'S PROMISES COLUMN LEFT BLANK ON PURPOSE — what alpha/beta/GA promise is a PRODUCT COMMITMENT,
+  not an architecture call. Asked PM for one line each rather than inventing it.
+  🔴 MY OWN ERROR, LEFT IN THE DOCUMENT DELIBERATELY: first draft said "delete the `production` branch —
+  nothing depends on it that I can find," THEN I RAN THE SEARCH I HAD JUST CLAIMED TO HAVE RUN. Five
+  consumers: four CI workflows trigger on `branches: [main, production]`, and check-release-parity.sh:17
+  uses it as its DEFAULT BASELINE. Recommendation changed to RENAME (the name claims authority the ref
+  doesn't have) + fix the parity default — PPM's finding, filed to #1413, endorsed not claimed. The error
+  stays in the doc because it is the mistake Rule 2 exists to prevent, committed inside the proposal for
+  Rule 2, which makes it the strongest argument there for the rule.
+
+SLASH-COMMAND SURFACE NORMALIZATION RULED (Lead's PM-requested memo; three surfaces — Slack console
+  commands, web UI, CLI): ⭐ ONE REGISTRY, MANY PROJECTIONS — NOT ONE VOCABULARY.
+  NORMALIZE: what commands exist, what each DOES, and whether each MUTATES (one source of truth — same
+  argument as PDR-006 condition 2). DO NOT NORMALIZE: spelling and invocation form. `/standup` in Slack,
+  `piper standup` in CLI, a slash-menu entry in web are THE SAME COMMAND IN THREE GRAMMARS.
+  WHY FORM-PARITY IS THE ERROR: it is PA's tool-catalog finding one surface over — "the property that makes
+  the alias set good input makes it bad catalog." Slack commands are FIXED/PRE-REGISTERED, web chat is
+  FREE-FORM, CLI is TYPED/COMPLETABLE: three different interaction contracts.
+  INVARIANT: a command with the same name means the same thing and has the same effect on every surface it
+  appears on. ANTI-INVARIANT (refused): every command appears on every surface. A surface carrying a subset
+  DECLARES that subset in the registry, so "absent from the CLI" is a recorded decision, not a discovered gap.
+  🔴 HAZARD NO DERIVE CAN REACH: Slack's slash commands are registered BY HAND IN SLACK'S CONSOLE — outside
+  the repo, outside CI, outside any generator. A registry can emit what SHOULD be registered; it cannot make
+  it so and cannot see changes. THE CONSOLE IS THE ARTIFACT; everything in our repo is a RECORD OF IT — same
+  divergence we learned Thursday with origin/production. SO THE SLACK LEG NEEDS A CHECK (query Slack's API,
+  compare to the registry), NOT A GENERATOR: a generator alone yields a confident record of a console nobody
+  looked at. ⚠️ UNVERIFIED: whether Slack's API exposes registered slash commands to us. If not, this reduces
+  to a documented manual step with a named owner — worse, but better than a derive claiming coverage it
+  lacks. Sequence AFTER the connector wave (same file territory as PPM's front-load order).

@@ -1,0 +1,259 @@
+<title>Set up Slack for Piper Morgan</title>
+<style>
+  :root {
+    --ground: #FBFAF8;
+    --ink: #1D1C1D;
+    --ink-soft: #55504F;
+    --accent: #4A154B;
+    --accent-soft: #F4EDF4;
+    --good: #007A5A;
+    --good-soft: #E8F5F0;
+    --warn: #B25000;
+    --warn-soft: #FBF0E5;
+    --code-bg: #F1ECF1;
+    --rule: #E4DFDC;
+    --card: #FFFFFF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #1A181A;
+      --ink: #ECE8E6;
+      --ink-soft: #A8A2A0;
+      --accent: #C99BC9;
+      --accent-soft: #322232;
+      --good: #4FBF9F;
+      --good-soft: #17332B;
+      --warn: #E5945A;
+      --warn-soft: #392617;
+      --code-bg: #2A252A;
+      --rule: #3A3538;
+      --card: #232022;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #1A181A; --ink: #ECE8E6; --ink-soft: #A8A2A0;
+    --accent: #C99BC9; --accent-soft: #322232;
+    --good: #4FBF9F; --good-soft: #17332B;
+    --warn: #E5945A; --warn-soft: #392617;
+    --code-bg: #2A252A; --rule: #3A3538; --card: #232022;
+  }
+  :root[data-theme="light"] {
+    --ground: #FBFAF8; --ink: #1D1C1D; --ink-soft: #55504F;
+    --accent: #4A154B; --accent-soft: #F4EDF4;
+    --good: #007A5A; --good-soft: #E8F5F0;
+    --warn: #B25000; --warn-soft: #FBF0E5;
+    --code-bg: #F1ECF1; --rule: #E4DFDC; --card: #FFFFFF;
+  }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 2.5rem 1.25rem 5rem;
+  }
+  main { max-width: 68ch; margin: 0 auto; }
+  h1, h2 {
+    font-family: "Avenir Next", Seravek, system-ui, sans-serif;
+    text-wrap: balance;
+    line-height: 1.2;
+  }
+  h1 { font-size: 2rem; font-weight: 600; margin: 0 0 .5rem; }
+  .lede { color: var(--ink-soft); font-size: 1.05rem; margin: 0 0 1rem; }
+  .eyebrow {
+    display: inline-block;
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: .75rem;
+  }
+  .phase {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 1.5rem 1.75rem;
+    margin-top: 1.75rem;
+  }
+  .phase h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+    display: flex;
+    align-items: baseline;
+    gap: .75rem;
+  }
+  .phase h2 .num {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: .15rem .5rem;
+    flex: none;
+  }
+  ol.steps { margin: 0; padding-left: 1.3rem; display: flex; flex-direction: column; gap: .65rem; }
+  ol.steps li::marker { color: var(--accent); font-weight: 600; }
+  code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: .88em;
+    background: var(--code-bg);
+    border-radius: 5px;
+    padding: .1em .4em;
+  }
+  .copyblock {
+    background: var(--code-bg);
+    border-radius: 8px;
+    padding: .75rem 1rem;
+    margin: .5rem 0 0;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: .85rem;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .copyblock b { color: var(--accent); font-weight: 600; }
+  .checkpoint, .gotcha {
+    border-radius: 8px;
+    padding: .8rem 1rem;
+    margin-top: 1.1rem;
+    font-size: .93rem;
+  }
+  .checkpoint { background: var(--good-soft); }
+  .checkpoint strong { color: var(--good); }
+  .gotcha { background: var(--warn-soft); }
+  .gotcha strong { color: var(--warn); }
+  .path { color: var(--ink-soft); }
+  .path b { color: var(--ink); font-weight: 600; }
+  table { border-collapse: collapse; width: 100%; margin-top: .5rem; font-size: .9rem; }
+  th, td { text-align: left; padding: .4rem .6rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-soft); }
+  td code { white-space: nowrap; }
+  a { color: var(--accent); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .toc { color: var(--ink-soft); font-size: .93rem; margin: 0; padding-left: 1.3rem; }
+</style>
+
+<main>
+  <span class="eyebrow">Piper Morgan · one-time setup · ~10 minutes</span>
+  <h1>Set up Slack for Piper Morgan</h1>
+  <p class="lede">This creates the Slack app that lets Piper reply to your DMs and @mentions, and gives you the <code>/link</code> and <code>/standup</code> commands. You'll do everything in two tabs: Slack's app console and Piper's settings page.</p>
+  <ol class="toc">
+    <li>Create the app in your workspace</li>
+    <li>Turn on Socket Mode and generate the app token</li>
+    <li>Give the bot its permissions</li>
+    <li>Subscribe to messages and mentions</li>
+    <li>Add the slash commands</li>
+    <li>Install and copy the bot token</li>
+    <li>Paste both tokens into Piper</li>
+    <li>Link your account and try it</li>
+  </ol>
+
+  <section class="phase">
+    <h2><span class="num">1</span>Create the app in your workspace</h2>
+    <ol class="steps">
+      <li>Open <a href="https://api.slack.com/apps">api.slack.com/apps</a>. Check the workspace switcher in the <b>top-right corner</b> — apps belong to one workspace, and the list only shows apps for the workspace you're signed into. (If an app you remember seems to have vanished, it's almost certainly listed under a different workspace, such as an older one.)</li>
+      <li>Click <b>Create New App</b> → <b>From scratch</b>.</li>
+      <li>App name: <code>Piper Morgan</code>. Pick the workspace you actually chat in. Click <b>Create App</b>.</li>
+    </ol>
+    <div class="checkpoint"><strong>Checkpoint:</strong> you're on the app's <b>Basic Information</b> page, with a left sidebar of settings.</div>
+  </section>
+
+  <section class="phase">
+    <h2><span class="num">2</span>Turn on Socket Mode and generate the app token</h2>
+    <ol class="steps">
+      <li>In the left sidebar: <span class="path"><b>Settings → Socket Mode</b></span> → toggle <b>Enable Socket Mode</b> on.</li>
+      <li>Slack immediately asks you to create an app-level token. Name it <code>piper-socket</code>, and confirm it has the scope <code>connections:write</code>. Click <b>Generate</b>.</li>
+      <li>Copy the token — it starts with <code>xapp-</code>. Park it somewhere safe for phase 7 (you can always regenerate it later under <span class="path"><b>Basic Information → App-Level Tokens</b></span>).</li>
+    </ol>
+    <div class="checkpoint"><strong>Checkpoint:</strong> Socket Mode shows as enabled, and you have an <code>xapp-…</code> token copied.</div>
+    <div class="gotcha"><strong>Why Socket Mode:</strong> it lets Piper connect out to Slack, so there's no public webhook URL to configure anywhere — every screen that asks for a "Request URL" can be left alone.</div>
+  </section>
+
+  <section class="phase">
+    <h2><span class="num">3</span>Give the bot its permissions</h2>
+    <ol class="steps">
+      <li>Left sidebar: <span class="path"><b>Features → OAuth &amp; Permissions</b></span>, scroll to <b>Scopes → Bot Token Scopes</b>.</li>
+      <li>Add each scope below with <b>Add an OAuth Scope</b>:</li>
+    </ol>
+    <table>
+      <tr><th>Scope</th><th>What it's for</th></tr>
+      <tr><td><code>chat:write</code></td><td>Sending replies</td></tr>
+      <tr><td><code>im:history</code></td><td>Reading the DMs you send it</td></tr>
+      <tr><td><code>im:read</code></td><td>Seeing its DM conversations</td></tr>
+      <tr><td><code>app_mentions:read</code></td><td>Hearing @Piper Morgan in channels</td></tr>
+      <tr><td><code>commands</code></td><td>The /link and /standup commands</td></tr>
+      <tr><td><code>users:read</code></td><td>Knowing who's talking to it</td></tr>
+      <tr><td><code>team:read</code></td><td>Knowing which workspace it's in</td></tr>
+      <tr><td><code>channels:history</code>, <code>channels:read</code></td><td>Optional — richer channel awareness; skip if you only plan to DM</td></tr>
+    </table>
+    <div class="checkpoint"><strong>Checkpoint:</strong> the Bot Token Scopes list shows at least the first seven scopes.</div>
+  </section>
+
+  <section class="phase">
+    <h2><span class="num">4</span>Subscribe to messages and mentions</h2>
+    <ol class="steps">
+      <li>Left sidebar: <span class="path"><b>Features → Event Subscriptions</b></span> → toggle <b>Enable Events</b> on. (No Request URL needed — Socket Mode carries the events.)</li>
+      <li>Expand <b>Subscribe to bot events</b> and add both:</li>
+    </ol>
+    <div class="copyblock"><b>message.im</b>       direct messages to the bot
+<b>app_mention</b>      @Piper Morgan in a channel</div>
+    <ol class="steps" start="3">
+      <li>Click <b>Save Changes</b> (bottom of the page).</li>
+    </ol>
+    <div class="checkpoint"><strong>Checkpoint:</strong> both events are listed and the page shows saved.</div>
+  </section>
+
+  <section class="phase">
+    <h2><span class="num">5</span>Add the slash commands</h2>
+    <ol class="steps">
+      <li>Left sidebar: <span class="path"><b>Features → Slash Commands</b></span> → <b>Create New Command</b>. Leave any Request URL field alone (Socket Mode again). Create each of these:</li>
+    </ol>
+    <table>
+      <tr><th>Command</th><th>Short description</th><th>Usage hint</th></tr>
+      <tr><td><code>/link</code></td><td>Link this Slack account to Piper Morgan</td><td><code>[code]</code></td></tr>
+      <tr><td><code>/standup</code></td><td>Get your standup from Piper</td><td></td></tr>
+      <tr><td><code>/piper</code></td><td>Piper commands and help</td><td><code>[help]</code></td></tr>
+    </table>
+    <div class="checkpoint"><strong>Checkpoint:</strong> three commands listed under Slash Commands.</div>
+  </section>
+
+  <section class="phase">
+    <h2><span class="num">6</span>Add the redirect URL and copy your app credentials</h2>
+    <ol class="steps">
+      <li>Left sidebar: <span class="path"><b>Features → OAuth &amp; Permissions</b></span> → <b>Redirect URLs</b> → <b>Add New Redirect URL</b>, paste exactly:</li>
+    </ol>
+    <div class="copyblock">https://piper-morgan.fly.dev/api/v1/settings/integrations/slack/callback</div>
+    <ol class="steps" start="2">
+      <li>Click <b>Save URLs</b>.</li>
+      <li>Left sidebar: <span class="path"><b>Settings → Basic Information</b></span> → <b>App Credentials</b> → copy the <b>Client ID</b> and <b>Client Secret</b>.</li>
+    </ol>
+    <div class="checkpoint"><strong>Checkpoint:</strong> one redirect URL saved; Client ID and Client Secret copied. (Piper never asks for the Signing Secret or Verification Token.)</div>
+    <div class="gotcha"><strong>Why no bot-token copying?</strong> Piper gets its <code>xoxb-</code> bot token automatically when you authorize in the next phase — there is deliberately no field to paste one.</div>
+  </section>
+
+  <section class="phase">
+    <h2><span class="num">7</span>Connect Piper to your app</h2>
+    <ol class="steps">
+      <li>In Piper: <span class="path"><b>Settings → Integrations → Slack</b></span>.</li>
+      <li>In <b>App Configuration</b>, paste the Client ID and Client Secret → <b>Save Credentials</b>.</li>
+      <li>In <b>Connect to Slack</b>, click connect. Slack shows an authorization screen listing the permissions from phase 3 → click <b>Allow</b>. (This also installs the app to your workspace — no separate install step.)</li>
+      <li>In <b>Enable Slack replies</b>, paste the <code>xapp-…</code> token from phase 2 → <b>Enable Slack replies</b>.</li>
+      <li>The status should flip to <b>listening</b> within a few seconds — no restart needed.</li>
+    </ol>
+    <div class="checkpoint"><strong>Checkpoint:</strong> the page shows connected and listening.</div>
+    <div class="gotcha"><strong>If you change scopes, events, or commands later,</strong> Slack banners "reinstall your app" in the console — click it, then reconnect here.</div>
+  </section>
+
+  <section class="phase">
+    <h2><span class="num">8</span>Link your account and try it</h2>
+    <ol class="steps">
+      <li>Sanity check first: in Slack, open a DM with <b>Piper Morgan</b> and say <code>hello</code>. You should see a brief <i>…thinking…</i> and then a real reply.</li>
+      <li>Back on Piper's Slack settings page, find <b>Link your Slack account</b> and click <b>Mint link code</b>.</li>
+      <li>In Slack, send <code>/link YOURCODE</code> (the code works once and expires after about ten minutes).</li>
+      <li>Try <code>/standup</code> — you should get your own standup, because Slack now knows which Piper account you are.</li>
+    </ol>
+    <div class="checkpoint"><strong>Checkpoint:</strong> DM replies work, <code>/link</code> confirmed, <code>/standup</code> answers as you. Done — this was all one-time; from here Slack just works.</div>
+  </section>
+</main>
