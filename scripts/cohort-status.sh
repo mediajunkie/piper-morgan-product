@@ -127,3 +127,12 @@ for r in $ROSTER; do
   done <<< "$fs"
 done
 echo "  closed today:  $closed_n / $N_ROSTER"
+# ⚠️ 2026-08-07 (CIO): READ THIS NUMBER WITH THE CLOCK, or it reads as an alarm when nothing is wrong.
+# Most roles STOP at their last scheduled fire (21:xx-22:xx) and the close lands 20-40 min later, after
+# dispatch latency. So a run at ~22:45 catches much of the cohort MID-STOP and reports a low count that
+# is simply "not yet" -- measured 2026-08-06: this said 2/11 at 22:45, and all 11 had closed by morning.
+# Before ~23:30 a low count is uninformative; after that, or at any morning START, it is meaningful.
+if [ "$(date +%-H)" -ge 20 ] && [ "$(date +%-H)" -lt 24 ] && [ "$closed_n" -lt "$N_ROSTER" ]; then
+  echo "                 ^ evening run: roles STOP at 21:xx-22:xx and close 20-40 min later, so a low"
+  echo "                   count here is usually NOT YET, not a stall. Re-read at tomorrow's START."
+fi
