@@ -256,7 +256,7 @@ CoS to maintain simple tracking:
 | Methodology | Mar 15, 2026 | Trigger: next sprint gate | ✅ Complete (trigger-based per CIO policy) |
 | Documentation (weekly — quality/accuracy) | Jul 24, 2026 | Aug 14, 2026 | ✅ Complete (#1453; Jul 20 audit conducted Jul 24: briefing frontmatter fixed, STATUS BANNER final numbers folded, 0 broken links, omnibus Jul 19-23 complete, ADR index staleness found → #1455, pmorgan.tech domain inconsistency flagged for PM, 1 issue created). Prior: Jul 9 (#1375). |
 | Documentation (monthly — housekeeping/infra) | Jul 2, 2026 | Aug 3, 2026 | ✅ Complete (absorbed into #1341 quarterly sweep; scope split ratified 2026-07-04; first standalone monthly issue will auto-generate Aug 4, 2026). Prior quarterly sweeps: #1341 (Jul 2). |
-| Role Health | May 10, 2026 (Apr 16 + May 10 audits) | Jun 7, 2026 | ✅ Complete (#978) |
+| Role Health | Aug 7, 2026 | Sep 4, 2026 (4 weeks) | ✅ Complete (#1478). **Gap named**: this row was last updated May 10 while the audit itself lapsed Jun 7 → Aug 3 (auto-generated, unpolled — see #1478 finding 1: HOST's duty cycle didn't check for the open issue, despite the mechanism existing). Fixed same day by adding the poll step to `duty-cycle-tick`. Prior: Apr 16 + May 10 (#978). |
 | Skill-Candidates Review | *(none yet)* | Aug 4, 2026 (1st Tue) | Ratified 2026-07-08 (PM); slot confirmed 2026-07-09 (CIO/HOST). First review not yet held. |
 
 **Note**: Role Health Check methodology formalized Jan 31, 2026. First formal audit Feb 17, 2026.
