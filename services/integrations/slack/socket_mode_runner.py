@@ -59,6 +59,7 @@ class SlackSocketModeRunner:
         self._client = None
         self._web = None
         self._connected = False  # #1201: reflect actual socket state for the status surface
+        self._slash_router = None  # #1496: lazily-built SlackWebhookRouter for slash commands
 
     @property
     def is_connected(self) -> bool:
@@ -78,18 +79,64 @@ class SlackSocketModeRunner:
         self._client = SocketModeClient(app_token=self.app_token, web_client=self._web)
 
         async def _listener(client, req: "SocketModeRequest") -> None:
-            # Always ack fast — Slack retries unacked envelopes.
-            await client.send_socket_mode_response(SocketModeResponse(envelope_id=req.envelope_id))
-            if req.type != "events_api":
-                return
-            event = (req.payload or {}).get("event") or {}
-            # Fire-and-forget so slow LLM turns don't block the socket.
-            asyncio.create_task(self._handle_event(event))
+            await self._on_socket_request(client, req)
 
         self._client.socket_mode_request_listeners.append(_listener)
         await self._client.connect()
         self._connected = True  # #1201
         logger.info("slack_socket_mode_connected", bound_user=self.bound_user_id)
+
+    async def _on_socket_request(self, client, req) -> None:
+        """Dispatch one Socket Mode envelope (extracted from the start() closure
+        for testability, #1496).
+
+        Always ack fast — Slack retries unacked envelopes. An empty ack is a
+        valid slash-command response (the visible reply goes via response_url),
+        and the 3s ack window is too tight for DB/LLM work anyway.
+        """
+        from slack_sdk.socket_mode.response import SocketModeResponse
+
+        await client.send_socket_mode_response(SocketModeResponse(envelope_id=req.envelope_id))
+        if req.type == "slash_commands":
+            # #1496: the HTTP mount for SlackWebhookRouter was removed in the
+            # Oct 2025 CORE-GREAT-2D refactor, and the #1129 socket rebuild
+            # handled only events_api — so /link (#1466), /standup and /piper
+            # had NO live transport. Route the socket-delivered payload through
+            # the existing tested _process_slash_command; command logic stays in
+            # webhook_router (preserving the #1466 binding-invariant caller-set).
+            asyncio.create_task(self._handle_slash_command(req.payload or {}))
+            return
+        if req.type != "events_api":
+            return
+        event = (req.payload or {}).get("event") or {}
+        # Fire-and-forget so slow LLM turns don't block the socket.
+        asyncio.create_task(self._handle_event(event))
+
+    async def _handle_slash_command(self, payload: dict) -> None:
+        """#1496: process a slash-command payload and reply via response_url.
+
+        Socket Mode delivers the same form-body dict the HTTP webhook carried
+        (command, text, user_id, team_id, channel_id, response_url), so
+        _process_slash_command consumes it unchanged.
+        """
+        try:
+            if self._slash_router is None:
+                from services.integrations.slack.webhook_router import SlackWebhookRouter
+
+                self._slash_router = SlackWebhookRouter()
+            response = await self._slash_router._process_slash_command(payload)
+            response_url = payload.get("response_url")
+            if response_url and response:
+                from slack_sdk.webhook.async_client import AsyncWebhookClient
+
+                await AsyncWebhookClient(response_url).send_dict(response)
+        except Exception as e:
+            logger.error(
+                "slack_slash_command_failed",
+                command=payload.get("command"),
+                error=str(e),
+                exc_info=True,
+            )
 
     async def _handle_event(self, event: dict) -> None:
         try:
