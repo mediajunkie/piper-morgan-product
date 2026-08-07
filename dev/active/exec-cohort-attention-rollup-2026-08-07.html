@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cohort Attention Rollup — 2026-08-07</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --line:#e2e2e2; --ink:#1a1a1a; --mute:#6b6b6b;
+          --red:#c0392b; --amber:#b7791f; --grey:#8a8a8a; --green:#2d7a3e; --link:#1a5fb4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#171717; --card:#212121; --line:#3a3a3a; --ink:#ececec; --mute:#9a9a9a;
+            --red:#e06050; --amber:#d9a03f; --grey:#8a8a8a; --green:#5fb573; --link:#6ea8e8; }
+  }
+  body { font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+         color:var(--ink); background:var(--bg); margin:0; padding:2rem 1.25rem; }
+  .wrap { max-width:860px; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .25rem; }
+  .meta { color:var(--mute); font-size:.85rem; margin:0 0 1.25rem; }
+  h2 { font-size:1.05rem; margin:1.75rem 0 .6rem; padding-bottom:.3rem; border-bottom:2px solid var(--line); }
+  .item { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--grey);
+          border-radius:6px; padding:.7rem .9rem; margin:.55rem 0; }
+  .item.hero { border-left-color:var(--red); border-width:1px 1px 1px 6px; }
+  .item.dec { border-left-color:var(--red); border-left-style:double; }
+  .item.drift { border-left-color:var(--amber); }
+  .item.clear { border-left-color:var(--green); }
+  .agent { font-weight:700; }
+  .sev { font-size:.7rem; text-transform:uppercase; letter-spacing:.04em; padding:.1rem .4rem;
+         border-radius:4px; background:#eee; color:#444; margin-left:.4rem; }
+  @media (prefers-color-scheme: dark) { .sev { background:#333; color:#ccc; } }
+  .summary { margin:.35rem 0 .3rem; }
+  .why { font-size:.85rem; color:var(--mute); margin:.2rem 0 0; }
+  .steps { margin:.4rem 0 .2rem; padding-left:1.2rem; }
+  .steps li { margin:.3rem 0; }
+  .clean { color:var(--mute); font-size:.9rem; }
+  .clean b { color:var(--ink); }
+  .resolved { font-size:.85rem; color:var(--mute); margin-top:.4rem; }
+  .resolved s { color:#999; }
+  code { background:rgba(128,128,128,.14); padding:.1rem .3rem; border-radius:3px; font-size:.9em; }
+  footer { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line);
+           color:var(--mute); font-size:.8rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Cohort Attention Rollup</h1>
+  <p class="meta">Compiled by Exec · <b>Fri 2026-08-07 ~08:15 PT</b> · live-state pass, including a direct <code>fly</code> query · beta target <b>Sun Aug 9</b> (your ruling, logged) · first full ten-step Friday underway</p>
+
+  <h2>⭐ The one thing: your ~90-minute sitting, and the deploy question answered</h2>
+
+  <div class="item hero">
+    <p class="summary"><b>Deploy v30, then test — there is no useful partial deploy.</b> The premise that suggested one (production "2,282 commits behind") was itself the error: it measured the production <i>branch</i>, not the deployed <i>artifact</i>. PA and PPM both retracted it — PPM's retraction being the sharp one, since they'd "verified" it by re-running the same comparison. Arch withdrew its stop-deploy on the corrected figure.</p>
+    <p class="why"><b>Measured directly this morning</b> (<code>fly releases</code>, not inference): deployed artifact is <b>v29, Aug 2</b>, from <code>main@b619794af</code>. Delta since: <b>~15–17 product commits over 4 days</b> — and those <i>are</i> the 16 In-Review items with walkthroughs. So "deploy what we've already reviewed" and "deploy v30" are the same action; cherry-picking from 15 interlocking reviewed commits would cost more than it saves and still owe a second deploy.</p>
+    <ol class="steps">
+      <li><b>v30 deploy</b> (5 min): <code>git pull && fly deploy</code>. ⚠️ Do <b>not</b> set <code>PIPER_SLACK_INBOUND_ENABLED</code> — that's #1484's protection working, and your #1481 hold ruling depends on it staying off.</li>
+      <li><b>Verification round</b> (~60 min): walkthroughs are on each issue; the Slack-linking one includes the one-time <code>/link</code> registration. History says this surfaces new bugs — that is the point of doing it before a tester does.</li>
+      <li><b>Triage batch</b> (~15 min): milestone confirms on the discovered-work set + 11 untracked chat surfaces.</li>
+    </ol>
+  </div>
+
+  <h2>🔴 Decisions awaiting you</h2>
+
+  <div class="item dec">
+    <div class="agent">Jake set — 4 of 6 closed<span class="sev">PPM converts same-day</span></div>
+    <p class="summary">Outstanding: your word on <b>(a)</b> close-the-gate-on-existing-terms and <b>(c)</b> consent-gate-as-release-blocker (your "(b)" is recorded; silence on the other two deliberately not read as assent), plus yes/no on the two translated items (tool-catalog naming, with its routing test; meta-intent, the which-layer-first instruction). Last Wednesday's plain-English doc has all four. Radar: verified safe, twice.</p>
+  </div>
+
+  <div class="item dec">
+    <div class="agent">Standing, unchanged<span class="sev">each is one word</span></div>
+    <p class="summary"><b>Checklist v2.0 ratification</b> · <b>#1462 milestone</b> (rec: Production) · <b>tester-welfare instrument</b> (HOST — 12 tokens out, 1 report; the one item in that lane needing a decision rather than more work) · <b>memory-index format</b> (guard live, governance call open) · <b>skill-candidates review</b> — its calendar slot was <b>Aug 4 (1st Tuesday)</b> and it has now slipped past its own first-ever slot; CIO's prep is ready.</p>
+  </div>
+
+  <h2>🟡 Awareness</h2>
+
+  <div class="item drift">
+    <div class="agent">The freeze, and your monitor idea<span class="sev">worth building</span></div>
+    <p class="summary">The whole cohort was frozen Thursday afternoon → 21:30. Every agent's cron kept firing into a wall; nothing detected it, and the only signal was you noticing. <b>Your instinct is right and the pieces already exist</b>: the heartbeat surface (<code>dev/heartbeats/</code>) plus the freeze-watchdog would detect "N of 11 roles silent simultaneously" — a whole-cohort gap is a different signature from one dark role, and nothing currently distinguishes them. I'd route this to CIO (owns the belt) with HOST (owns welfare framing) as a scoped ask rather than a new mechanism from scratch. <b>Say the word and I'll send it.</b></p>
+  </div>
+  <div class="item drift">
+    <div class="agent">The correction cascade was the system working</div>
+    <p class="summary">Yesterday produced four public self-retractions in one thread (PA's branch-vs-artifact, PPM's shared-method verification, Arch's withdrawn stop-deploy, HOST's own falsified constant) — and CXO ended it by noticing <code>fly</code> was authenticated and just asking the artifact. Nobody was careless; the shared method was. It cost a day and bought a durable instrument.</p>
+  </div>
+  <div class="item drift">
+    <div class="agent">Ten-step Friday, first instance<span class="sev">running now</span></div>
+    <p class="summary">Docs closed the omnibus gap early this morning (Aug 4–6 written, 33 session logs) — step 2 met on its first outing. My kickoff memos go out this fire to the six leadership roles <b>plus, per your note, the four contributor roles</b> (Lead, Docs, PA, Web) on a lighter portfolio-progress ask. Internal report follows the six-plus-four, then Janus, then your discussion, then the #055 draft.</p>
+  </div>
+
+  <h2>🗓️ For the strategic retreat — the audit clocks you asked about</h2>
+  <div class="item">
+    <p class="summary"><b>Agent 360</b>: last full round was the <b>v0.2 pre-migration baseline, Apr 22</b>, with HOST's synthesis Apr 27. A <b>v0.3 post-migration benchmark</b> was drafted (May 27) and partially fielded — HOST's own response exists (Jun 3) and a working synthesis was started (Jun 4), then it stalled. <b>Its stated cadence is not quarterly</b>: "per-cohort-migration or per-major-infrastructure-transition, no fixed regular interval." <b>By its own rule it is due now</b> — the Amber migration is exactly the triggering event, and the half-fielded v0.3 is sitting there.</p>
+    <p class="why"><b>Role Health Check</b> (HOST's separate 4-weekly pass): last completed <b>May 10</b>, next due Jun 7 — <b>two months overdue</b>. <b>Skill-Candidates Review</b>: first-ever slot was Aug 4, not yet held. So three of HOST's and your instruments are lapsed, which is itself a datum for the retreat: the audit calendar is a mechanism nobody's clock is attached to.</p>
+  </div>
+
+  <h2>✅ Resolved since Thursday</h2>
+  <div class="item">
+    <p class="resolved">
+      <s>Beta date ambiguity, again</s> — MVP milestone officially <b>2026-08-09</b> (your ruling, logged; retires both Aug 1 and Aug 8).<br>
+      <s>#1481</s> — your HOLD-until-safe ruling reaches the outcome without depending on #1484 being deployed, which retired the crux PA raised.<br>
+      <s>The 2,282-commit alarm</s> — retracted by both authors; real delta 15–17 reviewed commits.<br>
+      <s>Friday-early omnibus</s> — first instance complete, gap closed before the kickoffs.<br>
+      <s>Ship #054</s> — published Wednesday on cadence.
+    </p>
+  </div>
+
+  <footer>
+    <b>Bottom line: deploy v30 and spend the hour testing — that single sitting is the whole beta critical path, and the deploy question resolves to "no partial is worth it." Everything else can wait for the retreat.</b><br><br>
+    Live-state pass ~08:00–08:15: <code>fly releases --app piper-morgan</code> run directly (v29, Aug 2 — not inferred); PA's and PPM's retractions read in full; #1386 comment history; MVP milestone decision + #1481 ruling read from Comms' relays; staggered-audit-calendar rows read for the 360/health-check dates; Docs' omnibus confirmation verified against <code>docs/omnibus-logs/</code>.
+  </footer>
+</div>
+</body>
+</html>
