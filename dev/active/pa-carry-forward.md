@@ -15,7 +15,13 @@ PM-attention items live **here**, in the section immediately below.
 
 **Beta is Sat 2026-08-08.** **2 DAYS.**
 
-- 🔴🔴 **THE ONE THING: is a release cut + deploy planned before Saturday?** **Deployed artifact = Fly **v29** (08-02, `main@b619794af`) — **17 product
+- ✅ **RESOLVED 08-06 — PM ruled #1481 HELD from every shipping surface until safe** (building it
+  correctly is HIGH PRIORITY, not deferred; connector work front-loaded in Production — PPM's to plan).
+  **#1484's deployment status is no longer load-bearing for #1481 specifically** (a held feature is
+  unreachable regardless). ✅ **Date pressure was self-inflicted** — PM: 08-08 was *"a misremembering,"*
+  real target is **08-09**, explicitly not asking for a sprint. `decisions.log:303` stays as-is (accurate
+  to 07-30); correction is a new entry, Exec's/PPM's to file.
+- (superseded) 🔴🔴 **THE ONE THING: is a release cut + deploy planned before Saturday?** **Deployed artifact = Fly **v29** (08-02, `main@b619794af`) — **17 product
   commits / ~4 days behind.** ⛔ *My first memo said "2,269 commits / since 07-26" — that was the production
   BRANCH, benign-by-mode; corrected by Lead. Don't carry it.* **#1484 (the fail-closed Slack gate) is NOT
   in the deployed artifact** (Arch verified: `slack_inbound_enabled` = 0 occurrences, leak path present) — and **Arch's #1481 "not a beta blocker" ruling rests on that
