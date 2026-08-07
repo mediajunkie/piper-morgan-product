@@ -333,7 +333,7 @@ For the Jul 25 cohort (Code → Amber/pipermorgan.ai):
 
 ## Status
 
-**v2.0 — Exec-reviewed 2026-08-01: APPROVE WITH FIXES; all six applied. Ready for CEO ratification.**
+**v2.0 — CEO-RATIFIED 2026-08-07.** *(Exec-reviewed 2026-08-01: APPROVE WITH FIXES; all six applied same-day. Ratified by PM, verbatim: "I ratify Migration checklist v2.0." Relayed by Exec 2026-08-07.)*
 
 Ratification covers: the four-phase flow, Rule 0 (dark-role branch entry gate), the Phase-2 provisioner park-check gate and its **named non-coverage**, the Phase-3 behavioural hooks gate with attribution-based pass conditions, the verify-don't-import memory step, and the v2.0 mechanism resolution (real `pre-commit` gate; advisory `PreToolUse` layer retained on the measured truth table, with its one uncovered cell named).
 

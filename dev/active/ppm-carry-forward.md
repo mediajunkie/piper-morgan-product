@@ -111,13 +111,32 @@ deployment question.**
 
 **1. Radar/Surface-1 is SETTLED — do not re-derive it.** Radar's rendering is **Surface 1** (history
 sidebar, #1236). PDR-005 specifies a **cross-client variant** of it at `:122`, `:245`, `:288`, `:328`;
-**PDR-005:135 + roadmap.md:127 both mark it "unblocked NOW", ~4-6 days.** ⚠️ Caveat that stays:
-PDR-005:84 puts **Surfaces 1/3 on "weaker forms"** of the criteria (2/4/6/7 meet them clearly) — so
-Surface 1 is 1.0-required **on weaker grounds**. Scheduled, not unassailable.
+**PDR-005:135 + roadmap.md:127 both mark it "unblocked NOW", ~4-6 days.**
+✅ **THE "WEAKER GROUNDS" CAVEAT I CARRIED IS RETIRED (2026-08-07, CXO).** PDR-005:84's rating was
+written **2026-06-05**; **#1237 closed 06-18 and #1236 closed 06-19** — **the rating predates the
+feature by 13–14 days and described a history list, not a ranked multi-entity attention surface.**
+CXO ran PDR-005's own test on what exists: **criterion 1 MET strongly** (`feed.py:52` sorts by
+`attention`; four heterogeneous sources; serializing to text loses the simultaneity + ranking that
+*is* the information). CXO was revising **their own** Round-1 rating.
+
+**My contribution, filed 08-07** — CXO's *"which of the five are named is unenumerated"* gap:
+- ✅ **The five ARE enumerated — as BUILD LANES, `roadmap.md:127–129`, not as scope in PDR-005**:
+  **Surfaces 1, 2, 4, 6, 7.** (2.1 = 1+7, 2.2 = 2+4, 2.3 = 6.) Scope inferable from schedule,
+  asserted nowhere. **Surface 1 already has a lane marked "Unblocked NOW"** — so it is scheduled for
+  1.0 and CXO's flattening risk did not land in the schedule; only the *justification* was stale.
+- 🔴 **Surface 3 is a PHANTOM.** Whole-corpus grep: **one** MUX-roster mention, `PDR-005:84` — the
+  very sentence pairing it with Surface 1. **No name, no doc, no ADR, no build lane** (Surface 2 has
+  90 mentions + its own design doc). ⚠️ **And "Surface 3" collides**: in the *insight-delivery*
+  numbering it means push-insights (#1032), so a grep lands on a confidently wrong referent.
+- **Asked PM for**: the one sentence on Surface 1, **plus** name Surface 3 or strike it and say
+  "5 of 6." **No urgency attached** — beta isn't gated on it.
 ⛔ **My earlier answers "the web page goes" and "undecided" are both WRONG.** Superseded.
 
-**2. Awaiting PM** — six filings with **no milestone** (#1462 · #1476 · #1477 · #1482 · #1483 ·
-#1485) · the **six Jake items** (PM answered 1, 2→"(b)", 5; needs plain English on 3 and 6 — 3 sent,
+**2. Awaiting PM** — ✅ **#1462 ANSWERED 08-07: Product / "PUB - Public beta" sprint** (with #1463).
+Exec's note: *"you held #1462's milestone deliberately rather than guessing… PM's answer is a sharper
+placement than either of us had. That's the held-question pattern working."* **Remaining five are all
+milestoned already** (#1476 MVP · #1477 MVP · #1482 MVP · #1483 Production · #1485 MVP) — ⚠️ **verified
+08-07, so what I was "awaiting" on these needs re-stating or dropping; do not re-ask as a block** · the **six Jake items** (PM answered 1, 2→"(b)", 5; needs plain English on 3 and 6 — 3 sent,
 6 is PA's) · **canonical criterion text**.
 ✅ **CLOSED 08-06, both were on this list and both resolved**: **#1481 scope** — PM RULED the
 socket-mode path **HELD** from alpha/beta/release until safe, *held not deferred*, with connector
