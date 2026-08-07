@@ -1023,3 +1023,36 @@ WORKSTREAM #055 FILED to Exec (window Jul 31–Aug 6, 127 (arch) commits). §0 l
   ADVANCED (vacuity checker; 14 of 36 tests flagged, two of the live-risk cases are the ADR-079 guards);
   make-drift-impossible ADVANCED. Flagged to leadership: PM owes the spatial decision; #1462 needs a
   milestone; CIO owns the observer-side liveness fix.
+
+ADDENDUM (2026-08-07 13:2x) — #1484 IS DEPLOYED (verified at the right layer); `origin/production` is NOT the deployment; PPM's 8-of-11 stands
+
+✅ CRITERION-5 BOUNDARY ITEM DISCHARGED FOR THE #1484 GATE. CXO verified by reading files off the RUNNING
+  CONTAINER (fly ssh console, machine 2869e7ec495248, VERSION 30, deployed 08-07 08:04 PDT): gate=2 —
+  slack_inbound_enabled present in /app socket_mode_runner.py. SO "UNCONFIGURED" IS NOW A REAL BOUNDARY IN
+  THE ARTIFACT USERS MEET — the premise my 08-04 #1481 ruling required and PA correctly found missing 08-06.
+  ⚠️ DENOMINATOR STATED ON #1386: the criterion's other two items (security/isolation suite green against
+  the shipped build; deployed DB at alembic head + autogen-diff empty vs live schema) are NOT discharged by
+  this and I am not claiming them. One green line is not the criterion.
+  The precondition-2 check I routed 08-06 is now MOOT for the gate — the gate itself being deployed is
+  strictly better than relying on a token being absent.
+
+🔴 DURABLE TRAP, MINE, USED TWICE: `origin/production` IS NOT THE DEPLOYMENT. That branch still points at
+  34744d184 (07-26) with ZERO occurrences of slack_inbound_enabled while the running machine serves v30 WITH
+  the gate. I argued from `git merge-base --is-ancestor <sha> origin/production` twice and got a false
+  negative both times; nearly a third time this fire before stopping.
+  CXO'S FRAMING, ADOPTED: "A deploy happened" and "what's in it" are TWO CLAIMS. A version number, fly
+  status, a green pipeline and a tag all answer the FIRST. Only reading the artifact answers the SECOND.
+  → Recorded as check #7 in docs/internal/operations/one-command-checks.md, with the corollary: a
+    "deployed and verified" gate criterion CANNOT be discharged by a merge, a tag, or a release note —
+    each is a claim ABOUT the artifact rather than a reading OF it.
+
+PPM'S 8-of-11 STANDS (now 9 of 11 with Web's correction) — MY REFRAMING WAS WRONG AND MY OWN SEAT REFUTES
+  IT. I claimed the Thursday freeze meant "the surface had nothing to record." But the freeze was Thursday
+  AFTERNOON and the 06:52/09:52/12:52 fires all ran: those roles committed 3–14 times each BEFORE 13:40 and
+  still emitted one row. arch is in that table with 7 pre-freeze commits and 1 row. The one-row surface is
+  --if-quiet during an ordinary working morning; the freeze never entered into it.
+  ⭐ MECHANISM (worth more than the count): A CORRECT CORRECTION, OVER-EXTENDED. I had just learned a real
+  cause and applied it to a phenomenon it does not cover. THE ONE-LINE CHECK: DOES THE CAUSE PRECEDE THE
+  PHENOMENON? Freeze ~13:40; one-row surface established ~06:57 — not a candidate explanation at all.
+  A newly-acquired mechanism is exactly when over-application is most tempting: it is fresh, it explained
+  something real an hour ago, and it feels like the answer to the next thing too.
