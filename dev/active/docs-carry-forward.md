@@ -1,8 +1,8 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-05 22:27 PDT (Fire 6, STOP — DAY-CLOSED 2026-08-05)
-**Session log**: `dev/2026/08/05/2026-08-05-0727-docs-code-log.md` (yesterday's is
-`dev/2026/08/04/2026-08-04-0727-docs-code-log.md`, DAY-CLOSED verified)
+**Updated**: 2026-08-06 22:27 PDT (Fire 6, STOP — DAY-CLOSED 2026-08-06)
+**Session log**: `dev/2026/08/06/2026-08-06-0727-docs-code-log.md` (yesterday's is
+`dev/2026/08/05/2026-08-05-0727-docs-code-log.md`, DAY-CLOSED verified)
 
 **Worktrees**: product `~/Development/piper-morgan-worktrees/docs` @ `claude/docs-cycle` · website
 `~/Development/piper-morgan-website-worktrees/docs` @ `claude/docs-cycle`
@@ -12,16 +12,33 @@ must match after re-arm.
 stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
 staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
-Split large multi-file commits into batches under 20 files.
 
-## ⚠️ Mail-loop scan — TWO header formats exist, only checked by hand so far
+## 🔴 TOP PRIORITY, FIRST THING NEXT FIRE — "Drained on Paper" is proofread but NOT published
 
-Fixed 08-05 (Fire 3): scan by frontmatter `to:`, not filename — filenames can say `cc-X` while the real
-header has X as a primary recipient (this cost 6 unread memos, one over a week old). Fire 5 found a
-**second** convention in the wild: bold-markdown `**From**: X · **To**: Y · **cc**: Z` on one line, no
-YAML block. Both are checked by hand each fire now (works, confirmed clean both times), but **not yet
-unified into one scan command** — do that when there's a spare moment, before it causes a real miss the
-way the filename version did:
+PM asked for proofread + publish at 12:32 today (theme=`building`, pubDate 2026-08-06 — **already a day
+late as of tomorrow's first fire**). Audit is clean. Publish is held on ONE open question I asked PM
+and have not yet gotten an answer to: **four unambiguous copy-editing fixes** in
+`docs/public/comms/drafts/drained-on-paper.md` —
+1. Line 33: double period ("...the newer architecture..")
+2. Line 43: stray "1" after "/close-issue-properly skill" (looks like an orphaned footnote marker)
+3. Line 47: "unthethering" → "untethering"
+4. Line 53: "kind of mistakes" → "kind of mistake" (singular/plural)
+
+**Do not silently apply these and publish, and do not silently drop the question either** — check
+whether PM replied since last fire (chat history / mailbox). If yes, act on the answer. If still no
+reply by mid-morning tomorrow, that's worth a direct nudge given the post is now overdue against its
+own pubDate — but don't manufacture urgency beyond what the actual staleness warrants.
+
+**Everything else about this post is DONE and does not need re-checking**: frontmatter filled, both
+`[PM:]` brackets resolved, footer tease verified against calendar, dry-run pipeline output clean,
+image/hashId/slug/category all correct (`--work-date 2026-07-04`, no `--cluster`). Word count is 1,724
+(over target, PM aware, not a blocker — don't re-raise). If PM says "just publish, don't worry about
+the typos," the `publish-post.js` invocation is already worked out; re-run the dry-run once more before
+the real publish only as a freshness check (per the mandatory-dry-run discipline), not because anything
+is expected to have changed.
+
+## Mail-loop scan — TWO header formats, checked by hand each fire, not yet unified
+
 ```bash
 for f in mailboxes/docs/inbox/*.md; do
   yaml_to=$(grep -m1 "^to:" "$f" 2>/dev/null | sed 's/^to://')
@@ -30,114 +47,91 @@ for f in mailboxes/docs/inbox/*.md; do
   echo "$combined" | grep -qiw "docs" && echo "$(basename "$f")"
 done
 ```
-Run this (or the hand-checked equivalent) every fire, not just START.
+Run every fire, not just START. Still works (proven again today — caught Comms's Aug 8/9 date memo
+correctly). Unifying into one script is a nice-to-have, not urgent.
 
-## ⚠️ Friday early-omnibus is now a hard weekly obligation (Exec, 2026-08-05)
+## Friday early-omnibus — FIRST INSTANCE IS TOMORROW (Aug 7)
 
-PM's ten-step weekly-reporting cycle is now canonical. **Docs owns step 2: Fri–Thu omnibus logs
-complete EARLY FRIDAY, every week, unconditionally** — Exec's kickoff memos go out the same morning.
-**First instance: Friday 2026-08-07, covering Fri Jul 31 – Thu Aug 6.** No longer best-effort — a
-Friday-morning gap now blocks the whole downstream reporting chain.
+Fri Jul 31 – Thu Aug 6 window, must be complete EARLY, before Exec's kickoff memos go out same morning.
+This is now the **second** top-priority item for tomorrow's fires, after the blog-post question above.
+Don't let the blocked post eat the whole morning at the expense of this — they're both real deadlines.
 
-## Day-of-week duty triggers — CHECK EVERY START (a multi-day gap needs to catch up on any missed)
+## Day-of-week duty triggers — CHECK EVERY START
 
-- **Every Monday**: Weekly Docs Audit (`weekly-docs-audit.yml`, ~9am PT). Verify it fired
-  (`gh run list --workflow=weekly-docs-audit.yml --limit 2`); if not, run it + work the issue.
-- **First Monday of month**: Monthly Housekeeping Audit (`monthly-housekeeping-audit.yml`, fixed 08-04).
-- **Every Friday, EARLY**: omnibus logs Fri–Thu complete before Exec's kickoff memos (see box above).
-- **Not mine**: Skill-Candidates Review (1st Tuesday, PM+Exec), Role Health Check (4-weekly, HOST) —
-  `docs/internal/operations/staggered-audit-calendar-2026.md` has the full table.
+- **Every Monday**: Weekly Docs Audit (`weekly-docs-audit.yml`, ~9am PT) — verify it fired.
+- **First Monday of month**: Monthly Housekeeping Audit (fixed 08-04).
+- **Every Friday, EARLY**: omnibus logs Fri–Thu (see box above — this is tomorrow).
+- **Not mine**: Skill-Candidates Review (1st Tuesday), Role Health Check (4-weekly, HOST).
 
-**Proposed but not shipped**: generalized version routed to CIO 08-04, cc PM. No reply yet — this
-section is the interim per-role fix regardless.
+**Proposed but not shipped**: generalized version routed to CIO 08-04. No reply yet.
 
 ---
 
-## Awaiting PM specifically — website#31, converter double-`<em>` bug
+## Awaiting PM specifically
 
-Filed 2026-08-05. Root cause found (regex in `publish-post.js`), fix proposed, **NOT applied** — two
-decisions are PM's call, not mine to assume:
-1. Fix going forward only, or also regenerate the ~15-post Ship back-catalog (visibly changes
-   "Thanks,"/"Week of..." from familiar italic to bold on every past Ship)?
-2. Should `**Metrics (date):**` become a real `###` header in the Ship template? Related:
-   `blog-post-template.md`'s "Metrics tables" section still prescribes real tables; practice has used
-   bold-label + bullet-list since at least #050, neither side updated to match the other.
-
-Checked at every fire since filing — still 0 comments, not urgent, no chase needed.
+1. **The four typo fixes on "Drained on Paper"** — see top of file. This is the active one.
+2. **website#31, converter double-`<em>` bug** — filed 08-05, 0 comments, not urgent, no chase needed:
+   (a) fix forward-only vs. regenerate the ~15-post Ship back-catalog, (b) should Ship `**Metrics**`
+   become a real `###` header.
 
 ## Awaiting others — check, don't re-derive
 
-- **PDR-007 awaits CIO ONLY** — Arch ✅ and Web ✅ reviewed, no objection. Pre-registered 2–4 week
-  measurement window (2026-07-30 → 2026-08-27) via `scripts/measure-editorial-drift.py`. Do not decide
-  the storage question early.
-- **Dispatch-DinP staleness report** — replied 2026-08-01, no reply yet.
-- **CIO's response on the day-of-week duty-check proposal** — sent 2026-08-04, no reply yet. Not
-  urgent; interim fix works standalone.
-- **#1475 (weekly doc audit)** — OPEN, 1 comment, unchanged since 08-04 partial pass.
-- **#1486 (monthly housekeeping audit)** — OPEN, 0 comments, checklist entirely unworked. Not urgent —
-  first genuinely-correct run of the workflow, no backlog to catch up on.
-- **Next Monday's weekly-docs-audit fire (~9:07 PT, Aug 10)** — watch whether the nudged cron fires.
+- **PDR-007 awaits CIO ONLY** — Arch ✅ Web ✅, no objection. Measurement window runs to 2026-08-27.
+- **Dispatch-DinP staleness report** — replied 08-01, no reply yet.
+- **CIO's day-of-week duty-check proposal reply** — sent 08-04, no reply yet, not urgent.
+- **#1475 / #1486** — both OPEN, unchanged, not urgent.
+- **Next Monday's weekly-docs-audit fire (Aug 10)** — watch whether the nudged cron fires.
 
-## Owed by me — unblocked, priority order
+## Owed by me — unblocked, priority order (after the two 🔴 items above)
 
-1. **`planning/current/` Finding 1 — needs a fresh, careful pass, NOT a quick rename.** Headline claim
-   ("100% stale, 314d") is false — `vision.md` is ~113d, not ~314d — 13 live inbound references.
-   **Named trigger for the deferral**: a fresh session/compaction — still hasn't arrived, seven days
-   running now.
-2. **Friday early-omnibus (Aug 7)** — becomes the top priority Thursday night/Friday morning.
-3. **97 docs >30d asserting current-state language** — separate, broader item; no deadline.
-4. **#1486's actual checklist** — agent infra, pattern/ADR counts, dev/active cleanup, metrics snapshot.
-5. **methodology-20's two HIGH-COMPLEXITY compression rules are mutually unsatisfiable** — CIO owns.
-6. **`docs-standing-items.md` is stale** (last touched 2026-05-27, pre-Amber). Low priority.
+1. **`planning/current/` Finding 1** — fresh careful pass needed, not a rename. Named trigger (fresh
+   session/compaction) still hasn't arrived — eight days running now.
+2. **97 docs >30d asserting current-state language** — no deadline.
+3. **#1486's actual checklist** — not urgent.
+4. **methodology-20's compression rules mutually unsatisfiable** — CIO owns.
+5. **`docs-standing-items.md` stale** — low priority.
 
-## Resolved today (2026-08-05) — do NOT re-open
+## Resolved today (2026-08-06) — do NOT re-open
 
-Full narrative for each is in today's session log (`dev/2026/08/05/...`); compact list here:
-
-- **Weekly Ship #054** — published, calendar updated, LinkedIn syndicated, draft archived.
-- **Converter double-`<em>` bug** — found, root-caused, filed as website#31. Not fixed (PM decision
-  pending, see above).
-- **HOST's "BRIEFING-CURRENT-STATE derived-ness" question (08-02)** — ruled no; stays hand-maintained.
-- **Web's Tier 3 → Tier 2 question (08-03)** — ruled Tier 2; `ROSTER.md` updated with reasoning in-doc.
-- **6 stale/misfiled direct memos** (some 08-01 through 08-04) — all drained; see mail-scan fix above
-  for the root cause.
-- **"The List That Lies" Medium syndication** (had sat unread from 08-04) — actioned late, apologized.
-- **Cached-404-resolves-on-publish** — confirmed, folded into `publish-to-blog` v0.23.
+- **Aug 8 vs Aug 9 beta date on published Ship #054** — PM confirmed directly the Aug 8 line was
+  accurate *at the time it was written* and explicitly does NOT want a retroactive edit or correction
+  notice; a future Ship names the change if the date moves. Archived, no action taken, correctly.
+- **Mail-scan verified working** on real new traffic today, no false negatives found.
 
 ## Standing lessons (carried, still live)
 
-**A mail-loop scan is only as good as the surface it reads — filenames and even a single header
-format are both "adjacent," not authoritative.** Two real gaps found and fixed today in the same
-mechanism, same underlying cause: trusting a convention instead of parsing the actual field. Applies
-beyond mail — same instinct that caught the converter bug (read the code, not the pattern-match).
+**A user's own request to "verify, don't assume" can catch a real miss — take the challenge
+seriously rather than defending the first answer.** PM asked me to confirm I wasn't working from a
+stale draft; I was. Checking (via `git log`/`git show`, not just re-reading the file) confirmed a
+commit had landed within moments of my first read. The number came out the same by coincidence
+(offsetting edits) — reported that plainly rather than let a matching number imply nothing had changed.
 
-**Don't wave off a recurring quirk as "pre-existing, not my problem" just because it matches prior
-output.** Matching precedent answers "should this block today's work," not "is this actually correct."
-Conflating the two would have left the converter bug — live on 15+ Ships — uninvestigated indefinitely.
-Holds for a user's stated assumption too ("I believe X has always been true" is worth checking against
-the primary source, not just accepted as context, even when it comes from PM).
+**Holding a blocked item across a STOP is legitimate when the block is a genuine external
+dependency (a human's pending answer), not a self-imposed pause.** Don't fabricate an answer to avoid
+an awkward "still blocked" carry-forward entry, and don't bury the block in prose — put it at the very
+top, unmissable, with exactly what's needed to resume.
 
-**A design question asked in passing can be the fastest route to a real, previously-undiscovered
-defect.** Held again this week in a new shape (Ship #054's rendering question → the converter bug),
-same as last week (the day-of-week trigger request → the monthly-audit workflow bug).
+**A mail-loop scan is only as good as the surface it reads.** Proven again today on real traffic, not
+just a retrospective audit — the fixed scan correctly surfaced Comms's genuinely-relevant Aug 8/9 memo
+and nothing else.
 
-**Verify a fix behaviorally, not just statically, before calling it done.** Still live from 08-04 (the
-monthly-audit `node --check` vs. real `workflow_dispatch` lesson) — no new instance today, but the
-discipline held throughout (live content-checks for both Ship #054 and "The List That Lies," not status
-codes).
+**Don't wave off a recurring quirk as "pre-existing, not my problem."** Still the standing frame from
+08-05; no new instance today but the discipline (verify at the primary source) is what caught today's
+stale-read too — same muscle, different application.
 
 ## Watch items (not owed to me, but adjacent)
 
-- **Puppeteer extraction cause** — Pard's lane, still open.
-- **methodology-20's mutually unsatisfiable compression rules** — CIO owns, raised twice.
+- **Puppeteer extraction cause** — Pard's lane.
+- **methodology-20's mutually unsatisfiable compression rules** — CIO owns.
 - **`pre-commit-broad-staging-warn.sh` blocking despite advisory design** — documented, not escalated.
-- **Blog index is client-rendered, returns a shell** — Comms's finding, not urgent, not mine unless it
-  becomes one.
+- **Blog index is client-rendered, returns a shell** — Comms's finding, not mine unless it becomes one.
 
 ## The one thing I most want to carry into the next fire
 
-**Two separate "trust the adjacent surface" bugs, found the same day, by the same instinct.** The
-mail-scan fix (filename vs. frontmatter) and the converter-bug investigation (pattern-match vs. actual
-code) are the same failure mode wearing different clothes: something that *looks* like it answers the
-question is treated as if it does. The fix both times was identical — go open the thing that's actually
-authoritative. Worth actively watching for a third instance rather than assuming today used it up.
+**A published artifact's ground truth can move after publication, and the right response depends
+entirely on what the author actually wants — which is worth asking rather than assuming either
+"leave it" or "fix it" by default.** Today gave a clean example of both halves of that: PM explicitly
+did NOT want the Ship's date retroactively touched (even though it's now technically imprecise), and
+explicitly DID want me to hold "Drained on Paper" for confirmation on typos I could have just fixed.
+Neither instinct — "always fix" or "never touch published work" — is right on its own; the discipline
+is asking, then doing exactly what's asked, not what seems locally sensible.

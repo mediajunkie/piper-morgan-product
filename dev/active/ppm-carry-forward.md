@@ -1,8 +1,8 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-06 Fire 2 (~10:30 PT) — after correcting a two-orders-of-magnitude
-error I had told PM I'd verified independently
+**Last rewritten**: 2026-08-06 STOP (~22:50 PT) — DAY CLOSED. Four fires (07:22 START, 10:22,
+13:05, 22:22 STOP); the last three cron fires arrived stacked at 22:22 after a nine-hour no-turn gap.
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -40,14 +40,14 @@ sprint or to the **Production** milestone.
 *because* those two docs burned me — and it outlived them. **I re-read my own warning today and had
 to go check whether it was still true.** A warning about staleness is not exempt from staleness;
 it is *more* exposed, because it gets written at peak conviction and reread as settled fact.
-**Owed and still open**: the remaining `(M4 …)`/`(M5 …)` refs elsewhere, as a class.
+✅ **AND THE OWED RESIDUE IS NOW DRAINED TOO** (08-06 STOP). Scoped it: only **5** live refs, and **3 were correct as written** — the roadmap's own §M4 triage record, the briefing line that *instructs* readers what to do on seeing `(M4 territory)`, and a narrative about a stale artifact. **Fixing those would have been the error.** The 2 real ones were in my own entity-model spec.
 
 ✅ **The accurate source is `docs/internal/planning/beta-blockers.md`** (see its lines 12 + 20).
 
 **Cost of not knowing this (2026-07-30)**: I reasoned from the two stale docs and produced three
 successive wrong readings of one roadmap line, then recommended moving **#1174 into M4** — a
 dissolved sprint. PM caught it. **I had run the sweep myself and it was in no artifact I carried.**
-Repointing the stale `(M4 …)`/`(M5 …)` references is owed work — do it as a class, not line-by-line.
+✅ **Repointing DONE 08-06** — and doing it as a class is what made it cheap (5 hits, 3 false positives). 🔴 **It also surfaced something worse**: chasing the 2 real refs led to **#1216**, which is **CLOSED COMPLETED 2026-07-07 in MVP** — while `roadmap.md:143` had claimed for a **month** that it *"remains OPEN"* and was a *"Beta Blocker candidate pending PM's call."* **It landed in MVP, so the call I was waiting on had been made by ACTION rather than by ANSWER, and I kept carrying it as PM-gated.** ⭐ **An item can leave your PM-gated queue without anyone telling you, and nothing in the queue notices.**
 
 ## ⚠️ HEARTBEAT — WAKE EMISSION, EVERY FIRE, AT THE START (adopted 2026-08-05)
 
@@ -105,10 +105,15 @@ PDR-005:84 puts **Surfaces 1/3 on "weaker forms"** of the criteria (2/4/6/7 meet
 Surface 1 is 1.0-required **on weaker grounds**. Scheduled, not unassailable.
 ⛔ **My earlier answers "the web page goes" and "undecided" are both WRONG.** Superseded.
 
-**2. Awaiting PM — unchanged for days**: six filings with **no milestone** (#1462 · #1476 · #1477 ·
-#1482 · #1483 · #1485) · the **six Jake items** (PM answered 1, 2→"(b)", 5; needs plain English on 3
-and 6 — 3 sent, 6 is PA's) · **canonical criterion text** · **#1481 scope confirm** · **MVP milestone
-still 2026-08-01**.
+**2. Awaiting PM** — six filings with **no milestone** (#1462 · #1476 · #1477 · #1482 · #1483 ·
+#1485) · the **six Jake items** (PM answered 1, 2→"(b)", 5; needs plain English on 3 and 6 — 3 sent,
+6 is PA's) · **canonical criterion text**.
+✅ **CLOSED 08-06, both were on this list and both resolved**: **#1481 scope** — PM RULED the
+socket-mode path **HELD** from alpha/beta/release until safe, *held not deferred*, with connector
+work **front-loaded in Production** (sequence filed on #1440). **MVP milestone** — now reads
+**2026-08-09**.
+⚠️ **Before re-asking PM anything on this list, CHECK GITHUB FIRST.** #1216 sat here as PM-gated for
+a month after closing. **The queue does not notice when an item leaves it.**
 
 **3. Watch, don't drive**: #1484 (gate + CXO client branch, one commit) · the funnel query (Lead) ·
 #1468 judge calibration · PA's annotation spec (unblocked; `headersHelper` is condition 1's carrier).
@@ -170,24 +175,35 @@ already answered before sending.**
 
 ## Cron
 
-**ARMED** — job `25af26ae`, `52 6,9,12,15,18,21`, six fires/day. **CronList-verified: exactly one.**
+**ARMED** — job `2ae0bbb1`, `52 6,9,12,15,18,21`. **Re-armed at STOP by CronDelete-then-CronCreate
+and CronList-verified: exactly one.** (Prompt rewritten this re-arm — see below.)
 
-🔴 **GAP-C OBSERVED ON THIS SEAT, 2026-08-06 — with a tight before/after, which prior reports lacked.**
-Job `c079437c` was CronList-verified present at the 08-05 22:22 STOP and fired normally today
-(07:52 START, 09:52 WORK). **A context compaction occurred. `CronList` at 10:27 returned
-"No scheduled jobs."** I ran no `CronDelete`; the job was created 08-05 so the 7-day expiry is not
-in play. **The cycle would have gone silent with the registry still claiming coverage** — and the
-only reason it didn't is that the compaction happened to leave me a turn in which to look.
+🔴 **TWO DISTINCT FAILURES SEEN IN ONE DAY, and they produce IDENTICAL heartbeat records.**
+- **Fire 2 (10:27) — real Gap-C.** Job `c079437c` was CronList-verified present at the 08-05 22:22
+  STOP and fired twice today; a **compaction** intervened; `CronList` then returned **zero**. No
+  delete by me, expiry not in play. Re-armed. **Reported to CIO as an OBSERVATION, not a mechanism** —
+  I have present→compaction→absent, not the internals.
+- **Fire 4 (22:22) — NOT a cron failure at all.** Three ticks arrived stacked; `CronList` showed
+  **exactly one** job, so the 15:52 / 18:52 / 21:52 fires had **queued**. The session simply got no
+  turn from 13:05 to 22:22.
 
-⚠️ **State that narrowly**: what I observed is *cron present → compaction → cron absent*, not the
-internals. I don't have the mechanism, and after this morning I am not going to assert one I haven't
-measured. It is consistent with the skill's Gap-C note (session-scoped crons die silently;
-`durable:true` is a no-op — PA 2026-06-07) and adds a same-session before/after to it.
+⭐ **The lesson, and it changes how to read your own instrument**: today's heartbeat file shows
+`07:22 · 10:22 · 13:05 · 22:22` — **a nine-hour gap produced by a perfectly healthy cron.** A
+wake-time heartbeat records **when the session got a TURN, not when the cron FIRED.** **A heartbeat
+gap is evidence of no-turns, not of no-cron — and nothing in the file tells them apart.** Sent to
+CIO/PA/HOST with a suggested fix (record `scheduled=` alongside `emitted=`), flagged as a need rather
+than a prescription since I haven't checked the script can see its scheduled time.
 
-⚠️ **Session-only + 7-day auto-expiry, both silent.** This is NOT a durable daemon. **The self-heal
-only works if the session gets a turn at all** — a fully-dead cron has no trigger, so a seat that
-compacts while idle stays dark until a human prompts it. The cure is external (Routines watchdog),
-not anything I can do from here. Flagged to PM 7/30; reported to CIO 8/6 with this evidence.
+**On stacked ticks**: that is **ONE wake, not several** — fires are idempotent by design. Run
+`CronList` before concluding anything.
+
+⚠️ **Session-only + 7-day auto-expiry, both silent.** Not a durable daemon. The self-heal only works
+if the session gets a turn — a seat that compacts while *idle* stays dark. Cure is external.
+
+⭐ **The cron prompt no longer carries a beta date.** It carried one, it was wrong twice, and a date
+written into a prompt is re-read six times a day as settled — CXO's finding (a *verification note*
+immunises a claim exactly like a do-not-correct clause) and HOST's, arriving the same night. The
+prompt now points here instead.
 
 ---
 
