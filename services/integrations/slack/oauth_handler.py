@@ -161,6 +161,10 @@ class SlackOAuthHandler:
                     "users:read",  # Inhabitant information
                     "channels:join",  # Room navigation capability
                     "chat:write.public",  # Public room object placement
+                    # #1466/#1496: slash commands (/link, /standup, /piper). Without
+                    # this, an OAuth (re)install requests a scope set that OMITS
+                    # commands and can downgrade a console-granted commands scope.
+                    "commands",
                 ]
 
             # Default user-token scopes (Issue #1085 slice 3 prep)
