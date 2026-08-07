@@ -220,24 +220,30 @@
   </section>
 
   <section class="phase">
-    <h2><span class="num">6</span>Install and copy the bot token</h2>
+    <h2><span class="num">6</span>Add the redirect URL and copy your app credentials</h2>
     <ol class="steps">
-      <li>Left sidebar: <span class="path"><b>Settings → Install App</b></span> → <b>Install to Workspace</b> → <b>Allow</b>.</li>
-      <li>Copy the <b>Bot User OAuth Token</b> — it starts with <code>xoxb-</code>.</li>
+      <li>Left sidebar: <span class="path"><b>Features → OAuth &amp; Permissions</b></span> → <b>Redirect URLs</b> → <b>Add New Redirect URL</b>, paste exactly:</li>
     </ol>
-    <div class="checkpoint"><strong>Checkpoint:</strong> you now hold two tokens — <code>xapp-…</code> from phase 2 and <code>xoxb-…</code> from here.</div>
-    <div class="gotcha"><strong>If you change scopes, events, or commands later,</strong> Slack banners "reinstall your app" at the top of the console. Click it — changes don't take effect until you do.</div>
+    <div class="copyblock">https://piper-morgan.fly.dev/api/v1/settings/integrations/slack/callback</div>
+    <ol class="steps" start="2">
+      <li>Click <b>Save URLs</b>.</li>
+      <li>Left sidebar: <span class="path"><b>Settings → Basic Information</b></span> → <b>App Credentials</b> → copy the <b>Client ID</b> and <b>Client Secret</b>.</li>
+    </ol>
+    <div class="checkpoint"><strong>Checkpoint:</strong> one redirect URL saved; Client ID and Client Secret copied. (Piper never asks for the Signing Secret or Verification Token.)</div>
+    <div class="gotcha"><strong>Why no bot-token copying?</strong> Piper gets its <code>xoxb-</code> bot token automatically when you authorize in the next phase — there is deliberately no field to paste one.</div>
   </section>
 
   <section class="phase">
-    <h2><span class="num">7</span>Paste both tokens into Piper</h2>
+    <h2><span class="num">7</span>Connect Piper to your app</h2>
     <ol class="steps">
       <li>In Piper: <span class="path"><b>Settings → Integrations → Slack</b></span>.</li>
-      <li>In <b>Enable Slack replies</b>, paste the <code>xapp-…</code> token and save.</li>
-      <li>In the Slack connection section, provide the <code>xoxb-…</code> bot token where asked.</li>
-      <li>The status indicator should flip to <b>listening</b> within a few seconds — no restart needed.</li>
+      <li>In <b>App Configuration</b>, paste the Client ID and Client Secret → <b>Save Credentials</b>.</li>
+      <li>In <b>Connect to Slack</b>, click connect. Slack shows an authorization screen listing the permissions from phase 3 → click <b>Allow</b>. (This also installs the app to your workspace — no separate install step.)</li>
+      <li>In <b>Enable Slack replies</b>, paste the <code>xapp-…</code> token from phase 2 → <b>Enable Slack replies</b>.</li>
+      <li>The status should flip to <b>listening</b> within a few seconds — no restart needed.</li>
     </ol>
-    <div class="checkpoint"><strong>Checkpoint:</strong> the Slack settings page shows Piper is listening.</div>
+    <div class="checkpoint"><strong>Checkpoint:</strong> the page shows connected and listening.</div>
+    <div class="gotcha"><strong>If you change scopes, events, or commands later,</strong> Slack banners "reinstall your app" in the console — click it, then reconnect here.</div>
   </section>
 
   <section class="phase">
