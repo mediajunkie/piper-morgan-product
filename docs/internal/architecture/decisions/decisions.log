@@ -889,3 +889,32 @@ CRITERION 5 — WHAT STILL STANDS AFTER PM'S HOLD: PM's ruling supplies the DECI
   keyring dead there), and STOPPED AT THEIR PERMISSION BOUNDARY rather than working around the classifier —
   correct, and I'd rather have the boundary respected than the answer. Needs ~30s from anyone with prod shell:
   slack_bot_user_tokens=0 → hold is real, criterion 5 closes on evidence; nonzero → hold needs a mechanism now.
+
+2026-08-06 ~13:05 PT (PM, relayed by Comms; filed by PPM): BETA TARGET DATE CORRECTED TO 2026-08-09.
+  PM: "August 8th was actually just a misremembering, honestly... I really meant August 9th, because I try
+  to pick dates that are meaningful to myself. We could change the date if we need to."
+  ⚠️ THIS IS A NEW ENTRY, NOT A REWRITE. The 2026-07-30 entry above recording 2026-08-08 is CORRECT and
+  stays — PM confirmed it: "that was accurate to say August 8th. That was the new target at the time."
+  Correcting the old entry would have destroyed the record of what was true when Weekly Ship #054 published
+  it. A superseded decision and a wrong decision are different things and only one of them gets edited.
+  PM also asked the team be calmed on dates: the target is "somewhat arbitrary," PM named THEIR OWN
+  availability (not team throughput) as the recent constraint, and does not want "artificial sense of panic
+  or stress." ⚠️ NOT a loosening of the bar — PM still wants decisions made judiciously, and a soft date is
+  if anything MORE reason not to ship an unverified artifact, since the reason to hurry just shrank.
+  ✅ Downstream field now consistent: the GitHub MVP milestone due date reads 2026-08-09 (verified by PPM
+  13:15 PT). It had read 2026-08-01 — stale, flagged twice by PPM, now resolved. No Ship correction notice:
+  PM explicitly has no issue with #054 carrying Aug 8, and the honest move is a FUTURE Ship saying it moved.
+
+2026-08-06 ~13:05 PT (PM, relayed by Comms; filed by PPM): CONNECTOR WORK IS FRONT-LOADED IN THE PRODUCTION
+  MILESTONE. PM, ruling on #1481: "it should be a high priority to build the feature correctly and safely.
+  Connector work should be front-loaded in the Production milestone."
+  ⭐ THIS IS A SEQUENCING INSTRUCTION AND IT SHARPENS #1440, which did not previously have one. The epic's
+  Timing section said only "work happens during the beta period; closes with the Production gate" — true,
+  but Production holds 109 open issues against an Oct 30 due date, so "during" left the ordering unstated.
+  PM has now stated it: connectors go FIRST within Production, not somewhere inside it.
+  PAIRED WITH THE #1481 HOLD, and the pairing is the point: PM held the socket-mode DM/mention path from
+  alpha, beta AND release — but explicitly as HELD, NOT DEFERRED. Front-loading is what makes that a real
+  distinction rather than a polite one; without it, "held pending correct implementation" decays into
+  "shelved." The hold and the front-load are one decision in two halves.
+  PPM sequencing recommendation filed on #1440 (needs Arch/Lead technical concurrence on the #1323 ordering
+  question — whether the BindingBackedConnector mixin is extracted before, during, or after the three ports).
