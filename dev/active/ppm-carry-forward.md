@@ -40,14 +40,14 @@ sprint or to the **Production** milestone.
 *because* those two docs burned me — and it outlived them. **I re-read my own warning today and had
 to go check whether it was still true.** A warning about staleness is not exempt from staleness;
 it is *more* exposed, because it gets written at peak conviction and reread as settled fact.
-**Owed and still open**: the remaining `(M4 …)`/`(M5 …)` refs elsewhere, as a class.
+✅ **AND THE OWED RESIDUE IS NOW DRAINED TOO** (08-06 STOP). Scoped it: only **5** live refs, and **3 were correct as written** — the roadmap's own §M4 triage record, the briefing line that *instructs* readers what to do on seeing `(M4 territory)`, and a narrative about a stale artifact. **Fixing those would have been the error.** The 2 real ones were in my own entity-model spec.
 
 ✅ **The accurate source is `docs/internal/planning/beta-blockers.md`** (see its lines 12 + 20).
 
 **Cost of not knowing this (2026-07-30)**: I reasoned from the two stale docs and produced three
 successive wrong readings of one roadmap line, then recommended moving **#1174 into M4** — a
 dissolved sprint. PM caught it. **I had run the sweep myself and it was in no artifact I carried.**
-Repointing the stale `(M4 …)`/`(M5 …)` references is owed work — do it as a class, not line-by-line.
+✅ **Repointing DONE 08-06** — and doing it as a class is what made it cheap (5 hits, 3 false positives). 🔴 **It also surfaced something worse**: chasing the 2 real refs led to **#1216**, which is **CLOSED COMPLETED 2026-07-07 in MVP** — while `roadmap.md:143` had claimed for a **month** that it *"remains OPEN"* and was a *"Beta Blocker candidate pending PM's call."* **It landed in MVP, so the call I was waiting on had been made by ACTION rather than by ANSWER, and I kept carrying it as PM-gated.** ⭐ **An item can leave your PM-gated queue without anyone telling you, and nothing in the queue notices.**
 
 ## ⚠️ HEARTBEAT — WAKE EMISSION, EVERY FIRE, AT THE START (adopted 2026-08-05)
 
@@ -105,10 +105,15 @@ PDR-005:84 puts **Surfaces 1/3 on "weaker forms"** of the criteria (2/4/6/7 meet
 Surface 1 is 1.0-required **on weaker grounds**. Scheduled, not unassailable.
 ⛔ **My earlier answers "the web page goes" and "undecided" are both WRONG.** Superseded.
 
-**2. Awaiting PM — unchanged for days**: six filings with **no milestone** (#1462 · #1476 · #1477 ·
-#1482 · #1483 · #1485) · the **six Jake items** (PM answered 1, 2→"(b)", 5; needs plain English on 3
-and 6 — 3 sent, 6 is PA's) · **canonical criterion text** · **#1481 scope confirm** · **MVP milestone
-still 2026-08-01**.
+**2. Awaiting PM** — six filings with **no milestone** (#1462 · #1476 · #1477 · #1482 · #1483 ·
+#1485) · the **six Jake items** (PM answered 1, 2→"(b)", 5; needs plain English on 3 and 6 — 3 sent,
+6 is PA's) · **canonical criterion text**.
+✅ **CLOSED 08-06, both were on this list and both resolved**: **#1481 scope** — PM RULED the
+socket-mode path **HELD** from alpha/beta/release until safe, *held not deferred*, with connector
+work **front-loaded in Production** (sequence filed on #1440). **MVP milestone** — now reads
+**2026-08-09**.
+⚠️ **Before re-asking PM anything on this list, CHECK GITHUB FIRST.** #1216 sat here as PM-gated for
+a month after closing. **The queue does not notice when an item leaves it.**
 
 **3. Watch, don't drive**: #1484 (gate + CXO client branch, one commit) · the funnel query (Lead) ·
 #1468 judge calibration · PA's annotation spec (unblocked; `headersHelper` is condition 1's carrier).
