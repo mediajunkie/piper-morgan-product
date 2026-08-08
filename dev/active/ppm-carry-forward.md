@@ -84,13 +84,42 @@ just misinform — it can invert which option looks safe.**
 **Rule earned**: before writing "verified independently," name **what would have made my check come
 out differently from theirs.** If the answer is "nothing," it's a repeat, and say *that* instead.
 
-## 🔴 CURRENT — beta target **Sunday 2026-08-09** (was "Sat 08-08" here; wrong on BOTH counts)
+## 🔴 CURRENT — ⚠️ BETA MOVED BACK A MONTH from Aug 9 (PM, 2026-08-08 ~10:10)
 
-**PM 08-06, via Comms**: *"August 8th was actually just a misremembering… I really meant August
-9th."* Also: the target is *"somewhat arbitrary,"* PM named **their own availability** (not team
-pace) as the recent constraint, and asked for **no artificial panic**. ⚠️ **Not a loosening of the
-bar** — a soft date is *more* reason not to ship unverified, since the reason to hurry shrank.
-✅ **MVP milestone due date now reads 2026-08-09** — the field I flagged twice. Resolved; dropped.
+**Verified at source, `decisions.log:1242`.** PM verbatim: *"I am going to move the beta data back a
+month. **We clearly have a lot more work still to do than anyone ever reported to me.**"*
+
+⚠️ **That second sentence is about REPORTING, and I am a reporting role.** Context: T4/T5 verification
+surfaced structural flaws (#1471/#1490/#1521 pre-classifier over-claiming · #1517 floor fabricating
+capability denials · #1520 silent session expiry) on top of the denominator over-reporting Exec named
+the same morning.
+
+🔴 **MY SPECIFIC SHARE, so a future session doesn't re-derive a vague one**: **two of the six
+NOT-STARTED items are mine** — **#1476 and #1477**, filed 07-31 as the bucket-A **welfare carve-out**
+(*"fix regardless"*). **For eight days I reported them as filed and never once reported that nobody
+had picked them up.** Portfolio said "advanced." #055 §0 said "advanced." **Neither false; both let a
+reader infer motion that didn't exist.**
+
+⭐ **The mechanism, which is the reusable part**: I gave PM *"21 open in MVP"* — **a total with no
+parts**. And **`gh issue list --state open` CANNOT see board Status**, so it structurally cannot
+distinguish *unstarted* from *awaiting PM's review*. **I was answering "how much is left" with a tool
+that only answers "how many are open."** Not carelessness — **confident reporting from an instrument
+that couldn't answer the question I was implicitly answering.**
+
+**FIXED FORWARD**: use `scripts/sprint-truth.py` output **verbatim** (adopted 08-08, before the move
+landed), or state explicitly what I excluded. **Report not-started AS not-started** — "filed,
+unstarted, N days," never "advanced."
+
+**Accurate gate state (08-08)**: `MVP: 22 not done (6 Sprint Backlog, 1 Blocked, 3 In Progress, 12 In
+Review); 1021 done` — **with two corrections I found**: #1107 is CLOSED with a stale non-Done status
+(so In Review is 11), and **#1509/#1510 are absent from the board entirely** (`gh issue create
+--milestone` does NOT add to the board) → **≈23 genuinely not-done.** ⭐ **The 6 unstarted is the
+planning number, not the 23.** And **In Review is the largest bucket, waiting on PM** — so the
+critical path has been PM's attention, not build capacity.
+
+**ASKED PM**: do #1476/#1477 still hold? They were a *welfare* carve-out justified by alpha testers
+staying on the web UI meanwhile — **that reasoning may not survive a month's delay**, and I'd rather
+re-ask than leave them unstarted on a rationale I stopped checking.
 
 ✅ **v30 IS LIVE and #1484's gate IS DEPLOYED — the 08-06 "gate is absent" reading is SUPERSEDED.**
 CXO deployed 08-07 08:04 PDT and verified **off the running container** (`fly ssh console`, reading

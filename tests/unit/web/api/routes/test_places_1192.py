@@ -37,7 +37,10 @@ class TestPlaceToPayload:
     def test_serializes_renderer_contract(self):
         p = _place()
         payload = _place_to_payload(p)
-        # Exactly the keys place_window.html's renderer reads.
+        # The route's payload contract. (Historically "the keys
+        # place_window.html's renderer reads" — that panel was retired by
+        # #1236 and the route has no UI caller; the shape is pinned as the
+        # API contract itself. Keep-or-delete tracked in #1522.)
         for key in (
             "id",
             "place_type",

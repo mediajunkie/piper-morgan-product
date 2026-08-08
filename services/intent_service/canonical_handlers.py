@@ -2346,12 +2346,18 @@ What would you like to set up first?"""
 
         return False
 
-    async def _get_todays_todos(self, session_id: str, limit: int = 10) -> List[Dict]:
+    async def _get_todays_todos(self, user_id, limit: int = 10) -> List[Dict]:
         """
         Issue #499: Fetch today's pending todos for agenda aggregation.
 
-        Returns a list of todo dictionaries with title, priority, and due info.
+        Principal-audit F1 (2026-08-08): this took session_id and queried
+        get_todos_by_owner(owner_id=session_id) — but todos are WRITTEN with
+        owner_id=user_id, so the agenda's Tasks section was structurally empty
+        for every authenticated user. Sessions are not owners; principals are.
+        Anonymous callers own no todos: honest [].
         """
+        if not user_id:
+            return []
         try:
             from services.database.models import TodoPriority, TodoStatus
             from services.database.session_factory import AsyncSessionFactory
@@ -2362,7 +2368,7 @@ What would you like to set up first?"""
 
                 # Get pending todos ordered by priority
                 todos = await todo_repo.get_todos_by_owner(
-                    owner_id=session_id,
+                    owner_id=str(user_id),
                     status=TodoStatus.PENDING,
                     limit=limit,
                 )
@@ -2557,12 +2563,15 @@ What would you like to set up first?"""
         calendar_context = await self._get_calendar_context(user_id=user_id)
 
         # 2. Get todos
-        todos = await self._get_todays_todos(session_id)
+        todos = await self._get_todays_todos(user_id)
 
         # 3. Get priorities from user context
         priorities = []
         try:
-            user_context = await user_context_service.get_user_context(session_id)
+            # Principal-audit F2 (2026-08-08): user_id was omitted here — the ONLY
+            # session-only get_user_context call in this file — so priorities came
+            # from generic PIPER.md, never the user's preferences/portfolio.
+            user_context = await user_context_service.get_user_context(session_id, user_id=user_id)
             priorities = user_context.priorities if user_context else []
         except Exception as e:
             logger.warning(f"Could not get user context for agenda: {e}")

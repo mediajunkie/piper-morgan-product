@@ -6,8 +6,11 @@ verified against delete_user_key, which touches keychain+DB only).
 """
 import pytest
 
+# templates/home.html was in this set until #1522 step 1 (2026-08-08): its
+# delete dialog lived in the hidden legacy sidebar renderer (excised — the
+# #1482 copy had shipped dark into it, #1516). home no longer offers a
+# conversation delete, so it is no longer a soft-delete surface.
 SOFT_SURFACES = (
-    "templates/home.html",
     "templates/insights.html",
     "templates/components/insight_controls.html",
     "templates/components/insight_card.html",

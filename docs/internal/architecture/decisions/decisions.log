@@ -1330,3 +1330,5 @@ pin: NAMESPACE RATIFIED (#1521, Lead's request) — VERIFIED IN CODE, NOT ON THE
   when ratifying #1433 on 08-02 — ASSERT THE RESOLUTION PATH, NOT JUST THE DESTINATION — which landed.
   ⚠️ ON THE RECORD: if anyone ever weakens that resolver-path assertion to destination-only, PINS BECOME
   UNFALSIFIABLE ROWS. That assertion is now load-bearing for TWO features, not one.
+
+2026-08-08 ~14:15 PT — PM (in-conversation with Lead): FUNDAMENTALS-FIRST priority ruling for the moved-beta month — 'unblock addressing the most fundamental unfinished business first, before we spend too much time polishing specific workflows.' Understanding-Layer Inversion proposal (docs/internal/architecture/current/understanding-layer-inversion-proposal-2026-08-08.md) is the spine; PM will encourage Arch + leadership ratification; surface-polish issues (1497/1515/1519/1512 class) deferred below structural work. Local-model question: audition-against-corpus sequencing, Arch to ratify. — recorded by Lead
