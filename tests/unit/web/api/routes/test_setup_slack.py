@@ -58,9 +58,13 @@ class TestSlackOAuthTrigger:
         assert "state" in response
         assert "slack.com/oauth" in response["auth_url"]
         assert response["state"] == "state_abc123"
-        # Verify user_id was passed (redirect_uri may be None)
+        # Verify user_id was passed WITH an explicit redirect_uri (2026-08-07,
+        # route-audit fix: the old "" fallback meant redirect_uri=None here and
+        # an EMPTY redirect_uri at Slack — now derived from PIPER_BASE_URL,
+        # localhost default in test env)
         mock_instance.generate_authorization_url.assert_called_once_with(
-            user_id="test-user-123", redirect_uri=None
+            user_id="test-user-123",
+            redirect_uri="http://localhost:8001/api/v1/setup/slack/oauth/callback",
         )
 
     @pytest.mark.asyncio
