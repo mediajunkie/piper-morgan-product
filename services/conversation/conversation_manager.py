@@ -126,6 +126,7 @@ class ConversationManager:
         user_id: Optional[str] = None,
         provenance: Optional[dict] = None,
         context_state: Optional[dict] = None,
+        intent: Optional[str] = None,
     ) -> ConversationTurn:
         """Save new conversation turn and update context.
 
@@ -142,6 +143,10 @@ class ConversationManager:
                 + last_offer + floor flags — persisted into ConversationDB.context
                 in the SAME session as the turn (row guaranteed via save_turn's
                 ensure_conversation_exists). Best-effort; None = skip.
+            intent: Optional resolved intent label (Issue #1518) — persisted to
+                conversation_turns.intent ("category:action" or bare category)
+                so routing telemetry exists for every turn. Before #1518 this
+                was never passed and the column was always NULL on live turns.
 
         Returns:
             The saved ConversationTurn
@@ -157,6 +162,7 @@ class ConversationManager:
             turn_number=await self._get_next_turn_number(conversation_id),
             user_message=user_message,
             assistant_response=assistant_response,
+            intent=intent,
             entities=entities or [],
             metadata=metadata,
             created_at=datetime.now(),

@@ -370,6 +370,40 @@ class IntentService:
 
         return result
 
+    @staticmethod
+    def _resolve_turn_intent_label(source: Any) -> Optional[str]:
+        """#1518: derive the string persisted to conversation_turns.intent.
+
+        The column, its two indexes, and the ORM mapping existed since PM-034,
+        but the only live write path never populated it — every routing
+        forensic (#1488-class) was blind. This is the single place the label
+        shape is decided: ``"category:action"`` when the handler resolved an
+        action, bare ``"category"`` otherwise (lowercase enum values, matching
+        IntentCategory.*.value).
+
+        Accepts either a handler ``intent_data`` dict or a domain ``Intent``
+        (the in-memory turn annotation set on the floor path). Anything else —
+        None, mocks, legacy shapes without category/action — resolves to None:
+        telemetry derivation must never break the response path.
+        """
+        if isinstance(source, Intent):
+            category = getattr(source.category, "value", source.category)
+            action = source.action
+        elif isinstance(source, dict):
+            category = source.get("category")
+            action = source.get("action")
+            category = getattr(category, "value", category)
+            action = getattr(action, "value", action)
+        else:
+            return None
+        if category is not None and not isinstance(category, str):
+            category = str(category)
+        if action is not None and not isinstance(action, str):
+            action = str(action)
+        if category and action:
+            return f"{category}:{action}"
+        return category or action or None
+
     async def _save_conversation_turn(
         self,
         session_id: str,
@@ -379,6 +413,7 @@ class IntentService:
         user_id: Optional[str] = None,
         provenance: Optional[dict] = None,
         context_state: Optional[dict] = None,
+        intent: Optional[str] = None,
     ) -> None:
         """
         Save conversation turn via ConversationManager (Issue #563).
@@ -395,6 +430,9 @@ class IntentService:
             provenance: Issue #1030 R4 — provenance dict to persist into
                 turn_metadata['provenance'] for cross-session lookup (PM Q1
                 GUARANTEED).
+            intent: Issue #1518 — resolved intent label ("category:action" or
+                bare category) persisted to conversation_turns.intent for
+                routing telemetry.
         """
         if not self.conversation_manager:
             self.logger.debug("ConversationManager not available - skipping turn persistence")
@@ -409,6 +447,7 @@ class IntentService:
                 user_id=user_id,
                 provenance=provenance,
                 context_state=context_state,
+                intent=intent,
             )
             self.logger.debug(
                 "Conversation turn saved",
@@ -578,6 +617,14 @@ class IntentService:
             # cross-session lookup (PM Q1 GUARANTEED disposition).
             turn_provenance_for_db = None
             context_state_for_db = None
+            # #1518: resolve the intent label for conversation_turns.intent —
+            # primary source is the handler's intent_data (category/action);
+            # fallback is the in-memory turn's classified Intent (floor path
+            # annotates it). Before this, the column was NEVER populated by
+            # the live path and routing telemetry was silently absent.
+            turn_intent_for_db = self._resolve_turn_intent_label(
+                getattr(result, "intent_data", None)
+            )
             try:
                 # #1122: do NOT re-import get_or_create_context here — a
                 # function-local import makes the name local for the WHOLE
@@ -588,6 +635,8 @@ class IntentService:
                 if conv_ctx.turns:
                     latest_turn = conv_ctx.turns[-1]
                     turn_provenance_for_db = conv_ctx.turn_provenance.get(latest_turn.id)
+                    if turn_intent_for_db is None:
+                        turn_intent_for_db = self._resolve_turn_intent_label(latest_turn.intent)
                 # #953: capture the Layer-4 context slice (lens_stack + last_offer +
                 # floor flags) to persist alongside the turn so it survives restart/refresh.
                 context_state_for_db = conv_ctx.to_persistable_state()
@@ -601,6 +650,7 @@ class IntentService:
                 user_id=effective_user_id,
                 provenance=turn_provenance_for_db,
                 context_state=context_state_for_db,
+                intent=turn_intent_for_db,
             )
 
             # ADR-078 OQ-3 (#1394): central observer — record any external creation
