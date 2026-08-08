@@ -1274,7 +1274,14 @@ async def start_slack_oauth(
 
         # Use setup-specific redirect URI if available
         # This returns user to wizard instead of general callback
-        redirect_uri = os.getenv("SLACK_SETUP_REDIRECT_URI", os.getenv("SLACK_REDIRECT_URI", ""))
+        # 2026-08-07 (route audit, #1324 class): the "" fallback sent Slack an
+        # EMPTY redirect_uri when neither env was set — same defect fixed live
+        # on the settings routes today. Derive from PIPER_BASE_URL instead.
+        _base = os.getenv("PIPER_BASE_URL", "http://localhost:8001").rstrip("/")
+        redirect_uri = os.getenv(
+            "SLACK_SETUP_REDIRECT_URI",
+            os.getenv("SLACK_REDIRECT_URI", f"{_base}/api/v1/setup/slack/oauth/callback"),
+        )
 
         # Issue #734: Pass user_id for multi-tenant state
         # Issue #1109: generate_authorization_url is async (Redis-backed state)

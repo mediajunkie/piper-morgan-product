@@ -474,6 +474,15 @@ class SlackOAuthHandler:
 
                 if not token_data.get("ok"):
                     error_msg = token_data.get("error", "Unknown token exchange error")
+                    # 2026-08-07: SlackAuthFailedError structurally DISCARDS the
+                    # message (its __init__ takes a details dict; every caller
+                    # passes a string that never renders) — so log Slack's
+                    # verbatim verdict here or it is lost. Two live walkthrough
+                    # failures were undiagnosable for exactly this reason.
+                    logger.error(
+                        f"Slack token exchange failed: {error_msg} "
+                        f"(client_id={str(client_id)[:13]}…, redirect_uri={redirect_uri})"
+                    )
                     raise SlackAuthFailedError(f"Slack token exchange failed: {error_msg}")
 
                 logger.info("Successfully exchanged code for tokens")

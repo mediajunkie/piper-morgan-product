@@ -155,9 +155,13 @@ class TestGetSlackOAuthUrl:
             assert result["success"] is True
             assert "slack.com/oauth" in result["authorization_url"]
             assert result["state"] == "secure_state_token"
-            # Verify user_id was passed to generate_authorization_url
+            # Verify user_id was passed to generate_authorization_url, and that the
+            # route supplies an explicit redirect_uri (2026-08-07: the legacy route
+            # passed NONE, so Slack received an empty redirect_uri — the assertion
+            # now pins the #1324 fallback chain, localhost default in test env)
             mock_oauth_handler.generate_authorization_url.assert_called_once_with(
-                user_id="test-user-123"
+                user_id="test-user-123",
+                redirect_uri="http://localhost:8001/api/v1/settings/integrations/slack/callback",
             )
 
     @pytest.mark.asyncio
