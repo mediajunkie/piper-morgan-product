@@ -24,7 +24,9 @@ Now: Extracted to separate router module
 from datetime import datetime, timezone
 
 import structlog
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Depends, Request
+
+from services.auth.auth_middleware import JWTClaims, require_admin
 
 logger = structlog.get_logger()
 
@@ -120,7 +122,7 @@ async def intent_cache_metrics(request: Request):
 
 
 @router.post("/api/admin/intent-cache-clear")
-async def clear_intent_cache(request: Request):
+async def clear_intent_cache(request: Request, admin: JWTClaims = Depends(require_admin)):
     """
     Clear the intent cache (admin only).
 
@@ -156,7 +158,7 @@ async def piper_config_cache_metrics():
 
 
 @router.post("/api/admin/piper-config-cache-clear")
-async def clear_piper_config_cache():
+async def clear_piper_config_cache(admin: JWTClaims = Depends(require_admin)):
     """
     Clear the PIPER.md config cache (admin only).
 
@@ -187,7 +189,7 @@ async def user_context_cache_metrics():
 
 
 @router.post("/api/admin/user-context-cache-clear")
-async def clear_user_context_cache():
+async def clear_user_context_cache(admin: JWTClaims = Depends(require_admin)):
     """
     Clear the user context cache (admin only).
 
@@ -204,7 +206,7 @@ async def clear_user_context_cache():
 
 
 @router.post("/api/admin/user-context-cache-invalidate/{session_id}")
-async def invalidate_user_context(session_id: str):
+async def invalidate_user_context(session_id: str, admin: JWTClaims = Depends(require_admin)):
     """
     Invalidate specific user's cached context (admin only).
 
