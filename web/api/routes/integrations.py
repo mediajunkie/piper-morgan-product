@@ -469,6 +469,19 @@ async def _get_integration_config_status(integration_id: str, user_id: Optional[
         elif integration_id == "github":
             if os.environ.get("GITHUB_TOKEN") or os.environ.get("GITHUB_ACCESS_TOKEN"):
                 return "configured"
+            # #1513: PAT saves store the token user-scoped in the keychain ONLY
+            # (the process-env write was restart-volatile and removed in #1507),
+            # but this branch was env-only — so a connected GitHub read "not
+            # configured" after any machine restart. Mirrors the user-scoped
+            # branches notion (#1337), slack, and calendar (#839) already have.
+            if user_id:
+                try:
+                    from services.infrastructure.keychain_service import KeychainService
+
+                    if KeychainService().get_api_key("github_token", username=user_id):
+                        return "configured"
+                except Exception:
+                    pass
         elif integration_id == "calendar":
             # Calendar uses keychain token (Issue #529) or legacy MCP/credentials
             # Issue #839: Use user-scoped key when user_id available

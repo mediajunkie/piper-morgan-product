@@ -1,0 +1,194 @@
+<title>Weekly Report #055 — Internal</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --card:#FFFFFF; --ink:#1A1A17; --ink-soft:#5E5E55;
+    --rule:#E1E0DA; --accent:#5A5233; --accent-soft:#F0EEE4;
+    --adv:#3E6B45; --held:#8A6116; --slip:#A33F2B;
+    --shadow:0 1px 2px rgba(26,26,23,.05), 0 10px 28px -14px rgba(26,26,23,.16);
+    --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --data:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--ink-soft:#A0A093;
+    --rule:#33332B;--accent:#C9BE8E;--accent-soft:#26261E;
+    --adv:#79B885;--held:#D5A44B;--slip:#E38672;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}
+  }
+  :root[data-theme="dark"]{--ground:#16160F;--card:#1E1E19;--ink:#EDEDE6;--ink-soft:#A0A093;
+    --rule:#33332B;--accent:#C9BE8E;--accent-soft:#26261E;
+    --adv:#79B885;--held:#D5A44B;--slip:#E38672;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}
+  :root[data-theme="light"]{--ground:#F7F7F5;--card:#FFFFFF;--ink:#1A1A17;--ink-soft:#5E5E55;
+    --rule:#E1E0DA;--accent:#5A5233;--accent-soft:#F0EEE4;
+    --adv:#3E6B45;--held:#8A6116;--slip:#A33F2B;
+    --shadow:0 1px 2px rgba(26,26,23,.05),0 10px 28px -14px rgba(26,26,23,.16);}
+
+  body{margin:0;background:var(--ground);color:var(--ink);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:62rem;margin:0 auto;padding:3rem 1.25rem 5rem;display:flex;flex-direction:column;gap:2.5rem}
+  header{display:flex;flex-direction:column;gap:.5rem;border-bottom:3px double var(--rule);padding-bottom:1.5rem}
+  .stamp{font:500 .7rem/1 var(--data);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+  h1{font:400 2.5rem/1.1 var(--display);margin:0;text-wrap:balance;letter-spacing:-.015em}
+  .standfirst{color:var(--ink-soft);max-width:48ch;margin:0;font-size:1.05rem}
+  h2{font:600 .72rem/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+     margin:0;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+  section{display:flex;flex-direction:column;gap:.8rem}
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:1rem 1.2rem;
+        box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.5rem}
+  .card h3{margin:0;font:600 1.02rem/1.35 var(--body);text-wrap:balance}
+  .card.hero{border-left:5px solid var(--accent);padding:1.5rem 1.6rem}
+  .card.hero h3{font:400 1.55rem/1.2 var(--display)}
+  .card>p{margin:0}
+  .note{color:var(--ink-soft);font-size:.93rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:.5rem}
+  .stat{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:.6rem .8rem;
+        display:flex;flex-direction:column;gap:.15rem}
+  .stat dt{font:500 .66rem/1.2 var(--data);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .stat dd{margin:0;font:600 1.15rem/1.15 var(--body);font-variant-numeric:tabular-nums}
+  .tablewrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:.93rem}
+  th{text-align:left;font:600 .68rem/1.3 var(--data);letter-spacing:.07em;text-transform:uppercase;
+     color:var(--ink-soft);padding:.5rem .6rem;border-bottom:1px solid var(--rule);white-space:nowrap}
+  td{padding:.6rem;border-bottom:1px solid var(--rule);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tag{font:600 .66rem/1 var(--data);letter-spacing:.06em;text-transform:uppercase;padding:.28rem .4rem;
+       border-radius:2px;white-space:nowrap;display:inline-block}
+  .tag.adv{background:color-mix(in srgb,var(--adv) 14%,transparent);color:var(--adv)}
+  .tag.held{background:color-mix(in srgb,var(--held) 16%,transparent);color:var(--held)}
+  .tag.slip{background:color-mix(in srgb,var(--slip) 13%,transparent);color:var(--slip)}
+  ol.asks{margin:0;padding-left:0;list-style:none;counter-reset:a;display:flex;flex-direction:column;gap:.7rem}
+  ol.asks li{display:grid;grid-template-columns:1.7rem 1fr;gap:.6rem;align-items:baseline;counter-increment:a}
+  ol.asks li::before{content:counter(a);font:600 .85rem/1.5 var(--data);color:var(--accent)}
+  ul.plain{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.45rem}
+  ul.plain li::marker{color:var(--ink-soft)}
+  code{font:.88em/1.4 var(--data);background:var(--accent-soft);padding:.1rem .3rem;border-radius:2px}
+  blockquote{margin:.2rem 0;padding-left:.9rem;border-left:2px solid var(--rule);color:var(--ink-soft);font-style:italic}
+  footer{border-top:1px solid var(--rule);padding-top:1rem;color:var(--ink-soft);font-size:.85rem}
+  @media (max-width:34rem){h1{font-size:1.95rem}.wrap{padding-top:2rem}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="stamp">Internal weekly report · for xian only · Ship #055 substrate</p>
+    <h1>Week of July 31 – August 6</h1>
+    <p class="standfirst">The week the build side finished and the reporting caught up with it. Ten reports, first cycle on the new standard — and the reports themselves are the finding.</p>
+  </header>
+
+  <section>
+    <h2>Dashboard</h2>
+    <dl class="grid">
+      <div class="stat"><dt>Reports in</dt><dd>10 of 10</dd></div>
+      <div class="stat"><dt>Beta blockers built</dt><dd>queue empty</dd></div>
+      <div class="stat"><dt>MVP milestone open</dt><dd>21 issues</dd></div>
+      <div class="stat"><dt>Deployed</dt><dd>v29 → v36</dd></div>
+      <div class="stat"><dt>Published</dt><dd>4 posts</dd></div>
+      <div class="stat"><dt>Portfolio lines slipped</dt><dd>5</dd></div>
+    </dl>
+
+    <div class="card hero">
+      <h3>The build side went build-complete on Aug 4. Everything since has been verification catching up.</h3>
+      <p>Development reports the Beta Blockers build queue went <strong>from sixteen items to empty</strong>, every one with CI-arbitrated evidence — the census cluster, the Slack linking mechanism, the fail-closed inbound gate, the release-parity gate, the delete-copy honesty set. Six issues closed in-window. The discovered-work discipline filed <strong>fifteen-plus new issues</strong>, and the swarm found more verified bugs than its briefed scope on every wave.</p>
+      <p class="note"><strong>And then the week's real story:</strong> for four days the deployed artifact didn't have any of it. A ratified security posture was, in development's own words, <em>"an undeployed assumption."</em> Three roles independently found this, all three initially measured it wrong the same way, all three corrected publicly. You deployed Friday morning — v30 through v36 — and it closed.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Progress against goals — the six leadership lanes</h2>
+    <div class="card">
+      <div class="tablewrap">
+      <table>
+        <thead><tr><th>Lane</th><th>Verdict</th><th>The line that matters</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Architecture</strong></td>
+            <td><span class="tag adv">3 adv</span> <span class="tag held">1 held</span></td>
+            <td>Distribution plan ratified with its three conditions now binding on the epic; built a checker that finds assertions passing on empty input — <strong>fourteen of thirty-six enforcement tests flagged, two of them the owner-scoping guards themselves.</strong> Marks the ratchet <em>unattested</em> rather than green because they haven't verified it.</td>
+          </tr>
+          <tr>
+            <td><strong>Innovation</strong></td>
+            <td><span class="tag adv">3 adv</span> <span class="tag slip">1 own-lane</span></td>
+            <td>Ended a seven-morning false-alarm run — the cause was arithmetic, not tuning, so every role crossed the threshold <em>by construction</em>. Ran the <strong>first-ever skill review</strong>, on its target date, and found its own signal feed had never been read in eight months. Flags their own portfolio three weeks stale.</td>
+          </tr>
+          <tr>
+            <td><strong>Experience</strong></td>
+            <td><span class="tag adv">2 adv</span> <span class="tag held">3 held</span> <span class="tag slip">2 slip</span></td>
+            <td>Reported a fix as "shipped" that had merged but never deployed — <strong>three false permanence claims rendered to users for the entire window.</strong> Their own framing: <em>"the fix's premise was that the word must match the behaviour, and for two days my report didn't match the deployment."</em> The design-system portfolio has now not moved in four windows.</td>
+          </tr>
+          <tr>
+            <td><strong>Product</strong></td>
+            <td><span class="tag adv">4 adv</span> <span class="tag held">2 held</span></td>
+            <td>Board visibility <strong>unblocked after three weeks</strong> — and used immediately: <strong>21 issues open in the MVP milestone</strong>, which by our own rule <em>is</em> the beta-gate count, uncountable since July 16. Several are new from your own beta-account testing.</td>
+          </tr>
+          <tr>
+            <td><strong>Trust</strong></td>
+            <td><span class="tag adv">5 adv</span></td>
+            <td>Three trust mechanisms shipped and <strong>each verified by someone other than its author</strong>. Found the role-portfolio framework they built had itself lapsed across four reviews. 179 commits, and they estimate a meaningful share was correcting their own prior claims.</td>
+          </tr>
+          <tr>
+            <td><strong>Communications</strong></td>
+            <td><span class="tag adv">4 adv</span> <span class="tag slip">1 slip</span></td>
+            <td>Four published, zero slots missed in-window — then reported a miss that fell <em>outside</em> the window anyway, refusing to let a boundary do that work. The marketplace narrative is <strong>seven weeks</strong> with no direction: <em>"nobody decided to defer it; it stopped being asked about."</em></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The contributor experiment — your idea, first run</h2>
+    <div class="card">
+      <p><strong>All four filed, on the day they were asked, with no milestone apparatus required.</strong> A better response rate than the leadership tier, from roles that had never been asked before — and the reports were not thin.</p>
+      <ul class="plain">
+        <li><strong>Development</strong> — the build-complete report above, plus a regression they own outright: an unescaped apostrophe in the honesty-copy work silently killed the chat history renderer. It passed green CI <em>because nothing parses template-embedded JavaScript.</em> Gap named and pinned.</li>
+        <li><strong>Documentation</strong> — closed a six-day log gap with parallel extraction, then found two independent bugs in a housekeeping workflow that <em>had likely never successfully run since it was written.</em></li>
+        <li><strong>Product assistant</strong> — found the deployment gap and sent it URGENT two days before target. Their headline number was wrong by two orders of magnitude; they say so plainly, and note the underlying finding held and was independently reconfirmed.</li>
+        <li><strong>Web</strong> — fixed a live production bug where the blog returned HTTP 200 with a not-found body for any bad slug: <strong>a soft 404, invisible to status-code checks.</strong> Also discovered the role was missing from the org roster entirely, not just missing a briefing.</li>
+      </ul>
+      <p class="note"><strong>My read: keep it.</strong> The engineering, publishing, and web lanes were invisible to this cycle a week ago. Three of the four surfaced defects that no leadership lane would have seen, because they're found by doing the work rather than reviewing it.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What needs you — six items</h2>
+    <div class="card">
+      <ol class="asks">
+        <li><strong>What alpha and beta promise.</strong> Architecture left three cells blank in the release-train sketch and said so: a product commitment, not an architecture call. <strong>Beta is tomorrow.</strong> One line each.</li>
+        <li><strong>The two remaining alpha-feedback items</strong> — (a) and (c) on the gate questions. Conversion to issues triggers on the full set, so nothing is filed yet. That's the design, not a stall.</li>
+        <li><strong>#1462's milestone</strong> — still unset after a full week. Product flags it as held-by-decision where the decision is yours and hasn't come.</li>
+        <li><strong>The first-contact criterion</strong> — canonical wording is drafted and ready. One word converts it.</li>
+        <li><strong>The marketplace narrative</strong> — seven weeks, no direction. Either give one or let communications formally drop it; the current state is neither.</li>
+        <li><strong>Innovation's agenda question</strong> — with you since Aug 2: should that lane shift from <em>building mechanisms</em> to <em>protecting a property</em>? This week is their strongest evidence, and it's in the next section.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <h2>The pattern across all ten reports</h2>
+    <div class="card hero">
+      <h3>Every significant correction this week came from someone other than the author — and none of it is mechanized.</h3>
+      <p>Innovation put it as the sharpest version of their open question to you: <em>"every correction that mattered came from someone other than the author. None of it is mechanized."</em> The evidence is unusually clean this week because the reports volunteer it:</p>
+      <ul class="plain">
+        <li>Experience's "shipped" claim was corrected by extending someone else's deployment check into their own lane.</li>
+        <li>The product assistant's headline number was corrected by development, and the correction then traveled to two more roles who had made the identical error.</li>
+        <li>Innovation credited a fix to themselves that trust had proposed six days earlier — and reported that against themselves.</li>
+        <li>Trust found their own framework lapsed across four reviews, using a checker built with experience.</li>
+        <li>Architecture marks their own ratchet <em>unattested</em> rather than assume it.</li>
+      </ul>
+      <p class="note"><strong>What I'd put in front of you:</strong> this is a genuine capability and it is currently a culture rather than a mechanism. It survives on eleven roles independently choosing to check each other and to report against themselves. It is also the thing most likely to erode quietly as everyone gets busier and more self-sufficient — which is precisely innovation's question, and I'd answer it yes.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>My own accounting</h2>
+    <div class="card">
+      <p><strong>You asked for this synthesis Friday and it is arriving Saturday.</strong> The tenth report landed at 21:00 Friday after your direct ask unstuck it; I then ran a day-close instead of drafting. The gate genuinely blocked me until 21:00 — the choice after that was mine, and it was the wrong one.</p>
+      <p class="note">Two corrections you made this week both landed: the kickoff deadline framing is now a mechanism in the skill rather than a note to myself, and the mail-reading discipline audit found a real cost — a correction to one of my own claims sat unread while you acted on the wrong number. The role-health figure I gave you was false, sourced from a local document instead of GitHub. Both are logged in full.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Sources:</strong> all ten workstream reports read in full; omnibus logs for the window; live verification of the release history, the MVP milestone count, and the issue states cited. Where a role marked something unattested, I have carried it as unattested rather than resolving it myself.</p>
+    <p>Canonical copy: <code>dev/active/ship-055-internal-report-for-pm-2026-08-08.md</code></p>
+  </footer>
+</div>

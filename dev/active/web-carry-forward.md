@@ -294,3 +294,11 @@ own beat-planning doc (the exact artifact PM steers the narrative slate from), 4
 correction, same distance as PA's and mine. Comms explicitly flagged whether this belongs in standing
 methodology as a decision for someone else (CIO/HOST) to make, not themselves. Nothing further for
 Web — already ran the check on my own docs earlier today (18:27 fire) and fixed the one hit found.
+
+### BYOC/GTM task force — acknowledged, no active work
+Comms found (2026-08-08) that a "Comms+PPM+Web" task force from a June PM directive never convened,
+and that their own 12-repeated "blocked on PM" status was inverted (record actually said unblocked,
+awaiting PM direction on angles Comms hadn't drafted). Named as a member; nothing was ever blocked
+on my end since I was never looped into any concrete ask. Acknowledged rather than left silent,
+offered availability for website-side implementation (a marketplace/GTM page, updated BYOC
+messaging) once PM picks a narrative angle. No action pending until something concrete lands.
