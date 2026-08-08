@@ -54,6 +54,24 @@ CXO's 2a/2b split (2026-07-29) is folded in; it is the distinction that makes th
 | `mcp/consumer/github_oauth_handler` | 1 | `web.api.routes.settings_integrations` |
 | `integrations/spatial/github_spatial` | 2 | `github_integration_router:30` (**top-level, not deferred**) |
 
+> ### 🔄 RE-DERIVED 2026-08-08 (9 days on) — THE TOOL DISAGREES WITH THIS SECTION, SO THE TOOL WINS
+>
+> Re-ran the command in the header, per this document's own rule. **Two corrections, and the second is the one that matters for PM's decision.**
+>
+> **1. The island is ELEVEN modules, not ten — this section UNDERCOUNTED it.** Current derivation: **7 modules with zero importers** (`cicd_spatial`, `devenvironment_spatial`, `gitbook_spatial` ×2 — one in `integrations/`, one in `intelligence/` — `linear_spatial`, `intelligence/spatial/notion_spatial`, `slack_adapter`) **plus 4 adapters reachable only from those** (`cicd_adapter`, `devenvironment_adapter`, `gitbook_adapter`, `linear_adapter`).
+>
+> **2. 🔴 The sixth cold wrapper is NOTION'S — and this document used Notion as its refutation test.** Below, the cold island is characterised as *"CI/CD, dev-environment, GitBook and Linear — none of them in PM's invite email,"* with **Notion named as the case that could have refuted it**. But Notion has **two** objects and they have opposite status:
+>
+> | module | importers | status |
+> |---|---|---|
+> | `services/integrations/mcp/notion_adapter.py` | 2 | **LIVE** |
+> | `services/mcp/consumer/notion_adapter.py` | 1 | **LIVE** |
+> | `services/intelligence/spatial/notion_spatial.py` | **0** | 🔴 **COLD** |
+>
+> **So "Notion is live" and "Notion's spatial wrapper is cold" are both true, of different modules.** The L3 row's *"LIVE for GitHub / Calendar / Notion"* is true of the **adapter** and false of the **spatial wrapper** — and the refutation test this document ran was therefore ambiguous. **It does not overturn the recommendation** (the live Notion path is genuinely live), **but PM should not read "Notion is live" as "Notion's spatial layer is out of scope."**
+>
+> ⚠️ **Same defect this cohort found three times in five days** — one name carrying two objects — **here in my own artifact.** Which is the argument for the header's rule: *don't duplicate measurable facts in prose; re-derive them.*
+
 **COLD — a closed island of 10 modules.** Five `*_spatial` wrappers with **zero** importers, four `*_adapter` modules imported **only** by those cold wrappers, plus `slack_adapter` with zero:
 
 `cicd_spatial` · `devenvironment_spatial` · `linear_spatial` · `integrations/spatial/gitbook_spatial` · `intelligence/spatial/notion_spatial` — all 0 importers

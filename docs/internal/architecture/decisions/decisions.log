@@ -1196,3 +1196,45 @@ RULINGS AS AMENDED:
   principal (#1481, the original defect). (2) "production" = deployment mode, git branch, and running app
   (the release-train sketch). (3) "trust" = proactivity earned AND interpretive accuracy (tonight).
   Three separate corrections suggest a pattern is cheaper than a fourth correction. Offered to CIO's catalog.
+
+---
+2026-08-08 08:1x PT — Arch — CXO's THIRD reading (declared vs inferred) + spatial map RE-DERIVED at 9 days
+
+CXO'S FORK, CONCURRED: PM's clause "until/unless THE USER has established that working model" — the USER is
+  the subject of the verb. BOTH quantities I named yesterday (interpretive accuracy, proactivity earned) are
+  things PIPER INFERS. PM may be describing something the USER DECLARES. I was cataloguing within one
+  category and calling it a fork.
+  (a) INFERRED = demonstrated over N interactions; Piper measures and graduates → months.
+  (b) DECLARED = the user tells Piper "just do it" → a setting and a sentence.
+  NOT RESOLVED, deliberately — both readings are faithful; only PM can say. CXO's stakes line: "if we build
+  (a) when PM meant (b), we will have inferred a permission the user was willing to simply give us."
+  ⭐ ARCH'S ADDITION — THE FORK IS ASYMMETRIC, SO THE FIRST STEP IS SAFE EITHER WAY: (b) is a PREREQUISITE
+  for ever validating (a). Inference without labels is unsupervised and unfalsifiable — you cannot tell
+  whether an inferred working-model matches the user's actual one unless the user sometimes TELLS you. So
+  BUILD (b) FIRST UNDER EITHER READING, not as a hedge but as the thing that makes (a) testable. ⚠️ Does NOT
+  answer PM's question; if PM meant (a), (b) alone is insufficient and the months remain.
+  Architectural note supporting CXO's trust-property lane: a declared setting is LEGIBLE and REVOCABLE by
+  the person it governs; an inferred threshold is neither — the user cannot revoke a counter they cannot see.
+
+SPATIAL MAP RE-DERIVED (9 days on) — I chose this over sending three reminders, per my #055 statement that
+  the item becomes my drift if it sits. The map carries its own regeneration command and the rule "if this
+  table and the tool disagree, the tool is right." THEY DISAGREED:
+  1. THE COLD ISLAND IS ELEVEN MODULES, NOT TEN — I UNDERCOUNTED. 7 with zero importers (cicd_spatial,
+     devenvironment_spatial, gitbook_spatial ×2 — integrations/ AND intelligence/ — linear_spatial,
+     intelligence/spatial/notion_spatial, slack_adapter) + 4 adapters reachable only from those.
+  2. 🔴 THE SIXTH COLD WRAPPER IS NOTION'S, AND THE MAP USED NOTION AS ITS REFUTATION TEST. The map argued
+     "the cold island is CI/CD, dev-environment, GitBook and Linear — none in PM's invite email — and Notion
+     was the case that could have refuted this." But Notion has TWO objects with OPPOSITE status:
+       services/integrations/mcp/notion_adapter.py      2 importers  LIVE
+       services/mcp/consumer/notion_adapter.py          1 importer   LIVE
+       services/intelligence/spatial/notion_spatial.py  0 importers  COLD
+     "Notion is live" is TRUE of the adapter and FALSE of the spatial wrapper.
+     ⚠️ Does NOT overturn option (b) — the live path is genuinely live — but it CHANGES WHAT PM IS DECIDING
+     ABOUT: "Notion is live" must not be read as "Notion's spatial layer is out of scope." It is in the island.
+  ⭐ FOURTH INSTANCE THIS WEEK of one name carrying two objects (bound_user_id, "production", "trust",
+    "Notion") — and this one was IN MY OWN ARTIFACT, in the sentence I used to test my own conclusion. The
+    header rule is the cure and it worked as designed: NINE DAYS WAS ENOUGH FOR A HAND-WRITTEN COUNT TO GO
+    WRONG IN A WAY THAT TOUCHED THE ARGUMENT. Don't duplicate measurable facts in prose; re-derive them.
+  Sent as a REFRESHED INPUT, not a reminder, with the explicit note that the nine days are not anyone's
+  neglect — beta correctly outranked a Production discovery thread; keeping the input current was mine.
+2026-08-08 ~07:08 PT [comms, PM-stated in-conversation] **MAIL FORMAT: standardize on YAML headers for all cohort memos.** PM: *"We are going to standardize on YAML headers for email."* Supersedes the mixed-format status quo (measured 2026-08-07: 272 YAML / 65 header-style across 337 memos in comms/read; header-style concentrated in HOST 18, CXO 9, Docs 4, PA 2 — HOST self-reported 106 of 199 sent). ⚠️ **This retires the CAUSE of the triage blind spot, not just the symptom** — `scripts/scan-inbox.py` (dual-format parser, shipped 08-07) stays useful for the existing archive, which remains mixed and always will. **PM also questioned the practice underneath it**: *"It seems odd to me that agents grep for mail when they have an inbox and the mail is in it?"* — see the Comms reply; the grep was a volume optimisation that introduced a defect the inbox itself never had.
