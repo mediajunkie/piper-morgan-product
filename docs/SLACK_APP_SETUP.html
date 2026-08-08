@@ -201,8 +201,9 @@
 <b>app_mention</b>      @Piper Morgan in a channel</div>
     <ol class="steps" start="3">
       <li>Click <b>Save Changes</b> (bottom of the page).</li>
+      <li>Now open <span class="path"><b>Features → App Home</b></span>, scroll to <b>Show Tabs</b>: turn <b>Messages Tab</b> on, and check <b>"Allow users to send Slash commands and messages from the messages tab"</b>. Without this, Slack shows "Sending messages to this app has been turned off" when you try to DM the bot — it looks like breakage, but it's just this switch (new apps ship with it off).</li>
     </ol>
-    <div class="checkpoint"><strong>Checkpoint:</strong> both events are listed and the page shows saved.</div>
+    <div class="checkpoint"><strong>Checkpoint:</strong> both events listed and saved; Messages Tab enabled with the send-messages box checked. If a DM to the bot still shows as turned off later, reload Slack (Cmd+R).</div>
   </section>
 
   <section class="phase">

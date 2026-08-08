@@ -1103,3 +1103,60 @@ SLASH-COMMAND SURFACE NORMALIZATION RULED (Lead's PM-requested memo; three surfa
   looked at. ⚠️ UNVERIFIED: whether Slack's API exposes registered slash commands to us. If not, this reduces
   to a documented manual step with a named owner — worse, but better than a derive claiming coverage it
   lacks. Sequence AFTER the connector wave (same file territory as PPM's front-load order).
+
+---
+2026-08-07 19:3x PT — Arch — TRUST GRADIENT: wire don't rebuild + PM's design question answered + cold-code sweep
+
+VERIFIED EXEC'S FORENSIC INDEPENDENTLY (the load-bearing claim was "zero production callers"):
+  services/trust/delegation.py — 8,525 bytes, complete, ~40 unit tests, IMPORTERS OUTSIDE ITS OWN TEST: NONE.
+  services/trust/proactivity_gate.py (trust stage only, NO risk dimension) — FOUR production callers:
+  intent_service.py, soft_invocation.py, mux/orientation.py, trust_integration.py.
+  → THE MATRIX THAT ENCODES RISK IS COLD; THE SIBLING THAT DOESN'T IS WIRED INTO THE INTENT PATH. That is
+    the answer to "why didn't the gradient stop Jake's incident."
+
+RULING 1 — WIRE IT, DO NOT REBUILD. Completion case, not a design case (CLAUDE.md: "pattern/class/function
+  already exists — complete it instead"). Rebuilding discards 40 tests and a decision already made.
+  ⚠️ SEQUENCE IS LOAD-BEARING: wire FIRST, then apply PM's refinement to the wired thing. AMENDING A COLD
+  COMPONENT IS UNFALSIFIABLE — you cannot distinguish a correct amendment from an incorrect one until
+  something calls it. Wire, observe, then refine.
+  ⭐ META-FINDING: two siblings shipped in ONE COMMIT, one wired and one not, and NOTHING IN THE SYSTEM
+  COULD TELL YOU WHICH. That is exactly what scripts/reachability-map.py (07-29) exists to answer, and I
+  never swept services/ with it. COLD WELL-TESTED CODE IS THE MOST EXPENSIVE KIND, BECAUSE THE TESTS MAKE
+  IT LOOK ALIVE — a green suite is evidence of CORRECTNESS and no evidence of REACHABILITY, and those get
+  read as the same thing.
+
+RULING 2 — PM's design question ("at NEW, does every consequential action confirm, or only first-of-kind?").
+  ANSWER: NEITHER. It follows from PM's own reframing (confirmation hedges MISUNDERSTANDING, not permission;
+  what accumulates with trust is EVIDENCE WE INTERPRET THIS USER CORRECTLY):
+  ⭐ AT NEW, A CONSEQUENTIAL ACTION CONFIRMS UNCONDITIONALLY — PER KIND — UNTIL N CONSECUTIVE CONFIRMATIONS
+    OF THAT KIND ARE ACCEPTED WITHOUT CORRECTION. A CORRECTION RESETS THAT KIND'S COUNTER TO ZERO.
+    Accepted unmodified = evidence we interpreted correctly (counts down). Corrected = evidence we did not
+    (must NOT count down). This is NOT a confidence threshold — PM ruled that out correctly — it is an
+    EVIDENCE COUNT, which is what PM said trust actually is. The system never grades its own certainty; it
+    counts outcomes.
+  ⚠️ PER-KIND IS LOAD-BEARING, NOT A REFINEMENT: a global counter means a genuinely new kind of
+    consequential action arrives UNCONFIRMED because the user happened to confirm three of something else —
+    the failure the gradient exists to prevent, arriving through the mechanism meant to implement it.
+    "Kind" must be defined at the granularity the EFFECT lives at, not the phrasing.
+  CXO's capability-legibility point is the other half: the FIRST confirmation of a kind is also how the user
+    learns Piper can do this at all — independent argument for never suppressing the first, and it
+    front-loads the UX cost onto the moment it is most informative.
+  🔴 NOT DECIDED BY ME: N, and the definition of "kind". CXO owns whether three feels like diligence or
+    nagging; PM owns the risk appetite setting N. THE RULING IS THE SHAPE — per-kind, evidence-counted,
+    correction-resetting — NOT THE CONSTANTS. Anyone reading a number into this is reading something I
+    didn't write.
+  ENDORSED from Exec's step 2: reversibility (RECOVERABLE-or-worse) as the definition of PM's "important
+    effects" — gives "consequential" a testable meaning instead of a judgment call, in tier language the
+    system already uses.
+
+COLD-CODE SWEEP RUN (rather than only proposed): 25 services/ modules whose only STATIC importers are tests.
+  🔴 CANDIDATES, NOT FINDINGS — a static sweep cannot see dynamic registration (web/app.py mounts routers BY
+  STRING, which is why reachability-map.py prints "unknown" not "no"). ONE CONFIRMED COLD MODULE
+  (delegation.py) DOES NOT VALIDATE TWENTY-FIVE.
+  ⭐ THE SHAPE IS MORE INFORMATIVE THAN THE LENGTH: mux is 16 of 25. Either a substantial part of mux is
+  genuinely cold (perception.py has 12 test importers and no static production importer) OR mux uses a
+  registration pattern the sweep can't traverse and the number is meaningless. THOSE ARE DISTINGUISHABLE IN
+  MINUTES BY SOMEONE WHO KNOWS MUX'S COMPOSITION — that check must precede anyone reading the list as a work
+  queue. I don't know mux well enough to call it and said so rather than guessing.
+  If "genuinely cold" → make it a standing check. If "registration the sweep can't see" → teach
+  reachability-map.py the pattern, which is strictly better because the tool outlives the sweep.

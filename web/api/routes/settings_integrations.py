@@ -2322,7 +2322,20 @@ async def get_slack_oauth_url(
 
         # Issue #734: Pass user_id for multi-tenant state
         # Issue #1109: generate_authorization_url is async (Redis-backed state)
-        auth_url, state = await oauth_handler.generate_authorization_url(user_id=current_user.sub)
+        # 2026-08-07: this legacy route (the settings page's Add to Slack button)
+        # never got #1324's fallback chain — with no SLACK_REDIRECT_URI env it sent
+        # Slack an EMPTY redirect_uri ("Passed URI:" blank, found live in PM's
+        # walkthrough). Mirror /slack/connect's chain so both routes agree.
+        redirect_uri = os.getenv(
+            "SLACK_SETTINGS_REDIRECT_URI",
+            os.getenv(
+                "SLACK_REDIRECT_URI",
+                f"{_base_url()}/api/v1/settings/integrations/slack/callback",
+            ),
+        )
+        auth_url, state = await oauth_handler.generate_authorization_url(
+            user_id=current_user.sub, redirect_uri=redirect_uri if redirect_uri else None
+        )
 
         return {
             "success": True,

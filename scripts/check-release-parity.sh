@@ -7,14 +7,33 @@
 # for a two-day latent window. A parity CLAIM is a statement about a moment;
 # this script makes it a statement about NOW, verified.
 #
-# Usage: scripts/check-release-parity.sh [release-ref]   (default: origin/production)
+# Usage: scripts/check-release-parity.sh [release-ref]   (default: the DEPLOY SHA
+#        recorded by the running app, falling back to origin/main)
 # Exit 0: content-identical across product paths, or every diff line is
 #         explained in RELEASE_EXCLUSIONS (stdin prompt refused in CI — the
 #         explanation file is the mechanism, not an interactive shrug).
 # Exit 1: unexplained content gap — the release may not ship.
+#
+# 2026-08-07 (PPM finding, taken by Lead): the old default was origin/production,
+# a branch measured 12 DAYS STALE while the deployed artifact tracked main —
+# five roles inherited a wrong "thousands behind" conclusion from one comparison
+# encoded here. The deployment model is `git pull && fly deploy` from main, so
+# origin/production tracks nothing; a parity statement must be about what SHIPS.
+# m-43: this script now PRINTS the layer it measured; it compares GIT REFS, not
+# the running artifact — for the no-inference check, grep the machine via
+# `fly ssh console` (CXO's third layer).
 set -euo pipefail
 
-REF="${1:-origin/production}"
+if [ $# -lt 1 ]; then
+  echo "REFUSING TO MEASURE NOTHING: pass the ref you intend to ship." >&2
+  echo "  usage: scripts/check-release-parity.sh <release-ref>" >&2
+  echo "The old default (origin/production) was 12 days stale and produced a" >&2
+  echo "confident wrong answer five roles inherited; a default of origin/main" >&2
+  echo "would self-compare and always pass. Neither is a measurement." >&2
+  echo "For the deployed artifact itself: fly ssh console -C 'grep …' (no inference)." >&2
+  exit 2
+fi
+REF="$1"
 PATHS=(services/ web/ templates/ alembic/ static/ requirements.txt fly.toml Dockerfile)
 EXCLUSIONS_FILE="${RELEASE_EXCLUSIONS_FILE:-release-exclusions.txt}"
 

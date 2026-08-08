@@ -104,51 +104,59 @@
 
 <div class="wrap">
   <header>
-    <p class="stamp">Chief of Staff · Friday 7 August 2026 · updated 14:30</p>
+    <p class="stamp">Chief of Staff · Friday 7 August 2026 · evening sweep, 18:55</p>
     <h1>Attention rollup</h1>
-    <p class="standfirst">One sitting stands between build-complete and a verified beta. Six decisions came back this afternoon; two questions go back to you.</p>
+    <p class="standfirst">Seven deploys landed while I was working. The deploy question is closed — what remains are four questions from architecture, one of which only you can answer, and beta is Sunday.</p>
   </header>
 
   <dl class="band">
     <div class="fact"><dt>Beta target</dt><dd>Sun Aug 9</dd></div>
-    <div class="fact"><dt>Deployed</dt><dd>v29 · Aug 2</dd></div>
-    <div class="fact"><dt>Delta</dt><dd>15–17 commits</dd></div>
-    <div class="fact"><dt>In review</dt><dd>16 items</dd></div>
-    <div class="fact"><dt>Your time</dt><dd>~90 min</dd></div>
+    <div class="fact"><dt>Deployed</dt><dd>v36 · today</dd></div>
+    <div class="fact"><dt>Deploys today</dt><dd>v30 → v36</dd></div>
     <div class="fact"><dt>#055 reports</dt><dd>9 of 10</dd></div>
+    <div class="fact"><dt>Open for you</dt><dd>6 questions</dd></div>
   </dl>
 
   <section>
-    <h2>The one thing</h2>
+    <h2>What changed while you were out</h2>
     <div class="card lead">
-      <h3>Deploy v30, then test. No cherry-picking — you ratified that today.</h3>
-      <p>The premise that suggested a partial deploy was itself the error. Yesterday's <span class="tnum">2,282</span>-commits-behind alarm measured the production <em>branch</em>, not the deployed <em>artifact</em>. Both authors retracted it — the sharper retraction being the one that had "verified" the number by re-running the same comparison.</p>
-      <p class="note">Measured this morning with <code>fly releases</code> rather than inferred: the artifact is <strong>v29, Aug 2</strong>, from <code>main@b619794af</code>. The real delta is 15–17 product commits over four days — and those <em>are</em> the 16 reviewed items. Deploy-what-we-reviewed and deploy-v30 are the same action.</p>
-      <ol class="steps">
-        <li><strong>Deploy</strong> — <code>git pull &amp;&amp; fly deploy</code>, about five minutes. Do <strong>not</strong> set <code>PIPER_SLACK_INBOUND_ENABLED</code>; that switch staying off is what your #1481 hold ruling rests on.</li>
-        <li><strong>Verify</strong> — about an hour. Walkthroughs sit on each issue; the Slack-linking one needs the one-time <code>/link</code> registration. History says this surfaces new bugs, which is the entire reason to spend the hour before a tester does.</li>
-        <li><strong>Triage</strong> — about fifteen minutes. Milestone confirms on the discovered-work set and the eleven untracked chat surfaces.</li>
-      </ol>
+      <h3>The deploy happened — seven times. Beta is running v36, not v29.</h3>
+      <p>This morning's card asked for one deploy. <strong>You shipped v30 through v36 across the day</strong>, the last one under two hours ago, with development running Slack end-to-end verification alongside — OAuth redirect root-caused, a secret fixed, the Slack flow working, and a new issue filed for a missing settings-nav row. <strong>That entire card is closed.</strong></p>
+      <p class="note">So the beta path is no longer waiting on you at all. What follows is genuinely different work: four questions from the release-train sketch, one design correction you should know about, and a cohort-wide integrity finding that touches my own synthesis.</p>
     </div>
   </section>
 
   <section>
-    <h2>Needs your decision</h2>
+    <h2>Time-sensitive — beta is Sunday</h2>
 
     <div class="card act">
-      <p><span class="chip crit">back to you</span></p>
-      <h3>Two questions I owe you an answer on before you decide</h3>
-      <p><strong>"On its existing terms" — you're right that it doesn't parse, and here's why.</strong> That phrase came from the roadmap lens and meant only: <em>don't add new criteria to the gate issue in response to the alpha feedback.</em> It was never a claim about the sprint. Your reading is the correct one — the gate cannot close while Beta Blockers has open issues, and nothing in the alpha-feedback set changes that. So the real question is smaller than it sounded: <strong>should the alpha-feedback findings become new gate criteria, or tracked work outside the gate?</strong> My recommendation is outside — the gate is a completion check on a defined sprint, and reopening its definition mid-flight is what turns a closeable gate into an open-ended one.</p>
-      <p class="note"><strong>The consent gate — current status, honestly: it does not exist as tracked work.</strong> It is a recommendation from the trust lens, backed by the roadmap lens as "the one item I'd hold a release for," and it has <em>no issue number</em>. The concrete behavior: the alpha tester asked Piper to help him <em>write</em> a ticket and Piper <em>filed</em> one — a live write to his real GitHub from a misread intent. The proposed gate is a confirmation step before any consequential external write. <strong>Consequences of your decision, plainly:</strong> if you make it a release blocker, someone must file and build it, and it lands in the beta path. If you don't, beta ships with the class of bug that produced that incident still live — bounded by the fact that only connected tools are exposed, and your testers connected them deliberately. <strong>I'd suggest a third option: file it now so it's visible and sized, and decide blocker-or-not once you can see the actual cost.</strong> Right now the decision rests on an estimate nobody has made.</p>
+      <p><span class="chip crit">only you can answer</span></p>
+      <h3>What do alpha and beta actually promise?</h3>
+      <p>Architecture filed the release-train sketch this afternoon and left three cells deliberately blank: <strong>what promises hold for someone in alpha, in beta, at GA.</strong> Their words — <em>"that is the question that makes those words mean anything, and it is a product commitment, not an architecture call. I left it blank rather than inventing it."</em> One line each is enough.</p>
+      <p class="note"><strong>This is time-sensitive in a way the other three aren't</strong>: beta starts Sunday, so "what beta promises" stops being a definition exercise and becomes a thing real people are inside of. The other three asks — ratify the one-word-one-axis rule, retire or keep <em>staging</em>, rename the <code>production</code> branch or leave it — can wait; this one is about to be load-bearing.</p>
     </div>
 
     <div class="card act">
-      <p><span class="chip">needs your read</span></p>
-      <h3>Memory-index format — the choice, and where it's written down</h3>
-      <p>Full doc: <code>docs/internal/operations/memory-index-size-limits.md</code>. <strong>Live state: 193 lines against a ~200-line ceiling, 174 memories.</strong> Past the ceiling, trailing entries vanish from every agent's context silently — and both the byte and line limits were tested against the platform's claimed fix, which does not hold.</p>
-      <p class="note"><strong>The choice is between three levers, and the deciding property is reversibility.</strong> ① <em>Denser entry format</em> — drop or shorten the one-line descriptions. Generator change, re-runnable, costs recall quality since the description is what makes an index useful. ② <em>Per-type index files with a router</em> — <strong>proposed, tested, and withdrawn by its own author</strong>: only <code>MEMORY.md</code> is auto-loaded (174 files sit unloaded), so a split moves entries off the loaded surface rather than raising the ceiling. ③ <em>Prune entries</em> — the only irreversible option, since memory isn't version-controlled, and a governance call about other roles' lessons rather than a formatting choice.</p>
-      <p class="note"><strong>My recommendation: ①, and treat it as buying time rather than solving it.</strong> One line per memory means the floor rises with every new memory regardless of format — the structural question is whether the cohort keeps growing a shared pool indefinitely, and that one is genuinely yours.</p>
+      <p><span class="chip">your own answers, now routed</span></p>
+      <h3>Your Jake answers reached me through the other channel</h3>
+      <p>Your input on the two open items came via the cross-project relay rather than directly, and both are substantive enough that I want to confirm I've read them the way you meant.</p>
+      <p class="note"><strong>On meta-intent</strong> — <em>"It clearly does not involve writing out anywhere by default. Piper should work with the user first before immediately jumping to task completion, until/unless the user has established that working model."</em> I'm reading that as a <strong>default-behavior specification</strong>: collaborate first, don't execute, escalate to direct execution only once a user has established that as their expected mode. That is a real answer to the open either/or, and it composes exactly with your earlier point that confirmation hedges misunderstanding rather than permission. <strong>On tool naming</strong> — your point that situation-shaped skills may be <em>compositions</em> of object-shaped primitives changes what the routing test should measure, and you routed it to architecture with development's input rather than deciding it. Both are moving.</p>
     </div>
+
+    <div class="card watch">
+      <p><span class="chip warn">a design you approved, corrected</span></p>
+      <h3>The freeze monitor: the approved framing doesn't survive the data</h3>
+      <p>You approved "N of 11 roles silent simultaneously" as the detector. Innovation measured it against every alert on record before building: <strong>simultaneous-stale has never once exceeded three roles, and Thursday's actual freeze produced two</strong> — indistinguishable from an ordinary morning. The reason is structural: staleness is measured over seven hours and the freeze lasted about eight, so <strong>it ended before anyone could look stale.</strong> A freeze is invisible to a staleness belt by construction.</p>
+      <p class="note">They raised it instead of building it, then built the thing that does work — total heartbeat blackout — and verified it against Thursday as a known positive and today as a known negative. <strong>No action needed from you; flagging because you approved a specific design and got a better one.</strong></p>
+    </div>
+
+    <div class="card watch">
+      <p><span class="chip warn">affects my synthesis</span></p>
+      <h3>Nineteen percent of memos are invisible to a standard inbox scan</h3>
+      <p>Communications found it by nearly missing a memo addressed to them, then measured it: <strong>65 of 337 memos use a header format that a frontmatter-based triage scan reads as blank</strong> — concentrated in two roles, one of which reports that <strong>53% of everything they send</strong> is in the invisible format. Experience audited their own corpus and found twelve blind, <em>including one that was a Ship input.</em></p>
+      <p class="note"><strong>My own exposure, checked rather than assumed</strong>: my triage moves every file regardless of format, so I don't drop memos — but I read selectively, which is a weaker version of the same risk. I verified the Ship #055 collection is unaffected. Worth your awareness because it means the cohort's written record has been partly invisible to its own tooling for some time, and that is the kind of thing that quietly distorts a synthesis.</p>
+    </div>
+  </section>
 
   <section>
     <h2>Moving, on your word today</h2>
