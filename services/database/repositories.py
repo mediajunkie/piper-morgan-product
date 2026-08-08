@@ -398,12 +398,20 @@ class ProjectRepository(BaseRepository):
         name: str,
         owner_id: Optional[str] = None,
         is_admin: bool = False,
+        include_archived: bool = False,
     ) -> Optional[domain.Project]:
-        """Find project by name - optionally filter by owner (admin bypass in SEC-RBAC Phase 3)"""
+        """Find project by name - optionally filter by owner (admin bypass in SEC-RBAC Phase 3).
+
+        #1470: `include_archived` must be threaded down to the QUERY (same
+        conditional-filter shape as search_projects below) — it used to be a
+        service-level post-filter over an always-active-only result set, so
+        the restore-by-name chat path could never find an archived project.
+        """
         filters = [
             func.lower(ProjectDB.name) == name.lower(),
-            ProjectDB.is_archived == False,
         ]
+        if not include_archived:
+            filters.append(ProjectDB.is_archived == False)
         if owner_id and not is_admin:  # Only check ownership if not admin
             filters.append(ProjectDB.owner_id == owner_id)
 
@@ -416,8 +424,14 @@ class ProjectRepository(BaseRepository):
                 ),
             )
             .where(and_(*filters))
+            # Deterministic tie-break: the (owner_id, name) unique constraint is
+            # case-sensitive, so a case-insensitive match can hit >1 row (e.g.
+            # active "Alpha" + archived "alpha" once archived rows are in scope).
+            # Active row wins; scalars().first() instead of scalar_one_or_none()
+            # so a name collision can't raise MultipleResultsFound mid-chat.
+            .order_by(ProjectDB.is_archived, ProjectDB.name)
         )
-        db_project = result.scalar_one_or_none()
+        db_project = result.scalars().first()
         return db_project.to_domain() if db_project else None
 
     async def search_projects(

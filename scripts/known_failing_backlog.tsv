@@ -7,8 +7,6 @@
 #   triage       = not yet glanced — triaging it IS part of the burn-down
 #   flaky        = oscillates run-to-run (tolerated both states); burn-down = DE-FLAKE, then retag
 # Source: dev/2026/07/19/fullsuite-enumeration-2026-07-19.txt (CI-parity local run 2).
-tests/e2e/test_scenario_driver.py::test_multi_turn_scenario[fresh_tester_onboarding]	triage
-tests/e2e/test_task_lifecycle_e2e.py::TestTodoLifecycleE2E::test_create_todo_returns_confirmation	triage
 tests/features/test_issue_intelligence.py::TestIssueIntelligenceCanonicalQueryEngine::test_canonical_query_engine_initialization	triage
 tests/features/test_quick_integration.py::test_method_signatures	triage
 tests/infrastructure/mcp/test_connection_pool.py::TestMCPConnectionPoolCircuitBreaker::test_circuit_breaker_opens_on_failures	triage
@@ -62,5 +60,4 @@ tests/performance/test_standup_performance.py::TestAlphaRealisticLoad::test_sing
 tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_analyze_nonexistent_file	flaky
 tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_compare_requires_minimum_files	flaky
 tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_question_requires_auth	flaky
-tests/integration/services/test_db_user_history_repository.py::test_search_matches_title_preview_topics	triage
 tests/integration/test_phase3_phase4_learning.py::TestPerformanceRequirements::test_feedback_performance	flaky

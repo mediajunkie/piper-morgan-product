@@ -1160,3 +1160,39 @@ COLD-CODE SWEEP RUN (rather than only proposed): 25 services/ modules whose only
   queue. I don't know mux well enough to call it and said so rather than guessing.
   If "genuinely cold" → make it a standing check. If "registration the sweep can't see" → teach
   reachability-map.py the pattern, which is strictly better because the tool outlives the sweep.
+
+ADDENDUM (2026-08-07 22:1x) — CXO's missing-concept finding QUALIFIES Arch's own Ruling 2, same night
+
+THREE INDEPENDENT CONFIRMATIONS of the cold matrix now (Exec's forensic, Arch's importer check, CXO's
+  services/+web/+main.py search — three different patterns). COLD IS SETTLED.
+
+🔴 TWO DIFFERENT QUANTITIES ARE BOTH CALLED "TRUST", and my Ruling 2 used one while the implementation would
+  supply the other:
+    PM's sense ("evidence that we interpret them correctly") = INTERPRETIVE ACCURACY on SOLICITED requests
+      → exists NOWHERE in the code.
+    The code's trust STAGE (NEW/BUILDING/ESTABLISHED/TRUSTED) = PROACTIVITY EARNED, i.e. how much
+      UNSOLICITED action is licensed → ProactivityGate, DELEGATION_MATRIX.
+  Exec's finding #2 named the gap ("every trust type grades unsolicited action; Jake's request was
+  solicited; there is no domain concept for INTERPRETIVE LATITUDE"); CXO connected it and flagged the reuse
+  BEFORE it is built, which is the only time that flag is cheap.
+  → WIRING MY PER-KIND RULE TO THE EXISTING STAGE WOULD SILENTLY SUBSTITUTE PROACTIVITY FOR INTERPRETIVE
+    ACCURACY. They correlate; they are not identical. A user can be TRUSTED for proactivity and NEW for a
+    kind of request we have never interpreted before — under a stage-driven rule that user gets NO
+    confirmation on a request we have no evidence we understand. That is the failure the rule exists to
+    prevent, arriving through the axis it was wired to.
+
+RULINGS AS AMENDED:
+  Ruling 1 (wire DelegationService) — UNCHANGED. It governs PROACTIVITY, correctly. "Wire first, then
+    refine" still holds.
+  Ruling 2 (per-kind, evidence-counted confirmation) — ⚠️ NEEDS ITS OWN COUNTER, NOT THE TRUST STAGE.
+    Per-kind interpretive evidence is a NEW QUANTITY and must be stored as one.
+  ⭐ DO NOT REUSE THE STAGE FOR BOTH (CXO's caution, adopted as the operative constraint).
+  Flagged to PPM: if #1509/#1510 encode "trust stage" as the gate for interpretive confirmation, that IS the
+    substitution — catch it at filing, not review. Not asserted; I have not read the issue bodies.
+  NAMING: "interpretive latitude" is CXO's and better than anything I'd have reached for.
+
+⭐ PATTERN CANDIDATE — THIRD INSTANCE IN FIVE DAYS: one name carrying two quantities, invisible until
+  something depends on the difference. (1) `bound_user_id` = outbound credential selector AND inbound
+  principal (#1481, the original defect). (2) "production" = deployment mode, git branch, and running app
+  (the release-train sketch). (3) "trust" = proactivity earned AND interpretive accuracy (tonight).
+  Three separate corrections suggest a pattern is cheaper than a fourth correction. Offered to CIO's catalog.

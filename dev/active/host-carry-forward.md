@@ -1,12 +1,24 @@
 # HOST carry-forward
 
-**Written**: 2026-08-07 16:2x PDT (fire, day 14 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
-⚠️ **The "Written" date sat at 07-30 for a week while this file was edited daily** — an instance of the exact stale-header shape this file itself catalogues below. Fixing it here doesn't fix the pattern; treat every section's date as suspect, not just this line.
+**Written**: 2026-08-07 19:4x PDT (STOP fire, day 14 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+⚠️ **This header sat stale at 07-30 for a week despite daily edits** (caught and fixed Fire 4, 08-07) — the file's own catalogued failure shape, instantiated by the file itself. Treat every section's date as suspect, not just this line.
 
-## Closed by PM ruling, 2026-08-07 — do not re-raise
+## Standing check — cron-misread, THIRD instance (2026-08-07, Fire 6)
 
-- ✅ **Tester welfare — DISPOSED, not deferred.** PM, verbatim: *"1 tester with feedback as pivotal as Jake's justifies 11 quiet busy ones. That is an 8% return from the field and high value signal. Not worth sweating."* **My framing wasn't wrong (silence needed a decision); the denominator was (I read it as a welfare risk, PM reads it as a field-response rate, where 8% unsolicited qualitative feedback is good).** No instrument needed. If it resurfaces, it's on new evidence — an *active* tester having a bad time — not on quiet ones. **Stop carrying this in the standing prompt.**
-- ✅ **Migration checklist v2.0 — CEO-RATIFIED.** PM, verbatim: *"I ratify Migration checklist v2.0."* Status section stamped. Nothing further owed here.
+⚠️ **"Re-read the cron hour list" has failed twice now** (07-30, then again 08-07) on the identical expression `37 6,9,12,15,18,21` — both times I STOPped a fire early. Re-reading isn't a functioning fix if I've done it wrong twice. **Replacing it with a count, not a re-read**: before writing STOP, count the comma-separated values in the cron expression and count today's logged fires in the session log. If they don't match, it's not the last fire. `37 6,9,12,15,18,21` = **6** values → 6 fires/day, always. Do this arithmetic explicitly in the log entry, not silently.
+
+## New this fire (2026-08-07, Fire 5/STOP — note: mislabeled, see Fire 6 correction below)
+
+- 🔴 **OWED: freeze-monitor's HOST half.** CIO shipped the redesigned detector (heartbeat-blackout, verified against a known positive AND negative — `scripts/cohort-freeze-detect.sh`). Signed off on the design within the HOST↔CIO seam. **Not yet built**: what a frozen agent says on waking, what PM receives *during* a freeze. Named explicitly so it doesn't sit implied in the mail thread — pick up next fire or flag if PM wants it sooner.
+- ⚠️ **Mailbox-write discipline slip, caught same-fire.** Did 15 inbox→read triage `mv`s directly instead of routing through `mail-send.sh` from the start — left them as uncommitted local diffs for a few minutes before catching it and re-doing it correctly. No harm (caught pre-sign-off), but it's the same "the local worktree isn't the record, mail-send.sh is" mistake this file has warned about before. Worth a beat of care at the *start* of a triage pass, not just a fix after.
+- ✅ **Comms's "did any of your conclusions rest on invisible silence" question — closed, own-corpus checked.** No. But **separate your own exposure by direction**: 53% of what I *send* is header-style (already known); what I *receive* in that format is a different, unchecked number — cheap to check, not done this fire, worth a few minutes next time inbox is light.
+
+## Closed by PM ruling — archival, do not re-raise
+
+- ✅ **Tester welfare — DISPOSED 2026-08-06/07.** PM: *"1 tester with feedback as pivotal as Jake's justifies 11 quiet busy ones. That is an 8% return from the field and high value signal."* My framing wasn't wrong (silence needed a decision); the denominator was (welfare-risk read vs. PM's field-response-rate read). No instrument needed. Resurfaces only on new evidence — an *active* tester having a bad time — never on quiet ones. **Removed from standing cron prompt this re-arm.**
+- ✅ **Migration checklist v2.0 — CEO-RATIFIED 2026-08-07.** PM: *"I ratify Migration checklist v2.0."* Status section stamped. Nothing further owed.
+- ✅ **Role Health Check — #1478 closed 08-07, own audit error corrected same-day (CIO caught it), `duty-cycle-tick` Step 1a ships the self-polling fix.** Cadence real history now in `ROLE-PORTFOLIO-HOST.md` §3, GH-issue-verified (`--state all`, not `--state open`). Next due ~09-04 (self-surfacing now, no manual tracking needed).
+- ✅ **#1481 (Slack cross-user leakage)** — verified live 08-07 (`gh issue view`), still OPEN, still HELD by PM until safe. Standing-prompt line confirmed accurate, kept as-is.
 
 ## Read this first
 
