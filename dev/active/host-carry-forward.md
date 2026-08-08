@@ -3,7 +3,11 @@
 **Written**: 2026-08-07 19:4x PDT (STOP fire, day 14 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 ⚠️ **This header sat stale at 07-30 for a week despite daily edits** (caught and fixed Fire 4, 08-07) — the file's own catalogued failure shape, instantiated by the file itself. Treat every section's date as suspect, not just this line.
 
-## New this fire (2026-08-07, Fire 5/STOP)
+## Standing check — cron-misread, THIRD instance (2026-08-07, Fire 6)
+
+⚠️ **"Re-read the cron hour list" has failed twice now** (07-30, then again 08-07) on the identical expression `37 6,9,12,15,18,21` — both times I STOPped a fire early. Re-reading isn't a functioning fix if I've done it wrong twice. **Replacing it with a count, not a re-read**: before writing STOP, count the comma-separated values in the cron expression and count today's logged fires in the session log. If they don't match, it's not the last fire. `37 6,9,12,15,18,21` = **6** values → 6 fires/day, always. Do this arithmetic explicitly in the log entry, not silently.
+
+## New this fire (2026-08-07, Fire 5/STOP — note: mislabeled, see Fire 6 correction below)
 
 - 🔴 **OWED: freeze-monitor's HOST half.** CIO shipped the redesigned detector (heartbeat-blackout, verified against a known positive AND negative — `scripts/cohort-freeze-detect.sh`). Signed off on the design within the HOST↔CIO seam. **Not yet built**: what a frozen agent says on waking, what PM receives *during* a freeze. Named explicitly so it doesn't sit implied in the mail thread — pick up next fire or flag if PM wants it sooner.
 - ⚠️ **Mailbox-write discipline slip, caught same-fire.** Did 15 inbox→read triage `mv`s directly instead of routing through `mail-send.sh` from the start — left them as uncommitted local diffs for a few minutes before catching it and re-doing it correctly. No harm (caught pre-sign-off), but it's the same "the local worktree isn't the record, mail-send.sh is" mistake this file has warned about before. Worth a beat of care at the *start* of a triage pass, not just a fix after.

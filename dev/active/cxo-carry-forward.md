@@ -1,15 +1,29 @@
-# CXO carry-forward — rewritten 2026-08-06 at STOP (~22:5x PT). Day closed; next fire 06:47 on 08-07, opening ~07:17.
+# CXO carry-forward — rewritten 2026-08-07 at STOP (~22:5x PT). Day closed; next fire 06:47 on 08-08 (Sat), opening ~07:17.
 
-**Cron**: `53ca1c08` (`47 6,9,12,15,18,21`) — rotated at STOP from `971df264`; session-only, auto-expires ~2026-08-13, both deaths silent → **CronList at START**. ⚠️ **Fires QUEUE rather than drop** — on 08-06 four ticks delivered at once at 22:17 after ~11h silence. **Stacked ticks = ONE wake.** A quiet stretch on this seat is not a stall. ⏱️ **Measured: this seat's fires open ~+30 min after the cron minute** (six clean points 08-05, minute resolution) · **Worktree**: `~/Development/piper-morgan-worktrees/cxo` (Model A) · **Branch**: `claude/cxo-cycle`
+**Cron**: `03f6083a` (`47 6,9,12,15,18,21`) — rotated at STOP from `53ca1c08`; session-only, auto-expires ~2026-08-14, both deaths silent → **CronList at START**. ⚠️ **Fires QUEUE rather than drop** — on 08-06 four ticks delivered at once at 22:17 after ~11h silence. **Stacked ticks = ONE wake.** A quiet stretch on this seat is not a stall. ⏱️ **Measured: this seat's fires open ~+30 min after the cron minute** (six clean points 08-05, minute resolution) · **Worktree**: `~/Development/piper-morgan-worktrees/cxo` (Model A) · **Branch**: `claude/cxo-cycle`
 🔴 **DATE CHANGED 2026-08-06 — PM: Aug 8 was "a misremembering"; they meant **Aug 9, a SUNDAY**.** *"Somewhat arbitrary… I don't want to create any artificial sense of panic or stress… we could change the date if we need to."* ⚠️ **`decisions.log:303` still records 08-08 and is CORRECT for the Jul-30 decision — do NOT edit it**; a correction is a new dated entry (Exec/PPM's). **A soft date is not permission to ship an unverified artifact — it means the reason to hurry got smaller.**
 
-## ✅ DEPLOYMENT — CLOSED 2026-08-07
+## 🔴 THE LIVE THREAD — interpretive latitude (a fork with months riding on it)
 
-- **v30 deployed 08-07 08:04 PDT. Verified by reading the templates off the running machine**, not by version number or ancestry: `home_false=0`, `insights_false=0`, honest replacement present, credential true-claim present, `slack_inbound_enabled` gate present. **#1482 and #1484 are both live.**
-- ⭐ **THE INSTRUMENT, in order of strength**: `git merge-base` (inference — five roles got it wrong 08-06) → `fly status -a piper-morgan` (what version serves) → **`fly ssh console -a piper-morgan -C "sh -c 'grep -c … /app/…'"` (what the running system CONTAINS — no inference step).** Use the third to close anything.
-- ⚠️ **`check-release-parity.sh` still reads `origin/production`** — the tooling encodes the inference. Flagged to the cohort, **not claimed** (outside my lane).
-- ⚠️ **Two of six mapped delete-copy surfaces are still absent from the artifact** — never say "six surfaces fixed".
-- **PM RULING 08-06: #1481 Slack socket path HELD until safe — not alpha, not beta, not release.** #1466 spec parked behind it.
+- **Exec's forensic**: `services/trust/delegation.py` (Trust × Risk matrix) is **COLD — zero production callers**. Confirmed three ways, three patterns (Exec, Arch, me). **Settled; don't re-check.**
+- **Exec's DDD finding #2**: the domain grades **unsolicited** action. Jake's request was **solicited**. **No concept of interpretive latitude** — how far Piper may travel from an under-specified request.
+- **PM specified its default** (item #6, via Janus): *"work with the user first before immediately jumping to task completion, until/unless the user has established that working model."*
+- **Arch's table** (they qualified their own ruling on this): **interpretive accuracy** (nowhere in code) vs **proactivity earned** (`ProactivityGate`). *A user can be TRUSTED for proactivity and NEW for an unfamiliar request-kind.*
+- 🔴 **THE OPEN FORK — mine, filed 08-07 22:4x, PM's to settle**: *"the user has established"* makes **the USER the subject**, while both of Arch's quantities are things **Piper infers**. **(a) inferred = counters/thresholds/matrix/decay = months. (b) declared = a setting and a sentence = an afternoon.** Hybrid offered: *inference proposes, the user disposes.* ⛔ **Do not resolve this without PM. Someone may start building Monday.**
+- ⭐ **The falsifier I'd attach either way**: *could the user have predicted what Piper just did?* Jake's incident was an unpredictable action, not a wrong number.
+
+## ✅ CLOSED 2026-08-07 — deployment (keep the instrument, drop the rest)
+
+- **v30 deployed 08-07 08:04; verified by reading templates off the running machine.** #1482 and #1484 both live.
+- ⭐ **INSTRUMENT LADDER, use the third to close anything**: `git merge-base` (inference) → `fly status -a piper-morgan` (what version serves) → **`fly ssh console -a piper-morgan -C "sh -c 'grep -c … /app/…'"` (what the running system CONTAINS)**.
+- **`check-release-parity.sh` reads `origin/production`** → routed to **#1413** (PPM), which is in the beta gate.
+- ⚠️ **Two of six mapped delete-copy surfaces are absent from the artifact** — never say "six surfaces fixed".
+
+## ✅ CLOSED 2026-08-07 — Surface 1 / Radar
+
+- **The five ARE enumerated — as a build schedule** (`roadmap.md:127–129`): Surfaces **1, 2, 4, 6, 7**. **Surface 1 has a lane, "Unblocked NOW" — Radar is scheduled for 1.0.**
+- **My finding still stands**: its *justification* is a June-5 rating of a history list, **two weeks older than Radar**. Defensible conclusion, indefensible reason.
+- 🔴 **Still open, small**: **Surface 3 is a phantom** — one corpus mention, in the very sentence that rates Radar. PPM's ask to PM: *name it or strike it (5 of 6)*. **Neither of us will guess the history.**
 
 ## 🔴 PM-attention (nothing here has moved)
 

@@ -1,8 +1,8 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-06 STOP (~22:50 PT) — DAY CLOSED. Four fires (07:22 START, 10:22,
-13:05, 22:22 STOP); the last three cron fires arrived stacked at 22:22 after a nine-hour no-turn gap.
+**Last rewritten**: 2026-08-07 STOP (~22:50 PT) — DAY CLOSED. Six clean fires, no gaps
+(07:07 START · 10:07 · 13:07 · 16:07 · 19:07 WORK · 22:22 STOP). Cron re-armed `b087936b`.
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -205,35 +205,25 @@ already answered before sending.**
 
 ## Cron
 
-**ARMED** — job `2ae0bbb1`, `52 6,9,12,15,18,21`. **Re-armed at STOP by CronDelete-then-CronCreate
-and CronList-verified: exactly one.** (Prompt rewritten this re-arm — see below.)
+**ARMED** — job `b087936b`, `52 6,9,12,15,18,21`. Re-armed at STOP by CronDelete-then-CronCreate,
+**CronList-verified: exactly one.** Prompt gained three lines this re-arm (Step-0 backward check;
+account-freeze caveat; check-GitHub-before-re-asking-PM).
 
-🔴 **TWO DISTINCT FAILURES SEEN IN ONE DAY, and they produce IDENTICAL heartbeat records.**
-- **Fire 2 (10:27) — real Gap-C.** Job `c079437c` was CronList-verified present at the 08-05 22:22
-  STOP and fired twice today; a **compaction** intervened; `CronList` then returned **zero**. No
-  delete by me, expiry not in play. Re-armed. **Reported to CIO as an OBSERVATION, not a mechanism** —
-  I have present→compaction→absent, not the internals.
-- **Fire 4 (22:22) — NOT a cron failure at all.** Three ticks arrived stacked; `CronList` showed
-  **exactly one** job, so the 15:52 / 18:52 / 21:52 fires had **queued**. The session simply got no
-  turn from 13:05 to 22:22.
+**2026-08-07 was clean** — six fires, no stacking, no Gap-C. Contrast 08-06, which had **both** a real
+Gap-C (verified-present job gone after a compaction) **and** a non-failure (three ticks stacked,
+`CronList` showing one job). ⚠️ **Arch later established the 08-06 stacking was a cohort-wide account
+weekly-limit freeze until 21:30 — invisible from inside any seat.** My "the session got no turn" was
+seat-shaped for an account-shaped event; I owned that.
 
-⭐ **The lesson, and it changes how to read your own instrument**: today's heartbeat file shows
-`07:22 · 10:22 · 13:05 · 22:22` — **a nine-hour gap produced by a perfectly healthy cron.** A
-wake-time heartbeat records **when the session got a TURN, not when the cron FIRED.** **A heartbeat
-gap is evidence of no-turns, not of no-cron — and nothing in the file tells them apart.** Sent to
-CIO/PA/HOST with a suggested fix (record `scheduled=` alongside `emitted=`), flagged as a need rather
-than a prescription since I haven't checked the script can see its scheduled time.
+⭐ **THE HEARTBEAT SURFACE CANNOT REPORT ROLE-LIVENESS FOR 9 OF 11 SEATS.** Measured 08-07: on 08-06
+every role was active (5–20 commits each) and **nine recorded ZERO WORK rows** — a full working day
+byte-identical to a role that died after START. **PPM/HOST/PA are the only seats emitting WORK rows**,
+which is *why* we three saw gaps and the others couldn't. **Two failure modes, one surface, selected
+by a flag.** Handed to CIO. ⚠️ **It also retired my own `scheduled=`/`emitted=` proposal** — it
+annotates rows that get written, and the majority mode is rows that don't.
 
-**On stacked ticks**: that is **ONE wake, not several** — fires are idempotent by design. Run
-`CronList` before concluding anything.
-
-⚠️ **Session-only + 7-day auto-expiry, both silent.** Not a durable daemon. The self-heal only works
-if the session gets a turn — a seat that compacts while *idle* stays dark. Cure is external.
-
-⭐ **The cron prompt no longer carries a beta date.** It carried one, it was wrong twice, and a date
-written into a prompt is re-read six times a day as settled — CXO's finding (a *verification note*
-immunises a claim exactly like a do-not-correct clause) and HOST's, arriving the same night. The
-prompt now points here instead.
+⚠️ **Session-only + 7-day auto-expiry, both silent.** Not a durable daemon; the self-heal only works
+if the session gets a turn. Cure is external (CIO's freeze monitor is in flight).
 
 ---
 

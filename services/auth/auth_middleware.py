@@ -476,6 +476,74 @@ async def get_current_user(
 # fires later, re-introducing the dependency is a ~10-line edit.
 
 
+async def _user_is_admin(user_id) -> bool:
+    """Live DB read of users.is_admin (#357 SEC-RBAC) for the given user id.
+
+    Kept as a one-line boundary so tests can patch the DB read while
+    require_admin's refuse/allow logic runs for real. Raises on DB failure —
+    require_admin converts that into a fail-closed refusal.
+    """
+    from services.database.models import User
+    from services.database.session_factory import AsyncSessionFactory
+
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        row = await session.get(User, user_id)
+        return bool(row and row.is_admin)
+
+
+async def require_admin(
+    current_user: JWTClaims = Depends(get_current_user),
+) -> JWTClaims:
+    """FastAPI dependency: authenticated AND an admin (users.is_admin, #357).
+
+    #1485: a GLOBAL (app-wide) credential write must require authority
+    proportional to its blast radius — mere authentication is not enough.
+    The privileged-user concept in this codebase is the `users.is_admin` DB
+    column (SEC-RBAC #357; migration cd320b81e4c6 seeds the founder account).
+    It is checked LIVE against the DB, not trusted from token claims —
+    JWTClaims carries no admin flag today, and a live check means revoking
+    admin takes effect immediately rather than at token expiry.
+
+    Fail-closed: a lookup failure refuses (503), never allows. Refusals are
+    logged with actor identity (issue AC: global-effect writes log who).
+
+    Usage (replaces get_current_user on admin-only routes):
+        @router.post("/some/global/write")
+        async def route(current_user: JWTClaims = Depends(require_admin)):
+            ...
+    """
+    try:
+        is_admin = await _user_is_admin(current_user.user_id)
+    except Exception as e:
+        logger.warning(
+            "admin_check_unavailable",
+            user_id=str(current_user.user_id),
+            error=str(e),
+        )
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=(
+                "Couldn't verify admin permissions right now — nothing was "
+                "changed. Try again in a moment."
+            ),
+        )
+
+    if not is_admin:
+        logger.warning(
+            "global_credential_write_refused_non_admin",
+            user_id=str(current_user.user_id),
+        )
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=(
+                "This changes app-wide configuration, so it needs an admin "
+                "account — nothing was changed."
+            ),
+        )
+
+    return current_user
+
+
 def require_scopes(required_scopes: List[str]):
     """
     FastAPI dependency to require specific scopes.
