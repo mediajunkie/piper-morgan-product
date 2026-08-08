@@ -199,6 +199,17 @@ class TodoIntentHandlers:
         # Parse time from message
         reminder_dt, time_label = parse_reminder_time(original_message)
 
+        # Issue #1490 invariant: parse_reminder_time returns None ONLY when
+        # the message carried an explicit clock time it couldn't bind (e.g.
+        # "at 25:99"). Never save with a silently-guessed default — echo the
+        # unparsed time honestly and ask.
+        if reminder_dt is None:
+            return (
+                f"I caught the task — **{text}** — but couldn't work out "
+                f'the time from "{time_label}". When should I remind you? '
+                f"(For example: 'at 3pm tomorrow' or 'in 2 hours'.)"
+            )
+
         try:
             todo = await self.todo_service.create_todo(
                 user_id=user_id,
@@ -255,7 +266,13 @@ class TodoIntentHandlers:
         r"next\s+week|"
         r"(?:next|on)\s+(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)|"
         r"in\s+\d+\s+(?:minutes?|mins?|hours?|hrs?|days?)|"
-        r"(?:today\s+)?at\s+\d{1,2}(?::\d{2})?\s*(?:am|pm)?)"
+        # Issue #1490 (inverted-order reopen): "at" forms now cover
+        # noon/midnight and an optional TRAILING "today" ("at 9:41 today"),
+        # plus bare "3pm"/"9:41am" and bare noon/midnight — mirroring what
+        # find_explicit_clock_time can bind.
+        r"(?:today\s+)?at\s+(?:\d{1,2}(?::\d{2})?\s*(?:am|pm)?|noon|midnight)(?:\s+today)?|"
+        r"\d{1,2}(?::\d{2})?\s*(?:am|pm)|"
+        r"noon|midnight)"
     )
 
     def _extract_reminder_text(self, message: str) -> Optional[str]:
