@@ -1,91 +1,126 @@
-<title>The honest MVP ledger — Aug 8</title>
+<title>MVP sprint tracker — fundamentals to polish</title>
 <style>
   :root { --bg:#FBFAF7; --ink:#20242A; --soft:#646C77; --rule:#E5E2DB; --card:#FFFFFF;
-    --green:#166B45; --green-bg:#E9F3EC; --amber:#8A5A00; --amber-bg:#F9F0DC;
-    --red:#A32C22; --red-bg:#F9E9E6; --grey:#4A5560; --grey-bg:#ECEEF0; --accent:#1F4E79; }
+    --fund:#7A3E9D; --fund-bg:#F3EBF8; --trust:#1F4E79; --trust-bg:#E8F0F8;
+    --ver:#166B45; --ver-bg:#E9F3EC; --infra:#8A5A00; --infra-bg:#F9F0DC;
+    --pol:#5A6570; --pol-bg:#EDEFF1; --done:#166B45; --bar:#E3E0D9; }
   @media (prefers-color-scheme: dark) {
     :root { --bg:#171A1E; --ink:#E7E9EC; --soft:#9AA3AD; --rule:#31363D; --card:#1F242A;
-      --green:#5FC08D; --green-bg:#17301F; --amber:#E0B25C; --amber-bg:#332708;
-      --red:#E58B80; --red-bg:#3A1F1B; --grey:#AEB6BE; --grey-bg:#262B31; --accent:#7FB0DC; } }
+      --fund:#C79BE8; --fund-bg:#2C2135; --trust:#7FB0DC; --trust-bg:#1C2A38;
+      --ver:#5FC08D; --ver-bg:#17301F; --infra:#E0B25C; --infra-bg:#332708;
+      --pol:#AEB6BE; --pol-bg:#262B31; --done:#5FC08D; --bar:#2C3138; } }
   :root[data-theme="dark"] { --bg:#171A1E; --ink:#E7E9EC; --soft:#9AA3AD; --rule:#31363D; --card:#1F242A;
-    --green:#5FC08D; --green-bg:#17301F; --amber:#E0B25C; --amber-bg:#332708;
-    --red:#E58B80; --red-bg:#3A1F1B; --grey:#AEB6BE; --grey-bg:#262B31; --accent:#7FB0DC; }
+    --fund:#C79BE8; --fund-bg:#2C2135; --trust:#7FB0DC; --trust-bg:#1C2A38;
+    --ver:#5FC08D; --ver-bg:#17301F; --infra:#E0B25C; --infra-bg:#332708;
+    --pol:#AEB6BE; --pol-bg:#262B31; --done:#5FC08D; --bar:#2C3138; }
   :root[data-theme="light"] { --bg:#FBFAF7; --ink:#20242A; --soft:#646C77; --rule:#E5E2DB; --card:#FFFFFF;
-    --green:#166B45; --green-bg:#E9F3EC; --amber:#8A5A00; --amber-bg:#F9F0DC;
-    --red:#A32C22; --red-bg:#F9E9E6; --grey:#4A5560; --grey-bg:#ECEEF0; --accent:#1F4E79; }
+    --fund:#7A3E9D; --fund-bg:#F3EBF8; --trust:#1F4E79; --trust-bg:#E8F0F8;
+    --ver:#166B45; --ver-bg:#E9F3EC; --infra:#8A5A00; --infra-bg:#F9F0DC;
+    --pol:#5A6570; --pol-bg:#EDEFF1; --done:#166B45; --bar:#E3E0D9; }
   body { background:var(--bg); color:var(--ink); margin:0; padding:2rem 1.25rem 4rem;
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height:1.55; }
-  main { max-width:78ch; margin:0 auto; }
-  h1 { font-size:1.5rem; margin:0 0 .3rem; }
-  .sub { color:var(--soft); margin:0 0 1.4rem; }
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height:1.5; }
+  main { max-width:80ch; margin:0 auto; }
+  h1 { font-size:1.45rem; margin:0 0 .25rem; }
+  .sub { color:var(--soft); margin:0 0 1.25rem; font-size:.95rem; }
+  .dash { display:flex; flex-direction:column; gap:.55rem; background:var(--card);
+    border:1px solid var(--rule); border-radius:10px; padding:1.1rem 1.3rem; }
+  .drow { display:grid; grid-template-columns: 11.5rem 1fr 9.5rem; gap:.8rem; align-items:center; }
+  .dlabel { font-size:.8rem; font-weight:650; letter-spacing:.02em; }
+  .dbar { height:14px; background:var(--bar); border-radius:7px; overflow:hidden; display:flex; }
+  .seg { height:100%; }
+  .dnum { font-size:.78rem; color:var(--soft); font-variant-numeric:tabular-nums; text-align:right; }
+  .legend { display:flex; gap:1.1rem; flex-wrap:wrap; margin-top:.5rem; font-size:.75rem; color:var(--soft); }
+  .sw { display:inline-block; width:.7em; height:.7em; border-radius:2px; margin-right:.3em; vertical-align:-1px; }
   section { background:var(--card); border:1px solid var(--rule); border-radius:10px;
-    padding:1.1rem 1.35rem; margin-top:1.1rem; }
-  h2 { font-size:.82rem; letter-spacing:.07em; text-transform:uppercase; margin:0 0 .7rem; }
-  .g h2{color:var(--green)} .a h2{color:var(--amber)} .r h2{color:var(--red)} .n h2{color:var(--grey)}
-  ul { margin:0; padding-left:1.15rem; display:flex; flex-direction:column; gap:.45rem; }
-  .why { color:var(--soft); }
-  b.n { font-variant-numeric:tabular-nums; color:var(--accent); }
-  .est { border-left:4px solid var(--accent); }
-  .est p { margin:.5rem 0; }
-  code { font-family:ui-monospace,Menlo,monospace; font-size:.85em; background:var(--grey-bg);
-    border-radius:4px; padding:.05em .35em; }
+    padding:1rem 1.3rem; margin-top:1rem; }
+  h2 { font-size:.8rem; letter-spacing:.07em; text-transform:uppercase; margin:0 0 .6rem; }
+  ul { margin:0; padding-left:1.1rem; display:flex; flex-direction:column; gap:.4rem; font-size:.95rem; }
+  b.n { font-variant-numeric:tabular-nums; }
+  .st { font-size:.72rem; font-weight:650; border-radius:999px; padding:.06rem .5rem; margin-left:.35rem; white-space:nowrap; }
+  .s-build { background:var(--fund-bg); color:var(--fund); }
+  .s-verify { background:var(--ver-bg); color:var(--ver); }
+  .s-todo { background:var(--pol-bg); color:var(--pol); }
+  .s-block { background:#F9E9E6; color:#A32C22; }
+  :root[data-theme="dark"] .s-block, [data-theme="dark"] .s-block { background:#3A1F1B; color:#E58B80; }
+  .why { color:var(--soft); font-size:.85em; }
+  .f h2{color:var(--fund)} .t h2{color:var(--trust)} .v h2{color:var(--ver)} .i h2{color:var(--infra)} .p h2{color:var(--pol)}
 </style>
 <main>
-  <h1>The honest MVP ledger</h1>
-  <p class="sub">Saturday Aug 8 · what's working, what's leaking, what's faking, what's unbuilt — every row evidence-backed from this week's live testing, board via live API (MVP: 23 open / 1,022 closed)</p>
+  <h1>MVP sprint — fundamentals to polish</h1>
+  <p class="sub">Live denominator: <b>25 open</b> in the MVP milestone (API, Sat Aug 8 ~2:45 PM) + 3 unnumbered workstreams · categories per your fundamentals-first ruling · statuses current as of this build</p>
 
-  <section class="g">
-    <h2>Verified working — live evidence, this week</h2>
+  <div class="dash">
+    <div class="drow"><span class="dlabel" style="color:var(--fund)">1 · Fundamentals</span>
+      <div class="dbar"><span class="seg" style="width:27%;background:var(--done)"></span><span class="seg" style="width:37%;background:var(--fund)"></span><span class="seg" style="width:9%;background:#A32C22"></span></div>
+      <span class="dnum">11: 3 built · 4 building · 1 blocked · 3 unstarted</span></div>
+    <div class="drow"><span class="dlabel" style="color:var(--trust)">2 · Trust features</span>
+      <div class="dbar"><span class="seg" style="width:16%;background:var(--done)"></span></div>
+      <span class="dnum">6: 1 built · 5 unstarted</span></div>
+    <div class="drow"><span class="dlabel" style="color:var(--ver)">3 · Verification queue</span>
+      <div class="dbar"><span class="seg" style="width:100%;background:var(--done)"></span></div>
+      <span class="dnum">8: all built — needs v39 + you</span></div>
+    <div class="drow"><span class="dlabel" style="color:var(--infra)">4 · Launch infra</span>
+      <div class="dbar"><span class="seg" style="width:33%;background:var(--done)"></span></div>
+      <span class="dnum">3: 1 mostly-built · 2 gated on rebuild</span></div>
+    <div class="drow"><span class="dlabel" style="color:var(--pol)">5 · Polish</span>
+      <div class="dbar"></div>
+      <span class="dnum">0 in sprint (deferred by ruling)</span></div>
+    <div class="legend"><span><span class="sw" style="background:var(--done)"></span>built (awaiting verify/deploy)</span>
+      <span><span class="sw" style="background:var(--fund)"></span>agent building now</span>
+      <span><span class="sw" style="background:#A32C22"></span>blocked</span>
+      <span><span class="sw" style="background:var(--bar)"></span>unstarted</span></div>
+  </div>
+
+  <section class="f">
+    <h2>1 · Fundamentals — the rebuild spine (works first, by your ruling)</h2>
     <ul>
-      <li><b>The chat core loop</b> — send, LLM reply, history persistence, conversation switching (content-correct; see leak list for the flash).</li>
-      <li><b>Slack, end to end</b> — DM replies, @mentions, account linking (<code>/link</code>), <code>/standup</code> as the linked user with real data. All first-contact live passes.</li>
-      <li><b>All four connectors healthy</b> — GitHub, Calendar, Slack, Notion: 4-of-4 green after live Test All, from stored per-user credentials.</li>
-      <li><b>The standup report</b> — renders real seeded data correctly (Today populated, empty sections honestly empty).</li>
-      <li><b>Todos UI</b> — create/complete/display with due dates (via the page, not chat).</li>
-      <li><b>The security floor</b> — unauthenticated setup writes refuse 403 live; global-credential writes admin-gated; per-user credential isolation (GitHub token bleed fixed).</li>
-      <li><b>Ship/deploy machinery</b> — cut → migrate → live in ~3 min, parity-gated, ratchet suite (dispatch ratchet at literal zero) holding.</li>
-      <li><b>Reminder time-parsing slot layer</b> — as of this morning's root fix: any ordering, explicit-time-never-defaulted invariant, honest ask on unparseable. <span class="why">(Routing to it is the amber story below.)</span></li>
+      <li><b>Understanding-Layer Inversion</b> <span class="st s-todo">AWAITING ARCH RULING</span> <span class="why">the proposal; 1-week decision clock; Phase-0 corpus can start on ratification</span></li>
+      <li><b class="n">#1517</b> floor honesty (denials/fabrications ×2 live) <span class="st s-build">inversion workstream</span></li>
+      <li><b class="n">#1394</b> session continuity — prior turns → floor context <span class="st s-build">agent out</span></li>
+      <li><b class="n">#1518</b> intent telemetry (never wired since birth!) <span class="st s-verify">built today</span></li>
+      <li><b class="n">#1423</b> silent-death epic <span class="st s-verify">slice 1 built (12 sites, ceiling 226→214)</span> — slice 2 (#1524 GitHub-cohort lies) <span class="st s-build">agent out</span></li>
+      <li><b class="n">#1522</b> false-trails cauterization <span class="st s-build">step-1 agent out</span> <span class="why">(not MVP-milestoned yet — your call)</span></li>
+      <li><b class="n">#1529</b> standup-flow hijack / no-escape <span class="st s-todo">unstarted</span> <span class="why">becomes an inversion property (refusal exits any flow)</span></li>
+      <li><b class="n">#1530</b> chat project-list wrong source + wrong denominator <span class="st s-todo">unstarted</span></li>
+      <li><b class="n">#1488</b> your-account todo misroute <span class="st s-block">blocked</span> <span class="why">on diagnosis data — #1518's fix makes the next occurrence diagnosable</span></li>
+      <li><b class="n">#1436</b> mypy defect pack (~30 verified, 12+ live) <span class="st s-todo">unstarted tail</span></li>
+      <li><b class="n">#1492</b> name-extraction (period fixed; template-slicing) <span class="st s-todo">folds into rebuild</span> <span class="why">moratorium — resolve-against-real-names is the inversion's job</span></li>
     </ul>
   </section>
 
-  <section class="a">
-    <h2>Working but leaking oil — real, fixable, sized-small individually</h2>
+  <section class="t">
+    <h2>2 · Trust features — build, not polish</h2>
     <ul>
-      <li><b>Conversation UX</b> — switching works but flash-rebuilds the page (#1515); live greeting renders over historical threads (#1498).</li>
-      <li><b>Sessions</b> — auth works; expiry is silent, mid-use, too frequent, with wrong-blame error copy (#1520).</li>
-      <li><b>Integration surfaces</b> — connections work; the settings/health pages are three generations stacked (#1497): unknown-until-Test, missing Settings buttons, dead Disconnect.</li>
-      <li><b>Archive/restore</b> — works for clean phrasings; punctuation/quote variants still In Review awaiting your retest (#1492, #1470).</li>
-      <li><b>Todos via chat</b> — the UI works; chat creation misroutes on your account specifically (#1488, diagnosable now that telemetry is coming back via #1518).</li>
+      <li><b class="n">#1509</b> consent gate + capability legibility <span class="st s-todo">PPM spec'ing</span></li>
+      <li><b class="n">#1510</b> compose-vs-execute default <span class="st s-todo">PPM spec'ing</span></li>
+      <li><b class="n">#1476</b> 'blocked' card has no referent <span class="st s-todo">unstarted</span></li>
+      <li><b class="n">#1477</b> current chat has no sidebar row <span class="st s-todo">unstarted</span></li>
+      <li><b class="n">#1480</b> Slack deep-link dies at login redirect <span class="st s-todo">unstarted</span></li>
+      <li><b class="n">#1482</b> honest delete copy <span class="st s-verify">built</span> <span class="why">verify via insight delete on v39</span></li>
     </ul>
   </section>
 
-  <section class="r">
-    <h2>Faking it — looks alive, isn't; the trust-debt column</h2>
+  <section class="v">
+    <h2>3 · Verification queue — built; needs v39 deployed + your eyes</h2>
     <ul>
-      <li><b>Reminder questions</b> — "what reminders do I have?" answers with the calendar weather (#1521). The data exists; no rail reaches it.</li>
-      <li><b>The floor's mouth</b> — invents capability denials and retractions of real successes (#1517). Worst single trust defect in the product.</li>
-      <li><b>Web <code>/standup</code></b> — an interview that persists answers nothing ever reads (#1511); wears the same name as the real report.</li>
-      <li><b>Conversation delete</b> — honest dialog built and shipped dark; no reachable button (#1516).</li>
-      <li><b>Structural fakery inventory</b> (#1522, audited yesterday): a documented ops health surface that 404s; mounted APIs whose only callers are dead pages (places, documents); two prod-URL-reachable pre-refactor pages; <b class="n">5</b> dead-code families kept green by passing tests; 48% of UI components included by nothing.</li>
+      <li><b class="n">#1490</b> reminder orderings + never-default invariant · <b class="n">#1491</b> due-reminder fetch · <b class="n">#1485</b> admin gate · <b class="n">#1470</b> restore archived · <b class="n">#1471</b> "connect my calendar" · <b class="n">#1472/#1493</b> todo filters + timezones · <b class="n">#1431</b> archived list · <b class="n">#1411</b> update_issue rail <span class="why">(+ non-milestone: #1520 sessions, #1521 reminder query, #1507/#1508 security)</span></li>
+      <li class="why">One pass through the testable-now list clears most of this category.</li>
     </ul>
   </section>
 
-  <section class="n">
-    <h2>Not built — the unstarted remainder of MVP</h2>
+  <section class="i">
+    <h2>4 · Launch infrastructure</h2>
     <ul>
-      <li><b>#1509/#1510</b> — consent gate + compose-vs-execute default (the alpha-feedback trust features you ruled into the gate).</li>
-      <li><b>#1394/#1386</b> — session-continuity gap on the chat path + the close-out gate's multi-turn scenarios (continuity is the biggest unbuilt <i>capability</i>).</li>
-      <li><b>#1423 / #1436</b> — silent-death un-swallowing + the mypy defect pack: hygiene epics, partially ratcheted, tails unsized until scoped.</li>
-      <li><b>#1419</b> — multi-tenancy epic (you parked the deep work for Production; the sprint copy needs re-scoping to match).</li>
-      <li><b>#1278</b> — domain cutover (now unhurried).</li>
-      <li><b>The month's structural spine</b> (new, from this week's diagnosis): routing front-door confidence-gating + floor honesty contract (Arch review requested) · false-trails cauterization with regrowth ratchet (#1522) · corpus growth from your failed sentences.</li>
+      <li><b class="n">#1278</b> hosting + domain cutover <span class="st s-verify">build done</span> <span class="why">cutover = paired session, now unhurried</span></li>
+      <li><b class="n">#1386</b> beta close-out gate <span class="st s-todo">gated on rebuild</span> <span class="why">its multi-turn scenarios ARE inversion acceptance</span></li>
+      <li><b class="n">#1419</b> multi-tenancy epic <span class="st s-todo">needs re-scope</span> <span class="why">you parked the deep work for Production; sprint copy should match</span></li>
     </ul>
   </section>
 
-  <section class="est">
-    <h2 style="color:var(--accent)">The estimate you asked for — honest version</h2>
-    <p><b>It is not a year. The visible inventory is 6–8 working weeks.</b> Basis: this week's measured velocity (one Lead + agent swarms: ~15 substantive fixes built and merged in 8 days, sweeps clean) against the 23 open MVP items + the structural spine, of which the genuinely large pieces are four: routing/floor rework, continuity (#1394), cauterization, and the two trust features (#1509/#1510). Everything else on the board is days-sized.</p>
-    <p><b>The uncertainty is not build speed — it's discovery rate.</b> Every hard test day this week found ~8–12 new issues. If that curve doesn't bend, no estimate holds; "another year" is what a flat discovery curve would mean. So here is the falsifiable indicator to watch instead of trusting anyone's optimism: <b>new-issues-per-test-hour, weekly.</b> The routing/floor rework plus the corpus mechanism (your failed sentences become permanent judged cases) is precisely the work designed to bend it. If after ~3 weeks of structural work your test sessions stop minting new fundamental issues — the estimate is real. If they don't, we'll see it in the number by month's end, and <i>that</i> is the moment for the hard conversation — with data, not dread.</p>
-    <p class="why">Denominator note, per this morning's discipline: "23 open" is the live MVP milestone count at 10:30 AM today, from the API, not memory. The estimate covers that list plus the named spine; it does not cover work not yet discovered — that's exactly what the indicator measures.</p>
+  <section class="p">
+    <h2>5 · Polish — deferred by your ruling (not in sprint)</h2>
+    <ul>
+      <li class="why"><b class="n">#1497</b> settings-surface rebuild (your tabs design) · <b class="n">#1515</b> switch-flash · <b class="n">#1516</b> conversation-delete button (rail port) · <b class="n">#1519</b> insights page design · <b class="n">#1512</b> todos priority field · <b class="n">#1498</b> greeting-over-history · <b class="n">#1500</b> attachment DMs · <b class="n">#1523/#1525/#1526/#1527/#1528/#1531</b> hygiene tail</li>
+    </ul>
   </section>
 </main>
