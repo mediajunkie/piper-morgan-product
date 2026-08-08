@@ -444,8 +444,9 @@ def register_default_workflows() -> None:
     )
     # #1411: update_issue onto the rail (was elif-only surface-4, registry/rail-invisible
     # → mode-4 reachability gap for every update request). Reuses the fully-implemented
-    # _handle_update_issue (intent, workflow_id, user_id) via the standard factory; the
-    # existing elif stays as an additive backstop (rail wins pre-floor).
+    # _handle_update_issue (intent, workflow_id, user_id) via the standard factory. The
+    # legacy elif is REMOVED (migration completion): the rail is the single dispatch
+    # surface — B3 Stage-0 referent resolution emits update_issue onto this same key.
     update_issue_entry = WorkflowEntry(
         entry_point=_make_query_dispatch_entry_point("_handle_update_issue", pass_user_id=True),
         description="Update-issue via action dispatch (#1411)",
@@ -682,6 +683,21 @@ def register_default_workflows() -> None:
         (
             _qentry(run_todo_query_workflow, "todo list/next query via action dispatch"),
             ["list_todos_query", "list_completed_todos", "next_todo_query"],
+        ),
+        # #1521: reminder LIST query — "what reminders do I have?" The
+        # pre-classifier emits QUERY/list_reminders_query (canonical); the
+        # extra aliases are mode-4 defense for LLM paraphrase emissions on
+        # phrasings the pre-classifier doesn't claim. 4-arg handler
+        # (intent, workflow_id, session_id, user_id) — session for logging
+        # parity, user for the owner-scoped todo read.
+        (
+            _qentry(
+                _make_query_dispatch_entry_point(
+                    "_handle_list_reminders_query", pass_session_id=True, pass_user_id=True
+                ),
+                "reminder list query via action dispatch (#1521)",
+            ),
+            ["list_reminders_query", "list_reminders", "show_reminders", "get_reminders"],
         ),
     ]
     for entry, aliases in _query_cohort:

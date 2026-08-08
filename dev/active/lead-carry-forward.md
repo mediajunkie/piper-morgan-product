@@ -1,21 +1,23 @@
-# Lead carry-forward — rewritten 2026-08-07 ~19:00 PT (post-walkthrough-day)
+# Lead carry-forward — rewritten 2026-08-08 ~12:50 PT (post-crisis-day dispatch)
+
+## THE CONTEXT THAT CHANGES EVERYTHING
+- **PM moved beta back a month (2026-08-08, decisions.log)** after a verification day exposed structural flaws + accumulated over-reporting. PM had a real crisis of confidence — READ memory pin `project_pm_confidence_crisis_2026_08_08` before any sprint/planning conversation. Its 4 standing commitments are LIVE OBLIGATIONS: weekly discovery-rate (instrument: scripts/discovery-rate.py; surface: Exec daily rollup — ASSIGNED 8/8; baseline this-week=59); 6-8wk estimate conditioned on curve bend by ~Sep 1; PM-failed sentences → canonical corpus; completion answers from live board ONLY (note PPM 8/8: sprint-truth.py has a board-absent blind spot; milestone REST count avoids it).
+- **PM demands urgency + visibility**: dispatch first, explain after. "You are the lead developer."
 
 ## State
-- **Sprint**: 12+ closed; ~14 In Review (incl. 1466/1496 with LIVE E2E evidence, close on PM nod); 1488 Blocked on PM's corrected query (v3 on the issue); build queue EMPTY except swarm below.
-- **Beta**: v37-era live; SLACK WORKS E2E (link+standup verified live 8/7 evening). PIPER_SLACK_INBOUND_ENABLED=ON — #1485 must land before more testers (agent on it). Slack redirect overrides SLACK_SETTINGS_REDIRECT_URI + SLACK_REDIRECT_URI set on fly; DELETE at #1278 cutover.
-- **#1278 cutover (beta.pipermorgan.ai) needs a PM-paired session BEFORE Sunday Aug 9 launch.** Cutover checklist addendum: THREE redirect overrides now point at fly.dev (SLACK_SETTINGS_REDIRECT_URI, SLACK_REDIRECT_URI, GOOGLE_SETTINGS_REDIRECT_URI) — flip all three + add beta callbacks in BOTH consoles (Slack app, Google OAuth client).
+- **Aug-8 dispatch wave: 4/4 agents landed+merged** (1411 elif/double-mutation, 1520 backwards-refresh root cause, 1423-slice-1 12 un-swallows ceiling→214, 1521 reminder-query rail + pin: namespace). Cross-merge 2067 green; **batch composition sweep RUNNING** → on clean: CUT REC to PM (deploy carries: sessions-stay-alive, reminder ordering+query, un-swallowed honesty, 1490 root fix).
+- Closed today: 1429, 1489, 1504, 1513 (+6 yesterday evening). In Review: ~15. New today: 1515-1527 family.
+- Arch owes: routing front-door design review (requested; 2 new datapoints sent) + pin: namespace ratification.
+- CIO owes: memory-index architecture fix (PM-directed escalation sent 8/8).
+- Exec owes: daily discovery-rate line (starting 8/9).
 
-## In flight (next wake: MERGE + COMPOSITION SWEEP — quality-banked to fresh context)
-- 4 background agents in isolated worktrees: 1470, 1485, 1472+1493, 1471. On completion: review reports, merge, FULL composition sweep (killed-sweep watch: 6 datapoints), board→In Review, evidence comments.
-- Route-audit #1499 follow-ups queued: env-var inventory (PM interested, not yet worded), authorize→connect collapse, /api/v1/version.
-
-## Awaiting PM
-- Close nods: 1466, 1496 (live E2E), 1413/1432/1433 (infra-evidenced), 1465 closed w/ caveat.
-- #1488 v3 query output (on the issue). #1429: needs a data-present /standup to verify.
-- Sprint adds: my recs on 1470/76/77/82/85/96 (PPM converting alpha-feedback set per PM ruling 8/7 — don't duplicate).
-- Todo-in-beta scope answer (affects 1472/1493 sprint placement, both being fixed regardless).
+## Next wake priorities
+1. Sweep verdict → backlog gate → cut rec to PM (if not already done in-session).
+2. PM's T6/T7 retest results; new-fix retests post-cut (1520 stay-active test, 1521 reminder question, 1490 orderings).
+3. Remaining sprint-backlog unstarted: 1509/1510 (PPM converting — coordinate, don't duplicate), 1394 continuity (BIG — needs Arch design alignment first), 1423 slice-2 (GitHub cohort lies, #1524 — flip handlers+tests together), 1436 mypy pack.
+4. GraphQL-quota board flips still owed: 1490→In Progress-done-actually-fixed→In Review, 1507/1508/1411/1520/1521/1423-slice status, labels for 1517-1527.
+5. Killed-sweep watch (6 datapoints); cross_user_isolation no-teardown issue still unfiled.
 
 ## Standing
-- Rulings landed 8/7: PM (alpha-feedback→Beta Blockers; PPM converts). Arch (slash normalization: one semantic registry, many projections; Slack console needs read-the-artifact check — pre-Production).
-- Cron: 17 6,9,12,15,18,21 — singular, job da7e9309 (verify at fire).
-- Killed-sweep pattern → Pard via CIO (6 datapoints); cross_user_isolation has NO teardown (file issue when merging swarm).
+- Cron 17 6,9,12,15,18,21. GraphQL pool: shared 5k/hr — swarms exhaust it; REST rail for filings.
+- Redirect overrides (3, fly.dev) flip at #1278 cutover — checklist in this file's history + 1497.

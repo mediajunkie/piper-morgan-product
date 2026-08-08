@@ -225,6 +225,37 @@ def _create_anonymous_key_required_response(original_message: str) -> dict:
     }
 
 
+def _create_session_expired_response(original_message: str) -> dict:
+    """#1520: the honest response when a token was PRESENT but EXPIRED.
+
+    PM's live failure (2026-08-08): an expired session fell through the #1320
+    anonymous gate and got the "supplying your own Anthropic API key" copy —
+    wrong blame served to a signed-in user of the hosted app. An expired
+    session is not an anonymous caller: the remediation is signing in again,
+    never bringing a key. Key-talk belongs only on the genuinely-anonymous path.
+
+    Carries `auth_expired: True` (the #840 signal this early-return path used
+    to drop) so the frontend can attempt a silent #857 refresh / show the
+    expiry banner instead of failing silently.
+    """
+    msg = (
+        "Your session has expired, so I couldn't process that message. "
+        "Please sign in again to continue — your draft is preserved."
+    )
+    return {
+        "message": msg,
+        "intent": {"type": "unknown", "confidence": 0, "action": "clarify"},
+        "workflow_id": None,
+        "requires_clarification": True,
+        "clarification_type": "session_expired",
+        "suggestions": ["Sign in again to continue"],
+        "preferences": {},
+        "error": msg,
+        "error_type": "session_expired",
+        "auth_expired": True,
+    }
+
+
 @router.get("/workflows/{workflow_id}")
 async def get_workflow_status(workflow_id: str, request: Request):
     """Get workflow status to prevent UI polling hang (Bug #166 fix)"""
@@ -420,6 +451,14 @@ async def process_intent(
         except AnonymousLLMKeyRequiredError:
             # #1320: refuse BEFORE touching intent_service/the LLM at all — never
             # silently bill the server's own key to a fully anonymous caller.
+            # #1520: but an EXPIRED session is not an anonymous caller. The #840
+            # dependency flagged token-present-but-expired on request.state;
+            # this early return used to drop that flag, so expired users got
+            # the wrong-blame "bring your own key" copy and the frontend never
+            # saw auth_expired. Distinguish the two honestly.
+            if getattr(request.state, "auth_expired", False):
+                logger.warning("intent_session_expired_1520", session_id=session_id)
+                return _create_session_expired_response(message)
             logger.warning("intent_anonymous_key_required_1320", session_id=session_id)
             return _create_anonymous_key_required_response(message)
         with request_api_key(resolved_key):

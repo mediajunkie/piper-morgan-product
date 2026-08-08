@@ -34,7 +34,11 @@ from enum import Enum
 from typing import Any, Optional
 from uuid import UUID, uuid4
 
+import structlog
+
 from services.intent_service.intent_types import Intent, IntentCategory
+
+logger = structlog.get_logger()
 
 
 class FollowUpType(str, Enum):
@@ -694,5 +698,12 @@ async def hydrate_turns_from_db(
             turn = conv_ctx.add_turn(message=msg)
             turn.response = getattr(t, "assistant_response", None)
         return bool(conv_ctx.turns)
-    except Exception:
-        return False  # best-effort — never block the turn on hydration
+    except Exception as e:  # silent-ok: #1423 — hydration stays best-effort (never block the turn), but the failure is now logged: this was a ZERO-telemetry swallow, and a hydration failure is exactly the "the doc"/"that one" antecedent-loss failure this function exists to prevent
+        logger.warning(
+            "turn_hydration_from_db_failed — resumed conversation will see an EMPTY "
+            "history this turn (antecedents like 'the doc' will not resolve)",
+            session_id=session_id,
+            error=str(e),
+            exc_info=True,
+        )
+        return False

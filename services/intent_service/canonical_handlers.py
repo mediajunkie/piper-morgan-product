@@ -2174,6 +2174,7 @@ Would you like me to explain more about how Piper uses project context, or are y
         """
         # Check which integrations are configured
         integrations_status = []
+        status_check_failed = False
         try:
             registry = get_plugin_registry()
             plugin_status = registry.get_status_all()
@@ -2186,8 +2187,11 @@ Would you like me to explain more about how Piper uses project context, or are y
                         "configured": is_configured,
                     }
                 )
-        except Exception as e:
-            logger.debug(f"Could not check integration status: {e}")
+        except Exception as e:  # silent-ok: #1423 — guidance still renders without live status, but the failure is now WARN-logged with traceback (was debug) AND the message honestly says the status check failed instead of silently omitting connection state
+            status_check_failed = True
+            logger.warning(
+                f"Could not check integration status: {e}", exc_info=True
+            )
 
         configured = [i["name"] for i in integrations_status if i.get("configured")]
         not_configured = [i["name"] for i in integrations_status if not i.get("configured")]
@@ -2196,6 +2200,12 @@ Would you like me to explain more about how Piper uses project context, or are y
 
 **Available Integrations:**
 """
+        if status_check_failed:
+            message += (
+                "\n(I couldn't check your current connection status just now, "
+                "so I can't say which of these are already connected.)\n"
+            )
+
         if configured:
             message += "\n✅ **Connected:**\n"
             for name in configured[:5]:

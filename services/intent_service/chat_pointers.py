@@ -189,6 +189,24 @@ CHAT_POINTERS = {
     ),
     "capability:create_document": CHAT_INVISIBLE(untracked=True),
     "capability:batch_create_issues": CHAT_INVISIBLE(untracked=True),
+    # ---- regression pins ----
+    # A "pin:" row is NOT a derived product surface: it exists purely so the
+    # #1433 ratchet re-verifies, on every build, that a once-misrouted natural
+    # phrasing still resolves deterministically to its capability (the #1471
+    # calendar precedent, generalized — that fix could ride existing surface
+    # rows; reminders have no page/integration surface of their own, they live
+    # on todo_items.reminder_date). The ratchet's stale check exempts the pin:
+    # namespace; test_every_pointer_resolves_deterministically enforces pins
+    # exactly like surface rows, and pins MUST be POINTERs (asserted there).
+    # Being POINTERs, pins also join the "what can you do?" answer (#1428).
+    #
+    # #1521: signed-in "what reminders do I have?" fell past the pre-classifier
+    # to the LLM, which misrouted it to the temporal lane — answered with
+    # today's date and "(No meetings – great day for deep work!)" while the
+    # stored reminder was never consulted (PM live, 2026-08-08).
+    "pin:reminder-query": POINTER(
+        "what reminders do I have?", expects=("query", "list_reminders_query")
+    ),
 }
 
 

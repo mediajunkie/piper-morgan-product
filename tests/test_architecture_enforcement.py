@@ -1209,8 +1209,22 @@ class TestChatPointersReachabilityRatchet:
         and must be removed (the CHAT_INVISIBLE set only shrinks)."""
         derived = self._derived_surfaces()
         ledgered = set(CHAT_POINTERS)
+        # #1521: "pin:" rows are regression pins, not derived surfaces — they
+        # keep a once-misrouted natural phrasing under
+        # test_every_pointer_resolves_deterministically forever (the #1471
+        # precedent, generalized for capabilities with no surface of their
+        # own). Exempt from surface derivation ONLY; a pin must be a POINTER
+        # (a CHAT_INVISIBLE pin would assert nothing).
+        pins = {k for k in ledgered if k.startswith("pin:")}
+        non_pointer_pins = sorted(
+            k for k in pins if not isinstance(CHAT_POINTERS[k], POINTER)
+        )
+        assert not non_pointer_pins, (
+            f"pin: rows must be POINTERs (they exist to be resolution-tested): "
+            f"{non_pointer_pins}"
+        )
         missing = derived - ledgered
-        stale = ledgered - derived
+        stale = ledgered - derived - pins
         assert not missing, (
             f"Product surfaces with NO CHAT_POINTERS ledger row: {sorted(missing)}. "
             f"Add a POINTER (a canonical utterance that resolves deterministically) "
