@@ -158,8 +158,13 @@ CHAT_POINTERS = {
     "integration:slack": POINTER(
         "connect my slack", expects=("guidance", "get_contextual_guidance")
     ),
+    # #1471: the NATURAL phrasing — pre-#1471 it collided with the temporal
+    # calendar pattern (→ current time) and the ledger had to use the "link"
+    # phrasing. Both phrasings are now pinned as POINTERs (this row + the
+    # page:/settings/integrations/calendar row above) per the #1471 regression
+    # requirement.
     "integration:calendar": POINTER(
-        "link my google calendar", expects=("guidance", "get_contextual_guidance")
+        "connect my calendar", expects=("guidance", "get_contextual_guidance")
     ),
     "integration:notion": POINTER(
         "connect my notion", expects=("guidance", "get_contextual_guidance")

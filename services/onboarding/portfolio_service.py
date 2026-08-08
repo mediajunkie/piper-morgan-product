@@ -170,15 +170,15 @@ class PortfolioService:
         Returns:
             Matching project or None
         """
-        project = await self.project_repository.find_by_name(
+        # #1470: include_archived is threaded into the repository QUERY. It
+        # used to be only a post-filter here, over a result set the repo had
+        # already hard-filtered to is_archived == False — so archived projects
+        # were unreachable by name and restore-by-name always failed.
+        return await self.project_repository.find_by_name(
             name=name,
             owner_id=user_id,
+            include_archived=include_archived,
         )
-
-        if project and not include_archived and project.is_archived:
-            return None
-
-        return project
 
     async def search_projects(
         self,
