@@ -23,271 +23,14 @@
         min-height: 100vh;
       }
 
-      /* #1280 — the left dark rail (app_shell) now owns the conversation list (conv-list-everywhere),
-         so home's own left sidebar is a duplicate → hidden. !important beats the legacy collapse
-         toggle's inline display style. .app-layout is flex, so .main-content fills the freed space.
-         (Clean removal of the markup + the now-dead #conversation-list render is a tracked follow-up;
-         hidden-not-removed keeps initSidebar/loadConversations element refs valid — loadConversations
-         still returns the auto-select id home uses to open the most-recent chat.) */
-      .sidebar,
-      .sidebar-expand-btn {
-        display: none !important;
-      }
-
-      .sidebar {
-        width: 280px;
-        flex-shrink: 0;
-        background: var(--color-background-tertiary);
-        border-right: 1px solid var(--color-border-light);
-        display: flex;
-        flex-direction: column;
-        height: calc(100vh - 60px); /* Account for nav height */
-        position: sticky;
-        top: 60px; /* Below nav */
-        transition: transform 0.2s ease-in-out, width 0.2s ease-in-out;
-      }
-
-      .sidebar.collapsed {
-        transform: translateX(-100%);
-        width: 0;
-        overflow: hidden;
-      }
-
-      .sidebar-header {
-        display: flex;
-        align-items: center;
-        padding: var(--space-sm);
-        border-bottom: 1px solid var(--color-border-light);
-        gap: var(--space-sm);
-      }
-
-      .new-chat-btn {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: var(--space-sm);
-        padding: 10px var(--space-md);
-        background: var(--color-primary);
-        color: var(--color-neutral-white);
-        border: none;
-        border-radius: var(--border-radius-md);
-        cursor: pointer;
-        font-size: var(--font-size-sm);
-        font-weight: var(--font-weight-medium);
-        transition: var(--transition-background);
-      }
-
-      .new-chat-btn:hover {
-        background: var(--color-primary-dark);
-      }
-
-      .new-chat-icon {
-        font-size: var(--font-size-lg);
-        font-weight: bold;
-      }
-
-      .sidebar-toggle {
-        padding: var(--space-sm) 10px;
-        background: transparent;
-        border: 1px solid var(--color-border-light);
-        border-radius: var(--border-radius-md);
-        cursor: pointer;
-        color: var(--color-text-secondary);
-        transition: var(--transition-background);
-      }
-
-      .sidebar-toggle:hover {
-        background: var(--color-background-secondary);
-      }
-
-      /* Issue #1097 (MUX/UI Round 2 Surface 1): "Recent" header
-         distinguishes left rail (current-session continuation, ~5)
-         from right slide-out "History" (full archive, paginated) */
-      .sidebar-section-header {
-        font-size: var(--font-size-xs);
-        font-weight: var(--font-weight-semibold);
-        color: var(--color-text-secondary);
-        padding: var(--space-sm) var(--space-sm) var(--space-xs);
-        margin: 0;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-
-      .sidebar-expand-btn {
-        position: fixed;
-        left: 0;
-        top: calc(60px + 50%); /* Account for nav, then center */
-        transform: translateY(-50%);
-        padding: var(--space-sm) var(--space-sm);
-        background: var(--color-background-tertiary);
-        border: 1px solid var(--color-border-light);
-        border-left: none;
-        border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
-        cursor: pointer;
-        color: var(--color-text-secondary);
-        z-index: 100;
-        transition: var(--transition-background);
-      }
-
-      .sidebar-expand-btn:hover {
-        background: var(--color-background-secondary);
-      }
-
-      .conversation-list {
-        flex: 1;
-        overflow-y: auto;
-        padding: var(--space-sm);
-      }
-
-      .conversation-loading {
-        text-align: center;
-        color: var(--color-text-light);
-        padding: var(--space-md);
-        font-size: var(--font-size-sm);
-      }
-
-      /* #1263: conversation-list empty-state — design-floor treatment (title + hint),
-         consistent with the center modules' card__empty. Tentative copy → CXO ratify. */
-      .no-conversations {
-        text-align: center;
-        padding: var(--space-md);
-        color: var(--color-text-secondary);
-      }
-      .no-conversations-title {
-        font-size: var(--font-size-sm);
-        font-weight: var(--font-weight-semibold);
-        color: var(--color-text-primary);
-        margin: 0 0 var(--space-xs);
-      }
-      .no-conversations-hint {
-        font-size: var(--font-size-xs);
-        color: var(--color-text-light);
-        margin: 0;
-        line-height: 1.45;
-      }
-
-      .conversation-group-header {
-        font-size: var(--font-size-xs);
-        font-weight: var(--font-weight-semibold);
-        color: var(--color-text-secondary);
-        padding: var(--space-sm) var(--space-sm) var(--space-xs);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-
-      .conversation-item {
-        padding: var(--space-sm);
-        border-radius: var(--border-radius-md);
-        cursor: pointer;
-        transition: background 0.15s;
-        margin-bottom: 2px;
-      }
-
-      .conversation-item:hover {
-        background: var(--color-background-secondary);
-      }
-
-      .conversation-item.active {
-        background: var(--color-primary-light);
-      }
-
-      .conversation-title {
-        font-size: var(--font-size-sm);
-        color: var(--color-text-primary);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin-bottom: var(--space-xs);
-      }
-
-      /* Issue #604: Editable titles */
-      .conversation-item-header {
-        display: flex;
-        align-items: center;
-        gap: var(--space-xs);
-      }
-
-      .conversation-title-wrapper {
-        flex: 1;
-        min-width: 0; /* Allow text truncation */
-      }
-
-      .conversation-edit-btn {
-        opacity: 0;
-        background: none;
-        border: none;
-        padding: 2px var(--space-xs);
-        cursor: pointer;
-        color: var(--color-text-secondary);
-        font-size: var(--font-size-xs);
-        border-radius: var(--border-radius-sm);
-        transition: opacity 0.15s, background 0.15s;
-      }
-
-      .conversation-item:hover .conversation-edit-btn {
-        opacity: 1;
-      }
-
-      .conversation-edit-btn:hover {
-        background: rgba(0,0,0,0.1);
-        color: var(--color-text-primary);
-      }
-
-      /* Issue #715: Conversation action buttons (archive, delete) */
-      .conversation-actions {
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        flex-shrink: 0;
-      }
-
-      .conversation-action-btn {
-        opacity: 0;
-        background: none;
-        border: none;
-        padding: 2px 4px;
-        cursor: pointer;
-        color: var(--color-text-secondary);
-        font-size: var(--font-size-xs);
-        border-radius: var(--border-radius-sm);
-        transition: opacity 0.15s, background 0.15s;
-      }
-
-      .conversation-item:hover .conversation-action-btn {
-        opacity: 1;
-      }
-
-      .conversation-action-btn:hover {
-        background: rgba(0,0,0,0.1);
-      }
-
-      .conversation-delete-btn:hover {
-        background: rgba(220,38,38,0.1);
-        color: #dc2626;
-      }
-
-      .conversation-title-input {
-        width: 100%;
-        padding: var(--space-xs) var(--space-xs);
-        border: 1px solid var(--color-primary);
-        border-radius: var(--border-radius-sm);
-        font-size: var(--font-size-sm);
-        font-family: inherit;
-        outline: none;
-      }
-
-      .conversation-meta {
-        font-size: var(--font-size-xs);
-        color: var(--color-text-light);
-      }
-
-      .no-conversations {
-        text-align: center;
-        color: var(--color-text-light);
-        padding: var(--space-2xl) var(--space-md);
-        font-size: var(--font-size-sm);
-      }
+      /* #1522 step 1 (2026-08-08): home's legacy left sidebar (aside#sidebar +
+         .conversation-item renderer, #565/#566/#604/#715/#1097) is EXCISED, not
+         hidden (#1280 had hidden it; a #1482 fix later shipped dark into the
+         hidden twin — #1516). The visible conversation list is the left dark
+         rail (components/nav_rail.html, included by layouts/app_shell.html,
+         populated by static/js/nav.js — #1280 conv-list-everywhere); the full
+         archive is the right slide-out (components/history_sidebar.html).
+         Do NOT rebuild a conversation list renderer in this file. */
 
       .main-content {
         flex: 1;
@@ -299,16 +42,6 @@
       }
 
       @media (max-width: 768px) {
-        .sidebar {
-          position: fixed;
-          left: 0;
-          top: 60px; /* Below nav */
-          bottom: 0;
-          height: auto;
-          z-index: 1000;
-          box-shadow: var(--shadow-md);
-        }
-
         .main-content {
           padding: var(--space-md);
         }
@@ -965,33 +698,12 @@
       {# shell sets window.currentUser + window.trustStage; home additionally needs trustStageName #}
       window.trustStageName = "{{ trust_stage_name|default('NEW') }}";
     </script>
-    <!-- Issue #566: Sidebar-ready layout -->
     <!-- Issue #1097 (MUX/UI Round 2 Surface 1): Two-sidebar role differentiation
-         Left rail (this aside) = "current session continuation" — ~5 recent ACTIVE
-         Right slide-out (history_sidebar.html, included above) = "full archive" — paginated, searchable -->
+         Left dark rail (components/nav_rail.html via app_shell, populated by static/js/nav.js)
+           = "current session continuation" — recent ACTIVE conversations (#1280 conv-list-everywhere)
+         Right slide-out (history_sidebar.html, included above) = "full archive" — paginated, searchable
+         #1522 step 1: home's own legacy aside#sidebar was excised (see the style-block note). -->
     <div class="app-layout">
-      <!-- Issue #565: Conversation History Sidebar -->
-      <aside class="sidebar" id="sidebar" role="navigation" aria-label="Recent conversations">
-        <div class="sidebar-header">
-          <button class="new-chat-btn" onclick="createNewConversation()" title="Start a new conversation">
-            <span class="new-chat-icon">+</span>
-            <span class="new-chat-text">New Chat</span>
-          </button>
-          <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Collapse sidebar" title="Collapse sidebar">
-            <span class="toggle-icon">◀</span>
-          </button>
-        </div>
-        <h2 class="sidebar-section-header">Recent</h2>
-        <div class="conversation-list" id="conversation-list" aria-live="polite">
-          <!-- Populated by JavaScript -->
-          <div class="conversation-loading">Loading conversations...</div>
-        </div>
-      </aside>
-      <!-- Sidebar toggle button when collapsed -->
-      <button class="sidebar-expand-btn" id="sidebar-expand-btn" onclick="toggleSidebar()" aria-label="Expand sidebar" title="Show conversations" style="display: none;">
-        <span>▶</span>
-      </button>
-
       <div class="main-content">
         <div class="container">
 
@@ -1250,11 +962,11 @@
       document.addEventListener('DOMContentLoaded', initOrientation);
 
       // ============================================
-      // Issue #565: Conversation History Sidebar
+      // Conversation selection + chat restore (#565 lineage; renderer excised
+      // #1522 step 1 — the visible list is the nav rail, see note above)
       // ============================================
 
       let activeConversationId = null;
-      let sidebarCollapsed = false;
 
       // #1418 — selection-integrity guards. Two failure modes killed the picker:
       // (1) a late implicit/default switch (init auto-select racing a user click)
@@ -1265,33 +977,15 @@
       let explicitSelectionMade = false;
       let switchSeq = 0;
 
-      // Toggle sidebar visibility
-      function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const expandBtn = document.getElementById('sidebar-expand-btn');
-
-        sidebarCollapsed = !sidebarCollapsed;
-
-        if (sidebarCollapsed) {
-          sidebar.classList.add('collapsed');
-          expandBtn.style.display = 'block';
-          localStorage.setItem('sidebarCollapsed', 'true');
-        } else {
-          sidebar.classList.remove('collapsed');
-          expandBtn.style.display = 'none';
-          localStorage.setItem('sidebarCollapsed', 'false');
-        }
-      }
-
-      // Load conversations from API
-      // Returns the first conversation ID if available (for auto-select)
+      // Fetch recent ACTIVE conversations; returns the most-recent conversation ID
+      // for auto-select (#583) — DATA ONLY, renders nothing. The visible list is
+      // the left dark rail (components/nav_rail.html + static/js/nav.js, #1280);
+      // the full archive is the right slide-out (history_sidebar.html). home's
+      // legacy .conversation-item renderer (edit/archive/delete actions, #604/#715)
+      // was excised in #1522 step 1 after a fix shipped dark into it (#1516).
+      // Also called by chat.js after a conversation is created (typeof-guarded).
       async function loadConversations() {
-        const listEl = document.getElementById('conversation-list');
-
         try {
-          // Issue #715: Explicitly request ACTIVE conversations for left sidebar
-          // Issue #1097 (MUX/UI Round 2 Surface 1): Cap at ~5 most-recent —
-          // left rail = "current session continuation"; right slide-out (history_sidebar.html) = "full archive"
           const response = await fetch('/api/v1/conversations?state=active&limit=5', {
             credentials: 'include'
           });
@@ -1301,7 +995,6 @@
           }
 
           const data = await response.json();
-          renderConversationList(data.conversations, data.has_more);
 
           // Issue #583: Return first conversation ID for auto-select
           return data.conversations && data.conversations.length > 0
@@ -1310,272 +1003,7 @@
 
         } catch (error) {
           console.error('Failed to load conversations:', error);
-          listEl.innerHTML = '<div class="no-conversations">Unable to load conversations</div>';
           return null;
-        }
-      }
-
-      // Render conversation list with date grouping
-      function renderConversationList(conversations, hasMore) {
-        const listEl = document.getElementById('conversation-list');
-
-        if (!conversations || conversations.length === 0) {
-          // #1263: design-floor empty-state treatment (title + hint), consistent with
-          // the center modules' card__empty pattern — was a plain unstyled line.
-          listEl.innerHTML =
-            '<div class="no-conversations">' +
-            '<p class="no-conversations-title">No conversations yet</p>' +
-            '<p class="no-conversations-hint">Start a new chat to begin — your history will live here.</p>' +
-            '</div>';
-          return;
-        }
-
-        // Group conversations by date
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const yesterday = new Date(today);
-        yesterday.setDate(yesterday.getDate() - 1);
-        const lastWeek = new Date(today);
-        lastWeek.setDate(lastWeek.getDate() - 7);
-
-        const groups = {
-          today: [],
-          yesterday: [],
-          thisWeek: [],
-          earlier: []
-        };
-
-        conversations.forEach(conv => {
-          const convDate = new Date(conv.updated_at || conv.created_at);
-          convDate.setHours(0, 0, 0, 0);
-
-          if (convDate.getTime() === today.getTime()) {
-            groups.today.push(conv);
-          } else if (convDate.getTime() === yesterday.getTime()) {
-            groups.yesterday.push(conv);
-          } else if (convDate >= lastWeek) {
-            groups.thisWeek.push(conv);
-          } else {
-            groups.earlier.push(conv);
-          }
-        });
-
-        let html = '';
-
-        if (groups.today.length > 0) {
-          html += '<div class="conversation-group-header">Today</div>';
-          html += groups.today.map(conv => renderConversationItem(conv)).join('');
-        }
-
-        if (groups.yesterday.length > 0) {
-          html += '<div class="conversation-group-header">Yesterday</div>';
-          html += groups.yesterday.map(conv => renderConversationItem(conv)).join('');
-        }
-
-        if (groups.thisWeek.length > 0) {
-          html += '<div class="conversation-group-header">This Week</div>';
-          html += groups.thisWeek.map(conv => renderConversationItem(conv)).join('');
-        }
-
-        if (groups.earlier.length > 0) {
-          html += '<div class="conversation-group-header">Earlier</div>';
-          html += groups.earlier.map(conv => renderConversationItem(conv)).join('');
-        }
-
-        if (hasMore) {
-          html += '<div class="conversation-item" onclick="loadMoreConversations()" style="text-align: center; color: var(--color-primary);">Load more...</div>';
-        }
-
-        listEl.innerHTML = html;
-      }
-
-      // Render a single conversation item
-      // Issue #604: Added edit button for editable titles
-      function renderConversationItem(conv) {
-        const isActive = conv.id === activeConversationId;
-        const title = conv.title || 'New conversation';
-        const date = formatConversationDate(conv.updated_at || conv.created_at);
-        const turnCount = conv.turn_count || 0;
-
-        return `
-          <div class="conversation-item ${isActive ? 'active' : ''}"
-               onclick="switchConversation('${conv.id}')"
-               data-id="${conv.id}">
-            <div class="conversation-item-header">
-              <div class="conversation-title-wrapper">
-                <div class="conversation-title" id="title-${conv.id}">${escapeHtml(title)}</div>
-              </div>
-              <div class="conversation-actions">
-                <button class="conversation-edit-btn" onclick="event.stopPropagation(); editConversationTitle('${conv.id}', '${escapeHtml(title).replace(/'/g, "\\'")}')" title="Edit title">&#9998;</button>
-                <button class="conversation-action-btn" onclick="event.stopPropagation(); archiveConversation('${conv.id}')" title="Archive">&#128451;</button>
-                <button class="conversation-action-btn conversation-delete-btn" onclick="event.stopPropagation(); deleteConversation('${conv.id}')" title="Delete">&#128465;</button>
-              </div>
-            </div>
-            <div class="conversation-meta">${date}${turnCount > 0 ? ' · ' + turnCount + ' messages' : ''}</div>
-          </div>
-        `;
-      }
-
-      // Format conversation date for display
-      function formatConversationDate(dateStr) {
-        if (!dateStr) return '';
-        const date = new Date(dateStr);
-        const now = new Date();
-
-        // Same day - show time
-        if (date.toDateString() === now.toDateString()) {
-          return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-        }
-
-        // Within a week - show day name
-        const weekAgo = new Date(now);
-        weekAgo.setDate(weekAgo.getDate() - 7);
-        if (date > weekAgo) {
-          return date.toLocaleDateString([], { weekday: 'short' });
-        }
-
-        // Older - show date
-        return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
-      }
-
-      // Escape HTML to prevent XSS
-      function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-      }
-
-      // Issue #604: Edit conversation title inline
-      function editConversationTitle(conversationId, currentTitle) {
-        const titleEl = document.getElementById(`title-${conversationId}`);
-        if (!titleEl) return;
-
-        // Create input field
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'conversation-title-input';
-        input.value = currentTitle;
-        input.maxLength = 100;
-
-        // Replace title with input
-        const wrapper = titleEl.parentElement;
-        wrapper.replaceChild(input, titleEl);
-        input.focus();
-        input.select();
-
-        // Handle save on Enter or blur
-        const saveTitle = async () => {
-          const newTitle = input.value.trim();
-          if (newTitle && newTitle !== currentTitle) {
-            await updateConversationTitle(conversationId, newTitle);
-          } else {
-            // Restore original title
-            const newTitleEl = document.createElement('div');
-            newTitleEl.className = 'conversation-title';
-            newTitleEl.id = `title-${conversationId}`;
-            newTitleEl.textContent = currentTitle;
-            wrapper.replaceChild(newTitleEl, input);
-          }
-        };
-
-        input.addEventListener('blur', saveTitle);
-        input.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            input.blur();
-          } else if (e.key === 'Escape') {
-            input.value = currentTitle; // Reset to original
-            input.blur();
-          }
-        });
-      }
-
-      // Issue #604: Update conversation title via API
-      async function updateConversationTitle(conversationId, newTitle) {
-        try {
-          const response = await fetch(`/api/v1/conversations/${conversationId}/title`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({ title: newTitle })
-          });
-
-          if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.detail || 'Failed to update title');
-          }
-
-          // Refresh the conversation list to show updated title
-          await loadConversations();
-
-        } catch (error) {
-          console.error('Failed to update title:', error);
-          ToastMessages.error('update_error', { body: error.message });  // #1170: toast, not native alert
-          await loadConversations(); // Refresh to restore original
-        }
-      }
-
-      // Issue #715: Archive a conversation
-      async function archiveConversation(conversationId) {
-        try {
-          const response = await fetch(`/api/v1/conversations/${conversationId}/state`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({ state: 'archived' })
-          });
-
-          if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.detail || 'Failed to archive conversation');
-          }
-
-          // If we archived the active conversation, clear it
-          if (conversationId === activeConversationId) {
-            setActiveConversation(null);
-          }
-
-          // Refresh sidebar
-          await loadConversations();
-
-        } catch (error) {
-          console.error('Failed to archive conversation:', error);
-          ToastMessages.error('archive_error', { body: error.message });  // #1170: toast, not native alert
-        }
-      }
-
-      // Issue #715: Delete a conversation (soft delete)
-      async function deleteConversation(conversationId) {
-        // #1170: Dialog.confirm, not native confirm
-        if (!(await Dialog.confirm({
-          title: 'Delete this conversation?',
-          message: 'It\'ll stop appearing in your workspace. We keep a copy for a while — ask if you need it back.',
-        }))) {
-          return;
-        }
-
-        try {
-          const response = await fetch(`/api/v1/conversations/${conversationId}`, {
-            method: 'DELETE',
-            credentials: 'include'
-          });
-
-          if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.detail || 'Failed to delete conversation');
-          }
-
-          // If we deleted the active conversation, clear it
-          if (conversationId === activeConversationId) {
-            setActiveConversation(null);
-          }
-
-          // Refresh sidebar
-          await loadConversations();
-
-        } catch (error) {
-          console.error('Failed to delete conversation:', error);
-          ToastMessages.error('delete_error', { body: error.message });  // #1170: toast, not native alert
         }
       }
 
@@ -1602,10 +1030,8 @@
           history.replaceState(null, '', '/');
         }
 
-        // Update visual highlight
-        document.querySelectorAll('.conversation-item').forEach(el => {
-          el.classList.toggle('active', el.dataset.id === id);
-        });
+        // Rail highlight: nav.js marks the active rail link from the
+        // ?conversation= URL param (#1280) — nothing to update here.
       }
 
       // Switch to a different conversation
@@ -1697,9 +1123,6 @@
           // Set as active
           setActiveConversation(newConv.id);
 
-          // Refresh conversation list
-          await loadConversations();
-
           // Focus input
           const input = document.querySelector('.chat-input');
           if (input) input.focus();
@@ -1722,13 +1145,8 @@
         }
       }
 
-      // Load more conversations (pagination)
-      async function loadMoreConversations() {
-        // TODO: Implement pagination
-        console.log('Load more not yet implemented');
-      }
-
-      // Initialize sidebar on page load
+      // Initialize conversation selection on page load (name kept from the
+      // sidebar era — the DOMContentLoaded wiring below and #1418's pins ride on it)
       async function initSidebar() {
         // Check URL for conversation parameter
         const params = new URLSearchParams(window.location.search);
@@ -1749,16 +1167,6 @@
 
         // Note: Don't set activeConversationId here - let switchConversation() do it
         // so that setActiveConversation() is called and syncs to chat.js (#581)
-
-        // Restore collapsed state
-        const wasCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-        if (wasCollapsed) {
-          const sidebar = document.getElementById('sidebar');
-          const expandBtn = document.getElementById('sidebar-expand-btn');
-          sidebar.classList.add('collapsed');
-          expandBtn.style.display = 'block';
-          sidebarCollapsed = true;
-        }
 
         // Load conversations and get the most recent one
         const firstConversationId = await loadConversations();
