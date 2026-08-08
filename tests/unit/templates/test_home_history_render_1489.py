@@ -180,20 +180,13 @@ def test_home_inline_scripts_have_no_broken_string_literals():
     )
 
 
-def test_delete_dialog_copy_apostrophe_is_escaped():
-    """The specific #1482 string that shipped the regression. The copy itself
-    is CXO-specified and stays; the apostrophe must be escaped (it sits in a
-    single-quoted JS literal). Companion to test_delete_copy_honesty_1482.py,
-    which pins the copy's presence but not its JS validity."""
-    html = _home_html()
-    assert "'It'll stop appearing" not in html, (
-        "home.html delete-dialog copy has an unescaped apostrophe inside a "
-        "single-quoted JS string — this is the exact #1489 SyntaxError"
-    )
-    assert "It\\'ll stop appearing in your workspace" in html, (
-        "#1482 delete-dialog honesty copy missing (or rephrased without "
-        "updating this pin) — it must remain present AND JS-escaped"
-    )
+# test_delete_dialog_copy_apostrophe_is_escaped was removed in #1522 step 1
+# (2026-08-08): the specific #1482 string it pinned lived in home.html's dead
+# legacy sidebar renderer, which is now excised (the copy had shipped dark into
+# the hidden twin — #1516). The regression CLASS stays covered by the broader
+# parse pin above (test_home_inline_scripts_have_no_broken_string_literals);
+# the #1482 copy itself stays pinned on its live surfaces by
+# test_delete_copy_honesty_1482.py.
 
 
 def test_history_reload_renders_both_sides_of_each_turn():

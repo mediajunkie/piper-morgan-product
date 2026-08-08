@@ -2,7 +2,11 @@
 Todo Intent Handlers - Natural language interface for todo operations
 
 Issue #285: CORE-ALPHA-TODO-INCOMPLETE
-Wires chat commands to existing todo_management API (PM-081)
+Wires chat commands to TodoManagementService, reusing request models from
+services/api/todo_management.py (PM-081). NOTE (#1427): that module's REST
+surface is UNMOUNTED (it was mocked end-to-end); chat — this file — and the
+Lists API are the live todos surfaces. The live /api/v1/todos REST routes are
+web/api/routes/todos.py (a different module).
 
 Enhanced with consciousness injection (#407 MUX-VISION-STANDUP-EXTRACT)
 for more alive, present-feeling responses.

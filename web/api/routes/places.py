@@ -1,16 +1,20 @@
 """Places API (#684 / #1192(d) / #1195).
 
-Backs the home page's "What I'm seeing" panel (`templates/home.html` +
-`templates/components/place_window.html`). The frontend shipped under #684 with
-its fetch stubbed ("TODO: Wire to /api/v1/places endpoint when available") and
-`PlaceService` was built but never routed (#1195 audit) — so the panel
-permanently showed "No external sources connected yet" even with GitHub
-connected (PM-observed, 2026-06-12). This module is the missing last mile.
+⚠️ NO UI CALLER as of #1236 (CXO, 2026-06-19): the home "What I'm seeing"
+panel this route was built to back was consolidated into the Radar — Places
+now render as Radar work_item entities (PlaceEntitySource, services/radar/),
+fed by this same PlaceService but NOT through this route. The panel component
+(`templates/components/place_window.html`) is a dead twin; do not "re-wire"
+it to this endpoint. Whether this route stays (as a plain API surface) or is
+deleted is tracked in #1522.
 
-Returns the user's trust-visible Places (GitHub issue-tracking, Calendar) in
-the exact JSON shape `PlaceWindow.render` consumes. Sources that aren't
-connected or fail simply don't appear — the panel's empty state is then
-honest ("nothing connected") rather than fabricated.
+History: the frontend shipped under #684 with its fetch stubbed and
+`PlaceService` built but never routed (#1195 audit); this module was the
+missing last mile (2026-06), then #1236 retired the panel it fed.
+
+Returns the user's trust-visible Places (GitHub issue-tracking, Calendar).
+Sources that aren't connected or fail simply don't appear — the empty state
+is then honest ("nothing connected") rather than fabricated.
 """
 
 from __future__ import annotations

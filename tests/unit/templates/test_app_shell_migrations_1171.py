@@ -39,8 +39,10 @@ MIGRATED = [
     ("transparency.html", "Transparency"),
     (
         "home.html",
-        "New Chat",
-    ),  # chat landing page (#1266 — inline chat; hide_floating_widget via route)
+        "chat-inline",
+    ),  # chat landing page (#1266 — inline chat; hide_floating_widget via route).
+    # Marker was "New Chat" (the legacy sidebar's button) until #1522 step 1
+    # excised that dead surface; the inline-chat include is the page's live core.
 ]
 
 _USER = {"username": "xian", "user_id": "u1", "is_admin": False}
