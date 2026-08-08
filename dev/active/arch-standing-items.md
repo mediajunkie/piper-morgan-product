@@ -2,7 +2,8 @@
 
 **Purpose**: Architect's task queue per duty cycle v0.7 (worktree-as-cycle-default; cron-shape-experiments registry Row 1 = 3hr-interval bursty-lane).
 
-**Convention**: tasks listed roughly by priority/cadence. Mark `[x]` when complete; `[⏸]` when blocked on external (per recurring-failure memory on deferred-AC). Move to "Closed" section at end-of-week.
+**Convention**: tasks listed roughly by priority/cadence. Mark `[x]` when complete; `[⏸]` when blocked on external.
+> ⚠️ **A `[⏸]` line is a STATUS CLAIM, and status claims are measurable facts with a short lifetime** (PPM, 2026-08-08). **Every blocked-on-external line must name a condition that can still fire** — a gate on a swept milestone, a closed issue, or a departed role generates *permanent silence*, because the person who would correct it reads the line and stands down. **Re-derive these, not just counts.** (per recurring-failure memory on deferred-AC). Move to "Closed" section at end-of-week.
 
 **Last refreshed**: **2026-07-31 06:35 PT** — after **44 days stale**, under this doc's own 7-day trip-wire (see the refresh-discipline note at the foot, written after the *previous* lapse). Prior refresh 2026-06-17 (DinP account-migration handoff).
 
@@ -54,7 +55,7 @@
 - [x] **PA+CIO clean test for durable=true — OBSOLETE per CIO Gap-C resolution 2026-06-11**. No clean test needed; mechanism characterized empirically (durable=true is no-op; session-dormancy is the failure mode). Cure is external watchdog, not in-memory durability codification.
 - [⏸] **Reviewer engagement on ADR-065 + ADR-066 + ADR-060 amendment + m-40** — cohort (PPM/Lead Dev/CIO/CEO) can engage when ready; not Architect-driven
 - [⏸] **ADR-067 candidate for #952 Artifact** — Lead Dev's call per 6/8 ratification (Lead Dev's authorship + my ratification is natural shape, but Lead Dev may prefer to just ship)
-- [⏸] **#1166 Type-2 Dreaming spike kickoff** — post-M3; structurally gated on persistence; convergence complete (Architect + PPM + CXO lenses all in 2026-06-08); awaiting M3 ship + spike-launch decision (PPM owns PDR)
+- [⏸] **#1166 Type-2 Dreaming spike kickoff** — ⚠️ **TRIGGER DEAD, FOUND 2026-08-08: gated on "awaiting M3 ship" and M3 IS NOT IN THE MILESTONE LIST** (live set: Ongoing · MVP · Production · Fast Follow · Dot Releases · Enterprise — swept 2026-07-04/05). **Same defect as the ADR-068 M4 trigger I repaired 07-31 — I fixed one instance and did not sweep for siblings.** Convergence complete (Architect + PPM + CXO lenses, 2026-06-08); substance unchanged. **NEEDS RE-GATING on a live condition — PPM owns the PDR and the sequencing call.** ⚠️ Issue state itself UNVERIFIED (gh rate-limited at check time; empty output ≠ absent).
 - [⏸] **BYO-colleague Exec synthesis** — Exec is synthesizer; HOST + PPM lenses still pending; Exec drafts when source set complete (per source-set-anchor discipline)
 - [⏸] **Lead-lane detector hook for session-log displacement** — Lead-lane build; CIO + Docs concur on commit-count keying ("no session-log growth across N substantive same-day commits"); composition with PreCompact-signoff-warning
 - [⏸] **Docs `cleanup-dev-active` omnibus-coverage guard** — Docs filing per 6/9 evening exchange; protects already-displaced June 3-8 days from cleanup before omnibus coverage; load-bearing durability net

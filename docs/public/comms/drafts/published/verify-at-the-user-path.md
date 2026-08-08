@@ -26,7 +26,7 @@ A `curl` (a command-line tool that fetches a URL) returning 200 tells you the se
 
 And a clean database row tells you the data exists. It tells you nothing about whether the code that's supposed to fetch that row, hand it to a template, and render it into HTML actually does so without falling over. In our case the falling-over was almost comically specific — the page template had a self-reference that sent it into a loop, and separately the template engine was choking on tag syntax it found *inside an HTML comment*, which a human reading the file would skip right over. None of that is visible from the data layer. None of it is visible from a 200. It's only visible when you render the actual page and look at the actual output.
 
-We fixed the bugs. That took care of  this page, this template, this loop. The more important lesson was about the *discipline*: before you say a user-facing surface works, render the real surface and assert on what the user would actually see. Not the row. Not the status code. The rendered thing, with realistic data in it, checked the way the user would experience it.
+We fixed the bugs. That took care of this page, this template, this loop. The more important lesson was about the *discipline*: before you say a user-facing surface works, render the real surface and assert on what the user would actually see. Not the row. Not the status code. The rendered thing, with realistic data in it, checked the way the user would experience it.
 
 # Tests pass, users succeed — and those aren't the same claim
 
@@ -42,7 +42,7 @@ The tell is distance. The further your check sits from the user's hands, the mor
 
 And this generalizes well past pages and templates. Any time you're verifying anything — a report a person will read, a workflow someone will run, an answer a user will receive — the same question applies. Did I check the thing the human actually touches, or did I check the thing that was easy to assert? Those drift apart constantly, and they drift apart in the direction of comfort, because the easy assertion is the one that's always available. The work is to resist the gravity and go all the way out to the edge — to the path where the person actually stands — and check the thing *there*, where it's harder and where it counts.
 
-The page renders now. It passes, if barely. But the thing I'm keeping from the whole episode isn't the working page. It's the reminder that the most trustworthy-looking checkmark and the user's actual experience can sit a surprising distance apart, and that closing that distance is not optional polish. It's the verification.
+The page renders now. It passes, if barely. Now I have one more reminder that a trustworthy-looking checkmark and the user's actual experience can sit a surprising distance apart if we don't ensure we're actually checking the right thing.
 
 ---
 
