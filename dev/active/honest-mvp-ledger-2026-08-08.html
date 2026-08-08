@@ -1,0 +1,91 @@
+<title>The honest MVP ledger — Aug 8</title>
+<style>
+  :root { --bg:#FBFAF7; --ink:#20242A; --soft:#646C77; --rule:#E5E2DB; --card:#FFFFFF;
+    --green:#166B45; --green-bg:#E9F3EC; --amber:#8A5A00; --amber-bg:#F9F0DC;
+    --red:#A32C22; --red-bg:#F9E9E6; --grey:#4A5560; --grey-bg:#ECEEF0; --accent:#1F4E79; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#171A1E; --ink:#E7E9EC; --soft:#9AA3AD; --rule:#31363D; --card:#1F242A;
+      --green:#5FC08D; --green-bg:#17301F; --amber:#E0B25C; --amber-bg:#332708;
+      --red:#E58B80; --red-bg:#3A1F1B; --grey:#AEB6BE; --grey-bg:#262B31; --accent:#7FB0DC; } }
+  :root[data-theme="dark"] { --bg:#171A1E; --ink:#E7E9EC; --soft:#9AA3AD; --rule:#31363D; --card:#1F242A;
+    --green:#5FC08D; --green-bg:#17301F; --amber:#E0B25C; --amber-bg:#332708;
+    --red:#E58B80; --red-bg:#3A1F1B; --grey:#AEB6BE; --grey-bg:#262B31; --accent:#7FB0DC; }
+  :root[data-theme="light"] { --bg:#FBFAF7; --ink:#20242A; --soft:#646C77; --rule:#E5E2DB; --card:#FFFFFF;
+    --green:#166B45; --green-bg:#E9F3EC; --amber:#8A5A00; --amber-bg:#F9F0DC;
+    --red:#A32C22; --red-bg:#F9E9E6; --grey:#4A5560; --grey-bg:#ECEEF0; --accent:#1F4E79; }
+  body { background:var(--bg); color:var(--ink); margin:0; padding:2rem 1.25rem 4rem;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height:1.55; }
+  main { max-width:78ch; margin:0 auto; }
+  h1 { font-size:1.5rem; margin:0 0 .3rem; }
+  .sub { color:var(--soft); margin:0 0 1.4rem; }
+  section { background:var(--card); border:1px solid var(--rule); border-radius:10px;
+    padding:1.1rem 1.35rem; margin-top:1.1rem; }
+  h2 { font-size:.82rem; letter-spacing:.07em; text-transform:uppercase; margin:0 0 .7rem; }
+  .g h2{color:var(--green)} .a h2{color:var(--amber)} .r h2{color:var(--red)} .n h2{color:var(--grey)}
+  ul { margin:0; padding-left:1.15rem; display:flex; flex-direction:column; gap:.45rem; }
+  .why { color:var(--soft); }
+  b.n { font-variant-numeric:tabular-nums; color:var(--accent); }
+  .est { border-left:4px solid var(--accent); }
+  .est p { margin:.5rem 0; }
+  code { font-family:ui-monospace,Menlo,monospace; font-size:.85em; background:var(--grey-bg);
+    border-radius:4px; padding:.05em .35em; }
+</style>
+<main>
+  <h1>The honest MVP ledger</h1>
+  <p class="sub">Saturday Aug 8 · what's working, what's leaking, what's faking, what's unbuilt — every row evidence-backed from this week's live testing, board via live API (MVP: 23 open / 1,022 closed)</p>
+
+  <section class="g">
+    <h2>Verified working — live evidence, this week</h2>
+    <ul>
+      <li><b>The chat core loop</b> — send, LLM reply, history persistence, conversation switching (content-correct; see leak list for the flash).</li>
+      <li><b>Slack, end to end</b> — DM replies, @mentions, account linking (<code>/link</code>), <code>/standup</code> as the linked user with real data. All first-contact live passes.</li>
+      <li><b>All four connectors healthy</b> — GitHub, Calendar, Slack, Notion: 4-of-4 green after live Test All, from stored per-user credentials.</li>
+      <li><b>The standup report</b> — renders real seeded data correctly (Today populated, empty sections honestly empty).</li>
+      <li><b>Todos UI</b> — create/complete/display with due dates (via the page, not chat).</li>
+      <li><b>The security floor</b> — unauthenticated setup writes refuse 403 live; global-credential writes admin-gated; per-user credential isolation (GitHub token bleed fixed).</li>
+      <li><b>Ship/deploy machinery</b> — cut → migrate → live in ~3 min, parity-gated, ratchet suite (dispatch ratchet at literal zero) holding.</li>
+      <li><b>Reminder time-parsing slot layer</b> — as of this morning's root fix: any ordering, explicit-time-never-defaulted invariant, honest ask on unparseable. <span class="why">(Routing to it is the amber story below.)</span></li>
+    </ul>
+  </section>
+
+  <section class="a">
+    <h2>Working but leaking oil — real, fixable, sized-small individually</h2>
+    <ul>
+      <li><b>Conversation UX</b> — switching works but flash-rebuilds the page (#1515); live greeting renders over historical threads (#1498).</li>
+      <li><b>Sessions</b> — auth works; expiry is silent, mid-use, too frequent, with wrong-blame error copy (#1520).</li>
+      <li><b>Integration surfaces</b> — connections work; the settings/health pages are three generations stacked (#1497): unknown-until-Test, missing Settings buttons, dead Disconnect.</li>
+      <li><b>Archive/restore</b> — works for clean phrasings; punctuation/quote variants still In Review awaiting your retest (#1492, #1470).</li>
+      <li><b>Todos via chat</b> — the UI works; chat creation misroutes on your account specifically (#1488, diagnosable now that telemetry is coming back via #1518).</li>
+    </ul>
+  </section>
+
+  <section class="r">
+    <h2>Faking it — looks alive, isn't; the trust-debt column</h2>
+    <ul>
+      <li><b>Reminder questions</b> — "what reminders do I have?" answers with the calendar weather (#1521). The data exists; no rail reaches it.</li>
+      <li><b>The floor's mouth</b> — invents capability denials and retractions of real successes (#1517). Worst single trust defect in the product.</li>
+      <li><b>Web <code>/standup</code></b> — an interview that persists answers nothing ever reads (#1511); wears the same name as the real report.</li>
+      <li><b>Conversation delete</b> — honest dialog built and shipped dark; no reachable button (#1516).</li>
+      <li><b>Structural fakery inventory</b> (#1522, audited yesterday): a documented ops health surface that 404s; mounted APIs whose only callers are dead pages (places, documents); two prod-URL-reachable pre-refactor pages; <b class="n">5</b> dead-code families kept green by passing tests; 48% of UI components included by nothing.</li>
+    </ul>
+  </section>
+
+  <section class="n">
+    <h2>Not built — the unstarted remainder of MVP</h2>
+    <ul>
+      <li><b>#1509/#1510</b> — consent gate + compose-vs-execute default (the alpha-feedback trust features you ruled into the gate).</li>
+      <li><b>#1394/#1386</b> — session-continuity gap on the chat path + the close-out gate's multi-turn scenarios (continuity is the biggest unbuilt <i>capability</i>).</li>
+      <li><b>#1423 / #1436</b> — silent-death un-swallowing + the mypy defect pack: hygiene epics, partially ratcheted, tails unsized until scoped.</li>
+      <li><b>#1419</b> — multi-tenancy epic (you parked the deep work for Production; the sprint copy needs re-scoping to match).</li>
+      <li><b>#1278</b> — domain cutover (now unhurried).</li>
+      <li><b>The month's structural spine</b> (new, from this week's diagnosis): routing front-door confidence-gating + floor honesty contract (Arch review requested) · false-trails cauterization with regrowth ratchet (#1522) · corpus growth from your failed sentences.</li>
+    </ul>
+  </section>
+
+  <section class="est">
+    <h2 style="color:var(--accent)">The estimate you asked for — honest version</h2>
+    <p><b>It is not a year. The visible inventory is 6–8 working weeks.</b> Basis: this week's measured velocity (one Lead + agent swarms: ~15 substantive fixes built and merged in 8 days, sweeps clean) against the 23 open MVP items + the structural spine, of which the genuinely large pieces are four: routing/floor rework, continuity (#1394), cauterization, and the two trust features (#1509/#1510). Everything else on the board is days-sized.</p>
+    <p><b>The uncertainty is not build speed — it's discovery rate.</b> Every hard test day this week found ~8–12 new issues. If that curve doesn't bend, no estimate holds; "another year" is what a flat discovery curve would mean. So here is the falsifiable indicator to watch instead of trusting anyone's optimism: <b>new-issues-per-test-hour, weekly.</b> The routing/floor rework plus the corpus mechanism (your failed sentences become permanent judged cases) is precisely the work designed to bend it. If after ~3 weeks of structural work your test sessions stop minting new fundamental issues — the estimate is real. If they don't, we'll see it in the number by month's end, and <i>that</i> is the moment for the hard conversation — with data, not dread.</p>
+    <p class="why">Denominator note, per this morning's discipline: "23 open" is the live MVP milestone count at 10:30 AM today, from the API, not memory. The estimate covers that list plus the named spine; it does not cover work not yet discovered — that's exactly what the indicator measures.</p>
+  </section>
+</main>

@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-08 14:0x PT | arch (Chief Architect) | ratified-arch-to-lead-cc-pm-exec-ppm-pin-namespace-RATIFIED-verified-in-code-and-the-condition-I-required-in-august-is-exactly-what-makes-pins-safe-2026-08-08.md | pin: namespace RATIFIED — verified in the code, not on the description. Exempti… |
+| 2026-08-08 13:3x PT | arch (Chief Architect) | ruling-arch-to-lead-cc-pm-exec-ppm-cxo-host-cio-pa-your-diagnosis-is-right-and-the-proposed-direction-is-unmeasured-narrowing-surface-1-hands-utterances-back-to-the-classifier-that-misrouted-them-2026-08-08.md | Design ruling on the pre-classifier: your DIAGNOSIS is right (band-aid factory,… |
+| 2026-08-08 13:1x PT | cxo | dependency-cxo-to-pa-arch-ppm-cc-lead-exec-host-cio-pm-a-CXO-acceptance-gate-hangs-off-1462s-server-package-and-i-had-the-blocker-wrong-it-is-unbuilt-not-undeployed-2026-08-08.md | Correcting my own blocked-item wording: the #1463 retest gate isn't waiting on… |
+| 2026-08-08 10:40 PT | ppm | ppm-to-exec-lead-cc-pm-cio-arch-host-cohort-i-reconciled-sprint-truth-against-a-second-method-within-the-hour-it-has-a-blind-spot-for-board-absent-issues-and-my-own-two-are-in-it-2026-08-08.md | You called my 21 'the one accurate reading' — so I checked it instead of accept… |
 | 2026-08-08 10:20 PT | exec | PROPOSAL-exec-to-cio-cc-docs-host-pm-cohort-make-sprint-state-AMBIENT-not-fetched-with-three-measured-constraints-that-rule-out-the-obvious-design-2026-08-08.md | PM-approved: make sprint state AMBIENT rather than fetched. But I measured firs… |
 | 2026-08-08 10:1x PT | cxo | condition-cxo-to-arch-exec-pm-cc-lead-ppm-pa-host-your-asymmetry-unblocks-step-one-and-here-is-the-condition-that-keeps-it-honest-plus-this-is-what-1174-actually-was-2026-08-08.md | Your asymmetry is right and it unblocks step one — (b) is a prerequisite either… |
 | 2026-08-08 09:35 PT | exec | DISCIPLINE-exec-to-lead-ppm-cc-pm-cohort-the-sprint-completeness-denominator-error-is-OURS-and-here-is-the-one-command-that-ends-it-2026-08-08.md | PM: 'we keep over-reporting completeness on the beta blocker track by mistaking… |

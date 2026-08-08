@@ -607,6 +607,40 @@ class PreClassifier:
         r"\bcomplete\s+todo\b",
     ]
 
+    # #1521: Reminder-QUERY patterns — "what reminders do I have?" is a READ of
+    # the stored reminders (todo_items.reminder_date, the #1491 fetch path),
+    # NOT a temporal/calendar question and NOT a reminder creation. Before
+    # this lane existed no surface claimed the shape: pre_classify returned
+    # None and the LLM classifier misrouted it to the temporal lane ("Today is
+    # Saturday… No meetings – great day for deep work!" — PM live, 2026-08-08).
+    # Deliberately narrow (the OBVIOUS query shapes only): every pattern needs
+    # a read verb / question form + the plural-or-possessed "reminders" noun,
+    # so creation phrasings ("remind me to…", "set a reminder…") are disjoint
+    # by construction — and the blockers below re-assert that disjointness
+    # (same belt-and-suspenders discipline as INTEGRATION_CONNECT, #1417/#1471).
+    REMINDER_QUERY_PATTERNS = [
+        # "what reminders do I have?" / "what reminders are set"
+        r"\bwhat reminders\b",
+        # "what are my reminders" / "check my reminders" / bare "my reminders"
+        r"\bmy reminders\b",
+        # "show/list/view/see/check [me] [all] [my] reminders"
+        r"\b(?:show|list|view|see|check)\s+(?:me\s+)?(?:all\s+)?(?:my\s+)?reminders\b",
+        # "do I have [any] reminders?"
+        r"\bdo i have (?:any\s+)?reminders\b",
+    ]
+    # #1521 blockers (mirror of INTEGRATION_CONNECT_BLOCKERS): a creation verb
+    # or a destructive verb means a WRITE ask — never the listing lane. The
+    # creation shapes keep their #903 create_reminder routing; the destructive
+    # shapes fall through (deletion of reminders is not this lane's claim).
+    REMINDER_QUERY_BLOCKERS = [
+        r"\bremind\s+me\b",
+        r"\bset\s+(?:a\s+)?reminders?\b",
+        r"\bcreate\s+(?:a\s+)?reminders?\b",
+        r"\bdon'?t\s+let\s+me\s+forget\b",
+        r"\bneed\s+to\s+remember\b",
+        r"\b(?:delete|remove|cancel|clear|dismiss)\b",
+    ]
+
     # Issue #903: Reminder patterns - Query #32
     REMINDER_PATTERNS = [
         # "remind me to X" / "remind me about X"
@@ -1491,6 +1525,22 @@ class PreClassifier:
                 context={"original_message": message},
             )
 
+        # #1521: Check reminder-QUERY before reminder-CREATION and far above
+        # TEMPORAL. Read-before-write mirrors GET_DEFAULT_REPO vs
+        # SET_DEFAULT_REPO: the two lanes are disjoint by construction (query
+        # needs a read verb + plural "reminders"; creation needs "remind
+        # me"/"set a reminder"), and _reminder_query_match's blockers keep any
+        # residual write phrasing out of this lane. Claiming the shape HERE is
+        # what prevents the LLM-classifier temporal misroute (#1521): the LLM
+        # never sees the message.
+        if PreClassifier._reminder_query_match(clean_for_matching):
+            return Intent(
+                category=IntentCategory.QUERY,
+                action="list_reminders_query",
+                confidence=1.0,
+                context={"original_message": message},
+            )
+
         # Issue #903: Check Reminder patterns (Query #32) before todo patterns
         if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.REMINDER_PATTERNS):
             return Intent(
@@ -1692,6 +1742,24 @@ class PreClassifier:
         return False
 
     @staticmethod
+    def _reminder_query_match(clean_message: str) -> bool:
+        """#1521: True iff the message is a reminder LIST/READ ask.
+
+        Applies REMINDER_QUERY_BLOCKERS (creation + destructive verbs) before
+        the query patterns. Shared by pre_classify() and
+        detect_multiple_intents() so both entry surfaces resolve the shape with
+        identical precedence — the same shared-helper shape as
+        _integration_connect_match (#1471).
+        """
+        if PreClassifier._matches_patterns(
+            clean_message, PreClassifier.REMINDER_QUERY_BLOCKERS
+        ):
+            return False
+        return PreClassifier._matches_patterns(
+            clean_message, PreClassifier.REMINDER_QUERY_PATTERNS
+        )
+
+    @staticmethod
     def _integration_connect_match(clean_message: str):
         """#1417/#1471: the integration-connect regex match for the message,
         or None.
@@ -1771,6 +1839,15 @@ class PreClassifier:
                 PreClassifier.SESSION_ACTIVITY_QUERY_PATTERNS,
                 IntentCategory.QUERY,
                 "session_activity_query",
+            ),
+            # #1521: reminder LIST query — before the todo group (adjacent
+            # noun space) and before TEMPORAL (the live misroute lane). The
+            # loop body guards this group with _reminder_query_match, so the
+            # creation/destructive blockers apply on this path too.
+            (
+                PreClassifier.REMINDER_QUERY_PATTERNS,
+                IntentCategory.QUERY,
+                "list_reminders_query",
             ),
             # Todo patterns
             (PreClassifier.TODO_QUERY_PATTERNS, IntentCategory.QUERY, "list_todos_query"),
@@ -1864,6 +1941,14 @@ class PreClassifier:
             # intent, don't let GUIDANCE_PATTERNS add a duplicate of the same
             # (category, action) ("help me set up my calendar" matches both).
             if patterns is PreClassifier.GUIDANCE_PATTERNS and connect_substituted:
+                continue
+            # #1521: the reminder-query group is blocker-guarded — the shared
+            # helper (not the raw pattern match) decides, so creation
+            # phrasings ("remind me to X") never emit the listing intent on
+            # the multi-intent path either.
+            if patterns is PreClassifier.REMINDER_QUERY_PATTERNS and not (
+                PreClassifier._reminder_query_match(clean_for_matching)
+            ):
                 continue
             if PreClassifier._matches_patterns(clean_for_matching, patterns):
                 # Refine action for specific pattern groups that need it

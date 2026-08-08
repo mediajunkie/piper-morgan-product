@@ -53,8 +53,10 @@ PM-attention items live **here**, in the section immediately below.
 
 - ✅ **PDR-006 RATIFIED** (2026-07-31); epic **#1462**; gates **#1458**, **#1463**.
 - ✅ **Probe A complete and stood down** — refusals survive as **failure-shaped payloads** (6/6 both
-  providers); structured fields help but are **not sufficient** on GPT. ⚠️ API-layer only; deployed-host
-  retest before booking.
+  providers); structured fields help but are **not sufficient** on GPT. ⚠️ **CORRECTED 2026-08-08 (CXO's
+  finding, verified independently)**: the retest gate isn't waiting on a **deployment** — `services/mcp/
+  server/` doesn't exist in `main` or the artifact. **It's unbuilt, not undeployed** — blocked on **#1462**
+  (the epic), not a hostname. CXO retests same-day once #1462's server package lands; tell them when it does.
 - ⚠️ **"Delete" means SOFT delete** — five live *"cannot be undone"* claims on reversible paths
   (**#1482**, CXO owns copy, HOST owns the trust ruling).
 

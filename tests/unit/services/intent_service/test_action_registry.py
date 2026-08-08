@@ -176,6 +176,8 @@ class TestNoStubPhrases:
             "list_todos_query",
             "list_completed_todos",
             "next_todo_query",
+            # #1521 — handled by _handle_list_reminders_query via the rail
+            "list_reminders_query",
             # RECONNECT #1327: conversational set-default-repo
             "set_default_repo",
             # RECONNECT #1327 build #2: conversational get-default-repo (read)
