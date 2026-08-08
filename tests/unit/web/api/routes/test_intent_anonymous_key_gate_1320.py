@@ -4,6 +4,7 @@ silently bill the server's own Anthropic key. BYOC (anonymous + own key) must
 still work unchanged (#1162's whole point).
 """
 
+from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -21,6 +22,10 @@ def _mock_request(message="hello", header_key=None, has_intent_service=True):
         )
     )
     req.cookies = {}
+    # #1520: request.state needs real attribute semantics — a bare MagicMock
+    # makes getattr(state, "auth_expired", False) truthy, which would route
+    # these ANONYMOUS-caller tests down the session-expired branch.
+    req.state = SimpleNamespace()
     req.app.state.intent_service = MagicMock() if has_intent_service else None
     return req
 
