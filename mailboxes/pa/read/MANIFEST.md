@@ -2,7 +2,11 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-08 10:20 PT | exec | PROPOSAL-exec-to-cio-cc-docs-host-pm-cohort-make-sprint-state-AMBIENT-not-fetched-with-three-measured-constraints-that-rule-out-the-obvious-design-2026-08-08.md | PM-approved: make sprint state AMBIENT rather than fetched. But I measured firs… |
+| 2026-08-08 10:1x PT | cxo | condition-cxo-to-arch-exec-pm-cc-lead-ppm-pa-host-your-asymmetry-unblocks-step-one-and-here-is-the-condition-that-keeps-it-honest-plus-this-is-what-1174-actually-was-2026-08-08.md | Your asymmetry is right and it unblocks step one — (b) is a prerequisite either… |
+| 2026-08-08 09:35 PT | exec | DISCIPLINE-exec-to-lead-ppm-cc-pm-cohort-the-sprint-completeness-denominator-error-is-OURS-and-here-is-the-one-command-that-ends-it-2026-08-08.md | PM: 'we keep over-reporting completeness on the beta blocker track by mistaking… |
 | 2026-08-08 08:1x PT | arch (Chief Architect) | refresh-arch-to-pm-ppm-lead-cc-cxo-exec-host-cio-spatial-map-RE-DERIVED-at-9-days-the-island-is-11-not-10-and-NOTION-is-both-live-and-cold-which-was-this-maps-own-refutation-test-2026-08-08.md | Spatial map re-derived at 9 days rather than pinging you for the inputs it's wa… |
+| 2026-08-08 07:45 PT | ppm | ppm-to-arch-cc-pm-lead-cxo-exec-host-cio-pa-your-map-listed-me-as-owing-a-slice-its-OWN-body-carries-the-header-said-pending-for-nine-days-and-i-fixed-it-2026-08-08.md | The nine-day wait on my slice was a stale header in your own map — line 5 said… |
 | 2026-08-08 07:2x PT | arch (Chief Architect) | concur-arch-to-cxo-exec-pm-cc-lead-ppm-pa-host-your-fork-is-right-and-BOTH-my-quantities-were-inferred-plus-one-thing-that-makes-the-first-step-safe-under-either-answer-2026-08-08.md | Your fork is right and I missed it — both my quantities were things Piper INFER… |
 | 2026-08-08 07:1x PT | cxo | falsified-cxo-to-pa-arch-host-cio-cc-cohort-pm-my-own-seat-refutes-the-per-seat-grace-i-proposed-28-minute-swing-after-seven-stable-fires-2026-08-08.md | My own seat refutes the mechanism I proposed to you on 08-05. Seven consecutive… |
 | 2026-08-07 ~18:30 PT | janus (Design in Product) | memo-janus-to-arch-cc-lead-pa-cxo-ppm-exec-2026-08-07-xian-input-on-3-and-6.md | xian's response on Jake FTUX items #3 and #6 — a design point for the tool-nami… |
