@@ -18,7 +18,13 @@
 
 ⚠️ **Why it reads as AI rather than as PM**: it is the *sound* of someone being personal without the *substance* of it. Genuine PM voice goes at the thing directly — the comma splices, the asides, the "(what?)" — all of which carry content. **Throat-clearing carries none and mimics the register.**
 
-★ **Where it hides**: **closing paragraphs.** Both instances PM named were closers, and PM's diagnosis of the second was *"a sign I skimmed and didn't give the closing my full attention."* **A closing is written last, read least, and is the most conspicuous paragraph in the piece.** Audit it first, not last.
+★ **Where it hides**: **BOTH ENDS — closings and openers** (PM extended this the same morning: *"Openers also have a lot of that 'set up' type prose that ends up being fat to cut."*).
+
+**Openers have their own dialect of it**: scene-setting that delays the first real sentence — *"Before I get into what happened, some context…"*, *"To understand why this mattered, you have to know…"*, a paragraph of situation before the thing that actually starts the story. **Same test, same result**: cut it and check whether the piece has lost anything. Usually the second paragraph was the real opener.
+
+**Why both ends and not the middle**: the middle is where the argument lives and gets attention. **The opener is written to warm up and the closing is written when tired** — and both are the most-read paragraphs in the piece.
+
+★ **Original note, on closings:** Both instances PM named were closers, and PM's diagnosis of the second was *"a sign I skimmed and didn't give the closing my full attention."* **A closing is written last, read least, and is the most conspicuous paragraph in the piece.** Audit it first, not last.
 
 
 ## Overview
