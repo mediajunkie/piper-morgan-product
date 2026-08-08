@@ -70,7 +70,7 @@
 
 ## Standing / carried
 
-- **Probe A deployed-host retest** — GATE before the plugin capability is booked (#1463). Blocked on a live `mcp.pipermorgan.ai`.
+- **Probe A deployed-host retest** — GATE before the plugin capability is booked (#1463). 🔴 **Blocker RESTATED 08-08: UNBUILT, not undeployed.** `services/mcp/server/` is absent from `main` AND the deployed artifact (`fly ssh` + `git ls-tree`); `fly apps list` shows no MCP app of ours (`-gh-mcp` is the GitHub sibling). **Waits on #1462 (OPEN epic), not on a hostname.** Told PA/Arch I'll run the retest same-day whenever the server package is shippable — it's a probe, not a project.
 - **`dialog.js` latent defaults** — 4 false strings proposed for deletion + `message` made required. Lead's to apply.
 - **Colleague Test tier question** — with PPM/PM.
 - **#1386 criterion-2 sign-off — still WITHHELD.** Keyless suite skips and reports green. Committed to same-day sign-off once a keyed run exists.
