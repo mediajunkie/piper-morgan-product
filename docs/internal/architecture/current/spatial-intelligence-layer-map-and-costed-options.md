@@ -2,7 +2,7 @@
 
 **Status**: ⚠️ **INPUT to a pending PM decision. Not a decision.** PM decides; this is the Architect slice of the committed-theory review PM directed on 2026-07-18.
 **Author**: Chief Architect (arch) · **Date**: 2026-07-30
-**Companion**: `spatial-intelligence-experience-thesis.md` (CXO, the experience slice). PPM's roadmap-dependency slice is pending.
+**Companion**: `spatial-intelligence-experience-thesis.md` (CXO, the experience slice). PPM's roadmap-dependency slice was **delivered 2026-07-30** and is incorporated at §"PPM's roadmap slice" below — *(header corrected by PPM 2026-08-08; it had read "pending" for nine days while the delivered slice sat in this same document, and that stale line was read back as a live blocker)*.
 **Supersedes**: every prior characterization of this subsystem by me, including my 7/19 two-layer finding and both of my 7/29 corrections. **Nothing in this review may ratify on those.**
 
 ---

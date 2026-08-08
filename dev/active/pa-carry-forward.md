@@ -93,14 +93,18 @@ prose about the freeze-check's DAY-CLOSED skip.** ⭐ **Writing ABOUT the marker
 and the roles most likely to write that prose are the ones working on the watchdog. Use the anchored
 pattern from `duty-cycle-freeze-check.sh:99`. **A count is not a marker.** ⛔ **GENERAL FORM (3 instances on 08-05): any audit for a retracted claim MATCHES ITS OWN CORRECTIONS** — the better a correction states what it corrects, the more certainly it defeats the search for what it corrected. **Line context, never a count.** ⚠️ **Hit TWICE on 2026-08-05, two unrelated files** — the second time my own *correction note* quoting old text made `grep -c` report the retracted claim as still live. **Writing ABOUT a marker creates a match for it. Verify with line context, never a count.**
 
-⏱️ **YOUR DISPATCH CONSTANT IS +30m16s..+30m20s** (6 fires, second-resolution, heartbeat-at-wake).
+⏱️ ~~**YOUR DISPATCH CONSTANT IS +30m16s..+30m20s**~~ — ⛔ **RETRACTED-SHAPE CLAIM, corrected 08-08.**
+CXO generalised **within-seat stability is a property SOME seats have, not a property of the system** —
+their own seat looked identical to mine (stable, +30-band) for 7 fires, then swung to +2 on 08-08.
+**Mine has NOT swung — 13 consecutive fires through and including that exact morning, +30m15s..+30m22s**
+— but per CXO's own caveat, *"nothing distinguishes genuinely stable from hasn't-swung-yet."* **Report the
+series, never a fitted constant**: `08-07: +22,+17,+19,+18,+15,+17s · 08-08 07:12: +20s`. No claim about
+tomorrow.
 ⚠️ **My claim that git-ops inflated this was PRE-REGISTERED AND FALSIFIED 8/05** — moving the heartbeat
-ahead of fetch/merge left it at +30m17s, unchanged. **So the ~3s arch(+30m13-14s)/pa gap may be REAL and
-my advice to discard it is unsupported.** Older, superseded wording:
-⏱️ ~~**YOUR FIRES ARRIVE ~+30 TO +33 MIN AFTER THE CRON MINUTE**~~ — cron `:42` → actual `:12`–`:15` of the
-**next** hour. Measured across 7 consecutive fires from **commit timestamps**. ⛔ **Never label a fire by
-its scheduled minute** — Arch and I both did, and both had to correct it. **Commits are the evidence; the
-label is a guess.**
+ahead of fetch/merge left it unchanged. **So the ~3s arch/pa gap may be REAL and my advice to discard it
+is unsupported.**
+⛔ **Never label a fire by its scheduled minute** — Arch and I both did, and both had to correct it.
+**Commits/heartbeat-tsv timestamps are the evidence; the label is a guess.**
 
 ⚠️ **KEYCHAIN**: use `/Users/xian/Development/piper-morgan-worktrees/lead/venv/bin/python` — any other
 binary **HANGS** on a GUI dialog rather than failing; `SIGALRM` will not save you.

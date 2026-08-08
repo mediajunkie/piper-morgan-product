@@ -2,7 +2,7 @@
 name: draft-weekly-ship
 description: Draft the Piper Morgan Weekly Ship newsletter from collected workstream memos. Use when PM says "draft the Ship", "draft Ship #NNN", "synthesize the workstream memos", or when all 6 workstream-NNN memos have landed in `mailboxes/exec/inbox/` and a theme has been picked. Loads the canonical artifacts before drafting so memory-of-past-Ships doesn't substitute for structure.
 scope: exec
-version: 1.11
+version: 1.12
 created: 2026-05-19
 ---
 
@@ -55,6 +55,11 @@ Invoke this skill when:
 ### Step 0: Write the kickoff memo — REQUIRED FRAMING (do not paraphrase from memory)
 
 **The kickoff's deadline framing is a mechanism, not a style choice.** PM has corrected the same failure three times (Ship #045 Jun 1, #046 Jun 5, #055 Aug 7). Every instance had the same shape: a stated backstop date read by recipients as the target, work deferred to it, reports arriving later and staler, PM's reading window compressed. **Use this wording. Do not compose it fresh.**
+
+
+**★ Required in every kickoff, added v1.12**: any report making a claim about sprint, backlog, or roadmap *progress* must carry the output of `python3 scripts/sprint-truth.py` (or state explicitly what its claim excludes). Paste this into the kickoff body:
+
+> **If your report makes any completeness or progress claim about the sprint, run `python3 scripts/sprint-truth.py` and paste its line.** A claim without a denominator is the defect PM named on 2026-08-08: *"we keep over-reporting completeness by mistaking the denominator… it is not great for planning to be told every few days that the sprint is complete when it is not."* "The build queue is empty" was true and excluded six never-started items.
 
 ✅ **Required — copy this into every kickoff:**
 
@@ -314,6 +319,10 @@ The Ship #043 v0.1 failure was not knowing the template existed — it was choos
 
 ## Version history
 
+### v1.12 (2026-08-08)
+
+**Kickoffs now require `sprint-truth.py` output on any progress claim.** PM: *"We keep over-reporting completeness on the beta blocker track by mistaking the denominator… It is not great that I am the only entity on this team with an accurate sense of what is in this sprint."* Traced to a true-about-a-subset claim ("the build queue went to empty") restated as whole-sprint completeness — by Lead in their report and then by Exec in the report to PM. This is the structural half of the fix (the ambient-context half is with CIO); it covers the weekly cycle, which is where progress claims actually reach PM.
+
 ### v1.11 (2026-08-07)
 
 **New Step 0: required kickoff-memo framing, with copy-this wording and a banned-phrasings list.** Third instance of the same PM correction (#045, #046, #055): a stated backstop date reads as the target and licenses deferral, which compresses PM's reading window on staler reports. The rule had existed in memory since June — *including a note that it belonged in this skill* — and failed anyway in a session that held the pin. Mechanism now lives here. Also carries the contributor-role kickoff (Lead/Docs/PA/Web, added at PM's direction 2026-08-07: progress/setbacks/blockers in their own portfolios, without the leadership milestone apparatus).
@@ -368,7 +377,7 @@ Initial skill. Lists canonical artifacts to load before drafting. Names voice-di
 
 ---
 
-*Skill version: 1.11*
+*Skill version: 1.12*
 *Created: 2026-05-19 (v1.0)*
 *Updated: 2026-05-20 (v1.1 — External-section verification step; v1.2 — omnibus is required full read, not spot-check); 2026-07-08 (v1.3 — Comms pre-publish review is a named mandatory step; v1.4 — PM gates the Comms handoff + evidence-tier discipline; v1.5 — metrics as bullet list, never a table); 2026-07-14 (v1.6 — Step 2b hard gate: all 6 memos required, no partial drafts under deadline pressure)*
 *Scope: Exec (drafts); PM (gates); Comms (reviews)*
