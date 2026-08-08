@@ -9,15 +9,16 @@
 
 ## The one dated thing
 
-⚠️ **"Drained on Paper" publishes TOMORROW (Thu Aug 6) and PM has not touched it** — last commit Jul 9, agent-only. Needs **four** things, all PM's:
-1. **Voice pass** (never done)
-2. **Art** — `image`/`alt`/`caption` all empty
-3. **Two open `[PM:]` questions** — line 17 (name Ship #049 explicitly, or keep "our own status"?) and line 49 (the dishes/baby analogy — keep, cut, or reword?)
-4. **1,656 words** vs the 1,300 target
+✅ **THE WEEKEND IS STAGED — first time this week the queue is AHEAD of the day.** Both weekend insights pre-passed, both clean, **neither has a single open `[PM:]` question**:
 
-✅ **Pre-pass already done (Aug 5), so tomorrow is fast**: mechanically clean — H1, dateline, 0 semicolons, 0 cohort/load-bearing, 0 tics, 0 gendered pronouns, footer correctly teases *"Verify at the User Path"* (Aug 8). The one `#NNN` hit is **inside a PM bracket** = false positive, vanishes when resolved.
+| slot | post | words | needs |
+|---|---|---|---|
+| **Sat Aug 8** | *Verify at the User Path, Not the Data Layer* | 1,438 | **voice pass + art only** |
+| **Sun Aug 9** | *Over-Checking Has Dividends* | 1,507 | **voice pass + art only** |
 
-**Two cuts named** (~115 words, both removing *repetition* not content): line 31's sequencing paragraph, and line 59's deployed-code aside (a 4th instance of record-vs-reality after three are made). **Deliberately NOT proposing** the privacy-fix passage in the last section — it's the concrete instance that earns the closing line.
+Both over the 1,300 target but **under the 1,600 flag — no cuts needed.** Footers chain correctly through to *The Write-Path Chase* (Aug 11). Full mechanical detail on each calendar row.
+
+⚠️ **Aug 6's slot was MISSED and the cause was mine** — I never sent the step-3 publish-ready memo, having let PM's *"I'll let Docs know"* stand in for it. Recovered Aug 7 07:05; Docs published 07:32. **Run-of-show step 3 now reads "always send it, even when PM says they will tell Docs."**
 
 ## Open PM questions — 4 across 3 posts, best answered in one pass
 
