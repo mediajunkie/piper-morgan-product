@@ -276,7 +276,49 @@ async def check_temporal() -> bool:
 # ============================================================================
 
 
+async def _completed_setup_exists() -> bool:
+    """#1504: does any user have setup_complete = true? Same predicate the
+    /status route has used since #389 — reused as the lockout condition so
+    "set up" means one thing."""
+    from sqlalchemy import text
+
+    from services.database.session_factory import AsyncSessionFactory
+
+    async with AsyncSessionFactory.session_scope_fresh() as session:
+        result = await session.execute(
+            text("SELECT COUNT(*) FROM users WHERE setup_complete = true")
+        )
+        return (result.scalar() or 0) > 0
+
+
+async def require_setup_incomplete() -> None:
+    """#1504 lockout: the /api/v1/setup prefix is auth-exempt (first-run needs
+    it), which left these WRITE routes callable by anyone forever — global
+    LLM-key overwrite, global Slack creds, project rows with attacker-chosen
+    owner_id, and an unauthenticated alembic-upgrade trigger (F1-F4, audit
+    2026-08-07). Once ANY user has completed setup the wizard's writes refuse;
+    signed-in management lives in Settings → Integrations. Fail-closed: a DB
+    error refuses rather than allows.
+    """
+    try:
+        already = await _completed_setup_exists()
+    except Exception:
+        raise HTTPException(
+            status_code=503,
+            detail="Couldn't verify setup state — try again in a moment.",
+        )
+    if already:
+        raise HTTPException(
+            status_code=403,
+            detail=(
+                "Setup is already complete on this server. Sign in and manage "
+                "credentials and projects from Settings → Integrations instead."
+            ),
+        )
+
+
 @router.get("/status", response_model=SetupStatusResponse)
+
 async def get_setup_status():
     """
     Check if setup has been completed.
@@ -377,7 +419,7 @@ async def ensure_database_migrated() -> bool:
         return False
 
 
-@router.post("/check-system", response_model=SystemCheckResponse)
+@router.post("/check-system", response_model=SystemCheckResponse, dependencies=[Depends(require_setup_incomplete)])
 async def check_system():
     """
     Check system requirements and service availability.
@@ -746,7 +788,7 @@ class SlackCredentialsResponse(BaseModel):
     message: str
 
 
-@router.post("/slack-credentials", response_model=SlackCredentialsResponse)
+@router.post("/slack-credentials", response_model=SlackCredentialsResponse, dependencies=[Depends(require_setup_incomplete)])
 async def save_slack_credentials_setup(credentials: SlackCredentialsRequest):
     """
     Save Slack app credentials during setup wizard.
@@ -900,7 +942,7 @@ async def create_user(req: CreateUserRequest):
             )
 
 
-@router.post("/complete", response_model=SetupCompleteResponse)
+@router.post("/complete", response_model=SetupCompleteResponse, dependencies=[Depends(require_setup_incomplete)])
 async def complete_setup(req: SetupCompleteRequest):
     """
     Finalize setup by storing API keys and marking user as setup complete.
@@ -1111,7 +1153,7 @@ class SetupProjectResponse(BaseModel):
     message: str = ""
 
 
-@router.post("/projects", response_model=SetupProjectResponse)
+@router.post("/projects", response_model=SetupProjectResponse, dependencies=[Depends(require_setup_incomplete)])
 async def create_setup_project(req: SetupProjectRequest):
     """
     Create a project (and optionally link a GitHub repo) during setup wizard.
