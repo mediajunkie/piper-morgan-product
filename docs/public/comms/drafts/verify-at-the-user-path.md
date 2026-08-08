@@ -26,7 +26,7 @@ A `curl` (a command-line tool that fetches a URL) returning 200 tells you the se
 
 And a clean database row tells you the data exists. It tells you nothing about whether the code that's supposed to fetch that row, hand it to a template, and render it into HTML actually does so without falling over. In our case the falling-over was almost comically specific — the page template had a self-reference that sent it into a loop, and separately the template engine was choking on tag syntax it found *inside an HTML comment*, which a human reading the file would skip right over. None of that is visible from the data layer. None of it is visible from a 200. It's only visible when you render the actual page and look at the actual output.
 
-We fixed the bugs. That took care of  this page, this template, this loop. The more important lesson was about the *discipline*: before you say a user-facing surface works, render the real surface and assert on what the user would actually see. Not the row. Not the status code. The rendered thing, with realistic data in it, checked the way the user would experience it.
+We fixed the bugs. That took care of this page, this template, this loop. The more important lesson was about the *discipline*: before you say a user-facing surface works, render the real surface and assert on what the user would actually see. Not the row. Not the status code. The rendered thing, with realistic data in it, checked the way the user would experience it.
 
 # Tests pass, users succeed — and those aren't the same claim
 
