@@ -25,7 +25,7 @@ async def test_real_todos_reach_the_agenda_dicts():
         "services.repositories.todo_repository.TodoRepository.get_todos_by_owner",
         new=AsyncMock(return_value=todos),
     ):
-        out = await CanonicalHandlers()._get_todays_todos(session_id=str(uuid4()))
+        out = await CanonicalHandlers()._get_todays_todos(user_id=str(uuid4()))
 
     # Old code: AttributeError -> swallow -> None (source-failed). Now: real dicts.
     assert out is not None and len(out) == 2
@@ -42,7 +42,7 @@ async def test_formatter_renders_the_tasks_section_from_these_dicts():
         "services.repositories.todo_repository.TodoRepository.get_todos_by_owner",
         new=AsyncMock(return_value=todos),
     ):
-        dicts = await CanonicalHandlers()._get_todays_todos(session_id=str(uuid4()))
+        dicts = await CanonicalHandlers()._get_todays_todos(user_id=str(uuid4()))
     msg = CanonicalHandlers()._format_agenda_standard(None, dicts, [])
     assert "Ship the fix" in msg
     assert "No pending tasks" not in msg
