@@ -13,6 +13,9 @@ from pydantic import BaseModel, Field
 
 from services.knowledge.knowledge_graph_service import KnowledgeGraphService
 
+# #1493: response timestamps were naive-local datetime.now(); use aware UTC
+from services.utils.datetime_utils import utc_now
+
 # PM-081: Todo Management API Router
 todo_management_router = APIRouter(prefix="/api/v1/todos", tags=["Todo Management"])
 
@@ -523,8 +526,8 @@ async def create_todo_list(
             list_type=list_data.list_type,
             color=list_data.color,
             ordering_strategy=list_data.ordering_strategy,
-            created_at=datetime.now(),
-            updated_at=datetime.now(),
+            created_at=utc_now(),
+            updated_at=utc_now(),
             todo_count=0,  # Computed field for backward compatibility
             metadata=list_data.metadata,
         )
@@ -703,7 +706,7 @@ async def add_list_member(
             list_id=list_id,
             user_id=membership_data.user_id,
             role=membership_data.role,
-            joined_at=datetime.now(),
+            joined_at=utc_now(),
             permissions={"read": True, "write": True, "admin": False},
         )
 

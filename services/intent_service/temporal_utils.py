@@ -38,7 +38,11 @@ def parse_relative_date(
 
     # Get current time in user's timezone (or local if not specified)
     # Issue #588: Use local time for "today" calculation, then convert to UTC for API
-    now = datetime.now()
+    # #1493: AWARE local time — the naive value stored to timestamptz drifted
+    # by the server's UTC offset (asyncpg interprets naive as UTC). Local
+    # wall-clock semantics are unchanged; the value now carries its offset so
+    # storage is UTC-normalized. Per-user timezones are the #747/#750 family.
+    now = datetime.now().astimezone()
     today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
 
     # Check for "tomorrow" first (more specific than "today")
@@ -88,7 +92,10 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
         - human_label: Human-readable description of the time
     """
     message_lower = message.lower()
-    now = datetime.now()
+    # #1493: AWARE local time (see parse_relative_date) — "tomorrow at 3pm"
+    # still means 3pm server-local, but the stored timestamptz instant is now
+    # unambiguous instead of drifting by the UTC offset.
+    now = datetime.now().astimezone()
 
     # --- "in N minutes/hours/days" ---
     in_match = re.search(

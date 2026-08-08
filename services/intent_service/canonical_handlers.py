@@ -2663,7 +2663,9 @@ What would you like to set up first?"""
                     .where(
                         and_(
                             TodoDB.owner_id == session_id,
-                            TodoDB.status == TodoStatus.COMPLETED,
+                            # #1472: String column — bind .value, never the raw
+                            # enum (asyncpg DataError -> #1425 None sentinel)
+                            TodoDB.status == TodoStatus.COMPLETED.value,
                             TodoDB.completed_at >= start_of_day,
                             TodoDB.completed_at <= end_of_day,
                         )
@@ -2675,10 +2677,16 @@ What would you like to set up first?"""
                 result = await session.execute(query)
                 db_todos = result.scalars().all()
 
+                # #1472 (B12 family, same shape as #1436): these are TodoDB
+                # rows — text (not .title; only DOMAIN Todo has that property)
+                # and a plain-str priority (String column, no .value). The old
+                # reads raised AttributeError into the swallow below, so the
+                # retrospective ALWAYS reported source-failed. Dict key stays
+                # "title" (the formatters' contract).
                 return [
                     {
-                        "title": todo.title,
-                        "priority": todo.priority.value if todo.priority else "medium",
+                        "title": todo.text,
+                        "priority": todo.priority or "medium",
                         "completed_at": (
                             todo.completed_at.isoformat() if todo.completed_at else None
                         ),
@@ -3025,7 +3033,9 @@ What would you like to set up first?"""
 
                     result = await session.execute(
                         select(TodoDB).where(
-                            TodoDB.owner_id == user_id, TodoDB.status == TodoStatus.PENDING
+                            # #1472: String column — bind .value, never the raw enum
+                            TodoDB.owner_id == user_id,
+                            TodoDB.status == TodoStatus.PENDING.value,
                         )
                     )
                     todos = result.scalars().all()

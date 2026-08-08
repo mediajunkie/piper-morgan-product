@@ -19,7 +19,7 @@ from fastapi import APIRouter, Depends, Form, HTTPException, Request, status
 from pydantic import BaseModel
 from starlette.responses import RedirectResponse
 
-from services.auth.auth_middleware import get_current_user
+from services.auth.auth_middleware import get_current_user, require_admin
 from services.auth.jwt_service import JWTClaims
 
 # #1327 gap 3: the Settings repo-config dropdown reads repos over the per-user OAuth connector
@@ -615,7 +615,9 @@ async def save_slack_preferences(
 @router.post("/slack/app-credentials")
 async def save_slack_app_credentials(
     credentials: SlackAppCredentialsRequest,
-    current_user: JWTClaims = Depends(get_current_user),
+    # #1485: GLOBAL write — IntegrationConfigService is "server-wide configuration,
+    # NOT per-user" (its own docstring). Admin only; see require_admin.
+    current_user: JWTClaims = Depends(require_admin),
 ):
     """
     Save Slack app credentials to secure keychain storage.
@@ -668,7 +670,10 @@ async def save_slack_app_credentials(
 async def save_slack_app_token(
     body: SlackAppTokenRequest,
     request: Request,
-    current_user: JWTClaims = Depends(get_current_user),
+    # #1485: GLOBAL credential write (unscoped keychain slack_app_token) + runtime
+    # runner restart — admin only, not merely authenticated. require_admin checks
+    # users.is_admin (#357) live in the DB, fail-closed.
+    current_user: JWTClaims = Depends(require_admin),
 ) -> SlackInboundStatusResponse:
     """Save the Slack app-level token (xapp-) + start inbound Socket Mode (#1201).
 
@@ -921,7 +926,9 @@ async def unlink_slack_account(
 @router.post("/calendar/app-credentials")
 async def save_calendar_app_credentials(
     credentials: CalendarAppCredentialsRequest,
-    current_user: JWTClaims = Depends(get_current_user),
+    # #1485: GLOBAL write — IntegrationConfigService is "server-wide configuration,
+    # NOT per-user" (its own docstring). Admin only; see require_admin.
+    current_user: JWTClaims = Depends(require_admin),
 ):
     """
     Save Google Calendar app credentials to secure keychain storage.
