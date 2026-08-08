@@ -1,6 +1,6 @@
 ---
 image: 'verify-at-the-user-path-hotel-room.png'
-alt: ''
+alt: 'A weary hotel guest’s keycard fails at a locked door while, in a cutaway view inside, two glowing AI staff proudly inspect the immaculate room and mark it with a green check.'
 caption: '"Sheesh! They told me the room was ready!"'
 ---
 
