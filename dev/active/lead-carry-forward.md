@@ -11,6 +11,13 @@
 - CIO owes: memory-index architecture fix (PM-directed escalation sent 8/8).
 - Exec owes: daily discovery-rate line (starting 8/9).
 
+## AFTERNOON EVENTS (postdate the 12:50 rewrite — read these)
+- **Understanding-Layer Inversion proposal** committed + sent (understanding-layer-inversion-proposal-2026-08-08.md); **MORATORIUM on piecemeal routing fixes** (PM-directed); PM ruled FUNDAMENTALS-FIRST (decisions.log). **Arch RULED (15:xx): diagnosis right, direction UNMEASURED — measure surface-1 claims first via counterfactual probe (ratified, scoped). Agent building+running it now** → results doc surface1-counterfactual-results-2026-08-08.md decides narrow-vs-keep per utterance. pin: namespace RATIFIED separately.
+- Principal audit: F1/F2 FIXED (agenda todos/priorities), F3 → #1532 (agent fixing + guards 1-3), #1533 master (33 probe-blind suites).
+- **MERGE-DROP INCIDENT**: arch-seat merges deleted the false-trails audit doc from main; restored; Arch auditing their merges; CIO owes merge-drop guard ruling.
+- v40 LIVE (wave-2 cut: all 10 fixes). F1/F2 + F3 + probe results NOT yet deployed.
+- PM day-arc: crisis → reassured → deployed v39+v40 → testing. Discovery-rate assigned to Exec daily (baseline 59-this-week).
+
 ## Next wake priorities
 1. Sweep verdict → backlog gate → cut rec to PM (if not already done in-session).
 2. PM's T6/T7 retest results; new-fix retests post-cut (1520 stay-active test, 1521 reminder question, 1490 orderings).

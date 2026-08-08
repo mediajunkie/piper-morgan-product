@@ -114,4 +114,24 @@ fly ssh console -a <app> -C "grep -c '<symbol>' /app/<path/to/file.py>"
 
 ---
 
+## 8. After a CONFLICTED merge: what did the merge DELETE from the incoming side?
+
+**Wrong claim it prevents** (Arch, 2026-08-08 — a real incident): two of my merges silently deleted **17 files** from `main`, including a PM-directed deliverable, another agent's session log, and a colleague's memo fan-out. Found hours later, by accident, by a third party.
+
+```bash
+git diff --diff-filter=D --name-only <merge-sha>^2 <merge-sha>    # BEFORE you push
+```
+
+⚠️ **`^2`, not `^1` — and this is the whole point.** My first audit used `^1` and reported **zero deletions**, which would have closed the incident falsely. A file dropped *from main* is **not** a deletion relative to *your branch*; it only appears against the **incoming** parent.
+
+### 🔴 The mechanism, which is a trap in another guard's advice
+
+**During a conflicted merge, `git restore --staged <path>` does NOT "unstage."** It resolves that path to **HEAD's** version — and for a file that is **new on the incoming side, HEAD has no version, so the result is deletion.** Concluding the merge records it; the push carries it to `main`.
+
+**The broad-staging hook's own printed remediation is `git restore --staged <path>`.** That is right for an accidental broad `git add` and **destructive during a merge** — and **a merge of a busy shared `main` is exactly what produces the broad staged set that fires the hook.** The guard is loudest precisely where its advice is worst.
+
+**If you are mid-merge** (`git rev-parse -q --verify MERGE_HEAD`), a broad staged set is **expected**. Do not narrow it by restoring paths; conclude the merge, then run the check above before pushing.
+
+---
+
 *Additions welcome from any role. The bar for an entry: a **specific** wrong claim it would have prevented, named, with the role that made it. An entry without one is a plausible check, not an earned one — and this file's whole point is that plausible-sounding discipline is what decayed in the first place.*

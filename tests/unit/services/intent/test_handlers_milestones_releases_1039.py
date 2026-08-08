@@ -165,7 +165,8 @@ class TestListMilestonesHandler:
         assert "and 2 more" in result.message
         assert result.intent_data["context"]["milestone_count"] == 7
 
-    async def test_exception_returns_graceful_message(self, intent_service):
+    async def test_exception_returns_honest_failure(self, intent_service):
+        """#1423 slice 2 (#1524): router failure → success=False + error/error_type."""
         with patch(
             "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
         ) as MockRouter:
@@ -173,8 +174,12 @@ class TestListMilestonesHandler:
             result = await intent_service._handle_list_milestones_query(
                 _make_intent(), workflow_id="wf-1"
             )
-        assert result.success is True
+        assert result.success is False, (
+            "milestone-listing failure must not report success=True (#1524)"
+        )
         assert "wasn't able to fetch" in result.message
+        assert result.error_type == "list_milestones_error"
+        assert "router boom" in (result.error or "")
         assert "error" in result.intent_data["context"]
 
 
@@ -279,7 +284,8 @@ class TestListReleasesHandler:
         assert "and 2 more" in result.message
         assert result.intent_data["context"]["release_count"] == 7
 
-    async def test_exception_graceful_path(self, intent_service):
+    async def test_exception_returns_honest_failure(self, intent_service):
+        """#1423 slice 2 (#1524): router failure → success=False + error/error_type."""
         with patch(
             "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
         ) as MockRouter:
@@ -287,6 +293,10 @@ class TestListReleasesHandler:
             result = await intent_service._handle_list_releases_query(
                 _make_release_intent(), workflow_id="wf-1"
             )
-        assert result.success is True
+        assert result.success is False, (
+            "release-listing failure must not report success=True (#1524)"
+        )
         assert "wasn't able to fetch" in result.message
+        assert result.error_type == "list_releases_error"
+        assert "router boom" in (result.error or "")
         assert "error" in result.intent_data["context"]

@@ -370,6 +370,40 @@ class IntentService:
 
         return result
 
+    @staticmethod
+    def _resolve_turn_intent_label(source: Any) -> Optional[str]:
+        """#1518: derive the string persisted to conversation_turns.intent.
+
+        The column, its two indexes, and the ORM mapping existed since PM-034,
+        but the only live write path never populated it — every routing
+        forensic (#1488-class) was blind. This is the single place the label
+        shape is decided: ``"category:action"`` when the handler resolved an
+        action, bare ``"category"`` otherwise (lowercase enum values, matching
+        IntentCategory.*.value).
+
+        Accepts either a handler ``intent_data`` dict or a domain ``Intent``
+        (the in-memory turn annotation set on the floor path). Anything else —
+        None, mocks, legacy shapes without category/action — resolves to None:
+        telemetry derivation must never break the response path.
+        """
+        if isinstance(source, Intent):
+            category = getattr(source.category, "value", source.category)
+            action = source.action
+        elif isinstance(source, dict):
+            category = source.get("category")
+            action = source.get("action")
+            category = getattr(category, "value", category)
+            action = getattr(action, "value", action)
+        else:
+            return None
+        if category is not None and not isinstance(category, str):
+            category = str(category)
+        if action is not None and not isinstance(action, str):
+            action = str(action)
+        if category and action:
+            return f"{category}:{action}"
+        return category or action or None
+
     async def _save_conversation_turn(
         self,
         session_id: str,
@@ -379,6 +413,7 @@ class IntentService:
         user_id: Optional[str] = None,
         provenance: Optional[dict] = None,
         context_state: Optional[dict] = None,
+        intent: Optional[str] = None,
     ) -> None:
         """
         Save conversation turn via ConversationManager (Issue #563).
@@ -395,6 +430,9 @@ class IntentService:
             provenance: Issue #1030 R4 — provenance dict to persist into
                 turn_metadata['provenance'] for cross-session lookup (PM Q1
                 GUARANTEED).
+            intent: Issue #1518 — resolved intent label ("category:action" or
+                bare category) persisted to conversation_turns.intent for
+                routing telemetry.
         """
         if not self.conversation_manager:
             self.logger.debug("ConversationManager not available - skipping turn persistence")
@@ -409,6 +447,7 @@ class IntentService:
                 user_id=user_id,
                 provenance=provenance,
                 context_state=context_state,
+                intent=intent,
             )
             self.logger.debug(
                 "Conversation turn saved",
@@ -509,8 +548,10 @@ class IntentService:
                 conv_ctx._hydrated = True
                 if self.conversation_manager:
                     try:
+                        # #1532 F3: thread the principal — an owner mismatch
+                        # behaves as not-found (None), never leaks state.
                         _persisted = await self.conversation_manager.load_context_state(
-                            effective_session_id
+                            effective_session_id, user_id=effective_user_id
                         )
                         if _persisted:
                             conv_ctx.apply_persisted_state(_persisted)
@@ -531,8 +572,13 @@ class IntentService:
                     hydrate_turns_from_db,
                 )
 
+                # #1532 F3: thread the principal — hydrating another
+                # principal's session id backfills nothing (owner-checked read).
                 await hydrate_turns_from_db(
-                    conv_ctx, self.conversation_manager, effective_session_id
+                    conv_ctx,
+                    self.conversation_manager,
+                    effective_session_id,
+                    user_id=effective_user_id,
                 )
             # #1122: record the in-flight turn for EVERY path, not just the
             # one floor site that called add_turn (R4 fix). Before this, turns
@@ -578,6 +624,14 @@ class IntentService:
             # cross-session lookup (PM Q1 GUARANTEED disposition).
             turn_provenance_for_db = None
             context_state_for_db = None
+            # #1518: resolve the intent label for conversation_turns.intent —
+            # primary source is the handler's intent_data (category/action);
+            # fallback is the in-memory turn's classified Intent (floor path
+            # annotates it). Before this, the column was NEVER populated by
+            # the live path and routing telemetry was silently absent.
+            turn_intent_for_db = self._resolve_turn_intent_label(
+                getattr(result, "intent_data", None)
+            )
             try:
                 # #1122: do NOT re-import get_or_create_context here — a
                 # function-local import makes the name local for the WHOLE
@@ -588,6 +642,8 @@ class IntentService:
                 if conv_ctx.turns:
                     latest_turn = conv_ctx.turns[-1]
                     turn_provenance_for_db = conv_ctx.turn_provenance.get(latest_turn.id)
+                    if turn_intent_for_db is None:
+                        turn_intent_for_db = self._resolve_turn_intent_label(latest_turn.intent)
                 # #953: capture the Layer-4 context slice (lens_stack + last_offer +
                 # floor flags) to persist alongside the turn so it survives restart/refresh.
                 context_state_for_db = conv_ctx.to_persistable_state()
@@ -601,6 +657,7 @@ class IntentService:
                 user_id=effective_user_id,
                 provenance=turn_provenance_for_db,
                 context_state=context_state_for_db,
+                intent=turn_intent_for_db,
             )
 
             # ADR-078 OQ-3 (#1394): central observer — record any external creation
@@ -892,6 +949,11 @@ class IntentService:
                             ),
                             None,
                             session_id,
+                            # #1394: this Intent is built here with no context,
+                            # so the floor entry's principal recovery can't
+                            # help — thread user_id explicitly or the floor
+                            # reads the empty anonymous turn window.
+                            user_id=user_id,
                         )
 
                 elif response_type == "decline":
@@ -923,7 +985,11 @@ class IntentService:
                 from services.intent_service.conversation_context import get_or_create_context
 
                 try:
-                    _conv_ctx = get_or_create_context(session_id)
+                    # #1394: user-scoped key — this READ must hit the same
+                    # context the offer WRITE (canonical seam) and the #953
+                    # hydration/persist path use. The anonymous key silently
+                    # split the pair for every authenticated session.
+                    _conv_ctx = get_or_create_context(session_id, user_id=user_id)
                 except (ValueError, KeyError):
                     _conv_ctx = None  # Non-UUID session_id — skip offer tracking
                 if _conv_ctx and _conv_ctx.last_offer:
@@ -1505,7 +1571,10 @@ class IntentService:
                     )
 
                     try:
-                        conv_ctx = get_or_create_context(session_id)
+                        # #1394: user-scoped key — pairs with the turn-start
+                        # read above and the #953 persist capture at the outer
+                        # seam (both user-scoped).
+                        conv_ctx = get_or_create_context(session_id, user_id=user_id)
                     except (ValueError, KeyError):
                         conv_ctx = None  # Non-UUID session_id — skip offer tracking
                     if conv_ctx:
@@ -2541,7 +2610,9 @@ class IntentService:
         #     todos delegates to the EXECUTION handler via run_todo_query_workflow)
         # The rail short-circuits before this routing; anything without a rail entry
         # falls through to the generic query handler (which itself floors the unknown case).
-        return await self._handle_generic_query(intent, workflow_id, session_id)
+        # #1394: thread user_id — it was dropped here, severing session continuity
+        # (empty floor history) for every authenticated generic query.
+        return await self._handle_generic_query(intent, workflow_id, session_id, user_id)
 
     @staticmethod
     def _is_standup_query(message: str) -> bool:
@@ -2701,7 +2772,7 @@ class IntentService:
         )
 
     async def _handle_generic_query(
-        self, intent: Intent, workflow_id: str, session_id: str = None
+        self, intent: Intent, workflow_id: str, session_id: str = None, user_id: str = None
     ) -> IntentProcessingResult:
         """
         Handle generic QUERY intents that have no specialized handler.
@@ -2709,6 +2780,11 @@ class IntentService:
         Issue #915: Routes to conversational floor instead of returning
         a dev stub ("Query processed successfully: {action}").
         The floor can discuss the topic conversationally with context.
+
+        #1394: user_id must thread through — dropping it here made the floor
+        read the `anonymous:`-keyed (empty) turn window for every
+        authenticated generic query, so prior turns never reached the floor's
+        context on the chat path (the session-continuity gap's main artery).
         """
         self.logger.info(
             "query_action_routing_to_floor",
@@ -2719,6 +2795,7 @@ class IntentService:
             intent,
             None,
             session_id or "default_session",
+            user_id=user_id,
         )
 
     async def _handle_search_documents_notion(
@@ -4903,16 +4980,18 @@ class IntentService:
                 },
             )
 
-        except Exception as e:
-            self.logger.error(f"Failed to list PRs: {e}")
+        except Exception as e:  # silent-ok: #1423 slice 2 (#1524) — top-level handler boundary; failure now returns an honest error result (success=False + error/error_type) with traceback instead of success=True
+            self.logger.error(f"Failed to list PRs: {e}", exc_info=True)
             return IntentProcessingResult(
-                success=True,
+                success=False,
                 message="I wasn't able to fetch your pull requests right now. Please try again in a moment.",
                 intent_data={
                     "category": "query",
                     "action": "list_prs_query",
                     "context": {"error": str(e)},
                 },
+                error=str(e),
+                error_type="list_prs_error",
             )
 
     async def _handle_list_milestones_query(
@@ -4967,10 +5046,10 @@ class IntentService:
                 },
             )
 
-        except Exception as e:
-            self.logger.error(f"Failed to list milestones: {e}")
+        except Exception as e:  # silent-ok: #1423 slice 2 (#1524) — top-level handler boundary; failure now returns an honest error result (success=False + error/error_type) with traceback instead of success=True
+            self.logger.error(f"Failed to list milestones: {e}", exc_info=True)
             return IntentProcessingResult(
-                success=True,
+                success=False,
                 message=(
                     "I wasn't able to fetch milestones right now. " "Please try again in a moment."
                 ),
@@ -4979,6 +5058,8 @@ class IntentService:
                     "action": "list_milestones_query",
                     "context": {"error": str(e)},
                 },
+                error=str(e),
+                error_type="list_milestones_error",
             )
 
     async def _handle_list_releases_query(
@@ -5081,10 +5162,10 @@ class IntentService:
                 },
             )
 
-        except Exception as e:
-            self.logger.error(f"Failed to list releases: {e}")
+        except Exception as e:  # silent-ok: #1423 slice 2 (#1524) — top-level handler boundary; failure now returns an honest error result (success=False + error/error_type) with traceback instead of success=True
+            self.logger.error(f"Failed to list releases: {e}", exc_info=True)
             return IntentProcessingResult(
-                success=True,
+                success=False,
                 message=(
                     "I wasn't able to fetch releases right now. " "Please try again in a moment."
                 ),
@@ -5093,6 +5174,8 @@ class IntentService:
                     "action": "list_releases_query",
                     "context": {"error": str(e)},
                 },
+                error=str(e),
+                error_type="list_releases_error",
             )
 
     async def _handle_list_labels_query(
@@ -5147,10 +5230,10 @@ class IntentService:
                 },
             )
 
-        except Exception as e:
-            self.logger.error(f"Failed to list labels: {e}")
+        except Exception as e:  # silent-ok: #1423 slice 2 (#1524) — top-level handler boundary; failure now returns an honest error result (success=False + error/error_type) with traceback instead of success=True
+            self.logger.error(f"Failed to list labels: {e}", exc_info=True)
             return IntentProcessingResult(
-                success=True,
+                success=False,
                 message=(
                     "I wasn't able to fetch labels right now. " "Please try again in a moment."
                 ),
@@ -5159,6 +5242,8 @@ class IntentService:
                     "action": "list_labels_query",
                     "context": {"error": str(e)},
                 },
+                error=str(e),
+                error_type="list_labels_error",
             )
 
     async def _handle_list_branches_query(
@@ -5257,10 +5342,10 @@ class IntentService:
                 },
             )
 
-        except Exception as e:
-            self.logger.error(f"Failed to list branches: {e}")
+        except Exception as e:  # silent-ok: #1423 slice 2 (#1524) — top-level handler boundary; failure now returns an honest error result (success=False + error/error_type) with traceback instead of success=True
+            self.logger.error(f"Failed to list branches: {e}", exc_info=True)
             return IntentProcessingResult(
-                success=True,
+                success=False,
                 message=(
                     "I wasn't able to fetch branches right now. " "Please try again in a moment."
                 ),
@@ -5269,6 +5354,8 @@ class IntentService:
                     "action": "list_branches_query",
                     "context": {"error": str(e)},
                 },
+                error=str(e),
+                error_type="list_branches_error",
             )
 
     async def _handle_local_git_status_query(
@@ -11885,6 +11972,9 @@ Content to summarize:
         Uses ContextAssembler to gather structured data, then creates
         FloorContext and calls ConversationalFloor.respond().
         """
+        # #1394: principal recovery — see _handle_unknown_intent. The gate
+        # call site threads user_id today; this guards any future caller.
+        user_id = user_id or _principal_from_intent(intent)
         category = intent.category.value.upper()
 
         self.logger.info(
@@ -12093,6 +12183,8 @@ Content to summarize:
         The floor gets calendar, projects, and priorities as factual context,
         then generates a response that actually addresses the user's question.
         """
+        # #1394: principal recovery — see _handle_unknown_intent.
+        user_id = user_id or _principal_from_intent(intent)
         self.logger.info(
             "guidance_routed_to_floor",
             action=intent.action,
@@ -12166,6 +12258,16 @@ Content to summarize:
 
         GREAT-4D Phase 7: Completes intent handler coverage.
         """
+        # #1394: recover the principal when a caller dropped it. The registry
+        # key is user-scoped (#817), and the outer seam records every turn
+        # under the AUTHENTICATED key — a None user_id here made
+        # build_recent_history read the empty `anonymous:` context, so the
+        # floor answered with ZERO prior-turn context on the authenticated
+        # chat path (PM's live "I don't have any context about a CoVa
+        # project" amnesia). process_intent stamps the principal onto
+        # intent.context before category routing; _principal_from_intent is
+        # the sanctioned read (#1252).
+        user_id = user_id or _principal_from_intent(intent)
         self.logger.info(f"Processing UNKNOWN intent via conversational floor: {intent.action}")
 
         # Issue #907: Build floor context from available state

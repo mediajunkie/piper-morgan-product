@@ -1,63 +1,86 @@
-"""
-Unit tests for home.html left-sidebar Surface 1 reconciliation (#1097)
+"""home.html conversation-list surface — post-excision contract (#1522 step 1).
 
-Verifies the MUX/UI Round 2 Surface 1 contract:
-- Left rail = "current session continuation" (~5 recent ACTIVE)
-- Differentiated from right slide-out (history_sidebar.html, full archive)
+History: this file originally pinned the #1097 Round-2 Surface-1 contract on
+home's OWN left sidebar (aside#sidebar, "Recent" header, 5-active fetch). #1280
+hid that sidebar (the app_shell nav rail took over the conversation list) but
+left the markup + renderer in place, and the hidden twin became a fix-magnet —
+a #1482 copy fix shipped dark into it (#1516). #1522 step 1 excised it.
 
-Round 2 ratification: 2026-05-16 (Architect's CEO ratification distribution).
+These are REAL template.render() tests (house rule: curl-200 is not a render
+test). They gate the excision:
+  1. home.html still renders cleanly without the excised block;
+  2. the live rail include (components/nav_rail.html via layouts/app_shell.html)
+     survives in the rendered page, as does the history_sidebar include;
+  3. the dead surface stays dead — no aside#sidebar, no .conversation-item
+     renderer may return to home.html (regression pin against rebuilding the
+     fix-magnet);
+  4. the auto-select data fetch (Surface-1's surviving piece: most-recent
+     ACTIVE conversation id for #583 auto-select) is still present.
 """
 
 from pathlib import Path
 
 import pytest
-from bs4 import BeautifulSoup
+from jinja2 import Environment, FileSystemLoader
+
+TEMPLATES = Path(__file__).resolve().parents[3] / "templates"
 
 
 @pytest.fixture
-def home_html() -> str:
-    return Path("templates/home.html").read_text()
+def rendered() -> str:
+    env = Environment(loader=FileSystemLoader(str(TEMPLATES)), autoescape=True)
+    return env.get_template("home.html").render(
+        trust_stage=1, show_radar=True, user_name="tester"
+    )
 
 
 @pytest.fixture
-def soup(home_html: str) -> BeautifulSoup:
-    return BeautifulSoup(home_html, "html.parser")
+def source() -> str:
+    return (TEMPLATES / "home.html").read_text()
 
 
-def test_left_rail_fetch_caps_at_five_active(home_html: str) -> None:
-    """AC-1: left rail fetches at most 5 active conversations."""
-    assert "/api/v1/conversations?state=active&limit=5" in home_html, (
-        "Left rail must fetch with state=active&limit=5 per Round 2 Surface 1 spec "
-        "(current-session continuation, ~5 recent)"
+def test_home_renders_without_excised_sidebar(rendered: str) -> None:
+    """The excision gate: a full jinja2 render must succeed and produce the
+    live page skeleton (rendering at all is the assertion that matters —
+    a stranded include/endblock would raise TemplateError here)."""
+    assert '<div class="app-layout">' in rendered
+    assert '<div class="main-content">' in rendered
+    assert "chat" in rendered.lower()
+
+
+def test_live_rail_include_survives(rendered: str) -> None:
+    """The conversation list users actually see: the left dark rail
+    (components/nav_rail.html, included by layouts/app_shell.html and
+    populated by static/js/nav.js)."""
+    assert 'id="nav-rail"' in rendered
+    assert 'id="nav-rail-chats"' in rendered, (
+        "nav rail's conversation-list region must be in the rendered page — "
+        "it is the ONLY visible conversation list (#1280 conv-list-everywhere)"
     )
 
 
-def test_left_rail_aria_label_distinguishes_from_history_sidebar(soup: BeautifulSoup) -> None:
-    """AC-2: left rail aside has aria-label that names its role.
-
-    History sidebar (right slide-out) uses aria-label="Conversation history".
-    Left rail must use a distinct aria-label so assistive tech users can tell them apart.
-    """
-    left_rail = soup.find("aside", {"id": "sidebar"})
-    assert left_rail is not None, "Left rail aside#sidebar must exist"
-    aria_label = left_rail.get("aria-label", "")
-    assert aria_label, "Left rail must have aria-label"
-    # Must be distinct from right slide-out's "Conversation history"
-    assert aria_label.lower() != "conversation history", (
-        "Left rail aria-label must differ from right slide-out's " "'Conversation history' label"
-    )
+def test_history_sidebar_include_survives(rendered: str) -> None:
+    """Right slide-out (full archive) — its own renderer, untouched by the
+    excision."""
+    assert 'class="history-sidebar"' in rendered
 
 
-def test_left_rail_has_recent_section_header(soup: BeautifulSoup) -> None:
-    """AC-2: visible 'Recent' header inside the left rail differentiates from
-    right slide-out's 'History' header."""
-    left_rail = soup.find("aside", {"id": "sidebar"})
-    assert left_rail is not None
-    header = left_rail.find(class_="sidebar-section-header")
-    assert header is not None, (
-        "Left rail must have a .sidebar-section-header element to make the "
-        "current-session-continuation role visible"
-    )
-    assert (
-        "recent" in header.get_text().strip().lower()
-    ), "Section header text must convey recency (left rail role per Round 2)"
+def test_dead_sidebar_stays_dead(source: str) -> None:
+    """Cauterization pin: the legacy surface must not be rebuilt in home.html.
+    It shipped a fix dark once (#1516) — if you need conversation-list UI,
+    it belongs in components/nav_rail.html (+ static/js/nav.js) or
+    components/history_sidebar.html, never here."""
+    assert 'id="sidebar"' not in source
+    assert 'class="conversation-item' not in source
+    assert "renderConversationItem" not in source
+    assert "renderConversationList" not in source
+    assert "archiveConversation" not in source
+    assert "deleteConversation" not in source
+    assert "toggleSidebar" not in source
+
+
+def test_autoselect_fetch_survives(source: str) -> None:
+    """Surface-1's surviving piece: loadConversations still fetches recent
+    ACTIVE conversations to return the most-recent id for auto-select (#583) —
+    data only, no rendering."""
+    assert "/api/v1/conversations?state=active&limit=5" in source
