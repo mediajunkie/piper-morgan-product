@@ -1,5 +1,26 @@
 # Christian Crumlish Voice & Tone Style Guide
 
+
+## ⚠️ Fake-personal throat-clearing — PM is actively stripping this (named 2026-08-08)
+
+**PM's own words**: *"a bit of a tic I have been stripping a lot lately. Fake-personal notes that sound more like AI than me, along the lines of 'Now here's the thing I keep coming back to' or 'the thing I'm keeping from this whole episode…'. I generally find I can cut this sort of throat-clearing with no loss of info and an increase in clarity and tightness."*
+
+**The shape**: a first-person preamble that announces a forthcoming insight instead of delivering one. It performs reflection rather than doing it.
+
+| cut this | keep the payload |
+|---|---|
+| *"Now here's the thing I keep coming back to…"* | the thing |
+| *"the thing I'm keeping from this whole episode is…"* | what you're keeping |
+| *"What strikes me most about this is…"* | what strikes you |
+| *"If there's one lesson here, it's…"* | the lesson |
+
+**Test**: delete the preamble and read the sentence that follows. **If it survives intact — and it almost always does — the preamble was throat-clearing.** PM: *"no loss of info and an increase in clarity and tightness."*
+
+⚠️ **Why it reads as AI rather than as PM**: it is the *sound* of someone being personal without the *substance* of it. Genuine PM voice goes at the thing directly — the comma splices, the asides, the "(what?)" — all of which carry content. **Throat-clearing carries none and mimics the register.**
+
+★ **Where it hides**: **closing paragraphs.** Both instances PM named were closers, and PM's diagnosis of the second was *"a sign I skimmed and didn't give the closing my full attention."* **A closing is written last, read least, and is the most conspicuous paragraph in the piece.** Audit it first, not last.
+
+
 ## Overview
 This guide captures the distinctive writing style of Christian Crumlish (xian/mediajunkie) for use in generating blog posts, technical communications, and professional content that authentically represents his voice.
 
