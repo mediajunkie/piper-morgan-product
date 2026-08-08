@@ -16,6 +16,7 @@ import services.domain.models as domain
 from services.database.models import ItemDB, TodoDB
 from services.database.repositories import BaseRepository
 from services.shared_types import TodoPriority, TodoStatus
+from services.utils.datetime_utils import utc_now
 
 logger = structlog.get_logger()
 
@@ -131,7 +132,7 @@ class TodoRepository(BaseRepository):
         if due_before:
             query = query.where(TodoDB.due_date <= due_before)
         elif include_overdue:
-            query = query.where(TodoDB.due_date <= datetime.now())
+            query = query.where(TodoDB.due_date <= utc_now())
 
         query = query.order_by(TodoDB.due_date.asc())
 
@@ -233,7 +234,7 @@ class TodoRepository(BaseRepository):
             filters.append(TodoDB.owner_id == owner_id)
 
         # Always update updated_at on parent table (ItemDB)
-        parent_updates["updated_at"] = datetime.now()
+        parent_updates["updated_at"] = utc_now()
 
         # Build query to fetch the todo first
         select_stmt = select(TodoDB).where(and_(*filters))
@@ -280,9 +281,9 @@ class TodoRepository(BaseRepository):
         updates = {
             "status": TodoStatus.COMPLETED.value,
             "completed": True,  # Boolean field used by list_todos filter
-            "completed_at": datetime.now(),
+            "completed_at": utc_now(),
             "completion_notes": completion_notes,
-            "updated_at": datetime.now(),
+            "updated_at": utc_now(),
         }
         return await self.update_todo(todo_id, updates, owner_id=owner_id, is_admin=is_admin)
 
@@ -306,7 +307,7 @@ class TodoRepository(BaseRepository):
             "status": TodoStatus.PENDING.value,
             "completed": False,  # Boolean field used by list_todos filter
             "completed_at": None,
-            "updated_at": datetime.now(),
+            "updated_at": utc_now(),
         }
         return await self.update_todo(todo_id, updates, owner_id=owner_id, is_admin=is_admin)
 
@@ -338,7 +339,7 @@ class TodoRepository(BaseRepository):
 
     async def get_completion_stats(self, owner_id: str, days: int = 30) -> Dict[str, int]:
         """Get completion statistics for a user over specified days"""
-        cutoff_date = datetime.now() - timedelta(days=days)
+        cutoff_date = utc_now() - timedelta(days=days)
 
         # Total todos created in period
         total_result = await self.session.execute(
@@ -426,7 +427,7 @@ class TodoRepository(BaseRepository):
         await self.session.execute(
             update(TodoDB)
             .where(TodoDB.id == todo_id)
-            .values(shared_with=shared_with_jsonb, updated_at=datetime.now())
+            .values(shared_with=shared_with_jsonb, updated_at=utc_now())
         )
 
         # Refresh and return updated todo
@@ -461,7 +462,7 @@ class TodoRepository(BaseRepository):
         await self.session.execute(
             update(TodoDB)
             .where(TodoDB.id == todo_id)
-            .values(shared_with=shared_with_jsonb, updated_at=datetime.now())
+            .values(shared_with=shared_with_jsonb, updated_at=utc_now())
         )
 
         # Refresh and return updated todo
@@ -518,7 +519,7 @@ class TodoRepository(BaseRepository):
         await self.session.execute(
             update(TodoDB)
             .where(TodoDB.id == todo_id)
-            .values(shared_with=shared_with_jsonb, updated_at=datetime.now())
+            .values(shared_with=shared_with_jsonb, updated_at=utc_now())
         )
 
         return True

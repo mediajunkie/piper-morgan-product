@@ -70,21 +70,22 @@ class TestParseReminderTime:
         assert dt is not None
         assert "30 minute" in label
         # Should be roughly 30 minutes from now
-        expected = datetime.now() + timedelta(minutes=30)
+        # #1493: dt is now AWARE local; compare aware-to-aware
+        expected = datetime.now().astimezone() + timedelta(minutes=30)
         assert abs((dt - expected).total_seconds()) < 5
 
     def test_in_hours(self):
         dt, label = parse_reminder_time("remind me in 2 hours")
         assert dt is not None
         assert "2 hour" in label
-        expected = datetime.now() + timedelta(hours=2)
+        expected = datetime.now().astimezone() + timedelta(hours=2)
         assert abs((dt - expected).total_seconds()) < 5
 
     def test_in_days(self):
         dt, label = parse_reminder_time("remind me in 3 days")
         assert dt is not None
         assert "3 day" in label
-        expected = datetime.now() + timedelta(days=3)
+        expected = datetime.now().astimezone() + timedelta(days=3)
         assert abs((dt - expected).total_seconds()) < 5
 
     def test_tomorrow_default_morning(self):
@@ -114,7 +115,7 @@ class TestParseReminderTime:
         assert "next week" in label
         assert dt.hour == 9  # Default morning
         # Should be at least 1 day ahead (next Monday), at most 8
-        diff = dt - datetime.now()
+        diff = dt - datetime.now().astimezone()  # #1493: aware-to-aware
         hours_ahead = diff.total_seconds() / 3600
         assert hours_ahead > 0  # Must be in the future
 
@@ -556,3 +557,56 @@ class TestDueReminderTZGuard1491:
         assert "error" in kwargs
         assert "todo_count" in kwargs, "warning must carry count context (#1491)"
         assert "reminders_considered" in kwargs, "warning must carry count context (#1491)"
+
+
+# ---------------------------------------------------------------------------
+# Issue #1493: parsed reminder/date-range times must be timezone-aware
+# ---------------------------------------------------------------------------
+
+
+class TestParsedTimesAreTimezoneAware1493:
+    """#1493: temporal_utils built NAIVE local datetimes that were stored to
+    timestamptz `reminder_date` — internally consistent, but the stored
+    instant depended on the server's tz interpretation (asyncpg treats naive
+    as UTC), drifting every reminder by the UTC offset. This was the upstream
+    source of the ambiguity #1491's ensure_utc guard had to absorb.
+
+    Local-time UX semantics stay ("tomorrow at 3pm" = 3pm server-local; user
+    timezones are the #747/#750 family) — but the value now CARRIES its
+    offset, so storage is UTC-normalized. No wall-clock equality assertions
+    here: awareness and offset only (plus delta-vs-aware-now with wide
+    tolerance where the semantics are relative)."""
+
+    def _local_offset(self):
+        return datetime.now().astimezone().utcoffset()
+
+    def test_relative_reminder_is_aware_local(self):
+        dt, label = parse_reminder_time("remind me in 2 hours")
+        assert dt.tzinfo is not None, (
+            "parse_reminder_time returned a NAIVE datetime — stored to "
+            "timestamptz it drifts by the server's UTC offset (#1493)"
+        )
+        assert dt.utcoffset() == self._local_offset()
+        # Relative semantics: ~2h from now, compared aware-to-aware.
+        delta = dt - datetime.now().astimezone()
+        assert timedelta(hours=1, minutes=55) < delta <= timedelta(hours=2)
+
+    def test_wall_clock_reminder_keeps_local_semantics_and_offset(self):
+        dt, label = parse_reminder_time("remind me tomorrow at 3pm")
+        assert dt.tzinfo is not None
+        assert dt.utcoffset() == self._local_offset()
+        assert dt.hour == 15  # 3pm LOCAL — the UX semantics are unchanged
+
+    def test_fallback_reminder_is_aware(self):
+        dt, label = parse_reminder_time("remind me to do something")
+        assert dt.tzinfo is not None
+        assert dt.hour == 9
+
+    def test_parse_relative_date_range_is_aware(self):
+        from services.intent_service.temporal_utils import parse_relative_date
+
+        start, end, label = parse_relative_date("what's on today")
+        for value, name in ((start, "start"), (end, "end")):
+            assert value.tzinfo is not None, f"parse_relative_date {name} is naive (#1493)"
+            assert value.utcoffset() == self._local_offset()
+        assert end - start == timedelta(days=1)
