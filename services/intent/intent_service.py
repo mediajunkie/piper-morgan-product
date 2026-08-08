@@ -256,8 +256,13 @@ class IntentService:
         try:
             registry = get_process_registry()
             registry.register(self.slot_filling_adapter)
-        except Exception:
-            pass  # Graceful — slot filling optional
+        except Exception as e:  # silent-ok: #1423 — slot filling degrades gracefully, but the loss is now ops-visible (was a bare `pass`: feature vanished for the whole process lifetime with zero telemetry)
+            # self.logger doesn't exist yet at this point in __init__ — use module logger.
+            structlog.get_logger().error(
+                "slot_filling_registration_failed",
+                error=str(e),
+                exc_info=True,
+            )
         self.kg_integration = ConversationKnowledgeGraphIntegration()  # Issue #99 CORE-KNOW
         self.todo_handlers = TodoIntentHandlers()  # Issue #285: Todo chat integration
         self.learning_handler = LearningHandler()  # Issue #300: Basic Auto-Learning
@@ -410,12 +415,13 @@ class IntentService:
                 session_id=session_id,
                 message_preview=user_message[:50] if user_message else None,
             )
-        except Exception as e:
-            # Don't fail the response if persistence fails
-            self.logger.warning(
-                "Failed to save conversation turn",
+        except Exception as e:  # silent-ok: #1423 — response delivery must not fail on persistence loss, but the loss is an ERROR (resumed sessions lose this turn's history), logged with traceback
+            self.logger.error(
+                "Failed to save conversation turn — this turn will be MISSING from "
+                "resumed-conversation history (#1122 hydration reads what this writes)",
                 session_id=session_id,
                 error=str(e),
+                exc_info=True,
             )
 
     async def _record_session_activity(
@@ -508,8 +514,13 @@ class IntentService:
                         )
                         if _persisted:
                             conv_ctx.apply_persisted_state(_persisted)
-                    except Exception:
-                        pass  # best-effort hydration — never block the turn
+                    except Exception as e:  # silent-ok: #1423 — hydration is best-effort (never block the turn), but a failure means the resumed session silently lost its lens/offer/floor state, so it must be visible in logs
+                        self.logger.warning(
+                            "layer4_state_hydration_failed",
+                            session_id=effective_session_id,
+                            error=str(e),
+                            exc_info=True,
+                        )
             # #1122: backfill the in-memory turn window from persisted turns
             # whenever it's empty (server restart, 30-min prune, resumed
             # conversation) — the registry is process-local but the DB has
@@ -1809,8 +1820,15 @@ class IntentService:
 
             return None, None
 
-        except Exception as e:
-            self.logger.warning(f"Could not check active guided processes: {e}")
+        except Exception as e:  # silent-ok: #1423 — falling through to normal classification is the designed fallback, but a failure here silently drops the user OUT of an active guided flow (their answer gets re-classified as a fresh intent), so it is ERROR + traceback, not a bare warning
+            self.logger.error(
+                "guided_process_check_failed — if a guided process (standup/slot-filling) "
+                "was active, this turn just fell out of it into normal classification",
+                user_id=user_id,
+                session_id=session_id,
+                error=str(e),
+                exc_info=True,
+            )
             return None, None
 
     async def _check_pending_onboarding_offer(
@@ -2579,11 +2597,16 @@ class IntentService:
                 requires_clarification=False,
                 clarification_type=None,
             )
-        except Exception as e:
-            self.logger.error(f"Standup generation error: {e}")
+        except Exception as e:  # silent-ok: #1423 — top-level handler boundary; the failure is now an HONEST error result (success=False + error/error_type surfaced to the route) with traceback, not a success=True "degraded" lie
+            self.logger.error(
+                "Standup generation failed", error=str(e), user_id=user_id, exc_info=True
+            )
             return IntentProcessingResult(
-                success=True,  # Still success, just degraded
-                message="Unable to generate standup at this time. Please try again later.",
+                success=False,
+                message=(
+                    "I couldn't put your standup together just now — something went "
+                    "wrong on my end while assembling it. Please try again in a moment."
+                ),
                 intent_data={
                     "category": intent.category.value,
                     "action": intent.action,
@@ -2593,6 +2616,8 @@ class IntentService:
                 workflow_id=workflow_id,
                 requires_clarification=False,
                 clarification_type=None,
+                error=str(e),
+                error_type="standup_generation_error",
             )
 
     async def _handle_projects_query(
@@ -4583,16 +4608,18 @@ class IntentService:
                 },
             )
 
-        except Exception as e:
-            self.logger.error(f"Failed to list issues: {e}")
+        except Exception as e:  # silent-ok: #1423 — top-level handler boundary; failure now returns an honest error result (success=False + error/error_type) with traceback instead of success=True
+            self.logger.error(f"Failed to list issues: {e}", exc_info=True)
             return IntentProcessingResult(
-                success=True,
+                success=False,
                 message="I wasn't able to fetch your issues right now. Please try again in a moment.",
                 intent_data={
                     "category": "query",
                     "action": "list_issues_query",
                     "context": {"error": str(e)},
                 },
+                error=str(e),
+                error_type="list_issues_error",
             )
 
     async def _handle_set_default_repo(
@@ -4680,10 +4707,10 @@ class IntentService:
                 },
                 workflow_id=workflow_id,
             )
-        except Exception as e:
-            self.logger.error(f"Failed to set default repo: {e}")
+        except Exception as e:  # silent-ok: #1423 — top-level handler boundary; a FAILED WRITE must never report success=True — honest error result (success=False + error/error_type) with traceback
+            self.logger.error(f"Failed to set default repo: {e}", exc_info=True)
             return IntentProcessingResult(
-                success=True,
+                success=False,
                 message=(
                     "I wasn't able to save your default repo just now. "
                     "Please try again in a moment."
@@ -4694,6 +4721,8 @@ class IntentService:
                     "context": {"error": str(e)},
                 },
                 workflow_id=workflow_id,
+                error=str(e),
+                error_type="set_default_repo_error",
             )
 
     async def _handle_get_default_repo(
@@ -4755,10 +4784,10 @@ class IntentService:
                 },
                 workflow_id=workflow_id,
             )
-        except Exception as e:
-            self.logger.error(f"Failed to get default repo: {e}")
+        except Exception as e:  # silent-ok: #1423 — top-level handler boundary; failure now returns an honest error result (success=False + error/error_type) with traceback instead of success=True
+            self.logger.error(f"Failed to get default repo: {e}", exc_info=True)
             return IntentProcessingResult(
-                success=True,
+                success=False,
                 message=(
                     "I wasn't able to look up your default repo just now. "
                     "Please try again in a moment."
@@ -4769,6 +4798,8 @@ class IntentService:
                     "context": {"error": str(e)},
                 },
                 workflow_id=workflow_id,
+                error=str(e),
+                error_type="get_default_repo_error",
             )
 
     # #1333 (2026-06-30): `_handle_unwired_write` (the rail-dispatched honest-degrade

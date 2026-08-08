@@ -24,6 +24,7 @@ from typing import List, Optional, Tuple
 from uuid import UUID
 
 import structlog
+from sqlalchemy.exc import SQLAlchemyError
 
 from services.api.todo_management import TodoCreateRequest, TodoUpdateRequest
 from services.consciousness.todo_consciousness import (
@@ -172,7 +173,11 @@ class TodoIntentHandlers:
             logger.warning("Todo creation validation failed", error=str(e), user_id=user_id)
             return f"I had trouble with that: {str(e)}"
 
-        except Exception as e:
+        # #1423: narrowed from `except Exception` — expected failures here are DB-layer
+        # (unreachable/timeout/constraint), which SQLAlchemyError covers. Anything else
+        # (a formatting bug, an attribute error) is a CODE bug and now propagates to the
+        # route's degradation boundary instead of masquerading as "a temporary issue".
+        except (SQLAlchemyError, OSError) as e:
             logger.error("Todo creation failed", error=str(e), user_id=user_id, exc_info=True)
             return "I had trouble saving that todo — it may be a temporary issue. You can try again, or rephrase with 'add todo: [your task]'."
 
@@ -337,7 +342,11 @@ class TodoIntentHandlers:
             # Format with consciousness
             return format_todo_list_conscious(todos, include_completed=include_completed)
 
-        except Exception as e:
+        # #1423: narrowed from `except Exception` — expected failures are DB-layer
+        # (unreachable/timeout), covered by SQLAlchemyError. Code bugs (e.g. in the
+        # conscious formatter) now propagate to the route's degradation boundary
+        # instead of vanishing into "try again in a moment".
+        except (SQLAlchemyError, OSError) as e:
             logger.error("Todo list retrieval failed", error=str(e), user_id=user_id, exc_info=True)
             return "I had trouble loading your todos right now. You can try 'show my todos' again in a moment, or add a new one with 'add todo: [task]'."
 
