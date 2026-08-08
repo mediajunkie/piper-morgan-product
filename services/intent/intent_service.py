@@ -6544,6 +6544,49 @@ class IntentService:
         else:
             return f"in the past {days} days"
 
+    async def _handle_list_reminders_query(
+        self, intent: Intent, workflow_id, session_id: str, user_id: str = None
+    ) -> IntentProcessingResult:
+        """
+        Issue #1521: "what reminders do I have?" — reminder LIST query.
+
+        The pre-classifier claims the query shape deterministically
+        (QUERY/list_reminders_query) so the LLM classifier never misroutes it
+        to the temporal lane; the action-dispatch rail lands here (registered
+        in workflow_entries — NO new elif dispatch site, per the #1124
+        discipline). Reads the stored reminders via
+        TodoIntentHandlers.handle_list_reminders (owner-scoped, aware-UTC).
+        """
+        self.logger.info(f"Processing list-reminders query: {intent.action}")
+
+        todo_user_id = _coerce_todo_principal(user_id)  # #1466: never raises on Slack ids
+        if not todo_user_id:
+            return IntentProcessingResult(
+                success=False,
+                message=(
+                    "I need you to be logged in to show your reminders. "
+                    "Please log in and try again."
+                ),
+                intent_data={"category": intent.category.value, "action": intent.action},
+                workflow_id=workflow_id,
+                error="User not authenticated",
+                error_type="AuthenticationRequired",
+            )
+
+        message = await self.todo_handlers.handle_list_reminders(
+            intent, session_id, user_id=todo_user_id
+        )
+        # Issue #748 shape: synchronous read — no workflow_id in the result.
+        return IntentProcessingResult(
+            success=True,
+            message=message,
+            intent_data={
+                "category": intent.category.value,
+                "action": intent.action,
+                "confidence": intent.confidence,
+            },
+        )
+
     async def _handle_execution_intent(
         self, intent: Intent, workflow, session_id: str, user_id: str = None
     ) -> IntentProcessingResult:

@@ -318,6 +318,78 @@ class TodoIntentHandlers:
 
         return None
 
+    async def handle_list_reminders(self, intent: Intent, session_id: str, user_id: UUID) -> str:
+        """
+        Issue #1521: Handle "what reminders do I have?" — list the STORED
+        reminders instead of misrouting to the temporal/calendar answer.
+
+        Reads this user's active todos (owner-scoped via user_id, the #1493
+        discipline) and reports the ones carrying a reminder_date, split into
+        due-now/overdue vs upcoming. Both sides of the due-ness comparison are
+        normalized aware-UTC per the #1491/#1429 guard shape (naive rows from
+        tz-dropping backends are assumed UTC via ensure_utc, never TypeError).
+        """
+        from datetime import datetime, timezone
+
+        from services.utils.datetime_utils import ensure_utc
+
+        try:
+            todos = await self.todo_service.list_todos(user_id=user_id, include_completed=False)
+
+            reminders = [
+                todo
+                for todo in todos
+                if getattr(todo, "reminder_date", None) is not None and not todo.completed
+            ]
+
+            logger.info(
+                "Reminder list retrieved",
+                user_id=user_id,
+                todo_count=len(todos),
+                reminder_count=len(reminders),
+            )
+
+            if not reminders:
+                # Pattern-073 discipline: describe what was actually queried
+                # (saved reminders), not a categorical "nothing scheduled".
+                return (
+                    "I checked your saved reminders and there are none right now. "
+                    "You can set one with 'remind me to [task] tomorrow at 9am'."
+                )
+
+            now = datetime.now(timezone.utc)
+            due: List[tuple] = []
+            upcoming: List[tuple] = []
+            for todo in reminders:
+                when = ensure_utc(todo.reminder_date)
+                (due if when <= now else upcoming).append((when, todo))
+            due.sort(key=lambda pair: pair[0])
+            upcoming.sort(key=lambda pair: pair[0])
+
+            def _line(when, todo) -> str:
+                return f"- **{todo.text}** — {when.strftime('%A, %B %-d at %-I:%M %p')} UTC"
+
+            count = len(reminders)
+            parts = [f"You have {count} reminder{'s' if count != 1 else ''} saved:"]
+            if due:
+                parts.append("\n⏰ Due now:")
+                parts.extend(_line(when, todo) for when, todo in due)
+            if upcoming:
+                parts.append("\n📅 Upcoming:")
+                parts.extend(_line(when, todo) for when, todo in upcoming)
+            return "\n".join(parts)
+
+        except Exception as e:  # silent-ok: logged at error w/ exc_info; user gets honest trouble-loading copy, never a false "no reminders" (#1425)
+            logger.error(
+                "Reminder list retrieval failed", error=str(e), user_id=user_id, exc_info=True
+            )
+            # #1425 discipline: a source failure must read as trouble-loading,
+            # never as "no reminders".
+            return (
+                "I had trouble loading your reminders right now. "
+                "You can try 'what reminders do I have?' again in a moment."
+            )
+
     async def handle_list_todos(self, intent: Intent, session_id: str, user_id: UUID) -> str:
         """Handle: "show my todos" or "list todos" - shows active todos from database.
 

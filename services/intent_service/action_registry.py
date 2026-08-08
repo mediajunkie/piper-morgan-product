@@ -124,6 +124,9 @@ ACTION_REGISTRY: dict[tuple[str, str], ActionDisposition] = {
     ("QUERY", "list_todos_query"): ActionDisposition.WORKFLOW,
     ("QUERY", "list_completed_todos"): ActionDisposition.WORKFLOW,
     ("QUERY", "next_todo_query"): ActionDisposition.WORKFLOW,
+    # #1521: reminder LIST query ("what reminders do I have?") — pre-classifier
+    # canonical, rail-registered in workflow_entries.
+    ("QUERY", "list_reminders_query"): ActionDisposition.WORKFLOW,
     # ---- QUERY: Feature Info (was stub → now floor) ----
     ("QUERY", "get_feature_info"): ActionDisposition.FLOOR,
     # ---- EXECUTION ----
@@ -190,6 +193,7 @@ ACTION_EXAMPLES: dict[tuple[str, str], str] = {
     ("QUERY", "list_todos_query"): "Show me my todos",
     ("QUERY", "list_completed_todos"): "Show me completed todos",
     ("QUERY", "next_todo_query"): "What's my next todo?",
+    ("QUERY", "list_reminders_query"): "What reminders do I have?",
     ("QUERY", "get_feature_info"): "Tell me more about the GitHub integration",
     ("EXECUTION", "complete_todo"): "Mark my first todo as done",
     ("EXECUTION", "create_todo"): "Add a todo to review the Q3 roadmap",
@@ -349,6 +353,7 @@ ACTION_TO_VERB: dict[str, Verb] = {
     "session_activity_query": Verb.GET,
     "list_todos_query": Verb.LIST,
     "list_completed_todos": Verb.LIST,
+    "list_reminders_query": Verb.LIST,
     "next_todo_query": Verb.GET,
     "get_feature_info": Verb.GET,
     "complete_todo": Verb.COMPLETE,
