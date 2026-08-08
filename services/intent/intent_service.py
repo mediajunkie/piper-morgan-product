@@ -548,8 +548,10 @@ class IntentService:
                 conv_ctx._hydrated = True
                 if self.conversation_manager:
                     try:
+                        # #1532 F3: thread the principal — an owner mismatch
+                        # behaves as not-found (None), never leaks state.
                         _persisted = await self.conversation_manager.load_context_state(
-                            effective_session_id
+                            effective_session_id, user_id=effective_user_id
                         )
                         if _persisted:
                             conv_ctx.apply_persisted_state(_persisted)
@@ -570,8 +572,13 @@ class IntentService:
                     hydrate_turns_from_db,
                 )
 
+                # #1532 F3: thread the principal — hydrating another
+                # principal's session id backfills nothing (owner-checked read).
                 await hydrate_turns_from_db(
-                    conv_ctx, self.conversation_manager, effective_session_id
+                    conv_ctx,
+                    self.conversation_manager,
+                    effective_session_id,
+                    user_id=effective_user_id,
                 )
             # #1122: record the in-flight turn for EVERY path, not just the
             # one floor site that called add_turn (R4 fix). Before this, turns

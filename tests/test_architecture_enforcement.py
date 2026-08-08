@@ -1544,3 +1544,224 @@ class TestNoRawTodoEnumComparisons1472:
             f"lookup, #1472). Compare `.value` instead. Sites: {violations} "
             f"(scanned {files_scanned} files)"
         )
+
+
+class TestPrincipalThreadingGuards1532:
+    """#1532 — the three guards from the principal-dropping audit
+    (docs/internal/operations/principal-dropping-audit-2026-08-08.md §Guards).
+
+    The class being guarded: state keyed by ``{user_id or 'anonymous'}:...``
+    read WITHOUT the principal — every authenticated user silently gets the
+    anonymous key's (empty or wrong) data. #1394 (floor history), F1 (agenda
+    todos read with owner_id=session_id), F2 (priorities read session-only)
+    and F3 (conversation persistence had no ownership check) were all this
+    one shape. These guards make the shape a test failure instead of an audit
+    finding.
+
+    Guard 1 is a RATCHET like TestPreFloorDispatchSiteRatchet: the allowlist
+    is exact (tight, no slack) and may only SHRINK. When you thread a
+    principal through an allowlisted site, remove its entry in the same
+    commit. NEVER add an entry — thread the principal (or recover it via
+    ``_principal_from_intent(intent)``, the sanctioned recovery idiom the
+    guard recognizes) instead.
+    """
+
+    # Functions whose results are principal-keyed (the audit's reader set that
+    # is callable across modules; the three F3 persistence readers are covered
+    # structurally by Guard 3 + their own ownership tests).
+    PRINCIPAL_KEYED_READERS = {
+        "get_or_create_context",  # in-memory discourse state (#817 key)
+        "get_user_context",  # user prefs/projects (F2's reader)
+        "build_recent_history",  # prompt-shaped history (#1394's reader)
+    }
+
+    # Demo-only surface (audit §INERT / by-design): excluded, not allowlisted,
+    # so its churn can never consume the ratchet budget.
+    EXCLUDED_FILES = {
+        os.path.join("services", "conversation", "context_tracker.py"),
+    }
+
+    # Guard 1 baseline — audit-validated: exactly ONE unthreaded site remains,
+    # classify_conscious's anonymous-keyed context read (zero production
+    # callers; delete-candidate with the #1526 class). F2 was fixed 2026-08-08.
+    # Direction is DOWN: 1 → 0 when classify_conscious is deleted or threaded.
+    ALLOWED_UNTHREADED = {
+        (
+            os.path.join("services", "intent_service", "classifier.py"),
+            "classify_conscious",
+            "get_or_create_context",
+        ),
+    }
+    MAX_UNTHREADED_PRINCIPAL_READS = 1
+
+    @staticmethod
+    def _call_name(call) -> str:
+        import ast
+
+        func = call.func
+        if isinstance(func, ast.Name):
+            return func.id
+        if isinstance(func, ast.Attribute):
+            return func.attr
+        return ""
+
+    @staticmethod
+    def _passes_principal(call) -> bool:
+        """A reader call is threaded if it passes a user_id that is not the
+        literal None — as keyword, or as the 2nd positional arg (all three
+        readers take the principal as parameter #2)."""
+        import ast
+
+        for kw in call.keywords:
+            if kw.arg == "user_id":
+                return not (isinstance(kw.value, ast.Constant) and kw.value.value is None)
+        if len(call.args) >= 2:
+            a = call.args[1]
+            return not (isinstance(a, ast.Constant) and a.value is None)
+        return False
+
+    def _scan_files(self):
+        import ast
+
+        for base in ("services", "web"):
+            for root, _dirs, files in os.walk(base):
+                if "__pycache__" in root:
+                    continue
+                for f in sorted(files):
+                    if not f.endswith(".py"):
+                        continue
+                    rel = os.path.relpath(os.path.join(root, f))
+                    src = open(rel, encoding="utf-8", errors="ignore").read()
+                    yield rel, ast.parse(src)
+
+    def _unthreaded_reader_sites(self):
+        """(rel_path, enclosing_function, reader) for every principal-keyed
+        reader call that neither threads a principal nor sits in a function
+        using the ``_principal_from_intent`` recovery idiom."""
+        import ast
+
+        violations = []
+        reader_calls_seen = 0
+        files_scanned = 0
+
+        for rel, tree in self._scan_files():
+            files_scanned += 1
+            if rel in self.EXCLUDED_FILES:
+                continue
+
+            def walk(node, enclosing):
+                nonlocal reader_calls_seen
+                for child in ast.iter_child_nodes(node):
+                    child_enclosing = enclosing
+                    if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                        child_enclosing = child
+                    if (
+                        isinstance(child, ast.Call)
+                        and self._call_name(child) in self.PRINCIPAL_KEYED_READERS
+                    ):
+                        reader_calls_seen += 1
+                        if not self._passes_principal(child):
+                            recovered = enclosing is not None and any(
+                                isinstance(n, ast.Name) and n.id == "_principal_from_intent"
+                                for n in ast.walk(enclosing)
+                            )
+                            if not recovered:
+                                violations.append(
+                                    (
+                                        rel,
+                                        enclosing.name if enclosing else "<module>",
+                                        self._call_name(child),
+                                    )
+                                )
+                    walk(child, child_enclosing)
+
+            walk(tree, None)
+
+        return violations, reader_calls_seen, files_scanned
+
+    def test_guard1_no_unthreaded_principal_keyed_reads(self):
+        """Guard 1: every principal-keyed read passes a non-None user_id (or
+        recovers it via _principal_from_intent). Tight ratchet — the violation
+        set must EQUAL the allowlist, so fixes shrink it in the same commit
+        and new drops fail immediately."""
+        violations, reader_calls_seen, files_scanned = self._unthreaded_reader_sites()
+
+        # Vacuity guards (m-44): prove the scan actually measured something.
+        assert files_scanned >= 100, (
+            f"principal-reader scan walked only {files_scanned} files — detection broken"
+        )
+        assert reader_calls_seen >= 15, (
+            f"principal-reader scan matched only {reader_calls_seen} reader calls — "
+            "detection broken (the tree has dozens)"
+        )
+
+        assert len(violations) <= self.MAX_UNTHREADED_PRINCIPAL_READS, (
+            f"NEW unthreaded principal-keyed read(s): "
+            f"{sorted(set(violations) - self.ALLOWED_UNTHREADED)} — this is the #1394/F1/F2 "
+            "shape (authenticated users silently served the anonymous key's data). Thread "
+            "user_id through, or recover it with _principal_from_intent(intent). Do NOT "
+            "extend the allowlist."
+        )
+        assert set(violations) == self.ALLOWED_UNTHREADED, (
+            f"Guard-1 ratchet drift: actual={sorted(set(violations))} vs "
+            f"allowlist={sorted(self.ALLOWED_UNTHREADED)}. If you just threaded/deleted an "
+            "allowlisted site, shrink ALLOWED_UNTHREADED (and "
+            "MAX_UNTHREADED_PRINCIPAL_READS) in this commit; if a new site appears, fix the "
+            "site, never the list."
+        )
+
+    def test_guard2_session_id_is_never_an_owner(self):
+        """Guard 2: no call anywhere passes owner_id=<session-derived value>.
+        F1's exact bug (todos read with owner_id=session_id while writes used
+        owner_id=user_id → structurally empty for every authenticated user).
+        Zero baseline — F1 is fixed; any hit is a regression."""
+        import ast
+
+        violations = []
+        owner_kwargs_seen = 0
+
+        for rel, tree in self._scan_files():
+            for node in ast.walk(tree):
+                if not isinstance(node, ast.Call):
+                    continue
+                for kw in node.keywords:
+                    if kw.arg != "owner_id":
+                        continue
+                    owner_kwargs_seen += 1
+                    idents = {
+                        n.id for n in ast.walk(kw.value) if isinstance(n, ast.Name)
+                    } | {n.attr for n in ast.walk(kw.value) if isinstance(n, ast.Attribute)}
+                    session_like = {
+                        i for i in idents if i == "session" or i.startswith("session_")
+                    }
+                    if session_like:
+                        violations.append((rel, node.lineno, sorted(session_like)))
+
+        assert owner_kwargs_seen >= 10, (
+            f"owner_id scan matched only {owner_kwargs_seen} keyword sites — detection broken"
+        )
+        assert not violations, (
+            f"owner_id passed a session-derived value at: {violations} — a session id is "
+            "NEVER an owner (F1, #1532 audit). Owners are principals (user_id); thread the "
+            "user's id instead."
+        )
+
+    def test_guard3_f3_persistence_readers_accept_principal(self):
+        """Guard 3: the three F3 conversation-persistence readers keep their
+        principal parameter (ownership contract pinned behaviorally in
+        test_conversation_ownership_1532.py; this pins the signatures so a
+        refactor can't silently drop the parameter again)."""
+        import inspect
+
+        from services.conversation.conversation_manager import ConversationManager
+        from services.intent_service.conversation_context import hydrate_turns_from_db
+
+        for func, name in [
+            (ConversationManager.get_recent_turns, "ConversationManager.get_recent_turns"),
+            (ConversationManager.load_context_state, "ConversationManager.load_context_state"),
+            (hydrate_turns_from_db, "hydrate_turns_from_db"),
+        ]:
+            assert "user_id" in inspect.signature(func).parameters, (
+                f"{name} lost its user_id (principal) parameter — the F3 ownership check "
+                "cannot be threaded without it (#1532)."
+            )
