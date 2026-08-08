@@ -37,6 +37,28 @@ from .session_factory import AsyncSessionFactory
 logger = structlog.get_logger()
 
 
+class ConversationOwnershipError(PermissionError):
+    """#1532 F3: an operation tried to touch a conversation owned by a
+    different principal. Raised by ``ensure_conversation_exists`` (and thus
+    ``save_turn``) on an owner mismatch so cross-principal appends are
+    impossible at the data layer. Message never includes turn content."""
+
+
+def conversation_ownership_matches(owner, principal) -> bool:
+    """#1532 F3 shared ownership contract (same rule the chat-path reads use —
+    see conversation_manager._owner_matches, which mirrors the REST check at
+    web/api/routes/conversations.py:173):
+
+    - anonymous-owned row (owner None) ↔ anonymous principal (None) only;
+    - owned row ↔ exactly that owner (string-compared);
+    - every cross pairing (authenticated↔anonymous either way, or two
+      different users) is a mismatch.
+    """
+    if owner is None:
+        return principal is None
+    return principal is not None and str(owner) == str(principal)
+
+
 # #1089 Phase 0 increment 4: repository-layer safety-net flag-word list.
 # Architect Q3 disposition 2026-05-17 — "trivially-detectable flag word"
 # for the defense-in-depth check in `KnowledgeGraphRepository.create_node`.
@@ -1449,15 +1471,41 @@ class ConversationRepository(BaseRepository):
         Issue #563: Called before saving turns to handle new sessions.
         Issue #715: Sets lifecycle_state=ACTIVE on creation.
 
+        #1532 F3: on an EXISTING row the caller's principal must match the
+        row's owner, else ConversationOwnershipError — appending one
+        principal's turns to another principal's conversation is refused at
+        the data layer. (The sole production caller is ``save_turn``, whose
+        callers already treat persistence as best-effort — a raise here means
+        "turn not saved", never a crashed response.) The owner contract is
+        ``conversation_ownership_matches``: an anonymous principal may touch
+        only anonymous-owned rows, an authenticated principal only its own.
+
         Args:
             conversation_id: The conversation/session ID
             user_id: Optional user ID to associate with conversation
+
+        Raises:
+            ConversationOwnershipError: existing row owned by a different
+                principal (#1532 F3).
         """
         from services.database.models import ConversationDB
 
         # Check if conversation exists
         existing = await self.session.get(ConversationDB, conversation_id)
         if existing:
+            if not conversation_ownership_matches(existing.user_id, user_id):
+                logger.warning(
+                    "conversation_owner_mismatch_on_append",
+                    conversation_id=str(conversation_id),
+                    conversation_owner=str(existing.user_id),
+                    requesting_principal=(
+                        str(user_id) if user_id is not None else "anonymous"
+                    ),
+                )
+                raise ConversationOwnershipError(
+                    f"Conversation {conversation_id} belongs to a different "
+                    "principal; refusing to append."
+                )
             return
 
         # Issue #840: Refuse to create conversation without valid user_id.

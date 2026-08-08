@@ -34,7 +34,7 @@ from datetime import datetime
 from typing import Optional
 
 import structlog
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from services.auth.jwt_service import JWTClaims, JWTService
@@ -399,6 +399,7 @@ async def process_intent(
         # in the chat input without clicking "+ New Chat" button
         # Issue #787: Track if conversation was created to signal frontend sidebar refresh
         conversation_created = False
+        conversation_owner_mismatch = False
         if user_id and session_id and session_id != "default_session":
             try:
                 from services.database.models import ConversationDB
@@ -426,9 +427,32 @@ async def process_intent(
                             session_id=session_id,
                             user_id=user_id,
                         )
+                    elif str(existing.user_id) != str(user_id):
+                        # #1532 F3: the chat path checked EXISTENCE only, never
+                        # owner — mirror the REST ownership rule
+                        # (conversations.py:173). A different owner — including
+                        # a hypothetical anonymous-owned row — is treated as
+                        # not-found for this account (never confirm existence).
+                        # Flag here, refuse below: raising inside this try would
+                        # be swallowed by the except that guards auto-creation.
+                        conversation_owner_mismatch = True
+                        logger.warning(
+                            "conversation_session_owner_mismatch",
+                            session_id=session_id,
+                            conversation_owner=str(existing.user_id),
+                            requesting_user=str(user_id),
+                        )
             except Exception as e:
                 # Don't fail the intent if conversation creation fails
                 logger.warning(f"Failed to auto-create conversation: {e}")
+        if conversation_owner_mismatch:
+            # #1532 F3: refuse BEFORE process_intent — no hydration, no append.
+            # (The service layer enforces ownership independently; this gives
+            # the honest HTTP answer instead of a silently empty conversation.)
+            raise HTTPException(
+                status_code=404,
+                detail="Conversation not found for this account.",
+            )
 
         # Issue #490: Pass user_id to service for user-specific features
         # ADR-051 Phase 3: Pass RequestContext alongside old params (dual pattern)
@@ -499,6 +523,10 @@ async def process_intent(
 
         return response
 
+    except HTTPException:
+        # #1532 F3: deliberate HTTP refusals (ownership 404) must reach the
+        # client as-is — never converted to a 200 degradation response.
+        raise
     except Exception as e:
         # Pattern-007: Graceful degradation - return 200 with user-friendly message
         logger.error(f"Intent route error: {str(e)}", exc_info=True)

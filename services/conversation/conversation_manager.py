@@ -40,6 +40,30 @@ from services.health.integration_health_monitor import health_monitor
 
 logger = structlog.get_logger()
 
+# #1532 F3: sentinel distinguishing "caller did not thread a principal" (legacy /
+# internal callers — unscoped m-40 shim, WARNs) from "caller threaded user_id=None"
+# (a genuinely anonymous principal — ENFORCED: may only read conversations that
+# have no owner). Mirrors the ConversationRepository.get_by_id D3 shim (#1252).
+UNSCOPED_PRINCIPAL = object()
+
+
+def _owner_matches(owner, principal) -> bool:
+    """#1532 F3 ownership contract for conversation reads/appends.
+
+    - anonymous-owned row (owner None) → readable ONLY by the anonymous path
+      (principal None). An authenticated principal hitting an anonymous-owned
+      conversation id is treated as NOT-FOUND (the safe contract).
+    - owned row → readable ONLY by that owner (string-compared, like the REST
+      rule at web/api/routes/conversations.py:173).
+    - anonymous principal hitting an owned row → NOT-FOUND (never leak).
+
+    Single source of truth: delegates to the shared repository-layer rule so
+    the read side and the append side (ensure_conversation_exists) can't drift.
+    """
+    from services.database.repositories import conversation_ownership_matches
+
+    return conversation_ownership_matches(owner, principal)
+
 
 class ConversationManager:
     """
@@ -78,7 +102,7 @@ class ConversationManager:
         )
 
     async def get_recent_turns(
-        self, conversation_id: str, limit: Optional[int] = None
+        self, conversation_id: str, limit: Optional[int] = None, user_id=UNSCOPED_PRINCIPAL
     ) -> List[ConversationTurn]:
         """Get the recent persisted turns for a conversation (cache → DB).
 
@@ -87,9 +111,26 @@ class ConversationManager:
         from here. Returns domain ``ConversationTurn`` objects ordered by
         turn_number; empty list when the conversation has no turns (or on
         any failure — read is best-effort, never raises).
+
+        #1532 F3: ``user_id`` is the requesting principal. When threaded, the
+        read verifies conversation ownership FIRST (before cache or DB): an
+        owner mismatch behaves as not-found (empty list) + a warning log with
+        both ids — turns are never leaked across principals. When omitted
+        (legacy sentinel) the read is unscoped and WARNs (m-40 shim). The
+        ownership probe runs before the cache read on purpose: the cache key
+        is not principal-scoped, so the check must gate BOTH sources.
         """
         limit = limit or self.context_window_size
         try:
+            if user_id is UNSCOPED_PRINCIPAL:
+                logger.warning(
+                    "conversation_turns_read_without_principal",
+                    conversation_id=str(conversation_id),
+                )
+            elif not await self._principal_owns_conversation(
+                conversation_id, user_id, surface="get_recent_turns"
+            ):
+                return []
             # Try Redis cache first (with circuit breaker)
             cached_turns = await self._get_from_cache(conversation_id)
             if cached_turns:
@@ -126,6 +167,7 @@ class ConversationManager:
         user_id: Optional[str] = None,
         provenance: Optional[dict] = None,
         context_state: Optional[dict] = None,
+        intent: Optional[str] = None,
     ) -> ConversationTurn:
         """Save new conversation turn and update context.
 
@@ -142,6 +184,10 @@ class ConversationManager:
                 + last_offer + floor flags — persisted into ConversationDB.context
                 in the SAME session as the turn (row guaranteed via save_turn's
                 ensure_conversation_exists). Best-effort; None = skip.
+            intent: Optional resolved intent label (Issue #1518) — persisted to
+                conversation_turns.intent ("category:action" or bare category)
+                so routing telemetry exists for every turn. Before #1518 this
+                was never passed and the column was always NULL on live turns.
 
         Returns:
             The saved ConversationTurn
@@ -157,6 +203,7 @@ class ConversationManager:
             turn_number=await self._get_next_turn_number(conversation_id),
             user_message=user_message,
             assistant_response=assistant_response,
+            intent=intent,
             entities=entities or [],
             metadata=metadata,
             created_at=datetime.now(),
@@ -178,14 +225,20 @@ class ConversationManager:
         return turn
 
     async def resolve_references_in_message(
-        self, message: str, conversation_id: str
+        self, message: str, conversation_id: str, user_id=UNSCOPED_PRINCIPAL
     ) -> Tuple[str, List[ResolvedReference]]:
-        """Resolve anaphoric references using conversation context"""
+        """Resolve anaphoric references using conversation context.
+
+        #1532 F3: threads the requesting principal through to the ownership-
+        checked ``get_recent_turns`` read (sentinel pass-through preserved).
+        """
         start_time = time.time()
 
         try:
             # Last 5 turns for performance
-            recent_turns = await self.get_recent_turns(conversation_id, limit=5)
+            recent_turns = await self.get_recent_turns(
+                conversation_id, limit=5, user_id=user_id
+            )
             if not recent_turns:
                 return message, []
 
@@ -334,10 +387,26 @@ class ConversationManager:
         except Exception as e:
             logger.error(f"Failed to save turn to database: {e}")
 
-    async def load_context_state(self, conversation_id: str) -> Optional[dict]:
+    async def load_context_state(
+        self, conversation_id: str, user_id=UNSCOPED_PRINCIPAL
+    ) -> Optional[dict]:
         """#953: load the persisted Layer-4 context slice for a conversation,
-        or None. Best-effort (returns None on any error / missing row)."""
+        or None. Best-effort (returns None on any error / missing row).
+
+        #1532 F3: when a principal is threaded, ownership is verified first —
+        an owner mismatch behaves as not-found (None) + warning log; the
+        state is never leaked across principals. Omitted principal = unscoped
+        m-40 shim (WARNs)."""
         try:
+            if user_id is UNSCOPED_PRINCIPAL:
+                logger.warning(
+                    "conversation_state_read_without_principal",
+                    conversation_id=str(conversation_id),
+                )
+            elif not await self._principal_owns_conversation(
+                conversation_id, user_id, surface="load_context_state"
+            ):
+                return None
             async with AsyncSessionFactory.session_scope() as session:
                 from services.database.repositories import ConversationRepository
 
@@ -346,6 +415,32 @@ class ConversationManager:
         except Exception as e:
             logger.error(f"Failed to load context state: {e}")
             return None
+
+    async def _principal_owns_conversation(
+        self, conversation_id: str, user_id: Optional[str], surface: str
+    ) -> bool:
+        """#1532 F3 ownership probe — runs BEFORE any turn/state read when a
+        principal is threaded. Missing row → vacuously True (there is nothing
+        to protect; downstream reads return empty anyway). Owner mismatch →
+        False + a warning naming both ids. Raises on DB failure so callers'
+        best-effort except blocks fail CLOSED (empty/None), never open."""
+        async with AsyncSessionFactory.session_scope() as session:
+            from services.database.models import ConversationDB
+
+            row = await session.get(ConversationDB, conversation_id)
+            if row is None:
+                return True
+            owner = row.user_id  # read inside the session (avoid detached access)
+        if _owner_matches(owner, user_id):
+            return True
+        logger.warning(
+            "conversation_owner_mismatch",
+            surface=surface,
+            conversation_id=str(conversation_id),
+            conversation_owner=str(owner),
+            requesting_principal=str(user_id) if user_id is not None else "anonymous",
+        )
+        return False
 
     async def _get_next_turn_number(self, conversation_id: str) -> int:
         """Get next turn number for conversation"""

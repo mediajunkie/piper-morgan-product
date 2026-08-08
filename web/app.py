@@ -251,18 +251,23 @@ RouterInitializer.mount_router(
 RouterInitializer.mount_router(app, "web.api.routes.files", "router", "Files API")
 RouterInitializer.mount_router(app, "web.api.routes.artifacts", "router", "Artifacts API")
 RouterInitializer.mount_router(app, "web.api.routes.documents", "router", "Documents API")
-# #1427 (PM-ratified 2026-07-18): the todos REST surface was mocked end-to-end
-# (fabricated responses, nothing persisted) — UNMOUNTED rather than shipped as
-# a lie. Chat todos (todo_handlers) + the Lists API below are the real, kept
-# surfaces; the module's request models stay imported by the chat path.
-# Finish-work moved to Production as integrate-don't-build (One Job paradigm).
+# #1427 (PM-ratified 2026-07-18): services/api/todo_management.py — the mocked
+# end-to-end todos REST surface (fabricated responses, nothing persisted) — is
+# the UNMOUNTED module; its mount was removed here rather than shipped as a lie.
+# It is NOT web.api.routes.todos: that module IS mounted below ("Todos SEC-RBAC
+# API") and is live. Chat todos (todo_handlers) + the Lists API right below are
+# the real, kept surfaces; todo_management's request models stay imported by
+# the chat path. Finish-work moved to Production as integrate-don't-build
+# (One Job paradigm).
 RouterInitializer.mount_router(app, "web.api.routes.lists", "router", "Lists API")
 RouterInitializer.mount_router(
     app, "web.api.routes.insights", "router", "Insights API"
 )  # Issue #1031 MUX-INSIGHT-PASSIVE
 RouterInitializer.mount_router(
     app, "web.api.routes.places", "router", "Places API"
-)  # Issue #684/#1192(d)/#1195 — "What I'm seeing" panel backend
+)  # #684/#1192(d)/#1195. NOTE: its "What I'm seeing" panel was retired by
+# #1236 (Places render via Radar/PlaceEntitySource now) — this route currently
+# has NO UI caller; keep-or-delete tracked in #1522 (see the module docstring).
 RouterInitializer.mount_router(app, "web.api.routes.todos", "router", "Todos SEC-RBAC API")
 RouterInitializer.mount_router(app, "web.api.routes.projects", "router", "Projects API")
 RouterInitializer.mount_router(

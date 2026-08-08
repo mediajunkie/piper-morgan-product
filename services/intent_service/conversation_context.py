@@ -662,10 +662,19 @@ def build_recent_history(
     return history
 
 
+# #1532 F3: local sentinel mirroring conversation_manager.UNSCOPED_PRINCIPAL
+# (not imported — the manager is handed in as an argument precisely so this
+# module never imports it). Distinguishes "principal not threaded" (legacy
+# 3-arg callers → manager's unscoped shim) from user_id=None (anonymous,
+# enforced against owned rows).
+_UNSCOPED_PRINCIPAL = object()
+
+
 async def hydrate_turns_from_db(
     conv_ctx: ConversationContext,
     conversation_manager,
     session_id: str,
+    user_id=_UNSCOPED_PRINCIPAL,
 ) -> bool:
     """Backfill the in-memory turn window from persisted turns (#1122).
 
@@ -684,13 +693,22 @@ async def hydrate_turns_from_db(
     This is THE single mapping point between the domain ConversationTurn
     (user_message/assistant_response, system of record) and the
     working-state turn (message/response) — #1207. Don't add others.
+
+    #1532 F3: ``user_id`` is the requesting principal, threaded through to the
+    manager's ownership-checked read — hydrating another principal's session id
+    backfills NOTHING (the manager treats an owner mismatch as not-found).
     """
     if conv_ctx.turns or conversation_manager is None:
         return False
     try:
-        persisted_turns = await conversation_manager.get_recent_turns(
-            session_id, limit=conv_ctx.max_turns
-        )
+        if user_id is _UNSCOPED_PRINCIPAL:
+            persisted_turns = await conversation_manager.get_recent_turns(
+                session_id, limit=conv_ctx.max_turns
+            )
+        else:
+            persisted_turns = await conversation_manager.get_recent_turns(
+                session_id, limit=conv_ctx.max_turns, user_id=user_id
+            )
         for t in persisted_turns or []:
             msg = getattr(t, "user_message", None)
             if not msg:

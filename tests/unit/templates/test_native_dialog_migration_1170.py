@@ -67,18 +67,22 @@ def test_insights_handlers_are_async(insights):
     assert "async function handleReset(" in insights
 
 
-# --- home.html: 3 toast errors + 1 dialog confirm ------------------------------
-
-
-def test_home_delete_uses_dialog_confirm(home):
-    assert "await Dialog.confirm(" in home
-    assert "Delete this conversation?" in home
+# --- home.html: toast errors on the live conversation paths --------------------
+# (#1522 step 1, 2026-08-08: the delete-confirm dialog + update/archive/delete
+# error toasts lived in home's dead legacy sidebar renderer, now excised — the
+# whole surface had been hidden since #1280 and a fix shipped dark into it,
+# #1516. The surviving live paths are switch/create; they must stay on the
+# design-floor Toast primitive, and no native dialog may return.)
 
 
 def test_home_errors_use_toast_messages(home):
-    assert "ToastMessages.error('update_error'" in home
-    assert "ToastMessages.error('archive_error'" in home
-    assert "ToastMessages.error('delete_error'" in home
+    assert "ToastMessages.error('load_error'" in home
+    assert "ToastMessages.error('create_error'" in home
+
+
+def test_home_has_no_native_dialogs(home):
+    assert "window.confirm(" not in home
+    assert "window.alert(" not in home
 
 
 # --- the other migrated files --------------------------------------------------

@@ -1,6 +1,12 @@
 """
 Tests for place_window component (#684 MUX-NAV-PLACES).
 
+⚠️ DEAD-TWIN NOTICE (#1522 step 1, 2026-08-08): place_window.html has NO live
+includer — the "What I'm seeing" panel it implements was consolidated into the
+Radar by #1236 (Places render as Radar work_item entities). These tests pin a
+component no page renders; do not treat green here as evidence the panel
+works. Deletion of the component + this suite is a #1522 step-2 candidate.
+
 Tests:
 - Template structure
 - Type-specific styling (atmosphere)
