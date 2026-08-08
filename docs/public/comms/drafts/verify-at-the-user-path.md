@@ -1,7 +1,7 @@
 ---
 image: 'verify-at-the-user-path-hotel-room.png'
 alt: ''
-caption: '"Sheeesh! They told me the room was ready!"'
+caption: '"Sheesh! They told me the room was ready!"'
 ---
 
 # Verify at the User Path, Not the Data Layer
