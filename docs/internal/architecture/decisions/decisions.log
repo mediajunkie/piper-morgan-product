@@ -1238,3 +1238,40 @@ SPATIAL MAP RE-DERIVED (9 days on) — I chose this over sending three reminders
   Sent as a REFRESHED INPUT, not a reminder, with the explicit note that the nine days are not anyone's
   neglect — beta correctly outranked a Production discovery thread; keeping the input current was mine.
 2026-08-08 ~07:08 PT [comms, PM-stated in-conversation] **MAIL FORMAT: standardize on YAML headers for all cohort memos.** PM: *"We are going to standardize on YAML headers for email."* Supersedes the mixed-format status quo (measured 2026-08-07: 272 YAML / 65 header-style across 337 memos in comms/read; header-style concentrated in HOST 18, CXO 9, Docs 4, PA 2 — HOST self-reported 106 of 199 sent). ⚠️ **This retires the CAUSE of the triage blind spot, not just the symptom** — `scripts/scan-inbox.py` (dual-format parser, shipped 08-07) stays useful for the existing archive, which remains mixed and always will. **PM also questioned the practice underneath it**: *"It seems odd to me that agents grep for mail when they have an inbox and the mail is in it?"* — see the Comms reply; the grep was a volume optimisation that introduced a defect the inbox itself never had.
+
+---
+2026-08-08 10:2x PT — Arch — PPM's RULE EXTENSION (status claims are measurable facts) + a dead trigger it found immediately
+
+PPM CAUGHT A SELF-CONTRADICTION IN MY OWN MAP: line 5 (header) said "PPM's roadmap-dependency slice is
+  PENDING" while §161 carried the DELIVERED slice with my own commentary on it. PPM delivered 2026-07-30; I
+  incorporated it the same day; I never updated the header. Nine days later I read my own header and asked
+  PPM for a slice they had delivered and I had already used.
+  ⚠️ MY LINE "the nine days are not anyone's neglect — beta correctly outranked it" WAS GENEROUS IN A WAY
+  THAT LET ME OFF. Beta explains part of the wait; my own header explains the rest, and I wrote both the
+  header and the excuse.
+
+⭐ PPM'S EXTENSION, ADOPTED — MY RULE WAS SCOPED TOO NARROWLY: I had "don't duplicate measurable facts in
+  prose; re-derive them" and applied it to COUNTS. "Has PPM delivered the slice" is JUST AS MEASURABLE. The
+  thing that cost nine days was a STATUS CLAIM, not a count.
+  🔴 AND THE ASYMMETRY IS THE PART WORTH KEEPING: A WRONG COUNT IS WRONG IN PUBLIC AND GETS ARGUED WITH; A
+  STALE "PENDING" GENERATES SILENCE — the person who would correct it reads it and stands down. That is AN
+  ERROR THAT SUPPRESSES ITS OWN CORRECTION, a nastier class than merely being wrong: the failure recruits
+  the one person positioned to catch it.
+
+APPLIED IMMEDIATELY TO MY OWN STATE FILES, AND IT FOUND ONE: arch-standing-items.md, #1166 Type-2 Dreaming
+  spike, gated on "awaiting M3 ship." M3 IS NOT IN THE MILESTONE LIST (live set: Ongoing · MVP · Production ·
+  Fast Follow · Dot Releases · Enterprise; M3/M4/M5 swept 2026-07-04/05). THE GATE HAS BEEN UNABLE TO FIRE
+  FOR FIVE WEEKS.
+  🔴 SAME DEFECT I REPAIRED 2026-07-31 (the ADR-068 line was gated on an M4 trigger and I re-gated it). I
+  FIXED THE INSTANCE IN FRONT OF ME AND NEVER SWEPT THE FILE FOR SIBLINGS — and the sibling was four lines
+  away. One-instance fixes are exactly what PPM's rule predicts will recur.
+  Re-gating #1166 needs PPM (owns the PDR + sequencing). Flagged in the file, not guessed.
+  ⚠️ HONESTY NOTE: `gh issue view 1166` returned EMPTY and I nearly reported the issue absent. IT WAS A RATE
+  LIMIT. The milestone call had succeeded so that finding stands, but #1166's own state is UNVERIFIED and
+  marked so. Empty output is "couldn't measure," not "measured zero" — the week's shape, occurring inside
+  the check I was running to find that shape.
+
+CONVENTION EXTENDED in arch-standing-items.md header: "A [⏸] line is a STATUS CLAIM, and status claims are
+  measurable facts with a short lifetime. Every blocked-on-external line must name a condition that CAN
+  STILL FIRE — a gate on a swept milestone, a closed issue, or a departed role generates permanent silence.
+  Re-derive these, not just counts." Credit to PPM in the file.
