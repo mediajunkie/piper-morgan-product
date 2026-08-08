@@ -42,7 +42,7 @@ The tell is distance. The further your check sits from the user's hands, the mor
 
 And this generalizes well past pages and templates. Any time you're verifying anything — a report a person will read, a workflow someone will run, an answer a user will receive — the same question applies. Did I check the thing the human actually touches, or did I check the thing that was easy to assert? Those drift apart constantly, and they drift apart in the direction of comfort, because the easy assertion is the one that's always available. The work is to resist the gravity and go all the way out to the edge — to the path where the person actually stands — and check the thing *there*, where it's harder and where it counts.
 
-The page renders now. It passes, if barely. Now I have one more reminder that the a trustworthy-looking checkmark and the user's actual experience can sit a surprising distance apart if we don't ensure we're actually checking the right thing.
+The page renders now. It passes, if barely. Now I have one more reminder that a trustworthy-looking checkmark and the user's actual experience can sit a surprising distance apart if we don't ensure we're actually checking the right thing.
 
 ---
 
