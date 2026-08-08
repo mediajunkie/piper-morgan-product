@@ -80,3 +80,24 @@ the bet that bends it.
 **Standing moratorium (Lead, effective 2026-08-08, PM's direction)**: no new routing patterns,
 extraction tweaks, or flow-claiming fixes outside this rebuild — emergencies excepted. Routing
 failures found meanwhile are corpus material, not patch tickets.
+
+## Addendum (same day, PM conversation): local-model sequencing — for explicit Arch ruling
+
+PM's standing question: a small LOCAL model for routine understanding/parsing. Agreed sequencing
+(decision requested as part of the review): build the inversion against a Haiku-class API model
+FIRST — this forces the routing call into a clean, swappable component with the corpus as its
+acceptance instrument. A local 3–8B model then AUDITIONS against the same corpus (the task —
+constrained selection + argument extraction — is classification-adjacent and locally plausible);
+swap when the corpus says it routes as well and the economics say it matters. Model choice becomes
+a config decision with a scoreboard, never an architecture bet. Contra-indicators recorded: the
+contextual cases (offer-binding, refusal-mid-flow) are where small models are weakest; local
+inference grows the Fly footprint; beta-scale API routing costs pennies/day and REPLACES the
+existing surface-2 call rather than adding one.
+
+## Addendum 2 — PM priority ruling (2026-08-08, in-conversation): FUNDAMENTALS FIRST
+
+PM: *"I would like to unblock addressing the most fundamental unfinished business first, before we
+spend too much time polishing specific workflows."* Month-plan ordering follows: inversion Phase 0
+(corpus baseline) starts immediately pre-ratification; floor-honesty contract, observability
+restoration (#1518), and false-trails cauterization steps 1–2 rank ABOVE all surface polish
+(#1497/#1515/#1519/#1512 explicitly deferred). Recorded in decisions.log.
