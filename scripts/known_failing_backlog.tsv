@@ -61,3 +61,4 @@ tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::
 tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_compare_requires_minimum_files	flaky
 tests/integration/test_document_processing.py::TestDocumentProcessingEdgeCases::test_question_requires_auth	flaky
 tests/integration/test_phase3_phase4_learning.py::TestPerformanceRequirements::test_feedback_performance	flaky
+tests/config/test_llm_config_service.py::TestProviderValidation::test_validate_openai_key_success	flaky	network-dependent: hits LIVE OpenAI API with the real keychain key; fails on connection timeout (verified 2026-08-08: file untouched since ruff reformat, fails in isolation with NETWORK_ERROR timeout both runs, passed in prior sweeps when network cooperated). Proper fix tracked: mock the HTTP call.
