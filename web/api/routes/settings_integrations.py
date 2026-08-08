@@ -1977,12 +1977,15 @@ async def save_github_token(
         )
 
     try:
-        # Valid → persist (user-scoped keychain, #849) + make it live for this
-        # process immediately (env) + clear the config cache so the next lookup
-        # picks it up.
+        # Valid → persist (user-scoped keychain, #849) + clear the config cache
+        # so the next lookup picks it up. #1507: the old `os.environ["GITHUB_TOKEN"]
+        # = token` line here was a PROCESS-WIDE write — any user's save became the
+        # ambient token for every env-reading GitHub path (cross-tenant bleed), and
+        # it silently refilled the env fallback #1461(a) deliberately gates off for
+        # real users. Per-user resolution goes through the keychain; the env is not
+        # a cache.
         keychain = KeychainService()
         keychain.store_api_key("github_token", token, username=current_user.sub)
-        os.environ["GITHUB_TOKEN"] = token
         GitHubConfigService().clear_cache()
 
         username = test_result.get("username") or "GitHub User"
