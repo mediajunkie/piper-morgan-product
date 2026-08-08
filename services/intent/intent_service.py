@@ -6539,8 +6539,11 @@ class IntentService:
         if mapped_action in ["create_issue", "create_ticket"]:
             return await self._handle_create_issue(intent, workflow_id, session_id, user_id=user_id)
 
-        elif mapped_action in ["update_issue", "update_ticket"]:
-            return await self._handle_update_issue(intent, workflow_id, user_id=user_id)
+        # #1411: update_issue/update_ticket elif REMOVED — dispatch is rail-only
+        # (workflow_entries.py registers update_issue + aliases pre-floor). The elif
+        # was reachable only when rail dispatch returned None, i.e. the handler
+        # RAISED — making the "backstop" a silent retry of a failed GitHub write.
+        # That edge now falls to the #1333 honest-decline else-branch below.
 
         # Issue #285: Todo operations routing
         # Issue #744: Convert user_id string to UUID for multi-tenancy support

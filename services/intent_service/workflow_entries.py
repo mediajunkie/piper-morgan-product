@@ -444,8 +444,9 @@ def register_default_workflows() -> None:
     )
     # #1411: update_issue onto the rail (was elif-only surface-4, registry/rail-invisible
     # → mode-4 reachability gap for every update request). Reuses the fully-implemented
-    # _handle_update_issue (intent, workflow_id, user_id) via the standard factory; the
-    # existing elif stays as an additive backstop (rail wins pre-floor).
+    # _handle_update_issue (intent, workflow_id, user_id) via the standard factory. The
+    # legacy elif is REMOVED (migration completion): the rail is the single dispatch
+    # surface — B3 Stage-0 referent resolution emits update_issue onto this same key.
     update_issue_entry = WorkflowEntry(
         entry_point=_make_query_dispatch_entry_point("_handle_update_issue", pass_user_id=True),
         description="Update-issue via action dispatch (#1411)",
