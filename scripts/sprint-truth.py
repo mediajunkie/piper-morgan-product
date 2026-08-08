@@ -16,6 +16,11 @@ an accurate sense of what is in this sprint."
 So this prints the breakdown, never a single number, and refuses to print a total without
 its parts. GitHub is the source of truth; nothing here is maintained by hand.
 
+THIS SCRIPT IS THE EXECUTABLE HALF OF THE `query-github-board` SKILL.
+The skill holds the doctrine (why board reads lie, and the three rules); this holds the one
+command for the most common question. It implements rule 1 (truncation reconciliation) as a
+hard exit — see fetch(). If they ever disagree, the skill wins and this script is the bug.
+
 USAGE
 -----
     python3 scripts/sprint-truth.py                 # MVP milestone (the beta gate)
@@ -45,7 +50,13 @@ GLOSS = {
 }
 
 
-def fetch(limit=1400):
+def fetch(limit=2000):
+    """Fetch the board, honoring query-github-board rule 1: reconcile totalCount vs fetched.
+
+    A truncated pull MAY NOT be summarized — that is the 2026-07-18 incident (a 1280-item
+    board silently truncated at --limit 1200 produced a confident '27 of 28 closed' to PM
+    that missed 8 open issues, including the sprint's own close-out gate).
+    """
     cmd = ["gh", "project", "item-list", PROJECT, "--owner", OWNER,
            "--limit", str(limit), "--format", "json"]
     try:
@@ -59,6 +70,19 @@ def fetch(limit=1400):
     items = data.get("items", [])
     if not items:
         sys.exit("Board returned ZERO items. That is a query failure, not an empty sprint.")
+
+    # ---- query-github-board rule 1: the truncation reconciliation ----
+    total = data.get("totalCount")
+    if total is None:
+        sys.exit("Payload carries no totalCount — cannot prove the pull was complete. "
+                 "REFUSING to summarize. (query-github-board rule 1)")
+    if len(items) != total:
+        sys.exit(f"TRUNCATED PULL: fetched {len(items)} of {total}. "
+                 f"Raise --limit above {total} or paginate. "
+                 f"A truncated pull MAY NOT be summarized — this check measured a SUBSET "
+                 f"and would report it as the whole, which is the exact defect this script exists "
+                 f"to prevent. (query-github-board rule 1; incident 2026-07-18)")
+    print(f"[pull complete: {len(items)}/{total} board items]")
     return items
 
 
