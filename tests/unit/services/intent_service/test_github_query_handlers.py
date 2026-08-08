@@ -1530,8 +1530,9 @@ class TestListPRsResults:
             assert "Settings" in result.message
 
     @pytest.mark.asyncio
-    async def test_handles_error_gracefully(self, intent_service):
-        """Test handler returns graceful error message on failure"""
+    async def test_handles_error_honestly(self, intent_service):
+        """#1423 slice 2 (#1524): connector failure returns an HONEST error result —
+        success=False + error/error_type — never the old success=True lie."""
         intent = Intent(
             category=IntentCategory.QUERY,
             action="list_prs_query",
@@ -1539,15 +1540,18 @@ class TestListPRsResults:
         )
 
         with patch(
-            "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
-        ) as MockRouter:
-            MockRouter.side_effect = Exception("Connection failed")
-
+            "services.mcp.consumer.github_adapter.GitHubMCPSpatialAdapter",
+            side_effect=RuntimeError("Connection failed"),
+        ):
             result = await intent_service._handle_list_prs_query(intent, "test-workflow-id")
 
-            assert result.success is True
-            assert "wasn't able to fetch" in result.message
-            assert "error" in result.intent_data["context"]
+        assert result.success is False, (
+            "PR-listing failure must not report success=True (#1524)"
+        )
+        assert "wasn't able to fetch" in result.message
+        assert result.error_type == "list_prs_error"
+        assert "Connection failed" in (result.error or "")
+        assert "error" in result.intent_data["context"]
 
 
 class TestListPRsPreClassifierRouting:

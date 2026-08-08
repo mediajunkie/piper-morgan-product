@@ -128,7 +128,8 @@ class TestListLabelsHandler:
         assert "and 5 more" in result.message
         assert result.intent_data["context"]["label_count"] == 25
 
-    async def test_exception_graceful_path(self, intent_service):
+    async def test_exception_returns_honest_failure(self, intent_service):
+        """#1423 slice 2 (#1524): router failure → success=False + error/error_type."""
         with patch(
             "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
         ) as MockRouter:
@@ -136,8 +137,12 @@ class TestListLabelsHandler:
             result = await intent_service._handle_list_labels_query(
                 _make_label_intent(), workflow_id="wf-1"
             )
-        assert result.success is True
+        assert result.success is False, (
+            "label-listing failure must not report success=True (#1524)"
+        )
         assert "wasn't able to fetch" in result.message
+        assert result.error_type == "list_labels_error"
+        assert "boom" in (result.error or "")
         assert "error" in result.intent_data["context"]
 
 
@@ -242,7 +247,8 @@ class TestListBranchesHandler:
             )
         assert "(protected)" in result.message
 
-    async def test_exception_graceful_path(self, intent_service):
+    async def test_exception_returns_honest_failure(self, intent_service):
+        """#1423 slice 2 (#1524): router failure → success=False + error/error_type."""
         with patch(
             "services.integrations.github.github_integration_router.GitHubIntegrationRouter"
         ) as MockRouter:
@@ -250,6 +256,10 @@ class TestListBranchesHandler:
             result = await intent_service._handle_list_branches_query(
                 _make_branch_intent(), workflow_id="wf-1"
             )
-        assert result.success is True
+        assert result.success is False, (
+            "branch-listing failure must not report success=True (#1524)"
+        )
         assert "wasn't able to fetch" in result.message
+        assert result.error_type == "list_branches_error"
+        assert "boom" in (result.error or "")
         assert "error" in result.intent_data["context"]

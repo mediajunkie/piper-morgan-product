@@ -4953,16 +4953,18 @@ class IntentService:
                 },
             )
 
-        except Exception as e:
-            self.logger.error(f"Failed to list PRs: {e}")
+        except Exception as e:  # silent-ok: #1423 slice 2 (#1524) — top-level handler boundary; failure now returns an honest error result (success=False + error/error_type) with traceback instead of success=True
+            self.logger.error(f"Failed to list PRs: {e}", exc_info=True)
             return IntentProcessingResult(
-                success=True,
+                success=False,
                 message="I wasn't able to fetch your pull requests right now. Please try again in a moment.",
                 intent_data={
                     "category": "query",
                     "action": "list_prs_query",
                     "context": {"error": str(e)},
                 },
+                error=str(e),
+                error_type="list_prs_error",
             )
 
     async def _handle_list_milestones_query(
@@ -5017,10 +5019,10 @@ class IntentService:
                 },
             )
 
-        except Exception as e:
-            self.logger.error(f"Failed to list milestones: {e}")
+        except Exception as e:  # silent-ok: #1423 slice 2 (#1524) — top-level handler boundary; failure now returns an honest error result (success=False + error/error_type) with traceback instead of success=True
+            self.logger.error(f"Failed to list milestones: {e}", exc_info=True)
             return IntentProcessingResult(
-                success=True,
+                success=False,
                 message=(
                     "I wasn't able to fetch milestones right now. " "Please try again in a moment."
                 ),
@@ -5029,6 +5031,8 @@ class IntentService:
                     "action": "list_milestones_query",
                     "context": {"error": str(e)},
                 },
+                error=str(e),
+                error_type="list_milestones_error",
             )
 
     async def _handle_list_releases_query(
@@ -5131,10 +5135,10 @@ class IntentService:
                 },
             )
 
-        except Exception as e:
-            self.logger.error(f"Failed to list releases: {e}")
+        except Exception as e:  # silent-ok: #1423 slice 2 (#1524) — top-level handler boundary; failure now returns an honest error result (success=False + error/error_type) with traceback instead of success=True
+            self.logger.error(f"Failed to list releases: {e}", exc_info=True)
             return IntentProcessingResult(
-                success=True,
+                success=False,
                 message=(
                     "I wasn't able to fetch releases right now. " "Please try again in a moment."
                 ),
@@ -5143,6 +5147,8 @@ class IntentService:
                     "action": "list_releases_query",
                     "context": {"error": str(e)},
                 },
+                error=str(e),
+                error_type="list_releases_error",
             )
 
     async def _handle_list_labels_query(
@@ -5197,10 +5203,10 @@ class IntentService:
                 },
             )
 
-        except Exception as e:
-            self.logger.error(f"Failed to list labels: {e}")
+        except Exception as e:  # silent-ok: #1423 slice 2 (#1524) — top-level handler boundary; failure now returns an honest error result (success=False + error/error_type) with traceback instead of success=True
+            self.logger.error(f"Failed to list labels: {e}", exc_info=True)
             return IntentProcessingResult(
-                success=True,
+                success=False,
                 message=(
                     "I wasn't able to fetch labels right now. " "Please try again in a moment."
                 ),
@@ -5209,6 +5215,8 @@ class IntentService:
                     "action": "list_labels_query",
                     "context": {"error": str(e)},
                 },
+                error=str(e),
+                error_type="list_labels_error",
             )
 
     async def _handle_list_branches_query(
@@ -5307,10 +5315,10 @@ class IntentService:
                 },
             )
 
-        except Exception as e:
-            self.logger.error(f"Failed to list branches: {e}")
+        except Exception as e:  # silent-ok: #1423 slice 2 (#1524) — top-level handler boundary; failure now returns an honest error result (success=False + error/error_type) with traceback instead of success=True
+            self.logger.error(f"Failed to list branches: {e}", exc_info=True)
             return IntentProcessingResult(
-                success=True,
+                success=False,
                 message=(
                     "I wasn't able to fetch branches right now. " "Please try again in a moment."
                 ),
@@ -5319,6 +5327,8 @@ class IntentService:
                     "action": "list_branches_query",
                     "context": {"error": str(e)},
                 },
+                error=str(e),
+                error_type="list_branches_error",
             )
 
     async def _handle_local_git_status_query(
