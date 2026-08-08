@@ -1,0 +1,114 @@
+<title>Lead status — Sat Aug 8 (launch eve)</title>
+<style>
+  :root {
+    --ground: #FAFBFC; --ink: #1A2733; --soft: #5A6B7A; --rule: #E3E8ED;
+    --card: #FFFFFF; --accent: #0B5FA5; --accent-soft: #E8F1F8;
+    --good: #1A7F4B; --good-soft: #E7F4EC; --warn: #A05A00; --warn-soft: #FBF1E2;
+    --block: #B3261E; --block-soft: #FBEAE9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ground:#141A20; --ink:#E4EAEF; --soft:#93A3B1; --rule:#2C3944;
+      --card:#1C242C; --accent:#5FA8E0; --accent-soft:#1C2E3D;
+      --good:#5BC98B; --good-soft:#16301F; --warn:#E0A45C; --warn-soft:#33270F;
+      --block:#E58B84; --block-soft:#39201E; }
+  }
+  :root[data-theme="dark"] { --ground:#141A20; --ink:#E4EAEF; --soft:#93A3B1; --rule:#2C3944;
+    --card:#1C242C; --accent:#5FA8E0; --accent-soft:#1C2E3D;
+    --good:#5BC98B; --good-soft:#16301F; --warn:#E0A45C; --warn-soft:#33270F;
+    --block:#E58B84; --block-soft:#39201E; }
+  :root[data-theme="light"] { --ground:#FAFBFC; --ink:#1A2733; --soft:#5A6B7A; --rule:#E3E8ED;
+    --card:#FFFFFF; --accent:#0B5FA5; --accent-soft:#E8F1F8;
+    --good:#1A7F4B; --good-soft:#E7F4EC; --warn:#A05A00; --warn-soft:#FBF1E2;
+    --block:#B3261E; --block-soft:#FBEAE9; }
+  body { background: var(--ground); color: var(--ink); margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.55;
+    padding: 2rem 1.25rem 4rem; }
+  main { max-width: 76ch; margin: 0 auto; }
+  h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
+  .sub { color: var(--soft); margin: 0 0 1.5rem; }
+  section { background: var(--card); border: 1px solid var(--rule); border-radius: 10px;
+    padding: 1.1rem 1.35rem; margin-top: 1.1rem; }
+  h2 { font-size: .8rem; letter-spacing: .08em; text-transform: uppercase;
+    margin: 0 0 .75rem; display: flex; gap: .6rem; align-items: center; }
+  h2 .chip { font-size: .72rem; letter-spacing: 0; text-transform: none; font-weight: 600;
+    border-radius: 999px; padding: .1rem .6rem; }
+  .you h2 { color: var(--block); } .you .chip { background: var(--block-soft); color: var(--block); }
+  .today h2 { color: var(--warn); } .today .chip { background: var(--warn-soft); color: var(--warn); }
+  .review h2 { color: var(--accent); } .review .chip { background: var(--accent-soft); color: var(--accent); }
+  .done h2 { color: var(--good); } .done .chip { background: var(--good-soft); color: var(--good); }
+  ul { margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: .5rem; }
+  li::marker { color: var(--soft); }
+  b.n { font-variant-numeric: tabular-nums; color: var(--accent); font-weight: 600; }
+  .why { color: var(--soft); }
+  code { font-family: ui-monospace, Menlo, monospace; font-size: .85em;
+    background: var(--accent-soft); border-radius: 4px; padding: .05em .35em; }
+  .k { font-weight: 600; }
+</style>
+<main>
+  <h1>Where everything stands</h1>
+  <p class="sub">Saturday Aug 8, post-cut · working the verification script top to bottom, one at a time</p>
+
+  <section class="today">
+    <h2>Verification script <span class="chip">one test at a time · say the result, I close or chase</span></h2>
+    <ul>
+      <li>✅ <b class="n">T1 · #1513/#1504</b> — DONE: your 4-of-4 healthy screenshot + my 403 probes. Both closed.</li>
+      <li><b class="n">T2 · #1489</b> — open an older conversation from the sidebar, click into a <i>different</i> one, then back. <span class="k">Expect:</span> Piper's replies all still render both times.</li>
+      <li><b class="n">T3 · #1482</b> — hover a conversation → trash icon → read the dialog. <span class="k">Expect:</span> honest copy (no "cannot be undone" on a soft delete), and delete works. Repeat for one insight on /insights.</li>
+      <li><b class="n">T4 · #1490</b> — chat: <code>remind me tomorrow at 3pm to review the PR</code>. <span class="k">Expect:</span> confirmation naming tomorrow 3:00 PM — not a parse complaint, not a wrong hour.</li>
+      <li><b class="n">T5 · #1491</b> — chat: <code>what reminders do I have?</code> <span class="k">Expect:</span> a list (incl. T4's), no error about naive/aware datetimes.</li>
+      <li><b class="n">T6 · #1492 + #1470</b> — chat: <code>archive the CoVa project.</code> (with the period). <span class="k">Expect:</span> archives despite punctuation. Then: <code>restore the CoVa project</code>. <span class="k">Expect:</span> it FINDS the archived project and restores — yesterday this was impossible by design.</li>
+      <li><b class="n">T7 · #1471</b> — chat: <code>connect my calendar</code>. <span class="k">Expect:</span> setup guidance pointing at Settings → Integrations — NOT the current time (yesterday's misroute).</li>
+      <li><b class="n">T8 · #1429</b> — run the todo-seed one-liner (in chat history), then in <b>Slack</b>: <code>/standup</code>. <span class="k">Expect:</span> "Today:" lists the seeded high-priority due-today item. <span class="why">Standup expectations as deployed: Slack /standup = generated report (test this one); web /standup = interview dialogue (separate feature, decision pending as #1511 — skip it for testing).</span></li>
+      <li><b class="n">T9 · #1394/#1431</b> — chat: <code>list my archived projects</code> (expect: real list, not always-empty), then a follow-up that references the previous turn (e.g. <code>restore the first one</code>) to exercise continuity.</li>
+    </ul>
+  </section>
+
+  <section class="you">
+    <h2>Waiting on you <span class="chip">these unblock me or the launch</span></h2>
+    <ul>
+      <li><span class="k">Domain cutover session (#1278)</span> — if tomorrow's launch is on <code>beta.pipermorgan.ai</code>, we pair on DNS + OAuth callbacks <b>today</b>. ~45 min. The three redirect fixes from last night are on its checklist already.</li>
+      <li><span class="k">Calendar</span> — add the fly.dev callback URI to the Google client (<code>538609082609-…</code>) and <b>click Save</b>, then Connect. Your morning error confirms the entry isn't saved yet.</li>
+      <li><span class="k">Admin row</span> — run the <code>is_admin</code> one-liner (in chat) before/at the next deploy, or the new security gates lock you out too.</li>
+      <li><span class="k">Standup verdict (#1429)</span> — run the todo-seed one-liner (in chat), then <code>/standup</code> in Slack. Populated “Today” closes it; empty reproduces it.</li>
+      <li><span class="k">#1488 query v3</span> — on the issue; its output un-blocks the todo-misroute diagnosis.</li>
+      <li><span class="k">Standup model decision (#1511)</span> — web /standup is an interview, Slack /standup is a report, and they don't share data. Which ships? (My rec on the issue: report everywhere; rename the interview.)</li>
+    </ul>
+  </section>
+
+  <section class="today">
+    <h2>My plate today <span class="chip">in order</span></h2>
+    <ul>
+      <li><b class="n">#1504</b> setup-route lockout — <span class="why">the unauthenticated global-credential hole, your sprint add. Building now.</span></li>
+      <li>Cut + deploy support whenever you want today's fixes live (includes the whole swarm wave + 1507/1508).</li>
+      <li>Cutover session support (#1278) when you say go.</li>
+    </ul>
+  </section>
+
+  <section class="review">
+    <h2>Built, awaiting verification <span class="chip">15 In Review</span></h2>
+    <ul>
+      <li><span class="k">Your retests, next deploy</span>: <b class="n">#1489</b> back-nav replies · <b class="n">#1490</b> “remind me tomorrow at 3pm” · <b class="n">#1491</b> due-reminder crash · <b class="n">#1492</b> archive phrasings · <b class="n">#1482</b> delete dialogs · <b class="n">#1394/#1431</b> continuity + archived list.</li>
+      <li><span class="k">Swarm wave (merged clean, zero new failures)</span>: <b class="n">#1470</b> restore archived by name · <b class="n">#1471</b> “connect my calendar” routing · <b class="n">#1472/#1493</b> todo filters + timezones · <b class="n">#1485</b> admin gate on global Slack credentials.</li>
+      <li><span class="k">This morning</span>: <b class="n">#1507</b> cross-tenant GitHub env write removed · <b class="n">#1508</b> admin cache routes actually gated.</li>
+      <li><span class="k">Blocked</span>: <b class="n">#1488</b> (your query) · <b class="n">#1429</b> (your standup seed).</li>
+    </ul>
+  </section>
+
+  <section class="done">
+    <h2>Closed yesterday <span class="chip">7, evidence on each</span></h2>
+    <ul>
+      <li><b class="n">#1466</b> Slack linking + <b class="n">#1496</b> slash transport — <span class="why">your live /link → /standup run</span>.</li>
+      <li><b class="n">#1484</b> Slack kill-switch · <b class="n">#1413</b> release-parity gate · <b class="n">#1432</b> classifier cleanup · <b class="n">#1433</b> reachability ratchet · <b class="n">#1465</b> learning-signal fix <span class="why">(closed with a not-yet-manually-tested note on record)</span>.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 style="color:var(--soft)">New since yesterday, triaged, not urgent for you <span class="chip" style="background:var(--rule);color:var(--soft)">filed with recs</span></h2>
+    <ul>
+      <li><span class="k">Security family</span> from the audit you ordered: <b class="n">#1504</b> (sprint, building) · <b class="n">#1507/#1508</b> (already built) · <b class="n">#1502/#1503</b> (small, later).</li>
+      <li><span class="k">UX findings from your testing</span>: <b class="n">#1497</b> Slack settings page reorg (your tabs design) · <b class="n">#1511</b> standup model · <b class="n">#1512</b> todos priority field · <b class="n">#1513</b> GitHub status card reads wrong layer (your token is safe — display bug) · <b class="n">#1500</b> attachment DMs ignored · <b class="n">#1498</b> greeting-over-history.</li>
+      <li><span class="k">Route audit</span>: <b class="n">#1499</b> master list (7 unmounted routers, 4-way OAuth duplication, dead <code>/api/v1/version</code> fetches).</li>
+      <li><span class="k">Test-failure backlog</span>: list is <b class="n">54</b> known entries (was 57 — swarm cured 3); last sweep saw 52 of them fail, <b>zero</b> new.</li>
+    </ul>
+  </section>
+</main>
