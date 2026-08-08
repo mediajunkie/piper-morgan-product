@@ -103,8 +103,11 @@ class TodoRepository(BaseRepository):
         """Get todos assigned to a user"""
         query = select(TodoDB).where(TodoDB.assigned_to == assigned_to)
 
+        # #1472: String column — bind .value, never the raw enum (asyncpg
+        # DataError "expected str, got TodoStatus"; same class as #1460's fix
+        # in get_todos_by_owner above).
         if status:
-            query = query.where(TodoDB.status == status)
+            query = query.where(TodoDB.status == status.value)
 
         query = query.order_by(TodoDB.priority.desc(), TodoDB.due_date.asc().nulls_last())
 
@@ -119,7 +122,8 @@ class TodoRepository(BaseRepository):
         query = select(TodoDB).where(
             and_(
                 TodoDB.owner_id == owner_id,
-                TodoDB.status != TodoStatus.COMPLETED,
+                # #1472: String column — compare .value, never the raw enum
+                TodoDB.status != TodoStatus.COMPLETED.value,
                 TodoDB.due_date.is_not(None),
             )
         )
