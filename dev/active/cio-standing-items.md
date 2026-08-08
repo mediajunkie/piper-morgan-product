@@ -171,3 +171,17 @@ This tracker tracks **CIO-action items** — pending PM decisions, external wait
 *Tracker created: May 8, 2026*
 *Author: CIO (Code instance, session 5)*
 *Origin: PM directive May 8 — "put them in a tracker document so we don't lose them to the transcript, my faulty memory, or your context window"*
+
+## Carried from 2026-08-07 STOP (direct memos actioned-by-carrying, not by doing)
+
+- **Memory-index format — PM decided option ① (denser entries).** Implementation is a *generator* change
+  (`rebuild-memory-index.py`), not a file edit — the guard is on the generator and the one-line-per-entry
+  floor means editing the file can never fix it. **Not started.**
+- **Mail protocol — Exec's three fixes**, arising from PM's question after a direct memo went unread.
+  Overlaps the Step-3 restoration I shipped 08-07; **check for duplication before implementing** rather
+  than adding a parallel rule.
+- **PM's chess-board idea** — *"agents have a move log and no position; PM is the only one holding the
+  position."* Squarely this lane (the cohort's operating system) and the most conceptually interesting
+  item on the board. **Needs a real design pass, not a tail-of-fire one.**
+- **Freeze detector has no caller.** `cohort-freeze-detect.sh` is verified but unwired; watchdog
+  integration + HOST's message-side half are both open. HOST has signed off on the shape.
