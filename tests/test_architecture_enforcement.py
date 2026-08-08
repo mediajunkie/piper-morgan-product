@@ -1453,3 +1453,80 @@ class TestSingleDeclarativeBase:
             "(Arch invariant, #1312). Register models on "
             "services.database.connection.Base instead."
         )
+
+
+class TestNoRawTodoEnumComparisons1472:
+    """#1472 — raw TodoStatus/TodoPriority members must never appear in a
+    comparison: `todo_items.status`/`priority` are String columns ("Changed
+    from Enum to String"), so binding a raw enum member raises asyncpg
+    DataError ("expected str, got TodoStatus") at execution time — which every
+    call site's try/except turns into a silent degraded lookup (#1425 None
+    sentinel). The class stayed latent because the broken filters were only
+    reachable through gates that were dead until #1460 revived them.
+
+    Rule enforced (AST, whole services/ tree): an attribute of the bare name
+    `TodoStatus`/`TodoPriority` (i.e. an enum MEMBER, not `.value` on one) may
+    not be an operand of a comparison (`==`, `!=`, etc.) nor an element of a
+    list/tuple/set passed to SQLAlchemy's `.in_()`/`.notin_()`. Passing a
+    member as a typed argument (e.g. `get_todos_by_owner(status=TodoStatus.
+    PENDING)`) stays legal — the repository normalizes via `.value`; that
+    parameter-shaped half of the class is pinned by bind-type tests in
+    tests/unit/services/repositories/test_todo_repository_enum_filters_1472.py.
+    """
+
+    _ENUM_NAMES = {"TodoStatus", "TodoPriority"}
+
+    @classmethod
+    def _is_raw_member(cls, node) -> bool:
+        """`TodoStatus.COMPLETED` — but NOT `TodoStatus.COMPLETED.value`
+        (there the operand's .value attr chain bottoms out in an Attribute,
+        not a bare enum Name)."""
+        import ast
+
+        return (
+            isinstance(node, ast.Attribute)
+            and isinstance(node.value, ast.Name)
+            and node.value.id in cls._ENUM_NAMES
+        )
+
+    def test_no_raw_enum_members_compared_or_in_listed(self):
+        import ast
+
+        violations = []
+        files_scanned = 0
+        for path in glob.glob("services/**/*.py", recursive=True):
+            if "__pycache__" in path:
+                continue
+            files_scanned += 1
+            try:
+                tree = ast.parse(open(path, encoding="utf-8").read(), filename=path)
+            except (SyntaxError, UnicodeDecodeError):
+                continue
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Compare):
+                    operands = [node.left, *node.comparators]
+                    if any(self._is_raw_member(op) for op in operands):
+                        violations.append(f"{path}:{node.lineno} (comparison)")
+                elif (
+                    isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Attribute)
+                    and node.func.attr in ("in_", "notin_")
+                ):
+                    for arg in node.args:
+                        if isinstance(arg, (ast.List, ast.Tuple, ast.Set)) and any(
+                            self._is_raw_member(el) for el in arg.elts
+                        ):
+                            violations.append(f"{path}:{node.lineno} (.in_ list)")
+
+        # m-44 denominator: the scan must actually have covered the tree.
+        # 526 files at time of writing; floor set with slack for deletions.
+        assert files_scanned >= 400, (
+            f"enum-comparison scan walked only {files_scanned} services/ files "
+            f"— detection broken (vacuity guard); expected >= 400"
+        )
+        assert not violations, (
+            f"Raw TodoStatus/TodoPriority member used in a comparison against "
+            f"String-typed columns (asyncpg DataError -> silent degraded "
+            f"lookup, #1472). Compare `.value` instead. Sites: {violations} "
+            f"(scanned {files_scanned} files)"
+        )

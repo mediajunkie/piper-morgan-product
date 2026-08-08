@@ -789,6 +789,13 @@ class PreClassifier:
     INTEGRATION_CONNECT_BLOCKERS = [
         r"[\w.-]+/[\w.-]+",
         r"\brepo(?:sitor(?:y|ies))?s?\b",
+        # #1471: an event-write noun means a calendar-WRITE ask ("add a
+        # meeting to my calendar"), never integration setup. Without this
+        # guard, giving connect-verbs precedence over the temporal calendar
+        # patterns (#1471) would also flip event-write phrasings into setup
+        # guidance; with it they keep their pre-#1471 routing (temporal).
+        # Same conservative over-blocking discipline as the repo guard.
+        r"\b(?:meeting|event|appointment|invite|reminder)s?\b",
     ]
 
     # Issue #673: TRUST patterns for trust explanation queries
@@ -1553,6 +1560,28 @@ class PreClassifier:
                 context={"original_message": message},
             )
 
+        # #1417: integration-connect routes deterministically to the guidance
+        # lane (the capability exists — this makes it *reachable*). Checked with
+        # explicit collision blockers even though the #862 repo lane already ran
+        # above (belt + suspenders; both are unit-tested).
+        # #1471: checked BEFORE TEMPORAL — connect/link/set-up verbs out-rank
+        # the temporal calendar-noun patterns. "connect my calendar" is a setup
+        # ask, not a schedule query; the temporal `\bmy calendar\b` pattern was
+        # winning and answering with the current time. The blockers keep the
+        # repo lane (#862) and calendar event-writes ("add a meeting to my
+        # calendar") out of this lane.
+        connect_match = PreClassifier._integration_connect_match(clean_for_matching)
+        if connect_match:
+            return Intent(
+                category=IntentCategory.GUIDANCE,
+                action="get_contextual_guidance",
+                confidence=1.0,
+                context={
+                    "original_message": message,
+                    "setup_target": connect_match.group("integration").strip(),
+                },
+            )
+
         if PreClassifier._matches_patterns(clean_for_matching, PreClassifier.TEMPORAL_PATTERNS):
             return Intent(
                 category=IntentCategory.TEMPORAL,
@@ -1560,26 +1589,6 @@ class PreClassifier:
                 confidence=1.0,
                 context={"original_message": message},
             )
-
-        # #1417: integration-connect routes deterministically to the guidance
-        # lane (the capability exists — this makes it *reachable*). Checked with
-        # explicit collision blockers even though the #862 repo lane already ran
-        # above (belt + suspenders; both are unit-tested).
-        if not PreClassifier._matches_patterns(
-            clean_for_matching, PreClassifier.INTEGRATION_CONNECT_BLOCKERS
-        ):
-            for pattern in PreClassifier.INTEGRATION_CONNECT_PATTERNS:
-                m = re.search(pattern, clean_for_matching, re.IGNORECASE)
-                if m:
-                    return Intent(
-                        category=IntentCategory.GUIDANCE,
-                        action="get_contextual_guidance",
-                        confidence=1.0,
-                        context={
-                            "original_message": message,
-                            "setup_target": m.group("integration").strip(),
-                        },
-                    )
 
         # Issue #487: Check GUIDANCE before STATUS to catch "help setup my projects"
         # before "my projects" triggers STATUS. More specific patterns should match first.
@@ -1681,6 +1690,28 @@ class PreClassifier:
             if re.search(pattern, message):
                 return True
         return False
+
+    @staticmethod
+    def _integration_connect_match(clean_message: str):
+        """#1417/#1471: the integration-connect regex match for the message,
+        or None.
+
+        Applies INTEGRATION_CONNECT_BLOCKERS (repo lane #862, calendar
+        event-writes #1471) before the connect-verb x integration-noun
+        patterns. Shared by pre_classify() and detect_multiple_intents() so
+        both entry surfaces resolve the temporal-calendar collision with
+        identical precedence (#1471) — the match carries the named
+        ``integration`` group for setup_target.
+        """
+        if PreClassifier._matches_patterns(
+            clean_message, PreClassifier.INTEGRATION_CONNECT_BLOCKERS
+        ):
+            return None
+        for pattern in PreClassifier.INTEGRATION_CONNECT_PATTERNS:
+            match = re.search(pattern, clean_message, re.IGNORECASE)
+            if match:
+                return match
+        return None
 
     @staticmethod
     def detect_multiple_intents(message: str) -> MultiIntentResult:
@@ -1795,7 +1826,45 @@ class PreClassifier:
         ]
 
         # Check each pattern group
+        connect_substituted = False
         for patterns, category, action in pattern_groups:
+            # #1471: same precedence as pre_classify() — an integration-connect
+            # ask must not surface as a TEMPORAL calendar/schedule query on the
+            # multi-intent path ("connect my calendar" was answered with the
+            # current time). Substitute the guidance-lane intent for the
+            # temporal one (rather than just skipping) so multi-intent
+            # messages keep their other parts ("hi piper, connect my calendar"
+            # stays greeting + setup guidance).
+            if patterns is PreClassifier.TEMPORAL_PATTERNS and PreClassifier._matches_patterns(
+                clean_for_matching, patterns
+            ):
+                connect_match = PreClassifier._integration_connect_match(clean_for_matching)
+                if connect_match:
+                    intents.append(
+                        Intent(
+                            category=IntentCategory.GUIDANCE,
+                            action="get_contextual_guidance",
+                            confidence=1.0,
+                            original_message=message,
+                            context={
+                                "original_message": message,
+                                "multi_intent_detection": True,
+                                "setup_target": connect_match.group("integration").strip(),
+                            },
+                        )
+                    )
+                    connect_substituted = True
+                    logger.debug(
+                        "multi_intent_connect_substitution",
+                        category="guidance",
+                        action="get_contextual_guidance",
+                    )
+                    continue
+            # #1471: if the substitution already emitted the guidance-lane
+            # intent, don't let GUIDANCE_PATTERNS add a duplicate of the same
+            # (category, action) ("help me set up my calendar" matches both).
+            if patterns is PreClassifier.GUIDANCE_PATTERNS and connect_substituted:
+                continue
             if PreClassifier._matches_patterns(clean_for_matching, patterns):
                 # Refine action for specific pattern groups that need it
                 final_action = action

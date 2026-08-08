@@ -108,6 +108,106 @@ def test_no_integration_noun_no_match(message):
 
 
 # ---------------------------------------------------------------------------
+# #1471: temporal-calendar collision — connect verbs OUT-RANK the temporal
+# calendar-noun patterns. "connect my calendar" matched `\bmy calendar\b` in
+# TEMPORAL_PATTERNS (checked earlier than the #1417 lane) and answered with
+# the current time; only pattern-avoiding phrasings ("link my google
+# calendar") reached setup guidance. Fixed by precedence (pre_classify) and
+# substitution (detect_multiple_intents), sharing _integration_connect_match.
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "message,target",
+    [
+        ("connect my calendar", "calendar"),
+        ("can you connect my calendar?", "calendar"),
+        ("link my calendar", "calendar"),
+        ("set up my calendar", "calendar"),
+        ("add my google calendar", "google calendar"),
+    ],
+)
+def test_connect_calendar_beats_temporal_1471(message, target):
+    intent = _classify(message)
+    assert intent is not None, f"pre-classifier missed: {message!r}"
+    assert intent.category == IntentCategory.GUIDANCE, (
+        f"{message!r} routed to {intent.category} — the temporal calendar "
+        f"pattern is winning over integration-connect again (#1471)"
+    )
+    assert intent.action == "get_contextual_guidance"
+    assert intent.context.get("setup_target") == target
+
+
+def test_connect_calendar_multi_intent_path_1471():
+    """The dominant chat path is classify_multiple → detect_multiple_intents,
+    where TEMPORAL_PATTERNS matched before any connect handling existed —
+    the #1471 misroute lived here even after pre_classify was fixed."""
+    result = PreClassifier.detect_multiple_intents("connect my calendar")
+    resolved = [(i.category, i.action) for i in result.intents]
+    assert resolved == [(IntentCategory.GUIDANCE, "get_contextual_guidance")], (
+        f"multi-intent path resolved {resolved} (#1471)"
+    )
+    intent = result.intents[0]
+    assert intent.original_message == "connect my calendar"  # #1460 field
+    assert intent.context.get("setup_target") == "calendar"
+
+
+def test_multi_intent_substitution_keeps_other_parts_1471():
+    """Substitution, not suppression: a greeting riding with the connect ask
+    survives, and the temporal phantom does not."""
+    result = PreClassifier.detect_multiple_intents("hi piper, connect my calendar")
+    categories = {i.category for i in result.intents}
+    assert IntentCategory.TEMPORAL not in categories
+    assert IntentCategory.GUIDANCE in categories
+
+
+def test_no_duplicate_guidance_when_both_lanes_match_1471():
+    """'help me set up my calendar' matches the #487 GUIDANCE patterns AND the
+    connect substitution — exactly one guidance intent must come out."""
+    result = PreClassifier.detect_multiple_intents("help me set up my calendar")
+    guidance = [
+        i
+        for i in result.intents
+        if i.category == IntentCategory.GUIDANCE and i.action == "get_contextual_guidance"
+    ]
+    assert len(guidance) == 1, f"expected 1 guidance intent, got {len(guidance)}"
+
+
+@pytest.mark.parametrize(
+    "message",
+    [
+        "show my calendar",
+        "what time is it",
+        "my appointments",
+    ],
+)
+def test_temporal_queries_unchanged_1471(message):
+    intent = _classify(message)
+    assert intent is not None
+    assert intent.category == IntentCategory.TEMPORAL
+    assert intent.action == "get_current_time"
+
+
+@pytest.mark.parametrize(
+    "message",
+    [
+        "add a meeting to my calendar",
+        "add an event to my calendar",
+        "set up a meeting on my calendar",
+    ],
+)
+def test_calendar_event_writes_stay_out_of_connect_lane_1471(message):
+    """Event-write nouns are blocked from the connect lane (#1471 blocker):
+    these keep their pre-#1471 routing instead of flipping to setup guidance."""
+    intent = _classify(message)
+    if intent is not None:
+        assert not (
+            intent.action == "get_contextual_guidance"
+            and intent.context.get("setup_target")
+        ), f"event-write ask hijacked into integration setup: {message!r}"
+
+
+# ---------------------------------------------------------------------------
 # The handoff bug found via this issue: the classifier's Stage-1 return left
 # Intent.original_message EMPTY (only context carried it), so the GUIDANCE
 # canonical gate (_detect_setup_request reads the FIELD) never fired for ANY
