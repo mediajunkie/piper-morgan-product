@@ -171,10 +171,12 @@ class TestSaveGitHubToken:
             mock_keychain.store_api_key.assert_called_once_with(
                 "github_token", "ghp_valid_token", username="test-user-123"
             )
-            # Token made live for this process.
+            # #1507: the save must NOT mutate the process environment — the old
+            # assertion here pinned the cross-tenant env write as expected
+            # behavior. Per-user resolution goes through the keychain.
             import os as _os
 
-            assert _os.environ.get("GITHUB_TOKEN") == "ghp_valid_token"
+            assert _os.environ.get("GITHUB_TOKEN") != "ghp_valid_token"
 
 
 class TestDisconnectGitHub:
