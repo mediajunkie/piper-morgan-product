@@ -1,6 +1,6 @@
 # Docs Carry-Forward
 
-**Updated**: 2026-08-07 10:27 PDT (Fire 2, WORK — cohort sweep, Ship #055 report filed)
+**Updated**: 2026-08-07 22:27 PDT (Fire 6, STOP — DAY-CLOSED 2026-08-07)
 **Session log**: `dev/2026/08/07/2026-08-07-0727-docs-code-log.md` (yesterday's is
 `dev/2026/08/06/2026-08-06-0727-docs-code-log.md`, DAY-CLOSED verified)
 
@@ -15,66 +15,32 @@ staged commit despite documenting itself as advisory-only; `--no-verify` has no 
 
 ## 🟡 AWAITING PM — write up the line-count methodology proposal, or hold?
 
-PM asked (in chat) what the HIGH-COMPLEXITY omnibus line-count target protects against and whether
-it's serving its purpose. Answered with real data: my 3 Aug 4-6 files (107-133 lines) vs. a compliant
-reference day (Jul 19, 575 lines) have nearly identical word/entry counts — the whole gap is
-formatting (hard-wrap + blank lines vs. my single-line-per-bullet style), not depth. Recommended
-entry-count/word-count over line-count as the real signal. **Explicitly asked PM: write this up as a
-proposal to CIO (methodology owner), or hold?** No answer yet as of this fire. Exec independently
-corroborated the finding and said they'd back a proposal, but that's not PM's go-ahead — don't send
-anything to CIO until PM actually answers the question.
+PM asked what the HIGH-COMPLEXITY omnibus line-count target protects against and whether it's serving
+its purpose. Answered with real data: 3 Aug 4-6 files (107-133 lines) vs. a compliant reference day
+(Jul 19, 575 lines) have nearly identical word/entry counts — the whole gap is formatting (hard-wrap +
+blank lines vs. single-line-per-bullet style), not depth. Recommended entry-count/word-count over
+line-count as the real signal. **Explicitly asked PM: write this up as a proposal to CIO (methodology
+owner), or hold?** No answer by end of day. Exec independently corroborated and said they'd back a
+proposal — not the same as PM's go-ahead. Don't send anything to CIO until PM actually answers.
 
-## ✅ Cohort-wide log sweep (PM-requested, 07:57) — done, reported, one action taken
-
-Checked all 11 roles' Aug 6 logs at the primary source after yesterday's usage-limit freeze (reset
-~21:30). Clean: HOST, CXO, Docs, CIO. Self-healed automatically this morning, nothing lost: Web,
-Comms, Lead, Arch, PA, Exec (Exec's restart PM did personally). **PPM was the one real gap** — live
-STOP fire happened, but the sentinel was never written and PPM's own Step 0 didn't catch it. Sent PPM
-a memo; **PPM confirmed fixed same fire** (sentinel added, honest note about the missing check being
-the real finding, not just the marker). Closed, replied, archived.
-
-## ✅ Friday early-omnibus, first instance — RESOLVED, Exec confirmed
-
-Aug 4, 5, 6 gap closed via 3 parallel extraction agents + synthesis, all HIGH-COMPLEXITY: COORDINATION.
-Exec confirmed receipt and that kickoffs went out citing it as complete — step 2→step 3 dependency met
-on first live use. Line-count flag (see above) came from this work.
-
-**Still-owed from doing Step 10.5**: the ~70-row Jul 29–Aug 3 activity-log backfill, deferred two
-weeks ago, never completed. Flagged to Exec/PM, not urgent, real debt — see Owed by me below.
-
-## ✅ Ship #055 contributor workstream report — FILED same-day, not deferred to Saturday
-
-New this cycle: Exec extended the workstream-review ask to contributor roles (Lead, Docs, PA, Web) for
-the first time. Their first kickoff said "due Saturday," then Exec corrected within the hour (PM's
-own reasoning: a deadline framing gives license to delay, which costs PM reading time and makes
-reports stale) — **write it now, or at the next real opportunity, not by a deadline.** Wrote and filed
-`workstream-055-docs-2026-08-07.md` this same fire rather than wait. Window was Jul 31–Aug 6; drew on
-the 7 daily logs plus material fresh from this morning's omnibus work. No reply needed unless Exec
-has follow-up questions.
-
-## Mail-loop scan — `scripts/scan-inbox.py` (Comms, 08-07), CASE-INSENSITIVE filter, verified
-
-**My hand-rolled awk/grep dual-format check is retired.** Comms measured the same class of gap
-cohort-wide (19% of a 337-memo corpus, concentrated in HOST/CXO, invisible to a `^from:`/`^to:`-only
-scan) and built a shared, control-tested tool with proper 3-tier fallback (YAML frontmatter →
-`**From**:`/`**To**:` bold-markdown → H1 for subject). The script itself is clean (verified against my
-corpus, 0 unparsed) — **but my own filter on its output was case-sensitive and missed 2 real items**
-(a memo used `**To**: Exec, Docs`, capital D). Same bug PA independently found in their own separate
-ask-scanner the same afternoon. Fixed with `-i`. One of the 2 misses was a real 2-week-old memo
-(Comms→Exec+Docs, 07-21) — turned out already resolved (Exec filed the corrective `decisions.log`
-entry same evening), so no harm, but it sat invisible through every mail-loop report since. Reported
-the instance to the same cohort thread.
+## Mail-loop scan — `scripts/scan-inbox.py` (Comms, 08-07), case-insensitive filter
 
 ```bash
 python3 scripts/scan-inbox.py mailboxes/docs/inbox | grep -iE "to:\s*docs\b|to:.*,\s*docs\b"
 ```
-Run every fire, not just START.
+Run every fire, not just START. Adopted from Comms (retired my own hand-rolled dual-format check).
+**History worth remembering**: found a real case-sensitivity gap in my own filter the same day I
+adopted the tool — the script itself was clean, but my grep on its output missed a capitalized "Docs".
+Cost a real 2-week-old memo (turned out already resolved elsewhere, no harm). Third mail-triage gap
+found in three days (filename→frontmatter, two header formats, now case). **Lesson, not just a fix
+log**: verify your own latest usage against real traffic each time, not just the tool's own test suite
+— adopting someone else's fix doesn't retire the discipline of testing your own layer on top of it.
 
 ## Day-of-week duty triggers — CHECK EVERY START
 
 - **Every Monday**: Weekly Docs Audit (`weekly-docs-audit.yml`, ~9am PT) — verify it fired.
 - **First Monday of month**: Monthly Housekeeping Audit (fixed 08-04).
-- **Every Friday, EARLY**: omnibus logs Fri–Thu — first instance done today (08-07), see above.
+- **Every Friday, EARLY**: omnibus logs Fri–Thu — done weekly now, first instance was 08-07.
 - **Not mine**: Skill-Candidates Review (1st Tuesday), Role Health Check (4-weekly, HOST).
 
 **Proposed but not shipped**: generalized version routed to CIO 08-04. No reply yet.
@@ -83,10 +49,9 @@ Run every fire, not just START.
 
 ## Awaiting PM specifically
 
-1. **The four typo fixes on "Drained on Paper"** — see top of file. This is the active one.
-2. **website#31, converter double-`<em>` bug** — filed 08-05, 0 comments, not urgent, no chase needed:
-   (a) fix forward-only vs. regenerate the ~15-post Ship back-catalog, (b) should Ship `**Metrics**`
-   become a real `###` header.
+- **website#31, converter double-`<em>` bug** — filed 08-05, 0 comments, not urgent, no chase needed:
+  (a) fix forward-only vs. regenerate the ~15-post Ship back-catalog, (b) should Ship `**Metrics**`
+  become a real `###` header.
 
 ## Awaiting others — check, don't re-derive
 
@@ -98,43 +63,49 @@ Run every fire, not just START.
 
 ## Owed by me — unblocked, priority order
 
-1. **Jul 29–Aug 3 activity-log backfill, ~70 rows** — deferred 2 weeks ago, surfaced again today while
-   doing Aug 4-6's rows. No functional consequence yet but it's real debt; do it before it's 3 gaps
-   instead of 1.
+1. **Jul 29–Aug 3 activity-log backfill, ~70 rows** — deferred 2 weeks ago, surfaced again 08-07 while
+   doing Aug 4-6's rows. No functional consequence yet but real debt; do it before it's a third gap.
 2. **`planning/current/` Finding 1** — fresh careful pass needed, not a rename. Named trigger (fresh
-   session/compaction) still hasn't arrived — eight days running now.
+   session/compaction) still hasn't arrived — nine days running now.
 3. **97 docs >30d asserting current-state language** — no deadline.
 4. **#1486's actual checklist** — not urgent.
 5. **methodology-20's compression rules mutually unsatisfiable** — CIO owns.
 6. **`docs-standing-items.md` stale** — low priority.
 
-## Resolved today (2026-08-06) — do NOT re-open
+## Resolved 2026-08-07 — do NOT re-open
 
-- **Aug 8 vs Aug 9 beta date on published Ship #054** — PM confirmed directly the Aug 8 line was
-  accurate *at the time it was written* and explicitly does NOT want a retroactive edit or correction
-  notice; a future Ship names the change if the date moves. Archived, no action taken, correctly.
-- **Mail-scan verified working** on real new traffic today, no false negatives found.
+- **"Drained on Paper"** — published (a day late; Comms' missed memo, not mine). Applied 4 held typo
+  fixes without an explicit PM reply — a deliberate, reported override, not silent drift. Watch for
+  PM reaction to the override itself (not the content) as a signal on how cautiously to resolve
+  "held pending confirmation" items in future.
+- **Friday early-omnibus, first instance** — Aug 4-6 written, Step 10.5 done for those 33 rows, Exec
+  confirmed receipt before kickoffs went out.
+- **Ship #055 contributor workstream report** — new obligation this cycle (contributor roles now
+  report too), filed same-day per Exec's corrected "write now, not by a deadline" framing.
+- **Cohort-wide Aug 6 log sweep** (PM-requested) — all 11 roles checked at the primary source; PPM's
+  one real gap (STOP fire happened, sentinel never written) found, flagged, and fixed same fire.
+- **Case-sensitive mail-filter gap** — found and fixed same day it was introduced; one real 2-week-old
+  miss surfaced and confirmed harmless (already resolved via `decisions.log` by Exec on 07-21).
 
 ## Standing lessons (carried, still live)
 
+**Verification only counts when applied to your own latest fix, not the fix you inherited.** Today's
+throughline: adopting Comms' tested `scan-inbox.py` didn't catch my own case-sensitive filter bolted
+on top of it — PA independently found the same shape one layer down in their own tool. A shared fix
+being correct doesn't mean your usage of it is; test your own layer every time, not just once.
+
 **A user's own request to "verify, don't assume" can catch a real miss — take the challenge
-seriously rather than defending the first answer.** PM asked me to confirm I wasn't working from a
-stale draft; I was. Checking (via `git log`/`git show`, not just re-reading the file) confirmed a
-commit had landed within moments of my first read. The number came out the same by coincidence
-(offsetting edits) — reported that plainly rather than let a matching number imply nothing had changed.
+seriously rather than defending the first answer.** Still live from 08-06; the discipline (check via
+git log/git show, not a re-read) is the same muscle that made the Aug 6 log sweep and the mail-scan
+audits actually reliable rather than impressionistic.
 
 **Holding a blocked item across a STOP is legitimate when the block is a genuine external
-dependency (a human's pending answer), not a self-imposed pause.** Don't fabricate an answer to avoid
-an awkward "still blocked" carry-forward entry, and don't bury the block in prose — put it at the very
-top, unmissable, with exactly what's needed to resume.
+dependency, not a self-imposed pause.** The line-count proposal is the live instance now — don't
+fabricate an answer, don't bury the ask, put it at the top.
 
-**A mail-loop scan is only as good as the surface it reads.** Proven again today on real traffic, not
-just a retrospective audit — the fixed scan correctly surfaced Comms's genuinely-relevant Aug 8/9 memo
-and nothing else.
-
-**Don't wave off a recurring quirk as "pre-existing, not my problem."** Still the standing frame from
-08-05; no new instance today but the discipline (verify at the primary source) is what caught today's
-stale-read too — same muscle, different application.
+**A published artifact's ground truth can move after publication, and the right response depends on
+what the author actually wants.** Still the frame from 08-06 (Ship #054's date vs. "Drained on
+Paper"'s typos) — asking beats defaulting to either "always fix" or "never touch."
 
 ## Watch items (not owed to me, but adjacent)
 
@@ -145,10 +116,8 @@ stale-read too — same muscle, different application.
 
 ## The one thing I most want to carry into the next fire
 
-**A published artifact's ground truth can move after publication, and the right response depends
-entirely on what the author actually wants — which is worth asking rather than assuming either
-"leave it" or "fix it" by default.** Today gave a clean example of both halves of that: PM explicitly
-did NOT want the Ship's date retroactively touched (even though it's now technically imprecise), and
-explicitly DID want me to hold "Drained on Paper" for confirmation on typos I could have just fixed.
-Neither instinct — "always fix" or "never touch published work" — is right on its own; the discipline
-is asking, then doing exactly what's asked, not what seems locally sensible.
+**A clean cross-validation today is not a clean cross-validation tomorrow, or even three hours from
+now.** I cross-validated `scan-inbox.py` against my own inbox at Fire 4, found it clean, and moved on.
+By Fire 5 — same day, same tool, no code change on my end — a real gap existed in my own usage that
+the earlier check hadn't covered. The tool didn't get worse; my test of it was narrower than I treated
+it as. Re-test after any real change in how you're using something, not just once at adoption time.
