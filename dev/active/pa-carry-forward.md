@@ -89,7 +89,15 @@ commit / heartbeat tsv, so **a committing role is already covered by the first t
 on a working day is *correct*. I had the mechanism right and the consequence wrong (Arch made the same
 error; HOST made its mirror image — checked *what* the belt reads, not *when*).
 
-⛔ **NEVER `grep -c "DAY-CLOSED"` TO DECIDE CLOSE STATE** *(bit me 2026-08-05)*. My 8/04 log returned **2**
+🔴 **AFTER ANY CONFLICTED MERGE, BEFORE PUSHING** *(new 2026-08-08, real incident — Arch's own broad-
+staging-hook remediation deleted 17 files from `main` during a merge)*: run
+`git diff --diff-filter=D --name-only <merge-sha>^2 <merge-sha>` — **`^2`, not `^1`.** During a conflicted
+merge, `git restore --staged <path>` resolves to **HEAD's** version; for a file new on the incoming side,
+HEAD has none, so the result is **deletion**, and concluding the merge carries it to `main`. **Never run
+`git restore --staged` mid-merge.** Retroactively audited my one real conflict this week (0b6b36b2,
+decisions.log, 08-07) — clean, no deletions. Now `one-command-checks.md` #8.
+
+⛔ **NEVER `grep -c "DAY-CLOSED"` TO DECIDE CLOSE STATE**⛔ **NEVER `grep -c "DAY-CLOSED"` TO DECIDE CLOSE STATE** *(bit me 2026-08-05)*. My 8/04 log returned **2**
 and was **not closed** — one match was a continuity reference to the prior day, the other was **my own
 prose about the freeze-check's DAY-CLOSED skip.** ⭐ **Writing ABOUT the marker creates a false marker**,
 and the roles most likely to write that prose are the ones working on the watchdog. Use the anchored
