@@ -57,7 +57,9 @@
   const STORAGE_KEYS = {
     SESSION_ID: 'piper_chat_session_id',
     CHAT_HISTORY: 'piper_chat_history',
-    WIDGET_STATE: 'piper_chat_widget_expanded'
+    WIDGET_STATE: 'piper_chat_widget_expanded',
+    // #1520: drafted message preserved across the expiry → re-login round trip
+    DRAFT_MESSAGE: 'piper_chat_draft'
   };
 
   // Check if localStorage is available (graceful degradation for private browsing)
@@ -481,6 +483,81 @@
   }
 
   /**
+   * #1520: Attempt a silent access-token refresh via the #857 endpoint.
+   * Returns true when the session was renewed (httponly cookies rotated
+   * server-side — nothing to store client-side).
+   */
+  async function tryRefreshSession() {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/v1/auth/refresh`, {
+        method: "POST",
+        credentials: "include",
+      });
+      return res.ok;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /**
+   * #1520: Make session expiry VISIBLE and preserve the drafted message.
+   * Called only after a silent refresh attempt has failed — the session is
+   * genuinely over. Honest copy: the session expired; sign in again. Never
+   * blames a missing API key (that copy belongs to anonymous callers only).
+   */
+  function handleSessionExpired(message, form) {
+    // Preserve the draft: back into the input, and stashed for after re-login.
+    const input = form && form.querySelector(".chat-input");
+    if (input && !input.value) {
+      input.value = message;
+    }
+    if (storageAvailable && message) {
+      try {
+        localStorage.setItem(STORAGE_KEYS.DRAFT_MESSAGE, message);
+      } catch (e) {
+        // Storage full/unavailable — the input restore above still holds it.
+      }
+    }
+
+    // Visible, honest notice in the chat window.
+    const notice = appendMessage(
+      "Your session has expired, so that message wasn't processed. " +
+        "Redirecting you to sign in again — your message is saved and " +
+        "will be restored.",
+      false
+    );
+    notice.classList.add("error");
+
+    // Reuse the session-timeout modal's expired state when available.
+    if (typeof SessionTimeout !== "undefined" && SessionTimeout.autoLogout) {
+      SessionTimeout.autoLogout();
+    } else {
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 3000);
+    }
+  }
+
+  /**
+   * #1520: Restore a draft preserved across the expiry → re-login round trip.
+   */
+  function restoreDraftMessage(form) {
+    if (!storageAvailable) return;
+    try {
+      const draft = localStorage.getItem(STORAGE_KEYS.DRAFT_MESSAGE);
+      if (draft) {
+        const input = form.querySelector(".chat-input");
+        if (input && !input.value) {
+          input.value = draft;
+        }
+        localStorage.removeItem(STORAGE_KEYS.DRAFT_MESSAGE);
+      }
+    } catch (e) {
+      // Ignore — draft restore is best-effort.
+    }
+  }
+
+  /**
    * Initialize the chat widget
    */
   function initChat() {
@@ -490,6 +567,7 @@
     // Restore previous state
     restoreChatHistory();
     restoreWidgetState();
+    restoreDraftMessage(form); // #1520: draft preserved across re-login
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -525,17 +603,37 @@
         }
 
         // Not a permission intent, send to conversational AI
-        const response = await fetch(`${API_BASE_URL}/api/v1/intent`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message: message,
-            session_id: sessionId,
-          }),
-          credentials: "include",
-        });
+        const sendIntent = () =>
+          fetch(`${API_BASE_URL}/api/v1/intent`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              message: message,
+              session_id: sessionId,
+            }),
+            credentials: "include",
+          });
 
-        const result = await response.json();
+        let response = await sendIntent();
+        let result = await response.json();
+
+        // #1520: expired session — try ONE silent refresh (#857) and resend
+        // before surfacing anything. Active users should never notice expiry.
+        if (result && result.error_type === "session_expired") {
+          if (await tryRefreshSession()) {
+            response = await sendIntent();
+            result = await response.json();
+          }
+        }
+
+        if (result && result.error_type === "session_expired") {
+          // Refresh failed — the session is genuinely over. Visible + honest,
+          // draft preserved (#1520).
+          const thinkingContainer0 = thinkingDiv.closest('.message-container');
+          if (thinkingContainer0) thinkingContainer0.remove(); else thinkingDiv.remove();
+          handleSessionExpired(message, form);
+          return;
+        }
 
         if (!response.ok) {
           throw new Error(result.detail || "An API error occurred");

@@ -14,10 +14,21 @@ const SessionTimeout = {
   // while the 30-min JWT marched on. The #857 refresh endpoint (httponly
   // refresh_token cookie, rotates on use) is the real extension.
   extendUrl: '/api/v1/auth/refresh',
+  // #1520: proactive refresh cadence for ACTIVE users. The access token lives
+  // 30 minutes (JWTService default) regardless of activity; before this, the
+  // ONLY refresh caller was the idle-modal's "Continue Working" button — so
+  // refresh could fire only when the user was AWAY, and active sessions died
+  // mid-use at the 30-minute mark. 20 minutes sits safely inside the token
+  // lifetime with margin for a missed check.
+  refreshIntervalMinutes: 20,
+  // #1520: only refresh for users active within this window — idle users must
+  // NOT be kept signed in forever (the idle warning/auto-logout still governs).
+  activityWindowMinutes: 5,
 
   // Internal state
   sessionStartTime: null,
   lastActivityTime: null,
+  lastRefreshTime: null,
   timeoutHandle: null,
   countdownHandle: null,
   modalOpen: false,
@@ -33,6 +44,9 @@ const SessionTimeout = {
 
     SessionTimeout.sessionStartTime = Date.now();
     SessionTimeout.lastActivityTime = Date.now();
+    // #1520: the access token is freshest at page load (login or a full-page
+    // navigation that survived auth) — count the refresh clock from here.
+    SessionTimeout.lastRefreshTime = Date.now();
 
     // Track user activity
     // #1384: the modal copy promises "Move your mouse ... to stay signed in"
@@ -101,9 +115,48 @@ const SessionTimeout = {
         SessionTimeout.sessionExpired = true;
         SessionTimeout.autoLogout();
       }
+
+      // #1520: keep ACTIVE sessions alive — the server-side token expires on
+      // wall-clock, not idleness, so activity alone never renewed it.
+      SessionTimeout.maybeRefreshToken();
     }, 10000); // Check every 10 seconds
 
     SessionTimeout.timeoutHandle = checkInterval;
+  },
+
+  /**
+   * #1520: Proactive, activity-aware token refresh.
+   * Fires the #857 refresh when (a) the user has been active recently and
+   * (b) the refresh interval has elapsed. Idle users are left to the idle
+   * warning / auto-logout path — this must never keep an absent user
+   * signed in.
+   */
+  async maybeRefreshToken() {
+    if (SessionTimeout.sessionExpired || !SessionTimeout.extendUrl) return;
+
+    const now = Date.now();
+    const minutesIdle = (now - SessionTimeout.lastActivityTime) / 1000 / 60;
+    const minutesSinceRefresh =
+      (now - (SessionTimeout.lastRefreshTime || SessionTimeout.sessionStartTime)) / 1000 / 60;
+
+    if (minutesIdle > SessionTimeout.activityWindowMinutes) return;
+    if (minutesSinceRefresh < SessionTimeout.refreshIntervalMinutes) return;
+
+    // Set BEFORE the await so overlapping 10s ticks can't double-fire.
+    SessionTimeout.lastRefreshTime = now;
+    try {
+      const res = await fetch(SessionTimeout.extendUrl, {
+        method: 'POST',
+        credentials: 'same-origin',
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+    } catch (e) {
+      // Silent: the reactive path (chat.js #1520 refresh-and-retry, or the
+      // idle modal) handles a genuinely dead session. Retry next interval.
+      console.warn('Proactive session refresh failed:', e);
+      SessionTimeout.lastRefreshTime =
+        now - (SessionTimeout.refreshIntervalMinutes - 1) * 60 * 1000;
+    }
   },
 
   /**
@@ -198,6 +251,7 @@ const SessionTimeout = {
           credentials: 'same-origin',
         });
         if (!res.ok) throw new Error('HTTP ' + res.status);
+        SessionTimeout.lastRefreshTime = Date.now(); // #1520: shared refresh clock
         if (typeof Toast !== 'undefined' && Toast.success) {
           Toast.success('Session Extended', 'Your session has been extended.');
         }

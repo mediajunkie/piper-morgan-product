@@ -1277,3 +1277,56 @@ CONVENTION EXTENDED in arch-standing-items.md header: "A [⏸] line is a STATUS 
   measurable facts with a short lifetime. Every blocked-on-external line must name a condition that CAN
   STILL FIRE — a gate on a swept milestone, a closed issue, or a departed role generates permanent silence.
   Re-derive these, not just counts." Credit to PPM in the file.
+
+---
+2026-08-08 13:3x PT — Arch — PRE-CLASSIFIER RULING (measure before narrowing) + pin: namespace RATIFIED
+
+CONTEXT: PM moved beta back a month ("We clearly have a lot more work still to do than anyone ever reported
+  to me"), after the reminder feature failed end-to-end three ways in one hour (#1490 re-failed, #1517 floor
+  DENIED a capability while the reminder sat in the DB, #1521 reminder query answered with the calendar
+  weather-report). Lead offered a structural diagnosis and requested an Arch design ruling.
+
+LEAD'S DIAGNOSIS: the deterministic pre-classifier (surface 1) OVER-CLAIMS time-scented utterances before
+  the LLM classifier (surface 2) sees them; every phrasing fix is a new regex (band-aid factory). PROPOSED:
+  narrow / confidence-gate surface 1 to certain-only claims; the LLM owns ambiguity.
+
+RULING — DIAGNOSIS RIGHT, PROPOSED DIRECTION UNMEASURED. DO NOT NARROW SURFACE 1 YET.
+  (Read intent-routing-stack.md first, per its own mandatory instruction; it CHANGED my answer.)
+  1. LIVE COUNTEREXAMPLE, from the failure set that triggered PM's decision: per the stack doc, "what
+     reminders do I have?" was MISROUTED TO THE TEMPORAL LANE BY THE LLM CLASSIFIER until the pre-classifier
+     claimed it. Narrowing hands it back to the thing that got it wrong. Lead independently confirmed the
+     same day: "#1521's real mechanism was an LLM-classifier miss on an uncovered read-shape, NOT a pattern
+     collision." TWO datapoints, both pointing away from the proposed direction.
+  2. ⭐ THE REAL DEFECT IS NOT THAT SURFACE 1 CLAIMS TOO MUCH — IT IS THAT ITS CLAIMS ARE UNFALSIFIABLE.
+     Stack doc: "the reason 'the LLM classified X wrong' is often UNOBSERVABLE IN PRODUCTION: the LLM never
+     saw the phrase." When surface 1 claims an utterance we never learn what the LLM would have done —
+     WHICH IS EXACTLY WHY EVERY FIX IS A REGEX. There is no measurement that could tell us to do otherwise.
+  3. Mode-4 pressure: the LLM's action vocabulary is "prompt-suggested, not enforced… emits paraphrase
+     variants," and alias defenses are "necessary, provably insufficient" (4 stale-PR aliases missed a live
+     5th). More LLM traffic loads a defense already known to leak.
+  → SAME SHAPE AS THIS WEEK'S TRUST-GRADIENT RULING: you cannot validate an amendment to something you
+    cannot observe. MAKE IT OBSERVABLE FIRST.
+  ✅ ARCH GATE RELEASED, SCOPED: the behavioral routing probe (tests/fixtures/routing_corpus_1283.yaml +
+    scripts/routing_probe_1283.py) was "out-of-CI on cost grounds, GATED ON ARCH RATIFICATION" — that gate
+    is mine. RATIFIED for a ONE-OFF MEASUREMENT (not CI) against the utterances surface 1 currently claims,
+    recording per-utterance whether the LLM agrees. Agree → surface 1 gratuitous there, narrow WITH
+    EVIDENCE. Disagree → surface 1 load-bearing, the pin is correct. Variant → mode-4 data, its own finding.
+    "Narrow/confidence-gate" then stops being a swap and becomes a list.
+    ⚠️ The month PM just bought is what makes this order affordable; under the old date I'd have said keep
+    band-aiding. NOT asserting the probe is cheap — "out-of-CI on cost grounds" means someone already
+    decided it isn't; scope to surface-1-claimed utterances, and STATE THE DENOMINATOR if sampling.
+  NOT RULED: against Lead's direction (probably right for a SUBSET — the probe names it); on
+    confidence-gating's mechanism (threshold vs abstain-and-defer) — a design call better made against data.
+
+pin: NAMESPACE RATIFIED (#1521, Lead's request) — VERIFIED IN CODE, NOT ON THE DESCRIPTION:
+  stale = ledgered - derived - pins → pins leave the STALE half ONLY; missing = derived - ledgered untouched.
+  assert not non_pointer_pins → a pin MUST be a POINTER ("a CHAT_INVISIBLE pin would assert nothing").
+  test_every_pointer_resolves_deterministically iterates all CHAT_POINTERS and skips only non-POINTERs →
+  A PIN CANNOT SKIP IT. Bidirectional pair still sound; pins exempted only where they'd be false positives.
+  DECLINED Lead's offer to migrate to capability-derived rows: that would make the ledger depend on the
+  registry being complete, which is the thing #1283 exists because it isn't.
+  ⭐ WHERE THE SINGLE POINT OF FAILURE NOW SITS: a pin can never be reported stale, so THE ONLY THING
+  KEEPING A PIN HONEST IS THE RESOLUTION TEST. Acceptable precisely because of the condition I required
+  when ratifying #1433 on 08-02 — ASSERT THE RESOLUTION PATH, NOT JUST THE DESTINATION — which landed.
+  ⚠️ ON THE RECORD: if anyone ever weakens that resolver-path assertion to destination-only, PINS BECOME
+  UNFALSIFIABLE ROWS. That assertion is now load-bearing for TWO features, not one.
