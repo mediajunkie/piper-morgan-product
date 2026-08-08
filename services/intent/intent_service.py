@@ -942,6 +942,11 @@ class IntentService:
                             ),
                             None,
                             session_id,
+                            # #1394: this Intent is built here with no context,
+                            # so the floor entry's principal recovery can't
+                            # help — thread user_id explicitly or the floor
+                            # reads the empty anonymous turn window.
+                            user_id=user_id,
                         )
 
                 elif response_type == "decline":
@@ -973,7 +978,11 @@ class IntentService:
                 from services.intent_service.conversation_context import get_or_create_context
 
                 try:
-                    _conv_ctx = get_or_create_context(session_id)
+                    # #1394: user-scoped key — this READ must hit the same
+                    # context the offer WRITE (canonical seam) and the #953
+                    # hydration/persist path use. The anonymous key silently
+                    # split the pair for every authenticated session.
+                    _conv_ctx = get_or_create_context(session_id, user_id=user_id)
                 except (ValueError, KeyError):
                     _conv_ctx = None  # Non-UUID session_id — skip offer tracking
                 if _conv_ctx and _conv_ctx.last_offer:
@@ -1555,7 +1564,10 @@ class IntentService:
                     )
 
                     try:
-                        conv_ctx = get_or_create_context(session_id)
+                        # #1394: user-scoped key — pairs with the turn-start
+                        # read above and the #953 persist capture at the outer
+                        # seam (both user-scoped).
+                        conv_ctx = get_or_create_context(session_id, user_id=user_id)
                     except (ValueError, KeyError):
                         conv_ctx = None  # Non-UUID session_id — skip offer tracking
                     if conv_ctx:
@@ -2591,7 +2603,9 @@ class IntentService:
         #     todos delegates to the EXECUTION handler via run_todo_query_workflow)
         # The rail short-circuits before this routing; anything without a rail entry
         # falls through to the generic query handler (which itself floors the unknown case).
-        return await self._handle_generic_query(intent, workflow_id, session_id)
+        # #1394: thread user_id — it was dropped here, severing session continuity
+        # (empty floor history) for every authenticated generic query.
+        return await self._handle_generic_query(intent, workflow_id, session_id, user_id)
 
     @staticmethod
     def _is_standup_query(message: str) -> bool:
@@ -2751,7 +2765,7 @@ class IntentService:
         )
 
     async def _handle_generic_query(
-        self, intent: Intent, workflow_id: str, session_id: str = None
+        self, intent: Intent, workflow_id: str, session_id: str = None, user_id: str = None
     ) -> IntentProcessingResult:
         """
         Handle generic QUERY intents that have no specialized handler.
@@ -2759,6 +2773,11 @@ class IntentService:
         Issue #915: Routes to conversational floor instead of returning
         a dev stub ("Query processed successfully: {action}").
         The floor can discuss the topic conversationally with context.
+
+        #1394: user_id must thread through — dropping it here made the floor
+        read the `anonymous:`-keyed (empty) turn window for every
+        authenticated generic query, so prior turns never reached the floor's
+        context on the chat path (the session-continuity gap's main artery).
         """
         self.logger.info(
             "query_action_routing_to_floor",
@@ -2769,6 +2788,7 @@ class IntentService:
             intent,
             None,
             session_id or "default_session",
+            user_id=user_id,
         )
 
     async def _handle_search_documents_notion(
@@ -11945,6 +11965,9 @@ Content to summarize:
         Uses ContextAssembler to gather structured data, then creates
         FloorContext and calls ConversationalFloor.respond().
         """
+        # #1394: principal recovery — see _handle_unknown_intent. The gate
+        # call site threads user_id today; this guards any future caller.
+        user_id = user_id or _principal_from_intent(intent)
         category = intent.category.value.upper()
 
         self.logger.info(
@@ -12153,6 +12176,8 @@ Content to summarize:
         The floor gets calendar, projects, and priorities as factual context,
         then generates a response that actually addresses the user's question.
         """
+        # #1394: principal recovery — see _handle_unknown_intent.
+        user_id = user_id or _principal_from_intent(intent)
         self.logger.info(
             "guidance_routed_to_floor",
             action=intent.action,
@@ -12226,6 +12251,16 @@ Content to summarize:
 
         GREAT-4D Phase 7: Completes intent handler coverage.
         """
+        # #1394: recover the principal when a caller dropped it. The registry
+        # key is user-scoped (#817), and the outer seam records every turn
+        # under the AUTHENTICATED key — a None user_id here made
+        # build_recent_history read the empty `anonymous:` context, so the
+        # floor answered with ZERO prior-turn context on the authenticated
+        # chat path (PM's live "I don't have any context about a CoVa
+        # project" amnesia). process_intent stamps the principal onto
+        # intent.context before category routing; _principal_from_intent is
+        # the sanctioned read (#1252).
+        user_id = user_id or _principal_from_intent(intent)
         self.logger.info(f"Processing UNKNOWN intent via conversational floor: {intent.action}")
 
         # Issue #907: Build floor context from available state
