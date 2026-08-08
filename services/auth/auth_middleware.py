@@ -59,7 +59,8 @@ EXEMPT_AUTH_AND_SETUP_PATHS: List[str] = [
     "/setup",  # Issue #390: setup-wizard UI template
     "/api/v1/auth/login",
     "/api/v1/auth/logout",
-    "/api/v1/auth/register",
+    # "/api/v1/auth/register" pruned 2026-08-08 (#1504 audit): no /register route
+    # is mounted anywhere — a dead exempt entry is a hole waiting for a route.
     "/api/v1/auth/refresh",  # Issue #857: refresh endpoint hit with expired access token
     "/api/v1/auth/reset-password",  # #441/#1261: forgot-password (see AUTH_EXEMPT_JUSTIFIED)
     "/api/v1/setup",  # All /api/v1/setup/* sub-routes via startswith match
