@@ -4017,7 +4017,19 @@ What would you like to set up first?"""
             # Check for list/show operations
             if not operation:
                 if any(word in message_lower for word in ["show", "list", "view", "my projects"]):
-                    operation = "list"
+                    # #1431 (reopened 2026-08-09): "list my archived projects"
+                    # answered the ACTIVE list. The pre-classifier's portfolio
+                    # list pattern already claims the archived variant
+                    # ("(show|list|view) ... (archived )?projects"), but this
+                    # branch discarded the archived token. Narrow the dispatch
+                    # HERE, inside the already-claiming handler — seam work
+                    # under the routing moratorium, not a new routing pattern.
+                    # ("archived" only: bare "archive <name>" phrasings were
+                    # already claimed by ARCHIVE_PATTERNS above.)
+                    if re.search(r"\barchived\b", message_lower):
+                        operation = "list_archived"
+                    else:
+                        operation = "list"
 
             # Check for add/create operations
             if not operation:
@@ -4156,6 +4168,32 @@ What would you like to set up first?"""
                             "offer_text": "Would you like to add one?",
                         }
                     return result_dict
+
+                # Handle archived-list operation (#1431: owner-scoped archived
+                # rows via the dedicated repository query — never the active list)
+                if operation == "list_archived":
+                    projects = await portfolio_service.list_archived_projects(user_id=user_id)
+                    if projects:
+                        project_names = [p.name for p in projects[:5]]
+                        noun = "project" if len(projects) == 1 else "projects"
+                        response = f"You have {len(projects)} archived {noun}:\n\n" + "\n".join(
+                            f"- {name}" for name in project_names
+                        )
+                        if len(projects) > 5:
+                            response += f"\n\n...and {len(projects) - 5} more."
+                        response += "\n\nSay \"restore <name>\" to bring one back."
+                    else:
+                        response = "You don't have any archived projects."
+                    return {
+                        "message": response,
+                        "intent": {
+                            "category": IntentCategoryEnum.PORTFOLIO.value,
+                            "action": "list_archived_projects",
+                            "confidence": 1.0,
+                            "context": {"project_count": len(projects)},
+                        },
+                        "requires_clarification": False,
+                    }
 
                 # Handle archive operation
                 if operation == "archive" and project_name:
