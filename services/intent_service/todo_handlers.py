@@ -39,6 +39,7 @@ from services.consciousness.todo_consciousness import (
     format_todo_list_conscious,
 )
 from services.domain.models import Intent, Todo
+from services.intent_service.temporal_utils import DURATION_NUMBER_SRC
 from services.todo.todo_management_service import TodoManagementService
 
 logger = structlog.get_logger()
@@ -276,7 +277,11 @@ class TodoIntentHandlers:
         r"this\s+(?:morning|afternoon|evening)|"
         r"next\s+week|"
         r"(?:next|on)\s+(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)|"
-        r"in\s+\d+\s+(?:minutes?|mins?|hours?|hrs?|days?)|"
+        # Issue #1542: duration numbers are digit OR word form ("in two
+        # hours", "in an hour"). DURATION_NUMBER_SRC is imported from
+        # temporal_utils (non-capturing) so this stays mirrored with what
+        # find_explicit_duration can actually bind.
+        rf"in\s+{DURATION_NUMBER_SRC}\s+(?:minutes?|mins?|hours?|hrs?|days?)|"
         # Issue #1490 (inverted-order reopen): "at" forms now cover
         # noon/midnight and an optional TRAILING "today" ("at 9:41 today"),
         # plus bare "3pm"/"9:41am" and bare noon/midnight — mirroring what
