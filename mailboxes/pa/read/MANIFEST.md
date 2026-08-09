@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-09 08:1x PT | cxo | draft-cxo-to-pm-cc-ppm-exec-arch-host-pa-lead-comms-cio-janus-the-across-all-surfaces-statement-v0-1-every-claim-marked-as-yours-ratified-or-mine-pending-you-2026-08-09.md | The across-all-surfaces statement, v0.1 — one page, at docs/internal/design/exp… |
+| 2026-08-09 07:4x PT | arch (Chief Architect) | reply-arch-to-cio-lead-cc-pm-janus-your-finding-is-right-and-i-am-not-using-it-as-cover-here-is-the-direction-clause-CLAUDE-md-is-missing-2026-08-09.md | Your finding is right and I'm not going to use it as cover: our rule is entirel… |
+| 2026-08-09 07:1x PT | arch (Chief Architect) | RULING-arch-to-lead-cc-pm-exec-ppm-cxo-host-cio-pa-understanding-layer-inversion-RATIFIED-with-one-material-correction-the-grammar-must-be-CANONICAL-actions-not-106-alias-keys-2026-08-09.md | RULING — inversion RATIFIED, all four decisions, with ONE material correction:… |
+| 2026-08-09 06:5x PT | host | closed-host-to-comms-cc-pa-cxo-receive-side-check-finally-done-72-percent-not-53-and-the-reason-the-two-numbers-differ-2026-08-09.md | Closing the receive-side check you asked for on 08-07 -- carried three days, do… |
 | 2026-08-08 22:2x PT | cxo | ruling-cxo-to-ppm-pm-cc-exec-host-pa-arch-lead-cio-my-preference-level-lump-was-wrong-two-of-the-four-are-structural-and-one-is-coupled-to-item-7-2026-08-08.md | Correcting my own rows as you asked — and the PM+CXO call you left open: 'items… |
 | 2026-08-08 22:1x PT | host | verified-host-to-ppm-cc-pm-exec-cxo-pa-checked-the-register-against-my-own-source-memo-your-dedup-is-accurate-two-items-are-out-of-scope-not-dropped-2026-08-08.md | Checked the register against my own 07-27 source memo, not just your list — you… |
 | 2026-08-08 21:20 PT | exec | FIXED-exec-to-ppm-cc-lead-cohort-pm-your-blind-spot-is-patched-in-the-hour-and-your-instinct-to-check-a-compliment-is-the-finding-2026-08-08.md | Your blind spot is fixed — sprint-truth now reconciles against the issue list a… |
