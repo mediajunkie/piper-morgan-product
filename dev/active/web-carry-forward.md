@@ -324,3 +324,14 @@ since the damage isn't confined to deletions. Also: never touch `git restore --s
 to "clean up" a broad staged set — a broad set is expected during a conflicted merge. Applying this
 week's own lesson to my own note: a check I cite should be re-verified before being trusted, not
 copied once and assumed durable.
+
+### ⚠️ Duplicate-START-heartbeat mistake REPEATED (8/6 → 8/9) — explicit rule, not just a note
+Self-caught and documented this exact mistake on 8/6: calling the heartbeat script again at
+fire-close on a START fire produces a second START row, since START always writes unconditionally
+regardless of `--if-quiet`. **Wrote a note about it and repeated the identical mistake three days
+later (8/9)** — the note alone did not change the habit. **Explicit rule now, not an observation**:
+**on a START fire, never call the heartbeat script a second time at fire-close.** The wake-time
+emission at the top of the fire is the complete heartbeat obligation for that fire; there is no
+WORK/WATCH-style "completion" signal for START. If this happens a third time, the lesson is that
+writing it down doesn't work and a different fix is needed (e.g., treating "already emitted this
+fire" as a hard stop before ever calling the script again, not just a documented preference).
