@@ -228,7 +228,9 @@
             </div>
           </div>
           <p>Status: ${todo.status || 'pending'}</p>
-          ${todo.due_date ? `<small>Due: ${todo.due_date}</small>` : ''}
+          <!-- #1512: the due-date slot is always visible — a todo without a
+               due date says so, instead of silently omitting the line. -->
+          ${todo.due_date ? `<small>Due: ${todo.due_date}</small>` : `<small class="no-due-date">No due date</small>`}
         </div>
       `;
     }).join('');
@@ -246,12 +248,26 @@
           <input type="text" id="new-todo-text" placeholder="What do you need to do?">
         </div>
         <div class="form-group">
+          <label>Priority</label>
+          <!-- #1512: values are the TodoPriority .value strings the String-typed
+               DB column stores (low/medium/high/urgent). The Slack /standup
+               "Today" bucket selects priority === 'high', so without this
+               control Today could never populate from the UI. -->
+          <select id="new-todo-priority">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label>Due Date (optional)</label>
           <input type="date" id="new-todo-due-date">
         </div>
       `,
       onConfirm: async () => {
         const text = document.getElementById('new-todo-text').value;
+        const priority = document.getElementById('new-todo-priority').value;
         const dueDate = document.getElementById('new-todo-due-date').value;
 
         if (!text) {
@@ -263,7 +279,7 @@
           const response = await fetch('/api/v1/todos', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ title: text, due_date: dueDate }),
+            body: JSON.stringify({ title: text, priority: priority, due_date: dueDate }),
             credentials: 'include'
           });
 

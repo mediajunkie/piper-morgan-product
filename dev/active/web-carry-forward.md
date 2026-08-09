@@ -365,3 +365,18 @@ emission at the top of the fire is the complete heartbeat obligation for that fi
 WORK/WATCH-style "completion" signal for START. If this happens a third time, the lesson is that
 writing it down doesn't work and a different fix is needed (e.g., treating "already emitted this
 fire" as a hard stop before ever calling the script again, not just a documented preference).
+
+### cohort-freeze-detect.sh false positive — FILED to CIO/HOST/PM 2026-08-09, awaiting their fix
+Ran Step 1b at the 15:27 fire (should have skipped it — v1.24 says WORK fires skip this check, my
+own process miss too) and got a false `rc=1 COHORT-FREEZE` because my local checkout was ~3h stale
+since the 12:27 fire's close — the detector only reads local `dev/heartbeats/*/*.tsv`, never fetches,
+and Step 1b runs before Step 2's sync in the skill's own numbered order. Verified before acting:
+fetched+merged, re-ran, got `rc=0` with real emitters one minute later; cross-checked `git log
+origin/main` independently and found dozens of genuine commits across the cohort inside the window
+the first run claimed was empty. **Not a real freeze, a measurement-ordering bug** — any role whose
+gap since last sync exceeds the 4h window would see the same false positive, and the detector's own
+output text ("stand the cohort down and notify PM") makes this a real false-alarm risk, not just a
+curiosity. Filed as a FINDING rather than quietly fixing my own sync habit, since the failure mode is
+cohort-wide. `mailboxes/cio/inbox/FINDING-web-to-cio-cc-host-pm-cohort-freeze-detect-false-positive-from-stale-local-checkout-2026-08-09.md`.
+**Nothing further for Web** — suggested fix (reorder Step 1b after sync, or have the detector fetch
+its own heartbeat data) is CIO's/HOST's call, not mine to ship unilaterally on their surfaces.

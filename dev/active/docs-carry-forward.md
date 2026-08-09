@@ -107,6 +107,9 @@ what the author actually wants.** Still the frame from 08-06 — asking beats de
 
 ## Watch items (not owed to me, but adjacent)
 
+- **"Verify at the User Path" (Aug 8) unsyndicated** — no Medium/LinkedIn, unlike the 7-of-9 recent
+  norm. Comms found + flagged directly to Dispatch, offered to fill columns herself. Nothing for me
+  until URLs land (from either Comms or Dispatch) — take the update whichever way it arrives.
 - **Puppeteer extraction cause** — Pard's lane.
 - **methodology-20's mutually unsatisfiable compression rules** — CIO owns.
 - **`pre-commit-broad-staging-warn.sh` blocking despite advisory design** — documented, not escalated.
