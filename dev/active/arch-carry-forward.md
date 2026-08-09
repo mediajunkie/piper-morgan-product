@@ -35,6 +35,19 @@ A real **`.git/hooks/pre-commit` gate** is installed in the shared common dir (P
 
 ---
 
+## ⚠️ Procedure fix owed to myself (2026-08-09) — the drain loop moved an UNREAD memo
+
+**I drained `results-lead-to-arch-…-the-probe-you-ordered-…-2026-08-08.md` into `read/` in an earlier fire
+without reading it.** Then I searched for an *08-09* date, concluded no Lead memo existed, told PM so, and
+**PPM's whole-tree search corroborated it because they inherited my framing.** A false negative of mine
+propagated into an independent "confirmation."
+
+**Two fixes, both mine:**
+1. **Never `mv` a memo to `read/` in the same pass that first sees it** — read, then move. The bulk drain
+   is for things already actioned this fire.
+2. **Search for the OBJECT, not the date.** I looked for "a Lead memo dated 08-09"; the memo was a Lead
+   memo dated 08-08. **The date was my assumption, not the thing I was looking for.**
+
 ## Active threads
 
 ### Owed by me
