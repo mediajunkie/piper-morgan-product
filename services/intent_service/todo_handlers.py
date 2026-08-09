@@ -132,12 +132,15 @@ class TodoIntentHandlers:
                 if ensure_utc(reminder_date) <= now:
                     due.append(todo.text)
             return due
-        except Exception as e:  # silent-ok: None sentinel -> assembler flags source_failed instead of "no reminders due" (#1425)
-            logger.warning(
+        except Exception as e:  # silent-ok: logged at error w/ exc_info; None sentinel -> assembler flags source_failed instead of "no reminders due" (#1425)
+            # #1491/#1423: error-level, never warning-swallow — this failure
+            # hid the v30 TypeError for days because warnings don't surface.
+            logger.error(
                 "Failed to fetch due reminders (source failed)",
                 error=str(e),
                 todo_count=todo_count,
                 reminders_considered=reminders_considered,
+                exc_info=True,
             )
             return None
 
