@@ -156,6 +156,29 @@ def _derive_workitem_lifecycle(state: Any, labels: Any) -> str:
     return "open"
 
 
+def _blocker_referent_from_labels(labels: Any) -> str | None:
+    """#1476 — extract a NAMED blocker from the label that made the item blocked.
+
+    GitHub labels are the only blocker signal this source has. A label like
+    ``blocked-by: auth migration`` / ``blocked: X`` / ``blocked by X`` names the
+    blocking thing — render that name. A bare ``blocked`` label names nothing;
+    return None so the caller can say so honestly instead of inventing a ghost.
+    """
+    for label in labels or []:
+        text = str(label).strip()
+        lower = text.lower()
+        if "block" not in lower:
+            continue
+        # Strip the leading blocked-marker; whatever remains names the blocker.
+        for prefix in ("blocked-by", "blocked by", "blocked on", "blocked"):
+            if lower.startswith(prefix):
+                remainder = text[len(prefix) :].lstrip(" :-–—").strip()
+                if remainder:
+                    return remainder
+                break  # bare marker label — carries no name
+    return None
+
+
 class WorkItemEntitySource:
     """Maps the bound user's GitHub work items (#1239) → WorkItem RadarEntities.
 
@@ -185,11 +208,22 @@ class WorkItemEntitySource:
                 meta_bits.append(f"#{number}")
             if last_touch:
                 meta_bits.append(f"updated {last_touch}")
+            lifecycle = _derive_workitem_lifecycle(_get(r, "state"), _get(r, "labels"))
+            if lifecycle == "blocked":
+                # #1476: a blocked card must render its referent — the blocker's
+                # name when a label carries one, else the honest admission that
+                # the cause isn't recorded (the card's ref opens the issue).
+                referent = _blocker_referent_from_labels(_get(r, "labels"))
+                meta_bits.append(
+                    f"blocked by {referent}"
+                    if referent
+                    else "blocked — cause not named; open the issue for details"
+                )
             entities.append(
                 RadarEntity(
                     entity_type=EntityType.WORK_ITEM,
                     title=_get(r, "title") or "(untitled work item)",
-                    lifecycle_state=_derive_workitem_lifecycle(_get(r, "state"), _get(r, "labels")),
+                    lifecycle_state=lifecycle,
                     provenance=Provenance.OBSERVED,
                     meta=" · ".join(meta_bits),
                     attention=attention,

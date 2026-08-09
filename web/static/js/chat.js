@@ -682,9 +682,18 @@
         }
 
         // Issue #787: Refresh sidebar when a new conversation is auto-created
+        // (data-only since #1522 step 1 — kept for home's auto-select state)
         if (result.conversation_created && typeof loadConversations === 'function') {
           loadConversations();
         }
+
+        // #1477: announce the exchange so the left rail (nav.js) refreshes —
+        // the current conversation gets its row from the FIRST turn, not the
+        // next full page load. The #787 hook above renders nothing since
+        // #1522 step 1; this event is what refreshes the visible surface.
+        document.dispatchEvent(new CustomEvent('piper:conversation-updated', {
+          detail: { conversationId: sessionId, created: !!result.conversation_created }
+        }));
 
         // Issue #840: Detect expired auth token and redirect to login
         if (result.auth_expired) {
