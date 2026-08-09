@@ -382,25 +382,25 @@ class ContextAssembler:
 
         context["capabilities"] = capability_answer_lines()
 
-        # Integrations from plugin registry (dynamic, reflects runtime state)
+        # Integrations from the canonical status service (#1547, audit F2).
+        # Previously registry-fed: every real plugin hardcodes configured=False
+        # (#784), so the floor computed all integrations "inactive" and the
+        # renderer omitted the line entirely — PM's "no visibility" finding.
+        # The canonical service is user-scoped and binding-first; Demo is
+        # structurally excluded from its known set.
         try:
-            from services.plugins import get_plugin_registry
+            from services.integrations.integration_status_service import (
+                IntegrationStatusService,
+            )
 
-            registry = get_plugin_registry()
-            plugin_status = registry.get_status_all()
-
-            integrations = []
-            for name, status in plugin_status.items():
-                is_configured = status.get("configured", False)
-                is_active = status.get("active", False) or status.get("status") == "active"
-                integrations.append(
-                    {
-                        "name": name,
-                        "status": "active" if (is_configured or is_active) else "inactive",
-                    }
-                )
-
-            context["integrations"] = integrations
+            statuses = await IntegrationStatusService().get_all(user_id)
+            context["integrations"] = [
+                {
+                    "name": name,
+                    "status": "active" if status.get("configured") else "inactive",
+                }
+                for name, status in statuses.items()
+            ]
         except Exception as e:
             logger.warning("context_assembler_identity_capabilities_error", error=str(e))
 
@@ -810,15 +810,16 @@ class ContextAssembler:
 
         # #1155: GitHub connection flag (the high-priority issues themselves are
         # gathered below — this block only records whether GitHub is connected).
+        # #1547 (audit F2): from the canonical service, user-scoped and
+        # binding-first — the registry read was constant-false (#784), so this
+        # flag could never be True for anyone.
         try:
-            from services.plugins import get_plugin_registry
+            from services.integrations.integration_status_service import (
+                IntegrationStatusService,
+            )
 
-            registry = get_plugin_registry()
-            github_status = registry.get_status_all().get("github", {})
-            if github_status.get("configured") or github_status.get("active"):
-                context["github_connected"] = True
-            else:
-                context["github_connected"] = False
+            gh_status = await IntegrationStatusService().get_status(user_id, "github")
+            context["github_connected"] = bool(gh_status.get("configured"))
         except Exception as e:
             logger.warning("context_assembler_status_github_error", error=str(e))
             context["github_connected"] = False

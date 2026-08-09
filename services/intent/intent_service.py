@@ -12288,7 +12288,9 @@ Content to summarize:
         projects = user_context.projects if user_context else []
         if projects:
             try:
-                project_metadata = await handlers._get_project_metadata(projects)
+                project_metadata = await handlers._get_project_metadata(
+                    projects, user_id=user_id
+                )
                 if project_metadata:
                     context["projects"] = project_metadata
                 else:

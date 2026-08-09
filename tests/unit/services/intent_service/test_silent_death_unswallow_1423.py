@@ -266,15 +266,21 @@ class TestGuidedProcessCheckFailureIsError:
 
 
 class TestIntegrationGuidanceHonestStatus:
-    def test_status_check_failure_is_named_in_message(self):
+    @pytest.mark.asyncio
+    async def test_status_check_failure_is_named_in_message(self):
+        from unittest.mock import AsyncMock
+
         from services.intent_service.canonical_handlers import CanonicalHandlers
 
         handlers = CanonicalHandlers()
+        # #1547: the status source is the canonical IntegrationStatusService now;
+        # the honesty contract is unchanged — a failed check is NAMED, not silent.
         with patch(
-            "services.intent_service.canonical_handlers.get_plugin_registry",
-            side_effect=RuntimeError("plugin registry down"),
+            "services.integrations.integration_status_service."
+            "IntegrationStatusService.get_all",
+            new=AsyncMock(side_effect=RuntimeError("status source down")),
         ):
-            response = handlers._format_integration_setup_guidance()
+            response = await handlers._format_integration_setup_guidance(user_id="u1")
         assert "couldn't check your current connection status" in response["message"]
 
 
