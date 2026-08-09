@@ -84,6 +84,45 @@ just misinform — it can invert which option looks safe.**
 **Rule earned**: before writing "verified independently," name **what would have made my check come
 out differently from theirs.** If the answer is "nothing," it's a repeat, and say *that* instead.
 
+## ⛔ THE WEB UI IS NOT GOING AWAY — my sort key was a FALSE QUESTION (PM, 2026-08-08)
+
+**READ THIS BEFORE ANY SURFACE/ROADMAP REASONING. Second time I've made this error.**
+
+**PM verbatim**: *"I never said the web UI was going away… the modeled user experience is **not
+specific to any one surface**. It's a holistic user experience, **expressed on each surface as
+appropriate**"* — phone as notifications · **Slack** as a channel bot · **web** as conversations +
+radar + settings · **another chat** as skills + MCP server · **CLI still maintained**. **All true at
+the same time.** *"We can make decisions about what to ship first… but I have never said that we are
+abandoning any one of those services."*
+
+**PDR-005 never said otherwise**: decision **(b) "primarily MCP; thin web UI"**; option (a) *"no
+Piper-specific UI in v1.0"* **explicitly REJECTED as infeasible**; **5 of 7 MUX/UI surfaces scoped
+1.0-required**.
+
+⭐ **The mechanism — "read more carefully" doesn't explain a repeat:**
+1. I read a **PRIORITIZATION** statement as an **ONTOLOGY** statement. *"Primarily"* orders work; I
+   made it a claim about which surfaces **exist**. Same family as production/trust/Notion/shipped:
+   **"primary" = first-in-sequence vs. the-only-real-one.**
+2. 🔴 **Building a SORT turned a misreading into infrastructure.** A sort needs a discriminator, so I
+   **manufactured an axis**, and the axis smuggled in competition between complementary surfaces.
+3. **Why it recurs cohort-wide**: the holistic model is **simultaneous truths**; decision artifacts
+   are **singular commitments**. The doc's grammar wins every time. ⚠️ **It IS documented and
+   referenced** (Nov-2025 holistic-UX brief; PDR-004 §Scope; PDR-005 lists PDR-004 under Related) —
+   **so "not written down" is not available. It survives only in docs nobody opens mid-decision.**
+
+**WITHDRAWN**: the sort key, at source in the synthesis §3 + my 07-30 memo + #055 framing. ⚠️ **PM
+RATIFIED the bucket sort 08-05 on my framing** — flagged loudly rather than left standing.
+⛔ **Do NOT re-key by patching labels** — any *survival* phrasing reintroduces it. Likely honest key:
+**"which surface does this defect live in."**
+
+✅ **#1477 re-anchored: a SURFACE-1 defect** (PDR-005:53 — *"left rail = current session"*),
+1.0-required + scheduled. **Never needed the welfare exception.** ⚠️ **#1476's surface is NOT
+verified** — couldn't locate what renders the "blocked" card; **do not assume it matches #1477.**
+
+🔴 **OPEN, PM's to answer**: PM said the MCP path **"may emerge as primary"** — a **sequencing
+possibility, not a settled ordering.** The re-sort waits on PM's read of how the surfaces relate.
+**I treated an open question as closed once; not inferring it twice.**
+
 ## 🔴 CURRENT — ⚠️ BETA MOVED BACK A MONTH from Aug 9 (PM, 2026-08-08 ~10:10)
 
 **Verified at source, `decisions.log:1242`.** PM verbatim: *"I am going to move the beta data back a

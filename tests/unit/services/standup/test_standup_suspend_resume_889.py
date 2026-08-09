@@ -220,7 +220,9 @@ class TestPendingResumeOfferDetection:
 
     @pytest.mark.asyncio
     async def test_accept_signals_trigger_resume(self):
-        """Various 'yes' phrases trigger resume."""
+        """Accept phrases trigger resume — with #1529 offer-binding:
+        explicit resume commands work anytime; bare affirmatives only while
+        the resume offer is actually pending (made on the previous turn)."""
         from services.intent.intent_service import IntentService
         from services.process.registry import ProcessType, SuspendedInfo
 
@@ -232,9 +234,56 @@ class TestPendingResumeOfferDetection:
             description="Your standup was paused.",
         )
 
-        accept_phrases = ["yes", "continue", "resume", "sure", "ok", "yes please"]
+        # (phrase, resume_offer_pending) — explicit commands need no pending
+        # offer; bare affirmatives do (#1529: an unbound "yes" resumes nothing).
+        accept_cases = [
+            ("continue", False),
+            ("resume", False),
+            ("yes", True),
+            ("sure", True),
+            ("ok", True),
+            ("yes please", True),
+        ]
 
-        for phrase in accept_phrases:
+        for phrase, pending in accept_cases:
+            with (
+                patch(
+                    "services.intent.intent_service.get_process_registry",
+                ) as mock_registry_fn,
+                patch.object(
+                    service,
+                    "_resume_suspended_standup",
+                    new_callable=AsyncMock,
+                    return_value=MagicMock(success=True),
+                ) as mock_resume,
+            ):
+                mock_registry = MagicMock()
+                mock_registry.check_suspended_processes = AsyncMock(return_value=suspended_info)
+                mock_registry_fn.return_value = mock_registry
+
+                result = await service._check_pending_resume_offer(
+                    "user-1", "sess-1", phrase, resume_offer_pending=pending
+                )
+                assert result is not None, f"'{phrase}' should trigger resume"
+                mock_resume.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_bare_affirmative_without_pending_offer_does_not_resume(self):
+        """#1529 offer-binding: a bare 'yes' with NO resume offer pending
+        binds to nothing — it must NOT resume the suspended flow (this is
+        the standup-hijack mechanism, pinned)."""
+        from services.intent.intent_service import IntentService
+        from services.process.registry import ProcessType, SuspendedInfo
+
+        service = IntentService()
+
+        suspended_info = SuspendedInfo(
+            process_type=ProcessType.STANDUP,
+            suspended_at=datetime.now(),
+            description="Your standup was paused.",
+        )
+
+        for phrase in ["yes", "yes please", "sure", "ok", "y"]:
             with (
                 patch(
                     "services.intent.intent_service.get_process_registry",
@@ -251,12 +300,13 @@ class TestPendingResumeOfferDetection:
                 mock_registry_fn.return_value = mock_registry
 
                 result = await service._check_pending_resume_offer("user-1", "sess-1", phrase)
-                assert result is not None, f"'{phrase}' should trigger resume"
-                mock_resume.assert_called_once()
+                assert result is None, f"unbound '{phrase}' must not claim the turn"
+                mock_resume.assert_not_called()
 
     @pytest.mark.asyncio
-    async def test_decline_signals_trigger_abandon(self):
-        """Various 'no' phrases trigger abandon."""
+    async def test_end_standup_abandons_suspended_flow(self):
+        """#1529 part 3: 'end standup' against a suspended standup abandons
+        it deterministically — never falls through to a classifier."""
         from services.intent.intent_service import IntentService
         from services.process.registry import ProcessType, SuspendedInfo
 
@@ -268,9 +318,51 @@ class TestPendingResumeOfferDetection:
             description="Your standup was paused.",
         )
 
-        decline_phrases = ["no", "fresh", "start over", "nah", "no thanks"]
+        with (
+            patch(
+                "services.intent.intent_service.get_process_registry",
+            ) as mock_registry_fn,
+            patch.object(
+                service,
+                "_abandon_suspended_standup",
+                new_callable=AsyncMock,
+                return_value=MagicMock(success=True),
+            ) as mock_abandon,
+        ):
+            mock_registry = MagicMock()
+            mock_registry.check_suspended_processes = AsyncMock(return_value=suspended_info)
+            mock_registry_fn.return_value = mock_registry
 
-        for phrase in decline_phrases:
+            result = await service._check_pending_resume_offer("user-1", "sess-1", "end standup")
+            assert result is not None
+            mock_abandon.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_decline_signals_trigger_abandon(self):
+        """Decline phrases trigger abandon — with #1529 offer-binding:
+        explicit restart commands work anytime; bare negatives only while
+        the resume offer is actually pending."""
+        from services.intent.intent_service import IntentService
+        from services.process.registry import ProcessType, SuspendedInfo
+
+        service = IntentService()
+
+        suspended_info = SuspendedInfo(
+            process_type=ProcessType.STANDUP,
+            suspended_at=datetime.now(),
+            description="Your standup was paused.",
+        )
+
+        decline_cases = [
+            ("start over", False),
+            ("start fresh", False),
+            ("no", True),
+            ("fresh", True),
+            ("nah", True),
+            ("no thanks", True),
+        ]
+
+        for phrase, pending in decline_cases:
             with (
                 patch(
                     "services.intent.intent_service.get_process_registry",
@@ -286,7 +378,9 @@ class TestPendingResumeOfferDetection:
                 mock_registry.check_suspended_processes = AsyncMock(return_value=suspended_info)
                 mock_registry_fn.return_value = mock_registry
 
-                result = await service._check_pending_resume_offer("user-1", "sess-1", phrase)
+                result = await service._check_pending_resume_offer(
+                    "user-1", "sess-1", phrase, resume_offer_pending=pending
+                )
                 assert result is not None, f"'{phrase}' should trigger abandon"
                 mock_abandon.assert_called_once()
 

@@ -356,6 +356,115 @@ class ProcessRegistry:
         normalized = message.strip().lower()
         return normalized in ESCAPE_COMMANDS
 
+    async def _close_process(
+        self,
+        handler: GuidedProcess,
+        user_id: Optional[str],
+        session_id: Optional[str],
+    ) -> None:
+        """Close a flow for good (exit/refusal — #1529).
+
+        Prefers the handler's `close()` (terminal state: no resume re-offer,
+        which is the nag loop #1529 documents) and falls back to `suspend()`
+        for handlers that don't implement it. Duck-typed on purpose so the
+        GuidedProcess protocol doesn't force a migration.
+        """
+        closer = getattr(handler, "close", None)
+        try:
+            if closer is not None:
+                await closer(user_id, session_id)
+            else:
+                await handler.suspend(user_id, session_id)
+        except Exception as close_err:
+            logger.warning(
+                "Error closing process after escape",
+                process_type=handler.process_type.value,
+                error=str(close_err),
+            )
+
+    async def _handle_escape_signal(
+        self,
+        handler: GuidedProcess,
+        user_id: Optional[str],
+        session_id: Optional[str],
+        message: str,
+    ) -> Optional[ProcessCheckResult]:
+        """Issue #1529: universal escape check for an active guided flow.
+
+        Runs the flow-generic escape detection (exit / refusal / off-intent)
+        and, when a signal fires, closes or pauses the flow and returns the
+        appropriate ProcessCheckResult. Returns None when the message should
+        proceed to the flow's handler. Detection failures never trap the user
+        IN the flow silently — they log and return None (the pre-existing
+        #888 exact-match escape above remains the guaranteed hatch).
+        """
+        try:
+            from services.process.escape import (
+                check_escape,
+                format_exit_message,
+                format_refusal_prefix,
+            )
+
+            signal = check_escape(message, handler.process_type)
+        except Exception as e:
+            logger.warning(
+                "Escape check failed, message proceeds to flow handler",
+                process_type=handler.process_type.value,
+                error=str(e),
+            )
+            return None
+
+        if signal is None:
+            return None
+
+        logger.info(
+            "Guided-process escape detected",
+            process_type=handler.process_type.value,
+            kind=signal.kind,
+            matched=signal.matched[:80],
+            has_residual=signal.residual is not None,
+            user_id=user_id,
+            session_id=session_id,
+        )
+
+        if signal.kind == "exit":
+            await self._close_process(handler, user_id, session_id)
+            return ProcessCheckResult.escaped_from(
+                process_type=handler.process_type,
+                response_message=format_exit_message(handler.process_type),
+            )
+
+        if signal.kind == "refusal":
+            await self._close_process(handler, user_id, session_id)
+            if signal.residual:
+                # Refusal + an actual request ("… restore CoVa"): exit the
+                # flow and let normal intent processing answer the request,
+                # with the honest exit copy prepended (off_topic_pause shape).
+                return ProcessCheckResult.off_topic_pause(
+                    process_type=handler.process_type,
+                    pause_message=format_refusal_prefix(handler.process_type),
+                )
+            return ProcessCheckResult.escaped_from(
+                process_type=handler.process_type,
+                response_message=format_exit_message(handler.process_type),
+            )
+
+        # off_intent — Option A UX (#899): pause (resumable) + answer.
+        try:
+            await handler.suspend(user_id, session_id)
+        except Exception as suspend_err:
+            logger.warning(
+                "Error suspending process after off-intent escape",
+                process_type=handler.process_type.value,
+                error=str(suspend_err),
+            )
+        from services.process.off_topic import format_off_topic_pause_message
+
+        return ProcessCheckResult.off_topic_pause(
+            process_type=handler.process_type,
+            pause_message=format_off_topic_pause_message(handler.process_type),
+        )
+
     async def check_suspended_processes(
         self,
         user_id: Optional[str],
@@ -455,6 +564,16 @@ class ProcessRegistry:
                                 "We can pick it up anytime."
                             ),
                         )
+
+                    # Issue #1529: universal escape check (FLOW-ESCAPE) — exits,
+                    # refusals, and cross-domain actions are consumed HERE,
+                    # deterministically, before the flow can transcribe them and
+                    # before any classifier sees them.
+                    escape_result = await self._handle_escape_signal(
+                        handler, user_id, session_id, message
+                    )
+                    if escape_result is not None:
+                        return escape_result
 
                     # Issue #899: Layer C — off-topic detection.
                     # Check if the message is clearly unrelated to the active process.

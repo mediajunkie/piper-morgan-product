@@ -96,6 +96,16 @@
 }
 .nav-rail-new-chat:hover { background: var(--color-primary-dark); }
 
+/* #1477 — honest microcopy under "+ New chat": the current chat is saved; starting a
+   new one loses nothing. Placed where the fear arises (alpha-tester finding). */
+.nav-rail-new-chat-hint {
+  margin: var(--space-sm) 0 0;
+  padding: 0 var(--space-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-nav-text-muted);
+  text-align: center;
+}
+
 /* Footer — compact utility links + user-avatar menu, pinned to the bottom (#1280 v2: footer
    utilities at the mock's .tag weight, NOT primary nav). */
 .nav-rail-footer { margin-top: auto; padding-top: var(--space-md); }

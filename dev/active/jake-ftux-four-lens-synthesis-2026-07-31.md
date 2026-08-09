@@ -19,7 +19,42 @@
 - **CXO's "demonstrate, don't describe" (§6) + PA's "ingest-and-reflect at onboarding" (#1)** — independent lanes, same conclusion: the first moment must do something only Piper could do against the user's own connected tools. This convergence is the strongest single signal in the collection.
 - **CXO's trigger-based entry points (§5) + PPM's relocation of them to the MCP tool catalog** — same principle, different surface: under PDR-006 the entry-point copy *is* the tool catalog. PPM prices this at a third of the nav-redesign cost. **Open question PPM flagged against their own recommendation**: situation-shaped tool names may route *worse* for the host LLM than object-shaped ones — cheap to test, expensive to assume; test both namings before committing (Lead or Arch).
 
-## 3. PPM's sort key — the roadmap overlay on all twenty items
+## 3. PPM's sort key — ⛔ THE KEY ITSELF IS WITHDRAWN (PM, 2026-08-08)
+
+> ⛔ **"Which surface survives PDR-006" is a FALSE QUESTION, and every bucket below inherits it.**
+> **PM, 2026-08-08**: *"I never said the web UI was going away… The fundamental idea of the modeled
+> user experience is that it is not specific to any one surface. It's a holistic user experience,
+> which is expressed on each surface as appropriate"* — phone as notifications, Slack as a channel
+> bot, web as conversations + radar + settings, another chat as skills + MCP server, **and the CLI is
+> still maintained. All true at the same time.**
+>
+> **PDR-005 never said otherwise.** Its decision is **(b) — "primarily MCP; thin web UI"**, and option
+> (a) *"no Piper-specific UI in v1.0"* was **explicitly rejected as infeasible**; the PDR then scopes
+> **5 of 7 MUX/UI surfaces as 1.0-required bespoke UI.**
+>
+> **The mechanism of the error, since the buckets read as reasonable**: I read a **prioritization**
+> statement as an **ontology** statement. *"Primarily"* orders work; I converted it into a claim about
+> which surfaces exist. **And building a SORT made it worse — a sort needs a discriminator, so I
+> manufactured an axis, and the axis smuggled in competition between surfaces the model treats as
+> complementary.** *(Same one-name-two-objects family as "production" = branch vs. artifact and
+> "trust" = inferred vs. declared: here, **"primary" = first-in-sequence vs. the-only-real-one**.)*
+>
+> ⚠️ **Do not re-key this by patching the labels.** Any key phrased as *survival* reintroduces the
+> error. The honest key is likely **"which surface does this defect live in"**, which requires knowing
+> the surface inventory rather than ranking it. **Re-sort pending PM's read on how the surfaces relate
+> going forward** — PM said the MCP path *may emerge* as primary, which is a sequencing possibility,
+> not a settled ordering, and I treated an open question as closed in the wrong direction.
+>
+> 🔴 **Concrete damage already found**: **#1477** ("current chat has no sidebar row") sat in bucket A
+> as dying, needing a *welfare* exception to justify fixing. **It is a defect in Surface 1** — whose
+> PDR-005 scoping line reads *"left rail = **current session**"* — a **1.0-required, scheduled**
+> surface that CXO re-tested on 08-07 as meeting criterion 1 strongly. **It never needed a welfare
+> argument at all.** (**#1476**'s owning surface is **NOT yet verified** — I could not locate what
+> renders the "blocked" card; do not assume it is also Surface 1.)
+
+*(Original section retained below for the record — the item groupings may still be useful; the KEY is what's withdrawn.)*
+
+## 3-bis. PPM's sort key as originally written — the roadmap overlay on all twenty items
 
 Sort every fix by **which surface survives PDR-006 ratification**:
 

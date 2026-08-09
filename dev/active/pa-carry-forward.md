@@ -13,24 +13,7 @@ PM-attention items live **here**, in the section immediately below.
 
 *(Exec's `cohort-attention-rollup` reads this section directly. Live items only — rewritten 2026-08-04 fire 3.)*
 
-**Beta is Sat 2026-08-08.** **2 DAYS.**
-
-- ✅ **RESOLVED 08-06 — PM ruled #1481 HELD from every shipping surface until safe** (building it
-  correctly is HIGH PRIORITY, not deferred; connector work front-loaded in Production — PPM's to plan).
-  **#1484's deployment status is no longer load-bearing for #1481 specifically** (a held feature is
-  unreachable regardless). ✅ **Date pressure was self-inflicted** — PM: 08-08 was *"a misremembering,"*
-  real target is **08-09**, explicitly not asking for a sprint. `decisions.log:303` stays as-is (accurate
-  to 07-30); correction is a new entry, Exec's/PPM's to file.
-- (superseded) 🔴🔴 **THE ONE THING: is a release cut + deploy planned before Saturday?** **Deployed artifact = Fly **v29** (08-02, `main@b619794af`) — **17 product
-  commits / ~4 days behind.** ⛔ *My first memo said "2,269 commits / since 07-26" — that was the production
-  BRANCH, benign-by-mode; corrected by Lead. Don't carry it.* **#1484 (the fail-closed Slack gate) is NOT
-  in the deployed artifact** (Arch verified: `slack_inbound_enabled` = 0 occurrences, leak path present) — and **Arch's #1481 "not a beta blocker" ruling rests on that
-  gate existing.** So in the running system "unconfigured" is still an absence. Also undeployed: the
-  #1482 delete-copy honesty fixes. **#1386 criterion 5 is exactly this check and is unchecked.**
-  **Cure = the v30 deploy (PM word-batch item 2); Lead has the two-liner and can run it plus the #1413
-  parity check in minutes given the allow-rule.** ⚠️ **Urgency is real but bounded** — Arch: only 1 of 3
-  preconditions is tester-suppliable; the `slack_bot` token needs Slack OAuth against a configured
-  workspace, **which a tester cannot mint.**
+**Beta target: Monday 2026-08-09 — TOMORROW.** (PM: 08-08 was a misremembering; not a sprint deadline.)
 
 - ⏱️ **TEN SECONDS: open `https://pipermorgan.ai/privacy` in a browser** and say whether a real policy
   renders. URL returns **200**; **server-rendered text is 29 characters.** PA cannot execute JS, so this
@@ -38,16 +21,19 @@ PM-attention items live **here**, in the section immediately below.
   and review may fetch without JS.
 - 🟡 **Three privacy items left for you**: **sub-processor completeness** (which LLM provider is actually
   in production?), **retention practice** (none exists in code), **contact address**.
-- 🔵 **One word for Arch: is Slack inbound a beta surface?** Arch's #1481 ruling assumes **no** and
-  everything in it follows from that. Yes → **#1484 flips to default-on and a fix lands on a 4-day clock**
-  (Arch advises against). It's your scope condition to amend.
-- ❓ **Is a Saturday beta deliberate?** Aug 8 is a Saturday. Given weekends are your active window it may
-  well be — worth being deliberate rather than inherited. One word.
+- 🟡 **Plugin manifest `license`** — repo is public; public ≠ licensed. Naming one we haven't chosen is a
+  claim, not metadata.
 - 🟡 **Architecture diagram** — redrawn at your request, still awaiting a time to discuss. No urgency named.
 - 💵 **One word on Probe B**: it needs API spend against your credential. **Your "yes you may" was scoped
-  to Probe A**, so I'm not extending it silently. B just became *upstream* of the MCP tool catalog (the
-  registry's 31 aliases are the situation-vs-object-shaped naming experiment sitting in our own code), so
-  it's worth more now than when PPM green-lit it.
+  to Probe A**, so I'm not extending it silently. It's now upstream of the MCP tool catalog naming (the
+  registry's **103 aliases → 38 entries** are the situation-vs-object-shaped naming experiment sitting in
+  our own code), so it's worth more now than when PPM green-lit it.
+
+### Fully resolved 08-06→08-08, deleted per CIO's rule (see git history if you need the trail)
+
+#1481 held by PM ruling; #1484 + #1482 both deployed and verified live in v30 (08-07); #1463's retest gate
+identified as blocked on #1462 (unbuilt), not a deployment, and CXO now owns notifying-on-ship; the
+"is a Saturday beta deliberate" question — moot, PM named 08-09 directly.
 
 ### Closed / no PM action
 
@@ -88,6 +74,14 @@ wake row is the only signal that can precede a sweep; the end-of-fire one is int
 commit / heartbeat tsv, so **a committing role is already covered by the first two** and an empty surface
 on a working day is *correct*. I had the mechanism right and the consequence wrong (Arch made the same
 error; HOST made its mirror image — checked *what* the belt reads, not *when*).
+
+🔴 **AFTER ANY CONFLICTED MERGE, BEFORE PUSHING** *(new 2026-08-08, real incident — Arch's own broad-
+staging-hook remediation deleted 17 files from `main` during a merge)*: run
+`git diff --diff-filter=D --name-only <merge-sha>^2 <merge-sha>` — **`^2`, not `^1`.** During a conflicted
+merge, `git restore --staged <path>` resolves to **HEAD's** version; for a file new on the incoming side,
+HEAD has none, so the result is **deletion**, and concluding the merge carries it to `main`. **Never run
+`git restore --staged` mid-merge.** Retroactively audited my one real conflict this week (0b6b36b2,
+decisions.log, 08-07) — clean, no deletions. Now `one-command-checks.md` #8.
 
 ⛔ **NEVER `grep -c "DAY-CLOSED"` TO DECIDE CLOSE STATE** *(bit me 2026-08-05)*. My 8/04 log returned **2**
 and was **not closed** — one match was a continuity reference to the prior day, the other was **my own

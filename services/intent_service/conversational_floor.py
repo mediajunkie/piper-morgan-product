@@ -636,8 +636,24 @@ class ConversationalFloor:
                         else:
                             lines.append(f'- Project "{name}": tracked')
             elif isinstance(proj, list):
-                for name in proj:
+                for item in proj:
+                    # #1530: ContextAssembler emits {"name": ...} dicts — render
+                    # the plain name, not the dict repr the LLM used to see.
+                    name = item.get("name", "unknown") if isinstance(item, dict) else item
                     lines.append(f'- Project "{name}": tracked')
+
+        # #1530 (m-44): state the row-derived count explicitly so the LLM never
+        # counts a truncated display slice and presents it as the total.
+        if "project_count" in domain_context:
+            total = domain_context["project_count"]
+            proj_list = domain_context.get("projects")
+            shown = len(proj_list) if isinstance(proj_list, list) else None
+            if shown is not None and total > shown:
+                lines.append(
+                    f"- Active project count: {total} (only the first {shown} are listed above)"
+                )
+            else:
+                lines.append(f"- Active project count: {total}")
 
         # #950 iteration: user-anchoring fields from extended _gather_identity_context
         if "user_projects" in domain_context:

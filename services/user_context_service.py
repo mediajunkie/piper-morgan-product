@@ -18,6 +18,10 @@ class UserContext:
     projects: list = field(default_factory=list)
     priorities: list = field(default_factory=list)
     preferences: Dict[str, Any] = field(default_factory=dict)
+    # #1530: which source `projects` came from — "database" | "preferences" |
+    # "config". Lets the cache-hit refresh path know whether an empty DB read
+    # means "all archived, rebuild fallback" or "DB was never the source".
+    projects_source: str = "config"
 
 
 class UserContextService:
@@ -57,7 +61,15 @@ class UserContextService:
                 user_id=user_id,
                 cache_hits=self.cache_hits,
             )
-            return self.cache[cache_key]
+            context = self.cache[cache_key]
+            # #1530: this cache is process-lifetime and no project write
+            # invalidates it, so a project created/unarchived after first fill
+            # was invisible to chat forever while the /projects page (fresh
+            # owner-scoped query per request) showed it. Re-read the projects
+            # rows on every hit so chat states the same truth the page reads.
+            if user_id:
+                context = await self._refresh_db_projects(context, session_id, user_id, cache_key)
+            return context
 
         # Cache miss - load from database or config
         self.cache_misses += 1  # GREAT-4C Phase 3: Track cache miss
@@ -79,6 +91,35 @@ class UserContextService:
             user_id=user_id,
             org=context.organization,
         )
+        return context
+
+    async def _refresh_db_projects(
+        self, context: UserContext, session_id: str, user_id: UUID, cache_key: str
+    ) -> UserContext:
+        """
+        #1530: On a cache hit, re-read owner-scoped project rows from the DB.
+
+        Same query the /projects page runs per request
+        (ProjectRepository.list_active_projects(owner_id=...)) — so the chat
+        surface and the page can never diverge on which projects exist.
+
+        - DB has active rows → they replace the cached list (DB is the
+          highest-priority source, mirroring the cold-load precedence).
+        - DB has no rows but was the cached source → every project has been
+          archived/deleted since fill (or the read failed); rebuild the whole
+          context so the cold-load fallback chain (prefs → config) applies and
+          stale row names cannot linger.
+        - DB has no rows and was never the source → cached prefs/config
+          projects stand, exactly as on cold load.
+        """
+        db_projects = await self._load_projects_from_db(user_id)
+        if db_projects:
+            context.projects = db_projects
+            context.projects_source = "database"
+            return context
+        if context.projects_source == "database":
+            context = await self._load_context_from_config(session_id, user_id)
+            self.cache[cache_key] = context
         return context
 
     async def _load_context_from_config(
@@ -126,16 +167,20 @@ class UserContextService:
             #    - Config-based projects (PIPER.md) - fallback
             if db_projects:
                 projects = db_projects
+                projects_source = "database"
             elif user_prefs:
                 projects = self._extract_projects_from_prefs(user_prefs)
+                projects_source = "preferences"
             else:
                 projects = self._extract_projects(merged_config)
+                projects_source = "config"
 
             # 6. Extract context from merged config
             context = UserContext(
                 user_id=user_id or session_id,
                 organization=self._extract_organization(merged_config),
                 projects=projects,
+                projects_source=projects_source,
                 priorities=(
                     self._extract_priorities_from_prefs(user_prefs)
                     if user_prefs
