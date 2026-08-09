@@ -209,8 +209,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install "mypy==2.3.0" "sqlalchemy==2.0.23" "pydantic==2.12.5" "fastapi==0.115.14"
 
-      - name: "mypy gate: per-code shrink-only ratchets (call-arg / arg-type / attr-defined / union-attr)"
+      - name: "mypy gate: per-code shrink-only ratchets (ALL codes incl. name-defined — #1469 closed)"
         run: |
-          echo "#1436 Part 2 (Arch-ratified 2026-07-17): new signature drift may not ship;"
-          echo "removed drift must lower its ceiling in the same commit."
+          echo "#1436 Part 2 (Arch-ratified 2026-07-17; extended to all codes 2026-08-08, closing"
+          echo "#1469's [name-defined] blindness): new drift of ANY ratcheted code may not ship;"
+          echo "removed drift must lower its ceiling in the same commit; an unratcheted code failing"
+          echo "means a new drift class appeared — freeze a reviewed ceiling or fix it."
           python scripts/check_mypy_gate.py

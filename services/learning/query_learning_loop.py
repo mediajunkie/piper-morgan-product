@@ -16,8 +16,13 @@ from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
 from uuid import UUID
+
+if TYPE_CHECKING:
+    # #1436: resolve the "Intent" forward ref (optimize_workflow_via_experiments)
+    # for type checkers; runtime import stays out to avoid a domain import cycle.
+    from services.domain.models import Intent
 
 # Configure logging
 logger = logging.getLogger(__name__)

@@ -528,7 +528,11 @@ class TodoIntentHandlers:
                     )
 
             # Mark as complete
-            completed_todo = await self.todo_service.complete_todo(todo_id=todo.id, user_id=user_id)
+            # #1436: domain Todo.id is a str(uuid4); the service is typed UUID.
+            # Same value either way — this makes the contract explicit.
+            completed_todo = await self.todo_service.complete_todo(
+                todo_id=UUID(todo.id), user_id=user_id
+            )
 
             if completed_todo:
                 logger.info("Todo completed", todo_id=str(todo.id), user_id=user_id)
@@ -571,7 +575,8 @@ class TodoIntentHandlers:
             todo_text = todo.text
 
             # Delete the todo
-            deleted = await self.todo_service.delete_todo(todo_id=todo.id, user_id=user_id)
+            # #1436: same str(uuid4) → UUID contract fix as complete_todo above.
+            deleted = await self.todo_service.delete_todo(todo_id=UUID(todo.id), user_id=user_id)
 
             if deleted:
                 logger.info("Todo deleted", todo_id=str(todo.id), user_id=user_id)

@@ -474,8 +474,10 @@ async def delete_file(
                 )
 
             # Delete from storage
-            file_path = Path(file.storage_path)
-            if file_path.exists():
+            # #1436: storage_path is a nullable column — a NULL row must not
+            # 500 on Path(None); it just has no bytes to remove.
+            file_path = Path(file.storage_path) if file.storage_path else None
+            if file_path is not None and file_path.exists():
                 try:
                     file_path.unlink()
                     logger.info(
@@ -584,8 +586,10 @@ async def download_file(
                 )
 
             # Verify file exists on disk
-            file_path = Path(file.storage_path)
-            if not file_path.exists():
+            # #1436: storage_path is nullable — a NULL row is the same honest
+            # "bytes are gone" state as a missing file, not a Path(None) 500.
+            file_path = Path(file.storage_path) if file.storage_path else None
+            if file_path is None or not file_path.exists():
                 logger.error(
                     "file_content_missing",
                     user_id=user_id,
@@ -693,8 +697,10 @@ async def preview_file(file_id: str, request: Request):
                     "message": "Preview isn't available for this file type — download it to view.",
                 }
 
-            file_path = Path(file.storage_path)
-            if not file_path.exists():
+            # #1436: storage_path is nullable — NULL reads as not-on-disk, not
+            # a Path(None) 500.
+            file_path = Path(file.storage_path) if file.storage_path else None
+            if file_path is None or not file_path.exists():
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND, detail="File not found on disk"
                 )
@@ -808,6 +814,11 @@ async def download_bulk(
                         )
                         file = result.scalar_one_or_none()
                         if not file or (not is_admin and file.owner_id != user_id):
+                            skipped += 1
+                            continue
+                        # #1436: nullable storage_path — NULL is a skip, not a
+                        # Path(None) crash swallowed by the item-level except.
+                        if not file.storage_path:
                             skipped += 1
                             continue
                         p = Path(file.storage_path)
