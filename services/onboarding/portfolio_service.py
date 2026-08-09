@@ -206,7 +206,9 @@ class PortfolioService:
         """
         if not query or not query.strip():
             # Empty query - return all active projects
-            projects = await self.list_active_projects(user_id)
+            # Keyword form so the #1532/#1501 principal-threading AST guard
+            # can see the principal (it recognizes user_id/owner_id kwargs).
+            projects = await self.list_active_projects(user_id=user_id)
             return projects[:limit]
 
         return await self.project_repository.search_projects(

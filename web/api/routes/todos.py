@@ -332,9 +332,16 @@ async def update_todo(
     Raises:
         HTTPException 404: Todo not found or not owned by current user
         HTTPException 400: Invalid input
-        HTTPException 500: Server error
+        HTTPException 500: Server error (including a repo refusal — never a
+            fake success)
 
     Issue #357: SEC-RBAC Phase 1.3 Endpoint Protection
+    Issue #1548: this route called ``update_todo(todo_obj)`` — an imagined
+        signature. The real TodoRepository.update_todo is
+        ``update_todo(todo_id, updates: Dict, owner_id, is_admin=False)``,
+        so every PUT raised TypeError against the real repo and surfaced as
+        a 500. The old tests never caught it because their mocks were
+        hand-rolled to the imagined interface (the #1541 delete-lie pattern).
     """
     try:
         # Verify ownership
@@ -346,25 +353,37 @@ async def update_todo(
                 detail=f"Todo not found: {todo_id}",
             )
 
-        # Update fields
+        # Build the updates dict in the repository's field vocabulary.
+        # The domain model stores the title in `text` (title is a property),
+        # and the repository routes `text` to the parent ItemDB table —
+        # sending "title" would raise "Unconsumed column names".
+        updates = {}
         if title is not None:
             if not title.strip():
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail="Todo title cannot be empty",
                 )
-            todo_obj.title = title
+            updates["text"] = title
 
         if description is not None:
-            todo_obj.description = description
+            updates["description"] = description
 
         if todo_status is not None:
-            todo_obj.status = todo_status
+            updates["status"] = todo_status
 
         if priority is not None:
-            todo_obj.priority = priority
+            updates["priority"] = priority
 
-        updated = await todo_repo.update_todo(todo_obj)
+        updated = await todo_repo.update_todo(todo_id, updates, owner_id=current_user.sub)
+
+        if not updated:
+            # The todo existed a moment ago but the update touched nothing —
+            # report the failure honestly instead of claiming success.
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to update todo",
+            )
 
         logger.info(
             "todo_updated",
