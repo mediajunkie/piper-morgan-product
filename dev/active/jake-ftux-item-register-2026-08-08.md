@@ -32,22 +32,26 @@ it is reviewable, and CXO/HOST/PA should correct their own rows.**
 
 | # | Item | Lens | Status |
 |---|---|---|---|
-| 1 | **"Blocked" card with no findable referent** | CXO 6 · HOST 1 | ✅ **#1476** — ⚠️ owning surface **NOT verified**; CXO taking the render question |
-| 2 | **Current chat has no row in left panel** | CXO 2 · HOST 2 | ✅ **#1477** — re-anchored as a **Surface-1** defect; never needed the welfare exception |
+| 1 | **"Blocked" card with no findable referent** | CXO §4.6 · HOST 1 | ✅ **#1476** — ⚠️ owning surface **NOT verified**; CXO taking the render question |
+| 2 | **Current chat has no row in left panel** | CXO §4.2 · HOST 2 | ✅ **#1477** — re-anchored as a **Surface-1** defect; never needed the welfare exception |
 | 3 | **Consent gate + capability legibility** (one feature) | HOST escalation · CXO | ✅ **#1509** — ⚠️ decision item **(c)** unanswered: is it a release blocker? |
 | 4 | **Meta-intent: compose vs. execute** | PA 2 | ✅ **#1510** — ⚠️ **(a)/(b) fork open**; build (b) first per Arch's asymmetry |
 | 5 | **Tool-catalog naming** (object- vs situation-shaped) | PPM relocation | ⏸️ **HELD deliberately** — PM's #3 input reframed the test (*"moment-oriented skills are compounds of more basic action-on-one-object skills"*) and routed the shape to **Arch, with Lead's input**. Filing now would bake in the superseded framing |
 | 6 | **Ingest-and-reflect at onboarding** (cold-start: show the user their own work) | PA 1 | 🔴 **UNFILED** — PA calls it highest-leverage; converges with CXO's "demonstrate, don't describe." **The strongest single signal in the collection** |
-| 7 | **Reflect and elaborate between steps** | CXO 2 (elicitation) | 🔴 **UNFILED** |
-| 8 | **One thing at a time** (reduce cognitive load of the ask) | CXO 1 | 🔴 **UNFILED** |
-| 9 | **Goal-driven, not harness-driven** (agent decides what it still needs) | CXO 3 | 🔴 **UNFILED** |
+| 7 | **Reflect and elaborate between steps** | CXO §2.2 | 🔴 **UNFILED** |
+| 8 | **One thing at a time** (reduce cognitive load of the ask) | CXO §2.1 | 🔴 **UNFILED** |
+| 9 | **Goal-driven, not harness-driven** (agent decides what it still needs) | CXO §2.3 | 🔴 **UNFILED** |
 | 10 | **Uncertainty-reduction legibility** — *"a much stronger sense of what uncertainty it is reducing for me as a user"* | HOST 3 | 🔴 **UNFILED** — ⚠️ **the only HOST item with no CXO twin**, and the one closest to Jake's headline verdict |
-| 11 | **Primary nav lives in the avatar/settings pill** | CXO 1 (IA) | 🔴 **UNFILED** |
-| 12 | **Left panel width in an uncanny middle** | CXO 3 (IA) | 🔴 **UNFILED** |
-| 13 | **Search placeholder too verbose** | CXO 4 (IA) | 🔴 **UNFILED** — CXO: *"Take it."* |
-| 14 | **Chat input doesn't grow** | CXO 5 (IA) | 🔴 **UNFILED** |
+| 11 | **Primary nav lives in the avatar/settings pill** | CXO §4.1 | 🔴 **UNFILED — STRUCTURAL** *(CXO ruling 08-08, correcting their own lump)*: this is **findability, not taste**. Jake's headline was that he couldn't tell what Piper could do; **primary nav hidden in an avatar pill is a direct cause of that** |
+| 12 | **Left panel width in an uncanny middle** | CXO §4.3 | ✅ **HOLD — preference** (CXO confirms: no functional consequence) |
+| 13 | **Search placeholder too verbose** | CXO §4.4 | ✅ **HOLD — preference.** ⚠️ **History matters**: CXO reverted that placeholder in June because it made a **false capability claim**. *That* defect is fixed; **Jake's is a verbosity complaint on the corrected string** — different item, same line |
+| 14 | **Chat input doesn't grow** | CXO §4.5 | 🔴 **UNFILED — STRUCTURAL, and a DEPENDENCY of row 7.** CXO: a composer that won't grow means **you cannot read your own message before sending it** — and **you cannot elaborate in a box you can't see.** ⚠️ **Filing 7 without 14 ships an elicitation improvement into an input that can't hold the elaboration** |
 
-**Filed 4 · Held 1 · Unfiled 9.**
+**Filed 4 · Held-by-decision 1 · Preference-hold 2 · 🔴 Unfiled-and-structural 6.**
+
+*(Revised 2026-08-08 22:30 after all three lens owners audited their own rows — see Corrections below.
+The pre-audit line read "Unfiled 9" with "up to four may correctly never be filed." **Both numbers were
+wrong: it is two that hold, not four.**)*
 
 ---
 
@@ -77,3 +81,69 @@ against the decided bucket structure"* — **so the enumeration was gated on a s
 out to be built on a false premise.** ⚠️ **A conversion gated on a decision is a conversion that
 disappears if the decision is withdrawn.** That is the mechanism by which nine real findings from our
 first alpha tester sat in a memo for eight days while I reported the lane as "advanced."
+
+
+---
+
+## Corrections from the lens owners (2026-08-08, within an hour of the register)
+
+**I asked each lens to correct its own rows. All three did, unprompted, the same evening. Three real
+corrections — and two are to MY work, not theirs.**
+
+### 1. ⛔ CXO: "items 11–14 are preference-level" was a LUMP, and it was mine to un-lump
+
+**2 of 4 are structural (11, 14), not 4 of 4 preference.** Rows updated above. ⭐ **And CXO's mechanism
+is the sharper end of my own**:
+
+> **All four arrived in the same section of my memo, so I sorted them by where they appeared rather
+> than by what they do. And the withdrawn sort key made the lump cheap to keep — under "dies with the
+> pivot" all four were doomed anyway, so the difference between preference and structural had no
+> consequence. A distinction with no consequence doesn't get made.**
+
+**That is the false axis from the other end: it didn't only mis-sort items — it removed the incentive
+to sort them correctly.**
+
+### 2. 🔴 PA: my "PA #3/#4 defer to CXO" was wrong for #3 — it is an OMISSION, not a deferral
+
+PA's #3 made a **specific engineering claim** that is **absent from the synthesis AND from this
+register** (PA grepped both for "handler", "front-end", "structured-intake", "Grill Me" — **zero
+hits**):
+
+> *"If the implementation genuinely needs five fields before it can act, then incremental elicitation
+> isn't a UI change, it's a change to what the handler accepts. Worth confirming which of those it is
+> before scoping it as a front-end fix — I haven't read the handler and won't guess."*
+
+⚠️ **This belongs INSIDE row 7's body, not as a fifteenth row.** *"Front-end change" and "handler
+change" are different owners, different effort, and different risk of being filed as the wrong kind of
+fix and bouncing.* **If row 7 is written from the UX lens alone it may describe the gap correctly and
+still under-scope the fix** — the UX lens has no reason to ask what the handler currently requires.
+
+### 3. ⚠️ My own attribution defect — one name, two objects, in the register itself
+
+CXO flagged that rows 2 and 7 were **both** labelled *"CXO 2."* **Verified: their memo has TWO
+numbered lists** — §2 (elicitation) and §4 (Navigation/IA). So *"CXO 2"* meant **§2.2** in one row and
+**§4.2** in another. **All attributions now carry the section (§2.n / §4.n).**
+
+**Sixth instance of one-name-two-objects in this cohort in ten days** — after *production*, *trust*,
+*Notion*, *shipped*, and *primary* — **and this one is in the register I built to make things
+countable.** An index whose labels are ambiguous is a countability instrument that can't be audited.
+
+### 4. ✅ HOST: dedup verified accurate; two items out of scope, not dropped
+
+### 5. On row 10, and it is CXO's own note about themselves
+
+> *"I built four lenses' worth of convergence and the item with no convergence may be the most
+> important one in the set — **convergence is not importance, and I've been treating it as a ranking
+> signal all week.**"*
+
+---
+
+## ⚠️ Why bodies were NOT written tonight — and the reason is NOT the hour
+
+**Two lens owners materially corrected this register within an hour of its publication.** Writing
+bodies from it before those landed would have **baked in a wrong preference/structural split and an
+omitted engineering caveat** — filing four items that hold and missing the dependency between 7 and 14.
+
+**That is a sequencing reason, not a fatigue reason.** CXO independently reached the same conclusion
+(*"not asking you to file tonight"*). ✅ **Trigger for bodies: next fire, first item, against THIS
+revised register** — with **PA's handler caveat inside row 7** and **row 14 filed alongside it.**
