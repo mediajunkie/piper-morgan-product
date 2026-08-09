@@ -1765,3 +1765,120 @@ class TestPrincipalThreadingGuards1532:
                 f"{name} lost its user_id (principal) parameter — the F3 ownership check "
                 "cannot be threaded without it (#1532)."
             )
+
+
+# ============================================================================
+# #1547 — status-truth: the plugin registry is NOT a configuration source
+# ============================================================================
+
+
+class TestRegistryConfiguredReadRatchet:
+    """#1547 (status-truth audit 2026-08-09) — architectural enforcement for the
+    canonical-status migration.
+
+    All four real integration plugins hardcode ``is_configured() -> False``
+    (#784 — the plugin interface has no user, and integration truth is
+    user-scoped), so any surface reading
+    ``PluginRegistry.get_status_all()[...]["configured"]`` reports every real
+    integration never-connected — the mechanism behind 6 of the audit's 10
+    findings (#1534, the blind floor, the constant degrade nudges, ...).
+
+    The canonical source is
+    ``services/integrations/integration_status_service.py``
+    (user-scoped, binding-first). This test is a RATCHET: it counts remaining
+    non-test ``get_status_all()`` consumer sites and fails if the count GROWS.
+    When a migration lands, LOWER ``MAX_REGISTRY_STATUS_CONSUMERS`` in the same
+    commit (never raise it). New status-consuming surfaces must read the
+    canonical service.
+    """
+
+    # Ratchet target — non-test get_status_all() consumer sites remaining.
+    # 2026-08-09 (#1547): 1 — the Slack-help capability enumeration in
+    # canonical_handlers._get_dynamic_capabilities (audit F6, a separate slice).
+    # Trajectory: 4 (audit baseline) → 1 (F1 guidance, F2 identity context +
+    # github flag migrated this pass). LOWER as F6 lands; NEVER raise.
+    MAX_REGISTRY_STATUS_CONSUMERS = 1
+
+    # Where consumers could live (m-44: name the denominator — this is the
+    # scanned space, and the guard test below asserts it's actually populated).
+    SCAN_GLOBS = ("services/**/*.py", "web/**/*.py", "main.py")
+
+    # The definition site itself (and this test) are not consumers.
+    DEFINITION_FILE = "services/plugins/plugin_registry.py"
+
+    CALL_RE = re.compile(r"get_status_all\s*\(")
+
+    def _consumer_sites(self):
+        sites = []
+        scanned = 0
+        for pattern in self.SCAN_GLOBS:
+            for path in glob.glob(pattern, recursive=True):
+                if os.path.normpath(path) == os.path.normpath(self.DEFINITION_FILE):
+                    continue
+                scanned += 1
+                with open(path, encoding="utf-8") as fh:
+                    for lineno, line in enumerate(fh, start=1):
+                        if self.CALL_RE.search(line):
+                            sites.append(f"{path}:{lineno}")
+        return sites, scanned
+
+    def test_denominator_guard_scan_space_is_populated(self):
+        """m-44: an empty glob would make the ratchet pass by measuring nothing.
+        Assert the scan actually covered the production tree."""
+        _sites, scanned = self._consumer_sites()
+        assert scanned >= 300, (
+            f"Scan space collapsed: only {scanned} files scanned — the ratchet "
+            "below would be vacuous. Check SCAN_GLOBS / working directory."
+        )
+
+    def test_no_new_registry_configured_readers(self):
+        """Fails if a new non-test surface starts consuming registry status.
+        New surfaces must read IntegrationStatusService (user-scoped,
+        binding-first) — the registry's 'configured' bit is structurally
+        unknowable (#784)."""
+        sites, _scanned = self._consumer_sites()
+        assert len(sites) <= self.MAX_REGISTRY_STATUS_CONSUMERS, (
+            f"{len(sites)} non-test get_status_all() consumer sites found "
+            f"({sites}), exceeding the #1547 ratchet target of "
+            f"{self.MAX_REGISTRY_STATUS_CONSUMERS}. The registry cannot report "
+            "per-user configuration — read "
+            "services/integrations/integration_status_service.py instead."
+        )
+
+    def test_ratchet_target_stays_tight(self):
+        """The target must equal the actual count — a loose target silently
+        permits regressions up to the slack. When F6 migrates, lower
+        MAX_REGISTRY_STATUS_CONSUMERS to 0 in the same commit."""
+        sites, _scanned = self._consumer_sites()
+        assert len(sites) == self.MAX_REGISTRY_STATUS_CONSUMERS, (
+            f"Ratchet drift: actual consumer-site count is {len(sites)} "
+            f"({sites}) but MAX_REGISTRY_STATUS_CONSUMERS is "
+            f"{self.MAX_REGISTRY_STATUS_CONSUMERS}. If a migration just landed, "
+            "lower the target in the same commit."
+        )
+
+    def test_real_plugins_do_not_fabricate_configured(self):
+        """The lying source stays retired: no real plugin's get_status() may
+        emit a boolean 'configured' again (None + note is the contract; demo is
+        env-fed and exempt)."""
+        plugin_files = [
+            "services/integrations/github/github_plugin.py",
+            "services/integrations/slack/slack_plugin.py",
+            "services/integrations/calendar/calendar_plugin.py",
+            "services/integrations/notion/notion_plugin.py",
+        ]
+        offenders = []
+        for path in plugin_files:
+            assert os.path.exists(path), (
+                f"Denominator guard: {path} missing — the fabrication check "
+                "would be vacuous. Update the list if plugins moved."
+            )
+            with open(path, encoding="utf-8") as fh:
+                content = fh.read()
+            if re.search(r"\"configured\"\s*:\s*self\.is_configured\(\)", content):
+                offenders.append(path)
+        assert not offenders, (
+            f"{offenders} reintroduced 'configured': self.is_configured() — "
+            "that bit is hardcoded False without user context (#784) and every "
+            "registry consumer inherits the lie (#1547)."
+        )
