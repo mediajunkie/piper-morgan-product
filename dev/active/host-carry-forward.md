@@ -1,20 +1,17 @@
 # HOST carry-forward
 
-**Written**: 2026-08-07 19:4x PDT (STOP fire, day 14 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
-⚠️ **This header sat stale at 07-30 for a week despite daily edits** (caught and fixed Fire 4, 08-07) — the file's own catalogued failure shape, instantiated by the file itself. Treat every section's date as suspect, not just this line.
+**Written**: 2026-08-08 22:2x PDT (STOP fire, day 15 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
-## Standing check — cron-misread, THIRD instance (2026-08-07, Fire 6)
+## Standing check — cron-count, FIX HELD under real use (2026-08-08, Fires 5 & 6)
 
-⚠️ **"Re-read the cron hour list" has failed twice now** (07-30, then again 08-07) on the identical expression `37 6,9,12,15,18,21` — both times I STOPped a fire early. Re-reading isn't a functioning fix if I've done it wrong twice. **Replacing it with a count, not a re-read**: before writing STOP, count the comma-separated values in the cron expression and count today's logged fires in the session log. If they don't match, it's not the last fire. `37 6,9,12,15,18,21` = **6** values → 6 fires/day, always. Do this arithmetic explicitly in the log entry, not silently.
+✅ **The count-based fix (shipped Fire 3, 08-08) worked twice today, correctly, on real end-of-day calls** — Fire 5 (5 logged fires vs. 6 cron values → correctly WORK) and Fire 6 (5 vs. 6 → correctly STOP). Four prior mis-reads on this exact expression (07-30, 08-07 ×2, plus the near-miss this replaced) — this is the first evidence the replacement actually holds rather than being a fourth well-intentioned "be more careful." Keep doing it explicitly (`grep -c "^## Fire"` against the comma count) rather than trusting it's now internalized — two clean uses is not yet proof it's automatic.
 
-## New this fire (2026-08-08, Fire 1/START)
+## New this fire (2026-08-08, Fire 6/STOP)
 
-- ✅ **Freeze-monitor HOST half — WAKING side SHIPPED (`duty-cycle-tick` v1.24, Step 1b).** Tested against this morning's own fire (rc=0, ordinary wake — no live freeze available to test the positive branch, relying on CIO's own known-positive/known-negative verification of the detector). 🔴 **Still open, still not mine to build**: what PM receives *during* a freeze — needs a watcher outside the frozen agent set (real crontab, not `CronCreate`), CIO/Pard's. Notified CIO with the boundary stated explicitly so this doesn't read as fully closed.
-- **Comms's "did any of your conclusions rest on invisible silence" — the receive-side check still not done.** Carried forward again: 53% of what I *send* is header-style (known); what I *receive* in that format is unchecked. Cheap, next light-inbox fire.
-
-## Archival (2026-08-07, Fire 5/6)
-
-- ✅ **Mailbox-write discipline slip, caught 08-07, repeated and re-caught 08-08.** Did bare `mv`s outside `mail-send.sh` on 08-07 (caught pre-sign-off); on 08-08 routed everything through one `mail-send.sh` call from the start — held this time. Worth watching whether it recurs a third time before calling it fixed.
+- ✅ **Freeze-monitor HOST half — waking side shipped (Fire 1), memory-index headroom watch shipped (Fire 3), cron prompt content repaired (Fire 4)** — all closed loops, not carried forward. Full detail in today's session log if ever needed; this file doesn't need to re-narrate a closed day.
+- 🔴 **Comms's "did any of your conclusions rest on invisible silence" — the receive-side check STILL not done.** Third day carried. 53% of what I *send* is header-style (known); what I *receive* in that format is unchecked. Genuinely cheap — do it the next fire with a light inbox, don't let it become a fourth carry.
+- **MEMORY.md headroom now 182/200 (18 lines) after CIO's same-day fix** — Step 1c will re-alert under 8 automatically; no manual tracking needed. CIO's further hybrid-packing proposal (18→113 lines, lossy on 72% of entries) is explicitly PM's call, not escalated further by HOST — watch for a ruling, don't chase it.
+- **PPM's Jake-fix-list register verified accurate for all 4 HOST-tagged rows** (checked against the 07-27 source memo, not assumed). Item 10 (uncertainty-reduction legibility) is unfiled and flagged as the one most likely to be lost — named as first-in-line when PPM's "next fire, first item" filing happens; not HOST's to file, just worth watching it actually lands.
 
 ## Closed by PM ruling — archival, do not re-raise
 

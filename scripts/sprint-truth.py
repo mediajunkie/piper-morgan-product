@@ -86,6 +86,26 @@ def fetch(limit=2000):
     return items
 
 
+def board_absent_issues(milestone):
+    """Issues carrying the milestone but ABSENT from the project board.
+
+    PPM found this the hour the script shipped (2026-08-08): `gh issue create --milestone X`
+    sets the milestone and does NOT add the issue to the board, so a board-derived count
+    cannot see it. #1509 and #1510 — both Beta Blockers by PM's 08-07 ruling — were invisible.
+    PM's ruling created a pipeline of exactly this shape, so this is the recurring case, not
+    an edge case. Counting the board alone would under-report the sprint indefinitely.
+    """
+    cmd = ["gh", "issue", "list", "--milestone", milestone, "--state", "open",
+           "--limit", "300", "--json", "number,title"]
+    try:
+        out = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
+        if out.returncode != 0:
+            return None, out.stderr.strip()
+        return json.loads(out.stdout), None
+    except Exception as exc:
+        return None, str(exc)
+
+
 def milestone_of(item):
     ms = item.get("milestone")
     return ms.get("title") if isinstance(ms, dict) else ms
@@ -118,10 +138,31 @@ def main():
         print(f"  {not_done[status]:>4}  {status:<16} {gloss}")
     print(f"\n  {done:>4}  Done")
 
+    # ---- second method: reconcile against the issue list (PPM, 2026-08-08) ----
+    on_board = {(i.get("content") or {}).get("number") for i in scoped}
+    issues, err = board_absent_issues(args.milestone)
+    if err is not None:
+        print(f"\n⚠️  RECONCILIATION SKIPPED — issue-list query failed: {err}")
+        print("    The board count above may UNDER-report. Treat it as a floor, not a total.")
+    else:
+        missing = [i for i in issues if i["number"] not in on_board]
+        if missing:
+            print(f"\n🔴 NOT ON THE BOARD — {len(missing)} open issue(s) carry this milestone "
+                  f"but are absent from the project, so the counts above EXCLUDE them:")
+            for m in sorted(missing, key=lambda x: x["number"]):
+                print(f"     #{m['number']}  {m['title'][:62]}")
+            print("     Fix at the source: add them to the board (filing with --milestone does not).")
+            total_open += len(missing)
+        else:
+            print(f"\n[reconciled: {len(issues)} open issues by milestone, all present on the board]")
+
     # The sentence a reporter should copy, rather than composing their own.
     parts = ", ".join(f"{not_done[s]} {s}" for s in ordered)
+    board_sum = sum(not_done.values())
+    off_board = total_open - board_sum
+    tail = f" + {off_board} not on the board" if off_board else ""
     print("\n--- paste this, not a single number ---")
-    print(f"{args.milestone}: {total_open} not done ({parts}); {done} done.")
+    print(f"{args.milestone}: {total_open} not done ({parts}{tail}); {done} done.")
     if not_done.get("Sprint Backlog"):
         print(f"NOTE: {not_done['Sprint Backlog']} item(s) have NOT BEEN STARTED. "
               f"Any 'complete' claim must exclude itself explicitly.")
