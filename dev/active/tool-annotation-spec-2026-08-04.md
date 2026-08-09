@@ -86,10 +86,10 @@ key; here, the client doesn't ask. **Understated risk is the expensive direction
 Extend `WorkflowEntry` with a **required** effect declaration:
 
 ```python
-class ToolEffect(str, Enum):
-    READ = "read"            # → readOnlyHint=True,  destructiveHint=False
-    WRITE = "write"          # → readOnlyHint=False, destructiveHint=False
-    DESTRUCTIVE = "destructive"  # → readOnlyHint=False, destructiveHint=True
+class ToolEffect(IntEnum):    # ⛔ CORRECTED 2026-08-09 — was `(str, Enum)`. See §9e.
+    READ = 0                 # → readOnlyHint=True,  destructiveHint=False
+    WRITE = 1                # → readOnlyHint=False, destructiveHint=False
+    DESTRUCTIVE = 2          # → readOnlyHint=False, destructiveHint=True
 
 @dataclass
 class WorkflowEntry:
@@ -394,3 +394,35 @@ total.*
   most likely to be softened in review.
 - **`meeting`** — offer-only (`action_triggered=False`); unread. And `run_todo_query_workflow` is not in
   `intent_service.py` — separate module, unscreened.
+
+## 9f. 🔴 CORRECTED 2026-08-09 — the string-enum shape silently breaks the exact predicate Arch's ruling now specifies
+
+**Found before anyone built against it, not after.** Arch ruled 08-09 (four-consumer census — capability
+legibility, #1190 destructive gate, #1509 consent gate, MCP annotations) that the field must be an
+**ordered enum**, `READ < WRITE < DESTRUCTIVE`, so every consumer derives its own predicate:
+`needs_consent = effect >= WRITE`, `needs_confirm = effect == DESTRUCTIVE`.
+
+**My original `class ToolEffect(str, Enum)` does not support that safely — it *appears* to, which is
+worse than an error.** `str, Enum` members inherit `str.__ge__`, so `>=` doesn't raise; it silently
+compares **string values lexicographically**. Verified:
+
+```python
+ToolEffect.WRITE       >= ToolEffect.READ   # True  — coincidentally right ('w' > 'r')
+ToolEffect.DESTRUCTIVE >= ToolEffect.WRITE  # FALSE — WRONG. 'destructive' < 'write' alphabetically.
+```
+
+**Result: `needs_consent = effect >= WRITE` evaluates to `False` for `DESTRUCTIVE`** — the one case that
+most needs `True`. A `close_issue`-shaped action would be **silently exempted from the consent gate**,
+with no traceback; it just returns the wrong boolean. **The dangerous direction again** — understated
+risk, not overstated — and it would have shipped invisibly into #1509 and #1190 if built against this
+spec as written.
+
+**Fixed**: `class ToolEffect(IntEnum)` with explicit ordinal values (`READ=0, WRITE=1, DESTRUCTIVE=2`).
+Verified against Arch's exact predicates — both `needs_consent` and `needs_confirm` now correct for all
+three tiers. §3's code block updated in place.
+
+⚠️ **Recorded rather than quietly fixed**: this survived from 08-04 to 09-09 — five days, cited by two
+other roles, adopted by name in an architecture ruling — before anyone (including me) checked whether the
+type actually supported the operation its own design depended on. **A claim can be correctly hedged in
+prose and still be wrong in the code three lines below the hedge.** Caught only because Arch's ruling made
+the predicate explicit enough to test against.
