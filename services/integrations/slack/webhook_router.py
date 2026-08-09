@@ -1657,10 +1657,18 @@ class SlackWebhookRouter:
 
     async def _get_today_priorities(self, principal: UUID) -> Optional[list]:
         """
-        Get the user's pending high-priority todos (urgent first, then high).
+        Get the user's pending todos for today: urgent first, then high, then
+        anything due today or overdue (whatever its priority).
 
         Issue #520: Helper for /standup command.
         Issue #1429: wired to TodoManagementService (was a placeholder []).
+        Issue #1541: due-date awareness. This helper read ONLY urgent/high
+        priority and never looked at due_date — so a todo created on the
+        /todos page as "due today" (the page offers no priority field;
+        everything it creates is medium) was invisible to /standup by
+        construction, even though both surfaces share the same storage
+        (TodoRepository → todo_items). Due-today/overdue items now render
+        after the priority items, deduplicated.
         Returns None when the lookup fails — the caller renders honest
         "couldn't check" copy, never "No high-priority items scheduled".
         """
@@ -1675,9 +1683,25 @@ class SlackWebhookRouter:
                 p = getattr(todo, "priority", "") or ""
                 return (p.value if hasattr(p, "value") else str(p)).lower()
 
-            urgent = [t.text for t in todos if _priority(t) == "urgent"]
-            high = [t.text for t in todos if _priority(t) == "high"]
-            return urgent + high
+            end_of_today = datetime.now(timezone.utc).replace(
+                hour=23, minute=59, second=59, microsecond=999999
+            )
+
+            def _due_today_or_overdue(todo) -> bool:
+                due = getattr(todo, "due_date", None)
+                if due is None:
+                    return False
+                if due.tzinfo is None:
+                    due = due.replace(tzinfo=timezone.utc)
+                return due <= end_of_today
+
+            urgent = [t for t in todos if _priority(t) == "urgent"]
+            high = [t for t in todos if _priority(t) == "high"]
+            already = {id(t) for t in urgent + high}
+            due = [
+                t for t in todos if id(t) not in already and _due_today_or_overdue(t)
+            ]
+            return [t.text for t in urgent + high + due]
         except Exception as e:
             logger.warning(f"/standup today-priorities lookup failed: {e}")
             return None
