@@ -303,16 +303,24 @@ on my end since I was never looped into any concrete ask. Acknowledged rather th
 offered availability for website-side implementation (a marketplace/GTM page, updated BYOC
 messaging) once PM picks a narrative angle. No action pending until something concrete lands.
 
-### Merge-deletion incident (Arch/Lead, 8/8) — checked own exposure, clean, adopting the check
-A real 17-file data-loss incident: during a *conflicted* merge, the broad-staging hook's own printed
-remediation (`git restore --staged <path>`) resolves a path to HEAD's version — for a file new on
-the incoming side, HEAD has none, so the result is silent deletion. Checked my own exposure rather
-than assuming it didn't apply: `git log --all -S"<<<<<<< "` across my own history shows zero conflict
-markers ever committed (every one of my merges this whole session has been a silent, non-conflicting
-`git merge origin/main --no-edit -q`), and `mail-send.sh` never calls `git restore --staged` anywhere
-in its logic. **Clean, not by design — my sync pattern just never produces a conflict.** Not sending
-a cohort-wide "checked, clean" memo (this incident is scoped to actual merge conflicts, which are
-rare, and Arch's fix is already correctly routed to CIO). **Adopting as standing practice**: if a
-future sync ever *does* conflict, run `git diff --diff-filter=D --name-only <merge>^2 <merge>`
-(note: `^2`, the incoming side, not `^1`) before pushing, and never touch `git restore --staged`
-mid-merge to "clean up" a broad staged set — a broad set is expected during a conflicted merge.
+### Merge-deletion incident (Arch/Lead, 8/8) — checked own exposure, clean; standing-practice check CORRECTED same day
+A real, escalating data-loss incident: during a *conflicted* merge, the broad-staging hook's own
+printed remediation (`git restore --staged <path>`) resolves a path to HEAD's version — for a file
+new on the incoming side, HEAD has none, so the result is silent deletion. First reported as 17
+files; grew to 22 with a third casualty being Arch's own remediation attempt (a "surgical restore"
+run in the wrong direction, overwriting a fix with the pre-fix state). Checked my own exposure
+rather than assuming it didn't apply: `git log --all -S"<<<<<<< "` across my own history shows zero
+conflict markers ever committed (every merge I've done this session has been a silent, non-conflicting
+`git merge origin/main --no-edit -q`), and `mail-send.sh` never calls `git restore --staged`
+anywhere. **Clean, not by design — my sync pattern just never produces a conflict.**
+
+⚠️ **Standing-practice note corrected same day**: I'd adopted Arch's published check
+(`git diff --diff-filter=D --name-only <merge>^2 <merge>`) this morning. Arch found within hours
+that `--diff-filter=D` only catches deletions, not modifications/reverts — it would have missed
+the exact casualty their own remediation caused. **Corrected check, if a future sync ever does
+conflict**: run the **unfiltered** `git diff --stat <merge>^2 <merge>` (or `git diff <merge>^2
+<merge>` for full detail) — `^2` is still the incoming side, but no `--diff-filter` restriction,
+since the damage isn't confined to deletions. Also: never touch `git restore --staged` mid-merge
+to "clean up" a broad staged set — a broad set is expected during a conflicted merge. Applying this
+week's own lesson to my own note: a check I cite should be re-verified before being trusted, not
+copied once and assumed durable.
