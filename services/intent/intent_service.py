@@ -7153,6 +7153,49 @@ class IntentService:
             )
             if m:
                 out["title"] = m.group(1)
+        if "title" not in out:
+            # #1543/#1411 live find (2026-08-09): the UNQUOTED to-form -- PM's
+            # natural "change the title of issue #108 to test new regressions"
+            # carries no quotes, so the #1386-B3' quoted pattern above missed it
+            # and the update reached the handler with NO fields ("no fields to
+            # update"). Requires an update verb before "the title" so "add the
+            # title to the issue" can't capture "the issue" as a title.
+            m = _re.search(
+                r"\b(?:change|update|rename|edit|modify|set)\b[^\n]*?"
+                r"\bthe\s+title\b[^\n]*?\bto\s+(.+)$",
+                message,
+                _re.IGNORECASE,
+            )
+            if m:
+                _t = m.group(1).strip().strip("\"'\u2018\u2019\u201c\u201d").rstrip(" .!?,;:")
+                if _t:
+                    out["title"] = _t
+        if "title" not in out:
+            # #1543: the "about X" form -- `create an issue [in owner/repo]
+            # about X`. Verify-first finding (2026-08-09): this extraction
+            # NEVER existed -- git -S/-G over this function's whole history
+            # (042cee411 -> ff9febf01 -> HEAD) shows titled/colon/to-form only --
+            # while the #1212 no-repo degrade copy below has been TEACHING
+            # exactly this phrasing ('create an issue in owner/repo about
+            # testing.'). Live result: the raw command, truncated, shipped as
+            # the title (#108: "Issue: create an issue in mediajunkie/test-pi...").
+            m = _re.search(
+                r"\b(?:issue|ticket|bug)\b[^\n]*?\babout\s+(.+)$",
+                message,
+                _re.IGNORECASE,
+            )
+            if m:
+                _t = m.group(1).strip()
+                # a trailing "in owner/repo" clause is repo routing, not subject
+                _t = _re.sub(
+                    r"\s+in\s+(?:https?://)?(?:github\.com/)?"
+                    r"[A-Za-z0-9._-]+/[A-Za-z0-9._-]+(?:\.git)?\s*$",
+                    "",
+                    _t,
+                )
+                _t = _t.strip().strip("\"'\u2018\u2019\u201c\u201d").rstrip(" .!?,;:")
+                if _t:
+                    out["title"] = _t
         # with body "..." / body '...'
         m = _re.search(r"\bbody\s*[\"\u201c']([^\"\u201d']+)[\"\u201d']", message)
         if m:
@@ -7232,8 +7275,13 @@ class IntentService:
             # Issue #494: Load GitHub config for defaults
             github_config = piper_config_loader.load_github_config()
 
-            # Extract issue details from intent
-            title = intent.context.get("title") or f"Issue: {intent.original_message[:50]}"
+            # Extract issue details from intent. #1543 (2026-08-09): the old
+            # fallback here -- f"Issue: {intent.original_message[:50]}" -- shipped
+            # the RAW COMMAND, truncated mid-word, as the live title of #108
+            # ("Issue: create an issue in mediajunkie/test-piper-morgan a").
+            # No fallback title: if neither context nor slot-fill yields a
+            # subject, we ASK below (the #1490 shape) instead of titling garbage.
+            title = intent.context.get("title")
             # 2026-07-09: deterministic slot-fill BEFORE defaults — see
             # _slotfill_issue_request's docstring for why context is empty here.
             slots = self._slotfill_issue_request(
@@ -7252,7 +7300,7 @@ class IntentService:
                 context_repo=intent.context.get("repository") or intent.context.get("repo"),
                 slots=slots,
             )
-            title = intent.context.get("title") or slots.get("title") or title
+            title = title or slots.get("title")
             description = (
                 intent.context.get("description")
                 or slots.get("body")
@@ -7303,6 +7351,30 @@ class IntentService:
                     },
                     workflow_id=workflow_id,
                     requires_clarification=False,
+                )
+
+            # #1543 honest-ask (the #1490 shape: ask rather than guess). No
+            # extractable subject anywhere -- context, quoted/colon/to/about
+            # slot-fill -- means we do NOT know what the issue is about; the
+            # old behavior invented a title from the raw command text. Ask,
+            # and teach the forms that work (incl. the about-form the #1212
+            # copy above has always promised).
+            if not title:
+                return IntentProcessingResult(
+                    success=True,
+                    message=(
+                        "What should the issue be about? Give me a subject — "
+                        'e.g. "create an issue in owner/repo about flaky login '
+                        "tests\" or a quoted title — and I'll create it."
+                    ),
+                    intent_data={
+                        "category": intent.category.value,
+                        "action": intent.action,
+                        "confidence": intent.confidence,
+                    },
+                    workflow_id=workflow_id,
+                    requires_clarification=True,
+                    clarification_type="issue_title_required",
                 )
 
             # Issue #494: Use default labels from config if none specified
