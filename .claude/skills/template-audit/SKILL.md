@@ -2,7 +2,7 @@
 name: template-audit
 description: Run a mechanical template audit on a finished blog draft before sending the publish-ready signal to Docs. Use after PM's voice pass is complete. Produces a pass/fail report with specific flags. Blocks the publish-ready signal on any FAIL.
 scope: comms
-version: 1.9
+version: 1.10
 created: 2026-06-19
 updated: 2026-08-09
 ---
@@ -210,7 +210,14 @@ Any confirmed instance of the reveal-cliché or "-fold" = FAIL.
 wc -w <draft>
 ```
 
-Target: ~800–1,300 words for narratives and insights (markdown word count includes some frontmatter noise — subtract ~10). FAIL if significantly over (>1,600) — flag for PM review, don't auto-block.
+⚠️ **MEASURED 2026-08-09: this range describes 2 of the last 14 published pieces.** Actual published narratives+insights: **min 597 · median 1,403 · max 2,564**. The `>1,600` flag fires on **6 of 14** — i.e. on posts that shipped and PM was happy with. **A 597-word beat and a 2,319-word beat both published without complaint.**
+
+**So treat the number as a prompt, never a verdict**, and read the direction:
+- 🔴 **LONG is the live concern.** PM has been actively cutting since 2026-08-01 (*"length is creeping up"*, *"trim the fat more aggressively"*). Flagging >1,600 is still useful — **as a question for PM, not a defect.**
+- ✅ **SHORT is not a defect.** *What the Running System Found* (614) and *Almost Beta* (597) both published clean. **Do not pad a complete story to reach a floor** — that is the exact fat PM is removing.
+- **The real test is whether the piece is complete**, not whether it hits a range: does it have its arc, and would cutting anything lose information?
+
+Nominal target: ~800–1,300 words for narratives and insights (markdown word count includes some frontmatter noise — subtract ~10). FAIL if significantly over (>1,600) — flag for PM review, don't auto-block.
 
 ### 13. Acronym sweep
 
@@ -306,3 +313,5 @@ On PASS: send the publish-ready memo to Docs inbox per the handoff protocol (Jun
 *v1.8 — 2026-08-08. **Throat-clearing check extended to OPENERS**, per PM within the hour: *"Openers also have a lot of that 'set up' type prose that ends up being fat to cut."* Same shape, different dialect — scene-setting that delays the first real sentence, where the second paragraph is usually the real opener. **Both ends, not the middle**: the middle is where the argument lives and gets attention.*
 
 *v1.9 — 2026-08-09. **Check #11 gains PM's word-order discriminator.** Reviewing *Over-Checking Pays Dividends* I flagged *"That's a portfolio observation, not a per-decision one"* as the negation-reveal shape and left it for PM. PM's ruling names the actual boundary: **"it doesn't LEAD with the negation, which is part of the tic."** So the defect is **denial-first word order**, not the presence of a negation — a claim stated first and sharpened by a negative is fine. This retires a whole class of false positives the check was generating.*
+
+*v1.10 — 2026-08-09. **Check #12 recalibrated against reality.** The 800–1,300 target describes **2 of the last 14** published narratives/insights (min 597, median 1,403, max 2,564), and the >1,600 flag fires on **6 of 14** — posts that shipped fine. Found while pre-passing Beat 21 at 550 words: I nearly reported it as under-length when *Almost Beta* (597) and *What the Running System Found* (614) had published clean weeks earlier. **The fix is not a wider range but a direction**: long is the live concern PM is actively cutting; short is not a defect; **never pad a complete story to reach a floor.** Same mis-calibration family as the v1.5 Ship table — a check whose numbers didn't match what actually ships.*
