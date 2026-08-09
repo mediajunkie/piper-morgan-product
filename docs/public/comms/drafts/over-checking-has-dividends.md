@@ -28,7 +28,7 @@ Here's a concrete example: This project had a sizable piece of work nearing its 
 
 Option A was tempting. It *was* basically done. Option B felt, on its face, like the kind ofover-checking I often try to talk people out of.
 
-I picked B anyway, and I told my chief architect agent (Arch),  the one who'd run the trace the reason: *we've often cut corners but rarely over-checked things.* That was the entire reasoning. Not a risk model, not a calculation. Just a standing awareness that our error budget had been spent almost entirely in one direction, and this was a cheap chance to spend a little in the other.
+I picked B anyway, and I told my chief architect agent (Arch), the one who'd run the trace, the reason: *we've often cut corners but rarely over-checked things.* That was the entire reasoning. Not a risk model, not a calculation. Just a standing awareness that our error budget had been spent almost entirely in one direction, and this was a cheap chance to spend a little in the other.
 
 The fresh pass caught two real things.
 
