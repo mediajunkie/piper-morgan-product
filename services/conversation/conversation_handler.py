@@ -167,7 +167,9 @@ class ConversationHandler:
 
         # Issue #888: Check for suspended sessions before offering new onboarding
         if user_id:
-            reentry_response = await self._check_suspended_session_reentry(user_id)
+            reentry_response = await self._check_suspended_session_reentry(
+                user_id, session_id=session_id
+            )
             if reentry_response:
                 return reentry_response
 
@@ -297,12 +299,22 @@ class ConversationHandler:
 
         return None
 
-    async def _check_suspended_session_reentry(self, user_id: str) -> Optional[Dict[str, Any]]:
+    async def _check_suspended_session_reentry(
+        self, user_id: str, session_id: Optional[str] = None
+    ) -> Optional[Dict[str, Any]]:
         """
         Issue #888: Check for suspended sessions and offer to resume.
 
         PPM direction: "Save state, offer to resume once at next conversation
         start, accept 'no' gracefully." This runs during greeting handling.
+
+        #1529 OFFER-BINDING: when the offer is made, it is RECORDED as a
+        one-turn `last_offer` (offer_type="process_resume") on the user-scoped
+        conversation context. `_check_pending_resume_offer` (#889) only binds
+        bare affirmatives ("yes", "yes please") to a resume while that record
+        is pending — without it, any bare "yes" while a suspended standup
+        existed resumed the standup, regardless of what was actually offered
+        last turn (PM's standup hijack).
 
         Returns a resume offer if a suspended session exists, None otherwise.
         """
@@ -326,6 +338,25 @@ class ConversationHandler:
                 f"Welcome back! {suspended.description} "
                 "Would you like to continue, or start fresh?"
             )
+
+            # #1529: record the offer so next turn's bare affirmative binds
+            # to IT (one-turn memory, same store as #852 contextual offers;
+            # user-scoped per #1394, persisted per #953).
+            if session_id:
+                from services.intent_service.conversation_context import (
+                    LastOffer,
+                    get_or_create_context,
+                )
+
+                try:
+                    ctx = get_or_create_context(session_id, user_id=user_id)
+                    ctx.last_offer = LastOffer(
+                        offer_type="process_resume",
+                        continuation_hint=f"resume {suspended.process_type.value}",
+                        offer_text=resume_message,
+                    )
+                except (ValueError, KeyError):
+                    pass  # Non-UUID session_id — offer stays greeting-only
 
             return {
                 "message": resume_message,

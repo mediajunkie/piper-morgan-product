@@ -68,6 +68,74 @@ def parse_relative_date(
     return (today_start, today_start + timedelta(days=1), "today")
 
 
+# --- Issue #1490 (inverted-order reopen, 8/8): explicit clock-time finder ---
+# "remind me at 3pm tomorrow ..." dropped the 3pm: the bare-"tomorrow" branch
+# fired before any branch that could see "at 3pm" and silently defaulted to
+# 9am. The fix: detect an explicit clock time ANYWHERE in the message up
+# front, so every date-word branch can bind it regardless of ordering.
+#
+# Alternation order matters: noon/midnight first; then "at N(:MM)(am|pm)?"
+# ("at" required so durations like "30 minutes" can't match); then bare
+# "N(:MM)am/pm" (am/pm required, same reason).
+_CLOCK_TIME_RE = re.compile(
+    r"\b(?:at\s+)?(?P<word>noon|midnight)\b"
+    r"|\bat\s+(?P<h1>\d{1,2})(?::(?P<m1>\d{2}))?\s*(?P<ap1>am|pm)?\b"
+    r"|\b(?P<h2>\d{1,2})(?::(?P<m2>\d{2}))?\s*(?P<ap2>am|pm)\b"
+)
+
+
+def _to_24h(hour: int, minute: int, ampm: Optional[str]) -> Optional[Tuple[int, int]]:
+    """Convert a matched clock time to 24h, or None when unbindable (#1490).
+
+    Preserves the pre-existing heuristics: 12-hour wrap for am/pm; without
+    am/pm, small hours (<8) are assumed PM ("at 3" -> 15:00). Out-of-range
+    values (minute > 59, am/pm hour outside 1-12, bare hour > 23) return
+    None instead of crashing .replace() or guessing.
+    """
+    if minute > 59:
+        return None
+    if ampm:
+        if not 1 <= hour <= 12:
+            return None
+        if ampm == "pm" and hour < 12:
+            hour += 12
+        elif ampm == "am" and hour == 12:
+            hour = 0
+    else:
+        if hour > 23:
+            return None
+        if hour < 8:
+            hour += 12
+    return (hour, minute)
+
+
+def find_explicit_clock_time(
+    message_lower: str,
+) -> Optional[Tuple[Optional[int], Optional[int], str]]:
+    """Issue #1490: locate an explicit clock time anywhere in the message.
+
+    Returns None when the message carries no explicit clock time; otherwise
+    (hour24, minute, raw_label). hour24/minute are None when the mention is
+    explicit but unbindable (e.g. "at 25:99") — the caller must then refuse
+    to guess (the #1490 invariant: an explicit time is never silently
+    replaced by a default), returning the raw text for an honest echo.
+    """
+    match = _CLOCK_TIME_RE.search(message_lower)
+    if not match:
+        return None
+    if match.group("word"):
+        word = match.group("word")
+        return (12 if word == "noon" else 0, 0, word)
+    hour = int(match.group("h1") or match.group("h2"))
+    minute = int(match.group("m1") or match.group("m2") or 0)
+    ampm = match.group("ap1") or match.group("ap2")
+    converted = _to_24h(hour, minute, ampm)
+    if converted is None:
+        return (None, None, match.group(0).strip())
+    raw = re.sub(r"^at\s+", "", match.group(0).strip())
+    return (converted[0], converted[1], raw)
+
+
 def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
     """
     Issue #903: Extract a reminder datetime from natural language.
@@ -97,6 +165,22 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
     # unambiguous instead of drifting by the UTC offset.
     now = datetime.now().astimezone()
 
+    # Issue #1490 invariant: find any explicit clock time up front so every
+    # date-word branch below can bind it, whichever side of the date it sits
+    # on ("tomorrow at 3pm" AND "at 3pm tomorrow"). If the mention is
+    # explicit but unbindable, return (None, raw-echo) — the handler asks
+    # instead of guessing a default.
+    raw_clock = find_explicit_clock_time(message_lower)
+    # #1436: rebind with the unbindable case structurally excluded, so every
+    # branch below gets (int, int, str) — the guard here already enforced
+    # this at runtime; the locals make the invariant visible to type checkers.
+    clock: Optional[Tuple[int, int, str]] = None
+    if raw_clock is not None:
+        clock_hour, clock_minute = raw_clock[0], raw_clock[1]
+        if clock_hour is None or clock_minute is None:
+            return (None, raw_clock[2])
+        clock = (clock_hour, clock_minute, raw_clock[2])
+
     # --- "in N minutes/hours/days" ---
     in_match = re.search(
         r"\bin\s+(\d+)\s+(minute|minutes|min|mins|hour|hours|hr|hrs|day|days)\b",
@@ -122,16 +206,16 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
         message_lower,
     )
     if tomorrow_at:
-        hour = int(tomorrow_at.group(1))
-        minute = int(tomorrow_at.group(2) or 0)
-        ampm = tomorrow_at.group(3)
-        if ampm == "pm" and hour < 12:
-            hour += 12
-        elif ampm == "am" and hour == 12:
-            hour = 0
-        elif not ampm and hour < 8:
-            # Assume PM for small numbers without AM/PM ("tomorrow at 3")
-            hour += 12
+        converted = _to_24h(
+            int(tomorrow_at.group(1)),
+            int(tomorrow_at.group(2) or 0),
+            tomorrow_at.group(3),
+        )
+        if converted is None:
+            # #1490 invariant: explicit but unbindable ("tomorrow at 25:99")
+            # — refuse to guess; pre-fix this crashed .replace(hour=25).
+            return (None, tomorrow_at.group(0).strip())
+        hour, minute = converted
         tomorrow = now + timedelta(days=1)
         dt = tomorrow.replace(hour=hour, minute=minute, second=0, microsecond=0)
         # Issue #1490: the matched fragment may already contain "at" ("tomorrow
@@ -141,9 +225,18 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
         time_part = re.sub(r"^at\s+", "", time_part)
         return (dt, f"tomorrow at {time_part}")
 
-    # --- "tomorrow morning/afternoon/evening" ---
+    # --- "tomorrow" with the time elsewhere, or vague morning/afternoon ---
     if "tomorrow" in message_lower:
         tomorrow = now + timedelta(days=1)
+        if clock is not None:
+            # Issue #1490 (PM's 8/8 verification): "remind me at 3pm tomorrow"
+            # — explicit clock time on the OTHER side of "tomorrow". Pre-fix
+            # this fell through to the 9am morning default (prod row saved at
+            # 09:00 with copy "tomorrow morning").
+            dt = tomorrow.replace(
+                hour=clock[0], minute=clock[1], second=0, microsecond=0
+            )
+            return (dt, f"tomorrow at {clock[2]}")
         if "afternoon" in message_lower:
             dt = tomorrow.replace(hour=14, minute=0, second=0, microsecond=0)
             return (dt, "tomorrow afternoon")
@@ -155,51 +248,20 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
             dt = tomorrow.replace(hour=9, minute=0, second=0, microsecond=0)
             return (dt, "tomorrow morning")
 
-    # --- "today at Xpm/am" or "at Xpm" ---
-    at_time = re.search(
-        r"\b(?:today\s+)?at\s+(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\b",
-        message_lower,
-    )
-    if at_time:
-        hour = int(at_time.group(1))
-        minute = int(at_time.group(2) or 0)
-        ampm = at_time.group(3)
-        if ampm == "pm" and hour < 12:
-            hour += 12
-        elif ampm == "am" and hour == 12:
-            hour = 0
-        elif not ampm and hour < 8:
-            hour += 12
-        dt = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
-        # If the time is already past, push to tomorrow
-        if dt <= now:
-            dt += timedelta(days=1)
-        # Issue #1490: group(0) already contains "at" (and possibly "today"),
-        # so strip both before the f-string re-adds "at " — avoids "at at 5pm".
-        time_part = re.sub(r"^(?:today\s+)?at\s+", "", at_time.group(0).strip())
-        return (dt, f"at {time_part}")
-
-    # --- "this afternoon/evening/tonight" ---
-    if "this afternoon" in message_lower:
-        dt = now.replace(hour=14, minute=0, second=0, microsecond=0)
-        if dt <= now:
-            dt += timedelta(days=1)
-        return (dt, "this afternoon")
-    if "this evening" in message_lower or "tonight" in message_lower:
-        dt = now.replace(hour=18, minute=0, second=0, microsecond=0)
-        if dt <= now:
-            dt += timedelta(days=1)
-        return (dt, "this evening")
-
-    # --- "next week" ---
+    # --- "next week" (Issue #1490: now clock-aware, checked BEFORE the
+    # generic clock branch so "next week at 4pm" binds next week, not today) ---
     if "next week" in message_lower:
+        hour, minute = (clock[0], clock[1]) if clock is not None else (9, 0)
         days_until_monday = (7 - now.weekday()) % 7 or 7
         dt = (now + timedelta(days=days_until_monday)).replace(
-            hour=9, minute=0, second=0, microsecond=0
+            hour=hour, minute=minute, second=0, microsecond=0
         )
-        return (dt, "next week")
+        label = "next week" if clock is None else f"next week at {clock[2]}"
+        return (dt, label)
 
-    # --- Day names: "next Monday", "on Tuesday", etc. ---
+    # --- Day names: "next Monday", "on Tuesday", etc. (Issue #1490: now
+    # clock-aware and checked BEFORE the generic clock branch, so "next
+    # Monday at 4pm" binds Monday 16:00 instead of today's date) ---
     day_names = {
         "monday": 0,
         "tuesday": 1,
@@ -218,8 +280,36 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
         days_ahead = (target_day - now.weekday()) % 7
         if days_ahead == 0:
             days_ahead = 7  # "next Monday" when it's Monday → next week
-        dt = (now + timedelta(days=days_ahead)).replace(hour=9, minute=0, second=0, microsecond=0)
-        return (dt, f"next {day_match.group(1).capitalize()}")
+        hour, minute = (clock[0], clock[1]) if clock is not None else (9, 0)
+        dt = (now + timedelta(days=days_ahead)).replace(
+            hour=hour, minute=minute, second=0, microsecond=0
+        )
+        label = f"next {day_match.group(1).capitalize()}"
+        if clock is not None:
+            label = f"{label} at {clock[2]}"
+        return (dt, label)
+
+    # --- explicit clock time with no date word: "today at 9:41", "at 5pm",
+    # "at noon" (Issue #1490: was an "at"-adjacent regex; now the shared
+    # finder, so noon/midnight and bare "3pm" forms bind too) ---
+    if clock is not None:
+        dt = now.replace(hour=clock[0], minute=clock[1], second=0, microsecond=0)
+        # If the time is already past, push to tomorrow (next occurrence)
+        if dt <= now:
+            dt += timedelta(days=1)
+        return (dt, f"at {clock[2]}")
+
+    # --- "this afternoon/evening/tonight" ---
+    if "this afternoon" in message_lower:
+        dt = now.replace(hour=14, minute=0, second=0, microsecond=0)
+        if dt <= now:
+            dt += timedelta(days=1)
+        return (dt, "this afternoon")
+    if "this evening" in message_lower or "tonight" in message_lower:
+        dt = now.replace(hour=18, minute=0, second=0, microsecond=0)
+        if dt <= now:
+            dt += timedelta(days=1)
+        return (dt, "this evening")
 
     # --- Fallback: tomorrow morning at 9 AM ---
     tomorrow = now + timedelta(days=1)

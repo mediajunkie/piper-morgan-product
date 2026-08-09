@@ -1332,3 +1332,46 @@ pin: NAMESPACE RATIFIED (#1521, Lead's request) — VERIFIED IN CODE, NOT ON THE
   UNFALSIFIABLE ROWS. That assertion is now load-bearing for TWO features, not one.
 
 2026-08-08 ~14:15 PT — PM (in-conversation with Lead): FUNDAMENTALS-FIRST priority ruling for the moved-beta month — 'unblock addressing the most fundamental unfinished business first, before we spend too much time polishing specific workflows.' Understanding-Layer Inversion proposal (docs/internal/architecture/current/understanding-layer-inversion-proposal-2026-08-08.md) is the spine; PM will encourage Arch + leadership ratification; surface-polish issues (1497/1515/1519/1512 class) deferred below structural work. Local-model question: audition-against-corpus sequencing, Arch to ratify. — recorded by Lead
+
+---
+2026-08-08 19:2x PT — Arch — MERGE-DROP INCIDENT: full surface 22 files / −1303 lines; three casualties, one caused by my own remediation
+
+SURFACE, MEASURED (Lead's unfiltered command, run independently): `git diff <merge>^2 <merge> --stat` on
+  d99b3d068 and d5ae5484f → 22 FILES, 120 insertions, 1303 DELETIONS each, vs the origin/main parent.
+  NOT the 17 I reported this afternoon.
+
+CASUALTY 1 (Lead found): false-trails-audit-2026-08-08.md, a PM-directed deliverable, deleted from main.
+CASUALTIES 2 + 3 (Lead found, after PM's verbatim reminder test started failing again — 3pm→09:00, the
+  exact cured bug): the same merges REVERTED services/intent_service/temporal_utils.py to its pre-refix
+  state (find_explicit_clock_time deleted) and stripped todo_handlers.py's #1490 invariant. Lead restored
+  both (aafc044b5); verified live on origin/main.
+
+🔴 CASUALTY 2 IS MINE TWICE: the merge dropped it AND MY OWN REMEDIATION RE-BROKE IT. I found both files
+  modified in my worktree, concluded they held SUPERSEDED content, and ran
+  `git checkout HEAD -- services/intent_service/{temporal_utils,todo_handlers}.py`.
+  I HAD THE DIRECTION BACKWARDS: my working tree held the REFIX; my HEAD, already carrying the merge
+  damage, held the PRE-FIX state. The command I logged as "surgical, explicit paths, nothing lost" WROTE
+  THE BROKEN VERSION OVER THE WORKING ONE. I reasoned from "e77b968fb exists on origin/main" to "my copy
+  must be the old one" AND NEVER DIFFED THE TWO. Every element of care — explicit paths, no broad
+  checkout, verify-first — was applied to a conclusion I had not checked.
+
+🔴 AND MY PUBLISHED CHECK WOULD HAVE MISSED IT. one-command-checks #8, written by me four hours earlier,
+  used `--diff-filter=D`. THE INCIDENT WAS REPORTED TO ME AS "A FILE WAS DELETED," SO I AUDITED DELETIONS
+  and reported "17 files, that's the space." A REVERT IS A MODIFICATION, NOT A DELETION; -D CANNOT SEE IT.
+  I INHERITED THE FRAMING OF THE REPORT AND AUDITED THE SPACE THAT FRAMING IMPLIED, RATHER THAN THE SPACE
+  OF POSSIBLE DAMAGE — in the same memo where I praised Lead for saying a one-file restore isn't the space.
+  ✅ CORRECTED AND PUSHED: filter removed; the correction written into the doc as the lesson rather than a
+  quiet edit. Use the unfiltered `--stat`.
+
+ROOT CAUSE UNCHANGED AND NOW THREE-TIMES-PAID: `git restore --staged <path>` during a CONFLICTED MERGE
+  resolves the path to HEAD, which for an incoming-only file means DELETION — and that command is STEP 2 OF
+  THE BROAD-STAGING HOOK'S OWN PRINTED REMEDIATION. The hook fires most reliably on a merge of a busy
+  shared main, i.e. exactly where its advice is destructive.
+  → CIO: the merge-aware hook fix (check MERGE_HEAD, suppress step 2, say "conclude the merge") MOVES UP.
+    Cost to date: a PM deliverable, a cured bug returning under PM's own test, two rounds of Lead forensics.
+  → RATIFIED (again): Lead's CI/merge-keeper check for merge commits deleting files neither parent touched.
+
+STANDING REQUEST MADE TO LEAD: do not treat my audits of my own damage as sufficient. I under-measured
+  twice, in two different ways, and both times Lead found the rest. I did NOT run a third self-audit and
+  declare completeness — "22 is what the unfiltered diff shows; I have no independent basis for believing
+  that is the whole space" is the honest statement, and asserting closure would be the same error a third time.

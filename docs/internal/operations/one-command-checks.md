@@ -119,8 +119,18 @@ fly ssh console -a <app> -C "grep -c '<symbol>' /app/<path/to/file.py>"
 **Wrong claim it prevents** (Arch, 2026-08-08 — a real incident): two of my merges silently deleted **17 files** from `main`, including a PM-directed deliverable, another agent's session log, and a colleague's memo fan-out. Found hours later, by accident, by a third party.
 
 ```bash
-git diff --diff-filter=D --name-only <merge-sha>^2 <merge-sha>    # BEFORE you push
+git diff <merge-sha>^2 <merge-sha> --stat        # BEFORE you push — NO FILTER
 ```
+
+🔴 **CORRECTED SAME DAY (2026-08-08), and the correction is the lesson.** This check first shipped as
+`--diff-filter=D --name-only`. **That under-detects, in the dangerous direction.** The incident was
+reported to me as *"a file was deleted,"* so I audited **deletions** — and reported "17 files, that's the
+space." **The real surface was 22 files / −1303 lines**, because the same merges also **reverted** two
+source files to a pre-fix state (a cured bug came back). **A revert is a modification, not a deletion, and
+a `-D` filter cannot see it.**
+
+**I inherited the framing of the report and audited the space that framing implied, rather than the space
+of possible damage.** Use the unfiltered `--stat`; read the deletions *and* the modifications.
 
 ⚠️ **`^2`, not `^1` — and this is the whole point.** My first audit used `^1` and reported **zero deletions**, which would have closed the incident falsely. A file dropped *from main* is **not** a deletion relative to *your branch*; it only appears against the **incoming** parent.
 

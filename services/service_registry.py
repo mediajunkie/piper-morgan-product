@@ -5,9 +5,14 @@ Global registry pattern enabling dependency injection and
 centralized service management across the application.
 """
 
-from typing import Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 import structlog
+
+if TYPE_CHECKING:
+    # #1436: resolve the "LLMDomainService" forward ref for type checkers
+    # (runtime import stays lazy — registry must not depend on domain services).
+    from services.domain.llm_domain_service import LLMDomainService
 
 logger = structlog.get_logger(__name__)
 

@@ -981,6 +981,18 @@ class IntentService:
             # previous turn, check if they're accepting it with a bare affirmative.
             # One-turn memory: always clear, regardless of user response.
             contextual_continuation_hint = None
+            # #1529 OFFER-BINDING: an affirmative must bind to the offer that
+            # was actually made last turn. These two flags carry that binding
+            # into the pipeline steps below:
+            # - contextual_offer_bound: "yes" just bound to a contextual offer
+            #   (e.g. "Would you like me to list your archived projects?") —
+            #   NO flow-starter may claim this turn; the hint rides to the
+            #   classifier.
+            # - resume_offer_pending: the previous turn made a process-resume
+            #   offer ("Your standup was paused. Want to pick it up?") — bare
+            #   affirmatives at the resume check are legitimate ONLY now.
+            contextual_offer_bound = False
+            resume_offer_pending = False
             if session_id:
                 from services.intent_service.conversation_context import get_or_create_context
 
@@ -997,8 +1009,18 @@ class IntentService:
                     _conv_ctx.last_offer = None  # One-turn memory: always clear
 
                     response_type = detect_offer_response(message)
-                    if response_type == "accept":
+                    if last_offer.offer_type == "process_resume":
+                        # #1529: resume offers are deterministic (handled at
+                        # _check_pending_resume_offer), not classifier hints.
+                        resume_offer_pending = True
+                        self.logger.info(
+                            "process_resume_offer_pending",
+                            offer_hint=last_offer.continuation_hint,
+                            session_id=session_id,
+                        )
+                    elif response_type == "accept":
                         contextual_continuation_hint = last_offer.continuation_hint
+                        contextual_offer_bound = True
                         self.logger.info(
                             "contextual_offer_accepted",
                             continuation_hint=contextual_continuation_hint,
@@ -1048,11 +1070,16 @@ class IntentService:
 
             # Issue #889: Check for pending resume offer (SUSPENDED state).
             # If user was offered to resume a suspended session, catch their response.
-            if user_id and session_id:
+            # #1529 OFFER-BINDING: a turn whose affirmative already bound to a
+            # contextual offer is NOT available to any flow-starter — skipping
+            # this check is what lets "Yes please" mean the offer it answered
+            # instead of resuming a week-old suspended standup.
+            if user_id and session_id and not contextual_offer_bound:
                 pending_resume_result = await self._check_pending_resume_offer(
                     user_id=user_id,
                     session_id=session_id,
                     message=message,
+                    resume_offer_pending=resume_offer_pending,
                 )
                 if pending_resume_result:
                     return pending_resume_result
@@ -1957,7 +1984,11 @@ class IntentService:
             return None
 
     async def _check_pending_resume_offer(
-        self, user_id: str, session_id: str, message: str
+        self,
+        user_id: str,
+        session_id: str,
+        message: str,
+        resume_offer_pending: bool = False,
     ) -> Optional[IntentProcessingResult]:
         """
         Issue #889: Check if user is responding to a suspended session resume offer.
@@ -1966,9 +1997,19 @@ class IntentService:
         session, the user's next message may be accepting or declining.
         This method catches those responses before normal classification.
 
-        Accept signals: "yes", "continue", "resume", "sure", "ok", "pick it up"
-        Decline signals: "no", "fresh", "start over", "new", "nah", "skip"
-        Anything else: Not a response to the offer, proceed with normal classification.
+        #1529 OFFER-BINDING: bare affirmatives/negatives ("yes", "yes please",
+        "no") are claimed ONLY when the resume offer was actually made on the
+        previous turn (`resume_offer_pending`, carried via the one-turn
+        last_offer memory the reentry check writes). Before this gate, ANY
+        bare "yes" while a suspended standup existed in the durable repo
+        resumed it — which is how "Yes please", answering a list-archived
+        offer, started PM's standup hijack. Explicit resume commands
+        ("resume", "continue", "pick it up") still work at any time — they
+        name the flow unambiguously.
+
+        #1529 part 3: flow-targeted exit phrases ("end standup") against a
+        suspended flow are consumed here deterministically — abandoning the
+        flow — so they never reach a classifier to be misrouted.
 
         Returns IntentProcessingResult if the offer was handled, None otherwise.
         """
@@ -1982,8 +2023,38 @@ class IntentService:
             # Determine if user is responding to resume offer
             msg_lower = message.strip().lower()
 
-            # Accept signals
-            accept_signals = frozenset(
+            # #1529: "end standup" against a suspended standup ends it — no
+            # classifier involved.
+            from services.process.escape import detect_flow_exit
+
+            if detect_flow_exit(message, suspended.process_type):
+                self.logger.info(
+                    "Suspended process ended by flow-exit phrase",
+                    user_id=user_id,
+                    process_type=suspended.process_type.value,
+                )
+                if suspended.process_type == ProcessType.STANDUP:
+                    return await self._abandon_suspended_standup(user_id)
+                return None
+
+            # Explicit resume/decline commands — unambiguous, honored anytime.
+            explicit_accept_signals = frozenset(
+                {
+                    "continue",
+                    "resume",
+                    "pick it up",
+                    "let's continue",
+                }
+            )
+            explicit_decline_signals = frozenset(
+                {
+                    "start over",
+                    "start fresh",
+                }
+            )
+            # Bare affirmatives/negatives — only meaningful while the resume
+            # offer is actually pending (#1529 offer-binding).
+            bare_accept_signals = frozenset(
                 {
                     "yes",
                     "yeah",
@@ -1991,29 +2062,33 @@ class IntentService:
                     "sure",
                     "ok",
                     "okay",
-                    "continue",
-                    "resume",
-                    "pick it up",
-                    "let's continue",
                     "yes please",
                     "y",
                     "yea",
                 }
             )
-            # Decline signals
-            decline_signals = frozenset(
+            bare_decline_signals = frozenset(
                 {
                     "no",
                     "nah",
                     "nope",
                     "fresh",
-                    "start over",
-                    "start fresh",
                     "new",
                     "skip",
                     "no thanks",
                     "n",
                 }
+            )
+
+            accept_signals = (
+                explicit_accept_signals | bare_accept_signals
+                if resume_offer_pending
+                else explicit_accept_signals
+            )
+            decline_signals = (
+                explicit_decline_signals | bare_decline_signals
+                if resume_offer_pending
+                else explicit_decline_signals
             )
 
             if msg_lower in accept_signals:

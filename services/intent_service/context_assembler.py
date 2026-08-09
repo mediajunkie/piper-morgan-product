@@ -220,6 +220,8 @@ class ContextAssembler:
         # Reminders
         "reminders": {"source": "ReminderService"},
         "projects": {"source": "ProjectManagementService"},
+        # #1530 (m-44): row-derived denominator riding with the sliced list
+        "project_count": {"source": "UserContextService"},
     }
 
     def _attribute_provenance(
@@ -1142,6 +1144,11 @@ class ContextAssembler:
                 result["projects"] = [
                     {"name": p} if isinstance(p, str) else p for p in user_ctx.projects[:10]
                 ]
+                # #1530 (m-44): the display list above is sliced to 10; the
+                # stated count must be the query's row count, never the length
+                # of a truncated slice. The floor renders this explicitly so
+                # the LLM never derives a denominator the query didn't produce.
+                result["project_count"] = len(user_ctx.projects)
             if hasattr(user_ctx, "priorities") and user_ctx.priorities:
                 # #496: the floor formatter (conversational_floor._format_domain_context)
                 # reads domain_context["priorities"] as a DICT (p.get("user_priorities")),

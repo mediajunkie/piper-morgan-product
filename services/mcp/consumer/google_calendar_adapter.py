@@ -10,7 +10,11 @@ import json
 import logging
 import os
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+
+# #1436 Tier-1: `timezone` was referenced by get_recurring_events (#518) but
+# never imported — a guaranteed NameError swallowed by that method's broad
+# except, so the recurring-meetings query silently returned [] on every call.
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 
 import aiohttp

@@ -5,8 +5,15 @@ Universal List Architecture - Chief Architect's universal composition over speci
 """
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 from uuid import UUID, uuid4
+
+if TYPE_CHECKING:
+    # #1436: resolve the "TodoManagementService" forward refs on the route
+    # params for type checkers. At runtime the service is supplied lazily by
+    # Depends(get_todo_management_service); FastAPI does not evaluate the
+    # string annotation at decoration time (verified empirically on 0.115.14).
+    from services.todo.todo_management_service import TodoManagementService
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, Field
@@ -18,6 +25,13 @@ from services.utils.datetime_utils import utc_now
 
 # PM-081: Todo Management API Router
 todo_management_router = APIRouter(prefix="/api/v1/todos", tags=["Todo Management"])
+
+# #1436: the pre-auth placeholder was the literal "default-user" — never a
+# valid UUID, so every call through it would have failed at the DB layer had
+# this router been mounted (#1427: it is deliberately UNMOUNTED). A nil-UUID
+# sentinel keeps the stub type-correct until real auth context arrives;
+# mirrors DEFAULT_WORKSPACE_ID in services/domain/models.py.
+_UNAUTHENTICATED_USER_ID = UUID("00000000-0000-0000-0000-000000000000")
 
 
 # Pydantic Models for Todo API
@@ -219,8 +233,10 @@ async def create_todo(
     """
     try:
         # Create todo via TodoManagementService (database persistence)
+        # #1436: the service is typed UUID; a malformed owner_id now 400s via
+        # the ValueError handler below instead of failing inside the DB layer.
         todo = await service.create_todo(
-            user_id=todo_data.owner_id,
+            user_id=UUID(todo_data.owner_id),
             text=todo_data.title,  # API uses 'title', domain uses 'text'
             priority=todo_data.priority,
             list_id=todo_data.list_id,
@@ -298,7 +314,7 @@ async def update_todo(
             # Use complete_todo for status change to completed
             updated_todo = await service.complete_todo(
                 todo_id=todo_uuid,
-                user_id="default-user",  # TODO: Get from auth context
+                user_id=_UNAUTHENTICATED_USER_ID,  # TODO: Get from auth context (#1436 typed sentinel)
             )
         elif todo_data.status and todo_data.status != "completed":
             # For other status changes, use update_todo
@@ -316,7 +332,7 @@ async def update_todo(
 
             updated_todo = await service.update_todo(
                 todo_id=todo_uuid,
-                user_id="default-user",  # TODO: Get from auth context
+                user_id=_UNAUTHENTICATED_USER_ID,  # TODO: Get from auth context (#1436 typed sentinel)
                 **update_data,
             )
         else:
@@ -333,7 +349,7 @@ async def update_todo(
 
             updated_todo = await service.update_todo(
                 todo_id=todo_uuid,
-                user_id="default-user",  # TODO: Get from auth context
+                user_id=_UNAUTHENTICATED_USER_ID,  # TODO: Get from auth context (#1436 typed sentinel)
                 **update_data,
             )
 
@@ -380,7 +396,7 @@ async def delete_todo(
         # Delete todo via TodoManagementService
         deleted = await service.delete_todo(
             todo_id=todo_uuid,
-            user_id="default-user",  # TODO: Get from auth context
+            user_id=_UNAUTHENTICATED_USER_ID,  # TODO: Get from auth context (#1436 typed sentinel)
         )
 
         if not deleted:
@@ -433,7 +449,9 @@ async def list_todos(
     """
     try:
         # Get user_id from assignee_id (for now - will be replaced with proper auth)
-        user_id = assignee_id if assignee_id else "default-user"
+        # #1436: typed sentinel + honest 400 on a malformed assignee_id (the
+        # ValueError handler below), matching the service's UUID contract.
+        user_id = UUID(assignee_id) if assignee_id else _UNAUTHENTICATED_USER_ID
 
         # Get todos from TodoManagementService
         include_completed = (status_filter == "completed") if status_filter else True
@@ -485,6 +503,9 @@ async def list_todos(
             has_previous=(page > 1),
         )
 
+    except ValueError as e:
+        # #1436: malformed assignee_id (not a UUID) is caller error, not a 500
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

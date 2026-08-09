@@ -198,6 +198,44 @@ class OnboardingProcessAdapter:
                 error=str(e),
             )
 
+    async def close(
+        self,
+        user_id: Optional[str],
+        session_id: Optional[str],
+    ) -> None:
+        """
+        Close the active onboarding session for good (#1529).
+
+        Exit/refusal semantics: transition to DECLINED (terminal) so the
+        flow doesn't re-offer itself. Distinct from suspend(), which
+        preserves state for resumption.
+        """
+        from services.shared_types import PortfolioOnboardingState
+
+        session = self._get_session(user_id, session_id)
+        if not session:
+            logger.warning(
+                "Cannot close onboarding — no session found",
+                user_id=user_id,
+                session_id=session_id,
+            )
+            return
+
+        manager, _ = self._get_components()
+        try:
+            manager.transition_state(session.id, PortfolioOnboardingState.DECLINED)
+            logger.info(
+                "Onboarding session closed (escape exit/refusal)",
+                session_id=session.id,
+                user_id=user_id,
+            )
+        except Exception as e:
+            logger.warning(
+                "Error closing onboarding session",
+                session_id=session.id,
+                error=str(e),
+            )
+
     async def has_suspended_session(
         self,
         user_id: Optional[str],
@@ -393,6 +431,45 @@ class StandupProcessAdapter:
         except Exception as e:
             logger.warning(
                 "Error suspending standup conversation",
+                conversation_id=conversation.id,
+                error=str(e),
+            )
+
+    async def close(
+        self,
+        user_id: Optional[str],
+        session_id: Optional[str],
+    ) -> None:
+        """
+        Close the active standup conversation for good (#1529).
+
+        Exit/refusal semantics: transition to ABANDONED, a terminal state,
+        so the flow neither claims further turns nor re-offers itself at the
+        next greeting (the resume-nag loop). Distinct from suspend(), which
+        preserves the conversation for resumption.
+        """
+        from services.shared_types import StandupConversationState
+
+        conversation = await self._get_conversation(user_id, session_id)
+        if not conversation:
+            logger.warning(
+                "Cannot close standup — no conversation found",
+                user_id=user_id,
+                session_id=session_id,
+            )
+            return
+
+        manager, _ = self._get_components()
+        try:
+            await manager.transition_state(conversation.id, StandupConversationState.ABANDONED)
+            logger.info(
+                "Standup conversation closed (escape exit/refusal)",
+                conversation_id=conversation.id,
+                user_id=user_id,
+            )
+        except Exception as e:
+            logger.warning(
+                "Error closing standup conversation",
                 conversation_id=conversation.id,
                 error=str(e),
             )
