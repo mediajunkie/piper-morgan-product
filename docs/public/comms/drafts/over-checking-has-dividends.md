@@ -1,7 +1,7 @@
 ---
 image: ''
 alt: 'A translucent engineer makes one last inspection beneath a magnificent airship, pointing out a loose safety hook while the expedition leader pauses at the final launch lever.'
-caption: ''
+caption: '"Ready to fly?"'
 ---
 
 # Over-Checking Pays Dividends
