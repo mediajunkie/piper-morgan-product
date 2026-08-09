@@ -35,7 +35,37 @@ A real **`.git/hooks/pre-commit` gate** is installed in the shared common dir (P
 
 ---
 
-## ⚠️ Procedure fix owed to myself (2026-08-09) — the drain loop moved an UNREAD memo
+## 🔴 HARD RULE FOR MYSELF (2026-08-09, PM-escalated as a TRUST VIOLATION) — never glob the inbox
+
+**`read/` is a CLAIM ABOUT MY OWN COGNITION.** Moving a file there asserts *"I read this."* On 08-08 I
+moved Lead's probe-results memo there **without reading it**, then told PM no such memo existed — and
+PPM's independent search corroborated my false negative because they inherited my framing.
+
+**PM's ruling: this must never happen again. It is a real violation of trust.**
+
+### The rule already existed and I broke it by batching
+PM correction 2026-05-15: *"Inbox is for arrivals **not yet read OR not yet acted on**."* The two-folder
+model already encodes "not new but not read yet." **No third folder is needed** — PM offered one and the
+honest answer is that it would just give a bulk loop one more destination to move unread things into.
+**The defect is an UNVERIFIED TRANSITION, not a missing state.**
+
+### The structural fix — the glob is the smell
+> ⛔ **NEVER `for f in mailboxes/arch/inbox/*.md`.** A directory glob makes the move a scheduled chore
+> instead of a consequence of reading.
+> ✅ **The drain iterates a list I APPEND TO IN THE SAME TOOL CALL THAT DISPLAYS A MEMO'S CONTENTS.**
+> Unread ⇒ never in the list ⇒ **cannot move.** Bad state unrepresentable, not merely forbidden.
+
+**If a fire ends with unread mail, it stays in `inbox/` and the fire entry says so.** An inbox that isn't
+empty is an honest inbox; a `read/` folder with unread mail in it is a lie that nothing can detect.
+
+### Why it is a TRUST violation and not a delay (PM's chess-board framing)
+Mailboxes are an **event log**; nobody holds the **position**. `read/` is a move-log annotation, so a false
+"consumed" doesn't delay the information — **it removes it from the system**, because no state anywhere
+still shows the thread waiting. A shared board would have exposed it as a contradiction: input consumed,
+thread open, no ruling emitted. **Same shape as the heartbeat finding: you cannot detect absence from a
+surface authored by the party whose absence is in question.**
+
+## ⚠️ Superseded detail (kept for the record) — the drain loop moved an UNREAD memo
 
 **I drained `results-lead-to-arch-…-the-probe-you-ordered-…-2026-08-08.md` into `read/` in an earlier fire
 without reading it.** Then I searched for an *08-09* date, concluded no Lead memo existed, told PM so, and
