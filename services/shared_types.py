@@ -341,6 +341,43 @@ class PerceptionMode(str, Enum):
     ANTICIPATING = "anticipating"
 
 
+class EffectClass(IntEnum):
+    """
+    What a workflow's operation does IN THE WORLD — an ordered effect enum.
+
+    Arch ruling 2026-08-09 (building on PDR-006 condition 2, decisions.log
+    2026-08-04): the read/write boundary is DECLARED, not inferred. Effect is
+    not computable from an entry point, signature, or description — it's a
+    fact about what the operation does in the world (PA's evidence:
+    `prioritization` sounds like a bulk-write and writes nothing). Declare
+    the non-computable fact once at the source (WorkflowEntry.effect,
+    required + defaultless); derive everything else from it.
+
+    ORDERED, and the ordering is contract: READ < WRITE < DESTRUCTIVE, with
+    destructive a subset of write (you cannot destroy without writing). Four
+    consumers each derive their own predicate from the one declared value —
+    a boolean `mutates` would force the destructive consumers to re-derive
+    destructiveness, recreating the inference problem one level down:
+
+        readOnlyHint    = (effect == READ)         # MCP annotations, PDR-006 §30
+        destructiveHint = (effect == DESTRUCTIVE)  # MCP annotations
+        needs_consent   = (effect >= WRITE)        # #1509 consent gate
+        needs_confirm   = (effect == DESTRUCTIVE)  # #1190 destructive-mutation gate
+
+    EXTENSION POINT — tier vocabulary is deliberately NOT settled here: Arch
+    ruled the properties (ordered enum, required, defaultless, derivable) but
+    explicitly did not rule the tier names alone. Exec's reversibility framing
+    may later split DESTRUCTIVE by recoverability (e.g. RECOVERABLE vs
+    IRREVERSIBLE); settle any new tier vocabulary with the consumers (#1190
+    gate, PA's MCP annotation spec) before adding values. New tiers must
+    preserve the ordering contract above.
+    """
+
+    READ = 1  # Observes the world; changes nothing durable outside the conversation
+    WRITE = 2  # Creates or modifies durable state (GitHub, Notion, DB) recoverably
+    DESTRUCTIVE = 3  # A write whose effect destroys state (subset of write)
+
+
 class TrustStage(IntEnum):
     """
     Trust stages governing Piper's proactivity level.

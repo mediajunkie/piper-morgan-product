@@ -1513,3 +1513,52 @@ PROCESS FAILURE, MINE: Lead's memo was in my read/ folder — I DRAINED IT THERE
   procedure fixes recorded in arch-carry-forward: (1) never mv a memo to read/ in the same pass that first
   sees it; (2) SEARCH FOR THE OBJECT, NOT THE DATE — I looked for "a Lead memo dated 08-09"; it was a Lead
   memo dated 08-08, and the date was my assumption rather than the thing I was looking for.
+
+2026-08-09 ~10:00 PT [Lead, relaying PM in-conversation rulings]
+1) MILESTONE SEQUENCE CORRECTION (PM, verbatim intent): the release sequence is MVP → Production → Fast Follow. "MVP or Fast Follow" as a binary encodes a misunderstanding held by multiple agents — Production sits BETWEEN them: Production milestone = required for PUBLIC beta, worked in the PUB sprint. Fast Follow comes after. Triage accordingly.
+2) PM approved PPM's placement recommendation: #1510 → MVP, #1190 → MVP, #1509 → Production. Board written by Lead (native milestone field).
+3) The 48 unmilestoned open issues (all filed 2026-08-07..09, the testing yield): PM directed triage-now. Lead triaged 42 (18 MVP / 21+1 Production / 3 Fast Follow, criteria in session log); escalated 6 to PM: #1536-#1540 (FTUX five, deliberately PM-held per PPM) + #1511 (two-standups product decision, with PPM). #1553 → Production + PUB sprint (PM named it).
+
+---
+2026-08-09 12:4x PT — Arch — `ToolEffect` MUST BE IntEnum, AND THE ORDERING MUST BE ASSERTED (PA found it in my own ruling)
+
+MY ERROR: my 09:4x read/write ruling specified `needs_consent = effect >= WRITE` / `needs_confirm =
+  effect == DESTRUCTIVE` against PA's spec type `class ToolEffect(str, Enum)` — WITHOUT VERIFYING THE TYPE
+  SUPPORTS THE OPERATION. I wrote executable-looking pseudocode into a ruling and four consumers (#1509,
+  #1190, capability legibility, MCP annotations) were about to build on it.
+PA VERIFIED BEFORE LETTING IT STAND; Arch REPRODUCED before ruling:
+    StrEffect.WRITE       >= StrEffect.READ   -> True   (COINCIDENTALLY right: 'w' > 'r')
+    StrEffect.DESTRUCTIVE >= StrEffect.WRITE  -> False  ← AND IT DOES NOT RAISE
+    needs_consent (str,Enum): {READ: False, WRITE: True, DESTRUCTIVE: False}
+    needs_consent (IntEnum):  {READ: False, WRITE: True, DESTRUCTIVE: True}
+  → UNDER (str, Enum) THE MOST DANGEROUS TIER SILENTLY SKIPS THE CONSENT GATE. `str, Enum` inherits
+    str.__ge__, so `>=` compares VALUES LEXICOGRAPHICALLY.
+
+✅ IntEnum RATIFIED. 🔴 BUT THE TYPE FIX ALONE IS NOT ENOUGH — THE ORDERING IS A SAFETY INVARIANT AND MUST
+  BE ASSERTED IN A TEST. THE FAILURE IS ASYMMETRIC IN THE DANGEROUS DIRECTION: WRITE >= READ is true BY
+  COINCIDENCE, so the bug is INVISIBLE IN THE EASY CASE and appears only on the tier that matters. A test
+  checking READ/WRITE passes and proves nothing — THE PAIR YOU'D NATURALLY TEST IS THE PAIR THAT WORKS.
+  REQUIRED (DESTRUCTIVE pair first, it is the one that breaks):
+      assert ToolEffect.DESTRUCTIVE > ToolEffect.WRITE > ToolEffect.READ
+      assert (ToolEffect.DESTRUCTIVE >= ToolEffect.WRITE) is True   # the consent predicate itself
+  One line converts a silent wrong answer into a build failure — what my ruling should have specified
+  instead of trusting a type annotation.
+SERIALIZATION ANSWER, so nobody reintroduces (str, Enum) for a legitimate reason: (str, Enum) was presumably
+  chosen so the value serializes as "destructive" for MCP/JSON. KEEP IntEnum FOR ORDERING; SERIALIZE
+  EXPLICITLY via `effect.name.lower()`. NEVER RELY ON AN ENUM'S str-NESS FOR BOTH ORDERING AND WIRE FORMAT —
+  two jobs, one type, which is the ONE-NAME-TWO-QUANTITIES shape hit four times this week, here inside a
+  base class.
+SEQUENCING: land IntEnum + the ordering assertion IN ONE COMMIT. A type change without the test is the same
+  latent defect with a different literal.
+
+COHORT OUTCOMES THIS FIRE (all confirming, no action owed):
+  - CIO ADOPTED the never-glob-the-inbox fix and SHIPPED IT INTO duty-cycle-tick Step 3's mail loop — as a
+    constraint inside the existing obligation rather than a new mechanism. CONFIRMED IT WAS NOT SEAT-SPECIFIC:
+    CIO's own drain had the identical glob. "read/ is not a folder, it is a CLAIM ABOUT YOUR OWN COGNITION"
+    carried verbatim.
+  - CXO took PPM's read/write split as the discriminator their legibility ruling was missing (write-capability
+    discovery is what carries surprise-action risk; read-side does not).
+  - PPM answered Exec NO on milestone-at-filing: "a required field doesn't produce knowledge, it produces a
+    value… an absent milestone is honestly unknown; a guessed milestone is a claim that reads as decided and
+    nobody re-examines." This week's failure class applied correctly by someone else — worth noting the
+    pattern is propagating without me restating it.

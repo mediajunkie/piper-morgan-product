@@ -119,7 +119,17 @@ class TodoRepository(BaseRepository):
     async def get_due_todos(
         self, owner_id: str, due_before: Optional[datetime] = None, include_overdue: bool = True
     ) -> List[domain.Todo]:
-        """Get todos by due date with overdue support"""
+        """Get todos by due date with overdue support
+
+        DEAD PATH (#1493 audit, caller sweep verified 2026-08-09): no
+        production callers anywhere in services/, web/, main.py, or scripts/
+        — only referenced by tests (test_todo_repository_enum_filters_1472.py,
+        test_todo_repository_tz_1493.py). The overdue cutoff was already
+        normalized aware-UTC by #1493 before the sweep ran, so the code is
+        correct as written; kept (not removed) per the comment-out-before-
+        removing norm, pending the #1423 dead-path treatment (wire it to a
+        caller or delete it via delete-module-safely).
+        """
         query = select(TodoDB).where(
             and_(
                 TodoDB.owner_id == owner_id,

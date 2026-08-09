@@ -20,6 +20,7 @@ from services.intent_service.workflow_dispatcher import (
     register_workflow,
     validate_registry,
 )
+from services.shared_types import EffectClass
 
 
 @pytest.fixture(autouse=True)
@@ -39,6 +40,7 @@ class TestWorkflowRegistry:
         """Can register a workflow entry."""
         entry = WorkflowEntry(
             entry_point=AsyncMock(),
+            effect=EffectClass.READ,
             description="Test workflow",
         )
         register_workflow("test_type", entry)
@@ -47,17 +49,23 @@ class TestWorkflowRegistry:
 
     def test_duplicate_registration_raises(self):
         """Cannot register the same workflow type twice."""
-        entry = WorkflowEntry(entry_point=AsyncMock(), description="First")
+        entry = WorkflowEntry(entry_point=AsyncMock(), effect=EffectClass.READ, description="First")
         register_workflow("dupe", entry)
 
         with pytest.raises(ValueError, match="already registered"):
-            register_workflow("dupe", WorkflowEntry(entry_point=AsyncMock(), description="Second"))
+            register_workflow(
+                "dupe",
+                WorkflowEntry(entry_point=AsyncMock(), effect=EffectClass.READ, description="Second"),
+            )
 
     def test_get_registered_workflows(self):
         """get_registered_workflows returns a copy."""
         from services.intent_service.workflow_dispatcher import get_registered_workflows
 
-        register_workflow("test", WorkflowEntry(entry_point=AsyncMock(), description="Test"))
+        register_workflow(
+            "test",
+            WorkflowEntry(entry_point=AsyncMock(), effect=EffectClass.READ, description="Test"),
+        )
         result = get_registered_workflows()
         assert "test" in result
         # Mutating the copy doesn't affect the real registry
@@ -83,7 +91,7 @@ class TestDispatchWorkflow:
         mock_handler = AsyncMock(return_value={"message": "Started!"})
         register_workflow(
             "test_workflow",
-            WorkflowEntry(entry_point=mock_handler, description="Test"),
+            WorkflowEntry(entry_point=mock_handler, effect=EffectClass.READ, description="Test"),
         )
 
         result = await dispatch_workflow(
@@ -109,6 +117,7 @@ class TestDispatchWorkflow:
             "resumable",
             WorkflowEntry(
                 entry_point=mock_start,
+                effect=EffectClass.READ,
                 resume_point=mock_resume,
                 description="Resumable",
             ),
@@ -130,7 +139,7 @@ class TestDispatchWorkflow:
         mock_start = AsyncMock(return_value={"message": "Fresh start"})
         register_workflow(
             "no_resume",
-            WorkflowEntry(entry_point=mock_start, description="No resume"),
+            WorkflowEntry(entry_point=mock_start, effect=EffectClass.READ, description="No resume"),
         )
 
         result = await dispatch_workflow(
@@ -148,7 +157,7 @@ class TestDispatchWorkflow:
         mock_handler = AsyncMock(side_effect=RuntimeError("boom"))
         register_workflow(
             "broken",
-            WorkflowEntry(entry_point=mock_handler, description="Broken"),
+            WorkflowEntry(entry_point=mock_handler, effect=EffectClass.READ, description="Broken"),
         )
 
         result = await dispatch_workflow(
@@ -166,7 +175,7 @@ class TestValidateRegistry:
         """Valid registry produces no errors."""
         register_workflow(
             "valid",
-            WorkflowEntry(entry_point=AsyncMock(), description="Valid"),
+            WorkflowEntry(entry_point=AsyncMock(), effect=EffectClass.READ, description="Valid"),
         )
         errors = validate_registry()
         assert errors == []
@@ -175,6 +184,7 @@ class TestValidateRegistry:
         """Non-callable entry_point is caught."""
         WORKFLOW_REGISTRY["bad"] = WorkflowEntry(
             entry_point="not_a_function",  # type: ignore
+            effect=EffectClass.READ,
             description="Bad entry",
         )
         errors = validate_registry()
@@ -185,6 +195,7 @@ class TestValidateRegistry:
         """Non-callable resume_point is caught."""
         WORKFLOW_REGISTRY["bad_resume"] = WorkflowEntry(
             entry_point=AsyncMock(),
+            effect=EffectClass.READ,
             resume_point=42,  # type: ignore
             description="Bad resume",
         )
@@ -290,7 +301,7 @@ class TestActionWorkflows:
 
     def test_workflow_entry_defaults_to_not_action_triggered(self):
         """Backward-compatible default: existing entries are offer-only."""
-        entry = WorkflowEntry(entry_point=AsyncMock(), description="x")
+        entry = WorkflowEntry(entry_point=AsyncMock(), effect=EffectClass.READ, description="x")
         assert entry.action_triggered is False
 
     def test_get_action_workflows_filters_to_action_triggered_only(self):
@@ -298,11 +309,16 @@ class TestActionWorkflows:
 
         register_workflow(
             "offer_only",
-            WorkflowEntry(entry_point=AsyncMock(), description="offer"),
+            WorkflowEntry(entry_point=AsyncMock(), effect=EffectClass.READ, description="offer"),
         )
         register_workflow(
             "by_action",
-            WorkflowEntry(entry_point=AsyncMock(), description="action", action_triggered=True),
+            WorkflowEntry(
+                entry_point=AsyncMock(),
+                effect=EffectClass.READ,
+                description="action",
+                action_triggered=True,
+            ),
         )
 
         action_workflows = get_action_workflows()
@@ -670,3 +686,53 @@ class TestGenerateContentWorkflowEntry1124:
         from services.intent.intent_service import IntentService
 
         assert hasattr(IntentService, "_handle_generate_content")
+
+
+class TestEffectClassDerivations:
+    """Arch ruling 2026-08-09: one declared EffectClass value per WorkflowEntry;
+    every consumer derives its own predicate from it — readOnlyHint /
+    destructiveHint (MCP annotations, PDR-006 §30), needs_consent (#1509),
+    needs_confirm (#1190). Consumers must NEVER re-derive effect from names,
+    descriptions, or write sets."""
+
+    def _entry(self, effect):
+        from services.intent_service.workflow_dispatcher import WorkflowEntry
+
+        return WorkflowEntry(entry_point=AsyncMock(), description="x", effect=effect)
+
+    def test_read_entry_derivations(self):
+        from services.shared_types import EffectClass
+
+        e = self._entry(EffectClass.READ)
+        assert e.read_only_hint is True
+        assert e.destructive_hint is False
+        assert e.needs_consent is False
+        assert e.needs_confirm is False
+
+    def test_write_entry_derivations(self):
+        from services.shared_types import EffectClass
+
+        e = self._entry(EffectClass.WRITE)
+        assert e.read_only_hint is False
+        assert e.destructive_hint is False
+        assert e.needs_consent is True
+        assert e.needs_confirm is False
+
+    def test_destructive_entry_derivations(self):
+        """Destructive ⊂ write: a DESTRUCTIVE entry needs consent AND
+        confirmation — the subset semantics the ordered enum encodes."""
+        from services.shared_types import EffectClass
+
+        e = self._entry(EffectClass.DESTRUCTIVE)
+        assert e.read_only_hint is False
+        assert e.destructive_hint is True
+        assert e.needs_consent is True
+        assert e.needs_confirm is True
+
+    def test_effect_is_required_keyword(self):
+        """Constructing without effect raises — the defaultless contract at the
+        behavior layer (the enforcement suite asserts it structurally too)."""
+        from services.intent_service.workflow_dispatcher import WorkflowEntry
+
+        with pytest.raises(TypeError):
+            WorkflowEntry(entry_point=AsyncMock(), description="no effect")

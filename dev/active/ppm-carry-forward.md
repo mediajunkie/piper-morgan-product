@@ -1,10 +1,16 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-08 STOP (~22:45 PT) — DAY CLOSED. Six clean fires
-(07:22 START · 10:22 · 13:22 · 16:22 · 19:22 WORK · 22:22 STOP). Cron re-armed `89206635`.
-🔴 **OWED FIRST THING NEXT FIRE**: issue bodies for the unfiled structural rows in
-`dev/active/jake-ftux-item-register-2026-08-08.md` (rows 6, 7+14 as one wave, 8, 9, 10, 11).
+**Last rewritten**: 2026-08-09 Fire 2 (~10:50 PT). Cron re-armed **`6b2053ad`** mid-day (not at STOP)
+to kill a live hazard — see Cron. ✅ **Jake conversion COMPLETE: #1536–#1540 filed 08-09, zero rows
+unfiled.**
+
+## ✅ PM APPROVED THE PLACEMENT (2026-08-09, relayed by Lead, board WRITTEN)
+**#1510 → MVP · #1190 → MVP · #1509 → Production.** Verified on the board myself. **#1536–#1540
+remain NONE, correctly — their unmilestoned state IS the ask.**
+⚠️ **PM sequence correction, cohort-wide**: **MVP → Production → Fast Follow.** *"'MVP or Fast Follow'
+encodes a misunderstanding by many agents."* **"Not MVP" NEVER defaults to Fast Follow.** Production =
+required for PUBLIC beta, worked in the **PUB sprint**.
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -275,14 +281,20 @@ already answered before sending.**
 
 ## Cron
 
-**ARMED** — job `89206635`, `52 6,9,12,15,18,21`. Re-armed at STOP by CronDelete-then-CronCreate,
-**CronList-verified: exactly one.** Prompt now also carries the **owed first work item** and the
-**surfaces correction**, so neither can be lost to a context gap.
+**ARMED** — job **`6b2053ad`**, CronList-verified exactly one.
 
-**Two clean days running** (08-07 and 08-08: six fires each, no stacking, no Gap-C). ⚠️ Session-only
-+ 7-day auto-expiry, both silent; the self-heal only works if the session gets a turn.
+🔴 **RE-ARMED MID-DAY, NOT AT STOP — deliberately, to kill a live hazard.** The prior prompt carried
+*"FIRST WORK ITEM: write issue bodies for rows 6, 7+14, 8, 9, 10, 11"* — **work completed at Fire 1
+this morning.** ⚠️ **A compacted session reading that would have filed duplicates of #1536–#1540.**
+**A stale instruction in a prompt read six times a day is not untidiness; it is an order to redo
+finished work.** The new prompt says so explicitly and adds: *if you put an owed item here, delete it
+when done.*
 
-⭐ **Heartbeat surface: 9 of 11 seats cannot report role-liveness** (measured 08-07). CIO owns it.
+⭐ **This is the seventh one-name-two-objects / stale-claim instance in a fortnight, and the second in
+my own instruments** (after the register's ambiguous `CXO 2`). **The pattern is not that I write
+stale things — it's that anything I write to be re-read is a claim with a shelf life.**
+
+⚠️ Session-only + 7-day auto-expiry, both silent; the self-heal only works if the session gets a turn.
 
 ---
 
