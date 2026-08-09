@@ -531,6 +531,9 @@
           >
             Disconnect
           </button>
+          <a href="${integration.configure_url || '/settings/integrations/' + integration.name}" class="action-btn configure-btn">
+            Settings
+          </a>
         ` : `
           <a
             href="/settings/integrations/${integration.name}"
