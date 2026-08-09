@@ -48,6 +48,19 @@
 
   <div class="banner"><b>Deploy: current for everything testable below.</b> One cut pending later today (mypy gate + the status-truth service when it lands) — I'll flag it. <b>Sprint score: 15 closed since Friday · 2 reopened honestly · 7 building.</b></div>
 
+
+  <div class="dash" style="display:flex;flex-direction:column;gap:.5rem;background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:1rem 1.3rem;margin-bottom:0">
+    <div style="display:grid;grid-template-columns:10.5rem 1fr 13rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--fund)">1 · Fundamentals</span>
+      <div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:33%;background:var(--done)"></span><span style="width:42%;background:var(--fund)"></span></div>
+      <span style="font-size:.74rem;color:var(--soft);text-align:right">12: 4 built · 5 building · 1 diagnosing · 2 await</span></div>
+    <div style="display:grid;grid-template-columns:10.5rem 1fr 13rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--trust)">2 · Trust</span>
+      <div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:50%;background:var(--done)"></span></div>
+      <span style="font-size:.74rem;color:var(--soft);text-align:right">4 open: 2 built · 2 gated (PPM)</span></div>
+    <div style="display:grid;grid-template-columns:10.5rem 1fr 13rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--ver)">3 · Verified/closed</span>
+      <div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:100%;background:var(--done)"></span></div>
+      <span style="font-size:.74rem;color:var(--soft);text-align:right">18 closed since Fri · 2 honest reopens</span></div>
+  </div>
+
   <section class="v">
     <h2>✅ Your three remaining tests + one unblock (exact steps)</h2>
     <ul class="checks" id="testlist">
