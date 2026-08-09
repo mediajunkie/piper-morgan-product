@@ -44,7 +44,7 @@
 </style>
 <main>
   <h1>MVP sprint — fundamentals to polish</h1>
-  <p class="sub">Sun Aug 9 ~9:30 AM · after your morning pass: <b>8 closed today</b> · check-offs persist in your browser</p>
+  <p class="sub">Sun Aug 9 ~10:15 AM · <b>12 closed today</b> · 6 agents building · check-offs persist in your browser</p>
 
   <div class="banner"><b>Deploy: current for everything testable below.</b> One cut pending later today (mypy gate + the status-truth service when it lands) — I'll flag it. <b>Sprint score: 15 closed since Friday · 2 reopened honestly · 7 building.</b></div>
 
@@ -73,10 +73,9 @@
   <section class="v">
     <h2>✅ Your three remaining tests + one unblock (exact steps)</h2>
     <ul class="checks" id="testlist">
-      <li><input type="checkbox" id="t-hijack"><label for="t-hijack"><b>#1529 hijack replay</b> — in chat: <i>start my standup</i> → answer one question → then say <i>i am not doing the standup right now. what are my projects?</i> <span class="why">Pass = standup exits with honest copy AND the projects question gets answered. (Yesterday this held you hostage for 9 turns.)</span></label></li>
-      <li><input type="checkbox" id="t-projects"><label for="t-projects"><b>#1530 projects list</b> — chat: <i>what are my projects?</i> <span class="why">Pass = all three (CoVa, Klatch-if-restored, One Job), count matches the /projects page.</span></label></li>
-      <li><input type="checkbox" id="t-radar"><label for="t-radar"><b>#1476 Radar card</b> — look at the Radar panel on home. <span class="why">Pass = the "blocked" card now reads as an explicit example ("Not a real item — nothing of yours is blocked…"), not phantom work. (#1477's sidebar row + microcopy you already saw ✓.)</span></label></li>
-      <li><input type="checkbox" id="t-1488"><label for="t-1488"><b>#1488 unblock (2 min)</b> — in chat, retry the misroute: <i>Please create a todo: test continuity again</i>. Whatever happens, then run the intent query (in our chat thread) — <b>#1518's telemetry is live now</b>, so this one repro finally yields the diagnosis.</label></li>
+      <li><input type="checkbox" id="t-escape2"><label for="t-escape2"><b>#1529 offer-binding (the live half)</b> — chat: <i>archive Zebra</i> (no such project) → expect the offer <i>"Would you like me to list your projects?"</i> → reply <i>Yes please</i>. <span class="why">Pass = it lists your projects. Yesterday this exact shape launched the standup interview. (The interview-escape half is CI-pinned; the interview itself currently has no chat entry — the report claims all standup phrasings, which is #1511's decision arguing for itself.)</span></label></li>
+      <li><input type="checkbox" id="t-1488b" checked><label for="t-1488b"><b>#1488 — DIAGNOSED via your repro ✓</b> <span class="why">intent=execution:create_ticket; no deterministic claim exists for todo-creation; your personalization context biases the LLM to ticket-vocabulary. Fix = the inversion's constrained output; your phrasing joins the corpus.</span></label></li>
+      <li class="why">Closed from your morning verdicts: #1530 projects ✓ · #1476/#1477 Radar+sidebar ✓ (example card renders only in true-empty state — yours has real entities, which IS the fix).</li>
     </ul>
   </section>
 
