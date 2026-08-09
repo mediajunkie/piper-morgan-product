@@ -22,9 +22,9 @@
   main { max-width:80ch; margin:0 auto; }
   h1 { font-size:1.4rem; margin:0 0 .25rem; }
   .sub { color:var(--soft); margin:0 0 1rem; font-size:.92rem; }
-  .banner { background:var(--infra-bg); border:1px solid var(--rule); border-radius:10px;
+  .banner { background:var(--ver-bg); border:1px solid var(--rule); border-radius:10px;
     padding:.8rem 1.2rem; font-size:.95rem; margin-bottom:1rem; }
-  .banner b { color:var(--infra); }
+  .banner b { color:var(--ver); }
   section { background:var(--card); border:1px solid var(--rule); border-radius:10px;
     padding:1rem 1.3rem; margin-top:1rem; }
   h2 { font-size:.8rem; letter-spacing:.07em; text-transform:uppercase; margin:0 0 .6rem; }
@@ -41,87 +41,55 @@
   .s-done { background:var(--ver-bg); color:var(--ver); font-weight:750; }
   .why { color:var(--soft); font-size:.85em; }
   .f h2{color:var(--fund)} .t h2{color:var(--trust)} .v h2{color:var(--ver)} .i h2{color:var(--infra)} .p h2{color:var(--pol)}
-  .dash { display:flex; flex-direction:column; gap:.5rem; }
-  .drow { display:grid; grid-template-columns: 10.5rem 1fr 12rem; gap:.7rem; align-items:center; }
-  .dlabel { font-size:.78rem; font-weight:650; }
-  .dbar { height:13px; background:var(--bar); border-radius:7px; overflow:hidden; display:flex; }
-  .seg { height:100%; }
-  .dnum { font-size:.74rem; color:var(--soft); font-variant-numeric:tabular-nums; text-align:right; }
 </style>
 <main>
   <h1>MVP sprint — fundamentals to polish</h1>
-  <p class="sub">Primary source of truth for the rebuild-month collaboration · updated Sat Aug 8 ~5:15 PM · check-offs persist in your browser</p>
+  <p class="sub">Sun Aug 9 ~9:30 AM · after your morning pass: <b>8 closed today</b> · check-offs persist in your browser</p>
 
-  <div class="banner"><b>Deploy state: CURRENT.</b> Your Sat-evening redeploy carries everything built through the evening wave — the whole checklist below is live, including the additions: the hijack-escape replay, <i>what are my projects?</i>, the sidebar current-chat row, the honest Radar example card, and the agenda reading YOUR todos.</div>
+  <div class="banner"><b>Deploy: current for everything testable below.</b> One cut pending later today (mypy gate + the status-truth service when it lands) — I'll flag it. <b>Sprint score: 15 closed since Friday · 2 reopened honestly · 7 building.</b></div>
 
   <section class="v">
-    <h2>✅ Test now on v40 — check off as you go</h2>
+    <h2>✅ Your three remaining tests + one unblock (exact steps)</h2>
     <ul class="checks" id="testlist">
-      <li><input type="checkbox" id="t-cont"><label for="t-cont"><b>Continuity (#1394)</b> — create/archive something, then ask <i>"what do you know about it?"</i> / <i>"what did we just do?"</i> — the floor should cite it. <span class="why">The big one.</span></label></li>
-      <li><input type="checkbox" id="t-remq"><label for="t-remq"><b>#1521</b> — <i>what reminders do I have?</i> → your reminders, not the calendar.</label></li>
-      <li><input type="checkbox" id="t-remc"><label for="t-remc"><b>#1490</b> — <i>remind me at 3pm tomorrow to review the PR</i> → says 3:00 PM. <span class="why">(v40 has the fix; the arch-merge reversion hit only post-v40 main and is restored.)</span></label></li>
-      <li><input type="checkbox" id="t-sess"><label for="t-sess"><b>#1520</b> — stay active 35+ min → never logged out.</label></li>
-      <li><input type="checkbox" id="t-cal"><label for="t-cal"><b>#1471</b> — <i>connect my calendar</i> → setup guidance, not the time.</label></li>
-      <li><input type="checkbox" id="t-todo"><label for="t-todo"><b>#1472/#1493</b> — todos page CRUD + a Slack /standup with your seeded todo.</label></li>
-      <li><input type="checkbox" id="t-adm"><label for="t-adm"><b>#1485/#1508</b> — Slack settings still work for you (admin); no errors.</label></li>
-      <li><input type="checkbox" id="t-rest"><label for="t-rest"><b>#1470</b> — <i>Archive CoVa</i> then <i>Restore CoVa</i> (bare names — fancier phrasing tests the condemned extraction, not this fix).</label></li>
-      <li><input type="checkbox" id="t-arch"><label for="t-arch"><b>#1431</b> — <i>list my archived projects</i> → a real list. <span class="why">If it misroutes: corpus material, not a #1431 fail.</span></label></li>
-      <li><input type="checkbox" id="t-upd"><label for="t-upd"><b>#1411</b> — <i>create an issue about testing X</i> … then <i>change the title to Y</i> (same session).</label></li>
-      <li><input type="checkbox" id="t-del"><label for="t-del"><b>#1482</b> — delete one insight on /insights → honest dialog copy.</label></li>
+      <li><input type="checkbox" id="t-hijack"><label for="t-hijack"><b>#1529 hijack replay</b> — in chat: <i>start my standup</i> → answer one question → then say <i>i am not doing the standup right now. what are my projects?</i> <span class="why">Pass = standup exits with honest copy AND the projects question gets answered. (Yesterday this held you hostage for 9 turns.)</span></label></li>
+      <li><input type="checkbox" id="t-projects"><label for="t-projects"><b>#1530 projects list</b> — chat: <i>what are my projects?</i> <span class="why">Pass = all three (CoVa, Klatch-if-restored, One Job), count matches the /projects page.</span></label></li>
+      <li><input type="checkbox" id="t-radar"><label for="t-radar"><b>#1476 Radar card</b> — look at the Radar panel on home. <span class="why">Pass = the "blocked" card now reads as an explicit example ("Not a real item — nothing of yours is blocked…"), not phantom work. (#1477's sidebar row + microcopy you already saw ✓.)</span></label></li>
+      <li><input type="checkbox" id="t-1488"><label for="t-1488"><b>#1488 unblock (2 min)</b> — in chat, retry the misroute: <i>Please create a todo: test continuity again</i>. Whatever happens, then run the intent query (in our chat thread) — <b>#1518's telemetry is live now</b>, so this one repro finally yields the diagnosis.</label></li>
     </ul>
-    <p class="why">Layer rule when something fails: wrong answer after the right handler = reopen the fix · misroute/no-route = rebuild territory, report it as corpus material.</p>
   </section>
 
-  <div class="dash" style="margin-top:1rem">
-    <div class="drow"><span class="dlabel" style="color:var(--fund)">1 · Fundamentals</span>
-      <div class="dbar"><span class="seg" style="width:46%;background:var(--done)"></span><span class="seg" style="width:18%;background:var(--fund)"></span><span class="seg" style="width:9%;background:var(--alert)"></span></div>
-      <span class="dnum">11: 5 built · 2 building · 1 blocked · 1 unstarted · 2 fold/await</span></div>
-    <div class="drow"><span class="dlabel" style="color:var(--trust)">2 · Trust features</span>
-      <div class="dbar"><span class="seg" style="width:17%;background:var(--done)"></span><span class="seg" style="width:50%;background:var(--fund)"></span></div>
-      <span class="dnum">6: 1 built · 3 building · 2 in spec (PPM)</span></div>
-    <div class="drow"><span class="dlabel" style="color:var(--ver)">3 · Verification queue</span>
-      <div class="dbar"><span class="seg" style="width:100%;background:var(--done)"></span></div>
-      <span class="dnum">all built — the checklist above</span></div>
-    <div class="drow"><span class="dlabel" style="color:var(--infra)">4 · Launch infra</span>
-      <div class="dbar"><span class="seg" style="width:33%;background:var(--done)"></span></div>
-      <span class="dnum">3: cutover ready · 2 gated on rebuild</span></div>
-    <div class="drow"><span class="dlabel" style="color:var(--pol)">5 · Polish</span>
-      <div class="dbar"></div><span class="dnum">deferred by your ruling</span></div>
-  </div>
-
   <section class="f">
-    <h2>1 · Fundamentals</h2>
+    <h2>1 · Fundamentals — reviewed Sun AM</h2>
     <ul>
-      <li><b>Inversion / routing rework</b> <span class="st s-build">MEASURED — awaiting Arch round 2</span> <span class="why">probe: surface 1 load-bearing for 52%; revised shape (measured boundary + enforced vocabulary + shadow-sampler = your division-of-labor) with Arch</span></li>
-      <li><b class="n">#1394</b> continuity (principal-dropping) <span class="st s-done">BUILT · in v40 · test above</span></li>
-      <li><b class="n">#1518</b> intent telemetry (never wired since birth) <span class="st s-verify">built · next cut</span></li>
-      <li><b>Agenda F1/F2</b> (todos session-owned; priorities generic) <span class="st s-verify">built · next cut</span></li>
-      <li><b class="n">#1532</b> conversation ownership + 3 principal guards <span class="st s-verify">built · next cut</span></li>
-      <li><b class="n">#1423</b> silent-death epic <span class="st s-verify">slices 1+2 built (ceiling 226→209)</span> <span class="why">tail continues</span></li>
-      <li><b class="n">#1522</b> false-trails cauterization <span class="st s-verify">step 1 built (−703 lines)</span> <span class="why">steps 2–8 sequenced</span></li>
-      <li><b class="n">#1529</b> flow hijack / universal escape <span class="st s-build">agent building</span></li>
-      <li><b class="n">#1530</b> chat project-list wrong source <span class="st s-build">agent building</span></li>
-      <li><b class="n">#1488</b> your-account misroute <span class="st s-block">blocked</span> <span class="why">diagnosable once #1518 deploys + one repro</span></li>
-      <li><b class="n">#1436</b> mypy pack <span class="st s-todo">unstarted</span> · <b class="n">#1517</b> floor honesty <span class="why">inversion workstream</span> · <b class="n">#1492</b> extraction <span class="why">folds into rebuild</span></li>
+      <li><b>Routing rework</b> <span class="st s-build">measured · awaiting Arch round-2</span> <span class="why">probe done (52% load-bearing); revised shape = measured boundary + enforced vocabulary + shadow-sampler</span></li>
+      <li><b>Status-truth class (#1547)</b> <span class="st s-build">AGENT BUILDING NOW</span> <span class="why">root: all 4 plugins hardcode not-configured since #784; canonical service + 5 surface migrations + retire-the-lie ratchet. Absorbs #1534 + half of #1517's manifest.</span></li>
+      <li><b class="n">#1394</b> continuity <span class="st s-done">CLOSED ✓ (your test)</span> · <b class="n">#1520</b> sessions <span class="st s-done">CLOSED ✓</span> · <b class="n">#1521</b> reminder query <span class="st s-done">CLOSED ✓</span> · <b class="n">#1490</b> orderings <span class="st s-done">CLOSED ✓</span></li>
+      <li><b class="n">#1431</b> archived list <span class="st s-block">REOPENED (your fail)</span> — answers the ACTIVE list; next agent slot 1</li>
+      <li><b class="n">#1411</b> update issue <span class="st s-block">REOPENED (partial)</span> — create ✓; title bug #1543; update-reachability = B3 explicit-#N extension, next agent slot 2</li>
+      <li><b class="n">#1488</b> your-account misroute <span class="st s-block">blocked → YOUR 2-min unblock above</span></li>
+      <li><b>Todo-trust family</b> (your finds): <b class="n">#1541</b> todos-page CRUD (no complete, lying delete) + <b class="n">#1544</b> pending wrong-empty + <b class="n">#1542</b> duration-words invariant — next agent slots 3-4</li>
+      <li><b class="n">#1436</b> mypy gate <span class="st s-verify">slice 1 merged (name-defined extinct) · in next cut</span> · <b class="n">#1518</b> telemetry <span class="st s-verify">LIVE — powers the 1488 diagnosis</span> · <b class="n">#1423/#1522</b> tails sequenced · <b class="n">#1545</b> malformed-row skip (small)</li>
     </ul>
   </section>
 
   <section class="t">
-    <h2>2 · Trust features</h2>
+    <h2>2 · Trust features — reviewed Sun AM</h2>
     <ul>
-      <li><b class="n">#1476</b> blocked-card referent + <b class="n">#1477</b> current-chat sidebar row <span class="st s-build">agent building (pair)</span></li>
-      <li><b class="n">#1480</b> Slack deep-link through login <span class="st s-build">agent building</span></li>
-      <li><b class="n">#1482</b> honest delete copy <span class="st s-verify">built · test above</span></li>
-      <li><b class="n">#1509/#1510</b> consent gate · compose-vs-execute <span class="st s-todo">PPM spec'ing</span> <span class="why">build starts on spec handoff</span></li>
+      <li><b class="n">#1482</b> honest delete copy <span class="st s-done">CLOSED ✓ (your test)</span> — wording pass → #1546 (CXO)</li>
+      <li><b class="n">#1476/#1477</b> Radar card + sidebar row <span class="st s-verify">built · your test above</span></li>
+      <li><b class="n">#1480</b> deep-link through login <span class="st s-verify">built</span> <span class="why">test rides the next Slack round (logged-out /link visit)</span></li>
+      <li><b class="n">#1509/#1510</b> consent gate · compose-vs-execute <span class="st s-block">gated on PPM's countability reset</span> <span class="why">→ YOUR unblock: a placement/scope word to PPM shortcuts their re-sort</span></li>
     </ul>
   </section>
 
   <section class="i">
-    <h2>4 · Launch infra & process</h2>
+    <h2>Decisions & unblocks only you can do</h2>
     <ul>
-      <li><b class="n">#1278</b> domain cutover <span class="st s-verify">paired session, unhurried</span> · <b class="n">#1386</b> gate <span class="why">= rebuild acceptance</span> · <b class="n">#1419</b> re-scope call</li>
-      <li><b>Merge-drop incident</b> <span class="st s-block">escalated</span> <span class="why">3 casualties restored; Arch freeze-request + CIO methodology ruling pending (your directive executed)</span></li>
-      <li><b>Discovery-rate</b>: 59 this week (baseline) · Exec daily line starts tomorrow</li>
+      <li><b>#1488 repro</b> (above) — 2 minutes, unlocks a sprint blocker.</li>
+      <li><b>PPM nudge</b> — 1509/1510 placement word ends their gating.</li>
+      <li><b>Arch round-2</b> — the revised routing shape awaits their ruling; your voiced support (you converged on the same division-of-labor independently) would speed it.</li>
+      <li><b>Deploy on my flag</b> — after #1547 lands + gates (today), one cut makes the floor status-truthful.</li>
+      <li><b class="n">#1419</b> re-scope word (multi-tenancy epic copy vs your Production parking) — 1 sentence.</li>
     </ul>
   </section>
 
