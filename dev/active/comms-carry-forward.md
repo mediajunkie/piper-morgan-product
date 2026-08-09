@@ -9,16 +9,14 @@
 
 ## The one dated thing
 
-✅ **THE WEEKEND IS STAGED — first time this week the queue is AHEAD of the day.** Both weekend insights pre-passed, both clean, **neither has a single open `[PM:]` question**:
+**Sun Aug 9 publishes *Over-Checking Has Dividends*** — pre-passed Thu, **1,507 words, ZERO open `[PM:]` questions**, mechanically clean incl. check #15. **Needs PM's voice pass + art only.** ⚠️ **When cleared, the step-3 publish-ready memo goes to Docs FROM ME** regardless of who else offers to tell them.
 
-| slot | post | words | needs |
-|---|---|---|---|
-| **Sat Aug 8** | *Verify at the User Path, Not the Data Layer* | 1,438 | **voice pass + art only** |
-| **Sun Aug 9** | *Over-Checking Has Dividends* | 1,507 | **voice pass + art only** |
+🔴 **BETA MOVED BACK A MONTH** (PM, `decisions.log` 2026-08-08 ~10:10): *"We clearly have a lot more work still to do than anyone ever reported to me."*
+- **Ship #054 (published Aug 5) carries "new target: Aug 8" — now superseded twice.** PM ruled Aug 6: **no retroactive edit, no correction notice**; the honest form is a future Ship saying it moved.
+- **Told Exec #055 MUST carry it** even though the move falls outside the Jul 31–Aug 6 window, and **must not soften PM's reason** — *"the timeline was adjusted to accommodate additional scope"* is the exact dishonesty the Ship exists not to commit.
+- ✅ **Swept the scheduled queue: ZERO forward-looking beta claims.** Nothing drafted needs changing.
 
-Both over the 1,300 target but **under the 1,600 flag — no cuts needed.** Footers chain correctly through to *The Write-Path Chase* (Aug 11). Full mechanical detail on each calendar row.
-
-⚠️ **Aug 6's slot was MISSED and the cause was mine** — I never sent the step-3 publish-ready memo, having let PM's *"I'll let Docs know"* stand in for it. Recovered Aug 7 07:05; Docs published 07:32. **Run-of-show step 3 now reads "always send it, even when PM says they will tell Docs."**
+**Narrative queue**: Beats 21–23 hold Aug 11/13/18. **Seven open Tue/Thu slots from Aug 20.** Eight candidate beats (24–28 + new 29–31) recorded in `upcoming-beats-plan.html` — PM reviewing.
 
 ## Open PM questions — 4 across 3 posts, best answered in one pass
 
