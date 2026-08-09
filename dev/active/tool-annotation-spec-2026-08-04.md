@@ -81,23 +81,29 @@ user's **GitHub**.
 `handoff-pa-2026-07-31.md`): understating risk produces *inaction* — there, the user doesn't revoke a live
 key; here, the client doesn't ask. **Understated risk is the expensive direction in both.**
 
-## 3. ⭐ The recommendation — a required registry field, and NO default
+## 3. ✅ SHIPPED 2026-08-09 — this section is now historical; the real thing exists
 
-Extend `WorkflowEntry` with a **required** effect declaration:
+**This spec proposed `ToolEffect` on 08-04 as a design. It's no longer a proposal to point at a proposal
+for — `services/shared_types.py:344` has the real `EffectClass(IntEnum)`, landed on `main` (`5dc822268`,
+#1557), independently of this doc, with the ordering safety-invariant test
+(`test_effect_enum_is_ordered_read_write_destructive`, `tests/test_architecture_enforcement.py:1949`).**
+**This spec's job now is to CONSUME that type, not maintain a parallel copy of it** — a second definition
+here would be exactly the drift problem Arch's condition 2 exists to prevent, one file over.
 
 ```python
-class ToolEffect(IntEnum):    # ⛔ CORRECTED 2026-08-09 — was `(str, Enum)`. See §9e.
-    READ = 0                 # → readOnlyHint=True,  destructiveHint=False
-    WRITE = 1                # → readOnlyHint=False, destructiveHint=False
-    DESTRUCTIVE = 2          # → readOnlyHint=False, destructiveHint=True
+from services.shared_types import EffectClass   # READ < WRITE < DESTRUCTIVE, IntEnum, ordering asserted
 
-@dataclass
-class WorkflowEntry:
-    entry_point: Callable[..., Coroutine[Any, Any, Any]]
-    effect: ToolEffect                    # ← REQUIRED. No default. Positional-or-keyword, no fallback.
-    touches_external_world: bool          # ← REQUIRED. → openWorldHint
-    ...
+# MCP annotation derivation — the seam this spec owns:
+readOnlyHint    = (entry.effect == EffectClass.READ)
+destructiveHint = (entry.effect == EffectClass.DESTRUCTIVE)
 ```
+
+⚠️ **Serialization contract, per Arch's ruling — this IS this spec's surface to own**: never serialize
+`EffectClass` by relying on its base type. Emit `effect.name.lower()` explicitly (`"destructive"`, not an
+accidental side effect of a `str` base). **One type, two jobs (ordering + wire format) is the exact defect
+this whole thread found** — keep them separated at the MCP boundary.
+
+**§9f below is left as-is: it's the record of how the bug was found, not a live design section anymore.**
 
 ⛔ **No default value on either field, deliberately — and this is the part I'd defend hardest.**
 Adopting HOST's framing from today's latent-defaults memo:
@@ -426,3 +432,16 @@ other roles, adopted by name in an architecture ruling — before anyone (includ
 type actually supported the operation its own design depended on. **A claim can be correctly hedged in
 prose and still be wrong in the code three lines below the hedge.** Caught only because Arch's ruling made
 the predicate explicit enough to test against.
+
+## 9g. ✅ RESOLVED, verified independently — the fix landed in the real codebase before I finished patching my own doc
+
+**`services/shared_types.py:344` already has `EffectClass(IntEnum)` with the ordering safety-invariant
+test, landed on `main` (`5dc822268`, #1557) — independently of this spec, per Lead.** Verified directly
+rather than accepted the report: fetched `origin/main`, read the class definition and the test body
+myself. Matches exactly — `READ < WRITE < DESTRUCTIVE`, and the test asserts the exact dangerous pair
+(`DESTRUCTIVE >= WRITE`), not just the coincidentally-safe one.
+
+**Not a contradiction of §9f — a convergence.** My catch was against this *document's* copy; the
+implementing agent picked `IntEnum` correctly from Arch's original ordered-comparison requirement,
+independently. §3 above now points at the real type instead of re-proposing one, so this spec has exactly
+one job left on this axis: own the MCP-annotation derivation and the explicit serialization contract.
