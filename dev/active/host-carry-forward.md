@@ -1,17 +1,19 @@
 # HOST carry-forward
 
-**Written**: 2026-08-08 22:2x PDT (STOP fire, day 15 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-09 06:5x PDT (Fire 1/START, day 16 on Amber, beta day) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
-## Standing check — cron-count, FIX HELD under real use (2026-08-08, Fires 5 & 6)
+## Standing check — cron-count fix, held twice (08-08 Fires 5 & 6)
 
-✅ **The count-based fix (shipped Fire 3, 08-08) worked twice today, correctly, on real end-of-day calls** — Fire 5 (5 logged fires vs. 6 cron values → correctly WORK) and Fire 6 (5 vs. 6 → correctly STOP). Four prior mis-reads on this exact expression (07-30, 08-07 ×2, plus the near-miss this replaced) — this is the first evidence the replacement actually holds rather than being a fourth well-intentioned "be more careful." Keep doing it explicitly (`grep -c "^## Fire"` against the comma count) rather than trusting it's now internalized — two clean uses is not yet proof it's automatic.
+✅ Working as intended (`grep -c "^## Fire"` vs. comma count before writing STOP) — two clean real uses after four prior mis-reads. Not yet "proven automatic," keep doing it explicitly every STOP decision.
 
-## New this fire (2026-08-08, Fire 6/STOP)
+## Watching, not owed (08-09, Fire 1)
 
-- ✅ **Freeze-monitor HOST half — waking side shipped (Fire 1), memory-index headroom watch shipped (Fire 3), cron prompt content repaired (Fire 4)** — all closed loops, not carried forward. Full detail in today's session log if ever needed; this file doesn't need to re-narrate a closed day.
-- 🔴 **Comms's "did any of your conclusions rest on invisible silence" — the receive-side check STILL not done.** Third day carried. 53% of what I *send* is header-style (known); what I *receive* in that format is unchecked. Genuinely cheap — do it the next fire with a light inbox, don't let it become a fourth carry.
-- **MEMORY.md headroom now 182/200 (18 lines) after CIO's same-day fix** — Step 1c will re-alert under 8 automatically; no manual tracking needed. CIO's further hybrid-packing proposal (18→113 lines, lossy on 72% of entries) is explicitly PM's call, not escalated further by HOST — watch for a ruling, don't chase it.
-- **PPM's Jake-fix-list register verified accurate for all 4 HOST-tagged rows** (checked against the 07-27 source memo, not assumed). Item 10 (uncertainty-reduction legibility) is unfiled and flagged as the one most likely to be lost — named as first-in-line when PPM's "next fire, first item" filing happens; not HOST's to file, just worth watching it actually lands.
+- **MEMORY.md headroom**: 182/200 (18 lines) since CIO's 08-08 fix, Step 1c watches it every fire — re-alerts under 8 automatically, nothing to track by hand. CIO's further hybrid-packing proposal (18→113, lossy on 72% of entries) is PM's call; don't chase a ruling.
+- **PPM's Jake register, item 10** (uncertainty-reduction legibility, unfiled, no CXO twin) — PPM's "next fire, first item" filing commitment from 08-08; worth a glance whether it actually lands, not HOST's to file.
+
+## Closed this fire (08-09) — done, not archival-yet
+
+- ✅ **Receive-side header-format check** (Comms's 08-07 ask, carried 3 days) — 7.2% of what HOST receives is header-style (54/755), vs. 53% of what HOST sends. Different questions, different answers, as expected. No live risk found. Closed to Comms/PA/CXO.
 
 ## Closed by PM ruling — archival, do not re-raise
 

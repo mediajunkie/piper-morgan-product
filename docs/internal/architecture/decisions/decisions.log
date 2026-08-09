@@ -1375,3 +1375,61 @@ STANDING REQUEST MADE TO LEAD: do not treat my audits of my own damage as suffic
   twice, in two different ways, and both times Lead found the rest. I did NOT run a third self-audit and
   declare completeness — "22 is what the unfiltered diff shows; I have no independent basis for believing
   that is the whole space" is the honest statement, and asserting closure would be the same error a third time.
+
+---
+2026-08-09 07:1x PT — Arch — UNDERSTANDING-LAYER INVERSION **RATIFIED** (all 4 decisions) with one material correction
+
+DIRECTION ✅ RATIFIED. Lead's diagnosis ("one defect wearing eight numbers") is right and I half-ruled it
+  08-08. What earns ratification rather than agreement: CONSTRAINED STRUCTURED OUTPUT MAKES VOCABULARY DRIFT
+  STRUCTURALLY IMPOSSIBLE rather than defended-against — make-the-bad-state-unrepresentable applied to the
+  one place the stack doc concedes our defenses are "necessary, provably insufficient" (4 stale-PR aliases
+  still missed a live 5th). Not better patterns: the class stops existing.
+
+🔴 MATERIAL CORRECTION — THE GRAMMAR IS CANONICAL ACTIONS (~31–38), NOT THE 106 RAIL KEYS. The proposal
+  constrains output to "the 106 rail keys"; the stack doc defines those as "≈31 handlers + ALIASES", and PA
+  measured the registry 08-04 at 103 alias keys → 38 distinct entries, ≈2.7 names per operation
+  (create_issue has 6). PA's rule applies verbatim: "the property that makes the alias set good input makes
+  it bad catalog" — synonymous options make a model disambiguate names carrying no distinction and pick
+  arbitrarily. Aliases stay INPUT-SIDE; the rail resolves them AFTER selection. ⚠️ AND THE SCHEMA MUST BE
+  DERIVED FROM THE REGISTRY (PDR-006 condition 2) — a hand-written output schema is the drift problem
+  relocated to a new file.
+
+② MODEL TIER + MECHANISM ✅ Haiku-class + ENFORCED structured output (a prompt that merely ASKS for registry
+  keys is what we have today). Local-model addendum ratified as written: API first to force a clean
+  swappable component; local auditions against the same corpus; "model choice becomes a config decision with
+  a scoreboard, never an architecture bet." Lead's contra-indicators (contextual cases are where small
+  models are weakest) are the right ones to hold.
+③ FLOOR-HONESTY CONTRACT — Arch owns the spec, but RULED DECOUPLED from the inversion. #1517 ("floor denies
+  reminder capability AND fabricates a retraction") is a TRUST/SAFETY defect, not a routing defect; it
+  reproduces whenever the floor is reached, however routing got there. COUPLING IT TO A MONTH-LONG REBUILD
+  LEAVES A LIVE HONESTY DEFECT WAITING ON AN ARCHITECTURE BET. Spec now, ship against the current floor, let
+  the inversion ADOPT rather than CONTAIN it. CXO/HOST hold the trust lens; Arch brings them the spec.
+④ pin:/LEDGER — NO NEW MECHANICS NEEDED, and better than they look: ⭐ EVERY pin: ROW IS A RECORDED INSTANCE
+  OF "THE LLM CLASSIFIER GOT THIS WRONG," WHICH MAKES THE PIN LEDGER THE INVERSION'S REGRESSION SUITE,
+  ALREADY CURATED. Retarget POINTER assertions to the new resolver, KEEP the resolver-path assertion (the
+  #1433 condition — it is what keeps a pin falsifiable), and add every pin to the Exhibit-A gate.
+
+ARCH WITHDREW ITS OWN PREREQUISITE: on 08-08 I released the behavioral-probe gate and asked for measurement
+  of surface-1 claims BEFORE narrowing. Lead's Phase 1 SUPERSEDES it — build behind a flag, shadow-score vs
+  corpus + live-mirrored traffic, gate the flip on corpus ≥ baseline AND all 8 Exhibit-A failures passing.
+  THAT GATES THE RIGHT EVENT: I was gating the BUILD; they gate the FLIP, which is where the risk is. Probe
+  folds into Phase 0's baseline. ⚠️ ONE DEMAND: "what reminders do I have?" — recorded in the stack doc as
+  MISROUTED BY THE LLM CLASSIFIER until the pre-classifier claimed it — MUST be in Exhibit A. The inversion
+  hands understanding back to an LLM; that case is the sharpest test of the thesis.
+
+TWO CONDITIONS ON THE ENDPOINT: (1) Phase-3's deletion ratchet must assert CORPUS NON-REGRESSION ALONGSIDE
+  SHRINK — a shrink-only ratchet passes while the thing it shrank was load-bearing (same vacuity family as
+  the week's other findings: assert the denominator, not just the bound). (2) pattern→corpus-case conversion
+  must be A STEP IN THE DELETION PROCEDURE, NOT AN INTENTION — a pattern deleted without becoming a corpus
+  case loses a documented instance of real user phrasing.
+PHASE 0 NEEDS NOTHING FROM ARCH — corpus baseline starts immediately, per PM's fundamentals-first ruling.
+
+MERGE-DROP FOLLOW-UP — CIO's investigation finding TAKEN WITHOUT USING IT AS COVER: CLAUDE.md's data-loss
+  rule is ENTIRELY ABOUT SCOPE and has NO CONCEPT OF DIRECTION; my command was its prescribed "surgical
+  explicit path" shape verbatim. BOTH TRUE: the doc has a real hole that will catch the next person, AND I
+  should have diffed before overwriting. The rule I actually broke is not in CLAUDE.md — it is "name the
+  object", and the object was WHICH SIDE HOLDS NEWER CONTENT. Proposed a DIRECTION clause for the HARD RULE
+  block (git checkout <ref> -- <path> is a DIRECTIONAL overwrite; scope discipline does not make it safe;
+  diff the two sides first) — proposed, not edited, because it is a HARD RULE block. The merge-aware hook
+  remains the higher-leverage fix: the clause helps someone about to overwrite; the hook prevents the state
+  that made me want to.
