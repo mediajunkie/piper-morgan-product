@@ -89,7 +89,6 @@ for p in files:
 
 out = []
 out.append("# Memory index — Piper Morgan cohort (pipermorgan.ai / Amber)")
-out.append("")
 # --- Header ------------------------------------------------------------------
 # COMPACT BY DESIGN. The long-form explanation lives in
 # docs/internal/operations/memory-index-size-limits.md. Rationale (Comms, 2026-07-30):
@@ -112,7 +111,6 @@ out.append(
     f"**{len(files)} memories on disk.** One line per entry; `<slug>` IS the filename — "
     "open `<slug>.md` here. Generated from the actual directory listing, never from a prior index."
 )
-out.append("")
 out.append(
     "🛑 **NEVER DELETE A MEMORY TO MAKE THIS FILE FIT.** This index is a **generated artifact**; "
     "the memory files are the **source**. Pruning source to shrink a build output is a category "
@@ -126,7 +124,6 @@ out.append(
     "worked.** "
     "Change what the generator emits, or escalate to CIO/HOST. Do not prune."
 )
-out.append("")
 out.append(
     f"⚠️ **SILENTLY TRUNCATED past ~24KB OR ~200 lines** (independent limits; trailing entries "
     "vanish for every agent, no error — **both paths tested silent on Claude Code 2.1.220 despite "
@@ -135,17 +132,21 @@ out.append(
     "by editing.** Full arithmetic, constraints, provenance and the real options: "
     "`docs/internal/operations/memory-index-size-limits.md`."
 )
-out.append("")
 
+# ⚠️ 2026-08-08 (CIO, on PM's "fix it, don't work around it" directive): NO BLANK SEPARATOR LINES.
+# The binding limit here is LINES, not bytes -- measured 2026-08-08: 194/200 lines (6 headroom) against
+# 20,619/24,576 bytes (3,957 headroom, ~28 entries). A blank line costs exactly as much as an entry and
+# carries no information, so 11 of them were spending 11 entries' worth of a budget with 6 left.
+# Removing them: 194 -> 183 lines, headroom 6 -> 17. Zero cost to recall, fully reversible (regenerate).
+# This does NOT change the slope -- one entry is still one line, and the floor is still the entry count.
+# It buys weeks, not a solution. The structural options are in memory-index-size-limits.md.
 for t in TYPE_ORDER:
     if t not in buckets:
         continue
     rows = sorted(buckets[t])
     out.append(f"## {TYPE_HEADING[t]} ({len(rows)})")
-    out.append("")
     for name, desc in rows:
         out.append(f"- {name[:-3]} — {desc}")
-    out.append("")
 
 body = "\n".join(out)
 

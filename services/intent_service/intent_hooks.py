@@ -12,7 +12,10 @@ These hooks enable extensibility without modifying core classifier logic.
 import logging
 from typing import Any, Dict, Optional
 
-from services.database.models import Intent
+# #1436: this imported the SQLAlchemy row (services.database.models.Intent)
+# while every caller (classifier.py) passes the domain Intent — the annotation
+# was drift, not the callers. The hook never touches the object's attributes.
+from services.domain.models import Intent
 from services.intent_service.preference_handler import PreferenceDetectionHandler
 from services.personality.personality_profile import PersonalityProfile
 

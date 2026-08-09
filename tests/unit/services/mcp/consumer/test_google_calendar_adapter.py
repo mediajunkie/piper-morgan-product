@@ -623,3 +623,67 @@ class TestUserScopedKeychainAuth:
                 assert result is False
                 # System user should not attempt any keychain lookup
                 mock_keychain.get_api_key.assert_not_called()
+
+
+class TestGetRecurringEvents:
+    """#1436 Tier-1: get_recurring_events referenced `timezone` without importing it.
+
+    The NameError was swallowed by the method's broad `except Exception` (which
+    logs + returns []), so the recurring-meetings query path (#518, Query #35)
+    silently returned no events on EVERY call. This test drives the real path
+    with a mocked Google service and asserts events actually come back —
+    failing-first evidence: before the import fix it fails with an empty list.
+    """
+
+    @pytest.fixture
+    def mock_google_service(self):
+        service = MagicMock()
+        events_resource = MagicMock()
+        list_resource = MagicMock()
+        service.events.return_value = events_resource
+        events_resource.list.return_value = list_resource
+        return service, events_resource, list_resource
+
+    @pytest.mark.asyncio
+    @pytest.mark.unit
+    async def test_get_recurring_events_returns_parsed_events(self, mock_google_service):
+        """A weekly recurring event must be returned with its frequency parsed."""
+        service, events_resource, list_resource = mock_google_service
+        list_resource.execute.return_value = {
+            "items": [
+                {
+                    "id": "recurring_1",
+                    "summary": "Weekly sync",
+                    "recurrence": ["RRULE:FREQ=WEEKLY;BYDAY=MO"],
+                    "start": {"dateTime": "2026-01-12T10:00:00Z"},
+                    "end": {"dateTime": "2026-01-12T10:30:00Z"},
+                },
+                {
+                    "id": "one_off",
+                    "summary": "Not recurring",
+                    "start": {"dateTime": "2026-01-13T10:00:00Z"},
+                    "end": {"dateTime": "2026-01-13T10:30:00Z"},
+                },
+            ]
+        }
+
+        with (
+            patch("services.mcp.consumer.google_calendar_adapter.GOOGLE_LIBS_AVAILABLE", True),
+            patch("services.mcp.consumer.google_calendar_adapter.build") as mock_build,
+        ):
+            mock_build.return_value = service
+
+            from services.mcp.consumer.google_calendar_adapter import GoogleCalendarMCPAdapter
+
+            adapter = GoogleCalendarMCPAdapter()
+            adapter._service = service
+
+            events = await adapter.get_recurring_events(days_ahead=30)
+
+            # Pre-fix: NameError("timezone") inside _get_recurring is swallowed
+            # by the outer except and this comes back [] — the assert below is
+            # the failing-first evidence.
+            assert len(events) == 1
+            assert events[0]["summary"] == "Weekly sync"
+            assert events[0]["frequency"] == "Weekly"
+            assert events[0]["duration_minutes"] == 30

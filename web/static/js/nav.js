@@ -280,28 +280,74 @@ document.addEventListener('DOMContentLoaded', function() {
   // the rail is present (#nav-rail-chats). Clicking opens the conversation on home via
   // /?conversation=<id> (home reads that param), so it works from any page. textContent (not
   // innerHTML) keeps titles XSS-safe; failure leaves the honest "No conversations yet." placeholder.
+  //
+  // #1477 — extracted to a NAMED, refreshable loader. The old anonymous one-shot fetch ran only at
+  // DOMContentLoaded, so a conversation created after page load (the server auto-creates the row on
+  // the first /api/v1/intent post, #731) had no rail row until a full reload — the alpha tester read
+  // that as "my current chat isn't saved" and avoided "+ New chat" fearing data loss that could not
+  // happen. Now: the CURRENT conversation is always present + marked (synthesized if not yet listed),
+  // and chat.js's 'piper:conversation-updated' event refreshes the list on every exchange.
   const railChats = document.getElementById('nav-rail-chats');
-  if (railChats) {
-    const activeConvId = new URLSearchParams(window.location.search).get('conversation');
+
+  // The current conversation's id, freshest source first: the ?conversation= URL param (explicit
+  // link) → the home picker's persisted selection → the chat widget's own session id (widget-started
+  // chats use it as the conversation id, #731). Resolved per-render, never cached at load.
+  function getActiveRailConversationId() {
+    const fromUrl = new URLSearchParams(window.location.search).get('conversation');
+    if (fromUrl) return fromUrl;
+    try {
+      return localStorage.getItem('piper_active_conversation_id') ||
+             localStorage.getItem('piper_chat_session_id');
+    } catch (e) {
+      return null;  // private browsing — URL param is the only signal
+    }
+  }
+
+  function buildRailChatRow(c, activeConvId) {
+    const a = document.createElement('a');
+    a.className = 'nav-rail-chat-item';
+    a.href = '/?conversation=' + encodeURIComponent(c.id);
+    a.textContent = c.title || 'Untitled conversation';
+    if (activeConvId && String(c.id) === String(activeConvId)) {
+      a.classList.add('active');
+      a.setAttribute('aria-current', 'page');
+    }
+    return a;
+  }
+
+  function loadRailChats() {
+    if (!railChats) return;
+    const activeConvId = getActiveRailConversationId();
     fetch('/api/v1/conversations?state=active&limit=8', { credentials: 'include' })
       .then(function(r) { return r.ok ? r.json() : null; })
       .then(function(data) {
-        const convs = (data && data.conversations) ? data.conversations : [];
-        if (!convs.length) return;  // keep the honest placeholder
+        if (!data) return;  // auth/API failure — leave the current render
+        const convs = data.conversations || [];
+        const activeListed = activeConvId &&
+          convs.some(function(c) { return String(c.id) === String(activeConvId); });
+        if (!convs.length && !activeConvId) return;  // keep the honest placeholder
         railChats.innerHTML = '';
+        // #1477: the current chat is ALWAYS present. If the server list doesn't
+        // carry it yet (row lands with the first exchange), synthesize its row
+        // at the top, marked active, under an honest generic title.
+        if (activeConvId && !activeListed) {
+          railChats.appendChild(
+            buildRailChatRow({ id: activeConvId, title: 'Current chat' }, activeConvId)
+          );
+        }
         convs.forEach(function(c) {
-          const a = document.createElement('a');
-          a.className = 'nav-rail-chat-item';
-          a.href = '/?conversation=' + encodeURIComponent(c.id);
-          a.textContent = c.title || 'Untitled conversation';
-          if (activeConvId && String(c.id) === String(activeConvId)) {
-            a.classList.add('active');
-            a.setAttribute('aria-current', 'page');
-          }
-          railChats.appendChild(a);
+          railChats.appendChild(buildRailChatRow(c, activeConvId));
         });
       })
-      .catch(function() { /* leave the placeholder; the rail's nav still works */ });
+      .catch(function() { /* leave the previous render; the rail's nav still works */ });
+  }
+
+  if (railChats) {
+    loadRailChats();
+    // #1477: chat.js dispatches this after every successful exchange (and on
+    // conversation auto-create), so the rail reflects the first turn live.
+    document.addEventListener('piper:conversation-updated', loadRailChats);
+    window.NavRail = { refreshChats: loadRailChats };
   }
 });
 

@@ -6,6 +6,7 @@ SQLAlchemy models for persistent storage
 import enum
 import uuid
 from datetime import datetime, timezone
+from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     CHAR,
@@ -93,6 +94,14 @@ from services.shared_types import (
 )
 
 from .connection import Base
+
+if TYPE_CHECKING:
+    # #1436: resolve forward refs used by to_domain/from_domain annotations.
+    # Runtime imports stay lazy inside those methods to keep services/database
+    # from depending on services/ethics, services/feedback, services/personality.
+    from services.ethics.audit_transparency import AuditLogEntry
+    from services.feedback.models import Feedback
+    from services.personality.personality_profile import PersonalityProfile
 
 
 class TimestampMixin:
@@ -418,7 +427,7 @@ class EthicsAuditLogDB(Base, TimestampMixin):
         )
 
     @classmethod
-    def from_domain(cls, entry: "AuditLogEntry") -> "EthicsAuditLogDB":  # noqa: F821
+    def from_domain(cls, entry: "AuditLogEntry") -> "EthicsAuditLogDB":
         """Construct DB row from the domain `AuditLogEntry` dataclass.
 
         Imported lazily inside the method to keep services/database from
@@ -2532,7 +2541,7 @@ class PersonalityProfileModel(Base, TimestampMixin):
         Index("idx_personality_profiles_technical", "technical_depth"),
     )
 
-    def to_domain(self) -> "domain.PersonalityProfile":
+    def to_domain(self) -> "PersonalityProfile":  # #1436: was "domain.PersonalityProfile" — not in services.domain.models
         """Convert to domain model"""
         # Import here to avoid circular imports
         from services.personality.personality_profile import (
@@ -2559,7 +2568,7 @@ class PersonalityProfileModel(Base, TimestampMixin):
 
     @classmethod
     def from_domain(
-        cls, profile: "domain.PersonalityProfile", user_id: uuid.UUID
+        cls, profile: "PersonalityProfile", user_id: uuid.UUID  # #1436: same dangling-module fix as to_domain
     ) -> "PersonalityProfileModel":
         """Create from domain model"""
         import uuid

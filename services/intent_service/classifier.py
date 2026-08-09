@@ -403,7 +403,7 @@ class IntentClassifier:
         classification_context = {
             "message": message,
             "timestamp": datetime.now().isoformat(),
-            "available_knowledge": self._assess_available_knowledge(context),
+            "available_knowledge": self._assess_available_knowledge(context or {}),  # #1436: callee is dict-typed
             "user_context": context or {},
             "has_file_reference": has_file_reference,
             "file_context": file_context,
@@ -621,7 +621,10 @@ class IntentClassifier:
             # try the LLM decoder for complex follow-ups
             if intent is None and conv_context:
                 current_lens = conv_context.current_lens
-                if should_try_llm_decoder(message, current_lens):
+                # #1436: the None-check is already inside should_try_llm_decoder
+                # (returns False for a null lens); stating it here too lets the
+                # type checker see the decoder below only ever gets a str.
+                if current_lens is not None and should_try_llm_decoder(message, current_lens):
                     decoded = await decode_follow_up_with_llm(
                         message=message,
                         turns=conv_context.turns,

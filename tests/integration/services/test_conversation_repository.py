@@ -32,7 +32,11 @@ async def db_session():
 
 @pytest.fixture
 async def test_conversation(db_session):
-    """Create a test conversation in the database."""
+    """Create a test conversation in the database.
+
+    #1532: turns must be appended by the conversation's OWNER — tests thread
+    the fixture principal, matching the ownership contract the repo now enforces.
+    """
     conversation_id = str(uuid4())
     user_id = str(uuid4())
 
@@ -79,7 +83,7 @@ class TestConversationRepository:
             completed_at=datetime.now(),
         )
 
-        await repo.save_turn(turn)
+        await repo.save_turn(turn, user_id=test_conversation.user_id)
 
         # Verify it was saved
         saved = await db_session.get(ConversationTurnDB, turn.id)
@@ -102,12 +106,12 @@ class TestConversationRepository:
             user_message="Initial message",
             assistant_response="",  # Empty response initially
         )
-        await repo.save_turn(turn)
+        await repo.save_turn(turn, user_id=test_conversation.user_id)
 
         # Update with response
         turn.assistant_response = "Here is the response"
         turn.completed_at = datetime.now()
-        await repo.save_turn(turn)
+        await repo.save_turn(turn, user_id=test_conversation.user_id)
 
         # Verify update
         saved = await db_session.get(ConversationTurnDB, turn_id)
@@ -130,7 +134,7 @@ class TestConversationRepository:
                 user_message=f"Message {i}",
                 assistant_response=f"Response {i}",
             )
-            await repo.save_turn(turn)
+            await repo.save_turn(turn, user_id=test_conversation.user_id)
 
         # Fetch and verify order
         turns = await repo.get_conversation_turns(test_conversation.id)
@@ -156,7 +160,7 @@ class TestConversationRepository:
                 user_message=f"Message {i}",
                 assistant_response=f"Response {i}",
             )
-            await repo.save_turn(turn)
+            await repo.save_turn(turn, user_id=test_conversation.user_id)
 
         # Fetch with limit
         turns = await repo.get_conversation_turns(test_conversation.id, limit=3)
@@ -178,7 +182,7 @@ class TestConversationRepository:
                 user_message=f"Message {i}",
                 assistant_response=f"Response {i}",
             )
-            await repo.save_turn(turn)
+            await repo.save_turn(turn, user_id=test_conversation.user_id)
 
         # most_recent=True with limit=3 -> turns 3,4,5 (newest), chronological order
         turns = await repo.get_conversation_turns(test_conversation.id, limit=3, most_recent=True)
@@ -225,7 +229,7 @@ class TestConversationRepository:
                 user_message=f"Message {i}",
                 assistant_response=f"Response {i}",
             )
-            await repo.save_turn(turn)
+            await repo.save_turn(turn, user_id=test_conversation.user_id)
 
         next_num = await repo.get_next_turn_number(test_conversation.id)
 
@@ -257,7 +261,7 @@ class TestConversationRepositoryRoundTrip:
         )
 
         # Save
-        await repo.save_turn(original)
+        await repo.save_turn(original, user_id=test_conversation.user_id)
 
         # Load
         turns = await repo.get_conversation_turns(test_conversation.id)
@@ -298,7 +302,7 @@ class TestConversationRepositoryRoundTrip:
                 user_message=user_msg,
                 assistant_response=assistant_msg,
             )
-            await repo.save_turn(turn)
+            await repo.save_turn(turn, user_id=test_conversation.user_id)
 
         # Simulate page refresh - load all turns
         loaded_turns = await repo.get_conversation_turns(test_conversation.id)

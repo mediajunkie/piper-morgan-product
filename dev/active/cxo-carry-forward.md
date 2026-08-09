@@ -27,6 +27,16 @@
 - **My finding still stands**: its *justification* is a June-5 rating of a history list, **two weeks older than Radar**. Defensible conclusion, indefensible reason.
 - 🔴 **Still open, small**: **Surface 3 is a phantom** — one corpus mention, in the very sentence that rates Radar. PPM's ask to PM: *name it or strike it (5 of 6)*. **Neither of us will guess the history.**
 
+## ⭐ TOP CXO WORK ITEM — the across-all-surfaces statement (deferred to a FRESH CONTEXT, 08-08)
+
+**PPM withdrew their "which surface survives PDR-006" sort key; PM had ratified it on that framing and I concurred. My concurrence is withdrawn too** (my 08-03 memo argued *"differs on bucket A only on timing, not merit"* — that accepts the key).
+**PM stated the real model verbatim 08-08**: *"a holistic user experience, **expressed on each surface as appropriate**"* — phone = notifications, Slack = channel bot, web = conversations + radar + settings, another chat = skills + MCP, **CLI still maintained. All true at once.** *"I never said the web UI was going away."*
+🔴 **There is NO current CXO artifact that says this**, and PM ruled 07-26 that he and I decide the experience **across all surfaces**. **Three times in ten days its absence produced real work**: *"a surface being retired"*, *"there is no web page"*, and the sort key.
+**Deliverable**: one page, current, citable — each surface and what the one experience looks like there. **Not a PDR, not a re-litigation of PDR-005/006** — the thing those docs keep flattening, shaped to sit next to a decision.
+⏸️ **Deferred to a fresh context — NAMED TRIGGER, not "when I get to it."** Foundational, PM co-owns it, and writing it at the tail of a long session produces a document that reads like the last argument I was in.
+**Also mine in the same pass**: **#1476** — PPM could not locate what renders the "blocked" card. **A render question, so it's mine.** Report the surface either way.
+⚠️ **PPM's mechanism #3, worth carrying**: *the holistic model is a set of simultaneous truths, decision artifacts are singular commitments — every time the model meets a decision doc, the doc's grammar wins.*
+
 ## 🔴 PM-attention (nothing here has moved)
 
 | Item | What PM owns | Age |

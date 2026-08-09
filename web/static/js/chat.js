@@ -533,9 +533,21 @@
       SessionTimeout.autoLogout();
     } else {
       setTimeout(() => {
-        window.location.href = "/login";
+        // #1480: carry the current page through the re-login round trip so
+        // login lands back here (auth.js reads + guards the next param).
+        window.location.href = "/login?next=" + encodeURIComponent(loginReturnTarget());
       }, 3000);
     }
+  }
+
+  /**
+   * #1480: where re-login should land — the full current location including
+   * query and fragment. The fragment survives because auth.js's redirect is
+   * client-side; the open-redirect guard lives at the consuming end
+   * (sanitize_next_path server-side, safeNextUrl in auth.js).
+   */
+  function loginReturnTarget() {
+    return window.location.pathname + window.location.search + window.location.hash;
   }
 
   /**
@@ -670,9 +682,18 @@
         }
 
         // Issue #787: Refresh sidebar when a new conversation is auto-created
+        // (data-only since #1522 step 1 — kept for home's auto-select state)
         if (result.conversation_created && typeof loadConversations === 'function') {
           loadConversations();
         }
+
+        // #1477: announce the exchange so the left rail (nav.js) refreshes —
+        // the current conversation gets its row from the FIRST turn, not the
+        // next full page load. The #787 hook above renders nothing since
+        // #1522 step 1; this event is what refreshes the visible surface.
+        document.dispatchEvent(new CustomEvent('piper:conversation-updated', {
+          detail: { conversationId: sessionId, created: !!result.conversation_created }
+        }));
 
         // Issue #840: Detect expired auth token and redirect to login
         if (result.auth_expired) {
@@ -682,7 +703,8 @@
           );
           warningDiv.classList.add("reply");
           setTimeout(() => {
-            window.location.href = "/login";
+            // #1480: carry the current page as next (see loginReturnTarget).
+            window.location.href = "/login?next=" + encodeURIComponent(loginReturnTarget());
           }, 2000);
         }
       } catch (error) {

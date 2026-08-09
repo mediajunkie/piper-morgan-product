@@ -16,13 +16,22 @@ logger = structlog.get_logger(__name__)
 
 
 def _example_entity() -> RadarEntity:
-    """Empty-state teaching card (CXO mockup) — unmistakably an example, never observed."""
+    """Empty-state teaching card — unmistakably an example, never observed.
+
+    #1476: the previous copy ("A blocker you flagged" with a live "blocked" state
+    chip) read as a REAL blocked item to a first-time user, who searched the UI
+    for the blocked thing, failed, and read it as breakage. HOST's rule: a
+    surfaced signal must be traceable to its subject; an unresolvable alert is an
+    invitation to imagine the failure. The example must therefore never claim a
+    live lifecycle state or name a ghost referent.
+    """
     return RadarEntity(
         entity_type=EntityType.WORK_ITEM,
-        title="A blocker you flagged",
-        lifecycle_state="blocked",
+        title="Example — how a blocked item appears",
+        lifecycle_state="example",
         provenance=Provenance.EXAMPLE,
-        meta="…with what's holding it up, and what you can do about it.",
+        meta="Not a real item — nothing of yours is blocked. When something is, "
+        "it shows here with what's holding it up.",
         attention=0.0,
     )
 
@@ -45,6 +54,22 @@ class RadarFeed:
 
         # Honest provenance: the default view is real-only (#1214/#1216) — seed/dev never shown.
         observed = [e for e in gathered if e.provenance == Provenance.OBSERVED]
+
+        # #1476: a "blocked" card whose referent can't be opened at all (no ref)
+        # is a ghost alert — the user can't trace the signal to its subject.
+        # Suppress it and log, rather than render an unresolvable "blocked".
+        kept: list[RadarEntity] = []
+        for e in observed:
+            if e.lifecycle_state == "blocked" and not e.ref:
+                logger.warning(
+                    "radar_blocked_card_suppressed_no_referent",
+                    title=e.title,
+                    entity_type=str(e.entity_type),
+                )
+                continue
+            kept.append(e)
+        observed = kept
+
         if not observed:
             return RadarView(state="empty", entities=[_example_entity()])
 

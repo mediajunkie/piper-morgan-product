@@ -13,8 +13,13 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
 from uuid import UUID, uuid4
+
+if TYPE_CHECKING:
+    # #1436: resolve the "JWTClaims" forward ref for type checkers only —
+    # the runtime import stays out to avoid the circular auth<->domain import.
+    from services.auth.jwt_service import JWTClaims
 
 # Import Item primitive for Todo to extend
 from services.domain.primitives import Item
@@ -226,7 +231,10 @@ class Product:
     # Relationships
     features: List["Feature"] = field(default_factory=list)
     stakeholders: List["Stakeholder"] = field(default_factory=list)
-    metrics: List["Metric"] = field(default_factory=list)
+    # #1436: a `Metric` class has never existed anywhere in repo history —
+    # the forward ref was dangling since introduction. Field is unused; typed
+    # honestly as Any until a real Metric model exists.
+    metrics: List[Any] = field(default_factory=list)
     work_items: List["WorkItem"] = field(default_factory=list)
 
 
@@ -250,7 +258,9 @@ class Feature:
 
     # Relationships
     dependencies: List["Feature"] = field(default_factory=list)
-    risks: List["Risk"] = field(default_factory=list)
+    # #1436: like `Metric` above, no `Risk` class has ever existed in repo
+    # history; field is unused. Typed as Any until a real Risk model exists.
+    risks: List[Any] = field(default_factory=list)
     work_items: List["WorkItem"] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:

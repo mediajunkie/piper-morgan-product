@@ -28,6 +28,49 @@ from .jwt_service import JWTClaims, JWTService
 logger = structlog.get_logger(__name__)
 
 
+def sanitize_next_path(next_url: Optional[str], default: str = "/") -> str:
+    """
+    Open-redirect guard for post-login `next` targets (#1480).
+
+    Accepts ONLY a same-origin relative path (optionally with a query
+    string). Everything else — absolute URLs (https://evil.example),
+    protocol-relative (//evil.example), backslash smuggling (/\\evil —
+    browsers normalize \\ to /), scheme URLs (javascript:…), control
+    characters, and auth-flow loop targets (/login, /logout) — falls back
+    to `default`.
+
+    Shared contract: web/static/js/auth.js applies the same predicates
+    client-side before its post-login redirect; keep the two in sync.
+    """
+    from urllib.parse import urlsplit
+
+    if not next_url or not isinstance(next_url, str):
+        return default
+    # Backslash smuggling: browsers treat \ as / when resolving, so
+    # "/\evil.example" navigates like "//evil.example".
+    if "\\" in next_url:
+        return default
+    # Header-injection / log-forgery hygiene: no control characters.
+    if any(ord(ch) < 0x20 or ord(ch) == 0x7F for ch in next_url):
+        return default
+    # Relative path only: refuses absolute URLs (no leading /) and
+    # protocol-relative URLs (//host).
+    if not next_url.startswith("/") or next_url.startswith("//"):
+        return default
+    try:
+        split = urlsplit(next_url)
+    except ValueError:
+        return default
+    # Belt-and-braces: urlsplit must agree there is no scheme/host.
+    if split.scheme or split.netloc:
+        return default
+    # Auth-flow loop guard: next pointing back at login would loop; /logout
+    # has no GET route (SessionTimeout's legacy default) and dead-ends.
+    if split.path in ("/login", "/logout"):
+        return default
+    return next_url
+
+
 # ─── Default exempt-path categories for AuthMiddleware ──────────────────────
 # Refactored from a flat 34-entry list to named categories per #1014 (Apr 29).
 # Each category corresponds to one architectural reason for skipping auth.
@@ -366,11 +409,21 @@ class AuthMiddleware(BaseHTTPMiddleware):
             accepts_html = "text/html" in accept_header
 
             if not is_api_route and accepts_html:
-                # Redirect to login with return URL
+                # Redirect to login with return URL. #1480: percent-encode the
+                # WHOLE original path+query into a single `next` param —
+                # unencoded, a multi-param query (the #1466 Slack deep-link
+                # carries slack_user_id AND slack_team_id) split at its '&'
+                # and everything after it leaked out of `next` as stray
+                # /login params. Fragments (#link-slack) never reach the
+                # server; the settings page auto-scrolls off the query params.
+                from urllib.parse import quote
+
                 return_url = str(request.url.path)
                 if request.url.query:
                     return_url += f"?{request.url.query}"
-                return RedirectResponse(url=f"/login?next={return_url}", status_code=302)
+                return RedirectResponse(
+                    url=f"/login?next={quote(return_url, safe='')}", status_code=302
+                )
 
         return JSONResponse(
             status_code=status.HTTP_401_UNAUTHORIZED,

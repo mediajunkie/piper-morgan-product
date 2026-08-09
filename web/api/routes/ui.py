@@ -310,17 +310,27 @@ async def login_page(request: Request):
 
     Issue #393: CORE-UX-AUTH - Login UI
     Issue #722: Redirect to setup if no users exist
+    Issue #1480: honor a sanitized `next` param (deep-link preservation)
     """
     from sqlalchemy import text
 
+    from services.auth.auth_middleware import sanitize_next_path
     from services.database.session_factory import AsyncSessionFactory
 
-    templates = _get_templates(request)
+    # #1480: where to land after (or instead of) login. Guarded — relative
+    # paths only, so a crafted /login?next=https://evil.example can never
+    # bounce a user off-site.
+    next_url = sanitize_next_path(request.query_params.get("next"))
 
     # Check if user is already authenticated (has valid user_id in state)
     user_id = getattr(request.state, "user_id", None)
     if user_id and user_id != "user":  # "user" is the default placeholder
-        return RedirectResponse(url="/", status_code=302)
+        # #1480: an already-authenticated visit to /login?next=… (e.g. the
+        # Slack deep-link after the middleware round trip) continues to the
+        # deep-link target, not blindly home.
+        return RedirectResponse(url=next_url, status_code=302)
+
+    templates = _get_templates(request)
 
     # Issue #722: Check if any users exist - if not, redirect to setup wizard
     # First-time users shouldn't see login page, they should see setup

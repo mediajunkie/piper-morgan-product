@@ -3,6 +3,34 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginButton = document.getElementById('login-button');
     const errorMessage = document.getElementById('error-message');
 
+    // #1480: post-login destination. The auth middleware (and the #1520
+    // expiry redirects in chat.js) arrive here as /login?next=<encoded
+    // path+query>; before this, login always redirected to '/' and the
+    // #1466 Slack deep-link params (slack_user_id/slack_team_id) were lost.
+    // Guard mirrors sanitize_next_path (services/auth/auth_middleware.py):
+    // relative paths only — refuse absolute URLs (https://evil.example
+    // fails startsWith('/')), protocol-relative ('//evil.example'), and
+    // backslash smuggling ('/\\evil' — browsers normalize \ to /).
+    function safeNextUrl() {
+        const next = new URLSearchParams(window.location.search).get('next');
+        if (
+            typeof next !== 'string' ||
+            !next.startsWith('/') ||
+            next.startsWith('//') ||
+            next.indexOf('\\') !== -1 ||
+            /^\/(login|logout)([/?#]|$)/.test(next)
+        ) {
+            return '/';
+        }
+        // Fragments never reach the server, but the browser carries the
+        // original hash (#link-slack) across the 302 onto the login page
+        // URL — re-attach it so anchor-targeted deep links stay intact.
+        if (window.location.hash && next.indexOf('#') === -1) {
+            return next + window.location.hash;
+        }
+        return next;
+    }
+
     if (loginForm) {
         loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -38,9 +66,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 if (response.ok) {
-                    // Success - redirect to home
+                    // Success — land on the guarded next target (#1480), or
+                    // home when none was carried.
                     const data = await response.json();
-                    window.location.href = '/';
+                    window.location.href = safeNextUrl();
                 } else {
                     // Login failed
                     const error = await response.json();
