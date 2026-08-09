@@ -37,17 +37,23 @@ it is reviewable, and CXO/HOST/PA should correct their own rows.**
 | 3 | **Consent gate + capability legibility** (one feature) | HOST escalation · CXO | ✅ **#1509** — ⚠️ decision item **(c)** unanswered: is it a release blocker? |
 | 4 | **Meta-intent: compose vs. execute** | PA 2 | ✅ **#1510** — ⚠️ **(a)/(b) fork open**; build (b) first per Arch's asymmetry |
 | 5 | **Tool-catalog naming** (object- vs situation-shaped) | PPM relocation | ⏸️ **HELD deliberately** — PM's #3 input reframed the test (*"moment-oriented skills are compounds of more basic action-on-one-object skills"*) and routed the shape to **Arch, with Lead's input**. Filing now would bake in the superseded framing |
-| 6 | **Ingest-and-reflect at onboarding** (cold-start: show the user their own work) | PA 1 | 🔴 **UNFILED** — PA calls it highest-leverage; converges with CXO's "demonstrate, don't describe." **The strongest single signal in the collection** |
-| 7 | **Reflect and elaborate between steps** | CXO §2.2 | 🔴 **UNFILED** |
-| 8 | **One thing at a time** (reduce cognitive load of the ask) | CXO §2.1 | 🔴 **UNFILED** |
-| 9 | **Goal-driven, not harness-driven** (agent decides what it still needs) | CXO §2.3 | 🔴 **UNFILED** |
-| 10 | **Uncertainty-reduction legibility** — *"a much stronger sense of what uncertainty it is reducing for me as a user"* | HOST 3 | 🔴 **UNFILED** — ⚠️ **the only HOST item with no CXO twin**, and the one closest to Jake's headline verdict |
-| 11 | **Primary nav lives in the avatar/settings pill** | CXO §4.1 | 🔴 **UNFILED — STRUCTURAL** *(CXO ruling 08-08, correcting their own lump)*: this is **findability, not taste**. Jake's headline was that he couldn't tell what Piper could do; **primary nav hidden in an avatar pill is a direct cause of that** |
+| 6 | **Ingest-and-reflect at onboarding** (cold-start: show the user their own work) | PA 1 | ✅ **#1536** (filed 08-09) — PA calls it highest-leverage; converges with CXO's "demonstrate, don't describe." **The strongest single signal in the collection** |
+| 7 | **Reflect and elaborate between steps** | CXO §2.2 | ✅ **#1538** — filed with rows 8+9 as ONE issue (one interaction pattern; PA's handler question is one investigation covering all three). **Blocked by #1537** |
+| 8 | **One thing at a time** (reduce cognitive load of the ask) | CXO §2.1 | ✅ **#1538** (with rows 7+9) |
+| 9 | **Goal-driven, not harness-driven** (agent decides what it still needs) | CXO §2.3 | ✅ **#1538** (with rows 7+8) |
+| 10 | **Uncertainty-reduction legibility** — *"a much stronger sense of what uncertainty it is reducing for me as a user"* | HOST 3 | ✅ **#1539** (filed 08-09) — ⚠️ **the only HOST item with no CXO twin**, and the one closest to Jake's headline verdict |
+| 11 | **Primary nav lives in the avatar/settings pill** | CXO §4.1 | ✅ **#1540** (filed 08-09) — **STRUCTURAL** *(CXO ruling 08-08, correcting their own lump)*: this is **findability, not taste**. Jake's headline was that he couldn't tell what Piper could do; **primary nav hidden in an avatar pill is a direct cause of that** |
 | 12 | **Left panel width in an uncanny middle** | CXO §4.3 | ✅ **HOLD — preference** (CXO confirms: no functional consequence) |
 | 13 | **Search placeholder too verbose** | CXO §4.4 | ✅ **HOLD — preference.** ⚠️ **History matters**: CXO reverted that placeholder in June because it made a **false capability claim**. *That* defect is fixed; **Jake's is a verbosity complaint on the corrected string** — different item, same line |
-| 14 | **Chat input doesn't grow** | CXO §4.5 | 🔴 **UNFILED — STRUCTURAL, and a DEPENDENCY of row 7.** CXO: a composer that won't grow means **you cannot read your own message before sending it** — and **you cannot elaborate in a box you can't see.** ⚠️ **Filing 7 without 14 ships an elicitation improvement into an input that can't hold the elaboration** |
+| 14 | **Chat input doesn't grow** | CXO §4.5 | ✅ **#1537** (filed 08-09) — **STRUCTURAL, and a DEPENDENCY of row 7 (#1538).** CXO: a composer that won't grow means **you cannot read your own message before sending it** — and **you cannot elaborate in a box you can't see.** ⚠️ **Filing 7 without 14 ships an elicitation improvement into an input that can't hold the elaboration** |
 
-**Filed 4 · Held-by-decision 1 · Preference-hold 2 · 🔴 Unfiled-and-structural 6.**
+✅ **ALL STRUCTURAL ROWS FILED as of 2026-08-09 07:5x.**
+**Filed 9** (#1476 · #1477 · #1509 · #1510 · **#1536** · **#1537** · **#1538** · **#1539** · **#1540**)
+**· Held-by-decision 1** (row 5, pending Arch) **· Preference-hold 2** (rows 12, 13) **· Unfiled 0.**
+
+⚠️ **No milestones set on any of the five new ones — PM-gated.** PM's 08-07 ruling says *where*
+acted-on alpha findings go; **which of these are acted-on is PM's call**, and beta moved back a month
+on 08-08. **They are now countable and sizeable, which was the point.**
 
 *(Revised 2026-08-08 22:30 after all three lens owners audited their own rows — see Corrections below.
 The pre-audit line read "Unfiled 9" with "up to four may correctly never be filed." **Both numbers were
