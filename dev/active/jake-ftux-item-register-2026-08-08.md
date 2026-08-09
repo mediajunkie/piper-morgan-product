@@ -57,19 +57,18 @@ wrong: it is two that hold, not four.**)*
 
 ## What I am NOT doing, and why
 
-⛔ **Not filing the nine tonight.** PM moved beta *because* work was under-reported and the gate is
-bigger than it looked; **filing nine hasty issues at the tail of a long day is the wrong response to
-that**, and would repeat the pattern in a new form.
+⛔ **Not writing bodies tonight — and the reason is SEQUENCING, not fatigue.** Two lens owners
+materially corrected this register **within an hour of publishing it**. Bodies written before those
+landed would have **filed two items that hold, missed the 7↔14 dependency, and omitted PA's handler
+caveat.** CXO reached the same conclusion independently (*"not asking you to file tonight"*).
 
-⛔ **Not assigning milestones or sprint values.** Board writes are PM-gated, and PM's 08-07 ruling
-(*alpha-feedback findings we're acting on are Beta Blockers*) tells me **where** they'd go, not
-**whether all nine are ones we're acting on.** Items 11–14 are the IA nitpicks CXO herself flagged as
-preference-level, and the n=1 split (*act on structural findings, hold preference-level ones*) was
-uncontested — **so at least four of the nine may correctly never be filed.**
+⛔ **Not assigning milestones or sprint values.** Board writes are PM-gated. PM's 08-07 ruling
+(*alpha-feedback findings we're acting on are Beta Blockers*) says **where** they go, not **which of
+these we're acting on.** ✅ **That question is now answered for rows 11–14 by CXO's own re-ruling —
+two hold (12, 13), two file (11, 14).** The remaining judgment is PM's.
 
-✅ **Named trigger for the remainder** (per the deferral rule — *"no rush" is not a trigger*): **the
-next fire, as its first work item.** The register is the prerequisite and it's done; what remains is
-writing bodies, which is mechanical and wants a fresh start rather than a tired one.
+✅ **Trigger for bodies: next fire, first item, against the REVISED register** — with **PA's handler
+caveat inside row 7** and **row 14 filed alongside it**, not after.
 
 ---
 
@@ -79,8 +78,12 @@ writing bodies, which is mechanical and wants a fresh start rather than a tired 
 they simply aren't a tracker, and my own synthesis §5 said the conversion pass would *"enumerate
 against the decided bucket structure"* — **so the enumeration was gated on a sort that later turned
 out to be built on a false premise.** ⚠️ **A conversion gated on a decision is a conversion that
-disappears if the decision is withdrawn.** That is the mechanism by which nine real findings from our
-first alpha tester sat in a memo for eight days while I reported the lane as "advanced."
+disappears if the decision is withdrawn.** That is the mechanism by which **six structural findings**
+from our first alpha tester sat in a memo for eight days while I reported the lane as "advanced."
+
+*(This paragraph said "nine" before the lens-owner audit. Corrected rather than left — a register
+whose summary disagrees with its own table is the defect I fixed in someone else's document this same
+morning, and it took under an hour to reproduce in mine.)*
 
 
 ---
