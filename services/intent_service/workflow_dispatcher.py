@@ -252,3 +252,59 @@ def normalize_action(action: str) -> str:
                 return stripped
     logger.debug("action_unnormalized", emitted=action)
     return action
+
+
+# ---------------------------------------------------------------------------
+# #1517 wired-capability derivation — the capability-gaslighting fix's source.
+#
+# Incident (PM live, 2026-08-08): a floor turn DENIED a wired capability
+# ("I can't actually set reminders from chat") and fabricated a retraction of
+# a real prior create_reminder success. The floor had no manifest of what IS
+# wired, so it improvised — and improvised a lie. The manifest source below is
+# DERIVED, never hand-maintained (a hand list would drift exactly like the
+# UNWIRED_WRITE_ACTIONS list #1333 retired):
+#
+#   1. The workflow registry's action_triggered entries (this module) — the
+#      #1124 rail, effect-classified WorkflowEntries (PDR-006). Canonical
+#      name = first-registered key per unique entry (aliases follow their
+#      canonical in every _default_entries cohort).
+#   2. The legacy _handle_execution_intent elif chain, enumerated by
+#      ActionMapper.ACTION_MAPPING's TARGET names (#284) — the mapper's
+#      values are exactly the handler tokens that chain dispatches (e.g.
+#      create_reminder, the incident capability, which is NOT rail-registered).
+#      The "unknown_intent" fallback sentinel is excluded: it is a routing
+#      outcome, not a capability.
+# ---------------------------------------------------------------------------
+
+
+def wired_chat_actions() -> list[str]:
+    """Canonical action names genuinely wired for chat dispatch, sorted.
+
+    Derived at call time from the two dispatch surfaces above — see the
+    block comment. Consumers: the conversational floor's capability
+    manifest (#1517) and its tests.
+    """
+    # Lazy imports: workflow_entries imports this module at module level,
+    # and ActionMapper is EXECUTION-legacy plumbing this module otherwise
+    # doesn't need.
+    from services.intent_service.action_mapper import ActionMapper
+    from services.intent_service.workflow_entries import register_default_workflows
+
+    register_default_workflows()  # idempotent; no-op when already registered
+
+    wired: set[str] = set()
+
+    # 1. Registry rail — one canonical name per unique action-triggered entry.
+    seen_entries: set[int] = set()
+    for key, entry in WORKFLOW_REGISTRY.items():
+        if not entry.action_triggered:
+            continue  # offer-only (e.g. "meeting") — never action-dispatched
+        if id(entry) in seen_entries:
+            continue  # alias of an already-named entry
+        seen_entries.add(id(entry))
+        wired.add(key)
+
+    # 2. Legacy EXECUTION elif chain, via the mapper's target names.
+    wired |= set(ActionMapper.ACTION_MAPPING.values()) - {"unknown_intent"}
+
+    return sorted(wired)

@@ -1573,6 +1573,15 @@ class TestPrincipalThreadingGuards1532:
         "get_or_create_context",  # in-memory discourse state (#817 key)
         "get_user_context",  # user prefs/projects (F2's reader)
         "build_recent_history",  # prompt-shaped history (#1394's reader)
+        # #1501 reader-set extension (2026-08-09): project reads are
+        # owner-keyed. These names cover ProjectQueryService, PortfolioService
+        # AND ProjectRepository call sites alike (matching is by attr name) —
+        # an unthreaded call to any of them is the global cross-tenant read
+        # #1501 fixed. The principal here is `owner_id` or `user_id` (kwarg);
+        # _passes_principal recognizes both.
+        "list_active_projects",
+        "find_project_by_name",
+        "count_active_projects",
     }
 
     # Demo-only surface (audit §INERT / by-design): excluded, not allowlisted,
@@ -1581,18 +1590,30 @@ class TestPrincipalThreadingGuards1532:
         os.path.join("services", "conversation", "context_tracker.py"),
     }
 
-    # Guard 1 baseline — audit-validated: exactly ONE unthreaded site remains,
-    # classify_conscious's anonymous-keyed context read (zero production
-    # callers; delete-candidate with the #1526 class). F2 was fixed 2026-08-08.
-    # Direction is DOWN: 1 → 0 when classify_conscious is deleted or threaded.
+    # Guard 1 baseline — audit-validated: exactly ONE unthreaded site remained
+    # (classify_conscious's anonymous-keyed context read — zero production
+    # callers; delete-candidate with the #1526 class; F2 was fixed 2026-08-08).
+    # The #1501 reader-set extension re-validated the baseline and surfaced
+    # ONE more site (two calls): ProjectContext.resolve_project's bare
+    # repo.list_active_projects() reads — a class with NO principal in scope
+    # and zero production callers (#1421 census B item 31). Allowlisted as the
+    # extension's validated baseline, NOT as budget: fixing means threading an
+    # owner or deleting the class. Direction is DOWN: 3 → 0 as those die.
     ALLOWED_UNTHREADED = {
         (
             os.path.join("services", "intent_service", "classifier.py"),
             "classify_conscious",
             "get_or_create_context",
         ),
+        # Two call sites (lines ~50/~56) collapse to one tuple here; the
+        # MAX count below still counts both.
+        (
+            os.path.join("services", "project_context", "project_context.py"),
+            "resolve_project",
+            "list_active_projects",
+        ),
     }
-    MAX_UNTHREADED_PRINCIPAL_READS = 1
+    MAX_UNTHREADED_PRINCIPAL_READS = 3
 
     @staticmethod
     def _call_name(call) -> str:
@@ -1607,13 +1628,15 @@ class TestPrincipalThreadingGuards1532:
 
     @staticmethod
     def _passes_principal(call) -> bool:
-        """A reader call is threaded if it passes a user_id that is not the
-        literal None — as keyword, or as the 2nd positional arg (all three
-        readers take the principal as parameter #2)."""
+        """A reader call is threaded if it passes a user_id or owner_id
+        (#1501 readers name the principal owner_id) that is not the literal
+        None — as keyword, or as the 2nd positional arg (the original three
+        readers and find_project_by_name take the principal as parameter #2;
+        the single-parameter #1501 readers should pass it as a keyword)."""
         import ast
 
         for kw in call.keywords:
-            if kw.arg == "user_id":
+            if kw.arg in ("user_id", "owner_id"):
                 return not (isinstance(kw.value, ast.Constant) and kw.value.value is None)
         if len(call.args) >= 2:
             a = call.args[1]

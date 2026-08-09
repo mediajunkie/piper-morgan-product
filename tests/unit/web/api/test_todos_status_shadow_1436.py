@@ -45,7 +45,10 @@ async def test_empty_title_renders_400():
 
 
 async def test_status_update_still_flows_through_the_alias_param():
-    todo = SimpleNamespace(
+    # #1548: this test originally mocked the imagined interface
+    # (update_todo(todo_obj) mutating the object in place). It now asserts the
+    # REAL TodoRepository shape: update_todo(todo_id, updates, owner_id=...).
+    stored = SimpleNamespace(
         title="t",
         description="",
         status="pending",
@@ -54,9 +57,10 @@ async def test_status_update_still_flows_through_the_alias_param():
         owner_id="user-abc",
         updated_at=None,
     )
+    updated = SimpleNamespace(**{**vars(stored), "status": "completed"})
     repo = SimpleNamespace(
-        get_todo_by_id=AsyncMock(return_value=todo),
-        update_todo=AsyncMock(return_value=todo),
+        get_todo_by_id=AsyncMock(return_value=stored),
+        update_todo=AsyncMock(return_value=updated),
     )
     out = await update_todo(
         todo_id="t1",
@@ -64,5 +68,8 @@ async def test_status_update_still_flows_through_the_alias_param():
         current_user=CLAIMS,
         todo_repo=repo,
     )
-    assert todo.status == "completed"
+    repo.update_todo.assert_awaited_once_with(
+        "t1", {"status": "completed"}, owner_id="user-abc"
+    )
+    assert out["status"] == "completed"
     assert out["id"] == "t1"

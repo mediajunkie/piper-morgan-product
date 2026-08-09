@@ -127,6 +127,19 @@ CRITICAL — Never claim an action happened or a resource exists unless you veri
 - Asked whether something exists or was done? Affirm ONLY from the current
   [Available context]; otherwise say you can't confirm it / don't see it.
 
+CRITICAL — Never retract a prior turn's claimed action (#1517):
+- The dual of the rule above: do not TRUST earlier "done / ✓" claims as ground
+  truth, but do not DENY them either. NEVER characterize a previously
+  confirmed action ("Reminder set for 3pm tomorrow ✓") as failed, not saved,
+  or something that couldn't really have happened, unless the current
+  [Available context] explicitly says it failed. You cannot see the earlier
+  turn's execution from here.
+- A fabricated retraction — telling the user "I should have been upfront:
+  that wasn't actually saved" about an action that DID run — is a worse trust
+  violation than staying silent. It denies the user's own data back to them.
+- When you can't verify a prior claim either way, stay neutral and offer to
+  check ("want me to look up what's stored?") instead of asserting failure.
+
 CRITICAL — No sycophancy, no unbacked promises (#1197):
 - NEVER open with "You're absolutely right" or other reflexive validation. When
   the user corrects you, just correct course plainly: state what was wrong and
@@ -200,6 +213,47 @@ Prohibitions:
 - Do NOT use system-speak: "blocked", "violation", "policy", "enforcement"
 - Do NOT introduce yourself or name the boundary category in rule language
 """.strip()
+
+
+# ---- Capability Manifest (#1517) ----
+
+# Static prose only — deliberately CAPABILITY-NAME-FREE. The derived list is
+# the sole carrier of capability names; naming one here would be the
+# hand-maintained list this design exists to avoid (it would go stale silently
+# when the capability wires/unwires — the #1426 false-denial class, inverted).
+_CAPABILITY_MANIFEST_STATIC = """
+Wired chat capabilities — the internal action names below are derived from the
+live dispatch registry. Every one of them is an operation you CAN genuinely
+perform when the user asks in plain language:
+  {actions}
+- This list is internal machinery: never recite these names to the user or
+  volunteer the list unprompted.
+- NEVER tell the user you can't do something this list covers. If their ask
+  matches one of these but you have no execution result this turn, the request
+  simply didn't route: say you CAN do it, and ask them to restate it in one
+  short, plain line (what + when/which). Do NOT recommend external tools for
+  anything on this list.
+""".strip()
+
+
+def capability_manifest_block() -> str:
+    """Render the wired-capability manifest for the floor's system prompt.
+
+    The action list is DERIVED per call from the dispatch surfaces
+    (workflow_dispatcher.wired_chat_actions — registry rail + legacy
+    EXECUTION chain); the surrounding prose is static and capability-name-free.
+    This block is what stops the floor from denying wired capabilities
+    ("I can't set reminders from chat" while create_reminder is wired — the
+    #1517 incident).
+    """
+    from services.intent_service.workflow_dispatcher import wired_chat_actions
+
+    return _CAPABILITY_MANIFEST_STATIC.format(actions=", ".join(wired_chat_actions()))
+
+
+# Exposed for the #1517 prompt-content tests: the static prose must stay free
+# of hand-written capability names (the derived list is the only carrier).
+capability_manifest_block.__wrapped_static__ = _CAPABILITY_MANIFEST_STATIC
 
 
 # ---- Data Classes ----
@@ -428,7 +482,21 @@ class ConversationalFloor:
 
         warmth = ctx.format_warmth_guidance()
         addendum = FLOOR_DENIAL_ADDENDUM if ctx.denial_mode else FLOOR_SYSTEM_PROMPT_ADDENDUM
-        return f"{base}\n\n{addendum}{warmth}"
+
+        # #1517: every non-denial floor turn carries the wired-capability
+        # manifest — the incident turn was TEMPORAL-classified, so riding
+        # only the IDENTITY/DISCOVERY context assembly would miss it.
+        # Best-effort: a manifest failure must never take down the floor,
+        # but it must be visible in logs (a silent absence would recreate
+        # the deny-wired-capabilities gap with no trace).
+        manifest = ""
+        if not ctx.denial_mode:
+            try:
+                manifest = f"\n\n{capability_manifest_block()}"
+            except Exception as e:
+                logger.warning("floor_capability_manifest_error", error=str(e))
+
+        return f"{base}\n\n{addendum}{manifest}{warmth}"
 
     # Issue #911: Categories intentionally routed to floor with context.
     # These should NOT get the "no handler available" note — the floor IS the handler.
