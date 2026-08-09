@@ -533,9 +533,21 @@
       SessionTimeout.autoLogout();
     } else {
       setTimeout(() => {
-        window.location.href = "/login";
+        // #1480: carry the current page through the re-login round trip so
+        // login lands back here (auth.js reads + guards the next param).
+        window.location.href = "/login?next=" + encodeURIComponent(loginReturnTarget());
       }, 3000);
     }
+  }
+
+  /**
+   * #1480: where re-login should land — the full current location including
+   * query and fragment. The fragment survives because auth.js's redirect is
+   * client-side; the open-redirect guard lives at the consuming end
+   * (sanitize_next_path server-side, safeNextUrl in auth.js).
+   */
+  function loginReturnTarget() {
+    return window.location.pathname + window.location.search + window.location.hash;
   }
 
   /**
@@ -682,7 +694,8 @@
           );
           warningDiv.classList.add("reply");
           setTimeout(() => {
-            window.location.href = "/login";
+            // #1480: carry the current page as next (see loginReturnTarget).
+            window.location.href = "/login?next=" + encodeURIComponent(loginReturnTarget());
           }, 2000);
         }
       } catch (error) {
