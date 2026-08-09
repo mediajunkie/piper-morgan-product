@@ -865,6 +865,42 @@ class IntentService:
             IntentProcessingError: If processing fails
         """
         try:
+            # ── #1510 declaration surface (compose-vs-execute working mode) ──
+            # An explicit standing declaration ("just do things directly from
+            # now on" / "ask me first from now on") is a meta-instruction about
+            # HOW Piper should work, not a task — catch it deterministically
+            # before any routing claims it. Detection is conservative (requires
+            # a durative marker), so task requests never flip the mode. The
+            # mode itself is consumed by the collaborate-first gate in
+            # _handle_create_issue (services/intent_service/collaboration_gate.py).
+            # Anonymous turns fall through: there is no user row to persist to.
+            if user_id:
+                from services.intent_service import collaboration_gate as _collab_gate
+
+                _declared_mode = _collab_gate.detect_mode_declaration(message)
+                if _declared_mode is not None:
+                    _mode_persisted = await _collab_gate.set_working_mode(
+                        user_id, _declared_mode
+                    )
+                    self.logger.info(
+                        "working_mode_declared",
+                        user_id=user_id,
+                        working_mode=_declared_mode.value,
+                        persisted=_mode_persisted,
+                    )
+                    return IntentProcessingResult(
+                        success=True,
+                        message=_collab_gate.mode_confirmation_message(
+                            _declared_mode, _mode_persisted
+                        ),
+                        intent_data={
+                            "category": "execution",
+                            "action": "set_working_mode",
+                            "confidence": 1.0,
+                            "working_mode": _declared_mode.value,
+                        },
+                    )
+
             # Issue #899: Off-topic pause message prefix (set by guided process check)
             off_topic_prefix = None
 
@@ -7238,7 +7274,50 @@ class IntentService:
         GREAT-4D Phase 1: First EXECUTION handler implementation.
         Issue #494: Added better defaults from PIPER.md config.
         Issue #943: Added pre-flight check for GitHub configuration.
+        Issue #1510: Collaborate-first gate — compose-phrased/ambiguous
+        requests draft-and-ask instead of executing, unless the user has
+        declared execute mode.
         """
+        # ── #1510 collaborate-first gate (BEFORE the GitHub preflight: drafting
+        # together needs no connector). The Jake shape — "help me write a
+        # ticket about X" — classified as create_ticket and executed, because
+        # the classifier has no compose-side action name AND this handler had
+        # no mode awareness. The gate holds for compose framing always, for
+        # ambiguous framing under the (default) collaborate mode, and never
+        # for explicit imperatives; declared mode is per-user, persisted in
+        # users.preferences (see collaboration_gate.py).
+        from services.intent_service import collaboration_gate as _collab_gate
+
+        _gate_message = intent.original_message or (
+            (intent.context or {}).get("original_message") or ""
+        )
+        _gate_user = user_id or _principal_from_intent(intent)
+        if await _collab_gate.gate_holds(intent.action, _gate_message, _gate_user):
+            _gate_slots = self._slotfill_issue_request(_gate_message)
+            self.logger.info(
+                "collaboration_gate_held",
+                action=intent.action,
+                framing=_collab_gate.classify_framing(_gate_message),
+                user_id=_gate_user,
+            )
+            return IntentProcessingResult(
+                success=True,
+                message=_collab_gate.build_collaboration_response(
+                    subject=(intent.context or {}).get("title") or _gate_slots.get("title"),
+                    repository=(intent.context or {}).get("repository")
+                    or _gate_slots.get("repository"),
+                ),
+                intent_data={
+                    "category": intent.category.value,
+                    "action": intent.action,
+                    "confidence": intent.confidence,
+                    "collaboration_gate": True,
+                },
+                workflow_id=workflow_id,
+                requires_clarification=True,
+                clarification_type="collaboration_draft",
+            )
+
         # Issue #943 pre-flight, rebuilt for #1220/#1382 (2026-07-09): the old gate
         # checked GITHUB_TOKEN/PAT only, so a user connected via the OAuth flow
         # (the tester path on hosted — no PAT anywhere) was told "not connected"

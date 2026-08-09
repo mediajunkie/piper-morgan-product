@@ -25,6 +25,23 @@ front of them); earlier surfaces win:
 | 3 | **Action rail** | `services/intent_service/workflow_entries.py` (`register_default_workflows`) → `workflow_dispatcher.get_action_workflows()`; consumed in `services/intent/intent_service.py::process_intent` | Deterministic dict lookup | If `intent.action` is a registered key (canonical or alias), dispatch pre-floor to that handler. 106 keys ≈ 31 handlers + aliases (census D count 2026-07-16; corrected 2026-08-02 by #1433 — the old "~86" sat stale for weeks, F24; +4 keys 2026-08-08, #1521 reminder-list cohort). The alias lists are **mode-4 defense** against variant emissions — necessary, provably insufficient alone (4 stale-PR aliases still missed a live 5th variant). |
 | 4 | **Category handlers + floor-internal action checks** | category routing in `intent_service.py`; `conversational_floor.py`, `context_assembler.py` | Mixed | Anything not action-railed routes by `intent.category` (TEMPORAL/STATUS/PRIORITY/IDENTITY/…). Several of these check `intent.action` BY NAME internally (e.g. `pull_insights` in `conversational_floor.py`, MEMORY handling in `context_assembler.py`) — this is the **fourth vocabulary**: real dispatch that no rail listing shows. Bottom: the unhandled-LLM floor (improvised response) — the place #1283 exists to keep phrases OUT of. |
 
+**#1510 collaborate-first additions (2026-08-09), two deterministic checks that sit
+around the chain rather than in it** (`services/intent_service/collaboration_gate.py`):
+(a) a **working-mode declaration surface** at the very top of
+`_process_intent_internal` — an explicit standing declaration ("just do things
+directly from now on" / "ask me first from now on", durative marker required) is a
+meta-instruction, caught before any surface and persisted per-user to the
+`users.preferences` JSONB (`working_mode`: collaborate default / execute); and (b) a
+**collaborate-first gate at the top of `_handle_create_issue`** — compose-phrased
+requests ("help me write a ticket about X", the Jake shape) always draft-and-ask,
+explicit imperatives always execute, and AMBIGUOUS framing is decided by the declared
+mode (collaborate unless the user established execute). The gate is action-effect
+keyed via a local mapping (TODO(#1510): `WorkflowEntry.effect` once the enum lands)
+and currently wired for the create-issue family only. Background: the classifier
+prompt has NO compose-side action name for issue writes, so compose and execute
+phrasings collapse into `create_ticket`/`create_issue` at surface 2 — the classifier
+half is corpus material (routing moratorium); the gate is the action-layer half.
+
 ## The vocabularies (where action names live)
 
 1. **Prompt vocabulary** — action names the classifier prompt suggests (`services/prompts.py`, ~17).

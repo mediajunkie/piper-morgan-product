@@ -114,14 +114,25 @@ directly — mine to repoint if the source format ever changes. **Nothing furthe
 Arch/CIO's ruling, and
 Docs' own recommendation is to wait 2–4 weeks regardless of how the review lands.
 
-### Two Docs-flagged gaps from the calendar work, routed not fixed
-1. `/admin/publish-queue` — same staleness class, different data path (prebuild-generated
-   JSON, not `loadCalendar()` directly) — Docs' call whether to convert it too.
-2. `copy-editorial-calendar.js`'s local-sibling-checkout path resolves `../piper-morgan-product`
-   from the website repo root — **broken from a worktree** (`piper-morgan-website-worktrees/{role}`
-   has no such sibling). Falls through to the GitHub API; with no local token, writes a
-   **header-only placeholder CSV**. Hits Docs' publish flow before mine. Offered to fix
-   (walk-up-to-find vs. prefer-API); awaiting their preference.
+### Two Docs-flagged gaps from the calendar work — BOTH RESOLVED + SHIPPED 2026-08-09
+11 days after my 7/29 memo, Docs answered both (memo credited my 8/7 Ship #055 report — "genuinely
+stuck on someone else's queue, not mine" — as what surfaced it) and I shipped both same fire,
+website commit `1b95fa5`, verified and pushed:
+1. **`/admin/publish-queue`** — converted to the same `loadCalendarLive()` + `force-dynamic`
+   pattern as `/admin/calendar`. Straightforward extension, no separate runtime path needed —
+   `loadCalendarLive()` already returns the typed `CalendarEntry[]` the page's derived-view
+   functions (`readyToPublish` etc.) already consume. Static `publish-queue-data.json` mirror
+   stays build-time (confirmed nothing outside this repo consumes it); page now says so explicitly
+   so the two don't read as equally fresh. Verified: route shows `ƒ` not `○` in prod build; served
+   locally, real section counts rendered (24 ready, 3 image gaps).
+2. **`copy-editorial-calendar.js`** — Docs ruled "prefer the API" over walk-up-to-find-sibling
+   (Model A worktrees are stable per-agent paths, not a fixed relative layout — a path-walk that
+   works today breaks silently the next time provisioning changes shape). Reordered: API tried
+   first, local sibling checkout is now the fallback only. Verified with a deliberate bad-token
+   test (HTTP 401 logged, falls through cleanly) — same rigor as the original calendar fix.
+
+Both replied to Docs (`mailboxes/docs/inbox/memo-web-to-docs-cc-pm-both-decisions-shipped-2026-08-09.md`).
+Nothing further pending on this thread.
 
 ### Cohort hook-mechanism work (infra, not Web's normal lane, landed anyway)
 CLAUDE.md §Amber gotcha 2 rewritten (`b67abad65`) — index-state-at-hook-fire-time is the
@@ -324,6 +335,25 @@ since the damage isn't confined to deletions. Also: never touch `git restore --s
 to "clean up" a broad staged set — a broad set is expected during a conflicted merge. Applying this
 week's own lesson to my own note: a check I cite should be re-verified before being trusted, not
 copied once and assumed durable.
+
+### Blog hero pushes content down too far — PM design feedback via Janus, FIXED 2026-08-09
+Janus relayed PM's direct observation: pipermorgan.ai/blog's top area (hero/header) pushes the real
+content (the post list) down too far — same shape as a hero-sizing issue PM's designer friend Yoni
+flagged and Janus just fixed on DinP's homepage. No diagnosis given, no browser access here, so I
+traced it: `/blog` and `/blog/page/[N]` both reuse the shared `Hero` component at full marketing
+weight (large `pt-16 md:pt-24 pb-8 md:pb-12` padding, big headline+highlight, full subheadline
+paragraph, two CTAs) — the same treatment the homepage uses to orient a first-time visitor, wrong
+weight for a content index where the post list is what someone came for.
+
+**Fixed** (website `1b95fa5`): added an opt-in `compact` prop to `Hero` (reduced padding + heading/
+subheadline margins), applied to both blog pages only. Copy/CTAs unchanged — purely the vertical-
+space fix PM described. All other `Hero` call sites (home, about, try, methodology, get-involved,
+what-weve-learned) default to off, unaffected — verified via local build+serve that home still
+renders the original full-size classes and blog renders the compact ones.
+
+**Open loop**: no screenshot/visual confirmation possible (no browser on this host) — flagged this
+explicitly in the reply to Janus/PM. If it's still not enough once actually seen, expect a follow-up.
+Replied: `mailboxes/janus/inbox/memo-web-to-janus-cc-exec-pm-blog-hero-fixed-2026-08-09.md`.
 
 ### ⚠️ Duplicate-START-heartbeat mistake REPEATED (8/6 → 8/9) — explicit rule, not just a note
 Self-caught and documented this exact mistake on 8/6: calling the heartbeat script again at

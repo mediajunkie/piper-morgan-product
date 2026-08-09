@@ -1882,3 +1882,144 @@ class TestRegistryConfiguredReadRatchet:
             "that bit is hardcoded False without user context (#784) and every "
             "registry consumer inherits the lie (#1547)."
         )
+
+
+class TestWorkflowEffectDeclaration:
+    """Arch ruling 2026-08-09 (building on PDR-006 condition 2, ruled 2026-08-04):
+    every ``WorkflowEntry`` must DECLARE its effect — a required, DEFAULTLESS,
+    ordered enum (``EffectClass``: READ < WRITE < DESTRUCTIVE; destructive is a
+    subset of write).
+
+    Why defaultless is load-bearing (Arch, decisions.log 2026-08-04): 4 of
+    WorkflowEntry's 5 prior fields are defaulted, so a defaulted effect field
+    would let every future entry silently inherit a value nobody chose. The
+    construction-site break IS THE FEATURE — you cannot register a handler
+    without saying whether it writes.
+
+    Why an enum, not a boolean (Arch 2026-08-09): four consumers (capability
+    legibility #1509, destructive-mutation gate #1190, consent gate #1509, MCP
+    readOnlyHint/destructiveHint annotations per PDR-006 §30) each derive a
+    DIFFERENT predicate from the one declared value. A boolean ``mutates``
+    would force #1190 and MCP annotations to re-derive destructiveness —
+    recreating the inference problem one level down.
+
+    Effect is a fact about what the operation does IN THE WORLD — it is not
+    computable from the entry point, signature, or description. Declare once at
+    the source; derive everything else (read_only_hint / destructive_hint /
+    needs_consent / needs_confirm properties on WorkflowEntry).
+    """
+
+    def test_effect_is_required_at_construction(self):
+        """Constructing a WorkflowEntry without effect must raise — the
+        construction-site break at every registration is the enforcement
+        mechanism the ruling asks for."""
+        from unittest.mock import AsyncMock
+
+        from services.intent_service.workflow_dispatcher import WorkflowEntry
+
+        with pytest.raises(TypeError):
+            WorkflowEntry(entry_point=AsyncMock(), description="no effect declared")
+
+    def test_effect_field_is_defaultless_in_the_dataclass_definition(self):
+        """The field must carry NO default and NO default_factory — a later
+        'convenience' default would silently reintroduce inherited-value drift
+        for every future entry (the exact failure the 08-04 ruling names)."""
+        import dataclasses
+
+        from services.intent_service.workflow_dispatcher import WorkflowEntry
+
+        effect_fields = [
+            f for f in dataclasses.fields(WorkflowEntry) if f.name == "effect"
+        ]
+        assert len(effect_fields) == 1, (
+            "WorkflowEntry must declare an `effect` field (Arch ruling "
+            "2026-08-09 / PDR-006 condition 2)."
+        )
+        f = effect_fields[0]
+        assert f.default is dataclasses.MISSING, (
+            "WorkflowEntry.effect has a default value. The ruling requires it "
+            "DEFAULTLESS: a defaulted effect lets new entries silently inherit "
+            "a mutation-semantics value nobody chose."
+        )
+        assert f.default_factory is dataclasses.MISSING, (
+            "WorkflowEntry.effect has a default_factory — same defect as a "
+            "default value; remove it."
+        )
+
+    def test_effect_enum_is_ordered_read_write_destructive(self):
+        """Consumers gate on ordered comparison (needs_consent = effect >=
+        WRITE), so the ordering READ < WRITE < DESTRUCTIVE is contract, not
+        style. Destructive ⊂ write: you cannot destroy without writing."""
+        from services.shared_types import EffectClass
+
+        assert EffectClass.READ < EffectClass.WRITE < EffectClass.DESTRUCTIVE
+        # The consent predicate the #1509 gate derives:
+        assert not (EffectClass.READ >= EffectClass.WRITE)
+        assert EffectClass.WRITE >= EffectClass.WRITE
+        assert EffectClass.DESTRUCTIVE >= EffectClass.WRITE
+
+    def test_every_registered_default_entry_declares_a_real_effect(self):
+        """Denominator guard (m-44): assert the registry is non-empty AND every
+        registered entry's effect is an EffectClass member — a registry the
+        default registration never populated would make this check vacuous."""
+        from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY
+        from services.intent_service.workflow_entries import (
+            register_default_workflows,
+        )
+        from services.shared_types import EffectClass
+
+        saved = dict(WORKFLOW_REGISTRY)
+        try:
+            register_default_workflows()
+            assert len(WORKFLOW_REGISTRY) >= 30, (
+                f"Denominator guard: only {len(WORKFLOW_REGISTRY)} workflows "
+                "registered — expected the full default set (~80 alias keys). "
+                "If the default set legitimately shrank, update this floor."
+            )
+            offenders = {
+                key: getattr(entry, "effect", None)
+                for key, entry in WORKFLOW_REGISTRY.items()
+                if not isinstance(getattr(entry, "effect", None), EffectClass)
+            }
+            assert not offenders, (
+                f"Registered workflows without a declared EffectClass effect: "
+                f"{offenders}"
+            )
+        finally:
+            WORKFLOW_REGISTRY.clear()
+            WORKFLOW_REGISTRY.update(saved)
+
+    # ── Ratchet: no name-based effect inference in production code ─────────
+    # Now that the effect is DECLARED on WorkflowEntry, production code must
+    # never re-derive read/write-ness from action NAMES, key prefixes, or
+    # descriptions — that inference is exactly what the declared field
+    # retires (PA's evidence: `prioritization` sounds like a bulk-write and
+    # writes nothing; guess and fact pointed opposite ways). Hand-maintained
+    # read/write action lists are the greppable signature of that inference.
+    INFERENCE_LIST_RE = re.compile(
+        r"^\s*(?:READ|WRITE|MUTATING|READONLY|READ_ONLY|DESTRUCTIVE)"
+        r"[A-Z_]*_(?:ACTIONS|WORKFLOWS|KEYS)\s*[:=]",
+        re.MULTILINE,
+    )
+    MAX_INFERENCE_SITES = 0  # Ratchet: never raise.
+
+    def test_no_name_based_effect_inference_in_production_code(self):
+        """Fails if production code (services/, web/) introduces a
+        hand-maintained read/write/destructive action list — the field on
+        WorkflowEntry is the single source of effect truth; consumers derive
+        via entry.effect / the derivation properties, never via name lists."""
+        offenders: List[str] = []
+        for root in ("services", "web"):
+            for path in glob.glob(f"{root}/**/*.py", recursive=True):
+                with open(path, encoding="utf-8") as fh:
+                    content = fh.read()
+                if self.INFERENCE_LIST_RE.search(content):
+                    offenders.append(path)
+        assert len(offenders) <= self.MAX_INFERENCE_SITES, (
+            f"Hand-maintained effect-classification lists found in production "
+            f"code: {offenders}. Effect is DECLARED on WorkflowEntry "
+            f"(entry.effect: EffectClass) — derive predicates from it "
+            f"(read_only_hint / destructive_hint / needs_consent / "
+            f"needs_confirm); never re-infer from names (Arch ruling "
+            f"2026-08-09)."
+        )

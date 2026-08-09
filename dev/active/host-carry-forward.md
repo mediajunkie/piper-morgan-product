@@ -1,19 +1,23 @@
 # HOST carry-forward
 
-**Written**: 2026-08-09 06:5x PDT (Fire 1/START, day 16 on Amber, beta day) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-09 10:0x PDT (Fire 2/WORK, day 16 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+
+## 🔴 BETA MOVED BACK A MONTH — PM, 08-08 ~10:10 PT, `decisions.log:1242`. This file's own header called 08-09 "beta day" this morning. It was already wrong when written — the decision predates that entry by ~20 hours. Corrected in the cron prompt (re-armed Fire 2) and named in the log as HOST's own instance of the week's dominant failure shape. If you're reading this and still thinking "beta day," you're carrying the same stale claim — check `decisions.log` for "beta", don't trust this file's prior framing either.
 
 ## Standing check — cron-count fix, held twice (08-08 Fires 5 & 6)
 
 ✅ Working as intended (`grep -c "^## Fire"` vs. comma count before writing STOP) — two clean real uses after four prior mis-reads. Not yet "proven automatic," keep doing it explicitly every STOP decision.
 
-## Watching, not owed (08-09, Fire 1)
+## Watching, not owed (08-09, Fire 2)
 
-- **MEMORY.md headroom**: 182/200 (18 lines) since CIO's 08-08 fix, Step 1c watches it every fire — re-alerts under 8 automatically, nothing to track by hand. CIO's further hybrid-packing proposal (18→113, lossy on 72% of entries) is PM's call; don't chase a ruling.
-- **PPM's Jake register, item 10** (uncertainty-reduction legibility, unfiled, no CXO twin) — PPM's "next fire, first item" filing commitment from 08-08; worth a glance whether it actually lands, not HOST's to file.
+- **MEMORY.md headroom trending down again**: 182→185 lines used (18→15 headroom) in one fire — two new memories ate back a third of CIO's 08-08 gain already. Not yet under Step 1c's <8 escalate threshold, but the trend is worth a second look before it gets there again, not just a point-in-time check.
+- **CIO's further hybrid-packing proposal** (18→113 headroom, lossy on 72% of entries) — still PM's call, still open, don't chase a ruling.
 
-## Closed this fire (08-09) — done, not archival-yet
+## Closed this fire (08-09)
 
-- ✅ **Receive-side header-format check** (Comms's 08-07 ask, carried 3 days) — 7.2% of what HOST receives is header-style (54/755), vs. 53% of what HOST sends. Different questions, different answers, as expected. No live risk found. Closed to Comms/PA/CXO.
+- ✅ **PPM's Jake-register item 10** (uncertainty-reduction legibility) filed as **#1539**. Watch closed.
+- ✅ **Receive-side header-format check** (Comms's 08-07 ask) — 7.2% received header-style (54/755) vs. 53% sent. Closed to Comms/PA/CXO.
+- ✅ **PM standardized on YAML frontmatter for all memos, retiring header-style** (`decisions.log`, 08-08 ~07:08) — checked, HOST's recent memos already comply.
 
 ## Closed by PM ruling — archival, do not re-raise
 

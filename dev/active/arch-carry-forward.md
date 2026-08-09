@@ -55,7 +55,27 @@ honest answer is that it would just give a bulk loop one more destination to mov
 > ✅ **The drain iterates a list I APPEND TO IN THE SAME TOOL CALL THAT DISPLAYS A MEMO'S CONTENTS.**
 > Unread ⇒ never in the list ⇒ **cannot move.** Bad state unrepresentable, not merely forbidden.
 
-**If a fire ends with unread mail, it stays in `inbox/` and the fire entry says so.** An inbox that isn't
+**If a fire ends with unread mail, it stays in `inbox/` and the fire entry says so.**
+
+### ⚠️ EXTENSION (2026-08-09 09:3x) — the move has TWO halves, and I got each wrong on consecutive days
+
+**08-08**: moved memos to `read/` **without reading them** → the record claimed more than reality.
+**08-09**: read them properly, moved them locally — **but passed only the MANIFESTs to `mail-send.sh`, so
+the moves never reached the trunk.** From every other agent's view my inbox still held 10 unread memos.
+**The act happened; the shared record didn't.**
+
+> ⭐ **A mailbox move is a COGNITIVE ACT (reading) plus a SHARED RECORD (the push). Yesterday I did the
+> record without the act. Today the act without the record. Both leave the board wrong.**
+
+**✅ Mandatory verification, one command, after every drain:**
+```
+git ls-tree -r --name-only origin/main -- mailboxes/arch/inbox/ | grep -vc MANIFEST
+```
+**Not `ls mailboxes/arch/inbox/`.** I checked the local directory, saw zero, and told PM *"my inbox is
+genuinely empty"* — **true locally, false where it matters.** Verify at the layer other agents read.
+
+**And pass BOTH SIDES of every move to `mail-send.sh`** — the inbox-side deletion AND the read-side
+addition. Passing only MANIFESTs pushes a manifest that disagrees with the tree. An inbox that isn't
 empty is an honest inbox; a `read/` folder with unread mail in it is a lie that nothing can detect.
 
 ### Why it is a TRUST violation and not a delay (PM's chess-board framing)

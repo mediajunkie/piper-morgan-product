@@ -1513,3 +1513,8 @@ PROCESS FAILURE, MINE: Lead's memo was in my read/ folder — I DRAINED IT THERE
   procedure fixes recorded in arch-carry-forward: (1) never mv a memo to read/ in the same pass that first
   sees it; (2) SEARCH FOR THE OBJECT, NOT THE DATE — I looked for "a Lead memo dated 08-09"; it was a Lead
   memo dated 08-08, and the date was my assumption rather than the thing I was looking for.
+
+2026-08-09 ~10:00 PT [Lead, relaying PM in-conversation rulings]
+1) MILESTONE SEQUENCE CORRECTION (PM, verbatim intent): the release sequence is MVP → Production → Fast Follow. "MVP or Fast Follow" as a binary encodes a misunderstanding held by multiple agents — Production sits BETWEEN them: Production milestone = required for PUBLIC beta, worked in the PUB sprint. Fast Follow comes after. Triage accordingly.
+2) PM approved PPM's placement recommendation: #1510 → MVP, #1190 → MVP, #1509 → Production. Board written by Lead (native milestone field).
+3) The 48 unmilestoned open issues (all filed 2026-08-07..09, the testing yield): PM directed triage-now. Lead triaged 42 (18 MVP / 21+1 Production / 3 Fast Follow, criteria in session log); escalated 6 to PM: #1536-#1540 (FTUX five, deliberately PM-held per PPM) + #1511 (two-standups product decision, with PPM). #1553 → Production + PUB sprint (PM named it).

@@ -18,6 +18,7 @@ from services.intent_service.workflow_dispatcher import (
     get_registered_workflows,
     register_workflow,
 )
+from services.shared_types import EffectClass
 
 logger = structlog.get_logger(__name__)
 
@@ -418,8 +419,12 @@ def register_default_workflows() -> None:
     # All three classifier aliases share one entry point; action_triggered lets
     # the intent_service action-dispatch rail pick them up (vs offer-only
     # workflows like meeting, which stay action_triggered=False).
+    # effect: WRITE — _handle_update_document_notion appends content to a Notion
+    # page (notion_router.append_blocks, intent_service.py ~L3409). Recoverable
+    # (page history), so WRITE not DESTRUCTIVE.
     document_update_entry = WorkflowEntry(
         entry_point=run_update_document_workflow,
+        effect=EffectClass.WRITE,
         description="Document update via slot-filling (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -427,8 +432,11 @@ def register_default_workflows() -> None:
 
     # #1124 cohort 1 migration #3: changes-query — dispatch migration. The four
     # classifier aliases (verified live as stable) share one entry point.
+    # effect: READ — _handle_changes_query reads GitHub activity for a time
+    # window and formats it; no mutating router calls anywhere in its body.
     changes_query_entry = WorkflowEntry(
         entry_point=run_changes_query_workflow,
+        effect=EffectClass.READ,
         description="What-changed-since query via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -436,8 +444,12 @@ def register_default_workflows() -> None:
 
     # #1124 Phase 4 step 3: issue-mutation cohort (CLOSE / REOPEN / COMMENT verbs).
     # Each handler reused unchanged; all classifier aliases share one entry point.
+    # effect: WRITE — _handle_close_issue_query calls
+    # github_router.update_issue(issue_number, state="closed") (~L4228).
+    # Reversible via reopen, so WRITE not DESTRUCTIVE.
     close_issue_entry = WorkflowEntry(
         entry_point=run_close_issue_workflow,
+        effect=EffectClass.WRITE,
         description="Close-issue query via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -447,8 +459,12 @@ def register_default_workflows() -> None:
     # _handle_update_issue (intent, workflow_id, user_id) via the standard factory. The
     # legacy elif is REMOVED (migration completion): the rail is the single dispatch
     # surface — B3 Stage-0 referent resolution emits update_issue onto this same key.
+    # effect: WRITE — _handle_update_issue calls github_router.update_issue with
+    # title/body/label fields (~L7594). Prior values recoverable via GitHub edit
+    # history, so WRITE not DESTRUCTIVE.
     update_issue_entry = WorkflowEntry(
         entry_point=_make_query_dispatch_entry_point("_handle_update_issue", pass_user_id=True),
+        effect=EffectClass.WRITE,
         description="Update-issue via action dispatch (#1411)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -456,22 +472,31 @@ def register_default_workflows() -> None:
     # #1412: create_issue onto the rail (same mode-4 gap as #1411; the live primary
     # write path). _handle_create_issue takes (intent, workflow_id, session_id, user_id),
     # so BOTH pass_session_id + pass_user_id. Elif stays as an additive backstop.
+    # effect: WRITE — _handle_create_issue calls github_router.create_issue
+    # (~L7392): creates a new GitHub issue. Additive, so WRITE not DESTRUCTIVE.
     create_issue_entry = WorkflowEntry(
         entry_point=_make_query_dispatch_entry_point(
             "_handle_create_issue", pass_session_id=True, pass_user_id=True
         ),
+        effect=EffectClass.WRITE,
         description="Create-issue via action dispatch (#1412)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
     )
+    # effect: WRITE — _handle_reopen_issue_query calls
+    # github_router.update_issue(issue_number, state="open") (~L4435).
     reopen_issue_entry = WorkflowEntry(
         entry_point=run_reopen_issue_workflow,
+        effect=EffectClass.WRITE,
         description="Reopen-issue query via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
     )
+    # effect: WRITE — _handle_comment_issue_query calls
+    # github_router.add_comment(issue_number, comment_body) (~L4597). Additive.
     comment_issue_entry = WorkflowEntry(
         entry_point=run_comment_issue_workflow,
+        effect=EffectClass.WRITE,
         description="Comment-issue query via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -479,16 +504,27 @@ def register_default_workflows() -> None:
 
     # #1124 cohort 1: prioritization — strategy-category handler, 2-arg
     # (intent, workflow_id), reused unchanged via the parameterized factory.
+    # effect: READ — the ruling's own cautionary example: `prioritization`
+    # SOUNDS like a bulk-write and writes NOTHING. _handle_prioritization
+    # scores/ranks items entirely in memory (_calculate_*_scores /
+    # _rank_items_by_score) and returns the ranking as a message. No router,
+    # DB, or session writes anywhere in its body.
     prioritization_entry = WorkflowEntry(
         entry_point=_make_query_dispatch_entry_point("_handle_prioritization"),
+        effect=EffectClass.READ,
         description="Prioritization via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
     )
 
     # #1124: content generation — synthesis-category handler, 2-arg, reused unchanged.
+    # effect: READ — despite "generate": _handle_generate_content routes to
+    # _generate_status_report / _generate_readme_section / _generate_issue_template,
+    # all of which READ repo metrics and return generated TEXT in the result
+    # message. Nothing is written to GitHub, Notion, disk, or DB.
     generate_content_entry = WorkflowEntry(
         entry_point=_make_query_dispatch_entry_point("_handle_generate_content"),
+        effect=EffectClass.READ,
         description="Content generation via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -497,8 +533,12 @@ def register_default_workflows() -> None:
     # RECONNECT #1327 gap 1: conversational "set my default repo to owner/name".
     # 2-arg (intent, workflow_id) handler, reused via the standard factory. Routed
     # via the action-dispatch rail (action_triggered) — NOT a hand-coded elif branch.
+    # effect: WRITE — _handle_set_default_repo persists the preference to the
+    # DB: ConnectorConfigService(session).set_default_repo(user_id, full_name)
+    # (~L4847). Overwritable, so WRITE not DESTRUCTIVE.
     set_default_repo_entry = WorkflowEntry(
         entry_point=_make_query_dispatch_entry_point("_handle_set_default_repo"),
+        effect=EffectClass.WRITE,
         description="Set-default-repo via action dispatch (#1327)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -506,8 +546,11 @@ def register_default_workflows() -> None:
 
     # RECONNECT #1327 build #2: conversational "what's my default repo" — the read
     # counterpart. Same 2-arg (intent, workflow_id) factory + action-dispatch rail.
+    # effect: READ — _handle_get_default_repo reads the same preference key the
+    # set handler writes; its own docstring names it "the READ counterpart".
     get_default_repo_entry = WorkflowEntry(
         entry_point=_make_query_dispatch_entry_point("_handle_get_default_repo"),
+        effect=EffectClass.READ,
         description="Get-default-repo via action dispatch (#1327)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -521,8 +564,17 @@ def register_default_workflows() -> None:
     # no drift surface (a novel unwired action declines automatically). Curated decline
     # COPY still lives in `unwired_writes.UNWIRED_WRITE_DECLINES`; the trigger is derived.
     _default_entries: dict[str, WorkflowEntry] = {
+        # effect: READ — despite the "Schedule a Meeting" name, this workflow
+        # only runs a slot-filling CONVERSATION: start_meeting_workflow calls
+        # manager.start_filling, and _complete_session (slot_filling_manager)
+        # returns the filled slots with a "done" message — no calendar event or
+        # any other durable write is created anywhere on the path (verified
+        # 2026-08-09; grep for schedule_meeting consumers finds only lens
+        # inference). ⚠️ If a real calendar write ever lands at completion,
+        # this entry MUST flip to WRITE in the same commit.
         "meeting": WorkflowEntry(
             entry_point=start_meeting_workflow,
+            effect=EffectClass.READ,
             description="Meeting scheduling via slot-filling",
             requires_context=["trigger_message"],
         ),
@@ -568,9 +620,16 @@ def register_default_workflows() -> None:
 
     # #1124 step 3 cohort 2: GitHub read-query cohort — one shared entry point per
     # handler (built by the factory), fanned out to that handler's classifier aliases.
+    # effect: READ for every handler in this cohort — each of the nine
+    # (_handle_shipped_this_week / _handle_stale_prs / _handle_review_issue_query
+    # / _handle_list_{issues,prs,milestones,releases,labels,branches}_query)
+    # fetches GitHub data via the router and formats it; none contains a
+    # mutating call (verified per-handler 2026-08-09). A handler that starts
+    # writing must move OUT of this cohort and declare its own effect.
     for handler_attr, aliases in _READ_QUERY_COHORT.items():
         entry = WorkflowEntry(
             entry_point=_make_query_dispatch_entry_point(handler_attr),
+            effect=EffectClass.READ,
             description=f"{handler_attr} via action dispatch (#1124)",
             requires_context=["intent", "intent_service"],
             action_triggered=True,
@@ -579,9 +638,13 @@ def register_default_workflows() -> None:
             _default_entries[alias] = entry
 
     # #1124 calendar cohort — 3-arg (intent, workflow_id, user_id), user-scoped factory.
+    # effect: READ for all three calendar handlers — meeting_time /
+    # recurring_meetings / week_calendar each analyze the user's calendar and
+    # answer; no event creation or modification (verified per-handler 2026-08-09).
     for handler_attr, aliases in _CALENDAR_QUERY_COHORT.items():
         entry = WorkflowEntry(
             entry_point=_make_user_scoped_query_dispatch_entry_point(handler_attr),
+            effect=EffectClass.READ,
             description=f"{handler_attr} via action dispatch (#1124)",
             requires_context=["intent", "intent_service"],
             action_triggered=True,
@@ -590,9 +653,14 @@ def register_default_workflows() -> None:
             _default_entries[alias] = entry
 
     # #1124 analysis cohort — 2-arg (intent, workflow_id), standard factory.
+    # effect: READ for all three analysis handlers — analyze_commits and
+    # analyze_data read repo activity/metrics; generate_report (despite the
+    # name) reads recent activity and returns the formatted report as the
+    # response message, writing nowhere (verified per-handler 2026-08-09).
     for handler_attr, aliases in _ANALYSIS_QUERY_COHORT.items():
         entry = WorkflowEntry(
             entry_point=_make_query_dispatch_entry_point(handler_attr),
+            effect=EffectClass.READ,
             description=f"{handler_attr} via action dispatch (#1124)",
             requires_context=["intent", "intent_service"],
             action_triggered=True,
@@ -604,9 +672,14 @@ def register_default_workflows() -> None:
     # handlers, reused unchanged, with per-handler arity threaded via the factory
     # flags (session_id and/or user_id). `todos` is special — it delegates to the
     # EXECUTION handler via run_todo_query_workflow. Aliases mirror the elif branches.
-    def _qentry(entry_point, description):
+    def _qentry(entry_point, description, effect):
+        # `effect` is deliberately REQUIRED here too (no default): the helper
+        # must not become the defaulted back door around WorkflowEntry's
+        # defaultless field (Arch ruling 2026-08-09) — every call site below
+        # declares what its handler does in the world, with evidence.
         return WorkflowEntry(
             entry_point=entry_point,
+            effect=effect,
             description=f"{description} (#1124)",
             requires_context=["intent", "intent_service"],
             action_triggered=True,
@@ -617,6 +690,8 @@ def register_default_workflows() -> None:
             _qentry(
                 _make_query_dispatch_entry_point("_handle_local_git_status_query"),
                 "local-git-status via action dispatch",
+                # effect: READ — runs read-only local git status inspection.
+                EffectClass.READ,
             ),
             ["local_git_status_query", "local_git_status"],
         ),
@@ -626,6 +701,8 @@ def register_default_workflows() -> None:
                     "_handle_search_documents_notion", pass_session_id=True
                 ),
                 "search-documents (Notion) via action dispatch",
+                # effect: READ — Notion search only; no page mutation calls.
+                EffectClass.READ,
             ),
             ["search_documents", "find_documents", "search_notion"],
         ),
@@ -635,6 +712,8 @@ def register_default_workflows() -> None:
                     "_handle_productivity_query", pass_session_id=True
                 ),
                 "productivity query via action dispatch",
+                # effect: READ — aggregates activity metrics; no writes.
+                EffectClass.READ,
             ),
             # #1283 probe (2026-07-08): the registry CANONICAL was missing from its
             # own handler's alias list (mode-2), and the live LLM emitted
@@ -654,6 +733,8 @@ def register_default_workflows() -> None:
                     "_handle_session_activity_query", pass_session_id=True
                 ),
                 "session-activity recall (#1394 / ADR-078 B4) via action dispatch",
+                # effect: READ — recalls what this session created; pure read.
+                EffectClass.READ,
             ),
             ["session_activity_query", "what_did_we_create", "session_recall"],
         ),
@@ -661,6 +742,8 @@ def register_default_workflows() -> None:
             _qentry(
                 _make_query_dispatch_entry_point("_handle_standup_query", pass_user_id=True),
                 "standup query via action dispatch",
+                # effect: READ — assembles standup summary from existing data.
+                EffectClass.READ,
             ),
             ["show_standup", "get_standup"],
         ),
@@ -668,6 +751,8 @@ def register_default_workflows() -> None:
             _qentry(
                 _make_query_dispatch_entry_point("_handle_projects_query", pass_user_id=True),
                 "projects query via action dispatch",
+                # effect: READ — lists the user's projects; no writes.
+                EffectClass.READ,
             ),
             ["list_projects", "show_projects"],
         ),
@@ -677,11 +762,24 @@ def register_default_workflows() -> None:
                     "_handle_attention_query", pass_session_id=True, pass_user_id=True
                 ),
                 "attention query via action dispatch",
+                # effect: READ — surfaces items needing attention; pure read.
+                EffectClass.READ,
             ),
             ["attention_query", "needs_attention", "what_needs_attention", "attention_items"],
         ),
         (
-            _qentry(run_todo_query_workflow, "todo list/next query via action dispatch"),
+            _qentry(
+                run_todo_query_workflow,
+                "todo list/next query via action dispatch",
+                # effect: READ — delegates to _handle_execution_intent, but the
+                # ONLY actions registered on this entry (list_todos_query /
+                # list_completed_todos / next_todo_query) map to list_todos /
+                # next_todo — todo READS. The handler's write branches
+                # (complete_todo / delete_todo / create_issue) are unreachable
+                # from these rail keys; if a write alias is ever added here,
+                # it needs its own entry with its own effect.
+                EffectClass.READ,
+            ),
             ["list_todos_query", "list_completed_todos", "next_todo_query"],
         ),
         # #1521: reminder LIST query — "what reminders do I have?" The
@@ -696,6 +794,8 @@ def register_default_workflows() -> None:
                     "_handle_list_reminders_query", pass_session_id=True, pass_user_id=True
                 ),
                 "reminder list query via action dispatch (#1521)",
+                # effect: READ — owner-scoped reminder/todo read; no writes.
+                EffectClass.READ,
             ),
             ["list_reminders_query", "list_reminders", "show_reminders", "get_reminders"],
         ),
@@ -715,6 +815,9 @@ def register_default_workflows() -> None:
                     "_handle_analyze_document_notion", pass_session_id=True
                 ),
                 "analyze-document (Notion) via action dispatch",
+                # effect: READ — fetches and analyzes a Notion document; unlike
+                # its update sibling, it never calls append_blocks/update_page.
+                EffectClass.READ,
             ),
             ["analyze_document", "analyze_file"],
         ),
@@ -722,6 +825,10 @@ def register_default_workflows() -> None:
             _qentry(
                 _make_query_dispatch_entry_point("_handle_strategic_planning"),
                 "strategic-planning via action dispatch",
+                # effect: READ — despite "create_plan": _handle_strategic_planning
+                # builds an in-memory plan dict (_create_issue_resolution_plan)
+                # and returns it as the message; nothing is persisted.
+                EffectClass.READ,
             ),
             ["strategic_planning", "create_plan"],
         ),
@@ -729,6 +836,10 @@ def register_default_workflows() -> None:
             _qentry(
                 _make_query_dispatch_entry_point("_handle_learn_pattern"),
                 "learn-pattern via action dispatch",
+                # effect: READ — despite "learn": _handle_learn_pattern fetches
+                # historical data and computes patterns in memory
+                # (_learn_*_patterns are pure); no pattern store is written.
+                EffectClass.READ,
             ),
             ["learn_pattern", "detect_pattern"],
         ),
