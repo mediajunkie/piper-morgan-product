@@ -746,7 +746,9 @@ class CanonicalHandlers:
         specific_project = self._detect_project_specific_query(intent, projects)
         if specific_project:
             # Fetch metadata for just this project
-            project_metadata = await self._get_project_metadata([specific_project])
+            project_metadata = await self._get_project_metadata(
+                [specific_project], user_id=user_id
+            )
             metadata = project_metadata.get(specific_project, {})
             message = self._format_project_specific_status(
                 specific_project, metadata, user_context, spatial_pattern
@@ -769,7 +771,7 @@ class CanonicalHandlers:
             }
 
         # Issue #18: Fetch project metadata from GitHub (for all projects)
-        project_metadata = await self._get_project_metadata(projects)
+        project_metadata = await self._get_project_metadata(projects, user_id=user_id)
 
         # Adjust response detail based on spatial pattern
         if spatial_pattern == "GRANULAR":
@@ -1034,8 +1036,10 @@ class CanonicalHandlers:
                 "requires_clarification": False,
             }
 
-        # Fetch project metadata from GitHub
-        project_metadata = await self._get_project_metadata(projects)
+        # Fetch project metadata from GitHub (#1547: user-scoped gate)
+        project_metadata = await self._get_project_metadata(
+            projects, user_id=getattr(user_context, "user_id", None)
+        )
 
         # Format response based on spatial pattern
         if spatial_pattern == "EMBEDDED":
@@ -1430,7 +1434,9 @@ class CanonicalHandlers:
 
         return f"\n\n*{degrade_nudge(reason)}*"
 
-    async def _get_project_metadata(self, projects: list) -> Dict[str, Dict]:
+    async def _get_project_metadata(
+        self, projects: list, user_id: Optional[str] = None
+    ) -> Dict[str, Dict]:
         """
         Issue #18: Get real project metadata from GitHub.
 
@@ -1440,15 +1446,22 @@ class CanonicalHandlers:
         - repository: Repository name if matched
 
         Falls back gracefully if GitHub is not available.
+
+        #1547 (audit F3): the gate reads the canonical IntegrationStatusService
+        (user-scoped, binding-first). The previous `plugin.is_configured()` gate
+        is constant-false (#784), so EVERY project-status answer degraded and
+        nudged already-connected users to connect (#1231 copy). Sibling
+        `_get_priority_metadata` was fixed for this in #847; this one was missed.
         """
         project_metadata = {}
 
         try:
-            # Check if GitHub plugin is registered and configured
-            registry = get_plugin_registry()
-            github_plugin = registry.get_plugin("github")
+            # Canonical user-scoped check (binding-first — OAuth counts)
+            from services.integrations.integration_status_service import (
+                IntegrationStatusService,
+            )
 
-            if not github_plugin or not github_plugin.is_configured():
+            if not await IntegrationStatusService().is_configured(user_id, "github"):
                 from services.mcp.consumer.connector import DegradationReason
 
                 logger.debug("GitHub not configured — honest-degrade (#1231)")
@@ -1525,19 +1538,25 @@ class CanonicalHandlers:
 
         Issue #847: Uses config_service.is_configured(user_id) instead of
         plugin.is_configured() which always returns False without user context (#784).
+
+        #1547 (audit F4): the gate is now the canonical IntegrationStatusService,
+        which is binding-FIRST (#1329) — GitHubConfigService.is_configured is
+        PAT-only, so an OAuth-bound-no-PAT user read "not configured" here while
+        the web /health page correctly said healthy. Chat and web now share one
+        status source.
         """
         try:
-            # Issue #847: Check configuration using config_service with user_id
-            # Plugin-level is_configured() always returns False without user context (#784)
+            # Issue #847: user-scoped check (plugin-level is constant-false, #784)
             if not user_id:
                 logger.debug("No user_id, returning empty priority metadata")
                 return {}
 
-            from services.integrations.github.config_service import GitHubConfigService
-
             try:
-                config_service = GitHubConfigService()
-                if not config_service.is_configured(user_id):
+                from services.integrations.integration_status_service import (
+                    IntegrationStatusService,
+                )
+
+                if not await IntegrationStatusService().is_configured(user_id, "github"):
                     # #1231 (Arch-ratified): carry the DegradationReason so the formatter
                     # surfaces "connect me" via the shared copy policy, never a silent {}.
                     # NOT_CONFIGURED = onboard gap (never set up), distinct from CONNECT_REQUIRED.
@@ -2166,35 +2185,48 @@ Would you like me to explain more about how Piper uses project context, or are y
             },
         }
 
-    def _format_integration_setup_guidance(self) -> Dict:
+    async def _format_integration_setup_guidance(self, user_id: str = None) -> Dict:
         """
         Issue #498: Format guidance response for integration setup requests.
 
         Returns structured guidance with link to settings page.
+
+        #1547 (status-truth audit F1): reads the canonical
+        IntegrationStatusService per-user — the plugin registry's `configured`
+        bit was constant-false for all four real plugins (#784), so this
+        guidance told CONNECTED users everything was "Not connected" and
+        enumerated Demo beside real integrations (#1534). The canonical set
+        excludes Demo structurally.
         """
-        # Check which integrations are configured
+        # Check which integrations are configured (user-scoped, binding-first)
         integrations_status = []
         status_check_failed = False
         try:
-            registry = get_plugin_registry()
-            plugin_status = registry.get_status_all()
+            from services.integrations.integration_status_service import (
+                DISPLAY_NAMES,
+                IntegrationStatusService,
+            )
 
-            for name, status in plugin_status.items():
-                is_configured = status.get("configured", False)
+            statuses = await IntegrationStatusService().get_all(user_id)
+            for name, status in statuses.items():
                 integrations_status.append(
                     {
                         "name": name,
-                        "configured": is_configured,
+                        "configured": bool(status.get("configured")),
                     }
                 )
         except Exception as e:  # silent-ok: #1423 — guidance still renders without live status, but the failure is now WARN-logged with traceback (was debug) AND the message honestly says the status check failed instead of silently omitting connection state
             status_check_failed = True
+            DISPLAY_NAMES = {}
             logger.warning(
                 f"Could not check integration status: {e}", exc_info=True
             )
 
         configured = [i["name"] for i in integrations_status if i.get("configured")]
         not_configured = [i["name"] for i in integrations_status if not i.get("configured")]
+
+        def _display(name: str) -> str:
+            return DISPLAY_NAMES.get(name, name.title())
 
         message = """I'd be happy to help you set up integrations!
 
@@ -2209,12 +2241,12 @@ Would you like me to explain more about how Piper uses project context, or are y
         if configured:
             message += "\n✅ **Connected:**\n"
             for name in configured[:5]:
-                message += f"  - {name.title()}\n"
+                message += f"  - {_display(name)}\n"
 
         if not_configured:
             message += "\n⚪ **Not connected:**\n"
             for name in not_configured[:5]:
-                message += f"  - {name.title()}\n"
+                message += f"  - {_display(name)}\n"
 
         message += """
 To connect integrations, visit the **Settings** hub:
@@ -2969,8 +3001,10 @@ What would you like to set up first?"""
                 "requires_clarification": False,
             }
 
-        # Fetch GitHub metadata for all projects
-        project_metadata = await self._get_project_metadata(projects)
+        # Fetch GitHub metadata for all projects (#1547: user-scoped gate)
+        project_metadata = await self._get_project_metadata(
+            projects, user_id=getattr(user_context, "user_id", None)
+        )
 
         # Calculate health for each project
         health_groups = {"healthy": [], "at-risk": [], "stalled": [], "unknown": []}
@@ -3019,8 +3053,10 @@ What would you like to set up first?"""
         """
         projects = user_context.projects if user_context else []
 
-        # Fetch GitHub metadata for all projects
-        project_metadata = await self._get_project_metadata(projects)
+        # Fetch GitHub metadata for all projects (#1547: user-scoped gate)
+        project_metadata = await self._get_project_metadata(
+            projects, user_id=getattr(user_context, "user_id", None)
+        )
 
         # Calculate health for each project
         health_summary = {"healthy": 0, "at-risk": 0, "stalled": 0, "unknown": 0}
@@ -3111,8 +3147,10 @@ What would you like to set up first?"""
                 "requires_clarification": False,
             }
 
-        # Fetch GitHub metadata for all projects
-        project_metadata = await self._get_project_metadata(projects)
+        # Fetch GitHub metadata for all projects (#1547: user-scoped gate)
+        project_metadata = await self._get_project_metadata(
+            projects, user_id=getattr(user_context, "user_id", None)
+        )
 
         # Calculate priority score for each project
         ranked_projects = []
@@ -3822,7 +3860,8 @@ What would you like to set up first?"""
                 # Issue #814: Route to interactive onboarding or state-aware response
                 return await self._handle_project_setup_request(intent, session_id, user_id)
             elif setup_topic == "integrations":
-                return self._format_integration_setup_guidance()
+                # #1547: thread user_id — integration status is user-scoped
+                return await self._format_integration_setup_guidance(user_id)
             else:  # general
                 return self._format_general_setup_guidance()
 
@@ -3843,7 +3882,9 @@ What would you like to set up first?"""
 
         # Issue #497: Gather project and priority metadata for rich context
         projects = user_context.projects if user_context else []
-        project_metadata = await self._get_project_metadata(projects) if projects else {}
+        project_metadata = (
+            await self._get_project_metadata(projects, user_id=user_id) if projects else {}
+        )
         priority_metadata = await self._get_priority_metadata(user_id=user_id)
 
         # Issue #497: Synthesize focus recommendation from all context
@@ -4017,7 +4058,19 @@ What would you like to set up first?"""
             # Check for list/show operations
             if not operation:
                 if any(word in message_lower for word in ["show", "list", "view", "my projects"]):
-                    operation = "list"
+                    # #1431 (reopened 2026-08-09): "list my archived projects"
+                    # answered the ACTIVE list. The pre-classifier's portfolio
+                    # list pattern already claims the archived variant
+                    # ("(show|list|view) ... (archived )?projects"), but this
+                    # branch discarded the archived token. Narrow the dispatch
+                    # HERE, inside the already-claiming handler — seam work
+                    # under the routing moratorium, not a new routing pattern.
+                    # ("archived" only: bare "archive <name>" phrasings were
+                    # already claimed by ARCHIVE_PATTERNS above.)
+                    if re.search(r"\barchived\b", message_lower):
+                        operation = "list_archived"
+                    else:
+                        operation = "list"
 
             # Check for add/create operations
             if not operation:
@@ -4156,6 +4209,32 @@ What would you like to set up first?"""
                             "offer_text": "Would you like to add one?",
                         }
                     return result_dict
+
+                # Handle archived-list operation (#1431: owner-scoped archived
+                # rows via the dedicated repository query — never the active list)
+                if operation == "list_archived":
+                    projects = await portfolio_service.list_archived_projects(user_id=user_id)
+                    if projects:
+                        project_names = [p.name for p in projects[:5]]
+                        noun = "project" if len(projects) == 1 else "projects"
+                        response = f"You have {len(projects)} archived {noun}:\n\n" + "\n".join(
+                            f"- {name}" for name in project_names
+                        )
+                        if len(projects) > 5:
+                            response += f"\n\n...and {len(projects) - 5} more."
+                        response += "\n\nSay \"restore <name>\" to bring one back."
+                    else:
+                        response = "You don't have any archived projects."
+                    return {
+                        "message": response,
+                        "intent": {
+                            "category": IntentCategoryEnum.PORTFOLIO.value,
+                            "action": "list_archived_projects",
+                            "confidence": 1.0,
+                            "context": {"project_count": len(projects)},
+                        },
+                        "requires_clarification": False,
+                    }
 
                 # Handle archive operation
                 if operation == "archive" and project_name:

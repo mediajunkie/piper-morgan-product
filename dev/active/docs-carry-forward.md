@@ -56,7 +56,10 @@ but keep testing rather than assuming permanence.
 ## Awaiting others — check, don't re-derive
 
 - **PDR-007 awaits CIO ONLY** — Arch ✅ Web ✅, no objection. Measurement window runs to 2026-08-27.
-- **Dispatch-DinP staleness report** — replied 08-01, no reply yet.
+- **Web to ship 2 fixes I unblocked 08-09** — `/admin/publish-queue` runtime-read extension (my call:
+  yes) and `copy-editorial-calendar.js`'s worktree-sibling-path bug (my call: prefer the GitHub API
+  over a path-walk). Both had sat in MY queue 11 days since Web's 07-29 memo — genuinely my miss, not
+  Web waiting on anyone. Resolved and sent 08-09; watch for Web's ship, not a reply requirement.
 - **CIO's day-of-week duty-check proposal reply** — sent 08-04, no reply yet, not urgent.
 - **#1475 / #1486** — both OPEN, unchanged, not urgent.
 

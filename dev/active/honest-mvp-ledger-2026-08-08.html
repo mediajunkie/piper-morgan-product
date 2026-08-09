@@ -35,7 +35,7 @@
   b.n { font-variant-numeric:tabular-nums; }
   .st { font-size:.7rem; font-weight:650; border-radius:999px; padding:.05rem .5rem; margin-left:.3rem; white-space:nowrap; }
   .s-build { background:var(--fund-bg); color:var(--fund); }
-  .s-verify { background:var(--ver-bg); color:var(--ver); }
+  .s-verify { background:var(--infra-bg); color:var(--infra); }
   .s-todo { background:var(--pol-bg); color:var(--pol); }
   .s-block { background:var(--alert-bg); color:var(--alert); }
   .s-done { background:var(--ver-bg); color:var(--ver); font-weight:750; }
@@ -44,7 +44,7 @@
 </style>
 <main>
   <h1>MVP sprint — fundamentals to polish</h1>
-  <p class="sub">Sun Aug 9 ~9:30 AM · after your morning pass: <b>8 closed today</b> · check-offs persist in your browser</p>
+  <p class="sub">Sun Aug 9 ~10:15 AM · <b>12 closed today</b> · 6 agents building · check-offs persist in your browser</p>
 
   <div class="banner"><b>Deploy: current for everything testable below.</b> One cut pending later today (mypy gate + the status-truth service when it lands) — I'll flag it. <b>Sprint score: 15 closed since Friday · 2 reopened honestly · 7 building.</b></div>
 
@@ -58,16 +58,24 @@
       <span style="font-size:.74rem;color:var(--soft);text-align:right">4 open: 2 built · 2 gated (PPM)</span></div>
     <div style="display:grid;grid-template-columns:10.5rem 1fr 13rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--ver)">3 · Verified/closed</span>
       <div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:100%;background:var(--done)"></span></div>
-      <span style="font-size:.74rem;color:var(--soft);text-align:right">18 closed since Fri · 2 honest reopens</span></div>
+      <span style="font-size:.74rem;color:var(--soft);text-align:right">22 closed since Fri · 2 honest reopens</span></div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;font-size:.72rem;color:var(--soft);padding-top:.3rem;border-top:1px solid var(--rule)">
+      <span><b>Status stages:</b></span>
+      <span style="background:var(--pol-bg);color:var(--pol);border-radius:999px;padding:.05rem .5rem">not started</span>
+      <span style="background:var(--alert-bg);color:var(--alert);border-radius:999px;padding:.05rem .5rem">diagnosing / blocked</span>
+      <span style="background:var(--fund-bg);color:var(--fund);border-radius:999px;padding:.05rem .5rem">building (agent out)</span>
+      <span style="background:var(--infra-bg);color:var(--infra);border-radius:999px;padding:.05rem .5rem">built — NOT yet tested</span>
+      <span style="background:var(--ver-bg);color:var(--ver);border-radius:999px;padding:.05rem .5rem">✓ tested & accepted</span>
+    </div>
   </div>
+
 
   <section class="v">
     <h2>✅ Your three remaining tests + one unblock (exact steps)</h2>
     <ul class="checks" id="testlist">
-      <li><input type="checkbox" id="t-hijack"><label for="t-hijack"><b>#1529 hijack replay</b> — in chat: <i>start my standup</i> → answer one question → then say <i>i am not doing the standup right now. what are my projects?</i> <span class="why">Pass = standup exits with honest copy AND the projects question gets answered. (Yesterday this held you hostage for 9 turns.)</span></label></li>
-      <li><input type="checkbox" id="t-projects"><label for="t-projects"><b>#1530 projects list</b> — chat: <i>what are my projects?</i> <span class="why">Pass = all three (CoVa, Klatch-if-restored, One Job), count matches the /projects page.</span></label></li>
-      <li><input type="checkbox" id="t-radar"><label for="t-radar"><b>#1476 Radar card</b> — look at the Radar panel on home. <span class="why">Pass = the "blocked" card now reads as an explicit example ("Not a real item — nothing of yours is blocked…"), not phantom work. (#1477's sidebar row + microcopy you already saw ✓.)</span></label></li>
-      <li><input type="checkbox" id="t-1488"><label for="t-1488"><b>#1488 unblock (2 min)</b> — in chat, retry the misroute: <i>Please create a todo: test continuity again</i>. Whatever happens, then run the intent query (in our chat thread) — <b>#1518's telemetry is live now</b>, so this one repro finally yields the diagnosis.</label></li>
+      <li><input type="checkbox" id="t-escape2"><label for="t-escape2"><b>#1529 offer-binding (the live half)</b> — chat: <i>archive Zebra</i> (no such project) → expect the offer <i>"Would you like me to list your projects?"</i> → reply <i>Yes please</i>. <span class="why">Pass = it lists your projects. Yesterday this exact shape launched the standup interview. (The interview-escape half is CI-pinned; the interview itself currently has no chat entry — the report claims all standup phrasings, which is #1511's decision arguing for itself.)</span></label></li>
+      <li><input type="checkbox" id="t-1488b" checked><label for="t-1488b"><b>#1488 — DIAGNOSED via your repro ✓</b> <span class="why">intent=execution:create_ticket; no deterministic claim exists for todo-creation; your personalization context biases the LLM to ticket-vocabulary. Fix = the inversion's constrained output; your phrasing joins the corpus.</span></label></li>
+      <li class="why">Closed from your morning verdicts: #1530 projects ✓ · #1476/#1477 Radar+sidebar ✓ (example card renders only in true-empty state — yours has real entities, which IS the fix).</li>
     </ul>
   </section>
 
@@ -75,13 +83,13 @@
     <h2>1 · Fundamentals — reviewed Sun AM</h2>
     <ul>
       <li><b>Routing rework</b> <span class="st s-build">measured · awaiting Arch round-2</span> <span class="why">probe done (52% load-bearing); revised shape = measured boundary + enforced vocabulary + shadow-sampler</span></li>
-      <li><b>Status-truth class (#1547)</b> <span class="st s-build">AGENT BUILDING NOW</span> <span class="why">root: all 4 plugins hardcode not-configured since #784; canonical service + 5 surface migrations + retire-the-lie ratchet. Absorbs #1534 + half of #1517's manifest.</span></li>
+      <li><b>Status-truth class (#1547)</b> <span class="st s-verify">BUILT — in this cut</span> <span class="why">canonical IntegrationStatusService; chat guidance + floor + project/priority gates + Radar all read it; Demo excluded; 4 lying /status routes deleted; the floor now answers connector-health both directions. F6-F10 remainder = #1553.</span></li>
       <li><b class="n">#1394</b> continuity <span class="st s-done">CLOSED ✓ (your test)</span> · <b class="n">#1520</b> sessions <span class="st s-done">CLOSED ✓</span> · <b class="n">#1521</b> reminder query <span class="st s-done">CLOSED ✓</span> · <b class="n">#1490</b> orderings <span class="st s-done">CLOSED ✓</span></li>
       <li><b class="n">#1431</b> archived list <span class="st s-block">REOPENED (your fail)</span> — answers the ACTIVE list; next agent slot 1</li>
-      <li><b class="n">#1411</b> update issue <span class="st s-block">REOPENED (partial)</span> — create ✓; title bug #1543; update-reachability = B3 explicit-#N extension, next agent slot 2</li>
+      <li><b class="n">#1411</b> update issue <span class="st s-verify">RE-BUILT — in this cut</span> — explicit-#N binds at Stage 0 (both # and no-# forms); <b class="n">#1543</b> titles: "about X" extraction existed nowhere, now real + honest ask when no subject</li>
       <li><b class="n">#1488</b> your-account misroute <span class="st s-block">blocked → YOUR 2-min unblock above</span></li>
-      <li><b>Todo-trust family</b> (your finds): <b class="n">#1541</b> todos-page CRUD (no complete, lying delete) + <b class="n">#1544</b> pending wrong-empty + <b class="n">#1542</b> duration-words invariant — next agent slots 3-4</li>
-      <li><b class="n">#1436</b> mypy gate <span class="st s-verify">slice 1 merged (name-defined extinct) · in next cut</span> · <b class="n">#1518</b> telemetry <span class="st s-verify">LIVE — powers the 1488 diagnosis</span> · <b class="n">#1423/#1522</b> tails sequenced · <b class="n">#1545</b> malformed-row skip (small)</li>
+      <li><b>Todo-trust family</b> (your finds): <b class="n">#1541</b> todos-page CRUD (no complete, lying delete) + <b class="n">#1544</b> pending wrong-empty ✓ built; <b class="n">#1542</b> duration-words <span class="st s-verify">BUILT — in this cut</span> ("in two hours" now a real 2h reminder)</li>
+      <li><b class="n">#1436</b> mypy gate <span class="st s-verify">slice 1 merged (name-defined extinct) · in next cut</span> · <b class="n">#1518</b> telemetry <span class="st s-verify">LIVE — powers the 1488 diagnosis</span> · <b class="n">#1423/#1522</b> tails sequenced · <b class="n">#1545</b> malformed-row skip <span class="st s-verify">BUILT — in this cut</span> (one bad row no longer blanks Insights; shows "N could not be displayed")</li>
     </ul>
   </section>
 

@@ -25,14 +25,20 @@ class TestConfigurationContract:
         assert elapsed < 0.1, f"is_configured() too slow: {elapsed*1000:.2f}ms for 100 calls"
 
     def test_configuration_status_consistency(self, plugin_instance):
-        """is_configured() and get_status() should be consistent"""
+        """is_configured() and get_status() should be consistent.
+
+        #1547: user-scoped plugins report `configured: None` in get_status()
+        (unknowable without a user, #784) — None is exempt from the equality
+        check; a boolean must still match is_configured().
+        """
         is_configured = plugin_instance.is_configured()
         status = plugin_instance.get_status()
 
         assert "configured" in status, "Status must include 'configured' field"
-        assert (
-            status["configured"] == is_configured
-        ), "is_configured() and status['configured'] must match"
+        if status["configured"] is not None:
+            assert (
+                status["configured"] == is_configured
+            ), "is_configured() and status['configured'] must match"
 
     def test_status_includes_router_info(self, plugin_instance):
         """get_status() should include router information"""

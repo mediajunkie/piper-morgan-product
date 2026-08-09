@@ -777,6 +777,15 @@ class ConversationalFloor:
                 "do not imply they simply have zero open issues."
             )
 
+        # #1547 (audit F2): github_connected was computed by the STATUS/PRIORITY
+        # gatherer and then DROPPED here (comment-only) — render it, both ways.
+        if "github_connected" in domain_context:
+            lines.append(
+                "- GitHub: connected"
+                if domain_context["github_connected"]
+                else "- GitHub: not connected (issue/PR data unavailable until connected)"
+            )
+
         # #1155: high-priority open issues — the "what should I focus on"
         # candidates. Surfaced so the PRIORITY floor reasons over real issues
         # instead of flooring as "no project visibility" despite github_connected.
@@ -813,10 +822,41 @@ class ConversationalFloor:
 
         if "integrations" in domain_context:
             integrations = domain_context["integrations"]
-            if isinstance(integrations, list):
-                active = [i["name"] for i in integrations if i.get("status") == "active"]
-                if active:
-                    lines.append(f"- Active integrations: {', '.join(active)}")
+            if isinstance(integrations, list) and integrations:
+                # #1547 (audit F2): render BOTH directions — "GitHub connected;
+                # Notion isn't" — never omit the line. The old render dropped
+                # everything when nothing was active, which (combined with the
+                # #784 constant-false registry) made the floor blind to
+                # integration state entirely.
+                display = {
+                    "github": "GitHub",
+                    "slack": "Slack",
+                    "calendar": "Google Calendar",
+                    "notion": "Notion",
+                }
+
+                def _disp(name: object) -> str:
+                    return display.get(str(name), str(name).title())
+
+                connected = [
+                    _disp(i.get("name"))
+                    for i in integrations
+                    if isinstance(i, dict) and i.get("status") == "active"
+                ]
+                not_connected = [
+                    _disp(i.get("name"))
+                    for i in integrations
+                    if isinstance(i, dict) and i.get("status") != "active"
+                ]
+                lines.append(
+                    "- Connected integrations: "
+                    + (", ".join(connected) if connected else "none")
+                )
+                if not_connected:
+                    lines.append(
+                        "- Not connected (available in Settings): "
+                        + ", ".join(not_connected)
+                    )
 
         if "trust_profile" in domain_context:
             tp = domain_context["trust_profile"]

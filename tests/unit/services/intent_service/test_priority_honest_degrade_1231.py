@@ -7,7 +7,7 @@ a "connect me" nudge from the one shared reason→copy policy. NOT_CONFIGURED (o
 and CONNECT_REQUIRED (reconnect gap) are distinct reasons with distinct copy.
 """
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
@@ -24,10 +24,15 @@ def handlers():
 # ---- priority-metadata: carries DegradationReason ----
 
 
+# #1547: the configured-gate is the canonical IntegrationStatusService
+# (user-scoped, binding-first) — not the PAT-only GitHubConfigService and not
+# the constant-false plugin registry.
+_SVC = "services.integrations.integration_status_service.IntegrationStatusService"
+
+
 @pytest.mark.asyncio
 async def test_priority_metadata_not_configured_is_not_configured_reason(handlers):
-    with patch("services.integrations.github.config_service.GitHubConfigService") as CS:
-        CS.return_value.is_configured.return_value = False
+    with patch(f"{_SVC}.is_configured", new=AsyncMock(return_value=False)):
         md = await handlers._get_priority_metadata(user_id="u1")
     assert md == {"degrade_reason": DegradationReason.NOT_CONFIGURED}  # onboard gap
 
@@ -35,10 +40,9 @@ async def test_priority_metadata_not_configured_is_not_configured_reason(handler
 @pytest.mark.asyncio
 async def test_priority_metadata_not_connected_is_connect_required_reason(handlers):
     with (
-        patch("services.integrations.github.config_service.GitHubConfigService") as CS,
+        patch(f"{_SVC}.is_configured", new=AsyncMock(return_value=True)),
         patch("services.domain.github_domain_service.GitHubDomainService") as DS,
     ):
-        CS.return_value.is_configured.return_value = True
         DS.return_value.get_connection_status.return_value = {"connected": False}
         md = await handlers._get_priority_metadata(user_id="u1")
     assert md == {"degrade_reason": DegradationReason.CONNECT_REQUIRED}  # reconnect gap
@@ -64,25 +68,22 @@ def test_detailed_priorities_silent_without_reason(handlers):
 
 @pytest.mark.asyncio
 async def test_project_metadata_not_configured_reason(handlers):
-    with patch("services.intent_service.canonical_handlers.get_plugin_registry") as reg:
-        plugin = MagicMock()
-        plugin.is_configured.return_value = False
-        reg.return_value.get_plugin.return_value = plugin
-        md = await handlers._get_project_metadata(["Proj A"])
+    # #1547 (audit F3): the gate is the canonical service — the old
+    # plugin.is_configured() gate was constant-false (#784), so EVERY user got
+    # this degrade, including connected ones.
+    with patch(f"{_SVC}.is_configured", new=AsyncMock(return_value=False)):
+        md = await handlers._get_project_metadata(["Proj A"], user_id="u1")
     assert md == {"__degrade_reason__": DegradationReason.NOT_CONFIGURED}
 
 
 @pytest.mark.asyncio
 async def test_project_metadata_not_connected_reason(handlers):
     with (
-        patch("services.intent_service.canonical_handlers.get_plugin_registry") as reg,
+        patch(f"{_SVC}.is_configured", new=AsyncMock(return_value=True)),
         patch("services.domain.github_domain_service.GitHubDomainService") as DS,
     ):
-        plugin = MagicMock()
-        plugin.is_configured.return_value = True
-        reg.return_value.get_plugin.return_value = plugin
         DS.return_value.get_connection_status.return_value = {"connected": False}
-        md = await handlers._get_project_metadata(["Proj A"])
+        md = await handlers._get_project_metadata(["Proj A"], user_id="u1")
     assert md == {"__degrade_reason__": DegradationReason.CONNECT_REQUIRED}
 
 

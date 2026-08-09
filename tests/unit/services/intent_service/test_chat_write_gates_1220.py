@@ -201,7 +201,10 @@ class TestIssueRequestSlotFill:
         assert f("issue about the 1/2 day outage in acme/widgets")["repository"] == "acme/widgets"
 
     def test_no_slots_returns_empty(self):
-        assert self._f()("create an issue about login bugs") == {}
+        # #1543 (2026-08-09): "about X" now extracts a title (this line used to
+        # pin the about-form as slotless — that WAS the #108 garbage-title bug).
+        assert self._f()("create an issue") == {}
+        assert self._f()("create an issue about login bugs") == {"title": "login bugs"}
 
     def test_colon_single_quote_title_extracts(self):
         """#1386-B2 live find: CXO's natural phrasing — no 'titled' keyword,
