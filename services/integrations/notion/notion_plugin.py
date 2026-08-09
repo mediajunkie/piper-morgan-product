@@ -49,16 +49,10 @@ class NotionPlugin(PiperPlugin):
         """
         if self._api_router is None:
             self._api_router = APIRouter(prefix="/api/v1/integrations/notion", tags=["notion"])
-
-            # Simple status endpoint for plugin
-            @self._api_router.get("/status")
-            async def notion_status():
-                """Get Notion integration status"""
-                return {
-                    "configured": self.is_configured(),
-                    "spatial_enabled": self.integration_router.use_spatial,
-                    "legacy_allowed": self.integration_router.allow_legacy,
-                }
+            # #1547 (audit F5): the GET /status sub-route is DELETED — it served
+            # `configured: false` forever, for everyone (is_configured() is
+            # hardcoded False without user context, #781/#784). Truthful status
+            # lives at /api/v1/integrations/health (user-scoped, #1337).
 
         return self._api_router
 
@@ -101,8 +95,14 @@ class NotionPlugin(PiperPlugin):
 
         Returns detailed status information for monitoring.
         """
+        # #1547: `configured` is None, not False — configuration is user-scoped
+        # and unknowable at plugin level (#781/#784). Callers needing real
+        # status use services/integrations/integration_status_service.py.
         return {
-            "configured": self.is_configured(),
+            "configured": None,
+            "configured_note": (
+                "user-scoped — use IntegrationStatusService.get_status(user_id, ...)"
+            ),
             "config_service": "active",
             "router": "active" if self._api_router else "inactive",
             "spatial_enabled": self.integration_router.use_spatial,

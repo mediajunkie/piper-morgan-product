@@ -69,6 +69,11 @@
       <!-- Insights will be rendered here -->
     </div>
 
+    <!-- #1545: honest partial-load notice — some rows failed to deserialize
+         server-side and were skipped rather than killing the whole listing -->
+    <p class="insights-skipped-notice" id="insights-skipped-notice"
+       role="status" style="display: none; opacity: 0.7; font-size: 0.85em;"></p>
+
     <!-- Empty State -->
     <div class="insights-empty" id="insights-empty" style="display: none;">
       <div class="insights-empty-icon">&#128218;</div>
@@ -221,6 +226,19 @@
         }
         const data = await response.json();
         currentInsights = data.insights || [];
+
+        // #1545: honest line when the backend skipped undeserializable rows.
+        const skippedEl = document.getElementById('insights-skipped-notice');
+        const skipped = data.skipped_count || 0;
+        if (skippedEl) {
+          if (skipped > 0) {
+            skippedEl.textContent = skipped + ' insight' + (skipped === 1 ? '' : 's') +
+              ' could not be displayed.';
+            skippedEl.style.display = 'block';
+          } else {
+            skippedEl.style.display = 'none';
+          }
+        }
 
         if (loadingEl) loadingEl.style.display = 'none';
 

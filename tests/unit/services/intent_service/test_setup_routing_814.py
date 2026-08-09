@@ -319,9 +319,20 @@ class TestPatternCollisionFix:
 class TestIntegrationSetupContinuity:
     """Issue #814: Integration setup response includes continuity language (Option B)."""
 
-    def test_integration_guidance_has_continuity(self, canonical_handlers):
-        """Integration setup guidance includes connection-testing offer."""
-        result = canonical_handlers._format_integration_setup_guidance()
+    @pytest.mark.asyncio
+    async def test_integration_guidance_has_continuity(self, canonical_handlers):
+        """Integration setup guidance includes connection-testing offer.
+        (#1547: async + canonical status service.)"""
+        from unittest.mock import AsyncMock, patch
+
+        with patch(
+            "services.integrations.integration_status_service."
+            "IntegrationStatusService.get_all",
+            new=AsyncMock(return_value={}),
+        ):
+            result = await canonical_handlers._format_integration_setup_guidance(
+                user_id="test-user"
+            )
         assert "test the connection" in result["message"].lower()
 
 

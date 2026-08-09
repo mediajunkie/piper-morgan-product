@@ -110,6 +110,49 @@ def _detect_issue_referent(message: str) -> bool:
     return bool(_FIELD_REFERENT_RE.search(message) or _PRONOUN_REFERENT_RE.search(message))
 
 
+# --- #1411 (2026-08-09): explicit-#N update shape -----------------------------
+# "change the title of issue #108 to test new regressions" carries its OWN
+# referent — the ledger has nothing to resolve, so B3 deliberately fell through
+# (the _EXPLICIT_ISSUE_RE guard above)… and then the message never reached
+# update_issue at all. Live-reproduced, both forms:
+#   - "… of issue 108 to …" (no '#'): surface 1's DOCUMENT_QUERY_PATTERNS
+#     (`change … to`) claims it → update_document_query @ 1.0 (hard misroute).
+#   - "… of issue #108 to …": the '#' breaks that pattern's [\w\s]+ span, so
+#     every deterministic surface passes and reachability of the fully
+#     implemented, rail-registered handler (#1411) depended entirely on the
+#     LLM emission — reachability = corpus.
+# The fix lives at THIS seam — the stack doc's sanctioned deterministic
+# Stage 0 — NOT as a new pre-classifier pattern. Moratorium reasoning: a
+# competing issue-update pattern inside surface 1 would race
+# DOCUMENT_QUERY_PATTERNS on list order (the same ordering fragility #1256
+# already hand-tunes for stakeholder-updates, and #1327 for set-default-repo),
+# and would re-lose the issue number to a pattern→LLM→slot-fill round trip.
+# Stage 0 runs before detect_multiple_intents at BOTH classifier entries by
+# construction, and here the number is bound deterministically at detection
+# time. Guards mirror the referent path: update verb AND issue-field word
+# required (the N2 analog), and a document noun anywhere declines — "change
+# the title of the design doc to #4" is a doc edit whose stray number must
+# not be captured.
+_EXPLICIT_ISSUE_NUM_RE = re.compile(r"(?:\bissue\s+#?|#)(\d+)", re.IGNORECASE)
+_DOC_NOUN_RE = re.compile(
+    r"\b(docs?|documents?|readme|spec|wiki|notion|page|file)\b", re.IGNORECASE
+)
+
+
+def _detect_explicit_issue_update(message: str) -> Optional[int]:
+    """Return the issue number iff the message is an issue-FIELD update aimed at
+    an explicit ``#N`` / ``issue N`` (#1411). Deterministic + conservative; None
+    on any doubt → normal classification runs untouched."""
+    if not message:
+        return None
+    if _DOC_NOUN_RE.search(message):
+        return None  # document edit — a stray issue number is not the target
+    if not _FIELD_REFERENT_RE.search(message):
+        return None  # no update-verb + issue-field shape (the N2 analog)
+    m = _EXPLICIT_ISSUE_NUM_RE.search(message)
+    return int(m.group(1)) if m else None
+
+
 class IntentClassifier:
     def __init__(
         self,
@@ -198,8 +241,70 @@ class IntentClassifier:
         - N2 (fresh topic): _detect_issue_referent already declined (no issue-field word).
         - D1a: reads the ledger owner-scoped; with no principal/session, returns None
           (never an unscoped read).
+
+        Explicit-#N extension (#1411, 2026-08-09): an update-verb + issue-field
+        message that names its issue ("change the title of issue #108 to …")
+        resolves HERE too — the user already bound the referent, so the number
+        is taken from the message (no ledger required; D1a scopes LEDGER reads
+        and this path only reads one opportunistically, to bind the repository
+        when THIS session created that very issue). Without this, the shape was
+        claimed by surface 1's document pattern (no-'#' form) or left to the
+        LLM's mercy ('#' form) — see the comment block above
+        _detect_explicit_issue_update for the live evidence + moratorium
+        reasoning. All pre-existing guards are untouched: the two detectors are
+        disjoint (_detect_issue_referent still declines on explicit #N).
         Returns the emitted Intent, or None to pass through to normal classification.
         """
+        explicit_num = _detect_explicit_issue_update(message)
+        if explicit_num is not None:
+            repository: Optional[str] = None
+            if user_id and session_id:
+                # Opportunistic owner-scoped ledger read: bind the repository
+                # iff this session's creation ledger holds the SAME issue
+                # number (mirrors the ledgered emit below). Never cross-binds.
+                from services.database.repositories import SessionActivityRepository
+                from services.database.session_factory import AsyncSessionFactory
+
+                try:
+                    async with AsyncSessionFactory.session_scope() as session:
+                        activities = await SessionActivityRepository(
+                            session
+                        ).list_for_session(
+                            owner_id=str(user_id), conversation_id=str(session_id)
+                        )
+                except Exception as e:
+                    logger.warning("b3_ledger_read_failed", error=str(e))
+                    activities = []
+                for a in activities:
+                    ref = a.target_ref or ""
+                    if a.action_type == "issue_created" and ref.endswith(
+                        f"#{explicit_num}"
+                    ):
+                        repository = ref.rpartition("#")[0] or None
+                        break
+            logger.info(
+                "b3_explicit_issue_update_resolved",
+                session_id=session_id,
+                issue_number=explicit_num,
+                repository_bound=bool(repository),
+                action="update_issue",
+            )
+            context = {
+                "original_message": message,  # handler slot-fills fields from this
+                "issue_number": explicit_num,
+                "b3_resolved": True,  # provenance: deterministic Stage-0 emit
+                "b3_explicit": True,  # …via the explicit-#N path (#1411)
+            }
+            if repository:
+                context["repository"] = repository
+            return Intent(
+                original_message=message,  # RAW preserved (#1332)
+                category=IntentCategory.QUERY,  # matches update_issue's registry category
+                action="update_issue",
+                confidence=1.0,
+                context=context,
+            )
+
         if not user_id or not session_id:
             return None  # D1a: no owner-scoped read possible → don't resolve
         if not _detect_issue_referent(message):

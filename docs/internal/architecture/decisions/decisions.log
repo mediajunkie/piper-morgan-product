@@ -1433,3 +1433,88 @@ MERGE-DROP FOLLOW-UP — CIO's investigation finding TAKEN WITHOUT USING IT AS C
   diff the two sides first) — proposed, not edited, because it is a HARD RULE block. The merge-aware hook
   remains the higher-leverage fix: the clause helps someone about to overwrite; the hook prevents the state
   that made me want to.
+
+AMENDMENT (2026-08-09 08:3x) — inversion condition 1 is PER-CATEGORY, not aggregate (PPM's input, accepted)
+  RULED 07:1x: "the deletion ratchet must assert pattern count only shrinks AND that the corpus score does
+  not regress." AMENDED TO: "no CATEGORY's corpus score regresses at each step."
+  PPM'S PROOF, and it is ours: the M2 canonical gate achieved 72.1% AGGREGATE — above the 63% no-regression
+  floor — while IDENTITY CONTEXT scored 1 on two queries. AN AGGREGATE PASSED ITS FLOOR WHILE A CATEGORY WAS
+  BROKEN. My condition as written would have licensed exactly that.
+  ⭐ AND IT COMPOSES BADLY WITH THE INVERSION SPECIFICALLY: the flip is PER-CATEGORY (Phase 2, "queries
+  first, writes last"). A GATE MEASURED IN AGGREGATE CANNOT SEE THE CATEGORY YOU ARE ABOUT TO FLIP — the
+  gate's granularity must match the flip's granularity or it is not gating the decision being made.
+  PPM offered this UNPROMPTED after confirming (independently, whole-tree search) that the Lead memo PM
+  expected does not exist anywhere in the mailbox tree.
+CITATION CORRECTED in the same ruling (PA re-verified their own number before letting my ruling rest on it):
+  registry is 107 alias keys → 39 entries as of 08-09, not 103 → 38 (08-04). Conclusion untouched (~2.7
+  names per operation; constrain to canonical actions). ⭐ THE DRIFT IS ITSELF THE ARGUMENT: +4 keys in 5
+  days means a hand-written output schema pinned to "106 keys" would be stale within a week — the
+  derive-from-the-registry condition proved empirically rather than asserted.
+
+2026-08-09 08:1x PT — Arch — #1423 INVENTORY DELIVERED (ask 1) + a scope finding about the issue itself
+  Built scripts/silent-death-scan.py (AST): broad `except` (Exception/BaseException/bare) whose handler
+  RETURNS A PLAUSIBLE DEFAULT instead of raising. Same family as assertion-vacuity-check.py — a failure
+  whose observable output is identical to success.
+  RESULT: 67 handlers / 77 files under THE ISSUE'S STATED ROOTS; 70 / 80 with services/todo added.
+  TRIAGE AXIS: 9 of 70 SWALLOW SILENTLY (no log at all) — strictly worse, no forensic trace; 61 log+swallow.
+  ✅ DENOMINATOR CHECK PASSED: catches #1422 at personality_profile.py:234, the exact line the issue names.
+  🔴 SCOPE FINDING ABOUT #1423 ITSELF: it does NOT catch #1420, because todo_knowledge_service.py lives at
+  services/todo — NOT in the issue's stated root list. THE INVENTORY AS SCOPED WOULD HAVE FOUND 1 OF THE 2
+  KNOWN INSTANCES AND REPORTED ITSELF COMPLETE. Recommended widening; noted in the script's own defaults.
+  ⚠️ ON ASK 3 (lint): a count-ceiling on this shape PASSES WHEN DETECTION BREAKS. Not hypothetical — MY OWN
+  FIRST INVOCATION REPORTED ZERO because zsh passed seven roots as one string; the script's guard refused to
+  print "0 findings" and said "scanned nothing" instead. WITHOUT THAT GUARD I WOULD HAVE POSTED A FALSE
+  ALL-CLEAR INTO THE ISSUE. If ratcheted, assert files_scanned > 0.
+
+---
+2026-08-09 09:0x PT — Arch — SURFACE-1 PROBE RESULTS: ruling vindicated empirically; revised shape RATIFIED; my own round-2 ratification NARROWED
+
+PROBE (Lead ran it after I released the Arch gate): 52 unique utterances, 52 LLM calls, 0 errors.
+  DENOMINATOR STATED: 11 chat_pointers POINTER rows surface 1 claims (incl. pin:) + 41 pattern-group
+  representatives — "one per group, not the infinite space."
+  RESULT: 14 AGREE / 36 DISAGREE / 2 VARIANT. 27+ of 52 are TRUE CATEGORY-CHANGES if handed to the LLM,
+  including "remind me to review the roadmap tomorrow" re-breaking into the temporal lane and ALL FOUR
+  connect-integration rows reverting to the pre-#1417 false decline.
+  → SURFACE 1 IS LOAD-BEARING FOR THE MAJORITY OF WHAT IT CLAIMS. The 08-08 ruling ("do not narrow yet;
+    make the claims observable first") is empirically vindicated.
+
+🔴 ARCH NARROWS ITS OWN ROUND-2 RATIFICATION. On 08-09 07:1x I ratified the inversion direction as written.
+  The proposal contained: "the deterministic front shrinks to exact-match only… the pre-classifier as a
+  ROUTER dies." THE PROBE FALSIFIES THAT CLAUSE. A ratification of the DIRECTION is not a ratification of
+  that SENTENCE, and my GO must not be read as covering it.
+  AMENDED: surface 1 STAYS where measured load-bearing (27+ rows); the ~14 AGREE rows narrow, EACH CITING
+  ITS PROBE ROW. Condition: a narrowing without its probe row is not narrowing, it is guessing — the
+  citation is what keeps the decision falsifiable later.
+
+⭐ POINT 3 IS THE ACTUAL CURE, NOT A WORKAROUND. On 08-08 I diagnosed the real defect as "surface 1's claims
+  are UNFALSIFIABLE — we never learn what the LLM would have done, which is exactly why every fix is a
+  regex." Lead's point 3 makes the one-off probe a STANDING SAMPLED ASYNC SHADOW-CHECK: deterministic
+  answers ship live, a sample gets an LLM counter-opinion afterwards, disagreements become corpus telemetry,
+  zero latency cost. MY PROBE MADE THE CLAIMS FALSIFIABLE ONCE; THIS MAKES THEM FALSIFIABLE CONTINUOUSLY —
+  strictly better than what I asked for. PM converged on the same cross-check shape independently the same
+  day, unprompted.
+
+RATIFIED ALSO: ② constrained output — the probe strengthened the case beyond my third consideration
+  ("nearly every DISAGREE emits an off-alias action name: show_standup, prioritize, get_branch_info…"), so
+  THE UNENFORCED VOCABULARY IS THE DEEPER DISEASE AND IS ORTHOGONAL TO WHO ROUTES — which is why the
+  inversion is still worth doing though its original headline move is off the table. ④ flow-escape +
+  offer-binding as context-carrying work, correctly scoped as unmeasured by this probe.
+
+🔴 BONUS FINDING TO TRACK SEPARATELY (not inversion work; it survives the inversion): a surface-1
+  SELF-INCONSISTENCY — single-path vs multi-intent divergence on milestones; pre_classify lacks a branch
+  only _get_github_action has. TWO CODE PATHS IMPLEMENT THE SAME ROUTING DECISION DIFFERENTLY — same family
+  as bound_user_id and "production": one decision, two implementations, nothing forcing agreement. Produces
+  phrasing-dependent behaviour that LOOKS like an LLM problem and isn't. FIX MUST BE A SHARED BRANCH OR A
+  TEST ASSERTING THE TWO PATHS AGREE — NOT A COPIED BRANCH, which re-creates the divergence with a delay.
+
+PROCESS FAILURE, MINE: Lead's memo was in my read/ folder — I DRAINED IT THERE IN AN EARLIER FIRE WITHOUT
+  READING IT. I then searched for an 08-09 date, concluded no Lead memo existed, told PM so, and PPM's
+  independent whole-tree search CORROBORATED THE FALSE NEGATIVE BECAUSE THEY INHERITED MY FRAMING. Two
+  procedure fixes recorded in arch-carry-forward: (1) never mv a memo to read/ in the same pass that first
+  sees it; (2) SEARCH FOR THE OBJECT, NOT THE DATE — I looked for "a Lead memo dated 08-09"; it was a Lead
+  memo dated 08-08, and the date was my assumption rather than the thing I was looking for.
+
+2026-08-09 ~10:00 PT [Lead, relaying PM in-conversation rulings]
+1) MILESTONE SEQUENCE CORRECTION (PM, verbatim intent): the release sequence is MVP → Production → Fast Follow. "MVP or Fast Follow" as a binary encodes a misunderstanding held by multiple agents — Production sits BETWEEN them: Production milestone = required for PUBLIC beta, worked in the PUB sprint. Fast Follow comes after. Triage accordingly.
+2) PM approved PPM's placement recommendation: #1510 → MVP, #1190 → MVP, #1509 → Production. Board written by Lead (native milestone field).
+3) The 48 unmilestoned open issues (all filed 2026-08-07..09, the testing yield): PM directed triage-now. Lead triaged 42 (18 MVP / 21+1 Production / 3 Fast Follow, criteria in session log); escalated 6 to PM: #1536-#1540 (FTUX five, deliberately PM-held per PPM) + #1511 (two-standups product decision, with PPM). #1553 → Production + PUB sprint (PM named it).

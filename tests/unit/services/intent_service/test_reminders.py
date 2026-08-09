@@ -539,9 +539,12 @@ class TestDueReminderTZGuard1491:
         assert context["reminder_count"] == 2
 
     @pytest.mark.asyncio
-    async def test_fetch_failure_warning_includes_count_context(self):
-        """#1491 AC: the swallow stays (None sentinel, #1425) but the warning
-        must carry reminder-count context — not a bare error string."""
+    async def test_fetch_failure_logs_error_with_count_context(self):
+        """#1491 AC: the None sentinel stays (#1425 — assembler flags
+        source_failed, never a false "no reminders due"), but the failure must
+        log at ERROR level with exc_info and reminder-count context — not a
+        warning-swallow (the #1423 silent-death shape). Mirrors the
+        handle_list_reminders error-logging discipline."""
         from services.intent_service.todo_handlers import TodoIntentHandlers
 
         handler = TodoIntentHandlers()
@@ -552,11 +555,15 @@ class TestDueReminderTZGuard1491:
             result = await handler.get_due_reminders(uuid4())
 
         assert result is None  # sentinel preserved (#1425)
-        assert mock_logger.warning.called
-        _, kwargs = mock_logger.warning.call_args
+        assert not mock_logger.warning.called, (
+            "failure must not be warning-swallowed (#1491/#1423) — log at error level"
+        )
+        assert mock_logger.error.called, "fetch failure must log at ERROR level (#1491)"
+        _, kwargs = mock_logger.error.call_args
         assert "error" in kwargs
-        assert "todo_count" in kwargs, "warning must carry count context (#1491)"
-        assert "reminders_considered" in kwargs, "warning must carry count context (#1491)"
+        assert kwargs.get("exc_info") is True, "error log must carry exc_info (#1423 shape)"
+        assert "todo_count" in kwargs, "error must carry count context (#1491)"
+        assert "reminders_considered" in kwargs, "error must carry count context (#1491)"
 
 
 # ---------------------------------------------------------------------------

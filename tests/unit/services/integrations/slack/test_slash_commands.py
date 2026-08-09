@@ -21,10 +21,14 @@ import pytest
 from services.integrations.slack.webhook_router import SlackWebhookRouter
 
 
-def _todo(text, completed=False, completed_at=None, priority="medium"):
+def _todo(text, completed=False, completed_at=None, priority="medium", due_date=None):
     """Minimal domain-Todo stand-in with the fields /standup reads."""
     return SimpleNamespace(
-        text=text, completed=completed, completed_at=completed_at, priority=priority
+        text=text,
+        completed=completed,
+        completed_at=completed_at,
+        priority=priority,
+        due_date=due_date,
     )
 
 
@@ -297,6 +301,48 @@ class TestStandupDataWiring1429:
         assert "No completed items recorded" not in text
         assert "No high-priority items scheduled" not in text
         assert "couldn't check" in text
+
+    @pytest.mark.asyncio
+    async def test_today_includes_todos_due_today_regardless_of_priority(self, router):
+        """#1541 finding (3): a page-added todo due TODAY never appeared in
+        /standup. Same storage on both ends (the page and
+        TodoManagementService both go through TodoRepository → todo_items) —
+        the selection was the gap: _get_today_priorities read ONLY
+        urgent/high priority and never looked at due_date, so a due-today
+        medium-priority todo (the page's default — it offers no priority
+        field) was invisible by construction."""
+        now = datetime.now(timezone.utc)
+        todos = [
+            _todo("Due today, default priority", priority="medium", due_date=now),
+            _todo("Overdue chore", priority="low", due_date=now - timedelta(days=2)),
+            _todo("Due next week", priority="medium", due_date=now + timedelta(days=7)),
+            _todo("Fix prod bug", priority="urgent"),
+        ]
+        with patch(
+            "services.todo.todo_management_service.TodoManagementService"
+        ) as mock_svc:
+            mock_svc.return_value.list_todos = AsyncMock(return_value=todos)
+            result = await router._handle_standup_command(str(uuid4()), "C456")
+
+        text = result.get("text", "")
+        assert "Due today, default priority" in text
+        assert "Overdue chore" in text
+        assert "Due next week" not in text
+        # Priority items still lead, and nothing renders twice
+        assert text.index("Fix prod bug") < text.index("Due today, default priority")
+        assert text.count("Fix prod bug") == 1
+
+    @pytest.mark.asyncio
+    async def test_today_does_not_duplicate_high_priority_item_that_is_also_due(self, router):
+        """An urgent todo that is ALSO due today renders once, not twice."""
+        now = datetime.now(timezone.utc)
+        todos = [_todo("Urgent and due", priority="urgent", due_date=now)]
+        with patch(
+            "services.todo.todo_management_service.TodoManagementService"
+        ) as mock_svc:
+            mock_svc.return_value.list_todos = AsyncMock(return_value=todos)
+            result = await router._handle_standup_command(str(uuid4()), "C456")
+        assert result.get("text", "").count("Urgent and due") == 1
 
     @pytest.mark.asyncio
     async def test_blockers_section_still_ratified_empty(self, router):

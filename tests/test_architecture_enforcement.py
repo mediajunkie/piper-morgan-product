@@ -1765,3 +1765,261 @@ class TestPrincipalThreadingGuards1532:
                 f"{name} lost its user_id (principal) parameter — the F3 ownership check "
                 "cannot be threaded without it (#1532)."
             )
+
+
+# ============================================================================
+# #1547 — status-truth: the plugin registry is NOT a configuration source
+# ============================================================================
+
+
+class TestRegistryConfiguredReadRatchet:
+    """#1547 (status-truth audit 2026-08-09) — architectural enforcement for the
+    canonical-status migration.
+
+    All four real integration plugins hardcode ``is_configured() -> False``
+    (#784 — the plugin interface has no user, and integration truth is
+    user-scoped), so any surface reading
+    ``PluginRegistry.get_status_all()[...]["configured"]`` reports every real
+    integration never-connected — the mechanism behind 6 of the audit's 10
+    findings (#1534, the blind floor, the constant degrade nudges, ...).
+
+    The canonical source is
+    ``services/integrations/integration_status_service.py``
+    (user-scoped, binding-first). This test is a RATCHET: it counts remaining
+    non-test ``get_status_all()`` consumer sites and fails if the count GROWS.
+    When a migration lands, LOWER ``MAX_REGISTRY_STATUS_CONSUMERS`` in the same
+    commit (never raise it). New status-consuming surfaces must read the
+    canonical service.
+    """
+
+    # Ratchet target — non-test get_status_all() consumer sites remaining.
+    # 2026-08-09 (#1547): 1 — the Slack-help capability enumeration in
+    # canonical_handlers._get_dynamic_capabilities (audit F6, a separate slice).
+    # Trajectory: 4 (audit baseline) → 1 (F1 guidance, F2 identity context +
+    # github flag migrated this pass). LOWER as F6 lands; NEVER raise.
+    MAX_REGISTRY_STATUS_CONSUMERS = 1
+
+    # Where consumers could live (m-44: name the denominator — this is the
+    # scanned space, and the guard test below asserts it's actually populated).
+    SCAN_GLOBS = ("services/**/*.py", "web/**/*.py", "main.py")
+
+    # The definition site itself (and this test) are not consumers.
+    DEFINITION_FILE = "services/plugins/plugin_registry.py"
+
+    CALL_RE = re.compile(r"get_status_all\s*\(")
+
+    def _consumer_sites(self):
+        sites = []
+        scanned = 0
+        for pattern in self.SCAN_GLOBS:
+            for path in glob.glob(pattern, recursive=True):
+                if os.path.normpath(path) == os.path.normpath(self.DEFINITION_FILE):
+                    continue
+                scanned += 1
+                with open(path, encoding="utf-8") as fh:
+                    for lineno, line in enumerate(fh, start=1):
+                        if self.CALL_RE.search(line):
+                            sites.append(f"{path}:{lineno}")
+        return sites, scanned
+
+    def test_denominator_guard_scan_space_is_populated(self):
+        """m-44: an empty glob would make the ratchet pass by measuring nothing.
+        Assert the scan actually covered the production tree."""
+        _sites, scanned = self._consumer_sites()
+        assert scanned >= 300, (
+            f"Scan space collapsed: only {scanned} files scanned — the ratchet "
+            "below would be vacuous. Check SCAN_GLOBS / working directory."
+        )
+
+    def test_no_new_registry_configured_readers(self):
+        """Fails if a new non-test surface starts consuming registry status.
+        New surfaces must read IntegrationStatusService (user-scoped,
+        binding-first) — the registry's 'configured' bit is structurally
+        unknowable (#784)."""
+        sites, _scanned = self._consumer_sites()
+        assert len(sites) <= self.MAX_REGISTRY_STATUS_CONSUMERS, (
+            f"{len(sites)} non-test get_status_all() consumer sites found "
+            f"({sites}), exceeding the #1547 ratchet target of "
+            f"{self.MAX_REGISTRY_STATUS_CONSUMERS}. The registry cannot report "
+            "per-user configuration — read "
+            "services/integrations/integration_status_service.py instead."
+        )
+
+    def test_ratchet_target_stays_tight(self):
+        """The target must equal the actual count — a loose target silently
+        permits regressions up to the slack. When F6 migrates, lower
+        MAX_REGISTRY_STATUS_CONSUMERS to 0 in the same commit."""
+        sites, _scanned = self._consumer_sites()
+        assert len(sites) == self.MAX_REGISTRY_STATUS_CONSUMERS, (
+            f"Ratchet drift: actual consumer-site count is {len(sites)} "
+            f"({sites}) but MAX_REGISTRY_STATUS_CONSUMERS is "
+            f"{self.MAX_REGISTRY_STATUS_CONSUMERS}. If a migration just landed, "
+            "lower the target in the same commit."
+        )
+
+    def test_real_plugins_do_not_fabricate_configured(self):
+        """The lying source stays retired: no real plugin's get_status() may
+        emit a boolean 'configured' again (None + note is the contract; demo is
+        env-fed and exempt)."""
+        plugin_files = [
+            "services/integrations/github/github_plugin.py",
+            "services/integrations/slack/slack_plugin.py",
+            "services/integrations/calendar/calendar_plugin.py",
+            "services/integrations/notion/notion_plugin.py",
+        ]
+        offenders = []
+        for path in plugin_files:
+            assert os.path.exists(path), (
+                f"Denominator guard: {path} missing — the fabrication check "
+                "would be vacuous. Update the list if plugins moved."
+            )
+            with open(path, encoding="utf-8") as fh:
+                content = fh.read()
+            if re.search(r"\"configured\"\s*:\s*self\.is_configured\(\)", content):
+                offenders.append(path)
+        assert not offenders, (
+            f"{offenders} reintroduced 'configured': self.is_configured() — "
+            "that bit is hardcoded False without user context (#784) and every "
+            "registry consumer inherits the lie (#1547)."
+        )
+
+
+class TestWorkflowEffectDeclaration:
+    """Arch ruling 2026-08-09 (building on PDR-006 condition 2, ruled 2026-08-04):
+    every ``WorkflowEntry`` must DECLARE its effect — a required, DEFAULTLESS,
+    ordered enum (``EffectClass``: READ < WRITE < DESTRUCTIVE; destructive is a
+    subset of write).
+
+    Why defaultless is load-bearing (Arch, decisions.log 2026-08-04): 4 of
+    WorkflowEntry's 5 prior fields are defaulted, so a defaulted effect field
+    would let every future entry silently inherit a value nobody chose. The
+    construction-site break IS THE FEATURE — you cannot register a handler
+    without saying whether it writes.
+
+    Why an enum, not a boolean (Arch 2026-08-09): four consumers (capability
+    legibility #1509, destructive-mutation gate #1190, consent gate #1509, MCP
+    readOnlyHint/destructiveHint annotations per PDR-006 §30) each derive a
+    DIFFERENT predicate from the one declared value. A boolean ``mutates``
+    would force #1190 and MCP annotations to re-derive destructiveness —
+    recreating the inference problem one level down.
+
+    Effect is a fact about what the operation does IN THE WORLD — it is not
+    computable from the entry point, signature, or description. Declare once at
+    the source; derive everything else (read_only_hint / destructive_hint /
+    needs_consent / needs_confirm properties on WorkflowEntry).
+    """
+
+    def test_effect_is_required_at_construction(self):
+        """Constructing a WorkflowEntry without effect must raise — the
+        construction-site break at every registration is the enforcement
+        mechanism the ruling asks for."""
+        from unittest.mock import AsyncMock
+
+        from services.intent_service.workflow_dispatcher import WorkflowEntry
+
+        with pytest.raises(TypeError):
+            WorkflowEntry(entry_point=AsyncMock(), description="no effect declared")
+
+    def test_effect_field_is_defaultless_in_the_dataclass_definition(self):
+        """The field must carry NO default and NO default_factory — a later
+        'convenience' default would silently reintroduce inherited-value drift
+        for every future entry (the exact failure the 08-04 ruling names)."""
+        import dataclasses
+
+        from services.intent_service.workflow_dispatcher import WorkflowEntry
+
+        effect_fields = [
+            f for f in dataclasses.fields(WorkflowEntry) if f.name == "effect"
+        ]
+        assert len(effect_fields) == 1, (
+            "WorkflowEntry must declare an `effect` field (Arch ruling "
+            "2026-08-09 / PDR-006 condition 2)."
+        )
+        f = effect_fields[0]
+        assert f.default is dataclasses.MISSING, (
+            "WorkflowEntry.effect has a default value. The ruling requires it "
+            "DEFAULTLESS: a defaulted effect lets new entries silently inherit "
+            "a mutation-semantics value nobody chose."
+        )
+        assert f.default_factory is dataclasses.MISSING, (
+            "WorkflowEntry.effect has a default_factory — same defect as a "
+            "default value; remove it."
+        )
+
+    def test_effect_enum_is_ordered_read_write_destructive(self):
+        """Consumers gate on ordered comparison (needs_consent = effect >=
+        WRITE), so the ordering READ < WRITE < DESTRUCTIVE is contract, not
+        style. Destructive ⊂ write: you cannot destroy without writing."""
+        from services.shared_types import EffectClass
+
+        assert EffectClass.READ < EffectClass.WRITE < EffectClass.DESTRUCTIVE
+        # The consent predicate the #1509 gate derives:
+        assert not (EffectClass.READ >= EffectClass.WRITE)
+        assert EffectClass.WRITE >= EffectClass.WRITE
+        assert EffectClass.DESTRUCTIVE >= EffectClass.WRITE
+
+    def test_every_registered_default_entry_declares_a_real_effect(self):
+        """Denominator guard (m-44): assert the registry is non-empty AND every
+        registered entry's effect is an EffectClass member — a registry the
+        default registration never populated would make this check vacuous."""
+        from services.intent_service.workflow_dispatcher import WORKFLOW_REGISTRY
+        from services.intent_service.workflow_entries import (
+            register_default_workflows,
+        )
+        from services.shared_types import EffectClass
+
+        saved = dict(WORKFLOW_REGISTRY)
+        try:
+            register_default_workflows()
+            assert len(WORKFLOW_REGISTRY) >= 30, (
+                f"Denominator guard: only {len(WORKFLOW_REGISTRY)} workflows "
+                "registered — expected the full default set (~80 alias keys). "
+                "If the default set legitimately shrank, update this floor."
+            )
+            offenders = {
+                key: getattr(entry, "effect", None)
+                for key, entry in WORKFLOW_REGISTRY.items()
+                if not isinstance(getattr(entry, "effect", None), EffectClass)
+            }
+            assert not offenders, (
+                f"Registered workflows without a declared EffectClass effect: "
+                f"{offenders}"
+            )
+        finally:
+            WORKFLOW_REGISTRY.clear()
+            WORKFLOW_REGISTRY.update(saved)
+
+    # ── Ratchet: no name-based effect inference in production code ─────────
+    # Now that the effect is DECLARED on WorkflowEntry, production code must
+    # never re-derive read/write-ness from action NAMES, key prefixes, or
+    # descriptions — that inference is exactly what the declared field
+    # retires (PA's evidence: `prioritization` sounds like a bulk-write and
+    # writes nothing; guess and fact pointed opposite ways). Hand-maintained
+    # read/write action lists are the greppable signature of that inference.
+    INFERENCE_LIST_RE = re.compile(
+        r"^\s*(?:READ|WRITE|MUTATING|READONLY|READ_ONLY|DESTRUCTIVE)"
+        r"[A-Z_]*_(?:ACTIONS|WORKFLOWS|KEYS)\s*[:=]",
+        re.MULTILINE,
+    )
+    MAX_INFERENCE_SITES = 0  # Ratchet: never raise.
+
+    def test_no_name_based_effect_inference_in_production_code(self):
+        """Fails if production code (services/, web/) introduces a
+        hand-maintained read/write/destructive action list — the field on
+        WorkflowEntry is the single source of effect truth; consumers derive
+        via entry.effect / the derivation properties, never via name lists."""
+        offenders: List[str] = []
+        for root in ("services", "web"):
+            for path in glob.glob(f"{root}/**/*.py", recursive=True):
+                with open(path, encoding="utf-8") as fh:
+                    content = fh.read()
+                if self.INFERENCE_LIST_RE.search(content):
+                    offenders.append(path)
+        assert len(offenders) <= self.MAX_INFERENCE_SITES, (
+            f"Hand-maintained effect-classification lists found in production "
+            f"code: {offenders}. Effect is DECLARED on WorkflowEntry "
+            f"(entry.effect: EffectClass) — derive predicates from it "
+            f"(read_only_hint / destructive_hint / needs_consent / "
+            f"needs_confirm); never re-infer from names (Arch ruling "
+            f"2026-08-09)."
+        )

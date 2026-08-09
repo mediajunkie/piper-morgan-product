@@ -136,6 +136,81 @@ def find_explicit_clock_time(
     return (converted[0], converted[1], raw)
 
 
+# --- Issue #1542 (#1490 invariant deepening): explicit-duration finder ---
+# "remind me to stretch in two hours" saved for TOMORROW 9AM: the "in N
+# units" branch matched digits only, so word-form numbers fell through to
+# the vague-time default — a silent replacement of an explicit duration,
+# the same class #1490 bans for clock times. Mirrors the
+# find_explicit_clock_time architecture: one shared pattern, one finder,
+# consumed by both the parser (below) and the slot layer
+# (todo_handlers._TIME_EXPR imports DURATION_NUMBER_SRC so the two can't
+# drift).
+_NUMBER_WORDS = {
+    "a": 1,
+    "an": 1,
+    "one": 1,
+    "two": 2,
+    "three": 3,
+    "four": 4,
+    "five": 5,
+    "six": 6,
+    "seven": 7,
+    "eight": 8,
+    "nine": 9,
+    "ten": 10,
+    "eleven": 11,
+    "twelve": 12,
+    "thirteen": 13,
+    "fourteen": 14,
+    "fifteen": 15,
+    "sixteen": 16,
+    "seventeen": 17,
+    "eighteen": 18,
+    "nineteen": 19,
+    "twenty": 20,
+}
+
+# NON-capturing, longest-first (so "seven" can't pre-empt "seventeen"):
+# todo_handlers embeds this inside slot patterns that rely on group(1)
+# indexing, so introducing a capturing group here would silently break them.
+DURATION_NUMBER_SRC = (
+    r"(?:\d+|" + "|".join(sorted(_NUMBER_WORDS, key=len, reverse=True)) + r")"
+)
+
+_DURATION_RE = re.compile(
+    rf"\bin\s+(?P<amount>{DURATION_NUMBER_SRC})\s+"
+    r"(?P<unit>minute|minutes|min|mins|hour|hours|hr|hrs|day|days)\b"
+)
+
+
+def find_explicit_duration(message_lower: str) -> Optional[Tuple[timedelta, str]]:
+    """Issue #1542: locate an explicit relative duration anywhere in the
+    message — "in 2 hours", "in two hours", "in an hour", "in ten minutes",
+    "in three days".
+
+    Digit and word-form numbers (a/an, one through twenty) bind identically,
+    so a word-form duration is never silently replaced by the vague-time
+    default (the #1490 invariant, deepened to durations). Returns None when
+    the message carries no explicit duration; otherwise (timedelta, label).
+    """
+    match = _DURATION_RE.search(message_lower)
+    if not match:
+        return None
+    token = match.group("amount")
+    amount = int(token) if token.isdigit() else _NUMBER_WORDS[token]
+    unit = match.group("unit")
+    if unit.startswith("min"):
+        delta = timedelta(minutes=amount)
+        label = f"in {amount} minute{'s' if amount != 1 else ''}"
+    elif unit.startswith("hr") or unit.startswith("hour"):
+        delta = timedelta(hours=amount)
+        label = f"in {amount} hour{'s' if amount != 1 else ''}"
+    else:
+        delta = timedelta(days=amount)
+        label = f"in {amount} day{'s' if amount != 1 else ''}"
+    return (delta, label)
+
+
 def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
     """
     Issue #903: Extract a reminder datetime from natural language.
@@ -181,24 +256,11 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
             return (None, raw_clock[2])
         clock = (clock_hour, clock_minute, raw_clock[2])
 
-    # --- "in N minutes/hours/days" ---
-    in_match = re.search(
-        r"\bin\s+(\d+)\s+(minute|minutes|min|mins|hour|hours|hr|hrs|day|days)\b",
-        message_lower,
-    )
-    if in_match:
-        amount = int(in_match.group(1))
-        unit = in_match.group(2)
-        if unit.startswith("min"):
-            dt = now + timedelta(minutes=amount)
-            label = f"in {amount} minute{'s' if amount != 1 else ''}"
-        elif unit.startswith("hr") or unit.startswith("hour"):
-            dt = now + timedelta(hours=amount)
-            label = f"in {amount} hour{'s' if amount != 1 else ''}"
-        else:
-            dt = now + timedelta(days=amount)
-            label = f"in {amount} day{'s' if amount != 1 else ''}"
-        return (dt, label)
+    # --- "in N minutes/hours/days" — digit or word-form N (#1542) ---
+    duration = find_explicit_duration(message_lower)
+    if duration is not None:
+        delta, label = duration
+        return (now + delta, label)
 
     # --- "tomorrow at Xpm/am" ---
     tomorrow_at = re.search(

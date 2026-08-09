@@ -295,8 +295,11 @@ class TestIdentityContextUserAnchoring:
             "services.intent_service.workflow_dispatcher.get_registered_workflows",
             return_value={},
         ):
-            with patch("services.plugins.get_plugin_registry") as mock_registry:
-                mock_registry.return_value.get_status_all.return_value = {}
+            with patch(
+                "services.integrations.integration_status_service."
+                "IntegrationStatusService.get_all",
+                new=AsyncMock(return_value={}),  # #1547: canonical status source
+            ):
                 with patch("services.user_context_service.user_context_service") as mock_svc:
                     mock_svc.get_user_context = AsyncMock(return_value=mock_user_ctx)
                     result = await assembler._gather_identity_context(
@@ -357,8 +360,11 @@ class TestUserContextPrioritiesShape:
             "services.intent_service.workflow_dispatcher.get_registered_workflows",
             return_value={},
         ):
-            with patch("services.plugins.get_plugin_registry") as mock_registry:
-                mock_registry.return_value.get_status_all.return_value = {}
+            with patch(
+                "services.integrations.integration_status_service."
+                "IntegrationStatusService.get_all",
+                new=AsyncMock(return_value={}),  # #1547: canonical status source
+            ):
                 with patch(
                     "services.intent_service.conversation_context.get_or_create_context",
                     return_value=mock_conv_ctx,
@@ -379,8 +385,11 @@ class TestUserContextPrioritiesShape:
             "services.intent_service.workflow_dispatcher.get_registered_workflows",
             return_value={},
         ):
-            with patch("services.plugins.get_plugin_registry") as mock_registry:
-                mock_registry.return_value.get_status_all.return_value = {}
+            with patch(
+                "services.integrations.integration_status_service."
+                "IntegrationStatusService.get_all",
+                new=AsyncMock(return_value={}),  # #1547: canonical status source
+            ):
                 result = await assembler._gather_identity_context(user_id=None, session_id=None)
 
         # Capabilities + integrations still there; user-anchoring absent
@@ -396,8 +405,11 @@ class TestUserContextPrioritiesShape:
             "services.intent_service.workflow_dispatcher.get_registered_workflows",
             return_value={},
         ):
-            with patch("services.plugins.get_plugin_registry") as mock_registry:
-                mock_registry.return_value.get_status_all.return_value = {}
+            with patch(
+                "services.integrations.integration_status_service."
+                "IntegrationStatusService.get_all",
+                new=AsyncMock(return_value={}),  # #1547: canonical status source
+            ):
                 with patch("services.user_context_service.user_context_service") as mock_svc:
                     mock_svc.get_user_context = AsyncMock(side_effect=RuntimeError("db down"))
                     # Should not raise

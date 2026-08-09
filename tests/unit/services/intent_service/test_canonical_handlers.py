@@ -1311,9 +1311,17 @@ class TestSetupGuidanceFormatting:
         assert "Project A" in result["message"]
         assert "/settings/projects" in result["message"]
 
-    def test_integration_setup_guidance(self, canonical_handlers):
-        """Integration setup guidance."""
-        result = canonical_handlers._format_integration_setup_guidance()
+    @pytest.mark.asyncio
+    async def test_integration_setup_guidance(self, canonical_handlers):
+        """Integration setup guidance (#1547: async + canonical status service)."""
+        with patch(
+            "services.integrations.integration_status_service."
+            "IntegrationStatusService.get_all",
+            new=AsyncMock(return_value={}),
+        ):
+            result = await canonical_handlers._format_integration_setup_guidance(
+                user_id="test-user"
+            )
 
         assert "message" in result
         assert result["setup_type"] == "integrations"
@@ -3125,20 +3133,22 @@ class TestIntegrationTipLogic847:
             assert result is None
 
     @pytest.mark.asyncio
-    async def test_get_priority_metadata_uses_config_service(self, canonical_handlers):
-        """_get_priority_metadata checks config_service, not plugin.is_configured()."""
+    async def test_get_priority_metadata_uses_canonical_status_service(
+        self, canonical_handlers
+    ):
+        """_get_priority_metadata checks the canonical IntegrationStatusService
+        (user-scoped, binding-first — #1547), not plugin.is_configured() (#784)
+        and not the PAT-only GitHubConfigService (#847's fix, superseded)."""
         with patch(
-            "services.integrations.github.config_service.GitHubConfigService"
-        ) as MockConfigService:
-            mock_config = MagicMock()
-            mock_config.is_configured.return_value = False
-            MockConfigService.return_value = mock_config
-
+            "services.integrations.integration_status_service."
+            "IntegrationStatusService.is_configured",
+            new=AsyncMock(return_value=False),
+        ) as mock_is_configured:
             result = await canonical_handlers._get_priority_metadata(user_id="test-user")
 
-            # Should have checked config service with user_id
-            mock_config.is_configured.assert_called_once_with("test-user")
-            # Config says not configured → #1231 honest-degrade reason (was silent {})
+            # Should have checked the canonical service with user_id
+            mock_is_configured.assert_awaited_once_with("test-user", "github")
+            # Not configured → #1231 honest-degrade reason (was silent {})
             from services.mcp.consumer.connector import DegradationReason
 
             assert result == {"degrade_reason": DegradationReason.NOT_CONFIGURED}
@@ -3168,8 +3178,10 @@ class TestIntegrationTipLogic847:
         user_id = "12345678-1234-5678-1234-567812345678"
 
         with patch(
-            "services.integrations.github.config_service.GitHubConfigService"
-        ) as MockConfigService, patch(
+            "services.integrations.integration_status_service."
+            "IntegrationStatusService.is_configured",
+            new=AsyncMock(return_value=True),  # #1547: canonical gate
+        ), patch(
             "services.domain.github_domain_service.GitHubDomainService"
         ) as MockDomainService, patch(
             "services.integrations.github.repo_resolver.get_user_default_repo",
@@ -3177,10 +3189,6 @@ class TestIntegrationTipLogic847:
         ) as mock_get_default_repo, patch(
             "services.configuration.piper_config_loader.piper_config_loader"
         ) as mock_config_loader:
-            mock_config = MagicMock()
-            mock_config.is_configured.return_value = True
-            MockConfigService.return_value = mock_config
-
             mock_domain = MagicMock()
             mock_domain.get_connection_status.return_value = {"connected": True}
             mock_domain.get_open_issues = AsyncMock(return_value=[])

@@ -71,8 +71,11 @@ class WorkItemProvider:
     """Resolves the SINGLE bound user's configured repo and lists their open GitHub work
     items — Arch's #1239 beta path (user-default / ``PIPER_DEFAULT_REPO`` via the GitHub
     router's stashed user_id), scoped to "assigned to me" when a handle is configured (#6).
-    Returns [] when GitHub isn't configured or no repo resolves (graceful — checks
-    ``is_configured`` BEFORE ``initialize`` so an unconfigured user opens no session)."""
+    Returns [] when GitHub isn't configured or no repo resolves (graceful — checks the
+    canonical status service BEFORE ``initialize`` so an unconfigured user opens no
+    session). #1547 (audit F4): the gate is the binding-first IntegrationStatusService —
+    the previous PAT-only ``config_service.is_configured`` silently blanked standup/Radar
+    work items for OAuth-bound-no-PAT users."""
 
     async def list_for_user(self, user_id: str) -> list[dict]:
         try:
@@ -82,10 +85,13 @@ class WorkItemProvider:
             from services.integrations.github.repo_resolver import (
                 read_user_github_handle,
             )
+            from services.integrations.integration_status_service import (
+                IntegrationStatusService,
+            )
 
-            router = GitHubIntegrationRouter()
-            if not router.config_service.is_configured(user_id):
+            if not await IntegrationStatusService().is_configured(user_id, "github"):
                 return []
+            router = GitHubIntegrationRouter()
             try:
                 await router.initialize(user_id=user_id)
                 handle = await read_user_github_handle(user_id)  # WS-1 P4: now async (DB-backed read)

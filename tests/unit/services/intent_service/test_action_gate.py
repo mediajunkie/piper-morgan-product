@@ -294,19 +294,30 @@ class TestContextAssembler:
 
     @pytest.mark.asyncio
     async def test_gather_identity_returns_integrations(self):
+        from unittest.mock import AsyncMock
+
         from services.intent_service.context_assembler import ContextAssembler
 
         assembler = ContextAssembler()
-        with patch("services.plugins.get_plugin_registry") as mock_reg:
-            mock_reg.return_value.get_status_all.return_value = {
-                "github": {"configured": True, "active": True},
-                "slack": {"configured": False, "active": False},
-            }
+        # #1547: integrations come from the canonical IntegrationStatusService
+        # (user-scoped, binding-first), not the constant-false plugin registry.
+        with patch(
+            "services.integrations.integration_status_service."
+            "IntegrationStatusService.get_all",
+            new=AsyncMock(
+                return_value={
+                    "github": {"configured": True, "via": "env", "healthy": None, "last_check": None},
+                    "slack": {"configured": False, "via": None, "healthy": None, "last_check": None},
+                }
+            ),
+        ):
             result = await assembler.gather_context("DISCOVERY")
 
         assert "integrations" in result
         assert isinstance(result["integrations"], list)
         assert len(result["integrations"]) == 2
+        statuses = {i["name"]: i["status"] for i in result["integrations"]}
+        assert statuses == {"github": "active", "slack": "inactive"}
 
     @pytest.mark.asyncio
     async def test_gather_trust_without_user_id(self):
@@ -409,8 +420,11 @@ class TestFormatDomainContext:
             ]
         }
         result = floor._format_domain_context(ctx)
-        assert "github" in result
-        assert "slack" not in result  # Only active integrations shown
+        # #1547 (audit F2): BOTH directions render — connected AND not-connected
+        # (the old render dropped inactive names, leaving the floor blind).
+        assert "Connected integrations: GitHub" in result
+        assert "Not connected" in result
+        assert "Slack" in result
 
     def test_format_trust_profile(self):
         floor = self._get_floor()

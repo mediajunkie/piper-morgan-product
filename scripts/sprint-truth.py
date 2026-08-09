@@ -106,6 +106,26 @@ def board_absent_issues(milestone):
         return None, str(exc)
 
 
+def unmilestoned_open():
+    """Open issues carrying NO milestone — invisible to every milestone-scoped count.
+
+    Found 2026-08-09: the MVP gate count fell 26 -> 17 over two days while 48 new issues
+    were filed with no milestone at all, every one created on or after 08-07. A gate number
+    alone therefore went DOWN while the work went UP, and nobody was lying. PM had already
+    named the consequence: "we clearly have a lot more work still to do than anyone ever
+    reported to me." A milestone-scoped instrument cannot see this by construction.
+    """
+    cmd = ["gh", "issue", "list", "--state", "open", "--limit", "400",
+           "--json", "number,milestone"]
+    try:
+        out = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
+        if out.returncode != 0:
+            return None
+        return [i for i in json.loads(out.stdout) if i.get("milestone") is None]
+    except Exception:
+        return None
+
+
 def milestone_of(item):
     ms = item.get("milestone")
     return ms.get("title") if isinstance(ms, dict) else ms
@@ -163,6 +183,11 @@ def main():
     tail = f" + {off_board} not on the board" if off_board else ""
     print("\n--- paste this, not a single number ---")
     print(f"{args.milestone}: {total_open} not done ({parts}{tail}); {done} done.")
+    un = unmilestoned_open()
+    if un is None:
+        print("⚠️  UNMILESTONED COUNT UNAVAILABLE — this figure covers ONE milestone only.")
+    else:
+        print(f"PLUS {len(un)} open issue(s) carry NO milestone and are outside every gate count.")
     if not_done.get("Sprint Backlog"):
         print(f"NOTE: {not_done['Sprint Backlog']} item(s) have NOT BEEN STARTED. "
               f"Any 'complete' claim must exclude itself explicitly.")

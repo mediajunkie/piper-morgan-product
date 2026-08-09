@@ -5,7 +5,7 @@ Handles CRUD operations for domain entities
 
 import uuid
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import structlog
 from sqlalchemy import String, and_, func, or_, select, update
@@ -2355,6 +2355,31 @@ class InsightRepository:
         Per #1031 Q1 (May 3): soft-delete semantics — `exclude_deleted=True`
         is the default; deleted insights are hidden from the journal page.
         Pass `exclude_deleted=False` for admin/diagnostic use cases.
+
+        #1545: deserialization is per-row — one malformed `learning` JSON row
+        is skipped (error-logged with id) instead of killing the whole
+        listing (live 2026-08-09: one bad row → the entire Insight Journal
+        page failed to load). Callers that want the skipped count for honest
+        UI copy use `list_for_user_with_skips`.
+        """
+        insights, _ = await self.list_for_user_with_skips(
+            user_id=user_id, limit=limit, exclude_deleted=exclude_deleted
+        )
+        return insights
+
+    async def list_for_user_with_skips(
+        self,
+        user_id: str,
+        limit: Optional[int] = None,
+        exclude_deleted: bool = True,
+    ) -> Tuple[List, int]:
+        """`list_for_user` plus the count of rows skipped because their
+        `learning` JSON failed to deserialize (#1545).
+
+        A row that fails `to_domain()` is skipped with an error log (insight
+        id + error) so the good rows still return; the skipped count lets the
+        journal page render "N insights could not be displayed" instead of
+        silently under-reporting.
         """
         filters = [InsightDB.user_id == user_id]
         if exclude_deleted:
@@ -2363,7 +2388,20 @@ class InsightRepository:
         if limit is not None:
             stmt = stmt.limit(limit)
         result = await self.session.execute(stmt)
-        return [row.to_domain() for row in result.scalars().all()]
+        insights: List = []
+        skipped = 0
+        for row in result.scalars().all():
+            try:
+                insights.append(row.to_domain())
+            except Exception as e:  # silent-ok: error-logged per row; good rows survive one bad row's deserialization failure (#1545)
+                skipped += 1
+                logger.error(
+                    "insight_row_deserialization_failed",
+                    insight_id=row.id,
+                    user_id=user_id,
+                    error=str(e),
+                )
+        return insights, skipped
 
     async def update_user_correction(self, insight_id: str, user_id: str, correction_text: str):
         """Record the user's free-text correction for an insight (#1031 Q2).

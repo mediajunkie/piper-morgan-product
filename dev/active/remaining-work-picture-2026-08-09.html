@@ -1,0 +1,168 @@
+<title>The Remaining-Work Picture — Aug 9</title>
+<style>
+  :root{--ground:#F7F6F3;--card:#FFF;--ink:#1B1A16;--ink-soft:#615E54;--rule:#E2DFD6;
+    --accent:#7A4A2B;--accent-soft:#F3EDE7;--warn:#8A6116;--crit:#A33520;--good:#3E6B45;
+    --shadow:0 1px 2px rgba(27,26,22,.05),0 10px 28px -14px rgba(27,26,22,.18);
+    --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --data:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;}
+  @media (prefers-color-scheme:dark){:root{--ground:#17150F;--card:#201E18;--ink:#EFEDE5;
+    --ink-soft:#A29D8F;--rule:#35322A;--accent:#D19A6E;--accent-soft:#282419;
+    --warn:#D5A44B;--crit:#E38672;--good:#79B885;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}}
+  :root[data-theme="dark"]{--ground:#17150F;--card:#201E18;--ink:#EFEDE5;--ink-soft:#A29D8F;
+    --rule:#35322A;--accent:#D19A6E;--accent-soft:#282419;--warn:#D5A44B;--crit:#E38672;--good:#79B885;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 28px -14px rgba(0,0,0,.6);}
+  :root[data-theme="light"]{--ground:#F7F6F3;--card:#FFF;--ink:#1B1A16;--ink-soft:#615E54;
+    --rule:#E2DFD6;--accent:#7A4A2B;--accent-soft:#F3EDE7;--warn:#8A6116;--crit:#A33520;--good:#3E6B45;
+    --shadow:0 1px 2px rgba(27,26,22,.05),0 10px 28px -14px rgba(27,26,22,.18);}
+  body{margin:0;background:var(--ground);color:var(--ink);font:16px/1.62 var(--body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:58rem;margin:0 auto;padding:3rem 1.25rem 5rem;display:flex;flex-direction:column;gap:2.4rem}
+  header{display:flex;flex-direction:column;gap:.5rem;border-bottom:3px double var(--rule);padding-bottom:1.4rem}
+  .stamp{font:500 .7rem/1 var(--data);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+  h1{font:400 2.4rem/1.12 var(--display);margin:0;letter-spacing:-.015em;text-wrap:balance}
+  .standfirst{color:var(--ink-soft);max-width:46ch;margin:0;font-size:1.04rem}
+  h2{font:600 .72rem/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+     margin:0;padding-bottom:.5rem;border-bottom:1px solid var(--rule)}
+  section{display:flex;flex-direction:column;gap:.75rem}
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:1.05rem 1.25rem;
+        box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.55rem}
+  .card.hero{border-left:5px solid var(--crit);padding:1.5rem 1.6rem}
+  .card.hero h3{font:400 1.5rem/1.22 var(--display);margin:0}
+  .card h3{margin:0;font:600 1.02rem/1.35 var(--body)}
+  .card>p{margin:0}
+  .note{color:var(--ink-soft);font-size:.93rem}
+  .bars{display:flex;flex-direction:column;gap:.4rem;margin-top:.3rem}
+  .bar{display:grid;grid-template-columns:9.5rem 1fr 3rem;align-items:center;gap:.6rem;font-size:.9rem}
+  .bar .lbl{color:var(--ink-soft);font:500 .78rem/1.3 var(--data);text-align:right}
+  .bar .track{background:var(--accent-soft);border-radius:2px;height:1.15rem;overflow:hidden}
+  .bar .fill{height:100%;background:var(--accent);opacity:.85}
+  .bar .val{font:600 .9rem/1 var(--body);font-variant-numeric:tabular-nums;text-align:right}
+  .bar.hot .fill{background:var(--crit)}
+  .bar.mvp .fill{background:var(--good)}
+  ul.plain{margin:0;padding-left:1.15rem;display:flex;flex-direction:column;gap:.45rem}
+  ul.plain li::marker{color:var(--ink-soft)}
+  code{font:.88em/1.4 var(--data);background:var(--accent-soft);padding:.1rem .3rem;border-radius:2px}
+  .pull{font:400 1.12rem/1.45 var(--display);color:var(--ink);border-left:3px solid var(--accent);
+        padding-left:1rem;margin:.3rem 0}
+  footer{border-top:1px solid var(--rule);padding-top:1rem;color:var(--ink-soft);font-size:.85rem}
+  @media (max-width:34rem){h1{font-size:1.9rem}.bar{grid-template-columns:7rem 1fr 2.6rem}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="stamp">Chief of Staff · Sunday 9 August 2026 · updated 10:40 — sorting section added</p>
+    <h1>What's actually left</h1>
+    <p class="standfirst">You moved beta because more work remained than anyone reported. Here is why the reports couldn't have shown it — and what the real number is.</p>
+  </header>
+
+  <section>
+    <h2>The finding</h2>
+    <div class="card hero">
+      <h3>The beta-gate count fell from 26 to 17 in two days. In the same two days, 48 new issues were filed with no milestone at all.</h3>
+      <p>Every one of those 48 was created on or after August 7. They are invisible to the beta-gate count by construction, because the count reads the MVP milestone and these carry no milestone. <strong>So the number everyone reports went down while the work went up</strong>, and no one was lying.</p>
+      <p class="pull">"We clearly have a lot more work still to do than anyone ever reported to me." — the reports were structurally incapable of showing it.</p>
+      <p class="note">This is the denominator problem in its most consequential form yet. Last week's version excluded six never-started items inside the sprint. This version excludes an entire category of work that sits outside every milestone — and it is the fastest-growing category we have.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Where the 263 open issues actually sit</h2>
+    <div class="card">
+      <div class="bars">
+        <div class="bar"><span class="lbl">Production</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">118</span></div>
+        <div class="bar hot"><span class="lbl">NO MILESTONE</span><span class="track"><span class="fill" style="width:40.7%"></span></span><span class="val">48</span></div>
+        <div class="bar"><span class="lbl">Fast Follow</span><span class="track"><span class="fill" style="width:36.4%"></span></span><span class="val">43</span></div>
+        <div class="bar"><span class="lbl">Ongoing</span><span class="track"><span class="fill" style="width:15.3%"></span></span><span class="val">18</span></div>
+        <div class="bar mvp"><span class="lbl">MVP (the gate)</span><span class="track"><span class="fill" style="width:13.6%"></span></span><span class="val">16</span></div>
+        <div class="bar"><span class="lbl">Enterprise</span><span class="track"><span class="fill" style="width:11%"></span></span><span class="val">13</span></div>
+        <div class="bar"><span class="lbl">Dot Releases</span><span class="track"><span class="fill" style="width:5.9%"></span></span><span class="val">7</span></div>
+      </div>
+      <p class="note"><strong>The gate is the second-smallest bucket on the board.</strong> Reporting against it and calling that "progress toward beta" was accurate about the bucket and misleading about the project — which is precisely the shape you caught.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What the 48 actually are — and this part is good news</h2>
+    <div class="card">
+      <p><strong>They are not scope creep. They are the product of you testing the product.</strong> Three on Aug 7, twenty-five on Aug 8, twenty on Aug 9 — the discovery rate rose as you spent real time in it.</p>
+      <ul class="plain">
+        <li><strong>The alpha-feedback conversion</strong> — five issues, filed this morning, zero unfiled. The strongest one is cold-start: show the user their own work in the first exchange, which two independent lanes converged on.</li>
+        <li><strong>Your own testing session</strong> — todo CRUD that is incomplete <em>and lies about it</em>, reminder duration-words silently dropped, a single malformed row taking down an entire journal, all-day events rendering as "at 12am."</li>
+        <li><strong>A class fix that found its own family</strong> — all four plugins hardcoding a status they don't check, then five more surfaces after the first fix landed.</li>
+        <li><strong>Twenty-one of them were closed within a day</strong>, which is the encouraging half: the pipeline is absorbing discovery fast.</li>
+      </ul>
+      <p class="note"><strong>My read</strong>: this is a healthy week that looked like a bad one only because the instrument pointed at the wrong bucket. Finding forty-eight real defects by using the product two days before shipping it to strangers is the system working. Shipping without finding them would have been the failure.</p>
+    </div>
+  </section>
+
+
+  <section>
+    <h2>The sort — what needs it, what dimensions are real, three approaches</h2>
+
+    <div class="card hero">
+      <h3>Six items need sorting, and the reason there's no answer yet is that the old key was withdrawn rather than replaced.</h3>
+      <p>The key everyone was sorting against — <em>"which surface survives the plugin pivot"</em> — was withdrawn yesterday after you corrected its premise: the web UI is not going away, and the experience is <em>"not specific to any one surface… expressed on each surface as appropriate."</em> <strong>Nothing replaced it.</strong> So the five alpha-feedback issues and one bug sit unmilestoned, and the ordering logic that would justify a tier is gone.</p>
+      <p class="note">Everything else was triaged this morning. This is the residue that needs a principle, not a decision-by-decision call.</p>
+    </div>
+
+    <div class="card">
+      <h3>What needs sorting</h3>
+      <ul class="plain">
+        <li><strong>#1536 cold-start</strong> — show the user their own work in the first exchange. The one finding two lanes reached independently.</li>
+        <li><strong>#1537 composer</strong> — the chat input doesn't grow; the tester wrote a long message he couldn't read back. <em>Filed as preference, corrected to structural.</em></li>
+        <li><strong>#1538 elicitation</strong> — ask one thing at a time and reflect between steps. <strong>Blocked by #1537.</strong></li>
+        <li><strong>#1539 purpose</strong> — <em>"a much stronger sense of what uncertainty it is reducing for me."</em> The tester's own words for what would have cleared his anxiety.</li>
+        <li><strong>#1540 navigation</strong> — primary nav hidden in the avatar pill, where he didn't look. <em>Also filed as preference, also corrected to structural.</em></li>
+        <li><strong>#1511 two standups</strong> — Slack <code>/standup</code> generates a summary; web <code>/standup</code> runs an interview. Same name, different products. Found by you, live-testing.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>The dimensions that are actually real</h3>
+      <p>Four hold up under examination. I've marked which discriminate well and which don't, because a dimension that splits nothing is decoration.</p>
+      <ul class="plain">
+        <li><strong>Does fixing it change the value answer?</strong> — i.e. does it make <em>"this is just an LLM with extra UI"</em> unavailable as a reading. <strong>Discriminates sharply</strong>: #1536, #1538, #1539 do; #1537, #1540, #1511 do not, however real they are.</li>
+        <li><strong>Does the fix travel across surfaces, or land on one?</strong> — <strong>the salvageable version of the withdrawn key.</strong> You rejected "which surface survives," but "is this experience-level or surface-local" follows directly from your own framing. #1536 and #1539 travel (every surface has a first contact and a purpose). #1538 travels as a pattern. #1537, #1540, #1511 are web-local.</li>
+        <li><strong>Did it change the tester's behavior?</strong> — the welfare carve-out, and the honest discriminator between real and aesthetic. #1537 did (he wrote a message he couldn't read). #1540 did (he didn't find navigation). #1539 did (anxiety, in his words). #1536 arguably did the most — he never met the differentiator.</li>
+        <li><strong>Evidence strength</strong> — #1536 alone has independent convergence from two lanes that didn't coordinate. The rest each rest on one lens. <strong>Weak as a primary sort</strong> (it would rank a single sharp observation below a popular one) but a good tiebreak.</li>
+      </ul>
+      <p class="note"><strong>One dimension I'd retire: "preference vs. structural."</strong> Two of these six were filed as preference and corrected to structural on review. A category that gets overturned a third of the time is measuring the filer's confidence, not the work.</p>
+      <p class="note"><strong>One we don't have: cost.</strong> None of the six is sized. Any sort that leans on effort is currently guessing, and I'd rather say so than imply a cheap/expensive split exists.</p>
+    </div>
+
+    <div class="card">
+      <h3>Three approaches, with what each gets wrong</h3>
+      <ul class="plain">
+        <li><strong>A · Value-first.</strong> Sort by whether the fix changes the value answer, dependency-ordered within tiers. Gives: #1536 → #1539 → (#1537 → #1538) → #1540 → #1511. <em>Gets wrong</em>: pushes two behavior-changing bugs below a conceptual fix, and #1538 is arguably the deepest change while sitting third because its blocker is cheap.</li>
+        <li><strong>B · Behavior-change-first.</strong> Ship what demonstrably altered how the tester acted, then the value work. Gives: (#1537 → #1538) → #1540 → #1536 → #1539 → #1511. <em>Gets wrong</em>: optimizes for the one tester we have. Four of these travel to every future user; two are what one practitioner hit on one afternoon.</li>
+        <li><strong>C · Travel-first.</strong> Ship what's experience-level before what's surface-local, since the surface-local work will be re-litigated as other surfaces mature. Gives: #1536 → #1539 → #1538 → #1537 → #1540 → #1511. <em>Gets wrong</em>: leaves #1537 late even though it <strong>blocks</strong> #1538, which is a mechanical contradiction the sort has to override.</li>
+      </ul>
+      <p class="pull">My recommendation: <strong>C with the dependency honored</strong> — #1536, #1539, then #1537→#1538 as a pair, then #1540, with #1511 sorted separately as a plain bug rather than experience work.</p>
+      <p class="note"><strong>Why C</strong>: it's the only one derived from a principle you've already stated rather than from the tester's session, so it keeps working when Jake is one of twenty testers instead of one of one. <strong>Why the caveat</strong>: #1537 costs little and unblocks the deepest item, so treating it as "surface-local, therefore later" would be the sort overriding a fact. <strong>And #1511 is not an experience finding</strong> — two features answering to one name is a plain defect, and sorting it alongside FTUX work would flatter it.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What I'd ask you to decide</h2>
+    <div class="card">
+      <ul class="plain">
+        <li><strong>Milestone the 48 — or rule that they don't need one.</strong> Right now they're in no plan. The five alpha-feedback issues were deliberately left unmilestoned pending your word; the rest are unmilestoned because nothing forced a choice at filing time.</li>
+        <li><strong>Say what the moved month is for.</strong> Development proposed a shape: cauterize the false trails, floor-honesty guardrails, auth/session work, the settings surface, and honest sizing for the never-started items. Architecture ratified the deeper fix this morning — the understanding layer inverts so vocabulary drift becomes structurally impossible rather than patched per phrasing. <strong>That is the band-aid factory closing, and it is the best use of a month I can see.</strong></li>
+        <li><strong>Two issues still aren't on the board</strong> (#1509, #1510) — filing with a milestone doesn't add them, so they're invisible to board-derived counts. One-time fix, then a filing habit.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>What I'm changing so you don't have to catch this again</h2>
+    <div class="card">
+      <p><strong>Every progress claim from now on reports the milestone bucket AND the unmilestoned count.</strong> A gate number alone is exactly the report that failed you this week — twice, at two different scopes, which is what makes it a pattern rather than an incident.</p>
+      <p class="note">The tool that produces these numbers has now been corrected twice in two days by people who didn't write it — once for a missing truncation check, once for a blind spot on off-board issues. Both fixes are in. I'd rather tell you that than present it as reliable.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Method.</strong> All counts pulled live from GitHub this morning, reconciled two ways (project board and issue list) after yesterday's blind-spot finding. Discovery dates are issue creation timestamps. The 21 same-day closures are counted separately and are not netted against the 48.</p>
+  </footer>
+</div>

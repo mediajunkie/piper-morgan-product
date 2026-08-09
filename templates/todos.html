@@ -149,6 +149,17 @@
       // Build action buttons based on permissions
       let actionButtons = '';
 
+      // #1541: Complete is the primary verb of a todo list — the page had no
+      // completion control at all. Only offered while not yet completed.
+      const isCompleted = todo.status === 'completed' || todo.completed;
+      if (canEdit(todo) && !isCompleted) {
+        actionButtons += `
+          <button class="complete-btn" onclick="completeTodo('${todo.id}')">
+            Complete
+          </button>
+        `;
+      }
+
       if (canEdit(todo)) {
         actionButtons += `
           <button class="edit-btn" onclick="editTodo('${todo.id}')">
@@ -280,6 +291,26 @@
     ToastMessages.info('coming_soon', { body: 'Edit functionality coming soon' });
   }
 
+  // Complete todo (#1541 — the page previously had no completion control)
+  async function completeTodo(todoId) {
+    try {
+      const response = await fetch(`/api/v1/todos/${todoId}/complete`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+      if (response.ok) {
+        ToastMessages.success('todo_completed');
+        await loadTodos();
+      } else {
+        const error = await response.json().catch(() => ({}));
+        ToastMessages.error('update_error', { body: error.detail || 'Please try again' });
+      }
+    } catch (error) {
+      console.error('Error completing todo:', error);
+      ToastMessages.error('update_error');
+    }
+  }
+
   // Delete todo
   function deleteTodo(todoId) {
     Dialog.confirm({
@@ -287,11 +318,21 @@
       message: "I'll remove this from your list. This can't be undone.",
       onConfirm: async () => {
         try {
-          // TODO: Call API to delete
-          // await fetch(`/api/v1/todos/${todoId}`, { method: 'DELETE' });
-
-          ToastMessages.success('todo_deleted');
-          await loadTodos();
+          // #1541: this call was commented out ("TODO: Call API to delete")
+          // while the success toast fired unconditionally — the page claimed
+          // deletion and the row survived refresh. The toast is now gated on
+          // the actual outcome.
+          const response = await fetch(`/api/v1/todos/${todoId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+          });
+          if (response.ok) {
+            ToastMessages.success('todo_deleted');
+            await loadTodos();
+          } else {
+            const error = await response.json().catch(() => ({}));
+            ToastMessages.error('delete_error', { body: error.detail || 'Please try again' });
+          }
         } catch (error) {
           console.error('Error deleting todo:', error);
           ToastMessages.error('delete_error');
