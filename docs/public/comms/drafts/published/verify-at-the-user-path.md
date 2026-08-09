@@ -46,6 +46,6 @@ The page renders now. It passes, if barely. Now I have one more reminder that a 
 
 ---
 
-*Next on Building Piper Morgan: "Over-Checking Has Dividends" — the corner you don't cut is the bug that never ships, and that dividend is invisible precisely because nothing went wrong.*
+*Next on Building Piper Morgan: "Over-Checking Pays Dividends" — the corner you don't cut is the bug that never ships, and that dividend is invisible precisely because nothing went wrong.*
 
 *Where in your own work does "it works" really mean "the data is there" — and when did you last actually stand where the user stands and load the thing yourself?*
