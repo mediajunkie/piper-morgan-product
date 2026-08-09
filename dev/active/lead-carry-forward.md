@@ -18,6 +18,14 @@
 - v40 LIVE (wave-2 cut: all 10 fixes). F1/F2 + F3 + probe results NOT yet deployed.
 - PM day-arc: crisis → reassured → deployed v39+v40 → testing. Discovery-rate assigned to Exec daily (baseline 59-this-week).
 
+## EVENING EVENTS (Sat night — newest truth)
+- **NIGHT SWEEP GATED CLEAN: 10,842 passed (record), 52 all-backlog, zero new.** Everything through 1436-slice-1 is cut-ready.
+- **PM deployed the evening wave** (escape/1530/1476-77/1480/afternoon batch all LIVE) and is working the interactive checklist (tracker artifact = primary source of truth; banner says CURRENT).
+- **Evening wave all landed**: 1529 (hijack mechanism SURVIVED 1394 — resume-check claimed bare affirmatives; fixed + universal escape), 1530 (invalidated-by-nothing cache), 1476/77 (example-card masquerade; 3-stacked-breaks sidebar), 1480 (4 drop points incl. server-side unencoded next), 1436-slice-1 (mypy full-spectrum, name-defined EXTINCT, live recurring-calendar NameError killed).
+- **Probe results**: surface 1 load-bearing 52% (14A/36D/2V); revised inversion shape with Arch (measured boundary + enforced vocabulary + shadow-sampler).
+- **Merge-drop INCIDENT CLOSED by Arch**: 17 files restored; mechanism = broad-staging hook's own remediation (restore --staged deletes incoming-new files mid-merge); CIO holds hook fix + guard ruling; Arch owned casualties 2+3 + their check-8 gap.
+- Dispatch state: ALL startable tier-1/2 built/building-none-left; holds = 1488 (PM repro), 1509/1510 (PPM specs — note PPM register: Jake work 9-of-15 unfiled, countability reset in progress).
+
 ## Next wake priorities
 1. Sweep verdict → backlog gate → cut rec to PM (if not already done in-session).
 2. PM's T6/T7 retest results; new-fix retests post-cut (1520 stay-active test, 1521 reminder question, 1490 orderings).

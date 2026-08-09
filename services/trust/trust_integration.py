@@ -15,8 +15,13 @@ Key responsibilities:
 """
 
 import logging
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 from uuid import UUID
+
+if TYPE_CHECKING:
+    # #1436: resolve the "IntentProcessingResult" forward ref for type
+    # checkers without a runtime trust->intent import cycle.
+    from services.intent.intent_service import IntentProcessingResult
 
 from services.domain.models import RequestContext
 from services.trust.outcome_classifier import OutcomeClassifier, OutcomeType

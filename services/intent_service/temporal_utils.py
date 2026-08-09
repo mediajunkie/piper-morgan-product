@@ -170,9 +170,16 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
     # on ("tomorrow at 3pm" AND "at 3pm tomorrow"). If the mention is
     # explicit but unbindable, return (None, raw-echo) — the handler asks
     # instead of guessing a default.
-    clock = find_explicit_clock_time(message_lower)
-    if clock is not None and clock[0] is None:
-        return (None, clock[2])
+    raw_clock = find_explicit_clock_time(message_lower)
+    # #1436: rebind with the unbindable case structurally excluded, so every
+    # branch below gets (int, int, str) — the guard here already enforced
+    # this at runtime; the locals make the invariant visible to type checkers.
+    clock: Optional[Tuple[int, int, str]] = None
+    if raw_clock is not None:
+        clock_hour, clock_minute = raw_clock[0], raw_clock[1]
+        if clock_hour is None or clock_minute is None:
+            return (None, raw_clock[2])
+        clock = (clock_hour, clock_minute, raw_clock[2])
 
     # --- "in N minutes/hours/days" ---
     in_match = re.search(
