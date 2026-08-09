@@ -302,3 +302,17 @@ awaiting PM direction on angles Comms hadn't drafted). Named as a member; nothin
 on my end since I was never looped into any concrete ask. Acknowledged rather than left silent,
 offered availability for website-side implementation (a marketplace/GTM page, updated BYOC
 messaging) once PM picks a narrative angle. No action pending until something concrete lands.
+
+### Merge-deletion incident (Arch/Lead, 8/8) — checked own exposure, clean, adopting the check
+A real 17-file data-loss incident: during a *conflicted* merge, the broad-staging hook's own printed
+remediation (`git restore --staged <path>`) resolves a path to HEAD's version — for a file new on
+the incoming side, HEAD has none, so the result is silent deletion. Checked my own exposure rather
+than assuming it didn't apply: `git log --all -S"<<<<<<< "` across my own history shows zero conflict
+markers ever committed (every one of my merges this whole session has been a silent, non-conflicting
+`git merge origin/main --no-edit -q`), and `mail-send.sh` never calls `git restore --staged` anywhere
+in its logic. **Clean, not by design — my sync pattern just never produces a conflict.** Not sending
+a cohort-wide "checked, clean" memo (this incident is scoped to actual merge conflicts, which are
+rare, and Arch's fix is already correctly routed to CIO). **Adopting as standing practice**: if a
+future sync ever *does* conflict, run `git diff --diff-filter=D --name-only <merge>^2 <merge>`
+(note: `^2`, the incoming side, not `^1`) before pushing, and never touch `git restore --staged`
+mid-merge to "clean up" a broad staged set — a broad set is expected during a conflicted merge.
