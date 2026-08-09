@@ -35,7 +35,7 @@
   b.n { font-variant-numeric:tabular-nums; }
   .st { font-size:.7rem; font-weight:650; border-radius:999px; padding:.05rem .5rem; margin-left:.3rem; white-space:nowrap; }
   .s-build { background:var(--fund-bg); color:var(--fund); }
-  .s-verify { background:var(--ver-bg); color:var(--ver); }
+  .s-verify { background:var(--infra-bg); color:var(--infra); }
   .s-todo { background:var(--pol-bg); color:var(--pol); }
   .s-block { background:var(--alert-bg); color:var(--alert); }
   .s-done { background:var(--ver-bg); color:var(--ver); font-weight:750; }
@@ -58,8 +58,17 @@
       <span style="font-size:.74rem;color:var(--soft);text-align:right">4 open: 2 built · 2 gated (PPM)</span></div>
     <div style="display:grid;grid-template-columns:10.5rem 1fr 13rem;gap:.7rem;align-items:center"><span style="font-size:.78rem;font-weight:650;color:var(--ver)">3 · Verified/closed</span>
       <div style="height:13px;background:var(--bar);border-radius:7px;overflow:hidden;display:flex"><span style="width:100%;background:var(--done)"></span></div>
-      <span style="font-size:.74rem;color:var(--soft);text-align:right">18 closed since Fri · 2 honest reopens</span></div>
+      <span style="font-size:.74rem;color:var(--soft);text-align:right">22 closed since Fri · 2 honest reopens</span></div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;font-size:.72rem;color:var(--soft);padding-top:.3rem;border-top:1px solid var(--rule)">
+      <span><b>Status stages:</b></span>
+      <span style="background:var(--pol-bg);color:var(--pol);border-radius:999px;padding:.05rem .5rem">not started</span>
+      <span style="background:var(--alert-bg);color:var(--alert);border-radius:999px;padding:.05rem .5rem">diagnosing / blocked</span>
+      <span style="background:var(--fund-bg);color:var(--fund);border-radius:999px;padding:.05rem .5rem">building (agent out)</span>
+      <span style="background:var(--infra-bg);color:var(--infra);border-radius:999px;padding:.05rem .5rem">built — NOT yet tested</span>
+      <span style="background:var(--ver-bg);color:var(--ver);border-radius:999px;padding:.05rem .5rem">✓ tested & accepted</span>
+    </div>
   </div>
+
 
   <section class="v">
     <h2>✅ Your three remaining tests + one unblock (exact steps)</h2>
