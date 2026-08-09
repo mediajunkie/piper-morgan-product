@@ -18,6 +18,8 @@ from typing import Any, Callable, Coroutine, Dict, Optional
 
 import structlog
 
+from services.shared_types import EffectClass
+
 logger = structlog.get_logger(__name__)
 
 
@@ -29,6 +31,17 @@ class WorkflowEntry:
     Attributes:
         entry_point: Async callable that starts the workflow.
             Signature: (session_id, user_id, context) -> IntentProcessingResult
+        effect: REQUIRED, DEFAULTLESS (Arch ruling 2026-08-09 / PDR-006
+            condition 2, ruled 2026-08-04). What the workflow's operation does
+            in the world: EffectClass.READ / WRITE / DESTRUCTIVE (ordered;
+            destructive ⊂ write). Not computable from the entry point or
+            description — classify by READING the handler, never by its name.
+            Defaultless is load-bearing: every other optional field here is
+            defaulted, and a defaulted effect would let future entries
+            silently inherit a mutation-semantics value nobody chose. The
+            construction-site break IS THE FEATURE — you cannot register a
+            handler without saying whether it writes. Consumers derive their
+            predicates from the properties below; they never re-infer.
         resume_point: Optional async callable for resuming a suspended workflow.
             If None, resume falls back to entry_point with existing session context.
         requires_context: List of context keys the workflow expects.
@@ -41,10 +54,36 @@ class WorkflowEntry:
     """
 
     entry_point: Callable[..., Coroutine[Any, Any, Any]]
+    effect: EffectClass
     resume_point: Optional[Callable[..., Coroutine[Any, Any, Any]]] = None
     requires_context: list[str] = field(default_factory=list)
     description: str = ""
     action_triggered: bool = False
+
+    # ── Derivations (Arch ruling 2026-08-09): one declaration, four ─────────
+    # predicates. Each consumer reads ITS property; none re-derives effect
+    # from names, descriptions, or write sets.
+
+    @property
+    def read_only_hint(self) -> bool:
+        """MCP ``readOnlyHint`` annotation (PDR-006 §30, PA's spec)."""
+        return self.effect == EffectClass.READ
+
+    @property
+    def destructive_hint(self) -> bool:
+        """MCP ``destructiveHint`` annotation (PDR-006 §30, PA's spec)."""
+        return self.effect == EffectClass.DESTRUCTIVE
+
+    @property
+    def needs_consent(self) -> bool:
+        """#1509 consent gate: any write (destructive included) needs consent."""
+        return self.effect >= EffectClass.WRITE
+
+    @property
+    def needs_confirm(self) -> bool:
+        """#1190 destructive-mutation gate: destructive writes need explicit
+        confirmation on top of consent."""
+        return self.effect == EffectClass.DESTRUCTIVE
 
 
 # ─── Workflow Registry ───────────────────────────────────────────────
