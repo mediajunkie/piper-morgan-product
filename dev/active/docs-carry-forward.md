@@ -56,10 +56,6 @@ but keep testing rather than assuming permanence.
 ## Awaiting others — check, don't re-derive
 
 - **PDR-007 awaits CIO ONLY** — Arch ✅ Web ✅, no objection. Measurement window runs to 2026-08-27.
-- **Web to ship 2 fixes I unblocked 08-09** — `/admin/publish-queue` runtime-read extension (my call:
-  yes) and `copy-editorial-calendar.js`'s worktree-sibling-path bug (my call: prefer the GitHub API
-  over a path-walk). Both had sat in MY queue 11 days since Web's 07-29 memo — genuinely my miss, not
-  Web waiting on anyone. Resolved and sent 08-09; watch for Web's ship, not a reply requirement.
 - **CIO's day-of-week duty-check proposal reply** — sent 08-04, no reply yet, not urgent.
 - **#1475 / #1486** — both OPEN, unchanged, not urgent.
 
@@ -73,6 +69,12 @@ but keep testing rather than assuming permanence.
 4. **#1486's actual checklist** — not urgent.
 5. **methodology-20's compression rules mutually unsatisfiable** — CIO owns.
 6. **`docs-standing-items.md` stale** — low priority.
+
+## Resolved 2026-08-09 — do NOT re-open
+
+- **Web's 2 fixes I'd left unblocked for 11 days** — traced from PM's question about Dispatch's
+  stale-calendar friction to my own unanswered 07-29 memo; resolved with clear decisions same-day, Web
+  shipped both within the hour (`1b95fa5`), verified the actual commit diff matches before closing.
 
 ## Resolved 2026-08-08 — do NOT re-open
 
