@@ -70,11 +70,17 @@ class TestRouterClose:
 
 class TestWorkItemProviderClosesRouter:
     """The Radar WorkItem provider constructs a fresh router per call (#1239);
-    it must close it whether the fetch succeeds or blows up mid-way."""
+    it must close it whether the fetch succeeds or blows up mid-way.
 
-    def _mock_router(self, *, configured=True):
+    #1547: the configured-gate is the canonical IntegrationStatusService
+    (binding-first), patched here so these stay hermetic."""
+
+    _SVC = (
+        "services.integrations.integration_status_service.IntegrationStatusService"
+    )
+
+    def _mock_router(self):
         router = MagicMock()
-        router.config_service.is_configured.return_value = configured
         router.initialize = AsyncMock()
         router.get_open_issues = AsyncMock(return_value=[])
         router.close = AsyncMock()
@@ -85,6 +91,8 @@ class TestWorkItemProviderClosesRouter:
 
         router = self._mock_router()
         with patch(
+            f"{self._SVC}.is_configured", new=AsyncMock(return_value=True)
+        ), patch(
             "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
             return_value=router,
         ), patch(
@@ -100,6 +108,8 @@ class TestWorkItemProviderClosesRouter:
         router = self._mock_router()
         router.get_open_issues = AsyncMock(side_effect=RuntimeError("github down"))
         with patch(
+            f"{self._SVC}.is_configured", new=AsyncMock(return_value=True)
+        ), patch(
             "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
             return_value=router,
         ), patch(
@@ -115,8 +125,10 @@ class TestWorkItemProviderClosesRouter:
         return [] before initialize (and close isn't required — no session)."""
         from services.radar.feed_factory import WorkItemProvider
 
-        router = self._mock_router(configured=False)
+        router = self._mock_router()
         with patch(
+            f"{self._SVC}.is_configured", new=AsyncMock(return_value=False)
+        ), patch(
             "services.integrations.github.github_integration_router.GitHubIntegrationRouter",
             return_value=router,
         ):

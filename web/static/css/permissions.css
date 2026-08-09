@@ -98,6 +98,16 @@
 }
 
 /* Action button colors - semantic, intentionally specific */
+.resource-actions button.complete-btn {
+  /* #1541 todo completion control */
+  background: var(--color-accent-success);
+  color: var(--color-neutral-white);
+}
+
+.resource-actions button.complete-btn:hover {
+  background: var(--color-accent-success-dark);
+}
+
 .resource-actions button.edit-btn {
   background: var(--color-primary);
   color: var(--color-neutral-white);

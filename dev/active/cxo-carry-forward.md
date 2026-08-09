@@ -27,7 +27,11 @@
 - **My finding still stands**: its *justification* is a June-5 rating of a history list, **two weeks older than Radar**. Defensible conclusion, indefensible reason.
 - 🔴 **Still open, small**: **Surface 3 is a phantom** — one corpus mention, in the very sentence that rates Radar. PPM's ask to PM: *name it or strike it (5 of 6)*. **Neither of us will guess the history.**
 
-## ⭐ TOP CXO WORK ITEM — the across-all-surfaces statement (deferred to a FRESH CONTEXT, 08-08)
+## ✅ DELIVERED 2026-08-09 — the across-all-surfaces statement
+
+**`docs/internal/design/experience-across-surfaces.md` v0.1 DRAFT, on `origin/main` (verified via `git cat-file -e`).** Every claim marked 📌 PM's words / 📄 ratified+cited / ✏️ CXO pending PM. **Four ✏️ items await PM (§7)**: the §3 one-sentence formulation · §4's *"must not be asked to"* column · §6's same-colleague corollary · **is Surface 1 in the 1.0 five**. ⛔ **Offered PM the delete** if he'd rather it stay verbal. **Do not re-derive; cite it.**
+
+### (superseded framing, kept for the record)
 
 **PPM withdrew their "which surface survives PDR-006" sort key; PM had ratified it on that framing and I concurred. My concurrence is withdrawn too** (my 08-03 memo argued *"differs on bucket A only on timing, not merit"* — that accepts the key).
 **PM stated the real model verbatim 08-08**: *"a holistic user experience, **expressed on each surface as appropriate**"* — phone = notifications, Slack = channel bot, web = conversations + radar + settings, another chat = skills + MCP, **CLI still maintained. All true at once.** *"I never said the web UI was going away."*

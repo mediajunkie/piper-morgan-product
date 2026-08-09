@@ -7,6 +7,7 @@ Provides todo CRUD endpoints with ownership validation:
 - User-isolated todo access
 """
 
+from datetime import datetime, timezone
 from typing import List, Optional
 
 import structlog
@@ -74,6 +75,11 @@ class CreateTodoRequest(BaseModel):
     description: Optional[str] = None
     status: Optional[str] = "pending"
     priority: Optional[str] = "medium"
+    # #1541: the /todos page has ALWAYS sent due_date from its create dialog;
+    # this model had no such field, so Pydantic silently dropped it and
+    # page-created due dates never persisted (which is also why they could
+    # never surface in Slack /standup). ISO date or datetime string.
+    due_date: Optional[str] = None
 
 
 @router.post("")
@@ -107,6 +113,20 @@ async def create_todo(
                 detail="Todo title is required",
             )
 
+        # #1541: parse due_date (the page sends "YYYY-MM-DD" from
+        # <input type="date">). Honest 400 on garbage, never a silent drop.
+        due_date: Optional[datetime] = None
+        if request.due_date:
+            try:
+                due_date = datetime.fromisoformat(request.due_date)
+            except ValueError:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Invalid due_date: use ISO format (YYYY-MM-DD)",
+                )
+            if due_date.tzinfo is None:
+                due_date = due_date.replace(tzinfo=timezone.utc)
+
         # Create todo with ownership
         # Note: Todo domain model uses 'text' not 'title' (title is a property)
         new_todo = domain.Todo(
@@ -114,6 +134,7 @@ async def create_todo(
             description=request.description or "",
             status=request.status or "pending",
             priority=request.priority or "medium",
+            due_date=due_date,
             owner_id=current_user.sub,
         )
 
@@ -133,6 +154,7 @@ async def create_todo(
             "status": created_todo.status,
             "priority": created_todo.priority,
             "owner_id": created_todo.owner_id,
+            "due_date": created_todo.due_date.isoformat() if created_todo.due_date else None,
             "created_at": created_todo.created_at.isoformat() if created_todo.created_at else None,
         }
 
@@ -251,6 +273,9 @@ async def list_todos(
                     "status": t.status,
                     "priority": t.priority,
                     "owner_id": t.owner_id,
+                    # #1541: the template has always rendered todo.due_date;
+                    # this payload never carried it, so that branch was dead.
+                    "due_date": t.due_date.isoformat() if t.due_date else None,
                     "created_at": t.created_at.isoformat() if t.created_at else None,
                     # MUX Lifecycle (#708) - include when present for UI indicator
                     "lifecycle_state": t.lifecycle_state.value if t.lifecycle_state else None,
@@ -433,6 +458,86 @@ async def delete_todo(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to delete todo",
+        )
+
+
+@router.post("/{todo_id}/complete")
+async def complete_todo(
+    todo_id: str,
+    current_user: JWTClaims = Depends(get_current_user),
+    todo_repo=Depends(get_todo_repository),
+) -> dict:
+    """
+    Mark a todo completed, with ownership validation (SEC-RBAC).
+
+    Issue #1541: the /todos page had NO completion control and the API had no
+    completion route — Complete is the primary verb of a todo list. Mirrors
+    the delete route's ownership pattern (verify via get_todo_by_id scoped to
+    owner, then act) and calls TodoRepository.complete_todo, which sets
+    status/completed/completed_at — the exact fields the Slack /standup
+    "Yesterday" section reads.
+
+    Args:
+        todo_id: Todo ID to complete
+        current_user: Current authenticated user
+        todo_repo: Todo repository (injected)
+
+    Returns:
+        The completed todo (status, completed, completed_at)
+
+    Raises:
+        HTTPException 404: Todo not found or not owned by current user
+        HTTPException 500: Server error (including a repo refusal — never a
+            fake success)
+    """
+    try:
+        # Verify ownership before completing
+        todo_obj = await todo_repo.get_todo_by_id(todo_id, owner_id=current_user.sub)
+
+        if not todo_obj:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Todo not found: {todo_id}",
+            )
+
+        completed = await todo_repo.complete_todo(todo_id, owner_id=current_user.sub)
+
+        if not completed:
+            # The todo existed a moment ago but the update touched nothing —
+            # report the failure honestly instead of claiming completion.
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to complete todo",
+            )
+
+        logger.info(
+            "todo_completed",
+            user_id=current_user.sub,
+            todo_id=todo_id,
+        )
+
+        return {
+            "id": completed.id,
+            "title": completed.title,
+            "status": completed.status,
+            "completed": completed.completed,
+            "completed_at": completed.completed_at.isoformat() if completed.completed_at else None,
+            "owner_id": completed.owner_id,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(
+            "todo_complete_error",
+            user_id=current_user.sub,
+            todo_id=todo_id,
+            error=str(e),
+            exc_info=True,
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to complete todo",
         )
 
 

@@ -73,9 +73,25 @@ class TestPluginInterfaceContract:
         ), f"Router prefix must start with '/', got {router.prefix}"
 
     def test_router_has_routes(self, plugin_instance):
-        """Router must define at least one route"""
+        """Router may be empty but must never serve a constant-false /status.
+
+        #1547 (audit F5): the four real plugins' only route was
+        ``GET /status`` emitting ``configured: false`` forever (#784) — deleted.
+        An empty router is the honest state until a plugin grows real routes;
+        what's enforced now is that no plugin reintroduces a /status sub-route
+        (per-user truth lives at /api/v1/integrations/health).
+        """
+        if plugin_instance.get_metadata().name == "demo":
+            # Demo's /status is env-fed (DEMO_ENABLED) and truthful at plugin
+            # level; demo is excluded from user-facing surfaces structurally
+            # (IntegrationStatusService known set), not by route deletion.
+            return
         router = plugin_instance.get_router()
-        assert len(router.routes) > 0, "Router must have at least one route defined"
+        paths = [getattr(r, "path", "") for r in router.routes]
+        assert not any(
+            p.endswith("/status") and router.prefix.startswith("/api/v1/integrations/")
+            for p in paths
+        ), "Plugin /status sub-routes are retired (#1547 F5) — do not reintroduce"
 
     def test_is_configured_returns_bool(self, plugin_instance):
         """is_configured() must return boolean"""
@@ -88,7 +104,21 @@ class TestPluginInterfaceContract:
         assert isinstance(status, dict), f"get_status() must return dict, got {type(status)}"
 
     def test_status_has_configured_field(self, plugin_instance):
-        """Status dict should include 'configured' field"""
+        """Status dict should include 'configured' field.
+
+        #1547: `configured` may be None — configuration is user-scoped and
+        unknowable at plugin level (#784), so user-scoped plugins report None
+        (with a `configured_note` pointing at IntegrationStatusService) rather
+        than fabricating a boolean. A boolean remains valid for plugins whose
+        configuration IS knowable at plugin level (e.g. env-fed demo).
+        """
         status = plugin_instance.get_status()
         assert "configured" in status, "Status dict must include 'configured' field"
-        assert isinstance(status["configured"], bool), "Status 'configured' field must be boolean"
+        assert isinstance(status["configured"], (bool, type(None))), (
+            "Status 'configured' field must be boolean or None (user-scoped)"
+        )
+        if status["configured"] is None:
+            assert "configured_note" in status, (
+                "A None 'configured' must carry a 'configured_note' naming the "
+                "canonical status source (#1547)"
+            )

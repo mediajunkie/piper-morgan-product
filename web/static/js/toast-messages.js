@@ -22,6 +22,7 @@ const TOAST_MESSAGES = {
   // Todo operations
   todo_created: { title: 'Got it', body: 'Todo added' },
   todo_updated: { title: 'Updated', body: 'Todo saved' },
+  todo_completed: { title: 'Done', body: 'Todo completed' },  // #1541 complete control
   todo_deleted: { title: 'Done', body: 'Todo removed' },
 
   // List operations

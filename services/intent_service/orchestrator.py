@@ -270,22 +270,29 @@ class IntentOrchestrator:
                 transition = transitions[i % len(transitions)].format(topic=topic)
                 parts.append(f"{transition}, {_lowercase_first(result.response)}")
 
-        # Note any failures
+        body = " ".join(parts)
+
+        # Note any failures — as their OWN paragraph, never space-joined onto
+        # the last content line. #1431 bonus defect (PM screenshots 2026-08-09):
+        # when the preceding response ended in a bullet list, the space-join
+        # rendered the failure note as part of the last item's name
+        # ("- One Job I wasn't able to check on project status ...").
         if failed:
             failure_topics = [_intent_topic_label(r.intent) for r in failed]
             if len(failure_topics) == 1:
                 # #1198: no false retry promise — nothing retries in the background.
-                parts.append(
+                failure_note = (
                     f"I wasn't able to check on {failure_topics[0]} right now — ask me again and I'll retry."
                 )
             else:
                 topics = ", ".join(failure_topics)
                 # #1198: no false retry promise — nothing retries in the background.
-                parts.append(
+                failure_note = (
                     f"I wasn't able to check on {topics} right now — ask me again and I'll retry."
                 )
+            body = f"{body}\n\n{failure_note}" if body else failure_note
 
-        return " ".join(parts)
+        return body
 
 
 def _intent_topic_label(intent: Intent) -> str:

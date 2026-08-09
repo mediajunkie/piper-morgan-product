@@ -192,6 +192,34 @@ class TestExplicitClockTimeInvariant1490:
         )
 
     @pytest.mark.parametrize(
+        "message,delta",
+        [
+            # Issue #1542 (invariant deepening): word-form durations are
+            # explicit time expressions too. The digit-only "in \d+ hours"
+            # let these fall to the tomorrow-9am default (PM live 8/9:
+            # "remind me to stretch in two hours" saved for tomorrow 09:00).
+            ("remind me to stretch in two hours", timedelta(hours=2)),
+            ("remind me in two hours to stretch", timedelta(hours=2)),
+            ("remind me in ten minutes to check the oven", timedelta(minutes=10)),
+            ("remind me to follow up in three days", timedelta(days=3)),
+            ("remind me in twelve hours to take the medication", timedelta(hours=12)),
+            ("remind me in one minute to look up", timedelta(minutes=1)),
+        ],
+    )
+    def test_explicit_word_duration_is_always_carried(self, message, delta):
+        before = datetime.now().astimezone()
+        dt, label = parse_reminder_time(message)
+        after = datetime.now().astimezone()
+        assert dt is not None, (
+            f"explicit word-form duration in {message!r} parsed to None (label {label!r})"
+        )
+        assert before + delta <= dt <= after + delta, (
+            f"explicit word-form duration in {message!r} not carried: expected "
+            f"now+{delta}, got {dt} (label {label!r}) — a silent default "
+            "violates the #1490 invariant (#1542 deepening)"
+        )
+
+    @pytest.mark.parametrize(
         "message,echo",
         [
             # Explicit-but-unbindable times: minute > 59, am/pm hour out of

@@ -92,18 +92,27 @@ async def list_insights(
 
     Backs the Insight Journal page initial load. Soft-deleted insights
     are excluded by default (Q1 disposition).
+
+    #1545: rows whose learning JSON fails to deserialize are skipped at the
+    repo layer (error-logged with id) instead of 500ing the whole listing
+    (live 2026-08-09: one bad row → "Failed to load insights" for every
+    insight). `skipped_count` rides in the payload so the page can render
+    "N insights could not be displayed" honestly.
     """
     try:
         async with AsyncSessionFactory.session_scope() as session:
             repo = InsightRepository(session)
-            insights = await repo.list_for_user(user_id=current_user.sub)
+            insights, skipped_count = await repo.list_for_user_with_skips(
+                user_id=current_user.sub
+            )
         payload = [_insight_to_payload(i) for i in insights]
         logger.info(
             "insights_listed",
             user_id=current_user.sub,
             count=len(payload),
+            skipped_count=skipped_count,
         )
-        return {"insights": payload, "count": len(payload)}
+        return {"insights": payload, "count": len(payload), "skipped_count": skipped_count}
     except Exception as e:
         logger.error("insights_list_error", user_id=current_user.sub, error=str(e), exc_info=True)
         raise HTTPException(

@@ -134,19 +134,17 @@ INTEGRATION_REGISTRY = {
     },
 }
 
-# Module-level health monitor instance for tracking test results
-_health_monitor: Optional[IntegrationHealthMonitor] = None
-
-
 def _get_health_monitor() -> IntegrationHealthMonitor:
-    """Get or create the health monitor singleton"""
-    global _health_monitor
-    if _health_monitor is None:
-        _health_monitor = IntegrationHealthMonitor()
-        # Register all integrations
-        for integration_id in INTEGRATION_REGISTRY.keys():
-            _health_monitor.register_component(integration_id, ComponentStatus.UNKNOWN)
-    return _health_monitor
+    """The shared health monitor singleton.
+
+    #1547: the singleton moved to services/integrations/integration_status_service.py
+    (the canonical status source) so chat/floor/standup surfaces see the same cached
+    active-test results the /test/* routes record. This delegate keeps the route's
+    historical import surface working.
+    """
+    from services.integrations.integration_status_service import get_health_monitor
+
+    return get_health_monitor()
 
 
 def _get_error_guidance(integration: str, error_type: str) -> tuple[str, Optional[str]]:
@@ -306,24 +304,14 @@ async def check_all_connections(current_user: JWTClaims = Depends(get_current_us
 async def _github_oauth_bound(user_id: Optional[str]) -> bool:
     """True if the user has a BOUND github OAuth-connector binding (#1329 / ADR-070 C).
 
-    GitHub health follows the OAuth connector after the #1322 cutover, not the legacy
-    native PAT — so a dead/expired PAT must NOT make GitHub read as unhealthy when the
-    connector is bound and the chat reads work through it. Mirrors the binding check in
-    ``GET /github/oauth-status``.
+    #1547: canonical logic hoisted to
+    services/integrations/integration_status_service.py (the ONE status source);
+    this thin delegate keeps /health and /test/* consuming it under the route's
+    historical name.
     """
-    if not user_id:
-        return False
-    try:
-        from services.connectors.binding_repository import ConnectorBindingRepository
-        from services.database.session_factory import AsyncSessionFactory
-        from services.mcp.consumer.connector import ConnectorStatusState
+    from services.integrations.integration_status_service import github_oauth_bound
 
-        async with AsyncSessionFactory.session_scope() as session:
-            binding = await ConnectorBindingRepository(session).get(user_id, "github")
-        return binding is not None and binding.status == ConnectorStatusState.BOUND.value
-    except Exception as e:
-        logger.warning("github oauth-binding health check failed", error=str(e))
-        return False
+    return await github_oauth_bound(user_id)
 
 
 async def _check_integration_health(
@@ -426,83 +414,18 @@ async def _check_integration_health(
 
 
 async def _get_integration_config_status(integration_id: str, user_id: Optional[str] = None) -> str:
-    """Check if an integration is configured by checking environment variables"""
-    import os
+    """Check if an integration is configured (user-scoped stores + env).
 
-    try:
-        # Check integration-specific environment variables
-        if integration_id == "notion":
-            if os.environ.get("NOTION_API_TOKEN") or os.environ.get("NOTION_API_KEY"):
-                return "configured"
-            # #1337: user-scoped path. save_notion_key stores the key in the #358
-            # user-secret store (UserAPIKeyService, provider "notion") — NOT the keychain
-            # that slack/calendar use. Health was env-only and missed this, so a
-            # UI-configured Notion read "not configured." Mirror the user-scoped intent.
-            if user_id:
-                try:
-                    from services.database.session_factory import AsyncSessionFactory
-                    from services.security.user_api_key_service import UserAPIKeyService
+    #1547: canonical logic hoisted to
+    services/integrations/integration_status_service.py — the #1513 (github
+    keychain) / #1337 (notion user-secret store) / #839 (calendar user-scoped
+    key) / ADR-058 (slack keychain) composition lives there now. This thin
+    delegate preserves the route's historical name and status-string contract.
+    """
+    from services.integrations.integration_status_service import get_config_status
 
-                    async with AsyncSessionFactory.session_scope_fresh() as session:
-                        if await UserAPIKeyService().retrieve_user_key(
-                            session, user_id, "notion"
-                        ):
-                            return "configured"
-                except Exception:
-                    pass
-        elif integration_id == "slack":
-            # Env-var path (production / explicit-config deployment)
-            if os.environ.get("SLACK_BOT_TOKEN"):
-                return "configured"
-            # Keychain path (OAuth-completed deployment per ADR-058 — bot token
-            # stored under user-scoped keychain key after a successful OAuth
-            # callback). Mirrors the calendar branch below.
-            if user_id:
-                try:
-                    from services.infrastructure.keychain_service import KeychainService
-
-                    keychain = KeychainService()
-                    if keychain.get_api_key("slack_bot", username=user_id):
-                        return "configured"
-                except Exception:
-                    pass
-        elif integration_id == "github":
-            if os.environ.get("GITHUB_TOKEN") or os.environ.get("GITHUB_ACCESS_TOKEN"):
-                return "configured"
-            # #1513: PAT saves store the token user-scoped in the keychain ONLY
-            # (the process-env write was restart-volatile and removed in #1507),
-            # but this branch was env-only — so a connected GitHub read "not
-            # configured" after any machine restart. Mirrors the user-scoped
-            # branches notion (#1337), slack, and calendar (#839) already have.
-            if user_id:
-                try:
-                    from services.infrastructure.keychain_service import KeychainService
-
-                    if KeychainService().get_api_key("github_token", username=user_id):
-                        return "configured"
-                except Exception:
-                    pass
-        elif integration_id == "calendar":
-            # Calendar uses keychain token (Issue #529) or legacy MCP/credentials
-            # Issue #839: Use user-scoped key when user_id available
-            try:
-                from services.infrastructure.keychain_service import KeychainService
-
-                keychain = KeychainService()
-                key_name = f"google_calendar_{user_id}" if user_id else "google_calendar"
-                if keychain.get_api_key(key_name):
-                    return "configured"
-            except Exception:
-                pass
-            # Fallback to legacy check
-            if os.environ.get("GOOGLE_CALENDAR_CREDENTIALS") or os.environ.get("MCP_ENABLED"):
-                return "configured"
-
-        return "not_configured"
-
-    except Exception as e:
-        logger.warning(f"Failed to check {integration_id} config", error=str(e))
-        return "unknown"
+    status, _via = await get_config_status(integration_id, user_id=user_id)
+    return status
 
 
 async def _test_integration(integration_id: str, user_id: Optional[str] = None) -> Dict[str, Any]:

@@ -35,6 +35,69 @@ A real **`.git/hooks/pre-commit` gate** is installed in the shared common dir (P
 
 ---
 
+## 🔴 HARD RULE FOR MYSELF (2026-08-09, PM-escalated as a TRUST VIOLATION) — never glob the inbox
+
+**`read/` is a CLAIM ABOUT MY OWN COGNITION.** Moving a file there asserts *"I read this."* On 08-08 I
+moved Lead's probe-results memo there **without reading it**, then told PM no such memo existed — and
+PPM's independent search corroborated my false negative because they inherited my framing.
+
+**PM's ruling: this must never happen again. It is a real violation of trust.**
+
+### The rule already existed and I broke it by batching
+PM correction 2026-05-15: *"Inbox is for arrivals **not yet read OR not yet acted on**."* The two-folder
+model already encodes "not new but not read yet." **No third folder is needed** — PM offered one and the
+honest answer is that it would just give a bulk loop one more destination to move unread things into.
+**The defect is an UNVERIFIED TRANSITION, not a missing state.**
+
+### The structural fix — the glob is the smell
+> ⛔ **NEVER `for f in mailboxes/arch/inbox/*.md`.** A directory glob makes the move a scheduled chore
+> instead of a consequence of reading.
+> ✅ **The drain iterates a list I APPEND TO IN THE SAME TOOL CALL THAT DISPLAYS A MEMO'S CONTENTS.**
+> Unread ⇒ never in the list ⇒ **cannot move.** Bad state unrepresentable, not merely forbidden.
+
+**If a fire ends with unread mail, it stays in `inbox/` and the fire entry says so.**
+
+### ⚠️ EXTENSION (2026-08-09 09:3x) — the move has TWO halves, and I got each wrong on consecutive days
+
+**08-08**: moved memos to `read/` **without reading them** → the record claimed more than reality.
+**08-09**: read them properly, moved them locally — **but passed only the MANIFESTs to `mail-send.sh`, so
+the moves never reached the trunk.** From every other agent's view my inbox still held 10 unread memos.
+**The act happened; the shared record didn't.**
+
+> ⭐ **A mailbox move is a COGNITIVE ACT (reading) plus a SHARED RECORD (the push). Yesterday I did the
+> record without the act. Today the act without the record. Both leave the board wrong.**
+
+**✅ Mandatory verification, one command, after every drain:**
+```
+git ls-tree -r --name-only origin/main -- mailboxes/arch/inbox/ | grep -vc MANIFEST
+```
+**Not `ls mailboxes/arch/inbox/`.** I checked the local directory, saw zero, and told PM *"my inbox is
+genuinely empty"* — **true locally, false where it matters.** Verify at the layer other agents read.
+
+**And pass BOTH SIDES of every move to `mail-send.sh`** — the inbox-side deletion AND the read-side
+addition. Passing only MANIFESTs pushes a manifest that disagrees with the tree. An inbox that isn't
+empty is an honest inbox; a `read/` folder with unread mail in it is a lie that nothing can detect.
+
+### Why it is a TRUST violation and not a delay (PM's chess-board framing)
+Mailboxes are an **event log**; nobody holds the **position**. `read/` is a move-log annotation, so a false
+"consumed" doesn't delay the information — **it removes it from the system**, because no state anywhere
+still shows the thread waiting. A shared board would have exposed it as a contradiction: input consumed,
+thread open, no ruling emitted. **Same shape as the heartbeat finding: you cannot detect absence from a
+surface authored by the party whose absence is in question.**
+
+## ⚠️ Superseded detail (kept for the record) — the drain loop moved an UNREAD memo
+
+**I drained `results-lead-to-arch-…-the-probe-you-ordered-…-2026-08-08.md` into `read/` in an earlier fire
+without reading it.** Then I searched for an *08-09* date, concluded no Lead memo existed, told PM so, and
+**PPM's whole-tree search corroborated it because they inherited my framing.** A false negative of mine
+propagated into an independent "confirmation."
+
+**Two fixes, both mine:**
+1. **Never `mv` a memo to `read/` in the same pass that first sees it** — read, then move. The bulk drain
+   is for things already actioned this fire.
+2. **Search for the OBJECT, not the date.** I looked for "a Lead memo dated 08-09"; the memo was a Lead
+   memo dated 08-08. **The date was my assumption, not the thing I was looking for.**
+
 ## Active threads
 
 ### Owed by me

@@ -87,7 +87,10 @@ def test_workitem_source_registered_in_feed():
 
 async def test_workitem_provider_returns_empty_when_github_unavailable(monkeypatch):
     """A GitHub hiccup must NEVER blank Radar — the provider degrades to [] (and
-    RadarFeed's per-source isolation is the second guard). #1239 beta path."""
+    RadarFeed's per-source isolation is the second guard). #1239 beta path.
+    (#1547: gate patched configured=True so the hiccup path is actually reached.)"""
+    from unittest.mock import AsyncMock, patch
+
     import services.integrations.github.github_integration_router as ghmod
 
     class _BoomRouter:
@@ -95,7 +98,12 @@ async def test_workitem_provider_returns_empty_when_github_unavailable(monkeypat
             raise RuntimeError("github down")
 
     monkeypatch.setattr(ghmod, "GitHubIntegrationRouter", _BoomRouter)
-    assert await WorkItemProvider().list_for_user("user-1") == []
+    with patch(
+        "services.integrations.integration_status_service."
+        "IntegrationStatusService.is_configured",
+        new=AsyncMock(return_value=True),
+    ):
+        assert await WorkItemProvider().list_for_user("user-1") == []
 
 
 # --- #6: scope work items to "assigned to me" via the configured GitHub handle ---
