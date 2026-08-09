@@ -1,8 +1,10 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-07 STOP (~22:50 PT) — DAY CLOSED. Six clean fires, no gaps
-(07:07 START · 10:07 · 13:07 · 16:07 · 19:07 WORK · 22:22 STOP). Cron re-armed `b087936b`.
+**Last rewritten**: 2026-08-08 STOP (~22:45 PT) — DAY CLOSED. Six clean fires
+(07:22 START · 10:22 · 13:22 · 16:22 · 19:22 WORK · 22:22 STOP). Cron re-armed `89206635`.
+🔴 **OWED FIRST THING NEXT FIRE**: issue bodies for the unfiled structural rows in
+`dev/active/jake-ftux-item-register-2026-08-08.md` (rows 6, 7+14 as one wave, 8, 9, 10, 11).
 **Purpose**: ephemeral session state — active PM threads, PM-attention items, parked work, current cron job-id. Rewrite at end of every substantive fire (duty-cycle-tick v1.13).
 
 ---
@@ -273,25 +275,14 @@ already answered before sending.**
 
 ## Cron
 
-**ARMED** — job `b087936b`, `52 6,9,12,15,18,21`. Re-armed at STOP by CronDelete-then-CronCreate,
-**CronList-verified: exactly one.** Prompt gained three lines this re-arm (Step-0 backward check;
-account-freeze caveat; check-GitHub-before-re-asking-PM).
+**ARMED** — job `89206635`, `52 6,9,12,15,18,21`. Re-armed at STOP by CronDelete-then-CronCreate,
+**CronList-verified: exactly one.** Prompt now also carries the **owed first work item** and the
+**surfaces correction**, so neither can be lost to a context gap.
 
-**2026-08-07 was clean** — six fires, no stacking, no Gap-C. Contrast 08-06, which had **both** a real
-Gap-C (verified-present job gone after a compaction) **and** a non-failure (three ticks stacked,
-`CronList` showing one job). ⚠️ **Arch later established the 08-06 stacking was a cohort-wide account
-weekly-limit freeze until 21:30 — invisible from inside any seat.** My "the session got no turn" was
-seat-shaped for an account-shaped event; I owned that.
+**Two clean days running** (08-07 and 08-08: six fires each, no stacking, no Gap-C). ⚠️ Session-only
++ 7-day auto-expiry, both silent; the self-heal only works if the session gets a turn.
 
-⭐ **THE HEARTBEAT SURFACE CANNOT REPORT ROLE-LIVENESS FOR 9 OF 11 SEATS.** Measured 08-07: on 08-06
-every role was active (5–20 commits each) and **nine recorded ZERO WORK rows** — a full working day
-byte-identical to a role that died after START. **PPM/HOST/PA are the only seats emitting WORK rows**,
-which is *why* we three saw gaps and the others couldn't. **Two failure modes, one surface, selected
-by a flag.** Handed to CIO. ⚠️ **It also retired my own `scheduled=`/`emitted=` proposal** — it
-annotates rows that get written, and the majority mode is rows that don't.
-
-⚠️ **Session-only + 7-day auto-expiry, both silent.** Not a durable daemon; the self-heal only works
-if the session gets a turn. Cure is external (CIO's freeze monitor is in flight).
+⭐ **Heartbeat surface: 9 of 11 seats cannot report role-liveness** (measured 08-07). CIO owns it.
 
 ---
 

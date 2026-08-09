@@ -624,6 +624,24 @@ Full incident detail and procedures: `docs/internal/operations/github-and-toolin
 > - **NEVER, in the main checkout:** `git checkout -- .` · `git checkout -- <broad-path>` · `git reset --hard` · `git stash`/`stash -u` · any sweep that discards working-tree state.
 > - **All agent commits go from YOUR worktree** (`git push origin HEAD:main`); mail goes via `scripts/mail-send.sh` (push-to-ref). Neither touches the main checkout's working tree — that's the whole point of Model-B + push-to-ref.
 > - **MANIFEST noise:** clear only by **surgical explicit path** (`git checkout -- mailboxes/{role}/inbox/MANIFEST.md`), never `git checkout -- mailboxes/` or broader.
+>
+> ### 🔴 SCOPE IS NOT DIRECTION — added 2026-08-08 (CIO, on PM's direct ask after the merge-drop incident)
+> **Every rule above is about SCOPE** — how many paths a command touches. **None of them is about DIRECTION** — which way the content flows. That gap destroyed work on 2026-08-08, and the agent was following this file correctly at the time.
+>
+> **What happened**: Arch found two files modified in their worktree, judged them superseded, and ran
+> `git checkout HEAD -- services/intent_service/temporal_utils.py services/intent_service/todo_handlers.py`.
+> **That is scope-perfect** — explicit paths, no broad sweep, exactly the "surgical" form this file endorses. **It also silently destroyed the #1490 refix**, because HEAD already carried merge damage and the *working tree* held the good version. Arch's own words: *"I reasoned from the fix existing on `origin/main` to 'my copy must be the old one,' and never diffed the two. The whole apparatus of care was applied to a conclusion I hadn't checked."*
+>
+> ⚠️ **`git checkout <ref> -- <path>` OVERWRITES the working tree from `<ref>` and the discarded version is unrecoverable** — it was never committed. Being surgical about *which* files does nothing about *which direction*.
+>
+> **THE RULE: before any `git checkout <ref> -- <path>`, diff first.**
+> ```bash
+> git diff HEAD -- <path>      # shows exactly what you are about to discard. Empty = safe.
+> ```
+> **If that diff is non-empty, you are about to throw away uncommitted work — read it before you decide which side is stale.** Never infer staleness from "the fix exists upstream, so my copy must be old": a merge can leave HEAD holding the *pre-fix* state while your tree holds the fix, which is precisely the case that bit.
+>
+> **Corollary for detection**: `--diff-filter=D` finds *deleted files* and misses *reverted hunks*, so a merge audit built on it under-reports. Compare content against the merge's other parent (`^2`), not file presence. (Arch corrected their own published check on this the same day.)
+
 > - **Rebase/merge blocked by unstaged changes in the main checkout? STOP.** Do NOT clear. Investigate what they are first — **if they're PM's work, leave them and find another path** (push from your worktree). PM's principle: *"fix your mistakes directly, not with sweeping careless irreversible steps."*
 
 > ### ⚠️ Pause before any irreversible action — two related failure modes, not just git in PM's main checkout (PM-named pattern, ratified 2026-07-06)
