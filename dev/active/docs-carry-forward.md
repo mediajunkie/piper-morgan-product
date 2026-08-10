@@ -70,15 +70,20 @@ permanence, per standing lesson 10.
 
 ## Owed by me — unblocked, priority order
 
-1. **Jul 29–Aug 3 activity-log backfill, ~70 rows** — deferred repeatedly, surfaced again 08-07. No
-   functional consequence yet but real debt; do it before it's a third gap.
-2. **`planning/current/` Finding 1** — fresh careful pass needed, not a rename. Named trigger (fresh
-   session/compaction) still hasn't arrived — eleven days running now. Note: this very session was
-   compacted today; if a natural opening appears early in the next fire, this is the candidate.
-3. **97 docs >30d asserting current-state language** — no deadline.
-4. **#1486's actual checklist** — not urgent.
-5. **methodology-20's compression rules mutually unsatisfiable** — CIO owns.
-6. **`docs-standing-items.md` stale** — low priority.
+1. **`planning/current/` Finding 1** — fresh careful pass needed, not a rename. Named trigger (fresh
+   session/compaction) still hasn't arrived — twelve days running now. This session was compacted
+   08-09; still hasn't found a natural opening since.
+2. **97 docs >30d asserting current-state language** — no deadline.
+3. **#1486's actual checklist** — not urgent.
+4. **methodology-20's compression rules mutually unsatisfiable** — CIO owns.
+5. **`docs-standing-items.md` stale** — low priority.
+
+## Resolved 2026-08-10 — do NOT re-open
+
+- **Jul 29–Aug 3 activity-log backfill, 77 rows** — deferred since 08-04 (that day's own omnibus
+  catch-up explicitly deferred its Step 10.5). Delegated to a background subagent, verified
+  independently (row counts, field-count parse, convention spot-check, diff scope), committed
+  `98b569e3c`, pushed clean.
 
 ## Resolved 2026-08-09 — do NOT re-open
 
@@ -118,9 +123,12 @@ call: don't fabricate an answer, don't bury the ask, don't manufacture urgency t
 
 ## Watch items (not owed to me, but adjacent)
 
-- **"Verify at the User Path" (Aug 8) unsyndicated** — no Medium/LinkedIn, unlike the recent norm.
-  Comms routed to Dispatch, offered to fill columns herself. Nothing for me until URLs land (from
-  either party) — take the update whichever way it arrives.
+- **Syndication gap, now 3 posts not 1 (updated 08-10 07:27)** — Comms' 08-09 report was scoped to 2
+  rows she happened to compare; a proper sweep this morning (08-10) found 3 genuinely unsyndicated
+  (*The Package and the First Bite* Jul 9, *Drained on Paper* Aug 7, *Verify at the User Path* Aug 8)
+  and 1 partial (*The Team Catches the Cycle*, Medium only). 2 more were bookkeeping-only and Comms
+  fixed those herself (commit `46782a55e`, verified real). All filed with Dispatch already. Nothing for
+  me until URLs land.
 - **Puppeteer extraction cause** — Pard's lane.
 - **methodology-20's mutually unsatisfiable compression rules** — CIO owns.
 - **`pre-commit-broad-staging-warn.sh` blocking despite advisory design** — documented, not escalated.

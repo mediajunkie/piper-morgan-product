@@ -410,13 +410,13 @@
         // #313 tags MVP: owners can edit tags.
         if (isOwner(file) || (window.currentUser && window.currentUser.is_admin)) {
           actionButtons += `
-            <button class="btn-icon" onclick="editTags('${file.file_id}', '${kind}')" title="Edit tags">🏷️</button>`;
+            <button class="btn-icon" onclick="editTags('${escapeAttr(file.file_id)}', '${escapeAttr(kind)}')" title="Edit tags">🏷️</button>`;
         }
 
         // #313: preview (anyone who can download can preview).
         if (canDownloadFile(file)) {
           actionButtons += `
-            <button class="btn-icon" onclick="previewFile('${file.file_id}', '${kind}')" title="Preview">
+            <button class="btn-icon" onclick="previewFile('${escapeAttr(file.file_id)}', '${escapeAttr(kind)}')" title="Preview">
               👁️
             </button>
           `;
@@ -424,7 +424,7 @@
 
         if (canDownloadFile(file)) {
           actionButtons += `
-            <button class="btn-icon" onclick="downloadFile('${file.file_id}', '${kind}')" title="Download">
+            <button class="btn-icon" onclick="downloadFile('${escapeAttr(file.file_id)}', '${escapeAttr(kind)}')" title="Download">
               ⬇️
             </button>
           `;
@@ -433,7 +433,10 @@
         // #1184: rename — artifacts only (the PATCH endpoint is /api/v1/artifacts), owner/admin only.
         if (kind === 'artifact' && (isOwner(file) || (window.currentUser && window.currentUser.is_admin))) {
           actionButtons += `
-            <button class="btn-icon" onclick="renameArtifact('${file.file_id}', '${file.filename}')" title="Rename">
+            <!-- #1581: id only — the filename must not enter the onclick
+                 JS-string context (unprotectable by HTML escaping);
+                 renameArtifact resolves it from window._allFiles. -->
+            <button class="btn-icon" onclick="renameArtifact('${escapeAttr(file.file_id)}')" title="Rename">
               ✏️
             </button>
           `;
@@ -441,7 +444,7 @@
 
         if (canDeleteFile(file)) {
           actionButtons += `
-            <button class="btn-icon btn-danger" onclick="deleteFile('${file.file_id}', '${kind}')" title="Remove">
+            <button class="btn-icon btn-danger" onclick="deleteFile('${escapeAttr(file.file_id)}', '${escapeAttr(kind)}')" title="Remove">
               🗑️
             </button>
           `;
@@ -450,15 +453,15 @@
         // Build owner indicator
         const ownerIndicator = !isOwner(file) ?
           `<div class="resource-owner">
-             Uploaded by: ${file.owner_id}
+             Uploaded by: ${escapeHtml(file.owner_id)}
            </div>` : '';
 
         return `
           <div class="file-card">
             <div class="file-header">
-              <input type="checkbox" class="file-select" data-id="${file.file_id}"
-                     data-kind="${kind}" onchange="updateBulkBar()"
-                     aria-label="Select ${escapeHtml(file.filename)} for bulk download" />
+              <input type="checkbox" class="file-select" data-id="${escapeAttr(file.file_id)}"
+                     data-kind="${escapeAttr(kind)}" onchange="updateBulkBar()"
+                     aria-label="Select ${escapeAttr(file.filename)} for bulk download" />
               <h3 class="file-title">${escapeHtml(file.filename)}</h3>
               <div class="file-actions">
                 ${actionButtons}
@@ -466,10 +469,10 @@
             </div>
             <div class="file-metadata">
               ${sourceBadge}
-              <span class="metadata-item">📦 ${formatFileSize(file.size)}</span>
+              <span class="metadata-item">📦 ${escapeHtml(formatFileSize(file.size))}</span>
               ${(file.tags && file.tags.length) ? `<span class="metadata-item tag-row">${file.tags.map(t => `<span class="tag-chip">${escapeHtml(t)}</span>`).join('')}</span>` : ''}
-              <span class="metadata-item">📅 ${formatDate(file.uploaded_at)}</span>
-              <span class="metadata-item">📋 ${file.content_type}</span>
+              <span class="metadata-item">📅 ${escapeHtml(formatDate(file.uploaded_at))}</span>
+              <span class="metadata-item">📋 ${escapeHtml(file.content_type)}</span>
             </div>
             ${ownerIndicator}
           </div>
@@ -566,7 +569,7 @@
         content: `
           <div class="form-group">
             <label>Tags (comma-separated, up to 10)</label>
-            <input type="text" id="tagsInput" value="${current.replace(/"/g, '&quot;')}" placeholder="e.g. research, q3, draft">
+            <input type="text" id="tagsInput" value="${escapeAttr(current)}" placeholder="e.g. research, q3, draft">
           </div>
         `,
         onConfirm: async () => {
@@ -764,8 +767,12 @@
 
     // #1184: rename a saved artifact (owner-scoped via the PATCH endpoint).
     // Uses the design-floor Dialog form-mode (NOT native prompt — #1170 retires those).
-    function renameArtifact(artifactId, currentFilename) {
-      const current = (currentFilename || '').replace(/\.(md|txt)$/i, '');
+    // #1581: takes the id ONLY — the filename is resolved from window._allFiles
+    // state so user-authored text never rides through the onclick JS-string
+    // context (see the escaping note above; the #1578 shareTodo fix is the model).
+    function renameArtifact(artifactId) {
+      const file = (window._allFiles || []).find(f => String(f.file_id) === String(artifactId)) || {};
+      const current = (file.filename || '').replace(/\.(md|txt)$/i, '');
       Dialog.show({
         mode: 'form',
         title: 'Rename artifact',
@@ -773,7 +780,7 @@
         content: `
           <div class="form-group">
             <label for="rename-title-input">New name</label>
-            <input type="text" id="rename-title-input" value="${escapeHtml(current)}"
+            <input type="text" id="rename-title-input" value="${escapeAttr(current)}"
                    maxlength="200" aria-label="New artifact name" />
           </div>
         `,
@@ -808,11 +815,37 @@
     }
 
     // Utility functions
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
+
+    // #1581 [SECURITY]: single escaping source of truth for everything this
+    // page interpolates into innerHTML (same pattern as todos.html/#1578 —
+    // duplicated inline per-template; consolidating into a shared static
+    // asset is a flagged follow-on). Filenames, tags, content types and
+    // owner ids are user-supplied — stored XSS if they land in the DOM
+    // unescaped. The previous DOM-based helper (div.textContent ->
+    // innerHTML) did NOT escape quotes, so attribute sites it "protected"
+    // (value="", aria-label="") were quote-breakable.
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
     }
+
+    // Attribute-context variant. Same escapes; the name documents the
+    // call-site context.
+    function escapeAttr(value) {
+      return escapeHtml(value);
+    }
+
+    // NOTE (#1581, verbatim rule from #1578): HTML-escaping CANNOT protect a
+    // JS string inside an inline onclick="..." — the HTML parser decodes
+    // entities before the JS engine parses the handler, so a quote
+    // re-materializes and breaks out. Therefore user-authored text NEVER
+    // crosses that boundary: only server-generated ids/kinds appear in
+    // onclick (escapeAttr'd for the HTML-attribute layer), and filenames
+    // travel via the window._allFiles state lookup (see renameArtifact).
 
     function formatFileSize(bytes) {
       if (bytes < 1024) return bytes + ' B';

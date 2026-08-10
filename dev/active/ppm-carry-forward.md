@@ -4,17 +4,25 @@
 **Last rewritten**: 2026-08-09 STOP (~22:45 PT) — DAY CLOSED. Six clean fires. Cron **`e4f3b4e8`**.
 ✅ **Jake conversion COMPLETE: #1536–#1540 filed 08-09, zero rows unfiled.**
 
-## 🔴 OWED (named trigger, in the cron prompt): MERGE THE FIRST-CONTACT CRITERION
-**Neither §7a nor #1536's ACs is canonical-ready.** §7a's *binary-and-checkable-now* constraint
-**selected against its own purpose** (CXO's diagnosis) and is missing **AC2, AC3 and AC4**. But
-**#1536's list has never been audited — and unaudited is not sound.** I ran CXO's audit on it and
-found two holes: **AC2 is a JUDGMENT that can't fail cleanly**, and **AC3 is scoped to the
-nothing-connected case while fabrication is most dangerous when a connector IS live** — the identical
-hole I'd found in CXO's item 4 eight hours earlier.
-**MERGE**: AC1 as written · AC2 keep as intent, test via the **verifiable-against-source** attribute
-shadow · AC3 **widen** to no-fabrication regardless of connection · AC4 fold into AC1.
-⛔ **PM should bless neither list as written — only the merged one.** Deferred from 08-09 deliberately:
-four corrections landed that day and the audit was still finding things.
+## ✅ FIRST-CONTACT CRITERION MERGED (2026-08-10) — `docs/internal/product/first-contact-criterion-merged-2026-08-10.md`
+
+**THREE items, not four.** ① cold account + one tool → own data in the **first exchange, unprompted**
+→ 🚪 **GATE** · ② **only Piper could produce it** → 📋 **§7b conformance** (a judgment; cannot fail
+cleanly; never gate it) · ③ **no fabricated content**, connector attached or not → 🚪 **GATE by
+citation**. ⛔ **#1536's AC4 DELETED, not placed — entailed by item ①** (*cold account* + *first
+exchange* already say *first session, not after warm-up*); CXO's table had a row too many.
+
+🔴 **ITEM ③ IS BLOCKED, and the block is mine to have found**: it cites Arch's
+`floor-honesty-contract-1517-spec.md` rather than restate it — because my fix and CXO's were **the same
+predicate**, which would have been **guard number six** in the week Arch documented *"we've solved
+fabrication five times, never generally."* ⭐ *One predicate closing two holes in two documents is not
+elegance — it's the signal it belongs in neither.*
+⚠️ **But the contract may not reach the case**: **H1 governs whether a READ OCCURRED; item ③ needs
+whether the named ENTITY IS REAL.** A read can occur and particulars still be fabricated. **Awaiting
+Arch.** ⛔ Do not treat "cites the contract" as closing it.
+
+⚠️ **PM blesses NEITHER §7a nor #1536's ACs — only the merged list.** And the **placement** question
+(*is this criterion in #1386's gate at all?*) is **untouched and still PM's**, pending since 08-05.
 
 ## ✅ PM APPROVED THE PLACEMENT (2026-08-09, relayed by Lead, board WRITTEN)
 **#1510 → MVP · #1190 → MVP · #1509 → Production.** Verified on the board myself. **#1536–#1540

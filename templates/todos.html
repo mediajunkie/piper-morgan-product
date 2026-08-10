@@ -56,6 +56,43 @@
     color: var(--color-text-primary);
     font-weight: var(--font-weight-medium);
   }
+  /* #1568: priority chip — subtle for low/medium, distinct for high/urgent */
+  .priority-chip {
+    display: inline-block;
+    margin-left: var(--space-sm);
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: var(--font-weight-medium);
+    text-transform: capitalize;
+    vertical-align: middle;
+  }
+  .priority-low,
+  .priority-medium {
+    background: var(--color-background-secondary);
+    color: var(--color-text-secondary);
+  }
+  .priority-high {
+    background: #fff3e0;
+    color: #b45309;
+  }
+  .priority-urgent {
+    background: #fdecea;
+    color: var(--color-accent-error, #c62828);
+  }
+  /* #1568: inline title editing */
+  .edit-title-form {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  .edit-title-input {
+    font-size: 1rem;
+    padding: var(--space-xs) var(--space-sm);
+    border: 1px solid var(--color-border-light, #ccc);
+    border-radius: var(--border-radius-sm);
+    min-width: 240px;
+  }
 </style>
 {% endblock %}
 
@@ -115,8 +152,61 @@
     }
   }
 
+  // #1568: inline-edit render state — the row being edited, and the last
+  // payload so edit/cancel can re-render without a refetch.
+  let currentTodos = [];
+  let editingTodoId = null;
+
+  // #1578 [SECURITY]: single escaping source of truth for everything this
+  // page interpolates into innerHTML. Todos are shareable, so todo.text,
+  // owner_username, share.user_email etc. are OTHER users' strings — stored
+  // XSS if they land in the DOM unescaped.
+  function escapeHtml(value) {
+    return String(value ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+  }
+
+  // Attribute-context variant (the edit input's value="" carries user-authored
+  // titles — #1568). Same escapes; the name documents the call-site context.
+  function escapeAttr(value) {
+    return escapeHtml(value);
+  }
+
+  // NOTE (#1578): HTML-escaping CANNOT protect a JS string inside an inline
+  // onclick="..." — the HTML parser decodes entities before the JS engine
+  // parses the handler, so a quote re-materializes and breaks out. Therefore
+  // user-authored text NEVER crosses that boundary: only server-generated
+  // ids/types appear in onclick (escapeAttr'd for the HTML-attribute layer),
+  // and titles travel via the currentTodos state lookup (see shareTodo).
+
+  // #1568: humanize due dates. Aware-ISO comes from the server; the browser
+  // renders in the USER's timezone via toLocale* (the audit's correct
+  // pattern — docs/internal/operations/time-handling-audit-2026-08-10.md).
+  // Midnight-UTC values are all-day-ish (the <input type="date"> create path
+  // stores YYYY-MM-DD → 00:00:00+00:00): the time is meaningless, so render
+  // date only — and read that calendar date in UTC, otherwise the picked day
+  // shifts backward for any user west of UTC. Timed values get date + time
+  // in the user's local zone.
+  function formatDueDate(iso) {
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) {
+      return iso; // honest fallback: the raw value beats "Invalid Date"
+    }
+    const allDayIsh = d.getUTCHours() === 0 && d.getUTCMinutes() === 0 && d.getUTCSeconds() === 0;
+    if (allDayIsh) {
+      return d.toLocaleDateString(undefined, { timeZone: 'UTC', year: 'numeric', month: 'short', day: 'numeric' });
+    }
+    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
+      + ', ' + d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+  }
+
   // Render todos with permission-aware UI
   function renderTodos(todos) {
+    currentTodos = todos;
     const container = document.getElementById('todos-container');
 
     if (todos.length === 0) {
@@ -154,7 +244,7 @@
       const isCompleted = todo.status === 'completed' || todo.completed;
       if (canEdit(todo) && !isCompleted) {
         actionButtons += `
-          <button class="complete-btn" onclick="completeTodo('${todo.id}')">
+          <button class="complete-btn" onclick="completeTodo('${escapeAttr(todo.id)}')">
             Complete
           </button>
         `;
@@ -162,7 +252,7 @@
 
       if (canEdit(todo)) {
         actionButtons += `
-          <button class="edit-btn" onclick="editTodo('${todo.id}')">
+          <button class="edit-btn" onclick="editTodo('${escapeAttr(todo.id)}')">
             Edit
           </button>
         `;
@@ -170,7 +260,7 @@
 
       if (canDelete(todo)) {
         actionButtons += `
-          <button class="delete-btn" onclick="deleteTodo('${todo.id}')">
+          <button class="delete-btn" onclick="deleteTodo('${escapeAttr(todo.id)}')">
             Remove
           </button>
         `;
@@ -178,7 +268,10 @@
 
       if (canShare(todo)) {
         actionButtons += `
-          <button class="share-btn" onclick="shareTodo('${todo.id}', '${todo.text}')">
+          <!-- #1578: id only — the title must not enter the onclick JS-string
+               context (unprotectable by HTML escaping); shareTodo resolves it
+               from currentTodos. -->
+          <button class="share-btn" onclick="shareTodo('${escapeAttr(todo.id)}')">
             Share
           </button>
         `;
@@ -187,7 +280,7 @@
       // Build owner indicator
       const ownerIndicator = !isOwner(todo) ?
         `<div class="shared-indicator">
-           Owned by: ${todo.owner_username || todo.owner_id}
+           Owned by: ${escapeHtml(todo.owner_username || todo.owner_id)}
          </div>` : '';
 
       // Build lifecycle indicator (#708 MUX-LIFECYCLE-UI-TODOS)
@@ -197,28 +290,46 @@
         const phrase = LifecycleIndicator.getPhrase(todo.lifecycle_state);
         lifecycleIndicator = `
           <div class="lifecycle-indicator"
-               data-lifecycle-stage="${todo.lifecycle_state}"
+               data-lifecycle-stage="${escapeAttr(todo.lifecycle_state)}"
                data-compact="true"
                role="status"
                tabindex="0"
-               aria-label="Lifecycle: ${phrase}"
+               aria-label="Lifecycle: ${escapeAttr(phrase)}"
                style="margin-left: 8px;">
             <span class="lifecycle-dot" aria-hidden="true"></span>
-            <span class="lifecycle-phrase">${phrase}</span>
-            <span class="lifecycle-tooltip" role="tooltip">${phrase}</span>
+            <span class="lifecycle-phrase">${escapeHtml(phrase)}</span>
+            <span class="lifecycle-tooltip" role="tooltip">${escapeHtml(phrase)}</span>
           </div>
         `;
       }
+
+      // #1568: priority chip — the payload has always carried priority; the
+      // card never showed it. Class is driven by the real TodoPriority
+      // .value strings (low/medium/high/urgent).
+      const priority = todo.priority || 'medium';
+      const priorityChip = `<span class="priority-chip priority-${escapeAttr(priority)}">${escapeHtml(priority)}</span>`;
+
+      // #1568: inline title editing — the row being edited swaps its title
+      // for an input prefilled with the current title, plus Save/Cancel.
+      const titleArea = todo.id === editingTodoId
+        ? `<span class="edit-title-form">
+             <input type="text" class="edit-title-input" id="edit-title-input-${escapeAttr(todo.id)}"
+                    value="${escapeAttr(todo.text)}" aria-label="Edit todo title">
+             <button class="save-edit-btn" onclick="saveTodoTitle('${escapeAttr(todo.id)}')">Save</button>
+             <button class="cancel-edit-btn" onclick="cancelEditTodo()">Cancel</button>
+           </span>`
+        : `${escapeHtml(todo.text)}`;
 
       return `
         <div class="resource-item">
           <div class="resource-header">
             <div>
               <h3 class="resource-title">
-                ${todo.text}
+                ${titleArea}
+                ${priorityChip}
                 ${lifecycleIndicator}
-                <span class="${getRoleBadgeClass(role)}">
-                  ${roleDisplay}
+                <span class="${escapeAttr(getRoleBadgeClass(role))}">
+                  ${escapeHtml(roleDisplay)}
                 </span>
               </h3>
               ${ownerIndicator}
@@ -227,10 +338,11 @@
               ${actionButtons}
             </div>
           </div>
-          <p>Status: ${todo.status || 'pending'}</p>
+          <p>Status: ${escapeHtml(todo.status || 'pending')}</p>
           <!-- #1512: the due-date slot is always visible — a todo without a
-               due date says so, instead of silently omitting the line. -->
-          ${todo.due_date ? `<small>Due: ${todo.due_date}</small>` : `<small class="no-due-date">No due date</small>`}
+               due date says so, instead of silently omitting the line.
+               #1568: humanized via formatDueDate, never raw ISO. -->
+          ${todo.due_date ? `<small class="due-date">Due: ${escapeHtml(formatDueDate(todo.due_date))}</small>` : `<small class="no-due-date">No due date</small>`}
         </div>
       `;
     }).join('');
@@ -301,10 +413,52 @@
     });
   }
 
-  // Edit todo
+  // Edit todo (#1568 — replaces the former stub; PUT works since #1548)
   function editTodo(todoId) {
-    // TODO: Implement edit functionality
-    ToastMessages.info('coming_soon', { body: 'Edit functionality coming soon' });
+    editingTodoId = todoId;
+    renderTodos(currentTodos);
+    const input = document.getElementById(`edit-title-input-${todoId}`);
+    if (input) {
+      input.focus();
+      input.select();
+    }
+  }
+
+  // Cancel inline edit — restore the plain row, change nothing
+  function cancelEditTodo() {
+    editingTodoId = null;
+    renderTodos(currentTodos);
+  }
+
+  // Save the edited title (#1568)
+  async function saveTodoTitle(todoId) {
+    const input = document.getElementById(`edit-title-input-${todoId}`);
+    const title = input ? input.value.trim() : '';
+    if (!title) {
+      ToastMessages.error('validation_error', { body: 'Title cannot be empty' });
+      return;
+    }
+    try {
+      // The PUT route takes title as a QUERY param — it has no JSON body
+      // model, so a body {title} would be silently dropped and the success
+      // toast would lie (#1541's delete pattern). Send ?title=.
+      const response = await fetch(`/api/v1/todos/${todoId}?title=${encodeURIComponent(title)}`, {
+        method: 'PUT',
+        credentials: 'include'
+      });
+      if (response.ok) {
+        editingTodoId = null;
+        ToastMessages.success('todo_updated');
+        await loadTodos();
+      } else {
+        // Honest failure: the row stays in edit mode, no success claim.
+        const error = await response.json().catch(() => ({}));
+        ToastMessages.error('update_error', { body: error.detail || 'Please try again' });
+      }
+    } catch (error) {
+      console.error('Error updating todo:', error);
+      ToastMessages.error('update_error');
+    }
   }
 
   // Complete todo (#1541 — the page previously had no completion control)
@@ -357,9 +511,13 @@
     });
   }
 
-  // Share todo
-  function shareTodo(todoId, todoText) {
-    openShareModal('todos', todoId, todoText);
+  // Share todo. #1578: takes the id ONLY — the title is resolved from
+  // currentTodos state so user-authored text never rides through the
+  // onclick JS-string context (see the escaping note above). The modal
+  // title is a safe sink regardless: Dialog.show sets it via textContent.
+  function shareTodo(todoId) {
+    const todo = currentTodos.find(t => String(t.id) === String(todoId));
+    openShareModal('todos', todoId, todo ? todo.text : '');
   }
 
   // Generic sharing modal
@@ -399,7 +557,7 @@
             </select>
           </div>
 
-          <button onclick="addShare('${resourceType}', '${resourceId}')"
+          <button onclick="addShare('${escapeAttr(resourceType)}', '${escapeAttr(resourceId)}')"
                   class="create-resource-btn"
                   style="width: 100%; margin-top: 12px;">
             Add Share
@@ -427,10 +585,10 @@
       <div style="display: flex; justify-content: space-between; align-items: center;
                   padding: var(--space-sm); border: 1px solid var(--color-border-light); border-radius: var(--border-radius-md); margin-bottom: var(--space-sm);">
         <div>
-          <strong>${share.user_email || share.user_id}</strong>
-          <span class="${getRoleBadgeClass(share.role)}">${formatRole(share.role)}</span>
+          <strong>${escapeHtml(share.user_email || share.user_id)}</strong>
+          <span class="${escapeAttr(getRoleBadgeClass(share.role))}">${escapeHtml(formatRole(share.role))}</span>
         </div>
-        <button onclick="removeShare('${resourceType}', '${resourceId}', '${share.user_id}')"
+        <button onclick="removeShare('${escapeAttr(resourceType)}', '${escapeAttr(resourceId)}', '${escapeAttr(share.user_id)}')"
                 style="background: var(--color-accent-error); color: var(--color-neutral-white); padding: var(--space-xs) var(--space-sm);
                        border: none; border-radius: var(--border-radius-sm); cursor: pointer;">
           Remove

@@ -211,6 +211,18 @@ def find_explicit_duration(message_lower: str) -> Optional[Tuple[timedelta, str]
     return (delta, label)
 
 
+# --- Issue #1562: "today" is an explicit DAY WORD ---
+# Sentinel prefix for the honest-ask label when an explicit "today" + clock
+# time has already passed on the server clock. parse_reminder_time returns
+# (None, PAST_TODAY_PREFIX + time_label); todo_handlers recognizes the prefix
+# and asks "did you mean tomorrow?" instead of silently rolling the date.
+PAST_TODAY_PREFIX = "past-today:"
+
+# "today" as a day word — excludes the possessive ("send today's report" is
+# task text, not a time expression).
+_TODAY_WORD_RE = re.compile(r"\btoday\b(?!['’]s)")
+
+
 def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
     """
     Issue #903: Extract a reminder datetime from natural language.
@@ -351,9 +363,29 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
             label = f"{label} at {clock[2]}"
         return (dt, label)
 
-    # --- explicit clock time with no date word: "today at 9:41", "at 5pm",
-    # "at noon" (Issue #1490: was an "at"-adjacent regex; now the shared
-    # finder, so noon/midnight and bare "3pm" forms bind too) ---
+    # --- "today" + explicit clock: "remind me at 9:41am today ..." (#1562) ---
+    # PM live 8/10 (07:16 PT): this stored TOMORROW 9:41 — the branch below
+    # claimed "today at 9:41" as its case but had no today handling, so its
+    # past-roll silently overrode the explicit day word. And the past-check
+    # runs on the SERVER clock (aware-local = UTC on fly), so a time still
+    # hours in the user's future can look past here. Never-default (#1490
+    # family): an explicit "today" binds TODAY; if the time HAS passed on the
+    # server clock, return the honest-ask shape (None, PAST_TODAY_PREFIX +
+    # label) so the handler asks "did you mean tomorrow?" — NEVER a silent
+    # roll. The server-tz limitation (past-check on server-local time) stays
+    # until per-user timezones land (#1535/#747) — do NOT build per-user tz
+    # here.
+    has_today = _TODAY_WORD_RE.search(message_lower) is not None
+    if has_today and clock is not None:
+        dt = now.replace(hour=clock[0], minute=clock[1], second=0, microsecond=0)
+        if dt <= now:
+            return (None, f"{PAST_TODAY_PREFIX}{clock[2]}")
+        return (dt, f"today at {clock[2]}")
+
+    # --- explicit clock time with no date word: "at 5pm", "at noon"
+    # (Issue #1490: was an "at"-adjacent regex; now the shared finder, so
+    # noon/midnight and bare "3pm" forms bind too). No day word, so the
+    # next-occurrence roll-forward is legitimate here (#1562 keeps it). ---
     if clock is not None:
         dt = now.replace(hour=clock[0], minute=clock[1], second=0, microsecond=0)
         # If the time is already past, push to tomorrow (next occurrence)
@@ -372,6 +404,13 @@ def parse_reminder_time(message: str) -> Tuple[Optional[datetime], str]:
         if dt <= now:
             dt += timedelta(days=1)
         return (dt, "this evening")
+
+    # --- bare "today" with no bindable clock (#1562) ---
+    # "remind me today to X" used to fall through to the tomorrow-morning
+    # default below — the same silent day-word override in vague form. Ask
+    # instead (the handler's None-branch echoes "today" and asks for a time).
+    if has_today:
+        return (None, "today")
 
     # --- Fallback: tomorrow morning at 9 AM ---
     tomorrow = now + timedelta(days=1)
