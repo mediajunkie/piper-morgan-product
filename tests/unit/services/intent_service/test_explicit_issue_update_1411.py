@@ -36,6 +36,13 @@ from services.intent_service.classifier import (
 PM_MSG = "change the title of issue #108 to test new regressions"
 PM_MSG_NO_HASH = "change the title of issue 108 to test new regressions"
 
+# PM's verbatim PRODUCTION phrasing (2026-08-10, deployed cut): the live miss
+# that reopened #1411. "status" was absent from _ISSUE_FIELD_WORDS, so Stage 0
+# declined BOTH forms — the probe suite above pinned only the "title" shape.
+# Probe-shape ≠ live-shape at the VOCABULARY level, not the entry-point level.
+PM_STATUS_MSG = "change the status of issue #108 to in progress"
+PM_STATUS_MSG_NO_HASH = "change the status of issue 108 to in progress"
+
 _CONV = "conv-1411-1"
 _USER = "owner-1411"
 
@@ -48,6 +55,11 @@ class TestDetection:
     @pytest.mark.parametrize("msg,num", [
         (PM_MSG, 108),
         (PM_MSG_NO_HASH, 108),
+        # 2026-08-10 live miss: "status" is user-language for the issue-state
+        # field; it must be in the shared field vocabulary.
+        (PM_STATUS_MSG, 108),
+        (PM_STATUS_MSG_NO_HASH, 108),
+        ("set the status of #42 to done", 42),
         ("update the labels on issue #77", 77),
         ("set the state of #42 to closed", 42),
         ("In acme/widgets, change the title of issue #107 to something new", 107),

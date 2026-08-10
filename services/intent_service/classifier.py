@@ -83,7 +83,15 @@ logger = structlog.get_logger()
 
 # The fields _handle_update_issue accepts — presence of one of these is what
 # makes a "the X"/"it" a resolvable ISSUE referent (not an arbitrary topic).
-_ISSUE_FIELD_WORDS = r"title|body|description|label|labels|assignee|assignees|state"
+# "status" (#1411 follow-up, 2026-08-10): user-language for the state field —
+# PM's live "change the status of issue #108 to in progress" missed Stage 0
+# because only "state" was listed; the hash form then slipped every
+# deterministic surface and the LLM classifier routed it to the document lane
+# (the no-hash form was doc-claimed at surface 1). This ONE constant is the
+# shared vocabulary for BOTH detectors (_detect_issue_referent and
+# _detect_explicit_issue_update) — extend it here, never per-detector (#1555's
+# copied-branch rule: shared seam, no diverging copies).
+_ISSUE_FIELD_WORDS = r"title|body|description|label|labels|assignee|assignees|state|status"
 # Verbs that modify an existing issue (create/close/reopen are their own handlers).
 _UPDATE_VERB = r"change|update|rename|edit|modify|set|add"
 # An explicit issue number already present → nothing to resolve; let normal routing run.
