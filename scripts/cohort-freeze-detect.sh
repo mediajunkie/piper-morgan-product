@@ -39,7 +39,14 @@ set -uo pipefail
 # caller would have read as a detected freeze. Caught only because the known-negative test was run as
 # well as the known-positive. Hence the trap: any unhandled error is 3, never 1.
 trap 'rc=$?; [ "$rc" -ne 0 ] && [ "$rc" -ne 1 ] && echo "cohort-freeze: FAIL internal error rc=$rc (NOT a detection, NOT an all-clear)" >&2 && exit 3' ERR
-REPO="${FREEZE_REPO:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+# PIPER_REPO accepted as an alias 2026-08-10: Pard's watchdog wrapper invokes this with
+# PIPER_REPO="$REPO" (matching how it calls duty-cycle-freeze-check.sh), and this script read only
+# FREEZE_REPO -- so the caller's explicit intent was SILENTLY IGNORED. Not a live bug today, because
+# self-derivation from the script's own location happens to give the same answer, but a caller
+# setting a variable that has no effect is exactly the kind of quiet mismatch that surfaces later as
+# "it was configured correctly and did the wrong thing". Precedence: FREEZE_REPO, then PIPER_REPO,
+# then self-derive.
+REPO="${FREEZE_REPO:-${PIPER_REPO:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}}"
 REG="${DUTY_CYCLE_REGISTRY:-$REPO/dev/active/duty-cycle-registry.tsv}"
 HB="${HEARTBEAT_DIR:-$REPO/dev/heartbeats}"
 WINDOW_H="${COHORT_FREEZE_WINDOW_H:-4}"      # hours to look back
