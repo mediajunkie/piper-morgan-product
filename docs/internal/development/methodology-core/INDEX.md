@@ -122,8 +122,16 @@
 - [41-MECHANISM-DISPLACES-UNREFERENCED-DISCIPLINE.md](methodology-41-MECHANISM-DISPLACES-UNREFERENCED-DISCIPLINE.md) - Mechanism Displaces Unreferenced Discipline — a new mechanism silently displaces an older discipline it was meant to compose with, when the mechanism's loop doesn't reference the older surface; cure = structural composition (m-36 Class-2). Founding: session-log-vs-cycle-log displacement (Docs audit: systemic, 6/9 roles); 2nd instance: migration carry-forward variant-preservation trap. **PROVEN** (2026-06-12; cure-class = "no path of least resistance bypasses the discipline" — force-by-reference / force-by-distinction) ⭐ **NEW**
 - [42-REFLEXIVE-VERIFICATION-SELF-EXEMPTION-UNDER-PRESSURE.md](methodology-42-REFLEXIVE-VERIFICATION-SELF-EXEMPTION-UNDER-PRESSURE.md) - Reflexive Verification — we apply verification rigor to others' claims but self-exempt on our own under-pressure speculation (speculate-then-claim instead of trace-then-claim); the pressure is the tell. Cure = name it so the next instance self-catches (m-34). Cohort-wide: 5 instances/2 roles/2 weeks (Arch-surfaced). Emerging (awaits evidence naming reduces recurrence) ⭐ **NEW**
 
+### Recent (43-47)
+
+- [43-NAME-THE-LAYER.md](methodology-43-NAME-THE-LAYER.md) - Name the Layer — we verify the proxy nearest to hand, not the claim; an instrument must state what it looked at. Filed 2026-07-25 by CIO, from HOST's structural read of the Amber migration. Emerging.
+- [44-CLEAR-IS-NOT-A-MEASUREMENT.md](methodology-44-CLEAR-IS-NOT-A-MEASUREMENT.md) - "Clear" Is Not a Measurement — an instrument must assert what it looked at, not just report clean. Filed 2026-07-27 by CIO, from Arch's Amber-handoff bequest. Emerging → strong (11 instances/4 roles/2 projects in 96h).
+- [45-AGREEMENT-IS-NOT-REPLICATION.md](methodology-45-AGREEMENT-IS-NOT-REPLICATION.md) - Agreement Is Not Replication — shared procedure manufactures false consensus; independent agreement isn't independent verification if they share a confound. Filed 2026-07-29 by CIO, proposed by Arch (four-seat evidence table). Emerging, unusually clean evidence.
+- [46-PROMOTION-IS-A-RE-VERIFICATION-EVENT.md](methodology-46-PROMOTION-IS-A-RE-VERIFICATION-EVENT.md) - Promotion Is a Re-Verification Event — the durable copy needs a named source; promoting a finding into a canonical doc is itself a verification-bearing act. Filed 2026-07-30 (CXO draft), mechanism landed 2026-07-31 (HOST). Emerging — limb 2 has a shipped mechanism, limb 1 remains vigilance.
+- [47-SECOND-ORDER-CLAIMS-NEED-FIRST-ORDER-RIGOR.md](methodology-47-SECOND-ORDER-CLAIMS-NEED-FIRST-ORDER-RIGOR.md) - Second-Order Claims Need First-Order Rigor — a claim about a claim (a summary, a status report, a rollup) needs the same verification discipline as the original. Filed 2026-08-07 (CIO). Proven (two distinct instances, measured cost).
+
 ---
 
-**Last Updated**: June 11, 2026 (CIO — added m-42 reflexive-verification-self-exemption-under-pressure, Emerging, on Arch's cohort-pattern recognition; m-41 added 6/9)
+**Last Updated**: August 10, 2026 (Docs — added methodology-43 through -47, missing from this catalog since filing; found during weekly-docs-audit #1583's NAVIGATION.md↔INDEX.md cross-check)
 **Maintained By**: Methodology Team
 **Questions?** Check [METHODOLOGY.md](../../../briefing/METHODOLOGY.md) or create a GitHub issue

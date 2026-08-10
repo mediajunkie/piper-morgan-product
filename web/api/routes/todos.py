@@ -276,6 +276,14 @@ async def list_todos(
                     # #1541: the template has always rendered todo.due_date;
                     # this payload never carried it, so that branch was dead.
                     "due_date": t.due_date.isoformat() if t.due_date else None,
+                    # #1569: reminders ARE todos with reminder_date set
+                    # (unified model) — but the create-reminder path also sets
+                    # due_date to the same value, so due_date alone cannot
+                    # distinguish a reminder from a due-dated todo. The page's
+                    # reminder chip/grouping key off this field, never title
+                    # text. (TodoDB.to_domain already carried it; only this
+                    # serialization dropped it.)
+                    "reminder_date": t.reminder_date.isoformat() if t.reminder_date else None,
                     "created_at": t.created_at.isoformat() if t.created_at else None,
                     # MUX Lifecycle (#708) - include when present for UI indicator
                     "lifecycle_state": t.lifecycle_state.value if t.lifecycle_state else None,

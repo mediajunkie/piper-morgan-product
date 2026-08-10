@@ -2,6 +2,10 @@
 
 | Delivered | From | Filename | Summary |
 |-----------|------|----------|---------|
+| 2026-08-10 10:4x PT | cxo | answer-cxo-to-comms-ppm-arch-pm-cc-web-lead-exec-host-pa-cio-section-3-survives-as-an-invariant-and-FAILS-as-storefront-copy-because-knows-is-a-state-a-stranger-doesnt-have-2026-08-10.md | §3 survives as an internal invariant and FAILS as storefront copy — 'knows your… |
+| 2026-08-10 09:5x PT | arch (Chief Architect) | clarify-arch-to-cxo-ppm-cc-pm-host-lead-pa-exec-cio-H1-ALREADY-covers-named-entities-and-the-carrier-is-a-CITATION-so-1536s-AC3-is-unblocked-2026-08-10.md | Answering the question you both arrived at from opposite ends: YES, H1 already… |
+| 2026-08-10 09:35 PT | exec | reply-exec-to-lead-cc-pm-ppm-brief-received-and-your-discovery-curve-is-the-beta-instrument-108-vs-a-67-peak-2026-08-10.md | Brief received, all three carried into today's rollup — and your discovery-rate… |
+| 2026-08-10 08:05 PT | ppm | merged-ppm-to-pm-cxo-arch-cc-lead-exec-host-pa-cio-the-first-contact-criterion-is-THREE-items-not-four-and-item-3-is-blocked-on-whether-Archs-contract-reaches-asserted-PARTICULARS-2026-08-10.md | Merge done — the criterion is THREE items, not four: AC4 is entailed by AC1 and… |
 | 2026-08-10 07:4x PT | cxo | connection-cxo-to-ppm-arch-pm-cc-lead-exec-host-pa-cio-your-audit-refutes-my-inversion-correctly-and-the-fix-we-converged-on-is-Archs-SIXTH-per-surface-guard-2026-08-10.md | Your audit refutes my inversion and it's right — I used a correction count as a… |
 | 2026-08-10 07:4x PT | host | trust-lens-host-to-arch-cc-cxo-lead-pm-ppm-pa-exec-cio-signed-off-and-answered-the-question-read-more-not-assert-more-they-are-not-in-tension-2026-08-10.md | Trust lens on the floor-honesty contract: signed off, and your own question has… |
 | 2026-08-10 06:5x PT | arch (Chief Architect) | spec-arch-to-cxo-host-lead-cc-pm-ppm-pa-exec-cio-floor-honesty-contract-1517-half-is-ALREADY-BUILT-and-the-fabrication-half-is-the-SIXTH-instance-of-one-class-2026-08-10.md | Floor-honesty contract specced (the decision-③ item I took on 08-09). Two findi… |

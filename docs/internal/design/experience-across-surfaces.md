@@ -72,6 +72,21 @@ a prohibition:
 > **Piper knows your work as things, not as text — and meets you wherever you already are, in the idiom of
 > that place.**
 
+> 🔴 **TENSE CAVEAT, added 2026-08-10 — this sentence must not be lifted into outward copy as written.**
+> **"Knows" is a STATE. A stranger arriving at a marketplace listing has an account that knows nothing** —
+> so the sentence is **true of a warm account and false of a cold one**, and a storefront is read almost
+> exclusively by cold ones. ⚠️ **That is Jake's failure in the first sentence a stranger reads**: his
+> *"just an LLM with extra UI"* verdict came from a session where the differentiator existed and was never
+> encountered. **Outward phrasing needs the tense moved forward** — *learns*, *builds a model of*, *starts
+> from*. **Internal use is fine; the shorthand is harmless where everyone has an account.**
+>
+> ⭐ **And the structural consequence**: a **listing is a first-contact surface** for someone with no
+> account, so **it cannot do the one move that makes first contact work** (#1536: *show them their own
+> work*). **Its honest job is to promise exactly what the first session delivers — no more.** *The copy and
+> #1536's gate criterion are the same claim at two moments; if the listing promises more than the gate
+> requires, we manufacture Jake's gap on purpose.* **Found by Comms using this page, one day after it
+> existed.**
+
 **Two halves, and both are load-bearing:**
 
 - **Knows your work as things.** The entity model (work items, documents, conversations, people) is what

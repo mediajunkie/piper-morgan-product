@@ -1,9 +1,8 @@
-# Lead carry-forward — rewritten 2026-08-10 ~09:55 PT (supersedes all prior; cron-prompt blurbs are stale by construction)
+# Lead carry-forward — rewritten 2026-08-10 ~12:50 PT (supersedes all prior; cron-prompt blurbs are stale by construction)
 
 ## Live state
-- **FIFTH CUT DEPLOYED ~9:15 (Lead-pushed)** — every fail from PM's 11-verdict morning session live-fixed (1562/1566/1411-status/1568/1570/1573/1578 + 1558/1560). PM retesting at leisure (Santa Rosa, days off).
-- Verdicts so far: #1547 + #1517 CLOSED on PM pass; 5 fails all root-caused + fixed same-day. Discovery curve: 108/wk vs 67 prior peak (Exec promoted it to THE beta instrument; usage-denominator caveat stated).
-- 2 agents out: #1571 floor-phrase honesty + #1581 files.html XSS. 12 off-board MVP issues added to board (Exec's find).
+- **SEVEN CUTS DEPLOYED cumulative; 7th ~11:50 (1190 confirm gate + 1569 reminder identity)**. PM drained their ENTIRE decision queue live (~10:30-11:30): 1536→MVP (CXO deference, PM rationale on issue), 1537-40→Production/PUB, 1190 approved+BUILT+DEPLOYED, 1511 two-modes direction→PPM spec, 1569 ratified+BUILT+DEPLOYED, auto-add=UI-only (click path given). Decision-to-production <2h.
+- 0 agents out. Verdict state: 1547+1517 closed; 12-step retest list current vs 7th cut. Discovery curve 108/wk vs 67 peak = the beta instrument (Exec).
 
 ## Awaiting PM (decisions, not work)
 - FTUX five #1536-#1540 + #1511 two-standups — escalated per triage; PPM confirmed unmilestoned-is-the-ask.

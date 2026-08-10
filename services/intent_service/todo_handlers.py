@@ -276,11 +276,17 @@ class TodoIntentHandlers:
             # conversational turn, not just greetings, but action commands
             # (e.g. "add todo: x") still don't surface it. So: "in
             # conversation", the mechanism we actually have.
+            # #1569: reminders ARE todos in storage (unified model,
+            # PM-ratified) — the closing sentence TEACHES that relationship
+            # (lives with your todos, visible on the Todos page) instead of
+            # leaving the user to meet it as a surprise on /todos. The
+            # passive-surfacing clause stays inside it, same mechanism claim.
             return (
                 f"Reminder saved: **{text}** "
                 f"(scheduled for {schedule_label}).\n\n"
                 f"📅 {time_display}\n\n"
-                f"I'll surface this in conversation once it's due."
+                f"It lives with your todos (you'll see it on the Todos page) "
+                f"and I'll surface it in conversation once it's due."
             )
 
         except Exception as e:
