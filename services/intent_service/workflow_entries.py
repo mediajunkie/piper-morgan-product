@@ -543,12 +543,18 @@ def register_default_workflows() -> None:
 
     # #1124 Phase 4 step 3: issue-mutation cohort (CLOSE / REOPEN / COMMENT verbs).
     # Each handler reused unchanged; all classifier aliases share one entry point.
-    # effect: WRITE — _handle_close_issue_query calls
-    # github_router.update_issue(issue_number, state="closed") (~L4228).
-    # Reversible via reopen, so WRITE not DESTRUCTIVE.
+    # effect: DESTRUCTIVE (#1190, PM ruling decisions.log 2026-08-10 ~10:55) —
+    # _handle_close_issue_query calls
+    # github_router.update_issue(issue_number, state="closed") (~L4264).
+    # The old rationale ("reversible via reopen, so WRITE") classified by
+    # RECOVERABILITY; the ruling classifies by BLAST RADIUS: closing an issue
+    # removes it from every open-state board, query, and sprint view at once
+    # (the 2026-07 auto-close incident closed a live Beta Blocker from a
+    # commit message). needs_confirm derives True → the #1190 confirmation
+    # gate defers execution to an explicit yes/no turn.
     close_issue_entry = WorkflowEntry(
         entry_point=run_close_issue_workflow,
-        effect=EffectClass.WRITE,
+        effect=EffectClass.DESTRUCTIVE,
         description="Close-issue query via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -582,11 +588,16 @@ def register_default_workflows() -> None:
         requires_context=["intent", "intent_service"],
         action_triggered=True,
     )
-    # effect: WRITE — _handle_reopen_issue_query calls
-    # github_router.update_issue(issue_number, state="open") (~L4435).
+    # effect: DESTRUCTIVE (#1190, PM ruling decisions.log 2026-08-10 ~10:55) —
+    # _handle_reopen_issue_query calls
+    # github_router.update_issue(issue_number, state="open") (~L4475).
+    # Same blast-radius rationale as close (a reopen resurrects an issue onto
+    # every open-state surface — sprint boards, counts, portfolio reviews —
+    # in one stroke); recoverability was the old WRITE rationale and is
+    # retired. needs_confirm derives True → #1190 confirmation gate.
     reopen_issue_entry = WorkflowEntry(
         entry_point=run_reopen_issue_workflow,
-        effect=EffectClass.WRITE,
+        effect=EffectClass.DESTRUCTIVE,
         description="Reopen-issue query via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
