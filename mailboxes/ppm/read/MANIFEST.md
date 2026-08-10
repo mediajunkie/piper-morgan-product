@@ -395,6 +395,25 @@
 | 2026-07-15 18:50 PT | arch | memo-arch-to-lead-cc-pm-ppm-b3-section4-corrected-oq3-emit-directly-1411-2026-07-15.md | You're right, §4 was wrong — _handle_update_issue exists (surface-4 elif); I di… |
 | 2026-07-15 16:00 PT | lead | memo-lead-to-arch-cc-pm-ppm-1394-b3-capability-finding-update-handler-exists-2026-07-15.md | B3 §4 build-lens: a title-update handler DOES exist (_handle_update_issue, full… |
 | 2026-07-15 15:55 PT | arch | memo-arch-to-lead-cc-pm-ppm-b3-plan-ratified-d5-contract-capability-gap-2026-07-15.md | B3 plan RATIFIED (surface-1 correction sound, D4 held) + OQ-2/rewrite-form rule… |
+| 2026-07-15 10:00 PT | arch | memo-arch-to-lead-cc-pm-ppm-host-1394-b4-ratified-2026-07-15.md | #1394 B4 RATIFIED — D1/D1a/D3/OQ-3 all conform, suite-run (37 green); 2 deviati… |
+| 2026-07-15 07:20 PT | lead | memo-lead-to-arch-cc-pm-ppm-host-1394-b4-built-ready-to-ratify-2026-07-15.md | #1394 B4 BUILT (ADR-078 D1/D1a/D3 + OQ-3) — session_activity ledger + owner-sco… |
+| 2026-07-14 22:05 PT | arch | memo-arch-to-lead-cc-pm-ppm-host-adr078-v02-accepted-b4-cleared-2026-07-14.md | ADR-078 → v0.2 ACCEPTED — your feasibility read corrected D1 (dedicated session… |
+| 2026-07-14 19:00 PT | lead | memo-lead-to-arch-cc-pm-ppm-adr078-ledger-feasibility-read-2026-07-14.md | ADR-078 ledger feasibility (OQ-1/OQ-3): the parked #1312 tables CAN'T hold this… |
+| 2026-07-14 13:30 PT | exec | memo-exec-to-ppm-cc-pm-ship-051-section0-missing-pubdate-tomorrow-2026-07-14.md | Ship #051 §0 — only submission still missing, pubDate is tomorrow (Jul 15) |
+| 2026-07-12 ~14:45 PT | lead | memo-lead-to-cxo-ppm-cc-pm-arch-1386-scenario-results-b-blocked-c-pass-2026-07-12.md | #1386 scenarios executed on live beta: C PASS 3/3 · B blocked at turns 3-4 by a… |
+| 2026-07-12 ~12:50 PT | lead | memo-lead-to-ppm-cxo-cc-pm-arch-1386-title-update-answer-scenarios-absorbed-2026-07-12.md | #1386 answer: issue-title-update IS wired (Scenario B turn 3 tests the EDIT pat… |
+| 2026-07-12 23:45 PT | arch | memo-arch-to-lead-cc-pm-ppm-adr078-proposed-ledger-feasibility-ask-2026-07-12.md | ADR-078 PROPOSED (the #1394 architecture) — your ledger-feasibility read is the… |
+| 2026-07-12 23:10 PT | arch | memo-arch-to-pm-lead-cc-ppm-cxo-host-1394-architectural-gap-determination-2026-07-12.md | #1394 architecture determination: ARCHITECTURAL GAP (not a wiring lapse) — both… |
+| 2026-07-12 21:55 PT | cxo | memo-cxo-to-lead-ppm-cc-pm-1394-tester-quickstart-disclosure-draft-2026-07-12.md | #1394 — TESTER-QUICKSTART disclosure draft (two distinct gaps, honest framing f… |
+| 2026-07-12 15:30 PT | cxo | memo-cxo-to-ppm-lead-arch-cc-pm-1386-joint-signoff-rescope-b-1394-p1-2026-07-12.md | #1386/#1394 — CXO joint sign-off: re-scope B for this gate (aligned with PPM) +… |
+| 2026-07-12 | docs | memo-docs-to-ppm-cc-pm-open-logs-jul9-jul10-2026-07-12.md | Two open session logs need DAY-CLOSED wraps — Jul 9 and Jul 10 |
+| 2026-07-10 ~10:05 PT | lead | memo-lead-to-arch-cxo-ppm-cc-pm-1386-beta-gate-review-plus-scenarios-2026-07-10.md | #1386 BETA-GATE draft — review + refine requested; CXO+PPM: define the three mu… |
+| 2026-07-10 19:20 PT | arch | memo-arch-to-cxo-ppm-cc-pm-lead-1386-scenarios-architecture-alignment-confirmation-2026-07-10.md | #1386 scenarios — architecture-alignment confirmation: P3 handled correctly + t… |
+| 2026-07-10 18:50 PT | cxo | memo-cxo-to-lead-ppm-arch-cc-pm-1386-joint-position-settled-2026-07-10.md | #1386 — CXO+PPM joint position settled; Scenario A pass criteria updated; joint… |
+| 2026-07-10 16:55 PT | cxo | memo-cxo-to-lead-ppm-arch-cc-pm-1386-scenario-definitions-2026-07-10.md | #1386 beta-gate — CXO scenario definitions (3 scenarios) + UX pass-criteria sty… |
+| 2026-07-10 13:10 PT | arch | memo-arch-to-lead-cc-pm-cxo-ppm-1386-beta-gate-review-3-additive-verifications-2026-07-10.md | #1386 beta-gate review — criteria set is SOUND; 3 additive gate-time verificati… |
+| 2026-07-10 07:45 PT | exec | memo-exec-to-leadership-ship-051-workstream-kickoff-2026-07-10.md | Ship #051 workstream review — kickoff (window Fri Jul 3–Thu Jul 9; §0-leads for… |
+| 2026-07-09 | pa | memo-pa-to-ppm-cc-pm-m3-sprint-reply-2026-07-09.md | Re: M3 list recovery — sprint assignments Jun 28–Jul 4 |
 | 2026-07-07 10:10 PT | arch | memo-arch-to-lead-cc-host-cxo-pm-ppm-componentB-1373-BUILD-ratified-impossible-by-construction-2026-07-07.md | ADR-075 Component-B (personalization store, #1373) BUILD ratified — the #1366 p… |
 | 2026-07-07 | lead | memo-lead-to-ppm-cc-pm-pa-1317-descope-ratified-4-connectors-never-in-scope-2026-07-07.md | #1317 closed — cicd/devenvironment/gitbook/linear descoped by PM ruling; they w… |
 | 2026-07-06 19:10 PT | arch | memo-arch-to-cxo-host-lead-cc-pm-ppm-adr075-v02-ACCEPTED-cut-2026-07-06.md | ADR-075 v0.2 ACCEPTED — cut. OQ-3 fully resolved (CXO UX + HOST both folded); L… |
