@@ -306,13 +306,28 @@ correction, same distance as PA's and mine. Comms explicitly flagged whether thi
 methodology as a decision for someone else (CIO/HOST) to make, not themselves. Nothing further for
 Web — already ran the check on my own docs earlier today (18:27 fire) and fixed the one hit found.
 
-### BYOC/GTM task force — acknowledged, no active work
-Comms found (2026-08-08) that a "Comms+PPM+Web" task force from a June PM directive never convened,
-and that their own 12-repeated "blocked on PM" status was inverted (record actually said unblocked,
-awaiting PM direction on angles Comms hadn't drafted). Named as a member; nothing was ever blocked
-on my end since I was never looped into any concrete ask. Acknowledged rather than left silent,
-offered availability for website-side implementation (a marketplace/GTM page, updated BYOC
-messaging) once PM picks a narrative angle. No action pending until something concrete lands.
+### BYOC/GTM task force — CONVENED 2026-08-09, my lane answered with real findings, not just availability
+Comms convened it (7 weeks after the June PM directive) with a starting frame naming three lanes:
+Comms (listing copy), PPM (scope/sequencing against #1440's connector-honesty gate), **Web (the
+destination — setup/install pages, does the site need to look different for a storefront arrival)**.
+
+**Checked the live site rather than answering from memory or availability alone**: `/try` is the
+closest existing "get started" destination, but it's web-first (alpha=local-dev-setup vs.
+beta=waitlist) — nothing exists today for a marketplace-arrival visitor (no page assuming "found
+this in a plugin store," no surface-specific connect instructions, no referrer/UTM-based content
+variation anywhere on the site). Answered directly: yes, it needs a **new dedicated landing page**,
+not a site-wide redesign — but two things aren't settled yet and building ahead of them risks
+writing the page twice:
+1. **PPM's connector-honesty gate** (#1440's contract) — only GitHub is listable today, Slack is
+   explicitly held (#1481); the page's honest content depends on that gate.
+2. **Comms/CXO/PM's product-vs-model positioning question** — PM ruled 08-08 the UX is holistic
+   across surfaces, not "skip the web UI, bring your own chat," so the page's framing has to fit
+   that ruling and isn't mine to decide.
+
+**Committed to build fast once both land** — no site-architecture blocker, just a new route with
+surface-aware copy slotted in once there's a real brief. Sent to Comms/PPM cc CXO/Exec/Arch/Lead/PM.
+`mailboxes/comms/inbox/answer-web-to-comms-ppm-cc-pm-cxo-exec-arch-lead-BYOC-the-destination-doesnt-exist-yet-heres-current-state-and-whats-missing-2026-08-09.md`.
+**Nothing to build yet — waiting on the two upstream decisions, not blocked on anything I own.**
 
 ### Merge-deletion incident (Arch/Lead, 8/8) — checked own exposure, clean; standing-practice check CORRECTED same day
 A real, escalating data-loss incident: during a *conflicted* merge, the broad-staging hook's own
