@@ -231,6 +231,13 @@ class ContextAssembler:
         "projects": {"source": "ProjectManagementService"},
         # #1530 (m-44): row-derived denominator riding with the sliced list
         "project_count": {"source": "UserContextService"},
+        # #1536 FTUX-COLDSTART: first-exchange demonstration — the read that
+        # licenses the floor to name the user's entities on a cold first turn
+        "first_contact_demo": {
+            "source": "GitHubIntegrationRouter",
+            "filter": "state:open, recency-ranked",
+        },
+        "first_contact_source_failed": {"source": "GitHubIntegrationRouter"},
     }
 
     def _attribute_provenance(
@@ -358,6 +365,31 @@ class ContextAssembler:
                 self._attribute_provenance(list(reminder_ctx.keys()), user_id=user_id)
         except Exception as e:
             logger.warning("context_assembler_reminder_gather_error", error=str(e))
+
+        # #1536 FTUX-COLDSTART: on the FIRST exchange of a conversation, when
+        # the user has a configured connector, gather a small recent slice of
+        # their real data so the first reply demonstrates with THEIR entities
+        # instead of greeting generically. Rides OUTSIDE the category dispatch
+        # (the #1566 pattern) so any floor-bound first turn gets it — a cold
+        # first message needn't be a greeting — and a first-contact failure
+        # can't take the rest of the context down (or vice versa). Newness is
+        # per-conversation: no completed exchange yet (#1122 in-flight turn
+        # semantics; see first_contact.is_first_exchange). Cached per #984.
+        # #1425 honesty: a failed read merges first_contact_source_failed,
+        # which the floor renders as "couldn't check", never a fake demo.
+        if user_id and session_id:
+            try:
+                from services.intent_service import first_contact as _first_contact
+
+                if _first_contact.is_first_exchange(session_id, user_id):
+                    fc_ctx = await _first_contact.gather_first_contact_demo(
+                        user_id, cache=self.cache
+                    )
+                    if fc_ctx:
+                        context.update(fc_ctx)
+                        self._attribute_provenance(list(fc_ctx.keys()), user_id=user_id)
+            except Exception as e:
+                logger.warning("context_assembler_first_contact_error", error=str(e))
 
         # #960: Context contract violation logging — warn when a data-query
         # category reaches the floor with no user data in context.

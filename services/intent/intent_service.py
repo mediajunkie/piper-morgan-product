@@ -1179,7 +1179,11 @@ class IntentService:
                     original_message=message,
                     confidence=1.0,
                 )
-                return await self._handle_standup_query(standup_intent, standup_intent.id, user_id)
+                # #1511: session_id threaded so the interview-token branch inside
+                # the handler can key the interactive flow to this session.
+                return await self._handle_standup_query(
+                    standup_intent, standup_intent.id, session_id, user_id
+                )
 
             # Issue #197 Phase 2B: Ethics enforcement at universal entry point
             # Check ENABLE_ETHICS_ENFORCEMENT environment variable (default: False for gradual rollout)
@@ -2686,7 +2690,15 @@ class IntentService:
 
             return IntentProcessingResult(
                 success=True,
-                message=response.message,
+                # #1511: one deterministic teaching line on the OPENING only —
+                # the interview names the quick report so both modes are
+                # discoverable from either. 'give me my standup' is the
+                # deterministically-claimed report phrasing (#1269 cue); bare
+                # 'standup' is known to be conflated by the LLM classifier.
+                message=(
+                    f"{response.message}\n\n"
+                    "Want the quick report instead? Say 'give me my standup'."
+                ),
                 intent_data={
                     "category": IntentCategory.EXECUTION.value,
                     "action": "standup_started",
@@ -2829,7 +2841,11 @@ class IntentService:
         return any(cue in m for cue in cues)
 
     async def _handle_standup_query(
-        self, intent: Intent, workflow_id: str, user_id: Optional[str] = None
+        self,
+        intent: Intent,
+        workflow_id: str,
+        session_id: Optional[str] = None,
+        user_id: Optional[str] = None,
     ) -> IntentProcessingResult:
         """Handle show_standup/get_standup query actions — the on-demand standup DERIVED
         over the live entity catalog (#1269: StandupAssembler reading the same Radar
@@ -2841,7 +2857,31 @@ class IntentService:
         Radar uses), threaded via the dispatch rail's ``pass_user_id=True``. NOT the
         session_id — the standup is the user's, not the session's. Anonymous (``user_id``
         None) → the sources degrade to an honest empty summary.
+
+        #1511 (MVP slice — pure disambiguation): ``session_id`` is threaded (claim site +
+        dispatch rail) ONLY so the interview-token branch below can key the interactive
+        flow to the session; the report itself still ignores it.
         """
+        # #1511: "two standups wear one name." This handler claims all standup
+        # phrasings, which left the EXISTING interactive interview (#585,
+        # StandupConversationHandler) unaddressable from chat. #1431 pattern —
+        # a token branch INSIDE the already-claiming handler, sanctioned under
+        # the routing moratorium (no pre-classifier pattern or prompt changes):
+        # an explicit interview token dispatches the existing interview flow
+        # instead of the report. Neither mode's behavior changes. Without a
+        # session_id there is no conversation to key the interview to, so we
+        # fall through to the report (whose teaching line names the interview).
+        message_text = (
+            intent.original_message or intent.context.get("original_message", "") or ""
+        ).lower()
+        if session_id and re.search(r"\binterview\b|\binteractive\b", message_text):
+            self.logger.info(
+                "Standup interview token detected — dispatching interactive flow (#1511)",
+                user_id=user_id,
+                session_id=session_id,
+            )
+            return await self._start_standup_conversation(user_id, session_id)
+
         try:
             from services.standup.assembler import build_user_standup_summary
 
@@ -2849,7 +2889,17 @@ class IntentService:
 
             return IntentProcessingResult(
                 success=True,
-                message=f"Good morning! {summary.to_prose()}",
+                # #1511: one deterministic teaching line — the report names the
+                # interview so the guided mode is discoverable. Copy teaches
+                # 'my standup interview' because that phrasing is claimed by the
+                # existing _is_standup_query cue ("my standup") and therefore
+                # routes deterministically; bare "standup interview" is not a
+                # claimed phrasing (widening the claim is off-limits under the
+                # moratorium).
+                message=(
+                    f"Good morning! {summary.to_prose()}\n\n"
+                    "Want the guided version instead? Say 'my standup interview'."
+                ),
                 intent_data={
                     "category": intent.category.value,
                     "action": intent.action,

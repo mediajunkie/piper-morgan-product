@@ -94,7 +94,9 @@ class ConversationHandler:
         import random
 
         # ADR-059: Active onboarding check disabled (onboarding on ice)
-        user_id = (intent.context or {}).get("user_id")
+        # #1536: fall back to the caller-threaded principal instead of
+        # silently dropping it when intent.context lacks user_id.
+        user_id = (intent.context or {}).get("user_id") or user_id
 
         # Handle clarification_needed action
         if intent.action == "clarification_needed":
@@ -154,7 +156,9 @@ class ConversationHandler:
         import random
 
         # Issue #490: Check if this user should be offered portfolio onboarding
-        user_id = (intent.context or {}).get("user_id")
+        # #1536: fall back to the caller-threaded principal instead of
+        # silently dropping it when intent.context lacks user_id.
+        user_id = (intent.context or {}).get("user_id") or user_id
 
         # DEBUG Issue #490: Trace greeting flow
         logger.info(
@@ -182,6 +186,25 @@ class ConversationHandler:
 
         # Issue #407: Use consciousness-enhanced greeting
         response = format_greeting_conscious(calendar_summary=calendar_summary)
+
+        # #1536 FTUX-COLDSTART: on the very first exchange of a conversation,
+        # when the user has a configured connector, append a demonstration
+        # block built from a read performed this turn — the user's own data,
+        # unprompted, instead of a purely generic greeting. The block is
+        # DETERMINISTIC (pure string formatting over the gathered payload in
+        # first_contact.render_first_contact_block), so this path is
+        # structurally incapable of naming an entity the read didn't return.
+        # Fail-graceful: any error → the plain greeting, never a dead turn.
+        try:
+            from services.intent_service import first_contact as _first_contact
+
+            demo_block = await _first_contact.first_contact_demo_block(
+                session_id=session_id, user_id=user_id
+            )
+            if demo_block:
+                response = f"{response}\n\n{demo_block}"
+        except Exception as e:
+            logger.warning("first_contact_greeting_error", error=str(e))
 
         return {
             "message": response,

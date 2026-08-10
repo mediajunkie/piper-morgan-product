@@ -989,9 +989,16 @@ def register_default_workflows() -> None:
         ),
         (
             _qentry(
-                _make_query_dispatch_entry_point("_handle_standup_query", pass_user_id=True),
+                # #1511: pass_session_id too — the interview-token branch inside
+                # _handle_standup_query needs the session to key the interactive
+                # flow; the report path still ignores it.
+                _make_query_dispatch_entry_point(
+                    "_handle_standup_query", pass_session_id=True, pass_user_id=True
+                ),
                 "standup query via action dispatch",
-                # effect: READ — assembles standup summary from existing data.
+                # effect: READ — assembles standup summary from existing data;
+                # the #1511 interview-token branch starts the existing guided
+                # capture flow (same effect the /standup command already has).
                 EffectClass.READ,
             ),
             ["show_standup", "get_standup"],
