@@ -72,10 +72,25 @@ while IFS=$'\t' read -r role cron _ _ _ _ _ state; do
   done
 done < "$REG"
 
-# ── emissions in the window, from the heartbeat surface ────────────────────────
+# ── emissions in the window, from the heartbeat surface ON origin/main ─────────
+# 🔴 FIXED 2026-08-09 (Web's finding). v0.1 read $HB from the LOCAL WORKING TREE. A checkout that had
+# not fetched therefore saw stale heartbeats, reported emissions=0, and raised a FALSE COHORT-FREEZE --
+# whose own instruction is "stand down and notify PM." Web hit exactly that at 15:28: rc=1 with
+# emissions=0, then rc=0 with emissions=3 one minute later, one `git fetch` apart, same window.
+# The cohort was never frozen; their checkout was.
+#
+# The belt beside this one (duty-cycle-freeze-check.sh) has always read origin/main and SAYS SO in its
+# show-your-work line. This did neither. Both halves are fixed here: read the ref, and print it.
+FETCH_NOTE=""
+if ! git -C "$REPO" fetch origin main -q 2>/dev/null; then
+  FETCH_NOTE=" ⚠️FETCH-FAILED(reading possibly-stale origin/main)"
+fi
+if ! TIP=$(git -C "$REPO" rev-parse --short origin/main 2>/dev/null); then
+  echo "cohort-freeze: FAIL origin/main does not resolve -- cannot measure (NOT an all-clear)" >&2
+  exit 3
+fi
 emitted=0; emitters=""
-for f in "$HB"/*/*.tsv; do
-  [ -e "$f" ] || continue
+for f in $(git -C "$REPO" ls-tree -r --name-only origin/main -- dev/heartbeats/ 2>/dev/null | grep '\.tsv$'); do
   while IFS=$'\t' read -r ts who _; do
     [ -z "${ts:-}" ] && continue
     e=$(date -j -f "%Y-%m-%d %H:%M:%S" "$(printf '%s' "$ts" | awk '{print $1" "$2}')" +%s 2>/dev/null) || continue
@@ -83,12 +98,12 @@ for f in "$HB"/*/*.tsv; do
       emitted=$((emitted+1))
       case " $emitters " in *" $who "*) ;; *) emitters="$emitters $who";; esac
     fi
-  done < "$f"
+  done < <(git -C "$REPO" show "origin/main:$f" 2>/dev/null)
 done
 
 ws=$(date -r "$win_start" "+%Y-%m-%d %H:%M" 2>/dev/null || date -d "@$win_start" "+%Y-%m-%d %H:%M")
 we=$(date -r "$NOW_EPOCH" "+%Y-%m-%d %H:%M" 2>/dev/null || date -d "@$NOW_EPOCH" "+%Y-%m-%d %H:%M")
-echo "cohort-freeze: examined window=[$ws .. $we] (${WINDOW_H}h) watched_roles=$roles scheduled_fires=$sched emissions=$emitted emitters=[${emitters# }] min_sched=$MIN_SCHED" >&2
+echo "cohort-freeze: examined ref=origin/main tip=$TIP$FETCH_NOTE window=[$ws .. $we] (${WINDOW_H}h) watched_roles=$roles scheduled_fires=$sched emissions=$emitted emitters=[${emitters# }] min_sched=$MIN_SCHED" >&2
 
 if [ "$sched" -lt "$MIN_SCHED" ]; then
   echo "INSUFFICIENT-SCHEDULE ($sched scheduled fires < $MIN_SCHED in window) — NOT an all-clear, this window cannot discriminate" >&2
