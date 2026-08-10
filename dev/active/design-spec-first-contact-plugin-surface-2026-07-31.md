@@ -276,6 +276,23 @@ All items assume a **cold account with one connector authorized**, in a real cli
 2. The user-visible reply contains **no request for scope** before that reading.
 3. The reply carries **an offer or an opinion**, not only a status.
 
+> 🔴 **DEFECT FOUND 2026-08-09 — DO NOT RATIFY AS WRITTEN. A fourth item is required.**
+>
+> Applying PPM's #1536 analysis to this wording: **item 1 is AC1; item 3 is *stance*; AC2's property —
+> *only Piper could have produced this* — is genuinely absent.** ⚠️ **Stance is not a substitute for
+> provenance**: *"You have 12 open issues; that's a lot"* carries an opinion and could have been produced
+> by anything with read access. **This criterion passes it**, which is the echo case #1536 exists to
+> answer — *"an LLM with extra UI."*
+>
+> **Why AC2 isn't here, which constrains the fix**: §7a's constraint is *binary and checkable now*, and
+> *"only Piper could produce it"* is a **judgment**. Importing it verbatim would break the property that
+> makes §7a a gate rather than an opinion. **What's needed is AC2's binary shadow.**
+>
+> **PROPOSED item 4 — with PM:** *The content includes at least one entity attribute that could not have
+> been derived from the user's message alone* — a title, state, timestamp or link Piper had to fetch.
+> **Mechanical, can fail, kills the echo case.** ⚠️ **Weaker than AC2** (it proves a *fetch*, not
+> *uniqueness*) — **a weaker binary that can fail beats a stronger judgment that can't.**
+
 **Binary, and every one is checkable now.** This is the wording proposed as canonical (see §7c).
 
 ### 7b. Spec conformance — required for *done*, beyond the gate
