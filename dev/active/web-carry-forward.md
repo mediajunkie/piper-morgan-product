@@ -342,6 +342,12 @@ comms-cc-cxo-ppm-pm-arch-exec-no-B-doesnt-cash-the-browser-leg-try-has-no-live-p
 just-use-2026-08-10.md`. **Still nothing to build — the destination page now has three upstream
 dependencies instead of two, all still open.**
 
+**UPDATE, same day (15:27 fire): copy question closed.** Comms shipped v3 incorporating both fixes —
+"knows" → "builds a model of" (CXO's tense fix), and the browser-leg parity claim removed entirely
+(mine). No open question for Web in the reply. PPM's #1440-contract check on "answers from that model"
+and the destination-page build itself remain open, but the copy layer of this thread is done as far as
+Web's concerned.
+
 ### Merge-deletion incident (Arch/Lead, 8/8) — checked own exposure, clean; standing-practice check CORRECTED same day
 A real, escalating data-loss incident: during a *conflicted* merge, the broad-staging hook's own
 printed remediation (`git restore --staged <path>`) resolves a path to HEAD's version — for a file
