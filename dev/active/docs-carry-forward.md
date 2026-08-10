@@ -13,31 +13,32 @@ stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
 staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
 
-## 🟠 ACTIVE — Weekly Docs Audit #1583, in progress, spans multiple fires
+## 🟠 ACTIVE — Weekly Docs Audit #1583, 6 of 8 sections done, 2 remain — pick up next fire
 
-**The trigger fired clean** (08-10, 17:03 UTC/10:03 PT, verified via `gh run list` + reading the actual
-log, not just "it ran green") — first real test of the nudged cron since it was flagged, and it worked.
-Issue #1583 created, real 17.7K-char checklist body.
+**All 3 background subagents landed and were consolidated this fire** (verified each factual claim before
+acting — caught nothing wrong this time, but the discipline is what makes that trustworthy). Real fixes
+shipped: CITATIONS.md Serena attribution (`32d6cba9b`), NAVIGATION.md/INDEX.md methodology-43-47 gap
+(`34457f82f`), duplicate draft removed (`06209210d`). Two tracking issues filed for what's too large for
+one sitting: **#1584** (~240 broken links, 2 methodology cross-ref drifts) and **#1585** (11 stale
+current-state docs, 6 duplicate-file clusters).
 
-**Genuinely worked, not just checked-off** (Fire 2, 10:27-11:15ish): Briefing Freshness ✅ fresh,
-Doc Currency (25/37 stale, 21 sharing the `2026-06-19` bulk-stamp — flagged, not fixed, cohort matter),
-pattern count (no real discrepancy, self-corrected a false read before reporting), ADR link integrity
-(0 broken), omnibus coverage (3-day gap is expected under the Friday-early-omnibus cadence, verified via
-git log not assumed), quality checks (0 backups, GitHub-issues-sync step is stale template drift and was
-skipped in favor of the substantive check), docs/README.md pmorgan.tech homepage review (clean).
+**Completion Matrix state** (posted to #1583, both progress comments):
+- ✅ Briefing Freshness, Link Integrity, Omnibus Coverage, GitHub Issues Sync, Quality Checks (both READMEs)
+- ⏳ **Sprint & Roadmap Alignment** — checked, roadmap.md is PPM's actively-maintained artifact (4 days
+  old), marked verified-current rather than edited (not my lane) — arguably done, but worth a final look
+  next fire before checking the box.
+- ⏳ **Pattern & Knowledge Capture** — pattern-count sub-check done (no real discrepancy). Session-log
+  pattern-mining sub-item NOT started — this is the one genuinely open piece of audit work.
+- ⏳ **Staggered-audit-calendar update** — final closing step, blocked on everything else finishing.
 
-**3 background subagents in flight** (non-overlapping scopes) — **consolidate their results FIRST at
-next fire, before anything else**:
-1. Stale content by file-mtime + duplicate files
-2. Broken links across rest of docs/ (not just ADRs) + methodology cross-refs + NAVIGATION↔INDEX check
-3. Briefing completeness vs ROSTER.md + root README.md review + CITATIONS.md spot-check
+**Next fire, in order**: (1) do the session-log pattern-mining pass, (2) confirm Sprint/Roadmap can be
+checked off, (3) update `docs/internal/operations/staggered-audit-calendar-2026.md`, (4) fill the final
+Completion Matrix and close #1583 via `close-issue-properly`. Do NOT close early — Pattern-046 (no silent
+skipping) applies to the checklist's own gate.
 
-**Not yet started**: Sprint & Roadmap Alignment, Pattern & Knowledge Capture (session-log pattern-mining,
-template-dir currency), staggered-audit-calendar update (final step).
-
-Progress comment posted to #1583 with real evidence — do NOT close the issue until the Completion Matrix
-is genuinely filled (all 8 sections ✅/⏸️-with-PM-approval/❌-with-blocker-link — no silent skipping per
-Pattern-046). This is legitimately multi-fire work per the checklist's own explicit allowance.
+**New PM item, not urgent**: root README.md's MIT license badge has **no LICENSE file anywhere in repo
+history** (verified via `find` + `git log --all`) — needs PM's call (add LICENSE vs. adjust badge), added
+below in "Awaiting PM specifically."
 
 ## 🟡 AWAITING PM (3+ days now) — write up the line-count methodology proposal, or hold?
 
@@ -79,6 +80,10 @@ permanence, per standing lesson 10.
 - **website#31, converter double-`<em>` bug** — filed 08-05, still 0 comments as of 08-09 22:27, not
   urgent, no chase needed: (a) fix forward-only vs. regenerate the ~15-post Ship back-catalog, (b)
   should Ship `**Metrics**` become a real `###` header.
+- **MIT license badge, no LICENSE file** (found 08-10, weekly-docs-audit #1583) — root README.md
+  displays an MIT badge; `find . -iname "LICENSE*"` and `git log --all -- LICENSE*` both return zero
+  hits, repo-wide, all of history. Needs PM's call: add a real LICENSE file, or adjust/remove the badge.
+  Not urgent, not blocking, flagged in #1583's progress comment.
 
 ## Awaiting others — check, don't re-derive
 
