@@ -931,6 +931,18 @@ class IntentService:
             )
             if pending_offer:
                 response_type = detect_offer_response(message)
+                # #1190: a pending DESTRUCTIVE confirmation treats bare exit
+                # commands ("cancel", "stop", "forget it" — #888 ∪ #1529
+                # sets) as an honest decline, not as a message that silently
+                # drops the offer. Exit tier of the #1529 escape semantics
+                # applied to a one-turn offer.
+                if response_type is None and pending_offer.get("pending_action"):
+                    from services.intent_service.destructive_confirm import (
+                        detect_bare_exit,
+                    )
+
+                    if detect_bare_exit(message):
+                        response_type = "decline"
                 if response_type == "accept":
                     workflow_type = pending_offer["workflow_type"]
 
@@ -942,6 +954,14 @@ class IntentService:
                         "active_lens": pending_offer.get("active_lens"),
                         "formality_baseline": formality_baseline,
                         "slot_filling_adapter": self.slot_filling_adapter,
+                        # #1190: destructive-confirmation offers carry a
+                        # deferred rail action; the confirm entry point needs
+                        # the stored record + this service to execute the
+                        # ORIGINAL handler path with the ORIGINAL parameters
+                        # (the "yes" is never re-classified). Harmless extras
+                        # for every other workflow type.
+                        "pending_action": pending_offer.get("pending_action"),
+                        "intent_service": self,
                     }
 
                     result = await dispatch_workflow(
@@ -1011,6 +1031,16 @@ class IntentService:
                         },
                     )
                 # Neither accept nor decline — user moved on. Continue normal processing.
+                # #1190: for a destructive confirmation this IS the honest
+                # cancel (#1529 off_intent tier): the pop above already
+                # removed the pending action, so nothing can ever fire it,
+                # and normal processing answers the new message.
+                elif pending_offer.get("pending_action"):
+                    self.logger.info(
+                        "destructive_confirmation_abandoned",
+                        action=pending_offer["pending_action"].get("action"),
+                        session_id=session_id,
+                    )
 
             # Issue #852: Contextual offer continuation
             # If the user was offered something contextual (not a workflow) on the
@@ -1699,7 +1729,58 @@ class IntentService:
             # live mode-4 evidence). Known names pass through untouched.
             intent.action = normalize_action(intent.action)
 
-            if intent.action in get_action_workflows():
+            _action_workflows = get_action_workflows()
+            if intent.action in _action_workflows:
+                # ── #1190 destructive-mutation confirmation gate ──────────
+                # A rail entry whose declared effect derives needs_confirm
+                # (== EffectClass.DESTRUCTIVE; close/reopen per PM's 08-10
+                # ruling) does NOT execute on the turn it was classified.
+                # The gate registers the deferred action as a pending offer
+                # (the EXISTING #846 session-scoped store — the same seam
+                # that pops offers before classification and before the
+                # resume check, so #1529 offer-binding ordering holds) and
+                # asks one yes/no question. "yes" re-dispatches the ORIGINAL
+                # intent via run_confirm_pending_action_workflow; "no" and
+                # bare exits cancel honestly; any other message abandons the
+                # action (it was popped — nothing can fire it later).
+                # Orthogonal to the #1510 collaborate-gate: execute-mode
+                # users still confirm destructive actions (different
+                # failures, different protections).
+                _rail_entry = _action_workflows[intent.action]
+                if _rail_entry.needs_confirm:
+                    from services.intent_service.destructive_confirm import (
+                        build_confirmation_offer,
+                    )
+
+                    _confirmation = build_confirmation_offer(intent)
+                    if _confirmation is not None:
+                        self.workflow_offer_service.set_pending_offer(
+                            session_id, _confirmation.offer, user_id=user_id
+                        )
+                        self.logger.info(
+                            "destructive_confirmation_offered",
+                            action=intent.action,
+                            session_id=session_id,
+                        )
+                        # Return DIRECTLY — _apply_soft_offer would overwrite
+                        # the pending confirmation with a soft offer in the
+                        # same session-scoped store.
+                        return IntentProcessingResult(
+                            success=True,
+                            message=_confirmation.question,
+                            intent_data={
+                                "category": intent.category.value,
+                                "action": intent.action,
+                                "confidence": intent.confidence,
+                                "destructive_confirmation_pending": True,
+                            },
+                            requires_clarification=True,
+                            suggestions=all_suggestions,
+                            preferences=preferences,
+                        )
+                    # None → verified read-only clarification shape (no
+                    # parseable target); the handler asks "which issue?".
+
                 dispatched = await dispatch_workflow(
                     workflow_type=intent.action,
                     session_id=session_id,
@@ -4206,7 +4287,11 @@ class IntentService:
 
             # Issue #902: Check if this is a confirmed close (user already saw
             # the issue and confirmed). Pattern: "yes, close #123" or "confirm close #123"
-            confirmed = bool(
+            # #1190: the rail confirmation gate defers execution to an explicit
+            # yes/no turn and re-dispatches the ORIGINAL intent with the
+            # destructive_confirmed marker — honor it so the confirmed "yes"
+            # executes in one turn instead of re-asking #902's question.
+            confirmed = bool(intent.context.get("destructive_confirmed")) or bool(
                 re.search(
                     r"\b(yes|confirm|confirmed|sure|go ahead|do it)\b",
                     original_message.lower(),
@@ -4416,7 +4501,8 @@ class IntentService:
             issue_number = int(match.group(1))
 
             # Issue #902: Confirmation UX (mirrors close handler)
-            confirmed = bool(
+            # #1190: honor the rail confirmation gate's marker (see close handler).
+            confirmed = bool(intent.context.get("destructive_confirmed")) or bool(
                 re.search(
                     r"\b(yes|confirm|confirmed|sure|go ahead|do it)\b",
                     original_message.lower(),
