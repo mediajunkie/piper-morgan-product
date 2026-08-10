@@ -1,6 +1,6 @@
 # First-contact criterion — the merged list
 
-**Author**: PPM · **Date**: 2026-08-10 · **Status**: 🟡 proposed, not ratified — **PM's to bless**
+**Author**: PPM · **Date**: 2026-08-10 · **Status**: 🟡 proposed, not ratified — **PM's to bless.** ✅ **Item ③'s block discharged 2026-08-10 (Arch).** All three items now stand on their own.
 **Supersedes for ratification purposes**: CXO's §7a as written, and #1536's ACs as written. **Neither
 was canonical-ready.**
 
@@ -36,7 +36,7 @@ placement**, not list selection.
 |---|---|---|---|
 | **1** | With one tool connected and a **cold account**, the user's own data appears in the **first exchange, unprompted** | 🚪 **GATE** | Already binary and runner-checkable |
 | **2** | What is shown is something **only Piper could produce** — not a capability list, not a restatement of the user's request | 📋 **§7b CONFORMANCE** | **A judgment. It cannot fail cleanly** and a runner can argue it either way. Reviewed for *done*; **never a gate item** |
-| **3** | **No fabricated content** — every entity named is real, **whether or not a connector is attached** | 🚪 **GATE**, ⚠️ **by citation** — see below | Widened from #1536's empty-state scoping |
+| **3** | **No fabricated content** — **every entity named in a user-facing claim carries a citation** | 🚪 **GATE** ✅ **unblocked 08-10** | Widened from #1536's empty-state scoping; **gates on Arch's contract, not on our wording** |
 
 ### ⛔ AC4 is deleted, not placed — it is entailed by item 1
 
@@ -57,26 +57,30 @@ fabrication five times, never generally."*
 > ⭐ **One predicate closing two holes in two documents is not elegance — it is the signal it belongs
 > in neither.** So item 3 **cites** the general contract rather than restating it.
 
-### ⚠️ But the contract may not reach this case, and that is worth resolving before citing it
+### ✅ RESOLVED 2026-08-10 — the contract DOES reach it, and my flag was half a misreading
 
-`floor-honesty-contract-1517-spec.md` §3:
+**Arch, answering CXO and me arriving at the same question from opposite ends:**
 
-> **"An assertion about system state requires a read of that state. Fabrication is
-> asserting-without-reading."**
-> **H1** — no proposition about **stored state** (*saved / not saved / exists / doesn't exist / was
-> deleted*) unless derived from a value the turn actually read.
+> *"You have issue #1234 'Fix login bug'"* **asserts that #1234 exists. That is a proposition about
+> stored state whether or not the word 'saved' appears. A named entity IS a state claim.**
 
-**The headline property is general enough. H1's obligation may not be**, on two counts:
+⚠️ **My "H1's enumeration is storage-flavoured" objection was wrong** — *exists / doesn't exist* is
+**literally in H1's list.** I read it as save-state because the enumeration *leads* with
+*saved / not saved*. **Arch fixed the wording rather than asking anyone to patch around it.**
 
-1. **H1's enumeration is storage-flavoured** — Piper's *own* persistence. First-contact fabrication is
-   about an entity from a **connected external source** (a GitHub issue that doesn't exist).
-2. 🔴 **More important: H1 governs *whether a read occurred*; item 3 needs *whether the named entity
-   is real*.** **A read can occur and the particulars still be fabricated** — fetch the issue list,
-   then hallucinate a title onto it. **H1 is satisfied; item 3 is violated.**
+**My second objection was the real one and it is answered by the carrier**: H1 governs whether a read
+occurred; item 3 needs whether the named entity is real. **Arch's mechanism closes the gap:**
 
-**So item 3 is currently: 🟡 BLOCKED on Arch confirming the contract covers *asserted particulars*,
-not only *asserted-without-reading*.** ⛔ **Do not treat "cites the contract" as closing it until
-that's answered.** *(Flagged to Arch as a consumer they may not have counted — CXO's framing.)*
+> **Propositions carry a `StateFact(read_at, source)`. Entities carry a CITATION.**
+> ***You cannot cite a read you did not perform.***
+
+**Because citations are PER-ENTITY, a fabricated `#1234` has nothing to cite even when a real read of
+the issue list happened in the same turn.** *(That per-entity property is what makes it hold — a
+per-turn citation would let a fabricated entity ride on a genuine read. Implementation-level, and
+Arch's/Lead's to keep.)*
+
+> ✅ **Item ③ gates on: *every entity named in a user-facing claim carries a citation.*** **No fourth
+> wording patch needed.** The block is discharged.
 
 ---
 
