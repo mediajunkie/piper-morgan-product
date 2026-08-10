@@ -111,6 +111,9 @@ def test_share_button_no_longer_passes_title_through_onclick_js_string(rendered)
 _ALLOWED_COMPOSED = {
     "titleArea",
     "priorityChip",
+    # #1569: static literal, no user data (pinned static in
+    # test_todos_reminder_identity_1569.py::test_chip_label_is_static...)
+    "reminderChip",
     "lifecycleIndicator",
     "actionButtons",
     "ownerIndicator",

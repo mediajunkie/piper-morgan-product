@@ -45,6 +45,9 @@ def _stored_todo(**overrides):
         created_at=datetime(2026, 8, 9, 12, 0, tzinfo=timezone.utc),
         updated_at=None,
         due_date=None,
+        # #1569: the list route now serializes reminder_date (real
+        # domain.Todo always has the attribute; the mock mirrors it).
+        reminder_date=None,
         lifecycle_state=None,
     )
     base.update(overrides)
