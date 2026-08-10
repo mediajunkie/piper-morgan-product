@@ -1562,3 +1562,38 @@ COHORT OUTCOMES THIS FIRE (all confirming, no action owed):
     value… an absent milestone is honestly unknown; a guessed milestone is a claim that reads as decided and
     nobody re-examines." This week's failure class applied correctly by someone else — worth noting the
     pattern is propagating without me restating it.
+
+---
+2026-08-09 18:5x PT — Arch — THE read/-AUDIT CHECK I PROMISED PM CANNOT WORK AS DESIGNED. Negative result, and it argues for the board.
+
+PROMISED TO PM (08-09 morning, after the unread-memo trust violation): "a check that flags memos in read/ I
+  never quoted, replied to, or logged — a candidate false-claim detector. Converts this from invisible to
+  detectable." BUILT IT. IT DOES NOT WORK. NOT SHIPPED — script deleted rather than committed, because a
+  non-working check sitting in scripts/ is worse than none: someone runs it and acts on the false positives.
+
+WHAT WAS MEASURED (three iterations, each falsified by the next):
+  1. Token = 4-part runs from the MIDDLE of the filename slug → flagged 50 of 111 memos in a 3-day window.
+  2. Cross-checked against `in-reply-to:` in my own sent mail (204 of 302 sent memos carry it): 20 OF THE 50
+     WERE NAMED IN A REPLY — a 40% miss against a signal demonstrably present. Token strategy was wrong.
+  3. Recalibrated to PREFIX matching (replies truncate the tail, never the head). Still flagged memos I had
+     read and written about the SAME AFTERNOON — CIO's adoption memo, Comms's not-a-clobber, Exec's
+     trust-gradient proposal I ruled on at length.
+
+🔴 THE ROOT CAUSE, MEASURED: MY SESSION LOGS NAME A MEMO FILENAME **ZERO** TIMES across 2026-08-06→09.
+  I cite by ROLE + PARAPHRASE ("PPM caught my map contradicting itself") — 12 instances in the same span.
+  A memo's identity is a 100+ character filename slug. THERE IS NO TEXTUAL LINK BETWEEN MY ACTING ON A MEMO
+  AND THAT MEMO'S IDENTITY. No token tuning fixes that; the link does not exist in the artifacts.
+
+⭐ THE NEGATIVE RESULT IS THE CONTRIBUTION, AND IT ARGUES FOR PM'S BOARD: the reason a private audit cannot
+  verify "did I act on this input" is that THERE IS NO IDENTIFIER LINKING AN ACTION TO THE INPUT THAT CAUSED
+  IT. Two things would supply one:
+    (a) a STABLE SHORT ID per memo (message-id style), cited when acting — makes citation checkable, and is
+        a mail-layer change (CIO/Exec surface, not mine to impose);
+    (b) THE BOARD — thread state where "input consumed" and "output emitted" are both visible WITHOUT
+        textual matching. This is PM's chess-board idea, and my failed audit is direct evidence for it.
+  ⚠️ Recorded honestly rather than shipping something noisy: a check that flags ~50 memos in three days,
+  most of them false, would train exactly the ignore-the-belt behaviour Comms warned about this week —
+  and it would do it while carrying my name and PM's expectation that the promise was kept.
+STILL TRUE AND UNCHANGED: the never-glob-the-inbox rule (adopted cohort-wide by CIO) is the actual control.
+  It prevents the failure. What I could not build is the DETECTOR for the failure — those are different
+  things, and I said I'd deliver the second.

@@ -10,10 +10,19 @@ behind this interface changes, not the call sites).
 
 Per-connector clearing (each best-effort — a missing credential never fails the
 disconnect; the point is to leave NO usable credential behind):
-- **github** (ADR-070 binding): keychain PAT + env + config-cache + binding→UNBOUND +
+- **github** (ADR-070 binding): keychain PAT + config-cache + binding→UNBOUND +
   #358 grant revoke (the #1330 fix).
 - **slack** (ADR-058 keychain): bot+user keychain tokens + Slack-side OAuth revoke
-  (the #1334-P1 fix) + env.
+  (the #1334-P1 fix).
+
+#1558 (mirror of #1507): this module must NEVER mutate `os.environ`. The old
+github/slack clears popped GITHUB_TOKEN/GH_TOKEN/SLACK_BOT_TOKEN etc. — a
+process-wide ambient-credential mutation: one user's disconnect deleted the
+SYSTEM/deployment credential for every env-reading path in the process. And it
+protected no user path: since #1461(a) the env fallback is system-only
+(GitHubConfigService gates it on `not is_real_user`), so a real user's reads
+never touch env. User disconnect touches only user-scoped stores. AST pin:
+tests/unit/services/connectors/test_disconnect_no_env_mutation_1558.py.
 - **calendar** (keychain): user-scoped refresh token + Google-side OAuth revoke
   (the #542 fix — previously local-clear only, never actually revoked).
 - **notion** (keychain + #358 store): keychain key (legacy) AND the user-scoped
@@ -22,8 +31,6 @@ disconnect; the point is to leave NO usable credential behind):
 """
 
 from __future__ import annotations
-
-import os
 
 import structlog
 
@@ -62,8 +69,9 @@ async def _disconnect_github(user_id: str) -> None:
         keychain.delete_api_key("github_token", username=user_id)  # #849 user-scoped
     except Exception:
         pass
-    for var in ("GITHUB_TOKEN", "GITHUB_API_TOKEN", "GH_TOKEN"):
-        os.environ.pop(var, None)
+    # #1558: NO os.environ.pop here — env tokens are system/deployment
+    # credentials (#1461(a): env fallback is system-only); a user-scoped
+    # disconnect mutating them was process-wide cross-tenant damage.
     try:
         from services.integrations.github.config_service import GitHubConfigService
 
@@ -114,8 +122,8 @@ async def _disconnect_slack(user_id: str) -> None:
         keychain.delete_api_key("slack_user", username=user_id)
     except Exception:
         pass
-    for var in ("SLACK_BOT_TOKEN", "SLACK_TEAM_ID", "SLACK_APP_TOKEN"):
-        os.environ.pop(var, None)
+    # #1558: NO os.environ.pop here — same class as the github clear above
+    # (SLACK_BOT_TOKEN env is deployment config, not a user credential).
 
 
 async def _disconnect_calendar(user_id: str) -> None:

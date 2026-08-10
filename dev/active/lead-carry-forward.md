@@ -1,19 +1,19 @@
-# Lead carry-forward — rewritten 2026-08-09 ~12:55 PT (supersedes all prior; cron-prompt blurbs are stale by construction)
+# Lead carry-forward — rewritten 2026-08-09 ~18:50 PT (supersedes all prior; cron-prompt blurbs are stale by construction)
 
 ## Live state
-- **Second cut READY at 0cc28c048** — PM deployed the morning cut (~9:45), afternoon wave (effect enum #1557, #1510 collaborate-first, #1491/#1493, #1472-verified) needs one more pull+deploy. PM flagged and testing.
-- **12 built items awaiting PM verdicts** (tracker artifact fbb9edcf is the live list + exact test steps). 0 agents out.
-- Sprint: 22 closed since Fri; 2 honest reopens both re-built.
+- **THIRD CUT DEPLOYED ~17:25 by Lead on PM's explicit word** (first Lead-pushed deploy; fly authed on this seat; ancestry-verified pre-push; /health 200/119ms). Everything through wave 3 is LIVE.
+- **26 built items awaiting PM verdicts** (tracker artifact fbb9edcf — 12-step test list, all live). 1 agent out (#1558+#1560 small pair, dispatched 18:50).
+- Sprint: 22 closed since Fri; PM triage executed (49 filed→milestones; 18+MVP adds); sequence correction MVP→Production→Fast Follow memory-pinned.
 
 ## Awaiting PM (decisions, not work)
 - FTUX five #1536-#1540 + #1511 two-standups — escalated per triage; PPM confirmed unmilestoned-is-the-ask.
 - Post-deploy verdicts on the 12 amber rows.
 
 ## Next build queue (unblocked, in order)
-1. Inversion Phase 1 (Arch GO w/ conditions: per-category corpus gate, registry-derived grammar, AGREE-rows-only narrowing w/ probe citations; effect enum landed first per sequencing). Fresh-session quality-bank candidate.
+1. **Inversion Phase 1** — the ONLY substantial unstarted MVP work besides #1190. Quality-banked to a FRESH SESSION (explicit trigger, named): conditions per Arch (per-category corpus gate incl. #1559's two PM verbatims, registry-derived grammar, AGREE-rows narrowing w/ probe-row citations). Effect enum + rail hygiene (#1560) land first — both done/in-flight.
 2. #1423/#1522 tails (silent-death un-swallow; false-trails cleanup).
-3. #1553 F6-F10 status-truth slice 2 (Production/PUB — post-MVP unless PM pulls it).
-4. mypy gate cut rides next deploy.
+3. #1190 — blocked on PM's close/reopen DESTRUCTIVE word (question on the issue).
+4. #1553 F6-F10 (Production/PUB).
 
 ## Standing
 - Discovery-rate weekly (Exec daily rollup carries it + unmilestoned count; PPM's two-populations split ratified in mail 08-09).
