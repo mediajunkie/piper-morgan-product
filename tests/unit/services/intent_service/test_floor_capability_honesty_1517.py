@@ -44,8 +44,9 @@ class TestWiredChatActionsDerivation:
 
     def test_includes_the_incident_capability_create_reminder(self):
         # create_reminder is wired via the legacy EXECUTION elif chain
-        # (intent_service.py _handle_execution_intent), NOT the rail — the
-        # derivation must cover both or it re-opens exactly the #1517 gap.
+        # (intent_service.py _handle_execution_intent) AND, since #1560, the
+        # rail — the derivation must cover both surfaces (and dedup them, see
+        # test_create_reminder_rail_1560) or it re-opens exactly the #1517 gap.
         assert "create_reminder" in wired_chat_actions()
 
     def test_includes_registry_rail_actions(self):

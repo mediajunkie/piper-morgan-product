@@ -315,11 +315,14 @@ async def run_todo_query_workflow(
     user_id: Optional[str] = None,
     context: Optional[Dict[str, Any]] = None,
 ) -> Any:
-    """#1124: todo list/next queries (pre-classifier routes them as QUERY) delegate
-    to the EXECUTION handler, which owns the todo handlers — mirrors the migrated
-    elif exactly. The workflow object is no longer pre-created (#883/#1094), so None
-    is passed (the elif passed the `workflow` param, which the handler reduced to
-    `getattr(workflow, 'id', None)` anyway)."""
+    """#1124: the execution-delegation adapter — delegates to the EXECUTION
+    handler, which owns the todo handlers. Used by the todo READ queries
+    (pre-classifier routes them as QUERY) AND by the create_reminder WRITE
+    entry (#1560) — each rail key registers its own WorkflowEntry with its own
+    declared effect; this shared entry point just mirrors the migrated elifs
+    exactly. The workflow object is no longer pre-created (#883/#1094), so None
+    is passed (the elif passed the `workflow` param, which the handler reduced
+    to `getattr(workflow, 'id', None)` anyway)."""
     ctx = context or {}
     intent_service = ctx.get("intent_service")
     intent = ctx.get("intent")
@@ -544,6 +547,29 @@ def register_default_workflows() -> None:
         action_triggered=True,
     )
 
+    # #1560: create_reminder onto the rail (the structural half of the #1517
+    # capability-gaslighting incident). Its only dispatch was the legacy
+    # `elif mapped_action == "create_reminder"` inside _handle_execution_intent —
+    # reachable ONLY under category EXECUTION, so a correct create_reminder
+    # emission under any other category (TEMPORAL, GUIDANCE, ...) floored, and
+    # the floor improvised a capability denial. The rail check in process_intent
+    # dispatches by intent.action BEFORE category routing, making dispatch
+    # category-independent. Entry point: run_todo_query_workflow, the existing
+    # execution-delegation adapter — the rail reaches the SAME handler chain the
+    # elif fronts (ActionMapper → todo_handlers.handle_create_reminder); no
+    # duplicated logic. The elif stays (additive backstop, #1412 precedent; it is
+    # not a ratchet-counted site — the ratchet counts `if/elif intent.action in [`).
+    # effect: WRITE — handle_create_reminder persists a reminder row via
+    # todo_service.create_todo (todo_handlers.py ~L229). Additive + recoverable
+    # (a todo row the user can delete), so WRITE not DESTRUCTIVE.
+    create_reminder_entry = WorkflowEntry(
+        entry_point=run_todo_query_workflow,
+        effect=EffectClass.WRITE,
+        description="Create-reminder via action dispatch (#1560)",
+        requires_context=["intent", "intent_service"],
+        action_triggered=True,
+    )
+
     # RECONNECT #1327 build #2: conversational "what's my default repo" — the read
     # counterpart. Same 2-arg (intent, workflow_id) factory + action-dispatch rail.
     # effect: READ — _handle_get_default_repo reads the same preference key the
@@ -612,6 +638,13 @@ def register_default_workflows() -> None:
         # #1124: content generation (synthesis category).
         "generate_content": generate_content_entry,
         "create_content": generate_content_entry,
+        # #1560: create_reminder + its ActionMapper raw-emission aliases
+        # (set_reminder / add_reminder → create_reminder, #284/#1426). Canonical
+        # key first: wired_chat_actions() names each unique entry by its
+        # first-registered key.
+        "create_reminder": create_reminder_entry,
+        "set_reminder": create_reminder_entry,
+        "add_reminder": create_reminder_entry,
         # RECONNECT #1327 gap 1: set-default-repo (QUERY category, pre-classifier action).
         "set_default_repo": set_default_repo_entry,
         # RECONNECT #1327 build #2: get-default-repo (read counterpart).
