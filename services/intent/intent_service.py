@@ -6998,7 +6998,11 @@ class IntentService:
             if specific_fallback == self._GENERIC_FALLBACK_TEXT:
                 from services.intent_service.unwired_writes import get_unwired_write_decline
 
-                fallback_message = get_unwired_write_decline(intent.action)
+                # #1571: pass the ask so a files-family decline whose message
+                # looks issue-like can append the working create-issue hint.
+                fallback_message = get_unwired_write_decline(
+                    intent.action, original_message=intent.original_message
+                )
                 self.logger.info(
                     "unwired_execution_honest_degrade_1333",
                     action=intent.action,

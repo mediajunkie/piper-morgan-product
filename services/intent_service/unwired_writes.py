@@ -38,7 +38,8 @@ dead PAT rather than confabulate):
   - complete_todo / create_todo / create_reminder / delete_todo → todo_handlers
 """
 
-from typing import Dict
+import re
+from typing import Dict, Optional
 
 # Per-action decline copy. Tone (per #1331): honest, brief, not over-apologetic,
 # point to the alternative. NEVER fabricate success. The {object} the user wanted
@@ -101,11 +102,105 @@ GENERIC_UNWIRED_WRITE_DECLINE = (
 )
 
 
-def get_unwired_write_decline(action: str) -> str:
+# ---------------------------------------------------------------------------
+# #1571 — nearest-wired-capability hint for the files-family decline shape.
+#
+# Incident (PM live, 2026-08-10): the LLM floor taught PM to "just say 'file it
+# in [owner/repo]' and I'll create it". That phrase misclassified into a
+# files-family action; the generic decline above replied "I can't do that from
+# chat yet" — a FALSE denial as experienced, because create_issue IS wired and
+# PM had used it minutes earlier. The decline was honest about the
+# misclassified action but useless about the obvious intent.
+#
+# The hint: when declining a files-family WRITE whose ask looks issue-like,
+# append ONE sentence offering the working create-issue form. Trust properties
+# preserved (#1231/#1333): honest-gap (the decline stands), actionable (the
+# hint IS the next action), once-per-response (one sentence on the one decline
+# this response carries), and deterministic template — NEVER an LLM call.
+#
+# Derive-don't-hand-write (the MAX_INFERENCE_SITES=0 spirit): the action
+# phrase is derived from workflow_dispatcher.wired_chat_actions() — the same
+# registry the #1517 capability manifest reads. If the create-issue capability
+# ever unwires or renames, _wired_issue_create_phrase() returns None and the
+# hint vanishes rather than teaching a dead form (the false-affirmation dual
+# of the #1426 false-denial class).
+# ---------------------------------------------------------------------------
+
+# Token sets, not substrings: "profile" must not read as files-family, and
+# "issued" must not read as issue-like.
+_FILES_FAMILY_TOKENS = frozenset({"file", "files"})
+_ISSUE_LIKE_TOKENS = frozenset({"issue", "issues", "bug", "bugs", "ticket", "tickets"})
+
+# owner/repo pair — the incident shape ("file it in mediajunkie/piper-morgan-product").
+# Same guards as intent_service._slotfill_issue_request's bare-pair pattern:
+# not preceded by ./ or a word char (excludes URLs matching as pair + domains),
+# owner must contain a letter (excludes fractions/dates like "1/2").
+_REPO_PAIR_RE = re.compile(
+    r"(?<![./\w])(?=[A-Za-z0-9-]*[A-Za-z])[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?"
+    r"/[A-Za-z0-9._-]+\b"
+)
+
+
+def _wired_issue_create_phrase() -> Optional[str]:
+    """Derive the plain-language create-issue phrase from the wired registry.
+
+    Looks for a wired action whose tokens are exactly a create-verb plus
+    issue-noun (today: ``create_issue``) and renders it mechanically
+    ("create an issue"). Returns None when no such action is wired — the
+    caller then offers no hint (never teach a dead form).
+    """
+    from services.intent_service.workflow_dispatcher import wired_chat_actions
+
+    for action in wired_chat_actions():
+        tokens = action.lower().split("_")
+        if tokens[0] == "create" and set(tokens[1:]) <= _ISSUE_LIKE_TOKENS and tokens[1:]:
+            noun = " ".join(tokens[1:])
+            article = "an" if noun[0] in "aeiou" else "a"
+            return f"{tokens[0]} {article} {noun}"
+    return None
+
+
+def _issue_like_files_family_hint(action: str, original_message: Optional[str]) -> str:
+    """Return the one-sentence create-issue hint, or "" when out of scope.
+
+    Scope: files-family action (a "file"/"files" token in the action name)
+    AND an issue-like ask — issue/bug/ticket wording in the action or message,
+    or the incident shape (a file-verb action aimed at an owner/repo pair).
+    """
+    action_tokens = set((action or "").lower().split("_"))
+    if not action_tokens & _FILES_FAMILY_TOKENS:
+        return ""
+
+    msg = original_message or ""
+    issue_like = bool(
+        action_tokens & _ISSUE_LIKE_TOKENS
+        or re.search(r"\b(?:issue|bug|ticket)s?\b", msg, re.IGNORECASE)
+        or _REPO_PAIR_RE.search(msg)
+    )
+    if not issue_like:
+        return ""
+
+    phrase = _wired_issue_create_phrase()
+    if phrase is None:
+        return ""
+    return (
+        f" If you're trying to get an issue filed, that part works today — "
+        f"say \"{phrase} in owner/repo titled '…'\" and I'll take it from there."
+    )
+
+
+def get_unwired_write_decline(action: str, original_message: Optional[str] = None) -> str:
     """Return the honest-decline message for an unwired write action.
 
     Falls back to the generic decline if the action has no bespoke copy — so the
     handler NEVER confabulates success even for an action added to the set without
     its own message.
+
+    #1571: for a files-family decline whose ask looks issue-like, appends a
+    one-sentence nearest-wired-capability hint (the working create-issue form,
+    derived from the wired registry). Deterministic template; no LLM call.
+    ``original_message`` is optional — the pre-#1571 single-arg call shape
+    behaves exactly as before.
     """
-    return UNWIRED_WRITE_DECLINES.get(action, GENERIC_UNWIRED_WRITE_DECLINE)
+    decline = UNWIRED_WRITE_DECLINES.get(action, GENERIC_UNWIRED_WRITE_DECLINE)
+    return decline + _issue_like_files_family_hint(action, original_message)

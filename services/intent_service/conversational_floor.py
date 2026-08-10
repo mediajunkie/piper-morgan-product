@@ -291,6 +291,12 @@ perform when the user asks in plain language:
   simply didn't route: say you CAN do it, and ask them to restate it in one
   short, plain line (what + when/which). Do NOT recommend external tools for
   anything on this list.
+- When you recommend HOW to get something done in chat, phrase the recommended
+  ask as a plain one-line request (what + which/when) that matches a capability
+  in the list above. NEVER invent a magic phrase, trigger word, or special
+  command syntax — e.g. do not tell the user to "just say 'file it in
+  owner/repo'". No such phrases exist: an invented shortcut routes their next
+  message into a wrong decline of something you CAN do (#1571).
 """.strip()
 
 
