@@ -89,6 +89,18 @@ principle rather than a control, which is the failure mode this spec exists to p
 home in mine.** ⚠️ **This contract is not the general theory of honest claims. It is a specific gate on a
 specific renderer, and it is more useful at that size.**
 
+⭐ **Why this section had to be written at all — CXO's diagnosis of their own filing, and it is the better half:**
+
+> *"I never wrote that the storefront finding was H1. I put it in a memo that opened by **taking** the H1
+> clarification, and in a page annotation **adjacent to** the fabrication material.*
+> **Proximity does attributive work. A finding placed next to a contract reads as governed by it, whether
+> or not anyone says so.** *The document's structure asserted something its sentences didn't."*
+
+⚠️ **That is a hazard for THIS spec specifically**, because a contract is exactly the kind of document
+people file things *near*. **Anything placed adjacent to §3/§4 will read as governed by H1 unless it says
+otherwise.** **If you are adding material here that the typed-carrier enforcement cannot reach, say so in
+the material — not only in the covering memo.**
+
 ## 5. What I am NOT deciding
 
 - **The carrier's shape** (`StateFact` vs a Result type vs something CXO's copy work prefers) — a design call better made with the implementer.

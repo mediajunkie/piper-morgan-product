@@ -669,6 +669,54 @@ class ConversationalFloor:
                 "couldn't check them just now — do not claim none are due."
             )
 
+        # #1536 FTUX-COLDSTART: first exchange of a conversation with a
+        # connected GitHub — open by demonstrating with the user's own data,
+        # unprompted. Every entity below comes from a read that happened THIS
+        # turn (the context gather IS that read); the directive confines the
+        # model to exactly these items. Deliberately marker-free user-facing
+        # text (census F8: no internal issue refs in prompt copy).
+        if "first_contact_demo" in domain_context:
+            demo = domain_context["first_contact_demo"] or {}
+            demo_items = demo.get("items") or []
+            if demo_items:
+                repo = demo.get("repo") or "the connected repository"
+                open_count = demo.get("open_count", len(demo_items))
+                lines.append(
+                    "- FIRST EXCHANGE, CONNECTOR DEMONSTRATION: this is the "
+                    "user's first message of this conversation and their "
+                    f"GitHub repo {repo} is connected. Open your reply by "
+                    "briefly showing what you can already see there — "
+                    "unprompted, before anything else — naming the repo "
+                    "inside the same sentence as the claim (it is the one "
+                    f"repo you looked at). {open_count} open items; the most "
+                    "recently active:"
+                )
+                for it in demo_items:
+                    kind = "PR" if it.get("type") == "pr" else "issue"
+                    recency = it.get("recency") or ""
+                    recency_part = f" — {recency}" if recency else ""
+                    lines.append(
+                        f'    • #{it.get("number")} ({kind}) "{it.get("title")}"{recency_part}'
+                    )
+                lines.append(
+                    "  - Name ONLY the items listed above — no other issue, "
+                    "PR, repo, count, or date. Do NOT ask which repo to look "
+                    "at or request scope/objectives before showing these; "
+                    "the repo is already bound. Close with one short, "
+                    "concrete offer to dig into one of them."
+                )
+
+        # #1536 + #1425 honesty: GitHub is connected but the first-exchange
+        # read FAILED — a demonstration was promised by the connection, so say
+        # we couldn't check; never present the failure as an empty repo.
+        if domain_context.get("first_contact_source_failed"):
+            lines.append(
+                "- First-exchange GitHub check FAILED: the user's GitHub is "
+                "connected but the read did not complete. If their repo or "
+                "issues come up, say you couldn't check GitHub just now — "
+                "never claim the repo is empty and never invent items."
+            )
+
         # #1187: fetched source content for a summarize request — the floor renders the
         # summary FROM this content (the source it couldn't otherwise reach, e.g. a
         # GitHub issue + comments or a commit range). The wording steers the LLM to
