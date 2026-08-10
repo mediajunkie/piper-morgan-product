@@ -118,9 +118,12 @@ call: don't fabricate an answer, don't bury the ask, don't manufacture urgency t
 
 ## Watch items (not owed to me, but adjacent)
 
-- **"Verify at the User Path" (Aug 8) unsyndicated** — no Medium/LinkedIn, unlike the recent norm.
-  Comms routed to Dispatch, offered to fill columns herself. Nothing for me until URLs land (from
-  either party) — take the update whichever way it arrives.
+- **Syndication gap, now 3 posts not 1 (updated 08-10 07:27)** — Comms' 08-09 report was scoped to 2
+  rows she happened to compare; a proper sweep this morning (08-10) found 3 genuinely unsyndicated
+  (*The Package and the First Bite* Jul 9, *Drained on Paper* Aug 7, *Verify at the User Path* Aug 8)
+  and 1 partial (*The Team Catches the Cycle*, Medium only). 2 more were bookkeeping-only and Comms
+  fixed those herself (commit `46782a55e`, verified real). All filed with Dispatch already. Nothing for
+  me until URLs land.
 - **Puppeteer extraction cause** — Pard's lane.
 - **methodology-20's mutually unsatisfiable compression rules** — CIO owns.
 - **`pre-commit-broad-staging-warn.sh` blocking despite advisory design** — documented, not escalated.
