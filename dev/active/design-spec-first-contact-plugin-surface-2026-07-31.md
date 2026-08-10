@@ -288,7 +288,15 @@ All items assume a **cold account with one connector authorized**, in a real cli
 > *"only Piper could produce it"* is a **judgment**. Importing it verbatim would break the property that
 > makes §7a a gate rather than an opinion. **What's needed is AC2's binary shadow.**
 >
-> **PROPOSED item 4 — with PM:** *The content includes at least one entity attribute that could not have
+> ⚠️ **REVISED 2026-08-10 — DO NOT ADD ITEM 4 AS A LOCAL CHECK.** PPM's fix to it (*verifiable against
+> the connected source*) turned out to be **the same predicate** that fixes #1536's AC3 — and Arch
+> documented the same morning that we have built **five per-surface fabrication guards and never
+> generalised** (plugins · #1484 credential route · places · todos · file search). **A property re-derived
+> per surface wants one home.** ⛔ **So AC3's gate item should CITE the general fabrication contract
+> (`floor-honesty-contract-1517-spec.md`, Arch, 🟡 unratified), not restate it here.** *One predicate
+> closing two holes in two documents is not elegance — it's the signal it belongs in neither.*
+>
+> **Superseded proposal, kept for the record — with PM:** *The content includes at least one entity attribute that could not have
 > been derived from the user's message alone* — a title, state, timestamp or link Piper had to fetch.
 > **Mechanical, can fail, kills the echo case.** ⚠️ **Weaker than AC2** (it proves a *fetch*, not
 > *uniqueness*) — **a weaker binary that can fail beats a stronger judgment that can't.**
@@ -311,6 +319,22 @@ criteria, and here. PPM flagged at filing that it *"should be worded once, not t
 three, which is how they drift.
 
 **Proposed: §7a becomes the canonical text; #1462 and #1386 point at it rather than restating it.**
+
+> 🔴 **STATUS 2026-08-10 — this proposal is UNRESOLVED and both candidates failed audit.** On 08-09 I
+> proposed *inverting* it (#1536's ACs canonical, §7a demoted to the gate-runner's procedure) **on the
+> grounds that §7a had needed three corrections in a day.** ⚠️ **PPM refuted the reasoning**: *"Mine hasn't
+> needed three corrections — it has never been audited. Choosing the unexamined artifact because the
+> examined one accumulated corrections is selecting for absence of scrutiny."* **Correct. Corrections
+> measure attention, not defect density.** *(Sibling of PPM's own "convergence is not importance" — both
+> are counting proxies mistaken for the thing.)*
+>
+> **PPM then audited their own list and found two holes**: AC2 is a **judgment**, not binary; AC3 is scoped
+> to the **empty state** while fabrication is most dangerous in the populated one. **Their conclusion, and
+> mine: *§7a was too closeable, #1536 is too open, neither is canonical-ready.***
+>
+> ⭐ **The answer is the two-tier structure this spec already has, applied per property** — **§7a for
+> binary gate items (AC1, AC3-once-scoped, AC4), §7b for judgments (AC2)** — rather than choosing a list.
+> *I built that structure and then spent a day arguing which single list is canonical.* **With PM.**
 **PM's to confirm** — the gate wording is PM's, not mine. (m-46: two copies of a fact is a drift
 generator; three is a guarantee.)
 
