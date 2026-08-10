@@ -44,6 +44,8 @@ REG="${DUTY_CYCLE_REGISTRY:-$REPO/dev/active/duty-cycle-registry.tsv}"
 HB="${HEARTBEAT_DIR:-$REPO/dev/heartbeats}"
 WINDOW_H="${COHORT_FREEZE_WINDOW_H:-4}"      # hours to look back
 MIN_SCHED="${COHORT_FREEZE_MIN_SCHED:-6}"    # scheduled fires needed before "zero emissions" means anything
+DISPATCH_LAG_MIN="${COHORT_FREEZE_DISPATCH_LAG_MIN:-45}"  # a fire is not "missing" until its emission could have landed;
+                                                          # measured cohort dispatch latency is +6..+40 min (2026-08-05)
 NOW_EPOCH="${COHORT_FREEZE_NOW:-$(date +%s)}"
 
 [ -r "$REG" ] || { echo "cohort-freeze: FAIL cannot read registry $REG" >&2; exit 3; }
@@ -61,13 +63,25 @@ while IFS=$'\t' read -r role cron _ _ _ _ _ state; do
   roles=$((roles+1))
   hours=$(printf '%s' "$cron" | awk '{print $2}')
   case "$hours" in *[!0-9,]*) continue;; esac      # ranges/unparseable → skip, do not guess
+  # ⚠️ 2026-08-10: a slot only counts once its emission COULD have landed.
+  # v0.2 counted a slot the instant its clock hour fell in the window, at :00, ignoring both the cron
+  # MINUTE and dispatch latency. Web's 06:28 fire therefore counted 9 slots whose fires land 06:42-07:27
+  # -- 9 of 9 physically unable to have emitted -- and raised a FALSE COHORT-FREEZE. Honest denominator
+  # was 0, i.e. below min_sched, i.e. INSUFFICIENT-SCHEDULE.
+  # 🔴 THIS IS THE SAME DEFECT CIO FIXED IN duty-cycle-freeze-check.sh ON 2026-08-05 (counting the
+  # current fire-hour as already landed) REPRODUCED IN A NEW TOOL FIVE DAYS LATER. Recorded rather than
+  # quietly corrected, because "I fixed this class already" is exactly what stopped me looking.
+  # Slot time now uses the cron MINUTE, and a slot must satisfy slot + DISPATCH_LAG_MIN <= now.
+  mins=$(printf '%s' "$cron" | awk '{print $1}')
+  case "$mins" in ''|*[!0-9]*) mins=0;; esac
   IFS=',' read -ra HS <<< "$hours"
-  [ "${#HS[@]}" -eq 0 ] && continue          # empty array is unbound under set -u; guard explicitly
+  [ "${#HS[@]}" -eq 0 ] && continue
   for h in ${HS[@]+"${HS[@]}"}; do
     for dayoff in 0 1; do
-      t=$(date -j -f "%Y-%m-%d %H:%M:%S" "$now_d $(printf '%02d' "$h"):00:00" +%s 2>/dev/null) || continue
+      t=$(date -j -f "%Y-%m-%d %H:%M:%S" "$now_d $(printf '%02d' "$h"):$(printf '%02d' "$mins"):00" +%s 2>/dev/null) || continue
       t=$(( t - dayoff*86400 ))
-      [ "$t" -ge "$win_start" ] && [ "$t" -le "$NOW_EPOCH" ] && sched=$((sched+1))
+      landed_by=$(( t + DISPATCH_LAG_MIN*60 ))
+      [ "$t" -ge "$win_start" ] && [ "$landed_by" -le "$NOW_EPOCH" ] && sched=$((sched+1))
     done
   done
 done < "$REG"
@@ -103,7 +117,7 @@ done
 
 ws=$(date -r "$win_start" "+%Y-%m-%d %H:%M" 2>/dev/null || date -d "@$win_start" "+%Y-%m-%d %H:%M")
 we=$(date -r "$NOW_EPOCH" "+%Y-%m-%d %H:%M" 2>/dev/null || date -d "@$NOW_EPOCH" "+%Y-%m-%d %H:%M")
-echo "cohort-freeze: examined ref=origin/main tip=$TIP$FETCH_NOTE window=[$ws .. $we] (${WINDOW_H}h) watched_roles=$roles scheduled_fires=$sched emissions=$emitted emitters=[${emitters# }] min_sched=$MIN_SCHED" >&2
+echo "cohort-freeze: examined ref=origin/main tip=$TIP$FETCH_NOTE window=[$ws .. $we] (${WINDOW_H}h) watched_roles=$roles scheduled_fires=$sched emissions=$emitted emitters=[${emitters# }] min_sched=$MIN_SCHED lag=${DISPATCH_LAG_MIN}m" >&2
 
 if [ "$sched" -lt "$MIN_SCHED" ]; then
   echo "INSUFFICIENT-SCHEDULE ($sched scheduled fires < $MIN_SCHED in window) — NOT an all-clear, this window cannot discriminate" >&2

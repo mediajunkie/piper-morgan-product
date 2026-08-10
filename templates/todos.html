@@ -80,6 +80,24 @@
     background: #fdecea;
     color: var(--color-accent-error, #c62828);
   }
+  /* #1569: reminder identity chip — reminders ARE todos (unified model);
+     the chip makes that legible on the row. Reuses the .priority-chip base
+     (shape/size), with its own color so it never reads as a priority. */
+  .reminder-chip {
+    background: #e8eaf6;
+    color: #3949ab;
+  }
+  /* #1569: reminder rows cluster under their own heading */
+  .reminders-heading {
+    margin: var(--space-lg) 0 var(--space-xs);
+    font-size: 1.1rem;
+    color: var(--color-text-primary);
+  }
+  .reminders-note {
+    margin: 0 0 var(--space-md);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-base);
+  }
   /* #1568: inline title editing */
   .edit-title-form {
     display: inline-flex;
@@ -232,7 +250,13 @@
       return;
     }
 
-    container.innerHTML = todos.map(todo => {
+    // #1569: reminders ARE todos in storage (unified model, PM-ratified) —
+    // the page makes that identity legible instead of leaving reminder rows
+    // indistinguishable. A row is a reminder iff the payload carries
+    // reminder_date (threaded through GET /api/v1/todos by #1569 — never
+    // inferred from title text; due_date can't distinguish, the reminder
+    // create path sets it to the same value).
+    const renderTodoRow = todo => {
       const role = getUserRole(todo);
       const roleDisplay = formatRole(role);
 
@@ -309,6 +333,12 @@
       const priority = todo.priority || 'medium';
       const priorityChip = `<span class="priority-chip priority-${escapeAttr(priority)}">${escapeHtml(priority)}</span>`;
 
+      // #1569: reminder identity chip — same chip pattern as priority.
+      // Static label (no user data): the signal is the reminder_date field.
+      const reminderChip = todo.reminder_date
+        ? `<span class="priority-chip reminder-chip">⏰ reminder</span>`
+        : '';
+
       // #1568: inline title editing — the row being edited swaps its title
       // for an input prefilled with the current title, plus Save/Cancel.
       const titleArea = todo.id === editingTodoId
@@ -327,6 +357,7 @@
               <h3 class="resource-title">
                 ${titleArea}
                 ${priorityChip}
+                ${reminderChip}
                 ${lifecycleIndicator}
                 <span class="${escapeAttr(getRoleBadgeClass(role))}">
                   ${escapeHtml(roleDisplay)}
@@ -345,7 +376,20 @@
           ${todo.due_date ? `<small class="due-date">Due: ${escapeHtml(formatDueDate(todo.due_date))}</small>` : `<small class="no-due-date">No due date</small>`}
         </div>
       `;
-    }).join('');
+    };
+
+    // #1569: client-side grouping — reminder rows cluster under their own
+    // heading below the plain todos. Keyed off reminder_date only.
+    const reminderTodos = todos.filter(t => t.reminder_date);
+    const plainTodos = todos.filter(t => !t.reminder_date);
+
+    // Empty group renders nothing — no "Reminders" heading over zero rows.
+    const remindersSection = reminderTodos.length === 0 ? '' :
+      `<h2 class="reminders-heading">⏰ Reminders</h2>` +
+      `<p class="reminders-note">Reminders live with your todos — I'll surface each one in conversation once it's due.</p>` +
+      reminderTodos.map(renderTodoRow).join('');
+
+    container.innerHTML = plainTodos.map(renderTodoRow).join('') + remindersSection;
   }
 
   // Create new todo
