@@ -13,12 +13,32 @@ stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
 staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
 
-## 🔴 MONDAY (08-10) IS A DOCS-OWNED TRIGGER DAY — check FIRST at START
+## 🟠 ACTIVE — Weekly Docs Audit #1583, 6 of 8 sections done, 2 remain — pick up next fire
 
-**Weekly Docs Audit** (`weekly-docs-audit.yml`, fires ~9am PT) — verify it actually fired before doing
-anything else. Last cycle this was flagged as "watch whether the nudged cron fires" and then the day
-turned out to be Sunday (no check needed) — tomorrow is the real test. If it didn't fire, that's a
-process gap worth a same-day fix, not a defer.
+**All 3 background subagents landed and were consolidated this fire** (verified each factual claim before
+acting — caught nothing wrong this time, but the discipline is what makes that trustworthy). Real fixes
+shipped: CITATIONS.md Serena attribution (`32d6cba9b`), NAVIGATION.md/INDEX.md methodology-43-47 gap
+(`34457f82f`), duplicate draft removed (`06209210d`). Two tracking issues filed for what's too large for
+one sitting: **#1584** (~240 broken links, 2 methodology cross-ref drifts) and **#1585** (11 stale
+current-state docs, 6 duplicate-file clusters).
+
+**Completion Matrix state** (posted to #1583, both progress comments):
+- ✅ Briefing Freshness, Link Integrity, Omnibus Coverage, GitHub Issues Sync, Quality Checks (both READMEs)
+- ⏳ **Sprint & Roadmap Alignment** — checked, roadmap.md is PPM's actively-maintained artifact (4 days
+  old), marked verified-current rather than edited (not my lane) — arguably done, but worth a final look
+  next fire before checking the box.
+- ⏳ **Pattern & Knowledge Capture** — pattern-count sub-check done (no real discrepancy). Session-log
+  pattern-mining sub-item NOT started — this is the one genuinely open piece of audit work.
+- ⏳ **Staggered-audit-calendar update** — final closing step, blocked on everything else finishing.
+
+**Next fire, in order**: (1) do the session-log pattern-mining pass, (2) confirm Sprint/Roadmap can be
+checked off, (3) update `docs/internal/operations/staggered-audit-calendar-2026.md`, (4) fill the final
+Completion Matrix and close #1583 via `close-issue-properly`. Do NOT close early — Pattern-046 (no silent
+skipping) applies to the checklist's own gate.
+
+**New PM item, not urgent**: root README.md's MIT license badge has **no LICENSE file anywhere in repo
+history** (verified via `find` + `git log --all`) — needs PM's call (add LICENSE vs. adjust badge), added
+below in "Awaiting PM specifically."
 
 ## 🟡 AWAITING PM (3+ days now) — write up the line-count methodology proposal, or hold?
 
@@ -60,6 +80,10 @@ permanence, per standing lesson 10.
 - **website#31, converter double-`<em>` bug** — filed 08-05, still 0 comments as of 08-09 22:27, not
   urgent, no chase needed: (a) fix forward-only vs. regenerate the ~15-post Ship back-catalog, (b)
   should Ship `**Metrics**` become a real `###` header.
+- **MIT license badge, no LICENSE file** (found 08-10, weekly-docs-audit #1583) — root README.md
+  displays an MIT badge; `find . -iname "LICENSE*"` and `git log --all -- LICENSE*` both return zero
+  hits, repo-wide, all of history. Needs PM's call: add a real LICENSE file, or adjust/remove the badge.
+  Not urgent, not blocking, flagged in #1583's progress comment.
 
 ## Awaiting others — check, don't re-derive
 

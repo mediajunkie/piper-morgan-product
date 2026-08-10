@@ -204,6 +204,81 @@ async def run_reopen_issue_workflow(
     return await intent_service._handle_reopen_issue_query(intent, workflow_id)
 
 
+async def run_confirm_pending_action_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1190: execute a confirmed pending DESTRUCTIVE action.
+
+    Dispatched ONLY by the offer-acceptance seam in process_intent (the
+    "yes" turn against a stored destructive-confirmation offer —
+    ``destructive_confirm.CONFIRM_PENDING_ACTION_WORKFLOW``). Registered
+    action_triggered=False so the classifier/rail can never reach it.
+
+    The context carries the pending-action record's ``pending_action``
+    payload (see destructive_confirm module docstring for the shape). This
+    entry point re-dispatches the ORIGINAL rail action with the ORIGINAL
+    classified Intent — the "yes" message is never re-classified, and the
+    resolved parameters (issue number, repo context, principal) are exactly
+    the ones the gate deferred. The ``destructive_confirmed`` context marker
+    tells the handler's own in-message confirmation (#902) that the explicit
+    confirmation turn already happened, so execution completes in one turn.
+
+    Generic carrier (#1190 Part 3): nothing here is close/reopen-specific —
+    any deferred rail action stored in ``pending_action`` executes the same
+    way. Returns the acceptance-seam dict shape ({"message", "intent_data"});
+    None on wiring gaps (caller routes to floor — safe default, no write).
+    """
+    from services.intent_service.destructive_confirm import CONFIRMED_CONTEXT_KEY
+
+    ctx = context or {}
+    pending_action = ctx.get("pending_action")
+    intent_service = ctx.get("intent_service")
+    if not pending_action or intent_service is None:
+        logger.error(
+            "confirm_pending_action_missing_context",
+            has_pending_action=bool(pending_action),
+            has_intent_service=intent_service is not None,
+        )
+        return None
+
+    intent = pending_action.get("intent")
+    action = pending_action.get("action")
+    if intent is None or not action:
+        logger.error(
+            "confirm_pending_action_malformed_record",
+            has_intent=intent is not None,
+            action=action,
+        )
+        return None
+
+    # Mark the intent confirmed so the handler executes instead of asking
+    # its own #902 confirmation a second time. Copy-on-write: never mutate
+    # a context dict the caller may share.
+    intent.context = dict(intent.context or {})
+    intent.context[CONFIRMED_CONTEXT_KEY] = True
+
+    from services.intent_service.workflow_dispatcher import dispatch_workflow
+
+    result = await dispatch_workflow(
+        workflow_type=action,
+        session_id=session_id,
+        user_id=user_id,
+        context={"intent": intent, "workflow_id": None, "intent_service": intent_service},
+    )
+    if result is None:
+        logger.error("confirm_pending_action_dispatch_failed", action=action)
+        return None
+
+    logger.info("destructive_action_confirmed_and_executed", action=action)
+    # The acceptance seam consumes {"message", "intent_data"}; rail handlers
+    # return IntentProcessingResult — adapt without losing either shape.
+    if isinstance(result, dict):
+        return result
+    return {"message": result.message, "intent_data": result.intent_data}
+
+
 async def run_comment_issue_workflow(
     session_id: str,
     user_id: Optional[str] = None,
@@ -543,12 +618,18 @@ def register_default_workflows() -> None:
 
     # #1124 Phase 4 step 3: issue-mutation cohort (CLOSE / REOPEN / COMMENT verbs).
     # Each handler reused unchanged; all classifier aliases share one entry point.
-    # effect: WRITE — _handle_close_issue_query calls
-    # github_router.update_issue(issue_number, state="closed") (~L4228).
-    # Reversible via reopen, so WRITE not DESTRUCTIVE.
+    # effect: DESTRUCTIVE (#1190, PM ruling decisions.log 2026-08-10 ~10:55) —
+    # _handle_close_issue_query calls
+    # github_router.update_issue(issue_number, state="closed") (~L4264).
+    # The old rationale ("reversible via reopen, so WRITE") classified by
+    # RECOVERABILITY; the ruling classifies by BLAST RADIUS: closing an issue
+    # removes it from every open-state board, query, and sprint view at once
+    # (the 2026-07 auto-close incident closed a live Beta Blocker from a
+    # commit message). needs_confirm derives True → the #1190 confirmation
+    # gate defers execution to an explicit yes/no turn.
     close_issue_entry = WorkflowEntry(
         entry_point=run_close_issue_workflow,
-        effect=EffectClass.WRITE,
+        effect=EffectClass.DESTRUCTIVE,
         description="Close-issue query via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -582,11 +663,16 @@ def register_default_workflows() -> None:
         requires_context=["intent", "intent_service"],
         action_triggered=True,
     )
-    # effect: WRITE — _handle_reopen_issue_query calls
-    # github_router.update_issue(issue_number, state="open") (~L4435).
+    # effect: DESTRUCTIVE (#1190, PM ruling decisions.log 2026-08-10 ~10:55) —
+    # _handle_reopen_issue_query calls
+    # github_router.update_issue(issue_number, state="open") (~L4475).
+    # Same blast-radius rationale as close (a reopen resurrects an issue onto
+    # every open-state surface — sprint boards, counts, portfolio reviews —
+    # in one stroke); recoverability was the old WRITE rationale and is
+    # retired. needs_confirm derives True → #1190 confirmation gate.
     reopen_issue_entry = WorkflowEntry(
         entry_point=run_reopen_issue_workflow,
-        effect=EffectClass.WRITE,
+        effect=EffectClass.DESTRUCTIVE,
         description="Reopen-issue query via action dispatch (#1124)",
         requires_context=["intent", "intent_service"],
         action_triggered=True,
@@ -712,6 +798,20 @@ def register_default_workflows() -> None:
             effect=EffectClass.READ,
             description="Meeting scheduling via slot-filling",
             requires_context=["trigger_message"],
+        ),
+        # #1190: the confirmed-destructive-action executor. Offer-acceptance
+        # ONLY (action_triggered=False — the classifier/rail can never emit
+        # it; an accidental key/action collision must not fire a deferred
+        # write). effect: DESTRUCTIVE — dispatching it performs the deferred
+        # destructive write with its stored parameters. It is not itself
+        # confirm-gated: the gate lives at the rail seam, which this entry is
+        # structurally excluded from, and the confirmation turn HAS already
+        # happened when this dispatches.
+        "confirm_pending_action": WorkflowEntry(
+            entry_point=run_confirm_pending_action_workflow,
+            effect=EffectClass.DESTRUCTIVE,
+            description="Execute a confirmed pending destructive action (#1190)",
+            requires_context=["pending_action", "intent_service"],
         ),
         "update_document": document_update_entry,
         "edit_document": document_update_entry,
