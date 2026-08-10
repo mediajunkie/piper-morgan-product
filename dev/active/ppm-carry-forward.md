@@ -1,9 +1,20 @@
 # PPM Carry-Forward
 
 **Role**: Principal Product Manager (PPM)
-**Last rewritten**: 2026-08-09 Fire 2 (~10:50 PT). Cron re-armed **`6b2053ad`** mid-day (not at STOP)
-to kill a live hazard — see Cron. ✅ **Jake conversion COMPLETE: #1536–#1540 filed 08-09, zero rows
-unfiled.**
+**Last rewritten**: 2026-08-09 STOP (~22:45 PT) — DAY CLOSED. Six clean fires. Cron **`e4f3b4e8`**.
+✅ **Jake conversion COMPLETE: #1536–#1540 filed 08-09, zero rows unfiled.**
+
+## 🔴 OWED (named trigger, in the cron prompt): MERGE THE FIRST-CONTACT CRITERION
+**Neither §7a nor #1536's ACs is canonical-ready.** §7a's *binary-and-checkable-now* constraint
+**selected against its own purpose** (CXO's diagnosis) and is missing **AC2, AC3 and AC4**. But
+**#1536's list has never been audited — and unaudited is not sound.** I ran CXO's audit on it and
+found two holes: **AC2 is a JUDGMENT that can't fail cleanly**, and **AC3 is scoped to the
+nothing-connected case while fabrication is most dangerous when a connector IS live** — the identical
+hole I'd found in CXO's item 4 eight hours earlier.
+**MERGE**: AC1 as written · AC2 keep as intent, test via the **verifiable-against-source** attribute
+shadow · AC3 **widen** to no-fabrication regardless of connection · AC4 fold into AC1.
+⛔ **PM should bless neither list as written — only the merged one.** Deferred from 08-09 deliberately:
+four corrections landed that day and the audit was still finding things.
 
 ## ✅ PM APPROVED THE PLACEMENT (2026-08-09, relayed by Lead, board WRITTEN)
 **#1510 → MVP · #1190 → MVP · #1509 → Production.** Verified on the board myself. **#1536–#1540
@@ -281,20 +292,11 @@ already answered before sending.**
 
 ## Cron
 
-**ARMED** — job **`6b2053ad`**, CronList-verified exactly one.
+**ARMED** — job **`e4f3b4e8`**, CronList-verified exactly one. Prompt carries the owed merge (with a
+delete-when-done instruction) and a new standing line: **when someone proposes elevating YOUR
+artifact, audit it before accepting — unaudited is not sound.**
 
-🔴 **RE-ARMED MID-DAY, NOT AT STOP — deliberately, to kill a live hazard.** The prior prompt carried
-*"FIRST WORK ITEM: write issue bodies for rows 6, 7+14, 8, 9, 10, 11"* — **work completed at Fire 1
-this morning.** ⚠️ **A compacted session reading that would have filed duplicates of #1536–#1540.**
-**A stale instruction in a prompt read six times a day is not untidiness; it is an order to redo
-finished work.** The new prompt says so explicitly and adds: *if you put an owed item here, delete it
-when done.*
-
-⭐ **This is the seventh one-name-two-objects / stale-claim instance in a fortnight, and the second in
-my own instruments** (after the register's ambiguous `CXO 2`). **The pattern is not that I write
-stale things — it's that anything I write to be re-read is a claim with a shelf life.**
-
-⚠️ Session-only + 7-day auto-expiry, both silent; the self-heal only works if the session gets a turn.
+⚠️ Session-only + 7-day auto-expiry, both silent. **Three clean days running** (08-07/08/09).
 
 ---
 
