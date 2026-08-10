@@ -8,7 +8,7 @@ Covers:
 - _gather_identity_context user-anchoring data (#950 iteration)
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -57,7 +57,11 @@ def _patch_context_cache(monkeypatch):
 # freezes NAIVE now() to a fixed midday but delegates tz-aware now(tz) to the real
 # clock, so the gatherer's tz-aware calls (e.g. _current_time_in_configured_tz)
 # are unaffected. Removes the wall-clock dependence entirely.
+# #1573: `_compute_deadline_proximity` now reads the module-level `utc_now`
+# (aware-UTC, the naive-vs-aware fix), so freezing patches that too —
+# frozen to the same fixed noon, as UTC.
 _FIXED_NOON = datetime(2026, 1, 15, 12, 0, 0)
+_FIXED_NOON_UTC = _FIXED_NOON.replace(tzinfo=timezone.utc)
 
 
 class _FrozenNoon(datetime):
@@ -66,8 +70,31 @@ class _FrozenNoon(datetime):
         return _FIXED_NOON if tz is None else datetime.now(tz)
 
 
+class _FreezeNoonStack:
+    """Compound context manager: freezes both clocks the assembler reads."""
+
+    def __init__(self):
+        self._patches = [
+            patch("services.intent_service.context_assembler.datetime", _FrozenNoon),
+            patch(
+                "services.intent_service.context_assembler.utc_now",
+                lambda: _FIXED_NOON_UTC,
+            ),
+        ]
+
+    def __enter__(self):
+        for p in self._patches:
+            p.start()
+        return self
+
+    def __exit__(self, *exc):
+        for p in reversed(self._patches):
+            p.stop()
+        return False
+
+
 def _freeze_noon():
-    return patch("services.intent_service.context_assembler.datetime", _FrozenNoon)
+    return _FreezeNoonStack()
 
 
 # -------------------------------------------------------------------
@@ -81,12 +108,16 @@ class TestComputeDeadlineProximity:
     def test_none_returns_none_bucket(self):
         assert _compute_deadline_proximity(None) == "none"
 
+    # #1573: offset fixtures build from aware-UTC now — the proximity helper
+    # compares aware-UTC, and a naive LOCAL-clock fixture is reinterpreted as
+    # UTC (skewed by the host's UTC offset), which made these flaky by tz.
+
     def test_past_due_date_returns_overdue(self):
-        past = datetime.now() - timedelta(hours=1)
+        past = datetime.now(timezone.utc) - timedelta(hours=1)
         assert _compute_deadline_proximity(past) == "overdue"
 
     def test_past_days_returns_overdue(self):
-        past = datetime.now() - timedelta(days=5)
+        past = datetime.now(timezone.utc) - timedelta(days=5)
         assert _compute_deadline_proximity(past) == "overdue"
 
     def test_today_returns_due_today(self):
@@ -105,19 +136,19 @@ class TestComputeDeadlineProximity:
             assert _compute_deadline_proximity(now) == "due_today"
 
     def test_tomorrow_returns_due_this_week(self):
-        tomorrow = datetime.now() + timedelta(days=1)
+        tomorrow = datetime.now(timezone.utc) + timedelta(days=1)
         assert _compute_deadline_proximity(tomorrow) == "due_this_week"
 
     def test_in_six_days_returns_due_this_week(self):
-        in_six = datetime.now() + timedelta(days=6)
+        in_six = datetime.now(timezone.utc) + timedelta(days=6)
         assert _compute_deadline_proximity(in_six) == "due_this_week"
 
     def test_in_eight_days_returns_later(self):
-        in_eight = datetime.now() + timedelta(days=8)
+        in_eight = datetime.now(timezone.utc) + timedelta(days=8)
         assert _compute_deadline_proximity(in_eight) == "later"
 
     def test_in_one_month_returns_later(self):
-        in_month = datetime.now() + timedelta(days=30)
+        in_month = datetime.now(timezone.utc) + timedelta(days=30)
         assert _compute_deadline_proximity(in_month) == "later"
 
 
@@ -270,6 +301,160 @@ class TestPendingTodosDeadlineSurfacing:
         # Third todo: no deadline
         assert todos[2]["deadline_proximity"] == "none"
         assert todos[2]["due_date"] is None
+
+
+# -------------------------------------------------------------------
+# #1573 (time audit F5): naive-vs-aware TypeError in deadline proximity
+# was caught and warning-swallowed in _compute_pending_todos, so the
+# user's pending todos silently VANISHED from floor context for any user
+# with a due-dated todo (timestamptz columns return AWARE datetimes; the
+# proximity helper compared them against naive datetime.now()).
+# -------------------------------------------------------------------
+
+
+class TestPendingTodosNaiveAwareFix1573:
+    """Red-first against the pre-#1573 code."""
+
+    def test_aware_due_date_computes_proximity_without_typeerror(self):
+        # The live data shape: timestamptz -> asyncpg returns tz-aware.
+        # Pre-fix: `due_date < datetime.now()` raised TypeError.
+        due = datetime.now(timezone.utc) + timedelta(days=3)
+        assert _compute_deadline_proximity(due) == "due_this_week"
+
+    def test_aware_overdue_due_date(self):
+        due = datetime.now(timezone.utc) - timedelta(hours=3)
+        assert _compute_deadline_proximity(due) == "overdue"
+
+    def test_naive_due_date_still_supported(self):
+        # Naive input is treated as UTC (ensure_utc) — both shapes work.
+        due = datetime.now(timezone.utc).replace(tzinfo=None) + timedelta(days=3)
+        assert _compute_deadline_proximity(due) == "due_this_week"
+
+    @pytest.mark.asyncio
+    async def test_due_dated_todo_row_survives_pending_gather(self):
+        """The F5 repro: a due-dated todo (aware, the live DB shape) driving
+        the pending-todos gather under a non-None user_id. Pre-fix the
+        TypeError was swallowed as a warning and the WHOLE pending_todos
+        block vanished (compute returned None). Post-fix: todos present."""
+        due = datetime.now(timezone.utc) + timedelta(hours=2)
+        mock_todos = [
+            _make_mock_todo(text="Ship #1573", due_date=due, priority="high"),
+            _make_mock_todo(text="No deadline task", due_date=None),
+        ]
+        mock_svc = MagicMock()
+        mock_svc.list_todos = AsyncMock(return_value=mock_todos)
+
+        from uuid import uuid4
+
+        user_id = str(uuid4())
+        assembler = ContextAssembler()
+
+        with patch(
+            "services.todo.todo_management_service.TodoManagementService",
+            return_value=mock_svc,
+        ):
+            result = await assembler._compute_pending_todos(user_id)
+
+        assert result is not None, "due-dated todo made the whole gather vanish"
+        assert "source_failed" not in result
+        assert result["pending_todo_count"] == 2
+        assert result["pending_todos"][0]["text"] == "Ship #1573"
+        assert result["pending_todos"][0]["deadline_proximity"] in (
+            "due_today",
+            "due_this_week",
+        )
+
+    @pytest.mark.asyncio
+    async def test_injected_failure_error_logged_and_source_failed(self):
+        """#1425 honesty: a genuine failure flags source_failed at ERROR
+        level (with exc_info) — never warning-swallowed to a fake-empty."""
+        mock_svc = MagicMock()
+        mock_svc.list_todos = AsyncMock(side_effect=RuntimeError("db down"))
+
+        from uuid import uuid4
+
+        user_id = str(uuid4())
+        assembler = ContextAssembler()
+
+        with patch(
+            "services.todo.todo_management_service.TodoManagementService",
+            return_value=mock_svc,
+        ), patch("services.intent_service.context_assembler.logger") as mock_logger:
+            result = await assembler._compute_pending_todos(user_id)
+
+        assert result == {"source_failed": True}, "failure must flag, not fake-empty None"
+        assert mock_logger.error.called, "failure must log at error level"
+        _, err_kwargs = mock_logger.error.call_args
+        assert err_kwargs.get("exc_info") is True
+        assert not mock_logger.warning.called, "must not warning-swallow"
+
+    @pytest.mark.asyncio
+    async def test_cached_layer_translates_source_failed(self):
+        """_get_pending_todos_cached maps compute's source_failed to the
+        floor-renderable pending_todos_source_failed key (the generic
+        source_failed key renders as a REMINDER failure on the floor)."""
+        mock_svc = MagicMock()
+        mock_svc.list_todos = AsyncMock(side_effect=RuntimeError("db down"))
+
+        from uuid import uuid4
+
+        user_id = str(uuid4())
+        assembler = ContextAssembler()
+
+        with patch(
+            "services.todo.todo_management_service.TodoManagementService",
+            return_value=mock_svc,
+        ):
+            result = await assembler._get_pending_todos_cached(user_id, limit=5)
+
+        assert result == {"pending_todos_source_failed": True}
+
+    @pytest.mark.asyncio
+    async def test_status_gather_propagates_failure_flag(self):
+        """_gather_status_priority_context must carry the failure flag into
+        context, never drop it into fake-empty."""
+        assembler = ContextAssembler()
+        with patch.object(
+            assembler, "_gather_calendar_context", new=AsyncMock(return_value={})
+        ), patch.object(
+            assembler, "_get_user_context_cached", new=AsyncMock(return_value=None)
+        ), patch.object(
+            assembler,
+            "_get_pending_todos_cached",
+            new=AsyncMock(return_value={"pending_todos_source_failed": True}),
+        ), patch.object(
+            assembler,
+            "_gather_blocked_items_context",
+            new=AsyncMock(return_value={}),
+        ), patch.object(
+            assembler,
+            "_gather_active_milestones_context",
+            new=AsyncMock(return_value={}),
+        ), patch.object(
+            assembler,
+            "_gather_recent_activity_context",
+            new=AsyncMock(return_value={}),
+        ), patch.object(
+            assembler,
+            "_gather_high_priority_issues_context",
+            new=AsyncMock(return_value={}),
+        ), patch(
+            "services.integrations.integration_status_service.IntegrationStatusService"
+        ):
+            ctx = await assembler._gather_status_priority_context(user_id="u1")
+
+        assert ctx.get("pending_todos_source_failed") is True
+        assert "pending_todos" not in ctx
+
+    def test_floor_renders_todo_check_failed_line(self):
+        """#1425 honesty at the render layer: the floor says it couldn't
+        check todos rather than presenting a todo-less context."""
+        from services.intent_service.conversational_floor import ConversationalFloor
+
+        floor = ConversationalFloor(llm_client=MagicMock())
+        out = floor._format_domain_context({"pending_todos_source_failed": True})
+        assert "Todo check FAILED" in out
+        assert "could not load" in out
 
 
 # -------------------------------------------------------------------

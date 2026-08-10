@@ -17,6 +17,7 @@ from typing import Any, Dict, List, Optional
 import structlog
 
 from services.intent_service.context_cache import ContextCache
+from services.utils.datetime_utils import ensure_utc, utc_now
 
 logger = structlog.get_logger()
 
@@ -115,22 +116,27 @@ def _compute_deadline_proximity(due_date: Optional[datetime]) -> str:
     - "due_this_week": due in the next 1-7 days
     - "later": due > 7 days out
 
-    Uses naive datetime.now() to match existing gatherer pattern.
-    Timezone-aware proximity is a future enhancement (#586 territory).
+    #1573 (time audit F5, #1491 pattern): both sides normalized aware-UTC.
+    The previous naive `datetime.now()` raised TypeError against the
+    timestamptz-aware due_date every real todo row carries, which was
+    warning-swallowed upstream — the user's pending todos silently
+    vanished from floor context. "Today" is the UTC day until a per-user
+    timezone exists (audit root cause; #586 territory).
     """
     if due_date is None:
         return "none"
 
-    now = datetime.now()
-    if due_date < now:
+    due = ensure_utc(due_date)
+    now = utc_now()
+    if due < now:
         return "overdue"
 
     end_of_today = now.replace(hour=23, minute=59, second=59, microsecond=999999)
-    if due_date <= end_of_today:
+    if due <= end_of_today:
         return "due_today"
 
     end_of_week = now + timedelta(days=7)
-    if due_date <= end_of_week:
+    if due <= end_of_week:
         return "due_this_week"
 
     return "later"
@@ -219,6 +225,9 @@ class ContextAssembler:
         "current_day_of_week": {"source": "ServerClock"},
         # Reminders
         "reminders": {"source": "ReminderService"},
+        # #1566: due-reminder keys ride every gather_context call
+        "due_reminders": {"source": "TodoIntentHandlers.get_due_reminders"},
+        "reminder_count": {"source": "TodoIntentHandlers.get_due_reminders"},
         "projects": {"source": "ProjectManagementService"},
         # #1530 (m-44): row-derived denominator riding with the sliced list
         "project_count": {"source": "UserContextService"},
@@ -301,11 +310,12 @@ class ContextAssembler:
                 context.update(ctx)
                 self._attribute_provenance(list(ctx.keys()), user_id=user_id)
             elif category == "CONVERSATION":
-                # Issue #903: Surface due reminders for greeting context
-                ctx = await self._gather_reminder_context(user_id)
-                if ctx:
-                    context.update(ctx)
-                    self._attribute_provenance(list(ctx.keys()), user_id=user_id)
+                # Issue #903 gathered due reminders HERE (greeting-only).
+                # #1566 hoisted reminder gathering below the dispatch so
+                # EVERY floor-bound category surfaces due reminders;
+                # CONVERSATION keeps its deliberately-minimal context (the
+                # #960 else-branch is for UNKNOWN categories, not greetings).
+                pass
             elif category == "TEMPORAL":
                 # #965: Temporal context for non-date queries (agenda, retrospective, etc.)
                 ctx = await self._gather_temporal_context(user_id, session_id)
@@ -331,6 +341,23 @@ class ContextAssembler:
                 category=category,
                 error=str(e),
             )
+
+        # #1566: due reminders ride EVERY floor-bound turn, not only
+        # CONVERSATION greetings (#903's original scope). PM live 8/10: four
+        # due-now reminders + 15 minutes of STATUS/EXECUTION/TEMPORAL turns
+        # with zero surfacing. Gathered OUTSIDE the category dispatch's try
+        # so a category-gatherer failure can't take reminders down with it
+        # (and vice versa). Cost: cached TTL-30s (#984) — a dict merge on
+        # hits. #1425 honesty preserved: a failed lookup merges
+        # source_failed=True, which the floor renders as "couldn't check",
+        # never "none due".
+        try:
+            reminder_ctx = await self._gather_reminder_context(user_id)
+            if reminder_ctx:
+                context.update(reminder_ctx)
+                self._attribute_provenance(list(reminder_ctx.keys()), user_id=user_id)
+        except Exception as e:
+            logger.warning("context_assembler_reminder_gather_error", error=str(e))
 
         # #960: Context contract violation logging — warn when a data-query
         # category reaches the floor with no user data in context.
@@ -807,6 +834,9 @@ class ContextAssembler:
             pending_data = await self._get_pending_todos_cached(user_id, limit=5)
             if pending_data and "pending_todos" in pending_data:
                 context["pending_todos"] = pending_data["pending_todos"]
+            elif pending_data and pending_data.get("pending_todos_source_failed"):
+                # #1573 (#1425): propagate the failure flag — never fake-empty.
+                context["pending_todos_source_failed"] = True
 
         # #1155: GitHub connection flag (the high-priority issues themselves are
         # gathered below — this block only records whether GitHub is connected).
@@ -1002,7 +1032,16 @@ class ContextAssembler:
             ttl_seconds=_TTL_PENDING_TODOS,
             compute_fn=lambda: self._compute_pending_todos(user_id),
         )
-        if not cached or "pending_todos" not in cached:
+        if not cached:
+            return None
+        if cached.get("source_failed"):
+            # #1573 (#1425 honesty): the todos lookup FAILED — todos may
+            # exist. Translate to a todo-specific key (the generic
+            # "source_failed" renders as a REMINDER-check failure on the
+            # floor) so the floor says "couldn't check todos", never
+            # fake-empty.
+            return {"pending_todos_source_failed": True}
+        if "pending_todos" not in cached:
             return None
         return {
             "pending_todos": cached["pending_todos"][:limit],
@@ -1010,7 +1049,15 @@ class ContextAssembler:
         }
 
     async def _compute_pending_todos(self, user_id: str) -> Optional[Dict[str, Any]]:
-        """Compute pending-todos (uncached) for cache miss. Stores up to 10."""
+        """Compute pending-todos (uncached) for cache miss. Stores up to 10.
+
+        #1573 (#1425 honesty): a genuine failure returns
+        ``{"source_failed": True}`` at ERROR level — never a silent None.
+        The old warning+None swallow masked a naive-vs-aware TypeError
+        (time audit F5) that made every due-dated user's pending todos
+        vanish from floor context with no trace.
+        """
+        pending = None
         try:
             from uuid import UUID
 
@@ -1025,8 +1072,14 @@ class ContextAssembler:
                 "pending_todo_count": len(pending),
             }
         except Exception as e:
-            logger.warning("context_assembler_pending_todos_error", error=str(e))
-            return None
+            logger.error(
+                "context_assembler_pending_todos_error",
+                error=str(e),
+                user_id=user_id,
+                fetched_count=len(pending) if pending is not None else None,
+                exc_info=True,
+            )
+            return {"source_failed": True}
 
     async def _get_completed_todos_cached(
         self, user_id: str, limit: int = 10
@@ -1582,8 +1635,10 @@ class ContextAssembler:
                 if not s:
                     return None
                 try:
-                    # GitHub returns Zulu time; fromisoformat needs +00:00
-                    return datetime.fromisoformat(s.replace("Z", "+00:00"))
+                    # GitHub returns Zulu time; fromisoformat needs +00:00.
+                    # #1573 sweep: ensure_utc guards an offset-less string
+                    # from a naive-vs-aware TypeError against the cutoff.
+                    return ensure_utc(datetime.fromisoformat(s.replace("Z", "+00:00")))
                 except Exception:
                     return None
 
@@ -1644,7 +1699,9 @@ class ContextAssembler:
                 if not s:
                     return None
                 try:
-                    return datetime.fromisoformat(str(s).replace("Z", "+00:00"))
+                    # #1573 sweep: ensure_utc guards an offset-less string
+                    # from a naive-vs-aware TypeError against now/cutoff.
+                    return ensure_utc(datetime.fromisoformat(str(s).replace("Z", "+00:00")))
                 except Exception:
                     return None
 

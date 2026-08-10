@@ -107,3 +107,19 @@ corpus:
     expected: action:manage_repos   # collision guard: slug/repo stays the repo-link lane
   - phrase: "help me set up github"
     expected: action:get_contextual_guidance   # regression: pre-#1417 phrasing unchanged
+  # #1570 archived-projects rows (2026-08-10, PM live). "show me my archived
+  # projects" is claimed at surface 1 — but by STATUS/get_project_status, NOT
+  # PORTFOLIO: the portfolio list pattern `(show|list|view) (my )?(all )?
+  # (archived )?projects` rejects the "me" token, so the #1431 archived branch
+  # (inside the PORTFOLIO handler) never runs and the turn floors as STATUS
+  # with no archived data. The rail key `list_archived_projects` (#1570, the
+  # #1560 pattern) covers the manifest + any LLM emission of the action, but
+  # the surface-1 claim means the LLM never sees this phrasing — routing it to
+  # the archived lane is a PATTERN question, filed here under the #1559
+  # moratorium rather than patched.
+  - phrase: "show me my archived projects"
+    expected: REVIEW   # today: pre_classifier -> STATUS/get_project_status (verified 2026-08-10); desired: the archived-list lane
+  - phrase: "list my archived projects"
+    expected: action:manage_portfolio   # regression pin: PORTFOLIO pattern claims this (no "me" token); #1431 branch lists archived rows
+  - phrase: "what projects have I archived?"
+    expected: action:list_archived_projects   # not surface-1 claimed; the #1570 rail key is the deterministic destination
