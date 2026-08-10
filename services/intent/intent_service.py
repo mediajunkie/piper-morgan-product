@@ -6998,7 +6998,11 @@ class IntentService:
             if specific_fallback == self._GENERIC_FALLBACK_TEXT:
                 from services.intent_service.unwired_writes import get_unwired_write_decline
 
-                fallback_message = get_unwired_write_decline(intent.action)
+                # #1571: pass the ask so a files-family decline whose message
+                # looks issue-like can append the working create-issue hint.
+                fallback_message = get_unwired_write_decline(
+                    intent.action, original_message=intent.original_message
+                )
                 self.logger.info(
                     "unwired_execution_honest_degrade_1333",
                     action=intent.action,
@@ -12394,6 +12398,19 @@ Content to summarize:
         except Exception:
             pass
 
+        # #1566: due reminders ride every floor-bound turn — including this
+        # GUIDANCE pathway, which bypasses ContextAssembler's category
+        # dispatch. Same cached gather (#984), same #1425 source_failed
+        # honesty; _format_domain_context renders the keys like any other.
+        try:
+            from services.intent_service.context_assembler import ContextAssembler
+
+            reminder_ctx = await ContextAssembler()._gather_reminder_context(user_id)
+            if reminder_ctx:
+                context.update(reminder_ctx)
+        except Exception:
+            pass
+
         return context
 
     async def _handle_guidance_via_floor(
@@ -12501,6 +12518,40 @@ Content to summarize:
         # Issue #907: Build floor context from available state
         from services.intent_service.conversational_floor import ConversationalFloor, FloorContext
 
+        # #1570: context assembly is floor-ENTRY-independent, not just
+        # category-independent (#1566 one level up). This entry — the
+        # generic-QUERY fall-through, the offer-acceptance fallback, and the
+        # ANALYSIS/SYNTHESIS/STRATEGY/LEARNING fall-throughs — never gathered
+        # ANY domain context, so a data query landing here ("what todos are
+        # pending?" emitted as an unrailed QUERY action, PM live 2026-08-10)
+        # floored with zero user data while the store had rows, and the model
+        # honestly reported seeing none. Gather the same baseline
+        # _handle_floor_with_context would, unless the caller curated its own
+        # context (#1187 summarize). Fail-graceful: a gather failure degrades
+        # to the pre-#1570 contextless floor, never a dead turn.
+        domain_context_provenance: Optional[Dict[str, Dict[str, Any]]] = None
+        if domain_context is None:
+            try:
+                from services.intent_service.context_assembler import ContextAssembler
+
+                assembler = ContextAssembler()
+                domain_context = await assembler.gather_context(
+                    intent_category=(
+                        intent.category.value.upper() if intent.category else "UNKNOWN"
+                    ),
+                    user_id=user_id,
+                    session_id=session_id,
+                    intent_action=intent.action,
+                )
+                domain_context_provenance = assembler.get_last_provenance()
+            except Exception as e:
+                self.logger.warning(
+                    "unknown_intent_context_gather_failed",
+                    error=str(e),
+                    action=intent.action,
+                )
+                domain_context = None
+
         # Gather conversation history (#1122: shared builder, excludes in-flight turn)
         history = build_recent_history(session_id, user_id)
 
@@ -12517,6 +12568,8 @@ Content to summarize:
             intent_confidence=intent.confidence,
             # #1187: optional fetched source content for the floor to summarize.
             domain_context=domain_context,
+            # #1030 R4 parity with _handle_floor_with_context (#1570).
+            domain_context_provenance=domain_context_provenance,
         )
 
         floor = ConversationalFloor()

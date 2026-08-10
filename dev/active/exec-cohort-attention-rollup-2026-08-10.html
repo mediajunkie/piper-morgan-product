@@ -1,0 +1,176 @@
+<title>Piper Morgan — Attention Rollup</title>
+<style>
+  :root {
+    --ground: #F6F7F9;
+    --card: #FFFFFF;
+    --ink: #191C22;
+    --ink-soft: #5A6172;
+    --rule: #DFE3EA;
+    --accent: #3A4E7A;
+    --accent-soft: #EDF0F7;
+    --crit: #A32E28;
+    --warn: #8A6116;
+    --good: #2C6E4F;
+    --shadow: 0 1px 2px rgba(25,28,34,.05), 0 8px 24px -12px rgba(25,28,34,.14);
+    --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --data: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #13161B; --card: #1B1F27; --ink: #E7E9EE; --ink-soft: #99A1B3;
+      --rule: #2B313C; --accent: #92A9DA; --accent-soft: #212838;
+      --crit: #E3796F; --warn: #D5A44B; --good: #6FBE92;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #13161B; --card: #1B1F27; --ink: #E7E9EE; --ink-soft: #99A1B3;
+    --rule: #2B313C; --accent: #92A9DA; --accent-soft: #212838;
+    --crit: #E3796F; --warn: #D5A44B; --good: #6FBE92;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+  :root[data-theme="light"] {
+    --ground: #F6F7F9; --card: #FFFFFF; --ink: #191C22; --ink-soft: #5A6172;
+    --rule: #DFE3EA; --accent: #3A4E7A; --accent-soft: #EDF0F7;
+    --crit: #A32E28; --warn: #8A6116; --good: #2C6E4F;
+    --shadow: 0 1px 2px rgba(25,28,34,.05), 0 8px 24px -12px rgba(25,28,34,.14);
+  }
+
+  body { margin: 0; background: var(--ground); color: var(--ink);
+         font: 16px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 60rem; margin: 0 auto; padding: 3rem 1.25rem 5rem;
+          display: flex; flex-direction: column; gap: 2.25rem; }
+
+  header { display: flex; flex-direction: column; gap: .5rem; }
+  h1 { font: 400 2.4rem/1.15 var(--display); margin: 0; text-wrap: balance;
+       letter-spacing: -.01em; }
+  .standfirst { color: var(--ink-soft); max-width: 44ch; margin: 0; }
+  .stamp { font: 500 .72rem/1 var(--data); letter-spacing: .09em;
+           text-transform: uppercase; color: var(--accent); }
+
+  .band { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .fact { background: var(--card); border: 1px solid var(--rule); border-radius: 3px;
+          padding: .5rem .75rem; display: flex; flex-direction: column; gap: .1rem; flex: 1 1 8rem; }
+  .fact dt { font: 500 .68rem/1 var(--data); letter-spacing: .08em;
+             text-transform: uppercase; color: var(--ink-soft); }
+  .fact dd { margin: 0; font: 600 1.05rem/1.2 var(--body); font-variant-numeric: tabular-nums; }
+
+  section { display: flex; flex-direction: column; gap: .7rem; }
+  h2 { font: 600 .74rem/1 var(--body); letter-spacing: .13em; text-transform: uppercase;
+       color: var(--ink-soft); margin: 0; padding-bottom: .55rem;
+       border-bottom: 1px solid var(--rule); }
+
+  .card { background: var(--card); border: 1px solid var(--rule);
+          border-left: 3px solid var(--rule); border-radius: 3px;
+          padding: 1rem 1.15rem; box-shadow: var(--shadow);
+          display: flex; flex-direction: column; gap: .5rem; }
+  .card.lead { border-left-color: var(--crit); padding: 1.4rem 1.5rem; }
+  .card.act { border-left-color: var(--crit); }
+  .card.watch { border-left-color: var(--warn); }
+  .card.done { border-left-color: var(--good); }
+  .card > p { margin: 0; }
+  .card h3 { margin: 0; font: 600 1.02rem/1.35 var(--body); text-wrap: balance; }
+  .card.lead h3 { font: 400 1.5rem/1.25 var(--display); }
+  .note { color: var(--ink-soft); font-size: .93rem; }
+
+  .chip { display: inline-block; font: 500 .68rem/1 var(--data); letter-spacing: .07em;
+          text-transform: uppercase; padding: .3rem .45rem; border-radius: 2px;
+          background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+  .chip.crit { background: color-mix(in srgb, var(--crit) 12%, transparent); color: var(--crit); }
+  .chip.warn { background: color-mix(in srgb, var(--warn) 14%, transparent); color: var(--warn); }
+  .chip.good { background: color-mix(in srgb, var(--good) 13%, transparent); color: var(--good); }
+
+  ol.steps { margin: .2rem 0 0; padding-left: 0; list-style: none;
+             display: flex; flex-direction: column; gap: .55rem; counter-reset: s; }
+  ol.steps li { display: grid; grid-template-columns: 1.6rem 1fr; gap: .6rem;
+                align-items: baseline; counter-increment: s; }
+  ol.steps li::before { content: counter(s); font: 500 .8rem/1.5 var(--data);
+                        color: var(--accent); }
+
+  code, .mono { font: .88em/1.4 var(--data); background: var(--accent-soft);
+                padding: .1rem .3rem; border-radius: 2px; }
+  .tnum { font-variant-numeric: tabular-nums; }
+
+  ul.plain { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: .4rem; }
+  ul.plain li::marker { color: var(--ink-soft); }
+  s { color: var(--ink-soft); text-decoration-color: var(--rule); }
+
+  footer { border-top: 1px solid var(--rule); padding-top: 1rem;
+           color: var(--ink-soft); font-size: .85rem; }
+  footer p { margin: 0 0 .5rem; }
+  @media (max-width: 34rem) { h1 { font-size: 1.9rem; } .wrap { padding-top: 2rem; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="stamp">Chief of Staff · Monday 10 August 2026</p>
+    <h1>Attention rollup</h1>
+    <p class="standfirst">The weekend answered the beta-date question with a number nobody had looked at: discovery is accelerating, not settling.</p>
+  </header>
+
+  <dl class="band">
+    <div class="fact"><dt>Discovery this wk</dt><dd>108</dd></div>
+    <div class="fact"><dt>Prior 8-wk peak</dt><dd>67</dd></div>
+    <div class="fact"><dt>Closed since Fri</dt><dd>~30</dd></div>
+    <div class="fact"><dt>Deploys</dt><dd>4</dd></div>
+    <div class="fact"><dt>Awaiting your call</dt><dd>7</dd></div>
+  </dl>
+
+  <section>
+    <h2>The one thing</h2>
+    <div class="card lead">
+      <h3>Discovery ran to 108 issues this week — against a prior eight-week peak of 67 and a last-week figure of 18.</h3>
+      <p>That is roughly six times last week and nearly double the highest week on record, and it happened because you spent real time in the product. <strong>It is the clearest vindication of moving the date that exists</strong>, and it is a better beta instrument than any open count.</p>
+      <p class="note"><strong>Why the rate beats the count:</strong> the open number moves with triage — it fell 26→17 while work grew, then rose to 48 once triage put findings where they belonged. Neither move meant much. <strong>The discovery rate measures something the count cannot: whether the product is still surprising you.</strong> Beta is ready when that curve falls while your usage holds steady — not when a backlog empties. The tool is development's, <code>scripts/discovery-rate.py</code>, and I'd make it the weekly number you watch.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Needs your decision</h2>
+
+    <div class="card act">
+      <p><span class="chip crit">7 items, unmilestoned by design</span></p>
+      <h3>The sort — still open, and it is the only thing blocking these</h3>
+      <p>#1536–#1540 (the alpha-feedback five), #1511 (two standups, one name), #1569. All deliberately unmilestoned: <strong>their unmilestoned state is the ask.</strong> The sorting analysis with four dimensions and three approaches is in the remaining-work artifact; my recommendation was travel-first with the dependency honored.</p>
+      <p class="note">Once you rule, the milestones follow immediately and this population empties to zero.</p>
+    </div>
+
+    <div class="card act">
+      <h3>Two smaller ones</h3>
+      <ul class="plain">
+        <li><strong>An <code>awaiting-decision</code> label.</strong> Product management found that "unmilestoned: 7" conflates <em>a decision waiting on you</em> with <em>work nobody has examined</em> — opposite remedies. The distinction isn't derivable from GitHub today. One label fixes it; the code already reads it. Taxonomy is yours and theirs, not mine.</li>
+        <li><strong>Twelve issues carry the MVP milestone but aren't on the board</strong> — up from seven yesterday, so it's compounding. Filing with a milestone doesn't add them, and board-derived views can't see them.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>What the weekend actually produced</h2>
+    <div class="card">
+      <ul class="plain">
+        <li><strong>Four deploys, ~30 issues closed since Friday</strong>, three agent build waves plus a fourth this morning.</li>
+        <li><strong>Your Monday session: 11 verdicts — 4 pass, 2 closed, 5 fails, and every fail root-caused the same morning</strong> at mechanism level: a missing vocabulary word, a missing today-branch, a renderer dark since birth, a stub button, a false canned decline.</li>
+        <li><strong>The anti-gaslighting floor was verified live under challenge</strong> (#1517) — the fix held when tested adversarially, not just when tested.</li>
+        <li><strong>A stored XSS in shared todo titles</strong> found and fixed overnight (#1578). Worth noting it came out of the same testing burst, not a security audit.</li>
+        <li><strong>The routing inversion is ratified</strong> with architecture's conditions — the band-aid factory closing, Phase 1 next.</li>
+        <li><strong>The fifth class audit landed: time.</strong> Root cause is that per-user timezone supply is zero percent — every clock time a user types is interpreted on the server's UTC clock. Umbrella issue #1572, MVP.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Worth knowing, no action</h2>
+    <div class="card watch">
+      <ul class="plain">
+        <li><strong>The corrected milestone sequence is MVP → Production → Fast Follow</strong> — "not MVP" never defaults to Fast Follow. It's in decisions.log and memory; carrying it here so nobody re-derives the old binary.</li>
+        <li><strong>Memory headroom is eroding faster than the fix assumed</strong> — 18 lines to 14 in fifteen hours. Trust flagged the rate rather than waiting for the point-threshold to fire. Not urgent; watched.</li>
+        <li><strong>The fly CLI now works from development's seat</strong>, so a deploy can happen on your word from anywhere — including an iPad.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <p><strong>Live-state pass this morning.</strong> Discovery-rate curve from development's tool against GitHub creation timestamps; board and milestone counts reconciled two ways after last week's blind-spot findings; the seven unmilestoned enumerated individually rather than counted. Where a population isn't distinguishable in the data, this page says so rather than splitting it by inference.</p>
+  </footer>
+</div>

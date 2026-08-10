@@ -337,6 +337,102 @@ async def run_todo_query_workflow(
     return await intent_service._handle_execution_intent(intent, None, session_id, user_id)
 
 
+async def run_archived_projects_query_workflow(
+    session_id: str,
+    user_id: Optional[str] = None,
+    context: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """#1570: archived-projects LIST query via the action-dispatch rail.
+
+    PM live 2026-08-10: "show me my archived projects" — the floor DENIED the
+    capability. The pre-classifier claims that phrasing as
+    STATUS/get_project_status (the PORTFOLIO list pattern rejects the "me"
+    token), STATUS always floors, and archived-list had NO rail/ActionMapper
+    key — so the #1517 capability manifest could not protect it and the #1431
+    branch (inside the PORTFOLIO canonical handler) never ran. This entry is
+    the sanctioned #1560 pattern: a rail key makes the capability (1) part of
+    wired_chat_actions() → the floor may no longer deny it, and (2)
+    deterministically dispatchable for any LLM emission of the action,
+    category-independent. The pre-classifier pattern half is corpus material
+    (#1559 routing moratorium) — reported on the issue, not patched here.
+
+    Data path mirrors the #1431 canonical branch (canonical_handlers.py,
+    operation == "list_archived"): owner-scoped
+    PortfolioService.list_archived_projects — never the active list.
+    """
+    # Lazy import: IntentProcessingResult lives in intent_service, which this
+    # module must not import at module level (circular).
+    from services.intent.intent_service import IntentProcessingResult
+
+    if not user_id:
+        return IntentProcessingResult(
+            success=True,
+            message=(
+                "I can show you your archived projects, but I need to know who "
+                "you are first — try signing in."
+            ),
+            intent_data={
+                "category": "portfolio",
+                "action": "list_archived_projects",
+                "context": {"reason": "no_user_id"},
+            },
+            workflow_id=None,
+            requires_clarification=False,
+        )
+
+    try:
+        from services.database.repositories import ProjectRepository
+        from services.database.session_factory import AsyncSessionFactory
+        from services.onboarding.portfolio_service import PortfolioService
+
+        async with AsyncSessionFactory.session_scope() as session:
+            project_repo = ProjectRepository(session)
+            portfolio_service = PortfolioService(project_repo)
+            projects = await portfolio_service.list_archived_projects(user_id=user_id)
+    except Exception as e:
+        logger.error(
+            "archived_projects_query_failed", error=str(e), user_id=user_id
+        )
+        return IntentProcessingResult(
+            success=False,
+            message=(
+                "I had trouble loading your archived projects right now. "
+                "You can try again in a moment."
+            ),
+            intent_data={
+                "category": "portfolio",
+                "action": "list_archived_projects",
+                "context": {"error": str(e)},
+            },
+            workflow_id=None,
+            requires_clarification=False,
+        )
+
+    if projects:
+        names = [p.name for p in projects[:5]]
+        noun = "project" if len(projects) == 1 else "projects"
+        message = f"You have {len(projects)} archived {noun}:\n\n" + "\n".join(
+            f"- {name}" for name in names
+        )
+        if len(projects) > 5:
+            message += f"\n\n...and {len(projects) - 5} more."
+        message += '\n\nSay "restore <name>" to bring one back.'
+    else:
+        message = "You don't have any archived projects."
+
+    return IntentProcessingResult(
+        success=True,
+        message=message,
+        intent_data={
+            "category": "portfolio",
+            "action": "list_archived_projects",
+            "context": {"project_count": len(projects)},
+        },
+        workflow_id=None,
+        requires_clarification=False,
+    )
+
+
 # handler_attr → classifier aliases (mirror the migrated elif branches exactly).
 _READ_QUERY_COHORT: dict[str, list[str]] = {
     "_handle_shipped_this_week": [
@@ -570,6 +666,19 @@ def register_default_workflows() -> None:
         action_triggered=True,
     )
 
+    # #1570: archived-projects LIST query (the #1560 pattern). Self-contained
+    # entry point (needs only user_id — no intent/intent_service context), so
+    # requires_context stays empty. See run_archived_projects_query_workflow's
+    # docstring for the incident + moratorium disposition.
+    # effect: READ — owner-scoped SELECT of archived project rows
+    # (PortfolioService.list_archived_projects); no writes anywhere.
+    archived_projects_entry = WorkflowEntry(
+        entry_point=run_archived_projects_query_workflow,
+        effect=EffectClass.READ,
+        description="Archived-projects list query via action dispatch (#1570)",
+        action_triggered=True,
+    )
+
     # RECONNECT #1327 build #2: conversational "what's my default repo" — the read
     # counterpart. Same 2-arg (intent, workflow_id) factory + action-dispatch rail.
     # effect: READ — _handle_get_default_repo reads the same preference key the
@@ -649,6 +758,13 @@ def register_default_workflows() -> None:
         "set_default_repo": set_default_repo_entry,
         # RECONNECT #1327 build #2: get-default-repo (read counterpart).
         "get_default_repo": get_default_repo_entry,
+        # #1570: archived-projects list — canonical key first (wired_chat_actions
+        # names each unique entry by its first-registered key), then the mode-4
+        # defense aliases for LLM paraphrase emissions.
+        "list_archived_projects": archived_projects_entry,
+        "show_archived_projects": archived_projects_entry,
+        "archived_projects_query": archived_projects_entry,
+        "list_archived": archived_projects_entry,
     }
 
     # #1124 step 3 cohort 2: GitHub read-query cohort — one shared entry point per

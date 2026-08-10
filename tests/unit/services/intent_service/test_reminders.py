@@ -156,10 +156,23 @@ class TestReminderTimeLabelNoDoubledTokens:
         assert dt is not None
         assert label == "at 5pm"
 
-    def test_today_at_time_label_no_double_at(self):
+    def test_today_at_time_label_no_double_at(self, monkeypatch):
+        # #1562: "today" now has its own branch and label ("today at 4pm").
+        # Frozen before 4pm so the binding is deterministic (an explicit
+        # "today" + past time returns the honest-ask shape, not a roll).
+        import services.intent_service.temporal_utils as tu
+
+        class _Frozen(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                frozen = datetime(2026, 8, 10, 10, 0)
+                return frozen if tz is None else frozen.astimezone(tz)
+
+        monkeypatch.setattr(tu, "datetime", _Frozen)
         dt, label = parse_reminder_time("remind me today at 4pm to file the report")
         assert dt is not None
-        assert label == "at 4pm"
+        assert dt.date() == datetime(2026, 8, 10).date()
+        assert label == "today at 4pm"
 
     @pytest.mark.parametrize(
         "message",

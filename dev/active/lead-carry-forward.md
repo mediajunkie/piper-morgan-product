@@ -1,9 +1,9 @@
-# Lead carry-forward — rewritten 2026-08-09 ~18:50 PT (supersedes all prior; cron-prompt blurbs are stale by construction)
+# Lead carry-forward — rewritten 2026-08-10 ~09:55 PT (supersedes all prior; cron-prompt blurbs are stale by construction)
 
 ## Live state
-- **THIRD CUT DEPLOYED ~17:25 by Lead on PM's explicit word** (first Lead-pushed deploy; fly authed on this seat; ancestry-verified pre-push; /health 200/119ms). Everything through wave 3 is LIVE.
-- **26 built items awaiting PM verdicts** (tracker artifact fbb9edcf — 12-step test list, all live). 1 agent out (#1558+#1560 small pair, dispatched 18:50).
-- Sprint: 22 closed since Fri; PM triage executed (49 filed→milestones; 18+MVP adds); sequence correction MVP→Production→Fast Follow memory-pinned.
+- **FIFTH CUT DEPLOYED ~9:15 (Lead-pushed)** — every fail from PM's 11-verdict morning session live-fixed (1562/1566/1411-status/1568/1570/1573/1578 + 1558/1560). PM retesting at leisure (Santa Rosa, days off).
+- Verdicts so far: #1547 + #1517 CLOSED on PM pass; 5 fails all root-caused + fixed same-day. Discovery curve: 108/wk vs 67 prior peak (Exec promoted it to THE beta instrument; usage-denominator caveat stated).
+- 2 agents out: #1571 floor-phrase honesty + #1581 files.html XSS. 12 off-board MVP issues added to board (Exec's find).
 
 ## Awaiting PM (decisions, not work)
 - FTUX five #1536-#1540 + #1511 two-standups — escalated per triage; PPM confirmed unmilestoned-is-the-ask.
