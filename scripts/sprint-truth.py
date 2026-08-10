@@ -116,12 +116,20 @@ def unmilestoned_open():
     reported to me." A milestone-scoped instrument cannot see this by construction.
     """
     cmd = ["gh", "issue", "list", "--state", "open", "--limit", "400",
-           "--json", "number,milestone"]
+           "--json", "number,milestone,labels"]
     try:
         out = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
         if out.returncode != 0:
             return None
         return [i for i in json.loads(out.stdout) if i.get("milestone") is None]
+
+    # NOTE (PPM, 2026-08-09): "unmilestoned" is TWO populations with opposite remedies —
+    # (a) deliberately held, awaiting a named decision, drained by ASKING; and
+    # (b) never triaged, nobody has looked, drained by LOOKING.
+    # Reporting them as one number conflates a question for PM with unexamined work.
+    # The split is NOT derivable from GitHub today: no label marks (a), and the six held
+    # issues carry no distinguishing metadata. The cheap fix is an `awaiting-decision`
+    # label; the code below is ready for it and reports honestly until it exists.
     except Exception:
         return None
 
@@ -187,7 +195,17 @@ def main():
     if un is None:
         print("⚠️  UNMILESTONED COUNT UNAVAILABLE — this figure covers ONE milestone only.")
     else:
-        print(f"PLUS {len(un)} open issue(s) carry NO milestone and are outside every gate count.")
+        held = [i for i in un if any(l.get("name") == "awaiting-decision"
+                                     for l in (i.get("labels") or []))]
+        if held:
+            print(f"PLUS {len(un)} open issue(s) carry NO milestone and are outside every gate count:")
+            print(f"       {len(held)} awaiting a decision (drained by ASKING) · "
+                  f"{len(un) - len(held)} not yet triaged (drained by LOOKING)")
+        else:
+            print(f"PLUS {len(un)} open issue(s) carry NO milestone and are outside every gate count.")
+            print("       ⚠️  NOT SPLIT: no `awaiting-decision` label exists, so a decision waiting "
+                  "on PM\n           is counted identically to work nobody has examined. "
+                  "Two populations, one number.")
     if not_done.get("Sprint Backlog"):
         print(f"NOTE: {not_done['Sprint Backlog']} item(s) have NOT BEEN STARTED. "
               f"Any 'complete' claim must exclude itself explicitly.")

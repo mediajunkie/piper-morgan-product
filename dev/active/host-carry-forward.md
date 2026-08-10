@@ -1,23 +1,20 @@
 # HOST carry-forward
 
-**Written**: 2026-08-09 10:0x PDT (Fire 2/WORK, day 16 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
+**Written**: 2026-08-09 22:2x PDT (STOP fire, day 16 on Amber) · **Worktree**: Model A, `~/Development/piper-morgan-worktrees/host` on `claude/host-cycle`
 
-## 🔴 BETA MOVED BACK A MONTH — PM, 08-08 ~10:10 PT, `decisions.log:1242`. This file's own header called 08-09 "beta day" this morning. It was already wrong when written — the decision predates that entry by ~20 hours. Corrected in the cron prompt (re-armed Fire 2) and named in the log as HOST's own instance of the week's dominant failure shape. If you're reading this and still thinking "beta day," you're carrying the same stale claim — check `decisions.log` for "beta", don't trust this file's prior framing either.
+## Standing checks — both proven under real use now
 
-## Standing check — cron-count fix, held twice (08-08 Fires 5 & 6)
+✅ **Cron-count fix**: `grep -c "^## Fire"` vs. comma count before writing STOP. Four clean real uses (08-08 Fires 5/6, 08-09 Fires 5/6). Keep doing it explicitly.
+✅ **Step 1c headroom**: now reads the guard-convention count from `check-derived-drift.sh`'s own output, not a separate `wc -l` (fixed 08-09 after CIO caught a two-convention mismatch). Currently 186/14 lines, stable for three fires — the earlier erosion trend was itself a single-interval artifact, don't extrapolate a rate from one reading.
 
-✅ Working as intended (`grep -c "^## Fire"` vs. comma count before writing STOP) — two clean real uses after four prior mis-reads. Not yet "proven automatic," keep doing it explicitly every STOP decision.
+## Watching, not owed
 
-## Watching, not owed (08-09, Fire 2)
+- **CIO's hybrid-packing proposal** (further headroom, lossy on 72% of entries) — still PM's call, still open, don't chase a ruling.
+- **BETA moved back a month** (PM, 08-08, `decisions.log:1242`) — no live watch needed, just don't let a future re-arm reintroduce a ship-date claim from stale continuity. Grep `decisions.log` for "beta" if it ever matters to a decision, don't trust this file's framing either.
 
-- **MEMORY.md headroom trending down again**: 182→185 lines used (18→15 headroom) in one fire — two new memories ate back a third of CIO's 08-08 gain already. Not yet under Step 1c's <8 escalate threshold, but the trend is worth a second look before it gets there again, not just a point-in-time check.
-- **CIO's further hybrid-packing proposal** (18→113 headroom, lossy on 72% of entries) — still PM's call, still open, don't chase a ruling.
+## Closed 08-09 — archival
 
-## Closed this fire (08-09)
-
-- ✅ **PPM's Jake-register item 10** (uncertainty-reduction legibility) filed as **#1539**. Watch closed.
-- ✅ **Receive-side header-format check** (Comms's 08-07 ask) — 7.2% received header-style (54/755) vs. 53% sent. Closed to Comms/PA/CXO.
-- ✅ **PM standardized on YAML frontmatter for all memos, retiring header-style** (`decisions.log`, 08-08 ~07:08) — checked, HOST's recent memos already comply.
+- ✅ Beta-date self-correction, receive-side header check, PPM Jake-item-10 (#1539), YAML-frontmatter standardization check, Step 1b/2c relocation (superseded by CIO's deeper fix), Step 1c convention fix. Full detail in today's session log if ever needed.
 
 ## Closed by PM ruling — archival, do not re-raise
 
