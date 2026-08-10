@@ -4,25 +4,31 @@
 **Last rewritten**: 2026-08-09 STOP (~22:45 PT) — DAY CLOSED. Six clean fires. Cron **`e4f3b4e8`**.
 ✅ **Jake conversion COMPLETE: #1536–#1540 filed 08-09, zero rows unfiled.**
 
-## ✅ FIRST-CONTACT CRITERION MERGED (2026-08-10) — `docs/internal/product/first-contact-criterion-merged-2026-08-10.md`
+## ✅ FTUX FIVE RULED (2026-08-10) — HOLD STATE ENDED
+**#1536 → MVP + Beta Blockers** (PM: *"if CXO feels one of the issues should be kept in MVP, I am
+inclined to defer to that and err on the side of including"* — CXO's on-record argument was exactly
+one issue). **#1537–#1540 → Production + PUB.** ✅ **Verified on the board.**
+**PM resolved CXO's tension by clarification, not by us**: *"something can be discovered in alpha, and
+we can decide to defer it before going into beta… comfortable with my placement and with clarifying
+or overriding my needlessly blanket statement from earlier."* ⭐ ***"Out of alpha" = the PUBLIC beta***;
+private beta stays invite-only until PUB completes.
+✅ **#1536 now gates on the converged three** (CXO's two-tier + my merge + Arch's H1 clarify) —
+`docs/internal/product/first-contact-criterion-merged-2026-08-10.md`. **Item ③'s block discharged.**
+**Awaiting-decision population: 7 → 2** (#1511, #1569).
 
-**THREE items, not four.** ① cold account + one tool → own data in the **first exchange, unprompted**
-→ 🚪 **GATE** · ② **only Piper could produce it** → 📋 **§7b conformance** (a judgment; cannot fail
-cleanly; never gate it) · ③ **no fabricated content**, connector attached or not → 🚪 **GATE by
-citation**. ⛔ **#1536's AC4 DELETED, not placed — entailed by item ①** (*cold account* + *first
-exchange* already say *first session, not after warm-up*); CXO's table had a row too many.
-
-🔴 **ITEM ③ IS BLOCKED, and the block is mine to have found**: it cites Arch's
-`floor-honesty-contract-1517-spec.md` rather than restate it — because my fix and CXO's were **the same
-predicate**, which would have been **guard number six** in the week Arch documented *"we've solved
-fabrication five times, never generally."* ⭐ *One predicate closing two holes in two documents is not
-elegance — it's the signal it belongs in neither.*
-⚠️ **But the contract may not reach the case**: **H1 governs whether a READ OCCURRED; item ③ needs
-whether the named ENTITY IS REAL.** A read can occur and particulars still be fabricated. **Awaiting
-Arch.** ⛔ Do not treat "cites the contract" as closing it.
-
-⚠️ **PM blesses NEITHER §7a nor #1536's ACs — only the merged list.** And the **placement** question
-(*is this criterion in #1386's gate at all?*) is **untouched and still PM's**, pending since 08-05.
+## ✅ #1511 IS MY SPEC LANE (PM direction 08-10) — slice ACCEPTED, spec on the issue
+**Two modes, not one winner**: report-on-demand **default** (ratifies live behaviour) · interview
+survives as a **NAMED** mode · possible first-run interactive fallback + preference capture.
+**MVP** = the naming/disambiguation only (**the interview already works — anything touching its
+behaviour is OUT**); **Production/PUB** = fallback + preference.
+🔴 **The merge I added: #1511's preference capture IS #1510's declared mode in another domain.**
+Lead spotted the shared *storage* (`users.preferences` JSONB); **the MECHANISM matters more —
+declaration, REVOCATION, and showing the user what Piper believes about them.** *Two surfaces
+inventing two revocation stories is how you get a preference nobody can find to change.* **Ride
+#1510's surface, don't parallel it** — ordering already right since #1510 is MVP.
+⚠️ **Anti-goal risk flagged**: a first-run *"what standup do you want going forward"* asks at the
+moment of **least information**. **Demonstrate then ask** (as #1536), and make it **visibly revisable**
+— *an unfindable preference is the dictating PM's anti-goal is about, arriving by accident.*
 
 ## ✅ PM APPROVED THE PLACEMENT (2026-08-09, relayed by Lead, board WRITTEN)
 **#1510 → MVP · #1190 → MVP · #1509 → Production.** Verified on the board myself. **#1536–#1540
