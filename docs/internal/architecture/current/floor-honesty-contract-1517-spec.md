@@ -1,7 +1,7 @@
 # Floor-Honesty Contract (#1517) — SPEC
 
 **By**: Arch, 2026-08-10 · **Status**: 🟡 **SPEC for review — not ratified.** Owed per my 2026-08-09 inversion ruling, where I took decision ③ and ruled it **DECOUPLED** from the inversion: #1517 is a trust/safety defect that reproduces however routing got there, and coupling it to a month-long rebuild leaves a live honesty defect waiting on an architecture bet.
-**Trust lens owed to CXO/HOST before ratification.**
+**Trust lens: ✅ HOST SIGNED OFF 2026-08-10 (§6). ⏳ CXO's copy/experience lens still owed.**
 
 ---
 
@@ -45,6 +45,10 @@ The same sentence describes the floor: **a denial satisfiable by invention is em
 
 **H1 — No unread state claims.** The floor must not emit a proposition about stored state (saved / not saved / exists / doesn't exist / was deleted) unless that proposition is derived from a value the turn actually read. **If no read occurred, the honest form is an offer to look**, not a verdict.
 
+⭐ **H1 covers NAMED ENTITIES, not just save-state — clarified 2026-08-10 because CXO and PPM both needed it and the original wording obscured it.** *"You have issue #1234 'Fix login bug', opened Tuesday"* **asserts that #1234 exists**, which is a proposition about stored state whether or not the word "saved" appears. **A named entity is a state claim.** CXO's live example (*"a fabricated attribute passes my item 4"*) and PPM's merged property 3 (*"no fabricated content, whether or not a connector is attached"*) are both H1, not a separate rule.
+
+> **The carrier for an entity is a CITATION** — the read that produced it. Same mechanism as `StateFact`, different rendering: **you cannot cite a read you did not perform.** This makes #1536's AC3 gateable on *"every entity named in a user-facing claim carries a citation"* — ⛔ **so AC3 is unblocked, and it does not need a fourth wording patch.**
+
 **H2 — No retraction of a recorded success.** If the turn's own prior action recorded a success, the floor may not contradict it. *(This is #1517's literal incident: the reminder was in the database and the floor said it wasn't.)*
 
 **H3 — No denial of a registered capability.** ✅ Already built; folded in so the contract is complete rather than to re-implement it.
@@ -67,6 +71,36 @@ The same sentence describes the floor: **a denial satisfiable by invention is em
 - **Whether the other five guards migrate to the contract.** They work; the contract explains them. **Migration is a separate, non-urgent question and I would not gate #1517 on it.**
 - **The user-facing wording** of the honest forms — CXO's lane, and this spec deliberately specifies the *property*, not the *copy*.
 
-## 6. Open question for CXO/HOST — the trust lens I owe you
+## 6. ✅ TRUST LENS — HOST SIGNED OFF 2026-08-10, and dissolved the open question
+
+**HOST read the spec in full and signed off from the trust lens.** Their reasoning, kept because it is
+better than mine:
+
+> **The asymmetry is the whole argument, and it's not close.** A false *"I don't know"* costs **friction** —
+> the user re-asks or waits. A false confident state claim costs **the user's model of what the system
+> knows.** Those are not the same magnitude.
+
+**H1's floor is correctly placed**: silence and *"let me check"* both satisfy it, and **neither is a lesser
+evil than fabrication — they are not on the same axis.**
+
+### ⭐ The open question below was malformed, and HOST's answer is the useful part
+
+I had asked: *"is there a threshold past which 'I don't know' becomes its own trust cost — and does that
+argue for reading more RATHER THAN asserting less?"*
+
+> **HOST: "Read more, don't loosen H1 to compensate for not reading."**
+>
+> **They aren't in tension. H1 gates the ASSERTION, not the READING** — so eager reading closes the gap
+> **without weakening the contract.** My question framed as a tradeoff something that is simply orthogonal.
+
+**The operational consequence, which is HOST's and is better than a threshold:** if a specific surface
+starts hedging noticeably once this ships, **that is a signal to add a read THERE** — not to loosen H1, and
+not to read everywhere by default.
+
+⏳ **Still owed: CXO's lens** (copy/experience). The property is settled; the wording is not.
+
+---
+
+## 6b. The original open question, kept for the record
 
 **H1's honest form is "I don't know, let me look."** That is more honest and **less confident-sounding** than what the floor does today. **Is there a threshold past which "I don't know" becomes its own trust cost** — and if so, does that argue for the floor *reading* more often rather than *asserting* less? **I have a view (read more) but it is a product judgment, not an architectural one.**
