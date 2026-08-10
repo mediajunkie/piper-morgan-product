@@ -65,6 +65,30 @@ The same sentence describes the floor: **a denial satisfiable by invention is em
 2. **The judge-evaluated corpus** (already the inversion's acceptance instrument) gets fabrication cases: **#1517's transcript verbatim as case 1.** A judge can evaluate "asserted a state fact" where a regex cannot.
 3. ⚠️ **A denominator guard on whatever check lands** — `test_real_plugins_do_not_fabricate_configured` already carries one (*"Denominator guard: {path} missing — the fabrication check…"*), and it is the model to copy. **A fabrication check that silently scans nothing reports the same clean as one that scanned everything.**
 
+## 4b. ⛔ SCOPE BOUNDARY — where this contract does NOT reach (added 2026-08-10)
+
+**CXO applied §3 of the storefront page against this contract** (*"'knows your work' is a state a
+stranger's account doesn't have yet"*). **Their conclusion is right and the copy should not ship — but it
+is NOT H1**, and the contract must not be cited there.
+
+> ⭐ **The test: if the ENFORCEMENT doesn't transfer, the contract doesn't either.**
+
+H1's enforcement is a typed carrier — `StateFact(read_at, source)`, or a citation for a named entity.
+**You cannot put a `StateFact` in a headline.** No read to carry, no renderer to gate, nothing for the
+mechanism to bite on. **A contract cited where its mechanism cannot apply becomes prose** — an appeal to a
+principle rather than a control, which is the failure mode this spec exists to prevent.
+
+**The distinction, stated so it stays drawn:**
+
+| | asserting past your evidence, where the evidence is… |
+|---|---|
+| **H1 (this contract)** | **a read the system did not do** — runtime, per-turn, gateable at the renderer |
+| **the copy failure (CXO's lane)** | **a state the reader does not have** — general claim, cold audience, caught in human review |
+
+**Adjacent, not the same, and the copy property deserves a name in CXO's vocabulary rather than a borrowed
+home in mine.** ⚠️ **This contract is not the general theory of honest claims. It is a specific gate on a
+specific renderer, and it is more useful at that size.**
+
 ## 5. What I am NOT deciding
 
 - **The carrier's shape** (`StateFact` vs a Result type vs something CXO's copy work prefers) — a design call better made with the implementer.
