@@ -87,7 +87,12 @@ Arch's/Lead's to keep.)*
 ## What PM would be blessing
 
 **Not §7a's wording. Not #1536's ACs. This:** *the first-contact criterion is three items; items 1
-and 3 gate; item 2 is conformance reviewed for done; item 3 is pending one architectural answer.*
+and 3 gate; item 2 is conformance reviewed for done.* ✅ **Nothing is pending — item 3's architectural
+block was discharged 2026-08-10.**
+
+*(This paragraph said "item 3 is pending one architectural answer" for about an hour after the block
+cleared. Corrected rather than left — a summary disagreeing with its own body is the defect I fixed
+in someone else's document on 08-08 and have now reproduced in my own twice.)*
 
 ⚠️ **And the placement question is unchanged and still separate**: *is the first-contact criterion in
 #1386's beta gate at all?* **That decision has been pending since 2026-08-05 and this document does
