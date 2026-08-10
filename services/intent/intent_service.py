@@ -12394,6 +12394,19 @@ Content to summarize:
         except Exception:
             pass
 
+        # #1566: due reminders ride every floor-bound turn — including this
+        # GUIDANCE pathway, which bypasses ContextAssembler's category
+        # dispatch. Same cached gather (#984), same #1425 source_failed
+        # honesty; _format_domain_context renders the keys like any other.
+        try:
+            from services.intent_service.context_assembler import ContextAssembler
+
+            reminder_ctx = await ContextAssembler()._gather_reminder_context(user_id)
+            if reminder_ctx:
+                context.update(reminder_ctx)
+        except Exception:
+            pass
+
         return context
 
     async def _handle_guidance_via_floor(

@@ -575,6 +575,36 @@ class ConversationalFloor:
         if "current_time" in domain_context:
             lines.append(f"- Current time: {domain_context['current_time']}")
 
+        # #1566: due reminders — rendered for EVERY category (they were
+        # gathered only for CONVERSATION and then never rendered at all; both
+        # ends of #903's "I'll surface this" promise were broken). Placed
+        # first among the data lines so the LLM treats surfacing as a
+        # first-class duty, not trivia.
+        if "due_reminders" in domain_context:
+            rems = domain_context["due_reminders"]
+            if isinstance(rems, list) and rems:
+                count = domain_context.get("reminder_count", len(rems))
+                lines.append(
+                    f"- DUE REMINDERS ({count}): the user asked to be reminded "
+                    "of these and their time has passed. Briefly surface them "
+                    "in your reply (a short line is enough), even if the "
+                    "user's message is about something else — do not wait to "
+                    "be asked:"
+                )
+                for r in rems[:5]:
+                    lines.append(f"    • {r}")
+                if count > 5:
+                    lines.append(f"    • …and {count - 5} more")
+
+        # #1425 honesty: the reminder lookup FAILED — a promised reminder may
+        # exist. Say we couldn't check; NEVER present this as "nothing due".
+        if domain_context.get("source_failed"):
+            lines.append(
+                "- Reminder check FAILED: could not verify whether any "
+                "reminders are due right now. If reminders come up, say you "
+                "couldn't check them just now — do not claim none are due."
+            )
+
         # #1187: fetched source content for a summarize request — the floor renders the
         # summary FROM this content (the source it couldn't otherwise reach, e.g. a
         # GitHub issue + comments or a commit range). The wording steers the LLM to

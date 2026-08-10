@@ -50,9 +50,12 @@ def test_reminder_copy_describes_passive_surfacing(
     todo_handlers_source: str,
 ) -> None:
     """The replacement copy describes the actual surfacing mechanism (passive,
-    on next conversation after the reminder time)."""
+    in conversation once the reminder is due). #1566 aligned the wording with
+    the widened mechanism: any floor-bound (conversational) turn surfaces due
+    reminders, but action commands still don't — so 'in conversation', not
+    'the next time you check in' (which over-promised turn coverage)."""
     assert (
-        "surface this the next time you check in" in todo_handlers_source
+        "surface this in conversation once it's due" in todo_handlers_source
     ), "New copy must describe the passive surfacing mechanism"
 
 

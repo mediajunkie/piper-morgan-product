@@ -219,6 +219,9 @@ class ContextAssembler:
         "current_day_of_week": {"source": "ServerClock"},
         # Reminders
         "reminders": {"source": "ReminderService"},
+        # #1566: due-reminder keys ride every gather_context call
+        "due_reminders": {"source": "TodoIntentHandlers.get_due_reminders"},
+        "reminder_count": {"source": "TodoIntentHandlers.get_due_reminders"},
         "projects": {"source": "ProjectManagementService"},
         # #1530 (m-44): row-derived denominator riding with the sliced list
         "project_count": {"source": "UserContextService"},
@@ -301,11 +304,12 @@ class ContextAssembler:
                 context.update(ctx)
                 self._attribute_provenance(list(ctx.keys()), user_id=user_id)
             elif category == "CONVERSATION":
-                # Issue #903: Surface due reminders for greeting context
-                ctx = await self._gather_reminder_context(user_id)
-                if ctx:
-                    context.update(ctx)
-                    self._attribute_provenance(list(ctx.keys()), user_id=user_id)
+                # Issue #903 gathered due reminders HERE (greeting-only).
+                # #1566 hoisted reminder gathering below the dispatch so
+                # EVERY floor-bound category surfaces due reminders;
+                # CONVERSATION keeps its deliberately-minimal context (the
+                # #960 else-branch is for UNKNOWN categories, not greetings).
+                pass
             elif category == "TEMPORAL":
                 # #965: Temporal context for non-date queries (agenda, retrospective, etc.)
                 ctx = await self._gather_temporal_context(user_id, session_id)
@@ -331,6 +335,23 @@ class ContextAssembler:
                 category=category,
                 error=str(e),
             )
+
+        # #1566: due reminders ride EVERY floor-bound turn, not only
+        # CONVERSATION greetings (#903's original scope). PM live 8/10: four
+        # due-now reminders + 15 minutes of STATUS/EXECUTION/TEMPORAL turns
+        # with zero surfacing. Gathered OUTSIDE the category dispatch's try
+        # so a category-gatherer failure can't take reminders down with it
+        # (and vice versa). Cost: cached TTL-30s (#984) — a dict merge on
+        # hits. #1425 honesty preserved: a failed lookup merges
+        # source_failed=True, which the floor renders as "couldn't check",
+        # never "none due".
+        try:
+            reminder_ctx = await self._gather_reminder_context(user_id)
+            if reminder_ctx:
+                context.update(reminder_ctx)
+                self._attribute_provenance(list(reminder_ctx.keys()), user_id=user_id)
+        except Exception as e:
+            logger.warning("context_assembler_reminder_gather_error", error=str(e))
 
         # #960: Context contract violation logging — warn when a data-query
         # category reaches the floor with no user data in context.

@@ -196,7 +196,10 @@ class TodoIntentHandlers:
         Extracts the reminder text and time from the message, creates a todo
         with reminder_date set, and confirms with the parsed time.
         """
-        from services.intent_service.temporal_utils import parse_reminder_time
+        from services.intent_service.temporal_utils import (
+            PAST_TODAY_PREFIX,
+            parse_reminder_time,
+        )
 
         original_message = intent.original_message or intent.context.get("original_message", "")
 
@@ -219,6 +222,19 @@ class TodoIntentHandlers:
         # (RESTORED 2026-08-08: reverted by the arch-seat merge-drop incident,
         # d99b3d068/d5ae5484f — second casualty after the audit doc.)
         if reminder_dt is None:
+            # #1562: explicit "today" + a clock time that has already passed
+            # on the server clock — honest ask, never a silent roll to
+            # tomorrow. (The server's clock is not the user's until
+            # #1535/#747 lands, so this can fire while the time is still in
+            # the user's future; the ask keeps the user in control either way.)
+            if time_label.startswith(PAST_TODAY_PREFIX):
+                passed_time = time_label[len(PAST_TODAY_PREFIX) :]
+                return (
+                    f"I caught the task — **{text}** — but {passed_time} today "
+                    f"has already passed on my clock. Did you mean tomorrow? "
+                    f"Say 'remind me at {passed_time} tomorrow' — or give me "
+                    f"another time — and I'll set it."
+                )
             return (
                 f"I caught the task — **{text}** — but couldn't work out "
                 f'the time from "{time_label}". When should I remind you? '
@@ -248,15 +264,23 @@ class TodoIntentHandlers:
             if reminder_dt:
                 time_display = reminder_dt.strftime("%A, %B %-d at %-I:%M %p")
 
+            # #1562: labels from the bare-clock branch start with "at"
+            # ("at 5pm") — strip a LEADING "at" so the copy never reads
+            # "(scheduled for at 5pm)". Same doublet family as #1490's
+            # "tomorrow at at 3pm".
+            schedule_label = re.sub(r"^at\s+", "", time_label)
+
             # Issue #1096 slice 2 (Pattern-073 discipline): verification-bounded
-            # phrasing. The reminder is surfaced via context_assembler at
-            # next-conversation time (not push-notified), so describe the
-            # actual surfacing mechanism rather than promising active reminder.
+            # phrasing. The reminder is surfaced via context_assembler on
+            # floor-bound turns (not push-notified) — since #1566 that's ANY
+            # conversational turn, not just greetings, but action commands
+            # (e.g. "add todo: x") still don't surface it. So: "in
+            # conversation", the mechanism we actually have.
             return (
                 f"Reminder saved: **{text}** "
-                f"(scheduled for {time_label}).\n\n"
+                f"(scheduled for {schedule_label}).\n\n"
                 f"📅 {time_display}\n\n"
-                f"I'll surface this the next time you check in after that time."
+                f"I'll surface this in conversation once it's due."
             )
 
         except Exception as e:
