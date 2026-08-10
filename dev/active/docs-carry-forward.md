@@ -13,12 +13,31 @@ stage in one call, commit bare in the next. `mail-send.sh` safe regardless.
 **Standing note**: `pre-commit-broad-staging-warn.sh` blocks the Bash tool call outright on a ≥20-file
 staged commit despite documenting itself as advisory-only; `--no-verify` has no effect (not a git hook).
 
-## 🔴 MONDAY (08-10) IS A DOCS-OWNED TRIGGER DAY — check FIRST at START
+## 🟠 ACTIVE — Weekly Docs Audit #1583, in progress, spans multiple fires
 
-**Weekly Docs Audit** (`weekly-docs-audit.yml`, fires ~9am PT) — verify it actually fired before doing
-anything else. Last cycle this was flagged as "watch whether the nudged cron fires" and then the day
-turned out to be Sunday (no check needed) — tomorrow is the real test. If it didn't fire, that's a
-process gap worth a same-day fix, not a defer.
+**The trigger fired clean** (08-10, 17:03 UTC/10:03 PT, verified via `gh run list` + reading the actual
+log, not just "it ran green") — first real test of the nudged cron since it was flagged, and it worked.
+Issue #1583 created, real 17.7K-char checklist body.
+
+**Genuinely worked, not just checked-off** (Fire 2, 10:27-11:15ish): Briefing Freshness ✅ fresh,
+Doc Currency (25/37 stale, 21 sharing the `2026-06-19` bulk-stamp — flagged, not fixed, cohort matter),
+pattern count (no real discrepancy, self-corrected a false read before reporting), ADR link integrity
+(0 broken), omnibus coverage (3-day gap is expected under the Friday-early-omnibus cadence, verified via
+git log not assumed), quality checks (0 backups, GitHub-issues-sync step is stale template drift and was
+skipped in favor of the substantive check), docs/README.md pmorgan.tech homepage review (clean).
+
+**3 background subagents in flight** (non-overlapping scopes) — **consolidate their results FIRST at
+next fire, before anything else**:
+1. Stale content by file-mtime + duplicate files
+2. Broken links across rest of docs/ (not just ADRs) + methodology cross-refs + NAVIGATION↔INDEX check
+3. Briefing completeness vs ROSTER.md + root README.md review + CITATIONS.md spot-check
+
+**Not yet started**: Sprint & Roadmap Alignment, Pattern & Knowledge Capture (session-log pattern-mining,
+template-dir currency), staggered-audit-calendar update (final step).
+
+Progress comment posted to #1583 with real evidence — do NOT close the issue until the Completion Matrix
+is genuinely filled (all 8 sections ✅/⏸️-with-PM-approval/❌-with-blocker-link — no silent skipping per
+Pattern-046). This is legitimately multi-fire work per the checklist's own explicit allowance.
 
 ## 🟡 AWAITING PM (3+ days now) — write up the line-count methodology proposal, or hold?
 
